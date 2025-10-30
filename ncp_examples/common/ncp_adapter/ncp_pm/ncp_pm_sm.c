@@ -116,6 +116,24 @@ static const char *ncp_pm_sm_event_str(uint32_t event)
     return buf;
 }
 
+static const char *ncp_pm_sm_notify_event_str(uint32_t events)
+{
+    static char buf[64];
+    buf[0] = '\0';
+
+    if (events & NCP_PM_NOTIFY_EVENT_DATA_READY) strcat(buf, "DATA_READY|");
+    if (events & NCP_PM_NOTIFY_EVENT_PRE)        strcat(buf, "CTRL_PRE|");
+    if (events & NCP_PM_NOTIFY_EVENT_POST)       strcat(buf, "CTRL_POST|");
+
+    size_t len = strlen(buf);
+    if (len > 0 && buf[len-1] == '|')
+        buf[len-1] = '\0';
+    else if (len == 0)
+        strcpy(buf, "NONE");
+
+    return buf;
+}
+
 /**
  * @brief Set the state of the power state machine.
  */
@@ -203,7 +221,7 @@ static ncp_pm_status_t ncp_pm_sm_send(ncp_pm_sm_ctx_t *ctx, uint32_t event)
     }
 
     msg_id = packed >> 4;
-    notify_event = packed & 0x03;
+    notify_event = event | (packed & 0x03);
 
     ncp_pm_msg_t msg = {
         .magic = NCP_PM_MSG_MAGIC,
@@ -221,10 +239,10 @@ static ncp_pm_status_t ncp_pm_sm_send(ncp_pm_sm_ctx_t *ctx, uint32_t event)
         if (ctx->tx_if->send_msg(notify_event, &msg, msg.size) == NCP_PM_STATUS_SUCCESS)
         {
             s_psm_msg_seqnum++;
-            NCP_LOG_DBG("Message sent done, event: %s", ncp_pm_sm_event_str(event));
+            NCP_LOG_DBG("Message sent done, event: %s", ncp_pm_sm_notify_event_str(event));
             return NCP_PM_STATUS_SUCCESS;
         }
-        NCP_LOG_ERR("Failed to send message, event: %s", ncp_pm_sm_event_str(event));
+        NCP_LOG_ERR("Failed to send message, event: %s", ncp_pm_sm_notify_event_str(event));
     }
 
     return NCP_PM_STATUS_ERROR;
