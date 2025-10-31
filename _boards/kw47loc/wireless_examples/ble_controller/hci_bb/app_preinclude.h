@@ -38,6 +38,9 @@
 /* Defines Size for Timer Task*/
 #define gTmrTaskStackSize_c             384
 
+/* Enable capture of NBU failure */
+#define HCIBB_DBG_NBU_ENABLE    1
+
 /*
  * TimerManager Configuration
  */
