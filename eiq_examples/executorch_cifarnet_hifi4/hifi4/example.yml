@@ -1,0 +1,16 @@
+executorch_cifarnet_hifi4:
+  skip_build: true
+  section-type: application
+  contents:
+    meta_path: examples/eiq_examples/executorch_cifarnet_hifi4/hifi4
+    project-root-path: boards/${board}/eiq_examples/executorch_cifarnet_hifi4/${multicore_foldername}
+    document:
+      name: executorch_cifarnet_hifi4${core_id_suffix_name}
+      category: eiq_examples
+      brief: CIFARNET example for ExecuTorch
+      example_readme:
+      - examples/eiq_examples/executorch_cifarnet_hifi4/hifi4/readme.md
+  boards:
+    mimxrt700evk@hifi4:
+    - +xtensa@debug
+    - +xtensa@release
