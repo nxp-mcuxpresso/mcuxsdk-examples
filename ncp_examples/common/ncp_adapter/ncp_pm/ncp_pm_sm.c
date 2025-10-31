@@ -32,7 +32,7 @@ typedef struct _ncp_pm_sm_ctx
 } ncp_pm_sm_ctx_t;
 
 #define NCP_PM_SM_TASK_STACK_SIZE (1024U)
-#define NCP_PM_WAKEUP_MAX_RETRY   (3U)
+#define NCP_PM_WAKEUP_MAX_RETRY   (20U)
 #define NCP_PM_WAKEUP_TIMEOUT_MS  (25U)
 
 /*******************************************************************************
