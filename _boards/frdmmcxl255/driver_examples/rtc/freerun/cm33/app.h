@@ -21,7 +21,6 @@
  * Prototypes
  ******************************************************************************/
 /*${prototype:start}*/
-void BOARD_Init96MClocksBoot(void);
 void BOARD_InitHardware(void);
 /*${prototype:end}*/
 
