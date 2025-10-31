@@ -138,7 +138,7 @@ BOARD_InitPins:
     open_drain: Disable}
   - {pin_num: R2, peripheral: SEMC, signal: 'DATA, 25', pin_signal: GPIO_EMC_B2_10, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: L4, peripheral: SEMC, signal: 'DATA, 26', pin_signal: GPIO_EMC_B2_11, software_input_on: Disable, pull_down_pull_up_config: Pull_Up, pdrv_config: High_Driver,
+  - {pin_num: L4, peripheral: SEMC, signal: 'DATA, 26', pin_signal: GPIO_EMC_B2_11, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
   - {pin_num: M2, peripheral: SEMC, signal: 'DATA, 27', pin_signal: GPIO_EMC_B2_12, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
@@ -150,7 +150,7 @@ BOARD_InitPins:
     open_drain: Disable}
   - {pin_num: P2, peripheral: SEMC, signal: 'DATA, 31', pin_signal: GPIO_EMC_B2_16, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: P1, peripheral: SEMC, signal: 'DM, 2', pin_signal: GPIO_EMC_B2_08, software_input_on: Disable, pull_down_pull_up_config: Pull_Up, pdrv_config: High_Driver,
+  - {pin_num: P1, peripheral: SEMC, signal: 'DM, 2', pin_signal: GPIO_EMC_B2_08, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
   - {pin_num: T2, peripheral: SEMC, signal: 'DM, 3', pin_signal: GPIO_EMC_B2_17, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
@@ -747,8 +747,8 @@ void BOARD_InitPins(void) {
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B2_08_SEMC_DM02,        /* GPIO_EMC_B2_08 PAD functional properties : */
-      0x04U);                                 /* PDRV Field: high drive strength
-                                                 Pull Down Pull Up Field: Internal pullup resistor enabled
+      0x08U);                                 /* PDRV Field: high drive strength
+                                                 Pull Down Pull Up Field: Internal pulldown resistor enabled
                                                  Open Drain Field: Disabled
                                                  Domain write protection: Both cores are allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
@@ -768,8 +768,8 @@ void BOARD_InitPins(void) {
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B2_11_SEMC_DATA26,      /* GPIO_EMC_B2_11 PAD functional properties : */
-      0x04U);                                 /* PDRV Field: high drive strength
-                                                 Pull Down Pull Up Field: Internal pullup resistor enabled
+      0x08U);                                 /* PDRV Field: high drive strength
+                                                 Pull Down Pull Up Field: Internal pulldown resistor enabled
                                                  Open Drain Field: Disabled
                                                  Domain write protection: Both cores are allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
