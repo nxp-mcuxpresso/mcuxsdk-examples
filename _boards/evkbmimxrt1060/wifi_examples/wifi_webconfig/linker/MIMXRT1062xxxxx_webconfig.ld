@@ -212,7 +212,7 @@ SECTIONS
     __data_start__ = .;      /* create a global symbol at data start */
     *(.data)                 /* .data sections */
     *(.data*)                /* .data* sections */
-    *(DataQuickAccess)       /* quick access data section */
+    KEEP(*(DataQuickAccess))       /* quick access data section */
     *(.wlan_data .wlan_data.*)
     KEEP(*(.jcr*))
     . = ALIGN(4);
