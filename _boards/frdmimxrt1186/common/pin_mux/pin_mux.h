@@ -312,6 +312,12 @@ void BOARD_InitFLEXIO_TFORMATPins(void);          /* Function assigned for the C
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
+void BOARD_InitFLEXIO_BISSPins(void);
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
 void BOARD_InitFLEXSPI_FLRPins(void);         /* Function assigned for the Cortex-M33 */
 
 /*!

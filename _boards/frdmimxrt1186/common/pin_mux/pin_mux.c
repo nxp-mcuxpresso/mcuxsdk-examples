@@ -1442,6 +1442,45 @@ void BOARD_InitFLEXIO_TFORMATPins(void) {
 
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitFLEXIO_BISSPins:
+- options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
+- pin_list:
+  - {pin_num: G3, peripheral: FLEXIO1, signal: 'IO, 00', pin_signal: GPIO_EMC_B1_00, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+    open_drain: Disable}
+  - {pin_num: G2, peripheral: FLEXIO1, signal: 'IO, 02', pin_signal: GPIO_EMC_B1_02, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+    open_drain: Disable}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitFLEXIO_BISSPins, assigned for the Cortex-M33 core.
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitFLEXIO_BISSPins(void) {
+  CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
+
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B1_00_FLEXIO1_FLEXIO00, /* GPIO_EMC_B1_00 is configured as FLEXIO1_FLEXIO00 */
+      1U);                                    /* Software Input On Field: Force input path of pad GPIO_EMC_B1_00 */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B1_02_FLEXIO1_FLEXIO02, /* GPIO_EMC_B1_02 is configured as FLEXIO1_FLEXIO02 */
+      1U);
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_EMC_B1_00_FLEXIO1_FLEXIO00, /* GPIO_EMC_B1_00 PAD functional properties : */
+      0x08U);                                 /* PDRV Field: high driver
+                                                 Pull Down Pull Up Field: PD
+                                                 Open Drain Field: Disabled */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_EMC_B1_02_FLEXIO1_FLEXIO02, /* GPIO_EMC_B1_02 PAD functional properties : */
+      0x08U);                                 /* PDRV Field: high driver
+                                                 Pull Down Pull Up Field: PD
+                                                 Open Drain Field: Disabled */
+}
+
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitFLEXSPI_FLRPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
