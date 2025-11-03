@@ -44,7 +44,7 @@ void EDMA_Callback(edma_handle_t *handle, void *param, bool transferDone, uint32
     {
         g_Transfer_Done[count] = true;
     }
-    count++;
+    count = (count + 1) % TCD_QUEUE_SIZE;
 }
 
 /*!
