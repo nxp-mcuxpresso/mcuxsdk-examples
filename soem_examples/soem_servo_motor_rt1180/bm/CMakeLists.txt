@@ -22,6 +22,7 @@ mcux_add_include(
     INCLUDES examples/soem_examples/soem_servo_motor_rt1180/bm
 )
 
+include(${SdkRootDirPath}/${board_root}/${board}/soem_examples/soem_servo_motor_rt1180/bm/reconfig.cmake OPTIONAL)
 include(${SdkRootDirPath}/${board_root}/${board}/soem_examples/soem_servo_motor_rt1180/bm/${core_id}/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
