@@ -15,11 +15,6 @@ mcux_add_include(
         BASE_PATH ${SdkRootDirPath}
     )
 
-#add cc-defines
-mcux_add_macro(
-     CC "-DPLATFORM_DEFAULT_NV_COUNTERS\
-       "
-)
 #mdk configurations:
 mcux_remove_mdk_configuration(
     TARGETS debug release
