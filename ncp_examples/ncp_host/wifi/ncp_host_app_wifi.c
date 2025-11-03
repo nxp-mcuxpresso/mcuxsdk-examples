@@ -578,7 +578,7 @@ void ncp_iperf_tx_task(void *pvParameters)
     unsigned int cur_time = 0;
     int delta = 0;
     unsigned int send_interval = 1;
-    int                client_sockfd;
+    int client_sockfd = -1;
     struct sockaddr_in server_addr = {0};
 
     while (1)

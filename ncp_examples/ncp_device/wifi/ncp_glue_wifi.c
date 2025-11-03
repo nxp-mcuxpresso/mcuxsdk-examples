@@ -4288,7 +4288,6 @@ static int wlan_ncp_remove_all_networks(void *tlv)
 
 static int wlan_ncp_get_pkt_stats(void *tlv)
 {
-    unsigned int count;
     int ret = WM_SUCCESS;
     wlan_pkt_stats_t stats;
 
