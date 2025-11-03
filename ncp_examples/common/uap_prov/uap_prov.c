@@ -694,12 +694,16 @@ static int uap_prov_sm(struct q_message *msg)
                  * If the mflash is empty, the board starts and AP allowing the user to configure
                  * the desired Wi-Fi network.
                  * Otherwise the stored credentials will be used to connect to the Wi-Fi network.*/
-                ret = do_fall_to_sta(NETWORK_FROM_CONFIG);
-                if (ret == WM_SUCCESS)
+                if(ncp_network_is_added(DEF_STA_NETWORK_LABEL))
                 {
-                    uap_prov_set_sm_state(WIFI_STATE_STA_CONNECTING);
-                    break;
+                    ret = do_fall_to_sta(NETWORK_FROM_CONFIG);
+                    if (ret == WM_SUCCESS)
+                    {
+                        uap_prov_set_sm_state(WIFI_STATE_STA_CONNECTING);
+                        break;
+                    }
                 }
+
                 ret = do_fall_to_uap();
                 if (ret == WM_SUCCESS)
                 {

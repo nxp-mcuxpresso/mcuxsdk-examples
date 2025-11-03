@@ -1680,7 +1680,14 @@ bool ncp_network_is_added(char *network)
         }
         else
         {
-            break;
+            if(wifi_lfs_bss_config[i].flag == WLAN_BSS_STATUS_NONAVAILABLE)
+            {
+                continue;
+            }
+            else
+            {
+                break;
+            }
         }
     }
 

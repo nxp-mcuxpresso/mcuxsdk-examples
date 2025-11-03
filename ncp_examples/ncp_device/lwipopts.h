@@ -71,7 +71,7 @@
 
 #define CONFIG_NETWORK_HIGH_PERF 1
 
-#define MAX_SOCKETS_TCP           8
+#define MAX_SOCKETS_TCP           16
 #define MAX_LISTENING_SOCKETS_TCP 4
 #define MAX_SOCKETS_UDP           10
 #define TCP_SND_BUF_COUNT         2
