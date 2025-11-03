@@ -1,5 +1,5 @@
 /*
- * Copyright 2019, 2021-2024 NXP
+ * Copyright 2019, 2021-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -873,7 +873,7 @@ static void APP_RestoreRuntimeContext(void)
 static void APP_SetPowerDownModeWakeupConfig(void)
 {
     /* The first word from wakeup address must be SP. */
-    g_wakeupEntry[0] = ((uint32_t)&m_warmboot_stack_end);
+    g_wakeupEntry[0] = SDK_SIZEALIGN_DOWN(((uint32_t)&m_warmboot_stack_end), 8);
     /* The second word from wakeup address must be PC. */
     g_wakeupEntry[1] = (uint32_t)APP_WakeupFunction;
 
