@@ -138,7 +138,7 @@ framework_info_sh_mem_size        = 0x20;
 framework_info_sh_mem_end         = framework_info_sh_mem_start + framework_info_sh_mem_size - 1;
 
 /* Section used for the sfc module intercore debug */
-m_sfc_log_start                   = framework_info_sh_mem_start; 
+m_sfc_log_start                   = framework_info_sh_mem_start;
 m_sfc_log_size                    = 0x04;
 
 /* Section used to share a flag on both cores for lowpower purpose */
@@ -147,11 +147,11 @@ m_lowpower_flag_size              = 0x04;
 m_lowpower_flag_end               = m_lowpower_flag_start + m_lowpower_flag_size - 1;
 
 /* RPMSG section for intercore communication */
-rpmsg_sh_mem_size                 = 0x1100;
+rpmsg_sh_mem_size                 = 0xA00;
 rpmsg_sh_mem_start                = framework_info_sh_mem_end + 1;
 rpmsg_sh_mem_end                  = rpmsg_sh_mem_start + rpmsg_sh_mem_size - 1;
 
-dbg_ext_logging_size              = 0x700;
+dbg_ext_logging_size              = 0x1500;
 dbg_ext_logging_start             = rpmsg_sh_mem_end + 1;
 dbg_ext_logging_end               = dbg_ext_logging_start + dbg_ext_logging_size - 1;
 
@@ -213,7 +213,7 @@ SECTIONS
     KEEP(*(.isr_vector))     /* Startup code */
     . = ALIGN(4);
   } > m_interrupts
-  
+
   /* The program code and other data goes into internal flash */
   .text :
   {
@@ -280,7 +280,7 @@ SECTIONS
     PROVIDE(__stop_VERSION_TAGS = .);
     . = ALIGN(4);
   } > m_text
-  
+
   .ARM.extab :
   {
     *(.ARM.extab* .gnu.linkonce.armextab.*)

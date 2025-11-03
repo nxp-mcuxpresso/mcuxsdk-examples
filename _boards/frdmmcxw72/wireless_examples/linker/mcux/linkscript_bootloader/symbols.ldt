@@ -5,7 +5,7 @@
     /* Linker Symbols */
     _RAM_START_ = 0x1FFFC000;
     _RAM_END_ = 0x2000BFFF;
-    
+
     __RAM_VECTOR_TABLE_SIZE_BYTES = 192;
     __VECTOR_RAM = __base_RAM_VECTOR_TABLE;
     __VECTOR_TABLE = __base_PROGRAM_FLASH;
@@ -14,7 +14,7 @@
     INT_STORAGE_START = DEFINED(__base_INT_STORAGE) ? __base_INT_STORAGE : 0;
     INT_STORAGE_END =  DEFINED(__top_INT_STORAGE) ? __top_INT_STORAGE : 0;
     INT_STORAGE_SIZE = INT_STORAGE_END - INT_STORAGE_START;
-    
+
     NV_STORAGE_START_ADDRESS = DEFINED(__base_NVM_region) ? __base_NVM_region : 0;
     NV_STORAGE_END_ADDRESS = DEFINED(__top_NVM_region) ? __top_NVM_region : 0;
     NV_STORAGE_SECTOR_SIZE = 0x2000;
@@ -89,7 +89,7 @@ framework_info_sh_mem_size        = 0x20;
 framework_info_sh_mem_end         = framework_info_sh_mem_start + framework_info_sh_mem_size - 1;
 
 /* Section used for the sfc module intercore debug */
-m_sfc_log_start                   = framework_info_sh_mem_start; 
+m_sfc_log_start                   = framework_info_sh_mem_start;
 m_sfc_log_size                    = 0x04;
 
 /* Section used to share a flag on both cores for lowpower purpose */
@@ -98,11 +98,11 @@ m_lowpower_flag_size              = 0x04;
 m_lowpower_flag_end               = m_lowpower_flag_start + m_lowpower_flag_size - 1;
 
 /* RPMSG section for intercore communication */
-rpmsg_sh_mem_size                 = 0x1100;
+rpmsg_sh_mem_size                 = 0xA00;
 rpmsg_sh_mem_start                = framework_info_sh_mem_end + 1;
 rpmsg_sh_mem_end                  = rpmsg_sh_mem_start + rpmsg_sh_mem_size - 1;
 
-dbg_ext_logging_size              = 0x700;
+dbg_ext_logging_size              = 0x1500;
 dbg_ext_logging_start             = rpmsg_sh_mem_end + 1;
 dbg_ext_logging_end               = dbg_ext_logging_start + dbg_ext_logging_size - 1;
 

@@ -459,7 +459,7 @@ define symbol framework_info_sh_mem_size        = 0x20;
 define symbol framework_info_sh_mem_end         = framework_info_sh_mem_start + framework_info_sh_mem_size - 1;
 
 /* Section used for the sfc module intercore debug */
-define exported symbol m_sfc_log_start          = framework_info_sh_mem_start; 
+define exported symbol m_sfc_log_start          = framework_info_sh_mem_start;
 define symbol m_sfc_log_size                    = 0x04;
 
 /* Section used to share a flag on both cores for lowpower purpose */
@@ -468,7 +468,7 @@ define symbol m_lowpower_flag_size              = 0x04;
 define symbol m_lowpower_flag_end               = m_lowpower_flag_start + m_lowpower_flag_size - 1;
 
 /* RPMSG section for intercore communication */
-define exported symbol rpmsg_sh_mem_size        = 0x1100;
+define exported symbol rpmsg_sh_mem_size        = 0xA00;
 define exported symbol rpmsg_sh_mem_start       = framework_info_sh_mem_end + 1;
 define exported symbol rpmsg_sh_mem_end         = rpmsg_sh_mem_start + rpmsg_sh_mem_size - 1;
 
@@ -483,7 +483,7 @@ if (gEnableCoverage_d) {
 define exported symbol dbg_ext_logging_size     = 0x000;
 define exported symbol dbg_ext_logging_start    = sh_mem_coverage_end + 1;
 } else {
-define exported symbol dbg_ext_logging_size     = 0x700;
+define exported symbol dbg_ext_logging_size     = 0x1500;
 define exported symbol dbg_ext_logging_start    = rpmsg_sh_mem_end + 1;
 }
 define exported symbol dbg_ext_logging_end      = dbg_ext_logging_start + dbg_ext_logging_size - 1;
