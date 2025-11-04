@@ -95,7 +95,7 @@ status_t FLEXSPI_NorFlash_GetVendorID(uint32_t instance, uint32_t *vendorID)
 #define FLEXSPI_LUT_SEQ(cmd0, pad0, op0, cmd1, pad1, op1)                                                              \
     (FLEXSPI_LUT_OPERAND0(op0) | FLEXSPI_LUT_NUM_PADS0(pad0) | FLEXSPI_LUT_OPCODE0(cmd0) | FLEXSPI_LUT_OPERAND1(op1) | \
      FLEXSPI_LUT_NUM_PADS1(pad1) | FLEXSPI_LUT_OPCODE1(cmd1))
-
+/* These settings are related to board design for external QSPI flash memory, please adjust it accordingly based on your design */
 status_t FLEXSPI_NorFlash_GetConfig(uint32_t instance,
                                            flexspi_nor_config_t *config)
 {  
