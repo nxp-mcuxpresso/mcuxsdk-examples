@@ -594,12 +594,6 @@ int le_audio_mcs_discover(struct bt_conn *conn)
 
 #endif /* CONFIG_BT_MCC */
 
-
-static void mcs_server_discover_cb(struct bt_conn *conn)
-{
-	OSA_SemaphorePost(sem_mcs_server_discovered);
-}
-
 static void vcs_vol_rend_state_callback(int err, uint8_t volume, uint8_t mute)
 {
 	if (err) {

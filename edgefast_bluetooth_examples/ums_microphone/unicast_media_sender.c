@@ -1069,27 +1069,6 @@ static void member_scan_cb(const bt_addr_le_t *addr, int8_t rssi, uint8_t adv_ty
 	(void)OSA_SemaphorePost(sem_member_discovered);
 }
 
-static int member_scan(void)
-{
-	int err;
-
-	/* This demo doesn't require active scan */
-	err = bt_le_scan_start(BT_LE_SCAN_PASSIVE, member_scan_cb);
-	if(err)
-	{
-		if(err == -EALREADY) {
-			PRINTF("Scan already started!\r\n");
-		}
-		else
-		{
-			PRINTF("Scan failed to start (err %d)\r\n", err);
-			return -1;
-		}
-	}
-
-	return 0;
-}
-
 static int device_connect(int index)
 {
 	int err;

@@ -76,9 +76,6 @@ typedef struct _scan_dev_info_t
 
 static void connected(struct bt_conn *conn, uint8_t err);
 static void disconnected(struct bt_conn *conn, uint8_t reason);
-static void wireless_uart_rx_callback(void *callbackParam,
-                                               serial_manager_callback_message_t *message,
-                                               serial_manager_status_t status);
 static void wu_central_scan_callback(const bt_addr_le_t *addr, int8_t rssi, uint8_t type,
              struct net_buf_simple *ad);
 #if CONFIG_BT_SMP

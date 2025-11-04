@@ -107,6 +107,7 @@ void BOARD_Init_Timer(void)
     timerConfig.srcClock_Hz = CLOCK_GetFreq(kCLOCK_BusClk);
     status                  = (osa_status_t)TM_Init(&timerConfig);
     assert(status == (osa_status_t)kStatus_TimerSuccess);
+    (void)status;
 }
 
 void BOARD_Init_Button(void)
