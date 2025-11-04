@@ -165,6 +165,9 @@ void ncp_pm_get_wakeup_source(void *ws)
             case WKDEEPSLEEP_IRQn:
                 s_wake_src = NCP_PM_WAKE_SRC_WKDEEPSLEEP;
                 break;
+            case SDU_IRQn:
+                s_wake_src = NCP_PM_WAKE_SRC_SDIO;
+                break;
             default:
                 break;
         }
@@ -224,6 +227,9 @@ static void ncp_pm_print_wakeup_source(void)
             break;
         case NCP_PM_WAKE_SRC_BLE:
             src_str = "BLE";
+            break;
+        case NCP_PM_WAKE_SRC_SDIO:
+            src_str = "SDIO";
             break;
         case NCP_PM_WAKE_SRC_NONE:
         default:

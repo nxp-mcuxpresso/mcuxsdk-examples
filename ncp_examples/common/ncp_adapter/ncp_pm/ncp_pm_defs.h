@@ -65,6 +65,7 @@ typedef enum _ncp_pm_wake_src
     NCP_PM_WAKE_SRC_FLEXCOMM0,    /**< FLEXCOMM0 wake source */
     NCP_PM_WAKE_SRC_USB,          /**< USB wake source */
     NCP_PM_WAKE_SRC_WKDEEPSLEEP,  /**< WKDEEPSLEEP wake source */
+    NCP_PM_WAKE_SRC_SDIO,         /**< SDIO wake source */
 } ncp_pm_wake_src_t;
 
 #define NCP_PM_MSG_MAGIC (0xACAC)

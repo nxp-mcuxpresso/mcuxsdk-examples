@@ -15,6 +15,7 @@
 #include "ncp_adapter.h"
 #include "ncp_intf_sdio.h"
 #include "ncp_pm.h"
+#include "fsl_pm_core.h"
 
 /*******************************************************************************
  * Defines
@@ -91,6 +92,7 @@ typedef MLAN_PACK_START struct ncp_command_header
  * Variables
  ******************************************************************************/
 static const ncp_pm_ops_t *s_pm_ops = NULL;
+static pm_wakeup_source_t sdioWakeupSource;
 static uint32_t ncp_intf_sdio_entered = 0;
 
 //static void ncp_sdio_intf_task(void *argv);
@@ -269,6 +271,13 @@ static void ncp_wait_host_status(uint8_t status)
 
 static int ncp_sdio_pm_init(void)
 {
+    s_pm_ops = ncp_pm_get_ops();
+
+    if (s_pm_ops && s_pm_ops->init_wakeup_src)
+    {
+        s_pm_ops->init_wakeup_src(&sdioWakeupSource, (uint32_t)SDU_IRQn, true);
+    }
+
     return (int)NCP_STATUS_SUCCESS;
 }
 
@@ -302,9 +311,10 @@ static int ncp_sdio_pm_enter(uint8_t pm_state)
         SDU_FN_CARD->CARD_INTMASK0 |= SDU_FN_CARD_CARD_INTSTATUS0_HOST_PWR_UP_INT_MASK;
         /* Enable this bit so that hardware can send R5 immediately in sleep mode */
         SDU_FN0_CARD->CARD_CTRL5 |= SDU_FN0_CARD_CARD_CTRL5_CMD52_RES_VALID_MODE_MASK;
-        POWER_ClearWakeupStatus(SDU_IRQn);
-        NVIC_ClearPendingIRQ(SDU_IRQn);
-        POWER_EnableWakeup(SDU_IRQn);
+        if (s_pm_ops && s_pm_ops->enable_wakeup_src)
+        {
+            s_pm_ops->enable_wakeup_src(&sdioWakeupSource);
+        }
     }
     else if(pm_state == NCP_PM_STATE_PM3)
     {
@@ -397,9 +407,18 @@ static int ncp_sdio_pm_exit(uint8_t pm_state)
         return (int)NCP_PM_STATUS_SUCCESS;
     }
 
+    if (s_pm_ops && s_pm_ops->get_wakeup_src)
+    {
+        s_pm_ops->get_wakeup_src(&sdioWakeupSource);
+    }
+
     if (pm_state == NCP_PM_STATE_PM2)
     {
-        POWER_DisableWakeup(SDU_IRQn);
+        if (s_pm_ops && s_pm_ops->disable_wakeup_src)
+        {
+            s_pm_ops->disable_wakeup_src(&sdioWakeupSource);
+            (void)EnableIRQ(SDU_IRQn);
+        }
         SDU_FN0_CARD->CARD_CTRL5 &= (~SDU_FN0_CARD_CARD_CTRL5_CMD52_RES_VALID_MODE_MASK);
         SDU_FN_CARD->CARD_INTMASK0 &= (~SDU_FN_CARD_CARD_INTSTATUS0_HOST_PWR_UP_INT_MASK);
     }
