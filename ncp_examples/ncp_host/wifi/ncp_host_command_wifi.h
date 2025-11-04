@@ -2587,42 +2587,6 @@ int wlan_wakeup_condition_command(int argc, char **argv);
  */
 int wlan_process_wakeup_condition_response(uint8_t *res);
 
-#if (CONFIG_NCP_WIFI && !CONFIG_NCP_BLE && !CONFIG_NCP_OT)
-/**
- * This API is used to request NCP device enter specific low power mode.
- *
- * \note Should be used after API \ref ncp_mcu_sleep_command with manual mode.
- *
- * \param[in] argc    Argument count, the number of strings pointed to by argv,
- *                    argc should be 2.
- * \param[in] argv    Argument vector.\n
- *                    argv[0]: wlan-suspend\n
- *                    argv[1]: String value of low power mode\n
- *                             1 -- PM1\n
- *                             2 -- PM2\n
- *                             3 -- PM3\n
- *
- * \note The allowed low power mode is controlled by configuration of \ref ncp_wake_cfg_command.\n
- * For INTF wake mode, the allowed <power_mode> are PM1 and PM2.\n
- * For GPIO wake mode and RDRW612 as NCP device, the allowed <power_mode> are PM1, PM2 and PM3.\n
- * For GPIO wake mode and FRDMRW612 as NCP device, the allowed <power_mode> are PM1 and PM2.\n
- * For WIFI-NB wake mode and FRDRW612 as NCP device, the allowed <power_mode> are PM1, PM2 and PM3.
- *
- * \return WM_SUCCESS if the call was successful.
- * \return -WM_FAIL if failed.
- */
-int wlan_suspend_command(int argc, char **argv);
-
-/**
- * This API is used to process suspend response.
- *
- * \param[in] res    A pointer to \ref MCU_NCPCmd_DS_COMMAND response.
- *
- * \return WM_SUCCESS.
- */
-int wlan_process_suspend_response(uint8_t *res);
-#endif
-
 /**
  * This API is used to enable/disable deep sleep power save mode.
  *

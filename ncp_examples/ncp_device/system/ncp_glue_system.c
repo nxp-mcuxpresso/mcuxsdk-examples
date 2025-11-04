@@ -24,10 +24,6 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-#if (CONFIG_NCP_WIFI && !CONFIG_NCP_BLE && !CONFIG_NCP_OT)
-extern OSA_TIMER_HANDLE_DEFINE(wake_timer);
-#endif
-int current_PM_mode;
 
 extern uint16_t g_cmd_seqno;
 extern uint8_t cmd_buf[NCP_INBUF_SIZE];

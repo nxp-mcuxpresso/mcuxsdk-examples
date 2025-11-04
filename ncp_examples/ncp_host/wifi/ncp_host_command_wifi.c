@@ -1154,28 +1154,6 @@ int wlan_process_wakeup_condition_response(uint8_t *res)
     return WM_SUCCESS;
 }
 
-#if (CONFIG_NCP_WIFI && !CONFIG_NCP_BLE && !CONFIG_NCP_OT)
-int wlan_process_suspend_response(uint8_t *res)
-{
-    MCU_NCPCmd_DS_COMMAND *cmd_res = (MCU_NCPCmd_DS_COMMAND *)res;
-    uint16_t result                = cmd_res->header.result;
-
-    if (result == NCP_CMD_RESULT_ERROR)
-    {
-        (void)PRINTF("suspend command is failed\r\n");
-        (void)PRINTF("PM1/2 allowed with INTF mode\r\n");
-        (void)PRINTF("If NCP device is RDRW612:\r\n");
-        (void)PRINTF("    PM1/2/3 allowed with GPIO mode\r\n");
-        (void)PRINTF("If NCP device is FRDMRW612:\r\n");
-        (void)PRINTF("    PM1/2 allowed with GPIO mode\r\n");
-        (void)PRINTF("    PM1/2/3 allowed with WIFI-NB mode\r\n");
-    }
-    else
-        (void)PRINTF("suspend command is successful\r\n");
-    return WM_SUCCESS;
-}
-#endif
-
 static void dump_wlan_eu_crypto_ccmp_128(void)
 {
     (void)PRINTF("Usage:\r\n");
@@ -8877,11 +8855,6 @@ int wlan_process_response(uint8_t *res)
         case NCP_RSP_WLAN_POWERMGMT_WOWLAN_CFG:
             ret = wlan_process_wakeup_condition_response(res);
             break;
-#if (CONFIG_NCP_WIFI && !CONFIG_NCP_BLE && !CONFIG_NCP_OT)
-        case NCP_RSP_WLAN_POWERMGMT_SUSPEND:
-            ret = wlan_process_suspend_response(res);
-            break;
-#endif
         case NCP_RSP_WLAN_HTTP_CON:
             ret = wlan_process_wlan_http_con_response(res);
             break;
