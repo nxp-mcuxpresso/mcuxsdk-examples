@@ -49,8 +49,12 @@
 #define NCP_SDIO_DEVICE_PM2           (2U)
 #define NCP_SDIO_DEVICE_PM3           (3U)
 
+/** SCRATCH_7_1 */
+#define SCRATCH_7_1 0xFD
+
 #define SDIO_SLEEP_HS_DONE 1U
-#define SDIO_RESET_DONE 2U
+#define SDIO_HOST_RESET_DONE 2U
+#define SDIO_HOST_INIT_DONE 3U
 
 /** Max retry number of IO write */
 #define MAX_WRITE_IOMEM_RETRY       10
@@ -1023,24 +1027,24 @@ static void BOARD_SD_Enable(bool enable)
     }
 }
 
-static bool sdio_set_host_reset_done(uint32_t retry_cnt)
+static bool sdio_set_host_status(uint8_t data, uint32_t retry_cnt)
 {
     uint32_t resp = 0;
     bool ret = false;
 
     do {
-        /* Set Scratch Reg 0xFD to 2, let device know reset done */
-        ret = sdio_drv_creg_write(0xFD, 1, SDIO_RESET_DONE, &resp);
+        /* Set Scratch Reg SCRATCH_7_1 to data, let device know reset status */
+        ret = sdio_drv_creg_write(SCRATCH_7_1, 1, data, &resp);
         if (ret != true)
         {
-            ncp_adap_d("%s: SDIO Write 0xFD to %u FAIL", __FUNCTION__, SDIO_RESET_DONE);
+            ncp_adap_d("%s: SDIO Write 0xFD to %u FAIL", __FUNCTION__, data);
             OSA_TimeDelay(1000);
         }
         retry_cnt--;
     } while ((ret != true) && retry_cnt > 0);
     if (ret != true)
     {
-        ncp_adap_e("%s: SDIO Write 0xFD to %u ERR", __FUNCTION__, SDIO_SLEEP_HS_DONE);
+        ncp_adap_e("%s: SDIO Write 0xFD to %u ERR", __FUNCTION__, data);
         return false;
     }
     return true;
@@ -1099,12 +1103,12 @@ static ncp_status_t sdio_card_init(void)
     }
     ncp_adap_d("%s: SDIO_CardInit success", __FUNCTION__);
 
-    if (sdio_set_host_reset_done(10) != true)
+    if (sdio_set_host_status(SDIO_HOST_RESET_DONE, 10) != true)
     {
-        ncp_adap_e("%s: sdio_set_host_reset_done fail ret=%d", __FUNCTION__);
+        ncp_adap_e("%s: sdio_set_host_status fail", __FUNCTION__);
         return NCP_STATUS_ERROR;
     }
-    ncp_adap_d("%s: sdio_set_host_reset_done success", __FUNCTION__);
+    ncp_adap_d("%s: sdio_set_host_status success", __FUNCTION__);
 
     if (sdio_card_ready_wait(1000) != true)
     {
@@ -1239,6 +1243,13 @@ static ncp_status_t ncp_sdhost_CardInit(void)
 
     ret = sdio_post_init();
     ncp_adap_d("sdio_post_init done");
+
+    if (sdio_set_host_status(SDIO_HOST_INIT_DONE, 10) != true)
+    {
+        ncp_adap_e("%s: sdio_set_host_status fail", __FUNCTION__);
+        return NCP_STATUS_ERROR;
+    }
+    ncp_adap_d("%s: sdio_set_host_reset_done success", __FUNCTION__);
 
     return NCP_STATUS_SUCCESS;
 }

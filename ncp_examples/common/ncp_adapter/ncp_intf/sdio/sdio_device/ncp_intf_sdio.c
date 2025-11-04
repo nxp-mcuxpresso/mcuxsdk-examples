@@ -102,6 +102,18 @@ static uint32_t ncp_intf_sdio_entered = 0;
  * API
  ******************************************************************************/
 
+void ncp_tx_ctrl_enter_hook(void)
+{
+    osa_task_handle_t taskHandle = OSA_TaskGetCurrentHandle();
+    OSA_TaskSetPriority(taskHandle, PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 1)));
+}
+
+void ncp_tx_ctrl_exit_hook(void)
+{
+    osa_task_handle_t taskHandle = OSA_TaskGetCurrentHandle();
+    OSA_TaskSetPriority(taskHandle, PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 3)));
+}
+
 #if 0
 static void ncp_sdio_intf_task(void *argv)
 {
@@ -238,7 +250,7 @@ static int ncp_sdio_send(uint8_t *tlv_buf, size_t tlv_sz, tlv_send_callback_t cb
     return (int)NCP_STATUS_SUCCESS;
 }
 
-uint32_t g_check_host_loop_delay_time = 10;
+uint32_t g_check_host_loop_delay_time = 0;
 static void ncp_wait_host_status(uint8_t status)
 {
     while (true)
@@ -409,7 +421,7 @@ static int ncp_sdio_pm_exit(uint8_t pm_state)
 
     if (pm_state == NCP_PM_STATE_PM3)
     {
-        ncp_wait_host_status(SDIO_RESET_DONE);
+        ncp_wait_host_status(SDIO_HOST_RESET_DONE);
         ret = SDU_ExitPowerDownPhase2();
         if(ret != kStatus_Success)
         {
