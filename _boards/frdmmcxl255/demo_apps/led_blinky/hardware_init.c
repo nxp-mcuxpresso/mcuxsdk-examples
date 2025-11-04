@@ -17,7 +17,6 @@
 void BOARD_InitHardware(void)
 {
     BOARD_InitBootClocks();
-    BOARD_InitSWD_DEBUGPins();
     BOARD_InitLEDsPins();
     BOARD_InitBootPeripherals();
     /* Initialize the systick module. */

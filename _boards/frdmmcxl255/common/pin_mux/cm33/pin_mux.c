@@ -126,26 +126,6 @@ void BOARD_InitDEBUG_UARTPins(void)
 /* clang-format off */
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOARD_InitSWD_DEBUGPins:
-- options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true', fullInit: 'true'}
-- pin_list: []
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
- */
-/* clang-format on */
-
-/* FUNCTION ************************************************************************************************************
- *
- * Function Name : BOARD_InitSWD_DEBUGPins
- * Description   : Configures pin routing and optionally pin electrical features.
- *
- * END ****************************************************************************************************************/
-void BOARD_InitSWD_DEBUGPins(void)
-{
-}
-
-/* clang-format off */
-/*
- * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitMAGSWPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true', fullInit: 'true'}
 - pin_list:

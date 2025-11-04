@@ -36,7 +36,6 @@ int main(void)
 {
     /* Board initialization */
     BOARD_InitBootClocks();
-    BOARD_InitSWD_DEBUGPins();
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitDebugConsole();
 

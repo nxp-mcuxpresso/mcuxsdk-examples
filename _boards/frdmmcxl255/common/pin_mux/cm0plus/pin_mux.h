@@ -42,12 +42,6 @@ void BOARD_InitDEBUG_UARTPins(void);
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
-void BOARD_InitSWD_DEBUGPins(void);
-
-/*!
- * @brief Configures pin routing and optionally pin electrical features.
- *
- */
 void BOARD_InitI2CPins(void);
 
 /*!

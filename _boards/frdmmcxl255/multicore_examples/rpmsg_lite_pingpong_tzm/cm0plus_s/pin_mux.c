@@ -70,10 +70,6 @@ void BOARD_InitDEBUG_UARTPins(void)
     PORT_SetPinConfig(AON__PORT0, 7U, &port0_7_config);
 }
 
-void BOARD_InitSWD_DEBUGPins(void)
-{
-}
-
 void BOARD_InitI2CPins(void)
 {
     /* SDA */

@@ -74,10 +74,6 @@ void BOARD_InitDEBUG_UARTPins(void)
     PORT_SetPinConfig(PORT2, 10U, &port2_10_config);
 }
 
-void BOARD_InitSWD_DEBUGPins(void)
-{
-}
-
 void BOARD_InitI2CPins(void)
 {
     /* SDA */

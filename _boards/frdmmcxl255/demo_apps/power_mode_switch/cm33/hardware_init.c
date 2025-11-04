@@ -252,7 +252,6 @@ void BOARD_Init96MClocksBoot(void)
 
 void BOARD_InitHardware(void)
 {
-    BOARD_InitSWD_DEBUGPins();
     BOARD_InitDEBUG_UARTPins();
     BOARD_Init96MClocksBoot();
     BOARD_InitDebugConsole();

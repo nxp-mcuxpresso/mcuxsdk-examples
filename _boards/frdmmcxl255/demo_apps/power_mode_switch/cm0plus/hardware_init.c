@@ -78,7 +78,6 @@ void BOARD_DeinitTamper_ButtonPins(void)
 void BOARD_InitHardware(void)
 {
     BOARD_BootAs2MHzClocks();
-    BOARD_InitSWD_DEBUGPins();
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitDebugConsole();
 

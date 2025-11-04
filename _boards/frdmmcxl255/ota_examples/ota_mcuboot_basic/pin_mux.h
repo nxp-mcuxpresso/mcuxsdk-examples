@@ -26,7 +26,6 @@ extern "C" {
  *
  */
 void BOARD_InitDEBUG_UARTPins(void);
-void BOARD_InitSWD_DEBUGPins(void);
 void BOARD_InitACCELPins(void);
 void BOARD_InitMAGSWPins(void);
 void BOARD_InitI2CPins(void);
