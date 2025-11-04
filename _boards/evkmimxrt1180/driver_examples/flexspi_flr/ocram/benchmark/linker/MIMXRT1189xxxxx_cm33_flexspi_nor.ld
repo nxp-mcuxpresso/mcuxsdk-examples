@@ -1,18 +1,20 @@
 /*
 ** ###################################################################
-**     Processor:           MIMXRT1189CVM8A_cm33
+**     Processors:          MIMXRT1189CVM8B_cm33
+**                          MIMXRT1189CVM8C_cm33
+**                          MIMXRT1189XVM8B_cm33
+**                          MIMXRT1189XVM8C_cm33
+**
 **     Compiler:            GNU C Compiler
-**     Reference manual:    IMXRT1180RM, Rev 0, 03/2021
-**     Version:             rev. 0.1, 2021-03-09
-**     Build:               b220221
+**     Reference manual:    IMXRT1180RM, Rev 5, 01/2024
+**     Version:             rev. 2.0, 2024-01-18
+**     Build:               b250310
 **
 **     Abstract:
 **         Linker file for the GNU C Compiler
 **
 **     Copyright 2016 Freescale Semiconductor, Inc.
-**     Copyright 2016-2022 NXP
-**     All rights reserved.
-**
+**     Copyright 2016-2025 NXP
 **     SPDX-License-Identifier: BSD-3-Clause
 **
 **     http:                 www.nxp.com
@@ -24,101 +26,164 @@
 /* Entry Point */
 ENTRY(Reset_Handler)
 
-vector_table_size  = 0x00000400;
-app_image_offset   = 0x0000B000;
-m_code_tcm_start   = 0x0FFE0000;
-m_code_tcm_size    = 0x00020000;
-m_system_tcm_start = 0x20000000;
-m_system_tcm_size  = 0x00020000;
-m_ocram1_start     = 0x20484000;
-m_ocram1_size      = 0x0007C000;
-m_ocram2_start     = 0x20500000;
-m_ocram2_size      = 0x00040000;
-m_flash_start      = 0x28000000;
-m_flash_size       = 0x00800000;
+/* Board memory map */
+m_code_tcm_start         = 0x0FFE0000;
+m_code_tcm_size          = 0x00020000;
+m_system_tcm_start       = 0x20000000;
+m_system_tcm_size        = 0x00020000;
+m_ocram1_start           = 0x20484000;  /* OCRAM1 first 16K access is blocked by TRDC */
+m_ocram1_size            = 0x0007C000;
+m_ocram2_start           = 0x20500000;
+m_ocram2_size            = 0x00040000;
 
-VECTOR_RAM_SIZE    = DEFINED(__ram_vector_table__) ? vector_table_size : 0;
-HEAP_SIZE          = DEFINED(__heap_size__)  ? __heap_size__  : 0x0400;
-STACK_SIZE         = DEFINED(__stack_size__) ? __stack_size__ : 0x0400;
-NCACHE_HEAP_START  = DEFINED(__heap_noncacheable__) ? m_ocram2_start + m_ocram2_size - HEAP_SIZE : m_system_tcm_start + m_system_tcm_size - HEAP_SIZE;
-NCACHE_HEAP_SIZE   = DEFINED(__heap_noncacheable__) ? HEAP_SIZE : 0x0000;
+/* CM33 use last 2M bytes space of sdram and hyperram for dual image framework */
+m_sdram_start            = DEFINED(__dual_image__) ? 0x81E00000 : 0x80000000;
+m_sdram_size             = DEFINED(__dual_image__) ? 0x00200000 : 0x02000000;
+m_hyperram_start         = DEFINED(__dual_image__) ? 0x04600000 : 0x04000000;
+m_hyperram_size          = DEFINED(__dual_image__) ? 0x00200000 : 0x00800000;
+m_flash_start            = 0x28000000;
+m_flash_size             = 0x00800000;
+
+m_core1_image_maximum_size = 0x00040000;
+
+/* General definition */
+m_fcb_offset             = 0x400;
+m_fcb_size               = 0x200;
+m_xmcd_offset            = 0x800;
+m_xmcd_size              = 0x400;
+m_container_offset       = 0x1000;
+m_container_size         = 0x2000;
+
+m_fcb_start              = m_flash_start + m_fcb_offset;
+m_fcb_end                = m_fcb_start + m_fcb_size - 1;
+m_xmcd_start             = m_flash_start + m_xmcd_offset;
+m_xmcd_end               = m_xmcd_start + m_xmcd_size - 1;
+m_container_start        = m_flash_start + m_container_offset;
+m_container_end          = m_container_start + m_container_size - 1;
+
+app_image_offset         = 0x0000B000;
+vector_table_size        = 0x00000400;
+m_qacode_start           = m_code_tcm_start + (DEFINED(__ram_vector_table__) ? vector_table_size : 0);
+m_qacode_end             = m_code_tcm_start + m_code_tcm_size - 1;
+m_qadata_start           = m_system_tcm_start;
+m_qadata_end             = m_system_tcm_start + m_system_tcm_size - 1;
+m_ram_vector_table_start = m_code_tcm_start;
+m_stack_size             = DEFINED(__stack_size__) ? __stack_size__ : 0x400;
+m_heap_size              = DEFINED(__heap_size__)  ? __heap_size__  : 0x400;
+
+/* Target specific definition, code & data allocation */
+m_code_size              = m_flash_size - app_image_offset - vector_table_size;
+m_data_size              = m_system_tcm_size;
+m_ncache_size            = DEFINED(__multicore__) ? 0x20000 : 0x40000;   /* m_ncache_size must be 2^N */
+m_shmem_size             = m_ocram2_size;  /* m_shmem_size must be 2^N */
+
+m_ocram1_size_for_cm7    = DEFINED(__multicore__) ? 0x40000 : 0;
+
+m_ram_vector_table_size  = DEFINED(__ram_vector_table__) ? vector_table_size : 0;
+
+m_interrupts_start       = m_flash_start + app_image_offset;
+m_interrupts_end         = m_interrupts_start + vector_table_size - 1;
+
+m_text_start             = m_interrupts_end + 1;
+m_text_end               = m_text_start + m_code_size - 1;
+
+m_data_start             = m_system_tcm_start;
+m_data_end               = m_data_start + m_data_size - 1;
+
+m_ncache_start           = m_ocram1_start + m_ocram1_size - m_ocram1_size_for_cm7 - m_ncache_size;
+m_ncache_end             = m_ncache_start + m_ncache_size - 1 - (DEFINED(__heap_noncacheable__) ? m_heap_size : 0);
+
+m_heap_start             = DEFINED(__heap_noncacheable__) ? m_ncache_end + 1 : m_ocram1_start;
+m_heap_end               = m_heap_start +  m_heap_size - 1;
+
+m_rpmsg_sh_mem_start     = m_ocram2_start;
+m_rpmsg_sh_mem_end       = m_rpmsg_sh_mem_start + m_shmem_size - 1;
+
+/* Exported symbol definition */
+__VECTOR_TABLE                = m_interrupts_start;
+__VECTOR_RAM                  = m_ram_vector_table_start;
+__RAM_VECTOR_TABLE_SIZE_BYTES = m_ram_vector_table_size;
+__CONTAINER_IMG_OFFSET        = m_interrupts_start - m_container_start;
+
+__NCACHE_REGION_START = m_ncache_start;
+__NCACHE_REGION_SIZE  = m_ncache_size;
+__RPMSG_SH_MEM_START  = DEFINED(__use_shmem__)? m_rpmsg_sh_mem_start : 0;
+__RPMSG_SH_MEM_SIZE   = DEFINED(__use_shmem__)? m_rpmsg_sh_mem_end - m_rpmsg_sh_mem_start + 1 : 0;
 
 /* Specify the memory areas */
 MEMORY
 {
-  m_flash_config   (RX)  : ORIGIN = m_flash_start, LENGTH = 0x00000C00
-  m_ivt            (RX)  : ORIGIN = m_flash_start + 0x2000, LENGTH = 0x00001000
-  m_interrupts     (RX)  : ORIGIN = m_flash_start + app_image_offset, LENGTH = vector_table_size
-  m_text           (RX)  : ORIGIN = m_flash_start + app_image_offset + vector_table_size, LENGTH = m_flash_size - app_image_offset - vector_table_size
-  m_qacode         (RX)  : ORIGIN = m_code_tcm_start, LENGTH = m_code_tcm_size
-  m_data           (RW)  : ORIGIN = m_system_tcm_start, LENGTH = DEFINED(__heap_noncacheable__) ? m_system_tcm_size : m_system_tcm_size - HEAP_SIZE
-  m_data2          (RW)  : ORIGIN = m_ocram1_start, LENGTH = m_ocram1_size
-  m_ncache         (RW)  : ORIGIN = m_ocram2_start, LENGTH = DEFINED(__heap_noncacheable__) ? m_ocram2_size - HEAP_SIZE : m_ocram2_size
-  m_heap           (RW)  : ORIGIN = NCACHE_HEAP_START, LENGTH = HEAP_SIZE
+  m_fcb_data       (RX)  : ORIGIN = m_fcb_start,              LENGTH = m_fcb_end - m_fcb_start + 1
+  m_xmcd_data      (RX)  : ORIGIN = m_xmcd_start,             LENGTH = m_xmcd_end - m_xmcd_start + 1
+  m_container_data (RX)  : ORIGIN = m_container_start,        LENGTH = m_container_end - m_container_start + 1
+  m_interrupts_ram (RX)  : ORIGIN = m_ram_vector_table_start, LENGTH = __RAM_VECTOR_TABLE_SIZE_BYTES
+  m_interrupts     (RX)  : ORIGIN = m_interrupts_start,       LENGTH = m_interrupts_end - m_interrupts_start + 1
+  m_text           (RX)  : ORIGIN = m_text_start,             LENGTH = m_text_end - m_text_start + 1
+  m_data           (RW)  : ORIGIN = m_data_start,             LENGTH = m_data_end - m_data_start + 1
+  m_ncache         (RW)  : ORIGIN = m_ncache_start,           LENGTH = m_ncache_end - m_ncache_start + 1
+  m_heap           (RW)  : ORIGIN = m_heap_start,             LENGTH = m_heap_end - m_heap_start + 1
+  m_qacode         (RX)  : ORIGIN = m_qacode_start,           LENGTH = m_qacode_end - m_qacode_start + 1
+  m_qadata         (RW)  : ORIGIN = m_qadata_start,           LENGTH = m_qadata_end - m_qadata_start + 1
+  m_rpmsg          (RW)  : ORIGIN = m_rpmsg_sh_mem_start,     LENGTH = m_rpmsg_sh_mem_end - m_rpmsg_sh_mem_start + 1
 }
 
 /* Define output sections */
 SECTIONS
 {
-  __NCACHE_REGION_START = ORIGIN(m_ncache);
-  __NCACHE_REGION_SIZE  = LENGTH(m_ncache) + NCACHE_HEAP_SIZE;
-
-  .flash_config :
+  .fcb :
   {
-    . = ALIGN(4);
-    __FLASH_BASE = .;
-    KEEP(* (.boot_hdr.conf))     /* flash config section */
-    . = ALIGN(4);
-  } > m_flash_config
+    KEEP(*(.boot_hdr.conf))
+  } > m_fcb_data
 
-  ivt_begin = ORIGIN(m_flash_config) + LENGTH(m_flash_config);
-
-  .ivt : AT(ivt_begin)
+  .xmcd :
   {
-    . = ALIGN(4);
-    KEEP(* (.boot_hdr.ivt))           /* ivt section */
-    KEEP(* (.boot_hdr.boot_data))     /* boot section */
-    KEEP(* (.boot_hdr.dcd_data))      /* dcd section */
-    . = ALIGN(4);
-  } > m_ivt
+    KEEP(*(.boot_hdr.xmcd_data))
+  } > m_xmcd_data
 
-  /* The startup code goes first into internal RAM */
+  .container :
+  {
+    KEEP(*(.boot_hdr.container))
+  } > m_container_data
+
+  /* The startup code goes first */
   .interrupts :
   {
-    __VECTOR_TABLE = .;
-    __Vectors = .;
     . = ALIGN(4);
-    KEEP(*(.isr_vector))     /* Startup code */
+    __Vectors = .;
+    KEEP(*(.isr_vector))     /* Vector table and startup code */
     . = ALIGN(4);
   } > m_interrupts
 
-  /* The program code and other data goes into internal RAM */
+  .interrupts_ram :
+  {
+    . = ALIGN(4);
+    . += __RAM_VECTOR_TABLE_SIZE_BYTES;
+    . = ALIGN(4);
+  } > m_interrupts_ram
+
+  /* The program code */
   .text :
   {
     . = ALIGN(4);
-    *(EXCLUDE_FILE(
-        */flexspi_nor_flash_ops.c.obj
-        */fsl_flexspi.c.obj
-    ) .text)                 /* .text sections (code) */
-    *(EXCLUDE_FILE(
-        */flexspi_nor_flash_ops.c.obj
-        */fsl_flexspi.c.obj
-    ) .text*)                /* .text* sections (code) */
-    *(EXCLUDE_FILE(
-        */flexspi_nor_flash_ops.c.obj
-        */fsl_flexspi.c.obj
-    ) .rodata)               /* .rodata sections (constants, strings, etc.) */
-    *(EXCLUDE_FILE(
-        */flexspi_nor_flash_ops.c.obj
-        */fsl_flexspi.c.obj
-    ) .rodata*)              /* .rodata* sections (constants, strings, etc.) */
+    EXCLUDE_FILE (
+        *flexspi_nor_flash_ops.c.obj
+        *fsl_flexspi.c.obj
+      *(.text .rdata .text* .rodata*)
     *(.glue_7)               /* glue arm to thumb code */
     *(.glue_7t)              /* glue thumb to arm code */
     *(.eh_frame)
     KEEP (*(.init))
     KEEP (*(.fini))
-    . = ALIGN(4);
+
+    . = ALIGN(16);
+    core1_image_start = .;
+    KEEP (*(.core1_code))
+    *(.core1_code*)
+    core1_image_end = .;
+    . = ALIGN(4) ;
   } > m_text
+
+  ASSERT((core1_image_end - core1_image_start) <= m_core1_image_maximum_size, "Core1 image size exceeds the limit")
 
   .ARM.extab :
   {
@@ -132,7 +197,7 @@ SECTIONS
     __exidx_end = .;
   } > m_text
 
- .ctors :
+  .ctors :
   {
     __CTOR_LIST__ = .;
     /* gcc uses crtbegin.o to find the start of
@@ -191,30 +256,12 @@ SECTIONS
   } > m_text
 
   __etext = .;    /* define a global symbol at end of code */
-  __DATA_ROM = .; /* Symbol is used by startup for data initialization */
 
-  .interrupts_ram :
+  __data_flash_start = .; /* Symbol is used by startup for data initialization */
+  .data : AT(__data_flash_start)
   {
     . = ALIGN(4);
-    __VECTOR_RAM__ = .;
-    __interrupts_ram_start__ = .; /* Create a global symbol at data start */
-    *(.m_interrupts_ram)     /* This is a user defined section */
-    . += VECTOR_RAM_SIZE;
-    . = ALIGN(4);
-    __interrupts_ram_end__ = .; /* Define a global symbol at data end */
-  } > m_data
-
-  __VECTOR_RAM = DEFINED(__ram_vector_table__) ? __VECTOR_RAM__ : ORIGIN(m_interrupts);
-  __RAM_VECTOR_TABLE_SIZE_BYTES = DEFINED(__ram_vector_table__) ? (__interrupts_ram_end__ - __interrupts_ram_start__) : 0x0;
-
-  .data : AT(__DATA_ROM)
-  {
-    . = ALIGN(4);
-    __DATA_RAM = .;
     __data_start__ = .;      /* create a global symbol at data start */
-    *(m_usb_dma_init_data)
-    */flexspi_nor_flash_ops.c.obj(.text .text* .rodata .rodata*)
-    */fsl_flexspi.c.obj(.text .text* .rodata .rodata*)
     *(.data)                 /* .data sections */
     *(.data*)                /* .data* sections */
     *(DataQuickAccess)       /* quick access data section */
@@ -223,77 +270,92 @@ SECTIONS
     __data_end__ = .;        /* define a global symbol at data end */
   } > m_data
 
-  __ram_function_flash_start = __DATA_ROM + (__data_end__ - __data_start__); /* Symbol is used by startup for TCM data initialization */
-
+  __ram_function_flash_start = __data_flash_start + (__data_end__ - __data_start__); /* Symbol is used by startup for TCM code initialization */
   .ram_function : AT(__ram_function_flash_start)
   {
     . = ALIGN(32);
     __ram_function_start__ = .;
     *(CodeQuickAccess)
+    *flexspi_nor_flash_ops.c.obj(.text .text* .rodata .rodata*)
+    *fsl_flexspi.c.obj(.text .text* .rodata .rodata*)
     . = ALIGN(128);
     __ram_function_end__ = .;
   } > m_qacode
 
-  __NDATA_ROM = __ram_function_flash_start + (__ram_function_end__ - __ram_function_start__);
-  .ncache.init : AT(__NDATA_ROM)
+  __noncache_data_flash_start = __ram_function_flash_start + (__ram_function_end__ - __ram_function_start__);
+  .ncache.init : AT(__noncache_data_flash_start)
   {
-    __noncachedata_start__ = .;   /* create a global symbol at ncache data start */
+    . = ALIGN(4);
+    __noncache_data_start__ = .;      /* create a global symbol at ncache data start */
     *(NonCacheable.init)
     . = ALIGN(4);
-    __noncachedata_init_end__ = .;   /* create a global symbol at initialized ncache data end */
-  } > m_ncache
-  . = __noncachedata_init_end__;
-  .ncache :
-  {
-    *(NonCacheable)
-    . = ALIGN(4);
-    __noncachedata_end__ = .;     /* define a global symbol at ncache data end */
+    __noncache_data_end__ = .;   /* create a global symbol at ncache data end */
   } > m_ncache
 
-  __DATA_END = __NDATA_ROM + (__noncachedata_init_end__ - __noncachedata_start__);
+  .ncache :
+  {
+    . = ALIGN(4);
+    __noncache_bss_start__ = .;  /* define a global symbol at ncache bss start */
+    *(NonCacheable)
+    . = ALIGN(4);
+    __noncache_bss_end__ = .;    /* define a global symbol at ncache bss end */
+  } > m_ncache
+
+  __qadata_flash_start = __noncache_data_flash_start + (__noncache_data_end__ - __noncache_data_start__);
+  .qadata : AT(__qadata_flash_start)
+  {
+    . = ALIGN(4);
+    __qadata_start__ = .;
+    . = ALIGN(4);
+    __qadata_end__ = .;
+  } > m_qadata
+
+  text_data_end = __qadata_flash_start + (__qadata_end__ - __qadata_start__);
   text_end = ORIGIN(m_text) + LENGTH(m_text);
-  ASSERT(__DATA_END <= text_end, "region m_text overflowed with text and data")
+  ASSERT(text_data_end < text_end, "region m_text overflowed with text and data")
+
+  __CONTAINER_IMG_SIZE = text_data_end - m_interrupts_start;
 
   /* Uninitialized data section */
   .bss :
   {
     /* This is used by the startup in order to initialize the .bss section */
     . = ALIGN(4);
-    __START_BSS = .;
     __bss_start__ = .;
-    *(m_usb_dma_noninit_data)
     *(.bss)
     *(.bss*)
     *(COMMON)
     . = ALIGN(4);
     __bss_end__ = .;
-    __END_BSS = .;
   } > m_data
+
+  .rpmsg :
+  {
+    *(.noinit.$rpmsg_sh_mem)
+  } > m_rpmsg
 
   .heap :
   {
     . = ALIGN(8);
-    __end__ = .;
-    PROVIDE(end = .);
     __HeapBase = .;
-    . += HEAP_SIZE;
-    __HeapLimit = .;
-    __heap_limit = .; /* Add for _sbrk */
+    end = .;
+    . += m_heap_size;
+    __HeapLimit = .;  /* Add for _sbrk */
   } > m_heap
 
   .stack :
   {
     . = ALIGN(8);
     __StackStart = .;
-    . += STACK_SIZE;
+    . += m_stack_size;
   } > m_data
 
   /* Initializes stack on the end of block */
   __StackTop   = ORIGIN(m_data) + LENGTH(m_data);
-  __StackLimit = __StackTop - STACK_SIZE;
+  __StackLimit = __StackTop - m_stack_size;
   PROVIDE(__stack = __StackTop);
+  PROVIDE (__stack_size = m_stack_size);
+  ASSERT(__StackLimit >= __StackStart, "region m_data overflowed with stack and heap")
 
   .ARM.attributes 0 : { *(.ARM.attributes) }
-
-  ASSERT(__StackLimit >= __StackStart, "region m_data overflowed with stack and heap")
 }

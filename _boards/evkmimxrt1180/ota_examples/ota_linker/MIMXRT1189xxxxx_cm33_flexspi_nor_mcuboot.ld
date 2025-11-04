@@ -1,16 +1,20 @@
 /*
 ** ###################################################################
-**     Processor:           MIMXRT1189CVM8B_cm33
+**     Processors:          MIMXRT1189CVM8B_cm33
+**                          MIMXRT1189CVM8C_cm33
+**                          MIMXRT1189XVM8B_cm33
+**                          MIMXRT1189XVM8C_cm33
+**
 **     Compiler:            GNU C Compiler
-**     Reference manual:    IMXRT1180RM, Rev 2, 12/2022
-**     Version:             rev. 0.1, 2021-03-09
-**     Build:               b230621
+**     Reference manual:    IMXRT1180RM, Rev 5, 01/2024
+**     Version:             rev. 2.0, 2024-01-18
+**     Build:               b250310
 **
 **     Abstract:
 **         Linker file for the GNU C Compiler
 **
 **     Copyright 2016 Freescale Semiconductor, Inc.
-**     Copyright 2016-2023 NXP
+**     Copyright 2016-2025 NXP
 **     SPDX-License-Identifier: BSD-3-Clause
 **
 **     http:                 www.nxp.com
@@ -23,26 +27,40 @@
 ENTRY(Reset_Handler)
 
 /* Board memory map */
-m_code_tcm_start     = 0x0FFE0000;
-m_code_tcm_size      = 0x00020000;
-m_system_tcm_start   = 0x20000000;
-m_system_tcm_size    = 0x00020000;
-m_ocram1_start       = 0x20484000;  /* OCRAM1 first 16K access is blocked by TRDC */
-m_ocram1_size        = 0x0007C000;
-m_ocram2_start       = 0x20500000;
-m_ocram2_size        = 0x00040000;
+m_code_tcm_start         = 0x0FFE0000;
+m_code_tcm_size          = 0x00020000;
+m_system_tcm_start       = 0x20000000;
+m_system_tcm_size        = 0x00020000;
+m_ocram1_start           = 0x20484000;  /* OCRAM1 first 16K access is blocked by TRDC */
+m_ocram1_size            = 0x0007C000;
+m_ocram2_start           = 0x20500000;
+m_ocram2_size            = 0x00040000;
 
 /* CM33 use last 2M bytes space of sdram and hyperram for dual image framework */
-m_sdram_start        = DEFINED(__dual_image__) ? 0x81E00000 : 0x80000000;
-m_sdram_size         = DEFINED(__dual_image__) ? 0x00200000 : 0x02000000;
-m_hyperram_start     = DEFINED(__dual_image__) ? 0x04600000 : 0x04000000;
-m_hyperram_size      = DEFINED(__dual_image__) ? 0x00200000 : 0x00800000;
-m_flash_start        = 0x28000000;
-m_flash_size         = 0x00800000;
+m_sdram_start            = DEFINED(__dual_image__) ? 0x81E00000 : 0x80000000;
+m_sdram_size             = DEFINED(__dual_image__) ? 0x00200000 : 0x02000000;
+m_hyperram_start         = DEFINED(__dual_image__) ? 0x04600000 : 0x04000000;
+m_hyperram_size          = DEFINED(__dual_image__) ? 0x00200000 : 0x00800000;
+m_flash_start            = 0x28000000;
+m_flash_size             = 0x00800000;
 
 m_core1_image_maximum_size = 0x00040000;
 
 /* General definition */
+m_fcb_offset             = 0x400;
+m_fcb_size               = 0x200;
+m_xmcd_offset            = 0x800;
+m_xmcd_size              = 0x400;
+m_container_offset       = 0x1000;
+m_container_size         = 0x2000;
+
+m_fcb_start              = m_flash_start + m_fcb_offset;
+m_fcb_end                = m_fcb_start + m_fcb_size - 1;
+m_xmcd_start             = m_flash_start + m_xmcd_offset;
+m_xmcd_end               = m_xmcd_start + m_xmcd_size - 1;
+m_container_start        = m_flash_start + m_container_offset;
+m_container_end          = m_container_start + m_container_size - 1;
+
 app_image_offset         = 0x40400;
 vector_table_size        = 0x00000400;
 m_qacode_start           = m_code_tcm_start + (DEFINED(__ram_vector_table__) ? vector_table_size : 0);
@@ -86,6 +104,7 @@ m_rpmsg_sh_mem_end       = m_rpmsg_sh_mem_start + m_shmem_size - 1;
 __VECTOR_TABLE                = m_interrupts_start;
 __VECTOR_RAM                  = m_ram_vector_table_start;
 __RAM_VECTOR_TABLE_SIZE_BYTES = m_ram_vector_table_size;
+__CONTAINER_IMG_OFFSET        = m_interrupts_start - m_container_start;
 
 __NCACHE_REGION_START = m_ncache_start;
 __NCACHE_REGION_SIZE  = m_ncache_size;
@@ -95,6 +114,9 @@ __RPMSG_SH_MEM_SIZE   = DEFINED(__use_shmem__)? m_rpmsg_sh_mem_end - m_rpmsg_sh_
 /* Specify the memory areas */
 MEMORY
 {
+  m_fcb_data       (RX)  : ORIGIN = m_fcb_start,              LENGTH = m_fcb_end - m_fcb_start + 1
+  m_xmcd_data      (RX)  : ORIGIN = m_xmcd_start,             LENGTH = m_xmcd_end - m_xmcd_start + 1
+  m_container_data (RX)  : ORIGIN = m_container_start,        LENGTH = m_container_end - m_container_start + 1
   m_interrupts_ram (RX)  : ORIGIN = m_ram_vector_table_start, LENGTH = __RAM_VECTOR_TABLE_SIZE_BYTES
   m_interrupts     (RX)  : ORIGIN = m_interrupts_start,       LENGTH = m_interrupts_end - m_interrupts_start + 1
   m_text           (RX)  : ORIGIN = m_text_start,             LENGTH = m_text_end - m_text_start + 1
@@ -104,11 +126,27 @@ MEMORY
   m_heap           (RW)  : ORIGIN = m_heap_start,             LENGTH = m_heap_end - m_heap_start + 1
   m_qacode         (RX)  : ORIGIN = m_qacode_start,           LENGTH = m_qacode_end - m_qacode_start + 1
   m_qadata         (RW)  : ORIGIN = m_qadata_start,           LENGTH = m_qadata_end - m_qadata_start + 1
+  m_rpmsg          (RW)  : ORIGIN = m_rpmsg_sh_mem_start,     LENGTH = m_rpmsg_sh_mem_end - m_rpmsg_sh_mem_start + 1
 }
 
 /* Define output sections */
 SECTIONS
 {
+  .fcb :
+  {
+    KEEP(*(.boot_hdr.conf))
+  } > m_fcb_data
+
+  .xmcd :
+  {
+    KEEP(*(.boot_hdr.xmcd_data))
+  } > m_xmcd_data
+
+  .container :
+  {
+    KEEP(*(.boot_hdr.container))
+  } > m_container_data
+
   /* The startup code goes first */
   .interrupts :
   {
@@ -226,7 +264,6 @@ SECTIONS
   {
     . = ALIGN(4);
     __data_start__ = .;      /* create a global symbol at data start */
-    *(m_usb_dma_init_data)
     *(.data)                 /* .data sections */
     *(.data*)                /* .data* sections */
     *(DataQuickAccess)       /* quick access data section */
@@ -279,19 +316,25 @@ SECTIONS
   text_end = ORIGIN(m_text) + LENGTH(m_text);
   ASSERT(text_data_end < text_end, "region m_text overflowed with text and data")
 
+  __CONTAINER_IMG_SIZE = text_data_end - m_interrupts_start;
+
   /* Uninitialized data section */
   .bss :
   {
     /* This is used by the startup in order to initialize the .bss section */
     . = ALIGN(4);
     __bss_start__ = .;
-    *(m_usb_dma_noninit_data)
     *(.bss)
     *(.bss*)
     *(COMMON)
     . = ALIGN(4);
     __bss_end__ = .;
   } > m_data_ocram
+
+  .rpmsg :
+  {
+    *(.noinit.$rpmsg_sh_mem)
+  } > m_rpmsg
 
   .heap :
   {

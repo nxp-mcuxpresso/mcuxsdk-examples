@@ -55,3 +55,12 @@ mcux_add_armgcc_linker_script(
     TARGETS flexspi_nor_debug flexspi_nor_release
     LINKER ${board_root}/${board}/ota_examples/ota_linker/MIMXRT1186xxxxx_cm33_flexspi_nor_mcuboot.ld
 )
+mcux_remove_configuration(
+    TARGETS flexspi_nor_debug           flexspi_nor_release
+    CC "-DXIP_BOOT_HEADER_ENABLE=1"
+)
+
+mcux_add_configuration(
+    TARGETS flexspi_nor_debug           flexspi_nor_release
+    CC "-DXIP_BOOT_HEADER_ENABLE=0"
+)

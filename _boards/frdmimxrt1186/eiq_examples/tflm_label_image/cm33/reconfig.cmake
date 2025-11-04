@@ -13,26 +13,8 @@ mcux_remove_mdk_configuration(
   CX "-fshort-wchar"
   )
 
-mcux_remove_configuration(
-    TARGETS flexspi_nor_debug           flexspi_nor_release
-            flexspi_nor_hyperram_debug  flexspi_nor_hyperram_release
-    CC "-DXIP_BOOT_HEADER_ENABLE=0"
-)
-
-mcux_remove_mdk_configuration(
-    TARGETS flexspi_nor_debug           flexspi_nor_release
-            flexspi_nor_hyperram_debug  flexspi_nor_hyperram_release
-    LD "--predefine=-DXIP_BOOT_HEADER_ENABLE=0"
-)
-
 mcux_add_macro(
     CC "-DUSE_HYPERRAM=1"
-)
-
-mcux_add_configuration(
-    TARGETS flexspi_nor_debug           flexspi_nor_release
-            flexspi_nor_hyperram_debug  flexspi_nor_hyperram_release
-    CC "-DXIP_BOOT_HEADER_ENABLE=1"
 )
 
 mcux_add_iar_configuration(
@@ -41,7 +23,6 @@ mcux_add_iar_configuration(
   )
 mcux_add_mdk_configuration(
   LD "--predefine=-D__heap_size__=0x8000\
-      --predefine=-DXIP_BOOT_HEADER_ENABLE=1\
       --predefine=-D__stack_size__=0x2000"
   )
 mcux_add_armgcc_configuration(

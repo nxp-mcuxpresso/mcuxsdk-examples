@@ -25,20 +25,20 @@
 ENTRY(Reset_Handler)
 
 /* Board memory map */
-m_code_tcm_start     = 0x0FFE0000;
-m_code_tcm_size      = 0x00020000;
-m_system_tcm_start   = 0x20000000;
-m_system_tcm_size    = 0x00020000;
-m_ocram1_start       = 0x20484000;  /* OCRAM1 first 16K access is blocked by TRDC */
-m_ocram1_size        = 0x0007C000;
-m_ocram2_start       = 0x20500000;
-m_ocram2_size        = 0x00040000;
+m_code_tcm_start         = 0x0FFE0000;
+m_code_tcm_size          = 0x00020000;
+m_system_tcm_start       = 0x20000000;
+m_system_tcm_size        = 0x00020000;
+m_ocram1_start           = 0x20484000;  /* OCRAM1 first 16K access is blocked by TRDC */
+m_ocram1_size            = 0x0007C000;
+m_ocram2_start           = 0x20500000;
+m_ocram2_size            = 0x00040000;
 
 /* CM33 use last 2M bytes space of sdram and hyperram for dual image framework */
-m_hyperram_start     = DEFINED(__dual_image__) ? 0x28600000 : 0x28000000;
-m_hyperram_size      = DEFINED(__dual_image__) ? 0x00200000 : 0x00800000;
-m_flash_start        = 0x04000000;
-m_flash_size         = 0x00800000;
+m_hyperram_start         = DEFINED(__dual_image__) ? 0x28600000 : 0x28000000;
+m_hyperram_size          = DEFINED(__dual_image__) ? 0x00200000 : 0x00800000;
+m_flash_start            = 0x04000000;
+m_flash_size             = 0x00800000;
 
 m_core1_image_maximum_size = 0x00040000;
 
@@ -49,12 +49,14 @@ m_xmcd_offset            = 0x800;
 m_xmcd_size              = 0x400;
 m_container_offset       = 0x1000;
 m_container_size         = 0x2000;
+
 m_fcb_start              = m_flash_start + m_fcb_offset;
 m_fcb_end                = m_fcb_start + m_fcb_size - 1;
 m_xmcd_start             = m_flash_start + m_xmcd_offset;
 m_xmcd_end               = m_xmcd_start + m_xmcd_size - 1;
 m_container_start        = m_flash_start + m_container_offset;
 m_container_end          = m_container_start + m_container_size - 1;
+
 app_image_offset         = 0x0000B000;
 vector_table_size        = 0x00000400;
 m_qacode_start           = m_code_tcm_start + (DEFINED(__ram_vector_table__) ? vector_table_size : 0);
@@ -72,6 +74,7 @@ m_ncache_size            = DEFINED(__multicore__) ? 0x20000 : 0x40000;   /* m_nc
 m_shmem_size             = m_ocram2_size;  /* m_shmem_size must be 2^N */
 
 m_ocram1_size_for_cm7    = DEFINED(__multicore__) ? 0x40000 : 0;
+
 m_ram_vector_table_size  = DEFINED(__ram_vector_table__) ? vector_table_size : 0;
 
 m_interrupts_start       = m_flash_start + app_image_offset;
@@ -127,14 +130,17 @@ SECTIONS
   {
     KEEP(*(.boot_hdr.conf))
   } > m_fcb_data
+
   .xmcd :
   {
     KEEP(*(.boot_hdr.xmcd_data))
   } > m_xmcd_data
+
   .container :
   {
     KEEP(*(.boot_hdr.container))
   } > m_container_data
+
   /* The startup code goes first */
   .interrupts :
   {
@@ -305,6 +311,7 @@ SECTIONS
   ASSERT(text_data_end < text_end, "region m_text overflowed with text and data")
 
   __CONTAINER_IMG_SIZE = text_data_end - m_interrupts_start;
+
   /* Uninitialized data section */
   .bss :
   {
@@ -317,6 +324,7 @@ SECTIONS
     . = ALIGN(4);
     __bss_end__ = .;
   } > m_data
+
   .rpmsg :
   {
     *(.noinit.$rpmsg_sh_mem)
