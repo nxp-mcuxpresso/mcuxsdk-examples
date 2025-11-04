@@ -2,6 +2,7 @@ Hardware requirements
 =====================
 - FRDM-IMXRT1186 board
 - FRDM-LVPMSM-FA boards
+- FRDM-EXP-LVPMSM board
 - Power supply 24V
 - USB Type-C cable
 - Low-voltage 3-phase permanent magnet motors with EnDat2.2 sensor
@@ -46,6 +47,9 @@ FRDM-LVPMSM-FA boards configuration:
 			ENC_DATA_IO_N      J70-9                     DATA_N
 			VENC               J70-1                     UP - Power supply voltage
 			GND                J70-6                     GND
+			
+FRDM-EXP-LVPMSM boards configuration:
+	- will be added soon
 		
 Running the demo
 ================
