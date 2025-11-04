@@ -260,17 +260,17 @@ static void ncp_pm_sm_reset_flag(ncp_pm_sm_ctx_t *ctx)
  */
 static void pm_state_machine_step(ncp_pm_sm_ctx_t *ctx)
 {
+    ncp_pm_action_entry_update(ctx->state);
+
     switch (ctx->state)
     {
         case NCP_PM_SM_STATE_IDLE:
             NCP_LOG_DBG("=================START=================");
-            ncp_pm_action_cb_register(NULL, NULL, ncp_pm_action_rx_idle);
             ncp_pm_sm_reset_flag(ctx);
             ncp_pm_sm_wait_event(ctx, NCP_PM_SM_EVENT_START, osaWaitForever_c);
             ncp_pm_sm_set_state(ctx, NCP_PM_SM_STATE_ENTER);
             break;
         case NCP_PM_SM_STATE_ENTER:
-            ncp_pm_action_cb_register(ncp_pm_action_tx_ctrl_enter, NULL, NULL);
             /* Initiates low power handshake by sending SLEEP_ENTER/SLEEP_CFM message
              * and entering critical section. */
             ctx->notify_events = NCP_PM_NOTIFY_EVENT_POST;
@@ -285,7 +285,6 @@ static void pm_state_machine_step(ncp_pm_sm_ctx_t *ctx)
             ncp_pm_sm_set_state(ctx, NCP_PM_SM_STATE_CONFIRM);
             break;
         case NCP_PM_SM_STATE_CONFIRM:
-            ncp_pm_action_cb_register(NULL, NULL, ncp_pm_action_rx_confirm);
             if (ctx->role == NCP_PM_ROLE_DEVICE)
             {
                 /* Handshake is ongoing. Device waits for SLEEP_CFM. */
@@ -294,7 +293,6 @@ static void pm_state_machine_step(ncp_pm_sm_ctx_t *ctx)
             ncp_pm_sm_set_state(ctx, NCP_PM_SM_STATE_ACK);
             break;
         case NCP_PM_SM_STATE_ACK:
-            ncp_pm_action_cb_register(ncp_pm_action_tx_ctrl_ack, ncp_pm_action_tx_data_ack, ncp_pm_action_rx_ack);
             if (ctx->role == NCP_PM_ROLE_DEVICE)
             {
                 /* Sending SLEEP_ACK message */
@@ -316,13 +314,11 @@ static void pm_state_machine_step(ncp_pm_sm_ctx_t *ctx)
             ncp_pm_sm_set_state(ctx, NCP_PM_SM_STATE_FINISH);
             break;
         case NCP_PM_SM_STATE_FINISH:
-            ncp_pm_action_cb_register(NULL, ncp_pm_action_tx_data_finish, ncp_pm_action_rx_finish);
             /* Handshake complete. Waits for STOP, AWAKE, or TIME_WAIT to determine next step. */
             ncp_pm_sm_wait_event(ctx, NCP_PM_SM_EVENT_STOP | NCP_PM_SM_EVENT_AWAKE | NCP_PM_SM_EVENT_TIME_WAIT, osaWaitForever_c);
             ncp_pm_sm_set_state(ctx, NCP_PM_SM_STATE_EXIT);
             break;
         case NCP_PM_SM_STATE_EXIT:
-            ncp_pm_action_cb_register(ncp_pm_action_tx_ctrl_exit, ncp_pm_action_tx_data_exit, NULL);
             if (ctx->role == NCP_PM_ROLE_DEVICE)
             {
                 /* Check if TIME_WAIT event is already set, that is, if the low power timer has expired. */
@@ -359,7 +355,6 @@ static void pm_state_machine_step(ncp_pm_sm_ctx_t *ctx)
             NCP_LOG_DBG("=================STOP==================");
             break;
         case NCP_PM_SM_STATE_TIME_WAIT:
-            ncp_pm_action_cb_register(NULL, ncp_pm_action_tx_data_time_wait, ncp_pm_action_rx_time_wait);
             if (ctx->role == NCP_PM_ROLE_DEVICE)
             {
                 /* Release PM policy constraint. */
@@ -470,5 +465,3 @@ bool ncp_pm_sm_is_done(void)
 {
     return (s_psm_ctx.state == NCP_PM_SM_STATE_FINISH);
 }
-
-

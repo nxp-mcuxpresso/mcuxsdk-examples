@@ -47,16 +47,13 @@ void ncp_pm_action_init(ncp_pm_role_t role, ncp_pm_event_poster_t poster);
 void ncp_pm_action_deinit(void);
 
 /**
- * @brief Register TX/RX callbacks for PM action
+ * @brief Register action entry for PM action
  *
- * Register action callbacks used by the power state machine. The tx_cb is
- * called when the state machine needs to perform a transmit action; rx_cb is
- * invoked when incoming messages are dispatched.
+ * Register action entry used by the power state machine.
  *
- * @param tx_cb TX callback
- * @param rx_cb RX callback
+ * @param state Power management state machine states
  */
-void ncp_pm_action_cb_register(ncp_pm_action_tx_cb_t tx_ctrl_cb, ncp_pm_action_tx_cb_t tx_data_cb, ncp_pm_action_rx_cb_t rx_cb);
+void ncp_pm_action_entry_update(int state);
 
 /**
  * @brief Dispatch TX ctrl action using registered callback
@@ -96,6 +93,8 @@ int ncp_pm_action_tx_data_time_wait(void);
 
 /** RX idle action */
 int ncp_pm_action_rx_idle(void *buf, size_t buf_sz);
+/** RX enter action */
+int ncp_pm_action_rx_enter(void *buf, size_t buf_sz);
 /** RX confirm action */
 int ncp_pm_action_rx_confirm(void *buf, size_t buf_sz);
 /** RX ack action */

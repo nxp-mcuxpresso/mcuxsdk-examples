@@ -54,6 +54,10 @@ typedef struct _clock_context
 {
     uint32_t selA;
     uint32_t selB;
+    uint32_t frgSel;
+    uint32_t frgctl;
+    uint32_t osr;
+    uint32_t brg;
 } clock_context_t;
 
 /*******************************************************************************
@@ -306,10 +310,30 @@ AT_QUICKACCESS_SECTION_CODE(static void ncp_pm_switch_pre_hook(uint32_t mode, vo
     clock_context_t * clk_ctx = (clock_context_t *)param;
     clk_ctx->selA = CLKCTL0->MAINCLKSELA;
     clk_ctx->selB = CLKCTL0->MAINCLKSELB;
+#if CONFIG_NCP_UART
+    clk_ctx->frgSel = CLKCTL1->FLEXCOMM[0].FRGCLKSEL;
+    clk_ctx->frgctl = CLKCTL1->FLEXCOMM[0].FRGCTL;
+    clk_ctx->osr    = USART0->OSR;
+    clk_ctx->brg    = USART0->BRG;
+#endif
 
     /* Switch main_clk to LPOSC */
     CLKCTL0->MAINCLKSELA = 2;
     CLKCTL0->MAINCLKSELB = 0;
+
+#if CONFIG_NCP_UART
+    /* Change UART0 clock source to main_clk */
+    CLKCTL1->FLEXCOMM[0].FRGCLKSEL = 0;
+    /* bit[0:7] div, bit[8:15] mult.
+     * freq(new) = freq(old)/(1 + mult/(div+1))
+     * freq(new) is the frequency of LPOSC clock
+     * freq(old) is the frequency of main_pll clock
+     * Use the equation here to get div and mult.
+     */
+    CLKCTL1->FLEXCOMM[0].FRGCTL    = 0x11C7;
+    USART0->OSR                    = 7;
+    USART0->BRG                    = 0;
+#endif
 
     /* Update system core clock */
     SystemCoreClock = freq / ((CLKCTL0->SYSCPUAHBCLKDIV & CLKCTL0_SYSCPUAHBCLKDIV_DIV_MASK) + 1U);
@@ -320,6 +344,12 @@ AT_QUICKACCESS_SECTION_CODE(static void ncp_pm_switch_post_hook(uint32_t mode, v
     /* Recover main_clk clock source after wakeup.
      Use register access directly to avoid possible flash access in function call. */
     clock_context_t * clk_ctx = (clock_context_t *)param;
+#if CONFIG_NCP_UART
+    USART0->OSR                    = clk_ctx->osr;
+    USART0->BRG                    = clk_ctx->brg;
+    CLKCTL1->FLEXCOMM[0].FRGCLKSEL = clk_ctx->frgSel;
+    CLKCTL1->FLEXCOMM[0].FRGCTL    = clk_ctx->frgctl;
+#endif
     CLKCTL0->MAINCLKSELA           = clk_ctx->selA;
     CLKCTL0->MAINCLKSELB           = clk_ctx->selB;
 }

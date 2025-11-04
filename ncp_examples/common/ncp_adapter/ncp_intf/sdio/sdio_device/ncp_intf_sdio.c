@@ -104,18 +104,6 @@ static uint32_t ncp_intf_sdio_entered = 0;
  * API
  ******************************************************************************/
 
-void ncp_tx_ctrl_enter_hook(void)
-{
-    osa_task_handle_t taskHandle = OSA_TaskGetCurrentHandle();
-    OSA_TaskSetPriority(taskHandle, PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 1)));
-}
-
-void ncp_tx_ctrl_exit_hook(void)
-{
-    osa_task_handle_t taskHandle = OSA_TaskGetCurrentHandle();
-    OSA_TaskSetPriority(taskHandle, PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 3)));
-}
-
 #if 0
 static void ncp_sdio_intf_task(void *argv)
 {
