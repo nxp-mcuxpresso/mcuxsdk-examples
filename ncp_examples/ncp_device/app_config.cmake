@@ -1,7 +1,7 @@
 # ncp coex applications
 # Enable WIFI, BLE or OT functions
 set(CONFIG_NCP_WIFI           1)
-set(CONFIG_NCP_BLE            1)
+set(CONFIG_NCP_BLE            0)
 set(CONFIG_NCP_OT             0)
 # Select the ncp interface to use
 set(CONFIG_NCP_UART           1)

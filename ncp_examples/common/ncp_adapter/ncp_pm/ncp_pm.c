@@ -34,6 +34,7 @@ typedef struct _ncp_pm_ctx
                                                  */
     uint8_t pm_policy_constraint;               /**< Defines the deepest allowed low power mode based on system policy.
                                                  * Unlike runtime constraints, it can be set by LP timer. */
+    uint32_t critical_enter_cnt;                /**< Counter for critical section entry to manage nested critical sections */
     const ncp_pm_tx_if_t *tx_if;                /**< Interface for transmitting handshake messages */
 } ncp_pm_ctx_t;
 
@@ -122,12 +123,30 @@ static int ncp_pm_release_lp_constraint(int power_mode)
 
 int ncp_pm_enter_critical(void)
 {
-    return ncp_pm_set_lp_constraint(s_pm_ctx.pm_runtime_constraint);
+    int ret = NCP_PM_STATUS_SUCCESS;
+
+    ret = ncp_pm_set_lp_constraint(s_pm_ctx.pm_runtime_constraint);
+    if (ret == NCP_PM_STATUS_SUCCESS) {
+        s_pm_ctx.critical_enter_cnt++;
+    }
+
+    return ret;
 }
 
 int ncp_pm_exit_critical(void)
 {
-    return ncp_pm_release_lp_constraint(s_pm_ctx.pm_runtime_constraint);
+    int ret = NCP_PM_STATUS_SUCCESS;
+
+    if (s_pm_ctx.critical_enter_cnt == 0) {
+        return NCP_PM_STATUS_ERROR;
+    }
+
+    ret = ncp_pm_release_lp_constraint(s_pm_ctx.pm_runtime_constraint);
+    if (ret == NCP_PM_STATUS_SUCCESS) {
+        s_pm_ctx.critical_enter_cnt--;
+    }
+
+    return ret;
 }
 
 void ncp_pm_configure_next_lowpower_mode(int next_mode, uint32_t duration_ms)

@@ -60,7 +60,7 @@
 
 /* protocol options */
 #define CONFIG_NCP_WIFI                   1
-#define CONFIG_NCP_BLE                    1
+#define CONFIG_NCP_BLE                    0
 #define CONFIG_NCP_OT                     0
 
 /* NCP BLE mode options */

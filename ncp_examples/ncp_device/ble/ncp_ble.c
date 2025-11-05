@@ -191,6 +191,9 @@ static void ble_ncp_callback(void *tlv, size_t tlv_sz, int status)
 int ble_ncp_init(void)
 {
     int ret;
+
+    s_pm_ops = ncp_pm_get_ops();
+
     ble_ncp_command_queue = (osa_msgq_handle_t)ble_ncp_command_queue_buff;
     ret = OSA_MsgQCreate(ble_ncp_command_queue, BLE_NCP_COMMAND_QUEUE_NUM,  sizeof(ble_ncp_command_t));
     if (ret != NCP_CMD_RESULT_OK)
@@ -264,9 +267,9 @@ void ncp_put_ble_resp_buf_lock()
 
 void ncp_ble_state_set(int state)
 {
-    atomic_set_bit(ncp_ble_state, state);
+    if (atomic_test_and_set_bit(ncp_ble_state, state))
+        return;
 
-    s_pm_ops = ncp_pm_get_ops();
     if (state == NCP_BLE_SCANNING)
     {
         if (s_pm_ops && s_pm_ops->enter_critical)
@@ -278,9 +281,9 @@ void ncp_ble_state_set(int state)
 
 void ncp_ble_state_clear(int state)
 {
-    atomic_clear_bit(ncp_ble_state, state);
+    if (!atomic_test_and_clear_bit(ncp_ble_state, state))
+        return;
 
-    s_pm_ops = ncp_pm_get_ops();
     if (state == NCP_BLE_SCANNING)
     {
         if (s_pm_ops && s_pm_ops->exit_critical)
