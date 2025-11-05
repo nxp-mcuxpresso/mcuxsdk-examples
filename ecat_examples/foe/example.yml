@@ -40,6 +40,8 @@ ecat_foe:
     - -iar@flexspi_nor_hyperram_release
     - -mdk@debug
     - -mdk@release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     - -mdk@flexspi_nor_hyperram_debug

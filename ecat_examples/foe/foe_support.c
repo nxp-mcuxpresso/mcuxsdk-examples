@@ -102,6 +102,7 @@ int32_t FoE_StoreImage(uint8_t *data, uint16_t size, uint32_t offset, uint8_t is
     }
     total_processed += size;
     PRINTF("\r%s: processed %i bytes \r\n", __func__, total_processed);
+
     return mflash_result;
 }
 
@@ -128,6 +129,7 @@ void FoE_UpdateImage(void)
     } else {
         PRINTF("Update image success\r\n");
     }
+
     return;
 }
 
@@ -138,7 +140,8 @@ void FoE_UpdatePartition(void)
     if (bl_get_update_partition_info(image, &storage) != kStatus_Success) {
         PRINTF("FAILED to determine address for download\r\n");
     }
-    PRINTF("storage addr: 0x28%lX \r\n", storage.start);
+    PRINTF("Firmware upgrade in progress...\r\n");
+
     return;
 }
 

@@ -1,28 +1,4 @@
 
-# Add additional configuration
-mcux_add_macro(
-    CC "-DSDK_DEBUGCONSOLE_UART\
-        -DSERIAL_PORT_TYPE_UART=1\
-       -DPRINTF_ADVANCED_ENABLE=1"
-)
-
-mcux_add_armgcc_configuration(
-    TARGETS debug release flexspi_nor_debug flexspi_nor_release
-    LD "-Xlinker --defsym=__stack_size__=0x2000 -Xlinker --defsym=__heap_size__=0x10000"
-    CC "-O0"
-)
-
-mcux_add_iar_configuration(
-    TARGETS debug release flexspi_nor_debug flexspi_nor_release
-    LD "--config_def=__stack_size__=0x2000 --config_def=__heap_size__=0x10000"
-)
-
-mcux_add_mdk_configuration(
-    TARGETS debug release flexspi_nor_debug flexspi_nor_release
-    LD "--predefine=\"-D__stack_size__=0x2000\" --predefine=\"-D__heap_size__=0x10000\""
-    CC "-O0"
-)
-
 # Add or remove Linker File Configurations
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
@@ -39,10 +15,10 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER ${board_root}/${board}/ota_examples/mcuboot_opensource/linker/MIMXRT1186xxxxx_cm33_flexspi_nor.icf
+    LINKER ${board_root}/${board}/ota_examples/ota_linker/MIMXRT1186xxxxx_cm33_flexspi_nor_mcuboot.icf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER ${board_root}/${board}/ota_examples/mcuboot_opensource/linker/MIMXRT1186xxxxx_cm33_flexspi_nor.ld
+    LINKER ${board_root}/${board}/ota_examples/ota_linker/MIMXRT1186xxxxx_cm33_flexspi_nor_mcuboot.ld
 )

@@ -10,6 +10,21 @@ Board settings
 J12(2-3)/J13(2-3): eCAT0 Function Via J57A(Default).
 J18(2-3)/J17(2-3): eCAT1 Function Via J57B(Default).
 
+
+### MCUBoot layout
+
+| Region         | From       | To         | Size   |
+|----------------|------------|------------|--------|
+| MCUboot code   | 0x04000000 | 0x0403FFFF | 256kB  |
+| Primary slot   | 0x04040000 | 0x0423FFFF | 2048kB |
+| Secondary slot | 0x04240000 | 0x0443FFFF | 2048kB |
+
+- MCUBoot header size is set to 1024 bytes
+- Signing algorithm is ECDSA-P256
+- Write alignment is 4 bytes
+- MCUBoot is configured to use `SWAP_MOVE` image handling strategy
+
+
 Prepare the Demo
 ================
 1. Generate the SSC source code
@@ -36,26 +51,31 @@ Prepare the Demo
 	- One stop bit
 	- No flow control
 
-5. Download mcuboot_opensource program to the target board
-	- Change EVK SW5[1..4] to 0000 and press the reset SW3 key. 
-	- Enter 'boards\frdmimxrt1186\ota_examples\mcuboot_opensource\cm33', compile and use 'SPSDK tool' download to board.
+5. Compile mcuboot_opensource and FoE example image
+	- mcuboot_opensource example path: 'boards\frdmimxrt1186\ota_examples\mcuboot_opensource\cm33'
+	- FoE example path: 'boards\frdmimxrt1186\ecat_examples\foe\cm33'
 
-6. Download the signed FoE image to the target board
-	- Compile FoE image
-	- Install imgtool by the Python package manager
-		'pip install imgtool'
-	- Generate FoE example signed image
-		'imgtool sign --key sign-rsa2048-priv.pem --align 4 --header-size 0x400 --pad-header --slot-size 0x200000 --pad --confirm --max-sectors 800 --version "2.3.0" ecat_examples_foe_cm33.bin ecat_foe_2-3-0_SIGNED.bin'
-	- Download the image into target board
-		Open Jlink Command Line:
-			'JLink.exe -device MIMXRT1186xxx8_M33 -if SWD -speed 15000'
-			'r'
-			'h'
-			'loadbin ecat_foe_2-3-0_SIGNED.bin 0x28040000'
-			'qc'
+6. Download mcuboot_opensource and signed FoE image to the target board using 'MCUXpresso Secure Provisioning Tool'
+	- Download 'MCUXpresso Secure Provisioning Tool' from NXP official website
+	- Change J60(from left to right)[1,2,3] to '100' to open Serial Download mode, reset board
+	- Open 'SPT' and create a new workspace for the selected processor
+	- Connect the board via UART
+	- Verify the selected boot memory in 'main menu' > 'Target' > 'Boot Memory'
+	- On the Build image view, select the 'mcuboot_opensource_cm33.elf' image as 'Source executable image'
+	- Open 'main menu' > 'Tools' > 'MCUboot' > 'Sign Image' and configure the following
+		- 'ecat_foe.bin' image to be signed
+		- The signing key; it is located in the same folder that the prebuilt application or in MCUXpresso SDK, in folder 'middleware\mcuboot_opensource\boot\nxp_mcux_sdk\keys\sign-ecdsa-p256-priv.pem'
+		- The imgtool arguments by default should match the SDK example. It is not needed to change them
+		- Click the 'Sign' button to sign the application; fix problems, if any
+		- Set target address: '0x04040000'
+		- Close the dialog by clicking the 'Save & Close' button
+	- On the Build tab, double-check that the 'Build script hooks' section contains the pre-build script
+	- Open 'Additional Images' and check that the signed application is properly configured as 'Image 1'
+	- Build and write the bootable image into the processor
+	- Note: You can refer 'MCUboot workflow' chapter of 'MCUXSPTUG.pdf', which is from 'SPT Documentation website page'
 
 7. Run FoE example
-	- Change EVK SW5[1..4] to 0100 and press the reset SW3 key. 
+	- Change J60(from left to right)[1,2,3] to '001', reset board 
 	- The serial port will output:
 		hello sbl.
 		Bootloader Version 1.9.0
@@ -95,24 +115,31 @@ Prepare the Demo
 
 11. FoE image upgrade
 	- Generate new version FoE example signed image
-		'imgtool sign --key sign-rsa2048-priv.pem --align 4 --header-size 0x400 --pad-header --slot-size 0x200000 --max-sectors 800 --version "2.4.0" ecat_examples_foe_cm33.bin ecat_foe_2-4-0_SIGNED.bin'
+		'imgtool sign --key sign-ecdsa-p256-priv.pem --align 4 --header-size 0x400 --pad-header --slot-size 0x200000 --max-sectors 800 --version "2.4.0" ecat_foe_cm33.bin ecat_foe_2-4-0_SIGNED.bin'
 	- Click 'Device' -> 'Box1' -> 'Online' -> 'Bootstrap'
-	- Click 'Download' -> 'ecat_foe_2-4-0_SIGNED.bin' -> 'Password' -> 'Ok' to upgrade image
+	- Click 'Download' -> 'ecat_foe_2-4-0_SIGNED.bin' -> 'Password: 12369874' -> 'Ok' to upgrade image
 	- The serial port will output:
-		storage addr: 0x28240000
-		FoE_StoreImage: processed 256 bytes
-		FoE_StoreImage: processed 512 bytes
+
+		Firmware upgrade in progress...
+
+		FoE_StoreImage: processed 116 bytes
+
+		FoE_StoreImage: processed 232 bytes
+
 		...
+
 		FoE_StoreImage: upload complete (42028 bytes)
+
 		write magic number offset = 0x43ff00
+
 		Update image success
+
 	- After download, click 'Init' to restart board
 
 12. FoE image download
 	- Click 'Upload' -> 'ecat_foe_2-4-0_SIGNED.bin' -> 'Ok' to download upgraded image
 
 Note: 
-	- FoE download Password: 12369874
 	- For subsequent upgrades, new version number must be greater than the old version number, perform step 11 to generate the new version signed image
 	- For more mcuboot information, please refer to mcuboot_opensource example
 

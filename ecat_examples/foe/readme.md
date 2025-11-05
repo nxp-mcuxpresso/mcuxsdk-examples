@@ -22,7 +22,7 @@ When FoE upgrade is successful, the serial port will output:
 		Jumping to the image
 
        	Start the SSC FoE example...
-	   	Image version: 2.4.0
+	   	Image version: 2.3.0
 		Image state: testing
 		Set image as confirmed: success
 
