@@ -124,7 +124,7 @@
 #define CONFIG_WPA_SUPP_P2P 0
 #endif
 
-#if defined(SD9177)
+#if defined(SD8978) || defined(SD8987) || defined(SD9177)
 #define CONFIG_WPA_SUPP_DPP 0
 
 #if CONFIG_WPA_SUPP_DPP
