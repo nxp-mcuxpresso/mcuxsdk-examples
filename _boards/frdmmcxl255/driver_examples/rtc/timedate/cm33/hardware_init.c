@@ -50,10 +50,26 @@ void APP_InitTamperPins()
 
 void BOARD_InitHardware(void)
 {
+    rosc_init_config_t roscInitConfig;
+    
     BOARD_InitBootClocks();
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitDebugConsole();
     APP_InitTamperPins();
-    CLOCK_InitRosc(true);
+
+    /* Initialize Rosc if not already initialized */
+    if (!CLOCK_IsRoscInitialized())
+    {
+        /* Get default Rosc initialization configuration */
+        CLOCK_GetDefaultInitRoscConfig(&roscInitConfig);
+        
+        /* Configure Rosc initialization for FRDM-MCXL255 for faster init*/
+        roscInitConfig.detectionDelay = 50U;
+        roscInitConfig.detectionTimeout = 0U;
+        roscInitConfig.detectionDelaySwitchedMode = 50U;
+        roscInitConfig.detectionTimeoutSwitchedMode = 50U;
+        
+        CLOCK_InitRosc(&roscInitConfig);
+    }
 }
 /*${function:end}*/

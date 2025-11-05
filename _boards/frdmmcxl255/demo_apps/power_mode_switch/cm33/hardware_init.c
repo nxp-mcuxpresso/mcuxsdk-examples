@@ -252,6 +252,8 @@ void BOARD_Init96MClocksBoot(void)
 
 void BOARD_InitHardware(void)
 {
+    rosc_init_config_t roscInitConfig;
+    
     BOARD_InitDEBUG_UARTPins();
     BOARD_Init96MClocksBoot();
     BOARD_InitDebugConsole();
@@ -263,7 +265,20 @@ void BOARD_InitHardware(void)
     EnableIRQ(MU_A_RX_IRQn);
     MU_EnableInterrupts(APP_MU, (kMU_Rx0FullInterruptEnable));
 
-    CLOCK_InitRosc(true);
+    /* Initialize Rosc if not already initialized */
+    if (!CLOCK_IsRoscInitialized())
+    {
+        /* Get default Rosc initialization configuration */
+        CLOCK_GetDefaultInitRoscConfig(&roscInitConfig);
+        
+        /* Configure Rosc initialization for FRDM-MCXL255 for faster init*/
+        roscInitConfig.detectionDelay = 50U;
+        roscInitConfig.detectionTimeout = 0U;
+        roscInitConfig.detectionDelaySwitchedMode = 50U;
+        roscInitConfig.detectionTimeoutSwitchedMode = 50U;
+        
+        CLOCK_InitRosc(&roscInitConfig);
+    }
 }
 
 /*${function:end}*/
