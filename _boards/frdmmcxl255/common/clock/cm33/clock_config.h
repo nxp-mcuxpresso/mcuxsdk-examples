@@ -18,8 +18,8 @@
  * Definitions
  ******************************************************************************/
 
-#define VDD_CORE_1P1_1V_VOLTAGE     (0x69U) // 105 * 9.5mV = 0.9975V
-#define VDD_CORE_1P1_1_1V_VOLTAGE   (0x74U) // 116 * 9.5mV = 1.102V
+#define VDD_CORE_MAIN_1V_VOLTAGE        (0xA5U) /* Typical value */
+#define VDD_CORE_MAIN_1_1V_VOLTAGE      (0x8FU) /* Typical value */
 
 /*******************************************************************************
  ************************ BOARD_InitBootClocks function ************************

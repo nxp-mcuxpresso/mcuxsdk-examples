@@ -131,12 +131,12 @@ void CLOCK_ConfigureCoreVoltageAndFlashWaitStates(void)
     if (freq <= 48000000U) 
     {
         // Mid Drive Mode 1.0V
-        PMU_UpdateVDDCore1P1InActiveMode(AON__PMU, VDD_CORE_1P1_1V_VOLTAGE);
+        PMU_UpdateVDDCore1P1InActiveMode(AON__PMU, VDD_CORE_MAIN_1V_VOLTAGE);
     }
     else if (freq <= 96000000U)
     {
         // Normal Drive Mode 1.1V
-        PMU_UpdateVDDCore1P1InActiveMode(AON__PMU, VDD_CORE_1P1_1_1V_VOLTAGE);
+        PMU_UpdateVDDCore1P1InActiveMode(AON__PMU, VDD_CORE_MAIN_1_1V_VOLTAGE);
     }
     CLOCK_SetFlashWaitStateBasedOnFreq(freq);
 }
