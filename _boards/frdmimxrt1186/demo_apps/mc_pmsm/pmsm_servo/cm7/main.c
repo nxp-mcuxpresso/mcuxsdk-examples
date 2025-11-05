@@ -104,7 +104,7 @@ ctrl_m1_mid_t g_sSpinMidSwitch;           /* Control Spin/MID switching */
 
 volatile uint32_t ui32CntFast = 0U;
 
-uint32_t ui32EndatPositionSt;
+uint8_t ui8M1EndatISRCheck = 0U;
 uint64_t ui64EndatData;
 
 /*******************************************************************************
@@ -179,6 +179,9 @@ void M1_FLEXIO_IRQHandler()
 {
   
     USER_J3_16_ON();
+    
+    /* Clear EnDat2.2 fault check flag */
+    ui8M1EndatISRCheck = 0U;
   
     M1_MCDRV_FLEXIO_ENDAT2P2_GET(&g_sM1Enc);    
     
@@ -201,11 +204,24 @@ void M1_FLEXIO_IRQHandler()
 RAM_FUNC_LIB
 void SINC3_CH0_CH1_CH2_CH3_IRQHandler(void)
 {
-  
     USER_J3_16_ON();
-    
+  
+    if(ui8M1EndatISRCheck > 3U)
+    {
+        /* Set EnDat2.2 fault */
+        FAULT_SET(g_sM1Drive.sFaultIdPending, FAULT_ENDAT_ISR);
+        
+        /* Run M1 state machine */
+        SM_StateMachineFast(&g_sM1Ctrl); 
+        
+        ui8M1EndatISRCheck--;
+        
+    }
+      
     /* Read SINC results and process data */
     M1_MCDRV_SINC_GET(&g_sM1Curr3phDcBus);  
+    
+    ui8M1EndatISRCheck++;
            
     USER_J3_16_OFF();
     
