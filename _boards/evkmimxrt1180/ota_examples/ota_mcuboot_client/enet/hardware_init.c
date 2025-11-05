@@ -127,8 +127,9 @@ void BOARD_InitHardware(void)
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 
-    // XCACHE_DisableCache(XCACHE_PC);
-    // XCACHE_DisableCache(XCACHE_PS);
+    /* Cache should be off until MbedTLS HW acceleration supports cache handling */
+    XCACHE_DisableCache(XCACHE_PC);
+    XCACHE_DisableCache(XCACHE_PS);
 
     /* RMII mode */
     BLK_CTRL_WAKEUPMIX->NETC_LINK_CFG[0] = BLK_CTRL_WAKEUPMIX_NETC_LINK_CFG_MII_PROT(1);

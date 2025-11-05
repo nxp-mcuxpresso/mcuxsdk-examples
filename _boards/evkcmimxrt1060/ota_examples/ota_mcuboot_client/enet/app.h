@@ -10,7 +10,6 @@
 
 /*${header:start}*/
 #include "fsl_phyksz8081.h"
-#include "ksdk_mbedtls.h"
 /*${header:end}*/
 
 /*******************************************************************************

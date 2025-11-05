@@ -30,6 +30,8 @@
 #include "flash_map.h"
 #include "flash_helper.h"
 #include "mcuboot_app_support.h"
+#include "psa/crypto.h"
+#include "threading_alt.h"
 
 #ifdef WIFI_MODE
 #include "wpl.h"
@@ -471,14 +473,22 @@ failed_init:
  */
 int main(void)
 {
+    psa_status_t status;
     BOARD_InitHardware();
-    CRYPTO_InitHardware();
+    config_mbedtls_threading_alt();
+    status = psa_crypto_init();
+    if (status != PSA_SUCCESS)
+    {
+        PRINTF("Failed to initialize MBEDTLS crypto! PSA error %d\r\n", status);
+        while (1)
+            ;
+    }
 
     mflash_drv_init();
 
     /* start the shell */
 
-    if (xTaskCreate(ota_task, "ota_task", 2048 /* x4 */, NULL, SHELL_TASK_PRIORITY, NULL) != pdPASS)
+    if (xTaskCreate(ota_task, "ota_task", 4096 /* x4 */, NULL, SHELL_TASK_PRIORITY, NULL) != pdPASS)
     {
         PRINTF("Task creation failed!\r\n");
         while (1)

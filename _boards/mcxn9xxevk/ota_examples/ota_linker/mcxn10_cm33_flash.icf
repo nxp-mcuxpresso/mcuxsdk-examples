@@ -35,7 +35,7 @@
 define symbol mcuboot_header_size      = 0x400;
 define symbol mcuboot_trailer_size     = 0x2000;
 define symbol interrupts_size          = 0x400;
-define symbol core1_image_size         = 0x40000;
+define symbol core1_image_size         = 0x38000;
 
 define symbol primary_slot_base        = 0x00000000;
 define symbol primary_slot_size        = 0x00100000;
@@ -45,9 +45,9 @@ define symbol m_interrupts_start       = primary_slot_base + mcuboot_header_size
 define symbol m_interrupts_end         = m_interrupts_start + interrupts_size - 1;
 
 define symbol m_text_start             = primary_slot_base + mcuboot_header_size + interrupts_size;
-define symbol m_text_end               = 0x000BFFFF;
+define symbol m_text_end               = 0x000C7FFF;
 
-define exported symbol core1_image_start   = 0x000C0000;
+define exported symbol core1_image_start   = 0x000C8000;
 define exported symbol core1_image_end     = core1_image_start + core1_image_size - mcuboot_trailer_size - 1;
 
 define symbol m_data_start             = 0x20000000;

@@ -15,7 +15,8 @@ mcux_add_mdk_configuration(
 )
 
 mcux_add_macro(
-    CC "-DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_user_config.h\\\""
+    CC "-DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_user_config.h\\\"\
+        -DconfigTOTAL_HEAP_SIZE=102400"
 )
 mcux_remove_mdk_configuration(
     TARGETS flexspi_nor_release

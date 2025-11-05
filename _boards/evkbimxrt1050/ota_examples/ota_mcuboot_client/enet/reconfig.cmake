@@ -11,8 +11,7 @@ mcux_add_include(
 mcux_add_macro(
     CC "-DFSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE\
        -DFSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1\
-       -DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_user_config.h\\\"\
-       -DconfigTOTAL_HEAP_SIZE=81920"
+       -DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_user_config.h\\\""
 )
 mcux_add_macro(
     TOOLCHAINS iar

@@ -34,10 +34,10 @@
 define symbol mcuboot_header_size      = 0x400;
 define symbol mcuboot_trailer_size     = 0x2000;
 define symbol interrupts_size          = 0x400;
-define symbol core1_image_size         = 0x20000;
+define symbol core1_image_size         = 0x18000;
 
 define symbol primary_slot_base        = 0x00040000;
-define symbol primary_slot_size        = 0x000E0000;
+define symbol primary_slot_size        = 0x000E8000;
 
 
 define symbol m_interrupts_start       = primary_slot_base + mcuboot_header_size;

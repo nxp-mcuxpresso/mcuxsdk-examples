@@ -1,9 +1,20 @@
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}
+    SOURCES examples/_boards/${board}/ota_examples/ota_mcuboot_client/mbedtls_user_config.h
+)
+
+mcux_add_include(
+    BASE_PATH ${SdkRootDirPath}
+    INCLUDES examples/_boards/${board}/ota_examples/ota_mcuboot_client
+)
+
 mcux_add_macro(
-    CC "-DFSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE\
-       -DLWIP_ENET_FLEXIBLE_CONFIGURATION\
-       -DFSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1\
-       -DUSE_SDRAM\
-       -DDATA_SECTION_IS_CACHEABLE=1"
+    CC "-DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_user_config.h\\\"\
+        -DFSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE\
+        -DLWIP_ENET_FLEXIBLE_CONFIGURATION\
+        -DFSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1\
+        -DUSE_SDRAM\
+        -DDATA_SECTION_IS_CACHEABLE=1"
 )
 
 mcux_remove_armgcc_configuration(

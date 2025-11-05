@@ -20,8 +20,7 @@ mcux_add_macro(
     CC "-DXIP_IMAGE\
        -DXIP_EXTERNAL_FLASH\
        -DHIGH_SPEED_SDIO_CLOCK\
-       -DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_user_config.h\\\"\
-       -DMBEDTLS_CCM_ALT"
+       -DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_user_config.h\\\""
 )
 
 # Add or remove Linker File Configurations

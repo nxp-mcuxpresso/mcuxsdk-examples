@@ -27,6 +27,7 @@
 #include "network_cfg.h"
 #include "flash_helper.h"
 #include "ota_config.h"
+#include "psa/crypto.h"
 
 /*******************************************************************************
  * Definitions
@@ -59,6 +60,9 @@ static TLSDataParams tlsDataParams;
  * for HTTP headers
  */
 static unsigned char https_buf[OTA_HTTP_BLOCK_SIZE + 512];
+
+static mbedtls_ctr_drbg_context drbg_ctx;
+static mbedtls_entropy_context entropy_ctx;
 
 /*******************************************************************************
  * Code
@@ -131,6 +135,10 @@ int https_client_tls_init(const char *host, const char *service)
     mbedtls_x509_crt_init(&(tlsDataParams.cacert));
     mbedtls_x509_crt_init(&(tlsDataParams.clicert));
     mbedtls_pk_init(&(tlsDataParams.pkey));
+    
+    mbedtls_ctr_drbg_init(&drbg_ctx);
+    mbedtls_entropy_init(&entropy_ctx);
+    mbedtls_ctr_drbg_seed(&drbg_ctx, mbedtls_entropy_func, &entropy_ctx, NULL, 0);
 
 #if defined(MBEDTLS_DEBUG_C)
     /* Enable debug output of mbedtls */
@@ -168,7 +176,7 @@ int https_client_tls_init(const char *host, const char *service)
     PRINTF(" ok\n");
 
     ret = mbedtls_pk_parse_key(&(tlsDataParams.pkey), (const unsigned char *)mbedtls_test_cli_key,
-                               mbedtls_test_cli_key_len, NULL, 0);
+                               mbedtls_test_cli_key_len, NULL, 0, mbedtls_ctr_drbg_random, &drbg_ctx);
     if (ret != 0)
     {
         PRINTF(" failed\n  !  mbedtls_pk_parse_key returned -0x%x while parsing private key\n\n", -ret);
@@ -247,7 +255,6 @@ int https_client_tls_init(const char *host, const char *service)
 
     mbedtls_ssl_set_bio(&(tlsDataParams.ssl), &(tlsDataParams.fd), lwipSend, (mbedtls_ssl_recv_t *)lwipRecv, NULL);
 
-    PRINTF("  . SSL state connect : %d \n", tlsDataParams.ssl.state);
     PRINTF("  . Performing the SSL/TLS handshake...\n");
     while ((ret = mbedtls_ssl_handshake(&(tlsDataParams.ssl))) != 0)
     {
@@ -340,11 +347,15 @@ int https_client_ota_download(const char *host, const char *fPath, uint32_t dstA
     struct OtaHttpConf httpConf = {.ti = &ti, .dataBuf = https_buf, .dataBufSize = sizeof(https_buf), .hostName = host};
 
     int ret;
-    unsigned char md_net[32], md_flash[32];
-    mbedtls_sha256_context md_ctx;
-
-    mbedtls_sha256_init(&md_ctx);
-    mbedtls_sha256_starts_ret(&md_ctx, 0);
+    unsigned char sha_net[32], sha_flash[32];
+    size_t hash_len;
+    
+    psa_algorithm_t alg = PSA_ALG_SHA_256;
+    psa_hash_operation_t operation = PSA_HASH_OPERATION_INIT;
+    
+    if (psa_hash_setup(&operation, alg) != PSA_SUCCESS) {
+        return kStatus_Fail;
+    }
 
     uint32_t addr_phy   = dstAddrPhy;
     uint32_t file_size  = 0;
@@ -402,7 +413,10 @@ int https_client_ota_download(const char *host, const char *fPath, uint32_t dstA
             break;
         }
 
-        mbedtls_sha256_update(&md_ctx, https_buf, cnt);
+        if (psa_hash_update(&operation, (unsigned char *)https_buf, cnt) != PSA_SUCCESS) {           
+            PRINTF("psa_hash_update failed\n");
+            break;
+        }
 
         /* Flash erase is done on the fly with download since erasing large portion
          * of flash while executing from it would cause other system tasks to starve
@@ -436,18 +450,21 @@ int https_client_ota_download(const char *host, const char *fPath, uint32_t dstA
     /* Message Digest check */
 
     PRINTF("SHA256 of downloaded data: ");
-    mbedtls_sha256_finish(&md_ctx, md_net);
-    print_hash(md_net, 10);
+    if (psa_hash_finish(&operation, sha_net, 32, &hash_len) != PSA_SUCCESS) {
+        PRINTF("FAILED to calculate SHA.\n");
+        return EXIT_FAILURE;
+    }
+    print_hash(sha_net, 10);
     PRINTF("...\n");
 
     PRINTF("SHA256 of flashed data:    ");
-    flash_sha256(addr_phy, file_size, md_flash);
-    print_hash(md_flash, 10);
+    flash_sha256(addr_phy, file_size, sha_flash);
+    print_hash(sha_flash, 10);
     PRINTF("...\n");
 
-    if (memcmp(md_net, md_flash, sizeof(md_flash)) != 0)
+    if (memcmp(sha_net, sha_flash, sizeof(sha_flash)) != 0)
     {
-        PRINTF("FAILED to compare MD's.\n");
+        PRINTF("FAILED to compare SHA's.\n");
         return EXIT_FAILURE;
     }
 

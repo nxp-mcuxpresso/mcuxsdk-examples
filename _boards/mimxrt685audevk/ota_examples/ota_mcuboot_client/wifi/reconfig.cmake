@@ -4,6 +4,8 @@ mcux_add_source(
             examples/_boards/${board}/sdmmc_config.h
             examples/_boards/${board}/wifi_bt_config.c
             examples/_boards/${board}/wifi_bt_config.h
+            ${board_root}/${board}/ota_examples/ota_mcuboot_client/mbedtls_user_config.h
+
 )
 
 mcux_add_mdk_configuration(
@@ -11,10 +13,10 @@ mcux_add_mdk_configuration(
 )
 
 mcux_add_macro(
-    CC "-DXIP_IMAGE\
+    CC "-DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_user_config.h\\\"\
+       -DXIP_IMAGE\
        -DXIP_EXTERNAL_FLASH\
-       -DHIGH_SPEED_SDIO_CLOCK\
-       -DMBEDTLS_CCM_ALT"
+       -DHIGH_SPEED_SDIO_CLOCK"
 )
 
 # Add or remove Linker File Configurations

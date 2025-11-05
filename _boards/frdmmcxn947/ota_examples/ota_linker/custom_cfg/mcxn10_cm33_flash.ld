@@ -45,8 +45,8 @@ RPMSG_SHMEM_SIZE = DEFINED(__use_shmem__) ? 0x2000 : 0;
 
 SLOT_START    = 0x00040000; /* 256kB */
 SLOT_SIZE     = 0x000E0000; /* 896kB */
-APP_SIZE      = 0x000C0000; /* 768kB */
-CORE1_SIZE    = 0x00020000; /* 128kB (including trailer)*/
+APP_SIZE      = 0x000C8000; /* 800kB */
+CORE1_SIZE    = 0x00018000; /* 96kB (including trailer)*/
 
 IVEC_SIZE = 0x400;
 MCUBOOT_HEADER_SIZE = 0x400;

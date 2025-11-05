@@ -83,7 +83,9 @@ mcux_add_macro(
        -DLWIP_DHCP=1\
        -DENET_RXBUFF_NUM=14\
        -DSHELL_BUFFER_SIZE=128U\
-       -DSHELL_TASK_PRIORITY=1"
+       -DSHELL_TASK_PRIORITY=1\
+       -DMBEDTLS_THREADING_ALT\
+       -DMBEDTLS_THREADING_C"
 )
 
 mcux_add_macro(

@@ -14,8 +14,7 @@ mcux_remove_macro(
 
 )
 mcux_add_macro(
-    CC "-DMBEDTLS_CONFIG_FILE=\\\"ele_s400_mbedtls_config.h\\\"\
-       -DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_user_config.h\\\"\
+    CC "-DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_user_config.h\\\"\
        -DFSL_ETH_ENABLE_CACHE_CONTROL"
 )
 

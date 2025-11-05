@@ -12,7 +12,7 @@
 #include "flash_helper.h"
 #include "mflash_drv.h"
 #include "fsl_debug_console.h"
-#include "mbedtls/sha256.h"
+#include "psa/crypto.h"
 
 void hexdump(const void *src, size_t size)
 {
@@ -149,10 +149,14 @@ int flash_sha256(uint32_t offset, size_t size, uint8_t sha256[32])
 {
     uint32_t buf[128 / sizeof(uint32_t)];
     status_t status;
-    mbedtls_sha256_context sha256ctx;
-
-    mbedtls_sha256_init(&sha256ctx);
-    mbedtls_sha256_starts_ret(&sha256ctx, 0);
+    size_t hash_len;
+    
+    psa_algorithm_t alg = PSA_ALG_SHA_256;
+    psa_hash_operation_t operation = PSA_HASH_OPERATION_INIT;
+    
+    if (psa_hash_setup(&operation, alg) != PSA_SUCCESS) {
+        return kStatus_Fail;
+    }
 
     while (size > 0)
     {
@@ -166,13 +170,17 @@ int flash_sha256(uint32_t offset, size_t size, uint8_t sha256[32])
             return status;
         }
 
-        mbedtls_sha256_update(&sha256ctx, (unsigned char *)buf, chunk);
+        if (psa_hash_update(&operation, (unsigned char *)buf, chunk) != PSA_SUCCESS) {           
+            return kStatus_Fail;
+        }
 
         size -= chunk;
         offset += chunk;
     }
 
-    mbedtls_sha256_finish(&sha256ctx, sha256);
+    if (psa_hash_finish(&operation, sha256, 32, &hash_len) != PSA_SUCCESS) {
+        return kStatus_Fail;
+    }
 
     return kStatus_Success;
 }

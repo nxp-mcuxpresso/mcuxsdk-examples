@@ -7,6 +7,9 @@ All notable changes to MCUboot fork in MCUXpresso SDK and related ota examples w
 ### Added
 - Enabled ota_rom_basic for FRDM-MCXN236
 
+### Changed
+- Update Mbed TLS to 3.0 in ota_mcuboot_client example
+
 ## [25.12.0] - 12/2025
 
 ### Added

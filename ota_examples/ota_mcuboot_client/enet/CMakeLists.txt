@@ -25,17 +25,6 @@ mcux_add_source(
             ${board_root}/${board}/ota_examples/ota_mcuboot_client/enet/network_board_cfg.h
 )
 
-## common mbedtls config file for KSDK port
-#if (CONFIG_MCUX_COMPONENT_middleware.mbedtls.port.ksdk)
-#    mcux_add_source(
-#        BASE_PATH ${SdkRootDirPath}
-#        SOURCES examples/ota_examples/ota_mcuboot_client/mbedtls_config_client.h
-#    )
-#    mcux_add_macro(
-#        CC "-DMBEDTLS_CONFIG_FILE=\\\"mbedtls_config_client.h\\\""
-#    )
-#endif ()
-
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES ${board_root}/${board}/ota_examples/mcuboot_opensource/flash_partitioning/flash_partitioning.h
@@ -88,7 +77,9 @@ mcux_add_macro(
        -DLWIP_DNS=1\
        -DLWIP_DHCP=1\
        -DENET_RXBUFF_NUM=14\
-       -DSHELL_BUFFER_SIZE=128U"
+       -DSHELL_BUFFER_SIZE=128U\
+       -DMBEDTLS_THREADING_ALT\
+       -DMBEDTLS_THREADING_C"
 )
 mcux_add_macro(
     TOOLCHAINS armgcc
