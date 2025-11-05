@@ -11,12 +11,14 @@ mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES middleware/wireless/coex/examples/coex_app/main.c
             middleware/edgefast_bluetooth/source/shell/shell_common.c
+            examples/edgefast_bluetooth_examples/config/mbedtls_user_config.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES middleware/wireless/coex/examples/coex_app
              middleware/edgefast_bluetooth/source/shell
+             examples/edgefast_bluetooth_examples/config
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/coex_examples/coex_wifi_edgefast/reconfig.cmake OPTIONAL)
