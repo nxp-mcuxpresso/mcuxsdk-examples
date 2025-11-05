@@ -16,5 +16,7 @@ void BOARD_InitHardware(void)
     BOARD_InitPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+
+    CLOCK_EnableClock(kCLOCK_Wdog1);
 }
 /*${function:end}*/
