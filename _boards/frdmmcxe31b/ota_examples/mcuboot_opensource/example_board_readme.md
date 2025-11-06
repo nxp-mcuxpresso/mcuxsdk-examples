@@ -35,3 +35,13 @@ Board settings
                    ota_mcuboot_basic.bin
                    ota_mcuboot_basic.SIGNED.bin
 
+### How to enable PSA support with HW crypto acceleration
+
+It is possible to use PSA instead of purely SW based TinyCrypt implementation.
+However, current PSA port (25.12 release) is not compatible with enabled D-cache so the performance is degraded by this.
+To switch to PSA use the alternative files in `psa_alt_files` directory located in the following repository path:
+
+    <repo-root-dir>\examples\_boards\frdmmcxe31b\ota_examples\mcuboot_opensource
+
+Also make sure you have the HSE firmware installed on the chip. This is described in the readme of `ele_hseb_demo` example.
+

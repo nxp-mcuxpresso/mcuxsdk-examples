@@ -120,7 +120,3 @@ void SBL_DisablePeripherals(void)
     __ISB();  // Instruction Synchronization Barrier
 }
 
-status_t CRYPTO_InitHardware(void)
-{
-    return kStatus_Success;
-}

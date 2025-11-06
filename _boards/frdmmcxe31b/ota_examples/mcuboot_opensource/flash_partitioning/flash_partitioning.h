@@ -29,7 +29,7 @@
 
 /* The layout is designed according to MCXE31's flash capabilities.
  * It has 4x 1MB blocks where first 768kB within a block is protected
- * using a single super-sector.
+ * using a super-sector granularity of 64kB.
 
   MCUBoot region    0x0040_1400 - 0x004C_0000  : 763kB
   Primary slot      0x0050_0000 - 0x005C_0000  : 768kB (0xC0000 bytes)
