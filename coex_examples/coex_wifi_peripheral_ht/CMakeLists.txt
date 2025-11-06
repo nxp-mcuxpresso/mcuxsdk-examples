@@ -25,6 +25,7 @@ mcux_add_source(
     SOURCES examples/coex_examples/coex_wifi_peripheral_ht/main.c
             examples/edgefast_bluetooth_examples/peripheral_ht/peripheral_ht.c
             examples/edgefast_bluetooth_examples/peripheral_ht/peripheral_ht.h
+            examples/edgefast_bluetooth_examples/config/mbedtls_user_config.h
             middleware/wireless/coex/src/common/controller_coex_nxp.c
             middleware/wireless/coex/src/cli/coex_cli.c
             middleware/wireless/coex/src/cli/coex_cli.h
@@ -34,6 +35,7 @@ mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES examples/coex_examples/coex_wifi_peripheral_ht
              examples/edgefast_bluetooth_examples/peripheral_ht
+             examples/edgefast_bluetooth_examples/config
              middleware/wireless/coex/src/cli
 )
 
