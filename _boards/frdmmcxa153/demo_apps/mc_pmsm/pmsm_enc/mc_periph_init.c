@@ -259,7 +259,7 @@ static void InitADC(void)
     lpadcConfig.enableAnalogPreliminary = true;
     lpadcConfig.referenceVoltageSource = kLPADC_ReferenceVoltageAlt3;
     lpadcConfig.conversionAverageMode = kLPADC_ConversionAverage1;
-    lpadcConfig.FIFOWatermark = 2U;
+    lpadcConfig.FIFOWatermark = 3U;
     
     /* Attach peripheral clock (24MHz) */
     CLOCK_SetClockDiv(kCLOCK_DivADC0, 4u);
