@@ -443,7 +443,7 @@ void M1_InitPWM(void)
     /* PWM2 submodule 0 trigger1 on VAL5 enabled for PWM1 synchronization */
     PWMBase->SM[0].TCTRL |= PWM_TCTRL_OUT_TRIG_EN(1 << 5);
     
-    /* PWM sub-module 1 trigger0 on VAL0 and VAL4 enabled for trigger BiSS. */
+    /* PWM sub-module 1 trigger0 on VAL0 and VAL4 enabled for trigger EnDat2.2. */
     PWMBase->SM[1].TCTRL |= PWM_TCTRL_OUT_TRIG_EN(1 << 0) | PWM_TCTRL_OUT_TRIG_EN(1 << 4);
     
     /* Set dead-time register */

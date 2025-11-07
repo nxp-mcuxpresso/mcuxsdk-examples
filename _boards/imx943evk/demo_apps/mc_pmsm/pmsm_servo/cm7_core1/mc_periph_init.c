@@ -567,6 +567,8 @@ void InitEndat2p2(void)
  */
 void InitBiSS1(void)
 {
+  xbar_control_config_t BissIRQxBARConfig;
+  
   /* BiSS 20MHz */
   clk_t bissClk = {
       .clkId = BISS_SYS_CLK_ROOT,
@@ -607,9 +609,11 @@ void InitBiSS1(void)
   biss_slave_info_t *slv;
   biss_master_t *master;
 
-  /* Disable BiSS_EOT interrupt */
-  DisableIRQ(BISS_EOT_IRQn);
-  blk_ctrl->BISS1_EOT_CTL = 0;
+  /* Disable XBAR1 interrupt 0/1 */
+  DisableIRQ(XBAR1_IRQn);
+  
+  #warning "RADEK NIZE ASI PRIJDE ODMAZAT???"
+//  blk_ctrl->BISS1_EOT_CTL = 0;
   
   master = BISS_MasterInit(BISS1, BISS_SYS_CLK_FREQ, BISS_MA_CLK_FREQ, BISS_AGS_CLK_FREQ);  
   
@@ -650,8 +654,16 @@ void InitBiSS1(void)
   /* Asign BiSS master module address */
   g_sM1Enc.pMaster = (biss_master_t *)master;
 
-  /* Enable BiSS_EOT interrupt */
-  EnableIRQ(BISS_EOT_IRQn);
-  blk_ctrl->BISS1_EOT_CTL = 0x3;
+  /* Configure biss EOT interrupt to XBAR1_CH0 IRQ */
+  XBAR_SetSignalsConnection(kXBAR1_InputBissEot, kXBAR1_OutputEdma4IpdReq76);
+  BissIRQxBARConfig.activeEdge = kXBAR_EdgeRising;
+  BissIRQxBARConfig.requestType = kXBAR_RequestInterruptEnable;
+  XBAR_SetOutputSignalConfig(kXBAR1_OutputEdma4IpdReq76, &BissIRQxBARConfig);
+  
+  /* Enable XBAR1 interrupt 0/1 */
+  EnableIRQ(XBAR1_IRQn);
+  
+#warning "RADEK NIZE ASI PRIJDE ODMAZAT???"
+//  blk_ctrl->BISS1_EOT_CTL = 0x3;
 }       /* BiSS encoder is used. */
 #endif

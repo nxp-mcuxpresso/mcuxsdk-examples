@@ -48,7 +48,7 @@ typedef struct _clock_setup
  * Clock & PWM definition for motor 1
  ******************************************************************************/
 #define M1_PWM_FREQ (32000)         /* PWM frequency - 32kHz */
-#define M1_FOC_FREQ_VS_PWM_FREQ (1) /* FOC calculation is called every n-th PWM reload */
+#define M1_FOC_FREQ_VS_PWM_FREQ (2) /* FOC calculation is called every n-th PWM reload */
 #define M1_SPEED_LOOP_FREQ (4000)   /* Speed loop frequency */
 #define M1_PWM_DEADTIME (500)       /* Output PWM deadtime value in nanoseconds */
 

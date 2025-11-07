@@ -27,7 +27,7 @@
 #define USE_ENCODER_ENDAT2P2   (2U)    /* EnDat2.2 encoder */
 #define USE_ENCODER_BISS       (3U)    /* BiSS encoder */
 
-#define USE_ENCODER     (USE_ENCODER_ENDAT3)    /* Select which encoder will be used. */
+#define USE_ENCODER     (USE_ENCODER_BISS)    /* Select which encoder will be used. */
 
 #include "fsl_common.h"
 #include "fsl_xbar.h"
@@ -72,7 +72,7 @@ typedef struct _clock_setup
  * Clock & PWM definition for motor 1
  ******************************************************************************/
 #define M1_PWM_FREQ (32000)         /* PWM frequency - 32kHz */
-#define M1_FOC_FREQ_VS_PWM_FREQ (1) /* FOC calculation is called every n-th PWM reload */
+#define M1_FOC_FREQ_VS_PWM_FREQ (2) /* FOC calculation is called every n-th PWM reload */
 #define M1_SPEED_LOOP_FREQ (4000)   /* Speed loop frequency */
 #define M1_PWM_DEADTIME (500)       /* Output PWM deadtime value in nanoseconds */
 
@@ -191,8 +191,11 @@ typedef struct _clock_setup
 
 /* Define for BiSS encoder - motor connector 1 */
 #if (USE_ENCODER == USE_ENCODER_BISS)
-#define BISS_EOT_IRQn           Reserved166_IRQn
-#define ENCODER_IRQHandler      Reserved166_IRQHandler
+/* BLK_CTRL_WAKEUPMIX registers should not be accessible by CM7 core.
+ * BiSS EOT is routed to an XBAR input and used to trigger and XBAR output interrupt.
+ */
+#define XBAR1_IRQn              XBAR1_CH0_CH1_IRQn
+#define ENCODER_IRQHandler      XBAR1_CH0_CH1_IRQHandler
    
 /* Example specific position/speed sensor defines */
 #define M1_MCDRV_ENCODER_PERIPH_INIT() InitBiSS1()

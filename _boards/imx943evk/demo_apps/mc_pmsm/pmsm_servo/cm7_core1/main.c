@@ -160,9 +160,8 @@ void ENCODER_IRQHandler(void)
   SYSTICK_START_COUNT();
 
 #if (USE_ENCODER == USE_ENCODER_BISS)
-  /* clear EOT interrupt */
-  BLK_CTRL_WAKEUPMIX->BISS1_EOT_CTL =
-    BLK_CTRL_WAKEUPMIX_BISS1_EOT_CTL_biss_eot_rise_clr_int_b(1) | 3; 
+  /* clear BiSS EOT interrupt routed via XBAR */
+  XBAR_ClearOutputStatusFlag(kXBAR1_OutputEdma4IpdReq76);
 #endif
   
   /* Get position data from EnDat2.2, EnDat3 or BiSS encoder. */
@@ -178,10 +177,6 @@ void ENCODER_IRQHandler(void)
   /* Clear EnDat3 FG_IRQ0 flag */
   ENDAT3_IRQ_Clear(ENDAT3, CLEAR_FG_IRQ0);
 #endif  /* EnDat3 encoder is used. */
-  
-#if (USE_ENCODER == USE_ENCODER_BISS)
-  BLK_CTRL_WAKEUPMIX->BISS1_EOT_CTL = 3;
-#endif
   
   /* Stop CPU tick number couting and store actual and maximum ticks */
   SYSTICK_STOP_COUNT(g_ui32NumberOfCycles);
