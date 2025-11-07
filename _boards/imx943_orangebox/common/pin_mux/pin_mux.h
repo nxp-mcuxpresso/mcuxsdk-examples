@@ -27,6 +27,7 @@ extern "C" {
 #endif
 
 void BOARD_InitI2C3Pins(void);
+void BOARD_InitNETCPins(void);
 
 #if defined(__cplusplus)
 }
