@@ -1,13 +1,12 @@
 /*
 ** ###################################################################
-**     Processors:          KW47B42Z96FTA_cm33_core0
-**                          KW47B42ZB2AFTA_cm33_core0
-**                          KW47B42ZB3AFTA_cm33_core0
-**                          KW47B42ZB6AFTA_cm33_core0
-**                          KW47B42ZB7AFTA_cm33_core0
-**                          MCXW727CAFTA_cm33_core0
-**                          MCXW727AAFTA_cm33_core0
-**                          MCXW727DAFTA_cm33_core0
+**     Processors:          KW47B42Z83_cm33_core0
+**                          KW47B42Z96_cm33_core0
+**                          KW47B42Z97_cm33_core0
+**                          KW47B42ZB2_cm33_core0
+**                          KW47B42ZB3_cm33_core0
+**                          KW47B42ZB6_cm33_core0
+**                          KW47B42ZB7_cm33_core0
 **
 **     Compiler:            GNU C Compiler
 **
@@ -24,6 +23,8 @@
 ** ###################################################################
 */
 
+#include "conn_device_memory.h"
+
 GROUP (
   libm.a
 )
@@ -31,11 +32,11 @@ GROUP (
 /* Entry Point */
 ENTRY(Reset_Handler)
 
-m_flash_start                       = 0x00000000;
-m_flash_size                        = 0x00200000;
-m_flash_end                         = m_flash_start + m_flash_size - 1;
-m_sector_size                       = 0x2000;
-m_vector_table_size                 = 0x400;
+m_flash_start                       = FSL_DEVICE_FLASH_START;
+m_flash_size                        = FSL_DEVICE_FLASH_SIZE;
+m_flash_end                         = FSL_DEVICE_FLASH_END;
+m_sector_size                       = FSL_DEVICE_FLASH_SECTOR_SIZE;
+m_vector_table_size                 = FSL_DEVICE_VECT_TABLE_SIZE;
 m_interrupts_start                  = m_flash_start;
 m_interrupts_end                    = m_interrupts_start + m_vector_table_size - 1;
 __VECTOR_TABLE                      = m_interrupts_start;
@@ -60,10 +61,10 @@ INT_STORAGE_SECTOR_SIZE             = m_sector_size;
 m_text_start                        = m_interrupts_end  + 1;
 m_text_end                          = INT_STORAGE_START - 1;
 m_text_size                         = m_text_end - m_text_start;
-m_ram0_start                        = 0x14000000;
-m_ram0_end                          = 0x14007FFF;
-m_ram1_start                        = 0x20000000;
-m_ram1_end                          = 0x20039FFF;
+m_ram0_start                        = FSL_DEVICE_RAM0_START;
+m_ram0_end                          = FSL_DEVICE_RAM0_END;
+m_ram1_start                        = FSL_DEVICE_RAM1_START;
+m_ram1_end                          = FSL_DEVICE_RAM1_END;
 mReserveCeRam_d                     = DEFINED(gReserveCeRam_d) ? gReserveCeRam_d : 0;
 /* This region is used by bootrom when exiting power down modes */
 m_ram1_reserved_start               = m_ram1_start;

@@ -177,6 +177,9 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.linker_script)
         BASE_PATH ${SdkRootDirPath}
         TARGETS debug release
         LINKER ${board_root}/${board}/wireless_examples/linker/gcc/${gcc_wireless_linker_file}
+        PREPROCESSED TRUE
+        PARAMETERS -D${device}${core_id_suffix_name}_SERIES
+        INCLUDES examples/_common/project_segments/wireless/${conn_device}
     )
 
     mcux_remove_iar_linker_script(
@@ -189,7 +192,11 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.linker_script)
         BASE_PATH ${SdkRootDirPath}
         TARGETS debug release
         LINKER ${board_root}/${board}/wireless_examples/linker/iar/${iar_wireless_linker_file}
+        PREPROCESSED TRUE
+        PARAMETERS -D${device}${core_id_suffix_name}_SERIES
+        INCLUDES examples/_common/project_segments/wireless/${conn_device}
     )
+
 endif()
 
 if(CONFIG_MCUX_PRJSEG_module.board.wireless.linker_script_ble)
@@ -200,9 +207,12 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.linker_script_ble)
     )
 
     mcux_add_armgcc_linker_script(
-        BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/wireless_examples
+        BASE_PATH ${SdkRootDirPath}
         TARGETS debug release
-        LINKER linker/gcc/${gcc_wireless_linker_file_ble}
+        LINKER ${board_root}/${board}/wireless_examples/linker/gcc/${gcc_wireless_linker_file_ble}
+        PREPROCESSED TRUE
+        PARAMETERS -D${device}${core_id_suffix_name}_SERIES
+        INCLUDES examples/_common/project_segments/wireless/${conn_device}
     )
 
     mcux_remove_iar_linker_script(
@@ -212,9 +222,12 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.linker_script_ble)
     )
 
     mcux_add_iar_linker_script(
-        BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/wireless_examples
+        BASE_PATH ${SdkRootDirPath}
         TARGETS debug release
-        LINKER linker/iar/${iar_wireless_linker_file}
+        LINKER ${board_root}/${board}/wireless_examples/linker/iar/${iar_wireless_linker_file}
+        PREPROCESSED TRUE
+        PARAMETERS -D${device}${core_id_suffix_name}_SERIES
+        INCLUDES examples/_common/project_segments/wireless/${conn_device}
     )
 endif()
 
@@ -226,9 +239,12 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.linker_script_ble_loc)
     )
 
     mcux_add_armgcc_linker_script(
-        BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/wireless_examples
+        BASE_PATH ${SdkRootDirPath}
         TARGETS debug release
-        LINKER linker/gcc/${gcc_wireless_linker_file_ble_loc}
+        LINKER ${board_root}/${board}/wireless_examples/linker/gcc/${gcc_wireless_linker_file_ble_loc}
+        PREPROCESSED TRUE
+        PARAMETERS -D${device}${core_id_suffix_name}_SERIES
+        INCLUDES examples/_common/project_segments/wireless/${conn_device}
     )
 
     mcux_remove_iar_linker_script(
@@ -238,9 +254,12 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.linker_script_ble_loc)
     )
 
     mcux_add_iar_linker_script(
-        BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/wireless_examples
+        BASE_PATH ${SdkRootDirPath}
         TARGETS debug release
-        LINKER linker/iar/${iar_wireless_linker_file}
+        LINKER ${board_root}/${board}/wireless_examples/linker/iar/${iar_wireless_linker_file}
+        PREPROCESSED TRUE
+        PARAMETERS -D${device}${core_id_suffix_name}_SERIES
+        INCLUDES examples/_common/project_segments/wireless/${conn_device}
     )
 endif()
 
@@ -255,6 +274,9 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.core_linker_script)
         BASE_PATH ${SdkRootDirPath}
         TARGETS debug release
         LINKER ${board_root}/${board}/wireless_examples/linker/${core_id}/gcc/${gcc_wireless_linker_file}
+        PREPROCESSED TRUE
+        PARAMETERS -D${device}${core_id_suffix_name}_SERIES
+        INCLUDES examples/_common/project_segments/wireless/${conn_device}/${core_id}
     )
 
     mcux_remove_iar_linker_script(
@@ -267,6 +289,9 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.core_linker_script)
         BASE_PATH ${SdkRootDirPath}
         TARGETS debug release
         LINKER ${board_root}/${board}/wireless_examples/linker/iar/${core_id}/${iar_wireless_linker_file}
+        PREPROCESSED TRUE
+        PARAMETERS -D${device}${core_id_suffix_name}_SERIES
+        INCLUDES examples/_common/project_segments/wireless/${conn_device}/${core_id}
     )
 endif()
 
@@ -281,6 +306,9 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.core_linker_script_ble)
         BASE_PATH ${SdkRootDirPath}
         TARGETS debug release
         LINKER ${board_root}/${board}/wireless_examples/linker/${core_id}/gcc/${gcc_wireless_linker_file_ble}
+        PREPROCESSED TRUE
+        PARAMETERS -D${device}${core_id_suffix_name}_SERIES
+        INCLUDES examples/_common/project_segments/wireless/${conn_device}/${core_id}
     )
 
     mcux_remove_iar_linker_script(
@@ -293,5 +321,8 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.core_linker_script_ble)
         BASE_PATH ${SdkRootDirPath}
         TARGETS debug release
         LINKER ${board_root}/${board}/wireless_examples/linker/iar/${core_id}/${iar_wireless_linker_file_ble}
+        PREPROCESSED TRUE
+        PARAMETERS -D${device}${core_id_suffix_name}_SERIES
+        INCLUDES examples/_common/project_segments/wireless/${conn_device}/${core_id}
     )
 endif()

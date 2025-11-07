@@ -5,60 +5,29 @@ This document explains how to select and configure the correct linker file for y
 ## Identifying Your KW47 Variant
 
 The KW47EVK board default configuration:
-- **KW47B42ZB7** - 2MB Flash, 256KB RAM
+- **KW47B42ZB7/B6/B3/B2** - 2MB Flash, 264KB RAM
 
-Other than that the KW47EVK board supports two main variants:
-- **KW47B42Z83** - 1MB Flash, 128KB RAM
-- **KW47B42Z97** - 1MB Flash, 256KB RAM
+Other than that the KW47EVK board supports two other variants:
+- **KW47B42Z83** - 1MB Flash, 136KB RAM
+- **KW47B42Z97/96** - 1MB Flash, 264KB RAM
 
 Check your device marking or part number to identify which variant you have.
 
 ## Selecting the Correct Linker File
 
-### For GCC Toolchain
+The linker script is generated during the project generation, using the toolchain preprocessor. The generated linker
+script will use the appropriate memory layout based on which KW47 variant being used.
 
-#### KW47B42Z83
-Use the linker file: `connectivity_ble_KW47B42Z83.ld`
+Make sure to use the `--device <variant>` in your west command line to select the correct target variant. The variant
+used by default is `KW47B42ZB7`.
+As an example, if you want to build for `KW47B42Z83`, use:
+```bash
+west build -b kw47evk --device KW47B42Z83 ...
+```
 
-**Building with west**
-If using west you can update `gcc_wireless_linker_file` and `gcc_wireless_linker_file_ble` in `examples\_boards\kw47evk\project_segments\wireless\prjseg.cmake` with the value `connectivity_ble_KW47B42Z83.ld` and building your project.
+The generated linker script can be found in the build directory:
+`<build dir>/linker.ld|icf`
 
-#### KW47B42Z97
-Use the linker file: `connectivity_ble_KW47B42Z97.ld`
-
-**Building with west**
-If using west you can update `gcc_wireless_linker_file` and `gcc_wireless_linker_file_ble` in `examples\_boards\kw47evk\project_segments\wireless\prjseg.cmake` with the value `connectivity_ble_KW47B42Z97.ld` and building your project.
-
-### For IAR Toolchain
-
-#### KW47B42Z83
-Use the linker file: `connectivity_KW47B42Z83.icf`
-
-**Building with west**
-If using west you can update `iar_wireless_linker_file` in `examples\_boards\kw47evk\project_segments\wireless\prjseg.cmake` with the value `connectivity_KW47B42Z83.icf` and building your project.
-
-**In IDE:**
-1. Right-click project → Options → Linker → Config
-2. Override default → Use linker command file
-3. Browse and select: `connectivity_KW47B42Z83.icf`
-
-#### KW47B42Z97
-Use the linker file: `connectivity_KW47B42Z97.icf`
-
-**Building with west**
-If using west you can update `iar_wireless_linker_file` in `examples\_boards\kw47evk\project_segments\wireless\prjseg.cmake` with the value `connectivity_KW47B42Z97.icf`.
-
-**In IDE:**
-1. Right-click project → Options → Linker → Config
-2. Override default → Use linker command file
-3. Browse and select: `connectivity_KW47B42Z97.icf`
-
-## Quick Reference
-
-| Your Variant | GCC Linker File                  | IAR Linker File               |
-|--------------|----------------------------------|-------------------------------|
-| KW47B42Z83   | `connectivity_ble_KW47B42Z83.ld` | `connectivity_KW47B42Z83.icf` |
-| KW47B42Z97   | `connectivity_ble_KW47B42Z97.ld` | `connectivity_KW47B42Z97.icf` |
-| others       | `connectivity_ble.ld`            | `connectivity.icf`            |
-
-**Important:** Always ensure your linker file matches your physical device variant to avoid runtime issues or build failures.
+The memory layout is constructed based on a header file definings macros based on which device is selected.
+For KW47B42Zxx variants, you can find this file under:
+`mcuxsdk/examples/_common/project_segments/wireless/kw47b42z/conn_device_memory.h`

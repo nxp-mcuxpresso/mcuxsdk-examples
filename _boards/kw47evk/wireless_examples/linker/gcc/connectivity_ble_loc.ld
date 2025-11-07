@@ -1,15 +1,12 @@
 /*
 ** ###################################################################
-**     Processors:          KW47B42Z83AFTA_cm33_core0
-**                          KW47B42Z96FTA_cm33_core0
-**                          KW47B42Z97AFTA_cm33_core0
-**                          KW47B42ZB2AFTA_cm33_core0
-**                          KW47B42ZB3AFTA_cm33_core0
-**                          KW47B42ZB6AFTA_cm33_core0
-**                          KW47B42ZB7AFTA_cm33_core0
-**                          MCXW727CAFTA_cm33_core0
-**                          MCXW727AAFTA_cm33_core0
-**                          MCXW727DAFTA_cm33_core0
+**     Processors:          KW47B42Z83_cm33_core0
+**                          KW47B42Z96_cm33_core0
+**                          KW47B42Z97_cm33_core0
+**                          KW47B42ZB2_cm33_core0
+**                          KW47B42ZB3_cm33_core0
+**                          KW47B42ZB6_cm33_core0
+**                          KW47B42ZB7_cm33_core0
 **
 **     Compiler:            GNU C Compiler
 **
