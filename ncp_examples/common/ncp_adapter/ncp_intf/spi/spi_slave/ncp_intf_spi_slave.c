@@ -49,7 +49,7 @@ OSA_EVENT_HANDLE_DEFINE(spi_slave_event);
     (&(const clock_frg_clk_config_t){0, kCLOCK_FrgMainClk, 255, 0})
 
 #define NCP_SPI_TASK_PRIORITY    11
-#define NCP_SPI_TASK_STACK_SIZE  1024
+#define NCP_SPI_TASK_STACK_SIZE  4096
 static void ncp_spi_intf_task(void *argv);
 static OSA_TASK_HANDLE_DEFINE(ncp_spiTaskHandle);
 static OSA_TASK_DEFINE(ncp_spi_intf_task, PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-2)), 1, NCP_SPI_TASK_STACK_SIZE, 0);
