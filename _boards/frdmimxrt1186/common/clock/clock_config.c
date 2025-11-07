@@ -586,12 +586,12 @@ void BOARD_BootClockRUN(void)
     CLOCK_SetRootClock(kCLOCK_Root_Gpt2, &rootCfg);
 
 #ifndef USE_HYPERRAM
-    /* Configure FLEXSPI1 using SYS_PLL3_PFD2_CLK, 166MHz */
+    /* Configure FLEXSPI1 using SYS_PLL3_PFD0_CLK */
     BOARD_SetFlexspiClock(FLEXSPI1, kCLOCK_FLEXSPI1_ClockRoot_MuxSysPll3Pfd0, 2U);
 #endif
 
-    /* Configure FLEXSPI1 using SYS_PLL3_PFD0_CLK, 133MHz */
-    BOARD_SetFlexspiClock(FLEXSPI2, kCLOCK_FLEXSPI2_ClockRoot_MuxSysPll3Pfd2, 3U);
+    /* Configure FLEXSPI2 using SYS_PLL3_PFD2_CLK */
+    BOARD_SetFlexspiClock(FLEXSPI2, kCLOCK_FLEXSPI2_ClockRoot_MuxSysPll3Pfd2, 4U);
 
     /* Configure FLEXSPI_SLV using SYS_PLL2_CLK */
     rootCfg.mux = kCLOCK_FLEXSPI_SLV_ClockRoot_MuxSysPll2Out;

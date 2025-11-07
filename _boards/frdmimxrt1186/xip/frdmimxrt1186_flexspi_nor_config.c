@@ -61,7 +61,7 @@ const flexspi_nor_config_t qspi_flash_nor_config = {
             .controllerMiscOption = 0x10,
             .deviceType           = kFlexSpiDeviceType_SerialNOR,
             .sflashPadType        = kSerialFlash_4Pads,
-            .serialClkFreq        = kFlexSpiSerialClk_133MHz,
+            .serialClkFreq        = kFlexSpiSerialClk_100MHz,
             .sflashA1Size         = 16u * 1024u * 1024u,
 
             .configModeType[0] = kDeviceConfigCmdType_Generic,
