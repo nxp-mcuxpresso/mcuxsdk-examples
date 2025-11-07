@@ -14,21 +14,21 @@ psa_crypto_opaque_key_examples:
       - ${board_root}/${board}/mbedtls3x_examples/psa_crypto_opaque_key_examples/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkmimxrt1180@cm33:
-    - -armgcc@debug
-    - -armgcc@hyperram_debug
-    - -armgcc@hyperram_release
-    - -armgcc@release
-    - -iar@debug
-    - -iar@hyperram_debug
-    - -iar@hyperram_release
-    - -iar@release
-    - -mdk@debug
-    - -mdk@flexspi_nor_debug
-    - -mdk@flexspi_nor_release
-    - -mdk@hyperram_debug
-    - -mdk@hyperram_release
-    - -mdk@release
+    # evkmimxrt1180@cm33: # Temporarily disable RT1180 until PSA NVM manager is stabilized
+    # - -armgcc@debug
+    # - -armgcc@hyperram_debug
+    # - -armgcc@hyperram_release
+    # - -armgcc@release
+    # - -iar@debug
+    # - -iar@hyperram_debug
+    # - -iar@hyperram_release
+    # - -iar@release
+    # - -mdk@debug
+    # - -mdk@flexspi_nor_debug
+    # - -mdk@flexspi_nor_release
+    # - -mdk@hyperram_debug
+    # - -mdk@hyperram_release
+    # - -mdk@release
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
     frdmrw612: []
