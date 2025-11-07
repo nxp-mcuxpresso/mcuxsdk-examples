@@ -276,3 +276,18 @@ lwip_ping_bm:
     - +armgcc@release
     - +iar@release
     - +iar@debug
+    imx943_orangebox@cm7_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
+    imx943_orangebox@cm7_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
+    imx943_orangebox@cm33_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug

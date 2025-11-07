@@ -18,3 +18,8 @@ netc_switch_standalone:
     - +armgcc@release
     - -iar@release
     - -iar@debug
+    imx943_orangebox@cm33_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - -iar@release
+    - -iar@debug
