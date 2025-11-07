@@ -206,7 +206,7 @@ static int ncp_uart_recv(uint8_t *tlv_buf, size_t *tlv_sz)
          */
         if (is_wakeup_magic_pattern(tlv_buf, rx_len))
         {
-            ncp_adap_d("Received magic pattern\r\n");
+            NCP_LOG_DBG("Received magic pattern");
             continue;
         }
 #elif defined(MIMXRT1062_SERIES)
@@ -216,7 +216,7 @@ static int ncp_uart_recv(uint8_t *tlv_buf, size_t *tlv_sz)
         ret = LPUART_RTOS_Receive(&ncp_rtos_handle, tlv_buf + tmp_len, 1, &rx_len);
         if (tlv_buf[0] == 0x0 || tlv_buf[0] == 0xff)
         {
-            ncp_adap_d("Received one dummy byte\r\n");
+            NCP_LOG_DBG("Received one dummy byte");
             continue;
         }
         tmp_len += rx_len;
@@ -227,6 +227,7 @@ static int ncp_uart_recv(uint8_t *tlv_buf, size_t *tlv_sz)
         total   += rx_len;
     }
 
+    NCP_LOG_HEXDUMP_DBG(tlv_buf, total);
     cmd_len = (tlv_buf[TLV_CMD_SIZE_HIGH_BYTES] << 8) | tlv_buf[TLV_CMD_SIZE_LOW_BYTES];
     tmp_len = 0;
     rx_len  = 0;
@@ -244,7 +245,7 @@ static int ncp_uart_recv(uint8_t *tlv_buf, size_t *tlv_sz)
 #endif
         total = 0;
 
-        NCP_LOG_ERR("Failed to receive TLV Header!");
+        NCP_LOG_ERR("Failed to receive TLV Header, cmd_len = 0x%02x!", cmd_len);
         NCP_ASSERT(0);
 
         return (int)NCP_STATUS_ERROR;

@@ -330,7 +330,7 @@ AT_QUICKACCESS_SECTION_CODE(static void ncp_pm_switch_pre_hook(uint32_t mode, vo
      * freq(old) is the frequency of main_pll clock
      * Use the equation here to get div and mult.
      */
-    CLKCTL1->FLEXCOMM[0].FRGCTL    = 0x11C7;
+    CLKCTL1->FLEXCOMM[0].FRGCTL    = 0x15F7; // Baudrate = 115205.22, error = 0.0045%
     USART0->OSR                    = 7;
     USART0->BRG                    = 0;
 #endif
@@ -344,14 +344,14 @@ AT_QUICKACCESS_SECTION_CODE(static void ncp_pm_switch_post_hook(uint32_t mode, v
     /* Recover main_clk clock source after wakeup.
      Use register access directly to avoid possible flash access in function call. */
     clock_context_t * clk_ctx = (clock_context_t *)param;
+    CLKCTL0->MAINCLKSELA           = clk_ctx->selA;
+    CLKCTL0->MAINCLKSELB           = clk_ctx->selB;
 #if CONFIG_NCP_UART
     USART0->OSR                    = clk_ctx->osr;
     USART0->BRG                    = clk_ctx->brg;
     CLKCTL1->FLEXCOMM[0].FRGCLKSEL = clk_ctx->frgSel;
     CLKCTL1->FLEXCOMM[0].FRGCTL    = clk_ctx->frgctl;
 #endif
-    CLKCTL0->MAINCLKSELA           = clk_ctx->selA;
-    CLKCTL0->MAINCLKSELB           = clk_ctx->selB;
 }
 
 static void ncp_pm_hw_reinit_on_pm3(void)
