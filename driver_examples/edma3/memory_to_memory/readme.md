@@ -22,6 +22,7 @@ debugging and further development.
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/driver_examples/edma3/memory_to_memory/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/driver_examples/edma3/memory_to_memory/example_board_readme.md)
 - [FRDM-MCXL255](../../../_boards/frdmmcxl255/driver_examples/edma3/memory_to_memory/example_board_readme.md)
+- [FRDM-MCXA174](../../../_boards/frdmmcxa174/driver_examples/edma3/memory_to_memory/example_board_readme.md)
 - [FRDM-MCXA344](../../../_boards/frdmmcxa344/driver_examples/edma3/memory_to_memory/example_board_readme.md)
 - [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/driver_examples/edma3/memory_to_memory/example_board_readme.md)
 - [FRDM-MCXA266](../../../_boards/frdmmcxa266/driver_examples/edma3/memory_to_memory/example_board_readme.md)

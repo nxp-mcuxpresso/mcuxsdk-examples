@@ -39,6 +39,7 @@ Note: The example echo every 8 characters, so input 8 characters every time.
 - [FRDM-KE17Z512](../../../_boards/frdmke17z512/cmsis_driver_examples/lpuart/interrupt_transfer/example_board_readme.md)
 - [FRDM-MCXA153](../../../_boards/frdmmcxa153/cmsis_driver_examples/lpuart/interrupt_transfer/example_board_readme.md)
 - [FRDM-MCXA156](../../../_boards/frdmmcxa156/cmsis_driver_examples/lpuart/interrupt_transfer/example_board_readme.md)
+- [FRDM-MCXA174](../../../_boards/frdmmcxa174/cmsis_driver_examples/lpuart/interrupt_transfer/example_board_readme.md)
 - [FRDM-MCXA344](../../../_boards/frdmmcxa344/cmsis_driver_examples/lpuart/interrupt_transfer/example_board_readme.md)
 - [FRDM-MCXA346](../../../_boards/frdmmcxa346/cmsis_driver_examples/lpuart/interrupt_transfer/example_board_readme.md)
 - [FRDM-MCXC041](../../../_boards/frdmmcxc041/cmsis_driver_examples/lpuart/interrupt_transfer/example_board_readme.md)

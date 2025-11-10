@@ -294,6 +294,7 @@ lpi2c_interrupt_b2b_transfer_master:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     - -mdk@release
+    frdmmcxa174: []
     frdmmcxa344: []
     frdmmcxa266: []
     frdmmcxa366: []

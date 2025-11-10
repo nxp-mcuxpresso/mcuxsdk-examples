@@ -37,6 +37,7 @@ example uses the software button to control/toggle the LED.
 - [TWR-KM34Z75M](../../../_boards/twrkm34z75m/driver_examples/gpio/input_interrupt/example_board_readme.md)
 - [TWR-KM35Z75M](../../../_boards/twrkm35z75m/driver_examples/gpio/input_interrupt/example_board_readme.md)
 - [FRDM-MCXL255](../../../_boards/frdmmcxl255/driver_examples/gpio/input_interrupt/example_board_readme.md)
+- [FRDM-MCXA174](../../../_boards/frdmmcxa174/driver_examples/gpio/input_interrupt/example_board_readme.md)
 - [FRDM-MCXA344](../../../_boards/frdmmcxa344/driver_examples/gpio/input_interrupt/example_board_readme.md)
 - [KW47-LOC](../../../_boards/kw47loc/driver_examples/gpio/input_interrupt/example_board_readme.md)
 - [MCXW72-LOC](../../../_boards/mcxw72loc/driver_examples/gpio/input_interrupt/example_board_readme.md)

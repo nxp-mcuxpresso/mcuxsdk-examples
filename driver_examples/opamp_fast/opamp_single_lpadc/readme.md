@@ -22,4 +22,5 @@ OPAMP input and output relationship formula:
 3. inn=inp => Vp*gain+Vout=Vn*gain+Vref, Vout=Vref-(Vp-Vn)*gain
 
 ## Supported Boards
+- [FRDM-MCXA174](../../../_boards/frdmmcxa174/driver_examples/opamp/opamp_lpadc/example_board_readme.md)
 - [FRDM-MCXA344](../../../_boards/frdmmcxa344/driver_examples/opamp/opamp_lpadc/example_board_readme.md)

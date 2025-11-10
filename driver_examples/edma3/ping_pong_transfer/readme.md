@@ -17,6 +17,7 @@ Please reference user manual for the detail of the feature.
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/driver_examples/edma3/ping_pong_transfer/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/driver_examples/edma3/ping_pong_transfer/example_board_readme.md)
 - [FRDM-MCXL255](../../../_boards/frdmmcxl255/driver_examples/edma3/ping_pong_transfer/example_board_readme.md)
+- [FRDM-MCXA174](../../../_boards/frdmmcxa174/driver_examples/edma3/ping_pong_transfer/example_board_readme.md)
 - [FRDM-MCXA344](../../../_boards/frdmmcxa344/driver_examples/edma3/ping_pong_transfer/example_board_readme.md)
 - [FRDM-MCXA266](../../../_boards/frdmmcxa266/driver_examples/edma3/ping_pong_transfer/example_board_readme.md)
 - [FRDM-MCXA366](../../../_boards/frdmmcxa366/driver_examples/edma3/ping_pong_transfer/example_board_readme.md)

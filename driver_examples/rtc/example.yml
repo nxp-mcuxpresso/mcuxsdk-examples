@@ -39,6 +39,7 @@ rtc:
     kw45b41zevk:
     - +armgcc@debug
     - +armgcc@release
+    frdmmcxa174: []
     frdmmcxa344: []
     frdmmcxa266: []
     frdmmcxa366: []

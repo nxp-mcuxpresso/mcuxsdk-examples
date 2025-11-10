@@ -40,6 +40,7 @@ ctimer_capture:
     mcxw23evk: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
+    frdmmcxa174: []
     frdmmcxa344: []
     frdmmcxa266: []
     frdmmcxa366: []

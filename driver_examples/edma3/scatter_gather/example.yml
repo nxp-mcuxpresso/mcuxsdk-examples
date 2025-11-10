@@ -42,6 +42,7 @@ edma3_scatter_gather:
     - +iar@release
     - +iar@debug
     frdmmcxl255@cm33: []
+    frdmmcxa174: []
     frdmmcxa344: []
     frdmmcxa266: []
     frdmmcxa366: []

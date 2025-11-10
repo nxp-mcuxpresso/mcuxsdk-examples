@@ -18,6 +18,7 @@ Example application demonstrates the communication over SEGGER J-Link RTT interf
 - [FRDM-KE17Z512](../../_boards/frdmke17z512/freemaster_examples/fmstr_rtt/example_board_readme.md)
 - [FRDM-MCXA153](../../_boards/frdmmcxa153/freemaster_examples/fmstr_rtt/example_board_readme.md)
 - [FRDM-MCXA156](../../_boards/frdmmcxa156/freemaster_examples/fmstr_rtt/example_board_readme.md)
+- [FRDM-MCXA174](../../_boards/frdmmcxa174/freemaster_examples/fmstr_rtt/example_board_readme.md)
 - [FRDM-MCXA344](../../_boards/frdmmcxa344/freemaster_examples/fmstr_rtt/example_board_readme.md)
 - [FRDM-MCXA346](../../_boards/frdmmcxa346/freemaster_examples/fmstr_rtt/example_board_readme.md)
 - [FRDM-MCXC242](../../_boards/frdmmcxc242/freemaster_examples/fmstr_rtt/example_board_readme.md)

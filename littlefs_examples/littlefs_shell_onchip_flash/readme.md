@@ -6,6 +6,7 @@ Demonstrates littlefs functionality by commands executed from shell.
 
 ## Supported Boards
 - [FRDM-MCXA156](../../_boards/frdmmcxa156/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md)
+- [FRDM-MCXA174](../../_boards/frdmmcxa174/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md)
 - [FRDM-MCXA344](../../_boards/frdmmcxa344/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md)
 - [FRDM-MCXA346](../../_boards/frdmmcxa346/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md)
 - [FRDM-MCXL255](../../_boards/frdmmcxl255/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md)

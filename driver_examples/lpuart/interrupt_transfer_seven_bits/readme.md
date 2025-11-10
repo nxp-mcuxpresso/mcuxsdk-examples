@@ -39,6 +39,7 @@ NOTE: Please set com port format to "7 data bits without parity bit" in PC's com
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/driver_examples/lpuart/interrupt_transfer_seven_bits/example_board_readme.md)
 - [MCX-W72-EVK](../../../_boards/mcxw72evk/driver_examples/lpuart/interrupt_transfer_seven_bits/example_board_readme.md)
 - [MIMXRT700-EVK](../../../_boards/mimxrt700evk/driver_examples/lpuart/interrupt_transfer_seven_bits/example_board_readme.md)
+- [FRDM-MCXA174](../../../_boards/frdmmcxa174/driver_examples/lpuart/interrupt_transfer_seven_bits/example_board_readme.md)
 - [FRDM-MCXA344](../../../_boards/frdmmcxa344/driver_examples/lpuart/interrupt_transfer_seven_bits/example_board_readme.md)
 - [KW47-LOC](../../../_boards/kw47loc/driver_examples/lpuart/interrupt_transfer_seven_bits/example_board_readme.md)
 - [MCXW72-LOC](../../../_boards/mcxw72loc/driver_examples/lpuart/interrupt_transfer_seven_bits/example_board_readme.md)

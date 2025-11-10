@@ -122,6 +122,7 @@ lpspi_interrupt_b2b_transfer_slave:
     - -mdk@release
     frdmmcxl255@cm33: []
     frdmmcxe31b: []
+    frdmmcxa174: []
     frdmmcxa344: []
     frdmmcxa266: []
     frdmmcxa366: []

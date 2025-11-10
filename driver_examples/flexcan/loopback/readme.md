@@ -36,6 +36,7 @@ throuth internal loopback interconnect and print out the Message payload to term
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/driver_examples/flexcan/loopback/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/driver_examples/flexcan/loopback/example_board_readme.md)
 - [FRDM-MCXE31B](../../../_boards/frdmmcxe31b/driver_examples/flexcan/loopback/example_board_readme.md)
+- [FRDM-MCXA174](../../../_boards/frdmmcxa174/driver_examples/flexcan/loopback/example_board_readme.md)
 - [FRDM-MCXA344](../../../_boards/frdmmcxa344/driver_examples/flexcan/loopback/example_board_readme.md)
 - [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/driver_examples/flexcan/loopback/example_board_readme.md)
 - [FRDM-MCXA266](../../../_boards/frdmmcxa266/driver_examples/flexcan/loopback/example_board_readme.md)
