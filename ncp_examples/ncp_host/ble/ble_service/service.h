@@ -17,6 +17,12 @@
 
 /** NCP Bluetooth LE priority */
 #define NCP_BLE_SERVICE_PRIO   PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 1))
+/** NCP Bluetooth LE task stack size */
+#if CONFIG_NCP_USE_ENCRYPT
+#define NCP_BLE_SERVICE_STACK_SIZE 3072
+#else
+#define NCP_BLE_SERVICE_STACK_SIZE 1024
+#endif
 
 /** NCP Bluetooth LE adv data type structure */
 typedef struct adv_data {

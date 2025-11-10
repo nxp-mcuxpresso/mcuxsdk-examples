@@ -35,7 +35,7 @@
  ******************************************************************************/
 static OSA_TASK_HANDLE_DEFINE(hrs_service_thread);
 static void peripheral_hrs_task(void *pvParameters);
-static OSA_TASK_DEFINE(peripheral_hrs_task, NCP_BLE_SERVICE_PRIO, 1, 1024, 0);
+static OSA_TASK_DEFINE(peripheral_hrs_task, NCP_BLE_SERVICE_PRIO, 1, NCP_BLE_SERVICE_STACK_SIZE, 0);
 static OSA_EVENT_HANDLE_DEFINE(hrs_events);
 
 static uint8_t heart_rate = 90U;
