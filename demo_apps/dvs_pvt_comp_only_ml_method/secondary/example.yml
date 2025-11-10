@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+dvs_pvt_comp_only_ml_method_secondary:
+  section-type: application
+  skip_build: true
+  contents:
+    meta_path: examples/demo_apps/dvs_pvt_comp_only_ml_method/secondary
+    project-root-path: boards/${board}/demo_apps/dvs_pvt_comp_only_ml_method/${multicore_foldername}
+    document:
+      name: dvs_pvt_comp_only_ml_method_secondary
+      category: demo_apps
+      brief: 'The dvs_pvt_comp_only_ml_method application shows the usage of Dynamic Voltage Scalling
+        using PVT Sensor with ML method.'
+      example_readme:
+      - examples/demo_apps/dvs_pvt_comp_only_ml_method/readme.md
+      - ${board_root}/${board}/demo_apps/dvs_pvt_comp_only_ml_method/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    mimxrt700evk@cm33_core1:
+    - -armgcc@debug
+    - -armgcc@release
+    - -mdk@debug
+    - -mdk@release
+
