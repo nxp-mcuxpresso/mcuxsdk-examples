@@ -245,7 +245,7 @@ void SINC3_CH0_CH1_CH2_CH3_IRQHandler(void)
     if(ui8M1EndatISRCheck > 3U)
     {
         /* Set EnDat2.2 fault */
-        FAULT_SET(g_sM1Drive.sFaultIdPending, FAULT_ENDAT_ISR);
+        FAULT_SET(g_sM1Drive.sFaultIdPending, FAULT_ENC_TIMEOUT);
         
         /* Run M1 state machine */
         SM_StateMachineFast(&g_sM1Ctrl); 
@@ -277,7 +277,7 @@ void SINC2_CH1_IRQHandler(void)
     if(ui8M2EndatISRCheck > 3U)
     {
         /* Set EnDat2.2 fault */
-        FAULT_SET(g_sM2Drive.sFaultIdPending, FAULT_ENDAT_ISR);
+        FAULT_SET(g_sM2Drive.sFaultIdPending, FAULT_ENC_TIMEOUT);
         
         /* Run M1 state machine */
         SM_StateMachineFast(&g_sM2Ctrl); 
