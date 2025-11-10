@@ -554,7 +554,7 @@ static void netc_fiper_init(void)
         fiper.pulseGenSync = 0;
         fiper.pulseWidth = 20;
         fiper.pulsePeriod = 80000;
-        NETC_TimerStartFIPER(&timer_handle, 0, &fiper);
+        NETC_TimerStartFIPER(&timer_handle, kNETC_TimerFiper1, &fiper);
 }
 
 void netc_alarm_set(uint64_t tm)
@@ -565,8 +565,8 @@ void netc_alarm_set(uint64_t tm)
         alarm.polarity = 0;
         alarm.pulseGenSync = 0;
         alarm.pulseWidth = 30;
-        NETC_TimerConfigureAlarm(&timer_handle, 0, &alarm);
-        NETC_TimerStartAlarm(&timer_handle, 0, tm);
+        NETC_TimerConfigureAlarm(&timer_handle, kNETC_TimerAlarm1, &alarm);
+        NETC_TimerStartAlarm(&timer_handle, kNETC_TimerAlarm1, tm);
 
 }
 
@@ -590,8 +590,6 @@ int main(void)
     status_t result = kStatus_Success;
     uint32_t index;
     netc_timer_handle_t *timer_handler;
-    uint64_t ns;
-    int sum = 0;
 
     BOARD_InitHardware();
 

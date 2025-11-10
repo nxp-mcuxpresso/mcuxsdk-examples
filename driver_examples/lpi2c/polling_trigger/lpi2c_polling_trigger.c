@@ -75,7 +75,7 @@ static void lpi2c_slave_callback(LPI2C_Type *base, lpi2c_slave_transfer_t *xfer,
 static void LPI2C_trigger_config(lpi2c_master_config_t *config)
 {
     config->hostRequest.enable = true;
-    config->hostRequest.polarity = 0;
+    config->hostRequest.polarity = kLPI2C_HostRequestPinActiveLow;
     config->hostRequest.source = kLPI2C_HostRequestInputTrigger;
 }
 
