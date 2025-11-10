@@ -26,7 +26,7 @@
 #define QTMR_CLOCK_SOURCE_DIVIDER   (128U)
 
 /* Get source clock for QTMR driver */
-#define QTMR_SOURCE_CLOCK           ((CLOCK_GetFreq(kCLOKC_FroAON)/4U)/QTMR_CLOCK_SOURCE_DIVIDER)
+#define QTMR_SOURCE_CLOCK           ((CLOCK_GetFreq(kCLOCK_FroAON)/4U)/QTMR_CLOCK_SOURCE_DIVIDER)
 /*${macro:end}*/
 
 /*******************************************************************************
