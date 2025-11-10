@@ -110,9 +110,13 @@ static void display_ping_stats(int status, uint32_t size, const char *ip_str, ui
 #if CONFIG_INET_SOCKET
 void ping_sock_task(void *pvParameters)
 {
+    struct ip_hdr *iphdr;
     struct icmp_echo_hdr *iecho;
+    struct icmp_echo_hdr *iecho_resp;
+    uint8_t *recv_buf;
     struct sockaddr_in server_addr = {0};
     struct in_addr dest_addr;
+    int retry;
 
     while (1)
     {
@@ -138,24 +142,64 @@ void ping_sock_task(void *pvParameters)
             ncp_e("failed to allocate memory for ping packet!");
             continue;
         }
+
+        recv_buf = (uint8_t *)OSA_MemoryAllocate(ping_size + sizeof(struct ip_hdr));
+        if (!recv_buf)
+        {
+            ncp_e("failed to allocate memory for ping response packet!\r\n");
+            OSA_MemoryFree((void *)iecho);
+            continue;
+        }
+
         int sockfd = ncp_socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
         while (i <= ping_msg.count)
         {
+            retry = 10;
+            ping_res.echo_resp = -WM_FAIL;
+            (void)memset(iecho, 0, ping_size);
+            (void)memset(recv_buf, 0, ping_size + IP_HEADER_LEN);
+
             /* Prepare ping command */
             ping_prepare_echo(iecho, (uint16_t)ping_size, i);
             ping_res.time = OSA_TimeGetMsec();
-            ncp_sendto(sockfd, iecho, ping_size, 0, (struct sockaddr *)&server_addr, sizeof(server_addr));
             /* sequence number */
             ping_res.seq_no = i;
+            ncp_sendto(sockfd, iecho, ping_size, 0, (struct sockaddr *)&server_addr, sizeof(server_addr));
+
             socklen_t len = sizeof(server_addr);
-            int ret = ncp_recvfrom(sockfd, iecho, ping_size, 0, (struct sockaddr *)&server_addr, &len);
-            if (ret > 0)
+
+            /* Function raw_input may put multiple pieces of data in conn->recvmbox,
+             * waiting to select the data we want */
+            while (ping_res.echo_resp != WM_SUCCESS && retry)
             {
-                ping_res.recvd++;
-                ping_res.size = ret;
+                int ret = ncp_recvfrom(sockfd, recv_buf, ping_size + sizeof(struct ip_hdr), 0, (struct sockaddr *)&server_addr, &len);
+                if (ret > (int)(sizeof(struct ip_hdr) + sizeof(struct icmp_echo_hdr)))
+                {
+                    /* Handle the ICMP echo response and extract required parameters */
+                    iphdr = (struct ip_hdr *)recv_buf;
+                    /* Calculate the offset of ICMP header */
+                    iecho_resp = (struct icmp_echo_hdr *)(recv_buf + ((iphdr->_v_hl & 0x0f) * 4));
+                    /* Verify that the echo response is for the echo request
+                    * we sent by checking PING_ID and sequence number */
+                    if ((iecho_resp->id == PING_ID) && (iecho_resp->seqno == PP_HTONS(ping_res.seq_no)))
+                    {
+                        /* Increment the receive counter */
+                        ping_res.recvd++;
+                        /* Extract TTL and send back so that it can be
+                         * displayed in ping statistics */
+                        ping_res.ttl = iphdr->_ttl;
+                        ping_res.size = ret - sizeof(struct ip_hdr);
+                        ping_res.echo_resp = WM_SUCCESS;
+                        break;
+                    }
+                    else
+                    {
+                        (void)memset(recv_buf, 0, ping_size + IP_HEADER_LEN);
+                    }
+                }
+                retry--;
             }
-            else
-                ping_res.echo_resp = ret;
+
             /* Calculate the round trip time */
             ping_res.time = OSA_TimeGetMsec() - ping_res.time;
             inet_ntop(AF_INET, &(server_addr.sin_addr), ping_res.ip_addr, IP_ADDR_LEN);
@@ -164,10 +208,10 @@ void ping_sock_task(void *pvParameters)
 
             OSA_TimeDelay(1000);
             i++;
-
         }
-        OSA_MemoryFree((void *)iecho);
         display_ping_result((int)ping_msg.count, ping_res.recvd);
+        OSA_MemoryFree((void *)iecho);
+        OSA_MemoryFree((void *)recv_buf);
         ncp_close(sockfd);
     }
 }
