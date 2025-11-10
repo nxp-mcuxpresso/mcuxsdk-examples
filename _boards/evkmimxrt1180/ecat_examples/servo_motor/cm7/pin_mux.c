@@ -1,5 +1,6 @@
 /*
- * Copyright 2023 NXP
+ * Copyright 2025 NXP
+ * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -12,11 +13,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v15.0
+product: Pins v17.0
 processor: MIMXRT1189xxxxx
 package_id: MIMXRT1189CVM8C
 mcu_data: ksdk2_0
-processor_version: 0.15.6
+processor_version: 25.09.10
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -54,10 +55,8 @@ BOARD_InitPins:
     slew_rate: Slow}
   - {pin_num: M14, peripheral: RGPIO4, signal: 'gpio_io, 26', pin_signal: GPIO_AD_26}
   - {pin_num: M15, peripheral: RGPIO4, signal: 'gpio_io, 25', pin_signal: GPIO_AD_25}
-  - {pin_num: T14, peripheral: RGPIO4, signal: 'gpio_io, 8', pin_signal: GPIO_AD_08, direction: OUTPUT, gpio_init_state: 'false'}
   - {pin_num: N15, peripheral: RGPIO4, signal: 'gpio_io, 13', pin_signal: GPIO_AD_13, direction: OUTPUT}
   - {pin_num: P17, peripheral: RGPIO4, signal: 'gpio_io, 12', pin_signal: GPIO_AD_12, direction: OUTPUT, pull_up_down_config: Pull_Down}
-  - {pin_num: B4, peripheral: RGPIO1, signal: 'gpio_io, 4', pin_signal: GPIO_AON_04, pull_up_down_config: Pull_Up}
   - {pin_num: M16, peripheral: RGPIO4, signal: 'gpio_io, 27', pin_signal: GPIO_AD_27, direction: OUTPUT}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -71,14 +70,6 @@ BOARD_InitPins:
 void BOARD_InitPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
   CLOCK_EnableClock(kCLOCK_Iomuxc2);          /* Turn on LPCG: LPCG is ON. */
-
-  /* GPIO configuration on GPIO_AD_08 (pin T14) */
-  rgpio_pin_config_t gpio4_pinT14_config = {
-      .pinDirection = kRGPIO_DigitalOutput,
-      .outputLogic = 0U,
-  };
-  /* Initialize GPIO functionality on GPIO_AD_08 (pin T14) */
-  RGPIO_PinInit(RGPIO4, 8U, &gpio4_pinT14_config);
 
   /* GPIO configuration on GPIO_AD_12 (pin P17) */
   rgpio_pin_config_t gpio4_pinP17_config = {
@@ -104,9 +95,6 @@ void BOARD_InitPins(void) {
   /* Initialize GPIO functionality on GPIO_AD_27 (pin M16) */
   RGPIO_PinInit(RGPIO4, 27U, &gpio4_pinM16_config);
 
-  IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AD_08_GPIO4_IO08,           /* GPIO_AD_08 is configured as GPIO4_IO08 */
-      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AD_12_GPIO4_IO12,           /* GPIO_AD_12 is configured as GPIO4_IO12 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
@@ -543,4 +531,3 @@ void BOARD_InitADC(void) {
 /***********************************************************************************************************************
  * EOF
  **********************************************************************************************************************/
-

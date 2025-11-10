@@ -1,5 +1,6 @@
 /*
  * Copyright 2025 NXP
+ * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -12,11 +13,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v15.0
+product: Pins v17.0
 processor: MIMXRT1186xxxxx
 package_id: MIMXRT1186CVJ8C
 mcu_data: ksdk2_0
-processor_version: 0.15.6
+processor_version: 25.09.0
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -31,13 +32,21 @@ processor_version: 0.15.6
 BOARD_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: D2, peripheral: RGPIO2, signal: 'gpio_io, 11', pin_signal: GPIO_EMC_B1_11, direction: OUTPUT}
+  - {pin_num: D3, peripheral: RGPIO2, signal: 'gpio_io, 11', pin_signal: GPIO_EMC_B1_11}
+  - {pin_num: F10, peripheral: RGPIO5, signal: 'gpio_io, 06', pin_signal: GPIO_SD_B1_02}
+  - {peripheral: XBAR1, signal: 'IN, 17', pin_signal: IOMUX_XBAR_INOUT17}
+  - {peripheral: XBAR1, signal: 'IN, 18', pin_signal: IOMUX_XBAR_INOUT18}
+  - {pin_num: B12, peripheral: LPUART1, signal: RXD, pin_signal: GPIO_AON_09, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper, open_drain: Disable, drive_strength: High,
+    slew_rate: Slow}
+  - {pin_num: A7, peripheral: LPUART1, signal: TXD, pin_signal: GPIO_AON_08, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper, open_drain: Disable, drive_strength: High,
+    slew_rate: Slow}
+  - {pin_num: C12, peripheral: ECAT, signal: CLKOUT25M, pin_signal: GPIO_B2_00}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
 /* FUNCTION ************************************************************************************************************
  *
- * Function Name : BOARD_InitPins, assigned for the Cortex-M7F core.
+ * Function Name : BOARD_InitPins, assigned for the Cortex-M7 core.
  * Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
@@ -106,14 +115,14 @@ void BOARD_InitPins(void) {
 BOARD_ECAT_MDIO_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: L17, peripheral: ECAT, signal: MDC, pin_signal: GPIO_AD_30, pull_up_down_config: Pull_Up, slew_rate: Slow}
-  - {pin_num: K17, peripheral: ECAT, signal: MDIO, pin_signal: GPIO_AD_31, pull_up_down_config: Pull_Up, slew_rate: Slow}
+  - {pin_num: L14, peripheral: ECAT, signal: MDC, pin_signal: GPIO_AD_30, pull_up_down_config: Pull_Up, slew_rate: Slow}
+  - {pin_num: K14, peripheral: ECAT, signal: MDIO, pin_signal: GPIO_AD_31, pull_up_down_config: Pull_Up, slew_rate: Slow}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
 /* FUNCTION ************************************************************************************************************
  *
- * Function Name : BOARD_ECAT_MDIO_InitPins, assigned for the Cortex-M7F core.
+ * Function Name : BOARD_ECAT_MDIO_InitPins, assigned for the Cortex-M7 core.
  * Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
@@ -224,27 +233,79 @@ void BOARD_InitENC(void) {
   XBAR_SetSignalsConnection(kXBAR1_InputIomuxXbarInout05, kXBAR1_OutputEqdc1Phaseb); /* IOMUX_XBAR_INOUT05 output assigned to XBAR1_IN5 input is connected to XBAR1_OUT88 output assigned to EQDC1_PHASEB */
 }
 
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_Port0_MII_InitPins:
+- options: {callFromInitBoot: 'true', coreID: cm7, enableClock: 'true'}
+- pin_list:
+  - {pin_num: L5, peripheral: ECAT, signal: PT0_RX_CLK, pin_signal: GPIO_EMC_B2_00}
+  - {pin_num: L6, peripheral: ECAT, signal: 'PT0_RXD, 2', pin_signal: GPIO_EMC_B2_01}
+  - {pin_num: K6, peripheral: ECAT, signal: 'PT0_RXD, 3', pin_signal: GPIO_EMC_B2_02}
+  - {pin_num: M6, peripheral: ECAT, signal: 'PT0_TXD, 2', pin_signal: GPIO_EMC_B2_03}
+  - {pin_num: P5, peripheral: ECAT, signal: 'PT0_TXD, 3', pin_signal: GPIO_EMC_B2_04}
+  - {pin_num: N5, peripheral: ECAT, signal: 'PT0_TXD, 0', pin_signal: GPIO_EMC_B2_05}
+  - {pin_num: P6, peripheral: ECAT, signal: 'PT0_TXD, 1', pin_signal: GPIO_EMC_B2_06}
+  - {pin_num: L8, peripheral: ECAT, signal: PT0_TX_EN, pin_signal: GPIO_EMC_B2_07}
+  - {pin_num: M5, peripheral: ECAT, signal: PT0_TX_CLK, pin_signal: GPIO_EMC_B2_08, software_input_on: Enable}
+  - {pin_num: N6, peripheral: ECAT, signal: 'PT0_RXD, 0', pin_signal: GPIO_EMC_B2_09}
+  - {pin_num: M7, peripheral: ECAT, signal: 'PT0_RXD, 1', pin_signal: GPIO_EMC_B2_10}
+  - {pin_num: L7, peripheral: ECAT, signal: PT0_RX_DV, pin_signal: GPIO_EMC_B2_11}
+  - {pin_num: J8, peripheral: ECAT, signal: PT0_RX_ER, pin_signal: GPIO_EMC_B2_12}
+  - {pin_num: N14, peripheral: ECAT, signal: 'LINK_MII, 0', pin_signal: GPIO_AD_16, pull_keeper_select: Keeper}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_Port0_MII_InitPins, assigned for the Cortex-M7 core.
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
 void BOARD_Port0_MII_InitPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_B2_00_ECAT_RX_CLK_0, 0);
-  IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_B2_01_ECAT_RX_DATA2_0, 0);
-  IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_B2_02_ECAT_RX_DATA3_0, 0);
-  IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_B2_03_ECAT_TX_DATA2_0, 0);
-  IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_B2_04_ECAT_TX_DATA3_0, 1);
-  IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_B2_05_ECAT_TX_DATA0_0, 0);
-  IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_B2_06_ECAT_TX_DATA1_0, 0);
-  IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_B2_07_ECAT_TX_EN_0, 0);
-  IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_B2_08_ECAT_TX_CLK_0, 1);
-  IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_B2_09_ECAT_RX_DATA0_0, 0);
-  IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_B2_10_ECAT_RX_DATA1_0, 0);
-  IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_B2_11_ECAT_RX_DV_0, 0);
-  IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_B2_12_ECAT_PT0_RX_ER, 0);
-  
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AD_16_ECAT_LINK_0,          /* GPIO_AD_16 is configured as ECAT_LINK_0 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
-
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B2_00_ECAT_RX_CLK_0,    /* GPIO_EMC_B2_00 is configured as ECAT_RX_CLK_0 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B2_01_ECAT_RX_DATA2_0,  /* GPIO_EMC_B2_01 is configured as ECAT_RX_DATA2_0 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B2_02_ECAT_RX_DATA3_0,  /* GPIO_EMC_B2_02 is configured as ECAT_RX_DATA3_0 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B2_03_ECAT_TX_DATA2_0,  /* GPIO_EMC_B2_03 is configured as ECAT_TX_DATA2_0 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B2_04_ECAT_TX_DATA3_0,  /* GPIO_EMC_B2_04 is configured as ECAT_TX_DATA3_0 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B2_05_ECAT_TX_DATA0_0,  /* GPIO_EMC_B2_05 is configured as ECAT_TX_DATA0_0 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B2_06_ECAT_TX_DATA1_0,  /* GPIO_EMC_B2_06 is configured as ECAT_TX_DATA1_0 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B2_07_ECAT_TX_EN_0,     /* GPIO_EMC_B2_07 is configured as ECAT_TX_EN_0 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B2_08_ECAT_TX_CLK_0,    /* GPIO_EMC_B2_08 is configured as ECAT_TX_CLK_0 */
+      1U);                                    /* Software Input On Field: Force input path of pad GPIO_EMC_B2_08 */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B2_09_ECAT_RX_DATA0_0,  /* GPIO_EMC_B2_09 is configured as ECAT_RX_DATA0_0 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B2_10_ECAT_RX_DATA1_0,  /* GPIO_EMC_B2_10 is configured as ECAT_RX_DATA1_0 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B2_11_ECAT_RX_DV_0,     /* GPIO_EMC_B2_11 is configured as ECAT_RX_DV_0 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B2_12_ECAT_PT0_RX_ER,   /* GPIO_EMC_B2_12 is configured as ECAT_PT0_RX_ER */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AD_16_ECAT_LINK_0,          /* GPIO_AD_16 PAD functional properties : */
       0x02U);                                 /* Slew Rate Field: Fast Slew Rate
@@ -255,23 +316,77 @@ void BOARD_Port0_MII_InitPins(void) {
                                                  Force ibe off Field: Disabled */
 }
 
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_Port1_MII_InitPins:
+- options: {callFromInitBoot: 'true', coreID: cm7, enableClock: 'true'}
+- pin_list:
+  - {pin_num: J7, peripheral: ECAT, signal: 'PT1_TXD, 1', pin_signal: GPIO_EMC_B1_26}
+  - {pin_num: G5, peripheral: ECAT, signal: 'PT1_TXD, 0', pin_signal: GPIO_EMC_B1_27}
+  - {pin_num: D5, peripheral: ECAT, signal: PT1_TX_EN, pin_signal: GPIO_EMC_B1_28}
+  - {pin_num: C3, peripheral: ECAT, signal: PT1_TX_CLK, pin_signal: GPIO_EMC_B1_29}
+  - {pin_num: F2, peripheral: ECAT, signal: 'PT1_RXD, 0', pin_signal: GPIO_EMC_B1_30}
+  - {pin_num: F1, peripheral: ECAT, signal: 'PT1_RXD, 1', pin_signal: GPIO_EMC_B1_31}
+  - {pin_num: G1, peripheral: ECAT, signal: PT1_RX_DV, pin_signal: GPIO_EMC_B1_32}
+  - {pin_num: H1, peripheral: ECAT, signal: PT1_RX_ER, pin_signal: GPIO_EMC_B1_33}
+  - {pin_num: H3, peripheral: ECAT, signal: 'PT1_RXD, 2', pin_signal: GPIO_EMC_B1_34}
+  - {pin_num: H2, peripheral: ECAT, signal: 'PT1_RXD, 3', pin_signal: GPIO_EMC_B1_35}
+  - {pin_num: J2, peripheral: ECAT, signal: 'PT1_TXD, 3', pin_signal: GPIO_EMC_B1_36}
+  - {pin_num: J1, peripheral: ECAT, signal: 'PT1_TXD, 2', pin_signal: GPIO_EMC_B1_37}
+  - {pin_num: K2, peripheral: ECAT, signal: PT1_RX_CLK, pin_signal: GPIO_EMC_B1_38}
+  - {pin_num: L12, peripheral: ECAT, signal: 'LINK_MII, 1', pin_signal: GPIO_AD_17, pull_keeper_select: Keeper}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_Port1_MII_InitPins, assigned for the Cortex-M7 core.
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
 void BOARD_Port1_MII_InitPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_B1_30_ECAT_RX_DATA0_1, 0);
-  IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_B1_31_ECAT_RX_DATA1_1, 0);
-  IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_B1_34_ECAT_RX_DATA2_1, 0);
-  IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_B1_35_ECAT_RX_DATA3_1, 0);
-  IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_B1_33_ECAT_RX_ER_1, 0);
-  IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_B1_32_ECAT_RX_DV_1, 0);
-  IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_B1_38_ECAT_RX_CLK_1, 0);
-  IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_B1_27_ECAT_TX_DATA0_1, 0);
-  IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_B1_26_ECAT_TX_DATA1_1, 0);
-  IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_B1_37_ECAT_TX_DATA2_1, 0);
-  IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_B1_36_ECAT_TX_DATA3_1, 0);
-  IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_B1_28_ECAT_TX_EN_1, 0);
-  IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_B1_29_ECAT_TX_CLK_1, 1);
-
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B1_26_ECAT_TX_DATA1_1,  /* GPIO_EMC_B1_26 is configured as ECAT_TX_DATA1_1 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B1_27_ECAT_TX_DATA0_1,  /* GPIO_EMC_B1_27 is configured as ECAT_TX_DATA0_1 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B1_28_ECAT_TX_EN_1,     /* GPIO_EMC_B1_28 is configured as ECAT_TX_EN_1 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B1_29_ECAT_TX_CLK_1,    /* GPIO_EMC_B1_29 is configured as ECAT_TX_CLK_1 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B1_30_ECAT_RX_DATA0_1,  /* GPIO_EMC_B1_30 is configured as ECAT_RX_DATA0_1 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B1_31_ECAT_RX_DATA1_1,  /* GPIO_EMC_B1_31 is configured as ECAT_RX_DATA1_1 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B1_32_ECAT_RX_DV_1,     /* GPIO_EMC_B1_32 is configured as ECAT_RX_DV_1 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B1_33_ECAT_RX_ER_1,     /* GPIO_EMC_B1_33 is configured as ECAT_RX_ER_1 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B1_34_ECAT_RX_DATA2_1,  /* GPIO_EMC_B1_34 is configured as ECAT_RX_DATA2_1 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B1_35_ECAT_RX_DATA3_1,  /* GPIO_EMC_B1_35 is configured as ECAT_RX_DATA3_1 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B1_36_ECAT_TX_DATA3_1,  /* GPIO_EMC_B1_36 is configured as ECAT_TX_DATA3_1 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B1_37_ECAT_TX_DATA2_1,  /* GPIO_EMC_B1_37 is configured as ECAT_TX_DATA2_1 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B1_38_ECAT_RX_CLK_1,    /* GPIO_EMC_B1_38 is configured as ECAT_RX_CLK_1 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AD_17_ECAT_LINK_1,          /* GPIO_AD_17 is configured as ECAT_LINK_1 */
       0U); 
@@ -290,14 +405,14 @@ void BOARD_Port1_MII_InitPins(void) {
 BOARD_ECAT_I2C_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: K16, peripheral: ECAT, signal: SCL, pin_signal: GPIO_AD_18, pull_up_down_config: Pull_Up, open_drain: Enable, slew_rate: Slow}
-  - {pin_num: L13, peripheral: ECAT, signal: SDA, pin_signal: GPIO_AD_19, pull_up_down_config: Pull_Up, open_drain: Enable, slew_rate: Slow}
+  - {pin_num: L13, peripheral: ECAT, signal: SCL, pin_signal: GPIO_AD_18, pull_up_down_config: Pull_Up, open_drain: Enable, slew_rate: Slow}
+  - {pin_num: K13, peripheral: ECAT, signal: SDA, pin_signal: GPIO_AD_19, pull_up_down_config: Pull_Up, open_drain: Enable, slew_rate: Slow}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
 /* FUNCTION ************************************************************************************************************
  *
- * Function Name : BOARD_ECAT_I2C_InitPins, assigned for the Cortex-M7F core.
+ * Function Name : BOARD_ECAT_I2C_InitPins, assigned for the Cortex-M7 core.
  * Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
