@@ -328,6 +328,7 @@ typedef struct _sdhost_ctrl
 static sdhost_ctrl_t sdhost_ctrl;
 static bool cmd_sent = false;
 static bool data_sent = false;
+static bool sdhost_ready = false;
 
 static uint32_t txportno;
 
@@ -1250,12 +1251,14 @@ static ncp_status_t ncp_sdhost_CardInit(void)
         return NCP_STATUS_ERROR;
     }
     ncp_adap_d("%s: sdio_set_host_reset_done success", __FUNCTION__);
+    sdhost_ready = true;
 
     return NCP_STATUS_SUCCESS;
 }
 
 static ncp_status_t ncp_sdhost_CardDeinit(void)
 {
+    sdhost_ready = false;
     SDIO_Deinit(&g_sdio_card);
 
     return NCP_STATUS_SUCCESS;
@@ -1564,6 +1567,11 @@ int ncp_sdhost_send(uint8_t *tlv_buf, size_t tlv_sz, tlv_send_callback_t cb)
 
     NCP_ASSERT(NULL != tlv_buf);
     NCP_ASSERT(0 != tlv_sz);
+
+    while (!sdhost_ready)
+    {
+        OSA_TimeDelay(1);
+    }
 
     res = (NCP_COMMAND *)(tlv_buf);
 
