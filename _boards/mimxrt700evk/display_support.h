@@ -113,7 +113,7 @@
 
 /* Definitions for the frame buffer. */
 #define DEMO_BUFFER_COUNT         2   /* 2 is enough for DPI interface display. */
-#define FRAME_BUFFER_ALIGN        64  /* For RGB565 or XRGB8888, LCDIF and VGLite alignment requirement */
+#define FRAME_BUFFER_ALIGN        64U  /* For RGB565 or XRGB8888, LCDIF and VGLite alignment requirement */
 
 #if ((DEMO_PANEL_RK055AHD091 == DEMO_PANEL) || (DEMO_PANEL_RK055MHD091 == DEMO_PANEL))
 
@@ -128,8 +128,6 @@
 #endif
 
 #if (DEMO_RK055AHD091_USE_XRGB8888 || DEMO_RK055MHD091_USE_XRGB8888)
-
-#define FRAME_BUFFER_ALIGN         64U  /* LCDIF and VGLite are considered. */
 
 /* Frame buffer #0 is 720 x 1280 x 4 = 0x384000 bytes long */
 #define DEMO_BUFFER0_ADDR DEMO_ALIGN_ADDR(0x60000000U, FRAME_BUFFER_ALIGN)
