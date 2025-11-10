@@ -54,6 +54,15 @@
 #define VIT_CMD_TIME_SPAN  3.0
 #define VIT_OPERATING_MODE VIT_WAKEWORD_ENABLE | VIT_VOICECMD_ENABLE
 
+#if (defined(PLATFORM_MCXN947) || defined(PLATFORM_RT1170_EVKB) || defined(PLATFORM_RW61X) || DEMO_CODEC_CS42448)
+#define INPUT_32BIT_BYTES  4
+
+#ifndef DEMO_AUDIO_BYTE_WIDTH
+#include "fsl_sai.h"
+#define DEMO_AUDIO_BYTE_WIDTH (DEMO_AUDIO_BIT_WIDTH / 8)
+#endif
+#endif
+
 #if defined(PLATFORM_RT1060)
 #define DEVICE_ID      VIT_IMXRT1060
 #define MODEL_LOCATION VIT_MODEL_IN_SLOW_MEM
@@ -383,7 +392,7 @@ int VIT_Execute(void *arg, void *inputBuffer, int size)
     VIT_WakeWord_st WakeWord;                                       // Wakeword info
     VIT_DetectionStatus_en VIT_DetectionResults = VIT_NO_DETECTION; // VIT detection result
 
-#if (defined(PLATFORM_MCXN947) || defined(PLATFORM_RT1170_EVKB) || defined(PLATFORM_RW61X)) || DEMO_CODEC_CS42448
+#if (defined(PLATFORM_MCXN947) || defined(PLATFORM_RT1170_EVKB) || defined(PLATFORM_RW61X) || DEMO_CODEC_CS42448)
     int16_t output_buffer[VIT_SAMPLES_PER_30MS_FRAME * MIC_NUM];
 #endif
 
@@ -395,8 +404,8 @@ int VIT_Execute(void *arg, void *inputBuffer, int size)
     /* Initialization of the variables */
     buffer = (void *)(buf->buffer + *pkt_hdr_size);
 
-#if (defined(PLATFORM_MCXN947) || defined(PLATFORM_RT1170_EVKB) || defined(PLATFORM_RW61X)) || DEMO_CODEC_CS42448
-    DeInterleave32(buffer, output_buffer, VIT_SAMPLES_PER_30MS_FRAME, MIC_NUM);
+#if (defined(PLATFORM_MCXN947) || defined(PLATFORM_RT1170_EVKB) || defined(PLATFORM_RW61X) || DEMO_CODEC_CS42448)
+    DeInterleave(buffer, output_buffer, VIT_SAMPLES_PER_30MS_FRAME, MIC_NUM, DEMO_AUDIO_BYTE_WIDTH);
 #else
     if (size != SAMPLES_PER_FRAME * NUMBER_OF_CHANNELS * BYTE_DEPTH)
     {
@@ -496,14 +505,19 @@ int VIT_Deinit(void)
 }
 
 #if (defined(PLATFORM_MCXN947) || defined(PLATFORM_RT1170_EVKB) || defined(PLATFORM_RW61X) ||  DEMO_CODEC_CS42448)
-void DeInterleave32(const int16_t *pDataInput, int16_t *pDataOutput, uint16_t FrameSize, uint16_t ChannelNumber)
+void DeInterleave(const int16_t *pDataInput, int16_t *pDataOutput,
+                  uint16_t FrameSize, uint16_t ChannelNumber,
+                  uint8_t inputBytesPerSample)
 {
+    uint16_t inputStride = inputBytesPerSample / sizeof(int16_t);
+    uint16_t msbOffset = (inputBytesPerSample == INPUT_32BIT_BYTES) ? 1 : 0;
+
     for (uint16_t ichan = 0; ichan < ChannelNumber; ichan++)
     {
         for (uint16_t i = 0; i < FrameSize; i++)
         {
-            /* Select the 16 MSB of the 32 input bits */
-            pDataOutput[i + (ichan * FrameSize)] = pDataInput[(i * 2 * ChannelNumber) + (ichan * 2) + 1];
+            pDataOutput[i + (ichan * FrameSize)] =
+                pDataInput[(i * inputStride * ChannelNumber) + (ichan * inputStride) + msbOffset];
         }
     }
     return;

@@ -57,5 +57,7 @@ typedef enum
 extern VIT_Language_T Vit_Language;
 #endif
 
-void DeInterleave32(const int16_t *pDataInput, int16_t *pDataOutput, uint16_t FrameSize, uint16_t ChannelNumber);
+void DeInterleave(const int16_t *pDataInput, int16_t *pDataOutput,
+                  uint16_t FrameSize, uint16_t ChannelNumber,
+                  uint8_t inputBytesPerSample);
 #endif
