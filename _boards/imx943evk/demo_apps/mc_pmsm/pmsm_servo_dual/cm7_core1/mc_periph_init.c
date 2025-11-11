@@ -71,11 +71,11 @@ void MCDRV_Init(void)
     M2_MCDRV_PWM_PERIPH_INIT();
     
     /* Init SINC filters */
-//    M1_MCDRV_SINC_INIT();
+    M1_MCDRV_SINC_INIT();
     M2_MCDRV_SINC_INIT();
     
     /* Init EnDat2.2 for motor connector 1 */
-//    M1_MCDRV_ENCODER_PERIPH_INIT();
+    M1_MCDRV_ENCODER_PERIPH_INIT();
     
     /* Init EnDat2p2 for motor connector 2 */
     M2_MCDRV_ENCODER_PERIPH_INIT();
@@ -96,7 +96,7 @@ void M1_InitEndat2p2(void)
   
   /* EnDat2.2 100MHz */
   clk_t endat2p2Clk = {
-    .clkId = kCLOCK_Endat21,
+    .clkId = kCLOCK_Endat22,
     .pclkId = kCLOCK_Syspll1dfs1div2, /* 400 MHz */
     .rate = ENDAT2P2_CLK_48M,
     .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,

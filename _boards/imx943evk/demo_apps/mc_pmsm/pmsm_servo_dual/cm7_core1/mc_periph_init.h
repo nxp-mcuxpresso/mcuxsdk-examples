@@ -52,13 +52,6 @@ typedef struct _clock_setup
 #define M1_SPEED_LOOP_FREQ (4000)   /* Speed loop frequency */
 #define M1_PWM_DEADTIME (500)       /* Output PWM deadtime value in nanoseconds */
 
-#define M1_FAST_LOOP_TS ((float_t)1.0 / (float_t)(M1_PWM_FREQ / M1_FOC_FREQ_VS_PWM_FREQ))
-#define M1_SLOW_LOOP_TS ((float_t)1.0 / (float_t)(M1_SPEED_LOOP_FREQ))
-#define M1_TIME_ONESEC_COUNT (M1_PWM_FREQ / M1_FOC_FREQ_VS_PWM_FREQ)
-
-/* Fast loop frequency in Hz */
-#define M1_FAST_LOOP_FREQ       (M1_PWM_FREQ / M1_FOC_FREQ_VS_PWM_FREQ)
-
 /* Over Current Fault detection */
 #define M1_FAULT_NUM (0)
 #define M1_FAULT_OV_NUM (1)

@@ -27,7 +27,7 @@
 #define USE_ENCODER_ENDAT2P2   (2U)    /* EnDat2.2 encoder */
 #define USE_ENCODER_BISS       (3U)    /* BiSS encoder */
 
-#define USE_ENCODER     (USE_ENCODER_BISS)    /* Select which encoder will be used. */
+#define USE_ENCODER     (USE_ENCODER_ENDAT3)    /* Select which encoder will be used. */
 
 #include "fsl_common.h"
 #include "fsl_xbar.h"
@@ -75,13 +75,6 @@ typedef struct _clock_setup
 #define M1_FOC_FREQ_VS_PWM_FREQ (2) /* FOC calculation is called every n-th PWM reload */
 #define M1_SPEED_LOOP_FREQ (4000)   /* Speed loop frequency */
 #define M1_PWM_DEADTIME (500)       /* Output PWM deadtime value in nanoseconds */
-
-#define M1_FAST_LOOP_TS ((float_t)1.0 / (float_t)(M1_PWM_FREQ / M1_FOC_FREQ_VS_PWM_FREQ))
-#define M1_SLOW_LOOP_TS ((float_t)1.0 / (float_t)(M1_SPEED_LOOP_FREQ))
-#define M1_TIME_ONESEC_COUNT (M1_PWM_FREQ / M1_FOC_FREQ_VS_PWM_FREQ)
-
-/* Fast loop frequency in Hz */
-#define M1_FAST_LOOP_FREQ       (M1_PWM_FREQ / M1_FOC_FREQ_VS_PWM_FREQ)
 
 /* Over Current Fault detection */
 #define M1_FAULT_NUM (0)

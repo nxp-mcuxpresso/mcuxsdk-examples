@@ -5,8 +5,8 @@
 */
 
 /*
-    * FILE NAME: ../../../examples/_boards/imx943evk/demo_apps/mc_pmsm/pmsm_servo_dual/cm7_core1/m2_pmsm_appconfig.h
-    * DATE: Thu May 29 2025, 10:20:41
+    * FILE NAME: ../../../examples/_boards/imx943evk/demo_apps/mc_pmsm/pmsm_servo/cm7_core1/m2_pmsm_appconfig.h
+    * DATE: Mon Nov 10 2025, 08:07:19
 */
 
 /*
@@ -41,7 +41,7 @@
         "parametersScalarVHzRatio": 100
     },
     "currentLoop": {
-        "currentLoopSampleTime": 0.00003125,
+        "currentLoopSampleTime": 0.000015625,
         "currentLoopF0": 250,
         "currentLoopKsi": 1,
         "currentLoopOutputLimit": 90
@@ -111,25 +111,25 @@
 #define M1_FREEWHEEL_DURATION (6000)
 #define M1_SCALAR_UQ_MIN (1.0F)
 #define M1_ALIGN_VOLTAGE (0.6F)
-#define M1_ALIGN_DURATION (32000)
+#define M1_ALIGN_DURATION (64000)
 #define M1_U_MAX (44.6581F)
 #define M1_FREQ_MAX (366.667F)
 #define M1_N_ANGULAR_MAX (1.90986F)
-#define M1_UDCB_IIR_B0 (0.00972203F)
-#define M1_UDCB_IIR_B1 (0.00972203F)
-#define M1_UDCB_IIR_A1 (0.980556F)
+#define M1_UDCB_IIR_B0 (0.00488476F)
+#define M1_UDCB_IIR_B1 (0.00488476F)
+#define M1_UDCB_IIR_A1 (0.990230F)
 #define M1_SCALAR_VHZ_FACTOR_GAIN (0.0450000F)
-#define M1_SCALAR_INTEG_GAIN ACC32(0.0229167)
-#define M1_SCALAR_RAMP_UP (0.0130208F)
-#define M1_SCALAR_RAMP_DOWN (0.0130208F)
+#define M1_SCALAR_INTEG_GAIN ACC32(0.0114583)
+#define M1_SCALAR_RAMP_UP (0.00651042F)
+#define M1_SCALAR_RAMP_DOWN (0.00651042F)
 /* CURRENTLOOP*/
 #define M1_D_KP_GAIN (0.307540F)
-#define M1_D_KI_GAIN (0.00532033F)
+#define M1_D_KI_GAIN (0.00266017F)
 #define M1_Q_KP_GAIN (0.307540F)
-#define M1_Q_KI_GAIN (0.00532033F)
-#define M1_Q_IIR_ZC_B0 (0.0170055F)
-#define M1_Q_IIR_ZC_B1 (0.0170055F)
-#define M1_Q_IIR_ZC_A1 (0.965989F)
+#define M1_Q_KI_GAIN (0.00266017F)
+#define M1_Q_IIR_ZC_B0 (0.00857565F)
+#define M1_Q_IIR_ZC_B1 (0.00857565F)
+#define M1_Q_IIR_ZC_A1 (0.982849F)
 #define M1_CLOOP_LIMIT (0.519615F)
 /* SPEEDLOOP*/
 #define M1_SPEED_RAMP_UP (0.654498F)
@@ -158,22 +158,22 @@
 #define M1_SERVO_SPEED_PI_HIGH_LIMIT (5.0F)
 #define M1_SERVO_SPEED_PI_LOW_LIMIT (-5.0F)
 /* SENSORLESS*/
-#define M1_OL_START_RAMP_INC (0.0490874F)
+#define M1_OL_START_RAMP_INC (0.0245437F)
 #define M1_OL_START_I (0.6F)
 #define M1_MERG_SPEED_TRH (261.799F)
-#define M1_MERG_COEFF FRAC16(0.00131226)
-#define M1_I_SCALE (0.972259F)
-#define M1_U_SCALE (0.220167F)
-#define M1_E_SCALE (0.220167F)
-#define M1_WI_SCALE (0.0000303831F)
+#define M1_MERG_COEFF FRAC16(0.000640869)
+#define M1_I_SCALE (0.985934F)
+#define M1_U_SCALE (0.111632F)
+#define M1_E_SCALE (0.111632F)
+#define M1_WI_SCALE (0.0000154052F)
 #define M1_BEMF_DQ_KP_GAIN (0.134124F)
-#define M1_BEMF_DQ_KI_GAIN (0.00383064F)
+#define M1_BEMF_DQ_KI_GAIN (0.00191532F)
 #define M1_TO_KP_GAIN (439.823F)
-#define M1_TO_KI_GAIN (1.51128F)
-#define M1_TO_THETA_GAIN (0.00000994718F)
-#define M1_TO_SPEED_IIR_B0 (0.0377861F)
-#define M1_TO_SPEED_IIR_B1 (0.0377861F)
-#define M1_TO_SPEED_IIR_A1 (0.924428F)
+#define M1_TO_KI_GAIN (0.755642F)
+#define M1_TO_THETA_GAIN (0.00000497359F)
+#define M1_TO_SPEED_IIR_B0 (0.0192568F)
+#define M1_TO_SPEED_IIR_B1 (0.0192568F)
+#define M1_TO_SPEED_IIR_A1 (0.961486F)
 /* USER INPUT START */
 /* USER INPUT END */
 #endif /* __M1_PMSM_APPCONFIG_H */

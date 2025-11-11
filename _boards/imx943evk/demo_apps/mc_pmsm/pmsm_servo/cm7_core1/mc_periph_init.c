@@ -463,7 +463,7 @@ void InitEndat2p2(void)
   
   /* EnDat2.2 100MHz */
   clk_t endat2p2Clk = {
-    .clkId = kCLOCK_Endat21,
+    .clkId = kCLOCK_Endat22,
     .pclkId = kCLOCK_Syspll1dfs1div2, /* 400 MHz */
     .rate = ENDAT2P2_CLK_48M,
     .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
@@ -612,9 +612,6 @@ void InitBiSS1(void)
   /* Disable XBAR1 interrupt 0/1 */
   DisableIRQ(XBAR1_IRQn);
   
-  #warning "RADEK NIZE ASI PRIJDE ODMAZAT???"
-//  blk_ctrl->BISS1_EOT_CTL = 0;
-  
   master = BISS_MasterInit(BISS1, BISS_SYS_CLK_FREQ, BISS_MA_CLK_FREQ, BISS_AGS_CLK_FREQ);  
   
   if (master == NULL)
@@ -662,8 +659,5 @@ void InitBiSS1(void)
   
   /* Enable XBAR1 interrupt 0/1 */
   EnableIRQ(XBAR1_IRQn);
-  
-#warning "RADEK NIZE ASI PRIJDE ODMAZAT???"
-//  blk_ctrl->BISS1_EOT_CTL = 0x3;
 }       /* BiSS encoder is used. */
 #endif
