@@ -14,6 +14,8 @@ mcux_add_source(
         app_preinclude.h
 )
 
+include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/ieee-802.15.4/nbu_ble_15_4_dyn/reconfig.cmake)
+
 mcux_add_macro(
     PHY_15_4_ENABLED=1
     FSL_RTOS_THREADX=1
@@ -22,12 +24,12 @@ mcux_add_macro(
     gBleBondIdentityHeaderSize_c=56
     gUseHciTransportUpward_d=1
     HCI_FREE_RxBuffer=0
-    HDI_MODE=0
+    HDI_MODE=${HDI_MODE}
     MULTICORE_APP=1
     RF_OSC_26MHZ=0
     TEST_BUILD_COEX=0
     FFU_DEVICE_LIMIT_VISIBILITY=1
-    FPGA_TARGET=0
+    FPGA_TARGET=${FPGA_TARGET}
     PHY_15_4_LOW_POWER_ENABLED=1
     TX_INCLUDE_USER_DEFINE_FILE
 )
