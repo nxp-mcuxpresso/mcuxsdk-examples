@@ -97,6 +97,16 @@ void BOARD_InitNETCPins(void)
     IOMUXC_SetPinConfig(IOMUXC_PAD_ETH4_MDC_GPIO1__NETC_EMDC, 0x57eU);
     IOMUXC_SetPinConfig(IOMUXC_PAD_ETH4_MDIO_GPIO2__NETC_EMDIO, 0x57eU);
 }
+
+void BOARD_InitLEDsPins(void) {
+
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO00__GPIO2_IO0, 0U);
+
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO00__GPIO2_IO0,
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_PD_MASK);
+}
 /***********************************************************************************************************************
  * EOF
  **********************************************************************************************************************/
