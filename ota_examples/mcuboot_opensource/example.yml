@@ -211,6 +211,9 @@ mcuboot_opensource:
     frdmmcxn947@cm33_core0:
     - -mdk@release
     - -mdk@debug
+    frdmmcxn236:
+    - -mdk@release
+    - -mdk@debug
     mimxrt685audevk@cm33:
     - -armgcc@debug
     - -armgcc@release

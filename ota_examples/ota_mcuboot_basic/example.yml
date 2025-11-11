@@ -214,6 +214,9 @@ ota_mcuboot_basic:
     frdmmcxn947@cm33_core0:
     - -mdk@debug
     - -mdk@release
+    frdmmcxn236:
+    - -mdk@debug
+    - -mdk@release
     mimxrt685audevk@cm33:
     - -armgcc@debug
     - -armgcc@release
