@@ -280,7 +280,6 @@ struct sockaddr {
     char    sa_data[14];    /* 14 bytes of protocol address	*/
 };
 
-typedef uint32_t in_addr_t;
 typedef uint16_t in_port_t;
 struct in_addr_ipv4 {
     in_addr_t s_addr;

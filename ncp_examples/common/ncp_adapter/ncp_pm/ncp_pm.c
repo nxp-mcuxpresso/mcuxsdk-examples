@@ -72,16 +72,16 @@ static int ncp_pm_set_lp_constraint(int power_mode)
             case NCP_PM_STATE_PM0:
                 break;
             case NCP_PM_STATE_PM1:
-                ret = s_pm_ctx.lp_constraint_cbs->set_constraint(0);
+                ret = (ncp_pm_status_t)s_pm_ctx.lp_constraint_cbs->set_constraint((int32_t)0);
                 break;
             case NCP_PM_STATE_PM2:
-                ret = s_pm_ctx.lp_constraint_cbs->set_constraint(NCP_PM_STATE_PM2);
+                ret = (ncp_pm_status_t)s_pm_ctx.lp_constraint_cbs->set_constraint((int32_t)NCP_PM_STATE_PM2);
                 break;
             case NCP_PM_STATE_PM3:
-                ret = s_pm_ctx.lp_constraint_cbs->set_constraint(NCP_PM_STATE_PM3);
+                ret = (ncp_pm_status_t)s_pm_ctx.lp_constraint_cbs->set_constraint((int32_t)NCP_PM_STATE_PM3);
                 break;
             case NCP_PM_STATE_PM4:
-                ret = s_pm_ctx.lp_constraint_cbs->set_constraint(NCP_PM_STATE_PM4);
+                ret = (ncp_pm_status_t)s_pm_ctx.lp_constraint_cbs->set_constraint((int32_t)NCP_PM_STATE_PM4);
                 break;
             default:
                 break;
@@ -102,16 +102,16 @@ static int ncp_pm_release_lp_constraint(int power_mode)
             case NCP_PM_STATE_PM0:
                 break;
             case NCP_PM_STATE_PM1:
-                ret = s_pm_ctx.lp_constraint_cbs->release_constraint(0);
+                ret = (ncp_pm_status_t)s_pm_ctx.lp_constraint_cbs->release_constraint((int32_t)0);
                 break;
             case NCP_PM_STATE_PM2:
-                ret = s_pm_ctx.lp_constraint_cbs->release_constraint(NCP_PM_STATE_PM2);
+                ret = (ncp_pm_status_t)s_pm_ctx.lp_constraint_cbs->release_constraint((int32_t)NCP_PM_STATE_PM2);
                 break;
             case NCP_PM_STATE_PM3:
-                ret = s_pm_ctx.lp_constraint_cbs->release_constraint(NCP_PM_STATE_PM3);
+                ret = (ncp_pm_status_t)s_pm_ctx.lp_constraint_cbs->release_constraint((int32_t)NCP_PM_STATE_PM3);
                 break;
             case NCP_PM_STATE_PM4:
-                ret = s_pm_ctx.lp_constraint_cbs->release_constraint(NCP_PM_STATE_PM4);
+                ret = (ncp_pm_status_t)s_pm_ctx.lp_constraint_cbs->release_constraint((int32_t)NCP_PM_STATE_PM4);
                 break;
             default:
                 break;

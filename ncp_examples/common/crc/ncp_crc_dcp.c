@@ -35,6 +35,7 @@ uint32_t ncp_tlv_chksum(uint8_t *buf, uint16_t len)
     assert(outLength == 4u);
 
     unsigned int result = (output[0] << 24) | (output[1] << 16) | (output[2] << 8) | output[3];
+    (void)status;
 
     return result;
 }

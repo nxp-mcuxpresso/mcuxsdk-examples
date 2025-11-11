@@ -553,7 +553,7 @@ ncp_status_t ncp_adapter_init(int role)
 
     /* Init PM state machine */
     ncp_tlv_adapter.pm_ops = ncp_pm_get_ops();
-    status = (ncp_status_t)ncp_tlv_adapter.pm_ops->init(role, &s_ncp_pm_tx_if);
+    status = (ncp_status_t)ncp_tlv_adapter.pm_ops->init((ncp_pm_role_t)role, &s_ncp_pm_tx_if);
     if (status != NCP_STATUS_SUCCESS)
     {
         NCP_LOG_ERR("ncp pm init fail");

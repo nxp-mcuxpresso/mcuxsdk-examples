@@ -378,7 +378,7 @@ static int wlan_ncp_inet_setsockopt(void *data)
     int ret           = WM_SUCCESS;
 
     NCP_CMD_INET_SETSOCKOPT_CFG *tlv = (NCP_CMD_INET_SETSOCKOPT_CFG *)data;
-    char optval[64] = {0};
+
     tlv->level = sockopt_linuxtolwip(tlv->level);
     tlv->optname = sockopt_linuxtolwip(tlv->optname);
     ret                  = setsockopt(tlv->socket, tlv->level, tlv->optname, tlv->optval, (socklen_t)tlv->socklen);
@@ -507,10 +507,8 @@ static void socket_recv_task(void *arg)
 {
 #define NCP_SOCKET_RECEIVE_TIMEOUT_INTVAL  1000
     NCP_CMD_INET_RESP_RECVFROM_CFG *tlv_res = 0;
-    uint8_t *buf = 0;
     int buf_len = 0;
     int ret = 0;
-    int recv_size = 0;
     uint8_t *recv_buf = 0;
     int chksum_len = 4;
     int sa_data_offset = offsetof(struct sockaddr, sa_data);
@@ -594,7 +592,6 @@ realloc_mem:
 
 uint8_t *ncp_inet_prepare_socket_recv_resp(uint8_t *receive_res)
 {
-    int i;
     uint8_t *event_buf         = (uint8_t *)receive_res;
     NCPCmd_DS_INET_COMMAND *evt_res = NULL;
 
@@ -615,7 +612,6 @@ static OSA_TASK_HANDLE_DEFINE(ncp_inet_recv_thread);
 static OSA_TASK_DEFINE(socket_recv_task, PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-3)), 1, 5000, 0);
 static int ncp_inet_recv_create_task(void)
 {
-    BaseType_t status = pdPASS;
     ncp_d("NCP: run %s!\r\n", __func__);
     (void)OSA_TaskCreate((osa_task_handle_t)ncp_inet_recv_thread, OSA_TASK(socket_recv_task), NULL);
     return WM_SUCCESS;
@@ -669,7 +665,6 @@ uint8_t *ncp_inet_prepare_socket_send_fail(uint8_t *send_fail)
     NCPCmd_DS_INET_COMMAND *evt_res = NULL;
 
     evt_res                                = (NCPCmd_DS_INET_COMMAND *)event_buf;
-    NCP_CMD_INET_RESP_SEND_CFG *recv_res = (NCP_CMD_INET_RESP_SEND_CFG *)&evt_res->params.inet_send;
 
     evt_res->header.cmd        = NCP_EVENT_WLAN_NCP_INET_SEND_FAIL;
     evt_res->header.size       = NCP_CMD_HEADER_LEN;

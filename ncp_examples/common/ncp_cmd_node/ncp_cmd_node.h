@@ -22,10 +22,9 @@
 /** Get command cmd_id */
 #define GET_CMD_ID(cmd)       ((cmd)&0x0000ffff)
 
-typedef struct ncp_cmd_node_t ncp_cmd_node_t;
+struct ncp_cmd_node_t; 
 
-typedef void (*Handle_respFunc)(void * cmd_resp_buf, ncp_cmd_node_t * cmd_node);
-
+typedef void (*Handle_respFunc)(void * cmd_resp_buf, struct ncp_cmd_node_t * cmd_node);
 typedef struct ncp_cmd_node_t
 {
     void * resp_buf;

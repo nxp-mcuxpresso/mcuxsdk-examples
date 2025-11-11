@@ -36,6 +36,7 @@ int ncp_socket(int family, int style, int protocol)
     int socket;
     int ret = 0;
     int socket_type = IPPROTO_NONE;
+	NCP_CMD_INET_RESP_SOCKET_CFG *inet_socket_resp = NULL;
     if (style & SOCK_STREAM)
         socket_type = IPPROTO_TCP;
     else if (style & SOCK_DGRAM)
@@ -77,7 +78,7 @@ int ncp_socket(int family, int style, int protocol)
     if (ret < 0)
         goto exit;
 
-    NCP_CMD_INET_RESP_SOCKET_CFG *inet_socket_resp = (NCP_CMD_INET_RESP_SOCKET_CFG *)cmd_resp_buf;
+    inet_socket_resp = (NCP_CMD_INET_RESP_SOCKET_CFG *)cmd_resp_buf;
     socket = inet_socket_resp->ret;
     errno = inet_socket_resp->errorn;
 
@@ -109,6 +110,7 @@ static void ncp_inet_bind_cb(void *res, ncp_cmd_node_t * cmd_node)
 int ncp_bind(int socket, const struct sockaddr *addr, socklen_t length)
 {
     int ret = 0;
+	NCP_CMD_INET_RESP_BIND_CFG *inet_bind_resp = NULL;
     socket = socketfd_host_to_lwip(socket);
     NCP_CMD_INET_RESP_BIND_CFG *cmd_resp_buf = OSA_MemoryAllocate(sizeof(NCP_CMD_INET_RESP_BIND_CFG));
     if(cmd_resp_buf == NULL)
@@ -142,7 +144,7 @@ int ncp_bind(int socket, const struct sockaddr *addr, socklen_t length)
     if (ret < 0)
         goto exit;
 
-    NCP_CMD_INET_RESP_BIND_CFG *inet_bind_resp = (NCP_CMD_INET_RESP_BIND_CFG *)cmd_resp_buf;
+    inet_bind_resp = (NCP_CMD_INET_RESP_BIND_CFG *)cmd_resp_buf;
     ret   =  inet_bind_resp->ret;
     errno = inet_bind_resp->errorn;
 
@@ -163,6 +165,7 @@ static void ncp_inet_con_cb(void *res, ncp_cmd_node_t * cmd_node)
 int ncp_connect(int socket, const struct sockaddr *addr, socklen_t length)
 {
     int ret = 0;
+	NCP_CMD_INET_RESP_CON_CFG *inet_con_resp = NULL;
     socket = socketfd_host_to_lwip(socket);
     NCP_CMD_INET_RESP_CON_CFG *cmd_resp_buf = OSA_MemoryAllocate(sizeof(NCP_CMD_INET_RESP_CON_CFG));
     if(cmd_resp_buf == NULL)
@@ -196,7 +199,7 @@ int ncp_connect(int socket, const struct sockaddr *addr, socklen_t length)
     if (ret < 0)
         goto exit;
 
-    NCP_CMD_INET_RESP_CON_CFG *inet_con_resp = (NCP_CMD_INET_RESP_CON_CFG *)cmd_resp_buf;
+    inet_con_resp = (NCP_CMD_INET_RESP_CON_CFG *)cmd_resp_buf;
     ret   =  inet_con_resp->ret;
     errno = inet_con_resp->errorn;
     if (ret > 0)
@@ -227,6 +230,7 @@ static void ncp_inet_listen_cb(void *res, ncp_cmd_node_t * cmd_node)
 int ncp_listen(int socket, int number)
 {
     int ret = 0;
+	NCP_CMD_INET_RESP_LISTEN_CFG *inet_listen_resp = NULL;
     socket = socketfd_host_to_lwip(socket);
     NCP_CMD_INET_RESP_LISTEN_CFG * cmd_resp_buf = OSA_MemoryAllocate(sizeof(NCP_CMD_INET_RESP_LISTEN_CFG));
     if(cmd_resp_buf == NULL)
@@ -259,7 +263,7 @@ int ncp_listen(int socket, int number)
     if (ret < 0)
         goto exit;
 
-    NCP_CMD_INET_RESP_LISTEN_CFG *inet_listen_resp = (NCP_CMD_INET_RESP_LISTEN_CFG *)cmd_resp_buf;
+    inet_listen_resp = (NCP_CMD_INET_RESP_LISTEN_CFG *)cmd_resp_buf;
     ret   =  inet_listen_resp->ret;
     errno = inet_listen_resp->errorn;
 
@@ -280,6 +284,7 @@ static void ncp_inet_accept_cb(void *res, ncp_cmd_node_t * cmd_node)
 int ncp_accept(int socket, struct sockaddr *addr, socklen_t *length)
 {
     int ret = 0;
+	NCP_CMD_INET_RESP_ACCEPT_CFG *inet_accept_resp = NULL;
     socket = socketfd_host_to_lwip(socket);
 
     int accept_socket = 0;
@@ -313,7 +318,7 @@ int ncp_accept(int socket, struct sockaddr *addr, socklen_t *length)
     if (ret < 0)
         goto exit;
 
-    NCP_CMD_INET_RESP_ACCEPT_CFG *inet_accept_resp = (NCP_CMD_INET_RESP_ACCEPT_CFG *)cmd_resp_buf;
+    inet_accept_resp = (NCP_CMD_INET_RESP_ACCEPT_CFG *)cmd_resp_buf;
     ret           =  inet_accept_resp->ret;
     accept_socket = ret;
     errno = inet_accept_resp->errorn;
@@ -345,6 +350,7 @@ static void ncp_inet_close_cb(void *res, ncp_cmd_node_t * cmd_node)
 int ncp_close(int socket)
 {
     int ret = 0;
+	NCP_CMD_INET_RESP_CLOSE_CFG *inet_close_resp = NULL;
     socket = socketfd_host_to_lwip(socket);
     NCP_CMD_INET_RESP_CLOSE_CFG *cmd_resp_buf = OSA_MemoryAllocate(sizeof(NCP_CMD_INET_RESP_CLOSE_CFG));
     if(cmd_resp_buf == NULL)
@@ -376,7 +382,7 @@ int ncp_close(int socket)
     if (ret < 0)
         goto exit;
 
-    NCP_CMD_INET_RESP_CLOSE_CFG *inet_close_resp = (NCP_CMD_INET_RESP_CLOSE_CFG *)cmd_resp_buf;
+    inet_close_resp = (NCP_CMD_INET_RESP_CLOSE_CFG *)cmd_resp_buf;
     ret   =  inet_close_resp->ret;
     errno = inet_close_resp->errorn;
     inet_socket_recv_queue_close(socket);
@@ -398,6 +404,7 @@ static void ncp_inet_shutdown_cb(void *res, ncp_cmd_node_t * cmd_node)
 int ncp_shutdown(int socket, int how)
 {
     int ret = 0;
+	NCP_CMD_INET_RESP_SHUTDOWN_CFG *inet_shutdown_resp = NULL;
     socket = socketfd_host_to_lwip(socket);
     NCP_CMD_INET_RESP_SHUTDOWN_CFG *cmd_resp_buf = OSA_MemoryAllocate(sizeof(NCP_CMD_INET_RESP_SHUTDOWN_CFG));
     if(cmd_resp_buf == NULL)
@@ -429,7 +436,7 @@ int ncp_shutdown(int socket, int how)
     if (ret < 0)
         goto exit;
 
-    NCP_CMD_INET_RESP_SHUTDOWN_CFG *inet_shutdown_resp = (NCP_CMD_INET_RESP_SHUTDOWN_CFG *)cmd_resp_buf;
+    inet_shutdown_resp = (NCP_CMD_INET_RESP_SHUTDOWN_CFG *)cmd_resp_buf;
     ret   =  inet_shutdown_resp->ret;
     errno = inet_shutdown_resp->errorn;
     inet_socket_recv_queue_close(socket);
@@ -451,6 +458,7 @@ static void ncp_inet_getsockname_cb(void *res, ncp_cmd_node_t * cmd_node)
 int ncp_getsockname(int socket, struct sockaddr *addr, socklen_t *length)
 {
     int ret = 0;
+	NCP_CMD_INET_RESP_GETSOCKNAME_CFG *inet_getsockname_resp = NULL;
     socket = socketfd_host_to_lwip(socket);
     NCP_CMD_INET_RESP_GETSOCKNAME_CFG *cmd_resp_buf = OSA_MemoryAllocate(sizeof(NCP_CMD_INET_RESP_GETSOCKNAME_CFG));
     if(cmd_resp_buf == NULL)
@@ -482,7 +490,7 @@ int ncp_getsockname(int socket, struct sockaddr *addr, socklen_t *length)
     if (ret < 0)
         goto exit;
 
-    NCP_CMD_INET_RESP_GETSOCKNAME_CFG *inet_getsockname_resp = (NCP_CMD_INET_RESP_GETSOCKNAME_CFG *)cmd_resp_buf;
+    inet_getsockname_resp = (NCP_CMD_INET_RESP_GETSOCKNAME_CFG *)cmd_resp_buf;
     ret   =  inet_getsockname_resp->ret;
     errno = inet_getsockname_resp->errorn;
     *length = inet_getsockname_resp->socklen;
@@ -505,6 +513,7 @@ static void ncp_inet_getpeername_cb(void *res, ncp_cmd_node_t * cmd_node)
 int ncp_getpeername(int socket, struct sockaddr *addr, socklen_t *length)
 {
     int ret = 0;
+	NCP_CMD_INET_RESP_GETPEERNAME_CFG *inet_getpeername_resp = NULL;
     socket = socketfd_host_to_lwip(socket);
 
     NCP_CMD_INET_RESP_GETPEERNAME_CFG *cmd_resp_buf = OSA_MemoryAllocate(sizeof(NCP_CMD_INET_RESP_GETPEERNAME_CFG));
@@ -537,7 +546,7 @@ int ncp_getpeername(int socket, struct sockaddr *addr, socklen_t *length)
     if (ret < 0)
         goto exit;
 
-    NCP_CMD_INET_RESP_GETPEERNAME_CFG *inet_getpeername_resp = (NCP_CMD_INET_RESP_GETPEERNAME_CFG *)cmd_resp_buf;
+    inet_getpeername_resp = (NCP_CMD_INET_RESP_GETPEERNAME_CFG *)cmd_resp_buf;
     ret   =  inet_getpeername_resp->ret;
     errno = inet_getpeername_resp->errorn;
     *length = inet_getpeername_resp->socklen;
@@ -560,6 +569,7 @@ static void ncp_inet_getsockopt_cb(void *res, ncp_cmd_node_t * cmd_node)
 int ncp_getsockopt(int socket, int level, int optname, void *optval, socklen_t *optlen)
 {
     int ret = 0;
+	NCP_CMD_INET_RESP_GETSOCKOPT_CFG *inet_getsockopt_resp = NULL;
     socket = socketfd_host_to_lwip(socket);
 
     NCP_CMD_INET_RESP_GETSOCKOPT_CFG *cmd_resp_buf = OSA_MemoryAllocate(sizeof(NCP_CMD_INET_RESP_GETSOCKOPT_CFG));
@@ -594,7 +604,7 @@ int ncp_getsockopt(int socket, int level, int optname, void *optval, socklen_t *
     if (ret < 0)
         goto exit;
 
-    NCP_CMD_INET_RESP_GETSOCKOPT_CFG *inet_getsockopt_resp = (NCP_CMD_INET_RESP_GETSOCKOPT_CFG *)cmd_resp_buf;
+    inet_getsockopt_resp = (NCP_CMD_INET_RESP_GETSOCKOPT_CFG *)cmd_resp_buf;
     ret   =  inet_getsockopt_resp->ret;
     errno = inet_getsockopt_resp->errorn;
     *optlen = inet_getsockopt_resp->socklen;
@@ -617,6 +627,7 @@ static void ncp_inet_setsockopt_cb(void *res, ncp_cmd_node_t * cmd_node)
 int ncp_setsockopt(int socket, int level, int optname, const void *optval, socklen_t optlen)
 {
     int ret = 0;
+	NCP_CMD_INET_RESP_SETSOCKOPT_CFG *inet_setsockopt_resp = NULL;
     socket = socketfd_host_to_lwip(socket);
 
     NCP_CMD_INET_RESP_SETSOCKOPT_CFG *cmd_resp_buf = OSA_MemoryAllocate(sizeof(NCP_CMD_INET_RESP_SETSOCKOPT_CFG));
@@ -653,7 +664,7 @@ int ncp_setsockopt(int socket, int level, int optname, const void *optval, sockl
     if (ret < 0)
         goto exit;
 
-    NCP_CMD_INET_RESP_SETSOCKOPT_CFG *inet_setsockopt_resp = (NCP_CMD_INET_RESP_SETSOCKOPT_CFG *)cmd_resp_buf;
+    inet_setsockopt_resp = (NCP_CMD_INET_RESP_SETSOCKOPT_CFG *)cmd_resp_buf;
     ret   =  inet_setsockopt_resp->ret;
     errno = inet_setsockopt_resp->errorn;
 
@@ -859,19 +870,6 @@ static struct ncp_socket_recv_t *inet_get_sock_handle(int socket)
     return handle;
 }
 
-static int inet_get_socket_by_fifo(StreamBufferHandle_t fifo_fd)
-{
-    for (int i = 0; i < NCP_INET_SOCK_NUMBER; i++)
-    {
-        if (fifo_fd == inet_sock_handle_array[i].rx_fifo_fd)
-        {
-            return inet_sock_handle_array[i].socket;
-        }
-    }
-    return -1; 
-}
-
-
 /* enqueue receive data from bus to queue */
 int inet_sock_recv_send_queue_data(int socket, char *buf, int size)
 {
@@ -1058,6 +1056,7 @@ static void ncp_inet_ioctl_cb(void *res, ncp_cmd_node_t * cmd_node)
 int ncp_ioctl(int fd, long cmd, void *argp)
 {
     int ret = 0;
+	NCP_CMD_INET_RESP_IOCTL_CFG *inet_ioctl_resp = NULL;
     fd = socketfd_host_to_lwip(fd);
     NCP_CMD_INET_RESP_IOCTL_CFG *cmd_resp_buf = OSA_MemoryAllocate(sizeof(NCP_CMD_INET_RESP_IOCTL_CFG));
     if(cmd_resp_buf == NULL)
@@ -1091,7 +1090,7 @@ int ncp_ioctl(int fd, long cmd, void *argp)
     if (ret < 0)
 		goto exit;
 
-    NCP_CMD_INET_RESP_IOCTL_CFG *inet_ioctl_resp = (NCP_CMD_INET_RESP_IOCTL_CFG *)cmd_resp_buf;
+    inet_ioctl_resp = (NCP_CMD_INET_RESP_IOCTL_CFG *)cmd_resp_buf;
     ret   =  inet_ioctl_resp->ret;
     errno = inet_ioctl_resp->errorno;
     memcpy(argp, inet_ioctl_resp->argp, sizeof(inet_ioctl_resp));
@@ -1114,6 +1113,7 @@ static void ncp_inet_fcntl_cb(void *res, ncp_cmd_node_t * cmd_node)
 int ncp_fcntl(int fd, int cmd, int val)
 {
     int ret = 0;
+	NCP_CMD_INET_RESP_FCNTL_CFG *inet_fcntl_resp = NULL;
     fd = socketfd_host_to_lwip(fd);
 
     NCP_CMD_INET_RESP_FCNTL_CFG * cmd_resp_buf = OSA_MemoryAllocate(sizeof(NCP_CMD_INET_RESP_FCNTL_CFG));
@@ -1148,7 +1148,7 @@ int ncp_fcntl(int fd, int cmd, int val)
     if (ret < 0)
         goto exit;
 
-    NCP_CMD_INET_RESP_FCNTL_CFG *inet_fcntl_resp = (NCP_CMD_INET_RESP_FCNTL_CFG *)cmd_resp_buf;
+    inet_fcntl_resp = (NCP_CMD_INET_RESP_FCNTL_CFG *)cmd_resp_buf;
     ret   =  inet_fcntl_resp->ret;
     errno = inet_fcntl_resp->errorno;
 

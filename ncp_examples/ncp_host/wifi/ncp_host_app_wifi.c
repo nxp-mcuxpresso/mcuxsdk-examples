@@ -778,7 +778,7 @@ void ncp_iperf_rx_task(void *pvParameters)
 {
     unsigned int pkg_num         = 0;
     long long recv_size = 0, left_size = 0;
-    int                client_sockfd;
+    int client_sockfd = -1;
     struct sockaddr_in server_addr = {0};
     int ret = 0;
     char buffer[3000];

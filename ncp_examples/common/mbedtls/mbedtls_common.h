@@ -66,8 +66,8 @@ typedef struct {
     uint16_t in;
     uint16_t out;
 } ringbuf_t;
-
-typedef /*NCP_TLV_PACK_START*/ struct {
+#pragma pack()
+typedef /*NCP_TLV_PACK_START*/ struct __attribute__((aligned(4))){
     mbedtls_ssl_context      ssl;
     mbedtls_entropy_context  entropy;
     mbedtls_ctr_drbg_context ctr_drbg;
@@ -79,8 +79,6 @@ typedef /*NCP_TLV_PACK_START*/ struct {
     uint8_t                  entropy_buf[MBEDTLS_ENTROPY_BLOCK_SIZE];
     ringbuf_t                ringbuf;
 } /*NCP_TLV_PACK_END*/ mbedtls_ctx_t;
-
-#pragma pack()
 
 
 extern mbedtls_ctx_t *_mbedtls;
