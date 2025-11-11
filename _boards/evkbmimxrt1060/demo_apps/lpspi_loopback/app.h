@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NXP
+ * Copyright 2021, 2025 NXP
  * All rights reserved.
  *
  *
@@ -14,7 +14,6 @@
 /*${macro:start}*/
 #define LPSPI_TRANSFER_SIZE          20
 #define BOARD_EEPROM_LPSPI_BASEADDR  (LPSPI1)
-#define BOARD_LPSPI_CLK_FREQ         12000000U
 #define BOARD_LPSPI_PCS_FOR_INIT     kLPSPI_Pcs0
 #define BOARD_LPSPI_PCS_FOR_TRANSFER kLPSPI_MasterPcs0
 
@@ -22,6 +21,8 @@
 #define EXAMPLE_LPSPI_CLOCK_SOURCE_SELECT (1U)
 /* Clock divider for master lpspi clock source */
 #define EXAMPLE_LPSPI_CLOCK_SOURCE_DIVIDER (7U)
+
+#define BOARD_LPSPI_CLK_FREQ (CLOCK_GetFreq(kCLOCK_Usb1PllPfd0Clk) / (EXAMPLE_LPSPI_CLOCK_SOURCE_DIVIDER + 1U))
 /*${macro:end}*/
 
 /*******************************************************************************
