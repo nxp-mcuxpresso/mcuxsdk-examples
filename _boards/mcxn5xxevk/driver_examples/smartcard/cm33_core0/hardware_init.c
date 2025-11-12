@@ -24,6 +24,8 @@ void BOARD_InitHardware(void)
     CLOCK_SetClkDiv(kCLOCK_DivEmvsim0Clk, 1u);
     CLOCK_AttachClk(kFRO_HF_to_EMVSIM0);
 
+    CLOCK_SetupOsc32KClocking(kCLOCK_Osc32kToMain);
+
     BOARD_InitPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
