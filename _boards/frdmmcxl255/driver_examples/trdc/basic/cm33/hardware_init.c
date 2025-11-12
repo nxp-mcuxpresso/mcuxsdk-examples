@@ -81,6 +81,8 @@ uint32_t APP_GetMbc0Mem0BlockIdx(const void* mem_ptr)
     /* Shift by GLBCFG_NBLKS_LOG2*/
     idx >>= shift;
 
+    (void)nblks;
+
     /* Check if mem_ptr fits to MBC0_MEM0 */
     assert(idx < nblks);
 
