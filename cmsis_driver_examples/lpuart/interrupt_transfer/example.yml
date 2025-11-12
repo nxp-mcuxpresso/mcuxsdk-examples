@@ -316,3 +316,18 @@ cmsis_lpuart_interrupt_transfer:
     - -mdk@release
     frdmmcxa266: []
     frdmmcxa366: []
+    imx943_orangebox@cm7_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release
+    imx943_orangebox@cm7_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release
+    imx943_orangebox@cm33_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release
