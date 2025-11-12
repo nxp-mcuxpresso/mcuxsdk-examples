@@ -23,24 +23,25 @@ static clock_output2_selection_t APP_GetClockOutput2Selection(void);
  ******************************************************************************/
 static uint32_t APP_ConvertNumberStringToIntValue(uint32_t MAXValue)
 {
-    char ch, pre_ch;
+    char ch = 0U;
+    char pre_ch = 0U;
     uint32_t value = 0;
     do
         {
             ch = GETCHAR();
-            if ((ch >= '0') && (ch <= '9'))
+            if (ch >= '0' && ch <= '9')
             {
                 value = value * 10U + ch - '0';
                 pre_ch = ch;
             }
-            else if ((ch == '\r'))
+            else if (ch == '\r')
             {
                 pre_ch = ch;
                 continue;
             }
-            else if ((ch == '\n'))
+            else if (ch == '\n')
             {
-                if((pre_ch == '\r'))
+                if (pre_ch == '\r')
                 {
                    break;
                 }
