@@ -162,7 +162,7 @@ static int ncp_sys_mcu_sleep(void *tlv)
         wlan_clear_host_sleep_config();
 #endif
         /* Release current constraint of Power Manager */
-        ncp_pm_configure_next_lowpower_mode(0, 0);
+        ncp_pm_configure_next_lowpower_mode(1, 0);
         goto out;
     }
     else

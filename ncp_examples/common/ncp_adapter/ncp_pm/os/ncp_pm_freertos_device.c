@@ -443,6 +443,20 @@ void ncp_pm_os_activate_lp_timer(uint32_t duration_ms)
             assert(0);
         }
     }
+    else if (duration_ms == 0U)
+    {
+        if (OSA_TimerIsRunning((osa_timer_handle_t)lp_timer))
+        {
+            (void)OSA_TimerDeactivate((osa_timer_handle_t)lp_timer);
+            NCP_LOG_DBG("Deactive LPM Timer!");
+            if (!ncp_pm_sm_is_idle())
+            {
+                ncp_pm_sm_post_event(NCP_PM_SM_EVENT_TIME_WAIT);
+                NCP_LOG_DBG("Post evet TIME_WAIT!");
+                return;
+            }
+        }
+    }
 }
 
 static void ncp_pm_os_timer_cb(osa_timer_arg_t arg)
