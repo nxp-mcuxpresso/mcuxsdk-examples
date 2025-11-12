@@ -756,6 +756,35 @@ void BOARD_ConfigMPU(void)
 #endif
     ARM_MPU_SetRegion(1U, ARM_MPU_RBAR(0x28000000, ARM_MPU_SH_OUTER, 0U, 1U, 0U), ARM_MPU_RLAR(0x3FFFFFFF, 4U));
 
+    /*
+     * Region 2: [0x20800000, 0x208A0FFF](NETC OCRAM), outer shareable, read/write, any privileged, executable. Attr 1
+     * This region is used as RPMSG share memory between Cortex-M33 Core1(M33S) and AP(Non Secure Linux).
+     * (non-cacheable).
+     */
+    ARM_MPU_SetRegion(2U, ARM_MPU_RBAR(0x20800000, ARM_MPU_SH_OUTER, 0U, 1U, 0U), ARM_MPU_RLAR(0x208A0FFF, 1U));
+
+    /*
+     * Region 3: [0x20039000, 0x2003BFFF](System TCM of Cortex-m33 Core1), outer shareable, read/write, any privileged, executable. Attr 1
+     * This range 0x20039000~0x2003A7FF is used as RPMSG share memory between Cortex-M33 Core1(M33S, as remote) and Cortex-m7 Core0(as master).
+     * This range 0x2003A800~0x2003BFFF is used as RPMSG share memory between Cortex-M33 Core1(M33S, as remote) and Cortex-m7 Core1(as master).
+     * (non-cacheable).
+     */
+    ARM_MPU_SetRegion(3U, ARM_MPU_RBAR(0x20039000, ARM_MPU_SH_OUTER, 0U, 1U, 0U), ARM_MPU_RLAR(0x2003BFFF, 1U));
+
+    /*
+     * Region 4: [0x2033A800, 0x2033BFFF](DTCM of Cortex-m7 Core1), outer shareable, read/write, any privileged, executable. Attr 1
+     * This range 0x2033A800~0x2033BFFF is used as RPMSG share memory between Cortex-M33 Core1(M33S, as master) and Cortex-m7 Core1(as remote).
+     * (non-cacheable).
+     */
+    ARM_MPU_SetRegion(4U, ARM_MPU_RBAR(0x2033A800, ARM_MPU_SH_OUTER, 0U, 1U, 0U), ARM_MPU_RLAR(0x2033BFFF, 1U));
+
+    /*
+     * Region 5: [0x2043A800, 0x2043BFFF](DTCM of Cortex-m7 Core0), outer shareable, read/write, any privileged, executable. Attr 1
+     * This range 0x2043A800~0x2043BFFF is used as RPMSG share memory between Cortex-M33 Core1(M33S, as master) and Cortex-m7 Core0(as remote).
+     * (non-cacheable).
+     */
+    ARM_MPU_SetRegion(5U, ARM_MPU_RBAR(0x2043A800, ARM_MPU_SH_OUTER, 0U, 1U, 0U), ARM_MPU_RLAR(0x2043BFFF, 1U));
+
     /* Enable MPU(The MPU is enabled during HardFault and NMI handlers; use default memory map when access the memory within region) */
     ARM_MPU_Enable(MPU_CTRL_HFNMIENA_Msk | MPU_CTRL_PRIVDEFENA_Msk);
 
