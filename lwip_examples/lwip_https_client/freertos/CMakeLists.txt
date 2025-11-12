@@ -31,7 +31,8 @@ mcux_add_include(
 
 mcux_add_macro(
     CC "-DUSE_RTOS=1\
-       -DPRINTF_ADVANCED_ENABLE=1"
+        -DPRINTF_ADVANCED_ENABLE=1\
+        -DMBEDTLS_ERROR_C"
 )
 
 mcux_add_macro(

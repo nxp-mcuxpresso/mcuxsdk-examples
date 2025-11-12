@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2024 NXP
+ * Copyright 2016-2025 NXP
  * All rights reserved.
  *
  *
@@ -34,16 +34,12 @@
 #include "lwip/sockets.h"
 #include "netif/etharp.h"
 
-#ifdef MBEDTLS_MCUX_ELE_S400_API
-#include "ele_mbedtls.h"
-#else
-#include "ksdk_mbedtls.h"
-#endif /* MBEDTLS_MCUX_ELE_S400_API */
-
 #include "httpsrv.h"
 
 // dm #include "certs_buff.h"
-#include "mbedtls/certs.h"
+#include "test/certs.h"
+#include "psa/crypto.h"
+#include "threading_alt.h"
 
 /*******************************************************************************
  * Definitions
@@ -471,7 +467,7 @@ static void netif_ipv6_callback(struct netif *cb_netif)
  */
 static void stack_init(void)
 {
-    status_t status;
+    psa_status_t status;
 #if LWIP_IPV4
     ip4_addr_t netif_ipaddr, netif_netmask, netif_gw;
 #endif /* LWIP_IPV4 */
@@ -485,8 +481,9 @@ static void stack_init(void)
 #endif
     };
 
-    status = CRYPTO_InitHardware();
-    LWIP_ASSERT("CRYPTO_InitHardware() has failed\r\n", status == kStatus_Success);
+    config_mbedtls_threading_alt();
+    status = psa_crypto_init();
+    LWIP_ASSERT("psa_crypto_init() has failed\r\n", status == PSA_SUCCESS);
 
     tcpip_init(NULL, NULL);
 

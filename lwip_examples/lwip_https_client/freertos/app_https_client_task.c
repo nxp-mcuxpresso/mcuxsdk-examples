@@ -43,6 +43,12 @@ void app_https_client_task_init(https_client_task_context_t *context,
 static void client_task(void *args)
 {
     https_client_task_context_t *context = (https_client_task_context_t *)args;
+    TransportInterface_t xport_interface = {
+        .send            = app_corehttp_send,
+        .recv            = app_corehttp_recv,
+        .writev          = NULL,
+        .pNetworkContext = NULL,
+    };
 
     assert(context != NULL);
     assert(context->host != NULL);
@@ -95,14 +101,9 @@ static void client_task(void *args)
         goto free_hdr_exit;
     }
 
-    /* Create transport interface */
+    /* Initialize transport interface */
 
-    TransportInterface_t xport_interface = {
-        .send            = app_corehttp_send,
-        .recv            = app_corehttp_recv,
-        .writev          = NULL,
-        .pNetworkContext = nwk_ctx,
-    };
+    xport_interface.pNetworkContext = nwk_ctx;
 
     HTTPResponse_t resp;
 

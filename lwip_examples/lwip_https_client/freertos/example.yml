@@ -215,4 +215,3 @@ lwip_https_client_freertos:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     - -mdk@release
-    lpcxpresso54628: []

@@ -218,4 +218,3 @@ lwip_httpssrv_mbedTLS_freertos:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     - -mdk@release
-    lpcxpresso54628: []

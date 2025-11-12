@@ -21,7 +21,7 @@ mcux_add_macro(
 
 mcux_add_linker_symbol(
     SYMBOLS "__stack_size__=1000\
-             __heap_size__=40000"
+             __heap_size__=70000"
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/lwip_examples/lwip_httpssrv_mbedTLS/bm/reconfig.cmake OPTIONAL)

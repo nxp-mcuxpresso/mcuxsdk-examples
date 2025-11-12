@@ -31,12 +31,7 @@
 #include "lwip/netifapi.h"
 #include "lwip/tcpip.h"
 #include "lwip/ip.h"
-
-#ifdef MBEDTLS_MCUX_ELE_S400_API
-#include "ele_mbedtls.h"
-#else
-#include "ksdk_mbedtls.h"
-#endif /* MBEDTLS_MCUX_ELE_S400_API */
+#include "psa/crypto.h"
 
 /*******************************************************************************
  * Definitions
@@ -155,7 +150,7 @@ static void init_task(void *arg)
 {
     const ip_addr_t *dns_address;
     const char *str_ip;
-    status_t status;
+    psa_status_t status;
     uint8_t numdns;
 
     LWIP_UNUSED_ARG(arg);
@@ -182,8 +177,8 @@ static void init_task(void *arg)
     LWIP_PLATFORM_DIAG(("lwIP HTTPS client example\r\n"));
     LWIP_PLATFORM_DIAG(("***********************************************************\r\n"));
 
-    status = CRYPTO_InitHardware();
-    LWIP_ASSERT("CRYPTO_InitHardware() has failed\r\n", status == kStatus_Success);
+    status = psa_crypto_init();
+    LWIP_ASSERT("psa_crypto_init() has failed\r\n", status == PSA_SUCCESS);
 
     tcpip_init(NULL, NULL);
 

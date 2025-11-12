@@ -4,7 +4,6 @@
 
 mcux_add_macro(
     CC "-DFSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE\
-        -DMBEDTLS_CONFIG_FILE=\\\"ksdk_mbedtls_config.h\\\"\
         -DMBEDTLS_SSL_CIPHERSUITES=MBEDTLS_TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256"
 )
 mcux_add_macro(

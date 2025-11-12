@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 NXP
+ * Copyright 2023-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -172,7 +172,7 @@ int app_mbedtls_socket_connect(void *param, char *host, uint16_t port)
 
     if (mbedtls_ssl_get_peer_cert(&sock->ctx_ssl) != NULL)
     {
-        char *buf = pvPortMalloc(MBEDTLS_SSL_MAX_CONTENT_LEN + 1);
+        char *buf = pvPortMalloc(MBEDTLS_SSL_IN_CONTENT_LEN + 1);
         if (buf == NULL)
         {
             PRINTF("SSL: Failed to allocate certificate info buffer.\r\n");
@@ -181,7 +181,7 @@ int app_mbedtls_socket_connect(void *param, char *host, uint16_t port)
         }
 
         PRINTF("SSL: Peer certificate information:\n");
-        mbedtls_x509_crt_info((char *)buf, MBEDTLS_SSL_MAX_CONTENT_LEN, "\r>>> ",
+        mbedtls_x509_crt_info((char *)buf, MBEDTLS_SSL_IN_CONTENT_LEN, "\r>>> ",
                               mbedtls_ssl_get_peer_cert(&sock->ctx_ssl));
         PRINTF("%s\r\n", buf);
 

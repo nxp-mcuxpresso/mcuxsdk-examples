@@ -25,14 +25,9 @@
 #include "app.h"
 #include "fsl_phy.h"
 
-#ifdef MBEDTLS_MCUX_ELE_S400_API
-#include "ele_mbedtls.h"
-#else
-#include "ksdk_mbedtls.h"
-#endif /* MBEDTLS_MCUX_ELE_S400_API */
-
-#include "mbedtls/certs.h"
 #include "mbedtls/debug.h"
+#include "psa/crypto.h"
+#include "test/certs.h"
 
 /*******************************************************************************
  * Definitions
@@ -60,13 +55,6 @@ static phy_handle_t phyHandle;
 /*******************************************************************************
  * Code
  ******************************************************************************/
-
-static void my_debug(void *ctx, int level, const char *file, int line, const char *str)
-{
-    ((void)level);
-
-    PRINTF("\r\n%s, at line %d in file %s\n", str, line, file);
-}
 
 #if LWIP_IPV6
 static void print_ipv6_addresses(struct netif *netif)
@@ -103,8 +91,8 @@ void SysTick_Handler(void)
  */
 int main(void)
 {
+    psa_status_t status;
     struct netif netif;
-    int ret;
 #if LWIP_IPV4
     ip4_addr_t netif_ipaddr, netif_netmask, netif_gw;
 #endif /* LWIP_IPV4 */
@@ -121,7 +109,8 @@ int main(void)
 
     time_init();
 
-    CRYPTO_InitHardware();
+    status = psa_crypto_init();
+    LWIP_ASSERT("psa_crypto_init() has failed\r\n", status == PSA_SUCCESS);
 
     /* Set MAC address. */
 #ifndef configMAC_ADDR
