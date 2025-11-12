@@ -1,4 +1,4 @@
-/*
+ /*
     * Copyright 2025 NXP 
     *
     * SPDX-License-Identifier: BSD-3-Clause 
@@ -28,8 +28,8 @@
 #define ParametersLq 						(0.000218F)
 #define ParametersKe 						(0.05477461F)
 #define ParametersJ  						(0.00001F)
-#define ParametersIphNom 					(8F)
-#define ParametersUphNom 					(15F)
+#define ParametersIphNom 					(8.0F)
+#define ParametersUphNom 					(15.0F)
 #define ParametersNnom 						(4000.0F)
 #define ParametersImax 						(8.25F)
 #define ParametersUdcbMax 					(60.8F)
