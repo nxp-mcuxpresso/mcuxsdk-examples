@@ -26,6 +26,7 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsolePins();
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
+    BOARD_ConfigMPU();
 
     clk.clkId = BOARD_GetUartClkId(BOARD_DEBUG_CONSOLE_PORT);
     CLOCK_SetParent(&clk);

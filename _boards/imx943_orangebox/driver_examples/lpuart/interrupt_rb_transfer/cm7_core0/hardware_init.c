@@ -25,6 +25,7 @@ void BOARD_InitHardware(void)
     SystemPlatformInit();
     BOARD_InitLpuartPins(DEMO_LPUART_INSTANCE_IDX);
     BOARD_BootClockRUN();
+    BOARD_ConfigMPU();
     CLOCK_SetParent(&clk);
     CLOCK_SetRate(&clk);
     CLOCK_EnableClock(clk.clkId);
