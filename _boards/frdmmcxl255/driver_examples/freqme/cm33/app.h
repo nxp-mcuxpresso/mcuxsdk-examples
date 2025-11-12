@@ -11,7 +11,6 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define INPUTMUX                INPUTMUX0
 #define Freqme_IRQn             FREQME0_IRQn
 #define DEMO_FREQME             FREQME0
 #define FREQME_IRQHANDLER       FREQME0_IRQHandler
