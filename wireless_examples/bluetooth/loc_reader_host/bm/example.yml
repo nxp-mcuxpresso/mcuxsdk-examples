@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+loc_reader_host_bm:
+  section-type: application
+  contents:
+    meta_path: examples/wireless_examples/bluetooth/loc_reader_host/bm
+    project-root-path: boards/${board}/wireless_examples/bluetooth/loc_reader_host/bm/${multicore_foldername}
+    document:
+      name: loc_reader_host_bm
+      category: wireless_examples/bluetooth/loc_reader_host/bm
+      brief: The BLE Localization Reader application is a simple Channel Sounding based demonstration program
+        based on the MCUXpresso SDK. The application is meant to be used together with the ncp_loc_reader
+        application running on Core 1. The ncp_loc_reader takes care of the BLE connection to a localization
+        device and runs the Channel Sounding procedure. The loc_reader_host application takes the Channel Sounding
+        data from ncp_loc_reader and runs the localization algorithm based on it. It also implements shell functionality
+        for user interaction.
+  boards:
+    mcxw72evk@cm33_core0: []
+    frdmmcxw72@cm33_core0: []

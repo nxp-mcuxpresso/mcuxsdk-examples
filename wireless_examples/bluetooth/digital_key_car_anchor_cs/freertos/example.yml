@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+digital_key_car_anchor_cs_freertos:
+  section-type: application
+  contents:
+    meta_path: examples/wireless_examples/bluetooth/digital_key_car_anchor_cs/freertos
+    project-root-path: boards/${board}/wireless_examples/bluetooth/digital_key_car_anchor_cs/freertos/${multicore_foldername}
+    document:
+      name: digital_key_car_anchor_cs_freertos
+      category: wireless_examples/bluetooth/digital_key_car_anchor_cs/freertos
+      brief: The BLE Digital Key Car Anchor application is a simple demonstration
+        program based on the MCUXpresso SDK. The application implements the CCC Digital
+        Key functionality.
+  boards:
+    kw47evk@cm33_core0: []
+    kw47loc@cm33_core0: []
+    kw43evk:
+    - -armgcc@debug
+    - -armgcc@release

@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+loc_reader_freertos:
+  section-type: application
+  contents:
+    meta_path: examples/wireless_examples/bluetooth/loc_reader/freertos
+    project-root-path: boards/${board}/wireless_examples/bluetooth/loc_reader/freertos/${multicore_foldername}
+    document:
+      name: loc_reader_freertos
+      category: wireless_examples/bluetooth/loc_reader/freertos
+      brief: The BLE Localization Reader application is a simple demonstration program based
+        on the MCUXpresso SDK. The application implements a BLE peripheral device that
+        performs distance measurement using Channel Sounding.
+  boards:
+    kw47evk@cm33_core0: []
+    kw47loc@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    frdmmcxw72@cm33_core0: []
+    mcxw72loc@cm33_core0: []
+    kw43evk:
+    - -armgcc@debug
+    - -armgcc@release

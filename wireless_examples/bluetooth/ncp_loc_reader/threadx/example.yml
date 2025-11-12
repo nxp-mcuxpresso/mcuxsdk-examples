@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+ncp_loc_reader:
+  section-type: application
+  contents:
+    meta_path: examples/wireless_examples/bluetooth/ncp_loc_reader/threadx
+    project-root-path: boards/${board}/wireless_examples/bluetooth/ncp_loc_reader/threadx/${multicore_foldername}
+    document:
+      name: ncp_loc_reader
+      category: wireless_examples/bluetooth/ncp_loc_reader
+      brief: The BLE ncp loc reader application is a simple demonstration program for core 1
+        based on the MCUXpresso SDK. This application implements a BLE device that
+        performs distance measurement using Channel Sounding. The application is made to be used
+        together with the corresponding loc_reader_host application on core 0. The device handles
+        all BLE related operatins (connection, channel sounding, service discovery) and send the
+        local and remote Channel Sounding data to the Core 0 application for processing.
+  boards:
+    mcxw72evk@cm33_core1: []
+    frdmmcxw72@cm33_core1: []

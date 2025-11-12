@@ -14,17 +14,17 @@ mcux_add_configuration(
        -DNXP_SSSAPI\
        -DNXP_ELE200\
        -DHAL_FLASH_ROMAPI_DRIVER=1\
+       -DUSE_RTOS=1\
        -DTM_ENABLE_TIME_STAMP=1"
 )
 
 mcux_add_iar_configuration(
     CX "--diag_suppress Pa082,Pa050"
     LD "--config_def=gUseNVMLink_d=1\
-        --config_def=gEraseNVMLink_d=1\
-        --config_def=__ram_vector_table__=1\
-        --config_def=gUseProdInfoLegacyMode_d=1\
-        --config_def=__use_shmem__=1\
-        --config_def=gLowpowerPowerDownEnable_d=0"
+       --config_def=gEraseNVMLink_d=1\
+       --config_def=__ram_vector_table__=1\
+       --config_def=gUseProdInfoLegacyMode_d=1\
+       --config_def=__use_shmem__=1"
 )
 
 mcux_add_armgcc_configuration(
@@ -32,12 +32,7 @@ mcux_add_armgcc_configuration(
         -Xlinker --defsym=gEraseNVMLink_d=1\
         -Xlinker --defsym=__ram_vector_table__=1\
         -Xlinker --defsym=gUseProdInfoLegacyMode_d=1\
-        -Xlinker --defsym=__use_shmem__=1\
-	-Xlinker --defsym=gLowpowerPowerDownEnable_d=0\
-        -Xlinker --defsym=PROD_DATA_BASE_ADDR=0xfe000\
-        -Xlinker --defsym=__base_PROD_DATA=0xfe000"
+        -Xlinker --defsym=__use_shmem__=1"
 )
-
-
 
 mcux_add_macro(ECC_RAM_STCM8_INIT=1)

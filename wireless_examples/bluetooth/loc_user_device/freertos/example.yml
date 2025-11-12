@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+loc_user_device_freertos:
+  section-type: application
+  contents:
+    meta_path: examples/wireless_examples/bluetooth/loc_user_device/freertos
+    project-root-path: boards/${board}/wireless_examples/bluetooth/loc_user_device/freertos/${multicore_foldername}
+    document:
+      name: loc_user_device_freertos
+      category: wireless_examples/bluetooth/loc_user_device/freertos
+      brief: The BLE Localization User Device application is a simple demonstration program based
+        on the MCUXpresso SDK. The application implements a BLE central device that
+        performs distance measurement using Channel Sounding.
+  boards:
+    kw47evk@cm33_core0: []
+    kw47loc@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    frdmmcxw72@cm33_core0: []
+    mcxw72loc@cm33_core0: []
+    kw43evk:
+    - -armgcc@debug
+    - -armgcc@release

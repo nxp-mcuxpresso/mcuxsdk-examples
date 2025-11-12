@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+wireless_ranging_bm:
+  section-type: application
+  contents:
+    meta_path: examples/wireless_examples/bluetooth/wireless_ranging/bm
+    project-root-path: boards/${board}/wireless_examples/bluetooth/wireless_ranging/bm/${multicore_foldername}
+    document:
+      name: wireless_ranging_bm
+      category: wireless_examples/bluetooth/wireless_ranging/bm
+      brief: The Wireless Ranging application is used to perform secure and highly
+        accurate distance estimation (ranging) between two BLE devices. Wireless ranging
+        application can be used either by using a console or by using a python script
+        environment.
+  boards:
+    kw47evk@cm33_core0: []
+    kw47loc@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    frdmmcxw72@cm33_core0: []
+    mcxw72loc@cm33_core0: []
+    kw43evk:
+    - -armgcc@debug
+    - -armgcc@release
