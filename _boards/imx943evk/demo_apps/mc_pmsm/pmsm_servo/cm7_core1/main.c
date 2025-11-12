@@ -96,6 +96,9 @@ app_ver_t g_sAppIdFM = {
 
 ctrl_m1_mid_t g_sSpinMidSwitch;           /* Control Spin/MID switching */
 
+/* Encoder timeout fault counter */
+uint8_t ui8M1EncISRCheck = 0U;
+
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -163,6 +166,9 @@ void ENCODER_IRQHandler(void)
   /* clear BiSS EOT interrupt routed via XBAR */
   XBAR_ClearOutputStatusFlag(kXBAR1_OutputEdma4IpdReq76);
 #endif
+
+  /* Clear Encoder fault check flag */
+  ui8M1EncISRCheck = 0U; 
   
   /* Get position data from EnDat2.2, EnDat3 or BiSS encoder. */
   M1_MCDRV_ENCODER_GET(&g_sM1Enc);
@@ -189,8 +195,21 @@ void ENCODER_IRQHandler(void)
 RAM_FUNC_LIB
 void SINC1_CH0_IRQHandler(void)
 {
+  if(ui8M1EncISRCheck > 3U)
+  {
+    /* Set Encoder timeout fault */
+    FAULT_SET(g_sM1Drive.sFaultIdPending, FAULT_ENC_TIMEOUT);
+    
+    /* Run M1 state machine */
+    SM_StateMachineFast(&g_sM1Ctrl); 
+    
+    ui8M1EncISRCheck--;
+  }
+  
   /* Read SINC results and process data */
   M1_MCDRV_SINC_GET(&g_sM1Curr3phDcBus);
+  
+  ui8M1EncISRCheck++;
 }
 
 /*!

@@ -110,6 +110,10 @@ app_ver_t g_sAppIdFM = {
 
 ctrl_m1_mid_t g_sSpinMidSwitch;           /* Control Spin/MID switching */
 
+/* Encoder timeout fault counter */
+uint8_t ui8M1EncISRCheck = 0U;
+uint8_t ui8M2EncISRCheck = 0U;
+
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -172,22 +176,51 @@ int main(void)
 RAM_FUNC_LIB
 void SINC1_CH0_IRQHandler(void)
 {
+  if(ui8M1EncISRCheck > 3U)
+  {
+      /* Set Encoder timeout fault */
+      FAULT_SET(g_sM1Drive.sFaultIdPending, FAULT_ENC_TIMEOUT);
+      
+      /* Run M1 state machine */
+      SM_StateMachineFast(&g_sM1Ctrl); 
+      
+      ui8M1EncISRCheck--;
+  }
+  
   /* Read SINC results and process data */
   M1_MCDRV_SINC_GET(&g_sM1Curr3phDcBus);
+  
+  ui8M1EncISRCheck++;
 }
 
 /* SINC2 conversation interrupt handler */
 RAM_FUNC_LIB
 void SINC2_CH0_IRQHandler(void)
 {
+  if(ui8M2EncISRCheck > 3U)
+  {
+      /* Set Encoder timeout fault */
+      FAULT_SET(g_sM2Drive.sFaultIdPending, FAULT_ENC_TIMEOUT);
+      
+      /* Run M2 state machine */
+      SM_StateMachineFast(&g_sM2Ctrl); 
+      
+      ui8M2EncISRCheck--;
+  }
+  
   /* Read SINC results and process data */
   M2_MCDRV_SINC_GET(&g_sM2Curr3phDcBus);
+  
+  ui8M2EncISRCheck++;
 }
 
 /* EnDat2.2 interrupt handler for motor connector 1 */
 RAM_FUNC_LIB
 void M1_ENDAT2P2_IRQHandler(void)
-{   
+{
+  /* Clear Encoder fault check flag */
+  ui8M1EncISRCheck = 0U;  
+
   /* get position from EnDat2.2 */
   M1_MCDRV_ENCODER_GET(&g_sM1Enc);
   
@@ -203,7 +236,10 @@ void M1_ENDAT2P2_IRQHandler(void)
 /* EnDat2.2 interrupt handler for motor connector 2 */
 RAM_FUNC_LIB
 void M2_ENDAT2P2_IRQHandler(void)
-{   
+{
+  /* Clear Encoder fault check flag */
+  ui8M2EncISRCheck = 0U;  
+  
   /* get position from EnDat2.2 */
   M2_MCDRV_ENCODER_GET(&g_sM2Enc);
   
