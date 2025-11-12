@@ -118,7 +118,7 @@ LR_m_text m_interrupts_start m_text_start+m_text_size-m_interrupts_start {   ; l
   }
 
   RW_m_dtcm m_dtcm_start m_dtcm_size {
-    * (RamFunction)
+    * (.ramfunc)
     * (decode_buf)
   }
 

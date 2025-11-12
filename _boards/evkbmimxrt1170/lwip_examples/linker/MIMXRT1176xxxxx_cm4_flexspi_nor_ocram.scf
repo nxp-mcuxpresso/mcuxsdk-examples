@@ -102,7 +102,7 @@ LR_m_text m_interrupts_start m_text_start+m_text_size-m_interrupts_start {   ; l
 #endif
   RW_m_data2 m_data2_start m_data2_size-Stack_Size-Heap_Size { ; RW data
     .ANY (+RW +ZI)
-    * (RamFunction)
+    * (.ramfunc)
   }
   ARM_LIB_HEAP +0 EMPTY Heap_Size {    ; Heap region growing up
   }

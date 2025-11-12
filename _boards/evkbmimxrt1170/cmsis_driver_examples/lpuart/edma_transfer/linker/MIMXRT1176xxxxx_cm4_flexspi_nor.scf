@@ -112,7 +112,7 @@ LR_m_text m_interrupts_start m_text_start+m_text_size-m_interrupts_start {   ; l
     fsl_edma.o (+RO +RW +ZI)
     fsl_dmamux.o (+RO +RW +ZI)
     fsl_lpuart_edma.o (+RO +RW +ZI)
-    * (RamFunction)
+    * (.ramfunc)
     * (DataQuickAccess)
   }
 #if (!defined(__heap_noncacheable__))

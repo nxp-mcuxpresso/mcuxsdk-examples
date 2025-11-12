@@ -153,7 +153,7 @@ LR_m_interrupts m_interrupts_start m_text_start+m_text_size-m_interrupts_start {
     lc3_ndsp_tables.o (+RO +RW +ZI)
     lc3_ndsp_fft.o (+RO +RW +ZI)
 
-    * (RamFunction)
+    * (.ramfunc)
     * (CodeQuickAccess)
     * (DataQuickAccess)
     .ANY (+RW +ZI)

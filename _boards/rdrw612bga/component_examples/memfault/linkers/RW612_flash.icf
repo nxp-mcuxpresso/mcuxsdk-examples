@@ -87,7 +87,6 @@ initialize by copy {
   section .textrw,
   section CodeQuickAccess,
   section DataQuickAccess,
-  section RamFunction,
 };
 
 do not initialize  {

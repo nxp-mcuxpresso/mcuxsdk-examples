@@ -95,7 +95,7 @@ LR_m_interrupts m_boot_interrupts_start m_interrupts_size+m_text_size {
   RW_m_data m_data_start ALIGN 4 m_data_size-Stack_Size { ; RW data
 #endif
     .ANY (+RW +ZI)
-    * (RamFunction)
+    * (.ramfunc)
     * (CodeQuickAccess)
     * (DataQuickAccess)
   }

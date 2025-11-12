@@ -94,7 +94,7 @@ LR_m_text m_interrupts_start m_text_start+m_text_size-m_interrupts_start {   ; l
     .ANY (+RO)
   }
   RW_m_data2 m_data2_start m_data2_size {
-    * (RamFunction)
+    * (.ramfunc)
   }
 #if (defined(__ram_vector_table__))
   VECTOR_RAM m_interrupts_ram_start EMPTY m_interrupts_ram_size {

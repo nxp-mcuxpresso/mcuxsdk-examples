@@ -143,7 +143,7 @@ LR_m_text m_interrupts_start m_text_start+m_text_size-m_interrupts_start {   ; l
 #endif
   RW_m_data m_data2_start m_data2_size { ; RW data
     .ANY (+RW +ZI)
-    * (RamFunction)
+    * (.ramfunc)
     /* Necessary to run flash routines from SRAM */
     fsl_adapter_flexspi_nor_flash.o (+RO +RW +ZI)
     fsl_flexspi.o (+RO +RW +ZI)

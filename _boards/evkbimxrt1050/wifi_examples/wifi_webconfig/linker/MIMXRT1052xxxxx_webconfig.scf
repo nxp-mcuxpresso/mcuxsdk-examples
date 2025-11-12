@@ -81,7 +81,7 @@ LR_m_text m_flash_config_start m_text_start+m_text_size-m_flash_config_start {  
   }
   RW_m_data m_data_start m_data_size-Stack_Size-Heap_Size { ; RW data
     .ANY (+RW +ZI)
-    * (RamFunction)
+    * (.ramfunc)
     /* Necessary to run flash routines from SRAM */
     mflash_drv.o (+RO +RW +ZI)
     fsl_flexspi.o (+RO +RW +ZI)

@@ -140,7 +140,7 @@ LR_m_text m_interrupts_start m_text_start+m_text_size-m_interrupts_start {   ; l
     bt_db_gen.o (+RW +ZI)
     sdio.o (+RW +ZI)
     mlan_sdio.o (+RW +ZI)
-    * (RamFunction)
+    * (.ramfunc)
     * (DataQuickAccess)
   }
   RW_m_ncache +0 EMPTY 0 {
@@ -157,7 +157,7 @@ LR_m_text m_interrupts_start m_text_start+m_text_size-m_interrupts_start {   ; l
   }
   RW_m_ram_text m_qacode_start m_qacode_size { ;
     * (CodeQuickAccess)
-    * (RamFunction)
+    * (.ramfunc)
     /* Necessary to run flash routines from SRAM */
     fsl_adapter_flexspi_nor_flash.o (+RO +RW +ZI)
     fsl_flexspi.o (+RO +RW +ZI)

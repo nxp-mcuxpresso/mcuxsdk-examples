@@ -74,7 +74,7 @@ LR_m_interrupts m_interrupts_start m_interrupts_size+m_text_size+m_veneer_table_
 
   RW_m_data m_data_start m_data_size-Stack_Size-Heap_Size { ; RW data
     .ANY (+RW +ZI)
-    * (RamFunction)
+    * (.ramfunc)
     * (CodeQuickAccess)
     * (DataQuickAccess)
   }
