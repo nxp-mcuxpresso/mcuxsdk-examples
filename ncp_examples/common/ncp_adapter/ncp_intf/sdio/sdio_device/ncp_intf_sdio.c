@@ -410,8 +410,20 @@ static int ncp_sdio_pm_exit(uint8_t pm_state)
         SDU_FN0_CARD->CARD_CTRL5 &= (~SDU_FN0_CARD_CARD_CTRL5_CMD52_RES_VALID_MODE_MASK);
         SDU_FN_CARD->CARD_INTMASK0 &= (~SDU_FN_CARD_CARD_INTSTATUS0_HOST_PWR_UP_INT_MASK);
     }
-    else if(pm_state == NCP_PM_STATE_PM3)
+
+    if (pm_state == NCP_PM_STATE_PM3)
     {
+        uint16_t fw_ready = 0xFFFF;
+        ret = SDU_GetFwReady(&fw_ready);
+        if ((ret == kStatus_Success) && (fw_ready != 0))
+        {
+            /* The registered should be cleared to 0 if device really power off SDU.
+             * If not 0, then consider SDU is not powered off.
+             * Then skip the next flow SDU re-init.*/
+            SDU_ExitPowerDownLite();
+            return (int)NCP_PM_STATUS_SUCCESS;
+        }
+
         ret = SDU_ExitPowerDown();
         if (ret != kStatus_Success)
         {

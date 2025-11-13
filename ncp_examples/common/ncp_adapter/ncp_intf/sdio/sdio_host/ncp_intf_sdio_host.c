@@ -153,6 +153,8 @@
 #define CMD_PORT_DNLD_INT_MASK (0x1U << 7)
 /** Enable Host interrupt mask */
 #define HIM_ENABLE (UP_LD_HOST_INT_MASK | DN_LD_HOST_INT_MASK | CMD_PORT_UPLD_INT_MASK | CMD_PORT_DNLD_INT_MASK)
+/** Disable Host interrupt mask */
+#define HIM_DISABLE 0xff
 
 /* Card Control Registers : Command port read length 0 */
 #define CMD_RD_LEN_0 0xC0
@@ -529,6 +531,19 @@ retry:
     return true;
 }
 
+static void sdhost_disable_host_int_mask()
+{
+    uint32_t host_int_mask = 0;
+    uint32_t resp;
+
+    (void)sdio_drv_creg_read(HOST_INT_MASK_REG, 1, &host_int_mask);
+
+    /* Update with the mask and write back to the register */
+    host_int_mask &= ~HIM_DISABLE;
+
+    (void)sdio_drv_creg_write(HOST_INT_MASK_REG, 1, host_int_mask, &resp);
+}
+
 void sdhost_core_wait_event(osa_event_flags_t flagsToWait)
 {
     uint32_t Events;
@@ -653,7 +668,7 @@ void sdhost_interrupt(void)
 
     if (!ret)
     {
-        ncp_adap_e("%s: sdio_drv_read fail");
+        ncp_adap_d("%s: sdio_drv_read fail", __FUNCTION__);
         return;
     }
 
@@ -1244,6 +1259,7 @@ static ncp_status_t ncp_sdhost_CardInit(void)
 
     ret = sdio_post_init();
     ncp_adap_d("sdio_post_init done");
+    SDMMCHOST_EnableCardInt(g_sdio_card.host, true);
 
     if (sdio_set_host_status(SDIO_HOST_INIT_DONE, 10) != true)
     {
@@ -1259,6 +1275,8 @@ static ncp_status_t ncp_sdhost_CardInit(void)
 static ncp_status_t ncp_sdhost_CardDeinit(void)
 {
     sdhost_ready = false;
+    SDMMCHOST_EnableCardInt(g_sdio_card.host, false);
+    sdhost_disable_host_int_mask();
     SDIO_Deinit(&g_sdio_card);
 
     return NCP_STATUS_SUCCESS;
