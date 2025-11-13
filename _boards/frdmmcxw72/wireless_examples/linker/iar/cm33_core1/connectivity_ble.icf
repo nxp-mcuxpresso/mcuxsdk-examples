@@ -121,6 +121,7 @@ define symbol m_data1_end                         = m_dmem_end;
                           |               | m_sqram_debug_start
                     - - - +---------------+ - - - - - - - -
                           |               | m_shared_ram_start
+**************************************************************************************************/
 
 /* Do not change shall be aligned with other core firmware */
 define exported symbol m_shared_ram_start       = 0xB0000000;

@@ -246,6 +246,7 @@ Default address values are indicated between brackets they can be overridden if 
                     - - - +---------------+ - - - - - - - -
               0x20000000  |               | m_ram1_start
 
+**************************************************************************************************/
 
 /********************************************** RAM **********************************************/
 
@@ -442,6 +443,7 @@ if(gUseOtSettingsStorage_d) {
                           |               | m_sqram_debug_start
                     - - - +---------------+ - - - - - - - -
                           |               | m_shared_ram_start
+**************************************************************************************************/
 
 /* Do not change shall be aligned with other core firmware */
 define symbol m_shared_ram_start                = 0x489C0000;

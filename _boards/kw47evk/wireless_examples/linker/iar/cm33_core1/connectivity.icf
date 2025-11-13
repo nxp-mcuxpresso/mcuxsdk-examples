@@ -96,6 +96,7 @@ define symbol smu_and_dmem_size                = 0x00028000;
                           |               | m_sqram_debug_start
                     - - - +---------------+ - - - - - - - -
                           |               | m_shared_ram_start
+**************************************************************************************************/
 
 /* Do not change shall be aligned with other core firmware */
 define exported symbol m_shared_ram_start       = 0xB0000000;
