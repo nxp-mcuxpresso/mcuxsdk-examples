@@ -257,6 +257,15 @@ void BOARD_ConfigMPU(void)
                           ARM_MPU_RLAR(nonCacheStart + nonCacheSize - 1, 1U));
     }
 
+#if defined(CACHE_MODE_WRITE_THROUGH)
+    /* Change the default cache attribute for SRAM to non-shareable, read/write, any privileged, executable. Attr 2 (write through). */
+    if (nonCacheStart > 0x20000000U)
+    {
+        ARM_MPU_SetRegion(3U, ARM_MPU_RBAR(0x20000000U, ARM_MPU_SH_NON, 0U, 1U, 0U), ARM_MPU_RLAR((nonCacheStart - 1U), 2U));
+    }
+    ARM_MPU_SetRegion(4U, ARM_MPU_RBAR(nonCacheStart + nonCacheSize, ARM_MPU_SH_NON, 0U, 1U, 0U), ARM_MPU_RLAR(0x3FFFFFFFU, 2U));
+#endif
+
     /*
      * Enable MPU and HFNMIENA feature
      * HFNMIENA ensures the core uses MPU configuration when in hard fault, NMI, and FAULTMASK handlers,

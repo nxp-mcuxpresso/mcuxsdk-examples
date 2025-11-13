@@ -1,6 +1,9 @@
 # Board Support Files
 
 ## board
+### [25.12.00]
+- Improvement
+  - Updated BOARD_ConfigMPU to support configuring SRAM as write-through by using CACHE_MODE_WRITE_THROUGH.
 ### [25.09.00]
 - Improvement
   - Added BOARD_SetDeepSleepPinConfig and BOARD_RestoreDeepSleepPinConfig APIs.
