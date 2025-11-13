@@ -2,7 +2,7 @@ Hardware requirements
 ===================
 - USB-C cable
 - Network cable RJ45 standard
-- FRDM-MCXE247 board
+- FRDM-MCXE31B board
 - Personal Computer
 
 Board settings
