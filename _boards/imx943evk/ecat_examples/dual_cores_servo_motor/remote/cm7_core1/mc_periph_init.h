@@ -130,8 +130,8 @@ typedef struct _clock_setup
 #define M1_MCDRV_ENDAT2P2_GET(par) (MCDRV_Endat2p2DataRead(par))
 
 /* Common position/speed sensor defines */
-#define M1_MCDRV_ENC_GET_DATA_FAST(par) (MCDRV_EnDatGetPositionFoc(par))
-#define M1_MCDRV_ENC_GET_DATA_SLOW(par) (MCDRV_EnDatGetPositionFullAndSpeed(par))
+#define M1_MCDRV_ENC_GET_DATA_FAST(par) (MCDRV_EnDat2p2GetPositionFoc(par))
+#define M1_MCDRV_ENC_GET_DATA_SLOW(par) (MCDRV_EnDat2p2GetPositionFullAndSpeed(par))
 #define M1_MCDRV_ENC_CLEAR(par) (MCDRV_Endat2p2Clear(par))
 #define M1_MCDRV_ENC_SET_OFFSET(par) (MCDRV_Endat2p2SetOffset(par))
 #define M1_MCDRV_ENC_SET_DIRECTION(par)
@@ -236,8 +236,8 @@ typedef struct _clock_setup
 #define M2_MCDRV_ENDAT2P2_GET(par)      (MCDRV_Endat2p2DataRead(par))
      
 /* Common position/speed sensor defines */
-#define M2_MCDRV_ENC_GET_DATA_FAST(par) (MCDRV_EnDatGetPositionFoc(par))
-#define M2_MCDRV_ENC_GET_DATA_SLOW(par) (MCDRV_EnDatGetPositionFullAndSpeed(par))
+#define M2_MCDRV_ENC_GET_DATA_FAST(par) (MCDRV_EnDat2p2GetPositionFoc(par))
+#define M2_MCDRV_ENC_GET_DATA_SLOW(par) (MCDRV_EnDat2p2GetPositionFullAndSpeed(par))
 #define M2_MCDRV_ENC_CLEAR(par)         (MCDRV_Endat2p2Clear(par))
 #define M2_MCDRV_ENC_SET_OFFSET(par)    (MCDRV_Endat2p2SetOffset(par)) 
 #define M2_MCDRV_ENC_SET_DIRECTION(par)
