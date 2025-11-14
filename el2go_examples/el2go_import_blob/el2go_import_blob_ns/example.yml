@@ -1,3 +1,6 @@
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
 # yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
 el2go_import_blob_ns:
   use_sysbuild: true

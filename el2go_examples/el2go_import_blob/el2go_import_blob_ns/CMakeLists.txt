@@ -1,3 +1,6 @@
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
 cmake_minimum_required(VERSION 3.30.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
@@ -12,21 +15,30 @@ mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_import_blob/*.h
             middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_import_blob/*.c
+            middleware/nxp_iot_agent/port/el2go_mbedtls_user_config.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_import_blob
+             middleware/nxp_iot_agent/port
 )
 
 mcux_add_macro(
-    CC "PRINTF_ADVANCED_ENABLE=1"
+    CC "MBEDTLS_USER_CONFIG_FILE=\\\"el2go_mbedtls_user_config.h\\\"\
+        PRINTF_ADVANCED_ENABLE=1"
 )
 
 mcux_add_iar_configuration(
-    CC "--diag_suppress=Pe546"
+    CC "--no_inline\
+        --diag_suppress=Pa084,Pe188,Pe546"
 )
 
+mcux_add_mdk_configuration(
+    CC "-Wno-typedef-redefinition -Wno-parentheses-equality"
+    LD "--library_type=microlib"
+)
+ 
 # TF-M linker file preprocessing
 mcux_add_custom_command(
     TOOLCHAINS armgcc

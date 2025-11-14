@@ -11,6 +11,12 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 include(${SdkRootDirPath}/${board_root}/${board}/el2go_examples/reconfig.cmake OPTIONAL)
 include(${SdkRootDirPath}/${board_root}/${board}/el2go_examples/el2go_import_blob/el2go_import_blob/reconfig.cmake OPTIONAL)
 
+#-------- add mbedtls configs -----------
+mcux_remove_macro("-DMBEDTLS_CONFIG_FILE=\\\"mcux_mbedtls_psa_crypto_config.h\\\"")
+mcux_add_macro(
+    "-DMBEDTLS_CONFIG_FILE=\\\"mcux_mbedtls_config.h\\\""
+)
+
 # ------- littlefs related configs --------
 mcux_add_configuration(
     CC "-DLFS_NO_INTRINSICS=1\
@@ -41,7 +47,12 @@ mcux_add_macro(
 )
 
 mcux_add_iar_configuration(
-    CC "--diag_suppress=Pe546,Pe111,Pe177"
+    CC "--diag_suppress=Pe546,Pe111,Pe177,Pa084,Pe188"
+)
+
+mcux_add_mdk_configuration(
+    CC "-Wno-typedef-redefinition -Wno-parentheses-equality"
+    LD "--library_type=microlib"
 )
 
 mcux_add_linker_symbol(
