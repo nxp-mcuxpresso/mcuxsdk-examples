@@ -193,6 +193,7 @@ static void BOARD_ExitLowPowerCb(void)
     PWR_DBG_LOG("%d", nb++);
 #endif
 
+#if !defined(gFro192mDisableTrim_d) || (gFro192mDisableTrim_d == 0)
 #if defined(BOARD_UART_CLKSRC) && (BOARD_UART_CLKSRC == BOARD_UART_CLKSRC_FRO192M)
     /* UART over FRO-192M is not ready for usage after deep sleep exit.
      * FIRC is trimmed by the SOSC clock, we should wait until FIRC
@@ -201,6 +202,7 @@ static void BOARD_ExitLowPowerCb(void)
     while (!CLOCK_IsFIRCAutoTrimLocked())
     {
     }
+#endif
 #endif
     return;
 }
