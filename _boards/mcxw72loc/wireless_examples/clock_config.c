@@ -140,6 +140,7 @@ sources:
 /*******************************************************************************
  * Variables for BOARD_BootClockRUN configuration
  ******************************************************************************/
+#if !defined(gFro192mDisableTrim_d) || (gFro192mDisableTrim_d == 0)
 static const scg_firc_trim_config_t FircTrimConfig_BOARD_BootClockRUN =
 {
     .trimMode = kSCG_FircTrimUpdate,              /* FIRC trim is enabled and trim value update is enabled */
@@ -148,6 +149,7 @@ static const scg_firc_trim_config_t FircTrimConfig_BOARD_BootClockRUN =
     .trimCoar = 0U,                               /* Trim value, see Reference Manual for more information */
     .trimFine = 0U,                               /* Trim value, see Reference Manual for more information */
 };
+#endif
 const scg_sys_clk_config_t g_sysClkConfig_BOARD_BootClockRUN =
 {
     .divSlow = (uint32_t)kSCG_SysClkDivBy3,       /* Slow Clock Divider: divided by 3 */
@@ -169,7 +171,11 @@ const scg_firc_config_t g_scgFircConfig_BOARD_BootClockRUN =
 {
     .enableMode = kSCG_FircEnable,                /* Fast IRC is enabled */
     .range = kSCG_FircRange96M,                   /* 96 Mhz FIRC clock selected */
+#if !defined(gFro192mDisableTrim_d) || (gFro192mDisableTrim_d == 0)
     .trimConfig = &FircTrimConfig_BOARD_BootClockRUN,
+#else
+    .trimConfig = NULL,
+#endif
 };
 
 /*******************************************************************************
@@ -260,6 +266,7 @@ sources:
 /*******************************************************************************
  * Variables for BOARD_BootClockHSRUN configuration
  ******************************************************************************/
+#if !defined(gFro192mDisableTrim_d) || (gFro192mDisableTrim_d == 0)
 static const scg_firc_trim_config_t FircTrimConfig_BOARD_BootClockHSRUN =
 {
     .trimMode = kSCG_FircTrimUpdate,              /* FIRC trim is enabled and trim value update is enabled */
@@ -268,6 +275,7 @@ static const scg_firc_trim_config_t FircTrimConfig_BOARD_BootClockHSRUN =
     .trimCoar = 0U,                               /* Trim value, see Reference Manual for more information */
     .trimFine = 0U,                               /* Trim value, see Reference Manual for more information */
 };
+#endif
 const scg_sys_clk_config_t g_sysClkConfig_BOARD_BootClockHSRUN =
 {
     .divSlow = (uint32_t)kSCG_SysClkDivBy4,       /* Slow Clock Divider: divided by 4 */
@@ -289,7 +297,11 @@ const scg_firc_config_t g_scgFircConfig_BOARD_BootClockHSRUN =
 {
     .enableMode = kSCG_FircEnable,                /* Fast IRC is enabled */
     .range = kSCG_FircRange96M,                   /* 96 Mhz FIRC clock selected */
+#if !defined(gFro192mDisableTrim_d) || (gFro192mDisableTrim_d == 0)
     .trimConfig = &FircTrimConfig_BOARD_BootClockHSRUN,
+#else
+    .trimConfig = NULL,
+#endif
 };
 
 /*******************************************************************************
