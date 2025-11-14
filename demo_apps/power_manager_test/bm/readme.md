@@ -28,3 +28,4 @@ The demo shows how the various power mode switch to each other based on power ma
 - [FRDM-MCXA266](../../../_boards/frdmmcxa266/demo_apps/power_manager_test/bm/example_board_readme.md)
 - [FRDM-MCXA366](../../../_boards/frdmmcxa366/demo_apps/power_manager_test/bm/example_board_readme.md)
 - [FRDM-MCXW72](../../../_boards/frdmmcxw72/demo_apps/power_manager_test/bm/example_board_readme.md)
+- [FRDM-MCXW23](../../../_boards/frdmmcxw23/demo_apps/power_manager_test/bm/example_board_readme.md)
