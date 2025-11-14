@@ -886,6 +886,16 @@ void BOARD_ConfigMPU(void)
        ++bitPos;
     }
 
+    /* Region n setting: Memory with Normal type, shareable, non-cacheable for pdm(micfil) buffer(0x81000000-0x810FFFFF) between mcu(FreeRTOS) and mpu(Linux) */
+    MPU->RBAR = ARM_MPU_RBAR(regionIdx, 0x81000000);
+    MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 1, 1, 0, 0, 0, ARM_MPU_REGION_SIZE_1MB);
+    regionIdx++;
+
+    /* Region n setting: Memory with Normal type, shareable, non-cacheable for audio buffer(0xC0000000-0xCFFFFFFF) between mcu(FreeRTOS) and mpu(Linux) */
+    MPU->RBAR = ARM_MPU_RBAR(regionIdx, 0xC0000000);
+    MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 1, 1, 0, 0, 0, ARM_MPU_REGION_SIZE_256MB);
+    regionIdx++;
+
     /* Enable MPU */
     ARM_MPU_Enable(MPU_CTRL_PRIVDEFENA_Msk | MPU_CTRL_HFNMIENA_Msk);
 
