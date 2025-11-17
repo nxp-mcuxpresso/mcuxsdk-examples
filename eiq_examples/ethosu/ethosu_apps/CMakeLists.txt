@@ -17,6 +17,14 @@ mcux_add_source(
           softmax_model.hpp
   )
 
+mcux_add_armgcc_configuration(
+    CX "-Wno-maybe-uninitialized\
+        -Wno-deprecated-declarations"
+)
+mcux_add_armgcc_configuration(
+    CC "-Wno-unused-variable"
+)
+
 include(${SdkRootDirPath}/CMakeLists.txt)
 include(${SdkRootDirPath}/${board_root}/${board}/eiq_examples/ethosu/ethosu_apps/reconfig.cmake OPTIONAL)
 

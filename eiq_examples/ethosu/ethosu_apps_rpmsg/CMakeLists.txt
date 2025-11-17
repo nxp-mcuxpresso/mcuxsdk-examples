@@ -13,6 +13,13 @@ mcux_add_source(
           ethosu_core_interface.h
   )
 
+mcux_add_armgcc_configuration(
+    CX "-Wno-maybe-uninitialized\
+        -Wno-deprecated-declarations"
+)
+mcux_add_armgcc_configuration(
+    CC "-Wno-unused-variable"
+)
 
 mcux_add_linker_symbol(
     SYMBOLS "__use_shmem__=1 \
