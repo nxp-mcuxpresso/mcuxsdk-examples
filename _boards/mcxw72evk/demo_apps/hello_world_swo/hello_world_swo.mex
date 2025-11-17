@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding= "UTF-8" ?>
 <configuration name="" xsi:schemaLocation="http://mcuxpresso.nxp.com/XSD/mex_configuration_11 http://mcuxpresso.nxp.com/XSD/mex_configuration_11.xsd" uuid="ac5fcd54-c9cb-468f-b278-19e93abf3701" version="11" xmlns="http://mcuxpresso.nxp.com/XSD/mex_configuration_11" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
    <common>
-      <processor>KW45B41Z83xxxA</processor>
-      <package>KW45B41Z83AFTA</package>
+      <processor>MCXW727CxxxA</processor>
+      <package>MCXW727CMFTA</package>
       <mcu_data>ksdk2_0</mcu_data>
-      <cores selected="cm33">
-         <core name="Cortex-M33" id="cm33" description=""/>
+      <cores selected="cm33_core0">
+         <core name="Cortex-M33 (Core #0)" id="cm33_core0" description=""/>
       </cores>
       <description></description>
    </common>
@@ -29,7 +29,7 @@
                <description>Configures pin routing and optionally pin electrical features.</description>
                <options>
                   <callFromInitBoot>true</callFromInitBoot>
-                  <coreID>cm33</coreID>
+                  <coreID>cm33_core0</coreID>
                   <enableClock>true</enableClock>
                </options>
                <dependencies>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding= "UTF-8" ?>
-<configuration name="KW47B42ZB7xxxA" xsi:schemaLocation="http://mcuxpresso.nxp.com/XSD/mex_configuration_17 http://mcuxpresso.nxp.com/XSD/mex_configuration_17.xsd" uuid="0d38f017-ca0a-4609-aa87-404199e887b4" version="17" xmlns="http://mcuxpresso.nxp.com/XSD/mex_configuration_17" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<configuration name="" xsi:schemaLocation="http://mcuxpresso.nxp.com/XSD/mex_configuration_17 http://mcuxpresso.nxp.com/XSD/mex_configuration_17.xsd" uuid="0d38f017-ca0a-4609-aa87-404199e887b4" version="17" xmlns="http://mcuxpresso.nxp.com/XSD/mex_configuration_17" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
    <common>
-      <processor>KW47B42ZB7xxxA</processor>
-      <package>KW47B42ZB7AFTA</package>
+      <processor>MCXW727CxxxA</processor>
+      <package>MCXW727CMFTA</package>
       <mcu_data>ksdk2_0</mcu_data>
       <cores selected="cm33_core0">
          <core name="Cortex-M33 (Core #0)" id="cm33_core0" description=""/>
