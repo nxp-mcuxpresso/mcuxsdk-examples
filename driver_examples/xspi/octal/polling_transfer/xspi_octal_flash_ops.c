@@ -541,7 +541,9 @@ void xspi_nor_flash_init(XSPI_Type *base)
     /*Get XSPI default settings and configure the xspi. */
     XSPI_GetDefaultConfig(&config);
 
-    config.byteOrder                                       = kXSPI_64BitLE;
+#if (defined(FSL_FEATURE_XSPI_HAS_END_CFG) && FSL_FEATURE_XSPI_HAS_END_CFG)
+    config.byteOrder = kXSPI_64BitLE;
+#endif
     config.ptrAhbAccessConfig->ahbErrorPayload.highPayload = 0x5A5A5A5AUL;
     config.ptrAhbAccessConfig->ahbErrorPayload.lowPayload  = 0x5A5A5A5AUL;
     config.ptrAhbAccessConfig->ptrAhbWriteConfig         = NULL; /* This demo does not demonstrate AHB write feature.*/
@@ -549,8 +551,15 @@ void xspi_nor_flash_init(XSPI_Type *base)
     config.ptrAhbAccessConfig->enableAHBBufferWriteFlush = true;
     config.ptrAhbAccessConfig->enableAHBPrefetch         = true;
 
-    config.ptrIpAccessConfig->ptrSfpFradConfig               = NULL; /* This demo does not demonstrate SFP feature.*/
-    config.ptrIpAccessConfig->ptrSfpMdadConfig               = NULL;
+#if defined(ENABLE_SFP_CONFIG) && (ENABLE_SFP_CONFIG)
+    extern xspi_sfp_mdad_config_t *pSfpMdadConfig;
+    extern xspi_sfp_frad_config_t *pSfpFradConfig;
+    config.ptrIpAccessConfig->ptrSfpFradConfig = pSfpFradConfig;
+    config.ptrIpAccessConfig->ptrSfpMdadConfig = pSfpMdadConfig;
+#else
+    config.ptrIpAccessConfig->ptrSfpFradConfig = NULL; /* This demo does not demonstrate SFP feature.*/
+    config.ptrIpAccessConfig->ptrSfpMdadConfig = NULL;
+#endif
     config.ptrIpAccessConfig->ipAccessTimeoutValue           = 0xFFFFFFFFUL;
     config.ptrIpAccessConfig->sfpArbitrationLockTimeoutValue = 0xFFFFFFUL;
     XSPI_Init(base, &config);
