@@ -1,0 +1,18 @@
+#
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+iar:
+  shared-workspace: tfm_regression
+  sharing-workspace:
+  - ../../tfm_regression_ns/iar/tfm_regression_ns
+  - ../../tfm_s_crypto_clients/iar/tfm_s_crypto_clients
+  - ../../tfm_s_reg_suites/iar/tfm_s_reg_suites
+  config:
+    __common__:
+      download-extra-image:
+      - path: "../../tfm_regression_ns/iar/tfm_regression_ns.out"
+        item: 1
+        offset: 0
+        debug_info_only: false

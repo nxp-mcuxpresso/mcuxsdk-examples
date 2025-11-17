@@ -1,0 +1,17 @@
+#
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+iar:
+  shared-workspace: tfm_psatest
+  sharing-workspace:
+  - ../../tfm_psatest_ns/iar/tfm_psatest_ns
+  - ../../tfm_s_crypto_clients/iar/tfm_s_crypto_clients
+  config:
+    __common__:
+      download-extra-image:
+      - path: "../../tfm_psatest_ns/iar/tfm_psatest_ns.out"
+        item: 1
+        offset: 0
+        debug_info_only: false
