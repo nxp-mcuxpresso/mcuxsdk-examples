@@ -43,6 +43,10 @@ mcux_add_armgcc_configuration(
   CX "-O3"
 )
 
+mcux_add_armgcc_configuration(
+    CX "-Wno-sign-compare"
+)
+
 mcux_add_macro(
   CC "-DSDK_DEBUGCONSOLE_UART\
       -DARM_MATH_CM33\
