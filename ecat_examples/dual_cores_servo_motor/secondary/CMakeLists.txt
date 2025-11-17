@@ -85,4 +85,11 @@ mcux_remove_mdk_configuration(
     CX "-Werror"
 )
 
-mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
+mcux_convert_binary(
+	BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin
+)
+
+mcux_convert_binary(
+    TOOLCHAINS armgcc mdk iar
+    BINARY ${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}/core1_image.bin
+)

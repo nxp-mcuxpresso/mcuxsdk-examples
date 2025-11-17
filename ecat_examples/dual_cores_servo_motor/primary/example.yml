@@ -1,4 +1,5 @@
 dual_cores_ecat_servo_motor_primary_core:
+  use_sysbuild: true
   section-type: application
   contents:
     meta_path: examples/ecat_examples/dual_cores_servo_motor/primary
@@ -15,5 +16,24 @@ dual_cores_ecat_servo_motor_primary_core:
     imx943evk@cm33_core1:
     - +armgcc@debug
     - +armgcc@release
-    - -iar@debug
-    - -iar@release
+    - +iar@debug
+    - +iar@release
+    frdmimxrt1186@cm33:
+    - +armgcc@flexspi_nor_hyperram_debug
+    - +armgcc@flexspi_nor_hyperram_release
+    - +iar@flexspi_nor_hyperram_debug
+    - +iar@flexspi_nor_hyperram_release
+    - +mdk@flexspi_nor_hyperram_debug
+    - +mdk@flexspi_nor_hyperram_release
+    - -armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release
+    - +mdk@debug
+    - +mdk@release
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
