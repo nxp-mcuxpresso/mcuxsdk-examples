@@ -45,12 +45,12 @@ Below setting is for kconfig, you can fix below settings in dpu/figure_display/c
 For default MIPI DSI panel, you do not need to change anything.
 For MIPI2HDMI card(1920*1080):
 CONFIG_APP_DISPLAY_EXTERNAL_CONVERTOR=y
-CONFIG_MCUX_PRJSEG_module.board.display_support.MIPI2HDMI=y
+CONFIG_MIPI2HDMI=y
 
 When package is used
 ----------------
 Below setting is for mcux_config.h.
-Setting DEMO_PANEL to MIPI2HDMI to use MIPI2HDMI card(1920*1080), you need to set APP_DISPLAY_EXTERNAL_CONVERTOR to 1.
+Setting DEMO_PANEL to 14 to use MIPI2HDMI card(1920*1080), you need to set APP_DISPLAY_EXTERNAL_CONVERTOR to 1.
 For default MIPI DSI panel, you do not need to change anything.
 
 Running the demo
