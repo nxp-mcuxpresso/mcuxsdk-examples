@@ -9,6 +9,22 @@ config MCUX_PRJSEG_module.board.display_support
     select MCUX_COMPONENT_driver.display-it6263
     select MCUX_COMPONENT_driver.lpi2c
 
+# Which panels the board supports
+config MCUX_DEMO_PANEL_LCD_SPEC_SUPPORT
+    default y
+
+config MCUX_DEMO_PANEL_LVDS_DUAL_PANEL_SUPPORT
+    default y
+
+config MCUX_DEMO_PANEL_MX9_DSI_OLED_SUPPORT
+    default y
+
+config MCUX_DEMO_PANEL_MIPI2HDMI_SUPPORT
+    default y
+
+config MCUX_DEMO_PANEL_LVDS2HDMI_SUPPORT
+    default y
+
 if MCUX_PRJSEG_module.board.display_support
 
     config DPU_EXAMPLE_DI
@@ -28,38 +44,6 @@ if MCUX_PRJSEG_module.board.display_support
 
         config MCUX_PRJSEG_module.board.display_support.DPU_DI_LVDS
             bool "DPU_DI_LVDS port"
-    endchoice
-
-
-    config DEMO_PANEL
-        string
-        default LCD_SPEC if MCUX_PRJSEG_module.board.display_support.LCD_SPEC
-        default LVDS_DUAL_PANEL if MCUX_PRJSEG_module.board.display_support.LVDS_DUAL_PANEL
-        default MX9_DSI_OLED if MCUX_PRJSEG_module.board.display_support.MX9_DSI_OLED
-        default MIPI2HDMI if MCUX_PRJSEG_module.board.display_support.MIPI2HDMI
-        default LVDS2HDMI if MCUX_PRJSEG_module.board.display_support.LVDS2HDMI
-        help
-            Panel selection for display support
-            No prefix in generated macro
-
-    choice MCUX_PRJSEG_module.board.display_support.panel
-        prompt "panel Selection"
-        default MCUX_PRJSEG_module.board.display_support.LCD_SPEC
-
-        config MCUX_PRJSEG_module.board.display_support.LCD_SPEC
-            bool "LCD_SPEC panel"
-
-        config MCUX_PRJSEG_module.board.display_support.LVDS_DUAL_PANEL
-            bool "LVDS_DUAL_PANEL panel"
-
-        config MCUX_PRJSEG_module.board.display_support.MX9_DSI_OLED
-            bool "MX9_DSI_OLED panel"
-
-        config MCUX_PRJSEG_module.board.display_support.MIPI2HDMI
-            bool "MIPI2HDMI convertor card"
-
-        config MCUX_PRJSEG_module.board.display_support.LVDS2HDMI
-            bool "LVDS2HDMI convertor card"
     endchoice
 
     config APP_DISPLAY_EXTERNAL_CONVERTOR
@@ -84,5 +68,10 @@ if MCUX_PRJSEG_module.board.display_support
 
         config MCUX_PRJSEG_module.board.display_support.LDB_DUAL_PANEL_ENABLE
             bool "Enable DUAL panel setting for LDB"
-     endchoice
+    endchoice
+
+    choice DISPLAY_SUPPORT_PANEL
+        default LCD_SPEC
+    endchoice
+
 endif

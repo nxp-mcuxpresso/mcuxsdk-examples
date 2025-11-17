@@ -9,10 +9,10 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define DPU_DI_LVDS     0
-#define DPU_DI_MIPI     1
-#define MX9_DSI_OLED    2
-#define MIPI2HDMI       3
+#define DPU_DI_LVDS                0
+#define DPU_DI_MIPI                1
+#define DEMO_PANEL_MX9_DSI_OLED    13
+#define DEMO_PANEL_MIPI2HDMI       14
 
 /* Use the MIPI interface. */
 #ifndef DPU_EXAMPLE_DI
@@ -20,7 +20,7 @@
 #endif
 
 #ifndef DEMO_PANEL
-#define DEMO_PANEL  MX9_DSI_OLED
+#define DEMO_PANEL  DEMO_PANEL_MX9_DSI_OLED
 #endif
 
 
@@ -61,7 +61,7 @@
 
 
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
-#if (DEMO_PANEL == MX9_DSI_OLED)
+#if (DEMO_PANEL == DEMO_PANEL_MX9_DSI_OLED)
 /*
  * The pixel clock is (height + VSW + VFP + VBP) * (width + HSW + HFP + HBP) * frame rate.
  * (2340 + 4 + 10 + 10) * (1080 + 4 + 12 + 8) * x 60Hz = 2364 * 1104 * x 60Hz = 2,609,856 x 57 = 148,761,792 Hz
@@ -78,7 +78,7 @@
 
 #else
 
-#if (DEMO_PANEL == MIPI2HDMI)
+#if (DEMO_PANEL == DEMO_PANEL_MIPI2HDMI)
 /*
  * The pixel clock is (height + VSW + VFP + VBP) * (width + HSW + HFP + HBP) * frame rate.
  * (1080 + 4 + 36 + 5) * (1920 + 88 + 148 + 44) * x 60 = 1125 * 2200 * x 60Hz = 148500000 Hz

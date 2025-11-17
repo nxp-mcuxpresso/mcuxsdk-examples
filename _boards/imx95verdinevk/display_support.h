@@ -9,13 +9,12 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define DPU_DI_LVDS     0
-#define DPU_DI_MIPI     1
-#define LVDS_DUAL_PANEL 2 
-#define CAP_TOUCH_LVDS  3
-#define CAP_TOUCH_DSI   4
-#define MX9_DSI_OLED    5
-#define MIPI2HDMI       6
+#define DPU_DI_LVDS                0
+#define DPU_DI_MIPI                1
+#define DEMO_PANEL_MX9_DSI_OLED    13
+#define DEMO_PANEL_MIPI2HDMI       14
+#define DEMO_PANEL_CAP_TOUCH_LVDS  16
+#define DEMO_PANEL_CAP_TOUCH_DSI   17
 
 /* Use the MIPI interface. */
 #ifndef DPU_EXAMPLE_DI
@@ -23,7 +22,7 @@
 #endif
 
 #ifndef DEMO_PANEL
-#define DEMO_PANEL  MX9_DSI_OLED
+#define DEMO_PANEL  DEMO_PANEL_MX9_DSI_OLED
 #endif
 
 #ifndef LDB_DUAL_PANEL
@@ -67,7 +66,7 @@
 
 
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
-#if (DEMO_PANEL == MX9_DSI_OLED)
+#if (DEMO_PANEL == DEMO_PANEL_MX9_DSI_OLED)
 /*
  * The pixel clock is (height + VSW + VFP + VBP) * (width + HSW + HFP + HBP) * frame rate.
  * (2340 + 4 + 10 + 10) * (1080 + 4 + 12 + 8) * x 60Hz = 2364 * 1104 * x 60Hz = 2,609,856 x 57 = 148,761,792 Hz
@@ -82,7 +81,7 @@
 #define APP_VBP          10
 #endif
 
-#if (DEMO_PANEL == CAP_TOUCH_DSI)
+#if (DEMO_PANEL == DEMO_PANEL_CAP_TOUCH_DSI)
 /*
  * The pixel clock is (height + VSW + VFP + VBP) * (width + HSW + HFP + HBP) * frame rate.
  * (800 + 8 + 8 + 24) * (1280 + 24 + 16 + 64) * x 60 = 840 * 1384 * x 60Hz = 69,753,600 Hz
@@ -101,7 +100,7 @@
 #endif
 
 
-#if (DEMO_PANEL == CAP_TOUCH_LVDS)
+#if (DEMO_PANEL == DEMO_PANEL_CAP_TOUCH_LVDS)
 /*
  * The pixel clock is (height + VSW + VFP + VBP) * (width + HSW + HFP + HBP) * frame rate.
  * (800 + 6 + 2 + 15) * (1280 + 32 + 48 + 80) * x 60 = 823 * 1440 * x 60Hz = 71107200 Hz
@@ -119,7 +118,7 @@
 
 #else
 
-#if (DEMO_PANEL == MIPI2HDMI)
+#if (DEMO_PANEL == DEMO_PANEL_MIPI2HDMI)
 /*
  * The pixel clock is (height + VSW + VFP + VBP) * (width + HSW + HFP + HBP) * frame rate.
  * (1080 + 4 + 36 + 5) * (1920 + 88 + 148 + 44) * x 60 = 1125 * 2200 * x 60Hz = 148500000 Hz

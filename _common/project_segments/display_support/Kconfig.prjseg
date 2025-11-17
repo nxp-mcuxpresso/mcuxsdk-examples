@@ -1,5 +1,4 @@
-# Copyright 2024 NXP
-# All rights reserved.
+# Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -102,6 +101,69 @@ if MCUX_DEMO_PANEL_RK043FN66HS_SUPPORT
             No prefix in generated macro
 endif
 
+if MCUX_DEMO_PANEL_LCD_SPEC_SUPPORT
+    config DEMO_PANEL_LCD_SPEC
+        int
+        default 11
+        help
+            Driver selection for panel LCD_SPEC
+            No prefix in generated macro
+endif
+
+if MCUX_DEMO_PANEL_LVDS_DUAL_PANEL_SUPPORT
+    config DEMO_PANEL_LVDS_DUAL_PANEL
+        int
+        default 12
+        help
+            Driver selection for panel LVDS_DUAL_PANEL
+            No prefix in generated macro
+endif
+
+if MCUX_DEMO_PANEL_MX9_DSI_OLED_SUPPORT
+    config DEMO_PANEL_MX9_DSI_OLED
+        int
+        default 13
+        help
+            Driver selection for panel MX9_DSI_OLED
+            No prefix in generated macro
+endif
+
+if MCUX_DEMO_PANEL_MIPI2HDMI_SUPPORT
+    config DEMO_PANEL_MIPI2HDMI
+        int
+        default 14
+        help
+            Driver selection for panel MIPI2HDMI
+            No prefix in generated macro
+endif
+
+if MCUX_DEMO_PANEL_LVDS2HDMI_SUPPORT
+    config DEMO_PANEL_LVDS2HDMI
+        int
+        default 15
+        help
+            Driver selection for panel LVDS2HDMI
+            No prefix in generated macro
+endif
+
+if MCUX_DEMO_PANEL_CAP_TOUCH_LVDS_SUPPORT
+    config DEMO_PANEL_CAP_TOUCH_LVDS
+        int
+        default 16
+        help
+            Driver selection for panel CAP_TOUCH_LVDS
+            No prefix in generated macro
+endif
+
+if MCUX_DEMO_PANEL_CAP_TOUCH_DSI_SUPPORT
+    config DEMO_PANEL_CAP_TOUCH_DSI
+        int
+        default 17
+        help
+            Driver selection for panel CAP_TOUCH_DSI
+            No prefix in generated macro
+endif
+
 config MCUX_PRJSEG_module.board.display_support
     bool "Enable Display Support"
 
@@ -138,6 +200,27 @@ config MCUX_DEMO_PANEL_RK043FN02H_SUPPORT
 config MCUX_DEMO_PANEL_RK043FN66HS_SUPPORT
     bool
 
+config MCUX_DEMO_PANEL_LCD_SPEC_SUPPORT
+    bool
+
+config MCUX_DEMO_PANEL_LVDS_DUAL_PANEL_SUPPORT
+    bool
+
+config MCUX_DEMO_PANEL_MX9_DSI_OLED_SUPPORT
+    bool
+
+config MCUX_DEMO_PANEL_MIPI2HDMI_SUPPORT
+    bool
+
+config MCUX_DEMO_PANEL_LVDS2HDMI_SUPPORT
+    bool
+
+config MCUX_DEMO_PANEL_CAP_TOUCH_LVDS_SUPPORT
+    bool
+
+config MCUX_DEMO_PANEL_CAP_TOUCH_DSI_SUPPORT
+    bool
+
 if MCUX_PRJSEG_module.board.display_support
 
 config DEMO_PANEL
@@ -153,6 +236,13 @@ config DEMO_PANEL
     default 8 if LCD_PAR_S035
     default 9 if RK043FN02H
     default 10 if RK043FN66HS
+    default 11 if LCD_SPEC
+    default 12 if LVDS_DUAL_PANEL
+    default 13 if MX9_DSI_OLED
+    default 14 if MIPI2HDMI
+    default 15 if LVDS2HDMI
+    default 16 if CAP_TOUCH_LVDS
+    default 17 if CAP_TOUCH_DSI
     help
         Panel selection for display support
         No prefix in generated macro
@@ -192,6 +282,27 @@ choice DISPLAY_SUPPORT_PANEL
 
     config RK043FN66HS
         bool "RK043FN66HS-CTG" if MCUX_DEMO_PANEL_RK043FN66HS_SUPPORT
+
+    config LCD_SPEC
+        bool "LCD_SPEC panel" if MCUX_DEMO_PANEL_LCD_SPEC_SUPPORT
+
+    config LVDS_DUAL_PANEL
+        bool "LVDS_DUAL_PANEL panel" if MCUX_DEMO_PANEL_LVDS_DUAL_PANEL_SUPPORT
+
+    config MX9_DSI_OLED
+        bool "MX9_DSI_OLED panel" if MCUX_DEMO_PANEL_MX9_DSI_OLED_SUPPORT
+
+    config MIPI2HDMI
+        bool "MIPI2HDMI convertor card" if MCUX_DEMO_PANEL_MIPI2HDMI_SUPPORT
+
+    config LVDS2HDMI
+        bool "LVDS2HDMI convertor card" if MCUX_DEMO_PANEL_LVDS2HDMI_SUPPORT
+
+    config CAP_TOUCH_LVDS
+        bool "CAP_TOUCH_LVDS panel" if MCUX_DEMO_PANEL_CAP_TOUCH_LVDS_SUPPORT
+
+    config CAP_TOUCH_DSI
+        bool "CAP_TOUCH_DSI panel" if MCUX_DEMO_PANEL_CAP_TOUCH_DSI_SUPPORT
 
 endchoice
 

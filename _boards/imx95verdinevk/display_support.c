@@ -21,10 +21,10 @@
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
 static pcal6524_handle_t pcalHandle;
 #include "fsl_mipi_dsi.h"
-#if (DEMO_PANEL == MX9_DSI_OLED)
+#if (DEMO_PANEL == DEMO_PANEL_MX9_DSI_OLED)
 #include "fsl_rm692c9.h"
 #endif
-#if (DEMO_PANEL == CAP_TOUCH_DSI)
+#if (DEMO_PANEL == DEMO_PANEL_CAP_TOUCH_DSI)
 #include "fsl_sn65dsi83.h"
 #endif
 #else
@@ -43,7 +43,7 @@ uint32_t phyRefClkFreq_Hz;
 extern void DPU_IRQHandler(void);
 #if (DPU_EXAMPLE_DI == DPU_DI_MIPI)
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
-#if (DEMO_PANEL == MX9_DSI_OLED)
+#if (DEMO_PANEL == DEMO_PANEL_MX9_DSI_OLED)
 status_t RM692c9_DSI_Transfer(dsi_transfer_t *xfer);
 static void RM692c9_PullResetPin(bool pullUp);
 #endif
@@ -56,7 +56,7 @@ static void RM692c9_PullResetPin(bool pullUp);
  ******************************************************************************/
 #if (DPU_EXAMPLE_DI == DPU_DI_MIPI)
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
-#if (DEMO_PANEL == MX9_DSI_OLED)
+#if (DEMO_PANEL == DEMO_PANEL_MX9_DSI_OLED)
 static mipi_dsi_device_t dsiDevice = {
     .virtualChannel = 0,
     .xferFunc       = RM692c9_DSI_Transfer,
@@ -78,7 +78,7 @@ static display_handle_t rm692c9Handle = {
 
 #if (DPU_EXAMPLE_DI == DPU_DI_MIPI)
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
-#if (DEMO_PANEL == MX9_DSI_OLED)
+#if (DEMO_PANEL == DEMO_PANEL_MX9_DSI_OLED)
 status_t RM692c9_DSI_Transfer(dsi_transfer_t *xfer)
 {
     return DSI_TransferBlocking(MIPI_DSI, xfer);
@@ -172,7 +172,7 @@ void BOARD_PrepareDisplay(void)
 {
 #if (DPU_EXAMPLE_DI == DPU_DI_MIPI)
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
-#if (DEMO_PANEL == MX9_DSI_OLED)
+#if (DEMO_PANEL == DEMO_PANEL_MX9_DSI_OLED)
     hal_clk_t hal_videopll1vcoCLKCfg = {
         .clk_id = hal_clock_videopll1ctl,
         .clk_round_opt = hal_clk_round_auto,
@@ -194,7 +194,7 @@ void BOARD_PrepareDisplay(void)
         .enable_clk    = true,
         .clk_round_opt = hal_clk_round_auto,
     };
-#elif (DEMO_PANEL == CAP_TOUCH_DSI)
+#elif (DEMO_PANEL == DEMO_PANEL_CAP_TOUCH_DSI)
     hal_clk_t hal_videopll1vcoCLKCfg = {
         .clk_id = hal_clock_videopll1ctl,
         .clk_round_opt = hal_clk_round_auto,
@@ -331,7 +331,7 @@ void BOARD_InitLcdPanel(void)
 
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
     if (DPU_EXAMPLE_DI == DPU_DI_MIPI)
-#if (DEMO_PANEL == MX9_DSI_OLED)
+#if (DEMO_PANEL == DEMO_PANEL_MX9_DSI_OLED)
         {
             BOARD_InitPCAL6524(&pcalHandle);
             PCAL6524_SetDirection(&pcalHandle, (1 << BOARD_PCAL6524_DSI_PWDN), kPCAL6524_Output);
@@ -341,7 +341,7 @@ void BOARD_InitLcdPanel(void)
             RM692c9_Init(&rm692c9Handle, &displayConfig);
         }
 #endif
-#if (DEMO_PANEL == CAP_TOUCH_DSI)
+#if (DEMO_PANEL == DEMO_PANEL_CAP_TOUCH_DSI)
         {
             BOARD_InitPCAL6524(&pcalHandle);
             PCAL6524_SetDirection(&pcalHandle, (1 << BOARD_PCAL6524_DSI_PWDN), kPCAL6524_Output);

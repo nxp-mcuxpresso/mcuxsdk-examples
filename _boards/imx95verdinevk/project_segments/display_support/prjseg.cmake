@@ -17,22 +17,6 @@ if (CONFIG_MCUX_PRJSEG_module.board.display_support.DPU_DI_LVDS)
 
 endif()
 
-if (CONFIG_MCUX_PRJSEG_module.board.display_support.CAP_TOUCH_LVDS)
-
-endif()
-
-if (CONFIG_MCUX_PRJSEG_module.board.display_support.CAP_TOUCH_DSI)
-
-endif()
-
-if (CONFIG_MCUX_PRJSEG_module.board.display_support.MX9_DSI_OLED)
-
-endif()
-
-if (CONFIG_MCUX_PRJSEG_module.board.display_support.MIPI2HDMI)
-
-endif()
-
 if (CONFIG_MCUX_PRJSEG_module.board.display_support.LDB_DUAL_PANEL_DISABLE)
 
 endif()

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -75,7 +75,7 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
-#if (DEMO_PANEL == CAP_TOUCH_DSI)
+#if (DEMO_PANEL == DEMO_PANEL_CAP_TOUCH_DSI)
     rgpio_pin_config_t led_config = {
         kRGPIO_DigitalOutput,
         0,
@@ -85,7 +85,7 @@ void BOARD_InitHardware(void)
     RGPIO_PortToggle(GPIO2, 1u << 12);
 #endif
 
-#if (DEMO_PANEL == CAP_TOUCH_LVDS)
+#if (DEMO_PANEL == DEMO_PANEL_CAP_TOUCH_LVDS)
     rgpio_pin_config_t led_config = {
         kRGPIO_DigitalOutput,
         1,
