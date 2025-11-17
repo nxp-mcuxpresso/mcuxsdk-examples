@@ -27,10 +27,18 @@ mcux_add_armgcc_configuration(
     CX "-O3"
 )
 
+mcux_add_armgcc_configuration(
+    CC "-Wno-stringop-overflow"
+    CX "-Wno-stringop-overflow"
+)
+
 mcux_add_mdk_configuration(
         CX "-std=gnu++17"
 )
-
+mcux_add_mdk_configuration(
+    CC "-Wno-format -Wno-enum-compare-switch"
+    CX "-Wno-format -Wno-enum-compare-switch"
+)
 mcux_add_iar_configuration(
     CC "--dlib_config full\
        -Ohs\

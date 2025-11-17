@@ -170,7 +170,7 @@ int Model_Setup(NNServer* server) {
             break;
         case tflite::TensorType_INT4:
             strcpy(server->input.data_type [i], "INT4");
-            server->input.bytes[i] = 0.5;
+            server->input.bytes[i] = 1;
             break;
         default:
             break;
@@ -401,7 +401,7 @@ int Model_RunInference(NNServer* server) {
         }
 
 #ifdef DEBUG
-        PRINTF("run ms: %f ", (float)(server->run_ns/1e3));
+        PRINTF("run ms: %f ", (double)(server->run_ns/1e3));
 #endif
  
         run_ns += server->run_ns;

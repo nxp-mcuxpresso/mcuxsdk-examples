@@ -7,7 +7,10 @@ mcux_add_source(
   SOURCES examples/eiq_examples/common/timer.c
           examples/eiq_examples/common/timer.h
   )
-
+mcux_add_mdk_configuration(
+    CC "-Wno-format -Wno-enum-compare-switch"
+    CX "-Wno-format -Wno-enum-compare-switch"
+)
 mcux_add_mdk_configuration(
         CX "-std=gnu++17"
 )

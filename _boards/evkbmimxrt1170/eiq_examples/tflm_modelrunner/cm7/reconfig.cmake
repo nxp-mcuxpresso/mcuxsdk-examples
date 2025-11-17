@@ -49,9 +49,18 @@ mcux_add_mdk_configuration(
     TARGETS flexspi_nor_sdram_release
     CC "-O3"
 )
+
+mcux_add_mdk_configuration(
+    CC "-Wno-format -Wno-enum-compare-switch"
+    CX "-Wno-format -Wno-enum-compare-switch"
+)
 mcux_add_armgcc_configuration(
     CC "-O3"
     CX "-O3"
+)
+mcux_add_armgcc_configuration(
+    CC "-Wno-stringop-overflow"
+    CX "-Wno-stringop-overflow"
 )
 mcux_add_macro(
     CC "PRINTF_ADVANCED_ENABLE=1 \
@@ -59,8 +68,7 @@ mcux_add_macro(
 	FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1 \
         PRINTF_FLOAT_ENABLE=1"
     CX "MODELRUNNER_HTTP=1 \
-       USE_RTOS=1 \
-       MODEL_SIZE=28*1024*1024"
+       USE_RTOS=1" 
     )
 mcux_add_iar_configuration(
   LD "--config_def=__heap_size__=0x2000000\

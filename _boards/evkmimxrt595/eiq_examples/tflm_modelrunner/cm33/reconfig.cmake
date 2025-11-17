@@ -15,6 +15,10 @@ mcux_add_macro(
 mcux_add_mdk_configuration(
         CX "-std=gnu++17"
 )
+mcux_add_mdk_configuration(
+    CC "-Wno-format -Wno-enum-compare-switch"
+    CX "-Wno-format -Wno-enum-compare-switch"
+)
 mcux_remove_mdk_configuration(
   CC "-fshort-wchar"
   CX "-fshort-wchar"

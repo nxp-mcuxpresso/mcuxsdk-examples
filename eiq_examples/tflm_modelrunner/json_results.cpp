@@ -187,7 +187,7 @@ int model_info(int sock, NNServer* server){
         if (data_len < 0 || data_len >= sizeof(data)) return -1;
         if (write_chunk(sock, data, data_len) < 0) return -1;
 
-        data_len = snprintf(data,sizeof(data), ",\"scale\": %f", server->input.scale[i]);
+        data_len = snprintf(data,sizeof(data), ",\"scale\": %f", (double)server->input.scale[i]);
         if (data_len < 0 || data_len >= sizeof(data)) return -1;
         if (write_chunk(sock, data, data_len) < 0) return -1;
 
@@ -243,7 +243,7 @@ int model_info(int sock, NNServer* server){
         if (data_len < 0 || data_len >= sizeof(data)) return -1;
         if (write_chunk(sock, data, data_len) < 0) return -1;
 
-        data_len = snprintf(data, sizeof(data), ",\"scale\": %f", server->output.scale[idx]);
+        data_len = snprintf(data, sizeof(data), ",\"scale\": %f", (double)server->output.scale[idx]);
         if (data_len < 0 || data_len >= sizeof(data)) return -1;
         if (write_chunk(sock, data, data_len) < 0) return -1;
 
