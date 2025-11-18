@@ -37,8 +37,8 @@ mcux_add_macro(
 #iar configurations
 mcux_remove_iar_configuration(
     TARGETS debug
-    CX "--diag_suppress=Pa082,Pa050"
-    CC "--diag_suppress=Pa082,Pa050 -On"
+    CX "--diag_suppress=Pa050"
+    CC "--diag_suppress=Pa050 -On"
 )
 
 mcux_add_iar_configuration(
