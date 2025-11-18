@@ -14,11 +14,6 @@
 #include "fsl_trdc.h"
 /*${header:end}*/
 
-/*${macro:start}*/
-/* When CM33 set TRDC, CM7 must NOT require TRDC ownership from ELE */
-#define CM33_SET_TRDC 0U
-/*${macro:end}*/
-
 /*${variable:start}*/
 edma_config_t edmaConfig            = {0};
 /*${variable:end}*/
