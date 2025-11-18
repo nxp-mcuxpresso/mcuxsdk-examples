@@ -1,0 +1,43 @@
+t-format_PWM_trigger:
+  section-type: application
+  contents:
+    meta_path: examples/digital_encoder_examples/t-format/PWM_trigger
+    project-root-path: boards/${board}/digital_encoder_examples/t-format/PWM_trigger/${multicore_foldername}
+    document:
+      name: t-format_PWM_trigger${core_id_suffix_name}
+      category: digital_encoder_examples
+      brief: The t-format_PWM_trigger example shows how to use flexio T-format driver
+        in sync way:In this example, a flexio simulated T-format connect to the encoder
+        through RS-485, the board will send requests triggered by the FlexPWM to and
+        receive responses from the encoder.
+      example_readme:
+      - examples/digital_encoder_examples/t-format/PWM_trigger/readme.md
+      - ${board_root}/${board}/digital_encoder_examples/t-format/PWM_trigger/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmimxrt1186@cm33:
+    - +armgcc@debug
+    - +armgcc@hyperram_debug
+    - +armgcc@flexspi_nor_hyperram_debug
+    - +armgcc@flexspi_nor_hyperram_release
+    - +iar@debug
+    - +iar@hyperram_debug
+    - +iar@flexspi_nor_hyperram_debug
+    - +iar@flexspi_nor_hyperram_release
+    - -mdk@debug
+    - -mdk@hyperram_debug
+    - -mdk@flexspi_nor_hyperram_debug
+    - -mdk@flexspi_nor_hyperram_release
+    frdmimxrt1186@cm7:
+    - +armgcc@debug
+    - +armgcc@hyperram_debug
+    - +armgcc@flexspi_nor_hyperram_debug
+    - +armgcc@flexspi_nor_hyperram_release
+    - +iar@debug
+    - +iar@hyperram_debug
+    - +iar@flexspi_nor_hyperram_debug
+    - +iar@flexspi_nor_hyperram_release
+    - -mdk@debug
+    - -mdk@hyperram_debug
+    - -mdk@flexspi_nor_hyperram_debug
+    - -mdk@flexspi_nor_hyperram_release

@@ -10,3 +10,4 @@ t-format
    interrupt_transfer/readme.md
    polling_transfer/readme.md
    sync_transfer/readme.md
+   PWM_trigger/readme.md
