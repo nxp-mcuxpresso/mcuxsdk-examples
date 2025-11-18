@@ -23,9 +23,9 @@ Follow chapter "Hardware setup" in Application User's guide.
 
 FRDM-RT1186 configuration:
 
-	- Add/Set zero resistors: R2, R3, R34, R40, R83 1-3, R243, R319 1-3, R448
+	- Add/Set zero resistors: R2, R3, R34 (replace by 0 Ohm), R40, R83 1-3, R243, R319 1-3, R448
 	- Remove resistors: R15, R17, R21, R24, R407
-	- Set jumpers: J29 2-3, J42 1-2, J49 2-3
+	- Set jumpers: J27 2-3, J29 2-3, J30 2-3, J33 2-3, J42 1-2, J49 2-3
 
 FRDM-LVPMSM-FA boards configuration:
 
