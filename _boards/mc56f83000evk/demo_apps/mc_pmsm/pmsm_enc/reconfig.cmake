@@ -5,6 +5,13 @@ mcux_add_source(
   SOURCES examples/_boards/${board}/demo_apps/mc_pmsm/pmsm_enc/${multicore_foldername}/Flash_config.h
 )
 
+# remove preprocessor appconfig - not available for fixed-point application
+mcux_project_remove_source(
+  BASE_PATH ${SdkRootDirPath}
+  SOURCES
+      examples/_boards/${board}/demo_apps/mc_pmsm/pmsm_enc/${multicore_foldername}/m1_pmsm_preprocessor.h
+)
+
 # Remove default linker file - SDM configurations
 mcux_remove_codewarrior_linker_script(
   TARGETS flash_sdm_lpm_debug flash_sdm_lpm_release

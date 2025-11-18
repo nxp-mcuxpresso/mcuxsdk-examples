@@ -12,3 +12,10 @@ mcux_add_armgcc_configuration(
   CC "-O1"
   CX "-O1"
   )
+
+# remove preprocessor appconfig - not available for fixed-point application
+mcux_project_remove_source(
+  BASE_PATH ${SdkRootDirPath}
+  SOURCES
+      examples/_boards/${board}/demo_apps/mc_pmsm/pmsm_enc/${multicore_foldername}/m1_pmsm_preprocessor.h
+)
