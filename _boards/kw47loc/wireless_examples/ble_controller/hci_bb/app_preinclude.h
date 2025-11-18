@@ -38,8 +38,9 @@
 /* Defines Size for Timer Task*/
 #define gTmrTaskStackSize_c             384
 
-/* Enable capture of NBU failure */
+#if !defined(__MCUXPRESSO)
 #define HCIBB_DBG_NBU_ENABLE    1
+#endif
 
 /*
  * TimerManager Configuration
@@ -84,9 +85,6 @@
 #undef gDebugConsoleEnable_d
 #define gDebugConsoleEnable_d 1
 #endif
-
-/* Enable capture of NBU failure */
-#define HCIBB_DBG_NBU_ENABLE    1
 
 /* define the max tx power setting, allowed value 0, 7 or 10 */
 #define gAppMaxTxPowerDbm_c                    10U

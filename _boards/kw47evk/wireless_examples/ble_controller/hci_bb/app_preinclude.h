@@ -47,7 +47,7 @@
 
 /* Enable debug throught SWO trace */
 #define gDbg_SwoEnabled_d       0
- 
+
 #if (defined(gDbg_SwoEnabled_d) && (gDbg_SwoEnabled_d == 1))
  /* Define to 1 if you want to configure the DWT/ITM/TPIU-SWO via SW i.s.o.the probe */
 #define DBG_SWO_INIT_VIA_SW 1
@@ -61,8 +61,9 @@
 #define DBG_SWO_FUNNEL_MUXING DBG_SWO_CORE_NBU_CORE
 #endif /* gDbg_SwoEnabled_d == 1 */
 
-/* Enable capture of NBU failure */
+#if !defined(__MCUXPRESSO)
 #define HCIBB_DBG_NBU_ENABLE    1
+#endif
 
 /*
  * TimerManager Configuration

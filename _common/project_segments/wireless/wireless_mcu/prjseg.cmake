@@ -74,6 +74,7 @@ endif()
 
 if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu)
     mcux_add_source(
+        TOOLCHAINS armgcc iar
         BASE_PATH ${SdkRootDirPath}
         SOURCES
             examples/_common/project_segments/wireless/wireless_mcu/debug/board_debug_nbu.c
@@ -81,12 +82,16 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu)
             examples/_common/project_segments/wireless/wireless_mcu/debug/readme.md
     )
     mcux_add_include(
+        TOOLCHAINS armgcc iar
         BASE_PATH ${SdkRootDirPath}
         INCLUDES
             examples/_common/project_segments/wireless/wireless_mcu/debug
     )
 
-    mcux_add_macro(BOARD_DBG_NBU_ENABLE=1)
+    mcux_add_macro(
+        TOOLCHAINS armgcc iar
+        BOARD_DBG_NBU_ENABLE=1
+    )
 endif()
 
 if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.extflash)

@@ -37,7 +37,9 @@
 #define gTmrTaskStackSize_c             384
 
 /* Enable capture of NBU failure */
+#if !defined(__MCUXPRESSO)
 #define HCIBB_DBG_NBU_ENABLE    1
+#endif
 
 /*
  * TimerManager Configuration
