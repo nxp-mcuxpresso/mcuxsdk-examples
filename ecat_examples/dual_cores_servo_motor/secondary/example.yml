@@ -18,12 +18,6 @@ dual_cores_ecat_servo_motor_secondary_core:
     - +iar@debug
     - +iar@release
     frdmimxrt1186@cm7:
-    - +armgcc@flexspi_nor_hyperram_debug
-    - +armgcc@flexspi_nor_hyperram_release
-    - +iar@flexspi_nor_hyperram_debug
-    - +iar@flexspi_nor_hyperram_release
-    - +mdk@flexspi_nor_hyperram_debug
-    - +mdk@flexspi_nor_hyperram_release
     - -armgcc@debug
     - +armgcc@release
     - +iar@debug
