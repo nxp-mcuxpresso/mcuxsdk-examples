@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 NXP
+ * Copyright 2022, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -41,7 +41,8 @@ void BOARD_InitHardware(void)
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 
-    CLOCK_AttachClk(MUX_A(CM_ENETRMIICLKSEL, 0));
+    /* Use external reference clock. */
+    CLOCK_AttachClk(kNONE_to_ENETRMII);
     CLOCK_EnableClock(kCLOCK_Enet);
     SYSCON0->PRESETCTRL2 = SYSCON_PRESETCTRL2_ENET_RST_MASK;
     SYSCON0->PRESETCTRL2 &= ~SYSCON_PRESETCTRL2_ENET_RST_MASK;
