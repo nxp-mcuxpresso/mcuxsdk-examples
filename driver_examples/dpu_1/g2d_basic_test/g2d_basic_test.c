@@ -1137,8 +1137,8 @@ static int32_t run_blending_tests(void *handle, struct g2d_buf *s_buf, struct g2
     /* Pre-multiplied & de-multiply test: alpha blending mode G2D_ONE, G2D_ONE_MINUS_SRC_ALPHA */
     fill_destination_buffer(d_buf, test_height, test_width); 
 
-    src.blendfunc = G2D_ONE | G2D_PRE_MULTIPLIED_ALPHA;
-    dst.blendfunc = G2D_ONE_MINUS_SRC_ALPHA | G2D_PRE_MULTIPLIED_ALPHA;
+    src.blendfunc = (enum g2d_blend_func)(G2D_ONE | G2D_PRE_MULTIPLIED_ALPHA);
+    dst.blendfunc = (enum g2d_blend_func)(G2D_ONE_MINUS_SRC_ALPHA | G2D_PRE_MULTIPLIED_ALPHA);
 
     (void)g2d_enable(handle, G2D_BLEND);
     (void)g2d_blit(handle, &src, &dst);
