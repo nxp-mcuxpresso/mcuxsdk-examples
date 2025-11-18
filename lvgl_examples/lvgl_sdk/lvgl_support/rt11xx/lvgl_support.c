@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2024 NXP
+ * Copyright 2019-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -85,6 +85,8 @@
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
+static void disp_flush_cb(lv_display_t *disp, const lv_area_t *area, uint8_t *color_p);
+
 static void DEMO_FlushDisplay(lv_display_t *disp_drv, const lv_area_t *area, uint8_t *color_p);
 
 static bool DEMO_InitTouch(void);
@@ -244,12 +246,12 @@ void lv_port_disp_init(void)
     memset(s_frameBuffer, 0, sizeof(s_frameBuffer));
 #if DEMO_USE_ROTATE
     memset(s_lvglBuffer, 0, sizeof(s_lvglBuffer));
-    lv_display_set_buffers_with_stride(disp_drv, (void *)s_lvglBuffer[0], NULL, DEMO_FB_SIZE, DEMO_FB_STRIDE(ROTATED_FB_WIDTH), LV_DISPLAY_RENDER_MODE_FULL);
+    lv_display_set_buffers_with_stride(disp_drv, (void *)s_lvglBuffer[0], NULL, DEMO_FB_SIZE, DEMO_FB_STRIDE(ROTATED_FB_WIDTH), LV_DISPLAY_RENDER_MODE_DIRECT);
 #else
-    lv_display_set_buffers_with_stride(disp_drv, (void *)s_frameBuffer[0], (void *)s_frameBuffer[1], DEMO_FB_SIZE, DEMO_FB_STRIDE(ROTATED_FB_WIDTH), LV_DISPLAY_RENDER_MODE_FULL);
+    lv_display_set_buffers_with_stride(disp_drv, (void *)s_frameBuffer[0], (void *)s_frameBuffer[1], DEMO_FB_SIZE, DEMO_FB_STRIDE(ROTATED_FB_WIDTH), LV_DISPLAY_RENDER_MODE_DIRECT);
 #endif
 
-    lv_display_set_flush_cb(disp_drv, DEMO_FlushDisplay);
+    lv_display_set_flush_cb(disp_drv, disp_flush_cb);
 
 #if LV_USE_DRAW_VGLITE
     if (vg_lite_init(DEFAULT_VG_LITE_TW_WIDTH, DEFAULT_VG_LITE_TW_HEIGHT) != VG_LITE_SUCCESS)
@@ -385,10 +387,6 @@ static void DEMO_FlushDisplay(lv_display_t *disp_drv, const lv_area_t *area, uin
 
     g_dc.ops->setFrameBuffer(&g_dc, 0, inactiveFrameBuffer);
 
-    /* IMPORTANT!!!
-     * Inform the graphics library that you are ready with the flushing*/
-    lv_disp_flush_ready(disp_drv);
-
 #else  /* DEMO_USE_ROTATE */
 
 #if __CORTEX_M == 4
@@ -400,11 +398,18 @@ static void DEMO_FlushDisplay(lv_display_t *disp_drv, const lv_area_t *area, uin
     g_dc.ops->setFrameBuffer(&g_dc, 0, (void *)color_p);
 
     DEMO_WaitBufferSwitchOff();
-
-    /* IMPORTANT!!!
-     * Inform the graphics library that you are ready with the flushing*/
-    lv_disp_flush_ready(disp_drv);
 #endif /* DEMO_USE_ROTATE */
+}
+
+static void disp_flush_cb(lv_display_t *disp, const lv_area_t *area, uint8_t *color_p)
+{
+#ifndef DISABLE_DISPLAY
+    /* Skip the non-last flush */
+    if (lv_display_flush_is_last(disp)) {
+        DEMO_FlushDisplay(disp, area, color_p);
+    }
+#endif
+    lv_display_flush_ready(disp);
 }
 
 void lv_port_indev_init(void)

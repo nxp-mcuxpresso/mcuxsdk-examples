@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -80,6 +80,8 @@
  * Prototypes
  ******************************************************************************/
 static void DEMO_FlushDisplay(lv_display_t *disp_drv, const lv_area_t *area, uint8_t *color_p);
+
+static void disp_flush_cb(lv_display_t *disp, const lv_area_t *area, uint8_t *color_p);
 
 static bool DEMO_InitTouch(void);
 
@@ -246,7 +248,11 @@ void lv_port_disp_init(void)
      *----------------------------------*/
 
     /*Set up the functions to access to your display*/
+#if DEMO_DISPLAY_USE_PARTIAL_REFRESH
     lv_display_set_flush_cb(disp_drv, DEMO_FlushDisplay);
+#else
+    lv_display_set_flush_cb(disp_drv, disp_flush_cb);
+#endif
 
     /*
      * Two buffers screen sized buffer for double buffering.
@@ -263,9 +269,9 @@ void lv_port_disp_init(void)
 #else /* DEMO_DISPLAY_USE_PARTIAL_REFRESH */
 #if DEMO_USE_ROTATE
     memset(s_lvglBuffer, 0, sizeof(s_lvglBuffer));
-    lv_display_set_buffers(disp_drv, s_lvglBuffer[0], NULL, DEMO_FB_SIZE, LV_DISPLAY_RENDER_MODE_FULL);
+    lv_display_set_buffers(disp_drv, s_lvglBuffer[0], NULL, DEMO_FB_SIZE, LV_DISPLAY_RENDER_MODE_DIRECT);
 #else
-    lv_display_set_buffers_with_stride(disp_drv, (void *)DEMO_BUFFER0_ADDR, (void *)DEMO_BUFFER1_ADDR, DEMO_FB_SIZE, DEMO_BUFFER_STRIDE_BYTE, LV_DISPLAY_RENDER_MODE_FULL);
+    lv_display_set_buffers_with_stride(disp_drv, (void *)DEMO_BUFFER0_ADDR, (void *)DEMO_BUFFER1_ADDR, DEMO_FB_SIZE, DEMO_BUFFER_STRIDE_BYTE, LV_DISPLAY_RENDER_MODE_DIRECT);
 #endif /* DEMO_USE_ROTATE */
 
 #endif /* DEMO_DISPLAY_USE_PARTIAL_REFRESH */
@@ -503,22 +509,26 @@ static void DEMO_FlushDisplay(lv_display_t *disp_drv, const lv_area_t *area, uin
 
     g_dc.ops->setFrameBuffer(&g_dc, 0, inactiveFrameBuffer);
 
-    /* IMPORTANT!!!
-     * Inform the graphics library that you are ready with the flushing*/
-    lv_display_flush_ready(disp_drv);
-
 #else  /* DEMO_USE_ROTATE */
 
     g_dc.ops->setFrameBuffer(&g_dc, 0, (void *)color_p);
 
     DEMO_WaitBufferSwitchOff();
 
-    /* IMPORTANT!!!
-     * Inform the graphics library that you are ready with the flushing*/
-    lv_display_flush_ready(disp_drv);
 #endif /* DEMO_USE_ROTATE */
 }
 #endif
+
+static void disp_flush_cb(lv_display_t *disp, const lv_area_t *area, uint8_t *color_p)
+{
+#ifndef DISABLE_DISPLAY
+    /* Skip the non-last flush */
+    if (lv_display_flush_is_last(disp)) {
+        DEMO_FlushDisplay(disp, area, color_p);
+    }
+#endif
+    lv_display_flush_ready(disp);
+}
 
 void lv_port_indev_init(void)
 {
