@@ -33,7 +33,8 @@
  */
 
 /* enable JPEG SW decoder */
-#define HAL_ENABLE_JPEG_CPU                   1
+#define HAL_ENABLE_JPEG_CPU                   0
+#define HAL_ENABLE_JPEG_HW                    1
 
 /**
  * This is the inference HAL configuration
@@ -104,6 +105,7 @@
 #define APP_DISPLAY_FORMAT                    MPP_PIXEL_RGB565
 
 #define IMG_CONVERT_DEV_NAME "gfx_GPU"
+#define IMG_DECODE_DEV_NAME "jpeg_HW"
 
 /* other parameters */
 /* rotation is needed to display in landscape because display RK055 is portrait */

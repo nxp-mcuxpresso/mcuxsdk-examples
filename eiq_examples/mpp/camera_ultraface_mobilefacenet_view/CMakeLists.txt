@@ -9,12 +9,13 @@ mcux_add_source(
     SOURCES examples/eiq_examples/mpp/camera_ultraface_mobilefacenet_view/camera_ultraface_mobilefacenet_view.c
             ${board_root}/${board}/eiq_examples/mpp/examples/camera_ultraface_mobilefacenet_view/mpp_config.h
             examples/eiq_examples/mpp/camera_ultraface_mobilefacenet_view/event_listener.c
-            examples/eiq_examples/mpp/camera_ultraface_mobilefacenet_view/face_box_utils.c
+            examples/eiq_examples/mpp/camera_ultraface_mobilefacenet_view/*.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES ${board_root}/${board}/eiq_examples/mpp/examples/camera_ultraface_mobilefacenet_view/
+             middleware/eiq/mpp/examples/camera_ultraface_mobilefacenet_view/
 )
 
 # board files
@@ -26,6 +27,8 @@ mcux_add_include(
                 models/ultraface_slim_quant_int8
                 internal/models
                 internal/models/mobilefacenet
+                internal/face_recognition/utils
+                internal/face_recognition
 )
 
 mcux_add_source(
@@ -38,6 +41,9 @@ mcux_add_source(
             models/utils.h
             models/shell_database_utils.h
             models/shell_database_utils.c
+            internal/face_recognition/utils/face_box_utils.c
+            internal/face_recognition/utils/face_box_utils.h
+            internal/face_recognition/face_database.h
             internal/models/mobilefacenet/mobilefacenet_output_postproc_quantized.cpp
             internal/models/mobilefacenet/*.h
 )

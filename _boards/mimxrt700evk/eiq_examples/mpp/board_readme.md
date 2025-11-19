@@ -26,5 +26,5 @@ Prepare the Demo
 3. Build the project. The project expects the RK055MHD091 panel by default. To use the RK055AHD091 panel,
     change #define DEMO_PANEL DEMO_PANEL_RK055MHD091 to #define DEMO_PANEL MIPI_PANEL_RK055AHD091
     in display_support.h. The default camera is flexio OV7670, when using USB camera define USE_USB_CAMERA in reconfig.cmake.
-4. Download the program to the target board.
-5. Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
+4. Download the program to the target board using flasher or debugger utility.
+5. Press the reset button (SW2) on the board to begin running the demo (CPU reset via MCU-Link/CMSIS may not work).

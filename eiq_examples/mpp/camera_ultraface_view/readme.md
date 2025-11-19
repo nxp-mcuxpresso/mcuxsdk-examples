@@ -9,13 +9,14 @@ The machine learning framework used for this example is TensorFlow Lite Micro.
 The face detection model used is quantized Ultraface slim model that detects multiple faces in an input image.
 
 ## Toolchains supported
-- MCUXpresso, version 11.10.0
-- GCC Arm Embedded, version 13.2.Rel1
+Refer to build instructions:
+- [Build](../../../../middleware/eiq/mpp/Build.md)
 
 ## Hardware requirements
 Refer to board.readme for hardware setup requirements.
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/eiq_examples/mpp/board_readme.md)
 - [MIMXRT1170-EVKB](../../../_boards/evkbmimxrt1170/eiq_examples/mpp/board_readme.md)
+- [MIMXRT700-EVK](../../../_boards/mimxrt700evk/eiq_examples/mpp/board_readme.md)
 
 ## Use-cases Description
 
@@ -41,11 +42,11 @@ Pipeline 1                         +---> |  2D convert | -->  | ML Inference | -
                                                                        |                                                    |
                                                                        |                                                    |
         +-----------------+                                            |                                                    |
-	|  Main app:      |                                            |                                                    |
-	| ML output       |   <----- ML Inference output callback -----+                                                    |
+        |  Main app:      |                                            |                                                    |
+        | ML output       |   <----- ML Inference output callback -----+                                                    |
         | post processing |                                                                                                 |
-	|                 |   ------   labeled rectangle update   ----------------------------------------------------------+
-	+-----------------+
+        |                 |   ------   labeled rectangle update   ----------------------------------------------------------+
+        +-----------------+
 ```
 ### Detailed description
 
@@ -69,7 +70,7 @@ Application creates two pipelines:
 * 2D convert element on pipeline 1 is configured to perform:
   - color space conversion from the camera pixel format to RGB888
   - cropping to maintain image aspect ratio
-  - scaling to 240x320 as mandated by the face detection model
+  - scaling to 128x128 as mandated by the face detection model
 
 * The labeled rectangle element draws a crop window from which the camera image is sent to
   the ML inference element. The labeled rectangle element also displays the label "face" of the detected face.
@@ -88,7 +89,7 @@ The expected outputs of the example are:
 
 Logs for camera_ultraface_view example using TensorFlow Lite Micro model should look like this:
 ```
-[MPP_VERSION_1.0.0]
+[MPP_VERSION_3.6.0]
 Inference Engine: TensorFlow-Lite Micro
 inference time 707 ms
 ultraface : no face detected

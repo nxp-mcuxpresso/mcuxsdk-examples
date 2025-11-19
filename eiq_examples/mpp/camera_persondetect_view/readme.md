@@ -9,13 +9,14 @@ The machine learning framework used for this example is TensorFlow Lite Micro.
 The person detection model used is quantized persondetect model that detects multiple persons in an input image.
 
 ## Toolchains supported
-- MCUXpresso, version 11.10.0
-- GCC Arm Embedded, version 13.2.Rel1
+Refer to build instructions:
+- [Build](../../../../middleware/eiq/mpp/Build.md)
 
 ## Hardware requirements
 Refer to board.readme for hardware setup requirements.
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/eiq_examples/mpp/board_readme.md)
 - [MIMXRT1170-EVKB](../../../_boards/evkbmimxrt1170/eiq_examples/mpp/board_readme.md)
+- [MIMXRT700-EVK](../../../_boards/mimxrt700evk/eiq_examples/mpp/board_readme.md)
 
 ## Use-cases Description
 
@@ -41,11 +42,11 @@ Pipeline 1                         +---> |  2D convert | -->  | ML Inference | -
                                                                        |                                                    |
                                                                        |                                                    |
         +-----------------+                                            |                                                    |
-	|  Main app:      |                                            |                                                    |
-	| ML output       |   <----- ML Inference output callback -----+                                                    |
+        |  Main app:      |                                            |                                                    |
+        | ML output       |   <----- ML Inference output callback -----+                                                    |
         | post processing |                                                                                                 |
-	|                 |   ------   labeled rectangle update   ----------------------------------------------------------+
-	+-----------------+
+        |                 |   ------   labeled rectangle update   ----------------------------------------------------------+
+        +-----------------+
 ```
 ### Detailed description
 
@@ -89,7 +90,7 @@ The expected outputs of the example are:
 
 Logs for camera_persondetect_view example using TensorFlow Lite Micro model should look like this:
 ```
-[MPP_VERSION_2.1.e1dc37e]
+[MPP_VERSION_3.6.0]
 Inference Engine: TensorFlow-Lite Micro 
 
 Element stats --------------------------

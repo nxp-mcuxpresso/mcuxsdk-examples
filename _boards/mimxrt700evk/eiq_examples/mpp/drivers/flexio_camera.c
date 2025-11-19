@@ -7,7 +7,9 @@
 /* FreeRTOS kernel includes. */
 #include "FreeRTOS.h"
 #include "task.h"
+#include "mpp_config.h"
 
+#if defined(HAL_ENABLE_CAMERA_DEV_EzhV_Ov7670) && (HAL_ENABLE_CAMERA_DEV_EzhV_Ov7670 == 1)
 #include "flexio_camera.h"
 #include "fsl_debug_console.h"
 #include "pin_mux.h"
@@ -422,4 +424,4 @@ static void CAMERA_InterruptsInit(void)
     NVIC_SetPriority(EZHV_IRQn, 2);
     EZHV_SetCallback(EZHV_Callback, 0, NULL);
 }
-
+#endif /* defined(HAL_ENABLE_CAMERA_DEV_EzhV_Ov7670) && (HAL_ENABLE_CAMERA_DEV_EzhV_Ov7670 == 1) */

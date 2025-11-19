@@ -28,19 +28,41 @@ ENTRY(Reset_Handler)
 
 HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x1000;
 STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x1000;
+
 M_VECTOR_RAM_SIZE = DEFINED(__ram_vector_table__) ? 0x00000300 : 0;
 
-m_ezhv_image_maximum_size = 0x00008000;
+/* Total SRAM SIZE that does not include core 1 private data */
+/* If __use_shmem__ is defined, use SRAM P0-P17, otherwise use SRAM P0-P27 */
+TOTAL_USABLE_SRAM =  DEFINED(__use_shmem__) ? 0x00580000 : 0x00700000;
 
-DATA_START   = 0x20000000; /* SRAM P13 */
-DATA_SIZE    = 0x00400000;
+/* warning NPU see only SRAM P0-P17 */
+NCACHE_SIZE = DEFINED(__ncache_size__) ? __ncache_size__ : 0x00300000;  /* default SRAM P14-P27,  */
+
+/* DATA_SIZE: SRAM P0-P27 size - NCACHE_SIZE */
+DATA_SIZE = TOTAL_USABLE_SRAM - NCACHE_SIZE;
+
+/* Size needed by RPMSG */
+RPMSG_SHMEM_SIZE = DEFINED(__use_shmem__) ? 0x2000 : 0;
+
+/* Size needed for shared camera buffers when running USB camera on core 1 */
+CAMERA_BUFFERS_SHMEM_SIZE = DEFINED(__use_shmem__) ? 0x50000 : 0;
+
+m_ezhv_image_maximum_size = 0x00008000;
+m_core1_image_maximum_size = 0x00080000;
+
+DATA_START   = 0x20000000; /* SRAM P0 */
 DATA_END     = DATA_START + DATA_SIZE - 1 - (DEFINED(__heap_noncacheable__) ? 0 : HEAP_SIZE);
 
-NCACHE_START = 0x20420000; /* SRAM P14 */
-NCACHE_SIZE  = 0x00270000; /* SRAM P27 end - SRAM P14 start */
+NCACHE_START = DATA_START + TOTAL_USABLE_SRAM - NCACHE_SIZE;
 NCACHE_END   = NCACHE_START + NCACHE_SIZE - 1 - (DEFINED(__heap_noncacheable__) ? HEAP_SIZE : 0);
 
 HEAP_START   = DEFINED(__heap_noncacheable__) ? NCACHE_END + 1 : DATA_END + 1;
+
+/* RPMSG shared memory start address in SRAM */
+RPMSG_SHMEM_START = 0x20680000;
+
+/* Shared camera buffers start address in SRAM */
+CAMERA_BUFFERS_SHMEM_START = RPMSG_SHMEM_START + RPMSG_SHMEM_SIZE;
 
 /* Specify the memory areas */
 /* The SRAM region [0x000000-0x013FFF] is reserved for ROM bootloader execution. Can be reused after boot. */
@@ -50,10 +72,12 @@ MEMORY
 {
   m_flash_config        (RX)  : ORIGIN = 0x28000000, LENGTH = 0x00004000
   m_interrupts          (RX)  : ORIGIN = 0x28004000, LENGTH = 0x00000300
-  m_text                (RX)  : ORIGIN = 0x28004300, LENGTH = 0x001FBD00
+  m_text                (RX)  : ORIGIN = 0x28004300, LENGTH = 0x00400000
   m_data                (RW)  : ORIGIN = DATA_START, LENGTH = DATA_END - DATA_START + 1
   m_ncache              (RW)  : ORIGIN = NCACHE_START, LENGTH = NCACHE_END - NCACHE_START + 1
   m_heap                (RW)  : ORIGIN = HEAP_START, LENGTH = HEAP_SIZE
+  rpmsg_sh_mem          (RW)  : ORIGIN = RPMSG_SHMEM_START, LENGTH = RPMSG_SHMEM_SIZE
+  cam_buff_sh_mem       (RW)  : ORIGIN = CAMERA_BUFFERS_SHMEM_START, LENGTH = CAMERA_BUFFERS_SHMEM_SIZE
 }
 
 /* Define output sections */
@@ -88,6 +112,13 @@ SECTIONS
     *(.eh_frame)
     KEEP (*(.init))
     KEEP (*(.fini))
+
+    . = ALIGN(16);
+    core1_image_start = .;
+    KEEP (*(.core1_code))
+    *(.core1_code*)
+    core1_image_end = .;
+    . = ALIGN(4);
     
     ezhv_image_start = .;
     KEEP (*(.ezhvcode))
@@ -96,6 +127,7 @@ SECTIONS
     . = ALIGN(4);
   } > m_text
 
+  ASSERT((core1_image_end - core1_image_start) <= m_core1_image_maximum_size, "Core1 image size exceeds the limit")
   ASSERT((ezhv_image_end - ezhv_image_start) <= m_ezhv_image_maximum_size, "ezhv image size exceeds the limit")
 
   .ARM.extab :
@@ -220,9 +252,15 @@ SECTIONS
     __noncachedata_init_end__ = .;   /* create a global symbol at initialized ncache data end */
   } > m_ncache
   . = __noncachedata_init_end__;
+  .npu_ncache :
+  {
+    KEEP(*(.npu_ncache_data))
+    KEEP(*(.npu_ncache_data*))
+  } > m_ncache
+  ASSERT(. < 0x20580000, "Error: .npu_ncache cannot go beyond SRAM P18")
   .ncache :
   {
-    *(NonCacheable)
+    KEEP(*(NonCacheable))
     . = ALIGN(4);
     __noncachedata_end__ = .;     /* define a global symbol at ncache data end */
   } > m_ncache
@@ -234,6 +272,25 @@ SECTIONS
   _image_size = __DATA_END - __VECTOR_TABLE;
   
   /* Uninitialized data section */
+  /* NOINIT section for rpmsg_sh_mem */
+  .noinit_rpmsg_sh_mem (NOLOAD) : ALIGN(4)
+  {
+     __RPMSG_SH_MEM_START__ = .;
+     *(.noinit.$rpmsg_sh_mem*)
+     . = ALIGN(4) ;
+     __RPMSG_SH_MEM_END__ = .;
+  } > rpmsg_sh_mem
+
+  /* Uninitialized data section */
+  /* NOINIT section for cam_buff_sh_mem */
+  .noinit_cam_buff_sh_mem (NOLOAD) : ALIGN(4)
+  {
+     __CAM_BUFF_SH_MEM_START__ = .;
+     *(.noinit.$cam_buff_sh_mem*)
+     . = ALIGN(4) ;
+     __CAM_BUFF_SH_MEM_END__ = .;
+  } > cam_buff_sh_mem
+
   .bss :
   {
     /* This is used by the startup in order to initialize the .bss section */

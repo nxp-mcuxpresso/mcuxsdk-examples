@@ -1,0 +1,46 @@
+cmake_minimum_required(VERSION 3.22.0)
+
+include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
+
+project(static_image_mobilefacenet_view LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/eiq_examples/mpp/examples/static_image_mobilefacenet_view)
+
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}
+    SOURCES examples/eiq_examples/mpp/static_image_mobilefacenet_view/static_image_mobilefacenet_view.c
+            ${board_root}/${board}/eiq_examples/mpp/examples/static_image_mobilefacenet_view/mpp_config.h
+            middleware/eiq/mpp/internal/images/thispersondoesnotexist_4_96_bgra.h
+)
+
+mcux_add_include(
+    BASE_PATH ${SdkRootDirPath}
+    INCLUDES ${board_root}/${board}/eiq_examples/mpp/examples/static_image_mobilefacenet_view/
+)
+
+# board files
+include(${SdkRootDirPath}/${board_root}/${board}/eiq_examples/mpp/board.cmake)
+# model and post-processing
+# model and post-processing
+mcux_add_include(
+    BASE_PATH ${SdkRootDirPath}/middleware/eiq/mpp
+    INCLUDES    internal/models
+                internal/models/mobilefacenet
+                internal/images
+)
+
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}/middleware/eiq/mpp
+    SOURCES models/get_top_n.cpp
+            models/utils.cpp
+            models/get_top_n.h
+            models/utils.h
+            internal/models/mobilefacenet/mobilefacenet_output_postproc_quantized.cpp
+            internal/models/mobilefacenet/*.h
+)
+
+# top level
+include(${SdkRootDirPath}/CMakeLists.txt)
+# board & app specific cmake
+include(${SdkRootDirPath}/${board_root}/${board}/eiq_examples/mpp/examples/static_image_mobilefacenet_view/reconfig.cmake OPTIONAL)
+
+mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
+

@@ -12,13 +12,14 @@ one of 1000 output classes.
 [1] https://www.tensorflow.org/lite/models
 
 ## Toolchains supported
-- MCUXpresso, version 11.10.0
-- GCC Arm Embedded, version 13.2.Rel1
+Refer to build instructions:
+- [Build](../../../../middleware/eiq/mpp/Build.md)
 
 ## Hardware requirements
 Refer to board.readme for hardware setup requirements.
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/eiq_examples/mpp/board_readme.md)
 - [MIMXRT1170-EVKB](../../../_boards/evkbmimxrt1170/eiq_examples/mpp/board_readme.md)
+- [MIMXRT700-EVK](../../../_boards/mimxrt700evk/eiq_examples/mpp/board_readme.md)
 
 ## Use-cases Description
 
@@ -46,7 +47,7 @@ Pipeline 1                         +---> |  2D convert | -->  | ML Inference | -
                                                                        |                                                    |
                                                                        |                                                    |
         +-----------------+                                            |                                                    |
-	|  Main app:      |                                            |                                                    |
+        |  Main app:      |                                            |                                                    |
         | ML output       |   <----- ML Inference output callback -----+                                                    |
         | post processing |                                                                                                 |
         |                 |   ------ labeled rectangle update --------------------------------------------------------------+

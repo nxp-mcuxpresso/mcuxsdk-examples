@@ -7,13 +7,14 @@ simple camera preview pipeline.
 This example also shows how to stop and re-start the pipeline after 3 seconds.
 
 ## Toolchains supported
-- MCUXpresso, version 11.10.0
-- GCC Arm Embedded, version 13.2.Rel1
+Refer to build instructions:
+- [Build](../../../../middleware/eiq/mpp/Build.md)
 
 ## Hardware requirements
 Refer to board.readme for hardware setup requirements.
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/eiq_examples/mpp/board_readme.md)
 - [MIMXRT1170-EVKB](../../../_boards/evkbmimxrt1170/eiq_examples/mpp/board_readme.md)
+- [MIMXRT700-EVK](../../../_boards/mimxrt700evk/eiq_examples/mpp/board_readme.md)
 
 ## Pipelines Description
 

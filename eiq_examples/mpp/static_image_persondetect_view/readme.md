@@ -9,8 +9,8 @@ The machine learning framework used for this example is TensorFlow Lite Micro.
 The person detection model used is quantized persondetect model that detects multiple persons in an input image.
 
 ## Toolchains supported
-- MCUXpresso, version 11.10.0
-- GCC Arm Embedded, version 13.2.Rel1
+Refer to build instructions:
+- [Build](../../../../middleware/eiq/mpp/Build.md)
 
 ## Hardware requirements
 Refer to board.readme for hardware setup requirements.
@@ -40,11 +40,11 @@ Pipeline 1                         +---> |  2D convert | -->  | ML Inference | -
                                                                        |                                                    |
                                                                        |                                                    |
         +-----------------+                                            |                                                    |
-	|  Main app:      |                                            |                                                    |
-	| ML output       |   <----- ML Inference output callback -----+                                                    |
+        |  Main app:      |                                            |                                                    |
+        | ML output       |   <----- ML Inference output callback -----+                                                    |
         | post processing |                                                                                                 |
-	|                 |   ------   labeled rectangle update   ----------------------------------------------------------+
-	+-----------------+
+        |                 |   ------   labeled rectangle update   ----------------------------------------------------------+
+        +-----------------+
 ```
 ### Detailed description
 

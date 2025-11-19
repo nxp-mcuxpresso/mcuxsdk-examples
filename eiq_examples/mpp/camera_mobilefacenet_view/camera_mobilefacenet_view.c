@@ -55,21 +55,18 @@
 /* label rect line width */
 #define RECT_LINE_WIDTH 2
 
-#define APP_GFX_BACKEND_NAME "gfx_PXP"
-
-/*
- * SWAP_DIMS = 1 if source/display dims are reversed
- * SWAP_DIMS = 0 if source/display have the same orientation
- */
-#ifdef APP_SKIP_CONVERT_FOR_DISPLAY
-#define SWAP_DIMS 0
-#else
-#define SWAP_DIMS (((APP_DISPLAY_LANDSCAPE_ROTATE == ROTATE_90) || (APP_DISPLAY_LANDSCAPE_ROTATE == ROTATE_270)) ? 1 : 0)
+/* pick default backend if not specified */
+#ifndef APP_GFX_BACKEND_NAME
+#define APP_GFX_BACKEND_NAME NULL
 #endif
 
 /* display small and large dims */
 #define DISPLAY_SMALL_DIM MIN(APP_DISPLAY_WIDTH, APP_DISPLAY_HEIGHT)
 #define DISPLAY_LARGE_DIM MAX(APP_DISPLAY_WIDTH, APP_DISPLAY_HEIGHT)
+
+/* camera small & large dims */
+#define SRC_LARGE_DIM MAX(APP_CAMERA_WIDTH, APP_CAMERA_HEIGHT)
+#define SRC_SMALL_DIM MIN(APP_CAMERA_WIDTH, APP_CAMERA_HEIGHT)
 
 #define MODEL_ASPECT_RATIO   (1.0f * MOBILEFACENET_WIDTH / MOBILEFACENET_HEIGHT)
 /* output is displayed in landscape mode */
@@ -78,55 +75,78 @@
 #define CAMERA_ASPECT_RATIO  (1.0f * APP_CAMERA_WIDTH / APP_CAMERA_HEIGHT)
 
 /*
- * The detection zone is a rectangle centered on the display. It has the same shape as the model input.
+ * Configure the view resolution: if the display dimensions are larger than
+ * camera resolution, the view will have camera dimensions in landscape.
+ */
+#define VIEW_SMALL_DIM MIN(DISPLAY_SMALL_DIM, SRC_SMALL_DIM)
+#define VIEW_LARGE_DIM ((DISPLAY_SMALL_DIM > SRC_SMALL_DIM) ? SRC_LARGE_DIM : DISPLAY_LARGE_DIM)
+#define VIEW_ASPECT_RATIO ((DISPLAY_SMALL_DIM > SRC_SMALL_DIM) ? CAMERA_ASPECT_RATIO : DISPLAY_ASPECT_RATIO)
+#define VIEW_WIDTH ((DISPLAY_SMALL_DIM > SRC_SMALL_DIM) ? APP_CAMERA_WIDTH : APP_DISPLAY_WIDTH)
+#define VIEW_HEIGHT ((DISPLAY_SMALL_DIM > SRC_SMALL_DIM) ? APP_CAMERA_HEIGHT : APP_DISPLAY_HEIGHT)
+
+/*
+ * Assuming that the output should be in landscape, SWAP_DIMS is defined depending on the
+ * orientation of the view.
+ * SWAP_DIMS = 1 if view is not already in landscape (width and height need to be swapped)
+ * SWAP_DIMS = 0 if view is in landscape.
+ */
+#ifdef APP_SKIP_CONVERT_FOR_DISPLAY
+#define SWAP_DIMS 0
+#else
+#define SWAP_DIMS ((VIEW_WIDTH < VIEW_HEIGHT) ? 1 : 0)
+#endif
+
+
+/* The detection zone is a rectangle that has the same shape as the model input.
  * The rectangle dimensions are calculated based on the display small dim and respecting the model aspect ratio
- * The detection zone width and height depend on the display_aspect_ratio compared to the model aspect_ratio:
+ * The detection zone width and height depend on the view_aspect_ratio compared to the model aspect_ratio:
  * if the display_aspect_ratio >= model_aspect_ratio then :
- *                  (width, height) = (display_small_dim * model_aspect_ratio, display_small_dim)
+ *                  (width, height) = (view_small_dim * model_aspect_ratio, view_small_dim)
  * if the display_aspect_ratio < model_aspect_ratio then :
- *                  (width, height) = (display_small_dim, display_small_dim / model_aspect_ratio)
+ *                  (width, height) = (view_small_dim, view_small_dim / model_aspect_ratio)
  *
  * */
-#define DETECTION_ZONE_RECT_HEIGHT ((DISPLAY_ASPECT_RATIO >= MODEL_ASPECT_RATIO) ? \
-		DISPLAY_SMALL_DIM : (DISPLAY_SMALL_DIM / MODEL_ASPECT_RATIO))
-#define DETECTION_ZONE_RECT_WIDTH  ((DISPLAY_ASPECT_RATIO >= MODEL_ASPECT_RATIO) ? \
-		(DISPLAY_SMALL_DIM * MODEL_ASPECT_RATIO) : DISPLAY_SMALL_DIM)
+#define DETECTION_ZONE_RECT_HEIGHT ((VIEW_ASPECT_RATIO >= MODEL_ASPECT_RATIO) ? \
+        VIEW_SMALL_DIM : (VIEW_SMALL_DIM / MODEL_ASPECT_RATIO))
+#define DETECTION_ZONE_RECT_WIDTH  ((VIEW_ASPECT_RATIO >= MODEL_ASPECT_RATIO) ? \
+        (VIEW_SMALL_DIM * MODEL_ASPECT_RATIO) : VIEW_SMALL_DIM)
 
 /* detection zone top/left offsets */
-#define DETECTION_ZONE_RECT_TOP  (DISPLAY_SMALL_DIM - DETECTION_ZONE_RECT_HEIGHT)/2
-#define DETECTION_ZONE_RECT_LEFT (DISPLAY_LARGE_DIM - DETECTION_ZONE_RECT_WIDTH)/2
+#define DETECTION_ZONE_RECT_TOP (VIEW_SMALL_DIM - DETECTION_ZONE_RECT_HEIGHT)/2
+#define DETECTION_ZONE_RECT_LEFT ((VIEW_LARGE_DIM - DETECTION_ZONE_RECT_WIDTH)/2)
 
 /*
  *  The computation of the crop size(width and height) and the crop top/left depends on the detection
- *  zone dims and offsets and on the camera-display scaling factor SF which is calculated differently
+ *  zone dims and offsets and on the source-display scaling factor SF which is calculated differently
  *  depending on 2 constraints:
- *           * Constraint 1: display aspect ratio compared to the camera aspect ratio.
+ *           * Constraint 1: view aspect ratio compared to the source aspect ratio.
  *           * Constraint 2: SWAP_DIMS value.
- * if the display_aspect_ratio < camera_aspect_ratio :
- *            - SWAP_DIMS = 0: SF = APP_DISPLAY_WIDTH / APP_CAMERA_WIDTH
- *            - SWAP_DIMS = 1: SF = APP_DISPLAY_HEIGHT / APP_CAMERA_HEIGHT
- * if the display_aspect_ratio >= camera_aspect_ratio:
- *            - SWAP_DIMS = 0: SF = APP_DISPLAY_HEIGHT / APP_CAMERA_HEIGHT
- *            - SWAP_DIMS = 1: SF = APP_DISPLAY_WIDTH / APP_CAMERA_WIDTH
+ * if the display_aspect_ratio < source_aspect_ratio :
+ *            - SWAP_DIMS = 0: SF = VIEW_WIDTH / APP_CAMERA_WIDTH
+ *            - SWAP_DIMS = 1: SF = VIEW_HEIGHT / APP_CAMERA_HEIGHT
+ * if the display_aspect_ratio >= source_aspect_ratio:
+ *            - SWAP_DIMS = 0: SF = VIEW_HEIGHT / APP_CAMERA_HEIGHT
+ *            - SWAP_DIMS = 1: SF = VIEW_WIDTH / APP_CAMERA_WIDTH
  * the crop dims and offsets are calculated in the following way:
  * CROP_SIZE_TOP = DETECTION_ZONE_RECT_HEIGHT / SF
  * CROP_SIZE_LEFT = DETECTION_ZONE_RECT_WIDTH / SF
  * CROP_TOP = DETECTION_ZONE_RECT_HEIGHT / SF
  * CROP_LEFT = DETECTION_ZONE_RECT_LEFT / SF
  * */
-#if ((DISPLAY_LARGE_DIM * APP_CAMERA_HEIGHT) < (DISPLAY_SMALL_DIM * APP_CAMERA_WIDTH))
-#define CROP_SIZE_TOP   ((DETECTION_ZONE_RECT_HEIGHT * APP_CAMERA_WIDTH) / (SWAP_DIMS ? APP_DISPLAY_HEIGHT : APP_DISPLAY_WIDTH))
-#define CROP_SIZE_LEFT  ((DETECTION_ZONE_RECT_WIDTH * APP_CAMERA_WIDTH) / (SWAP_DIMS ? APP_DISPLAY_HEIGHT : APP_DISPLAY_WIDTH))
+#if ((VIEW_LARGE_DIM * APP_CAMERA_HEIGHT) < (VIEW_SMALL_DIM * APP_CAMERA_WIDTH))
+#define CROP_SIZE_TOP   ((DETECTION_ZONE_RECT_HEIGHT * APP_CAMERA_WIDTH) / (SWAP_DIMS ? VIEW_HEIGHT : VIEW_WIDTH))
+#define CROP_SIZE_LEFT  ((DETECTION_ZONE_RECT_WIDTH * APP_CAMERA_WIDTH) / (SWAP_DIMS ? VIEW_HEIGHT : VIEW_WIDTH))
 
-#define CROP_TOP  ((DETECTION_ZONE_RECT_TOP * APP_CAMERA_WIDTH) / (SWAP_DIMS ? APP_DISPLAY_HEIGHT : APP_DISPLAY_WIDTH))
-#define CROP_LEFT ((DETECTION_ZONE_RECT_LEFT * APP_CAMERA_WIDTH) / (SWAP_DIMS ? APP_DISPLAY_HEIGHT : APP_DISPLAY_WIDTH))
-#else   /* DISPLAY_ASPECT_RATIO() >= CAMERA_ASPECT_RATIO() */
-#define CROP_SIZE_TOP   ((DETECTION_ZONE_RECT_HEIGHT * APP_CAMERA_HEIGHT) / (SWAP_DIMS ? APP_DISPLAY_WIDTH : APP_DISPLAY_HEIGHT))
-#define CROP_SIZE_LEFT  ((DETECTION_ZONE_RECT_WIDTH * APP_CAMERA_HEIGHT) / (SWAP_DIMS ? APP_DISPLAY_WIDTH : APP_DISPLAY_HEIGHT))
+#define CROP_TOP  ((DETECTION_ZONE_RECT_TOP * APP_CAMERA_WIDTH) / (SWAP_DIMS ? VIEW_HEIGHT : VIEW_WIDTH))
+#define CROP_LEFT ((DETECTION_ZONE_RECT_LEFT * APP_CAMERA_WIDTH) / (SWAP_DIMS ? VIEW_HEIGHT : VIEW_WIDTH))
+#else   /* DISPLAY_ASPECT_RATIO() >= SOURCE_ASPECT_RATIO() */
+#define CROP_SIZE_TOP   ((DETECTION_ZONE_RECT_HEIGHT * APP_CAMERA_HEIGHT) / (SWAP_DIMS ? VIEW_WIDTH : VIEW_HEIGHT))
+#define CROP_SIZE_LEFT  ((DETECTION_ZONE_RECT_WIDTH * APP_CAMERA_HEIGHT) / (SWAP_DIMS ? VIEW_WIDTH : VIEW_HEIGHT))
 
-#define CROP_TOP  ((DETECTION_ZONE_RECT_TOP * APP_CAMERA_HEIGHT) / (SWAP_DIMS ? APP_DISPLAY_WIDTH : APP_DISPLAY_HEIGHT))
-#define CROP_LEFT ((DETECTION_ZONE_RECT_LEFT * APP_CAMERA_HEIGHT) / (SWAP_DIMS ? APP_DISPLAY_WIDTH : APP_DISPLAY_HEIGHT))
-#endif  /* DISPLAY_ASPECT_RATIO() < CAMERA_ASPECT_RATIO() */
+#define CROP_TOP  ((DETECTION_ZONE_RECT_TOP * APP_CAMERA_HEIGHT) / (SWAP_DIMS ? VIEW_WIDTH : VIEW_HEIGHT))
+#define CROP_LEFT ((DETECTION_ZONE_RECT_LEFT * APP_CAMERA_HEIGHT) / (SWAP_DIMS ? VIEW_WIDTH : VIEW_HEIGHT))
+#endif  /* DISPLAY_ASPECT_RATIO() < SOURCE_ASPECT_RATIO() */
+
 
 /* Detected boxes offsets */
 #define BOXES_OFFSET_LEFT DETECTION_ZONE_RECT_LEFT
@@ -193,8 +213,8 @@ int main()
 }
 
 int mpp_event_listener(mpp_t mpp, mpp_evt_t evt, void *evt_data, void *user_data) {
-	const mpp_inference_cb_param_t *inf_output;
-	recognition_result result;
+	static const mpp_inference_cb_param_t *inf_output;
+	static recognition_result result;
 
 	/* user_data handle contains application private data */
 	user_data_t *app_priv = (user_data_t *)user_data;
@@ -215,24 +235,29 @@ int mpp_event_listener(mpp_t mpp, mpp_evt_t evt, void *evt_data, void *user_data
 			app_priv->inference_frame_num++;
 			/* copy recognition results */
 			app_priv->result = result;
+
+			char* label = "Face not recognized";
+
+			/* update recognition label */
+			if (app_priv->result.similarity_percentage > 0)
+				strcpy(label, app_priv->result.recognized_name);
+
+			mpp_element_params_t params;
+			memset(&params, 0, sizeof(params));
+			uint8_t label_size = sizeof(params.labels.rectangles[0].label);
+			// Update the label in the first rectangle
+			params.labels.detected_rect = 1;
+			params.labels.max_rect = 1;
+			params.labels.rectangles = app_priv->labels;
+			strncpy((char *)params.labels.rectangles[0].label, label, label_size);
+			params.labels.rectangles[0].label[label_size - 1] = '\0';
+			if ( (app_priv->elem != 0) && ( app_priv->mp != NULL ) )
+			{
+				mpp_element_update(app_priv->mp, app_priv->elem, &params, true);
+			}
+
 			__atomic_store_n(&app_priv->accessing, 0, __ATOMIC_SEQ_CST);
 		}
-
-		mpp_element_params_t params;
-		memset(&params, 0, sizeof(params));
-		uint8_t label_size = sizeof(params.labels.rectangles[0].label);
-
-		const char* label = "\0";
-		// Update the label in the first rectangle
-		params.labels.detected_count = 1;
-		params.labels.max_count = 1;
-		params.labels.rectangles = app_priv->labels;
-		strncpy((char *)params.labels.rectangles[0].label, label, label_size);
-		params.labels.rectangles[0].label[label_size - 1] = '\0';
-        if ( (app_priv->elem != 0) && ( app_priv->mp != NULL ) )
-        {
-            mpp_element_update(app_priv->mp, app_priv->elem, &params);
-        }
 
 		break;
 	case MPP_EVENT_INVALID:
@@ -255,8 +280,8 @@ static void app_task(void *params)
 	if (ret)
 		goto err;
 
-	mpp_t mp;
-	mpp_params_t mpp_params;
+	static mpp_t mp;
+	static mpp_params_t mpp_params;
 	memset(&mpp_params, 0, sizeof(mpp_params));
 	mpp_params.evt_callback_f = &mpp_event_listener;
 	mpp_params.mask = MPP_EVENT_ALL;
@@ -268,13 +293,13 @@ static void app_task(void *params)
 		goto err;
 	user_data.mp = mp;
 
-	mpp_camera_params_t cam_params;
+	static mpp_camera_params_t cam_params;
 	memset(&cam_params, 0 , sizeof(cam_params));
 	cam_params.height = APP_CAMERA_HEIGHT;
 	cam_params.width =  APP_CAMERA_WIDTH;
 	cam_params.format = APP_CAMERA_FORMAT;
 	cam_params.fps    = 30;
-	ret = mpp_camera_add(mp, s_camera_name, &cam_params);
+	ret = mpp_camera_add(mp, s_camera_name, &cam_params, NULL);
 	if (ret) {
 		PRINTF("Failed to add camera %s\n", s_camera_name);
 		goto err;
@@ -284,7 +309,7 @@ static void app_task(void *params)
 	 * - first for the conversion to model
 	 * - second for the label-rect draw & display
 	 * this order is needed to avoid running inference on an image containing label-rect */
-	mpp_t mp_split;
+	static mpp_t mp_split;
 	mpp_params.exec_flag = MPP_EXEC_PREEMPT;
 
 	ret = mpp_split(mp, 1 , &mpp_params, &mp_split);
@@ -294,7 +319,7 @@ static void app_task(void *params)
 	}
 
 	/* First do crop + resize + color convert */
-	mpp_element_params_t elem_params;
+	static mpp_element_params_t elem_params;
 	memset(&elem_params, 0, sizeof(elem_params));
 	/* pick default device from the first listed and supported by Hw */
 	elem_params.convert.dev_name = APP_GFX_BACKEND_NAME;
@@ -315,7 +340,7 @@ static void app_task(void *params)
 	elem_params.convert.pixel_format = MOBILEFACENET_FORMAT;
 	elem_params.convert.ops |= MPP_CONVERT_COLOR;
 	/* then add a flip */
-	elem_params.convert.flip = FLIP_HORIZONTAL;
+	elem_params.convert.flip = APP_SRC_DISPLAY_FLIP;
 	elem_params.convert.ops |=  MPP_CONVERT_ROTATE;
 	ret = mpp_element_add(mp_split, MPP_ELEMENT_CONVERT, &elem_params, NULL);
 	if (ret ) {
@@ -324,13 +349,10 @@ static void app_task(void *params)
 	}
 
 	// configure TFlite element with model
-	mpp_element_params_t mobilefacenet_params;
+	static mpp_element_params_t mobilefacenet_params;
 	static mpp_stats_t mobilefacenet_stats;
 	memset(&mobilefacenet_params, 0 , sizeof(mpp_element_params_t));
 
-#ifdef APP_USE_NEUTRON64_MODEL
-    copy_mobilefacenet_to_ram();
-#endif
 	mobilefacenet_params.ml_inference.model_data = mobilefacenet_data;
 	mobilefacenet_params.ml_inference.model_size = mobilefacenet_data_len;
 	mobilefacenet_params.ml_inference.model_input_mean = MOBILEFACENET_INPUT_MEAN;
@@ -358,14 +380,14 @@ static void app_task(void *params)
 	/* First do color-convert + flip */
 	memset(&elem_params, 0, sizeof(elem_params));
 	/* pick default device from the first listed and supported by Hw */
-	elem_params.convert.dev_name = APP_GFX_BACKEND_NAME;
+	//elem_params.convert.dev_name = APP_GFX_BACKEND_NAME;
 	/* set output buffer dims */
 	elem_params.convert.out_buf.width = APP_CAMERA_WIDTH;
 	elem_params.convert.out_buf.height = APP_CAMERA_HEIGHT;
 	elem_params.convert.pixel_format = APP_DISPLAY_FORMAT;
 
 	/* then add a flip */
-	elem_params.convert.flip = FLIP_HORIZONTAL;
+	elem_params.convert.flip = APP_SRC_DISPLAY_FLIP;
 	elem_params.convert.ops = MPP_CONVERT_COLOR | MPP_CONVERT_ROTATE ;
 
 	ret = mpp_element_add(mp, MPP_ELEMENT_CONVERT, &elem_params, NULL);
@@ -380,8 +402,8 @@ static void app_task(void *params)
 	memset(&user_data.labels, 0, sizeof(user_data.labels));
 
 	// params init
-	elem_params.labels.max_count = 1;
-	elem_params.labels.detected_count = 1;
+	elem_params.labels.max_rect = 1;
+	elem_params.labels.detected_rect = 1;
 	elem_params.labels.rectangles = user_data.labels;
 
 	// first add detection zone box
@@ -428,15 +450,17 @@ static void app_task(void *params)
 		goto err;
 	}
 
+	mpp_stats_enable(MPP_STATS_GRP_ELEMENT);
+
 	// start preempt-able pipeline branch
-	ret = mpp_start(mp_split, 0);
+	ret = mpp_start(mp_split, 0, false);
 	if (ret) {
 		PRINTF("Failed to start pipeline");
 		goto err;
 	}
 
 	// start main pipeline branch
-	ret = mpp_start(mp, 1);
+	ret = mpp_start(mp, 1, false);
 	if (ret) {
 		PRINTF("Failed to start pipeline");
 		goto err;

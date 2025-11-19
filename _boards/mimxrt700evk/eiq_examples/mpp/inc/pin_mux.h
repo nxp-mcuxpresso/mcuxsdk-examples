@@ -53,11 +53,31 @@ void BOARD_InitMipiPanelPinsEvk(void); /* Function assigned for the Cortex-M33 (
 #define IOPCTL_PIO_FULLDRIVE_DI 0x00u     /*!<@brief Normal drive */
 #define IOPCTL_PIO_FUNC1 0x01u            /*!<@brief Selects pin function 1 */
 #define IOPCTL_PIO_INBUF_DI 0x00u         /*!<@brief Disable input buffer function */
+#define IOPCTL_PIO_INBUF_EN 0x40u         /*!<@brief Enables input buffer function */
 #define IOPCTL_PIO_INV_DI 0x00u           /*!<@brief Input function is not inverted */
 #define IOPCTL_PIO_PSEDRAIN_DI 0x00u      /*!<@brief Pseudo Output Drain is disabled */
 #define IOPCTL_PIO_PULLDOWN_EN 0x00u      /*!<@brief Enable pull-down function */
 #define IOPCTL_PIO_PUPD_DI 0x00u          /*!<@brief Disable pull-up / pull-down function */
 #define IOPCTL_PIO_SLEW_RATE_NORMAL 0x00u /*!<@brief Normal mode */
+
+/*! @name PIO1_0 (coord N5), Debug_TXD
+  @{ */
+/* Routed pin properties */
+#define BOARD_INITPINSDEBUG_UART_Debug_TXD_PERIPHERAL LP_FLEXCOMM0  /*!<@brief Peripheral name */
+#define BOARD_INITPINSDEBUG_UART_Debug_TXD_SIGNAL P1                /*!<@brief Signal name */
+#define BOARD_INITPINSDEBUG_UART_Debug_TXD_PORT 1U                  /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITPINSDEBUG_UART_Debug_TXD_PIN 0U                   /*!<@brief PORT pin number */
+#define BOARD_INITPINSDEBUG_UART_Debug_TXD_PIN_MASK (1U << 0U)      /*!<@brief PORT pin mask */
+                                                                    /* @} */
+
+/*! @name PIO0_31 (coord N4), Debug_RXD
+  @{ */
+/* Routed pin properties */
+#define BOARD_INITPINSDEBUG_UART_Debug_RXD_PERIPHERAL LP_FLEXCOMM0   /*!<@brief Peripheral name */
+#define BOARD_INITPINSDEBUG_UART_Debug_RXD_SIGNAL P0                 /*!<@brief Signal name */
+#define BOARD_INITPINSDEBUG_UART_Debug_RXD_PORT 0U                   /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITPINSDEBUG_UART_Debug_RXD_PIN 31U                   /*!<@brief PORT pin number */
+#define BOARD_INITPINSDEBUG_UART_Debug_RXD_PIN_MASK (1U << 31U)      /*!<@brief PORT pin mask */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.

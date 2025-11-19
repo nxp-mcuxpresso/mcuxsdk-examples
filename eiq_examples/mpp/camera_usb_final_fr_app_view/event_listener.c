@@ -1,0 +1,159 @@
+/*
+ * Copyright 2025 NXP
+ * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+#include "stdio.h"
+
+#include "FreeRTOS.h"
+#include "atomic.h"
+
+#include "fsl_common.h"
+#include "fsl_debug_console.h"
+
+#include "mpp_api.h"
+#include "mpp_config.h"
+
+#include "face_box_utils.h"
+#include "app_constants.h"
+#include "app_types.h"
+
+#include "mobilefacenet_output_postproc_quantized.h"
+#include "scrfd_kps_output_postproc.h"
+#include "antispoofing_output_postproc_quantized.h"
+
+
+int mpp_event_listener(mpp_t mpp, mpp_evt_t evt, void *evt_data, void *user_data)
+{
+    status_t ret = 0;
+    const mpp_inference_cb_param_t *inf_output;
+    recognition_result result;
+    antispoofing_result liveness;
+
+    /* user_data handle contains application private data */
+    user_data_t *app_priv = (user_data_t *)user_data;
+
+    switch(evt) {
+    case MPP_EVENT_INFERENCE_OUTPUT_READY:
+        /* cast evt_data pointer to correct structure matching the event */
+        inf_output = (const mpp_inference_cb_param_t *) evt_data;
+
+        /* check that we can modify the user data (not accessed by other task) */
+        if (Atomic_CompareAndSwap_u32(&app_priv->accessing, 1, 0) == ATOMIC_COMPARE_AND_SWAP_SUCCESS) {
+
+            if (app_priv->cur_model == MODEL_MOBILEFACENET)
+            {
+                MOBILEFACENET_ProcessOutput(
+                        inf_output,
+						app_priv->db,
+						app_priv->db_max,
+                        &result);
+
+                /* copy recognition results */
+                memcpy(&app_priv->result, &result, sizeof(result));
+                app_priv->last_model = MODEL_MOBILEFACENET;
+            }
+            else if (app_priv->cur_model == MODEL_ANTISPOOFING)
+            {
+                ANTISPOOFING_ProcessOutput(
+                inf_output,    
+                &liveness);
+                memcpy(&app_priv->liveness, &liveness, sizeof(liveness));
+                app_priv->last_model = MODEL_ANTISPOOFING;
+            }
+            else
+            {
+                ret = SCRFDKPS_ProcessOutput(
+                        inf_output,
+                        app_priv->final_boxes,
+                        NUM_BOXES_MAX);
+
+                app_priv->last_model = MODEL_SCRFD_KPS;
+                /* count valid results */
+                app_priv->detected_count = 0;
+                for (uint32_t i = 0; i < NUM_BOXES_MAX; i++)
+                {
+                    if (app_priv->final_boxes[i].score > 0)
+                        app_priv->detected_count++;
+                }
+            }
+            if (ret != kStatus_Success)
+                PRINTF("mpp_event_listener: process output error!");
+
+            app_priv->inference_time_ms = inf_output->inference_time_ms;
+
+            if (app_priv->cur_model == MODEL_MOBILEFACENET)
+            {
+                /* manage recognition vs registration */
+                if (app_priv->result.similarity_percentage > 0)
+                {
+                    PRINTF("*** Recognized %s ***\r\n", app_priv->result.recognized_name);
+
+                    if (app_priv->state == STATE_RECOGNIZING)
+                        app_priv->state = STATE_RECOGNIZED;
+
+                }
+                else
+                {
+                    /* *** Face not recognized! *** */
+
+                    if (app_priv->state == STATE_RECOGNIZING)
+                        app_priv->state = STATE_NOT_RECOGNIZED;
+
+                    break;
+                }
+            }
+            else if (app_priv->cur_model == MODEL_ANTISPOOFING)
+            {
+                /* Check whether the face is real or fake, if it's real proceed with recognition else stop the pipeline. */
+                if (app_priv->liveness.result[1] > SPOOFING_THRESHOLD)
+                {
+                    PRINTF("*** Real Face, proceeding with recognition! ***\r\n");
+                    app_priv->state = STATE_REAL;
+                }
+                else
+                {
+                    PRINTF("*** Fake Face, can't proceed with recognition! ***\r\n");
+                    app_priv->state = STATE_SPOOF;
+                }
+            }
+
+            /* update labeled rectangle */
+            mpp_element_params_t params;
+            memset(&params, 0, sizeof(params));
+            /* detected_count contains at least the detection zone box */
+            params.labels.detected_rect = app_priv->detected_count + 1;
+            params.labels.max_rect = MAX_LABEL_RECTS;
+            params.labels.rectangles = app_priv->labels;
+            /* Allocate landmarks array if not already done */
+            mpp_landmark_t landmarks[MAX_LABEL_RECTS * SCRFD_NUM_LANDMARKS];
+            memset(landmarks, 0, sizeof(landmarks));
+            params.labels.max_landmk = MAX_LABEL_RECTS * SCRFD_NUM_LANDMARKS;
+            params.labels.detected_landmk = 0;
+            params.labels.landmarks = app_priv->landmarks;
+            bool face_ok = boxes_to_rects(app_priv->final_boxes, NUM_BOXES_MAX, MAX_LABEL_RECTS, params.labels.rectangles);
+
+            if ( (face_ok) && (app_priv->state == STATE_DETECTING) )
+                app_priv->state = STATE_DETECTED;
+
+            if ( (app_priv->labrect_elem != 0) && ( app_priv->mp != NULL ) )
+            {
+                mpp_element_update(app_priv->mp, app_priv->labrect_elem, &params, true);
+            }
+
+            /* end of modification of user data */
+            __atomic_store_n(&app_priv->accessing, 0, __ATOMIC_SEQ_CST);
+        }
+
+        app_priv->inference_frame_num++;
+        break;
+    case MPP_EVENT_INVALID:
+    default:
+        /* nothing to do */
+        break;
+    }
+
+    return 0;
+}

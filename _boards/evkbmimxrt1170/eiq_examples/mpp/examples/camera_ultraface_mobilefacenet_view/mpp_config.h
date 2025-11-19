@@ -28,7 +28,8 @@
 #define HAL_ENABLE_GFX_DEV_Cpu                1
 #define HAL_ENABLE_GFX_DEV_GPU                0
 
-#define APP_GFX_BACKEND_NAME "gfx_CPU"
+#define APP_GFX_BACKEND_NAME "gfx_PXP"
+#define APP_GFX_BACKEND_INFER_NAME "gfx_PXP"
 
 /**
  * This is the inference HAL configuration
@@ -108,9 +109,17 @@
 /* maximum number of boxes stored in RAM by APP (1box ~= 16B) */
 #define APP_MAX_BOXES 10000
 
+/* enable dynamic recognition box matching detected face */
+#define APP_DYNAMIC_RECO_ZONE
+
+/* enable rotation for display */
+#define APP_SKIP_CONVERT_FOR_DISPLAY 0
+
 #define APP_PIPELINE_TASK_MAX_PRIO            5
 
 #define APP_RC_CYCLE_MIN 100
 #define APP_RC_CYCLE_INC 10
+
+#define APP_INFERENCE_IN_BCKGD 1
 
 #endif /* _MPP_CONFIG_H */

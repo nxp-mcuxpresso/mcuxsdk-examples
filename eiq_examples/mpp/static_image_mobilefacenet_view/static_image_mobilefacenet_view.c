@@ -27,7 +27,7 @@
 #include "pin_mux.h"
 #include "clock_config.h"
 #include "board.h"
-#include "board_init.h"
+#include "app.h"
 
 /* MPP includes */
 #include "mpp_api.h"
@@ -40,7 +40,7 @@
 #include APP_DATABASE_NAME
 
 /* Model output post-processing */
-#include "models/mobilefacenet/mobilefacenet_output_postproc_quantized.h"
+#include "mobilefacenet_output_postproc_quantized.h"
 
 /* Input image */
 #include APP_STATIC_IMAGE_NAME
@@ -57,7 +57,11 @@ void *image_data = (void *)thispersondoesnotexist_4_96_bgra_data;
 /* label rect line width */
 #define RECT_LINE_WIDTH 2
 
-#define APP_GFX_BACKEND_NAME "gfx_PXP"
+/* pick default backend if not specified */
+#ifndef APP_GFX_BACKEND_NAME
+#define APP_GFX_BACKEND_NAME NULL
+#endif
+
 /*
  * SWAP_DIMS = 1 if source/display dims are reversed
  * SWAP_DIMS = 0 if source/display have the same orientation
@@ -190,7 +194,7 @@ int main()
 
 int mpp_event_listener(mpp_t mpp, mpp_evt_t evt, void *evt_data, void *user_data) {
 	const mpp_inference_cb_param_t *inf_output;
-	recognition_result result;
+	static recognition_result result;
 
 	/* user_data handle contains application private data */
 	user_data_t *app_priv = (user_data_t *)user_data;
@@ -211,24 +215,29 @@ int mpp_event_listener(mpp_t mpp, mpp_evt_t evt, void *evt_data, void *user_data
 			app_priv->inference_frame_num++;
 			/* copy recognition results */
 			app_priv->result = result;
+
+			char* label = "Face not recognized";
+
+			/* update recognition label */
+			if (app_priv->result.similarity_percentage > 0)
+				strcpy(label, app_priv->result.recognized_name);
+
+			mpp_element_params_t params;
+			memset(&params, 0, sizeof(params));
+			uint8_t label_size = sizeof(params.labels.rectangles[0].label);
+			// Update the label in the first rectangle
+			params.labels.detected_rect = 1;
+			params.labels.max_rect = 1;
+			params.labels.rectangles = app_priv->labels;
+			strncpy((char *)params.labels.rectangles[0].label, label, label_size);
+			params.labels.rectangles[0].label[label_size - 1] = '\0';
+			if ( (app_priv->elem != 0) && ( app_priv->mp != NULL ) )
+			{
+				mpp_element_update(app_priv->mp, app_priv->elem, &params, true);
+			}
 			__atomic_store_n(&app_priv->accessing, 0, __ATOMIC_SEQ_CST);
 		}
 
-		mpp_element_params_t params;
-		memset(&params, 0, sizeof(params));
-		uint8_t label_size = sizeof(params.labels.rectangles[0].label);
-
-		const char* label = "\0";
-		// Update the label in the first rectangle
-		params.labels.detected_count = 1;
-		params.labels.max_count = 1;
-		params.labels.rectangles = app_priv->labels;
-		strncpy((char *)params.labels.rectangles[0].label, label, label_size);
-		params.labels.rectangles[0].label[label_size - 1] = '\0';
-        if ( (app_priv->elem != 0) && ( app_priv->mp != NULL ) )
-        {
-            mpp_element_update(app_priv->mp, app_priv->elem, &params);
-        }
 
 		break;
 	case MPP_EVENT_INVALID:
@@ -248,12 +257,16 @@ static void app_task(void *params)
 	PRINTF("[%s]\r\n", mpp_get_version());
 	PRINTF("Inference Engine: TensorFlow-Lite Micro \r\n");
 
-	ret = mpp_api_init(NULL);
+	/* fix max pipeline task priority. */
+	static mpp_api_params_t api_params;
+	api_params.pipeline_task_max_prio = APP_PIPELINE_TASK_MAX_PRIO;
+
+	ret = mpp_api_init(&api_params);
 	if (ret)
 		goto err;
 
-	mpp_t mp;
-	mpp_params_t mpp_params;
+	static mpp_t mp;
+	static mpp_params_t mpp_params;
 	memset(&mpp_params, 0, sizeof(mpp_params));
 	mpp_params.evt_callback_f = &mpp_event_listener;
 	mpp_params.mask = MPP_EVENT_ALL;
@@ -266,7 +279,7 @@ static void app_task(void *params)
 
 	user_data.mp = mp;
 
-	mpp_img_params_t img_params;
+	static mpp_img_params_t img_params;
 	memset(&img_params, 0, sizeof (mpp_img_params_t));
 	img_params.format = SRC_IMAGE_FORMAT;
 	img_params.width = SRC_IMAGE_WIDTH;
@@ -274,7 +287,7 @@ static void app_task(void *params)
 	mpp_static_img_add(mp, &img_params, (void *)image_data, NULL);
 
 	// split the pipeline into 2 branches
-	mpp_t mp_split;
+	static mpp_t mp_split;
 	mpp_params.exec_flag = MPP_EXEC_PREEMPT;
 	ret = mpp_split(mp, 1, &mpp_params, &mp_split);
 	if (ret) {
@@ -316,13 +329,10 @@ static void app_task(void *params)
 	}
 
 	// configure TFlite element with model
-	mpp_element_params_t mobilefacenet_params;
+	static mpp_element_params_t mobilefacenet_params;
 	static mpp_stats_t mobilefacenet_stats;
 	memset(&mobilefacenet_params, 0 , sizeof(mpp_element_params_t));
 
-#ifdef APP_USE_NEUTRON64_MODEL
-    copy_mobilefacenet_to_ram();
-#endif
 	mobilefacenet_params.ml_inference.model_data = mobilefacenet_data;
 	mobilefacenet_params.ml_inference.model_size = mobilefacenet_data_len;
 	mobilefacenet_params.ml_inference.model_input_mean = MOBILEFACENET_INPUT_MEAN;
@@ -380,8 +390,8 @@ static void app_task(void *params)
 	memset(&user_data.labels, 0, sizeof(user_data.labels));
 
 	// params init
-	elem_params.labels.max_count = 1;
-	elem_params.labels.detected_count = 1;
+	elem_params.labels.max_rect = 1;
+	elem_params.labels.detected_rect = 1;
 	elem_params.labels.rectangles = user_data.labels;
 
 	// first add detection zone box
@@ -417,7 +427,7 @@ static void app_task(void *params)
 			goto err;
 		}
 	}
-	mpp_display_params_t disp_params;
+	static mpp_display_params_t disp_params;
 	memset(&disp_params, 0 , sizeof(disp_params));
 	disp_params.format = APP_DISPLAY_FORMAT;
 	disp_params.width  = APP_DISPLAY_WIDTH;
@@ -431,14 +441,14 @@ static void app_task(void *params)
 	mpp_stats_enable(MPP_STATS_GRP_ELEMENT);
 
 	// start preempt-able pipeline branch
-	ret = mpp_start(mp_split, 0);
+	ret = mpp_start(mp_split, 0, false);
 	if (ret) {
 		PRINTF("Failed to start pipeline");
 		goto err;
 	}
 
 	// start main pipeline branch
-	ret = mpp_start(mp, 1);
+	ret = mpp_start(mp, 1, false);
 	if (ret) {
 		PRINTF("Failed to start pipeline");
 		goto err;

@@ -145,7 +145,7 @@ static void app_task(void *params) {
     cam_params.format = args->src_format;
     cam_params.fps    = 30;
     cam_params.stripe = stripe_mode;
-    ret = mpp_camera_add(mp, args->camera_name, &cam_params);
+    ret = mpp_camera_add(mp, args->camera_name, &cam_params, NULL);
     if (ret) {
         PRINTF("Failed to add camera %s\n", args->camera_name);
         goto err;
@@ -189,7 +189,7 @@ static void app_task(void *params) {
     }
 
     /* start mpp and run application pipeline */
-    ret = mpp_start(mp, 1);
+    ret = mpp_start(mp, 1, false);
     if (ret) {
         PRINTF("Failed to start pipeline\n");
         goto err;
@@ -208,7 +208,7 @@ static void app_task(void *params) {
     vTaskDelay(3000/portTICK_PERIOD_MS);
 
     /* restart the pipeline */
-    ret = mpp_start(mp, 0);
+    ret = mpp_start(mp, 0, false);
     if (ret) {
         PRINTF("Failed to restart pipeline\n");
         goto err;

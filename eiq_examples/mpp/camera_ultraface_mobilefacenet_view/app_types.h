@@ -22,7 +22,7 @@ typedef enum _e_state {
     STATE_DETECTED,
     STATE_RECOGNIZING,
     STATE_RECOGNIZED,
-    STATE_REGISTERING,  // TODO use this state to let user input its name
+    STATE_REGISTERING,  // use this state to let user input its name
     STATE_REGISTERED,
     STATE_REGISTRATION_CANCELLED,
     STATE_NOTIFYING_USER,
@@ -45,6 +45,7 @@ typedef struct _user_data_t {
     e_state state;          /* state-machine for the app */
     face_t * db;            /* embeddings database */
     int db_max;             /* embeddings database max size. */
+    mpp_stats_t *api_stats; /* global stats */
 } user_data_t;
 
 #endif /* APP_TYPES_H_ */

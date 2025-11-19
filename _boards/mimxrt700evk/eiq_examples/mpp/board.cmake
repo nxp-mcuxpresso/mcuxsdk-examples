@@ -14,7 +14,18 @@ mcux_add_source(
             ${board_root}/${board}/eiq_examples/mpp/inc/app.h
             ${board_root}/${board}/eiq_examples/mpp/inc/utick_config.h
             ${board_root}/${board}/eiq_examples/mpp/inc/FreeRTOSConfig.h
+            ${board_root}/${board}/eiq_examples/mpp/inc/fsl_debug_console_conf.h
             middleware/eiq/mpp/hal/hal_${board}.c
+)
+
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}
+    SOURCES ${board_root}/${board}/eiq_examples/mpp/drivers/flexio_camera.c
+            ${board_root}/${board}/eiq_examples/mpp/drivers/camera_config.h
+            ${board_root}/${board}/eiq_examples/mpp/drivers/flexio_camera.h
+            ${board_root}/${board}/eiq_examples/mpp/drivers/ezhv_para.h
+            ${board_root}/${board}/eiq_examples/mpp/drivers/ezhv.bin
+            ${board_root}/${board}/eiq_examples/mpp/drivers/incbin_cm33_core0.S
 )
 
 mcux_add_include(
@@ -22,16 +33,6 @@ mcux_add_include(
     INCLUDES ${board_root}/${board}/eiq_examples/mpp/drivers
              ${board_root}/${board}/eiq_examples/mpp/inc
 )
-
-mcux_add_source(
-        BASE_PATH ${SdkRootDirPath}
-        SOURCES ${board_root}/${board}/eiq_examples/mpp/drivers/flexio_camera.c
-                ${board_root}/${board}/eiq_examples/mpp/drivers/camera_config.h
-                ${board_root}/${board}/eiq_examples/mpp/drivers/flexio_camera.h
-                ${board_root}/${board}/eiq_examples/mpp/drivers/ezhv_para.h
-                ${board_root}/${board}/eiq_examples/mpp/drivers/ezhv.bin
-                ${board_root}/${board}/eiq_examples/mpp/drivers/incbin_cm33_core0.S
-    )
 
 mcux_add_macro(
     CC "-DGCID_REV_CID=gc555/0x423_ECO \
@@ -45,7 +46,6 @@ mcux_add_macro(
         -DUSB_STACK_FREERTOS \
         -DUSB_HOST_CONFIG_BUFFER_PROPERTY_CACHEABLE=1 \
         -DFSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1 \
-        -DOSA_USED \
         -DUSE_RTOS=1 \
         -DPROCESS_IMAGE=1 \
         -DUSE_PSRAM_JPG_BUFFERS=1 \
@@ -54,7 +54,6 @@ mcux_add_macro(
         -DUSB_STACK_FREERTOS \
         -DUSB_HOST_CONFIG_BUFFER_PROPERTY_CACHEABLE=1 \
         -DFSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1 \
-        -DOSA_USED \
         -DUSE_RTOS=1 \
         -DPROCESS_IMAGE=1 \
         -DUSE_PSRAM_JPG_BUFFERS=1 \

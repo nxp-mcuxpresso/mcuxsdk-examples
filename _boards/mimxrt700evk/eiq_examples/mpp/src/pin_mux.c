@@ -91,11 +91,11 @@ void BOARD_InitMipiPanelPinsEvk(void)
 /* clang-format off */
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOARD_InitUARTPins:
+BOARD_InitPinsDEBUG_UART:
 - options: {callFromInitBoot: 'true', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: N4, peripheral: LP_FLEXCOMM0, signal: P0, pin_signal: PIO0_31/LP_FLEXCOMM0_P0/UTICK0_CAP2/SCT0_OUT8/CTIMER4_MAT0}
-  - {pin_num: N5, peripheral: LP_FLEXCOMM0, signal: P1, pin_signal: PIO1_0/LP_FLEXCOMM0_P1/SCT0_OUT9/CTIMER4_MAT1}
+  - {pin_num: N5, peripheral: LP_FLEXCOMM0, signal: P1, pin_signal: PIO1_0, SelectsTransmitterCurrentDrive: O_100}
+  - {pin_num: N4, peripheral: LP_FLEXCOMM0, signal: P0, pin_signal: PIO0_31, SelectsTransmitterCurrentDrive: O_100, InputBufferEnable: enable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -112,39 +112,39 @@ void BOARD_InitUARTPins(void)
     /* Reset IOPCTL0 module */
     RESET_ClearPeripheralReset(kIOPCTL0_RST_SHIFT_RSTn);
 
-    const uint32_t port0_pin31_config = (/* Pin is configured as LP_FLEXCOMM0_P0 */
-                                         IOPCTL_PIO_FUNC1 |
-                                         /* Disable pull-up / pull-down function */
-                                         IOPCTL_PIO_PUPD_DI |
-                                         /* Enable pull-down function */
-                                         IOPCTL_PIO_PULLDOWN_EN |
-                                         /* Disable input buffer function */
-                                         IOPCTL_PIO_INBUF_DI |
-                                         /* Pseudo Output Drain is disabled */
-                                         IOPCTL_PIO_PSEDRAIN_DI |
-                                         /* Input function is not inverted */
-                                         IOPCTL_PIO_INV_DI |
-                                         /* Selects transmitter current drive 100ohm */
-                                         IOPCTL_PIO_DRIVE_100OHM);
+    const uint32_t Debug_RXD = (/* Pin is configured as LP_FLEXCOMM0_P0 */
+                                IOPCTL_PIO_FUNC1 |
+                                /* Disable pull-up / pull-down function */
+                                IOPCTL_PIO_PUPD_DI |
+                                /* Enable pull-down function */
+                                IOPCTL_PIO_PULLDOWN_EN |
+                                /* Enables input buffer function */
+                                IOPCTL_PIO_INBUF_EN |
+                                /* Pseudo Output Drain is disabled */
+                                IOPCTL_PIO_PSEDRAIN_DI |
+                                /* Input function is not inverted */
+                                IOPCTL_PIO_INV_DI |
+                                /* Selects transmitter current drive 100ohm */
+                                IOPCTL_PIO_DRIVE_100OHM);
     /* PORT0 PIN31 (coords: N4) is configured as LP_FLEXCOMM0_P0 */
-    IOPCTL_PinMuxSet(0U, 31U, port0_pin31_config);
+    IOPCTL_PinMuxSet(BOARD_INITPINSDEBUG_UART_Debug_RXD_PORT, BOARD_INITPINSDEBUG_UART_Debug_RXD_PIN, Debug_RXD);
 
-    const uint32_t port1_pin0_config = (/* Pin is configured as LP_FLEXCOMM0_P1 */
-                                        IOPCTL_PIO_FUNC1 |
-                                        /* Disable pull-up / pull-down function */
-                                        IOPCTL_PIO_PUPD_DI |
-                                        /* Enable pull-down function */
-                                        IOPCTL_PIO_PULLDOWN_EN |
-                                        /* Disable input buffer function */
-                                        IOPCTL_PIO_INBUF_DI |
-                                        /* Pseudo Output Drain is disabled */
-                                        IOPCTL_PIO_PSEDRAIN_DI |
-                                        /* Input function is not inverted */
-                                        IOPCTL_PIO_INV_DI |
-                                        /* Selects transmitter current drive 100ohm */
-                                        IOPCTL_PIO_DRIVE_100OHM);
+    const uint32_t Debug_TXD = (/* Pin is configured as LP_FLEXCOMM0_P1 */
+                                IOPCTL_PIO_FUNC1 |
+                                /* Disable pull-up / pull-down function */
+                                IOPCTL_PIO_PUPD_DI |
+                                /* Enable pull-down function */
+                                IOPCTL_PIO_PULLDOWN_EN |
+                                /* Disable input buffer function */
+                                IOPCTL_PIO_INBUF_DI |
+                                /* Pseudo Output Drain is disabled */
+                                IOPCTL_PIO_PSEDRAIN_DI |
+                                /* Input function is not inverted */
+                                IOPCTL_PIO_INV_DI |
+                                /* Selects transmitter current drive 100ohm */
+                                IOPCTL_PIO_DRIVE_100OHM);
     /* PORT1 PIN0 (coords: N5) is configured as LP_FLEXCOMM0_P1 */
-    IOPCTL_PinMuxSet(1U, 0U, port1_pin0_config);
+    IOPCTL_PinMuxSet(BOARD_INITPINSDEBUG_UART_Debug_TXD_PORT, BOARD_INITPINSDEBUG_UART_Debug_TXD_PIN, Debug_TXD);
 }
 
 /* clang-format off */

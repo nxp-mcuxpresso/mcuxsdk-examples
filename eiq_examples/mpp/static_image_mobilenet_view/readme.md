@@ -13,8 +13,8 @@ one of 1000 output classes.
 [1] https://www.tensorflow.org/lite/models
 
 ## Toolchains supported
-- MCUXpresso, version 11.10.0
-- GCC Arm Embedded, version 13.2.Rel1
+Refer to build instructions:
+- [Build](../../../../middleware/eiq/mpp/Build.md)
 
 ## Hardware requirements
 Refer to board_readme.md for hardware setup requirements.

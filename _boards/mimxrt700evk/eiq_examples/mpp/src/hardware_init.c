@@ -14,12 +14,18 @@
 #include "pmic_support.h"
 #include "fsl_device_registers.h"
 #include "app.h"
+#include "mpp_config.h"
 
 #ifdef USE_USB_CAMERA
 #include "usb_host_config.h"
 #include "usb_host.h"
 #include "usb_phy.h"
 #endif /* USE_USB_CAMERA */
+
+#ifdef MCMGR_USED
+#include "mcmgr.h"
+#include "fsl_cache.h"
+#endif /* MCMGR_USED */
 
 /*${header:end}*/
 
@@ -97,6 +103,30 @@ void USB_HostTaskFn(void *param)
 }
 #endif /* USE_USB_CAMERA */
 
+#ifdef MCMGR_USED
+#ifdef CORE1_IMAGE_COPY_TO_RAM
+uint32_t get_core1_image_size(void)
+{
+    uint32_t image_size;
+#if defined(__CC_ARM) || defined(__ARMCC_VERSION)
+    image_size = (uint32_t)&Image$$CORE1_REGION$$Length;
+#elif defined(__ICCARM__)
+    image_size = (uint32_t)__section_end("__core1_image") - (uint32_t)__section_begin("__core1_image");
+#elif defined(__GNUC__)
+    image_size = (uint32_t)core1_image_size;
+#endif
+    return image_size;
+}
+#endif /* CORE1_IMAGE_COPY_TO_RAM */
+
+#ifdef APP_INVALIDATE_CACHE_FOR_SECONDARY_CORE_IMAGE_MEMORY
+void invalidate_cache_for_core1_image_memory(uint32_t address, uint32_t size_byte)
+{
+    XCACHE_CleanInvalidateCacheByRange(address, size_byte);
+}
+#endif /* APP_INVALIDATE_CACHE_FOR_SECONDARY_CORE_IMAGE_MEMORY */
+#endif /* MCMGR_USED */
+
 #if (DEMO_PANEL_RM67162 == DEMO_PANEL)
 void BOARD_MIPI_TE_GPIO_IRQ_Handler(void)
 {
@@ -134,9 +164,11 @@ void BOARD_Init(void)
     BOARD_InitDebugConsole();
     BOARD_Init16bitsPsRam(XSPI2);
 
+#if (defined(HAL_ENABLE_INFERENCE_TFLITE) && (HAL_ENABLE_INFERENCE_TFLITE == 1) && defined(APP_USE_NEUTRON64_MODEL))
     POWER_DisablePD(kPDRUNCFG_APD_NPU);
     POWER_DisablePD(kPDRUNCFG_PPD_NPU);
     POWER_ApplyPD();
+#endif
 
 #if (DEMO_PANEL_TFT_PROTO_5 == DEMO_PANEL)
 #if (SSD1963_DRIVEN_BY == SSD1963_DRIVEN_BY_FLEXIO)
@@ -162,6 +194,15 @@ void BOARD_Init(void)
     CLOCK_EnableClock(kCLOCK_Gpio3);
     RESET_PeripheralReset(kGPIO3_RST_SHIFT_RSTn);
 
+#if (defined(HAL_ENABLE_JPEG_HW) && (HAL_ENABLE_JPEG_HW == 1))
+    /* Disable JPEG decoder power down. */
+    POWER_DisablePD(kPDRUNCFG_PPD_JPEGDEC);
+    POWER_DisablePD(kPDRUNCFG_APD_JPEGDEC);
+    POWER_ApplyPD();
+#endif
+
+    POWER_DisablePD(kPDRUNCFG_SHUT_SENSEP_MAINCLK);
+    POWER_ApplyPD();
 }
 
 /*${function:end}*/

@@ -356,8 +356,8 @@ static void app_task(void *params)
     memset(&user_data.labels, 0, sizeof(user_data.labels));
 
     // params init
-    elem_params.labels.max_count = 1;
-    elem_params.labels.detected_count = 1;
+    elem_params.labels.max_rect = 1;
+    elem_params.labels.detected_rect = 1;
     elem_params.labels.rectangles = user_data.labels;
 
     // first add detection zone box
@@ -407,14 +407,14 @@ static void app_task(void *params)
     mpp_stats_enable(MPP_STATS_GRP_ELEMENT);
 
     // start preempt-able pipeline branch
-    ret = mpp_start(mp_split, 0);
+    ret = mpp_start(mp_split, 0, false);
     if (ret) {
         PRINTF("Failed to start pipeline");
         goto err;
     }
 
     // start main pipeline branch
-    ret = mpp_start(mp, 1);
+    ret = mpp_start(mp, 1, false);
     if (ret) {
         PRINTF("Failed to start pipeline");
         goto err;

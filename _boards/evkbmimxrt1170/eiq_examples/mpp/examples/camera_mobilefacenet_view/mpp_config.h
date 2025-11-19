@@ -76,6 +76,8 @@
 /* rotation is needed to display in landscape because display RK055 is portrait */
 #define APP_DISPLAY_LANDSCAPE_ROTATE          ROTATE_90
 
+#define APP_SRC_DISPLAY_FLIP                  FLIP_HORIZONTAL
+
 /* enable checksum computation on display framebuffer [TESTS ONLY] */
 #ifndef ENABLE_FB_CHEKSUM
 #define ENABLE_FB_CHEKSUM                     0

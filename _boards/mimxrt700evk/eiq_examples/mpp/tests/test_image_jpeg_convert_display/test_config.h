@@ -19,7 +19,17 @@
 #define APP_CONFIG 0
 #endif
 
-#if (APP_CONFIG==0) /* default app config */
+#if (APP_CONFIG==0) /* default app config YUYV image */
+#include "images/tiger_yuyv_jpg.h"
+#define SRC_IMAGE_FORMAT            SRC_IMAGE_TIGER_JPEG_FORMAT
+#define SRC_IMAGE_CHANNELS_NUMBER   SRC_IMAGE_TIGER_JPEG_CHANNELS_NUMBER
+#define SRC_IMAGE_HEIGHT            SRC_IMAGE_TIGER_JPEG_HEIGHT
+#define SRC_IMAGE_WIDTH             SRC_IMAGE_TIGER_JPEG_WIDTH
+void *image_data = (void *)tiger_yuv_jpg;
+unsigned int image_data_len = tiger_jpeg_data_len;
+#define IMAGE_NAME "tiger_jpeg"
+#define EXPECTED_CHECKSUM 0x0
+#elif (APP_CONFIG==1) /* YUV444 */
 #include "images/tiger_jpeg.h"
 #define SRC_IMAGE_FORMAT            SRC_IMAGE_TIGER_JPEG_FORMAT
 #define SRC_IMAGE_CHANNELS_NUMBER   SRC_IMAGE_TIGER_JPEG_CHANNELS_NUMBER

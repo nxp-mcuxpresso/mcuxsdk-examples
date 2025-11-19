@@ -89,6 +89,7 @@ int mpp_event_listener(mpp_t mpp, mpp_evt_t evt, void *evt_data, void *user_data
                 else
                 {
                     PRINTF("*** Face not recognized, register it! ***\r\n");
+                    PRINTF("*** Type 'Add <person_name>' to register the face.***\r\n");
 
                     if (app_priv->state == STATE_RECOGNIZING)
                         app_priv->state = STATE_REGISTERING;
@@ -96,13 +97,21 @@ int mpp_event_listener(mpp_t mpp, mpp_evt_t evt, void *evt_data, void *user_data
                     break;
                 }
             }
+            else /* MODEL_ULTRAFACE */
+            {
+                if (app_priv->detected_count == 0)
+                {
+                    /* no face: clear greetings */
+                    strcpy((char *)app_priv->labels[0].label, ZONE_LABEL_RECO);
+                }
+            }
 
             /* update labeled rectangle */
             mpp_element_params_t params;
             memset(&params, 0, sizeof(params));
             /* detected_count contains at least the detection zone box */
-            params.labels.detected_count = app_priv->detected_count + 1;
-            params.labels.max_count = MAX_LABEL_RECTS;
+            params.labels.detected_rect = app_priv->detected_count + 1;
+            params.labels.max_rect = MAX_LABEL_RECTS;
             params.labels.rectangles = app_priv->labels;
             bool face_ok = boxes_to_rects(app_priv->final_boxes, NUM_BOXES_MAX, MAX_LABEL_RECTS, params.labels.rectangles);
 
@@ -111,7 +120,7 @@ int mpp_event_listener(mpp_t mpp, mpp_evt_t evt, void *evt_data, void *user_data
 
             if ( (app_priv->labrect_elem != 0) && ( app_priv->mp != NULL ) )
             {
-                mpp_element_update(app_priv->mp, app_priv->labrect_elem, &params);
+                mpp_element_update(app_priv->mp, app_priv->labrect_elem, &params, true);
             }
 
             /* end of modification of user data */

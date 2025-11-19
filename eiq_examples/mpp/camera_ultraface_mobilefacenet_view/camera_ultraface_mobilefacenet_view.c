@@ -39,10 +39,12 @@
 #include "mpp_config.h"
 #include "hal_utils.h"
 #include "hal_os.h"
+#include "hal_debug.h"
 
 /* utility functions */
 #include "models/utils.h"
 #include "models/shell_database_utils.h"
+#include "face_box_utils.h"
 
 /*******************************************************************************
  * Variables declaration
@@ -68,13 +70,20 @@ static TaskHandle_t shell_task_handle = NULL;
 
 #include APP_DATABASE_INFOS
 
-#define REGISTRATION_DELAY_MS 10000
+#ifndef APP_REGISTRATION_DELAY_MS
+#define APP_REGISTRATION_DELAY_MS 10000
+#endif
 
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
 #include "app_constants.h"
 #include "app_types.h"
+
+#ifndef APP_SKIP_CONVERT_FOR_DISPLAY
+#define APP_SKIP_CONVERT_FOR_DISPLAY 0
+#endif
+
 #include APP_TFLITE_MOBILEFACENET_INFO
 #include APP_TFLITE_ULTRAFACE_INFO
 
@@ -209,6 +218,10 @@ void print_conditional(user_data_t *user_data)
 			vTaskResume(shell_task_handle);
 			task_status = 0; /* task on */
 		}
+
+		mpp_stats_disable(MPP_STATS_GRP_API);
+		PRINTF("CPU Load: %u(%%)\n\r", user_data->api_stats->api.cpu_load);
+		mpp_stats_enable(MPP_STATS_GRP_API);
 	}
 
 	return;
@@ -222,7 +235,7 @@ static void app_task(void *params)
     user_data.db_max = DATABASE_MAX_SIZE;
     int ret = 0;
     int last_time = 0;
-    int face_registered = 1;
+    static int face_registered = 1;
     /* registration status. */
     static int registering = 0;
 
@@ -230,8 +243,31 @@ static void app_task(void *params)
 
     PRINTF("Inference Engine: TensorFlow-Lite Micro \r\n");
 
+    /* show constants */
+    HAL_LOGI("SRC_WIDTH = %d\r\n", SRC_WIDTH);
+    HAL_LOGI("SRC_HEIGHT = %d\r\n", SRC_HEIGHT);
+    HAL_LOGI("CROP_LEFT = %d\r\n", CROP_LEFT);
+    HAL_LOGI("CROP_TOP = %d\r\n", CROP_TOP);
+    HAL_LOGI("CROP_SIZE_LEFT = %d\r\n", CROP_SIZE_LEFT);
+    HAL_LOGI("CROP_SIZE_TOP = %d\r\n", CROP_SIZE_TOP);
+    HAL_LOGI("RECO_CROP_SIZE_LEFT = %d\r\n", RECO_CROP_SIZE_LEFT);
+    HAL_LOGI("RECO_CROP_SIZE_TOP = %d\r\n", RECO_CROP_SIZE_TOP);
+    HAL_LOGI("\r\n");
+    HAL_LOGI("DISPLAY_LARGE_DIM = %d\r\n", DISPLAY_LARGE_DIM);
+    HAL_LOGI("DISPLAY_SMALL_DIM = %d\r\n", DISPLAY_SMALL_DIM);
+    HAL_LOGI("VIEW_WIDTH = %d\r\n", VIEW_WIDTH);
+    HAL_LOGI("VIEW_HEIGHT = %d\r\n", VIEW_HEIGHT);
+    HAL_LOGI("DETECTION_ZONE_RECT_TOP = %d\r\n", DETECTION_ZONE_RECT_TOP);
+    HAL_LOGI("DETECTION_ZONE_RECT_LEFT = %d\r\n", DETECTION_ZONE_RECT_LEFT);
+    HAL_LOGI("DETECTION_ZONE_RECT_WIDTH = %d\r\n", DETECTION_ZONE_RECT_WIDTH);
+    HAL_LOGI("DETECTION_ZONE_RECT_HEIGHT = %d\r\n", DETECTION_ZONE_RECT_HEIGHT);
+#ifndef APP_DYNAMIC_RECO_ZONE
+    HAL_LOGI("RECO_ZONE_RECT_WIDTH = %d\r\n", RECO_ZONE_RECT_WIDTH);
+    HAL_LOGI("RECO_ZONE_RECT_HEIGHT = %d\r\n", RECO_ZONE_RECT_HEIGHT);
+#endif
+
     /* init API */
-    mpp_api_params_t api_param = {0};
+    static mpp_api_params_t api_param = {0};
 #if ((defined APP_RC_CYCLE_INC) && (defined APP_RC_CYCLE_MIN))
     /* fine-tune RC cycle for stripe mode */
     api_param.rc_cycle_inc = APP_RC_CYCLE_INC;
@@ -241,12 +277,16 @@ static void app_task(void *params)
 	/* fix max pipeline task priority. */
     api_param.pipeline_task_max_prio = APP_PIPELINE_TASK_MAX_PRIO;
 
+    mpp_stats_t api_stats;
+    memset(&api_stats, 0, sizeof(api_stats));
+    api_param.stats = &api_stats;
+
     ret = mpp_api_init(&api_param);
     if (ret)
         goto err;
 
-    mpp_t mp;
-    mpp_params_t mpp_params;
+    static mpp_t mp;
+    static mpp_params_t mpp_params;
     memset(&mpp_params, 0, sizeof(mpp_params));
     mpp_params.evt_callback_f = &mpp_event_listener;
     mpp_params.mask = MPP_EVENT_ALL;
@@ -257,13 +297,13 @@ static void app_task(void *params)
     if (mp == MPP_INVALID)
         goto err;
 
-    mpp_camera_params_t cam_params;
+    static mpp_camera_params_t cam_params;
     memset(&cam_params, 0 , sizeof(cam_params));
     cam_params.height = APP_CAMERA_HEIGHT;
     cam_params.width =  APP_CAMERA_WIDTH;
     cam_params.format = APP_CAMERA_FORMAT;
     cam_params.fps    = 30;
-    ret = mpp_camera_add(mp, s_camera_name, &cam_params);
+    ret = mpp_camera_add(mp, s_camera_name, &cam_params, NULL);
     if (ret) {
         PRINTF("Failed to add camera %s\n", s_camera_name);
         goto err;
@@ -273,20 +313,30 @@ static void app_task(void *params)
      * - first for the conversion to model
      * - second for the label-rect draw & display
      * this order is needed to avoid running inference on an image containing label-rect */
-    mpp_t mp_split;
-    mpp_params.exec_flag = MPP_EXEC_PREEMPT;
-
-    ret = mpp_split(mp, 1 , &mpp_params, &mp_split);
+    mpp_t mp_split[2];
+    mpp_params.exec_flag = MPP_EXEC_RC;
+    mpp_params_t mpp_param_split[2] = {mpp_params, mpp_params};
+    ret = mpp_split(mp, 2 , mpp_param_split, mp_split);
     if (ret) {
         PRINTF("Failed to split pipeline\n");
         goto err;
     }
+    /* 2 splits - 0: display, 1: inference */
+    mpp_t mp_conv_disp = mp_split[0];
+    mpp_t mp_conv_inf = mp_split[1];
+    
+        /* close the pipeline with a null sink */
+    ret = mpp_nullsink_add(mp);
+    if (ret) {
+        PRINTF("Failed to add NULL sink\n");
+        goto err;
+    }
 
     /* First do crop + resize + color convert */
-    mpp_element_params_t infer_conv_params;
+    static mpp_element_params_t infer_conv_params;
     memset(&infer_conv_params, 0, sizeof(infer_conv_params));
-    /* pick default device from the first listed and supported by Hw */
-    infer_conv_params.convert.dev_name = APP_GFX_BACKEND_NAME;
+    /* pick GFX device */
+    infer_conv_params.convert.dev_name = APP_GFX_BACKEND_INFER_NAME;
     /* set output buffer dims */
     infer_conv_params.convert.out_buf.width = ULTRAFACE_WIDTH;
     infer_conv_params.convert.out_buf.height = ULTRAFACE_HEIGHT;
@@ -304,39 +354,47 @@ static void app_task(void *params)
     infer_conv_params.convert.scale.height = ULTRAFACE_HEIGHT;
     infer_conv_params.convert.ops |= MPP_CONVERT_SCALE;
     /* then add a flip */
-#ifndef APP_SKIP_CONVERT_FOR_DISPLAY
+#if (SRC_DISPLAY_FLIP != FLIP_NONE)
     infer_conv_params.convert.flip = SRC_DISPLAY_FLIP;
     infer_conv_params.convert.ops |=  MPP_CONVERT_ROTATE;
 #endif
     infer_conv_params.convert.stripe_in = false;
     infer_conv_params.convert.stripe_out = false; /* model takes full frames */
 
-    mpp_elem_handle_t infer_conv_h;
-    ret = mpp_element_add(mp_split, MPP_ELEMENT_CONVERT, &infer_conv_params, &infer_conv_h);
+    HAL_LOGI("parameters of first image conversion for inference branch: \r\n");
+    HAL_LOGI("infer_conv_params.convert.crop.top = %d\r\n", infer_conv_params.convert.crop.top);
+    HAL_LOGI("infer_conv_params.convert.crop.bottom = %d\r\n", infer_conv_params.convert.crop.bottom);
+    HAL_LOGI("infer_conv_params.convert.crop.left = %d\r\n", infer_conv_params.convert.crop.left);
+    HAL_LOGI("infer_conv_params.convert.crop.right = %d\r\n", infer_conv_params.convert.crop.right);
+    HAL_LOGI("infer_conv_params.convert.scale.width = %d\r\n", infer_conv_params.convert.scale.width);
+    HAL_LOGI("infer_conv_params.convert.scale.height = %d\r\n", infer_conv_params.convert.scale.height);
+
+    static mpp_elem_handle_t infer_conv_h;
+    ret = mpp_element_add(mp_conv_inf, MPP_ELEMENT_CONVERT, &infer_conv_params, &infer_conv_h);
     if (ret ) {
         PRINTF("Failed to add element CONVERT\n");
         goto err;
     }
 
+    static mpp_t mp_infer;
+#if(APP_INFERENCE_IN_BCKGD == 1)
     /* create a background mpp (preempt-able branch) for the ML Inference
      * because it may take longer than capture period.
      * Inference runs an persondetect TF-Lite model */
-    mpp_t mp_bg;
     mpp_params.exec_flag = MPP_EXEC_PREEMPT;
 
-    ret = mpp_background(mp_split, &mpp_params, &mp_bg);
+    ret = mpp_background(mp_conv_inf, &mpp_params, &mp_infer);
     if (ret) {
         PRINTF("Failed to split pipeline\n");
         goto err;
     }
+#else
+    mp_infer = mp_conv_inf;
+#endif
 
     /* prepare the mobilefacenet model params */
-    mpp_element_params_t mobilefacenet_params;
+    static mpp_element_params_t mobilefacenet_params;
     memset(&mobilefacenet_params, 0 , sizeof(mpp_element_params_t));
-
-#ifdef APP_USE_NEUTRON64_MODEL
-    copy_mobilefacenet_to_ram();
-#endif
     mobilefacenet_params.ml_inference.model_data = mobilefacenet_data;
     mobilefacenet_params.ml_inference.model_size = mobilefacenet_data_len;
     mobilefacenet_params.ml_inference.model_input_mean = MOBILEFACENET_INPUT_MEAN;
@@ -347,11 +405,8 @@ static void app_task(void *params)
     mobilefacenet_params.ml_inference.type = MPP_INFERENCE_TYPE_TFLITE;
 
     /* prepare the ultraface model params */
-    mpp_element_params_t ultraface_params;
+    static mpp_element_params_t ultraface_params;
     memset(&ultraface_params, 0 , sizeof(mpp_element_params_t));
-#ifdef APP_USE_NEUTRON64_MODEL
-    copy_ultraface_to_ram();
-#endif
     ultraface_params.ml_inference.model_data = ultraface_data;
     ultraface_params.ml_inference.model_size = ultraface_data_len;
     ultraface_params.ml_inference.model_input_mean = ULTRAFACE_INPUT_MEAN;
@@ -362,60 +417,58 @@ static void app_task(void *params)
     ultraface_params.ml_inference.type = MPP_INFERENCE_TYPE_TFLITE;
 
     /* configure TFlite element with ultraface model */
-    ret = mpp_element_add(mp_bg, MPP_ELEMENT_INFERENCE, &ultraface_params, &user_data.infer_elem);
+    ret = mpp_element_add(mp_infer, MPP_ELEMENT_INFERENCE, &ultraface_params, &user_data.infer_elem);
 
     if (ret) {
         PRINTF("Failed to add element MPP_ELEMENT_INFERENCE");
         goto err;
     }
     /* close the pipeline with a null sink */
-    ret = mpp_nullsink_add(mp_bg);
+    ret = mpp_nullsink_add(mp_infer);
     if (ret) {
         PRINTF("Failed to add NULL sink\n");
         goto err;
     }
 
-
-#ifndef APP_SKIP_CONVERT_FOR_DISPLAY
     /* On the secondary branch of the pipeline, send the frame to the display */
     /* First do color-convert + flip */
-    mpp_element_params_t elem_params;
+    static mpp_element_params_t elem_params;
     memset(&elem_params, 0, sizeof(elem_params));
-    /* pick default device from the first listed and supported by Hw */
-    elem_params.convert.dev_name = NULL;
+    /* pick GFX device */
+    elem_params.convert.dev_name = APP_GFX_BACKEND_NAME;
     /* set output buffer dims */
-    elem_params.convert.out_buf.width =  (SWAP_DIMS ? APP_DISPLAY_HEIGHT : APP_DISPLAY_WIDTH);
-    elem_params.convert.out_buf.height = (SWAP_DIMS ? APP_DISPLAY_WIDTH : APP_DISPLAY_HEIGHT);
+    elem_params.convert.out_buf.width =  VIEW_WIDTH;
+    elem_params.convert.out_buf.height = VIEW_HEIGHT;
     elem_params.convert.pixel_format = APP_DISPLAY_FORMAT;
     /* scaling parameters */
-    if ((DISPLAY_LARGE_DIM * SRC_HEIGHT) < (DISPLAY_SMALL_DIM * SRC_WIDTH)) {
-        elem_params.convert.scale.width =  (SWAP_DIMS ? APP_DISPLAY_HEIGHT : APP_DISPLAY_WIDTH);
-        elem_params.convert.scale.height = (SWAP_DIMS ? (APP_DISPLAY_HEIGHT * SRC_HEIGHT / SRC_WIDTH) :
-                (APP_DISPLAY_WIDTH * SRC_HEIGHT / SRC_WIDTH));
-    } else {
-        elem_params.convert.scale.height = (SWAP_DIMS ? APP_DISPLAY_WIDTH : APP_DISPLAY_HEIGHT);
-        elem_params.convert.scale.width  = (SWAP_DIMS ? (APP_DISPLAY_WIDTH * SRC_WIDTH / SRC_HEIGHT) :
-                (APP_DISPLAY_HEIGHT * SRC_WIDTH / SRC_HEIGHT));
-    }
+    elem_params.convert.scale.width =  VIEW_WIDTH;
+    elem_params.convert.scale.height = VIEW_HEIGHT;
 
+    HAL_LOGI("parameters of first image conversion for display branch: \r\n");
+    HAL_LOGI("elem_params.convert.scale.width = %d\r\n", elem_params.convert.scale.width);
+    HAL_LOGI("elem_params.convert.scale.height = %d\r\n", elem_params.convert.scale.height);
+    HAL_LOGI("elem_params.convert.out_buf.width = %d\r\n", elem_params.convert.out_buf.width);
+    HAL_LOGI("elem_params.convert.out_buf.height = %d\r\n", elem_params.convert.out_buf.height);
+
+#if (SRC_DISPLAY_FLIP != FLIP_NONE)
     elem_params.convert.flip = SRC_DISPLAY_FLIP;
-    elem_params.convert.ops = MPP_CONVERT_COLOR | MPP_CONVERT_ROTATE | MPP_CONVERT_SCALE;
+#endif
+    elem_params.convert.ops |= MPP_CONVERT_COLOR | MPP_CONVERT_ROTATE | MPP_CONVERT_SCALE;
 
-    ret = mpp_element_add(mp, MPP_ELEMENT_CONVERT, &elem_params, NULL);
+    ret = mpp_element_add(mp_conv_disp, MPP_ELEMENT_CONVERT, &elem_params, NULL);
 
     if (ret) {
         PRINTF("Failed to add element CONVERT\n");
         goto err;
     }
-#endif
 
     /* add one label rectangle */
     memset(&elem_params, 0, sizeof(elem_params));
     memset(&user_data.labels, 0, sizeof(user_data.labels));
 
     /* params init */
-    elem_params.labels.max_count = MAX_LABEL_RECTS;
-    elem_params.labels.detected_count = 1;
+    elem_params.labels.max_rect = MAX_LABEL_RECTS;
+    elem_params.labels.detected_rect = 1;
     elem_params.labels.rectangles = user_data.labels;
 
     /* first add recognition zone box */
@@ -428,24 +481,34 @@ static void app_task(void *params)
     strcpy((char *)user_data.labels[0].label, ZONE_LABEL_RECO);
 
     /* add element and retrieve its handle in user data */
-    ret = mpp_element_add(mp, MPP_ELEMENT_LABELED_RECTANGLE, &elem_params, &user_data.labrect_elem);
+    ret = mpp_element_add(mp_conv_disp, MPP_ELEMENT_LABELED_RECTANGLE, &elem_params, &user_data.labrect_elem);
     if (ret) {
         PRINTF("Failed to add element LABELED_RECTANGLE (0x%x)\r\n", ret);
         goto err;
     }
     /* pass the mpp of the element 'label rectangle' to callback */
-    user_data.mp = mp;
+    user_data.mp = mp_conv_disp;
 
-#ifndef APP_SKIP_CONVERT_FOR_DISPLAY
+#if (APP_SKIP_CONVERT_FOR_DISPLAY == 0)
     /* then rotate if needed */
     if (APP_DISPLAY_LANDSCAPE_ROTATE != ROTATE_0) {
         memset(&elem_params, 0, sizeof(elem_params));
+        elem_params.convert.dev_name = APP_GFX_BACKEND_NAME;
         /* set output buffer dims */
         elem_params.convert.out_buf.width = APP_DISPLAY_WIDTH;
         elem_params.convert.out_buf.height = APP_DISPLAY_HEIGHT;
         elem_params.convert.angle = APP_DISPLAY_LANDSCAPE_ROTATE;
-        elem_params.convert.ops = MPP_CONVERT_ROTATE;
-        ret = mpp_element_add(mp, MPP_ELEMENT_CONVERT, &elem_params, NULL);
+        elem_params.convert.scale.width =  SCALED_VIEW_WIDTH;
+        elem_params.convert.scale.height = SCALED_VIEW_HEIGHT;
+
+        HAL_LOGI("parameters of second image conversion for display branch: \r\n");
+        HAL_LOGI("elem_params.convert.scale.width = %d\r\n", elem_params.convert.scale.width);
+        HAL_LOGI("elem_params.convert.scale.height = %d\r\n", elem_params.convert.scale.height);
+        HAL_LOGI("elem_params.convert.out_buf.width = %d\r\n", elem_params.convert.out_buf.width);
+        HAL_LOGI("elem_params.convert.out_buf.height = %d\r\n", elem_params.convert.out_buf.height);
+
+        elem_params.convert.ops = MPP_CONVERT_ROTATE | MPP_CONVERT_SCALE;
+        ret = mpp_element_add(mp_conv_disp, MPP_ELEMENT_CONVERT, &elem_params, NULL);
 
         if (ret) {
             PRINTF("Failed to add element CONVERT\r\n");
@@ -454,39 +517,48 @@ static void app_task(void *params)
     }
 #endif
 
-    mpp_display_params_t disp_params;
+    static mpp_display_params_t disp_params;
     memset(&disp_params, 0 , sizeof(disp_params));
     disp_params.format = APP_DISPLAY_FORMAT;
     disp_params.width  = APP_DISPLAY_WIDTH;
     disp_params.height = APP_DISPLAY_HEIGHT;
     disp_params.stripe = false;
-#ifdef APP_SKIP_CONVERT_FOR_DISPLAY
-    disp_params.rotate = APP_DISPLAY_LANDSCAPE_ROTATE;
-#endif
-    ret = mpp_display_add(mp, s_display_name, &disp_params);
+    ret = mpp_display_add(mp_conv_disp, s_display_name, &disp_params);
     if (ret) {
         PRINTF("Failed to add display %s\n", s_display_name);
         goto err;
     }
 
+    mpp_stats_enable(MPP_STATS_GRP_API);
+
+#if(APP_INFERENCE_IN_BCKGD == 1)
     /* start preempt-able pipeline branch */
-    ret = mpp_start(mp_bg, 0);
+    ret = mpp_start(mp_infer, 0, false);
     if (ret) {
         PRINTF("Failed to start preempt-able pipeline branch");
         goto err;
     }
+#endif
     /* start secondary pipeline branch */
-    ret = mpp_start(mp_split, 0);
+    ret = mpp_start(mp_conv_inf, 0, false);
     if (ret) {
         PRINTF("Failed to start secondary pipeline branch");
         goto err;
     }
+    /* start display pipeline branch */
+    ret = mpp_start(mp_conv_disp, 0, false);
+    if (ret) {
+        PRINTF("Failed to start display pipeline branch");
+        goto err;
+    }
     /* start main pipeline branch */
-    ret = mpp_start(mp, 1);
+    ret = mpp_start(mp, 1, false);
     if (ret) {
         PRINTF("Failed to start main pipeline branch");
         goto err;
     }
+
+    user_data.api_stats = &api_stats;
 
     TickType_t xLastPrintTime = 0, tick = 0, notifyTime = 0;
     const TickType_t xFrequency = OUTPUT_PRINT_PERIOD_MS / portTICK_PERIOD_MS;
@@ -508,7 +580,7 @@ static void app_task(void *params)
         __atomic_store_n(&user_data.accessing, 0, __ATOMIC_SEQ_CST);
 
         /* manage timed state transition */
-        if (user_data.state == STATE_RECOGNIZED || user_data.state == STATE_REGISTERED ||
+        if (user_data.state == STATE_REGISTERED ||user_data.state == STATE_RECOGNIZED ||
                 user_data.state == STATE_REGISTRATION_CANCELLED)
         {
             /* start timer */
@@ -517,8 +589,10 @@ static void app_task(void *params)
 
             /* stop branches with convert and inference elements */
             /* until the user is notified */
-            mpp_stop(mp_bg);
-            mpp_stop(mp_split);
+#if(APP_INFERENCE_IN_BCKGD == 1)
+            mpp_stop(mp_infer);
+#endif
+            mpp_stop(mp_conv_inf);
         }
 
         if ((user_data.state == STATE_NOTIFYING_USER) && (tick > notifyTime + notifyDelay))
@@ -532,23 +606,47 @@ static void app_task(void *params)
         {
             if (Atomic_CompareAndSwap_u32(&user_data.accessing, 1, 0) == ATOMIC_COMPARE_AND_SWAP_SUCCESS)
             {
+                /* update zone label */
+               /* detected_count contains at least the detection zone box */
+                if (user_data.labrect_elem != 0)
+                {
+                    elem_params.labels.detected_rect = user_data.detected_count + 1;
+                    elem_params.labels.max_rect = MAX_LABEL_RECTS;
+                    elem_params.labels.rectangles = user_data.labels;
+                    strcpy((char *)user_data.labels[0].label, ZONE_LABEL_REGISTERING);
+                    mpp_element_update(mp_conv_disp, user_data.labrect_elem, &elem_params, true);
+                }
+
                 /* set new person embeddings */
                 set_new_face_embeddings((const float *)user_data.result.embedding);
 
-                int start_time = hal_get_exec_time();
+                int start_time = xTaskGetTickCount();
+
                 /* wait for user to finish registration */
                 while(registering != 1)
                 {
                     /* check if user entered the new face name */
                     registering = registration_state();
                     /* cancel registration, if delay is expired */
-                    if (last_time >= start_time + REGISTRATION_DELAY_MS)
+                    if (last_time >= start_time + APP_REGISTRATION_DELAY_MS)
                     {
                         PRINTF("*** Registration time expired! ***\r\n");
+
+                        /* update zone label */
+                        /* detected_count contains at least the detection zone box */
+                        if (user_data.labrect_elem != 0)
+                        {
+                            elem_params.labels.detected_rect = user_data.detected_count + 1;
+                            elem_params.labels.max_rect = MAX_LABEL_RECTS;
+                            elem_params.labels.rectangles = user_data.labels;
+                            strcpy((char *)user_data.labels[0].label, ZONE_LABEL_REGISTRATION_END);
+                            mpp_element_update(mp_conv_disp, user_data.labrect_elem, &elem_params, true);
+                        }
+
                         face_registered = 0; /* person will not be added to database */
                         break;
                     }
-                    last_time = hal_get_exec_time();
+                    last_time = xTaskGetTickCount();
                 }
 
                 /* reset registration state to 0 */
@@ -575,10 +673,31 @@ static void app_task(void *params)
         if (user_data.state == STATE_DETECTED)
         {
             /* stop branches with convert and inference elements */
-            mpp_stop(mp_bg);
-            mpp_stop(mp_split);
+#if(APP_INFERENCE_IN_BCKGD == 1)
+            mpp_stop(mp_infer);
+#endif
+            mpp_stop(mp_conv_inf);
             PRINTF("Switching to MobileFaceNet \r\n");
             /* update convert params for mobilefacenet */
+#ifdef APP_DYNAMIC_RECO_ZONE
+            /* adapt source crop area to detected box */
+            if (get_face_crop_area(&user_data.final_boxes[0], &infer_conv_params.convert.crop))
+            {
+                PRINTF("Failed to get face crop area\r\n");
+                goto err;
+            }
+            infer_conv_params.convert.out_buf.width = MOBILEFACENET_WIDTH;
+            infer_conv_params.convert.out_buf.height = MOBILEFACENET_HEIGHT;
+            infer_conv_params.convert.scale.width = MOBILEFACENET_WIDTH;
+            infer_conv_params.convert.scale.height = MOBILEFACENET_HEIGHT;
+            infer_conv_params.convert.pixel_format = MOBILEFACENET_PIXEL_FORMAT;
+
+            HAL_LOGI("updated parameters of image conversion for inference branch: \r\n");
+            HAL_LOGI("infer_conv_params.convert.crop.top = %d\r\n", infer_conv_params.convert.crop.top);
+            HAL_LOGI("infer_conv_params.convert.crop.bottom = %d\r\n", infer_conv_params.convert.crop.bottom);
+            HAL_LOGI("infer_conv_params.convert.crop.left = %d\r\n", infer_conv_params.convert.crop.left);
+            HAL_LOGI("infer_conv_params.convert.crop.right = %d\r\n", infer_conv_params.convert.crop.right);
+#else
             infer_conv_params.convert.crop.top = RECO_CROP_TOP;
             infer_conv_params.convert.crop.bottom = RECO_CROP_TOP + RECO_CROP_SIZE_TOP - 1;
             infer_conv_params.convert.crop.left = RECO_CROP_LEFT;
@@ -587,17 +706,18 @@ static void app_task(void *params)
             infer_conv_params.convert.out_buf.height = MOBILEFACENET_HEIGHT;
             infer_conv_params.convert.scale.width = MOBILEFACENET_WIDTH;
             infer_conv_params.convert.scale.height = MOBILEFACENET_HEIGHT;
-            infer_conv_params.convert.pixel_format = MOBILEFACENET_PIXEL_FORMAT; 
-            ret = mpp_element_update(mp_split, infer_conv_h, &infer_conv_params);
+            infer_conv_params.convert.pixel_format = MOBILEFACENET_PIXEL_FORMAT;
+#endif
+            ret = mpp_element_update(mp_conv_inf, infer_conv_h, &infer_conv_params, true);
             if (ret) {
-                PRINTF("Failed to update element convert for mobilefacenet");
+                PRINTF("Failed to update element convert for mobilefacenet\r\n");
                 goto err;
             }
 
             /* switch to mobilefacenet model */
-            ret = mpp_element_update(mp_bg, user_data.infer_elem, &mobilefacenet_params);
+            ret = mpp_element_update(mp_infer, user_data.infer_elem, &mobilefacenet_params, true);
             if (ret) {
-                PRINTF("Failed to update element inference for mobilefacenet");
+                PRINTF("Failed to update element inference for mobilefacenet\r\n");
                 goto err;
             }
 
@@ -605,17 +725,18 @@ static void app_task(void *params)
             /* detected_count contains at least the detection zone box */
             if (user_data.labrect_elem != 0)
             {
-                elem_params.labels.detected_count = user_data.detected_count + 1;
-                elem_params.labels.max_count = MAX_LABEL_RECTS;
+                elem_params.labels.detected_rect = user_data.detected_count + 1;
+                elem_params.labels.max_rect = MAX_LABEL_RECTS;
                 elem_params.labels.rectangles = user_data.labels;
-                strcpy((char *)user_data.labels[0].label, ZONE_LABEL_REGISTERING);
-                mpp_element_update(mp, user_data.labrect_elem, &elem_params);
+                mpp_element_update(mp_conv_disp, user_data.labrect_elem, &elem_params, true);
             }
 
             user_data.cur_model = MODEL_MOBILEFACENET;
             user_data.state = STATE_RECOGNIZING;
-            mpp_start(mp_split, 0);
-            mpp_start(mp_bg, 0);
+            mpp_start(mp_conv_inf, 0, false);
+#if(APP_INFERENCE_IN_BCKGD == 1)
+            mpp_start(mp_infer, 0, false);
+#endif
         }
         else if (user_data.state == STATE_USER_NOTIFIED)
         {
@@ -630,24 +751,25 @@ static void app_task(void *params)
             infer_conv_params.convert.scale.width = ULTRAFACE_WIDTH;
             infer_conv_params.convert.scale.height = ULTRAFACE_HEIGHT;
             infer_conv_params.convert.pixel_format = ULTRAFACE_PIXEL_FORMAT;
-            ret = mpp_element_update(mp_split, infer_conv_h, &infer_conv_params);
+            ret = mpp_element_update(mp_conv_inf, infer_conv_h, &infer_conv_params, true);
             if (ret) {
-                PRINTF("Failed to update element convert for ultraface");
+                PRINTF("Failed to update element convert for ultraface\r\n");
                 goto err;
             }
 
             /* switch to ULTRAFACE */
-            ret = mpp_element_update(mp_bg, user_data.infer_elem, &ultraface_params);
+            ret = mpp_element_update(mp_infer, user_data.infer_elem, &ultraface_params, true);
             if (ret) {
-                PRINTF("Failed to update element inference for ultraface");
+                PRINTF("Failed to update element inference for ultraface\r\n");
                 goto err;
             }
 
             user_data.cur_model = MODEL_ULTRAFACE;
-            strcpy((char *)user_data.labels[0].label, ZONE_LABEL_RECO);
             user_data.state = STATE_DETECTING;
-            mpp_start(mp_split, 0);
-            mpp_start(mp_bg, 0);
+            mpp_start(mp_conv_inf, 0, false);
+#if(APP_INFERENCE_IN_BCKGD == 1)
+            mpp_start(mp_infer, 0, false);
+#endif
         }
         else
         {
