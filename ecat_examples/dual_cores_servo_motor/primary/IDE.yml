@@ -6,18 +6,18 @@
 mdk:
   shared-workspace: dual_cores_servo_motor
   sharing-workspace:
-  - ../../dual_cores_servo_motor_secondary_core/mdk/dual_cores_servo_motor_secondary_core_${SB_CONFIG_secondary_core_id}
+  - ../../dual_cores_ecat_servo_motor_secondary_core/mdk/dual_cores_ecat_servo_motor_secondary_core${SB_CONFIG_secondary_core_id}
 
 iar:
   shared-workspace: dual_cores_servo_motor
   sharing-workspace:
-  - ../../dual_cores_servo_motor_secondary_core/iar/dual_cores_servo_motor_secondary_core_${SB_CONFIG_secondary_core_id}
+  - ../../dual_cores_ecat_servo_motor_secondary_core/iar/dual_cores_ecat_servo_motor_secondary_core${SB_CONFIG_secondary_core_id}
   config:
     __common__:
       asym-multicore-debugger:
         enable: true
-        slave-workspace: "../../dual_cores_servo_motor_secondary_core/iar/dual_cores_servo_motor_secondary_core_${SB_CONFIG_secondary_core_id}.eww"
-        slave-project: dual_cores_servo_motor_secondary_core_${SB_CONFIG_secondary_core_id}
+        slave-workspace: "../../dual_cores_ecat_servo_motor_secondary_core/iar/dual_cores_ecat_servo_motor_secondary_core${SB_CONFIG_secondary_core_id}.eww"
+        slave-project: dual_cores_ecat_servo_motor_secondary_core${SB_CONFIG_secondary_core_id}
     debug:
       asym-multicore-debugger:
         slave-configuration: debug

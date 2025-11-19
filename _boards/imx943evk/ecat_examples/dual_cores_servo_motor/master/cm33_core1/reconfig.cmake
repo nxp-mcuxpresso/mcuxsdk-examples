@@ -33,3 +33,5 @@ mcux_add_armgcc_configuration(
     TARGETS debug release
     CC "-O0"
 )
+
+mcux_set_variable(multicore_sec_core_foldername cm7_core1)

@@ -5,7 +5,7 @@ dual_cores_ecat_servo_motor_primary_core:
     meta_path: examples/ecat_examples/dual_cores_servo_motor/primary
     project-root-path: boards/${board}/ecat_examples/dual_cores_servo_motor/${multicore_foldername}
     document:
-      name: dual_cores_ecat_servo_motor_primary_core${core_id_suffix_name}
+      name: dual_cores_ecat_servo_motor_primary_core
       category: ecat_examples
       brief: EtherCAT dual cores servo motor example example
       example_readme:
@@ -29,8 +29,8 @@ dual_cores_ecat_servo_motor_primary_core:
     - +armgcc@release
     - +iar@debug
     - +iar@release
-    - +mdk@debug
-    - +mdk@release
+    - -mdk@debug
+    - -mdk@release
     - -armgcc@hyperram_debug
     - -armgcc@hyperram_release
     - -iar@hyperram_debug
