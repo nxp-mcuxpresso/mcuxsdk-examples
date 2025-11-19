@@ -1,3 +1,0 @@
-G:/sdk-next/mcuxsdk/examples/build/CMakeFiles/CMakeScratch/TryCompile-67wdp4/CMakeFiles/cmTC_b0b4b.dir
-G:/sdk-next/mcuxsdk/examples/build/CMakeFiles/CMakeScratch/TryCompile-67wdp4/CMakeFiles/edit_cache.dir
-G:/sdk-next/mcuxsdk/examples/build/CMakeFiles/CMakeScratch/TryCompile-67wdp4/CMakeFiles/rebuild_cache.dir
