@@ -32,7 +32,7 @@
 #include "hybrid_gfsk.h"
 #endif
 
-#if (defined(gValidationBuildOptions) && (gValidationBuildOptions == 1))
+#if defined(VALIDATIONBUILDOPTIONS)
 #define HCIBB_ENABLE_DEBUG_FEATURES
 #endif
 
