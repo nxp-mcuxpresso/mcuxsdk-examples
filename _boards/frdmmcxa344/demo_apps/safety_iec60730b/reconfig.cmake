@@ -15,8 +15,6 @@ mcux_add_source(
 			examples/demo_apps/safety_iec60730b/common/cm33/safety_cm33_mcx.h
 			examples/demo_apps/safety_iec60730b/common/cm33/main.c
 			${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/freemaster/safety_flash.pmp
-			${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/clock_config.c
-			${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/clock_config.h
 )
 
 #----------------------------------------------
@@ -29,42 +27,12 @@ mcux_add_configuration(
 )
 
 mcux_add_macro(
-    CC "-DSKIP_SYSCLK_INIT"#\
-       #-DXIP_EXTERNAL_FLASH=1\
-       #-DXIP_BOOT_HEADER_ENABLE=1"
+    CC "-DSKIP_SYSCLK_INIT"
 )
 
 #----------------------------------------------
 # Project settings for IAR toolchain
 #----------------------------------------------
-
-mcux_remove_iar_configuration(
-    AS "--cpu=cortex-m33.no_se"
-    CC "--cpu=cortex-m33.no_se"
-    CX "--cpu=cortex-m33.no_se"
-)
-
-mcux_add_iar_configuration(
-    AS "--cpu=cortex-m33"
-    CC "--cpu=cortex-m33"
-    CX "--cpu=cortex-m33"
-)
-
-mcux_add_iar_configuration(
-    CC "--cmse"
-	CX "--cmse"
-)
-
-if(${CONFIG_TOOLCHAIN} STREQUAL "iar")
-if(DEFINED GENERATE_GUI_PROJECT OR GENERATE_STANDALONE_PROJECT)
-
-else()
-	# AS --cmse flag needs to be added when command line build is used
-	mcux_add_iar_configuration(
-		AS "--cmse"
-	)
-endif()
-endif()
 
 # optimization default setting needs to be removed first
 mcux_remove_iar_configuration(
@@ -97,12 +65,6 @@ mcux_add_configuration(
     CC "-gdwarf-3 -mcmse -g"
 	LD "--diag_suppress L6848E"
 )
-
-# Project settings for ARMGCC toolchain
-#----------------------------------------------
-
-# enable TrustZone
-mcux_add_armgcc_configuration(CC "-mcmse")
 
 
 #----------------------------------------------

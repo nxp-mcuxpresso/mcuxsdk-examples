@@ -32,15 +32,15 @@
  * Definitions
  ******************************************************************************/
 /* This macro enables infinity while loop in SafetyErrorHandling() function */
-#define SAFETY_ERROR_ACTION   1
+#define SAFETY_ERROR_ACTION   0
 
 /* TEST SWITCHES - for debugging it is better to turn the flash test and watchdog OFF */
 #define ADC_TEST_ENABLED      0
-#define CLOCK_TEST_ENABLED    1
-#define DIO_TEST_ENABLED      1
-#define FLASH_TEST_ENABLED    1
-#define RAM_TEST_ENABLED      1
-#define PC_TEST_ENABLED       1
+#define CLOCK_TEST_ENABLED    0
+#define DIO_TEST_ENABLED      0
+#define FLASH_TEST_ENABLED    0
+#define RAM_TEST_ENABLED      0
+#define PC_TEST_ENABLED       0
 #define WATCHDOG_ENABLED      0
 #define FMSTR_SERIAL_ENABLE   1
 
