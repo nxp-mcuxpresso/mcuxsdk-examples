@@ -30,9 +30,9 @@ Prepare the Demo
     https://mcuxpresso.nxp.com/mcuxsdk/latest/html/boards/i.MX/mcimx93evk/gettingStarted/topics/running_an_application_by_u-boot.html#running-an-application-by-u-boot
     Reference 'Getting Started with MCUXpresso SDK for MCIMX93-EVK.pdf' to download the demo binaries on board.
 
-	Download the tfm_demo_s.bin.bin to TCM, tfm_demo_ns.bin to OCRAM. Then boot the cortex M33 core.
-	fatload mmc 1:1 0x80000000 tfm_demo_s.bin; cp.b 0x80000000 0x201e0000 0x10000;
-	fatload mmc 1:1 0x80020000 tfm_demo_ns.bin; cp.b 0x80020000 0x20480000 0x18000; dcache flush; 
+	Download the tfm_demo_s_cm33.bin to TCM, tfm_demo_ns_cm33.bin to OCRAM. Then boot the cortex M33 core.
+	fatload mmc 1 0x80000000 tfm_demo_s_cm33.bin; cp.b 0x80000000 0x201e0000 0x20000
+	fatload mmc 1 0x80020000 tfm_demo_ns_cm33.bin; cp.b 0x80020000 0x20480000 0x18000; dcache flush;
 	bootaux 0x1ffe0000 0
 	
 Prints will appear on the serial terminal for Cortex M-33
@@ -79,8 +79,8 @@ In current configuration, if you disable the above option, given below is the Se
 
 If such a change is done secure and non secure binaries should be loaded on required offsets in TCM. 
 Example steps to do so from u-boot are given below:
-fatload mmc 1 0x80000000 tfm_demo_s.bin
-fatload mmc 1 0x80018000 tfm_demo_ns.bin
+fatload mmc 1 0x80000000 tfm_demo_s_cm33.bin
+fatload mmc 1 0x80018000 tfm_demo_ns_cm33.bin
 cp.b 0x80000000 0x201e0000 0x20000;
 bootaux 0x1ffe0000 0
 

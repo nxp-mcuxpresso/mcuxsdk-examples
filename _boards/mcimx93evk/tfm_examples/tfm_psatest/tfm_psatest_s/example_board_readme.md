@@ -32,9 +32,9 @@ Prepare the Demo
 
 	Please do the changes as suggested in Section ""What to do if your non secure binary size excceds 96K?" below before loading binaries.
 
-	Download the tfm_psatest_s.bin.bin to TCM, tfm_psatest_ns.bin to OCRAM. Then boot the cortex M33 core.
-	fatload mmc 1:1 0x80000000 tfm_psatest_s.bin; cp.b 0x80000000 0x201e0000 0x10000;
-	fatload mmc 1:1 0x80020000 tfm_psatest_ns.bin; cp.b 0x80020000 0x20480000 0x30000; dcache flush; 
+	Download the tfm_psatest_s_cm33.bin to TCM, tfm_psatest_ns_cm33.bin to OCRAM. Then boot the cortex M33 core.
+	fatload mmc 1:1 0x80000000 tfm_psatest_s_cm33.bin; cp.b 0x80000000 0x201e0000 0x20000;
+	fatload mmc 1:1 0x80020000 tfm_psatest_ns_cm33.bin; cp.b 0x80020000 0x20480000 0x30000; dcache flush; 
 	bootaux 0x1ffe0000 0
 	
 Prints will appear on the serial terminal for Cortex M-33

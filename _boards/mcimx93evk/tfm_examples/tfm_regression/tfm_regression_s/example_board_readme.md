@@ -29,9 +29,9 @@ Prepare the Demo
     https://mcuxpresso.nxp.com/mcuxsdk/latest/html/boards/i.MX/mcimx93evk/gettingStarted/topics/running_an_application_by_u-boot.html#running-an-application-by-u-boot
     Reference 'Getting Started with MCUXpresso SDK for MCIMX93-EVK.pdf' to download the demo binaries on board.
 
-	Download the tfm_regression_s.bin.bin to TCM, tfm_regression_ns.bin to OCRAM. Then boot the cortex M33 core.
-	fatload mmc 1:1 0x80000000 tfm_regression_s.bin; cp.b 0x80000000 0x201e0000 0x10000;
-	fatload mmc 1:1 0x80020000 tfm_regression_ns.bin; cp.b 0x80020000 0x20480000 0x18000; dcache flush; 
+	Download the tfm_regression_s_cm33.bin to TCM, tfm_regression_ns_cm33.bin to OCRAM. Then boot the cortex M33 core.
+	fatload mmc 1:1 0x80000000 tfm_regression_s_cm33.bin; cp.b 0x80000000 0x201e0000 0x20000;
+	fatload mmc 1:1 0x80020000 tfm_regression_ns_cm33.bin; cp.b 0x80020000 0x20480000 0x18000; dcache flush; 
 	bootaux 0x1ffe0000 0
 	
 Prints will appear on the serial terminal for Cortex M-33
