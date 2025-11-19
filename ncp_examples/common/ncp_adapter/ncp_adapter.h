@@ -42,6 +42,7 @@ typedef enum _ncp_status
     NCP_STATUS_CHKSUMERR  = -2,
     NCP_STATUS_NOMEM      = -3,
     NCP_STATUS_QUEUE_FULL = -4,
+    NCP_STATUS_HANDLE_RSP = -5,
     NCP_STATUS_SUCCESS    = 0,
 } ncp_status_t;
 

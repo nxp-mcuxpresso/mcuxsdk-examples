@@ -8816,6 +8816,7 @@ int wlan_process_ncp_event(uint8_t *res)
 int wlan_process_response(uint8_t *res)
 {
     int ret                        = -WM_FAIL;
+    int cmd_node_handled           = -WM_FAIL;
     MCU_NCPCmd_DS_COMMAND *cmd_res = (MCU_NCPCmd_DS_COMMAND *)res;
     switch (cmd_res->header.cmd)
     {
@@ -9128,7 +9129,12 @@ int wlan_process_response(uint8_t *res)
             break;
     }
 
-    ncp_cmd_node_wakeup_pending_tasks(cmd_res);
+    cmd_node_handled = ncp_cmd_node_wakeup_pending_tasks(cmd_res);
+    
+    if(cmd_node_handled == -NCP_STATUS_HANDLE_RSP)
+    {
+        return cmd_node_handled;
+    }
     
     return ret;
 }

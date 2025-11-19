@@ -182,10 +182,11 @@ uint8_t ncp_tlv_send_no_resp(void * cmd)
     return ret;
 }
 
-void ncp_cmd_node_wakeup_pending_tasks(void *res)
+int ncp_cmd_node_wakeup_pending_tasks(void *res)
 {
     NCP_COMMAND *cmd_res = (NCP_COMMAND *)res;
     ncp_cmd_node_t * cmd_node  = NULL;
+    int ret = NCP_STATUS_SUCCESS;
 
     cmd_node = match_cmd_node(cmd_res->cmd, cmd_res->seqnum);
 
@@ -193,7 +194,10 @@ void ncp_cmd_node_wakeup_pending_tasks(void *res)
     {
         cmd_node->handle_resp_cb(cmd_res, cmd_node);
         OSA_SemaphorePost(cmd_node->sem);
+        ret = -NCP_STATUS_HANDLE_RSP;
     }
+
+    return ret;
 }
 
 int ncp_cmd_node_list_init()

@@ -1133,7 +1133,7 @@ static int wifi_ncp_handle_cmd_input(uint8_t *cmd)
         }
     }
 
-    if (msg_type == NCP_MSG_TYPE_RESP)
+    if ((msg_type == NCP_MSG_TYPE_RESP) && (ret != -NCP_STATUS_HANDLE_RSP))
     {
         /*If failed to receive response or successed to parse tlv reponse, release mcu command response semaphore to
          * allow processing new string commands. If reponse can't match to command, don't release command reponse
