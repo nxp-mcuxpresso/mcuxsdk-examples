@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 NXP
+ * Copyright 2020, 2025 NXP
  * All rights reserved.
  *
  *
@@ -53,7 +53,7 @@ semc_mem_nand_config_t semcMemConfig = {
     .delayUS          = delayUs,
     .onfiVersion      = kNandOnfiVersion_1p0,
     .readyCheckOption = kNandReadyCheckOption_SR,
-    .eccCheckType     = kNandEccCheckType_DeviceECC,
+    .eccCheckType = kNandEccCheckType_SoftwareECC,
 };
 
 nand_config_t nandConfig = {
