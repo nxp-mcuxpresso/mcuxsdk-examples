@@ -53,6 +53,14 @@ mcux_remove_armgcc_configuration(
   CC "--specs=nano.specs"
 )
 
+mcux_add_iar_configuration(
+  CC "--diag_suppress=Pe236"
+)
+
+mcux_add_armgcc_configuration(
+  CC "-Wno-aggressive-loop-optimizations"
+)
+
 include(${SdkRootDirPath}/CMakeLists.txt)
 include(${SdkRootDirPath}/${board_root}/${board}/eiq_examples/tflm_modelrunner/reconfig.cmake OPTIONAL)
 
