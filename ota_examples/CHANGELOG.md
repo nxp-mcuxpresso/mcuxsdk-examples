@@ -2,6 +2,11 @@
 
 All notable changes to MCUboot fork in MCUXpresso SDK and related ota examples will be documented in this file.
 
+## [26.03.0] - 12/2025
+
+### Added
+- Enabled ota_rom_basic for FRDM-MCXN236
+
 ## [25.12.0] - 12/2025
 
 ### Added

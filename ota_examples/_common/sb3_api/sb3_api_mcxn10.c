@@ -92,12 +92,14 @@ void mbi_print_info(void)
 
     uint32_t img_mbi_addr[2];
     int remap_active;
+    
+    uint32_t remap_size = ((*(uint32_t*)0x1004004)+1)*32*1024;
 
     if (is_remap_active())
     {
         PRINTF("Flash REMAP_SWAP active\n");
         remap_active = 1;
-        img_mbi_addr[0] = 0x100000;
+        img_mbi_addr[0] = remap_size;
         img_mbi_addr[1] = 0;
     }
     else
@@ -105,7 +107,7 @@ void mbi_print_info(void)
         PRINTF("Flash REMAP_SWAP disabled\n");
         remap_active = 0;
         img_mbi_addr[0] = 0;
-        img_mbi_addr[1] = 0x100000;
+        img_mbi_addr[1] = remap_size;
     }
 
     for (int img_index = 0; img_index < 2; img_index++)
