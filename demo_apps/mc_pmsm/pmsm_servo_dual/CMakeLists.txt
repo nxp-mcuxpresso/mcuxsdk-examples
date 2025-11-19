@@ -31,6 +31,11 @@ mcux_add_include(
 
 mcux_add_iar_configuration(
     CX "--diag_suppress=Pa082,Pa050,Ta021,Ta022,Ta023"
+	CC "--diag_suppress=Pe177"
+)
+
+mcux_add_armgcc_configuration(
+    CC "-Wno-unused-function"
 )
 
 mcux_add_macro(

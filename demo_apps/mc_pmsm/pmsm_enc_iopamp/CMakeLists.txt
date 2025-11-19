@@ -40,6 +40,10 @@ mcux_add_iar_configuration(
     CX "--diag_suppress=Pa082,Pa050,Ta021,Ta022,Ta023"
 )
 
+mcux_add_armgcc_configuration(
+    CC "-Wno-missing-braces"
+)
+
 include(${SdkRootDirPath}/${board_root}/${board}/demo_apps/mc_pmsm/pmsm_enc_iopamp/${multicore_foldername}/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
