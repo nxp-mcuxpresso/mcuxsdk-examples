@@ -6,12 +6,12 @@
 iar:
   shared-workspace: tfm_psatest
   sharing-workspace:
-  - ../../tfm_psatest_ns/iar/tfm_psatest_ns
-  - ../../tfm_s_crypto_clients/iar/tfm_s_crypto_clients
+  - ../../tfm_psatest_ns/iar/tfm_psatest_ns${core_id_suffix_name}
+  - ../../tfm_s_crypto_clients/iar/tfm_s_crypto_clients${core_id_suffix_name}
   config:
     __common__:
       download-extra-image:
-      - path: "../../tfm_psatest_ns/iar/tfm_psatest_ns.out"
+      - path: "../../tfm_psatest_ns/iar/tfm_psatest_ns${core_id_suffix_name}.out"
         item: 1
         offset: 0
         debug_info_only: false

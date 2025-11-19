@@ -6,13 +6,13 @@
 iar:
   shared-workspace: tfm_regression
   sharing-workspace:
-  - ../../tfm_regression_ns/iar/tfm_regression_ns
-  - ../../tfm_s_crypto_clients/iar/tfm_s_crypto_clients
-  - ../../tfm_s_reg_suites/iar/tfm_s_reg_suites
+  - ../../tfm_regression_ns/iar/tfm_regression_ns${core_id_suffix_name}
+  - ../../tfm_s_crypto_clients/iar/tfm_s_crypto_clients${core_id_suffix_name}
+  - ../../tfm_s_reg_suites/iar/tfm_s_reg_suites${core_id_suffix_name}
   config:
     __common__:
       download-extra-image:
-      - path: "../../tfm_regression_ns/iar/tfm_regression_ns.out"
+      - path: "../../tfm_regression_ns/iar/tfm_regression_ns${core_id_suffix_name}.out"
         item: 1
         offset: 0
         debug_info_only: false
