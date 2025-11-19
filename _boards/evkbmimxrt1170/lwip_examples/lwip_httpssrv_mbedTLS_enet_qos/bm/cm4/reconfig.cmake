@@ -1,7 +1,6 @@
 # Add additional configuration
 mcux_add_macro(
-    CC "-DFSL_ETH_ENABLE_CACHE_CONTROL=1\
-       -DMBEDTLS_SSL_CIPHERSUITES=MBEDTLS_TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256"
+    CC "-DFSL_ETH_ENABLE_CACHE_CONTROL=1"
 )
 mcux_add_mdk_configuration(
     LD "--diag_suppress=L6329W"
