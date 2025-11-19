@@ -37,7 +37,6 @@ mcux_add_iar_configuration(
 mcux_add_iar_configuration(
     CC "--diag_suppress=Pe111,Pe177,Pe550"
 )
-
 mcux_add_armgcc_configuration(
     CC "-Wno-unused-variable\
         -Wno-unused-but-set-variable\
