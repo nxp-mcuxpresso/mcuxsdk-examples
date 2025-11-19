@@ -34,6 +34,9 @@ mcux_add_macro(
 mcux_add_iar_configuration(
     CC "--diag_suppress=Pe257,Pa039"
 )
+mcux_add_iar_configuration(
+    CC "--diag_suppress=Pe111,Pe177,Pe550"
+)
 
 # MCUboot relies on this option otherwise the build fails under IAR
 mcux_remove_iar_configuration(
