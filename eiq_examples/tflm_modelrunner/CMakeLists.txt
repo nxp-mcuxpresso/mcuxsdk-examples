@@ -54,11 +54,17 @@ mcux_remove_armgcc_configuration(
 )
 
 mcux_add_iar_configuration(
-  CC "--diag_suppress=Pe236"
+  CC "--diag_suppress=Pe236,Pe068"
 )
 
 mcux_add_armgcc_configuration(
-  CC "-Wno-aggressive-loop-optimizations"
+  CC "-Wno-aggressive-loop-optimizations\
+     -Wno-stringop-overflow"
+)
+
+mcux_add_mdk_configuration(
+  CC "-Wno-format -Wno-enum-compare-switch"
+  CX "-Wno-format -Wno-enum-compare-switch"
 )
 
 include(${SdkRootDirPath}/CMakeLists.txt)
