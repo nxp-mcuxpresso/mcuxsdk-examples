@@ -117,7 +117,7 @@ void task_main(void *param)
 
     result = mcu_create_mutex_scan_lock();
     assert(NCP_SUCCESS == result);
-
+    ncp_set_host_type(0);
     printSeparator();
 
     /* Initialization completed, destroy task */

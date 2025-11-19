@@ -32,4 +32,6 @@ int mcu_put_command_lock();
 
 int ncp_host_send_tlv_command();
 
+int ncp_set_host_type(int host_type);
+
 #endif /*_NCP_HOST_APP_H_*/

@@ -458,6 +458,7 @@ static ncp_intf_ops_t ncp_intf_ops =
     .send   = ncp_uart_send,
     .recv   = ncp_uart_recv,
     .pm_ops = &ncp_uart_pm_ops,
+    .set_host_type = NULL,
 };
 
 const ncp_intf_ops_t *ncp_intf_get_ops(void)

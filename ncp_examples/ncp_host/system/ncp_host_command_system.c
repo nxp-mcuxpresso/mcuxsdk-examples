@@ -25,6 +25,7 @@ extern uint8_t mcu_tlv_command_buff[NCP_HOST_COMMAND_LEN];
 extern int mcu_get_command_resp_sem();
 extern int mcu_put_command_resp_sem();
 extern int ncp_host_cli_register_commands(const struct ncp_host_cli_command *commands, int num_commands);
+extern int ncp_host_send_tlv_command();
 
 MCU_NCPCmd_DS_SYS_COMMAND *ncp_host_get_cmd_buffer_sys()
 {
@@ -354,6 +355,19 @@ int ncp_get_mcu_sleep_conf_command(int argc, char **argv)
     return NCP_SUCCESS;
 }
 
+int ncp_set_host_type(int host_type)
+{
+    MCU_NCPCmd_DS_SYS_COMMAND *sys_cfg_command = ncp_host_get_cmd_buffer_sys();
+    NCP_CMD_HOST_TYPE *host_type_para = (NCP_CMD_HOST_TYPE *)&sys_cfg_command->params.host_type;
+    host_type_para->host_type = host_type;
+    sys_cfg_command->header.cmd      = NCP_CMD_SYSTEM_HOST_TYPE;
+    sys_cfg_command->header.size     = NCP_CMD_HEADER_LEN;
+    sys_cfg_command->header.result   = NCP_CMD_RESULT_OK;
+    sys_cfg_command->header.size     += sizeof(NCP_CMD_HOST_TYPE);
+    ncp_host_send_tlv_command();
+    return NCP_SUCCESS;
+}
+
 /* Display the usage of test-loopback */
 static void display_test_loopback_usage()
 {
@@ -434,6 +448,27 @@ int system_process_event(uint8_t *res)
 }
 
 /**
+ * @brief      This function processes host type response from ncp device
+ *
+ * @param res  A pointer to uint8_t
+ * @return     Status returned
+ */
+int ncp_process_host_type_response(uint8_t *res)
+{
+    MCU_NCPCmd_DS_SYS_COMMAND *cmd_res = (MCU_NCPCmd_DS_SYS_COMMAND *)res;
+
+    if (cmd_res->header.result != NCP_CMD_RESULT_OK)
+    {
+        (void)PRINTF("Failed to set ncp host type\r\n");
+        return -NCP_FAIL;
+    }
+
+    (void)PRINTF("ncp-host-type succeeded!\r\n");
+
+    return NCP_SUCCESS;
+}
+
+/**
  * @brief       This function processes response from ncp device
  *
  * @param res   A pointer to uint8_t
@@ -465,6 +500,9 @@ int system_process_response(uint8_t *res)
             ret = ncp_process_encrypt_response(res);
             break;
 #endif
+        case NCP_RSP_SYSTEM_HOST_TYPE:
+            ret = ncp_process_host_type_response(res);
+            break;
         default:
             ncp_e("Invaild response cmd!");
             break;

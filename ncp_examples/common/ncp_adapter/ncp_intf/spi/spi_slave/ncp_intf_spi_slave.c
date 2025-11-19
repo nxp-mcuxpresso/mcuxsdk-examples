@@ -32,7 +32,7 @@ spi_dma_handle_t slaveHandle;
 /* Define the init structure for the output switch pin */
 gpio_pin_config_t output_pin = {
     kGPIO_DigitalOutput,
-    1
+    0,
 };
 
 /* Define the init structure for the input switch pin */
@@ -98,6 +98,23 @@ static void spi_delay_us(uint32_t us)
 
     instNum = ((SystemCoreClock + 999999UL) / 1000000UL) * us;
     spi_delay((instNum + 2U) / 3U);
+}
+
+void spi_set_host_type(int type)
+{
+    if (type == 0)
+    {
+        (void)PRINTF("ncp mcu host\n\r");
+        output_pin.outputLogic = 1;
+        GPIO_PortInit(GPIO, 0);
+        GPIO_PinInit(GPIO, 0, NCP_SPI_GPIO_TX, &output_pin);
+        GPIO_PinInit(GPIO, 0, NCP_SPI_GPIO_RX_READY, &output_pin);
+    }
+    else
+    {
+        (void)PRINTF("ncp mpu host\n\r");
+        output_pin.outputLogic = 0;
+    }
 }
 
 static void ncp_spi_slave_cb(SPI_Type *base,
@@ -546,6 +563,7 @@ ncp_intf_ops_t ncp_intf_ops =
     .send   = ncp_spi_send,
     .recv   = ncp_spi_recv,
     .pm_ops = &ncp_spi_pm_ops,
+    .set_host_type = spi_set_host_type,
 };
 
 #ifdef CONFIG_NCP_SPI

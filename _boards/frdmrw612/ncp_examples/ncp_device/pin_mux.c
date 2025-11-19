@@ -117,10 +117,6 @@ void BOARD_InitPins_NCP_SPI(void)
 {
     /* Initialize FC0_SPI_SS0 functionality on pin GPIO_3, GPIO_0, GPIO_4, GPIO_2, GPIO_5 (pin C13_M1_F8_F10_L7) */
     IO_MUX_SetPinMux(IO_MUX_FC0_SPI_SS0);
-    /* Initialize GPIO11 functionality on pin GPIO_11 (pin M2) */
-    IO_MUX_SetPinMux(IO_MUX_GPIO11);
-    /* Initialize GPIO27 functionality on pin GPIO_27 (pin C5) */
-    IO_MUX_SetPinMux(IO_MUX_GPIO27);
     /* Set GPIO_0 (pin C13_M1_F8_F10) configuration - Disable pull-up / pull-down; strongest slew rate */
     IO_MUX_SetPinConfig(0U, IO_MUX_PinConfigNoPull);
     /* Set GPIO_2 (pin C13_M1_F8_F10) configuration - Disable pull-up / pull-down; strongest slew rate */
@@ -129,10 +125,6 @@ void BOARD_InitPins_NCP_SPI(void)
     IO_MUX_SetPinConfig(3U, IO_MUX_PinConfigNoPull);
     /* Set GPIO_4 (pin C13_M1_F8_F10) configuration - Disable pull-up / pull-down; strongest slew rate */
     IO_MUX_SetPinConfig(4U, IO_MUX_PinConfigNoPull);
-    /* Set GPIO_11 (pin M2) configuration - Disable pull-up / pull-down; strongest slew rate */
-    IO_MUX_SetPinConfig(11U, IO_MUX_PinConfigNoPull);
-    /* Set GPIO_27 (pin C5) configuration - Disable pull-up / pull-down; strongest slew rate */
-    IO_MUX_SetPinConfig(27U, IO_MUX_PinConfigNoPull);
 }
 
 /* clang-format off */

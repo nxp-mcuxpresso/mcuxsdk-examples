@@ -33,7 +33,11 @@
 /** system configuration encrypted communication command ID */
 #define NCP_CMD_SYSTEM_CONFIG_ENCRYPT (NCP_CMD_SYSTEM | NCP_CMD_SYSTEM_CONFIG | NCP_MSG_TYPE_CMD | 0x00000003) /* ncp_encrypt */
 /** system configuration encrypted communication command response ID */
-#define NCP_RSP_SYSTEM_CONFIG_ENCRYPT (NCP_CMD_SYSTEM | NCP_CMD_SYSTEM_CONFIG | NCP_MSG_TYPE_RESP | 0x00000003) 
+#define NCP_RSP_SYSTEM_CONFIG_ENCRYPT (NCP_CMD_SYSTEM | NCP_CMD_SYSTEM_CONFIG | NCP_MSG_TYPE_RESP | 0x00000003)
+/** system configuration host type communication command ID */
+#define NCP_CMD_SYSTEM_HOST_TYPE     (NCP_CMD_SYSTEM | NCP_CMD_SYSTEM_CONFIG | NCP_MSG_TYPE_CMD | 0x00000004)
+/** system configuration host type communication command response ID */
+#define NCP_RSP_SYSTEM_HOST_TYPE     (NCP_CMD_SYSTEM | NCP_CMD_SYSTEM_CONFIG | NCP_MSG_TYPE_RESP | 0x00000004)
 /** Wi-Fi system power manager wakeup configuration command ID */
 #define NCP_CMD_SYSTEM_POWERMGMT_WAKE_CFG (NCP_CMD_SYSTEM | NCP_CMD_SYSTEM_POWERMGMT | NCP_MSG_TYPE_CMD | 0x00000001) /* ncp-wake-cfg */
 /** Wi-Fi system power manager wakeup configuration command response ID */
@@ -126,6 +130,12 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_ENCRYPT
     uint32_t arg;
 } NCP_TLV_PACK_END NCP_CMD_ENCRYPT;
 
+/** This structure is used for region code configuration. */
+typedef NCP_TLV_PACK_START struct _NCP_CMD_HOST_TYPE
+{
+    uint32_t host_type;
+} NCP_TLV_PACK_END NCP_CMD_HOST_TYPE;
+
 /** NCP system command */
 typedef NCP_TLV_PACK_START struct _NCPCmd_DS_SYS_COMMAND
 {
@@ -142,6 +152,8 @@ typedef NCP_TLV_PACK_START struct _NCPCmd_DS_SYS_COMMAND
         NCP_CMD_POWERMGMT_WAKEUP_HOST host_wakeup_ctrl;
         /** NCP host and device encrypted communication. */
         NCP_CMD_ENCRYPT encrypt;
+        /** NCP host and device host type communication.*/
+        NCP_CMD_HOST_TYPE host_type;
     } params;
 } NCP_TLV_PACK_END NCPCmd_DS_SYS_COMMAND, MCU_NCPCmd_DS_SYS_COMMAND;
 

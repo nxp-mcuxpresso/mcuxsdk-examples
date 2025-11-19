@@ -20,7 +20,6 @@
 #if CONFIG_NCP_USE_ENCRYPT
 #include "mbedtls_device.h"
 #endif
-
 /*******************************************************************************
  * Variables
  ******************************************************************************/
@@ -28,7 +27,8 @@
 extern uint16_t g_cmd_seqno;
 extern uint8_t cmd_buf[NCP_INBUF_SIZE];
 uint8_t sys_res_buf[NCP_SYS_INBUF_SIZE];
-
+int ncp_host_type = 0;
+extern const ncp_intf_ops_t *ncp_intf_get_ops(void);
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -208,6 +208,24 @@ static int ncp_sys_wakeup_host(void *tlv)
     return WM_SUCCESS;
 }
 
+void ncp_sys_set_host_type(int type)
+{
+    ncp_host_type = type;
+    if (ncp_intf_get_ops()->set_host_type)
+        ncp_intf_get_ops()->set_host_type(type);
+}
+int ncp_sys_get_host_type(void)
+{
+    return ncp_host_type;
+}
+
+int ncp_sys_host_type(void *tlv)
+{
+    NCP_CMD_HOST_TYPE *host_type   = (NCP_CMD_HOST_TYPE *)tlv;
+    ncp_sys_set_host_type(host_type->host_type);
+    ncp_sys_prepare_status(NCP_RSP_SYSTEM_HOST_TYPE, NCP_CMD_RESULT_OK);
+    return WM_SUCCESS;
+}
 
 struct cmd_t system_cmd_config[] = {
     {NCP_CMD_SYSTEM_CONFIG_SET, "ncp-set", ncp_sys_set_config, CMD_SYNC},
@@ -215,6 +233,7 @@ struct cmd_t system_cmd_config[] = {
 #if CONFIG_NCP_USE_ENCRYPT
     {NCP_CMD_SYSTEM_CONFIG_ENCRYPT, "ncp-encrypt", ncp_sys_encrypt, CMD_SYNC},
 #endif
+    {NCP_CMD_SYSTEM_HOST_TYPE, "ncp-host-type", ncp_sys_host_type, CMD_SYNC},
     {NCP_CMD_INVALID, NULL, NULL, NULL},
 };
 

@@ -174,6 +174,7 @@ typedef struct _ncp_intf_ops
     int (*send)(uint8_t *buf, size_t len, tlv_send_callback_t cb);
     int (*recv)(uint8_t *buf, size_t *len);
     ncp_intf_pm_ops_t *pm_ops;
+    void (*set_host_type)(int type);
 } ncp_intf_ops_t;
 
 /**

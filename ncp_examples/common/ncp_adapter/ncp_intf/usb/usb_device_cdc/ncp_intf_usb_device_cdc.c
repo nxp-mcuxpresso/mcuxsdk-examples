@@ -249,6 +249,7 @@ static ncp_intf_ops_t ncp_intf_ops =
     .send   = ncp_usb_device_send,
     .recv   = NULL,
     .pm_ops = &ncp_usb_device_pm_ops,
+    .set_host_type = NULL,
 };
 
 const ncp_intf_ops_t *ncp_intf_get_ops(void)
