@@ -56,7 +56,7 @@ static uint32_t SYSTICK_GET_COUNT()
 
 int getValueAndEcho(int isHex)
 {
-	char str[16] = {0};
+	char str[17] = {0};
 	int index = 0;
 	int v32 = 0;
 	char ch;
@@ -554,6 +554,7 @@ void ENDAT3_ModifyMemory(ENDAT3_Type *base, uint8_t bus_addr, uint32_t mem_index
 	status_t status;
 	uint16_t cache_buf[0x100] = {0};
 	endat3_mem_cache_t mem_cache;
+	(void)status;
 
 	if (bus_addr > 0) {
 		if ((status = ENDAT3_Bus_P2P_memCacheInit(base, bus_addr, mem_base_array[mem_index], &mem_cache, cache_buf, 0x100, 1)) != kStatus_Success) {
@@ -593,7 +594,7 @@ void ENDAT3_ModifyMemory(ENDAT3_Type *base, uint8_t bus_addr, uint32_t mem_index
 
 	while (1) {
 		PRINTF("=> ");
-		char str[64] = {0};
+		char str[65] = {0};
 		char cmd_buf[16] = {0};
 		char *cmd;
 		int index = 0;
@@ -1228,7 +1229,7 @@ void Endat3_BG_REQ(ENDAT3_Type *base)
 		}
 
 		switch (req_code) {
-			case ENDAT3_BG_OPCODE_NOP:
+			case ENDAT3_BG_OPCODE_NOP: {
 				uint64_t arbitrary_req = 0;
 				uint64_t arbitrary_res = 0;
 				getBGREQ_Nop(&arbitrary_req);
@@ -1239,14 +1240,16 @@ void Endat3_BG_REQ(ENDAT3_Type *base)
 					PRINTF("\tNOP request failed.\r\n");
 				}
 				break;
-			case ENDAT3_BG_OPCODE_RECONFIGURE:
+			}
+			case ENDAT3_BG_OPCODE_RECONFIGURE: {
 				if (ENDAT3_BG_Reconfigure(base, 1) == kStatus_Success) {
 					PRINTF("\tBG Reconfigure request successful \r\n");
 				} else {
 					PRINTF("\tBG Reconfigure request failed \r\n");
 				}
 				break;
-			case ENDAT3_BG_OPCODE_READ:
+			}
+			case ENDAT3_BG_OPCODE_READ: {
 				uint32_t address_read;
 				uint8_t num_read;
 				uint16_t words_read[3];
@@ -1259,7 +1262,8 @@ void Endat3_BG_REQ(ENDAT3_Type *base)
 					PRINTF("\tBG Read request failed\r\n");
 				}
 				break;
-			case ENDAT3_BG_OPCODE_WRITE:
+			}
+			case ENDAT3_BG_OPCODE_WRITE: {
 				uint32_t address_write;
 				uint16_t word_write;
 				getBGREQ_Write(&address_write, &word_write);
@@ -1269,7 +1273,8 @@ void Endat3_BG_REQ(ENDAT3_Type *base)
 					PRINTF("\tBG write request failed \r\n");
 				}
 				break;
-			case ENDAT3_BG_OPCODE_AUTH:
+			}
+			case ENDAT3_BG_OPCODE_AUTH: {
 				uint16_t usrlevel_auth;
 				uint16_t pass_auth;
 				getBGREQ_Auth_SetPass(&usrlevel_auth, &pass_auth);
@@ -1279,7 +1284,8 @@ void Endat3_BG_REQ(ENDAT3_Type *base)
 					PRINTF("\tBG Auth request failed \r\n");
 				}
 				break;
-			case ENDAT3_BG_OPCODE_SETPASS:
+			}
+			case ENDAT3_BG_OPCODE_SETPASS: {
 				uint16_t usrlevel_set;
 				uint16_t pass_set;
 				getBGREQ_Auth_SetPass(&usrlevel_set, &pass_set);
@@ -1289,7 +1295,8 @@ void Endat3_BG_REQ(ENDAT3_Type *base)
 					PRINTF("\tBG Auth request failed \r\n");
 				}
 				break;
-			case ENDAT3_BG_OPCODE_PROTECT:
+			}
+			case ENDAT3_BG_OPCODE_PROTECT: {
 				uint32_t address_pro;
 				uint8_t mode;
 				uint16_t acclevel;
@@ -1302,7 +1309,8 @@ void Endat3_BG_REQ(ENDAT3_Type *base)
 					PRINTF("\tBG Auth request failed \r\n");
 				}
 				break;
-			case ENDAT3_BG_OPCODE_LOCATE:
+			}
+			case ENDAT3_BG_OPCODE_LOCATE: {
 				uint8_t ctrl;
 				getBGREQ_Locate(&ctrl);
 				if (ENDAT3_BG_Locate(base, ctrl, 1) == kStatus_Success) {
@@ -1311,6 +1319,7 @@ void Endat3_BG_REQ(ENDAT3_Type *base)
 					PRINTF("\tBG Auth request failed \r\n");
 				}
 				break;
+			}
 			default:
 				break;
 
@@ -1328,7 +1337,7 @@ void Endat3_BUS_BG_REQ(ENDAT3_Type *base, int32_t bus_addr)
 		}
 
 		switch (req_code) {
-			case ENDAT3_BG_OPCODE_NOP:
+			case ENDAT3_BG_OPCODE_NOP: {
 				uint64_t arbitrary_req = 0;
 				uint64_t arbitrary_res = 0;
 				getBGREQ_Nop(&arbitrary_req);
@@ -1339,14 +1348,16 @@ void Endat3_BUS_BG_REQ(ENDAT3_Type *base, int32_t bus_addr)
 					PRINTF("\tNOP request failed.\r\n");
 				}
 				break;
-			case ENDAT3_BG_OPCODE_RECONFIGURE:
+			}
+			case ENDAT3_BG_OPCODE_RECONFIGURE: {
 				if (ENDAT3_BG_Bus_P2P_Reconfigure(base, bus_addr, 1) == kStatus_Success) {
 					PRINTF("\tBG Reconfigure request successful \r\n");
 				} else {
 					PRINTF("\tBG Reconfigure request failed \r\n");
 				}
 				break;
-			case ENDAT3_BG_OPCODE_READ:
+			}
+			case ENDAT3_BG_OPCODE_READ: {
 				uint32_t address_read;
 				uint8_t num_read;
 				uint16_t words_read[3];
@@ -1359,7 +1370,8 @@ void Endat3_BUS_BG_REQ(ENDAT3_Type *base, int32_t bus_addr)
 					PRINTF("\tBG Read request failed\r\n");
 				}
 				break;
-			case ENDAT3_BG_OPCODE_WRITE:
+			}
+			case ENDAT3_BG_OPCODE_WRITE: {
 				uint32_t address_write;
 				uint16_t word_write;
 				getBGREQ_Write(&address_write, &word_write);
@@ -1369,7 +1381,8 @@ void Endat3_BUS_BG_REQ(ENDAT3_Type *base, int32_t bus_addr)
 					PRINTF("\tBG write request failed \r\n");
 				}
 				break;
-			case ENDAT3_BG_OPCODE_AUTH:
+			}
+			case ENDAT3_BG_OPCODE_AUTH: {
 				uint16_t usrlevel_auth;
 				uint16_t pass_auth;
 				getBGREQ_Auth_SetPass(&usrlevel_auth, &pass_auth);
@@ -1379,7 +1392,8 @@ void Endat3_BUS_BG_REQ(ENDAT3_Type *base, int32_t bus_addr)
 					PRINTF("\tBG Auth request failed \r\n");
 				}
 				break;
-			case ENDAT3_BG_OPCODE_SETPASS:
+			}
+			case ENDAT3_BG_OPCODE_SETPASS: {
 				uint16_t usrlevel_set;
 				uint16_t pass_set;
 				getBGREQ_Auth_SetPass(&usrlevel_set, &pass_set);
@@ -1389,7 +1403,8 @@ void Endat3_BUS_BG_REQ(ENDAT3_Type *base, int32_t bus_addr)
 					PRINTF("\tBG Auth request failed \r\n");
 				}
 				break;
-			case ENDAT3_BG_OPCODE_PROTECT:
+			}
+			case ENDAT3_BG_OPCODE_PROTECT: {
 				uint32_t address_pro;
 				uint8_t mode;
 				uint16_t acclevel;
@@ -1402,7 +1417,8 @@ void Endat3_BUS_BG_REQ(ENDAT3_Type *base, int32_t bus_addr)
 					PRINTF("\tBG Auth request failed \r\n");
 				}
 				break;
-			case ENDAT3_BG_OPCODE_LOCATE:
+			}
+			case ENDAT3_BG_OPCODE_LOCATE: {
 				uint8_t ctrl;
 				getBGREQ_Locate(&ctrl);
 				if (ENDAT3_BG_Bus_P2P_Locate(base, bus_addr, ctrl, 1) == kStatus_Success) {
@@ -1411,6 +1427,7 @@ void Endat3_BUS_BG_REQ(ENDAT3_Type *base, int32_t bus_addr)
 					PRINTF("\tBG Auth request failed \r\n");
 				}
 				break;
+			}
 			default:
 				break;
 
