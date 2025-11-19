@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2013 - 2015, Freescale Semiconductor, Inc.
- * Copyright 2016-2017 NXP
+ * Copyright 2016-2017, 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -51,8 +51,9 @@ void EXAMPLE_LPSPI_SLAVE_IRQHandler(void)
     uint8_t rx_count = LPSPI_GetRxFifoCount(EXAMPLE_LPSPI_SLAVE_BASEADDR);
     if (slaveRxCount < TRANSFER_SIZE)
     {
-        while (rx_count--)
+        while (rx_count > 0U)
         {
+            rx_count--;
             slaveRxData[slaveRxCount] = LPSPI_ReadData(EXAMPLE_LPSPI_SLAVE_BASEADDR);
             slaveRxCount++;
 
@@ -98,8 +99,10 @@ void EXAMPLE_LPSPI_MASTER_IRQHandler(void)
          */
         LPSPI_DisableInterrupts(EXAMPLE_LPSPI_MASTER_BASEADDR, kLPSPI_RxInterruptEnable);
 
-        while (rx_count--)
+        while (rx_count > 0U)
         {
+            rx_count--;
+
             /*Read out the data*/
             masterRxData[masterRxCount] = LPSPI_ReadData(EXAMPLE_LPSPI_MASTER_BASEADDR);
 
