@@ -9,11 +9,3 @@ mcux_add_macro(
         -DSDK_I2C_BASED_COMPONENT_USED=1\
         -DBOARD_USE_PCAL6524=1"
 )
-
-# Override heap size
-mcux_remove_linker_symbol(
-    SYMBOLS "__heap_size__=40000"
-)
-mcux_add_linker_symbol(
-    SYMBOLS "__heap_size__=50000"
-)
