@@ -15,7 +15,7 @@ mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_import_blob/*.h
             middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_import_blob/*.c
-            middleware/nxp_iot_agent/port/el2go_mbedtls_user_config.h
+            middleware/nxp_iot_agent/port/el2go_mbedtls_user_config_bare_metal.h
 )
 
 mcux_add_include(
@@ -25,7 +25,7 @@ mcux_add_include(
 )
 
 mcux_add_macro(
-    CC "MBEDTLS_USER_CONFIG_FILE=\\\"el2go_mbedtls_user_config.h\\\"\
+    CC "MBEDTLS_USER_CONFIG_FILE=\\\"el2go_mbedtls_user_config_bare_metal.h\\\"\
         PRINTF_ADVANCED_ENABLE=1"
 )
 
