@@ -6,8 +6,53 @@ Hardware requirements
 
 Board settings
 ============
-Switch the JP45 jumper to the 2-3 configuration and the JP46 jumper to the 2-3 configuration to enable XSPI1 memory access.
-Switch the SW10 boot mode switch to the 11 XSPI1 flash configuration.
+
+### XSPI1 Usage (Default Configuration)
+To enable XSPI1 memory access, perform the following steps to enable XSPI1 memory access:
+ - Set JP45 jumper to 2-3 configuration.
+ - Set JP46 jumper to 2-3 configuration.
+ - Configure SW10 boot mode switch to 11 (XSPI1 flash configuration).
+
+### XSPI0 Usage:
+ - Set JP45 jumper to 1-2 configuration.
+ - Set JP46 jumper to 2-3 configuration.
+ - Configure SW10 boot mode switch to 10 (XSPI0 flash configuration).
+ 
+To use XSPI0 with TrustZone examples, you need to apply the following software changes:
+1.  Update CMake Configuration:
+    [trustzone_examples/<application_name>\<application_name>_s/cm33_core0/reconfig.cmake](reconfig.cmake)
+
+    ```c
+        DEMO_CODE_START_NS=672137216
+    ```
+
+2.  Update SAU Regions with following definations:
+    [trustzone_examples/<application_name>\<application_name>_s/cm33_core0/tzm_config.c](tzm_config.c)
+
+    ```c
+        #define SAU_REGION_0_BASE 0x28100000U
+        #define SAU_REGION_0_END 0x281FFFFFU
+        #define SAU_REGION_2_BASE 0x280FFE00U
+        #define SAU_REGION_2_END 0x280FFFFFU
+    ```
+
+3. Update Secure Linker Script with following:
+  [trustzone_examples/linkscripts/MIMXRT798Sxxxx_cm33_core0_flash_s.icf](../../../linkscripts/MIMXRT798Sxxxx_cm33_core0_flash_s.icf)
+    ```c
+        define symbol m_text_start                     = 0x38004000;
+        define symbol m_text_end                       = 0x380FFDFF;
+        define symbol m_boot_flash_conf_start          = 0x38000000;
+        define symbol m_veneer_table_start             = 0x280FFE00;
+    ```
+4. Update Non-Secure Linker Script with following:
+  [trustzone_examples/linkscripts/MIMXRT798Sxxxx_cm33_core0_flash_ns.icf](../../../linkscripts/MIMXRT798Sxxxx_cm33_core0_flash_ns.icf)
+    ```c
+       define symbol m_text_start                     = 0x28100000;
+       define symbol m_text_end                       = 0x281FFFFF;
+       define symbol m_boot_flash_conf_start          = 0x28100000;
+    ```
+Note: XSPI0 usage is for IAR toolchain, for other tool chain, make similar changes in respective linker files.
+
 
 Prepare the Demo
 ===============
