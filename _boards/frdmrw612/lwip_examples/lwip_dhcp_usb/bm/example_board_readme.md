@@ -1,6 +1,6 @@
 Hardware requirements
 ===================
-- Mini/micro USB cable
+- USB-C cable
 - FRDM-RW612 board
 - Personal Computer
 

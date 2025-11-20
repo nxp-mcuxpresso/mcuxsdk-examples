@@ -1,13 +1,13 @@
 Hardware requirements
 ===================
-- Micro USB cable
+- USB-C cable
 - Loopback network cable RJ45 standard (optional)
 - FRDM-RW612 board
 - Personal Computer
 
 Board settings
 ============
-No special settings
+Make sure SJ21 and SJ22 have positions 1 and 2 soldered (default).
 
 Prepare the Demo
 ===============
