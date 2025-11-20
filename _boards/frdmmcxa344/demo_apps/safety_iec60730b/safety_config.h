@@ -42,7 +42,7 @@
 #define RAM_TEST_ENABLED      0
 #define PC_TEST_ENABLED       0
 #define WATCHDOG_ENABLED      0
-#define FMSTR_SERIAL_ENABLE   0ss
+#define FMSTR_SERIAL_ENABLE   1
 
 /********* Clock *********/
 #define REF_TIMER_USED            CTIMER1
