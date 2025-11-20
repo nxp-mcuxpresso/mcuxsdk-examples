@@ -36,3 +36,7 @@ mcux_add_configuration(
   LD "-Xlinker --defsym=__stack_size__=0x2000\
       -Xlinker --defsym=__heap_size__=0x1000"
 )
+
+mcux_add_armgcc_configuration(
+    CC "-Wno-uninitialized"
+)
