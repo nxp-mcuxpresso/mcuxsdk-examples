@@ -596,7 +596,7 @@ void ENDAT3_ModifyMemory(ENDAT3_Type *base, uint8_t bus_addr, uint32_t mem_index
 		PRINTF("=> ");
 		char str[65] = {0};
 		char cmd_buf[16] = {0};
-		char *cmd;
+		char *cmd = NULL;
 		int index = 0;
 		int address, value, addr;
 		char ch;
