@@ -13,5 +13,5 @@ mc_bldc:
       - ${board_root}/${board}/demo_apps/mc_bldc/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkbmimxrt1170@cm7: []
-    lpcxpresso55s36: []
+    # evkbmimxrt1170@cm7: []
+    # lpcxpresso55s36: []

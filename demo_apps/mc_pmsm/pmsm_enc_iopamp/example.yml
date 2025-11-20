@@ -13,4 +13,4 @@ mc_pmsm_enc_iopamp:
       - ${board_root}/${board}/demo_apps/mc_pmsm/pmsm_enc_iopamp/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    lpcxpresso55s36: []
+    # lpcxpresso55s36: []
