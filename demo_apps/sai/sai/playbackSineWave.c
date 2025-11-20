@@ -86,8 +86,10 @@ static float32_t do_fft(
     switch (bitWidth)
     {
         case 8U:
+        {
             /* Validate buffer size for 8-bit data */
-            if (complexBuffSize > (SIZE_MAX / sizeof(uint8_t)))
+            size_t elementSize = sizeof(uint8_t);
+            if (complexBuffSize > (SIZE_MAX / elementSize))
             {
                 return 0.0f;
             }
@@ -137,6 +139,7 @@ static float32_t do_fft(
             }
 
             break;
+        }
 
         case 16U:
             /* Validate buffer size for 16-bit data */
