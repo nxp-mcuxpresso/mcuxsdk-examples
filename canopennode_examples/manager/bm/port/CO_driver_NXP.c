@@ -370,7 +370,7 @@ static void prv_read_can_received_msg(CAN_Type *base, uint8_t mbIdx, uint32_t fi
     uint8_t messageFound = 0;
     flexcan_frame_t *pRxFrame;
 
-    if (mbIdx >= RX_MB_FIRST_INDEX)
+    if ((mbIdx >= RX_MB_FIRST_INDEX) && (mbIdx <= RX_MB_LAST_INDEX))
     {
         pRxFrame = rxXfer[mbIdx - RX_MB_FIRST_INDEX].frame;
     }
