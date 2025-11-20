@@ -39,3 +39,8 @@ mcux_add_include(
     BASE_PATH ${APPLICATION_BINARY_DIR}
     INCLUDES ../executorch_cifarnet_hifi4/${CONFIG_TOOLCHAIN}/
 )
+
+mcux_add_armgcc_configuration(
+    CX "-Wno-sign-compare\
+        -Wno-format"
+)

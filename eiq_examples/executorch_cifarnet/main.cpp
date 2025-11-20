@@ -164,13 +164,13 @@ int main(void)
 
     auto startTime = TIMER_GetTimeInUS();
     status = method->execute();
+    auto endTime = TIMER_GetTimeInUS();
     if (status != Error::Ok) {
 	PRINTF("Execution of method %s failed with status 0x%\r\n" PRIx32,
                method_name, status);
     } else {
         PRINTF("Model executed successfully.\r\n");
     }
-    auto endTime = TIMER_GetTimeInUS();
 
     PRINTF("Core/NPU Frequency: %d MHz\r\n", CLOCK_GetFreq(kCLOCK_CoreSysClk)/1000000);
     PRINTF("method_allocator Addr: 0x%x - 0x%x\r\n", method_allocator_pool, method_allocator_pool + method_allocator.size());

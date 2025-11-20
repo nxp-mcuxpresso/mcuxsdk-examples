@@ -44,7 +44,13 @@ mcux_add_armgcc_configuration(
 )
 
 mcux_add_armgcc_configuration(
-    CX "-Wno-sign-compare"
+    CX "-Wno-sign-compare\
+        -Wno-format"
+)
+
+mcux_add_mcux_configuration(
+    CX "-Wno-sign-compare\
+        -Wno-format"
 )
 
 mcux_add_macro(
