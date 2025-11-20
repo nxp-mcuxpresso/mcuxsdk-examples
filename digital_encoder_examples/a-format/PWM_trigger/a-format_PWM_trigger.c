@@ -61,7 +61,7 @@ int main(void)
     /* Structure of initialize A-format encoder */
     flexio_a_format_config_t devConfig;
     FLEXIO_A_FORMAT_Type encDev;
-    a_format_abs_multi_single_t enc_abs, abs_save;
+    a_format_abs_multi_single_t enc_abs = {0}, abs_save = {0};
 
     BOARD_InitHardware();
 
