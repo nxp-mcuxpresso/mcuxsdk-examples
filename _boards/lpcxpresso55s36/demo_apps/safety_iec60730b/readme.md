@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Type-Micro USB cable
-- FRDM-KE17Z512 board
+- LPCXpresso55S36 board
 - Personal Computer
 
 Overview
