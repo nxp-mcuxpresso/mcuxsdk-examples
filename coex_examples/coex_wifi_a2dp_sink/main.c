@@ -61,6 +61,8 @@
 #define CONFIG_OT_CLI 0 // needs to define CONFIG_OT_CLI with value, 0 for disable OT, 1 for enable OT
 #endif
 
+struct bt_conn; // Forward declaration
+
 #include "app_a2dp_sink.h"
 #include "coex_cli.h"
 /*******************************************************************************
