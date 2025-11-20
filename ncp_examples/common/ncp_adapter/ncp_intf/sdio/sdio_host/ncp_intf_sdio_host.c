@@ -329,7 +329,7 @@ typedef struct _sdhost_ctrl
 
 static sdhost_ctrl_t sdhost_ctrl;
 static bool cmd_sent = false;
-static bool data_sent = false;
+//static bool data_sent = false;
 static bool sdhost_ready = false;
 
 static uint32_t txportno;
@@ -935,7 +935,7 @@ ncp_status_t sdhost_process_int_status(void)
         sdhost_ctrl.mp_wr_bitmap |= ((uint32_t)sdhost_ctrl.mp_regs[WR_BITMAP_1L]) << 16;
         sdhost_ctrl.mp_wr_bitmap |= ((uint32_t)sdhost_ctrl.mp_regs[WR_BITMAP_1U]) << 24;
         //ncp_adap_d("data sent");
-        data_sent = false;
+        //data_sent = false;
         ncp_adap_d("set event DATA_DNLD_RDY soon");
         (void)sdhost_core_set_event(SDHOST_DATA_DNLD_RDY);
     }
@@ -1504,7 +1504,7 @@ get_port:
         ncp_adap_e("failed to get txrx_mutex");
         return NCP_STATUS_ERROR;
     }
-    data_sent = true;
+    //data_sent = true;
     (void)memset(sdh_outbuf, 0, SDIO_CMD_OUTBUF_LEN);
     sdioheader->pkttype = SDIO_TYPE_DATA;
     sdioheader->size    = length + SDIO_HEADER_LEN;
