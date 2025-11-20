@@ -89,7 +89,6 @@ __attribute__((weak)) void DCDC_SetVoltage(uint8_t core, uint8_t targetVoltage)
 {
 }
 
-
 /*******************************************************************************
  ************************ BOARD_InitBootClocks function ************************
  ******************************************************************************/
@@ -126,8 +125,8 @@ outputs:
 - {id: ENET_REFCLK_ROOT.outFreq, value: 125 MHz}
 - {id: FLEXIO1_CLK_ROOT.outFreq, value: 48 MHz}
 - {id: FLEXIO2_CLK_ROOT.outFreq, value: 48 MHz}
-- {id: FLEXSPI1_CLK_ROOT.outFreq, value: 1440/11 MHz}
-- {id: FLEXSPI2_CLK_ROOT.outFreq, value: 2160/11 MHz}
+- {id: FLEXSPI1_CLK_ROOT.outFreq, value: 2160/11 MHz}
+- {id: FLEXSPI2_CLK_ROOT.outFreq, value: 1080/11 MHz}
 - {id: FLEXSPI_SLV_CLK_ROOT.outFreq, value: 132 MHz}
 - {id: GPT1_CLK_ROOT.outFreq, value: 240 MHz}
 - {id: GPT2_CLK_ROOT.outFreq, value: 240 MHz}
@@ -153,7 +152,7 @@ outputs:
 - {id: M33_SYSTICK_CLK_ROOT.outFreq, value: 100 kHz}
 - {id: M7_CLK_ROOT.outFreq, value: 792 MHz}
 - {id: M7_SYSTICK_CLK_ROOT.outFreq, value: 100 kHz}
-- {id: MAC0_CLK_ROOT.outFreq, value: 50 MHz}
+- {id: MAC0_CLK_ROOT.outFreq, value: 125 MHz}
 - {id: MAC1_CLK_ROOT.outFreq, value: 125 MHz}
 - {id: MAC2_CLK_ROOT.outFreq, value: 125 MHz}
 - {id: MAC3_CLK_ROOT.outFreq, value: 125 MHz}
@@ -247,9 +246,9 @@ settings:
 - {id: CCM.CLOCK_ROOT2.DIV.scale, value: '2', locked: true}
 - {id: CCM.CLOCK_ROOT2.MUX.sel, value: ANADIG_OSC.OSC_RC_400M}
 - {id: CCM.CLOCK_ROOT20.MUX.sel, value: ANADIG_PLL.SYS_PLL3_DIV2_CLK}
-- {id: CCM.CLOCK_ROOT21.DIV.scale, value: '3', locked: true}
+- {id: CCM.CLOCK_ROOT21.DIV.scale, value: '2', locked: true}
 - {id: CCM.CLOCK_ROOT21.MUX.sel, value: ANADIG_PLL.SYS_PLL3_PFD0_CLK}
-- {id: CCM.CLOCK_ROOT22.DIV.scale, value: '2', locked: true}
+- {id: CCM.CLOCK_ROOT22.DIV.scale, value: '4', locked: true}
 - {id: CCM.CLOCK_ROOT22.MUX.sel, value: ANADIG_PLL.SYS_PLL3_PFD2_CLK}
 - {id: CCM.CLOCK_ROOT23.DIV.scale, value: '4', locked: true}
 - {id: CCM.CLOCK_ROOT23.MUX.sel, value: ANADIG_PLL.SYS_PLL2_CLK}
@@ -312,7 +311,7 @@ settings:
 - {id: CCM.CLOCK_ROOT5.MUX.sel, value: ANADIG_PLL.SYS_PLL3_CLK}
 - {id: CCM.CLOCK_ROOT50.DIV.scale, value: '2', locked: true}
 - {id: CCM.CLOCK_ROOT50.MUX.sel, value: ANADIG_PLL.SYS_PLL3_PFD3_CLK}
-- {id: CCM.CLOCK_ROOT51.DIV.scale, value: '10', locked: true}
+- {id: CCM.CLOCK_ROOT51.DIV.scale, value: '4', locked: true}
 - {id: CCM.CLOCK_ROOT51.MUX.sel, value: ANADIG_PLL.SYS_PLL1_DIV2_CLK}
 - {id: CCM.CLOCK_ROOT52.DIV.scale, value: '4', locked: true}
 - {id: CCM.CLOCK_ROOT52.MUX.sel, value: ANADIG_PLL.SYS_PLL1_DIV2_CLK}
@@ -346,7 +345,7 @@ settings:
 - {id: CCM.CLOCK_ROOT73.MUX.sel, value: ANADIG_PLL.SYS_PLL1_DIV5_CLK}
 - {id: CCM.CLOCK_ROOT8.DIV.scale, value: '240', locked: true}
 - {id: CCM.CLOCK_ROOT8.MUX.sel, value: ANADIG_OSC.OSC_24M}
-- {id: CCM.CLOCK_ROOT9.DIV.scale, value: '2', locked: true}
+- {id: CCM.CLOCK_ROOT9.DIV.scale, value: '5', locked: true}
 - {id: CCM.CLOCK_ROOT9.MUX.sel, value: ANADIG_PLL.SYS_PLL3_DIV2_CLK}
 sources:
 - {id: BLK_CTRL_WAKEUPMIX.ECAT_PORT0_REF_CLK_EXT.outFreq, value: 50 MHz, enabled: true}
