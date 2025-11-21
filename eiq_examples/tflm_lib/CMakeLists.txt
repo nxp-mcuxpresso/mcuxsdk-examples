@@ -11,12 +11,12 @@ mcux_add_iar_configuration(
   CX "--endian=little -e  -DNDEBUG --diag_suppress=Pe167 --diag_suppress=Pe260,Pe1031,Pe144"
 )
 mcux_add_mdk_configuration(
-  CC "-Oz -ffunction-sections -fno-common -fdata-sections -fshort-enums -mthumb -fno-rtti -DNDEBUG"
-  CX "-Oz -ffunction-sections -fno-common -fdata-sections -fshort-enums -mthumb -fno-rtti -DNDEBUG"
+	CC "-Oz -ffunction-sections -fno-common -fdata-sections -fshort-enums -mthumb -fno-rtti -DNDEBUG -Wno-unused-variable -Wno-nan-infinity-disabled"
+	CX "-Oz -ffunction-sections -fno-common -fdata-sections -fshort-enums -mthumb -fno-rtti -DNDEBUG -Wno-unused-variable -Wno-nan-infinity-disabled"
 )
 mcux_add_armgcc_configuration(
-  CC "-Wall -fno-common -ffunction-sections -fdata-sections -mthumb -mapcs -DNDEBUG  -O2"
-  CX "-Wall -fno-common -ffunction-sections -fdata-sections -mthumb -mapcs -fno-rtti -fno-exceptions -DNDEBUG -O2"
+  CC "-Wall -fno-common -ffunction-sections -fdata-sections -mthumb -mapcs -DNDEBUG  -O2 -Wno-unused-variable"
+  CX "-Wall -fno-common -ffunction-sections -fdata-sections -mthumb -mapcs -fno-rtti -fno-exceptions -DNDEBUG -O2 -Wno-unused-variable"
 )
 
 if(${CONFIG_MCUX_HW_CORE} STREQUAL "cm85" OR ${CONFIG_MCUX_HW_CORE} STREQUAL "cm85f")
