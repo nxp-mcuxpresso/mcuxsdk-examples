@@ -1,0 +1,9 @@
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+config MCUX_HW_BOARD_imx943_orangebox_cm33_core0
+    bool
+    default n
+    imply MCUX_COMPONENT_middleware.freertos-kernel.cm33_non_trustzone if MCUX_COMPONENT_middleware.freertos-kernel
+
