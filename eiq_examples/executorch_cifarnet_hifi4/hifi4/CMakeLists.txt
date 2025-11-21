@@ -18,14 +18,23 @@ mcux_add_source(
   examples/eiq_examples/common/timer_xtensa.h
   examples/eiq_examples/common/timer.h
 
-  examples/eiq_examples/executorch_cifarnet_hifi4/hifi4/npu/model_pte.h
+  # miles edit
+  examples/eiq_examples/common/board_init.h
+  examples/eiq_examples/common/demo_info.h
+
+  examples/eiq_examples/common/image/image.h
+  examples/eiq_examples/common/image/image_decode_raw.c
+  examples/eiq_examples/common/image/image_utils.h
+  examples/eiq_examples/common/image/image_load.c
+  # miles edit
+
+  examples/eiq_examples/executorch_cifarnet_hifi4/hifi4/model_pte.h
   examples/eiq_examples/executorch_cifarnet_hifi4/hifi4/demo_config.h
   examples/eiq_examples/executorch_cifarnet_hifi4/hifi4/image_data.h
   examples/eiq_examples/executorch_cifarnet_hifi4/hifi4/labels.h
   examples/eiq_examples/executorch_cifarnet_hifi4/hifi4/main.cpp
   examples/eiq_examples/executorch_cifarnet_hifi4/hifi4/NativeFunctions.h
   examples/eiq_examples/executorch_cifarnet_hifi4/hifi4/RegisterKernels.cpp
-  examples/eiq_examples/executorch_cifarnet_hifi4/hifi4/main.cpp
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/eiq_examples/executorch_cifarnet_hifi4/${core_id}/reconfig.cmake OPTIONAL)

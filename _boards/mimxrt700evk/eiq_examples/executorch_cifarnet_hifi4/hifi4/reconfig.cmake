@@ -16,6 +16,28 @@ mcux_add_macro(
       -DPRINTF_FLOAT_ENABLE=1"
 )
 
+# mcux_add_xcc_configuration(
+#     CX "-Wno-sign-compare\
+#         -Wno-format\
+#         -Wno-shift-count-overflow\
+#         -Wno-deprecated-declarations\
+#         -Wno-int-in-bool-context"
+# )
+
+mcux_add_xtensa_configuration(
+    CX "-Wno-sign-compare\
+        -Wno-format\
+        -Wno-shift-count-overflow\
+        -Wno-deprecated-declarations\
+        -Wno-int-in-bool-context"
+    CC "-Wno-sign-compare\
+        -Wno-format\
+        -Wno-shift-count-overflow\
+        -Wno-deprecated-declarations\
+        -Wno-int-in-bool-context"
+)
+
+
 #mcux_remove_configuration(
 #    TARGETS debug
 #    LD "-mlsp=${XTENSA_LSP_DEBUG}"

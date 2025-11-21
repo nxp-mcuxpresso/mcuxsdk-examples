@@ -12,5 +12,16 @@ mcux_remove_armgcc_linker_script(
 
 mcux_add_armgcc_configuration(
     CX "-Wno-sign-compare\
-        -Wno-format"
+        -Wno-format\
+        -Wno-shift-count-overflow\
+        -Wno-deprecated-declarations\
+        -Wno-int-in-bool-context"
+)
+
+mcux_add_mcux_configuration(
+    CX "-Wno-sign-compare\
+        -Wno-format\
+        -Wno-shift-count-overflow\
+        -Wno-deprecated-declarations\
+        -Wno-int-in-bool-context"
 )
