@@ -41,6 +41,15 @@ mcux_add_macro(
 mcux_add_iar_configuration(
     CC "--diag_suppress=Pe257"
 )
+mcux_add_iar_configuration(
+    CC "--diag_suppress=Pe111,Pe177,Pe550"
+)
+
+mcux_add_armgcc_configuration(
+    CC "-Wno-unused-variable\
+        -Wno-unused-but-set-variable\
+        -Wno-unused-function"
+)
 
 mcux_remove_mdk_configuration(
     TARGETS flexspi_nor_release
