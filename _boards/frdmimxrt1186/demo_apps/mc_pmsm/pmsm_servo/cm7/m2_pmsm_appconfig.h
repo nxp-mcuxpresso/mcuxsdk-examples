@@ -6,13 +6,27 @@
 
 /*
     * FILE NAME: ../../../examples/_boards/imx943evk/demo_apps/mc_pmsm/pmsm_enc_dual/cm7_core1/m1_pmsm_appconfig.h
-    * DATE: Thu Jan 23 2025, 15:43:04
+    * DATE: Fri Nov 21 2025, 10:22:07
 */
 
 /*
 {
+    "mid": {
+        "midInParamINom": 2.5,
+        "midInParamNNom": 3000,
+        "midPolePairIAPp": 5,
+        "midElParamMeasRs": 0,
+        "midElParamMeasLd": 0,
+        "midElParamMeasLq": 0,
+        "midElParamMeasUdt": 0,
+        "midMechParamMeasKe": 0,
+        "midMechParamMeasKt": 0,
+        "midMechParamMeasJ": 0,
+        "midMechParamMeasB": 0,
+        "midMechParamMeasA": 0
+    },
     "parameters": {
-        "parametersPP": 5,
+        "parametersPp": 5,
         "parametersRs": 0.2,
         "parametersLd": 0.00022,
         "parametersLq": 0.000218,
@@ -92,6 +106,7 @@
 #ifndef __M1_PMSM_APPCONFIG_H 
 #define __M1_PMSM_APPCONFIG_H 
 
+/* MID*/
 /* PARAMETERS*/
 #define M1_MOTOR_PP (5)
 #define M1_I_PH_NOM (8.0F)

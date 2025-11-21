@@ -7,13 +7,27 @@
 
 /*
     * FILE NAME: ../../../examples/_boards/frdmimxrt1186/demo_apps/mc_pmsm/pmsm_servo_dual/cm7/m2_pmsm_appconfig.h
-    * DATE: Tue Oct 21 2025, 13:09:53
+    * DATE: Fri Nov 21 2025, 10:22:07
 */
 
 /*
 {
+    "mid": {
+        "midInParamINom": 2.5,
+        "midInParamNNom": 3000,
+        "midPolePairIAPp": 3,
+        "midElParamMeasRs": 0,
+        "midElParamMeasLd": 0,
+        "midElParamMeasLq": 0,
+        "midElParamMeasUdt": 0,
+        "midMechParamMeasKe": 0,
+        "midMechParamMeasKt": 0,
+        "midMechParamMeasJ": 0,
+        "midMechParamMeasB": 0,
+        "midMechParamMeasA": 0
+    },
     "parameters": {
-        "parametersPP": 3,
+        "parametersPp": 3,
         "parametersRs": 0.1105,
         "parametersLd": 0.000116467,
         "parametersLq": 0.000134492,
@@ -93,6 +107,7 @@
 #ifndef __M2_PMSM_APPCONFIG_H 
 #define __M2_PMSM_APPCONFIG_H 
 
+/* MID*/
 /* PARAMETERS*/
 #define M2_MOTOR_PP (3)
 #define M2_I_PH_NOM (11.1F)
