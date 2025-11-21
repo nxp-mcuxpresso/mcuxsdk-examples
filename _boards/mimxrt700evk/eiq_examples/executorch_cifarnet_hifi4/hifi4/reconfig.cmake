@@ -30,6 +30,11 @@ mcux_add_xtensa_configuration(
         -Wno-shift-count-overflow\
         -Wno-deprecated-declarations\
         -Wno-int-in-bool-context"
+    CC "-Wno-sign-compare\
+        -Wno-format\
+        -Wno-shift-count-overflow\
+        -Wno-deprecated-declarations\
+        -Wno-int-in-bool-context"
 )
 
 
