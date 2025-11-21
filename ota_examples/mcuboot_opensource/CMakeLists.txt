@@ -38,6 +38,12 @@ mcux_add_iar_configuration(
     CC "--diag_suppress=Pe111,Pe177,Pe550"
 )
 
+mcux_add_armgcc_configuration(
+    CC "-Wno-unused-variable\
+        -Wno-unused-but-set-variable\
+        -Wno-unused-function"
+)
+
 # MCUboot relies on this option otherwise the build fails under IAR
 mcux_remove_iar_configuration(
     CC "--use_c++_inline"
