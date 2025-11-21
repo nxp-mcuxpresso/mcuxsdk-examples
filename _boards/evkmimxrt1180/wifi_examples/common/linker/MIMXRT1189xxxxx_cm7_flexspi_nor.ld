@@ -309,6 +309,7 @@ SECTIONS
     . = ALIGN(4);
     __qadata_start__ = .;
     . = ALIGN(4);
+    *(.bss*)
     __qadata_end__ = .;
   } > m_qadata
 
@@ -323,7 +324,6 @@ SECTIONS
     . = ALIGN(4);
     __bss_start__ = .;
     *(.bss)
-    *(.bss*)
     *(COMMON)
     . = ALIGN(4);
     __bss_end__ = .;
