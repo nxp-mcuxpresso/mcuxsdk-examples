@@ -24,7 +24,7 @@
 #include "fsl_debug_console.h"
 #include "image_data.h"
 #include "labels.h"
-#include "npu/model_pte.h"
+#include "model_pte.h"
 #include "timer.h"
 
 using executorch::aten::ScalarType;
