@@ -22,12 +22,16 @@
 #include "mbedtls/platform_time.h"
 #include "fsl_rtc.h"
 #endif
-#include "ncp_inet.h"
 
 /* TODO: remove this private definition and use the definition in header file */
-#define _NCP_CMD_WLAN                0x00000000
-#define _NCP_CMD_WLAN_SOCKET         0x00900000
-
+#define _NCP_CMD_WLAN                 0x00000000
+#define _NCP_CMD_WLAN_SOCKET          0x00900000
+#define _NCP_CMD_WLAN_INET            0x01000000
+#define _NCP_MSG_TYPE_CMD             0x00010000
+#define _NCP_CMD_WLAN_INET_SENDTO     (_NCP_CMD_WLAN | _NCP_CMD_WLAN_INET | _NCP_MSG_TYPE_CMD | 0x00000006)
+#define _NCP_CMD_WLAN_ASYNC_EVENT      0x00f00000
+#define _NCP_MSG_TYPE_EVENT            0x00020000
+#define _NCP_EVENT_WLAN_NCP_INET_RECV (_NCP_CMD_WLAN | _NCP_CMD_WLAN_ASYNC_EVENT | _NCP_MSG_TYPE_EVENT | 0x00000009)
 static OSA_SEMAPHORE_HANDLE_DEFINE(evt_recv_sem);
 
 static const int _ciphersuite_list[] = { 
@@ -376,7 +380,7 @@ int ncp_cmd_is_data_cmd(uint32_t cmd)
 {
     return (GET_CMD_CLASS(cmd) == _NCP_CMD_WLAN
                     && GET_CMD_SUBCLASS(cmd) == _NCP_CMD_WLAN_SOCKET)
-        || (cmd == NCP_CMD_WLAN_INET_SENDTO)
+        || (cmd == _NCP_CMD_WLAN_INET_SENDTO) || (cmd == _NCP_EVENT_WLAN_NCP_INET_RECV)
         || (cmd == NCP_CMD_BLE_L2CAP_SEND || cmd == NCP_EVENT_L2CAP_RECEIVE);
 }
 
