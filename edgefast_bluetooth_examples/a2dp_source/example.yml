@@ -105,8 +105,10 @@ a2dp_source:
     - -iar@release
     - -mdk@debug
     - -mdk@release
-    mcxn5xxevk@cm33_core0: []
-    mcxn9xxevk@cm33_core0: []
+    mcxn5xxevk@cm33_core0:
+    - -armgcc@debug
+    mcxn9xxevk@cm33_core0:
+    - -armgcc@debug
     mimxrt685audevk@cm33:
     - -armgcc@debug
     - -armgcc@release
