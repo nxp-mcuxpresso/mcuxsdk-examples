@@ -6,13 +6,27 @@
 
 /*
     * FILE NAME: ../../../boards/frdmmcxe247/demo_apps/mc_pmsm/pmsm_snsless/m2_pmsm_appconfig.h
-    * DATE: Wed Jun 04 2025, 12:31:11
+    * DATE: Fri Nov 21 2025, 10:22:07
 */
 
 /*
 {
+    "mid": {
+        "midInParamINom": 2.5,
+        "midInParamNNom": 3000,
+        "midPolePairIAPp": 2,
+        "midElParamMeasRs": 0,
+        "midElParamMeasLd": 0,
+        "midElParamMeasLq": 0,
+        "midElParamMeasUdt": 0,
+        "midMechParamMeasKe": 0,
+        "midMechParamMeasKt": 0,
+        "midMechParamMeasJ": 0,
+        "midMechParamMeasB": 0,
+        "midMechParamMeasA": 0
+    },
     "parameters": {
-        "parametersPP": 2,
+        "parametersPp": 2,
         "parametersRs": 0.45,
         "parametersLd": 0.000375,
         "parametersLq": 0.000429,
@@ -92,6 +106,7 @@
 #ifndef __M1_PMSM_APPCONFIG_H 
 #define __M1_PMSM_APPCONFIG_H 
 
+/* MID*/
 /* PARAMETERS*/
 #define M1_MOTOR_PP (2)
 #define M1_I_PH_NOM (2.0F)

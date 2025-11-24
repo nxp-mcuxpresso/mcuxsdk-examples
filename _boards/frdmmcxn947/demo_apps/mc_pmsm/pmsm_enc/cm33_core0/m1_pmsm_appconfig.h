@@ -5,14 +5,28 @@
 */
 
 /*
-    * FILE NAME: ../../../examples/_boards/frdmmcxn236/demo_apps/mc_pmsm/pmsm_enc/m1_pmsm_appconfig.h
-    * DATE: Tue Jun 10 2025, 14:46:56
+    * FILE NAME: ../../../examples/_boards/frdmmcxn947/demo_apps/mc_pmsm/pmsm_enc/cm33_core0/m1_pmsm_appconfig.h
+    * DATE: Wed Nov 19 2025, 22:56:27
 */
 
 /*
 {
+    "mid": {
+        "midInParamINom": 2.5,
+        "midInParamNNom": 3000,
+        "midPolePairIAPp": 4,
+        "midElParamMeasRs": 0,
+        "midElParamMeasLd": 0,
+        "midElParamMeasLq": 0,
+        "midElParamMeasUdt": 0,
+        "midMechParamMeasKe": 0,
+        "midMechParamMeasKt": 0,
+        "midMechParamMeasJ": 0,
+        "midMechParamMeasB": 0,
+        "midMechParamMeasA": 0
+    },
     "parameters": {
-        "parametersPP": 4,
+        "parametersPp": 4,
         "parametersRs": 0.54,
         "parametersLd": 0.0003356,
         "parametersLq": 0.000218,
@@ -92,6 +106,7 @@
 #ifndef __M1_PMSM_APPCONFIG_H 
 #define __M1_PMSM_APPCONFIG_H 
 
+/* MID*/
 /* PARAMETERS*/
 #define M1_MOTOR_PP (4)
 #define M1_I_PH_NOM (8.0F)

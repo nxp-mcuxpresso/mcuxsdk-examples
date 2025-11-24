@@ -38,7 +38,7 @@ typedef struct _clock_setup
 #define M1_PWM_FREQ (16000)         /* PWM frequency - 16kHz */
 #define M1_FOC_FREQ_VS_PWM_FREQ (1) /* FOC calculation is called every n-th PWM reload */
 #define M1_SPEED_LOOP_FREQ (1000)   /* Speed loop frequency */
-#define M1_PWM_DEADTIME (500)       /* Output PWM deadtime value in nanoseconds */
+#define M1_PWM_DEADTIME (1000)       /* Output PWM deadtime value in nanoseconds */
 
 #define M1_FAST_LOOP_TS ((float_t)1.0 / (float_t)(M1_PWM_FREQ / M1_FOC_FREQ_VS_PWM_FREQ))
 #define M1_SLOW_LOOP_TS ((float_t)1.0 / (float_t)(M1_SLOW_LOOP_FREQ))

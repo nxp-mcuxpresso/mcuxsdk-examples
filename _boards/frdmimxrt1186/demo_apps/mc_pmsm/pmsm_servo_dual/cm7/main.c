@@ -169,6 +169,9 @@ int main(void)
     /* Position demo ramp */
     sPositionDemoRampParams.fltRampUp   = 0.00375; // 1 [rev/s] / SlowLoopSampleTime = 1/4000 = 0.00025
     sPositionDemoRampParams.fltRampDown = sPositionDemoRampParams.fltRampUp;
+
+    /* Spin state machine is default */
+    g_sSpinMidSwitch.eAppState = kAppStateSpin;
     
     /* Enable interrupts */
     EnableGlobalIRQ(ui32PrimaskReg);

@@ -65,10 +65,6 @@ typedef struct _clock_setup
  /******************************************************************************
   * Output control
   ******************************************************************************/
-/* Output PWM deadtime prescaler */
-#define M1_PWM_DEADTIME_LENGTH_DTPS     (1U)
-/* Output PWM deadtime register value */
-#define M1_PWM_DEADTIME_LENGTH_DTVAL    (67U)
 
 /* Over-current Fault enable */
 #define M1_FAULT_ENABLE         (0U)

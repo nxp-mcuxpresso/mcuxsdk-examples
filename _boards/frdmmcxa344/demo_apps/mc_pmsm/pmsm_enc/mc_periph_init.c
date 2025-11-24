@@ -66,6 +66,10 @@ void MCDRV_Init_M1(void)
 {
     /* Init application clock dependent variables */
     InitClock();
+    
+    /* Set FLASH_STALL_EN, DIS_LPCAC_WTBF and LIM_LPCAC_WTBF bits to 0 to get better performance. */
+//    SYSCON->NVM_CTRL = SYSCON->NVM_CTRL & ~SYSCON_NVM_CTRL_FLASH_STALL_EN_MASK;
+//    SYSCON->LPCAC_CTRL = SYSCON->LPCAC_CTRL & ~(SYSCON_LPCAC_CTRL_DIS_LPCAC_WTBF_MASK | SYSCON_LPCAC_CTRL_LIM_LPCAC_WTBF_MASK);
   
     /* Init ADC */
     InitADC();

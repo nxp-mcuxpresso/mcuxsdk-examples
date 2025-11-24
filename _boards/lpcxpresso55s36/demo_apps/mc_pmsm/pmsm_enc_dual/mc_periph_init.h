@@ -38,7 +38,7 @@
  ******************************************************************************/
 #define M1_PWM_FREQ             (10000U)                        /* PWM frequency in Hz */
 #define M1_PWM_MODULO           (MCU_CLOCK_FREQ / M1_PWM_FREQ)  /* PWM modulo = FTM_input_clock / M1_PWM_FREQ */
-#define M1_PWM_DEADTIME         (500)                           /* Output PWM deadtime value in nanoseconds */
+#define M1_PWM_DEADTIME         (1000)                           /* Output PWM deadtime value in nanoseconds */
 #define M1_FOC_FREQ_VS_PWM_FREQ (1U)                            /* PWM vs. Fast control loop ratio */
 #define M1_SLOW_LOOP_FREQ       (1000U)                         /* Slow control loop frequency in Hz */
 
@@ -47,7 +47,7 @@
  ******************************************************************************/
 #define M2_PWM_FREQ             (10000U)                        /* PWM frequency in Hz */
 #define M2_PWM_MODULO           (MCU_CLOCK_FREQ / M2_PWM_FREQ)  /* PWM modulo = FTM_input_clock / M2_PWM_FREQ */
-#define M2_PWM_DEADTIME         (500)                           /* Output PWM deadtime value in nanoseconds */
+#define M2_PWM_DEADTIME         (1000)                           /* Output PWM deadtime value in nanoseconds */
 #define M2_FOC_FREQ_VS_PWM_FREQ (1U)                            /* PWM vs. Fast control loop ratio */
 #define M2_SLOW_LOOP_FREQ       (1000U)                         /* Slow control loop frequency in Hz */
 
