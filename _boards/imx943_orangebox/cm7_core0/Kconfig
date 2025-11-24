@@ -5,13 +5,13 @@
 config MCUX_HW_BOARD_imx943_orangebox_cm7_core0
     bool
     default y
-    select MCUX_COMPONENT_driver.app_srtm.cm7_core0 if MCUX_COMPONENT_driver.srtm
+    select MCUX_PRJSEG_module.app_srtm.cm7_core0 if MCUX_COMPONENT_driver.srtm
 
-config MCUX_COMPONENT_driver.app_srtm.cm7_core0
+config MCUX_PRJSEG_module.app_srtm.cm7_core0
     bool
     default n
 
 config RL_BUFFER_COUNT_VALUE
     int
     default 4
-    default 256 if MCUX_COMPONENT_driver.app_srtm.cm7_core0
+    default 256 if MCUX_PRJSEG_module.app_srtm.cm7_core0

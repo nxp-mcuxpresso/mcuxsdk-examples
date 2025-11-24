@@ -5,13 +5,13 @@
 config MCUX_HW_BOARD_imx943evk_cm7_core1
     bool
     default y
-    select MCUX_COMPONENT_driver.app_srtm.cm7_core1 if MCUX_COMPONENT_driver.srtm
+    select MCUX_PRJSEG_module.app_srtm.cm7_core1 if MCUX_COMPONENT_driver.srtm
 
-config MCUX_COMPONENT_driver.app_srtm.cm7_core1
+config MCUX_PRJSEG_module.app_srtm.cm7_core1
     bool
-    select MCUX_COMPONENT_driver.rpmsg_config.cm7_core1
+    select MCUX_PRJSEG_module.rpmsg_config.cm7_core1
     default n
 
-config MCUX_COMPONENT_driver.rpmsg_config.cm7_core1
+config MCUX_PRJSEG_module.rpmsg_config.cm7_core1
     bool "The option is a common rpmsg config for demos using srtm"
     default n
