@@ -40,7 +40,8 @@ mcux_add_iar_configuration(
 mcux_add_armgcc_configuration(
     CC "-Wno-unused-variable\
         -Wno-unused-but-set-variable\
-        -Wno-unused-function"
+        -Wno-unused-function\
+        -Wno-maybe-uninitialized"
 )
 
 # MCUboot relies on this option otherwise the build fails under IAR
