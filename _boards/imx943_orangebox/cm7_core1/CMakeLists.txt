@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-if (CONFIG_MCUX_COMPONENT_driver.app_srtm.cm7_core1)
+if (CONFIG_MCUX_PRJSEG_module.app_srtm.cm7_core1)
     mcux_add_source(
         SOURCES
             ./app_srtm.c

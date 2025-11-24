@@ -13,6 +13,12 @@ if (CONFIG_MCUX_PRJSEG_module.board.suite)
 endif()
 
 if (CONFIG_MCUX_COMPONENT_driver.srtm)
+    mcux_add_configuration(
+            CC "-DSCMI_LMM_POWER_CHANGE_PROCESSED=1"
+    )
+endif()
+
+if (CONFIG_MCUX_PRJSEG_module.custom_rsc_table)
     mcux_add_source(
         SOURCES
             rsc_table.c
@@ -23,13 +29,9 @@ if (CONFIG_MCUX_COMPONENT_driver.srtm)
         INCLUDES
             .
     )
-
-    mcux_add_configuration(
-            CC "-DSCMI_LMM_POWER_CHANGE_PROCESSED=1"
-    )
 endif()
 
-if (CONFIG_MCUX_COMPONENT_driver.srtm_config)
+if (CONFIG_MCUX_PRJSEG_module.srtm_config)
 
     mcux_add_source(
         SOURCES
