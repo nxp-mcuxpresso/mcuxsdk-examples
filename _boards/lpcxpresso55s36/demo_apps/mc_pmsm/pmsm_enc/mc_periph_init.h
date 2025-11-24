@@ -40,7 +40,7 @@
 /* PWM modulo = FTM_input_clock / M1_PWM_FREQ */
 #define M1_PWM_MODULO           (MCU_CLOCK_FREQ / M1_PWM_FREQ)
 /* Output PWM deadtime value in nanoseconds */
-#define M1_PWM_DEADTIME (500)
+#define M1_PWM_DEADTIME (1000)
 /* PWM vs. Fast control loop ratio */
 #define M1_FOC_FREQ_VS_PWM_FREQ (1U)
 /* Slow control loop frequency */
