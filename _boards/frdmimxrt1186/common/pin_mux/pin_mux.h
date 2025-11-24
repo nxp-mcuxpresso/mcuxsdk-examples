@@ -378,6 +378,12 @@ void BOARD_InitALT_UARTPins(void);            /* Function assigned for the Corte
  */
 void BOARD_InitALT_UARTPins_deinit(void);     /* Function assigned for the Cortex-M33 */
 
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitCLOCKOUTPins(void);            /* Function assigned for the Cortex-M33 */
+
 #if defined(__cplusplus)
 }
 #endif

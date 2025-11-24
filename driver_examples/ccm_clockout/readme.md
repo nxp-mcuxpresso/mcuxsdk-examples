@@ -20,3 +20,4 @@ root may be different in different targets even though the dividers are set as t
 - [MIMXRT1160-EVK](../../_boards/evkmimxrt1160/driver_examples/clockout/example_board_readme.md)
 - [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/driver_examples/clockout/example_board_readme.md)
 - [MIMXRT1180-EVK](../../_boards/evkmimxrt1180/driver_examples/clockout/example_board_readme.md)
+- [FRDM-IMXRT1186](../../_boards/frdmimxrt1186/driver_examples/clockout/example_board_readme.md)

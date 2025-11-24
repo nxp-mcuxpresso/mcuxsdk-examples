@@ -2239,6 +2239,44 @@ void BOARD_InitALT_UARTPins_deinit(void) {
                                                  Force ibe off Field: Disabled */
 }
 
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitCLOCKOUTPins:
+- options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
+- pin_list:
+  - {pin_num: K6, peripheral: CCM, signal: CLKO1, pin_signal: GPIO_EMC_B2_02, pull_down_pull_up_config: Pull_Forbidden, pdrv_config: High_Driver, open_drain: Disable}
+  - {pin_num: M5, peripheral: CCM, signal: CLKO2, pin_signal: GPIO_EMC_B2_08, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver, open_drain: Disable}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitCLOCKOUTPins, assigned for the Cortex-M33 core.
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitCLOCKOUTPins(void) {
+  CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
+
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B2_02_CCM_CLKO1,        /* GPIO_EMC_B2_02 is configured as CCM_CLKO1 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B2_08_CCM_CLKO2,        /* GPIO_EMC_B2_08 is configured as CCM_CLKO2 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_EMC_B2_02_CCM_CLKO1,        /* GPIO_EMC_B2_02 PAD functional properties : */
+      0x00U);                                 /* PDRV Field: high driver
+                                                 Pull Down Pull Up Field: Forbidden
+                                                 Open Drain Field: Disabled */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_EMC_B2_08_CCM_CLKO2,        /* GPIO_EMC_B2_08 PAD functional properties : */
+      0x08U);                                 /* PDRV Field: high driver
+                                                 Pull Down Pull Up Field: PD
+                                                 Open Drain Field: Disabled */
+}
+
 /***********************************************************************************************************************
  * EOF
  **********************************************************************************************************************/
