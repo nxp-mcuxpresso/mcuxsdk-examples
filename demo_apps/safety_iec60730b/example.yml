@@ -19,18 +19,24 @@ safety_iec60730b:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    - -mcux@debug
+    - -mcux@release
     frdmmcxe31b:
     - -armgcc@debug
     - -armgcc@release
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    - -mcux@debug
+    - -mcux@release
     frdmmcxc444:
     - -armgcc@debug
     - -armgcc@release
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    - -mcux@debug
+    - -mcux@release
     # frdmk22f:
     # - -armgcc@debug
     # - -armgcc@release
@@ -79,30 +85,42 @@ safety_iec60730b:
     - -armgcc@debug
     - -armgcc@release
     - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    - -mcux@debug
+    - -mcux@release
     frdmmcxa156:
     - -armgcc@debug
     - -armgcc@release
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    - -mcux@debug
+    - -mcux@release
     frdmmcxa266:
     - -armgcc@debug
     - -armgcc@release
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    - -mcux@debug
+    - -mcux@release
     frdmmcxa346:
     - -armgcc@debug
     - -armgcc@release
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    - -mcux@debug
+    - -mcux@release
     frdmmcxa366:
     - -armgcc@debug
     - -armgcc@release
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    - -mcux@debug
+    - -mcux@release
     frdmmcxn947@cm33_core0:
     - -armgcc@debug
     - -armgcc@release
@@ -110,6 +128,8 @@ safety_iec60730b:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    - -mcux@debug
+    - -mcux@release
     # evkbmimxrt1170@cm7:
     # - -armgcc@debug
     # - -armgcc@flexspi_nor_debug
@@ -134,27 +154,37 @@ safety_iec60730b:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    - -mcux@debug
+    - -mcux@release
     lpcxpresso55s36:
     - -armgcc@debug
     - -armgcc@release
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    - -mcux@debug
+    - -mcux@release
     frdmmcxa153:
     - -armgcc@debug
     - -armgcc@release
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    - -mcux@debug
+    - -mcux@release
     frdmmcxn236:
     - -armgcc@debug
     - -armgcc@release
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    - -mcux@debug
+    - -mcux@release
     frdmmcxa344:
     - -armgcc@debug
     - -armgcc@release
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    - -mcux@debug
+    - -mcux@release
