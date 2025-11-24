@@ -89,6 +89,9 @@
 #define m_data_ocram_start             m_ocram1_start
 #define m_data_ocram_size              m_ocram1_size - m_ncache_size
 
+#define m_heap_start                   DEFINED(__heap_noncacheable__) ? m_ncache_end + 1 : m_ocram1_start + m_ocram1_size - m_ocram1_size_for_cm7
+#define m_heap_end                     m_heap_start +  m_heap_size - 1;
+
 #if defined(__use_shmem__)
 #define m_shmem_start                  m_ocram2_start
 #endif

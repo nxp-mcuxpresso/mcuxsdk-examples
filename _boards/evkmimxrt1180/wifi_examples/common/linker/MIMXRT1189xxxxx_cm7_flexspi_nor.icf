@@ -84,6 +84,9 @@ define symbol m_data_end               = m_data_start + m_data_size - 1;
 define symbol m_ncache_start           = m_ocram1_start + m_ocram1_size - m_ncache_size;  /* (m_ncache_start %  m_ncache_size) must be 0 */
 define symbol m_ncache_end             = m_ncache_start + m_ncache_size - 1;
 
+m_heap_start             = DEFINED(__heap_noncacheable__) ? m_ncache_end + 1 : m_ocram1_start + m_ocram1_size - m_ocram1_size_for_cm7;
+m_heap_end               = m_heap_start +  m_heap_size - 1;
+
 define symbol m_data_ocram_start       = m_ocram1_start;
 define symbol m_data_ocram_end         = m_ncache_start - 1;
 
