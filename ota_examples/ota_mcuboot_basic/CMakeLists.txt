@@ -48,7 +48,8 @@ mcux_add_iar_configuration(
 mcux_add_armgcc_configuration(
     CC "-Wno-unused-variable\
         -Wno-unused-but-set-variable\
-        -Wno-unused-function"
+        -Wno-unused-function\
+        -Wno-maybe-uninitialized"
 )
 
 mcux_remove_mdk_configuration(
