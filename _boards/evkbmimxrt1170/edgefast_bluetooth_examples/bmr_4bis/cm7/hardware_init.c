@@ -62,7 +62,7 @@
 #define EXAMPLE_SAI_TX_SOURCE   (kDmaRequestMuxSai1Tx)
 
 /* GPT - SyncTimer */
-#if defined(WIFI_IW612_BOARD_MURATA_2EL_M2)
+#if defined(WIFI_IW612_BOARD_MURATA_2EL_M2) || defined(BT_NW61X_BOARD_NXP_RD_USD)
 #define SyncTimer_GPT                (GPT2)
 #define SyncTimer_GPT_Irq            (GPT2_IRQn)
 #define SyncTimer_GPT_ClockRoot      (kCLOCK_Root_Gpt2)
@@ -75,7 +75,8 @@
 #define SyncTimer_GPT_ClockRoot_Mux  (kCLOCK_GPT3_ClockRoot_MuxAudioPllOut)
 #define SyncTimer_GPT_ClockRoot_Div  (16)
 #endif
-#if defined(WIFI_IW612_BOARD_MURATA_2EL_M2) || defined(WIFI_IW612_BOARD_RD_USD)
+#if defined(WIFI_IW612_BOARD_MURATA_2EL_M2) || defined(BT_NW61X_BOARD_NXP_RD_USD) || \
+    defined(WIFI_IW612_BOARD_RD_USD)
 static volatile uint32_t SyncTimer_Trigger_Counter; /* This used to counter the sync trigger signal. */
 static void (*SyncTimer_Trigger_Callback)(uint32_t sync_index, uint64_t bclk_count) = NULL;
 static uint32_t SyncTimer_Capture1_Value = 0;
@@ -222,12 +223,13 @@ uint32_t BOARD_SwitchAudioFreq(uint32_t sampleRate)
     return DEMO_SAI_CLK_FREQ;
 }
 
-#if defined(WIFI_IW612_BOARD_MURATA_2EL_M2) || defined(WIFI_IW612_BOARD_RD_USD)
+#if defined(WIFI_IW612_BOARD_MURATA_2EL_M2) || defined(BT_NW61X_BOARD_NXP_RD_USD) || \
+    defined(WIFI_IW612_BOARD_RD_USD)
 void BOARD_SyncTimer_Init(void (*sync_timer_callback)(uint32_t sync_index, uint64_t bclk_count))
 {
     gpt_config_t config;
 
-#if defined(WIFI_IW612_BOARD_MURATA_2EL_M2)
+#if defined(WIFI_IW612_BOARD_MURATA_2EL_M2) || defined(BT_NW61X_BOARD_NXP_RD_USD)
     /* 2EL use GPT2 as SyncTimer. */
     BOARD_InitGPT2Pins();
 #elif defined(WIFI_IW612_BOARD_RD_USD)
@@ -283,7 +285,7 @@ void BORAD_SyncTimer_Stop(void)
     GPT_StopTimer(SyncTimer_GPT);
 }
 
-#if defined(WIFI_IW612_BOARD_MURATA_2EL_M2)
+#if defined(WIFI_IW612_BOARD_MURATA_2EL_M2) || defined(BT_NW61X_BOARD_NXP_RD_USD)
 void GPT2_IRQHandler(void)
 #elif defined(WIFI_IW612_BOARD_RD_USD)
 void GPT3_IRQHandler(void)
@@ -368,7 +370,7 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
 #if (defined(WIFI_IW416_BOARD_AW_AM510MA) || defined(WIFI_88W8987_BOARD_AW_CM358MA) || \
      defined(WIFI_88W8987_BOARD_MURATA_1ZM_M2) || defined(WIFI_IW416_BOARD_MURATA_1XK_M2) || \
-     defined(WIFI_IW612_BOARD_MURATA_2EL_M2) )
+     defined(WIFI_IW612_BOARD_MURATA_2EL_M2) || defined(BT_NW61X_BOARD_NXP_RD_USD) )
     BOARD_InitM2UARTPins();
 #else
     BOARD_InitArduinoUARTPins();
@@ -439,7 +441,7 @@ int controller_hci_uart_get_configuration(controller_hci_uart_config_t *config)
     config->enableTxCTS      = 1u;
     return 0;
 }
-#elif defined(WIFI_IW612_BOARD_MURATA_2EL_M2)
+#elif defined(WIFI_IW612_BOARD_MURATA_2EL_M2) || defined(BT_NW61X_BOARD_NXP_RD_USD)
 int controller_hci_uart_get_configuration(controller_hci_uart_config_t *config)
 {
     if (NULL == config)

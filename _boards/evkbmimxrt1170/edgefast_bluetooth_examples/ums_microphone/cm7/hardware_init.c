@@ -229,7 +229,7 @@ static void BOARD_SyncSignal_Init(void)
 
     hal_gpio_pin_config_t config;
     config.direction = kHAL_GpioDirectionIn;
-#if defined(WIFI_IW612_BOARD_MURATA_2EL_M2)
+#if defined(WIFI_IW612_BOARD_MURATA_2EL_M2) || defined(BT_NW61X_BOARD_NXP_RD_USD)
     config.port      = 3;
     config.pin       = 0;
     config.level     = 1;
@@ -247,7 +247,7 @@ void BOARD_SyncSignal_Start(uint32_t init_offset)
 {
     SyncSignal_Index = 0;
 
-#if defined(WIFI_IW612_BOARD_MURATA_2EL_M2)
+#if defined(WIFI_IW612_BOARD_MURATA_2EL_M2) || defined(BT_NW61X_BOARD_NXP_RD_USD)
     GPIO_ClearPinsInterruptFlags(GPIO3,
                                  1U); /* A walk-around for fsl_adapter_gpio will triger once after trigger enabled. */
 #elif defined(WIFI_IW612_BOARD_RD_USD)
@@ -292,7 +292,7 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
 #if (defined(WIFI_IW416_BOARD_AW_AM510MA) || defined(WIFI_88W8987_BOARD_AW_CM358MA) || \
      defined(WIFI_88W8987_BOARD_MURATA_1ZM_M2) || defined(WIFI_IW416_BOARD_MURATA_1XK_M2) || \
-     defined(WIFI_IW612_BOARD_MURATA_2EL_M2) )
+     defined(WIFI_IW612_BOARD_MURATA_2EL_M2) || defined(BT_NW61X_BOARD_NXP_RD_USD) )
     BOARD_InitM2UARTPins();
 #else
     BOARD_InitArduinoUARTPins();
@@ -368,7 +368,7 @@ int controller_hci_uart_get_configuration(controller_hci_uart_config_t *config)
     return 0;
 }
 #elif (defined(WIFI_88W8987_BOARD_MURATA_1ZM_M2) || defined(WIFI_IW416_BOARD_MURATA_1XK_M2) || \
-     defined(WIFI_IW612_BOARD_MURATA_2EL_M2))
+     defined(WIFI_IW612_BOARD_MURATA_2EL_M2) || defined(BT_NW61X_BOARD_NXP_RD_USD))
 int controller_hci_uart_get_configuration(controller_hci_uart_config_t *config)
 {
     if (NULL == config)

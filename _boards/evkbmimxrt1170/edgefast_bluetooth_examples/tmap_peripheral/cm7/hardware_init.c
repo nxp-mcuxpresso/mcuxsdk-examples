@@ -218,7 +218,7 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
 #if (defined(WIFI_IW416_BOARD_AW_AM510MA) || defined(WIFI_88W8987_BOARD_AW_CM358MA) || \
      defined(WIFI_88W8987_BOARD_MURATA_1ZM_M2) || defined(WIFI_IW416_BOARD_MURATA_1XK_M2) || \
-     defined(WIFI_IW612_BOARD_MURATA_2EL_M2) )
+     defined(WIFI_IW612_BOARD_MURATA_2EL_M2) || defined(BT_NW61X_BOARD_NXP_RD_USD) )
     BOARD_InitM2UARTPins();
 #else
     BOARD_InitArduinoUARTPins();
@@ -289,7 +289,7 @@ int controller_hci_uart_get_configuration(controller_hci_uart_config_t *config)
     config->enableTxCTS      = 1u;
     return 0;
 }
-#elif defined(WIFI_IW612_BOARD_MURATA_2EL_M2)
+#elif defined(WIFI_IW612_BOARD_MURATA_2EL_M2) || defined(BT_NW61X_BOARD_NXP_RD_USD)
 int controller_hci_uart_get_configuration(controller_hci_uart_config_t *config)
 {
     if (NULL == config)

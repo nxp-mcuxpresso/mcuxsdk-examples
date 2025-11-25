@@ -10,7 +10,8 @@
 
 #define FLASH_ADAPTER_SIZE 0x10000
 
-#if defined(BT_THIRD_PARTY_TRANSCEIVER) || defined(WIFI_IW612_BOARD_RD_USD) || defined(WIFI_IW612_BOARD_MURATA_2EL_M2)
+#if defined(BT_THIRD_PARTY_TRANSCEIVER) || defined(WIFI_IW612_BOARD_RD_USD) || \
+defined(WIFI_IW612_BOARD_MURATA_2EL_M2) || defined(BT_NW61X_BOARD_NXP_RD_USD)
 #include "wifi_bt_module_config.h"
 #include "wifi_config.h"
 #else

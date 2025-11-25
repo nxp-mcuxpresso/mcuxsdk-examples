@@ -757,7 +757,7 @@ BOARD_InitSyncSignalPins:
 void BOARD_InitSyncSignalPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc);           /* LPCG on: LPCG is ON. */
 
-#if defined(WIFI_IW612_BOARD_MURATA_2EL_M2)
+#if defined(WIFI_IW612_BOARD_MURATA_2EL_M2) || defined(BT_NW61X_BOARD_NXP_RD_USD)
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AD_01_GPIO_MUX3_IO00,       /* GPIO_AD_01 is configured as GPIO_MUX3_IO00 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */

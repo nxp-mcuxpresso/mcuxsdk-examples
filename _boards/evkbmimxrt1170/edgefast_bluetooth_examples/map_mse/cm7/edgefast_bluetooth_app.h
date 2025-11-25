@@ -12,14 +12,15 @@
 /*WIFI_AW611_BOARD_UBX_JODY_W5_M2*/
 
 #if (defined(WIFI_IW416_BOARD_MURATA_1XK_M2) || defined(WIFI_88W8987_BOARD_MURATA_1ZM_M2) || \
-     defined(WIFI_IW612_BOARD_MURATA_2EL_M2) || defined(WIFI_AW611_BOARD_UBX_JODY_W5_M2))
+     defined(WIFI_IW612_BOARD_MURATA_2EL_M2) || defined(BT_NW61X_BOARD_NXP_RD_USD) || \
+     defined(WIFI_AW611_BOARD_UBX_JODY_W5_M2))
 #include "wifi_bt_module_config.h"
 #include "wifi_config.h"
 #else
 #error The transceiver module is unsupported
 #endif
 
-#if defined(WIFI_IW612_BOARD_MURATA_2EL_M2)
+#if defined(WIFI_IW612_BOARD_MURATA_2EL_M2) || defined(BT_NW61X_BOARD_NXP_RD_USD)
 #undef SD_TIMING_MAX
 #define SD_TIMING_MAX kSD_TimingDDR50Mode
 #endif /*#define WIFI_IW612_BOARD_MURATA_2EL_M2*/

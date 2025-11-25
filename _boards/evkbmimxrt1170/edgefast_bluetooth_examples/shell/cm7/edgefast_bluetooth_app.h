@@ -13,7 +13,8 @@
 /*WIFI_AW611_BOARD_UBX_JODY_W5_M2*/
 
 #if ( defined(WIFI_IW416_BOARD_MURATA_1XK_M2) || defined(WIFI_88W8987_BOARD_MURATA_1ZM_M2) || \
-      defined(BT_THIRD_PARTY_TRANSCEIVER) || defined(WIFI_IW612_BOARD_MURATA_2EL_M2) || defined(WIFI_IW610_BOARD_MURATA_2LL_M2) || \
+      defined(BT_THIRD_PARTY_TRANSCEIVER) || defined(WIFI_IW612_BOARD_MURATA_2EL_M2) || \
+      defined(BT_NW61X_BOARD_NXP_RD_USD) || defined(WIFI_IW610_BOARD_MURATA_2LL_M2) || \
       defined(WIFI_AW611_BOARD_UBX_JODY_W5_M2))
 #include "wifi_bt_module_config.h"
 #include "wifi_config.h"
@@ -55,7 +56,7 @@
 #if (defined(CONFIG_BT_IND_RESET) && (CONFIG_BT_IND_RESET > 0U))
 #define CONFIG_BT_IND_DNLD     1
 #endif /*#define ENABLE_BT_IND_RESET*/
-#if defined(WIFI_IW612_BOARD_MURATA_2EL_M2)
+#if defined(WIFI_IW612_BOARD_MURATA_2EL_M2) || defined(BT_NW61X_BOARD_NXP_RD_USD)
 #undef SD_TIMING_MAX
 #define SD_TIMING_MAX kSD_TimingDDR50Mode
 /* To enable the BT OOB IND Reset, only support 2EL on RT1170EVKB */
