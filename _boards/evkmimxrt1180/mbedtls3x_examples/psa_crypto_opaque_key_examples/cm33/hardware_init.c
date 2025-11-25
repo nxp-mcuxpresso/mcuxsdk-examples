@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 NXP
+ * Copyright 2023, 2025 NXP
  * All rights reserved.
  *
  *
@@ -37,7 +37,7 @@ static status_t sdcardWaitCardInsert(void);
 static FATFS g_fileSystem; /* File system object */
 
 #if !defined(PSA_ITS_STORAGE_PREFIX)
-#define PSA_ITS_STORAGE_PREFIX ""
+#define PSA_ITS_STORAGE_PREFIX "/mbedtls_psa/"
 #endif
 
 /* Initialize the FAT FS for SD */
