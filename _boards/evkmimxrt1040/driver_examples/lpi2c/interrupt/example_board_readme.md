@@ -8,8 +8,8 @@ Board settings
 ============
 To make lpi2c example work, connections needed to be as follows:
 
-        LPI2C1 SCL(J33-6)     -->          LPI2C3 SCL(J16-1)
-        LPI2C1 SDA(J33-5)     -->          LPI2C3 SDA(J16-2)
+        LPI2C3 SCL(J33-6)     -->          LPI2C1 SCL(J17-10)
+        LPI2C3 SDA(J33-5)     -->          LPI2C1 SDA(J17-9)
 
 Prepare the Demo
 ===============
