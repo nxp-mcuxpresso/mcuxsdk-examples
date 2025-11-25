@@ -27,7 +27,7 @@ void BOARD_InitGPIOPins(void)
     IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO31__GPIO2_IO31, 0U);
 
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO31__GPIO2_IO31,
-                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_DSE(7U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_PD_MASK);
 }
@@ -66,7 +66,7 @@ void BOARD_InitEcatCLKPins(void)
     IOMUXC_SetPinMux(IOMUXC_PAD_SD2_GPIO1__ECAT_CLK25, 0U);
     IOMUXC_SetPinMux(IOMUXC_PAD_ETH4_TXD2__ECAT_CLK25, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_SD2_GPIO1__ECAT_CLK25,
-                        IOMUXC_PAD_DSE(15U) | IOMUXC_PAD_FSEL1(3));     
+                        IOMUXC_PAD_DSE(7U) | IOMUXC_PAD_FSEL1(3));     
     IOMUXC_SetPinConfig(IOMUXC_PAD_ETH4_TXD2__ECAT_CLK25,
                         IOMUXC_PAD_DSE(15U) | IOMUXC_PAD_FSEL1(3));               
 
@@ -77,9 +77,9 @@ void BOARD_InitEcatI2CPins(void)
     IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO34__ECAT_SDA, 0U);
     IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO35__ECAT_SCL, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO34__ECAT_SDA,
-                        IOMUXC_PAD_DSE(15U) | IOMUXC_PAD_OD_MASK | IOMUXC_PAD_FSEL1(3));
+                        IOMUXC_PAD_DSE(7U) | IOMUXC_PAD_OD_MASK | IOMUXC_PAD_FSEL1(3));
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO35__ECAT_SCL,
-                        IOMUXC_PAD_DSE(15U) | IOMUXC_PAD_OD_MASK | IOMUXC_PAD_FSEL1(3));
+                        IOMUXC_PAD_DSE(7U) | IOMUXC_PAD_OD_MASK | IOMUXC_PAD_FSEL1(3));
 }
 
 #ifdef ECAT_RMII_PORT

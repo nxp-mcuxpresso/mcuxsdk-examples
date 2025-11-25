@@ -56,12 +56,12 @@ void BOARD_InitGPIOPins(void) {                                /*!< Function ass
   IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO01__GPIO2_IO1, 0U);
 
   IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO31__GPIO2_IO31,
-                      IOMUXC_PAD_DSE(15U) |
+                      IOMUXC_PAD_DSE(7U) |
                       IOMUXC_PAD_FSEL1(2U) |
                       IOMUXC_PAD_PD_MASK);
   
   IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO01__GPIO2_IO1,
-                      IOMUXC_PAD_DSE(15U) |
+                      IOMUXC_PAD_DSE(7U) |
                       IOMUXC_PAD_FSEL1(2U) |
                       IOMUXC_PAD_PD_MASK);
 }

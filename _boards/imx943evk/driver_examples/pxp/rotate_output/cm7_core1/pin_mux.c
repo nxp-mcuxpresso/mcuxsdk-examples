@@ -56,11 +56,11 @@ void BOARD_InitI2C3Pins(void) {                                /*!< Function ass
     IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO17__LPI2C3_SCL, 1U);
 
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO16__LPI2C3_SDA,
-                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_DSE(7U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_OD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO17__LPI2C3_SCL,
-                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_DSE(7U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_OD_MASK);
 }

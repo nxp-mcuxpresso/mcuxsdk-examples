@@ -57,10 +57,10 @@ void BOARD_InitI2C3Pins(void) {                                /*!< Function ass
     IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO16__LPI2C3_SDA, 1U);
 
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO17__LPI2C3_SCL,
-                        IOMUXC_PAD_DSE(15U) | IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_DSE(7U) | IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_OD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO16__LPI2C3_SDA,
-                        IOMUXC_PAD_DSE(15U) | IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_DSE(7U) | IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_OD_MASK);
 }
 
@@ -72,15 +72,15 @@ void BOARD_InitSAI1Pins(void) {                                /*!< Function ass
     IOMUXC_SetPinMux(IOMUXC_PAD_SAI1_TXFS__SAI1_TX_SYNC, 1U);
 
     IOMUXC_SetPinConfig(IOMUXC_PAD_SAI1_TXC__SAI1_TX_BCLK,
-                        IOMUXC_PAD_DSE(15U));
+                        IOMUXC_PAD_DSE(7U));
     IOMUXC_SetPinConfig(IOMUXC_PAD_I2C2_SDA__SAI1_MCLK,
-                        IOMUXC_PAD_DSE(15U));
+                        IOMUXC_PAD_DSE(7U));
     IOMUXC_SetPinConfig(IOMUXC_PAD_SAI1_RXD0__SAI1_RX_DATA0,
-                         IOMUXC_PAD_DSE(15U));
+                         IOMUXC_PAD_DSE(7U));
     IOMUXC_SetPinConfig(IOMUXC_PAD_SAI1_TXD0__SAI1_TX_DATA0,
-                        IOMUXC_PAD_DSE(15U));
+                        IOMUXC_PAD_DSE(7U));
     IOMUXC_SetPinConfig(IOMUXC_PAD_SAI1_TXFS__SAI1_TX_SYNC,
-                        IOMUXC_PAD_DSE(15U));
+                        IOMUXC_PAD_DSE(7U));
 }
 
 void BOARD_InitPDMPins(void)  {                               /*!< Function assigned for the core: undefined[cm33] */
@@ -89,11 +89,11 @@ void BOARD_InitPDMPins(void)  {                               /*!< Function assi
     IOMUXC_SetPinMux(IOMUXC_PAD_PDM_CLK__PDM_CLK, 0U);
 
     IOMUXC_SetPinConfig(IOMUXC_PAD_PDM_BIT_STREAM0__PDM_BIT_STREAM0,
-                        IOMUXC_PAD_DSE(15U) | IOMUXC_PAD_FSEL1(3U));
+                        IOMUXC_PAD_DSE(7U) | IOMUXC_PAD_FSEL1(3U));
     IOMUXC_SetPinConfig(IOMUXC_PAD_PDM_BIT_STREAM1__PDM_BIT_STREAM1,
-                        IOMUXC_PAD_DSE(15U) | IOMUXC_PAD_FSEL1(3U));
+                        IOMUXC_PAD_DSE(7U) | IOMUXC_PAD_FSEL1(3U));
     IOMUXC_SetPinConfig(IOMUXC_PAD_PDM_CLK__PDM_CLK,
-                        IOMUXC_PAD_DSE(15U) | IOMUXC_PAD_FSEL1(3U));   
+                        IOMUXC_PAD_DSE(7U) | IOMUXC_PAD_FSEL1(3U));   
 }
 /***********************************************************************************************************************
  * EOF

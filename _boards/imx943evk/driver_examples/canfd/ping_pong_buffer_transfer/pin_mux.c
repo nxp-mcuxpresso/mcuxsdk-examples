@@ -62,25 +62,25 @@ void BOARD_InitPins(void) {                                /*!< Function assigne
     IOMUXC_SetPinMux(IOMUXC_PAD_UART1_TXD__LPUART1_TX, 0U);
 
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO25__CAN2_TX, 
-                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_DSE(7U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_PD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO27__CAN2_RX, 
-                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_DSE(7U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_PD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_I2C2_SCL__LPI2C2_SCL, 
-                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_DSE(7U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_OD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_I2C2_SDA__LPI2C2_SDA, 
-                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_DSE(7U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_OD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_UART1_RXD__LPUART1_RX, 
                         IOMUXC_PAD_PD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_UART1_TXD__LPUART1_TX, 
-                        IOMUXC_PAD_DSE(15U));
+                        IOMUXC_PAD_DSE(7U));
 }
 
 /***********************************************************************************************************************

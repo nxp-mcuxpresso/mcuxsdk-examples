@@ -1018,7 +1018,7 @@ void BOARD_InitLpuart1Pins(void) {                                /*!< Function 
     IOMUXC_SetPinConfig(IOMUXC_PAD_UART1_RXD__LPUART1_RX,
                         IOMUXC_PAD_PD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_UART1_TXD__LPUART1_TX,
-                        IOMUXC_PAD_DSE(15U));
+                        IOMUXC_PAD_DSE(7U));
 }
 
 void BOARD_InitLpuart2Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
@@ -1028,7 +1028,7 @@ void BOARD_InitLpuart2Pins(void) {                                /*!< Function 
     IOMUXC_SetPinConfig(IOMUXC_PAD_UART2_RXD__LPUART2_RX,
                         IOMUXC_PAD_PD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_UART2_TXD__LPUART2_TX,
-                        IOMUXC_PAD_DSE(15U));
+                        IOMUXC_PAD_DSE(7U));
 }
 
 void BOARD_InitLpuart3Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
@@ -1038,7 +1038,7 @@ void BOARD_InitLpuart3Pins(void) {                                /*!< Function 
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO31__LPUART3_RX,
                         IOMUXC_PAD_PD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO30__LPUART3_TX,
-                        IOMUXC_PAD_DSE(15U));
+                        IOMUXC_PAD_DSE(7U));
 }
 
 #if BOARD_IMX943_TYPE == BOARD_IMX943_EMULATOR
@@ -1049,7 +1049,7 @@ void BOARD_InitLpuart4Pins(void) {                                /*!< Function 
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO41__LPUART4_RX,
                         IOMUXC_PAD_PD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO40__LPUART4_TX,
-                        IOMUXC_PAD_DSE(15U));
+                        IOMUXC_PAD_DSE(7U));
 }
 
 void BOARD_InitLpuart5Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
@@ -1059,7 +1059,7 @@ void BOARD_InitLpuart5Pins(void) {                                /*!< Function 
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO01__LPUART5_RX,
                         IOMUXC_PAD_PD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO00__LPUART5_TX,
-                        IOMUXC_PAD_DSE(15U));
+                        IOMUXC_PAD_DSE(7U));
 }
 #else
 void BOARD_InitLpuart4Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
@@ -1069,7 +1069,7 @@ void BOARD_InitLpuart4Pins(void) {                                /*!< Function 
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO15__LPUART4_RX,
                         IOMUXC_PAD_PD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO14__LPUART4_TX,
-                        IOMUXC_PAD_DSE(15U));
+                        IOMUXC_PAD_DSE(7U));
 }
 
 void BOARD_InitLpuart5Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
@@ -1090,7 +1090,7 @@ void BOARD_InitLpuart6Pins(void) {                                /*!< Function 
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO21__LPUART6_RX,
                         IOMUXC_PAD_PD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO20__LPUART6_TX,
-                        IOMUXC_PAD_DSE(15U));
+                        IOMUXC_PAD_DSE(7U));
 }
 
 void BOARD_InitLpuart7Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
@@ -1100,7 +1100,7 @@ void BOARD_InitLpuart7Pins(void) {                                /*!< Function 
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO33__LPUART7_RX,
                         IOMUXC_PAD_PD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO32__LPUART7_TX,
-                        IOMUXC_PAD_DSE(15U));
+                        IOMUXC_PAD_DSE(7U));
 }
 
 void BOARD_InitI2C6Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
@@ -1108,10 +1108,10 @@ void BOARD_InitI2C6Pins(void) {                                /*!< Function ass
     IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO29__LPI2C6_SDA, 1U);
 
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO28__LPI2C6_SCL,
-                        IOMUXC_PAD_DSE(15U) | IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_DSE(7U) | IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_OD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO29__LPI2C6_SDA,
-                        IOMUXC_PAD_DSE(15U) | IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_DSE(7U) | IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_OD_MASK);
 }
 
@@ -1131,7 +1131,7 @@ void BOARD_InitLpuart8Pins(void) {                                /*!< Function 
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO13__LPUART8_RX,
                         IOMUXC_PAD_PD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO12__LPUART8_TX,
-                        IOMUXC_PAD_DSE(15U));
+                        IOMUXC_PAD_DSE(7U));
 
     BOARD_InitI2C6Pins();
     /* Route LPSPI8 of SoC to arduino interface */
@@ -1151,7 +1151,7 @@ void BOARD_InitLpuart9Pins(void) {                                /*!< Function 
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO45__LPUART9_RX,
                         IOMUXC_PAD_PD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO44__LPUART9_TX,
-                        IOMUXC_PAD_DSE(15U));
+                        IOMUXC_PAD_DSE(7U));
 }
 
 void BOARD_InitLpuart10Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
@@ -1161,7 +1161,7 @@ void BOARD_InitLpuart10Pins(void) {                                /*!< Function
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO49__LPUART10_RX,
                         IOMUXC_PAD_PD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO48__LPUART10_TX,
-                        IOMUXC_PAD_DSE(15U));
+                        IOMUXC_PAD_DSE(7U));
 }
 
 void BOARD_InitLpuart11Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
@@ -1170,7 +1170,7 @@ void BOARD_InitLpuart11Pins(void) {                                /*!< Function
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO25__LPUART11_RX,
                         IOMUXC_PAD_PD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO24__LPUART11_TX,
-                        IOMUXC_PAD_DSE(15U));
+                        IOMUXC_PAD_DSE(7U));
 }
 
 void BOARD_InitLpuart12Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
@@ -1179,7 +1179,7 @@ void BOARD_InitLpuart12Pins(void) {                                /*!< Function
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO27__LPUART12_RX,
                         IOMUXC_PAD_PD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO26__LPUART12_TX,
-                        IOMUXC_PAD_DSE(15U));
+                        IOMUXC_PAD_DSE(7U));
 }
 
 void BOARD_DeinitLpuart1Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
@@ -1189,7 +1189,7 @@ void BOARD_DeinitLpuart1Pins(void) {                                /*!< Functio
     IOMUXC_SetPinConfig(IOMUXC_PAD_UART1_RXD__GPIO1_IO4,
                         IOMUXC_PAD_PD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_UART1_TXD__GPIO1_IO5,
-                        IOMUXC_PAD_DSE(15U));
+                        IOMUXC_PAD_DSE(7U));
 }
 
 void BOARD_DeinitLpuart2Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
@@ -1199,7 +1199,7 @@ void BOARD_DeinitLpuart2Pins(void) {                                /*!< Functio
     IOMUXC_SetPinConfig(IOMUXC_PAD_UART2_RXD__GPIO1_IO6,
                         IOMUXC_PAD_PD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_UART2_TXD__GPIO1_IO7,
-                        IOMUXC_PAD_DSE(15U));
+                        IOMUXC_PAD_DSE(7U));
 }
 
 void BOARD_DeinitLpuart3Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
@@ -1209,7 +1209,7 @@ void BOARD_DeinitLpuart3Pins(void) {                                /*!< Functio
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO31__GPIO2_IO31,
                         IOMUXC_PAD_PD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO30__GPIO2_IO30,
-                        IOMUXC_PAD_DSE(15U));
+                        IOMUXC_PAD_DSE(7U));
 }
 
 void BOARD_DeinitLpuart4Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
@@ -1219,7 +1219,7 @@ void BOARD_DeinitLpuart4Pins(void) {                                /*!< Functio
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO15__GPIO2_IO15,
                         IOMUXC_PAD_PD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO14__GPIO2_IO14,
-                        IOMUXC_PAD_DSE(15U));
+                        IOMUXC_PAD_DSE(7U));
 }
 
 void BOARD_DeinitLpuart5Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
@@ -1239,7 +1239,7 @@ void BOARD_DeinitLpuart6Pins(void) {                                /*!< Functio
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO21__GPIO2_IO21,
                         IOMUXC_PAD_PD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO20__GPIO2_IO20,
-                        IOMUXC_PAD_DSE(15U));
+                        IOMUXC_PAD_DSE(7U));
 }
 
 void BOARD_DeinitLpuart7Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
@@ -1249,7 +1249,7 @@ void BOARD_DeinitLpuart7Pins(void) {                                /*!< Functio
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO33__GPIO3_IO1,
                         IOMUXC_PAD_PD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO32__GPIO3_IO0,
-                        IOMUXC_PAD_DSE(15U));
+                        IOMUXC_PAD_DSE(7U));
 }
 
 void BOARD_DeinitLpuart8Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
@@ -1269,7 +1269,7 @@ void BOARD_DeinitLpuart9Pins(void) {                                /*!< Functio
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO45__GPIO3_IO13,
                         IOMUXC_PAD_PD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO44__GPIO3_IO12,
-                        IOMUXC_PAD_DSE(15U));
+                        IOMUXC_PAD_DSE(7U));
 }
 
 void BOARD_DeinitLpuart10Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
@@ -1279,7 +1279,7 @@ void BOARD_DeinitLpuart10Pins(void) {                                /*!< Functi
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO49__GPIO3_IO17,
                         IOMUXC_PAD_PD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO48__GPIO3_IO16,
-                        IOMUXC_PAD_DSE(15U));
+                        IOMUXC_PAD_DSE(7U));
 }
 
 void BOARD_DeinitLpuart11Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
@@ -1288,7 +1288,7 @@ void BOARD_DeinitLpuart11Pins(void) {                                /*!< Functi
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO17__GPIO2_IO17,
                         IOMUXC_PAD_PD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO16__GPIO2_IO16,
-                        IOMUXC_PAD_DSE(15U));
+                        IOMUXC_PAD_DSE(7U));
 }
 
 void BOARD_DeinitLpuart12Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
@@ -1297,7 +1297,7 @@ void BOARD_DeinitLpuart12Pins(void) {                                /*!< Functi
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO27__GPIO2_IO27,
                         IOMUXC_PAD_PD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO26__GPIO2_IO26,
-                        IOMUXC_PAD_DSE(15U));
+                        IOMUXC_PAD_DSE(7U));
 }
 
 uint32_t BOARD_GetUartFreq(uint32_t uartInstIdx)

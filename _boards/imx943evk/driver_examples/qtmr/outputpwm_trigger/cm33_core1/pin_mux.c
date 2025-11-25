@@ -53,7 +53,7 @@ BOARD_InitPins:
 void BOARD_InitPins(void) {
     IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO15__XBAR1_XBAR_INOUT8, 1);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO15__XBAR1_XBAR_INOUT8,
-                        IOMUXC_PAD_DSE(63U) |
+                        IOMUXC_PAD_DSE(7U) |
                         IOMUXC_PAD_FSEL1(3U) |
                         IOMUXC_PAD_PU_MASK);
 }

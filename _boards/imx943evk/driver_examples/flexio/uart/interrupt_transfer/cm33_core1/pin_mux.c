@@ -52,11 +52,11 @@ BOARD_InitPins:
 void BOARD_InitPins(void) {                                /*!< Function assigned for the core: Cortex-M33[cm33] */
     IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO30__FLEXIO1_3_1_FLEXIO4, 1U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO30__FLEXIO1_3_1_FLEXIO4,
-                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_DSE(7U) |
                         IOMUXC_PAD_FSEL1(2U));
     IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO31__FLEXIO1_3_1_FLEXIO5, 1U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO31__FLEXIO1_3_1_FLEXIO5,
-                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_DSE(7U) |
                         IOMUXC_PAD_FSEL1(2U));
 }
 /***********************************************************************************************************************

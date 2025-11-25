@@ -56,7 +56,7 @@ void BOARD_InitPins(void) {                                /*!< Function assigne
     IOMUXC_SetPinConfig(IOMUXC_PAD_UART1_RXD__LPUART1_RX, 
                         IOMUXC_PAD_PD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_UART1_TXD__LPUART1_TX, 
-                        IOMUXC_PAD_DSE(15U));
+                        IOMUXC_PAD_DSE(7U));
 }
 
 /***********************************************************************************************************************

@@ -54,17 +54,17 @@ void BOARD_InitPins(void) {                                /*!< Function assigne
 
     IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO01__FLEXIO1_FLEXIO1, 1U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO01__FLEXIO1_FLEXIO1,
-                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_DSE(7U) |
                         IOMUXC_PAD_FSEL1(2U));
 
     IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO02__FLEXIO1_FLEXIO2, 1U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO02__FLEXIO1_FLEXIO2,
-                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_DSE(7U) |
                         IOMUXC_PAD_FSEL1(2U));
 
     IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO03__FLEXIO1_FLEXIO3, 1U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO03__FLEXIO1_FLEXIO3,
-                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_DSE(7U) |
                         IOMUXC_PAD_FSEL1(2U));
 }
 

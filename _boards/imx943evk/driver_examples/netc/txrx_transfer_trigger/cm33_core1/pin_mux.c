@@ -172,7 +172,7 @@ void BOARD_InitPins(void)
 
     IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO15__XBAR1_XBAR_INOUT8, 1);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO15__XBAR1_XBAR_INOUT8,
-                        IOMUXC_PAD_DSE(63U) |
+                        IOMUXC_PAD_DSE(7U) |
                         IOMUXC_PAD_FSEL1(3U) |
                         IOMUXC_PAD_PU_MASK);
 }
@@ -182,11 +182,11 @@ void BOARD_InitI2C3Pins(void) {                                /*!< Function ass
     IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO17__LPI2C3_SCL, 1U);
 
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO16__LPI2C3_SDA, 
-                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_DSE(7U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_OD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO17__LPI2C3_SCL, 
-                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_DSE(7U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_OD_MASK);
 }
