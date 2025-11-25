@@ -127,7 +127,7 @@ int main()
     PRINTF("\r\n Flash driver API tree demo application. \r\n");
     /* Initialize flash driver */
     PRINTF("\r\n Initializing flash driver.");
-    if (FLASH_API->flash_init(&s_flashDriver) != kStatus_Success)
+    if (FLASH_Init(&s_flashDriver) != kStatus_Success)
     {
         error_trap();
     }
@@ -137,10 +137,10 @@ int main()
     PRINTF("\r\n Config flash memory access time. \r\n");
 
     /* Get flash properties kFLASH_ApiEraseKey */
-    FLASH_API->flash_get_property(&s_flashDriver, kFLASH_PropertyPflashBlockBaseAddr, &pflashBlockBase);
-    FLASH_API->flash_get_property(&s_flashDriver, kFLASH_PropertyPflashSectorSize, &pflashSectorSize);
-    FLASH_API->flash_get_property(&s_flashDriver, kFLASH_PropertyPflashTotalSize, &pflashTotalSize);
-    FLASH_API->flash_get_property(&s_flashDriver, kFLASH_PropertyPflashPageSize, &PflashPageSize);
+    FLASH_GetProperty(&s_flashDriver, kFLASH_PropertyPflashBlockBaseAddr, &pflashBlockBase);
+    FLASH_GetProperty(&s_flashDriver, kFLASH_PropertyPflashSectorSize, &pflashSectorSize);
+    FLASH_GetProperty(&s_flashDriver, kFLASH_PropertyPflashTotalSize, &pflashTotalSize);
+    FLASH_GetProperty(&s_flashDriver, kFLASH_PropertyPflashPageSize, &PflashPageSize);
 
     /* print welcome message */
     PRINTF("\r\n PFlash Information:");
@@ -161,7 +161,7 @@ SECTOR_INDEX_FROM_END = 2 means (the last sector -1 )...
     destAdrss = pflashBlockBase + (pflashTotalSize - (SECTOR_INDEX_FROM_END * pflashSectorSize));
 
     PRINTF("\r\n Erase a sector of flash");
-    status = FLASH_API->flash_erase_sector(&s_flashDriver, destAdrss, pflashSectorSize, kFLASH_ApiEraseKey);
+    status = FLASH_EraseSector(&s_flashDriver, destAdrss, pflashSectorSize, kFLASH_ApiEraseKey);
     if (status != kStatus_Success)
     {
         error_trap();
@@ -173,7 +173,7 @@ SECTOR_INDEX_FROM_END = 2 means (the last sector -1 )...
 
     /* Verify if the given flash range is successfully erased. */
     PRINTF("\r\n Calling flash_verify_erase_sector() API.");
-    status = FLASH_API->flash_verify_erase_sector(&s_flashDriver, destAdrss, pflashSectorSize);
+    status = FLASH_VerifyEraseSector(&s_flashDriver, destAdrss, pflashSectorSize);
     if (status == kStatus_Success)
     {
         PRINTF("\r\n Successfully erased sector: 0x%x -> 0x%x\r\n", destAdrss, (destAdrss + pflashSectorSize));
@@ -191,7 +191,7 @@ SECTOR_INDEX_FROM_END = 2 means (the last sector -1 )...
 
     /* Start programming specified flash region */
     PRINTF("\r\n Calling FLASH_Program() API.");
-    status = FLASH_API->flash_program_page(&s_flashDriver, destAdrss, (uint8_t *)s_buffer, sizeof(s_buffer));
+    status = FLASH_ProgramPage(&s_flashDriver, destAdrss, (uint8_t *)s_buffer, sizeof(s_buffer));
     if (status != kStatus_Success)
     {
         error_trap();
@@ -203,7 +203,7 @@ SECTOR_INDEX_FROM_END = 2 means (the last sector -1 )...
 
     /* Verify if the given flash region is successfully programmed with given data */
     PRINTF("\r\n Calling FLASH_VerifyProgram() API.");
-    status = FLASH_API->flash_verify_program(&s_flashDriver, destAdrss, sizeof(s_buffer), (const uint8_t *)s_buffer,
+    status = FLASH_VerifyProgram(&s_flashDriver, destAdrss, sizeof(s_buffer), (const uint8_t *)s_buffer,
                                              &failedAddress, &failedData);
     if (status != kStatus_Success)
     {
@@ -224,7 +224,7 @@ SECTOR_INDEX_FROM_END = 2 means (the last sector -1 )...
            (destAdrss + sizeof(s_buffer)));
 
     /* resume flash memory status */
-    status = FLASH_API->flash_erase_sector(&s_flashDriver, destAdrss, pflashSectorSize, kFLASH_ApiEraseKey);
+    status = FLASH_EraseSector(&s_flashDriver, destAdrss, pflashSectorSize, kFLASH_ApiEraseKey);
 
     app_finalize();
 

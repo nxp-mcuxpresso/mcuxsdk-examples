@@ -127,7 +127,7 @@ int main()
     }
 
     PRINTF("Call the runBootloader API based on the arg : %x...\r\n", arg);
-    ROM_API->run_bootloader(&arg);
+    ROMAPI_RunBootloader(&arg);
 
     app_fail();
 
