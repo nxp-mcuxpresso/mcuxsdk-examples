@@ -20,7 +20,7 @@ mcux_add_armgcc_configuration(
     LD "-lm"
 )
 mcux_add_iar_configuration(
-    TARGETS debug
+    TARGETS debug hyperram_debug
     CC "-Ol"
 )
 
@@ -34,7 +34,7 @@ mcux_add_macro(
 )
 
 mcux_remove_iar_configuration(
-    TARGETS debug
+    TARGETS debug hyperram_debug
     CC "-On"
 )
 
