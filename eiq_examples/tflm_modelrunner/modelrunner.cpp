@@ -207,7 +207,8 @@ static int do_cmd_model_loadb(char* model_buf, NNServer* server){
 	server->m_tensor_arena = nullptr;
     }
     PRINTF("\r\n######### Ready for TFLite model download");
-
+    
+    server->model_size = size;
     if (size <= MODEL_SIZE){
         model_buf = (char*)malloc(size+8);
         server->model_upload = model_buf;

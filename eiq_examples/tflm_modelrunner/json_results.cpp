@@ -165,6 +165,10 @@ int model_info(int sock, NNServer* server){
     if (data_len < 0 || data_len >= sizeof(data)) return -1;
     if (write_chunk(sock, data, data_len) < 0) return -1;
 
+    data_len = snprintf(data, sizeof(data), ",\"model_size\": %d", server->model_size);
+    if (data_len < 0 || data_len >= sizeof(data)) return -1;
+    if (write_chunk(sock, data, data_len) < 0) return -1;
+
     data_len = snprintf(data, sizeof(data), ",\"ktensor_arena_size\": %d", server->kTensorArenaSize);
     if (data_len < 0 || data_len >= sizeof(data)) return -1;
     if (write_chunk(sock, data, data_len) < 0) return -1;
@@ -309,7 +313,28 @@ int model_info(int sock, NNServer* server){
         if (data_len < 0 || data_len >= sizeof(data)) return -1;
         if (write_chunk(sock, data, data_len) < 0) return -1;
 
-        data_len = snprintf(data, sizeof(data), "}");
+	const char* process_unit = (strcmp(server->layers.type[i], "NeutronGraph") == 0) ? "NPU" : "CPU";
+        data_len = snprintf(data, sizeof(data), ",\"process_unit\": \"%s\"", process_unit);
+        if (data_len < 0 || data_len >= sizeof(data)) return -1;
+        if (write_chunk(sock, data, data_len) < 0) return -1;
+
+	data_len = snprintf(data, sizeof(data), ",\"shape\": [");
+        if (data_len < 0 || data_len >= sizeof(data)) return -1;
+        if (write_chunk(sock, data, data_len) < 0) return -1;
+        for (int dim = 0; dim < server->layers.shape_size[i]; ++dim) {
+            if (dim != 0){
+                data_len = snprintf(data, sizeof(data), ",");
+                if (data_len < 0 || data_len >= sizeof(data)) return -1;
+                if (write_chunk(sock, data, data_len) < 0) return -1;
+            }
+            data_len = snprintf(data, sizeof(data), "%ld", server->layers.shape_data[i][dim]);
+            if (data_len < 0 || data_len >= sizeof(data)) return -1;
+            if (write_chunk(sock, data, data_len) < 0) return -1;
+        }
+        data_len = snprintf(data, sizeof(data), "]");
+        if (data_len < 0 || data_len >= sizeof(data)) return -1;
+        if (write_chunk(sock, data, data_len) < 0) return -1;
+	data_len = snprintf(data, sizeof(data), "}");
         if (data_len < 0 || data_len >= sizeof(data)) return -1;
         if (write_chunk(sock, data, data_len) < 0) return -1;
     } 

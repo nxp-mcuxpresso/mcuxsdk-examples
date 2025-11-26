@@ -341,6 +341,7 @@ int v1_handler_put(int                sock,
                     filename, server->model_upload, &data_buf_len,
                     content_length, server->model_flash_load);
 
+    server->model_size = data_buf_len;
     char msg[50] = "{\"reply\": \"success\"}";
     size_t size = strlen(msg);
 

@@ -87,6 +87,16 @@ int Model_Setup(NNServer* server) {
     for (size_t i = 0; i < operators->size(); i++) {
         const tflite::Operator* cur_operator = (*operators)[i];
         auto* outputs = cur_operator->outputs();
+	auto* inputs = cur_operator->inputs();
+        if (inputs->size() > 0) {
+            int input_idx = (int)(*inputs)[0];  
+	    const tflite::Tensor* input_tensor = (*tensors)[input_idx];
+            server->layers.shape_data[i] = input_tensor->shape()->data();
+            server->layers.shape_size[i] = input_tensor->shape()->size();
+        } else {
+            server->layers.shape_data[i] = nullptr;
+            server->layers.shape_size[i] = 0;
+        }
 	server->layers.output_size[i] = outputs->size();
         for (size_t j = 0; j<outputs->size(); j++)
         {

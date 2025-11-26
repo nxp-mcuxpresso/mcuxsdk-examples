@@ -24,15 +24,15 @@ void BOARD_InitHardware(void)
     BOARD_ConfigMPU();
 
     // Disable LDO
-    POWER_SetVddnSupplySrc(kVddSrc_PMIC);
+/*    POWER_SetVddnSupplySrc(kVddSrc_PMIC);
     POWER_SetVdd1SupplySrc(kVddSrc_PMIC);
     POWER_SetVdd2SupplySrc(kVddSrc_PMIC);
     POWER_ApplyPD();
 
     BOARD_InitPmicPins();
     BOARD_InitPmic();
-    BOARD_SetPmicVdd2Voltage(1100000U); /* 1.1v for 325MHz clock. */
-
+    BOARD_SetPmicVdd2Voltage(1100000U); 
+*/
     BOARD_BootClockHSRUN();
     BOARD_InitDebugConsole();
 

@@ -35,6 +35,8 @@ struct nn_server {
         int32_t num_layers;
 	int32_t output_idx[256][20];
 	size_t output_size[256];
+	const int32_t* shape_data[256];
+    	int32_t shape_size[256];
     }layers;
     struct {
         int32_t num_outputs;
