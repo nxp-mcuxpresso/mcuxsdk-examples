@@ -56,7 +56,7 @@ m_heap_size              = DEFINED(__heap_size__)  ? __heap_size__  : 0x400;
 /* Target specific definition, code & data allocation */
 m_code_size              = m_flash_size - app_image_offset - vector_table_size;
 m_data_size              = m_dtcm_size;
-m_ncache_size            = DEFINED(__multicore__) ? 0x20000 : 0x40000;   /* m_ncache_size must be 2^N */
+m_ncache_size            = 0x1000;         /* m_ncache_size must be 2^N */
 m_shmem_size             = m_ocram2_size;  /* m_shmem_size must be 2^N */
 
 m_ocram1_size_for_cm7    = DEFINED(__multicore__) ? 0x40000 : m_ocram1_size;
@@ -78,6 +78,9 @@ m_ncache_end             = m_ncache_start + m_ncache_size - 1 - (DEFINED(__heap_
 m_heap_start             = DEFINED(__heap_noncacheable__) ? m_ncache_end + 1 : m_ocram1_start + m_ocram1_size - m_ocram1_size_for_cm7;
 m_heap_end               = m_heap_start +  m_heap_size - 1;
 
+m_data_ocram_start       = m_ocram1_start + (DEFINED(__heap_noncacheable__) ? 0 : m_heap_size);
+m_data_ocram_end         = m_ncache_start - 1;
+
 m_rpmsg_sh_mem_start     = m_ocram2_start; /* (m_rpmsg_sh_mem_start %  m_shmem_size) must be 0 */
 m_rpmsg_sh_mem_end       = m_rpmsg_sh_mem_start + m_shmem_size - 1;
 
@@ -98,6 +101,7 @@ MEMORY
   m_interrupts     (RX)  : ORIGIN = m_interrupts_start,       LENGTH = m_interrupts_end - m_interrupts_start + 1
   m_text           (RX)  : ORIGIN = m_text_start,             LENGTH = m_text_end - m_text_start + 1
   m_data           (RW)  : ORIGIN = m_data_start,             LENGTH = m_data_end - m_data_start + 1
+  m_data_ocram     (RW)  : ORIGIN = m_data_ocram_start,       LENGTH = m_data_ocram_end - m_data_ocram_start + 1
   m_ncache         (RW)  : ORIGIN = m_ncache_start,           LENGTH = m_ncache_end - m_ncache_start + 1
   m_heap           (RW)  : ORIGIN = m_heap_start,             LENGTH = m_heap_end - m_heap_start + 1
   m_qacode         (RX)  : ORIGIN = m_qacode_start,           LENGTH = m_qacode_end - m_qacode_start + 1
@@ -243,10 +247,16 @@ SECTIONS
     *(.data)                 /* .data sections */
     *(.data*)                /* .data* sections */
     *(DataQuickAccess)       /* quick access data section */
-    *(.wlan_data .wlan_data.*)
     KEEP(*(.jcr*))
     . = ALIGN(4);
     __data_end__ = .;        /* define a global symbol at data end */
+  } > m_data
+  
+  .wlan_data_noinit (NOLOAD) :
+  {
+    . = ALIGN(4);
+    *(.wlan_data .wlan_data.*)
+    . = ALIGN(4);
   } > m_data
 
   __ram_function_flash_start = __data_flash_start + (__data_end__ - __data_start__); /* Symbol is used by startup for TCM code initialization */
@@ -327,7 +337,7 @@ SECTIONS
     *(COMMON)
     . = ALIGN(4);
     __bss_end__ = .;
-  } > m_data
+  } > m_data_ocram
 
   .rpmsg :
   {
