@@ -14,7 +14,6 @@
 #include "mcux_psa_els_pkc_common_init.h"
 #endif
 
-#include "osa.h"
 #include "board_lp.h"
 #include "ncp_crc.h"
 #include "PWR_Interface.h"
@@ -26,6 +25,7 @@
 #include "ncp_pm.h"
 #include "ncp_cmd_common.h"
 #include "ncp_log.h"
+#include "ncp_utils.h"
 
 NCP_LOG_MODULE_DECLARE(ncp_pm);
 
@@ -433,21 +433,21 @@ void ncp_pm_os_activate_lp_timer(uint32_t duration_ms)
 {
     if (duration_ms > 0U)
     {
-        (void)OSA_TimerChange((osa_timer_handle_t)lp_timer, duration_ms/ portTICK_PERIOD_MS, 0);
+        (void)OSA_TimerChangeEx((osa_timer_handle_t)lp_timer, duration_ms/ portTICK_PERIOD_MS, 0);
 
         /* Start the timer, during this time, the configured low power mode will be used as much as possible by
          * the system, when the timer expires, the low power mode will be limited to WFI until next command
          * This is to make sure the serial interface becomes available again to the user */
-        if (OSA_TimerActivate((osa_timer_handle_t)lp_timer) != KOSA_StatusSuccess)
+        if (OSA_TimerActivateEx((osa_timer_handle_t)lp_timer) != KOSA_StatusSuccess)
         {
             assert(0);
         }
     }
     else if (duration_ms == 0U)
     {
-        if (OSA_TimerIsRunning((osa_timer_handle_t)lp_timer))
+        if (OSA_TimerIsRunningEx((osa_timer_handle_t)lp_timer))
         {
-            (void)OSA_TimerDeactivate((osa_timer_handle_t)lp_timer);
+            (void)OSA_TimerDeactivateEx((osa_timer_handle_t)lp_timer);
             NCP_LOG_DBG("Deactive LPM Timer!");
             if (!ncp_pm_sm_is_idle())
             {
@@ -459,7 +459,7 @@ void ncp_pm_os_activate_lp_timer(uint32_t duration_ms)
     }
 }
 
-static void ncp_pm_os_timer_cb(osa_timer_arg_t arg)
+static void ncp_pm_os_timer_cb(osa_timer_arg_ex_t arg)
 {
     if (!ncp_pm_sm_is_idle())
     {
@@ -517,8 +517,8 @@ int ncp_pm_os_init(void)
 
     ncp_pm_device_gpio_init();
 
-    if (OSA_TimerCreate((osa_timer_handle_t)lp_timer, NCP_PM_OS_TIMER_DURATION_MS, &ncp_pm_os_timer_cb, NULL,
-                KOSA_TimerOnce, OSA_TIMER_NO_ACTIVATE) != KOSA_StatusSuccess)
+    if (OSA_TimerCreateEx((osa_timer_handle_t)lp_timer, NCP_PM_OS_TIMER_DURATION_MS, &ncp_pm_os_timer_cb, NULL,
+                KOSA_TimerOnce, OSA_TIMER_NO_ACTIVATE_EX) != KOSA_StatusSuccess)
     {
         return NCP_PM_STATUS_ERROR;
     }
@@ -528,8 +528,8 @@ int ncp_pm_os_init(void)
 
 void ncp_pm_os_deinit(void)
 {
-    (void)OSA_TimerDeactivate((osa_timer_handle_t)lp_timer);
-    (void)OSA_TimerDestroy((osa_timer_handle_t)lp_timer);
+    (void)OSA_TimerDeactivateEx((osa_timer_handle_t)lp_timer);
+    (void)OSA_TimerDestroyEx((osa_timer_handle_t)lp_timer);
 
 #if CONFIG_NCP_WIFI
     PM_UnregisterNotify(&ncp_wlan_notify);
