@@ -19,6 +19,7 @@
 #include "fwk_debug.h"
 #include "SecLib.h"
 #include "RNG_Interface.h"
+#include "pin_mux.h"
 #if defined(gAppUseSensors_d) && (gAppUseSensors_d > 0)
 #include "sensors.h"
 #endif
@@ -263,6 +264,9 @@ static void BOARD_ExitPowerDownCb(void)
     BOARD_Button1ExitPowerDown((button_handle_t)g_buttonHandle[1]);
 #endif
 #endif
+
+    /* Avoid leakage on IO_ABC, configuration can be ovveriden by application */
+    BOARD_InitPins();
 }
 
 /* -------------------------------------------------------------------------- */
