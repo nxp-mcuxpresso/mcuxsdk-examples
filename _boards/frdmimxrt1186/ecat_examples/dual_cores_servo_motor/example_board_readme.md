@@ -10,6 +10,9 @@ Hardware requirements
 
 Board settings
 ==============
+- J12(2-3)/J13(2-3): eCAT0 Function Via J57A(Default).
+- J18(2-3)/J17(2-3): eCAT1 Function Via J57B(Default).
+
 FRDM-LVPMSM-FA board:
   - SW90[1:4]: OFF-ON-ON-ON
   - SW30[1:4]: OFF-ON-OFF-OFF

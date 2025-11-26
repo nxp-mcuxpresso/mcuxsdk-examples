@@ -56,4 +56,5 @@ To demonstrate this servo system, TwinCAT is used as the EtherCAT MainDevice.
 
 
 ## Supported Boards
-- [imx943evk/](../../_boards/imx943evk/ecat_examples/dual_cores_servo_motor/example_board_readme.md)
+- [imx943evk](../../_boards/imx943evk/ecat_examples/dual_cores_servo_motor/example_board_readme.md)
+- [frdmimxrt1186](../../_boards/frdmimxrt1186/ecat_examples/dual_cores_servo_motor/example_board_readme.md)
