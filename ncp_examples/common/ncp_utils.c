@@ -64,6 +64,235 @@ osa_status_t OSA_MsgQPutBlock(osa_msgq_handle_t msgqHandle, osa_msg_handle_t pMe
     return osaStatus;
 }
 
+/*FUNCTION**********************************************************************
+ *
+ * Function Name : OSA_TimerCreateEx
+ * Description   : This function is used to create a timer.
+ * Return        : Timer handle of the new timer, or NULL if failed.
+ *
+ *END**************************************************************************/
+osa_status_t OSA_TimerCreateEx(osa_timer_handle_t timerHandle,
+                             osa_timer_tick_ex ticks,
+                             void (*call_back)(osa_timer_arg_ex_t),
+                             void *cb_arg,
+                             osa_timer_t reload,
+                             osa_timer_activate_ex_t activate)
+{
+    int auto_reload = (reload == KOSA_TimerOnce) ? pdFALSE : pdTRUE;
+
+#if (defined(configSUPPORT_STATIC_ALLOCATION) && (configSUPPORT_STATIC_ALLOCATION > 0U)) && \
+    !((defined(configSUPPORT_DYNAMIC_ALLOCATION) && (configSUPPORT_DYNAMIC_ALLOCATION > 0U)))
+    assert((sizeof(osa_timer_handle_t) + sizeof(StaticTimer_t)) == OSA_TIMER_HANDLE_SIZE);
+#else
+    assert(sizeof(osa_timer_handle_t) == OSA_TIMER_HANDLE_SIZE);
+#endif
+    assert(NULL != timerHandle);
+
+    union
+    {
+        TimerHandle_t tm;
+        uint32_t timerhandle;
+    } xTimerHandle;
+
+#if (defined(configSUPPORT_STATIC_ALLOCATION) && (configSUPPORT_STATIC_ALLOCATION > 0U)) && \
+    !((defined(configSUPPORT_DYNAMIC_ALLOCATION) && (configSUPPORT_DYNAMIC_ALLOCATION > 0U)))
+    xTimerHandle.tm =
+        xTimerCreateStatic(NULL, ticks, (UBaseType_t)auto_reload, cb_arg, call_back,
+                           (StaticTimer_t *)(void *)((uint8_t *)timerHandle + sizeof(osa_timer_handle_t)));
+#else
+    xTimerHandle.tm = xTimerCreate(NULL, ticks, (UBaseType_t)auto_reload, cb_arg, call_back);
+#endif
+    if (NULL != xTimerHandle.tm)
+    {
+        *(uint32_t *)timerHandle = xTimerHandle.timerhandle;
+
+        if (activate == OSA_TIMER_AUTO_ACTIVATE_EX)
+        {
+            return OSA_TimerActivateEx(timerHandle);
+        }
+
+        return KOSA_StatusSuccess;
+    }
+
+    return KOSA_StatusError;
+}
+
+/*FUNCTION**********************************************************************
+ *
+ * Function Name : OSA_TimerActivateEx
+ * Description   : This function activates (or starts) a timer.
+ * Return        : KOSA_StatusSuccess if successfully, or KOSA_StatusError if failed.
+ *
+ *END**************************************************************************/
+osa_status_t OSA_TimerActivateEx(osa_timer_handle_t timerHandle)
+{
+    assert(NULL != timerHandle);
+    osa_status_t status = KOSA_StatusError;
+    TimerHandle_t tm    = (TimerHandle_t)(void *)(uint32_t *)(*(uint32_t *)timerHandle);
+
+    if (0U != __get_IPSR())
+    {
+        portBASE_TYPE taskToWake = (portBASE_TYPE)pdFALSE;
+
+        if (((BaseType_t)1) == (BaseType_t)xTimerStartFromISR(tm, &taskToWake))
+        {
+            portYIELD_FROM_ISR(((bool)(taskToWake)));
+            status = KOSA_StatusSuccess;
+        }
+        else
+        {
+            status = KOSA_StatusError;
+        }
+    }
+    else
+    {
+        if (((BaseType_t)1) == (BaseType_t)xTimerStart(tm, 0))
+        {
+            status = KOSA_StatusSuccess; /* sync object given */
+        }
+        else
+        {
+            status = KOSA_StatusError;
+        }
+    }
+
+    return status;
+}
+
+/*FUNCTION**********************************************************************
+ *
+ * Function Name : OSA_TimerChangeEx
+ * Description   : This function changes timer period.
+ * Return        : KOSA_StatusSuccess if successfully, or KOSA_StatusError if failed.
+ *
+ *END**************************************************************************/
+osa_status_t OSA_TimerChangeEx(osa_timer_handle_t timerHandle, osa_timer_tick_ex ntime, osa_timer_tick_ex block_time)
+{
+    assert(NULL != timerHandle);
+    osa_status_t status = KOSA_StatusError;
+    TimerHandle_t tm    = (TimerHandle_t)(void *)(uint32_t *)(*(uint32_t *)timerHandle);
+
+    if (0U != __get_IPSR())
+    {
+        portBASE_TYPE taskToWake = (portBASE_TYPE)pdFALSE;
+
+        if (((BaseType_t)1) == (BaseType_t)xTimerChangePeriodFromISR(tm, ntime, &taskToWake))
+        {
+            portYIELD_FROM_ISR(((bool)(taskToWake)));
+            status = KOSA_StatusSuccess;
+        }
+        else
+        {
+            status = KOSA_StatusError;
+        }
+    }
+    else
+    {
+        if (((BaseType_t)1) == (BaseType_t)xTimerChangePeriod(tm, ntime, 100))
+        {
+            status = KOSA_StatusSuccess; /* sync object given */
+        }
+        else
+        {
+            status = KOSA_StatusError;
+        }
+    }
+
+    return status;
+}
+
+/*FUNCTION**********************************************************************
+ *
+ * Function Name : OSA_TimerIsRunningEx
+ * Description   : This function checks the timer active state.
+ * Return        : true if timer is active, false if time is not active.
+ *
+ *END**************************************************************************/
+bool OSA_TimerIsRunningEx(osa_timer_handle_t timerHandle)
+{
+    assert(NULL != timerHandle);
+    TimerHandle_t tm = (TimerHandle_t)(void *)(uint32_t *)(*(uint32_t *)timerHandle);
+
+    if (((BaseType_t)0) == (BaseType_t)xTimerIsTimerActive(tm))
+    {
+        return false; /* Timer not active */
+    }
+    else
+    {
+        return true; /* Timer active */
+    }
+}
+
+/*FUNCTION**********************************************************************
+ *
+ * Function Name : OSA_TimerDeactivateEx
+ * Description   : This function deactivates (or stops) a timer that was previously started.
+ * Return        : KOSA_StatusSuccess if successfully, or KOSA_StatusError if failed.
+ *
+ *END**************************************************************************/
+osa_status_t OSA_TimerDeactivateEx(osa_timer_handle_t timerHandle)
+{
+    assert(NULL != timerHandle);
+    osa_status_t status = KOSA_StatusError;
+    TimerHandle_t tm    = (TimerHandle_t)(void *)(uint32_t *)(*(uint32_t *)timerHandle);
+
+    if (0U != __get_IPSR())
+    {
+        portBASE_TYPE taskToWake = (portBASE_TYPE)pdFALSE;
+
+        if (((BaseType_t)1) == (BaseType_t)xTimerStopFromISR(tm, &taskToWake))
+        {
+            portYIELD_FROM_ISR(((bool)(taskToWake)));
+            status = KOSA_StatusSuccess;
+        }
+        else
+        {
+            status = KOSA_StatusError;
+        }
+    }
+    else
+    {
+        if (((BaseType_t)1) == (BaseType_t)xTimerStop(tm, 0))
+        {
+            status = KOSA_StatusSuccess; /* sync object given */
+        }
+        else
+        {
+            status = KOSA_StatusError;
+        }
+    }
+
+    return status;
+}
+
+/*FUNCTION**********************************************************************
+ *
+ * Function Name : OSA_TimerDestroyEx
+ * Description   : This function deletes a timer.
+ * Return        : KOSA_StatusSuccess if successfully, or KOSA_StatusError if failed.
+ *
+ *END**************************************************************************/
+osa_status_t OSA_TimerDestroyEx(osa_timer_handle_t timerHandle)
+{
+    assert(NULL != timerHandle);
+    TimerHandle_t tm = (TimerHandle_t)(void *)(uint32_t *)(*(uint32_t *)timerHandle);
+    int ret;
+
+    /* Below timer handle invalidation needs to be protected as a context
+     * switch may create issues if same handle is used before
+     * invalidation.
+     */
+    OSA_SR_ALLOC();
+
+    OSA_ENTER_CRITICAL();
+    /* Note: Block time is set as 0, thus signifying non-blocking
+       API. Can be changed later if required. */
+    ret = xTimerDelete(tm, 0);
+
+    OSA_EXIT_CRITICAL();
+
+    return ret == pdPASS ? KOSA_StatusSuccess : KOSA_StatusError;
+}
 
 #if CONFIG_NCP_TP_DEBUG
 #define NCP_DEBUG_TIME_COUNT 512
