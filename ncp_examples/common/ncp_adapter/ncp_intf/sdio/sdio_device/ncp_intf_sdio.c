@@ -103,6 +103,8 @@ static uint32_t ncp_intf_sdio_entered = 0;
 /*******************************************************************************
  * API
  ******************************************************************************/
+static int ncp_notify_host_gpio(int32_t pm_state);
+static void ncp_wait_host_status(uint8_t status);
 
 #if 0
 static void ncp_sdio_intf_task(void *argv)
@@ -135,10 +137,27 @@ static int ncp_sdio_init(void *argv)
 
     ARG_UNUSED(argv);
 
-    ret = SDU_Init();
+    ret = SDU_InitPhase1();
     if (ret != kStatus_Success)
     {
-        ncp_adap_e("Failed to initialize SDIO");
+        ncp_adap_e("Failed to init SDIO Phase 1");
+        return (int)NCP_STATUS_ERROR;
+    }
+
+    SDU_WritePowerMode(NCP_PM_STATE_PM3);
+
+#ifdef CONFIG_HOST_SLEEP
+    ncp_notify_host_gpio(NCP_PM_STATE_PM3);
+#endif
+    ncp_adap_d("%s: notify gpio done\r\n", __FUNCTION__);
+
+    ncp_wait_host_status(SDIO_HOST_RESET_DONE);
+    ncp_adap_d("%s: wait RESET_DONE done\r\n", __FUNCTION__);
+
+    ret = SDU_InitPhase2();
+    if (ret != kStatus_Success)
+    {
+        ncp_adap_e("Failed to init SDIO Phase 2");
         return (int)NCP_STATUS_ERROR;
     }
 
@@ -238,6 +257,18 @@ static int ncp_sdio_send(uint8_t *tlv_buf, size_t tlv_sz, tlv_send_callback_t cb
     ncp_adap_d("%s: SDU_Send %u done (%p %ld)", __FUNCTION__, msg_type, tlv_buf, tlv_sz);
 
     return (int)NCP_STATUS_SUCCESS;
+}
+
+static void ncp_sdio_reset(void)
+{
+    while (SDU_CheckUpldOvrDone() != 0)
+    {
+        OSA_TimeDelay(1);
+    }
+    SDU_EnterPowerDown();
+
+    /* Disable SDIO CMD LINE PIN */
+    SOCCTRL->MCI_IOMUX_EN0 &= ~(1<<17);
 }
 
 uint32_t g_check_host_loop_delay_time = 0;
@@ -352,7 +383,7 @@ void ncp_notify_host_gpio_output(void)
  *  @return if success or fail
  */
 uint32_t g_gpio_delay_output_1_pm2 = 0;
-uint32_t g_gpio_delay_output_1_pm3 = 100000;
+uint32_t g_gpio_delay_output_1_pm3 = 0;
 uint32_t g_gpio_delay_output_2 = 0;
 static int ncp_notify_host_gpio(int32_t pm_state)
 {
@@ -468,6 +499,7 @@ static ncp_intf_ops_t ncp_intf_ops =
     .deinit = ncp_sdio_deinit,
     .send   = ncp_sdio_send,
     .recv   = NULL,
+    .reset  = ncp_sdio_reset,
     .pm_ops = &ncp_sdio_pm_ops,
     .set_host_type = NULL,
 };

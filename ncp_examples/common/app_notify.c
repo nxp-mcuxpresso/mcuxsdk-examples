@@ -261,6 +261,9 @@ static void app_notify_event_handler(void *argv)
                 if (!event_buf)
                     ret = -WM_FAIL;
                 break;
+            case APP_EVT_INIT_DONE:
+                ret = ncp_sys_dev_reset_send_rsp();
+                break;
             default:
                 app_d("no matching case");
                 ret = -WM_FAIL;
@@ -282,6 +285,7 @@ static void app_notify_event_handler(void *argv)
             OSA_MemoryFree(event_buf);
             event_buf = NULL;
         }
+        ret = WM_SUCCESS;
     }
 }
 

@@ -38,6 +38,11 @@
 #define NCP_CMD_SYSTEM_HOST_TYPE     (NCP_CMD_SYSTEM | NCP_CMD_SYSTEM_CONFIG | NCP_MSG_TYPE_CMD | 0x00000004)
 /** system configuration host type communication command response ID */
 #define NCP_RSP_SYSTEM_HOST_TYPE     (NCP_CMD_SYSTEM | NCP_CMD_SYSTEM_CONFIG | NCP_MSG_TYPE_RESP | 0x00000004)
+/** system configuration device reset command ID */
+#define NCP_CMD_SYSTEM_CONFIG_DEVICE_RESET (NCP_CMD_SYSTEM | NCP_CMD_SYSTEM_CONFIG | NCP_MSG_TYPE_CMD | 0x00000005) /* ncp-dev-reset */
+/** system configuration device reset command response ID */
+#define NCP_RSP_SYSTEM_CONFIG_DEVICE_RESET (NCP_CMD_SYSTEM | NCP_CMD_SYSTEM_CONFIG | NCP_MSG_TYPE_RESP | 0x00000005)
+
 /** Wi-Fi system power manager wakeup configuration command ID */
 #define NCP_CMD_SYSTEM_POWERMGMT_WAKE_CFG (NCP_CMD_SYSTEM | NCP_CMD_SYSTEM_POWERMGMT | NCP_MSG_TYPE_CMD | 0x00000001) /* ncp-wake-cfg */
 /** Wi-Fi system power manager wakeup configuration command response ID */

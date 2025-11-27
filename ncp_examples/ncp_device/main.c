@@ -23,6 +23,7 @@
 #include "fsl_power.h"
 
 #include "ncp_adapter.h"
+#include "app_notify.h"
 #include "osa.h"
 #if defined(MBEDTLS_USER_CONFIG_FILE)
 #include MBEDTLS_USER_CONFIG_FILE
@@ -116,11 +117,14 @@ void task_main(void *param)
     result = ncp_cmd_list_init();
     assert(NCP_SUCCESS == result);
 
+    app_notify_event(APP_EVT_INIT_DONE, APP_EVT_REASON_SUCCESS, NULL, 0);
+
     printSeparator();
 
     /* Initialization completed, destroy task */
     OSA_TaskDestroy((osa_task_handle_t)main_task_handle);
 }
+
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/

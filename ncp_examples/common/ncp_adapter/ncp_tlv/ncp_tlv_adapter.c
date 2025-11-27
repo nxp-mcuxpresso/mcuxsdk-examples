@@ -57,6 +57,9 @@ OSA_MSGQ_HANDLE_DEFINE(ncp_tlv_ctrl_msgq_handle, NCP_TLV_CTRL_QUEUE_LENGTH,  siz
 OSA_TASK_HANDLE_DEFINE(ncp_tlv_thread);
 OSA_TASK_DEFINE(ncp_tlv_process, PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 3)), 1, NCP_TLV_TX_TASK_STACK_SIZE, 0);
 
+#define NCP_RESET_CONTEXT_AON_ADDR (0x4015C100)
+static ncp_reset_callback_t ncp_dev_reset_cb = NULL;
+
 static bool ncp_initialized = false;
 static const ncp_pm_tx_if_t s_ncp_pm_tx_if = {
     .send_msg = ncp_tlv_ctrl_send,
@@ -247,6 +250,14 @@ const ncp_tlv_adapter_t *ncp_tlv_adapter_get(void)
     return &ncp_tlv_adapter;
 }
 
+ncp_reset_context_t *ncp_get_reset_context(void)
+{
+    const ncp_tlv_adapter_t *tlv_adap = ncp_tlv_adapter_get();
+
+    return (tlv_adap ? tlv_adap->reset_context_aon : NULL);
+}
+
+
 /**
  * @brief Set TX event for TLV adapter
  *
@@ -363,6 +374,12 @@ static void ncp_tlv_tx_data_dequeue(void)
                     __FUNCTION__, msg, msg->tlv_buf, msg->tlv_sz);
 
         ncp_tlv_adapter.intf_ops->send(msg->tlv_buf, msg->tlv_sz, NULL);
+
+        if (ncp_dev_reset_cb)
+        {
+            ncp_dev_reset_cb(msg->tlv_buf);
+        }
+
         /* free element */
         ncp_tlv_free_data_elmt(&msg);
     } while (1);
@@ -524,6 +541,11 @@ static void ncp_tlv_tx_deinit(void)
     NCP_LOG_DBG("ncp adapter tx deinit: completed");
 }
 
+void ncp_adapter_set_cb(ncp_reset_callback_t dev_reset_cb)
+{
+    ncp_dev_reset_cb = dev_reset_cb;
+}
+
 ncp_status_t ncp_adapter_init(int role)
 {
     ncp_status_t status = NCP_STATUS_SUCCESS;
@@ -532,6 +554,8 @@ ncp_status_t ncp_adapter_init(int role)
     {
         return status;
     }
+
+    ncp_tlv_adapter.reset_context_aon = (ncp_reset_context_t *)(NCP_RESET_CONTEXT_AON_ADDR);
 
     /* Init CRC32 */
     ncp_tlv_chksum_init();

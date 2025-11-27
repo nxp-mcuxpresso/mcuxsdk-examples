@@ -146,6 +146,66 @@ static int ncp_sys_get_config(void *tlv)
     return ret;
 }
 
+
+static int ncp_sys_dev_reset(void *tlv)
+{
+    const ncp_tlv_adapter_t *tlv_adap = ncp_tlv_adapter_get();
+    ncp_reset_context_t *context = ncp_get_reset_context();
+    extern uint16_t g_cmd_seqno;
+
+    if (context == NULL)
+    {
+        ncp_e("%s: Fail to get context", __FUNCTION__);
+        ncp_sys_prepare_status(NCP_RSP_SYSTEM_CONFIG_DEVICE_RESET, NCP_CMD_RESULT_ERROR);
+        return -NCP_FAIL;
+    }
+
+    context->reset_flag = NCP_RESET_FLAG_MAGIC;
+    context->host_type = ncp_sys_get_host_type();
+    context->cmd_seq = g_cmd_seqno;
+
+    if (tlv_adap->intf_ops->reset)
+    {
+        tlv_adap->intf_ops->reset();
+    }
+
+    OSA_DisableIRQGlobal();
+    NVIC_SystemReset();
+
+    return WM_SUCCESS;
+}
+
+int ncp_sys_dev_reset_send_rsp(void)
+{
+    NCPCmd_DS_SYS_COMMAND *cmd_res = ncp_sys_get_resp_buf();
+    ncp_reset_context_t *context = ncp_get_reset_context();
+    int ret = WM_SUCCESS;
+
+    if ((context == NULL) || (context->reset_flag != NCP_RESET_FLAG_MAGIC))
+    {
+        return -NCP_FAIL;
+    }
+
+    cmd_res->header.cmd        = NCP_RSP_SYSTEM_CONFIG_DEVICE_RESET;
+    cmd_res->header.size       = NCP_CMD_HEADER_LEN;
+    cmd_res->header.seqnum     = context->cmd_seq;
+    cmd_res->header.result     = NCP_CMD_RESULT_OK;
+
+    /* Clear context except for host_type */
+    context->reset_flag = 0;
+    context->cmd_seq = 0;
+
+    ret = ncp_tlv_send(cmd_res, cmd_res->header.size);
+    if (ret != WM_SUCCESS)
+    {
+        ncp_e("%s: failed to write response", __FUNCTION__);
+        return -NCP_FAIL;
+    }
+
+    /* We have send rsp, return fail to avoid app notify send again */
+    return -NCP_FAIL;
+}
+
 static int ncp_sys_mcu_sleep(void *tlv)
 {
     NCP_CMD_POWERMGMT_MCU_SLEEP *mcu_sleep_config = (NCP_CMD_POWERMGMT_MCU_SLEEP *)tlv;
@@ -230,6 +290,7 @@ int ncp_sys_host_type(void *tlv)
 struct cmd_t system_cmd_config[] = {
     {NCP_CMD_SYSTEM_CONFIG_SET, "ncp-set", ncp_sys_set_config, CMD_SYNC},
     {NCP_CMD_SYSTEM_CONFIG_GET, "ncp-get", ncp_sys_get_config, CMD_SYNC},
+    {NCP_CMD_SYSTEM_CONFIG_DEVICE_RESET, "ncp-dev-reset", ncp_sys_dev_reset, CMD_ASYNC},
 #if CONFIG_NCP_USE_ENCRYPT
     {NCP_CMD_SYSTEM_CONFIG_ENCRYPT, "ncp-encrypt", ncp_sys_encrypt, CMD_SYNC},
 #endif

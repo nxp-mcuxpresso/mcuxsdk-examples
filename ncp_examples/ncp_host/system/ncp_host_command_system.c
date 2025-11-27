@@ -22,6 +22,8 @@ extern AT_NONCACHEABLE_SECTION_INIT(uint8_t mcu_tlv_command_buff[NCP_HOST_COMMAN
 extern uint8_t mcu_tlv_command_buff[NCP_HOST_COMMAND_LEN];
 #endif
 
+static OSA_SEMAPHORE_HANDLE_DEFINE(ncp_dev_reset_semaphore);
+
 extern int mcu_get_command_resp_sem();
 extern int mcu_put_command_resp_sem();
 extern int ncp_host_cli_register_commands(const struct ncp_host_cli_command *commands, int num_commands);
@@ -174,6 +176,53 @@ int ncp_get_command(int argc, char **argv)
     strcpy(sys_cfg->value, "");
 
     sys_cfg_command->header.size += sizeof(NCP_CMD_SYSTEM_CFG);
+
+    return NCP_SUCCESS;
+}
+
+void ncp_dev_reset_block(uint8_t *res)
+{
+    MCU_NCPCmd_DS_SYS_COMMAND *ncp_dev_reset_command = (MCU_NCPCmd_DS_SYS_COMMAND *)res;
+
+    if (ncp_dev_reset_command->header.cmd == NCP_CMD_SYSTEM_CONFIG_DEVICE_RESET)
+    {
+        OSA_SemaphoreWait(ncp_dev_reset_semaphore, osaWaitForever_c);
+    }
+}
+
+int ncp_dev_reset_command(int argc, char **argv)
+{
+    MCU_NCPCmd_DS_SYS_COMMAND *ncp_dev_reset_command = ncp_host_get_cmd_buffer_sys();
+
+    ncp_dev_reset_command->header.cmd      = NCP_CMD_SYSTEM_CONFIG_DEVICE_RESET;
+    ncp_dev_reset_command->header.size     = NCP_CMD_HEADER_LEN;
+    ncp_dev_reset_command->header.result   = NCP_CMD_RESULT_OK;
+
+    ncp_adapter_set_cb(ncp_dev_reset_block);
+
+    return NCP_SUCCESS;
+}
+
+/**
+ * @brief      This function processes device reset response from ncp device
+ *
+ * @param res  A pointer to uint8_t
+ * @return     Status returned
+ */
+int ncp_process_dev_reset_response(uint8_t *res)
+{
+    MCU_NCPCmd_DS_SYS_COMMAND *cmd_res = (MCU_NCPCmd_DS_SYS_COMMAND *)res;
+
+    OSA_SemaphorePost(ncp_dev_reset_semaphore);
+    ncp_adapter_set_cb(NULL);
+
+    if (cmd_res->header.result != NCP_CMD_RESULT_OK)
+    {
+        (void)PRINTF("Failed to reset ncp device\r\n");
+        return -NCP_FAIL;
+    }
+
+    (void)PRINTF("ncp-dev-reset succeeded!\r\n");
 
     return NCP_SUCCESS;
 }
@@ -489,6 +538,9 @@ int system_process_response(uint8_t *res)
         case NCP_RSP_SYSTEM_CONFIG_GET:
             ret = ncp_process_get_cfg_response(res);
             break;
+        case NCP_RSP_SYSTEM_CONFIG_DEVICE_RESET:
+            ret = ncp_process_dev_reset_response(res);
+            break;
         case NCP_CMD_SYSTEM_TEST_LOOPBACK:
             ret = ncp_process_test_loopback_response(res);
             break;
@@ -524,6 +576,7 @@ static struct ncp_host_cli_command ncp_host_app_cli_commands_system[] = {
 #else
     {"test-loopback", NULL, ncp_test_loopback_command},
 #endif
+    {"ncp-dev-reset", NULL, ncp_dev_reset_command},
     {"ncp-mcu-sleep", NULL, ncp_mcu_sleep_command},
     {"ncp-wakeup-host", NULL, ncp_wakeup_host_command},
     {"ncp-get-mcu-sleep-config", NULL, ncp_get_mcu_sleep_conf_command},
@@ -540,6 +593,11 @@ static struct ncp_host_cli_command ncp_host_app_cli_commands_system[] = {
  */
 int ncp_host_system_command_init()
 {
+	osa_status_t ret = KOSA_StatusSuccess;
+
+	ret = OSA_SemaphoreCreateBinary(ncp_dev_reset_semaphore);
+	assert(KOSA_StatusSuccess == ret);
+
     if (ncp_host_cli_register_commands(ncp_host_app_cli_commands_system,
                                        sizeof(ncp_host_app_cli_commands_system) / sizeof(struct ncp_host_cli_command)) != 0)
         return -NCP_FAIL;

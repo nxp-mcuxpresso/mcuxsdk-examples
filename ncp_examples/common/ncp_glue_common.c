@@ -134,6 +134,11 @@ struct cmd_t *lookup_class(uint32_t cmd_class, uint32_t cmd_subclass, uint32_t c
         return NULL;
     }
 
+    while (ncp_cmd_initialized != true)
+    {
+        OSA_TimeDelay(1);
+    }
+
     for (i = 0; i < (sizeof(cmd_class_list) / sizeof(struct cmd_class_t)); i++)
     {
         pclass = &cmd_class_list[i];

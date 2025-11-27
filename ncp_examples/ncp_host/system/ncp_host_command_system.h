@@ -66,6 +66,29 @@ int ncp_get_command(int argc, char **argv);
 int ncp_process_get_cfg_response(uint8_t *res);
 
 /**
+ * This API is used to do ncp device reset processing.
+ *
+ * \param[in] argc    Argument count, the number of strings pointed to by argv, \n
+ *                    argc should be 1.
+ * \param[in] argv    Argument vector, \n
+ *                    argv[0]: ncp-dev-reset
+ *
+ * \return WM_SUCCESS if success.
+ */
+int ncp_dev_reset_command(int argc, char **argv);
+
+/**
+ * This API is used to process the response for the ncp device reset command.
+ *
+ * \param[in] res    A pointer to \ref MCU_NCPCmd_DS_COMMAND response. \n
+ *                   Response body refer to \ref NCP_CMD_SYSTEM_CONFIG_DEVICE_RESET.
+ *
+ * \return WM_SUCCESS if success.
+ * \return -WM_FAIL if failure.
+ */
+int ncp_process_dev_reset_response(uint8_t *res);
+
+/**
  * This API is used to enable/disable low power of NCP device and
  * configure method to enter low power mode.
  *

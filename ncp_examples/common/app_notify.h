@@ -53,6 +53,8 @@ typedef enum
     APP_EVT_INET_SOCKET_SEND_FAIL,
     /** Event for IPV6 DAD complete*/
     APP_EVT_INET_DAD_DONE,
+    /** Event for MAIN INIT DONE */
+    APP_EVT_INIT_DONE,
 } app_notify_event_t;
 
 typedef enum

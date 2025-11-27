@@ -165,6 +165,10 @@ static int ncp_usb_device_deinit(void* argv)
     return usb_device_deinit();
 }
 
+static void ncp_usb_device_reset(void)
+{
+}
+
 static int ncp_usb_device_pm_init(void)
 {
     s_pm_ops = ncp_pm_get_ops();
@@ -244,6 +248,7 @@ static ncp_intf_ops_t ncp_intf_ops =
     .deinit = ncp_usb_device_deinit,
     .send   = ncp_usb_device_send,
     .recv   = NULL,
+    .reset  = ncp_usb_device_reset,
     .pm_ops = &ncp_usb_device_pm_ops,
     .set_host_type = NULL,
 };

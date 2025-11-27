@@ -175,9 +175,31 @@ typedef struct _ncp_intf_ops
     int (*deinit)(void *);
     int (*send)(uint8_t *buf, size_t len, tlv_send_callback_t cb);
     int (*recv)(uint8_t *buf, size_t *len);
+    void (*reset)(void);
     ncp_intf_pm_ops_t *pm_ops;
     void (*set_host_type)(int type);
 } ncp_intf_ops_t;
+
+/**
+ * @brief NCP device reset callback fn type
+ */
+typedef void (*ncp_reset_callback_t)(uint8_t *res);
+
+/**
+ * @brief Set NCP device reset callback fn handler
+ * @param dev_reset_cb Pointer to ncp_reset_callback_t
+ */
+void ncp_adapter_set_cb(ncp_reset_callback_t dev_reset_cb);
+
+/**
+ * @brief NCP device reset context save on AON memory
+ */
+typedef struct _ncp_reset_context
+{
+    volatile uint8_t reset_flag;
+    volatile uint8_t host_type;
+    volatile uint16_t cmd_seq;
+} ncp_reset_context_t;
 
 /**
  * @brief NCP TLV adapter main structure
@@ -189,6 +211,7 @@ typedef struct _ncp_tlv_adapter
     const ncp_intf_ops_t *intf_ops;           /**< Interface operations */
     const ncp_pm_ops_t *pm_ops;               /**< Power management operations */
     tlv_callback_t tlv_handler[NCP_MAX_CLASS]; /**< TLV class handlers */
+    ncp_reset_context_t *reset_context_aon; /**Reset context addr on AON mem */
 #if CONFIG_NCP_USE_ENCRYPT
     crypt_param_t *crypt;               /**< Encryption parameters */
 #endif
@@ -250,5 +273,7 @@ void ncp_tlv_tx_set_event(uint32_t event);
  * @return Pointer to ncp_tlv_adapter_t structure
  */
 const ncp_tlv_adapter_t *ncp_tlv_adapter_get(void);
+
+ncp_reset_context_t *ncp_get_reset_context(void);
 
 #endif /* __NCP_TLV_ADAPTER_H__ */
