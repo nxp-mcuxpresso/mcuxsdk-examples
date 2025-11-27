@@ -85,6 +85,14 @@ $ west build -b evkcmimxrt1060 examples/coex_examples/coex_wifi_central_ht --too
 > 1. ```-d coex_wifi_central_ht``` -> Specify the generated project path. Can name it as needed.
 > 2. Find coex_wifi_central_ht.elf/coex_wifi_central_ht.bin in coex_wifi_central_ht folder.
 > 3. Only support armgcc to build coex application.
+> 4. CSI and NET_MONITOR are disabled by default due to RAM limitation. If to test CSI and NET_MONITOR, enable them and disable enterprise in wifi_config.h.
+     Modify middleware/wireless/coex/src/configs/<board>/wifi/wifi_config.h:
+     Enable CSI and NET_MONITOR:
+     #define CONFIG_CSI 1
+     #define CONFIG_NET_MONITOR 1
+     Disable enterprise:
+     #define CONFIG_WPA_SUPP_CRYPTO_ENTERPRISE 0
+     #define CONFIG_WPA_SUPP_CRYPTO_AP_ENTERPRISE 0
 
 ### 4. Flash Binaries
 
