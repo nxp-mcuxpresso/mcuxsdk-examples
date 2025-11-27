@@ -38,6 +38,7 @@
 #include "fsl_usart.h"
 #include "fsl_i2c.h"
 #ifdef ENABLE_LOW_POWER
+#include "SecLib.h"
 #include "fsl_pm_core.h"
 #endif
 #include "pin_mux.h"
@@ -345,6 +346,8 @@ static status_t PrepareForLowPower(pm_event_type_t eventType, pm_mode_t mode, vo
     {
         if (mode == kPM_Mode_PowerDownWithCpuRetention)
         {
+            SecLib_ReInit();
+
             status_t status = DbgConsole_ExitLowpower();
             (void)status;
             assert_equal(status, kStatus_Success);
