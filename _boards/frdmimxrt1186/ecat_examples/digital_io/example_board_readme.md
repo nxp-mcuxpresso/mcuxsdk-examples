@@ -13,10 +13,11 @@ Board settings
 Prepare the Demo
 ================
 1. Generate the SSC source code
-	- Download Slave Stack Code Tool(SSC Tool) from BECKHOFF official website and install it
+	- Download Slave Stack Code Tool(SSC Tool V5.13) from BECKHOFF official website and install it
 	- Open Slave Stack Code Tool
 	- Click 'File' -> 'New' -> 'Import' to import the Congfig file
 		Select digital_io.xml under path '.\boards\frdmimxrt1186\ecat_examples\digital_io\<core>\SSC'.
+	- Click 'Custom' -> 'NXP ECAT...' -> 'OK' to select the subdevice description file
 	- Click 'Tool' -> 'Application' -> 'Import' to import Application information
 		Select digital_io.xlsx under path '.\boards\frdmimxrt1186\ecat_examples\digital_io\<core>\SSC'.
 	- Click 'Project' -> 'Create new Slave Files'

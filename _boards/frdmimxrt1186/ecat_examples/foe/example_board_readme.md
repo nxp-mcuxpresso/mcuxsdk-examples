@@ -28,10 +28,11 @@ J18(2-3)/J17(2-3): eCAT1 Function Via J57B(Default).
 Prepare the Demo
 ================
 1. Generate the SSC source code
-	- Download Slave Stack Code Tool(SSC Tool) from BECKHOFF official website and install it
+	- Download Slave Stack Code Tool(SSC Tool V5.13) from BECKHOFF official website and install it
 	- Open Slave Stack Code Tool
 	- Click 'File' -> 'New' -> 'Import' to import the Congfig file
 		Select foe.xml under path '.\boards\frdmimxrt1186\ecat_examples\foe\<core>\SSC'.
+	- Click 'Custom' -> 'NXP ECAT...' -> 'OK' to select the subdevice description file
 	- Click 'Tool' -> 'Application' -> 'Import' to import Application information
 		Select foe.xlsx under path '.\boards\frdmimxrt1186\ecat_examples\foe\<core>\SSC'.
 	- Click 'Project' -> 'Create new Slave Files'
