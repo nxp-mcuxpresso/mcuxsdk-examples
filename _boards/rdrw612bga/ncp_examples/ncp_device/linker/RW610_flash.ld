@@ -126,7 +126,10 @@ SECTIONS
         *littlefs_adapter.c.obj
       ) .text*)              /* .text* sections (code) */
     *(.rodata)               /* .rodata sections (constants, strings, etc.) */
-    *(.rodata*)              /* .rodata* sections (constants, strings, etc.) */
+    *(EXCLUDE_FILE(
+        *mflash_drv.c.obj
+        *fsl_flexspi.c.obj
+    ) .rodata*)              /* .rodata* sections (constants, strings, etc.) */
     *(.glue_7)               /* glue arm to thumb code */
     *(.glue_7t)              /* glue thumb to arm code */
     *(.eh_frame)
@@ -317,8 +320,8 @@ SECTIONS
     *fsl_adapter_rfimu.c.obj(.text*)
     *fsl_cache.c.obj(.text*)
     *fsl_os_abstraction_free_rtos.c.obj(.text*)
-    *fsl_flexspi.c.obj(.text*)
-    *mflash_drv.c.obj(.text*)
+    *fsl_flexspi.c.obj(.text .text* .rodata .rodata*)
+    *mflash_drv.c.obj(.text .text* .rodata .rodata*)
     *lfs.c.obj(.text*)
     *littlefs_adapter.c.obj(.text*)
     KEEP(*(.jcr*))
