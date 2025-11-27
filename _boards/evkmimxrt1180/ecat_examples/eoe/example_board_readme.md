@@ -12,10 +12,11 @@ No special settings are required.
 Prepare the Demo
 ================
 1. Generate the SSC source code
-	- Download Slave Stack Code Tool(SSC Tool) from BECKHOFF official website and install it
+	- Download Slave Stack Code Tool(SSC Tool V5.13) from BECKHOFF official website and install it
 	- Open Slave Stack Code Tool
 	- Click 'File' -> 'New' -> 'Import' to import the Congfig file
 		Select eoe.xml under path '.\boards\evkmimxrt1180\ecat_examples\eoe\<core>\SSC'.
+	- Click 'Custom' -> 'NXP ECAT...' -> 'OK' to select the subdevice description file
 	- Click 'Tool' -> 'Application' -> 'Import' to import Application information
 		Select eoe_freertos.xlsx under path '.\boards\evkmimxrt1180\ecat_examples\eoe\<core>\SSC'.
 	- Click 'Project' -> 'Create new Slave Files'
