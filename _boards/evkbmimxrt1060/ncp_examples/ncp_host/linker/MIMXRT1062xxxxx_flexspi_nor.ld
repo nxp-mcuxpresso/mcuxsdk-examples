@@ -88,30 +88,24 @@ SECTIONS
     ) .text)                 /* .text sections (code) */
     *(EXCLUDE_FILE(
         *queue.c.obj
-        *tcp_out.c.obj
-        *mlan_sdio.c.obj
-        *mlan_11n.c.obj
-        *mlan_11n_aggr.c.obj
-        *mlan_11n_rxreorder.c.obj
-        *tcp_in.c.obj
-        *inet_chksum.c.obj
         *timers.c.obj
-        *fsl_usdhc.c.obj
         *port.c.obj
-        *wifi-sdio.c.obj
-        *fsl_sdio.c.obj
-        *pbuf.c.obj
-        *tcp.c.obj
-        *udp.c.obj
-        *tcpip.c.obj
-        *sockets.c.obj
         *tasks.c.obj
         *lib_a-memset.o
         *fsl_cache.c.obj
-        *wifi.c.obj
-        *wifi_netif.c.obj
         *fsl_os_abstraction_free_rtos.c.obj
         *fsl_memcpy.S.obj
+        *stream_buffer.c.obj
+        *ncp_inet.c.obj
+        *ncp_tlv_adapter.c.obj
+        *ncp_utils.c.obj
+        *ncp_crc_dcp.c.obj
+        *ncp_crc_sw.c.obj
+        *ncp_pm.c.obj
+        *ncp_pm_action.c.obj
+        *fsl_usdhc.c.obj
+        *fsl_sdio.c.obj
+        *ncp_intf_sdio_host.c.obj
       ) .text*)              /* .text* sections (code) */
     *(.rodata)               /* .rodata sections (constants, strings, etc.) */
     *(.rodata*)              /* .rodata* sections (constants, strings, etc.) */
@@ -233,30 +227,24 @@ SECTIONS
     __ram_function_start__ = .;
     *(CodeQuickAccess)
     *queue.c.obj(.text*)
-    *tcp_out.c.obj(.text*)
-    *mlan_sdio.c.obj(.text*)
-    *mlan_11n.c.obj(.text*)
-    *mlan_11n_aggr.c.obj(.text*)
-    *mlan_11n_rxreorder.c.obj(.text*)
-    *tcp_in.c.obj(.text*)
-    *inet_chksum.c.obj(.text*)
     *timers.c.obj(.text*)
-    *fsl_usdhc.c.obj(.text*)
     *port.c.obj(.text*)
-    *wifi-sdio.c.obj(.text*)
-    *fsl_sdio.c.obj(.text*)
-    *pbuf.c.obj(.text*)
-    *tcp.c.obj(.text*)
-    *udp.c.obj(.text*)
-    *tcpip.c.obj(.text*)
-    *sockets.c.obj(.text*)
     *tasks.c.obj(.text*)  
     *lib_a-memset.o(.text*)
     *fsl_cache.c.obj(.text*)
-    *wifi.c.obj(.text*)
-    *wifi_netif.c.obj(.text*)
     *fsl_os_abstraction_free_rtos.c.obj(.text*)
     *fsl_memcpy.S.obj(.text)
+    *stream_buffer.c.obj(.text)
+    *ncp_inet.c.obj(.text)
+    *ncp_tlv_adapter.c.obj(.text)
+    *ncp_utils.c.obj(.text)
+    *ncp_crc_dcp.c.obj(.text)
+    *ncp_crc_sw.c.obj(.text)
+    *ncp_pm.c.obj(.text)
+    *ncp_pm_action.c.obj(.text)
+    *fsl_usdhc.c.obj(.text*)
+    *fsl_sdio.c.obj(.text*)
+    *ncp_intf_sdio_host.c.obj(.text)
     . = ALIGN(128);
     __ram_function_end__ = .;
   } > m_qacode

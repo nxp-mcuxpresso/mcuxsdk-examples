@@ -136,29 +136,24 @@ SECTIONS
 
         *(EXCLUDE_FILE(
             *queue.o
-            *tcp_out.o
-            *mlan_sdio.o
-            *mlan_11n.o
-            *mlan_11n_aggr.o
-            *mlan_11n_rxreorder.o
             *lib_a-memcpy-stub.o
-            *tcp_in.o
-            *inet_chksum.o
             *timers.o
-            *fsl_usdhc.o
             *port.o
-            *wifi-sdio.o
             *startup_mimxrt1062.o
-            *fsl_sdio.o
-            *pbuf.o
-            *tcp.o
-            *udp.o
-            *tcpip.o
             *lib_a-memset.o
             *fsl_cache.o
-            *wifi.o
-            *wifi_netif.o
             *fsl_memcpy.o
+            *stream_buffer.o
+            *ncp_inet.o
+            *ncp_tlv_adapter.o
+            *ncp_utils.o
+            *ncp_crc_dcp.o
+            *ncp_crc_sw.o
+            *ncp_pm.o
+            *ncp_pm_action.o
+            *fsl_usdhc.o
+            *fsl_sdio.o
+            *ncp_intf_sdio_host.o
         ) .text*)
        KEEP(*freertos*/tasks.o(.rodata*)) /* FreeRTOS Debug Config */
        *(.rodata .rodata.* .constdata .constdata.*)
@@ -219,29 +214,24 @@ SECTIONS
         *(.data.$SRAM_ITC.*)
 
         *queue.o(.text*)
-        *tcp_out.o(.text*)
-        *mlan_sdio.o(.text*)
-        *mlan_11n.o(.text*)
-        *mlan_11n_aggr.o(.text*)
-        *mlan_11n_rxreorder.o(.text*)
         *lib_a-memcpy-stub.o(.text*)
-        *tcp_in.o(.text*)
-        *inet_chksum.o(.text*)
         *timers.o(.text*)
-        *fsl_usdhc.o(.text*)
         *port.o(.text*)
-        *wifi-sdio.o(.text*)
         *startup_mimxrt1062.o(.text*)
-        *fsl_sdio.o(.text*)
-        *pbuf.o(.text*)
-        *tcp.o(.text*)
-        *udp.o(.text*)
-        *tcpip.o(.text*)
         *lib_a-memset.o(.text*)
         *fsl_cache.o(.text*)
-        *wifi.o(.text*)
-        *wifi_netif.o(.text*)
         *fsl_memcpy.o(.text*)
+        *stream_buffer.o(.text)
+        *ncp_inet.o(.text)
+        *ncp_tlv_adapter.o(.text)
+        *ncp_utils.o(.text)
+        *ncp_crc_dcp.o(.text)
+        *ncp_crc_sw.o(.text)
+        *ncp_pm.o(.text)
+        *ncp_pm_action.o(.text)
+        *fsl_usdhc.o(.text*)
+        *fsl_sdio.o(.text*)
+        *ncp_intf_sdio_host.o(.text)
         . = ALIGN(4) ;
         PROVIDE(__end_data_RAM3 = .) ;
         PROVIDE(__end_data_SRAM_ITC = .) ;
