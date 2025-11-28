@@ -190,18 +190,6 @@ int ncp_http_connect(char *host)
     int rc = WM_SUCCESS;
     http_session_t handle;
     int h_slot;
-#if CONFIG_ENABLE_HTTPC_SECURE
-    uint8_t *cert = 0;
-    int cert_len  = 0;
-    char cert_partition[6];
-    uint8_t https_conn_attempts = 0;
-
-tryagain:
-    cert     = (uint8_t *)NGINX_CA_CRT;
-    cert_len = NGINX_CA_CRT_LEN;
-    if (cert == NULL)
-        cert_len = 0;
-#endif
     /* host */
     if (host && *host == '\0')
     {
@@ -220,58 +208,14 @@ tryagain:
     memset(&httpc_cfg, 0x00, sizeof(httpc_cfg_t));
     httpc_cfg.flags     = HTTP_FLAGS;
     httpc_cfg.retry_cnt = HTTP_RETRY_CNT;
-#if CONFIG_ENABLE_HTTPC_SECURE
-    https_conn_attempts++;
-    wm_mbedtls_cert_t wm_cert;
-    memset(&wm_cert, 0, sizeof(wm_cert));
-    wm_cert.ca_chain = wm_mbedtls_parse_cert((unsigned char *)cert, cert_len);
-    httpc_cfg.ctx    = wm_mbedtls_ssl_config_new(&wm_cert, MBEDTLS_SSL_IS_CLIENT, MBEDTLS_SSL_VERIFY_REQUIRED);
-    if (!httpc_cfg.ctx)
-    {
-        httpc_e("status:tls context create failed");
-        return -E_FAIL;
-    }
-#endif /* CONFIG_ENABLE_HTTPC_SECURE */
     rc = http_open_session(&handle, host, &httpc_cfg);
     if (rc == -WM_E_HTTPC_TLS_NOT_ENABLED)
     {
         httpc_e("status:cannot create session, tls is not enabled.");
-#if CONFIG_ENABLE_HTTPC_SECURE
-        if (httpc_cfg.ctx)
-        {
-            wm_mbedtls_ssl_config_free(httpc_cfg.ctx);
-            wm_mbedtls_free_cert(wm_cert.ca_chain);
-        }
-#endif
         return -E_FAIL;
     }
     if (rc != WM_SUCCESS)
     {
-#if CONFIG_ENABLE_HTTPC_SECURE
-        if (httpc_cfg.ctx)
-        {
-            wm_mbedtls_ssl_config_free(httpc_cfg.ctx);
-            wm_mbedtls_free_cert(wm_cert.ca_chain);
-        }
-
-        if (https_conn_attempts < 2)
-        {
-            int size = sizeof(cert_partition);
-            if (strncmp(cert_partition, "cert0", size) == 0)
-            {
-                strcpy(cert_partition, "cert1");
-            }
-            else if (strncmp(cert_partition, "cert1", size) == 0)
-            {
-                strcpy(cert_partition, "cert0");
-            }
-            /*
-                        if (cert)
-                            OSA_MemoryFree(cert);
-            */
-            goto tryagain;
-        }
-#endif
         httpc_e(
             "status:cannot create session, "
             "http connect failed",
@@ -283,14 +227,6 @@ tryagain:
     if (rc != WM_SUCCESS)
     {
         http_close_session(&handle);
-#if CONFIG_ENABLE_HTTPC_SECURE
-        if (httpc_cfg.ctx)
-        {
-            wm_mbedtls_ssl_config_free(httpc_cfg.ctx);
-            wm_mbedtls_free_cert(wm_cert.ca_chain);
-        }
-
-#endif
         httpc_e(
             "status:internal error"
             " setting handle",
@@ -327,14 +263,7 @@ int ncp_http_disconnect(uint32_t handle)
         ws_ctx = NULL;
     }
 
-#if CONFIG_ENABLE_HTTPC_SECURE
-    mbedtls_ssl_config *ctx = http_get_tls_context_from_handle(hs);
-#endif
     http_close_session(&hs);
-#if CONFIG_ENABLE_HTTPC_SECURE
-    if (ctx)
-        wm_mbedtls_ssl_config_free(ctx);
-#endif
     remove_handle(h_slot);
 
     httpc_d("SUCCESS");

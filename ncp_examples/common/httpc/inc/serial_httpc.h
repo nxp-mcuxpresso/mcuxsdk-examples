@@ -86,34 +86,6 @@ int serial_httpc_cli_init(void);
 /* This is taken from tests/data_files/test-ca-sha1.crt. */
 /* BEGIN FILE string macro TEST_CA_CRT_RSA_SHA1_PEM tests/data_files/test-ca-sha1.crt */
 
-/* NOTE:
- * 1) CA valid from 2024/9/5 to 2034/9/5
- * 2) Common Name must be 192.168.50.189
- * */
-#define NGINX_CA_CRT                                                       \
-    "-----BEGIN CERTIFICATE-----\r\n"                                      \
-    "MIIDPzCCAicCFEPsbEntvNtFMnRJNm/KSItl8eHsMA0GCSqGSIb3DQEBCwUAMFwx\r\n" \
-    "CzAJBgNVBAYTAkNOMQswCQYDVQQIDAJTSDELMAkGA1UEBwwCU0gxDDAKBgNVBAoM\r\n" \
-    "A05YUDEMMAoGA1UECwwDV0NTMRcwFQYDVQQDDA4xOTIuMTY4LjUwLjE4OTAeFw0y\r\n" \
-    "NDA5MDUxMDIzMjRaFw0zNDA5MDUxMDIzMjRaMFwxCzAJBgNVBAYTAkNOMQswCQYD\r\n" \
-    "VQQIDAJTSDELMAkGA1UEBwwCU0gxDDAKBgNVBAoMA05YUDEMMAoGA1UECwwDV0NT\r\n" \
-    "MRcwFQYDVQQDDA4xOTIuMTY4LjUwLjE4OTCCASIwDQYJKoZIhvcNAQEBBQADggEP\r\n" \
-    "ADCCAQoCggEBAMfbbbQc/MU5+uUb06fIPp0M32rp3H17A6dfkDe9RZSulMbkqB5a\r\n" \
-    "0C3Z5CAuj0/c28e3WDg6MSMqG0l7fGrohR7PQkUHUQfBxGsycRiyNwxgwsE/t6Vg\r\n" \
-    "6sQrBou05fAL9lIkJyEptvxGhCB74GtkZLqLrLRyFdxssID/aY8D4PLq6Ekz56va\r\n" \
-    "qod+HbpYDF3jl3cQgcWJcA5odks3si+5UnpkpDvXlM6RbpEiqCz6eGIA31wt8GC6\r\n" \
-    "TYF97CvoCfNMhcS8Gm0SCWPb9vNPWHvC6PY6Hrfyo5Tg9XGJMMzCYwLDTehJUn6S\r\n" \
-    "yo11ocz38F+mLewTUEHXYcDX/Jdkev3Ufo0CAwEAATANBgkqhkiG9w0BAQsFAAOC\r\n" \
-    "AQEAUqJfNQg57neb1YmdkMYZTitkVB36GcXnn9LKDRTQFxutYgnSlmGoy80EGv4Z\r\n" \
-    "z8a2WnpfhetxpgZjI6WEd3+0c7djg4BoqvSM10AOfokq0mvRhqtDI0B1ykhhN7+0\r\n" \
-    "2SP4ngChYtmx1UPdJBk0sq170C+KeX5+EDxDKllZjprD9dGubQJM1+f1gPOiWT4z\r\n" \
-    "U+pKnJ4LkutijPGrvCc/HHndOVkTLM0qcHo/mWypq/8aeo6SaLYy+P+aTBHjDV5F\r\n" \
-    "c7MbfjKg+02+vxJwCyr+Edsr88DrYiJqpGtZ7cD4xze7bgE+NJ1K6aapGtmz3WOp\r\n" \
-    "PQHRpdzTw+rSR9tqSbGmyaBfUQ==\r\n"                                     \
-    "-----END CERTIFICATE-----\r\n"
-
-#define NGINX_CA_CRT_LEN sizeof(NGINX_CA_CRT)
-
 enum
 {
     DATA_DONE = 1,

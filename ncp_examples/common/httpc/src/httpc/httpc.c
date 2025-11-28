@@ -20,8 +20,30 @@
 #include <stdio.h>
 #include <wmstats.h>
 
+
 #if CONFIG_ENABLE_HTTPC_SECURE
-#include <wm_mbedtls_helper_api.h>
+#include <https_mbedtls.h>
+const char NGINX_CA_CRT[] =
+"-----BEGIN CERTIFICATE-----\n\
+MIIDPzCCAicCFEPsbEntvNtFMnRJNm/KSItl8eHsMA0GCSqGSIb3DQEBCwUAMFwx\n\
+CzAJBgNVBAYTAkNOMQswCQYDVQQIDAJTSDELMAkGA1UEBwwCU0gxDDAKBgNVBAoM\n\
+A05YUDEMMAoGA1UECwwDV0NTMRcwFQYDVQQDDA4xOTIuMTY4LjUwLjE4OTAeFw0y\n\
+NDA5MDUxMDIzMjRaFw0zNDA5MDUxMDIzMjRaMFwxCzAJBgNVBAYTAkNOMQswCQYD\n\
+VQQIDAJTSDELMAkGA1UEBwwCU0gxDDAKBgNVBAoMA05YUDEMMAoGA1UECwwDV0NT\n\
+MRcwFQYDVQQDDA4xOTIuMTY4LjUwLjE4OTCCASIwDQYJKoZIhvcNAQEBBQADggEP\n\
+ADCCAQoCggEBAMfbbbQc/MU5+uUb06fIPp0M32rp3H17A6dfkDe9RZSulMbkqB5a\n\
+0C3Z5CAuj0/c28e3WDg6MSMqG0l7fGrohR7PQkUHUQfBxGsycRiyNwxgwsE/t6Vg\n\
+6sQrBou05fAL9lIkJyEptvxGhCB74GtkZLqLrLRyFdxssID/aY8D4PLq6Ekz56va\n\
+qod+HbpYDF3jl3cQgcWJcA5odks3si+5UnpkpDvXlM6RbpEiqCz6eGIA31wt8GC6\n\
+TYF97CvoCfNMhcS8Gm0SCWPb9vNPWHvC6PY6Hrfyo5Tg9XGJMMzCYwLDTehJUn6S\n\
+yo11ocz38F+mLewTUEHXYcDX/Jdkev3Ufo0CAwEAATANBgkqhkiG9w0BAQsFAAOC\n\
+AQEAUqJfNQg57neb1YmdkMYZTitkVB36GcXnn9LKDRTQFxutYgnSlmGoy80EGv4Z\n\
+z8a2WnpfhetxpgZjI6WEd3+0c7djg4BoqvSM10AOfokq0mvRhqtDI0B1ykhhN7+0\n\
+2SP4ngChYtmx1UPdJBk0sq170C+KeX5+EDxDKllZjprD9dGubQJM1+f1gPOiWT4z\n\
+U+pKnJ4LkutijPGrvCc/HHndOVkTLM0qcHo/mWypq/8aeo6SaLYy+P+aTBHjDV5F\n\
+c7MbfjKg+02+vxJwCyr+Edsr88DrYiJqpGtZ7cD4xze7bgE+NJ1K6aapGtmz3WOp\n\
+PQHRpdzTw+rSR9tqSbGmyaBfUQ==\n\
+-----END CERTIFICATE-----\n";
 #endif /* ENABLE_HTTPC_SECURE */
 
 #include <httpc.h>
@@ -116,18 +138,9 @@ typedef struct
      * connection.
      */
     bool read_till_server_close;
-#if CONFIG_ENABLE_HTTPC_SECURE
-    /*
-     * Set if SSL context is created by HTTP client as user didn't
-     * give it. The significance of this is, if set, http client needs
-     * to free the context during session close.
-     */
-    bool own_ctx;
-    /* Filled after called to wm_mbedtls_ssl_new() */
-    mbedtls_ssl_context *ssl;
-#endif /* ENABLE_HTTPC_SECURE */
     /* Local copy of the structure passed by user */
     httpc_cfg_t httpc_cfg;
+    https_ssl *ssl;
 } session_t;
 
 static bool is_proxy_on = false;
@@ -136,16 +149,8 @@ static bool is_proxy_on = false;
 static void _httpc_free_ssl_context(session_t *s)
 {
     if (s->ssl)
-    {
-        wm_mbedtls_ssl_free(s->ssl);
-        s->ssl = NULL;
-    }
-
-    if (s->own_ctx)
-    {
-        wm_mbedtls_ssl_config_free(s->httpc_cfg.ctx);
-        s->httpc_cfg.ctx = NULL;
-    }
+        https_mbedtls_teardown(s->ssl);
+    s->ssl = NULL;
 }
 #endif /* ENABLE_HTTPC_SECURE */
 
@@ -166,9 +171,7 @@ static int _http_raw_recv(session_t *s, char *buf, unsigned int maxlen, int wait
     {
 #if CONFIG_ENABLE_HTTPC_SECURE
         if (s->ssl)
-        {
-            rv = wm_mbedtls_ssl_read(s->ssl, (unsigned char *)buf, maxlen);
-        }
+            rv = https_mbedtls_ssl_read(&s->ssl->ssl, (unsigned char *)buf, maxlen);
         else
 #endif
             rv = recv(s->sockfd, buf, maxlen, 0);
@@ -190,9 +193,7 @@ static int _http_raw_send(session_t *s, const char *buf, int len)
 {
 #if CONFIG_ENABLE_HTTPC_SECURE
     if (s->ssl)
-    {
-        return wm_mbedtls_ssl_write(s->ssl, (const unsigned char *)buf, len);
-    }
+        return https_mbedtls_ssl_write(&s->ssl->ssl, (const unsigned char *)buf, len);
     else
 #endif
         return send(s->sockfd, buf, len, 0);
@@ -736,67 +737,26 @@ int http_parse_URL(const char *URL, char *tmp_buf, int tmp_buf_len, parsed_url_t
 static int http_tls_init(session_t *s)
 {
     int ret = 0;
-    httpc_d("HTTPC TLS init session");
+    httpc_d("HTTPS TLS init session");
+    s->ssl = (https_ssl *)OSA_MemoryAllocate(sizeof(https_ssl));
+    s->ssl->cert_file      = (uint8_t *)NGINX_CA_CRT;
+    s->ssl->cert_file_len  = sizeof(NGINX_CA_CRT);
+    s->ssl->hostname       = s->hostname;
+    s->ssl->fd             = s->sockfd;
+    if (s->ssl->cert_file == NULL)
+        s->ssl->cert_file_len = 0;
 
-    /*
-     * A TLS connection will need to be established for this
-     * session. An SSL context is mandatory.
-     */
-    if (!s->httpc_cfg.ctx)
+    ret = https_mbedtls_setup(s->ssl);
+    if (ret < 0)
     {
-        /*
-         * User hasn't provided any context. Create a
-         * temporary one for this session. This will be
-         * destroyed during session close.
-         */
-        s->httpc_cfg.ctx = wm_mbedtls_ssl_config_new(NULL, MBEDTLS_SSL_IS_CLIENT, MBEDTLS_SSL_VERIFY_NONE);
-        if (!s->httpc_cfg.ctx)
-            return -WM_FAIL;
-        s->own_ctx = true;
+        OSA_MemoryFree(s->ssl);
+        s->ssl = NULL;
     }
-
-    if (wm_mbedtls_ssl_conf_buffsizes(s->httpc_cfg.ctx, s->httpc_cfg.in_buf_len, s->httpc_cfg.out_buf_len) != 0)
-    {
-        if (s->own_ctx)
-        {
-            wm_mbedtls_ssl_config_free(s->httpc_cfg.ctx);
-            s->httpc_cfg.ctx = NULL;
-        }
-        return -WM_FAIL;
-    }
-
-    s->ssl = wm_mbedtls_ssl_new(s->httpc_cfg.ctx, s->sockfd, s->hostname);
-    if (!s->ssl)
-    {
-        if (s->own_ctx)
-        {
-            wm_mbedtls_ssl_config_free(s->httpc_cfg.ctx);
-            s->httpc_cfg.ctx = NULL;
-        }
-        return -WM_E_NOMEM;
-    }
-
     /* Set server hostname in TLS session CLIENT HELLO request, this is
      * to enable SNI, so that server can send appropriate certificate
      * hosted over same IP/PORT address.
      */
-    httpc_d("Starting SSL connect");
-
-    if ((ret = wm_mbedtls_ssl_connect(s->ssl)) != 0)
-    {
-        httpc_e(
-            "Failed! wm_mbedtls_ssl_connect "
-            "returned: %02x\r\n",
-            -ret);
-        _httpc_free_ssl_context(s);
-        return -WM_FAIL;
-    }
-
-    httpc_d("Negotiated SSL protocol is %s and SSL cipher suite is %s\r\n", mbedtls_ssl_get_version(s->ssl),
-            mbedtls_ssl_get_ciphersuite(s->ssl));
-
-    httpc_d("SSL Connect success");
-    return WM_SUCCESS;
+    return ret;
 }
 #endif /* ENABLE_HTTPC_SECURE */
 
@@ -885,18 +845,6 @@ int http_open_session(http_session_t *handle, const char *hostname, const httpc_
             url.portno = DEFAULT_HTTPS_PORT;
     }
 
-#ifndef CONFIG_ENABLE_HTTPC_SECURE
-    if (s->httpc_cfg.flags & TLS_ENABLE)
-    {
-        httpc_e(
-            "ENABLE_TLS and/or CONFIG_ENABLE_HTTPC_SECURE are "
-            "not enabled in configuration.");
-        httpc_e("Cannot set up a TLS connection.");
-        delete_session_object(s);
-        return -WM_E_HTTPC_TLS_NOT_ENABLED;
-    }
-#endif
-
     httpc_d("Connect: %s Port: %d", url.hostname, url.portno);
 
     r = httpc_tcp_connect(&s->sockfd, (char *)url.hostname, url.portno, s->httpc_cfg.retry_cnt, s->httpc_cfg.socket_timeout);
@@ -920,6 +868,7 @@ int http_open_session(http_session_t *handle, const char *hostname, const httpc_
     }
 
 #if CONFIG_ENABLE_HTTPC_SECURE
+
     if (s->httpc_cfg.flags & TLS_ENABLE)
     {
         r = http_tls_init(s);
@@ -2251,16 +2200,12 @@ void http_close_session(http_session_t *handle)
 #if CONFIG_ENABLE_HTTPC_SECURE
     if (s->ssl)
     {
-        mbedtls_ssl_close_notify(s->ssl);
-        wm_mbedtls_ssl_free(s->ssl);
+        https_mbedtls_close_notify(s->ssl);
+        https_mbedtls_teardown(s->ssl);
+        OSA_MemoryFree(s->ssl);
         s->ssl = NULL;
     }
 
-    if (s->own_ctx == true)
-    {
-        wm_mbedtls_ssl_config_free(s->httpc_cfg.ctx);
-        s->httpc_cfg.ctx = NULL;
-    }
 #endif /* ENABLE_HTTPC_SECURE */
 
     if (is_proxy_on == true)
@@ -2348,17 +2293,3 @@ int http_get_sockfd_from_handle(http_session_t handle)
     session_t *s = (session_t *)handle;
     return s->sockfd;
 }
-
-#if CONFIG_ENABLE_HTTPC_SECURE
-mbedtls_ssl_config *http_get_tls_context_from_handle(http_session_t handle)
-{
-    if (!handle)
-        return NULL;
-
-    session_t *s = (session_t *)handle;
-    if (s->own_ctx)
-        return NULL; /* The context is managed automatically by HTTPC */
-    else
-        return s->httpc_cfg.ctx;
-}
-#endif /* ENABLE_HTTPC_SECURE */

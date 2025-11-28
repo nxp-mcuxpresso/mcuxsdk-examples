@@ -129,10 +129,12 @@ mcux_add_source(
             common/httpc/inc/serial_httpc.h
             common/httpc/inc/serial_network.h
             common/httpc/inc/serial_socket.h
+            common/httpc/inc/https_mbedtls.h
             common/httpc/inc/websockets.h
             common/httpc/inc/wmstats.h
             common/httpc/src/httpc/httpc.c
             common/httpc/src/httpc/httpc_tests.c
+            common/httpc/src/httpc/https_mbedtls.c
             common/httpc/src/json_parser/json_generator.c
             common/httpc/src/serial_httpc/serial_httpc.c
             common/httpc/src/serial_httpc/serial_network.c

@@ -168,24 +168,6 @@ typedef struct
      *  Set it to zero if timeout is not needed
      */
     unsigned int socket_timeout;
-
-#if CONFIG_ENABLE_HTTPC_SECURE
-    /** If TLS connection with specific certificates is to be done,
-        this member should be populated using
-        wm_mbedtls_ssl_config_new(). If TLS connection without specific
-        certificates is required then pass NULL here. If NULL is passed
-        here or NULL is passed for entire httpc_cfg_t, HTTP client
-        would automatically manage and internally use a temporary
-        structure */
-    mbedtls_ssl_config *ctx;
-
-    /** Size of internal TLS receive I/O buffer. 0 to use default size
-        See \ref wm_mbedtls_ssl_conf_buffsizes() */
-    size_t in_buf_len;
-    /** Size of internal TLS send I/O buffer. 0 to use default size
-        See \ref wm_mbedtls_ssl_conf_buffsizes() */
-    size_t out_buf_len;
-#endif /* ENABLE_HTTPC_SECURE */
 } httpc_cfg_t;
 
 /*
