@@ -19,6 +19,7 @@
 /************************************************************************************
  * Private memory declarations
  ************************************************************************************/
+static nbu_debug_struct_t debug_info;
 
 /************************************************************************************
 *************************************************************************************
@@ -60,7 +61,6 @@ static void DBG_PrintRawData(const char* label, const char* start_marker, const 
  */
 static void BOARD_NbuDebugNotifyCb(const nbu_dbg_context_t *nbu_event)
 {
-    nbu_debug_struct_t debug_info;
     nbu_dbg_info_t *nbu_dbg_info;
     reg_info_t *regs;
     int status;
