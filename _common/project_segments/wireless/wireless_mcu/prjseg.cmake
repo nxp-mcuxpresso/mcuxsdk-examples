@@ -90,7 +90,7 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu)
 
     mcux_add_macro(
         TOOLCHAINS armgcc iar
-        BOARD_DBG_NBU_ENABLE=1
+        CC "-DBOARD_DBG_NBU_ENABLE=1"
     )
 endif()
 
