@@ -31,7 +31,7 @@ volatile uint8_t g_reqFlag = 0;
 
 void SysTick_Handler(void)
 {
-    g_systickCounter++;
+    g_systickCounter = g_systickCounter < 0xFFFFFFFFFFFFFFFF ? g_systickCounter + 1 : 0;
 }
 
 static uint64_t GetTickCounter(void)
@@ -274,7 +274,7 @@ void canopen_app_process(void)
 {
     static uint32_t testData = 0;
 
-    testData++;
+    testData = testData < 0xFFFFFFFF ? testData + 1 : 0;
     OD_set_u32(OD_ENTRY_H6000, 1, testData, true);
     OD_set_u32(OD_ENTRY_H6002, 0, testData, true);
 

@@ -325,9 +325,10 @@ void CO_CANmodule_process(CO_CANmodule_t *CANmodule)
         }
         else
         {
+            uint16_t mask = CO_CAN_ERRRX_OVERFLOW | CO_CAN_ERRRX_PASSIVE | CO_CAN_ERRRX_WARNING |
+                            CO_CAN_ERRTX_BUS_OFF | CO_CAN_ERRTX_WARNING | CO_CAN_ERRTX_PASSIVE;
             /* recalculate CANerrorStatus, first clear some flags */
-            status &= (uint16_t)(~(CO_CAN_ERRRX_OVERFLOW | CO_CAN_ERRRX_PASSIVE | CO_CAN_ERRRX_WARNING |
-                                   CO_CAN_ERRTX_BUS_OFF | CO_CAN_ERRTX_WARNING | CO_CAN_ERRTX_PASSIVE));
+            status &= (uint16_t)(~mask);
 
             if (FLEXCAN_EFIFO_STATUS_UNMASK(err) & CAN_ERFSR_ERFOVF_MASK)
             {
