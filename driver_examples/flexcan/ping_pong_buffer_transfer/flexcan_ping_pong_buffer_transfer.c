@@ -157,6 +157,130 @@ static void FLEXCAN_PHY_Config(void)
 }
 
 /*!
+ * @brief User read message buffer function
+ */
+#if (defined(USE_CANFD) && USE_CANFD)
+static status_t DEMO_ReadRxMb(CAN_Type *base, uint8_t mbIdx, flexcan_fd_frame_t *pRxFrame)
+#else
+static status_t DEMO_ReadRxMb(CAN_Type *base, uint8_t mbIdx, flexcan_frame_t *pRxFrame)
+#endif
+{
+    /* Assertion. */
+    assert(mbIdx <= (base->MCR & CAN_MCR_MAXMB_MASK));
+    assert(NULL != pRxFrame);
+
+    status_t status;
+    uint32_t cs_temp;
+    uint8_t rx_code;
+    uint32_t can_id = 0;
+#if (defined(USE_CANFD) && USE_CANFD)
+    uint8_t cnt = 0;
+    uint32_t dataSize;
+    dataSize                  = (base->FDCTRL & CAN_FDCTRL_MBDSR0_MASK) >> CAN_FDCTRL_MBDSR0_SHIFT;
+    uint8_t payload_dword     = 1;
+    volatile uint32_t *mbAddr = &(base->MB[0].CS);
+    uint32_t offset;
+
+    switch (dataSize)
+    {
+        case (uint32_t)kFLEXCAN_8BperMB:
+            offset = (((uint32_t)mbIdx / 32U) * 512U + ((uint32_t)mbIdx % 32U) * 16U);
+            break;
+        case (uint32_t)kFLEXCAN_16BperMB:
+            offset = (((uint32_t)mbIdx / 21U) * 512U + ((uint32_t)mbIdx % 21U) * 24U);
+            break;
+        case (uint32_t)kFLEXCAN_32BperMB:
+            offset = (((uint32_t)mbIdx / 12U) * 512U + ((uint32_t)mbIdx % 12U) * 40U);
+            break;
+        case (uint32_t)kFLEXCAN_64BperMB:
+            offset = (((uint32_t)mbIdx / 7U) * 512U + ((uint32_t)mbIdx % 7U) * 72U);
+            break;
+        default:
+            /* All the cases have been listed above, the default clause should not be reached. */
+            assert(false);
+            break;
+    }
+    /* To get the dword aligned offset, need to divide by 4. */
+    offset = offset / 4U;
+
+    /* Read CS field of Rx Message Buffer to lock Message Buffer. */
+    cs_temp = mbAddr[offset];
+    can_id  = mbAddr[offset + 1U];
+#else
+    /* Read CS field of Rx Message Buffer to lock Message Buffer. */
+    cs_temp = base->MB[mbIdx].CS;
+    can_id  = base->MB[mbIdx].ID;
+#endif
+    /* Get Rx Message Buffer Code field. */
+    rx_code = (uint8_t)((cs_temp & CAN_CS_CODE_MASK) >> CAN_CS_CODE_SHIFT);
+
+    /* Check to see if Rx Message Buffer is full or overrun. */
+    if ((0x2 == rx_code) || (0x6 == rx_code))
+    {
+        /* Store Message ID. */
+        pRxFrame->id = can_id & (CAN_ID_EXT_MASK | CAN_ID_STD_MASK);
+
+        /* Get the message ID and format. */
+        pRxFrame->format = (cs_temp & CAN_CS_IDE_MASK) != 0U ? (uint8_t)kFLEXCAN_FrameFormatExtend :
+                                                               (uint8_t)kFLEXCAN_FrameFormatStandard;
+
+        /* Get the message type. */
+        pRxFrame->type =
+            (cs_temp & CAN_CS_RTR_MASK) != 0U ? (uint8_t)kFLEXCAN_FrameTypeRemote : (uint8_t)kFLEXCAN_FrameTypeData;
+
+        /* Get the message length. */
+        pRxFrame->length = (uint8_t)((cs_temp & CAN_CS_DLC_MASK) >> CAN_CS_DLC_SHIFT);
+
+        /* Get the time stamp. */
+        pRxFrame->timestamp = (uint16_t)((cs_temp & CAN_CS_TIME_STAMP_MASK) >> CAN_CS_TIME_STAMP_SHIFT);
+
+#if (defined(USE_CANFD) && USE_CANFD)
+        /* Calculate the DWORD number, dataSize 0/1/2/3 corresponds to 8/16/32/64
+           Bytes payload. */
+        for (cnt = 0; cnt < (dataSize + 1U); cnt++)
+        {
+            payload_dword *= 2U;
+        }
+
+        /* Store Message Payload. */
+        for (cnt = 0; cnt < payload_dword; cnt++)
+        {
+            pRxFrame->dataWord[cnt] = mbAddr[offset + 2U + cnt];
+        }
+
+        /* Restore original Rx ID value*/
+        mbAddr[offset + 1U] = FLEXCAN_ID_STD(RX_MB_ID);
+#else
+        /* Store Message Payload. */
+        pRxFrame->dataWord0 = base->MB[mbIdx].WORD0;
+        pRxFrame->dataWord1 = base->MB[mbIdx].WORD1;
+        /* Restore original Rx value*/
+        base->MB[mbIdx].ID = FLEXCAN_ID_STD(RX_MB_ID);
+#endif
+        /* Read free-running timer to unlock Rx Message Buffer. */
+        (void)base->TIMER;
+
+        if (0x2 == rx_code)
+        {
+            status = kStatus_Success;
+        }
+        else
+        {
+            status = kStatus_FLEXCAN_RxOverflow;
+        }
+    }
+    else
+    {
+        /* Read free-running timer to unlock Rx Message Buffer. */
+        (void)base->TIMER;
+
+        status = kStatus_Fail;
+    }
+
+    return status;
+}
+
+/*!
  * @brief User FlexCAN IRQ handler function
  */
 static void User_TransferHandleIRQ(CAN_Type *base)
@@ -203,18 +327,16 @@ static void User_TransferHandleIRQ(CAN_Type *base)
                      */
                     FLEXCAN_SetRxIndividualMask(EXAMPLE_CAN, RX_QUEUE_BUFFER_BASE + i,
                                                 FLEXCAN_RX_MB_STD_MASK(RX_MB_ID_FULL_MASK, 0, 0));
+
                     /* 
                      * Restore Rx MB ID to default ID 0x21.
                      * If not, current Rx MB ID 0x321 which is updated by received frame will make Rx MB
                      * match ID 0x321, so queue 2 cannot receive the messages.
+                     * It is safe to restore Rx MB ID to default ID when Rx MB locked, because MB cannot
+                     * be updated by received frame during locked state. Otherwise queue 1 MB may receive
+                     * ID 0x321 frames before restored default ID 0x21 take effect.
                      */
-#if (defined(USE_CANFD) && USE_CANFD)
-                    (void)FLEXCAN_ReadFDRxMb(EXAMPLE_CAN, RX_QUEUE_BUFFER_BASE + i, &rxFrame[i]);
-                    FLEXCAN_SetFDMbID(EXAMPLE_CAN, RX_QUEUE_BUFFER_BASE + i, FLEXCAN_ID_STD(RX_MB_ID));
-#else
-                    (void)FLEXCAN_ReadRxMb(EXAMPLE_CAN, RX_QUEUE_BUFFER_BASE + i, &rxFrame[i]);
-                    FLEXCAN_SetMbID(EXAMPLE_CAN, RX_QUEUE_BUFFER_BASE + i, FLEXCAN_ID_STD(RX_MB_ID));
-#endif
+                    (void)DEMO_ReadRxMb(EXAMPLE_CAN, RX_QUEUE_BUFFER_BASE + i, &rxFrame[i]);
 
                     /* Clear queue 1 Message Buffer receive status. */
                     FLEXCAN_ClearMbStatusFlags(base, 1U << (RX_QUEUE_BUFFER_BASE + i));
@@ -231,11 +353,7 @@ static void User_TransferHandleIRQ(CAN_Type *base)
                                                 FLEXCAN_RX_MB_STD_MASK(RX_MB_ID_MASK, 0, 0));
                 for (; i < (RX_QUEUE_BUFFER_SIZE * 2U); i++)
                 {
-#if (defined(USE_CANFD) && USE_CANFD)
-                    status = FLEXCAN_ReadFDRxMb(EXAMPLE_CAN, RX_QUEUE_BUFFER_BASE + i, &rxFrame[i]);
-#else
-                    status = FLEXCAN_ReadRxMb(EXAMPLE_CAN, RX_QUEUE_BUFFER_BASE + i, &rxFrame[i]);
-#endif
+                    status = DEMO_ReadRxMb(EXAMPLE_CAN, RX_QUEUE_BUFFER_BASE + i, &rxFrame[i]);
 
                     /* Clear queue 2 Message Buffer receive status. */
                     FLEXCAN_ClearMbStatusFlags(base, 1U << (RX_QUEUE_BUFFER_BASE + i));
