@@ -85,6 +85,13 @@ static void BOARD_NbuDebugNotifyCb(const nbu_dbg_context_t *nbu_event)
             break;
         }
 
+        BOARD_DBG_PRINTF("NBU Debug version: 0x%04X\n", debug_info.version);
+        if (debug_info.version != (uint16_t)NBUDBG_VERSION)
+        {
+            BOARD_DBG_PRINTF("!! Host Debug version 0x%04X != NBU debug version 0x%04X !!\n", (uint16_t)NBUDBG_VERSION, debug_info.version);
+            BOARD_DBG_PRINTF("!! The following analysis may be incorrect !!\n");
+        }
+
         if ((nbu_event->nbu_error_count > 0U))
         {
             nbu_dbg_info = &debug_info.nbu_dbg_info;
@@ -182,11 +189,6 @@ static void BOARD_NbuDebugNotifyCb(const nbu_dbg_context_t *nbu_event)
         /* Raw dump of BLE debug data */
         DBG_PrintRawData("BLE Debug Data", "DBG_BLE_START", "DBG_BLE_END",
                          debug_info.dbg_ble, NBUDBG_BLE_STRUCT_SIZE);
-
-        /* Raw dump of 15.4 debug data */
-        DBG_PrintRawData("15.4 Debug Data", "DBG_15_4_START", "DBG_15_4_END",
-                         debug_info.dbg_15_4, NBUDBG_15_4_STRUCT_SIZE);
-
     } while (false);
 }
 
