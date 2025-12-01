@@ -73,6 +73,11 @@ int ncp_usb_host_send(uint8_t *data, size_t data_len, tlv_send_callback_t cb)
     ncp_adap_d("transfer_size :%d!", data_len);
     ncp_usb_check_bus();
 
+    while(g_cdc.deviceState != kStatus_DEV_Attached)
+    {
+        OSA_TimeDelay(10);
+    }
+
     while (remaining_data_len > 0)
     {
         packet_size = (remaining_data_len > TLV_CMD_BUF_SIZE) ? TLV_CMD_BUF_SIZE : remaining_data_len;
