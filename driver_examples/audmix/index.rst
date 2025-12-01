@@ -1,7 +1,7 @@
 .. _examples__driver_examples__audmix:
 
 audmix
-####
+######
 
 .. toctree::
    :maxdepth: 1

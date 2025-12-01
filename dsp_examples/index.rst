@@ -16,5 +16,5 @@ dsp_examples
    ../../middleware/cadence/multicore-xaf/doc/xaf_playback.md
    ../../middleware/cadence/multicore-xaf/doc/xaf_record.md
    ../../middleware/cadence/multicore-xaf/doc/xaf_usb.md
-   ../../examples_int/dsp_examples/naturedsp/readme.md
-   ../../examples_int/dsp_examples/voice_spot_demo/readme.md
+   ../../middleware/cadence/naturedsp/examples/naturedsp/readme.md
+   ../../middleware/audio_voice/components/voice_spot/examples/voice_spot_demo/readme.md
