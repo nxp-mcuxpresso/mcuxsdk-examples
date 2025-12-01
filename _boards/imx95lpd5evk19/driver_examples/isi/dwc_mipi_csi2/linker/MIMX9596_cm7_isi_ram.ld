@@ -40,7 +40,7 @@ MEMORY
   m_m33_suspend_ram     (RW)  : ORIGIN = 0x20000000, LENGTH = 0x00002000
   m_a55_suspend_ram     (RW)  : ORIGIN = 0x20002000, LENGTH = 0x00002000
   m_data                (RW)  : ORIGIN = 0x20004000, LENGTH = 0x0001a000
-  m_ncache              (RW)  : ORIGIN = 0x80000000, LENGTH = 0x07FFFFFF
+  m_ncache              (RW)  : ORIGIN = 0x80000000, LENGTH = 0x08000000
   m_reserved            (RW)  : ORIGIN = 0x2002E000, LENGTH = 0x0000e000
   m_rsc_tbl             (RW)  : ORIGIN = 0x2003c000, LENGTH = 0x00004000
   m_rsc_tbl_in_dram     (RW)  : ORIGIN = 0x88220000, LENGTH = 0x00004000
