@@ -357,6 +357,7 @@ int ncp_get_mcu_sleep_conf_command(int argc, char **argv)
 
 int ncp_set_host_type(int host_type)
 {
+#if CONFIG_NCP_SPI
     MCU_NCPCmd_DS_SYS_COMMAND *sys_cfg_command = ncp_host_get_cmd_buffer_sys();
     NCP_CMD_HOST_TYPE *host_type_para = (NCP_CMD_HOST_TYPE *)&sys_cfg_command->params.host_type;
     host_type_para->host_type = host_type;
@@ -365,6 +366,8 @@ int ncp_set_host_type(int host_type)
     sys_cfg_command->header.result   = NCP_CMD_RESULT_OK;
     sys_cfg_command->header.size     += sizeof(NCP_CMD_HOST_TYPE);
     ncp_host_send_tlv_command();
+#endif
+
     return NCP_SUCCESS;
 }
 

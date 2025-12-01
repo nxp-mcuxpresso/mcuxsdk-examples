@@ -39,6 +39,11 @@ int ncp_usb_device_recv(uint8_t *recv_data, uint32_t packet_len)
     static int usb_rx_len = 0;
     static uint16_t usb_transfer_len = 0;
 
+    while(1 != s_cdcVcom.attach)
+    {
+        OSA_TimeDelay(10);
+    }
+
     if (usb_rx_len < TLV_CMD_HEADER_LEN)
     {
         usb_rx_len += packet_len;
@@ -85,7 +90,6 @@ static int ncp_usb_device_send(uint8_t *data, size_t data_len, tlv_send_callback
 {
     uint16_t packet_size        = 0;
     uint16_t remaining_data_len = data_len;
-    int lpm_usb_retry_cnt = 20;
     ARG_UNUSED(cb);
 
     ncp_adap_d("usb transfer_size :%d!\r\n", data_len);
@@ -100,17 +104,9 @@ static int ncp_usb_device_send(uint8_t *data, size_t data_len, tlv_send_callback
         s_pm_ops->enter_critical();
     }
 
-    /* Wait for USB re-init done */
-    lpm_usb_retry_cnt = 200;
-    while(lpm_usb_retry_cnt > 0 && 1 != s_cdcVcom.attach)
+    while(1 != s_cdcVcom.attach)
     {
-        OSA_TimeDelay(50);
-        lpm_usb_retry_cnt--;
-    }
-
-    if(0 == lpm_usb_retry_cnt)
-    {
-        ncp_adap_e("usb enum failed from LPM");
+        OSA_TimeDelay(10);
     }
 
     while (remaining_data_len > 0)
