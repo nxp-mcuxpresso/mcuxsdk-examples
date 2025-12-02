@@ -346,6 +346,29 @@ static int ncp_uart_send(uint8_t *tlv_buf, size_t tlv_sz, tlv_send_callback_t cb
     return (int)NCP_STATUS_SUCCESS;
 }
 
+
+static void ncp_uart_reset(void)
+{
+#if defined(RW610)
+    uint32_t status;
+
+    while (1)
+    {
+        status = USART_GetStatusFlags(PROTOCOL_UART);
+        /* Check if the uart is transmitting */
+        bool tx_idle = (status & kUSART_TxIdleFlag) != 0U;
+        bool rx_idle = (((status & (kUSART_RxFifoNotEmptyFlag | kUSART_RxError)) == 0U) &&
+                       ((status & kUSART_RxIdleFlag) != 0U));
+        if (tx_idle && rx_idle)
+        {
+            break;
+        }
+
+        OSA_TimeDelay(1);
+    }
+#endif
+}
+
 #if defined(RW610)
 static int ncp_uart_exit_power_down(void)
 {
@@ -457,6 +480,7 @@ static ncp_intf_ops_t ncp_intf_ops =
     .deinit = ncp_uart_deinit,
     .send   = ncp_uart_send,
     .recv   = ncp_uart_recv,
+    .reset  = ncp_uart_reset,
     .pm_ops = &ncp_uart_pm_ops,
     .set_host_type = NULL,
 };
