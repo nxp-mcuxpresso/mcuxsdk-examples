@@ -23,6 +23,7 @@
 /*${variable:start}*/
 
 extern pm_handle_t g_pmHandle;
+extern uint8_t g_targetPowerMode;
 /*${variable:end}*/
 
 /*${function:start}*/
@@ -105,6 +106,11 @@ uint32_t APP_GetWakeupTimeout(void)
 {
     uint8_t timeout;
     uint32_t timeoutUs;
+
+    if (g_targetPowerMode == PM_LP_STATE_POWER_OFF)
+    {
+        return 0UL;
+    }
 
     while (1)
     {
