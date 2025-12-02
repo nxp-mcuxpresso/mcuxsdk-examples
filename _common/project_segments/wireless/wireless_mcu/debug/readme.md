@@ -143,14 +143,36 @@ The system differentiates between warnings and fatal errors:
 
 ## Comprehensive Fault Analysis Features
 
-### 1. **Exception Information Analysis**
 ```
-=== NBU Fault Analysis ===
+NBU Debug version: 0x0001
+!! Host Debug version 0x0001 != NBU debug version 0x0000 !!
+!! The following analysis may be incorrect !!
+```
+
+The system automatically checks version compatibility between host and NBU debug structures to ensure accurate analysis.
+
+### 1. **Exception and Assert Information Analysis**
+
+#### **For NBU Faults:**
+```
+=== NBU Fault/Assert Analysis ===
+
+NBU Fault Detected
 Exception Information:
-  NBU event ID: 0x00000001
   Exception ID: 0x00000003  
   NBU SHA1    : 0x12345678
 ```
+
+#### **For NBU Asserts:**
+```
+=== NBU Fault/Assert Analysis ===
+
+NBU Assert Detected
+  Line: 123
+  File name: ble_controller.c
+```
+
+The system automatically distinguishes between hardware faults and software asserts based on the exception ID.
 
 ### 2. **Complete Processor State Dump**
 ```
@@ -193,6 +215,9 @@ Execution Context:
 ```
 
 ### 5. **Protocol Stack Debug Data**
+
+BLE Debug Data provides 256 bytes of BLE Link Layer specific debug information
+
 ```
 BLE Debug Data (Raw - 256 bytes):
 DBG_BLE_START
@@ -200,14 +225,7 @@ DBG_BLE_START
 0010: 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20
 ...
 DBG_BLE_END
-
-15.4 Debug Data (Raw - 64 bytes):
-DBG_15_4_START
-
-DBG_15_4_END
 ```
-
-**NOTE**: 15.4 Debug Data is not yet supported. This is planned for future releases.
 
 ## Benefits
 
@@ -217,15 +235,16 @@ DBG_15_4_END
 - **Field Deployment Ready**: Provides valuable diagnostic capabilities for deployed products
 
 #### **Rapid Debugging**
-- **Rapid Fault/Warning Detection**: No need to poll or wait for symptoms
+- **Rapid Fault/Assert/Warning Detection**: Immediate notification without polling
 - **Complete Context**: Full CPU state and execution context at fault time
+- **Assert Analysis**: File and line information for software asserts
 - **Root Cause Analysis**: Detailed fault explanations with probable causes
 
 #### **Protocol Stack Debugging**
 - **BLE Stack Insights**: 256 bytes of BLE-specific debug data
-- **802.15.4 Analysis**: 64 bytes reserved for 802.15.4 stack information. Not yet supported (planned for future releases)
 - **Custom Protocol Support**: Extensible debug buffer system
 - **Minimal Overhead**: Negligible impact on normal system performance and on low power consumption
+- **Optimized Memory Usage**: Efficient memory layout with shared regions for fault and assert contexts
 
 #### **Comprehensive Logging**
 - **Human-Readable Output**: Less work for register decoding
@@ -252,8 +271,9 @@ DBG_15_4_END
 
 The NBU Debug Framework provides a complete solution for NBU fault detection and analysis, combining:
 
-- **Comprehensive analysis** with human-readable output
-- **Easy integration** with minimal code changes
+- **Comprehensive analysis** with human-readable output for faults and asserts conditions
+- **Easy integration** with minimal code changes and configurable output
 - **Production-ready reliability** with minimal overhead
+- **Flexible debugging** supporting both hardware faults and software asserts
 
 This module significantly reduces debugging time, improves system reliability, and provides valuable insights for both development and field deployment.
