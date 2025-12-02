@@ -1,0 +1,44 @@
+flash_programming_file:
+  files:
+    - source: ${board_root}/${board}/trustzone_examples/secure_faults/secure_faults_s/secure_faults_flashdownload_debug.ini
+      attribute: flash_programming_file
+      toolchains: mdk
+      targets: debug
+    - source: ${board_root}/${board}/trustzone_examples/secure_faults/secure_faults_s/secure_faults_flashdownload_release.ini
+      attribute: flash_programming_file
+      toolchains: mdk
+      targets: release
+
+initialization_file:
+  files:
+    - source: ${board_root}/${board}/trustzone_examples/secure_faults/secure_faults_s/secure_faults_flashdebug_debug.ini
+      attribute: initialization_file
+      toolchains: mdk
+      targets: debug
+    - source: ${board_root}/${board}/trustzone_examples/secure_faults/secure_faults_s/secure_faults_flashdebug_release.ini
+      attribute: initialization_file
+      toolchains: mdk
+      targets: release
+
+mdk:
+  shared-workspace: secure_faults
+  sharing-workspace:
+    - ../../secure_faults_ns/mdk/secure_faults_ns${core_id_suffix_name}
+
+iar:
+  shared-workspace: secure_faults
+  sharing-workspace:
+    - ../../secure_faults_ns/iar/secure_faults_ns${core_id_suffix_name}
+  config:
+    debug:
+      download-extra-image:
+        - path: "../../secure_faults_ns/iar/secure_faults_ns${core_id_suffix_name}.out"
+          item: 1
+          offset: 0
+          debug_info_only: false
+    release:
+      download-extra-image:
+        - path: "../../secure_faults_ns/iar/secure_faults_ns${core_id_suffix_name}.out"
+          item: 1
+          offset: 0
+          debug_info_only: false

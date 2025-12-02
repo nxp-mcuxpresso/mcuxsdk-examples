@@ -19,6 +19,7 @@ secure_faults_s:
   boards:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []
+    frdmmcxl255@cm33: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
     lpcxpresso55s06: []
