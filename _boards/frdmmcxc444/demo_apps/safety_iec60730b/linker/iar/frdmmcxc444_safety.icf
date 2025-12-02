@@ -68,7 +68,7 @@ define exported symbol __ROM_start__  = 0x00000000;
 define exported symbol __ROM_end__    = 0x0003FFFF;
 
 /* RAM memory boundaries. */
-define exported symbol __RAM_start__  = 0x1FFFF410;
+define exported symbol __RAM_start__  = 0x1FFFE000;
 define exported symbol __RAM_end__    = 0x20005EEB;
 
 /* Sizes of objects in RAM. */
