@@ -75,45 +75,96 @@ void BOARD_InitDEBUG_UARTPins(void)
 
 void BOARD_InitBUTTONsPins(void)
 {
-    /* GPIO1: Peripheral clock is enabled */
-    CLOCK_EnableClock(kCLOCK_GateGPIO1);
-    /* PORT1: Peripheral clock is enabled */
+    /* Port Clock Enable: Enable */
+    CLOCK_EnableClock(kCLOCK_GateAonPORT);
+    /* Clock gate control PORT1: Peripheral clock is enabled */
     CLOCK_EnableClock(kCLOCK_GatePORT1);
+    /* GPIO Clock Enable: Enable */
+    CLOCK_EnableClock(kCLOCK_GateAonGPIO);
+    /* Clock gate control GPIO1: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GateGPIO1);
     /* GPIO1 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kGPIO1_RST_SHIFT_RSTn);
     /* PORT1 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kPORT1_RST_SHIFT_RSTn);
 
-    gpio_pin_config_t SW2_config = {
+    const port_pin_config_t port1_14_pinB1_config = {/* Internal pull-up/down resistor is disabled */
+                                                     kPORT_PullDisable,
+                                                     /* Low internal pull resistor value is selected. */
+                                                     kPORT_LowPullResistor,
+                                                     /* Fast slew rate is configured */
+                                                     kPORT_FastSlewRate,
+                                                     /* Passive input filter is disabled */
+                                                     kPORT_PassiveFilterDisable,
+                                                     /* Open drain output is disabled */
+                                                     kPORT_OpenDrainDisable,
+                                                     /* Low drive strength is configured */
+                                                     kPORT_LowDriveStrength,
+                                                     /* Normal drive strength is configured */
+                                                     kPORT_NormalDriveStrength,
+                                                     /* Pin is configured as P1_14 */
+                                                     kPORT_MuxAlt0,
+                                                     /* Digital input enabled */
+                                                     kPORT_InputBufferEnable,
+                                                     /* Digital input is not inverted */
+                                                     kPORT_InputNormal,
+                                                     /* Pin Control Register fields [15:0] are not locked */
+                                                     kPORT_UnlockRegister};
+    /* PORT1_14 (pin B1) is configured as P1_14 */
+    PORT_SetPinConfig(PORT1, 14U, &port1_14_pinB1_config);
+
+    gpio_pin_config_t gpio1_pinB1_config = {
         .pinDirection = kGPIO_DigitalInput,
         .outputLogic = 0U
     };
+    /* Initialize GPIO functionality on pin P1_14 (pin B1)  */
+    GPIO_PinInit(GPIO1, 14U, &gpio1_pinB1_config);
 
-    /* Initialize GPIO functionality on pin PIO1_14   */
-    GPIO_PinInit(BOARD_SW2_GPIO, BOARD_SW2_GPIO_PIN, &SW2_config);
+    /* Interrupt configuration on GPIO1_14 (pin B1): Interrupt/DMA request is disabled */
+    GPIO_SetPinInterruptChannel(GPIO1, 14U, kGPIO_InterruptOutput0);
+    GPIO_SetPinInterruptConfig(GPIO1, 14U, kGPIO_InterruptStatusFlagDisabled);
+}
 
-    const port_pin_config_t SW2 = {/* Internal pull-up/down resistor is disabled */
-                                   .pullSelect = kPORT_PullDisable,
-                                   /* Low internal pull resistor value is selected. */
-                                   .pullValueSelect = kPORT_LowPullResistor,
-                                   /* Fast slew rate is configured */
-                                   .slewRate = kPORT_FastSlewRate,
-                                   /* Passive input filter is disabled */
-                                   .passiveFilterEnable = kPORT_PassiveFilterDisable,
-                                   /* Open drain output is disabled */
-                                   .openDrainEnable = kPORT_OpenDrainDisable,
-                                   /* Low drive strength is configured */
-                                   .driveStrength = kPORT_LowDriveStrength,
-                                   /* Normal drive strength is configured */
-                                   .driveStrength1 = kPORT_NormalDriveStrength,
-                                   /* Pin is configured as P1_14 */
-                                   .mux = kPORT_MuxAlt0,
-                                   /* Digital input enabled */
-                                   .inputBuffer = kPORT_InputBufferEnable,
-                                   /* Digital input is not inverted */
-                                   .invertInput = kPORT_InputNormal,
-                                   /* Pin Control Register fields [15:0] are not locked */
-                                   .lockRegister = kPORT_UnlockRegister};
-    /* PORT1_14 is configured as P1_14 */
-    PORT_SetPinConfig(PORT1, BOARD_SW2_GPIO_PIN, &SW2);
+void BOARD_InitLEDsPins(void)
+{
+    /* Clock gate control PORT1: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GatePORT1);
+    /* Clock gate control GPIO1: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GateGPIO1);
+    /* GPIO1 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kGPIO1_RST_SHIFT_RSTn);
+    /* PORT1 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kPORT1_RST_SHIFT_RSTn);
+
+    const port_pin_config_t LED_RED = {/* Internal pull-up/down resistor is disabled */
+                                       kPORT_PullDisable,
+                                       /* Low internal pull resistor value is selected. */
+                                       kPORT_LowPullResistor,
+                                       /* Fast slew rate is configured */
+                                       kPORT_FastSlewRate,
+                                       /* Passive input filter is disabled */
+                                       kPORT_PassiveFilterDisable,
+                                       /* Open drain output is disabled */
+                                       kPORT_OpenDrainDisable,
+                                       /* Low drive strength is configured */
+                                       kPORT_LowDriveStrength,
+                                       /* Normal drive strength is configured */
+                                       kPORT_NormalDriveStrength,
+                                       /* Pin is configured as P1_15 */
+                                       kPORT_MuxAlt0,
+                                       /* Digital input enabled */
+                                       kPORT_InputBufferEnable,
+                                       /* Digital input is not inverted */
+                                       kPORT_InputNormal,
+                                       /* Pin Control Register fields [15:0] are not locked */
+                                       kPORT_UnlockRegister};
+    /* PORT1_15 (pin C3) is configured as P1_15 */
+    PORT_SetPinConfig(BOARD_INITLEDSPINS_LED_RED_PORT, BOARD_INITLEDSPINS_LED_RED_PIN, &LED_RED);
+
+    gpio_pin_config_t LED_RED_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 1U
+    };
+    /* Initialize GPIO functionality on pin P1_15 (pin C3)  */
+    GPIO_PinInit(BOARD_INITLEDSPINS_LED_RED_GPIO, BOARD_INITLEDSPINS_LED_RED_PIN, &LED_RED_config);
 }

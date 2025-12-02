@@ -18,5 +18,6 @@ void BOARD_InitHardware(void)
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitDebugConsole();
     BOARD_InitBUTTONsPins();
+    BOARD_InitLEDsPins();
 }
 /* ${function:end} */
