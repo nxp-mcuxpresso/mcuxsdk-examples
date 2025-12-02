@@ -39,26 +39,26 @@ define symbol m_m33_suspend_ram_end    = 0x20001FFF;
 define symbol m_a55_suspend_ram_start  = 0x20002000;
 define symbol m_a55_suspend_ram_end    = 0x20003FFF;
 
-define symbol m_data_tcm_start         = 0x00030000;
-define symbol m_data_tcm_end           = 0x00040000;
-
-define symbol m_data_dram_start        = 0x80000000;
-define symbol m_data_dram_end          = 0x8E800000;
-
-define symbol m_ncache_start           = 0x8E7FFFFF;
-define symbol m_ncache_end             = 0x8F000000;
-
 define symbol m_reserved_start         = 0x2002E000;
 define symbol m_reserved_end           = 0x2003BFFF;
 
 define symbol m_rsc_tbl_start          = 0x2003C000;
 define symbol m_rsc_tbl_end            = 0x2003FFFF;
 
+define symbol m_data_tcm_start         = 0x00030000;
+define symbol m_data_tcm_end           = 0x00040000;
+
+define symbol m_data_dram_start        = 0x80000000;
+define symbol m_data_dram_end          = 0x8E7FFFFF;
+
+define symbol m_ncache_start           = 0x8E800000;
+define symbol m_ncache_end             = 0x8F000000;
+
 define symbol m_rsc_tbl_in_dram_start  = 0x8F220000;
 define symbol m_rsc_tbl_in_dram_end    = 0x8F223FFF;
 
 define exported symbol __NCACHE_REGION_START   = m_ncache_start;
-define exported symbol __NCACHE_REGION_SIZE    = m_ncache_end - m_ncache_start + 1;
+define exported symbol __NCACHE_REGION_SIZE    = m_ncache_end - m_ncache_start;
 /* Sizes */
 if (isdefinedsymbol(__stack_size__)) {
   define symbol __size_cstack__        = __stack_size__;

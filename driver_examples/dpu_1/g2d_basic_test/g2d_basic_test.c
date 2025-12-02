@@ -79,39 +79,54 @@ int main(void)
         return 0;
     }
 
-    result = run_stress_tests(handle);
-    if (result == 0) {
+    do {
+        result = run_stress_tests(handle);
+        if (result != 0) {
+            break;
+        }
+
         s_buf = g2d_alloc((uint32_t)(test_height * test_width * 4), 0U);
         d_buf = g2d_alloc((uint32_t)(test_height * test_width * 4), 0U);
         
-        if ((s_buf != NULL) && (d_buf != NULL)) {
-            result = run_yuv_feature_tests(handle, s_buf, d_buf, test_width, test_height);
-            if (result == 0) {
-                result = run_blending_tests(handle, s_buf, d_buf, test_width, test_height);
-                if (result == 0) {
-                    result = run_rotation_tests(handle, s_buf, d_buf, test_width, test_height);
-                    if (result == 0) {
-                        result = run_clear_tests(handle, s_buf, d_buf, test_width, test_height);
-                        if (result == 0) {
-                            result = run_resize_tests(handle, s_buf, d_buf, test_width, test_height);
-                            if (result == 0) {
-                                result = run_copy_tests(handle, s_buf, d_buf, test_width, test_height);
-                            }
-                        }
-                    }
-                }
-            }
-        } else {
+        if ((s_buf == NULL) || (d_buf == NULL)) {
             (void)PRINTF("Buffer allocation failed.\r\n");
             result = 1;
+            break;
         }
-        
-        if (s_buf != NULL) { 
-            (void)g2d_free(s_buf); 
+
+        result = run_yuv_feature_tests(handle, s_buf, d_buf, test_width, test_height);
+        if (result != 0) {
+            break;
         }
-        if (d_buf != NULL) { 
-            (void)g2d_free(d_buf); 
+
+        result = run_blending_tests(handle, s_buf, d_buf, test_width, test_height);
+        if (result != 0) {
+            break;
         }
+
+        result = run_clear_tests(handle, s_buf, d_buf, test_width, test_height);
+        if (result != 0) {
+            break;
+        }
+
+        result = run_rotation_tests(handle, s_buf, d_buf, test_width, test_height);
+        if (result != 0) {
+            break;
+        }
+
+        result = run_resize_tests(handle, s_buf, d_buf, test_width, test_height);
+        if (result != 0) {
+            break;
+        }
+
+        result = run_copy_tests(handle, s_buf, d_buf, test_width, test_height);
+    } while (0);
+
+    if (s_buf != NULL) {
+        (void)g2d_free(s_buf);
+    }
+    if (d_buf != NULL) {
+        (void)g2d_free(d_buf);
     }
 
     (void)g2d_close(handle);
@@ -123,10 +138,7 @@ static void fill_source_buffer(struct g2d_buf* buf, int32_t rows, int32_t cols)
 {
     for (int32_t i = 0; i < rows; i++) {
         for (int32_t j = 0; j < cols; j++) {
-            uintptr_t base_addr = (uintptr_t)buf->buf_vaddr;
-            uintptr_t offset = (uintptr_t)((i * cols + j) * 4);
-            char* p = (char *)(void *)(base_addr + offset);
-
+            char* p = (char *)(((char *)buf->buf_vaddr) + (i * cols + j) * 4);
             p[0] = (char)((i * cols + j) % 255);
             p[1] = p[0];
             p[2] = p[0];
@@ -135,14 +147,12 @@ static void fill_source_buffer(struct g2d_buf* buf, int32_t rows, int32_t cols)
     } 
 }
 
+
 static void fill_destination_buffer(struct g2d_buf* buf, int32_t rows, int32_t cols) 
 {
     for (int32_t i = 0; i < rows; i++) {
         for (int32_t j = 0; j < cols; j++) {
-            uintptr_t base_addr = (uintptr_t)buf->buf_vaddr;
-            uintptr_t offset = (uintptr_t)((i * cols + j) * 4);
-            char* p = (char *)(void *)(base_addr + offset);
-
+            char* p = (char *)(((char *)buf->buf_vaddr) + (i * cols + j) * 4);
             p[0] = (char)((i * cols + j + 128) % 255);
             p[1] = p[0];
             p[2] = p[0];
@@ -1666,8 +1676,8 @@ static int32_t run_resize_tests(void *handle, struct g2d_buf *s_buf, struct g2d_
                 dst.left, dst.top, dst.right, dst.bottom, 
                 us, 1000000U / us, (uint32_t)(test_height * test_width) / us);
 
-        /* Reset destination surface */
         init_surface_common(&dst, d_buf, test_width, test_height);
+
     } else {
         (void)PRINTF("test window size is too small for cropping\r\n");
     }
@@ -1680,6 +1690,7 @@ static int32_t run_resize_tests(void *handle, struct g2d_buf *s_buf, struct g2d_
     src.stride = (test_width > 1280) ? 1280 : (test_width >> 1);
     src.width = (test_width > 1280) ? 1280 : (test_width >> 1);
     src.height = (test_height > 720) ? 720 : (test_height >> 1);
+    src.format = G2D_BGRA8888;
 
     dst.rot = G2D_ROTATION_90;
     dst.left = 0;
