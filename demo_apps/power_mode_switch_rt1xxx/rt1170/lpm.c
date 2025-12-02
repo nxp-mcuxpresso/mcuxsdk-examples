@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2023 NXP
+ * Copyright 2020, 2023, 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -829,6 +829,10 @@ void ChipInitConfig(void)
     /* Init System Pll2 pfd3. */
     CLOCK_InitPfd(kCLOCK_PllSys2, kCLOCK_Pfd3, 24);
     CLOCK_InitSysPll3();
+#if __CORTEX_M == 7
+    SCB_InvalidateDCache();
+    SCB_InvalidateICache();
+#endif /* __CORTEX_M == 7 */
     /* Init System Pll3 pfd3. */
     CLOCK_InitPfd(kCLOCK_PllSys3, kCLOCK_Pfd3, 22);
     CLOCK_InitAudioPll(&avPllConfig);
