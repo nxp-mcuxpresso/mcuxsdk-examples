@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 NXP
+ * Copyright 2023, 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -537,4 +537,54 @@ int lc3_decoder_deinit(lc3_decoder_t *decoder)
     (void)memset(decoder, 0, sizeof(lc3_decoder_t));
 #endif
     return 0;
+}
+
+int lc3_delay_samples(int sample_rate, int duration_us)
+{
+    if(duration_us == 10000)
+    {
+        switch(sample_rate)
+        {
+            case 8000:
+                return 20;
+            case 16000:
+                return 40;
+            case 24000:
+                return 60;
+            case 32000:
+                return 80;
+            case 44100:
+                return 120;
+            case 48000:
+                return 120;
+            default:
+                return -1;
+        }
+    }
+    else if(duration_us == 7500)
+    {
+        switch(sample_rate)
+        {
+            case 8000:
+                return 32;
+            case 16000:
+                return 64;
+            case 24000:
+                return 96;
+            case 32000:
+                return 128;
+            case 44100:
+                return 192;
+            case 48000:
+                return 192;
+            default:
+                return -1;
+        }
+    }
+    else
+    {
+        return -1;
+    }
+
+    return -1;
 }

@@ -488,7 +488,7 @@ static int lc3_enable(struct bt_bap_stream *stream, const uint8_t meta[], size_t
 		le_audio_sync_test_init(lc3_codec_info.sample_rate);
 	}
 
-	le_audio_sync_start(lc3_codec_info.sample_rate, lc3_codec_info.samples_per_frame);
+	le_audio_sync_start(lc3_codec_info.sample_rate, lc3_codec_info.samples_per_frame, lc3_codec_info.frame_duration_us);
 #endif
 
 	audio_codec_initialized = true;

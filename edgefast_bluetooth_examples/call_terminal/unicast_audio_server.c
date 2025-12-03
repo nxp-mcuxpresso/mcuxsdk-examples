@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 NXP
+ * Copyright 2023-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -53,6 +53,7 @@
 
 #if defined(UNICAST_AUDIO_SYNC_MODE) && (UNICAST_AUDIO_SYNC_MODE > 0)
 #include "srCvtFrm.h"
+#include "lc3_codec.h"
 /* Note: this include should be remove once audio api could get bt_iso_chan. */
 #include "audio/bap_endpoint.h"
 #include "audio/bap_iso.h"
@@ -160,6 +161,7 @@ struct sync_info
 {
     uint32_t iso_interval_us;
     uint32_t sample_rate;
+    uint32_t frame_duration_us;
     uint32_t bits_pre_sample;
     float cig_sync_delay_us;
     float sample_duration_us;
@@ -938,24 +940,6 @@ static void get_capability_from_codec(const struct bt_audio_codec_cfg *codec, st
 }
 
 #if (defined(UNICAST_AUDIO_SYNC_MODE) && (UNICAST_AUDIO_SYNC_MODE > 0))
-/* This value is measured externaly. */
-static float System_Sync_offset(int sample_rate)
-{
-    float us;
-
-    switch (sample_rate)
-    {
-        case 8000:  us = 666.0;   break;
-        case 16000: us = 544.0;   break;
-        case 24000: us = 502.0;   break;
-        case 32000: us = 444.0;   break;
-        case 48000: us = 427.0;   break;
-        default:    us = 0.0;     break;
-    }
-
-    return us;
-}
-
 static uint32_t get_cig_sync_delay(void)
 {
 	struct bt_iso_info iso_info;
@@ -1110,12 +1094,12 @@ static void sink_recv_stream_task(void *param)
                     /* Get iso_interval_us */
                     connection.info.iso_interval_us = get_iso_interval();
 
-                    /* Resampler have 16 samples delay. */
-                    connection.snk.status.system_delay_us = connection.info.bits_pre_sample * connection.info.sample_duration_us;
-                    /* LC3 decode delay. 0 for default */
-                    connection.snk.status.system_delay_us += 0.0;
+                    /* Resampler have 17 samples delay. */
+                    connection.snk.status.system_delay_us = 17 * connection.info.sample_duration_us;
+                    /* LC3 decode delay. */
+                    connection.snk.status.system_delay_us += lc3_delay_samples(connection.info.sample_rate, connection.info.frame_duration_us) * connection.info.sample_duration_us;
                     /* Addition delay */
-                    connection.snk.status.system_delay_us += System_Sync_offset(connection.info.sample_rate);
+                    connection.snk.status.system_delay_us += 0.0;
 
                     connection.snk.status.start_ts = info->ts;
                     connection.snk.status.start_slot = (uint32_t)((info->ts + connection.snk.status.presentation_delay_us - connection.snk.status.system_delay_us - connection.info.cig_sync_delay_us) / connection.info.iso_interval_us);
@@ -1705,6 +1689,7 @@ static void unicast_server_stream_enabled(struct bt_bap_stream *stream)
                 sync_timer_started = 1U;
                 connection.info.bits_pre_sample = BITS_RATES_OF_SAMPLE;
                 connection.info.sample_rate = snk_config_cap.frequency;
+                connection.info.frame_duration_us = snk_config_cap.duration;
                 connection.info.sample_duration_us = (float)1000000.0 / (float)connection.info.sample_rate;
 
                 BORAD_SyncTimer_Start(connection.info.sample_rate, connection.info.bits_pre_sample * snk_config_cap.channel_count);

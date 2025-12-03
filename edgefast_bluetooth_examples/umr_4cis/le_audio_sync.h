@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 NXP
+ * Copyright 2023-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -21,7 +21,7 @@ struct sync_info {
 };
 
 void le_audio_sync_init(void);
-void le_audio_sync_start(int sample_rate, int samples_per_frame);
+void le_audio_sync_start(int sample_rate, int samples_per_frame, int frame_duration_us);
 void le_audio_sync_set(uint32_t iso_interval_us, uint32_t sync_delay_us, uint32_t presentation_delay_us);
 void le_audio_sync_process(frame_packet_t *frame);
 void le_audio_sync_stop(void);

@@ -85,4 +85,6 @@ int lc3_decoder_init(lc3_decoder_t *decoder, int sample_rate, int duration_us, i
 int lc3_decoder(lc3_decoder_t *decoder, uint8_t *input, int frame_flag, void *output);
 int lc3_decoder_deinit(lc3_decoder_t *decoder);
 
+int lc3_delay_samples(int sample_rate, int duration_us);
+
 #endif /* __LC3_CODEC_H_ */
