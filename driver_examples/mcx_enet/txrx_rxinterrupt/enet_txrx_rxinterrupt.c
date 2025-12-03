@@ -6,11 +6,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include "fsl_debug_console.h"
-#include "fsl_silicon_id.h"
 #include "fsl_enet.h"
 #include "fsl_phy.h"
 #include "app.h"
+#if !APP_USER_DEFINED_MAC_ADDRESS
 #include "fsl_silicon_id.h"
+#endif
 
 /*******************************************************************************
  * Definitions
