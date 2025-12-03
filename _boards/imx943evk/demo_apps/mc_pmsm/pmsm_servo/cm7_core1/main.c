@@ -141,6 +141,9 @@ int main(void)
   
   /* Turn off application */
   M1_SetAppSwitch(FALSE);
+
+  /* Spin state machine is default */
+  g_sSpinMidSwitch.eAppState = kAppStateSpin;
   
   /* Enable interrupts */
   EnableGlobalIRQ(ui32PrimaskReg);
