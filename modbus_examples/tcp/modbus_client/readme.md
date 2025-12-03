@@ -18,28 +18,28 @@ FreeModbus supports bellow feature:
 ## Running the demo
 If the test passes, serial port output:
 
-  Please input Modbus Server ip address(for example 192.168.1.2):
-  Note: don't use backspace key or space key!
-  Modbus Server ip: 10.91.20.33
+    Please input Modbus Server ip address(for example 192.168.1.2):
+    Note: don't use backspace key or space key!
+    Modbus Server ip: 10.91.20.33
 
-  Initializing PHY...
-  [LINK STATE] netif=0, state=down
-  [LINK STATE] netif=0, state=up, speed=100M_full
+    Initializing PHY...
+    [LINK STATE] netif=0, state=down
+    [LINK STATE] netif=0, state=up, speed=100M_full
 
-  ************************************************
-  Modbus TCP example
-  ************************************************
-  FOR TASK ETH Get IP address from DHCP...
+    ************************************************
+    Modbus TCP example
+    ************************************************
+    FOR TASK ETH Get IP address from DHCP...
 
-  IPv4 Address : 10.91.20.66
-  IPv4 Subnet mask : 255.255.255.0
-  IPv4 Gateway : 10.91.20.254
+    IPv4 Address : 10.91.20.66
+    IPv4 Subnet mask : 255.255.255.0
+    IPv4 Gateway : 10.91.20.254
 
-  Enable LED1
-  0 1 0 0 0 6 1 13 0 0 0 1
-  Enable LED2
-  0 1 0 0 0 6 1 13 0 1 0 1
-  ...
+    Enable LED1
+    0 1 0 0 0 6 1 13 0 0 0 1
+    Enable LED2
+    0 1 0 0 0 6 1 13 0 1 0 1
+    ...
 
 Use the MIMXRT1180-EVK board as modbus Server simulator, write board LED status(0x0d) to control LED light
 

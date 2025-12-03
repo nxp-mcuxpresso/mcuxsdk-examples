@@ -5,13 +5,15 @@ Hardware requirements
 - FRDM-IMXRT1186 board
 - Personal Computer
 - Servo-Motor
+
 	DELTA_ASDA_B3  * 1
+    
 	INOVANCE_SV680 * 1
 
 Board settings
 ============
-J12(1-2)/J13(2-3): ETH0 Function Via J56A.
-J18(1-2)/J17(2-3): ETH2 Function Via J56B.
+- J12(1-2)/J13(2-3): ETH0 Function Via J56A.
+- J18(1-2)/J17(2-3): ETH2 Function Via J56B.
 
 Prepare the Demo
 ================

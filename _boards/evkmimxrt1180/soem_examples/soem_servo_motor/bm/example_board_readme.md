@@ -5,7 +5,9 @@ Hardware requirements
 - MIMXRT1180-EVK board
 - Personal Computer
 - Servo-Motor
+
 	DELTA_ASDA_B3  * 1
+    
 	INOVANCE_SV680 * 1
 
 Board settings

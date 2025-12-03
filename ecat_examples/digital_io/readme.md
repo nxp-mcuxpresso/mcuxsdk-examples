@@ -4,7 +4,9 @@
 This example demonstrates how to develop a remote IO device based on Slave Stack Code(SSC).
 
 This remote IO device only supports SM-Synchron mode for DC operation, and implements one Input channel and one Output channel:
+
 	Output channel: connected with the LED and used to control this LED.
+	
 	Input channel: used to read the LED current status. 
 
 Note that the demo CAN NOT be built directly. Please see the "Prepare the Demo" section for more details.

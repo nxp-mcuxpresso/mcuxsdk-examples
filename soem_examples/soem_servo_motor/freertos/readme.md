@@ -19,38 +19,26 @@ If the test passes, the motor will start to retate.
 
 When the demo is running, the serial port will output:
 
-NETC EP frame loopback example start.
+	NETC EP frame loopback example start.
+	Starting motion task
+	ec_init on netc0 succeeded.
+	ec_config_init 0
+	...
+	2 slaves found and configured.
+	ec_config_map_group IOmap:20000664 group:0
+	>Slave 1, configadr 1001, state  2
+	...
+	SM programming
+	SM2 Type:3 
+	StartAddr:1200 Flags:   10064
+	...
+	Slaves mapped, state to SAFE_OP.
+	Request operational state for all slaves
+	Calculated workcounter 6
+	Request operational state for all slaves
+	Calculated workcounter 6
+	Operational state reached for all slaves.
 
-Starting motion task
-
-ec_init on netc0 succeeded.
-
-ec_config_init 0
-
-...
-
-1 slaves found and configured.
-
-ec_config_map_group IOmap:20000664 group:0
-
->Slave 1, configadr 1001, state  2
-
-...
-
-Slaves mapped, state to SAFE_OP.
-
-Request operational state for all slaves
-
-Calculated workcounter 3
-
-Request operational state for all slaves
-
-Calculated workcounter 3
-
-Operational state reached for all slaves.
-
-
-Note: Modify GPT timer frequncy >= 200MHz to get more accurate timer.
 
 Note: Detailed SOEM performance please refter to EtherCAT Benchamrk. 
 

@@ -1,7 +1,8 @@
 # ecat_servo_motor
 
 ## Overview
-This example is a implementation of EtherCAT servo motor system which is compliance with CiA402 profile running on one core.  
+This example is a implementation of EtherCAT servo motor system which is compliance with CiA402 profile running on one core.
+  
 The example only support one motor with quadrature encoder.
 
 ## Running the demo

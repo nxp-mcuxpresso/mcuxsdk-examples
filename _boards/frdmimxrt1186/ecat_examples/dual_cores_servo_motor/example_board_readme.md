@@ -21,31 +21,40 @@ FRDM-LVPMSM-FA board:
 	|Pin name (FRDM-LVPMSM-FA) | Pin location (FRDM-LVPMSM-FA) | Sensor signal name|
 	|--------------------------|-------------------------------|-------------------|
 	| ENC_CLK_P                | J70-2                         | CLOCK_P           |
-  | ENC_CLK_N                | J70-7                         | CLOCK_N           |
-  | ENC_DATA_IO_P            | J70-4                         | DATA_P            |
-  | ENC_DATA_IO_N            | J70-9                         | DATA_N            |
-  | VENC                     | J70-1                         | UP - Power supply voltage|
-  | GND                      | J70-6                         | GND               |
+	| ENC_CLK_N                | J70-7                         | CLOCK_N           |
+	| ENC_DATA_IO_P            | J70-4                         | DATA_P            |
+	| ENC_DATA_IO_N            | J70-9                         | DATA_N            |
+	| VENC                     | J70-1                         | UP - Power supply voltage|
+	| GND                      | J70-6                         | GND               |
 
   - Motor connection:
+  
      J140: pin3  <-->  Cable A: 1=U  
      J140: pin2  <-->  Cable A: 3=W  
      J140: pin1  <-->  Cable A: 4=V  
 
 FRDM-IMXRT1186 board:
   - Jumper setting:
-    J29 (2-3)
-    J42 (1-2)
-    J49 (2-3)
-    J30 (2-3)
-    J33 (2-3)
-    J27 (2-3)
+
+      J29 (2-3)
+
+      J42 (1-2)
+
+      J49 (2-3)
+
+      J30 (2-3)
+
+      J33 (2-3)
+      
+      J27 (2-3)
 
   - Add zero resistors:
-    R2, R3, R243, R448, R34, R40, R83(1-3)
+
+      R2, R3, R243, R448, R34, R40, R83(1-3)
 
   - Remove resistors:
-    R407
+
+      R407
   
 Prepare the Demo  
 ===================

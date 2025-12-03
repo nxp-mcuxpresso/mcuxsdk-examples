@@ -33,10 +33,10 @@ Board settings
 Prepare the Demo
 ================
 
-1. Connect Teknic2311P motor to the FRDM-LVPMSM-FA shield \<How\>
+1. Connect Teknic2311P motor to the FRDM-LVPMSM-FA shield
 2. Connect the FRDM-LVPMSM-FA shield on Motor Control interface of the MIMXRT1180-EVK board.
 3. Connect the EtherCAT Port0 on the MIMXRT1180-EVK board with TwinCAT3
-	The label of the EtherCAT Port0 is J28.
+	- The label of the EtherCAT Port0 is J28.
 4. Connect a USB cable between the host PC and the OpenSDA USB port on the target board
 
 5. Open a serial terminal with the following settings
