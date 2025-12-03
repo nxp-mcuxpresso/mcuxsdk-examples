@@ -7,7 +7,7 @@ project(loc_reader_host_bm LANGUAGES C CXX ASM
     CUSTOM_PRJ_CONF_PATH ${board_root}/${board}/wireless_examples/bluetooth/
         examples/wireless_examples/bluetooth/
         ${board_root}/${board}/wireless_examples/bluetooth/loc_reader_host/
-        ${board_root}/${board}/wireless_examples/bluetooth/loc_reader_host/${core_id}/bm
+#       ${board_root}/${board}/wireless_examples/bluetooth/loc_reader_host/${core_id}/bm
 )
 
 include(${SdkRootDirPath}/CMakeLists.txt)

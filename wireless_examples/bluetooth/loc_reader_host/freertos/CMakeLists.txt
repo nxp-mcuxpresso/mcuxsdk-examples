@@ -8,7 +8,7 @@ project(loc_reader_host_freertos LANGUAGES C CXX ASM
         ${board_root}/${board}/wireless_examples/bluetooth/
         ${board_root}/${board}/wireless_examples/freertos
         ${board_root}/${board}/wireless_examples/bluetooth/loc_reader_host/
-        ${board_root}/${board}/wireless_examples/bluetooth/loc_reader_host/${core_id}/freertos
+#       ${board_root}/${board}/wireless_examples/bluetooth/loc_reader_host/${core_id}/freertos
 )
 
 include(${SdkRootDirPath}/CMakeLists.txt)

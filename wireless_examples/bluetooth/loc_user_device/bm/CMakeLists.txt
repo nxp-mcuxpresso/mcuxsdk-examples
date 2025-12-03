@@ -6,7 +6,7 @@ project(loc_user_device_bm LANGUAGES C CXX ASM
     PROJECT_BOARD_PORT_PATH ${board_root}/${board}/wireless_examples
     CUSTOM_PRJ_CONF_PATH ${board_root}/${board}/wireless_examples/bluetooth/
         ${board_root}/${board}/wireless_examples/bluetooth/
-        ${board_root}/${board}/wireless_examples/bluetooth/loc_user_device/
+#       ${board_root}/${board}/wireless_examples/bluetooth/loc_user_device/
         ${board_root}/${board}/wireless_examples/bluetooth/loc_user_device/${core_id}/bm
 )
 
