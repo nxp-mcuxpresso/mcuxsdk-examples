@@ -170,11 +170,7 @@ typedef enum ct_conf_param_idx_tag
 #define gGenFskLastLowPowerIdx_c     (31)
 #define gGenFskMaxTxPowerLevel_c     ((gGenFskLastLowPowerIdx_c*2)+1)   /* High power table is used from index 32 to index 63. */
 #else
-  #if defined(NXP_RADIO_GEN) && (NXP_RADIO_GEN>=470)
-  #define gGenFskLastLowPowerIdx_c   (27)
-  #else
   #define gGenFskLastLowPowerIdx_c   (31)
-  #endif
   #define gGenFskMaxTxPowerLevel_c   gGenFskLastLowPowerIdx_c
 #endif
 #define gGenFskMinTxPowerLevel_c     (0x00)                             /* Low power table is used from index 0 to index 31. */
