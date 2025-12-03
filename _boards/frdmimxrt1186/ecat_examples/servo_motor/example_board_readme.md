@@ -30,7 +30,7 @@ Board settings
 
 Prepare the Demo
 ================
-1. Connect Teknic2311P motor to the FRDM-LVPMSM-FA shield \<How\>
+1. Connect Teknic2311P motor to the FRDM-LVPMSM-FA shield
 2. Connect the FRDM-LVPMSM-FA shield on Motor Control interface of the FRDM-IMXRT1186 board.
 3. Connect the EtherCAT Port0 on the FRDM-IMXRT1186 board with TwinCAT3
 	The label of the EtherCAT Port0 is J57A.

@@ -9,8 +9,8 @@ Hardware requirements
 
 Board settings
 ============
-J12(1-2)/J13(2-3): ETH0 Function Via J56A.
-J18(1-2)/J17(2-3): ETH2 Function Via J56B.
+- J12(1-2)/J13(2-3): ETH0 Function Via J56A.
+- J18(1-2)/J17(2-3): ETH2 Function Via J56B.
 
 Prepare the Demo
 ================

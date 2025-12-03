@@ -18,18 +18,18 @@ FreeModbus supports bellow feature:
 ## Running the demo
 If the test passes, serial port output:
 
-  Initializing PHY...
-  [LINK STATE] netif=0, state=down
-  [LINK STATE] netif=0, state=up, speed=100M_full
+    Initializing PHY...
+    [LINK STATE] netif=0, state=down
+    [LINK STATE] netif=0, state=up, speed=100M_full
 
-  ************************************************
-  Modbus TCP Server example
-  ************************************************
-  FOR TASK ETH Get IP address from DHCP...
+    ************************************************
+    Modbus TCP Server example
+    ************************************************
+    FOR TASK ETH Get IP address from DHCP...
 
-  IPv4 Address : 10.91.20.33
-  IPv4 Subnet mask : 255.255.255.0
-  IPv4 Gateway : 10.91.20.254
+    IPv4 Address : 10.91.20.33
+    IPv4 Subnet mask : 255.255.255.0
+    IPv4 Gateway : 10.91.20.254
 
 Use the modbus client simulator to read holding registers(0x3) to test modbus function
 

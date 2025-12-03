@@ -18,7 +18,7 @@ FreeModbus supports bellow feature:
 ## Running the demo
 If the test passes, serial port output:
 
-  Modbus RTU Client Example Start!
+    Modbus RTU Client Example Start!
 
 Use the MIMXRT1180-EVK board as modbus Server simulator, write board LED status(0x0d) to control LED(D6, D7) light
 

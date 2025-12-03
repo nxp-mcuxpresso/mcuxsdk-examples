@@ -18,7 +18,7 @@ FreeModbus supports bellow feature:
 ## Running the demo
 If the test passes, serial port output:
 
-  Modbus RTU Server Example Start!
+    Modbus RTU Server Example Start!
 
 Use the modbus client simulator to read holding registers(0x3) to test modbus function
 
