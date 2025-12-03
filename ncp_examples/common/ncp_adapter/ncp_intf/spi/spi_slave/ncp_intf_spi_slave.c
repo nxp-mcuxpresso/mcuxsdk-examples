@@ -22,6 +22,7 @@
 #include "ncp_intf_pm.h"
 #include "ncp_pm.h"
 #include "fsl_pm_core.h"
+#include "ncp_glue_system.h"
 
 /*******************************************************************************
  * Variables
@@ -294,6 +295,16 @@ static void ncp_spi_output_gpio_init(void)
     GPIO_PortInit(GPIO, 1);
     /* Init output GPIO. Default level is high */
     /* GPIO 27 for TX and GPIO 11 for RX interrupt */
+    ncp_reset_context_t *nvic_reset_context = ncp_get_reset_context();
+    if (nvic_reset_context->reset_flag == NCP_RESET_FLAG_MAGIC)
+    {
+        /* boot from nvic reset */
+        if (nvic_reset_context->host_type == 0)
+            output_pin.outputLogic = 1;
+        else if (nvic_reset_context->host_type == 1)
+            output_pin.outputLogic = 0;
+        ncp_sys_set_host_type(nvic_reset_context->host_type);
+    }
     GPIO_PinInit(GPIO, 0, NCP_SPI_GPIO_TX, &output_pin);
     GPIO_PinInit(GPIO, 0, NCP_SPI_GPIO_RX_READY, &output_pin);
     IO_MUX_SetPinOutLevelInSleep(27U, IO_MUX_SleepPinLevelUnchanged);
@@ -548,6 +559,14 @@ static int ncp_spi_pm_exit(unsigned char pm_state)
     return ret;
 }
 
+static void ncp_spi_reset(void)
+{
+    while (!ncp_spi_pm_flag)
+    {
+        OSA_TimeDelay(1);
+    }
+}
+
 static ncp_intf_pm_ops_t ncp_spi_pm_ops =
 {
     .init  = ncp_spi_pm_init,
@@ -563,6 +582,7 @@ ncp_intf_ops_t ncp_intf_ops =
     .send   = ncp_spi_send,
     .recv   = ncp_spi_recv,
     .pm_ops = &ncp_spi_pm_ops,
+    .reset  = ncp_spi_reset,
     .set_host_type = spi_set_host_type,
 };
 

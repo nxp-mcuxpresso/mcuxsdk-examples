@@ -196,7 +196,7 @@ void ncp_adapter_set_cb(ncp_reset_callback_t dev_reset_cb);
  */
 typedef struct _ncp_reset_context
 {
-    volatile uint8_t reset_flag;
+    volatile uint32_t reset_flag;
     volatile uint8_t host_type;
     volatile uint16_t cmd_seq;
 } ncp_reset_context_t;
