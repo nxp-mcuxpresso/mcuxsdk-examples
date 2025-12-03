@@ -13,6 +13,10 @@ mcux_add_macro(
        -DMBEDTLS_HKDF_C\
        "
 )
+if(CONFIG_MCUX_HW_DEVICE_ID_MCXW235)
+    set(TFM_PLATFORM_LINKER_DEFINES "-DMCXW235_SERIES")
+endif()
+
 #mdk configurations:
 mcux_remove_mdk_configuration(
     TARGETS debug
