@@ -89,7 +89,7 @@
         "sensorlessTrackObsrvKsi": 1,
         "sensorlessTrackObsrvIIRSpeedCutOff": 400,
         "sensorlessStartupRamp": 5000,
-        "sensorlessStartupCurrent": 0.35,
+        "sensorlessStartupCurrent": 0.5,
         "sensorlessMergingSpeed": 300,
         "sensorlessMergingCoeff": 100
     }
@@ -174,7 +174,7 @@
 #define M1_SERVO_SPEED_PI_LOW_LIMIT (-2.0F)
 /* SENSORLESS*/
 #define M1_OL_START_RAMP_INC (0.0654498F)
-#define M1_OL_START_I (0.35F)
+#define M1_OL_START_I (0.5F)
 #define M1_MERG_SPEED_TRH (62.8319F)
 #define M1_MERG_COEFF FRAC16(0.000610352)
 #define M1_I_SCALE (0.930233F)
