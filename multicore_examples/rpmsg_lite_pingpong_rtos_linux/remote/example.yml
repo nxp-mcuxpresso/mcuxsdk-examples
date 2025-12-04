@@ -1,3 +1,8 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
 rpmsg_lite_pingpong_rtos_linux_remote:
   section-type: application
   contents:
@@ -5,7 +10,7 @@ rpmsg_lite_pingpong_rtos_linux_remote:
     project-root-path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos_linux/remote/${multicore_foldername}/
     document:
       name: rpmsg_lite_pingpong_rtos_linux_remote${core_id_suffix_name}
-      category: multicore_examples/
+      category: multicore_examples
       brief: 'The Multicore RPMsg-Lite pingpong RTOS project is a simple demonstration
         program that uses the MCUXpresso SDK software, the RPMsg-Lite library and
         Linux rpmsg driver and shows how to implement the inter-core communication

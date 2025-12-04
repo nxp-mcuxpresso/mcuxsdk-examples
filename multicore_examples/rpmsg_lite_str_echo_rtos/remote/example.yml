@@ -1,10 +1,16 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
 rpmsg_lite_str_echo_rtos_remote:
+  section-type: application
   contents:
     meta_path: examples/multicore_examples/rpmsg_lite_str_echo_rtos/remote
     project-root-path: boards/${board}/multicore_examples/rpmsg_lite_str_echo_rtos/remote/${multicore_foldername}/
     document:
       name: rpmsg_lite_str_echo_rtos_remote${core_id_suffix_name}
-      category: multicore_examples/
+      category: multicore_examples
       brief: "The Multicore RPMsg-Lite string echo project is a simple demonstration\
         \ program that uses the MCUXpresso SDK software and the RPMsg-Lite library\
         \ and shows how to implement the inter-core communication between cores of\
