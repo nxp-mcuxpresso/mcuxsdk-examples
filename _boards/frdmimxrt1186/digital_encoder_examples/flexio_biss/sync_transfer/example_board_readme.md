@@ -10,12 +10,14 @@ Board settings
 ============
 This example requires connecting between FRDM-IMXRT1186 board and FRDM-LVPMSM-FA board.
 - Short J300-1 and J300-2 on the FRDM-LVPMSM-FA board
-- FRDM-LVPMSM-FA SW90[1-4] = 0111
+- FRDM-LVPMSM-FA SW90[1-4] = 1001
 - FRDM-LVPMSM-FA SW30[1-4] = 0100
-- FRDM-LVPMSM-FA J70-1 -> 5.0V pin of encoder
+- FRDM-LVPMSM-FA J70-1 -> VCC pin of encoder
 - FRDM-LVPMSM-FA J70-6 -> GND pin of encoder
-- FRDM-LVPMSM-FA J70-4 -> SD+ pin of encoder
-- FRDM-LVPMSM-FA J70-9 -> SD- pin of encoder
+- FRDM-LVPMSM-FA J70-2 -> CLK+ pin of encoder
+- FRDM-LVPMSM-FA J70-7 -> CLK- pin of encoder
+- FRDM-LVPMSM-FA J70-3 -> Data+ pin of encoder
+- FRDM-LVPMSM-FA J70-8 -> Data- pin of encoder
 
 Prepare the Demo
 ===============
