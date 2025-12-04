@@ -103,8 +103,8 @@ void InitClock(void)
     uint32_t ui32CyclesNumber = 0U;
    
     /* The following peripherals use SYSTEM_CLK as APB/IPS clock: FlexPWM0/1, ADC0~3 */
-    g_sClockSetup.ui32FastPeripheralClock = CLOCK_GetFreq(kCLOCK_CoreSysClk);
-    g_sClockSetup.ui32CpuFrequency = CLOCK_GetFreq(kCLOCK_CoreSysClk);
+    g_sClockSetup.ui32FastPeripheralClock = 45000000U;
+    g_sClockSetup.ui32CpuFrequency = 180000000U;
 
     /* Parameters for motor M1 */
     g_sClockSetup.ui16M1PwmFreq   = M1_PWM_FREQ; /* 16 kHz */

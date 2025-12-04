@@ -570,11 +570,6 @@ static void Application_Control_BL(void)
 static void BOARD_Init(void)
 {
     
-    /* INPUTMUX0 peripheral is released from reset */
-    RESET_PeripheralReset(kINPUTMUX0_RST_SHIFT_RSTn);
-    /* Write to INPUTMUX0: Peripheral clock is enabled */
-    CLOCK_EnableClock(kCLOCK_GateINPUTMUX0);    
-    
     /* Init pins set in pin_mux file */
     BOARD_InitBootPins();
     
@@ -587,22 +582,5 @@ static void BOARD_Init(void)
     /* Init GPIO pins */
     BOARD_InitGPIO();
     
-    /* Release peripheral reset */
-    RESET_ReleasePeripheralReset(kADC0_RST_SHIFT_RSTn);
-    RESET_ReleasePeripheralReset(kADC1_RST_SHIFT_RSTn);
-    RESET_ReleasePeripheralReset(kCTIMER1_RST_SHIFT_RSTn);
-
-    /* Attach peripheral clock */
-    CLOCK_SetClockDiv(kCLOCK_DivADC, 1u);
-    CLOCK_AttachClk(kFRO_LF_DIV_to_ADC);
-    
-    CLOCK_SetClockDiv(kCLOCK_DivCTIMER1, 1u);
-    CLOCK_AttachClk(kFRO_HF_to_CTIMER1);
-    
-    /* attach 12 MHz clock to FLEXCOMM0 (debug console) */
-    CLOCK_SetClockDiv(kCLOCK_DivLPUART2, 1u);
-    CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
-
-    RESET_PeripheralReset(BOARD_DEBUG_UART_RST);
   
 }
