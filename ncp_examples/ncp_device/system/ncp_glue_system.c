@@ -146,7 +146,6 @@ static int ncp_sys_get_config(void *tlv)
     return ret;
 }
 
-
 static int ncp_sys_dev_reset(void *tlv)
 {
     const ncp_tlv_adapter_t *tlv_adap = ncp_tlv_adapter_get();
@@ -175,16 +174,20 @@ static int ncp_sys_dev_reset(void *tlv)
     return WM_SUCCESS;
 }
 
-int ncp_sys_dev_reset_send_rsp(void)
+int ncp_sys_dev_reset_rsp(void)
 {
-    NCPCmd_DS_SYS_COMMAND *cmd_res = ncp_sys_get_resp_buf();
+    NCPCmd_DS_SYS_COMMAND *cmd_res = NULL;
     ncp_reset_context_t *context = ncp_get_reset_context();
-    int ret = WM_SUCCESS;
 
     if ((context == NULL) || (context->reset_flag != NCP_RESET_FLAG_MAGIC))
     {
         return -NCP_FAIL;
     }
+
+    cmd_res = ncp_sys_get_resp_buf();
+
+    /* Recover global data */
+    g_cmd_seqno = context->cmd_seq;
 
     cmd_res->header.cmd        = NCP_RSP_SYSTEM_CONFIG_DEVICE_RESET;
     cmd_res->header.size       = NCP_CMD_HEADER_LEN;
@@ -195,15 +198,7 @@ int ncp_sys_dev_reset_send_rsp(void)
     context->reset_flag = 0;
     context->cmd_seq = 0;
 
-    ret = ncp_tlv_send(cmd_res, cmd_res->header.size);
-    if (ret != WM_SUCCESS)
-    {
-        ncp_e("%s: failed to write response", __FUNCTION__);
-        return -NCP_FAIL;
-    }
-
-    /* We have send rsp, return fail to avoid app notify send again */
-    return -NCP_FAIL;
+    return WM_SUCCESS;
 }
 
 static int ncp_sys_mcu_sleep(void *tlv)

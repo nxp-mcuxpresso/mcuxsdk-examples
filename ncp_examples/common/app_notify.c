@@ -36,6 +36,8 @@
 extern int wifi_ncp_send_response(uint8_t *pbuf);
 extern uint8_t wifi_res_buf[NCP_INBUF_SIZE];
 
+extern uint8_t sys_res_buf[NCP_SYS_INBUF_SIZE];
+
 #if defined(configUSE_TICKLESS_IDLE) && (configUSE_TICKLESS_IDLE == 1)
 extern void APP_SetTicklessIdle(bool enable);
 #endif
@@ -92,6 +94,7 @@ static void app_notify_event_handler(void *argv)
     osa_status_t status;
     app_notify_msg_t msg;
     uint8_t *event_buf = NULL;
+    uint32_t cmd_class = NCP_CMD_WLAN;
 
     while (1)
     {
@@ -262,7 +265,8 @@ static void app_notify_event_handler(void *argv)
                     ret = -WM_FAIL;
                 break;
             case APP_EVT_INIT_DONE:
-                ret = ncp_sys_dev_reset_send_rsp();
+                ret = ncp_sys_dev_reset_rsp();
+                cmd_class = NCP_CMD_SYSTEM;
                 break;
             default:
                 app_d("no matching case");
@@ -277,7 +281,16 @@ static void app_notify_event_handler(void *argv)
                 wifi_ncp_send_response(event_buf);
             }
             else
-                wifi_ncp_send_response((uint8_t *)wifi_res_buf);
+            {
+                if (cmd_class == NCP_CMD_SYSTEM)
+                {
+                    system_ncp_send_response((uint8_t *)sys_res_buf);
+                }
+                else
+                {
+                    wifi_ncp_send_response((uint8_t *)wifi_res_buf);
+                }
+            }
         }
 
         if (event_buf)
@@ -285,6 +298,7 @@ static void app_notify_event_handler(void *argv)
             OSA_MemoryFree(event_buf);
             event_buf = NULL;
         }
+        cmd_class = NCP_CMD_WLAN;
         ret = WM_SUCCESS;
     }
 }
