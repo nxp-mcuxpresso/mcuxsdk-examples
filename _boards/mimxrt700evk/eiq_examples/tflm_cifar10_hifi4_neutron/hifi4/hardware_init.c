@@ -16,26 +16,21 @@
 /*${function:start}*/
 #include "fsl_debug_console.h"
 
-extern void xthal_dcache_all_writeback();
-extern void xthal_dcache_all_invalidate();
-extern void xthal_icache_all_invalidate();
+extern void xthal_dcache_region_invalidate(void *addr, size_t size);
+extern void xthal_dcache_region_writeback(void *addr, size_t size);
 
 void cleanCache(void)
-
 {
-    xthal_dcache_all_writeback();
+    xthal_dcache_region_writeback((void *)0x204e0000, 0xaf00);
 }
 
 void invalidateCache(void)
-
 {
-    xthal_dcache_all_invalidate();
-    xthal_icache_all_invalidate();
+    xthal_dcache_region_invalidate((void *)0x204e0000, 0xaf00);
 }
 
 void BOARD_Init(void)
 {
-
     CLOCK_SetXtalFreq(BOARD_XTAL_SYS_CLK_HZ); /* Note: need tell clock driver the frequency of OSC. */
 
     BOARD_InitBootPins();
