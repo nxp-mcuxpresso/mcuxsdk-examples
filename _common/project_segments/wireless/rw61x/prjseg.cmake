@@ -75,3 +75,18 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.linker_script)
         LINKER linker/iar/${iar_wireless_linker_file}
     )
 endif()
+
+if(CONFIG_MCUX_PRJSEG_module.board.wireless.ble_app_mbedtls_psa_config)
+    mcux_add_source(
+        BASE_PATH ${SdkRootDirPath}
+        SOURCES
+            examples/_common/project_segments/wireless/rw61x/mbedtls/ble_mbedtls_psa_config.h
+    )
+    mcux_add_include(
+        BASE_PATH ${SdkRootDirPath}
+        INCLUDES
+            examples/_common/project_segments/wireless/rw61x/mbedtls/
+    )
+
+    mcux_add_macro("-DMBEDTLS_USER_CONFIG_FILE=\\\"ble_mbedtls_psa_config.h\\\"")
+endif()

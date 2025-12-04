@@ -108,3 +108,9 @@ choice MCUX_PRJSEG_module.board.wireless.board.debug_nbu_hci_log_port_selection
 endchoice
 
 endif
+
+config MCUX_PRJSEG_module.board.wireless.ble_app_mbedtls_psa_config
+    bool "Optimized configuration file for BLE Applications with PSA"
+    depends on MCUX_COMPONENT_middleware.wireless.framework.seclib_rng_port.psa
+    help
+      This is a customized PSA configuration file used in wireless BLE examples.

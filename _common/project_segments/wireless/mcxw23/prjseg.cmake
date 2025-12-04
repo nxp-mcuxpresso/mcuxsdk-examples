@@ -122,3 +122,18 @@ endif()
 if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.lowpower)
 # Not implemented for MCXW23 but cmake definition needed for ecosystem build.
 endif()
+
+if(CONFIG_MCUX_PRJSEG_module.board.wireless.ble_app_mbedtls_psa_config)
+    mcux_add_source(
+        BASE_PATH ${SdkRootDirPath}
+        SOURCES
+            examples/_common/project_segments/wireless/mcxw23/mbedtls/ble_mbedtls_psa_config.h
+    )
+    mcux_add_include(
+        BASE_PATH ${SdkRootDirPath}
+        INCLUDES
+            examples/_common/project_segments/wireless/mcxw23/mbedtls/
+    )
+
+    mcux_add_macro("-DMBEDTLS_USER_CONFIG_FILE=\\\"ble_mbedtls_psa_config.h\\\"")
+endif()
