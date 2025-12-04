@@ -9,3 +9,5 @@ wireless_examples
 
    bluetooth/index.rst
    reference_design/index.rst
+   ble_controller/index.rst
+   genfsk/index.rst
