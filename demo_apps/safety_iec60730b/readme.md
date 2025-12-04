@@ -5,6 +5,7 @@
 This example demonstrates the safety library usage.
 
 ## Supported Boards
+- [FRDM-MCXA153](../../_boards/frdmmcxa153/demo_apps/safety_iec60730b/readme.md)
 - [FRDM-MCXA156](../../_boards/frdmmcxa156/demo_apps/safety_iec60730b/readme.md)
 - [FRDM-MCXA266](../../_boards/frdmmcxa266/demo_apps/safety_iec60730b/readme.md)
 - [FRDM-MCXA346](../../_boards/frdmmcxa346/demo_apps/safety_iec60730b/readme.md)
