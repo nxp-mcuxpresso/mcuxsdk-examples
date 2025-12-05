@@ -8,6 +8,16 @@
 
 /* This header configures the MPP HAL and the application according to the board model */
 
+/*
+ * 0: MATCH_FORMAT_ANY
+ * 1: MATCH_FORMAT_MJPEG
+ * 2: MATCH_FORMAT_UNCOMPRESSED
+ *
+ */
+#ifdef USE_USB_CAMERA
+#define MATCH_FORMAT 1
+#endif
+
 /*******************************************************************************
  * HAL configuration (Mandatory)
  ******************************************************************************/
@@ -28,6 +38,16 @@
 #define HAL_ENABLE_DISPLAY
 #define HAL_ENABLE_DISPLAY_DEV_Lcdifv2Rk055   1
 #define HAL_ENABLE_2D_IMGPROC
+
+/**
+ * This is the image decoder HAL configuration
+ */
+
+/* enable JPEG SW decoder */
+#if (MATCH_FORMAT != 2)
+#define HAL_ENABLE_JPEG_CPU                   0
+#define HAL_ENABLE_JPEG_HW                    1
+#endif
 
 /* use GPU backend */
 #define HAL_ENABLE_GFX_DEV_Pxp                0
@@ -77,9 +97,13 @@
 /* camera parameters */
 #ifdef USE_USB_CAMERA
 #define APP_CAMERA_NAME    "USB_cam"
-#define APP_CAMERA_WIDTH   320
-#define APP_CAMERA_HEIGHT  240
+#define APP_CAMERA_WIDTH   1280   //320 //1280 //640 //352
+#define APP_CAMERA_HEIGHT  720   //240 // 720 //480 //288
+#if (MATCH_FORMAT == 2) /* MATCH_FORMAT_UNCOMPRESSED */
 #define APP_CAMERA_FORMAT  MPP_PIXEL_YUYV
+#else
+#define APP_CAMERA_FORMAT  MPP_PIXEL_JPEG
+#endif
 #else /* Flexio camera parameters */
 #define APP_CAMERA_NAME    "EzhV_Ov7670"
 #define APP_CAMERA_WIDTH   640
@@ -93,7 +117,8 @@
 #define APP_DISPLAY_HEIGHT 1280
 #define APP_DISPLAY_FORMAT MPP_PIXEL_RGB565
 
-#define APP_GFX_BACKEND_NAME "gfx_GPU"
+#define APP_GFX_BACKEND_NAME    "gfx_GPU"
+#define APP_DECODE_BACKEND_NAME "jpeg_HW"
 
 /* 30fps capture */
 #define APP_RC_CYCLE_INC 3
@@ -105,12 +130,12 @@
 
 /* other parameters */
 /* rotation is needed to display in landscape because display RK055 is portrait */
-#define APP_DISPLAY_LANDSCAPE_ROTATE ROTATE_0
-
 #ifdef USE_USB_CAMERA
-#define APP_SRC_DISPLAY_FLIP                  FLIP_HORIZONTAL
+#define APP_DISPLAY_LANDSCAPE_ROTATE ROTATE_90
+#define APP_SRC_DISPLAY_FLIP         FLIP_HORIZONTAL
 #else /* OV7670 */
-#define APP_SRC_DISPLAY_FLIP                  FLIP_NONE
+#define APP_DISPLAY_LANDSCAPE_ROTATE ROTATE_0
+#define APP_SRC_DISPLAY_FLIP         FLIP_NONE
 #endif
 
 #endif /* _MPP_CONFIG_H */

@@ -7,6 +7,8 @@
 #ifndef _MPP_CONFIG_H
 #define _MPP_CONFIG_H
 
+#include "hal_camera_shared.h"
+
 /* This header configures the MPP HAL and the application according to the board model */
 
 /*******************************************************************************
@@ -18,6 +20,7 @@
  * This is the mimxrt700evk board configuration
  * Disabling HAL of unused/missing devices saves memory
  */
+
 #define HAL_ENABLE_CAMERA
 #define HAL_ENABLE_CAMERA_DEV_EzhV_Ov7670     0
 #define HAL_ENABLE_CAMERA_DEV_USB             0
@@ -106,8 +109,10 @@
 
 /* Virtual usb dual camera parameters */
 #define APP_CAMERA_NAME    "Virtual_USB_cam"
-#define APP_CAMERA_WIDTH   320
-#define APP_CAMERA_HEIGHT  240 
+#define RGB_CAMERA_WIDTH  TARGET_CAMERA0_WIDTH
+#define RGB_CAMERA_HEIGHT TARGET_CAMERA0_HEIGHT
+#define IR_CAMERA_WIDTH   TARGET_CAMERA1_WIDTH
+#define IR_CAMERA_HEIGHT  TARGET_CAMERA1_HEIGHT
 #define APP_CAMERA_FORMAT  MPP_PIXEL_JPEG
 
 /* display parameters */
@@ -148,8 +153,8 @@
 #define APP_SKIP_CONVERT_FOR_DISPLAY 0
 
 #ifdef APP_USE_NEUTRON64_MODEL
-#define APP_TFLITE_SCRFD_KPS_DATA "scrfd_kps_500m_full_integer_quant_128x128_npu64_tflite.h"
-#define APP_TFLITE_SCRFD_KPS_INFO "scrfd_kps_500m_full_integer_quant_128x128_tflite_info.h"
+#define APP_TFLITE_SCRFD_KPS_DATA "scrfd_kps_500m_full_integer_quant_256x256_npu64_tflite.h"
+#define APP_TFLITE_SCRFD_KPS_INFO "scrfd_kps_500m_full_integer_quant_256x256_tflite_info.h"
 #define APP_TFLITE_MOBILEFACENET_DATA "mobilefacenet_96_96_npu64_tflite.h"
 #define APP_TFLITE_MOBILEFACENET_INFO "mobilefacenet_96_96_npu64_tflite_info.h"
 #define APP_TFLITE_ANTISPOOFING_DATA "antispoofing_npu64_tflite.h"

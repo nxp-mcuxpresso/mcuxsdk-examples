@@ -38,9 +38,18 @@ typedef enum _e_state {
 	STATE_REAL   /* ANTISPOOFING: Face real */
 } e_state;
 
+/* Define image indices for the composition array */
+typedef enum {
+    COMPOSE_LOGO_INDEX = 0,
+    COMPOSE_TEXT_INDEX = 1,
+    COMPOSE_INFPVW_INDEX = 2,
+    COMPOSE_MAX_IMAGES
+} compose_image_index_t;
+
 typedef struct _user_data_t {
     int inference_frame_num;
     mpp_t mp;
+    mpp_t mp_split;
     mpp_elem_handle_t labrect_elem; /* label-rect element handle */
     mpp_elem_handle_t infer_elem;   /* inferenc element handle */
     mpp_elem_handle_t compose_elem;   /* inferenc element handle */
@@ -51,6 +60,7 @@ typedef struct _user_data_t {
     mpp_labeled_rect_t labels[MAX_LABEL_RECTS];
     mpp_landmark_t landmarks[NUM_BOXES_MAX * SCRFD_NUM_LANDMARKS]; /* landmarks for display */
     box_data final_boxes[NUM_BOXES_MAX];
+    mpp_element_params_t *p_params_compose;
     uint32_t accessing;     /* boolean protecting access */
     int detected_count;     /* number of detected boxes */
     int inference_time_ms;
@@ -60,6 +70,7 @@ typedef struct _user_data_t {
     mpp_stats_t *api_stats; /* global stats */
     int registration_mode_on;
     int registration_timeout;
+    uint8_t *inference_view;    /* image seen by inference element (RGB888) */
     char registration_name[NAME_SIZE];
 } user_data_t;
 

@@ -10,7 +10,7 @@ mcux_add_source(
             ${board_root}/${board}/eiq_examples/mpp/examples//camera_usb_final_fr_app_view/mpp_config.h
             examples/eiq_examples/mpp/camera_usb_final_fr_app_view/event_listener.c
             examples/eiq_examples/mpp/camera_usb_final_fr_app_view/main.c
-            examples/eiq_examples/mpp//camera_usb_final_fr_app_view/*.h
+            examples/eiq_examples/mpp/camera_usb_final_fr_app_view/*.h
             examples/eiq_examples/mpp/camera_usb_final_fr_app_view/mpp_app_task_notify.c
             examples/eiq_examples/mpp/camera_usb_final_fr_app_view/mpp_app_task_notify.h
             middleware/eiq/mpp/common/draw_text.c
@@ -19,7 +19,7 @@ mcux_add_source(
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES ${board_root}/${board}/eiq_examples/mpp/examples/camera_usb_final_fr_app_view/
-             middleware/eiq/mpp/examples/camera_usb_final_fr_app_view/
+              examples/eiq_examples/mpp/camera_usb_final_fr_app_view/
 )
 
 # board files

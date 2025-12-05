@@ -10,6 +10,8 @@ mcux_add_source(
     SOURCES ${board_root}/${board}/eiq_examples/mpp/src/pin_mux.c
             ${board_root}/${board}/eiq_examples/mpp/src/hardware_init.c
             ${board_root}/${board}/eiq_examples/mpp/src/utick_config.c
+            ${board_root}/${board}/eiq_examples/mpp/src/ostimer_config.c
+            ${board_root}/${board}/eiq_examples/mpp/inc/ostimer_config.h
             ${board_root}/${board}/eiq_examples/mpp/inc/pin_mux.h
             ${board_root}/${board}/eiq_examples/mpp/inc/app.h
             ${board_root}/${board}/eiq_examples/mpp/inc/utick_config.h

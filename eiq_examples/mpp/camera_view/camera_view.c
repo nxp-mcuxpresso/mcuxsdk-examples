@@ -45,6 +45,10 @@
 #define APP_GFX_BACKEND_NAME NULL
 #endif
 
+#ifndef APP_DECODE_BACKEND_NAME
+#define APP_DECODE_BACKEND_NAME NULL
+#endif
+
 /** Default priority for application tasks
    Tasks created by the application have a lower priority than pipeline tasks by default.
    Pipeline_task_max_prio in mpp_api_params_t structure should be adjusted with other application tasks.*/
@@ -149,6 +153,28 @@ static void app_task(void *params) {
     if (ret) {
         PRINTF("Failed to add camera %s\n", args->camera_name);
         goto err;
+    }
+
+    if (args->src_format == MPP_PIXEL_JPEG)
+    {
+    	/* Add element jpeg decode */
+    	mpp_element_params_t elem_params_decoder;
+    	memset(&elem_params_decoder, 0, sizeof(mpp_element_params_t));
+    	elem_params_decoder.decode.dev_name = APP_DECODE_BACKEND_NAME;
+    	elem_params_decoder.decode.width = APP_CAMERA_WIDTH;
+    	elem_params_decoder.decode.height = APP_CAMERA_HEIGHT;
+
+    	elem_params_decoder.decode.out_format = MPP_PIXEL_YUYV;
+
+    	ret = mpp_element_add(mp, MPP_ELEMENT_IMG_DECODE, &elem_params_decoder, NULL);
+    	if (ret)
+    	{
+    		PRINTF("Failed to add element DECODE\n");
+    		goto err;
+    	}
+    	else{
+    		PRINTF("Added HW jpeg decoder to the branch mp !\r\n");
+    	}
     }
 
 #ifndef APP_SKIP_CONVERT_FOR_DISPLAY

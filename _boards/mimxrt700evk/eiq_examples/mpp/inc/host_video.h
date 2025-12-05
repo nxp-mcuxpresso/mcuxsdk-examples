@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 NXP
+ * Copyright 2019, 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -13,6 +13,10 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+#define MATCH_FORMAT_ANY 0
+#define MATCH_FORMAT_MJPEG 1
+#define MATCH_FORMAT_UNCOMPRESSED 2
+
 #define FULL_SPEED_ISO_MAX_PACKET_SIZE               (1023U)
 #define HIGH_SPEED_ISO_MAX_PACKET_SIZE_ZERO_ADDITION (1024U)
 
@@ -20,7 +24,7 @@
 #define USB_VIDEO_STREAM_BUFFER_COUNT \
     (6U) /*!< the prime count, the value shouldn't be more than 6 because of USB dedicated ram limination */
 #define USB_MJPEG_COMPRESSION_RATIO \
-    (100U) /*!< the approximate mjep picture compression radio of device camera, 50 means 50% */
+    (25U) /*!< the approximate mjep picture compression radio of device camera, 50 means 50% */
 
 /*! @brief host app run status */
 typedef enum _usb_host_vidio_run_state

@@ -72,14 +72,7 @@ typedef struct usb_camera_msg_{
 	void* parameter;
 }usb_camera_msg_t;
 
-#define MATCH_FORMAT_ANY 0
-#define MATCH_FORMAT_MJPEG 1
-#define MATCH_FORMAT_UNCOMPRESSED 2
-
 #define MATCH_RESOLUTION_FIXED 1
-#define MATCH_RES_W 320 //1280 //640 //352
-#define MATCH_RES_H 240 // 720 //480 //288
-#define MATCH_FORMAT MATCH_FORMAT_UNCOMPRESSED
 #define NUM_FRAMES_TO_PROCESS -1 // -1 all frames, >0 process as many frames as requested
 
 #define USB_FRAME_INTERVAL_OVERRIDE 1

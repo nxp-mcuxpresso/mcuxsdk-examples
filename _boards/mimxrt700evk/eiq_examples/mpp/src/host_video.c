@@ -22,11 +22,13 @@
 
 #ifdef USE_USB_CAMERA
 
+#include "mpp_config.h"
+
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
 #ifdef MATCH_RESOLUTION_FIXED
-#define RGB_BUFFER_SIZE (MATCH_RES_W * MATCH_RES_H * 3)
+#define RGB_BUFFER_SIZE (APP_CAMERA_WIDTH * APP_CAMERA_HEIGHT * 3)
 #else
 #define RGB_BUFFER_SIZE (320 * 240 * 3)
 #endif
@@ -559,8 +561,9 @@ static void USB_HostVideoWriteSDCard(void *param)
             return;
         }
 #endif
+#ifdef PRINT_FRAME_INFOS
         usb_echo("Pic:%d\r\n",s_PictureIndex);
-
+#endif
         s_PictureIndex++;
 
         /* toggle the sdcard write picture index */
@@ -678,39 +681,8 @@ void USB_HostVideoTask(void *param)
             break;
         case kUSB_HostVideoRunFindOptimalSetting:
 
-#if MATCH_FORMAT == MATCH_FORMAT_ANY
-
-        	/* Firstly get MJPEG format descriptor */
-            status = USB_HostVideoStreamGetFormatDescriptor(videoAppInstance->classHandle,
-                                                            USB_HOST_DESC_SUBTYPE_VS_FORMAT_MJPEG,
-                                                            (void *)&videoAppInstance->videoStreamFormatDescriptor);
-            if (status == kStatus_USB_InvalidHandle)
-            {
-                usb_echo("videoAppInstance->classHandle is invalid\r\n");
-            }
-            else if (status == kStatus_USB_Error)
-            {
-                /* the camera device doesn't support MJPEG format, try to get UNCOMPRESSED format */
-                status = USB_HostVideoStreamGetFormatDescriptor(videoAppInstance->classHandle,
-                                                                USB_HOST_DESC_SUBTYPE_VS_FORMAT_UNCOMPRESSED,
-                                                                (void *)&videoAppInstance->videoStreamFormatDescriptor);
-                if (status == kStatus_USB_InvalidHandle)
-                {
-                    usb_echo("videoAppInstance->classHandle is invalid\r\n");
-                }
-                else if (status == kStatus_USB_Error)
-                {
-                    usb_echo(" host can't support this format camera device\r\n");
-                    videoAppInstance->runState = kUSB_HostVideoRunIdle;
-                }
-                else
-                {
-                }
-            }
-            else
-            {
-            }
-#elif MATCH_FORMAT == MATCH_FORMAT_MJPEG
+        	/* use MJPEG format by default */
+#if ((MATCH_FORMAT == MATCH_FORMAT_MJPEG) || (MATCH_FORMAT == MATCH_FORMAT_ANY))
          	/* Try to get MJPEG format descriptor */
                 status = USB_HostVideoStreamGetFormatDescriptor(videoAppInstance->classHandle,
                                                                 USB_HOST_DESC_SUBTYPE_VS_FORMAT_MJPEG,
@@ -762,7 +734,7 @@ void USB_HostVideoTask(void *param)
                             videoAppInstance->videoStreamFormatDescriptor;
                 }
 
-                usb_echo("Listing camera %d supported resolutions: \r\n", count);
+                //usb_echo("Listing camera %d supported resolutions: \r\n", count);
                 /* Choose a minimum resolution video stream frame descriptor */
                 for (index = 1; index <= count; index++)
                 {
@@ -789,7 +761,7 @@ void USB_HostVideoTask(void *param)
                     	fd_width = (uint32_t)(USB_SHORT_FROM_LITTLE_ENDIAN_ADDRESS(frameDesc->wWitd));
                     	fd_height = (uint32_t)(USB_SHORT_FROM_LITTLE_ENDIAN_ADDRESS(frameDesc->wHeight));
 
-                    	usb_echo("%d: w:%u h:%u ", index, fd_width , fd_height);
+                        //usb_echo("%d: w:%u h:%u ", index, fd_width , fd_height);
                         if (videoAppInstance->cameraDeviceFormatType == USB_HOST_DESC_SUBTYPE_VS_FORMAT_MJPEG)
                         {
 
@@ -834,7 +806,7 @@ void USB_HostVideoTask(void *param)
                         }
 
 #ifdef MATCH_RESOLUTION_FIXED
-                        if ( (MATCH_RES_W == fd_width) &&  (MATCH_RES_H == fd_height))
+                        if ( (APP_CAMERA_WIDTH == fd_width) &&  (APP_CAMERA_HEIGHT == fd_height))
                         {
 #else
                         resolution    = fd_width * fd_height;
@@ -1202,7 +1174,7 @@ void USB_HostVideoTask(void *param)
                 s_pictureBuffer[0] = (uint32_t *) &usbbuff[0][0];
                 s_pictureBuffer[1] = (uint32_t *) &usbbuff[1][0];
 #else
-#define CAPT_BUFFER_SIZE (MATCH_RES_W * MATCH_RES_H * 3)
+#define CAPT_BUFFER_SIZE (APP_CAMERA_WIDTH * APP_CAMERA_HEIGHT * 3)
                 extern uint8_t * aImgBuff0;
                 extern uint8_t * aImgBuff1;
                 s_pictureBuffer[0] = (uint32_t *) aImgBuff0;

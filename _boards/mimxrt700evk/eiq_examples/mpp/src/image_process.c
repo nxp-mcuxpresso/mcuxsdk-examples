@@ -89,8 +89,9 @@ int Process_Image_Frame(uint8_t *imagebuffer, uint32_t imagesize, uint32_t width
 	static char task_stats_buf[512];
 #endif
 #endif
-
+#ifdef PRINT_FRAME_INFOS
 	process_echo("JS:%ukB ", imagesize/1024);
+#endif
 	if (imagesize <= 1024)
 	{
 		process_echo("Skipping Image, size:%d\r\n",imagesize);
