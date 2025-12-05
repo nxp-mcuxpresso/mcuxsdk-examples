@@ -137,6 +137,8 @@ typedef NCP_TLV_PACK_START struct
     uint32_t is_ref;      /**< Reference flag */
     size_t tlv_sz;       /**< Data size */
     uint8_t *tlv_buf;    /**< Data buffer pointer */
+    void *ref_buf;       /**< Reference buffer */
+    void (*ref_free_cb)(void *buf); /**< Reference buffer free callback  */
 } NCP_TLV_PACK_END ncp_tlv_data_qelem_t;
 
 /**
@@ -220,9 +222,12 @@ ncp_status_t ncp_tlv_send(void *tlv_buf, size_t tlv_sz);
  * @param tlv_buf TLV buffer pointer
  * @param tlv_sz TLV buffer size
  * @param is_ref Reference flag
+ * @param ref_free_cb Reference buffer free callback
+ * @param ref_buf Reference buffer
  * @return Status code
  */
-ncp_status_t ncp_tlv_ref_send(void *tlv_buf, size_t tlv_sz, uint32_t is_ref);
+ncp_status_t ncp_tlv_ref_send(void *tlv_buf, size_t tlv_sz, uint32_t is_ref,
+                              void (*ref_free_cb)(void *buf), void *ref_buf);
 
 /**
  * @brief Send control message

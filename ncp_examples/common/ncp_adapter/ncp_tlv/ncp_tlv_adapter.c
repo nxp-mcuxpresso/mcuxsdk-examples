@@ -334,8 +334,8 @@ static ncp_status_t ncp_tlv_tx_ctrl_enqueue(ncp_tlv_ctrl_qelem_t *qelem)
  */
 static void ncp_tlv_free_data_elmt(ncp_tlv_data_qelem_t **qbuf)
 {
-    if ((*qbuf)->is_ref)
-        OSA_MemoryFree((*qbuf)->tlv_buf);
+    if ((*qbuf)->is_ref && (*qbuf)->ref_free_cb)
+        (*qbuf)->ref_free_cb((*qbuf)->ref_buf);
     OSA_MemoryFree(*qbuf);
     *qbuf = NULL;
 }
@@ -810,7 +810,8 @@ ncp_status_t ncp_tlv_send(void *tlv_buf, size_t tlv_sz)
     return status;
 }
 
-ncp_status_t ncp_tlv_ref_send(void *tlv_buf, size_t tlv_sz, uint32_t is_ref)
+ncp_status_t ncp_tlv_ref_send(void *tlv_buf, size_t tlv_sz, uint32_t is_ref,
+                              void (*ref_free_cb)(void *buf), void *ref_buf)
 {
     ncp_status_t status = NCP_STATUS_SUCCESS;
     ncp_tlv_data_qelem_t *qbuf = NULL;
@@ -833,6 +834,8 @@ ncp_status_t ncp_tlv_ref_send(void *tlv_buf, size_t tlv_sz, uint32_t is_ref)
 
     qbuf->tlv_sz = tlv_sz + chksum_len;
     qbuf->is_ref = 1;
+    qbuf->ref_buf = ref_buf;
+    qbuf->ref_free_cb = ref_free_cb;
     qbuf_tlv = (uint8_t *)tlv_buf;
 
     if (ncp_crypt_is_needed(tlv_buf, tlv_sz))

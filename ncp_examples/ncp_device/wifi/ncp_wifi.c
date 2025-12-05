@@ -144,7 +144,8 @@ int wifi_ncp_forward_data(uint8_t *pbuf)
 {
     int ret                = WM_SUCCESS;
     uint16_t transfer_len = 0;
-    NCP_COMMAND *res = (NCP_COMMAND *)pbuf;
+    struct pbuf *p = (struct pbuf *)(void *)pbuf;
+    NCP_COMMAND *res = (NCP_COMMAND *)p->payload;
 
     /* set cmd response seqno */
     res->seqnum = (GET_MSG_TYPE(res->cmd) == NCP_MSG_TYPE_RESP) ? g_cmd_seqno : 0;
@@ -152,7 +153,7 @@ int wifi_ncp_forward_data(uint8_t *pbuf)
     if (transfer_len >= NCP_CMD_HEADER_LEN)
     {
         /* write response to host */
-        ret = ncp_tlv_ref_send(pbuf, transfer_len, 1);
+        ret = ncp_tlv_ref_send(p->payload, transfer_len, 1, ncp_buf_free, pbuf);
         if (ret != WM_SUCCESS)
         {
             ncp_e("%s: failed to write response", __FUNCTION__);
@@ -229,6 +230,10 @@ static void wifi_ncp_task(void *pvParameters)
             ncp_e("wifi ncp command queue receive failed");
             continue;
         }
+        else if (cmd_item.block_type == 1)
+        {
+            ncp_send_acc_process(cmd_item.cmd_buff);
+        }
         else
         {
             cmd_buf = cmd_item.cmd_buff;
@@ -240,27 +245,113 @@ static void wifi_ncp_task(void *pvParameters)
     }
 }
 
-#define WIFI_NCP_TX_ALLOC_TRY_NUM  20
+typedef struct {
+    int socket;
+    struct sockaddr to;
+    uint32_t flags;
+} ncp_inet_socket_info_t;
+
+bool ncp_send_acc_process(void *data)
+{
+    int ret;
+    struct pbuf *p = (struct pbuf *)data;
+    ncp_inet_socket_info_t *info;
+
+    /* get p */
+    info = (ncp_inet_socket_info_t *)p->payload;
+    pbuf_header(p, -(int)sizeof(ncp_inet_socket_info_t));
+
+    /* make sure socket is not closed here, so that these variables can be read without lock */
+    if (info->to.sa_len)
+    {
+        ret = sendto(info->socket, p->payload, p->len, info->flags, &info->to, info->to.sa_len);
+    }
+    else
+    {
+        ret = send(info->socket, p->payload, p->len, info->flags);
+    }
+    ncp_buf_free(p);
+    if (ret < 0)
+    {
+        ncp_e("inet acc send fail ret %d", ret);
+    }
+
+    return true;
+}
+
+void *ncp_send_acc_filter(void *data)
+{
+    uint32_t cmd_id = (*((uint32_t *)data));
+    NCP_CMD_INET_SENDTO_CFG *tlv;
+    ncp_inet_socket_info_t info = {0};
+    struct pbuf *p;
+    const int offset = sizeof(ncp_inet_socket_info_t);
+    int retry = 10;
+
+    if (cmd_id != NCP_CMD_WLAN_INET_SENDTO)
+    {
+        return NULL;
+    }
+
+    tlv = (NCP_CMD_INET_SENDTO_CFG *)((uint8_t *)data + NCP_CMD_HEADER_LEN);
+retry:
+    p = (struct pbuf *)ncp_buf_alloc(tlv->size, offset);
+    if (!p)
+    {
+        if (retry--)
+        {
+            OSA_TaskYield();
+            goto retry;
+        }
+        return NULL;
+    }
+
+    if (pbuf_header(p, offset) || p->next)
+    {
+        ncp_buf_free(p);
+        return NULL;
+    }
+
+    info.socket = tlv->socket;
+    info.flags = tlv->flags;
+    info.to.sa_len = tlv->socklen;
+    info.to.sa_family = ((struct linux_sockaddr *)tlv->sockaddr)->sa_family;
+    (void)memcpy(info.to.sa_data, ((struct linux_sockaddr *)tlv->sockaddr)->sa_data, tlv->socklen);
+    (void)pbuf_take(p, &info, offset);
+    (void)pbuf_take_at(p, tlv->send_data, tlv->size, offset);
+
+    return p;
+}
+
 static void wifi_ncp_callback(void *tlv, size_t tlv_sz, int status)
 {
     int ret = 0;
     wifi_ncp_command_t cmd_item;
-    int mem_alloc_try_num = WIFI_NCP_TX_ALLOC_TRY_NUM;
+    void *buf;
+
+    buf = ncp_send_acc_filter(tlv);
+    if (buf)
+    {
+        cmd_item.block_type = 1;
+        cmd_item.command_sz = tlv_sz;
+        cmd_item.cmd_buff = buf;
+        ret = OSA_MsgQPutBlock(wifi_ncp_command_queue, &cmd_item, osaWaitForever_c);
+        if (ret != kStatus_Success)
+        {
+            ncp_e("send to wifi ncp data queue failed");
+            ncp_buf_free(buf);
+        }
+        return;
+    }
+
     cmd_item.block_type = 0;
     cmd_item.command_sz = tlv_sz;
-realloc_mem:
     cmd_item.cmd_buff = (ncp_tlv_data_qelem_t *)OSA_MemoryAllocate(tlv_sz);
     if (!cmd_item.cmd_buff)
     {
-        if (!mem_alloc_try_num)
-        {
-            mem_alloc_try_num--;
-            OSA_TimeDelay(OSA_MsgQAvailableMsgs(wifi_ncp_command_queue)/10+1);
-            goto realloc_mem;
-        }
         ncp_adap_e("%s: failed to allocate memory for tlv queue element, num = %d",
                    __FUNCTION__, OSA_MsgQAvailableMsgs(wifi_ncp_command_queue));
-        return ;
+        return;
     }
     memcpy(cmd_item.cmd_buff, tlv, tlv_sz);
 

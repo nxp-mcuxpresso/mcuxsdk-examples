@@ -842,7 +842,6 @@ void ncp_iperf_rx_task(void *pvParameters)
             }
         }
 
-        OSA_TimeDelay(1000);
         pkg_num             = 0;
         iperf_msg.status[1] = 0;
         recv_size           = 0;

@@ -42,6 +42,7 @@ typedef struct {
 
 static socket_type_t socket_type_table[MAX_SOCKETS] = {{-1, 0}};
 static int socket_type_count = 0;
+OSA_SEMAPHORE_HANDLE_DEFINE(ncp_socket_sem);
 
 static void set_socket_socket(int sockfd, int type)
 {
@@ -129,13 +130,17 @@ static int wlan_ncp_inet_connect(void *data)
     sa_data_offset = offsetof(struct sockaddr, sa_data);
     name->sa_len = tlv->socklen;
     memcpy(name->sa_data, linux_name->sa_data, tlv->socklen-sa_data_offset);
+    /* for tcp socket, select this socket recv data before connect */
+    if (get_socket_type(ret) & SOCK_STREAM)
+    {
+        ncp_inet_set_bit(tlv->socket);
+    }
     ret = connect(tlv->socket, name, tlv->socklen);
-    /* for tcp socket, select this socket recv data after connect */
-    if (!ret)
+    if (ret)
     {
         if (get_socket_type(ret) & SOCK_STREAM)
         {
-            ncp_inet_set_bit(tlv->socket);
+            ncp_inet_clear_bit(tlv->socket);
         }
     }
     NCPCmd_DS_INET_COMMAND *cmd_res     = (NCPCmd_DS_INET_COMMAND *)wlan_ncp_get_response_buffer();
@@ -459,6 +464,7 @@ void ncp_inet_set_bit(int bit_index)
     if (bit_index >= 0 && bit_index < 64)
     {
         ncp_bitmap |= (1ULL << bit_index);
+        OSA_SemaphorePost((osa_semaphore_handle_t)ncp_socket_sem);
     }
 }
 
@@ -467,6 +473,7 @@ void ncp_inet_clear_bit(int bit_index)
     if (bit_index >= 0 && bit_index < 64)
     {
         ncp_bitmap &= ~(1ULL << bit_index);
+        OSA_SemaphorePost((osa_semaphore_handle_t)ncp_socket_sem);
     }
 }
 
@@ -511,7 +518,9 @@ static void socket_recv_task(void *arg)
     int ret = 0;
     uint8_t *recv_buf = 0;
     int chksum_len = 4;
+    struct pbuf *p;
     int sa_data_offset = offsetof(struct sockaddr, sa_data);
+    int mem_alloc_try_num;
 
     while(1)
     {
@@ -521,7 +530,7 @@ static void socket_recv_task(void *arg)
         fd_set readset = traverse_bitmap_and_setfd(ncp_bitmap);
         if (max_sock_fd <= 0)
         {
-            vTaskDelay(NCP_SOCKET_RECEIVE_TIMEOUT_INTVAL);
+            OSA_SemaphoreWait((osa_semaphore_handle_t)ncp_socket_sem, osaWaitForever_c);
             continue;
         }
         if (lwip_select(max_sock_fd, (fd_set *)&readset, 0, 0, &timeout) > 0)
@@ -532,16 +541,17 @@ static void socket_recv_task(void *arg)
                     continue;
                 if (FD_ISSET(i, &readset))
                 {
+                do {
+                    mem_alloc_try_num = WIFI_NCP_RX_ALLOC_TRY_NUM;
                     buf_len = ALIGN_D(NCP_INET_SOCKET_RECV_SIZE + sizeof(NCP_CMD_INET_RESP_RECVFROM_CFG)
                       + sizeof(NCP_COMMAND)
 #if CONFIG_NCP_USE_ENCRYPT
                       + NCP_GCM_TAG_LEN
 #endif
                       + chksum_len);
-                    int mem_alloc_try_num = WIFI_NCP_RX_ALLOC_TRY_NUM;
 realloc_mem:
-                    recv_buf = (uint8_t *)OSA_MemoryAllocate(buf_len);
-                    if (!recv_buf)
+                    p = ncp_buf_alloc(buf_len, 0);
+                    if (!p)
                     {
                         if (mem_alloc_try_num)
                         {
@@ -549,14 +559,16 @@ realloc_mem:
                             OSA_TaskYield();
                             goto realloc_mem;
                         }
-                        ncp_e("ncp socket receive buffer alloc fail\r\n");
+                        break;
                     }
+                    recv_buf = p->payload;
                     union ncp_sockaddr_aligned client_addr;
                     socklen_t socklen = sizeof(client_addr);
                     socklen = sizeof(client_addr);
                     tlv_res = (NCP_CMD_INET_RESP_RECVFROM_CFG *)(recv_buf + sizeof(NCP_COMMAND));
+                    memset(recv_buf, 0x0, sizeof(NCP_COMMAND) + sizeof(NCP_CMD_INET_RESP_RECVFROM_CFG));
                     /* read data from tcp/ip stack */
-                    ret = recvfrom(i, tlv_res->recv_data, NCP_INET_SOCKET_RECV_SIZE, 0, (struct sockaddr *)&client_addr.sin6, &socklen);
+                    ret = recvfrom(i, tlv_res->recv_data, NCP_INET_SOCKET_RECV_SIZE, MSG_DONTWAIT, (struct sockaddr *)&client_addr.sin6, &socklen);
                     tlv_res->ret = ret;
                     tlv_res->errno = errno;
                     tlv_res->socket = i;
@@ -564,26 +576,21 @@ realloc_mem:
                         tlv_res->recv_size = ret;
                     else
                     {
-                        /*if recvfrom fail, not to select socket*/
-                        if (ret < 0)
-                            ncp_inet_clear_bit(i);
-                        OSA_MemoryFree(recv_buf);
-                        recv_buf = 0;
-                        OSA_TaskYield();
-                        continue;
+                        ncp_buf_free(p);
+                        break;
                     }
                     struct linux_sockaddr *linux_addr = (struct linux_sockaddr *)tlv_res->sockaddr;
                     linux_addr->sa_family      = client_addr.sa.sa_family;
                     memcpy(linux_addr->sa_data, client_addr.sa.sa_data, socklen-sa_data_offset);
                     tlv_res->socklen = socklen;
                     ncp_inet_prepare_socket_recv_resp(recv_buf);
-                    if (wifi_ncp_forward_data(recv_buf) != WM_SUCCESS)
+                    if (wifi_ncp_forward_data((void *)p) != WM_SUCCESS)
                     {
                         ncp_e("ncp inet send receive event fail\r\n");
-                        OSA_MemoryFree(recv_buf);
-                        recv_buf = 0;
+                        ncp_buf_free(p);
                         OSA_TaskYield();
                     }
+                } while (ret > 0);
                 }
             }
         }
@@ -613,6 +620,7 @@ static OSA_TASK_DEFINE(socket_recv_task, PRIORITY_RTOS_TO_OSA((configMAX_PRIORIT
 static int ncp_inet_recv_create_task(void)
 {
     ncp_d("NCP: run %s!\r\n", __func__);
+    (void)OSA_SemaphoreCreateBinary((osa_semaphore_handle_t)ncp_socket_sem);
     (void)OSA_TaskCreate((osa_task_handle_t)ncp_inet_recv_thread, OSA_TASK(socket_recv_task), NULL);
     return WM_SUCCESS;
 }

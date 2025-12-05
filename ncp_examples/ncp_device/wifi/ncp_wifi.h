@@ -9,6 +9,8 @@
 
 
 int wifi_ncp_init(void);
+bool ncp_send_acc_process(void *data);
+void *ncp_send_acc_filter(void *data);
 
 /*If nvm is enabled, set lfs network to Wi-Fi driver.*/
 int ncp_wifi_set_nvm_network(void);
