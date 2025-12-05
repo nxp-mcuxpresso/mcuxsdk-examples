@@ -42,4 +42,3 @@ lwip_httpssrv_mbedTLS_enet_qos_freertos:
     - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
-    frdmmcxe31b: []
