@@ -177,6 +177,12 @@ static void BOARD_ExitLowPowerCb(void)
 #endif
 
 #if defined(gAppUseSensors_d) && (gAppUseSensors_d > 0)
+
+     /* Ensure IO isolation is cleared before initializing the ADC.
+      * If the main core entered power down mode, failing to release IO isolation
+      * beforehand may result in unpredictable measurement values. */
+    (void)PLATFORM_ClearIoIsolationFromLowPower();
+
     PLATFORM_ReinitAdc();
     /* Trig temperature measurement on wake-up.
      * If a temperature change is detected,
