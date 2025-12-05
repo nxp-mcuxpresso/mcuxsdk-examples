@@ -5,7 +5,7 @@ Hardware requirements
 - J-Link Debug Probe
 - 12V~20V power supply
 - Personal Computer
-- LCD SPEC panel
+- BOE EV121WXM-N12 (LCD SPEC) panel
 
 Board settings
 ============
