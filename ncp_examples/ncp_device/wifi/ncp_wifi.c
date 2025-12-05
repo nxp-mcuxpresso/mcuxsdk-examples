@@ -37,6 +37,8 @@
 #include "ncp_inet.h"
 
 #include "ncp_utils.h"
+#include "lwip/memp.h"
+#include "lwip/pbuf.h"
 
 #if CONFIG_NCP_DEBUG
 #include "cli.h"
@@ -723,4 +725,47 @@ void ncp_get_wifi_resp_buf_lock()
 void ncp_put_wifi_resp_buf_lock()
 {
     OSA_SemaphorePost(ncp_wifi_resp_buf_lock);
+}
+
+void *ncp_buf_alloc(size_t size, uint32_t offset)
+{
+    struct pbuf *p;
+
+    if (size + sizeof(struct pbuf) + offset > MEMP_POOL_NCP_BUF_SIZE)
+    {
+        return NULL;
+    }
+
+    p = (struct pbuf *)memp_malloc(MEMP_NCP_BUF);
+    if (!p)
+    {
+        return NULL;
+    }
+
+    p->next = NULL;
+    p->payload = (uint8_t *)p + sizeof(struct pbuf) + offset;
+    p->tot_len = size;
+    p->len = size;
+    p->type_internal = (uint8_t)PBUF_POOL;
+    p->ref = 1;
+
+    return p;
+}
+
+void ncp_buf_free(void *buf)
+{
+    struct pbuf *p = (struct pbuf *)buf;
+
+    assert(p != NULL);
+    if (!p)
+    {
+        return;
+    }
+
+    p->ref--;
+    assert(p->ref == 0);
+    if (p->ref == 0)
+    {
+        memp_free(MEMP_NCP_BUF, buf);
+    }
 }

@@ -8,12 +8,12 @@
  *  The BSD-3-Clause license can be found at https://spdx.org/licenses/BSD-3-Clause.html
  */
 
-#ifndef __LWIPPOOLS_H__
-#define __LWIPPOOLS_H__
-
 #ifndef LWIP_HOOK_FILENAME
 #define LWIP_HOOK_FILENAME                               "lwiphooks.h"
 #define LWIP_HOOK_TCP_OUT_ADD_TCPOPTS(p, hdr, pcb, opts) lwip_hook_tcp_out_add_tcpopts(p, hdr, pcb, opts)
 #endif
 
-#endif /* __LWIPPOOLS_H__ */
+#define MEMP_POOL_NCP_BUF_NUM 16
+#define MEMP_POOL_NCP_BUF_SIZE 1680
+
+LWIP_MEMPOOL(NCP_BUF, MEMP_POOL_NCP_BUF_NUM, MEMP_POOL_NCP_BUF_SIZE, "NCP_BUF_POOL")

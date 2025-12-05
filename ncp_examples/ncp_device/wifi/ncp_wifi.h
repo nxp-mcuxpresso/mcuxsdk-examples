@@ -13,4 +13,6 @@ int wifi_ncp_init(void);
 /*If nvm is enabled, set lfs network to Wi-Fi driver.*/
 int ncp_wifi_set_nvm_network(void);
 
+void *ncp_buf_alloc(size_t size, uint32_t offset);
+void ncp_buf_free(void *buf);
 #endif /* _NCP_WIFI_H_ */
