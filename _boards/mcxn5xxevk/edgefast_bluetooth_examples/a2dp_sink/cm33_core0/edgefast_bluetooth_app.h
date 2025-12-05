@@ -8,6 +8,7 @@
 #include "edgefast_bluetooth_config.h"
 
 #define FLASH_ADAPTER_SIZE 0x4000
+#define SAI_XFER_QUEUE_SIZE  5U
 
 #if (defined(WIFI_IW416_BOARD_MURATA_1XK_M2) || defined(WIFI_88W8987_BOARD_MURATA_1ZM_M2))
 #include "wifi_bt_module_config.h"
