@@ -543,7 +543,7 @@ realloc_mem:
                     recv_buf = (uint8_t *)OSA_MemoryAllocate(buf_len);
                     if (!recv_buf)
                     {
-                        if (!mem_alloc_try_num)
+                        if (mem_alloc_try_num)
                         {
                             mem_alloc_try_num--;
                             OSA_TaskYield();
