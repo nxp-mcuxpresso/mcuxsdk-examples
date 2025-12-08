@@ -1,5 +1,6 @@
 /*
  * Copyright 2025 NXP
+ * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -13,11 +14,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v16.0
+product: Pins v17.0
 processor: MCXA174
-package_id: MCXA174VLQ
+package_id: MCXA174VLL
 mcu_data: ksdk2_0
-processor_version: 0.0.0
+processor_version: 0.2512.30
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -43,21 +44,19 @@ void BOARD_InitBootPins(void)
 BOARD_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: '36', peripheral: LPUART2, signal: RX, pin_signal: P2_3/WUU0_IN19/TRIG_IN7/LPUART0_CTS_B/LPUART2_RXD/CT_INP13/CT2_MAT3/EZH_PIO27/ADC0_A3/CMP1_IN0/ADC1_A4,
+  - {pin_num: '25', peripheral: LPUART2, signal: RX, pin_signal: P2_3/WUU0_IN19/TRIG_IN7/LPUART0_CTS_B/LPUART2_RXD/CT_INP13/CT2_MAT3/SMARTDMA_PIO27/ADC0_A3/CMP1_IN0/ADC1_A4,
     slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: '35', peripheral: LPUART2, signal: TX, pin_signal: P2_2/TRIG_IN6/LPUART0_RTS_B/LPUART2_TXD/CT_INP12/CT2_MAT2/EZH_PIO26/ADC0_A4/CMP0_IN0/DAC0_OUT, slew_rate: fast,
-    open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: '37', peripheral: ADC0, signal: 'A, 1', pin_signal: P2_4/LPUART2_CTS_B/CT_INP14/CT1_MAT0/EZH_PIO28/ADC0_A1/ADC2_A0/CMP2_IN0, slew_rate: fast, open_drain: disable,
+  - {pin_num: '24', peripheral: LPUART2, signal: TX, pin_signal: P2_2/TRIG_IN6/LPUART0_RTS_B/LPUART2_TXD/CT_INP12/CT2_MAT2/SMARTDMA_PIO26/ADC0_A4/CMP0_IN0/CMP1_INN4,
+    slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+  - {pin_num: '26', peripheral: ADC0, signal: 'A, 1', pin_signal: P2_4/LPUART2_CTS_B/CT_INP14/CT1_MAT0/SMARTDMA_PIO28/ADC0_A1, slew_rate: fast, open_drain: disable,
     drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: disable, invert_input: normal}
-  - {pin_num: '37', peripheral: CMP2, signal: 'IN, 0P', pin_signal: P2_4/LPUART2_CTS_B/CT_INP14/CT1_MAT0/EZH_PIO28/ADC0_A1/ADC2_A0/CMP2_IN0}
-  - {pin_num: '37', peripheral: ADC2, signal: 'A, 0', pin_signal: P2_4/LPUART2_CTS_B/CT_INP14/CT1_MAT0/EZH_PIO28/ADC0_A1/ADC2_A0/CMP2_IN0}
-  - {pin_num: '37', peripheral: CMP2, signal: 'IN, 0N', pin_signal: P2_4/LPUART2_CTS_B/CT_INP14/CT1_MAT0/EZH_PIO28/ADC0_A1/ADC2_A0/CMP2_IN0}
-  - {pin_num: '50', peripheral: ADC0, signal: 'A, 2', pin_signal: P2_15/WUU0_IN21/TRIG_OUT4/LPSPI1_SDI/LPUART1_RTS_B/CT4_MAT3/CT0_MAT2/EZH_PIO18/OPAMP0_OUT/ADC0_A2,
+  - {pin_num: '36', peripheral: ADC0, signal: 'A, 2', pin_signal: P2_15/WUU0_IN21/TRIG_OUT4/LPSPI1_SDI/LPUART1_RTS_B/CT0_MAT2/SMARTDMA_PIO18/OPAMP0_OUT/ADC0_A2/CMP0_INP4,
     slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: disable, invert_input: normal}
-  - {pin_num: '50', peripheral: OPAMP0, signal: OUT, pin_signal: P2_15/WUU0_IN21/TRIG_OUT4/LPSPI1_SDI/LPUART1_RTS_B/CT4_MAT3/CT0_MAT2/EZH_PIO18/OPAMP0_OUT/ADC0_A2}
-  - {pin_num: '54', peripheral: ADC1, signal: 'A, 2', pin_signal: P2_19/TRIG_OUT5/CT3_MAT3/EZH_PIO21/ADC1_A2/OPAMP1_OUT, slew_rate: fast, open_drain: disable, drive_strength: low,
+  - {pin_num: '36', peripheral: CMP0, signal: 'IN, 4P', pin_signal: P2_15/WUU0_IN21/TRIG_OUT4/LPSPI1_SDI/LPUART1_RTS_B/CT0_MAT2/SMARTDMA_PIO18/OPAMP0_OUT/ADC0_A2/CMP0_INP4}
+  - {pin_num: '36', peripheral: OPAMP0, signal: OUT, pin_signal: P2_15/WUU0_IN21/TRIG_OUT4/LPSPI1_SDI/LPUART1_RTS_B/CT0_MAT2/SMARTDMA_PIO18/OPAMP0_OUT/ADC0_A2/CMP0_INP4}
+  - {pin_num: '39', peripheral: ADC1, signal: 'A, 2', pin_signal: P2_19/TRIG_OUT5/SMARTDMA_PIO21/ADC1_A2/CMP1_INP4, slew_rate: fast, open_drain: disable, drive_strength: low,
     pull_select: down, pull_enable: disable, input_buffer: disable, invert_input: normal}
-  - {pin_num: '54', peripheral: OPAMP1, signal: OUT, pin_signal: P2_19/TRIG_OUT5/CT3_MAT3/EZH_PIO21/ADC1_A2/OPAMP1_OUT}
+  - {pin_num: '39', peripheral: CMP1, signal: 'IN, 4P', pin_signal: P2_19/TRIG_OUT5/SMARTDMA_PIO21/ADC1_A2/CMP1_INP4}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -80,14 +79,12 @@ void BOARD_InitPins(void)
     RESET_ReleasePeripheralReset(kPORT2_RST_SHIFT_RSTn);
     /* ADC1 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kADC1_RST_SHIFT_RSTn);
+    /* CMP1 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kCMP1_RST_SHIFT_RSTn);
     /* LPUART2 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kLPUART2_RST_SHIFT_RSTn);
-    /* CMP2 peripheral is released from reset */
-    RESET_ReleasePeripheralReset(kCMP2_RST_SHIFT_RSTn);
-    /* ADC1 peripheral is released from reset */
-    RESET_ReleasePeripheralReset(kADC1_RST_SHIFT_RSTn);
 
-    const port_pin_config_t port2_15_pin50_config = {/* Internal pull-up/down resistor is disabled */
+    const port_pin_config_t port2_15_pin36_config = {/* Internal pull-up/down resistor is disabled */
                                                      .pullSelect = kPORT_PullDisable,
                                                      /* Low internal pull resistor value is selected. */
                                                      .pullValueSelect = kPORT_LowPullResistor,
@@ -101,7 +98,7 @@ void BOARD_InitPins(void)
                                                      .driveStrength = kPORT_LowDriveStrength,
                                                      /* Normal drive strength is configured */
                                                      .driveStrength1 = kPORT_NormalDriveStrength,
-                                                     /* Pin is configured as ADC0_A2, OPAMP0_OUT */
+                                                     /* Pin is configured as ADC0_A2, CMP0_INP4, OPAMP0_OUT */
                                                      .mux = kPORT_MuxAlt0,
                                                      /* Digital input disabled; it is required for analog functions */
                                                      .inputBuffer = kPORT_InputBufferDisable,
@@ -109,10 +106,10 @@ void BOARD_InitPins(void)
                                                      .invertInput = kPORT_InputNormal,
                                                      /* Pin Control Register fields [15:0] are not locked */
                                                      .lockRegister = kPORT_UnlockRegister};
-    /* PORT2_15 (pin 50) is configured as ADC0_A2, OPAMP0_OUT */
-    PORT_SetPinConfig(PORT2, 15U, &port2_15_pin50_config);
+    /* PORT2_15 (pin 36) is configured as ADC0_A2, CMP0_INP4, OPAMP0_OUT */
+    PORT_SetPinConfig(PORT2, 15U, &port2_15_pin36_config);
 
-    const port_pin_config_t port2_19_pin54_config = {/* Internal pull-up/down resistor is disabled */
+    const port_pin_config_t port2_19_pin39_config = {/* Internal pull-up/down resistor is disabled */
                                                      .pullSelect = kPORT_PullDisable,
                                                      /* Low internal pull resistor value is selected. */
                                                      .pullValueSelect = kPORT_LowPullResistor,
@@ -126,7 +123,7 @@ void BOARD_InitPins(void)
                                                      .driveStrength = kPORT_LowDriveStrength,
                                                      /* Normal drive strength is configured */
                                                      .driveStrength1 = kPORT_NormalDriveStrength,
-                                                     /* Pin is configured as ADC1_A2, OPAMP1_OUT */
+                                                     /* Pin is configured as ADC1_A2, CMP1_INP4 */
                                                      .mux = kPORT_MuxAlt0,
                                                      /* Digital input disabled; it is required for analog functions */
                                                      .inputBuffer = kPORT_InputBufferDisable,
@@ -134,10 +131,10 @@ void BOARD_InitPins(void)
                                                      .invertInput = kPORT_InputNormal,
                                                      /* Pin Control Register fields [15:0] are not locked */
                                                      .lockRegister = kPORT_UnlockRegister};
-    /* PORT2_19 (pin 54) is configured as ADC1_A2, OPAMP1_OUT */
-    PORT_SetPinConfig(PORT2, 19U, &port2_19_pin54_config);
+    /* PORT2_19 (pin 39) is configured as ADC1_A2, CMP1_INP4 */
+    PORT_SetPinConfig(PORT2, 19U, &port2_19_pin39_config);
 
-    const port_pin_config_t port2_2_pin35_config = {/* Internal pull-up/down resistor is disabled */
+    const port_pin_config_t port2_2_pin24_config = {/* Internal pull-up/down resistor is disabled */
                                                     .pullSelect = kPORT_PullDisable,
                                                     /* Low internal pull resistor value is selected. */
                                                     .pullValueSelect = kPORT_LowPullResistor,
@@ -159,10 +156,10 @@ void BOARD_InitPins(void)
                                                     .invertInput = kPORT_InputNormal,
                                                     /* Pin Control Register fields [15:0] are not locked */
                                                     .lockRegister = kPORT_UnlockRegister};
-    /* PORT2_2 (pin 35) is configured as LPUART2_TXD */
-    PORT_SetPinConfig(PORT2, 2U, &port2_2_pin35_config);
+    /* PORT2_2 (pin 24) is configured as LPUART2_TXD */
+    PORT_SetPinConfig(PORT2, 2U, &port2_2_pin24_config);
 
-    const port_pin_config_t port2_3_pin36_config = {/* Internal pull-up/down resistor is disabled */
+    const port_pin_config_t port2_3_pin25_config = {/* Internal pull-up/down resistor is disabled */
                                                     .pullSelect = kPORT_PullDisable,
                                                     /* Low internal pull resistor value is selected. */
                                                     .pullValueSelect = kPORT_LowPullResistor,
@@ -184,10 +181,10 @@ void BOARD_InitPins(void)
                                                     .invertInput = kPORT_InputNormal,
                                                     /* Pin Control Register fields [15:0] are not locked */
                                                     .lockRegister = kPORT_UnlockRegister};
-    /* PORT2_3 (pin 36) is configured as LPUART2_RXD */
-    PORT_SetPinConfig(PORT2, 3U, &port2_3_pin36_config);
+    /* PORT2_3 (pin 25) is configured as LPUART2_RXD */
+    PORT_SetPinConfig(PORT2, 3U, &port2_3_pin25_config);
 
-    const port_pin_config_t port2_4_pin37_config = {/* Internal pull-up/down resistor is disabled */
+    const port_pin_config_t port2_4_pin26_config = {/* Internal pull-up/down resistor is disabled */
                                                     .pullSelect = kPORT_PullDisable,
                                                     /* Low internal pull resistor value is selected. */
                                                     .pullValueSelect = kPORT_LowPullResistor,
@@ -201,7 +198,7 @@ void BOARD_InitPins(void)
                                                     .driveStrength = kPORT_LowDriveStrength,
                                                     /* Normal drive strength is configured */
                                                     .driveStrength1 = kPORT_NormalDriveStrength,
-                                                    /* Pin is configured as ADC0_A1, CMP2_IN0, ADC2_A0 */
+                                                    /* Pin is configured as ADC0_A1 */
                                                     .mux = kPORT_MuxAlt0,
                                                     /* Digital input disabled; it is required for analog functions */
                                                     .inputBuffer = kPORT_InputBufferDisable,
@@ -209,8 +206,8 @@ void BOARD_InitPins(void)
                                                     .invertInput = kPORT_InputNormal,
                                                     /* Pin Control Register fields [15:0] are not locked */
                                                     .lockRegister = kPORT_UnlockRegister};
-    /* PORT2_4 (pin 37) is configured as ADC0_A1, CMP2_IN0, ADC2_A0 */
-    PORT_SetPinConfig(PORT2, 4U, &port2_4_pin37_config);
+    /* PORT2_4 (pin 26) is configured as ADC0_A1 */
+    PORT_SetPinConfig(PORT2, 4U, &port2_4_pin26_config);
 }
 /***********************************************************************************************************************
  * EOF

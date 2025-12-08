@@ -1,5 +1,6 @@
 /*
  * Copyright 2025 NXP
+ * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -13,11 +14,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v16.0
+product: Pins v17.0
 processor: MCXA174
-package_id: MCXA174VLQ
+package_id: MCXA174VLL
 mcu_data: ksdk2_0
-processor_version: 0.0.0
+processor_version: 0.2512.30
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -43,15 +44,15 @@ void BOARD_InitBootPins(void)
 BOARD_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: '35', peripheral: LPUART2, signal: TX, pin_signal: P2_2/TRIG_IN6/LPUART0_RTS_B/LPUART2_TXD/CT_INP12/CT2_MAT2/EZH_PIO26/ADC0_A4/CMP0_IN0/DAC0_OUT, slew_rate: fast,
-    open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: '36', peripheral: LPUART2, signal: RX, pin_signal: P2_3/WUU0_IN19/TRIG_IN7/LPUART0_CTS_B/LPUART2_RXD/CT_INP13/CT2_MAT3/EZH_PIO27/ADC0_A3/CMP1_IN0/ADC1_A4,
+  - {pin_num: '24', peripheral: LPUART2, signal: TX, pin_signal: P2_2/TRIG_IN6/LPUART0_RTS_B/LPUART2_TXD/CT_INP12/CT2_MAT2/SMARTDMA_PIO26/ADC0_A4/CMP0_IN0/CMP1_INN4,
     slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: '6', peripheral: INPUTMUX0, signal: 'TRIG_IN, 3', pin_signal: P1_13/TRIG_IN3/LPI2C1_SCL/LPUART2_TXD/CT2_MAT3/EZH_PIO9/LPUART5_RTS_B/ADC1_A11, slew_rate: fast,
+  - {pin_num: '25', peripheral: LPUART2, signal: RX, pin_signal: P2_3/WUU0_IN19/TRIG_IN7/LPUART0_CTS_B/LPUART2_RXD/CT_INP13/CT2_MAT3/SMARTDMA_PIO27/ADC0_A3/CMP1_IN0/ADC1_A4,
+    slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+  - {pin_num: '6', peripheral: INPUTMUX0, signal: 'TRIG_IN, 3', pin_signal: P1_13/TRIG_IN3/LPI2C1_SCL/LPUART2_TXD/CT2_MAT3/SMARTDMA_PIO9/CAN0_TXD/ADC1_A11, slew_rate: fast,
     open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: '70', peripheral: INPUTMUX0, signal: 'TRIG_IN, 10', pin_signal: P3_31/LPTMR0_ALT2/TRIG_IN10/LPI2C3_SDAS/LPUART4_CTS_B/CT0_MAT3/PWM1_B0/EZH_PIO31/ADC1_A20,
-    slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, pull_value: low, input_buffer: enable, invert_input: normal}
-  - {pin_num: '28', peripheral: INPUTMUX0, signal: 'TRIG_IN, 5', pin_signal: P4_7/TRIG_IN5/LPUART3_RTS_B/CT_INP7/PWM0_B0/EZH_PIO27/ADC2_A23, slew_rate: fast, open_drain: disable,
+  - {pin_num: '48', peripheral: INPUTMUX0, signal: 'TRIG_IN, 10', pin_signal: P3_31/LPTMR0_ALT2/TRIG_IN10/LPI2C1_SDAS/CT0_MAT3/PWM1_B0/SMARTDMA_PIO31/ADC1_A20, slew_rate: fast,
+    open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+  - {pin_num: '21', peripheral: INPUTMUX0, signal: 'TRIG_IN, 5', pin_signal: P4_7/TRIG_IN5/LPUART3_RTS_B/CT_INP7/PWM0_B0/SMARTDMA_PIO27, slew_rate: fast, open_drain: disable,
     drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -111,7 +112,7 @@ void BOARD_InitPins(void)
     /* PORT1_13 (pin 6) is configured as TRIG_IN3 */
     PORT_SetPinConfig(PORT1, 13U, &port1_13_pin6_config);
 
-    const port_pin_config_t port2_2_pin35_config = {/* Internal pull-up/down resistor is disabled */
+    const port_pin_config_t port2_2_pin24_config = {/* Internal pull-up/down resistor is disabled */
                                                     .pullSelect = kPORT_PullDisable,
                                                     /* Low internal pull resistor value is selected. */
                                                     .pullValueSelect = kPORT_LowPullResistor,
@@ -133,10 +134,10 @@ void BOARD_InitPins(void)
                                                     .invertInput = kPORT_InputNormal,
                                                     /* Pin Control Register fields [15:0] are not locked */
                                                     .lockRegister = kPORT_UnlockRegister};
-    /* PORT2_2 (pin 35) is configured as LPUART2_TXD */
-    PORT_SetPinConfig(PORT2, 2U, &port2_2_pin35_config);
+    /* PORT2_2 (pin 24) is configured as LPUART2_TXD */
+    PORT_SetPinConfig(PORT2, 2U, &port2_2_pin24_config);
 
-    const port_pin_config_t port2_3_pin36_config = {/* Internal pull-up/down resistor is disabled */
+    const port_pin_config_t port2_3_pin25_config = {/* Internal pull-up/down resistor is disabled */
                                                     .pullSelect = kPORT_PullDisable,
                                                     /* Low internal pull resistor value is selected. */
                                                     .pullValueSelect = kPORT_LowPullResistor,
@@ -158,10 +159,10 @@ void BOARD_InitPins(void)
                                                     .invertInput = kPORT_InputNormal,
                                                     /* Pin Control Register fields [15:0] are not locked */
                                                     .lockRegister = kPORT_UnlockRegister};
-    /* PORT2_3 (pin 36) is configured as LPUART2_RXD */
-    PORT_SetPinConfig(PORT2, 3U, &port2_3_pin36_config);
+    /* PORT2_3 (pin 25) is configured as LPUART2_RXD */
+    PORT_SetPinConfig(PORT2, 3U, &port2_3_pin25_config);
 
-    const port_pin_config_t port3_31_pin70_config = {/* Internal pull-up/down resistor is disabled */
+    const port_pin_config_t port3_31_pin48_config = {/* Internal pull-up/down resistor is disabled */
                                                      .pullSelect = kPORT_PullDisable,
                                                      /* Low internal pull resistor value is selected. */
                                                      .pullValueSelect = kPORT_LowPullResistor,
@@ -183,10 +184,10 @@ void BOARD_InitPins(void)
                                                      .invertInput = kPORT_InputNormal,
                                                      /* Pin Control Register fields [15:0] are not locked */
                                                      .lockRegister = kPORT_UnlockRegister};
-    /* PORT3_31 (pin 70) is configured as TRIG_IN10 */
-    PORT_SetPinConfig(PORT3, 31U, &port3_31_pin70_config);
+    /* PORT3_31 (pin 48) is configured as TRIG_IN10 */
+    PORT_SetPinConfig(PORT3, 31U, &port3_31_pin48_config);
 
-    const port_pin_config_t port4_7_pin28_config = {/* Internal pull-up/down resistor is disabled */
+    const port_pin_config_t port4_7_pin21_config = {/* Internal pull-up/down resistor is disabled */
                                                     .pullSelect = kPORT_PullDisable,
                                                     /* Low internal pull resistor value is selected. */
                                                     .pullValueSelect = kPORT_LowPullResistor,
@@ -208,8 +209,8 @@ void BOARD_InitPins(void)
                                                     .invertInput = kPORT_InputNormal,
                                                     /* Pin Control Register fields [15:0] are not locked */
                                                     .lockRegister = kPORT_UnlockRegister};
-    /* PORT4_7 (pin 28) is configured as TRIG_IN5 */
-    PORT_SetPinConfig(PORT4, 7U, &port4_7_pin28_config);
+    /* PORT4_7 (pin 21) is configured as TRIG_IN5 */
+    PORT_SetPinConfig(PORT4, 7U, &port4_7_pin21_config);
 }
 /***********************************************************************************************************************
  * EOF

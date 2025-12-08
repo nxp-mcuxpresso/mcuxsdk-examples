@@ -1,5 +1,6 @@
 /*
  * Copyright 2025 NXP
+ * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -13,11 +14,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v16.0
+product: Pins v17.0
 processor: MCXA174
-package_id: MCXA174VLQ
+package_id: MCXA174VLL
 mcu_data: ksdk2_0
-processor_version: 0.0.0
+processor_version: 0.2512.30
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -43,10 +44,10 @@ void BOARD_InitBootPins(void)
 BOARD_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: '23', peripheral: LPUART3, signal: RX, pin_signal: P4_2/WUU0_IN16/CLKOUT/LPI2C2_SDAS/LPUART3_RXD/CT4_MAT0/PWM0_A2/EZH_PIO22/ADC2_A18, slew_rate: fast,
-    open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: '26', peripheral: LPUART3, signal: TX, pin_signal: P4_5/TRIG_OUT3/LPI2C2_SCLS/LPUART3_TXD/CT4_MAT3/PWM0_B1/EZH_PIO25/ADC2_A21, slew_rate: fast, open_drain: disable,
-    drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+  - {pin_num: '16', peripheral: LPUART3, signal: RX, pin_signal: P4_2/WUU0_IN16/CLKOUT/LPUART3_RXD/PWM0_A2/SMARTDMA_PIO22, slew_rate: fast, open_drain: disable, drive_strength: low,
+    pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+  - {pin_num: '19', peripheral: LPUART3, signal: TX, pin_signal: P4_5/TRIG_OUT3/LPUART3_TXD/PWM0_B1/SMARTDMA_PIO25, slew_rate: fast, open_drain: disable, drive_strength: low,
+    pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -66,7 +67,7 @@ void BOARD_InitPins(void)
     /* PORT4 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kPORT4_RST_SHIFT_RSTn);
 
-    const port_pin_config_t port4_2_pin23_config = {/* Internal pull-up/down resistor is disabled */
+    const port_pin_config_t port4_2_pin16_config = {/* Internal pull-up/down resistor is disabled */
                                                     .pullSelect = kPORT_PullDisable,
                                                     /* Low internal pull resistor value is selected. */
                                                     .pullValueSelect = kPORT_LowPullResistor,
@@ -88,10 +89,10 @@ void BOARD_InitPins(void)
                                                     .invertInput = kPORT_InputNormal,
                                                     /* Pin Control Register fields [15:0] are not locked */
                                                     .lockRegister = kPORT_UnlockRegister};
-    /* PORT4_2 (pin 23) is configured as LPUART3_RXD */
-    PORT_SetPinConfig(PORT4, 2U, &port4_2_pin23_config);
+    /* PORT4_2 (pin 16) is configured as LPUART3_RXD */
+    PORT_SetPinConfig(PORT4, 2U, &port4_2_pin16_config);
 
-    const port_pin_config_t port4_5_pin26_config = {/* Internal pull-up/down resistor is disabled */
+    const port_pin_config_t port4_5_pin19_config = {/* Internal pull-up/down resistor is disabled */
                                                     .pullSelect = kPORT_PullDisable,
                                                     /* Low internal pull resistor value is selected. */
                                                     .pullValueSelect = kPORT_LowPullResistor,
@@ -113,8 +114,8 @@ void BOARD_InitPins(void)
                                                     .invertInput = kPORT_InputNormal,
                                                     /* Pin Control Register fields [15:0] are not locked */
                                                     .lockRegister = kPORT_UnlockRegister};
-    /* PORT4_5 (pin 26) is configured as LPUART3_TXD */
-    PORT_SetPinConfig(PORT4, 5U, &port4_5_pin26_config);
+    /* PORT4_5 (pin 19) is configured as LPUART3_TXD */
+    PORT_SetPinConfig(PORT4, 5U, &port4_5_pin19_config);
 }
 /***********************************************************************************************************************
  * EOF
