@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(endat2p2 LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/digital_encoder_examples/flexio_endat2p2)
+project(flexio_endat2p2 LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/digital_encoder_examples/flexio_endat2p2)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
