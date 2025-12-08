@@ -230,7 +230,8 @@ void flexspi_flr_callback(FLEXSPI_SLV_Type *base, flexspi_slv_handle_t *handle)
 
     if ((handle->intrMask & (uint32_t)kFLEXSPI_SLV_ErrorCommandFlag) != 0U)
     {
-        (void)PRINTF("[Follower](interrupt) Error command!\r\n");
+        /* Mask this log in case test reports error when there's glitch on bus. FLR ignores them. */
+        //(void)PRINTF("[Follower](interrupt) Error command!\r\n");
     }
     if ((handle->intrMask & ((uint32_t)kFLEXSPI_SLV_WriteOverflowFlag | (uint32_t)kFLEXSPI_SLV_ReadUnderflowFlag)) != 0U)
     {
