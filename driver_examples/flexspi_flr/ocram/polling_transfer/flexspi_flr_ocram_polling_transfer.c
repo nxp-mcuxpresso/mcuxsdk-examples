@@ -21,6 +21,10 @@
 #define FOLLOWER_STATUS_REG_ACCESS     (FLEXSPI_SLV_MODULE_STATUS_SEQIDLE_MASK | FLEXSPI_SLV_MODULE_STATUS_REGRWIDLE_MASK)
 #define FOLLOWER_STATUS_AXI_WRITE_IDLE FLEXSPI_SLV_MODULE_STATUS_SEQIDLE_MASK
 
+#ifndef FOLLOWER_READY_WAIT_100MS_COUNT
+#define FOLLOWER_READY_WAIT_100MS_COUNT 100U
+#endif
+
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -54,9 +58,11 @@ void flexspi_flr_callback(FLEXSPI_SLV_Type *base, flexspi_slv_handle_t *handle)
 
     if ((handle->intrMask & (uint32_t)kFLEXSPI_SLV_ErrorCommandFlag) != 0U)
     {
-        (void)PRINTF("[Follower](interrupt) Error command!\r\n");
+        /* Mask this log in case test reports error when there's glitch on bus. FLR ignores them. */
+        //(void)PRINTF("[Follower](interrupt) Error command!\r\n");
     }
-    if ((handle->intrMask & ((uint32_t)kFLEXSPI_SLV_WriteOverflowFlag | (uint32_t)kFLEXSPI_SLV_ReadUnderflowFlag)) != 0U)
+    if ((handle->intrMask & ((uint32_t)kFLEXSPI_SLV_WriteOverflowFlag | (uint32_t)kFLEXSPI_SLV_ReadUnderflowFlag)) !=
+        0U)
     {
         FLEXSPI_SLV_GetOutOfRangeCounts(base, &rdCount, &wrCount);
         (void)PRINTF("[Follower](interrupt) Write error count = %u. Read error count = %u!\r\n", wrCount, rdCount);
@@ -117,8 +123,18 @@ int main(void)
     flexspi_ocram_init(EXAMPLE_FLEXSPI);
     PRINTF("FLEXSPI leader is initialized! Clock is %u\r\n", deviceconfig.flexspiRootClk);
 
-    /* Get FlexSPI Follower status. */
-    status = flexspi_ocram_status_get(EXAMPLE_FLEXSPI, &slvStatus);
+    PRINTF("Wait for FLEXSPI Follower ready...\r\n");
+    for (uint32_t timeout = 0; timeout < FOLLOWER_READY_WAIT_100MS_COUNT; timeout++)
+    {
+        /* Get FlexSPI Follower status. */
+        status = flexspi_ocram_status_get(EXAMPLE_FLEXSPI, &slvStatus);
+        if (status == kStatus_Success)
+        {
+            break;
+        }
+
+        SDK_DelayAtLeastUs(100000, CLOCK_GetFreq(kCLOCK_CpuClk));
+    }
     if (status != kStatus_Success)
     {
         PRINTF("[%d] It's failed to get the follower status!\r\n", status);
