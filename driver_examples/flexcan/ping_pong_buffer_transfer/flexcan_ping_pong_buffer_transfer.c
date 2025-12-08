@@ -286,7 +286,13 @@ static status_t DEMO_ReadRxMb(CAN_Type *base, uint8_t mbIdx, flexcan_frame_t *pR
 static void User_TransferHandleIRQ(CAN_Type *base)
 {
     status_t status;
-    uint32_t EsrStatus;
+#if (defined(FSL_FEATURE_FLEXCAN_HAS_PN_MODE) && FSL_FEATURE_FLEXCAN_HAS_PN_MODE) ||                   \
+    (defined(FSL_FEATURE_FLEXCAN_HAS_ENHANCED_RX_FIFO) && FSL_FEATURE_FLEXCAN_HAS_ENHANCED_RX_FIFO) || \
+    (defined(FSL_FEATURE_FLEXCAN_HAS_MEMORY_ERROR_CONTROL) && FSL_FEATURE_FLEXCAN_HAS_MEMORY_ERROR_CONTROL)
+    uint64_t EsrStatus = 0U;
+#else
+    uint32_t EsrStatus = 0U;
+#endif
     uint32_t i;
 
     do
@@ -361,7 +367,9 @@ static void User_TransferHandleIRQ(CAN_Type *base)
                     /* Due to enable the queue feature, the rx overflow may only occur in the last matched MB
                        (RX_QUEUE_BUFFER_END_2). */
                     if (((RX_QUEUE_BUFFER_BASE + i) == RX_QUEUE_BUFFER_END_2) && (status == kStatus_FLEXCAN_RxOverflow))
+                    {
                         rxStatus = status;
+                    }
                 }
             }
         }
@@ -390,7 +398,6 @@ int main(void)
     flexcan_rx_mb_config_t mbConfig;
     uint8_t node_type;
     uint32_t i;
-    static uint32_t TxCount = 1;
 
     /* Initialize board hardware. */
     BOARD_InitHardware();
@@ -534,6 +541,12 @@ int main(void)
             while (index != 0x0D)
             {
                 index = GETCHAR();
+
+                if (times > 256U)
+                {
+                    times = 256U;
+                    LOG_INFO("\r\nMaximum number of CAN/CANFD messages to be send is 256.\r\n");
+                }
                 if ((index >= '0') && (index <= '9'))
                 {
                     (void)PUTCHAR(index);
@@ -558,11 +571,12 @@ int main(void)
                 (void)FLEXCAN_TransferSendBlocking(EXAMPLE_CAN, TX_MESSAGE_BUFFER_NUM, &txFrame);
 #endif
                 /* Wait for 200ms after every 2 RX_QUEUE_BUFFER_SIZE transmissions. */
-                if ((TxCount % (RX_QUEUE_BUFFER_SIZE * 2U)) == 0U)
+                if ((i % (RX_QUEUE_BUFFER_SIZE * 2U)) == 0U)
+                {
                     SDK_DelayAtLeastUs(200000U, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+                }
 
                 txFrame.dataByte0++;
-                TxCount++;
             }
             LOG_INFO("Transmission done.\r\n\r\n");
         }

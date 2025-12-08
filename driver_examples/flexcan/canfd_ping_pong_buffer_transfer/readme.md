@@ -19,7 +19,9 @@ But masked by 0xFF in Receive Individual Mask register, Node B will match ID 0x3
 When queue 1 finish receive, update queue 1 individual ID mask to 0x7FF, can only receive frame with ID 0x21. So queue 1 will ignore the next messages and the queue 2 start to receive frame.  
 When queue 2 finish receive, restore queue 1 individual ID mask to 0xFF, make it receive ID 0x321 frames again.  
 
-This example also demonstrates how to create custom FlexCAN IRQ handler.
+This example also demonstrates how to create custom FlexCAN IRQ handler.  
+
+This example limits maximum number of CAN messages to be send each time to 256.
 
 ## Supported Boards
 - [EVK9-MIMX8ULP](../../../_boards/evk9mimx8ulp/driver_examples/canfd/ping_pong_buffer_transfer/example_board_readme.md)
