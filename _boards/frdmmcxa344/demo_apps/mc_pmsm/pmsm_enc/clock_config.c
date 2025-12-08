@@ -24,11 +24,11 @@
 /* clang-format off */
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Clocks v19.0
+product: Clocks v15.0
 processor: MCXA344
 package_id: MCXA344VLL
 mcu_data: ksdk2_0
-processor_version: 0.2512.40
+processor_version: 0.0.0
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
 
@@ -55,6 +55,380 @@ void BOARD_InitBootClocks(void)
 }
 
 /*******************************************************************************
+ ******************** Configuration BOARD_BootClockFRO12M **********************
+ ******************************************************************************/
+/* clang-format off */
+/* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+!!Configuration
+name: BOARD_BootClockFRO12M
+outputs:
+- {id: BUS_clock.outFreq, value: 6 MHz}
+- {id: CLK_1M_clock.outFreq, value: 1 MHz}
+- {id: CLK_45M_clock.outFreq, value: 45 MHz}
+- {id: CPU_clock.outFreq, value: 12 MHz}
+- {id: FRO_12M_DIV_clock.outFreq, value: 12 MHz}
+- {id: FRO_12M_clock.outFreq, value: 12 MHz}
+- {id: FRO_HF_DIV_clock.outFreq, value: 45 MHz}
+- {id: FRO_HF_clock.outFreq, value: 45 MHz}
+- {id: MAIN_clock.outFreq, value: 12 MHz}
+- {id: Slow_clock.outFreq, value: 2 MHz}
+- {id: System_clock.outFreq, value: 12 MHz}
+- {id: TRACE_clock.outFreq, value: 12 MHz}
+- {id: UTICK0_clock.outFreq, value: 1 MHz}
+- {id: WWDT0_clock.outFreq, value: 1 MHz}
+settings:
+- {id: SCGMode, value: SIRC}
+- {id: VDD_CORE, value: voltage_1v2}
+- {id: FROHFDIV_SYSCON_FROHFDIV_HALT, value: RUN}
+- {id: FROLFDIV_SYSCON_FROLFDIV_HALT, value: RUN}
+- {id: SCG.SCGSCS_CLKSEL.sel, value: SCG.FRO_12M_clock}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
+/* clang-format on */
+
+/*******************************************************************************
+ * Variables for BOARD_BootClockFRO12M configuration
+ ******************************************************************************/
+/*******************************************************************************
+ * Code for BOARD_BootClockFRO12M configuration
+ ******************************************************************************/
+void BOARD_BootClockFRO12M(void)
+{
+    uint32_t coreFreq;
+    spc_active_mode_core_ldo_option_t ldoOption;
+    spc_sram_voltage_config_t sramOption;
+
+    /* Get the CPU Core frequency */
+    coreFreq = CLOCK_GetCoreSysClkFreq();
+
+    /* The flow of increasing voltage and frequency */
+    if (coreFreq <= BOARD_BOOTCLOCKFRO12M_CORE_CLOCK) {
+        /* Set the LDO_CORE VDD regulator level */
+        ldoOption.CoreLDOVoltage = kSPC_CoreLDO_OverDriveVoltage;
+        ldoOption.CoreLDODriveStrength = kSPC_CoreLDO_NormalDriveStrength;
+        (void)SPC_SetActiveModeCoreLDORegulatorConfig(SPC0, &ldoOption);
+        /* Configure Flash to support different voltage level and frequency */
+        FMU0->FCTRL = (FMU0->FCTRL & ~((uint32_t)FMU_FCTRL_RWSC_MASK)) | (FMU_FCTRL_RWSC(0x0U));
+        /* Specifies the operating voltage for the SRAM's read/write timing margin */
+        sramOption.operateVoltage = kSPC_sramOperateAt1P2V;
+        sramOption.requestVoltageUpdate =  true;
+        (void)SPC_SetSRAMOperateVoltage(SPC0, &sramOption);
+    }
+
+
+    /*!< Set up system dividers */
+    CLOCK_SetClockDiv(kCLOCK_DivAHBCLK, 1U);               /* !< Set SYSCON.AHBCLKDIV divider to value 1 */
+    CLOCK_SetClockDiv(kCLOCK_DivFRO_HF, 1U);               /* !< Set SYSCON.FROHFDIV divider to value 1 */
+    CLOCK_SetupFROHFClocking(45000000U);               /*!< Enable FRO HF(45MHz) output */
+    CLOCK_SetupFRO12MClocking();                /*!< Setup FRO12M clock */
+
+    CLOCK_AttachClk(kFRO12M_to_MAIN_CLK);       /* !< Switch MAIN_CLK to kFRO12M */
+
+    /* The flow of decreasing voltage and frequency */
+    if (coreFreq > BOARD_BOOTCLOCKFRO12M_CORE_CLOCK) {
+        /* Configure Flash to support different voltage level and frequency */
+        FMU0->FCTRL = (FMU0->FCTRL & ~((uint32_t)FMU_FCTRL_RWSC_MASK)) | (FMU_FCTRL_RWSC(0x0U));
+        /* Specifies the operating voltage for the SRAM's read/write timing margin */
+        sramOption.operateVoltage = kSPC_sramOperateAt1P2V;
+        sramOption.requestVoltageUpdate =  true;
+        (void)SPC_SetSRAMOperateVoltage(SPC0, &sramOption);
+        /* Set the LDO_CORE VDD regulator level */
+        ldoOption.CoreLDOVoltage = kSPC_CoreLDO_OverDriveVoltage;
+        ldoOption.CoreLDODriveStrength = kSPC_CoreLDO_NormalDriveStrength;
+        (void)SPC_SetActiveModeCoreLDORegulatorConfig(SPC0, &ldoOption);
+    }
+
+    /*!< Set up clock selectors - Attach clocks to the peripheries */
+    CLOCK_AttachClk(kCPU_CLK_to_TRACE);                    /* !< Switch TRACE to CPU_CLK */
+
+    /*!< Set up dividers */
+    CLOCK_SetClockDiv(kCLOCK_DivFRO_LF, 1U);               /* !< Set SYSCON.FROLFDIV divider to value 1 */
+    CLOCK_SetClockDiv(kCLOCK_DivWWDT0, 1U);                /* !< Set MRCC.WWDT0_CLKDIV divider to value 1 */
+    CLOCK_SetClockDiv(kCLOCK_DivTRACE, 1U);                /* !< Set MRCC.TRACE_CLKDIV divider to value 1 */
+
+    /* Set SystemCoreClock variable */
+    SystemCoreClock = BOARD_BOOTCLOCKFRO12M_CORE_CLOCK;
+}
+/*******************************************************************************
+ ******************* Configuration BOARD_BootClockFROHF45M *********************
+ ******************************************************************************/
+/* clang-format off */
+/* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+!!Configuration
+name: BOARD_BootClockFROHF45M
+outputs:
+- {id: BUS_clock.outFreq, value: 22.5 MHz}
+- {id: CLK_1M_clock.outFreq, value: 1 MHz}
+- {id: CLK_45M_clock.outFreq, value: 45 MHz}
+- {id: CPU_clock.outFreq, value: 45 MHz}
+- {id: FRO_12M_DIV_clock.outFreq, value: 12 MHz}
+- {id: FRO_12M_clock.outFreq, value: 12 MHz}
+- {id: FRO_HF_DIV_clock.outFreq, value: 45 MHz}
+- {id: FRO_HF_clock.outFreq, value: 45 MHz}
+- {id: MAIN_clock.outFreq, value: 45 MHz}
+- {id: Slow_clock.outFreq, value: 7.5 MHz}
+- {id: System_clock.outFreq, value: 45 MHz}
+- {id: TRACE_clock.outFreq, value: 45 MHz}
+- {id: UTICK0_clock.outFreq, value: 1 MHz}
+- {id: WWDT0_clock.outFreq, value: 1 MHz}
+settings:
+- {id: VDD_CORE, value: voltage_1v2}
+- {id: FROHFDIV_SYSCON_FROHFDIV_HALT, value: RUN}
+- {id: FROLFDIV_SYSCON_FROLFDIV_HALT, value: RUN}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
+/* clang-format on */
+
+/*******************************************************************************
+ * Variables for BOARD_BootClockFROHF45M configuration
+ ******************************************************************************/
+/*******************************************************************************
+ * Code for BOARD_BootClockFROHF45M configuration
+ ******************************************************************************/
+void BOARD_BootClockFROHF45M(void)
+{
+    uint32_t coreFreq;
+    spc_active_mode_core_ldo_option_t ldoOption;
+    spc_sram_voltage_config_t sramOption;
+
+    /* Get the CPU Core frequency */
+    coreFreq = CLOCK_GetCoreSysClkFreq();
+
+    /* The flow of increasing voltage and frequency */
+    if (coreFreq <= BOARD_BOOTCLOCKFROHF45M_CORE_CLOCK) {
+        /* Set the LDO_CORE VDD regulator level */
+        ldoOption.CoreLDOVoltage = kSPC_CoreLDO_OverDriveVoltage;
+        ldoOption.CoreLDODriveStrength = kSPC_CoreLDO_NormalDriveStrength;
+        (void)SPC_SetActiveModeCoreLDORegulatorConfig(SPC0, &ldoOption);
+        /* Configure Flash to support different voltage level and frequency */
+        FMU0->FCTRL = (FMU0->FCTRL & ~((uint32_t)FMU_FCTRL_RWSC_MASK)) | (FMU_FCTRL_RWSC(0x1U));
+        /* Specifies the operating voltage for the SRAM's read/write timing margin */
+        sramOption.operateVoltage = kSPC_sramOperateAt1P2V;
+        sramOption.requestVoltageUpdate =  true;
+        (void)SPC_SetSRAMOperateVoltage(SPC0, &sramOption);
+    }
+
+
+    /*!< Set up system dividers */
+    CLOCK_SetClockDiv(kCLOCK_DivAHBCLK, 1U);               /* !< Set SYSCON.AHBCLKDIV divider to value 1 */
+    CLOCK_SetClockDiv(kCLOCK_DivFRO_HF, 1U);               /* !< Set SYSCON.FROHFDIV divider to value 1 */
+    CLOCK_SetupFROHFClocking(45000000U);               /*!< Enable FRO HF(45MHz) output */
+    CLOCK_SetupFRO12MClocking();                /*!< Setup FRO12M clock */
+
+    CLOCK_AttachClk(kFRO_HF_to_MAIN_CLK);       /* !< Switch MAIN_CLK to kFRO_HF */
+
+    /* The flow of decreasing voltage and frequency */
+    if (coreFreq > BOARD_BOOTCLOCKFROHF45M_CORE_CLOCK) {
+        /* Configure Flash to support different voltage level and frequency */
+        FMU0->FCTRL = (FMU0->FCTRL & ~((uint32_t)FMU_FCTRL_RWSC_MASK)) | (FMU_FCTRL_RWSC(0x1U));
+        /* Specifies the operating voltage for the SRAM's read/write timing margin */
+        sramOption.operateVoltage = kSPC_sramOperateAt1P2V;
+        sramOption.requestVoltageUpdate =  true;
+        (void)SPC_SetSRAMOperateVoltage(SPC0, &sramOption);
+        /* Set the LDO_CORE VDD regulator level */
+        ldoOption.CoreLDOVoltage = kSPC_CoreLDO_OverDriveVoltage;
+        ldoOption.CoreLDODriveStrength = kSPC_CoreLDO_NormalDriveStrength;
+        (void)SPC_SetActiveModeCoreLDORegulatorConfig(SPC0, &ldoOption);
+    }
+
+    /*!< Set up clock selectors - Attach clocks to the peripheries */
+    CLOCK_AttachClk(kCPU_CLK_to_TRACE);                    /* !< Switch TRACE to CPU_CLK */
+
+    /*!< Set up dividers */
+    CLOCK_SetClockDiv(kCLOCK_DivFRO_LF, 1U);               /* !< Set SYSCON.FROLFDIV divider to value 1 */
+    CLOCK_SetClockDiv(kCLOCK_DivWWDT0, 1U);                /* !< Set MRCC.WWDT0_CLKDIV divider to value 1 */
+    CLOCK_SetClockDiv(kCLOCK_DivTRACE, 1U);                /* !< Set MRCC.TRACE_CLKDIV divider to value 1 */
+
+    /* Set SystemCoreClock variable */
+    SystemCoreClock = BOARD_BOOTCLOCKFROHF45M_CORE_CLOCK;
+}
+/*******************************************************************************
+ ******************* Configuration BOARD_BootClockFROHF60M *********************
+ ******************************************************************************/
+/* clang-format off */
+/* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+!!Configuration
+name: BOARD_BootClockFROHF60M
+outputs:
+- {id: BUS_clock.outFreq, value: 30 MHz}
+- {id: CLK_1M_clock.outFreq, value: 1 MHz}
+- {id: CLK_45M_clock.outFreq, value: 45 MHz}
+- {id: CPU_clock.outFreq, value: 60 MHz}
+- {id: FRO_12M_DIV_clock.outFreq, value: 12 MHz}
+- {id: FRO_12M_clock.outFreq, value: 12 MHz}
+- {id: FRO_HF_DIV_clock.outFreq, value: 60 MHz}
+- {id: FRO_HF_clock.outFreq, value: 60 MHz}
+- {id: MAIN_clock.outFreq, value: 60 MHz}
+- {id: Slow_clock.outFreq, value: 10 MHz}
+- {id: System_clock.outFreq, value: 60 MHz}
+- {id: TRACE_clock.outFreq, value: 60 MHz}
+- {id: UTICK0_clock.outFreq, value: 1 MHz}
+- {id: WWDT0_clock.outFreq, value: 1 MHz}
+settings:
+- {id: VDD_CORE, value: voltage_1v2}
+- {id: FROHFDIV_SYSCON_FROHFDIV_HALT, value: RUN}
+- {id: FROLFDIV_SYSCON_FROLFDIV_HALT, value: RUN}
+sources:
+- {id: SCG.FIRC.outFreq, value: 60 MHz}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
+/* clang-format on */
+
+/*******************************************************************************
+ * Variables for BOARD_BootClockFROHF60M configuration
+ ******************************************************************************/
+/*******************************************************************************
+ * Code for BOARD_BootClockFROHF60M configuration
+ ******************************************************************************/
+void BOARD_BootClockFROHF60M(void)
+{
+    uint32_t coreFreq;
+    spc_active_mode_core_ldo_option_t ldoOption;
+    spc_sram_voltage_config_t sramOption;
+
+    /* Get the CPU Core frequency */
+    coreFreq = CLOCK_GetCoreSysClkFreq();
+
+    /* The flow of increasing voltage and frequency */
+    if (coreFreq <= BOARD_BOOTCLOCKFROHF60M_CORE_CLOCK) {
+        /* Set the LDO_CORE VDD regulator level */
+        ldoOption.CoreLDOVoltage = kSPC_CoreLDO_OverDriveVoltage;
+        ldoOption.CoreLDODriveStrength = kSPC_CoreLDO_NormalDriveStrength;
+        (void)SPC_SetActiveModeCoreLDORegulatorConfig(SPC0, &ldoOption);
+        /* Configure Flash to support different voltage level and frequency */
+        FMU0->FCTRL = (FMU0->FCTRL & ~((uint32_t)FMU_FCTRL_RWSC_MASK)) | (FMU_FCTRL_RWSC(0x1U));
+        /* Specifies the operating voltage for the SRAM's read/write timing margin */
+        sramOption.operateVoltage = kSPC_sramOperateAt1P2V;
+        sramOption.requestVoltageUpdate =  true;
+        (void)SPC_SetSRAMOperateVoltage(SPC0, &sramOption);
+    }
+
+
+    /*!< Set up system dividers */
+    CLOCK_SetClockDiv(kCLOCK_DivAHBCLK, 1U);               /* !< Set SYSCON.AHBCLKDIV divider to value 1 */
+    CLOCK_SetClockDiv(kCLOCK_DivFRO_HF, 1U);               /* !< Set SYSCON.FROHFDIV divider to value 1 */
+    CLOCK_SetupFROHFClocking(60000000U);               /*!< Enable FRO HF(60MHz) output */
+    CLOCK_SetupFRO12MClocking();                /*!< Setup FRO12M clock */
+
+    CLOCK_AttachClk(kFRO_HF_to_MAIN_CLK);       /* !< Switch MAIN_CLK to kFRO_HF */
+
+    /* The flow of decreasing voltage and frequency */
+    if (coreFreq > BOARD_BOOTCLOCKFROHF60M_CORE_CLOCK) {
+        /* Configure Flash to support different voltage level and frequency */
+        FMU0->FCTRL = (FMU0->FCTRL & ~((uint32_t)FMU_FCTRL_RWSC_MASK)) | (FMU_FCTRL_RWSC(0x1U));
+        /* Specifies the operating voltage for the SRAM's read/write timing margin */
+        sramOption.operateVoltage = kSPC_sramOperateAt1P2V;
+        sramOption.requestVoltageUpdate =  true;
+        (void)SPC_SetSRAMOperateVoltage(SPC0, &sramOption);
+        /* Set the LDO_CORE VDD regulator level */
+        ldoOption.CoreLDOVoltage = kSPC_CoreLDO_OverDriveVoltage;
+        ldoOption.CoreLDODriveStrength = kSPC_CoreLDO_NormalDriveStrength;
+        (void)SPC_SetActiveModeCoreLDORegulatorConfig(SPC0, &ldoOption);
+    }
+
+    /*!< Set up clock selectors - Attach clocks to the peripheries */
+    CLOCK_AttachClk(kCPU_CLK_to_TRACE);                    /* !< Switch TRACE to CPU_CLK */
+
+    /*!< Set up dividers */
+    CLOCK_SetClockDiv(kCLOCK_DivFRO_LF, 1U);               /* !< Set SYSCON.FROLFDIV divider to value 1 */
+    CLOCK_SetClockDiv(kCLOCK_DivWWDT0, 1U);                /* !< Set MRCC.WWDT0_CLKDIV divider to value 1 */
+    CLOCK_SetClockDiv(kCLOCK_DivTRACE, 1U);                /* !< Set MRCC.TRACE_CLKDIV divider to value 1 */
+
+    /* Set SystemCoreClock variable */
+    SystemCoreClock = BOARD_BOOTCLOCKFROHF60M_CORE_CLOCK;
+}
+/*******************************************************************************
+ ******************* Configuration BOARD_BootClockFROHF90M *********************
+ ******************************************************************************/
+/* clang-format off */
+/* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+!!Configuration
+name: BOARD_BootClockFROHF90M
+outputs:
+- {id: BUS_clock.outFreq, value: 45 MHz}
+- {id: CLK_1M_clock.outFreq, value: 1 MHz}
+- {id: CLK_45M_clock.outFreq, value: 45 MHz}
+- {id: CPU_clock.outFreq, value: 90 MHz}
+- {id: FRO_12M_DIV_clock.outFreq, value: 12 MHz}
+- {id: FRO_12M_clock.outFreq, value: 12 MHz}
+- {id: FRO_HF_DIV_clock.outFreq, value: 90 MHz}
+- {id: FRO_HF_clock.outFreq, value: 90 MHz}
+- {id: MAIN_clock.outFreq, value: 90 MHz}
+- {id: Slow_clock.outFreq, value: 15 MHz}
+- {id: System_clock.outFreq, value: 90 MHz}
+- {id: TRACE_clock.outFreq, value: 90 MHz}
+- {id: UTICK0_clock.outFreq, value: 1 MHz}
+- {id: WWDT0_clock.outFreq, value: 1 MHz}
+settings:
+- {id: VDD_CORE, value: voltage_1v2}
+- {id: FROHFDIV_SYSCON_FROHFDIV_HALT, value: RUN}
+- {id: FROLFDIV_SYSCON_FROLFDIV_HALT, value: RUN}
+sources:
+- {id: SCG.FIRC.outFreq, value: 90 MHz}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
+/* clang-format on */
+
+/*******************************************************************************
+ * Variables for BOARD_BootClockFROHF90M configuration
+ ******************************************************************************/
+/*******************************************************************************
+ * Code for BOARD_BootClockFROHF90M configuration
+ ******************************************************************************/
+void BOARD_BootClockFROHF90M(void)
+{
+    uint32_t coreFreq;
+    spc_active_mode_core_ldo_option_t ldoOption;
+    spc_sram_voltage_config_t sramOption;
+
+    /* Get the CPU Core frequency */
+    coreFreq = CLOCK_GetCoreSysClkFreq();
+
+    /* The flow of increasing voltage and frequency */
+    if (coreFreq <= BOARD_BOOTCLOCKFROHF90M_CORE_CLOCK) {
+        /* Set the LDO_CORE VDD regulator level */
+        ldoOption.CoreLDOVoltage = kSPC_CoreLDO_OverDriveVoltage;
+        ldoOption.CoreLDODriveStrength = kSPC_CoreLDO_NormalDriveStrength;
+        (void)SPC_SetActiveModeCoreLDORegulatorConfig(SPC0, &ldoOption);
+        /* Configure Flash to support different voltage level and frequency */
+        FMU0->FCTRL = (FMU0->FCTRL & ~((uint32_t)FMU_FCTRL_RWSC_MASK)) | (FMU_FCTRL_RWSC(0x2U));
+        /* Specifies the operating voltage for the SRAM's read/write timing margin */
+        sramOption.operateVoltage = kSPC_sramOperateAt1P2V;
+        sramOption.requestVoltageUpdate =  true;
+        (void)SPC_SetSRAMOperateVoltage(SPC0, &sramOption);
+    }
+
+
+    /*!< Set up system dividers */
+    CLOCK_SetClockDiv(kCLOCK_DivAHBCLK, 1U);               /* !< Set SYSCON.AHBCLKDIV divider to value 1 */
+    CLOCK_SetClockDiv(kCLOCK_DivFRO_HF, 1U);               /* !< Set SYSCON.FROHFDIV divider to value 1 */
+    CLOCK_SetupFROHFClocking(90000000U);               /*!< Enable FRO HF(90MHz) output */
+    CLOCK_SetupFRO12MClocking();                /*!< Setup FRO12M clock */
+
+    CLOCK_AttachClk(kFRO_HF_to_MAIN_CLK);       /* !< Switch MAIN_CLK to kFRO_HF */
+
+    /* The flow of decreasing voltage and frequency */
+    if (coreFreq > BOARD_BOOTCLOCKFROHF90M_CORE_CLOCK) {
+        /* Configure Flash to support different voltage level and frequency */
+        FMU0->FCTRL = (FMU0->FCTRL & ~((uint32_t)FMU_FCTRL_RWSC_MASK)) | (FMU_FCTRL_RWSC(0x2U));
+        /* Specifies the operating voltage for the SRAM's read/write timing margin */
+        sramOption.operateVoltage = kSPC_sramOperateAt1P2V;
+        sramOption.requestVoltageUpdate =  true;
+        (void)SPC_SetSRAMOperateVoltage(SPC0, &sramOption);
+        /* Set the LDO_CORE VDD regulator level */
+        ldoOption.CoreLDOVoltage = kSPC_CoreLDO_OverDriveVoltage;
+        ldoOption.CoreLDODriveStrength = kSPC_CoreLDO_NormalDriveStrength;
+        (void)SPC_SetActiveModeCoreLDORegulatorConfig(SPC0, &ldoOption);
+    }
+
+    /*!< Set up clock selectors - Attach clocks to the peripheries */
+    CLOCK_AttachClk(kCPU_CLK_to_TRACE);                    /* !< Switch TRACE to CPU_CLK */
+
+    /*!< Set up dividers */
+    CLOCK_SetClockDiv(kCLOCK_DivFRO_LF, 1U);               /* !< Set SYSCON.FROLFDIV divider to value 1 */
+    CLOCK_SetClockDiv(kCLOCK_DivWWDT0, 1U);                /* !< Set MRCC.WWDT0_CLKDIV divider to value 1 */
+    CLOCK_SetClockDiv(kCLOCK_DivTRACE, 1U);                /* !< Set MRCC.TRACE_CLKDIV divider to value 1 */
+
+    /* Set SystemCoreClock variable */
+    SystemCoreClock = BOARD_BOOTCLOCKFROHF90M_CORE_CLOCK;
+}
+/*******************************************************************************
  ******************* Configuration BOARD_BootClockFROHF180M ********************
  ******************************************************************************/
 /* clang-format off */
@@ -63,21 +437,14 @@ void BOARD_InitBootClocks(void)
 name: BOARD_BootClockFROHF180M
 called_from_default_init: true
 outputs:
-- {id: ADC_clock.outFreq, value: 60 MHz}
 - {id: BUS_clock.outFreq, value: 90 MHz}
 - {id: CLK_1M_clock.outFreq, value: 1 MHz}
 - {id: CLK_45M_clock.outFreq, value: 45 MHz}
-- {id: CMP1_FUNC_DIV_clock.outFreq, value: 12 MHz}
-- {id: CMP2_FUNC_DIV_clock.outFreq, value: 12 MHz}
 - {id: CPU_clock.outFreq, value: 180 MHz}
-- {id: CTIMER0_clock.outFreq, value: 180 MHz}
-- {id: FREQME_reference_clock.outFreq, value: 12 MHz}
-- {id: FREQME_target_clock.outFreq, value: 12 MHz}
 - {id: FRO_12M_DIV_clock.outFreq, value: 12 MHz}
 - {id: FRO_12M_clock.outFreq, value: 12 MHz}
 - {id: FRO_HF_DIV_clock.outFreq, value: 180 MHz}
-- {id: FRO_HF_clock.outFreq, value: 180 MHz, locked: true, accuracy: '0.001'}
-- {id: LPUART2_clock.outFreq, value: 12 MHz}
+- {id: FRO_HF_clock.outFreq, value: 180 MHz}
 - {id: MAIN_clock.outFreq, value: 180 MHz}
 - {id: Slow_clock.outFreq, value: 30 MHz}
 - {id: System_clock.outFreq, value: 180 MHz}
@@ -86,127 +453,21 @@ outputs:
 - {id: WWDT0_clock.outFreq, value: 1 MHz}
 settings:
 - {id: VDD_CORE, value: voltage_1v2}
-- {id: ADC_CLKDIV_MRCC0_MRCC_ADC_CLKDIV_HALT, value: 'ON'}
-- {id: CMP1_FUNC_CLKDIV_MRCC0_MRCC_CMP1_FUNC_CLKDIV_HALT, value: 'ON'}
-- {id: CMP2_FUNC_CLKDIV_MRCC0_MRCC_CMP2_FUNC_CLKDIV_HALT, value: 'ON'}
-- {id: CTIMER0_CLKDIV_MRCC0_MRCC_CTIMER0_CLKDIV_HALT, value: 'ON'}
 - {id: FROHFDIV_SYSCON_FROHFDIV_HALT, value: RUN}
 - {id: FROLFDIV_SYSCON_FROLFDIV_HALT, value: RUN}
-- {id: LPUART2_CLKDIV_MRCC0_MRCC_LPUART2_CLKDIV_HALT, value: 'ON'}
-- {id: MRCC.ADC_CLKDIV.scale, value: '3', locked: true}
-- {id: MRCC.ADC_CLKSEL.sel, value: SCG.FRO_HF_clock}
-- {id: MRCC.CMP1_RR_CLKSEL.sel, value: SYSCON.FRO_12M_DIV_clock}
-- {id: MRCC.CMP2_RR_CLKSEL.sel, value: SYSCON.FRO_12M_DIV_clock}
-- {id: MRCC.CTIMER0_CLKSEL.sel, value: SCG.FRO_HF_clock}
-- {id: MRCC.LPUART2_CLKSEL.sel, value: SYSCON.FRO_12M_DIV_clock}
 - {id: MRCC.TRACE_CLKDIV.scale, value: '2', locked: true}
-- {id: SCG.FREQ_SEL.scale, value: '1'}
+- {id: SYSCON.AHBCLKDIV.scale, value: '1', locked: true}
+sources:
+- {id: SCG.FIRC.outFreq, value: 180 MHz}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
 
 /*******************************************************************************
+ * Variables for BOARD_BootClockFROHF180M configuration
+ ******************************************************************************/
+/*******************************************************************************
  * Code for BOARD_BootClockFROHF180M configuration
  ******************************************************************************/
-void BOARD_BootClockFROHF180M_InitClockModule(clock_module_t module)
-{
-
-    switch(module) {
-        case kClockModule_FIRC:
-            CLOCK_SetClockDiv(kCLOCK_DivFRO_HF, 1U);       /* !< Set SYSCON.FROHFDIV divider to value 1 */
-            CLOCK_SetupFROHFClocking(180000000U); /*!< Enable FRO HF 180000000Hz output */
-            break;
-        case kClockModule_SIRC:
-            CLOCK_SetClockDiv(kCLOCK_DivFRO_LF, 1U);       /* !< Set SYSCON.FROLFDIV divider to value 1 */
-            CLOCK_SetupFRO12MClocking();                /*!< Setup FRO12M clock */
-            break;
-        case kClockModule_SystemClk:
-            CLOCK_SetClockDiv(kCLOCK_DivAHBCLK, 1U);       /* !< Set SYSCON.AHBCLKDIV divider to value 1 */
-            CLOCK_AttachClk(kFRO_HF_to_MAIN_CLK);/* !< Switch MAIN_CLK to kFRO_HF */
-            break;
-        case kClockModule_ADCClk:
-            CLOCK_AttachClk(kFRO_HF_to_ADC);               /* !< Switch ADC to FRO_HF */
-            CLOCK_SetClockDiv(kCLOCK_DivADC, 3U);          /* !< Set MRCC.ADC_CLKDIV divider to value 3 */
-            break;
-        case kClockModule_CLKOUT:
-            CLOCK_AttachClk(kNONE_to_CLKOUT);              /* !< Switch CLKOUT to  */
-            break;
-        case kClockModule_CMP0Clk:
-            CLOCK_AttachClk(kNONE_to_CMP0);                /* !< Switch CMP0 to  */
-            break;
-        case kClockModule_CMP1Clk:
-            CLOCK_AttachClk(kFRO_LF_DIV_to_CMP1);          /* !< Switch CMP1 to FRO_LF_DIV */
-            CLOCK_SetClockDiv(kCLOCK_DivCMP1_FUNC, 1U);    /* !< Set MRCC.CMP1_FUNC_CLKDIV divider to value 1 */
-            CLOCK_HaltClockDiv(kCLOCK_DivCMP1_RR);         /* !< Halt MRCC.CMP1_FUNC_CLKDIV divider  */
-            break;
-        case kClockModule_CMP2Clk:
-            CLOCK_AttachClk(kFRO_LF_DIV_to_CMP2);          /* !< Switch CMP2 to FRO_LF_DIV */
-            CLOCK_SetClockDiv(kCLOCK_DivCMP2_FUNC, 1U);    /* !< Set MRCC.CMP2_FUNC_CLKDIV divider to value 1 */
-            CLOCK_HaltClockDiv(kCLOCK_DivCMP2_RR);         /* !< Halt MRCC.CMP2_FUNC_CLKDIV divider  */
-            break;
-        case kClockModule_CTIMER0Clk:
-            CLOCK_AttachClk(kFRO_HF_to_CTIMER0);           /* !< Switch CTIMER0 to FRO_HF */
-            CLOCK_SetClockDiv(kCLOCK_DivCTIMER0, 1U);      /* !< Set MRCC.CTIMER0_CLKDIV divider to value 1 */
-            break;
-        case kClockModule_CTIMER1Clk:
-            CLOCK_AttachClk(kNONE_to_CTIMER1);             /* !< Switch CTIMER1 to  */
-            break;
-        case kClockModule_CTIMER2Clk:
-            CLOCK_AttachClk(kNONE_to_CTIMER2);             /* !< Switch CTIMER2 to  */
-            break;
-        case kClockModule_FLEXCAN0Clk:
-            CLOCK_AttachClk(kNONE_to_FLEXCAN0);            /* !< Switch FLEXCAN0 to  */
-            break;
-        case kClockModule_LPI2C0Clk:
-            CLOCK_AttachClk(kNONE_to_LPI2C0);              /* !< Switch LPI2C0 to  */
-            break;
-        case kClockModule_LPI2C1Clk:
-            CLOCK_AttachClk(kNONE_to_LPI2C1);              /* !< Switch LPI2C1 to  */
-            break;
-        case kClockModule_LPSPI0Clk:
-            CLOCK_AttachClk(kNONE_to_LPSPI0);              /* !< Switch LPSPI0 to  */
-            break;
-        case kClockModule_LPSPI1Clk:
-            CLOCK_AttachClk(kNONE_to_LPSPI1);              /* !< Switch LPSPI1 to  */
-            break;
-        case kClockModule_LPTMR0Clk:
-            CLOCK_AttachClk(kNONE_to_LPTMR0);              /* !< Switch LPTMR0 to  */
-            break;
-        case kClockModule_LPUART0Clk:
-            CLOCK_AttachClk(kNONE_to_LPUART0);             /* !< Switch LPUART0 to  */
-            break;
-        case kClockModule_LPUART1Clk:
-            CLOCK_AttachClk(kNONE_to_LPUART1);             /* !< Switch LPUART1 to  */
-            break;
-        case kClockModule_LPUART2Clk:
-            CLOCK_AttachClk(kFRO_LF_DIV_to_LPUART2);       /* !< Switch LPUART2 to FRO_LF_DIV */
-            CLOCK_SetClockDiv(kCLOCK_DivLPUART2, 1U);      /* !< Set MRCC.LPUART2_CLKDIV divider to value 1 */
-            break;
-        case kClockModule_LPUART3Clk:
-            CLOCK_AttachClk(kNONE_to_LPUART3);             /* !< Switch LPUART3 to  */
-            break;
-        case kClockModule_OSTIMER0Clk:
-            CLOCK_AttachClk(kNONE_to_OSTIMER);             /* !< Switch OSTIMER to  */
-            break;
-        case kClockModule_TRACEClk:
-            CLOCK_AttachClk(kCPU_CLK_to_TRACE);            /* !< Switch TRACE to CPU_CLK */
-            CLOCK_SetClockDiv(kCLOCK_DivTRACE, 2U);        /* !< Set MRCC.TRACE_CLKDIV divider to value 2 */
-            break;
-        case kClockModule_WWDT0Clk:
-            CLOCK_SetClockDiv(kCLOCK_DivWWDT0, 1U);        /* !< Set MRCC.WWDT0_CLKDIV divider to value 1 */
-            break;
-        case kClockModule_FREQME:
-            /* Configure FREQME clock */
-            CLOCK_EnableClock(kCLOCK_InputMux);
-            RESET_ReleasePeripheralReset(kINPUTMUX0_RST_SHIFT_RSTn);
-            INPUTMUX0->FREQMEAS_REF = INPUTMUX_FREQMEAS_REF_INP(2);
-            INPUTMUX0->FREQMEAS_TAR = INPUTMUX_FREQMEAS_TAR_INP(2);
-            break;
-        default:
-            assert(false);
-            break;
-    }
-}
-
 void BOARD_BootClockFROHF180M(void)
 {
     uint32_t coreFreq;
@@ -229,9 +490,15 @@ void BOARD_BootClockFROHF180M(void)
         sramOption.requestVoltageUpdate =  true;
         (void)SPC_SetSRAMOperateVoltage(SPC0, &sramOption);
     }
-    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_SIRC);
-    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_FIRC);
-    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_SystemClk);
+
+
+    /*!< Set up system dividers */
+    CLOCK_SetClockDiv(kCLOCK_DivAHBCLK, 1U);               /* !< Set SYSCON.AHBCLKDIV divider to value 1 */
+    CLOCK_SetClockDiv(kCLOCK_DivFRO_HF, 1U);               /* !< Set SYSCON.FROHFDIV divider to value 1 */
+    CLOCK_SetupFROHFClocking(180000000U);              /*!< Enable FRO HF(180MHz) output */
+    CLOCK_SetupFRO12MClocking();                /*!< Setup FRO12M clock */
+
+    CLOCK_AttachClk(kFRO_HF_to_MAIN_CLK);       /* !< Switch MAIN_CLK to kFRO_HF */
 
     /* The flow of decreasing voltage and frequency */
     if (coreFreq > BOARD_BOOTCLOCKFROHF180M_CORE_CLOCK) {
@@ -247,28 +514,13 @@ void BOARD_BootClockFROHF180M(void)
         (void)SPC_SetActiveModeCoreLDORegulatorConfig(SPC0, &ldoOption);
     }
 
-    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_ADCClk);
-    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_CLKOUT);
-    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_CMP0Clk);
-    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_CMP1Clk);
-    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_CMP2Clk);
-    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_CTIMER0Clk);
-    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_CTIMER1Clk);
-    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_CTIMER2Clk);
-    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_FLEXCAN0Clk);
-    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_FREQME);
-    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_LPI2C0Clk);
-    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_LPI2C1Clk);
-    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_LPSPI0Clk);
-    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_LPSPI1Clk);
-    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_LPTMR0Clk);
-    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_LPUART0Clk);
-    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_LPUART1Clk);
-    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_LPUART2Clk);
-    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_LPUART3Clk);
-    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_OSTIMER0Clk);
-    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_TRACEClk);
-    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_WWDT0Clk);
+    /*!< Set up clock selectors - Attach clocks to the peripheries */
+    CLOCK_AttachClk(kCPU_CLK_to_TRACE);                    /* !< Switch TRACE to CPU_CLK */
+
+    /*!< Set up dividers */
+    CLOCK_SetClockDiv(kCLOCK_DivFRO_LF, 1U);               /* !< Set SYSCON.FROLFDIV divider to value 1 */
+    CLOCK_SetClockDiv(kCLOCK_DivWWDT0, 1U);                /* !< Set MRCC.WWDT0_CLKDIV divider to value 1 */
+    CLOCK_SetClockDiv(kCLOCK_DivTRACE, 2U);                /* !< Set MRCC.TRACE_CLKDIV divider to value 2 */
 
     /* Set SystemCoreClock variable */
     SystemCoreClock = BOARD_BOOTCLOCKFROHF180M_CORE_CLOCK;

@@ -68,8 +68,8 @@ void MCDRV_Init_M1(void)
     InitClock();
     
     /* Set FLASH_STALL_EN, DIS_LPCAC_WTBF and LIM_LPCAC_WTBF bits to 0 to get better performance. */
-    SYSCON->NVM_CTRL = SYSCON->NVM_CTRL & ~SYSCON_NVM_CTRL_FLASH_STALL_EN_MASK;
-    SYSCON->LPCAC_CTRL = SYSCON->LPCAC_CTRL & ~(SYSCON_LPCAC_CTRL_DIS_LPCAC_WTBF_MASK | SYSCON_LPCAC_CTRL_LIM_LPCAC_WTBF_MASK);
+//    SYSCON->NVM_CTRL = SYSCON->NVM_CTRL & ~SYSCON_NVM_CTRL_FLASH_STALL_EN_MASK;
+//    SYSCON->LPCAC_CTRL = SYSCON->LPCAC_CTRL & ~(SYSCON_LPCAC_CTRL_DIS_LPCAC_WTBF_MASK | SYSCON_LPCAC_CTRL_LIM_LPCAC_WTBF_MASK);
   
     /* Init ADC */
     InitADC();
@@ -107,8 +107,8 @@ void InitClock(void)
     uint32_t ui32CyclesNumber = 0U;
    
     /* The following peripherals use SYSTEM_CLK as APB/IPS clock: FlexPWM0/1, ADC0~3 */
-    g_sClockSetup.ui32FastPeripheralClock = 45000000U;
-    g_sClockSetup.ui32CpuFrequency = 180000000U;
+    g_sClockSetup.ui32FastPeripheralClock = CLOCK_GetFreq(kCLOCK_CoreSysClk);
+    g_sClockSetup.ui32CpuFrequency = CLOCK_GetFreq(kCLOCK_CoreSysClk);
 
     /* Parameters for motor M1 */
     g_sClockSetup.ui16M1PwmFreq   = M1_PWM_FREQ; /* 16 kHz */
