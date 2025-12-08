@@ -116,7 +116,6 @@ void ping_sock_task(void *pvParameters)
     uint8_t *recv_buf;
     struct sockaddr_in server_addr = {0};
     struct in_addr dest_addr;
-    int retry;
 
     while (1)
     {
@@ -154,7 +153,6 @@ void ping_sock_task(void *pvParameters)
         int sockfd = ncp_socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
         while (i <= ping_msg.count)
         {
-            retry = 10;
             ping_res.echo_resp = -WM_FAIL;
             (void)memset(iecho, 0, ping_size);
             (void)memset(recv_buf, 0, ping_size + IP_HEADER_LEN);
@@ -170,7 +168,7 @@ void ping_sock_task(void *pvParameters)
 
             /* Function raw_input may put multiple pieces of data in conn->recvmbox,
              * waiting to select the data we want */
-            while (ping_res.echo_resp != WM_SUCCESS && retry)
+            while (ping_res.echo_resp != WM_SUCCESS)
             {
                 int ret = ncp_recvfrom(sockfd, recv_buf, ping_size + sizeof(struct ip_hdr), 0, (struct sockaddr *)&server_addr, &len);
                 if (ret > (int)(sizeof(struct ip_hdr) + sizeof(struct icmp_echo_hdr)))
@@ -178,7 +176,7 @@ void ping_sock_task(void *pvParameters)
                     /* Handle the ICMP echo response and extract required parameters */
                     iphdr = (struct ip_hdr *)recv_buf;
                     /* Calculate the offset of ICMP header */
-                    iecho_resp = (struct icmp_echo_hdr *)(recv_buf + ((iphdr->_v_hl & 0x0f) * 4));
+                    iecho_resp = (struct icmp_echo_hdr *)(recv_buf + ((iphdr->_v_hl & 0x0f) * 4));                  
                     /* Verify that the echo response is for the echo request
                     * we sent by checking PING_ID and sequence number */
                     if ((iecho_resp->id == PING_ID) && (iecho_resp->seqno == PP_HTONS(ping_res.seq_no)))
@@ -197,9 +195,7 @@ void ping_sock_task(void *pvParameters)
                         (void)memset(recv_buf, 0, ping_size + IP_HEADER_LEN);
                     }
                 }
-                retry--;
             }
-
             /* Calculate the round trip time */
             ping_res.time = OSA_TimeGetMsec() - ping_res.time;
             inet_ntop(AF_INET, &(server_addr.sin_addr), ping_res.ip_addr, IP_ADDR_LEN);
