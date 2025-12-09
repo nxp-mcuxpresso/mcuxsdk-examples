@@ -76,6 +76,12 @@
 #include "ble_config.h"
 //#endif
 
+#if (CONFIG_NCP_SDIO)
+/** When the NCP device exits PM3, the NCP HOST requires about 1.4 seconds to re-enumerate SDIO.
+ *  Therefore, need to re-set the wake-up timeout.*/
+#define PLATFORM_BLE_WAKE_UP_TIMEOUT_MS 5000
+#endif
+
 #if !defined(__GNUC__)
 #if defined(CONFIG_NCP_OT) && (CONFIG_NCP_OT == 1)
 #error "Ot ncp feature only supports arm gcc compilation"
