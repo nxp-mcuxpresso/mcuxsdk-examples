@@ -12,5 +12,5 @@ executorch_cifarnet_hifi4:
       - examples/eiq_examples/executorch_cifarnet_hifi4/hifi4/readme.md
   boards:
     mimxrt700evk@hifi4:
-    - -xtensa@debug
-    - -xtensa@release
+    - +xtensa@debug
+    - +xtensa@release
