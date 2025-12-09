@@ -265,8 +265,13 @@ static void app_notify_event_handler(void *argv)
                     ret = -WM_FAIL;
                 break;
             case APP_EVT_INIT_DONE:
-                ret = ncp_sys_dev_reset_rsp();
-                cmd_class = NCP_CMD_SYSTEM;
+                if (ncp_sys_dev_reset_check_n_clear() == WM_SUCCESS)
+                {
+                    cmd_class = NCP_CMD_SYSTEM;
+                    event_buf = ncp_sys_evt_status(NCP_EVENT_SYSTEM_DEV_RESET, &msg);
+                }
+                if (!event_buf)
+                    ret = -WM_FAIL;
                 break;
             default:
                 app_d("no matching case");
@@ -278,7 +283,14 @@ static void app_notify_event_handler(void *argv)
         {
             if (event_buf)
             {
-                wifi_ncp_send_response(event_buf);
+                if (cmd_class == NCP_CMD_SYSTEM)
+                {
+                    system_ncp_send_response(event_buf);
+                }
+                else
+                {
+                    wifi_ncp_send_response(event_buf);
+                }
             }
             else
             {

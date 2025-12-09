@@ -67,6 +67,7 @@ int system_ncp_send_response(uint8_t *pbuf)
     int ret                = NCP_SUCCESS;
     uint16_t transfer_len = 0;
     NCP_COMMAND *res = (NCP_COMMAND *)pbuf;
+    uint32_t cmd = res->cmd;
 
     /* set cmd response seqno */
     res->seqnum = (GET_MSG_TYPE(res->cmd) == NCP_MSG_TYPE_RESP) ? g_cmd_seqno : 0;
@@ -98,6 +99,20 @@ int system_ncp_send_response(uint8_t *pbuf)
         ncp_d("put lock");
     }
 
+    if (ret == NCP_SUCCESS)
+    {
+        if (cmd == NCP_RSP_SYSTEM_CONFIG_DEVICE_RESET)
+        {
+            const ncp_tlv_adapter_t *tlv_adap = ncp_tlv_adapter_get();
+            OSA_TaskYield();
+            if (tlv_adap->intf_ops->reset)
+            {
+                tlv_adap->intf_ops->reset();
+            }
+            OSA_DisableIRQGlobal();
+            NVIC_SystemReset();
+        }
+    }
 
     return ret;
 }

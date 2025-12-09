@@ -59,6 +59,8 @@ OSA_TASK_DEFINE(ncp_tlv_process, PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 3)
 
 #define NCP_RESET_CONTEXT_AON_ADDR (0x4015C100)
 static ncp_reset_callback_t ncp_dev_reset_cb = NULL;
+uint32_t ncp_dev_reset_cb_cnt = 0;
+
 
 static bool ncp_initialized = false;
 static const ncp_pm_tx_if_t s_ncp_pm_tx_if = {
@@ -543,7 +545,20 @@ static void ncp_tlv_tx_deinit(void)
 
 void ncp_adapter_set_cb(ncp_reset_callback_t dev_reset_cb)
 {
-    ncp_dev_reset_cb = dev_reset_cb;
+    NCP_LOG_DBG("%s: enter cb_in=%p cb=%p cnt=%u", __FUNCTION__, dev_reset_cb, ncp_dev_reset_cb, ncp_dev_reset_cb_cnt);
+    if (dev_reset_cb != NULL)
+    {
+        ncp_dev_reset_cb_cnt++;
+        ncp_dev_reset_cb = dev_reset_cb;
+    }
+    else
+    {
+        if (ncp_dev_reset_cb_cnt)
+            ncp_dev_reset_cb_cnt--;
+        if (ncp_dev_reset_cb_cnt == 0)
+            ncp_dev_reset_cb = dev_reset_cb;
+    }
+    NCP_LOG_DBG("%s: exit cb_in=%p cb=%p cnt=%u", __FUNCTION__, dev_reset_cb, ncp_dev_reset_cb, ncp_dev_reset_cb_cnt);
 }
 
 ncp_status_t ncp_adapter_init(int role)

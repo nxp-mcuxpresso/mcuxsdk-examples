@@ -184,9 +184,12 @@ void ncp_dev_reset_block(uint8_t *res)
 {
     MCU_NCPCmd_DS_SYS_COMMAND *ncp_dev_reset_command = (MCU_NCPCmd_DS_SYS_COMMAND *)res;
 
+    ncp_d("%s: cmd=0x%x", __FUNCTION__, ncp_dev_reset_command->header.cmd);
     if (ncp_dev_reset_command->header.cmd == NCP_CMD_SYSTEM_CONFIG_DEVICE_RESET)
     {
+        ncp_d("%s: wait start", __FUNCTION__);
         OSA_SemaphoreWait(ncp_dev_reset_semaphore, osaWaitForever_c);
+        ncp_d("%s: wait end", __FUNCTION__);
     }
 }
 
@@ -213,12 +216,11 @@ int ncp_process_dev_reset_response(uint8_t *res)
 {
     MCU_NCPCmd_DS_SYS_COMMAND *cmd_res = (MCU_NCPCmd_DS_SYS_COMMAND *)res;
 
-    OSA_SemaphorePost(ncp_dev_reset_semaphore);
-    ncp_adapter_set_cb(NULL);
-
     if (cmd_res->header.result != NCP_CMD_RESULT_OK)
     {
         (void)PRINTF("Failed to reset ncp device\r\n");
+        OSA_SemaphorePost(ncp_dev_reset_semaphore);
+        ncp_adapter_set_cb(NULL);
         return -NCP_FAIL;
     }
 
@@ -467,6 +469,16 @@ end:
     return ret;
 }
 
+int ncp_process_dev_reset_event(uint8_t *res)
+{
+    ncp_d("%s: post start", __FUNCTION__);
+    OSA_SemaphorePost(ncp_dev_reset_semaphore);
+    ncp_d("%s: post end", __FUNCTION__);
+    ncp_adapter_set_cb(NULL);
+    PRINTF("device reset complete\r\n");
+    return NCP_SUCCESS;
+}
+
 int ncp_process_crc_check_error(uint8_t *res)
 {
     mcu_put_command_resp_sem();
@@ -489,6 +501,9 @@ int system_process_event(uint8_t *res)
             ret = ncp_process_encrypt_stop_event(res);
             break;
 #endif
+        case NCP_EVENT_SYSTEM_DEV_RESET:
+            ret = ncp_process_dev_reset_event(res);
+            break;
         case NCP_EVENT_CRC_CHECK_ERROR:
             ret = ncp_process_crc_check_error(res);
             break;
