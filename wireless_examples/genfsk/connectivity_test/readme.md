@@ -1,28 +1,27 @@
-Overview
+# Connectivity test application
+
+## 1 - Overview
 ========
 After power on, the board will start flashing all LEDs and will print the application logo into a serial port terminal, signalling an idle state.
 To start the application the [ENTER] key on the keyboard. Then follow the onscreen instructions to configure and run available tests.
 
 This demo requires a serial port terminal application through a serial interface.
 
-For more information please refer to the "Generic FSK Link Layer Quick Start Guide.pdf" document.
+For more information please refer to `Generic FSK Link Layer Quick Start Guide pdf <../../../_static/wireless/genfsk/Generic FSK Link Layer Quick Start Guide.pdf.pdf>`_
 
-Toolchain supported
+## 2 - Toolchain supported
 ===================
 - IAR embedded Workbench
 - MCUXpresso IDE
+- ARM GCC
 
-Hardware requirements
+## 3 - Hardware requirements
 =====================
 - Mini/micro USB cable
-- FRDM board
+- Supported board: KW45B41Z-EVK, FRDM-MCXW71, KW47-EVK, MCX-W72-EVK
 - Personal Computer a serial port terminal application installed.
 
-Board settings
-==============
-No special board setting.
-
-Prepare the Demo
+## 4 - Prepare the Demo
 ================
 1.  Connect a mini/micro USB cable between the PC host and the OpenSDA USB port on the board.
 2.  Open a serial terminal on PC for the detected serial device with these settings:
