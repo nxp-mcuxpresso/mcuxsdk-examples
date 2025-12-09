@@ -1,8 +1,12 @@
 mcux_add_xtensa_configuration(
   CC "-std=c99"
   CX "-stdlib=libc++ \
-    -DTENSORARENA_NONCACHE=1\
     -std=c++17"
+)
+mcux_add_xtensa_configuration(
+  TARGETS release
+  CC "-DTENSORARENA_NONCACHE=1"
+  CX "-DTENSORARENA_NONCACHE=1"
 )
 
 mcux_remove_configuration(
@@ -18,7 +22,12 @@ mcux_add_source(
   model_data.h
   )
 
+mcux_remove_configuration(
+    TARGETS release
+    LD "-mlsp=${XTENSA_LSP_RELEASE}"
+)
+
 mcux_add_xtensa_configuration(
     TARGETS release
-    LD "-mlsp=${SdkRootDirPath}/${board_root}/mimxrt700evk/eiq_examples/tflm_cifar10_hifi4_neutron/linker/hifi4/min-rt"
+    LD "-mlsp=${SdkRootDirPath}/${board_root}/${board}/eiq_examples/tflm_cifar10_hifi4_neutron/linker/hifi4/min-rt"
 )
