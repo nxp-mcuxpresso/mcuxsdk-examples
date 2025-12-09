@@ -36,19 +36,24 @@ To provision the device perform the following steps:
     * Enable Dual image support if you evaluate `ota_rom_basic`
         * Define Image version 1
         * Target dual boot image: __Image 1__
-        * Image 1 size: 1MB
+        * Image 1 size: 
+            * For MCXN9xx/5xx select 0x100000 (1MB)
+            * For MCXN2xx select 0x80000 (512kB)
 
 Following image is for MCUboot use case
+
 ![Image](sb3_pics/1_prov_mcuboot_mcxn.jpg)
 
 Following image is for ROM only use case
+
 ![Image](sb3_pics/1_prov_rom_mcxn.jpg)
     
 8. Click __Build image__ 
 
 9. Write image tab
     * Click __Write image__
-    ![Image](sb3_pics/1_prov_write_mcxn.jpg)
+
+![Image](sb3_pics/1_prov_write_mcxn.jpg)
 
 ## 2. Prepare OTA images
 
