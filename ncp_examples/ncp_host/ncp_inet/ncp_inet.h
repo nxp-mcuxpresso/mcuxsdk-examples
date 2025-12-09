@@ -18,6 +18,9 @@
 #include "ncp_host_utils_wifi.h"
 #include "stream_buffer.h"
 
+#define SOL_SOCKET      0xfff  /* options for socket level */
+#define SO_RCVTIMEO     0x1006 /* receive timeout */
+
 /** WLAN Inet command */
 #define NCP_CMD_WLAN_INET        0x01000000
 /** Wi-Fi socket socket command ID */
@@ -435,6 +438,7 @@ struct ncp_socket_recv_t
     char name[64];
     int read_errorn;
     int write_errorn;
+    int recv_timeout_ms;
 };
 
 

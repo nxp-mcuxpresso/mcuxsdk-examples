@@ -627,8 +627,18 @@ static void ncp_inet_setsockopt_cb(void *res, ncp_cmd_node_t * cmd_node)
 int ncp_setsockopt(int socket, int level, int optname, const void *optval, socklen_t optlen)
 {
     int ret = 0;
-	NCP_CMD_INET_RESP_SETSOCKOPT_CFG *inet_setsockopt_resp = NULL;
+    NCP_CMD_INET_RESP_SETSOCKOPT_CFG *inet_setsockopt_resp = NULL;
     socket = socketfd_host_to_lwip(socket);
+
+    struct ncp_socket_recv_t *handle = inet_get_sock_handle(socket);
+    if (!handle)
+        return -1;
+    
+    if (level == SOL_SOCKET && optname == SO_RCVTIMEO)
+    {
+        struct timestamp *tv = (struct timestamp *)optval;
+        handle->recv_timeout_ms = tv->tv_sec * 1000 + tv->tv_usec / 1000;
+    }
 
     NCP_CMD_INET_RESP_SETSOCKOPT_CFG *cmd_resp_buf = OSA_MemoryAllocate(sizeof(NCP_CMD_INET_RESP_SETSOCKOPT_CFG));
     if(cmd_resp_buf == NULL)
@@ -827,6 +837,7 @@ created:
     ncp_adap_d("create ncp socket receive queue %d for socket %d", handle->rx_fifo_fd, socket);
     handle->socket = socket;
     handle->socket_type = socket_type;
+    handle->recv_timeout_ms = 0;
     return WM_SUCCESS;
 err:
     return -WM_FAIL;
@@ -847,6 +858,7 @@ static void inet_socket_recv_queue_close(int socket)
     handle->socket = -1;
     handle->socket_type = IPPROTO_NONE;	
     handle->write_errorn = 0;
+    handle->recv_timeout_ms = 0;
     memset(handle->name, '\0', sizeof(handle->name));
 }
 
@@ -942,6 +954,7 @@ static int ncp_common_recv(int socket, void *buffer, size_t size, int flags, str
     int32_t ret = 0;
     StreamBufferHandle_t read_fd;
     struct ncp_socket_recv_t *handle = inet_get_sock_handle(socket);
+    TickType_t timeout_ticks;
     if (!handle || handle->socket == -1)
     {
         ncp_adap_e("%s ncp socket receive get queue fail", __func__);
@@ -960,10 +973,19 @@ static int ncp_common_recv(int socket, void *buffer, size_t size, int flags, str
         goto exit;
     }
 
+    if (handle->recv_timeout_ms > 0)
+    {
+        timeout_ticks = pdMS_TO_TICKS(handle->recv_timeout_ms);
+    }
+    else
+    {
+        timeout_ticks = portMAX_DELAY;
+    }
+
     read_fd = handle->rx_fifo_fd;
     if (handle->socket_type == IPPROTO_TCP)
     {
-        ret = xStreamBufferReceive(read_fd, buffer, size, osaWaitForever_c);
+        ret = xStreamBufferReceive(read_fd, buffer, size, timeout_ticks);
         if (ret < 0)
         {
             perror("read: ");
@@ -979,13 +1001,13 @@ static int ncp_common_recv(int socket, void *buffer, size_t size, int flags, str
     {
         char buf[256];
         /* recv_data need one byte. */
-        ret = xStreamBufferReceive(read_fd, buf, sizeof(NCP_CMD_INET_RESP_RECVFROM_CFG) - 1, portMAX_DELAY);
+        ret = xStreamBufferReceive(read_fd, buf, sizeof(NCP_CMD_INET_RESP_RECVFROM_CFG) - 1, timeout_ticks);
         if(ret == -1)
             perror("read recvfrom header: ");
         else
         {
             NCP_CMD_INET_RESP_RECVFROM_CFG *inet_sock_recv_tlv = (NCP_CMD_INET_RESP_RECVFROM_CFG *)buf;
-            ret = xStreamBufferReceive(read_fd, buffer, inet_sock_recv_tlv->recv_size, portMAX_DELAY);
+            ret = xStreamBufferReceive(read_fd, buffer, inet_sock_recv_tlv->recv_size, timeout_ticks);
             if(ret == -1)
             {
                 perror("read recvfrom buffer: ");
@@ -1002,13 +1024,13 @@ static int ncp_common_recv(int socket, void *buffer, size_t size, int flags, str
     {
         char buf[256];
         /* recv_data need one byte. */
-        ret = xStreamBufferReceive(read_fd, buf, sizeof(NCP_CMD_INET_RESP_RECVFROM_CFG) - 1, portMAX_DELAY);
+        ret = xStreamBufferReceive(read_fd, buf, sizeof(NCP_CMD_INET_RESP_RECVFROM_CFG) - 1, timeout_ticks);
         if(ret == -1)
             perror("read recvfrom header: ");
         else
         {
             NCP_CMD_INET_RESP_RECVFROM_CFG *inet_sock_recv_tlv = (NCP_CMD_INET_RESP_RECVFROM_CFG *)buf;
-            ret = xStreamBufferReceive(read_fd, buffer, inet_sock_recv_tlv->recv_size, portMAX_DELAY);
+            ret = xStreamBufferReceive(read_fd, buffer, inet_sock_recv_tlv->recv_size, timeout_ticks);
             if(ret == -1)
             {
                 perror("read recvfrom buffer: ");

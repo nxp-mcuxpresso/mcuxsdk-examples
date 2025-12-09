@@ -309,6 +309,11 @@ struct sockaddr_in6 {
     uint32_t           sin6_scope_id; /* Set of interfaces for scope */
 };
 
+struct timestamp {
+  long    tv_sec;         /* seconds */
+  long    tv_usec;        /* and microseconds */
+};
+
 #define IEEEtypes_SSID_SIZE 32
 /* Min WPA2 passphrase can be upto 8 ASCII chars */
 #define WLAN_PSK_MIN_LENGTH 8U

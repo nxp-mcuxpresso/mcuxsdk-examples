@@ -10,6 +10,7 @@
 #include "ncp_host_command_wifi.h"
 #include "ncp_inet.h"
 #include "ncp_utils.h"
+
 int ping_sock_handle = -1;
 
 void ping_sock_task(void *param);
@@ -108,6 +109,7 @@ static void display_ping_stats(int status, uint32_t size, const char *ip_str, ui
  * command response, and print ping result in ping_sock_task.
  */
 #if CONFIG_INET_SOCKET
+#define PING_RECV_TIMEOUT_MS 5000
 void ping_sock_task(void *pvParameters)
 {
     struct ip_hdr *iphdr;
@@ -116,6 +118,7 @@ void ping_sock_task(void *pvParameters)
     uint8_t *recv_buf;
     struct sockaddr_in server_addr = {0};
     struct in_addr dest_addr;
+    struct timestamp tv;
 
     while (1)
     {
@@ -151,6 +154,11 @@ void ping_sock_task(void *pvParameters)
         }
 
         int sockfd = ncp_socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
+
+        tv.tv_sec = PING_RECV_TIMEOUT_MS / 1000;
+        tv.tv_usec = (PING_RECV_TIMEOUT_MS % 1000) * 1000;
+        ncp_setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+
         while (i <= ping_msg.count)
         {
             ping_res.echo_resp = -WM_FAIL;
@@ -194,6 +202,11 @@ void ping_sock_task(void *pvParameters)
                     {
                         (void)memset(recv_buf, 0, ping_size + IP_HEADER_LEN);
                     }
+                }
+                else
+                {
+                    /* ncp_recvfrom timeout and break */
+                    break;
                 }
             }
             /* Calculate the round trip time */
