@@ -688,6 +688,152 @@ void BOARD_InitSPIPins(void)
 /* clang-format off */
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitSPIFlashPins:
+- options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
+- pin_list:
+  - {pin_num: C4, peripheral: GPIO1, signal: 'GPIO, 7', pin_signal: P1_7/TRIG_IN15/LPI2C0_SDA/LPUART1_CTS_B/LPSPI1_PCS0/LPUART0_TXD/CT2_MAT2/SLCD_3/WUU_P3, direction: OUTPUT,
+    gpio_init_state: 'true', slew_rate: fast, open_drain: disable, drive_strength: low, extra_drive_strength: normal, pull_select: down, pull_enable: disable, passive_filter: disable,
+    pull_value: low, input_buffer: enable, invert_input: normal}
+  - {pin_num: B4, peripheral: LPSPI1, signal: SCK, pin_signal: P1_9/TRIG_IN17/LPI2C0_SDAS/LPUART0_TXD/LPSPI1_SCK/SLCD_5, slew_rate: fast, open_drain: disable, drive_strength: low,
+    pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+  - {pin_num: A4, peripheral: LPSPI1, signal: OUT, pin_signal: P1_8/TRIG_IN16/LPI2C0_SCLS/LPUART0_RXD/LPSPI1_SDO/CT2_MAT3/SLCD_4/WUU_P4, slew_rate: fast, open_drain: disable,
+    drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+  - {pin_num: C5, peripheral: LPSPI1, signal: IN, pin_signal: P1_6/TRIG_IN19/LPI2C0_SCL/LPUART1_RTS_B/LPSPI1_SDI/LPUART0_RXD/CT2_MAT1/SLCD_2, slew_rate: fast, open_drain: disable,
+    drive_strength: low, extra_drive_strength: normal, pull_select: down, pull_enable: disable, passive_filter: disable, pull_value: low, input_buffer: enable, invert_input: normal}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+/* clang-format on */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitSPIFlashPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitSPIFlashPins(void)
+{
+    /* Clock gate control PORT1: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GatePORT1);
+    /* Clock gate control GPIO1: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GateGPIO1);
+    /* LPSPI1 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kLPSPI1_RST_SHIFT_RSTn);
+    /* PORT1 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kPORT1_RST_SHIFT_RSTn);
+    /* GPIO1 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kGPIO1_RST_SHIFT_RSTn);
+
+    const port_pin_config_t port1_6_pinC5_config = {/* Internal pull-up/down resistor is disabled */
+                                                    kPORT_PullDisable,
+                                                    /* Low internal pull resistor value is selected. */
+                                                    kPORT_LowPullResistor,
+                                                    /* Fast slew rate is configured */
+                                                    kPORT_FastSlewRate,
+                                                    /* Passive input filter is disabled */
+                                                    kPORT_PassiveFilterDisable,
+                                                    /* Open drain output is disabled */
+                                                    kPORT_OpenDrainDisable,
+                                                    /* Low drive strength is configured */
+                                                    kPORT_LowDriveStrength,
+                                                    /* Normal drive strength is configured */
+                                                    kPORT_NormalDriveStrength,
+                                                    /* Pin is configured as LPSPI1_SDI */
+                                                    kPORT_MuxAlt4,
+                                                    /* Digital input enabled */
+                                                    kPORT_InputBufferEnable,
+                                                    /* Digital input is not inverted */
+                                                    kPORT_InputNormal,
+                                                    /* Pin Control Register fields [15:0] are not locked */
+                                                    kPORT_UnlockRegister};
+    /* PORT1_6 (pin C5) is configured as LPSPI1_SDI */
+    PORT_SetPinConfig(PORT1, 6U, &port1_6_pinC5_config);
+
+    const port_pin_config_t port1_7_pinC4_config = {/* Internal pull-up/down resistor is disabled */
+                                                    kPORT_PullDisable,
+                                                    /* Low internal pull resistor value is selected. */
+                                                    kPORT_LowPullResistor,
+                                                    /* Fast slew rate is configured */
+                                                    kPORT_FastSlewRate,
+                                                    /* Passive input filter is disabled */
+                                                    kPORT_PassiveFilterDisable,
+                                                    /* Open drain output is disabled */
+                                                    kPORT_OpenDrainDisable,
+                                                    /* Low drive strength is configured */
+                                                    kPORT_LowDriveStrength,
+                                                    /* Normal drive strength is configured */
+                                                    kPORT_NormalDriveStrength,
+                                                    /* Pin is configured as P1_7 */
+                                                    kPORT_MuxAlt0,
+                                                    /* Digital input enabled */
+                                                    kPORT_InputBufferEnable,
+                                                    /* Digital input is not inverted */
+                                                    kPORT_InputNormal,
+                                                    /* Pin Control Register fields [15:0] are not locked */
+                                                    kPORT_UnlockRegister};
+    /* PORT1_7 (pin C4) is configured as P1_7 */
+    PORT_SetPinConfig(PORT1, 7U, &port1_7_pinC4_config);
+
+    const port_pin_config_t port1_8_pinA4_config = {/* Internal pull-up/down resistor is disabled */
+                                                    kPORT_PullDisable,
+                                                    /* Low internal pull resistor value is selected. */
+                                                    kPORT_LowPullResistor,
+                                                    /* Fast slew rate is configured */
+                                                    kPORT_FastSlewRate,
+                                                    /* Passive input filter is disabled */
+                                                    kPORT_PassiveFilterDisable,
+                                                    /* Open drain output is disabled */
+                                                    kPORT_OpenDrainDisable,
+                                                    /* Low drive strength is configured */
+                                                    kPORT_LowDriveStrength,
+                                                    /* Normal drive strength is configured */
+                                                    kPORT_NormalDriveStrength,
+                                                    /* Pin is configured as LPSPI1_SDO */
+                                                    kPORT_MuxAlt4,
+                                                    /* Digital input enabled */
+                                                    kPORT_InputBufferEnable,
+                                                    /* Digital input is not inverted */
+                                                    kPORT_InputNormal,
+                                                    /* Pin Control Register fields [15:0] are not locked */
+                                                    kPORT_UnlockRegister};
+    /* PORT1_8 (pin A4) is configured as LPSPI1_SDO */
+    PORT_SetPinConfig(PORT1, 8U, &port1_8_pinA4_config);
+
+    const port_pin_config_t port1_9_pinB4_config = {/* Internal pull-up/down resistor is disabled */
+                                                    kPORT_PullDisable,
+                                                    /* Low internal pull resistor value is selected. */
+                                                    kPORT_LowPullResistor,
+                                                    /* Fast slew rate is configured */
+                                                    kPORT_FastSlewRate,
+                                                    /* Passive input filter is disabled */
+                                                    kPORT_PassiveFilterDisable,
+                                                    /* Open drain output is disabled */
+                                                    kPORT_OpenDrainDisable,
+                                                    /* Low drive strength is configured */
+                                                    kPORT_LowDriveStrength,
+                                                    /* Normal drive strength is configured */
+                                                    kPORT_NormalDriveStrength,
+                                                    /* Pin is configured as LPSPI1_SCK */
+                                                    kPORT_MuxAlt4,
+                                                    /* Digital input enabled */
+                                                    kPORT_InputBufferEnable,
+                                                    /* Digital input is not inverted */
+                                                    kPORT_InputNormal,
+                                                    /* Pin Control Register fields [15:0] are not locked */
+                                                    kPORT_UnlockRegister};
+    /* PORT1_9 (pin B4) is configured as LPSPI1_SCK */
+    PORT_SetPinConfig(PORT1, 9U, &port1_9_pinB4_config);
+
+    gpio_pin_config_t gpio1_pinC4_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 1U
+    };
+    /* Initialize GPIO functionality on pin P1_7 (pin C4)  */
+    GPIO_PinInit(GPIO1, 7U, &gpio1_pinC4_config);
+}
+
+/* clang-format off */
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitLEDsPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true', fullInit: 'true'}
 - pin_list:

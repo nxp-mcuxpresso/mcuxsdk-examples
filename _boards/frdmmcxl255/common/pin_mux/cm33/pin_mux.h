@@ -62,6 +62,12 @@ void BOARD_InitI2CPins(void);
  */
 void BOARD_InitSPIPins(void);
 
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitSPIFlashPins(void);
+
 /*! @name PORT1_15 (coord C3), LED_RED
   @{ */
 

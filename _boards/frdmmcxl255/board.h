@@ -92,6 +92,13 @@
 #define BOARD_SW5_IRQ         GPIO00_AON_IRQn
 #define BOARD_SW5_IRQ_HANDLER GPIO00_AON_IRQHandler
 
+/*! @brief The LPSPI channel used for the NOR flash */
+#define BOARD_EEPROM_LPSPI_BASEADDR  LPSPI1
+#define BOARD_LPSPI_MRCC_ADDRESS     kCLOCK_GateLPSPI1
+#define BOARD_LPSPI_CLKSRC           kFRO_HF_DIV_to_LPSPI1
+#define BOARD_LPSPI_MRCC_CLK_DIV     2U
+#define BOARD_LPSPI_NOR_BAUDRATE     48000000U
+
 #if __CORTEX_M == (33U) /* Building on the main core */
 #ifndef BOARD_SW2_GPIO
 #define BOARD_SW2_GPIO GPIO1
