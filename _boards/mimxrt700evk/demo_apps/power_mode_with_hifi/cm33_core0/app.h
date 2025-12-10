@@ -63,7 +63,7 @@
 #define APP_DEEPSLEEP_PDSLEEPCFG1 (0U)                            /* PMC->PDSLEEPCFG1 */
 #define APP_DSR_PDSLEEPCFG0       (0U)                            /* PMC->PDSLEEPCFG0 */
 #define APP_DEEPSLEEP_RAM_APD     (0x3FFFFU) /* PMC->PDSLEEPCFG2, all keep powered, the unused PT can be power off. */
-#define APP_DEEPSLEEP_RAM_PPD     (0x3C000U) /* PMC->PDSLEEPCFG3, keep PT14-17 which used by HIFI. */
+#define APP_DEEPSLEEP_RAM_PPD     (0x3FFFFU) /* PMC->PDSLEEPCFG3, all keep powered, PT14-17 used by HIFI, others can be powered off. */
 #define APP_DEEPSLEEP_PDSLEEPCFG4                                                                        \
     (PMC_PDSLEEPCFG4_CPU0_CCACHE_MASK | PMC_PDSLEEPCFG4_CPU0_SCACHE_MASK | PMC_PDSLEEPCFG4_OCOTP_MASK |  \
      PMC_PDSLEEPCFG4_DSP_ICACHE_MASK | PMC_PDSLEEPCFG4_DSP_DCACHE_MASK | PMC_PDSLEEPCFG4_DSP_ITCM_MASK | \
