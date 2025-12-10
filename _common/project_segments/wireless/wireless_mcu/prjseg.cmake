@@ -94,6 +94,29 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu)
     )
 endif()
 
+if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu.enable_hci_log)
+    mcux_add_macro(
+        TOOLCHAINS armgcc iar
+        CC "-DBOARD_DBG_HCI_LOGGER=1"
+    )
+endif()
+
+if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu_hci_log_port_lpuart)
+    mcux_add_source(
+        TOOLCHAINS armgcc iar
+        BASE_PATH ${SdkRootDirPath}
+        SOURCES
+            examples/_common/project_segments/wireless/wireless_mcu/debug/board_debug_nbu_lpuart_port.c
+            examples/_common/project_segments/wireless/wireless_mcu/debug/board_debug_nbu_port.h
+    )
+    mcux_add_include(
+        TOOLCHAINS armgcc iar
+        BASE_PATH ${SdkRootDirPath}
+        INCLUDES
+            examples/_common/project_segments/wireless/wireless_mcu/debug
+    )
+endif()
+
 if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.extflash)
     mcux_add_source(
         BASE_PATH ${SdkRootDirPath}

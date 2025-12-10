@@ -88,3 +88,22 @@ config MCUX_PRJSEG_module.board.wireless.hw_app
     depends on MCUX_PRJSEG_project.hw_app_customize_folder
     help
       This is a customized implementation of hardware init used in wireless examples.
+
+config MCUX_PRJSEG_module.board.wireless.board.debug_nbu.enable_hci_log
+    bool "HCI Packet Logger"
+    depends on MCUX_PRJSEG_module.board.wireless.board.debug_nbu
+    help
+      Enable HCI packet logger for BLE protocol debugging.
+
+if MCUX_PRJSEG_module.board.wireless.board.debug_nbu.enable_hci_log
+
+choice MCUX_PRJSEG_module.board.wireless.board.debug_nbu_hci_log_port_selection
+    prompt "Debug NBU output port"
+    config MCUX_PRJSEG_module.board.wireless.board.debug_nbu_hci_log_port_lpuart
+        bool "Debug NBU output to second UART"
+        select MCUX_COMPONENT_driver.lpuart
+    config MCUX_PRJSEG_module.board.wireless.board.debug_nbu_hci_log_port_custom
+        bool "Custom port (user implemented)"
+endchoice
+
+endif

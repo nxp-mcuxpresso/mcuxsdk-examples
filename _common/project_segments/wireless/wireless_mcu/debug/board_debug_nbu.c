@@ -11,10 +11,24 @@
 #include "fwk_nbu_dbg.h"
 #include "fsl_debug_console.h"
 #include "fsl_device_registers.h"
+#include "fsl_os_abstraction.h"
+#if defined(BOARD_DBG_HCI_LOGGER)
+#include "board_debug_nbu_port.h"
+#endif
 
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+/* Set to 1 to add direction byte before each packet, 0 for no direction marker */
+#ifndef BOARD_DBG_HCI_LOG_W_DIRECTION_MARKER
+#define BOARD_DBG_HCI_LOG_W_DIRECTION_MARKER 1
+#endif
+
+#if (defined(gDebugConsoleEnable_d) && (gDebugConsoleEnable_d == 1)) && defined(BOARD_DBG_HCI_LOGGER)
+#warning "HCI Logger: Debug console is enabled. \
+          Same UART instance will be shared between debug prints and HCI logging. \
+          This will lead to conflict."
+#endif
 
 /************************************************************************************
  * Private memory declarations
@@ -329,6 +343,26 @@ static void DBG_PrintRawData(const char* label, const char* start_marker, const 
     BOARD_DBG_PRINTF("%s\n", end_marker);
 }
 
+#if defined(BOARD_DBG_HCI_LOGGER)
+static void BOARD_NbuDebugHCILogCb(uint8_t packet_type, const uint8_t *data, uint16_t len, bool is_rx)
+{
+    if (data != NULL && len > 0U)
+    {
+        OSA_DisableScheduler();
+#if (BOARD_DBG_HCI_LOG_W_DIRECTION_MARKER == 1)
+        /* Write packet direction */
+        (void)BOARD_DbgNbuPortWrite((uint8_t *)&is_rx, 1U);
+#endif
+        /* Write packet type */
+        (void)BOARD_DbgNbuPortWrite(&packet_type, 1U);
+        /* Write packet payload */
+        (void)BOARD_DbgNbuPortWrite(data, len);
+        OSA_EnableScheduler();
+    }
+    (void)is_rx;
+}
+#endif
+
 /************************************************************************************
 *************************************************************************************
 * Public functions
@@ -337,9 +371,17 @@ static void DBG_PrintRawData(const char* label, const char* start_marker, const 
 
 int BOARD_DbgNbuInit(void)
 {
+    int ret = 0;
     NBUDBG_RegisterNbuDebugNotificationCb(BOARD_NbuDebugNotifyCb);
-
-    return 0;
+    /* Configure to send debug structure via HCI vendor events */
+    NBUDBG_ConfigureHciVendorEvent(NBUDBG_HCI_EVENT_DEBUG_STRUCT);
+#if defined(BOARD_DBG_HCI_LOGGER)
+    /* Register HCI logger callback */
+    NBUDBG_RegisterHciLogCallback(BOARD_NbuDebugHCILogCb);
+    /* Init HCI log port */
+    ret = BOARD_DbgNbuPortInit();
+#endif
+    return ret;
 }
 
 void BOARD_DbgNbuProcess(void)

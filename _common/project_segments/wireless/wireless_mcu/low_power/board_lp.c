@@ -40,6 +40,10 @@
 #include "fsl_debug_console.h"
 #endif
 
+#if defined(BOARD_DBG_HCI_LOGGER)
+#include "board_debug_nbu_port.h"
+#endif
+
 /* -------------------------------------------------------------------------- */
 /*                             Private prototypes                             */
 /* -------------------------------------------------------------------------- */
@@ -241,6 +245,10 @@ static void BOARD_ExitPowerDownCb(void)
 
 #if defined(gDebugConsoleEnable_d) && (gDebugConsoleEnable_d == 1)
     BOARD_ReinitDebugConsole();
+#endif
+
+#if defined(BOARD_DBG_HCI_LOGGER)
+    (void)BOARD_DbgNbuPortReinit();
 #endif
 
 #if defined(gAppUseSerialManager_c) && (gAppUseSerialManager_c > 0)
