@@ -14,7 +14,7 @@ mcux_add_source(
             examples/canopennode_examples/manager/bm/port/CO_driver_NXP.c
             examples/canopennode_examples/manager/bm/port/CO_driver_target.h
             examples/canopennode_examples/manager/bm/port/OD.c
-            examples/canopennode_examples/manager/bm/port/OD.c
+            examples/canopennode_examples/manager/bm/port/OD.h
 )
 
 mcux_add_include(
