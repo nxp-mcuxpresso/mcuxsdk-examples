@@ -380,6 +380,10 @@ static void ncp_tlv_tx_data_dequeue(void)
         if (ncp_dev_reset_cb)
         {
             ncp_dev_reset_cb(msg->tlv_buf);
+            if (ncp_tlv_adapter_is_encrypt_mode())
+            {
+                ncp_tlv_adapter_encrypt_deinit();
+            }
         }
 
         /* free element */
