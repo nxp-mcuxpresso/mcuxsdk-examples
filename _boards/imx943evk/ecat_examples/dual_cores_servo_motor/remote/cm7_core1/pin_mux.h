@@ -36,12 +36,12 @@ extern "C" {
 void BOARD_InitBootPins(void);
 
 void BOARD_Init_M1_PWM(void);
-void BOARD_Init_M1_ENDAT2P2(void);
+void BOARD_Init_M1_Encoder(void);
 void BOARD_Init_M1_SINC(void);
 void BOARD_Init_M1_FAULTS(void);
 
 void BOARD_Init_M2_PWM(void);
-void BOARD_Init_M2_ENDAT2P2(void);
+void BOARD_Init_M2_Encoder(void);
 void BOARD_Init_M2_SINC(void);
 void BOARD_Init_M2_FAULTS(void);
 

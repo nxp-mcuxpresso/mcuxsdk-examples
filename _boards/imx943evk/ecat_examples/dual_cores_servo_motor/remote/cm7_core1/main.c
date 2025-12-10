@@ -91,11 +91,6 @@ app_ver_t g_sAppIdFM = {
  * Prototypes
  ******************************************************************************/
 static void init_freemaster_lpuart(void);
-/* EnDat2.2 interrupt */
-RAM_FUNC_LIB
-void M2_ENDAT2P2_IRQHandler(void);
-RAM_FUNC_LIB
-void M1_ENDAT2P2_IRQHandler(void);
 
 static void BOARD_InitSysTick(void);
 
@@ -105,12 +100,12 @@ static void BOARD_InitSysTick(void);
 
 int32_t GetM1PositionActualValue(void)
 {
-    return (g_sM1Enc.data.position.position | (i32EthercatM1PosCurrMT << 25))& 0xFFFFFFFF;
+    return (M1_MCDRV_ENC_GET_POSITION(&g_sM1Enc) | (i32EthercatM1PosCurrMT << 25))& 0xFFFFFFFF;
 }
 
 int32_t GetM2PositionActualValue(void)
 {
-   return (g_sM2Enc.data.position.position | (i32EthercatM2PosCurrMT << 25))& 0xFFFFFFFF;
+   return (M2_MCDRV_ENC_GET_POSITION(&g_sM2Enc)  | (i32EthercatM2PosCurrMT << 25))& 0xFFFFFFFF;
 }
 
 acc32_t GetM1PositionCmdValue(int32_t targetPos)
@@ -150,7 +145,7 @@ int Cia402_status_machine_trans(uint8_t axis, uint8_t trans_id, struct param_t *
                break;
            case 4:
                M1_SetAppSwitch(1);
-               i64EthercatPosTargetM1 = g_sM1Enc.i64EndatPositionMT;
+               i64EthercatPosTargetM1 = M1_MCDRV_ENC_GET_POSITION(&g_sM1Enc);
                if (g_sM1Ctrl.eState != kSM_AppRun || g_eM1StateRun != kRunState_Spin)
                {
                    ret = -1;
@@ -181,7 +176,7 @@ int Cia402_status_machine_trans(uint8_t axis, uint8_t trans_id, struct param_t *
            case 3: M2_OpenPWM(); break;
            case 4:
                M2_SetAppSwitch(1);
-               i64EthercatPosTargetM2 = g_sM2Enc.i64EndatPositionMT;
+               i64EthercatPosTargetM2 = M2_MCDRV_ENC_GET_POSITION(&g_sM2Enc);
                if (g_sM2Ctrl.eState != kSM_AppRun || g_eM2StateRun != kRunState_Spin) {
                    ret = -1;
                }
@@ -267,7 +262,6 @@ int main(void)
     /* FreeMASTER communication layer initialization */
     init_freemaster_lpuart();
     FMSTR_Init();
-
     /* SysTick initialization for CPU load measurement */
     BOARD_InitSysTick();
     /* Init peripheral motor control driver for motors M1 and M2 */
@@ -288,7 +282,7 @@ int main(void)
         if (!i32InitializedM1) {
             if (g_param->axis[0].axis_is_active) {
                 M1_MCDRV_SINC_INIT();
-                M1_MCDRV_ENDAT2P2_PERIPH_INIT();
+                M1_MCDRV_ENCODER_PERIPH_INIT();
                 i32InitializedM1 = 1;
             }
         }
@@ -296,26 +290,26 @@ int main(void)
         if (!i32InitializedM2) {
             if (g_param->axis[1].axis_is_active) {
                 M2_MCDRV_SINC_INIT();
-                M2_MCDRV_ENDAT2P2_PERIPH_INIT();
+                M2_MCDRV_ENCODER_PERIPH_INIT();
                 i32InitializedM2 = 1;
             }
         }
-
        /* FreeMASTER Polling function */
        FMSTR_Poll();
     }
 }
 
 RAM_FUNC_LIB
-void M1_ENDAT2P2_IRQHandler(void)
+void M1_ENCODER_IRQHandler(void)
 {
     int32_t detal = 0;
-    M1_MCDRV_SINC_GET(&g_sM1Curr3phDcBus);
-    /* get position from EnDat2.2 */
-    M1_MCDRV_ENDAT2P2_GET(&g_sM1Enc);
+    int32_t position;
 
+    M1_MCDRV_SINC_GET(&g_sM1Curr3phDcBus);
+    M1_MCDRV_ENCODER_GET(&g_sM1Enc);
+    position = M1_MCDRV_ENC_GET_POSITION(&g_sM1Enc);
     if (!(i32EthercatM1PosOldST < 0)) {
-        detal = (int32_t)g_sM1Enc.data.position.position - i32EthercatM1PosOldST;
+        detal = position - i32EthercatM1PosOldST;
         if (detal < -16777216) {
             i32EthercatM1PosCurrMT++;
         }
@@ -323,24 +317,27 @@ void M1_ENDAT2P2_IRQHandler(void)
             i32EthercatM1PosCurrMT--;
         }
     }
-    i32EthercatM1PosOldST = g_sM1Enc.data.position.position;
+    i32EthercatM1PosOldST = position;
 
-    /* M2 State machine */
+    /* M1 State machine */
     SM_StateMachineFast(&g_sM1Ctrl);
-
+#if (M1_ENCODER == ENCODER_ENDAT3)
+    /* Clear EnDat3 FG_IRQ0 flag */
+    ENDAT3_IRQ_Clear(ENDAT3, CLEAR_FG_IRQ0);
+#endif  /* EnDat3 encoder is used. */
     SDK_ISR_EXIT_BARRIER;
 }
 
 RAM_FUNC_LIB
-void M2_ENDAT2P2_IRQHandler(void)
+void M2_ENCODER_IRQHandler(void)
 {
     int32_t detal = 0;
+    int32_t position;
     M2_MCDRV_SINC_GET(&g_sM2Curr3phDcBus);
-    /* get position from EnDat2.2 */
-    M2_MCDRV_ENDAT2P2_GET(&g_sM2Enc);
-
+    M2_MCDRV_ENCODER_GET(&g_sM2Enc);
+    position = M2_MCDRV_ENC_GET_POSITION(&g_sM2Enc);
     if (!(i32EthercatM2PosOldST < 0)) {
-        detal = (int32_t)g_sM2Enc.data.position.position - i32EthercatM2PosOldST;
+        detal = position - i32EthercatM2PosOldST;
         if (detal < -16777216) {
             i32EthercatM2PosCurrMT++;
         }
@@ -348,12 +345,15 @@ void M2_ENDAT2P2_IRQHandler(void)
             i32EthercatM2PosCurrMT--;
         }
     }
-    i32EthercatM2PosOldST = g_sM2Enc.data.position.position;
+    i32EthercatM2PosOldST = position;
 
     /* M2 State machine */
     SM_StateMachineFast(&g_sM2Ctrl);
     FMSTR_Recorder(0);
-
+#if (M2_ENCODER == ENCODER_ENDAT3)
+    /* Clear EnDat3 FG_IRQ0 flag */
+    ENDAT3_IRQ_Clear(ENDAT3, CLEAR_FG_IRQ0);
+#endif  /* EnDat3 encoder is used. */
     SDK_ISR_EXIT_BARRIER;
 }
 

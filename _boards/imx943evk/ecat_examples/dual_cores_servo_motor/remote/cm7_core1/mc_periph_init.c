@@ -20,9 +20,18 @@
 mcdrv_pwm3ph_pwma_t g_sM1Pwm3ph;
 mcdrv_pwm3ph_pwma_t g_sM2Pwm3ph;
 
-/* Structure for EnDat2.2 driver */
+/* Structure for EnDat2.2, EnDat3 driver */
+#if (M1_ENCODER == ENCODER_ENDAT3)
+mcdrv_endat3_t g_sM1Enc;
+#elif (M1_ENCODER == ENCODER_ENDAT2P2_2)
 mcdrv_endat2p2_t g_sM1Enc;
+#endif
+
+#if (M2_ENCODER == ENCODER_ENDAT3)
+mcdrv_endat3_t g_sM2Enc;
+#elif (M2_ENCODER == ENCODER_ENDAT2P2_1)
 mcdrv_endat2p2_t g_sM2Enc;
+#endif
 
 /* Structures for current and voltage measurement */
 mcdrv_sinc_t g_sM1Curr3phDcBus = { .fltDCBvoltageScale = M1_U_DCB_MAX, \
@@ -64,46 +73,127 @@ void MCDRV_Init(void)
     M2_MCDRV_PWM_PERIPH_INIT();
 }
 
-
-/*
-
-ksi = 1;
-f0 = 100;
-Ts = 0.0000625;
-DiscMethodFactor = 2; !!!
-
-M1_POSPE_TO_KP_GAIN = (4.0 * pi * ksi * f0) % (1256.64F)
-M1_POSPE_TO_KI_GAIN = ((2*pi*f0)^2 * Ts)  % (24.6740F)
-M1_POSPE_TO_THETA_GAIN = (Ts / pi / DiscMethodFactor)  % (0.0000198944 / 2)
-
-*/
-
-///* 16KHz */
-//#define M1_POSPE_TO_KP_GAIN (1256.64F)
-//#define M1_POSPE_TO_KI_GAIN (24.6740F)
-//#define M1_POSPE_TO_THETA_GAIN (0.0000099472F) // DiscMethodFactor is 2!
-
-/* 32KHz */
-//#define M1_POSPE_TO_KP_GAIN (1256.64F)
-//#define M1_POSPE_TO_KI_GAIN (12.3370F)
-//#define M1_POSPE_TO_THETA_GAIN (0.0000049736F) // DiscMethodFactor is 2!
-
 /* 64KHz */
 #define M1_POSPE_TO_KP_GAIN (1256.64F)
 #define M1_POSPE_TO_KI_GAIN (6.1685F)
 #define M1_POSPE_TO_THETA_GAIN (0.0000024868) // DiscMethodFactor is 2!
 
+#if (M1_ENCODER == ENCODER_ENDAT3) || (M2_ENCODER == ENCODER_ENDAT3)
+/*!
+ * @brief   void InitEndat3(void)
+ *           - Initialization of the EnDat3 peripheral
+ *
+ * @param   void
+ *
+ * @return  none
+ */
+void InitEndat3(void)
+{
+  status_t retVal;
+
+  /* EnDat3.0 200MHz */
+  clk_t endat3Clk_rxtx = {
+    .clkId = kCLOCK_Endat31fast,
+    .pclkId = kCLOCK_Syspll1dfs1div2, /* 400 MHz */
+    .rate = 200000000UL,
+    .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
+  };
+
+  clk_t endat3Clk_sys = {
+    .clkId = kCLOCK_Endat31slow,
+    .pclkId = kCLOCK_Syspll1dfs1div2, /* 400 MHz */
+    .rate = 100000000UL,
+    .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
+  };
+
+  BLK_CTRL_WAKEUPMIX_Type *blk_base = BLK_CTRL_WAKEUPMIX;
+
+  CLOCK_SetParent(&endat3Clk_rxtx);
+  CLOCK_SetRate(&endat3Clk_rxtx);
+  CLOCK_EnableClock(endat3Clk_rxtx.clkId);
+
+  CLOCK_SetParent(&endat3Clk_sys);
+  CLOCK_SetRate(&endat3Clk_sys);
+  CLOCK_EnableClock(endat3Clk_sys.clkId);
+
+  /* Select top connector on the IMX94BB board */
+#if (M1_ENCODER == ENCODER_ENDAT3)
+  blk_base->DIAG_ENCODER_MUX_SEL = blk_base->DIAG_ENCODER_MUX_SEL |
+    BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc2_sel(DIG_ENCODER_MUX_ENDAT3);
+  /* Connect FlexPWM2_SM1_trig0 -> EnDat3_HW_Strobe trigger*/
+  XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm2Mux0Trigger1, kXBAR1_OutputEndat3HwStrobe);
+#elif ((M2_ENCODER == ENCODER_ENDAT3))
+  blk_base->DIAG_ENCODER_MUX_SEL = blk_base->DIAG_ENCODER_MUX_SEL |
+    BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc1_sel(DIG_ENCODER_MUX_ENDAT3);
+  /* Connect FlexPWM1_SM1_trig0 -> EnDat3_HW_Strobe trigger*/
+  XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux0Trigger1, kXBAR1_OutputEndat3HwStrobe);
+#endif
+
+
+  blk_base->ENDAT_STRETCHER_CTRL &= ~(BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_hw_strobe_value_MASK << BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_hw_strobe_value_SHIFT);
+  blk_base->ENDAT_STRETCHER_CTRL |= BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_hw_strobe_value(ENDAT3_STRETCHER_CTRL_HW_STROBE_COUNTER);
+  blk_base->ENDAT_STRETCHER_CTRL |= BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_hw_strobe_ctrl(1);
+  blk_base->ENDAT_STRETCHER_CTRL |= BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_async_en(1);
+  blk_base->ENDAT_STRETCHER_CTRL |= BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_pol_sel(1);
+
+  /* Set master clock to 12.5Mbps - the default data transfer rate of ECN1325 EnDat3 encoder */
+  ENDAT3_RxTxClkConfig(ENDAT3, ENDAT3_SOURCE_CLOCK, ENDAT3_RXTX_RATE_12_5MBPS, 0);
+  /*  Check the communication is working */
+  if (ENDAT3_FG_Hello(ENDAT3) == kStatus_Success)
+  {
+    /* Encoder data transfer rate is 12.5Mbps */
+    /* Switch the encoder data transfer rate to 25Mbps */
+    retVal = ENDAT3_FG_Rate(ENDAT3, ENDAT3_RXTX_RATE_25MBPS);
+    if (retVal != kStatus_Success)
+    {
+      /* Failed to switch to 25Mbps */
+      return;
+    }
+
+    SDK_DelayAtLeastUs(20U, SystemCoreClock);
+    if (ENDAT3_FG_Hello(ENDAT3) != kStatus_Success)
+    {
+      /* Failed to switch to 25Mbps */
+      return;
+    }
+  }
+  else
+  {
+    /* Actual encoder data transfer rate is 25Mbps, change master clock to the same clock (25Mbps) */
+    ENDAT3_RxTxClkConfig(ENDAT3, ENDAT3_SOURCE_CLOCK, ENDAT3_RXTX_RATE_25MBPS,  0);
+
+    SDK_DelayAtLeastUs(20U, SystemCoreClock);
+    if (ENDAT3_FG_Hello(ENDAT3) != kStatus_Success)
+    {
+      /* Communication was not established. */
+      return;
+    }
+  }
+
+  /* Enable the FG_IRQ0 when HPF received */
+  ENDAT3_FG_IRQ_Enable_With_FIxM_Frame_Count(ENDAT3, 0, 1);
+
+  /* Enable EnDat3 HW trigger */
+  ENDAT3_HW_Strobe_Enable(ENDAT3);
+
+  /* Enable interrupt for EnDat3 event */
+  NVIC_EnableIRQ(ENDAT3_FG_IRQn);
+  NVIC_SetPriority(ENDAT3_FG_IRQn, 0U);
+}
+#endif  /* EnDat3 encoder is used. */
+
+#if (M2_ENCODER == ENCODER_ENDAT2P2_1)
 /*!
  * @brief      Init EnDat2.2_1 master IP for M2
  *
  * @param      void
  *
- * @return     none
+ * @return     endat2p2_dev_t
  */
 void InitEndat2p2_1(void)
 {
     int data;
-
+    endat2p2_dev_t *dev;
     /* EnDat2.2 100MHz */
     clk_t endat2p2Clk = {
         .clkId = kCLOCK_Endat21,
@@ -125,50 +215,56 @@ void InitEndat2p2_1(void)
         BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat2p1_nstr_value(3) |
         BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat2p1_nstr_ctrl(1);
 
-    g_sM2Enc.dev = ENDAT2P2_InitMaster(ENDAT2P2_1, ENDAT2P2_CLK_48M);
+    /* EXTENDED PWM to trigger EnDat StrN */
+    BLK_CTRL_WAKEUPMIX->XBAR_TRIG_SYNC_CTRL2 |= BLK_CTRL_WAKEUPMIX_XBAR_TRIG_SYNC_CTRL2_SYNC_ENABLE(2U);
+    BLK_CTRL_WAKEUPMIX->XBAR_TRIG_SYNC_CTRL3 |= BLK_CTRL_WAKEUPMIX_XBAR_TRIG_SYNC_CTRL3_PULSE_WIDTH1(7U);
+
+    XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux0Trigger1, kXBAR1_OutputTriggerSyncAsyncIn1);
+
+    /* Trigger EnDat2.2 */
+    XBAR_SetSignalsConnection(kXBAR1_InputTriggerSyncSyncOut1, kXBAR1_OutputEndat21StrN);
+    dev = ENDAT2P2_InitMaster(ENDAT2P2_1, ENDAT2P2_CLK_48M);
 
     ////////////////////////////////////////////////////////////
     /* Init encoder - ENDAT2P2_InitEncoder(dev); */
 
-    ENDAT2P2_EncoderRest(g_sM2Enc.dev);
+    ENDAT2P2_EncoderRest(dev);
     SDK_DelayAtLeastUs((50 * 1000), SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 
-    ENDAT2P2_ClearEncoderError(g_sM2Enc.dev);
+    ENDAT2P2_ClearEncoderError(dev);
     SDK_DelayAtLeastUs((50 * 1000), SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 
-    ENDAT2P2_ClearEncoderWarning(g_sM2Enc.dev);
+    ENDAT2P2_ClearEncoderWarning(dev);
     SDK_DelayAtLeastUs((50 * 1000), SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 
-    ENDAT2P2_GetEncoderInfo(g_sM2Enc.dev);
+    ENDAT2P2_GetEncoderInfo(dev);
 
-    ENDAT2P2_SetDataWordLength(g_sM2Enc.dev, g_sM2Enc.dev->pos_res);
+    ENDAT2P2_SetDataWordLength(dev, dev->pos_res);
 
     //////////////////////////////////////////////////////////
 
-    // ENDAT2P2_EnableDelayCompensation(dev);
-
-    ENDAT2P2_SetFTCLOCK(g_sM2Enc.dev, ENDAT2P2_CLK_8M); // ENDAT2P2_FTCLK
+    ENDAT2P2_SetFTCLOCK(dev, ENDAT2P2_CLK_8M); // ENDAT2P2_FTCLK
 
     /* Change tm to 3.75us */
-    data = ENDAT2P2_GetParamWithPos(g_sM2Enc.dev, MRS_CODE_OPERATING_STATUS, ENDAT2P2_MEM_WORD_3);
+    data = ENDAT2P2_GetParamWithPos(dev, MRS_CODE_OPERATING_STATUS, ENDAT2P2_MEM_WORD_3);
     data = (data & (~3)) | 0x1;
 
-    ENDAT2P2_SetParamWithPos(g_sM2Enc.dev, MRS_CODE_OPERATING_STATUS, ENDAT2P2_MEM_WORD_3, data);
-    ENDAT2P2_EncoderRestWithPos(g_sM2Enc.dev);
+    ENDAT2P2_SetParamWithPos(dev, MRS_CODE_OPERATING_STATUS, ENDAT2P2_MEM_WORD_3, data);
+    ENDAT2P2_EncoderRestWithPos(dev);
 
-    data = ENDAT2P2_GetParamWithPos(g_sM2Enc.dev, MRS_CODE_OPERATING_STATUS, ENDAT2P2_MEM_WORD_3);
+    data = ENDAT2P2_GetParamWithPos(dev, MRS_CODE_OPERATING_STATUS, ENDAT2P2_MEM_WORD_3);
 
-    ENDAT2P2_SetRecoveryTimer(g_sM2Enc.dev, 0);
+    ENDAT2P2_SetRecoveryTimer(dev, 0);
 
-    ENDAT2P2_GetEncoderError(g_sM2Enc.dev);
-    ENDAT2P2_GetEncoderWarning(g_sM2Enc.dev);
+    ENDAT2P2_GetEncoderError(dev);
+    ENDAT2P2_GetEncoderWarning(dev);
 
-    if (g_sM2Enc.dev->cmd_set_2_2)
+    if (dev->cmd_set_2_2)
     {
-        ENDAT2P2_ClearEncoderErrorWithPos(g_sM2Enc.dev);
+        ENDAT2P2_ClearEncoderErrorWithPos(dev);
 
-        ENDAT2P2_GetEncoderErrorWithPos(g_sM2Enc.dev);
-        ENDAT2P2_GetParamWithPos(g_sM2Enc.dev, MRS_CODE_PARAM_ENCODER_MANUFACTURER_PAGE1, ENDAT2P2_MEM_WORD_1);
+        ENDAT2P2_GetEncoderErrorWithPos(dev);
+        ENDAT2P2_GetParamWithPos(dev, MRS_CODE_PARAM_ENCODER_MANUFACTURER_PAGE1, ENDAT2P2_MEM_WORD_1);
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -177,27 +273,25 @@ void InitEndat2p2_1(void)
     endat2p2_mode_cmd_t cmd = ENDAT2P2_CMD_SEND_POSITION_VALUE;
 
     /* reset additional info's if present */
-    ENDAT2P2_EncoderRest(g_sM2Enc.dev);
+    ENDAT2P2_EncoderRest(dev);
     SDK_DelayAtLeastUs(500U, SystemCoreClock);
 
-    ENDAT2P2_CMDBuild(g_sM2Enc.dev, cmd, 0, 0);
+    ENDAT2P2_CMDBuild(dev, cmd, 0, 0);
 
-    ENDAT2P2_CleanStatus(g_sM2Enc.dev);
+    ENDAT2P2_CleanStatus(dev);
 
-    ENDAT2P2_SetHWStrobe(g_sM2Enc.dev, true);
+    ENDAT2P2_SetHWStrobe(dev, true);
 
-    ENDAT2P2_CleanStatus(g_sM2Enc.dev);
-
-    g_sM2Enc.ui16Pp = M2_MOTOR_PP;
-
-    //    ENDAT2P2_SetHWStrobe(dev, false);
+    ENDAT2P2_CleanStatus(dev);
 
     /* Enable interrupt */
-    ENDAT2P2_SetInterruptMask(g_sM2Enc.dev, ENDAT2P2_INTERRUPTMASKREGISTER_RECEIVE_REGISTER1_MASK_MASK);
+    ENDAT2P2_SetInterruptMask(dev, ENDAT2P2_INTERRUPTMASKREGISTER_RECEIVE_REGISTER1_MASK_MASK);
     EnableIRQ(M2_ENDAT2P2_IRQn);
     NVIC_SetPriority(M2_ENDAT2P2_IRQn, 0U);
 }
+#endif
 
+#if (M1_ENCODER == ENCODER_ENDAT2P2_2)
 /*!
  * @brief      Init EnDat2.2_2 master IP for M1
  *
@@ -208,6 +302,7 @@ void InitEndat2p2_1(void)
 void InitEndat2p2_2(void)
 {
     int data;
+    endat2p2_dev_t *dev;
 
     /* EnDat2.2 100MHz */
     clk_t endat2p2Clk = {
@@ -230,50 +325,55 @@ void InitEndat2p2_2(void)
     BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat2p2_nstr_value(3) |
     BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat2p2_nstr_ctrl(1);
 
-    g_sM1Enc.dev = ENDAT2P2_InitMaster(ENDAT2P2_2, ENDAT2P2_CLK_48M);
+    // /* EXTENDED PWM to trigger EnDat getsens */
+    BLK_CTRL_WAKEUPMIX->XBAR_TRIG_SYNC_CTRL2 |= BLK_CTRL_WAKEUPMIX_XBAR_TRIG_SYNC_CTRL2_SYNC_ENABLE(1U);
+    BLK_CTRL_WAKEUPMIX->XBAR_TRIG_SYNC_CTRL3 |= BLK_CTRL_WAKEUPMIX_XBAR_TRIG_SYNC_CTRL3_PULSE_WIDTH0(7U);
+    XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm2Mux0Trigger1, kXBAR1_OutputTriggerSyncAsyncIn0);
+    XBAR_SetSignalsConnection(kXBAR1_InputTriggerSyncSyncOut0, kXBAR1_OutputEndat22StrN);
+    dev = ENDAT2P2_InitMaster(ENDAT2P2_2, ENDAT2P2_CLK_48M);
 
     ////////////////////////////////////////////////////////////
     /* Init encoder - ENDAT2P2_InitEncoder(dev); */
 
-    ENDAT2P2_EncoderRest(g_sM1Enc.dev);
+    ENDAT2P2_EncoderRest(dev);
     SDK_DelayAtLeastUs((50 * 1000), SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 
-    ENDAT2P2_ClearEncoderError(g_sM1Enc.dev);
+    ENDAT2P2_ClearEncoderError(dev);
     SDK_DelayAtLeastUs((50 * 1000), SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 
-    ENDAT2P2_ClearEncoderWarning(g_sM1Enc.dev);
+    ENDAT2P2_ClearEncoderWarning(dev);
     SDK_DelayAtLeastUs((50 * 1000), SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 
-    ENDAT2P2_GetEncoderInfo(g_sM1Enc.dev);
+    ENDAT2P2_GetEncoderInfo(dev);
 
-    ENDAT2P2_SetDataWordLength(g_sM1Enc.dev, g_sM1Enc.dev->pos_res);
+    ENDAT2P2_SetDataWordLength(dev, dev->pos_res);
 
     //////////////////////////////////////////////////////////
 
     //ENDAT2P2_EnableDelayCompensation(dev);
 
-    ENDAT2P2_SetFTCLOCK(g_sM1Enc.dev, ENDAT2P2_CLK_8M); //ENDAT2P2_FTCLK
+    ENDAT2P2_SetFTCLOCK(dev, ENDAT2P2_CLK_8M); //ENDAT2P2_FTCLK
 
     /* Change tm to 3.75us */
-    data = ENDAT2P2_GetParamWithPos(g_sM1Enc.dev, MRS_CODE_OPERATING_STATUS, ENDAT2P2_MEM_WORD_3);
+    data = ENDAT2P2_GetParamWithPos(dev, MRS_CODE_OPERATING_STATUS, ENDAT2P2_MEM_WORD_3);
     data = (data & (~3)) | 0x1;
 
-    ENDAT2P2_SetParamWithPos(g_sM1Enc.dev, MRS_CODE_OPERATING_STATUS, ENDAT2P2_MEM_WORD_3, data);
-    ENDAT2P2_EncoderRestWithPos(g_sM1Enc.dev);
+    ENDAT2P2_SetParamWithPos(dev, MRS_CODE_OPERATING_STATUS, ENDAT2P2_MEM_WORD_3, data);
+    ENDAT2P2_EncoderRestWithPos(dev);
 
-    data = ENDAT2P2_GetParamWithPos(g_sM1Enc.dev, MRS_CODE_OPERATING_STATUS, ENDAT2P2_MEM_WORD_3);
+    data = ENDAT2P2_GetParamWithPos(dev, MRS_CODE_OPERATING_STATUS, ENDAT2P2_MEM_WORD_3);
 
-    ENDAT2P2_SetRecoveryTimer(g_sM1Enc.dev, 0);
+    ENDAT2P2_SetRecoveryTimer(dev, 0);
 
-    ENDAT2P2_GetEncoderError(g_sM1Enc.dev);
-    ENDAT2P2_GetEncoderWarning(g_sM1Enc.dev);
+    ENDAT2P2_GetEncoderError(dev);
+    ENDAT2P2_GetEncoderWarning(dev);
 
-    if(g_sM1Enc.dev->cmd_set_2_2)
+    if(dev->cmd_set_2_2)
     {
-        ENDAT2P2_ClearEncoderErrorWithPos(g_sM1Enc.dev);
+        ENDAT2P2_ClearEncoderErrorWithPos(dev);
 
-        ENDAT2P2_GetEncoderErrorWithPos(g_sM1Enc.dev);
-        ENDAT2P2_GetParamWithPos(g_sM1Enc.dev, MRS_CODE_PARAM_ENCODER_MANUFACTURER_PAGE1, ENDAT2P2_MEM_WORD_1);
+        ENDAT2P2_GetEncoderErrorWithPos(dev);
+        ENDAT2P2_GetParamWithPos(dev, MRS_CODE_PARAM_ENCODER_MANUFACTURER_PAGE1, ENDAT2P2_MEM_WORD_1);
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -282,30 +382,63 @@ void InitEndat2p2_2(void)
     endat2p2_mode_cmd_t cmd = ENDAT2P2_CMD_SEND_POSITION_VALUE;
 
     /* reset additional info's if present */
-    ENDAT2P2_EncoderRest(g_sM1Enc.dev);
+    ENDAT2P2_EncoderRest(dev);
     SDK_DelayAtLeastUs(500U, SystemCoreClock);
     
-    ENDAT2P2_CMDBuild(g_sM1Enc.dev, cmd, 0, 0);
+    ENDAT2P2_CMDBuild(dev, cmd, 0, 0);
 
-    ENDAT2P2_CleanStatus(g_sM1Enc.dev);
+    ENDAT2P2_CleanStatus(dev);
     
-    ENDAT2P2_SetHWStrobe(g_sM1Enc.dev, true);
+    ENDAT2P2_SetHWStrobe(dev, true);
 
-    ENDAT2P2_CleanStatus(g_sM1Enc.dev);
-    
-    
-    g_sM1Enc.ui16Pp        = M2_MOTOR_PP;
-    
-    
-//    ENDAT2P2_SetHWStrobe(dev, false);
-       
+    ENDAT2P2_CleanStatus(dev);
+
     /* Enable interrupt */
-    ENDAT2P2_SetInterruptMask(g_sM1Enc.dev, ENDAT2P2_INTERRUPTMASKREGISTER_RECEIVE_REGISTER1_MASK_MASK);
+    ENDAT2P2_SetInterruptMask(dev, ENDAT2P2_INTERRUPTMASKREGISTER_RECEIVE_REGISTER1_MASK_MASK);
     EnableIRQ(M1_ENDAT2P2_IRQn);
     NVIC_SetPriority(M1_ENDAT2P2_IRQn, 0U);
 
 }
+#endif
 
+/*!
+ * @brief      M1 encoder initialization
+ *
+ * @param      void
+ *
+ * @return     none
+ */
+void M1_Encoder_init(void)
+{
+#if (M1_ENCODER == ENCODER_ENDAT2P2_2)
+    InitEndat2p2_2();
+    g_sM1Enc.dev = ENDAT2P2_GetDev(ENDAT2P2_2);
+
+#elif (M1_ENCODER == ENCODER_ENDAT3)
+    InitEndat3();
+    g_sM1Enc.pui32EnDat3BaseAddress = (ENDAT3_Type *)ENDAT3;
+#endif
+    g_sM1Enc.ui16Pp = M1_MOTOR_PP;
+}
+
+/*!
+ * @brief      M2 encoder initialization
+ *
+ * @param      void
+ *
+ * @return     none
+ */
+void M2_Encoder_init(void)
+{
+#if (M2_ENCODER == ENCODER_ENDAT2P2_1)
+    InitEndat2p2_1();
+    g_sM2Enc.dev = ENDAT2P2_GetDev(ENDAT2P2_1);
+#elif (M2_ENCODER == ENCODER_ENDAT3)
+    InitEndat3();
+    g_sM2Enc.pui32EnDat3BaseAddress = (ENDAT3_Type *)ENDAT3;
+#endif
+    g_sM2Enc.ui16Pp = M2_MOTOR_PP;
+}
 
 /*!
  * @brief      Core, bus, flash clock setup
@@ -321,7 +454,6 @@ void InitClock(void)
     /* Calculate clock dependant variables for PMSM control algorithm */
     g_sClockSetup.ui32FastPeripheralClock = (uint32_t)CLOCK_GetRate(kCLOCK_Buswakeup);
     g_sClockSetup.ui32CpuFrequency = (uint32_t)CLOCK_GetRate(kCLOCK_M71);    
-
 
     /* Parameters for motor M1 */
     g_sClockSetup.ui16M1PwmFreq   = M1_PWM_FREQ; /* 32 kHz */
@@ -459,8 +591,6 @@ void M1_InitPWM(void)
     
     g_sM1Pwm3ph.ui16Modulo = PWMBase->SM[0].VAL1;
 }
-
-
 
 /*!
  * @brief   void M2_InitPWM(void)
@@ -625,10 +755,6 @@ void Sinc1_Init(void)
     /* Enable Data Output Ready interrupt CHFIE0 */
     SINCBase->NIE |= (1U << SINC_NIE_CHFIE0_SHIFT);
     
-    /* Enable SINC1 interrupt */
-   // NVIC_SetPriority(SINC1_CH0_IRQn, SINC1_IRQ_PRIORITY);
-   // NVIC_EnableIRQ(SINC1_CH0_IRQn);
-    
     /* Set base pointer used in the SINC MC driver */
     g_sM1Curr3phDcBus.pui32SincBaseAddress = (SINC_Type *)SINCBase;
 
@@ -684,10 +810,6 @@ void Sinc2_Init(void)
 
     /* Enable Data Output Ready interrupt CHFIE0 */
     SINCBase->NIE |= (1U << SINC_NIE_CHFIE0_SHIFT);
-
-    /* Enable SINC2 interrupt */
-   // NVIC_SetPriority(SINC2_CH0_IRQn, SINC2_IRQ_PRIORITY);
-   // NVIC_EnableIRQ(SINC2_CH0_IRQn);
 
     /* Set base pointer used in the SINC MC driver */
     g_sM2Curr3phDcBus.pui32SincBaseAddress = (SINC_Type *)SINCBase;

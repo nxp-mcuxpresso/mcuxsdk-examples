@@ -39,19 +39,18 @@ void BOARD_InitBootPins(void)
 
   /* Motor controller 1 (main connector for motor control example) */
   BOARD_Init_M1_PWM();          /* Init PWM pins */
-  BOARD_Init_M1_ENDAT2P2();     /* Init EnDat2.2 encoder pins */
+  BOARD_Init_M1_Encoder();     /* Init encoder pins */
   BOARD_Init_M1_SINC();         /* Init SINC filter pins */ 
   BOARD_Init_M1_FAULTS();       /* Init over-current and over-voltage protection pins */
   XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm2Mux0Trigger0, kXBAR1_OutputSinc1ExtTrigger0);   /* Route FlexPWM2_SM0_trig0 -> SINC1_htrig0 */ 
   
   /* Motor controller 2 (main connector for motor control example) */
   BOARD_Init_M2_PWM();          /* Init PWM pins */
-  BOARD_Init_M2_ENDAT2P2();         /* Init EnDat2.2 encoder pins */
+  BOARD_Init_M2_Encoder();         /* Init encoder pins */
   BOARD_Init_M2_SINC();         /* Init SINC filter pins */ 
   BOARD_Init_M2_FAULTS();       /* Init over-current and over-voltage protection pins */
   XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux0Trigger0, kXBAR1_OutputSinc2ExtTrigger0);   /* Route FlexPWM1_SM0_trig0 -> SINC2_htrig0 */
 
- 
   /* Route synchronization signal FlexPWM2_SM0_trig1 -> FlexPWM1_SM0_ExtSync0 */  
   XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm2Mux1Trigger0, kXBAR1_OutputFlexpwm1ExtSync0);
 }
@@ -79,7 +78,7 @@ void BOARD_Init_M1_PWM(void)
 
 }
 
-void BOARD_Init_M1_ENDAT2P2(void)
+void BOARD_Init_M1_Encoder(void)
 {
   /* Init Encoder 1 routed to Motor controller 1 */
   IOMUXC_SetPinMux(IOMUXC_PAD_ETH2_RXD0__DIG_ENCODER2_DATA_EN, 0U);
@@ -92,12 +91,7 @@ void BOARD_Init_M1_ENDAT2P2(void)
   SDK_DelayAtLeastUs(2000U, SystemCoreClock);
   BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);
   SDK_DelayAtLeastUs(10000U, SystemCoreClock);
- 
-  /* EXTENDED PWM to trigger EnDat getsens */
-  BLK_CTRL_WAKEUPMIX->XBAR_TRIG_SYNC_CTRL2 |= BLK_CTRL_WAKEUPMIX_XBAR_TRIG_SYNC_CTRL2_SYNC_ENABLE(1U);
-  BLK_CTRL_WAKEUPMIX->XBAR_TRIG_SYNC_CTRL3 |= BLK_CTRL_WAKEUPMIX_XBAR_TRIG_SYNC_CTRL3_PULSE_WIDTH0(7U);
-  XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm2Mux0Trigger1, kXBAR1_OutputTriggerSyncAsyncIn0);
-  XBAR_SetSignalsConnection(kXBAR1_InputTriggerSyncSyncOut0, kXBAR1_OutputEndat22StrN);
+
 }
 
 void BOARD_Init_M1_SINC(void)
@@ -179,7 +173,7 @@ void BOARD_Init_M2_PWM(void)
 
 }
 
-void BOARD_Init_M2_ENDAT2P2(void)
+void BOARD_Init_M2_Encoder(void)
 {
   /* Init Encoder 2 routed to Motor controller 2 */
   IOMUXC_SetPinMux(IOMUXC_PAD_ETH3_RXD0__DIG_ENCODER1_DATA_EN, 0U);
@@ -191,14 +185,7 @@ void BOARD_Init_M2_ENDAT2P2(void)
   SDK_DelayAtLeastUs(2000U, SystemCoreClock);
   BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);
   SDK_DelayAtLeastUs(10000U, SystemCoreClock);
-  
-  /* EXTENDED PWM to trigger EnDat StrN */
-  BLK_CTRL_WAKEUPMIX->XBAR_TRIG_SYNC_CTRL2 |= BLK_CTRL_WAKEUPMIX_XBAR_TRIG_SYNC_CTRL2_SYNC_ENABLE(2U);
-  BLK_CTRL_WAKEUPMIX->XBAR_TRIG_SYNC_CTRL3 |= BLK_CTRL_WAKEUPMIX_XBAR_TRIG_SYNC_CTRL3_PULSE_WIDTH1(7U);
-  XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux0Trigger1, kXBAR1_OutputTriggerSyncAsyncIn1);
-  
-  /* Trigger EnDat2.2 */
-  XBAR_SetSignalsConnection(kXBAR1_InputTriggerSyncSyncOut1, kXBAR1_OutputEndat21StrN);
+
 }
 
 void BOARD_Init_M2_SINC(void)

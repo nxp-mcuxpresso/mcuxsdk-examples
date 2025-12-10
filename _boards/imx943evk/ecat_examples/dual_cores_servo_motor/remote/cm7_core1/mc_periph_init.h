@@ -12,12 +12,13 @@
 #include "fsl_common.h"
 #include "fsl_clock.h"
 #include "fsl_xbar.h"
-#include "fsl_biss.h"
+#include "fsl_endat3.h"
+#include "fsl_endat2p2.h"
 
 #include "board.h"
 
 #include "mcdrv_pwm3ph_pwma.h"
-#include "mcdrv_bissc.h"
+#include "mcdrv_endat3.h"
 #include "mcdrv_endat2p2.h"
 #include "mcdrv_sinc.h"
 #include "m1_pmsm_appconfig.h"
@@ -26,6 +27,12 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+#define  ENCODER_ENDAT3     (1U)
+#define  ENCODER_ENDAT2P2_1 (2U)
+#define  ENCODER_ENDAT2P2_2 (3U)
+
+#define M1_ENCODER ENCODER_ENDAT2P2_2
+#define M2_ENCODER ENCODER_ENDAT3
 
 /* Structure used during clocks and modulo calculations */
 typedef struct _clock_setup
@@ -43,8 +50,6 @@ typedef struct _clock_setup
     uint16_t ui16M2PwmModulo;
     uint16_t ui16M2PwmDeadTime;
 } clock_setup_t;
-
-
 
 /******************************************************************************
  * Clock & PWM definition for motor 1
@@ -71,7 +76,7 @@ typedef struct _clock_setup
 /* DC bus braking threshold hysteresis */
 #define M1_U_DCB_HYSTERESIS (0.05F)
 
-/* Measure phase currents using ADC. 0 - false, 1 - true */   
+/* Measure phase currents using ADC. 0 - false, 1 - true */
 #define PHASE_CUR_ADC_MEASUREMENT (0)
  
 /* DC bus voltage not measured using ADC. 0 - false, 1 - true */ 
@@ -82,16 +87,87 @@ typedef struct _clock_setup
 #define DIG_ENCODER_MUX_ENDAT3          0x2
 #define DIG_ENCODER_MUX_BISS            0x3
    
-/* Interrupt number and interrupt handler for the TPM instance used */
-
+#if (M1_ENCODER == ENCODER_ENDAT2P2_2)
+/* Interrupt number and interrupt handler for the encoder instance used */
 #define M1_ENDAT2P2_BASE           ENDAT2P2_2
 #define M1_ENDAT2P2_IRQn           Reserved165_IRQn
-#define M1_ENDAT2P2_IRQHandler     Reserved165_IRQHandler
+#define M1_ENCODER_IRQHandler      Reserved165_IRQHandler
 
+/* Example specific position/speed sensor defines */
+#define M1_MCDRV_ENCODER_PERIPH_INIT() (M1_Encoder_init())
+#define M1_MCDRV_ENCODER_GET(par) (MCDRV_Endat2p2DataRead(par))
+
+/* Common position/speed sensor defines */
+#define M1_MCDRV_ENC_GET_DATA_FAST(par) (MCDRV_EnDat2p2GetPositionFoc(par))
+#define M1_MCDRV_ENC_GET_DATA_SLOW(par) (MCDRV_EnDat2p2GetPositionFullAndSpeed(par))
+#define M1_MCDRV_ENC_CLEAR(par) (MCDRV_Endat2p2Clear(par))
+#define M1_MCDRV_ENC_SET_OFFSET(par) (MCDRV_Endat2p2SetOffset(par))
+#define M1_MCDRV_ENC_GET_POSITION(par)  ((par)->data.position.position)
+#define M1_MCDRV_ENC_GET_SPEED(par)
+#define M1_MCDRV_ENC_SET_DIRECTION(par)
+#define M1_MCDRV_ENC_SET_PULSES(par)
+#elif (M1_ENCODER == ENCODER_ENDAT3)
+/* Interrupt number and interrupt handler for the encoder instance used */
+#define ENDAT3_SOURCE_CLOCK     CLOCK_GetRate(kCLOCK_Endat31fast)
+#define ENDAT3_STRETCHER_CTRL_ASYNC_EN 1
+#define ENDAT3_STRETCHER_CTRL_HW_STROBE_COUNTER  7
+#define ENDAT3_FG_IRQn              Reserved164_IRQn
+#define M1_ENCODER_IRQHandler       Reserved164_IRQHandler
+/* Example specific position/speed sensor defines */
+#define M1_MCDRV_ENCODER_PERIPH_INIT() M1_Encoder_init()
+#define M1_MCDRV_ENCODER_GET(par)      (MCDRV_Endat3DataRead(par))
+
+/* Common position/speed sensor defines */
+#define M1_MCDRV_ENC_GET_DATA_FAST(par) (MCDRV_EnDat3GetPositionFoc(par))
+#define M1_MCDRV_ENC_GET_DATA_SLOW(par) (MCDRV_EnDat3GetPositionFullAndSpeed(par))
+#define M1_MCDRV_ENC_CLEAR(par)         (MCDRV_Endat3Clear(par))
+#define M1_MCDRV_ENC_SET_OFFSET(par)    (MCDRV_Endat3SetOffset(par))
+#define M1_MCDRV_ENC_GET_POSITION(par)  ((ENDAT3_READ_HPF_DATA((par)->rsp.hpf.hpf64) & 0xFFFFFFFF) >> 7)  // convert to 25Bit
+#define M1_MCDRV_ENC_GET_SPEED(par)
+#define M1_MCDRV_ENC_SET_DIRECTION(par)
+#define M1_MCDRV_ENC_SET_PULSES(par)
+#endif
+
+#if (M2_ENCODER == ENCODER_ENDAT2P2_1)
+/* Interrupt number and interrupt handler for the encoder instance used */
 #define M2_ENDAT2P2_BASE           ENDAT2P2_1
 #define M2_ENDAT2P2_IRQn           Reserved163_IRQn
-#define M2_ENDAT2P2_IRQHandler     Reserved163_IRQHandler
+#define M2_ENCODER_IRQHandler     Reserved163_IRQHandler
 
+/* Example specific position/speed sensor defines */
+#define M2_MCDRV_ENCODER_PERIPH_INIT() (M2_Encoder_init())
+#define M2_MCDRV_ENCODER_GET(par)      (MCDRV_Endat2p2DataRead(par))
+
+/* Common position/speed sensor defines */
+#define M2_MCDRV_ENC_GET_DATA_FAST(par) (MCDRV_EnDat2p2GetPositionFoc(par))
+#define M2_MCDRV_ENC_GET_DATA_SLOW(par) (MCDRV_EnDat2p2GetPositionFullAndSpeed(par))
+#define M2_MCDRV_ENC_CLEAR(par)         (MCDRV_Endat2p2Clear(par))
+#define M2_MCDRV_ENC_SET_OFFSET(par)    (MCDRV_Endat2p2SetOffset(par))
+#define M2_MCDRV_ENC_GET_POSITION(par)  ((par)->data.position.position)
+#define M2_MCDRV_ENC_GET_SPEED(par)
+#define M2_MCDRV_ENC_SET_DIRECTION(par)
+#define M2_MCDRV_ENC_SET_PULSES(par)
+#elif (M2_ENCODER == ENCODER_ENDAT3)
+/* Interrupt number and interrupt handler for the encoder instance used */
+#define ENDAT3_SOURCE_CLOCK     CLOCK_GetRate(kCLOCK_Endat31fast)
+#define ENDAT3_STRETCHER_CTRL_ASYNC_EN 1
+#define ENDAT3_STRETCHER_CTRL_HW_STROBE_COUNTER  7
+#define ENDAT3_FG_IRQn              Reserved164_IRQn
+#define M2_ENCODER_IRQHandler       Reserved164_IRQHandler
+/* Example specific position/speed sensor defines */
+#define M2_MCDRV_ENCODER_PERIPH_INIT() M2_Encoder_init()
+#define M2_MCDRV_ENCODER_GET(par)      (MCDRV_Endat3DataRead(par))
+
+/* Common position/speed sensor defines */
+#define M2_MCDRV_ENC_GET_DATA_FAST(par) (MCDRV_EnDat3GetPositionFoc(par))
+#define M2_MCDRV_ENC_GET_DATA_SLOW(par) (MCDRV_EnDat3GetPositionFullAndSpeed(par))
+#define M2_MCDRV_ENC_CLEAR(par)         (MCDRV_Endat3Clear(par))
+#define M2_MCDRV_ENC_SET_OFFSET(par)    (MCDRV_Endat3SetOffset(par))
+#define M2_MCDRV_ENC_GET_POSITION(par)  ((ENDAT3_READ_HPF_DATA((par)->rsp.hpf.hpf64) & 0xFFFFFFFF) >> 7)  // convert to 25Bit
+#define M2_MCDRV_ENC_GET_SPEED(par)
+#define M2_MCDRV_ENC_SET_DIRECTION(par)
+#define M2_MCDRV_ENC_SET_PULSES(par)
+#endif
 
 /******************************************************************************
  * Define common phase currents and DC bus measurement functions for motor 1
@@ -105,12 +181,6 @@ typedef struct _clock_setup
 #define M1_MCDRV_CURR_3PH_CALIB_SET(par)
 
 /******************************************************************************
- * Define slow control loop timer - common for motor 1 and motor 2
- ******************************************************************************/
-#define M1_MCDRV_TMR_SLOWLOOP_INIT() InitTMR1()
-
-
-/******************************************************************************
  * Define 3-ph PWM control functions for motor 1 (PWM2 instance)
  ******************************************************************************/
 #define M1_MCDRV_PWM_PERIPH_INIT() (M1_InitPWM())
@@ -120,24 +190,6 @@ typedef struct _clock_setup
 #define M1_MCDRV_PWM3PH_DIS(par) (MCDRV_eFlexPwm3PhOutDis_Optim(par))
 #define M1_MCDRV_PWM3PH_FLT_GET(par) (MCDRV_eFlexPwm3PhFltGet(par))
 #define M1_MCDRV_PWM3PH_FLT_OV_GET(par) (MCDRV_eFlexPwm3PhFlt2Get(par))
-
-/******************************************************************************
- * Define position and speed sensor for motor 1 - EnDat2.2
- ******************************************************************************/
-
-/* Example specific position/speed sensor defines */
-#define M1_MCDRV_ENDAT2P2_PERIPH_INIT() (InitEndat2p2_2())
-#define M1_MCDRV_ENDAT2P2_GET(par) (MCDRV_Endat2p2DataRead(par))
-
-/* Common position/speed sensor defines */
-#define M1_MCDRV_ENC_GET_DATA_FAST(par) (MCDRV_EnDat2p2GetPositionFoc(par))
-#define M1_MCDRV_ENC_GET_DATA_SLOW(par) (MCDRV_EnDat2p2GetPositionFullAndSpeed(par))
-#define M1_MCDRV_ENC_CLEAR(par) (MCDRV_Endat2p2Clear(par))
-#define M1_MCDRV_ENC_SET_OFFSET(par) (MCDRV_Endat2p2SetOffset(par))
-#define M1_MCDRV_ENC_SET_DIRECTION(par)
-#define M1_MCDRV_ENC_SET_PULSES(par)
-#define M1_MCDRV_ENC_GET_POSITION(par)
-#define M1_MCDRV_ENC_GET_SPEED(par)
 
 /******************************************************************************
  * Define SINC filter for motor 1
@@ -222,29 +274,9 @@ typedef struct _clock_setup
 #define M2_MCDRV_PWM_PERIPH_INIT() (M2_InitPWM())
 #define M2_MCDRV_PWM3PH_SET(par) (MCDRV_eFlexPwm3PhSet(par))
 #define M2_MCDRV_PWM3PH_EN(par) (MCDRV_eFlexPwm3PhOutEn(par))
-//#define M2_MCDRV_PWM3PH_DIS(par) (MCDRV_eFlexPwm3PhOutDis(par))
 #define M2_MCDRV_PWM3PH_DIS(par) (MCDRV_eFlexPwm3PhOutDis_Optim(par))
 #define M2_MCDRV_PWM3PH_FLT_GET(par) (MCDRV_eFlexPwm3PhFltGet(par))
 #define M2_MCDRV_PWM3PH_FLT_OV_GET(par) (MCDRV_eFlexPwm3PhFlt2Get(par))
-        
-/******************************************************************************
- * Define position and speed sensor for motor 2 - EnDat2.2
- ******************************************************************************/
-
-/* Example specific position/speed sensor defines */
-#define M2_MCDRV_ENDAT2P2_PERIPH_INIT() (InitEndat2p2_1())
-#define M2_MCDRV_ENDAT2P2_GET(par)      (MCDRV_Endat2p2DataRead(par))
-     
-/* Common position/speed sensor defines */
-#define M2_MCDRV_ENC_GET_DATA_FAST(par) (MCDRV_EnDat2p2GetPositionFoc(par))
-#define M2_MCDRV_ENC_GET_DATA_SLOW(par) (MCDRV_EnDat2p2GetPositionFullAndSpeed(par))
-#define M2_MCDRV_ENC_CLEAR(par)         (MCDRV_Endat2p2Clear(par))
-#define M2_MCDRV_ENC_SET_OFFSET(par)    (MCDRV_Endat2p2SetOffset(par)) 
-#define M2_MCDRV_ENC_SET_DIRECTION(par)
-#define M2_MCDRV_ENC_SET_PULSES(par)
-#define M2_MCDRV_ENC_GET_POSITION(par)
-#define M2_MCDRV_ENC_GET_SPEED(par)
-
 
 /******************************************************************************
  * Global variable definitions
@@ -254,12 +286,20 @@ extern clock_setup_t g_sClockSetup;
 extern mcdrv_pwm3ph_pwma_t g_sM1Pwm3ph;
 extern mcdrv_pwm3ph_pwma_t g_sM2Pwm3ph;
 
+#if (M1_ENCODER == ENCODER_ENDAT3)
+extern mcdrv_endat3_t g_sM1Enc;
+#elif (M1_ENCODER == ENCODER_ENDAT2P2_2)
 extern mcdrv_endat2p2_t g_sM1Enc;
+#endif
+
+#if (M2_ENCODER == ENCODER_ENDAT3)
+extern mcdrv_endat3_t g_sM2Enc;
+#elif (M2_ENCODER == ENCODER_ENDAT2P2_1)
 extern mcdrv_endat2p2_t g_sM2Enc;
+#endif
 
 extern mcdrv_sinc_t g_sM1Curr3phDcBus;
 extern mcdrv_sinc_t g_sM2Curr3phDcBus;
-
 
 /*******************************************************************************
  * API
@@ -275,6 +315,9 @@ void M1_InitPWM(void);
 void M2_InitPWM(void);
 void InitEndat2p2_1(void);
 void InitEndat2p2_2(void);
+void InitEndat3(void);
+void M1_Encoder_init(void);
+void M2_Encoder_init(void);
 void Sinc1_Init(void);
 void Sinc2_Init(void);
 
