@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2024 NXP
+ * Copyright 2019-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -118,7 +118,7 @@ static uint32_t isFileOnSDcard(char *filename)
     {
         error = f_readdir(&directory, &fileInformation);
         /* When dir end or error detected, break out */
-        if ((error != FR_OK) || (fileInformation.fname[0U] == 0U))
+        if ((error != FR_OK) || (fileInformation.fname[0U] == '\0'))
         {
             break;
         }
@@ -297,7 +297,9 @@ void cmdPlay(int32_t argc, char **argv)
 #endif
                 )
                 {
-                    strcpy(get_app_data()->input, argv[2]);
+                    /* STR31-C: Prevent buffer overflow when copying filename */
+                    strncpy(get_app_data()->input, argv[2], sizeof(get_app_data()->input) - 1);
+                    get_app_data()->input[sizeof(get_app_data()->input) - 1] = '\0';
                 }
                 else
                 {

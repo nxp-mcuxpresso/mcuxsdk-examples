@@ -94,7 +94,7 @@ status_t list_files()
         error = f_readdir(&directory, &fileInformation);
 
         /* When dir end or error detected, break out */
-        if ((error != FR_OK) || (fileInformation.fname[0U] == 0U))
+        if ((error != FR_OK) || (fileInformation.fname[0U] == '\0'))
         {
             break;
         }

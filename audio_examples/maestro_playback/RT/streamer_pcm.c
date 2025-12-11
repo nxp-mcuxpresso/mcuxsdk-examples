@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2022 NXP
+ * Copyright 2018-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -102,9 +102,13 @@ void streamer_pcm_close()
 
 int streamer_pcm_write(uint8_t *data, uint32_t size)
 {
+    uint32_t remainder;
+
     /* Ensure write size is a multiple of 32/64, otherwise EDMA will assert
      * failure.  Round down for the last chunk of a file/stream. */
-    pcmHandle.saiTx.dataSize = size - (size % ((pcmHandle.bit_width == 16) ? 32 : 64));
+    remainder = size % ((pcmHandle.bit_width == 16) ? 32U : 64U);
+    assert(size >= remainder); /* INT30-C: Prevent unsigned integer underflow */
+    pcmHandle.saiTx.dataSize = size - remainder;
     pcmHandle.saiTx.data     = data;
 
     /* Split the first transfer into two to ensure the continuity */
