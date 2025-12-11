@@ -9,3 +9,7 @@ reference_design
 
    lowpower_central/readme.md
    lowpower_peripheral/readme.md
+   health_care_iot_central/readme.md
+   health_care_iot_peripheral/readme.md
+   health_care_iot_threadx/central/readme.md
+   health_care_iot_threadx/peripheral/readme.md
