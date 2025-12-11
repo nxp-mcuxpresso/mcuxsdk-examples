@@ -176,9 +176,7 @@ status_t BOARD_InitPsRam(void)
     uint32_t mr0Val[1];
     uint32_t mr4Val[1];
     uint32_t mr8Val[1];
-    uint32_t cache64PhymemSizes[] = CACHE64_CTRL_PHYMEM_SIZES;
     flexspi_config_t config;
-    cache64_config_t cacheCfg;
     status_t status = kStatus_Success;
 
     POWER_DisablePD(kPDRUNCFG_APD_FLEXSPI_SRAM);
@@ -225,6 +223,8 @@ status_t BOARD_InitPsRam(void)
      * Don't use CACHE64_GetDefaultConfig() in mpi_loader_extram_loader case since it calls global variable which
      * is not initialized in SystemInitHook().
      */
+    cache64_config_t cacheCfg;
+    uint32_t cache64PhymemSizes[] = CACHE64_CTRL_PHYMEM_SIZES;
     (void)memset(&cacheCfg, 0, sizeof(cache64_config_t));
     cacheCfg.boundaryAddr[0] = cache64PhymemSizes[0];
     cacheCfg.policy[0]       = kCACHE64_PolicyWriteBack;
