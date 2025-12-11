@@ -257,6 +257,9 @@ stop sync: clean all state.
  */
 void le_audio_sync_process(frame_packet_t *frame)
 {
+    static int resampler_buff_remain_0 = 0;
+    static int resampler_buff_remain_1 = 0;
+
     //PRINTF("seq:%d,ts:%d,f:%d,len:%d\n", frame->info.seq_num, frame->info.ts, frame->info.flags, frame->len);
 
     /* if frame is invalid, just drop and stop. */
@@ -333,6 +336,9 @@ void le_audio_sync_process(frame_packet_t *frame)
 
             /* Save the first SDU's timestamp. */
             audio_sync_info.time_stamp = frame->info.ts;
+
+            resampler_buff_remain_0 = 0;
+            resampler_buff_remain_1 = 0;
         }
     }
 
@@ -356,15 +362,33 @@ void le_audio_sync_process(frame_packet_t *frame)
             }
         }
         /* resampler process. */
+        int resampler_samples_out_0;
+        int resampler_samples_out_1;
         int resampler_samples_out;
-        resampler_samples_out = Resampler(0, (int16_t *)frame->buff[0], resampler_buff[0]);
-        resampler_samples_out = Resampler(1, (int16_t *)frame->buff[1], resampler_buff[1]);
-        audio_sync_info.resampler_added_samples += resampler_samples_out - audio_sync_info.samples_per_frame;
+
+        resampler_samples_out_0 = Resampler(0, (int16_t *)frame->buff[0], &resampler_buff[0][resampler_buff_remain_0]);
+        resampler_samples_out_1 = Resampler(1, (int16_t *)frame->buff[1], &resampler_buff[1][resampler_buff_remain_1]);
+
+        audio_sync_info.resampler_added_samples += resampler_samples_out_0 - audio_sync_info.samples_per_frame;
         audio_sync_info.resampler_internal_samples = Resampler_GetFrc(0);
-        
+
+        resampler_buff_remain_0 += resampler_samples_out_0;
+        resampler_buff_remain_1 += resampler_samples_out_1;
+        resampler_samples_out = MIN(resampler_buff_remain_0, resampler_buff_remain_1);
+        resampler_buff_remain_0 -= resampler_samples_out;
+        resampler_buff_remain_1 -= resampler_samples_out;
+
         if(audio_sync_pcm.count < PCM_PACKET_COUNT)
         {
             audio_data_make_stereo(resampler_samples_out, 16, (uint8_t *)&resampler_buff[0], (uint8_t *)&resampler_buff[1], (uint8_t *)audio_sync_pcm.pcm_packet[audio_sync_pcm.in].buff);
+            for (int i = 0; i < resampler_buff_remain_0; i++)
+            {
+                resampler_buff[0][i] = resampler_buff[0][resampler_samples_out + i];
+            }
+            for (int i = 0; i < resampler_buff_remain_1; i++)
+            {
+                resampler_buff[1][i] = resampler_buff[1][resampler_samples_out + i];
+            }
             memcpy(&audio_sync_pcm.pcm_packet[audio_sync_pcm.in].info, &frame->info, sizeof(struct bt_iso_recv_info));
             audio_sync_pcm.pcm_packet[audio_sync_pcm.in].len = resampler_samples_out * 2 * 2;
             audio_sync_pcm.in = (audio_sync_pcm.in + 1) % PCM_PACKET_COUNT;
