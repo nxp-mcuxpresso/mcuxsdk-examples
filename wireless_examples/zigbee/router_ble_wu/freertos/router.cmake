@@ -41,6 +41,7 @@ mcux_add_macro(
     SHELL_BUFFER_SIZE=140
     SHELL_TASK_STACK_SIZE=3000U
     STORAGE_IDLE_TASK_PRIORITY=11 # storage task must be higher priority than Zigbee task for bonding to work
+    LFS_NO_ASSERT
 )
 
 mcux_add_source(
