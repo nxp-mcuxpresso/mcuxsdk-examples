@@ -95,7 +95,6 @@ initialize by copy {
   object portasm.o,
   object queue.o,
   object mlan_sdio.o,
-  object mlan_11n.o,
   object mlan_11n_aggr.o,
   object mlan_11n_rxreorder.o,
   object inet_chksum.o,

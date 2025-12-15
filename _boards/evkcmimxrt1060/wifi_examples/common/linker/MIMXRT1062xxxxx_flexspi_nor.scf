@@ -115,7 +115,6 @@ LR_m_text m_interrupts_start m_text_start+m_text_size-m_interrupts_start {   ; l
     queue.o (+RO)
     tcp_out.o (+RO)
     mlan_sdio.o (+RO)
-    mlan_11n.o (+RO)
     mlan_11n_aggr.o (+RO)
     mlan_11n_rxreorder.o (+RO)
     tcp_in.o (+RO)

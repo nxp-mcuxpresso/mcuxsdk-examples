@@ -92,7 +92,6 @@ SECTIONS
         *queue.c.obj
         *tcp_out.c.obj
         *mlan_sdio.c.obj
-        *mlan_11n.c.obj
         *mlan_11n_aggr.c.obj
         *mlan_11n_rxreorder.c.obj
         *tcp_in.c.obj
@@ -240,7 +239,6 @@ SECTIONS
     *queue.c.obj(.text*)
     *tcp_out.c.obj(.text*)
     *mlan_sdio.c.obj(.text*)
-    *mlan_11n.c.obj(.text*)
     *mlan_11n_aggr.c.obj(.text*)
     *mlan_11n_rxreorder.c.obj(.text*)
     *tcp_in.c.obj(.text*)
