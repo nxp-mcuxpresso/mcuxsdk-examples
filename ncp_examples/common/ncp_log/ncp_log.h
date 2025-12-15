@@ -1,3 +1,11 @@
+/* @file ncp_log.h
+ *
+ *  Copyright 2025 NXP
+ *
+ *  SPDX-License-Identifier: BSD-3-Clause
+ *
+ */
+
 #ifndef __NCP_LOG_H__
 #define __NCP_LOG_H__
 
