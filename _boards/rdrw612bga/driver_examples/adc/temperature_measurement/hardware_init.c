@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2023 NXP
+ * Copyright 2020, 2023, 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -19,7 +19,7 @@ void BOARD_InitHardware(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
-    CLOCK_AttachClk(kMAIN_CLK_to_GAU_CLK);
+    CLOCK_AttachClk(kT3PLL_MCI_256M_to_GAU_CLK);
     CLOCK_SetClkDiv(kCLOCK_DivGauClk, 4U);
     CLOCK_EnableClock(kCLOCK_Gau);
     RESET_PeripheralReset(kGAU_RST_SHIFT_RSTn);
