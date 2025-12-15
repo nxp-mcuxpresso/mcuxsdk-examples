@@ -104,6 +104,7 @@ Other cmds could be used:
 5. "config_phy" used to config the phy, and this cmd should be used before "lc3_preset".
 6. "config_packing" used to config iso packing mode, and this cmd should be used before "lc3_preset".
 7. "set_broadcast_code" used to set broadcast code, and this cmd should be used before "lc3_preset".
+8. "set_device_name" used to set device name for broadcast source, and this cmd should be used before "lc3_preset".
 
 Note:
 1 "exit" command is a shell internal command, only used to exit shell module and could not used to exit demo.

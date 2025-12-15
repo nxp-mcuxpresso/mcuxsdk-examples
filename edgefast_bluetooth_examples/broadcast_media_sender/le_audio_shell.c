@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 NXP
+ * Copyright 2023-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -21,6 +21,7 @@
 shell_handle_t s_shellHandle;
 SDK_ALIGN(static uint8_t s_shellHandleBuffer[SHELL_HANDLE_SIZE], 4);
 extern serial_handle_t g_serialHandle;
+extern char new_device_name[CONFIG_BT_DEVICE_NAME_MAX];
 
 extern void le_audio_bis_play(void);
 extern void le_audio_bis_pause(void);
@@ -213,6 +214,25 @@ static shell_status_t set_broadcast_code(shell_handle_t shellHandle, int32_t arg
 	return kStatus_SHELL_Success;
 }
 
+static shell_status_t set_device_name(shell_handle_t shellHandle, int32_t argc, char **argv)
+{
+	char *new_name;
+	
+	new_name = argv[1];
+
+	int len = strlen(new_name);
+	if (len >= CONFIG_BT_DEVICE_NAME_MAX)
+	{
+		SHELL_Printf(s_shellHandle, "device name too long %d\n", len);
+		return kStatus_SHELL_Error;
+	}
+
+	(void)memset(new_device_name, 0, sizeof(new_device_name));
+	(void)strncpy(new_device_name, new_name, len);
+
+	return kStatus_SHELL_Success;
+}
+
 SHELL_COMMAND_DEFINE(wav_open,        "wav_open <path>\r\n",          wav_open,        1);
 SHELL_COMMAND_DEFINE(lc3_preset_list, "lc3_preset_list\r\n",          lc3_preset_list, 0);
 SHELL_COMMAND_DEFINE(lc3_preset,      "lc3_preset <name>\r\n",        lc3_preset,      1);
@@ -224,6 +244,8 @@ SHELL_COMMAND_DEFINE(config_pd,       "config_pd <pd>\r\n",           config_pd,
 SHELL_COMMAND_DEFINE(config_phy,      "config_phy [1,2,4] - 1: 1M, 2: 2M, 4: Coded\r\n", config_phy, 1);
 SHELL_COMMAND_DEFINE(config_packing,  "config_packing [0,1] - 0: sequentially, 1: interleaved\r\n", config_packing, 1);
 SHELL_COMMAND_DEFINE(set_broadcast_code, "set_broadcast_code [str,hex] [data]\r\n", set_broadcast_code, 2);
+SHELL_COMMAND_DEFINE(set_device_name, "set_device_name <name>\r\n",   set_device_name, 1);
+
 
 void le_audio_shell_init(void)
 {
@@ -241,6 +263,7 @@ void le_audio_shell_init(void)
 	SHELL_RegisterCommand(s_shellHandle, SHELL_COMMAND(config_phy));
 	SHELL_RegisterCommand(s_shellHandle, SHELL_COMMAND(config_packing));
 	SHELL_RegisterCommand(s_shellHandle, SHELL_COMMAND(set_broadcast_code));
+	SHELL_RegisterCommand(s_shellHandle, SHELL_COMMAND(set_device_name));
 
 	SHELL_Printf(s_shellHandle, "\r\nBroadcast Media Sender.\r\n");
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 NXP
+ * Copyright 2023-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -74,6 +74,7 @@ static int new_phy = -1;
 static uint8_t iso_packing = BT_ISO_PACKING_SEQUENTIAL;
 static uint8_t broadcast_code[BT_AUDIO_BROADCAST_CODE_SIZE] = { 0 };
 static bool broadcast_code_set = false;
+char new_device_name[CONFIG_BT_DEVICE_NAME_MAX] = CONFIG_BT_DEVICE_NAME;
 
 struct named_lc3_preset {
 	const char *name;
@@ -715,6 +716,16 @@ void broadcast_media_sender_task(void *param)
 		print_lc3_preset("new_preset", &lc3_preset);
 	}
 
+	/* change device name. */
+	if (strcmp(new_device_name, CONFIG_BT_DEVICE_NAME) != 0)
+	{
+		err = bt_set_name(new_device_name);
+		if (err)
+		{
+			printk("Failed to set device name (err %d)\n", err);
+		}
+	}
+
 	/* Config audio parameters. */
 	config_audio_parameters(wav_file.sample_rate, wav_file.channels, wav_file.bits);
 
@@ -762,10 +773,8 @@ void broadcast_media_sender_task(void *param)
 		ext_ad[0].type = BT_DATA_SVC_DATA16;
 		ext_ad[0].data_len = ad_buf.len;
 		ext_ad[0].data = ad_buf.data;
-		ext_ad[1] = (struct bt_data)BT_DATA(BT_DATA_NAME_COMPLETE, CONFIG_BT_DEVICE_NAME,
-						    sizeof(CONFIG_BT_DEVICE_NAME) - 1);
-		ext_ad[2] = (struct bt_data)BT_DATA(BT_DATA_BROADCAST_NAME, CONFIG_BT_DEVICE_NAME,
-							sizeof(CONFIG_BT_DEVICE_NAME) - 1);
+		ext_ad[1] = (struct bt_data)BT_DATA(BT_DATA_NAME_COMPLETE,  bt_get_name(), strlen(bt_get_name()));
+		ext_ad[2] = (struct bt_data)BT_DATA(BT_DATA_BROADCAST_NAME, bt_get_name(), strlen(bt_get_name()));
 		err = bt_le_ext_adv_set_data(adv, ext_ad, ARRAY_SIZE(ext_ad), NULL, 0);
 		if (err != 0) {
 			printk("Failed to set extended advertising data: %d\n",
