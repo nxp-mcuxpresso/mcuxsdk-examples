@@ -38,8 +38,6 @@ void BOARD_InitBootPins(void)
 BOARD_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm33}
 - pin_list:
-  - {pin_num: J17, peripheral: CAN1, signal: can_rx, pin_signal: PDM_BIT_STREAM0, APC: DOMAIN0_ACCESS, HYS: DISABLED}
-  - {pin_num: G17, peripheral: CAN1, signal: can_tx, pin_signal: PDM_CLK, HYS: DISABLED}
   - {pin_num: F21, peripheral: LPUART2, signal: lpuart_tx, pin_signal: UART2_TXD, HYS: DISABLED, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
   - {pin_num: F20, peripheral: LPUART2, signal: lpuart_rx, pin_signal: UART2_RXD, HYS: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: NO_DRIVE}
   - {pin_num: C20, peripheral: LPI2C1, signal: lpi2c_scl, pin_signal: I2C1_SCL, SION: ENABLED, HYS: DISABLED, OD: ENABLED, PD: DISABLED}
@@ -56,8 +54,6 @@ BOARD_InitPins:
 void BOARD_InitPins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
     IOMUXC_SetPinMux(IOMUXC_PAD_I2C1_SCL__LPI2C1_SCL, 1U);
     IOMUXC_SetPinMux(IOMUXC_PAD_I2C1_SDA__LPI2C1_SDA, 1U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_PDM_BIT_STREAM0__CAN1_RX, 0U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_PDM_CLK__CAN1_TX, 0U);
     IOMUXC_SetPinMux(IOMUXC_PAD_UART2_RXD__LPUART2_RX, 0U);
     IOMUXC_SetPinMux(IOMUXC_PAD_UART2_TXD__LPUART2_TX, 0U);
 
@@ -69,14 +65,6 @@ void BOARD_InitPins(void) {                                /*!< Function assigne
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_OD_MASK);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_PDM_BIT_STREAM0__CAN1_RX, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_PD_MASK);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_PDM_CLK__CAN1_TX, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_PD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_UART2_RXD__LPUART2_RX, 
                         IOMUXC_PAD_PD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_UART2_TXD__LPUART2_TX, 

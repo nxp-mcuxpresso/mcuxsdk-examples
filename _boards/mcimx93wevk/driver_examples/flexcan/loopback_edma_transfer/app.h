@@ -10,14 +10,14 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define EXAMPLE_CAN           CAN1
+#define EXAMPLE_CAN           CAN2
 #define TX_MESSAGE_BUFFER_NUM (9)
 
 #define EXAMPLE_CAN_DMA            (DMA3)
-#define EXAMPLE_CAN_DMA_CHANNEL    kDma3RequestMuxCAN1
+#define EXAMPLE_CAN_DMA_CHANNEL    kDma3RequestMuxCAN2
 #define FLEXCAN_DMA_REQUEST_SOURCE (-1)
-#define FLEXCAN_CLOCK_ROOT         (kCLOCK_Root_Can1)
-#define FLEXCAN_CLOCK_GATE         kCLOCK_Can1
+#define FLEXCAN_CLOCK_ROOT         (kCLOCK_Root_Can2)
+#define FLEXCAN_CLOCK_GATE         kCLOCK_Can2
 #define EXAMPLE_CAN_CLK_FREQ       CLOCK_GetIpFreq(FLEXCAN_CLOCK_ROOT)
 #define EXAMPLE_DMA_CLOCK_ROOT     kCLOCK_Root_WakeupAxi
 #define EXAMPLE_DMA_CLOCK_GATE     kCLOCK_Edma1

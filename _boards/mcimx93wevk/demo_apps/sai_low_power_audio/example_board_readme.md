@@ -12,7 +12,9 @@ Board settings
 No special settings are required.
 
 **Note!**
-1.  This case does not support ddr and flash target.
+1. This case does not support ddr and flash target.
+2. i.MX93W PDM pads are not available. PDM MIC is not supported on MCIMX93W-EVK board.
+   But PDM signals still can be routed to other pins by pin-muxed options.
 
 Prepare the Demo
 ================
@@ -68,7 +70,7 @@ When playback the .wav file (on A Core Linux console):
     Now please use "echo mem > /sys/power/state" command to make A core enter suspend mode and the playback work normally.
     Note, make sure the A core has enough time to fill the audio buffer before going into suspend mode.
 
-When recording sound, could use command:
+When recording sound, could use command: (Not supported on MCIMX93W-EVK. See `Board settings`.)
        arecord -Dhw:1,0 -c2 -r48000 -fS32_LE test.wav
 
 Running the demo

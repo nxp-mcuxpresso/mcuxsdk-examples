@@ -91,19 +91,7 @@ void BOARD_InitLPSPI3Pins(void);                           /*!< Function assigne
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
-void BOARD_InitXSPI1Pins(void);                            /*!< Function assigned for the core: Cortex-M33[cm33] */
-
-/*!
- * @brief Configures pin routing and optionally pin electrical features.
- *
- */
 void BOARD_InitLCDPins(void);                              /*!< Function assigned for the core: Cortex-M33[cm33] */
-
-/*!
- * @brief Configures pin routing and optionally pin electrical features.
- *
- */
-void BOARD_InitPDMPins(void);                              /*!< Function assigned for the core: Cortex-M33[cm33] */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.

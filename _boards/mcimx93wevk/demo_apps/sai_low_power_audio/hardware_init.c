@@ -59,12 +59,6 @@ void BOARD_InitHardware(void)
     CLOCK_SetRootClock(kCLOCK_Root_Sai3, &saiClkCfg);
     CLOCK_SetRootClock(BOARD_ADP5585_I2C_CLOCK_ROOT, &lpi2cClkCfg);
 
-    /* Select PDM signals */
-    adp5585_handle_t handle;
-    BOARD_InitADP5585(&handle);
-    ADP5585_SetDirection(&handle, (1 << BOARD_ADP5585_PDM_MQS_SEL) | (1 << BOARD_ADP5585_EXP_SEL), kADP5585_Output);
-    ADP5585_ClearPins(&handle, (1 << BOARD_ADP5585_PDM_MQS_SEL) | (1 << BOARD_ADP5585_EXP_SEL));
-
     /* Select SAI3 signals */
     ADP5585_SetDirection(&handle, (1 << BOARD_ADP5585_EXP_SEL), kADP5585_Output);
     ADP5585_ClearPins(&handle, (1 << BOARD_ADP5585_EXP_SEL));

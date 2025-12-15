@@ -42,9 +42,6 @@ BOARD_InitPins:
   - {pin_num: F21, peripheral: LPUART2, signal: lpuart_tx, pin_signal: UART2_TXD, HYS: DISABLED, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
   - {pin_num: D20, peripheral: LPI2C2, signal: lpi2c_scl, pin_signal: I2C2_SCL, SION: ENABLED, HYS: DISABLED, OD: ENABLED, PD: DISABLED}
   - {pin_num: D21, peripheral: LPI2C2, signal: lpi2c_sda, pin_signal: I2C2_SDA, SION: ENABLED, HYS: DISABLED, OD: ENABLED, PD: DISABLED}
-  - {pin_num: J17, peripheral: PDM, signal: 'pdm_bit_stream, 00', pin_signal: PDM_BIT_STREAM0, HYS: DISABLED, PD: DISABLED, FSEL1: FAST_SLEW_RATE}
-  - {pin_num: G18, peripheral: PDM, signal: 'pdm_bit_stream, 01', pin_signal: PDM_BIT_STREAM1, HYS: DISABLED, PD: DISABLED, FSEL1: FAST_SLEW_RATE}
-  - {pin_num: G17, peripheral: PDM, signal: pdm_clk, pin_signal: PDM_CLK, HYS: DISABLED, PD: DISABLED, FSEL1: FAST_SLEW_RATE}
   - {pin_num: R20, peripheral: SAI3, signal: sai_mclk, pin_signal: GPIO_IO17, HYS: DISABLED, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
   - {pin_num: R21, peripheral: SAI3, signal: sai_tx_bclk, pin_signal: GPIO_IO16, HYS: DISABLED, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
   - {pin_num: V20, peripheral: SAI3, signal: sai_tx_sync, pin_signal: GPIO_IO26, HYS: DISABLED, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
@@ -97,18 +94,6 @@ void BOARD_InitPins(void) {                                /*!< Function assigne
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_OD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_PDM_BIT_STREAM0__PDM_BIT_STREAM00, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_PDM_BIT_STREAM0__PDM_BIT_STREAM00,
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(3U));
-    IOMUXC_SetPinMux(IOMUXC_PAD_PDM_BIT_STREAM1__PDM_BIT_STREAM01, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_PDM_BIT_STREAM1__PDM_BIT_STREAM01,
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(3U));
-    IOMUXC_SetPinMux(IOMUXC_PAD_PDM_CLK__PDM_CLK, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_PDM_CLK__PDM_CLK,
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(3U));
     IOMUXC_SetPinMux(IOMUXC_PAD_UART2_RXD__LPUART2_RX, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_UART2_RXD__LPUART2_RX,
                         IOMUXC_PAD_PD_MASK);

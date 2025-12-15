@@ -31,7 +31,7 @@
 #define DEMO_AUDIO_SAMPLE_RATE  (kSAI_SampleRate48KHz)
 #define DEMO_AUDIO_MASTER_CLOCK DEMO_SAI_CLK_FREQ
 
-/* Get frequency of sai1 clock */
+/* Get frequency of sai clock */
 #define SAI_CLOCK_ROOT    kCLOCK_Root_Sai3
 #define SAI_CLOCK_GATE    kCLOCK_Sai3
 #define DEMO_SAI_CLK_FREQ CLOCK_GetIpFreq(SAI_CLOCK_ROOT)

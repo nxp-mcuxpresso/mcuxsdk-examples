@@ -444,46 +444,6 @@ void BOARD_InitLPSPI3Pins(void) {                          /*!< Function assigne
 
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOARD_InitXSPI1Pins:
-- options: {callFromInitBoot: 'false', coreID: cm33}
-- pin_list:
-  - {pin_num: V16, peripheral: FLEXSPI1, signal: flexspi_a_sclk, pin_signal: SD3_CLK, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X6}
-  - {pin_num: T16, peripheral: FLEXSPI1, signal: 'flexspi_a_data, 00', pin_signal: SD3_DATA0, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X6}
-  - {pin_num: V14, peripheral: FLEXSPI1, signal: 'flexspi_a_data, 01', pin_signal: SD3_DATA1, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X6}
-  - {pin_num: U14, peripheral: FLEXSPI1, signal: 'flexspi_a_data, 02', pin_signal: SD3_DATA2, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X6}
-  - {pin_num: T14, peripheral: FLEXSPI1, signal: 'flexspi_a_data, 03', pin_signal: SD3_DATA3, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X6}
-  - {pin_num: U16, peripheral: FLEXSPI1, signal: 'flexspi_a_ss_b, 0', pin_signal: SD3_CMD}
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
- */
-
-/* FUNCTION ************************************************************************************************************
- *
- * Function Name : BOARD_InitXSPI1Pins
- * Description   : Configures pin routing and optionally pin electrical features.
- *
- * END ****************************************************************************************************************/
-void BOARD_InitXSPI1Pins(void) {                           /*!< Function assigned for the core: Cortex-M33[cm33] */
-    IOMUXC_SetPinMux(IOMUXC_PAD_SD3_CLK__FLEXSPI1_A_SCLK, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_SD3_CLK__FLEXSPI1_A_SCLK, 
-                        IOMUXC_PAD_DSE(63U));
-    IOMUXC_SetPinMux(IOMUXC_PAD_SD3_CMD__FLEXSPI1_A_SS0_B, 0U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_SD3_DATA0__FLEXSPI1_A_DATA00, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_SD3_DATA0__FLEXSPI1_A_DATA00, 
-                        IOMUXC_PAD_DSE(63U));
-    IOMUXC_SetPinMux(IOMUXC_PAD_SD3_DATA1__FLEXSPI1_A_DATA01, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_SD3_DATA1__FLEXSPI1_A_DATA01, 
-                        IOMUXC_PAD_DSE(63U));
-    IOMUXC_SetPinMux(IOMUXC_PAD_SD3_DATA2__FLEXSPI1_A_DATA02, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_SD3_DATA2__FLEXSPI1_A_DATA02, 
-                        IOMUXC_PAD_DSE(63U));
-    IOMUXC_SetPinMux(IOMUXC_PAD_SD3_DATA3__FLEXSPI1_A_DATA03, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_SD3_DATA3__FLEXSPI1_A_DATA03, 
-                        IOMUXC_PAD_DSE(63U));
-}
-
-
-/*
- * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitLCDPins:
 - options: {callFromInitBoot: 'false', coreID: cm33}
 - pin_list:
@@ -499,39 +459,6 @@ BOARD_InitLCDPins:
  * END ****************************************************************************************************************/
 void BOARD_InitLCDPins(void) {                             /*!< Function assigned for the core: Cortex-M33[cm33] */
     IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO00__MEDIAMIX_DISP_CLK, 0U);
-}
-
-
-/*
- * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOARD_InitPDMPins:
-- options: {callFromInitBoot: 'false', coreID: cm33}
-- pin_list:
-  - {pin_num: J17, peripheral: PDM, signal: 'pdm_bit_stream, 00', pin_signal: PDM_BIT_STREAM0, HYS: DISABLED, PD: DISABLED, FSEL1: FAST_SLEW_RATE}
-  - {pin_num: G18, peripheral: PDM, signal: 'pdm_bit_stream, 01', pin_signal: PDM_BIT_STREAM1, HYS: DISABLED, PD: DISABLED, FSEL1: FAST_SLEW_RATE}
-  - {pin_num: G17, peripheral: PDM, signal: pdm_clk, pin_signal: PDM_CLK, HYS: DISABLED, PD: DISABLED, FSEL1: FAST_SLEW_RATE}
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
- */
-
-/* FUNCTION ************************************************************************************************************
- *
- * Function Name : BOARD_InitPDMPins
- * Description   : Configures pin routing and optionally pin electrical features.
- *
- * END ****************************************************************************************************************/
-void BOARD_InitPDMPins(void) {                             /*!< Function assigned for the core: Cortex-M33[cm33] */
-    IOMUXC_SetPinMux(IOMUXC_PAD_PDM_BIT_STREAM0__PDM_BIT_STREAM00, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_PDM_BIT_STREAM0__PDM_BIT_STREAM00, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(3U));
-    IOMUXC_SetPinMux(IOMUXC_PAD_PDM_BIT_STREAM1__PDM_BIT_STREAM01, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_PDM_BIT_STREAM1__PDM_BIT_STREAM01, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(3U));
-    IOMUXC_SetPinMux(IOMUXC_PAD_PDM_CLK__PDM_CLK, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_PDM_CLK__PDM_CLK, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(3U));
 }
 
 
