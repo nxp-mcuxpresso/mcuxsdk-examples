@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2023 NXP
+ * Copyright 2020, 2023, 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -59,10 +59,11 @@ int main(void)
      *  config->averageLength = kADC_AverageNone;
      *  config->triggerSource = kADC_TriggerSourceSoftware;
      *  config->inputGain = kADC_InputGain1;
-     *  config->enableInputGainBuffer = false;
      *  config->resultWidth = kADC_ResultWidth16;
      *  config->fifoThreshold = kADC_FifoThresholdData1;
+     *  config->enableInputGainBuffer = false;
      *  config->enableInputBufferChop = true;
+     *  config->enableChop = true;
      *  config->enableDMA = false;
      *  config->enableADC = false;
      */
@@ -74,9 +75,9 @@ int main(void)
     adcConfig.resolution            = kADC_Resolution16Bit;
     adcConfig.fifoThreshold         = kADC_FifoThresholdData1;
     adcConfig.averageLength         = kADC_Average16;
-    adcConfig.enableInputGainBuffer = true;
-    adcConfig.enableADC             = true;
+    adcConfig.enableInputGainBuffer = false;
     adcConfig.enableInputBufferChop = false;
+    adcConfig.enableADC             = true;
 
     ADC_Init(DEMO_ADC_BASE, &adcConfig);
 
