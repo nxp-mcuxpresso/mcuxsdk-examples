@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
 #
-# Copyright 2024 NXP
+# Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 sema42_dualcore_secondary_core:
@@ -68,3 +68,8 @@ sema42_dualcore_secondary_core:
     - -mdk@flexspi_nor_release
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
+    kw47evk@cm33_core1: []
+    mcxw72evk@cm33_core1: []
+    kw47loc@cm33_core1: []
+    mcxw72loc@cm33_core1: []
+    frdmmcxw72@cm33_core1: []
