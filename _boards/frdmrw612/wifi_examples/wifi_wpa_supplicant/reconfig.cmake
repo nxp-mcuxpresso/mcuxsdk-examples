@@ -49,11 +49,6 @@ mcux_add_mdk_configuration(
     CC "-mfloat-abi=hard"
 )
 
-mcux_add_mdk_configuration(
-    TARGETS flash_release flash_debug
-    CC "-DCONFIG_HAVE_TIME_DISABLE=1"
-)
-
 mcux_add_iar_configuration(
     CX "--no_clustering"
     CC "--dlib_config full"

@@ -15,11 +15,6 @@ mcux_add_include(
     INCLUDES .
 )
 
-mcux_add_mdk_configuration(
-    TARGETS flash_release
-    CC "-DCONFIG_HAVE_TIME_DISABLE=1"
-)
-
 mcux_add_iar_configuration(
     CX "--no_clustering"
     CC "--dlib_config full"
