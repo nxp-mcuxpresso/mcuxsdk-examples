@@ -28,6 +28,8 @@ static void XOS_Init(void)
 
 void BOARD_InitHardware(void)
 {
+    /* Disable DSP cache for noncacheable sections. */
+    xthal_set_region_attribute((uint32_t *)0x20400000, 30000, XCHAL_CA_BYPASS, 0);
     CLOCK_SetXtalFreq(BOARD_XTAL_SYS_CLK_HZ); /* Note: need tell clock driver the frequency of OSC. */
 
     BOARD_InitBootPins();
