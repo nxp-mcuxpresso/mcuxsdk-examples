@@ -18,9 +18,22 @@
 #include "mbedtls/error.h"
 #include "mbedtls/debug.h"
 #include "mbedtls/ssl_ciphersuites.h"
-#include "mbedtls/mbedtls_common.h"
 #include "entropy_poll.h"
 
+#define TLS_OK                                  0
+#define TLS_ERR_PSA_INIT                        1
+#define TLS_ERR_PARSE_CERT                      2
+#define TLS_ERR_PARSE_KEY                       3
+#define TLS_ERR_SSL_INIT                        4
+#define TLS_ERR_CFG_CERT                        5
+#define TLS_ERR_SSL_SETUP                       6
+#define TLS_ERR_CRETAE_SEM                      7
+#define TLS_ERR_ALLOC_MEM                       8
+#define TLS_ERR_INIT_TLS                        9
+#define TLS_ERR_HANDSHAKING_NOT_START           10
+#define TLS_ERR_INVALID_PARAM                   11
+#define TLS_ERR_RINGBUF_FULL                    12
+#define TLS_ERR_HANDSHAKE                       13
 
 #define MBEDTLS_ERR_NET_SOCKET_FAILED    -0x0042
 #define MBEDTLS_ERR_NET_CONNECT_FAILED   -0x0044
