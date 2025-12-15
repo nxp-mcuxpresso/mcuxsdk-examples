@@ -49,4 +49,5 @@ adc_watchdog:
     - +iar@release
     - +iar@debug
     mcimx93evk: []
+    mcimx93wevk: []
     frdmmcxe31b: []

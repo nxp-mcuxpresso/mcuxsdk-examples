@@ -55,5 +55,6 @@ lwip_dhcp_enet_qos_freertos:
     - -mdk@sdram_debug
     - -mdk@sdram_release
     mcimx93evk: []
+    mcimx93wevk: []
     mcimx93qsb: []
     frdmmcxe31b: []

@@ -60,4 +60,5 @@ i3c_master_read_sensor_lsm6dso:
     - -mdk@release
     mcimx93autoevk: []
     mcimx93evk: []
+    mcimx93wevk: []
     mcimx93qsb: []

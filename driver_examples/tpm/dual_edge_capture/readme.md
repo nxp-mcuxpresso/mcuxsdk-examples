@@ -24,6 +24,7 @@ This example will print the capture values and period of the input signal on the
 - [KW47-EVK](../../../_boards/kw47evk/driver_examples/tpm/dual_edge_capture/example_board_readme.md)
 - [MCIMX93AUTO-EVK](../../../_boards/mcimx93autoevk/driver_examples/tpm/dual_edge_capture/example_board_readme.md)
 - [MCIMX93-EVK](../../../_boards/mcimx93evk/driver_examples/tpm/dual_edge_capture/example_board_readme.md)
+- [MCIMX93W-EVK](../../../_boards/mcimx93wevk/driver_examples/tpm/dual_edge_capture/example_board_readme.md)
 - [MCIMX93-QSB](../../../_boards/mcimx93qsb/driver_examples/tpm/dual_edge_capture/example_board_readme.md)
 - [MCX-W72-EVK](../../../_boards/mcxw72evk/driver_examples/tpm/dual_edge_capture/example_board_readme.md)
 - [KW47-LOC](../../../_boards/kw47loc/driver_examples/tpm/dual_edge_capture/example_board_readme.md)

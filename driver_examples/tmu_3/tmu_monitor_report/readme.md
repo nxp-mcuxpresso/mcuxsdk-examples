@@ -13,4 +13,5 @@ Note: Before monitoring the temperature, we must programming the calibration tab
 ## Supported Boards
 - [MCIMX93AUTO-EVK](../../../_boards/mcimx93autoevk/driver_examples/tmu/tmu_monitor_report/example_board_readme.md)
 - [MCIMX93-EVK](../../../_boards/mcimx93evk/driver_examples/tmu/tmu_monitor_report/example_board_readme.md)
+- [MCIMX93W-EVK](../../../_boards/mcimx93wevk/driver_examples/tmu/tmu_monitor_report/example_board_readme.md)
 - [MCIMX93-QSB](../../../_boards/mcimx93qsb/driver_examples/tmu/tmu_monitor_report/example_board_readme.md)

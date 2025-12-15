@@ -60,6 +60,7 @@ When the demo runs, the log would be seen on the terminal like:
 - [LPCXpresso54S018M](../../../_boards/lpcxpresso54s018m/lwip_examples/lwip_dhcp/bm/example_board_readme.md)
 - [MCIMX93AUTO-EVK](../../../_boards/mcimx93autoevk/lwip_examples/lwip_dhcp/bm/example_board_readme.md)
 - [MCIMX93-EVK](../../../_boards/mcimx93evk/lwip_examples/lwip_dhcp/bm/example_board_readme.md)
+- [MCIMX93W-EVK](../../../_boards/mcimx93wevk/lwip_examples/lwip_dhcp/bm/example_board_readme.md)
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/lwip_examples/lwip_dhcp/bm/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/lwip_examples/lwip_dhcp/bm/example_board_readme.md)
 - [RD-RW612-BGA](../../../_boards/rdrw612bga/lwip_examples/lwip_dhcp/bm/example_board_readme.md)

@@ -172,6 +172,7 @@ canfd_ping_pong_buffer_transfer:
     imx95verdinevk@cm7: []
     mcimx93autoevk: []
     mcimx93evk: []
+    mcimx93wevk: []
     mcimx93qsb: []
     frdmimxrt1186@cm33:
     - -armgcc@debug

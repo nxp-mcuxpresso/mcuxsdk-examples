@@ -40,6 +40,7 @@ lpit_chained_channel:
     - +armgcc@release
     mcimx93autoevk: []
     mcimx93evk: []
+    mcimx93wevk: []
     mcimx93qsb: []
     imx943evk@cm7_core1:
     - +armgcc@debug

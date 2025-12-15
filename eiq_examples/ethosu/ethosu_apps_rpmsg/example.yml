@@ -13,4 +13,5 @@ ethosu_apps_rpmsg:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mcimx93evk: []
+    mcimx93wevk: []
     mcimx93qsb: []

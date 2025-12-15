@@ -43,6 +43,7 @@ so it demonstrates following techniques for TrustZone applications development:
 - [LPCXpresso55S69](../../_boards/lpcxpresso55s69/trustzone_examples/hello_world/hello_world_s/example_board_readme.md)
 - [MCIMX93AUTO-EVK](../../_boards/mcimx93autoevk/trustzone_examples/hello_world/hello_world_s/example_board_readme.md)
 - [MCIMX93-EVK](../../_boards/mcimx93evk/trustzone_examples/hello_world/hello_world_s/example_board_readme.md)
+- [MCIMX93W-EVK](../../_boards/mcimx93wevk/trustzone_examples/hello_world/hello_world_s/example_board_readme.md)
 - [MCIMX93-QSB](../../_boards/mcimx93qsb/trustzone_examples/hello_world/hello_world_s/example_board_readme.md)
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/trustzone_examples/hello_world/hello_world_s/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/trustzone_examples/hello_world/hello_world_s/example_board_readme.md)

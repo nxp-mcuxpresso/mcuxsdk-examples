@@ -238,6 +238,7 @@ flexcan_interrupt_transfer:
     - +armgcc@release
     mcimx93autoevk: []
     mcimx93evk: []
+    mcimx93wevk: []
     mcimx93qsb: []
     mcxn9xxevk@cm33_core0: []
     frdmmcxe31b: []

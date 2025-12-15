@@ -17,4 +17,5 @@ source by following the debug console prompts. The purpose of this demo is to sh
 ## Supported Boards
 - [MCIMX93AUTO-EVK](../../_boards/mcimx93autoevk/demo_apps/power_mode_switch/example_board_readme.md)
 - [MCIMX93-EVK](../../_boards/mcimx93evk/demo_apps/power_mode_switch/example_board_readme.md)
+- [MCIMX93W-EVK](../../_boards/mcimx93wevk/demo_apps/power_mode_switch/example_board_readme.md)
 - [MCIMX93-QSB](../../_boards/mcimx93qsb/demo_apps/power_mode_switch/example_board_readme.md)

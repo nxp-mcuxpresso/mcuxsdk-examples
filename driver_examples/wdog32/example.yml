@@ -59,4 +59,5 @@ wdog32:
     - +armgcc@release
     mcimx93autoevk: []
     mcimx93evk: []
+    mcimx93wevk: []
     mcimx93qsb: []

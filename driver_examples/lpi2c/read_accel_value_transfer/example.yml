@@ -48,4 +48,5 @@ lpi2c_read_accel_value_transfer:
     frdmke17z: []
     mcimx93autoevk: []
     mcimx93evk: []
+    mcimx93wevk: []
     mcimx93qsb: []

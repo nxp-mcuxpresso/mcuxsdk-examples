@@ -18,4 +18,5 @@ tmu_3_temperature_polling:
   boards:
     mcimx93autoevk: []
     mcimx93evk: []
+    mcimx93wevk: []
     mcimx93qsb: []

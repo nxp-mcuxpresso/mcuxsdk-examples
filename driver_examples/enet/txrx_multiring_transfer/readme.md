@@ -23,3 +23,4 @@ auto-negotiation when phy is in loop back mode. However, the auto-negotiation fa
 - [EVK-MIMX8MP](../../../_boards/evkmimx8mp/driver_examples/enet/txrx_multiring_transfer/example_board_readme.md)
 - [MCIMX93AUTO-EVK](../../../_boards/mcimx93autoevk/driver_examples/enet/txrx_multiring_transfer/example_board_readme.md)
 - [MCIMX93-EVK](../../../_boards/mcimx93evk/driver_examples/enet/txrx_multiring_transfer/example_board_readme.md)
+- [MCIMX93W-EVK](../../../_boards/mcimx93wevk/driver_examples/enet/txrx_multiring_transfer/example_board_readme.md)

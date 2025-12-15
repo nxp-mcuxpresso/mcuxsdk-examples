@@ -178,6 +178,7 @@ canfd_loopback_transfer:
     imx95verdinevk@cm7: []
     mcimx93autoevk: []
     mcimx93evk: []
+    mcimx93wevk: []
     mcimx93qsb: []
     frdmmcxe31b: []
     frdmimxrt1186@cm33:

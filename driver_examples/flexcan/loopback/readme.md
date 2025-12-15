@@ -32,6 +32,7 @@ throuth internal loopback interconnect and print out the Message payload to term
 - [imx95verdinevk](../../../_boards/imx95verdinevk/driver_examples/flexcan/loopback/example_board_readme.md)
 - [MCIMX93AUTO-EVK](../../../_boards/mcimx93autoevk/driver_examples/flexcan/loopback/example_board_readme.md)
 - [MCIMX93-EVK](../../../_boards/mcimx93evk/driver_examples/flexcan/loopback/example_board_readme.md)
+- [MCIMX93W-EVK](../../../_boards/mcimx93wevk/driver_examples/flexcan/loopback/example_board_readme.md)
 - [MCIMX93-QSB](../../../_boards/mcimx93qsb/driver_examples/flexcan/loopback/example_board_readme.md)
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/driver_examples/flexcan/loopback/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/driver_examples/flexcan/loopback/example_board_readme.md)

@@ -254,6 +254,7 @@ lpi2c_edma_b2b_transfer_slave:
     - +armgcc@release
     mcimx93autoevk: []
     mcimx93evk: []
+    mcimx93wevk: []
     mcimx93qsb: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []

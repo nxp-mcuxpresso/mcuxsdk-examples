@@ -229,6 +229,7 @@ flexcan_loopback:
     imx95verdinevk@cm7: []
     mcimx93autoevk: []
     mcimx93evk: []
+    mcimx93wevk: []
     mcimx93qsb: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []

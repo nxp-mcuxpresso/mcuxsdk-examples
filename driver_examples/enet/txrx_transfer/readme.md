@@ -31,4 +31,5 @@ in TWR-SERIAL board for the external PHY.
 - [FRDM-RW612](../../../_boards/frdmrw612/driver_examples/enet/txrx_transfer/example_board_readme.md)
 - [MCIMX93AUTO-EVK](../../../_boards/mcimx93autoevk/driver_examples/enet/txrx_transfer/example_board_readme.md)
 - [MCIMX93-EVK](../../../_boards/mcimx93evk/driver_examples/enet/txrx_transfer/example_board_readme.md)
+- [MCIMX93W-EVK](../../../_boards/mcimx93wevk/driver_examples/enet/txrx_transfer/example_board_readme.md)
 - [RD-RW612-BGA](../../../_boards/rdrw612bga/driver_examples/enet/txrx_transfer/example_board_readme.md)

@@ -242,6 +242,7 @@ flexio_spi_int_lpspi_transfer_master:
     - +armgcc@release
     mcimx93autoevk: []
     mcimx93evk: []
+    mcimx93wevk: []
     mcimx93qsb: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []

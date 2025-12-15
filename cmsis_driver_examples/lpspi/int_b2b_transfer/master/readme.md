@@ -46,6 +46,7 @@ This example uses the transactional API in LPSPI driver.
 - [KW47-EVK](../../../../_boards/kw47evk/cmsis_driver_examples/lpspi/int_b2b_transfer/master/example_board_readme.md)
 - [MCIMX93AUTO-EVK](../../../../_boards/mcimx93autoevk/cmsis_driver_examples/lpspi/int_b2b_transfer/master/example_board_readme.md)
 - [MCIMX93-EVK](../../../../_boards/mcimx93evk/cmsis_driver_examples/lpspi/int_b2b_transfer/master/example_board_readme.md)
+- [MCIMX93W-EVK](../../../../_boards/mcimx93wevk/cmsis_driver_examples/lpspi/int_b2b_transfer/master/example_board_readme.md)
 - [MCIMX93-QSB](../../../../_boards/mcimx93qsb/cmsis_driver_examples/lpspi/int_b2b_transfer/master/example_board_readme.md)
 - [MCX-N5XX-EVK](../../../../_boards/mcxn5xxevk/cmsis_driver_examples/lpspi/int_b2b_transfer/master/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../../_boards/mcxn9xxevk/cmsis_driver_examples/lpspi/int_b2b_transfer/master/example_board_readme.md)

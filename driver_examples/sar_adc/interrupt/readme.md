@@ -19,4 +19,5 @@ of channel conversion is valid, it will be printed to the debug console.
 - [IMX95LPD5EVK-19](../../../_boards/imx95lpd5evk19/driver_examples/sar_adc/interrupt/example_board_readme.md)
 - [imx95verdinevk](../../../_boards/imx95verdinevk/driver_examples/sar_adc/interrupt/example_board_readme.md)
 - [MCIMX93-EVK](../../../_boards/mcimx93evk/driver_examples/sar_adc/interrupt/example_board_readme.md)
+- [MCIMX93W-EVK](../../../_boards/mcimx93wevk/driver_examples/sar_adc/interrupt/example_board_readme.md)
 - [FRDM-MCXE31B](../../../_boards/frdmmcxe31b/driver_examples/sar_adc/interrupt/example_board_readme.md)

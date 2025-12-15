@@ -46,6 +46,7 @@ flexio_pin_led_output:
     imx95verdinevk@cm7: []
     mcimx93autoevk: []
     mcimx93evk: []
+    mcimx93wevk: []
     mcimx93qsb: []
     imx943evk@cm7_core1:
     - +armgcc@debug

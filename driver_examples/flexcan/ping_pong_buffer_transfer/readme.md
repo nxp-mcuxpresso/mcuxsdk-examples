@@ -41,6 +41,7 @@ This example also demonstrates how to create custom FlexCAN IRQ handler.
 - [imx95verdinevk](../../../_boards/imx95verdinevk/driver_examples/flexcan/ping_pong_buffer_transfer/example_board_readme.md)
 - [MCIMX93AUTO-EVK](../../../_boards/mcimx93autoevk/driver_examples/flexcan/ping_pong_buffer_transfer/example_board_readme.md)
 - [MCIMX93-EVK](../../../_boards/mcimx93evk/driver_examples/flexcan/ping_pong_buffer_transfer/example_board_readme.md)
+- [MCIMX93W-EVK](../../../_boards/mcimx93wevk/driver_examples/flexcan/ping_pong_buffer_transfer/example_board_readme.md)
 - [MCIMX93-QSB](../../../_boards/mcimx93qsb/driver_examples/flexcan/ping_pong_buffer_transfer/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/driver_examples/flexcan/ping_pong_buffer_transfer/example_board_readme.md)
 - [FRDM-MCXA174](../../../_boards/frdmmcxa174/driver_examples/flexcan/ping_pong_buffer_transfer/example_board_readme.md)

@@ -151,5 +151,6 @@ flexio_i2c_read_accel_value_transfer:
     frdmmcxe247: []
     mcimx93autoevk: []
     mcimx93evk: []
+    mcimx93wevk: []
     mcimx93qsb: []
     frdmmcxe31b: []

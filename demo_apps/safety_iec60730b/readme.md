@@ -12,6 +12,7 @@ This example demonstrates the safety library usage.
 - [FRDM-MCXC444](../../_boards/frdmmcxc444/demo_apps/safety_iec60730b/readme.md)
 - [FRDM-MCXE247](../../_boards/frdmmcxe247/demo_apps/safety_iec60730b/readme.md)
 - [MCIMX93-EVK](../../_boards/mcimx93evk/demo_apps/safety_iec60730b/readme.md)
+- [MCIMX93W-EVK](../../_boards/mcimx93wevk/demo_apps/safety_iec60730b/readme.md)
 - [FRDM-MCXE31B](../../_boards/frdmmcxe31b/demo_apps/safety_iec60730b/readme.md)
 - [FRDM-MCXA344](../../_boards/frdmmcxa344/demo_apps/safety_iec60730b/readme.md)
 - [FRDM-MCXN236](../../_boards/frdmmcxn236/demo_apps/safety_iec60730b/readme.md)

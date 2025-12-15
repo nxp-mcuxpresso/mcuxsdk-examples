@@ -20,4 +20,5 @@ tmu_3_monitor_report:
   boards:
     mcimx93autoevk: []
     mcimx93evk: []
+    mcimx93wevk: []
     mcimx93qsb: []

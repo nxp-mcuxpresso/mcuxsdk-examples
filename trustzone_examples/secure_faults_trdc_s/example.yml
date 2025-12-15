@@ -29,4 +29,5 @@ secure_faults_trdc_s:
     - -iar@release
     mcimx93autoevk@cm33: []
     mcimx93evk@cm33: []
+    mcimx93wevk@cm33: []
     mcimx93qsb@cm33: []

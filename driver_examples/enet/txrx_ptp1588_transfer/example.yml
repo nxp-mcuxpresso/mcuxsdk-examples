@@ -189,3 +189,4 @@ enet_txrx_ptp1588_transfer:
     frdmmcxe247: []
     mcimx93autoevk: []
     mcimx93evk: []
+    mcimx93wevk: []

@@ -20,4 +20,5 @@ sai_low_power_audio_rtos_imx93:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mcimx93evk: []
+    mcimx93wevk: []
     mcimx93qsb: []

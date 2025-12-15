@@ -88,6 +88,7 @@ freertos_sem_static:
     lpcxpresso55s69@cm33_core0: []
     mcimx93autoevk: []
     mcimx93evk: []
+    mcimx93wevk: []
     mcimx93qsb: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []

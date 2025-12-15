@@ -36,6 +36,7 @@ a message is printed on the UART terminal and an LED is toggled on the board.
 - [KW47-EVK](../../_boards/kw47evk/driver_examples/lptmr/example_board_readme.md)
 - [MCIMX93AUTO-EVK](../../_boards/mcimx93autoevk/driver_examples/lptmr/example_board_readme.md)
 - [MCIMX93-EVK](../../_boards/mcimx93evk/driver_examples/lptmr/example_board_readme.md)
+- [MCIMX93W-EVK](../../_boards/mcimx93wevk/driver_examples/lptmr/example_board_readme.md)
 - [MCIMX93-QSB](../../_boards/mcimx93qsb/driver_examples/lptmr/example_board_readme.md)
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/driver_examples/lptmr/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/driver_examples/lptmr/example_board_readme.md)

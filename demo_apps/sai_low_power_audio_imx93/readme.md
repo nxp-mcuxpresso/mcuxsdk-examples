@@ -10,4 +10,5 @@ If there is no audio palyback, M core will enter the STOP mode, and the whole SO
 
 ## Supported Boards
 - [MCIMX93-EVK](../../_boards/mcimx93evk/demo_apps/sai_low_power_audio/example_board_readme.md)
+- [MCIMX93W-EVK](../../_boards/mcimx93wevk/demo_apps/sai_low_power_audio/example_board_readme.md)
 - [MCIMX93-QSB](../../_boards/mcimx93qsb/demo_apps/sai_low_power_audio/example_board_readme.md)

@@ -53,6 +53,11 @@ hello_world_ns:
     - +armgcc@release
     - +iar@debug
     - +iar@release
+    mcimx93wevk@cm33:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release
     mcimx93qsb@cm33:
     - +armgcc@debug
     - +armgcc@release

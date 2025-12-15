@@ -25,6 +25,7 @@ I3C slave and check the data consistency.
 - [LPCXpresso860MAX](../../../../_boards/lpcxpresso860max/driver_examples/i3c/interrupt_b2b_transfer/master/example_board_readme.md)
 - [MCIMX93AUTO-EVK](../../../../_boards/mcimx93autoevk/driver_examples/i3c/interrupt_b2b_transfer/master/example_board_readme.md)
 - [MCIMX93-EVK](../../../../_boards/mcimx93evk/driver_examples/i3c/interrupt_b2b_transfer/master/example_board_readme.md)
+- [MCIMX93W-EVK](../../../../_boards/mcimx93wevk/driver_examples/i3c/interrupt_b2b_transfer/master/example_board_readme.md)
 - [MCIMX93-QSB](../../../../_boards/mcimx93qsb/driver_examples/i3c/interrupt_b2b_transfer/master/example_board_readme.md)
 - [MCX-N5XX-EVK](../../../../_boards/mcxn5xxevk/driver_examples/i3c/interrupt_b2b_transfer/master/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../../_boards/mcxn9xxevk/driver_examples/i3c/interrupt_b2b_transfer/master/example_board_readme.md)

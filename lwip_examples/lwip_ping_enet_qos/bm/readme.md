@@ -11,4 +11,5 @@ board. The lwIP stack sends the ICMP echo reply back to the PC.
 ## Supported Boards
 - [MIMXRT1170-EVKB](../../../_boards/evkbmimxrt1170/lwip_examples/lwip_ping_enet_qos/bm/example_board_readme.md)
 - [MCIMX93-EVK](../../../_boards/mcimx93evk/lwip_examples/lwip_ping_enet_qos/bm/example_board_readme.md)
+- [MCIMX93W-EVK](../../../_boards/mcimx93wevk/lwip_examples/lwip_ping_enet_qos/bm/example_board_readme.md)
 - [MCIMX93-QSB](../../../_boards/mcimx93qsb/lwip_examples/lwip_ping_enet_qos/bm/example_board_readme.md)

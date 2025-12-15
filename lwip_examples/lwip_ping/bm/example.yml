@@ -252,6 +252,7 @@ lwip_ping_bm:
     lpcxpresso54s018m: []
     mcimx93autoevk: []
     mcimx93evk: []
+    mcimx93wevk: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
     rdrw612bga:

@@ -82,6 +82,7 @@ debug_console supports this, debug_console_lite doesn't support).
 - [MC56F83000-EVK](../../_boards/mc56f83000evk/demo_apps/hello_world/example_board_readme.md)
 - [MCIMX93AUTO-EVK](../../_boards/mcimx93autoevk/demo_apps/hello_world/example_board_readme.md)
 - [MCIMX93-EVK](../../_boards/mcimx93evk/demo_apps/hello_world/example_board_readme.md)
+- [MCIMX93W-EVK](../../_boards/mcimx93wevk/demo_apps/hello_world/example_board_readme.md)
 - [MCIMX93-QSB](../../_boards/mcimx93qsb/demo_apps/hello_world/example_board_readme.md)
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/demo_apps/hello_world/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/demo_apps/hello_world/example_board_readme.md)

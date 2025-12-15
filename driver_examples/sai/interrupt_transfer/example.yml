@@ -266,6 +266,7 @@ sai_interrupt_transfer:
     imx95lp4xevk15@cm7: []
     imx95verdinevk@cm7: []
     mcimx93evk: []
+    mcimx93wevk: []
     mcimx93qsb: []
     mcxn5xxevk@cm33_core0: []
     mimxrt700evk@cm33_core0:

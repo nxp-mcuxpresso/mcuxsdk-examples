@@ -47,3 +47,4 @@ enet_txrx_multiring_transfer:
     - -iar@flash_release
     mcimx93autoevk: []
     mcimx93evk: []
+    mcimx93wevk: []

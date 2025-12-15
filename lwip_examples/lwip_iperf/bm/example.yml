@@ -128,6 +128,7 @@ lwip_iperf_bm:
     - -armgcc@release
     mcimx93autoevk: []
     mcimx93evk: []
+    mcimx93wevk: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
     rdrw612bga: []

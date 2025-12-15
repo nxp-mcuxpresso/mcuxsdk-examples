@@ -117,6 +117,7 @@ flexcan_loopback_edma_transfer:
     - +armgcc@release
     mcimx93autoevk: []
     mcimx93evk: []
+    mcimx93wevk: []
     mcimx93qsb: []
     imx943evk@cm7_core1:
     - +armgcc@debug

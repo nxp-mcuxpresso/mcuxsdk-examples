@@ -23,6 +23,7 @@ edma3_scatter_gather:
     frdmmcxn947@cm33_core0: []
     mcimx93autoevk: []
     mcimx93evk: []
+    mcimx93wevk: []
     mcimx93qsb: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []

@@ -52,6 +52,7 @@ slave is correct.
 - [KW47-EVK](../../../../_boards/kw47evk/cmsis_driver_examples/lpi2c/edma_b2b_transfer/slave/example_board_readme.md)
 - [MCIMX93AUTO-EVK](../../../../_boards/mcimx93autoevk/cmsis_driver_examples/lpi2c/edma_b2b_transfer/slave/example_board_readme.md)
 - [MCIMX93-EVK](../../../../_boards/mcimx93evk/cmsis_driver_examples/lpi2c/edma_b2b_transfer/slave/example_board_readme.md)
+- [MCIMX93W-EVK](../../../../_boards/mcimx93wevk/cmsis_driver_examples/lpi2c/edma_b2b_transfer/slave/example_board_readme.md)
 - [MCIMX93-QSB](../../../../_boards/mcimx93qsb/cmsis_driver_examples/lpi2c/edma_b2b_transfer/slave/example_board_readme.md)
 - [MCX-N5XX-EVK](../../../../_boards/mcxn5xxevk/cmsis_driver_examples/lpi2c/edma_b2b_transfer/slave/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../../_boards/mcxn9xxevk/cmsis_driver_examples/lpi2c/edma_b2b_transfer/slave/example_board_readme.md)

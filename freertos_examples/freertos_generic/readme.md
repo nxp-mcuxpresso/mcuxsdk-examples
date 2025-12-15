@@ -101,6 +101,7 @@ Receive message counter: 14.
 - [LPCXpresso860MAX](../../_boards/lpcxpresso860max/freertos_examples/freertos_generic/example_board_readme.md)
 - [MCIMX93AUTO-EVK](../../_boards/mcimx93autoevk/freertos_examples/freertos_generic/example_board_readme.md)
 - [MCIMX93-EVK](../../_boards/mcimx93evk/freertos_examples/freertos_generic/example_board_readme.md)
+- [MCIMX93W-EVK](../../_boards/mcimx93wevk/freertos_examples/freertos_generic/example_board_readme.md)
 - [MCIMX93-QSB](../../_boards/mcimx93qsb/freertos_examples/freertos_generic/example_board_readme.md)
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/freertos_examples/freertos_generic/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/freertos_examples/freertos_generic/example_board_readme.md)

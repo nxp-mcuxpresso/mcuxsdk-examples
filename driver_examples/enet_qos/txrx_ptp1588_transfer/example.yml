@@ -70,4 +70,5 @@ enet_qos_txrx_ptp1588_transfer:
     - -iar@flash_release
     frdmmcxe31b: []
     mcimx93evk: []
+    mcimx93wevk: []
     mcimx93qsb: []

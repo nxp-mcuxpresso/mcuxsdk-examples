@@ -23,3 +23,4 @@ error, and the corresponding error information will be printed to the debug cons
 - [IMX95LPD5EVK-19](../../../_boards/imx95lpd5evk19/driver_examples/sar_adc/selftest/example_board_readme.md)
 - [imx95verdinevk](../../../_boards/imx95verdinevk/driver_examples/sar_adc/selftest/example_board_readme.md)
 - [MCIMX93-EVK](../../../_boards/mcimx93evk/driver_examples/sar_adc/selftest/example_board_readme.md)
+- [MCIMX93W-EVK](../../../_boards/mcimx93wevk/driver_examples/sar_adc/selftest/example_board_readme.md)

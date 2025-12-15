@@ -36,4 +36,5 @@ to the application.
 - [imx95verdinevk](../../../_boards/imx95verdinevk/multicore_examples/rpmsg_lite_str_echo_rtos/remote/example_board_readme.md)
 - [MCIMX93AUTO-EVK](../../../_boards/mcimx93autoevk/multicore_examples/rpmsg_lite_str_echo_rtos/remote/example_board_readme.md)
 - [MCIMX93-EVK](../../../_boards/mcimx93evk/multicore_examples/rpmsg_lite_str_echo_rtos/remote/example_board_readme.md)
+- [MCIMX93W-EVK](../../../_boards/mcimx93wevk/multicore_examples/rpmsg_lite_str_echo_rtos/remote/example_board_readme.md)
 - [MCIMX93-QSB](../../../_boards/mcimx93qsb/multicore_examples/rpmsg_lite_str_echo_rtos/remote/example_board_readme.md)

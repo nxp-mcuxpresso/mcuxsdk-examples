@@ -34,4 +34,5 @@ power_mode_switch_rtos_imx93:
   boards:
     mcimx93autoevk: []
     mcimx93evk: []
+    mcimx93wevk: []
     mcimx93qsb: []

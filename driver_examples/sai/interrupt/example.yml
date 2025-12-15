@@ -225,6 +225,7 @@ sai_interrupt:
     imx95lp4xevk15@cm7: []
     imx95verdinevk@cm7: []
     mcimx93evk: []
+    mcimx93wevk: []
     mcimx93qsb: []
     mcxn5xxevk@cm33_core0: []
     imx943evk@cm7_core1:

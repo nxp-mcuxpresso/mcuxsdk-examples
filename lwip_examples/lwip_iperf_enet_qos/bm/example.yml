@@ -36,5 +36,6 @@ lwip_iperf_enet_qos_bm:
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
     mcimx93evk: []
+    mcimx93wevk: []
     mcimx93qsb: []
     frdmmcxe31b: []
