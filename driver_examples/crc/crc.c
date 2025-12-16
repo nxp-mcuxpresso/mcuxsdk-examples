@@ -20,9 +20,7 @@
  * Definitions
  ******************************************************************************/
 
-#ifndef CRC_INSTANCE
-#define CRC_INSTANCE CRC0
-#endif
+#define EXAMPLE_CRC_INSTANCE      (0U)
 
 /*******************************************************************************
  * Prototypes
@@ -155,7 +153,8 @@ int main(void)
     const uint32_t checkCrc32           = 0xcbf43926u;
     const uint32_t checkPosixCrc32      = 0x765e7680u;
 
-    CRC_Type *base = CRC_INSTANCE;
+    CRC_Type *crcBases[] = CRC_BASE_PTRS;
+    CRC_Type *base = crcBases[EXAMPLE_CRC_INSTANCE];
     uint16_t checksum16;
     uint32_t checksum32;
 
