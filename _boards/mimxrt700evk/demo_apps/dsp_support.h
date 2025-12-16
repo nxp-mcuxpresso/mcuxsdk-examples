@@ -62,16 +62,16 @@ extern const char dsp_ncache_image_end[];
 #endif
 #elif defined(__GNUC__)
 extern const char dsp_literal_image_start[];
-extern int dsp_literal_image_size;
+extern unsigned int dsp_literal_image_size;
 extern const char dsp_vector_image_start[];
-extern int dsp_vector_image_size;
+extern unsigned int dsp_vector_image_size;
 extern const char dsp_text_image_start[];
-extern int dsp_text_image_size;
+extern unsigned int dsp_text_image_size;
 extern const char dsp_data_image_start[];
-extern int dsp_data_image_size;
+extern unsigned int dsp_data_image_size;
 #ifdef DSP_NCACHE
 extern const char dsp_ncache_image_start[];
-extern int dsp_ncache_image_size;
+extern unsigned int dsp_ncache_image_size;
 #endif
 #define DSP_IMAGE_LITERAL_START ((uint32_t *)dsp_literal_image_start)
 #define DSP_IMAGE_LITERAL_SIZE  ((uint32_t)dsp_literal_image_size)
