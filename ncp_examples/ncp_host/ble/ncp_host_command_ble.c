@@ -2444,22 +2444,9 @@ int ble_process_l2cap_received(uint8_t *res)
 
     NCP_L2CAP_RECEIVE_EV *l2cap_received_tlv = (NCP_L2CAP_RECEIVE_EV *)&evt_res->params.l2cap_receive_ev;
 
-    memcpy(address,l2cap_received_tlv->address, 6);
-    PRINTF("Connected to: %02X:%02X:%02X:%02X:%02X:%02X \r\n",
-                    address[0],  address[1], address[2], address[3], address[4], address[5]);
+    PRINTF("L2CAP psm: %u, Len: %d\r\n",l2cap_received_tlv->psm, l2cap_received_tlv->len);
 
-    if(l2cap_received_tlv->address_type == 0) //public address
-    {
-        PRINTF("Address type: public\r\n");
-
-    }
-    else
-    {
-        PRINTF("Address type: random\r\n");
-    }
-    PRINTF("L2CAP psm: %u\r\n",l2cap_received_tlv->psm);
-
-    ncp_dump_hex(l2cap_received_tlv->data, l2cap_received_tlv->len);
+    // ncp_dump_hex(l2cap_received_tlv->data, l2cap_received_tlv->len);
 
     return NCP_STATUS_SUCCESS;
 }
