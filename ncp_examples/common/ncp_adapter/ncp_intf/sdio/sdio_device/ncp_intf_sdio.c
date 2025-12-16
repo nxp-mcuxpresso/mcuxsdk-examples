@@ -88,6 +88,11 @@ typedef MLAN_PACK_START struct ncp_command_header
 #define NCP_NOTIFY_HOST_GPIO        27
 #define NCP_NOTIFY_HOST_GPIO_MASK   0x8000000
 
+/** Card Control Registers : IO abort */
+#define IO_ABORT 0x06
+/** Host Control Registers : Host to Card Event */
+#define HOST_TO_CARD_EVENT_REG 0x00
+
 /*******************************************************************************
  * Variables
  ******************************************************************************/
@@ -105,6 +110,7 @@ static uint32_t ncp_intf_sdio_entered = 0;
  ******************************************************************************/
 static int ncp_notify_host_gpio(int32_t pm_state);
 static void ncp_wait_host_status(uint8_t status);
+extern bool ncp_sys_dev_reset_check(void);
 
 #if 0
 static void ncp_sdio_intf_task(void *argv)
@@ -144,12 +150,14 @@ static int ncp_sdio_init(void *argv)
         return (int)NCP_STATUS_ERROR;
     }
 
-    SDU_WritePowerMode(NCP_PM_STATE_PM3);
-
+    if (ncp_sys_dev_reset_check() == true)
+    {
+        SDU_WritePowerMode(NCP_PM_STATE_PM3);
 #ifdef CONFIG_HOST_SLEEP
-    ncp_notify_host_gpio(NCP_PM_STATE_PM3);
+        ncp_notify_host_gpio(NCP_PM_STATE_PM3);
 #endif
-    ncp_adap_d("%s: notify gpio done\r\n", __FUNCTION__);
+        ncp_adap_d("%s: notify gpio done\r\n", __FUNCTION__);
+    }
 
     ncp_wait_host_status(SDIO_HOST_RESET_DONE);
     ncp_adap_d("%s: wait RESET_DONE done\r\n", __FUNCTION__);
@@ -165,6 +173,22 @@ static int ncp_sdio_init(void *argv)
     SDU_InstallCallback(SDU_TYPE_FOR_WRITE_DATA, ncp_tlv_dispatch);
 
     //(void)OSA_TaskCreate((osa_task_handle_t)ncp_sdioTaskHandle, OSA_TASK(ncp_sdio_intf_task), NULL);
+
+    ncp_wait_host_status(SDIO_HOST_INIT_DONE);
+    ncp_adap_d("%s: wait INIT_DONE done\r\n", __FUNCTION__);
+
+    if (ncp_sys_dev_reset_check() == true)
+    {
+        SDU_WriteReg(0, IO_ABORT, 0x01);
+        SDU_WriteReg(1, HOST_TO_CARD_EVENT_REG, 0x04);
+        ncp_adap_d("%s: io abort done\r\n", __FUNCTION__);
+    }
+
+    if (SDU_IsPhase3En() == true)
+    {
+        SDU_InitPhase3();
+        ncp_adap_d("%s: InitPhase3 done\r\n", __FUNCTION__);
+    }
 
     return (int)NCP_STATUS_SUCCESS;
 }
@@ -477,6 +501,12 @@ static int ncp_sdio_pm_exit(uint8_t pm_state)
         {
             ncp_adap_e("%s: SDU_ExitPowerDownPhase2 failed.", __FUNCTION__);
             return (int)NCP_PM_STATUS_ERROR;
+        }
+
+        if (SDU_IsPhase3En() == true)
+        {
+            ncp_wait_host_status(SDIO_HOST_INIT_DONE);
+            SDU_ExitPowerDownPhase3();
         }
     }
 

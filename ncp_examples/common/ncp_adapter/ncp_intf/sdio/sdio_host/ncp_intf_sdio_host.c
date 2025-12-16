@@ -1357,7 +1357,7 @@ void ncp_host_sdio_notify_gpio_init(void)
 
     hal_gpio_pin_config_t notify_config = {kHAL_GpioDirectionIn, 0, NCP_HOST_SDIO_GPIO_NUM, NCP_HOST_SDIO_GPIO_PIN};
     HAL_GpioInit(ncp_host_sdio_notify_handle, &notify_config);
-    HAL_GpioSetTriggerMode(ncp_host_sdio_notify_handle, kHAL_GpioInterruptRisingEdge);
+    HAL_GpioSetTriggerMode(ncp_host_sdio_notify_handle, kHAL_GpioInterruptRisingEdge | kHAL_GpioInterruptFallingEdge);
     HAL_GpioInstallCallback(ncp_host_sdio_notify_handle, sdio_notify_int_callback, NULL);
 
     NVIC_SetPriority(NCP_HOST_SDIO_GPIO_IRQ, NCP_HOST_SDIO_GPIO_IRQ_PRIO);

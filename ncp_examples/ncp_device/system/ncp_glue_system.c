@@ -171,6 +171,18 @@ static int ncp_sys_dev_reset(void *tlv)
     return WM_SUCCESS;
 }
 
+bool ncp_sys_dev_reset_check(void)
+{
+    ncp_reset_context_t *context = ncp_get_reset_context();
+
+    if ((context == NULL) || (context->reset_flag != NCP_RESET_FLAG_MAGIC))
+    {
+        return false;
+    }
+
+    return true;
+}
+
 int ncp_sys_dev_reset_check_n_clear(void)
 {
     ncp_reset_context_t *context = ncp_get_reset_context();

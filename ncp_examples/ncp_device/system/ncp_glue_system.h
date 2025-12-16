@@ -18,5 +18,6 @@ void ncp_get_sys_resp_buf_lock();
 void ncp_put_sys_resp_buf_lock();
 int ncp_sys_get_host_type(void);
 void ncp_sys_set_host_type(int type);
+bool ncp_sys_dev_reset_check(void);
 int ncp_sys_dev_reset_check_n_clear(void);
 #endif /* __NCP_GLUE_SYSTEM_H__ */

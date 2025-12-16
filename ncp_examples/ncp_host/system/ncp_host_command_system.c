@@ -608,10 +608,14 @@ static struct ncp_host_cli_command ncp_host_app_cli_commands_system[] = {
  */
 int ncp_host_system_command_init()
 {
-	osa_status_t ret = KOSA_StatusSuccess;
+    osa_status_t ret = KOSA_StatusSuccess;
 
-	ret = OSA_SemaphoreCreateBinary(ncp_dev_reset_semaphore);
-	assert(KOSA_StatusSuccess == ret);
+    ret = OSA_SemaphoreCreateBinary(ncp_dev_reset_semaphore);
+    if (ret != KOSA_StatusSuccess)
+    {
+        ncp_e("%s: create ncp_dev_reset_semaphore fail!", __FUNCTION__);
+        return -NCP_FAIL;
+    }
 
     if (ncp_host_cli_register_commands(ncp_host_app_cli_commands_system,
                                        sizeof(ncp_host_app_cli_commands_system) / sizeof(struct ncp_host_cli_command)) != 0)
