@@ -22,6 +22,13 @@
 #include "mflash_drv.h"
 #endif
 
+#if defined(gAppUseSerialManager_c) && (gAppUseSerialManager_c > 0)
+#include "app.h"
+
+/*serial manager handle*/
+extern SERIAL_MANAGER_HANDLE_DEFINE(gSerMgrIf);
+#endif
+
 /* -------------------------------------------------------------------------- */
 /*                             Private prototypes                             */
 /* -------------------------------------------------------------------------- */
@@ -112,7 +119,14 @@ static void BOARD_ExitPowerDown(void)
 {
     /* Clocks and pins need to be reinitialized after wake up from power down */
     BOARD_InitBootPins();
+    /* Select clock configuration based on application settings */
+#if defined(gAppLowPowerClockMode_d) && (gAppLowPowerClockMode_d > 0)
+    /* Use Low Power Run clock configuration for reduced power consumption */
+    BOARD_BootClockLPR();
+#else
+    /* Use normal boot clock configuration */
     BOARD_InitBootClocks();
+#endif
 #if defined(gBoardUseFro32k_d) && (gBoardUseFro32k_d > 0)
     CLOCK_AttachClk(kRC32K_to_CLK32K);
 #else
@@ -133,6 +147,14 @@ static void BOARD_UninitDebugConsole(void)
     {
     }
     (void)DbgConsole_EnterLowpower();
+
+#if defined(gAppUseSerialManager_c) && (gAppUseSerialManager_c > 0)
+    /* Wait for application console to complete transmission */
+    while (((uint32_t)kUSART_TxFifoEmptyFlag & USART_GetStatusFlags(BOARD_APP_UART)) == 0U)
+    {
+    }
+    (void)SerialManager_EnterLowpower(gSerMgrIf);
+#endif
 }
 
 static void BOARD_ReinitDebugConsole(void)
@@ -140,6 +162,13 @@ static void BOARD_ReinitDebugConsole(void)
     CLOCK_SetFRGClock(BOARD_DEBUG_UART_FRG_CLK);
     CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
     (void)DbgConsole_ExitLowpower();
+
+#if defined(gAppUseSerialManager_c) && (gAppUseSerialManager_c > 0)
+    /* Reinitialize application console */
+    CLOCK_SetFRGClock(BOARD_APP_UART_FRG_CLK);
+    CLOCK_AttachClk(BOARD_APP_UART_CLK_ATTACH);
+    (void)SerialManager_ExitLowpower(gSerMgrIf);
+#endif
 }
 
 /* -------------------------------------------------------------------------- */

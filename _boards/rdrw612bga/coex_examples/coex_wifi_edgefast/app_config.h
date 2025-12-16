@@ -66,6 +66,16 @@
 #define gBoardUseFro32k_d 0
 #endif
 
+#ifndef gAppLowPowerClockMode_d
+#define gAppLowPowerClockMode_d 1
+#endif
+
+#if CONFIG_OT_CLI
+#ifndef gAppUseSerialManager_c
+#define gAppUseSerialManager_c 1
+#endif /* gAppUseSerialManager_c */
+#endif /* CONFIG_OT_CLI */
+
 #define SERIAL_MANAGER_TASK_PRIORITY (PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-2)))
 #define SHELL_TASK_PRIORITY          (PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-2)))
 
