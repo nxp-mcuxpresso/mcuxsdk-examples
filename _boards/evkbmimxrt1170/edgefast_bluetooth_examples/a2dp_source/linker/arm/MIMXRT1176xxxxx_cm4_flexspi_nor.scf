@@ -59,11 +59,11 @@
 #define m_data_start                   (m_interrupts_ram_start + m_interrupts_ram_size)
 #define m_data_size                    (0x00020000 - m_interrupts_ram_size)
 
-#define m_ncache_start                 0x20280000
-#define m_ncache_size                  0x00040000
+#define m_ncache_start                 0x202A0000
+#define m_ncache_size                  0x00020000
 
 #define m_data2_start                  0x20240000
-#define m_data2_size                   0x00040000
+#define m_data2_size                   0x00060000
 
 /*** littleFS configuration Start ***/
 #define EDGEFAST_BT_LITTLEFS_STORAGE_START_ADDRESS  (_ROM_END_ + 1)

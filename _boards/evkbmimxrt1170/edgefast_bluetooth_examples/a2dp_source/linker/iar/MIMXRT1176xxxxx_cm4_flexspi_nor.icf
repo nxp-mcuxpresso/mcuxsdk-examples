@@ -49,9 +49,9 @@ define symbol m_data_start             = m_interrupts_ram_start + __ram_vector_t
 define symbol m_data_end               = 0x2001FFFF;
 
 define symbol m_data2_start            = 0x20240000;
-define symbol m_data2_end              = 0x2027FFFF;
+define symbol m_data2_end              = 0x2029FFFF;
 
-define symbol m_ncache_start           = 0x20280000;
+define symbol m_ncache_start           = 0x202A0000;
 define symbol m_ncache_end             = 0x202BFFFF;
 
 define exported symbol __NCACHE_REGION_START   = m_ncache_start;
