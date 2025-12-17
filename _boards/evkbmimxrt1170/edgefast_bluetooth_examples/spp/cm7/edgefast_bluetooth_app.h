@@ -17,6 +17,11 @@
 #error The transceiver module is unsupported
 #endif
 
+#if defined(BT_NW61X_BOARD_NXP_RD_USD)
+#define CONFIG_BT_IND_RESET 1
+#define CONFIG_BT_IND_DNLD 1
+#endif /*#define BT_NW61X_BOARD_NXP_RD_USD*/
+
 #if defined(WIFI_IW612_BOARD_MURATA_2EL_M2) || defined(BT_NW61X_BOARD_NXP_RD_USD)
 #undef SD_TIMING_MAX
 #define SD_TIMING_MAX kSD_TimingDDR50Mode

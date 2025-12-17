@@ -18,6 +18,11 @@
 #error The transceiver module is unsupported
 #endif
 
+#if defined(BT_NW61X_BOARD_NXP_RD_USD)
+#define CONFIG_BT_IND_RESET 1
+#define CONFIG_BT_IND_DNLD 1
+#endif /*#define BT_NW61X_BOARD_NXP_RD_USD*/
+
 /* BIS */
 
 /* Even we only have 1 bis stream in sink side, but the BASE have 2 bis_data.

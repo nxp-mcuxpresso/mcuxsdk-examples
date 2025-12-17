@@ -18,6 +18,11 @@
 #error The transceiver module is unsupported
 #endif
 
+#if defined(BT_NW61X_BOARD_NXP_RD_USD)
+#define CONFIG_BT_IND_RESET 1
+#define CONFIG_BT_IND_DNLD 1
+#endif /*#define BT_NW61X_BOARD_NXP_RD_USD*/
+
 /* re-define CONFIG_BT_A2DP=1 and CONFIG_BT_A2DP_SINK=1 to enable bridge mode! */
 #if CONFIG_BT_A2DP
 #undef CONFIG_BT_A2DP

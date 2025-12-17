@@ -18,6 +18,11 @@
 #error The transceiver module is unsupported
 #endif
 
+#if defined(BT_NW61X_BOARD_NXP_RD_USD)
+#define CONFIG_BT_IND_RESET 1
+#define CONFIG_BT_IND_DNLD 1
+#endif /*#define BT_NW61X_BOARD_NXP_RD_USD*/
+
 /* This configuration used to upsample 44.1k audio to 48k in a2dp bridge. */
 #ifndef APP_BRIDGE_UPSAMPLE_441_TO_48
 #define APP_BRIDGE_UPSAMPLE_441_TO_48 0
