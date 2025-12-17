@@ -7,7 +7,7 @@ To start the application the [ENTER] key on the keyboard. Then follow the onscre
 
 This demo requires a serial port terminal application through a serial interface.
 
-For more information please refer to `Generic FSK Link Layer Quick Start Guide pdf <../../../_static/wireless/genfsk/Generic_FSK_Link_Layer_Quick_Start_Guide.pdf>`_
+For more information please refer to [Generic FSK Link Layer Quick Start Guide](<https://mcuxpresso.nxp.com/mcuxsdk/latest/html/_static/wireless/genfsk/Generic_FSK_Link_Layer_Quick_Start_Guide.pdf>)
 
 ## 2 - Toolchain supported
 ===================
