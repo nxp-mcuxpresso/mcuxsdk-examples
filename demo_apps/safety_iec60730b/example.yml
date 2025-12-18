@@ -89,14 +89,6 @@ safety_iec60730b:
     - -mdk@release
     - -mcux@debug
     - -mcux@release
-    mcimx93wevk:
-    - -armgcc@debug
-    - -armgcc@release
-    - -iar@release
-    - -mdk@debug
-    - -mdk@release
-    - -mcux@debug
-    - -mcux@release
     frdmmcxa156:
     - -armgcc@debug
     - -armgcc@release
