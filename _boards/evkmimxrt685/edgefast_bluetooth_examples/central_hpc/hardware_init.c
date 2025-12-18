@@ -64,6 +64,9 @@ void BOARD_InitHardware(void)
     /* Init output reset pin. */
     GPIO_PortInit(GPIO, 2);
     GPIO_PinInit(GPIO, 2, 12, &reset_config);
+#if defined(CONFIG_BT_IND_DNLD)
+    BOARD_USDHC_SDCARD_POWER_CONTROL_INIT();
+#endif
 
     /* Attach AUX0_PLL clock to flexspi with divider 4*/
     BOARD_SetFlexspiClock(2, 8);
