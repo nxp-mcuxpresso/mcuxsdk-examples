@@ -1,6 +1,5 @@
 /*
  * Copyright 2025 NXP
- * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -197,8 +196,7 @@ void BOARD_InitPWM(void);
  */
 void BOARD_InitADC(void);
 
-#define PCR_IBE_ibe0 0x00u         /*!<@brief Input Buffer Enable: Disables */
-#define PORT2_PCR4_MUX_mux00 0x00u /*!<@brief Pin Multiplex Control: Alternative 0 (GPIO) */
+#define PCR_IBE_ibe0 0x00u /*!<@brief Input Buffer Enable: Disables */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.

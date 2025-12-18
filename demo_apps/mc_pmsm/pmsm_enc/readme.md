@@ -10,6 +10,7 @@ This example demonstrates the control of the PMSM.
 - [MIMXRT1186-EVK](../../../_boards/frdmimxrt1186/demo_apps/mc_pmsm/pmsm_enc/example_board_readme.md)
 - [FRDM-MCXA153](../../../_boards/frdmmcxa153/demo_apps/mc_pmsm/pmsm_enc/example_board_readme.md)
 - [FRDM-MCXA156](../../../_boards/frdmmcxa156/demo_apps/mc_pmsm/pmsm_enc/example_board_readme.md)
+- [FRDM-MCXA174](../../../_boards/frdmmcxa174/demo_apps/mc_pmsm/pmsm_enc/example_board_readme.md)
 - [FRDM-MCXA346](../../../_boards/frdmmcxa346/demo_apps/mc_pmsm/pmsm_enc/example_board_readme.md)
 - [FRDM-MCXA344](../../../_boards/frdmmcxa344/demo_apps/mc_pmsm/pmsm_enc/example_board_readme.md)
 - [FRDM-MCXA266](../../../_boards/frdmmcxa266/demo_apps/mc_pmsm/pmsm_enc/example_board_readme.md)

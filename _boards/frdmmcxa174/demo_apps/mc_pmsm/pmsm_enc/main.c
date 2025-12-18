@@ -1,6 +1,6 @@
 /*
  * Copyright 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2021 NXP
+ * Copyright 2016-2021, 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -98,6 +98,7 @@ ctrl_m1_mid_t g_sSpinMidSwitch;           /* Control Spin/MID switching */
  * Code
  ******************************************************************************/
 
+
 /*!
  * @brief   Application main function processing peripheral function calling and
  *          infinite loop
@@ -129,9 +130,6 @@ int main(void)
     
     /* FreeMASTER initialization */
     FMSTR_Init();
-	
-    /* RTCESL MAU initialization */
-//    RTCESL_MAU_Init();
 
     /* Initialize peripheral motor control driver for motor M1 */
     MCDRV_Init_M1();   
@@ -226,7 +224,7 @@ void ADC1_IRQHandler(void)
 void CTIMER0_IRQHandler(void)
 {
     static int16_t ui16i = 0;
-
+    
     /* M1 Slow StateMachine call */
     SM_StateMachineSlow(&g_sM1Ctrl);
 

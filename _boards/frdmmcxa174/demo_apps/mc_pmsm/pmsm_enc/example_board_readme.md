@@ -6,6 +6,7 @@ Hardware requirements
 - Mini/micro USB cable
 - Low-voltage 3-phase permanent magnet motor
 - Personal Computer
+- For over-current fault protection, connect J2-9 and J2-17 on the FRDM-MCXA174 board. 
 
 Overview
 ========

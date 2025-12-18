@@ -6,13 +6,27 @@
 
 /*
     * FILE NAME: ../../../examples/_boards/frdmmcxa174/demo_apps/mc_pmsm/pmsm_enc/m2_pmsm_appconfig.h
-    * DATE: Tue Jun 10 2025, 15:14:54
+    * DATE: Thu Dec 18 2025, 12:54:28
 */
 
 /*
 {
+    "mid": {
+        "midInParamINom": 2.5,
+        "midInParamNNom": 3000,
+        "midPolePairIAPp": 2,
+        "midElParamMeasRs": 0,
+        "midElParamMeasLd": 0,
+        "midElParamMeasLq": 0,
+        "midElParamMeasUdt": 0,
+        "midMechParamMeasKe": 0,
+        "midMechParamMeasKt": 0,
+        "midMechParamMeasJ": 0,
+        "midMechParamMeasB": 0,
+        "midMechParamMeasA": 0
+    },
     "parameters": {
-        "parametersPP": 2,
+        "parametersPp": 2,
         "parametersRs": 0.45,
         "parametersLd": 0.000375,
         "parametersLq": 0.000429,
@@ -75,7 +89,7 @@
         "sensorlessTrackObsrvKsi": 1,
         "sensorlessTrackObsrvIIRSpeedCutOff": 400,
         "sensorlessStartupRamp": 5000,
-        "sensorlessStartupCurrent": 0.35,
+        "sensorlessStartupCurrent": 0.5,
         "sensorlessMergingSpeed": 300,
         "sensorlessMergingCoeff": 100
     }
@@ -85,13 +99,14 @@
 /*
 {
     "motorName": "Linix",
-    "motorDescription": "Configuration for Linix motor."
+    "motorDescription": "Curent loop sample frequency 16KHz"
 }
 */
 
 #ifndef __M1_PMSM_APPCONFIG_H 
 #define __M1_PMSM_APPCONFIG_H 
 
+/* MID*/
 /* PARAMETERS*/
 #define M1_MOTOR_PP (2)
 #define M1_I_PH_NOM (2.0F)
@@ -159,7 +174,7 @@
 #define M1_SERVO_SPEED_PI_LOW_LIMIT (-2.0F)
 /* SENSORLESS*/
 #define M1_OL_START_RAMP_INC (0.0654498F)
-#define M1_OL_START_I (0.35F)
+#define M1_OL_START_I (0.5F)
 #define M1_MERG_SPEED_TRH (62.8319F)
 #define M1_MERG_COEFF FRAC16(0.000610352)
 #define M1_I_SCALE (0.930233F)
