@@ -21,7 +21,7 @@ mcux_add_source(
 
 mcux_add_include(
     INCLUDES .
-    INCLUDES .
+    INCLUDES ..
 )
 
 # We bump the stack size a little

@@ -13,7 +13,7 @@
 #include "fsl_sss_sscp.h"
 #include "fsl_sscp_mu.h"
 
-#include "../common_definitions.h"
+#include "common_definitions.h"
 
 /*******************************************************************************
  * Definitions
