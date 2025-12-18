@@ -41,8 +41,8 @@
  *     Debug Configuration
  ***********************************************************************************/
 
-/*! Enable Debug Console (PRINTF) */
-#define gDebugConsoleEnable_d           1
+/*! Disable Debug Console (PRINTF) - Debug UART will be reserved for HCI logging */
+#define gDebugConsoleEnable_d           0
 
 /*! Enable Panic logs through PRINTF */
 #define PANIC_ENABLE_LOG                1
