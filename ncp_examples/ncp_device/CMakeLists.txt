@@ -197,6 +197,16 @@ mcux_add_include(
         common/uap_prov
 )
 
+# Add MCUXPRESSO IDE support
+mcux_add_include(
+    INCLUDES
+        mcuxpresso_config
+)
+
+mcux_add_source(
+    SOURCES mcuxpresso_config/app_mcuxpresso_config.h
+)
+
 include(${SdkRootDirPath}/examples/ncp_examples/ncp_device/ot/third_party/ot_config.cmake OPTIONAL)
 
 include(${SdkRootDirPath}/${board_root}/${board}/ncp_examples/ncp_device/reconfig.cmake OPTIONAL)
