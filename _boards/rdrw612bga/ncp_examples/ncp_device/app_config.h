@@ -14,6 +14,9 @@
 #error "Please define macro for RW610 board"
 #endif
 
+#ifdef __MCUXPRESSO
+#include "app_mcuxpresso_config.h"
+#endif
 
 /*NCP config*/
 #define CONFIG_NCP    1

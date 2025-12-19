@@ -75,7 +75,7 @@
 #define httpc_d(...)
 #endif /* ! CONFIG_HTTPC_DEBUG */
 
-#ifdef CONFIG_ENABLE_HTTPC_MODIFY_TIME
+#if CONFIG_ENABLE_HTTPC_MODIFY_TIME
 #include <wmtime.h>
 #endif /* CONFIG_ENABLE_HTTPC_MODIFY_TIME	*/
 #include <wm_net.h>
@@ -264,7 +264,7 @@ typedef struct
     const char *reason_phrase;
     /** HTTP "Server" header field value */
     const char *server;
-#ifdef CONFIG_ENABLE_HTTPC_MODIFY_TIME
+#if CONFIG_ENABLE_HTTPC_MODIFY_TIME
     /** Last-Modified header field value in POSIX time format */
     time_t modify_time;
 #endif /* CONFIG_ENABLE_HTTPC_MODIFY_TIME	*/
