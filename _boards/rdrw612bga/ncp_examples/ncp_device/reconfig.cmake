@@ -89,31 +89,15 @@ mcux_remove_mdk_linker_script(
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER ${board_root}/${board}/ncp_examples/ncp_device/linker/RW610_flash.ld
-)
-mcux_add_iar_linker_script(
-    BASE_PATH ${SdkRootDirPath}
-    TARGETS flash_debug flash_release
-    LINKER ${board_root}/${board}/ncp_examples/ncp_device/linker/RW610_flash.icf
-)
-mcux_add_mdk_linker_script(
-    BASE_PATH ${SdkRootDirPath}
-    TARGETS flash_debug flash_release
-    LINKER ${board_root}/${board}/ncp_examples/ncp_device/linker/RW610_flash.scf
+    LINKER ${board_root}/${board}/ncp_examples/ncp_device/linker/armgcc/RW610_flash.ld
 )
 
-mcux_add_iar_configuration(
-    LD "--config_def=__stack_size__=0x400\
-        --config_def=__heap_size__=0x400"
-)
+
 mcux_add_armgcc_configuration(
     LD "-Xlinker --defsym=__stack_size__=0x400\
         -Xlinker --defsym=__heap_size__=0x400"
 )
-mcux_add_mdk_configuration(
-    LD "--predefine=\"-D__stack_size__=0x400\"\
-        --predefine=\"-D__heap_size__=0x400\""
-)
+
 if(${CONFIG_TOOLCHAIN} STREQUAL "armgcc")
 if(EXISTS "${SdkRootDirPath}/middleware/mbedtls3x/library/bignum.c")
 set_source_files_properties(
