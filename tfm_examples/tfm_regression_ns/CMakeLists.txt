@@ -27,11 +27,6 @@ mcux_add_iar_configuration(
     CX "--diag_suppress Pa082,Pa050,Pa084,Pa205,Pe128,Pe186,Pe546,Pe940,Pe550,Pa167,Pe161,Pe170,Pe188"
 )
 
-# Provision in sdk to pass on platform related Compile options in pre-build commands for tfm linker files.
-if(NOT TFM_PLATFORM_LINKER_DEFINES)
-    set(TFM_PLATFORM_LINKER_DEFINES "")
-endif()
-
 #--------------------------
 # add mdk configurations
 #--------------------------
@@ -44,20 +39,20 @@ mcux_add_custom_command(
         TARGETS debug release
         TOOLCHAINS armgcc
         BUILD_EVENT  PRE_BUILD
-        BUILD_COMMAND ${TOOLCHAIN_DIR}/bin/arm-none-eabi-gcc ${TFM_PLATFORM_LINKER_DEFINES} -E -P -xc -I${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/${board}/partition -I${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common/gcc/tfm_common_ns.ld -o ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common/gcc/tfm_common_ns_pre.ld
+        BUILD_COMMAND ${TOOLCHAIN_DIR}/bin/arm-none-eabi-gcc -D${device}_SERIES -E -P -xc -I${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/${board}/partition -I${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common/gcc/tfm_common_ns.ld -o ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common/gcc/tfm_common_ns_pre.ld
 )
 
 mcux_add_custom_command(
         TARGETS debug release
         TOOLCHAINS iar
         BUILD_EVENT  PRE_BUILD
-        BUILD_COMMAND ${CC} ${TFM_PLATFORM_LINKER_DEFINES} -I ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/${board}/partition -I ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common/iar/tfm_common_ns.icf --silent --preprocess=ns ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common/iar/tfm_common_ns_pre.icf
+        BUILD_COMMAND ${CC} -D${device}_SERIES -I ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/${board}/partition -I ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common/iar/tfm_common_ns.icf --silent --preprocess=ns ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common/iar/tfm_common_ns_pre.icf
 )
 mcux_add_custom_command(
         TARGETS debug release
         TOOLCHAINS mdk
         BUILD_EVENT  PRE_BUILD
-        BUILD_COMMAND ${CC} ${TFM_PLATFORM_LINKER_DEFINES} --target=arm-arm-none-eabi -march=armv8-m.main -E -P -xc -I ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/${board}/partition -I ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common/armclang/tfm_common_ns.sct -o ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common/armclang/tfm_common_ns_pre.sct
+        BUILD_COMMAND ${CC} -D${device}_SERIES --target=arm-arm-none-eabi -march=armv8-m.main -E -P -xc -I ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/${board}/partition -I ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common/armclang/tfm_common_ns.sct -o ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common/armclang/tfm_common_ns_pre.sct
 
 )
 

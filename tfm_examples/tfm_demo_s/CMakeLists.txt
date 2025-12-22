@@ -25,11 +25,6 @@ mcux_add_macro(
        "
 )
 
-# Provision in sdk to pass on platform related Compile options in pre-build commands for tfm linker files.
-if(NOT TFM_PLATFORM_LINKER_DEFINES)
-    set(TFM_PLATFORM_LINKER_DEFINES "")
-endif()
-
 #--------------------------
 # add iar configurations
 #--------------------------
@@ -44,7 +39,7 @@ mcux_add_custom_command(
         TARGETS debug release
         TOOLCHAINS iar
         BUILD_EVENT  PRE_BUILD
-        BUILD_COMMAND ${CC} --cpu=Cortex-M33 ${TFM_PLATFORM_LINKER_DEFINES} -DCONFIG_TFM_PARTITION_META -DENABLE_HEAP -D__ARM_ARCH_8M_MAIN__ -DCONFIG_TFM_USE_TRUSTZONE -I ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/${board}/partition -I ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/common/iar/tfm_common_s.icf --silent --preprocess=ns ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/common/iar/tfm_common_s_pre.icf
+        BUILD_COMMAND ${CC} --cpu=Cortex-M33 -D${device}${core_id_suffix_name}_SERIES -DCONFIG_TFM_PARTITION_META -DENABLE_HEAP -D__ARM_ARCH_8M_MAIN__ -DCONFIG_TFM_USE_TRUSTZONE -I ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/${board}/partition -I ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/common/iar/tfm_common_s.icf --silent --preprocess=ns ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/common/iar/tfm_common_s_pre.icf
 )
 
 #--------------------------
@@ -62,7 +57,7 @@ mcux_add_custom_command(
         TARGETS debug release
         TOOLCHAINS armgcc
         BUILD_EVENT  PRE_BUILD
-        BUILD_COMMAND ${TOOLCHAIN_DIR}/bin/arm-none-eabi-gcc ${TFM_PLATFORM_LINKER_DEFINES} -DCONFIG_TFM_PARTITION_META -DENABLE_HEAP -D__ARM_ARCH_8M_MAIN__ -DCONFIG_TFM_USE_TRUSTZONE -E -P -xc -I${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/${board}/partition -I${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/common/armgcc/tfm_common_s.ld -o ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/common/armgcc/tfm_common_s_pre.ld
+        BUILD_COMMAND ${TOOLCHAIN_DIR}/bin/arm-none-eabi-gcc -D${device}${core_id_suffix_name}_SERIES -DCONFIG_TFM_PARTITION_META -DENABLE_HEAP -D__ARM_ARCH_8M_MAIN__ -DCONFIG_TFM_USE_TRUSTZONE -E -P -xc -I${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/${board}/partition -I${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/common/armgcc/tfm_common_s.ld -o ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/common/armgcc/tfm_common_s_pre.ld
 )
 
 #--------------------------
@@ -79,7 +74,7 @@ mcux_add_custom_command(
         TARGETS debug release
         TOOLCHAINS mdk
         BUILD_EVENT  PRE_BUILD
-        BUILD_COMMAND ${CC} ${TFM_PLATFORM_LINKER_DEFINES} -DCONFIG_TFM_PARTITION_META -DENABLE_HEAP -D__ARM_ARCH_8M_MAIN__ -DCONFIG_TFM_USE_TRUSTZONE --target=arm-arm-none-eabi
+        BUILD_COMMAND ${CC} -D${device}${core_id_suffix_name}_SERIES -DCONFIG_TFM_PARTITION_META -DENABLE_HEAP -D__ARM_ARCH_8M_MAIN__ -DCONFIG_TFM_USE_TRUSTZONE --target=arm-arm-none-eabi
         -march=armv8-m.main -E -P -xc -I ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/${board}/partition
         -I ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/common/armclang/tfm_common_s.sct
         -o ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/common/armclang/tfm_common_s_pre.sct
