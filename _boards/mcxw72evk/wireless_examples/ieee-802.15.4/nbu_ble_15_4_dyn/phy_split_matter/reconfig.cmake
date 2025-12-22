@@ -2,6 +2,11 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
+# Enable experimental NBU RAM retention optimization for Matter apps
+mcux_add_macro(
+    gNbuLowpowerRetentionRamOptimized=1
+)
+
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
