@@ -2438,8 +2438,6 @@ static int ble_process_gatt_chrc_discovered(uint8_t *res)
 
 int ble_process_l2cap_received(uint8_t *res)
 {
-    uint8_t address[6]= {0};
-
     MCU_NCPCmd_DS_BLE_COMMAND *evt_res = (MCU_NCPCmd_DS_BLE_COMMAND *)res;
 
     NCP_L2CAP_RECEIVE_EV *l2cap_received_tlv = (NCP_L2CAP_RECEIVE_EV *)&evt_res->params.l2cap_receive_ev;
