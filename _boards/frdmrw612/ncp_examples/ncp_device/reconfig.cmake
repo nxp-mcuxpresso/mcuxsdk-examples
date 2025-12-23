@@ -15,17 +15,6 @@ mcux_add_include(
     INCLUDES .
 )
 
-mcux_add_iar_configuration(
-    CX "--no_clustering"
-    LD "--semihosting"
-    CC "--dlib_config full"
-)
-
-mcux_add_iar_configuration(
-    TARGETS flash_release
-    CC "--no_inline"
-)
-
 mcux_add_armgcc_configuration(
     TARGETS flash_release
     AS "-g"
@@ -50,18 +39,12 @@ mcux_add_macro(
        -DCONFIG_HOSTAPD=0"
 )
 
-mcux_remove_mdk_configuration(
-    TARGETS flash_debug
-    CC "-O1"
-    CX "-O1"
-)
-
 mcux_remove_macro(
     MBEDTLS_MCUX_ELS_PKC_API
 )
 
 mcux_remove_macro(
-    TOOLCHAINS armgcc iar mdk
+    TOOLCHAINS armgcc
     TARGETS flash_release
     AS "-DNDEBUG"
     CC "-DNDEBUG"
@@ -74,46 +57,19 @@ mcux_remove_armgcc_linker_script(
     TARGETS flash_debug flash_release
     LINKER ${device_root}/Wireless/RW/RW612/gcc/RW612_flash.ld
 )
-mcux_remove_iar_linker_script(
-    BASE_PATH ${SdkRootDirPath}
-    TARGETS flash_debug flash_release
-    LINKER ${device_root}/Wireless/RW/RW612/iar/RW612_flash.icf
-)
-mcux_remove_mdk_linker_script(
-    BASE_PATH ${SdkRootDirPath}
-    TARGETS flash_debug flash_release
-    LINKER ${device_root}/Wireless/RW/RW612/arm/RW612_flash.scf
-)
 
 # Add or remove Linker File Configurations
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER ${board_root}/${board}/ncp_examples/ncp_device/linker/RW610_flash.ld
-)
-mcux_add_iar_linker_script(
-    BASE_PATH ${SdkRootDirPath}
-    TARGETS flash_debug flash_release
-    LINKER ${board_root}/${board}/ncp_examples/ncp_device/linker/RW610_flash.icf
-)
-mcux_add_mdk_linker_script(
-    BASE_PATH ${SdkRootDirPath}
-    TARGETS flash_debug flash_release
-    LINKER ${board_root}/${board}/ncp_examples/ncp_device/linker/RW610_flash.scf
+    LINKER ${board_root}/${board}/ncp_examples/ncp_device/linker/armgcc/RW610_flash.ld
 )
 
-mcux_add_iar_configuration(
-    LD "--config_def=__stack_size__=0x400\
-        --config_def=__heap_size__=0x400"
-)
 mcux_add_armgcc_configuration(
     LD "-Xlinker --defsym=__stack_size__=0x400\
         -Xlinker --defsym=__heap_size__=0x400"
 )
-mcux_add_mdk_configuration(
-    LD "--predefine=\"-D__stack_size__=0x400\"\
-        --predefine=\"-D__heap_size__=0x400\""
-)
+
 if(${CONFIG_TOOLCHAIN} STREQUAL "armgcc")
 if(EXISTS "${SdkRootDirPath}/middleware/mbedtls3x/library/bignum.c")
 set_source_files_properties(
