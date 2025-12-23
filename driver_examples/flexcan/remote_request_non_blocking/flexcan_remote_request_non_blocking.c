@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 NXP
+ * Copyright 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -25,9 +25,8 @@
 flexcan_handle_t flexcanHandle;
 volatile bool txComplete = false;
 volatile bool rxComplete = false;
-volatile bool responseComplete = false;
 flexcan_mb_transfer_t txXfer, rxXfer;
-flexcan_frame_t requestFrame, responseFrame, receiveFrame;
+flexcan_frame_t txframe, rxframe;
 uint8_t node_type;
 
 /*******************************************************************************
@@ -40,28 +39,21 @@ static FLEXCAN_CALLBACK(flexcan_callback)
 {
     switch (status)
     {
-        case kStatus_FLEXCAN_RxRemote:
-            if (REQUEST_MB_NUM == result)
+        case kStatus_FLEXCAN_RxIdle:
+            if (RX_MESSAGE_BUFFER_NUM == result)
             {
+                /* Receive next Data Frame or Remote Request Frame. */
+                rxXfer.mbIdx = (uint8_t)RX_MESSAGE_BUFFER_NUM;
+                rxXfer.frame = &rxframe;
+                (void)FLEXCAN_TransferReceiveNonBlocking(EXAMPLE_CAN, &flexcanHandle, &rxXfer);
+
                 rxComplete = true;
             }
             break;
-        case kStatus_FLEXCAN_TxSwitchToRx:
-            if (REQUEST_MB_NUM == result)
+        case kStatus_FLEXCAN_TxIdle:
+            if (TX_MESSAGE_BUFFER_NUM == result)
             {
                 txComplete = true;
-            }
-            break;
-        case kStatus_FLEXCAN_TxIdle:
-            if (RESPONSE_MB_NUM == result)
-            {
-                /* Start to receive next Remote Request Frame. */
-                responseFrame.dataWord0++;
-                rxXfer.mbIdx = (uint8_t)RESPONSE_MB_NUM;
-                rxXfer.frame = &responseFrame;
-                (void)FLEXCAN_TransferRemoteResponseNonBlocking(EXAMPLE_CAN, &flexcanHandle, &rxXfer);
-
-                responseComplete = true;
             }
             break;
         default:
@@ -75,18 +67,19 @@ static FLEXCAN_CALLBACK(flexcan_callback)
 int main(void)
 {
     flexcan_config_t flexcanConfig;
+    flexcan_rx_mb_config_t rxMbConfig;
     
     /* Initialize board hardware. */
     BOARD_InitHardware();
 
     PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
 
-    LOG_INFO("******* FLEXCAN Remote Request EXAMPLE *******\r\n");
-    LOG_INFO("    Message format: Standard (11 bit id)\r\n");
-    LOG_INFO("    Message buffer %d used for Request.\r\n", REQUEST_MB_NUM);
-    LOG_INFO("    Message buffer %d used for Response.\r\n", RESPONSE_MB_NUM);
-    LOG_INFO("    Interrupt Mode: Enabled\r\n");
-    LOG_INFO("**********************************************\r\n\r\n");
+    LOG_INFO("******* FLEXCAN RTR Non-Blocking EXAMPLE *******\r\n");
+    LOG_INFO("      Message format: Standard (11 bit id)\r\n");
+    LOG_INFO("      Message buffer %d used for Rx.\r\n", RX_MESSAGE_BUFFER_NUM);
+    LOG_INFO("      Message buffer %d used for Tx.\r\n", TX_MESSAGE_BUFFER_NUM);
+    LOG_INFO("      Interrupt Mode: Enabled\r\n");
+    LOG_INFO("************************************************\r\n\r\n");
 
     do
     {
@@ -115,27 +108,16 @@ int main(void)
 
     flexcanConfig.bitRate = 500000U;
     /* 
-     * flexcanConfig.enableRemoteRequestFrameStored = false:
-     * Frame's ID is compared to the IDs of the receive mailboxes with the CODE field configured as
-     * 0b1010(kFLEXCAN_RxMbRanswer). If there is a matching ID, then this mailbox content will be
-     * transmitted as response automatically. The received remote request frame is not stored in
-     * receive buffer. It is only used to trigger a transmission of a frame in response.
-     * 
      * flexcanConfig.enableRemoteRequestFrameStored = true:
      * Frame's ID is compared to the IDs of the receive mailboxes with the CODE field configured as
      * 0b0100, 0b0010, 0b0110. Message buffer will store the remote frame in the same fashion of a
      * data frame. No automatic remote response frame will be generated. User need to setup another
      * message buffer to respond remote request.
      */
-    if ((node_type == 'A') || (node_type == 'a'))
-    {
-        /* Recommend configure node A to store Remote Frame, beacuse node B may respond with Remote Frame. */
-        flexcanConfig.enableRemoteRequestFrameStored = true;
-    }
-    else
-    {
-        flexcanConfig.enableRemoteRequestFrameStored = false;
-    }
+    flexcanConfig.enableRemoteRequestFrameStored = true;
+
+    /* Disable Self-Reception to prevent RTR frame transmitted by Tx MB received by Rx MB.  */
+    flexcanConfig.disableSelfReception = true;
 
 #if defined(EXAMPLE_CAN_CLK_SOURCE)
     flexcanConfig.clkSrc = EXAMPLE_CAN_CLK_SOURCE;
@@ -162,24 +144,40 @@ int main(void)
 
     if ((node_type == 'A') || (node_type == 'a'))
     {
-        /* Setup Remote Request Message Buffer. */
-        FLEXCAN_SetTxMbConfig(EXAMPLE_CAN, REQUEST_MB_NUM, true);
+        /* Setup Tx Message Buffer to send Remote Request Frame. */
+        FLEXCAN_SetTxMbConfig(EXAMPLE_CAN, TX_MESSAGE_BUFFER_NUM, true);
+
+        /* Setup Rx Message Buffer to receive Data Frame. */
+        rxMbConfig.format = kFLEXCAN_FrameFormatStandard;
+        rxMbConfig.type   = kFLEXCAN_FrameTypeData;
+        rxMbConfig.id     = FLEXCAN_ID_STD(0x321);
+        FLEXCAN_SetRxMbConfig(EXAMPLE_CAN, RX_MESSAGE_BUFFER_NUM, &rxMbConfig, true);
+
+        /* Receive Data Frame. */
+        rxXfer.mbIdx = (uint8_t)RX_MESSAGE_BUFFER_NUM;
+        rxXfer.frame = &rxframe;
+        (void)FLEXCAN_TransferReceiveNonBlocking(EXAMPLE_CAN, &flexcanHandle, &rxXfer);
 
         LOG_INFO("Press any key to trigger one-shot remote request\r\n\r\n");
     }
     else
     {
-        /* Setup Remote Response Message Buffer. */
-        responseFrame.id        = FLEXCAN_ID_STD(0x321);
-        responseFrame.type      = (uint8_t)kFLEXCAN_FrameTypeData;  /* Respond Data Frame. */
-        responseFrame.format    = (uint8_t)kFLEXCAN_FrameFormatStandard;
-        responseFrame.length    = (uint8_t)DLC;
-        responseFrame.dataWord0 = 0;
-        responseFrame.dataWord1 = 0x55;
+        /* Setup Tx Message Buffer to send Data Frame. */
+        FLEXCAN_SetTxMbConfig(EXAMPLE_CAN, TX_MESSAGE_BUFFER_NUM, true);
 
-        rxXfer.mbIdx = (uint8_t)RESPONSE_MB_NUM;
-        rxXfer.frame = &responseFrame;
-        (void)FLEXCAN_TransferRemoteResponseNonBlocking(EXAMPLE_CAN, &flexcanHandle, &rxXfer);
+        /* Setup Rx Message Buffer to receive Remote Request frame. */
+        rxMbConfig.format = kFLEXCAN_FrameFormatStandard;
+        rxMbConfig.type   = kFLEXCAN_FrameTypeRemote;
+        rxMbConfig.id     = FLEXCAN_ID_STD(0x321);
+        FLEXCAN_SetRxMbConfig(EXAMPLE_CAN, RX_MESSAGE_BUFFER_NUM, &rxMbConfig, true);
+
+        /* Receive Remote Request Frame. */
+        rxXfer.mbIdx = (uint8_t)RX_MESSAGE_BUFFER_NUM;
+        rxXfer.frame = &rxframe;
+        (void)FLEXCAN_TransferReceiveNonBlocking(EXAMPLE_CAN, &flexcanHandle, &rxXfer);
+
+        txframe.dataWord0 = 0;
+        txframe.dataWord1 = 0x55;
 
         LOG_INFO("Start to wait request from Node A\r\n\r\n");
     }
@@ -191,12 +189,47 @@ int main(void)
             GETCHAR();
 
             /* Transmit Remote Request Frame. */
-            requestFrame.id     = FLEXCAN_ID_STD(0x321);
-            requestFrame.format = (uint8_t)kFLEXCAN_FrameFormatStandard;
-            requestFrame.type   = (uint8_t)kFLEXCAN_FrameTypeRemote;
-            requestFrame.length = (uint8_t)DLC;
-            txXfer.mbIdx        = (uint8_t)REQUEST_MB_NUM;
-            txXfer.frame        = &requestFrame;
+            txframe.id     = FLEXCAN_ID_STD(0x321);
+            txframe.format = (uint8_t)kFLEXCAN_FrameFormatStandard;
+            txframe.type   = (uint8_t)kFLEXCAN_FrameTypeRemote;
+            txframe.length = (uint8_t)DLC;
+            txXfer.mbIdx   = (uint8_t)TX_MESSAGE_BUFFER_NUM;
+            txXfer.frame   = &txframe;
+            (void)FLEXCAN_TransferRemoteRequestNonBlocking(EXAMPLE_CAN, &flexcanHandle, &txXfer);
+
+            while (!txComplete)
+            {
+            };
+            txComplete = false;
+
+            LOG_INFO("Remote request message sent\r\n");
+
+            /* Wait Data Frame. */
+            while (!rxComplete)
+            {
+            };
+            rxComplete = false;
+
+            LOG_INFO("Response message word0: 0x%x, word1: 0x%x\r\n", rxframe.dataWord0, rxframe.dataWord1);
+            LOG_INFO("Response message Timestamp: %d\r\n\r\n", rxframe.timestamp);
+        }
+        else
+        {
+            /* Receive Remote Request Frame. */
+            while (!rxComplete)
+            {
+            };
+            rxComplete = false;
+
+            LOG_INFO("Received remote request from Node A\r\n");
+
+            /* Transmit Data Frame. */
+            txframe.id     = FLEXCAN_ID_STD(0x321);
+            txframe.format = (uint8_t)kFLEXCAN_FrameFormatStandard;
+            txframe.type   = (uint8_t)kFLEXCAN_FrameTypeData;
+            txframe.length = (uint8_t)DLC;
+            txXfer.mbIdx   = (uint8_t)TX_MESSAGE_BUFFER_NUM;
+            txXfer.frame   = &txframe;
             (void)FLEXCAN_TransferSendNonBlocking(EXAMPLE_CAN, &flexcanHandle, &txXfer);
 
             while (!txComplete)
@@ -204,32 +237,9 @@ int main(void)
             };
             txComplete = false;
 
-            /* 
-             * After the remote request frame is transmitted successfully, the Remote Request
-             * mailbox becomes a Receive mailbox, with the same ID as before.
-             */
-            LOG_INFO("Remote request complete!\r\n");
+            txframe.dataWord0++;
 
-            /* Wait Remote Response Frame. */
-            while (!rxComplete)
-            {
-            };
-            rxComplete = false;
-
-            /* Read Remote Response Frame from request mailbox. */
-            FLEXCAN_ReadRxMb(EXAMPLE_CAN, (uint8_t)REQUEST_MB_NUM, &receiveFrame);
-
-            LOG_INFO("Response message word0: 0x%x, word1: 0x%x\r\n", receiveFrame.dataWord0, receiveFrame.dataWord1);
-            LOG_INFO("Response message Timestamp: %d\r\n\r\n", receiveFrame.timestamp);
-        }
-        else
-        {
-            while (!responseComplete)
-            {
-            };
-            responseComplete = false;
-
-            LOG_INFO("Remote response complete!\r\n");
+            LOG_INFO("Response message sent\r\n");
             LOG_INFO("Update next response message.\r\n\r\n");
         }
     }

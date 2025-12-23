@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+flexcan_remote_request_non_blocking:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexcan/remote_request_non_blocking
+    project-root-path: boards/${board}/driver_examples/flexcan/remote_request_non_blocking/${multicore_foldername}
+    document:
+      name: remote_request_non_blocking${core_id_suffix_name}
+      category: driver_examples/flexcan
+      brief: The flexcan_remote_request_non_blocking example shows how to use remote request feature in non-blocking
+        mode by SDK driver. In this example, 2 boards are connected through CAN bus. Board A send a remote frame to
+        request message from board B. After successful request, board A will receive response message. Board A uses
+        interrupt-driven non-blocking transfer. Board B receive remote frame and send response message manually with
+        application control. After successful response, board B will update response message and wait for next remote
+        request. Board B uses interrupt-driven non-blocking transfer. Both boards use differnet message buffer to send
+        and receive messages. Remote request frames are stored in RX message buffer instead of automatic response.
+      example_readme:
+      - examples/driver_examples/flexcan/remote_request_non_blocking/readme.md
+      - ${board_root}/${board}/driver_examples/flexcan/remote_request_non_blocking/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1060:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
