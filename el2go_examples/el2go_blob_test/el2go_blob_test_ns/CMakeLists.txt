@@ -31,7 +31,7 @@ mcux_add_iar_configuration(
 mcux_add_custom_command(
     TOOLCHAINS armgcc
     BUILD_EVENT PRE_BUILD
-    BUILD_COMMAND ${TOOLCHAIN_DIR}/bin/arm-none-eabi-gcc -E -P -xc
+    BUILD_COMMAND ${TOOLCHAIN_DIR}/bin/arm-none-eabi-gcc -D${device}${core_id_suffix_name}_SERIES -E -P -xc
     -I ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/${board}/partition
     -I ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common
     ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common/gcc/tfm_common_ns.ld
@@ -41,7 +41,7 @@ mcux_add_custom_command(
 mcux_add_custom_command(
     TOOLCHAINS iar
     BUILD_EVENT PRE_BUILD
-    BUILD_COMMAND ${CC}
+    BUILD_COMMAND ${CC} -D${device}${core_id_suffix_name}_SERIES 
     -I ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/${board}/partition
     -I ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common
     ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common/iar/tfm_common_ns.icf
@@ -51,7 +51,7 @@ mcux_add_custom_command(
 mcux_add_custom_command(
     TOOLCHAINS mdk
     BUILD_EVENT PRE_BUILD
-    BUILD_COMMAND ${CC} --target=arm-arm-none-eabi -march=armv8-m.main -E -P -xc
+    BUILD_COMMAND ${CC} -D${device}${core_id_suffix_name}_SERIES --target=arm-arm-none-eabi -march=armv8-m.main -E -P -xc
     -I ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/${board}/partition
     -I ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common
     ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common/armclang/tfm_common_ns.sct

@@ -43,7 +43,7 @@ mcux_add_mdk_configuration(
 mcux_add_custom_command(
     TOOLCHAINS armgcc
     BUILD_EVENT PRE_BUILD
-    BUILD_COMMAND ${TOOLCHAIN_DIR}/bin/arm-none-eabi-gcc ${TFM_LINKER_DEFINES_MQTT} -E -P -xc
+    BUILD_COMMAND ${TOOLCHAIN_DIR}/bin/arm-none-eabi-gcc -D${device}${core_id_suffix_name}_SERIES ${TFM_LINKER_DEFINES_MQTT} -E -P -xc
     -I ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/${board}/partition
     -I ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common
     ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/common/armgcc/tfm_common_s.ld
@@ -53,7 +53,7 @@ mcux_add_custom_command(
 mcux_add_custom_command(
     TOOLCHAINS iar
     BUILD_EVENT PRE_BUILD
-    BUILD_COMMAND ${CC} ${TFM_LINKER_DEFINES_MQTT} --cpu=Cortex-M33
+    BUILD_COMMAND ${CC} -D${device}${core_id_suffix_name}_SERIES ${TFM_LINKER_DEFINES_MQTT} --cpu=Cortex-M33
     -I ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/${board}/partition
     -I ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common
     ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/common/iar/tfm_common_s.icf
@@ -63,7 +63,7 @@ mcux_add_custom_command(
 mcux_add_custom_command(
     TOOLCHAINS mdk
     BUILD_EVENT PRE_BUILD
-    BUILD_COMMAND ${CC} ${TFM_LINKER_DEFINES_MQTT} --target=arm-arm-none-eabi -march=armv8-m.main -E -P -xc
+    BUILD_COMMAND ${CC} -D${device}${core_id_suffix_name}_SERIES ${TFM_LINKER_DEFINES_MQTT} --target=arm-arm-none-eabi -march=armv8-m.main -E -P -xc
     -I ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/${board}/partition
     -I ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common
     ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/common/armclang/tfm_common_s.sct
