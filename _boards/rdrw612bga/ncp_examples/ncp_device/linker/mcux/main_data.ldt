@@ -36,4 +36,3 @@
         _net_buf_pool_list_start = .;
         KEEP(*(SORT(._net_buf_pool*)))
         _net_buf_pool_list_end = .;
-        . = ALIGN(4);
