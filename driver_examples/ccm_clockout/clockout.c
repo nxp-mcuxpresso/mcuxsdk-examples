@@ -62,7 +62,7 @@ int main(void)
 {
     clock_output1_selection_t clko1Selection;
     clock_output2_selection_t clko2Selection;
-    uint8_t divider;
+    uint32_t divider;
 
     BOARD_InitHardware();
 
