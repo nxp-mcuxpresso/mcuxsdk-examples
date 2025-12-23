@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -25,6 +25,7 @@
 flexcan_handle_t flexcanHandle;
 volatile bool txComplete = false;
 volatile bool rxComplete = false;
+volatile bool responseComplete = false;
 flexcan_mb_transfer_t txXfer, rxXfer;
 flexcan_frame_t requestFrame, responseFrame, receiveFrame;
 uint8_t node_type;
@@ -37,25 +38,33 @@ uint8_t node_type;
  */
 static FLEXCAN_CALLBACK(flexcan_callback)
 {
-    if ((node_type == 'A') || (node_type == 'a'))
+    switch (status)
     {
-        switch (status)
-        {
-            case kStatus_FLEXCAN_RxRemote:
-                if (REQUEST_MB_NUM == result)
-                {
-                    rxComplete = true;
-                }
-                break;
-            case kStatus_FLEXCAN_TxSwitchToRx:
-                if (REQUEST_MB_NUM == result)
-                {
-                    txComplete = true;
-                }
-                break;
-            default:
-                break;
-        }
+        case kStatus_FLEXCAN_RxRemote:
+            if (REQUEST_MB_NUM == result)
+            {
+                rxComplete = true;
+            }
+            break;
+        case kStatus_FLEXCAN_TxSwitchToRx:
+            if (REQUEST_MB_NUM == result)
+            {
+                txComplete = true;
+            }
+            break;
+        case kStatus_FLEXCAN_TxIdle:
+            if (RESPONSE_MB_NUM == result)
+            {
+                responseFrame.dataWord0++;
+                rxXfer.mbIdx = (uint8_t)RESPONSE_MB_NUM;
+                rxXfer.frame = &responseFrame;
+                (void)FLEXCAN_TransferRemoteResponseNonBlocking(EXAMPLE_CAN, &flexcanHandle, &rxXfer);
+
+                responseComplete = true;
+            }
+            break;
+        default:
+            break;
     }
 }
 
@@ -131,22 +140,6 @@ int main(void)
     flexcanConfig.clkSrc = EXAMPLE_CAN_CLK_SOURCE;
 #endif
 
-#if defined(EXAMPLE_CAN_BIT_RATE)
-    flexcanConfig.bitRate = EXAMPLE_CAN_BIT_RATE;
-#endif
-
-    /* If special quantum setting is needed, set the timing parameters. */
-#if (defined(SET_CAN_QUANTUM) && SET_CAN_QUANTUM)
-    flexcanConfig.timingConfig.phaseSeg1 = PSEG1;
-    flexcanConfig.timingConfig.phaseSeg2 = PSEG2;
-    flexcanConfig.timingConfig.propSeg   = PROPSEG;
-#if (defined(FSL_FEATURE_FLEXCAN_HAS_FLEXIBLE_DATA_RATE) && FSL_FEATURE_FLEXCAN_HAS_FLEXIBLE_DATA_RATE)
-    flexcanConfig.timingConfig.fphaseSeg1 = FPSEG1;
-    flexcanConfig.timingConfig.fphaseSeg2 = FPSEG2;
-    flexcanConfig.timingConfig.fpropSeg   = FPROPSEG;
-#endif
-#endif
-
 #if (defined(USE_IMPROVED_TIMING_CONFIG) && USE_IMPROVED_TIMING_CONFIG)
     flexcan_timing_config_t timing_config;
     memset(&timing_config, 0, sizeof(flexcan_timing_config_t));
@@ -182,7 +175,10 @@ int main(void)
         responseFrame.length    = (uint8_t)DLC;
         responseFrame.dataWord0 = 0;
         responseFrame.dataWord1 = 0x55;
-        FLEXCAN_SetRemoteResponseMbConfig(EXAMPLE_CAN, RESPONSE_MB_NUM, &responseFrame);
+
+        rxXfer.mbIdx = (uint8_t)RESPONSE_MB_NUM;
+        rxXfer.frame = &responseFrame;
+        (void)FLEXCAN_TransferRemoteResponseNonBlocking(EXAMPLE_CAN, &flexcanHandle, &rxXfer);
 
         LOG_INFO("Start to wait request from Node A\r\n\r\n");
     }
@@ -193,12 +189,7 @@ int main(void)
         {
             GETCHAR();
 
-            /* 
-             * Transmit Remote Request Frame.
-             * Not recommend to setup other mailbox with same ID as Remote Request mailbox.
-             * If so, Remote Response Frame maybe stored in other mailbox, instead of Remote
-             * Request mailbox.
-             */
+            /* Transmit Remote Request Frame. */
             requestFrame.id     = FLEXCAN_ID_STD(0x321);
             requestFrame.format = (uint8_t)kFLEXCAN_FrameFormatStandard;
             requestFrame.type   = (uint8_t)kFLEXCAN_FrameTypeRemote;
@@ -232,14 +223,10 @@ int main(void)
         }
         else
         {
-            /* Wait until respond remote frame complete. */
-            while (0U == FLEXCAN_GetMbStatusFlags(EXAMPLE_CAN, (uint64_t)1U << RESPONSE_MB_NUM))
+            while (!responseComplete)
             {
-            }
-            FLEXCAN_ClearMbStatusFlags(EXAMPLE_CAN, (uint64_t)1U << RESPONSE_MB_NUM);
-
-            responseFrame.dataWord0++;
-            FLEXCAN_SetRemoteResponseMbConfig(EXAMPLE_CAN, RESPONSE_MB_NUM, &responseFrame);
+            };
+            responseComplete = false;
 
             LOG_INFO("Remote response complete!\r\n");
             LOG_INFO("Update next response message.\r\n\r\n");
