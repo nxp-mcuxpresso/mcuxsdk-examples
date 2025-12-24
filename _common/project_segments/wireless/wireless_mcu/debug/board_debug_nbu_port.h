@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -16,7 +16,7 @@
 /*!
  * \brief Initialize HCI logger port
  *
- * \return 0 Success, otherwise failure
+ * \return 0 Success, negative for failure
  */
 int BOARD_DbgNbuPortInit(void);
 
@@ -26,14 +26,14 @@ int BOARD_DbgNbuPortInit(void);
  * \param[in] data pointer to data buffer
  * \param[in] len length of data
  *
- * \return 0 Success, otherwise failure
+ * \return 0 Success, negative for failure
  */
 int BOARD_DbgNbuPortWrite(const uint8_t *data, uint16_t len);
 
 /*!
  * \brief Reinitialize HCI logger port - Needed on power down exit
  *
- * \return 0 Success, otherwise failure
+ * \return 0 Success, negative for failure
  */
 int BOARD_DbgNbuPortReinit(void);
 
