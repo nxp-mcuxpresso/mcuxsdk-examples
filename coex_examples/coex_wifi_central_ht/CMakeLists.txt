@@ -55,6 +55,16 @@ mcux_add_mdk_configuration(
     LD "--library_type=microlib"
 )
 
+# Add MCUXPRESSO IDE support
+mcux_add_include(
+    INCLUDES
+        mcuxpresso_config
+)
+
+mcux_add_source(
+    SOURCES mcuxpresso_config/app_mcuxpresso_config.h
+)
+
 include(${SdkRootDirPath}/${board_root}/${board}/coex_examples/coex_wifi_central_ht/reconfig.cmake OPTIONAL)
 
 include(${SdkRootDirPath}/middleware/wireless/coex/third_party/third_party.cmake OPTIONAL)

@@ -7,6 +7,10 @@
 
 #include "wifi_bt_module_config.h"
 
+#ifdef __MCUXPRESSO
+#include "app_mcuxpresso_config.h"
+#endif
+
 #if defined(WIFI_BOARD_RW610)
 
 #ifndef RW612_SERIES

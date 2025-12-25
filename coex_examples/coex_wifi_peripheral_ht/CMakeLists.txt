@@ -47,6 +47,16 @@ mcux_add_macro(
       -DUSE_RTOS=1"
 )
 
+# Add MCUXPRESSO IDE support
+mcux_add_include(
+    INCLUDES
+        mcuxpresso_config
+)
+
+mcux_add_source(
+    SOURCES mcuxpresso_config/app_mcuxpresso_config.h
+)
+
 include(${SdkRootDirPath}/${board_root}/${board}/coex_examples/coex_wifi_peripheral_ht/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
