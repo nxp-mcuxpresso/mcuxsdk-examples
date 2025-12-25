@@ -22,7 +22,6 @@
 #include "ncp_intf_pm.h"
 #include "ncp_pm.h"
 #include "fsl_pm_core.h"
-#include "ncp_glue_system.h"
 
 /*******************************************************************************
  * Variables
@@ -33,7 +32,7 @@ spi_dma_handle_t slaveHandle;
 /* Define the init structure for the output switch pin */
 gpio_pin_config_t output_pin = {
     kGPIO_DigitalOutput,
-    0,
+    1,
 };
 
 /* Define the init structure for the input switch pin */
@@ -67,8 +66,10 @@ static OSA_TASK_DEFINE(ncp_spi_hs_intf_task, PRIORITY_RTOS_TO_OSA((configMAX_PRI
 #define NCP_SPI_STATS_INC(x)
 #endif
 
+static ncp_spi_hs_tx_header hs_tx_header = {NCP_SPI_CRC};
+static ncp_spi_hs_rx_header hs_rx_header = {0};
 static int ncp_spi_pm_flag   = 0;
-static uint8_t hs_p[4] = {'\0'};
+
 /*
 low power
 */
@@ -96,25 +97,15 @@ static void spi_delay(uint32_t loop)
 static void spi_delay_us(uint32_t us)
 {
     uint32_t instNum;
-
     instNum = ((SystemCoreClock + 999999UL) / 1000000UL) * us;
     spi_delay((instNum + 2U) / 3U);
 }
 
-void spi_set_host_type(int type)
+static void spi_delay_ms(uint32_t ms)
 {
-    if (type == 0)
+    for (int i = 0; i < ms; i++)
     {
-        (void)PRINTF("ncp mcu host\n\r");
-        output_pin.outputLogic = 1;
-        GPIO_PortInit(GPIO, 0);
-        GPIO_PinInit(GPIO, 0, NCP_SPI_GPIO_TX, &output_pin);
-        GPIO_PinInit(GPIO, 0, NCP_SPI_GPIO_RX_READY, &output_pin);
-    }
-    else
-    {
-        (void)PRINTF("ncp mpu host\n\r");
-        output_pin.outputLogic = 0;
+        spi_delay_us(1000);
     }
 }
 
@@ -212,8 +203,10 @@ static int ncp_spi_slave_tx(uint8_t *buff, size_t data_size)
 {
     int ret = 0;
     ncp_dev_spi("spi slave sends spi tx signal");
+    ncp_spi_pm_flag = 0;
     ncp_spi_slave_send_sd_signal();
     ret = ncp_spi_tx(buff, data_size);
+    ncp_spi_pm_flag = 1;
     return ret;
 }
 
@@ -295,16 +288,6 @@ static void ncp_spi_output_gpio_init(void)
     GPIO_PortInit(GPIO, 1);
     /* Init output GPIO. Default level is high */
     /* GPIO 27 for TX and GPIO 11 for RX interrupt */
-    ncp_reset_context_t *nvic_reset_context = ncp_get_reset_context();
-    if (nvic_reset_context->reset_flag == NCP_RESET_FLAG_MAGIC)
-    {
-        /* boot from nvic reset */
-        if (nvic_reset_context->host_type == 0)
-            output_pin.outputLogic = 1;
-        else if (nvic_reset_context->host_type == 1)
-            output_pin.outputLogic = 0;
-        ncp_sys_set_host_type(nvic_reset_context->host_type);
-    }
     GPIO_PinInit(GPIO, 0, NCP_SPI_GPIO_TX, &output_pin);
     GPIO_PinInit(GPIO, 0, NCP_SPI_GPIO_RX_READY, &output_pin);
     IO_MUX_SetPinOutLevelInSleep(27U, IO_MUX_SleepPinLevelUnchanged);
@@ -337,13 +320,22 @@ static int ncp_spi_slave_init(void)
 
     return ret;
 }
+
+static int ncp_spi_slave_deinit(void)
+{
+    int ret = 0;
+    SPI_Type *base = NCP_SPI_SLAVE;
+    SPI_Deinit(NCP_SPI_SLAVE);
+    base->FIFOCFG |= SPI_FIFOCFG_EMPTYTX_MASK | SPI_FIFOCFG_EMPTYRX_MASK;
+    return ret;
+}
 int ncp_spi_enter_power_down(void)
 {
     DMA_AbortTransfer(&slaveTxHandle);
     DMA_AbortTransfer(&slaveRxHandle);
     SPI_MasterTransferAbortDMA(NCP_SPI_SLAVE, &slaveHandle);
     DMA_Deinit(NCP_SPI_SLAVE_DMA);
-
+    ncp_spi_slave_deinit();
     return NCP_PM_STATUS_SUCCESS;
 }
 
@@ -354,6 +346,8 @@ int ncp_spi_exit_power_down(void)
     ncp_spi_output_gpio_init();
     CLOCK_SetFRGClock(BOARD_NORMAL_FLEXCOMM0_FRG_CLK);
     CLOCK_AttachClk(kFRG_to_FLEXCOMM0);
+    spi_delay_ms(10);
+
     (void)ncp_spi_slave_init();
 
     ncp_spi_slave_dma_setup();
@@ -362,8 +356,8 @@ int ncp_spi_exit_power_down(void)
                                            ncp_spi_slave_cb, NULL,
                                            &slaveTxHandle, &slaveRxHandle);
 
-    slaveXfer.txData = NULL;
-    slaveXfer.rxData = hs_p;
+    slaveXfer.txData = (uint8_t *)&hs_tx_header;
+    slaveXfer.rxData = (uint8_t *)&hs_rx_header;
     slaveXfer.dataSize = 4;
     slaveXfer.configFlags = kSPI_FrameAssert;
     (void)SPI_SlaveTransferDMA(NCP_SPI_SLAVE, &slaveHandle, &slaveXfer);
@@ -583,7 +577,7 @@ ncp_intf_ops_t ncp_intf_ops =
     .recv   = ncp_spi_recv,
     .pm_ops = &ncp_spi_pm_ops,
     .reset  = ncp_spi_reset,
-    .set_host_type = spi_set_host_type,
+    .set_host_type = NULL,
 };
 
 #ifdef CONFIG_NCP_SPI
@@ -626,8 +620,8 @@ static void ncp_spi_hs_intf_task(void *argv)
         OSA_SemaphoreWait(spi_hs_mutex, osaWaitForever_c);
         ncp_dev_spi("enter spi hs task");
         /* spi master and slave handshake */
-        slaveXfer.txData = NULL;
-        slaveXfer.rxData = hs_p;
+        slaveXfer.txData = (uint8_t *)&hs_tx_header;
+        slaveXfer.rxData = (uint8_t *)&hs_rx_header;
         slaveXfer.dataSize = 4;
         slaveXfer.configFlags = kSPI_FrameAssert;
         ret = (int)SPI_SlaveTransferDMA(NCP_SPI_SLAVE, &slaveHandle, &slaveXfer);
@@ -636,7 +630,7 @@ static void ncp_spi_hs_intf_task(void *argv)
             ncp_adap_e("Error occurred in SPI_SlaveTransferDMA");
             continue;
         }
-        if(spi_hs_task_init)
+        if (spi_hs_task_init)
         {
             /* notify master that the slave prepare DMA ready */
             ncp_spi_slave_send_ready_signal();
@@ -647,13 +641,13 @@ static void ncp_spi_hs_intf_task(void *argv)
         OSA_SemaphoreWait(spi_slave_trans_comp, osaWaitForever_c);
         ncp_spi_pm_flag = 0;
         ncp_dev_spi("spi can't enter pm mode");
-        if (memcmp(hs_p, "send", 4) == 0)
+        if (hs_rx_header.direct == NCP_SPI_SEND)
         {
             ncp_dev_spi("spi hs receive send command");
             OSA_EventClear(spi_slave_event, SLAVE_TX_ENABLE_EVENT);
             OSA_EventSet(spi_slave_event, SLAVE_RX_ENABLE_EVENT);
         }
-        else if (memcmp(hs_p, "recv", 4) == 0)
+        else if (hs_rx_header.direct == NCP_SPI_RECV)
         {
             ncp_dev_spi("spi hs receive recv command");
             OSA_EventClear(spi_slave_event, SLAVE_RX_ENABLE_EVENT);

@@ -59,7 +59,7 @@ GPIO_HANDLE_DEFINE(NcpTlvSpiRxReadyDetectGpioHandle);
 
 uint32_t spi_master_buff[(OSA_EVENT_HANDLE_SIZE + 3) / 4];
 
-#define NCP_SPI_QUEUE_NUM 256
+#define NCP_SPI_QUEUE_NUM 1
 static osa_msgq_handle_t ncp_spi_queue; /* ncp spi msgq */
 OSA_MSGQ_HANDLE_DEFINE(ncp_spi_queue_buff, NCP_SPI_QUEUE_NUM,  sizeof(int));
 
@@ -100,13 +100,16 @@ int ncp_host_spi_master_tx(uint8_t *buff, uint16_t data_size)
     int16_t len = 0;
     uint8_t *p   = NULL;
     uint8_t *first_buf = NULL;
-    uint8_t hs_tx[4] = {'s', 'e', 'n', 'd'};
+    ncp_spi_hs_tx_header hs_tx_header = {0};
+    ncp_spi_hs_rx_header hs_rx_header = {0};
+    hs_tx_header.direct = NCP_SPI_SEND;
 
     /* spi slave and master handshake */
     OSA_SemaphoreWait(spi_slave_rtx_sync, osaWaitForever_c);
     mcu_host_spi_debug("master starts spi tx");
-    masterXfer.txData   = hs_tx;
-    masterXfer.rxData   = NULL;
+    OSA_SemaphoreWait(spi_slave_rx_ready, osaWaitNone_c);
+    masterXfer.txData   = (uint8_t *)&hs_tx_header;
+    masterXfer.rxData   = (uint8_t *)&hs_rx_header;
     masterXfer.dataSize = 4;
     ret = (int)LPSPI_MasterTransferEDMALite(EXAMPLE_LPSPI_MASTER_BASEADDR, &masterHandle, &masterXfer);
     if (ret)
@@ -177,14 +180,17 @@ int ncp_host_spi_master_rx(uint8_t *buff, size_t *tlv_sz)
     lpspi_transfer_t masterXfer;
     int total_len = 0, resp_len = 0, len = 0;
     uint8_t *p   = NULL;
-    uint8_t hs_rx[4] = {'r', 'e', 'c', 'v'};
-
+    ncp_spi_hs_tx_header hs_tx_header = {0};
+    ncp_spi_hs_rx_header hs_rx_header = {0};
+    hs_tx_header.direct = NCP_SPI_RECV;
+invalid_crc:
     OSA_MsgQGet(ncp_spi_queue, &spi_sig, osaWaitForever_c);
     OSA_SemaphoreWait(spi_slave_rtx_sync, osaWaitForever_c);
     mcu_host_spi_debug("master starts spi rx");
+    OSA_SemaphoreWait(spi_slave_rx_ready, osaWaitNone_c);
     /* spi slave and master handshake */
-    masterXfer.txData   = hs_rx;
-    masterXfer.rxData   = NULL;
+    masterXfer.txData   = (uint8_t *)&hs_tx_header;
+    masterXfer.rxData   = (uint8_t *)&hs_rx_header;
     masterXfer.dataSize = 4;
     ret = (int)LPSPI_MasterTransferEDMALite(EXAMPLE_LPSPI_MASTER_BASEADDR, &masterHandle, &masterXfer);
     if (ret)
@@ -194,6 +200,13 @@ int ncp_host_spi_master_rx(uint8_t *buff, size_t *tlv_sz)
     }
     OSA_SemaphoreWait(spi_slave_tx_complete, osaWaitForever_c);
     mcu_host_spi_debug("spi transfer complete-%d", __LINE__);
+    if (hs_rx_header.crc != NCP_SPI_CRC)
+    {
+        mcu_host_spi_debug("line = %d, recv invalid crc", __LINE__);
+        OSA_SemaphorePost(spi_slave_rtx_sync);
+        goto invalid_crc;
+    }
+
     /* start to send valid data */
     OSA_SemaphoreWait(spi_slave_rx_ready, osaWaitForever_c);
     p  = buff;

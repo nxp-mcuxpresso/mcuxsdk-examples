@@ -14,13 +14,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
-
+#if defined(__GNUC__) /* for armgcc compiler */
+/** Structure packing begins */
+#define NCP_TLV_PACK_START
+/** Structure packeing end */
+#define NCP_TLV_PACK_END __attribute__((packed))
+#elif defined(__ICCARM__) /* for iar compiler */
+/** Structure packing begins */
+#define NCP_TLV_PACK_START __packed
+/** Structure packing end */
+#define NCP_TLV_PACK_END
+#elif defined(PRAGMA_PACK)
+/** Structure packing begins */
+#define NCP_TLV_PACK_START
+/** Structure packeing end */
+#define NCP_TLV_PACK_END
+#endif /* __GNUC__ */
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#ifndef CONFIG_NCP_SPI_DEBUG
-#define CONFIG_NCP_SPI_DEBUG 0
-#endif
 #define NCP_SPI_SLAVE        SPI0
 #define NCP_SPI_SLAVE_DMA              DMA0
 #define NCP_SPI_SLAVE_DMA_RX_CHANNEL 0
@@ -52,6 +64,23 @@ typedef enum
     NCP_SLAVE_SPI_END,
 } ncp__slave_state;
 
+typedef struct NCP_TLV_PACK_START _ncp_spi_hs_rx_header
+{
+    uint16_t direct;
+} NCP_TLV_PACK_END ncp_spi_hs_rx_header;
+
+typedef struct NCP_TLV_PACK_START _ncp_spi_hs_tx_header
+{
+    uint32_t crc;
+} NCP_TLV_PACK_END ncp_spi_hs_tx_header;
+
+#define NCP_SPI_SEND 0x9b
+#define NCP_SPI_RECV 0xb9
+#define NCP_SPI_CRC  0x5a5b9a9b
+
+#ifndef CONFIG_NCP_SPI_DEBUG
+#define CONFIG_NCP_SPI_DEBUG 0
+#endif
 #if CONFIG_NCP_SPI_DEBUG
 #define ncp_dev_spi(...) ncplog("NCP", ##__VA_ARGS__)
 #else

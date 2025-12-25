@@ -9,6 +9,23 @@
 #ifndef __NCP_INTF_SPI_MASTER_H__
 #define __NCP_INTF_SPI_MASTER_H__
 
+#if defined(__GNUC__) /* for armgcc compiler */
+/** Structure packing begins */
+#define NCP_TLV_PACK_START
+/** Structure packeing end */
+#define NCP_TLV_PACK_END __attribute__((packed))
+#elif defined(__ICCARM__) /* for iar compiler */
+/** Structure packing begins */
+#define NCP_TLV_PACK_START __packed
+/** Structure packing end */
+#define NCP_TLV_PACK_END
+#elif defined(PRAGMA_PACK)
+/** Structure packing begins */
+#define NCP_TLV_PACK_START
+/** Structure packeing end */
+#define NCP_TLV_PACK_END
+#endif /* __GNUC__ */
+
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -73,6 +90,20 @@ typedef enum
     NCP_MASTER_SPI_END,
 } ncp_state;
 
+typedef struct NCP_TLV_PACK_START _ncp_spi_hs_rx_header
+{
+    uint16_t direct;
+} NCP_TLV_PACK_END ncp_spi_hs_tx_header;
+
+typedef struct NCP_TLV_PACK_START _ncp_spi_hs_tx_header
+{
+    uint32_t crc;
+} NCP_TLV_PACK_END ncp_spi_hs_rx_header;
+
+#define NCP_SPI_SEND 0x9b
+#define NCP_SPI_RECV 0xb9
+#define NCP_SPI_CRC  0x5a5b9a9b
+#define CONFIG_NCP_SPI_DEBUG 0
 #if CONFIG_NCP_SPI_DEBUG
 #define mcu_host_spi_debug(...) ncplog_w("spi master", ##__VA_ARGS__)
 #else
