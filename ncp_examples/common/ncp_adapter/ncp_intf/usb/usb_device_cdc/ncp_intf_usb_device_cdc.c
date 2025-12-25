@@ -34,6 +34,25 @@ void ncp_usb_put_tx_sem(void)
     OSA_SemaphorePost(usb_device_tx_sem);
 }
 
+int ncp_usb_bus_idle_check(void)
+{
+    usb_device_cdc_acm_struct_t *cdcAcmHandle;
+    
+    cdcAcmHandle = s_cdcVcom.cdcAcmHandle;
+    if (NULL == cdcAcmHandle)
+    {
+        return kStatus_USB_Error;
+    }
+
+    /* Check if any pipe is busy */
+    if (cdcAcmHandle->bulkIn.isBusy || cdcAcmHandle->interruptIn.isBusy)
+    {
+        return kStatus_USB_Busy;
+    }
+
+    return NCP_STATUS_SUCCESS;
+}
+
 int ncp_usb_device_recv(uint8_t *recv_data, uint32_t packet_len)
 {
     static int usb_rx_len = 0;
@@ -167,6 +186,10 @@ static int ncp_usb_device_deinit(void* argv)
 
 static void ncp_usb_device_reset(void)
 {
+    while (NCP_STATUS_SUCCESS != ncp_usb_bus_idle_check())
+    {
+        OSA_TimeDelay(10);
+    }
 }
 
 static int ncp_usb_device_pm_init(void)
