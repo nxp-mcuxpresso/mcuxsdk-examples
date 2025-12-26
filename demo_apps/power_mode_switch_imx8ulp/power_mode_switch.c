@@ -617,7 +617,7 @@ void PowerModeSwitchTask(void *pvParameters)
         PRINTF("Press  %c to enter: Power Down(PD) mode\r\n", kAPP_PowerModePowerDown);
         PRINTF("Press  %c to enter: Deep Power Down(DPD) mode\r\n", kAPP_PowerModeDeepPowerDown);
         PRINTF("Press  W for wake up CA35 core from PD/DPD mode\r\n");
-        PRINTF("Press  T for reboot CA35 core\r\n");
+        PRINTF("Press  R for reboot CA35 core\r\n");
         PRINTF("Press  U for shutdown CA35 core.\r\n");
         PRINTF("Press  V for boot CA35 core.\r\n");
         PRINTF("Press  S for showing supported LPM Mode Combination.\r\n");
@@ -689,7 +689,7 @@ void PowerModeSwitchTask(void *pvParameters)
             }
             APP_SRTM_WakeupCA35();
         }
-        else if ('T' == ch)
+        else if ('R' == ch)
         {
             APP_RebootCA35();
         }

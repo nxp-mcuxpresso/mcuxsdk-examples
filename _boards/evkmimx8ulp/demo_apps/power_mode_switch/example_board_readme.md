@@ -37,7 +37,7 @@ NOTE: For 'F' option (Power Down mode), it's not supported on A0.1 chip. Please 
 
 NOTE: For 'G' option (Deep Power Down mode), it's not supported on Single Boot mode. Please try it on Dual Boot or Low Power Boot mode instead.
 
-NOTE: For 'T' option, M33 side will force reboot A35 core.
+NOTE: For 'R' option, M33 side will force reboot A35 core.
 
 NOTE: For 'U' and 'V' option (shutdown/boot CA35 core), please execute 'poweroff' command in A35 BSP Linux console in advance, then press 'U' on M33 console to shutdown A35, then press 'V' to boot A35 again.
 
@@ -66,7 +66,7 @@ Press  E to enter: Deep Sleep mode
 Press  F to enter: Power Down(PD) mode
 Press  G to enter: Deep Power Down(DPD) mode
 Press  W for wake up CA35 core from PD/DPD mode
-Press  T for reboot CA35 core
+Press  R for reboot CA35 core
 Press  U for shutdown CA35 core.
 Press  V for boot CA35 core.
 Press  S for showing supported LPM Mode Combination.
