@@ -41,3 +41,12 @@
 #endif  /* defined(WIFI_BOARD_RW610) */
 
 #include "wifi_config.h"
+
+/* Workaround: Define MBEDTLS_ALLOW_PRIVATE_ACCESS for MCUXpresso build 
+ * when CONFIG_WPA_SUPP_MBEDTLS is disabled.
+ */
+#if defined(__MCUXPRESSO) && !CONFIG_WPA_SUPP_MBEDTLS
+#ifndef MBEDTLS_ALLOW_PRIVATE_ACCESS
+#define MBEDTLS_ALLOW_PRIVATE_ACCESS
+#endif
+#endif

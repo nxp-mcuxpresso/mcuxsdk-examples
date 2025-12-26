@@ -62,10 +62,16 @@
  * Enabled only if Wi-Fi is active.
  * -------------------------------------------------------------------------- */
 #if CONFIG_NCP_WIFI
-#ifndef CONFIG_WPA_SUPP_MBEDTLS
-#define CONFIG_WPA_SUPP_MBEDTLS 1
+#ifndef CONFIG_WPA_SUPPLICANT
+#define CONFIG_WPA_SUPPLICANT 1
 #endif
 #endif /* CONFIG_NCP_WIFI */
+
+/* --------------------------------------------------------------------------
+ * Derived configuration macros
+ * These depend on the above feature selections.
+ * -------------------------------------------------------------------------- */
+#define CONFIG_WPA_SUPP_MBEDTLS     CONFIG_WPA_SUPPLICANT
 
 #endif /* __MCUXPRESSO */
 #endif /* __APP_MCUXPRESSO_CONFIG_H__ */

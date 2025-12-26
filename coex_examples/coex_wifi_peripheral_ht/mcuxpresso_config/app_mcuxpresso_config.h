@@ -18,7 +18,7 @@
 
 #ifdef __MCUXPRESSO
 /* --------------------------------------------------------------------------
- * Only support to enable/disable CONFIG_WPA_SUPP_MBEDTLS now.
+ * Only support to enable/disable CONFIG_WPA_SUPPLICANT now.
  * -------------------------------------------------------------------------- */
 
 /* --------------------------------------------------------------------------
@@ -37,8 +37,8 @@
  * -------------------------------------------------------------------------- */
 
 #if CONFIG_WIFI
-#ifndef CONFIG_WPA_SUPP_MBEDTLS
-#define CONFIG_WPA_SUPP_MBEDTLS 1
+#ifndef CONFIG_WPA_SUPPLICANT
+#define CONFIG_WPA_SUPPLICANT 1
 #endif
 #endif /* CONFIG_WIFI */
 
@@ -52,6 +52,7 @@
 #define CONFIG_COEX_ENABLE_BLE_MENU     0
 #define CONFIG_DISABLE_BLE              0
 #define CONFIG_OT_CLI                   0
+#define CONFIG_WPA_SUPP_MBEDTLS         CONFIG_WPA_SUPPLICANT
 
 #endif /* __MCUXPRESSO */
 #endif /* __APP_MCUXPRESSO_CONFIG_H__ */

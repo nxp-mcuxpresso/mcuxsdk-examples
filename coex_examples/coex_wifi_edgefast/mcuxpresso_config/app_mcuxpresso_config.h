@@ -41,8 +41,8 @@
  * -------------------------------------------------------------------------- */
 
 #if CONFIG_WIFI
-#ifndef CONFIG_WPA_SUPP_MBEDTLS
-#define CONFIG_WPA_SUPP_MBEDTLS 1
+#ifndef CONFIG_WPA_SUPPLICANT
+#define CONFIG_WPA_SUPPLICANT 1
 #endif
 #endif /* CONFIG_WIFI */
 
@@ -53,6 +53,7 @@
 #define CONFIG_WIFI_BLE_COEX_APP    CONFIG_WIFI
 #define CONFIG_DISABLE_BLE          (!CONFIG_BLE)
 #define CONFIG_OT_CLI               CONFIG_OT
+#define CONFIG_WPA_SUPP_MBEDTLS     CONFIG_WPA_SUPPLICANT
 
 #endif /* __MCUXPRESSO */
 #endif /* __APP_MCUXPRESSO_CONFIG_H__ */
