@@ -31,7 +31,6 @@
 #include "BT_hci_api.h"
 #include "bt_pal_conn_internal.h"
 #include "bluetooth/avrcp.h"
-#include "bluetooth/conn.h"
 #include "app_a2dp_source.h"
 
 #include "EM_timer.h"
@@ -269,15 +268,11 @@ void sbc_start_play(int err)
 	{
 		g_audioStart = 1;
 
-		if(!app_get_a2dp_mode())
+		if(app_a2dp_start_with_rhs())
 		{
 			/* Start Audio Player */
 			app_a2dp_src_start(1);
-			//PRINTF("a2dp start playing\r\n");
 
-		} else
-		{
-			avrcp_pause_button(1);
 		}
 	}
 	else
@@ -287,6 +282,17 @@ void sbc_start_play(int err)
 
 }
 
+void app_a2dp_snk_suspend()
+{
+	int err=0;
+
+	PRINTF("\nPhone audio suspend \n ");
+	err=bt_a2dp_stop(default_a2dp_endpoint_snk);
+
+	if(err)
+		PRINTF("\nRH stop Error code=%d ",err);
+
+}
 void sbc_stop_play(int err)
 {
 	if (err == 0)
@@ -320,6 +326,7 @@ void sbc_streamer_data(uint8_t *data, uint32_t length)
 			//PRINTF("a2dp streamer \n");
 
 			data_send_source(data, length);
+
 		}
 	}
 }

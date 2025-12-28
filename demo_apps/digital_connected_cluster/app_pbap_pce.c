@@ -165,26 +165,25 @@ void clear_pbap_data(int index)
 {
 	if(app_pbap_pce[index] != NULL)
 	{
-		PRINTF("Deleting Pbap contact list...\n");
-		for(g_contactCount = MAX_CONTACTS-1; g_contactCount >= 0;  g_contactCount--)
+		for(g_contactCount = MAX_CONTACTS - 1; g_contactCount >= 0;  g_contactCount--)
 		{
 			contact_list[g_contactCount][index].name[0] = '\0';
 			contact_list[g_contactCount][index].phone[0] = '\0';
 		}
 
-		for(g_misscallCount = MAX_MISSED_CALL-1; g_misscallCount >= 0;  g_misscallCount--)
+		for(g_misscallCount = MAX_MISSED_CALL - 1; g_misscallCount >= 0;  g_misscallCount--)
 		{
 			misscall_list[g_misscallCount][index].name[0] = '\0';
 			misscall_list[g_misscallCount][index].phone[0] = '\0';
 		}
 
-		for(g_incallCount = MAX_INCOMING_CALL-1; g_incallCount >= 0;  g_incallCount--)
+		for(g_incallCount = MAX_INCOMING_CALL - 1; g_incallCount >= 0;  g_incallCount--)
 		{
 			incall_list[g_incallCount][index].name[0] = '\0';
 			incall_list[g_incallCount][index].phone[0] = '\0';
 		}
 
-		for(g_outcallCount = MAX_OUTGOING_CALL-1; g_outcallCount >= 0;  g_outcallCount--)
+		for(g_outcallCount = MAX_OUTGOING_CALL - 1; g_outcallCount >= 0;  g_outcallCount--)
 		{
 			outcall_list[g_outcallCount][index].name[0] = '\0';
 			outcall_list[g_outcallCount][index].phone[0] = '\0';
@@ -427,6 +426,36 @@ void print_contact_list(int type)
 	}
 }
 
+void app_get_photo_data(char *vcf_data)
+{
+    static char *photo_data;
+    static int photo_data_start = 0;
+    if (photo_data_start == 0)
+    {
+		// Extract photo if present
+		photo_data = strstr(vcf_data, "PHOTO;ENCODING=BASE64;JPEG:");
+		if (photo_data)
+		{
+			photo_data_start = 1;
+			photo_data = strchr(photo_data, ':');
+			photo_data++;
+		}
+    }
+    else if (photo_data_start == 1)
+    {
+	photo_data = strcat(photo_data, vcf_data);
+	char *pos = strstr(photo_data, "END:");
+		if(pos)
+		{
+			*pos = '\0';
+#ifdef APP_DEBUG_EN
+			//PRINTF("Extracted full Photo Data: %s\n", photo_data);
+#endif
+			photo_data_start = 0;
+		}
+    }
+}
+
 static void app_print_body(struct net_buf *buf)
 {
     struct pbap_hdr body;
@@ -448,6 +477,8 @@ static void app_print_body(struct net_buf *buf)
 #ifdef APP_DEBUG_EN
     	//PRINTF("======= Extracted vCard Body =======\n%s\n", vcf_data);
 #endif
+
+    app_get_photo_data(vcf_data);
 
     // **Call function to extract contacts**
     parse_vcard_entries(vcf_data);

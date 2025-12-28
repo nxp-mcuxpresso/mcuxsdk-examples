@@ -55,8 +55,7 @@ bt_addr_t g_riderHsAddr, g_riderPhoneAddr, g_passengerHsAddr;
 uint8_t g_connectInitRiderHs = 0, g_connectInitRiderPhone = 0 , g_connectInitPassengerHs = 0;
 uint8_t g_profileConnectedPhone = 0, g_profileConnectedRiderHs = 0, g_profileConnectedPassengerHs = 0;
 uint8_t g_isRiderHeadset=1;
-uint8_t g_auto_connect_paired_devices = 0;
-uint8_t g_auto_connect_device_index = 1;
+
 static struct bt_conn_cb conn_callbacks = {
     .connected = connected,
     .disconnected = disconnected,
@@ -80,6 +79,7 @@ static lfs_file_t g_lfsFile;
 #define LFS_PAIRED_DEVICES_FILE  "paired_devices"
 #define SETUP_CONNECTION_DELAY K_MSEC(2000)
 struct k_work_delayable setup_auto_connection_work;
+
 
 void hfp_ag_discover(struct bt_conn_info *info)
 {
@@ -160,7 +160,6 @@ void app_clear_pbap_data(void)
 
 static void setup_auto_connection(struct k_work *work)
 {
-	//PRINTF("app_auto_connect_paired_devices work.\n");
 	app_auto_connect_paired_devices();
 
 }
@@ -168,7 +167,8 @@ static void setup_auto_connection(struct k_work *work)
 static void connected(struct bt_conn *conn, uint8_t err)
 {
 	struct bt_conn_info info;
-        uint16_t conn_handle;
+	uint16_t conn_handle;
+
 	if (err)
 	{
 		PRINTF("ACL Connection Failed (err %d)\n",err);
@@ -187,6 +187,7 @@ static void connected(struct bt_conn *conn, uint8_t err)
 			{
 				conn_rider_phone = NULL;
 			}
+
 			app_dual_a2dp_src_resume();
 		}
 		if (g_connectInitRiderHs)
@@ -212,6 +213,7 @@ static void connected(struct bt_conn *conn, uint8_t err)
 			PRINTF("DUT as HFP-AG to remote as HFP-HF Connection failed (err %d)\n", err);
 #endif
 		}
+
 		// Auto connect if failed
 		if(g_auto_connection_status)
 		{
@@ -219,11 +221,12 @@ static void connected(struct bt_conn *conn, uint8_t err)
 			k_work_init_delayable(&setup_auto_connection_work, setup_auto_connection);
 			k_work_schedule(&setup_auto_connection_work, SETUP_CONNECTION_DELAY);
 		}
+
 		return;
 	}
 
 	bt_conn_get_info(conn, &info);
-        bt_hci_get_conn_handle(conn,&conn_handle);
+     bt_hci_get_conn_handle(conn,&conn_handle);
 	if (info.type == BT_CONN_TYPE_LE)
 	{
 		return;
@@ -234,57 +237,11 @@ static void connected(struct bt_conn *conn, uint8_t err)
 		PRINTF("ACL Connection Successful with Rider Headset,Role: %d\n",info.role);
 		g_connectInitRiderHs = 0U;
 		g_profileConnectedRiderHs = 1;
+		connection_status |= (1 << RIDER_HEADSET);
+		app_update_last_connected_device(info.br.dst->val,RIDER_HEADSET);
+
 		conn_rider_hs = conn;
 		hfp_ag_discover(&info);
-
-		uint8_t ret;
-		struct net_buf *buf = NULL;
-
-		struct bt_hci_cp_write_link_policy_settings *cp;
-		buf = bt_hci_cmd_create(BT_HCI_OP_WRITE_LINK_POLICY_SETTINGS, sizeof(*cp));
-		if (buf != NULL)
-		{
-			PRINTF("\r\nSet link policy \r\n");
-			cp = net_buf_add(buf, sizeof(*cp));
-			cp->handle = conn_handle;
-			cp->link_policy_settings = A2DP_LINK_POLICY;
-			err = bt_hci_cmd_send_sync(BT_HCI_OP_WRITE_LINK_POLICY_SETTINGS, buf, NULL);
-		}
-
-		//A2DP profile connection
-		sdp_discover_for_a2dp_sink(1);
-		connection_status |= (1 << RIDER_HEADSET);
-    }
-	else if (g_connectInitRiderPhone)
-	{
-		PRINTF("ACL Connection Successful with Rider Phone,Role: %d\n",info.role);
-		g_connectInitRiderPhone = 0U;
-		conn_rider_phone = conn;
-#if AVRCP_BROWSING_ENABLE
-		if(!bt_avrcp_browsing_connect(conn_rider_phone))
-		{
-			PRINTF("AVRCP Browsing Connect SUCCESS\r\n");
-		}
-#endif
-
-		/*Profile level connection HFP HF*/
-		sdp_discover_for_hfp_hf(&info);
-		/*Profile level connection for PBAP*/
-#if defined(PBAP_PROFILE_ENABLE) && (PBAP_PROFILE_ENABLE == 1)
-		PRINTF( "\n\nPBAP connection\n");
-		sdp_discover_for_pbap_client(conn_rider_phone);
-		connection_status |= (1 << RIDER_PHONE);
-		app_update_last_connected_device(info.br.dst->val,RIDER_PHONE);
-		app_dual_a2dp_src_resume();
-#endif
-	} else if (g_connectInitPassengerHs)
-	{
-		PRINTF("ACL Connection Successful with Passenger Headset,Role: %d\n",info.role);
-		g_connectInitPassengerHs=0U;
-		g_profileConnectedPassengerHs = 1;
-		conn_passenger_hs = conn;
-
-		hfp_ag_discover(&info);// NO HFP connection to passenger headset, to be enabled later.
 
 		uint8_t ret;
 		struct net_buf *buf = NULL;
@@ -301,11 +258,66 @@ static void connected(struct bt_conn *conn, uint8_t err)
 		}
 
 		//A2DP profile connection
-		sdp_discover_for_a2dp_sink(0);
+		sdp_discover_for_a2dp_sink(1);
+
+    }
+	else if (g_connectInitRiderPhone)
+	{
+		PRINTF("ACL Connection Successful with Rider Phone,Role: %d\n",info.role);
+		g_connectInitRiderPhone = 0U;
+		connection_status |= (1 << RIDER_PHONE);
+		app_update_last_connected_device(info.br.dst->val,RIDER_PHONE);
+
+		conn_rider_phone = conn;
+
+#if AVRCP_BROWSING_ENABLE
+		cmd_browsing_connect();
+#endif
+
+		/*Profile level connection HFP HF*/
+		sdp_discover_for_hfp_hf(&info);
+		/*Profile level connection for PBAP*/
+#if defined(PBAP_PROFILE_ENABLE) && (PBAP_PROFILE_ENABLE == 1)
+		PRINTF( "\n\nPBAP connection\n");
+		sdp_discover_for_pbap_client(conn_rider_phone);
+#endif
+
+		app_dual_a2dp_src_resume();
+
+
+	} else if (g_connectInitPassengerHs){
+		PRINTF("ACL Connection Successful with Passenger Headset,Role: %d\n",info.role);
+		g_connectInitPassengerHs=0U;
+		g_profileConnectedPassengerHs = 1;
 		connection_status |= (1 << PASSENGER_HEADSET);
+		app_update_last_connected_device(info.br.dst->val,PASSENGER_HEADSET);
+
+		conn_passenger_hs = conn;
+
+		hfp_ag_discover(&info);// NO HFP connection to passenger headset, to be enabled later.
+
+		uint8_t ret;
+		struct net_buf *buf = NULL;
+
+		struct bt_hci_cp_write_link_policy_settings *cp;
+		buf = bt_hci_cmd_create(BT_HCI_OP_WRITE_LINK_POLICY_SETTINGS, sizeof(*cp));
+		if (buf != NULL)
+		{
+			PRINTF("\r\nSet link policy \r\n");
+			cp = net_buf_add(buf, sizeof(*cp));
+			cp->handle = conn_handle;
+			cp->link_policy_settings = A2DP_LINK_POLICY;
+			err = bt_hci_cmd_send_sync(BT_HCI_OP_WRITE_LINK_POLICY_SETTINGS, buf, NULL);
+		}
+
+		//A2DP profile connection
+		sdp_discover_for_a2dp_sink(0);
+
 	}
+
 	if(g_auto_connection_status)
 	{
+		vTaskDelay(pdMS_TO_TICKS(2000));
 		k_work_init_delayable(&setup_auto_connection_work, setup_auto_connection);
 		k_work_schedule(&setup_auto_connection_work, SETUP_CONNECTION_DELAY);
 	}
@@ -325,6 +337,7 @@ static void disconnected(struct bt_conn *conn, uint8_t reason)
     	g_connectInitRiderHs = 0U;
     	g_avrcpControlConnectHfpHf = false;
     	g_sHfpAgRhDisconnecting =0;
+	connection_status &= ~(1 << RIDER_HEADSET);
     }else if(conn_passenger_hs == conn)
     {
 #ifdef APP_DEBUG_EN
@@ -335,13 +348,15 @@ static void disconnected(struct bt_conn *conn, uint8_t reason)
     	g_connectInitPassengerHs = 0U;
     	g_avrcpControlConnectHfpHf = false;
     	g_sHfpAgPhDisconnecting =0;
+	connection_status &= ~(1 << PASSENGER_HEADSET);
     }
     else if(conn_rider_phone == conn)
     {
+
 #ifdef APP_DEBUG_EN
     	PRINTF("Rider Phone disconnected !!\n");
 #endif
-    	bt_conn_unref(conn);
+
 	conn_rider_phone = NULL;
         if (g_appInstance.acl_conn != NULL)
         {
@@ -350,6 +365,7 @@ static void disconnected(struct bt_conn *conn, uint8_t reason)
 		g_connectInitRiderPhone = 0U;
 		app_a2dp_bridge_src_stop();
 		app_clear_pbap_data();
+		connection_status &= ~(1 << RIDER_PHONE);
 		//app_hf_set_connectable();
     }
 	else
@@ -380,7 +396,9 @@ static void security_changed(struct bt_conn *conn, bt_security_t level,
     if (!err)
     {
         PRINTF("Security changed: %s level %u\n", addr, level);
+
         save_new_paired_device(conn,g_isRiderHeadset);
+
     }
     else
     {
@@ -427,7 +445,9 @@ void app_connect(uint8_t device_type,uint8_t *addr)
 	{
 		if(conn_rider_phone == NULL )
 		{
+
 			app_dual_a2dp_src_pause();
+
 			g_connectInitRiderPhone = 1U;
 			memcpy(&g_riderPhoneAddr, addr, 6U);
 
@@ -442,6 +462,7 @@ void app_connect(uint8_t device_type,uint8_t *addr)
 				{
 					g_appInstance.acl_conn = NULL;
 				}
+
 				app_dual_a2dp_src_resume();
 			}
 			else
@@ -449,10 +470,10 @@ void app_connect(uint8_t device_type,uint8_t *addr)
 				/* unref connection obj in advance as app user */
 				bt_conn_unref(conn_rider_phone);
 				if(conn_rider_phone == NULL )
-						{
+				{
 					PRINTF("Debug NULL Connecting Rider Phone\r\n");
-						}
-				PRINTF("Connecting Rider Phone\r\n");
+				}
+
 			}
 		} else
 		{
@@ -553,22 +574,31 @@ void app_schedule_auto_connect()
 	k_work_init_delayable(&setup_auto_connection_work, setup_auto_connection);
 	k_work_schedule(&setup_auto_connection_work, SETUP_CONNECTION_DELAY);
 }
-
 void app_auto_connect_paired_devices()
 {
-   if (con_attempts > (con_retries * 3 +1))
+
+	if (con_attempts > (con_retries * 3 +1))
 	{
 		g_auto_connection_status =0;
+
 		if(connection_status & RIDER_PHONE_BIT)
-			PRINTF("The Rider Phone connected !!\n");
+			PRINTF("\nThe Rider Phone connected !!\n");
 
 		if(connection_status & RIDER_HEADSET_BIT)
-			PRINTF("The Rider Headset connected !!\n");
+			PRINTF("\nThe Rider Headset connected !!\n");
 
 		if(connection_status & PASSENGER_HEADSET_BIT)
-			PRINTF("The Passenger Headset connected !!\n");
+			PRINTF("\nThe Passenger Headset connected !!\n");
+
 		return;
 	}
+
+    if (g_pairedDeviceCount == 0)
+    {
+        PRINTF("No paired devices found.\n");
+        g_auto_connection_status =0;
+        return;
+    }
 
 	if(con_attempts == 0)
 		g_auto_connection_status =1;
@@ -580,7 +610,7 @@ void app_auto_connect_paired_devices()
 		&& (connection_status & PASSENGER_HEADSET_BIT))
 	{
 		g_auto_connection_status =0;
-		PRINTF("The Rider Phone, Headset and Passenger Headset connected !!\n");
+		PRINTF("\nThe Rider Phone, Headset and Passenger Headset connected !!\n");
 		return;
 	}
 
@@ -608,7 +638,9 @@ void app_auto_connect_paired_devices()
 	    	}
 	        break;
 	}
+
 	app_auto_connect_paired_devices();
+
 }
 
 void app_connect_init(void)

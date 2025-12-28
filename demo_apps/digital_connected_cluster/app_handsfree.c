@@ -43,7 +43,6 @@
 #define APP_HFP_HF_INITIAL_VGM_GAIN 12
 #define HFP_CLASS_OF_DEVICE (0x200404U)
 struct bt_conn *conn_rider_phone = NULL;
-extern void app_hfp_hf_disconnected();
 
 hfp_hf_get_config hfp_hf_config = {
     .bt_hfp_hf_vgs             = APP_HFP_HF_INITIAL_VGS_GAIN,
@@ -310,6 +309,11 @@ void hf_codec_selection(struct bt_conn *conn, uint8_t *codec)
 	}
 }
 
+uint8_t aap_hf_call_status()
+{
+	return g_sCallStatus;
+}
+
 void indicator_status(struct bt_conn *conn, hf_indicator_status_t *status)
 {
     PRINTF("> ID : battchg %d\n", status->battchg);
@@ -340,9 +344,12 @@ void app_sco_connected_callback(struct bt_conn *acl, struct bt_conn *sco)
 {
     struct bt_conn_info sco_info;
     uint16_t sco_handle;
-    bt_conn_get_info(sco, &sco_info);
+
     bt_hci_get_conn_handle(sco,&sco_handle);
+	bt_conn_get_info(sco, &sco_info);
+
     uint8_t air_mode = sco_info.sco.air_mode;
+
     PRINTF("Phone eSCO connected, Handle: %u,air_mode : %u g_sHfpInCallingStatus %d\r\n",sco_handle,air_mode,g_sHfpInCallingStatus);
 
     if(g_appAgConnectInitialized)

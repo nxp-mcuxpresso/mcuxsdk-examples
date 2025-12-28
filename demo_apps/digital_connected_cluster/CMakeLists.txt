@@ -78,7 +78,12 @@ mcux_add_macro(
       -DCONFIG_BT_A2DP_WRITE_EXT=1\
       -DAVRCP_TG_CT=1\
       -DCONFIG_DEBUG_AVRCP=0\
-      -DHFP_BRIDGING=1"
+      -DHFP_BRIDGING=1\
+      -DAPP_AVRCP_DEBUG_EN=1\
+	  -DAPP_DEBUG_EN=1\
+	  -DPBAP_PROFILE_ENABLE=1\
+	  -DAVRCP_BROWSING_ENABLE=0\
+	  -DMAP_PROFILE_ENABLE=1"
 )
 
 mcux_add_iar_configuration(

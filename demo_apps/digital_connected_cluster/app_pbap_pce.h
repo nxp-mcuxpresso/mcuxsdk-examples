@@ -46,6 +46,7 @@ int app_set_phonebook_path(char *name);
 int app_pull_vcard_listing(char *name);
 int app_pull_vcard_entry(char *name);
 void print_contact_list(int type);
+void app_get_photo_data(char *vcf_data);
 void sdp_discover_for_pbap_client(struct bt_conn *conn_handle);
 void pbap_register_service();
 int pbap_pull_phonebook(int type); //pp

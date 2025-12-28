@@ -729,7 +729,7 @@ void avrcp_target_rsp_notify_cmd_interim(
 	switch (event_id)
 	{
 	case BT_AVRCP_EVENT_PLAYBACK_STATUS_CHANGED:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("Event-ID ->BT_AVRCP_EVENT_PLAYBACK_STATUS_CHANGED<0x%x>. rsp->play_status %d\n", event_id,g_playStatus);
 #endif
 		rsp->play_status = g_playStatus;
@@ -738,7 +738,7 @@ void avrcp_target_rsp_notify_cmd_interim(
 		break;
 
 	case BT_AVRCP_EVENT_TRACK_CHANGED:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("Event-ID - ->BT_AVRCP_EVENT_TRACK_CHANGED<0x%x>. \n", event_id);
 #endif
 		memset(rsp->identifier, 0, 8u);
@@ -749,7 +749,7 @@ void avrcp_target_rsp_notify_cmd_interim(
 
 	case BT_AVRCP_EVENT_TRACK_REACHED_END:
 	case BT_AVRCP_EVENT_TRACK_REACHED_START: /* Fall Through */
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("Event-ID -> %s<0x%x>.",
 				event_id == BT_AVRCP_EVENT_TRACK_REACHED_END ? "BT_AVRCP_EVENT_TRACK_REACHED_END" :
 						"AVRCP_EVENT_TRACK_REACHED_START",
@@ -759,7 +759,7 @@ void avrcp_target_rsp_notify_cmd_interim(
 		break;
 
 	case BT_AVRCP_EVENT_PLAYBACK_POS_CHANGED:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("Event-ID ->BT_AVRCP_EVENT_PLAYBACK_POS_CHANGED<0x%x>.\n", event_id);
 #endif
 		rsp->playback_pos = 1000;
@@ -767,7 +767,7 @@ void avrcp_target_rsp_notify_cmd_interim(
 		break;
 
 	case BT_AVRCP_EVENT_BATT_STATUS_CHANGED:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("Event-ID ->BT_AVRCP_EVENT_BATT_STATUS_CHANGED<0x%x>.\n", event_id);
 #endif
 		rsp->battery_status = 0;
@@ -775,7 +775,7 @@ void avrcp_target_rsp_notify_cmd_interim(
 		break;
 
 	case BT_AVRCP_EVENT_SYSTEM_STATUS_CHANGED:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("Event-ID ->BT_AVRCP_EVENT_SYSTEM_STATUS_CHANGED<0x%x>.\n", event_id);
 #endif
 		rsp->system_status = 0;
@@ -784,7 +784,7 @@ void avrcp_target_rsp_notify_cmd_interim(
 
 	case BT_AVRCP_EVENT_PLAYER_APP_SETTING_CHANGED:
 	{
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("Event-ID ->BT_AVRCP_EVENT_PLAYER_APP_SETTING_CHANGED<0x%x>.\n", event_id);
 #endif
 		rsp->setting_changed.num_of_attr           = 1;
@@ -798,21 +798,21 @@ void avrcp_target_rsp_notify_cmd_interim(
 
 #ifdef AVRCP_1_4
 	case BT_AVRCP_EVENT_NOW_PLAYING_CONTENT_CHANGED:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("Event-ID ->BT_AVRCP_EVENT_PLAYER_APP_SETTING_CHANGED<0x%x>.\n", event_id);
 #endif
 		register_player_event(event_id, msg->header.tl);
 		break;
 
 	case BT_AVRCP_EVENT_AVAILABLE_PLAYER_CHANGED:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("Event-ID ->BT_AVRCP_EVENT_AVAILABLE_PLAYER_CHANGED<0x%x>.\n", event_id);
 #endif
 		register_player_event(event_id, msg->header.tl);
 		break;
 
 	case BT_AVRCP_EVENT_ADDRESSED_PLAYER_CHANGED:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("Event-ID ->BT_AVRCP_EVENT_ADDRESSED_PLAYER_CHANGED<0x%x>.\n", event_id);
 #endif
 		rsp->addressed_player_changed.player_id   = 1;
@@ -821,7 +821,7 @@ void avrcp_target_rsp_notify_cmd_interim(
 		break;
 
 	case BT_AVRCP_EVENT_UIDS_CHANGED:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF( "    Event-ID ->BT_AVRCP_EVENT_UIDS_CHANGED<0x%x>.\n", event_id);
 #endif
 		rsp->uid_counter = 1;
@@ -829,7 +829,7 @@ void avrcp_target_rsp_notify_cmd_interim(
 		break;
 
 	case BT_AVRCP_EVENT_VOLUME_CHANGED:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF( "    Event-ID ->BT_AVRCP_EVENT_VOLUME_CHANGED<0x%x>\n", event_id);
 #endif
 		rsp->absolute_volume = g_ctTgVolume;
@@ -1161,7 +1161,7 @@ static void avrcp_target_handle_vendor_dependent_msg(struct bt_conn *conn, struc
 	}
 
 	case BT_AVRCP_PDU_ID_REGISTER_NOTIFICATION:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("PDU-ID -> Register Notification<0x%x>\r\n", vendor_msg->pdu_id);
 #endif
 		response_type = BT_AVRCP_RESPONSE_TYPE_INTERIM;
@@ -1645,6 +1645,10 @@ void avrcp_print_event_nofity_rsp(uint8_t event_id, struct bt_avrcp_event_rsp *e
 		case 0x01:
 			PRINTF("PLAYING\r\n");
 			avrcp_tg_notify(event_id,event_res->play_status);
+
+			if(app_get_a2dp_mode() || conn_rider_hs == NULL)
+				avrcp_pause_button(1);
+
 			break;
 
 		case 0x02:
@@ -1679,6 +1683,8 @@ void avrcp_print_event_nofity_rsp(uint8_t event_id, struct bt_avrcp_event_rsp *e
 #endif
 			avrcp_tg_notify(event_id,event_res->play_status);
 			//avrcp_get_playsong_detail();
+			if(!app_get_a2dp_mode())
+				avrcp_ct_get_element_attributes();
 			break;
 
 		case BT_AVRCP_EVENT_TRACK_REACHED_END:
@@ -1913,16 +1919,16 @@ void avrcp_print_vendor_cmd_rsp_content(struct bt_avrcp_vendor *vendor_rsp)
 			memcpy(attr_val, rsp->attrs[i].string, rsp->attrs[i].string_len);
 
 			attr_val[rsp->attrs[i].string_len] = '\0';
-#ifdef APP_AVRCP_DEBUG_EN
+//#ifdef APP_AVRCP_DEBUG_EN
 			PRINTF("\nID: 0x%04x ", rsp->attrs[i].attr_id);
 			PRINTF("Value: %s,", attr_val);
 			PRINTF("Len:%d, Value: %s", rsp->attrs[i].string_len, attr_val);
-#endif
+//#endif
 
 			if ((rsp->attrs[i].attr_id == 0x08u) && (rsp->attrs[i].string_len != 0u))
 			{
 #ifdef APP_AVRCP_DEBUG_EN
-				PRINTF("save cover art handle and get image\r\n");
+				PRINTF("Get cover art image \r\n");
 #endif
 
 				memset(cover_art_handle, 0, sizeof(cover_art_handle));
@@ -2028,74 +2034,74 @@ void avrcp_print_vendor_cmd_rsp_content(struct bt_avrcp_vendor *vendor_rsp)
 
 void avrcp_print_vendor_cmd_rsp(struct bt_avrcp_vendor *vendor_rsp)
 {
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 	//PRINTF("avrcp_vendor_cmd_rsp:<0x%x>,packet_type:<0x%x>,param_len:<0x%x>\r\n",vendor_rsp->pdu_id,vendor_rsp->packet_type,vendor_rsp->parameter_len);
 #endif
 
 	switch (vendor_rsp->pdu_id)
 	{
 	case BT_AVRCP_PDU_ID_GET_CAPABILITY:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("Get Capability <0x%x>.", vendor_rsp->pdu_id);
 #endif
 		break;
 
 	case BT_AVRCP_PDU_ID_LIST_PLAYER_APP_SETTING_ATTR:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("List Player Appl. Setting Attributes<0x%x>\r\n", vendor_rsp->pdu_id);
 #endif
 		break;
 
 	case BT_AVRCP_PDU_ID_LIST_PLAYER_APP_SETTING_VAL:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("List Player Appl. Setting Values<0x%x>\r\n", vendor_rsp->pdu_id);
 #endif
 		break;
 
 	case BT_AVRCP_PDU_ID_GET_CUR_PLAYER_APP_SETTING_VAL:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("Get Current Player Appl. Setting Value<0x%x>\r\n", vendor_rsp->pdu_id);
 #endif
 		break;
 
 	case BT_AVRCP_PDU_ID_SET_PLAYER_APP_SETTING_VAL:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("Set Player Appl. Setting Value<0x%x>\r\n", vendor_rsp->pdu_id);
 #endif
 		break;
 
 	case BT_AVRCP_PDU_ID_GET_PLAYER_APP_SETTING_ATTR_TXT:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("Get Player Appl. Setting Attr. Text<0x%x>\r\n", vendor_rsp->pdu_id);
 #endif
 		break;
 
 	case BT_AVRCP_PDU_ID_GET_PLAYER_APP_SETTING_VAL_TXT:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("Get Player Appl. Setting Value Text<0x%x>\r\n", vendor_rsp->pdu_id);
 #endif
 		break;
 
 	case BT_AVRCP_PDU_ID_INFORM_DISPLAYABLE_CHAR_SET:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("Inform Displayable Char Set<0x%x>\r\n", vendor_rsp->pdu_id);
 #endif
 		break;
 
 	case BT_AVRCP_PDU_ID_INFORM_BATTERY_STATUS:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("Inform Battery Status<0x%x>\r\n", vendor_rsp->pdu_id);
 #endif
 		break;
 
 	case BT_AVRCP_PDU_ID_GET_ELEMENT_ATTRIBUTE:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("Get Element Attributes<0x%x>\r\n", vendor_rsp->pdu_id);
 #endif
 		break;
 
 	case BT_AVRCP_PDU_ID_GET_PLAY_STATUS:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("Get Play Status<0x%x>\r\n", vendor_rsp->pdu_id);
 #endif
 		break;
@@ -2107,43 +2113,43 @@ void avrcp_print_vendor_cmd_rsp(struct bt_avrcp_vendor *vendor_rsp)
 		break;
 
 	case BT_AVRCP_PDU_ID_REQUEST_CONTINUING_RESPONSE:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("Request Continue Response <0x%x>\r\n", vendor_rsp->pdu_id);
 #endif
 		break;
 
 	case BT_AVRCP_PDU_ID_ABORT_CONTINUING_RESPONSE:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("Abort Continue Response <0x%x>\r\n", vendor_rsp->pdu_id);
 #endif
 		break;
 
 	case BT_AVRCP_PDU_ID_SET_ABSOLUTE_VOLUME:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("Set Absolute Volume<0x%x>\r\n", vendor_rsp->pdu_id);
 #endif
 		break;
 
 	case BT_AVRCP_PDU_ID_SET_ADDRESSED_PLAYER:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("Set Addressed Player<0x%x>\r\n", vendor_rsp->pdu_id);
 #endif
 		break;
 
 	case BT_AVRCP_PDU_ID_PLAY_ITEMS:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("Play Item<0x%x>\r\n", vendor_rsp->pdu_id);
 #endif
 		break;
 
 	case BT_AVRCP_PDU_ID_ADD_TO_NOW_PLAYING:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("Add To Now Playing<0x%x>\r\n", vendor_rsp->pdu_id);
 #endif
 		break;
 
 	default:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("Unknown PDU-ID<0x%x>\r\n", vendor_rsp->pdu_id);
 #endif
 		break;
@@ -2152,13 +2158,13 @@ void avrcp_print_vendor_cmd_rsp(struct bt_avrcp_vendor *vendor_rsp)
 	switch (vendor_rsp->packet_type)
 	{
 	case BT_AVRCP_PACKET_TYPE_SINGLE:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("Single\r\n");
 #endif
 		break;
 
 	case BT_AVRCP_PACKET_TYPE_START:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("Start\r\n");
 		PRINTF("====== Params are Not Displaying ======= \r\n");
 		PRINTF("Take Action to Send Continue/Abort Command\r\n");
@@ -2167,7 +2173,7 @@ void avrcp_print_vendor_cmd_rsp(struct bt_avrcp_vendor *vendor_rsp)
 		/* break; */
 
 	case BT_AVRCP_PACKET_TYPE_CONTINUE:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("Continue\r\n");
 		PRINTF("====== Params are Not Displaying ======= \r\n");
 		PRINTF("Take Action to Send Continue/Abort Command\r\n");
@@ -2176,7 +2182,7 @@ void avrcp_print_vendor_cmd_rsp(struct bt_avrcp_vendor *vendor_rsp)
 		/* break; */
 
 	case BT_AVRCP_PACKET_TYPE_END:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("End\r\n");
 		PRINTF("====== Params are Not Displaying ======= \r\n");
 #endif
@@ -2188,7 +2194,7 @@ void avrcp_print_vendor_cmd_rsp(struct bt_avrcp_vendor *vendor_rsp)
 		return;
 		/* break; */
 	}
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 	PRINTF("Param Length: 0x%04x\r\n", vendor_rsp->parameter_len);
 #endif
 
@@ -2726,8 +2732,8 @@ void avrcp_ct_register_notification(struct bt_conn *conn, uint8_t reg_notify_typ
 #endif
 		}
 		else {
-#ifdef APP_DEBUG_EN
-			PRINTF(" Register notification: BT_AVRCP_EVENT_PLAYBACK_STATUS_CHANGED: OK \r\n");
+#ifdef APP_AVRCP_DEBUG_EN
+			PRINTF("Register notification: BT_AVRCP_EVENT_PLAYBACK_STATUS_CHANGED: OK \r\n");
 #endif
 		}
 		break;
@@ -2742,7 +2748,7 @@ void avrcp_ct_register_notification(struct bt_conn *conn, uint8_t reg_notify_typ
 #endif
 		}
 		else {
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 			PRINTF("Register notification : BT_AVRCP_EVENT_TRACK_CHANGED: OK \r\n");
 #endif
 		}
@@ -2758,7 +2764,7 @@ void avrcp_ct_register_notification(struct bt_conn *conn, uint8_t reg_notify_typ
 #endif
 		}
 		else {
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 			PRINTF(" Register notification : BT_AVRCP_EVENT_VOLUME_CHANGED: OK\r\n");
 #endif
 		}
@@ -2774,7 +2780,7 @@ void avrcp_ct_register_notification(struct bt_conn *conn, uint8_t reg_notify_typ
 #endif
 		}
 		else {
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 			PRINTF("Register notification : BT_AVRCP_EVENT_NOW_PLAYING_CONTENT_CHANGED: OK\r\n");
 #endif
 		}
@@ -2791,13 +2797,13 @@ void avrcp_ct_register_notification(struct bt_conn *conn, uint8_t reg_notify_typ
 #endif
 		}
 		else {
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 			PRINTF("Register notification : BT_AVRCP_EVENT_PLAYBACK_POS_CHANGED: OK\r\n");
 #endif
 		}
 		break;
 	default:
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("default\r\n");
 #endif
 		break;
@@ -2816,6 +2822,7 @@ void avrcp_ct_get_element_attributes()
 	memset(&attrs->identifier[0], 0, 8u);
 	attrs->num_of_attr = 0u; /* get all attrs */
 	pdu_id             = BT_AVRCP_PDU_ID_GET_ELEMENT_ATTRIBUTE;
+
 	/*for (uint8_t index = 0; index < attrs->num_of_attr; index++)
 	{
 		attrs->attr_ids[index]=index+1;
@@ -3661,7 +3668,7 @@ int avrcp_tg_notify(uint8_t event,uint8_t value)
 	DEF_DATA(32u);
 	uint16_t rsp_len;
 
-#ifdef APP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 	PRINTF("\navrcp_tg_notify Event:%d,value:%d\n",event, value);
 #endif
 	if(event == 1)

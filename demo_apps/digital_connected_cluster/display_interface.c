@@ -152,7 +152,7 @@ void print_paired_devices(void)
     PRINTF("Paired Devices List:\n");
     if (g_pairedDeviceCount == 0)
     {
-    	check_and_clear_bonded_devices();
+	//check_and_clear_bonded_devices();
         PRINTF("No paired devices found.\n");
         return;
     }
@@ -166,7 +166,6 @@ void print_paired_devices(void)
                paired_devices[i].name, paired_devices[i].device_type);
     }
 }
-
 void app_update_last_connected_device(const uint8_t addr[6] , uint8_t device_type)
 {
 
@@ -415,7 +414,9 @@ void connect_paired_device(uint8_t device_index)
 	for (int i = 0; i < 6; i++) {
 		device_addr[i] = addr[5 - i];
 	}
+
 	uint8_t dev_type = paired_devices[device_index - 1].device_type;
+
 	//Call the correct connection function based on device type
 	if ( (dev_type & 0x0F) == RIDER_PHONE)
 	{
@@ -448,9 +449,12 @@ void app_auto_connect_device(int device_type)
         return;
     }
 
+    uint8_t dev_type;
+
     for (int i = 0; i < g_pairedDeviceCount; i++)
     {
-		uint8_t dev_type = paired_devices[i].device_type;
+	uint8_t dev_type = paired_devices[i].device_type;
+
     	if (( dev_type & 0x0F) == device_type  && (dev_type & LAST_CONNECTED_MASK) )
     	{
     		device_index=i+1;
@@ -462,6 +466,7 @@ void app_auto_connect_device(int device_type)
 
     if (!device_index)
     {
+	PRINTF("NOT LAST CONNECTED dev type %d",device_type);
     	app_auto_connect_paired_devices();
     	return;
     }

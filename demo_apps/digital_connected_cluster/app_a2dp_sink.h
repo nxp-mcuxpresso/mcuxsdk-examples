@@ -21,5 +21,6 @@ void app_a2dp_sink_task(void *param);
 void a2dp_sink_ready();
 void sdp_discover_for_a2dp_source(void);
 uint8_t app_get_snk_a2dp_status();
+void app_a2dp_snk_suspend();
 
 #endif /* __BT_BR_A2DP_SINK_H__ */

@@ -47,4 +47,5 @@ void read_audio(void *param);
 uint8_t app_get_a2dp_mode();
 void app_a2dp_snk_pause();
 void app_a2dp_snk_resume();
+uint8_t app_a2dp_start_with_rhs();
 #endif /* __APP_A2DP_SOURCE_H__ */

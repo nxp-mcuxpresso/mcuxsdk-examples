@@ -26,11 +26,12 @@
 #include "a2dp_pl_media_48KHz.h"
 #include "app_shell.h"
 #include "app_a2dp_source.h"
+#include "app_a2dp_sink.h"
 #include "app_avrcp.h"
 #include "app_pbap_pce.h"
 #include "wav_file.h"
 #include "app_handsfree_ag.h"
-#include "app_a2dp_sink.h"
+#include "app_handsfree.h"
 
 /* User may need to change it for real production */
 #define SDP_CLIENT_USER_BUF_LEN		512U
@@ -42,7 +43,6 @@ NET_BUF_POOL_FIXED_DEFINE(app_sdp_client_pool, CONFIG_BT_MAX_CONN,SDP_CLIENT_USE
 a2dp_codec_config_t g_phoneA2dpConfig;
 uint8_t app_sdp_a2sink_user(struct bt_conn *conn,struct bt_sdp_client_result *result);
 void print_a2dp_config_paramater();
-extern uint8_t app_get_snk_a2dp_status();
 
 struct bt_sdp_discover_params discov_a2dp_sink =
 {
@@ -89,6 +89,8 @@ uint8_t * media;
 uint8_t g_mallocA2dp = 0;
 uint8_t g_a2dpXtimer=0;
 uint8_t g_audioFileOpened=0;
+static bool pause_already_sent = false;
+static uint8_t audio_packets_after_pause;
 
 //BT_A2DP_SBC_SOURCE_ENDPOINT(sbcEndpoint, A2DP_SBC_SAMP_FREQ_44100 );
 //BT_A2DP_SBC_SOURCE_ENDPOINT(sbcEndpoint, A2DP_SBC_SAMP_FREQ_48000 );
@@ -180,12 +182,22 @@ int data_send_source(uint8_t *data, uint32_t length)
 	int ret=0;
 	/*Send the data to the external remote headset*/
 
-	if( g_phoneESCO || g_rhsESCO || g_phsESCO || rider_hs_a2dp_src == NULL )
-	{
-		/*A2DP mode not allowed during HFP call audio !*/
-		//Check if can pause music in that case ..
-		return 1;
-	}
+	if( rider_hs_a2dp_src == NULL )
+		{
+			//suspend if not rider headset connected
+			app_a2dp_snk_suspend();
+			return 1;
+		}
+
+		if( g_phoneESCO || g_phsESCO || g_dualA2dpSrcMode)
+		{
+			return 1;
+		}
+
+		if ( g_rhsESCO && aap_hf_call_status())
+		{
+			return 1;
+		}
 
 	//If no rider headset connected, need to suspend instead of pause.
 
@@ -317,7 +329,7 @@ void app_a2dp_snk_resume()
     	PRINTF("Resume A2DP SNK ! \n");
 #endif
     	g_a2dpSnkPlayStatus = 0;
-    	vTaskDelay(50);
+	vTaskDelay(30);
     	avrcp_play_button(1);
 
     }
@@ -327,6 +339,18 @@ uint8_t app_get_a2dp_mode()
 {
 	return g_dualA2dpSrcMode;
 }
+
+uint8_t app_a2dp_start_with_rhs()
+{
+	if( conn_rider_hs == NULL || g_rhsESCO || g_phsESCO || app_hfp_intercom_status())
+	{
+		return 0;
+	}
+
+	return 1;
+}
+
+
 void app_a2dp_music_play(uint8_t rider_hs)
 {
 	if( g_phoneESCO || g_rhsESCO || g_phsESCO )
@@ -488,7 +512,9 @@ void app_dual_a2dp_src_pause()
     	g_dualA2dpRhPlayStatus = g_riderHsAudioStart;
     	g_dualA2dpPhPlayStatus = g_passengerHsAudioStart;
 		app_a2dp_src_stop(1);
+		vTaskDelay(20);
 		app_a2dp_src_stop(0);
+		avrcp_tg_notify(1,0);
 		vTaskDelay(10);
     }
 
@@ -793,7 +819,7 @@ void read_audio(void *pvParameters)
 
 			        if (NULL == media)
 			        {
-			            return;
+			            continue;
 			        }
 
 			        for (index = 0; index < g_a2dpSrcNumSamples; index++)
@@ -817,7 +843,7 @@ void read_audio(void *pvParameters)
 			            if (NULL == media)
 			            {
 			                PRINTF("Memory Allocation failed in Produce Media\n");
-			                return;
+			                continue;
 			            }
 			            memcpy(media, ((uint8_t *)beethoven + g_ToneIndex), sizeof(beethoven) - g_ToneIndex);
 			            memcpy(&media[sizeof(beethoven) - g_ToneIndex],
@@ -900,22 +926,20 @@ void app_endpoint_configured_idx1(struct bt_a2dp_endpoint_configure_result *resu
 
         }else if(passenger_hs_a2dp_src == result->a2dp)
         {
-           	PRINTF("\nPHS ");
-           	g_phsIndex = index;
-           	if(index == 1)
-           	{
-           		phs_a2dp_endpoint_src = &sbcEndpointIdx1;
-           	}
-           	else if(index == 2)
-           	{
-           		phs_a2dp_endpoint_src = &sbcEndpointIdx2;
-           	}
+		PRINTF("\nPHS ");
 
-        	bt_a2dp_set_ep_codec_enable(phs_a2dp_endpoint_src,1);
-           	if (g_dualA2dpSrcMode)
-           	{
-           		app_a2dp_src_start(0);
-           	}
+		g_phsIndex = index;
+
+		if(index == 1)
+			phs_a2dp_endpoint_src = &sbcEndpointIdx1;
+		else if(index == 2)
+			phs_a2dp_endpoint_src = &sbcEndpointIdx2;
+
+		bt_a2dp_set_ep_codec_enable(phs_a2dp_endpoint_src,1);
+
+		if (g_dualA2dpSrcMode)
+			app_a2dp_src_start(0);
+
         }
 
         PRINTF("A2DP endpoint configured index:%d!\n",index);

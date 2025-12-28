@@ -35,5 +35,5 @@ int app_hfp_hf_discover(struct bt_conn *conn, uint8_t channel);
 void hfp_hf_init(void);
 void hfp_hf_query_list_current_calls(void);
 void hfp_set_hfp_nb_codec(void);
-
+uint8_t aap_hf_call_status();
 #endif /* __APPL_PERIPHERAL_HFP_HF_MAIN_H__ */

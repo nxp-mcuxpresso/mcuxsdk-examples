@@ -37,20 +37,22 @@
 #define MAX_MESSAGE_SIZE 700
 
 #define SDP_CLIENT_USER_BUF_LEN 512U
-#define MAX_MESSAGES 3
+#define MAX_REJECT_MESSAGES 3
 #define MAX_MESSAGE_LENGTH 120
+#define MAX_INBOX_MESSAGE 20
 NET_BUF_POOL_FIXED_DEFINE(map_sdp_client_pool, CONFIG_BT_MAX_CONN, SDP_CLIENT_USER_BUF_LEN, CONFIG_NET_BUF_USER_DATA_SIZE, NULL);
 
 static uint8_t g_isGetMessage = 0;
 static uint8_t g_mapMessageIndex = 0;
 uint32_t glb_message_list_cntr = 0,glb_manual_get_list =0;
+static uint8_t g_mapInitiated = 0;
 char map_msg_example[MAX_MESSAGE_SIZE];
 bool g_mapconnection = 0 ;
 
-char g_mapMessages[MAX_MESSAGES][MAX_MESSAGE_LENGTH] = {
+char g_mapMessages[MAX_REJECT_MESSAGES][MAX_MESSAGE_LENGTH] = {
     "I'll call you back later",
-    "Can�t pick up, riding. Will get back to you ASAP",
-    "On the bike � can�t talk. Will ping you shortly"
+    "Can't pick up, riding. Will get back to you ASAP",
+    "On the bike, can't talk. Will ping you shortly"
 };
 
 static struct bt_sdp_attribute map_mce_attrs[] = {
@@ -382,7 +384,7 @@ void app_build_map_msg(const char *number) {
 			"END:BBODY\r\n"
 			"END:BENV\r\n"
 			"END:BMSG", number, number, number, strlen(g_mapMessages[g_mapMessageIndex]), g_mapMessages[g_mapMessageIndex]);
-	PRINTF("Mobile Number is: %s\nText message is %s and length is %d\r\n",number, g_mapMessages[g_mapMessageIndex],strlen(g_mapMessages[g_mapMessageIndex]));
+	PRINTF("Mobile Number is: %s\nText message is: %s \r\n",number, g_mapMessages[g_mapMessageIndex],strlen(g_mapMessages[g_mapMessageIndex]));
 }
 
 struct map_hdr
@@ -588,7 +590,7 @@ static void map_mce_mns_disconnected(struct bt_map_mce_mns *mce_mns, uint8_t res
 {
     g_appInstance.mce_mns = NULL;
     PRINTF("MCE MNS disconnection - 0x%02X\r\n", result);
-	glb_manual_get_list--;
+    glb_manual_get_list--;
     app_state_machine();
 }
 
@@ -606,7 +608,10 @@ static void map_mce_mas_connected(struct bt_map_mce_mas *mce_mas)
         PRINTF("MAX Packet Length is invalid\r\n");
     }
 
+    vTaskDelay(pdMS_TO_TICKS(50));
     app_set_ntf_reg(1);
+    vTaskDelay(pdMS_TO_TICKS(50));
+    map_pull_message(MAX_INBOX_MESSAGE);
 }
 
 static void map_mce_mas_disconnected(struct bt_map_mce_mas *mce_mas, uint8_t result)
@@ -687,7 +692,7 @@ static void app_send_event_cb(struct bt_map_mce_mns *mce_mns, struct net_buf *bu
     uint8_t result;
     PRINTF ("MAP Recv Send Event\r\n");
     bt_map_mce_app_param_parse(buf, app_app_param_cb, NULL);
-    app_print_body(buf);
+    //app_print_body(buf);
     net_buf_unref(buf);
 
     if (flag & BT_OBEX_REQ_END)
@@ -739,7 +744,6 @@ static void app_get_folder_listing_cb(struct bt_map_mce_mas *mce_mas, uint8_t re
     }
     else
     {
-    	g_isGetMessage = 1;
         app_state_machine();
     }
 }
@@ -837,7 +841,17 @@ static void app_get_msg_listing_cb(struct bt_map_mce_mas *mce_mas, uint8_t resul
     }
     else
     {
-        app_state_machine();
+	g_isGetMessage = 1;
+
+        if (g_mapInitiated == 1)
+        {
+		app_map_push_message();
+		g_mapInitiated = 0;
+        }
+        else
+        {
+		app_state_machine();
+        }
     }
 }
 
@@ -926,7 +940,7 @@ void app_push_msg(char *name, bool charset)
     {
         PRINTF("Name - %s\r\n", name);
     }
-    PRINTF("Charset - %d\r\n", charset);
+   // PRINTF("Charset - %d\r\n", charset);
     buf = net_buf_alloc(&mce_mas_tx_pool, osaWaitForever_c);
     net_buf_reserve(buf, BT_MAP_MCE_RSV_LEN_PUSH_MSG(g_appInstance.mce_mas, name, flags));
     BT_MAP_ADD_CHARSET(buf, (uint8_t)charset);
@@ -941,7 +955,7 @@ void app_push_msg(char *name, bool charset)
         actual = max_body_len;
         flags = BT_OBEX_REQ_START;
     }
-    PRINTF("MAP Data:\n%s\n",map_msg_example);
+    //PRINTF("MAP Data:\n%s\n",map_msg_example);
 
     if (flags == BT_OBEX_REQ_START)
     {
@@ -1305,7 +1319,7 @@ static void app_check_supported_features(void)
 
 void app_map_push_message()
 {
-	if(g_isGetMessage)
+	if((g_isGetMessage) && (g_appInstance.mce_mns))
 	{
 		g_appInstance.state = SET_FOLDER_PARENT;
 		app_state_machine();
@@ -1313,7 +1327,8 @@ void app_map_push_message()
 	}
 	else
 	{
-		PRINTF("The get_message command must be executed prior to send_message command.\r\n");
+		g_mapInitiated = 1;
+		sdp_discover_for_map_client(conn_rider_phone);
 	}
 }
 

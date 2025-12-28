@@ -45,7 +45,7 @@
  * Prototypes
  ******************************************************************************/
 static shell_status_t shellBt(shell_handle_t shellHandle, int32_t argc, char **argv);
-extern void app_enable_intercom(uint8_t en);
+
 /*******************************************************************************
  * Variables
  ******************************************************************************/
@@ -270,11 +270,12 @@ static shell_status_t shellBt(shell_handle_t shellHandle, int32_t argc, char **a
 		uint8_t device_index = 0;
 		char *ch = argv[2];
 		device_index = ch[0] - '0';
-		
+
 		if(!g_auto_connection_status)
 			connect_paired_device(device_index);
 		else
 			PRINTF("Please wait auto-connection in progress !\r\n");
+
     }
     else if(strcmp(argv[1], "set_hstype") == 0)
     {
@@ -294,7 +295,7 @@ static shell_status_t shellBt(shell_handle_t shellHandle, int32_t argc, char **a
 			return kStatus_SHELL_Error;
 		}
 
-    	uint8_t dev_type = paired_devices[device_index - 1].device_type;
+		uint8_t dev_type = paired_devices[device_index - 1].device_type;
 
     	if (!(((dev_type & 0x0F) == RIDER_HEADSET) || ( (dev_type & 0x0F) == PASSENGER_HEADSET)))
     	{
@@ -305,12 +306,14 @@ static shell_status_t shellBt(shell_handle_t shellHandle, int32_t argc, char **a
     	if(((strcmp(argv[3], "H") == 0) || (strcmp(argv[3], "h") == 0))
     		&& (paired_devices[device_index - 1].device_type != RIDER_HEADSET))
     	{
+		app_disconnect(PASSENGER_HEADSET);
     		paired_devices[device_index - 1].device_type = RIDER_HEADSET;
 
     	}
     	else if(((strcmp(argv[3], "PH") == 0) || (strcmp(argv[3], "ph") == 0))
     			&& ( (dev_type & 0x0F) != PASSENGER_HEADSET))
     	{
+		app_disconnect(RIDER_HEADSET);
     		paired_devices[device_index - 1].device_type = PASSENGER_HEADSET;
     	}
     	else
@@ -350,53 +353,19 @@ static shell_status_t shellBt(shell_handle_t shellHandle, int32_t argc, char **a
 //**************AVRCP commands start ***************
     else if (strcmp(argv[1], "play") == 0)
     {
-			uint8_t select_op = 0;
-			char *ch = argv[2];
-			if (argc < 2)
-					{
-						PRINTF("the parameter count is wrong\r\n");
-						return kStatus_SHELL_Error;
-					}
-			select_op = ch[0] - '0';
-			avrcp_play_button(select_op);
+			avrcp_play_button(1);
 	}
     else if (strcmp(argv[1], "pause") == 0)
 	{
-			uint8_t select_op = 0;
-			char *ch = argv[2];
-			if (argc < 2)
-					{
-						PRINTF("the parameter count is wrong\r\n");
-						return kStatus_SHELL_Error;
-					}
-			select_op = ch[0] - '0';
-
-			avrcp_pause_button(select_op);
+			avrcp_pause_button(1);
 	}
     else if (strcmp(argv[1], "next") == 0)
     {
-          	uint8_t select_op = 0;
-          	char *ch = argv[2];
-          	if (argc < 2)
-          	        {
-          	            PRINTF("the parameter count is wrong\r\n");
-          	            return kStatus_SHELL_Error;
-          	        }
-         // 	select_op = ch[0] - '0';
           	avrcp_forward_backward(1);
     }
 
     else if (strcmp(argv[1], "previous") == 0)
     {
-          	uint8_t select_op = 0;
-          	char *ch = argv[2];
-          	if (argc < 2)
-          	        {
-          	            PRINTF("the parameter count is wrong\r\n");
-          	            return kStatus_SHELL_Error;
-          	        }
-         // 	select_op = ch[0] - '0';
-
           	avrcp_forward_backward(0);
     }
     else if (strcmp(argv[1], "volume") == 0)
@@ -583,8 +552,8 @@ static shell_status_t shellBt(shell_handle_t shellHandle, int32_t argc, char **a
         		return kStatus_SHELL_Error;
         	}
         	//select_op = ch[0] - '0';
+		avrcp_ct_get_element_attributes();
         	//avrcp_get_playsong_detail();
-			avrcp_ct_get_element_attributes();
         }		
 //**************AVRCP commands end***************
 
@@ -753,15 +722,24 @@ static shell_status_t shellBt(shell_handle_t shellHandle, int32_t argc, char **a
 			while(conn_passenger_hs != NULL);
 		}
 
-		err = bt_unpair(BT_ID_DEFAULT, NULL);
+		/*First need to read the paired device*/
+		if (!app_read_paired_devices())
+		{
+			uint8_t addr[6];
+			PRINTF("Number of paired device count is %d\n", g_pairedDeviceCount);
+			for(int i = 0;i < g_pairedDeviceCount; i++)
+			{
+				PRINTF("[%d] Address: %02X:%02X:%02X:%02X:%02X:%02X, Name: %s, Type: %d\n",
+						i + 1,
+						paired_devices[i].addr[0], paired_devices[i].addr[1], paired_devices[i].addr[2],
+						paired_devices[i].addr[3], paired_devices[i].addr[4], paired_devices[i].addr[5],
+						paired_devices[i].name, paired_devices[i].device_type);
 
-		if (err != 0)
-		{
-			PRINTF("failed reason = %d\r\n", err);
-		}
-		else
-		{
-			PRINTF("success\r\n");
+				if (memcmp(paired_devices[i].addr, addr, 6) == 0)
+				{
+					bt_unpair(BT_ID_DEFAULT,(bt_addr_le_t *)addr);
+				}
+			}
 			PRINTF("clear_paired_devices_from_lfs.\n\n");
 			vTaskDelay(pdMS_TO_TICKS(50));
 			app_clear_paired_devices();

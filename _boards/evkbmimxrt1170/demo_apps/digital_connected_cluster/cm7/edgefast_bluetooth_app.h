@@ -9,7 +9,7 @@
 #include "edgefast_bluetooth_audio_config.h"
 
 #define FLASH_ADAPTER_SIZE 0x10000
-#define MAX_PAIRED_DEVICES 4 
+#define MAX_PAIRED_DEVICES 6
 /*WIFI_AW611_BOARD_UBX_JODY_W5_M2*/
 
 #if ( defined(WIFI_IW416_BOARD_MURATA_1XK_M2) || defined(WIFI_88W8987_BOARD_MURATA_1ZM_M2) || \
@@ -439,11 +439,11 @@
 #undef CONFIG_BT_CLASSIC
 #endif
 
-#define SHELL_BUFFER_SIZE 512
+#define SHELL_BUFFER_SIZE 120
 #if ((defined(CONFIG_BT_MAP_MCE) && (CONFIG_BT_MAP_MCE > 0U)) || \
      (defined(CONFIG_BT_PBAP_PCE) && (CONFIG_BT_PBAP_PCE > 0U)))
-#define SHELL_MAX_ARGS    40
+#define SHELL_MAX_ARGS    10
 #else
-#define SHELL_MAX_ARGS    20
+#define SHELL_MAX_ARGS    10
 #endif
 
