@@ -60,6 +60,8 @@ void BOARD_InitHardware(void)
     CLOCK_SetRootClock(BOARD_ADP5585_I2C_CLOCK_ROOT, &lpi2cClkCfg);
 
     /* Select SAI3 signals */
+    adp5585_handle_t handle;
+    BOARD_InitADP5585(&handle);
     ADP5585_SetDirection(&handle, (1 << BOARD_ADP5585_EXP_SEL), kADP5585_Output);
     ADP5585_ClearPins(&handle, (1 << BOARD_ADP5585_EXP_SEL));
 
