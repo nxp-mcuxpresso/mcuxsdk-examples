@@ -90,12 +90,12 @@ typedef enum
     NCP_MASTER_SPI_END,
 } ncp_state;
 
-typedef struct NCP_TLV_PACK_START _ncp_spi_hs_rx_header
+typedef NCP_TLV_PACK_START struct _ncp_spi_hs_rx_header
 {
     uint16_t direct;
 } NCP_TLV_PACK_END ncp_spi_hs_tx_header;
 
-typedef struct NCP_TLV_PACK_START _ncp_spi_hs_tx_header
+typedef NCP_TLV_PACK_START struct _ncp_spi_hs_tx_header
 {
     uint32_t crc;
 } NCP_TLV_PACK_END ncp_spi_hs_rx_header;
