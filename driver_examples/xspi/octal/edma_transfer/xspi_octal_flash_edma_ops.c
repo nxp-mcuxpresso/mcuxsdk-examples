@@ -584,9 +584,15 @@ void xspi_nor_flash_init(XSPI_Type *base)
     config.ptrAhbAccessConfig->ARDSeqIndex               = NOR_CMD_LUT_SEQ_IDX_READ;
     config.ptrAhbAccessConfig->enableAHBBufferWriteFlush = true;
     config.ptrAhbAccessConfig->enableAHBPrefetch         = true;
-
-    config.ptrIpAccessConfig->ptrSfpFradConfig               = NULL; /* This demo does not demonstrate SFP feature.*/
-    config.ptrIpAccessConfig->ptrSfpMdadConfig               = NULL;
+#if defined(ENABLE_SFP_CONFIG) && (ENABLE_SFP_CONFIG)
+    extern xspi_sfp_mdad_config_t *pSfpMdadConfig;
+    extern xspi_sfp_frad_config_t *pSfpFradConfig;
+    config.ptrIpAccessConfig->ptrSfpFradConfig = pSfpFradConfig;
+    config.ptrIpAccessConfig->ptrSfpMdadConfig = pSfpMdadConfig;
+#else
+    config.ptrIpAccessConfig->ptrSfpFradConfig = NULL; /* This demo does not demonstrate SFP feature.*/
+    config.ptrIpAccessConfig->ptrSfpMdadConfig = NULL;
+#endif
     config.ptrIpAccessConfig->ipAccessTimeoutValue           = 0xFFFFFFFFUL;
     config.ptrIpAccessConfig->sfpArbitrationLockTimeoutValue = 0xFFFFFFUL;
     XSPI_Init(base, &config);
