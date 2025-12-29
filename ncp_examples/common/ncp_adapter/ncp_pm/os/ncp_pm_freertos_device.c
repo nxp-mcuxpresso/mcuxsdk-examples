@@ -104,6 +104,12 @@ static const ncp_pm_constraint_cbs_t s_ncp_pm_constraint_cbs = {
 
 void GPIO_INTA_DriverIRQHandler(void)
 {
+    /* Disable GPIO interrupt */
+    GPIO_PinDisableInterrupt(GPIO, 1U, 10U, (uint32_t)kGPIO_InterruptA);   
+    /* Clear interrupt status */
+    GPIO_PinClearInterruptFlag(GPIO, 1U, 10U, (uint32_t)kGPIO_InterruptA);    
+    /* Clear NVIC pending IRQ */
+    NVIC_ClearPendingIRQ(GPIO_INTA_IRQn);
 }
 
 void PIN1_INT_IRQHandler(void)
@@ -117,6 +123,19 @@ void ncp_pm_init_wakeup_source(void *ws, uint32_t wsId, bool enable)
 
 void ncp_pm_enable_wakeup_source(void *ws)
 {
+    pm_wakeup_source_t *pm_ws = (pm_wakeup_source_t *)ws;
+    uint32_t irqn;
+    uint32_t misc;
+
+    assert(ws != NULL);
+    PM_DECODE_WAKEUP_SOURCE_ID(pm_ws->wsId);
+    (void)misc;
+
+    if ((IRQn_Type)irqn == GPIO_INTA_IRQn)
+    {
+        NVIC_ClearPendingIRQ(GPIO_INTA_IRQn);
+    }
+
     PM_EnableWakeupSource((pm_wakeup_source_t *)ws);
 }
 
@@ -265,7 +284,6 @@ static void ncp_pm_device_gpio_init(void)
         GPIO_SetPinInterruptConfig(GPIO, 1U, 10U, &gpio_lp_int_config);
         GPIO_PinEnableInterrupt(GPIO, 1U, 10U, (uint32_t)kGPIO_InterruptA);
         NVIC_ClearPendingIRQ(GPIO_INTA_IRQn);
-        EnableIRQ(GPIO_INTA_IRQn);
         /* Keep GPIO 42 in high level to avoid unexpected level change in PM3. */
         IO_MUX_SetPinOutLevelInSleep(42U, IO_MUX_SleepPinLevelHigh);
     }
