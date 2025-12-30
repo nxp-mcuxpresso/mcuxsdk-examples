@@ -1132,7 +1132,6 @@ static ncp_status_t sdio_card_init(void)
         return NCP_STATUS_ERROR;
     }
     ncp_adap_d("%s: SDIO slave ready", __FUNCTION__);
-    OSA_TimeDelay(100);
 
     uint32_t resp;
 
@@ -1340,7 +1339,8 @@ retry:
 
 static void sdio_notify_int_callback(void *param)
 {
-    (void)sdhost_rescan_set_event(SDHOST_RESCAN_START);
+    if(sdhost_ready == true)
+        (void)sdhost_rescan_set_event(SDHOST_RESCAN_START);
 }
 
 /**
