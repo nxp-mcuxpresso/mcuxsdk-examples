@@ -5,17 +5,6 @@ if (CONFIG_MCUX_COMPONENT_middleware.lvgl)
         CX "-DLV_CONF_INCLUDE_SIMPLE=1"
     )
 
-    mcux_add_macro(
-        CC "-DVGLITE_ASSERT_MSG=LV_ASSERT_MSG"
-    )
-
-    mcux_add_macro(
-        CC "-D__SCB_DCACHE_LINE_SIZE=1"
-        CORES
-        cm4
-        cm4f
-    )
-
     mcux_add_iar_configuration(
         CC "--diag_suppress=Pe257,Pa039,Pe188,Pa089,Pe191,Pe111,Pa093,Pe177,Pe546,Pe236,Pa205,Pe136,Pa084,Pe550,Pe186,Pe170"
         CX "--diag_suppress=Pe257,Pa039,Pe188,Pa089,Pe191,Pe111,Pa093,Pe177,Pe546,Pe236,Pa205,Pe136,Pa084,Pe550,Pe186,Pe170"
