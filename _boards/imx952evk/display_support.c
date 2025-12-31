@@ -1,8 +1,9 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
+
 #include "fsl_debug_console.h"
 #include "board.h"
 #include "fsl_rgpio.h"
@@ -28,12 +29,15 @@ uint32_t mipiDsiTxEscClkFreq_Hz;
 uint32_t mipiDsiDphyBitClkFreq_Hz;
 uint32_t mipiDsiDphyRefClkFreq_Hz;
 uint32_t mipiDsiDpiClkFreq_Hz;
+uint32_t voutClkFreq_Hz;
 
 uint32_t mediaApbClkFreq_Hz;
 uint32_t testByteClkFreq_Hz;
 uint32_t phyRefClkFreq_Hz;
 uint32_t phyByteClkFreq_Hz;
 uint32_t mediaPixClkFreq_Hz;
+#define W32(addr, val) *((volatile uint32_t *)(addr)) = (val)
+#define R32(addr) *((volatile uint32_t *)(addr))
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -200,53 +204,60 @@ void BOARD_PrepareDisplay(void)
     clk_t videopll1vcoCLKCfg = {
         .clkId = kCLOCK_videopll1ctl,
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
-        .rate = 4008000000,
+        .rate = 4009500000,
     };
 
     clk_t videopll1CLKCfg = {
         .clkId = kCLOCK_videopll1,
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
-        .rate = 446333333,
+        .rate = 445500000,
     };
 
     clk_t disp1pixlCLKCfg = {
-        .clkId        = kCLOCK_disp1pix,
+        .clkId = kCLOCK_disp1pix,
+        .pclkId = kCLOCK_videopll1,
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
-	.rate = 148444444,
+        .rate = 148500000,
     };
 
     clk_t mipiphycfgCLKCfg = {
-        .clkId        = kCLOCK_camPhyCfg,
+        .clkId = kCLOCK_camPhyCfg,
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 24000000,
     };
 
     clk_t mipiphypllbypassCLKCfg = {
-        .clkId        = kCLOCK_mipiPhyPllBypass,
+        .clkId = kCLOCK_mipiPhyPllBypass,
+        .pclkId = kCLOCK_videopll1,
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
-        .rate = 446333333,
+        .rate = 445500000,
     };
 
     clk_t mipitestbyteCLKCfg = {
-        .clkId        = kCLOCK_mipiTestByte,
+        .clkId = kCLOCK_mipiTestByte,
+        .pclkId = kCLOCK_videopll1,
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
-        .rate = 446333333,
+        .rate = 445500000,
     };
 
     CLOCK_SetRate(&videopll1vcoCLKCfg);
     CLOCK_EnableClock(videopll1vcoCLKCfg.clkId);
     CLOCK_SetRate(&videopll1CLKCfg);
     CLOCK_EnableClock(videopll1CLKCfg.clkId);
+    voutClkFreq_Hz = CLOCK_GetRate(videopll1CLKCfg.clkId);
+    CLOCK_SetParent(&disp1pixlCLKCfg);
     CLOCK_SetRate(&disp1pixlCLKCfg);
     CLOCK_EnableClock(disp1pixlCLKCfg.clkId);
+    mipiDsiDpiClkFreq_Hz = CLOCK_GetRate(disp1pixlCLKCfg.clkId);
     CLOCK_SetRate(&mipiphycfgCLKCfg);
     CLOCK_EnableClock(mipiphycfgCLKCfg.clkId);
+    CLOCK_SetParent(&mipiphypllbypassCLKCfg);
     CLOCK_SetRate(&mipiphypllbypassCLKCfg);
-    CLOCK_EnableClock(mipiphypllbypassCLKCfg.clkId);
+    CLOCK_SetParent(&mipitestbyteCLKCfg);
     CLOCK_SetRate(&mipitestbyteCLKCfg);
-    CLOCK_EnableClock(mipitestbyteCLKCfg.clkId);
 #elif (DPU_EXAMPLE_DI == DPU_DI_LVDS)
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
+#if 1
     clk_t ldbpllvcoCLKCfg = {
         .clkId = kCLOCK_ldbpllctl,
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
@@ -258,6 +269,20 @@ void BOARD_PrepareDisplay(void)
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 497700000,
     };
+#endif
+#if 0
+    clk_t ldbpllvcoCLKCfg = {
+        .clkId = kCLOCK_ldbpllctl,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
+        .rate = 2564800000,
+    };
+
+    clk_t ldbpllCLKCfg = {
+        .clkId = kCLOCK_ldbpll,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
+        .rate = 641200000,
+    };
+#endif
 #else
     clk_t ldbpllvcoCLKCfg = {
         .clkId = kCLOCK_ldbpllctl,
@@ -282,10 +307,12 @@ void BOARD_PrepareDisplay(void)
     ADP5585_SetDirection(&adpHandle, (1 << LVDS1_EN), kADP5585_Output);
     ADP5585_SetDirection(&adpHandle, (1 << LVDS0_RST), kADP5585_Output);
     ADP5585_SetDirection(&adpHandle, (1 << LVDS0_EN), kADP5585_Output);
+
     ADP5585_SetPins(&adpHandle, (1 << LVDS1_RST));
     ADP5585_SetPins(&adpHandle, (1 << LVDS1_EN));
     ADP5585_SetPins(&adpHandle, (1 << LVDS0_RST));
     ADP5585_SetPins(&adpHandle, (1 << LVDS0_EN));
+
 #endif
     BOARD_InitDpuInterrupt();
 }
@@ -307,7 +334,7 @@ void BOARD_InitLcdPanel(void)
     /* Init the DSI related resource. I.MX952 uses ADP5585 GPIO expander  */
     clk_t lpi2cClkCfg = {
         .clkId = kCLOCK_lpi2c2,
-        .rate = 24000000UL, /* 24Mhz for lpi2c */
+        .rate = 1000000UL, /* 24Mhz for lpi2c */
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
     };
     CLOCK_SetRate(&lpi2cClkCfg);
@@ -345,6 +372,7 @@ void BOARD_InitLcdPanel(void)
 void BOARD_InitDisplayInterface(void)
 {
 #if (DPU_EXAMPLE_DI == DPU_DI_MIPI)
+
     dsi_config_t dsiConfig;
     DSI_GetDefaultConfig(&dsiConfig);
     DSI_Init(DSI_MAIN, DSI_HOST, DSI_INT, &dsiConfig);
@@ -354,31 +382,25 @@ void BOARD_InitDisplayInterface(void)
     phyConfig.phymode = kDSI_DPHY;
     phyConfig.enableNoncontinuousClk = false;
     phyConfig.ppiwidth = kDSI_PPI8BITS;
-    phyConfig.numLanes = APP_MIPI_DSI_LANE_NUM;
-
-    phyConfig.lp2hs_time = 0xED7FB4U;
-    phyConfig.hs2lp_time = 0x75DB48U;
-    phyConfig.esccmd_time = 32182700U;
-    phyConfig.escbyte_time = 21065040U;
+    phyConfig.numLanes = APP_MIPI_DSI_LANE_NUM -1U;
+    phyConfig.lp2hs_time = 0x02F3D91U;
+    phyConfig.hs2lp_time = 0x205ACFU;
+    phyConfig.esccmd_time = 0x1b90000U;
+    phyConfig.escbyte_time = 0x10e0000U;
     phyConfig.lptx_clkdiv = 10U;
-    phyConfig.tolerance_time = 10U;
-    phyConfig.cal_time = 0x96U;
-    phyConfig.ulps_wakeuptime = 0x14U;
+    phyConfig.tolerance_time = 0x280AU;
+    phyConfig.cal_time = 0U;
+    phyConfig.ulps_wakeuptime = 0U;
 
     DSI_SetPhyConfig(DSI_PHY, &phyConfig);
-    status_t result = DSI_PowerUp(DSI_MAIN, DSI_PHY);
-    if (result != 0U)
-    {
-        PRINTF("DSI PHY init failed.\r\n");
-    }
 
     /* IPI setting is based on video mode only */
     /* Set MIPI DSI IPI config */
     const dsi_ipi_config_t ipiConfig = {.pixelPayloadSize      = APP_PANEL_WIDTH,
                                         .dsi_ipi_lane          = kDSI_IPI1Lane,
                                         .dsi_ipi_mapping       = kDSI_IPIDpiConfig1,
-                                        //.ipiColor.depth        = kDSI_IPIdepth8bits,
-                                        //.ipiColor.format       = kDSI_IPIRGB,
+                                        .ipiColor.depth        = kDSI_IPIdepth8bits,
+                                        .ipiColor.format       = kDSI_IPIRGB,
                                         .dsi_fmt               = kDSI_Format_RGB888,
                                         .ipi_fifo_depth_value  = APP_IPI_PIXEL_DEPTH,
                                         .hfp                   = APP_HFP,
@@ -391,20 +413,34 @@ void BOARD_InitDisplayInterface(void)
                                         .vsa                   = APP_VSW,
                                         .vactive               = APP_PANEL_HEIGHT,
     };
-
-    float zebu_ratio = (312500000.0f / 350000000.0f);
-    DSI_PHY->PHY_IPI_RATIO_MAN_CFG     = MIPI_ConvertFloat(zebu_ratio, 6, 16);
-    DSI_PHY->PHY_SYS_RATIO_MAN_CFG     = MIPI_ConvertFloat(zebu_ratio, 6, 16);
-    DSI_ConfigHorizontalParams(DSI_IPI, &ipiConfig, zebu_ratio);
+    phyByteClkFreq_Hz = voutClkFreq_Hz * 2 / 8U;
+    float ratio = (float)phyByteClkFreq_Hz / (float)mipiDsiDpiClkFreq_Hz;
+    DSI_PHY->PHY_IPI_RATIO_MAN_CFG     = MIPI_ConvertFloat(ratio, 6, 16);
+    DSI_PHY->PHY_SYS_RATIO_MAN_CFG     = MIPI_ConvertFloat(ratio, 6, 16);
+    DSI_ConfigHorizontalParams(DSI_IPI, &ipiConfig, ratio);
     DSI_SetIpiConfig(DSI_IPI, &ipiConfig);
-
-    uint32_t dataRateFreq_Hz = 312500000U;
+    uint32_t dataRateFreq_Hz = voutClkFreq_Hz;
     uint32_t phyRefClkFreq_Hz = 24000000U;
+    uint32_t bndwidth_Hz = voutClkFreq_Hz * 2;
+    uint32_t lpclk_hz = mipiDsiDpiClkFreq_Hz / 20;
+    DSI_StartupTxStaticSetting(APP_DPU_DPHY);
+    DSI_DphyTxDynamicSetting(APP_DPU_DPHY, bndwidth_Hz, lpclk_hz);
     DSI_ConfigDphy(DSI_CSR, phyRefClkFreq_Hz, dataRateFreq_Hz, &ipiConfig);
+
+    status_t result = DSI_PowerUp(DSI_MAIN, DSI_PHY);
+    if (result != 0U)
+    {
+        PRINTF("DSI PHY init failed.\r\n");
+    }
+
+    DSI_ClearPpiInterfaceControl(DSI_CSR);
+    dsiConfig.operatemode = kDSI_CommandMode;
+    DSI_SetOperateMode(DSI_MAIN, DSI_HOST, &dsiConfig);
+    BOARD_InitLcdPanel();
+    /* Enter video mode */
     dsiConfig.operatemode = kDSI_VideoMode;
     DSI_SetOperateMode(DSI_MAIN, DSI_HOST, &dsiConfig);
 
-    BOARD_InitLcdPanel();
 #elif DPU_EXAMPLE_DI == DPU_DI_LVDS
 
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR

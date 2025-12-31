@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -54,6 +54,8 @@
 #define APP_DPU_BASE DISPLAY_SEERIS_BASE
 #define APP_DPU      ((DISPLAY_SEERIS_Type *)APP_DPU_BASE)
 #define APP_DPU_BLIT ((DISPLAY_SEERIS_Type *)0x4B430000U)
+#define APP_DPU_DPHY ((DISPLAY_MIPI_DSI_PHY_Type *)0x4B110000U)
+
 /* Display stream 0 base address setting */
 /*InterruptEnable0
 Interrupt Enable register 0.
@@ -88,21 +90,11 @@ Interrupt Enable register 0.
  * The pixel clock is (height + VSW + VFP + VBP) * (width + HSW + HFP + HBP) * frame rate.
  * (2340 + 4 + 10 + 10) * (1080 + 4 + 12 + 8) * x 60Hz = 2364 * 1104 * x 60Hz = 2,609,856 x 57 = 148,761,792 Hz
  */
-#if 0
-#define APP_PANEL_HEIGHT 1080
-#define APP_PANEL_WIDTH  1920
-#define APP_HSW          44
-#define APP_HFP          88
-#define APP_HBP          148
-#define APP_VSW          5
-#define APP_VFP          4
-#define APP_VBP          36
-#endif
 #define APP_PANEL_HEIGHT 2340
 #define APP_PANEL_WIDTH  1080
 #define APP_HSW          4
-#define APP_HFP          12
-#define APP_HBP          8
+#define APP_HFP          10
+#define APP_HBP          10
 #define APP_VSW          4
 #define APP_VFP          10
 #define APP_VBP          10
@@ -120,13 +112,14 @@ Interrupt Enable register 0.
 #define APP_VSW            6
 #define APP_VFP            2
 #define APP_VBP            15
-#define APP_PIXEL_CLOCK_HZ 72400000 /*497700000/7 = 711000000Hz*/
+#define APP_PIXEL_CLOCK_HZ 72400000 /*/7497700000 = 711000000Hz*/
 #endif
 #if (DEMO_PANEL == DEMO_PANEL_LVDS_DUAL_PANEL)
 /*
  * The pixel clock is (height + VSW + VFP + VBP) * (width + HSW + HFP + HBP) * frame rate.
  * (1200 + 5 + 4 + 6) * (1920 + 30 + 100 + 100) * x 60 = 1215 * 2150 * x 60Hz = 156735000 Hz
  */
+#if 1
 /* 1920*1200 LVDS dual panel */
 #define APP_PANEL_HEIGHT   1200
 #define APP_PANEL_WIDTH    1920
@@ -139,7 +132,18 @@ Interrupt Enable register 0.
 /* 1097.04/7 = 156.72MHz */
 #define APP_PIXEL_CLOCK_HZ 156720000
 #endif
-
+#if 0
+/* 1920*720 local dimming LVDS dual panel */
+#define APP_PANEL_HEIGHT   720
+#define APP_PANEL_WIDTH    1920
+#define APP_HSW            24
+#define APP_HFP            52
+#define APP_HBP            32
+#define APP_VSW            3
+#define APP_VFP            9
+#define APP_VBP            20
+#endif
+#endif
 #else
 
 #if (DEMO_PANEL == DEMO_PANEL_MIPI2HDMI)
@@ -147,7 +151,19 @@ Interrupt Enable register 0.
  * The pixel clock is (height + VSW + VFP + VBP) * (width + HSW + HFP + HBP) * frame rate.
  * (1080 + 4 + 36 + 5) * (1920 + 88 + 148 + 44) * x 60 = 1125 * 2200 * x 60Hz = 148500000 Hz
  */
-/* 1920*1080 ADV7535 MIPI2HDMI card */
+#if 0
+/* 1280*720 ADV7535 2lane MIPI2HDMI card */
+#define APP_PANEL_HEIGHT   720
+#define APP_PANEL_WIDTH    1280
+#define APP_HFP            110
+#define APP_HBP            220
+#define APP_HSW            40
+#define APP_VFP            5
+#define APP_VBP            20
+#define APP_VSW            5
+#define APP_PIXEL_CLOCK_HZ 148444444
+#endif
+/* 1920*1080 ADV7535 4 lane MIPI2HDMI card */
 #define APP_PANEL_HEIGHT   1080
 #define APP_PANEL_WIDTH    1920
 #define APP_HFP            88
@@ -156,8 +172,6 @@ Interrupt Enable register 0.
 #define APP_VFP            4
 #define APP_VBP            36
 #define APP_VSW            5
-
-#define APP_PIXEL_CLOCK_HZ 148444444
 #endif
 #if (DEMO_PANEL == DEMO_PANEL_LVDS2HDMI)
 /*
@@ -183,9 +197,8 @@ Interrupt Enable register 0.
 #define APP_MIPI_DSI_BASE MIPI_DSI_BASE
 #define APP_MIPI_DSI      ((MIPI_DSI_Type *)APP_MIPI_DSI_BASE)
 /* The MIPI DSI support 4 line, value in reg is 0x3. */
-#define APP_MIPI_DSI_LANE_NUM                   3
+#define APP_MIPI_DSI_LANE_NUM                   4
 #define APP_IPI_PIXEL_DEPTH                     960
-#define APP_MIPI_DsiPhyRgihtInitialState        0xf80000
 #define MIPI_DSI_BPP                            24
 #define MIPI_DSI_DIV                            32
 #elif DPU_EXAMPLE_DI == DPU_DI_LVDS
