@@ -353,7 +353,11 @@ void ncp_inet_deinit(void);
 #define LINUX_IP_MULTICAST_IF   32
 #define LINUX_IP_MULTICAST_TTL  33
 
+#if CONFIG_NCP_SPI
+#define NCP_INET_SOCKET_RECV_SIZE 3000
+#else
 #define NCP_INET_SOCKET_RECV_SIZE 1472
+#endif
 #define SOCKET_SELECT_TASK_NAME "socket recv task"
 
 #endif
