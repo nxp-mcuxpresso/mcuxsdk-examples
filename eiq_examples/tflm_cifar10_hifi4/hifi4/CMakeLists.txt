@@ -10,7 +10,7 @@ mcux_add_include(
   ../../common
   ../../common/image
   ../../common/tflm/model
-  ../../tflm_cifar10/pcq/
+  ../../tflm_cifar10_hifi4/hifi4/pcq/
   )
 
 mcux_add_source(
@@ -24,8 +24,8 @@ mcux_add_source(
   examples/eiq_examples/common/timer_xtensa.c
   examples/eiq_examples/common/timer_xtensa.h
   examples/eiq_examples/common/timer.h
-  examples/eiq_examples/tflm_cifar10/pcq/model_data.h
-  examples/eiq_examples/tflm_cifar10/pcq/model_cifarnet_ops_micro.cpp
+  examples/eiq_examples/tflm_cifar10_hifi4/hifi4/pcq/model_data.h
+  examples/eiq_examples/tflm_cifar10_hifi4/hifi4/pcq/model_cifarnet_ops_micro.cpp
 
   examples/eiq_examples/tflm_cifar10/main.cpp
 
