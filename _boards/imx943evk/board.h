@@ -18,6 +18,18 @@
 /*! @brief The board name */
 #define BOARD_NAME "IMX943-EVK"
 
+/*
+ * CPU(cm33 core1, cm7 core0, cm7 core1)'s domain id, please find the domain id that assigned to M7
+ * from system manager configuration.
+ * From imx-sm/configs/mx94alt.cfg,
+ * LM1                 name="Boot", rpc=scmi, boot=2, did=3, default
+ *
+ * "did=3" means that the domain id is 3.
+ */
+#ifndef SOC_CPU_DOMAIN_ID
+#define SOC_CPU_DOMAIN_ID 3
+#endif
+
 //#define BOARD_ENABLE_ELE 0
 #define BOARD_ENABLE_ELE 1
 
