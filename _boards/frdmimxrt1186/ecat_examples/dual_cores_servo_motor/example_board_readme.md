@@ -2,17 +2,14 @@ Hardware requirements
 =====================
 - FRDM-IMXRT1186
 - FRDM-LVPMSM-FA RevB
-- FRDM-EXP-LVPMSM
+- FRDM-EXP-LVPMSM RevB
 - TGT3-0065-60-48 Motor
 - RJ45 Network cable
 - 24V DC power supply
-- Personal Computer on which the TwinCat3 has been installed
+- TwinCat3
 
 Board settings
 ==============
-- J12(2-3)/J13(2-3): eCAT0 Function Via J57A(Default).
-- J18(2-3)/J17(2-3): eCAT1 Function Via J57B(Default).
-
 FRDM-LVPMSM-FA board:
   - SW90[1:4]: OFF-ON-ON-ON
   - SW30[1:4]: OFF-ON-OFF-OFF
@@ -37,16 +34,15 @@ FRDM-IMXRT1186 board:
   - Jumper setting:
 
       J29 (2-3)
-
       J42 (1-2)
-
       J49 (2-3)
-
       J30 (2-3)
-
       J33 (2-3)
-      
       J27 (2-3)
+      J12 (2-3)
+      J13 (2-3)
+      J18 (2-3)
+      J17 (2-3)
 
   - Add zero resistors:
 
@@ -55,7 +51,15 @@ FRDM-IMXRT1186 board:
   - Remove resistors:
 
       R407
-  
+
+FRDM-EXP-LVPMSM board:
+  - Add zero resistors:  
+    SJ12, SJ53, SJ52, SJ38, SJ29, SJ28, SJ27, SJ37, SJ16, SJ14, SJ9 , SJ4 , SJ17, SJ18, SJ2 , SJ1 ,  
+    SJ19, SJ20, SJ44, SJ42, SJ39, SJ36, SJ10, SJ17, SJ45, SJ47, SJ5 , SJ6 , SJ8 , SJ11, SJ13, SJ15
+
+  - Remove resistors:   
+	 SJ21, SJ23, SJ25, SJ31, SJ26, SJ32, SJ49
+
 Prepare the Demo  
 ===================
   - Connect the FRDM-EXP-LVPMSM board to the FRDM-IMXRT1186 board

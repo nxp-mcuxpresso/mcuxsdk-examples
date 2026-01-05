@@ -208,10 +208,10 @@ typedef struct _clock_setup
 #define M2_FLEXIO_ENDAT2P2_ST_LEN               (25U)
 #define M2_FLEXIO_ENDAT2P2_RECOVERY_TIME_III    (800U)  // 900ns
 
-#define M2_FLEXIO_ENDAT2P2_RXD_CHANNEL          (15U) // M2_ENDATA_DATA_IN_ENC_A
-#define M2_FLEXIO_ENDAT2P2_TXD_CHANNEL          (12U) // M2_ENDAT_DATA_OUT_ENC_HOME
-#define M2_FLEXIO_ENDAT2P2_CLK_CHANNEL          (13U) // M2_ENDAT_CLK_ENC_I
-#define M2_FLEXIO_ENDAT2P2_DIR_CHANNEL          (14U) // M2_ENDAT_DIR_ENC_B
+#define M2_FLEXIO_ENDAT2P2_RXD_CHANNEL          (12U) // M2_ENDATA_DATA_IN_ENC_A
+#define M2_FLEXIO_ENDAT2P2_TXD_CHANNEL          (15U) // M2_ENDAT_DATA_OUT_ENC_HOME
+#define M2_FLEXIO_ENDAT2P2_CLK_CHANNEL          (14U) // M2_ENDAT_CLK_ENC_I
+#define M2_FLEXIO_ENDAT2P2_DIR_CHANNEL          (13U) // M2_ENDAT_DIR_ENC_B
 
 /* Common position/speed sensor defines */
 #define M1_MCDRV_ENC_GET_DATA_FAST(par)         (MCDRV_EnDatGetPositionFoc(par))
