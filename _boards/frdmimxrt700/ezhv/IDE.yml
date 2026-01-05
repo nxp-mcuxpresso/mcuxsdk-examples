@@ -1,0 +1,4 @@
+riscvllvm:
+  project-templates:
+  - scripts/guigenerator/templates/cmake/CMakeLists.txt
+  - cmake/toolchain/riscvllvm.cmake

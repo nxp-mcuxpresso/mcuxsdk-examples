@@ -1,0 +1,11 @@
+# Copyright 2024-2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+if MCUX_COMPONENT_middleware.lvgl
+
+    config LV_DRAW_BUF_ALIGN
+        default 192 if LV_COLOR_DEPTH_24
+        default 64
+
+endif

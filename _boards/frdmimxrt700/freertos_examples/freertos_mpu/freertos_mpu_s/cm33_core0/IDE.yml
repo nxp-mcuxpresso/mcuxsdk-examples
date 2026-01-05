@@ -1,0 +1,41 @@
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+flash_programming_file:
+  files:
+  - source: ${board_root}/${board}/freertos_examples/freertos_mpu/freertos_mpu_s/${core_id}/freertos_mpu_download.ini
+    attribute: flash_programming_file
+    toolchains: mdk
+    targets: flash_debug flash_release
+
+initialization_file:
+  files:
+  - source: ${board_root}/${board}/freertos_examples/freertos_mpu/freertos_mpu_s/${core_id}/freertos_mpu_debug.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: flash_debug flash_release
+    package_path: boards/${board}/freertos_examples/freertos_mpu/freertos_mpu_s/${core_id}/mdk
+    project_path: _boards/${board}/freertos_examples/freertos_mpu/freertos_mpu_s/${core_id}
+
+mdk:
+  shared-workspace: freertos_mpu
+  sharing-workspace:
+  - ../../freertos_mpu_ns/mdk/freertos_mpu_ns${core_id_suffix_name}
+
+iar:
+  shared-workspace: freertos_mpu
+  sharing-workspace:
+  - ../../freertos_mpu_ns/iar/freertos_mpu_ns${core_id_suffix_name}
+  config:
+    flash_debug:
+      download-extra-image:
+      - path: "../../freertos_mpu_ns/iar/freertos_mpu_ns${core_id_suffix_name}.out"
+        item: 1
+        offset: 0
+        debug_info_only: false
+    flash_release:
+      download-extra-image:
+      - path: "../../freertos_mpu_ns/iar/freertos_mpu_ns${core_id_suffix_name}.out"
+        item: 1
+        offset: 0
+        debug_info_only: false

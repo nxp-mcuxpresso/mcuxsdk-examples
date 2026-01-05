@@ -340,6 +340,8 @@ hello_world:
     mimxrt685audevk@cm33: []
     mimxrt700evk@cm33_core0: []
     mimxrt700evk@cm33_core1: []
+    frdmimxrt700@cm33_core0: []
+    frdmimxrt700@cm33_core1: []
     rdrw612bga: []
     twrkm34z50mv3: []
     twrkm34z75m: []
