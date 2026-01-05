@@ -1,0 +1,63 @@
+/*
+ * Copyright 2023 NXP
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+/*${header:start}*/
+#include "app.h"
+#include "board.h"
+#include "pin_mux.h"
+#include "fsl_common.h"
+#include "clock_config.h"
+/*${header:end}*/
+
+/*${function:start}*/
+void BOARD_InitHardware(void)
+{
+    pca6416a_handle_t handle;
+    /* clang-format off */
+    clk_t flexcanclk = {
+        .clkId = kCLOCK_can1,
+        .pclkId = kCLOCK_osc24m,
+        .rate = 24000000UL,
+        //.enable_clk = true,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
+    };
+    clk_t lpi2cclk = {
+        .clkId = kCLOCK_lpi2c6,
+        .pclkId = kCLOCK_osc24m,
+        .rate = 24000000UL,
+        //.enable_clk = true,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
+    };
+    /* clang-format on */
+    SystemPlatformInit();
+    BOARD_InitBootPins();
+    BOARD_BootClockRUN();
+    BOARD_InitDebugConsole();
+
+    CLOCK_SetRate(&flexcanclk);
+    CLOCK_EnableClock(flexcanclk.clkId);
+    CLOCK_SetRate(&lpi2cclk);
+    CLOCK_EnableClock(lpi2cclk.clkId);
+
+    BOARD_InitPCA6416A(&handle);
+
+    PCA6416A_SetDirection(&handle, (1 << BOARD_PCA6416A_PDM_CAN_SEL), kPCA6416A_Output);
+    PCA6416A_SetDirection(&handle, (1 << BOARD_PCA6416A_MQS_EN), kPCA6416A_Output);
+    PCA6416A_SetDirection(&handle, (1 << BOARD_PCA6416A_CAN1_EN), kPCA6416A_Output);
+    PCA6416A_SetDirection(&handle, (1 << BOARD_PCA6416A_CAN1_STBY_B), kPCA6416A_Output);
+
+    /* Route GPIO_IO25,GPIO_IO27 to CAN1 */
+    PCA6416A_ClearPins(&handle, (1 << BOARD_PCA6416A_PDM_CAN_SEL));
+    PCA6416A_ClearPins(&handle, (1 << BOARD_PCA6416A_MQS_EN));
+
+    /* Initialize TJA1463AT with normal mode */
+    /* Clear CAN STBY_N and EN signal of TJA1463AT */
+    PCA6416A_ClearPins(&handle, (1 << BOARD_PCA6416A_CAN1_STBY_B) | (1 << BOARD_PCA6416A_CAN1_EN));
+    SDK_DelayAtLeastUs(100U, SystemCoreClock);
+
+    /* Setup CAN EN and STBY_N signal of TJA1436AT */
+    PCA6416A_SetPins(&handle, (1 << BOARD_PCA6416A_CAN1_STBY_B) | (1 << BOARD_PCA6416A_CAN1_EN) | (1 << BOARD_PCA6416A_PDM_CAN_SEL));
+}
+/*${function:end}*/

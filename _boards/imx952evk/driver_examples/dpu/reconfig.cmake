@@ -1,0 +1,35 @@
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+mcux_add_include(
+    INCLUDES .
+)
+
+mcux_add_configuration(
+        CC "-DSDK_I2C_BASED_COMPONENT_USED=1 -DBOARD_USE_ADP5585=1 -DRM67199_ENABLE=1"
+)
+
+mcux_remove_armgcc_linker_script(
+        TARGETS debug release
+        BASE_PATH ${SdkRootDirPath}
+        LINKER devices_int/i.MX/i.MX952/MIMX95294/gcc/MIMX95294xxxN_cm7_ram.ld
+)
+
+mcux_add_armgcc_linker_script(
+        TARGETS debug release
+        BASE_PATH ${SdkRootDirPath}
+        LINKER ${board_root}/imx952evk/driver_examples/dpu/linker/MIMX95294_cm7_ram.ld
+)
+
+mcux_remove_iar_linker_script(
+        TARGETS debug release
+        BASE_PATH ${SdkRootDirPath}
+        LINKER devices_int/i.MX/i.MX952/MIMX95294/iar/MIMX95294xxxN_cm7_ram.icf
+)
+
+mcux_add_iar_linker_script(
+        TARGETS debug release
+        BASE_PATH ${SdkRootDirPath}
+        LINKER ${board_root}/imx952evk/driver_examples/dpu/linker/MIMX95294_cm7_ram.icf
+)
