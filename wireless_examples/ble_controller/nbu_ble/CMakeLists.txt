@@ -37,6 +37,15 @@ mcux_add_configuration(
                 -DFSL_RTOS_THREADX=1\
                 -DgNbu_Hadm_d=1\
                 -DTX_INCLUDE_USER_DEFINE_FILE"
+    CX "        -DgBleBondIdentityHeaderSize_c=56 \
+                -DFSL_OSA_TASK_ENABLE=1\
+                -DgUseHciTransportUpward_d=1\
+                -DHCI_FREE_RxBuffer=0\
+                -DRF_OSC_26MHZ=0\
+                -DTEST_BUILD_COEX=0\
+                -DFSL_RTOS_THREADX=1\
+                -DgNbu_Hadm_d=1\
+                -DTX_INCLUDE_USER_DEFINE_FILE"
 )
 
 mcux_add_configuration(
@@ -49,10 +58,12 @@ mcux_add_configuration(
 mcux_add_iar_configuration(
     TARGETS  release
     CC "     -Oh "
+    CX "     -Oh "
 )
 mcux_add_iar_configuration(
     TARGETS  debug
     CC "     --debug "
+    CX "     --debug "
 )
 mcux_add_iar_configuration(
     TARGETS  debug
