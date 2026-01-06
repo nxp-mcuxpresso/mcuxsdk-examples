@@ -1,5 +1,5 @@
 #
-# Copyright 2025 NXP
+# Copyright 2025-2026 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -11,7 +11,7 @@ mcux_add_custom_command(
   TOOLCHAINS xtensa
   BUILD_EVENT POST_BUILD
   BUILD_COMMAND ${CMAKE_OBJCOPY}
-  --xtensa-params= -Obinary ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf ${APPLICATION_BINARY_DIR}/dsp_text_release.bin
+  --xtensa-params= -Obinary ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf ${full_project_board_port_path}/binary/dsp_text_${CMAKE_BUILD_TYPE}.bin
   --xtensa-core=${XTENSA_CORE}
   --xtensa-system=${XTENSA_SYSTEM}
   --only-section=.text
@@ -21,7 +21,7 @@ mcux_add_custom_command(
   TOOLCHAINS xtensa
   BUILD_EVENT POST_BUILD
   BUILD_COMMAND ${CMAKE_OBJCOPY}
-  --xtensa-params= -Obinary ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf ${APPLICATION_BINARY_DIR}/dsp_vector_release.bin
+  --xtensa-params= -Obinary ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf ${full_project_board_port_path}/binary/dsp_vector_${CMAKE_BUILD_TYPE}.bin
   --xtensa-core=${XTENSA_CORE}
   --xtensa-system=${XTENSA_SYSTEM}
   --only-section=.ResetVector.text
@@ -43,7 +43,7 @@ mcux_add_custom_command(
   TOOLCHAINS xtensa
   BUILD_EVENT POST_BUILD
   BUILD_COMMAND ${CMAKE_OBJCOPY}
-  --xtensa-params= -Obinary ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf ${APPLICATION_BINARY_DIR}/dsp_data_release.bin
+  --xtensa-params= -Obinary ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf ${full_project_board_port_path}/binary/dsp_data_${CMAKE_BUILD_TYPE}.bin
   --xtensa-core=${XTENSA_CORE}
   --xtensa-system=${XTENSA_SYSTEM}
   --only-section=.clib.rodata
