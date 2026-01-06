@@ -190,8 +190,8 @@ UINT16 APPL_GenerateMapping(UINT16 *pInputSize, UINT16 *pOutputSize)
             PDOSubindex0 = *((UINT16 *)pPDO->pVarPtr);
             for (PDOEntryCnt = 0; PDOEntryCnt < PDOSubindex0; PDOEntryCnt++)
             {
-                pPDOEntry = (UINT32 *)((UINT16 *)pPDO->pVarPtr +
-                                       (OBJ_GetEntryOffset((PDOEntryCnt + 1), pPDO) >> 3) / 2); // goto PDO entry
+                pPDOEntry = (UINT32 *)(((UINT16 *)pPDO->pVarPtr) +
+                                       (OBJ_GetEntryOffset((PDOEntryCnt + 1), pPDO) >> 4)); // goto PDO entry
                 // we increment the expected output size depending on the mapped Entry
                 OutputSize += (UINT16)((*pPDOEntry) & 0xFF);
             }
@@ -220,8 +220,8 @@ UINT16 APPL_GenerateMapping(UINT16 *pInputSize, UINT16 *pOutputSize)
                 PDOSubindex0 = *((UINT16 *)pPDO->pVarPtr);
                 for (PDOEntryCnt = 0; PDOEntryCnt < PDOSubindex0; PDOEntryCnt++)
                 {
-                    pPDOEntry = (UINT32 *)((UINT16 *)pPDO->pVarPtr +
-                                           (OBJ_GetEntryOffset((PDOEntryCnt + 1), pPDO) >> 3) / 2); // goto PDO entry
+                    pPDOEntry = (UINT32 *)(((UINT16 *)pPDO->pVarPtr) +
+                                           (OBJ_GetEntryOffset((PDOEntryCnt + 1), pPDO) >> 4)); // goto PDO entry
                     // we increment the expected output size depending on the mapped Entry
                     InputSize += (UINT16)((*pPDOEntry) & 0xFF);
                 }
