@@ -22,7 +22,7 @@ NOTE: refer to the User Guide for the details of how to setup the PLC project on
 
 ## TwinCAT Setup
 
-To demonstrate this servo system, TwinCAT is used as the EtherCAT MainDevice.
+To demonstrate this IO example, TwinCAT is used as the EtherCAT MainDevice.
 - [Generate SSC Code for digital_io](../topics/generate_ssc_for_digital_io.md)
 - [TwinCAT Installation](../topics/download_and_install_the_twincat_software.md)
 - [TwinCAT EEPROM Update](../topics/twincat_eeprom_update_digital_io.md)

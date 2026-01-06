@@ -13,20 +13,20 @@ Due to the license issue, the MCUXpresso SDK does not include the EtherCAT Subde
 
         ![](../images/foe/image7.png "Search and select EtherCAT SSC")
 
-2.  Install the downloaded SSC tool.
-    1.  Launch the SSC tool.
-    2.  Import the configuration file for the FoE example.
-    3.  Select **Tool \> Options**.
+    4.  Install the downloaded SSC tool(version 5.13).
+    5.  Launch the SSC tool(version 5.13).
+2.  Import the configuration file for the EoE example.
+    1.  Select **Tool \> Options**.
 
         ![](../images/foe/image8.png "Select tool options")
 
         The **Subdevice Stack Code Tool \| Options** window appears.
 
-    4.  Click the **Configurations** tab.
-    5.  To open the **Import Configuration file\(s\)** dialog box, click the **＋** icon.
-    6.  Navigate to the `\boards\frdmimxrt1186\ecat_examples\foe\<core>\SSC` folder.
-    7.  Select the **foe.xml** file.
-    8.  Click the **Open** button.
+    2.  Click the **Configurations** tab.
+    3.  To open the **Import Configuration file\(s\)** dialog box, click the **＋** icon.
+    4.  Navigate to the `\boards\frdmimxrt1186\ecat_examples\foe\<core>\SSC` folder.
+    5.  Select the **foe.xml** file.
+    6.  Click the **Open** button.
 
         ![](../images/foe/image9.png "Select the foe.xml file")
 

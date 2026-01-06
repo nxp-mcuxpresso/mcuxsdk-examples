@@ -28,7 +28,7 @@ When FoE upgrade is successful, the serial port will output:
 
 ## TwinCAT Setup
 
-To demonstrate this servo system, TwinCAT is used as the EtherCAT MainDevice.
+To demonstrate this FoE example, TwinCAT is used as the EtherCAT MainDevice.
 - [Generate SSC Code for FoE](../topics/generate_ssc_for_foe.md)
 - [TwinCAT Installation](../topics/download_and_install_the_twincat_software.md)
 - [TwinCAT EEPROM Update](../topics/twincat_eeprom_update_foe.md)

@@ -13,8 +13,8 @@ Due to the license issue, the MCUXpresso SDK does not include the EtherCAT SSC. 
 
         ![](../images/digital_io/image6.png "Search and select EtherCAT SSC")
 
-    4.  Install the downloaded SSC tool.
-    5.  Launch the SSC tool.
+    4.  Install the downloaded SSC tool(version 5.13).
+    5.  Launch the SSC tool(version 5.13).
 2.  Import the configuration file for the digital IO example.
     1.  Select **Tool \> Options**.
 

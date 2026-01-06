@@ -5,7 +5,7 @@ This example demonstrates how to use EtherCAT EoE based on digital_io example.
 
 Note that the demo CAN NOT be built directly. Please see the "Prepare the Demo" section for more details.
 
-For more information on digital_io example, please refer to '.\boards\evkmimxrt1180\ecat_examples\digital_io'
+For more information on digital_io example, please refer to '...\ecat_examples\digital_io'
 
 
 ## Running the demo
@@ -33,7 +33,7 @@ NOTE: To modify the html of http server, please refer to lwip_examples/lwip_http
 
 ## TwinCAT Setup
 
-To demonstrate this servo system, TwinCAT is used as the EtherCAT MainDevice.
+To demonstrate this EoE example, TwinCAT is used as the EtherCAT MainDevice.
 - [Generate SSC Code for EoE](../topics/generate_ssc_for_eoe.md)
 - [TwinCAT Installation](../topics/download_and_install_the_twincat_software.md)
 - [TwinCAT EEPROM Update](../topics/twincat_eeprom_update_eoe.md)
