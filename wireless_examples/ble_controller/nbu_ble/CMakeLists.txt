@@ -11,21 +11,11 @@ project(nbu_ble LANGUAGES C CXX ASM
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
-	BASE_PATH ${SdkRootDirPath}/middleware/wireless/ble_controller/
-	SOURCES src/KW4x/nbu_ble.c
-			src/KW4x/nbu_version.c
-			src/KW4x/sw_version.h
-			src/KW4x/controller_init.c
-			src/KW4x/controller_api_ll.c
-			src/KW4x/ll_types.h
-			interface/controller_init.h
-			lib/mll_inc/controller_api_ll.h
-			src/KW4x/app.h
-			src/KW4x/board.h
-			src/KW4x/board.c
-			src/hybrid_gfsk/hybrid_gfsk_hal.c
-			lib/mll_inc/hybrid_gfsk_hal.h
-			
+    BASE_PATH ${SdkRootDirPath}/middleware/wireless/ble_controller/
+    SOURCES src/KW4x/nbu_ble.c
+            src/KW4x/app.h
+            src/KW4x/board.h
+            src/KW4x/board.c
 )
 mcux_add_configuration(
     CC "        -DgBleBondIdentityHeaderSize_c=56 \
