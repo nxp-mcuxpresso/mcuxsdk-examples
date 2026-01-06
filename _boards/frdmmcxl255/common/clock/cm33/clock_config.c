@@ -25,15 +25,46 @@ extern uint32_t SystemCoreClock;
  ******************************************************************************/
 void BOARD_InitBootClocks(void) 
 {
-    /* Config 32k Crystal Oscillator */
-    /* Monitor is disabled */
-    CLOCK_SetRoscMonitorMode(kSCG_RoscMonitorDisable);
+    rosc_init_config_t roscInitConfig;
+
     CLOCK_SetupFROHFClocking(96000000U, 0U);                    /* Setup FRO HF clock */
 
-    CLOCK_SetupFRO12MClocking();                                /* Setup FRO12M clock */
+    CLOCK_ConfigureCoreVoltageAndFlashWaitStates();
     
-    CLOCK_EnableClock(kCLOCK_GateAonAPB);                       /* Required for access to AON*/    
-    CLOCK_SetupFROAonClocking(10000000U);
+    /* Set SystemCoreClock variable */
+    SystemCoreClock = 96000000U;
+
+    CLOCK_SetupFRO12MClocking();                                /* Setup FRO12M clock */
+
+    CLOCK_EnableClock(kCLOCK_GateAonAPB);                       /* Required for access to AON*/
+
+    /* Monitor is disabled */
+    CLOCK_SetRoscMonitorMode(kSCG_RoscMonitorDisable);
+    /* Configuration of the 32 kHz crystal oscillator */
+    
+    /* Initialize Rosc if not already initialized */
+    if (!CLOCK_IsRoscInitialized())
+    {
+        /* Get default Rosc initialization configuration */
+        CLOCK_GetDefaultInitRoscConfig(&roscInitConfig);
+        
+        /* Configure Rosc initialization for FRDM-MCXL255 for faster init*/
+        roscInitConfig.detectionDelay = 50U;
+        roscInitConfig.detectionTimeout = 0U;
+        roscInitConfig.detectionDelaySwitchedMode = 50U;
+        roscInitConfig.detectionTimeoutSwitchedMode = 50U;
+        
+        CLOCK_InitRosc(&roscInitConfig);
+    }
+    
+    /* Enable the 32 kHz crystal oscillator output to the AON and the Main domains. */
+    AON__SYSCON_AON->XTAL_32K_CLKCTRL &= ~SYSCON_AON_XTAL_32K_CLKCTRL_XTAL_32K_CLK_CTRL_MASK;
+    /* Enable the clock output of the XTAL32K from the AON_RTC. */
+    AON__CGU->CLK_CONFIG |= CGU_CLK_CONFIG_XTAL32_OUT_EN_MASK;
+    /* Enable the XTAL 32.768KHz towards the CGU. */
+    AON__RTC_AON->CONFIG |= RTC_CONFIG_XTAL32_EN_MASK;
+
+    CLOCK_SetupFROAonClocking(10000000);
 
     /*!< Set up clock selectors - Attach clocks to the peripheries */
     CLOCK_AttachClk(kFIRC_to_MAIN_CLK);                  /* !< Switch MAIN_CLK to FIRC */
@@ -69,12 +100,6 @@ void BOARD_InitBootClocks(void)
     
     CLOCK_EnableClock(kCLOCK_GatePERIPH_GROUP0);
     CLOCK_EnableClock(kCLOCK_GatePERIPH_GROUP1);
-
-    
-
-    /* Set SystemCoreClock variable */
-    SystemCoreClock = 96000000U;
-
 
     /** Clocks for AON **/
     CLOCK_EnableClock(kCLOCK_GateAonPORT);
