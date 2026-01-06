@@ -15,6 +15,7 @@ temperature_measurement_1:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     imx95lpd5evk19@cm7: []
+    imx952evk@cm7: []
     imx943evk@cm33_core1: []
     imx943evk@cm7_core0: []
     imx943evk@cm7_core1: []

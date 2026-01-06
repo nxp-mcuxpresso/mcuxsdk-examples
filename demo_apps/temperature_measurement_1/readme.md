@@ -6,3 +6,5 @@ tempsensor, note that this case just support i.mx95 platform at present.
 
 ## Supported Boards
 - [IMX95LPD5EVK-19](../../_boards/imx95lpd5evk19/demo_apps/temperature_measurement/example_board_readme.md)
+- [IMX952LPD5EVK-19](../../_boards/imx952evk/demo_apps/temperature_measurement_1/example_board_readme.md)
+- [IMX952LPD5EVK-15](../../_boards/imx952evk/demo_apps/temperature_measurement_1/example_board_readme.md)

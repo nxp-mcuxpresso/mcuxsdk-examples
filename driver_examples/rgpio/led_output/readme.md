@@ -8,6 +8,8 @@ example take turns to shine the LED.
 
 ## Supported Boards
 - [EVK9-MIMX8ULP](../../../_boards/evk9mimx8ulp/driver_examples/rgpio/led_output/example_board_readme.md)
+- [IMX952LPD5EVK-19](../../../_boards/imx952evk/driver_examples/rgpio/led_output/example_board_readme.md)
+- [IMX952LPD5EVK-15](../../../_boards/imx952evk/driver_examples/rgpio/led_output/example_board_readme.md)
 - [EVK-MIMX8ULP](../../../_boards/evkmimx8ulp/driver_examples/rgpio/led_output/example_board_readme.md)
 - [MIMXRT1180-EVK](../../../_boards/evkmimxrt1180/driver_examples/rgpio/led_output/example_board_readme.md)
 - [IMX95LP4XEVK-15](../../../_boards/imx95lp4xevk15/driver_examples/rgpio/led_output/example_board_readme.md)

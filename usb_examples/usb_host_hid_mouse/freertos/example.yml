@@ -57,6 +57,7 @@ host_hid_mouse_freertos:
     - -armgcc@flash_release
     - -iar@flash_debug
     - -iar@flash_release
+    imx952evk@cm7: []
     lpcxpresso54628: []
     lpcxpresso54s018: []
     lpcxpresso54s018m: []

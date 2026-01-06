@@ -8,6 +8,8 @@ and print it in while loop.
 
 ## Supported Boards
 - [FRDM-MCXA153](../../../_boards/frdmmcxa153/driver_examples/i3c/master_read_sensor_p3t1755/example_board_readme.md)
+- [IMX952LPD5EVK-19](../../../_boards/imx952evk/driver_examples/i3c/master_read_sensor_p3t1755/example_board_readme.md)
+- [IMX952LPD5EVK-15](../../../_boards/imx952evk/driver_examples/i3c/master_read_sensor_p3t1755/example_board_readme.md)
 - [FRDM-MCXA156](../../../_boards/frdmmcxa156/driver_examples/i3c/master_read_sensor_p3t1755/example_board_readme.md)
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/driver_examples/i3c/master_read_sensor_p3t1755/example_board_readme.md)
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/driver_examples/i3c/master_read_sensor_p3t1755/example_board_readme.md)

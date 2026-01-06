@@ -10,6 +10,8 @@ slave is correct.
 
 ## Supported Boards
 - [EVK9-MIMX8ULP](../../../../_boards/evk9mimx8ulp/driver_examples/lpi2c/edma_b2b_transfer/master/example_board_readme.md)
+- [IMX952LPD5EVK-19](../../../../_boards/imx952evk/driver_examples/lpi2c/edma_b2b_transfer/master/example_board_readme.md)
+- [IMX952LPD5EVK-15](../../../../_boards/imx952evk/driver_examples/lpi2c/edma_b2b_transfer/master/example_board_readme.md)
 - [EVKB-IMXRT1050](../../../../_boards/evkbimxrt1050/driver_examples/lpi2c/edma_b2b_transfer/master/example_board_readme.md)
 - [MIMXRT1060-EVKB](../../../../_boards/evkbmimxrt1060/driver_examples/lpi2c/edma_b2b_transfer/master/example_board_readme.md)
 - [MIMXRT1170-EVKB](../../../../_boards/evkbmimxrt1170/driver_examples/lpi2c/edma_b2b_transfer/master/example_board_readme.md)

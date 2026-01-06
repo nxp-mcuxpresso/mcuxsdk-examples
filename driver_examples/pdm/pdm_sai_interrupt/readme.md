@@ -7,6 +7,8 @@ In this example, pdm gather audio data, and sai send it to codec.
 
 ## Supported Boards
 - [EVK9-MIMX8ULP](../../../_boards/evk9mimx8ulp/driver_examples/pdm/pdm_sai_interrupt/example_board_readme.md)
+- [IMX952LPD5EVK-19](../../../_boards/imx952evk/driver_examples/pdm/pdm_sai_interrupt/example_board_readme.md)
+- [IMX952LPD5EVK-15](../../../_boards/imx952evk/driver_examples/pdm/pdm_sai_interrupt/example_board_readme.md)
 - [MIMXRT1170-EVKB](../../../_boards/evkbmimxrt1170/driver_examples/pdm/pdm_sai_interrupt/example_board_readme.md)
 - [EVK-MIMX8MM](../../../_boards/evkmimx8mm/driver_examples/pdm/pdm_sai_interrupt/example_board_readme.md)
 - [EVK-MIMX8MN](../../../_boards/evkmimx8mn/driver_examples/pdm/pdm_sai_interrupt/example_board_readme.md)

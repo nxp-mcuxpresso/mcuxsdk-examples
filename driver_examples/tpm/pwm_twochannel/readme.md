@@ -9,6 +9,8 @@ a change in LED brightness if user enter different values.
 
 ## Supported Boards
 - [EVK9-MIMX8ULP](../../../_boards/evk9mimx8ulp/driver_examples/tpm/pwm_twochannel/example_board_readme.md)
+- [IMX952LPD5EVK-19](../../../_boards/imx952evk/driver_examples/tpm/pwm_twochannel/example_board_readme.md)
+- [IMX952LPD5EVK-15](../../../_boards/imx952evk/driver_examples/tpm/pwm_twochannel/example_board_readme.md)
 - [EVK-MCIMX7ULP](../../../_boards/evkmcimx7ulp/driver_examples/tpm/pwm_twochannel/example_board_readme.md)
 - [EVK-MIMX8ULP](../../../_boards/evkmimx8ulp/driver_examples/tpm/pwm_twochannel/example_board_readme.md)
 - [FRDM-K32L2A4S](../../../_boards/frdmk32l2a4s/driver_examples/tpm/pwm_twochannel/example_board_readme.md)

@@ -285,3 +285,4 @@ cmsis_lpspi_edma_b2b_transfer_slave:
     - -mdk@release
     frdmmcxa266: []
     frdmmcxa366: []
+    imx952evk@cm7: []

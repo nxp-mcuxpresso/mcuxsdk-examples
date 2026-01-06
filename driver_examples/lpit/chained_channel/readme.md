@@ -13,6 +13,8 @@ When the LPIT interrupt is triggered a message a printed on the serial terminal.
 
 ## Supported Boards
 - [FRDM-K32L2A4S](../../../_boards/frdmk32l2a4s/driver_examples/lpit/chained_channel/example_board_readme.md)
+- [IMX952LPD5EVK-19](../../../_boards/imx952evk/driver_examples/lpit/chained_channel/example_board_readme.md)
+- [IMX952LPD5EVK-15](../../../_boards/imx952evk/driver_examples/lpit/chained_channel/example_board_readme.md)
 - [FRDM-K32L3A6](../../../_boards/frdmk32l3a6/driver_examples/lpit/chained_channel/example_board_readme.md)
 - [FRDM-KE15Z](../../../_boards/frdmke15z/driver_examples/lpit/chained_channel/example_board_readme.md)
 - [FRDM-KE16Z](../../../_boards/frdmke16z/driver_examples/lpit/chained_channel/example_board_readme.md)

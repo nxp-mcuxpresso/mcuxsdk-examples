@@ -9,3 +9,5 @@ Example will first erase the sector and program a page into the flash, at last c
 
 ## Supported Boards
 - [MIMXRT700-EVK](../../../../_boards/mimxrt700evk/driver_examples/xspi/octal/polling_transfer/example_board_readme.md)
+- [IMX952LPD5EVK-19](../../../../_boards/imx952evk/driver_examples/xspi/octal/polling_transfer/example_board_readme.md)
+- [IMX952LPD5EVK-15](../../../../_boards/imx952evk/driver_examples/xspi/octal/polling_transfer/example_board_readme.md)

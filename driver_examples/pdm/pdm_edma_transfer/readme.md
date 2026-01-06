@@ -7,6 +7,8 @@ In this example, pdm will trigger edma to transfer data when one PDM channel wat
 
 ## Supported Boards
 - [EVK9-MIMX8ULP](../../../_boards/evk9mimx8ulp/driver_examples/pdm/pdm_edma_transfer/example_board_readme.md)
+- [IMX952LPD5EVK-19](../../../_boards/imx952evk/driver_examples/pdm/pdm_edma_transfer/example_board_readme.md)
+- [IMX952LPD5EVK-15](../../../_boards/imx952evk/driver_examples/pdm/pdm_edma_transfer/example_board_readme.md)
 - [MIMXRT1170-EVKB](../../../_boards/evkbmimxrt1170/driver_examples/pdm/pdm_edma_transfer/example_board_readme.md)
 - [EVK-MIMX8ULP](../../../_boards/evkmimx8ulp/driver_examples/pdm/pdm_edma_transfer/example_board_readme.md)
 - [MIMXRT1160-EVK](../../../_boards/evkmimxrt1160/driver_examples/pdm/pdm_edma_transfer/example_board_readme.md)

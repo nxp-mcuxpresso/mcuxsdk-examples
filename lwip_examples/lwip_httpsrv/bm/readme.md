@@ -87,6 +87,8 @@ The assigned unique local or global unique addresses could be typed into the web
 
 ## Supported Boards
 - [EVKB-IMXRT1050](../../../_boards/evkbimxrt1050/lwip_examples/lwip_httpsrv/bm/example_board_readme.md)
+- [IMX952LPD5EVK-19](../../../_boards/imx952evk/lwip_examples/lwip_httpsrv/bm/example_board_readme.md)
+- [IMX952LPD5EVK-15](../../../_boards/imx952evk/lwip_examples/lwip_httpsrv/bm/example_board_readme.md)
 - [MIMXRT1060-EVKB](../../../_boards/evkbmimxrt1060/lwip_examples/lwip_httpsrv/bm/example_board_readme.md)
 - [MIMXRT1170-EVKB](../../../_boards/evkbmimxrt1170/lwip_examples/lwip_httpsrv/bm/example_board_readme.md)
 - [MIMXRT1060-EVKC](../../../_boards/evkcmimxrt1060/lwip_examples/lwip_httpsrv/bm/example_board_readme.md)

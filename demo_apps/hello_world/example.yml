@@ -121,6 +121,15 @@ hello_world:
     - +iar@ddr_release
     imx95lp4xevk15@cm7: []
     imx95verdinevk@cm7: []
+    imx952evk@cm7:
+    - +armgcc@debug
+    - +armgcc@release
+    - +armgcc@ddr_debug
+    - +armgcc@ddr_release
+    - +iar@debug
+    - +iar@release
+    - +iar@ddr_debug
+    - +iar@ddr_release
     evkmimx8mp: []
     evkmimx8mq: []
     evkmimx8ulp@cm33: []

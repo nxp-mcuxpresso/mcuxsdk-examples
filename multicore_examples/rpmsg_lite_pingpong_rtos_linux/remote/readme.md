@@ -24,6 +24,8 @@ DeviceTree of Linux.
 
 ## Supported Boards
 - [EVK9-MIMX8ULP](../../../_boards/evk9mimx8ulp/multicore_examples/rpmsg_lite_pingpong_rtos_linux/remote/example_board_readme.md)
+- [IMX952LPD5EVK-19](../../../_boards/imx952evk/multicore_examples/rpmsg_lite_pingpong_rtos_linux/remote/example_board_readme.md)
+- [IMX952LPD5EVK-15](../../../_boards/imx952evk/multicore_examples/rpmsg_lite_pingpong_rtos_linux/remote/example_board_readme.md)
 - [EVK-MIMX8MM](../../../_boards/evkmimx8mm/multicore_examples/rpmsg_lite_pingpong_rtos_linux/remote/example_board_readme.md)
 - [EVK-MIMX8MN](../../../_boards/evkmimx8mn/multicore_examples/rpmsg_lite_pingpong_rtos_linux/remote/example_board_readme.md)
 - [EVK-MIMX8MNDDR3L](../../../_boards/evkmimx8mnddr3l/multicore_examples/rpmsg_lite_pingpong_rtos_linux/remote/example_board_readme.md)

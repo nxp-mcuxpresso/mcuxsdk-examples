@@ -11,6 +11,8 @@ debug_console supports this, debug_console_lite doesn't support).
 
 ## Supported Boards
 - [EVK9-MIMX8ULP](../../_boards/evk9mimx8ulp/demo_apps/hello_world/example_board_readme.md)
+- [IMX952LPD5EVK-19](../../_boards/imx952evk/demo_apps/hello_world/example_board_readme.md)
+- [IMX952LPD5EVK-15](../../_boards/imx952evk/demo_apps/hello_world/example_board_readme.md)
 - [EVKB-IMXRT1050](../../_boards/evkbimxrt1050/demo_apps/hello_world/example_board_readme.md)
 - [MIMXRT1060-EVKB](../../_boards/evkbmimxrt1060/demo_apps/hello_world/example_board_readme.md)
 - [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/demo_apps/hello_world/example_board_readme.md)

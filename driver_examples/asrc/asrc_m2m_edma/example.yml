@@ -66,3 +66,4 @@ asrc_m2m_edma:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     - -mdk@release
+    imx952evk@cm7: []

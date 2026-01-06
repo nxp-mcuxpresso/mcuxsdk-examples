@@ -23,3 +23,4 @@ xspi_octal_edma_transfer:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    imx952evk@cm7: []

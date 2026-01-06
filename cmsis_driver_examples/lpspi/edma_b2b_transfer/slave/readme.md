@@ -10,6 +10,8 @@ The file 'cmsis_lpspi_edma_b2b_transfer_slave.c' includes the LPSPI slave code.
 
 ## Supported Boards
 - [EVK9-MIMX8ULP](../../../../_boards/evk9mimx8ulp/cmsis_driver_examples/lpspi/edma_b2b_transfer/slave/example_board_readme.md)
+- [IMX952LPD5EVK-19](../../../../_boards/imx952evk/cmsis_driver_examples/lpspi/edma_b2b_transfer/slave/example_board_readme.md)
+- [IMX952LPD5EVK-15](../../../../_boards/imx952evk/cmsis_driver_examples/lpspi/edma_b2b_transfer/slave/example_board_readme.md)
 - [EVKB-IMXRT1050](../../../../_boards/evkbimxrt1050/cmsis_driver_examples/lpspi/edma_b2b_transfer/slave/example_board_readme.md)
 - [MIMXRT1060-EVKB](../../../../_boards/evkbmimxrt1060/cmsis_driver_examples/lpspi/edma_b2b_transfer/slave/example_board_readme.md)
 - [MIMXRT1170-EVKB](../../../../_boards/evkbmimxrt1170/cmsis_driver_examples/lpspi/edma_b2b_transfer/slave/example_board_readme.md)

@@ -7,6 +7,8 @@ a message is printed on the UART terminal and an LED is toggled on the board.
 
 ## Supported Boards
 - [EVK9-MIMX8ULP](../../_boards/evk9mimx8ulp/driver_examples/lptmr/example_board_readme.md)
+- [IMX952LPD5EVK-19](../../_boards/imx952evk/driver_examples/lptmr/example_board_readme.md)
+- [IMX952LPD5EVK-15](../../_boards/imx952evk/driver_examples/lptmr/example_board_readme.md)
 - [EVK-MCIMX7ULP](../../_boards/evkmcimx7ulp/driver_examples/lptmr/example_board_readme.md)
 - [EVK-MIMX8ULP](../../_boards/evkmimx8ulp/driver_examples/lptmr/example_board_readme.md)
 - [MIMXRT1180-EVK](../../_boards/evkmimxrt1180/driver_examples/lptmr/example_board_readme.md)

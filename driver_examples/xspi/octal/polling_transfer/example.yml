@@ -24,3 +24,4 @@ xspi_octal_polling_transfer:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    imx952evk@cm7: []

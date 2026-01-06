@@ -8,6 +8,8 @@ debugging and further development.
 
 ## Supported Boards
 - [MIMXRT1180-EVK](../../../_boards/evkmimxrt1180/driver_examples/edma3/memory_to_memory/example_board_readme.md)
+- [IMX952LPD5EVK-19](../../../_boards/imx952evk/driver_examples/edma3/memory_to_memory/example_board_readme.md)
+- [IMX952LPD5EVK-15](../../../_boards/imx952evk/driver_examples/edma3/memory_to_memory/example_board_readme.md)
 - [FRDM-MCXA153](../../../_boards/frdmmcxa153/driver_examples/edma3/memory_to_memory/example_board_readme.md)
 - [FRDM-MCXA156](../../../_boards/frdmmcxa156/driver_examples/edma3/memory_to_memory/example_board_readme.md)
 - [FRDM-MCXA346](../../../_boards/frdmmcxa346/driver_examples/edma3/memory_to_memory/example_board_readme.md)
