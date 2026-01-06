@@ -132,7 +132,9 @@ static void APP_SetSPCConfiguration(void)
 
     spc_active_mode_regulators_config_t activeModeRegulatorOption;
 
+#if !(defined(FSL_FEATURE_MCX_SPC_HAS_SRAMRETLDO_REG) && (FSL_FEATURE_MCX_SPC_HAS_SRAMRETLDO_REG == 0U))
     SPC_EnableSRAMLdo(APP_SPC, true);
+#endif
 
     /* Disable analog modules that controlled by SPC in active mode. */
     SPC_DisableActiveModeAnalogModules(APP_SPC, (kSPC_controlUsb3vDet | kSPC_controlCmp0 | kSPC_controlCmp1 | kSPC_controlCmp0Dac | kSPC_controlCmp1Dac));
