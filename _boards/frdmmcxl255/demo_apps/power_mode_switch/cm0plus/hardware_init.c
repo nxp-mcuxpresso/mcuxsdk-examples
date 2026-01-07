@@ -24,17 +24,17 @@
 
 /*${function:start}*/
 
-void BOARD_BootAs2MHzClocks(void)
+void BOARD_BootAs3MHzClocks(void)
 {
-    CLOCK_SetupFROAonClocking(2000000U);
+    CLOCK_EnableClock(kCLOCK_GateAonAPB);
+    AON__CGU->CLOCK_DIV |= CGU_CLOCK_DIV_CLK_DIV_EN_MASK;
+    CLOCK_SetupFROAonClocking(3000000U);
     CLOCK_EnableClock(kCLOCK_GateAonPORT);
     CLOCK_EnableClock(kCLOCK_GateAonGPIO);
 
-    AON__CGU->CLOCK_DIV |= CGU_CLOCK_DIV_CLK_DIV_EN_MASK;
-    CLOCK_EnableClock(kCLOCK_GateAonAPB);
     AON__CGU->CLOCK_DIV |= 1UL << 1UL;
     CLOCK_EnableClock(kCLOCK_GateAonUART);
-    SystemCoreClock = 2000000U;
+    SystemCoreClock = 3000000U;
 }
 
 void BOARD_InitTamper_ButtonPins(void)
@@ -77,7 +77,7 @@ void BOARD_DeinitTamper_ButtonPins(void)
 
 void BOARD_InitHardware(void)
 {
-    BOARD_BootAs2MHzClocks();
+    BOARD_BootAs3MHzClocks();
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitDebugConsole();
 

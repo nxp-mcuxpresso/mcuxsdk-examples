@@ -217,7 +217,7 @@ void BOARD_Init96MClocksBoot(void)
     CLOCK_SetupFRO12MClocking();             /* Setup FRO12M clock */
 
     CLOCK_EnableClock(kCLOCK_GateAonAPB);    /* Required for access to AON*/
-    CLOCK_SetupFROAonClocking(2000000U);
+    CLOCK_SetupFROAonClocking(3000000U);
 
     /*!< Set up clock selectors - Attach clocks to the peripheries */
     CLOCK_AttachClk(kFIRC_to_MAIN_CLK);            /* !< Switch MAIN_CLK to FIRC */

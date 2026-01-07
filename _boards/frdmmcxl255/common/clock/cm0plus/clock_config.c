@@ -23,14 +23,13 @@ extern uint32_t SystemCoreClock;
  ************************ BOARD_InitBootClocks function ************************
  ******************************************************************************/
 void BOARD_InitBootClocks(void)
-{
-    CLOCK_SetupFROAonClocking(10000000U);
-    
+{   
     CLOCK_EnableClock(kCLOCK_GateAonPORT);
 
     /* 10M to system */
     CLOCK_AttachClk(kFROdiv1_to_AON_CPU);
     CLOCK_SetClockDiv(kCLOCK_DIVAonCPU, 1U);
+    CLOCK_SetupFROAonClocking(10000000U);
     CLOCK_EnableClock(kCLOCK_GateAonAPB);
 
     /* 2.5M to I2C & UART*/
