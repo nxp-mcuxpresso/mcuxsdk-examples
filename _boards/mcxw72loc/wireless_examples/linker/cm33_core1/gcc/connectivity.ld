@@ -229,9 +229,12 @@ SECTIONS
     . = ALIGN(4);
   } > m_text
 
-  .sqram_debug_region (NOLOAD) : ALIGN(4)
+  __debug_rom = LOADADDR(.data) + SIZEOF(.data);
+  .sqram_debug_region : AT(__debug_rom) ALIGN(4)
   {
+      __sqram_debug_start__ = .;
      *(.debugbuf)
+      __sqram_debug_end__ = .;
   } > sqram_debug_region
   .lowpower_flag_region  (NOLOAD) : ALIGN(4)
   {
