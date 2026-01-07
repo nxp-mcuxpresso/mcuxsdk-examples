@@ -5,11 +5,11 @@
 The SDCARD FreeRTOS project is a demonstration program that uses the SDK
 software. It reads/writes/erases the SD card continusly. The purpose of this
 example is to show how to use SDCARD driver with FreeRTOS in SDK software to
-access SD card.Note: If DATA3 is used as the card detect PIN, please make sure
+access SD card. Note: If DATA3 is used as the card detect PIN, please make sure
 DATA3 is pull down, no matter internal or external, at the same time, make sure
-the card can pull DATA3 up, then host can detect card through DATA3.And SDHC do
+the card can pull DATA3 up, then host can detect card through DATA3. And if SDHC does
 not support detect card through CD by host, card can be detected through DATA3
-or GPIO.No matter detect card through host or gpio, make sure the pinmux
+or GPIO. No matter detect card through host or gpio, make sure the pinmux
 configuration is correct.
 
 ## Supported Boards
