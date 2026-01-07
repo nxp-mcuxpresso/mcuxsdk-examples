@@ -27,134 +27,15 @@ Running the demo
 The log below shows the output of the TFM regression tests in the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Booting TF-M v2.1.1
+[INF] Beginning TF-M provisioning
+[WRN] TFM_DUMMY_PROVISIONING is not suitable for production! This device is NOT SECURE
 [WRN] This device was provisioned with dummy keys. This device is NOT SECURE
 [Sec Thread] Secure image initializing!
 TF-M Float ABI: Hard
 Lazy stacking enabled
 Creating an empty ITS flash layout.
-Creating an empty PS flash layout.
-[INF][PS] Encryption alg: 0x5500100
 
 #### Execute test suites for the Secure area ####
-Running Test Suite IPC secure interface test (TFM_S_IPC_TEST_1XXX)...
-> Executing 'TFM_S_IPC_TEST_1001'
-  Description: 'Get PSA framework version'
-  TEST: TFM_S_IPC_TEST_1001 - PASSED!
-> Executing 'TFM_S_IPC_TEST_1002'
-  Description: 'Get version of an RoT Service'
-  TEST: TFM_S_IPC_TEST_1002 - PASSED!
-> Executing 'TFM_S_IPC_TEST_1004'
-  Description: 'Request connection-based RoT Service'
-  TEST: TFM_S_IPC_TEST_1004 - PASSED!
-> Executing 'TFM_S_IPC_TEST_1006'
-  Description: 'Call PSA RoT access APP RoT memory test service'
-Connect success!
-Call success!
-  TEST: TFM_S_IPC_TEST_1006 - PASSED!
-> Executing 'TFM_S_IPC_TEST_1012'
-  Description: 'Request stateless service'
-  TEST: TFM_S_IPC_TEST_1012 - PASSED!
-TESTSUITE PASSED!
-Running Test Suite PSA protected storage S interface tests (TFM_S_PS_TEST_1XXX)...
-> Executing 'TFM_S_PS_TEST_1001'
-  Description: 'Set interface'
-  TEST: TFM_S_PS_TEST_1001 - PASSED!
-> Executing 'TFM_S_PS_TEST_1002'
-  Description: 'Set interface with create flags'
-  TEST: TFM_S_PS_TEST_1002 - PASSED!
-> Executing 'TFM_S_PS_TEST_1003'
-  Description: 'Set interface with NULL data pointer'
-  TEST: TFM_S_PS_TEST_1003 - PASSED!
-> Executing 'TFM_S_PS_TEST_1005'
-  Description: 'Set interface with write once UID'
-  TEST: TFM_S_PS_TEST_1005 - PASSED!
-> Executing 'TFM_S_PS_TEST_1006'
-  Description: 'Get interface with valid data'
-  TEST: TFM_S_PS_TEST_1006 - PASSED!
-> Executing 'TFM_S_PS_TEST_1007'
-  Description: 'Get interface with zero data length'
-  TEST: TFM_S_PS_TEST_1007 - PASSED!
-> Executing 'TFM_S_PS_TEST_1008'
-  Description: 'Get interface with invalid UIDs'
-  TEST: TFM_S_PS_TEST_1008 - PASSED!
-> Executing 'TFM_S_PS_TEST_1009'
-  Description: 'Get interface with invalid data lengths and offsets'
-  TEST: TFM_S_PS_TEST_1009 - PASSED!
-> Executing 'TFM_S_PS_TEST_1010'
-  Description: 'Get interface with NULL data pointer'
-  TEST: TFM_S_PS_TEST_1010 - PASSED!
-> Executing 'TFM_S_PS_TEST_1011'
-  Description: 'Get info interface with write once UID'
-  TEST: TFM_S_PS_TEST_1011 - PASSED!
-> Executing 'TFM_S_PS_TEST_1012'
-  Description: 'Get info interface with valid UID'
-  TEST: TFM_S_PS_TEST_1012 - PASSED!
-> Executing 'TFM_S_PS_TEST_1013'
-  Description: 'Get info interface with invalid UIDs'
-  TEST: TFM_S_PS_TEST_1013 - PASSED!
-> Executing 'TFM_S_PS_TEST_1015'
-  Description: 'Remove interface with valid UID'
-  TEST: TFM_S_PS_TEST_1015 - PASSED!
-> Executing 'TFM_S_PS_TEST_1016'
-  Description: 'Remove interface with write once UID'
-  TEST: TFM_S_PS_TEST_1016 - PASSED!
-> Executing 'TFM_S_PS_TEST_1017'
-  Description: 'Remove interface with invalid UID'
-  TEST: TFM_S_PS_TEST_1017 - PASSED!
-> Executing 'TFM_S_PS_TEST_1018'
-  Description: 'Block compaction after remove'
-  TEST: TFM_S_PS_TEST_1018 - PASSED!
-> Executing 'TFM_S_PS_TEST_1019'
-  Description: 'Multiple partial gets'
-  TEST: TFM_S_PS_TEST_1019 - PASSED!
-> Executing 'TFM_S_PS_TEST_1020'
-  Description: 'Multiple sets to same UID from same thread'
-  TEST: TFM_S_PS_TEST_1020 - PASSED!
-> Executing 'TFM_S_PS_TEST_1021'
-  Description: 'Get support interface'
-  TEST: TFM_S_PS_TEST_1021 - PASSED!
-> Executing 'TFM_S_PS_TEST_1022'
-  Description: 'Set, get and remove interface with different asset sizes'
-  TEST: TFM_S_PS_TEST_1022 - PASSED!
-TESTSUITE PASSED!
-Running Test Suite PS reliability tests (TFM_PS_TEST_3XXX)...
-> Executing 'TFM_S_PS_TEST_2001'
-  Description: 'repetitive sets and gets in/from an asset'
-  > Iteration 1 of 15
-  > Iteration 2 of 15
-  > Iteration 3 of 15
-  > Iteration 4 of 15
-  > Iteration 5 of 15
-  > Iteration 6 of 15
-  > Iteration 7 of 15
-  > Iteration 8 of 15
-  > Iteration 9 of 15
-  > Iteration 10 of 15
-  > Iteration 11 of 15
-  > Iteration 12 of 15
-  > Iteration 13 of 15
-  > Iteration 14 of 15
-  > Iteration 15 of 15
-  TEST: TFM_S_PS_TEST_2001 - PASSED!
-> Executing 'TFM_S_PS_TEST_2002'
-  Description: 'repetitive sets, gets and removes'
-  > Iteration 1 of 15
-  > Iteration 2 of 15
-  > Iteration 3 of 15
-  > Iteration 4 of 15
-  > Iteration 5 of 15
-  > Iteration 6 of 15
-  > Iteration 7 of 15
-  > Iteration 8 of 15
-  > Iteration 9 of 15
-  > Iteration 10 of 15
-  > Iteration 11 of 15
-  > Iteration 12 of 15
-  > Iteration 13 of 15
-  > Iteration 14 of 15
-  > Iteration 15 of 15
-  TEST: TFM_S_PS_TEST_2002 - PASSED!
-TESTSUITE PASSED!
 Running Test Suite PSA internal trusted storage S interface tests (TFM_S_ITS_TEST_1XXX)...
 > Executing 'TFM_S_ITS_TEST_1001'
   Description: 'Set interface'
@@ -305,17 +186,11 @@ Two cipher modes are required. Skipping...
 > Executing 'TFM_S_CRYPTO_TEST_1038'
   Description: 'Secure TLS-1.2 PSK-to-MasterSecret key derivation'
   TEST: TFM_S_CRYPTO_TEST_1038 - PASSED!
-> Executing 'TFM_S_CRYPTO_TEST_1040'
-  Description: 'Secure ECDH key agreement'
-  TEST: TFM_S_CRYPTO_TEST_1040 - PASSED!
 TESTSUITE PASSED!
-Running Test Suite Initial Attestation Service secure interface tests(TFM_S_ATTEST_TEST_1XXX)...
-> Executing 'TFM_S_ATTEST_TEST_1004'
-  Description: 'ECDSA signature test of attest token'
-  TEST: TFM_S_ATTEST_TEST_1004 - PASSED!
-> Executing 'TFM_S_ATTEST_TEST_1005'
-  Description: 'Negative test cases for initial attestation service'
-  TEST: TFM_S_ATTEST_TEST_1005 - PASSED!
+Running Test Suite Symmetric key algorithm based Initial Attestation Service secure interface tests (TFM_S_ATTEST_TEST_2XXX)...
+> Executing 'TFM_S_ATTEST_TEST_2001'
+  Description: 'Symmetric key algorithm based Initial Attestation test'
+  TEST: TFM_S_ATTEST_TEST_2001 - PASSED!
 TESTSUITE PASSED!
 Running Test Suite Platform Service Secure interface tests(TFM_S_PLATFORM_TEST_1XXX)...
 > Executing 'TFM_S_PLATFORM_TEST_1001'
@@ -324,108 +199,16 @@ Running Test Suite Platform Service Secure interface tests(TFM_S_PLATFORM_TEST_1
 TESTSUITE PASSED!
 
 *** Secure test suites summary ***
-Test suite 'IPC secure interface test (TFM_S_IPC_TEST_1XXX)' has PASSED
-Test suite 'PSA protected storage S interface tests (TFM_S_PS_TEST_1XXX)' has PASSED
-Test suite 'PS reliability tests (TFM_PS_TEST_3XXX)' has PASSED
 Test suite 'PSA internal trusted storage S interface tests (TFM_S_ITS_TEST_1XXX)' has PASSED
 Test suite 'ITS reliability tests (TFM_ITS_TEST_2XXX)' has PASSED
 Test suite 'Crypto secure interface tests (TFM_S_CRYPTO_TEST_1XXX)' has PASSED
-Test suite 'Initial Attestation Service secure interface tests(TFM_S_ATTEST_TEST_1XXX)' has PASSED
+Test suite 'Symmetric key algorithm based Initial Attestation Service secure interface tests (TFM_S_ATTEST_TEST_2XXX)' has PASSED
 Test suite 'Platform Service Secure interface tests(TFM_S_PLATFORM_TEST_1XXX)' has PASSED
 
 *** End of Secure test suites ***
 Non-Secure system starting...
 
 #### Execute test suites for the Non-secure area ####
-Running Test Suite IPC non-secure interface test (TFM_NS_IPC_TEST_1XXX)...
-> Executing 'TFM_NS_IPC_TEST_1001'
-  Description: 'Get PSA framework version'
-  TEST: TFM_NS_IPC_TEST_1001 - PASSED!
-> Executing 'TFM_NS_IPC_TEST_1002'
-  Description: 'Get version of an RoT Service'
-  TEST: TFM_NS_IPC_TEST_1002 - PASSED!
-> Executing 'TFM_NS_IPC_TEST_1003'
-  Description: 'Connect to an RoT Service'
-Connect success!
-  TEST: TFM_NS_IPC_TEST_1003 - PASSED!
-> Executing 'TFM_NS_IPC_TEST_1004'
-  Description: 'Request connection-based RoT Service'
-  TEST: TFM_NS_IPC_TEST_1004 - PASSED!
-> Executing 'TFM_NS_IPC_TEST_1010'
-  Description: 'Test psa_call with the status of PSA_ERROR_PROGRAMMER_ERROR'
-Connect success!
-The first time call success!
-The second time call success!
-  TEST: TFM_NS_IPC_TEST_1010 - PASSED!
-> Executing 'TFM_NS_IPC_TEST_1012'
-  Description: 'Request stateless service'
-  TEST: TFM_NS_IPC_TEST_1012 - PASSED!
-> Executing 'TFM_NS_IPC_TEST_1016'
-  Description: 'Testing Client-Id Translation'
-  TEST: TFM_NS_IPC_TEST_1016 - PASSED!
-TESTSUITE PASSED!
-Running Test Suite PSA protected storage NS interface tests (TFM_NS_PS_TEST_1XXX)...
-> Executing 'TFM_NS_PS_TEST_1001'
-  Description: 'Set interface'
-  TEST: TFM_NS_PS_TEST_1001 - PASSED!
-> Executing 'TFM_NS_PS_TEST_1002'
-  Description: 'Set interface with create flags'
-  TEST: TFM_NS_PS_TEST_1002 - PASSED!
-> Executing 'TFM_NS_PS_TEST_1003'
-  Description: 'Set interface with NULL data pointer'
-  TEST: TFM_NS_PS_TEST_1003 - PASSED!
-> Executing 'TFM_NS_PS_TEST_1004'
-  Description: 'Set interface with write once UID'
-  TEST: TFM_NS_PS_TEST_1004 - PASSED!
-> Executing 'TFM_NS_PS_TEST_1005'
-  Description: 'Get interface with valid data'
-  TEST: TFM_NS_PS_TEST_1005 - PASSED!
-> Executing 'TFM_NS_PS_TEST_1006'
-  Description: 'Get interface with zero data length'
-  TEST: TFM_NS_PS_TEST_1006 - PASSED!
-> Executing 'TFM_NS_PS_TEST_1007'
-  Description: 'Get interface with invalid UIDs'
-  TEST: TFM_NS_PS_TEST_1007 - PASSED!
-> Executing 'TFM_NS_PS_TEST_1008'
-  Description: 'Get interface with invalid data lengths and offsets'
-  TEST: TFM_NS_PS_TEST_1008 - PASSED!
-> Executing 'TFM_NS_PS_TEST_1009'
-  Description: 'Get interface with NULL data pointer'
-  TEST: TFM_NS_PS_TEST_1009 - PASSED!
-> Executing 'TFM_NS_PS_TEST_1010'
-  Description: 'Get info interface with write once UID'
-  TEST: TFM_NS_PS_TEST_1010 - PASSED!
-> Executing 'TFM_NS_PS_TEST_1011'
-  Description: 'Get info interface with valid UID'
-  TEST: TFM_NS_PS_TEST_1011 - PASSED!
-> Executing 'TFM_NS_PS_TEST_1012'
-  Description: 'Get info interface with invalid UIDs'
-  TEST: TFM_NS_PS_TEST_1012 - PASSED!
-> Executing 'TFM_NS_PS_TEST_1013'
-  Description: 'Remove interface with valid UID'
-  TEST: TFM_NS_PS_TEST_1013 - PASSED!
-> Executing 'TFM_NS_PS_TEST_1014'
-  Description: 'Remove interface with write once UID'
-  TEST: TFM_NS_PS_TEST_1014 - PASSED!
-> Executing 'TFM_NS_PS_TEST_1015'
-  Description: 'Remove interface with invalid UID'
-  TEST: TFM_NS_PS_TEST_1015 - PASSED!
-> Executing 'TFM_NS_PS_TEST_1021'
-  Description: 'Block compaction after remove'
-  TEST: TFM_NS_PS_TEST_1021 - PASSED!
-> Executing 'TFM_NS_PS_TEST_1022'
-  Description: 'Multiple partial gets'
-  TEST: TFM_NS_PS_TEST_1022 - PASSED!
-> Executing 'TFM_NS_PS_TEST_1023'
-  Description: 'Multiple sets to same UID from same thread'
-  TEST: TFM_NS_PS_TEST_1023 - PASSED!
-> Executing 'TFM_NS_PS_TEST_1024'
-  Description: 'Get support interface'
-  TEST: TFM_NS_PS_TEST_1024 - PASSED!
-> Executing 'TFM_NS_PS_TEST_1025'
-  Description: 'Set, get and remove interface with different asset sizes'
-  TEST: TFM_NS_PS_TEST_1025 - PASSED!
-TESTSUITE PASSED!
 Running Test Suite PSA internal trusted storage NS interface tests (TFM_NS_ITS_TEST_1XXX)...
 > Executing 'TFM_NS_ITS_TEST_1001'
   Description: 'Set interface'
@@ -541,22 +324,23 @@ Two cipher modes are required. Skipping...
 > Executing 'TFM_NS_CRYPTO_TEST_1037'
   Description: 'Non Secure TLS-1.2 PSK-to-MasterSecret key derivation'
   TEST: TFM_NS_CRYPTO_TEST_1037 - PASSED!
-> Executing 'TFM_NS_CRYPTO_TEST_1039'
-  Description: 'Non Secure ECDH key agreement'
-  TEST: TFM_NS_CRYPTO_TEST_1039 - PASSED!
 TESTSUITE PASSED!
 Running Test Suite Platform Service Non-Secure interface tests(TFM_NS_PLATFORM_TEST_1XXX)...
 > Executing 'TFM_NS_PLATFORM_TEST_1001'
   Description: 'Minimal platform service test'
   TEST: TFM_NS_PLATFORM_TEST_1001 - PASSED!
 TESTSUITE PASSED!
+Running Test Suite Symmetric key algorithm based Initial Attestation Service non-secure interface tests (TFM_NS_ATTEST_TEST_2XXX)...
+> Executing 'TFM_NS_ATTEST_TEST_2001'
+  Description: 'Symmetric key algorithm based Initial Attestation test'
+  TEST: TFM_NS_ATTEST_TEST_2001 - PASSED!
+TESTSUITE PASSED!
 
 *** Non-secure test suites summary ***
-Test suite 'IPC non-secure interface test (TFM_NS_IPC_TEST_1XXX)' has PASSED
-Test suite 'PSA protected storage NS interface tests (TFM_NS_PS_TEST_1XXX)' has PASSED
 Test suite 'PSA internal trusted storage NS interface tests (TFM_NS_ITS_TEST_1XXX)' has PASSED
 Test suite 'Crypto non-secure interface test (TFM_NS_CRYPTO_TEST_1XXX)' has PASSED
 Test suite 'Platform Service Non-Secure interface tests(TFM_NS_PLATFORM_TEST_1XXX)' has PASSED
+Test suite 'Symmetric key algorithm based Initial Attestation Service non-secure interface tests (TFM_NS_ATTEST_TEST_2XXX)' has PASSED
 
 *** End of Non-secure test suites ***
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

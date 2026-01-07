@@ -10,8 +10,7 @@ mcux_add_macro(
      CC "-DPRINTF_ADVANCED_ENABLE=1\
        -DOCOTP_NV_COUNTERS_RAM_EMULATION=1\
        -DPSA_CRYPTO_ACCELERATOR_DRIVER_PRESENT\
-       -DMBEDTLS_HKDF_C\
-       "
+	   "
 )
 
 #mdk configurations:

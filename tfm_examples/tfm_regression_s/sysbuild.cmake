@@ -1,5 +1,5 @@
 #
-# Copyright 2025 NXP
+# Copyright 2025-2026 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -24,3 +24,6 @@ ExternalMCUXProject_Add(
 )
 # Let's build the tfm_s_crypto_clients application second
 add_dependencies(${DEFAULT_IMAGE} tfm_s_reg_suites)
+
+#file to provide additonal configurations to secondary projects, e.g: tfm profile other than default
+include (${SdkRootDirPath}/${board_root}/${board}/tfm_examples/tfm_regression/tfm_regression_s/sysbuild.cmake OPTIONAL)
