@@ -1,9 +1,12 @@
 /*
- * Copyright 2024 ~ 2025 NXP
+ * Copyright 2024 ~ 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  * The BSD-3-Clause license can be found at https://spdx.org/licenses/BSD-3-Clause.html
  */
+
+#ifndef APP_CONFIG_H
+#define APP_CONFIG_H
 
 #include "wifi_bt_module_config.h"
 
@@ -85,11 +88,4 @@
 
 #include "wifi_config.h"
 
-/* Workaround: Define MBEDTLS_ALLOW_PRIVATE_ACCESS for MCUXpresso build 
- * when CONFIG_WPA_SUPP_MBEDTLS is disabled.
- */
-#if defined(__MCUXPRESSO) && !CONFIG_WPA_SUPP_MBEDTLS
-#ifndef MBEDTLS_ALLOW_PRIVATE_ACCESS
-#define MBEDTLS_ALLOW_PRIVATE_ACCESS
-#endif
-#endif
+#endif /* APP_CONFIG_H */

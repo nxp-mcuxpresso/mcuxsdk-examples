@@ -1,9 +1,12 @@
 /*
- *  Copyright 2024 NXP
+ *  Copyright 2024 ~ 2026 NXP
  *  All rights reserved.
  *
  *  SPDX-License-Identifier: BSD-3-Clause
  */
+
+#ifndef APP_CONFIG_H
+#define APP_CONFIG_H
 
 #include "wifi_bt_module_config.h"
 
@@ -82,3 +85,5 @@
 #error "Ot ncp feature only supports arm gcc compilation"
 #endif
 #endif
+
+#endif /* APP_CONFIG_H */

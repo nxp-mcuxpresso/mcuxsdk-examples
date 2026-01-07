@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2025 NXP
+ * Copyright 2022-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  * The BSD-3-Clause license can be found at https://spdx.org/licenses/BSD-3-Clause.html
@@ -24,6 +24,11 @@
 
 #ifndef MBEDTLS_ALLOW_PRIVATE_ACCESS
 #define MBEDTLS_ALLOW_PRIVATE_ACCESS
+#endif
+
+#ifdef MBEDTLS_PRIVATE
+#undef MBEDTLS_PRIVATE
+#define MBEDTLS_PRIVATE(member) member
 #endif
 
 #endif /* CONFIG_NCP_OT */
