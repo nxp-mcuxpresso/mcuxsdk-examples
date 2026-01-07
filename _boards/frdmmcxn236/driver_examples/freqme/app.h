@@ -11,30 +11,34 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define DEMO_CLOCK_SOURCE_COUNT 4U
-#define DEMO_CLOCK_SOURCE_NAME                                  \
+
+#define DEMO_FREQ_TAR_CLOCK_SOURCE_NAME                                  \
     {                                                           \
-        "CLK_IN", "FRO_12M", "FREQME_CLK_IN0", "FREQME_CLK_IN1" \
+        "CLK_IN", "FRO_12M", "FREQME_CLK_IN0" \
     }
 
-#define DEMO_REFERENCE_CLOCK_SOURCE_SIGNAL                                                                \
+#define DEMO_PULSE_TAR_CLOCK_SOURCE_NAME            \
+    {                                           \
+        "CLK_IN", "FRO_12M", "FRO_144M"       \
+    }
+
+#define DEMO_PULSE_TAR_CLOCK_SOURCE_SIGNAL                                                                \
     {                                                                                                     \
-        kINPUTMUX_ClkInToFreqmeasRef, kINPUTMUX_Fro12MToFreqmeasRef, kINPUTMUX_FreqmeClkIn0ToFreqmeasRef, \
-            kINPUTMUX_FreqmeClkIn1ToFreqmeasRef                                                           \
+        kINPUTMUX_ClkInToFreqmeasTar, kINPUTMUX_Fro12MToFreqmeasTar, kINPUTMUX_Fro144MToFreqmeasTar, \
     }
 
-#define DEMO_TARGET_CLOCK_SOURCE_SIGNAL                                                                   \
+#define DEMO_FREQ_TAR_CLOCK_SOURCE_SIGNAL                                                                   \
     {                                                                                                     \
         kINPUTMUX_ClkInToFreqmeasTar, kINPUTMUX_Fro12MToFreqmeasTar, kINPUTMUX_FreqmeClkIn0ToFreqmeasTar, \
-            kINPUTMUX_FreqmeClkIn1ToFreqmeasTar                                                           \
     }
 
-#define DEMO_REF_CLK_SOURCE    kINPUTMUX_Fro144MToFreqmeasRef
-#define DEMO_TARGET_CLK_SOURCE kINPUTMUX_Fro144MToFreqmeasTar
+#define DEMO_FREQ_REF_CLK_SOURCE    kINPUTMUX_Fro144MToFreqmeasRef
+#define DEMO_PULSE_REF_CLK_SOURCE kINPUTMUX_FreqmeClkIn1ToFreqmeasRef
 #define DEMO_FREQME            FREQME0
 #define FREQME_IRQHANDLER      Freqme_IRQHandler
 #define DEMO_MAXEXPECTVALUE    (0x6FFFFFFFUL)
 #define DEMO_MINEXPECTVALUE    (0xFUL)
+#define DEMO_REF_CLK_FREQ      CLOCK_GetFreq(kCLOCK_Clk144M)
 /*${macro:end}*/
 
 /*******************************************************************************

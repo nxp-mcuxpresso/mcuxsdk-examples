@@ -11,30 +11,36 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define DEMO_CLOCK_SOURCE_COUNT 4U
-#define DEMO_CLOCK_SOURCE_NAME                                               \
+
+#define DEMO_FREQ_TAR_CLOCK_SOURCE_NAME                                               \
     {                                                                        \
-        "XTAL32MHz", "FRO_OSC_12M", "FREQME_GPIO_CLK_A", "FREQME_GPIO_CLK_B" \
+        "XTAL32MHz", "FRO_OSC_12M", "FREQME_GPIO_CLK_A" \
     }
 
-#define DEMO_REFERENCE_CLOCK_SOURCE_SIGNAL                                                                           \
-    {                                                                                                                \
-        kINPUTMUX_Xtal32MhzToFreqmeasRef, kINPUTMUX_FroOsc12MhzToFreqmeasRef, kINPUTMUX_FreqmeGpioClkAToFreqmeasRef, \
-            kINPUTMUX_FreqmeGpioClkBToFreqmeasRef                                                                    \
+#define DEMO_PULSE_TAR_CLOCK_SOURCE_NAME            \
+    {                                           \
+        "XTAL32MHz", "FRO_OSC_12M", "FRO_OSC_96M"       \
     }
 
-#define DEMO_TARGET_CLOCK_SOURCE_SIGNAL                                                        \
+#define DEMO_PULSE_TAR_CLOCK_SOURCE_SIGNAL                                                      \
+    {                                                                                           \
+        kINPUTMUX_Xtal32MhzToFreqmeasTarget, kINPUTMUX_FroOsc12MhzToFreqmeasTarget,             \
+        kINPUTMUX_FroOsc96MhzToFreqmeasTarget,                                                  \
+    }
+
+#define DEMO_FREQ_TAR_CLOCK_SOURCE_SIGNAL                                                        \
     {                                                                                          \
         kINPUTMUX_Xtal32MhzToFreqmeasTarget, kINPUTMUX_FroOsc12MhzToFreqmeasTarget,            \
-            kINPUTMUX_FreqmeGpioClkAToFreqmeasTarget, kINPUTMUX_FreqmeGpioClkBToFreqmeasTarget \
+            kINPUTMUX_FreqmeGpioClkAToFreqmeasTarget \
     }
 
-#define DEMO_REF_CLK_SOURCE    kINPUTMUX_FroOsc96MhzToFreqmeasRef
-#define DEMO_TARGET_CLK_SOURCE kINPUTMUX_FroOsc96MhzToFreqmeasTarget
+#define DEMO_FREQ_REF_CLK_SOURCE    kINPUTMUX_FroOsc96MhzToFreqmeasRef
+#define DEMO_PULSE_REF_CLK_SOURCE kINPUTMUX_FreqmeGpioClkBToFreqmeasRef
 #define DEMO_FREQME            FREQME
 #define FREQME_IRQHANDLER      Freqme_IRQHandler
 #define DEMO_MAXEXPECTVALUE    (0x6FFFFFFFUL)
 #define DEMO_MINEXPECTVALUE    (0xFUL)
+#define DEMO_REF_CLK_FREQ      CLOCK_GetFreq(kCLOCK_FroHf)
 /*${macro:end}*/
 
 /*******************************************************************************
