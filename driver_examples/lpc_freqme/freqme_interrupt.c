@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NXP
+ * Copyright 2021, 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -14,6 +14,7 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+#define DEMO_CLOCK_SOURCE_COUNT 3U
 
 /*******************************************************************************
  * Prototypes
@@ -21,8 +22,8 @@
 
 /* Measure target clock's frequency. */
 static void DEMO_DoFreqMeasurement(void);
-/* Measure reference clock's pulse width. */
-static void DEMO_DoPulseWidthMeasurement(void);
+/* Measure reference clock's pulse. */
+static void DEMO_DoPulseMeasurement(void);
 /* Select clock source. */
 static void DEMO_GetClockSelection(freq_measure_config_t *config);
 /* Get pulse polarity from user input. */
@@ -32,11 +33,14 @@ static void DEMO_GetReferenceClockScaleFactor(freq_measure_config_t *config);
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-static const char *g_clockNameArray[DEMO_CLOCK_SOURCE_COUNT] = DEMO_CLOCK_SOURCE_NAME;
-static const inputmux_connection_t g_referenceClockSourceSignalArray[DEMO_CLOCK_SOURCE_COUNT] =
-    DEMO_REFERENCE_CLOCK_SOURCE_SIGNAL;
-static const inputmux_connection_t g_targetClockSourceSignalArray[DEMO_CLOCK_SOURCE_COUNT] =
-    DEMO_TARGET_CLOCK_SOURCE_SIGNAL;
+static const char *g_freqClockNameArray[DEMO_CLOCK_SOURCE_COUNT] = DEMO_FREQ_TAR_CLOCK_SOURCE_NAME;
+static const char *g_pulseClockNameArray[DEMO_CLOCK_SOURCE_COUNT] = DEMO_PULSE_TAR_CLOCK_SOURCE_NAME;
+
+static const inputmux_connection_t g_freqClockSourceSignalArray[DEMO_CLOCK_SOURCE_COUNT] =
+    DEMO_FREQ_TAR_CLOCK_SOURCE_SIGNAL;
+static const inputmux_connection_t g_pulseClockSourceSignalArray[DEMO_CLOCK_SOURCE_COUNT] =
+    DEMO_PULSE_TAR_CLOCK_SOURCE_SIGNAL;
+
 volatile bool g_measurementCompleted = false;
 volatile bool g_errorOccurred        = false;
 /*******************************************************************************
@@ -91,7 +95,6 @@ int main(void)
         {
             case 'A':
             {
-                RESET_PeripheralReset(kFREQME_RST_SHIFT_RSTn);
                 FREQME_SetMaxExpectedValue(DEMO_FREQME, DEMO_MAXEXPECTVALUE);
                 FREQME_SetMinExpectedValue(DEMO_FREQME, DEMO_MINEXPECTVALUE);
                 DEMO_DoFreqMeasurement();
@@ -99,8 +102,7 @@ int main(void)
             }
             case 'B':
             {
-                RESET_PeripheralReset(kFREQME_RST_SHIFT_RSTn);
-                DEMO_DoPulseWidthMeasurement();
+                DEMO_DoPulseMeasurement();
                 break;
             }
             default:
@@ -119,15 +121,21 @@ static void DEMO_DoFreqMeasurement(void)
 
     PRINTF("Frequency Measurement Mode Selected!\r\n");
 
+    /* 
+     * Set reference clock source for Frequency Measurement mode.
+     * In Frequency Measurement mode, FREQME counts target clock pulses that occurs during 
+     * the time defined by 2^CTRL_W[REF_SCALE] periods of the reference clock, so recommend
+     * to set the reference clock frequency greater than target clock frequency.
+     */
+    INPUTMUX_AttachSignal(INPUTMUX, 0UL, DEMO_FREQ_REF_CLK_SOURCE);
+
     /*
      * config->operateMode = kFREQME_FreqMeasurementMode;
      * config->operateModeAttribute.refClkScaleFactor = 0U;
      * config->enableContinuousMode                   = false;
      * config->startMeasurement                       = false;
      */
-
     FREQME_GetDefaultConfig(&config);
-    INPUTMUX_AttachSignal(INPUTMUX, 0UL, DEMO_REF_CLK_SOURCE);
     DEMO_GetClockSelection(&config);
     DEMO_GetReferenceClockScaleFactor(&config);
     FREQME_Init(DEMO_FREQME, &config);
@@ -135,6 +143,7 @@ static void DEMO_DoFreqMeasurement(void)
     FREQME_EnableInterrupts(
         DEMO_FREQME, kFREQME_ReadyInterruptEnable | kFREQME_UnderflowInterruptEnable | kFREQME_OverflowInterruptEnable);
     FREQME_StartMeasurementCycle(DEMO_FREQME);
+
     while (!g_measurementCompleted)
     {
     }
@@ -146,20 +155,28 @@ static void DEMO_DoFreqMeasurement(void)
     }
     else
     {
-#if defined(DEMO_REF_CLK_FREQ)
         targetFreq = FREQME_CalculateTargetClkFreq(DEMO_FREQME, DEMO_REF_CLK_FREQ);
-#else
-        targetFreq = FREQME_CalculateTargetClkFreq(DEMO_FREQME, CLOCK_GetFreq(kCLOCK_FroHf));
-#endif
         PRINTF("Target clock frequency is %d Hz.\r\n", targetFreq);
     }
 }
 
-static void DEMO_DoPulseWidthMeasurement(void)
+static void DEMO_DoPulseMeasurement(void)
 {
     freq_measure_config_t config;
     PRINTF("Pulse Width Measurement Mode.\r\n");
-    uint32_t pulseWidth;
+    uint32_t pulseCount;
+
+    /* 
+     * Set reference clock source for Pulse Measurement mode.
+     * In Pulse Width Measurement mode, FREQME counts target clock pulses while the reference 
+     * clock is in a specific state (high or low), so the reference clock frequency must less
+     * than target clock frequency.
+     * By combining the known duration of the reference clock's high or low period with the
+     * counted target pulses, the target clock frequency can be calculated.
+     * If the reference clock has a high period of 1 ms and 1000 target pulses occur during
+     * that time, the target frequency is 1 MHz.
+     */
+    INPUTMUX_AttachSignal(INPUTMUX, 0U, DEMO_PULSE_REF_CLK_SOURCE);
 
     /*
      * config->operateMode = kFREQME_FreqMeasurementMode;
@@ -167,20 +184,15 @@ static void DEMO_DoPulseWidthMeasurement(void)
      * config->enableContinuousMode                   = false;
      */
     FREQME_GetDefaultConfig(&config);
-
-    /* 
-     * In Pulse Measurement mode, FREQME counts target clock pulses while the reference clock
-     * is in a specific state (high or low), so the reference clock frequency must less than
-     * target clock frequency.
-     */   
-    INPUTMUX_AttachSignal(INPUTMUX, 0U, DEMO_TARGET_CLK_SOURCE);
     config.operateMode = kFREOME_PulseWidthMeasurementMode;
     DEMO_GetClockSelection(&config);
     DEMO_GetPulsePolarity(&config);
     FREQME_Init(DEMO_FREQME, &config);
+
     FREQME_EnableInterrupts(
         DEMO_FREQME, kFREQME_ReadyInterruptEnable | kFREQME_UnderflowInterruptEnable | kFREQME_OverflowInterruptEnable);
     FREQME_StartMeasurementCycle(DEMO_FREQME);
+
     while (!g_measurementCompleted)
     {
     }
@@ -192,8 +204,8 @@ static void DEMO_DoPulseWidthMeasurement(void)
     }
     else
     {
-        pulseWidth = FREQME_GetMeasurementResult(DEMO_FREQME);
-        PRINTF("Pulse width count is %d.\r\n", pulseWidth);
+        pulseCount = FREQME_GetMeasurementResult(DEMO_FREQME);
+        PRINTF("Pulse count is %d.\r\n", pulseCount);
     }
 }
 
@@ -204,59 +216,42 @@ static void DEMO_GetClockSelection(freq_measure_config_t *config)
 
     while (1)
     {
-        if (config->operateMode == kFREQME_FreqMeasurementMode)
+        PRINTF("Please select the target clock:\r\n");
+        for (i = 0U; i < DEMO_CLOCK_SOURCE_COUNT; i++)
         {
-            /* If operate mode is selected as Frequency measurment mode, the target clock is selectable. */
-            PRINTF("Please select the target clock:\r\n");
-            for (i = 0U; i < DEMO_CLOCK_SOURCE_COUNT; i++)
-            {
-                PRINTF("\t\t%c -- %s\r\n", 'A' + i, g_clockNameArray[i]);
-            }
-            PRINTF("Target clock: ");
-            chInput = GETCHAR();
-            if ((chInput >= 'a') && (chInput <= 'z'))
-            {
-                chInput -= 'a' - 'A';
-            }
-            PRINTF("%c \r\n", chInput);
-            chInput -= 'A';
-            if (chInput < DEMO_CLOCK_SOURCE_COUNT)
-            {
-                INPUTMUX_AttachSignal(INPUTMUX, 0UL, g_targetClockSourceSignalArray[(uint8_t)chInput]);
-                break;
+            if (config->operateMode == kFREQME_FreqMeasurementMode)
+            {                
+                PRINTF("\t\t%c -- %s\r\n", 'A' + i, g_freqClockNameArray[i]);
             }
             else
             {
-                PRINTF("Wrong Input Please Retry!\r\n");
-                continue;
+                PRINTF("\t\t%c -- %s\r\n", 'A' + i, g_pulseClockNameArray[i]);
             }
+        }
+        PRINTF("Target clock: ");
+        chInput = GETCHAR();
+        if ((chInput >= 'a') && (chInput <= 'z'))
+        {
+            chInput -= 'a' - 'A';
+        }
+        PRINTF("%c \r\n", chInput);
+        chInput -= 'A';
+        if (chInput < DEMO_CLOCK_SOURCE_COUNT)
+        {
+            if (config->operateMode == kFREQME_FreqMeasurementMode)
+            {
+                INPUTMUX_AttachSignal(INPUTMUX, 0UL, g_freqClockSourceSignalArray[(uint8_t)chInput]);
+            }
+            else
+            {
+                INPUTMUX_AttachSignal(INPUTMUX, 0UL, g_pulseClockSourceSignalArray[(uint8_t)chInput]);
+            }
+            break;
         }
         else
         {
-            /* In pulse width measurment mode, the reference clock is selectable. */
-            PRINTF("Please select the reference clock:\r\n");
-            for (i = 0U; i < DEMO_CLOCK_SOURCE_COUNT; i++)
-            {
-                PRINTF("\t\t%c -- %s\r\n", 'A' + i, g_clockNameArray[i]);
-            }
-            PRINTF("Reference clock: ");
-            chInput = GETCHAR();
-            if ((chInput >= 'a') && (chInput <= 'z'))
-            {
-                chInput -= 'a' - 'A';
-            }
-            PRINTF("%c \r\n", chInput);
-            chInput -= 'A';
-            if (chInput < DEMO_CLOCK_SOURCE_COUNT)
-            {
-                INPUTMUX_AttachSignal(INPUTMUX, 0UL, g_referenceClockSourceSignalArray[(uint8_t)chInput]);
-                break;
-            }
-            else
-            {
-                PRINTF("Wrong Input Please Retry!\r\n");
-                continue;
-            }
+            PRINTF("Wrong Input Please Retry!\r\n");
+            continue;
         }
     }
 }
