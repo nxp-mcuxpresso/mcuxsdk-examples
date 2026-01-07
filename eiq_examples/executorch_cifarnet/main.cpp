@@ -27,6 +27,8 @@
 #include "model_pte.h"
 #include "timer.h"
 
+#define POOL_SIZE (512 * 1024)
+
 using executorch::aten::ScalarType;
 using executorch::aten::Tensor;
 using executorch::aten::TensorImpl;
@@ -45,8 +47,8 @@ using executorch::runtime::Span;
 using executorch::runtime::Tag;
 using executorch::runtime::TensorInfo;
 
-static uint8_t method_allocator_pool[512 * 1024U] __ALIGNED(16) __attribute__((section("NonCacheable")));
-static uint8_t temp_allocator_pool[512 * 1024U] __ALIGNED(16) __attribute__((section("NonCacheable")));
+static uint8_t method_allocator_pool[POOL_SIZE] __ALIGNED(16) __attribute__((section("NonCacheable")));
+static uint8_t temp_allocator_pool[POOL_SIZE] __ALIGNED(16) __attribute__((section("NonCacheable")));
 
 class NMemoryAllocator : public executorch::runtime::MemoryAllocator {
     public:
@@ -57,9 +59,16 @@ class NMemoryAllocator : public executorch::runtime::MemoryAllocator {
             void* ret = executorch::runtime::MemoryAllocator::allocate(size, alignment);
             if (ret != nullptr) {
                 if ((size & (alignment - 1)) == 0) {
+                    if (used_ > POOL_SIZE - size) {
+                        return nullptr;
+                    }
                     used_ += size;
                 } else {
-                    used_ = (used_ | (alignment - 1)) + 1 + size;
+                    size_t aligned = (used_ | (alignment - 1)) + 1;
+                    if (aligned > POOL_SIZE - size) {
+                        return nullptr;
+                    }
+                    used_ = aligned + size;
                 }
             }
             return ret;
@@ -72,7 +81,12 @@ class NMemoryAllocator : public executorch::runtime::MemoryAllocator {
 
         // Returns the free size of the allocator's memory buffer.
         size_t free_size() const {
-            return executorch::runtime::MemoryAllocator::size() - used_;
+            size_t allocator_size = executorch::runtime::MemoryAllocator::size();
+
+            if (used_ > allocator_size) {
+	        return 0;
+            }
+            return allocator_size - used_;
         }
 
     private:
