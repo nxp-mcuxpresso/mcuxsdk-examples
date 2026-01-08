@@ -20,6 +20,9 @@ static adp5585_handle_t adpHandle;
 #endif
 #elif DPU_EXAMPLE_DI == DPU_DI_LVDS
 #include "fsl_ldb.h"
+#if APP_DISPLAY_EXTERNAL_CONVERTOR
+#include "fsl_it6263.h"
+#endif
 #endif
 uint32_t mipiDsiTxEscClkFreq_Hz;
 uint32_t mipiDsiDphyBitClkFreq_Hz;

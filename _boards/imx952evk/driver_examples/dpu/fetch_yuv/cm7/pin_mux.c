@@ -31,6 +31,7 @@ processor_version: 0.12.3
 void BOARD_InitBootPins(void)
 {
     BOARD_InitLpuart3Pins();
+    BOARD_InitPins();
 }
 
 /*
