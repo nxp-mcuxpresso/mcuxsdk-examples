@@ -45,7 +45,7 @@ void BOARD_InitBootPins(void) {
 BOARD_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: D14, peripheral: RGPIO5, signal: 'gpio_io, 06', pin_signal: GPIO_SD_B1_02, direction: OUTPUT, open_drain: Disable}
+  - {pin_num: F10, peripheral: ECAT, signal: RESET_OUT, pin_signal: GPIO_SD_B1_02}
   - {pin_num: A5, peripheral: LPUART1, signal: RXD, pin_signal: GPIO_AON_09, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper, open_drain: Disable, drive_strength: High,
     slew_rate: Slow}
   - {pin_num: B1, peripheral: LPUART1, signal: TXD, pin_signal: GPIO_AON_08, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper, open_drain: Disable, drive_strength: High,
@@ -64,20 +64,14 @@ void BOARD_InitPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
   CLOCK_EnableClock(kCLOCK_Iomuxc2);          /* Turn on LPCG: LPCG is ON. */
 
-  /* GPIO configuration of ECAT_PHY_RST_config on GPIO_SD_B1_02 (pin D14) */
-  rgpio_pin_config_t ECAT_PHY_RST_config_config = {
-      .pinDirection = kRGPIO_DigitalOutput,
-      .outputLogic = 0U,
-  };
-  /* Initialize GPIO functionality on GPIO_SD_B1_02 (pin D14) */
-  RGPIO_PinInit(RGPIO5, 6U, &ECAT_PHY_RST_config_config);
-
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_B2_00_ECAT_CLK_ECAT_CLK25,  /* GPIO_B2_00 is configured as ECAT_CLK_ECAT_CLK25 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  /* ECAT RESET SEETING */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_SD_B1_02_GPIO5_IO06,        /* GPIO_SD_B1_02 is configured as GPIO5_IO06 */
+      IOMUXC_GPIO_SD_B1_02_ECAT_RESET_OUT,    /* GPIO_SD_B1_02 is configured as ECAT_RESET_OUT */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  /* ENDIF ECAT RESET SEETING */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AON_08_LPUART1_TX,          /* GPIO_AON_08 is configured as LPUART1_TX */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
@@ -88,11 +82,6 @@ void BOARD_InitPins(void) {
       IOMUXC_GPIO_B2_00_ECAT_CLK_ECAT_CLK25,  /* GPIO_B2_00 PAD functional properties : */
       0x0CU);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: No Pull
-                                                 Open Drain Field: Disabled */
-  IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_SD_B1_02_GPIO5_IO06,        /* GPIO_SD_B1_02 PAD functional properties : */
-      0x04U);                                 /* PDRV Field: high driver
-                                                 Pull Down Pull Up Field: PU
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AON_08_LPUART1_TX,          /* GPIO_AON_08 PAD functional properties : */

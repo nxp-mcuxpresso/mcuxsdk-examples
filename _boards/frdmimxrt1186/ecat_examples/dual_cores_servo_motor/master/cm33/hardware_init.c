@@ -179,7 +179,6 @@ UINT16 HW_Init(void)
 
     Ecat_KickOff();
 
-    RGPIO_PinWrite(RGPIO5, 6, 1);
     SDK_DelayAtLeastUs(90000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
     /*set port0 page register*/
     ECAT_EscMdioWrite(ECAT, 0x00, 31, 0x07);

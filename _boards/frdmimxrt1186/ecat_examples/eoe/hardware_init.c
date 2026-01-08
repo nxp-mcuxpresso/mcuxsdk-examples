@@ -56,15 +56,8 @@ UINT16 HW_Init(void)
 
     PRINTF("Start the SSC EoE example...\r\n");
 
-    /* Reset ecat PHY */
-    RGPIO_PinInit(RGPIO5, 6, &pinConfig);
-    // RGPIO_PinInit(RGPIO4, 13, &pinConfig);
-    SDK_DelayAtLeastUs(15000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-
     Ecat_KickOff();
 
-    RGPIO_PinWrite(RGPIO5, 6, 1);
-    // RGPIO_PinWrite(RGPIO4, 13, 1);
     SDK_DelayAtLeastUs(90000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
     /*set port0 page register*/
     ECAT_EscMdioWrite(ECAT, 0x00, 31, 0x07);

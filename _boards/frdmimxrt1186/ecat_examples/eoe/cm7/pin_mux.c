@@ -31,7 +31,7 @@ BOARD_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm7, enableClock: 'true'}
 - pin_list:
   - {pin_num: D3, peripheral: RGPIO2, signal: 'gpio_io, 11', pin_signal: GPIO_EMC_B1_11}
-  - {pin_num: F10, peripheral: RGPIO5, signal: 'gpio_io, 06', pin_signal: GPIO_SD_B1_02}
+  - {pin_num: F10, peripheral: ECAT, signal: RESET_OUT, pin_signal: GPIO_SD_B1_02}
   - {peripheral: XBAR1, signal: 'IN, 17', pin_signal: IOMUX_XBAR_INOUT17}
   - {peripheral: XBAR1, signal: 'IN, 18', pin_signal: IOMUX_XBAR_INOUT18}
   - {pin_num: B12, peripheral: LPUART1, signal: RXD, pin_signal: GPIO_AON_09, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper, open_drain: Disable, drive_strength: High,
@@ -62,9 +62,11 @@ void BOARD_InitPins(void) {
       IOMUXC_GPIO_EMC_B1_11_GPIO2_IO11,       /* GPIO_EMC_B1_11 is configured as GPIO2_IO11 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   /* ENDIF LED GPIO SEETING */
+  /* ECAT RESET SEETING */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_SD_B1_02_GPIO5_IO06,    /* GPIO_AD_13 is configured as GPIO4_IO13 */
+      IOMUXC_GPIO_SD_B1_02_ECAT_RESET_OUT,    /* GPIO_SD_B1_02 is configured as ECAT_RESET_OUT */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  /* ENDIF ECAT RESET SEETING */
     IOMUXC_SetPinMux(
       IOMUXC_GPIO_AD_33_XBAR1_XBAR_INOUT17,   /* GPIO_AD_33 is configured as XBAR1_XBAR_INOUT17 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
