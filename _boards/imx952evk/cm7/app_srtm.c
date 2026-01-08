@@ -26,6 +26,10 @@
 #include "board.h"
 #include "rsc_table.h"
 #include "fsl_mu.h"
+#if SRTM_IO_SERVICE_USED
+#include "srtm_io_service.h"
+#include "fsl_adapter_gpio.h"
+#endif
 
 static srtm_dispatcher_t disp;
 static srtm_peercore_t core;
@@ -36,6 +40,243 @@ static struct rpmsg_lite_instance *rpmsgHandle;
 static app_rpmsg_monitor_t rpmsgMonitor;
 static void *rpmsgMonitorParam;
 static TimerHandle_t linkupTimer;
+
+#if SRTM_IO_SERVICE_USED
+static srtm_service_t ioService;
+#define PIN_FUNC_ID_SIZE (5)
+/* + 1: there is no GPIO0, but index start from 0 */
+#define APP_PORT_NUM (FSL_FEATURE_SOC_RGPIO_COUNT + 1)
+#define APP_PIN_NUM 32
+#define APP_GPIO_IDX(ioId) ((uint8_t)(((uint16_t)ioId) >> 8U))
+#define APP_PIN_IDX(ioId)  ((uint8_t)ioId)
+
+typedef struct
+{
+    uint16_t ioId;
+    uint8_t portIdx;
+    uint8_t pinIdx;
+    TimerHandle_t timer; /* GPIO glitch detect timer */
+    srtm_io_event_t event;
+    srtm_io_direction_t direction;
+    bool wakeup;
+    uint8_t value;
+    uint32_t pinFuncId[PIN_FUNC_ID_SIZE];
+    uint32_t inputMask;
+    uint32_t outputMask;
+    hal_gpio_handle_t p_gpioHandle;
+} app_io_t;
+
+GPIO_HANDLE_DEFINE(g_GpioPort2Pin4Handle);
+GPIO_HANDLE_DEFINE(g_GpioPort2Pin10Handle);
+GPIO_HANDLE_DEFINE(g_GpioPort2Pin11Handle);
+GPIO_HANDLE_DEFINE(g_GpioPort2Pin18Handle);
+
+/*
+ * NOTE: MCU DRIVERS DON'T SUPPORT SAVE CONTEXT FOR RESUME, BUT LINUX DRIVERS DO.
+ * WHEN MCU CORE RUNS INTO VLLS MODE, MOST PERIPHERALS STATE WILL BE LOST. HERE PROVIDES
+ * AN EXAMPLE TO SAVE DEVICE STATE BY APPLICATION IN A SUSPEND CONTEXT LOCATING IN TCM
+ * WHICH CAN KEEP DATA IN VLLS MODE.
+ */
+typedef struct
+{
+    struct
+    {
+        app_io_t data[APP_PORT_NUM][APP_PIN_NUM];
+    } io;
+} app_suspend_ctx_t;
+
+static app_suspend_ctx_t suspendContext = {
+    .io.data = {
+        /* port 0(GPIO0 instance) */
+        {
+            [0 ... (APP_PIN_NUM - 1)] = {
+                .portIdx = 0,
+                .pinIdx = 0,
+                .timer = NULL,
+                .event = 0,
+                .wakeup = false,
+                .value = 0,
+                .direction = SRTM_IoDirectionInput,
+                .pinFuncId = {0},
+                .inputMask = 0,
+                .outputMask = 0,
+                .p_gpioHandle = NULL,
+             }
+        },
+        /* port 1(GPIO1 instance) */
+        {
+            [0 ... (APP_PIN_NUM - 1)] = {
+                .portIdx = 0,
+                .pinIdx = 0,
+                .timer = NULL,
+                .event = 0,
+                .wakeup = false,
+                .value = 0,
+                .direction = SRTM_IoDirectionInput,
+                .pinFuncId = {0},
+                .inputMask = 0,
+                .outputMask = 0,
+                .p_gpioHandle = NULL,
+             }
+        },
+        /* port 2(GPIO2 instance) */
+        {
+            [0 ... 3] = {
+                .portIdx = 0,
+                .pinIdx = 0,
+                .timer = NULL,
+                .event = 0,
+                .wakeup = false,
+                .value = 0,
+                .direction = SRTM_IoDirectionInput,
+                .pinFuncId = {0},
+                .inputMask = 0,
+                .outputMask = 0,
+                .p_gpioHandle = NULL,
+             },
+             [4] = {
+                .portIdx = 2,
+                .pinIdx = 4,
+                .timer = NULL,
+                .event = SRTM_IoEventNone,
+                .wakeup = false,
+                .value = 0,
+                .direction = SRTM_IoDirectionOutput,
+                .pinFuncId = {IOMUXC_PAD_GPIO_IO04__GPIO2_IO_4},
+                .inputMask = IOMUXC_PAD_PU(1) | IOMUXC_PAD_FSEL1(0x3) | IOMUXC_PAD_DSE(0xF),
+                .outputMask = IOMUXC_PAD_PU(1) | IOMUXC_PAD_FSEL1(0x2) | IOMUXC_PAD_DSE(0xF),
+                .p_gpioHandle = g_GpioPort2Pin4Handle,
+             },
+             [5 ... 9] = {
+                .portIdx = 0,
+                .pinIdx = 0,
+                .timer = NULL,
+                .event = 0,
+                .wakeup = false,
+                .value = 0,
+                .direction = SRTM_IoDirectionInput,
+                .pinFuncId = {0},
+                .inputMask = 0,
+                .outputMask = 0,
+                .p_gpioHandle = NULL,
+             },
+             [10] = {
+                .portIdx = 2,
+                .pinIdx = 10,
+                .timer = NULL,
+                .event = SRTM_IoEventNone,
+                .wakeup = false,
+                .value = 0,
+                .direction = SRTM_IoDirectionInput,
+                .pinFuncId = {IOMUXC_PAD_GPIO_IO10__GPIO2_IO_10},
+                .inputMask = IOMUXC_PAD_PU(1) | IOMUXC_PAD_FSEL1(0x2) | IOMUXC_PAD_DSE(0xF),
+                .outputMask = IOMUXC_PAD_PU(1) | IOMUXC_PAD_FSEL1(0x2) | IOMUXC_PAD_DSE(0xF),
+                .p_gpioHandle = g_GpioPort2Pin10Handle,
+             },
+             [11] = {
+                .portIdx = 2,
+                .pinIdx = 11,
+                .timer = NULL,
+                .event = SRTM_IoEventNone,
+                .wakeup = false,
+                .value = 0,
+                .direction = SRTM_IoDirectionInput,
+                .pinFuncId = {IOMUXC_PAD_GPIO_IO11__GPIO2_IO_11},
+                .inputMask = IOMUXC_PAD_PU(1) | IOMUXC_PAD_FSEL1(0x2) | IOMUXC_PAD_DSE(0xF),
+                .outputMask = IOMUXC_PAD_PU(1) | IOMUXC_PAD_FSEL1(0x2) | IOMUXC_PAD_DSE(0xF),
+                .p_gpioHandle = g_GpioPort2Pin11Handle,
+             },
+             [12 ... 17] = {
+                .portIdx = 0,
+                .pinIdx = 0,
+                .timer = NULL,
+                .event = 0,
+                .wakeup = false,
+                .value = 0,
+                .pinFuncId = {0},
+                .inputMask = 0,
+                .outputMask = 0,
+                .p_gpioHandle = NULL,
+             },
+             [18] = {
+                .portIdx = 2,
+                .pinIdx = 18,
+                .timer = NULL,
+                .event = SRTM_IoEventNone,
+                .wakeup = false,
+                .value = 0,
+                .direction = SRTM_IoDirectionInput,
+                .pinFuncId = {IOMUXC_PAD_GPIO_IO18__GPIO2_IO_18},
+                .inputMask = IOMUXC_PAD_PU(1) | IOMUXC_PAD_FSEL1(0x2) | IOMUXC_PAD_DSE(0xF),
+                .outputMask = IOMUXC_PAD_PU(1) | IOMUXC_PAD_FSEL1(0x2) | IOMUXC_PAD_DSE(0xF),
+                .p_gpioHandle = g_GpioPort2Pin18Handle,
+             },
+             [19 ... (APP_PIN_NUM - 1)] = {
+                .portIdx = 0,
+                .pinIdx = 0,
+                .timer = NULL,
+                .event = 0,
+                .wakeup = false,
+                .value = 0,
+                .direction = SRTM_IoDirectionInput,
+                .pinFuncId = {0},
+                .inputMask = 0,
+                .outputMask = 0,
+                .p_gpioHandle = NULL,
+             },
+        },
+        /* port 3(GPIO3 instance) */
+        {
+            [0 ... (APP_PIN_NUM - 1)] = {
+                .portIdx = 0,
+                .pinIdx = 0,
+                .timer = NULL,
+                .event = 0,
+                .wakeup = false,
+                .value = 0,
+                .direction = SRTM_IoDirectionInput,
+                .pinFuncId = {0},
+                .inputMask = 0,
+                .outputMask = 0,
+                .p_gpioHandle = NULL,
+             }
+        },
+        /* port 4(GPIO4 instance) */
+        {
+            [0 ... (APP_PIN_NUM - 1)] = {
+                .portIdx = 0,
+                .pinIdx = 0,
+                .timer = NULL,
+                .event = 0,
+                .wakeup = false,
+                .value = 0,
+                .direction = SRTM_IoDirectionInput,
+                .pinFuncId = {0},
+                .inputMask = 0,
+                .outputMask = 0,
+                .p_gpioHandle = NULL,
+             }
+        },
+        /* port 5(GPIO5 instance) */
+        {
+            [0 ... (APP_PIN_NUM - 1)] = {
+                .portIdx = 0,
+                .pinIdx = 0,
+                .timer = NULL,
+                .event = 0,
+                .wakeup = false,
+                .value = 0,
+                .direction = SRTM_IoDirectionInput,
+                .pinFuncId = {0},
+                .inputMask = 0,
+                .outputMask = 0,
+                .p_gpioHandle = NULL,
+             }
+        },
+    }
+};
+
+#endif
 
 #if SRTM_AUDIO_SERVICE_USED
 static uint8_t edmaUseCnt = 0U;
@@ -312,6 +553,13 @@ static void APP_SRTM_Linkup(void)
     chan               = SRTM_RPMsgEndpoint_Create(&rpmsgConfig);
     SRTM_PeerCore_AddChannel(core, chan);
 
+#if SRTM_IO_SERVICE_USED
+    /* Create and add SRTM IO channel to peer core */
+    rpmsgConfig.epName = APP_SRTM_IO_CHANNEL_NAME;
+    chan               = SRTM_RPMsgEndpoint_Create(&rpmsgConfig);
+    SRTM_PeerCore_AddChannel(core, chan);
+#endif
+
     SRTM_Dispatcher_AddPeerCore(disp, core);
 }
 
@@ -501,11 +749,227 @@ static void APP_SRTM_InitAudioService(void)
 }
 #endif
 
+#if SRTM_IO_SERVICE_USED
+static void APP_HandleGPIOHander(uint16_t ioId);
+/*
+ * @brief Set pad control register
+ * @param asInput    use gpio as input, unless use as output
+ */
+static void APP_IO_SetPinConfig(uint16_t ioId, bool asInput)
+{
+    uint8_t portIdx = APP_GPIO_IDX(ioId);
+    uint8_t pinIdx  = APP_PIN_IDX(ioId);
+
+    IOMUXC_SetPinConfig(suspendContext.io.data[portIdx][pinIdx].pinFuncId[0], suspendContext.io.data[portIdx][pinIdx].pinFuncId[1], suspendContext.io.data[portIdx][pinIdx].pinFuncId[2], suspendContext.io.data[portIdx][pinIdx].pinFuncId[3],
+                        suspendContext.io.data[portIdx][pinIdx].pinFuncId[4], asInput ? (suspendContext.io.data[portIdx][pinIdx].inputMask) : (suspendContext.io.data[portIdx][pinIdx].outputMask));
+}
+
+static srtm_status_t APP_IO_ConfOutput(uint16_t ioId, srtm_io_value_t ioValue)
+{
+    uint8_t portIdx = APP_GPIO_IDX(ioId);
+    uint8_t pinIdx  = APP_PIN_IDX(ioId);
+
+    if (suspendContext.io.data[portIdx][pinIdx].p_gpioHandle != NULL)
+    {
+        APP_IO_SetPinConfig(ioId, false);
+
+        HAL_GpioSetOutput(suspendContext.io.data[portIdx][pinIdx].p_gpioHandle, (uint8_t)ioValue);
+        suspendContext.io.data[portIdx][pinIdx].direction = SRTM_IoDirectionOutput;
+        return SRTM_Status_Success;
+    }
+
+    return SRTM_Status_Error;
+}
+
+static srtm_status_t APP_IO_SetOutput(srtm_service_t service,
+                                      srtm_peercore_t core,
+                                      uint16_t ioId,
+                                      srtm_io_value_t ioValue)
+{
+    uint8_t portIdx = APP_GPIO_IDX(ioId);
+    uint8_t pinIdx  = APP_PIN_IDX(ioId);
+
+    if (suspendContext.io.data[portIdx][pinIdx].p_gpioHandle != NULL)
+    {
+        suspendContext.io.data[portIdx][pinIdx].value = (uint8_t)ioValue;
+
+        return APP_IO_ConfOutput(ioId, ioValue);
+    }
+    return SRTM_Status_Error;
+}
+
+static srtm_status_t APP_IO_GetInput(srtm_service_t service,
+                                     srtm_peercore_t core,
+                                     uint16_t ioId,
+                                     srtm_io_value_t *pIoValue)
+{
+    uint8_t portIdx = APP_GPIO_IDX(ioId);
+    uint8_t pinIdx  = APP_PIN_IDX(ioId);
+    uint8_t pinState;
+
+    if (suspendContext.io.data[portIdx][pinIdx].p_gpioHandle != NULL)
+    {
+        HAL_GpioGetInput(suspendContext.io.data[portIdx][pinIdx].p_gpioHandle, &pinState);
+        *pIoValue = pinState ? SRTM_IoValueHigh : SRTM_IoValueLow;
+
+        return SRTM_Status_Success;
+    }
+    return SRTM_Status_Error;
+}
+
+static srtm_status_t APP_IO_GetDirection(srtm_service_t service,
+                                     srtm_peercore_t core,
+                                     uint16_t ioId,
+                                     srtm_io_direction_t *pIoDir)
+{
+    uint8_t portIdx = APP_GPIO_IDX(ioId);
+    uint8_t pinIdx  = APP_PIN_IDX(ioId);
+
+    if (suspendContext.io.data[portIdx][pinIdx].p_gpioHandle != NULL)
+    {
+        *pIoDir = suspendContext.io.data[portIdx][pinIdx].direction;
+
+        return SRTM_Status_Success;
+    }
+    return SRTM_Status_Error;
+}
+
+static srtm_status_t APP_IO_ConfInput(uint16_t ioId, srtm_io_event_t event, bool wakeup)
+{
+    uint8_t portIdx = APP_GPIO_IDX(ioId);
+    uint8_t pinIdx  = APP_PIN_IDX(ioId);
+    hal_gpio_pin_config_t config;
+
+    APP_IO_SetPinConfig(ioId, true);
+    /* Set gpio direction as input */
+    config.direction = kHAL_GpioDirectionIn;
+    config.port = portIdx;
+    config.pin = pinIdx;
+    HAL_GpioInit(suspendContext.io.data[portIdx][pinIdx].p_gpioHandle, &config);
+    suspendContext.io.data[portIdx][pinIdx].direction = SRTM_IoDirectionInput;
+    suspendContext.io.data[portIdx][pinIdx].ioId = ioId;
+    HAL_GpioInstallCallback(suspendContext.io.data[portIdx][pinIdx].p_gpioHandle, (hal_gpio_callback_t)APP_HandleGPIOHander, (void *)&suspendContext.io.data[portIdx][pinIdx].ioId);
+
+    switch (event)
+    {
+        case SRTM_IoEventRisingEdge:
+	    HAL_GpioSetTriggerMode(suspendContext.io.data[portIdx][pinIdx].p_gpioHandle, kHAL_GpioInterruptRisingEdge);
+	    suspendContext.io.data[portIdx][pinIdx].event = SRTM_IoEventRisingEdge;
+            break;
+        case SRTM_IoEventFallingEdge:
+	    HAL_GpioSetTriggerMode(suspendContext.io.data[portIdx][pinIdx].p_gpioHandle, kHAL_GpioInterruptFallingEdge);
+	    suspendContext.io.data[portIdx][pinIdx].event = SRTM_IoEventFallingEdge;
+            break;
+        case SRTM_IoEventEitherEdge:
+	    HAL_GpioSetTriggerMode(suspendContext.io.data[portIdx][pinIdx].p_gpioHandle, kHAL_GpioInterruptEitherEdge);
+	    suspendContext.io.data[portIdx][pinIdx].event = SRTM_IoEventEitherEdge;
+            break;
+        case SRTM_IoEventLowLevel:
+	    HAL_GpioSetTriggerMode(suspendContext.io.data[portIdx][pinIdx].p_gpioHandle, kHAL_GpioInterruptLogicZero);
+	    suspendContext.io.data[portIdx][pinIdx].event = SRTM_IoEventLowLevel;
+            break;
+        case SRTM_IoEventHighLevel:
+	    HAL_GpioSetTriggerMode(suspendContext.io.data[portIdx][pinIdx].p_gpioHandle, kHAL_GpioInterruptLogicOne);
+	    suspendContext.io.data[portIdx][pinIdx].event = SRTM_IoEventHighLevel;
+            break;
+        default:
+	    HAL_GpioSetTriggerMode(suspendContext.io.data[portIdx][pinIdx].p_gpioHandle, kHAL_GpioInterruptDisable);
+	    suspendContext.io.data[portIdx][pinIdx].event = SRTM_IoEventNone;
+            break;
+    }
+
+    return SRTM_Status_Success;
+}
+
+static srtm_status_t APP_IO_ConfIEvent(
+    srtm_service_t service, srtm_peercore_t core, uint16_t ioId, srtm_io_event_t event, bool wakeup)
+{
+    uint8_t portIdx = APP_GPIO_IDX(ioId);
+    uint8_t pinIdx  = APP_PIN_IDX(ioId);
+
+    if (suspendContext.io.data[portIdx][pinIdx].p_gpioHandle != NULL)
+    {
+        suspendContext.io.data[portIdx][pinIdx].event  = event;
+        suspendContext.io.data[portIdx][pinIdx].wakeup = wakeup;
+
+        return APP_IO_ConfInput(ioId, event, wakeup);
+    }
+
+    return SRTM_Status_Error;
+}
+
+static void APP_SRTM_InitIoDevice(void)
+{
+    uint8_t portIdx;
+    uint8_t pinIdx;
+    hal_gpio_pin_config_t config;
+
+    /* Init io configuration */
+    for (portIdx = 0; portIdx < APP_PORT_NUM; portIdx++)
+    {
+        for (pinIdx = 0; pinIdx < APP_PIN_NUM; pinIdx++)
+        {
+            if (suspendContext.io.data[portIdx][pinIdx].p_gpioHandle != NULL)
+            {
+                config.direction = suspendContext.io.data[portIdx][pinIdx].direction ? (kHAL_GpioDirectionIn) : (kHAL_GpioDirectionOut);
+                config.port = suspendContext.io.data[portIdx][pinIdx].portIdx;
+                config.pin = suspendContext.io.data[portIdx][pinIdx].pinIdx;
+                config.level = suspendContext.io.data[portIdx][pinIdx].value;
+
+                HAL_GpioInit(suspendContext.io.data[portIdx][pinIdx].p_gpioHandle, &config);
+            }
+        }
+    }
+}
+
+static void APP_SRTM_InitIoService(void)
+{
+    uint16_t ioId = 0;
+    uint8_t portIdx, pinIdx;
+
+    /* Init IO structure used in the application. */
+    APP_SRTM_InitIoDevice();
+
+    ioService = SRTM_IoService_Create();
+    for (portIdx = 0; portIdx < APP_PORT_NUM; portIdx++)
+    {
+        for (pinIdx = 0; pinIdx < APP_PIN_NUM; pinIdx++)
+        {
+            if (suspendContext.io.data[portIdx][pinIdx].p_gpioHandle != NULL)
+            {
+                ioId = (portIdx << 8) | pinIdx;
+                SRTM_IoService_RegisterPin(ioService, ioId, APP_IO_SetOutput, APP_IO_GetInput, APP_IO_ConfIEvent, APP_IO_GetDirection, NULL);
+            }
+        }
+    }
+
+    SRTM_Dispatcher_RegisterService(disp, ioService);
+}
+
+static void APP_HandleGPIOHander(uint16_t ioId)
+{
+    //BaseType_t reschedule = pdFALSE;
+    uint8_t portIdx = APP_GPIO_IDX(ioId);
+    uint8_t pinIdx  = APP_PIN_IDX(ioId);
+
+    //APP_IO_ConfIEvent(NULL, NULL, ioId, SRTM_IoEventNone, false);
+    SRTM_IoService_NotifyInputEvent(ioService, ioId);
+    //xTimerStartFromISR(suspendContext.io.data[portIdx][pinIdx].timer, &reschedule);
+    //if (reschedule)
+    //{
+    //    portYIELD_FROM_ISR(reschedule);
+    //}
+}
+#endif
+
 static void APP_SRTM_InitServices(void)
 {
     APP_SRTM_InitI2CService();
 #if SRTM_AUDIO_SERVICE_USED
     APP_SRTM_InitAudioService();
+#endif
+#if SRTM_IO_SERVICE_USED
+    APP_SRTM_InitIoService();
 #endif
 }
 
