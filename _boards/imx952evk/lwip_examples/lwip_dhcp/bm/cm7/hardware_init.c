@@ -13,10 +13,14 @@
 #include "fsl_netc_mdio.h"
 #include "fsl_netc_phy_wrapper.h"
 #include "fsl_msgintr.h"
+#include "fsl_rgpio.h"
 
 /*${header:end}*/
 
 /*${macro:start}*/
+/* GPY215 PHY Regisgers*/
+#define PHY_MMD_VSPEC1         (0x1eU)
+#define VSPEC1_SGMII_CTRL_REG  (0x8U)
 /*${macro:end}*/
 
 /*${variable:start}*/
@@ -128,6 +132,9 @@ static status_t ENETC1_PHY_Init(phy_handle_t *phy_handle, const phy_config_t *co
     /* Initialize PHY */
     result = PHY_GPY215_Init(phy_handle, config);
 
+    /* Need to configure PHY SGMII mode */
+    PHY_GPY215_WriteC45(phy_handle, PHY_MMD_VSPEC1, VSPEC1_SGMII_CTRL_REG, 0x24faU);
+
     return result;
 }
 
@@ -153,16 +160,14 @@ static status_t ENETC_EMDIOC45Read(uint8_t portAddr, uint8_t devAddr, uint16_t r
 
 void BOARD_InitHardware(void)
 {
+    uint32_t comboPhyMode = 3; /* Select Ethernet */
+    uint8_t clkGenCfg = 0x0a; /* SI5332 config for 125M output*/
     pcal6524_handle_t handle1;
 
     /* clang-format off */
-    /* enetClk 666.66MHz */
-    clk_t enetclk = {
-        .clkId = kCLOCK_enet,
-        .pclkId = kCLOCK_syspll1dfs2,
-        .rate = 666666666,
-        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
-    };
+
+    /* enetClk 800MHz initialized in SM */
+
     /* enetRefClk 250MHz */
     clk_t enetrefclk = {
         .clkId = kCLOCK_enetref,
@@ -177,17 +182,27 @@ void BOARD_InitHardware(void)
         .rate = 100000000,
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
     };
-    /* NETCMIX power up */
-    pwr_s_t pwrst = {
-        .did = POWER_MIX_SLICE_IDX_NETC,
-        .st = SCMI_POWER_DOMAIN_STATE_ON,
-    };
     /* lpi2c7Clk 24MHz */
     clk_t lpi2cClkCfg = {
         .clkId = kCLOCK_lpi2c7,
         .pclkId = kCLOCK_osc24m,
         .rate = 24000000,
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
+    };
+    /* NETCMIX power up */
+    pwr_s_t pwrst = {
+        .did = POWER_MIX_SLICE_IDX_NETC,
+        .st = SCMI_POWER_DOMAIN_STATE_ON,
+    };
+    /* HSIO power */
+    pwr_s_t hsioPower = {
+        .did = POWER_MIX_SLICE_IDX_HSIO_TOP,
+        .st = SCMI_POWER_DOMAIN_STATE_OFF,
+    };
+
+    rgpio_pin_config_t gpioCfg = {
+        kRGPIO_DigitalOutput,
+        0,
     };
     /* clang-format on */
 
@@ -199,13 +214,30 @@ void BOARD_InitHardware(void)
     {
     }
 
-    /* Pins and clocks init */
-    BOARD_InitBootPins();
-    BOARD_BootClockRUN();
+    /* Power off HSIOMIX */
+    POWER_SetState(&hsioPower);
+    while(POWER_GetState(&pwrst))
+    {
+    }
 
-    CLOCK_SetParent(&enetclk);
-    CLOCK_SetRate(&enetclk);
-    CLOCK_EnableClock(enetclk.clkId);
+    /* Set combo phy for Ethernet */
+    if (SCMI_ERR_SUCCESS != SCMI_MiscControlSet(SCMI_A2P, 9U, 1U, &comboPhyMode))
+    {
+        assert(false);
+    }
+
+    /* Power up HSIOMIX */
+    hsioPower.st = SCMI_POWER_DOMAIN_STATE_ON;
+    POWER_SetState(&hsioPower);
+    while(POWER_GetState(&pwrst))
+    {
+    }
+
+    /* Pins init */
+    BOARD_InitBootPins();
+
+    /* Clocks init */
+    BOARD_BootClockRUN();
 
     CLOCK_SetParent(&enetrefclk);
     CLOCK_SetRate(&enetrefclk);
@@ -222,17 +254,40 @@ void BOARD_InitHardware(void)
     /* Console init */
     BOARD_InitDebugConsoleForCM7WithSM();
 
-    /* Select M.2 2.5G ETH card */
+    BOARD_ConfigMPU();
+
     BOARD_InitPCAL6524(&handle1);
+
+    /* Configure clock generator for 125M output */
+    BOARD_LPI2C_Send(LPI2C7, 0x6a, 0x42, 1, &clkGenCfg, 1, 0);
+
+    GPIO5->PCNS = 0x0;
+    RGPIO_PinInit(GPIO5, 12, &gpioCfg); /* Set PCIE1_CLK_REQ as low */
+
+    /* Set up M.2 2.5G ETH card */
+    PCAL6524_SetDirection(&handle1, (1 << BOARD_PCAL6524_M2_KE_PWREN), kPCAL6524_Output);
+    PCAL6524_SetPins(&handle1, (1 << BOARD_PCAL6524_M2_KE_PWREN));
+
     PCAL6524_SetDirection(&handle1, (1 << BOARD_PCAL6524_PCIE1_SEL), kPCAL6524_Output);
     PCAL6524_ClearPins(&handle1, (1 << BOARD_PCAL6524_PCIE1_SEL));
+
+    /* Do switching to 125MHz */
     PCAL6524_SetDirection(&handle1, (1 << BOARD_PCAL6524_WIFI_ETH_SEL), kPCAL6524_Output);
-    PCAL6524_SetPins(&handle1, (1 << BOARD_PCAL6524_WIFI_ETH_SEL));
+    PCAL6524_ClearPins(&handle1, (1 << BOARD_PCAL6524_WIFI_ETH_SEL));
     SDK_DelayAtLeastUs(1000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+    PCAL6524_SetPins(&handle1, (1 << BOARD_PCAL6524_WIFI_ETH_SEL));
+
+    /* Do PHY reset */
+    PCAL6524_SetDirection(&handle1, (1 << BOARD_PCAL6524_M2_E_RST_B), kPCAL6524_Output);
+    PCAL6524_ClearPins(&handle1, (1 << BOARD_PCAL6524_M2_E_RST_B));
+    SDK_DelayAtLeastUs(20000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+    PCAL6524_SetPins(&handle1, (1 << BOARD_PCAL6524_M2_E_RST_B));
+    SDK_DelayAtLeastUs(100000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 
     /* Protocol configure */
-    BLK_CTRL_NETCMIX->CFG_LINK_MII_PROT = 0x00000042;
+    BLK_CTRL_NETCMIX->CFG_LINK_MII_PROT = 0x00000032;
     BLK_CTRL_NETCMIX->CFG_LINK_PCS_PROT_1 = 0x00000002;
+    BLK_CTRL_NETCMIX->CFG_LINK_IO_VAR = 0x00000010;
 
     /* Unlock the IERB. It will warm reset whole NETC. */
     NETC_PRIV->NETCRR &= ~NETC_PRIV_NETCRR_LOCK_MASK;
