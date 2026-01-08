@@ -67,6 +67,14 @@ void BOARD_InitHardware(void)
     {
         BOARD_InitBootClocks();
     }
+    //Set RTC CLK source as XTAL32K to make RTC more accurate
+#if defined(gBoardUseFro32k_d) && (gBoardUseFro32k_d > 0)
+    CLOCK_AttachClk(kRC32K_to_CLK32K);
+#else
+    CLOCK_EnableXtal32K(true);
+    CLOCK_AttachClk(kXTAL32K_to_CLK32K);
+#endif
+
     BOARD_InitDebugConsole();
     /* Reset GMDA */
     RESET_PeripheralReset(kGDMA_RST_SHIFT_RSTn);
