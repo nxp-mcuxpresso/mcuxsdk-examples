@@ -54,3 +54,4 @@ It's a successful transfer.
 
  Slave example is running...
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Note: The `flexspi_nor_debug` target of this example currently experiences performance issue. For better performance, use RAM-based `debug` target instead.
