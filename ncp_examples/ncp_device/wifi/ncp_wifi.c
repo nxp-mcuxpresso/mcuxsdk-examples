@@ -247,7 +247,7 @@ static void wifi_ncp_task(void *pvParameters)
 
 typedef struct {
     int socket;
-    struct sockaddr to;
+    union ncp_sockaddr_aligned align_name;
     uint32_t flags;
 } ncp_inet_socket_info_t;
 
@@ -255,20 +255,21 @@ bool ncp_send_acc_process(void *data)
 {
     int ret;
     struct pbuf *p = (struct pbuf *)data;
-    ncp_inet_socket_info_t *info;
+    ncp_inet_socket_info_t info = {0};
+    struct sockaddr *to = &info.align_name.sa;
 
     /* get p */
-    info = (ncp_inet_socket_info_t *)p->payload;
+    (void)memcpy(&info, p->payload, sizeof(ncp_inet_socket_info_t));
     pbuf_header(p, -(int)sizeof(ncp_inet_socket_info_t));
 
     /* make sure socket is not closed here, so that these variables can be read without lock */
-    if (info->to.sa_len)
+    if (to->sa_len)
     {
-        ret = sendto(info->socket, p->payload, p->len, info->flags, &info->to, info->to.sa_len);
+        ret = sendto(info.socket, p->payload, p->len, info.flags, to, to->sa_len);
     }
     else
     {
-        ret = send(info->socket, p->payload, p->len, info->flags);
+        ret = send(info.socket, p->payload, p->len, info.flags);
     }
     ncp_buf_free(p);
     if (ret < 0)
@@ -284,6 +285,7 @@ void *ncp_send_acc_filter(void *data)
     uint32_t cmd_id = (*((uint32_t *)data));
     NCP_CMD_INET_SENDTO_CFG *tlv;
     ncp_inet_socket_info_t info = {0};
+    struct sockaddr *to = &info.align_name.sa;
     struct pbuf *p;
     const int offset = sizeof(ncp_inet_socket_info_t);
     int retry = 10;
@@ -314,9 +316,11 @@ retry:
 
     info.socket = tlv->socket;
     info.flags = tlv->flags;
-    info.to.sa_len = tlv->socklen;
-    info.to.sa_family = ((struct linux_sockaddr *)tlv->sockaddr)->sa_family;
-    (void)memcpy(info.to.sa_data, ((struct linux_sockaddr *)tlv->sockaddr)->sa_data, tlv->socklen);
+    to->sa_len = tlv->socklen;
+    to->sa_family = ((struct linux_sockaddr *)tlv->sockaddr)->sa_family;
+
+    /* reserved enough space for ipv6 address */
+    (void)memcpy(to->sa_data, ((struct linux_sockaddr *)tlv->sockaddr)->sa_data, tlv->socklen);
     (void)pbuf_take(p, &info, offset);
     (void)pbuf_take_at(p, tlv->send_data, tlv->size, offset);
 
