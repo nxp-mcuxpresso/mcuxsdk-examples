@@ -16,6 +16,15 @@
 /*******************************************************************/
 #ifndef CONFIG_BOOT_CUSTOM_DEVICE_SETUP
 
+/*
+ * MCUBoot upgrade mode (default)
+ * If supported by the device, an alternative upgrade mode can be selected.
+ * For more information please see documentation (ota_examples/_doc).
+ */
+//#define CONFIG_BOOT_MODE_OVERWRITE_ONLY
+//#define CONFIG_BOOT_MODE_SINGLE_APPLICATION_SLOT
+#define CONFIG_BOOT_MODE_SWAP
+
 /* To be able to bootstrap signed image from debug session */
 #define CONFIG_BOOT_BOOTSTRAP
 

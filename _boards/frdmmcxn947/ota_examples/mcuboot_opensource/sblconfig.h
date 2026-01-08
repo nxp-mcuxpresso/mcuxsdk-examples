@@ -23,18 +23,16 @@
 
 #ifndef CONFIG_MCXN_CUSTOM_CFG_MAIN_FLASH_ONLY
 /* HW flash remap feature is used if MCUBoot is located in IFR region */
-#define CONFIG_MCUBOOT_FLASH_REMAP_ENABLE
+#define CONFIG_BOOT_MODE_FLASH_REMAP
 #endif
-
-/* Encrypted XIP support config */
 
 /*
  * Uncomment to enable extension utilizing on-the-fly decryption of encrypted image.
  * Note: This configuration is compatible only with MCUBoot placed in main flash
- * array. Flash remap feature has to be disabled.
+ * array. Flash remap mode has to be disabled.
  * For more information please see readme file of mcuboot_opensource example.
  */
-//#define CONFIG_ENCRYPT_XIP_EXT_ENABLE
+//#define CONFIG_BOOT_MODE_ENCRYPTED_XIP
 
 /* MCUBoot Flash Config */
 
@@ -55,7 +53,7 @@
 /*
  * MCUBoot is located in main flash -> Use mbedTLS
  */
-#ifdef CONFIG_ENCRYPT_XIP_EXT_ENABLE
+#ifdef CONFIG_BOOT_MODE_ENCRYPTED_XIP
 #define CONFIG_BOOT_USE_MBEDTLS
 #define CONFIG_BOOT_ENCRYPT_EC256
 #else
@@ -73,7 +71,7 @@
 #endif /* CONFIG_BOOT_CUSTOM_DEVICE_SETUP */
 
 /* Config Guards */
-#if defined(CONFIG_ENCRYPT_XIP_EXT_ENABLE) && \
+#if defined(CONFIG_BOOT_MODE_ENCRYPTED_XIP) && \
     !defined(CONFIG_MCXN_CUSTOM_CFG_MAIN_FLASH_ONLY)
 #error "Encrypted XIP using NPX is not supported when MCUBoot is placed in IFR region."
 #endif

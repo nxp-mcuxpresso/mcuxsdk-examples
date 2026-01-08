@@ -24,7 +24,7 @@
 /*******************************************************************************
  * Code
  ******************************************************************************/
-#ifdef CONFIG_MCUBOOT_FLASH_REMAP_ENABLE
+#ifdef CONFIG_BOOT_MODE_FLASH_REMAP
 
 #define IOMUXC_GPR_GPR30_REG 0x400CC420 /* Flash remapping start address  */
 #define IOMUXC_GPR_GPR31_REG 0x400CC424 /* Flash remapping end address    */
@@ -69,7 +69,7 @@ int main(void)
 
     PRINTF("hello sbl.\r\n");
 
-#if defined(MCUBOOT_DIRECT_XIP) && defined(CONFIG_MCUBOOT_FLASH_REMAP_ENABLE)
+#if defined(MCUBOOT_DIRECT_XIP) && defined(CONFIG_BOOT_MODE_FLASH_REMAP)
     /* Make sure flash remapping function is disabled before running the
      * bootloader application .
      */

@@ -20,14 +20,15 @@
 #ifndef CONFIG_BOOT_CUSTOM_DEVICE_SETUP
 
 /*
- * MCUBoot upgrade mode
- *
- * The default MCUBoot configuration is to use SWAP mechanism. In case the flash
- * remapping functionality is supported by processor the alternative mechanism
- * using DIRECT-XIP mode can be used and evaluated by user.
- * Comment this to enable SWAP mode or when encrypted XIP extension is enabled.
+ * MCUBoot upgrade mode (default)
+ * If supported by the device, an alternative upgrade mode can be selected.
+ * For more information please see documentation (ota_examples/_doc).
  */
-#define CONFIG_MCUBOOT_FLASH_REMAP_ENABLE
+//#define CONFIG_BOOT_MODE_OVERWRITE_ONLY
+#define CONFIG_BOOT_MODE_FLASH_REMAP
+//#define CONFIG_BOOT_MODE_ENCRYPTED_XIP
+//#define CONFIG_BOOT_MODE_SINGLE_APPLICATION_SLOT
+//#define CONFIG_BOOT_MODE_SWAP
 
 /* To be able to bootstrap signed image from debug session */
 #define CONFIG_BOOT_BOOTSTRAP

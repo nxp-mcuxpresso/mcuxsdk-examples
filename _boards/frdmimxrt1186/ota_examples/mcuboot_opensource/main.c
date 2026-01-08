@@ -34,7 +34,7 @@ TRDC_Type* trdc[] = {TRDC2, TRDC1};
 /*******************************************************************************
  * Code
  ******************************************************************************/
-#ifdef CONFIG_MCUBOOT_FLASH_REMAP_ENABLE
+#ifdef CONFIG_BOOT_MODE_FLASH_REMAP
 
 #error "Not Supported"
 
@@ -216,7 +216,7 @@ int main(void)
 
     PRINTF("hello sbl.\r\n");
 
-#if defined(MCUBOOT_DIRECT_XIP) && defined(CONFIG_MCUBOOT_FLASH_REMAP_ENABLE)
+#if defined(MCUBOOT_DIRECT_XIP) && defined(CONFIG_BOOT_MODE_FLASH_REMAP)
     /* Make sure flash remapping function is disabled before running the
      * bootloader application .
      */

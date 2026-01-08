@@ -61,7 +61,7 @@
 #define BOOT_FLASH_ACT_APP  0x00040000
 #define BOOT_FLASH_CAND_APP 0x00120000
 
-#if defined(CONFIG_ENCRYPT_XIP_EXT_ENABLE)
+#if defined(CONFIG_BOOT_MODE_ENCRYPTED_XIP)
 #define BOOT_FLASH_ENC_META (BOOT_FLASH_ACT_APP - 8192U) /* Dummy area in this configuration, reserved for future use */
 #endif
 

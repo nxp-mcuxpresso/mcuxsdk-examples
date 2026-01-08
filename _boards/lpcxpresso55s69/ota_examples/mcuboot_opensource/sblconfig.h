@@ -25,10 +25,16 @@
 #define CONFIG_MCUBOOT_MAX_IMG_SECTORS 400
 
 /*
+ * MCUBoot upgrade mode (default)
+ * If supported by the device, an alternative upgrade mode can be selected.
+ * For more information please see documentation (ota_examples/_doc).
+ */
+/*
  * LPC55S69 with ECC Flash limits use of revert strategies (move/swap).
  * At least with current MCUBoot implementation.
  */
-#define MCUBOOT_OVERWRITE_ONLY
+#define CONFIG_BOOT_MODE_OVERWRITE_ONLY
+//#define CONFIG_BOOT_MODE_SINGLE_APPLICATION_SLOT
 
 #define CONFIG_BOOT_BOOTSTRAP
 

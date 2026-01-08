@@ -21,20 +21,22 @@
 #define CONFIG_MCUBOOT_MAX_IMG_SECTORS 800
 
 /*
- * MCUBoot upgrade mode
- *
- * The default MCUBoot configuration is to use swap mechanism. In case the flash
- * remapping functionality is supported by processor the alternative mechanism
- * using direct-xip mode can be used and evaluated by user.
+ * MCUBoot upgrade mode (default)
+ * If supported by the device, an alternative upgrade mode can be selected.
+ * For more information please see documentation (ota_examples/_doc).
  */
-#define CONFIG_MCUBOOT_FLASH_REMAP_ENABLE
+//#define CONFIG_BOOT_MODE_OVERWRITE_ONLY
+#define CONFIG_BOOT_MODE_FLASH_REMAP
+//#define CONFIG_BOOT_MODE_ENCRYPTED_XIP
+//#define CONFIG_BOOT_MODE_SINGLE_APPLICATION_SLOT
+//#define CONFIG_BOOT_MODE_SWAP
 
 /*
  * Enable the encrypted XIP extension. This extension is not compatible with the 
  * flash remapping feature as it implicitly uses overwrite only mode.
  * For more information, please see readme file.
  */
-//#define CONFIG_ENCRYPT_XIP_EXT_ENABLE
+//#define CONFIG_BOOT_MODE_ENCRYPTED_XIP
 
 #define CONFIG_BOOT_BOOTSTRAP
 
@@ -43,7 +45,7 @@
 #define CONFIG_BOOT_SIGNATURE
 #define CONFIG_BOOT_SIGNATURE_TYPE_ECDSA_P256
 
-#ifndef CONFIG_ENCRYPT_XIP_EXT_ENABLE
+#ifndef CONFIG_BOOT_MODE_ENCRYPTED_XIP
 #define CONFIG_BOOT_USE_PSA_CRYPTO
 #else
 #define CONFIG_BOOT_USE_MBEDTLS

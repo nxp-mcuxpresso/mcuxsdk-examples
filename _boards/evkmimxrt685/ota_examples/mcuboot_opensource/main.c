@@ -30,7 +30,7 @@
  * Code
  ******************************************************************************/
 
-#ifdef CONFIG_MCUBOOT_FLASH_REMAP_ENABLE
+#ifdef CONFIG_BOOT_MODE_FLASH_REMAP
 
 void SBL_EnableRemap(uint32_t start_addr, uint32_t end_addr, uint32_t off)
 {
@@ -52,7 +52,7 @@ void SBL_DisableRemap(void)
     __DSB();
     __ISB();
 }
-#endif /* CONFIG_MCUBOOT_FLASH_REMAP_ENABLE */
+#endif /* CONFIG_BOOT_MODE_FLASH_REMAP */
 
 /*!
  * @brief Main function
@@ -74,7 +74,7 @@ int main(void)
 
     PRINTF("hello sbl.\r\n");
 
-#if defined(MCUBOOT_DIRECT_XIP) && defined(CONFIG_MCUBOOT_FLASH_REMAP_ENABLE)
+#if defined(MCUBOOT_DIRECT_XIP) && defined(CONFIG_BOOT_MODE_FLASH_REMAP)
     /* Make sure flash remapping function is disabled before running the
      * bootloader application .
      */

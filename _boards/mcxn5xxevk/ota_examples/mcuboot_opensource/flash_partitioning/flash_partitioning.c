@@ -28,7 +28,7 @@ struct flash_area boot_flash_map[MCUBOOT_IMAGE_SLOT_NUMBER] = {
      .fa_size      = BOOT_FLASH_CAND_APP - BOOT_FLASH_ACT_APP,
      .fa_name      = "APP_SECONDARY"}};
 
-#ifdef CONFIG_ENCRYPT_XIP_EXT_ENABLE
+#ifdef CONFIG_BOOT_MODE_ENCRYPTED_XIP
 struct flash_area boot_flash_meta_map[1] = {
     /* Encrypted XIP metadata storage */
     {.fa_id        = 0,

@@ -203,8 +203,8 @@ Adjust the content of the `middleware\mcuboot_opensource\boot\nxp_mcux_sdk\keys\
 There are three ways how to enable Encrypted XIP mode:
 
 1. Manually modify content of `sblconfig.h`
-    * Enable `CONFIG_ENCRYPT_XIP_EXT_ENABLE` 
-    * Disable `CONFIG_MCUBOOT_FLASH_REMAP_ENABLE` and `CONFIG_BOOT_CUSTOM_DEVICE_SETUP`
+    * Enable `CONFIG_BOOT_MODE_ENCRYPTED_XIP` 
+    * Disable `CONFIG_BOOT_MODE_FLASH_REMAP` and `CONFIG_BOOT_CUSTOM_DEVICE_SETUP`
 2. Manually customize Kconfig configuration and generate the project - see [Kconfig and customization of OTA examples](kconfig_customization.md)
 3. Use pre-defined customized builds - see particular chapter in your board readme (see Supported boards)
 
