@@ -8,4 +8,3 @@ sai
 
 
    sai/readme.md
-   sai_peripheral/readme.md
