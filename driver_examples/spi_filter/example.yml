@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+spi_filter:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/spi_filter
+    project-root-path: boards/${board}/driver_examples/spi_filter/${multicore_foldername}
+    document:
+      name: spi_filter${core_id_suffix_name}
+      category: driver_examples/spi_filter
+      brief: 'The spi_filter example demonstrates the usage of SPI filter driver.'
+      example_readme:
+      - examples/driver_examples/spi_filter/readme.md
+      - ${board_root}/${board}/driver_examples/spi_filter/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxa577: []
