@@ -24,11 +24,11 @@
 /* clang-format off */
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Clocks v16.0
-processor: MCXA266
-package_id: MCXA266VLQ
+product: Clocks v19.0
+processor: MCXA366
+package_id: MCXA366VLQ
 mcu_data: ksdk2_0
-processor_version: 0.2503.50
+processor_version: 0.2512.50
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
 
@@ -66,6 +66,8 @@ outputs:
 - {id: CLK_1M_clock.outFreq, value: 1 MHz}
 - {id: CLK_45M_clock.outFreq, value: 45 MHz}
 - {id: CPU_clock.outFreq, value: 12 MHz}
+- {id: FREQME_reference_clock.outFreq, value: 12 MHz}
+- {id: FREQME_target_clock.outFreq, value: 12 MHz}
 - {id: FRO_12M_DIV_clock.outFreq, value: 12 MHz}
 - {id: FRO_12M_clock.outFreq, value: 12 MHz}
 - {id: FRO_HF_DIV_clock.outFreq, value: 45 MHz}
@@ -86,11 +88,134 @@ settings:
 /* clang-format on */
 
 /*******************************************************************************
- * Variables for BOARD_BootClockFRO12M configuration
- ******************************************************************************/
-/*******************************************************************************
  * Code for BOARD_BootClockFRO12M configuration
  ******************************************************************************/
+void BOARD_BootClockFRO12M_InitClockModule(clock_module_t module)
+{
+
+    switch(module) {
+        case kClockModule_FIRC:
+            CLOCK_SetClockDiv(kCLOCK_DivFRO_HF, 1U);       /* !< Set SYSCON.FROHFDIV divider to value 1 */
+            CLOCK_SetupFROHFClocking(45000000U); /*!< Enable FRO HF 45000000Hz output */
+            break;
+        case kClockModule_SIRC:
+            CLOCK_SetClockDiv(kCLOCK_DivFRO_LF, 1U);       /* !< Set SYSCON.FROLFDIV divider to value 1 */
+            CLOCK_SetupFRO12MClocking();                /*!< Setup FRO12M clock */
+            break;
+        case kClockModule_SystemClk:
+            CLOCK_SetClockDiv(kCLOCK_DivAHBCLK, 1U);       /* !< Set SYSCON.AHBCLKDIV divider to value 1 */
+            CLOCK_AttachClk(kFRO12M_to_MAIN_CLK);/* !< Switch MAIN_CLK to kFRO12M */
+            break;
+        case kClockModule_ADCClk:
+            CLOCK_AttachClk(kNONE_to_ADC);                 /* !< Switch ADC to  */
+            break;
+        case kClockModule_CLKOUT:
+            CLOCK_AttachClk(kNONE_to_CLKOUT);              /* !< Switch CLKOUT to  */
+            break;
+        case kClockModule_CMP0Clk:
+            CLOCK_AttachClk(kNONE_to_CMP0);                /* !< Switch CMP0 to  */
+            break;
+        case kClockModule_CMP1Clk:
+            CLOCK_AttachClk(kNONE_to_CMP1);                /* !< Switch CMP1 to  */
+            break;
+        case kClockModule_CMP2Clk:
+            CLOCK_AttachClk(kNONE_to_CMP2);                /* !< Switch CMP2 to  */
+            break;
+        case kClockModule_CTIMER0Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER0);             /* !< Switch CTIMER0 to  */
+            break;
+        case kClockModule_CTIMER1Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER1);             /* !< Switch CTIMER1 to  */
+            break;
+        case kClockModule_CTIMER2Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER2);             /* !< Switch CTIMER2 to  */
+            break;
+        case kClockModule_CTIMER3Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER3);             /* !< Switch CTIMER3 to  */
+            break;
+        case kClockModule_CTIMER4Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER4);             /* !< Switch CTIMER4 to  */
+            break;
+        case kClockModule_DAC0Clk:
+            CLOCK_AttachClk(kNONE_to_DAC0);                /* !< Switch DAC0 to  */
+            break;
+        case kClockModule_FLEXCAN0Clk:
+            CLOCK_AttachClk(kNONE_to_FLEXCAN0);            /* !< Switch FLEXCAN0 to  */
+            break;
+        case kClockModule_FLEXCAN1Clk:
+            CLOCK_AttachClk(kNONE_to_FLEXCAN1);            /* !< Switch FLEXCAN1 to  */
+            break;
+        case kClockModule_FLEXIO0Clk:
+            CLOCK_AttachClk(kNONE_to_FLEXIO0);             /* !< Switch FLEXIO0 to  */
+            break;
+        case kClockModule_I3C0Clk:
+            CLOCK_AttachClk(kNONE_to_I3C0FCLK);            /* !< Switch I3C0FCLK to  */
+            break;
+        case kClockModule_LPI2C0Clk:
+            CLOCK_AttachClk(kNONE_to_LPI2C0);              /* !< Switch LPI2C0 to  */
+            break;
+        case kClockModule_LPI2C1Clk:
+            CLOCK_AttachClk(kNONE_to_LPI2C1);              /* !< Switch LPI2C1 to  */
+            break;
+        case kClockModule_LPI2C2Clk:
+            CLOCK_AttachClk(kNONE_to_LPI2C2);              /* !< Switch LPI2C2 to  */
+            break;
+        case kClockModule_LPI2C3Clk:
+            CLOCK_AttachClk(kNONE_to_LPI2C3);              /* !< Switch LPI2C3 to  */
+            break;
+        case kClockModule_LPSPI0Clk:
+            CLOCK_AttachClk(kNONE_to_LPSPI0);              /* !< Switch LPSPI0 to  */
+            break;
+        case kClockModule_LPSPI1Clk:
+            CLOCK_AttachClk(kNONE_to_LPSPI1);              /* !< Switch LPSPI1 to  */
+            break;
+        case kClockModule_LPTMR0Clk:
+            CLOCK_AttachClk(kNONE_to_LPTMR0);              /* !< Switch LPTMR0 to  */
+            break;
+        case kClockModule_LPUART0Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART0);             /* !< Switch LPUART0 to  */
+            break;
+        case kClockModule_LPUART1Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART1);             /* !< Switch LPUART1 to  */
+            break;
+        case kClockModule_LPUART2Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART2);             /* !< Switch LPUART2 to  */
+            break;
+        case kClockModule_LPUART3Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART3);             /* !< Switch LPUART3 to  */
+            break;
+        case kClockModule_LPUART4Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART4);             /* !< Switch LPUART4 to  */
+            break;
+        case kClockModule_LPUART5Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART5);             /* !< Switch LPUART5 to  */
+            break;
+        case kClockModule_OSTIMER0Clk:
+            CLOCK_AttachClk(kNONE_to_OSTIMER);             /* !< Switch OSTIMER to  */
+            break;
+        case kClockModule_TRACEClk:
+            CLOCK_AttachClk(kCPU_CLK_to_TRACE);            /* !< Switch TRACE to CPU_CLK */
+            CLOCK_SetClockDiv(kCLOCK_DivTRACE, 1U);        /* !< Set MRCC.TRACE_CLKDIV divider to value 1 */
+            break;
+        case kClockModule_USB0ClkClk:
+            CLOCK_AttachClk(kNONE_to_USB0);                /* !< Switch USB0 to  */
+            break;
+        case kClockModule_WWDT0Clk:
+            CLOCK_SetClockDiv(kCLOCK_DivWWDT0, 1U);        /* !< Set MRCC.WWDT0_CLKDIV divider to value 1 */
+            break;
+        case kClockModule_FREQME:
+            /* Configure FREQME clock */
+            CLOCK_EnableClock(kCLOCK_InputMux);
+            RESET_ReleasePeripheralReset(kINPUTMUX0_RST_SHIFT_RSTn);
+            INPUTMUX0->FREQMEAS_REF = INPUTMUX_FREQMEAS_REF_INP(2);
+            INPUTMUX0->FREQMEAS_TAR = INPUTMUX_FREQMEAS_TAR_INP(2);
+            break;
+        default:
+            assert(false);
+            break;
+    }
+}
+
 void BOARD_BootClockFRO12M(void)
 {
     uint32_t coreFreq;
@@ -113,15 +238,9 @@ void BOARD_BootClockFRO12M(void)
         sramOption.requestVoltageUpdate =  true;
         (void)SPC_SetSRAMOperateVoltage(SPC0, &sramOption);
     }
-
-
-    /*!< Set up system dividers */
-    CLOCK_SetClockDiv(kCLOCK_DivAHBCLK, 1U);               /* !< Set SYSCON.AHBCLKDIV divider to value 1 */
-    CLOCK_SetClockDiv(kCLOCK_DivFRO_HF, 1U);               /* !< Set SYSCON.FROHFDIV divider to value 1 */
-    CLOCK_SetupFROHFClocking(45000000U);               /*!< Enable FRO HF(45MHz) output */
-    CLOCK_SetupFRO12MClocking();                /*!< Setup FRO12M clock */
-
-    CLOCK_AttachClk(kFRO12M_to_MAIN_CLK);       /* !< Switch MAIN_CLK to kFRO12M */
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_SIRC);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_FIRC);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_SystemClk);
 
     /* The flow of decreasing voltage and frequency */
     if (coreFreq > BOARD_BOOTCLOCKFRO12M_CORE_CLOCK) {
@@ -137,13 +256,39 @@ void BOARD_BootClockFRO12M(void)
         (void)SPC_SetActiveModeCoreLDORegulatorConfig(SPC0, &ldoOption);
     }
 
-    /*!< Set up clock selectors - Attach clocks to the peripheries */
-    CLOCK_AttachClk(kCPU_CLK_to_TRACE);                    /* !< Switch TRACE to CPU_CLK */
-
-    /*!< Set up dividers */
-    CLOCK_SetClockDiv(kCLOCK_DivFRO_LF, 1U);               /* !< Set SYSCON.FROLFDIV divider to value 1 */
-    CLOCK_SetClockDiv(kCLOCK_DivWWDT0, 1U);                /* !< Set MRCC.WWDT0_CLKDIV divider to value 1 */
-    CLOCK_SetClockDiv(kCLOCK_DivTRACE, 1U);                /* !< Set MRCC.TRACE_CLKDIV divider to value 1 */
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_ADCClk);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_CLKOUT);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_CMP0Clk);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_CMP1Clk);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_CMP2Clk);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_CTIMER0Clk);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_CTIMER1Clk);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_CTIMER2Clk);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_CTIMER3Clk);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_CTIMER4Clk);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_DAC0Clk);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_FLEXCAN0Clk);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_FLEXCAN1Clk);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_FLEXIO0Clk);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_FREQME);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_I3C0Clk);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_LPI2C0Clk);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_LPI2C1Clk);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_LPI2C2Clk);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_LPI2C3Clk);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_LPSPI0Clk);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_LPSPI1Clk);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_LPTMR0Clk);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_LPUART0Clk);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_LPUART1Clk);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_LPUART2Clk);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_LPUART3Clk);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_LPUART4Clk);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_LPUART5Clk);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_OSTIMER0Clk);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_TRACEClk);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_USB0ClkClk);
+    BOARD_BootClockFRO12M_InitClockModule(kClockModule_WWDT0Clk);
 
     /* Set SystemCoreClock variable */
     SystemCoreClock = BOARD_BOOTCLOCKFRO12M_CORE_CLOCK;
@@ -160,6 +305,8 @@ outputs:
 - {id: CLK_1M_clock.outFreq, value: 1 MHz}
 - {id: CLK_45M_clock.outFreq, value: 45 MHz}
 - {id: CPU_clock.outFreq, value: 45 MHz}
+- {id: FREQME_reference_clock.outFreq, value: 12 MHz}
+- {id: FREQME_target_clock.outFreq, value: 12 MHz}
 - {id: FRO_12M_DIV_clock.outFreq, value: 12 MHz}
 - {id: FRO_12M_clock.outFreq, value: 12 MHz}
 - {id: FRO_HF_DIV_clock.outFreq, value: 45 MHz}
@@ -178,11 +325,134 @@ settings:
 /* clang-format on */
 
 /*******************************************************************************
- * Variables for BOARD_BootClockFROHF45M configuration
- ******************************************************************************/
-/*******************************************************************************
  * Code for BOARD_BootClockFROHF45M configuration
  ******************************************************************************/
+void BOARD_BootClockFROHF45M_InitClockModule(clock_module_t module)
+{
+
+    switch(module) {
+        case kClockModule_FIRC:
+            CLOCK_SetClockDiv(kCLOCK_DivFRO_HF, 1U);       /* !< Set SYSCON.FROHFDIV divider to value 1 */
+            CLOCK_SetupFROHFClocking(45000000U); /*!< Enable FRO HF 45000000Hz output */
+            break;
+        case kClockModule_SIRC:
+            CLOCK_SetClockDiv(kCLOCK_DivFRO_LF, 1U);       /* !< Set SYSCON.FROLFDIV divider to value 1 */
+            CLOCK_SetupFRO12MClocking();                /*!< Setup FRO12M clock */
+            break;
+        case kClockModule_SystemClk:
+            CLOCK_SetClockDiv(kCLOCK_DivAHBCLK, 1U);       /* !< Set SYSCON.AHBCLKDIV divider to value 1 */
+            CLOCK_AttachClk(kFRO_HF_to_MAIN_CLK);/* !< Switch MAIN_CLK to kFRO_HF */
+            break;
+        case kClockModule_ADCClk:
+            CLOCK_AttachClk(kNONE_to_ADC);                 /* !< Switch ADC to  */
+            break;
+        case kClockModule_CLKOUT:
+            CLOCK_AttachClk(kNONE_to_CLKOUT);              /* !< Switch CLKOUT to  */
+            break;
+        case kClockModule_CMP0Clk:
+            CLOCK_AttachClk(kNONE_to_CMP0);                /* !< Switch CMP0 to  */
+            break;
+        case kClockModule_CMP1Clk:
+            CLOCK_AttachClk(kNONE_to_CMP1);                /* !< Switch CMP1 to  */
+            break;
+        case kClockModule_CMP2Clk:
+            CLOCK_AttachClk(kNONE_to_CMP2);                /* !< Switch CMP2 to  */
+            break;
+        case kClockModule_CTIMER0Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER0);             /* !< Switch CTIMER0 to  */
+            break;
+        case kClockModule_CTIMER1Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER1);             /* !< Switch CTIMER1 to  */
+            break;
+        case kClockModule_CTIMER2Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER2);             /* !< Switch CTIMER2 to  */
+            break;
+        case kClockModule_CTIMER3Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER3);             /* !< Switch CTIMER3 to  */
+            break;
+        case kClockModule_CTIMER4Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER4);             /* !< Switch CTIMER4 to  */
+            break;
+        case kClockModule_DAC0Clk:
+            CLOCK_AttachClk(kNONE_to_DAC0);                /* !< Switch DAC0 to  */
+            break;
+        case kClockModule_FLEXCAN0Clk:
+            CLOCK_AttachClk(kNONE_to_FLEXCAN0);            /* !< Switch FLEXCAN0 to  */
+            break;
+        case kClockModule_FLEXCAN1Clk:
+            CLOCK_AttachClk(kNONE_to_FLEXCAN1);            /* !< Switch FLEXCAN1 to  */
+            break;
+        case kClockModule_FLEXIO0Clk:
+            CLOCK_AttachClk(kNONE_to_FLEXIO0);             /* !< Switch FLEXIO0 to  */
+            break;
+        case kClockModule_I3C0Clk:
+            CLOCK_AttachClk(kNONE_to_I3C0FCLK);            /* !< Switch I3C0FCLK to  */
+            break;
+        case kClockModule_LPI2C0Clk:
+            CLOCK_AttachClk(kNONE_to_LPI2C0);              /* !< Switch LPI2C0 to  */
+            break;
+        case kClockModule_LPI2C1Clk:
+            CLOCK_AttachClk(kNONE_to_LPI2C1);              /* !< Switch LPI2C1 to  */
+            break;
+        case kClockModule_LPI2C2Clk:
+            CLOCK_AttachClk(kNONE_to_LPI2C2);              /* !< Switch LPI2C2 to  */
+            break;
+        case kClockModule_LPI2C3Clk:
+            CLOCK_AttachClk(kNONE_to_LPI2C3);              /* !< Switch LPI2C3 to  */
+            break;
+        case kClockModule_LPSPI0Clk:
+            CLOCK_AttachClk(kNONE_to_LPSPI0);              /* !< Switch LPSPI0 to  */
+            break;
+        case kClockModule_LPSPI1Clk:
+            CLOCK_AttachClk(kNONE_to_LPSPI1);              /* !< Switch LPSPI1 to  */
+            break;
+        case kClockModule_LPTMR0Clk:
+            CLOCK_AttachClk(kNONE_to_LPTMR0);              /* !< Switch LPTMR0 to  */
+            break;
+        case kClockModule_LPUART0Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART0);             /* !< Switch LPUART0 to  */
+            break;
+        case kClockModule_LPUART1Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART1);             /* !< Switch LPUART1 to  */
+            break;
+        case kClockModule_LPUART2Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART2);             /* !< Switch LPUART2 to  */
+            break;
+        case kClockModule_LPUART3Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART3);             /* !< Switch LPUART3 to  */
+            break;
+        case kClockModule_LPUART4Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART4);             /* !< Switch LPUART4 to  */
+            break;
+        case kClockModule_LPUART5Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART5);             /* !< Switch LPUART5 to  */
+            break;
+        case kClockModule_OSTIMER0Clk:
+            CLOCK_AttachClk(kNONE_to_OSTIMER);             /* !< Switch OSTIMER to  */
+            break;
+        case kClockModule_TRACEClk:
+            CLOCK_AttachClk(kCPU_CLK_to_TRACE);            /* !< Switch TRACE to CPU_CLK */
+            CLOCK_SetClockDiv(kCLOCK_DivTRACE, 1U);        /* !< Set MRCC.TRACE_CLKDIV divider to value 1 */
+            break;
+        case kClockModule_USB0ClkClk:
+            CLOCK_AttachClk(kNONE_to_USB0);                /* !< Switch USB0 to  */
+            break;
+        case kClockModule_WWDT0Clk:
+            CLOCK_SetClockDiv(kCLOCK_DivWWDT0, 1U);        /* !< Set MRCC.WWDT0_CLKDIV divider to value 1 */
+            break;
+        case kClockModule_FREQME:
+            /* Configure FREQME clock */
+            CLOCK_EnableClock(kCLOCK_InputMux);
+            RESET_ReleasePeripheralReset(kINPUTMUX0_RST_SHIFT_RSTn);
+            INPUTMUX0->FREQMEAS_REF = INPUTMUX_FREQMEAS_REF_INP(2);
+            INPUTMUX0->FREQMEAS_TAR = INPUTMUX_FREQMEAS_TAR_INP(2);
+            break;
+        default:
+            assert(false);
+            break;
+    }
+}
+
 void BOARD_BootClockFROHF45M(void)
 {
     uint32_t coreFreq;
@@ -205,15 +475,9 @@ void BOARD_BootClockFROHF45M(void)
         sramOption.requestVoltageUpdate =  true;
         (void)SPC_SetSRAMOperateVoltage(SPC0, &sramOption);
     }
-
-
-    /*!< Set up system dividers */
-    CLOCK_SetClockDiv(kCLOCK_DivAHBCLK, 1U);               /* !< Set SYSCON.AHBCLKDIV divider to value 1 */
-    CLOCK_SetClockDiv(kCLOCK_DivFRO_HF, 1U);               /* !< Set SYSCON.FROHFDIV divider to value 1 */
-    CLOCK_SetupFROHFClocking(45000000U);               /*!< Enable FRO HF(45MHz) output */
-    CLOCK_SetupFRO12MClocking();                /*!< Setup FRO12M clock */
-
-    CLOCK_AttachClk(kFRO_HF_to_MAIN_CLK);       /* !< Switch MAIN_CLK to kFRO_HF */
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_SIRC);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_FIRC);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_SystemClk);
 
     /* The flow of decreasing voltage and frequency */
     if (coreFreq > BOARD_BOOTCLOCKFROHF45M_CORE_CLOCK) {
@@ -229,13 +493,39 @@ void BOARD_BootClockFROHF45M(void)
         (void)SPC_SetActiveModeCoreLDORegulatorConfig(SPC0, &ldoOption);
     }
 
-    /*!< Set up clock selectors - Attach clocks to the peripheries */
-    CLOCK_AttachClk(kCPU_CLK_to_TRACE);                    /* !< Switch TRACE to CPU_CLK */
-
-    /*!< Set up dividers */
-    CLOCK_SetClockDiv(kCLOCK_DivFRO_LF, 1U);               /* !< Set SYSCON.FROLFDIV divider to value 1 */
-    CLOCK_SetClockDiv(kCLOCK_DivWWDT0, 1U);                /* !< Set MRCC.WWDT0_CLKDIV divider to value 1 */
-    CLOCK_SetClockDiv(kCLOCK_DivTRACE, 1U);                /* !< Set MRCC.TRACE_CLKDIV divider to value 1 */
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_ADCClk);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_CLKOUT);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_CMP0Clk);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_CMP1Clk);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_CMP2Clk);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_CTIMER0Clk);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_CTIMER1Clk);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_CTIMER2Clk);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_CTIMER3Clk);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_CTIMER4Clk);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_DAC0Clk);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_FLEXCAN0Clk);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_FLEXCAN1Clk);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_FLEXIO0Clk);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_FREQME);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_I3C0Clk);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_LPI2C0Clk);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_LPI2C1Clk);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_LPI2C2Clk);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_LPI2C3Clk);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_LPSPI0Clk);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_LPSPI1Clk);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_LPTMR0Clk);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_LPUART0Clk);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_LPUART1Clk);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_LPUART2Clk);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_LPUART3Clk);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_LPUART4Clk);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_LPUART5Clk);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_OSTIMER0Clk);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_TRACEClk);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_USB0ClkClk);
+    BOARD_BootClockFROHF45M_InitClockModule(kClockModule_WWDT0Clk);
 
     /* Set SystemCoreClock variable */
     SystemCoreClock = BOARD_BOOTCLOCKFROHF45M_CORE_CLOCK;
@@ -252,6 +542,8 @@ outputs:
 - {id: CLK_1M_clock.outFreq, value: 1 MHz}
 - {id: CLK_45M_clock.outFreq, value: 45 MHz}
 - {id: CPU_clock.outFreq, value: 60 MHz}
+- {id: FREQME_reference_clock.outFreq, value: 12 MHz}
+- {id: FREQME_target_clock.outFreq, value: 12 MHz}
 - {id: FRO_12M_DIV_clock.outFreq, value: 12 MHz}
 - {id: FRO_12M_clock.outFreq, value: 12 MHz}
 - {id: FRO_HF_DIV_clock.outFreq, value: 60 MHz}
@@ -271,11 +563,134 @@ settings:
 /* clang-format on */
 
 /*******************************************************************************
- * Variables for BOARD_BootClockFROHF60M configuration
- ******************************************************************************/
-/*******************************************************************************
  * Code for BOARD_BootClockFROHF60M configuration
  ******************************************************************************/
+void BOARD_BootClockFROHF60M_InitClockModule(clock_module_t module)
+{
+
+    switch(module) {
+        case kClockModule_FIRC:
+            CLOCK_SetClockDiv(kCLOCK_DivFRO_HF, 1U);       /* !< Set SYSCON.FROHFDIV divider to value 1 */
+            CLOCK_SetupFROHFClocking(60000000U); /*!< Enable FRO HF 60000000Hz output */
+            break;
+        case kClockModule_SIRC:
+            CLOCK_SetClockDiv(kCLOCK_DivFRO_LF, 1U);       /* !< Set SYSCON.FROLFDIV divider to value 1 */
+            CLOCK_SetupFRO12MClocking();                /*!< Setup FRO12M clock */
+            break;
+        case kClockModule_SystemClk:
+            CLOCK_SetClockDiv(kCLOCK_DivAHBCLK, 1U);       /* !< Set SYSCON.AHBCLKDIV divider to value 1 */
+            CLOCK_AttachClk(kFRO_HF_to_MAIN_CLK);/* !< Switch MAIN_CLK to kFRO_HF */
+            break;
+        case kClockModule_ADCClk:
+            CLOCK_AttachClk(kNONE_to_ADC);                 /* !< Switch ADC to  */
+            break;
+        case kClockModule_CLKOUT:
+            CLOCK_AttachClk(kNONE_to_CLKOUT);              /* !< Switch CLKOUT to  */
+            break;
+        case kClockModule_CMP0Clk:
+            CLOCK_AttachClk(kNONE_to_CMP0);                /* !< Switch CMP0 to  */
+            break;
+        case kClockModule_CMP1Clk:
+            CLOCK_AttachClk(kNONE_to_CMP1);                /* !< Switch CMP1 to  */
+            break;
+        case kClockModule_CMP2Clk:
+            CLOCK_AttachClk(kNONE_to_CMP2);                /* !< Switch CMP2 to  */
+            break;
+        case kClockModule_CTIMER0Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER0);             /* !< Switch CTIMER0 to  */
+            break;
+        case kClockModule_CTIMER1Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER1);             /* !< Switch CTIMER1 to  */
+            break;
+        case kClockModule_CTIMER2Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER2);             /* !< Switch CTIMER2 to  */
+            break;
+        case kClockModule_CTIMER3Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER3);             /* !< Switch CTIMER3 to  */
+            break;
+        case kClockModule_CTIMER4Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER4);             /* !< Switch CTIMER4 to  */
+            break;
+        case kClockModule_DAC0Clk:
+            CLOCK_AttachClk(kNONE_to_DAC0);                /* !< Switch DAC0 to  */
+            break;
+        case kClockModule_FLEXCAN0Clk:
+            CLOCK_AttachClk(kNONE_to_FLEXCAN0);            /* !< Switch FLEXCAN0 to  */
+            break;
+        case kClockModule_FLEXCAN1Clk:
+            CLOCK_AttachClk(kNONE_to_FLEXCAN1);            /* !< Switch FLEXCAN1 to  */
+            break;
+        case kClockModule_FLEXIO0Clk:
+            CLOCK_AttachClk(kNONE_to_FLEXIO0);             /* !< Switch FLEXIO0 to  */
+            break;
+        case kClockModule_I3C0Clk:
+            CLOCK_AttachClk(kNONE_to_I3C0FCLK);            /* !< Switch I3C0FCLK to  */
+            break;
+        case kClockModule_LPI2C0Clk:
+            CLOCK_AttachClk(kNONE_to_LPI2C0);              /* !< Switch LPI2C0 to  */
+            break;
+        case kClockModule_LPI2C1Clk:
+            CLOCK_AttachClk(kNONE_to_LPI2C1);              /* !< Switch LPI2C1 to  */
+            break;
+        case kClockModule_LPI2C2Clk:
+            CLOCK_AttachClk(kNONE_to_LPI2C2);              /* !< Switch LPI2C2 to  */
+            break;
+        case kClockModule_LPI2C3Clk:
+            CLOCK_AttachClk(kNONE_to_LPI2C3);              /* !< Switch LPI2C3 to  */
+            break;
+        case kClockModule_LPSPI0Clk:
+            CLOCK_AttachClk(kNONE_to_LPSPI0);              /* !< Switch LPSPI0 to  */
+            break;
+        case kClockModule_LPSPI1Clk:
+            CLOCK_AttachClk(kNONE_to_LPSPI1);              /* !< Switch LPSPI1 to  */
+            break;
+        case kClockModule_LPTMR0Clk:
+            CLOCK_AttachClk(kNONE_to_LPTMR0);              /* !< Switch LPTMR0 to  */
+            break;
+        case kClockModule_LPUART0Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART0);             /* !< Switch LPUART0 to  */
+            break;
+        case kClockModule_LPUART1Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART1);             /* !< Switch LPUART1 to  */
+            break;
+        case kClockModule_LPUART2Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART2);             /* !< Switch LPUART2 to  */
+            break;
+        case kClockModule_LPUART3Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART3);             /* !< Switch LPUART3 to  */
+            break;
+        case kClockModule_LPUART4Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART4);             /* !< Switch LPUART4 to  */
+            break;
+        case kClockModule_LPUART5Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART5);             /* !< Switch LPUART5 to  */
+            break;
+        case kClockModule_OSTIMER0Clk:
+            CLOCK_AttachClk(kNONE_to_OSTIMER);             /* !< Switch OSTIMER to  */
+            break;
+        case kClockModule_TRACEClk:
+            CLOCK_AttachClk(kCPU_CLK_to_TRACE);            /* !< Switch TRACE to CPU_CLK */
+            CLOCK_SetClockDiv(kCLOCK_DivTRACE, 1U);        /* !< Set MRCC.TRACE_CLKDIV divider to value 1 */
+            break;
+        case kClockModule_USB0ClkClk:
+            CLOCK_AttachClk(kNONE_to_USB0);                /* !< Switch USB0 to  */
+            break;
+        case kClockModule_WWDT0Clk:
+            CLOCK_SetClockDiv(kCLOCK_DivWWDT0, 1U);        /* !< Set MRCC.WWDT0_CLKDIV divider to value 1 */
+            break;
+        case kClockModule_FREQME:
+            /* Configure FREQME clock */
+            CLOCK_EnableClock(kCLOCK_InputMux);
+            RESET_ReleasePeripheralReset(kINPUTMUX0_RST_SHIFT_RSTn);
+            INPUTMUX0->FREQMEAS_REF = INPUTMUX_FREQMEAS_REF_INP(2);
+            INPUTMUX0->FREQMEAS_TAR = INPUTMUX_FREQMEAS_TAR_INP(2);
+            break;
+        default:
+            assert(false);
+            break;
+    }
+}
+
 void BOARD_BootClockFROHF60M(void)
 {
     uint32_t coreFreq;
@@ -298,15 +713,9 @@ void BOARD_BootClockFROHF60M(void)
         sramOption.requestVoltageUpdate =  true;
         (void)SPC_SetSRAMOperateVoltage(SPC0, &sramOption);
     }
-
-
-    /*!< Set up system dividers */
-    CLOCK_SetClockDiv(kCLOCK_DivAHBCLK, 1U);               /* !< Set SYSCON.AHBCLKDIV divider to value 1 */
-    CLOCK_SetClockDiv(kCLOCK_DivFRO_HF, 1U);               /* !< Set SYSCON.FROHFDIV divider to value 1 */
-    CLOCK_SetupFROHFClocking(60000000U);               /*!< Enable FRO HF(60MHz) output */
-    CLOCK_SetupFRO12MClocking();                /*!< Setup FRO12M clock */
-
-    CLOCK_AttachClk(kFRO_HF_to_MAIN_CLK);       /* !< Switch MAIN_CLK to kFRO_HF */
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_SIRC);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_FIRC);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_SystemClk);
 
     /* The flow of decreasing voltage and frequency */
     if (coreFreq > BOARD_BOOTCLOCKFROHF60M_CORE_CLOCK) {
@@ -322,13 +731,39 @@ void BOARD_BootClockFROHF60M(void)
         (void)SPC_SetActiveModeCoreLDORegulatorConfig(SPC0, &ldoOption);
     }
 
-    /*!< Set up clock selectors - Attach clocks to the peripheries */
-    CLOCK_AttachClk(kCPU_CLK_to_TRACE);                    /* !< Switch TRACE to CPU_CLK */
-
-    /*!< Set up dividers */
-    CLOCK_SetClockDiv(kCLOCK_DivFRO_LF, 1U);               /* !< Set SYSCON.FROLFDIV divider to value 1 */
-    CLOCK_SetClockDiv(kCLOCK_DivWWDT0, 1U);                /* !< Set MRCC.WWDT0_CLKDIV divider to value 1 */
-    CLOCK_SetClockDiv(kCLOCK_DivTRACE, 1U);                /* !< Set MRCC.TRACE_CLKDIV divider to value 1 */
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_ADCClk);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_CLKOUT);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_CMP0Clk);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_CMP1Clk);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_CMP2Clk);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_CTIMER0Clk);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_CTIMER1Clk);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_CTIMER2Clk);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_CTIMER3Clk);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_CTIMER4Clk);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_DAC0Clk);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_FLEXCAN0Clk);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_FLEXCAN1Clk);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_FLEXIO0Clk);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_FREQME);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_I3C0Clk);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_LPI2C0Clk);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_LPI2C1Clk);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_LPI2C2Clk);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_LPI2C3Clk);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_LPSPI0Clk);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_LPSPI1Clk);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_LPTMR0Clk);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_LPUART0Clk);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_LPUART1Clk);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_LPUART2Clk);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_LPUART3Clk);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_LPUART4Clk);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_LPUART5Clk);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_OSTIMER0Clk);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_TRACEClk);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_USB0ClkClk);
+    BOARD_BootClockFROHF60M_InitClockModule(kClockModule_WWDT0Clk);
 
     /* Set SystemCoreClock variable */
     SystemCoreClock = BOARD_BOOTCLOCKFROHF60M_CORE_CLOCK;
@@ -345,6 +780,8 @@ outputs:
 - {id: CLK_1M_clock.outFreq, value: 1 MHz}
 - {id: CLK_45M_clock.outFreq, value: 45 MHz}
 - {id: CPU_clock.outFreq, value: 90 MHz}
+- {id: FREQME_reference_clock.outFreq, value: 12 MHz}
+- {id: FREQME_target_clock.outFreq, value: 12 MHz}
 - {id: FRO_12M_DIV_clock.outFreq, value: 12 MHz}
 - {id: FRO_12M_clock.outFreq, value: 12 MHz}
 - {id: FRO_HF_DIV_clock.outFreq, value: 90 MHz}
@@ -364,11 +801,134 @@ settings:
 /* clang-format on */
 
 /*******************************************************************************
- * Variables for BOARD_BootClockFROHF90M configuration
- ******************************************************************************/
-/*******************************************************************************
  * Code for BOARD_BootClockFROHF90M configuration
  ******************************************************************************/
+void BOARD_BootClockFROHF90M_InitClockModule(clock_module_t module)
+{
+
+    switch(module) {
+        case kClockModule_FIRC:
+            CLOCK_SetClockDiv(kCLOCK_DivFRO_HF, 1U);       /* !< Set SYSCON.FROHFDIV divider to value 1 */
+            CLOCK_SetupFROHFClocking(90000000U); /*!< Enable FRO HF 90000000Hz output */
+            break;
+        case kClockModule_SIRC:
+            CLOCK_SetClockDiv(kCLOCK_DivFRO_LF, 1U);       /* !< Set SYSCON.FROLFDIV divider to value 1 */
+            CLOCK_SetupFRO12MClocking();                /*!< Setup FRO12M clock */
+            break;
+        case kClockModule_SystemClk:
+            CLOCK_SetClockDiv(kCLOCK_DivAHBCLK, 1U);       /* !< Set SYSCON.AHBCLKDIV divider to value 1 */
+            CLOCK_AttachClk(kFRO_HF_to_MAIN_CLK);/* !< Switch MAIN_CLK to kFRO_HF */
+            break;
+        case kClockModule_ADCClk:
+            CLOCK_AttachClk(kNONE_to_ADC);                 /* !< Switch ADC to  */
+            break;
+        case kClockModule_CLKOUT:
+            CLOCK_AttachClk(kNONE_to_CLKOUT);              /* !< Switch CLKOUT to  */
+            break;
+        case kClockModule_CMP0Clk:
+            CLOCK_AttachClk(kNONE_to_CMP0);                /* !< Switch CMP0 to  */
+            break;
+        case kClockModule_CMP1Clk:
+            CLOCK_AttachClk(kNONE_to_CMP1);                /* !< Switch CMP1 to  */
+            break;
+        case kClockModule_CMP2Clk:
+            CLOCK_AttachClk(kNONE_to_CMP2);                /* !< Switch CMP2 to  */
+            break;
+        case kClockModule_CTIMER0Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER0);             /* !< Switch CTIMER0 to  */
+            break;
+        case kClockModule_CTIMER1Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER1);             /* !< Switch CTIMER1 to  */
+            break;
+        case kClockModule_CTIMER2Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER2);             /* !< Switch CTIMER2 to  */
+            break;
+        case kClockModule_CTIMER3Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER3);             /* !< Switch CTIMER3 to  */
+            break;
+        case kClockModule_CTIMER4Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER4);             /* !< Switch CTIMER4 to  */
+            break;
+        case kClockModule_DAC0Clk:
+            CLOCK_AttachClk(kNONE_to_DAC0);                /* !< Switch DAC0 to  */
+            break;
+        case kClockModule_FLEXCAN0Clk:
+            CLOCK_AttachClk(kNONE_to_FLEXCAN0);            /* !< Switch FLEXCAN0 to  */
+            break;
+        case kClockModule_FLEXCAN1Clk:
+            CLOCK_AttachClk(kNONE_to_FLEXCAN1);            /* !< Switch FLEXCAN1 to  */
+            break;
+        case kClockModule_FLEXIO0Clk:
+            CLOCK_AttachClk(kNONE_to_FLEXIO0);             /* !< Switch FLEXIO0 to  */
+            break;
+        case kClockModule_I3C0Clk:
+            CLOCK_AttachClk(kNONE_to_I3C0FCLK);            /* !< Switch I3C0FCLK to  */
+            break;
+        case kClockModule_LPI2C0Clk:
+            CLOCK_AttachClk(kNONE_to_LPI2C0);              /* !< Switch LPI2C0 to  */
+            break;
+        case kClockModule_LPI2C1Clk:
+            CLOCK_AttachClk(kNONE_to_LPI2C1);              /* !< Switch LPI2C1 to  */
+            break;
+        case kClockModule_LPI2C2Clk:
+            CLOCK_AttachClk(kNONE_to_LPI2C2);              /* !< Switch LPI2C2 to  */
+            break;
+        case kClockModule_LPI2C3Clk:
+            CLOCK_AttachClk(kNONE_to_LPI2C3);              /* !< Switch LPI2C3 to  */
+            break;
+        case kClockModule_LPSPI0Clk:
+            CLOCK_AttachClk(kNONE_to_LPSPI0);              /* !< Switch LPSPI0 to  */
+            break;
+        case kClockModule_LPSPI1Clk:
+            CLOCK_AttachClk(kNONE_to_LPSPI1);              /* !< Switch LPSPI1 to  */
+            break;
+        case kClockModule_LPTMR0Clk:
+            CLOCK_AttachClk(kNONE_to_LPTMR0);              /* !< Switch LPTMR0 to  */
+            break;
+        case kClockModule_LPUART0Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART0);             /* !< Switch LPUART0 to  */
+            break;
+        case kClockModule_LPUART1Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART1);             /* !< Switch LPUART1 to  */
+            break;
+        case kClockModule_LPUART2Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART2);             /* !< Switch LPUART2 to  */
+            break;
+        case kClockModule_LPUART3Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART3);             /* !< Switch LPUART3 to  */
+            break;
+        case kClockModule_LPUART4Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART4);             /* !< Switch LPUART4 to  */
+            break;
+        case kClockModule_LPUART5Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART5);             /* !< Switch LPUART5 to  */
+            break;
+        case kClockModule_OSTIMER0Clk:
+            CLOCK_AttachClk(kNONE_to_OSTIMER);             /* !< Switch OSTIMER to  */
+            break;
+        case kClockModule_TRACEClk:
+            CLOCK_AttachClk(kCPU_CLK_to_TRACE);            /* !< Switch TRACE to CPU_CLK */
+            CLOCK_SetClockDiv(kCLOCK_DivTRACE, 1U);        /* !< Set MRCC.TRACE_CLKDIV divider to value 1 */
+            break;
+        case kClockModule_USB0ClkClk:
+            CLOCK_AttachClk(kNONE_to_USB0);                /* !< Switch USB0 to  */
+            break;
+        case kClockModule_WWDT0Clk:
+            CLOCK_SetClockDiv(kCLOCK_DivWWDT0, 1U);        /* !< Set MRCC.WWDT0_CLKDIV divider to value 1 */
+            break;
+        case kClockModule_FREQME:
+            /* Configure FREQME clock */
+            CLOCK_EnableClock(kCLOCK_InputMux);
+            RESET_ReleasePeripheralReset(kINPUTMUX0_RST_SHIFT_RSTn);
+            INPUTMUX0->FREQMEAS_REF = INPUTMUX_FREQMEAS_REF_INP(2);
+            INPUTMUX0->FREQMEAS_TAR = INPUTMUX_FREQMEAS_TAR_INP(2);
+            break;
+        default:
+            assert(false);
+            break;
+    }
+}
+
 void BOARD_BootClockFROHF90M(void)
 {
     uint32_t coreFreq;
@@ -391,15 +951,9 @@ void BOARD_BootClockFROHF90M(void)
         sramOption.requestVoltageUpdate =  true;
         (void)SPC_SetSRAMOperateVoltage(SPC0, &sramOption);
     }
-
-
-    /*!< Set up system dividers */
-    CLOCK_SetClockDiv(kCLOCK_DivAHBCLK, 1U);               /* !< Set SYSCON.AHBCLKDIV divider to value 1 */
-    CLOCK_SetClockDiv(kCLOCK_DivFRO_HF, 1U);               /* !< Set SYSCON.FROHFDIV divider to value 1 */
-    CLOCK_SetupFROHFClocking(90000000U);               /*!< Enable FRO HF(90MHz) output */
-    CLOCK_SetupFRO12MClocking();                /*!< Setup FRO12M clock */
-
-    CLOCK_AttachClk(kFRO_HF_to_MAIN_CLK);       /* !< Switch MAIN_CLK to kFRO_HF */
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_SIRC);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_FIRC);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_SystemClk);
 
     /* The flow of decreasing voltage and frequency */
     if (coreFreq > BOARD_BOOTCLOCKFROHF90M_CORE_CLOCK) {
@@ -415,13 +969,39 @@ void BOARD_BootClockFROHF90M(void)
         (void)SPC_SetActiveModeCoreLDORegulatorConfig(SPC0, &ldoOption);
     }
 
-    /*!< Set up clock selectors - Attach clocks to the peripheries */
-    CLOCK_AttachClk(kCPU_CLK_to_TRACE);                    /* !< Switch TRACE to CPU_CLK */
-
-    /*!< Set up dividers */
-    CLOCK_SetClockDiv(kCLOCK_DivFRO_LF, 1U);               /* !< Set SYSCON.FROLFDIV divider to value 1 */
-    CLOCK_SetClockDiv(kCLOCK_DivWWDT0, 1U);                /* !< Set MRCC.WWDT0_CLKDIV divider to value 1 */
-    CLOCK_SetClockDiv(kCLOCK_DivTRACE, 1U);                /* !< Set MRCC.TRACE_CLKDIV divider to value 1 */
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_ADCClk);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_CLKOUT);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_CMP0Clk);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_CMP1Clk);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_CMP2Clk);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_CTIMER0Clk);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_CTIMER1Clk);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_CTIMER2Clk);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_CTIMER3Clk);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_CTIMER4Clk);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_DAC0Clk);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_FLEXCAN0Clk);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_FLEXCAN1Clk);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_FLEXIO0Clk);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_FREQME);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_I3C0Clk);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_LPI2C0Clk);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_LPI2C1Clk);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_LPI2C2Clk);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_LPI2C3Clk);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_LPSPI0Clk);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_LPSPI1Clk);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_LPTMR0Clk);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_LPUART0Clk);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_LPUART1Clk);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_LPUART2Clk);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_LPUART3Clk);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_LPUART4Clk);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_LPUART5Clk);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_OSTIMER0Clk);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_TRACEClk);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_USB0ClkClk);
+    BOARD_BootClockFROHF90M_InitClockModule(kClockModule_WWDT0Clk);
 
     /* Set SystemCoreClock variable */
     SystemCoreClock = BOARD_BOOTCLOCKFROHF90M_CORE_CLOCK;
@@ -438,6 +1018,8 @@ outputs:
 - {id: CLK_1M_clock.outFreq, value: 1 MHz}
 - {id: CLK_45M_clock.outFreq, value: 45 MHz}
 - {id: CPU_clock.outFreq, value: 180 MHz}
+- {id: FREQME_reference_clock.outFreq, value: 12 MHz}
+- {id: FREQME_target_clock.outFreq, value: 12 MHz}
 - {id: FRO_12M_DIV_clock.outFreq, value: 12 MHz}
 - {id: FRO_12M_clock.outFreq, value: 12 MHz}
 - {id: FRO_HF_DIV_clock.outFreq, value: 180 MHz}
@@ -458,11 +1040,134 @@ settings:
 /* clang-format on */
 
 /*******************************************************************************
- * Variables for BOARD_BootClockFROHF180M configuration
- ******************************************************************************/
-/*******************************************************************************
  * Code for BOARD_BootClockFROHF180M configuration
  ******************************************************************************/
+void BOARD_BootClockFROHF180M_InitClockModule(clock_module_t module)
+{
+
+    switch(module) {
+        case kClockModule_FIRC:
+            CLOCK_SetClockDiv(kCLOCK_DivFRO_HF, 1U);       /* !< Set SYSCON.FROHFDIV divider to value 1 */
+            CLOCK_SetupFROHFClocking(180000000U); /*!< Enable FRO HF 180000000Hz output */
+            break;
+        case kClockModule_SIRC:
+            CLOCK_SetClockDiv(kCLOCK_DivFRO_LF, 1U);       /* !< Set SYSCON.FROLFDIV divider to value 1 */
+            CLOCK_SetupFRO12MClocking();                /*!< Setup FRO12M clock */
+            break;
+        case kClockModule_SystemClk:
+            CLOCK_SetClockDiv(kCLOCK_DivAHBCLK, 1U);       /* !< Set SYSCON.AHBCLKDIV divider to value 1 */
+            CLOCK_AttachClk(kFRO_HF_to_MAIN_CLK);/* !< Switch MAIN_CLK to kFRO_HF */
+            break;
+        case kClockModule_ADCClk:
+            CLOCK_AttachClk(kNONE_to_ADC);                 /* !< Switch ADC to  */
+            break;
+        case kClockModule_CLKOUT:
+            CLOCK_AttachClk(kNONE_to_CLKOUT);              /* !< Switch CLKOUT to  */
+            break;
+        case kClockModule_CMP0Clk:
+            CLOCK_AttachClk(kNONE_to_CMP0);                /* !< Switch CMP0 to  */
+            break;
+        case kClockModule_CMP1Clk:
+            CLOCK_AttachClk(kNONE_to_CMP1);                /* !< Switch CMP1 to  */
+            break;
+        case kClockModule_CMP2Clk:
+            CLOCK_AttachClk(kNONE_to_CMP2);                /* !< Switch CMP2 to  */
+            break;
+        case kClockModule_CTIMER0Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER0);             /* !< Switch CTIMER0 to  */
+            break;
+        case kClockModule_CTIMER1Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER1);             /* !< Switch CTIMER1 to  */
+            break;
+        case kClockModule_CTIMER2Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER2);             /* !< Switch CTIMER2 to  */
+            break;
+        case kClockModule_CTIMER3Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER3);             /* !< Switch CTIMER3 to  */
+            break;
+        case kClockModule_CTIMER4Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER4);             /* !< Switch CTIMER4 to  */
+            break;
+        case kClockModule_DAC0Clk:
+            CLOCK_AttachClk(kNONE_to_DAC0);                /* !< Switch DAC0 to  */
+            break;
+        case kClockModule_FLEXCAN0Clk:
+            CLOCK_AttachClk(kNONE_to_FLEXCAN0);            /* !< Switch FLEXCAN0 to  */
+            break;
+        case kClockModule_FLEXCAN1Clk:
+            CLOCK_AttachClk(kNONE_to_FLEXCAN1);            /* !< Switch FLEXCAN1 to  */
+            break;
+        case kClockModule_FLEXIO0Clk:
+            CLOCK_AttachClk(kNONE_to_FLEXIO0);             /* !< Switch FLEXIO0 to  */
+            break;
+        case kClockModule_I3C0Clk:
+            CLOCK_AttachClk(kNONE_to_I3C0FCLK);            /* !< Switch I3C0FCLK to  */
+            break;
+        case kClockModule_LPI2C0Clk:
+            CLOCK_AttachClk(kNONE_to_LPI2C0);              /* !< Switch LPI2C0 to  */
+            break;
+        case kClockModule_LPI2C1Clk:
+            CLOCK_AttachClk(kNONE_to_LPI2C1);              /* !< Switch LPI2C1 to  */
+            break;
+        case kClockModule_LPI2C2Clk:
+            CLOCK_AttachClk(kNONE_to_LPI2C2);              /* !< Switch LPI2C2 to  */
+            break;
+        case kClockModule_LPI2C3Clk:
+            CLOCK_AttachClk(kNONE_to_LPI2C3);              /* !< Switch LPI2C3 to  */
+            break;
+        case kClockModule_LPSPI0Clk:
+            CLOCK_AttachClk(kNONE_to_LPSPI0);              /* !< Switch LPSPI0 to  */
+            break;
+        case kClockModule_LPSPI1Clk:
+            CLOCK_AttachClk(kNONE_to_LPSPI1);              /* !< Switch LPSPI1 to  */
+            break;
+        case kClockModule_LPTMR0Clk:
+            CLOCK_AttachClk(kNONE_to_LPTMR0);              /* !< Switch LPTMR0 to  */
+            break;
+        case kClockModule_LPUART0Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART0);             /* !< Switch LPUART0 to  */
+            break;
+        case kClockModule_LPUART1Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART1);             /* !< Switch LPUART1 to  */
+            break;
+        case kClockModule_LPUART2Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART2);             /* !< Switch LPUART2 to  */
+            break;
+        case kClockModule_LPUART3Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART3);             /* !< Switch LPUART3 to  */
+            break;
+        case kClockModule_LPUART4Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART4);             /* !< Switch LPUART4 to  */
+            break;
+        case kClockModule_LPUART5Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART5);             /* !< Switch LPUART5 to  */
+            break;
+        case kClockModule_OSTIMER0Clk:
+            CLOCK_AttachClk(kNONE_to_OSTIMER);             /* !< Switch OSTIMER to  */
+            break;
+        case kClockModule_TRACEClk:
+            CLOCK_AttachClk(kCPU_CLK_to_TRACE);            /* !< Switch TRACE to CPU_CLK */
+            CLOCK_SetClockDiv(kCLOCK_DivTRACE, 2U);        /* !< Set MRCC.TRACE_CLKDIV divider to value 2 */
+            break;
+        case kClockModule_USB0ClkClk:
+            CLOCK_AttachClk(kNONE_to_USB0);                /* !< Switch USB0 to  */
+            break;
+        case kClockModule_WWDT0Clk:
+            CLOCK_SetClockDiv(kCLOCK_DivWWDT0, 1U);        /* !< Set MRCC.WWDT0_CLKDIV divider to value 1 */
+            break;
+        case kClockModule_FREQME:
+            /* Configure FREQME clock */
+            CLOCK_EnableClock(kCLOCK_InputMux);
+            RESET_ReleasePeripheralReset(kINPUTMUX0_RST_SHIFT_RSTn);
+            INPUTMUX0->FREQMEAS_REF = INPUTMUX_FREQMEAS_REF_INP(2);
+            INPUTMUX0->FREQMEAS_TAR = INPUTMUX_FREQMEAS_TAR_INP(2);
+            break;
+        default:
+            assert(false);
+            break;
+    }
+}
+
 void BOARD_BootClockFROHF180M(void)
 {
     uint32_t coreFreq;
@@ -485,15 +1190,9 @@ void BOARD_BootClockFROHF180M(void)
         sramOption.requestVoltageUpdate =  true;
         (void)SPC_SetSRAMOperateVoltage(SPC0, &sramOption);
     }
-
-
-    /*!< Set up system dividers */
-    CLOCK_SetClockDiv(kCLOCK_DivAHBCLK, 1U);               /* !< Set SYSCON.AHBCLKDIV divider to value 1 */
-    CLOCK_SetClockDiv(kCLOCK_DivFRO_HF, 1U);               /* !< Set SYSCON.FROHFDIV divider to value 1 */
-    CLOCK_SetupFROHFClocking(180000000U);              /*!< Enable FRO HF(180MHz) output */
-    CLOCK_SetupFRO12MClocking();                /*!< Setup FRO12M clock */
-
-    CLOCK_AttachClk(kFRO_HF_to_MAIN_CLK);       /* !< Switch MAIN_CLK to kFRO_HF */
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_SIRC);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_FIRC);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_SystemClk);
 
     /* The flow of decreasing voltage and frequency */
     if (coreFreq > BOARD_BOOTCLOCKFROHF180M_CORE_CLOCK) {
@@ -509,13 +1208,39 @@ void BOARD_BootClockFROHF180M(void)
         (void)SPC_SetActiveModeCoreLDORegulatorConfig(SPC0, &ldoOption);
     }
 
-    /*!< Set up clock selectors - Attach clocks to the peripheries */
-    CLOCK_AttachClk(kCPU_CLK_to_TRACE);                    /* !< Switch TRACE to CPU_CLK */
-
-    /*!< Set up dividers */
-    CLOCK_SetClockDiv(kCLOCK_DivFRO_LF, 1U);               /* !< Set SYSCON.FROLFDIV divider to value 1 */
-    CLOCK_SetClockDiv(kCLOCK_DivWWDT0, 1U);                /* !< Set MRCC.WWDT0_CLKDIV divider to value 1 */
-    CLOCK_SetClockDiv(kCLOCK_DivTRACE, 2U);                /* !< Set MRCC.TRACE_CLKDIV divider to value 2 */
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_ADCClk);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_CLKOUT);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_CMP0Clk);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_CMP1Clk);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_CMP2Clk);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_CTIMER0Clk);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_CTIMER1Clk);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_CTIMER2Clk);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_CTIMER3Clk);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_CTIMER4Clk);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_DAC0Clk);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_FLEXCAN0Clk);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_FLEXCAN1Clk);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_FLEXIO0Clk);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_FREQME);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_I3C0Clk);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_LPI2C0Clk);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_LPI2C1Clk);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_LPI2C2Clk);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_LPI2C3Clk);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_LPSPI0Clk);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_LPSPI1Clk);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_LPTMR0Clk);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_LPUART0Clk);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_LPUART1Clk);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_LPUART2Clk);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_LPUART3Clk);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_LPUART4Clk);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_LPUART5Clk);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_OSTIMER0Clk);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_TRACEClk);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_USB0ClkClk);
+    BOARD_BootClockFROHF180M_InitClockModule(kClockModule_WWDT0Clk);
 
     /* Set SystemCoreClock variable */
     SystemCoreClock = BOARD_BOOTCLOCKFROHF180M_CORE_CLOCK;
@@ -532,6 +1257,8 @@ outputs:
 - {id: CLK_1M_clock.outFreq, value: 1 MHz}
 - {id: CLK_45M_clock.outFreq, value: 45 MHz}
 - {id: CPU_clock.outFreq, value: 180 MHz}
+- {id: FREQME_reference_clock.outFreq, value: 12 MHz}
+- {id: FREQME_target_clock.outFreq, value: 12 MHz}
 - {id: FRO_12M_DIV_clock.outFreq, value: 12 MHz}
 - {id: FRO_12M_clock.outFreq, value: 12 MHz}
 - {id: FRO_HF_DIV_clock.outFreq, value: 45 MHz}
@@ -562,11 +1289,146 @@ settings:
 /* clang-format on */
 
 /*******************************************************************************
- * Variables for BOARD_BootClockPLL180M configuration
- ******************************************************************************/
-/*******************************************************************************
  * Code for BOARD_BootClockPLL180M configuration
  ******************************************************************************/
+void BOARD_BootClockPLL180M_InitClockModule(clock_module_t module)
+{
+    const pll_setup_t pll1Setup = {
+        .pllctrl = SCG_SPLLCTRL_SOURCE(3U) | SCG_SPLLCTRL_SELI(17U) | SCG_SPLLCTRL_SELP(8U),
+        .pllndiv = SCG_SPLLNDIV_NDIV(1U),
+        .pllpdiv = SCG_SPLLPDIV_PDIV(1U),
+        .pllmdiv = SCG_SPLLMDIV_MDIV(30U),
+        .pllRate = 180000000U
+    };
+
+    switch(module) {
+        case kClockModule_FIRC:
+            CLOCK_SetClockDiv(kCLOCK_DivFRO_HF, 1U);       /* !< Set SYSCON.FROHFDIV divider to value 1 */
+            CLOCK_SetupFROHFClocking(45000000U); /*!< Enable FRO HF 45000000Hz output */
+            break;
+        case kClockModule_SIRC:
+            CLOCK_SetClockDiv(kCLOCK_DivFRO_LF, 1U);       /* !< Set SYSCON.FROLFDIV divider to value 1 */
+            CLOCK_SetupFRO12MClocking();                /*!< Setup FRO12M clock */
+            break;
+        case kClockModule_PLL:
+            CLOCK_SetPLL1Freq(&pll1Setup);                       /*!< Configure PLL1 to the desired values */
+            CLOCK_SetPll1MonitorMode(kSCG_Pll1MonitorDisable);            /* Pll1 Monitor is disabled */
+            CLOCK_SetClockDiv(kCLOCK_DivPLL1CLK, 4U);      /* !< Set SYSCON.PLL1CLKDIV divider to value 4 */
+            break;
+        case kClockModule_SystemClk:
+            CLOCK_SetClockDiv(kCLOCK_DivAHBCLK, 1U);       /* !< Set SYSCON.AHBCLKDIV divider to value 1 */
+            CLOCK_AttachClk(kPll1Clk_to_MAIN_CLK);/* !< Switch MAIN_CLK to kPll1Clk */
+            break;
+        case kClockModule_ADCClk:
+            CLOCK_AttachClk(kNONE_to_ADC);                 /* !< Switch ADC to  */
+            break;
+        case kClockModule_CLKOUT:
+            CLOCK_AttachClk(kNONE_to_CLKOUT);              /* !< Switch CLKOUT to  */
+            break;
+        case kClockModule_CMP0Clk:
+            CLOCK_AttachClk(kNONE_to_CMP0);                /* !< Switch CMP0 to  */
+            break;
+        case kClockModule_CMP1Clk:
+            CLOCK_AttachClk(kNONE_to_CMP1);                /* !< Switch CMP1 to  */
+            break;
+        case kClockModule_CMP2Clk:
+            CLOCK_AttachClk(kNONE_to_CMP2);                /* !< Switch CMP2 to  */
+            break;
+        case kClockModule_CTIMER0Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER0);             /* !< Switch CTIMER0 to  */
+            break;
+        case kClockModule_CTIMER1Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER1);             /* !< Switch CTIMER1 to  */
+            break;
+        case kClockModule_CTIMER2Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER2);             /* !< Switch CTIMER2 to  */
+            break;
+        case kClockModule_CTIMER3Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER3);             /* !< Switch CTIMER3 to  */
+            break;
+        case kClockModule_CTIMER4Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER4);             /* !< Switch CTIMER4 to  */
+            break;
+        case kClockModule_DAC0Clk:
+            CLOCK_AttachClk(kNONE_to_DAC0);                /* !< Switch DAC0 to  */
+            break;
+        case kClockModule_FLEXCAN0Clk:
+            CLOCK_AttachClk(kNONE_to_FLEXCAN0);            /* !< Switch FLEXCAN0 to  */
+            break;
+        case kClockModule_FLEXCAN1Clk:
+            CLOCK_AttachClk(kNONE_to_FLEXCAN1);            /* !< Switch FLEXCAN1 to  */
+            break;
+        case kClockModule_FLEXIO0Clk:
+            CLOCK_AttachClk(kNONE_to_FLEXIO0);             /* !< Switch FLEXIO0 to  */
+            break;
+        case kClockModule_I3C0Clk:
+            CLOCK_AttachClk(kNONE_to_I3C0FCLK);            /* !< Switch I3C0FCLK to  */
+            break;
+        case kClockModule_LPI2C0Clk:
+            CLOCK_AttachClk(kNONE_to_LPI2C0);              /* !< Switch LPI2C0 to  */
+            break;
+        case kClockModule_LPI2C1Clk:
+            CLOCK_AttachClk(kNONE_to_LPI2C1);              /* !< Switch LPI2C1 to  */
+            break;
+        case kClockModule_LPI2C2Clk:
+            CLOCK_AttachClk(kNONE_to_LPI2C2);              /* !< Switch LPI2C2 to  */
+            break;
+        case kClockModule_LPI2C3Clk:
+            CLOCK_AttachClk(kNONE_to_LPI2C3);              /* !< Switch LPI2C3 to  */
+            break;
+        case kClockModule_LPSPI0Clk:
+            CLOCK_AttachClk(kNONE_to_LPSPI0);              /* !< Switch LPSPI0 to  */
+            break;
+        case kClockModule_LPSPI1Clk:
+            CLOCK_AttachClk(kNONE_to_LPSPI1);              /* !< Switch LPSPI1 to  */
+            break;
+        case kClockModule_LPTMR0Clk:
+            CLOCK_AttachClk(kNONE_to_LPTMR0);              /* !< Switch LPTMR0 to  */
+            break;
+        case kClockModule_LPUART0Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART0);             /* !< Switch LPUART0 to  */
+            break;
+        case kClockModule_LPUART1Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART1);             /* !< Switch LPUART1 to  */
+            break;
+        case kClockModule_LPUART2Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART2);             /* !< Switch LPUART2 to  */
+            break;
+        case kClockModule_LPUART3Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART3);             /* !< Switch LPUART3 to  */
+            break;
+        case kClockModule_LPUART4Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART4);             /* !< Switch LPUART4 to  */
+            break;
+        case kClockModule_LPUART5Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART5);             /* !< Switch LPUART5 to  */
+            break;
+        case kClockModule_OSTIMER0Clk:
+            CLOCK_AttachClk(kNONE_to_OSTIMER);             /* !< Switch OSTIMER to  */
+            break;
+        case kClockModule_TRACEClk:
+            CLOCK_AttachClk(kCPU_CLK_to_TRACE);            /* !< Switch TRACE to CPU_CLK */
+            CLOCK_SetClockDiv(kCLOCK_DivTRACE, 2U);        /* !< Set MRCC.TRACE_CLKDIV divider to value 2 */
+            break;
+        case kClockModule_USB0ClkClk:
+            CLOCK_AttachClk(kNONE_to_USB0);                /* !< Switch USB0 to  */
+            break;
+        case kClockModule_WWDT0Clk:
+            CLOCK_SetClockDiv(kCLOCK_DivWWDT0, 1U);        /* !< Set MRCC.WWDT0_CLKDIV divider to value 1 */
+            break;
+        case kClockModule_FREQME:
+            /* Configure FREQME clock */
+            CLOCK_EnableClock(kCLOCK_InputMux);
+            RESET_ReleasePeripheralReset(kINPUTMUX0_RST_SHIFT_RSTn);
+            INPUTMUX0->FREQMEAS_REF = INPUTMUX_FREQMEAS_REF_INP(2);
+            INPUTMUX0->FREQMEAS_TAR = INPUTMUX_FREQMEAS_TAR_INP(2);
+            break;
+        default:
+            assert(false);
+            break;
+    }
+}
+
 void BOARD_BootClockPLL180M(void)
 {
     uint32_t coreFreq;
@@ -589,26 +1451,10 @@ void BOARD_BootClockPLL180M(void)
         sramOption.requestVoltageUpdate =  true;
         (void)SPC_SetSRAMOperateVoltage(SPC0, &sramOption);
     }
-
-
-    /*!< Set up system dividers */
-    CLOCK_SetClockDiv(kCLOCK_DivAHBCLK, 1U);               /* !< Set SYSCON.AHBCLKDIV divider to value 1 */
-    CLOCK_SetClockDiv(kCLOCK_DivFRO_HF, 1U);               /* !< Set SYSCON.FROHFDIV divider to value 1 */
-    CLOCK_SetupFROHFClocking(45000000U);               /*!< Enable FRO HF(45MHz) output */
-    CLOCK_SetupFRO12MClocking();                /*!< Setup FRO12M clock */
-
-    /*!< Set up PLL1 */
-    const pll_setup_t pll1Setup = {
-        .pllctrl = SCG_SPLLCTRL_SOURCE(3U) | SCG_SPLLCTRL_SELI(17U) | SCG_SPLLCTRL_SELP(8U),
-        .pllndiv = SCG_SPLLNDIV_NDIV(1U),
-        .pllpdiv = SCG_SPLLPDIV_PDIV(1U),
-        .pllmdiv = SCG_SPLLMDIV_MDIV(30U),
-        .pllRate = 180000000U
-    };
-    CLOCK_SetPLL1Freq(&pll1Setup);                       /*!< Configure PLL1 to the desired values */
-    CLOCK_SetPll1MonitorMode(kSCG_Pll1MonitorDisable);    /* Pll1 Monitor is disabled */
-
-    CLOCK_AttachClk(kPll1Clk_to_MAIN_CLK);      /* !< Switch MAIN_CLK to kPll1Clk */
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_SIRC);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_FIRC);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_PLL);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_SystemClk);
 
     /* The flow of decreasing voltage and frequency */
     if (coreFreq > BOARD_BOOTCLOCKPLL180M_CORE_CLOCK) {
@@ -624,14 +1470,39 @@ void BOARD_BootClockPLL180M(void)
         (void)SPC_SetActiveModeCoreLDORegulatorConfig(SPC0, &ldoOption);
     }
 
-    /*!< Set up clock selectors - Attach clocks to the peripheries */
-    CLOCK_AttachClk(kCPU_CLK_to_TRACE);                    /* !< Switch TRACE to CPU_CLK */
-
-    /*!< Set up dividers */
-    CLOCK_SetClockDiv(kCLOCK_DivFRO_LF, 1U);               /* !< Set SYSCON.FROLFDIV divider to value 1 */
-    CLOCK_SetClockDiv(kCLOCK_DivPLL1CLK, 4U);              /* !< Set SYSCON.PLL1CLKDIV divider to value 4 */
-    CLOCK_SetClockDiv(kCLOCK_DivWWDT0, 1U);                /* !< Set MRCC.WWDT0_CLKDIV divider to value 1 */
-    CLOCK_SetClockDiv(kCLOCK_DivTRACE, 2U);                /* !< Set MRCC.TRACE_CLKDIV divider to value 2 */
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_ADCClk);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_CLKOUT);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_CMP0Clk);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_CMP1Clk);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_CMP2Clk);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_CTIMER0Clk);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_CTIMER1Clk);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_CTIMER2Clk);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_CTIMER3Clk);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_CTIMER4Clk);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_DAC0Clk);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_FLEXCAN0Clk);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_FLEXCAN1Clk);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_FLEXIO0Clk);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_FREQME);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_I3C0Clk);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_LPI2C0Clk);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_LPI2C1Clk);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_LPI2C2Clk);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_LPI2C3Clk);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_LPSPI0Clk);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_LPSPI1Clk);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_LPTMR0Clk);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_LPUART0Clk);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_LPUART1Clk);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_LPUART2Clk);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_LPUART3Clk);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_LPUART4Clk);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_LPUART5Clk);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_OSTIMER0Clk);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_TRACEClk);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_USB0ClkClk);
+    BOARD_BootClockPLL180M_InitClockModule(kClockModule_WWDT0Clk);
 
     /* Set SystemCoreClock variable */
     SystemCoreClock = BOARD_BOOTCLOCKPLL180M_CORE_CLOCK;
@@ -645,10 +1516,13 @@ void BOARD_BootClockPLL180M(void)
 name: BOARD_BootClockPLL240M
 called_from_default_init: true
 outputs:
+- {id: ADC_clock.outFreq, value: 45 MHz}
 - {id: BUS_clock.outFreq, value: 120 MHz}
 - {id: CLK_1M_clock.outFreq, value: 1 MHz}
 - {id: CLK_45M_clock.outFreq, value: 45 MHz}
 - {id: CPU_clock.outFreq, value: 240 MHz}
+- {id: FREQME_reference_clock.outFreq, value: 12 MHz}
+- {id: FREQME_target_clock.outFreq, value: 12 MHz}
 - {id: FRO_12M_DIV_clock.outFreq, value: 12 MHz}
 - {id: FRO_12M_clock.outFreq, value: 12 MHz}
 - {id: FRO_HF_DIV_clock.outFreq, value: 180 MHz}
@@ -665,8 +1539,11 @@ settings:
 - {id: PLL_MODE, value: Normal}
 - {id: SCGMode, value: PLL1}
 - {id: VDD_CORE, value: voltage_1v2}
+- {id: ADC_CLKDIV_MRCC0_MRCC_ADC_CLKDIV_HALT, value: 'ON'}
 - {id: FROHFDIV_SYSCON_FROHFDIV_HALT, value: RUN}
 - {id: FROLFDIV_SYSCON_FROLFDIV_HALT, value: RUN}
+- {id: MRCC.ADC_CLKDIV.scale, value: '4', locked: true}
+- {id: MRCC.ADC_CLKSEL.sel, value: SCG.FRO_HF_clock}
 - {id: MRCC.TRACE_CLKDIV.scale, value: '3', locked: true}
 - {id: PLL1CLKDIV_SYSCON_PLL1CLKDIV_HALT, value: RUN}
 - {id: SCG.FREQ_SEL.scale, value: '1', locked: true}
@@ -679,11 +1556,147 @@ settings:
 /* clang-format on */
 
 /*******************************************************************************
- * Variables for BOARD_BootClockPLL240M configuration
- ******************************************************************************/
-/*******************************************************************************
  * Code for BOARD_BootClockPLL240M configuration
  ******************************************************************************/
+void BOARD_BootClockPLL240M_InitClockModule(clock_module_t module)
+{
+    const pll_setup_t pll1Setup = {
+        .pllctrl = SCG_SPLLCTRL_SOURCE(3U) | SCG_SPLLCTRL_SELI(23U) | SCG_SPLLCTRL_SELP(11U),
+        .pllndiv = SCG_SPLLNDIV_NDIV(1U),
+        .pllpdiv = SCG_SPLLPDIV_PDIV(1U),
+        .pllmdiv = SCG_SPLLMDIV_MDIV(40U),
+        .pllRate = 240000000U
+    };
+
+    switch(module) {
+        case kClockModule_FIRC:
+            CLOCK_SetClockDiv(kCLOCK_DivFRO_HF, 1U);       /* !< Set SYSCON.FROHFDIV divider to value 1 */
+            CLOCK_SetupFROHFClocking(180000000U); /*!< Enable FRO HF 180000000Hz output */
+            break;
+        case kClockModule_SIRC:
+            CLOCK_SetClockDiv(kCLOCK_DivFRO_LF, 1U);       /* !< Set SYSCON.FROLFDIV divider to value 1 */
+            CLOCK_SetupFRO12MClocking();                /*!< Setup FRO12M clock */
+            break;
+        case kClockModule_PLL:
+            CLOCK_SetPLL1Freq(&pll1Setup);                       /*!< Configure PLL1 to the desired values */
+            CLOCK_SetPll1MonitorMode(kSCG_Pll1MonitorDisable);            /* Pll1 Monitor is disabled */
+            CLOCK_SetClockDiv(kCLOCK_DivPLL1CLK, 4U);      /* !< Set SYSCON.PLL1CLKDIV divider to value 4 */
+            break;
+        case kClockModule_SystemClk:
+            CLOCK_SetClockDiv(kCLOCK_DivAHBCLK, 1U);       /* !< Set SYSCON.AHBCLKDIV divider to value 1 */
+            CLOCK_AttachClk(kPll1Clk_to_MAIN_CLK);/* !< Switch MAIN_CLK to kPll1Clk */
+            break;
+        case kClockModule_ADCClk:
+            CLOCK_AttachClk(kFRO_HF_to_ADC);               /* !< Switch ADC to FRO_HF */
+            CLOCK_SetClockDiv(kCLOCK_DivADC, 4U);          /* !< Set MRCC.ADC_CLKDIV divider to value 4 */
+            break;
+        case kClockModule_CLKOUT:
+            CLOCK_AttachClk(kNONE_to_CLKOUT);              /* !< Switch CLKOUT to  */
+            break;
+        case kClockModule_CMP0Clk:
+            CLOCK_AttachClk(kNONE_to_CMP0);                /* !< Switch CMP0 to  */
+            break;
+        case kClockModule_CMP1Clk:
+            CLOCK_AttachClk(kNONE_to_CMP1);                /* !< Switch CMP1 to  */
+            break;
+        case kClockModule_CMP2Clk:
+            CLOCK_AttachClk(kNONE_to_CMP2);                /* !< Switch CMP2 to  */
+            break;
+        case kClockModule_CTIMER0Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER0);             /* !< Switch CTIMER0 to  */
+            break;
+        case kClockModule_CTIMER1Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER1);             /* !< Switch CTIMER1 to  */
+            break;
+        case kClockModule_CTIMER2Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER2);             /* !< Switch CTIMER2 to  */
+            break;
+        case kClockModule_CTIMER3Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER3);             /* !< Switch CTIMER3 to  */
+            break;
+        case kClockModule_CTIMER4Clk:
+            CLOCK_AttachClk(kNONE_to_CTIMER4);             /* !< Switch CTIMER4 to  */
+            break;
+        case kClockModule_DAC0Clk:
+            CLOCK_AttachClk(kNONE_to_DAC0);                /* !< Switch DAC0 to  */
+            break;
+        case kClockModule_FLEXCAN0Clk:
+            CLOCK_AttachClk(kNONE_to_FLEXCAN0);            /* !< Switch FLEXCAN0 to  */
+            break;
+        case kClockModule_FLEXCAN1Clk:
+            CLOCK_AttachClk(kNONE_to_FLEXCAN1);            /* !< Switch FLEXCAN1 to  */
+            break;
+        case kClockModule_FLEXIO0Clk:
+            CLOCK_AttachClk(kNONE_to_FLEXIO0);             /* !< Switch FLEXIO0 to  */
+            break;
+        case kClockModule_I3C0Clk:
+            CLOCK_AttachClk(kNONE_to_I3C0FCLK);            /* !< Switch I3C0FCLK to  */
+            break;
+        case kClockModule_LPI2C0Clk:
+            CLOCK_AttachClk(kNONE_to_LPI2C0);              /* !< Switch LPI2C0 to  */
+            break;
+        case kClockModule_LPI2C1Clk:
+            CLOCK_AttachClk(kNONE_to_LPI2C1);              /* !< Switch LPI2C1 to  */
+            break;
+        case kClockModule_LPI2C2Clk:
+            CLOCK_AttachClk(kNONE_to_LPI2C2);              /* !< Switch LPI2C2 to  */
+            break;
+        case kClockModule_LPI2C3Clk:
+            CLOCK_AttachClk(kNONE_to_LPI2C3);              /* !< Switch LPI2C3 to  */
+            break;
+        case kClockModule_LPSPI0Clk:
+            CLOCK_AttachClk(kNONE_to_LPSPI0);              /* !< Switch LPSPI0 to  */
+            break;
+        case kClockModule_LPSPI1Clk:
+            CLOCK_AttachClk(kNONE_to_LPSPI1);              /* !< Switch LPSPI1 to  */
+            break;
+        case kClockModule_LPTMR0Clk:
+            CLOCK_AttachClk(kNONE_to_LPTMR0);              /* !< Switch LPTMR0 to  */
+            break;
+        case kClockModule_LPUART0Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART0);             /* !< Switch LPUART0 to  */
+            break;
+        case kClockModule_LPUART1Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART1);             /* !< Switch LPUART1 to  */
+            break;
+        case kClockModule_LPUART2Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART2);             /* !< Switch LPUART2 to  */
+            break;
+        case kClockModule_LPUART3Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART3);             /* !< Switch LPUART3 to  */
+            break;
+        case kClockModule_LPUART4Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART4);             /* !< Switch LPUART4 to  */
+            break;
+        case kClockModule_LPUART5Clk:
+            CLOCK_AttachClk(kNONE_to_LPUART5);             /* !< Switch LPUART5 to  */
+            break;
+        case kClockModule_OSTIMER0Clk:
+            CLOCK_AttachClk(kNONE_to_OSTIMER);             /* !< Switch OSTIMER to  */
+            break;
+        case kClockModule_TRACEClk:
+            CLOCK_AttachClk(kCPU_CLK_to_TRACE);            /* !< Switch TRACE to CPU_CLK */
+            CLOCK_SetClockDiv(kCLOCK_DivTRACE, 3U);        /* !< Set MRCC.TRACE_CLKDIV divider to value 3 */
+            break;
+        case kClockModule_USB0ClkClk:
+            CLOCK_AttachClk(kNONE_to_USB0);                /* !< Switch USB0 to  */
+            break;
+        case kClockModule_WWDT0Clk:
+            CLOCK_SetClockDiv(kCLOCK_DivWWDT0, 1U);        /* !< Set MRCC.WWDT0_CLKDIV divider to value 1 */
+            break;
+        case kClockModule_FREQME:
+            /* Configure FREQME clock */
+            CLOCK_EnableClock(kCLOCK_InputMux);
+            RESET_ReleasePeripheralReset(kINPUTMUX0_RST_SHIFT_RSTn);
+            INPUTMUX0->FREQMEAS_REF = INPUTMUX_FREQMEAS_REF_INP(2);
+            INPUTMUX0->FREQMEAS_TAR = INPUTMUX_FREQMEAS_TAR_INP(2);
+            break;
+        default:
+            assert(false);
+            break;
+    }
+}
+
 void BOARD_BootClockPLL240M(void)
 {
     uint32_t coreFreq;
@@ -706,26 +1719,10 @@ void BOARD_BootClockPLL240M(void)
         sramOption.requestVoltageUpdate =  true;
         (void)SPC_SetSRAMOperateVoltage(SPC0, &sramOption);
     }
-
-
-    /*!< Set up system dividers */
-    CLOCK_SetClockDiv(kCLOCK_DivAHBCLK, 1U);               /* !< Set SYSCON.AHBCLKDIV divider to value 1 */
-    CLOCK_SetClockDiv(kCLOCK_DivFRO_HF, 1U);               /* !< Set SYSCON.FROHFDIV divider to value 1 */
-    CLOCK_SetupFROHFClocking(180000000U);              /*!< Enable FRO HF(180MHz) output */
-    CLOCK_SetupFRO12MClocking();                /*!< Setup FRO12M clock */
-
-    /*!< Set up PLL1 */
-    const pll_setup_t pll1Setup = {
-        .pllctrl = SCG_SPLLCTRL_SOURCE(3U) | SCG_SPLLCTRL_SELI(23U) | SCG_SPLLCTRL_SELP(11U),
-        .pllndiv = SCG_SPLLNDIV_NDIV(1U),
-        .pllpdiv = SCG_SPLLPDIV_PDIV(1U),
-        .pllmdiv = SCG_SPLLMDIV_MDIV(40U),
-        .pllRate = 240000000U
-    };
-    CLOCK_SetPLL1Freq(&pll1Setup);                       /*!< Configure PLL1 to the desired values */
-    CLOCK_SetPll1MonitorMode(kSCG_Pll1MonitorDisable);    /* Pll1 Monitor is disabled */
-
-    CLOCK_AttachClk(kPll1Clk_to_MAIN_CLK);      /* !< Switch MAIN_CLK to kPll1Clk */
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_SIRC);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_FIRC);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_PLL);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_SystemClk);
 
     /* The flow of decreasing voltage and frequency */
     if (coreFreq > BOARD_BOOTCLOCKPLL240M_CORE_CLOCK) {
@@ -741,14 +1738,39 @@ void BOARD_BootClockPLL240M(void)
         (void)SPC_SetActiveModeCoreLDORegulatorConfig(SPC0, &ldoOption);
     }
 
-    /*!< Set up clock selectors - Attach clocks to the peripheries */
-    CLOCK_AttachClk(kCPU_CLK_to_TRACE);                    /* !< Switch TRACE to CPU_CLK */
-
-    /*!< Set up dividers */
-    CLOCK_SetClockDiv(kCLOCK_DivFRO_LF, 1U);               /* !< Set SYSCON.FROLFDIV divider to value 1 */
-    CLOCK_SetClockDiv(kCLOCK_DivPLL1CLK, 4U);              /* !< Set SYSCON.PLL1CLKDIV divider to value 4 */
-    CLOCK_SetClockDiv(kCLOCK_DivWWDT0, 1U);                /* !< Set MRCC.WWDT0_CLKDIV divider to value 1 */
-    CLOCK_SetClockDiv(kCLOCK_DivTRACE, 3U);                /* !< Set MRCC.TRACE_CLKDIV divider to value 3 */
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_ADCClk);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_CLKOUT);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_CMP0Clk);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_CMP1Clk);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_CMP2Clk);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_CTIMER0Clk);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_CTIMER1Clk);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_CTIMER2Clk);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_CTIMER3Clk);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_CTIMER4Clk);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_DAC0Clk);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_FLEXCAN0Clk);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_FLEXCAN1Clk);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_FLEXIO0Clk);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_FREQME);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_I3C0Clk);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_LPI2C0Clk);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_LPI2C1Clk);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_LPI2C2Clk);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_LPI2C3Clk);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_LPSPI0Clk);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_LPSPI1Clk);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_LPTMR0Clk);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_LPUART0Clk);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_LPUART1Clk);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_LPUART2Clk);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_LPUART3Clk);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_LPUART4Clk);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_LPUART5Clk);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_OSTIMER0Clk);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_TRACEClk);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_USB0ClkClk);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_WWDT0Clk);
 
     /* Set SystemCoreClock variable */
     SystemCoreClock = BOARD_BOOTCLOCKPLL240M_CORE_CLOCK;

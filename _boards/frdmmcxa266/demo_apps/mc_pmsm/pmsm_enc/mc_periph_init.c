@@ -277,10 +277,6 @@ static void InitADC(void)
     RESET_ReleasePeripheralReset(kADC0_RST_SHIFT_RSTn);
     RESET_ReleasePeripheralReset(kADC1_RST_SHIFT_RSTn);
 
-    /* Attach peripheral clock */
-    CLOCK_SetClockDiv(kCLOCK_DivADC, 1u);
-    CLOCK_AttachClk(kFRO_LF_DIV_to_ADC);
-
     LPADC_Init(ADC0, &lpadcConfig);
     LPADC_DoOffsetCalibration(ADC0);
     LPADC_DoAutoCalibration(ADC0);

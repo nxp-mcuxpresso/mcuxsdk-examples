@@ -277,10 +277,6 @@ static void InitADC(void)
     RESET_ReleasePeripheralReset(kADC0_RST_SHIFT_RSTn);
     RESET_ReleasePeripheralReset(kADC1_RST_SHIFT_RSTn);
 
-    /* Attach peripheral clock */
-    CLOCK_SetClockDiv(kCLOCK_DivADC, 1u);
-    CLOCK_AttachClk(kFRO_LF_DIV_to_ADC);
-
     LPADC_Init(ADC0, &lpadcConfig);
     LPADC_DoOffsetCalibration(ADC0);
     LPADC_DoAutoCalibration(ADC0);
@@ -357,14 +353,9 @@ static void InitINPUTMUX(void)
     /* Write to INPUTMUX0: Peripheral clock is enabled */
     CLOCK_EnableClock(kCLOCK_GateINPUTMUX0);
     
-//    /* PWM0_SM0_OUT_TRIG0 is selected as trigger input for ADC0 channel 0 */
-//    INPUTMUX_AttachSignal(INPUTMUX0, 0U, kINPUTMUX_Pwm0Sm0OutTrig0ToAdc0Trigger);
-//    
-//    /* PWM0_SM0_OUT_TRIG0 is selected as trigger input for ADC1 channel 0 */
-//    INPUTMUX_AttachSignal(INPUTMUX0, 0U, kINPUTMUX_Pwm0Sm0OutTrig0ToAdc1Trigger);
-    
-    INPUTMUX0->ADC0_TRIG[0] = 0x12;
-    INPUTMUX0->ADC1_TRIG[0] = 0x12;
+    /* PWM0_SM0_OUT_TRIG0 is selected as trigger input for ADC0/ADC1 channel 0 */
+    INPUTMUX0->ADC0_TRIG[0] = 0x12;     /* Pwm0Sm0OutTrig0ToAdc0Trigger */
+    INPUTMUX0->ADC1_TRIG[0] = 0x12;     /* Pwm0Sm0OutTrig0ToAdc1Trigger */
 
 }
 

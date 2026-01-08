@@ -273,10 +273,6 @@ static void InitADC(void)
     RESET_ReleasePeripheralReset(kADC0_RST_SHIFT_RSTn);
     RESET_ReleasePeripheralReset(kADC1_RST_SHIFT_RSTn);
 
-    /* Attach peripheral clock */
-    CLOCK_SetClockDiv(kCLOCK_DivADC, 1u);
-    CLOCK_AttachClk(kFRO_LF_DIV_to_ADC);
-
     LPADC_Init(ADC0, &lpadcConfig);
     LPADC_DoOffsetCalibration(ADC0);
     LPADC_DoAutoCalibration(ADC0);
@@ -288,9 +284,7 @@ static void InitADC(void)
     LPADC_GetDefaultConvCommandConfig(&lpadcCommandConfig);
     lpadcCommandConfig.sampleChannelMode = kLPADC_SampleChannelSingleEndSideA;
     lpadcCommandConfig.conversionResolutionMode = kLPADC_ConversionResolutionStandard;
-    lpadcCommandConfig.sampleTimeMode = kLPADC_SampleTimeADCK3;
-    
-    
+    lpadcCommandConfig.sampleTimeMode = kLPADC_SampleTimeADCK3;   
     
     /* SET VOLT_DCB_CHANNEL_NUMBER (ADC0) */
     lpadcCommandConfig.channelNumber = VOLT_DCB_CHANNEL_NUMBER;
@@ -301,9 +295,7 @@ static void InitADC(void)
     LPADC_GetDefaultConvTriggerConfig(&lpadcTriggerConfig);
     lpadcTriggerConfig.targetCommandId = 1U;
     lpadcTriggerConfig.enableHardwareTrigger = true;
-    LPADC_SetConvTriggerConfig(ADC0, 0U, &lpadcTriggerConfig);
-    
-    
+    LPADC_SetConvTriggerConfig(ADC0, 0U, &lpadcTriggerConfig);    
     
     /* SET CURRENTS CHANNELS (ADC1) */
     lpadcCommandConfig.channelNumber = CUR_A_CHANNEL_NUMBER;
@@ -324,8 +316,6 @@ static void InitADC(void)
     lpadcTriggerConfig.enableHardwareTrigger = true;
     LPADC_SetConvTriggerConfig(ADC1, 0U, &lpadcTriggerConfig);
     
-    
-    
     /* Set watermark level selection */
     ADC1->FCTRL |= ADC_FCTRL_FWMARK(2);
     
@@ -333,11 +323,9 @@ static void InitADC(void)
     LPADC_EnableInterrupts(ADC1, kLPADC_FIFO0WatermarkInterruptEnable);
     NVIC_SetPriority(ADC1_IRQn, 0U);
     NVIC_EnableIRQ(ADC1_IRQn);  
-    
-    
+       
     /* ADC0 base address */
     g_sM1Curr3phDcBus.pToAdcBase = ADC0;
-
 }
 
 
@@ -353,15 +341,8 @@ static void InitINPUTMUX(void)
     /* Write to INPUTMUX0: Peripheral clock is enabled */
     CLOCK_EnableClock(kCLOCK_GateINPUTMUX0);
     
-//    /* PWM0_SM0_OUT_TRIG0 is selected as trigger input for ADC0 channel 0 */
-//    INPUTMUX_AttachSignal(INPUTMUX0, 0U, kINPUTMUX_Pwm0Sm0OutTrig0ToAdc0Trigger);
-//    
-//    /* PWM0_SM0_OUT_TRIG0 is selected as trigger input for ADC1 channel 0 */
-//    INPUTMUX_AttachSignal(INPUTMUX0, 0U, kINPUTMUX_Pwm0Sm0OutTrig0ToAdc1Trigger);
-    
-    INPUTMUX0->ADC0_TRIG[0] = 0x12;
-    INPUTMUX0->ADC1_TRIG[0] = 0x12;
-
+    INPUTMUX0->ADC0_TRIG[0] = 0x12;     /* Pwm0Sm0OutTrig0ToAdc0Trigger */
+    INPUTMUX0->ADC1_TRIG[0] = 0x12;     /* Pwm0Sm0OutTrig0ToAdc1Trigger */
 }
 
 
@@ -397,8 +378,7 @@ static void InitCTIMER(void)
      /* Configure interrupt register. */
     CTIMER0->IR = CTIMER_IR_MR0INT_MASK;     /* Set interrupt flag for match channel 0. */
     NVIC_SetPriority(CTIMER0_IRQn, 2U);
-    NVIC_EnableIRQ(CTIMER0_IRQn);            /* Enable LEVEL1 interrupt and update the call back function. */
-    
+    NVIC_EnableIRQ(CTIMER0_IRQn);            /* Enable LEVEL1 interrupt and update the call back function. */ 
 }
 
 
@@ -435,7 +415,6 @@ static void InitQD(void)
     M1_MCDRV_ENC_SET_DIRECTION(&g_sM1Enc); 
     /* Enable modulo counting and revolution counter increment on roll-over */
     EQDC0->CTRL2 = EQDC_CTRL2_REVMOD_MASK;
-
 }
 
 
@@ -449,7 +428,6 @@ static void InitQD(void)
 #if M1_FAULT_ENABLE
 static void InitCMP(void)
 {
-    
     /* Attach peripheral clock */
     CLOCK_AttachClk(kFRO_LF_DIV_to_CMP0);
     CLOCK_SetClockDiv(kCLOCK_DivCMP0_FUNC, 1U);

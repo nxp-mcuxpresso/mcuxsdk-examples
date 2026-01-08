@@ -588,14 +588,6 @@ static void BOARD_Init(void)
     /* Release peripheral reset */
     RESET_ReleasePeripheralReset(kADC0_RST_SHIFT_RSTn);
     RESET_ReleasePeripheralReset(kADC1_RST_SHIFT_RSTn);
-    RESET_ReleasePeripheralReset(kCTIMER1_RST_SHIFT_RSTn);
-
-    /* Attach peripheral clock */
-    CLOCK_SetClockDiv(kCLOCK_DivADC, 1u);
-    CLOCK_AttachClk(kFRO_LF_DIV_to_ADC);
-    
-    CLOCK_SetClockDiv(kCLOCK_DivCTIMER1, 1u);
-    CLOCK_AttachClk(kFRO_HF_to_CTIMER1);
     
     /* attach 12 MHz clock to FLEXCOMM0 (debug console) */
     CLOCK_SetClockDiv(kCLOCK_DivLPUART2, 1u);
