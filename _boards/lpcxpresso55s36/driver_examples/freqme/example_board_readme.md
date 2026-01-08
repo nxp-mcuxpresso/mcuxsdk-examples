@@ -35,7 +35,6 @@ Please select the target clock:
                 A -- XTAL32MHz
                 B -- FRO_OSC_12M
                 C -- FREQME_GPIO_CLK_A
-                D -- FREQME_GPIO_CLK_B
 Please input the scale factor of reference clock(Ranges from 0 to 31).
 20
 Target clock frequency is 11999725 Hz.

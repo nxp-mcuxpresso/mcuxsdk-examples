@@ -36,7 +36,6 @@ Please select the target clock:
                 A -- CLK_IN
                 B -- FRO_12M
                 C -- FREQME_CLK_IN0
-                D -- FREQME_CLK_IN1
 Target clock: B
 Please input the scale factor of reference clock(Ranges from 0 to 31).
 20
