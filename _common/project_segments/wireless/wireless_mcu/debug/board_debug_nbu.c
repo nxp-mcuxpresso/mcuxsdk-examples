@@ -173,7 +173,20 @@ static void BOARD_NBUDBG_ProcessDebugStruct(fwk_work_t *work)
             BOARD_NBUDBG_PRINTF("!! Host Debug version 0x%04X != NBU debug version 0x%04X !!\n", (uint16_t)NBUDBG_VERSION, debug_info.version);
             BOARD_NBUDBG_PRINTF("!! The following analysis may be incorrect !!\n");
         }
-
+#if (BOARD_NBUDBG_NBU_WARNING_PRINT_LEVEL == 2)
+        if (dbg_nbu_event.nbu_warning_count > 0U)
+        {
+            BOARD_NBUDBG_PRINTF("=== Warning Circular Table ===\n");
+            for(uint8_t i = 0U; i < NBUDBG_MAX_NB_WARNINGS; i++)
+            {
+                if (i == debug_info.nbu_dbg_info.warning_index)
+                {
+                    BOARD_NBUDBG_PRINTF("->");
+                }
+                BOARD_NBUDBG_PRINTF("%u\n", debug_info.nbu_dbg_info.warnings[i]);
+            }
+        }
+#endif
         if ((dbg_nbu_event.nbu_error_count > 0U))
         {
             nbu_dbg_info = &debug_info.nbu_dbg_info;
