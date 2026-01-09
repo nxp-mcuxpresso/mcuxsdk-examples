@@ -789,7 +789,17 @@ static bleResult_t EstablishConnection()
 #ifdef DELAY_INITIAL_CONNECTION
 static void DelayedStart(void *param)
 {
-    EstablishConnection();
+    timer_handle_t th = (timer_handle_t)param;
+    timer_status_t tmStatus = TM_Close(th);
+    (void)tmStatus;
+    assert_equal(tmStatus, kStatus_TimerSuccess);
+    /* Only establish connection if it's not established */
+    if (s_peerDeviceId == gInvalidDeviceId_c)
+    {
+        bleResult_t result = EstablishConnection();
+        assert_equal(result, gBleSuccess_c);
+        (void)result;
+    }
 }
 #endif /* DELAY_INITIAL_CONNECTION */
 
@@ -822,17 +832,24 @@ static void GapGenericCallback(gapGenericEvent_t *pGenericEvent)
             /* After LE SetPhy completed, the host stack still sends a SetAddressResolutionEnable command which
              * is not reported by the host stack. Therefore, we use a timer to allow this command to finish before
              * create connection is sent. */
-            timer_status_t tmStatus = TM_Open(s_delayTimerHandle);
+            timer_status_t tmStatus = TM_Close(s_delayTimerHandle);
             (void)tmStatus;
             assert_equal(tmStatus, kStatus_TimerSuccess);
-            tmStatus = TM_InstallCallback((timer_handle_t)s_delayTimerHandle, DelayedStart, NULL);
+            tmStatus = TM_Open(s_delayTimerHandle);
+            (void)tmStatus;
+            assert_equal(tmStatus, kStatus_TimerSuccess);
+            tmStatus = TM_InstallCallback((timer_handle_t)s_delayTimerHandle, DelayedStart, (void*)s_delayTimerHandle);
             assert_equal(tmStatus, kStatus_TimerSuccess);
             tmStatus = TM_Start((timer_handle_t)s_delayTimerHandle, kTimerModeSingleShot | kTimerModeSetSecondTimer, 1);
             assert_equal(tmStatus, kStatus_TimerSuccess);
 #else
-            bleResult_t result = EstablishConnection();
-            assert_equal(result, gBleSuccess_c);
-            (void)result;
+            /* Only establish connection if it's not established */
+            if (s_peerDeviceId == gInvalidDeviceId_c)
+            {
+                bleResult_t result = EstablishConnection();
+                assert_equal(result, gBleSuccess_c);
+                (void)result;
+            }
 #endif /* DELAY_INITIAL_CONNECTION */
             break;
         }
