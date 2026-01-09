@@ -141,6 +141,9 @@
 #error "gAppMaxTxPowerDbm_c 6dBm is the maximum supported"
 #endif
 
+#define gConnDefaultTxPhySettings_c             (gLePhy1MFlag_c | gLePhy2MFlag_c | gLePhyCodedFlag_c)
+#define gConnDefaultRxPhySettings_c             (gLePhy1MFlag_c | gLePhy2MFlag_c | gLePhyCodedFlag_c)
+
 /* Include common configuration file and board configuration file */
 #include "app_preinclude_common.h"
 #endif /* _APP_PREINCLUDE_H_ */

@@ -132,6 +132,9 @@
 #error "gAppMaxTxPowerDbm_c 6dBm is the maximum supported"
 #endif
 
+#define gConnDefaultTxPhySettings_c             (gLePhy1MFlag_c | gLePhy2MFlag_c | gLePhyCodedFlag_c)
+#define gConnDefaultRxPhySettings_c             (gLePhy1MFlag_c | gLePhy2MFlag_c | gLePhyCodedFlag_c)
+
 /*
  * Specific configuration of LL pools by block size and number of blocks for this application.
  * Optimized using the MEM_OPTIMIZE_BUFFER_POOL feature in MemManager,
