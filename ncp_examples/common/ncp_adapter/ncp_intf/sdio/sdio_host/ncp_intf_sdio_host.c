@@ -1268,6 +1268,8 @@ static ncp_status_t ncp_sdhost_CardInit(void)
     ncp_adap_d("%s: sdio_set_host_reset_done success", __FUNCTION__);
     sdhost_ready = true;
 
+    SDMMCHOST_ForceClockOn(g_sdio_card.host, true);
+
     return NCP_STATUS_SUCCESS;
 }
 
@@ -1303,6 +1305,8 @@ void sdhost_rescan_task(void *argv)
         resp = 0;
         pm_state = 0;
         (void)sdhost_rescan_wait_event(SDHOST_RESCAN_START);
+
+        SDMMCHOST_ForceClockOn(g_sdio_card.host, false);
 
         /* Read PM mode from device */
         ret = sdio_drv_creg_read(0xFC, 1, &resp);
