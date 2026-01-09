@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+mbedtls_psatest:
+  section-type: application
+  contents:
+    meta_path: examples/mbedtls_examples/mbedtls_psatest
+    project-root-path: boards/${board}/mbedtls_examples/mbedtls_psatest/${core_id}
+    document:
+      name: mbedtls_psatest${core_id_suffix_name}
+      category: mbedtls_examples
+      brief: The Mbed-TLS PSA Dev API test application provides verification that
+        the crypto API behaviours are implemented correctly.
+      example_readme:
+      - examples/mbedtls_examples/mbedtls_psatest/readme.md
+      - ${board_root}/${board}/mbedtls_examples/mbedtls_psatest/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxw23: []

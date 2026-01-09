@@ -7,8 +7,5 @@ mbedtls_examples
    :maxdepth: 1
 
 
-   mbedtls_benchmark/readme.md
-   mbedtls_selftest/readme.md
-   mbedtls_selftest_thread/readme.md
-   mbedtls_testsuite/readme.md
-   pn_mbedtls_demo/readme.md
+   psa_crypto_examples/readme.md
+   mbedtls_psatest/readme.md
