@@ -19,5 +19,6 @@ void BOARD_InitHardware(void)
     BOARD_InitPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+    BOARD_ApplyGpioPullUpWorkaround();
 }
 /*${function:end}*/

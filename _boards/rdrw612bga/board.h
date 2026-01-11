@@ -162,6 +162,7 @@ void BOARD_ClockPostConfig(void);
 AT_QUICKACCESS_SECTION_CODE(void BOARD_SetFlexspiClock(FLEXSPI_Type *base, uint32_t src, uint32_t divider));
 AT_QUICKACCESS_SECTION_CODE(void BOARD_DeinitFlash(FLEXSPI_Type *base));
 AT_QUICKACCESS_SECTION_CODE(void BOARD_InitFlash(FLEXSPI_Type *base));
+void BOARD_ApplyGpioPullUpWorkaround(void);
 
 #if defined(__cplusplus)
 }
