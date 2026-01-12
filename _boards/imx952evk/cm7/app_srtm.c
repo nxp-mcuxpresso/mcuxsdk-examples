@@ -536,6 +536,8 @@ static void APP_SRTM_Linkup(void)
     srtm_channel_t chan;
     srtm_rpmsg_endpoint_config_t rpmsgConfig;
 
+    (void)chan;
+    (void)rpmsgConfig;
     /* Create SRTM peer core */
     core = SRTM_PeerCore_Create(PEER_CORE_ID);
     /* Set peer core state to activated */
