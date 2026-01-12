@@ -1073,15 +1073,7 @@ static void APP_SRTM_InitIoService(void)
 
 static void APP_HandleGPIOHander(uint16_t ioId)
 {
-    //BaseType_t reschedule = pdFALSE;
-
-    //APP_IO_ConfIEvent(NULL, NULL, ioId, SRTM_IoEventNone, false);
     SRTM_IoService_NotifyInputEvent(ioService, ioId);
-    //xTimerStartFromISR(suspendContext.io.data[portIdx][pinIdx].timer, &reschedule);
-    //if (reschedule)
-    //{
-    //    portYIELD_FROM_ISR(reschedule);
-    //}
 }
 #endif
 
