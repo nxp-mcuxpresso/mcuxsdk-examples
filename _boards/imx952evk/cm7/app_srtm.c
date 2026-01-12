@@ -964,8 +964,6 @@ static void APP_SRTM_InitIoService(void)
 static void APP_HandleGPIOHander(uint16_t ioId)
 {
     //BaseType_t reschedule = pdFALSE;
-    uint8_t portIdx = APP_GPIO_IDX(ioId);
-    uint8_t pinIdx  = APP_PIN_IDX(ioId);
 
     //APP_IO_ConfIEvent(NULL, NULL, ioId, SRTM_IoEventNone, false);
     SRTM_IoService_NotifyInputEvent(ioService, ioId);
