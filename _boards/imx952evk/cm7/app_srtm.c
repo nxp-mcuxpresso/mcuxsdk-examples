@@ -9,16 +9,20 @@
 #include "task.h"
 #include "timers.h"
 
+#if SRTM_I2C_SERVICE_USED
 #include "fsl_lpi2c.h"
+#include "srtm_i2c_service.h"
+#endif
 
 #include "srtm_dispatcher.h"
 #include "srtm_peercore.h"
 #include "srtm_message.h"
 #include "srtm_rpmsg_endpoint.h"
-#include "srtm_i2c_service.h"
+#if SRTM_AUDIO_SERVICE_USED
 #include "srtm_audio_service.h"
 #include "srtm_sai_edma_adapter.h"
 #include "srtm_pdm_edma_adapter.h"
+#endif
 #include "scmi_cpu.h"
 #include "scmi.h"
 
@@ -33,7 +37,9 @@
 
 static srtm_dispatcher_t disp;
 static srtm_peercore_t core;
+#if SRTM_I2C_SERVICE_USED
 static srtm_service_t i2cService;
+#endif
 static SemaphoreHandle_t monSig;
 volatile app_srtm_state_t srtmState;
 static struct rpmsg_lite_instance *rpmsgHandle;
@@ -302,6 +308,7 @@ static srtm_sai_edma_local_buf_t g_local_buf = {
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
+#if SRTM_I2C_SERVICE_USED
 static srtm_status_t APP_SRTM_I2C_Read(srtm_i2c_adapter_t adapter,
                                        uint32_t base_addr,
                                        srtm_i2c_type_t type,
@@ -341,6 +348,7 @@ static struct _srtm_i2c_adapter i2c_adapter = {.read          = APP_SRTM_I2C_Rea
                                                    .bus_num    = sizeof(platform_i2c_buses) / sizeof(struct _i2c_bus),
                                                    .switch_num = 0,
                                                }};
+#endif
 
 void APP_SRTM_SetRpmsgMonitor(app_rpmsg_monitor_t monitor, void *param)
 {
@@ -348,6 +356,7 @@ void APP_SRTM_SetRpmsgMonitor(app_rpmsg_monitor_t monitor, void *param)
     rpmsgMonitorParam = param;
 }
 
+#if SRTM_I2C_SERVICE_USED
 static srtm_status_t APP_SRTM_I2C_Write(srtm_i2c_adapter_t adapter,
                                         uint32_t base_addr,
                                         srtm_i2c_type_t type,
@@ -435,6 +444,7 @@ static void APP_SRTM_InitI2CService(void)
     i2cService = SRTM_I2CService_Create(&i2c_adapter);
     SRTM_Dispatcher_RegisterService(disp, i2cService);
 }
+#endif
 
 #if !(defined(FSL_FEATURE_MU_NO_CORE_STATUS) && (0 != FSL_FEATURE_MU_NO_CORE_STATUS))
 static void APP_SRTM_OtherSideResetHandler(void)
@@ -548,10 +558,13 @@ static void APP_SRTM_Linkup(void)
     assert((audioService != NULL) && (pdmAdapter != NULL));
     SRTM_AudioService_BindChannel(audioService, pdmAdapter, chan);
 #endif
+
+#if SRTM_I2C_SERVICE_USED
     /* Create and add SRTM I2C channel to peer core*/
     rpmsgConfig.epName = APP_SRTM_I2C_CHANNEL_NAME;
     chan               = SRTM_RPMsgEndpoint_Create(&rpmsgConfig);
     SRTM_PeerCore_AddChannel(core, chan);
+#endif
 
 #if SRTM_IO_SERVICE_USED
     /* Create and add SRTM IO channel to peer core */
@@ -964,7 +977,9 @@ static void APP_HandleGPIOHander(uint16_t ioId)
 
 static void APP_SRTM_InitServices(void)
 {
+#if SRTM_I2C_SERVICE_USED
     APP_SRTM_InitI2CService();
+#endif
 #if SRTM_AUDIO_SERVICE_USED
     APP_SRTM_InitAudioService();
 #endif
