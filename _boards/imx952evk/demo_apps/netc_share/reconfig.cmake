@@ -1,16 +1,14 @@
 
 mcux_add_macro(
-    CC "-DSDK_I2C_BASED_COMPONENT_USED=1 \
-       -DBOARD_USE_PCAL6524=1 \
-       -DBOARD_USE_PCAL6408=1 \
+    CC "-DSRTM_NETC_SERVICE_USED=1 \
        -DSCMI_LMM_POWER_CHANGE_PROCESSED=1"
 )
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES
-    ${board_root}/${board}/demo_apps/netc_share/cm7/app_srtm.c
-    ${board_root}/${board}/demo_apps/netc_share/cm7/app_srtm.h
+    ${board_root}/${board}/cm7/app_srtm.c
+    ${board_root}/${board}/cm7/app_srtm.h
     ${board_root}/${board}/demo_apps/netc_share/cm7/rpmsg_config.h
     ${board_root}/${board}/demo_apps/netc_share/cm7/lwip_netc_port.h
     ${board_root}/${board}/rsc_table.c
@@ -24,6 +22,7 @@ mcux_add_include(
     INCLUDES
     ${board_root}/${board}/demo_apps/netc_share/cm7
     ${board_root}/${board}/
+    ${board_root}/${board}/cm7
     middleware/multicore/remoteproc
 )
 
@@ -31,12 +30,12 @@ mcux_add_include(
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER devices_int/i.MX/i.MX952/MIMX95294/iar/MIMX95294xxxN_cm7_ram.icf
+    LINKER devices/i.MX/i.MX952/MIMX95294/iar/MIMX95294xxxN_cm7_ram.icf
 )
 mcux_remove_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER devices_int/i.MX/i.MX952/MIMX95294/gcc/MIMX95294xxxN_cm7_ram.ld
+    LINKER devices/i.MX/i.MX952/MIMX95294/gcc/MIMX95294xxxN_cm7_ram.ld
 )
 
 # Add Linker File Configurations

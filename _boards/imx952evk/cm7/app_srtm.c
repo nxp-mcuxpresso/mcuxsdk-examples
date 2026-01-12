@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 NXP
+ * Copyright 2023-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -12,6 +12,10 @@
 #if SRTM_I2C_SERVICE_USED
 #include "fsl_lpi2c.h"
 #include "srtm_i2c_service.h"
+#endif
+
+#if SRTM_NETC_SERVICE_USED
+#include "srtm_netc_service.h"
 #endif
 
 #include "srtm_dispatcher.h"
@@ -39,6 +43,9 @@ static srtm_dispatcher_t disp;
 static srtm_peercore_t core;
 #if SRTM_I2C_SERVICE_USED
 static srtm_service_t i2cService;
+#endif
+#if SRTM_NETC_SERVICE_USED
+static srtm_service_t netcService;
 #endif
 static SemaphoreHandle_t monSig;
 volatile app_srtm_state_t srtmState;
@@ -350,6 +357,18 @@ static struct _srtm_i2c_adapter i2c_adapter = {.read          = APP_SRTM_I2C_Rea
                                                }};
 #endif
 
+#if SRTM_NETC_SERVICE_USED
+static srtm_status_t APP_SRTM_NETC_WritePCIConfig(srtm_netc_adapter_t adapter,
+                                                  uint8_t bus,
+                                                  uint8_t devFn,
+                                                  uint16_t reg,
+                                                  uint32_t val,
+                                                  uint8_t size);
+
+static struct _srtm_netc_adapter netc_adapter = {.writePCIConfig = APP_SRTM_NETC_WritePCIConfig,
+                                                };
+#endif
+
 void APP_SRTM_SetRpmsgMonitor(app_rpmsg_monitor_t monitor, void *param)
 {
     rpmsgMonitor      = monitor;
@@ -443,6 +462,90 @@ static void APP_SRTM_InitI2CService(void)
     APP_SRTM_InitI2CDevice();
     i2cService = SRTM_I2CService_Create(&i2c_adapter);
     SRTM_Dispatcher_RegisterService(disp, i2cService);
+}
+#endif
+
+#if SRTM_NETC_SERVICE_USED
+
+#define PCIE_CONFIG_SPACE_BASE         0x4CA00000U
+#define PCIE_CONFIG_SPACE_SIZE         0x100000U
+#define PCIE_VIRTUAL_CONFIG_SPACE_BASE 0x88224000U
+
+#define PCIE_CONFIG_ENETC0_BASE        0x4CA00000U
+
+#define REG_PCIE_DEV_CTRL              0x48U
+#define PCIE_DEV_CTRL_INIT_FLR_MASK    0x8000U
+
+/* Share ENETC0 VF */
+static srtm_status_t APP_SRTM_NETC_WritePCIConfig(srtm_netc_adapter_t adapter,
+                                                  uint8_t bus,
+                                                  uint8_t devFn,
+                                                  uint16_t reg,
+                                                  uint32_t val,
+                                                  uint8_t size)
+{
+    uint16_t rid = ((uint16_t)bus << 8U) | devFn;
+    uint32_t addr = PCIE_CONFIG_SPACE_BASE + ((uint32_t)rid * 4U * 1024U) + reg;
+    uint32_t vaddr = PCIE_VIRTUAL_CONFIG_SPACE_BASE + ((uint32_t)rid * 4U * 1024U) + reg;
+
+    /* Avoid writting ENETC2 PF except SR-IOV */
+    if ((addr >= PCIE_CONFIG_ENETC0_BASE) && (addr < (PCIE_CONFIG_ENETC0_BASE + 0x190U)))
+    {
+        return SRTM_Status_Success;
+    }
+
+    /* Write */
+    if (size == 1U)
+    {
+        *((volatile uint8_t *)addr) = (uint8_t)val;
+        *((volatile uint8_t *)vaddr) = *((volatile uint8_t *)addr);
+    }
+    else if (size == 2U)
+    {
+        *((volatile uint16_t *)addr) = (uint16_t)val;
+        *((volatile uint16_t *)vaddr) = *((volatile uint16_t *)addr);
+    }
+    else if (size == 4U)
+    {
+        *((volatile uint32_t *)addr) = (uint32_t)val;
+        *((volatile uint32_t *)vaddr) = *((volatile uint32_t *)addr);
+    }
+    else
+    {
+        return SRTM_Status_Error;
+    }
+
+    /* Wait PCIE_DEV_CTL INIT_FLR bit self-clear */
+    if ((reg == REG_PCIE_DEV_CTRL) && ((uint16_t)val == PCIE_DEV_CTRL_INIT_FLR_MASK))
+    {
+        while ((*((volatile uint16_t *)addr) & 0x8000U) != 0U)
+        {
+        }
+        *((volatile uint16_t *)vaddr) = *((volatile uint16_t *)addr);
+    }
+
+    return SRTM_Status_Success;
+}
+
+/* Share ENETC0 VF */
+void APP_SRTM_NETC_VirtualizePCIConfig(void)
+{
+    memset((void *)PCIE_VIRTUAL_CONFIG_SPACE_BASE, 0U, PCIE_CONFIG_SPACE_SIZE);
+    memcpy((void *)PCIE_VIRTUAL_CONFIG_SPACE_BASE, (void *)PCIE_CONFIG_SPACE_BASE, PCIE_CONFIG_SPACE_SIZE);
+
+    /* disable func except for ENETC0 */
+    (*((volatile uint32_t *)(PCIE_VIRTUAL_CONFIG_SPACE_BASE)))             = 0x080B1131U; /* ENETC0 with virtual ID */
+    (*((volatile uint32_t *)(PCIE_VIRTUAL_CONFIG_SPACE_BASE + 0x1000U)))   = 0x0000ffffU; /* TMR0 */
+    (*((volatile uint32_t *)(PCIE_VIRTUAL_CONFIG_SPACE_BASE + 0x2000U)))   = 0x0000ffffU; /* EMDIO0 */
+    (*((volatile uint32_t *)(PCIE_VIRTUAL_CONFIG_SPACE_BASE + 0x8000U)))   = 0x0000ffffU; /* ECAM Event Collector */
+    (*((volatile uint32_t *)(PCIE_VIRTUAL_CONFIG_SPACE_BASE + 0x100000U))) = 0x0000ffffU; /* ENETC1 */
+    (*((volatile uint32_t *)(PCIE_VIRTUAL_CONFIG_SPACE_BASE + 0x108000U))) = 0x0000ffffU; /* ECAM Event Collector */
+}
+
+static void APP_SRTM_InitNETCService(void)
+{
+    netcService = SRTM_NETCService_Create(&netc_adapter);
+    SRTM_Dispatcher_RegisterService(disp, netcService);
 }
 #endif
 
@@ -564,6 +667,13 @@ static void APP_SRTM_Linkup(void)
 #if SRTM_I2C_SERVICE_USED
     /* Create and add SRTM I2C channel to peer core*/
     rpmsgConfig.epName = APP_SRTM_I2C_CHANNEL_NAME;
+    chan               = SRTM_RPMsgEndpoint_Create(&rpmsgConfig);
+    SRTM_PeerCore_AddChannel(core, chan);
+#endif
+
+#if SRTM_NETC_SERVICE_USED
+    /* Create and add SRTM NETC channel to peer core */
+    rpmsgConfig.epName = APP_SRTM_NETC_CHANNEL_NAME;
     chan               = SRTM_RPMsgEndpoint_Create(&rpmsgConfig);
     SRTM_PeerCore_AddChannel(core, chan);
 #endif
@@ -979,6 +1089,9 @@ static void APP_SRTM_InitServices(void)
 {
 #if SRTM_I2C_SERVICE_USED
     APP_SRTM_InitI2CService();
+#endif
+#if SRTM_NETC_SERVICE_USED
+    APP_SRTM_InitNETCService();
 #endif
 #if SRTM_AUDIO_SERVICE_USED
     APP_SRTM_InitAudioService();

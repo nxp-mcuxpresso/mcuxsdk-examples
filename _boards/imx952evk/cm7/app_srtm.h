@@ -35,6 +35,9 @@
 #define APP_SRTM_PDM_CHANNEL_NAME   "rpmsg-micfil-channel"
 #define APP_SRTM_I2C_CHANNEL_NAME   "rpmsg-i2c-channel"
 #define APP_SRTM_IO_CHANNEL_NAME     "rpmsg-io-channel"
+#if SRTM_NETC_SERVICE_USED
+#define APP_SRTM_NETC_CHANNEL_NAME  "rpmsg-pci-channel"
+#endif
 
 #define PEER_CORE_ID (1U)
 
@@ -119,6 +122,11 @@ void APP_SRTM_StartCommunication(void);
 
 /* Set RPMsg channel init/deinit monitor */
 void APP_SRTM_SetRpmsgMonitor(app_rpmsg_monitor_t monitor, void *param);
+
+#if SRTM_NETC_SERVICE_USED
+/* Virtualize PCI config for NETC */
+void APP_SRTM_NETC_VirtualizePCIConfig(void);
+#endif
 
 /* Handle acore power mode changes */
 void APP_SRTM_HandleLmmPowerChange(uint32_t lm, uint32_t flags);
