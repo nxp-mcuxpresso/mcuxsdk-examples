@@ -17,6 +17,15 @@
 
 #define CONFIG_MCUBOOT_MAX_IMG_SECTORS 800
 
+/*
+ * MCUBoot upgrade mode (default)
+ * If supported by the device, an alternative upgrade mode can be selected.
+ * For more information please see documentation (ota_examples/_doc).
+ */
+//#define CONFIG_BOOT_MODE_OVERWRITE_ONLY
+//#define CONFIG_BOOT_MODE_SINGLE_APPLICATION_SLOT
+#define CONFIG_BOOT_MODE_SWAP
+
 #define CONFIG_BOOT_BOOTSTRAP
 
 /* Crypto Config */
