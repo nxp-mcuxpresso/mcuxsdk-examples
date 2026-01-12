@@ -26,4 +26,6 @@
             *wifi_netif.o
             *fsl_os_abstraction_free_rtos.o
             *fsl_memcpy.o
+            *mflash_drv.o
+            *fsl_flexspi.o
         ) .text*)

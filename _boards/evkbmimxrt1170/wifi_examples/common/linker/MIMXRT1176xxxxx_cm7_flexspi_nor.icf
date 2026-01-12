@@ -121,6 +121,8 @@ initialize by copy {
   section .textrw,
   section CodeQuickAccess,
   section DataQuickAccess,
+  object mflash_drv.o,
+  object fsl_flexspi.o,
   object portasm.o,
   object queue.o,
   object mlan_sdio.o,

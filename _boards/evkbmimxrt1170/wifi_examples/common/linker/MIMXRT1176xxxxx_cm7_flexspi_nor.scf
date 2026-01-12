@@ -138,6 +138,8 @@ LR_m_text m_interrupts_start m_text_start+m_text_size-m_interrupts_start {   ; l
 #else
   RW_m_ram_text m_qacode_start m_qacode_size { ;
     * (CodeQuickAccess)
+    fsl_flexspi.o (+RO)
+    mflash_drv.o (+RO)
     queue.o (+RO)
     tcp_out.o (+RO)
     mlan_sdio.o (+RO)
