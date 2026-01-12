@@ -23,10 +23,3 @@ mcux_add_configuration(
         CC "-DFSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL=1"
 )
 endif()
-
-if (CONFIG_MCUX_COMPONENT_driver.srtm)
-    mcux_add_configuration(
-	    CC "-DSRTM_IO_SERVICE_USED=1\
-	        -DSRTM_I2C_SERVICE_USED=1"
-    )
-endif()

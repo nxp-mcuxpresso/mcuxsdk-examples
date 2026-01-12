@@ -6,7 +6,9 @@ mcux_add_configuration(
             -DSRTM_AUDIO_SERVICE_USED=1\
             -DSRTM_SAI_EDMA_PLAY_HALT_WORKAROUND=1\
             -DBOARD_USE_PCAL6408=1\
-            -DSCMI_LMM_POWER_CHANGE_PROCESSED=1"
+            -DSCMI_LMM_POWER_CHANGE_PROCESSED=1\
+            -DSRTM_IO_SERVICE_USED=1\
+            -DSRTM_I2C_SERVICE_USED=1"
 )
 
 mcux_add_source(
