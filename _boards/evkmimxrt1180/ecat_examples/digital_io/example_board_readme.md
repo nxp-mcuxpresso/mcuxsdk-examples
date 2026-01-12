@@ -9,6 +9,23 @@ Board settings
 ==============
 For multiple boards cascades, R142 register needs to be removed.
 
+EEPROM LPI2C Emulator
+================
+1. i.MX RT1180 supports EEPROM LPI2C emulator, please skip this chapter if you used EEPROM hardware.
+2. Hardware Setting
+	- Connection:
+  
+      J51: pin4  <-->  J44: pin20
+
+      J51: pin6  <-->  J44: pin18  
+
+	- Remove EEPROM:
+
+      U48
+3. Add EEPROM_I2C_EMULATOR macro 
+	- Add EEPROM_I2C_EMULATOR macro to enable eeprom i2c emulator funtion
+4. Now you can refer "Prepare the Demo" to setup ecat_examples
+
 Prepare the Demo
 ================
 1. Generate the SSC source code
@@ -62,5 +79,4 @@ Prepare the Demo
 		END_IF;
 		
 9. Activate configuration and start PLC Main function
-
 
