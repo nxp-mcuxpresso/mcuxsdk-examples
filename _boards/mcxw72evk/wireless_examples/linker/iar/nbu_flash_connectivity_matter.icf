@@ -204,7 +204,9 @@ define region DATA_region             = mem:[from m_data0_start to m_data0_end]
                                       | mem:[from m_free_data_start to m_free_data_end];
 define region CSTACK_region           = mem:[from m_cstack_start to m_cstack_end];
 
+//define region sqram_debug_region                = mem:[from m_sqram_debug_start         to m_sqram_debug_end];
 define region lowpower_flag_region              = mem:[from m_lowpower_flag_start       to m_lowpower_flag_end];
+define region sqram_btblesqbuf_region           = mem:[from m_sqram_btblesqbuf_start    to m_sqram_btblesqbuf_end];
 //define region sqram_btbleaesqbuf_region         = mem:[from m_sqram_btbleaesqbuf_start  to m_sqram_btbleaesqbuf_end];
 //define region sqram_rldat_ae_region             = mem:[from m_sqram_rldat_ae_start      to m_sqram_rldat_ae_end];
 define region sqram_rldat_region                = mem:[from m_sqram_rldat_start         to m_sqram_rldat_end];
@@ -240,6 +242,8 @@ place in DATA_region                        { block ZI };
 place in DATA_region                        { last section .heap };
 place in CSTACK_region                      { block CSTACK };
 
+//place in sqram_debug_region                       { readwrite section .debugbuf } ;
+place in sqram_btblesqbuf_region                  { readwrite section .btblesqbuf } ;
 //place in sqram_btbleaesqbuf_region              { readwrite section .btbleaesqbuf } ;
 //place in sqram_rldat_ae_region                  { readwrite section .rl_ae } ;
 place in sqram_rldat_region                     { readwrite section .rl_conn } ;
