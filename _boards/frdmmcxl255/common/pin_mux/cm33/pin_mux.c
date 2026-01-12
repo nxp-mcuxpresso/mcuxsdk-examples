@@ -954,21 +954,21 @@ void BOARD_InitLEDsPins(void)
 
     gpio_pin_config_t LED_RED_config = {
         .pinDirection = kGPIO_DigitalOutput,
-        .outputLogic = 1U
+        .outputLogic = 0U
     };
     /* Initialize GPIO functionality on pin P1_15 (pin C3)  */
     GPIO_PinInit(BOARD_INITLEDSPINS_LED_RED_GPIO, BOARD_INITLEDSPINS_LED_RED_PIN, &LED_RED_config);
 
     gpio_pin_config_t LED_GREEN_config = {
         .pinDirection = kGPIO_DigitalOutput,
-        .outputLogic = 1U
+        .outputLogic = 0U
     };
     /* Initialize GPIO functionality on pin P1_16 (pin D3)  */
     GPIO_PinInit(BOARD_INITLEDSPINS_LED_GREEN_GPIO, BOARD_INITLEDSPINS_LED_GREEN_PIN, &LED_GREEN_config);
 
     gpio_pin_config_t LED_BLUE_config = {
         .pinDirection = kGPIO_DigitalOutput,
-        .outputLogic = 1U
+        .outputLogic = 0U
     };
     /* Initialize GPIO functionality on pin P2_12 (pin R3)  */
     GPIO_PinInit(BOARD_INITLEDSPINS_LED_BLUE_GPIO, BOARD_INITLEDSPINS_LED_BLUE_PIN, &LED_BLUE_config);

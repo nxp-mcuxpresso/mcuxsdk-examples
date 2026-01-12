@@ -114,8 +114,8 @@
 #if __CORTEX_M == (33U) /* Building on the main core */
 /* Board LED color mapping */
 /* Logic already inverted in pin_mux.c */
-#define LOGIC_LED_ON  0U
-#define LOGIC_LED_OFF 1U
+#define LOGIC_LED_ON  1U
+#define LOGIC_LED_OFF 0U
 
 #define LED_RED_INIT(output)                                           \
     GPIO_PinWrite(BOARD_LED_RED_GPIO, BOARD_LED_RED_GPIO_PIN, output); \
