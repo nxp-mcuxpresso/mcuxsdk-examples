@@ -45,7 +45,7 @@ BOARD_InitPins:
   - {pin_num: AH20, peripheral: CCMSRCGPCMIX, signal: 'ccmsrcgpcmix_clko, 1', pin_signal: CCM_CLKO1, SION: ENABLED, PD: DISABLED, PU: ENABLED}
   - {pin_num: E43, peripheral: LPI2C2, signal: lpi2c_scl, pin_signal: I2C2_SCL, SION: ENABLED, OD: ENABLED, PD: DISABLED}
   - {pin_num: E45, peripheral: LPI2C2, signal: lpi2c_sda, pin_signal: I2C2_SDA, SION: ENABLED, OD: ENABLED, PD: DISABLED}
-  - {pin_num: V44, peripheral: GPIO2, signal: 'gpio_io_bit, 29', pin_signal: GPIO_IO29, DSE: X6}
+  - {pin_num: V44, peripheral: GPIO2, signal: 'gpio_io_bit, 29', pin_signal: GPIO_IO29, DSE: X4}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -83,7 +83,7 @@ void BOARD_InitPins(void) {                                /*!< Function assigne
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO29__GPIO2_IO_BIT29, 0U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO29__GPIO2_IO_BIT29, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_I2C2_SCL__LPI2C2_SCL, 1U);

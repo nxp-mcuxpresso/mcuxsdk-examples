@@ -42,32 +42,32 @@ BOARD_InitPins:
   - {pin_num: T28, peripheral: LPUART3, signal: lpuart_tx, pin_signal: GPIO_IO14, PD: ENABLED, FSEL1: SLIGHTLY_FAST_SLEW_RATE}
   - {pin_num: F28, peripheral: LPI2C2, signal: lpi2c_scl, pin_signal: I2C2_SCL, SION: ENABLED, OD: ENABLED, PD: DISABLED}
   - {pin_num: E29, peripheral: LPI2C2, signal: lpi2c_sda, pin_signal: I2C2_SDA, SION: ENABLED, OD: ENABLED, PD: DISABLED}
-  - {pin_num: AH14, peripheral: ETH0, signal: 'eth_rgmii_rd, 0', pin_signal: ENET1_RD0, DSE: X6}
-  - {pin_num: AJ15, peripheral: ETH0, signal: 'eth_rgmii_rd, 1', pin_signal: ENET1_RD1, DSE: X6}
-  - {pin_num: AH15, peripheral: ETH0, signal: 'eth_rgmii_rd, 2', pin_signal: ENET1_RD2, DSE: X6}
-  - {pin_num: AJ16, peripheral: ETH0, signal: 'eth_rgmii_rd, 3', pin_signal: ENET1_RD3, DSE: X6}
-  - {pin_num: AH13, peripheral: ETH0, signal: eth_rgmii_rx_clk, pin_signal: ENET1_RXC, DSE: X6}
-  - {pin_num: AJ14, peripheral: ETH0, signal: eth_rgmii_rx_ctl, pin_signal: ENET1_RX_CTL, DSE: X6}
-  - {pin_num: AD18, peripheral: ETH0, signal: 'eth_rgmii_td, 0', pin_signal: ENET1_TD0, DSE: X6}
-  - {pin_num: AC18, peripheral: ETH0, signal: 'eth_rgmii_td, 1', pin_signal: ENET1_TD1, DSE: X6}
-  - {pin_num: AE20, peripheral: ETH0, signal: 'eth_rgmii_td, 2', pin_signal: ENET1_TD2, DSE: X6}
-  - {pin_num: AD20, peripheral: ETH0, signal: 'eth_rgmii_td, 3', pin_signal: ENET1_TD3, DSE: X6}
-  - {pin_num: AC16, peripheral: ETH0, signal: eth_rgmii_tx_clk, pin_signal: ENET1_TXC, DSE: X6}
-  - {pin_num: AE18, peripheral: ETH0, signal: eth_rgmii_tx_ctl, pin_signal: ENET1_TX_CTL, DSE: X6}
-  - {pin_num: AJ13, peripheral: NETC, signal: netc_mdc, pin_signal: ENET2_MDC, DSE: X6}
-  - {pin_num: AH12, peripheral: NETC, signal: netc_mdio, pin_signal: ENET2_MDIO, DSE: X6}
-  - {pin_num: AH10, peripheral: ETH1, signal: 'eth_rgmii_rd, 0', pin_signal: ENET2_RD0, DSE: X6}
-  - {pin_num: AJ11, peripheral: ETH1, signal: 'eth_rgmii_rd, 1', pin_signal: ENET2_RD1, DSE: X6}
-  - {pin_num: AH11, peripheral: ETH1, signal: 'eth_rgmii_rd, 2', pin_signal: ENET2_RD2, DSE: X6}
-  - {pin_num: AJ12, peripheral: ETH1, signal: 'eth_rgmii_rd, 3', pin_signal: ENET2_RD3, DSE: X6}
-  - {pin_num: AH9, peripheral: ETH1, signal: eth_rgmii_rx_clk, pin_signal: ENET2_RXC, DSE: X6}
-  - {pin_num: AJ10, peripheral: ETH1, signal: eth_rgmii_rx_ctl, pin_signal: ENET2_RX_CTL, DSE: X6}
-  - {pin_num: AE14, peripheral: ETH1, signal: 'eth_rgmii_td, 0', pin_signal: ENET2_TD0, DSE: X6}
-  - {pin_num: AD14, peripheral: ETH1, signal: 'eth_rgmii_td, 1', pin_signal: ENET2_TD1, DSE: X6}
-  - {pin_num: AC14, peripheral: ETH1, signal: 'eth_rgmii_td, 2', pin_signal: ENET2_TD2, DSE: X6}
-  - {pin_num: AD16, peripheral: ETH1, signal: 'eth_rgmii_td, 3', pin_signal: ENET2_TD3, DSE: X6}
-  - {pin_num: AD12, peripheral: ETH1, signal: eth_rgmii_tx_clk, pin_signal: ENET2_TXC, DSE: X6}
-  - {pin_num: AC12, peripheral: ETH1, signal: eth_rgmii_tx_ctl, pin_signal: ENET2_TX_CTL, DSE: X6}
+  - {pin_num: AH14, peripheral: ETH0, signal: 'eth_rgmii_rd, 0', pin_signal: ENET1_RD0, DSE: X4}
+  - {pin_num: AJ15, peripheral: ETH0, signal: 'eth_rgmii_rd, 1', pin_signal: ENET1_RD1, DSE: X4}
+  - {pin_num: AH15, peripheral: ETH0, signal: 'eth_rgmii_rd, 2', pin_signal: ENET1_RD2, DSE: X4}
+  - {pin_num: AJ16, peripheral: ETH0, signal: 'eth_rgmii_rd, 3', pin_signal: ENET1_RD3, DSE: X4}
+  - {pin_num: AH13, peripheral: ETH0, signal: eth_rgmii_rx_clk, pin_signal: ENET1_RXC, DSE: X4}
+  - {pin_num: AJ14, peripheral: ETH0, signal: eth_rgmii_rx_ctl, pin_signal: ENET1_RX_CTL, DSE: X4}
+  - {pin_num: AD18, peripheral: ETH0, signal: 'eth_rgmii_td, 0', pin_signal: ENET1_TD0, DSE: X4}
+  - {pin_num: AC18, peripheral: ETH0, signal: 'eth_rgmii_td, 1', pin_signal: ENET1_TD1, DSE: X4}
+  - {pin_num: AE20, peripheral: ETH0, signal: 'eth_rgmii_td, 2', pin_signal: ENET1_TD2, DSE: X4}
+  - {pin_num: AD20, peripheral: ETH0, signal: 'eth_rgmii_td, 3', pin_signal: ENET1_TD3, DSE: X4}
+  - {pin_num: AC16, peripheral: ETH0, signal: eth_rgmii_tx_clk, pin_signal: ENET1_TXC, DSE: X4}
+  - {pin_num: AE18, peripheral: ETH0, signal: eth_rgmii_tx_ctl, pin_signal: ENET1_TX_CTL, DSE: X4}
+  - {pin_num: AJ13, peripheral: NETC, signal: netc_mdc, pin_signal: ENET2_MDC, DSE: X4}
+  - {pin_num: AH12, peripheral: NETC, signal: netc_mdio, pin_signal: ENET2_MDIO, DSE: X4}
+  - {pin_num: AH10, peripheral: ETH1, signal: 'eth_rgmii_rd, 0', pin_signal: ENET2_RD0, DSE: X4}
+  - {pin_num: AJ11, peripheral: ETH1, signal: 'eth_rgmii_rd, 1', pin_signal: ENET2_RD1, DSE: X4}
+  - {pin_num: AH11, peripheral: ETH1, signal: 'eth_rgmii_rd, 2', pin_signal: ENET2_RD2, DSE: X4}
+  - {pin_num: AJ12, peripheral: ETH1, signal: 'eth_rgmii_rd, 3', pin_signal: ENET2_RD3, DSE: X4}
+  - {pin_num: AH9, peripheral: ETH1, signal: eth_rgmii_rx_clk, pin_signal: ENET2_RXC, DSE: X4}
+  - {pin_num: AJ10, peripheral: ETH1, signal: eth_rgmii_rx_ctl, pin_signal: ENET2_RX_CTL, DSE: X4}
+  - {pin_num: AE14, peripheral: ETH1, signal: 'eth_rgmii_td, 0', pin_signal: ENET2_TD0, DSE: X4}
+  - {pin_num: AD14, peripheral: ETH1, signal: 'eth_rgmii_td, 1', pin_signal: ENET2_TD1, DSE: X4}
+  - {pin_num: AC14, peripheral: ETH1, signal: 'eth_rgmii_td, 2', pin_signal: ENET2_TD2, DSE: X4}
+  - {pin_num: AD16, peripheral: ETH1, signal: 'eth_rgmii_td, 3', pin_signal: ENET2_TD3, DSE: X4}
+  - {pin_num: AD12, peripheral: ETH1, signal: eth_rgmii_tx_clk, pin_signal: ENET2_TXC, DSE: X4}
+  - {pin_num: AC12, peripheral: ETH1, signal: eth_rgmii_tx_ctl, pin_signal: ENET2_TX_CTL, DSE: X4}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -80,132 +80,132 @@ BOARD_InitPins:
 void BOARD_InitPins(void) {                                /*!< Function assigned for the core: Cortex-M7F[cm7] */
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET1_RD0__ETH0_RGMII_RD0, 0U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET1_RD0__ETH0_RGMII_RD0, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET1_RD1__ETH0_RGMII_RD1, 0U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET1_RD1__ETH0_RGMII_RD1, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET1_RD2__ETH0_RGMII_RD2, 0U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET1_RD2__ETH0_RGMII_RD2, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET1_RD3__ETH0_RGMII_RD3, 0U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET1_RD3__ETH0_RGMII_RD3, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET1_RXC__ETH0_RGMII_RX_CLK, 0U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET1_RXC__ETH0_RGMII_RX_CLK, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET1_RX_CTL__ETH0_RGMII_RX_CTL, 0U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET1_RX_CTL__ETH0_RGMII_RX_CTL, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET1_TD0__ETH0_RGMII_TD0, 0U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET1_TD0__ETH0_RGMII_TD0, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET1_TD1__ETH0_RGMII_TD1, 0U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET1_TD1__ETH0_RGMII_TD1, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET1_TD2__ETH0_RGMII_TD2, 0U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET1_TD2__ETH0_RGMII_TD2, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET1_TD3__ETH0_RGMII_TD3, 0U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET1_TD3__ETH0_RGMII_TD3, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET1_TXC__ETH0_RGMII_TX_CLK, 0U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET1_TXC__ETH0_RGMII_TX_CLK, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET1_TX_CTL__ETH0_RGMII_TX_CTL, 0U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET1_TX_CTL__ETH0_RGMII_TX_CTL, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_MDC__NETC_MDC, 0U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_MDC__NETC_MDC, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_MDIO__NETC_MDIO, 0U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_MDIO__NETC_MDIO, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RD0__ETH1_RGMII_RD0, 0U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RD0__ETH1_RGMII_RD0, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RD1__ETH1_RGMII_RD1, 0U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RD1__ETH1_RGMII_RD1, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RD2__ETH1_RGMII_RD2, 0U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RD2__ETH1_RGMII_RD2, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RD3__ETH1_RGMII_RD3, 0U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RD3__ETH1_RGMII_RD3, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RXC__ETH1_RGMII_RX_CLK, 0U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RXC__ETH1_RGMII_RX_CLK, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RX_CTL__ETH1_RGMII_RX_CTL, 0U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RX_CTL__ETH1_RGMII_RX_CTL, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TD0__ETH1_RGMII_TD0, 0U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TD0__ETH1_RGMII_TD0, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TD1__ETH1_RGMII_TD1, 0U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TD1__ETH1_RGMII_TD1, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TD2__ETH1_RGMII_TD2, 0U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TD2__ETH1_RGMII_TD2, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TD3__ETH1_RGMII_TD3, 0U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TD3__ETH1_RGMII_TD3, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TXC__ETH1_RGMII_TX_CLK, 0U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TXC__ETH1_RGMII_TX_CLK, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TX_CTL__ETH1_RGMII_TX_CTL, 0U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TX_CTL__ETH1_RGMII_TX_CTL, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO14__LPUART3_TX, 0U);
