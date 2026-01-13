@@ -180,7 +180,7 @@ int ncp_get_command(int argc, char **argv)
     return NCP_SUCCESS;
 }
 
-void ncp_dev_reset_block(uint8_t *res)
+int ncp_dev_reset_block(uint8_t *res)
 {
     MCU_NCPCmd_DS_SYS_COMMAND *ncp_dev_reset_command = (MCU_NCPCmd_DS_SYS_COMMAND *)res;
 
@@ -190,7 +190,10 @@ void ncp_dev_reset_block(uint8_t *res)
         ncp_d("%s: wait start", __FUNCTION__);
         OSA_SemaphoreWait(ncp_dev_reset_semaphore, osaWaitForever_c);
         ncp_d("%s: wait end", __FUNCTION__);
+        return NCP_SUCCESS;
     }
+
+    return -NCP_FAIL;
 }
 
 int ncp_dev_reset_command(int argc, char **argv)

@@ -81,6 +81,14 @@ int ncp_pm_sm_init(ncp_pm_role_t role, void *tx_if);
 int ncp_pm_sm_deinit(void);
 
 /**
+ * @brief Re-initialize power management state machine
+ * @param role Device/host role
+ * @param tx_if Transmit interface pointer
+ * @return Status code
+ */
+int ncp_pm_sm_reinit(ncp_pm_role_t role, void *tx_if);
+
+/**
  * @brief Check if state machine is idle
  * @return true if idle
  */

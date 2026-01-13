@@ -244,10 +244,29 @@ static int ncp_pm_deinit(void)
     return NCP_PM_STATUS_SUCCESS;
 }
 
+static int ncp_pm_reset(void)
+{
+    if (!s_pm_ctx.initialized)
+        return NCP_PM_STATUS_SUCCESS;
+
+    s_pm_ctx.initialized = false;
+
+    if (ncp_pm_sm_reinit(s_pm_ctx.role, (void *)s_pm_ctx.tx_if) != NCP_PM_STATUS_SUCCESS)
+    {
+        NCP_LOG_ERR("NCP PM init failed");
+        return NCP_PM_STATUS_ERROR;
+    }
+
+    s_pm_ctx.initialized = true;
+
+    return NCP_PM_STATUS_SUCCESS;
+}
+
 static const ncp_pm_ops_t ncp_pm_ops =
 {
     .init   = ncp_pm_init,
     .deinit = ncp_pm_deinit,
+    .reset  = ncp_pm_reset,
     .enter_critical = ncp_pm_enter_critical,
     .exit_critical = ncp_pm_exit_critical,
     .tx_ctrl_action = ncp_pm_tx_ctrl_action,

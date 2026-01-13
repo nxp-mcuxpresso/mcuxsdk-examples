@@ -456,6 +456,25 @@ int ncp_pm_sm_deinit(void)
     return NCP_PM_STATUS_SUCCESS;
 }
 
+int ncp_pm_sm_reinit(ncp_pm_role_t role, void *tx_if)
+{
+    int ret = NCP_PM_STATUS_SUCCESS;
+
+    ret = ncp_pm_sm_deinit();
+    if (ret != NCP_PM_STATUS_SUCCESS)
+    {
+        return ret;
+    }
+
+    ret = ncp_pm_sm_init(role, tx_if);
+    if (ret != NCP_PM_STATUS_SUCCESS)
+    {
+        return ret;
+    }
+
+    return NCP_PM_STATUS_SUCCESS;
+}
+
 bool ncp_pm_sm_is_idle(void)
 {
     return (s_psm_ctx.state == NCP_PM_SM_STATE_IDLE);

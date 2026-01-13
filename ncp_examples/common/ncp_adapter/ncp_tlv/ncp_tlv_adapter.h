@@ -183,7 +183,7 @@ typedef struct _ncp_intf_ops
 /**
  * @brief NCP device reset callback fn type
  */
-typedef void (*ncp_reset_callback_t)(uint8_t *res);
+typedef int (*ncp_reset_callback_t)(uint8_t *res);
 
 /**
  * @brief Set NCP device reset callback fn handler

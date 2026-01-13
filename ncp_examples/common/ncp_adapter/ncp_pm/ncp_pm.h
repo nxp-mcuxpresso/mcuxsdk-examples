@@ -39,6 +39,7 @@ typedef struct _ncp_pm_ops
 {
     int (*init)(ncp_pm_role_t role, const ncp_pm_tx_if_t *tx_if); /**< Initialize PM module */
     int (*deinit)(void);                               /**< Deinitialize PM module */
+    int (*reset)(void);                               /**< Reset PM module */
     int (*enter_critical)(void);                       /**< PM critical entry function, default set as NULL. */
     int (*exit_critical)(void);                        /**< PM critical exit function, default set as NULL. */
     void (*set_lp_mode)(uint8_t next_mode, uint32_t duration_ms); /**< Configure next low power mode */
