@@ -23,10 +23,8 @@
 */
 
 /*
-  MCUBoot region       0x0     - 0x06000 : 24kB 
-  Primary slot         0x6000  - 0x12000 : 48kB (0xc000 bytes)
-  Secondary slot       0x12000 - 0x1e000 : 48kB (0xc000 bytes)  
-  Optional user data   0x1e000 - 0x20000 : 8kB
+  MCUBoot region       0x0     - 0x08000 : 24kB
+  Primary slot         0x8000  - 0x20000 : 96kB (0x18000 bytes)
 */
 
 /* Entry Point */
@@ -38,8 +36,8 @@ STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x0800;
 /* Specify the memory areas */
 MEMORY
 {
-  m_interrupts          (RX)  : ORIGIN = 0x00006200, LENGTH = 0x00000200
-  m_text                (RX)  : ORIGIN = 0x00006400, LENGTH = 0x0000BC00
+  m_interrupts          (RX)  : ORIGIN = 0x00008200, LENGTH = 0x00000200
+  m_text                (RX)  : ORIGIN = 0x00008400, LENGTH = 0x00017C00
   m_data                (RW)  : ORIGIN = 0x20000000, LENGTH = 0x00006000
   m_sramx0              (RW)  : ORIGIN = 0x04000000, LENGTH = 0x00002000
 }

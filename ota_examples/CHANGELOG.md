@@ -11,6 +11,8 @@ All notable changes to MCUboot fork in MCUXpresso SDK and related ota examples w
 ### Changed
 - Update Mbed TLS to 3.0 in ota_mcuboot_client example
 - Specify terminology of upgrade modes supported in ota examples with MCUBoot (see [README](README.md))
+- FRDM-MCXA153 configured to use SINGLE_APPLICATION_SLOT mode due to its very limited flash size
+- LPCXpresso55S69 configured to use TinyCrypt due to higher flash usage of the latest mcuboot+mbedtls. Original prj.conf is left for reference.
 
 ## [25.12.0] - 12/2025
 

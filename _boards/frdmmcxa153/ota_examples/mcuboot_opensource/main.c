@@ -36,8 +36,8 @@ void glikey_write_enable(uint32_t index);
  * Variables
  ******************************************************************************/
 
-uint8_t glbac_sbl[MBC_BLOCK_CNT] = {4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-uint8_t glbac_app[MBC_BLOCK_CNT] = {4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0};
+uint8_t glbac_sbl[MBC_BLOCK_CNT] = {4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+uint8_t glbac_app[MBC_BLOCK_CNT] = {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4};
 
 /*******************************************************************************
  * Code
@@ -62,14 +62,7 @@ int main(void)
        Bootloader needs to be granted R/W access when doing an image update.
        Right before jumping to the new image the access level needs to be switched back to R/X.
        Sectors used for secondary image need to have R/W access so running app can download
-       new image.
-
-       To summarize:
-
-       Sector 0  -  3;  Bootloader   ;  R/X
-       Sector 4  -  9;  App Primary  ;  R/W before boot; R/X after boot
-       Sector 10 - 15;  App Secondary;  R/W
-       Sector 16     ;  Unused       ;  R/W
+       new image unless single slot configuration is used.
     */
 
 #if 0

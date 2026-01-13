@@ -37,3 +37,5 @@ to use any of the MCUBoot's revert strategies like image swapping by move or str
                    ota_mcuboot_basic.bin
                    ota_mcuboot_basic.SIGNED.bin
 
+NOTE - there is alternative prj.conf file named prj-mbedtls.conf
+that can be used to enable mbedtls with HW crypto acceleration.

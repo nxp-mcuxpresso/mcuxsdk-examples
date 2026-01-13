@@ -11,6 +11,7 @@
 
 #define BOOT_FLASH_BASE     0x00000000
 
+
 #if defined(CONFIG_BOOT_CUSTOM_DEVICE_SETUP)
 /* Layout setup from Kconfig */
 
@@ -21,15 +22,12 @@
 /* Default layout setup */
 
 /*
-  MCUBoot region       0x0     - 0x06000 : 24kB
-  Primary slot         0x6000  - 0x12000 : 48kB (0xc000 bytes)
-  Secondary slot       0x12000 - 0x1e000 : 48kB (0xc000 bytes)
-  Optional user data   0x1e000 - 0x20000 : 8kB
+  MCUBoot region       0x0     - 0x08000 : 32kB
+  Primary slot         0x8000  - 0x20000 : 96kB (0x18000 bytes)
 */
 
-
-#define BOOT_FLASH_ACT_APP  0x00006000
-#define BOOT_FLASH_CAND_APP 0x00012000
+#define BOOT_FLASH_ACT_APP  0x8000
+#define BOOT_FLASH_ACT_SIZE 0x18000
 
 #endif /* CONFIG_BOOT_CUSTOM_DEVICE_SETUP */
 
