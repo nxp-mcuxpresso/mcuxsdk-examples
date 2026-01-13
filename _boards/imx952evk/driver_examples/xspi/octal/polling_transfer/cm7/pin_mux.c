@@ -43,12 +43,12 @@ BOARD_InitPins:
   - {pin_num: D21, peripheral: LPI2C2, signal: lpi2c_sda, pin_signal: I2C2_SDA, SION: ENABLED, OD: ENABLED, PD: DISABLED}
   - {pin_num: F21, peripheral: LPUART2, signal: lpuart_tx, pin_signal: UART2_TXD, OD: no_init, PD: DISABLED, PU: DISABLED, FSEL1: SlOW_SLEW_RATE}
   - {pin_num: F20, peripheral: LPUART2, signal: lpuart_rx, pin_signal: UART2_RXD, OD: DISABLED, PD: ENABLED, PU: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: NO_DRIVE}
-  - {pin_num: V16, peripheral: XSPI1, signal: flexspi_a_sclk, pin_signal: SD3_CLK, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X6}
-  - {pin_num: T16, peripheral: XSPI1, signal: 'flexspi_a_data, 00', pin_signal: SD3_DATA0, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X6}
-  - {pin_num: V14, peripheral: XSPI1, signal: 'flexspi_a_data, 01', pin_signal: SD3_DATA1, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X6}
-  - {pin_num: U14, peripheral: XSPI1, signal: 'flexspi_a_data, 02', pin_signal: SD3_DATA2, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X6}
-  - {pin_num: T14, peripheral: XSPI1, signal: 'flexspi_a_data, 03', pin_signal: SD3_DATA3, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X6}
-  - {pin_num: U16, peripheral: USDHC3, signal: 'flexspi_a_ss_b, 0', pin_signal: SD3_CMD, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X6}
+  - {pin_num: V16, peripheral: XSPI1, signal: flexspi_a_sclk, pin_signal: SD3_CLK, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X4}
+  - {pin_num: T16, peripheral: XSPI1, signal: 'flexspi_a_data, 00', pin_signal: SD3_DATA0, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X4}
+  - {pin_num: V14, peripheral: XSPI1, signal: 'flexspi_a_data, 01', pin_signal: SD3_DATA1, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X4}
+  - {pin_num: U14, peripheral: XSPI1, signal: 'flexspi_a_data, 02', pin_signal: SD3_DATA2, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X4}
+  - {pin_num: T14, peripheral: XSPI1, signal: 'flexspi_a_data, 03', pin_signal: SD3_DATA3, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X4}
+  - {pin_num: U16, peripheral: USDHC3, signal: 'flexspi_a_ss_b, 0', pin_signal: SD3_CMD, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X4}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -69,40 +69,40 @@ void BOARD_InitPins(void) {                                /*!< Function assigne
 
     IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_SCLK__XSPI1_A_SCLK, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_SCLK__XSPI1_A_SCLK,
-                        IOMUXC_PAD_DSE(63U));
+                        IOMUXC_PAD_DSE(15U));
     IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_SS0_B__XSPI1_A_SS0_B, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_SS0_B__XSPI1_A_SS0_B,
-                        IOMUXC_PAD_DSE(63U));
+                        IOMUXC_PAD_DSE(15U));
     IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_SS1_B__XSPI1_A_SS1_B, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_SS1_B__XSPI1_A_SS1_B,
-                        IOMUXC_PAD_DSE(63U));
+                        IOMUXC_PAD_DSE(15U));
     IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DQS__XSPI1_A_DQS, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DQS__XSPI1_A_DQS,
-                        IOMUXC_PAD_DSE(63U));
+                        IOMUXC_PAD_DSE(15U));
     IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DATA0__XSPI1_A_DATA_0, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DATA0__XSPI1_A_DATA_0,
-                        IOMUXC_PAD_DSE(63U));
+                        IOMUXC_PAD_DSE(15U));
     IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DATA1__XSPI1_A_DATA_1, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DATA1__XSPI1_A_DATA_1,
-                        IOMUXC_PAD_DSE(63U));
+                        IOMUXC_PAD_DSE(15U));
     IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DATA2__XSPI1_A_DATA_2, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DATA2__XSPI1_A_DATA_2,
-                        IOMUXC_PAD_DSE(63U));
+                        IOMUXC_PAD_DSE(15U));
     IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DATA3__XSPI1_A_DATA_3, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DATA3__XSPI1_A_DATA_3,
-                        IOMUXC_PAD_DSE(63U));
+                        IOMUXC_PAD_DSE(15U));
     IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DATA4__XSPI1_A_DATA_4, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DATA4__XSPI1_A_DATA_4,
-                        IOMUXC_PAD_DSE(63U));
+                        IOMUXC_PAD_DSE(15U));
     IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DATA5__XSPI1_A_DATA_5, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DATA5__XSPI1_A_DATA_5,
-                        IOMUXC_PAD_DSE(63U));
+                        IOMUXC_PAD_DSE(15U));
     IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DATA6__XSPI1_A_DATA_6, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DATA6__XSPI1_A_DATA_6,
-                        IOMUXC_PAD_DSE(63U));
+                        IOMUXC_PAD_DSE(15U));
     IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DATA7__XSPI1_A_DATA_7, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DATA7__XSPI1_A_DATA_7,
-                        IOMUXC_PAD_DSE(63U));
+                        IOMUXC_PAD_DSE(15U));
 }
 
 /***********************************************************************************************************************
