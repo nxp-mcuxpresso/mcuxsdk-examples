@@ -183,6 +183,10 @@ int ncp_get_command(int argc, char **argv)
 int ncp_dev_reset_block(uint8_t *res)
 {
     MCU_NCPCmd_DS_SYS_COMMAND *ncp_dev_reset_command = (MCU_NCPCmd_DS_SYS_COMMAND *)res;
+    const ncp_tlv_adapter_t *tlv_adap = ncp_tlv_adapter_get();
+
+    if (tlv_adap->intf_ops->reset_cb)
+        tlv_adap->intf_ops->reset_cb(true);
 
     ncp_d("%s: cmd=0x%x", __FUNCTION__, ncp_dev_reset_command->header.cmd);
     if (ncp_dev_reset_command->header.cmd == NCP_CMD_SYSTEM_CONFIG_DEVICE_RESET)
@@ -474,6 +478,10 @@ end:
 
 int ncp_process_dev_reset_event(uint8_t *res)
 {
+    const ncp_tlv_adapter_t *tlv_adap = ncp_tlv_adapter_get();
+    if (tlv_adap->intf_ops->reset_cb)
+        tlv_adap->intf_ops->reset_cb(false);
+
     ncp_d("%s: post start", __FUNCTION__);
     OSA_SemaphorePost(ncp_dev_reset_semaphore);
     ncp_d("%s: post end", __FUNCTION__);

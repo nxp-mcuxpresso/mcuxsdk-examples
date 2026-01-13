@@ -368,6 +368,13 @@ static OSA_MUTEX_HANDLE_DEFINE(txrx_mutex);
 /*******************************************************************************
  * Code
  ******************************************************************************/
+ static void clear_GPIO_Interrupt(GPIO_Type *base, IRQn_Type IRQn)
+{
+    uint32_t intFlag = GPIO_PortGetInterruptFlags(base);
+    GPIO_PortClearInterruptFlags(base, intFlag);
+    NVIC_ClearPendingIRQ(IRQn);
+}
+
 int sdio_drv_creg_read(int addr, int fn, uint32_t *resp)
 {
     if (KOSA_StatusSuccess != OSA_MutexLock(&sdio_mutex, osaWaitForever_c))
@@ -1268,8 +1275,6 @@ static ncp_status_t ncp_sdhost_CardInit(void)
     ncp_adap_d("%s: sdio_set_host_reset_done success", __FUNCTION__);
     sdhost_ready = true;
 
-    SDMMCHOST_ForceClockOn(g_sdio_card.host, true);
-
     return NCP_STATUS_SUCCESS;
 }
 
@@ -1280,6 +1285,12 @@ static ncp_status_t ncp_sdhost_CardDeinit(void)
     sdhost_disable_host_int_mask();
     SDIO_Deinit(&g_sdio_card);
 
+    return NCP_STATUS_SUCCESS;
+}
+
+int ncp_sdhost_reset_cb(bool enable)
+{
+    SDMMCHOST_ForceClockOn(g_sdio_card.host, enable);
     return NCP_STATUS_SUCCESS;
 }
 
@@ -1306,8 +1317,6 @@ void sdhost_rescan_task(void *argv)
         pm_state = 0;
         (void)sdhost_rescan_wait_event(SDHOST_RESCAN_START);
 
-        SDMMCHOST_ForceClockOn(g_sdio_card.host, false);
-
         /* Read PM mode from device */
         ret = sdio_drv_creg_read(0xFC, 1, &resp);
         pm_state = resp & 0xffU;
@@ -1316,9 +1325,11 @@ void sdhost_rescan_task(void *argv)
         if ((ret == true) && ((pm_state == NCP_SDIO_DEVICE_PM1) || (pm_state == NCP_SDIO_DEVICE_PM2)))
         {
             /* If read success and device in PM1/PM2 then do nothing */
-            ncp_adap_d("%s: do thing continue", __FUNCTION__);
-            continue;
+            ncp_adap_d("%s: do thing continue: ret=0x%x pm_state=0x%x", __FUNCTION__, ret, pm_state);
+            goto one_loop_end;
         }
+
+        (void)ncp_sdhost_reset_cb(false);
 
         /* Protect the SDIO from other parallel activities */
         (void)OSA_MutexLock(&txrx_mutex, osaWaitForever_c);
@@ -1338,13 +1349,26 @@ retry:
         (void)OSA_MutexUnlock(&txrx_mutex);
 
         ncp_adap_d("%s: ncp_sdhost_CardInit done", __FUNCTION__);
+
+one_loop_end:
+        clear_GPIO_Interrupt(NCP_HOST_SDIO_GPIO, NCP_HOST_SDIO_GPIO_IRQ);
+        (void)EnableIRQ(NCP_HOST_SDIO_GPIO_IRQ);
     } /* for ;; */
 }
 
 static void sdio_notify_int_callback(void *param)
 {
+    (void)DisableIRQ(NCP_HOST_SDIO_GPIO_IRQ);
+
     if(sdhost_ready == true)
+    {
         (void)sdhost_rescan_set_event(SDHOST_RESCAN_START);
+    }
+    else
+    {
+        clear_GPIO_Interrupt(NCP_HOST_SDIO_GPIO, NCP_HOST_SDIO_GPIO_IRQ);
+        (void)EnableIRQ(NCP_HOST_SDIO_GPIO_IRQ);
+    }
 }
 
 /**
@@ -1702,6 +1726,7 @@ static ncp_intf_ops_t ncp_intf_ops =
     .deinit = ncp_sdhost_deinit,
     .send   = ncp_sdhost_send,
     .recv   = NULL,
+    .reset_cb = ncp_sdhost_reset_cb,
     .pm_ops = &ncp_sdhost_pm_ops,
 };
 
