@@ -42,12 +42,12 @@ BOARD_InitPins:
   - {pin_num: B11, peripheral: LPI2C2, signal: lpi2c_sda, pin_signal: I2C2_SDA, SION: ENABLED, OD: ENABLED, PD: DISABLED}
   - {pin_num: D12, peripheral: LPUART2, signal: lpuart_tx, pin_signal: UART2_TXD, OD: no_init, PD: DISABLED, PU: DISABLED, FSEL1: SlOW_SLEW_RATE}
   - {pin_num: D14, peripheral: LPUART2, signal: lpuart_rx, pin_signal: UART2_RXD, OD: DISABLED, PD: ENABLED, PU: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: NO_DRIVE}
-  - {pin_num: T16, peripheral: FLEXSPI1, signal: flexspi_a_sclk, pin_signal: SD3_CLK, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X6}
-  - {pin_num: R16, peripheral: FLEXSPI1, signal: 'flexspi_a_data, 00', pin_signal: SD3_DATA0, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X6}
-  - {pin_num: R17, peripheral: FLEXSPI1, signal: 'flexspi_a_data, 01', pin_signal: SD3_DATA1, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X6}
-  - {pin_num: P16, peripheral: FLEXSPI1, signal: 'flexspi_a_data, 02', pin_signal: SD3_DATA2, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X6}
-  - {pin_num: P17, peripheral: FLEXSPI1, signal: 'flexspi_a_data, 03', pin_signal: SD3_DATA3, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X6}
-  - {pin_num: T17, peripheral: USDHC3, signal: 'flexspi_a_ss_b, 0', pin_signal: SD3_CMD, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X6}
+  - {pin_num: T16, peripheral: FLEXSPI1, signal: flexspi_a_sclk, pin_signal: SD3_CLK, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X4}
+  - {pin_num: R16, peripheral: FLEXSPI1, signal: 'flexspi_a_data, 00', pin_signal: SD3_DATA0, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X4}
+  - {pin_num: R17, peripheral: FLEXSPI1, signal: 'flexspi_a_data, 01', pin_signal: SD3_DATA1, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X4}
+  - {pin_num: P16, peripheral: FLEXSPI1, signal: 'flexspi_a_data, 02', pin_signal: SD3_DATA2, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X4}
+  - {pin_num: P17, peripheral: FLEXSPI1, signal: 'flexspi_a_data, 03', pin_signal: SD3_DATA3, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X4}
+  - {pin_num: T17, peripheral: USDHC3, signal: 'flexspi_a_ss_b, 0', pin_signal: SD3_CMD, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X4}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -70,22 +70,22 @@ void BOARD_InitPins(void) {                                /*!< Function assigne
                         IOMUXC_PAD_OD_MASK);
     IOMUXC_SetPinMux(IOMUXC_PAD_SD3_CLK__FLEXSPI1_A_SCLK, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_SD3_CLK__FLEXSPI1_A_SCLK,
-                        IOMUXC_PAD_DSE(63U));
+                        IOMUXC_PAD_DSE(15U));
     IOMUXC_SetPinMux(IOMUXC_PAD_SD3_CMD__FLEXSPI1_A_SS0_B, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_SD3_CMD__FLEXSPI1_A_SS0_B,
-                        IOMUXC_PAD_DSE(63U));
+                        IOMUXC_PAD_DSE(15U));
     IOMUXC_SetPinMux(IOMUXC_PAD_SD3_DATA0__FLEXSPI1_A_DATA00, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_SD3_DATA0__FLEXSPI1_A_DATA00,
-                        IOMUXC_PAD_DSE(63U));
+                        IOMUXC_PAD_DSE(15U));
     IOMUXC_SetPinMux(IOMUXC_PAD_SD3_DATA1__FLEXSPI1_A_DATA01, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_SD3_DATA1__FLEXSPI1_A_DATA01,
-                        IOMUXC_PAD_DSE(63U));
+                        IOMUXC_PAD_DSE(15U));
     IOMUXC_SetPinMux(IOMUXC_PAD_SD3_DATA2__FLEXSPI1_A_DATA02, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_SD3_DATA2__FLEXSPI1_A_DATA02,
-                        IOMUXC_PAD_DSE(63U));
+                        IOMUXC_PAD_DSE(15U));
     IOMUXC_SetPinMux(IOMUXC_PAD_SD3_DATA3__FLEXSPI1_A_DATA03, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_SD3_DATA3__FLEXSPI1_A_DATA03,
-                        IOMUXC_PAD_DSE(63U));
+                        IOMUXC_PAD_DSE(15U));
     IOMUXC_SetPinMux(IOMUXC_PAD_UART2_RXD__LPUART2_RX, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_UART2_RXD__LPUART2_RX,
                         IOMUXC_PAD_PD_MASK);
