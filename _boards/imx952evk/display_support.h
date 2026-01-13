@@ -23,18 +23,12 @@
 #define DPU_EXAMPLE_DI DPU_DI_LVDS
 #endif
 
-#ifndef APP_USE_DUAL_LVDS_AS_DEFAULT_AS_WORKAROUND
 #ifndef DEMO_PANEL
 #define DEMO_PANEL  DEMO_PANEL_LCD_SPEC
 #endif
 
 #ifndef LDB_DUAL_PANEL
 #define LDB_DUAL_PANEL  0
-#endif
-
-#else
-#define DEMO_PANEL  DEMO_PANEL_LVDS_DUAL_PANEL
-#define LDB_DUAL_PANEL  1
 #endif
 
 /* Whether use external convertor such as MIPI2HDMI convertor (ADV7535) or LVDS2HDMI convertor (IT6263) */
