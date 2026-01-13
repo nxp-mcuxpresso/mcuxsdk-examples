@@ -6,7 +6,7 @@ mcux_add_configuration(
 mcux_remove_armgcc_linker_script(
         TARGETS debug release
         BASE_PATH ${SdkRootDirPath}
-        LINKER devices_int/i.MX/i.MX952/MIMX95294/gcc/MIMX95294xxxN_cm7_ram.ld
+        LINKER devices/i.MX/i.MX952/MIMX95294/gcc/MIMX95294xxxN_cm7_ram.ld
 )
 
 mcux_add_armgcc_linker_script(
@@ -18,7 +18,7 @@ mcux_add_armgcc_linker_script(
 mcux_remove_iar_linker_script(
         TARGETS debug release
         BASE_PATH ${SdkRootDirPath}
-        LINKER devices_int/i.MX/i.MX952/MIMX95294/iar/MIMX95294xxxN_cm7_ram.icf
+        LINKER devices/i.MX/i.MX952/MIMX95294/iar/MIMX95294xxxN_cm7_ram.icf
 )
 
 mcux_add_iar_linker_script(
