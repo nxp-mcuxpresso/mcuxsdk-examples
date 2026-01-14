@@ -6,13 +6,13 @@ lpspi_loopback:
     document:
       name: lpspi_loopback${core_id_suffix_name}
       category: driver_examples/lpspi
-      brief: The lpspi_loopback example shows how to use LPSPI driver
-        in polling way:In this example , one lpspi instance used as LPSPI master
-        and another lpspi instance used as LPSPI slave .1. LPSPI master send/received
-        data to/from LPSPI slave . (LPSPI Slave interrupt to receive/send
-        the data)
+      brief: The lpspi_loopback example shows how to use LPSPI driver in polling way:In
+        this example , one lpspi instance used as LPSPI master and another lpspi instance
+        used as LPSPI slave .1. LPSPI master send/received data to/from LPSPI slave
+        . (LPSPI Slave interrupt to receive/send the data)
       example_readme:
       - examples/driver_examples/lpspi/loopback/readme.md
       - ${board_root}/${board}/driver_examples/lpspi/loopback/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
+    frdmmcxa577: []

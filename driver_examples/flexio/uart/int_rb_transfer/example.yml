@@ -306,3 +306,4 @@ flexio_uart_int_rb_transfer:
     - -mdk@release
     frdmmcxa266: []
     frdmmcxa366: []
+    frdmmcxa577: []

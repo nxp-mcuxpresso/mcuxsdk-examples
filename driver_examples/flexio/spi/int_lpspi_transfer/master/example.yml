@@ -296,3 +296,4 @@ flexio_spi_int_lpspi_transfer_master:
     - -mdk@release
     frdmmcxa266: []
     frdmmcxa366: []
+    frdmmcxa577: []

@@ -65,3 +65,4 @@ flexspi_octal_polling_transfer:
     lpcxpresso55s36: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
+    frdmmcxa577: []

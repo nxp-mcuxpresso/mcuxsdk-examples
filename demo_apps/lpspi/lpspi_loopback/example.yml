@@ -22,3 +22,4 @@ lpspi_loopback:
     evkmimxrt1024: []
     evkmimxrt1040: []
     evkmimxrt1064: []
+    frdmmcxa577: []

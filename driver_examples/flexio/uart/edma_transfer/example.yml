@@ -278,3 +278,4 @@ flexio_uart_edma_transfer:
     - -mdk@release
     frdmmcxa266: []
     frdmmcxa366: []
+    frdmmcxa577: []

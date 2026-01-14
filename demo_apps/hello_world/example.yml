@@ -373,3 +373,4 @@ hello_world:
     - +armgcc@release
     - +iar@debug
     - +iar@release
+    frdmmcxa577: []

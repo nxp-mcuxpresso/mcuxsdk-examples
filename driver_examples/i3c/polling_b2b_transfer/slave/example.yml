@@ -89,3 +89,4 @@ i3c_polling_b2b_transfer_slave:
     mimxrt700evk@cm33_core1: []
     frdmmcxa266: []
     frdmmcxa366: []
+    frdmmcxa577: []

@@ -318,3 +318,4 @@ flexio_pwm:
     - -mdk@release
     frdmmcxa266: []
     frdmmcxa366: []
+    frdmmcxa577: []
