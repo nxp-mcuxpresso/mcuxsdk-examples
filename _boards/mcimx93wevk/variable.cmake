@@ -10,4 +10,4 @@ if (NOT DEFINED device)
     mcux_set_variable(device MIMX93W52)
 endif()
 
-include(${SdkRootDirPath}/devices/i.MX/i.MX93/${device}/variable.cmake)
+include(${SdkRootDirPath}/devices/i.MX/i.MX93W/${device}/variable.cmake)
