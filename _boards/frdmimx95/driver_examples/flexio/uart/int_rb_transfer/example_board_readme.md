@@ -10,9 +10,9 @@ Board settings
 ============
 The example requires connecting the FLEXIO1 pins with the USB2COM pins
 The connection should be set as follows:
-- FLEXIO_RX(J22-5) on base board, TX of USB2COM connected
-- FLEXIO_TX(J22-3) on base board, RX of USB2COM connected
-- GND      (J22-7) on base board, Ground of USB2COM connected
+- FLEXIO_RX(J19-5) on base board, TX of USB2COM connected
+- FLEXIO_TX(J19-3) on base board, RX of USB2COM connected
+- GND      (J19-9) on base board, Ground of USB2COM connected
 
 **Please note this application can't support running with Linux BSP!**
 

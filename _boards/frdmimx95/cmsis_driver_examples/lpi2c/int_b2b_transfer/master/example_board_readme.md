@@ -10,11 +10,11 @@ Board settings
 ==============
 Connection as below:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-MASTER(LPI2C1)                connect to        SLAVE(LPI2C1)
+MASTER(LPI2C6)                connect to        SLAVE(LPI2C6)
 Pin Name    Board Location                      Pin Name    Board Location
-SCL         J1005 pin 3                         SCL         J1005 pin 3
-SDA         J1005 pin 5                         SDA         J1005 pin 5
-GND         J1005 pin 7                         GND         J1005 pin 7
+SCL         J19 pin 3                         SCL         J19 pin 3
+SDA         J19 pin 5                         SDA         J19 pin 5
+GND         J19 pin 9                         GND         J19 pin 9
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **Please note this application can't support running with Linux BSP!**

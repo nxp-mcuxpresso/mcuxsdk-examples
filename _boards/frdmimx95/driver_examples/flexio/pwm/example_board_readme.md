@@ -8,7 +8,7 @@ Hardware requirements
 
 Board settings
 ============
-Connect J22-5(GPIO_IO02 pad, I2C6_SDA_3V3) and J22-8(GND) to oscilloscope
+Connect J19-5(GPIO_IO02 pad, I2C6_SDA_3V3) and J19-9(GND) to oscilloscope
 
 **Please note this application can't support running with Linux BSP!**
 
