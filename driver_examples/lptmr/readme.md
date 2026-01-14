@@ -56,3 +56,4 @@ a message is printed on the UART terminal and an LED is toggled on the board.
 - [FRDM-MCXA266](../../_boards/frdmmcxa266/driver_examples/lptmr/example_board_readme.md)
 - [FRDM-MCXA366](../../_boards/frdmmcxa366/driver_examples/lptmr/example_board_readme.md)
 - [FRDM-MCXW72](../../_boards/frdmmcxw72/driver_examples/lptmr/example_board_readme.md)
+- [FRDM-MCXA577](../../_boards/frdmmcxa577/driver_examples/lptmr/example_board_readme.md)

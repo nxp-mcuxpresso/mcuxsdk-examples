@@ -15,3 +15,4 @@ The SGI PKC application provides examples which demonstrate usage of most availa
 - [FRDM-MCXA266](../../_boards/frdmmcxa266/sgi_pkc_examples/sgi_symmetric/example_board_readme.md)
 - [FRDM-MCXA366](../../_boards/frdmmcxa366/sgi_pkc_examples/sgi_symmetric/example_board_readme.md)
 - [FRDM-MCXL255](../../_boards/frdmmcxl255/sgi_pkc_examples/sgi_symmetric/cm33/example_board_readme.md)
+- [FRDM-MCXA577](../../_boards/frdmmcxa577/sgi_pkc_examples/sgi_symmetric/example_board_readme.md)

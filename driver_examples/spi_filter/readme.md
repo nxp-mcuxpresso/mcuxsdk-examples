@@ -25,4 +25,4 @@ The example demonstrates two main features:
 The SPI Filter acts as a security mechanism to prevent unauthorized access to specific flash regions and block potentially dangerous SPI commands.
 
 ## Supported Boards
-- [FRDM-MCXA577](../../../_boards/frdmmcxa577/driver_examples/spi_filter/example_board_readme.md)
+- [FRDM-MCXA577](../../_boards/frdmmcxa577/driver_examples/spi_filter/example_board_readme.md)

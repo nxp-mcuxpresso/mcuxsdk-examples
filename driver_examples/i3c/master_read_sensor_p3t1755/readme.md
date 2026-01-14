@@ -17,3 +17,4 @@ and print it in while loop.
 - [MIMXRT700-EVK](../../../_boards/mimxrt700evk/driver_examples/i3c/master_read_sensor_p3t1755/example_board_readme.md)
 - [FRDM-MCXA266](../../../_boards/frdmmcxa266/driver_examples/i3c/master_read_sensor_p3t1755/example_board_readme.md)
 - [FRDM-MCXA366](../../../_boards/frdmmcxa366/driver_examples/i3c/master_read_sensor_p3t1755/example_board_readme.md)
+- [FRDM-MCXA577](../../../_boards/frdmmcxa577/driver_examples/i3c/master_read_sensor_p3t1755/example_board_readme.md)

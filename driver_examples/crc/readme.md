@@ -53,3 +53,4 @@ CRC-32 POSIX: 0x765e7680
 - [FRDM-MCXA266](../../_boards/frdmmcxa266/driver_examples/crc/example_board_readme.md)
 - [FRDM-MCXA366](../../_boards/frdmmcxa366/driver_examples/crc/example_board_readme.md)
 - [FRDM-MCXW72](../../_boards/frdmmcxw72/driver_examples/crc/example_board_readme.md)
+- [FRDM-MCXA577](../../_boards/frdmmcxa577/driver_examples/crc/example_board_readme.md)
