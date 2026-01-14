@@ -48,3 +48,7 @@ The log below shows the output of the hello world demo in the terminal window:
 
 ***NOR Flash All Pages Read/Write Success!***
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Note:
+For MIMXRT1064 (packaged with Winbond W25Q32JV flash memory), some parts do not support the SFDP command.
+This example may fail on those parts.
