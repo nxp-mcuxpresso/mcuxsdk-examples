@@ -382,21 +382,8 @@ static void InitTRGMUX(void)
 
 static void InitENC(void)
 {
-  
-    /* TRGMUX */
-  
-//    /* SIUL2 TRGMUX IN12 is selected as LCU0_0 device trigger input 0 */
-//    TRGMUX_SetTriggerSource(TRGMUX, kTRGMUX_Lcu0_0, kTRGMUX_TriggerInput0, kTRGMUX_SourceTriggerMuxInput12);
-//    /* SIUL2 TRGMUX IN13 is selected as LCU0_0 device trigger input 1 */
-//    TRGMUX_SetTriggerSource(TRGMUX, kTRGMUX_Lcu0_0, kTRGMUX_TriggerInput1, kTRGMUX_SourceTriggerMuxInput13);
-//    /* LCU_0 LC0 Out_i3 is selected as SIUL2 TRGMUX_OUT0 device trigger input 0 */
-//    TRGMUX_SetTriggerSource(TRGMUX, kTRGMUX_ExtOut0, kTRGMUX_TriggerInput0, kTRGMUX_SourceLcu0Lc0Out3);
-//    /* LCU_0 LC0 Out_i2 is selected as SIUL2 TRGMUX_OUT3 device trigger input 3 */
-//    TRGMUX_SetTriggerSource(TRGMUX, kTRGMUX_ExtOut3, kTRGMUX_TriggerInput3, kTRGMUX_SourceLcu0Lc0Out2);
-
-    
-    
-    /* LCU */
+      
+    /*** LCU ***/
 
     /* Structure of initialize LCU. */
     lcu_output_config_t outputConfig;
@@ -411,7 +398,6 @@ static void InitENC(void)
     outputConfig.softwareOverrideEnable = false;
     outputConfig.outputPolarity = kLCU_OutputPolarityNotInverted;
     outputConfig.forceInputSentivity = 0U;
-    
     
     /* Init LCU output. */
     outputConfig.riseFilter = 5U;
@@ -436,23 +422,35 @@ static void InitENC(void)
     outputConfig.fallFilter = 4U;
     outputConfig.lutValue = 0x2814U;
     LCU_OutputInit(LCU_0, kLCU_Lc0Output3, &outputConfig);
-    
-    
 
     /* Select LC input source. */
     LCU_MuxSelect(LCU_0, kLCU_Lc0Input0, kLCU_MuxSelInput0);
-    LCU_MuxSelect(LCU_0, kLCU_Lc0Input1, kLCU_MuxSelInput1);  
-    
+    LCU_MuxSelect(LCU_0, kLCU_Lc0Input1, kLCU_MuxSelInput1);     
     
     LCU_MuxSelect(LCU_0, kLCU_Lc0Input2, kLCU_MuxSelOutput0);
     LCU_MuxSelect(LCU_0, kLCU_Lc0Input3, kLCU_MuxSelOutput1);  
     
     
+    /*** EMIOS ***/
 
-    //EMIOS
-//    CLOCK_EnableClock(kCLOCK_Emios1);
+    /* Ch5-Ch6 are used for ENC */
+    EMIOS_0->UC[5U].A = EMIOS_A_A(4096U);
+    EMIOS_0->UC[5U].CNT |= EMIOS_CNT_C(1U);
+    EMIOS_0->UC[5U].C |= EMIOS_C_MODE(0x51U | 0x00U) | EMIOS_C_EDPOL(1U) | EMIOS_C_EDSEL(0U) |  EMIOS_C_UCPRE(0U);
+    
+    EMIOS_0->UC[6U].A = EMIOS_A_A(4096U);
+    EMIOS_0->UC[6U].CNT |= EMIOS_CNT_C(1U);   
+    EMIOS_0->UC[6U].C |= EMIOS_C_MODE(0x51U | 0x00U) | EMIOS_C_EDPOL(1U) | EMIOS_C_EDSEL(0U) |  EMIOS_C_UCPRE(0U);
     
 
+    /* TRGMUX */
+    TRGMUX_SetTriggerSource(TRGMUX, kTRGMUX_Emios0_1, kTRGMUX_TriggerInput0, kTRGMUX_SourceLcu0Lc0Out2); //5
+    TRGMUX_SetTriggerSource(TRGMUX, kTRGMUX_Emios0_1, kTRGMUX_TriggerInput1, kTRGMUX_SourceLcu0Lc0Out3); //6
+    
+    /* SIUL2 */
+    SIUL2->IMCR[53] = 0x3;
+    SIUL2->IMCR[54] = 0x3;
+    
 }
 
 
