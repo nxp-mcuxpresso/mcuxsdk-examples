@@ -23,6 +23,7 @@ static void InitEMIOS(void);
 static void InitTRGMUX(void);
 static void InitClock(void);
 static void InitPIT(void);
+static void InitENC(void);
 
 #if M1_FAULT_ENABLE   
     static void InitCMP(void);
@@ -85,6 +86,9 @@ void MCDRV_Init_M1(void)
     
     /* Slow loop timer init */
     InitPIT();
+    
+    /* Encoder */
+    InitENC();
 	
 }
 
@@ -247,12 +251,16 @@ static void InitLCU(void)
     outputConfig.outputPolarity = kLCU_OutputPolarityNotInverted;
     outputConfig.forceInputSentivity = 0U;
     
+    
+    
     outputConfig.riseFilter = 96U;
     outputConfig.fallFilter = 0U;
     outputConfig.lutValue = 0xAAAAU;
     
     /* Init LCU output. */
     LCU_OutputInit(LCU_1, kLCU_Lc1Output0, &outputConfig);
+    
+    
     
     outputConfig.riseFilter = 96U;
     outputConfig.fallFilter = 0U;
@@ -261,6 +269,8 @@ static void InitLCU(void)
     /* Init LCU output. */
     LCU_OutputInit(LCU_1, kLCU_Lc1Output1, &outputConfig);
     
+    
+    
     outputConfig.riseFilter = 96U;
     outputConfig.fallFilter = 0U;
     outputConfig.lutValue = 0xCCCCU;
@@ -268,12 +278,15 @@ static void InitLCU(void)
     /* Init LCU output. */
     LCU_OutputInit(LCU_1, kLCU_Lc1Output2, &outputConfig);
     
+    
+    
     outputConfig.riseFilter = 96U;
     outputConfig.fallFilter = 0U;
     outputConfig.lutValue = 0x3333U;
     
     /* Init LCU output. */
     LCU_OutputInit(LCU_1, kLCU_Lc1Output3, &outputConfig);
+    
 
     
     outputConfig.riseFilter = 96U;
@@ -283,13 +296,16 @@ static void InitLCU(void)
     /* Init LCU output. */
     LCU_OutputInit(LCU_1, kLCU_Lc2Output2, &outputConfig);
     
+    
+    
     outputConfig.riseFilter = 96U;
     outputConfig.fallFilter = 0U;
     outputConfig.lutValue = 0x5555U;
     
-    
     /* Init LCU output. */
     LCU_OutputInit(LCU_1, kLCU_Lc2Output3, &outputConfig);
+    
+    
     
     /* Select LC input source. */
     LCU_MuxSelect(LCU_1, kLCU_Lc1Input0, kLCU_MuxSelInput0);
@@ -361,6 +377,81 @@ static void InitTRGMUX(void)
     TRGMUX_SetTriggerSource(TRGMUX, kTRGMUX_Lcu1_0, kTRGMUX_TriggerInput0, kTRGMUX_SourceEmios0IppDoEmiosCh1);
     TRGMUX_SetTriggerSource(TRGMUX, kTRGMUX_Lcu1_0, kTRGMUX_TriggerInput1, kTRGMUX_SourceEmios0IppDoEmiosCh2);
     TRGMUX_SetTriggerSource(TRGMUX, kTRGMUX_Lcu1_0, kTRGMUX_TriggerInput2, kTRGMUX_SourceEmios0IppDoEmiosCh3);
+
+}
+
+static void InitENC(void)
+{
+  
+    /* TRGMUX */
+  
+//    /* SIUL2 TRGMUX IN12 is selected as LCU0_0 device trigger input 0 */
+//    TRGMUX_SetTriggerSource(TRGMUX, kTRGMUX_Lcu0_0, kTRGMUX_TriggerInput0, kTRGMUX_SourceTriggerMuxInput12);
+//    /* SIUL2 TRGMUX IN13 is selected as LCU0_0 device trigger input 1 */
+//    TRGMUX_SetTriggerSource(TRGMUX, kTRGMUX_Lcu0_0, kTRGMUX_TriggerInput1, kTRGMUX_SourceTriggerMuxInput13);
+//    /* LCU_0 LC0 Out_i3 is selected as SIUL2 TRGMUX_OUT0 device trigger input 0 */
+//    TRGMUX_SetTriggerSource(TRGMUX, kTRGMUX_ExtOut0, kTRGMUX_TriggerInput0, kTRGMUX_SourceLcu0Lc0Out3);
+//    /* LCU_0 LC0 Out_i2 is selected as SIUL2 TRGMUX_OUT3 device trigger input 3 */
+//    TRGMUX_SetTriggerSource(TRGMUX, kTRGMUX_ExtOut3, kTRGMUX_TriggerInput3, kTRGMUX_SourceLcu0Lc0Out2);
+
+    
+    
+    /* LCU */
+
+    /* Structure of initialize LCU. */
+    lcu_output_config_t outputConfig;
+
+    /* Init pit module. */
+    LCU_Init(LCU_0);
+
+    /* Get LCU output default configuration. */
+    LCU_GetOutputDefaultConfig(&outputConfig);
+    
+    outputConfig.outputEnable = true;
+    outputConfig.softwareOverrideEnable = false;
+    outputConfig.outputPolarity = kLCU_OutputPolarityNotInverted;
+    outputConfig.forceInputSentivity = 0U;
+    
+    
+    /* Init LCU output. */
+    outputConfig.riseFilter = 5U;
+    outputConfig.fallFilter = 5U;
+    outputConfig.lutValue = 0xAAAAU;
+    LCU_OutputInit(LCU_0, kLCU_Lc0Output0, &outputConfig);
+    
+    /* Init LCU output. */
+    outputConfig.riseFilter = 5U;
+    outputConfig.fallFilter = 5U;
+    outputConfig.lutValue = 0xCCCCU;
+    LCU_OutputInit(LCU_0, kLCU_Lc0Output1, &outputConfig);
+    
+    /* Init LCU output. */
+    outputConfig.riseFilter = 4U;
+    outputConfig.fallFilter = 4U;
+    outputConfig.lutValue = 0x4182U;    
+    LCU_OutputInit(LCU_0, kLCU_Lc0Output2, &outputConfig);
+    
+    /* Init LCU output. */
+    outputConfig.riseFilter = 4U;
+    outputConfig.fallFilter = 4U;
+    outputConfig.lutValue = 0x2814U;
+    LCU_OutputInit(LCU_0, kLCU_Lc0Output3, &outputConfig);
+    
+    
+
+    /* Select LC input source. */
+    LCU_MuxSelect(LCU_0, kLCU_Lc0Input0, kLCU_MuxSelInput0);
+    LCU_MuxSelect(LCU_0, kLCU_Lc0Input1, kLCU_MuxSelInput1);  
+    
+    
+    LCU_MuxSelect(LCU_0, kLCU_Lc0Input2, kLCU_MuxSelOutput0);
+    LCU_MuxSelect(LCU_0, kLCU_Lc0Input3, kLCU_MuxSelOutput1);  
+    
+    
+
+    //EMIOS
+//    CLOCK_EnableClock(kCLOCK_Emios1);
+    
 
 }
 
