@@ -1,5 +1,5 @@
 '''
-* Copyright 2025 NXP
+* Copyright 2025-2026 NXP
 *
 * SPDX-License-Identifier: BSD-3-Clause
 '''
@@ -30,13 +30,14 @@ import sys
 import argparse
 
 # Constants from fwk_debug_struct.h
-NBUDBG_VERSION = 1
+NBUDBG_VERSION = 2
 NBUDBG_BLE_STRUCT_SIZE = 0x100
 NBUDBG_ASSERT_FILE_NAME_SIZE = 74
 NBUDBG_EXCEPTION_ID_FOR_ASSERT_MAGIC = 0x00A55E27
 NBUDBG_HANDLER_MODE_MAGIC = 0xCAFE0000
 NBUDBG_MODE_MAGIC_MASK = 0xFFFF0000
 NBUDBG_IRQ_NUMBER_MASK = 0x0000FFFF
+NBUDBG_MAX_NB_WARNINGS = 7
 
 # BTSNOOP constants
 BTSNOOP_MAGIC = b'btsnoop\x00'
@@ -45,8 +46,9 @@ BTSNOOP_DATALINK_HCI_UART = 1002
 # HCI packet types
 HCI_EVENT = 0x04
 HCI_VENDOR_EVENT = 0xFF
-DEBUG_STRUCT_SUBEVENT = 0xF1
+DEBUG_SUBEVENT = 0xF1
 DEBUG_STRUCT_BUFFER_ID = 0
+STALL_BUFFER_ID = 2
 
 class RegInfo:
     """Processor register information - 76 bytes total"""
@@ -113,7 +115,7 @@ class ExecutionContext:
 
 
 class NbuDebugInfo:
-    """NBU debug information structure - 96 bytes total"""
+    """NBU debug information structure - 104 bytes total"""
     def __init__(self, data: bytes, offset: int = 0):
         # exception_id at offset + 0 (4 bytes)
         self.exception_id = struct.unpack_from('<I', data, offset)[0]
@@ -133,6 +135,11 @@ class NbuDebugInfo:
         # execution_context starts at offset + 8 + 76 = offset + 84 (12 bytes)
         self.execution_context = ExecutionContext(data, offset + 84)
 
+        # warnings array starts at offset + 96 (7 bytes)
+        self.warnings = list(struct.unpack_from('<7B', data, offset + 96))
+
+        # warning_index at offset + 103 (1 byte)
+        self.warning_index = struct.unpack_from('<B', data, offset + 103)[0]
 
 class NbuDebugStruct:
     """Complete NBU debug structure"""
@@ -145,11 +152,11 @@ class NbuDebugStruct:
         self.logging_buf_size = struct.unpack_from('<H', data, 2)[0]
         self.logging_buf_offset = struct.unpack_from('<I', data, 4)[0]
 
-        # nbu_dbg_info starts at offset 8 (96 bytes)
+        # nbu_dbg_info starts at offset 8 (104 bytes)
         self.nbu_dbg_info = NbuDebugInfo(data, 8)
 
-        # BLE debug data starts at offset 8 + 96 = 104
-        ble_offset = 104
+        # BLE debug data starts at offset 8 + 104 = 112 (was 104)
+        ble_offset = 112
         if len(data) >= ble_offset + NBUDBG_BLE_STRUCT_SIZE:
             self.dbg_ble = data[ble_offset:ble_offset + NBUDBG_BLE_STRUCT_SIZE]
         else:
@@ -175,14 +182,30 @@ def analyze_debug_struct(debug_struct: NbuDebugStruct):
 
     nbu_info = debug_struct.nbu_dbg_info
 
-    if nbu_info.is_assert:
+    print(f"NBU SHA1: 0x{nbu_info.nbu_sha1:08X}")
+
+    # Display warnings if any
+    if any(w != 0 for w in nbu_info.warnings):
+        print("\n*** WARNING INFORMATION ***")
+        print(f"Warning Index: {nbu_info.warning_index}")
+        print("Warning Circular Buffer:")
+        for i, warning_id in enumerate(nbu_info.warnings):
+            marker = "->" if i == nbu_info.warning_index else "  "
+            print(f"{marker}{i}: {warning_id}")
+
+    # Check if there's an assert or fault
+    has_assert = nbu_info.exception_id == NBUDBG_EXCEPTION_ID_FOR_ASSERT_MAGIC
+    has_fault = (nbu_info.exception_id != NBUDBG_EXCEPTION_ID_FOR_ASSERT_MAGIC and
+                 nbu_info.exception_id != 0)
+
+    if has_assert:
         print("\n*** NBU ASSERT DETECTED ***")
+        print(f"  Exception ID: 0x{nbu_info.exception_id:08X}")
         print(f"  File: {nbu_info.assert_info.file_name}")
         print(f"  Line: {nbu_info.assert_info.line}")
-    else:
+    elif has_fault:
         print("\n*** NBU FAULT DETECTED ***")
         print(f"  Exception ID: 0x{nbu_info.exception_id:08X}")
-        print(f"  NBU SHA1:     0x{nbu_info.nbu_sha1:08X}")
 
         regs = nbu_info.reg_info
         print("\nKey Registers:")
@@ -198,14 +221,16 @@ def analyze_debug_struct(debug_struct: NbuDebugStruct):
         print(f"  R8:  0x{regs.r8:08X}  R9:  0x{regs.r9:08X}  R10: 0x{regs.r10:08X}  R11: 0x{regs.r11:08X}")
         print(f"  R12: 0x{regs.r12:08X}  PSR: 0x{regs.psr:08X}")
 
-    print("\nExecution Context:")
-    ctx = nbu_info.execution_context
-    if ctx.is_handler_mode:
-        print(f"  Mode: Handler (IRQ {ctx.irq_number})")
-    else:
-        print(f"  Mode: Thread")
-        print(f"  Thread Address: 0x{ctx.thread_addr:08X}")
-        print(f"  Thread Name:    {ctx.thread_name}")
+    # Only display execution context if there's an assert or fault
+    if has_assert or has_fault:
+        print("\nExecution Context:")
+        ctx = nbu_info.execution_context
+        if ctx.is_handler_mode:
+            print(f"  Mode: Handler (IRQ {ctx.irq_number})")
+        else:
+            print(f"  Mode: Thread")
+            print(f"  Thread Address: 0x{ctx.thread_addr:08X}")
+            print(f"  Thread Name:    {ctx.thread_name}")
 
     if debug_struct.dbg_ble:
         print_raw_data("\nBLE Debug Data", debug_struct.dbg_ble)
@@ -241,11 +266,12 @@ def read_hex_file(filename: str) -> bytes:
 
     return bytes(data)
 
-def extract_debug_from_btsnoop(filename: str) -> list:
+def extract_debug_from_btsnoop(filename: str) -> tuple:
     """Extract debug structures from BTSNOOP file"""
     debug_structures = []
     debug_data = bytearray()
     segment_count = 0
+    stall_detected = False
 
     with open(filename, 'rb') as f:
         # Read and verify header
@@ -308,8 +334,13 @@ def extract_debug_from_btsnoop(filename: str) -> list:
             last_segment = params[2]
             data = params[3:]
 
+            # Check for NBU stall indication
+            if subevent == DEBUG_SUBEVENT and buffer_id == STALL_BUFFER_ID:
+                stall_detected = True
+                continue
+
             # Check if this is a debug structure event
-            if subevent != DEBUG_STRUCT_SUBEVENT or buffer_id != DEBUG_STRUCT_BUFFER_ID:
+            if subevent != DEBUG_SUBEVENT or buffer_id != DEBUG_STRUCT_BUFFER_ID:
                 continue
 
             # Accumulate data
@@ -327,9 +358,9 @@ def extract_debug_from_btsnoop(filename: str) -> list:
                 segment_count = 0
 
     if len(debug_structures) == 0:
-        raise ValueError("No debug structure found in BTSNOOP file")
+        print(f"\nNo debug structure found in BTSNOOP file.", file=sys.stderr)
 
-    return debug_structures
+    return debug_structures, stall_detected
 
 def main():
     parser = argparse.ArgumentParser(description='Parse and analyze NBU debug structure')
@@ -342,28 +373,35 @@ def main():
     try:
         if args.format == 'bin':
             data_list = [read_binary_file(args.input_file)]
+            stall_detected = False # Not supported for this format
         elif args.format == 'hex':
             data_list = [read_hex_file(args.input_file)]
+            stall_detected = False # Not supported for this format
         elif args.format == 'btsnoop':
-            data_list = extract_debug_from_btsnoop(args.input_file)
+            data_list, stall_detected = extract_debug_from_btsnoop(args.input_file)
 
         if len(data_list) == 0:
-            print("Error: No data read from input file", file=sys.stderr)
-            return 1
+            print("No debug structure available to parse.", file=sys.stderr)
+        else:
+            # Parse and analyze each debug structure
+            for i, data in enumerate(data_list, 1):
+                if len(data) == 0:
+                    print(f"Error: Debug structure #{i} is empty", file=sys.stderr)
+                    continue
 
-        # Parse and analyze each debug structure
-        for i, data in enumerate(data_list, 1):
-            if len(data) == 0:
-                print(f"Error: Debug structure #{i} is empty", file=sys.stderr)
-                continue
+                if len(data_list) > 1:
+                    print(f"\n{'='*70}")
+                    print(f"Analyzing Debug Structure #{i} of {len(data_list)}")
+                    print(f"{'='*70}")
 
-            if len(data_list) > 1:
-                print(f"\n{'='*70}")
-                print(f"Analyzing Debug Structure #{i} of {len(data_list)}")
-                print(f"{'='*70}")
+                debug_struct = NbuDebugStruct(data)
+                analyze_debug_struct(debug_struct)
 
-            debug_struct = NbuDebugStruct(data)
-            analyze_debug_struct(debug_struct)
+        # Print stall detection at the end
+        if stall_detected:
+            print(f"\n{'='*70}")
+            print(f"ERROR: NBU is stuck - possible stall or deadlock detected")
+            print(f"{'='*70}")
 
         return 0
 
