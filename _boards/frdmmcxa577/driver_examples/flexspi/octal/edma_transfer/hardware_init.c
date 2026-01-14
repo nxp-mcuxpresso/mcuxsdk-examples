@@ -186,8 +186,8 @@ void BOARD_InitHardware(void)
 {
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitFLEXSPIPins();
-    ////BOARD_InitBootClocks();
-    BOARD_BootClockFROHF192M();
+    BOARD_InitBootClocks();
+//    BOARD_BootClockFROHF192M();
     BOARD_InitDebugConsole();
 
     CLOCK_EnableClock(kCLOCK_GateFLEXSPI0);
