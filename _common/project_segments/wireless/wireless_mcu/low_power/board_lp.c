@@ -1,5 +1,5 @@
 /* -------------------------------------------------------------------------- */
-/*                           Copyright 2020-2025 NXP                          */
+/*                           Copyright 2020-2026 NXP                          */
 /*                    SPDX-License-Identifier: BSD-3-Clause                   */
 /* -------------------------------------------------------------------------- */
 
@@ -40,7 +40,7 @@
 #include "fsl_debug_console.h"
 #endif
 
-#if defined(BOARD_DBG_HCI_LOGGER)
+#if defined(BOARD_NBUDBG_HCI_LOGGER)
 #include "board_debug_nbu_port.h"
 #endif
 
@@ -247,7 +247,7 @@ static void BOARD_ExitPowerDownCb(void)
     BOARD_ReinitDebugConsole();
 #endif
 
-#if defined(BOARD_DBG_HCI_LOGGER)
+#if defined(BOARD_NBUDBG_HCI_LOGGER)
     (void)BOARD_DbgNbuPortReinit();
 #endif
 

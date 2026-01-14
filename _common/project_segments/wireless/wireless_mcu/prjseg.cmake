@@ -1,4 +1,4 @@
-# Copyright 2024-2025 NXP
+# Copyright 2024-2026 NXP
 # SPDX-License-Identifier: BSD-3-Clause
 
 if(CONFIG_MCUX_PRJSEG_module.board.wireless.clock)
@@ -97,7 +97,7 @@ endif()
 if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu.enable_hci_log)
     mcux_add_macro(
         TOOLCHAINS armgcc iar
-        CC "-DBOARD_DBG_HCI_LOGGER=1"
+        CC "-DBOARD_NBUDBG_HCI_LOGGER=1"
     )
 endif()
 
