@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, 2024-2025 NXP
+ * Copyright 2022, 2024-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -237,6 +237,9 @@ int main(void)
     PHY_GetLinkSpeedDuplex(&phyHandle, &speed, &duplex);
     config.miiSpeed  = (enet_mii_speed_t)speed;
     config.miiDuplex = (enet_mii_duplex_t)duplex;
+#ifdef EXAMPLE_MII_MODE
+    config.miiMode = EXAMPLE_MII_MODE;
+#endif
 
     /* Initialize ENET. */
     /* Shoule enable the multicast receive and enable the store and forward

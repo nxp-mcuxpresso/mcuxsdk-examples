@@ -113,6 +113,17 @@
 #define LED_BLUE_TOGGLE() \
     GPIO_PortToggle(BOARD_LED_BLUE_GPIO, 1U << BOARD_LED_BLUE_GPIO_PIN)       /*!< Toggle on target LED_BLUE */
 
+/*!
+ * @brief The Ethernet PHY used by network examples.
+ * Set to 0 to use external PHY over RMII (default).
+ * Set to 1 to use internal digital 10BASE-T1S PHY.
+ */
+/* Below comment is for test script to easily define which PHY to be used, please don't delete. */
+/* @TEST_ANCHOR */
+#ifndef BOARD_NETWORK_USE_TENBASET_PHY
+#define BOARD_NETWORK_USE_TENBASET_PHY (0U)
+#endif
+
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */

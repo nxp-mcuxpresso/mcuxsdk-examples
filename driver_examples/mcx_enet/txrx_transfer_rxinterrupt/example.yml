@@ -18,6 +18,7 @@ mcx_enet_txrx_transfer_rxinterrupt:
       - ${board_root}/${board}/driver_examples/enet/txrx_transfer_rxinterrupt/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
+    frdmmcxa577: []
     frdmmcxn947@cm33_core0: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []

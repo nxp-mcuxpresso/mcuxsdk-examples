@@ -11,6 +11,7 @@ The example transmits 20 number broadcast frame, print the number and the mac ad
 the recieved frames.
 
 ## Supported Boards
+- [FRDM-MCXA577](../../../_boards/frdmmcxa577/driver_examples/enet/txrx_rxpoll/example_board_readme.md)
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/driver_examples/enet/txrx_rxpoll/example_board_readme.md)
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/driver_examples/enet/txrx_rxpoll/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/driver_examples/enet/txrx_rxpoll/example_board_readme.md)
