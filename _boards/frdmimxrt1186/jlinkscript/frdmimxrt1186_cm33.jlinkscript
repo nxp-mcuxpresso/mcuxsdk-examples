@@ -815,6 +815,9 @@ int InitTarget(void)
     }
     JLINK_SYS_Report1("SI_VER = ", r);
     JLINK_SYS_Report1("TRAP   = ", rom_trap_addr);
+    
+    JLINK_ExecCommand("SetEnableFlashbank 0x28000000=0");  // Disable Flashbank "FlexSPI1 (NS)"
+    JLINK_ExecCommand("SetEnableFlashbank 0x38000000=0");  // Disable Flashbank "FlexSPI1 (S)"
 
     return 0;
 }
