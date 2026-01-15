@@ -72,12 +72,9 @@ float DEMO_MeasureTemperature(ADC_Type *base, uint32_t commandId, uint32_t index
 
 void BOARD_InitHardware(void)
 {
-    /* Release peripheral reset */
-    RESET_ReleasePeripheralReset(kADC0_RST_SHIFT_RSTn);
-
     /* Attach peripheral clock */
-    CLOCK_SetClockDiv(kCLOCK_DivADC, 1u);
-    CLOCK_AttachClk(kFRO_LF_DIV_to_ADC);
+    CLOCK_SetClockDiv(kCLOCK_DivADC, 3u);
+    CLOCK_AttachClk(kFRO_HF_to_ADC);
 
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitBootClocks();

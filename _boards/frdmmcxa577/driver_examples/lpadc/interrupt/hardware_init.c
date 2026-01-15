@@ -19,8 +19,8 @@
 void BOARD_InitHardware(void)
 {
     /* Attach peripheral clock */
-    CLOCK_SetClockDiv(kCLOCK_DivADC, 1u);
-    CLOCK_AttachClk(kFRO_LF_DIV_to_ADC);
+    CLOCK_SetClockDiv(kCLOCK_DivADC, 3u);
+    CLOCK_AttachClk(kFRO_HF_to_ADC);
 
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitADCPins();
