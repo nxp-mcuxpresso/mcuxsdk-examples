@@ -4,6 +4,7 @@ Hardware requirements
 - evkbmimxrt1170 board
 - Personal Computer
 - Embedded Artists 2EL M.2 Module (Rev-A1) - direct M2 connection.
+- Embedded Artists AW300 Module.
 
 Jumper settings for RT1170-EVKB (enables external 5V supply):
 ========================================================
