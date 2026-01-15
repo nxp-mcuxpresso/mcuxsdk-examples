@@ -17,6 +17,7 @@ void BOARD_InitHardware(void)
     CLOCK_SetClockDiv(kCLOCK_DivCTIMER2, 1u);
     CLOCK_AttachClk(kFRO_HF_to_CTIMER2);
 
+    BOARD_InitDEBUG_UARTPins();
     BOARD_InitCTIMERPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
