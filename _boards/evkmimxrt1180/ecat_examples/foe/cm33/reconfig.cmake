@@ -23,6 +23,16 @@ mcux_add_mdk_configuration(
     CC "-O0"
 )
 
+mcux_remove_configuration(
+    TARGETS flexspi_nor_debug           flexspi_nor_release
+    CC "-DXIP_BOOT_HEADER_ENABLE=1"
+)
+
+mcux_add_configuration(
+    TARGETS flexspi_nor_debug           flexspi_nor_release
+    CC "-DXIP_BOOT_HEADER_ENABLE=0"
+)
+
 # Add or remove Linker File Configurations
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
