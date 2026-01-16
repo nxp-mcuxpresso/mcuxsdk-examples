@@ -190,14 +190,14 @@ static void BOARD_NBUDBG_ProcessDebugStruct(fwk_work_t *work)
         if ((dbg_nbu_event.nbu_error_count > 0U))
         {
             nbu_dbg_info = &debug_info.nbu_dbg_info;
-            regs = &debug_info.nbu_dbg_info.reg_info;
+            regs = &debug_info.nbu_dbg_info.u.reg_info;
             BOARD_NBUDBG_PRINTF("\n=== NBU Fault/Assert Analysis ===\n\n");
             if (nbu_dbg_info->exception_id == NBUDBG_EXCEPTION_ID_FOR_ASSERT_MAGIC)
             {
                 /* Assert on NBU side */
                 BOARD_NBUDBG_PRINTF("NBU Assert Detected\n");
-                BOARD_NBUDBG_PRINTF("  Line: %u\n", nbu_dbg_info->assert_info.line);
-                BOARD_NBUDBG_PRINTF("  File name: %s\n", nbu_dbg_info->assert_info.file_name);
+                BOARD_NBUDBG_PRINTF("  Line: %u\n", nbu_dbg_info->u.assert_info.line);
+                BOARD_NBUDBG_PRINTF("  File name: %s\n", nbu_dbg_info->u.assert_info.file_name);
             }
             else
             {
@@ -265,9 +265,9 @@ static void BOARD_NBUDBG_ProcessDebugStruct(fwk_work_t *work)
             }
 
             BOARD_NBUDBG_PRINTF("\nExecution Context:\n");
-            if (NBUDBG_IS_HANDLER_MODE(nbu_dbg_info->execution_context.handler_irq))
+            if (NBUDBG_IS_HANDLER_MODE(nbu_dbg_info->execution_context.u.handler_irq))
             {
-                uint32_t irq_number = NBUDBG_GET_IRQ_NUMBER(nbu_dbg_info->execution_context.handler_irq);
+                uint32_t irq_number = NBUDBG_GET_IRQ_NUMBER(nbu_dbg_info->execution_context.u.handler_irq);
                 BOARD_NBUDBG_PRINTF("  Mode: Handler Mode (Interrupt Context)\n");
                 BOARD_NBUDBG_PRINTF("  IRQ Number: %u\n", irq_number);
                 (void) irq_number; /* Supress warning when debug console (PRINTF) is disabled */
@@ -275,8 +275,8 @@ static void BOARD_NBUDBG_ProcessDebugStruct(fwk_work_t *work)
             else
             {
                 BOARD_NBUDBG_PRINTF("  Mode: Thread Mode\n");
-                BOARD_NBUDBG_PRINTF("  Thread Address: 0x%08X\n", nbu_dbg_info->execution_context.thread_info.thread_addr);
-                BOARD_NBUDBG_PRINTF("  Thread Name: %.8s\n", nbu_dbg_info->execution_context.thread_info.thread_name);
+                BOARD_NBUDBG_PRINTF("  Thread Address: 0x%08X\n", nbu_dbg_info->execution_context.u.thread_info.thread_addr);
+                BOARD_NBUDBG_PRINTF("  Thread Name: %.8s\n", nbu_dbg_info->execution_context.u.thread_info.thread_name);
             }
 
             BOARD_NBUDBG_PRINTF("\n=== End of NBU Fault/Assert Analysis ===\n\n");
