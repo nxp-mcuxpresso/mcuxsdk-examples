@@ -1759,9 +1759,7 @@ bool_t CT_ContinuousTests(ct_event_t evType, void* pAssociatedValue)
         XCVR_GetCurrentConfig(p_currConfig);
         CT_WrapperRadioModeAndDataRate(p_currConfig, &radioModeIn, &dataRate);
         GENFSK_GetXcvrConfig(radioModeIn, dataRate, &p_xcvr_config);
-        GENFSK_BackupXcvrSetting();
         XCVR_DftTxPatternReg(chanNum, &p_xcvr_config, &rbme_config,0xFFFFFFFFU);
-        GENFSK_RestoreXcvrSetting();
 #if defined(gBoard_ExtPaSupport_d) && (gBoard_ExtPaSupport_d > 0)
         (void) BOARD_ExtPaXcvrInit(FALSE);
 #endif
@@ -1777,9 +1775,7 @@ bool_t CT_ContinuousTests(ct_event_t evType, void* pAssociatedValue)
         XCVR_GetCurrentConfig(p_currConfig);
         CT_WrapperRadioModeAndDataRate(p_currConfig, &radioModeIn, &dataRate);
         GENFSK_GetXcvrConfig(radioModeIn, dataRate, &p_xcvr_config);
-        GENFSK_BackupXcvrSetting();
         XCVR_DftTxPatternReg(chanNum, &p_xcvr_config, &rbme_config, 0x00000000);
-        GENFSK_RestoreXcvrSetting();
 #if defined(gBoard_ExtPaSupport_d) && (gBoard_ExtPaSupport_d > 0)
         (void) BOARD_ExtPaXcvrInit(FALSE);
 #endif
@@ -1795,9 +1791,7 @@ bool_t CT_ContinuousTests(ct_event_t evType, void* pAssociatedValue)
         XCVR_GetCurrentConfig(p_currConfig);
         CT_WrapperRadioModeAndDataRate(p_currConfig, &radioModeIn, &dataRate);
         GENFSK_GetXcvrConfig(radioModeIn, dataRate, &p_xcvr_config);
-        GENFSK_BackupXcvrSetting();
         XCVR_DftTxLfsrReg(chanNum, &p_xcvr_config, &rbme_config, 3U /* arbitrary choice */);
-        GENFSK_RestoreXcvrSetting();
 #if defined(gBoard_ExtPaSupport_d) && (gBoard_ExtPaSupport_d > 0)
         (void) BOARD_ExtPaXcvrInit(FALSE);
 #endif
@@ -1811,9 +1805,7 @@ bool_t CT_ContinuousTests(ct_event_t evType, void* pAssociatedValue)
     {
 #if defined (RADIO_IS_GEN_3P5) || defined(RADIO_IS_GEN_4P0) || defined(RADIO_IS_GEN_4P5)
         uint32_t rf_freq = (2360U + chanNum)*1000000U; /* In Hertz */
-        GENFSK_BackupXcvrSetting();
         XCVR_DftTxCW(rf_freq);
-        GENFSK_RestoreXcvrSetting();
 #if defined(gBoard_ExtPaSupport_d) && (gBoard_ExtPaSupport_d > 0)
         (void) BOARD_ExtPaXcvrInit(FALSE);
 #endif
