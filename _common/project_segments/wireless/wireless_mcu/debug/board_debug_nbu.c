@@ -502,7 +502,7 @@ int BOARD_DbgNbuInit(void)
     {
         NBUDBG_RegisterNbuDebugNotificationCb(BOARD_NBUDBG_NbuEventCallback);
         /* Configure to send debug structure via HCI vendor events */
-        NBUDBG_ConfigureHciVendorEvent(NBUDBG_HCI_EVENT_DEBUG_STRUCT);
+        NBUDBG_ConfigureHciVendorEvent(NBUDBG_HCI_EVENT_DEBUG_STRUCT | NBUDBG_HCI_EVENT_STALL_EVENT);
 #if defined(BOARD_NBUDBG_HCI_LOGGER)
         /* Register HCI logger callback */
         NBUDBG_RegisterHciLogCallback(BOARD_NBUDBG_HciLogCallback);
