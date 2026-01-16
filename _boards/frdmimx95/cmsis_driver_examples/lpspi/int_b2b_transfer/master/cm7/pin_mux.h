@@ -39,6 +39,17 @@ void BOARD_InitBootPins(void);
  */
 void BOARD_InitPins(void);                                 /*!< Function assigned for the core: Cortex-M7F[cm7] */
 
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void LPSPI3_InitPins(void);                                /*!< Function assigned for the core: undefined[cm33] */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void LPSPI3_DeinitPins(void);                              /*!< Function assigned for the core: undefined[cm33] */
 #if defined(__cplusplus)
 }
 #endif

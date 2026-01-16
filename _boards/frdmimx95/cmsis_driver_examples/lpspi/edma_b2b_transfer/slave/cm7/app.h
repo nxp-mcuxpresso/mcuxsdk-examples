@@ -10,12 +10,12 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define EXAMPLE_LPSPI_SLAVE_IRQN       (LPSPI1_IRQn)
-#define EXAMPLE_LPSPI_SLAVE_CLOCK_NAME (hal_clock_lpspi1)
+#define EXAMPLE_LPSPI_SLAVE_IRQN       (LPSPI3_IRQn)
+#define EXAMPLE_LPSPI_SLAVE_CLOCK_NAME (hal_clock_lpspi3)
 
-#define EXAMPLE_LPSPI_SLAVE_DMA_BASEADDR DMA3
+#define EXAMPLE_LPSPI_SLAVE_DMA_BASEADDR EDMA5_2
 
-#define DRIVER_SLAVE_SPI Driver_SPI1
+#define DRIVER_SLAVE_SPI Driver_SPI3
 /*${macro:end}*/
 
 /*******************************************************************************

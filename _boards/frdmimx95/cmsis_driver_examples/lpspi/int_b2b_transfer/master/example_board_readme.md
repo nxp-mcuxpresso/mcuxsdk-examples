@@ -8,17 +8,15 @@ Hardware requirements
 
 Board settings
 ==============
-populate r1217,r1218,r1219 and r1220 on IMX95LPD5-EVK
-
 Transfer data from one board instance to another board's instance.
-SPI1 pins are connected with SPI3 pins of another board
+SPI3 pins are connected with SPI3 pins of another board
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-INSTANCE0(SPI1)     CONNECTS TO         INSTANCE0(SPI3)
+INSTANCE0(SPI3)     CONNECTS TO         INSTANCE0(SPI3)
 Pin Name   Board Location       Pin Name  Board Location
-SPI_SCK    IMX95LPD5EVK-19   J35   pin 3	  SPI3_SCK  MCIMX93EVK    J1001 pin 23
-SPI_SIN    IMX95LPD5EVK-19   J35   pin 1      SPI3_SOUT MCIMX93EVK    J1001 pin 19
-SPI_SOUT   IMX95LPD5EVK-19   J35   pin 4      SPI3_SIN  MCIMX93EVK    J1001 pin 21
-SPI_PCS0   IMX95LPD5EVK-19   J35   pin 2      SPI3_PCS0 MCIMX93EVK    J1001 pin 24
+SPI3_SCK   FRDMIMX95    J19 pin 23	  SPI3_SCK  FRDMIMX95    J19 pin 23
+SPI3_SIN   FRDMIMX95    J19 pin 21          SPI3_SOUT FRDMIMX95    J19 pin 19
+SPI3_SOUT  FRDMIMX95    J19 pin 19          SPI3_SIN  FRDMIMX95    J19 pin 21
+SPI3_PCS0  FRDMIMX95    J19 pin 24          SPI3_PCS0 FRDMIMX95    J19 pin 24
 GND                             GND
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -39,9 +37,9 @@ Running the demo
 ===============
 When the demo runs successfully, the log would be seen on the terminal like:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-LPSPI CMSIS driver board to board edma example.
+LPSPI CMSIS driver board to board interrupt example.
 This example use one board as master and another as slave.
-Master and slave uses EDMA way. Slave should start first.
+Master and slave uses interrupt way. Slave should start first.
 Please make sure you make the correct line connection. Basically, the connection is:
 LPSPI_master -- LPSPI_slave
    CLK       --    CLK

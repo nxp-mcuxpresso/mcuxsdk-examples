@@ -291,4 +291,5 @@ lpspi_interrupt_b2b_master:
     frdmmcxa266: []
     frdmmcxa366: []
     imx952evk@cm7: []
+    frdmimx95@cm7: []
     frdmmcxa577: []

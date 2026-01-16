@@ -14,12 +14,12 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define EXAMPLE_LPSPI_MASTER_IRQN       (LPSPI1_IRQn)
-#define EXAMPLE_LPSPI_MASTER_CLOCK_NAME (hal_clock_lpspi1)
+#define EXAMPLE_LPSPI_MASTER_IRQN       (LPSPI3_IRQn)
+#define EXAMPLE_LPSPI_MASTER_CLOCK_NAME (hal_clock_lpspi3)
 
-#define EXAMPLE_LPSPI_MASTER_DMA_BASEADDR DMA3
+#define EXAMPLE_LPSPI_MASTER_DMA_BASEADDR EDMA5_2
 
-#define DRIVER_MASTER_SPI         Driver_SPI1
+#define DRIVER_MASTER_SPI         Driver_SPI3
 #define EXAMPLE_LPSPI_DEALY_COUNT 0xfffffU
 /*${macro:end}*/
 

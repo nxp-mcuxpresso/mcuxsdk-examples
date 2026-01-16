@@ -39,7 +39,7 @@ void BOARD_InitBootPins(void)
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
 
     BOARD_InitPins();
-    LPSPI1_InitPins();
+    LPSPI3_InitPins();
 }
 
 /*
@@ -66,41 +66,41 @@ void BOARD_InitPins(void) {                                /*!< Function assigne
 
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-LPSPI1_InitPins:
+LPSPI3_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm33}
 - pin_list:
-  - {pin_num: M20, peripheral: LPSPI1, signal: 'lpspi_pcs, 0', pin_signal: GPIO_IO08}
-  - {pin_num: N18, peripheral: LPSPI1, signal: lpspi_sck, pin_signal: GPIO_IO11}
-  - {pin_num: M21, peripheral: LPSPI1, signal: lpspi_sin, pin_signal: GPIO_IO09}
-  - {pin_num: N17, peripheral: LPSPI1, signal: lpspi_sout, pin_signal: GPIO_IO10}
+  - {pin_num: M20, peripheral: LPSPI3, signal: 'lpspi_pcs, 0', pin_signal: GPIO_IO08}
+  - {pin_num: N18, peripheral: LPSPI3, signal: lpspi_sck, pin_signal: GPIO_IO11}
+  - {pin_num: M21, peripheral: LPSPI3, signal: lpspi_sin, pin_signal: GPIO_IO09}
+  - {pin_num: N17, peripheral: LPSPI3, signal: lpspi_sout, pin_signal: GPIO_IO10}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
 /* FUNCTION ************************************************************************************************************
  *
- * Function Name : LPSPI1_InitPins
+ * Function Name : LPSPI3_InitPins
  * Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
-void LPSPI1_InitPins(void) {                               /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_SAI1_TXFS__LPSPI1_PCS0, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_SAI1_TXC__LPSPI1_SIN, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_SAI1_RXD0__LPSPI1_SOUT, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_SAI1_TXD0__LPSPI1_SCK, 0U);
+void LPSPI3_InitPins(void) {                               /*!< Function assigned for the core: undefined[cm33] */
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO08__LPSPI3_PCS0, 0U);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO09__LPSPI3_SIN, 0U);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO10__LPSPI3_SOUT, 0U);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO11__LPSPI3_SCK, 0U);
 
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_SAI1_TXFS__LPSPI1_PCS0, 
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO08__LPSPI3_PCS0, 
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_SAI1_TXC__LPSPI1_SIN, 
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO09__LPSPI3_SIN, 
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_SAI1_RXD0__LPSPI1_SOUT, 
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO10__LPSPI3_SOUT, 
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_SAI1_TXD0__LPSPI1_SCK, 
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO11__LPSPI3_SCK, 
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
@@ -109,7 +109,7 @@ void LPSPI1_InitPins(void) {                               /*!< Function assigne
 
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-LPSPI1_DeinitPins:
+LPSPI3_DeinitPins:
 - options: {callFromInitBoot: 'false', coreID: cm33}
 - pin_list:
   - {pin_num: M20, peripheral: GPIO2, signal: 'gpio_io, 08', pin_signal: GPIO_IO08}
@@ -121,11 +121,11 @@ LPSPI1_DeinitPins:
 
 /* FUNCTION ************************************************************************************************************
  *
- * Function Name : LPSPI1_DeinitPins
+ * Function Name : LPSPI3_DeinitPins
  * Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
-void LPSPI1_DeinitPins(void) {                             /*!< Function assigned for the core: undefined[cm33] */
+void LPSPI3_DeinitPins(void) {                             /*!< Function assigned for the core: undefined[cm33] */
     HAL_PinctrlSetPinMux( HAL_PINCTRL_PLATFORM_IOMUXC_PAD_SAI1_TXFS__SAI1_TX_SYNC, 0U);
     HAL_PinctrlSetPinMux( HAL_PINCTRL_PLATFORM_IOMUXC_PAD_SAI1_TXC__SAI1_TX_BCLK, 0U);
     HAL_PinctrlSetPinMux( HAL_PINCTRL_PLATFORM_IOMUXC_PAD_SAI1_RXD0__SAI1_RX_DATA_BIT0, 0U);

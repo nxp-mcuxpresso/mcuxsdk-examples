@@ -36,7 +36,7 @@ void BOARD_InitHardware(void)
     HAL_ClockSetRootClk(&hal_lpspiclk);
 }
 
-uint32_t LPSPI1_GetFreq(void)
+uint32_t LPSPI3_GetFreq(void)
 {
     return HAL_ClockGetIpFreq(EXAMPLE_LPSPI_MASTER_CLOCK_NAME);
 }

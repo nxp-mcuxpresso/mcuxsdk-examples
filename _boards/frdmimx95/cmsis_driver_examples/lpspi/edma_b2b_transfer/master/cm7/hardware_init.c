@@ -42,7 +42,7 @@ void BOARD_InitHardware(void)
     HAL_ClockSetRootClk(&hal_lpspiClkCfg);
 }
 
-uint32_t LPSPI1_GetFreq(void)
+uint32_t LPSPI3_GetFreq(void)
 {
     return HAL_ClockGetIpFreq(hal_clock_lpspi1);
 }
