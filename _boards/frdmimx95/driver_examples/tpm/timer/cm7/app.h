@@ -13,14 +13,14 @@
 /*${macro:start}*/
 
 /* define instance */
-#define BOARD_TPM TPM2
+#define BOARD_TPM TPM3
 
 /* Interrupt number and interrupt handler for the TPM instance used */
-#define BOARD_TPM_IRQ_NUM TPM2_IRQn
-#define BOARD_TPM_HANDLER TPM2_IRQHandler
+#define BOARD_TPM_IRQ_NUM TPM3_IRQn
+#define BOARD_TPM_HANDLER TPM3_IRQHandler
 
 /* Get source clock for TPM driver */
-#define LPTPM_CLOCK_ROOT hal_clock_tpm2
+#define LPTPM_CLOCK_ROOT hal_clock_tpm3
 #define TPM_SOURCE_CLOCK HAL_ClockGetIpFreq(LPTPM_CLOCK_ROOT)
 /*${macro:end}*/
 

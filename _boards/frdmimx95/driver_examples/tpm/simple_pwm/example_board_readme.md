@@ -9,7 +9,7 @@ Hardware requirements
 
 Board settings
 ==============
-- Connect resistor R881(close to U81) and (GND) to Oscilloscope
+- Connect resistor J19-32 and (GND) to Oscilloscope
 
 Prepare the Demo
 ===============

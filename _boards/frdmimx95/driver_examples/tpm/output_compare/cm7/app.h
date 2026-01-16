@@ -12,11 +12,11 @@
  ******************************************************************************/
 /*${macro:start}*/
 /* define instance */
-#define DEMO_TPM_BASEADDR     TPM2
+#define DEMO_TPM_BASEADDR     TPM3
 #define BOARD_TPM_OUT_CHANNEL kTPM_Chnl_2
 
 /* Get source clock for TPM driver */
-#define LPTPM_CLOCK_ROOT hal_clock_tpm2
+#define LPTPM_CLOCK_ROOT hal_clock_tpm3
 #define TPM_SOURCE_CLOCK HAL_ClockGetIpFreq(LPTPM_CLOCK_ROOT)
 /*${macro:end}*/
 
