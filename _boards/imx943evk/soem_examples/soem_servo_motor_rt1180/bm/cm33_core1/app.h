@@ -17,9 +17,9 @@
 #include "fsl_msgintr.h"
 #include "fsl_rgpio.h"
 
+#include "soem_port.h"
 #include "netc_ep/soem_netc_ep.h"
 #include "netc_ep/netc_ep.h"
-#include "soem_port.h"
 
 #include "ethercattype.h"
 #include "nicdrv.h"
@@ -32,13 +32,9 @@
 #include "ethercatprint.h"
 /*${header:end}*/
 
-#define CYCLE_SHIFT_NS  440000  // 440us
-#define DC_FILTER_CNT   64
-
 #define SOEM_PORT_NAME "J26"
-#define MASTER_SLAVE_SYNC 1U
 
-#define CLOCK_GRANULARITY_NS 50UL
+#define CLOCK_GRANULARITY_NS 250UL
 #define CLOCK_GRANULARITY_FRE (1000000000UL/CLOCK_GRANULARITY_NS)
 #define CLOCK_INCREASE_PER_SEC 1000000000UL 
 
@@ -101,12 +97,11 @@
  * Prototypes
  ******************************************************************************/
 /*${prototype:start}*/
-void osal_timer_init(uint32_t priority);
-uint64_t system_time64_ns(void);
+uint64_t gettime(void);
 void nsleep_to (uint64_t nsec_target);
 void osal_gettime(struct timeval *current_time);
+void osal_timer_init(uint32_t priority);
 int if_port_init(void);
-void update_master_clock(void);
 status_t BOARD_InitHardware(void);
 status_t NETC_EP_MDIO_Init(void);
 status_t NETC_EP_PHY_Init(void);

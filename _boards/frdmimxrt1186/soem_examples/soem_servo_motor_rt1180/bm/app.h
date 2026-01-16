@@ -14,9 +14,9 @@
 #include "fsl_phyyt8521.h"
 #include "fsl_msgintr.h"
 
+#include "soem_port.h"
 #include "netc_swt/soem_netc_swt.h"
 #include "netc_swt/netc_swt.h"
-#include "soem_port.h"
 
 #include "ethercattype.h"
 #include "nicdrv.h"
@@ -29,10 +29,10 @@
 #include "ethercatprint.h"
 /*${header:end}*/
 
-#define CYCLE_SHIFT_NS  440000  // 440us
-#define DC_FILTER_CNT   64
+#ifndef PHY_STABILITY_DELAY_US
+#define PHY_STABILITY_DELAY_US (500000U)
+#endif
 
-#define MASTER_SLAVE_SYNC 1U
 #define SOEM_PORT_NAME "ENET0"
 #define EXAMPLE_NETC_HAS_NO_SWITCH 0U
 #define EXAMPLE_EP_NUM    0U
@@ -40,16 +40,20 @@
 #define EXAMPLE_SWT_PORT0 0x01U
 #define EXAMPLE_SWT_PORT2 0x03U
 
- #define CLOCK_GRANULARITY_NS 5UL
+ #define CLOCK_GRANULARITY_NS 25UL
  #define CLOCK_GRANULARITY_FRE (1000000000UL/CLOCK_GRANULARITY_NS)
  #define CLOCK_INCREASE_PER_SEC 1000000000UL 
  
  #define BOARD_LED_RGPIO     BOARD_USER_LED_GPIO
  #define BOARD_LED_RGPIO_PIN BOARD_USER_LED_GPIO_PIN
 
-#define EXAMPLE_SWT_SI       kNETC_ENETC1PSI0
-
+#ifndef EXAMPLE_SWT_SI
+#define EXAMPLE_SWT_SI kNETC_ENETC1PSI0
+#endif
+/* Switch pseudo port */
+#ifndef EXAMPLE_SWT_PSEUDO_PORT
 #define EXAMPLE_SWT_PSEUDO_PORT 0x4U
+#endif
 
 #define NETC_FREQ             CLOCK_GetRootClockFreq(kCLOCK_Root_Netc)
 
@@ -87,13 +91,12 @@
  * Prototypes
  ******************************************************************************/
 /*${prototype:start}*/
+uint64_t gettime(void);
 void nsleep_to (uint64_t nsec_target);
 void osal_gettime(struct timeval *current_time);
 void osal_timer_init(uint32_t priority);
 status_t APP_SWT_AddTableEntry(void);
 int if_port_swt_init(void);
-uint64_t system_time64_ns(void);
-void update_master_clock(void);
 status_t BOARD_InitHardware(void);
 status_t NETC_MDIO_Init(void);
 status_t NETC_PHY_Init(void);

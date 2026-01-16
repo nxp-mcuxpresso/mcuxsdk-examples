@@ -9,22 +9,29 @@
 #include "clock_config.h"
 #include "board.h"
 #include "app.h"
-
 /*${header:end}*/
 
-/* Rx buffer memeory type. */
+/*******************************************************************************
+ * Variables
+ ******************************************************************************/
+ /* Rx buffer memeory type. */
 typedef uint8_t rx_buffer_t[EP_RXBUFF_SIZE_ALIGN];
 
-/* dc sync time */
-uint8_t  dc_started = 0;
-int32_t  dc_diff_ns = 0;
-int32_t  prev_dc_diff_ns = 0;
-int64_t  dc_adjust_ns;
-int64_t  system_time_offset = 0LL;
+#if defined(EXAMPLE_EP_NUM) && EXAMPLE_EP_NUM
+extern struct netc_ep_if_port if_port;
+#endif
 
-struct netc_ep_if_port if_port;
+#if !(defined(EXAMPLE_NETC_HAS_NO_SWITCH) && EXAMPLE_NETC_HAS_NO_SWITCH)
+extern struct netc_swt_if_port if_port;
+#endif
 
 volatile uint64_t system_time_ns = 0;
+
+#if !(defined(EXAMPLE_NETC_HAS_NO_SWITCH) && EXAMPLE_NETC_HAS_NO_SWITCH)
+/* SWT resource. */
+static swt_config_t g_swt_config;
+static swt_transfer_config_t swtTxRxConfig;
+#endif
 
 /* Buffer descriptor resource. */
 AT_NONCACHEABLE_SECTION_ALIGN(static netc_rx_bd_t g_rxBuffDescrip[EP_RING_NUM][EP_RXBD_NUM],
@@ -46,6 +53,69 @@ AT_NONCACHEABLE_SECTION_ALIGN(static netc_tx_bd_t g_txBuffDescrip[EP_RING_NUM][E
 static netc_tx_frame_info_t g_txDirty[EP_RING_NUM][EP_TXBD_NUM];
 #endif
 
+struct netc_ep_if_port if_port;
+
+status_t NETC_EP_MDIO_Init(void)
+{
+    status_t result = kStatus_Success;
+
+    netc_mdio_config_t mdioConfig = {
+        .isPreambleDisable = false,
+        .isNegativeDriven  = false,
+        .srcClockHz        = NETC_FREQ,
+    };
+
+    mdioConfig.mdio.type = kNETC_EMdio;
+    result               = NETC_MDIOInit(&if_port.s_emdio_handle, &mdioConfig);
+    if (result != kStatus_Success)
+    {
+        return result;
+    }
+
+    return result;
+}
+
+static status_t NETC_EP_EMDIOWrite(uint8_t phyAddr, uint8_t regAddr, uint16_t data)
+{
+    return NETC_MDIOWrite(&if_port.s_emdio_handle, phyAddr, regAddr, data);
+}
+
+static status_t NETC_EP_EMDIORead(uint8_t phyAddr, uint8_t regAddr, uint16_t *pData)
+{
+    return NETC_MDIORead(&if_port.s_emdio_handle, phyAddr, regAddr, pData);
+}
+
+uint64_t gettime()
+{
+	uint64_t nsec_base;
+	uint32_t cur_nsec;
+
+	nsec_base  = system_time_ns;
+	cur_nsec   = GPT_GetCurrentTimerCount(OSAL_TIMER);
+
+	if (nsec_base != system_time_ns)
+	{
+		nsec_base  = system_time_ns;
+		cur_nsec   = GPT_GetCurrentTimerCount(OSAL_TIMER);
+	}
+	return nsec_base + cur_nsec * CLOCK_GRANULARITY_NS;
+}
+
+void nsleep_to (uint64_t nsec_target)
+{
+	while (nsec_target > gettime());
+}
+
+void osal_gettime(struct timeval *current_time)
+{
+	uint64_t nsec = gettime();
+	
+	current_time->tv_sec  = nsec / CLOCK_INCREASE_PER_SEC;
+	current_time->tv_usec = (nsec % CLOCK_INCREASE_PER_SEC) / 1000;
+
+	return;
+}
+
 void irq_wake_task(void)
 {
     return;
@@ -64,6 +134,21 @@ void OSAL_TIMER_IRQHandler(void)
 #if defined __CORTEX_M && (__CORTEX_M == 4U || __CORTEX_M == 7U)
 	__DSB();
 #endif
+}
+
+void msgintrCallback(MSGINTR_Type *base, uint8_t channel, uint32_t pendingIntr)
+{
+    /* Transmit interrupt */
+    if ((pendingIntr & (1U << TX_INTR_MSG_DATA)) != 0U)
+    {
+        EP_CleanTxIntrFlags(&if_port.g_ep_handle, 1, 0);
+        if_port.txOver = true;
+    }
+    /* Receive interrupt */
+    if ((pendingIntr & (1U << RX_INTR_MSG_DATA)) != 0U)
+    {
+        EP_CleanRxIntrFlags(&if_port.g_ep_handle, 1);
+    }
 }
 
 void osal_timer_init(uint32_t priority)
@@ -86,52 +171,6 @@ void osal_timer_init(uint32_t priority)
 	NVIC_SetPriority(OSAL_TIMER_IRQ_ID, priority);
 	EnableIRQ(OSAL_TIMER_IRQ_ID);
 	GPT_StartTimer(OSAL_TIMER);
-}
-
-void msgintrCallback(MSGINTR_Type *base, uint8_t channel, uint32_t pendingIntr)
-{
-    /* Transmit interrupt */
-    if ((pendingIntr & (1U << TX_INTR_MSG_DATA)) != 0U)
-    {
-        EP_CleanTxIntrFlags(&if_port.g_ep_handle, 1, 0);
-        if_port.txOver = true;
-    }
-    /* Receive interrupt */
-    if ((pendingIntr & (1U << RX_INTR_MSG_DATA)) != 0U)
-    {
-        EP_CleanRxIntrFlags(&if_port.g_ep_handle, 1);
-    }
-}
-
-uint64_t system_time64_ns()
-{
-	uint64_t nsec_base;
-	uint32_t cur_nsec;
-
-	nsec_base  = system_time_ns;
-	cur_nsec   = GPT_GetCurrentTimerCount(OSAL_TIMER);
-
-	if (nsec_base != system_time_ns)
-	{
-		nsec_base  = system_time_ns;
-		cur_nsec   = GPT_GetCurrentTimerCount(OSAL_TIMER);
-	}
-	return nsec_base + cur_nsec * CLOCK_GRANULARITY_NS - system_time_offset;
-}
-
-void nsleep_to (uint64_t nsec_target)
-{
-	while (nsec_target > system_time64_ns());
-}
-
-void osal_gettime(struct timeval *current_time)
-{
-	uint64_t nsec = system_time64_ns();
-	
-	current_time->tv_sec  = nsec / CLOCK_INCREASE_PER_SEC;
-	current_time->tv_usec = (nsec % CLOCK_INCREASE_PER_SEC) / 1000;
-
-	return;
 }
 
 static netc_rx_bdr_config_t rxBdrConfig = {0};
@@ -213,94 +252,6 @@ int if_port_init(void)
 	soem_port.port_link_status= netc_ep_link_status;
 	soem_port.port_pri = &if_port;
     return register_soem_port(&soem_port);
-}
-
-uint64_t dc_diff_accu = 0;
-int32_t dc_diff_accu_arrary[DC_FILTER_CNT];
-int32_t dc_diff_accu_index = 0;
-
-static void dc_diff_init(int32_t dc_diff_ns)
-{
-	int i;
-	for (i = 0; i < DC_FILTER_CNT; i++) {
-		dc_diff_accu_arrary[i] = dc_diff_ns;
-		dc_diff_accu += dc_diff_ns;
-	}
-}
-
-static int32_t dc_diff_update(int32_t dc_diff_ns)
-{
-	dc_diff_accu += dc_diff_ns;
-	dc_diff_accu -= dc_diff_accu_arrary[dc_diff_accu_index];
-	dc_diff_accu_arrary[dc_diff_accu_index++] = dc_diff_ns;
-	if (dc_diff_accu_index >= DC_FILTER_CNT) {
-		dc_diff_accu_index = 0;
-	}
-	return dc_diff_accu / DC_FILTER_CNT;
-}
-
-#define PID_P  3 / 2
-#define PID_I  3 / 2
-#define PID_D  1 / 5 
-void update_master_clock()
-{
-	int32_t dc_diff_ns_avg;
-    // calc drift (via un-normalised time diff)
-    int32_t delta = dc_diff_ns - prev_dc_diff_ns;
-    prev_dc_diff_ns = dc_diff_ns;
-
-    if (dc_started == 2) {
-		dc_diff_ns_avg = dc_diff_update(dc_diff_ns);
-       dc_adjust_ns = dc_diff_ns * PID_P  + dc_diff_ns_avg * PID_I  + delta * PID_D;
-        if (dc_adjust_ns < -10000) {
-            dc_adjust_ns = -10000;
-        }
-        if (dc_adjust_ns > 10000) {
-            dc_adjust_ns =  10000;
-        }
-		// add cycles adjustment to time base (including a spot adjustment)
-        system_time_offset += dc_adjust_ns;
-    }
-    else {
-		if (dc_started == 0) {
-        	dc_started = (dc_diff_ns != 0);
-			system_time_offset = dc_diff_ns;
-		} else {
-			dc_started = 2;
-			dc_diff_init(dc_diff_ns);
-			system_time_offset += dc_diff_ns / 2;
-		}
-    }
-}
-
-status_t NETC_EP_MDIO_Init(void)
-{
-    status_t result = kStatus_Success;
-
-    netc_mdio_config_t mdioConfig = {
-        .isPreambleDisable = false,
-        .isNegativeDriven  = false,
-        .srcClockHz        = NETC_FREQ,
-    };
-
-    mdioConfig.mdio.type = kNETC_EMdio;
-    result               = NETC_MDIOInit(&if_port.s_emdio_handle, &mdioConfig);
-    if (result != kStatus_Success)
-    {
-        return result;
-    }
-
-    return result;
-}
-
-static status_t NETC_EP_EMDIOWrite(uint8_t phyAddr, uint8_t regAddr, uint16_t data)
-{
-    return NETC_MDIOWrite(&if_port.s_emdio_handle, phyAddr, regAddr, data);
-}
-
-static status_t NETC_EP_EMDIORead(uint8_t phyAddr, uint8_t regAddr, uint16_t *pData)
-{
-    return NETC_MDIORead(&if_port.s_emdio_handle, phyAddr, regAddr, pData);
 }
 
 static status_t NETC_EP_Phy8201SetUp(phy_handle_t *handle)

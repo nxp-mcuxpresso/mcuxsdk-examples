@@ -33,17 +33,15 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-/* dc sync time */
-uint64_t dc_start_time_ns = 0LL;
-extern int32_t  dc_diff_ns;
-
 static char IOmap[1500];
 
-static char *tp[MAX_SERVO] = {
+static char *tp[MAX_AXIS] = {
 
-// NXP
+// NXP i.MX RT1180
 "Cyclic=1; Scale=364; Bias=0; Accel=8; Decel=8; Max_speed=3600; TpArrays=[(0:2000),(270:1000),(270:2000),(180:1000),(180:2000),(0:1000),(0:2000),(0:1000)];",
 
+// NXP i.MX 943
+//"Cyclic=1; Scale=93206; Bias=0; Accel=8; Decel=8; Max_speed=3600; TpArrays=[(0:2000),(270:1000),(270:2000),(180:1000),(180:2000),(0:1000),(0:2000),(0:1000)];",
 };
 
 /*******************************************************************************
@@ -54,7 +52,7 @@ static char *tp[MAX_SERVO] = {
  * Code
  ******************************************************************************/
 
- int __write(int handle, char *buffer, int size)
+int __write(int handle, char *buffer, int size)
 {
     if (NULL == buffer)
     {
@@ -154,10 +152,55 @@ static int nxp_servo_setup(uint16 slave) {
 		return -1;
 }
 
+static int asda_b3_servo_setup(uint16 slave) {
+	int i;
+	int ret = 0;
+	int chk = 10;
+	struct servo_t *svo = NULL;
+	for (i = 0; i < MAX_SERVO; i++) {
+		if (servo[i].slave_id + 1 == slave) {
+			svo = &servo[i];
+			break;
+		}
+	}
+	if (svo) {
+		while (chk--) {
+			ret = servo_pdo_remap(svo);
+			if (ret)
+				break;
+		}
+	}
+
+	if (!ret)
+		return 0;
+
+	int8_t  Obj60c2[9][2] = {{12, -5},{25, -5}, {37, -5}, {5, -4},{62, -5}, {75, -5},{87, -5},{1, -3}, {2, -3}};
+	int8_t num_8b[2];
+	int wkc = 0;
+	if (CYCLE_PERIOD_NS > 1000000) {
+		num_8b[0] = CYCLE_PERIOD_NS / 1000000;
+		num_8b[1] = -3;
+	} else {
+		int index = ((CYCLE_PERIOD_NS - 1) / 125000);
+		num_8b[0] = Obj60c2[index][0];
+		num_8b[1] = Obj60c2[index][1];
+	}
+	int obj_60c2_index = 0x60c2;
+	for ( i = 0; i < svo->axis_num; i++) {
+		obj_60c2_index += i * 0x800;
+		wkc += ec_SDOwrite(slave, obj_60c2_index, 0x01, 0, 1, &num_8b[0], EC_TIMEOUTSAFE);
+		wkc += ec_SDOwrite(slave, obj_60c2_index, 0x02, 0, 1, &num_8b[1], EC_TIMEOUTSAFE);
+	}
+	return wkc == svo->axis_num * 2 ? 1 : 0;
+}
+
 static void servo_setup(struct servo_t *servo, int servo_num) {
 	int i;
 	for (i = 0; i < servo_num; i++) {
-		if (servo[i].VendorId == nxp_VendorId && servo[i].ProductID == nxp_ProductID) {
+		if (servo[i].VendorId == asda_b3_VendorId && servo[i].ProductID == asda_b3_ProductID) {
+			servo[i].slave->PO2SOconfig = asda_b3_servo_setup;
+			PRINTF("\r\n delta_servo_setup success!\r\n");
+		} else if (servo[i].VendorId == nxp_VendorId && servo[i].ProductID == nxp_ProductID) {
 			servo[i].slave->PO2SOconfig = nxp_servo_setup;
 			PRINTF("\r\n nxp_servo_setup success!\r\n");
 		} else {
@@ -212,7 +255,7 @@ void control_task(char *ifname)
 
 			for (i = 0; i < MAX_SERVO; i++) {
 				if(servo[i].slave->hasdc > 0) {
-				ec_dcsync0(servo[i].slave_id + 1, TRUE, CYCLE_PERIOD_NS, CYCLE_SHIFT_NS);
+				ec_dcsync0(servo[i].slave_id + 1, TRUE, CYCLE_PERIOD_NS, CYCLE_PERIOD_NS * 3);
 				}
 			}
 
@@ -247,59 +290,20 @@ void control_task(char *ifname)
 				ec_statecheck(1, EC_STATE_OPERATIONAL, 50000);
 			} while (chk-- && (ec_slave[0].state != EC_STATE_OPERATIONAL));
 
-			for (i = 0; i < MAX_AXIS; i++) {
-				PDO_write_targe_position(&axis[i], axis[i].current_position);
-			}
-
-			PRINTF("Request operational state for all slaves\r\n");
-			expectedWKC = (ec_group[0].outputsWKC * 2) + ec_group[0].inputsWKC;
-			PRINTF("Calculated workcounter %d\r\n", expectedWKC);
-			ec_slave[0].state = EC_STATE_OPERATIONAL;
-			/* send one valid process data to make outputs in slaves happy*/
-			ec_send_processdata();
-			ec_receive_processdata(EC_TIMEOUTRET);
-			/* request OP state for all slaves */
-			ec_writestate(0);
-			chk = 500;
-			/* wait for all slaves to reach OP state */
-			do {
-				ec_send_processdata();
-				ec_receive_processdata(EC_TIMEOUTRET);
-				ec_statecheck(1, EC_STATE_OPERATIONAL, 50000);
-			} while (chk-- && (ec_slave[0].state != EC_STATE_OPERATIONAL));
-
+			
 			if (ec_slave[0].state != EC_STATE_OPERATIONAL) {
 				PRINTF("Not all slaves reached operational state.\r\n");
 			} else {
 				PRINTF("Operational state reached for all slaves.\r\n");
-				chk = 100;
-				target_time = system_time64_ns();
-				do {
-					dc_start_time_ns = system_time64_ns();
-					ec_send_processdata();
-					if (ec_receive_processdata(EC_TIMEOUTRET) >= expectedWKC) {
-						dc_diff_ns = dc_start_time_ns - *ecx_context.DCtime;
-						update_master_clock();
-					}
-					target_time += CYCLE_PERIOD_NS;
-					nsleep_to(target_time);
-				} while (chk--);
-				
-				target_time = system_time64_ns();
-				target_time += CYCLE_PERIOD_NS;
-				target_time = target_time/CYCLE_PERIOD_NS * CYCLE_PERIOD_NS;
-				nsleep_to(target_time);
-				dc_start_time_ns = system_time64_ns();
+				/* send one valid process data to make outputs in slaves happy*/
 				ec_send_processdata();
+				
+				target_time = gettime();
 				int op_num = 0;
 				while (1) {
 					target_time += CYCLE_PERIOD_NS;
 					/* SOEM receive data */
 					wkc = ec_receive_processdata(EC_TIMEOUTRET);
-					if (wkc >= expectedWKC) {
-						dc_diff_ns = dc_start_time_ns - *ecx_context.DCtime;
-						update_master_clock();
-					}
 
 					/* servo motor application processing code */
 					for(i = 0; i < MAX_AXIS; i++) {
@@ -328,11 +332,10 @@ void control_task(char *ifname)
 					} else {
 						op_num = 0;
 					}
-					dc_start_time_ns = system_time64_ns();
-					ec_send_processdata();
 
 					/* SOEM transmit data */
-					curr_time = system_time64_ns();
+					ec_send_processdata();
+					curr_time = gettime();
 
 					if (curr_time < target_time) {
 						nsleep_to(target_time);
@@ -370,7 +373,7 @@ int main(void)
 	BOARD_InitHardware();
 
 	PRINTF("Start the soem_servo_motor_rt1180 baremetal example...\r\n");
-	
+
 	osal_timer_init(0);
 
 #if ((defined(EXAMPLE_EP_NUM) && EXAMPLE_EP_NUM) || (defined(EXAMPLE_ENET_NUM) && EXAMPLE_ENET_NUM))
