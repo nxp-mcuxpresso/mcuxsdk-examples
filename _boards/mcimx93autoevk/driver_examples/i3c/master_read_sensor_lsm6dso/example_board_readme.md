@@ -6,7 +6,7 @@ Hardware requirements
 
 Board settings
 ============
-Populate R1010 with 10KΩ
+No special settings are required.
 
 Note
 ====
