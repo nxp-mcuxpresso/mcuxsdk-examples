@@ -1,6 +1,10 @@
-# Copyright 2024-2025 NXP
+# Copyright 2024-2026 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
 config MCUX_COMPONENT_driver.flash_config
     bool "Use flash_config in image"
+
+config MCUX_COMPONENT_driver.flash_config_custom
+    bool "Use custom flash_config in image"
+    default n
