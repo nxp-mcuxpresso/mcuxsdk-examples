@@ -3,9 +3,6 @@ Hardware requirements
 - Mini/micro USB cable
 - Network cable RJ45 standard
 - i.MX943-EVK board
-- MIMXRT1180-EVK board
-- FRDM-MC-LVPMSM board
-- Teknic 2311P Motor
 - Personal Computer
 
 Board settings

@@ -3,15 +3,18 @@
 ## Overview
 This example demonstrates how to use the Simple Open EtherCAT Master (SOEM) Library to control motor.
 
-In this example there are 2 NXP EVK board:
+In this example there are 2 NXP board:
 
 	SOEM as EtherCAT MainDevice running on EVK board(i.MXRT1180/FRDM-1186/i.MX943)
 
-	ecat_servo_motor example as EtherCAT SubDevice running on i.MXRT1180 EVK board
+	ecat_servo_motor example as EtherCAT SubDevice running on i.MXRT1180 EVK/XSERVO-MTR-DRV RT1180/i.MX943 EVK board
 
 	Note: 
 
-		ecat_servo_motor path: .../boards/evkmimxrt1180/ecat_examples/servo_motor
+		ecat_servo_motor path: 
+		For i.MXRT1180 EVK: .../boards/evkmimxrt1180/ecat_examples/servo_motor
+		For XSERVO-MTR-DRV RT1180: https://github.com/nxp-appcodehub/rd-motion-control-slave-servo-mimxrt1180
+		For i.MX943 EVK: .../boards/imx943evk/ecat_examples/dual_cores_servo_motor
 
 
 ## Running the demo
@@ -35,10 +38,6 @@ When the demo is running, the serial port will output:
 	Calculated workcounter 3
 	Operational state reached for all slaves.
 
-
-Note: Modify GPT timer frequncy >= 200MHz to get more accurate timer.
-
-Note: Detailed SOEM performance please refter to EtherCAT Benchamrk. 
 
 ## Supported Boards
 - [MIMXRT1180-EVK](../../../_boards/evkmimxrt1180/soem_examples/soem_servo_motor_rt1180/bm/example_board_readme.md)

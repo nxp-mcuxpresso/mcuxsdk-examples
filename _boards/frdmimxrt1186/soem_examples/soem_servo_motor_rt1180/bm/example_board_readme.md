@@ -2,9 +2,7 @@ Hardware requirements
 ===================
 - Mini/micro USB cable
 - Network cable RJ45 standard
-- FRDM-IMXRT1186 board *2
-- FRDM-MC-LVPMSM board
-- Teknic 2311P Motor
+- FRDM-IMXRT1186 board
 - Personal Computer
 
 Board settings
