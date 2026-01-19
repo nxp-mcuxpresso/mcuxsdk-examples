@@ -269,8 +269,13 @@ void APP_DPU_ArbitaryWarping(void)
     displayTimingConfig.hbp    = APP_HBP;
     displayTimingConfig.height = APP_PANEL_HEIGHT;
     displayTimingConfig.vsw    = APP_VSW;
+#if defined(FSL_FEATURE_DISPLAY_SEERIS_MDR7) && FSL_FEATURE_DISPLAY_SEERIS_MDR7
+    displayTimingConfig.vfp    = APP_VFP;
+    displayTimingConfig.vbp    = APP_VBP;
+#else
     displayTimingConfig.vfp    = APP_VFP - 1U;
     displayTimingConfig.vbp    = APP_VBP + 1U;
+#endif
 
     DPU_InitDisplayTiming(APP_DPU, APP_DPU_DISPLAY_INDEX, &displayTimingConfig);
 
