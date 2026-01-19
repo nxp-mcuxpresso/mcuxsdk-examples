@@ -12,9 +12,9 @@ The example requires connecting between CAN pins of two boards.
 The connection should be set as follows:
 
 Between two boards:
-- J17-2(CANH) node A, J17-2(CANH) node B
-- J17-3(CANL) node A, J17-3(CANL) node B
-- J17-4(GND) node A, J7-4(GND) node B
+- J20-1(CANH) node A, J20-1(CANH) node B
+- J20-2(CANL) node A, J20-2(CANL) node B
+- J20-3(GND) node A, J20-3(GND) node B
 
 Prepare the Demo
 ================
