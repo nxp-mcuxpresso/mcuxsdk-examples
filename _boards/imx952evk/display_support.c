@@ -377,23 +377,6 @@ void BOARD_InitDisplayInterface(void)
     DSI_GetDefaultConfig(&dsiConfig);
     DSI_Init(DSI_MAIN, DSI_HOST, DSI_INT, &dsiConfig);
 
-    /* Set MIPI DSI PHY config */
-    dsi_phy_config_t phyConfig;
-    phyConfig.phymode = kDSI_DPHY;
-    phyConfig.enableNoncontinuousClk = false;
-    phyConfig.ppiwidth = kDSI_PPI8BITS;
-    phyConfig.numLanes = APP_MIPI_DSI_LANE_NUM -1U;
-    phyConfig.lp2hs_time = 0x02F3D91U;
-    phyConfig.hs2lp_time = 0x205ACFU;
-    phyConfig.esccmd_time = 0x1b90000U;
-    phyConfig.escbyte_time = 0x10e0000U;
-    phyConfig.lptx_clkdiv = 10U;
-    phyConfig.tolerance_time = 0x280AU;
-    phyConfig.cal_time = 0U;
-    phyConfig.ulps_wakeuptime = 0U;
-
-    DSI_SetPhyConfig(DSI_PHY, &phyConfig);
-
     /* IPI setting is based on video mode only */
     /* Set MIPI DSI IPI config */
     const dsi_ipi_config_t ipiConfig = {.pixelPayloadSize      = APP_PANEL_WIDTH,
@@ -422,10 +405,27 @@ void BOARD_InitDisplayInterface(void)
     uint32_t dataRateFreq_Hz = voutClkFreq_Hz;
     uint32_t phyRefClkFreq_Hz = 24000000U;
     uint32_t bndwidth_Hz = voutClkFreq_Hz * 2;
-    uint32_t lpclk_hz = mipiDsiDpiClkFreq_Hz / 20;
+    uint32_t lpclk_hz = mipiDsiDpiClkFreq_Hz / 8;
     DSI_StartupTxStaticSetting(APP_DPU_DPHY);
     DSI_DphyTxDynamicSetting(APP_DPU_DPHY, bndwidth_Hz, lpclk_hz);
     DSI_ConfigDphy(DSI_CSR, phyRefClkFreq_Hz, dataRateFreq_Hz, &ipiConfig);
+
+    /* Set MIPI DSI PHY config */
+    dsi_phy_config_t phyConfig;
+    phyConfig.phymode = kDSI_DPHY;
+    phyConfig.enableNoncontinuousClk = false;
+    phyConfig.ppiwidth = kDSI_PPI8BITS;
+    phyConfig.numLanes = APP_MIPI_DSI_LANE_NUM -1U;
+    phyConfig.lp2hs_time = 0x10000U;
+    phyConfig.hs2lp_time = 0x10000U;
+    phyConfig.esccmd_time = 0x90000U;
+    phyConfig.escbyte_time = 0xe0000U;
+    phyConfig.lptx_clkdiv = 4U;
+    phyConfig.tolerance_time = 0U;
+    phyConfig.cal_time = 0U;
+    phyConfig.ulps_wakeuptime = 0U;
+
+    DSI_SetPhyConfig(DSI_PHY, &phyConfig);
 
     status_t result = DSI_PowerUp(DSI_MAIN, DSI_PHY);
     if (result != 0U)
