@@ -1,6 +1,7 @@
-config secondary_board
-    string
-    default "$(board)"
+#
+# Copyright 2025-2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
 
 config secondary_toolchain
     string
