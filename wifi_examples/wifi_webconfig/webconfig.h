@@ -50,5 +50,6 @@
 #else
 #define WC_DEBUG(...)
 #endif
-
+#define ASCII_PRINTABLE_MIN 32   /* Space */
+#define ASCII_PRINTABLE_MAX 126  /* '~' */
 #endif /* _WEBCONFIG_H_ */

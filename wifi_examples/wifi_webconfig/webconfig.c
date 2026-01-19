@@ -231,6 +231,11 @@ static int CGI_HandlePost(HTTPSRV_CGI_REQ_STRUCT *param)
          * This message will also hold the new IP address under which the board will be reachable */
         PRINTF("[i] Successfully joined: %s\r\n", posted_ssid);
         char ip[32];
+		
+        /* sync posted Wi-Fi to runtime state */
+        strncpy(g_BoardState.ssid, posted_ssid, sizeof(g_BoardState.ssid));
+        strncpy(g_BoardState.password, posted_passphrase, sizeof(g_BoardState.password));
+        strncpy(g_BoardState.security, posted_security, sizeof(g_BoardState.security));
         /* Get new client address to be sent back to the old browser session */
         WPL_GetIP(ip, 1);
         PRINTF(" Now join that network on your device and connect to this IP: %s\r\n", ip);
@@ -356,6 +361,8 @@ static void LinkStatusChangeCallback(bool linkState)
         /* -------- LINK LOST -------- */
         /* DO SOMETHING */
         PRINTF("-------- LINK LOST --------\r\n");
+        g_BoardState.connected = false;
+        vTaskResume(g_BoardState.mainTask);
     }
     else
     {
@@ -455,8 +462,15 @@ static void main_task(void *arg)
             case WIFI_STATE_CLIENT:
                 SetBoardToClient();
                 /* Suspend here until its time to swtich back to AP */
-                vTaskSuspend(NULL);
-                CleanUpClient();
+                if (g_BoardState.connected == true)
+                {  
+                    vTaskSuspend(NULL);
+                }
+
+                if (g_BoardState.connected == false)
+                {  
+                    CleanUpClient();
+                }
                 break;
             case WIFI_STATE_AP:
             default:
@@ -548,6 +562,11 @@ static uint32_t SetBoardToClient()
                 do
                 {
                     c = GETCHAR();
+					
+                    // Print received character in hex and ASCII. Non-printable characters are shown as '.'
+                    PRINTF("[dbg] got char: 0x%02X (%c)\r\n", 
+                           (unsigned char)c,
+                           (c >= ASCII_PRINTABLE_MIN && c <= ASCII_PRINTABLE_MAX) ? c : '.');
                     // Skip over \n and \r and don't print the prompt again, just get next char
                 } while (c == '\n' || c == '\r');
 
