@@ -15,4 +15,3 @@ lpspi_loopback:
       - ${board_root}/${board}/driver_examples/lpspi/loopback/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    frdmmcxa577: []
