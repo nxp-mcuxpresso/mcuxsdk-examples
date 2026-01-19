@@ -9,9 +9,6 @@
 #if defined(SDK_I2C_BASED_COMPONENT_USED) && SDK_I2C_BASED_COMPONENT_USED
 #include "fsl_lpi2c.h"
 #endif
-#if defined(BOARD_USE_PCA6416A) && BOARD_USE_PCA6416A
-#include "fsl_pca6416a.h"
-#endif /* BOARD_USE_PCA6416A */
 #include "hal_clock.h"
 
 /*******************************************************************************
@@ -189,48 +186,6 @@ status_t BOARD_I2C_DeviceReceive( void *base,
                                flags);
 }
 
-#if defined(BOARD_USE_ADP5585) && BOARD_USE_ADP5585
-void BOARD_ADP5585_I2C_Init(void)
-{
-    BOARD_LPI2C_Init(BOARD_ADP5585_I2C, BOARD_ADP5585_I2C_CLOCK_FREQ);
-}
-
-status_t BOARD_ADP5585_I2C_Send(uint8_t deviceAddress,
-                                uint32_t subAddress,
-                                uint8_t subAddressSize,
-                                const uint8_t *txBuff,
-                                uint8_t txBuffSize,
-                                uint32_t flags)
-{
-    return BOARD_LPI2C_Send(BOARD_ADP5585_I2C, deviceAddress, subAddress, subAddressSize, (uint8_t *)txBuff, txBuffSize,
-                            flags);
-}
-
-status_t BOARD_ADP5585_I2C_Receive(uint8_t deviceAddress,
-                                   uint32_t subAddress,
-                                   uint8_t subAddressSize,
-                                   uint8_t *rxBuff,
-                                   uint8_t rxBuffSize,
-                                   uint32_t flags)
-{
-    return BOARD_LPI2C_Receive(BOARD_ADP5585_I2C, deviceAddress, subAddress, subAddressSize, rxBuff, rxBuffSize, flags);
-}
-
-void BOARD_InitADP5585(adp5585_handle_t *handle)
-{
-    BOARD_ADP5585_I2C_Init();
-
-    static const adp5585_config_t config = {
-        .i2cAddr         = BOARD_ADP5585_I2C_ADDR,
-        .I2C_SendFunc    = BOARD_ADP5585_I2C_Send,
-        .I2C_ReceiveFunc = BOARD_ADP5585_I2C_Receive,
-    };
-
-    ADP5585_Init(handle, &config);
-}
-
-#endif /* BOARD_USE_ADP5585. */
-
 #if defined(BOARD_USE_PCAL6524) && BOARD_USE_PCAL6524
 void BOARD_PCAL6524_I2C_Init(void)
 {
@@ -362,50 +317,6 @@ void BOARD_InitPCAL6408_I2C5(pcal6408_handle_t *handle)
 }
 #endif /* BOARD_USE_PCAL6408. */
 
-#if defined(BOARD_USE_PCA6416A) && BOARD_USE_PCA6416A
-void BOARD_PCA6416A_I2C_Init(void)
-{
-    BOARD_LPI2C_Init(BOARD_PCA6416A_I2C, BOARD_PCA6416A_I2C_CLOCK_FREQ);
-}
-
-status_t BOARD_PCA6416A_I2C_Send(void *base,
-                                 uint8_t deviceAddress,
-                                 uint32_t subAddress,
-                                 uint8_t subAddressSize,
-                                 const uint8_t *txBuff,
-                                 uint8_t txBuffSize,
-                                 uint32_t flags)
-{
-    return BOARD_LPI2C_Send(base, deviceAddress, subAddress, subAddressSize, (uint8_t *)txBuff,
-                            txBuffSize, flags);
-}
-
-status_t BOARD_PCA6416A_I2C_Receive(void *base,
-                                    uint8_t deviceAddress,
-                                    uint32_t subAddress,
-                                    uint8_t subAddressSize,
-                                    uint8_t *rxBuff,
-                                    uint8_t rxBuffSize,
-                                    uint32_t flags)
-{
-    return BOARD_LPI2C_Receive(base, deviceAddress, subAddress, subAddressSize, rxBuff, rxBuffSize,
-                               flags);
-}
-
-void BOARD_InitPCA6416A(pca6416a_handle_t *handle)
-{
-    BOARD_PCA6416A_I2C_Init();
-
-    static const pca6416a_config_t config = {
-        .i2cBase         = BOARD_PCA6416A_I2C,
-        .i2cAddr         = BOARD_PCA6416A_I2C_ADDR,
-        .I2C_SendFunc    = BOARD_PCA6416A_I2C_Send,
-        .I2C_ReceiveFunc = BOARD_PCA6416A_I2C_Receive,
-    };
-
-    PCA6416A_Init(handle, &config);
-}
-#endif /* BOARD_USE_PCA6416A. */
 #endif /* SDK_I2C_BASED_COMPONENT_USED */
 
 void BOARD_McoreSUSPEND(void)

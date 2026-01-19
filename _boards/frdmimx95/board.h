@@ -11,17 +11,11 @@
 #include "fsl_debug_console.h"
 #include "hal_clock.h"
 #include "clock_config.h"
-#if defined(BOARD_USE_ADP5585) && BOARD_USE_ADP5585
-#include "fsl_adp5585.h"
-#endif
 #if defined(BOARD_USE_PCAL6524) && BOARD_USE_PCAL6524
 #include "fsl_pcal6524.h"
 #endif
 #if defined(BOARD_USE_PCAL6408) && BOARD_USE_PCAL6408
 #include "fsl_pcal6408.h"
-#endif
-#if defined(BOARD_USE_PCA6416A) && BOARD_USE_PCA6416A
-#include "fsl_pca6416a.h"
 #endif
 
 /*******************************************************************************
@@ -114,27 +108,14 @@
 #define BOARD_CODEC_I2C_BASEADDR LPI2C4
 #define BOARD_CODEC_I2C_INSTANCE 4U
 
-/* ADP5585 */
-#define BOARD_ADP5585_I2C            LPI2C2
-#define BOARD_ADP5585_I2C_ADDR       (0x34U)
-#define BOARD_ADP5585_I2C_CLOCK_ROOT hal_clock_lpi2c2
-#define BOARD_ADP5585_I2C_CLOCK_FREQ HAL_ClockGetRate(BOARD_ADP5585_I2C_CLOCK_ROOT)
-/* hal api and hal arguments */
-#define BOARD_ADP5585_I2C_CLOCK_ROOT_HAL hal_clock_lpi2c2
-#define BOARD_ADP5585_I2C_CLOCK_FREQ_HAL HAL_ClockGetRate(BOARD_ADP5585_I2C_CLOCK_ROOT_HAL)
-
-#define BOARD_ADP5585_PDM_MQS_SEL (2U)
-#define BOARD_ADP5585_EXP_SEL     (4U)
-#define BOARD_ADP5585_CAN_STBY    (8U)
-
 /* PCAL6524 */
-#define BOARD_PCAL6524_I2C            LPI2C7
+#define BOARD_PCAL6524_I2C            LPI2C2
 #define BOARD_PCAL6524_I2C_ADDR       (0x22U)
-#define BOARD_PCAL6524_I2C_CLOCK_ROOT hal_clock_lpi2c7
+#define BOARD_PCAL6524_I2C_CLOCK_ROOT hal_clock_lpi2c2
 #define BOARD_PCAL6524_I2C_CLOCK_FREQ HAL_ClockGetRate(BOARD_PCAL6524_I2C_CLOCK_ROOT)
 
-#define BOARD_PCAL6524_SI5332_RST     (0x8U + 0x5U)
-#define BOARD_PCAL6524_USB2_PWR_EN    (0x3U)
+#define BOARD_PCAL6524_CAN_STBY       (0x7U)
+#define BOARD_PCAL6524_CH_CAN_SEL     (0x4U)
 
 /* PCAL6408 */
 #define BOARD_PCAL6408_I2C1            LPI2C1
@@ -171,18 +152,6 @@
 #define BOARD_PCAL6408_AQR113C_RST_B_3V3 (1U)
 #define BOARD_PCAL6408_ENET1_RST_B       (2U)
 #define BOARD_PCAL6408_ETH_CLK_EN        (3U)
-
-/* PCA6416A (U27) */
-#define BOARD_PCA6416A_I2C            LPI2C6
-#define BOARD_PCA6416A_I2C_ADDR       (0x21U)
-#define BOARD_PCA6416A_I2C_CLOCK_ROOT hal_clock_lpi2c6
-#define BOARD_PCA6416A_I2C_CLOCK_FREQ HAL_ClockGetRate(BOARD_PCA6416A_I2C_CLOCK_ROOT)
-
-#define BOARD_PCA6416A_CAN1_STBY_B     5U
-#define BOARD_PCA6416A_CAN1_EN         6U
-#define BOARD_PCA6416A_CAN1_WAKE       7U
-
-#define BOARD_PCA6416A_PDM_CAN_SEL     (8U + 2U)
 
 /* hal api and hal arguments */
 #define BOARD_PCAL6524_I2C_CLOCK_ROOT_HAL hal_clock_lpi2c2
@@ -223,23 +192,6 @@ status_t BOARD_Display_I2C_Send(
     uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, const uint8_t *txBuff, uint8_t txBuffSize);
 status_t BOARD_Display_I2C_Receive(
     uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, uint8_t *rxBuff, uint8_t rxBuffSize);
-#if defined(BOARD_USE_ADP5585) && BOARD_USE_ADP5585
-void BOARD_ADP5585_I2C_Init(void);
-status_t BOARD_ADP5585_I2C_Send(uint8_t deviceAddress,
-                                uint32_t subAddress,
-                                uint8_t subAddressSize,
-                                const uint8_t *txBuff,
-                                uint8_t txBuffSize,
-                                uint32_t flags);
-status_t BOARD_ADP5585_I2C_Receive(uint8_t deviceAddress,
-                                   uint32_t subAddress,
-                                   uint8_t subAddressSize,
-                                   uint8_t *rxBuff,
-                                   uint8_t rxBuffSize,
-                                   uint32_t flags);
-
-void BOARD_InitADP5585(adp5585_handle_t *handle);
-#endif /* BOARD_USE_ADP5585 */
 
 #if defined(BOARD_USE_PCAL6524) && BOARD_USE_PCAL6524
 void BOARD_PCAL6524_I2C_Init(void);
@@ -280,25 +232,6 @@ void BOARD_InitPCAL6408_I2C3(pcal6408_handle_t *handle);
 void BOARD_InitPCAL6408_I2C4(pcal6408_handle_t *handle);
 void BOARD_InitPCAL6408_I2C5(pcal6408_handle_t *handle);
 #endif /* BOARD_USE_PCAL6408 */
-
-#if defined(BOARD_USE_PCA6416A) && BOARD_USE_PCA6416A
-void BOARD_PCA6416A_I2C_Init(void);
-status_t BOARD_PCA6416A_I2C_Send(void *base,
-                                 uint8_t deviceAddress,
-                                 uint32_t subAddress,
-                                 uint8_t subAddressSize,
-                                 const uint8_t *txBuff,
-                                 uint8_t txBuffSize,
-                                 uint32_t flags);
-status_t BOARD_PCA6416A_I2C_Receive(void *base,
-                                    uint8_t deviceAddress,
-                                    uint32_t subAddress,
-                                    uint8_t subAddressSize,
-                                    uint8_t *rxBuff,
-                                    uint8_t rxBuffSize,
-                                    uint32_t flags);
-void BOARD_InitPCA6416A(pca6416a_handle_t *handle);
-#endif /* BOARD_USE_PCA6416A */
 
 #endif
 
