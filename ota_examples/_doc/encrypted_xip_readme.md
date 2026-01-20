@@ -188,7 +188,7 @@ Start preferentially with an empty board, erasing original content if needed.
 
 Note: This part can be skipped as OTA examples in SDK uses pre-generated key pairs.
 
-1. Generate private key using imgtool: `imgtool keygen -k enc-ec256-priv.pem -t rsa-2048`
+1. Generate private key using imgtool: `imgtool keygen -k enc-ec256-priv.pem -t ecdsa-p256`
     * Adjust the content of the `middleware\mcuboot_opensource\boot\nxp_mcux_sdk\keys\enc-ec256-priv.pem` accordingly.
 
 3. Extract private key to a C array: `imgtool getpriv --minimal -k enc-ec256-priv.pem`
