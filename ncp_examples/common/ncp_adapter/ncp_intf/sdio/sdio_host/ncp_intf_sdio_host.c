@@ -579,23 +579,6 @@ static void SDIO_CardInterruptCallBack(void *userData)
     }
 }
 
-static uint32_t sdio_card_read_scratch_reg(void)
-{
-    uint32_t val    = 0;
-    uint32_t rd_len = 0;
-
-    (void)sdio_drv_creg_read(0x64, 1, &val);
-    rd_len = (val & 0xffU);
-    (void)sdio_drv_creg_read(0x65, 1, &val);
-    rd_len |= ((val & 0xffU) << 8);
-    (void)sdio_drv_creg_read(0x66, 1, &val);
-    rd_len |= ((val & 0xffU) << 16);
-    (void)sdio_drv_creg_read(0x67, 1, &val);
-    rd_len |= ((val & 0xffU) << 24);
-
-    return rd_len;
-}
-
 ncp_status_t sdio_ioport_init(void)
 {
     /* this sets intmask on card and makes interrupts repeatable */
@@ -656,7 +639,7 @@ static bool sdio_card_ready_wait(uint32_t card_poll)
             ncp_adap_d("Firmware Ready");
             return true;
         }
-        vTaskDelay((5) / (portTICK_PERIOD_MS));
+        OSA_TimeDelay(1);
     }
     return false;
 }
@@ -993,7 +976,7 @@ bool sdio_card_status(uint8_t bits)
         {
             return true;
         }
-        vTaskDelay((1) / (portTICK_PERIOD_MS));
+        OSA_TimeDelay(1);
     }
     return false;
 }
@@ -1118,6 +1101,8 @@ static ncp_status_t sdio_card_init(void)
 
     BOARD_SD_Enable(true);
 
+    g_sdio_card.usrParam.powerOffDelayMS= 1;
+    g_sdio_card.usrParam.powerOnDelayMS = 1;
     ret = SDIO_CardInit(&g_sdio_card);
     if (ret != kStatus_Success)
     {
@@ -1133,7 +1118,7 @@ static ncp_status_t sdio_card_init(void)
     }
     ncp_adap_d("%s: sdio_set_host_status success", __FUNCTION__);
 
-    if (sdio_card_ready_wait(1000) != true)
+    if (sdio_card_ready_wait(5000) != true)
     {
         ncp_adap_e("%s: SDIO slave not ready", __FUNCTION__);
         return NCP_STATUS_ERROR;
@@ -1187,40 +1172,6 @@ static ncp_status_t sdio_hostInit(void)
         return NCP_STATUS_ERROR;
     }
 
-    uint32_t resp;
-    bool sdio_card_stat;
-    ret = sdio_drv_creg_read(CARD_TO_HOST_EVENT_REG, 1, &resp);
-    if (ret && (resp & (DN_LD_CARD_RDY)) == 0U)
-    {
-        sdio_card_stat = sdio_card_status(UP_LD_CARD_RDY);
-        if (sdio_card_stat != false)
-        {
-            uint32_t rd_len;
-            rd_len = sdio_card_read_scratch_reg();
-            if (rd_len > 0U)
-            {
-                (void)sdio_drv_creg_write(FN1_BLOCK_SIZE_0, 0, 0x8, &resp);
-                (void)sdio_drv_creg_write(FN1_BLOCK_SIZE_1, 0, 0x0, &resp);
-
-                uint8_t buf[256];
-                ret = sdio_drv_read(0x10000, 1, rd_len, 8, buf, &resp);
-                if (!ret)
-                {
-                    ncp_adap_e(
-                        "SDIO read failed, "
-                        "resp:%x",
-                        resp);
-                    return NCP_STATUS_ERROR;
-                }
-            }
-        }
-    }
-    else if (!ret)
-    {
-        ncp_adap_e("failed to read EVENT_REG");
-        return NCP_STATUS_ERROR;
-    }
-
     return NCP_STATUS_SUCCESS;
 }
 
@@ -1252,7 +1203,7 @@ static ncp_status_t ncp_sdhost_CardInit(void)
 
     if (ret == NCP_STATUS_SUCCESS)
     {
-        if (sdio_card_ready_wait(1000) != true)
+        if (sdio_card_ready_wait(5000) != true)
         {
             ncp_adap_e("SDIO slave not ready");
             return NCP_STATUS_ERROR;
