@@ -135,6 +135,9 @@ int ncp_tlv_adapter_encrypt_deinit(void)
         return NCP_STATUS_ERROR;
     }
 
+    psa_destroy_key(adapter->crypt->key_enc_id);
+    psa_destroy_key(adapter->crypt->key_dec_id);
+
     (void) memset(adapter->crypt, 0, sizeof(crypt_param_t));
     (void) OSA_MemoryFree(adapter->crypt);
     adapter->crypt = NULL;
