@@ -14,7 +14,9 @@
 #define CONFIG_MAX_IPV6_ADDRESSES 3
 
 #if defined(IW610)
+#ifndef CONFIG_WIFI_IND_RESET
 #define CONFIG_WIFI_IND_RESET 1
+#endif
 #endif
 
 #if defined(SD9177) || defined(IW610) || defined(SD8978)

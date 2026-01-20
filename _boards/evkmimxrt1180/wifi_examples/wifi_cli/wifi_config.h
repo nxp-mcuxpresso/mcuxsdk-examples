@@ -117,8 +117,12 @@
 #define CONFIG_TURBO_MODE       1
 #if defined(SD8978) || defined(SD8987)
 #define CONFIG_AUTO_RECONNECT 1
+#ifndef CONFIG_WIFI_IND_DNLD
 #define CONFIG_WIFI_IND_DNLD 0
+#endif
+#ifndef CONFIG_WIFI_IND_RESET
 #define CONFIG_WIFI_IND_RESET 0
+#endif
 #endif
 
 #define CONFIG_EXT_SCAN_SUPPORT 1

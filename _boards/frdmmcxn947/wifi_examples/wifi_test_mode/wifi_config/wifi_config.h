@@ -12,7 +12,9 @@
 
 #define CONFIG_IPV6 0
 #define CONFIG_MAX_IPV6_ADDRESSES 0
+#ifndef CONFIG_WIFI_IND_DNLD
 #define CONFIG_WIFI_IND_DNLD 1
+#endif
 
 #if defined(SD8978) || defined(SD8987)
 #define CONFIG_FW_VDLL 1
