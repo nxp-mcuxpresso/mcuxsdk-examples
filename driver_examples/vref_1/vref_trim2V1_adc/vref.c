@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2022 NXP
+ * Copyright 2019-2022, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -23,7 +23,6 @@ static void LPADC_Configuration(void);
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-
 #if defined(FSL_FEATURE_LPADC_HAS_CMDL_MODE) && FSL_FEATURE_LPADC_HAS_CMDL_MODE
 const uint32_t g_Lpadc_FullRange   = 65536UL;
 const uint32_t g_Lpadc_ResultShift = 0UL;
@@ -103,8 +102,11 @@ int main(void)
     PRINTF("ADC Full Range: %d\r\n", g_Lpadc_FullRange);
     PRINTF("Default (Factory) trim value is :%d\r\n", VREF_GetTrim21Val(DEMO_VREF_BASE));
 
-    /* Change the voltage by 0.1V each loop. */
+#if (defined(FSL_FEATURE_VREF_SUPPORT_2V5) && FSL_FEATURE_VREF_SUPPORT_2V5)
+    for (trimVal = 0U; trimVal < 0x6U; trimVal++)
+#else
     for (trimVal = 0U; trimVal < 0xCU; trimVal++)
+#endif
     {
         VREF_SetTrim21Val(DEMO_VREF_BASE, trimVal);
         LPADC_DoSoftwareTrigger(DEMO_LPADC_BASE, 1U);
@@ -119,7 +121,6 @@ int main(void)
         voltage  = DEMO_LPADC_VREF_VOLTAGE * ((float)adcValue / (float)g_Lpadc_FullRange);
         PRINTF("\r\nUse trim value: %d\r\n", trimVal);
         PRINTF("ADC conversion result: %d\r\n", adcValue);
-        PRINTF("Expected voltage on VREF_OUT: %.3fV\r\n", 1.000f + (0.100f * (double)trimVal));
         PRINTF("Actual voltage on VREF_OUT: %.3fV\r\n", (double)voltage);
     }
 

@@ -33,24 +33,20 @@ Default (Factory) trim value is :15
 
 Use trim value: 0
 ADC conversion result: 19599
-Expected voltage on VREF_OUT: 1.000V
 Actual voltage on VREF_OUT: 0.987V
 
 Use trim value: 1
 ADC conversion result: 21839
-Expected voltage on VREF_OUT: 1.100V
 Actual voltage on VREF_OUT: 1.100V
 
 Use trim value: 2
 ADC conversion result: 23942
-Expected voltage on VREF_OUT: 1.200V
 Actual voltage on VREF_OUT: 1.206V
 
 ......
 
 Use trim value: 11
 ADC conversion result: 41580
-Expected voltage on VREF_OUT: 2.100V
 Actual voltage on VREF_OUT: 2.094V
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

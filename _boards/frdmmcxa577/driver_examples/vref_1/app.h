@@ -18,7 +18,7 @@
 #define DEMO_LPADC_USER_CMDID   1U
 /* Use VDD_ANA. */
 #define DEMO_LPADC_VREF_SOURCE  kLPADC_ReferenceVoltageAlt3
-#define DEMO_LPADC_VREF_VOLTAGE 3.300f
+#define DEMO_LPADC_VREF_VOLTAGE 3.26f
 
 #define DEMO_VREF_BASE VREF0
 /*${macro:end}*/
