@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2025 NXP
+ * Copyright 2023-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -580,11 +580,13 @@ void BOARD_Init16bitsPsRam(XSPI_Type *base)
     };
     /* clang-format on */
 
+#if (defined(FSL_FEATURE_XSPI_HAS_DDR) && FSL_FEATURE_XSPI_HAS_DDR)
     xspi_device_ddr_config_t psRamDdrConfig = {
         .ddrDataAlignedClk         = kXSPI_DDRDataAlignedWith2xInternalRefClk,
         .enableByteSwapInOctalMode = false,
         .enableDdr                 = true,
     };
+#endif
 
     xspi_device_config_t psRamDeviceConfig = {
         .xspiRootClk                                = 500000000,      /*!< 500MHz */
@@ -612,7 +614,9 @@ void BOARD_Init16bitsPsRam(XSPI_Type *base)
         .deviceSize[0]                                    = 0x8000U,
         .deviceSize[1]      = 0x8000U, /*!< Single die device, so deviceSize1 should equal to deviceSize0. */
         .ptrDeviceRegInfo   = NULL,
+#if (defined(FSL_FEATURE_XSPI_HAS_DDR) && FSL_FEATURE_XSPI_HAS_DDR)
         .ptrDeviceDdrConfig = &psRamDdrConfig,
+#endif
     };
     /* Get XSPI default settings and configure the xspi. */
     XSPI_GetDefaultConfig(&config);
