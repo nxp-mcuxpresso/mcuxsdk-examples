@@ -28,7 +28,7 @@
 #define USE_ENCODER_ENDAT2P2   (2U)    /* EnDat2.2 encoder */
 #define USE_ENCODER_BISS       (3U)    /* BiSS encoder */
 
-#define USE_ENCODER     (USE_ENCODER_ENDAT3)    /* Select which encoder will be used. */
+#define USE_ENCODER     (USE_ENCODER_BISS)    /* Select which encoder will be used. */
 
 #include "fsl_common.h"
 #include "fsl_xbar.h"

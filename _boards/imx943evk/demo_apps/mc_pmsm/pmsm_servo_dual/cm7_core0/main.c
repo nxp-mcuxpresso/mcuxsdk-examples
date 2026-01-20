@@ -15,6 +15,7 @@
 #include "fsl_rgpio.h"
 #include "fsl_lpuart.h"
 #include "m1_sm_servo.h"
+#include "m2_sm_servo.h"
 #include "board.h"
 
 /*******************************************************************************
@@ -44,6 +45,8 @@
 #define FMSTR_LPUART_IRQn(x)         _FMSTR_LPUART_IRQn(x)
 #define FMSTR_LPUART_IRQ_HANDLER(x)  _FMSTR_LPUART_IRQ_HANDLER(x)
 
+#define BOARD_USER_BUTTON_PRIORITY 4
+
 /* CPU load measurement SysTick START / STOP macros */
 #define SYSTICK_START_COUNT() (SysTick->VAL = SysTick->LOAD)
 #define SYSTICK_STOP_COUNT(par1)   \
@@ -57,39 +60,50 @@
         __DSB();      \
         __ISB();      \
     }
-
+        
+/* Init SDK HW */
 /* TMR1 reload ISR called with 1ms period */
 RAM_FUNC_LIB
 void TMR1_IRQHandler(void);
-
 /* SINC conversation interrupt handler */
 RAM_FUNC_LIB
 void SINC1_CH0_IRQHandler(void);
+RAM_FUNC_LIB
+void SINC2_CH0_IRQHandler(void);
 
+/* EnDat2.2 interrupt for motor connector 1 */
+RAM_FUNC_LIB
+void M1_ENDAT2P2_IRQHandler(void);
+
+/* EnDat2.2 interrupt for motor connector 2 */
+RAM_FUNC_LIB
+void M2_ENDAT2P2_IRQHandler(void);
+
+/* Initialization SysTick */
 static void BOARD_InitSysTick(void);
 
 /*******************************************************************************
  * Variables
  ******************************************************************************/
 
-/*******************************************************************************
- * Code
- ******************************************************************************/
-
 /* CPU load measurement using Systick */
 uint32_t g_ui32NumberOfCycles    = 0U;
 uint32_t g_ui32MaxNumberOfCycles = 0U;
+uint32_t g_ui32M2NumberOfCycles    = 0U;
+uint32_t g_ui32M2MaxNumberOfCycles = 0U;
 
 /* Demo mode enabled/disabled */
 bool_t bDemoModeSpeed    = FALSE;
 bool_t bDemoModePosition = FALSE;
+bool_t bM2DemoModeSpeed    = FALSE;
+bool_t bM2DemoModePosition = FALSE;
 
 /* Structure used in FM to get required ID's */
 app_ver_t g_sAppIdFM = {
-    "../../../examples/_boards/imx943evk/demo_apps/mc_pmsm/pmsm_servo/cm7_core1",        /* User Path 1- the highest priority */
-    "../../../boards/imx943evk/demo_apps/mc_pmsm/pmsm_servo/cm7_core1",       /* User Path 2 */
+    "../../../examples/_boards/imx943evk/demo_apps/mc_pmsm/pmsm_servo_dual/cm7_core0",        /* User Path 1- the highest priority */
+    "../../../boards/imx943evk/demo_apps/mc_pmsm/pmsm_servo_dual/cm7_core0",       /* User Path 2 */
     "imx943evk", /* board id */
-    "pmsm_servo",     /* example id */
+    "pmsm_servo_dual",     /* example id */
     MCRSP_VER,      /* sw version */
     FEATURE_SET,    /* example's feature-set */
 };
@@ -98,6 +112,7 @@ ctrl_m1_mid_t g_sSpinMidSwitch;           /* Control Spin/MID switching */
 
 /* Encoder timeout fault counter */
 uint8_t ui8M1EncISRCheck = 0U;
+uint8_t ui8M2EncISRCheck = 0U;
 
 /*******************************************************************************
  * Prototypes
@@ -114,66 +129,102 @@ static void init_freemaster_lpuart(void);
  */
 int main(void)
 {  
-  /*Accessing ID structure to prevent optimization*/
-  g_sAppIdFM.ui16FeatureSet = FEATURE_SET;
-  
-  uint32_t ui32PrimaskReg;
-  
-  /* Disable all interrupts before peripherals are initialized */
-  ui32PrimaskReg = DisableGlobalIRQ();
-  
-  SystemPlatformInit();
-  BOARD_ConfigMPU();
-  BOARD_InitDebugConsolePins();
-  BOARD_InitBootPins();
-  BOARD_BootClockRUN();
-  
-  /* FreeMASTER communication layer initialization */
-  init_freemaster_lpuart();
-  
-  FMSTR_Init();
-  
-  /* SysTick initialization for CPU load measurement */
-  BOARD_InitSysTick();
-  
-  /* Init peripheral motor control driver for motors M1 and M2 */
-  MCDRV_Init();
-  
-  /* Turn off application */
-  M1_SetAppSwitch(FALSE);
+    /*Accessing ID structure to prevent optimization*/
+    g_sAppIdFM.ui16FeatureSet = FEATURE_SET;
 
-  /* Spin state machine is default */
-  g_sSpinMidSwitch.eAppState = kAppStateSpin;
+    uint32_t ui32PrimaskReg;
+
+    /* Disable all interrupts before peripherals are initialized */
+    ui32PrimaskReg = DisableGlobalIRQ();
+
+    SystemPlatformInit();
+    BOARD_ConfigMPU();
+    BOARD_InitDebugConsolePins();
+    BOARD_InitBootPins();
+    BOARD_BootClockRUN();
+    
+    /* FreeMASTER communication layer initialization */
+    init_freemaster_lpuart();
+    
+    FMSTR_Init();
+
+    /* SysTick initialization for CPU load measurement */
+    BOARD_InitSysTick();
+
+    /* Init peripheral motor control driver for motors M1 and M2 */
+    MCDRV_Init();
+
+    /* Turn off application */
+    M1_SetAppSwitch(FALSE);
+
+    /* Spin state machine is default */
+    g_sSpinMidSwitch.eAppState = kAppStateSpin;
   
-  /* Enable interrupts */
-  EnableGlobalIRQ(ui32PrimaskReg);
-  
-  /* Enable PWM clock */
-  g_sM1Pwm3ph.pui32PwmBaseAddress->MCTRL |= PWM_MCTRL_RUN(0xF);	/* Enable PWM for Motor 1 */
-  
-  /* Infinite loop */
-  while (1)
-  {      
-    /* FreeMASTER Polling function */
-    FMSTR_Poll();
-  }
+    /* Enable interrupts */
+    EnableGlobalIRQ(ui32PrimaskReg);
+    
+    /* Enable PWM clock */
+    g_sM1Pwm3ph.pui32PwmBaseAddress->MCTRL |= PWM_MCTRL_RUN(0xF);	/* Enable PWM for Motor 1 */
+    g_sM2Pwm3ph.pui32PwmBaseAddress->MCTRL |= PWM_MCTRL_RUN(0xF);	/* Enable PWM for Motor 2 */
+        
+    /* Infinite loop */
+    while (1)
+    {      
+        /* FreeMASTER Polling function */
+        FMSTR_Poll();
+    }
 }
 
+/* SINC1 conversation interrupt handler */
 RAM_FUNC_LIB
-void ENCODER_IRQHandler(void)
+void SINC1_CH0_IRQHandler(void)
 {
-  /* Start CPU tick number couting */
-  SYSTICK_START_COUNT();
-
-#if (USE_ENCODER == USE_ENCODER_BISS)
-  /* clear BiSS EOT interrupt routed via XBAR */
-  XBAR_ClearOutputStatusFlag(kXBAR1_OutputEdma4IpdReq76);
-#endif
-
-  /* Clear Encoder fault check flag */
-  ui8M1EncISRCheck = 0U; 
+  if(ui8M1EncISRCheck > 3U)
+  {
+      /* Set Encoder timeout fault */
+      FAULT_SET(g_sM1Drive.sFaultIdPending, FAULT_ENC_TIMEOUT);
+      
+      /* Run M1 state machine */
+      SM_StateMachineFast(&g_sM1Ctrl); 
+      
+      ui8M1EncISRCheck--;
+  }
   
-  /* Get position data from EnDat2.2, EnDat3 or BiSS encoder. */
+  /* Read SINC results and process data */
+  M1_MCDRV_SINC_GET(&g_sM1Curr3phDcBus);
+  
+  ui8M1EncISRCheck++;
+}
+
+/* SINC2 conversation interrupt handler */
+RAM_FUNC_LIB
+void SINC2_CH0_IRQHandler(void)
+{
+  if(ui8M2EncISRCheck > 3U)
+  {
+      /* Set Encoder timeout fault */
+      FAULT_SET(g_sM2Drive.sFaultIdPending, FAULT_ENC_TIMEOUT);
+      
+      /* Run M2 state machine */
+      SM_StateMachineFast(&g_sM2Ctrl); 
+      
+      ui8M2EncISRCheck--;
+  }
+  
+  /* Read SINC results and process data */
+  M2_MCDRV_SINC_GET(&g_sM2Curr3phDcBus);
+  
+  ui8M2EncISRCheck++;
+}
+
+/* EnDat2.2 interrupt handler for motor connector 1 */
+RAM_FUNC_LIB
+void M1_ENDAT2P2_IRQHandler(void)
+{
+  /* Clear Encoder fault check flag */
+  ui8M1EncISRCheck = 0U;  
+
+  /* get position from EnDat2.2 */
   M1_MCDRV_ENCODER_GET(&g_sM1Enc);
   
   /* M1 State machine */
@@ -181,38 +232,24 @@ void ENCODER_IRQHandler(void)
   
   /* Call FreeMASTER recorder */
   FMSTR_Recorder(0);
-
-#if (USE_ENCODER == USE_ENCODER_ENDAT3) 
-  /* Clear EnDat3 FG_IRQ0 flag */
-  ENDAT3_IRQ_Clear(ENDAT3, CLEAR_FG_IRQ0);
-#endif  /* EnDat3 encoder is used. */
-  
-  /* Stop CPU tick number couting and store actual and maximum ticks */
-  SYSTICK_STOP_COUNT(g_ui32NumberOfCycles);
-  g_ui32MaxNumberOfCycles =
-    g_ui32NumberOfCycles > g_ui32MaxNumberOfCycles ? g_ui32NumberOfCycles : g_ui32MaxNumberOfCycles;
   
   SDK_ISR_EXIT_BARRIER;
 }
 
+/* EnDat2.2 interrupt handler for motor connector 2 */
 RAM_FUNC_LIB
-void SINC1_CH0_IRQHandler(void)
+void M2_ENDAT2P2_IRQHandler(void)
 {
-  if(ui8M1EncISRCheck > 3U)
-  {
-    /* Set Encoder timeout fault */
-    FAULT_SET(g_sM1Drive.sFaultIdPending, FAULT_ENC_TIMEOUT);
-    
-    /* Run M1 state machine */
-    SM_StateMachineFast(&g_sM1Ctrl); 
-    
-    ui8M1EncISRCheck--;
-  }
+  /* Clear Encoder fault check flag */
+  ui8M2EncISRCheck = 0U;  
   
-  /* Read SINC results and process data */
-  M1_MCDRV_SINC_GET(&g_sM1Curr3phDcBus);
+  /* get position from EnDat2.2 */
+  M2_MCDRV_ENCODER_GET(&g_sM2Enc);
   
-  ui8M1EncISRCheck++;
+  /* M2 State machine */
+  SM_StateMachineFast(&g_sM2Ctrl);
+  
+  SDK_ISR_EXIT_BARRIER;
 }
 
 /*!
@@ -225,20 +262,24 @@ void SINC1_CH0_IRQHandler(void)
  */
 RAM_FUNC_LIB
 void TMR1_IRQHandler(void)
-{    
-  /* M1 Slow StateMachine call */
-  SM_StateMachineSlow(&g_sM1Ctrl);
-  
-  /* Clear the CSCTRL0[TCF1] flag */
-  TMR1->CHANNEL[0].CSCTRL |= TMR_CSCTRL_TCF1(0x00);
-  TMR1->CHANNEL[0].CSCTRL &= ~(TMR_CSCTRL_TCF1_MASK);
-  
-  /* Clear the CSCTRL0[TCF] flag */
-  TMR1->CHANNEL[0].SCTRL &= ~(TMR_SCTRL_TCF_MASK);
-  
-  /* Add empty instructions for correct interrupt flag clearing */
-  M1_END_OF_ISR;
+{
+    /* M1 Slow StateMachine call */
+    SM_StateMachineSlow(&g_sM1Ctrl);
+    
+    /* M2 Slow StateMachine call */
+    SM_StateMachineSlow(&g_sM2Ctrl);    
+
+    /* Clear the CSCTRL0[TCF1] flag */
+    TMR1->CHANNEL[0].CSCTRL |= TMR_CSCTRL_TCF1(0x00);
+    TMR1->CHANNEL[0].CSCTRL &= ~(TMR_CSCTRL_TCF1_MASK);
+
+    /* Clear the CSCTRL0[TCF] flag */
+    TMR1->CHANNEL[0].SCTRL &= ~(TMR_SCTRL_TCF_MASK);
+
+    /* Add empty instructions for correct interrupt flag clearing */
+    M1_END_OF_ISR;
 }
+
 
 /*!
  * @brief LPUART Module initialization (LPUART is a the standard block included e.g. in K66F)
@@ -278,7 +319,32 @@ static void init_freemaster_lpuart(void)
 
     /* Register communication module used by FreeMASTER driver. */
     FMSTR_SerialSetBaseAddress(FMSTR_LPUART_BASE_ADDR(BOARD_DEBUG_UART_INSTANCE));
+
+#if FMSTR_SHORT_INTR || FMSTR_LONG_INTR
+    /* Enable UART interrupts. */
+    EnableIRQ(FMSTR_LPUART_IRQn(BOARD_DEBUG_UART_INSTANCE));
+    EnableGlobalIRQ(0);
+#endif
 }
+
+#if FMSTR_SHORT_INTR || FMSTR_LONG_INTR
+/*
+ *   Application interrupt handler of communication peripheral used in interrupt modes
+ *   of FreeMASTER communication.
+ *
+ *   NXP MCUXpresso SDK framework defines interrupt vector table as a part of "startup_XXXXXX.x"
+ *   assembler/C file. The table points to weakly defined symbols, which may be overwritten by the
+ *   application specific implementation. FreeMASTER overrides the original weak definition and
+ *   redirects the call to its own handler.
+ *
+ */
+
+void FMSTR_LPUART_IRQ_HANDLER(BOARD_DEBUG_UART_INSTANCE)(void)
+{
+    /* Call FreeMASTER Interrupt routine handler */
+    FMSTR_SerialIsr();
+}
+#endif
 
 /*!
  *@brief      SysTick initialization for CPU cycle measurement

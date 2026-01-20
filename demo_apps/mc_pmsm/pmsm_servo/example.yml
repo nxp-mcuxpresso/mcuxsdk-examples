@@ -13,7 +13,7 @@ mc_pmsm_servo:
       - ${board_root}/${board}/demo_apps/mc_pmsm/pmsm_servo/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    imx943evk@cm7_core1:
+    imx943evk@cm7_core0:
     - +iar@debug
     - +armgcc@debug
     - +iar@release

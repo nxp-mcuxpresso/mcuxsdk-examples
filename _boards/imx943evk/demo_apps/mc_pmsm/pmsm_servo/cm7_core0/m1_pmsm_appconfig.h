@@ -5,7 +5,7 @@
 */
 
 /*
-    * FILE NAME: ../../../examples/_boards/imx943evk/demo_apps/mc_pmsm/pmsm_servo_dual/cm7_core1/m1_pmsm_appconfig.h
+    * FILE NAME: ../../../examples/_boards/imx943evk/demo_apps/mc_pmsm/pmsm_servo/cm7_core0/m1_pmsm_appconfig.h
     * DATE: Fri Nov 21 2025, 10:22:07
 */
 
