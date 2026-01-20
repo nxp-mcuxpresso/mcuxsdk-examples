@@ -349,6 +349,10 @@ SECTIONS
     . = ALIGN(4);
     __START_BSS = .;
     __bss_start__ = .;
+    PROVIDE(__active_buf_bss_start = .);
+    */fsl_dma.c.obj(.bss .bss* COMMON)
+    */ncp_intf_uart.c.obj(.bss .bss* COMMON)
+    PROVIDE(__active_buf_bss_end = .);
     *(.bss)
     *(.bss*)
     *(COMMON)

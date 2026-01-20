@@ -90,7 +90,7 @@ mcux_add_source(
             common/ncp_cmd_ble.h
             common/ncp_adapter/ncp_intf/ncp_intf_pm.c
             common/ncp_adapter/ncp_intf/ncp_intf_pm.h
-            common/ncp_adapter/ncp_intf/uart/ncp_intf_uart.c
+            common/ncp_adapter/ncp_intf/uart/ncp_intf_uart_host.c
             common/ncp_adapter/ncp_intf/uart/ncp_intf_uart.h
             common/ncp_cmd_node/ncp_cmd_node.c
             common/ncp_cmd_node/ncp_cmd_node.h

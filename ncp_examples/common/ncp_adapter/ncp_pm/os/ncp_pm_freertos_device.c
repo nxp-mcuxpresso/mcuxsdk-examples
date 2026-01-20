@@ -105,9 +105,9 @@ static const ncp_pm_constraint_cbs_t s_ncp_pm_constraint_cbs = {
 void GPIO_INTA_DriverIRQHandler(void)
 {
     /* Disable GPIO interrupt */
-    GPIO_PinDisableInterrupt(GPIO, 1U, 10U, (uint32_t)kGPIO_InterruptA);   
+    GPIO_PinDisableInterrupt(GPIO, 1U, 10U, (uint32_t)kGPIO_InterruptA);
     /* Clear interrupt status */
-    GPIO_PinClearInterruptFlag(GPIO, 1U, 10U, (uint32_t)kGPIO_InterruptA);    
+    GPIO_PinClearInterruptFlag(GPIO, 1U, 10U, (uint32_t)kGPIO_InterruptA);
     /* Clear NVIC pending IRQ */
     NVIC_ClearPendingIRQ(GPIO_INTA_IRQn);
 }
@@ -195,6 +195,9 @@ void ncp_pm_get_wakeup_source(void *ws)
             case SDU_IRQn:
                 s_wake_src = NCP_PM_WAKE_SRC_SDIO;
                 break;
+            case DMA0_IRQn:
+                s_wake_src = NCP_PM_WAKE_SRC_DMA0;
+                break;
             default:
                 break;
         }
@@ -222,7 +225,7 @@ void ncp_pm_get_wakeup_source(void *ws)
             s_wake_src = NCP_PM_WAKE_SRC_BLE;
             return;
         }
-   }
+    }
 }
 
 static void ncp_pm_print_wakeup_source(void)
@@ -257,6 +260,8 @@ static void ncp_pm_print_wakeup_source(void)
             break;
         case NCP_PM_WAKE_SRC_SDIO:
             src_str = "SDIO";
+        case NCP_PM_WAKE_SRC_DMA0:
+            src_str = "DMA0";
             break;
         case NCP_PM_WAKE_SRC_NONE:
         default:
@@ -324,88 +329,105 @@ void ncp_pm_gpio_wakeup_peer(void)
 
 AT_QUICKACCESS_SECTION_CODE(static void ncp_pm_switch_pre_hook(uint32_t mode, void *param))
 {
-    uint32_t freq = CLK_XTAL_OSC_CLK / 40U; //frequency of LPOSC
-
-    /* In PM2, only LPOSC and CLK32K are available. To use interface as wakeup source,
-       We have to use main_clk as system clock source, and main_clk comes from LPOSC.
-       Use register access directly to avoid possible flash access in function call */
-    clock_context_t * clk_ctx = (clock_context_t *)param;
-    clk_ctx->selA = CLKCTL0->MAINCLKSELA;
-    clk_ctx->selB = CLKCTL0->MAINCLKSELB;
-#if CONFIG_NCP_UART
-    clk_ctx->frgSel = CLKCTL1->FLEXCOMM[0].FRGCLKSEL;
-    clk_ctx->frgctl = CLKCTL1->FLEXCOMM[0].FRGCTL;
-    clk_ctx->osr    = USART0->OSR;
-    clk_ctx->brg    = USART0->BRG;
-#endif
-
-    /* Switch main_clk to LPOSC */
-    CLKCTL0->MAINCLKSELA = 2;
-    CLKCTL0->MAINCLKSELB = 0;
-
-#if CONFIG_NCP_UART
-    /* Change UART0 clock source to main_clk */
-    CLKCTL1->FLEXCOMM[0].FRGCLKSEL = 0;
-    /* bit[0:7] div, bit[8:15] mult.
-     * freq(new) = freq(old)/(1 + mult/(div+1))
-     * freq(new) is the frequency of LPOSC clock
-     * freq(old) is the frequency of main_pll clock
-     * Use the equation here to get div and mult.
-     */
-    CLKCTL1->FLEXCOMM[0].FRGCTL    = 0x15F7; // Baudrate = 115205.22, error = 0.0045%
-    USART0->OSR                    = 7;
-    USART0->BRG                    = 0;
-#endif
-
-    /* Update system core clock */
-    SystemCoreClock = freq / ((CLKCTL0->SYSCPUAHBCLKDIV & CLKCTL0_SYSCPUAHBCLKDIV_DIV_MASK) + 1U);
-#if CONFIG_NCP_SPI
-    /* For PM2 case, the FLEXSPI is disabled.
-     * Call flow:
-     *  POWER_PrePowerMode() -> deinitXip() -> FLEXSPI->MCR0 |= FLEXSPI_MCR0_MDIS_MASK
-     *
-     * In addition, the T3/TCPU PLL clock is gated(RW612X Reference Manual).
-     *
-     * Reattaches the FLEXSPI clock source to t3pll_mcu_256m (256 MHz) and
-     * configures a clock divider of 4.
-     * The FLEXSPI disable state remains unchanged.
-     */
-    if(mode == NCP_PM_STATE_PM2)
+    if (mode == NCP_PM_STATE_PM2)
     {
-        BOARD_SetFlexspiClock(FLEXSPI, 6U, 4U);
-    }
+        uint32_t freq = CLK_XTAL_OSC_CLK / 40U; //frequency of LPOSC
+
+        /* In PM2, only LPOSC and CLK32K are available. To use interface as wakeup source,
+        We have to use main_clk as system clock source, and main_clk comes from LPOSC.
+        Use register access directly to avoid possible flash access in function call */
+        clock_context_t * clk_ctx = (clock_context_t *)param;
+        clk_ctx->selA = CLKCTL0->MAINCLKSELA;
+        clk_ctx->selB = CLKCTL0->MAINCLKSELB;
+#if CONFIG_NCP_UART
+        extern active_sram_bank_t pm2_active_sram_bank;
+
+        if (pm2_active_sram_bank.intf_flags)
+        {
+            clk_ctx->frgSel = CLKCTL1->FLEXCOMM[0].FRGCLKSEL;
+            clk_ctx->frgctl = CLKCTL1->FLEXCOMM[0].FRGCTL;
+            clk_ctx->osr    = USART0->OSR;
+            clk_ctx->brg    = USART0->BRG;
+
+            SYSCTL2->MEM_PD_CTRL |= pm2_active_sram_bank.active_mask;
+        }
 #endif
+
+        /* Switch main_clk to LPOSC */
+        CLKCTL0->MAINCLKSELA = 2;
+        CLKCTL0->MAINCLKSELB = 0;
+
+#if CONFIG_NCP_UART
+        if (pm2_active_sram_bank.intf_flags)
+        {
+            /* Change UART0 clock source to main_clk */
+            CLKCTL1->FLEXCOMM[0].FRGCLKSEL = 0;
+            /* bit[0:7] div, bit[8:15] mult.
+            * freq(new) = freq(old)/(1 + mult/(div+1))
+            * freq(new) is the frequency of LPOSC clock
+            * freq(old) is the frequency of main_pll clock
+            * Use the equation here to get div and mult.
+            */
+            CLKCTL1->FLEXCOMM[0].FRGCTL    = 0x15F7; // Baudrate = 115205.22, error = 0.0045%
+            USART0->OSR                    = 7;
+            USART0->BRG                    = 0;
+        }
+#endif
+
+        /* Update system core clock */
+        SystemCoreClock = freq / ((CLKCTL0->SYSCPUAHBCLKDIV & CLKCTL0_SYSCPUAHBCLKDIV_DIV_MASK) + 1U);
+#if CONFIG_NCP_SPI
+        /* For PM2 case, the FLEXSPI is disabled.
+        * Call flow:
+        *  POWER_PrePowerMode() -> deinitXip() -> FLEXSPI->MCR0 |= FLEXSPI_MCR0_MDIS_MASK
+        *
+        * In addition, the T3/TCPU PLL clock is gated(RW612X Reference Manual).
+        *
+        * Reattaches the FLEXSPI clock source to t3pll_mcu_256m (256 MHz) and
+        * configures a clock divider of 4.
+        * The FLEXSPI disable state remains unchanged.
+        */
+        BOARD_SetFlexspiClock(FLEXSPI, 6U, 4U);
+#endif
+    }
 }
 
 AT_QUICKACCESS_SECTION_CODE(static void ncp_pm_switch_post_hook(uint32_t mode, void *param))
 {
-    /* Recover main_clk clock source after wakeup.
-     Use register access directly to avoid possible flash access in function call. */
-    clock_context_t * clk_ctx = (clock_context_t *)param;
-    CLKCTL0->MAINCLKSELA           = clk_ctx->selA;
-    CLKCTL0->MAINCLKSELB           = clk_ctx->selB;
+    if (mode == NCP_PM_STATE_PM2)
+    {
+        /* Recover main_clk clock source after wakeup.
+        Use register access directly to avoid possible flash access in function call. */
+        clock_context_t * clk_ctx = (clock_context_t *)param;
+        CLKCTL0->MAINCLKSELA           = clk_ctx->selA;
+        CLKCTL0->MAINCLKSELB           = clk_ctx->selB;
 #if CONFIG_NCP_UART
-    USART0->OSR                    = clk_ctx->osr;
-    USART0->BRG                    = clk_ctx->brg;
-    CLKCTL1->FLEXCOMM[0].FRGCLKSEL = clk_ctx->frgSel;
-    CLKCTL1->FLEXCOMM[0].FRGCTL    = clk_ctx->frgctl;
+        extern active_sram_bank_t pm2_active_sram_bank;
+        if (pm2_active_sram_bank.intf_flags)
+        {
+            USART0->OSR                    = clk_ctx->osr;
+            USART0->BRG                    = clk_ctx->brg;
+            CLKCTL1->FLEXCOMM[0].FRGCLKSEL = clk_ctx->frgSel;
+            CLKCTL1->FLEXCOMM[0].FRGCTL    = clk_ctx->frgctl;
+        }
 #endif
 #if CONFIG_NCP_SPI
-    /* In PM2 mode, the FLEXSPI module may not return to a ready state in time.
-     * Accessing FLEXSPI during this period may trigger hardware faults,
-     * including failures in BLE EtherMind RD/WT tasks performing littlefs operations.
-     *
-     * Calling BOARD_SetFlexspiClock forces a deinitialization and reinitialization
-     * of the FLEXSPI clock domain.
-     * The clock is restored to the original aux0_pll_clk source with divider set to 2.
-     *
-     * Accelerates FLEXSPI state recovery and restores a ready/valid operational state after PM2.
-     */
-    if(mode  == NCP_PM_STATE_PM2)
-    {
-        BOARD_SetFlexspiClock(FLEXSPI, 2U, 2U);
-    }
+        /* In PM2 mode, the FLEXSPI module may not return to a ready state in time.
+        * Accessing FLEXSPI during this period may trigger hardware faults,
+        * including failures in BLE EtherMind RD/WT tasks performing littlefs operations.
+        *
+        * Calling BOARD_SetFlexspiClock forces a deinitialization and reinitialization
+        * of the FLEXSPI clock domain.
+        * The clock is restored to the original aux0_pll_clk source with divider set to 2.
+        *
+        * Accelerates FLEXSPI state recovery and restores a ready/valid operational state after PM2.
+        */
+        if(mode  == NCP_PM_STATE_PM2)
+        {
+            BOARD_SetFlexspiClock(FLEXSPI, 2U, 2U);
+        }
 #endif
+    }
 }
 
 static void ncp_pm_hw_reinit_on_pm3(void)

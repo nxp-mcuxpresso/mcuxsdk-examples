@@ -11,6 +11,17 @@
 #include "fsl_common.h"
 
 /**
+ * @brief Active SRAM bank information structure.
+ */
+typedef struct active_sram_bank
+{
+    uint32_t start;
+    uint32_t end;
+    uint32_t active_mask;
+    uint8_t  intf_flags;
+} active_sram_bank_t;
+
+/**
  * @brief Power management operations interface.
  */
 typedef struct _ncp_intf_pm_ops
