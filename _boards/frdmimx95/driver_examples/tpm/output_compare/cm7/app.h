@@ -16,7 +16,7 @@
 #define BOARD_TPM_OUT_CHANNEL kTPM_Chnl_2
 
 /* Get source clock for TPM driver */
-#define LPTPM_CLOCK_ROOT hal_clock_tpm3
+#define LPTPM_CLOCK_ROOT hal_clock_buswakeup
 #define TPM_SOURCE_CLOCK HAL_ClockGetIpFreq(LPTPM_CLOCK_ROOT)
 /*${macro:end}*/
 

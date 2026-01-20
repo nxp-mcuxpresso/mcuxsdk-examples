@@ -28,7 +28,7 @@
 #define TPM_INPUT_CAPTURE_HANDLER TPM3_IRQHandler
 
 /* Get source clock for TPM driver */
-#define LPTPM_CLOCK_ROOT hal_clock_tpm3
+#define LPTPM_CLOCK_ROOT hal_clock_buswakeup
 #define TPM_SOURCE_CLOCK HAL_ClockGetIpFreq(LPTPM_CLOCK_ROOT)
 /*${macro:end}*/
 

@@ -19,13 +19,6 @@ void BOARD_InitHardware(void)
 {
     /* clang-format off */
 
-    hal_clk_t hal_lptpmclk = {
-        .clk_id = LPTPM_CLOCK_ROOT,
-        .pclk_id = hal_clock_osc24m,
-        .div = 1,
-        .enable_clk = true,
-        .clk_round_opt = hal_clk_round_auto,
-    };
     SM_Platform_Init();
     /* clang-format on */
     BOARD_InitBootPins();
@@ -33,6 +26,5 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
     BOARD_ConfigMPU();
 
-    HAL_ClockSetRootClk(&hal_lptpmclk);
 }
 /*${function:end}*/
