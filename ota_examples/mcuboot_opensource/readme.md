@@ -64,6 +64,8 @@ To sign an application binary, imgtool must be provided with respective private 
 
 NOTE that other boards may require different parameters - check their readme file.
 
+Key sets used in ota examples are located in `middleware\mcuboot_opensource\boot\nxp_mcux_sdk\keys`
+
 The parameters used in the example above are tested with out-of-the-box configuration of MCUBoot and OTA examples in the SDK package.
 However, some of them may depend on the application or board setup and thus may need to be modified.
 See the MCUBoot documentation for the meaning of the parameters and align them with your project setup if necessary.
