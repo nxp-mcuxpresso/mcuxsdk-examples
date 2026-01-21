@@ -257,17 +257,32 @@ void sbc_deconfigured(int err)
 		PRINTF("SBC_Configured callback return (err %d)\n", err);
 	}
 }
+
 uint8_t app_get_snk_a2dp_status()
 {
 	return g_audioStart;
 }
+
+void app_a2dp_snk_suspend()
+{
+	int err=0;
+
+	PRINTF("\nPhone audio suspend \n ");
+	if(g_audioStart)
+		err=bt_a2dp_stop(default_a2dp_endpoint_snk);
+
+	if(err)
+		PRINTF("\nstop Error code=%d ",err);
+
+}
+
 void sbc_start_play(int err)
 {
-
 	if (err == 0)
 	{
 		g_audioStart = 1;
-
+		if(!app_get_a2dp_intercom_status())
+			app_a2dp_snk_suspend();
 		if(app_a2dp_start_with_rhs())
 		{
 			/* Start Audio Player */
@@ -282,17 +297,19 @@ void sbc_start_play(int err)
 
 }
 
-void app_a2dp_snk_suspend()
+void app_a2dp_snk_suspend_to_start()
 {
 	int err=0;
 
-	PRINTF("\nPhone audio suspend \n ");
-	err=bt_a2dp_stop(default_a2dp_endpoint_snk);
+	PRINTF("\nPhone audio start \n ");
+	if(!g_audioStart)
+		err=bt_a2dp_start(default_a2dp_endpoint_snk);
 
 	if(err)
-		PRINTF("\nRH stop Error code=%d ",err);
+		PRINTF("\nstart Error code=%d ",err);
 
 }
+
 void sbc_stop_play(int err)
 {
 	if (err == 0)

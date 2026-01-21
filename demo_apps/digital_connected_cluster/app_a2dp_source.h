@@ -48,4 +48,7 @@ uint8_t app_get_a2dp_mode();
 void app_a2dp_snk_pause();
 void app_a2dp_snk_resume();
 uint8_t app_a2dp_start_with_rhs();
+uint8_t app_get_a2dp_intercom_status();
+void app_a2dp_suspend_snk();
+void app_a2dp_snk_suspend_to_start();
 #endif /* __APP_A2DP_SOURCE_H__ */

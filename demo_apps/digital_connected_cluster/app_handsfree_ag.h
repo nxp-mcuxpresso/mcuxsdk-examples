@@ -74,5 +74,6 @@ void app_rider_call_to_intercom();
 void app_hfp_hf_disconnected();
 void app_enable_intercom(uint8_t en);
 void app_hfp_ag_send_call_end_indicator();
+void app_hfp_ag_transfer_hf_ring_ind(void);
 
 #endif /* __APPL_PERIPHERAL_HFP_AG_MAIN_H__ */

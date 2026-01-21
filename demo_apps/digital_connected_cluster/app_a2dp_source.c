@@ -35,7 +35,7 @@
 
 /* User may need to change it for real production */
 #define SDP_CLIENT_USER_BUF_LEN		512U
-#define A2DP_SRC_PERIOD_MS    10
+#define A2DP_SRC_PERIOD_MS    11
 #define APPL_A2DP_MTU   (672U)
 
 NET_BUF_POOL_FIXED_DEFINE(app_sdp_client_pool, CONFIG_BT_MAX_CONN,SDP_CLIENT_USER_BUF_LEN, CONFIG_NET_BUF_USER_DATA_SIZE, NULL);
@@ -76,6 +76,7 @@ uint8_t g_dualA2dpRhPlayStatus=0;
 uint8_t g_dualA2dpPhPlayStatus=0;
 uint8_t g_riderHsAudioStart=0;
 uint8_t g_riderHsAudioStarting = 0;
+uint8_t g_riderHsAudioStopping = 0;
 uint8_t g_passengerHsAudioStart=0;
 uint8_t g_a2dpSnkPlayStatus = 0;
 uint8_t g_rhsIndex =0;
@@ -89,14 +90,40 @@ uint8_t * media;
 uint8_t g_mallocA2dp = 0;
 uint8_t g_a2dpXtimer=0;
 uint8_t g_audioFileOpened=0;
-static bool pause_already_sent = false;
-static uint8_t audio_packets_after_pause;
+
 
 //BT_A2DP_SBC_SOURCE_ENDPOINT(sbcEndpoint, A2DP_SBC_SAMP_FREQ_44100 );
 //BT_A2DP_SBC_SOURCE_ENDPOINT(sbcEndpoint, A2DP_SBC_SAMP_FREQ_48000 );
 
 BT_A2DP_SBC_SOURCE_ENDPOINT(sbcEndpointIdx1, A2DP_SBC_SAMP_FREQ_44100 );
 BT_A2DP_SBC_SOURCE_ENDPOINT(sbcEndpointIdx2, A2DP_SBC_SAMP_FREQ_44100 );
+
+#if ((defined(A2DP_BRIDGE_BUFFERING_ENABLE)) && (A2DP_BRIDGE_BUFFERING_ENABLE > 0U))
+
+#define A2DP_BUFFER_QUEUE_SIZE      (8U)   /* Must be power of 2 */
+#define A2DP_MAX_PACKET_SIZE        (1024U)
+#define A2DP_MIN_BUFFERED_PACKETS   (6U)
+
+typedef struct {
+    uint8_t data[A2DP_MAX_PACKET_SIZE];
+    uint32_t length;
+    uint8_t occupied;  /* 0 = free, 1 = occupied */
+} a2dp_data_packet_t;
+
+
+typedef struct {
+    a2dp_data_packet_t packets[A2DP_BUFFER_QUEUE_SIZE];
+    uint32_t write_index;
+    volatile uint32_t read_index;
+    /* Control flag */
+    uint8_t streaming_started;
+} a2dp_buffer_queue_t;
+
+/* Global buffer queue */
+static a2dp_buffer_queue_t g_a2dpBufferQueue = {0};
+uint8_t g_timeoutCount = 2;
+static uint8_t g_buffCount = 0;
+#endif
 
 void app_edgefast_a2dp_update_parameters(const a2dp_codec_config_t *config);
 
@@ -177,6 +204,238 @@ void a2dp_source_register_service()
 	bt_sdp_register_service(&a2dp_source_rec);
 }
 
+#if ((defined(A2DP_BRIDGE_BUFFERING_ENABLE)) && (A2DP_BRIDGE_BUFFERING_ENABLE > 0U))
+
+/**
+ * @brief Initialize the A2DP buffer queue
+ */
+void a2dp_buffer_queue_init(void)
+{
+    uint32_t i;
+
+    /* Clear all packets */
+    for (i = 0; i < A2DP_BUFFER_QUEUE_SIZE; i++) {
+        g_a2dpBufferQueue.packets[i].occupied = 0;
+        g_a2dpBufferQueue.packets[i].length = 0;
+    }
+
+    g_a2dpBufferQueue.write_index = 0;
+    g_a2dpBufferQueue.read_index = 0;
+    g_a2dpBufferQueue.streaming_started = 0;
+}
+
+/**
+ * @brief Reset the buffer queue
+ */
+void a2dp_buffer_queue_reset(void)
+{
+    uint32_t i;
+
+	PRINTF("A2DP buffer queue reset\n");
+    /* Mark all packets as free */
+    for (i = 0; i < A2DP_BUFFER_QUEUE_SIZE; i++) {
+        g_a2dpBufferQueue.packets[i].occupied = 0;
+        g_a2dpBufferQueue.packets[i].length = 0;
+    }
+
+    g_a2dpBufferQueue.write_index = 0;
+    g_a2dpBufferQueue.read_index = 0;
+    g_a2dpBufferQueue.streaming_started = 0;
+}
+
+/**
+ * @brief Get current buffer count
+ * @return Number of packets in buffer
+ */
+static uint32_t a2dp_buffer_queue_get_count(void)
+{
+    uint32_t write_idx = g_a2dpBufferQueue.write_index;
+    uint32_t read_idx = g_a2dpBufferQueue.read_index;  /* volatile read */
+
+    /* Calculate count with wrap-around */
+    if (write_idx >= read_idx) {
+        return (write_idx - read_idx);
+    } else {
+        return (A2DP_BUFFER_QUEUE_SIZE - read_idx + write_idx);
+    }
+}
+
+/**
+ * @brief Add data to the buffer queue (called by single writer thread only)
+ * @param data Pointer to data buffer
+ * @param length Length of data
+ * @return 0 on success, negative error code on failure
+ */
+static int a2dp_buffer_queue_enqueue(const uint8_t *data, uint32_t length)
+{
+    uint32_t write_idx, next_write_idx;
+    uint32_t read_idx;
+    a2dp_data_packet_t *packet;
+
+    if (data == NULL || length == 0 || length > A2DP_MAX_PACKET_SIZE) {
+        PRINTF("ERROR: Invalid enqueue parameters\n");
+        return -EINVAL;
+    }
+
+    write_idx = g_a2dpBufferQueue.write_index;
+    next_write_idx = (write_idx + 1) & (A2DP_BUFFER_QUEUE_SIZE - 1);
+    read_idx = g_a2dpBufferQueue.read_index;
+
+    if (next_write_idx == read_idx) {
+        /* Buffer full - drop oldest packet */
+        packet = &g_a2dpBufferQueue.packets[read_idx];
+      //  PRINTF("WARNING: Buffer full, dropping oldest packet\n");
+        packet->occupied = 0;
+        g_a2dpBufferQueue.read_index = (read_idx + 1) & (A2DP_BUFFER_QUEUE_SIZE - 1);
+    }
+
+    packet = &g_a2dpBufferQueue.packets[write_idx];
+
+    if (packet->occupied) {
+        PRINTF("ERROR: Write index packet still occupied\n");
+        return -EBUSY;
+    }
+
+    memcpy(packet->data, data, length);
+    packet->length = length;
+
+    packet->occupied = 1;
+
+    g_a2dpBufferQueue.write_index = next_write_idx;
+
+    return 0;
+}
+
+/**
+ * @brief Dequeue and send data from buffer (called by consumer)
+ * @return 0 on success, negative error code on failure
+ */
+static int a2dp_buffer_queue_dequeue_and_send(void)
+{
+    uint32_t read_idx, next_read_idx;
+    uint32_t write_idx;
+    a2dp_data_packet_t *packet;
+    uint8_t local_data[A2DP_MAX_PACKET_SIZE];
+    uint32_t local_length;
+    int ret;
+
+    read_idx = g_a2dpBufferQueue.read_index;
+    write_idx = g_a2dpBufferQueue.write_index;
+
+    if (read_idx == write_idx) {
+        return -ENODATA;
+    }
+
+    packet = &g_a2dpBufferQueue.packets[read_idx];
+
+
+    if (!packet->occupied) {
+        PRINTF("ERROR: Read index packet not occupied\n");
+        return -EINVAL;
+    }
+
+
+    local_length = packet->length;
+    if (local_length > A2DP_MAX_PACKET_SIZE) {
+        PRINTF("ERROR: Invalid packet length %u\n", local_length);
+        packet->occupied = 0;
+        g_a2dpBufferQueue.read_index = (read_idx + 1) & (A2DP_BUFFER_QUEUE_SIZE - 1);
+        return -EINVAL;
+    }
+
+    memcpy(local_data, packet->data, local_length);
+
+    packet->occupied = 0;
+
+    next_read_idx = (read_idx + 1) & (A2DP_BUFFER_QUEUE_SIZE - 1);
+    g_a2dpBufferQueue.read_index = next_read_idx;
+
+    if (rhs_a2dp_endpoint_src != NULL) {
+        ret = bt_a2dp_src_media_write(rhs_a2dp_endpoint_src, local_data, local_length);
+
+        if (ret != 0) {
+            PRINTF("ERROR: Failed to send packet, error: %d\n", ret);
+        }
+#ifdef APP_DEBUG_EN
+        else {
+          //  PRINTF("Sent packet, remaining: %u\n", a2dp_buffer_queue_get_count());
+        }
+#endif
+    } else {
+        PRINTF("ERROR: rhs_a2dp_endpoint_src is NULL\n");
+        ret = -EINVAL;
+    }
+
+    return ret;
+}
+
+/**
+ * @brief Check if minimum buffering threshold is reached
+ * @return true if ready to start streaming
+ */
+static bool a2dp_buffer_queue_is_ready(void)
+{
+    return (a2dp_buffer_queue_get_count() >= A2DP_MIN_BUFFERED_PACKETS);
+}
+
+/**
+ * @brief Modified data_send_source with simplified buffering
+ * NOTE: This function should only be called from ONE thread
+ */
+int data_send_source(uint8_t *data, uint32_t length)
+{
+    int ret = 0;
+
+    /* Validate input parameters */
+    if (data == NULL || length == 0) {
+        return -EINVAL;
+    }
+
+    /* Check if A2DP mode is allowed */
+    if (g_phoneESCO || g_rhsESCO || g_phsESCO || rider_hs_a2dp_src == NULL) {
+        /* Reset buffer when not allowed to stream */
+        return -EBUSY;
+    }
+
+    /* Check if dual A2DP mode is active */
+    if (g_dualA2dpSrcMode) {
+        /* In dual mode, bypass buffering */
+        return 0;
+    }
+
+    /* Check if rider headset is ready */
+    if (!g_riderHsAudioStart && !g_riderHsAudioStarting && !g_riderHsAudioStopping) {
+
+        a2dp_buffer_queue_reset();
+        app_a2dp_src_start(1);
+        return 0;
+    }
+
+    /* Enqueue incoming data */
+   // PRINTF(" x ");
+    ret = a2dp_buffer_queue_enqueue(data, length);
+    if (ret != 0) {
+        return ret;
+    }
+
+    /* Check if we should start streaming */
+    if (!g_a2dpBufferQueue.streaming_started) {
+
+        if (a2dp_buffer_queue_is_ready()) {
+            PRINTF("Buffer threshold reached (%u packets), starting streaming\n",
+                   a2dp_buffer_queue_get_count());
+            g_a2dpBufferQueue.streaming_started = 1;
+        } else {
+            /* Not enough data buffered yet */
+            return 0;
+        }
+    }
+
+    return ret;
+}
+
+#else
+
 int data_send_source(uint8_t *data, uint32_t length)
 {
 	int ret=0;
@@ -189,12 +448,12 @@ int data_send_source(uint8_t *data, uint32_t length)
 			return 1;
 		}
 
-		if( g_phoneESCO || g_phsESCO || g_dualA2dpSrcMode)
+		if( g_phoneESCO || g_phsESCO || g_dualA2dpSrcMode || g_rhsESCO)
 		{
 			return 1;
 		}
 
-		if ( g_rhsESCO && aap_hf_call_status())
+		if (aap_hf_call_status())
 		{
 			return 1;
 		}
@@ -213,6 +472,7 @@ int data_send_source(uint8_t *data, uint32_t length)
 	return ret;
 
 }
+#endif
 
 uint8_t app_set_a2dp_music_source(uint8_t music_source)
 {
@@ -229,7 +489,7 @@ uint8_t app_set_a2dp_music_source(uint8_t music_source)
 #ifdef APP_DEBUG_EN
 	    PRINTF("\nDUAL A2DP stop and Enable A2DP bridge!\n");
 #endif
-	    if(!app_get_snk_a2dp_status())
+	    if(g_dualA2dpSrcMode)
 	    	app_a2dp_src_stop(1);
 
 	    app_a2dp_src_stop(0);
@@ -239,6 +499,7 @@ uint8_t app_set_a2dp_music_source(uint8_t music_source)
 	    g_playDefaultMusic=0;
 	    g_dualA2dpSrcMode = 0;
 	    g_flagReadReady=0;
+	    g_dualA2dpSrcPlayback=0;
 	    //avrcp_tg_notify(1,1);
 	    app_a2dp_snk_resume();
 
@@ -302,16 +563,31 @@ void app_a2dp_snk_pause()
 	if(conn_rider_phone == NULL)
     	 return;
 
-    if(app_get_snk_a2dp_status() && g_riderHsAudioStart)
+    if(app_get_snk_a2dp_status())
     {
 #ifdef APP_DEBUG_EN
     	PRINTF("Pause Phone A2DP SNK ! \n");
 #endif
     	g_a2dpSnkPlayStatus=1;
     	avrcp_pause_button(1);
-		//vTaskDelay(50);
+		vTaskDelay(100);
     }
+}
 
+void app_a2dp_suspend_snk()
+{
+	if(conn_rider_phone == NULL)
+    	 return;
+
+    if(app_get_snk_a2dp_status())
+    {
+#ifdef APP_DEBUG_EN
+    	PRINTF("Pause Phone A2DP SNK ! \n");
+#endif
+    	g_a2dpSnkPlayStatus=1;
+    	app_a2dp_snk_suspend();
+		vTaskDelay(100);
+    }
 }
 
 void app_a2dp_snk_resume()
@@ -329,7 +605,8 @@ void app_a2dp_snk_resume()
     	PRINTF("Resume A2DP SNK ! \n");
 #endif
     	g_a2dpSnkPlayStatus = 0;
-	vTaskDelay(30);
+    	app_a2dp_snk_suspend_to_start();
+    	vTaskDelay(30);
     	avrcp_play_button(1);
 
     }
@@ -338,6 +615,14 @@ void app_a2dp_snk_resume()
 uint8_t app_get_a2dp_mode()
 {
 	return g_dualA2dpSrcMode;
+}
+
+uint8_t app_get_a2dp_intercom_status()
+{
+	if( g_dualA2dpSrcMode || app_hfp_intercom_status())
+		return 0;
+	else
+		return 1;
 }
 
 uint8_t app_a2dp_start_with_rhs()
@@ -446,6 +731,7 @@ void app_a2dp_src_stop(uint8_t rider_hs)
 	if(rider_hs && g_riderHsAudioStart)
 	{
 		PRINTF("\nRH audio stop \n ");
+		g_riderHsAudioStopping = 1;
 		err=bt_a2dp_stop(rhs_a2dp_endpoint_src);
 
 		if(!err)
@@ -529,7 +815,7 @@ void app_dual_a2dp_src_resume()
 	if(g_dualA2dpPlayStatus && g_sCallStatus != 2)
     {
 #ifdef APP_DEBUG_EN
-    	PRINTF("Resume DUAL A2DP ! \n");
+		PRINTF("Resume DUAL A2DP ! %d \n",app_hfp_intercom_status());
 #endif
     	if(g_dualA2dpRhPlayStatus)
     	{
@@ -583,13 +869,34 @@ static void a2dp_pl_playback_timeout_handler(TimerHandle_t timer_id)
 {
 	int32_t now_ms, period_ms;
 	TickType_t ticks;
+	int retv = 0;
 
-    /* If stopped then return */
+#if ((defined(A2DP_BRIDGE_BUFFERING_ENABLE)) && (A2DP_BRIDGE_BUFFERING_ENABLE > 0U))
+	int buff_count=0;
     if (0U == g_dualA2dpSrcPlayback)
     {
+    	/* Send buffered data if streaming */
+    	if (g_a2dpBufferQueue.streaming_started && g_riderHsAudioStart ) {
+    	   	g_timeoutCount++;
+    	   	if(g_timeoutCount>1)
+    	   	{
+    	   		buff_count = a2dp_buffer_queue_get_count();
+    	        if( buff_count >=2)
+    	   		{
+    	   			a2dp_buffer_queue_dequeue_and_send();
+    	   		}
+    	        g_timeoutCount=0;
+        	}else {
+        		buff_count = a2dp_buffer_queue_get_count();
+        		if(buff_count >= 5)
+        		{
+					a2dp_buffer_queue_dequeue_and_send();
+        		}
+        	}
+        }
         return;
     }
-
+#endif
     /* Get the current time */
     if (0U != __get_IPSR())
     {
@@ -651,26 +958,6 @@ static void a2dp_pl_start_playback_timer(void)
 	g_a2dpSrcSentMs = 0;
     xTimerStart(g_a2dpSrcTimer, 0);
 }
-
-static void music_control_a2dp_stop_callback(struct bt_a2dp *a2dp,int err)
-{
-
-#ifdef APP_DEBUG_EN
-    	PRINTF("A2DP control stop callback err %d! \n",err);
-#endif
-
-    if(rider_hs_a2dp_src == a2dp)
-    {
-    	g_riderHsAudioStart = 0;
-
-        if(!g_dualA2dpSrcMode)
-        	avrcp_tg_notify(1,0);
-    }
-
-    if(passenger_hs_a2dp_src == a2dp)
-    	g_passengerHsAudioStart = 0;
-}
-
 
 static void music_control_a2dp_start_callback(int err)
 {
@@ -758,6 +1045,49 @@ static void music_control_idx2_a2dp_start_callback(int err)
 	   	g_passengerHsAudioStart = 1;
 	}
     music_control_a2dp_start_callback(err);
+}
+
+static void music_control_idx1_a2dp_stop_callback(int err)
+{
+
+#ifdef APP_DEBUG_EN
+    	PRINTF("RH A2DP control stop callback err %d! \n",err);
+#endif
+
+    	if(g_rhsIndex == 1)
+    	{
+        	g_riderHsAudioStart = 0;
+        	g_riderHsAudioStopping = 0;
+
+            if(!g_dualA2dpSrcMode)
+            	avrcp_tg_notify(1,0);
+    	}
+    	if(g_phsIndex == 1)
+    	{
+    		   g_passengerHsAudioStart = 0;
+    	}
+
+}
+static void music_control_idx2_a2dp_stop_callback(int err)
+{
+#ifdef APP_DEBUG_EN
+    	PRINTF("PH A2DP control stop callback err %d! \n",err);
+#endif
+
+    	if(g_rhsIndex == 2)
+    	{
+        	g_riderHsAudioStart = 0;
+        	g_riderHsAudioStopping = 0;
+
+            if(!g_dualA2dpSrcMode)
+            	avrcp_tg_notify(1,0);
+    	}
+
+    	if(g_phsIndex == 2)
+    	{
+    		   g_passengerHsAudioStart = 0;
+    	}
+
 }
 
 void read_audio(void *pvParameters)
@@ -1241,9 +1571,11 @@ static void a2dp_src_edgefast_a2dp_init(void)
     connectCb.connected = app_connected_src;
     connectCb.disconnected = app_disconnected_src;
     sbcEndpointIdx1.control_cbs.start_play = music_control_idx1_a2dp_start_callback;
+    sbcEndpointIdx1.control_cbs.stop_play = music_control_idx1_a2dp_stop_callback;
     sbcEndpointIdx1.control_cbs.configured = app_endpoint_configured_idx1;
 
     sbcEndpointIdx2.control_cbs.start_play = music_control_idx2_a2dp_start_callback;
+    sbcEndpointIdx2.control_cbs.stop_play = music_control_idx2_a2dp_stop_callback;
     sbcEndpointIdx2.control_cbs.configured = app_endpoint_configured_idx2;
 
     bt_a2dp_register_endpoint(&sbcEndpointIdx1, BT_A2DP_AUDIO, BT_A2DP_SOURCE);

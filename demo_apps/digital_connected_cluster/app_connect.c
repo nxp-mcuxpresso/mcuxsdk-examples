@@ -47,6 +47,8 @@ static uint8_t map_sdp_discover_cb(struct bt_conn *conn, struct bt_sdp_client_re
 
 extern struct bt_map_mce_mas_cb map_mas_cb;
 extern struct bt_map_mce_mns_cb map_mns_cb;
+
+#define BT_BR_CONN_PARAM_ROLE_SWITCH_DISALLOWED BT_BR_CONN_PARAM(false)
 #define SDP_CLIENT_USER_BUF_LEN        512U
 NET_BUF_POOL_FIXED_DEFINE(sdp_client_pool, CONFIG_BT_MAX_CONN, SDP_CLIENT_USER_BUF_LEN, CONFIG_NET_BUF_USER_DATA_SIZE, NULL);
 
@@ -253,7 +255,7 @@ static void connected(struct bt_conn *conn, uint8_t err)
 			PRINTF("\r\nSet link policy \r\n");
 			cp = net_buf_add(buf, sizeof(*cp));
 			cp->handle = conn_handle;
-			cp->link_policy_settings = 0x0000U;
+			cp->link_policy_settings = A2DP_LINK_POLICY;
 			err = bt_hci_cmd_send_sync(BT_HCI_OP_WRITE_LINK_POLICY_SETTINGS, buf, NULL);
 		}
 
@@ -269,6 +271,19 @@ static void connected(struct bt_conn *conn, uint8_t err)
 		app_update_last_connected_device(info.br.dst->val,RIDER_PHONE);
 
 		conn_rider_phone = conn;
+		uint8_t ret;
+		struct net_buf *buf = NULL;
+
+		struct bt_hci_cp_write_link_policy_settings *cp;
+		buf = bt_hci_cmd_create(BT_HCI_OP_WRITE_LINK_POLICY_SETTINGS, sizeof(*cp));
+		if (buf != NULL)
+		{
+			PRINTF("\r\nSet link policy \r\n");
+			cp = net_buf_add(buf, sizeof(*cp));
+			cp->handle = conn_handle;
+			cp->link_policy_settings = A2DP_LINK_POLICY;
+			err = bt_hci_cmd_send_sync(BT_HCI_OP_WRITE_LINK_POLICY_SETTINGS, buf, NULL);
+		}
 
 #if AVRCP_BROWSING_ENABLE
 		cmd_browsing_connect();
@@ -452,7 +467,7 @@ void app_connect(uint8_t device_type,uint8_t *addr)
 			memcpy(&g_riderPhoneAddr, addr, 6U);
 
 
-			conn_rider_phone = bt_conn_create_br(&g_riderPhoneAddr, BT_BR_CONN_PARAM_DEFAULT);
+			conn_rider_phone = bt_conn_create_br(&g_riderPhoneAddr, BT_BR_CONN_PARAM_ROLE_SWITCH_DISALLOWED);
 			if (!conn_rider_phone)
 			{
 				g_connectInitRiderPhone = 0U;
@@ -491,7 +506,7 @@ void app_connect(uint8_t device_type,uint8_t *addr)
 		    g_isRiderHeadset=1;
 
 
-		    conn_rider_hs = bt_conn_create_br(&g_riderHsAddr, BT_BR_CONN_PARAM_DEFAULT);
+		    conn_rider_hs = bt_conn_create_br(&g_riderHsAddr, BT_BR_CONN_PARAM_ROLE_SWITCH_DISALLOWED);
 		    if (!conn_rider_hs)
 		    {
 		        g_connectInitRiderHs = 0U;
@@ -519,7 +534,7 @@ void app_connect(uint8_t device_type,uint8_t *addr)
 			g_isRiderHeadset=0;
 
 
-			conn_passenger_hs = bt_conn_create_br(&g_passengerHsAddr, BT_BR_CONN_PARAM_DEFAULT);
+			conn_passenger_hs = bt_conn_create_br(&g_passengerHsAddr, BT_BR_CONN_PARAM_ROLE_SWITCH_DISALLOWED);
 			if (!conn_passenger_hs)
 			{
 				g_connectInitPassengerHs = 0U;

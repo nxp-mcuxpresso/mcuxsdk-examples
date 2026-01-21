@@ -156,7 +156,7 @@ static void call(struct bt_conn *conn, uint32_t value)
     else if (value == 0)
     {
         g_sCallStatus = 0;
-        app_hfp_ag_stop_incoming_call();
+        //app_hfp_ag_stop_incoming_call();
         app_hfp_ag_send_call_end_indicator();
         g_hfOutCall = 0;
         app_dual_a2dp_src_resume();
@@ -195,7 +195,12 @@ static void call_setup(struct bt_conn *conn, uint32_t value)
     		app_dual_a2dp_src_pause();
     		k_work_init(&setup_close_audio_work_intercom, close_audio_connection_ag_intercom);
     		k_work_submit(&setup_close_audio_work_intercom);
-
+    		if(g_rhsESCO)
+    		{
+    			PRINTF("close RHS intercom eSCO \n");
+    			k_work_init(&setup_close_audio_work, close_audio_connection_ag);
+    			k_work_submit(&setup_close_audio_work);
+    		}
     	}
 
     	if (value == 0 && g_sHfpInCallingStatus > 1 && (g_sCallStatus !=2))
@@ -244,6 +249,7 @@ static void battery(struct bt_conn *conn, uint32_t value)
 
 static void ring_cb(struct bt_conn *conn)
 {
+	app_hfp_ag_transfer_hf_ring_ind();
     g_sCallStatus = 1;
 }
 static void call_phnum(struct bt_conn *conn, char *number)
@@ -391,7 +397,7 @@ void app_sco_disconnected_callback(struct bt_conn *sco, uint8_t reason) {
 	PRINTF("\n Phone SCO disconnected, g_sCallStatus=%d\n",g_sCallStatus);
 	if (g_sCallStatus == 2) {
 		g_hfOutCall = 0;
-		app_hfp_ag_stop_incoming_call();
+		//app_hfp_ag_stop_incoming_call();
 	}
 	else if(g_rhsESCO)
 	{

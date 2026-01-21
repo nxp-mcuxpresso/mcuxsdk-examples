@@ -1315,7 +1315,7 @@ void avrcp_control_received(struct bt_conn *conn, struct bt_avrcp_control_msg *m
 #endif
 		}
 
-		if(!app_get_a2dp_mode())
+		if(app_get_a2dp_intercom_status())
 		{
 #ifdef APP_DEBUG_EN
 			PRINTF("Forward passthrough cmd to phone\n");
@@ -2819,6 +2819,8 @@ void avrcp_ct_get_element_attributes()
 
 	PRINTF("GetElementAttributes\r\n");
 
+	// NEED TO REMOVE....HANG SEEN WHEN PLAYING VIA YOUTUBE iPHONE16
+	return;
 	memset(&attrs->identifier[0], 0, 8u);
 	attrs->num_of_attr = 0u; /* get all attrs */
 	pdu_id             = BT_AVRCP_PDU_ID_GET_ELEMENT_ATTRIBUTE;
@@ -3553,7 +3555,7 @@ int avrcp_tg_notify_playback_status_changed()
 	event=BT_AVRCP_EVENT_PLAYBACK_STATUS_CHANGED;
 
 
-	if (g_rspTypeSave != BT_AVRCP_RESPONSE_TYPE_INTERIM && !app_get_a2dp_mode())
+	if (g_rspTypeSave != BT_AVRCP_RESPONSE_TYPE_INTERIM && app_get_a2dp_intercom_status())
 	{
 		/*BT_AVRCP_EVENT_PLAYBACK_STATUS_CHANGED"*/
 		avrcp_ct_register_notification(conn_rider_phone, BT_AVRCP_EVENT_PLAYBACK_STATUS_CHANGED);
@@ -3585,7 +3587,7 @@ int avrcp_tg_notify_track_changed()
 	event=BT_AVRCP_EVENT_TRACK_CHANGED;
 
 
-	if (g_rspTypeSave != BT_AVRCP_RESPONSE_TYPE_INTERIM && !app_get_a2dp_mode())
+	if (g_rspTypeSave != BT_AVRCP_RESPONSE_TYPE_INTERIM && app_get_a2dp_intercom_status())
 	{
 		/*BT_AVRCP_EVENT_TRACK_CHANGED"*/
 		if(conn_rider_phone != NULL)

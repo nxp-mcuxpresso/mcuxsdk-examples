@@ -83,7 +83,8 @@ mcux_add_macro(
 	  -DAPP_DEBUG_EN=1\
 	  -DPBAP_PROFILE_ENABLE=1\
 	  -DAVRCP_BROWSING_ENABLE=0\
-	  -DMAP_PROFILE_ENABLE=1"
+	  -DMAP_PROFILE_ENABLE=1\
+	  -DA2DP_BRIDGE_BUFFERING_ENABLE=1"
 )
 
 mcux_add_iar_configuration(

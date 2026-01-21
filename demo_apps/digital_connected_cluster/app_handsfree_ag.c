@@ -254,12 +254,35 @@ static void ag_connected(struct bt_hfp_ag *hfp_ag, int err)
 }
 
 static struct k_work setup_close_audio_work_hf;
+static struct k_work setup_close_audio_work_rhs;
+static struct k_work setup_close_audio_work_phs;
 
 static void close_audio_connection_hf(struct k_work *work)
 {
 	    // disconnect SCO with phone.
 		bt_hfp_sco_disconnect(conn_rider_phone);
 
+}
+
+static void close_audio_connection_rhs(struct k_work *work)
+{
+
+	if(g_HfpAg->hfp_agHandle != NULL)
+	{
+		//PRINTF("555 rhs close esco\n");
+		bt_hfp_ag_close_audio(g_HfpAg->hfp_agHandle);
+
+	}
+}
+
+static void close_audio_connection_phs(struct k_work *work)
+{
+
+	 if (g_HfpAg_ph->hfp_agHandle != NULL)
+	{
+		//PRINTF("\n 555 close PHS eSCO audio... \n");
+		bt_hfp_ag_close_audio(g_HfpAg_ph->hfp_agHandle);
+	}
 }
 
 static void ag_disconnected(struct bt_hfp_ag *hfp_ag)
@@ -312,15 +335,15 @@ static void bt_work_ata_response(struct k_work *work)
 #endif
 
     app_hfp_ag->hfp_in_calling_status = 3;
-            //bt_hfp_ag_send_callsetup_indicator(app_hfp_ag->hfp_agHandle, 0);
-            bt_hfp_ag_send_call_indicator(app_hfp_ag->hfp_agHandle, 1);
-            if (app_hfp_ag->xTimers != 0)
+    //bt_hfp_ag_send_callsetup_indicator(app_hfp_ag->hfp_agHandle, 0);
+    bt_hfp_ag_send_call_indicator(app_hfp_ag->hfp_agHandle, 1);
+    if (app_hfp_ag->xTimers != 0)
     {
-            	xTimerStop(app_hfp_ag->xTimers, 0);
-            	        	        xTimerDelete(app_hfp_ag->xTimers, 0);
-            	        	        app_hfp_ag->xTimers = 0;
+    	xTimerStop(app_hfp_ag->xTimers, 0);
+    	xTimerDelete(app_hfp_ag->xTimers, 0);
+    	app_hfp_ag->xTimers = 0;
     }
-            bt_hfp_ag_call_status_pl(app_hfp_ag->hfp_agHandle, hfp_ag_call_call_incoming);
+    bt_hfp_ag_call_status_pl(app_hfp_ag->hfp_agHandle, hfp_ag_call_call_incoming);
 
 }
 
@@ -343,11 +366,11 @@ void bt_work_init_ag()
 
 }
 
-static void setup_audio_ag_connection(struct k_work *work)
+/*static void setup_audio_ag_connection(struct k_work *work)
 {
 	PRINTF("trigger audio connection \n");
 	//hfp_trigger_codec_connection();
-}
+}*/
 
 void at_brsf(struct bt_hfp_ag *hfp_ag, uint32_t hf_features)
 {
@@ -438,10 +461,13 @@ void chup_response(struct bt_hfp_ag *hfp_ag)
     PRINTF("HFP HF rh have ended the call\n");
 #endif
     g_hfOutCall = 0;
-	app_hfp_ag->hfp_in_calling_status = 1;
-	bt_hfp_ag_call_status_pl(hfp_ag, hfp_ag_call_call_end);
-	bt_hfp_ag_send_call_indicator(hfp_ag, 0);
-
+    if(!aap_hf_call_status())
+    {
+    	app_hfp_ag->hfp_in_calling_status = 1;
+    	k_work_init(&setup_close_audio_work_rhs, close_audio_connection_rhs);
+    	k_work_submit(&setup_close_audio_work_rhs);
+    	bt_hfp_ag_send_call_indicator(hfp_ag, 0);
+    }
 		if (g_HfpAg->xTimers != 0)
 		{
 			xTimerStop(g_HfpAg->xTimers, 0);
@@ -450,7 +476,9 @@ void chup_response(struct bt_hfp_ag *hfp_ag)
 		}
 		if(g_intercomEnabled && !g_intercomPaused)
 		{
-			bt_hfp_ag_call_status_pl(g_HfpAg_ph->hfp_agHandle, hfp_ag_call_call_end);
+			k_work_init(&setup_close_audio_work_phs, close_audio_connection_phs);
+			k_work_submit(&setup_close_audio_work_phs);
+			vTaskDelay(40);
 			bt_hfp_ag_send_call_indicator(g_HfpAg_ph->hfp_agHandle, 0);
 
 		}else
@@ -464,12 +492,15 @@ void chup_response(struct bt_hfp_ag *hfp_ag)
 #endif
 
 		app_hfp_ag->hfp_in_calling_status = 1;
-		bt_hfp_ag_call_status_pl(g_HfpAg_ph->hfp_agHandle, hfp_ag_call_call_end);
+		k_work_init(&setup_close_audio_work_rhs, close_audio_connection_rhs);
+		k_work_submit(&setup_close_audio_work_rhs);
 		bt_hfp_ag_send_call_indicator(g_HfpAg_ph->hfp_agHandle, 0);
 
 		if(g_intercomEnabled)
 		{
-			bt_hfp_ag_call_status_pl(g_HfpAg->hfp_agHandle, hfp_ag_call_call_end);
+			k_work_init(&setup_close_audio_work_phs, close_audio_connection_phs);
+			k_work_submit(&setup_close_audio_work_phs);
+			vTaskDelay(40);
 			bt_hfp_ag_send_call_indicator(g_HfpAg->hfp_agHandle, 0);
 
 		}
@@ -510,7 +541,7 @@ static void codec_negotiate(struct bt_hfp_ag *hfp_ag, uint32_t value)
     if (g_HfpAg->hfp_agHandle == hfp_ag)
     {
 	    //Get call details, if no intercom enabled..
-    	if(!g_intercomEnabled)
+    	if(!g_intercomPaused)
     		bt_hfp_hf_query_list_current_calls(conn_rider_phone);
 
     	k_work_init(&setup_call_audio_work, open_audio_connection_ag);
@@ -679,6 +710,14 @@ void app_hfp_ag_transfer_ring_ind(void)
     if (g_HfpAg->hfp_in_calling_status == 2 && g_HfpAg->hfp_agHandle)
     {
     	bt_hfp_ag_send_callsetup_indicator(g_HfpAg->hfp_agHandle, 1);
+		//bt_hfp_ag_send_callring(g_HfpAg->hfp_agHandle);
+    }
+}
+
+void app_hfp_ag_transfer_hf_ring_ind(void)
+{
+    if (g_HfpAg->hfp_agHandle)
+    {
 		bt_hfp_ag_send_callring(g_HfpAg->hfp_agHandle);
     }
 }
@@ -720,7 +759,7 @@ void app_hfp_ag_open_audio(uint8_t hs_type)
 #endif
         bt_hfp_ag_open_audio(g_HfpAg_ph->hfp_agHandle, g_HfpAg_ph->selectCodec - 1);
 
-        if (g_intercomEnabled && g_rhsESCO)
+        if (g_intercomEnabled && !g_intercomPaused)
         {
         	bt_hfp_ag_send_call_indicator(g_HfpAg->hfp_agHandle, 1);
         	bt_hfp_ag_send_callsetup_indicator(g_HfpAg->hfp_agHandle, 0);
@@ -857,7 +896,7 @@ void app_hfp_ag_transfer_call_ind(void)
 
 void app_hfp_ag_send_setup_call_indication(uint32_t value)
 {
-	if(g_HfpAg->hfp_agHandle != NULL && !g_intercomEnabled)
+	if(g_HfpAg->hfp_agHandle != NULL)
 	{
 		bt_hfp_ag_send_callsetup_indicator(g_HfpAg->hfp_agHandle, value);
 	}
@@ -868,16 +907,22 @@ void app_enable_intercom(uint8_t en)
 	{
 		if(g_phoneESCO)
 			return;
-
+		if(g_intercomEnabled && !g_intercomPaused )
+			return;
+		//Disconnect existing eSCO with Headsets may be needed.
 		if( g_HfpAg->hfp_agHandle != NULL && g_HfpAg_ph->hfp_agHandle != NULL)
 		{
 #ifdef APP_DEBUG_EN
-			PRINTF("Intercom started \n");
+			PRINTF("\nIntercom started \n");
 #endif
-			g_intercomEnabled=1;
 			g_intercomPaused=0;
-			app_dual_a2dp_src_pause();
-			app_a2dp_snk_pause();
+			g_intercomEnabled=1;
+			if(app_get_a2dp_mode())
+				app_dual_a2dp_src_pause();
+			else
+				app_a2dp_src_stop(1);
+			//app_a2dp_snk_pause();
+			app_a2dp_suspend_snk();
 
 			//Send call setup indication to Rider Headset and Passenger headset
 			bt_hfp_ag_send_callsetup_indicator(g_HfpAg_ph->hfp_agHandle, 1);
@@ -915,7 +960,7 @@ void app_enable_intercom(uint8_t en)
 		{
 			bt_hfp_ag_send_call_indicator(g_HfpAg->hfp_agHandle, 0);
 		}
-
+		vTaskDelay(40);
 		if(g_HfpAg_ph->hfp_agHandle)
 		{
 			bt_hfp_ag_send_call_indicator(g_HfpAg_ph->hfp_agHandle, 0);
@@ -947,13 +992,11 @@ void app_intercom_to_rider_call()
 		{
 			bt_hfp_ag_send_call_indicator(g_HfpAg->hfp_agHandle, 0);
 		}
+		vTaskDelay(40);
 		if(g_HfpAg_ph->hfp_agHandle)
 		{
 			bt_hfp_ag_send_call_indicator(g_HfpAg_ph->hfp_agHandle, 0);
 		}
-		if(0)
-			app_hfp_ag_close_audio(RIDER_HEADSET);
-
 		app_hfp_ag_close_audio(PASSENGER_HEADSET);
 	}
 }
@@ -966,14 +1009,8 @@ void app_rider_call_to_intercom()
 		if(g_intercomPaused && !g_sHfpInCallingStatus)
 		{
 			PRINTF("Enabled intercom back !");
-
+			vTaskDelay(50);
 			app_enable_intercom(1);
-
-		}else if(g_intercomEnabled)
-		{
-			//g_intercomEnabled = 0;
-			//app_a2dp_snk_resume();
-			vTaskDelay(20);
 		}
 
 		if(!g_intercomEnabled)
@@ -1035,7 +1072,7 @@ void hfp_ag_sco_connected_callback(struct bt_hfp_ag *ag, struct bt_conn *sco_con
    				app_hfp_ag_close_audio(RIDER_HEADSET);
    			}
 
-   			if(g_intercomEnabled)
+   			if(g_intercomEnabled && !g_intercomPaused)
    			{
    				PRINTF("\nIntercom SCO2 \n");
    				if(g_HfpAg_ph->hfp_agHandle == NULL)
@@ -1085,9 +1122,6 @@ void hfp_ag_sco_disconnected_callback(struct bt_hfp_ag *ag)
 		PRINTF("Rider SCO disconnected\r\n");
 		/* Reset stored SCO2 handle */
 		g_rhsESCO = 0;
-    	if(g_intercomEnabled)
-    		bt_hfp_ag_send_call_indicator(g_HfpAg->hfp_agHandle, 0);
-
     	if(g_phoneESCO && g_sHfpInCallingStatus && !g_sHfpAgRhDisconnecting)
     	{
     		PRINTF("Phone eSCO & call still active, ...\n");
@@ -1125,12 +1159,6 @@ void hfp_ag_sco_disconnected_callback(struct bt_hfp_ag *ag)
     		PRINTF("Close rider audio \r\n");
     		app_hfp_ag_close_audio(RIDER_HEADSET);
     	}
-
-    	if(g_intercomEnabled)
-    	{
-    		vTaskDelay(pdMS_TO_TICKS(40));
-    		bt_hfp_ag_send_call_indicator(g_HfpAg_ph->hfp_agHandle, 0);
-    	}
     }
 
 	if (!g_phoneESCO && !g_rhsESCO && !g_phsESCO)
@@ -1142,7 +1170,7 @@ void hfp_ag_sco_disconnected_callback(struct bt_hfp_ag *ag)
 
 			app_enable_intercom(1);
 
-		} else if(g_intercomEnabled)
+		} else if(g_intercomEnabled && !g_intercomPaused)
 		{
 			g_intercomEnabled = 0;
 			//app_a2dp_snk_resume();
