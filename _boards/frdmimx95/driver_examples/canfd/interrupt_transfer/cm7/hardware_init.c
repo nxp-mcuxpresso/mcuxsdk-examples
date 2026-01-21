@@ -43,19 +43,12 @@ void BOARD_InitHardware(void)
 
     BOARD_InitPCAL6524(&handle);
 
-    PCAL6524_SetDirection(&handle, (1 << BOARD_PCAL6524_PDM_CAN_SEL), kPCAL6524_Output);
-    PCAL6524_SetDirection(&handle, (1 << BOARD_PCAL6524_CAN1_EN), kPCAL6524_Output);
-    PCAL6524_SetDirection(&handle, (1 << BOARD_PCAL6524_CAN1_STBY_B), kPCAL6524_Output);
+    PCAL6524_SetDirection(&handle, (1 << BOARD_PCAL6524_CH_CAN_SEL), kPCAL6524_Output);
+    PCAL6524_SetDirection(&handle, (1 << BOARD_PCAL6524_CAN_STBY), kPCAL6524_Output);
 
-    /* Route GPIO_IO25,GPIO_IO27 to CAN1 */
-    PCAL6524_ClearPins(&handle, (1 << BOARD_PCAL6524_PDM_CAN_SEL));
+    PCAL6524_ClearPins(&handle, (1 << BOARD_PCAL6524_CH_CAN_SEL));
+    PCAL6524_ClearPins(&handle, (1 << BOARD_PCAL6524_CAN_STBY));
 
-    /* Initialize TJA1463AT with normal mode */
-    /* Clear CAN STBY_N and EN signal of TJA1463AT */
-    PCAL6524_ClearPins(&handle, (1 << BOARD_PCAL6524_CAN1_STBY_B) | (1 << BOARD_PCAL6524_CAN1_EN));
     SDK_DelayAtLeastUs(100U, SystemCoreClock);
-
-    /* Setup CAN EN and STBY_N signal of TJA1436AT */
-    PCAL6524_SetPins(&handle, (1 << BOARD_PCAL6524_CAN1_STBY_B) | (1 << BOARD_PCAL6524_CAN1_EN) | (1 << BOARD_PCAL6524_PDM_CAN_SEL));
 }
 /*${function:end}*/

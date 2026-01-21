@@ -17,7 +17,6 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    pca6416a_handle_t handle;
     /* clang-format off */
     hal_clk_t hal_audiopll1vcoCLKCfg = {
         .clk_id = hal_clock_audiopll1ctl,

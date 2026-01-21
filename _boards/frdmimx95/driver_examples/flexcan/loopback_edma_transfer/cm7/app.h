@@ -14,8 +14,8 @@
 #define EXAMPLE_CAN           CAN2
 #define TX_MESSAGE_BUFFER_NUM (9)
 
-#define EXAMPLE_CAN_DMA         (DMA3)
-#define EXAMPLE_CAN_DMA_CHANNEL Dma3RequestMuxCAN2
+#define EXAMPLE_CAN_DMA         (EDMA5_2)
+#define EXAMPLE_CAN_DMA_CHANNEL Dma5RequestMuxCAN2
 
 /* FLEXCAN_DMA_REQUEST_SOURCE is not used in driver, just avoid build error introduced by compatibility */
 #define FLEXCAN_DMA_REQUEST_SOURCE (0)

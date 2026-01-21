@@ -253,8 +253,8 @@ void BOARD_InitHardware(void)
 
     /* Enable 156.25MHz clock to 10G ETH_CLKIN_P/ETH_CLKIN_N */
     BOARD_InitPCAL6524(&handle1);
-    PCAL6524_SetDirection(&handle1, (1 << BOARD_PCAL6524_SI5332_RST), kPCAL6524_Output);
-    PCAL6524_ClearPins(&handle1, (1 << BOARD_PCAL6524_SI5332_RST));
+/*     PCAL6524_SetDirection(&handle1, (1 << BOARD_PCAL6524_SI5332_RST), kPCAL6524_Output); */
+/*     PCAL6524_ClearPins(&handle1, (1 << BOARD_PCAL6524_SI5332_RST)); */
     SDK_DelayAtLeastUs(100000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 
     BOARD_InitPCAL6408_I2C5(&handle2);
