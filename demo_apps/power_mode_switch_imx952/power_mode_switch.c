@@ -324,6 +324,7 @@ void PowerModeSwitchTask(void *pvParameters)
         PRINTF("Press  %c to enter: SUSPEND mode\r\n", kAPP_PowerModeSuspend);
         PRINTF("Press  P to suspend A55 core\r\n");
         PRINTF("Press  W to wakeup A55 core\r\n");
+        PRINTF("Press  M for switch M7 Clock frequency between LD/OD/ND\r\n");
         PRINTF("\r\nWaiting for power mode select..\r\n\r\n");
 
         /* Wait for user response */
@@ -394,6 +395,43 @@ void PowerModeSwitchTask(void *pvParameters)
             if (status != SCMI_ERR_SUCCESS)
             {
                 PRINTF("SCMI_LmmWake A55 fail\r\n");
+            }
+        }
+        else if ('M' == ch)
+        {
+            static uint32_t perfLevel = 0U;
+
+            PRINTF("Press L for Low Drive mode - choose M7 freq as 400MHz\r\n");
+            PRINTF("Press N for Nominal   mode - choose M7 freq as 667MHz\r\n");
+            PRINTF("Press O for OverDrive mode - choose M7 freq as 800MHz\r\n");
+            ch = GETCHAR();
+
+            if ((ch >= 'a') && (ch <= 'z'))
+            {
+                ch -= 'a' - 'A';
+            }
+            if (ch == 'L')
+            {
+                perfLevel = 1;
+            }
+            else if (ch == 'N')
+            {
+                perfLevel = 2;
+            }
+            else if (ch == 'O')
+            {
+                perfLevel = 3;
+            }
+            else
+            {
+                PRINTF("Invalid frequency perf level input!\r\n");
+                continue;
+            }
+
+            status = SCMI_PerformanceLevelSet(SCMI_A2P, DEV_SM_PERF_M7, perfLevel);
+            if (status != SCMI_ERR_SUCCESS)
+            {
+                PRINTF("Performance level switch fail\r\n");
             }
         }
         else

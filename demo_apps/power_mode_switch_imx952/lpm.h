@@ -94,6 +94,24 @@
 #define CPU_PER_LPI_IDX_WDOG4           17U
 #define CPU_PER_LPI_IDX_WDOG5           18U
 
+/*!
+ * @name Device performance domain indexes
+ */
+/** @{ */
+#define DEV_SM_PERF_M33     0U   /*!< M33 domain */
+#define DEV_SM_PERF_WAKEUP  1U   /*!< WAKEUP domain */
+#define DEV_SM_PERF_M7      2U   /*!< M7 domain */
+#define DEV_SM_PERF_DRAM    3U   /*!< DRAM domain */
+#define DEV_SM_PERF_HSIO    4U   /*!< HSIO domain */
+#define DEV_SM_PERF_NPU     5U   /*!< NPU domain */
+#define DEV_SM_PERF_NOC     6U   /*!< NOC domain */
+#define DEV_SM_PERF_A55     7U   /*!< A55 domain */
+#define DEV_SM_PERF_GPU     8U   /*!< GPU domain */
+#define DEV_SM_PERF_VPU     9U   /*!< VPU domain */
+#define DEV_SM_PERF_CAM     10U  /*!< CAM domain */
+#define DEV_SM_PERF_DISP    11U  /*!< DISP domain */
+
+
 typedef enum _lpm_power_mode
 {
     LPM_PowerModeRun = 0, /* Normal RUN mode */

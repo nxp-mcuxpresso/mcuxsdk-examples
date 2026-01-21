@@ -51,6 +51,7 @@ Press  C to enter: STOP mode
 Press  D to enter: SUSPEND mode
 Press  P to suspend A55 core
 Press  W to wakeup A55 core
+Press  M for switch M7 Clock frequency between LD/OD/ND
 
 Waiting for power mode select..
 
