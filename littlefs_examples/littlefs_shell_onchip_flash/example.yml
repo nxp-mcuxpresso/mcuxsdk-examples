@@ -73,3 +73,4 @@ littlefs_shell_onchip_flash:
     frdmmcxl255@cm33: []
     frdmmcxa266: []
     frdmmcxa366: []
+    frdmmcxa577: []
