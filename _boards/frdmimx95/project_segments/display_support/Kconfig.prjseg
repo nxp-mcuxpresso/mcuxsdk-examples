@@ -1,4 +1,4 @@
-# Copyright 2024 NXP
+# Copyright 2026 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 #
@@ -10,10 +10,8 @@ config MCUX_PRJSEG_module.board.display_support
     select MCUX_COMPONENT_driver.lpi2c
 
 # Which panels the board supports
-config MCUX_DEMO_PANEL_MX9_DSI_OLED_SUPPORT
-    default y
 
-config MCUX_DEMO_PANEL_MIPI2HDMI_SUPPORT
+config MCUX_DEMO_PANEL_LVDS2HDMI_SUPPORT
     default y
 
 if MCUX_PRJSEG_module.board.display_support
@@ -28,7 +26,7 @@ if MCUX_PRJSEG_module.board.display_support
 
     choice MCUX_PRJSEG_module.board.display_support.port
         prompt "port Selection"
-        default MCUX_PRJSEG_module.board.display_support.DPU_DI_MIPI
+        default MCUX_PRJSEG_module.board.display_support.DPU_DI_LVDS
 
         config MCUX_PRJSEG_module.board.display_support.DPU_DI_MIPI
             bool "DPU_DI_MIPI port"
@@ -42,8 +40,27 @@ if MCUX_PRJSEG_module.board.display_support
         help
             No prefix in generated macro
 
+    config LDB_DUAL_PANEL
+        int
+        default 0 if MCUX_PRJSEG_module.board.display_support.LDB_DUAL_PANEL_DISABLE
+        default 1 if MCUX_PRJSEG_module.board.display_support.LDB_DUAL_PANEL_ENABLE
+        help
+            Ldb dual panel setting selection for display support
+            No prefix in generated macro
+
+    choice MCUX_PRJSEG_module.board.display_support.ldb
+        prompt "dual panel Selection"
+        default MCUX_PRJSEG_module.board.display_support.LDB_DUAL_PANEL_DISABLE
+
+        config MCUX_PRJSEG_module.board.display_support.LDB_DUAL_PANEL_DISABLE
+            bool "Disable DUAL panel setting for LDB"
+
+        config MCUX_PRJSEG_module.board.display_support.LDB_DUAL_PANEL_ENABLE
+            bool "Enable DUAL panel setting for LDB"
+    endchoice
+
     choice DISPLAY_SUPPORT_PANEL
-        default MX9_DSI_OLED
+        default LVDS2HDMI
     endchoice
 
 endif

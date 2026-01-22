@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 NXP
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -11,22 +11,24 @@
  ******************************************************************************/
 #define DPU_DI_LVDS                0
 #define DPU_DI_MIPI                1
-#define DEMO_PANEL_MX9_DSI_OLED    13
-#define DEMO_PANEL_MIPI2HDMI       14
+#define DEMO_PANEL_LVDS2HDMI       15
 
 /* Use the MIPI interface. */
 #ifndef DPU_EXAMPLE_DI
-#define DPU_EXAMPLE_DI DPU_DI_MIPI
+#define DPU_EXAMPLE_DI DPU_DI_LVDS
 #endif
 
 #ifndef DEMO_PANEL
-#define DEMO_PANEL  DEMO_PANEL_MX9_DSI_OLED
+#define DEMO_PANEL  DEMO_PANEL_LVDS2HDMI
 #endif
 
+#ifndef LDB_DUAL_PANEL
+#define LDB_DUAL_PANEL  0
+#endif
 
 /* Whether use external convertor such as MIPI2HDMI convertor (ADV7535) */
 #ifndef APP_DISPLAY_EXTERNAL_CONVERTOR
-#define APP_DISPLAY_EXTERNAL_CONVERTOR 0
+#define APP_DISPLAY_EXTERNAL_CONVERTOR 1
 #endif
 
 #if (DPU_EXAMPLE_DI == DPU_DI_LVDS)
@@ -78,12 +80,12 @@
 
 #else
 
-#if (DEMO_PANEL == DEMO_PANEL_MIPI2HDMI)
+#if (DEMO_PANEL == DEMO_PANEL_LVDS2HDMI)
 /*
  * The pixel clock is (height + VSW + VFP + VBP) * (width + HSW + HFP + HBP) * frame rate.
  * (1080 + 4 + 36 + 5) * (1920 + 88 + 148 + 44) * x 60 = 1125 * 2200 * x 60Hz = 148500000 Hz
  */
-/* 1920*1080 ADV7535 MIPI2HDMI card */
+/* 1920*1080 IT6263 MIPI2HDMI card */
 #define APP_PANEL_HEIGHT   1080
 #define APP_PANEL_WIDTH    1920
 #define APP_HFP            88

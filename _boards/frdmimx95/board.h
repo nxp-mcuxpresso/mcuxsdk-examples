@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 NXP
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -116,6 +116,7 @@
 
 #define BOARD_PCAL6524_CAN_STBY       (0x7U)
 #define BOARD_PCAL6524_CH_CAN_SEL     (0x4U)
+#define BOARD_PCAL6524_LCD3_nRST      (0x10U + 0x7U)
 
 /* PCAL6408 */
 #define BOARD_PCAL6408_I2C1            LPI2C1

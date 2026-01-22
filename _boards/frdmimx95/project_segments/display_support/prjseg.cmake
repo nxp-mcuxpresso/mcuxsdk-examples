@@ -1,4 +1,4 @@
-# Copyright 2024 NXP
+# Copyright 2026 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 #
@@ -14,5 +14,13 @@ if (CONFIG_MCUX_PRJSEG_module.board.display_support.DPU_DI_MIPI)
 endif()
 
 if (CONFIG_MCUX_PRJSEG_module.board.display_support.DPU_DI_LVDS)
+
+endif()
+
+if (CONFIG_MCUX_PRJSEG_module.board.display_support.LDB_DUAL_PANEL_DISABLE)
+
+endif()
+
+if (CONFIG_MCUX_PRJSEG_module.board.display_support.LDB_DUAL_PANEL_ENABLE)
 
 endif()

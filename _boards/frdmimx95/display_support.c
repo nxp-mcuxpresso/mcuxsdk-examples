@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2025 NXP
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -7,12 +7,12 @@
 #include "board.h"
 #include "fsl_rgpio.h"
 #include "fsl_adp5585.h"
+#include "fsl_pcal6524.h"
 #include "display_support.h"
 #include "sm_platform.h"
 #include "fsl_video_common.h"
 #include "fsl_display.h"
-//#include "fsl_irqsteer.h"
-//#include "fsl_dpu_irqsteer.h"
+#include "fsl_lpi2c.h"
 #if DPU_EXAMPLE_DI == DPU_DI_MIPI
 static adp5585_handle_t adpHandle;
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
@@ -23,7 +23,7 @@ static adp5585_handle_t adpHandle;
 #include "fsl_adv7535.h"
 #endif
 #elif DPU_EXAMPLE_DI == DPU_DI_LVDS
-static adp5585_handle_t adpHandle;
+static pcal6524_handle_t pcalHandle;
 #include "fsl_ldb.h"
 #if APP_DISPLAY_EXTERNAL_CONVERTOR
 #include "fsl_it6263.h"
@@ -111,11 +111,11 @@ static void IT6263_PullResetPin(bool pullUp)
 {
     if (pullUp)
     {
-        ADP5585_SetPins(&adpHandle, (1 << LVDS1_RST));
+        PCAL6524_SetPins(&pcalHandle, (1 << LVDS1_RST));
     }
     else
     {
-        ADP5585_ClearPins(&adpHandle, (1 << LVDS1_RST));
+        PCAL6524_ClearPins(&pcalHandle, (1 << LVDS1_RST));
     }
 }
 #endif
@@ -293,17 +293,6 @@ void BOARD_PrepareDisplay(void)
     HAL_ClockSetPllClk(&hal_ldbpllCLKCfg);
     HAL_ClockEnable(&hal_ldbpllvcoCLKCfg);
     HAL_ClockEnable(&hal_ldbpllCLKCfg);
-
-    /* Select LVDS1 pin by using ADP5585 */
-    BOARD_InitADP5585(&adpHandle);
-    ADP5585_SetDirection(&adpHandle, (1 << LVDS1_RST), kADP5585_Output);
-    ADP5585_SetDirection(&adpHandle, (1 << LVDS1_EN), kADP5585_Output);
-    ADP5585_SetDirection(&adpHandle, (1 << LVDS0_RST), kADP5585_Output);
-    ADP5585_SetDirection(&adpHandle, (1 << LVDS0_EN), kADP5585_Output);
-    ADP5585_SetPins(&adpHandle, (1 << LVDS1_RST));
-    ADP5585_SetPins(&adpHandle, (1 << LVDS1_EN));
-    ADP5585_SetPins(&adpHandle, (1 << LVDS0_RST));
-    ADP5585_SetPins(&adpHandle, (1 << LVDS0_EN));
 #endif
     BOARD_InitDpuInterrupt();
 }
@@ -444,13 +433,20 @@ void BOARD_InitDisplayInterface(void)
         .clk_round_opt = hal_clk_round_auto,
     };
     HAL_ClockSetRootClk(&hal_lpi2cClkCfg);
-    adp5585_handle_t adpHandle;
-    BOARD_InitADP5585(&adpHandle);
-    ADP5585_SetDirection(&adpHandle, (1 << LVDS1_RST), kADP5585_Output);
-    ADP5585_SetDirection(&adpHandle, (1 << LVDS1_EN), kADP5585_Output);
-    ADP5585_SetPins(&adpHandle, (1 << LVDS1_RST));
-    ADP5585_SetPins(&adpHandle, (1 << LVDS1_EN));
 
+    hal_clk_t hal_lpi2c4ClkCfg = {
+        .clk_id = hal_clock_lpi2c4,
+        .pclk_id = hal_clock_osc24m,
+        .div = 1, /* 24Mhz for lpi2c */
+        .enable_clk = true,
+        .clk_round_opt = hal_clk_round_auto,
+    };
+    HAL_ClockSetRootClk(&hal_lpi2c4ClkCfg);
+    BOARD_InitPCAL6524(&pcalHandle);
+    PCAL6524_SetDirection(&pcalHandle, (1 << BOARD_PCAL6524_LCD3_nRST), kPCAL6524_Output);
+    PCAL6524_SetDirection(&pcalHandle, (1 << BOARD_PCAL6524_LCD3_nRST), kPCAL6524_Output);
+
+    BOARD_LPI2C_Init(LPI2C4, HAL_ClockGetIpFreq(hal_clock_lpi2c4));
     if (kStatus_Success != IT6263_Init(&it6263Handle, &displayConfig))
     {
         PRINTF("Error: Failed to init the IT6263 convert card\r\n");

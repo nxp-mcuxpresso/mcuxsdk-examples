@@ -1,25 +1,20 @@
 Hardware requirements
 =====================
 - Micro USB cable
-- IMX95LPD5EVK-19 board
+- FRDMIMX95 board
 - J-Link Debug Probe
-- 12V~20V power supply
+- USB power supply
 - Personal Computer
-- LCD SPEC panel
+- LVDS2HDMI card
 
 Board settings
 ==============
-For DUAL LVDS panel(1920*1200), connect MINISAS ports J15 and J16 to panel.
-For LCD SPEC panel(1280*800), connect MINISAS port J15 to MINISAS2LVDS card as LVDS0. J16 to MINISAS2LVDS card for LVDS1.
-The MINISAS2LVDS card need jumper, please refer to the card datasheet.
 For LVDS2HDMI card(1920*1080), connect MINISAS port J16 to panel.
-For MX9_DSI_OLED MIPI panel(1080*2340), connect MINISAS port J14 to panel.
-For MIPI2HDMI card(1920*1080), connect MINISAS port J14 to panel.
 
 Prepare the Demo
 ================
-1.  Connect 12V power supply and J-Link Debug Probe to the board, switch SW4 to power on the board.
-2.  Connect a micro USB cable between the host PC and the J31 USB port on the cpu board.
+1.  Connect usb power supply.
+2.  Connect a micro USB cable between the host PC and the J1 USB port on the cpu board.
 3.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
@@ -27,53 +22,26 @@ Prepare the Demo
     - One stop bit
     - No flow control
 4.  Download the program to the target board.
-5.  Launch the debugger in your IDE to begin running the example.
-6.  Load the figure binary file by using Jlink command "loadbin xxx.bin 0x80000000" and "loadbin xxx.bin 0x803e8000"(default LCD SPEC panel).
+5.  Load the figure binary file by using Jlink command "loadbin xxx.bin 0x80000000" and "loadbin xxx.bin 0x807e9000"(default LVDS2HDMI card).
 
    ------------------------------------------------------------
    | panel name   | buffer address 1 |   buffer address 2     |
-   ------------------------------------------------------------
-   | DUAL LVDS    |   0x80000000     |       0x808ca000       |
-   ------------------------------------------------------------
-   | LCD SPEC     |   0x80000000     |       0x803e8000       |
-   ------------------------------------------------------------
-   | MX9_DSI_OLED |   0x80000000     |       0x809a3f80       |
-   ------------------------------------------------------------
-   | MIPI2HDMI    |   0x80000000     |       0x807e9000       |
    ------------------------------------------------------------
    | LVDS2HDMI    |   0x80000000     |       0x807e9000       |
    ------------------------------------------------------------
 
 Steps to configure the panels
 ===============
-Default panel is LCD SPEC panel, default port is DPU_DI_LVDS, default setting for APP_DISPLAY_EXTERNAL_CONVERTOR is disabled
+Default panel is LVDS2HDMI card, default port is DPU_DI_LVDS, default setting for APP_DISPLAY_EXTERNAL_CONVERTOR is enabled
 Tips: The APP_DISPLAY_EXTERNAL_CONVERTOR can be set as 1 when you are using MIPI2HDMI card(ADV7535) or LVDS2HDMI card(IT6263) only.
 When Kconfig is used
 ----------------
 Below setting is for kconfig, you can fix below settings in dpu/figure_display/cm7/prj.conf
-For default LCD_SPEC panel, you do not need to change anything.
-For DUAL LVDS panel(1920*1200):
-CONFIG_MCUX_PRJSEG_module.board.display_support.LVDS_DUAL_PANEL=y
-CONFIG_MCUX_PRJSEG_module.board.display_support.LDB_DUAL_PANEL_ENABLE=y
-For LVDS2HDMI card(1920*1080):
-CONFIG_APP_DISPLAY_EXTERNAL_CONVERTOR=y
-CONFIG_MCUX_PRJSEG_module.board.display_support.LVDS2HDMI=y
-For MIPI DSI panel(1080*2340):
-CONFIG_MCUX_PRJSEG_module.board.display_support.DPU_DI_MIPI=y
-CONFIG_MCUX_PRJSEG_module.board.display_support.MX9_DSI_OLED=y
-For MIPI2HDMI card(1920*1080):
-CONFIG_MCUX_PRJSEG_module.board.display_support.DPU_DI_MIPI=y
-CONFIG_APP_DISPLAY_EXTERNAL_CONVERTOR=y
-CONFIG_MCUX_PRJSEG_module.board.display_support.MIPI2HDMI=y
+For default LVDS2HDMI card, you do not need to change anything.
 When package is used
 ----------------
 Below setting is for mcux_config.h.
-Setting DEMO_PANEL to LVDS_DUAL_PANEL to DUAL LVDS panel(1920*1200). You also need to set LDB_DUAL_PANEL to 1.
-Setting DEMO_PANEL to LVDS2HDMI to use LVDS2HDMI card(1920*1080), you need to set APP_DISPLAY_EXTERNAL_CONVERTOR to 1.
-Setting DEMO_PANEL to MX9_DSI_OLED to use MIPI DSI panel(1080*2340), you also need to set DPU_EXAMPLE_DI to DPU_DI_MIPI.
-Setting DEMO_PANEL to MIPI2HDMI to use MIPI2HDMI card(1920*1080), you need to set DPU_EXAMPLE_DI to DPU_DI_MIPI.
-And you also need to set APP_DISPLAY_EXTERNAL_CONVERTOR to 1.
-For default LCD_SPEC panel, you do not need to change anything.
+For default LVDS2HDMI card, you do not need to change anything.
 
 Running the demo
 ================

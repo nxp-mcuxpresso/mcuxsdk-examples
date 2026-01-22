@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -51,8 +51,16 @@ void BOARD_InitHardware(void)
         .st = hal_power_state_on,
     };
 
-    hal_clk_t hal_lpi2cClkCfg = {
+    hal_clk_t hal_lpi2c2ClkCfg = {
         .clk_id = hal_clock_lpi2c2,
+        .pclk_id = hal_clock_osc24m,
+        .div = 1, /* 24Mhz for lpi2c */
+        .enable_clk = true,
+        .clk_round_opt = hal_clk_round_auto,
+    };
+
+    hal_clk_t hal_lpi2c4ClkCfg = {
+        .clk_id = hal_clock_lpi2c4,
         .pclk_id = hal_clock_osc24m,
         .div = 1, /* 24Mhz for lpi2c */
         .enable_clk = true,
@@ -77,7 +85,8 @@ void BOARD_InitHardware(void)
     HAL_ClockSetRootClk(&hal_dispapbCLKCfg);
     HAL_ClockSetRootClk(&hal_dispaxiCLKCfg);
     HAL_ClockSetRootClk(&hal_dispocramCLKCfg);
-    HAL_ClockSetRootClk(&hal_lpi2cClkCfg);
+    HAL_ClockSetRootClk(&hal_lpi2c2ClkCfg);
+    HAL_ClockSetRootClk(&hal_lpi2c4ClkCfg);
 
     BOARD_PrepareDisplay();
 }
