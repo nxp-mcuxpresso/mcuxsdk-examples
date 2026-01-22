@@ -181,8 +181,8 @@ static void DEMO_InitEDMA(void)
  */
 static void DEMO_InitSAI(void)
 {
-    sai_transceiver_t saiTxConfig = {0};
-    sai_transceiver_t saiRxConfig = {0};
+    sai_transceiver_t saiTxConfig;
+    sai_transceiver_t saiRxConfig;
     uint32_t sourceClock = DEMO_SAI_CLK_FREQ;
 
     /* Initialize SAI1 (TDM1 input) */
