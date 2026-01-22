@@ -1,16 +1,15 @@
 # lpspi_interrupt_b2b_transfer_slave
 
 ## Overview
-The lpspi_interrupt_b2b_transfer example shows how to use LPSPI driver in interrupt way:
+The lpspi_interrupt_b2b_transfer example shows how to use LPSPI driver in interrupt way.
 
 In this example, we need two boards, one board used as LPSPI master and another board used as LPSPI slave.
 The file 'lpspi_interrupt_b2b_transfer_slave.c' includes the LPSPI slave code.
 This example uses the transactional API in LPSPI driver.
-LPSPI master send/received data to/from LPSPI slave in interrupt. (LPSPI Slave using interrupt to receive/send the data)
-
+The LPSPI master send/received data to/from LPSPI slave using interrupt (the LPSPI slave is using interrupt to receive/send the data).
 
 ## Running the demo
-When the demo runs successfully, the log would be seen in the terminal window:
+When the demo runs successfully, you will see output in the terminal like this:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 LPSPI interrupt board to board (b2b) transfer slave example.
 
@@ -22,12 +21,11 @@ It's a successful transfer.
 This is LPSPI slave transfer completed callback.
 It's a successful transfer.
 
-
- Slave received:
-      0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F
-     10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F
-     20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F
-     30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F
+Slave received:
+     0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F
+    10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F
+    20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F
+    30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F
 
 Slave example is running...
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

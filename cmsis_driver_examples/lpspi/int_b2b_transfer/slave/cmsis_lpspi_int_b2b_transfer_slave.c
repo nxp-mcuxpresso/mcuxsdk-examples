@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 NXP
+ * Copyright 2017, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -69,7 +69,7 @@ int main(void)
 
     while (1)
     {
-        PRINTF("\r\n Slave example is running...\r\n");
+        PRINTF("Slave example is running...\r\n\r\n");
 
         /* Reset the receive buffer */
         for (i = 0; i < TRANSFER_SIZE; i++)
@@ -94,16 +94,16 @@ int main(void)
         {
         }
         /* Print out receive buffer */
-        PRINTF("\r\n Slave receive:");
+        PRINTF("\r\nSlave received:");
         for (i = 0U; i < TRANSFER_SIZE; i++)
         {
             /* Print 16 numbers in a line */
             if ((i & 0x0FU) == 0U)
             {
-                PRINTF("\r\n    ");
+                PRINTF("\r\n   ");
             }
             PRINTF(" %02X", slaveRxData[i]);
         }
-        PRINTF("\r\n");
+        PRINTF("\r\n\r\n");
     }
 }

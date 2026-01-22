@@ -1,12 +1,50 @@
 # cmsis_lpspi_edma_b2b_transfer_master
 
 ## Overview
-The cmsis_lpspi_edma_b2b_transfer example shows how to use LPSPI CMSIS driver in edma way:
+The cmsis_lpspi_edma_b2b_transfer example shows how to use LPSPI CMSIS driver with eDMA.
 
 In this example , we need two boards, one board used as LPSPI master and another board used as LPSPI slave.
 The file 'cmsis_lpspi_edma_b2b_transfer_master.c' includes the LPSPI master code.
 
-1. LPSPI master send/received data to/from LPSPI slave in edma .
+The LPSPI master send/receive data to/from the LPSPI slave using eDMA.
+
+## Running the demo
+When the demo runs successfully, you will see output in the terminal like this:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+LPSPI CMSIS driver board to board edma example.
+This example use one board as master and another as slave.
+Master and slave uses EDMA way. Slave should start first.
+Please make sure you make the correct line connection. Basically, the connection is:
+LPSPI_master -- LPSPI_slave
+   CLK       --    CLK
+   PCS       --    PCS
+   SOUT      --    SIN
+   SIN       --    SOUT
+   GND       --    GND
+
+Make sure the slave example is running, then press any key to continue.
+
+Master transmit:
+     1  2  3  4  5  6  7  8  9  A  B  C  D  E  F 10
+    11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20
+    21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30
+    31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40
+
+This is LPSPI_MasterSignalEvent_t
+Master transmit data to slave has completed!
+This is LPSPI_MasterSignalEvent_t
+Master receive data from slave has completed!
+
+LPSPI transfer all data matched!
+
+Master received:
+     1  2  3  4  5  6  7  8  9  A  B  C  D  E  F 10
+    11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20
+    21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30
+    31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40
+
+Press any key to run again.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## Supported Boards
 - [EVK9-MIMX8ULP](../../../../_boards/evk9mimx8ulp/cmsis_driver_examples/lpspi/edma_b2b_transfer/master/example_board_readme.md)

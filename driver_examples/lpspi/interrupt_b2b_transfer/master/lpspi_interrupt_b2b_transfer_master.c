@@ -1,5 +1,5 @@
 /*
- * Copyright 2017, 2024 NXP
+ * Copyright 2017, 2024, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -96,6 +96,17 @@ int main(void)
 
     while (1)
     {
+        /* Wait for press any key */
+        if (loopCount == 1U)
+        {
+            PRINTF("\r\nMake sure the slave example is running, then press any key to continue.\r\n");
+        }
+        else
+        {
+            PRINTF("\r\nPress any key to run again.\r\n");
+        }
+        GETCHAR();
+
         /* Set up the transfer data */
         for (i = 0U; i < TRANSFER_SIZE; i++)
         {
@@ -104,17 +115,17 @@ int main(void)
         }
 
         /* Print out transmit buffer */
-        PRINTF("\r\n Master transmit:");
+        PRINTF("\r\nMaster transmit:");
         for (i = 0U; i < TRANSFER_SIZE; i++)
         {
             /* Print 16 numbers in a line */
             if ((i & 0x0FU) == 0U)
             {
-                PRINTF("\r\n");
+                PRINTF("\r\n   ");
             }
             PRINTF(" %02X", masterTxData[i]);
         }
-        PRINTF("\r\n");
+        PRINTF("\r\n\r\n");
 
         /* Start master transfer, send data to slave */
         isTransferCompleted = false;
@@ -168,28 +179,25 @@ int main(void)
         }
         if (errorCount == 0U)
         {
-            PRINTF(" \r\nLPSPI transfer all data matched!\r\n");
-            /* Print out receive buffer */
-            PRINTF("\r\n Master received:");
-            for (i = 0U; i < TRANSFER_SIZE; i++)
-            {
-                /* Print 16 numbers in a line */
-                if ((i & 0x0FU) == 0U)
-                {
-                    PRINTF("\r\n");
-                }
-                PRINTF(" %02X", masterRxData[i]);
-            }
-            PRINTF("\r\n");
+            PRINTF("\r\nLPSPI transfer all data matched!\r\n");
         }
         else
         {
-            PRINTF(" \r\nError occurred in LPSPI transfer!\r\n");
+            PRINTF("\r\nError occurred in LPSPI transfer!\r\n");
         }
 
-        /* Wait for press any key */
-        PRINTF("\r\nPress any key to run again\r\n");
-        GETCHAR();
+        /* Print out receive buffer */
+        PRINTF("\r\nMaster received:");
+        for (i = 0U; i < TRANSFER_SIZE; i++)
+        {
+            /* Print 16 numbers in a line */
+            if ((i & 0x0FU) == 0U)
+            {
+                PRINTF("\r\n   ");
+            }
+            PRINTF(" %02X", masterRxData[i]);
+        }
+        PRINTF("\r\n\r\n");
 
         /* Increase loop count to change transmit buffer */
         loopCount++;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017,2020,2022,2024 NXP
+ * Copyright 2017,2020,2022,2024,2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -125,11 +125,10 @@ int main(void)
     PRINTF("    SOUT     --    SIN\r\n");
     PRINTF("    SIN      --    SOUT\r\n");
     PRINTF("    GND      --    GND\r\n");
-    PRINTF("Please running slave here, then type any key to continue\r\n");
-    GETCHAR();
 
     uint32_t srcClock_Hz;
     uint32_t errorCount;
+    uint32_t loopCount = 1U;
     uint32_t i;
     lpspi_which_pcs_t whichPcs;
     uint8_t txWatermark;
@@ -146,118 +145,140 @@ int main(void)
     srcClock_Hz = LPSPI_MASTER_CLK_FREQ;
     LPSPI_MasterInit(EXAMPLE_LPSPI_MASTER_BASEADDR, &masterConfig, srcClock_Hz);
 
-    /******************Set up master transfer******************/
-    /* Set up the transfer data. */
-    for (i = 0; i < TRANSFER_SIZE; i++)
-    {
-        masterTxData[i] = i % 256;
-        masterRxData[i] = 0;
-    }
-
-    isMasterTransferCompleted = false;
-    masterTxCount             = 0;
-    masterRxCount             = 0;
-    whichPcs                  = EXAMPLE_LPSPI_MASTER_PCS_FOR_INIT;
-
-    /* The TX and RX FIFO sizes are always the same. */
-    g_masterFifoSize = LPSPI_GetRxFifoSize(EXAMPLE_LPSPI_MASTER_BASEADDR);
-
-    /* Set the RX and TX watermarks to reduce the ISR times. */
-    if (g_masterFifoSize > 1)
-    {
-        txWatermark         = 1;
-        g_masterRxWatermark = g_masterFifoSize - 2;
-    }
-    else
-    {
-        txWatermark         = 0;
-        g_masterRxWatermark = 0;
-    }
-
-    LPSPI_SetFifoWatermarks(EXAMPLE_LPSPI_MASTER_BASEADDR, txWatermark, g_masterRxWatermark);
-
-    LPSPI_Enable(EXAMPLE_LPSPI_MASTER_BASEADDR, false);
-    EXAMPLE_LPSPI_MASTER_BASEADDR->CFGR1 &= (~LPSPI_CFGR1_NOSTALL_MASK);
-    LPSPI_Enable(EXAMPLE_LPSPI_MASTER_BASEADDR, true);
-
-    /* Flush FIFO, clear status, disable all the inerrupts. */
-    LPSPI_FlushFifo(EXAMPLE_LPSPI_MASTER_BASEADDR, true, true);
-    LPSPI_ClearStatusFlags(EXAMPLE_LPSPI_MASTER_BASEADDR, kLPSPI_AllStatusFlag);
-    LPSPI_DisableInterrupts(EXAMPLE_LPSPI_MASTER_BASEADDR, kLPSPI_AllInterruptEnable);
-
-    LPSPI_SelectTransferPCS(EXAMPLE_LPSPI_MASTER_BASEADDR, whichPcs);
-    LPSPI_SetPCSContinous(EXAMPLE_LPSPI_MASTER_BASEADDR, true);
-
-    /* Enable the NVIC for LPSPI peripheral. Note that below code is useless if the LPSPI interrupt is in INTMUX,
-     * and you should also enable the INTMUX interupt in your application.
-     */
-    EnableIRQ(EXAMPLE_LPSPI_MASTER_IRQN);
-
-    /* TCR also shares the FIFO, so wait for TCR written. */
-    while (LPSPI_GetTxFifoCount(EXAMPLE_LPSPI_MASTER_BASEADDR) != 0)
-    {
-    }
-    /* Fill up the TX data in FIFO. */
-    while ((LPSPI_GetTxFifoCount(EXAMPLE_LPSPI_MASTER_BASEADDR) < g_masterFifoSize) &&
-           (masterTxCount - masterRxCount < g_masterFifoSize))
-    {
-        /* Write the word to TX register */
-        LPSPI_WriteData(EXAMPLE_LPSPI_MASTER_BASEADDR, masterTxData[masterTxCount]);
-        ++masterTxCount;
-
-        if (masterTxCount == TRANSFER_SIZE)
-        {
-            /* TCR also shares the FIFO, so wait for FIFO has room. */
-            while (LPSPI_GetTxFifoCount(EXAMPLE_LPSPI_MASTER_BASEADDR) == g_masterFifoSize)
-            {
-            }
-            /* Set the PCS back to uncontinuous to finish the transfer if all tx data are pushed to FIFO. */
-            LPSPI_SetPCSContinous(EXAMPLE_LPSPI_MASTER_BASEADDR, false);
-            break;
-        }
-    }
-    LPSPI_EnableInterrupts(EXAMPLE_LPSPI_MASTER_BASEADDR, kLPSPI_RxInterruptEnable);
-
-    /******************Wait for master and slave transfer completed.******************/
-    while (!isMasterTransferCompleted)
-    {
-    }
-
-    errorCount = 0;
-    for (i = 0; i < TRANSFER_SIZE; i++)
-    {
-        if (masterTxData[i] != masterRxData[i])
-        {
-            errorCount++;
-        }
-    }
-    if (errorCount == 0)
-    {
-        PRINTF("\r\nLPSPI transfer all data matched!\r\n");
-    }
-    else
-    {
-        PRINTF("\r\nError occurred in LPSPI transfer!\r\n");
-    }
-
-    /* Print out receive buffer */
-    PRINTF("\r\n Master received:");
-    for (i = 0U; i < TRANSFER_SIZE; i++)
-    {
-        /* Print 16 numbers in a line */
-        if ((i & 0x0FU) == 0U)
-        {
-            PRINTF("\r\n");
-        }
-        PRINTF(" %02X", masterRxData[i]);
-    }
-    PRINTF("\r\n");
-
-    LPSPI_Deinit(EXAMPLE_LPSPI_MASTER_BASEADDR);
-
-    PRINTF("\r\nEnd of master example!\r\n");
-
     while (1)
     {
+        /* Wait for press any key */
+        if (loopCount == 1U)
+        {
+            PRINTF("\r\nMake sure the slave example is running, then press any key to continue.\r\n");
+        }
+        else
+        {
+            PRINTF("\r\nPress any key to run again.\r\n");
+        }
+        GETCHAR();
+
+        /* Set up the transfer data. */
+        for (i = 0; i < TRANSFER_SIZE; i++)
+        {
+            masterTxData[i] = (i + loopCount) % 256U;
+            masterRxData[i] = 0;
+        }
+
+        /* Print out transmit buffer */
+        PRINTF("\r\nMaster transmit:");
+        for (i = 0; i < TRANSFER_SIZE; i++)
+        {
+            /* Print 16 numbers in a line */
+            if ((i & 0x0FU) == 0U)
+            {
+                PRINTF("\r\n   ");
+            }
+            PRINTF(" %02X", masterTxData[i]);
+        }
+        PRINTF("\r\n\r\n");
+
+        isMasterTransferCompleted = false;
+        masterTxCount             = 0;
+        masterRxCount             = 0;
+        whichPcs                  = EXAMPLE_LPSPI_MASTER_PCS_FOR_INIT;
+
+        /* The TX and RX FIFO sizes are always the same. */
+        g_masterFifoSize = LPSPI_GetRxFifoSize(EXAMPLE_LPSPI_MASTER_BASEADDR);
+
+        /* Set the RX and TX watermarks to reduce the ISR times. */
+        if (g_masterFifoSize > 1)
+        {
+            txWatermark         = 1;
+            g_masterRxWatermark = g_masterFifoSize - 2;
+        }
+        else
+        {
+            txWatermark         = 0;
+            g_masterRxWatermark = 0;
+        }
+
+        LPSPI_SetFifoWatermarks(EXAMPLE_LPSPI_MASTER_BASEADDR, txWatermark, g_masterRxWatermark);
+
+        LPSPI_Enable(EXAMPLE_LPSPI_MASTER_BASEADDR, false);
+        EXAMPLE_LPSPI_MASTER_BASEADDR->CFGR1 &= (~LPSPI_CFGR1_NOSTALL_MASK);
+        LPSPI_Enable(EXAMPLE_LPSPI_MASTER_BASEADDR, true);
+
+        /* Flush FIFO, clear status, disable all the inerrupts. */
+        LPSPI_FlushFifo(EXAMPLE_LPSPI_MASTER_BASEADDR, true, true);
+        LPSPI_ClearStatusFlags(EXAMPLE_LPSPI_MASTER_BASEADDR, kLPSPI_AllStatusFlag);
+        LPSPI_DisableInterrupts(EXAMPLE_LPSPI_MASTER_BASEADDR, kLPSPI_AllInterruptEnable);
+
+        LPSPI_SelectTransferPCS(EXAMPLE_LPSPI_MASTER_BASEADDR, whichPcs);
+        LPSPI_SetPCSContinous(EXAMPLE_LPSPI_MASTER_BASEADDR, true);
+
+        /* Enable the NVIC for LPSPI peripheral. Note that below code is useless if the LPSPI interrupt is in INTMUX,
+        * and you should also enable the INTMUX interupt in your application.
+        */
+        EnableIRQ(EXAMPLE_LPSPI_MASTER_IRQN);
+
+        /* TCR also shares the FIFO, so wait for TCR written. */
+        while (LPSPI_GetTxFifoCount(EXAMPLE_LPSPI_MASTER_BASEADDR) != 0)
+        {
+        }
+
+        /* Fill up the TX data in FIFO. */
+        while ((LPSPI_GetTxFifoCount(EXAMPLE_LPSPI_MASTER_BASEADDR) < g_masterFifoSize) &&
+            (masterTxCount - masterRxCount < g_masterFifoSize))
+        {
+            /* Write the word to TX register */
+            LPSPI_WriteData(EXAMPLE_LPSPI_MASTER_BASEADDR, masterTxData[masterTxCount]);
+            ++masterTxCount;
+
+            if (masterTxCount == TRANSFER_SIZE)
+            {
+                /* TCR also shares the FIFO, so wait for FIFO has room. */
+                while (LPSPI_GetTxFifoCount(EXAMPLE_LPSPI_MASTER_BASEADDR) == g_masterFifoSize)
+                {
+                }
+                /* Set the PCS back to uncontinuous to finish the transfer if all tx data are pushed to FIFO. */
+                LPSPI_SetPCSContinous(EXAMPLE_LPSPI_MASTER_BASEADDR, false);
+                break;
+            }
+        }
+        LPSPI_EnableInterrupts(EXAMPLE_LPSPI_MASTER_BASEADDR, kLPSPI_RxInterruptEnable);
+
+        /* Wait for master and slave transfer completed. */
+        while (!isMasterTransferCompleted)
+        {
+        }
+
+        errorCount = 0;
+        for (i = 0; i < TRANSFER_SIZE; i++)
+        {
+            if (masterTxData[i] != masterRxData[i])
+            {
+                errorCount++;
+            }
+        }
+        if (errorCount == 0)
+        {
+            PRINTF("\r\nLPSPI transfer all data matched!\r\n");
+        }
+        else
+        {
+            PRINTF("\r\nError occurred in LPSPI transfer!\r\n");
+        }
+
+        /* Print out receive buffer */
+        PRINTF("\r\nMaster received:");
+        for (i = 0U; i < TRANSFER_SIZE; i++)
+        {
+            /* Print 16 numbers in a line */
+            if ((i & 0x0FU) == 0U)
+            {
+                PRINTF("\r\n   ");
+            }
+            PRINTF(" %02X", masterRxData[i]);
+        }
+        PRINTF("\r\n\r\n");
+
+        /* Increase loop count to change transmit buffer */
+        loopCount++;
     }
 }

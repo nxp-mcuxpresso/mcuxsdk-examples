@@ -1,5 +1,5 @@
 /*
- * Copyright 2017, 2020, 2024 NXP
+ * Copyright 2017, 2020, 2024, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -103,9 +103,9 @@ int main(void)
     PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
 
     PRINTF("LPSPI interrupt board to board (b2b) slave example.\r\n");
-    PRINTF("  Slave start to receive data...\r\n");
 
     uint32_t errorCount;
+    uint32_t loopCount = 1U;
     uint32_t i;
     lpspi_slave_config_t slaveConfig;
     lpspi_which_pcs_t whichPcs;
@@ -117,117 +117,133 @@ int main(void)
 
     LPSPI_SlaveInit(EXAMPLE_LPSPI_SLAVE_BASEADDR, &slaveConfig);
 
-    /* Set up the transfer data */
-    for (i = 0; i < TRANSFER_SIZE; i++)
+    while (1)
     {
-        slaveTxData[i] = i % 256;
-        slaveRxData[i] = 0;
-    }
-    /******************Set up slave first ******************/
-    isSlaveTransferCompleted = false;
-    slaveTxCount             = 0;
-    slaveRxCount             = 0;
-    whichPcs                 = EXAMPLE_LPSPI_SLAVE_PCS_FOR_INIT;
+        PRINTF("Slave example is running...\r\n\r\n");
 
-    /* The TX and RX FIFO sizes are always the same */
-    g_slaveFifoSize = LPSPI_GetRxFifoSize(EXAMPLE_LPSPI_SLAVE_BASEADDR);
+        /* Set up the transfer data */
+        for (i = 0; i < TRANSFER_SIZE; i++)
+        {
+            slaveTxData[i] = (i + loopCount) % 256U;
+            slaveRxData[i] = 0;
+        }
 
-    /* Set the RX and TX watermarks to reduce the ISR times. */
-    if (g_slaveFifoSize > 1)
-    {
-        txWatermark        = 1;
-        g_slaveRxWatermark = g_slaveFifoSize - 2;
-    }
-    else
-    {
-        txWatermark        = 0;
-        g_slaveRxWatermark = 0;
-    }
+        /* Print out transmit buffer */
+        PRINTF("\r\nSlave transmit:");
+        for (i = 0; i < TRANSFER_SIZE; i++)
+        {
+            /* Print 16 numbers in a line */
+            if ((i & 0x0FU) == 0U)
+            {
+                PRINTF("\r\n   ");
+            }
+            PRINTF(" %02X", slaveTxData[i]);
+        }
+        PRINTF("\r\n\r\n");
 
-    LPSPI_SetFifoWatermarks(EXAMPLE_LPSPI_SLAVE_BASEADDR, txWatermark, g_slaveRxWatermark);
+        /* Set up slave */
+        isSlaveTransferCompleted = false;
+        slaveTxCount             = 0;
+        slaveRxCount             = 0;
+        whichPcs                 = EXAMPLE_LPSPI_SLAVE_PCS_FOR_INIT;
 
-    LPSPI_Enable(EXAMPLE_LPSPI_SLAVE_BASEADDR, false);
-    EXAMPLE_LPSPI_SLAVE_BASEADDR->CFGR1 &= (~LPSPI_CFGR1_NOSTALL_MASK);
-    LPSPI_Enable(EXAMPLE_LPSPI_SLAVE_BASEADDR, true);
+        /* The TX and RX FIFO sizes are always the same */
+        g_slaveFifoSize = LPSPI_GetRxFifoSize(EXAMPLE_LPSPI_SLAVE_BASEADDR);
 
-    /* Flush FIFO, clear status, disable all the interrupts. */
-    LPSPI_FlushFifo(EXAMPLE_LPSPI_SLAVE_BASEADDR, true, true);
-    LPSPI_ClearStatusFlags(EXAMPLE_LPSPI_SLAVE_BASEADDR, kLPSPI_AllStatusFlag);
-    LPSPI_DisableInterrupts(EXAMPLE_LPSPI_SLAVE_BASEADDR, kLPSPI_AllInterruptEnable);
+        /* Set the RX and TX watermarks to reduce the ISR times. */
+        if (g_slaveFifoSize > 1)
+        {
+            txWatermark        = 1;
+            g_slaveRxWatermark = g_slaveFifoSize - 2;
+        }
+        else
+        {
+            txWatermark        = 0;
+            g_slaveRxWatermark = 0;
+        }
 
-    LPSPI_SelectTransferPCS(EXAMPLE_LPSPI_SLAVE_BASEADDR, whichPcs);
+        LPSPI_SetFifoWatermarks(EXAMPLE_LPSPI_SLAVE_BASEADDR, txWatermark, g_slaveRxWatermark);
 
-    /* Enable the NVIC for LPSPI peripheral. Note that below code is useless if the LPSPI interrupt is in INTMUX,
-     * and you should also enable the INTMUX interrupt in your application.
-     */
-    EnableIRQ(EXAMPLE_LPSPI_SLAVE_IRQN);
+        LPSPI_Enable(EXAMPLE_LPSPI_SLAVE_BASEADDR, false);
+        EXAMPLE_LPSPI_SLAVE_BASEADDR->CFGR1 &= (~LPSPI_CFGR1_NOSTALL_MASK);
+        LPSPI_Enable(EXAMPLE_LPSPI_SLAVE_BASEADDR, true);
 
-    /* TCR is also shared the FIFO, so wait for TCR written. */
-    while (LPSPI_GetTxFifoCount(EXAMPLE_LPSPI_SLAVE_BASEADDR) != 0)
-    {
-    }
+        /* Flush FIFO, clear status, disable all the interrupts. */
+        LPSPI_FlushFifo(EXAMPLE_LPSPI_SLAVE_BASEADDR, true, true);
+        LPSPI_ClearStatusFlags(EXAMPLE_LPSPI_SLAVE_BASEADDR, kLPSPI_AllStatusFlag);
+        LPSPI_DisableInterrupts(EXAMPLE_LPSPI_SLAVE_BASEADDR, kLPSPI_AllInterruptEnable);
 
-    /* Fill up the TX data in FIFO */
-    while (LPSPI_GetTxFifoCount(EXAMPLE_LPSPI_SLAVE_BASEADDR) < g_slaveFifoSize)
-    {
-        /* Write the word to TX register */
-        LPSPI_WriteData(EXAMPLE_LPSPI_SLAVE_BASEADDR, slaveTxData[slaveTxCount]);
-        ++slaveTxCount;
+        LPSPI_SelectTransferPCS(EXAMPLE_LPSPI_SLAVE_BASEADDR, whichPcs);
+
+        /* Enable the NVIC for LPSPI peripheral. Note that below code is useless if the LPSPI interrupt is in INTMUX,
+         * and you should also enable the INTMUX interrupt in your application.
+         */
+        EnableIRQ(EXAMPLE_LPSPI_SLAVE_IRQN);
+
+        /* TCR is also shared the FIFO, so wait for TCR written. */
+        while (LPSPI_GetTxFifoCount(EXAMPLE_LPSPI_SLAVE_BASEADDR) != 0)
+        {
+        }
+
+        /* Fill up the TX data in FIFO */
+        while (LPSPI_GetTxFifoCount(EXAMPLE_LPSPI_SLAVE_BASEADDR) < g_slaveFifoSize)
+        {
+            /* Write the word to TX register */
+            LPSPI_WriteData(EXAMPLE_LPSPI_SLAVE_BASEADDR, slaveTxData[slaveTxCount]);
+            ++slaveTxCount;
+
+            if (slaveTxCount == TRANSFER_SIZE)
+            {
+                break;
+            }
+        }
 
         if (slaveTxCount == TRANSFER_SIZE)
         {
-            break;
+            /* Only enable rx interrupt if tx data are all pushed to FIFO */
+            LPSPI_EnableInterrupts(EXAMPLE_LPSPI_SLAVE_BASEADDR, kLPSPI_RxInterruptEnable);
         }
-    }
-    if (slaveTxCount == TRANSFER_SIZE)
-    {
-        /* Only enable rx interrupt if tx data are all pushed to FIFO */
-        LPSPI_EnableInterrupts(EXAMPLE_LPSPI_SLAVE_BASEADDR, kLPSPI_RxInterruptEnable);
-    }
-    else
-    {
-        LPSPI_EnableInterrupts(EXAMPLE_LPSPI_SLAVE_BASEADDR, kLPSPI_RxInterruptEnable | kLPSPI_TxInterruptEnable);
-    }
-
-    /******************Wait for master and slave transfer completed.******************/
-    while (!isSlaveTransferCompleted)
-    {
-    }
-
-    errorCount = 0;
-    for (i = 0; i < TRANSFER_SIZE; i++)
-    {
-        if (slaveTxData[i] != slaveRxData[i])
+        else
         {
-            errorCount++;
+            LPSPI_EnableInterrupts(EXAMPLE_LPSPI_SLAVE_BASEADDR, kLPSPI_RxInterruptEnable | kLPSPI_TxInterruptEnable);
         }
-    }
-    if (errorCount == 0)
-    {
-        PRINTF("\r\nLPSPI transfer all data matched!\r\n");
-    }
-    else
-    {
-        PRINTF("\r\nError occurred in LPSPI transfer!\r\n");
-    }
-    /* Print out receive buffer */
-    PRINTF("\r\n Slave received:");
-    for (i = 0U; i < TRANSFER_SIZE; i++)
-    {
-        /* Print 16 numbers in a line */
-        if ((i & 0x0FU) == 0U)
+
+        /* Wait for transfer completed. */
+        while (!isSlaveTransferCompleted)
         {
-            PRINTF("\r\n");
         }
-        PRINTF(" %02X", slaveRxData[i]);
-    }
-    PRINTF("\r\n");
 
-    LPSPI_Deinit(EXAMPLE_LPSPI_SLAVE_BASEADDR);
+        errorCount = 0;
+        for (i = 0; i < TRANSFER_SIZE; i++)
+        {
+            if (slaveTxData[i] != slaveRxData[i])
+            {
+                errorCount++;
+            }
+        }
+        if (errorCount == 0)
+        {
+            PRINTF("\r\nLPSPI transfer all data matched!\r\n");
+        }
+        else
+        {
+            PRINTF("\r\nError occurred in LPSPI transfer!\r\n");
+        }
 
-    PRINTF("\r\nEnd of slave example!\r\n");
+        /* Print out receive buffer */
+        PRINTF("\r\nSlave received:");
+        for (i = 0U; i < TRANSFER_SIZE; i++)
+        {
+            /* Print 16 numbers in a line */
+            if ((i & 0x0FU) == 0U)
+            {
+                PRINTF("\r\n   ");
+            }
+            PRINTF(" %02X", slaveRxData[i]);
+        }
+        PRINTF("\r\n\r\n");
 
-    while (1)
-    {
+        /* Increase loop count to change transmit buffer */
+        loopCount++;
     }
 }

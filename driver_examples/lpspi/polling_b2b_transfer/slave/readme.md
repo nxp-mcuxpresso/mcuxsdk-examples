@@ -1,12 +1,34 @@
 # lpspi_polling_b2b_transfer_slave
 
 ## Overview
-The lpspi_polling_b2b_transfer example shows how to use LPSPI driver in polling way:
+The lpspi_polling_b2b_transfer example shows how to use LPSPI driver using polling.
 
-In this example , we need two boards, one board used as LPSPI master and another board used as LPSPI slave.
+In this example, we need two boards, one board used as LPSPI master and another board used as LPSPI slave.
 The file 'lpspi_polling_b2b_transfer_slave.c' includes the LPSPI slave code.
 
-1. LPSPI master send/received data to/from LPSPI slave in polling . (LPSPI Slave using interrupt to receive/send the data)
+The LPSPI master send/received data to/from LPSPI slave using polling (the LPSPI slave is using interrupt to receive/send the data).
+
+## Running the demo
+When the demo runs successfully, you will see output in the terminal like this:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+LPSPI board to board polling example.
+
+Slave example is running...
+
+This is LPSPI slave transfer completed callback.
+It's a successful transfer.
+
+This is LPSPI slave transfer completed callback.
+It's a successful transfer.
+
+Slave received:
+     1  2  3  4  5  6  7  8  9  A  B  C  D  E  F 10
+    11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20
+    21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30
+    31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40
+
+Slave example is running...
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## Supported Boards
 - [EVK9-MIMX8ULP](../../../../_boards/evk9mimx8ulp/driver_examples/lpspi/polling_b2b_transfer/slave/example_board_readme.md)

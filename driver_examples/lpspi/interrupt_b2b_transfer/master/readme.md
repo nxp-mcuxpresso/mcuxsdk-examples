@@ -1,13 +1,12 @@
 # lpspi_interrupt_b2b_transfer_master
 
 ## Overview
-The lpspi_interrupt_b2b_transfer example shows how to use LPSPI driver in interrupt way:
+The lpspi_interrupt_b2b_transfer example shows how to use LPSPI driver in interrupt way.
 
 In this example, we need two boards, one board used as LPSPI master and another board used as LPSPI slave.
 The file 'lpspi_interrupt_b2b_transfer_master.c' includes the LPSPI master code.
 This example uses the transactional API in LPSPI driver.
-LPSPI master send/received data to/from LPSPI slave in interrupt. (LPSPI Slave using interrupt to receive/send the data)
-
+The LPSPI master send/received data to/from LPSPI slave using interrupt (the LPSPI slave is using interrupt to receive/send the data).
 
 ## Running the demo
 When the demo runs successfully, the log would be seen in terminal window:
@@ -23,21 +22,23 @@ LPSPI_master -- LPSPI_slave
     SIN      --    SOUT
     GND      --    GND
 
- Master transmit:
-  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F 10
- 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20
- 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30
- 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40
+Make sure the slave example is running, then press any key to continue.
+
+Master transmit:
+     1  2  3  4  5  6  7  8  9  A  B  C  D  E  F 10
+    11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20
+    21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30
+    31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40
 
 LPSPI transfer all data matched!
 
- Master received:
-  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F 10
- 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20
- 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30
- 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40
+Master received:
+     1  2  3  4  5  6  7  8  9  A  B  C  D  E  F 10
+    11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20
+    21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30
+    31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40
 
-Press any key to run again
+Press any key to run again.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## Supported Boards
