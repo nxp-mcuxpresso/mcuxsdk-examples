@@ -15,7 +15,8 @@ mcux_add_armgcc_configuration(
 )
 
 mcux_add_macro(
-    CC "-DSDK_NETC_USED=1 \
+    CC "-DFSL_ETH_ENABLE_CACHE_CONTROL \
+        -DSDK_NETC_USED=1 \
         -DNETC_PORT_USE_INCLUDES"
 )
 
