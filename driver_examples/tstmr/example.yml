@@ -72,17 +72,12 @@ tstmr:
     frdmk32l3a6@cm0plus: []
     frdmk32l3a6@cm4: []
     frdmmcxw71: []
-    frdmmcxw72@cm33_core0: []
     mcxw71evk: []
     imx95lpd5evk19@cm7: []
     imx95lp4xevk15@cm7: []
     imx95verdinevk@cm7: []
     frdmimx95@cm7: []
     imx952evk@cm7: []
-    kw47evk@cm33_core0: []
-    kw47loc@cm33_core0: []
-    mcxw72evk@cm33_core0: []
-    mcxw72loc@cm33_core0: []
     kw45b41zevk:
     - +armgcc@debug
     - +armgcc@release
