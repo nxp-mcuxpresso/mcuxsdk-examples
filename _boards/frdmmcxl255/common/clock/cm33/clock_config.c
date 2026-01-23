@@ -70,7 +70,7 @@ void BOARD_InitBootClocks(void)
     CLOCK_AttachClk(kFIRC_to_MAIN_CLK);                  /* !< Switch MAIN_CLK to FIRC */
     CLOCK_AttachClk(kFIRC_to_FRO_HF);                      /* !< Switch FRO_HF to FIRC */
     CLOCK_AttachClk(kCPU_CLK_to_SYSTICK);                  /* !< Switch SYSTICK to CPU_CLK */
-    CLOCK_AttachClk(kFRO_16k_to_OSTIMER0);                 /* !< Switch OSTIMER0 to FRO_16k */
+    CLOCK_AttachClk(kFRO16K_to_OSTIMER0);                 /* !< Switch OSTIMER0 to FRO_16k */
     CLOCK_AttachClk(kSLOW_CLK_to_CLKOUT);                  /* !< Switch CLKOUT to SLOW_CLK */
     CLOCK_AttachClk(kFRO_HF_DIV_to_ADC0);                  /* !< Switch ADC0 to FRO_HF_DIV */
     CLOCK_AttachClk(kCLK_1M_to_UTICK0);                    /* !< Switch UTICK0 to CLK_1M */
