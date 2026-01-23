@@ -98,3 +98,4 @@ hello_world_ns:
     - -armgcc@release
     - -mdk@debug
     - -mdk@release
+    frdmmcxa577: []
