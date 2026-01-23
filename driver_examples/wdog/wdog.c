@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016-2017 NXP
+ * Copyright 2016-2017, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -68,8 +68,6 @@ int main(void)
     /* Init hardware*/
     BOARD_InitHardware();
 
-    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
-
     /*If not wdog reset*/
     if (!(RCM_GetPreviousResetSources(rcm_base) & kRCM_SourceWdog))
     {
@@ -78,6 +76,7 @@ int main(void)
     wdog_reset_count = WDOG_GetResetCount(wdog_base);
     if (wdog_reset_count == 0)
     {
+        PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
         /*quick test*/
         test_config.testMode     = kWDOG_QuickTest;
         test_config.timeoutValue = 0xfffffu;
