@@ -277,4 +277,6 @@ const ncp_tlv_adapter_t *ncp_tlv_adapter_get(void);
 
 ncp_reset_context_t *ncp_get_reset_context(void);
 
+int ncp_tlv_data_queue_empty();
+
 #endif /* __NCP_TLV_ADAPTER_H__ */

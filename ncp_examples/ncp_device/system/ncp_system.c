@@ -104,7 +104,10 @@ int system_ncp_send_response(uint8_t *pbuf)
         if (cmd == NCP_RSP_SYSTEM_CONFIG_DEVICE_RESET)
         {
             const ncp_tlv_adapter_t *tlv_adap = ncp_tlv_adapter_get();
-            OSA_TaskYield();
+            while (!ncp_tlv_data_queue_empty())
+            {
+                OSA_TaskYield();
+            }
             if (tlv_adap->intf_ops->reset)
             {
                 tlv_adap->intf_ops->reset();

@@ -462,6 +462,7 @@ static void ncp_tlv_process(osa_task_param_t arg)
 
         if (events & NCP_TX_EVENT_DATA_READY)
         {
+            NCP_LOG_DBG("Processing DATA event");
             ncp_tlv_tx_data_dequeue();
         }
 
@@ -958,4 +959,9 @@ ncp_status_t ncp_tlv_ref_send(void *tlv_buf, size_t tlv_sz, uint32_t is_ref,
     }
 
     return status;
+}
+
+int ncp_tlv_data_queue_empty()
+{
+    return !OSA_MsgQAvailableMsgs(ncp_tlv_data_msgq_handle);
 }
