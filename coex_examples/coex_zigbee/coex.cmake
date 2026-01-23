@@ -15,13 +15,6 @@ mcux_add_include(
              ${COEX_SRC_BASE}/common
 )
 
-if(${CONFIG_WPA_SUPPLICANT})
-#zigbee user mbedtls config (SecLib_mbedtls_config.h) has been defined in wpa_supp_els_pkc_mbedtls_config.h
-mcux_remove_macro(
-    MBEDTLS_USER_CONFIG_FILE=\\\"SecLib_mbedtls_config.h\\\"
-)
-endif()
-
 mcux_remove_macro(
     IMU_TASK_PRIORITY=1
 )
