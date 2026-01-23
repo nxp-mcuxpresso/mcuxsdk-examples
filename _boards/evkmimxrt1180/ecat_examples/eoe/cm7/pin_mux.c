@@ -24,41 +24,31 @@ processor_version: 0.15.9
 #include "fsl_iomuxc.h"
 #include "pin_mux.h"
 
-/* FUNCTION ************************************************************************************************************
- * 
- * Function Name : BOARD_InitBootPins
- * Description   : Calls initialization functions.
- * 
- * END ****************************************************************************************************************/
-void BOARD_InitBootPins(void) {
-    BOARD_InitPins();
-    BOARD_ECAT_MDIO_InitPins();
-    BOARD_Port0_RMII_InitPins();
-    BOARD_Port1_RMII_InitPins();
-    BOARD_ECAT_I2C_InitPins();
-}
-
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitPins:
-- options: {callFromInitBoot: 'true', coreID: cm7, enableClock: 'true'}
+- options: {callFromInitBoot: 'true', coreID: cm33, enableClock: 'true'}
 - pin_list:
   - {pin_num: A5, peripheral: LPUART1, signal: RXD, pin_signal: GPIO_AON_09, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper, open_drain: Disable, drive_strength: High,
     slew_rate: Slow}
   - {pin_num: B1, peripheral: LPUART1, signal: TXD, pin_signal: GPIO_AON_08, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper, open_drain: Disable, drive_strength: High,
     slew_rate: Slow}
-  - {pin_num: M16, peripheral: RGPIO4, signal: 'gpio_io, 27', pin_signal: GPIO_AD_27}
-  - {pin_num: M14, peripheral: RGPIO4, signal: 'gpio_io, 26', pin_signal: GPIO_AD_26}
+  - {pin_num: C5, peripheral: LPI2C2, signal: SCL, pin_signal: GPIO_AON_16, software_input_on: Enable, pull_up_down_config: Pull_Up, pull_keeper_select: Keeper, open_drain: Enable,
+    drive_strength: High}
+  - {pin_num: B3, peripheral: LPI2C2, signal: SDA, pin_signal: GPIO_AON_15, software_input_on: Enable, pull_up_down_config: Pull_Up, pull_keeper_select: Keeper, open_drain: Enable,
+    drive_strength: High}
   - {pin_num: J16, peripheral: XBAR1, signal: 'IN, 17', pin_signal: GPIO_AD_33}
   - {pin_num: J15, peripheral: XBAR1, signal: 'IN, 18', pin_signal: GPIO_AD_34}
   - {pin_num: N15, peripheral: RGPIO4, signal: 'gpio_io, 13', pin_signal: GPIO_AD_13}
   - {pin_num: M15, peripheral: RGPIO4, signal: 'gpio_io, 25', pin_signal: GPIO_AD_25}
+  - {pin_num: M16, peripheral: RGPIO4, signal: 'gpio_io, 27', pin_signal: GPIO_AD_27}
+  - {pin_num: M14, peripheral: RGPIO4, signal: 'gpio_io, 26', pin_signal: GPIO_AD_26}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
 /* FUNCTION ************************************************************************************************************
  *
- * Function Name : BOARD_InitPins, assigned for the Cortex-M7F core.
+ * Function Name : BOARD_InitPins, assigned for the Cortex-M33 core.
  * Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
@@ -109,13 +99,33 @@ void BOARD_InitPins(void) {
                                                  Pull / Keep Select Field: Pull Disable, Highz
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_AON_15_LPI2C2_SDA,          /* GPIO_AON_15 is configured as LPI2C2_SDA */
+      1U);                                    /* Software Input On Field: Force input path of pad GPIO_AON_15 */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_AON_16_LPI2C2_SCL,          /* GPIO_AON_16 is configured as LPI2C2_SCL */
+      1U);                                    /* Software Input On Field: Force input path of pad GPIO_AON_16 */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_AON_15_LPI2C2_SDA,          /* GPIO_AON_15 PAD functional properties : */
+      0x1AU);                                 /* Slew Rate Field: Fast Slew Rate
+                                                 Drive Strength Field: high driver
+                                                 Pull / Keep Select Field: Pull Disable, Highz
+                                                 Pull Up / Down Config. Field: Weak pull up
+                                                 Open Drain Field: Enabled */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_AON_16_LPI2C2_SCL,          /* GPIO_AON_16 PAD functional properties : */
+      0x1AU);                                 /* Slew Rate Field: Fast Slew Rate
+                                                 Drive Strength Field: high driver
+                                                 Pull / Keep Select Field: Pull Disable, Highz
+                                                 Pull Up / Down Config. Field: Weak pull up
+                                                 Open Drain Field: Enabled */
 }
 
 
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_ECAT_MDIO_InitPins:
-- options: {callFromInitBoot: 'true', coreID: cm7, enableClock: 'true'}
+- options: {callFromInitBoot: 'true', coreID: cm33, enableClock: 'true'}
 - pin_list:
   - {pin_num: L17, peripheral: ECAT, signal: MDC, pin_signal: GPIO_AD_30, pull_up_down_config: Pull_Up, slew_rate: Slow}
   - {pin_num: K17, peripheral: ECAT, signal: MDIO, pin_signal: GPIO_AD_31, pull_up_down_config: Pull_Up, slew_rate: Slow}
@@ -124,7 +134,7 @@ BOARD_ECAT_MDIO_InitPins:
 
 /* FUNCTION ************************************************************************************************************
  *
- * Function Name : BOARD_ECAT_MDIO_InitPins, assigned for the Cortex-M7F core.
+ * Function Name : BOARD_ECAT_MDIO_InitPins, assigned for the Cortex-M33 core.
  * Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
@@ -159,7 +169,7 @@ void BOARD_ECAT_MDIO_InitPins(void) {
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_Port0_RMII_InitPins:
-- options: {callFromInitBoot: 'true', coreID: cm7, enableClock: 'true'}
+- options: {callFromInitBoot: 'true', coreID: cm33, enableClock: 'true'}
 - pin_list:
   - {pin_num: T4, peripheral: ECAT, signal: 'PT0_TXD, 0', pin_signal: GPIO_EMC_B2_05}
   - {pin_num: T6, peripheral: ECAT, signal: 'PT0_TXD, 1', pin_signal: GPIO_EMC_B2_06}
@@ -175,7 +185,7 @@ BOARD_Port0_RMII_InitPins:
 
 /* FUNCTION ************************************************************************************************************
  *
- * Function Name : BOARD_Port0_RMII_InitPins, assigned for the Cortex-M7F core.
+ * Function Name : BOARD_Port0_RMII_InitPins, assigned for the Cortex-M33 core.
  * Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
@@ -223,7 +233,7 @@ void BOARD_Port0_RMII_InitPins(void) {
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_Port1_RMII_InitPins:
-- options: {callFromInitBoot: 'true', coreID: cm7, enableClock: 'true'}
+- options: {callFromInitBoot: 'true', coreID: cm33, enableClock: 'true'}
 - pin_list:
   - {pin_num: R6, peripheral: ECAT, signal: 'PT1_TXD, 0', pin_signal: GPIO_EMC_B2_13}
   - {pin_num: N8, peripheral: ECAT, signal: 'PT1_TXD, 1', pin_signal: GPIO_EMC_B2_14}
@@ -239,7 +249,7 @@ BOARD_Port1_RMII_InitPins:
 
 /* FUNCTION ************************************************************************************************************
  *
- * Function Name : BOARD_Port1_RMII_InitPins, assigned for the Cortex-M7F core.
+ * Function Name : BOARD_Port1_RMII_InitPins, assigned for the Cortex-M33 core.
  * Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
@@ -287,7 +297,7 @@ void BOARD_Port1_RMII_InitPins(void) {
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_ECAT_I2C_InitPins:
-- options: {callFromInitBoot: 'true', coreID: cm7, enableClock: 'true'}
+- options: {callFromInitBoot: 'true', coreID: cm33, enableClock: 'true'}
 - pin_list:
   - {pin_num: K16, peripheral: ECAT, signal: SCL, pin_signal: GPIO_AD_18, pull_up_down_config: Pull_Up, open_drain: Enable, slew_rate: Slow}
   - {pin_num: L13, peripheral: ECAT, signal: SDA, pin_signal: GPIO_AD_19, pull_up_down_config: Pull_Up, open_drain: Enable, slew_rate: Slow}
@@ -296,7 +306,7 @@ BOARD_ECAT_I2C_InitPins:
 
 /* FUNCTION ************************************************************************************************************
  *
- * Function Name : BOARD_ECAT_I2C_InitPins, assigned for the Cortex-M7F core.
+ * Function Name : BOARD_ECAT_I2C_InitPins, assigned for the Cortex-M33 core.
  * Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
@@ -325,6 +335,20 @@ void BOARD_ECAT_I2C_InitPins(void) {
                                                  Pull Up / Down Config. Field: Weak pull up
                                                  Open Drain Field: Enabled
                                                  Force ibe off Field: Disabled */
+}
+
+/* FUNCTION ************************************************************************************************************
+ * 
+ * Function Name : BOARD_InitBootPins
+ * Description   : Calls initialization functions.
+ * 
+ * END ****************************************************************************************************************/
+void BOARD_InitBootPins(void) {
+    BOARD_InitPins();
+    BOARD_ECAT_MDIO_InitPins();
+    BOARD_Port0_RMII_InitPins();
+    BOARD_Port1_RMII_InitPins();
+    BOARD_ECAT_I2C_InitPins();
 }
 
 /***********************************************************************************************************************
