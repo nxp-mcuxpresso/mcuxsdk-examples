@@ -9,6 +9,32 @@ The NBU Debug module monitors the NBU (Narrow Band Unit) core from the host MCU 
 - **Detailed crash analysis** - CPU state, fault type, execution context
 - **HCI packet logging** - Optional BLE protocol capture for Wireshark
 
+## Understanding the Dual Serial Output Architecture
+
+The NBU Debug module uses **two separate serial outputs** for different purposes:
+
+### 1. Main Console Output (JLink/Primary UART)
+- **Format:** Human-readable ASCII text
+- **Purpose:** Displays fault analysis, warnings, and diagnostic messages
+- **Connection:** Typically connected via JLink debug port or primary UART
+- **Always Active:** Available whenever the serial manager is enabled
+
+**Example Output:**
+```
+=== NBU Fault/Assert Analysis ===
+NBU Fault Detected
+Processor State:
+  PC  (Program Counter): 0x20001234
+  ...
+```
+
+### 2. Debug Port Output (Secondary UART - HCI Logger)
+- **Format:** Binary HCI raw packets
+- **Purpose:** Captures BLE protocol packets for Wireshark analysis
+- **Connection:** Dedicated UART port (requires physical connection to TX pin)
+- **Optional:** Only active when HCI logging is explicitly enabled
+- **Power Impact:** Not low-power friendly - for development debugging only
+
 ## Supported Platforms
 
 - mcxw72evk
@@ -175,10 +201,12 @@ Enable HCI logging when you need to:
 - Capture air interface activity
 - Review HCI command/event sequences
 
-**Important:** HCI logging mode is **not low power friendly** and is intended for **advanced debugging only**.
+**Important:** HCI logging outputs **binary HCI data on a dedicated secondary UART port**, separate from the main console that displays human-readable analysis.
+
 This feature:
-- Continuously transmits data over the logging port
-- Is designed for development and lab debugging scenarios
+- Continuously transmits binary data over the dedicated logging port
+- Is **not low power friendly** - intended for **advanced debugging only**
+- Designed for development and lab debugging scenarios
 
 ### Setup
 
