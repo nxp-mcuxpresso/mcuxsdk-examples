@@ -79,6 +79,11 @@
 #define BOARD_SW3_IRQ         GPIO0_IRQn
 #define BOARD_SW3_IRQ_HANDLER GPIO0_IRQHandler
 
+/* USB PHY condfiguration */
+#define BOARD_USB_PHY_D_CAL     (0x04U)
+#define BOARD_USB_PHY_TXCAL45DP (0x07U)
+#define BOARD_USB_PHY_TXCAL45DM (0x07U)
+
 /* Board LED color mapping */
 #define LOGIC_LED_ON  0U
 #define LOGIC_LED_OFF 1U
