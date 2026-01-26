@@ -8,3 +8,4 @@ power_mode_switch_mcxa
 
 
    low_level/readme.md
+   low_level_align_with_ds/readme.md

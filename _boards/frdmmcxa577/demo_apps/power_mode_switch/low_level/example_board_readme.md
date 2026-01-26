@@ -32,7 +32,7 @@ and receive the wrong input value.
 Normal Boot.
 
 ###########################    Power Mode Switch Demo    ###########################
-    Core Clock = 180000000Hz
+    Core Clock = 200000000Hz
     Power mode: Active
 
 Select the desired operation
