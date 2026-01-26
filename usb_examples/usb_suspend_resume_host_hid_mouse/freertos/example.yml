@@ -62,3 +62,4 @@ host_suspend_resume_hid_mouse_freertos:
     frdmrw612: []
     frdmmcxa266: []
     frdmmcxa366: []
+    frdmmcxa577: []

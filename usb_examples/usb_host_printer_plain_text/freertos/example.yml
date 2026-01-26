@@ -50,6 +50,7 @@ host_printer_plain_text_freertos:
     frdmk32l2a4s: []
     frdmmcxa266: []
     frdmmcxa366: []
+    frdmmcxa577: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
     frdmrw612: []

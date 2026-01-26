@@ -74,3 +74,4 @@ dev_msc_ramdisk_bm:
     - -codewarrior@flash_sdm_lpm_release
     frdmmcxa266: []
     frdmmcxa366: []
+    frdmmcxa577: []
