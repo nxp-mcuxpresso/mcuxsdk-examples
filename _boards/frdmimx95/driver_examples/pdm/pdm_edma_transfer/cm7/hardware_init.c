@@ -46,7 +46,6 @@ void BOARD_InitHardware(void)
     HAL_ClockSetPllClk(&hal_audiopll1vcoCLKCfg);
     HAL_ClockSetPllClk(&hal_audiopll1CLKCfg);
     HAL_ClockSetRootClk(&hal_pdmClkCfg);
-    HAL_ClockSetRootClk(&hal_lpi2cclk);
 
     HAL_ClockEnable(&hal_audiopll1vcoCLKCfg);
     HAL_ClockEnable(&hal_audiopll1CLKCfg);
