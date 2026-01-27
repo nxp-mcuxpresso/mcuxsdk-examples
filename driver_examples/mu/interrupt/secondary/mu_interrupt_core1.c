@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016-2017, 2025 NXP
+ * Copyright 2016-2017, 2025-2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -49,7 +49,7 @@ static void ClearMsgRecv(void)
 /*!
  * @brief Function to create delay for Led blink.
  */
-void delay(void)
+static void delay(void)
 {
     volatile uint32_t i = 0;
     for (i = 0; i < 5000000; ++i)
@@ -58,6 +58,10 @@ void delay(void)
     }
 }
 
+#if defined(__DSC__) || defined(__CW__)
+#pragma interrupt alignsp saveall
+void APP_MU_IRQHandler(void);
+#endif
 void APP_MU_IRQHandler(void)
 {
     uint32_t flag = 0;
@@ -87,6 +91,9 @@ void APP_MU_IRQHandler(void)
     }
     SDK_ISR_EXIT_BARRIER;
 }
+#if defined(__DSC__) || defined(__CW__)
+#pragma interrupt off
+#endif
 
 /*!
  * @brief Main function
