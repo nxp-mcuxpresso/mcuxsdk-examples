@@ -62,6 +62,71 @@ INT_STORAGE_SECTOR_SIZE             = m_sector_size;
 m_text_start                        = m_interrupts_end  + 1;
 m_text_end                          = INT_STORAGE_START - 1;
 m_text_size                         = m_text_end - m_text_start;
+/*************************** RAM LAYOUT ***********************************
+Default address values are indicated between brackets they can be overridden if necessary by linker flags
+
+             0x20039FFF                     m_ram1_end
+                    - - - +---------------+ - - - - - - - -
+            (0x20039FFF)  |               | m_upper_data1_end __HEAP_end__
+                          |               |
+                          |               |
+                          |               |
+            (0x2002D000)  |               | m_upper_data1_start __HEAP_start__ 
+                    - - - +---------------+ - - - - - - - -
+            (0x2002CFFF)  |               | m_ce_heap_end
+                          |               |
+                          |               |
+                          |               |
+            (0x20029640)  |               | m_ce_heap_start
+                    - - - +---------------+ - - - - - - - -
+            (0x2002963F)  |               | m_ce_ctrl_end
+                          |               |
+                          |               |
+                          |               |
+            (0x20029000)  |               | m_ce_ctrl_start
+                    - - - +---------------+ - - - - - - - -
+            (0x20028FFF)  |               | m_ce_stack_end
+                          |               |
+                          |               |
+                          |               |
+            (0x20028000)  |               | m_ce_stack_start
+                    - - - +---------------+ - - - - - - - -
+            (0x20027FFF)  |               | m_ce_image_end
+                          |               |
+                          |               |
+                          |               |
+            (0x20020000)  |               | m_ce_image_start
+                    - - - +---------------+ - - - - - - - -
+            m_data1_end   |               |
+                          |               |
+                          |               |
+                          |...............| 
+                          |               |
+                          .     Data1     .
+                          .               .
+            m_data1_start |               |
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_interrupts_ram_end
+                          | vector table  |
+                          |               |
+            (0x20004C00)  |               | m_interrupts_ram_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_cstack_end
+                          |    CStack     |
+            (0x20004400)  |               | m_cstack_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_warmboot_stack_end
+                          |   Warm stack  |
+            (0x20004000)  |               | m_warmboot_stack_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_ram1_reserved_end
+                          |    Reserved   |
+                          |               | m_ram1_reserved_start
+                    - - - +---------------+ - - - - - - - -
+              0x20000000  |               | m_ram1_start
+
+**************************************************************************************************/
+
 m_ram0_start                        = 0x14000000;
 m_ram0_end                          = 0x14007FFF;
 m_ram1_start                        = 0x20000000;
@@ -90,9 +155,8 @@ m_data0_start                       = m_ram0_start;
 m_data0_end                         = m_ram0_end;
 m_data0_size                        = m_ram0_end - m_data0_start + 1;
 
-m_ce_data_size                      = 0x1A000;
 m_data1_start                       = m_interrupts_ram_end + 1;
-m_data1_end                         = m_ram1_end - m_ce_data_size;
+m_data1_end                         = 0x2001FFFF;
 m_data1_size                        = m_data1_end - m_data1_start + 1;
 
 __HEAP_start__                      = m_ram1_end - HEAP_SIZE;
@@ -204,29 +268,33 @@ m_free_data_end                   = m_shared_ram_end;
 
 
 /********************************************** Computeur Engine (CE) Memory **********************************************/
+/* memory used to store the LCE code (32K)*/
 m_ce_image_start                    = m_data1_end + 1;
 m_ce_image_size                     = 0x8000;
 m_ce_image_end                      = m_ce_image_start + m_ce_image_size - 1;
-
-m_ce_data_reserved_start            = m_ce_image_end + 1;
-m_ce_data_reserved_size             = 0x1000;
-m_ce_data_reserved_end              = m_ce_data_reserved_start + m_ce_data_reserved_size -1;
-
-m_ce_ctrl_start                     = m_ce_data_reserved_end + 1;
+/* memory used for the LCE stack (4K)*/
+m_ce_stack_start                    = m_ce_image_end + 1;
+m_ce_stack_size                     = 0x1000;
+m_ce_stack_end                      = m_ce_stack_start + m_ce_stack_size -1;
+/* memory used for Core0<-->LCE communication (1.5K)*/
+m_ce_ctrl_start                     = m_ce_stack_end + 1;
 m_ce_ctrl_size                      = 0x640;
 m_ce_ctrl_end                       = m_ce_ctrl_start + m_ce_ctrl_size -1;
-
+/* memory used for LCE heap (14.4K)*/
 m_ce_heap_start                     = m_ce_ctrl_end + 1;
 m_ce_heap_size                      = 0x39C0;
 m_ce_heap_end                       = m_ce_heap_start + m_ce_heap_size -1;
-
+/* memory used for the main heap (52K)*/
 m_upper_data1_start                 = m_ce_heap_end + 1;
 m_upper_data1_size                  = m_ram1_end - m_upper_data1_start + 1;
 m_upper_data1_end                   = m_ram1_end;
 
+/* There are three heap memory areas defined in the localization applications: 
+     - the main heap is accommodated in the upper data1  (52K)
+     - the heap used by LCE is accommodated in m_ce_heap (14.4K)
+     - the extended heap memory is accommodated in data1 (24K) */
 m_heap_start                       = m_upper_data1_start;
 m_heap_size                        = m_upper_data1_size;
-
 
 __CE_MEM_HEAP_end__                = m_ce_heap_end;
 
@@ -245,7 +313,7 @@ MEMORY
   m_ce_image            (RW)  : ORIGIN = m_ce_image_start, LENGTH = m_ce_image_size
   m_ce_ctrl             (RW)  : ORIGIN = m_ce_ctrl_start, LENGTH = m_ce_ctrl_size
   m_ce_heap             (RW)  : ORIGIN = m_ce_heap_start, LENGTH = m_ce_heap_size
-  m_ce_data_reserved    (RW)  : ORIGIN = m_ce_data_reserved_start, LENGTH = m_ce_data_reserved_size
+  m_ce_stack            (RW)  : ORIGIN = m_ce_stack_start, LENGTH = m_ce_stack_size
   m_heap                (RW)  : ORIGIN = m_heap_start, LENGTH = m_heap_size
   rpmsg_sh_mem          (RW)  : ORIGIN = rpmsg_sh_mem_start, LENGTH = rpmsg_sh_mem_size
   m_lowpower_flag       (RW)  : ORIGIN = m_lowpower_flag_start, LENGTH = m_lowpower_flag_size

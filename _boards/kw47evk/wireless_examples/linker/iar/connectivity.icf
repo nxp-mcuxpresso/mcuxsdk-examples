@@ -184,43 +184,77 @@ define exported symbol m_text_end                       = INT_STORAGE_START - 1;
 
 /*************************** RAM LAYOUT ***********************************
 Default address values are indicated between brackets they can be overridden if necessary by linker flags
+                             RAM LAYOUT when gReserveCeRam_d = 0
+
+             0x20039FFF                     m_ram1_end
+                    - - - +---------------+ - - - - - - - -
+            m_data1_end   |               | __HEAP_end__
+                          |               |
+                          |               |
+                          |               |
+                          |...............| __HEAP_start__
+                          |               |
+                          .     Data1     .
+                          .               .
+            m_data1_start |               |
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_interrupts_ram_end
+                          | vector table  |
+                          |               |
+            (0x20004E00)  |               | m_interrupts_ram_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_cstack_end
+                          |    CStack     |
+            (0x20004400)  |               | m_cstack_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_warmboot_stack_end
+                          |   Warm stack  |
+            (0x20004000)  |               | m_warmboot_stack_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_ram1_reserved_end
+                          |    Reserved   |
+                          |               | m_ram1_reserved_start
+                    - - - +---------------+ - - - - - - - -
+              0x20000000  |               | m_ram1_start
+
+                             RAM LAYOUT when gReserveCeRam_d = 1
 
              0x20039FFF                     m_ram1_end
                     - - - +---------------+ - - - - - - - -
             (0x20039FFF)  |               | m_upper_data1_end __HEAP_end__
                           |               |
-                          |               | Enable with gReserveCeRam_d=1
                           |               |
-            (0x2002D000)  |               | m_upper_data1_start __HEAP_start__ (gReserveCeRam_d=1)
+                          |               |
+            (0x2002D000)  |               | m_upper_data1_start __HEAP_start__ 
                     - - - +---------------+ - - - - - - - -
             (0x2002CFFF)  |               | m_ce_heap_end
                           |               |
-                          |               | Enable with gReserveCeRam_d=1
+                          |               |
                           |               |
             (0x20029640)  |               | m_ce_heap_start
                     - - - +---------------+ - - - - - - - -
             (0x2002963F)  |               | m_ce_ctrl_end
                           |               |
-                          |               | Enable with gReserveCeRam_d=1
+                          |               |
                           |               |
             (0x20029000)  |               | m_ce_ctrl_start
                     - - - +---------------+ - - - - - - - -
-            (0x20028FFF)  |               | m_ce_data_reserved_end
+            (0x20028FFF)  |               | m_ce_stack_end
                           |               |
-                          |               | Enable with gReserveCeRam_d=1
                           |               |
-            (0x20028000)  |               | m_ce_data_reserved_start
+                          |               |
+            (0x20028000)  |               | m_ce_stack_start
                     - - - +---------------+ - - - - - - - -
             (0x20027FFF)  |               | m_ce_image_end
                           |               |
-                          |               | Enable with gReserveCeRam_d=1
+                          |               |
                           |               |
             (0x20020000)  |               | m_ce_image_start
                     - - - +---------------+ - - - - - - - -
-              m_data1_end |               |
+            m_data1_end   |               |
                           |               |
                           |               |
-                          |...............| __HEAP_start__
+                          |...............| 
                           |               |
                           .     Data1     .
                           .               .
@@ -306,20 +340,24 @@ define symbol m_interrupts_ram_end                      = m_interrupts_ram_start
 define exported symbol __VECTOR_RAM                     = m_interrupts_ram_start;
 define exported symbol __RAM_VECTOR_TABLE_SIZE          = m_ram_vector_table_size;
 
-/* Data region Size for Compute Engine (CE) */
-if (gReserveCeRam_d)
+if ( gReserveCeRam_d && (m_ram1_end < 0x20039FFF))
 {
-    define symbol m_ce_data_size                        = 0x1A000;
-}
-else
-{
-    define symbol m_ce_data_size                        = 0x0;
+  error "LCE is not supported on this part!";
 }
 
 /* data1 region */
 define symbol m_data1_start                             = m_interrupts_ram_end + 1;
-/* data1 region will end before CE data region if not null, Otherwise, use up to ram1 end */
-define symbol m_data1_end                               = m_ram1_end - m_ce_data_size;
+
+if (gReserveCeRam_d)
+{
+/* data1 region will end before CE data region */
+    define symbol m_data1_end                          = 0x2001FFFF;
+}
+else
+{
+/* data1 is up to ram1 end */
+    define symbol m_data1_end                           = m_ram1_end;
+}
 
 /* Heap region start and end address symbols used by usual memory allocator (malloc(), free())
    Not used by fsl_component_memory_manager_light component, __heap_size__ can be NULL */
@@ -350,10 +388,12 @@ define block TEXT                                                   { readonly }
 define block DATA0                                                  {  };
 if (gReserveCeRam_d)
 {
+/* .heap section is placed after the memory used by LCE */
     define block DATA1                                                  { readwrite, zi };
 }
 else
 {
+/* .heap section is the last section placed in DATA1 */
     define block DATA1                                                  { readwrite, zi, last section .heap };
 }
 
@@ -535,30 +575,39 @@ if(gFlashNbuImage_d) {
 /********************************************** Computeur Engine (CE) Memory **********************************************/
 if (gReserveCeRam_d)
 {
+/* memory used to store the LCE code (32K)*/
     define symbol m_ce_image_start                = m_data1_end + 1;
     define symbol m_ce_image_size                 = 0x8000;
     define symbol m_ce_image_end                  = m_ce_image_start + m_ce_image_size - 1;
-    define symbol m_ce_data_reserved_start        = m_ce_image_end + 1;
-    define symbol m_ce_data_reserved_size         = 0x1000;
-    define symbol m_ce_data_reserved_end          = m_ce_data_reserved_start + m_ce_data_reserved_size -1;
-    define symbol m_ce_ctrl_start                 = m_ce_data_reserved_end + 1;
+/* memory used for the LCE stack (4K)*/
+    define symbol m_ce_stack_start                = m_ce_image_end + 1;
+    define symbol m_ce_stack_size                 = 0x1000;
+    define symbol m_ce_stack_end                  = m_ce_stack_start + m_ce_stack_size -1;
+/* memory used for Core0<-->LCE communication (1.5K)*/
+    define symbol m_ce_ctrl_start                 = m_ce_stack_end + 1;
     define symbol m_ce_ctrl_size                  = 0x640;
     define symbol m_ce_ctrl_end                   = m_ce_ctrl_start + m_ce_ctrl_size -1;
+/* memory used for LCE heap (14.4K)*/
     define symbol m_ce_heap_start                 = m_ce_ctrl_end + 1;
     define symbol m_ce_heap_size                  = 0x39C0;
     define symbol m_ce_heap_end                   = m_ce_heap_start + m_ce_heap_size -1;
+/* memory used for the main heap (52K)*/
     define symbol m_upper_data1_start             = m_ce_heap_end + 1;
     define symbol m_upper_data1_end               = m_ram1_end;
 
     define region CE_CTRL_region            = mem:[from m_ce_ctrl_start to m_ce_ctrl_end];
     define region CE_HEAP_region            = mem:[from m_ce_heap_start to m_ce_heap_end];
-    define region CE_DATA_RESERVED_region   = mem:[from m_ce_data_reserved_start to m_ce_data_reserved_end];
+    define region CE_STACK_region           = mem:[from m_ce_stack_start to m_ce_stack_end];
     define region UPPER_DATA1_region        = mem:[from m_upper_data1_start to m_upper_data1_end];
 
     define block ce_ctrl_blk        { section ceCtrl };
     define block ce_heap_blk        { section ceHeap };
 
-/*  UPPER_DATA1_region is 40K, can be used for customer specific data and heap */
+/* There are three heap memory areas defined in the localization applications: 
+     - the main heap is accommodated in the UPPER_DATA1_region  (52K)
+     - the heap used by LCE is accommodated in CE_HEAP_region   (14.4K)
+     - the extended heap memory is accommodated in DATA1_region (24K) */
+
     define block UPPER_DATA1_blk    { last section .heap };
 
     place in CE_CTRL_region         { block ce_ctrl_blk };
