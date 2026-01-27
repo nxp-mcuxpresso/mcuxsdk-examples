@@ -259,7 +259,7 @@ static void InitAdc1(void)
     lpadcConfig.enableAnalogPreliminary = true;
     lpadcConfig.referenceVoltageSource = kLPADC_ReferenceVoltageAlt3;
     lpadcConfig.conversionAverageMode = kLPADC_ConversionAverage1;
-    lpadcConfig.FIFO0Watermark = 2U;
+    lpadcConfig.FIFO0Watermark = 3U;
 
     /* Set clocks */
     CLOCK_SetClkDiv(pCurrentInitData->ClockDivName, pCurrentInitData->u32ClockDivider);
