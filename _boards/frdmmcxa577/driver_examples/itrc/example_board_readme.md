@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Type-C USB cable
-- FRDM-MCXN947 board
+- FRDM-MCXA577 board
 - Personal Computer
 
 Board settings
@@ -9,7 +9,7 @@ Board settings
 
 Prepare the Demo
 ===============
-1.  Connect a type-c USB cable between the PC host and the MCU-Link USB port (J17) on the board
+1.  Connect a type-c USB cable between the PC host and the MCU-Link USB port (J10) on the board
 2.  Open a serial terminal with the following settings (See Appendix A in Getting started guide for description how to determine serial port number):
     - 115200 baud rate
     - 8 data bits
@@ -33,7 +33,8 @@ Trigger SW Event 0
 
 ITRC IRQ Reached!
 ITRC STATUS:
-Input event IN14 occured!
+Input event IN14 occured
+Generated output signal 0
 
 Clear ITRC IRQ and SW Event 0 STATUS
 

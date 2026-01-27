@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Type-C USB cable
-- FRDM-MCXN947 board
+- FRDM-MCXA577 board
 - Personal Computer
 
 Board settings
@@ -9,7 +9,7 @@ Board settings
 
 Prepare the Demo
 ===============
-1.  Connect a type-c USB cable between the PC host and the MCU-Link USB port (J17) on the board
+1.  Connect a type-c USB cable between the PC host and the MCU-Link USB port (J10) on the board
 2.  Open a serial terminal with the following settings (See Appendix A in Getting started guide for description how to determine serial port number):
     - 115200 baud rate
     - 8 data bits
@@ -23,24 +23,13 @@ Running the demo
 ===============
 When the example runs successfully, you can see the similar information from the terminal as below.
 
-ITRC Peripheral Driver Example
+GDET Peripheral Driver Example
 
-Pass: No Event/Action triggered in STATUS after Init
-
-Enable ITRC IRQ Action response to SW Event 0
-
-Trigger SW Event 0
-
-ITRC IRQ Reached!
-ITRC STATUS:
-Input event IN14 occured!
-
-Clear ITRC IRQ and SW Event 0 STATUS
-
-Disable ITRC IRQ Action response to SW Event 0
-
-Trigger SW Event 0
-
-Pass: No Action triggered
+GDET Init
+GDET Enable
+GDET Isolate
+* Now VDD voltage can be adjusted *
+GDET Change voltage mode
+GDET Isolation off
 
 End of example

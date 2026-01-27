@@ -27,16 +27,13 @@ ITRC Peripheral Driver Example
 
 Pass: No Event/Action triggered in STATUS after Init
 
-Pass: No Event triggered in STATUS1 after Init
-
 Enable ITRC IRQ Action response to SW Event 0
 
 Trigger SW Event 0
 
 ITRC IRQ Reached!
 ITRC STATUS:
-SW Event0 occured!
-Generated ITRC interrupt!
+Input event IN14 occured!
 
 Clear ITRC IRQ and SW Event 0 STATUS
 

@@ -33,8 +33,7 @@ Trigger SW Event 0
 
 ITRC IRQ Reached!
 ITRC STATUS:
-SW Event0 occured!
-Generated ITRC interrupt!
+Input event IN14 occured!
 
 Clear ITRC IRQ and SW Event 0 STATUS
 

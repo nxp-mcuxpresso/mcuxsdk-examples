@@ -26,3 +26,4 @@ itrc:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    frdmmcxa577: []
