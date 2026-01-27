@@ -383,8 +383,7 @@ static void InitTRGMUX(void)
 static void InitENC(void)
 {
       
-    /*** LCU ***/
-
+    /* SET LCU*/
     /* Structure of initialize LCU. */
     lcu_output_config_t outputConfig;
 
@@ -431,14 +430,13 @@ static void InitENC(void)
     LCU_MuxSelect(LCU_0, kLCU_Lc0Input3, kLCU_MuxSelOutput1);  
     
     
-    /*** EMIOS ***/
-
+    /* SET EMOIS */
     /* Ch5-Ch6 are used for ENC */
-    EMIOS_0->UC[5U].A = EMIOS_A_A(4096U);
+    EMIOS_0->UC[5U].A = EMIOS_A_A(4 * M1_POSPE_ENC_PULSES);
     EMIOS_0->UC[5U].CNT |= EMIOS_CNT_C(1U);
     EMIOS_0->UC[5U].C |= EMIOS_C_MODE(0x51U | 0x00U) | EMIOS_C_EDPOL(1U) | EMIOS_C_EDSEL(0U) |  EMIOS_C_UCPRE(0U);
     
-    EMIOS_0->UC[6U].A = EMIOS_A_A(4096U);
+    EMIOS_0->UC[6U].A = EMIOS_A_A(4 * M1_POSPE_ENC_PULSES);
     EMIOS_0->UC[6U].CNT |= EMIOS_CNT_C(1U);   
     EMIOS_0->UC[6U].C |= EMIOS_C_MODE(0x51U | 0x00U) | EMIOS_C_EDPOL(1U) | EMIOS_C_EDSEL(0U) |  EMIOS_C_UCPRE(0U);
     
@@ -451,6 +449,17 @@ static void InitENC(void)
     SIUL2->IMCR[53] = 0x3;
     SIUL2->IMCR[54] = 0x3;
     
+    /* Fill ENC structure */
+    g_sM1Enc.sTo.fltPGain  = M1_POSPE_TO_KP_GAIN;
+    g_sM1Enc.sTo.fltIGain  = M1_POSPE_TO_KI_GAIN;
+    g_sM1Enc.sTo.fltThGain = M1_POSPE_TO_THETA_GAIN;
+    g_sM1Enc.a32PosMeGain  = M1_POSPE_MECH_POS_GAIN;
+    g_sM1Enc.ui16Pp        = M1_MOTOR_PP;
+    g_sM1Enc.ui16PulseNumberQuad = 4 * M1_POSPE_ENC_PULSES;
+    
+    /* Pulses offset */
+    g_sM1Enc.f16CounterOffset = (int16_t)EMIOS_0->UC[5U].CNT -((int16_t)EMIOS_0->UC[6U].CNT);
+
 }
 
 

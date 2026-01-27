@@ -5,8 +5,8 @@
 */
 
 /*
-    * FILE NAME: ../../../boards/frdmmcxe31b/demo_apps/mc_pmsm/pmsm_enc/m1_pmsm_appconfig.h
-    * DATE: Fri Nov 21 2025, 10:22:07
+    * FILE NAME: ../../../examples/_boards/frdmmcxe31b/demo_apps/mc_pmsm/pmsm_enc/m1_pmsm_appconfig.h
+    * DATE: Tue Jan 27 2026, 13:53:49
 */
 
 /*
@@ -75,7 +75,7 @@
     },
     "positionLoop": {
         "positionLoopSampleTime": 0.001,
-        "positionLoopF0": 20,
+        "positionLoopF0": 10,
         "positionLoopKsi": 1,
         "servo_positionLoopUpperLimit": 3000,
         "servo_positionLoopLowerLimit": -3000,
@@ -99,7 +99,7 @@
 /*
 {
     "motorName": "Teknic M-2311P-LN-08D",
-    "motorDescription": "Curent loop sample frequency 16KHz"
+    "motorDescription": "Curent loop sample frequency 10KHz"
 }
 */
 
@@ -162,14 +162,14 @@
 /* POSITIONLOOP*/
 #define M1_SERVO_POSITION_P_HIGH_LIMIT (1256.64F)
 #define M1_SERVO_POSITION_P_LOW_LIMIT (-1256.64F)
-#define M1_SERVO_POSITION_P_PROP_GAIN (1052.76F)
+#define M1_SERVO_POSITION_P_PROP_GAIN (526.379F)
 #define M1_SERVO_FEED_FRWD_K1 (16.7552F)
-#define M1_SERVO_FEED_FRWD_K2 (0.0666667F)
-#define M1_SERVO_IIR_ZC_B0 (0.0591174F)
-#define M1_SERVO_IIR_ZC_B1 (0.0591174F)
-#define M1_SERVO_IIR_ZC_A1 (0.881765F)
-#define M1_SERVO_SPEED_PI_PROP_GAIN (0.0172065F)
-#define M1_SERVO_SPEED_PI_INTEG_GAIN (0.00108111F)
+#define M1_SERVO_FEED_FRWD_K2 (0.133333F)
+#define M1_SERVO_IIR_ZC_B0 (0.0304590F)
+#define M1_SERVO_IIR_ZC_B1 (0.0304590F)
+#define M1_SERVO_IIR_ZC_A1 (0.939082F)
+#define M1_SERVO_SPEED_PI_PROP_GAIN (0.00860324F)
+#define M1_SERVO_SPEED_PI_INTEG_GAIN (0.000270279F)
 #define M1_SERVO_SPEED_PI_HIGH_LIMIT (4.0F)
 #define M1_SERVO_SPEED_PI_LOW_LIMIT (-4.0F)
 /* SENSORLESS*/

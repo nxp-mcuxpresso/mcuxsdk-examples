@@ -110,19 +110,22 @@ typedef struct _clock_setup
 /******************************************************************************
  * Define position and speed sensor - quadrature encoder for motor 1
  ******************************************************************************/
-#define M1_MCDRV_ENC_GET(par) //(MCDRV_QdEncGet(par))
+#define M1_MCDRV_ENC_GET(par) (MCDRV_QdEncGet(par))
 #define M1_MCDRV_ENC_SET_DIRECTION(par) //(MCDRV_QdEncSetDirection(par))
 #define M1_MCDRV_ENC_SET_PULSES(par) //(MCDRV_QdEncSetPulses(par))
-#define M1_MCDRV_ENC_CLEAR(par) //(MCDRV_QdEncClear(par))
+#define M1_MCDRV_ENC_CLEAR(par) (MCDRV_QdEncClear(par))
  
 /* SENSORS constants moved from MCAT calculations */
-#define M1_POSPE_ENC_PULSES (1000)
+#define PI (3.14159265358979323846)
+#define M1_POSPE_ENC_PULSES (2000) // Number of pulses - Teknic 2311P
 #define M1_POSPE_ENC_DIRECTION (0)
-#define M1_POSPE_ENC_N_MIN (0.0F)
-#define M1_POSPE_MECH_POS_GAIN ACC32(16.384)
-#define M1_POSPE_TO_KP_GAIN (1256.64F)
-#define M1_POSPE_TO_KI_GAIN (24.6740F)
-#define M1_POSPE_TO_THETA_GAIN (0.0000198944F)
+#define M1_POSPE_ENC_N_MIN (0.0F)  
+#define M1_POSPE_MECH_POS_GAIN ACC32(65535.0/(float_t)(M1_POSPE_ENC_PULSES*4.0))
+#define M1_POSPE_TO_F0 (100)       // Sensor TO bandwidth
+#define M1_POSPE_TO_KP_GAIN (4 * PI * M1_POSPE_TO_F0)
+#define M1_POSPE_TO_KI_GAIN ((2* PI * M1_POSPE_TO_F0) * (2* PI * M1_POSPE_TO_F0) * M1_FAST_LOOP_TS)
+#define M1_POSPE_TO_THETA_GAIN (M1_FAST_LOOP_TS / PI )
+
 /******************************************************************************
  * Global variable definitions
  ******************************************************************************/
