@@ -111,4 +111,29 @@ void BOARD_BootClockPLL200M(void);
 }
 #endif /* __cplusplus*/
 
+/*******************************************************************************
+ ******************* Configuration BOARD_BootClockPLL240M ********************
+ ******************************************************************************/
+/*******************************************************************************
+ * Definitions for BOARD_BootClockPLL240M configuration
+ ******************************************************************************/
+#define BOARD_BootClockPLL240M_CORE_CLOCK 240000000U /*!< Core clock frequency: 240000000Hz */
+
+/*******************************************************************************
+ * API for BOARD_BootClockPLL240M configuration
+ ******************************************************************************/
+#if defined(__cplusplus)
+extern "C" {
+#endif /* __cplusplus*/
+
+/*!
+ * @brief This function executes configuration of clocks.
+ *
+ */
+void BOARD_BootClockPLL240M(void);
+
+#if defined(__cplusplus)
+}
+#endif /* __cplusplus*/
+
 #endif /* _CLOCK_CONFIG_H_ */
