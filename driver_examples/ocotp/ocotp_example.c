@@ -81,7 +81,7 @@ int main(void)
     status_t status   = kStatus_Success;
     uint32_t fuseData = 0U;
 
-    status = OCOTP_ReadFuseShadowRegisterExt(OCOTP, EXAMPLE_OCOTP_FUSE_MAP_ADDRESS, &fuseData, 1);
+    status = OCOTP_ReadFuseExt(OCOTP, EXAMPLE_OCOTP_FUSE_MAP_ADDRESS, &fuseData, 1);
 
     if (status != kStatus_Success)
     {
@@ -92,13 +92,13 @@ int main(void)
 
     PRINTF("The origin value of fuse address 0x%02X is 0x%08X\r\n", EXAMPLE_OCOTP_FUSE_MAP_ADDRESS, fuseData);
 
-    status = OCOTP_WriteFuseShadowRegister(OCOTP, EXAMPLE_OCOTP_FUSE_MAP_ADDRESS, EXAMPLE_OCOTP_FUSE_WRITE_VALUE);
+    status = OCOTP_WriteFuse(OCOTP, EXAMPLE_OCOTP_FUSE_MAP_ADDRESS, EXAMPLE_OCOTP_FUSE_WRITE_VALUE);
 
     if (kStatus_Success == status)
     {
         PRINTF("OCOTP Write operation success!\r\n");
 
-        status = OCOTP_ReadFuseShadowRegisterExt(OCOTP, EXAMPLE_OCOTP_FUSE_MAP_ADDRESS, &fuseData, 1);
+        status = OCOTP_ReadFuseExt(OCOTP, EXAMPLE_OCOTP_FUSE_MAP_ADDRESS, &fuseData, 1);
 
         if (status != kStatus_Success)
         {
