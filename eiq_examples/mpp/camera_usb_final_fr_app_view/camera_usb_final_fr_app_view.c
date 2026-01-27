@@ -6,7 +6,7 @@
  */
 
 /* @brief This example application shows usage of MultiMedia Pipeline to recognize a face:
- * USB/Virtual Camera (IR&RGB) -> split -> JPEG HW -> image converter -> draw labeled rectangles -> display
+ * USB/Virtual Camera (IR:VGA & RGB:QVGA) -> split -> JPEG HW -> image converter -> draw labeled rectangles -> display
  *                   +-> JPEG HW -> image converter -> inference engine (model: scrfd_kps/antispoofing/mobilefacenet)
  * The model performs face detection then recognition using TF-Lite micro inference engine
  * the model output is displayed on UART console by application */
@@ -73,7 +73,11 @@
  ******************************************************************************/
 
 /* image buffer for the text area */
-__ALIGNED(64) uint8_t  g_text_img[TEXT_WIDTH*TEXT_HEIGHT*TEXT_BPP];
+uint8_t g_text_img[TEXT_WIDTH*TEXT_HEIGHT*TEXT_BPP] __attribute__((section(".noinit.$cam_buff_sh_mem"), aligned(64)));
+/* image buffer for the inference preview area */
+#ifdef DEBUG_PREVIEW_RECOGNITION
+__ALIGNED(64) uint8_t  g_inf_img[INFPVW_WIDTH * INFPVW_HEIGHT * INFPVW_BPP];
+#endif
 
 /* logo image array */
 #include "images/NXP_Logo_RGB_Colour_320.h"
@@ -101,6 +105,7 @@ typedef struct {
 	char name[MAX_WORD_SIZE];
 	float confidence;
 	int detection_inference_time;
+    int antispoofing_inference_time;
     int recognition_inference_time;
 	char state[MAX_WORD_SIZE];
 } text_info_t;
@@ -145,35 +150,38 @@ static void draw_text_area(void* buf, uint32_t size, text_info_t* text)
     draw_text_line(&ctx, "User name:",row_indentation,start_y_middle);
     start_y_middle += get_font_height();
     memset(tmp,0,sizeof(tmp));
-    snprintf(tmp,sizeof(tmp),"     %s",text->name);
+    snprintf(tmp,sizeof(tmp),"   %s",text->name);
     draw_text_line(&ctx, tmp, row_indentation, start_y_middle );
 
     start_y_middle += space4items;
     draw_text_line(&ctx, "Confidence:", row_indentation, start_y_middle);
     start_y_middle += get_font_height();
     memset(tmp,0,sizeof(tmp));
-    snprintf(tmp,sizeof(tmp)," %d.%d percent",
-        (int)(text->confidence),
-        (int)(text->confidence * 100)%100);
+    snprintf(tmp,sizeof(tmp),"    %2d%%",(int)(text->confidence));
     draw_text_line(&ctx, tmp, row_indentation, start_y_middle );
 
     start_y_middle += space4items;
-    draw_text_line(&ctx, "Inference times:",row_indentation,start_y_middle);
+    draw_text_line(&ctx, "Inf times:",row_indentation,start_y_middle);
     start_y_middle += get_font_height();
     memset(tmp,0,sizeof(tmp));
-    snprintf(tmp,sizeof(tmp),"   detect:%dms",text->detection_inference_time);
+    snprintf(tmp,sizeof(tmp),"    detect:%dms",text->detection_inference_time);
 	draw_text_line(&ctx, tmp, row_indentation, start_y_middle );
     start_y_middle += get_font_height();
     memset(tmp,0,sizeof(tmp));
-    snprintf(tmp,sizeof(tmp),"   recog:%dms",text->recognition_inference_time);
+    snprintf(tmp,sizeof(tmp),"    recog:%dms",text->recognition_inference_time);
     draw_text_line(&ctx, tmp, row_indentation, start_y_middle );
 
-	start_y_middle += space4items;
-	draw_text_line(&ctx, "State:",row_indentation,start_y_middle);
+#if USE_ANTISPOOFING
     start_y_middle += get_font_height();
     memset(tmp,0,sizeof(tmp));
-    snprintf(tmp,sizeof(tmp),"     %s",text->state);
+    snprintf(tmp,sizeof(tmp),"   spoof:%dms",text->antispoofing_inference_time);
+    draw_text_line(&ctx, tmp, row_indentation, start_y_middle );
+
+    start_y_middle += space4items;
+    memset(tmp,0,sizeof(tmp));
+    snprintf(tmp,sizeof(tmp),"%s",text->state);
 	draw_text_line(&ctx, tmp, row_indentation, start_y_middle );
+#endif
 
 	//make sure all data are pushed to the memory.
 	XCACHE_CleanCacheByRange((uint32_t)buf,size);
@@ -282,6 +290,11 @@ static void app_task(void *params)
     user_data.state = STATE_DETECTING;
     user_data.db = g_embedding_db;
     user_data.db_max = DATABASE_MAX_SIZE;
+#ifdef DEBUG_PREVIEW_RECOGNITION
+    user_data.inference_view = g_inf_img;
+#else
+    user_data.inference_view = NULL;
+#endif
     int ret = 0;
     /* text info default configuration */
     text_info_t txt_info;
@@ -292,18 +305,25 @@ static void app_task(void *params)
 
     int detection_inference_time = 0;
     int recognition_inference_time = 0;
-
+#if USE_ANTISPOOFING
+    txt_info.antispoofing_inference_time = 0;
+    int antispoofing_inference_time = 0;
+#endif
     PRINTF("[%s]\r\n", mpp_get_version());
 
     PRINTF("Inference Engine: TensorFlow-Lite Micro \r\n");
 
     /* show constants */
-    PRINTF("SRC_WIDTH = %d\r\n", SRC_WIDTH);
-    PRINTF("SRC_HEIGHT = %d\r\n", SRC_HEIGHT);
+    PRINTF("VIEW_SRC_WIDTH = %d\r\n", VIEW_SRC_WIDTH);
+    PRINTF("VIEW_SRC_HEIGHT = %d\r\n", VIEW_SRC_HEIGHT);
+    PRINTF("INF_SRC_WIDTH = %d\r\n", INF_SRC_WIDTH);
+    PRINTF("INF_SRC_HEIGHT = %d\r\n", INF_SRC_HEIGHT);
     PRINTF("CROP_LEFT = %d\r\n", CROP_LEFT);
     PRINTF("CROP_TOP = %d\r\n", CROP_TOP);
     PRINTF("CROP_SIZE_LEFT = %d\r\n", CROP_SIZE_LEFT);
     PRINTF("CROP_SIZE_TOP = %d\r\n", CROP_SIZE_TOP);
+    PRINTF("RECO_CROP_LEFT = %d\r\n", RECO_CROP_LEFT);
+    PRINTF("RECO_CROP_TOP = %d\r\n", RECO_CROP_TOP);
     PRINTF("RECO_CROP_SIZE_LEFT = %d\r\n", RECO_CROP_SIZE_LEFT);
     PRINTF("RECO_CROP_SIZE_TOP = %d\r\n", RECO_CROP_SIZE_TOP);
     PRINTF("\r\n");
@@ -354,8 +374,8 @@ static void app_task(void *params)
     static mpp_camera_params_t cam_params;
     mpp_elem_handle_t cam_elem;
     memset(&cam_params, 0 , sizeof(cam_params));
-    cam_params.height = APP_CAMERA_HEIGHT;
-    cam_params.width  = APP_CAMERA_WIDTH;
+    cam_params.height = RGB_CAMERA_HEIGHT;
+    cam_params.width  = RGB_CAMERA_WIDTH;
     cam_params.format = args->src_format;
     cam_params.fps    = 30;
     cam_params.stripe = stripe_mode;
@@ -364,8 +384,12 @@ static void app_task(void *params)
     cam_params.n_streams = 2;
     cam_params.stream[0].type = RGB_STREAM;
     cam_params.stream[0].active = true;
+    cam_params.stream[0].height = RGB_CAMERA_HEIGHT;
+    cam_params.stream[0].width = RGB_CAMERA_WIDTH;
     cam_params.stream[1].type = IR_STREAM;
     cam_params.stream[1].active = true;
+    cam_params.stream[1].height = IR_CAMERA_HEIGHT;
+    cam_params.stream[1].width = IR_CAMERA_WIDTH;
     cam_params.in_advance_enqueue = false;
     PRINTF("Debug: About to add a USB camera\r\n");
     ret = mpp_camera_add(mp, args->camera_name, &cam_params, &cam_elem);
@@ -387,14 +411,16 @@ static void app_task(void *params)
         goto err;
     }
 
+    user_data.mp_split = mp_split;
+
     if (args->src_format == MPP_PIXEL_JPEG)
     {
         /* Add element jpeg decode */
         mpp_element_params_t elem_params_decoder;
         memset(&elem_params_decoder, 0, sizeof(mpp_element_params_t));
         elem_params_decoder.decode.dev_name = IMG_DECODE_DEV_NAME;
-        elem_params_decoder.decode.width = APP_CAMERA_WIDTH;
-        elem_params_decoder.decode.height = APP_CAMERA_HEIGHT;
+        elem_params_decoder.decode.width = IR_CAMERA_WIDTH;
+        elem_params_decoder.decode.height = IR_CAMERA_HEIGHT;
 
         if (strcmp(IMG_DECODE_DEV_NAME, "jpeg_CPU") == 0)
             elem_params_decoder.decode.out_format = MPP_PIXEL_BGR; /* TODO auto detect */
@@ -412,6 +438,17 @@ static void app_task(void *params)
         }
     }
 
+    /* create a background mpp (preempt-able branch) for the ML Inference
+     * because it may take longer than capture period.
+     * Inference runs an persondetect TF-Lite model */
+    static mpp_t mp_bg;
+    mpp_params.exec_flag = MPP_EXEC_PREEMPT;
+
+    ret = mpp_background(mp_split, &mpp_params, &mp_bg);
+    if (ret) {
+        PRINTF("Failed to split pipeline\n");
+        goto err;
+    }
 
     /* First do crop + resize + color convert */
     static mpp_element_params_t infer_conv_params;
@@ -435,10 +472,12 @@ static void app_task(void *params)
     infer_conv_params.convert.scale.height = SCRFD_KPS_HEIGHT;
     infer_conv_params.convert.ops |= MPP_CONVERT_SCALE;
     /* then add a flip */
-#if (SRC_DISPLAY_FLIP != FLIP_NONE)
-    infer_conv_params.convert.flip = SRC_DISPLAY_FLIP;
-    infer_conv_params.convert.ops |=  MPP_CONVERT_ROTATE;
-#endif
+    if (SRC_DISPLAY_FLIP != FLIP_NONE)
+    {
+        infer_conv_params.convert.flip = SRC_DISPLAY_FLIP;
+        infer_conv_params.convert.ops |=  MPP_CONVERT_ROTATE;
+    }
+
     infer_conv_params.convert.stripe_in = false;
     infer_conv_params.convert.stripe_out = false; /* model takes full frames */
 
@@ -451,21 +490,9 @@ static void app_task(void *params)
     HAL_LOGI("infer_conv_params.convert.scale.height = %d\r\n", infer_conv_params.convert.scale.height);
 
     static mpp_elem_handle_t infer_conv_h;
-    ret = mpp_element_add(mp_split, MPP_ELEMENT_CONVERT, &infer_conv_params, &infer_conv_h);
+    ret = mpp_element_add(mp_bg, MPP_ELEMENT_CONVERT, &infer_conv_params, &infer_conv_h);
     if (ret ) {
         PRINTF("Failed to add element CONVERT\n");
-        goto err;
-    }
-
-    /* create a background mpp (preempt-able branch) for the ML Inference
-     * because it may take longer than capture period.
-     * Inference runs an persondetect TF-Lite model */
-    static mpp_t mp_bg;
-    mpp_params.exec_flag = MPP_EXEC_PREEMPT;
-
-    ret = mpp_background(mp_split, &mpp_params, &mp_bg);
-    if (ret) {
-        PRINTF("Failed to split pipeline\n");
         goto err;
     }
 
@@ -525,8 +552,8 @@ static void app_task(void *params)
         mpp_element_params_t elem_params_decoder;
         memset(&elem_params_decoder, 0, sizeof(mpp_element_params_t));
         elem_params_decoder.decode.dev_name = IMG_DECODE_DEV_NAME;
-        elem_params_decoder.decode.width = APP_CAMERA_WIDTH;
-        elem_params_decoder.decode.height = APP_CAMERA_HEIGHT;
+        elem_params_decoder.decode.width = RGB_CAMERA_WIDTH;
+        elem_params_decoder.decode.height = RGB_CAMERA_HEIGHT;
 
         if (strcmp(IMG_DECODE_DEV_NAME, "jpeg_CPU") == 0)
             elem_params_decoder.decode.out_format = MPP_PIXEL_BGR; /* TODO auto detect */
@@ -559,9 +586,9 @@ static void app_task(void *params)
     HAL_LOGI("elem_params.convert.out_buf.width = %d\r\n", elem_params.convert.out_buf.width);
     HAL_LOGI("elem_params.convert.out_buf.height = %d\r\n", elem_params.convert.out_buf.height);
 
-#if (SRC_DISPLAY_FLIP != FLIP_NONE)
-    elem_params.convert.flip = SRC_DISPLAY_FLIP;
-#endif
+    if (SRC_DISPLAY_FLIP != FLIP_NONE)
+        elem_params.convert.flip = SRC_DISPLAY_FLIP;
+
     elem_params.convert.ops |= MPP_CONVERT_COLOR | MPP_CONVERT_ROTATE | MPP_CONVERT_SCALE;
 
     ret = mpp_element_add(mp, MPP_ELEMENT_CONVERT, &elem_params, NULL);
@@ -600,44 +627,64 @@ static void app_task(void *params)
     user_data.mp = mp;
 
     /* compose element params */
-    mpp_element_params_t elem_params_compose;
+    static mpp_element_params_t elem_params_compose;
     memset(&elem_params_compose, 0, sizeof(mpp_element_params_t));
     mpp_stats_t compose_stats = {0};
     elem_params_compose.stats = &compose_stats;
 
     draw_text_area(g_text_img, sizeof(g_text_img), &txt_info);
 
-        /* Output params */
+    /* Output params */
     elem_params_compose.compose.out_angle = ROTATE_270;
     elem_params_compose.compose.out_flip = FLIP_NONE;
     elem_params_compose.compose.out_format = APP_DISPLAY_FORMAT;
-    /* TODO set output buffer width and height */
+    elem_params_compose.compose.out_width = APP_DISPLAY_WIDTH;
+    elem_params_compose.compose.out_height = APP_DISPLAY_HEIGHT;
 
-    /* Logo image parameters */
-    elem_params_compose.compose.logo_img_params.width = LOGO_WIDTH;
-    elem_params_compose.compose.logo_img_params.height = LOGO_HEIGHT;
-    elem_params_compose.compose.logo_img_params.format = MPP_PIXEL_RGB;
-    elem_params_compose.compose.logo_img_params.stripe = false;
-    elem_params_compose.compose.logo_buffer = NXP_Logo_RGB888_Colour_320_map;
+    /* Set number of images to compose */
+    elem_params_compose.compose.nb_images = COMPOSE_MAX_IMAGES;
 
-    /* Logo area - top left corner */
-    elem_params_compose.compose.logo_area.left = LOGO_LEFT_POS;
-    elem_params_compose.compose.logo_area.top = LOGO_TOP_POS;
-    elem_params_compose.compose.logo_area.right = LOGO_RIGHT_POS;
-    elem_params_compose.compose.logo_area.bottom = LOGO_BOTTOM_POS;
+    /* Allocate memory for image list */
+    static mpp_img_compose_param_t compose_images[COMPOSE_MAX_IMAGES];
+    memset(compose_images, 0, sizeof(compose_images));
+    elem_params_compose.compose.image_list = compose_images;
 
-    /* Text image parameters */
-    elem_params_compose.compose.txt_img_params.width = TEXT_WIDTH;
-    elem_params_compose.compose.txt_img_params.height = TEXT_HEIGHT;
-    elem_params_compose.compose.txt_img_params.format = MPP_PIXEL_RGB565;
-    elem_params_compose.compose.txt_img_params.stripe = false;
-    elem_params_compose.compose.txt_buffer = g_text_img;
+    /* Configure logo image */
+    elem_params_compose.compose.image_list[COMPOSE_LOGO_INDEX].width = LOGO_WIDTH;
+    elem_params_compose.compose.image_list[COMPOSE_LOGO_INDEX].height = LOGO_HEIGHT;
+    elem_params_compose.compose.image_list[COMPOSE_LOGO_INDEX].format = MPP_PIXEL_RGB;
+    elem_params_compose.compose.image_list[COMPOSE_LOGO_INDEX].buffer = (void *) NXP_Logo_RGB888_Colour_320_map;
+
+    /* Logo area */
+    elem_params_compose.compose.image_list[COMPOSE_LOGO_INDEX].dest_area.left = LOGO_LEFT_POS;
+    elem_params_compose.compose.image_list[COMPOSE_LOGO_INDEX].dest_area.top = LOGO_TOP_POS;
+    elem_params_compose.compose.image_list[COMPOSE_LOGO_INDEX].dest_area.right = LOGO_RIGHT_POS;
+    elem_params_compose.compose.image_list[COMPOSE_LOGO_INDEX].dest_area.bottom = LOGO_BOTTOM_POS;
+
+    /* Configure text image */
+    elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].width = TEXT_WIDTH;
+    elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].height = TEXT_HEIGHT;
+    elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].format = MPP_PIXEL_RGB565;
+    elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].buffer = g_text_img;
     
-    /* Text area - bottom center */
-    elem_params_compose.compose.txt_area.left = TEXT_LEFT_POS;
-    elem_params_compose.compose.txt_area.top = TEXT_TOP_POS;
-    elem_params_compose.compose.txt_area.right = TEXT_RIGHT_POS;
-    elem_params_compose.compose.txt_area.bottom = TEXT_BOTTOM_POS;
+    /* Text area */
+    elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].dest_area.left = TEXT_LEFT_POS;
+    elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].dest_area.top = TEXT_TOP_POS;
+    elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].dest_area.right = TEXT_RIGHT_POS;
+    elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].dest_area.bottom = TEXT_BOTTOM_POS;
+
+    /* Configure Inference preview image */
+    elem_params_compose.compose.image_list[COMPOSE_INFPVW_INDEX].width = INFPVW_WIDTH;
+    elem_params_compose.compose.image_list[COMPOSE_INFPVW_INDEX].height = INFPVW_HEIGHT;
+    elem_params_compose.compose.image_list[COMPOSE_INFPVW_INDEX].format = MPP_PIXEL_RGB;
+    elem_params_compose.compose.image_list[COMPOSE_INFPVW_INDEX].buffer = NULL;
+
+    /* Inference preview area position */
+    elem_params_compose.compose.image_list[COMPOSE_INFPVW_INDEX].dest_area.left = INFPVW_LEFT_POS;
+    elem_params_compose.compose.image_list[COMPOSE_INFPVW_INDEX].dest_area.top = INFPVW_TOP_POS;
+    elem_params_compose.compose.image_list[COMPOSE_INFPVW_INDEX].dest_area.right = INFPVW_RIGHT_POS;
+    elem_params_compose.compose.image_list[COMPOSE_INFPVW_INDEX].dest_area.bottom = INFPVW_BOTTOM_POS;
+    user_data.p_params_compose = &elem_params_compose;
 
     /* Input area - full frame */
     elem_params_compose.compose.input_area.left = 0;
@@ -705,7 +752,7 @@ static void app_task(void *params)
         // Check for incoming messages from control task
         msg_t *received_msg;
 
-        if (xQueueReceive(s_mpp_task_queue, &received_msg, 0) == pdPASS) // Non-blocking receive
+        if (xQueueReceive(s_mpp_task_queue, &received_msg, pdMS_TO_TICKS(5)) == pdPASS) // Non-blocking receive
         {
             /* Handle message received from control task */
             switch(received_msg->msgID)
@@ -727,13 +774,54 @@ static void app_task(void *params)
                         // Change state to registering
                         user_data.state = STATE_REGISTRATION_MODE;
                         user_data.registration_mode_on = 1; /* activate registraion mode */
-                        if (mpp_is_running(mp_bg))
+
+                        if (first_mpp_start == true)
+                        {
+                            /* start preempt-able pipeline branch */
+                            ret = mpp_start(mp_bg, 0, false);
+                            if (ret) {
+                                PRINTF("Failed to start preempt-able pipeline branch");
+                                goto err;
+                            }
+                            /* start secondary pipeline branch */
+                            ret = mpp_start(mp_split, 0, false);
+                            if (ret) {
+                                PRINTF("Failed to start secondary pipeline branch");
+                                goto err;
+                            }
+                            /* start main pipeline branch */
+                            ret = mpp_start(mp, first_mpp_start, false);
+                            if (ret) {
+                                PRINTF("Failed to start main pipeline branch");
+                                goto err;
+                            }
+
+                            first_mpp_start = false;
+
+                            /* small delay to allow pipelines to initialize */
+                            vTaskDelay(pdMS_TO_TICKS(100));
+
+                            /* stop the inference pippelines after initialization */
                             mpp_stop(mp_bg);
-                        if (mpp_is_running(mp_split))
                             mpp_stop(mp_split);
+                        }
+                        else
+                        {
+                            /* stop the inference pippelines */
+                            if (mpp_is_running(mp_bg))
+                                mpp_stop(mp_bg);
+                            if (mpp_is_running(mp_split))
+                                mpp_stop(mp_split);
+
+                            /* Start main pipeline if not running */
+                            if (!mpp_is_running(mp))
+                                mpp_start(mp, 0, false);
+                        }
+
                         /* start registration timer */
                         registration_start_time = xTaskGetTickCount();
                         registration_end_time = 0; // Reset end time
+
                         // Configure and start existing timer
                         if (registration_timer != NULL) {
                         	xTimerChangePeriod(registration_timer, pdMS_TO_TICKS(user_data.registration_timeout), 0);
@@ -772,7 +860,7 @@ static void app_task(void *params)
                         infer_conv_params.convert.scale.width = SCRFD_KPS_WIDTH;
                         infer_conv_params.convert.scale.height = SCRFD_KPS_HEIGHT;
                         infer_conv_params.convert.pixel_format = SCRFD_KPS_PIXEL_FORMAT;
-                        ret = mpp_element_update(mp_split, infer_conv_h, &infer_conv_params, true);
+                        ret = mpp_element_update(mp_bg, infer_conv_h, &infer_conv_params, true);
                         if (ret) {
                             PRINTF("Failed to update element convert for scrfd_kps\r\n");
                             goto err;
@@ -904,15 +992,34 @@ static void app_task(void *params)
             if (last_inf_frame_num != user_data.inference_frame_num)
             {
                 xLastPrintTime = tick;
-                // Store separately the detection vs recognition inference times
+                // Store separately the detection , antispoofing and recognition inference times
                 if (user_data.last_model == MODEL_SCRFD_KPS)
                 {
                     detection_inference_time = user_data.inference_time_ms;
+                 if (user_data.state == STATE_DETECTING && user_data.detected_count == 0)
+                    {
+                        strcpy(txt_info.name, "");
+                        txt_info.confidence = 0.0f;
+                        txt_info.detection_inference_time = detection_inference_time;
+                        txt_info.recognition_inference_time = 0;
+                    #if USE_ANTISPOOFING
+                        txt_info.antispoofing_inference_time = 0;
+                        strcpy(txt_info.state, "");
+                    #endif
+                        draw_text_area(g_text_img, sizeof(g_text_img), &txt_info);
+                    }
+                
                 }
                 else if (user_data.last_model == MODEL_MOBILEFACENET)
                 {
                     recognition_inference_time = user_data.inference_time_ms;
                 }
+            #if USE_ANTISPOOFING
+                else // MODEL_ANTISPOOFING
+                {
+                    antispoofing_inference_time = user_data.inference_time_ms;
+                }
+            #endif
 #ifdef PRINT_INFERENCE_RESULTS
                 print_conditional(&user_data);
 #endif /* PRINT_INFERENCE_RESULTS */
@@ -933,9 +1040,12 @@ static void app_task(void *params)
             /* update text area */
             strcpy(txt_info.name, user_data.result.recognized_name);
             txt_info.confidence = user_data.result.similarity_percentage;
-            txt_info.recognition_inference_time = recognition_inference_time;
             txt_info.detection_inference_time = detection_inference_time;
-            strcpy(txt_info.state, "Recognized");
+            txt_info.recognition_inference_time = recognition_inference_time;
+        #if USE_ANTISPOOFING   
+            txt_info.antispoofing_inference_time = antispoofing_inference_time;
+            strcpy(txt_info.state, "Real face");
+        #endif
             draw_text_area(g_text_img, sizeof(g_text_img), &txt_info);
         }
         else if (user_data.state == STATE_NOT_RECOGNIZED)
@@ -957,9 +1067,12 @@ static void app_task(void *params)
                 }
                 strcpy(txt_info.name, "Unknown");
                 txt_info.confidence = 0.0f;
+                txt_info.detection_inference_time = detection_inference_time;
                 txt_info.recognition_inference_time = recognition_inference_time;
-                txt_info.detection_inference_time = detection_inference_time; 
-                strcpy(txt_info.state, "Not Recog");
+            #if USE_ANTISPOOFING    
+                txt_info.antispoofing_inference_time = antispoofing_inference_time;
+                strcpy(txt_info.state, "Real face");
+            #endif
                 draw_text_area(g_text_img, sizeof(g_text_img), &txt_info);
                 /* mpp_element_update(mp, user_data.compose_elem, &elem_params_compose); */
 
@@ -982,6 +1095,17 @@ static void app_task(void *params)
         		ctrl_task_notify(ctrl_task_msg, ctrl_task_data);
                 ctrl_task_msg = -1;
         	}
+        #if USE_ANTISPOOFING
+            if(user_data.state == STATE_SPOOF)
+            {
+                txt_info.detection_inference_time = detection_inference_time;
+                txt_info.antispoofing_inference_time = antispoofing_inference_time;
+                strcpy(txt_info.state, "Fake face");
+                txt_info.recognition_inference_time = 0;
+                txt_info.confidence = 0.0f;
+                draw_text_area(g_text_img, sizeof(g_text_img), &txt_info);
+            }
+        #endif
             /* start timer */
             notifyTime = tick;
             user_data.state = STATE_NOTIFYING_USER;
@@ -989,7 +1113,6 @@ static void app_task(void *params)
             /* stop branches with convert and inference elements */
             /* until the user is notified */
             mpp_stop(mp_bg);
-            mpp_stop(mp_split);
         }
 
         if ((user_data.state == STATE_NOTIFYING_USER) && (tick > notifyTime + notifyDelay))
@@ -1071,21 +1194,25 @@ static void app_task(void *params)
             ctrl_task_msg = -1;
             /* stop branches with convert and inference elements */
             mpp_stop(mp_bg);
-            mpp_stop(mp_split);
 #if USE_ANTISPOOFING
-            PRINTF("Switching to Antispoofing \r\n");
             /* update convert params for the antispoofing model */
             if (get_face_crop_area(&user_data.final_boxes[0], &infer_conv_params.convert.crop))
             {
                 PRINTF("Failed to get face crop area\r\n");
                 goto err;
             }
+            if (SRC_DISPLAY_FLIP == FLIP_HORIZONTAL)
+            {
+                uint32_t temp_width = infer_conv_params.convert.crop.right - infer_conv_params.convert.crop.left;
+                infer_conv_params.convert.crop.left = INF_SRC_WIDTH - infer_conv_params.convert.crop.right - 1;
+                infer_conv_params.convert.crop.right = infer_conv_params.convert.crop.left + temp_width;
+            }
             infer_conv_params.convert.out_buf.width = ANTISPOOFING_WIDTH;
             infer_conv_params.convert.out_buf.height = ANTISPOOFING_HEIGHT;
             infer_conv_params.convert.scale.width = ANTISPOOFING_WIDTH;
             infer_conv_params.convert.scale.height = ANTISPOOFING_HEIGHT;
             infer_conv_params.convert.pixel_format = ANTISPOOFING_PIXEL_FORMAT;
-            ret = mpp_element_update(mp_split, infer_conv_h, &infer_conv_params, true);
+            ret = mpp_element_update(mp_bg, infer_conv_h, &infer_conv_params, true);
             if (ret)
             {
                 PRINTF("Failed to update element convert for the antispoofing model\r\n");
@@ -1093,7 +1220,7 @@ static void app_task(void *params)
             }
 
             /* switch to antispoofing model */
-            ret = mpp_element_update(mp_bg, user_data.infer_elem, &antispoofing_params, false);
+            ret = mpp_element_update(mp_bg, user_data.infer_elem, &antispoofing_params, true);
             if (ret)
             {
                 PRINTF("Failed to update element inference for the antispoofing model\r\n");
@@ -1108,40 +1235,44 @@ static void app_task(void *params)
             }
             user_data.cur_model = MODEL_ANTISPOOFING;
             user_data.state = STATE_CHECKING_ANTISPOOFING;
+            mpp_start(mp_bg, 0, true);
 #else
-		    /* Skipping Antispoofing, going directly to MobileFaceNet */
+            /* Skipping Antispoofing, going directly to MobileFaceNet */
             user_data.state = STATE_REAL;
 #endif
-            mpp_start(mp_split, 0, false);
-            mpp_start(mp_bg, 0, false);
         }
         else if (user_data.state == STATE_REAL)
         {
             /* PRINTF("Switching to MobileFaceNet \r\n"); */
-            mpp_stop(mp_bg);
-            mpp_stop(mp_split);
             /* update convert params for mobilefacenet */
-#if !USE_ANTISPOOFING
+#if USE_ANTISPOOFING
+            mpp_stop(mp_bg);
+#endif
             if (get_face_crop_area(&user_data.final_boxes[0], &infer_conv_params.convert.crop))
             {
                 PRINTF("Failed to get face crop area\r\n");
                 goto err;
             }
-#endif
+            if (SRC_DISPLAY_FLIP == FLIP_HORIZONTAL)
+            {
+                uint32_t temp_width = infer_conv_params.convert.crop.right - infer_conv_params.convert.crop.left;
+                infer_conv_params.convert.crop.left = INF_SRC_WIDTH - infer_conv_params.convert.crop.right - 1;
+                infer_conv_params.convert.crop.right = infer_conv_params.convert.crop.left + temp_width;
+            }
 
             infer_conv_params.convert.out_buf.width = MOBILEFACENET_WIDTH;
             infer_conv_params.convert.out_buf.height = MOBILEFACENET_HEIGHT;
             infer_conv_params.convert.scale.width = MOBILEFACENET_WIDTH;
             infer_conv_params.convert.scale.height = MOBILEFACENET_HEIGHT;
             infer_conv_params.convert.pixel_format = MOBILEFACENET_PIXEL_FORMAT;
-            ret = mpp_element_update(mp_split, infer_conv_h, &infer_conv_params, false);
+            ret = mpp_element_update(mp_bg, infer_conv_h, &infer_conv_params, true);
             if (ret) {
                 PRINTF("Failed to update element convert for mobilefacenet\r\n");
                 goto err;
             }
 
             /* switch to mobilefacenet model */
-            ret = mpp_element_update(mp_bg, user_data.infer_elem, &mobilefacenet_params, false);
+            ret = mpp_element_update(mp_bg, user_data.infer_elem, &mobilefacenet_params, true);
             if (ret) {
                 PRINTF("Failed to update element inference for mobilefacenet\r\n");
                 goto err;
@@ -1158,8 +1289,7 @@ static void app_task(void *params)
             }
             user_data.cur_model = MODEL_MOBILEFACENET;
             user_data.state = STATE_RECOGNIZING;
-            mpp_start(mp_split, 0, false);
-            mpp_start(mp_bg, 0, false);
+            mpp_start(mp_bg, 0, true);
         }
         else if (user_data.state == STATE_USER_NOTIFIED)
         {
@@ -1174,7 +1304,7 @@ static void app_task(void *params)
             infer_conv_params.convert.scale.width = SCRFD_KPS_WIDTH;
             infer_conv_params.convert.scale.height = SCRFD_KPS_HEIGHT;
             infer_conv_params.convert.pixel_format = SCRFD_KPS_PIXEL_FORMAT;
-            ret = mpp_element_update(mp_split, infer_conv_h, &infer_conv_params, false);
+            ret = mpp_element_update(mp_bg, infer_conv_h, &infer_conv_params, false);
             if (ret) {
                 PRINTF("Failed to update element convert for scrfd_kps\r\n");
                 goto err;

@@ -157,7 +157,7 @@ void *image_data = (void *)stopwatch168_208_rgb565_data;
 #define SRC_IMAGE_WIDTH SRC_IMAGE_90_160_RGB565LE_WIDTH
 void *image_data = (void *)image_90_160_rgb565le_data;
 #define IMAGE_NAME "90_160_rgb565le"
-#define EXPECTED_CHECKSUM 0xd449c001
+#define EXPECTED_CHECKSUM 0x03debd00
 #elif (APP_CONFIG==14)
 #include "images/stopwatch168_208_vuyx.h"
 #define SRC_IMAGE_FORMAT SRC_IMAGE_STOPWATCH168_208_VUYX_FORMAT

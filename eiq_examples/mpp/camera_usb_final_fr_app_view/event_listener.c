@@ -15,6 +15,7 @@
 
 #include "mpp_api.h"
 #include "mpp_config.h"
+#include "mpp_api_types_internal.h"
 
 #include "face_box_utils.h"
 #include "app_constants.h"
@@ -24,6 +25,12 @@
 #include "scrfd_kps_output_postproc.h"
 #include "antispoofing_output_postproc_quantized.h"
 
+#include APP_TFLITE_MOBILEFACENET_INFO
+#include APP_TFLITE_SCRFD_KPS_INFO
+#include APP_TFLITE_ANTISPOOFING_INFO
+
+static int g_detect_id = 0;
+static int g_reco_id = 0;
 
 int mpp_event_listener(mpp_t mpp, mpp_evt_t evt, void *evt_data, void *user_data)
 {
@@ -31,11 +38,50 @@ int mpp_event_listener(mpp_t mpp, mpp_evt_t evt, void *evt_data, void *user_data
     const mpp_inference_cb_param_t *inf_output;
     recognition_result result;
     antispoofing_result liveness;
+#ifdef DEBUG_PREVIEW_RECOGNITION
+    int imgsize = 0;
+    int model_width = 0;
+    int model_height = 0;
+    mpp_pixel_format_t model_format = MPP_PIXEL_RGB;
+#endif
 
     /* user_data handle contains application private data */
     user_data_t *app_priv = (user_data_t *)user_data;
 
     switch(evt) {
+    case MPP_EVENT_INFERENCE_INPUT_READY:
+#ifdef DEBUG_PREVIEW_RECOGNITION
+        /* copy inference input view data */
+        if (app_priv->cur_model == MODEL_MOBILEFACENET)
+        {
+            model_height = MOBILEFACENET_HEIGHT;
+            model_width = MOBILEFACENET_WIDTH;
+            model_format = MPP_PIXEL_RGB;
+        }
+        else if (app_priv->cur_model == MODEL_ANTISPOOFING)
+        {
+            model_height = ANTISPOOFING_HEIGHT;
+            model_width = ANTISPOOFING_WIDTH;
+            model_format = MPP_PIXEL_GRAY;
+        }
+        else    /* SCRFD do not preview */
+            break;
+
+        /* store face image */
+        imgsize = model_width * model_height * 3;  /* RGB888 */
+        if (app_priv->inference_view)
+        {
+            memcpy(app_priv->inference_view, (uint8_t *)evt_data, imgsize);
+        }
+        /* show detected face preview */
+        app_priv->p_params_compose->compose.image_list[COMPOSE_INFPVW_INDEX].width = model_width;
+        app_priv->p_params_compose->compose.image_list[COMPOSE_INFPVW_INDEX].height = model_height;
+        app_priv->p_params_compose->compose.image_list[COMPOSE_INFPVW_INDEX].format = model_format;
+        app_priv->p_params_compose->compose.image_list[COMPOSE_INFPVW_INDEX].buffer = app_priv->inference_view;
+        mpp_element_update(app_priv->mp, app_priv->compose_elem, app_priv->p_params_compose, true);
+#endif
+        break;
+
     case MPP_EVENT_INFERENCE_OUTPUT_READY:
         /* cast evt_data pointer to correct structure matching the event */
         inf_output = (const mpp_inference_cb_param_t *) evt_data;
@@ -45,6 +91,8 @@ int mpp_event_listener(mpp_t mpp, mpp_evt_t evt, void *evt_data, void *user_data
 
             if (app_priv->cur_model == MODEL_MOBILEFACENET)
             {
+                _elem_t *elem = (_elem_t *) app_priv->infer_elem;
+                g_reco_id = elem->io.in_buf[0]->frame_id;
                 MOBILEFACENET_ProcessOutput(
                         inf_output,
 						app_priv->db,
@@ -54,6 +102,10 @@ int mpp_event_listener(mpp_t mpp, mpp_evt_t evt, void *evt_data, void *user_data
                 /* copy recognition results */
                 memcpy(&app_priv->result, &result, sizeof(result));
                 app_priv->last_model = MODEL_MOBILEFACENET;
+#ifdef DEBUG
+                if (g_reco_id != g_detect_id)
+                    PRINTF("Warning: Recognize frame id=%d, detected on frame id=%d\r\n", g_reco_id, g_detect_id);
+#endif
             }
             else if (app_priv->cur_model == MODEL_ANTISPOOFING)
             {
@@ -65,6 +117,8 @@ int mpp_event_listener(mpp_t mpp, mpp_evt_t evt, void *evt_data, void *user_data
             }
             else
             {
+                _elem_t *elem = (_elem_t *) app_priv->infer_elem;
+                g_detect_id = elem->io.in_buf[0]->frame_id;
                 ret = SCRFDKPS_ProcessOutput(
                         inf_output,
                         app_priv->final_boxes,
@@ -110,12 +164,10 @@ int mpp_event_listener(mpp_t mpp, mpp_evt_t evt, void *evt_data, void *user_data
                 /* Check whether the face is real or fake, if it's real proceed with recognition else stop the pipeline. */
                 if (app_priv->liveness.result[1] > SPOOFING_THRESHOLD)
                 {
-                    PRINTF("*** Real Face, proceeding with recognition! ***\r\n");
                     app_priv->state = STATE_REAL;
                 }
                 else
                 {
-                    PRINTF("*** Fake Face, can't proceed with recognition! ***\r\n");
                     app_priv->state = STATE_SPOOF;
                 }
             }
@@ -136,7 +188,13 @@ int mpp_event_listener(mpp_t mpp, mpp_evt_t evt, void *evt_data, void *user_data
             bool face_ok = boxes_to_rects(app_priv->final_boxes, NUM_BOXES_MAX, MAX_LABEL_RECTS, params.labels.rectangles);
 
             if ( (face_ok) && (app_priv->state == STATE_DETECTING) )
+            {
                 app_priv->state = STATE_DETECTED;
+                if (app_priv->mp_split != mpp)
+                    mpp_stop(app_priv->mp_split);
+                else
+                    PRINTF("mp_split and inference branches are the same.Skipe calling mpp_stop\r\n");
+            }
 
             if ( (app_priv->labrect_elem != 0) && ( app_priv->mp != NULL ) )
             {

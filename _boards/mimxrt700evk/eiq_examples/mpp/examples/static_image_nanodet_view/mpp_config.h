@@ -35,7 +35,7 @@
 
 /* The size of Tensor Arena buffer for TensorFlowLite-Micro */
 /* minimum required arena size for Nanodet-m converted for NPU */
-#define HAL_TFLM_TENSOR_ARENA_SIZE_KB         1153
+#define HAL_TFLM_TENSOR_ARENA_SIZE_KB         1753
 
 /*
  * TFLite tensor arena buffer alignment requirement:

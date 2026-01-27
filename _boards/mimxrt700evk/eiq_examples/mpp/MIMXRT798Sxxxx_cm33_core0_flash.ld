@@ -45,7 +45,7 @@ DATA_SIZE = TOTAL_USABLE_SRAM - NCACHE_SIZE;
 RPMSG_SHMEM_SIZE = DEFINED(__use_shmem__) ? 0x2000 : 0;
 
 /* Size needed for shared camera buffers when running USB camera on core 1 */
-CAMERA_BUFFERS_SHMEM_SIZE = DEFINED(__use_shmem__) ? 0x50000 : 0;
+CAMERA_BUFFERS_SHMEM_SIZE = DEFINED(__use_shmem__) ? 0xC8000 : 0;
 
 m_ezhv_image_maximum_size = 0x00008000;
 m_core1_image_maximum_size = 0x00080000;
@@ -109,6 +109,8 @@ SECTIONS
     *(.text*)                /* .text* sections (code) */
     *(.glue_7)               /* glue arm to thumb code */
     *(.glue_7t)              /* glue thumb to arm code */
+    *(.rodata)               /* .rodata sections (constants, strings, etc.) */
+    *(.rodata*)              /* .rodata* sections (constants, strings, etc.) */
     *(.eh_frame)
     KEEP (*(.init))
     KEEP (*(.fini))
@@ -231,8 +233,6 @@ SECTIONS
     *(DataQuickAccess)       /* DataQuickAccess sections */
     *(.data)                 /* .data sections */
     *(.data*)                /* .data* sections */
-    *(.rodata)               /* .rodata sections (constants, strings, etc.) */
-    *(.rodata*)              /* .rodata* sections (constants, strings, etc.) */
     *(.modeldata)
     *(.modeldata*)
     KEEP(*(.jcr*))
@@ -252,13 +252,13 @@ SECTIONS
     __noncachedata_init_end__ = .;   /* create a global symbol at initialized ncache data end */
   } > m_ncache
   . = __noncachedata_init_end__;
-  .npu_ncache :
+  .npu_ncache(NOLOAD) :
   {
     KEEP(*(.npu_ncache_data))
     KEEP(*(.npu_ncache_data*))
   } > m_ncache
   ASSERT(. < 0x20580000, "Error: .npu_ncache cannot go beyond SRAM P18")
-  .ncache :
+  .ncache(NOLOAD) :
   {
     KEEP(*(NonCacheable))
     . = ALIGN(4);

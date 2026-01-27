@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -11,7 +11,7 @@
 
 #include "FreeRTOS.h"
 #include "FreeRTOSConfig.h"
-#if (configGENERATE_RUN_TIME_STATS == 1)
+#if ((configGENERATE_RUN_TIME_STATS == 1) && !defined(HAL_TIMER_PRECISION_1_US))
 #include "fsl_utick.h"
 #include "utick_config.h"
 #include "clock_config.h"

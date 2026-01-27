@@ -56,6 +56,8 @@
 
 /* select inference model converted for NPU */
 #define APP_USE_NEUTRON64_MODEL
+// #define USE_SCRFD_320_256_MODEL
+// #define USE_SCRFD_256_256_MODEL
 
 /* detection boxes params */
 /* maximum number of boxes stored in RAM by APP (1box ~= 16B) */
@@ -64,10 +66,18 @@
 /* The size of Tensor Arena buffer for TensorFlowLite-Micro */
 /* minimum required arena size for scrfd_kps_500m model on CPU or NPU */
 #ifdef APP_USE_NEUTRON64_MODEL
+#if defined(USE_SCRFD_320_256_MODEL) || defined(USE_SCRFD_256_256_MODEL)
+#define HAL_TFLM_TENSOR_ARENA_SIZE_KB 932
+#else
 #define HAL_TFLM_TENSOR_ARENA_SIZE_KB 190
+#endif /* USE_SCRFD_320_256_MODEL */
+#else
+#if defined(USE_SCRFD_320_256_MODEL) || defined(USE_SCRFD_256_256_MODEL)
+#define HAL_TFLM_TENSOR_ARENA_SIZE_KB 1132
 #else
 #define HAL_TFLM_TENSOR_ARENA_SIZE_KB 256
-#endif
+#endif /* USE_SCRFD_320_256_MODEL */
+#endif /* APP_USE_NEUTRON64_MODEL */
 
 /*
  * Enable this flag to define TFlite tensor arena non-cacheable.
@@ -82,12 +92,28 @@
 
 /* Tensorflow lite Model data */
 #ifdef APP_USE_NEUTRON64_MODEL
+#if defined(USE_SCRFD_320_256_MODEL)
+#define APP_TFLITE_SCRFD_KPS_DATA "internal/models/scrfd_kps_500m_full_integer_quant/scrfd_kps_500m_full_integer_quant_320x256_npu64_tflite.h"
+#define APP_TFLITE_SCRFD_KPS_INFO "internal/models/scrfd_kps_500m_full_integer_quant/scrfd_kps_500m_full_integer_quant_320x256_tflite_info.h"
+#elif defined(USE_SCRFD_256_256_MODEL)
+#define APP_TFLITE_SCRFD_KPS_DATA "internal/models/scrfd_kps_500m_full_integer_quant/scrfd_kps_500m_full_integer_quant_256x256_npu64_tflite.h"
+#define APP_TFLITE_SCRFD_KPS_INFO "internal/models/scrfd_kps_500m_full_integer_quant/scrfd_kps_500m_full_integer_quant_256x256_tflite_info.h"
+#else
 #define APP_TFLITE_SCRFD_KPS_DATA "internal/models/scrfd_kps_500m_full_integer_quant/scrfd_kps_500m_full_integer_quant_128x128_npu64_tflite.h"
 #define APP_TFLITE_SCRFD_KPS_INFO "internal/models/scrfd_kps_500m_full_integer_quant/scrfd_kps_500m_full_integer_quant_128x128_tflite_info.h"
+#endif /* USE_SCRFD_320_256_MODEL */
+#else
+#if defined(USE_SCRFD_320_256_MODEL)
+#define APP_TFLITE_SCRFD_KPS_DATA "internal/models/scrfd_kps_500m_full_integer_quant/scrfd_kps_500m_full_integer_quant_320x256_tflite.h"
+#define APP_TFLITE_SCRFD_KPS_INFO "internal/models/scrfd_kps_500m_full_integer_quant/scrfd_kps_500m_full_integer_quant_320x256_tflite_info.h"
+#elif defined(USE_SCRFD_256_256_MODEL)
+#define APP_TFLITE_SCRFD_KPS_DATA "internal/models/scrfd_kps_500m_full_integer_quant/scrfd_kps_500m_full_integer_quant_256x256_tflite.h"
+#define APP_TFLITE_SCRFD_KPS_INFO "internal/models/scrfd_kps_500m_full_integer_quant/scrfd_kps_500m_full_integer_quant_256x256_tflite_info.h"
 #else
 #define APP_TFLITE_SCRFD_KPS_DATA "internal/models/scrfd_kps_500m_full_integer_quant/scrfd_kps_500m_full_integer_quant_128x128_tflite.h"
 #define APP_TFLITE_SCRFD_KPS_INFO "internal/models/scrfd_kps_500m_full_integer_quant/scrfd_kps_500m_full_integer_quant_128x128_tflite_info.h"
-#endif
+#endif /* USE_SCRFD_320_256_MODEL */
+#endif /* APP_USE_NEUTRON64_MODEL */
 
 #include APP_TFLITE_SCRFD_KPS_INFO
 #define MODEL_NUM_LANDMARKS SCRFD_NUM_LANDMARKS

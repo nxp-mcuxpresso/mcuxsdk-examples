@@ -266,9 +266,8 @@ shell_status_t register_person(shell_handle_t shellHandle, int32_t argc, char **
     strncpy(cmd->reg_payload.name, name, NAME_SIZE - 1);
     cmd->reg_payload.timeout = num; // (num is provided in seconds)
 
-    mpp_task_notify(MPP_TASK_FR_DISABLE_LCD_ON, NULL);
-    crt_mpp_state = MPP_TASK_FR_DISABLE_LCD_ON;
     mpp_task_notify(MPP_TASK_FACE_REG_REQ, cmd);
+    crt_mpp_state = MPP_TASK_FR_ENABLE_LCD_ON;
 
     return kStatus_SHELL_Success;
 }
