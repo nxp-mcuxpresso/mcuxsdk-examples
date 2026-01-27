@@ -455,7 +455,6 @@ static void InitENC(void)
     g_sM1Enc.sTo.fltThGain = M1_POSPE_TO_THETA_GAIN;
     g_sM1Enc.a32PosMeGain  = M1_POSPE_MECH_POS_GAIN;
     g_sM1Enc.ui16Pp        = M1_MOTOR_PP;
-    g_sM1Enc.ui16PulseNumberQuad = 4 * M1_POSPE_ENC_PULSES;
     
     /* Pulses offset */
     g_sM1Enc.f16CounterOffset = (int16_t)EMIOS_0->UC[5U].CNT -((int16_t)EMIOS_0->UC[6U].CNT);
