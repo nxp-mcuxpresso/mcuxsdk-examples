@@ -8,7 +8,7 @@ Hardware requirements
 
 Board settings
 ============
-Use the jumper to connect the J20 1-2, 3-4, 5-6
+Connect J9-5 to J2-3
 
 **Please note this application can't support running with Linux BSP!**
 
