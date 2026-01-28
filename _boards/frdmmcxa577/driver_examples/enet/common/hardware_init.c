@@ -59,7 +59,7 @@ void BOARD_InitHardware(void)
     BOARD_InitENETPins();
 #endif /* BOARD_NETWORK_USE_TENBASET_PHY */
     BOARD_InitBootClocks();
-    BOARD_InitDebugConsole();    
+    BOARD_InitDebugConsole();
 
     RESET_PeripheralReset(kENET0_RST_SHIFT_RSTn);
 
@@ -80,7 +80,6 @@ void BOARD_InitHardware(void)
     MRCC0->MRCC_GLB_PR2 |= MRCC_MRCC_GLB_PR2_ENET0_MASK | MRCC_MRCC_GLB_PR2_T1S0_MASK;
     /* Disable RMII */
     MRCC0->MRCC_GLB_PR2 &= ~MRCC_MRCC_GLB_PR2_RMII_MASK;
-    
 
     /* Connect ENET to internal TENBASET_PHY0 instead of external PHY */
     SYSCON->ENET_CTRL = SYSCON_ENET_CTRL_PHY_SEL(1) | SYSCON_ENET_CTRL_PHY_INTF(0);
@@ -88,7 +87,7 @@ void BOARD_InitHardware(void)
     /* Set TENBASET_PHY0 configuration */
     memset(&g_phy_resource, 0, sizeof(phy_tenbaset_resource_t));
     TENBASET_PHY_GetDefaultConfig(&g_phy_resource.config);
-    g_phy_resource.base = T1S0;
+    g_phy_resource.base                     = T1S0;
     g_phy_resource.config.plcaConfig.enable = true;
     g_phy_resource.config.plcaConfig.nodeId = 1U;
 #else
