@@ -55,10 +55,11 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
 #if BOARD_NETWORK_USE_TENBASET_PHY
     BOARD_InitTenBaseT1SPins();
+    BOARD_BootClockPLL200M();
 #else
     BOARD_InitENETPins();
-#endif /* BOARD_NETWORK_USE_TENBASET_PHY */
     BOARD_InitBootClocks();
+#endif /* BOARD_NETWORK_USE_TENBASET_PHY */
     BOARD_InitDebugConsole();
 
     RESET_PeripheralReset(kENET0_RST_SHIFT_RSTn);
