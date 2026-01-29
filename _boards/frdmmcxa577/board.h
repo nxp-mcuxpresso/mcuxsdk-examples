@@ -124,6 +124,14 @@
 #define BOARD_NETWORK_USE_TENBASET_PHY (0U)
 #endif
 
+/*! @brief Memory ranges not usable by the ENET DMA. */
+#ifndef BOARD_ENET_NON_DMA_MEMORY_ARRAY
+#define BOARD_ENET_NON_DMA_MEMORY_ARRAY                         \
+    {                                                           \
+        {0xC0000000U, 0xFFFFFFFFU}, {0x00000000U, 0x00000000U}, \
+    }
+#endif /* BOARD_ENET_NON_DMA_MEMORY_ARRAY */
+
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
