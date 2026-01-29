@@ -24,7 +24,7 @@ void BOARD_InitHardware(void)
         .clk_round_opt = hal_clk_round_auto,
     };*/
     hal_clk_t hal_flexcanclk = {
-        .clk_id = hal_clock_can2,
+        .clk_id = hal_clock_can1,
         .pclk_id = hal_clock_osc24m,
         .div = 1,
         .enable_clk = true,
