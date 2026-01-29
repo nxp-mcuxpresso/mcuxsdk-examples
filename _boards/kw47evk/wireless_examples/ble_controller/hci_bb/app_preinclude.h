@@ -82,6 +82,9 @@
  *     BLE LL Configuration
  ***********************************************************************************/
 
+/* Defined as 1 to configure high speed NBU clock (64 MHz). Higher power consumption! */
+#define gAppHighNBUClockFrequency_d              0
+
 /* Define as 1 in order to configure FEM to use external PA.
    FEM in NBU is activated by API function PLATFORM_InitFEM.
    Remark: FEM may conflict with Localisation/Coex features in term of RF_GPO use. */

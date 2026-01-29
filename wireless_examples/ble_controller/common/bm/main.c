@@ -124,6 +124,15 @@ int main(void)
         assert(FEM_status==0U);
     }
 #endif
+#if defined(gAppHighNBUClockFrequency_d) && (gAppHighNBUClockFrequency_d > 0)
+    /* HCI_BB requests NBU to run at 64 MHz.
+     * Increase LDO core voltage to 1.1v - make sure the DCDC output voltage is at least 1.35mV
+     * Request Radio core to switch to higher frequency
+     * @warning : make sure LDO core is not decreased to lower voltage after this step (when going to low power for instance)
+     **/
+    PLATFORM_SetLdoCoreNormalDriveVoltage();
+    PLATFORM_SetNbuConstraintFrequency(PLATFORM_NBU_MIN_FREQ_64MHZ);
+#endif
 
     APP_InitServices();
 
