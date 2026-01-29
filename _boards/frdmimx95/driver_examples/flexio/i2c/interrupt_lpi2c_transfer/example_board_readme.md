@@ -8,9 +8,8 @@ Hardware requirements
 
 Board settings
 ============
-Populate R966 and R967 to establish connection between FLEXIO1(as master) and LPI2C6(as slave).
-- HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO09__FLEXIO1_FLEXIO_BIT9 , HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO03__LPI2C6_SCL connected
-- HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO08__FLEXIO1_FLEXIO_BIT8 , HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO02__LPI2C6_SDA connected
+Connect J19-3 to J19-27
+Connect J19-5 to J19-28
 
 **Please note this application can't support running with Linux BSP!**
 

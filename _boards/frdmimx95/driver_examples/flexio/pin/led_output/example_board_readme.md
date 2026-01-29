@@ -8,7 +8,7 @@ Hardware requirements
 
 Board settings
 ============
-Connect J19-3(GPIO_IO03 pad, I2C6_SCL_3V3) and J19-9(GND) to oscilloscope
+Connect J19-5(GPIO_IO03 pad, I2C6_SCL_3V3) and J19-9(GND) to oscilloscope
 
 Note
 ====
