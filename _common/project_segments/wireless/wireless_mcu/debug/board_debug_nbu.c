@@ -17,7 +17,8 @@
 #if defined(BOARD_NBUDBG_HCI_LOGGER)
 #include "board_debug_nbu_port.h"
 #endif
-#if defined(gAppUseSerialManager_c) && (gAppUseSerialManager_c >= 1)
+#if defined(BOARD_NBUDBG_APP_LOGGER) && (BOARD_NBUDBG_APP_LOGGER > 0) && \
+    defined(gAppUseSerialManager_c) && (gAppUseSerialManager_c > 0)
 #include "fsl_component_serial_manager.h"
 #include "app.h"
 #endif
@@ -73,7 +74,8 @@ static void BOARD_NBUDBG_HciLogCallback(uint8_t packet_type, const uint8_t *data
  * Private memory declarations
  ************************************************************************************/
 static nbu_debug_struct_t debug_info;
-#if defined(gAppUseSerialManager_c) && (gAppUseSerialManager_c > 0)
+#if defined(BOARD_NBUDBG_APP_LOGGER) && (BOARD_NBUDBG_APP_LOGGER > 0) && \
+    defined(gAppUseSerialManager_c) && (gAppUseSerialManager_c > 0)
 static SERIAL_MANAGER_WRITE_HANDLE_DEFINE(s_nbuDbgWriteHandle);
 #endif
 
@@ -104,7 +106,8 @@ static OSA_MSGQ_HANDLE_DEFINE(dbgMsgQueue, BOARD_NBUDBG_EVENT_QUEUE_SIZE, sizeof
 static int BOARD_NBUDBG_Print(const char *format, ...)
 {
     int len = 0;
-#if defined(gAppUseSerialManager_c) && (gAppUseSerialManager_c > 0)
+#if defined(BOARD_NBUDBG_APP_LOGGER) && (BOARD_NBUDBG_APP_LOGGER > 0) && \
+    defined(gAppUseSerialManager_c) && (gAppUseSerialManager_c > 0)
     static char printBuf[BOARD_NBUDBG_CONSOLE_BUFFER_SIZE];
     va_list args;
 
@@ -526,7 +529,8 @@ int BOARD_DbgNbuInit(void)
             break;
         }
 
-#if defined(gAppUseSerialManager_c) && (gAppUseSerialManager_c > 0)
+#if defined(BOARD_NBUDBG_APP_LOGGER) && (BOARD_NBUDBG_APP_LOGGER > 0) && \
+    defined(gAppUseSerialManager_c) && (gAppUseSerialManager_c > 0)
         /*open write handle*/
         if(SerialManager_OpenWriteHandle((serial_handle_t)gSerMgrIf, (serial_write_handle_t)s_nbuDbgWriteHandle) != kStatus_SerialManager_Success)
         {

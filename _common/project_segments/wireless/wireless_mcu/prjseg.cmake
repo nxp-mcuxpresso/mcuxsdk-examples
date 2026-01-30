@@ -94,6 +94,13 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu)
     )
 endif()
 
+if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu.enable_app_log)
+    mcux_add_macro(
+        TOOLCHAINS armgcc iar
+        CC "-DBOARD_NBUDBG_APP_LOGGER=1"
+    )
+endif()
+
 if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu.enable_hci_log)
     mcux_add_macro(
         TOOLCHAINS armgcc iar

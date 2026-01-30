@@ -1,4 +1,4 @@
-# Copyright 2024-2025 NXP
+# Copyright 2024-2026 NXP
 # SPDX-License-Identifier: BSD-3-Clause
 
 config MCUX_PRJSEG_module.board.wireless.app_services
@@ -89,6 +89,13 @@ config MCUX_PRJSEG_module.board.wireless.hw_app
     depends on MCUX_PRJSEG_project.hw_app_customize_folder
     help
       This is a customized implementation of hardware init used in wireless examples.
+
+config MCUX_PRJSEG_module.board.wireless.board.debug_nbu.enable_app_log
+    bool "Enable DBG Logging to app console"
+    default y if !MCUX_COMPONENT_middleware.wireless.framework.fsci
+    depends on MCUX_PRJSEG_module.board.wireless.board.debug_nbu
+    help
+      Enable debug event analysis logging to the application console.
 
 config MCUX_PRJSEG_module.board.wireless.board.debug_nbu.enable_hci_log
     bool "HCI Packet Logger"
