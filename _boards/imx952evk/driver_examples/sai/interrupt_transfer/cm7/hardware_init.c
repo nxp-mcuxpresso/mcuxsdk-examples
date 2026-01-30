@@ -85,6 +85,7 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+    BOARD_ConfigMPU();
 
     /* Set AUDMIX to bypass mode */
     BOARD_SetAudmixMode(0x0U);

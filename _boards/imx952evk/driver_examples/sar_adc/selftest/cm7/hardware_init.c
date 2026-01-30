@@ -23,6 +23,7 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+    BOARD_ConfigMPU();
 
     /* ADC receives a bandgap reference voltage from BBSM domain, this is used as the ADC self-test reference voltage.
      */

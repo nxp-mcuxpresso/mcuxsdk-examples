@@ -32,6 +32,7 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
+    BOARD_ConfigMPU();
 
     /* copy resource table to destination address(TCM and DRAM) */
     copyResourceTable();

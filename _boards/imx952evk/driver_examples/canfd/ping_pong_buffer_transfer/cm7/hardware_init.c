@@ -35,6 +35,7 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+    BOARD_ConfigMPU();
 
     CLOCK_SetRate(&flexcanclk);
     CLOCK_EnableClock(flexcanclk.clkId);
