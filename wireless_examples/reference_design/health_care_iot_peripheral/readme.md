@@ -79,6 +79,30 @@ The HCIOT_PERIPH device must be forgotten/unpaired on the smartphone after refla
 			4.B.B.2. The Thermometer window is opened. The status is Connected. Thermometer and Sensor Location both show '---'
         	4.B.B.3. Wait for a moment to simulate a temperature measurement. A measurement for the ambient temperature value is shown on the smartphone with name of the sensor location.
 
+## DC-DC Bypass in Low Power
+
+To enable HV_SM mode with DC-DC bypass during low power states, define:
+
+```c
+#define SUPPLY_MODE_DCDCBYPASS 1
+```
+
+This configuration allows the DC-DC converter to be bypassed when entering low-power states, which can provide additional power savings depending on the application requirements
+
+## Power Profiling Mode
+
+The application supports a low-power profiling mode designed to minimize power consumption
+
+### Configuration
+
+To enable power profiling mode, set the following define:
+
+```c
+#define BLE_POWER_PROFILING 1
+```
+
+Please note that this mode disables the watchdog, Brown-out Detection (BOD), memory profiling, the battery measurement task, and the temperature measurement task.
+
 #### Supported boards:
-- FRDM-MCXW32
+- FRDM-MCXW23
 - MCXW23-EVK

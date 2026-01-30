@@ -52,5 +52,5 @@ Temperature indication received @1s: 22
 Temperature indication received @2s: 22
 
 #### Supported boards:
-- FRDM-MCXW32
+- FRDM-MCXW23
 - MCXW23-EVK
