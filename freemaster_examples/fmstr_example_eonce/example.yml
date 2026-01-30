@@ -14,10 +14,6 @@ fmstr_example_eonce:
       - ${board_root}/${board}/freemaster_examples/fmstr_eonce/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
       name: fmstr_example_eonce${core_id_suffix_name}
-      example_readme:
-      - examples/freemaster_examples/fmstr_example_eonce/readme.md
-      - ${board_root}/${board}/freemaster_examples/fmstr_eonce/example_board_readme.md
-      - ${board_root}/${board}/examples_shared_readme.md
     meta_path: examples/freemaster_examples/fmstr_example_eonce
     project-root-path: boards/${board}/freemaster_examples/fmstr_eonce/${multicore_foldername}
   boards:
