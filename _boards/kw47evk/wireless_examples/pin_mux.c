@@ -426,8 +426,28 @@ void BOARD_InitPinLPUART1_RX(void)
     /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
     CLOCK_EnableClock(kCLOCK_PortC);
 
+    const port_pin_config_t portc2_pin39_config = {/* Internal pull-up resistor is enabled */
+        (uint16_t)kPORT_PullUp,
+        /* Low internal pull resistor value is selected. */
+        (uint16_t)kPORT_LowPullResistor,
+        /* Fast slew rate is configured */
+        (uint16_t)kPORT_FastSlewRate,
+        /* Passive input filter is disabled */
+        (uint16_t)kPORT_PassiveFilterDisable,
+        /* Open drain output is disabled */
+        (uint16_t)kPORT_OpenDrainDisable,
+        /* Low drive strength is configured */
+        (uint16_t)kPORT_LowDriveStrength,
+        /* Normal drive strength is configured */
+        (uint16_t)kPORT_NormalDriveStrength,
+        /* Pin is configured as LPUART1_RX */
+        (uint16_t)kPORT_MuxAlt3,
+        /* Does not invert */
+        (uint16_t)kPORT_InputNormal,
+        /* Pin Control Register fields [15:0] are not locked */
+        (uint16_t)kPORT_UnlockRegister};
     /* PORTC2 (pin 39) is configured as LPUART1_RX */
-    PORT_SetPinMux(PORTC, 2U, kPORT_MuxAlt3);
+    PORT_SetPinConfig(PORTC, 2U, &portc2_pin39_config);
 }
 
 /* clang-format off */
