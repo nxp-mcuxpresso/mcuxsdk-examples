@@ -12,7 +12,11 @@
 #include "app.h"
 #include "board.h"
 #include "fsl_lpuart.h"
+#ifdef APP_WAKRUP_USE_LPTMR
+#include "fsl_lptmr.h"
+#else
 #include "fsl_waketimer.h"
+#endif
 #include "fsl_wuu.h"
 #include "fsl_gpio.h"
 /*******************************************************************************
@@ -74,14 +78,21 @@ int main(void)
 
     while (1)
     {
-        if ((SPC_GetRequestedLowPowerMode(APP_SPC) & (kSPC_PowerDownWithSysClockOff | kSPC_DeepPowerDownWithSysClockOff)) != 0UL)
+#if !(defined(FSL_FEATURE_MCX_SPC_HAS_SC_SPC_LP_MODE_BIT) && (FSL_FEATURE_MCX_SPC_HAS_SC_SPC_LP_MODE_BIT==0U))
+        if ((SPC_GetRequestedLowPowerMode(APP_SPC) &
+             (kSPC_PowerDownWithSysClockOff | kSPC_DeepPowerDownWithSysClockOff)) != 0UL)
         {
             SPC_ClearPeriphIOIsolationFlag(APP_SPC);
         }
+#else
+        SPC_ClearPeriphIOIsolationFlag(APP_SPC);
+#endif
 
+#if !(defined(FSL_FEATURE_MCX_SPC_HAS_PD_STATUS_REG) && (FSL_FEATURE_MCX_SPC_HAS_PD_STATUS_REG == 0U))
         /* Clear CORE domain's low power request flag. */
         SPC_ClearPowerDomainLowPowerRequestFlag(APP_SPC, APP_SPC_MAIN_POWER_DOMAIN);
         SPC_ClearLowPowerRequest(APP_SPC);
+#endif /* FSL_FEATURE_MCX_SPC_HAS_PD_STATUS_REG */
 
         /* Normal start. */
         APP_SetCMCConfiguration();
@@ -121,9 +132,17 @@ int main(void)
 
 static void APP_InitWaketimer(void)
 {
+#ifdef APP_WAKRUP_USE_LPTMR
+    lptmr_config_t lptmr_config;
+    LPTMR_GetDefaultConfig(&lptmr_config);
+    /* Select clock source as FRO16K which is operatable in deep-sleep or deeper power modes. */
+    lptmr_config.prescalerClockSource = kLPTMR_PrescalerClock_1;
+    LPTMR_Init(LPTMR0, &lptmr_config);
+#else
     waketimer_config_t waketimer_config;
     WAKETIMER_GetDefaultConfig(&waketimer_config);
     WAKETIMER_Init(WAKETIMER0, &waketimer_config);
+#endif
 }
 
 static void APP_SetSPCConfiguration(void)
@@ -137,7 +156,8 @@ static void APP_SetSPCConfiguration(void)
 #endif
 
     /* Disable analog modules that controlled by SPC in active mode. */
-    SPC_DisableActiveModeAnalogModules(APP_SPC, (kSPC_controlUsb3vDet | kSPC_controlCmp0 | kSPC_controlCmp1 | kSPC_controlCmp0Dac | kSPC_controlCmp1Dac));
+    SPC_DisableActiveModeAnalogModules(APP_SPC, (kSPC_controlUsb3vDet | kSPC_controlCmp0 | kSPC_controlCmp1 |
+                                                 kSPC_controlCmp0Dac | kSPC_controlCmp1Dac));
 
     /* Disable LVDs and HVDs in active mode first. */
     SPC_EnableActiveModeCoreLowVoltageDetect(APP_SPC, false);
@@ -171,13 +191,14 @@ static void APP_SetSPCConfiguration(void)
     SPC_EnableActiveModeSystemLowVoltageDetect(APP_SPC, true);
 
     /* Disable analog modules that controlled by SPC in low power mode. */
-    SPC_DisableLowPowerModeAnalogModules(APP_SPC, (kSPC_controlUsb3vDet | kSPC_controlCmp0 | kSPC_controlCmp1 | kSPC_controlCmp0Dac | kSPC_controlCmp1Dac));
-    
+    SPC_DisableLowPowerModeAnalogModules(APP_SPC, (kSPC_controlUsb3vDet | kSPC_controlCmp0 | kSPC_controlCmp1 |
+                                                   kSPC_controlCmp0Dac | kSPC_controlCmp1Dac));
+
     /* Disable LVDs and HVDs in low power mode to save power. */
     SPC_EnableLowPowerModeCoreLowVoltageDetect(APP_SPC, false);
     SPC_EnableLowPowerModeSystemHighVoltageDetect(APP_SPC, false);
     SPC_EnableLowPowerModeSystemLowVoltageDetect(APP_SPC, false);
-      
+
     spc_lowpower_mode_regulators_config_t lowPowerRegulatorOption;
 
     lowPowerRegulatorOption.lpIREF                             = false;
@@ -295,13 +316,20 @@ static void APP_GetWakeupConfig(app_power_mode_t targetMode)
             PRINTF("Will wakeup in %d seconds.\r\n", timeOutValue);
             /* In case of target mode is powerdown/deep power down mode. */
             WUU_SetInternalWakeUpModulesConfig(APP_WUU, APP_WUU_WAKEUP_TIMER_IDX, kWUU_InternalModuleInterrupt);
+#ifdef APP_WAKRUP_USE_LPTMR
+            LPTMR_SetTimerPeriod(APP_LPTMR, (APP_LPTMR_CLK_SOURCE * timeOutValue) - 1U);
+            LPTMR_EnableInterrupts(APP_LPTMR, kLPTMR_TimerInterruptEnable);
+            LPTMR_StartTimer(APP_LPTMR);
+#else
             WAKETIMER_StartTimer(WAKETIMER0, timeOutValue * 1000);
+#endif
 
             if (targetMode > kAPP_PowerModeSleep)
             {
                 /* Isolate some power domains that are not used in low power modes, note that in order to save
                  * more power, it is better to not power the isolated domains.*/
-                SPC_SetExternalVoltageDomainsConfig(APP_SPC, APP_SPC_WAKEUP_TIMER_LPISO_VALUE, APP_SPC_WAKEUP_TIMER_ISO_VALUE);
+                SPC_SetExternalVoltageDomainsConfig(APP_SPC, APP_SPC_WAKEUP_TIMER_LPISO_VALUE,
+                                                    APP_SPC_WAKEUP_TIMER_ISO_VALUE);
                 isoDomains = APP_SPC_WAKEUP_TIMER_ISO_DOMAINS;
                 PRINTF("Isolate power domains: %s\r\n", isoDomains);
             }
@@ -323,7 +351,8 @@ static void APP_GetWakeupConfig(app_power_mode_t targetMode)
             {
                 /* Isolate some power domains that are not used in low power modes, note that in order to save
                  * more power, it is better to not power the isolated domains.*/
-                SPC_SetExternalVoltageDomainsConfig(APP_SPC, APP_SPC_WAKEUP_BUTTON_LPISO_VALUE, APP_SPC_WAKEUP_BUTTON_ISO_VALUE);
+                SPC_SetExternalVoltageDomainsConfig(APP_SPC, APP_SPC_WAKEUP_BUTTON_LPISO_VALUE,
+                                                    APP_SPC_WAKEUP_BUTTON_ISO_VALUE);
                 isoDomains = APP_SPC_WAKEUP_BUTTON_ISO_DOMAINS;
                 PRINTF("Isolate power domains: %s\r\n", isoDomains);
             }
