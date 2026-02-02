@@ -282,9 +282,9 @@ status_t BOARD_InitDisplayInterface(void)
                                             .vbp            = DEMO_SSD1963_VBP};
 
     /* Reset the SSD1963 LCD controller. */
-    GPIO_PinWrite(BOARD_SSD1963_RST_GPIO, BOARD_SSD1963_RST_PIN, 0);
+    GPIO_PinWrite(BOARD_FLEXIO_LCD_RST_GPIO, BOARD_FLEXIO_LCD_RST_PIN, 0);
     SDK_DelayAtLeastUs(10, SystemCoreClock);   /* Delay 10ns. */
-    GPIO_PinWrite(BOARD_SSD1963_RST_GPIO, BOARD_SSD1963_RST_PIN, 1);
+    GPIO_PinWrite(BOARD_FLEXIO_LCD_RST_GPIO, BOARD_FLEXIO_LCD_RST_PIN, 1);
     SDK_DelayAtLeastUs(5000, SystemCoreClock); /* Delay 5ms. */
 
     status = SSD1963_Init(&lcdHandle, &ssd1963Config, &s_lcdifDbiOps, LCDIF, DEMO_SSD1963_XTAL_FREQ);

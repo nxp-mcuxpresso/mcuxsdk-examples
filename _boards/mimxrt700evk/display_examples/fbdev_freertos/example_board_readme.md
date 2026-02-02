@@ -2,6 +2,7 @@ Hardware requirements
 ===================
 - Micro USB cable
 - TFT Proto 5" CAPACITIVE board HW REV 1.01 by Mikroelektronika. (Named as SSD1963 panel in project. Not necessary if use MIPI panel)
+- LCD_PAR_S035 (Not necessary if use MIPI panel)
 - MIMXRT700-EVK
 - Personal Computer
 - RK055AHD091 MIPI panel (Not necessary if use other panel)
@@ -15,6 +16,9 @@ Connect JP1 and JP3.
 
 To use SSD1963 panel:
 Connect SSD1963 panel to J4. Make sure to connect JP7 2&3 to use 3.3v interface.
+
+To use LCD_PAR_S035：
+Connect panel to J4 pin 1 to pin 28. Make sure to connect JP7 2&3 to use 3.3v interface, SW1 is 0b011 (8 bit 8080).
 
 To use MIPI panel:
 Connect MIPI panel to J52.
@@ -30,10 +34,10 @@ Refer the section [Display Settings](../../examples_shared_readme.md#display-set
 Prepare the Demo
 ===============
 The demo use MIPI RK055MHD091 panel by default, to use other panel,
-set the corresponding panel DEMO_PANEL_xxx(without '_SUPPORT') to y in prj.conf under board example folder before project generation.
-The supported panels can be found in examples\_boards\<board>\project_segments\display_support\Kconfig.prjseg.
-Or change the macro DEMO_PANEL in mcux_config.h of the project,
-which number represents which panel can be found in display_support.h and mcux_config.h
+see [Steps to select the panel](../../examples_shared_readme.md#steps-to-select-the-panel).
+The supported panels can be found in examples/_boards/mimxrt700evk/project_segments/display_support/Kconfig.prjseg.
+Or change the macro DEMO_PANEL in `mcux_config.h` of the project,
+which number represents which panel can be found in `display_support.h` and `mcux_config.h`
 
 1.  Connect a USB cable between the host PC and the MCU-LINK USB port on the target board.
 2.  Open a serial terminal with the following settings:

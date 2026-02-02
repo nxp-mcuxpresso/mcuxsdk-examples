@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024, 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -52,8 +52,9 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
     BOARD_Init16bitsPsRam(XSPI2);
 
-#if (DEMO_PANEL_TFT_PROTO_5 == DEMO_PANEL)
-#if (SSD1963_DRIVEN_BY == SSD1963_DRIVEN_BY_FLEXIO)
+#if ((DEMO_PANEL_TFT_PROTO_5 == DEMO_PANEL) || (DEMO_PANEL_LCD_PAR_S035 == DEMO_PANEL))
+#if ((defined(SSD1963_DRIVEN_BY) && (SSD1963_DRIVEN_BY == SSD1963_DRIVEN_BY_FLEXIO)) || \
+     (defined(ST7796S_DRIVEN_BY) && (ST7796S_DRIVEN_BY == ST7796S_DRIVEN_BY_FLEXIO)))
     BOARD_InitFlexIOPanelPins();
 #else
     BOARD_InitLcdDBIPanelPins();
@@ -78,7 +79,7 @@ void BOARD_InitHardware(void)
 #if ((DEMO_PANEL_RK055AHD091 == DEMO_PANEL) || (DEMO_PANEL_RK055MHD091 == DEMO_PANEL) || \
      (DEMO_PANEL_RK055IQH091 == DEMO_PANEL) || (DEMO_PANEL_RM67162 == DEMO_PANEL) || \
      (DEMO_PANEL_TFT_PROTO_5 == DEMO_PANEL) || (DEMO_PANEL_RASPI_7INCH == DEMO_PANEL) || \
-     (DEMO_PANEL_CO5300 == DEMO_PANEL))
+     (DEMO_PANEL_CO5300 == DEMO_PANEL) || (DEMO_PANEL_LCD_PAR_S035 == DEMO_PANEL))
     BOARD_MIPIPanelTouch_I2C_Init();
 #else
 #endif

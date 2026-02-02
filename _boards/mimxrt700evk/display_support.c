@@ -6,10 +6,15 @@
 
 #include "display_support.h"
 #include "fsl_gpio.h"
-#if (DEMO_PANEL_TFT_PROTO_5 == DEMO_PANEL)
+#if ((DEMO_PANEL_TFT_PROTO_5 == DEMO_PANEL) || (DEMO_PANEL_LCD_PAR_S035 == DEMO_PANEL))
 #include "fsl_dc_fb_dbi.h"
+#if (DEMO_PANEL_TFT_PROTO_5 == DEMO_PANEL)
 #include "fsl_ssd1963.h"
-#if (SSD1963_DRIVEN_BY == SSD1963_DRIVEN_BY_FLEXIO)
+#elif (DEMO_PANEL_LCD_PAR_S035 == DEMO_PANEL)
+#include "fsl_st7796s.h"
+#endif
+#if ((defined(SSD1963_DRIVEN_BY) && (SSD1963_DRIVEN_BY == SSD1963_DRIVEN_BY_FLEXIO)) || \
+     (defined(ST7796S_DRIVEN_BY) && (ST7796S_DRIVEN_BY == ST7796S_DRIVEN_BY_FLEXIO)))
 #include "fsl_dbi_flexio_edma.h"
 #include "fsl_edma.h"
 #else
@@ -64,12 +69,13 @@
  * Code
  ******************************************************************************/
 
-#if (DEMO_PANEL_TFT_PROTO_5 == DEMO_PANEL)
+#if ((DEMO_PANEL_TFT_PROTO_5 == DEMO_PANEL) || (DEMO_PANEL_LCD_PAR_S035 == DEMO_PANEL))
 
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
 
+#if (DEMO_PANEL_TFT_PROTO_5 == DEMO_PANEL)
 /*
  * PANEL_TFT_PROTO_5 SSD1963 controller
  */
@@ -86,44 +92,47 @@
 #define DEMO_SSD1963_VFP           13U
 #define DEMO_SSD1963_VBP           18U
 #define DEMO_SSD1963_POLARITY_FLAG 0U
+#endif
 
-#if (SSD1963_DRIVEN_BY == SSD1963_DRIVEN_BY_FLEXIO)
+#if ((defined(SSD1963_DRIVEN_BY) && (SSD1963_DRIVEN_BY == SSD1963_DRIVEN_BY_FLEXIO)) || \
+     (defined(ST7796S_DRIVEN_BY) && (ST7796S_DRIVEN_BY == ST7796S_DRIVEN_BY_FLEXIO)))
 
 /* Macros for FLEXIO and clock. */
-#define DEMO_SSD1963_FLEXIO            FLEXIO
-#define DEMO_SSD1963_FLEXIO_CLOCK_FREQ CLOCK_GetFlexioClkFreq()
-#define DEMO_SSD1963_FLEXIO_BAUDRATE_BPS                             \
-    (DEMO_SSD1963_FLEXIO_CLOCK_FREQ * FLEXIO_MCULCD_DATA_BUS_WIDTH / \
+#define DEMO_FLEXIO            FLEXIO
+#define DEMO_FLEXIO_CLOCK_FREQ CLOCK_GetFlexioClkFreq()
+#define DEMO_FLEXIO_BAUDRATE_BPS                             \
+    (DEMO_FLEXIO_CLOCK_FREQ * FLEXIO_MCULCD_DATA_BUS_WIDTH / \
      2) /* FLEXIO_MCULCD_DATA_BUS_WIDTH defined in compiler symbols */
 
 /* Macros for LCD DMA. */
-#define DEMO_SSD1963_DMA                   DMA0
-#define DEMO_SSD1963_FLEXIO_TX_DMA_CHANNEL 0 /* Match the DEMO_SSD1963_FLEXIO_TX_START_SHIFTER */
+#define DEMO_FLEXIO_DMA                   DMA0
+#define DEMO_FLEXIO_TX_DMA_CHANNEL 0 /* Match the DEMO_FLEXIO_TX_START_SHIFTER */
 
 /* Macros for FlexIO shifter, timer, and pins. */
-#define DEMO_SSD1963_FLEXIO_WR_PIN           4
-#define DEMO_SSD1963_FLEXIO_RD_PIN           3
-#define DEMO_SSD1963_FLEXIO_DATA_PIN_START   6
-#define DEMO_SSD1963_FLEXIO_TX_START_SHIFTER 0
-#define DEMO_SSD1963_FLEXIO_RX_START_SHIFTER 0
-#define DEMO_SSD1963_FLEXIO_TX_END_SHIFTER   7
-#define DEMO_SSD1963_FLEXIO_RX_END_SHIFTER   7
-#define DEMO_SSD1963_FLEXIO_TIMER            0
+#define DEMO_FLEXIO_WR_PIN           4
+#define DEMO_FLEXIO_RD_PIN           3
+#define DEMO_FLEXIO_DATA_PIN_START   6
+#define DEMO_FLEXIO_TX_START_SHIFTER 0
+#define DEMO_FLEXIO_RX_START_SHIFTER 0
+#define DEMO_FLEXIO_TX_END_SHIFTER   7
+#define DEMO_FLEXIO_RX_END_SHIFTER   7
+#define DEMO_FLEXIO_TIMER            0
 
 /* Macros for FLEIO EDMA. */
 #define DEMO_FLEXIO_TX_DMA_REQUEST kDmaRequestMuxFlexIO0ShiftRegister0Request
 
-#else /* SSD1963_DRIVEN_BY_LCDIF */
+#else /* DRIVEN_BY_LCDIF */
 
 /* Macros for LCDIF and interrupt. */
-#define DEMO_SSD1963_LCDIF      LCDIF
-#define DEMO_SSD1963_LCDIF_IRQn LCDIF_IRQn
+#define DEMO_LCDIF      LCDIF
+#define DEMO_LCDIF_IRQn LCDIF_IRQn
 
 #endif
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
-#if (SSD1963_DRIVEN_BY == SSD1963_DRIVEN_BY_FLEXIO)
+#if ((defined(SSD1963_DRIVEN_BY) && (SSD1963_DRIVEN_BY == SSD1963_DRIVEN_BY_FLEXIO)) || \
+     (defined(ST7796S_DRIVEN_BY) && (ST7796S_DRIVEN_BY == ST7796S_DRIVEN_BY_FLEXIO)))
 static void BOARD_SetCSPin(bool set);
 static void BOARD_SetRSPin(bool set);
 static void BOARD_InitFlexioClock(void);
@@ -133,7 +142,8 @@ static void BOARD_InitEDMA(void);
 static void BOARD_InitLcdifPowerReset(void);
 static void BOARD_InitLcdif(void);
 #endif
-static void BOARD_ResetSSD1963(void);
+
+static void BOARD_ResetPanel(void);
 
 /*******************************************************************************
  * Variables
@@ -146,6 +156,7 @@ const dc_fb_t g_dc = {
     .config  = NULL,
 };
 
+#if (DEMO_PANEL_TFT_PROTO_5 == DEMO_PANEL)
 const ssd1963_config_t ssd1963Config = {.pclkFreq_Hz    = DEMO_SSD1963_PCLK_FREQ,
 #if (SSD1963_DRIVEN_BY == SSD1963_DRIVEN_BY_FLEXIO)
                                         .pixelInterface = kSSD1963_BGR888,
@@ -162,8 +173,26 @@ const ssd1963_config_t ssd1963Config = {.pclkFreq_Hz    = DEMO_SSD1963_PCLK_FREQ
                                         .vsw            = DEMO_SSD1963_VSW,
                                         .vfp            = DEMO_SSD1963_VFP,
                                         .vbp            = DEMO_SSD1963_VBP};
+#else
+static st7796s_handle_t s_st7796sHandle;
 
-#if (SSD1963_DRIVEN_BY == SSD1963_DRIVEN_BY_FLEXIO)
+static const st7796s_config_t st7796sConfig = {
+    .driverPreset   = kST7796S_DriverPresetLCDPARS035,
+#if (DEMO_LCD_PAR_S035_BUFFER_FORMAT == DEMO_LCD_PAR_S035_BUFFER_RGB565)
+    .pixelFormat    = kST7796S_PixelFormatRGB565,
+#else
+    .pixelFormat    = kST7796S_PixelFormatRGB888,
+#endif
+    .orientationMode = kST7796S_Orientation0,
+    .teConfig       = kST7796S_TEDisabled,
+    .invertDisplay  = false,
+    .flipDisplay    = true,
+    .bgrFilter      = false,
+};
+#endif
+
+#if ((defined(SSD1963_DRIVEN_BY) && (SSD1963_DRIVEN_BY == SSD1963_DRIVEN_BY_FLEXIO)) || \
+     (defined(ST7796S_DRIVEN_BY) && (ST7796S_DRIVEN_BY == ST7796S_DRIVEN_BY_FLEXIO)))
 
 static edma_handle_t s_edmaTxHandle;
 
@@ -171,16 +200,16 @@ static flexio_mculcd_edma_handle_t s_flexioHandle;
 
 /* The FlexIO MCU LCD device. */
 static FLEXIO_MCULCD_Type flexioLcdDev = {
-    .flexioBase          = DEMO_SSD1963_FLEXIO,
+    .flexioBase          = DEMO_FLEXIO,
     .busType             = kFLEXIO_MCULCD_8080,
-    .dataPinStartIndex   = DEMO_SSD1963_FLEXIO_DATA_PIN_START,
-    .ENWRPinIndex        = DEMO_SSD1963_FLEXIO_WR_PIN,
-    .RDPinIndex          = DEMO_SSD1963_FLEXIO_RD_PIN,
-    .txShifterStartIndex = DEMO_SSD1963_FLEXIO_TX_START_SHIFTER,
-    .txShifterEndIndex   = DEMO_SSD1963_FLEXIO_TX_END_SHIFTER,
-    .rxShifterStartIndex = DEMO_SSD1963_FLEXIO_RX_START_SHIFTER,
-    .rxShifterEndIndex   = DEMO_SSD1963_FLEXIO_RX_END_SHIFTER,
-    .timerIndex          = DEMO_SSD1963_FLEXIO_TIMER,
+    .dataPinStartIndex   = DEMO_FLEXIO_DATA_PIN_START,
+    .ENWRPinIndex        = DEMO_FLEXIO_WR_PIN,
+    .RDPinIndex          = DEMO_FLEXIO_RD_PIN,
+    .txShifterStartIndex = DEMO_FLEXIO_TX_START_SHIFTER,
+    .txShifterEndIndex   = DEMO_FLEXIO_TX_END_SHIFTER,
+    .rxShifterStartIndex = DEMO_FLEXIO_RX_START_SHIFTER,
+    .rxShifterEndIndex   = DEMO_FLEXIO_RX_END_SHIFTER,
+    .timerIndex          = DEMO_FLEXIO_TIMER,
     .setCSPin            = BOARD_SetCSPin,
     .setRSPin            = BOARD_SetRSPin,
     .setRDWRPin          = NULL /* Not used in 8080 mode. */
@@ -193,7 +222,8 @@ static dbi_lcdif_prv_data_t s_lcdifPrvData;
 /*******************************************************************************
  * Code
  ******************************************************************************/
-#if (SSD1963_DRIVEN_BY == SSD1963_DRIVEN_BY_FLEXIO)
+#if ((defined(SSD1963_DRIVEN_BY) && (SSD1963_DRIVEN_BY == SSD1963_DRIVEN_BY_FLEXIO)) || \
+     (defined(ST7796S_DRIVEN_BY) && (ST7796S_DRIVEN_BY == ST7796S_DRIVEN_BY_FLEXIO)))
 static void BOARD_InitEDMA(void)
 {
     edma_config_t edmaConfig;
@@ -207,10 +237,10 @@ static void BOARD_InitEDMA(void)
 
     /* Init and create EDMA handles. */
     EDMA_GetDefaultConfig(&edmaConfig);
-    EDMA_Init(DEMO_SSD1963_DMA, &edmaConfig);
-    EDMA_CreateHandle(&s_edmaTxHandle, DEMO_SSD1963_DMA, DEMO_SSD1963_FLEXIO_TX_DMA_CHANNEL);
-    EDMA_SetChannelMux(DEMO_SSD1963_DMA, DEMO_SSD1963_FLEXIO_TX_DMA_CHANNEL, DEMO_FLEXIO_TX_DMA_REQUEST);
-    EDMA_EnableRequest(DEMO_SSD1963_DMA, DEMO_FLEXIO_TX_DMA_REQUEST);
+    EDMA_Init(DEMO_FLEXIO_DMA, &edmaConfig);
+    EDMA_CreateHandle(&s_edmaTxHandle, DEMO_FLEXIO_DMA, DEMO_FLEXIO_TX_DMA_CHANNEL);
+    EDMA_SetChannelMux(DEMO_FLEXIO_DMA, DEMO_FLEXIO_TX_DMA_CHANNEL, DEMO_FLEXIO_TX_DMA_REQUEST);
+    EDMA_EnableRequest(DEMO_FLEXIO_DMA, DEMO_FLEXIO_TX_DMA_REQUEST);
 
     NVIC_SetPriority(EDMA0_CH0_IRQn, 3);
 }
@@ -238,9 +268,9 @@ static status_t BOARD_InitFlexioLCD(void)
      */
     FLEXIO_MCULCD_GetDefaultConfig(&flexioMcuLcdConfig);
     flexioMcuLcdConfig.enableFastAccess = false;
-    flexioMcuLcdConfig.baudRate_Bps     = DEMO_SSD1963_FLEXIO_BAUDRATE_BPS;
+    flexioMcuLcdConfig.baudRate_Bps     = DEMO_FLEXIO_BAUDRATE_BPS;
 
-    return FLEXIO_MCULCD_Init(&flexioLcdDev, &flexioMcuLcdConfig, DEMO_SSD1963_FLEXIO_CLOCK_FREQ);
+    return FLEXIO_MCULCD_Init(&flexioLcdDev, &flexioMcuLcdConfig, DEMO_FLEXIO_CLOCK_FREQ);
 }
 
 status_t BOARD_PrepareDisplayController(void)
@@ -267,22 +297,35 @@ status_t BOARD_PrepareDisplayController(void)
     }
 
     /* 3. Initialize panel. */
-    BOARD_ResetSSD1963();
+#if (DEMO_PANEL_TFT_PROTO_5 == DEMO_PANEL)
+    BOARD_ResetPanel();
 
     SSD1963_Init(&(s_dcDbiHandle.dbiIface), &ssd1963Config, DEMO_SSD1963_XTAL_FREQ);
     SSD1963_SetBackLight(&(s_dcDbiHandle.dbiIface), 255);
 
     return kStatus_Success;
+#else
+    BOARD_ResetPanel();
+
+    status = ST7796S_Init(&s_st7796sHandle, &st7796sConfig, &(s_dcDbiHandle.dbiIface));
+    if (kStatus_Success != status)
+    {
+        return status;
+    }
+
+    /* Enable display output. */
+    return ST7796S_EnableDisplay(&s_st7796sHandle, true);
+#endif
 }
 
 static void BOARD_SetCSPin(bool set)
 {
-    GPIO_PinWrite(BOARD_SSD1963_CS_GPIO, BOARD_SSD1963_CS_PIN, set ? 1U : 0U);
+    GPIO_PinWrite(BOARD_FLEXIO_LCD_CS_GPIO, BOARD_FLEXIO_LCD_CS_PIN, set ? 1U : 0U);
 }
 
 static void BOARD_SetRSPin(bool set)
 {
-    GPIO_PinWrite(BOARD_SSD1963_RS_GPIO, BOARD_SSD1963_RS_PIN, set ? 1U : 0U);
+    GPIO_PinWrite(BOARD_FLEXIO_LCD_RS_GPIO, BOARD_FLEXIO_LCD_RS_PIN, set ? 1U : 0U);
 }
 
 #else /* SSD1963_DRIVEN_BY_LCDIF */
@@ -310,22 +353,30 @@ static void BOARD_InitLcdif(void)
     dbiConfig.reversePolarity = true;
 #endif
     dbiConfig.writeWRPeriod   = CLOCK_GetMediaMainClkFreq() / 40000000U; /* Make sure the WR frequency is 40M. */
-    dbiConfig.format          = kLCDIF_DbiOutD8RGB888;
+#if (DEMO_PANEL_LCD_PAR_S035 == DEMO_PANEL)
+    #if (DEMO_LCD_PAR_S035_BUFFER_FORMAT == DEMO_LCD_PAR_S035_BUFFER_RGB565)
+        dbiConfig.format = kLCDIF_DbiOutD8RGB565;
+    #else
+        dbiConfig.format = kLCDIF_DbiOutD8RGB888;
+    #endif
+#else
+    dbiConfig.format = kLCDIF_DbiOutD8RGB888;
+#endif
     dbiConfig.type            = kLCDIF_DbiTypeB;
     dbiConfig.writeCSAssert   = 1;
     dbiConfig.writeCSDeassert = 4;
     dbiConfig.writeWRAssert   = (dbiConfig.writeWRPeriod - 1U) / 2U; /* Asset at the middle. */
     dbiConfig.writeWRDeassert = (dbiConfig.writeWRPeriod - 1U);      /* Deassert at the end */
 
-    LCDIF_Init(DEMO_SSD1963_LCDIF);
-    LCDIF_DbiModeSetConfig(DEMO_SSD1963_LCDIF, 0, &dbiConfig);
+    LCDIF_Init(DEMO_LCDIF);
+    LCDIF_DbiModeSetConfig(DEMO_LCDIF, 0, &dbiConfig);
 
     LCDIF_PanelGetDefaultConfig(&config);
-    LCDIF_SetPanelConfig(DEMO_SSD1963_LCDIF, 0, &config);
+    LCDIF_SetPanelConfig(DEMO_LCDIF, 0, &config);
 
-    NVIC_ClearPendingIRQ(DEMO_SSD1963_LCDIF_IRQn);
-    NVIC_SetPriority(DEMO_SSD1963_LCDIF_IRQn, 3);
-    NVIC_EnableIRQ(DEMO_SSD1963_LCDIF_IRQn);
+    NVIC_ClearPendingIRQ(DEMO_LCDIF_IRQn);
+    NVIC_SetPriority(DEMO_LCDIF_IRQn, 3);
+    NVIC_EnableIRQ(DEMO_LCDIF_IRQn);
 }
 
 status_t BOARD_PrepareDisplayController(void)
@@ -336,16 +387,32 @@ status_t BOARD_PrepareDisplayController(void)
     BOARD_InitLcdif();
 
     /* 2. Create the LCDIF DBI XFER interface. */
-    DBI_LCDIF_InitController(&(s_dcDbiHandle.dbiIface), &s_lcdifPrvData, DEMO_SSD1963_LCDIF, NULL);
+    DBI_LCDIF_InitController(&(s_dcDbiHandle.dbiIface), &s_lcdifPrvData, DEMO_LCDIF, NULL);
 
     /* 3. Initialize panel. */
-    BOARD_ResetSSD1963();
+#if (DEMO_PANEL_TFT_PROTO_5 == DEMO_PANEL)
+    BOARD_ResetPanel();
 
     SSD1963_Init(&(s_dcDbiHandle.dbiIface), &ssd1963Config, DEMO_SSD1963_XTAL_FREQ);
 
     SSD1963_SetBackLight(&(s_dcDbiHandle.dbiIface), 255);
 
     return kStatus_Success;
+#else
+    status_t status;
+
+    BOARD_ResetPanel();
+
+    status = ST7796S_Init(&s_st7796sHandle, &st7796sConfig, &(s_dcDbiHandle.dbiIface));
+
+    if (kStatus_Success != status)
+    {
+        return status;
+    }
+
+    /* Enable display output. */
+    return ST7796S_EnableDisplay(&s_st7796sHandle, true);
+#endif
 }
 
 void LCDIF_IRQHandler(void)
@@ -355,7 +422,7 @@ void LCDIF_IRQHandler(void)
 
 #endif
 
-static void BOARD_ResetSSD1963(void)
+static void BOARD_ResetPanel(void)
 {
     const gpio_pin_config_t resetPinConfig = {
         .pinDirection = kGPIO_DigitalOutput,
@@ -363,18 +430,19 @@ static void BOARD_ResetSSD1963(void)
     };
 
     /* Set SSD1963 CS, RS, and reset pin to output. */
-    GPIO_PinInit(BOARD_SSD1963_RST_GPIO, BOARD_SSD1963_RST_PIN, &resetPinConfig);
-#if (SSD1963_DRIVEN_BY == SSD1963_DRIVEN_BY_FLEXIO)
+    GPIO_PinInit(BOARD_FLEXIO_LCD_RST_GPIO, BOARD_FLEXIO_LCD_RST_PIN, &resetPinConfig);
+#if ((defined(SSD1963_DRIVEN_BY) && (SSD1963_DRIVEN_BY == SSD1963_DRIVEN_BY_FLEXIO)) || \
+     (defined(ST7796S_DRIVEN_BY) && (ST7796S_DRIVEN_BY == ST7796S_DRIVEN_BY_FLEXIO)))
     /* FLEXIO needs external CS and RS pins. */
-    GPIO_PinInit(BOARD_SSD1963_CS_GPIO, BOARD_SSD1963_CS_PIN, &resetPinConfig);
-    GPIO_PinInit(BOARD_SSD1963_RS_GPIO, BOARD_SSD1963_RS_PIN, &resetPinConfig);
+    GPIO_PinInit(BOARD_FLEXIO_LCD_CS_GPIO, BOARD_FLEXIO_LCD_CS_PIN, &resetPinConfig);
+    GPIO_PinInit(BOARD_FLEXIO_LCD_RS_GPIO, BOARD_FLEXIO_LCD_RS_PIN, &resetPinConfig);
 #endif
 
     /* Reset the SSD1963 LCD controller. */
-    GPIO_PinWrite(BOARD_SSD1963_RST_GPIO, BOARD_SSD1963_RST_PIN, 0);
+    GPIO_PinWrite(BOARD_FLEXIO_LCD_RST_GPIO, BOARD_FLEXIO_LCD_RST_PIN, 0);
     VIDEO_DelayMs(1); /* Delay 1ms (10ns required). */
-    GPIO_PinWrite(BOARD_SSD1963_RST_GPIO, BOARD_SSD1963_RST_PIN, 1);
-    VIDEO_DelayMs(5); /* Delay 5ms. */
+    GPIO_PinWrite(BOARD_FLEXIO_LCD_RST_GPIO, BOARD_FLEXIO_LCD_RST_PIN, 1);
+    VIDEO_DelayMs(20); /* Delay 20ms. */
 }
 
 #elif ((DEMO_PANEL_RK055AHD091 == DEMO_PANEL) || (DEMO_PANEL_RK055IQH091 == DEMO_PANEL) || \
@@ -1454,3 +1522,4 @@ status_t BOARD_PrepareDisplayController(void)
 #endif /* The DBI panel does not use LCDIF */
 
 #endif
+

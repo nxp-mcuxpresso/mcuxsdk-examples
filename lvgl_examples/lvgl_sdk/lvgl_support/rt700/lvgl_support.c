@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 NXP
+ * Copyright 2024-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -25,7 +25,7 @@
 #include "fsl_lpi2c.h"
 #include "fsl_ft5406_rt.h"
 #elif ((DEMO_PANEL_RK055AHD091 == DEMO_PANEL) || (DEMO_PANEL_RK055IQH091 == DEMO_PANEL) || \
-       (DEMO_PANEL_RK055MHD091 == DEMO_PANEL))
+       (DEMO_PANEL_RK055MHD091 == DEMO_PANEL) || (DEMO_PANEL_LCD_PAR_S035 == DEMO_PANEL))
 #include "fsl_gt911.h"
 #endif
 
@@ -54,7 +54,7 @@
 #ifndef DEMO_USE_ROTATE
 /* Use rotate for portrait panel. */
 #if ((DEMO_PANEL_RK055AHD091 == DEMO_PANEL) || (DEMO_PANEL_RK055IQH091 == DEMO_PANEL) || \
-     (DEMO_PANEL_RK055MHD091 == DEMO_PANEL))
+     (DEMO_PANEL_RK055MHD091 == DEMO_PANEL) || (DEMO_PANEL_LCD_PAR_S035 == DEMO_PANEL))
 #define DEMO_USE_ROTATE 0
 #else
 #define DEMO_USE_ROTATE 0
@@ -96,7 +96,7 @@ void BOARD_PullMIPIPanelTouchResetPin(bool pullUp);
 #endif
 
 #if ((DEMO_PANEL_RK055AHD091 == DEMO_PANEL) || (DEMO_PANEL_RK055IQH091 == DEMO_PANEL) || \
-     (DEMO_PANEL_RK055MHD091 == DEMO_PANEL))
+     (DEMO_PANEL_RK055MHD091 == DEMO_PANEL) || (DEMO_PANEL_LCD_PAR_S035 == DEMO_PANEL))
 static void BOARD_ConfigMIPIPanelTouchIntPin(gt911_int_pin_mode_t mode);
 #endif
 
@@ -117,6 +117,8 @@ static volatile bool s_transferDone;
  * driver uses two buffers (s_frameBuffer) to remove tearing effect.
  */
 static void *volatile s_inactiveFrameBuffer;
+
+SDK_ALIGN(static uint8_t s_lvglBuffer[1][DEMO_FB_SIZE], FRAME_BUFFER_ALIGN);
 #endif
 
 #if (DEMO_PANEL == DEMO_PANEL_RM67162)
@@ -143,7 +145,7 @@ static const tma525b_config_t s_touchConfig = {
 };
 
 #elif ((DEMO_PANEL_RK055AHD091 == DEMO_PANEL) || (DEMO_PANEL_RK055IQH091 == DEMO_PANEL) || \
-       (DEMO_PANEL_RK055MHD091 == DEMO_PANEL))
+       (DEMO_PANEL_RK055MHD091 == DEMO_PANEL) || (DEMO_PANEL_LCD_PAR_S035 == DEMO_PANEL))
 /* GT911 I2C address depends on the int pin state during initialization.
  * On this board, the touch panel int pin is forced to input, so the I2C address
  * could not be configured, driver select the one which works.
@@ -152,7 +154,11 @@ static gt911_handle_t s_touchHandle;
 static const gt911_config_t s_touchConfig = {
     .I2C_SendFunc     = BOARD_MIPIPanelTouch_I2C_Send,
     .I2C_ReceiveFunc  = BOARD_MIPIPanelTouch_I2C_Receive,
+#if (DEMO_PANEL_LCD_PAR_S035 == DEMO_PANEL)
+    .pullResetPinFunc = NULL,
+#else
     .pullResetPinFunc = BOARD_PullMIPIPanelTouchResetPin,
+#endif
     .intPinFunc       = BOARD_ConfigMIPIPanelTouchIntPin,
     .timeDelayMsFunc  = VIDEO_DelayMs,
     .touchPointNum    = 1,
@@ -506,7 +512,7 @@ static void DEMO_FlushDisplay(lv_display_t *disp_drv, const lv_area_t *area, uin
                       ROTATED_FB_WIDTH, ROTATED_FB_HEIGHT,
                       ROTATED_FB_WIDTH * DEMO_BUFFER_BYTE_PER_PIXEL,
                       DEMO_FB_WIDTH * DEMO_BUFFER_BYTE_PER_PIXEL,
-                      LV_DISPLAY_ROTATION_270, disp_drv->color_format);
+                      LV_DISPLAY_ROTATION_270, lv_display_get_color_format(disp_drv));
 
     g_dc.ops->setFrameBuffer(&g_dc, 0, inactiveFrameBuffer);
 
@@ -545,7 +551,7 @@ void lv_port_indev_init(void)
 
 #if ((DEMO_PANEL == DEMO_PANEL_RM67162) || (DEMO_PANEL_RK055AHD091 == DEMO_PANEL) || \
      (DEMO_PANEL_RK055IQH091 == DEMO_PANEL) || (DEMO_PANEL_RK055MHD091 == DEMO_PANEL) || \
-     (DEMO_PANEL == DEMO_PANEL_CO5300))
+     (DEMO_PANEL == DEMO_PANEL_CO5300) || (DEMO_PANEL_LCD_PAR_S035 == DEMO_PANEL))
 void BOARD_PullMIPIPanelTouchResetPin(bool pullUp)
 {
     if (pullUp)
@@ -629,7 +635,7 @@ static void DEMO_ReadTouch(lv_indev_t *drv, lv_indev_data_t *data)
 }
 
 #elif ((DEMO_PANEL_RK055AHD091 == DEMO_PANEL) || (DEMO_PANEL_RK055IQH091 == DEMO_PANEL) || \
-       (DEMO_PANEL_RK055MHD091 == DEMO_PANEL))
+       (DEMO_PANEL_RK055MHD091 == DEMO_PANEL) || (DEMO_PANEL_LCD_PAR_S035 == DEMO_PANEL))
 
 static void BOARD_ConfigMIPIPanelTouchIntPin(gt911_int_pin_mode_t mode)
 {
@@ -659,7 +665,9 @@ static bool DEMO_InitTouch(void)
 
     const gpio_pin_config_t resetPinConfig = {.pinDirection = kGPIO_DigitalOutput, .outputLogic = 0};
 
+#if !(DEMO_PANEL_LCD_PAR_S035 == DEMO_PANEL)
     GPIO_PinInit(BOARD_MIPI_PANEL_TOUCH_RST_GPIO, BOARD_MIPI_PANEL_TOUCH_RST_PIN, &resetPinConfig);
+#endif
     GPIO_PinInit(BOARD_MIPI_PANEL_TOUCH_INT_GPIO, BOARD_MIPI_PANEL_TOUCH_INT_PIN, &resetPinConfig);
 
     status = GT911_Init(&s_touchHandle, &s_touchConfig);

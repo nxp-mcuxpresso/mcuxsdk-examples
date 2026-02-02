@@ -40,6 +40,7 @@ directly in mcux_config.h.
 This board supports such panels:
 
 - TFT Proto 5" CAPACITIVE board HW REV 1.01 by Mikroelektronika (SSD1963)
+- LCD_PAR_S035 3.5” 480x320 IPS TFT LCD Module (ST7796S)
 - "RK055HDMIPI4M" MIPI Rectangular Display (RK055AHD091)
 - "RK055IQH091" MIPI Rectangular panel
 - "RK055MHD091A0-CTG" MIPI Rectangular Display (RK055MHD091)
@@ -55,6 +56,12 @@ LVGL project lv_examples_readme.md for the steps.
 - TFT Proto 5" panel
   - Connect panel to J4.
   - Connect JP7 2&3 to use 3.3v interface.
+
+- LCD_PAR_S035 panel
+  - Connect panel to J4 pin 1 to pin 28.
+  - Connect JP7 2&3 to use 3.3v interface.
+  - Set SW1 is 0b011 (8 bit 8080).
+  - Remove resistance R60 to use the touch function.
 
 - MIPI panels
   - Connect MIPI panel to J52.
@@ -80,6 +87,7 @@ The panel can be switched by using west build option or modifying mcux_config.h.
 | RK055MHD091A0-CTG MIPI Rectanglular (RK055MHD091, default) | `-DCONFIG_RK055MHD091=y`   | 2                        |
 | RaspberryPi                                                | `-DCONFIG_RASPI_7INCH=y`   | 5                        |
 | ZC143AC72MIPI MIPI Circular (CO5300)                       | `-DCONFIG_ZC143AC72MIPI=y` | 6                        |
+| LCD_PAR_S035 (ST7796S)                                     | `-DCONFIG_LCD_PAR_S035=y`  | 8                        |
 
 ## Panel configuration
 
@@ -204,3 +212,37 @@ Please read section [Project Configuration](#project-configuration) to know the 
 #### Pixel format
 
   - Only RGB565 is supported
+
+### LCD_PAR_S035
+
+#### Pixel format
+
+- By Kconfig
+  - RGB565(default): Use build parameter `-DCONFIG_DEMO_LCD_PAR_S035_BUFFER_RGB565=y` or omit.
+  - RGB888: Use build parameter `-DCONFIG_DEMO_LCD_PAR_S035_BUFFER_RGB888=y`
+
+- Or By modifying `mcux_config.h`. If the macros don't exist, add them directly.
+  - RGB565(default)
+    ```c
+    #define DEMO_LCD_PAR_S035_BUFFER_FORMAT 0
+    ```
+  - RGB888
+    ```c
+    #define DEMO_LCD_PAR_S035_BUFFER_FORMAT 1
+    ```
+
+#### Driven Peripehral
+
+- By Kconfig
+  - Driven by LCDIF(default): Use build parameter `-DCONFIG_DEMO_PANEL_LCD_PAR_S035_LCDIF=y` or omit.
+  - Driven by FlexIO: Use build parameter `-DCONFIG_DEMO_PANEL_LCD_PAR_S035_FLEXIO=y`
+
+- Or By modifying `mcux_config.h`. If the macros don't exist, add them directly.
+  - Driven by LCDIF(default)
+    ```c
+    #define ST7796S_DRIVEN_BY 1
+    ```
+  - Driven by FlexIO
+    ```c
+    #define ST7796S_DRIVEN_BY 0
+    ```

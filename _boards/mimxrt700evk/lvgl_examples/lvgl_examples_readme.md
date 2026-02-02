@@ -3,6 +3,7 @@
 - MIMXRT700-EVK
 - Personal Computer
 - TFT Proto 5" CAPACITIVE board HW REV 1.01 by Mikroelektronika. (Named as SSD1963 panel in project. Not necessary if use MIPI panel)
+- LCD_PAR_S035 (Not necessary if use MIPI panel)
 - NXP "RK055HDMIPI4M" MIPI Rectangular Display (RK055AHD091) (Not necessary if use other panel)
 - RK055IQH091 MIPI panel (Not necessary if use other panel)
 - NXP "RK055MHD091A0-CTG" MIPI Rectangular Display (RK055MHD091) (Not necessary if use other panel)
@@ -13,6 +14,9 @@
 # Board settings
 To use TFT Proto 5" panel:
 Connect panel to J4. Make sure to connect JP7 2&3 to use 3.3v interface.
+
+To use LCD_PAR_S035：
+Connect panel to J4 pin 1 to pin 28. Make sure to connect JP7 2&3 to use 3.3v interface, SW1 is 0b011 (8 bit 8080) and remove resistance R60 to use the touch function.
 
 To use MIPI panel:
 Connect MIPI panel to J52.
@@ -59,6 +63,7 @@ The panel can be switched by using west build option or modifying mcux_config.h.
 | RK055MHD091A0-CTG MIPI Rectanglular (RK055MHD091, default) | `-DCONFIG_RK055MHD091=y`   | 2                        |
 | RaspberryPi                                                | `-DCONFIG_RASPI_7INCH=y`   | 5                        |
 | ZC143AC72MIPI MIPI Circular (CO5300)                       | `-DCONFIG_ZC143AC72MIPI=y` | 6                        |
+| LCD_PAR_S035 (ST7796S)                                     | `-DCONFIG_LCD_PAR_S035=y`  | 8                        |
 
 ## Panel configuration
 
@@ -203,6 +208,44 @@ Please read section [Project Configuration](#project-configuration) to know the 
 #### Pixel format
 
   - Only RGB565 is supported
+
+### LCD_PAR_S035
+
+#### Pixel format
+
+- By Kconfig
+  - RGB565(default): Use build parameter `-DCONFIG_LV_COLOR_DEPTH_16=y` or omit.
+  - RGB888: Use build parameter `-DCONFIG_LV_COLOR_DEPTH_24=y`
+
+- Or By modifying `mcux_config.h`. If the macros don't exist, add them directly.
+  - RGB565(default)
+    ```c
+    #define CONFIG_LV_COLOR_DEPTH 16
+    #define CONFIG_LV_DRAW_BUF_ALIGN 64
+    #define DEMO_LCD_PAR_S035_BUFFER_FORMAT 0
+    ```
+  - RGB888
+    ```c
+    #define CONFIG_LV_COLOR_DEPTH 24
+    #define CONFIG_LV_DRAW_BUF_ALIGN 192
+    #define DEMO_LCD_PAR_S035_BUFFER_FORMAT 1
+    ```
+
+#### Driven Peripehral
+
+- By Kconfig
+  - Driven by LCDIF(default): Use build parameter `-DCONFIG_DEMO_PANEL_LCD_PAR_S035_LCDIF=y` or omit.
+  - Driven by FlexIO: Use build parameter `-DCONFIG_DEMO_PANEL_LCD_PAR_S035_FLEXIO=y`
+
+- Or By modifying `mcux_config.h`. If the macros don't exist, add them directly.
+  - Driven by LCDIF(default)
+    ```c
+    #define ST7796S_DRIVEN_BY 1
+    ```
+  - Driven by FlexIO
+    ```c
+    #define ST7796S_DRIVEN_BY 0
+    ```
 
 Running the demo
 ===============

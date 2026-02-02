@@ -17,3 +17,4 @@ config MCUX_PRJSEG_module.board.lvgl
     select MCUX_COMPONENT_driver.ft3267
     select MCUX_PRJSEG_module.board.display_support
     select MCUX_COMPONENT_driver.tma525b
+    select MCUX_COMPONENT_driver.st7796s

@@ -12,6 +12,7 @@ config MCUX_PRJSEG_module.board.display_support
     select MCUX_COMPONENT_driver.display-co5300
     select MCUX_COMPONENT_driver.display-rpi
     select MCUX_COMPONENT_driver.ssd1963
+    select MCUX_COMPONENT_driver.st7796s
     select MCUX_COMPONENT_driver.dc-fb-dsi-cmd
     select MCUX_COMPONENT_driver.dc-fb-lcdif
     select MCUX_COMPONENT_driver.dc-fb-dbi
@@ -42,6 +43,9 @@ config MCUX_DEMO_PANEL_RASPI_7INCH_SUPPORT
     default y
 
 config MCUX_DEMO_PANEL_ZC143AC72MIPI_SUPPORT
+    default y
+
+config MCUX_DEMO_PANEL_LCD_PAR_S035_SUPPORT
     default y
 
 if MCUX_PRJSEG_module.board.display_support
@@ -179,6 +183,48 @@ if MCUX_PRJSEG_module.board.display_support
 
             config DEMO_RK055MHD091_BUFFER_XRGB8888
                 bool "XRGB888 - 32bit"
+        endchoice
+    endif
+
+    if LCD_PAR_S035
+        config ST7796S_DRIVEN_BY
+            int
+            default 0 if DEMO_PANEL_LCD_PAR_S035_FLEXIO
+            default 1 if DEMO_PANEL_LCD_PAR_S035_LCDIF
+            help
+                Driver selection for panel LCD_PAR_S035
+                No prefix in generated macro
+
+        choice DEMO_PANEL_LCD_PAR_S035_DRIVER
+            prompt "LCD_PAR_S035 driver Selection"
+            default DEMO_PANEL_LCD_PAR_S035_LCDIF
+
+            config DEMO_PANEL_LCD_PAR_S035_FLEXIO
+                bool "Use FLEXIO to drive LCD_PAR_S035"
+
+            config DEMO_PANEL_LCD_PAR_S035_LCDIF
+                bool "Use LCDIF to drive LCD_PAR_S035"
+
+        endchoice
+
+        config DEMO_LCD_PAR_S035_BUFFER_FORMAT
+            int
+            default 0 if DEMO_LCD_PAR_S035_BUFFER_RGB565
+            default 1 if DEMO_LCD_PAR_S035_BUFFER_RGB888
+            help
+                No prefix in generated macro
+
+        choice DEMO_LCD_PAR_S035_BUFFER_FORMAT_SELECTION
+            prompt "LCD-PAR-S035 panel pixel format"
+            default DEMO_LCD_PAR_S035_BUFFER_RGB565 if LV_COLOR_DEPTH_16
+            default DEMO_LCD_PAR_S035_BUFFER_RGB888 if LV_COLOR_DEPTH_24
+            default DEMO_LCD_PAR_S035_BUFFER_RGB565
+
+            config DEMO_LCD_PAR_S035_BUFFER_RGB565
+                bool "RGB565 - 16bit"
+
+            config DEMO_LCD_PAR_S035_BUFFER_RGB888
+                bool "RGB888 - 24bit"
         endchoice
     endif
 
