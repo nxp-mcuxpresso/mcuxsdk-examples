@@ -1,5 +1,5 @@
 /*! *********************************************************************************
-* Copyright 2021-2024 NXP
+* Copyright 2021-2026 NXP
 * All rights reserved.
 *
 * This file is the source file for the hci black box application
@@ -24,7 +24,8 @@
 #include "controller_interface.h"
 #include "controller_api.h"
 #include "fwk_platform_ics.h"
-#if defined(HCIBB_DBG_NBU_ENABLE) && (HCIBB_DBG_NBU_ENABLE != 0)
+#if defined(BOARD_DBG_NBU_ENABLE) && (BOARD_DBG_NBU_ENABLE > 0)
+#include "board_debug_nbu.h"
 #include "fwk_nbu_dbg.h"
 #endif
 
@@ -242,28 +243,6 @@ void HCIBB_SerialWrite(uint8_t *data, uint32_t len)
         EnableGlobalIRQ(regPrimask);
     }
 }
-
-#if defined(HCIBB_DBG_NBU_ENABLE) && (HCIBB_DBG_NBU_ENABLE != 0)
-
-/* Handle errors occurring on NBU.
-   Once NBU error is reported, the system needs to be reset as error status
-   cannot be cleared from APP core (read-only).
-  */
-extern uint8_t dbg_ext_logging_start[]; /* defined by linker file */
-extern uint8_t dbg_ext_logging_end[]; /* defined by linker file */
-static void HCIBB_nbu_dbg_system_cb(const nbu_dbg_context_t *nbu_event)
-{
-    static uint32_t HCIBB_error_reported=0;
-
-    if ((HCIBB_error_reported == 0) && ((nbu_event->nbu_error_count > 0) || (nbu_event->nbu_is_halted > 0U)))
-    {
-        /* Will send debug information as HCI vendor event since NBUDBG_ConfigureHciVendorEvent is enabled */
-        (void)NBUDBG_StructDump(NULL);
-
-        HCIBB_error_reported = 1;
-    }
-}
-#endif /* HCIBB_DBG_NBU_ENABLE */
 
 #endif
 
@@ -610,13 +589,6 @@ void main_task(uint32_t param)
         MEM_Init();
 
 #if (!defined(gAppUseDtm2Wire) || (gAppUseDtm2Wire == 0))
-
-#if defined(HCIBB_DBG_NBU_ENABLE) && (HCIBB_DBG_NBU_ENABLE != 0)
-        /* Register callback to handle NBU fatal errors */
-        NBUDBG_RegisterNbuDebugNotificationCb(HCIBB_nbu_dbg_system_cb);
-        /* Enable HCI vendor event transmission for debug information */
-        NBUDBG_ConfigureHciVendorEvent(NBUDBG_HCI_EVENT_ALL);
-#endif
         /*open application uart write/read handle, install rx callback*/
         if ( kStatus_SerialManager_Success != SerialManager_OpenWriteHandle((serial_handle_t)gSerMgrIf, (serial_write_handle_t)g_appUartWriteHandle))
         {
@@ -650,14 +622,20 @@ void main_task(uint32_t param)
 #if defined(gAppEnableHybridGenfsk_d) && (gAppEnableHybridGenfsk_d!=0)
         hybrid_gfsk_init();
 #endif
+#if defined(BOARD_DBG_NBU_ENABLE) && (BOARD_DBG_NBU_ENABLE > 0)
+        /* Override default configuration to add RAM Log
+         * TODO: Remove when RAM log gets enabled by board NBU debug module
+         */
+        NBUDBG_ConfigureHciVendorEvent(NBUDBG_HCI_EVENT_ALL);
+#endif
     }
 
 #if (!defined(gAppUseDtm2Wire) || (gAppUseDtm2Wire == 0))
 #ifdef ENABLE_HCI_CMD_HOOK
 
-#if defined(HCIBB_DBG_NBU_ENABLE) && (HCIBB_DBG_NBU_ENABLE != 0)
-    /* Check for NBU crash */
-    NBUDBG_StateCheck();
+#if defined(BOARD_DBG_NBU_ENABLE) && (BOARD_DBG_NBU_ENABLE > 0)
+    /* Check for NBU Debug events (warnings, errors) */
+    BOARD_DbgNbuProcess();
 #endif
 
     if( maPendingHciCmd[0] == gHciCommandPacket_c )

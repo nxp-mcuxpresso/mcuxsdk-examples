@@ -3,7 +3,7 @@
  * @{
  ********************************************************************************** */
 /*! *********************************************************************************
-* Copyright 2022-2024 NXP
+* Copyright 2022-2024, 2026 NXP
 * All rights reserved.
 *
 * \file
@@ -38,7 +38,7 @@
 #include "sensors.h"
 #endif
 
-#define USE_OSA_API_IN_MAIN     1
+#define USE_OSA_API_IN_MAIN     0
 
 /************************************************************************************
 *************************************************************************************
@@ -148,6 +148,7 @@ int main(void)
 #if (FSL_OSA_BM_TIMER_CONFIG != FSL_OSA_BM_TIMER_NONE)
     /* OSA_Start() is not called in this implementation but nevertheless we need to start
       timers for the bare metal scheduler for delays, wait on timeout , etc.. */
+    extern void OSA_TimeInit(void);
     OSA_TimeInit();
 #endif
 
@@ -155,7 +156,7 @@ int main(void)
     {
         OSA_ProcessTasks();
 
-        main_task(NULL);
+        main_task(0U);
 
         OSA_DisableIRQGlobal();
 
