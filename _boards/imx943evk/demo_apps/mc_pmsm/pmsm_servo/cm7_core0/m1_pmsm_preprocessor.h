@@ -26,7 +26,7 @@
 #define ParametersRs 					(0.1105F)
 #define ParametersLd 					(0.000116467F)
 #define ParametersLq 					(0.000134492F)
-#define ParametersKe 					(0.058F)
+#define ParametersKt 					(0.058F)
 #define ParametersJ  					(0.00005F)
 #define ParametersIphNom 				(11.1F)
 #define ParametersUphNom 				(48.0F)
@@ -149,15 +149,14 @@
 
 /* SPEEDLOOP */
 #define SensorlessWmax 		     (2 * FLOAT_PI * ParametersPp * ParametersNmax / 60)
-#define VarKt 					 (ParametersKe)
 
 #define M1_SPEED_RAMP_UP 		 (SpeedLoopIncUp * SpeedLoopSampleTime / (60 / (ParametersPp * 2 * FLOAT_PI)))
 #define M1_SPEED_RAMP_DOWN 		 (SpeedLoopIncDown * SpeedLoopSampleTime / (60 / (ParametersPp * 2 * FLOAT_PI)))
 #define M1_SPEED_LOOP_HIGH_LIMIT (SpeedLoopUpperLimit)
 #define M1_SPEED_LOOP_LOW_LIMIT  (SpeedLoopLowerLimit)
 
-#define M1_SPEED_PI_PROP_GAIN 	 ((4 * SpeedLoopKsi * FLOAT_PI * SpeedLoopF0 * ParametersJ )/ (VarKt * ParametersPp))
-#define M1_SPEED_PI_INTEG_GAIN 	 ((((2 * FLOAT_PI * SpeedLoopF0) * (2 * FLOAT_PI * SpeedLoopF0) * ParametersJ) / (VarKt * ParametersPp)) * (SpeedLoopSampleTime/DiscMethodFactor))
+#define M1_SPEED_PI_PROP_GAIN 	 ((4 * SpeedLoopKsi * FLOAT_PI * SpeedLoopF0 * ParametersJ )/ (ParametersKt * ParametersPp))
+#define M1_SPEED_PI_INTEG_GAIN 	 ((((2 * FLOAT_PI * SpeedLoopF0) * (2 * FLOAT_PI * SpeedLoopF0) * ParametersJ) / (ParametersKt * ParametersPp)) * (SpeedLoopSampleTime/DiscMethodFactor))
 
 #define M1_SPEED_IIR_B0 		 (2 * FLOAT_PI * SpeedLoopCutOffFreq * SpeedLoopSampleTime) / (2 + (2 * FLOAT_PI * SpeedLoopCutOffFreq * SpeedLoopSampleTime)) 	
 #define M1_SPEED_IIR_B1 		 (2 * FLOAT_PI * SpeedLoopCutOffFreq * SpeedLoopSampleTime) / (2 + (2 * FLOAT_PI * SpeedLoopCutOffFreq * SpeedLoopSampleTime)) 	
@@ -190,8 +189,8 @@
 #define M1_SERVO_IIR_ZC_B0 				(PositionLoopSampleTime/(PositionLoopSampleTime + 2 * Tfilt_fi))  					
 #define M1_SERVO_IIR_ZC_B1 				(PositionLoopSampleTime/(PositionLoopSampleTime + 2 * Tfilt_fi))  					
 #define M1_SERVO_IIR_ZC_A1 				((-1)*(PositionLoopSampleTime - 2*Tfilt_fi)/(PositionLoopSampleTime + 2*Tfilt_fi))  
-#define M1_SERVO_SPEED_PI_PROP_GAIN 	( ((2 * PositionLoopKsi + ParametersKk) * (2 * FLOAT_PI * PositionLoopF0) * ParametersJ) / (VarKt * ParametersPp) )
-#define M1_SERVO_SPEED_PI_INTEG_GAIN 	( ((ParametersJ * (2 * PositionLoopKsi * ParametersKk + 1) * (2 * FLOAT_PI * PositionLoopF0) * (2 * FLOAT_PI * PositionLoopF0)) / (VarKt*ParametersPp) ) * (PositionLoopSampleTime / DiscMethodFactor))
+#define M1_SERVO_SPEED_PI_PROP_GAIN 	( ((2 * PositionLoopKsi + ParametersKk) * (2 * FLOAT_PI * PositionLoopF0) * ParametersJ) / (ParametersKt * ParametersPp) )
+#define M1_SERVO_SPEED_PI_INTEG_GAIN 	( ((ParametersJ * (2 * PositionLoopKsi * ParametersKk + 1) * (2 * FLOAT_PI * PositionLoopF0) * (2 * FLOAT_PI * PositionLoopF0)) / (ParametersKt*ParametersPp) ) * (PositionLoopSampleTime / DiscMethodFactor))
 #define M1_SERVO_SPEED_PI_HIGH_LIMIT 	(Servo_speedLoopUpperLimit)
 #define M1_SERVO_SPEED_PI_LOW_LIMIT 	(Servo_speedLoopLowerLimit)
 

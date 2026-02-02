@@ -12,7 +12,7 @@
 /*
 {
     "mid": {
-        "midInParamINom": 2.5,
+        "midInParamINom": 4,
         "midInParamNNom": 3000,
         "midPolePairIAPp": 3,
         "midElParamMeasRs": 0,
@@ -30,7 +30,7 @@
         "parametersRs": 0.1105,
         "parametersLd": 0.000116467,
         "parametersLq": 0.000134492,
-        "parametersKe": 0.058,
+        "parametersKt": 0.058,
         "parametersJ": 0.00005,
         "parametersIphNom": 11.1,
         "parametersUphNom": 48,
