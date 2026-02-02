@@ -5,20 +5,11 @@
  * The BSD-3-Clause license can be found at https://spdx.org/licenses/BSD-3-Clause.html
  */
 #if CONFIG_NCP_UART
-#include "fsl_os_abstraction.h"
-#include "fsl_os_abstraction_free_rtos.h"
-
+#include "ncp_intf_uart.h"
 #include "fsl_flexcomm.h"
 #include "fsl_usart.h"
 #include "fsl_dma.h"
 #include "fsl_pm_core.h"
-#include "ncp_intf_uart.h"
-#include "pin_mux.h"
-#include "ncp_adapter.h"
-#include "ncp_tlv_adapter.h"
-#include "ncp_intf_pm.h"
-#include "ncp_pm.h"
-#include "ncp_log.h"
 
 NCP_LOG_MODULE_REGISTER(ncp_uart, CONFIG_LOG_NCP_INTF_LEVEL);
 
@@ -33,12 +24,6 @@ NCP_LOG_MODULE_REGISTER(ncp_uart, CONFIG_LOG_NCP_INTF_LEVEL);
 #define NCP_UART_CLK_FREQ          CLOCK_GetFlexCommClkFreq(0)
 #define NCP_UART_IRQ               FLEXCOMM0_IRQn
 #define NCP_UART_NVIC_PRIO         5U
-#define NCP_UART_BAUDRATE          3000000U
-#if (NCP_UART_BAUDRATE > 115200U)
-#define NCP_UART_IS_HIGH_BAUD      1
-#else
-#define NCP_UART_IS_HIGH_BAUD      0
-#endif
 
 #define NCP_UART_DMA               DMA0
 #define NCP_UART_DMA_IRQ           DMA0_IRQn
@@ -53,33 +38,6 @@ NCP_LOG_MODULE_REGISTER(ncp_uart, CONFIG_LOG_NCP_INTF_LEVEL);
 #define DMA_RX_CHAIN_DESC_NUM     DMA_CALC_DESC_NUM(TLV_CMD_BUF_SIZE) /* Number of RX chain descriptors */
 #define DMA_TX_CHAIN_DESC_NUM     DMA_CALC_DESC_NUM(TLV_CMD_BUF_SIZE) /* Number of TX chain descriptors */
 
-#define NCP_UART_TASK_PRIORITY    (PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-3)))
-#if CONFIG_NCP_USE_ENCRYPT
-#define NCP_UART_TASK_STACK_SIZE  4096
-#else
-#define NCP_UART_TASK_STACK_SIZE  1024
-#endif
-
-#if (CONFIG_NCP_DEBUG)
-#define NCP_UART_STATS_INC(x) NCP_STATS_INC(intf.x)
-#else
-#define NCP_UART_STATS_INC(x)
-#endif
-
-/* Event bit definitions */
-#define UART_EVENT_TX_DONE      (1U << 0)
-#define UART_EVENT_TX_ERROR     (1U << 1)
-#define UART_EVENT_RX_HEADER    (1U << 2)
-#define UART_EVENT_RX_DONE      (1U << 3)
-#define UART_EVENT_RX_ERROR     (1U << 4)
-
-#define UART_EVENT_TX_MASK      (UART_EVENT_TX_DONE | UART_EVENT_TX_ERROR)
-#define UART_EVENT_RX_MASK      (UART_EVENT_RX_DONE | UART_EVENT_RX_ERROR)
-
-#define SRAM_BASE_ADDR          0x20000000U
-#define SRAM_BANK_SIZE          0x00010000U  /* 64KB per bank */
-#define GET_BANK_NUM(addr)      (((uint32_t)(addr) - SRAM_BASE_ADDR) / SRAM_BANK_SIZE)
-
 /*******************************************************************************
  * Variables
  ******************************************************************************/
@@ -88,8 +46,8 @@ static const ncp_pm_ops_t *s_pm_ops = NULL;
 static pm_wakeup_source_t s_uart_wakeup_src;
 
 /* DMA related handles */
-static dma_handle_t s_uart_dma_tx_handle;
-static dma_handle_t s_uart_dma_rx_handle;
+static dma_handle_t s_dma_tx_handle;
+static dma_handle_t s_dma_rx_handle;
 
 /* DMA chain descriptors */
 DMA_ALLOCATE_LINK_DESCRIPTORS_AT_NONCACHEABLE(s_rx_link_descriptors, DMA_RX_CHAIN_DESC_NUM);
@@ -97,20 +55,18 @@ DMA_ALLOCATE_LINK_DESCRIPTORS_AT_NONCACHEABLE(s_tx_link_descriptors, DMA_TX_CHAI
 
 typedef struct {
     USART_Type *base;
-    uint8_t *buffer;
-    volatile uint32_t size;
     volatile OSA_EVENT_HANDLE_DEFINE(event);
-} dma_chain_control_t;
+} ncp_uart_ctx_t;
 
-static dma_chain_control_t s_dma_chain_ctrl = {0};
+static ncp_uart_ctx_t s_uart_ctx = {0};
 
-SDK_ALIGN(static uint8_t ncp_uart_tlvbuf[TLV_CMD_BUF_SIZE], 4);
+AT_NONCACHEABLE_SECTION_ALIGN(static uint8_t rx_buffer[TLV_CMD_BUF_SIZE], 4);
 static void ncp_uart_rx_task(void *argv);
 
 static OSA_TASK_HANDLE_DEFINE(s_uart_task_handle);
 static OSA_TASK_DEFINE(ncp_uart_rx_task, NCP_UART_TASK_PRIORITY, 1, NCP_UART_TASK_STACK_SIZE, 0);
 
-OSA_MUTEX_HANDLE_DEFINE(s_uart_mutex);
+static OSA_MUTEX_HANDLE_DEFINE(s_uart_mutex);
 
 /* Those symbols should be exported by the Linker Script */
 extern uint32_t __active_buf_bss_start __attribute__((weak));
@@ -162,41 +118,27 @@ static void dma_setup_tx_chain(uint8_t *buffer, uint32_t size)
     USART_EnableTxDMA(NCP_UART, true);
 }
 
-/* Setup initial DMA descriptor for header reception */
-static void dma_setup_rx_chain(uint8_t *buffer)
+/* Setup RX DMA chain */
+static void dma_setup_rx_chain(uint8_t *buffer, uint32_t size, bool is_header)
 {
-    s_dma_chain_ctrl.buffer = buffer;
-    s_dma_chain_ctrl.size   = 0;
-
-    /* Setup first descriptor for header only */
-    DMA_SetupDescriptor(
-        &s_rx_link_descriptors[0],
-        DMA_CHANNEL_XFER(true, false, true, false, 1, 0, 1, TLV_CMD_HEADER_LEN),
-        (void *)&NCP_UART->FIFORD,
-        buffer,
-        NULL
-    );
-
-    /* Submit descriptor to DMA channel */
-    DMA_LoadChannelDescriptor(NCP_UART_DMA, NCP_UART_DMA_RX_CHANNEL, &s_rx_link_descriptors[0]);
-    DMA_EnableChannelPeriphRq(NCP_UART_DMA, NCP_UART_DMA_RX_CHANNEL);
-    USART_EnableRxDMA(NCP_UART, true);
-}
-
-/* Dynamically setup payload descriptors after header is received */
-static void dma_setup_rx_payload_chain(uint8_t *buffer, uint32_t payload_len)
-{
-    uint32_t remaining = payload_len;
-    uint32_t offset    = TLV_CMD_HEADER_LEN;
-    uint8_t desc_index = 1;
+    uint32_t remaining  = size;
+    uint32_t offset     = 0;
+    uint8_t desc_index  = 0;
+    uint32_t chunk_size = 0;
+    void *next_desc     = NULL;
+    bool is_last        = true;
+    bool use_intA       = false;
+    bool use_intB       = false;
 
     while (remaining > 0 && desc_index < DMA_RX_CHAIN_DESC_NUM)
     {
-        uint32_t chunk_size = (remaining > DMA_MAX_TRANSFER_COUNT) ?
+        chunk_size = (remaining > DMA_MAX_TRANSFER_COUNT) ?
                                 DMA_MAX_TRANSFER_COUNT : remaining;
-        bool is_last = (remaining <= DMA_MAX_TRANSFER_COUNT) || (desc_index == DMA_RX_CHAIN_DESC_NUM - 1);
-        void *next_desc = NULL;
+        is_last = (remaining <= DMA_MAX_TRANSFER_COUNT) || (desc_index == DMA_RX_CHAIN_DESC_NUM - 1);
+        next_desc = NULL;
 
+        use_intA = is_header && is_last;
+        use_intB = (!is_header) && is_last;
         if (!is_last && (desc_index < DMA_RX_CHAIN_DESC_NUM - 1))
         {
             next_desc = &s_rx_link_descriptors[desc_index + 1];
@@ -204,7 +146,7 @@ static void dma_setup_rx_payload_chain(uint8_t *buffer, uint32_t payload_len)
 
         DMA_SetupDescriptor(
             &s_rx_link_descriptors[desc_index],
-            DMA_CHANNEL_XFER(!is_last, false, false, is_last, 1, 0, 1, chunk_size),
+            DMA_CHANNEL_XFER(!is_last, false, use_intA, use_intB, 1, 0, 1, chunk_size),
             (void *)&NCP_UART->FIFORD,
             buffer + offset,
             next_desc
@@ -214,11 +156,17 @@ static void dma_setup_rx_payload_chain(uint8_t *buffer, uint32_t payload_len)
         offset += chunk_size;
         desc_index++;
     }
+
+    DMA_SubmitChannelDescriptor(&s_dma_rx_handle, &s_rx_link_descriptors[0]);
+    DMA_EnableChannelPeriphRq(NCP_UART_DMA, NCP_UART_DMA_RX_CHANNEL);
+    USART_EnableRxDMA(NCP_UART, true);
+
+    DMA_StartTransfer(&s_dma_rx_handle);
 }
 
 static void dma_tx_callback(dma_handle_t *handle, void *param, bool transferDone, uint32_t intmode)
 {
-    dma_chain_control_t *chain = (dma_chain_control_t *)param;
+    ncp_uart_ctx_t *chain = (ncp_uart_ctx_t *)param;
 
     /* Disable UART TX DMA. */
     USART_EnableTxDMA(NCP_UART, false);
@@ -236,31 +184,14 @@ static void dma_tx_callback(dma_handle_t *handle, void *param, bool transferDone
 
 static void dma_rx_callback(dma_handle_t *handle, void *param, bool transferDone, uint32_t intmode)
 {
-    dma_chain_control_t *chain = (dma_chain_control_t *)param;
+    ncp_uart_ctx_t *chain = (ncp_uart_ctx_t *)param;
 
     /* Disable UART RX DMA. */
     USART_EnableRxDMA(NCP_UART, false);
 
     if (intmode == kDMA_IntA)
     {
-        uint32_t cmd_len = (chain->buffer[TLV_CMD_SIZE_HIGH_BYTES] << 8) | chain->buffer[TLV_CMD_SIZE_LOW_BYTES];
-        if (cmd_len < TLV_CMD_HEADER_LEN || cmd_len > TLV_CMD_BUF_SIZE)
-        {
-            DMA_AbortTransfer(&s_uart_dma_rx_handle);
-            OSA_EventSet((osa_event_handle_t)chain->event, UART_EVENT_RX_ERROR);
-            return;
-        }
-
         OSA_EventSet((osa_event_handle_t)chain->event, UART_EVENT_RX_HEADER);
-
-        chain->size = cmd_len;
-        uint32_t payload_len = cmd_len - TLV_CMD_HEADER_LEN + NCP_CHKSUM_LEN;
-
-        dma_setup_rx_payload_chain(chain->buffer, payload_len);
-        DMA_SubmitChannelDescriptor(&s_uart_dma_rx_handle, &s_rx_link_descriptors[1]);
-        DMA_EnableChannelPeriphRq(NCP_UART_DMA, NCP_UART_DMA_RX_CHANNEL);
-        USART_EnableRxDMA(NCP_UART, true);
-        DMA_StartTransfer(&s_uart_dma_rx_handle);
     }
     else if (intmode == kDMA_IntB)
     {
@@ -275,7 +206,7 @@ static void dma_rx_callback(dma_handle_t *handle, void *param, bool transferDone
 static void uart_transfer_handle_irq(void *base, void *handle)
 {
     USART_Type *uart_base = (USART_Type *)base;
-    dma_chain_control_t *chain = (dma_chain_control_t *)handle;
+    ncp_uart_ctx_t *chain = (ncp_uart_ctx_t *)handle;
 
     if ((0U != (uart_base->INTENSET & USART_INTENSET_TXIDLEEN_MASK)) && (0U != (uart_base->INTSTAT & USART_INTSTAT_TXIDLE_MASK)))
     {
@@ -292,7 +223,7 @@ static void uart_transfer_handle_irq(void *base, void *handle)
         /* clear rxFIFO */
         uart_base->FIFOCFG |= USART_FIFOCFG_EMPTYRX_MASK;
 
-        OSA_EventSet((osa_event_handle_t)chain->event, UART_EVENT_RX_ERROR);
+        OSA_EventSet((osa_event_handle_t)chain->event, UART_EVENT_RX_FRAME_ERROR);
     }
 }
 
@@ -300,6 +231,8 @@ static void uart_init_hw(void)
 {
     int ret = (int)NCP_STATUS_SUCCESS;
     usart_config_t usartConfig;
+
+    s_uart_ctx.base = NCP_UART;
 
     /* Attach FRG0 clock to FLEXCOMM0 */
     CLOCK_SetFRGClock(NCP_UART_FRG_CLK);
@@ -321,9 +254,10 @@ static void uart_init_hw(void)
     if (ret != kStatus_Success)
     {
         NCP_LOG_ERR("USART_Init failed!");
+        return;
     }
 
-    FLEXCOMM_SetIRQHandler(NCP_UART, uart_transfer_handle_irq, &s_dma_chain_ctrl);
+    FLEXCOMM_SetIRQHandler(NCP_UART, uart_transfer_handle_irq, &s_uart_ctx);
     /* Enable NVIC IRQ. */
     (void)EnableIRQ(NCP_UART_IRQ);
 
@@ -332,28 +266,33 @@ static void uart_init_hw(void)
 
 static void uart_init_dma(void)
 {
-    s_dma_chain_ctrl.base = NCP_UART;
     NVIC_SetPriority(NCP_UART_DMA_IRQ, NCP_UART_DMA_NVIC_PRIO);
 
     /* Initialize DMA */
     DMA_Init(NCP_UART_DMA);
     /* Create DMA handles */
-    DMA_CreateHandle(&s_uart_dma_tx_handle, NCP_UART_DMA, NCP_UART_DMA_TX_CHANNEL);
-    DMA_CreateHandle(&s_uart_dma_rx_handle, NCP_UART_DMA, NCP_UART_DMA_RX_CHANNEL);
+    DMA_CreateHandle(&s_dma_tx_handle, NCP_UART_DMA, NCP_UART_DMA_TX_CHANNEL);
+    DMA_CreateHandle(&s_dma_rx_handle, NCP_UART_DMA, NCP_UART_DMA_RX_CHANNEL);
     DMA_SetChannelPriority(NCP_UART_DMA, NCP_UART_DMA_TX_CHANNEL, kDMA_ChannelPriority3);
     DMA_SetChannelPriority(NCP_UART_DMA, NCP_UART_DMA_RX_CHANNEL, kDMA_ChannelPriority2);
     DMA_EnableChannel(NCP_UART_DMA, NCP_UART_DMA_TX_CHANNEL);
     DMA_EnableChannel(NCP_UART_DMA, NCP_UART_DMA_RX_CHANNEL);
 
-    DMA_SetCallback(&s_uart_dma_tx_handle, dma_tx_callback, &s_dma_chain_ctrl);
-    DMA_SetCallback(&s_uart_dma_rx_handle, dma_rx_callback, &s_dma_chain_ctrl);
+    DMA_SetCallback(&s_dma_tx_handle, dma_tx_callback, &s_uart_ctx);
+    DMA_SetCallback(&s_dma_rx_handle, dma_rx_callback, &s_uart_ctx);
+}
+
+static void uart_hardware_setup(void)
+{
+    uart_init_hw();
+    uart_init_dma();
 }
 
 static int uart_enter_power_down(void)
 {
     /* Abort any ongoing DMA transfers */
-    DMA_AbortTransfer(&s_uart_dma_rx_handle);
-    DMA_AbortTransfer(&s_uart_dma_tx_handle);
+    DMA_AbortTransfer(&s_dma_rx_handle);
+    DMA_AbortTransfer(&s_dma_tx_handle);
     /* Disable DMA channels */
     DMA_DisableChannel(NCP_UART_DMA, NCP_UART_DMA_TX_CHANNEL);
     DMA_DisableChannel(NCP_UART_DMA, NCP_UART_DMA_RX_CHANNEL);
@@ -367,14 +306,11 @@ static int uart_enter_power_down(void)
 
 static int uart_exit_power_down(void)
 {
-    uart_init_hw();
-    uart_init_dma();
+    uart_hardware_setup();
 
-    OSA_EventClear((osa_event_handle_t)s_dma_chain_ctrl.event,
-                    UART_EVENT_TX_MASK | UART_EVENT_RX_MASK | UART_EVENT_RX_HEADER);
+    OSA_EventClear((osa_event_handle_t)s_uart_ctx.event, UART_EVENT_RX_MASK);
 
-    dma_setup_rx_chain(ncp_uart_tlvbuf);
-    DMA_StartTransfer(&s_uart_dma_rx_handle);
+    dma_setup_rx_chain(rx_buffer, TLV_CMD_HEADER_LEN, true);
 
     return (int)NCP_PM_STATUS_SUCCESS;
 }
@@ -414,18 +350,14 @@ static int ncp_uart_init(void *argv)
 
     uart_get_active_sram_bank();
 
-    /* Initialize the USART module. */
-    uart_init_hw();
-
-    /* Initialize the DMA configuration. */
-    uart_init_dma();
+    uart_hardware_setup();
 
     /* Create event group for DMA synchronization */
-    ret = OSA_EventCreate((osa_event_handle_t)s_dma_chain_ctrl.event, true);
+    ret = OSA_EventCreate((osa_event_handle_t)s_uart_ctx.event, true);
     if (ret != kStatus_Success)
     {
         NCP_LOG_ERR("Failed to create event group!");
-        return (int)NCP_STATUS_ERROR;
+        goto cleanup_hw;
     }
 
     /* Create mutex for thread safety */
@@ -433,13 +365,30 @@ static int ncp_uart_init(void *argv)
     if (ret != kStatus_Success)
     {
         NCP_LOG_ERR("Failed to create uart mutex!");
-        OSA_EventDestroy((osa_event_handle_t)s_dma_chain_ctrl.event);
-        return (int)NCP_STATUS_ERROR;
+        goto cleanup_event;
     }
 
-    (void)OSA_TaskCreate((osa_task_handle_t)s_uart_task_handle, OSA_TASK(ncp_uart_rx_task), NULL);
+    ret = OSA_TaskCreate((osa_task_handle_t)s_uart_task_handle, OSA_TASK(ncp_uart_rx_task), NULL);
+    if (ret != kStatus_Success)
+    {
+        NCP_LOG_ERR("Failed to create uart RX task!");
+        goto cleanup_mutex;
+    }
 
-    return ret;
+    return (int)NCP_STATUS_SUCCESS;
+cleanup_mutex:
+    OSA_MutexDestroy((osa_mutex_handle_t)s_uart_mutex);
+cleanup_event:
+    OSA_EventDestroy((osa_event_handle_t)s_uart_ctx.event);
+cleanup_hw:
+    DMA_AbortTransfer(&s_dma_rx_handle);
+    DMA_AbortTransfer(&s_dma_tx_handle);
+    DMA_DisableChannel(NCP_UART_DMA, NCP_UART_DMA_TX_CHANNEL);
+    DMA_DisableChannel(NCP_UART_DMA, NCP_UART_DMA_RX_CHANNEL);
+    DMA_Deinit(NCP_UART_DMA);
+    USART_Deinit(NCP_UART);
+
+    return (int)NCP_STATUS_ERROR;
 }
 
 static int ncp_uart_deinit(void *argv)
@@ -447,8 +396,15 @@ static int ncp_uart_deinit(void *argv)
     (void)argv;
 
     /* Abort any ongoing DMA transfers */
-    DMA_AbortTransfer(&s_uart_dma_rx_handle);
-    DMA_AbortTransfer(&s_uart_dma_tx_handle);
+    DMA_AbortTransfer(&s_dma_rx_handle);
+    DMA_AbortTransfer(&s_dma_tx_handle);
+
+    (void)OSA_TaskDestroy((osa_task_handle_t)s_uart_task_handle);
+
+    /* Destroy synchronization objects */
+    OSA_EventDestroy((osa_event_handle_t)s_uart_ctx.event);
+    OSA_MutexDestroy((osa_mutex_handle_t)s_uart_mutex);
+
     /* Disable DMA channels */
     DMA_DisableChannel(NCP_UART_DMA, NCP_UART_DMA_TX_CHANNEL);
     DMA_DisableChannel(NCP_UART_DMA, NCP_UART_DMA_RX_CHANNEL);
@@ -458,53 +414,83 @@ static int ncp_uart_deinit(void *argv)
     /* Deinit USART */
     USART_Deinit(NCP_UART);
 
-    /* Destroy synchronization objects */
-    OSA_EventDestroy((osa_event_handle_t)s_dma_chain_ctrl.event);
-    OSA_MutexDestroy((osa_mutex_handle_t)s_uart_mutex);
-
-    (void)OSA_TaskDestroy((osa_task_handle_t)s_uart_task_handle);
-
     return NCP_STATUS_SUCCESS;
 }
 
 static int ncp_uart_recv(uint8_t *tlv_buf, size_t *tlv_sz)
 {
     osa_event_flags_t flags;
-    int ret = (int)NCP_STATUS_ERROR;
+    uint32_t cmd_len;
+    uint32_t payload_len;
 
     NCP_ASSERT(NULL != tlv_buf);
     NCP_ASSERT(NULL != tlv_sz);
 
     *tlv_sz = 0;
 
-    OSA_EventClear((osa_event_handle_t)s_dma_chain_ctrl.event, UART_EVENT_RX_MASK);
+    OSA_EventClear((osa_event_handle_t)s_uart_ctx.event, UART_EVENT_RX_MASK);
 
-    dma_setup_rx_chain(tlv_buf);
-    DMA_StartTransfer(&s_uart_dma_rx_handle);
+    dma_setup_rx_chain(tlv_buf, TLV_CMD_HEADER_LEN, true);
+
+    OSA_EventWait((osa_event_handle_t)s_uart_ctx.event,
+                                        UART_EVENT_RX_MASK,
+                                        false,
+                                        osaWaitForever_c,
+                                        &flags);
+    if (flags & UART_EVENT_RX_FRAME_ERROR)
+    {
+        NCP_LOG_DBG("UART RX frame error!");
+        NCP_UART_STATS_INC(drop);
+        goto exit;
+    }
+
+    if (!(flags & UART_EVENT_RX_HEADER))
+    {
+        NCP_LOG_ERR("Failed to receive RX header!");
+        return (int)NCP_STATUS_ERROR;
+    }
+
+    NCP_LOG_DBG("Received TLV header");
+
+    cmd_len = (tlv_buf[TLV_CMD_SIZE_HIGH_BYTES] << 8) | tlv_buf[TLV_CMD_SIZE_LOW_BYTES];
+    if (cmd_len < TLV_CMD_HEADER_LEN || cmd_len > TLV_CMD_BUF_SIZE)
+    {
+        NCP_LOG_ERR("Invalid command length: %u", cmd_len);
+        NCP_UART_STATS_INC(lenerr);
+        NCP_UART_STATS_INC(drop);
+        goto exit;
+    }
+
+    payload_len = cmd_len - TLV_CMD_HEADER_LEN + NCP_CHKSUM_LEN;
+    dma_setup_rx_chain(tlv_buf + TLV_CMD_HEADER_LEN, payload_len, false);
 
     /* Wait for complete transfer */
-    OSA_EventWait((osa_event_handle_t)s_dma_chain_ctrl.event,
+    OSA_EventWait((osa_event_handle_t)s_uart_ctx.event,
                                         UART_EVENT_RX_MASK,
                                         false,
                                         osaWaitForever_c,
                                         &flags);
     if (flags & UART_EVENT_RX_DONE)
     {
-        *tlv_sz = s_dma_chain_ctrl.size;
+        *tlv_sz = cmd_len;
         NCP_UART_STATS_INC(rx);
         NCP_LOG_DBG("Received %zu bytes", *tlv_sz);
         NCP_LOG_HEXDUMP_DBG(tlv_buf, *tlv_sz + NCP_CHKSUM_LEN);
-        ret = (int)NCP_STATUS_SUCCESS;
     }
     else
     {
-        USART_EnableRxDMA(NCP_UART, false);
-        DMA_AbortTransfer(&s_uart_dma_rx_handle);
         NCP_LOG_ERR("UART RX DMA transfer failed!");
-        ret = (int)NCP_STATUS_ERROR;
+        NCP_UART_STATS_INC(drop);
+        goto exit;
     }
 
-    return ret;
+    return (int)NCP_STATUS_SUCCESS;
+
+exit:
+    DMA_AbortTransfer(&s_dma_rx_handle);
+    USART_EnableRxDMA(NCP_UART, false);
+
+    return (int)NCP_STATUS_ERROR;
 }
 
 static void ncp_uart_rx_task(void *argv)
@@ -515,14 +501,14 @@ static void ncp_uart_rx_task(void *argv)
 
     while (1)
     {
-        ret = ncp_uart_recv(ncp_uart_tlvbuf, &tlv_size);
+        ret = ncp_uart_recv(rx_buffer, &tlv_size);
         if (NCP_STATUS_SUCCESS == ret)
         {
-            ncp_tlv_dispatch(ncp_uart_tlvbuf, tlv_size);
+            ncp_tlv_dispatch(rx_buffer, tlv_size);
         }
         else
         {
-            NCP_LOG_ERR("Failed to receive TLV command!");
+            NCP_LOG_DBG("Failed to receive TLV command!");
         }
     }
 }
@@ -546,34 +532,34 @@ static int ncp_uart_send(uint8_t *tlv_buf, size_t tlv_sz, tlv_send_callback_t cb
         s_pm_ops->enter_critical();
     }
 
-    OSA_EventClear((osa_event_handle_t)s_dma_chain_ctrl.event, UART_EVENT_TX_MASK);
+    OSA_EventClear((osa_event_handle_t)s_uart_ctx.event, UART_EVENT_TX_MASK);
 
     NCP_LOG_DBG("Sending: %zu bytes", tlv_sz);
     NCP_LOG_HEXDUMP_DBG(tlv_buf, tlv_sz);
 
     /* Setup TX DMA chain */
     dma_setup_tx_chain(tlv_buf, tlv_sz);
-    DMA_StartTransfer(&s_uart_dma_tx_handle);
+    DMA_StartTransfer(&s_dma_tx_handle);
 
     /* Wait for TX completion or error*/
-    OSA_EventWait((osa_event_handle_t)s_dma_chain_ctrl.event,
+    OSA_EventWait((osa_event_handle_t)s_uart_ctx.event,
                                         UART_EVENT_TX_MASK,
                                         false,
                                         osaWaitForever_c,
                                         &flags);
-    if (flags & UART_EVENT_TX_ERROR)
-    {
-        DMA_AbortTransfer(&s_uart_dma_tx_handle);
-        NCP_LOG_ERR("UART TX DMA transfer failed!");
-        ret = (int)NCP_STATUS_ERROR;
-        goto exit;
-    }
-
     if (flags & UART_EVENT_TX_DONE)
     {
         NCP_UART_STATS_INC(tx);
         NCP_LOG_DBG("Total sent: %zu bytes", tlv_sz);
         ret = (int)NCP_STATUS_SUCCESS;
+    }
+    else
+    {
+        USART_EnableTxDMA(NCP_UART, false);
+        DMA_AbortTransfer(&s_dma_tx_handle);
+        NCP_LOG_ERR("UART TX DMA transfer failed!");
+        ret = (int)NCP_STATUS_ERROR;
+        goto exit;
     }
 
 exit:

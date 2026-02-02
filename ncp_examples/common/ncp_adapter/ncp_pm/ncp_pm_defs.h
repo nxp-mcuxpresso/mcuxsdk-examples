@@ -62,7 +62,6 @@ typedef enum _ncp_pm_wake_src
     NCP_PM_WAKE_SRC_RTC,          /**< RTC wake source */
     NCP_PM_WAKE_SRC_PIN1,         /**< PIN1 wake source */
     NCP_PM_WAKE_SRC_GPIOA,        /**< GPIOA wake source */
-    NCP_PM_WAKE_SRC_FLEXCOMM0,    /**< FLEXCOMM0 wake source */
     NCP_PM_WAKE_SRC_USB,          /**< USB wake source */
     NCP_PM_WAKE_SRC_WKDEEPSLEEP,  /**< WKDEEPSLEEP wake source */
     NCP_PM_WAKE_SRC_SDIO,         /**< SDIO wake source */

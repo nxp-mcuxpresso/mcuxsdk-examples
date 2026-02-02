@@ -90,7 +90,7 @@ mcux_add_source(
             common/ncp_adapter/ncp_tlv/ncp_tlv_adapter.h
             common/ncp_adapter/ncp_intf/ncp_intf_pm.c
             common/ncp_adapter/ncp_intf/ncp_intf_pm.h
-            common/ncp_adapter/ncp_intf/uart/ncp_intf_uart.c
+            common/ncp_adapter/ncp_intf/uart/ncp_intf_uart_device.c
             common/ncp_adapter/ncp_intf/uart/ncp_intf_uart.h
             common/ncp_adapter/ncp_intf/usb/usb_device_cdc/usb_device_cdc_app.c
             common/ncp_adapter/ncp_intf/usb/usb_device_cdc/usb_device_cdc_app.h

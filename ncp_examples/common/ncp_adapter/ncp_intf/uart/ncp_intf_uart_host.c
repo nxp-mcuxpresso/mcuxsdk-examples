@@ -5,27 +5,12 @@
  * The BSD-3-Clause license can be found at https://spdx.org/licenses/BSD-3-Clause.html
  */
 #if CONFIG_NCP_UART
-#include "fsl_os_abstraction.h"
-#include "fsl_os_abstraction_free_rtos.h"
-#include "fsl_gpio.h"
-
-#if defined(RW610)
-#include "fsl_flexcomm.h"
-#include "fsl_usart.h"
-#include "fsl_usart_freertos.h"
-#include "fsl_pm_core.h"
-#elif defined(MIMXRT1062_SERIES)
-#include "fsl_lpuart.h"
-#include "fsl_lpuart_freertos.h"
-#endif
-
 #include "ncp_intf_uart.h"
-#include "pin_mux.h"
-#include "ncp_adapter.h"
-#include "ncp_tlv_adapter.h"
-#include "ncp_intf_pm.h"
-#include "ncp_pm.h"
-#include "ncp_log.h"
+#include "fsl_gpio.h"
+#include "fsl_lpuart.h"
+#include "fsl_lpuart_edma.h"
+#include "fsl_dmamux.h"
+#include "fsl_edma.h"
 
 NCP_LOG_MODULE_REGISTER(ncp_uart, CONFIG_LOG_NCP_INTF_LEVEL);
 
@@ -33,272 +18,285 @@ NCP_LOG_MODULE_REGISTER(ncp_uart, CONFIG_LOG_NCP_INTF_LEVEL);
  * Defines
  ******************************************************************************/
 
-#if !defined(RW610) && !defined (MIMXRT1062_SERIES)
-#error "Please define macro for Redfinch or MIMXRT1060 board"
-#endif
-
-#if defined(RW610)
-#define PROTOCOL_UART_FRG_CLK \
-    (&(const clock_frg_clk_config_t){0, kCLOCK_FrgMainClk, 255, 0}) /*!< Select FRG0 mux as frg_pll */
-#define PROTOCOL_UART_CLK_ATTACH  kFRG_to_FLEXCOMM0
-#define PROTOCOL_UART             USART0
-#define PROTOCOL_UART_CLK_FREQ    CLOCK_GetFlexCommClkFreq(0)
-#define PROTOCOL_UART_IRQ         FLEXCOMM0_IRQn
-#elif defined(MIMXRT1062_SERIES)
 extern uint32_t BOARD_DebugConsoleSrcFreq(void);
-#define PROTOCOL_UART           LPUART3
-#define PROTOCOL_UART_CLK_FREQ  BOARD_DebugConsoleSrcFreq()
-#define PROTOCOL_UART_IRQ       LPUART3_IRQn
-#endif
+#define NCP_UART                     LPUART3
+#define NCP_UART_CLK_FREQ            BOARD_DebugConsoleSrcFreq()
+#define NCP_UART_IRQ                 LPUART3_IRQn
+#define NCP_UART_NVIC_PRIO           5U
 
-#define PROTOCOL_UART_NVIC_PRIO 5
-#define PROTOCOL_UART_BAUDRATE  3000000U
-#define BACKGROUND_BUFFER_SIZE  256
-
-#if (PROTOCOL_UART_BAUDRATE > 115200U)
-#define NCP_UART_IS_HIGH_BAUD      1
-#else
-#define NCP_UART_IS_HIGH_BAUD      0
-#endif
-
-#define NCP_UART_TASK_PRIORITY    (PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-3)))
-#if CONFIG_NCP_USE_ENCRYPT
-#define NCP_UART_TASK_STACK_SIZE  4096
-#else
-#define NCP_UART_TASK_STACK_SIZE  1024
-#endif
-
-#if (CONFIG_NCP_DEBUG) && (CONFIG_NCP_UART)
-#define NCP_UART_STATS_INC(x) NCP_STATS_INC(intf.x)
-#else
-#define NCP_UART_STATS_INC(x)
-#endif
+#define NCP_UART_DMA                 DMA0
+#define NCP_UART_DMAMUX              DMAMUX
+#define NCP_UART_DMA_CHN0_IRQ        DMA0_DMA16_IRQn
+#define NCP_UART_DMA_CHN1_IRQ        DMA1_DMA17_IRQn
+#define NCP_UART_DMA_NVIC_PRIO       5U
+#define NCP_UART_DMA_TX_CHANNEL      0U
+#define NCP_UART_DMA_RX_CHANNEL      1U
+#define NCP_UART_DMA_TX_REQUEST      kDmaRequestMuxLPUART3Tx
+#define NCP_UART_DMA_RX_REQUEST      kDmaRequestMuxLPUART3Rx
 
 /*******************************************************************************
  * Variables
  ******************************************************************************/
+
 static const ncp_pm_ops_t *s_pm_ops = NULL;
 
-/* UART ringbuffer */
-static uint8_t ncp_uart_bgbuf[BACKGROUND_BUFFER_SIZE];
+static lpuart_edma_handle_t s_uart_dma_handle;
+static edma_handle_t s_dma_tx_handle;
+static edma_handle_t s_dma_rx_handle;
 
-#if defined(RW610)
-static pm_wakeup_source_t uartWakeupSource;
+typedef struct {
+    LPUART_Type *base;
+    volatile rx_state_t rx_state;
+    volatile OSA_EVENT_HANDLE_DEFINE(event);
+} ncp_uart_ctx_t;
 
-usart_rtos_handle_t ncp_rtos_handle;
-usart_handle_t      ncp_t_handle;
+static ncp_uart_ctx_t s_uart_ctx = {0};
 
-struct rtos_usart_config ncp_uart_config = {
-    .base        = PROTOCOL_UART,
-    .baudrate    = PROTOCOL_UART_BAUDRATE,
-    .parity      = kUSART_ParityDisabled,
-    .stopbits    = kUSART_OneStopBit,
-    .buffer      = ncp_uart_bgbuf,
-    .buffer_size = sizeof(ncp_uart_bgbuf),
-    .enableHardwareFlowControl = true,
-};
+AT_NONCACHEABLE_SECTION_ALIGN(static uint8_t rx_buffer[TLV_CMD_BUF_SIZE], 4);
 
-#define UART_WAKEUP_MAGIC_PATTERN  (0xABCDEF8987FEDCBAU)
-#elif defined(MIMXRT1062_SERIES)
-lpuart_rtos_handle_t  ncp_rtos_handle;
-lpuart_handle_t       ncp_t_handle;
+static void ncp_uart_rx_task(void *argv);
+static OSA_TASK_HANDLE_DEFINE(s_uart_task_handle);
+static OSA_TASK_DEFINE(ncp_uart_rx_task, NCP_UART_TASK_PRIORITY, 1, NCP_UART_TASK_STACK_SIZE, 0);
 
-lpuart_rtos_config_t ncp_uart_config = {
-    .base        = PROTOCOL_UART,
-    .baudrate    = PROTOCOL_UART_BAUDRATE,
-    .parity      = kLPUART_ParityDisabled,
-    .stopbits    = kLPUART_OneStopBit,
-    .buffer      = ncp_uart_bgbuf,
-    .buffer_size = sizeof(ncp_uart_bgbuf),
-    .enableRxRTS = true,
-    .enableTxCTS = true,
-};
-#endif
-
-extern uint32_t ncp_tlv_chksum(uint8_t *buf, uint16_t len);
-
-static uint8_t ncp_uart_tlvbuf[TLV_CMD_BUF_SIZE];
-static void ncp_uart_intf_task(void *argv);
-
-static OSA_TASK_HANDLE_DEFINE(ncp_uartTaskHandle);
-static OSA_TASK_DEFINE(ncp_uart_intf_task, NCP_UART_TASK_PRIORITY, 1, NCP_UART_TASK_STACK_SIZE, 0);
+OSA_MUTEX_HANDLE_DEFINE(s_uart_mutex);
 
 /*******************************************************************************
- * API
+ * Code
  ******************************************************************************/
-#if defined(RW610)
-static bool is_wakeup_magic_pattern(uint8_t *tlv_buf, size_t length)
-{
-    uint32_t local_checksum = 0, remote_checksum = 0;
-    uint64_t magic_pattern = UART_WAKEUP_MAGIC_PATTERN;
 
-    if ((*(uint64_t *)tlv_buf) == magic_pattern)
+void uart_transfer_callback(LPUART_Type *base, lpuart_edma_handle_t *handle, status_t status, void *userData)
+{
+    ncp_uart_ctx_t *ctx = (ncp_uart_ctx_t *)userData;
+
+    if (kStatus_LPUART_TxIdle == status)
     {
-        return true;
+        OSA_EventSet((osa_event_handle_t)ctx->event, UART_EVENT_TX_DONE);
     }
 
-    /* check CRC */
-    remote_checksum = NCP_GET_PEER_CHKSUM(tlv_buf, sizeof(magic_pattern));
-    local_checksum  = ncp_tlv_chksum((uint8_t *)&magic_pattern, sizeof(magic_pattern));
-    return remote_checksum == local_checksum;
+    if (kStatus_LPUART_RxIdle == status)
+    {
+        if (ctx->rx_state == RX_STATE_HEADER)
+        {
+            OSA_EventSet((osa_event_handle_t)ctx->event, UART_EVENT_RX_HEADER);
+        }
+        else if (ctx->rx_state == RX_STATE_PAYLOAD)
+        {
+            OSA_EventSet((osa_event_handle_t)ctx->event, UART_EVENT_RX_DONE);
+        }
+    }
 }
-#endif
+
+static void uart_init_hw(void)
+{
+    lpuart_config_t lpuart_config;
+
+    s_uart_ctx.base = NCP_UART;
+
+    NVIC_SetPriority(NCP_UART_IRQ, NCP_UART_NVIC_PRIO);
+
+    LPUART_GetDefaultConfig(&lpuart_config);
+    lpuart_config.baudRate_Bps = NCP_UART_BAUDRATE;
+    lpuart_config.enableTx = true;
+    lpuart_config.enableRx = true;
+    lpuart_config.enableRxRTS = true;
+    lpuart_config.enableTxCTS = true;
+
+    /* Initialize LPUART */
+    if (LPUART_Init(NCP_UART, &lpuart_config, NCP_UART_CLK_FREQ) != kStatus_Success)
+    {
+        NCP_LOG_ERR("LPUART_Init failed!");
+    }
+}
+
+static void uart_init_dma(void)
+{
+    edma_config_t edma_config;
+
+    NVIC_SetPriority(NCP_UART_DMA_CHN0_IRQ, NCP_UART_DMA_NVIC_PRIO);
+    NVIC_SetPriority(NCP_UART_DMA_CHN1_IRQ, NCP_UART_DMA_NVIC_PRIO);
+
+    /* Initialize DMAMUX */
+    DMAMUX_Init(NCP_UART_DMAMUX);
+    DMAMUX_SetSource(NCP_UART_DMAMUX, NCP_UART_DMA_TX_CHANNEL, NCP_UART_DMA_TX_REQUEST);
+    DMAMUX_SetSource(NCP_UART_DMAMUX, NCP_UART_DMA_RX_CHANNEL, NCP_UART_DMA_RX_REQUEST);
+    DMAMUX_EnableChannel(NCP_UART_DMAMUX, NCP_UART_DMA_TX_CHANNEL);
+    DMAMUX_EnableChannel(NCP_UART_DMAMUX, NCP_UART_DMA_RX_CHANNEL);
+
+    /* Initialize eDMA */
+    EDMA_GetDefaultConfig(&edma_config);
+    EDMA_Init(NCP_UART_DMA, &edma_config);
+
+    /* Create eDMA handles */
+    EDMA_CreateHandle(&s_dma_tx_handle, NCP_UART_DMA, NCP_UART_DMA_TX_CHANNEL);
+    EDMA_CreateHandle(&s_dma_rx_handle, NCP_UART_DMA, NCP_UART_DMA_RX_CHANNEL);
+
+    LPUART_TransferCreateHandleEDMA(NCP_UART, &s_uart_dma_handle, uart_transfer_callback, (void *)&s_uart_ctx, &s_dma_tx_handle, &s_dma_rx_handle);
+}
+
+static void uart_hardware_setup(void)
+{
+    uart_init_hw();
+    uart_init_dma();
+}
 
 static int ncp_uart_init(void *argv)
 {
-    int ret;
+    int ret = (int)NCP_STATUS_SUCCESS;
 
     ARG_UNUSED(argv);
 
-#if defined(RW610)
-    /* Attach FRG0 clock to FLEXCOMM0 */
-    CLOCK_SetFRGClock(PROTOCOL_UART_FRG_CLK);
-    CLOCK_AttachClk(PROTOCOL_UART_CLK_ATTACH);
-#endif
-    ncp_uart_config.srcclk = PROTOCOL_UART_CLK_FREQ;
+    memset(&s_uart_ctx, 0, sizeof(s_uart_ctx));
+    s_uart_ctx.rx_state = RX_STATE_IDLE;
 
-    NVIC_SetPriority(PROTOCOL_UART_IRQ, PROTOCOL_UART_NVIC_PRIO);
+    uart_hardware_setup();
 
-#if defined(RW610)
-    ret = USART_RTOS_Init(&ncp_rtos_handle, &ncp_t_handle, &ncp_uart_config);
-#elif defined(MIMXRT1062_SERIES)
-    ret = LPUART_RTOS_Init(&ncp_rtos_handle, &ncp_t_handle, &ncp_uart_config);
-#endif
-    if (kStatus_Success != ret)
+    /* Create event group for eDMA synchronization */
+    ret = OSA_EventCreate((osa_event_handle_t)s_uart_ctx.event, true);
+    if (ret != kStatus_Success)
     {
-        NCP_LOG_ERR("NCP UART interface failed to initialize!");
-        return (int)NCP_STATUS_ERROR;
+        NCP_LOG_ERR("Failed to create event group!");
+        goto cleanup_hw;
     }
 
-    (void)OSA_TaskCreate((osa_task_handle_t)ncp_uartTaskHandle, OSA_TASK(ncp_uart_intf_task), NULL);
+    ret = OSA_MutexCreate((osa_mutex_handle_t)s_uart_mutex);
+    if (ret != kStatus_Success)
+    {
+        NCP_LOG_ERR("Failed to create uart mutex!");
+        goto cleanup_event;
+    }
+
+    ret = OSA_TaskCreate((osa_task_handle_t)s_uart_task_handle, OSA_TASK(ncp_uart_rx_task), NULL);
+    if (ret != kStatus_Success)
+    {
+        NCP_LOG_ERR("Failed to create uart RX task!");
+        goto cleanup_mutex;
+    }
 
     return (int)NCP_STATUS_SUCCESS;
+
+cleanup_mutex:
+    OSA_MutexDestroy((osa_mutex_handle_t)s_uart_mutex);
+cleanup_event:
+    OSA_EventDestroy((osa_event_handle_t)s_uart_ctx.event);
+cleanup_hw:
+    LPUART_TransferAbortReceiveEDMA(NCP_UART, &s_uart_dma_handle);
+    LPUART_TransferAbortSendEDMA(NCP_UART, &s_uart_dma_handle);
+    EDMA_Deinit(NCP_UART_DMA);
+    DMAMUX_Deinit(NCP_UART_DMAMUX);
+    LPUART_Deinit(NCP_UART);
+
+    return (int)NCP_STATUS_ERROR;
 }
 
 static int ncp_uart_deinit(void *argv)
 {
-    int ret;
-
     ARG_UNUSED(argv);
 
-#if defined(RW610)
-    ret = USART_RTOS_Deinit(&ncp_rtos_handle);
-#elif defined(MIMXRT1062_SERIES)
-    ret = LPUART_RTOS_Deinit(&ncp_rtos_handle);
-#endif
-    if (kStatus_Success != ret)
-    {
-        return (int)NCP_STATUS_ERROR;
-    }
-    (void)OSA_TaskDestroy((osa_task_handle_t)ncp_uartTaskHandle);
+    LPUART_TransferAbortReceiveEDMA(NCP_UART, &s_uart_dma_handle);
+    LPUART_TransferAbortSendEDMA(NCP_UART, &s_uart_dma_handle);
+
+    /* Destroy task */
+    (void)OSA_TaskDestroy((osa_task_handle_t)s_uart_task_handle);
+
+    OSA_EventDestroy((osa_event_handle_t)s_uart_ctx.event);
+    OSA_MutexDestroy((osa_mutex_handle_t)s_uart_mutex);
+
+    /* Deinitialize eDMA */
+    EDMA_Deinit(NCP_UART_DMA);
+    DMAMUX_Deinit(NCP_UART_DMAMUX);
+
+    /* Deinitialize LPUART */
+    LPUART_Deinit(NCP_UART);
 
     return (int)NCP_STATUS_SUCCESS;
 }
 
 static int ncp_uart_recv(uint8_t *tlv_buf, size_t *tlv_sz)
 {
-    int ret;
-    size_t rx_len = 0, cmd_len = 0;
-    int tmp_len = 0, total = 0;
+    osa_event_flags_t flags;
+    lpuart_transfer_t receiveXfer;
+    uint32_t cmd_len;
 
     NCP_ASSERT(NULL != tlv_buf);
     NCP_ASSERT(NULL != tlv_sz);
 
-    while (tmp_len != TLV_CMD_HEADER_LEN)
+    /* Clear RX events */
+    OSA_EventClear((osa_event_handle_t)s_uart_ctx.event, UART_EVENT_RX_MASK);
+
+    s_uart_ctx.rx_state = RX_STATE_HEADER;
+    receiveXfer.data = tlv_buf;
+    receiveXfer.dataSize = TLV_CMD_HEADER_LEN;
+
+    if (kStatus_Success != LPUART_ReceiveEDMA(NCP_UART, &s_uart_dma_handle, &receiveXfer))
     {
-#if defined(RW610)
-        ret = USART_RTOS_Receive(&ncp_rtos_handle, tlv_buf + tmp_len, TLV_CMD_HEADER_LEN, &rx_len);
-        /* In PM2 + INTF mode, the NCP host needs to send the uart magic pattern to wake up the NCP device first,
-         * so if it detects the magic pattern, it will be discarded.
-         */
-        if (is_wakeup_magic_pattern(tlv_buf, rx_len))
-        {
-            NCP_LOG_DBG("Received magic pattern");
-            continue;
-        }
-#elif defined(MIMXRT1062_SERIES)
-        /* Once NCP device UART power off, there will be fake RX interrupt generated on RT1060 host side.
-        * Check first byte in response buffer to remove dummy byte.
-        */
-        ret = LPUART_RTOS_Receive(&ncp_rtos_handle, tlv_buf + tmp_len, 1, &rx_len);
-        if (tlv_buf[0] == 0x0 || tlv_buf[0] == 0xff)
-        {
-            NCP_LOG_DBG("Received one dummy byte");
-            continue;
-        }
-        tmp_len += rx_len;
-        total   += rx_len;
-        ret = LPUART_RTOS_Receive(&ncp_rtos_handle, tlv_buf + tmp_len, TLV_CMD_HEADER_LEN - 1, &rx_len);
-#endif
-        tmp_len += rx_len;
-        total   += rx_len;
+        NCP_LOG_ERR("Failed to start eDMA receive for header!");
+        goto exit;
     }
 
-    NCP_LOG_HEXDUMP_DBG(tlv_buf, total);
+    OSA_EventWait((osa_event_handle_t)s_uart_ctx.event,
+                                        UART_EVENT_RX_MASK,
+                                        false,
+                                        osaWaitForever_c,
+                                        &flags);
+    if (!(flags & UART_EVENT_RX_HEADER))
+    {
+        NCP_LOG_ERR("Failed to receive TLV header!");
+        NCP_UART_STATS_INC(drop);
+        goto exit;
+    }
+
+    NCP_LOG_DBG("Received TLV header");
+
     cmd_len = (tlv_buf[TLV_CMD_SIZE_HIGH_BYTES] << 8) | tlv_buf[TLV_CMD_SIZE_LOW_BYTES];
-    tmp_len = 0;
-    rx_len  = 0;
     if (cmd_len < TLV_CMD_HEADER_LEN || cmd_len > TLV_CMD_BUF_SIZE)
     {
+        NCP_LOG_ERR("Invalid command length: %u", cmd_len);
         NCP_UART_STATS_INC(lenerr);
         NCP_UART_STATS_INC(drop);
-
-        (void)memset(ncp_uart_config.buffer, 0, ncp_uart_config.buffer_size);
-        (void)memset(tlv_buf, 0, TLV_CMD_BUF_SIZE);
-#if defined(RW610)
-        USART_TransferStartRingBuffer(ncp_rtos_handle.base, ncp_rtos_handle.t_state, ncp_uart_config.buffer, ncp_uart_config.buffer_size);
-#elif defined(MIMXRT1062_SERIES)
-        LPUART_TransferStartRingBuffer(ncp_rtos_handle.base, ncp_rtos_handle.t_state, ncp_uart_config.buffer, ncp_uart_config.buffer_size);
-#endif
-        total = 0;
-
-        NCP_LOG_ERR("Failed to receive TLV Header, cmd_len = 0x%02x!", cmd_len);
-        NCP_ASSERT(0);
-
-        return (int)NCP_STATUS_ERROR;
+        goto exit;
     }
 
-    while (tmp_len != (cmd_len - TLV_CMD_HEADER_LEN + NCP_CHKSUM_LEN))
+    s_uart_ctx.rx_state = RX_STATE_PAYLOAD;
+    receiveXfer.data = tlv_buf + TLV_CMD_HEADER_LEN;
+    receiveXfer.dataSize = cmd_len - TLV_CMD_HEADER_LEN + NCP_CHKSUM_LEN;
+
+    if (kStatus_Success != LPUART_ReceiveEDMA(NCP_UART, &s_uart_dma_handle, &receiveXfer))
     {
-#if defined(RW610)
-        ret = USART_RTOS_Receive(&ncp_rtos_handle, tlv_buf + TLV_CMD_HEADER_LEN + tmp_len, cmd_len - TLV_CMD_HEADER_LEN + NCP_CHKSUM_LEN - tmp_len, &rx_len);
-#elif defined(MIMXRT1062_SERIES)
-        ret = LPUART_RTOS_Receive(&ncp_rtos_handle, tlv_buf + TLV_CMD_HEADER_LEN + tmp_len, cmd_len - TLV_CMD_HEADER_LEN + NCP_CHKSUM_LEN - tmp_len, &rx_len);
-#endif
-        tmp_len += rx_len;
-        total   += rx_len;
-        if ((ret ==
-#if defined(RW610)
-             kStatus_USART_RxRingBufferOverrun
-#elif defined(MIMXRT1062_SERIES)
-             kStatus_LPUART_RxRingBufferOverrun
-#endif
-               ) || total >= TLV_CMD_BUF_SIZE)
-        {
-            NCP_UART_STATS_INC(ringerr);
-            NCP_UART_STATS_INC(lenerr);
-            NCP_UART_STATS_INC(drop);
-
-            (void)memset(ncp_uart_config.buffer, 0, ncp_uart_config.buffer_size);
-            (void)memset(tlv_buf, 0, TLV_CMD_BUF_SIZE);
-            total = 0;
-
-            NCP_LOG_ERR("NCP UART interface ring buffer overflow!");
-#if defined(RW610)
-            NCP_ASSERT(0);
-#endif
-
-            return (int)NCP_STATUS_ERROR;
-        }
+        NCP_LOG_ERR("Failed to start eDMA receive for payload!");
+        goto exit;
     }
 
-    *tlv_sz = cmd_len;
-    NCP_UART_STATS_INC(rx);
+    OSA_EventWait((osa_event_handle_t)s_uart_ctx.event,
+                                        UART_EVENT_RX_MASK,
+                                        false,
+                                        osaWaitForever_c,
+                                        &flags);
+
+    if (flags & UART_EVENT_RX_DONE)
+    {
+        s_uart_ctx.rx_state = RX_STATE_IDLE;
+        *tlv_sz = cmd_len;
+        NCP_UART_STATS_INC(rx);
+        NCP_LOG_DBG("Received %zu bytes", *tlv_sz);
+        NCP_LOG_HEXDUMP_DBG(tlv_buf, *tlv_sz + NCP_CHKSUM_LEN);
+    }
+    else
+    {
+        NCP_LOG_ERR("LPUART RX eDMA transfer failed!");
+        NCP_UART_STATS_INC(drop);
+        goto exit;
+    }
 
     return (int)NCP_STATUS_SUCCESS;
+
+exit:
+    s_uart_ctx.rx_state = RX_STATE_IDLE;
+    LPUART_TransferAbortReceiveEDMA(NCP_UART, &s_uart_dma_handle);
+
+    return (int)NCP_STATUS_ERROR;
 }
 
-static void ncp_uart_intf_task(void *argv)
+static void ncp_uart_rx_task(void *argv)
 {
     int ret;
     size_t tlv_size = 0;
@@ -307,10 +305,10 @@ static void ncp_uart_intf_task(void *argv)
 
     while (1)
     {
-        ret = ncp_uart_recv(ncp_uart_tlvbuf, &tlv_size);
+        ret = ncp_uart_recv(rx_buffer, &tlv_size);
         if (NCP_STATUS_SUCCESS == ret)
         {
-            ncp_tlv_dispatch(ncp_uart_tlvbuf, tlv_size);
+            ncp_tlv_dispatch(rx_buffer, tlv_size);
         }
         else
         {
@@ -321,102 +319,67 @@ static void ncp_uart_intf_task(void *argv)
 
 static int ncp_uart_send(uint8_t *tlv_buf, size_t tlv_sz, tlv_send_callback_t cb)
 {
-    int ret;
+    int ret = (int)NCP_STATUS_SUCCESS;
+    osa_event_flags_t flags;
+    lpuart_transfer_t sendXfer;
 
     ARG_UNUSED(cb);
-
     NCP_ASSERT(NULL != tlv_buf);
+
+    if (OSA_MutexLock((osa_mutex_handle_t)s_uart_mutex, osaWaitForever_c) != KOSA_StatusSuccess)
+    {
+        return (int)NCP_STATUS_ERROR;
+    }
 
     if (s_pm_ops && s_pm_ops->enter_critical)
     {
         s_pm_ops->enter_critical();
     }
 
-#if defined(RW610)
-    ret = USART_RTOS_Send(&ncp_rtos_handle, tlv_buf, tlv_sz);
-#elif defined(MIMXRT1062_SERIES)
-    ret = LPUART_RTOS_Send(&ncp_rtos_handle, tlv_buf, tlv_sz);
-#endif
+    /* Clear TX events */
+    OSA_EventClear((osa_event_handle_t)s_uart_ctx.event, UART_EVENT_TX_MASK);
 
+    sendXfer.data = tlv_buf;
+    sendXfer.dataSize = tlv_sz;
+    NCP_LOG_DBG("Sending: %zu bytes", tlv_sz);
+    NCP_LOG_HEXDUMP_DBG(tlv_buf, tlv_sz);
+
+    if (kStatus_Success != LPUART_SendEDMA(NCP_UART, &s_uart_dma_handle, &sendXfer))
+    {
+        LPUART_TransferAbortSendEDMA(NCP_UART, &s_uart_dma_handle);
+        NCP_LOG_ERR("Failed to start eDMA send!");
+        ret = (int)NCP_STATUS_ERROR;
+        goto exit;
+    }
+
+    /* Wait for TX completion or error */
+    OSA_EventWait((osa_event_handle_t)s_uart_ctx.event,
+                                        UART_EVENT_TX_MASK,
+                                        false,
+                                        osaWaitForever_c,
+                                        &flags);
+    if (flags & UART_EVENT_TX_DONE)
+    {
+        NCP_UART_STATS_INC(tx);
+        NCP_LOG_DBG("Total sent: %zu bytes", tlv_sz);
+        ret = (int)NCP_STATUS_SUCCESS;
+    }
+    else
+    {
+        NCP_LOG_ERR("LPUART TX eDMA transfer failed!");
+        ret = (int)NCP_STATUS_ERROR;
+        goto exit;
+    }
+
+exit:
     if (s_pm_ops && s_pm_ops->exit_critical)
     {
         s_pm_ops->exit_critical();
     }
 
-    if (NCP_STATUS_SUCCESS != ret)
-    {
-        return (int)NCP_STATUS_ERROR;
-    }
-
-    NCP_UART_STATS_INC(tx);
-
-    return (int)NCP_STATUS_SUCCESS;
-}
-
-#if defined(RW610)
-static int ncp_uart_exit_power_down(void)
-{
-    int ret = (int)NCP_PM_STATUS_SUCCESS;
-
-    usart_config_t defcfg;
-    /* Attach FRG0 clock to FLEXCOMM0 */
-    CLOCK_SetFRGClock(PROTOCOL_UART_FRG_CLK);
-    CLOCK_AttachClk(PROTOCOL_UART_CLK_ATTACH);
-    ncp_uart_config.srcclk = PROTOCOL_UART_CLK_FREQ;
-
-    USART_GetDefaultConfig(&defcfg);
-    defcfg.baudRate_Bps = ncp_uart_config.baudrate;
-    defcfg.parityMode   = ncp_uart_config.parity;
-    defcfg.enableTx     = true;
-    defcfg.enableRx     = true;
-    defcfg.enableHardwareFlowControl = ncp_uart_config.enableHardwareFlowControl;
-
-    ret = USART_Init(ncp_rtos_handle.base, &defcfg, ncp_uart_config.srcclk);
-    /* Enable interrupt in NVIC. */
-    NVIC_SetPriority(PROTOCOL_UART_IRQ, PROTOCOL_UART_NVIC_PRIO);
-    FLEXCOMM_SetIRQHandler(ncp_rtos_handle.base,(flexcomm_irq_handler_t)USART_TransferHandleIRQ, ncp_rtos_handle.t_state);
-    USART_EnableInterrupts(ncp_rtos_handle.base,USART_FIFOINTENSET_RXLVL_MASK | USART_FIFOINTENSET_RXERR_MASK);
+    OSA_MutexUnlock((osa_mutex_handle_t)s_uart_mutex);
 
     return ret;
-}
-#endif
-
-static int ncp_uart_pm_init(void)
-{
-#if defined(RW610)
-    s_pm_ops = ncp_pm_get_ops();
-
-    if (s_pm_ops && s_pm_ops->init_wakeup_src)
-    {
-        s_pm_ops->init_wakeup_src(&uartWakeupSource, (uint32_t)FLEXCOMM0_IRQn, true);
-    }
-#endif
-    return (int)NCP_PM_STATUS_SUCCESS;
-}
-
-static int ncp_uart_pm_prep(uint8_t pm_state, uint8_t event_type, void *data)
-{
-    ARG_UNUSED(pm_state);
-    ARG_UNUSED(event_type);
-    ARG_UNUSED(data);
-
-    return 0;
-}
-
-static int ncp_uart_pm_enter(uint8_t pm_state)
-{
-#if defined(RW610)
-    if (pm_state == NCP_PM_STATE_PM2)
-    {
-        /* Enable RX interrupt. */
-        USART_EnableInterrupts(PROTOCOL_UART, kUSART_RxLevelInterruptEnable | kUSART_RxErrorInterruptEnable);
-        if (s_pm_ops && s_pm_ops->enable_wakeup_src)
-        {
-            s_pm_ops->enable_wakeup_src(&uartWakeupSource);
-        }
-    }
-#endif
-    return NCP_PM_STATUS_SUCCESS;
 }
 
 static int ncp_uart_pm_exit(uint8_t pm_state)
@@ -427,15 +390,16 @@ static int ncp_uart_pm_exit(uint8_t pm_state)
     GPIO_PinWrite(GPIO1, 27, 1);
     return NCP_PM_STATUS_SUCCESS;
 #else
+    ARG_UNUSED(pm_state);
     return NCP_PM_STATUS_SKIP;
 #endif
 }
 
 static ncp_intf_pm_ops_t ncp_uart_pm_ops =
 {
-    .init  = ncp_uart_pm_init,
-    .prep  = ncp_uart_pm_prep,
-    .enter = ncp_uart_pm_enter,
+    .init  = NULL,
+    .prep  = NULL,
+    .enter = NULL,
     .exit  = ncp_uart_pm_exit,
 };
 

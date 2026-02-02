@@ -183,9 +183,6 @@ void ncp_pm_get_wakeup_source(void *ws)
     {
         switch ((IRQn_Type)irqn)
         {
-            case FLEXCOMM0_IRQn:
-                s_wake_src = NCP_PM_WAKE_SRC_FLEXCOMM0;
-                break;
             case USB_IRQn:
                 s_wake_src = NCP_PM_WAKE_SRC_USB;
                 break;
@@ -234,9 +231,6 @@ static void ncp_pm_print_wakeup_source(void)
 
     switch (s_wake_src)
     {
-        case NCP_PM_WAKE_SRC_FLEXCOMM0:
-            src_str = "FLEXCOMM0";
-            break;
         case NCP_PM_WAKE_SRC_USB:
             src_str = "USB";
             break;
@@ -260,6 +254,7 @@ static void ncp_pm_print_wakeup_source(void)
             break;
         case NCP_PM_WAKE_SRC_SDIO:
             src_str = "SDIO";
+            break;
         case NCP_PM_WAKE_SRC_DMA0:
             src_str = "DMA0";
             break;

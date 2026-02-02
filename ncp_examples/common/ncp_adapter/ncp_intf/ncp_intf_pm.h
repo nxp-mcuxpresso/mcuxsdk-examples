@@ -10,6 +10,10 @@
 
 #include "fsl_common.h"
 
+#define SRAM_BASE_ADDR          0x20000000U
+#define SRAM_BANK_SIZE          0x00010000U  /* 64KB per bank */
+#define GET_BANK_NUM(addr)      (((uint32_t)(addr) - SRAM_BASE_ADDR) / SRAM_BANK_SIZE)
+
 /**
  * @brief Active SRAM bank information structure.
  */
