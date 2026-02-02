@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 NXP
+ * Copyright 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -19,6 +19,9 @@
 #endif
 #if defined(BOARD_USE_PCAL6408) && BOARD_USE_PCAL6408
 #include "fsl_pcal6408.h"
+#endif
+#if defined(BOARD_USE_PI4IO6408) && BOARD_USE_PI4IO6408
+#include "fsl_pi4io6408.h"
 #endif
 #if defined(BOARD_USE_PCA6416A) && BOARD_USE_PCA6416A
 #include "fsl_pca6416a.h"
@@ -153,6 +156,12 @@
 #define BOARD_PCAL6408_I2C3_ADDR       (0x20U)
 #define BOARD_PCAL6408_I2C3_CLOCK_ROOT kCLOCK_lpi2c3
 #define BOARD_PCAL6408_I2C3_CLOCK_FREQ CLOCK_GetRate(BOARD_PCAL6408_I2C3_CLOCK_ROOT)
+
+/* PI4IO6408 */
+#define BOARD_PI4IO6408_I2C3            LPI2C3
+#define BOARD_PI4IO6408_I2C3_ADDR       (0x43U)
+#define BOARD_PI4IO6408_I2C3_CLOCK_ROOT kCLOCK_lpi2c3
+#define BOARD_PI4IO6408_I2C3_CLOCK_FREQ CLOCK_GetRate(BOARD_PI4IO6408_I2C3_CLOCK_ROOT)
 
 /* output for BOARD_PCAL6408_I2C3 */
 #define BOARD_PCAL6408_CSI1_SYNC         (0U)
@@ -340,6 +349,25 @@ void BOARD_InitPCAL6408_I2C1(pcal6408_handle_t *handle);
 void BOARD_InitPCAL6408_I2C3(pcal6408_handle_t *handle);
 void BOARD_InitPCAL6408_I2C4(pcal6408_handle_t *handle);
 void BOARD_InitPCAL6408_I2C5(pcal6408_handle_t *handle);
+#endif /* BOARD_USE_PCAL6408 */
+
+#if defined(BOARD_USE_PI4IO6408) && BOARD_USE_PI4IO6408
+void BOARD_PI4IO6408_I2C_Init(void *base, uint32_t clkSrc_Hz);
+status_t BOARD_PI4IO6408_I2C_Send(void *base,
+                                 uint8_t deviceAddress,
+                                 uint32_t subAddress,
+                                 uint8_t subAddressSize,
+                                 const uint8_t *txBuff,
+                                 uint8_t txBuffSize,
+                                 uint32_t flags);
+status_t BOARD_PI4IO6408_I2C_Receive(void *base,
+                                    uint8_t deviceAddress,
+                                    uint32_t subAddress,
+                                    uint8_t subAddressSize,
+                                    uint8_t *rxBuff,
+                                    uint8_t rxBuffSize,
+                                    uint32_t flags);
+void BOARD_InitPI4IO6408_I2C3(pi4io6408_handle_t *handle);
 #endif /* BOARD_USE_PCAL6408 */
 
 #if defined(BOARD_USE_PCA6416A) && BOARD_USE_PCA6416A

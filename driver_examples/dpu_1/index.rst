@@ -9,5 +9,6 @@ dpu_1
 
    fetch_yuv/readme.md
    figure_display/readme.md
+   localdimming/readme.md
    rop/readme.md
    warp/readme.md

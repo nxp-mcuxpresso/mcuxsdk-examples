@@ -31,20 +31,19 @@ HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x0400;
 STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x0400;
 M_VECTOR_RAM_SIZE = DEFINED(__ram_vector_table__) ? 0x0620 : 0x0;
 
-/* Memory region from [0x28000000-0x28031FFF] is reserved for ROM header */
-/* Memory region from [0x20040000-0x2007FFFF] is reserved for A35 ATF */
 
 /* Specify the memory areas */
 MEMORY
 {
-  m_interrupts          (RX)  : ORIGIN = 0x28132000, LENGTH = 0x00000800
-  m_text                (RX)  : ORIGIN = 0x28132800, LENGTH = 0x002CD800
-  m_rsc_tbl             (RW)  : ORIGIN = 0x20000000, LENGTH = 0x00001000
-  m_m33_suspend_ram     (RW)  : ORIGIN = 0x20001000, LENGTH = 0x00002000
-  m_a55_suspend_ram     (RW)  : ORIGIN = 0x20003000, LENGTH = 0x00001000
+  m_interrupts          (RX)  : ORIGIN = 0x00000000, LENGTH = 0x00001000
+  m_text                (RX)  : ORIGIN = 0x00001000, LENGTH = 0x0004F260
+  m_m33_suspend_ram     (RW)  : ORIGIN = 0x20000000, LENGTH = 0x00002000
+  m_a55_suspend_ram     (RW)  : ORIGIN = 0x20002000, LENGTH = 0x00002000
   m_data                (RW)  : ORIGIN = 0x20004000, LENGTH = 0x0001a000
   m_ncache              (RW)  : ORIGIN = 0x80000000, LENGTH = 0x08000000
-  m_rom_reserved        (RW)  : ORIGIN = 0x2002E000, LENGTH = 0x00012000
+  m_reserved            (RW)  : ORIGIN = 0x2002E000, LENGTH = 0x0000e000
+  m_rsc_tbl             (RW)  : ORIGIN = 0x2003c000, LENGTH = 0x00004000
+  m_rsc_tbl_in_dram     (RW)  : ORIGIN = 0x88220000, LENGTH = 0x00004000
 }
 
 /* Define output sections */
@@ -52,7 +51,7 @@ SECTIONS
 {
   __NCACHE_REGION_START = ORIGIN(m_ncache);
   __NCACHE_REGION_SIZE  = LENGTH(m_ncache);
-  /* The startup code goes first into internal flash */
+  /* The startup code goes first into internal RAM */
   .interrupts :
   {
     __VECTOR_TABLE = .;
@@ -69,12 +68,17 @@ SECTIONS
     . = ALIGN(8);
   } > m_text
 
-  /* The program code and other data goes into internal flash */
+  /* The program code and other data goes into internal RAM */
   .text :
   {
     . = ALIGN(4);
     *(.text)                 /* .text sections (code) */
     *(.text*)                /* .text* sections (code) */
+    __quickcodeaccess_start__ = .;
+    . = ALIGN(32);
+    *(CodeQuickAccess)
+    . = ALIGN(32);
+    __quickcodeaccess_end__ = .;
     *(.rodata)               /* .rodata sections (constants, strings, etc.) */
     *(.rodata*)              /* .rodata* sections (constants, strings, etc.) */
     *(.glue_7)               /* glue arm to thumb code */
@@ -83,6 +87,11 @@ SECTIONS
     KEEP (*(.init))
     KEEP (*(.fini))
     . = ALIGN(4);
+  } > m_text
+
+  .ld_firmware :
+  {
+    KEEP(*(.ld_firmware.rodata))
   } > m_text
 
   .ARM.extab :
@@ -174,14 +183,14 @@ SECTIONS
 
   .data : AT(__DATA_ROM)
   {
-    __data_start__ = .;      /* create a global symbol at data start */
-    __quickaccess_start__ = .;
-    . = ALIGN(32);
-    *(CodeQuickAccess)
-    *(DataQuickAccess)
-    . = ALIGN(128);
-    __quickaccess_end__ = .;
+    . = ALIGN(4);
     __DATA_RAM = .;
+    __data_start__ = .;      /* create a global symbol at data start */
+    __quickdataaccess_start__ = .;
+    . = ALIGN(32);
+    *(DataQuickAccess)
+    . = ALIGN(32);
+    __quickdataaccess_end__ = .;
     *(.data)                 /* .data sections */
     *(.data*)                /* .data* sections */
     KEEP(*(.jcr*))
@@ -254,6 +263,13 @@ SECTIONS
   __StackTop   = ORIGIN(m_data) + LENGTH(m_data);
   __StackLimit = __StackTop - STACK_SIZE;
   PROVIDE(__stack = __StackTop);
+
+  /* For Resource table region(store table in tcm) */
+  __RscTblStart = ORIGIN(m_rsc_tbl);
+  __RscTblEnd = ORIGIN(m_rsc_tbl) + LENGTH(m_rsc_tbl);
+  /* For Resource table region(store table in dram) */
+  __RscTblInDramStart = ORIGIN(m_rsc_tbl_in_dram);
+  __RscTblInDramEnd = ORIGIN(m_rsc_tbl_in_dram) + LENGTH(m_rsc_tbl_in_dram);
 
   .ARM.attributes 0 : { *(.ARM.attributes) }
 

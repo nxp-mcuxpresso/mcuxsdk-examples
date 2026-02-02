@@ -1,0 +1,4 @@
+# Copyright 2026 NXP
+# SPDX-License-Identifier: BSD-3-Clause
+
+rsource "../../../examples/_common/project_segments/display_support/Kconfig.prjseg"

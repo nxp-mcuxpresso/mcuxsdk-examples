@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+dpu_1_localdimming:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dpu_1/localdimming
+    project-root-path: boards/${board}/driver_examples/dpu/localdimming/${multicore_foldername}
+    document:
+      name: dpu_1_localdimming${core_id_suffix_name}
+      category: driver_examples/dpu
+      brief: This example is intended to implement the local dimming function.
+         Based on the local dimming firmware running on the CM0 core, it enables backlight adjustment.
+      example_readme:
+      - examples/driver_examples/dpu_1/localdimming/readme.md
+      - ${board_root}/${board}/driver_examples/dpu/localdimming/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    imx952evk@cm7:
+    - -iar@debug
+    - -iar@release

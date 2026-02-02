@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 NXP
+ * Copyright 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -372,6 +372,51 @@ void BOARD_InitPCAL6408_I2C5(pcal6408_handle_t *handle)
 }
 #endif /* BOARD_USE_PCAL6408. */
 
+#if defined(BOARD_USE_PI4IO6408) && BOARD_USE_PI4IO6408
+void BOARD_PI4IO6408_I2C_Init(void *base, uint32_t clkSrc_Hz)
+{
+    BOARD_LPI2C_Init(base, clkSrc_Hz);
+}
+
+status_t BOARD_PI4IO6408_I2C_Send(void *base,
+                                 uint8_t deviceAddress,
+                                 uint32_t subAddress,
+                                 uint8_t subAddressSize,
+                                 const uint8_t *txBuff,
+                                 uint8_t txBuffSize,
+                                 uint32_t flags)
+{
+    return BOARD_LPI2C_Send(base, deviceAddress, subAddress, subAddressSize, (uint8_t *)txBuff,
+                            txBuffSize, flags);
+}
+
+status_t BOARD_PI4IO6408_I2C_Receive(void *base,
+                                    uint8_t deviceAddress,
+                                    uint32_t subAddress,
+                                    uint8_t subAddressSize,
+                                    uint8_t *rxBuff,
+                                    uint8_t rxBuffSize,
+                                    uint32_t flags)
+{
+    return BOARD_LPI2C_Receive(base, deviceAddress, subAddress, subAddressSize, rxBuff, rxBuffSize,
+                               flags);
+}
+
+void BOARD_InitPI4IO6408_I2C3(pi4io6408_handle_t *handle)
+{
+    BOARD_PI4IO6408_I2C_Init(BOARD_PI4IO6408_I2C3, BOARD_PI4IO6408_I2C3_CLOCK_FREQ);
+
+    static const pi4io6408_config_t config = {
+        .i2cBase         = BOARD_PI4IO6408_I2C3,
+        .i2cAddr         = BOARD_PI4IO6408_I2C3_ADDR,
+        .I2C_SendFunc    = BOARD_PI4IO6408_I2C_Send,
+        .I2C_ReceiveFunc = BOARD_PI4IO6408_I2C_Receive,
+    };
+
+    PI4IO6408_Init(handle, &config);
+}
+#endif
+
 #if defined(BOARD_USE_PCA6416A) && BOARD_USE_PCA6416A
 void BOARD_PCA6416A_I2C_Init(void)
 {
@@ -612,6 +657,9 @@ void BOARD_ConfigMPU(void)
     MPU->RBAR = ARM_MPU_RBAR(15, 0xC0000000);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 1, 1, 0, 0, 0, ARM_MPU_REGION_SIZE_256MB);
 
+    /* Region 16 setting: Memory with Device type, not shareable, non-cacheable */
+    MPU->RBAR = ARM_MPU_RBAR(16, 0x4B300000);
+    MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 1, 0, 0, 0, 0, ARM_MPU_REGION_SIZE_256KB);
     /* Enable MPU */
     ARM_MPU_Enable(MPU_CTRL_PRIVDEFENA_Msk | MPU_CTRL_HFNMIENA_Msk);
 

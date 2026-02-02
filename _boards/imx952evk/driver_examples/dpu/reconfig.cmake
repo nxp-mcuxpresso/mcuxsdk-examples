@@ -7,7 +7,7 @@ mcux_add_include(
 )
 
 mcux_add_configuration(
-        CC "-DSDK_I2C_BASED_COMPONENT_USED=1 -DBOARD_USE_ADP5585=1 -DRM67199_ENABLE=1"
+        CC "-DSDK_I2C_BASED_COMPONENT_USED=1 -DBOARD_USE_ADP5585=1 -DBOARD_USE_PI4IO6408=1"
 )
 
 mcux_remove_armgcc_linker_script(
@@ -19,7 +19,7 @@ mcux_remove_armgcc_linker_script(
 mcux_add_armgcc_linker_script(
         TARGETS debug release
         BASE_PATH ${SdkRootDirPath}
-        LINKER ${board_root}/imx952evk/driver_examples/dpu/linker/MIMX95294_cm7_ram.ld
+        LINKER ${board_root}/imx952evk/driver_examples/dpu/linker/MIMX9529_cm7_ram.ld
 )
 
 mcux_remove_iar_linker_script(
@@ -31,5 +31,5 @@ mcux_remove_iar_linker_script(
 mcux_add_iar_linker_script(
         TARGETS debug release
         BASE_PATH ${SdkRootDirPath}
-        LINKER ${board_root}/imx952evk/driver_examples/dpu/linker/MIMX95294_cm7_ram.icf
+        LINKER ${board_root}/imx952evk/driver_examples/dpu/linker/MIMX9529_cm7_ram.icf
 )
