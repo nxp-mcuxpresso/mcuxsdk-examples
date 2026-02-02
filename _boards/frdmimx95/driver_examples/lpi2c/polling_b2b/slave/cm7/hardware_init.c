@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 NXP
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -15,7 +15,7 @@ void BOARD_InitHardware(void)
 {
     /* clang-format off */
     hal_clk_t hal_lpi2cClkCfg = {
-        .clk_id = LPI2C_MASTER_CLOCK_ROOT,
+        .clk_id = LPI2C_SLAVE_CLOCK_ROOT,
         .pclk_id = hal_clock_osc24m,
         .div = 1,
         .enable_clk = true,
