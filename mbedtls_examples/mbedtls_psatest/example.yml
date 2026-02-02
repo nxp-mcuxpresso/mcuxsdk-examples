@@ -14,4 +14,4 @@ mbedtls_psatest:
       - ${board_root}/${board}/mbedtls_examples/mbedtls_psatest/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    frdmmcxw23: []
+    # frdmmcxw23: [] # Temporarily disable due to TF-M (psa-tests) old version.
