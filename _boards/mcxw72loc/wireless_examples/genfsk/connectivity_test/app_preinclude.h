@@ -38,6 +38,8 @@
 /* Enable Generic FSK protocol in XCVR */
 #define XCVR_GENFSK_ENABLED     1
 
+#define BOARD_LOCALIZATION_REVISION_SUPPORT 1
+
 /*! *********************************************************************************
  * 	Framework Configuration
  ********************************************************************************** */

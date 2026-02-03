@@ -29,6 +29,8 @@
 // #define BOARD_APP_UART_BAUDRATE 460800
 // #define SERIAL_MANAGER_RING_BUFFER_SIZE (1024U)
 
+#define BOARD_LOCALIZATION_REVISION_SUPPORT 1
+
 /*! *********************************************************************************
  * 	App Configuration
  ********************************************************************************** */
