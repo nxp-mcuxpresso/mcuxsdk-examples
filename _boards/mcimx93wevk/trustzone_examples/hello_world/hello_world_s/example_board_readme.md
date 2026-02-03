@@ -32,14 +32,14 @@ Prepare the Demo
 5.  Press the reset button on your board.
 
 How to get flash.bin of TrustZone examples:
-===============
-1.  Create a directory named 'tz_bin' in your work direcory.
-2.  Build {app}_s and copy sdk20-app.bin into 'tz_bin' then rename it as sdk20-app_s.bin.
-3.  Build {app}_ns and copy sdk20-app.bin into 'tz_bin' then rename it as sdk20-app_ns.bin.
-4.  Enter the 'tz_bin' directory and execute 'dd' command to combin the two files.
-    dd if=sdk20-app_ns.bin of=sdk20-app_s.bin bs=1 count=`ls -l ./sdk20-app_ns.bin|awk '{print $5}'` seek=65536
-5.  Rename sdk20-app_s.bin as m33_image.bin, and copy it into imx-mkimage
-6.  Build the low power boot flash.bin
+===========================================
+1. Build secure binary and non-secure binary. For example (if west build is used),
+   west build -p -b mcimx93wevk examples/trustzone_examples/hello_world_s -Dcore_id=cm33 -d hello_world_s
+   west build -p -b mcimx93wevk examples/trustzone_examples/hello_world_ns -Dcore_id=cm33 -d hello_world_ns
+2. Create m33_image.bin
+   dd if=hello_world_ns/hello_world_ns_cm33.bin of=hello_world_s/hello_world_s_cm33.bin bs=1 count=`ls -l hello_world_ns/hello_world_ns_cm33.bin | awk '{print $5}'` seek=65536
+   Rename hello_world_s/hello_world_s_cm33.bin to m33_image.bin
+3. Copy m33_image.bin into imx-mkimage to make low power boot flash.bin.
 
 Running the demo
 ================
