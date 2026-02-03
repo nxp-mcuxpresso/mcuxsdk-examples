@@ -32,15 +32,7 @@ When the example runs successfully, you will see similar information from the te
 ~~~~~~~~~~~~~~~~~~~~~
  ADC polling example.
  Please press any key to get the conversion result.
- The channel 0 ADC conversion data is 4084.
- The channel 1 ADC conversion data is 3740.
- The channel 2 ADC conversion data is 2049.
- Please press any key to get the conversion result.
- The channel 0 ADC conversion data is 4085.
- The channel 1 ADC conversion data is 3741.
- The channel 2 ADC conversion data is 2049.
- Please press any key to get the conversion result.
- The channel 0 ADC conversion data is 4084.
- The channel 1 ADC conversion data is 3739.
- The channel 2 ADC conversion data is 2049.
+ The channel 0 ADC conversion data is 4063.
+ The channel 2 ADC conversion data is 1379.
+ The channel 3 ADC conversion data is 682.
 ~~~~~~~~~~~~~~~~~~~~~

@@ -32,7 +32,7 @@ When the example runs successfully, you will see similar information from the te
 ~~~~~~~~~~~~~~~~~~~~~
  ADC interrupt example.
  Please press any key to get the conversion result.
- The channel 0 ADC conversion data is 4070.
- The channel 1 ADC conversion data is 3734.
- The channel 2 ADC conversion data is 2055.
+ The channel 0 ADC conversion data is 4063.
+ The channel 2 ADC conversion data is 1379.
+ The channel 3 ADC conversion data is 682.
 ~~~~~~~~~~~~~~~~~~~~~

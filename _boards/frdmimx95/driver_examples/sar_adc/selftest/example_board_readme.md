@@ -31,21 +31,27 @@ When the example runs successfully, you will see similar information from the te
 
 ~~~~~~~~~~~~~~~~~~~~~
  ADC selftest example.
- The channel 0 ADC conversion data is 4079.
- The channel 1 ADC conversion data is 3743.
- The channel 2 ADC conversion data is 2048.
- The channel 0 ADC conversion data is 4092.
- The channel 1 ADC conversion data is 3742.
- The channel 2 ADC conversion data is 2050.
- The channel 0 ADC conversion data is 4092.
- The channel 1 ADC conversion data is 3744.
- The channel 2 ADC conversion data is 2051.
- The channel 0 ADC conversion data is 4093.
- The channel 1 ADC conversion data is 3741.
- The channel 2 ADC conversion data is 2051.
- The channel 0 ADC conversion data is 4091.
- The channel 1 ADC conversion data is 3744.
- The channel 2 ADC conversion data is 2049.
+ The channel 0 ADC conversion data is 4059.
+ The channel 2 ADC conversion data is 1462.
+ The channel 3 ADC conversion data is 691.
+ The channel 0 ADC conversion data is 4060.
+ The channel 2 ADC conversion data is 1463.
+ The channel 3 ADC conversion data is 692.
+ The channel 0 ADC conversion data is 4055.
+ The channel 2 ADC conversion data is 1456.
+ The channel 3 ADC conversion data is 697.
+ The channel 0 ADC conversion data is 4058.
+ The channel 2 ADC conversion data is 1461.
+ The channel 3 ADC conversion data is 691.
+ The channel 0 ADC conversion data is 4075.
+ The channel 2 ADC conversion data is 1457.
+ The channel 3 ADC conversion data is 695.
+ The channel 0 ADC conversion data is 4050.
+ The channel 2 ADC conversion data is 1461.
+ The channel 3 ADC conversion data is 684.
+ The channel 0 ADC conversion data is 4056.
+ The channel 2 ADC conversion data is 1459.
+ The channel 3 ADC conversion data is 694.
  Self-test error occurred!
  ADC self-test watchdog sequence error occurred.
 ~~~~~~~~~~~~~~~~~~~~~

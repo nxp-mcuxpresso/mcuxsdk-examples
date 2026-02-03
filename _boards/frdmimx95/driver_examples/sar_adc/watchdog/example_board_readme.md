@@ -32,9 +32,6 @@ When the example runs successfully, you will see similar information from the te
 ~~~~~~~~~~~~~~~~~~~~~
  ADC watchdog example.
  Please press any key to get the conversion result.
- The channel 1 ADC conversion value is 3664.
- The channel 1 ADC conversion value is 3664.
- The channel 1 ADC conversion value is 3666.
- The channel 1 ADC conversion value is 4070.
+ The channel 0 ADC conversion value is 4084.
  Current ADC value is higher than the high threshold.
 ~~~~~~~~~~~~~~~~~~~~~
