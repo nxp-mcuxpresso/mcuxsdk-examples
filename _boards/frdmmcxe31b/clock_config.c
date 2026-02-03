@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -183,8 +183,12 @@ void BOARD_BootClockRUN_InitClockModule(clock_module_t module)
             (void)CLOCK_SetClkDiv(kCLOCK_DivAipsSlowClk, 4U);
             (void)CLOCK_SetClkDiv(kCLOCK_DivHseClk, 2U);
             (void)CLOCK_SetClkDiv(kCLOCK_DivDcmClk, 4U);
+#if defined(FSL_FEATURE_MC_CGM_HAS_LBIST_CLK_DIV) && (FSL_FEATURE_MC_CGM_HAS_LBIST_CLK_DIV != 0U)
             (void)CLOCK_SetClkDiv(kCLOCK_DivLbistClk, 4U);
+#endif
+#if defined(FSL_FEATURE_CLOCK_HAS_QSPI) && (FSL_FEATURE_CLOCK_HAS_QSPI != 0U)
             (void)CLOCK_SetClkDiv(kCLOCK_DivQspiClk, 1U);
+#endif
             (void)CLOCK_CommonTriggerClkMux0DivUpdate();
             (void)CLOCK_ProgressiveClockFrequencySwitch( kPLL_PHI0_CLK_to_MUX0, &g_pcfsConfig_BOARD_BootClockRUN);
             break;
