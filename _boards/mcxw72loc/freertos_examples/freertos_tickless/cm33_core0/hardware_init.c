@@ -45,8 +45,6 @@ void BOARD_InitHardware(void)
     BOARD_InitPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
-
-    CLOCK_EnableClock(kCLOCK_Sirc_vsys_gating);
 }
 
 #if configUSE_TICKLESS_IDLE == 2

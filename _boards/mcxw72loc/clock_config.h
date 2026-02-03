@@ -1,9 +1,8 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
- *
  */
 
 /***********************************************************************************************************************
@@ -54,9 +53,6 @@ extern const scg_sys_clk_config_t g_sysClkConfig_BOARD_BootClockRUN;
 /*! @brief System OSC set for BOARD_BootClockRUN configuration.
  */
 extern const scg_sosc_config_t g_scgSysOscConfig_BOARD_BootClockRUN;
-/*! @brief SIRC set for BOARD_BootClockRUN configuration.
- */
-extern const scg_sirc_config_t g_scgSircConfig_BOARD_BootClockRUN;
 /*! @brief FIRC set for BOARD_BootClockRUN configuration.
  */
 extern const scg_firc_config_t g_scgFircConfig_BOARD_BootClockRUN;

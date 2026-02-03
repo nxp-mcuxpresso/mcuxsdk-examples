@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025,2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -44,9 +44,6 @@ void APP_SetupFastClock(sfa_config_t *configPtr)
     {
         case kSCG_SysClkSrcSysOsc:
             CLOCK_SetClkOutSel(kClockClkoutSelSosc);
-            break;
-        case kSCG_SysClkSrcSirc:
-            CLOCK_SetClkOutSel(kClockClkoutSelSirc);
             break;
         case kSCG_SysClkSrcFirc:
             CLOCK_SetClkOutSel(kClockClkoutSelFirc);

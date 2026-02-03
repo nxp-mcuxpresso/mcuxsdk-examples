@@ -1,9 +1,8 @@
 /*
- * Copyright 2021-2024 NXP
+ * Copyright 2021-2024,2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
- *
  */
 
 /***********************************************************************************************************************
@@ -28,11 +27,11 @@
 /* clang-format off */
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Clocks v13.0
+product: Clocks v19.0
 processor: KW47B42ZB7xxxA
 package_id: KW47B42ZB7AFTA
 mcu_data: ksdk2_0
-processor_version: 0.15.8
+processor_version: 25.12.10
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
 
@@ -119,7 +118,6 @@ outputs:
 - {id: ROSC_CLK.outFreq, value: 32.768 kHz}
 - {id: SCG.FIRC_EXT_REF_TRIM_CLK.outFreq, value: 1 MHz}
 - {id: SCGCLKOUT_CLK.outFreq, value: 24 MHz}
-- {id: SIRC_CLK.outFreq, value: 6 MHz}
 - {id: SLOW_CLK.outFreq, value: 24 MHz}
 - {id: SOSC_CLK.outFreq, value: 32 MHz}
 - {id: System_clock.outFreq, value: 96 MHz}
@@ -166,10 +164,6 @@ const scg_sosc_config_t g_scgSysOscConfig_BOARD_BootClockRUN =
     .monitorMode = kSCG_SysOscMonitorDisable,     /* System OSC Clock Monitor is disabled */
     .enableMode = kSCG_SoscEnable,                /* System OSC Enable */
 };
-const scg_sirc_config_t g_scgSircConfig_BOARD_BootClockRUN =
-{
-    .enableMode = kSCG_SircDisableInSleep,        /* Slow IRC is disabled in sleep modes */
-};
 const scg_firc_config_t g_scgFircConfig_BOARD_BootClockRUN =
 {
     .enableMode = kSCG_FircEnable,                /* Fast IRC is enabled */
@@ -192,9 +186,8 @@ void BOARD_BootClockRUN(void)
     scg_sys_clk_config_t curConfig;
     spc_active_mode_core_ldo_option_t ldoOption;
 
-    /* Unlock FIRC, SIRC, ROSC and SOSC control status registers */
+    /* Unlock FIRC, ROSC and SOSC control status registers */
     CLOCK_UnlockFircControlStatusReg();
-    CLOCK_UnlockSircControlStatusReg();
     CLOCK_UnlockRoscControlStatusReg();
     CLOCK_UnlockSysOscControlStatusReg();
 
@@ -244,8 +237,6 @@ void BOARD_BootClockRUN(void)
     (void)CLOCK_InitSysOsc(&g_scgSysOscConfig_BOARD_BootClockRUN);
     /* Set the XTAL0 frequency based on board settings */
     CLOCK_SetXtal0Freq(g_scgSysOscConfig_BOARD_BootClockRUN.freq);
-    /* Init SIRC */
-    (void)CLOCK_InitSirc(&g_scgSircConfig_BOARD_BootClockRUN);
     /* Set SystemCoreClock variable */
     SystemCoreClock = BOARD_BOOTCLOCKRUN_CORE_CLOCK;
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 NXP
+ * Copyright 2024-2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -43,7 +43,6 @@ void APP_DeinitDebugConsole(void)
     PORT_SetPinMux(DEBUG_CONSOLE_TX_PORT, DEBUG_CONSOLE_TX_PIN, kPORT_PinDisabledOrAnalog);
 
     CLOCK_DeinitSysOsc();
-    CLOCK_DeinitSirc();
 }
 
 void APP_DeinitWakeupButton(void)
@@ -120,7 +119,7 @@ void BOARD_InitHardware(void)
         }
         SPC_ClearLowPowerRequest(APP_SPC);
     }
-    
+
     RFMC->RF2P4GHZ_CFG |= RFMC_RF2P4GHZ_CFG_FORCE_DBG_PWRUP_ACK_MASK;
 }
 /*${function:end}*/

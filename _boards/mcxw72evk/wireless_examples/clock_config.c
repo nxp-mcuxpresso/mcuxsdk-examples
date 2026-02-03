@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024,2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -118,7 +118,6 @@ outputs:
 - {id: ROSC_CLK.outFreq, value: 32.768 kHz}
 - {id: SCG.FIRC_EXT_REF_TRIM_CLK.outFreq, value: 1 MHz}
 - {id: SCGCLKOUT_CLK.outFreq, value: 16 MHz}
-- {id: SIRC_CLK.outFreq, value: 6 MHz}
 - {id: SLOW_CLK.outFreq, value: 16 MHz}
 - {id: SOSC_CLK.outFreq, value: 32 MHz}
 - {id: System_clock.outFreq, value: 48 MHz}
@@ -163,10 +162,6 @@ const scg_sosc_config_t g_scgSysOscConfig_BOARD_BootClockRUN =
     .monitorMode = kSCG_SysOscMonitorDisable,     /* System OSC Clock Monitor is disabled */
     .enableMode = kSCG_SoscEnable,                /* System OSC Enable */
 };
-const scg_sirc_config_t g_scgSircConfig_BOARD_BootClockRUN =
-{
-    .enableMode = kSCG_SircDisableInSleep,        /* Slow IRC is disabled in sleep modes */
-};
 const scg_firc_config_t g_scgFircConfig_BOARD_BootClockRUN =
 {
     .enableMode = kSCG_FircEnable,                /* Fast IRC is enabled */
@@ -186,9 +181,8 @@ void BOARD_BootClockRUN(void)
     scg_sys_clk_config_t curConfig;
     spc_active_mode_core_ldo_option_t ldoOption;
 
-    /* Unlock FIRC, SIRC, ROSC and SOSC control status registers */
+    /* Unlock FIRC, ROSC and SOSC control status registers */
     CLOCK_UnlockFircControlStatusReg();
-    CLOCK_UnlockSircControlStatusReg();
     CLOCK_UnlockRoscControlStatusReg();
     CLOCK_UnlockSysOscControlStatusReg();
 
@@ -210,8 +204,6 @@ void BOARD_BootClockRUN(void)
     (void)CLOCK_InitSysOsc(&g_scgSysOscConfig_BOARD_BootClockRUN);
     /* Set the XTAL0 frequency based on board settings */
     CLOCK_SetXtal0Freq(g_scgSysOscConfig_BOARD_BootClockRUN.freq);
-    /* Init SIRC */
-    (void)CLOCK_InitSirc(&g_scgSircConfig_BOARD_BootClockRUN);
     /* Set SystemCoreClock variable */
     SystemCoreClock = BOARD_BOOTCLOCKRUN_CORE_CLOCK;
 
@@ -244,7 +236,6 @@ outputs:
 - {id: ROSC_CLK.outFreq, value: 32.768 kHz}
 - {id: SCG.FIRC_EXT_REF_TRIM_CLK.outFreq, value: 1 MHz}
 - {id: SCGCLKOUT_CLK.outFreq, value: 24 MHz}
-- {id: SIRC_CLK.outFreq, value: 6 MHz}
 - {id: SLOW_CLK.outFreq, value: 24 MHz}
 - {id: SOSC_CLK.outFreq, value: 32 MHz}
 - {id: System_clock.outFreq, value: 96 MHz}
@@ -289,10 +280,6 @@ const scg_sosc_config_t g_scgSysOscConfig_BOARD_BootClockHSRUN =
     .monitorMode = kSCG_SysOscMonitorDisable,     /* System OSC Clock Monitor is disabled */
     .enableMode = kSCG_SoscEnable,                /* System OSC Enable */
 };
-const scg_sirc_config_t g_scgSircConfig_BOARD_BootClockHSRUN =
-{
-    .enableMode = kSCG_SircDisableInSleep,        /* Slow IRC is disabled in sleep modes */
-};
 const scg_firc_config_t g_scgFircConfig_BOARD_BootClockHSRUN =
 {
     .enableMode = kSCG_FircEnable,                /* Fast IRC is enabled */
@@ -312,9 +299,8 @@ void BOARD_BootClockHSRUN(void)
     scg_sys_clk_config_t curConfig;
     spc_active_mode_core_ldo_option_t ldoOption;
 
-    /* Unlock FIRC, SIRC, ROSC and SOSC control status registers */
+    /* Unlock FIRC, ROSC and SOSC control status registers */
     CLOCK_UnlockFircControlStatusReg();
-    CLOCK_UnlockSircControlStatusReg();
     CLOCK_UnlockRoscControlStatusReg();
     CLOCK_UnlockSysOscControlStatusReg();
 
@@ -345,8 +331,6 @@ void BOARD_BootClockHSRUN(void)
     (void)CLOCK_InitSysOsc(&g_scgSysOscConfig_BOARD_BootClockHSRUN);
     /* Set the XTAL0 frequency based on board settings */
     CLOCK_SetXtal0Freq(g_scgSysOscConfig_BOARD_BootClockHSRUN.freq);
-    /* Init SIRC */
-    (void)CLOCK_InitSirc(&g_scgSircConfig_BOARD_BootClockHSRUN);
     /* Set SystemCoreClock variable */
     SystemCoreClock = BOARD_BOOTCLOCKHSRUN_CORE_CLOCK;
     /* Set SCG CLKOUT selection. */

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2025 NXP
+ * Copyright 2021-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -116,7 +116,9 @@ void BOARD_InitHardware(void)
 #endif
 #endif /* #if !defined(FPGA_TARGET) || (FPGA_TARGET == 0) */
 
+#if defined(FSL_FEATURE_SOC_TSTMR_COUNT) && (FSL_FEATURE_SOC_TSTMR_COUNT > 0)
     CLOCK_EnableClock(kCLOCK_Tstmr0);
+#endif
 
 #if defined(gBoardUseDcdc_d) && (gBoardUseDcdc_d > 0)
     /* Initialize DCDC and apply optimized configuration */
