@@ -36,10 +36,12 @@ MEMORY
 {
   m_interrupts          (RX)  : ORIGIN = 0x0FFE0000, LENGTH = 0x00000478
   m_text                (RX)  : ORIGIN = 0x0FFE0478, LENGTH = 0x0001FB88
-  m_data                (RW)  : ORIGIN = 0x20003000, LENGTH = 0x0001B000
+  m_data                (RW)  : ORIGIN = 0x20003000, LENGTH = 0x00008000
   m_m33_suspend_ram     (RW)  : ORIGIN = 0x20000000, LENGTH = 0x00002000
   m_a55_suspend_ram     (RW)  : ORIGIN = 0x20002000, LENGTH = 0x00001000
   m_ocram               (RW)  : ORIGIN = 0x20480000, LENGTH = 0x00060000
+  m_data2               (RW)  : ORIGIN = 0x2000B000, LENGTH = 0x00012000
+  m_stack               (RW)  : ORIGIN = 0x2001D000, LENGTH = 0x00001000
   m_rsc_tbl             (RW)  : ORIGIN = 0x2001E000, LENGTH = 0x00001000
 }
 
@@ -203,7 +205,7 @@ SECTIONS
     . = ALIGN(4);
     __bss_end__ = .;
     __END_BSS = .;
-  } > m_data
+  } > m_data2
 
   .m33_suspend :
   {
@@ -220,16 +222,16 @@ SECTIONS
     . += HEAP_SIZE;
     __HeapLimit = .;
     __heap_limit = .; /* Add for _sbrk */
-  } > m_data
+  } > m_data2
 
   .stack :
   {
     . = ALIGN(8);
     . += STACK_SIZE;
-  } > m_data
+  } > m_stack
 
   /* Initializes stack on the end of block */
-  __StackTop   = ORIGIN(m_data) + LENGTH(m_data);
+  __StackTop   = ORIGIN(m_stack) + LENGTH(m_stack);
   __StackLimit = __StackTop - STACK_SIZE;
   PROVIDE(__stack = __StackTop);
 
