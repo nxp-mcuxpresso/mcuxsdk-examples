@@ -110,7 +110,7 @@ typedef enum ct_conf_param_idx_tag
 #define gModeTx_c (2)
 #define gDefaultMode_c gModeRx_c
 
-#if defined(RADIO_IS_GEN_3P5) || defined(RADIO_IS_GEN_4P0) || defined(RADIO_IS_GEN_4P5)
+#if (NXP_RADIO_GEN >= 350)
 #define gRateGenfsk250Kbps_c    (0)
 #define gRateGenfsk500Kbps_c    (1)
 #define gRateGenfsk1Mbps_c      (2)
@@ -139,7 +139,7 @@ typedef enum ct_conf_param_idx_tag
 #define gDefaultRFMode_c        (gRFModeRF2_c)
 #endif
 
-#elif defined(RADIO_IS_GEN_3P0)
+#elif (NXP_RADIO_GEN >= 300)
 #define gRateGenfsk250Kbps_c    (0)
 #define gRateGenfsk500Kbps_c    (1)
 #define gRateGenfsk1Mbps_c      (2)
@@ -165,19 +165,20 @@ typedef enum ct_conf_param_idx_tag
 #define gDefaultRate_c gRateGenfsk1Mbps_c
 
 /*tx power*/
-#if defined(RADIO_IS_GEN_3P5) || defined(RADIO_IS_GEN_4P0)
-#if !defined(RADIO_IS_GEN_4P5)
+#if (NXP_RADIO_GEN >= 350)
+#if (NXP_RADIO_GEN <= 400)
 #define gGenFskLastLowPowerIdx_c     (31)
 #define gGenFskMaxTxPowerLevel_c     ((gGenFskLastLowPowerIdx_c*2)+1)   /* High power table is used from index 32 to index 63. */
 #else
-  #define gGenFskLastLowPowerIdx_c   (31)
-  #define gGenFskMaxTxPowerLevel_c   gGenFskLastLowPowerIdx_c
-#endif
+#define gGenFskLastLowPowerIdx_c     (31)
+#define gGenFskMaxTxPowerLevel_c     gGenFskLastLowPowerIdx_c
+#endif /* (NXP_RADIO_GEN <= 400) */
 #define gGenFskMinTxPowerLevel_c     (0x00)                             /* Low power table is used from index 0 to index 31. */
-#else /* RADIO_IS_GEN_3P5 */
+#else /* (NXP_RADIO_GEN >= 350) */
 #define gGenFskMaxTxPowerLevel_c     (0x20)
 #define gGenFskMinTxPowerLevel_c     (0x00)
-#endif /* RADIO_IS_GEN_3P5 */
+#endif /* (NXP_RADIO_GEN >= 350) */
+
 #define gGenFskDefaultTxPowerLevel_c (0x08)
 
 /*channel*/

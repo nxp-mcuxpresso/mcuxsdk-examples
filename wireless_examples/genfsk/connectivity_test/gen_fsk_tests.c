@@ -24,7 +24,7 @@ SPDX-License-Identifier: BSD-3-Clause
 #include "genfsk_interface.h"
 #include "gen_fsk_tests_states.h"
 #include "gen_fsk_tests.h"
-#if !defined(RADIO_IS_GEN_3P5) && !defined(RADIO_IS_GEN_4P0) && !defined(RADIO_IS_GEN_4P5)
+#if (NXP_RADIO_GEN <= 300)
 #include "xcvr_test_fsk.h"
 #else
 #include "nxp_xcvr_msk_config.h"
@@ -79,17 +79,17 @@ ct_config_params_t gaConfigParams[gConfParamIdxMax];
 char* strDescr[gMaxRate_c+1]        = {"GENFSK 250Kbps",
                                        "GENFSK 500Kbps",
                                        "  GENFSK 1Mbps",
-#ifdef RADIO_IS_GEN_3P0
+#if (NXP_RADIO_GEN >= 300)
                                        "  GENFSK 2Mbps",
-#endif /* RADIO_IS_GEN_3P0 */
-#if defined(RADIO_IS_GEN_3P5) || defined(RADIO_IS_GEN_4P0)
+#endif /* (NXP_RADIO_GEN >= 300) */
+#if (NXP_RADIO_GEN >= 350)
                                        "BLE LR 125Kbps",
                                        "BLE LR 500Kbps",
-#endif /* RADIO_IS_GEN_3P5 */
+#endif /* (NXP_RADIO_GEN >= 350) */
                                        "     BLE 1Mbps",
-#ifdef RADIO_IS_GEN_3P0
+#if (NXP_RADIO_GEN >= 300)
                                        "     BLE 2Mbps"
-#endif /* RADIO_IS_GEN_3P0 */
+#endif /* (NXP_RADIO_GEN >= 300) */
                                          };
 
 char* strWhitenDescr[gMaxWhitenMode_c+1]        = {"Fixed",
@@ -103,17 +103,17 @@ char* strRFModeDescr[gMaxRFMode_c+1]            = {"RF1 (SMA1)",
                                                     "ALL OFF"};
 #endif /* BOARD_LOCALIZATION_REVISION_SUPPORT > 0 */
 
-#ifdef RADIO_IS_GEN_3P0
+#if (NXP_RADIO_GEN >= 300)
 uint8_t crtRate[gRateMaxNbr]                  = {gRateGenfsk1Mbps_c, gRateGenfsk500Kbps_c, gRateGenfsk250Kbps_c, gRateGenfsk2Mbps_c};
-#else /* RADIO_IS_GEN_3P0 */
+#else
 uint8_t crtRate[gRateMaxNbr]                  = {gRateGenfsk1Mbps_c, gRateGenfsk500Kbps_c, gRateGenfsk250Kbps_c};
-#endif
+#endif /* (NXP_RADIO_GEN >= 300) */
 
-#if defined(RADIO_IS_GEN_3P5) || defined(RADIO_IS_GEN_4P0) || defined(RADIO_IS_GEN_4P5)
+#if (NXP_RADIO_GEN >= 350)
 uint8_t targetRate[gMaxRate_c+1]    = {gGenfskDR250Kbps, gGenfskDR500Kbps, gGenfskDR1Mbps, gGenfskDR2Mbps,
                                        /* For BLE LR rates, no need to select alternate rate => use gGenfskDR1Mbps rate*/
                                        gGenfskDR1Mbps, gGenfskDR1Mbps, gGenfskDR1Mbps, gGenfskDR2Mbps};
-#elif defined(RADIO_IS_GEN_3P0)
+#elif (NXP_RADIO_GEN >= 300)
 uint8_t targetRate[gMaxRate_c+1]    = {gGenfskDR250Kbps, gGenfskDR500Kbps, gGenfskDR1Mbps, gGenfskDR2Mbps,
                                        gGenfskDR1Mbps, gGenfskDR2Mbps};
 
@@ -177,12 +177,12 @@ static bool_t CT_PacketErrorRateTx(ct_event_t evType, void* pAssociatedValue, bo
 static bool_t CT_RangeRx(ct_event_t evType, void* pAssociatedValue, bool_t bReInit);
 /* Range RX handler */
 static bool_t CT_RangeTx(ct_event_t evType, void* pAssociatedValue, bool_t bReInit);
-#if defined (RADIO_IS_GEN_3P5) || defined(RADIO_IS_GEN_4P0)
+#if (NXP_RADIO_GEN >= 350)
 /* Handles the activation/deactivation of low/high power transmit levels */
 static void CT_HandleHighLowPower(void);
 #endif
 
-#if defined (RADIO_IS_GEN_3P5) || defined(RADIO_IS_GEN_4P0) || defined(RADIO_IS_GEN_4P5)
+#if (NXP_RADIO_GEN >= 350)
 /* Wrapper to convert types */
 static void CT_WrapperRadioModeAndDataRate(xcvr_currConfig_t * pCurrConfig,
                                            genfskRadioMode_t* pRadioModeIn, genfskDataRate_t*  pDataRate);
@@ -241,7 +241,7 @@ static GENFSK_packet_config_t pktConfig =
     .h0Mask = gGenFskDefaultH0Mask_c,
     .h1Match = gGenFskDefaultH1Value_c,
     .h1Mask = gGenFskDefaultH1Mask_c,
-#if defined (RADIO_IS_GEN_3P5) || defined(RADIO_IS_GEN_4P0)
+#if (NXP_RADIO_GEN >= 350)
     .preambleBytePattern = 0
 #endif
 };
@@ -348,7 +348,7 @@ app_status_t CT_GenFskInit(pHookAppNotification pFunc, pTmrHookNotification pTmr
 
     gaConfigParams[gConfParamPower].paramType = gParamTypeNumber_c;
     FLib_MemCpy(gaConfigParams[gConfParamPower].paramName,
-#if !defined(RADIO_IS_GEN_4P5)
+#if (NXP_RADIO_GEN <= 400)
                 "Lo Power", 9);
 #else
                 "Power", 6);
@@ -447,7 +447,7 @@ app_status_t CT_GenFskInit(pHookAppNotification pFunc, pTmrHookNotification pTmr
     /*set channel: Freq = 2360MHz + ChannNumber*1MHz*/
     GENFSK_SetChannelNumber(mAppGenfskId, gGenFskDefaultChannel_c);
 
-#if defined(RADIO_IS_GEN_3P5) || defined(RADIO_IS_GEN_4P0)
+#if (NXP_RADIO_GEN >= 350)
     /* Whitening specific configuration (withen init depending on channel) only applies to BLE */
     {
         GENFSK_mode_config_t modeConfig;
@@ -1557,7 +1557,7 @@ static bool_t CT_RangeTx(ct_event_t evType,
 /*! ************************************************************************
 * \brief  Restores RBME configuration for continuous tests
 *************************************************************************** */
-#if defined (RADIO_IS_GEN_3P5) || defined(RADIO_IS_GEN_4P0) || defined(RADIO_IS_GEN_4P5)
+#if (NXP_RADIO_GEN >= 350)
 static void CT_RestoreRbmeConfiguration(bool_t *rbme_rec_required)
 {
     if(*rbme_rec_required)
@@ -1579,7 +1579,7 @@ bool_t CT_ContinuousTests(ct_event_t evType, void* pAssociatedValue)
 {
     static ct_cont_tests_states_t contTestState = gContStateInit_c;
     static ct_cont_tests_states_t prevState = gContStateInvalid_c;
-#if defined (RADIO_IS_GEN_3P5) || defined(RADIO_IS_GEN_4P0) || defined(RADIO_IS_GEN_4P5)
+#if (NXP_RADIO_GEN >= 350)
     const xcvr_coding_config_t *rbme_config = &xcvr_ble_uncoded_config;
 #endif
     ct_rx_indication_t* pIndicationInfo = NULL;
@@ -1592,7 +1592,7 @@ bool_t CT_ContinuousTests(ct_event_t evType, void* pAssociatedValue)
     bool_t bRestartRx = FALSE;
     bool_t bReturnFromSM = FALSE;
 
-#if defined (RADIO_IS_GEN_3P5) || defined(RADIO_IS_GEN_4P0) || defined(RADIO_IS_GEN_4P5)
+#if (NXP_RADIO_GEN >= 350)
     xcvr_config_t xcvr_config;
     const xcvr_config_t *p_xcvr_config = &xcvr_config;
     xcvr_currConfig_t currConfig;
@@ -1614,7 +1614,7 @@ bool_t CT_ContinuousTests(ct_event_t evType, void* pAssociatedValue)
        gContStateRunUnmodTx_c >= prevState) ||
        gContStateRunIdle_c == prevState)
     {
-#if defined (RADIO_IS_GEN_3P5) || defined(RADIO_IS_GEN_4P0) || defined(RADIO_IS_GEN_4P5)
+#if (NXP_RADIO_GEN >= 350)
         XCVR_DftTxOff();
         /* Remember continuous mode has been used (XCVR_ChangeMode() API called) */
         is_rbme_recovery_required = TRUE;
@@ -1650,7 +1650,7 @@ bool_t CT_ContinuousTests(ct_event_t evType, void* pAssociatedValue)
         }
     }
 
-#if defined (RADIO_IS_GEN_3P5) || defined(RADIO_IS_GEN_4P0) || defined(RADIO_IS_GEN_4P5)
+#if (NXP_RADIO_GEN >= 350)
     chanNum  = GENFSK_GetChannelNumber(mAppGenfskId);
 
     /* If packet mode is used and continuous mode was used previously, restore whitener and crc config
@@ -1690,7 +1690,7 @@ bool_t CT_ContinuousTests(ct_event_t evType, void* pAssociatedValue)
             }
             else if('p' == u8UartData)
             {
-#if defined (RADIO_IS_GEN_3P5) || defined(RADIO_IS_GEN_4P0)
+#if (NXP_RADIO_GEN >= 350)
                 /* When leaving continuous mode, restore whitener and crc config (RBME parameter)
                 to be used for next tests (continous packet tests, PER tests or Range tests. */
                 CT_RestoreRbmeConfiguration(&is_rbme_recovery_required);
@@ -1727,7 +1727,7 @@ bool_t CT_ContinuousTests(ct_event_t evType, void* pAssociatedValue)
             {
                if(u8ByteCount == 0)
                {
-#if !defined(MULTICORE_APP) || (MULTICORE_APP!=1)
+#if (NXP_RADIO_GEN <= 400)
                    RNG_GetRandomNo(&u32RandomValue); /*get 4 bytes from RNG*/
 #else
                    RNG_GetTrueRandomNumber(&u32RandomValue); /*get 4 bytes from RNG*/
@@ -1755,7 +1755,7 @@ bool_t CT_ContinuousTests(ct_event_t evType, void* pAssociatedValue)
         }
         break;
     case gContStateRunModTxOne_c:
-#if defined (RADIO_IS_GEN_3P5)  || defined(RADIO_IS_GEN_4P0) || defined(RADIO_IS_GEN_4P5)
+#if (NXP_RADIO_GEN >= 350)
         XCVR_GetCurrentConfig(p_currConfig);
         CT_WrapperRadioModeAndDataRate(p_currConfig, &radioModeIn, &dataRate);
         GENFSK_GetXcvrConfig(radioModeIn, dataRate, &p_xcvr_config);
@@ -1771,7 +1771,7 @@ bool_t CT_ContinuousTests(ct_event_t evType, void* pAssociatedValue)
         contTestState = gContStateSelectTest_c;
         break;
     case gContStateRunModTxZero_c:
-#if defined (RADIO_IS_GEN_3P5)  || defined(RADIO_IS_GEN_4P0) || defined(RADIO_IS_GEN_4P5)
+#if (NXP_RADIO_GEN >= 350)
         XCVR_GetCurrentConfig(p_currConfig);
         CT_WrapperRadioModeAndDataRate(p_currConfig, &radioModeIn, &dataRate);
         GENFSK_GetXcvrConfig(radioModeIn, dataRate, &p_xcvr_config);
@@ -1787,7 +1787,7 @@ bool_t CT_ContinuousTests(ct_event_t evType, void* pAssociatedValue)
         contTestState = gContStateSelectTest_c;
         break;
     case gContStateRunModTxPN_c:
-#if defined (RADIO_IS_GEN_3P5)  || defined(RADIO_IS_GEN_4P0) || defined(RADIO_IS_GEN_4P5)
+#if (NXP_RADIO_GEN >= 350)
         XCVR_GetCurrentConfig(p_currConfig);
         CT_WrapperRadioModeAndDataRate(p_currConfig, &radioModeIn, &dataRate);
         GENFSK_GetXcvrConfig(radioModeIn, dataRate, &p_xcvr_config);
@@ -1803,7 +1803,7 @@ bool_t CT_ContinuousTests(ct_event_t evType, void* pAssociatedValue)
         break;
     case gContStateRunUnmodTx_c:
     {
-#if defined (RADIO_IS_GEN_3P5) || defined(RADIO_IS_GEN_4P0) || defined(RADIO_IS_GEN_4P5)
+#if (NXP_RADIO_GEN >= 350)
         uint32_t rf_freq = (2360U + chanNum)*1000000U; /* In Hertz */
         XCVR_DftTxCW(rf_freq);
 #if defined(gBoard_ExtPaSupport_d) && (gBoard_ExtPaSupport_d > 0)
@@ -1924,7 +1924,7 @@ bool_t CT_ContinuousTests(ct_event_t evType, void* pAssociatedValue)
         }
         if(gCtEvtTimerExpired_c == evType)
         {
-#if defined (RADIO_IS_GEN_3P5) || defined(RADIO_IS_GEN_4P0) || defined(RADIO_IS_GEN_4P5)
+#if (NXP_RADIO_GEN >= 350)
             PrintCrtRssi((int8_t)XCVR_GetInstantRssi(), mAppSerId);
 #else
             PrintCrtRssi((int8_t)XcvrFskGetInstantRssi(), mAppSerId);
@@ -1992,9 +1992,9 @@ bool_t CT_UpdateShortcutKeyParam(uint8_t u8PressedKey)
         {
             pConfig->paramValue.decValue = gGenFskMinTxPowerLevel_c;
         }
-#ifdef RADIO_IS_GEN_3P5
+#if (NXP_RADIO_GEN >= 350)
         CT_HandleHighLowPower();
-#endif /* RADIO_IS_GEN_3P5 */
+#endif /* (NXP_RADIO_GEN >= 350) */
         break;
     case 's':
         pConfig = &gaConfigParams[gConfParamPower];
@@ -2006,9 +2006,9 @@ bool_t CT_UpdateShortcutKeyParam(uint8_t u8PressedKey)
         {
              pConfig->paramValue.decValue--;
         }
-#ifdef RADIO_IS_GEN_3P5
+#if (NXP_RADIO_GEN >= 350)
         CT_HandleHighLowPower();
-#endif /* RADIO_IS_GEN_3P5 */
+#endif /* (NXP_RADIO_GEN >= 350) */
         break;
     case 'n':
         pConfig = &gaConfigParams[gConfParamPayload];
@@ -2125,7 +2125,7 @@ bool_t CT_IsShortcutMenuEnabled(void)
     return bEnableShortcuts;
 }
 
-#ifdef RADIO_IS_GEN_3P5
+#if (NXP_RADIO_GEN >= 350)
 /*! *********************************************************************************
 * \brief  Handles the activation/deactivation of low/high power trasnmit levels
 ********************************************************************************** */
@@ -2160,7 +2160,7 @@ static void CT_HandleHighLowPower(void)
         if (status == gGenfskSuccess_c)
         {
            FLib_MemCpy(gaConfigParams[gConfParamPower].paramName,
-#if !defined(RADIO_IS_GEN_4P5)
+#if !(NXP_RADIO_GEN >= 450)
                 "Lo Power", 9);
 #else
                 "Power", 6);
@@ -2169,7 +2169,7 @@ static void CT_HandleHighLowPower(void)
         }
     }
 }
-#endif /* RADIO_IS_GEN_3P5 */
+#endif /* (NXP_RADIO_GEN >= 350) */
 
 /*! *********************************************************************************
 * \brief  Enables / Disables the shortcut keys
@@ -2187,7 +2187,7 @@ static bool_t CT_ApplyPrintRateParams(void)
 {
     bool_t bParamsUpdated = FALSE;
 
-#if defined(RADIO_IS_GEN_3P5)  || defined(RADIO_IS_GEN_4P0) || defined(RADIO_IS_GEN_4P5)
+#if (NXP_RADIO_GEN >= 350)
     static const xcvr_coding_config_t *old_rbmeConfig = &xcvr_ble_uncoded_config;
     const xcvr_coding_config_t *rbmeConfig = &xcvr_ble_uncoded_config;
     uint8_t preamble_pattern    = 0U;
@@ -2203,7 +2203,7 @@ static bool_t CT_ApplyPrintRateParams(void)
     (void)GENFSK_GetModeConfig(mAppGenfskId, &modeConfig);
     (void)GENFSK_GetPacketConfig(mAppGenfskId, &packetConfig);
 
-#if defined( RADIO_IS_GEN_3P5) || defined(RADIO_IS_GEN_4P0) || defined(RADIO_IS_GEN_4P5)
+#if (NXP_RADIO_GEN >= 350)
     if (old_rbmeConfig == &xcvr_ble_coded_s2_config)
     {
         crtMode = gRateBle500Kbps_c;
@@ -2226,7 +2226,7 @@ static bool_t CT_ApplyPrintRateParams(void)
     {
         crtMode += gRateBle1Mbps_c - 2;
     }
-#endif /* RADIO_IS_GEN_3P5 */
+#endif /* (NXP_RADIO_GEN >= 350) */
 
     if(gaConfigParams[gConfParamRateMode].id != crtMode)
     {
@@ -2237,7 +2237,7 @@ static bool_t CT_ApplyPrintRateParams(void)
         {
             mode = gGenfskGllMode;
         }
-#if defined( RADIO_IS_GEN_3P5) || defined(RADIO_IS_GEN_4P0) || defined(RADIO_IS_GEN_4P5)
+#if (NXP_RADIO_GEN >= 350)
         else if (gaConfigParams[gConfParamRateMode].id <= gRateBle500Kbps_c)
         {
             mode = gGenfskBleLrMode;
@@ -2255,7 +2255,7 @@ static bool_t CT_ApplyPrintRateParams(void)
                 rbmeConfig = &xcvr_ble_coded_s8_config;
             }
         }
-#endif /* RADIO_IS_GEN_3P5 */
+#endif /* (NXP_RADIO_GEN >= 350) */
         else
         {
             mode = gGenfskBleUncodedMode;
@@ -2264,7 +2264,7 @@ static bool_t CT_ApplyPrintRateParams(void)
             {
                 preamble_size = 0U;
             }
-#if defined( RADIO_IS_GEN_3P5) || defined(RADIO_IS_GEN_4P0)
+#if (NXP_RADIO_GEN >= 350)
             else
             {
                 preamble_size = 1U;
@@ -2293,7 +2293,7 @@ static bool_t CT_ApplyPrintRateParams(void)
             {
                 bParamsUpdated = TRUE;
             }
-#if defined( RADIO_IS_GEN_3P5) || defined(RADIO_IS_GEN_4P0)
+#if (NXP_RADIO_GEN >= 350)
             {
                 /* Whitening specific configuration (withen init depending on channel) only applies to BLE */
                 if ((mModeConfig.mode == gGenfskBleLrMode) || (mModeConfig.mode == gGenfskBleUncodedMode))
@@ -2309,7 +2309,7 @@ static bool_t CT_ApplyPrintRateParams(void)
 #endif
         }
 
-#if defined( RADIO_IS_GEN_3P5) || defined(RADIO_IS_GEN_4P0)
+#if (NXP_RADIO_GEN >= 350)
         /* Rate change detected or rbme configuration changed*/
         if ((rate != radioConfig.dataRate) || (old_rbmeConfig != rbmeConfig))
 #else
@@ -2318,11 +2318,11 @@ static bool_t CT_ApplyPrintRateParams(void)
         {
             genfskDataRate_t old_rate = radioConfig.dataRate;
             radioConfig.dataRate = rate;
-#if defined (RADIO_IS_GEN_3P5) || defined(RADIO_IS_GEN_4P0) || defined(RADIO_IS_GEN_4P5)
+#if (NXP_RADIO_GEN >= 350)
             if(gGenfskSuccess_c != GENFSK_RadioConfigWithRbme(mAppGenfskId, &radioConfig, &rbmeConfig))
 #else
             if(gGenfskSuccess_c != GENFSK_RadioConfig(mAppGenfskId, &radioConfig))
-#endif /* RADIO_IS_GEN_3P5 */
+#endif /* (NXP_RADIO_GEN >= 350) */
             {
                 gaConfigParams[gConfParamRateMode].id = crtMode;
                 radioConfig.dataRate = old_rate;
@@ -2338,17 +2338,17 @@ static bool_t CT_ApplyPrintRateParams(void)
                 GENFSK_SetWhitenerConfig(mAppGenfskId, &whitenerUpdatedConfig);
                 /*set crc config*/
                 GENFSK_SetCrcConfig(mAppGenfskId, &crcConfig);
-#if defined( RADIO_IS_GEN_3P5 ) || defined(RADIO_IS_GEN_4P0)
+#if (NXP_RADIO_GEN >= 350)
                 /* Workaround to set SPOV_EN=1 for S2 */
                 if (rbmeConfig == &xcvr_ble_coded_s2_config)
                 {
                     RBME->SPREAD_CFG |= RBME_SPREAD_CFG_SPOV_EN(1);
                 }
-#endif /* RADIO_IS_GEN_3P5 */
+#endif /* (NXP_RADIO_GEN >= 350) */
                 bParamsUpdated = TRUE;
             }
         }
-#if defined( RADIO_IS_GEN_3P5 ) || defined(RADIO_IS_GEN_4P0)
+#if (NXP_RADIO_GEN >= 350)
         old_rbmeConfig = rbmeConfig;
 
         if ((packetConfig.preambleSizeBytes != preamble_size) || (packetConfig.preambleBytePattern != preamble_pattern) ||
@@ -2357,13 +2357,13 @@ static bool_t CT_ApplyPrintRateParams(void)
 #else
         if ((packetConfig.preambleSizeBytes != preamble_size) || (packetConfig.lengthSizeBits != lengthSizeBits) ||
             (packetConfig.h1SizeBits != h1SizeBits) || (packetConfig.h1Mask != h1Mask))
-#endif /* RADIO_IS_GEN_3P5 */
+#endif /* (NXP_RADIO_GEN >= 350) */
         {
             GENFSK_packet_config_t old_packetConfig = packetConfig;
             packetConfig.preambleSizeBytes      = preamble_size;
-#if defined (RADIO_IS_GEN_3P5) || defined(RADIO_IS_GEN_4P0)
+#if (NXP_RADIO_GEN >= 350)
             packetConfig.preambleBytePattern    = preamble_pattern;
-#endif /* RADIO_IS_GEN_3P5 */
+#endif /* (NXP_RADIO_GEN >= 350) */
             packetConfig.lengthSizeBits         = lengthSizeBits;
             packetConfig.h1SizeBits             = h1SizeBits;
             packetConfig.h1Mask                 = h1Mask;
@@ -2389,11 +2389,11 @@ static bool_t CT_ApplyPrintRateParams(void)
 static bool_t CT_ApplyPrintConfigParams(void)
 {
     bool_t bParamsUpdated = FALSE;
-#if defined(RADIO_IS_GEN_3P5) || defined(RADIO_IS_GEN_4P0)
+#if (NXP_RADIO_GEN >= 350)
     static genfskMode_t old_mode = gGenfskGllMode;
     static uint8_t old_whiten_mode = gDefaultWhitenMode_c;
     bool_t update_whitening = false;
-#endif /* RADIO_IS_GEN_3P5 */
+#endif /* (NXP_RADIO_GEN >= 350) */
     if(CT_IsShortcutMenuEnabled())
     {
         uint8_t crtChannel = GENFSK_GetChannelNumber(mAppGenfskId);
@@ -2411,13 +2411,13 @@ static bool_t CT_ApplyPrintConfigParams(void)
             else
             {
                 bParamsUpdated = TRUE;
-#ifdef RADIO_IS_GEN_3P5
+#if (NXP_RADIO_GEN >= 350)
                 update_whitening = true;
-#endif /* RADIO_IS_GEN_3P5 */
+#endif /* (NXP_RADIO_GEN >= 350) */
             }
         }
 
-#if defined(RADIO_IS_GEN_3P5) || defined(RADIO_IS_GEN_4P0)
+#if (NXP_RADIO_GEN >= 350)
         GENFSK_mode_config_t modeConfig;
 
         (void)GENFSK_GetModeConfig(mAppGenfskId, &modeConfig);
@@ -2448,7 +2448,7 @@ static bool_t CT_ApplyPrintConfigParams(void)
 
         if(gaConfigParams[gConfParamPower].paramValue.decValue != crtPwr)
         {
-#if defined( RADIO_IS_GEN_3P5 ) || defined(RADIO_IS_GEN_4P0)
+#if (NXP_RADIO_GEN >= 350)
             genfskStatus_t status;
 
             if (GENFSK_IsHighPowerConfigured() == 0x1U)
@@ -2478,14 +2478,14 @@ static bool_t CT_ApplyPrintConfigParams(void)
                 if (status == gGenfskSuccess_c)
                 {
                    FLib_MemCpy(gaConfigParams[gConfParamPower].paramName,
-#if !defined(RADIO_IS_GEN_4P5)
+#if (NXP_RADIO_GEN <= 400)
                 "Lo Power", 9);
 #else
                 "Power", 6);
 #endif
                 }
             }
-#endif /* RADIO_IS_GEN_3P5  || defined(RADIO_IS_GEN_4P0 */
+#endif /* (NXP_RADIO_GEN >= 350) */
             if(gGenfskSuccess_c !=
                GENFSK_SetTxPowerLevel(mAppGenfskId, gaConfigParams[gConfParamPower].paramValue.decValue))
             {
@@ -2553,7 +2553,7 @@ static bool_t CT_ApplyPrintConfigParams(void)
     }
     return bParamsUpdated;
 }
-#if defined (RADIO_IS_GEN_3P5) || defined(RADIO_IS_GEN_4P0) || defined(RADIO_IS_GEN_4P5)
+#if (NXP_RADIO_GEN >= 350)
 /*! *********************************************************************************
 * \brief  Converts radio_mode_t to genfskRadioMode_t & data_rate_t to genfskDataRate_t
 *         This is used to provide the right types to GENFSK_GetXcvrConfig() after a
@@ -2564,7 +2564,7 @@ static void CT_WrapperRadioModeAndDataRate(xcvr_currConfig_t * pCurrConfig, genf
     *pRadioModeIn = gGenfskGfskBt0p5h0p5;
     *pDataRate = gGenfskDR1Mbps;
 
-#if !defined(RADIO_IS_GEN_4P0) && !defined(RADIO_IS_GEN_4P5)
+#if (NXP_RADIO_GEN <= 350)
     if ((pCurrConfig->radio_mode >= GFSK_BT_0p5_h_0p5) && (pCurrConfig->radio_mode <= RESERVED4_MODE))
     {
         *pRadioModeIn = (genfskRadioMode_t)((uint8_t)pCurrConfig->radio_mode - GFSK_BT_0p5_h_0p5);

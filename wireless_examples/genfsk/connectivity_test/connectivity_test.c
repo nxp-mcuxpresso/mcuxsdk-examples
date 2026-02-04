@@ -43,11 +43,11 @@ SPDX-License-Identifier: BSD-3-Clause
 #include "board.h"
 #include "app.h"
 #include "fwk_platform.h"
-#if !defined(MULTICORE_APP) || (MULTICORE_APP!=1)
+#if (NXP_RADIO_GEN <= 400)
 #include "platform_genfsk.h"
 #else
 #include "fwk_platform_genfsk.h"
-#endif
+#endif /* (NXP_RADIO_GEN <= 400) */
 
 #ifdef cPWR_UsePowerDownMode
 #if (cPWR_UsePowerDownMode)
@@ -244,7 +244,7 @@ void main_task(uint32_t param)
 {
     if (!platformInitialized)
     {
-#if !defined(MULTICORE_APP) || (MULTICORE_APP!=1)
+#if (NXP_RADIO_GEN <= 400)
         uint8_t pseudoRNGSeed[20] = {0};
 #endif
 
@@ -280,7 +280,7 @@ void main_task(uint32_t param)
         SecLib_Init();
 
         RNG_Init();
-#if !defined(MULTICORE_APP) || (MULTICORE_APP!=1)
+#if (NXP_RADIO_GEN <= 400)
         RNG_GetRandomNo((uint32_t*)(&(pseudoRNGSeed[0])));
         RNG_GetRandomNo((uint32_t*)(&(pseudoRNGSeed[4])));
         RNG_GetRandomNo((uint32_t*)(&(pseudoRNGSeed[8])));
