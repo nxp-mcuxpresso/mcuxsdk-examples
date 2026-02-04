@@ -82,11 +82,6 @@ void BOARD_InitHardware(void)
     /* Enable the interrupt. */
     EnableIRQ(TENBASET_PHY0_IRQn);
 
-    /* Enable ENET0 and TENBASET_PHY0 */
-    MRCC0->MRCC_GLB_PR2 |= MRCC_MRCC_GLB_PR2_ENET0_MASK | MRCC_MRCC_GLB_PR2_T1S0_MASK | MRCC_MRCC_GLB_PR2_E1588_MASK;
-    /* Disable RMII */
-    MRCC0->MRCC_GLB_PR2 &= ~MRCC_MRCC_GLB_PR2_RMII_MASK;
-
     /* Connect ENET to internal TENBASET_PHY0 instead of external PHY */
     SYSCON->ENET_CTRL = SYSCON_ENET_CTRL_PHY_SEL(1) | SYSCON_ENET_CTRL_PHY_INTF(0);
 
@@ -108,11 +103,6 @@ void BOARD_InitHardware(void)
 
     /* Initialize MDIO */
     MDIO_Init();
-
-    /* Enable ENET0 and RMII */
-    MRCC0->MRCC_GLB_PR2 |= MRCC_MRCC_GLB_PR2_ENET0_MASK | MRCC_MRCC_GLB_PR2_RMII_MASK | MRCC_MRCC_GLB_PR2_E1588_MASK;
-    /* Disable TENBASET_PHY0 */
-    MRCC0->MRCC_GLB_PR2 &= ~MRCC_MRCC_GLB_PR2_T1S0_MASK;
 
     /* Connect ENET to external PHY over RMII */
     SYSCON->ENET_CTRL = SYSCON_ENET_CTRL_PHY_SEL(0) | SYSCON_ENET_CTRL_PHY_INTF(1);

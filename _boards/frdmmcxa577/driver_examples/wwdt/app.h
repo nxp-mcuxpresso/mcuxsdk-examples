@@ -17,7 +17,7 @@
 #define APP_WDT_IRQn        WWDT0_IRQn
 #define APP_WDT_IRQ_HANDLER WWDT0_IRQHandler
 #define WDT_CLK_FREQ        CLOCK_GetWwdt0ClkFreq()
-#define IS_WWDT_RESET       (0 != (CMC->SRS & CMC_SRS_WDOG0_MASK))
+#define IS_WWDT_RESET       (0 != (CMC->SRS & CMC_SRS_WWDT0_MASK))
 /*${macro:end}*/
 
 /*******************************************************************************
