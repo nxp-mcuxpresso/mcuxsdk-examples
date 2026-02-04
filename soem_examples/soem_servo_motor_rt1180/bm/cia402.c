@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 NXP
+ * Copyright 2024 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -138,9 +138,6 @@ int axis_start(struct axis_t *si, uint8_t mode) {
 
 	switch (ss) {
 		case (no_ready_to_switch_on):
-			PDO_write_control_word(si, contrlword_shutdown(0));
-			PDO_write_op_mode(si, mode);
-			break;
 		case (switch_on_disable):
 			PDO_write_control_word(si, contrlword_shutdown(0));
 			break;
