@@ -45,3 +45,4 @@ example take turns to shine the LED.
 - [FRDM-MCXA366](../../../_boards/frdmmcxa366/driver_examples/gpio/led_output/example_board_readme.md)
 - [FRDM-MCXW72](../../../_boards/frdmmcxw72/driver_examples/gpio/led_output/example_board_readme.md)
 - [FRDM-MCXA577](../../../_boards/frdmmcxa577/driver_examples/gpio/led_output/example_board_readme.md)
+- [FRDM-MCXC162](../../../_boards/frdmmcxc162/driver_examples/gpio/led_output/example_board_readme.md)

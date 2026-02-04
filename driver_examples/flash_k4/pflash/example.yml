@@ -24,3 +24,4 @@ flash_k4:
     kw45b41zevk:
     - +armgcc@debug
     - +armgcc@release
+    frdmmcxc162: []

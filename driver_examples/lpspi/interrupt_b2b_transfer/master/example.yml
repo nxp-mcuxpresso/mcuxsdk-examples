@@ -130,3 +130,4 @@ lpspi_interrupt_b2b_transfer_master:
     imx952evk@cm7: []
     frdmimx95@cm7: []
     frdmmcxa577: []
+    frdmmcxc162: []

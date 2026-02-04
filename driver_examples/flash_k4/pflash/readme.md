@@ -34,3 +34,4 @@ When the example runs successfully, you can see the similar information from the
 - [KW47-LOC](../../../_boards/kw47loc/driver_examples/flash/pflash/example_board_readme.md)
 - [MCXW72-LOC](../../../_boards/mcxw72loc/driver_examples/flash/pflash/example_board_readme.md)
 - [FRDM-MCXW72](../../../_boards/frdmmcxw72/driver_examples/flash/pflash/example_board_readme.md)
+- [FRDM-MCXC162](../../../_boards/frdmmcxc162/driver_examples/flash/pflash/example_board_readme.md)

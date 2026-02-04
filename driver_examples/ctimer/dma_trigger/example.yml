@@ -29,3 +29,4 @@ ctimer_dma_trigger:
     frdmmcxl255@cm33: []
     frdmmcxa266: []
     frdmmcxa366: []
+    frdmmcxc162: []

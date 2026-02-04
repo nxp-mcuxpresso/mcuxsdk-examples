@@ -19,3 +19,4 @@ The code of this demo has been prepared and updated for use with the MCUXpresso 
 - [FRDM-MCXA344](../../_boards/frdmmcxa344/demo_apps/led_blinky/example_board_readme.md)
 - [FRDM-MCXA266](../../_boards/frdmmcxa266/demo_apps/led_blinky/example_board_readme.md)
 - [FRDM-MCXA366](../../_boards/frdmmcxa366/demo_apps/led_blinky/example_board_readme.md)
+- [FRDM-MCXC162](../../_boards/frdmmcxc162/demo_apps/led_blinky/example_board_readme.md)

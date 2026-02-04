@@ -333,3 +333,4 @@ lpuart_interrupt:
     - +iar@debug
     - +iar@release
     frdmmcxa577: []
+    frdmmcxc162: []

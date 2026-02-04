@@ -68,3 +68,4 @@ gpio_led_output:
     frdmmcxa366: []
     mimxrt2660evk: []
     frdmmcxa577: []
+    frdmmcxc162: []

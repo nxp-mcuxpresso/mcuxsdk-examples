@@ -374,3 +374,4 @@ hello_world:
     - +iar@debug
     - +iar@release
     frdmmcxa577: []
+    frdmmcxc162: []

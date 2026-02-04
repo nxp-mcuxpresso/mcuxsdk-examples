@@ -35,3 +35,4 @@ To measure the pulse period with a high degree of accuracy, the frequency of ref
 - [FRDM-MCXA266](../../_boards/frdmmcxa266/driver_examples/freqme/example_board_readme.md)
 - [FRDM-MCXA366](../../_boards/frdmmcxa366/driver_examples/freqme/example_board_readme.md)
 - [FRDM-MCXA577](../../_boards/frdmmcxa577/driver_examples/freqme/example_board_readme.md)
+- [FRDM-MCXC162](../../_boards/frdmmcxc162/driver_examples/freqme/example_board_readme.md)

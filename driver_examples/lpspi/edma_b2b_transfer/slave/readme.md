@@ -56,3 +56,4 @@ The file 'lpspi_edma_b2b_transfer_slave.c' includes the LPSPI slave code.
 - [FRDM-MCXA266](../../../../_boards/frdmmcxa266/driver_examples/lpspi/edma_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXA366](../../../../_boards/frdmmcxa366/driver_examples/lpspi/edma_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXA577](../../../../_boards/frdmmcxa577/driver_examples/lpspi/edma_b2b_transfer/slave/example_board_readme.md)
+- [FRDM-MCXC162](../../../../_boards/frdmmcxc162/driver_examples/lpspi/edma_b2b_transfer/slave/example_board_readme.md)
