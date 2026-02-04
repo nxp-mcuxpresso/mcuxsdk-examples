@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+espi_device:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/espi
+    project-root-path: boards/${board}/driver_examples/espi/${multicore_foldername}
+    document:
+      name: espi_device${core_id_suffix_name}
+      category: driver_examples/espi
+      brief: 'The espi_device example demonstrates using the eSPI driver to
+        configure ports, handle virtual wires, and process mailbox/OOB messages.'
+      example_readme:
+      - examples/driver_examples/espi/readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxa577: []
