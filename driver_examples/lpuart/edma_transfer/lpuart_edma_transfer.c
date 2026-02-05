@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016-2017 NXP
+ * Copyright 2016-2017, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -28,7 +28,7 @@ void LPUART_UserCallback(LPUART_Type *base, lpuart_edma_handle_t *handle, status
  * Variables
  ******************************************************************************/
 
-lpuart_edma_handle_t g_lpuartEdmaHandle;
+AT_NONCACHEABLE_SECTION(lpuart_edma_handle_t g_lpuartEdmaHandle);
 edma_handle_t g_lpuartTxEdmaHandle;
 edma_handle_t g_lpuartRxEdmaHandle;
 AT_NONCACHEABLE_SECTION_INIT(uint8_t g_tipString[]) =
