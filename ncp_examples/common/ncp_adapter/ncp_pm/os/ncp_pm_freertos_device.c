@@ -355,6 +355,22 @@ AT_QUICKACCESS_SECTION_CODE(static void ncp_pm_switch_pre_hook(uint32_t mode, vo
 
     /* Update system core clock */
     SystemCoreClock = freq / ((CLKCTL0->SYSCPUAHBCLKDIV & CLKCTL0_SYSCPUAHBCLKDIV_DIV_MASK) + 1U);
+#if CONFIG_NCP_SPI
+    /* For PM2 case, the FLEXSPI is disabled.
+     * Call flow:
+     *  POWER_PrePowerMode() -> deinitXip() -> FLEXSPI->MCR0 |= FLEXSPI_MCR0_MDIS_MASK
+     *
+     * In addition, the T3/TCPU PLL clock is gated(RW612X Reference Manual).
+     *
+     * Reattaches the FLEXSPI clock source to t3pll_mcu_256m (256 MHz) and
+     * configures a clock divider of 4.
+     * The FLEXSPI disable state remains unchanged.
+     */
+    if(mode == NCP_PM_STATE_PM2)
+    {
+        BOARD_SetFlexspiClock(FLEXSPI, 6U, 4U);
+    }
+#endif
 }
 
 AT_QUICKACCESS_SECTION_CODE(static void ncp_pm_switch_post_hook(uint32_t mode, void *param))
@@ -369,6 +385,22 @@ AT_QUICKACCESS_SECTION_CODE(static void ncp_pm_switch_post_hook(uint32_t mode, v
     USART0->BRG                    = clk_ctx->brg;
     CLKCTL1->FLEXCOMM[0].FRGCLKSEL = clk_ctx->frgSel;
     CLKCTL1->FLEXCOMM[0].FRGCTL    = clk_ctx->frgctl;
+#endif
+#if CONFIG_NCP_SPI
+    /* In PM2 mode, the FLEXSPI module may not return to a ready state in time.
+     * Accessing FLEXSPI during this period may trigger hardware faults,
+     * including failures in BLE EtherMind RD/WT tasks performing littlefs operations.
+     *
+     * Calling BOARD_SetFlexspiClock forces a deinitialization and reinitialization
+     * of the FLEXSPI clock domain.
+     * The clock is restored to the original aux0_pll_clk source with divider set to 2.
+     *
+     * Accelerates FLEXSPI state recovery and restores a ready/valid operational state after PM2.
+     */
+    if(mode  == NCP_PM_STATE_PM2)
+    {
+        BOARD_SetFlexspiClock(FLEXSPI, 2U, 2U);
+    }
 #endif
 }
 
