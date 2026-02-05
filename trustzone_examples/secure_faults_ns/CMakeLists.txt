@@ -48,7 +48,7 @@ mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bi
 
 mcux_add_library(
     BASE_PATH ${APPLICATION_BINARY_DIR}
-    LIBS "../secure_faults_s/${CONFIG_TOOLCHAIN}/secure_faults_s_CMSE_lib.o"
+    LIBS "../secure_faults_s/${CONFIG_TOOLCHAIN}/secure_faults_s${core_id_suffix_name}_CMSE_lib.o"
     TOOLCHAINS armgcc mdk iar
     GENERATED TRUE
 )
