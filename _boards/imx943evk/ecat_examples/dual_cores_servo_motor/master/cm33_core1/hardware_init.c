@@ -91,6 +91,7 @@ UINT16 HW_Init(void)
     BOARD_ConfigMPU();
 
     PRINTF("Start the SSC dual-cores servo motor example...\r\n");
+    PRINTF("(Compiled on: %s at %s)\r\n", __DATE__, __TIME__);
 
 #if USING_ECAT_CLK25
     BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S1_ID, ETHD_REFCLK_A0);

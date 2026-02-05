@@ -12,7 +12,7 @@ dual_cores_ecat_servo_motor_secondary_core:
       - ${board_root}/${board}/ecat_examples/dual_cores_servo_motor/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    imx943evk@cm7_core1:
+    imx943evk@cm7_core0:
     - +armgcc@debug
     - +armgcc@release
     - +iar@debug

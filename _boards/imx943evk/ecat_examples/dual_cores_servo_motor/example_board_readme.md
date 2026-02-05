@@ -43,7 +43,7 @@ FRDM-LVPMSM-FA board with T5PUXS4-H09 motor:
 
 FRDM-LVPMSM-FA board with T5PUXS4-H18 motor:
   - SW90[1:4]: OFF-ON-ON-ON
-  - SW30[1:4]: OFF-OFF-ON-OFF
+  - SW30[1:4]: OFF-OFF-OFF-ON
   - J72(1-3)
   - J72(2-4)
   - J73(1-2)
@@ -63,8 +63,12 @@ FRDM-LVPMSM-FA board with T5PUXS4-H18 motor:
 
 i.MX943-EVK board:
   - SW4: based on used BOOT_MODE
-  - SW7[1:4] : ON:OFF:ON:ON
+  - SW7[1:4] : ON:ON:ON:ON
   - SW8: ALL to OFF  
+
+Serial Port Setting:
+  - Replace "BOARD_DEBUG_UART_INSTANCE 8" with "BOARD_DEBUG_UART_INSTANCE 1" on "board.h"
+  - i.MX943 EVK has 4 serial port: port0, port1, port2, port3, using serial port1 as m70 core output, port2 as m33s core output
   
 Prepare the Demo  
 ===================

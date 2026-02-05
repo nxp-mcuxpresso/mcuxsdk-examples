@@ -34,4 +34,4 @@ mcux_add_armgcc_configuration(
     CC "-O0"
 )
 
-mcux_set_variable(multicore_sec_core_foldername cm7_core1)
+mcux_set_variable(multicore_sec_core_foldername cm7_core0)

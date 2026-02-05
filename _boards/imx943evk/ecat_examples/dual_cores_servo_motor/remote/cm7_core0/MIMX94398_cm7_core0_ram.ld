@@ -1,29 +1,29 @@
 /*
 ** ###################################################################
-**     Processors:          MIMX94398AVKE_cm7_core1
-**                          MIMX94398AVKJ_cm7_core1
-**                          MIMX94398AVKM_cm7_core1
-**                          MIMX94398AVME_cm7_core1
-**                          MIMX94398AVMJ_cm7_core1
-**                          MIMX94398AVMM_cm7_core1
-**                          MIMX94398CVKE_cm7_core1
-**                          MIMX94398CVKJ_cm7_core1
-**                          MIMX94398CVKM_cm7_core1
-**                          MIMX94398CVME_cm7_core1
-**                          MIMX94398CVMJ_cm7_core1
-**                          MIMX94398CVMM_cm7_core1
-**                          MIMX94398DVKE_cm7_core1
-**                          MIMX94398DVKJ_cm7_core1
-**                          MIMX94398DVKM_cm7_core1
-**                          MIMX94398DVME_cm7_core1
-**                          MIMX94398DVMJ_cm7_core1
-**                          MIMX94398DVMM_cm7_core1
-**                          MIMX94398XVKE_cm7_core1
-**                          MIMX94398XVKJ_cm7_core1
-**                          MIMX94398XVKM_cm7_core1
-**                          MIMX94398XVME_cm7_core1
-**                          MIMX94398XVMJ_cm7_core1
-**                          MIMX94398XVMM_cm7_core1
+**     Processors:          MIMX94398AVKE_cm7_core0
+**                          MIMX94398AVKJ_cm7_core0
+**                          MIMX94398AVKM_cm7_core0
+**                          MIMX94398AVME_cm7_core0
+**                          MIMX94398AVMJ_cm7_core0
+**                          MIMX94398AVMM_cm7_core0
+**                          MIMX94398CVKE_cm7_core0
+**                          MIMX94398CVKJ_cm7_core0
+**                          MIMX94398CVKM_cm7_core0
+**                          MIMX94398CVME_cm7_core0
+**                          MIMX94398CVMJ_cm7_core0
+**                          MIMX94398CVMM_cm7_core0
+**                          MIMX94398DVKE_cm7_core0
+**                          MIMX94398DVKJ_cm7_core0
+**                          MIMX94398DVKM_cm7_core0
+**                          MIMX94398DVME_cm7_core0
+**                          MIMX94398DVMJ_cm7_core0
+**                          MIMX94398DVMM_cm7_core0
+**                          MIMX94398XVKE_cm7_core0
+**                          MIMX94398XVKJ_cm7_core0
+**                          MIMX94398XVKM_cm7_core0
+**                          MIMX94398XVME_cm7_core0
+**                          MIMX94398XVMJ_cm7_core0
+**                          MIMX94398XVMM_cm7_core0
 **
 **     Compiler:            GNU C Compiler
 **     Reference manual:    iMX943RM rev1 draftK
@@ -59,7 +59,7 @@ MEMORY
   m_data                    (RW)  : ORIGIN = 0x20003000, LENGTH = 0x0002E000
   m_ncache                  (RW)  : ORIGIN = 0x20800000, LENGTH = 0x0000B000
   m_rsc_tbl                 (RW)  : ORIGIN = 0x2003C000, LENGTH = 0x00004000
-  m_rsc_tbl_share_with_mpu  (RW)  : ORIGIN = 0x84220000, LENGTH = 0x00001000
+  m_rsc_tbl_share_with_mpu  (RW)  : ORIGIN = 0x82220000, LENGTH = 0x00001000
 }
 
 /* Define output sections */

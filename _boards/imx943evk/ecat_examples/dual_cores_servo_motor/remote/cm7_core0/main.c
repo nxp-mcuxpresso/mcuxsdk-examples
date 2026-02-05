@@ -78,7 +78,7 @@ extern struct param_t *g_param;
 
 /* Structure used in FM to get required ID's */
 app_ver_t g_sAppIdFM = {
-    "../../../examples/_boards/imx943evk/ecat_examples/dual_cores_servo_motor/remote/cm7_core1",        /* User Path 1- the highest priority */
+    "../../../examples/_boards/imx943evk/ecat_examples/dual_cores_servo_motor/remote/cm7_core0",        /* User Path 1- the highest priority */
     "",       /* User Path 2 */
     "imx943evk", /* board id */
     "pmsm_servo_dual",     /* example id */
@@ -252,6 +252,7 @@ int main(void)
     SystemPlatformInit();
     BOARD_InitDebugConsolePins();
     BOARD_BootClockRUN();
+    BOARD_InitDebugConsole();
 
 	/* Waiting until MU_ipc_shm_master_init() is completed on CM33 core */
     MU_ipc_shm_client_init();
@@ -276,6 +277,10 @@ int main(void)
     /* Enable PWM clock */
     g_sM1Pwm3ph.pui32PwmBaseAddress->MCTRL |= PWM_MCTRL_RUN(0xF);    /* Enable PWM for Motor 1 */
     g_sM2Pwm3ph.pui32PwmBaseAddress->MCTRL |= PWM_MCTRL_RUN(0xF);    /* Enable PWM for Motor 2 */
+
+    PRINTF("CM7_Core0 SSC dual-cores servo motor example ");
+    PRINTF("(Compiled on: %s at %s)\r\n", __DATE__, __TIME__);
+
     /* Infinite loop */
     while (1)
     {

@@ -13,7 +13,7 @@ config secondary_toolchain
 
 config secondary_core_id
     string
-    default "cm7_core1" if $(board) = "imx943evk" && $(core_id) = "cm33_core1"
+    default "cm7_core0" if $(board) = "imx943evk" && $(core_id) = "cm33_core1"
 
 # This is for internal board support
 osource "${SdkRootDirPath}/${board_root}/${board}/Kconfig.sysbuild"
