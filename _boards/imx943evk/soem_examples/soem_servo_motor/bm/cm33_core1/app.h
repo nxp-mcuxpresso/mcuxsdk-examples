@@ -34,7 +34,7 @@
 
 #define SOEM_PORT_NAME "J26"
 
-#define CLOCK_GRANULARITY_NS 250UL
+#define CLOCK_GRANULARITY_NS 50UL
 #define CLOCK_GRANULARITY_FRE (1000000000UL/CLOCK_GRANULARITY_NS)
 #define CLOCK_INCREASE_PER_SEC 1000000000UL 
 
@@ -68,7 +68,7 @@
 
 #define EP_RING_NUM          3U
 #define EP_RXBD_NUM          8U
-#define EP_TXBD_NUM          8U
+#define EP_TXBD_NUM          128U
 #define EP_BD_ALIGN          128U
 #define EP_BUFF_SIZE_ALIGN   64U
 #define EP_RXBUFF_SIZE       1518U
