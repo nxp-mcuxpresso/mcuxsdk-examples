@@ -10,7 +10,7 @@ mcux_add_source(
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}/middleware/wireless/ieee-802.15.4/examples/nbu_ble_15_4_dyn
     PREINCLUDE TRUE
-    SOURCES 
+    SOURCES
         app_preinclude.h
 )
 
@@ -34,18 +34,39 @@ mcux_add_macro(
     TX_INCLUDE_USER_DEFINE_FILE
 )
 
-mcux_add_iar_configuration(
-    TARGETS  release
-    CC "     -Oh "
-)
-mcux_add_iar_configuration(
-    TARGETS  debug
-    CC "     --debug "
+mcux_add_configuration(
+# define to force initialization of sqram_rldat_region after reset
+# only required for GCC as IAR already initialize correctly this region
+    TOOLCHAINS armgcc
+    AS "-DINIT_BLE_RL_DAT"
 )
 
 mcux_add_iar_configuration(
-    TARGETS  debug
-    LD "     --semihosting "
+    TARGETS debug
+    AS "-r"
+    CC "-On --debug --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa --no_clustering --no_scheduling"
+    CX "--debug --no_cse --no_unroll --no_code_motion --no_tbaa --no_clustering --no_scheduling"
+    LD "--semihosting"
+)
+
+mcux_add_iar_configuration(
+    TARGETS  release
+    CC "-Oh"
+    CX "-Oh"
+)
+
+mcux_add_armgcc_configuration(
+    TARGETS debug
+    AS "-g"
+    CC "-g -Og"
+    CX "-g -Og"
+    LD "-g"
+)
+
+mcux_add_armgcc_configuration(
+    TARGETS release
+    CC "-Os"
+    CX "-Os"
 )
 
 # WAR as 15.4 doesn't use the framework's SecLib implementation
