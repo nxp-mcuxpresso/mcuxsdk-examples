@@ -1,4 +1,4 @@
-# Copyright 2024-2025 NXP
+# Copyright 2024-2026 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -164,6 +164,15 @@ if MCUX_DEMO_PANEL_CAP_TOUCH_DSI_SUPPORT
             No prefix in generated macro
 endif
 
+if MCUX_DEMO_PANEL_MX9_LVDS_LD_SUPPORT
+    config DEMO_PANEL_MX9_LVDS_LD
+        int
+        default 18
+        help
+            Driver selection for panel MX9_LVDS_LD
+            No prefix in generated macro
+endif
+
 config MCUX_PRJSEG_module.board.display_support
     bool "Enable Display Support"
 
@@ -221,6 +230,9 @@ config MCUX_DEMO_PANEL_CAP_TOUCH_LVDS_SUPPORT
 config MCUX_DEMO_PANEL_CAP_TOUCH_DSI_SUPPORT
     bool
 
+config MCUX_DEMO_PANEL_MX9_LVDS_LD_SUPPORT
+    bool
+
 if MCUX_PRJSEG_module.board.display_support
 
 config DEMO_PANEL
@@ -243,6 +255,7 @@ config DEMO_PANEL
     default 15 if LVDS2HDMI
     default 16 if CAP_TOUCH_LVDS
     default 17 if CAP_TOUCH_DSI
+    default 18 if MX9_LVDS_LD
     help
         Panel selection for display support
         No prefix in generated macro
@@ -303,6 +316,9 @@ choice DISPLAY_SUPPORT_PANEL
 
     config CAP_TOUCH_DSI
         bool "CAP_TOUCH_DSI panel" if MCUX_DEMO_PANEL_CAP_TOUCH_DSI_SUPPORT
+
+    config MX9_LVDS_LD
+        bool "MX9_LVDS_LD panel" if MCUX_DEMO_PANEL_MX9_LVDS_LD_SUPPORT
 
 endchoice
 

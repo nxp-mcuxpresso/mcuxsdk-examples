@@ -1,4 +1,4 @@
-# Copyright 2025 NXP
+# Copyright 2025-2026 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 #
@@ -23,6 +23,9 @@ config MCUX_DEMO_PANEL_MIPI2HDMI_SUPPORT
     default y
 
 config MCUX_DEMO_PANEL_LVDS2HDMI_SUPPORT
+    default y
+
+config MCUX_DEMO_PANEL_MX9_LVDS_LD_SUPPORT
     default y
 
 if MCUX_PRJSEG_module.board.display_support
