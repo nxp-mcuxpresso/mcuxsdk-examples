@@ -7,7 +7,7 @@ mcux_set_variable(board imx952evk)
 mcux_set_variable(board_root examples/_boards)
 
 if (NOT DEFINED device)
-    mcux_set_variable(device MIMX95294)
+    mcux_set_variable(device MIMX9529)
 endif()
 
 mcux_set_variable(soc_series i.MX952)

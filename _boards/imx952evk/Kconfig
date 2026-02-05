@@ -8,7 +8,7 @@ rsource "Kconfig.defconfig"
 config MCUX_HW_BOARD_imx952evk
     bool
     default y
-    imply MCUX_HW_DEVICE_MIMX95294
+    imply MCUX_HW_DEVICE_MIMX9529
     imply MCUX_COMPONENT_driver.mu1
     imply MCUX_COMPONENT_component.sm.crc
     imply MCUX_COMPONENT_component.sm.scmi

@@ -30,12 +30,12 @@ mcux_add_include(
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER devices/i.MX/i.MX952/MIMX95294/iar/MIMX95294xxxN_cm7_ram.icf
+    LINKER devices/i.MX/i.MX952/MIMX9529/iar/MIMX9529_cm7_ram.icf
 )
 mcux_remove_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER devices/i.MX/i.MX952/MIMX95294/gcc/MIMX95294xxxN_cm7_ram.ld
+    LINKER devices/i.MX/i.MX952/MIMX9529/gcc/MIMX9529_cm7_ram.ld
 )
 
 # Add Linker File Configurations
