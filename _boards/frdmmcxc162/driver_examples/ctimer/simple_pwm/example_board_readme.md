@@ -6,7 +6,7 @@ Hardware requirements
 
 Board settings
 ============
-P2_3(R50) connect to CTimer simple PWM.
+P1_10(R52) connect to CTimer simple PWM.
 
 Prepare the Demo
 ===============

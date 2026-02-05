@@ -14,17 +14,17 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
+    BOARD_InitDEBUG_UARTPins();
+    BOARD_InitCMPPins();
+    BOARD_InitLEDsPins();
+    BOARD_InitBootClocks();
+    BOARD_InitDebugConsole();
+
     /* Attach peripheral clock */
     CLOCK_AttachClk(kFRO_LF_DIV_to_CMP0);
     CLOCK_SetClockDiv(kCLOCK_DivCMP0_FUNC, 1U);
 
     /* enable CMP0 and CMP0_DAC */
     SPC0->ACTIVE_CFG1 |= ((1U << 16U) | (1U << 20U));
-
-    BOARD_InitDEBUG_UARTPins();
-    BOARD_InitCMPPins();
-    BOARD_InitLEDsPins();
-    BOARD_InitBootClocks();
-    BOARD_InitDebugConsole();
 }
 /*${function:end}*/

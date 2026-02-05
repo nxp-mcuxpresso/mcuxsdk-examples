@@ -17,12 +17,13 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    CLOCK_SetClockDiv(kCLOCK_DivCTIMER0, 1u);
-    CLOCK_AttachClk(kFRO_HF_to_CTIMER0);
-
     BOARD_InitPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
+
+    /* Attach peripheral clock */
+    CLOCK_SetClockDiv(kCLOCK_DivCTIMER0, 1u);
+    CLOCK_AttachClk(kFRO_HF_to_CTIMER0);
 }
 
 /* Route the GPIO to ctimer capture. */

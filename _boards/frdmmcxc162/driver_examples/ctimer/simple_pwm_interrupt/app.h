@@ -12,9 +12,9 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define CTIMER          CTIMER0         /* Timer 0 */
-#define CTIMER_MAT_OUT  kCTIMER_Match_3 /* Match output 3 */
-#define CTIMER_CLK_FREQ CLOCK_GetCTimerClkFreq(0U)
+#define CTIMER          CTIMER1         /* Timer 1 */
+#define CTIMER_MAT_OUT  kCTIMER_Match_0 /* Match output 0 */
+#define CTIMER_CLK_FREQ CLOCK_GetCTimerClkFreq(1U)
 
 /*${macro:end}*/
 

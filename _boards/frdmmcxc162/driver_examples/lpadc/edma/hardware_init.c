@@ -18,6 +18,11 @@
 
 void BOARD_InitHardware(void)
 {
+    BOARD_InitDEBUG_UARTPins();
+    BOARD_InitADCPins();
+    BOARD_InitBootClocks();
+    BOARD_InitDebugConsole();
+
     /* Attach peripheral clock */
     CLOCK_SetClockDiv(kCLOCK_DivADC, 3u);
     CLOCK_AttachClk(kFRO_HF_to_ADC);
@@ -26,11 +31,6 @@ void BOARD_InitHardware(void)
     
     /* Release peripheral reset */
     RESET_ReleasePeripheralReset(kDMA0_RST_SHIFT_RSTn);
-
-    BOARD_InitDEBUG_UARTPins();
-    BOARD_InitADCPins();
-    BOARD_InitBootClocks();
-    BOARD_InitDebugConsole();
 
     /* Enable INPUTMUX0 */
     CLOCK_EnableClock(kCLOCK_GateINPUTMUX0);

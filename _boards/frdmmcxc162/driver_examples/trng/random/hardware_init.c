@@ -13,17 +13,15 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    CLOCK_SetupFRO16KClocking(kCLKE_16K_SYSTEM | kCLKE_16K_COREMAIN);
-    
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
-    
+
+    CLOCK_SetupFRO16KClocking(kCLKE_16K_SYSTEM | kCLKE_16K_COREMAIN);    
     
     RESET_ReleasePeripheralReset(kTRNG0_RST_SHIFT_RSTn);
     
     CLOCK_EnableClock(kCLOCK_GateTRNG0);
-    
 }
 
 /*${function:end}*/

@@ -14,16 +14,12 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    /* Release peripheral reset */
-    RESET_ReleasePeripheralReset(kINPUTMUX0_RST_SHIFT_RSTn);
-
-    /* Attach peripheral clock */
-    CLOCK_EnableClock(kCLOCK_GateFREQME);
-    CLOCK_SetClockDiv(kCLOCK_DivFRO_HF, 1u);
-
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitFREQMEPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
+
+    /* Attach peripheral clock */
+    CLOCK_EnableClock(kCLOCK_GateFREQME);
 }
 /*${function:end}*/

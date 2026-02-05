@@ -14,11 +14,11 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
+    BOARD_InitPins();
+    BOARD_InitBootClocks();
+
     /* Attach peripheral clock */
     CLOCK_SetClockDiv(kCLOCK_DivLPUART2, 1u);
     CLOCK_AttachClk(kFRO_LF_DIV_to_LPUART2);
-
-    BOARD_InitPins();
-    BOARD_InitBootClocks();
 }
 /*${function:end}*/

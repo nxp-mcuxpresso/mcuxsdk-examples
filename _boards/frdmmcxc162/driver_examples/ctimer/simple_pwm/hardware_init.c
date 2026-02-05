@@ -14,12 +14,13 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    CLOCK_SetClockDiv(kCLOCK_DivCTIMER0, 1u);
-    CLOCK_AttachClk(kFRO_HF_to_CTIMER0);
-
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitCTIMERPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
+
+    /* Attach peripheral clock */
+    CLOCK_SetClockDiv(kCLOCK_DivCTIMER1, 1u);
+    CLOCK_AttachClk(kFRO_HF_to_CTIMER1);
 }
 /*${function:end}*/
