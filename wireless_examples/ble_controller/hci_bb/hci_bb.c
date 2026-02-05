@@ -679,8 +679,19 @@ void main_task(uint32_t param)
 #ifdef HCI_HW_RESET_OPCODE
         if(opcode == HCI_HW_RESET_OPCODE)
         {
+#ifndef FPGA_TARGET
             // the below function will reset the system and not return
             __NVIC_SystemReset();
+#else
+            uint8_t event[6];
+            event[0] = 0x0E; // command complete
+            event[1] = 0x04; // payloadlength
+            event[2] = 0x01; // nb commands
+            event[3] = maPendingHciCmd[1]; // opcode
+            event[4] = maPendingHciCmd[2]; // opcode
+            event[5] = 0x0C; // disallowed
+            HCI_AppControllerRxCallback(0x04, event, 6U);
+#endif
         }
         else
 #endif // HCI_HW_RESET_OPCODE
