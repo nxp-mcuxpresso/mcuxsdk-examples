@@ -117,7 +117,7 @@ void BOARD_BootClockPLL200M(void);
 /*******************************************************************************
  * Definitions for BOARD_BootClockPLL240M configuration
  ******************************************************************************/
-#define BOARD_BootClockPLL240M_CORE_CLOCK 240000000U /*!< Core clock frequency: 240000000Hz */
+#define BOARD_BOOTCLOCKPLL240M_CORE_CLOCK 240000000U /*!< Core clock frequency: 240000000Hz */
 
 /*******************************************************************************
  * API for BOARD_BootClockPLL240M configuration

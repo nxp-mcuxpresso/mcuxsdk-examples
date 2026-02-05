@@ -420,7 +420,7 @@ void BOARD_BootClockPLL240M(void)
     coreFreq = CLOCK_GetCoreSysClkFreq();
 
     /* The flow of increasing voltage and frequency */
-    if (coreFreq <= BOARD_BOOTCLOCKPLL200M_CORE_CLOCK)
+    if (coreFreq <= BOARD_BOOTCLOCKPLL240M_CORE_CLOCK)
     {
         /* Set the LDO_CORE VDD regulator level */
         ldoOption.CoreLDOVoltage       = kSPC_CoreLDO_OverDriveVoltage;
@@ -457,7 +457,7 @@ void BOARD_BootClockPLL240M(void)
     CLOCK_AttachClk(kPll1Clk_to_MAIN_CLK);             /* !< Switch MAIN_CLK to kPll1Clk */
 
     /* The flow of decreasing voltage and frequency */
-    if (coreFreq > BOARD_BOOTCLOCKPLL200M_CORE_CLOCK)
+    if (coreFreq > BOARD_BOOTCLOCKPLL240M_CORE_CLOCK)
     {
         /* Configure Flash to support different voltage level and frequency */
         CLOCK_SetFLASHAccessCyclesForFreq(BOARD_BOOTCLOCKFROHF192M_CORE_CLOCK, kOD_Mode);
@@ -481,5 +481,5 @@ void BOARD_BootClockPLL240M(void)
     CLOCK_SetClockDiv(kCLOCK_DivTRACE, 3U);   /* !< Set MRCC.TRACE_CLKDIV divider to value 3 */
 
     /* Set SystemCoreClock variable */
-    SystemCoreClock = BOARD_BOOTCLOCKPLL200M_CORE_CLOCK;
+    SystemCoreClock = BOARD_BOOTCLOCKPLL240M_CORE_CLOCK;
 }
