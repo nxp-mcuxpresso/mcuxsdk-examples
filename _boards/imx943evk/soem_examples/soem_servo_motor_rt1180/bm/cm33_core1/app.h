@@ -72,7 +72,7 @@
 
 #define EP_RING_NUM          3U
 #define EP_RXBD_NUM          8U
-#define EP_TXBD_NUM          8U
+#define EP_TXBD_NUM          128U
 #define EP_BD_ALIGN          128U
 #define EP_BUFF_SIZE_ALIGN   64U
 #define EP_RXBUFF_SIZE       1518U

@@ -93,7 +93,7 @@ void msgintrCallback(MSGINTR_Type *base, uint8_t channel, uint32_t pendingIntr)
     if ((pendingIntr & (1U << TX_INTR_MSG_DATA)) != 0U)
     {
         EP_CleanTxIntrFlags(&if_port.g_ep_handle, 1, 0);
-        if_port.txOver = true;
+        EP_ReclaimTxDescriptor(&if_port.g_ep_handle, 0);
     }
     /* Receive interrupt */
     if ((pendingIntr & (1U << RX_INTR_MSG_DATA)) != 0U)
@@ -356,6 +356,13 @@ status_t BOARD_InitHardware(void)
         .rate = 250000000UL,
     };
 
+    clk_t gptClk = {
+        .clkId = kCLOCK_Gpt1,
+        .pclkId = kCLOCK_Syspll1dfs1div2, /* 400 MHz */
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
+        .rate = 100000000UL,
+    };
+
     pwr_s_t pwrst = {
         .did =  POWER_MIX_SLICE_IDX_NETC,
         .st = SCMI_POWER_DOMAIN_STATE_ON,
@@ -422,6 +429,10 @@ status_t BOARD_InitHardware(void)
     CLOCK_SetParent(&mac5Clk);
     CLOCK_SetRate(&mac5Clk);
     CLOCK_EnableClock(mac5Clk.clkId);
+
+    CLOCK_SetParent(&gptClk);
+    CLOCK_SetRate(&gptClk);
+    CLOCK_EnableClock(gptClk.clkId);
 
     /* Select ETH signals to use */
     BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);
@@ -520,6 +531,9 @@ status_t BOARD_InitHardware(void)
     } while (!link);
 
     PRINTF("\r\n PHY get link status success\r\n");
+    /* Wait a moment for PHY status to be stable. */
+    SDK_DelayAtLeastUs(PHY_STABILITY_DELAY_US, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+
     return result;
 }
 

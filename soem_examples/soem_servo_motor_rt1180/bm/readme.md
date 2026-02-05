@@ -12,9 +12,9 @@ In this example there are 2 NXP board:
 	Note: 
 
 		ecat_servo_motor path: 
-		For i.MXRT1180 EVK: .../boards/evkmimxrt1180/ecat_examples/servo_motor
+		For i.MXRT1180 EVK: .../examples/_boards/evkmimxrt1180/ecat_examples/servo_motor
 		For XSERVO-MTR-DRV RT1180: https://github.com/nxp-appcodehub/rd-motion-control-slave-servo-mimxrt1180
-		For i.MX943 EVK: .../boards/imx943evk/ecat_examples/dual_cores_servo_motor
+		For i.MX943 EVK: .../examples/_boards/imx943evk/ecat_examples/dual_cores_servo_motor
 
 
 ## Running the demo

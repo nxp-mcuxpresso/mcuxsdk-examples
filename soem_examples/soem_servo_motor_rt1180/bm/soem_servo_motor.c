@@ -19,16 +19,17 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define CYCLE_PERIOD_NS 1000000 // 1ms
+#define CYCLE_PERIOD_NS 	250000 // 250us
 
-#define asda_b3_VendorId 0x000001dd
-#define asda_b3_ProductID 0x00006080
+#define ECAT_SUBDEVICE_1180_XSERVO 	1
+#define ECAT_SUBDEVICE_RT1180_EVK 	0
+#define ECAT_SUBDEVICE_IMX943_EVK 	0
 
-#define nxp_VendorId 0x00000CC2
-#define nxp_ProductID 0x00000002
+#define nxp_VendorId 		0x00000CC2
+#define nxp_ProductID 		0x00000002
 
-#define MAX_SERVO 1
-#define MAX_AXIS 1
+#define MAX_SERVO 	1
+#define MAX_AXIS 	1
 
 /*******************************************************************************
  * Variables
@@ -39,11 +40,22 @@ extern int32_t  dc_diff_ns;
 
 static char IOmap[1500];
 
-static char *tp[MAX_SERVO] = {
+static char *tp[MAX_AXIS] = {
 
-// NXP
+/* NXP i.MXRT1180EVK */
+#if ((defined(ECAT_SUBDEVICE_RT1180_EVK) && ECAT_SUBDEVICE_RT1180_EVK))
+"Cyclic=1; Scale=22; Bias=0; Accel=8; Decel=8; Max_speed=3600; TpArrays=[(0:2000),(270:1000),(270:2000),(180:1000),(180:2000),(0:1000),(0:2000),(0:1000)];",
+#endif
+
+/* NXP XSERVO-MTR-DRV RT1180 */
+#if ((defined(ECAT_SUBDEVICE_1180_XSERVO) && ECAT_SUBDEVICE_1180_XSERVO))
 "Cyclic=1; Scale=364; Bias=0; Accel=8; Decel=8; Max_speed=3600; TpArrays=[(0:2000),(270:1000),(270:2000),(180:1000),(180:2000),(0:1000),(0:2000),(0:1000)];",
+#endif
 
+/* NXP i.MX943 */
+#if ((defined(ECAT_SUBDEVICE_IMX943_EVK) && ECAT_SUBDEVICE_IMX943_EVK))
+"Cyclic=1; Scale=93206; Bias=0; Accel=8; Decel=8; Max_speed=3600; TpArrays=[(0:2000),(270:1000),(270:2000),(180:1000),(180:2000),(0:1000),(0:2000),(0:1000)];",
+#endif
 };
 
 /*******************************************************************************
@@ -97,7 +109,7 @@ static void EtherCAT_servo_init(struct servo_t *svo, struct axis_t *ax)
 		svo[i].ProductID = nxp_ProductID;
 	}
 
-	for (i = 0; i < MAX_SERVO; i++) {
+	for (i = 0; i < MAX_AXIS; i++) {
 		ax[i].servo = svo + i;
 		ax[i].axis_offset = 0;
 	}

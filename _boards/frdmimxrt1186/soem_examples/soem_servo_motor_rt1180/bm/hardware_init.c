@@ -114,7 +114,7 @@ void msgintrCallback(MSGINTR_Type *base, uint8_t channel, uint32_t pendingIntr)
     if ((pendingIntr & (1U << TX_INTR_MSG_DATA)) != 0U)
     {
         EP_CleanTxIntrFlags(&if_port.g_ep_handle, 1, 0);
-        if_port.txOver = true;
+        EP_ReclaimTxDescriptor(&if_port.g_ep_handle, 0);
     }
     /* Receive interrupt */
     if ((pendingIntr & (1U << RX_INTR_MSG_DATA)) != 0U)

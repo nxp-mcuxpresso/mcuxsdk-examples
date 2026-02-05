@@ -40,7 +40,7 @@
 #define EXAMPLE_SWT_PORT0 0x01U
 #define EXAMPLE_SWT_PORT2 0x03U
 
- #define CLOCK_GRANULARITY_NS 5UL
+ #define CLOCK_GRANULARITY_NS 25UL
  #define CLOCK_GRANULARITY_FRE (1000000000UL/CLOCK_GRANULARITY_NS)
  #define CLOCK_INCREASE_PER_SEC 1000000000UL 
  
@@ -63,7 +63,7 @@
 
 #define EP_RING_NUM          3U
 #define EP_RXBD_NUM          8U
-#define EP_TXBD_NUM          8U
+#define EP_TXBD_NUM          128U
 #define EP_BD_ALIGN          128U
 #define EP_BUFF_SIZE_ALIGN   64U
 #define EP_RXBUFF_SIZE       1518U
