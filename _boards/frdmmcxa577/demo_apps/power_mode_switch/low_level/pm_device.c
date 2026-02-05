@@ -604,9 +604,15 @@ static void SetRegulatorsConfig(app_power_mode_t targetPowerMode)
 void APP_PowerPreSwitchHook(app_power_mode_t targetPowerMode)
 {
     uint8_t modeIndex = 0U;
-    
-    assert(GetLowPowerModeIndex(targetPowerMode, &modeIndex));
-    
+    bool modeIndexValid = GetLowPowerModeIndex(targetPowerMode, &modeIndex);
+
+    assert(modeIndexValid);
+
+    if (!modeIndexValid)
+    {
+        return;
+    }
+
     /* Wait for debug console output finished. */
     while (!(kLPUART_TransmissionCompleteFlag & LPUART_GetStatusFlags((LPUART_Type *)BOARD_DEBUG_UART_BASEADDR)))
     {
