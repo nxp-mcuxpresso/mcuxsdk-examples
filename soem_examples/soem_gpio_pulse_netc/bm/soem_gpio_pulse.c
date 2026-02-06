@@ -174,7 +174,12 @@ void msgintrCallback(MSGINTR_Type *base, uint8_t channel, uint32_t pendingIntr)
     if ((pendingIntr & (1U << TX_INTR_MSG_DATA)) != 0U)
     {
         EP_CleanTxIntrFlags(&if_port.g_ep_handle, 1, 0);
+#if defined(EXAMPLE_EP_NUM) && EXAMPLE_EP_NUM
         EP_ReclaimTxDescriptor(&if_port.g_ep_handle, 0);
+#endif
+#if !(defined(EXAMPLE_NETC_HAS_NO_SWITCH) && EXAMPLE_NETC_HAS_NO_SWITCH)    
+        if_port.txOver = true;
+#endif
     }
     /* Receive interrupt */
     if ((pendingIntr & (1U << RX_INTR_MSG_DATA)) != 0U)
