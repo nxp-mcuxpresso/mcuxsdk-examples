@@ -52,16 +52,24 @@ mcux_remove_armgcc_configuration(
 mcux_add_iar_configuration(
     CC "--cmse"
     CX "--cmse"
+    LD "--import_cmse_lib_out=${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}/secure_gpio_s${core_id_suffix_name}_CMSE_lib.o"
+
 )
 
 mcux_add_armgcc_configuration(
     AS "-mcmse"
     CC "-mcmse"
     CX "-mcmse"
+    LD "-Wl,--cmse-implib \
+        -Wl,--out-implib=${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}/secure_gpio_s${core_id_suffix_name}_CMSE_lib.o"
 )
 
 mcux_add_mdk_configuration(
     AS "-mcmse"
     CC "-mcmse"
     CX "-mcmse"
+    LD "--import-cmse-lib-out=\"${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}/secure_gpio_s${core_id_suffix_name}_CMSE_lib.o\""
 )
+
+# Create output directory to put library in.
+file(MAKE_DIRECTORY ${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN})
