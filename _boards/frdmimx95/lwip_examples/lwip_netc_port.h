@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024, 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -17,9 +17,9 @@
  * - NETC_MII_MODE:  kNETC_RgmiiMode
  * - NETC_MII_SPEED: kNETC_MiiSpeed1000M
  *
- * ENETC2
- * - NETC_PSI:       kNETC_ENETC2PSI0
- * - NETC_MII_MODE:  kNETC_XgmiiMode
+ * ENETC1
+ * - NETC_PSI:       kNETC_ENETC1PSI0
+ * - NETC_MII_MODE:  kNETC_RgmiiMode
  * - NETC_MII_SPEED: kNETC_MiiSpeed1000M
  */
 #define NETC_PSI         kNETC_ENETC0PSI0
@@ -29,4 +29,3 @@
 #define NETC_MSGINTR_IRQ IRQSTEER_0_IRQn
 
 #endif
-
