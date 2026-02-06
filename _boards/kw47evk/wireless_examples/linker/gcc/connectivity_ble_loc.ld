@@ -13,7 +13,7 @@
 **     Abstract:
 **         Linker file for the GNU C Compiler
 **
-**     Copyright 2024 - 2025 NXP
+**     Copyright 2024 - 2026 NXP
 **
 **     SPDX-License-Identifier: BSD-3-Clause
 **
@@ -158,6 +158,8 @@ m_data1_size                        = m_data1_end - m_data1_start + 1;
 
 __HEAP_start__                      = m_ram1_end - HEAP_SIZE;
 __HEAP_end__                        = m_ram1_end;
+__EXT_HEAP_end__                    = m_data1_end;
+
 
 firmware_ram_lower_limit            = DEFINED(lp_ram_lower_limit) ? lp_ram_lower_limit : m_cstack_start;
 firmware_ram_upper_limit            = DEFINED(lp_ram_upper_limit) ? lp_ram_upper_limit : m_ram1_end;
@@ -544,6 +546,12 @@ SECTIONS
     . = ALIGN(4);
     __bss_end__ = .;
     __END_BSS = .;
+  } > m_data1
+
+  .extHeap (NOLOAD) :
+  {
+    . = ALIGN(4);
+    *(.extHeap)
   } > m_data1
 
   .heap (NOLOAD) :

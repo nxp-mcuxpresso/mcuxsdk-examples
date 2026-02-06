@@ -14,6 +14,7 @@
     heap_end = DEFINED(gUseStackEnd_d) ? _vStackBase -1 : __FIRMWARE_END_ADDRESS;
     __HEAP_end__ = DEFINED(__top_sys_heap) ? __top_sys_heap -1 : heap_end;
     __CSTACK_end__ = DEFINED(gUseStackEnd_d) ? __FIRMWARE_END_ADDRESS : __VECTOR_RAM - 1;
+    __EXT_HEAP_end__ = heap_end;
     INT_STORAGE_SECTOR_SIZE = 0x2000;
     INT_STORAGE_START = DEFINED(__base_INT_STORAGE) ? __base_INT_STORAGE : 0;
     INT_STORAGE_END =  DEFINED(__top_INT_STORAGE) ? __top_INT_STORAGE : 0;

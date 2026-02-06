@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 NXP
+ * Copyright 2022, 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -68,15 +68,26 @@ static memAreaCfg_t mCeHeap = {
     .flags         = AREA_FLAGS_POOL_NOT_SHARED,
 };
 
-#ifndef gExtendedHeapSize_c
-#define gExtendedHeapSize_c (24U*1024U)
+#ifndef gMinExtendedHeapSize_c
+#define gMinExtendedHeapSize_c (24U*1024U)
 #endif
-static uint32_t maExtHeap[gExtendedHeapSize_c / sizeof(uint32_t)];
+
+#if defined(__IAR_SYSTEMS_ICC__)
+#pragma location = ".extHeap"
+static uint32_t maExtHeap[gMinExtendedHeapSize_c / sizeof(uint32_t)];
+#elif defined(__GNUC__)
+static uint32_t maExtHeap[gMinExtendedHeapSize_c / sizeof(uint32_t)] __attribute__((section(".extHeap")));
+#elif defined(__CC_ARM)
+static uint32_t maExtHeap[gMinExtendedHeapSize_c / sizeof(uint32_t)] __attribute__((section(".extHeap")));
+#else
+#error "Compiler unknown!"
+#endif
+extern uint32_t __EXT_HEAP_end__[];
 
 static memAreaCfg_t mExtHeapCfg = {
     .next          = NULL,
     .start_address = maExtHeap,
-    .end_address   = &((uint8_t*)maExtHeap)[gExtendedHeapSize_c - 1],
+    .end_address   = __EXT_HEAP_end__,
     .flags         = 0U,
 };
 

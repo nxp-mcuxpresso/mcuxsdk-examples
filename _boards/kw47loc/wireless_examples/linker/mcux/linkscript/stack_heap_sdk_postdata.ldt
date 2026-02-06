@@ -11,6 +11,11 @@
         _pvHeapLimit = .;
         *(.heap);
     } > sys_heap
+    .extHeap (NOLOAD) :  ALIGN(${bss_align})
+    {
+        . = ALIGN(${bss_align});
+        *(.extHeap);
+    } > ${HEAP_REGION}
     </#if>
     <#if STACK_LOCATION == "Post Data">
 
