@@ -303,7 +303,7 @@ void BOARD_BootClockPLL200M(void)
         ldoOption.CoreLDODriveStrength = kSPC_CoreLDO_NormalDriveStrength;
         (void)SPC_SetActiveModeCoreLDORegulatorConfig(SPC0, &ldoOption);
         /* Configure Flash to support different voltage level and frequency */
-        CLOCK_SetFLASHAccessCyclesForFreq(BOARD_BOOTCLOCKFROHF192M_CORE_CLOCK, kOD_Mode);
+        CLOCK_SetFLASHAccessCyclesForFreq(BOARD_BOOTCLOCKPLL200M_CORE_CLOCK, kOD_Mode);
         /* Specifies the operating voltage for the SRAM's read/write timing margin */
         sramOption.operateVoltage       = kSPC_sramOperateAt1P2V;
         sramOption.requestVoltageUpdate = true;
@@ -335,7 +335,7 @@ void BOARD_BootClockPLL200M(void)
     if (coreFreq > BOARD_BOOTCLOCKPLL200M_CORE_CLOCK)
     {
         /* Configure Flash to support different voltage level and frequency */
-        CLOCK_SetFLASHAccessCyclesForFreq(BOARD_BOOTCLOCKFROHF192M_CORE_CLOCK, kOD_Mode);
+        CLOCK_SetFLASHAccessCyclesForFreq(BOARD_BOOTCLOCKPLL200M_CORE_CLOCK, kOD_Mode);
         /* Specifies the operating voltage for the SRAM's read/write timing margin */
         sramOption.operateVoltage       = kSPC_sramOperateAt1P2V;
         sramOption.requestVoltageUpdate = true;
@@ -405,10 +405,10 @@ sources:
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
 /*******************************************************************************
- * Variables for BOARD_BootClockPLL200M configuration
+ * Variables for BOARD_BootClockPLL240M configuration
  ******************************************************************************/
 /*******************************************************************************
- * Code for BOARD_BootClockPLL200M configuration
+ * Code for BOARD_BootClockPLL240M configuration
  ******************************************************************************/
 void BOARD_BootClockPLL240M(void)
 {
@@ -427,7 +427,7 @@ void BOARD_BootClockPLL240M(void)
         ldoOption.CoreLDODriveStrength = kSPC_CoreLDO_NormalDriveStrength;
         (void)SPC_SetActiveModeCoreLDORegulatorConfig(SPC0, &ldoOption);
         /* Configure Flash to support different voltage level and frequency */
-        CLOCK_SetFLASHAccessCyclesForFreq(BOARD_BOOTCLOCKFROHF192M_CORE_CLOCK, kOD_Mode);
+        CLOCK_SetFLASHAccessCyclesForFreq(BOARD_BOOTCLOCKPLL240M_CORE_CLOCK, kOD_Mode);
         /* Specifies the operating voltage for the SRAM's read/write timing margin */
         sramOption.operateVoltage       = kSPC_sramOperateAt1P2V;
         sramOption.requestVoltageUpdate = true;
@@ -460,7 +460,7 @@ void BOARD_BootClockPLL240M(void)
     if (coreFreq > BOARD_BOOTCLOCKPLL240M_CORE_CLOCK)
     {
         /* Configure Flash to support different voltage level and frequency */
-        CLOCK_SetFLASHAccessCyclesForFreq(BOARD_BOOTCLOCKFROHF192M_CORE_CLOCK, kOD_Mode);
+        CLOCK_SetFLASHAccessCyclesForFreq(BOARD_BOOTCLOCKPLL240M_CORE_CLOCK, kOD_Mode);
         /* Specifies the operating voltage for the SRAM's read/write timing margin */
         sramOption.operateVoltage       = kSPC_sramOperateAt1P2V;
         sramOption.requestVoltageUpdate = true;
