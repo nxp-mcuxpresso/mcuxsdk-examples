@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 NXP
+ * Copyright 2022-2023, 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -9,9 +9,7 @@
 /*${header:start}*/
 #include "fsl_netc_endpoint.h"
 #include "fsl_netc_mdio.h"
-#include "fsl_netc_phy_wrapper.h"
-#include "fsl_phyrtl8211f.h"
-#include "fsl_phyaqr113c.h"
+#include "fsl_phyyt8521.h"
 #include "fsl_msgintr.h"
 /*${header:end}*/
 
@@ -27,11 +25,11 @@
 
 #define EXAMPLE_EP_SI                      \
     {                                      \
-        kNETC_ENETC0PSI0, kNETC_ENETC2PSI0 \
+        kNETC_ENETC0PSI0, kNETC_ENETC1PSI0 \
     }
 #define EXAMPLE_EP_PHY_ADDR \
     {                       \
-        0x1U, 0x8U          \
+        0x1U, 0x2U          \
     }
 #define EXAMPLE_MSGINTR       MSGINTR2
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 NXP
+ * Copyright 2022-2023, 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -16,10 +16,8 @@
 
 /*${variable:start}*/
 /* PHY operation. */
-static netc_mdio_handle_t s_mdio_handle;
 static netc_mdio_handle_t s_emdio_handle;
-static phy_rtl8211f_resource_t s_phy_rtl8211f_resource;
-static phy_aqr113c_resource_t s_phy_aqr113c_resource;
+static phy_yt8521_resource_t s_phy_yt8521_resource;
 static phy_handle_t s_phy_handle[EXAMPLE_EP_NUM];
 static uint8_t s_phy_addr[EXAMPLE_EP_NUM] = EXAMPLE_EP_PHY_ADDR;
 /*${variable:end}*/
@@ -27,9 +25,6 @@ static uint8_t s_phy_addr[EXAMPLE_EP_NUM] = EXAMPLE_EP_PHY_ADDR;
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    pcal6524_handle_t handle1;
-    pcal6408_handle_t handle2;
-
     /* clang-format off */
     /* enetClk 666.66MHz */
     hal_clk_t hal_enetclk = {
@@ -60,22 +55,6 @@ void BOARD_InitHardware(void)
         .did = HAL_POWER_PLATFORM_MIX_SLICE_IDX_NETC,
         .st = hal_power_state_on,
     };
-    /* lpi2c5Clk 24MHz */
-    hal_clk_t hal_lpi2c5ClkCfg = {
-        .clk_id = hal_clock_lpi2c5,
-        .pclk_id = hal_clock_osc24m,
-        .div = 1,
-        .enable_clk = true,
-        .clk_round_opt = hal_clk_round_auto,
-    };
-    /* lpi2c7Clk 24MHz */
-    hal_clk_t hal_lpi2c7ClkCfg = {
-        .clk_id = hal_clock_lpi2c7,
-        .pclk_id = hal_clock_osc24m,
-        .div = 1,
-        .enable_clk = true,
-        .clk_round_opt = hal_clk_round_auto,
-    };
     /* clang-format on */
 
     SM_Platform_Init();
@@ -93,23 +72,10 @@ void BOARD_InitHardware(void)
     HAL_ClockSetRootClk(&hal_enetclk);
     HAL_ClockSetRootClk(&hal_enetrefclk);
     HAL_ClockSetRootClk(&hal_enettimer1clk);
-    HAL_ClockSetRootClk(&hal_lpi2c5ClkCfg);
-    HAL_ClockSetRootClk(&hal_lpi2c7ClkCfg);
 
     /* Console init */
     BOARD_InitDebugConsole();
     BOARD_ConfigMPU();
-
-    /* Enable 156.25MHz clock to 10G ETH_CLKIN_P/ETH_CLKIN_N */
-    BOARD_InitPCAL6524(&handle1);
-/*     PCAL6524_SetDirection(&handle1, (1 << BOARD_PCAL6524_SI5332_RST), kPCAL6524_Output); */
-/*     PCAL6524_ClearPins(&handle1, (1 << BOARD_PCAL6524_SI5332_RST)); */
-    SDK_DelayAtLeastUs(100000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-
-    BOARD_InitPCAL6408_I2C5(&handle2);
-    PCAL6408_SetDirection(&handle2, (1 << BOARD_PCAL6408_ETH_CLK_EN), kPCAL6408_Output);
-    PCAL6408_ClearPins(&handle2, (1 << BOARD_PCAL6408_ETH_CLK_EN));
-    SDK_DelayAtLeastUs(100000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 
     /* Protocol configure */
     BLK_CTRL_NETCMIX->CFG_LINK_MII_PROT = 0x00000522;
@@ -144,18 +110,6 @@ status_t APP_MDIO_Init(void)
     /* EMDIO init */
     mdioConfig.mdio.type = kNETC_EMdio;
     result               = NETC_MDIOInit(&s_emdio_handle, &mdioConfig);
-    if (result != kStatus_Success)
-    {
-        return result;
-    }
-
-    /* Internal MDIO init */
-    ENETC2_PCI_HDR_TYPE0->PCI_CFH_CMD |=
-        (ENETC_PCI_TYPE0_PCI_CFH_CMD_MEM_ACCESS_MASK | ENETC_PCI_TYPE0_PCI_CFH_CMD_BUS_MASTER_EN_MASK);
-
-    mdioConfig.mdio.type = kNETC_InternalMdio;
-    mdioConfig.mdio.port = kNETC_ENETC2EthPort;
-    result               = NETC_MDIOInit(&s_mdio_handle, &mdioConfig);
     return result;
 }
 
@@ -169,50 +123,31 @@ static status_t APP_EMDIORead(uint8_t phyAddr, uint8_t regAddr, uint16_t *pData)
     return NETC_MDIORead(&s_emdio_handle, phyAddr, regAddr, pData);
 }
 
-static status_t APP_EMDIOC45Write(uint8_t portAddr, uint8_t devAddr, uint16_t regAddr, uint16_t data)
-{
-    return NETC_MDIOC45Write(&s_emdio_handle, portAddr, devAddr, regAddr, data);
-}
-
-static status_t APP_EMDIOC45Read(uint8_t portAddr, uint8_t devAddr, uint16_t regAddr, uint16_t *pData)
-{
-    return NETC_MDIOC45Read(&s_emdio_handle, portAddr, devAddr, regAddr, pData);
-}
-
 status_t APP_PHY_Init(void)
 {
-    status_t result            = kStatus_Success;
+    status_t result = kStatus_Success;
 
     /* EP0 PHY Init */
-    phy_config_t phy8211Config = {
+    phy_config_t phyyt8521Config = {
         .autoNeg   = true,
         .speed     = kPHY_Speed1000M,
         .duplex    = kPHY_FullDuplex,
         .enableEEE = false,
-        .ops       = &phyrtl8211f_ops,
+        .ops       = &phyyt8521_ops,
     };
 
-    /* For a complete PHY reset of RTL8211FDI-CG, this pin must be asserted low for at least 10ms. And
-     * wait for a further 72ms(for internal circuits settling time) before accessing the PHY register */
-    pcal6408_handle_t handle;
-    BOARD_InitPCAL6408_I2C5(&handle);
-    PCAL6408_SetDirection(&handle, (1 << BOARD_PCAL6408_ENET1_RST_B), kPCAL6408_Output);
-    PCAL6408_ClearPins(&handle, (1 << BOARD_PCAL6408_ENET1_RST_B));
-    SDK_DelayAtLeastUs(20000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-    PCAL6408_SetPins(&handle, (1 << BOARD_PCAL6408_ENET1_RST_B));
-    SDK_DelayAtLeastUs(80000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-
     /* Initialize PHY for EP0. */
-    s_phy_rtl8211f_resource.write = APP_EMDIOWrite;
-    s_phy_rtl8211f_resource.read  = APP_EMDIORead;
-    phy8211Config.resource = &s_phy_rtl8211f_resource;
-    phy8211Config.phyAddr  = s_phy_addr[EXAMPLE_EP0_PORT];
-    result = PHY_Init(&s_phy_handle[EXAMPLE_EP0_PORT], &phy8211Config);
+    s_phy_yt8521_resource.write = APP_EMDIOWrite;
+    s_phy_yt8521_resource.read  = APP_EMDIORead;
+    phyyt8521Config.resource = &s_phy_yt8521_resource;
+
+    phyyt8521Config.phyAddr  = s_phy_addr[EXAMPLE_EP0_PORT];
+    result = PHY_Init(&s_phy_handle[EXAMPLE_EP0_PORT], &phyyt8521Config);
     if (result != kStatus_Success)
     {
         return result;
     }
-    result = PHY_EnableLoopback(&s_phy_handle[EXAMPLE_EP0_PORT], kPHY_LocalLoop, phy8211Config.speed, true);
+    result = PHY_EnableLoopback(&s_phy_handle[EXAMPLE_EP0_PORT], kPHY_LocalLoop, phyyt8521Config.speed, true);
     if (result != kStatus_Success)
     {
         return result;
@@ -220,39 +155,14 @@ status_t APP_PHY_Init(void)
 
     /* EP1 PHY Init */
 
-    /* PHY WRAPPER Init */
-    NETC_PHYInit(&s_mdio_handle, kNETC_XGMII10G);
-    phy_config_t phyaqr113cConfig = {
-        .autoNeg   = true,
-        .speed     = kPHY_Speed1000M,
-        .duplex    = kPHY_FullDuplex,
-        .enableEEE = false,
-        .ops       = &phyaqr113c_ops,
-    };
-
-    /* Power up and reset */
-    PCAL6408_SetDirection(&handle, (1 << BOARD_PCAL6408_AQR_PWR_EN), kPCAL6408_Output);
-    PCAL6408_SetPins(&handle, (1 << BOARD_PCAL6408_AQR_PWR_EN));
-    SDK_DelayAtLeastUs(80000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-
-    PCAL6408_SetDirection(&handle, (1 << BOARD_PCAL6408_AQR113C_RST_B_3V3), kPCAL6408_Output);
-    PCAL6408_ClearPins(&handle, (1 << BOARD_PCAL6408_AQR113C_RST_B_3V3));
-    SDK_DelayAtLeastUs(20000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-    PCAL6408_SetPins(&handle, (1 << BOARD_PCAL6408_AQR113C_RST_B_3V3));
-    SDK_DelayAtLeastUs(80000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-
-    /* Initialize PHY for EP1. */
-    s_phy_aqr113c_resource.write = APP_EMDIOC45Write;
-    s_phy_aqr113c_resource.read  = APP_EMDIOC45Read;
-    phyaqr113cConfig.resource = &s_phy_aqr113c_resource;
-    phyaqr113cConfig.phyAddr  = s_phy_addr[EXAMPLE_EP1_PORT];
-    result = PHY_Init(&s_phy_handle[EXAMPLE_EP1_PORT], &phyaqr113cConfig);
+    phyyt8521Config.phyAddr  = s_phy_addr[EXAMPLE_EP1_PORT];
+    result = PHY_Init(&s_phy_handle[EXAMPLE_EP1_PORT], &phyyt8521Config);
     if (result != kStatus_Success)
     {
         return result;
     }
+    result = PHY_EnableLoopback(&s_phy_handle[EXAMPLE_EP1_PORT], kPHY_LocalLoop, phyyt8521Config.speed, true);
 
-    result = PHY_EnableLoopback(&s_phy_handle[EXAMPLE_EP1_PORT], kPHY_LocalLoop, phyaqr113cConfig.speed, true);
     return result;
 }
 
@@ -266,10 +176,8 @@ status_t APP_PHY_GetLinkModeSpeedDuplex(uint32_t port, netc_hw_mii_mode_t *mode,
     switch (port)
     {
         case EXAMPLE_EP0_PORT:
-            *mode = kNETC_RgmiiMode;
-            break;
         case EXAMPLE_EP1_PORT:
-            *mode = kNETC_XgmiiMode;
+            *mode = kNETC_RgmiiMode;
             break;
         default:
             assert(false);
