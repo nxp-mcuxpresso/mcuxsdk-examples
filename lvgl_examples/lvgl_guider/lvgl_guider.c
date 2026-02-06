@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2024 NXP
+ * Copyright 2020, 2024, 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -79,7 +79,7 @@ int main(void)
     BOARD_InitHardware();
     DEMO_InitUsTimer();
 
-    stat = xTaskCreate(AppTask, "lvgl", 1024, NULL, tskIDLE_PRIORITY + 2, NULL);
+    stat = xTaskCreate(AppTask, "lvgl", 0x800, NULL, tskIDLE_PRIORITY + 2, NULL);
 
     if (pdPASS != stat)
     {
