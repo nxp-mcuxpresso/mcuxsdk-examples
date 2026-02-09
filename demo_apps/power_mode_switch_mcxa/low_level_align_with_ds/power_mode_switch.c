@@ -59,9 +59,13 @@ int main(void)
     {
         if (kCMC_CoreClockGated == CMC_GetCoreClockGatedStatus(APP_CMC))
         {
+#if FSL_FEATURE_MCX_SPC_HAS_PD_STATUS_REG
               /* Wakeup from low power mode? => Clears low power request and clock gated flags. */
               SPC_ClearPowerDomainLowPowerRequestFlag(APP_SPC, kSPC_PowerDomain0);
+#endif /* FSL_FEATURE_MCX_SPC_HAS_PD_STATUS_REG */
+#if FSL_FEATURE_MCX_SPC_HAS_SC_SPC_LP_REQ_BIT
               SPC_ClearLowPowerRequest(APP_SPC);
+#endif /* FSL_FEATURE_MCX_SPC_HAS_SC_SPC_LP_REQ_BIT */
               CMC_ClearCoreClockGatedStatus(APP_CMC);
         }
 

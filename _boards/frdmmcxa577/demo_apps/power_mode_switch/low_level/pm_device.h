@@ -7,6 +7,17 @@
 #ifndef PM_DEVICE_H_
 #define PM_DEVICE_H_
 
+#include "app.h"
+#include "board.h"
+#include "fsl_cmc.h"
+#include "fsl_spc.h"
+#include "fsl_vbat.h"
+#include "fsl_port.h"
+#include "fsl_lpuart.h"
+#include "clock_config.h"
+#include "fsl_debug_console.h"
+#include "power_mode_switch.h"
+
 typedef enum _resc_status
 {
     kResc_Status_On = 0U,
@@ -59,5 +70,31 @@ typedef enum _resc_name
     
     kResc_Max_Num,
 } resc_name_t;
+
+typedef struct _app_core_ldo_ctrl
+{
+    bool valid;
+    bool useActiveModeConfig;   /* true: SPC_SetActiveModeRegulatorsConfig, false: SPC_SetLowPowerModeRegulatorsConfig */
+    bool lpIREF;                /* Only used for low power modes. */
+    bool lpBuff;
+    spc_bandgap_mode_t bandgapMode;
+    spc_core_ldo_voltage_level_t coreLDOVoltage;
+    spc_core_ldo_drive_strength_t coreLDODriveStrength;
+} app_core_ldo_ctrl_t;
+
+typedef enum _app_cpu_clock_source
+{
+    kAPP_CpuClockSrcNone = 0,
+    kAPP_CpuClockSrcFro12M,
+    kAPP_CpuClockSrcFroHf,
+    kAPP_CpuClockSrcPll,
+} app_cpu_clock_source_t;
+
+typedef struct _app_cpu_clock_cfg
+{
+    bool valid;
+    app_cpu_clock_source_t source;
+    uint32_t freqHz;
+} app_cpu_clock_cfg_t;
 
 #endif /*PM_DEVICE_H_*/

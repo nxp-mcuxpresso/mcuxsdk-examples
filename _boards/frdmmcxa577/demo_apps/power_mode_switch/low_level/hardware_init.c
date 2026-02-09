@@ -13,6 +13,7 @@
 void BOARD_InitHardware(void)
 {
     BOARD_InitBootClocks();
+    BOARD_InitBUTTONsPins();
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitDebugConsole();
 }

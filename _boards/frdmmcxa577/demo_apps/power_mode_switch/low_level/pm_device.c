@@ -5,17 +5,8 @@
  */
 
 #include "pm_device.h"
-#include "app.h"
-#include "board.h"
-#include "fsl_cmc.h"
-#include "fsl_spc.h"
-#include "fsl_vbat.h"
-#include "fsl_port.h"
-#include "fsl_lpuart.h"
-#include "fsl_debug_console.h"
-#include "power_mode_switch.h"
 
-const resc_status_t g_resc_ctrl_table[kResc_Max_Num][APP_LOW_POWER_MODE_COUNT] = {
+static const resc_status_t g_resc_ctrl_table[kResc_Max_Num][APP_LOW_POWER_MODE_COUNT] = {
     /*! Clock modules */
     [kResc_Fro_192M]            = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_Fro_12M]             = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
@@ -60,6 +51,66 @@ const resc_status_t g_resc_ctrl_table[kResc_Max_Num][APP_LOW_POWER_MODE_COUNT] =
     [kResc_Tsi0]                = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_Cmp0]                = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_Cmp0_Dac]            = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
+};
+
+/* LDO voltage level and drive strength control table for all power modes. */
+static const app_core_ldo_ctrl_t g_core_ldo_ctrl_table[APP_LOW_POWER_MODE_COUNT] = {
+    /* Sleep */
+    {
+        .valid                 = true,
+        .useActiveModeConfig   = true,
+        .lpIREF                = false,
+        .lpBuff                = false,
+        .bandgapMode           = kSPC_BandgapDisabled,
+        .coreLDOVoltage        = kSPC_CoreLDO_MidDriveVoltage,
+        .coreLDODriveStrength  = kSPC_CoreLDO_LowDriveStrength,
+    },
+    /* DeepSleep */
+    {
+        .valid                 = true,
+        .useActiveModeConfig   = false,
+        .lpIREF                = false,
+        .lpBuff                = false,
+        .bandgapMode           = kSPC_BandgapDisabled,
+        .coreLDOVoltage        = kSPC_CoreLDO_MidDriveVoltage,
+        .coreLDODriveStrength  = kSPC_CoreLDO_LowDriveStrength,
+    },
+    /* PowerDown */
+    {
+        .valid                 = true,
+        .useActiveModeConfig   = false,
+        .lpIREF                = false,
+        .lpBuff                = false,
+        .bandgapMode           = kSPC_BandgapDisabled,
+        .coreLDOVoltage        = kSPC_Core_LDO_RetentionVoltage,
+        .coreLDODriveStrength  = kSPC_CoreLDO_LowDriveStrength,
+    },
+    /* DeepPowerDown */
+    {
+        .valid                 = true,
+        .useActiveModeConfig   = false,
+        .lpIREF                = false,
+        .lpBuff                = false,
+        .bandgapMode           = kSPC_BandgapDisabled,
+        .coreLDOVoltage        = kSPC_Core_LDO_RetentionVoltage,
+        .coreLDODriveStrength  = kSPC_CoreLDO_LowDriveStrength,
+    },
+};
+
+/* CPU clock control table for Active/Sleep mode. Other modes are intentionally left empty. */
+static const app_cpu_clock_cfg_t g_cpu_clock_cfg_table[] = {
+    /* Active */
+    {
+        .valid  = true,
+        .source = kAPP_CpuClockSrcPll,
+        .freqHz = BOARD_BOOTCLOCKPLL240M_CORE_CLOCK,
+    },
+    /* Sleep */
+    {
+        .valid  = true,
+        .source = kAPP_CpuClockSrcPll,
+        .freqHz = BOARD_BOOTCLOCKPLL240M_CORE_CLOCK,
+    },
 };
 
 static void SetSystemPeripheralPowerStatus(resc_status_t resc_status, resc_name_t resc_name)
@@ -541,64 +592,89 @@ static inline bool GetLowPowerModeIndex(app_power_mode_t mode, uint8_t *modeInde
  */
 static void SetRegulatorsConfig(app_power_mode_t targetPowerMode)
 {
-        switch (targetPowerMode)
-        {
-            case kAPP_PowerModeSleep:
-              {
-                spc_active_mode_regulators_config_t activeModeRegulatorOption;
-                
-                activeModeRegulatorOption.lpBuff                                = false;
-                activeModeRegulatorOption.bandgapMode                           = kSPC_BandgapDisabled;
-                activeModeRegulatorOption.CoreLDOOption.CoreLDOVoltage          = kSPC_CoreLDO_MidDriveVoltage;
-                activeModeRegulatorOption.CoreLDOOption.CoreLDODriveStrength    = kSPC_CoreLDO_LowDriveStrength;
-                
-                (void)SPC_SetActiveModeRegulatorsConfig(APP_SPC, &activeModeRegulatorOption);
+    uint8_t modeIndex = 0U;
+    bool modeIndexValid = GetLowPowerModeIndex(targetPowerMode, &modeIndex);
 
-                break;
-              }
-            case kAPP_PowerModeDeepSleep:
-              {
-                spc_lowpower_mode_regulators_config_t lowPowerRegulatorOption;
+    assert(modeIndexValid);
+    if (!modeIndexValid)
+    {
+        return;
+    }
 
-                lowPowerRegulatorOption.lpIREF                             = false;
-                lowPowerRegulatorOption.bandgapMode                        = kSPC_BandgapDisabled;
-                lowPowerRegulatorOption.CoreLDOOption.CoreLDOVoltage       = kSPC_CoreLDO_MidDriveVoltage;
-                lowPowerRegulatorOption.CoreLDOOption.CoreLDODriveStrength = kSPC_CoreLDO_LowDriveStrength;
+    const app_core_ldo_ctrl_t *ctrl = &g_core_ldo_ctrl_table[modeIndex];
 
-                (void)SPC_SetLowPowerModeRegulatorsConfig(APP_SPC, &lowPowerRegulatorOption);
-    
-                break;
-              }
-            case kAPP_PowerModePowerDown:
-              {
-                spc_lowpower_mode_regulators_config_t lowPowerRegulatorOption;
+    assert(ctrl->valid);
+    if (!ctrl->valid)
+    {
+        return;
+    }
 
-                lowPowerRegulatorOption.lpIREF                             = false;
-                lowPowerRegulatorOption.bandgapMode                        = kSPC_BandgapDisabled;
-                lowPowerRegulatorOption.CoreLDOOption.CoreLDOVoltage       = kSPC_Core_LDO_RetentionVoltage;
-                lowPowerRegulatorOption.CoreLDOOption.CoreLDODriveStrength = kSPC_CoreLDO_LowDriveStrength;
+    if (ctrl->useActiveModeConfig)
+    {
+        spc_active_mode_regulators_config_t activeModeRegulatorOption;
 
-                (void)SPC_SetLowPowerModeRegulatorsConfig(APP_SPC, &lowPowerRegulatorOption);
-    
-                break;
-              }
-            case kAPP_PowerModeDeepPowerDown:
-              {
-                spc_lowpower_mode_regulators_config_t lowPowerRegulatorOption;
+        activeModeRegulatorOption.lpBuff = ctrl->lpBuff;
+        activeModeRegulatorOption.bandgapMode = ctrl->bandgapMode;
+        activeModeRegulatorOption.CoreLDOOption.CoreLDOVoltage = ctrl->coreLDOVoltage;
+        activeModeRegulatorOption.CoreLDOOption.CoreLDODriveStrength = ctrl->coreLDODriveStrength;
 
-                lowPowerRegulatorOption.lpIREF                             = false;
-                lowPowerRegulatorOption.bandgapMode                        = kSPC_BandgapDisabled;
-                lowPowerRegulatorOption.CoreLDOOption.CoreLDOVoltage       = kSPC_Core_LDO_RetentionVoltage;
-                lowPowerRegulatorOption.CoreLDOOption.CoreLDODriveStrength = kSPC_CoreLDO_LowDriveStrength;
+        (void)SPC_SetActiveModeRegulatorsConfig(APP_SPC, &activeModeRegulatorOption);
+    }
+    else
+    {
+        spc_lowpower_mode_regulators_config_t lowPowerRegulatorOption;
 
-                (void)SPC_SetLowPowerModeRegulatorsConfig(APP_SPC, &lowPowerRegulatorOption);
+        lowPowerRegulatorOption.lpIREF = ctrl->lpIREF;
+        lowPowerRegulatorOption.lpBuff = ctrl->lpBuff;
+        lowPowerRegulatorOption.bandgapMode = ctrl->bandgapMode;
+        lowPowerRegulatorOption.CoreLDOOption.CoreLDOVoltage       = ctrl->coreLDOVoltage;
+        lowPowerRegulatorOption.CoreLDOOption.CoreLDODriveStrength = ctrl->coreLDODriveStrength;
 
-                break;
-              }
-            default:
-                assert(false);
-                break;
-        }
+        (void)SPC_SetLowPowerModeRegulatorsConfig(APP_SPC, &lowPowerRegulatorOption);
+    }
+}
+
+static const app_cpu_clock_cfg_t *GetCpuClockCfg(app_power_mode_t mode)
+{
+    switch (mode)
+    {
+        case kAPP_PowerModeActive:
+            return &g_cpu_clock_cfg_table[0];
+        case kAPP_PowerModeSleep:
+            return &g_cpu_clock_cfg_table[1];
+        default:
+            return NULL;
+    }
+}
+
+/*! Please note   */
+static void ApplyCpuClockCfg(const app_cpu_clock_cfg_t *cfg)
+{
+    if ((cfg == NULL) || (!cfg->valid))
+    {
+        return;
+    }
+
+    if ((cfg->source == kAPP_CpuClockSrcFro12M) && (cfg->freqHz == BOARD_BOOTCLOCKFRO12M_CORE_CLOCK))
+    {
+        BOARD_BootClockFRO12M();
+    }
+    else if ((cfg->source == kAPP_CpuClockSrcFroHf) && (cfg->freqHz == BOARD_BOOTCLOCKFROHF192M_CORE_CLOCK))
+    {
+        BOARD_BootClockFROHF192M();
+    }
+    else if ((cfg->source == kAPP_CpuClockSrcPll) && (cfg->freqHz == BOARD_BOOTCLOCKPLL200M_CORE_CLOCK))
+    {
+        BOARD_BootClockPLL200M();
+    }
+    else if ((cfg->source == kAPP_CpuClockSrcPll) && (cfg->freqHz == BOARD_BOOTCLOCKPLL240M_CORE_CLOCK))
+    {
+        BOARD_BootClockPLL240M();
+    }
+    else
+    {
+        assert(false);
+    }
 }
 
 void APP_PowerPreSwitchHook(app_power_mode_t targetPowerMode)
@@ -622,10 +698,10 @@ void APP_PowerPreSwitchHook(app_power_mode_t targetPowerMode)
     PORT_SetPinMux(APP_DEBUG_CONSOLE_RX_PORT, APP_DEBUG_CONSOLE_RX_PIN, kPORT_MuxAsGpio);
     PORT_SetPinMux(APP_DEBUG_CONSOLE_TX_PORT, APP_DEBUG_CONSOLE_TX_PIN, kPORT_MuxAsGpio);
 
+    ApplyCpuClockCfg(GetCpuClockCfg(targetPowerMode));
     ApplyRescTableForMode(modeIndex);
-    
     SetRegulatorsConfig(targetPowerMode);
- 
+
     /* Keep SPC wakeup delay in sync for low power entry. */
     SPC_SetLowPowerWakeUpDelay(APP_SPC, APP_LDO_LPWKUP_DELAY);
 }
