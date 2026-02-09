@@ -1,4 +1,4 @@
-# power_mode_switch_ll_mcxa
+# power_mode_switch_ll_mcxc
 
 ## Overview
 The power_mode_switch_ll demo application demonstrates the usage of low level power-related drivers(SPC, CMC, VBAT, WUU, and so on)
@@ -25,4 +25,4 @@ This demo demonstrates 2 wake-up sources:
     - Button: The external pin which connected to WUU.
 
 ## Supported Boards
-- [FRDM-MCXA577](../../../_boards/frdmmcxa577/demo_apps/power_mode_switch/low_level/example_board_readme.md)
+- [FRDM-MCXC162](../../../_boards/frdmmcxc162/demo_apps/power_mode_switch/low_level/example_board_readme.md)

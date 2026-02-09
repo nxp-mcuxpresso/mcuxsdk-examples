@@ -4,81 +4,15 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-/*${header:start}*/
-#include "pin_mux.h"
-#include "clock_config.h"
-#include "fsl_debug_console.h"
-#include "fsl_spc.h"
-#include "board.h"
 #include "app.h"
-#include "fsl_port.h"
-#include "fsl_spc.h"
-#include "fsl_cmc.h"
-#include "fsl_lptmr.h"
-#include "fsl_clock.h"
-#include "fsl_wuu.h"
-#include "fsl_gpio.h"
-/*${header:end}*/
-
-/*${function:start}*/
-void APP_InitDebugConsole(void)
-{
-    /*
-     * Debug console RX pin is set to disable for current leakage, need to re-configure pinmux.
-     * Debug console TX pin: Don't need to change.
-     */
-    BOARD_InitDEBUG_UARTPins();
-    BOARD_InitBootClocks();
-    BOARD_InitDebugConsole();
-}
-
-void APP_DeinitDebugConsole(void)
-{
-    DbgConsole_Deinit();
-    PORT_SetPinMux(APP_DEBUG_CONSOLE_RX_PORT, APP_DEBUG_CONSOLE_RX_PIN, kPORT_MuxAsGpio);
-    PORT_SetPinMux(APP_DEBUG_CONSOLE_TX_PORT, APP_DEBUG_CONSOLE_TX_PIN, kPORT_MuxAsGpio);
-}
-
-#if !(defined(APP_NOT_SUPPORT_WAKEUP_BUTTON) && APP_NOT_SUPPORT_WAKEUP_BUTTON)
-void APP_WUU_IRQ_HANDLER(void)
-{
-    PRINTF("\r\nWUU ISR.\r\n");
-    if (WUU_GetExternalWakeUpPinsFlag(APP_WUU) == (1UL << (uint32_t)APP_WUU_WAKEUP_BUTTON_IDX))
-    {
-        /* Enter into WUU IRQ handler, 3 timess toggle. */
-        WUU_ClearExternalWakeUpPinsFlag(APP_WUU, (1UL << (uint32_t)APP_WUU_WAKEUP_BUTTON_IDX));
-    }
-}
-#endif /* APP_NOT_SUPPORT_WAKEUP_BUTTON */
+#include "board.h"
+#include "pin_mux.h"
+#include "fsl_debug_console.h"
 
 void BOARD_InitHardware(void)
 {
-    CLOCK_SetupFRO16KClocking(kCLKE_16K_SYSTEM | kCLKE_16K_COREMAIN);
-
+    BOARD_BootClockFROHF72M();
+    BOARD_InitBUTTONsPins();
     BOARD_InitDEBUG_UARTPins();
-    BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
-
-#if !(defined(FSL_FEATURE_MCX_SPC_HAS_SC_SPC_LP_MODE_BIT) && (FSL_FEATURE_MCX_SPC_HAS_SC_SPC_LP_MODE_BIT==0U))
-    /* Release the I/O pads and certain peripherals to normal run mode state, for in Power Down mode
-     * they will be in a latched state. */
-    if ((SPC_GetRequestedLowPowerMode(APP_SPC) & (kSPC_PowerDownWithSysClockOff | kSPC_DeepPowerDownWithSysClockOff)) != 0UL)
-    {
-        SPC_ClearPeriphIOIsolationFlag(APP_SPC);
-    }
-#else
-    SPC_ClearPeriphIOIsolationFlag(APP_SPC);
-#endif /* FSL_FEATURE_MCX_SPC_HAS_SC_SPC_LP_MODE_BIT */
 }
-
-void APP_LPTMR_IRQ_HANDLER(void)
-{
-    if (kLPTMR_TimerInterruptEnable & LPTMR_GetEnabledInterrupts(APP_LPTMR))
-    {
-        LPTMR_DisableInterrupts(APP_LPTMR, kLPTMR_TimerInterruptEnable);
-        LPTMR_ClearStatusFlags(APP_LPTMR, kLPTMR_TimerCompareFlag);
-        LPTMR_StopTimer(APP_LPTMR);
-    }
-}
-
-/*${function:end}*/

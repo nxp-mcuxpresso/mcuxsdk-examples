@@ -1,22 +1,16 @@
 # yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
-power_mode_switch_ll_mcxa:
+power_mode_switch_mcxc:
   section-type: application
   contents:
-    meta_path: examples/demo_apps/power_mode_switch_mcxa/low_level
+    meta_path: examples/demo_apps/power_mode_switch_mcxc/low_level
     project-root-path: boards/${board}/demo_apps/power_mode_switch/low_level/${multicore_foldername}
     document:
-      name: power_mode_switch_ll_mcxa${core_id_suffix_name}
+      name: power_mode_switch_mcxc${core_id_suffix_name}
       category: demo_apps
       brief: Low level power_mode_switch demo.
       example_readme:
-      - examples/demo_apps/power_mode_switch_mcxa/low_level/readme.md
+      - examples/demo_apps/power_mode_switch_mcxc/low_level/readme.md
       - ${board_root}/${board}/demo_apps/power_mode_switch/low_level/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    frdmmcxa153: []
-    frdmmcxa156: []
-    frdmmcxa346: []
-    frdmmcxa174: []
-    frdmmcxa344: []
-    frdmmcxa266: []
-    frdmmcxa366: []
+    frdmmcxc162: []
