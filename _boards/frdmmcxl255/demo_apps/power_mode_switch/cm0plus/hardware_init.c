@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -35,6 +35,8 @@ void BOARD_BootAs3MHzClocks(void)
     AON__CGU->CLOCK_DIV |= 1UL << 1UL;
     CLOCK_EnableClock(kCLOCK_GateAonUART);
     SystemCoreClock = 3000000U;
+    
+    CLOCK_AttachClk(kFROdiv1_to_AON_CPU);
 }
 
 void BOARD_InitTamper_ButtonPins(void)
@@ -85,11 +87,6 @@ void BOARD_InitHardware(void)
 
     EnableIRQ(SMM_EXT_IRQn);
     AON__SMM->PWDN_CONFIG &= ~SMM_PWDN_CONFIG_Q_TMT_EN_MASK;
-
-    if ((AON__CGU->CLK_CONFIG & CGU_CLK_CONFIG_LPIRC_EN_MASK) != 0UL)
-    {
-        AON__CGU->CLK_CONFIG &= ~CGU_CLK_CONFIG_LPIRC_EN_MASK;
-    }
 }
 
 /*${function:end}*/

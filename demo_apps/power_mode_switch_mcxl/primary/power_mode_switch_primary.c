@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025,2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -55,6 +55,7 @@ power_pd1_config_t pd1Config = {
     .mainWakeupSource      = kPower_WS_NONE,
     .mainRamArraysToRetain = kPower_MainDomainAllRams,
     .enableIVSMode         = false,
+    .fro16KOutputFreq      = kPMU_FRO16KOutput16KHz,
 };
 
 power_pd2_config_t pd2Config = {.mainWakeupSource      = kPower_WS_NONE,
@@ -63,37 +64,38 @@ power_pd2_config_t pd2Config = {.mainWakeupSource      = kPower_WS_NONE,
                                 .mainRamArraysToRetain = kPower_MainDomainAllRams,
                                 .enableIVSMode         = false,
                                 .disableFRO10M         = true,
+                                .fro16KOutputFreq      = kPMU_FRO16KOutput16KHz,
 #if APP_ENABLE_ADVC
                                 .vddCoreAonVoltage = kPower_VddCoreAon_AdvcControl
 #else
-    .vddCoreAonVoltage     = kPower_VddCoreAon_630mV,
+    .vddCoreAonVoltage     = kPower_VddCoreAon_725mV,
 #endif
 };
 
 power_dpd1_config_t dpd1Config = {.mainWakeupSource = kPower_WS_NONE,
-#if (APP_ENABLE_CONTEXT_SAVING == 0)
-                                  .mainRamArraysToRetain = kPower_MainDomainNoneRams,
-                                  .disableBandgap        = true,
-                                  .enableIVSMode         = false,
-                                  .disableFRO10M         = true,
-#else
-                                  .mainRamArraysToRetain = kPower_MainDomainAllRams,
+                                  .fro16KOutputFreq      = kPMU_FRO16KOutput16KHz,
                                   .disableBandgap        = true,
                                   .enableIVSMode         = true,
+                                  .disableFRO10M         = true,
+#if (APP_ENABLE_CONTEXT_SAVING == 0)
+                                  .mainRamArraysToRetain = kPower_MainDomainNoneRams,
+#else
+                                  .mainRamArraysToRetain = kPower_MainDomainAllRams,
                                   .saveContext           = true,
 #endif
 
 #if APP_ENABLE_ADVC
                                   .vddCoreAonVoltage = kPower_VddCoreAon_AdvcControl
 #else
-    .vddCoreAonVoltage     = kPower_VddCoreAon_592mV,
+    .vddCoreAonVoltage     = kPower_VddCoreAon_725mV,
 #endif
 };
 
 power_dpd2_config_t dpd2Config = {
     .mainWakeupSource = kPower_WS_NONE,
     .aonWakeupSource  = kPower_WS_NONE,
-    .enableIVSMode    = false,
+    .enableIVSMode    = true,
+    .fro16KOutputFreq      = kPMU_FRO16KOutput16KHz,
 #if (APP_ENABLE_CONTEXT_SAVING == 0)
     .aonRamArraysToRetain  = kPower_AonDomainNoneRams,
     .mainRamArraysToRetain = kPower_MainDomainNoneRams,
@@ -105,17 +107,19 @@ power_dpd2_config_t dpd2Config = {
     .disableBandgap        = true,
     .switchToX32K          = true,
     .disableFRO10M         = true,
-    .disableFRO2M          = false,
-    .dpd2VddCoreAonVoltage = kPower_VddCoreAon_592mV,
+    .disableFRO3M          = false,
+    .dpd2VddCoreAonVoltage = kPower_VddCoreAon_601_5mV,
 };
 
 power_dpd3_config_t dpd3Config = {
     .wakeupSource = kPower_WS_NONE,
+    .fro16KOutputFreq      = kPMU_FRO16KOutput16KHz,
 };
 
 power_sd_config_t sdConfig = {
     .wakeupSource     = kPower_WS_NONE,
     .fro16KOutputFreq = kPMU_FRO16KOutput8KHz,
+    .keepFro16kActive = false,
 };
 
 void *powerConfigs[8U] = {
@@ -195,10 +199,6 @@ int main(void)
     };
 
     BOARD_InitHardware();
-#if APP_ENABLE_ADVC
-    ADVC_Init();
-    ADVC_Enable(kADVC_ModeOptimal, NULL);
-#endif
     PRINTF(
         "\r\n###########################  Power Mode Switch Demo Primary Core Boot  ###########################\r\n");
     PRINTF("Normal Boot......\r\n");
@@ -215,23 +215,31 @@ int main(void)
         return 0;
     }
 
+#if APP_ENABLE_ADVC
+    ADVC_Init();
+    ADVC_Enable(kADVC_ModeOptimal, NULL);
+#endif
+    
     while (1)
     {
+        if (ADVC_IsEnabled() == true)
+        {
+            PRINTF("ADVC Enabled...\r\n");
+        }
+        else
+        {
+            PRINTF("ADVC Disabled...\r\n");
+        }      
+
         powerTrans      = APP_GetTargetPowerTransition();
         targetLpMode    = APP_EnableWakeupSource(powerTrans);
         status_t status = Power_EnterLowPowerMode(targetLpMode, powerConfigs[(uint8_t)targetLpMode]);
         if (status != kStatus_Fail)
         {
+            /* Only when context saving is enabled. */
             BOARD_InitHardware();
+            PRINTF("Wakeup Successfully\r\n");
             CMC_ConfigFlashMode(CMC, true, true, true);
-#if APP_ENABLE_ADVC && APP_ENABLE_CONTEXT_SAVING
-            if (ADVC_IsEnabled() == false)
-            {
-                PRINTF("Re-enable ADVC\r\n");
-                ADVC_Init();
-                ADVC_Enable(kADVC_ModeOptimal, NULL);
-            }
-#endif
         }
         else
         {
@@ -504,14 +512,9 @@ static void APP_EnableLptmrWakeup(uint8_t firstMode, uint8_t secondMode, uint8_t
                 dpd2Config.saveContext           = true;
 #endif
                 dpd2Config.aonRamArraysToRetain = kPower_AonDomainAllRams;
-                dpd2Config.enableIVSMode        = false;
                 dpd2Config.wakeToDpd1           = true;
                 dpd2Config.aonWakeupSource      = kPower_WS_Aon_LptmrInt;
                 dpd2Config.mainWakeupSource     = kPower_WS_Main_ExternalINTRiseEdge;
-                dpd2Config.disableFRO10M        = true;
-                dpd2Config.disableFRO2M         = false;
-                dpd2Config.disableBandgap       = true;
-                dpd2Config.switchToX32K         = true;
             }
             else
             {
@@ -523,7 +526,6 @@ static void APP_EnableLptmrWakeup(uint8_t firstMode, uint8_t secondMode, uint8_t
 #else
                 dpd2Config.mainRamArraysToRetain = kPower_MainDomainAllRams;
                 dpd2Config.saveContext           = true;
-                dpd2Config.enableIVSMode         = false;
 #endif
             }
             break;

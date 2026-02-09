@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -233,9 +233,11 @@ static void APP_ActiveOps(void)
     }
 
     /* Interpret request message. */
+    DisableIRQ(MU_B_RX_IRQn);
     Power_InterpretRequest(g_MuBRxMsg);
     g_MuBRxMsg    = 0UL;
     g_MuBRxIsrHit = false;
+    EnableIRQ(MU_B_RX_IRQn);
 #if APP_ENABLE_CONTEXT_SAVING
     if (Power_GetPreviousPowerMode() == kPower_DeepPowerDown2)
     {
@@ -300,7 +302,7 @@ static void APP_DPD1ToActive(void)
     }
     PRINTF("Start to execute WFI\r\n");
     /* In DPD1, execute WFI to get lower power number. */
-    __WFI();
+   __WFI();
 }
 
 static void APP_DPD1ToDPD2BackToDPD1(void)
@@ -318,29 +320,26 @@ static void APP_DPD1ToDPD2BackToDPD1(void)
         .disableBandgap       = true,
 #if (APP_ENABLE_CONTEXT_SAVING == 0)
         .mainRamArraysToRetain = 0U,
+        .saveContext = false,
 #else
         .mainRamArraysToRetain = kPower_MainDomainAllRams,
         .saveContext           = true,
 #endif
-        .enableIVSMode         = false,
+        .enableIVSMode         = true,
         .switchToX32K          = true,
-        .disableFRO10M         = false,
-        .disableFRO2M          = false,
+        .disableFRO10M         = true,
+        .disableFRO3M          = false,
         .wakeToDpd1            = true,
         .aonWakeupSource       = kPower_WS_Aon_LptmrInt,
         .mainWakeupSource      = kPower_WS_NONE,
-        .dpd2VddCoreAonVoltage = kPower_VddCoreAon_592mV,
+        .dpd2VddCoreAonVoltage = kPower_VddCoreAon_601_5mV,
+        .fro16KOutputFreq      = kPMU_FRO16KOutput16KHz,
     };
     if (Power_EnterDeepPowerDown2(&dpd2Config) == kStatus_Power_WakeupFromDPD2)
     {
         APP_WakeupFromDPD2();
-#if APP_ENABLE_ADVC
-        if (ADVC_IsEnabled() == false)
-        {
-            PRINTF("Re-enable ADVC\r\n");
-            ADVC_Enable(kADVC_ModeOptimal, NULL);
-        }
-#endif
+        BOARD_InitHardware();
+        PRINTF("Wakeup from DPD2 with context saving enabled\r\n");
     }
     else
     {
@@ -363,24 +362,28 @@ static void APP_DPD1ToDPD2BackToActive(void)
 #if (APP_ENABLE_CONTEXT_SAVING == 0)
         .aonRamArraysToRetain  = kPower_AonDomainNoneRams,
         .mainRamArraysToRetain = kPower_MainDomainNoneRams,
+        .saveContext = false,
 #else
         .aonRamArraysToRetain  = kPower_AonDomainAllRams,
         .mainRamArraysToRetain = kPower_MainDomainAllRams,
         .saveContext           = true,
 #endif
-        .enableIVSMode         = false,
+        .enableIVSMode         = true,
         .disableBandgap        = true,
         .switchToX32K          = true,
-        .disableFRO10M         = false,
-        .disableFRO2M          = false,
+        .disableFRO10M         = true,
+        .disableFRO3M          = false,
         .wakeToDpd1            = false,
         .mainWakeupSource      = kPower_WS_Main_LptmrInt,
         .aonWakeupSource       = kPower_WS_Aon_LptmrInt,
-        .dpd2VddCoreAonVoltage = kPower_VddCoreAon_592mV,
+        .dpd2VddCoreAonVoltage = kPower_VddCoreAon_601_5mV,
+        .fro16KOutputFreq      = kPMU_FRO16KOutput16KHz,
     };
     if (Power_EnterDeepPowerDown2(&dpd2Config) == kStatus_Power_WakeupFromDPD2)
     {
+        PRINTF("Wakeup from DPD2 with context saving enabled\r\n");
         APP_WakeupFromDPD2();
+        BOARD_InitHardware();
     }
     else
     {
