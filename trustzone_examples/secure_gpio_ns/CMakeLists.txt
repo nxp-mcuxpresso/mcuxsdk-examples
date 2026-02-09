@@ -45,10 +45,3 @@ mcux_add_include(
 )
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
-
-mcux_add_library(
-    BASE_PATH ${APPLICATION_BINARY_DIR}
-    LIBS "../secure_gpio_s/${CONFIG_TOOLCHAIN}/secure_gpio_s${core_id_suffix_name}_CMSE_lib.o"
-    TOOLCHAINS armgcc mdk iar
-    GENERATED TRUE
-)
