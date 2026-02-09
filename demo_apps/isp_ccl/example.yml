@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+isp_ccl:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/isp_ccl
+    project-root-path: boards/${board}/demo_apps/isp_ccl/${multicore_foldername}
+    document:
+      name: isp_ccl${core_id_suffix_name}
+      category: demo_apps
+      brief: This demo app uses externally connected 4x ox3c cameras on CSI0 to capture images and process them using ISP coprocessor and display them via LVDS0 interface. Cameras are controlled by NXP algorithms to adjust to local light conditions.
+      example_readme:
+      - examples/demo_apps/isp_ccl/readme.md
+      - ${board_root}/${board}/demo_apps/isp_ccl/example_board_readme.md
+  boards:
+    imx95lpd5evk19@cm7:
+    - +armgcc@debug
+    - +armgcc@release

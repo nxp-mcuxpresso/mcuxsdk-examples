@@ -572,8 +572,8 @@ void BOARD_ConfigMPU(void)
     {
         /* The MPU region size should be 2^N, 5<=N<=32, region base should be multiples of size. */
         //assert(!(nonCacheStart % size));
-        assert(size == (uint32_t)(1 << i));
-        assert(i >= 5);
+        assert(size == (uint32_t)(1U << i));
+        assert(i >= 5U);
 
         /* Region 10 setting: Memory with Normal type, shareable, non-cacheable */
         MPU->RBAR = ARM_MPU_RBAR(10, nonCacheStart);

@@ -1,0 +1,16 @@
+# It is optional to provide example specific Kconfig.
+
+mainmenu "ISP CCL Demo Application"
+
+config MCUX_MISC_middleware.ispsdk.demos.isp_ccl
+    bool
+    default y
+
+# Manually pull in the default values file from the same directory
+rsource "Kconfig.defconfig"
+
+# Need to refer the root Kconfig.mcuxpreso to get all Kconfig data
+source "${SdkRootDirPath}/Kconfig.mcuxpresso"
+
+# Board example specific Kconfig can be linked in this way if needed
+osource "${SdkRootDirPath}/${project_board_port_path}/Kconfig"
