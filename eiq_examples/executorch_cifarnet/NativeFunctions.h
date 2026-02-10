@@ -96,6 +96,14 @@ torch::executor::Tensor & bitwise_xor_Scalar_out(const torch::executor::Tensor &
 torch::executor::Tensor & bitwise_xor_Scalar_out(torch::executor::KernelRuntimeContext & context, const torch::executor::Tensor & self, const torch::executor::Scalar & other, torch::executor::Tensor & out);
 torch::executor::Tensor & bitwise_xor_Tensor_out(const torch::executor::Tensor & self, const torch::executor::Tensor & other, torch::executor::Tensor & out);
 torch::executor::Tensor & bitwise_xor_Tensor_out(torch::executor::KernelRuntimeContext & context, const torch::executor::Tensor & self, const torch::executor::Tensor & other, torch::executor::Tensor & out);
+torch::executor::Tensor & bitwise_left_shift_Tensor_out(const torch::executor::Tensor & self, const torch::executor::Tensor & other, torch::executor::Tensor & out);
+torch::executor::Tensor & bitwise_left_shift_Tensor_out(torch::executor::KernelRuntimeContext & context, const torch::executor::Tensor & self, const torch::executor::Tensor & other, torch::executor::Tensor & out);
+torch::executor::Tensor & bitwise_left_shift_Tensor_Scalar_out(const torch::executor::Tensor & self, const torch::executor::Scalar & other, torch::executor::Tensor & out);
+torch::executor::Tensor & bitwise_left_shift_Tensor_Scalar_out(torch::executor::KernelRuntimeContext & context, const torch::executor::Tensor & self, const torch::executor::Scalar & other, torch::executor::Tensor & out);
+torch::executor::Tensor & bitwise_right_shift_Tensor_out(const torch::executor::Tensor & self, const torch::executor::Tensor & other, torch::executor::Tensor & out);
+torch::executor::Tensor & bitwise_right_shift_Tensor_out(torch::executor::KernelRuntimeContext & context, const torch::executor::Tensor & self, const torch::executor::Tensor & other, torch::executor::Tensor & out);
+torch::executor::Tensor & bitwise_right_shift_Tensor_Scalar_out(const torch::executor::Tensor & self, const torch::executor::Scalar & other, torch::executor::Tensor & out);
+torch::executor::Tensor & bitwise_right_shift_Tensor_Scalar_out(torch::executor::KernelRuntimeContext & context, const torch::executor::Tensor & self, const torch::executor::Scalar & other, torch::executor::Tensor & out);
 torch::executor::Tensor & bmm_out(const torch::executor::Tensor & self, const torch::executor::Tensor & mat2, torch::executor::Tensor & out);
 torch::executor::Tensor & bmm_out(torch::executor::KernelRuntimeContext & context, const torch::executor::Tensor & self, const torch::executor::Tensor & mat2, torch::executor::Tensor & out);
 torch::executor::Tensor & cat_out(torch::executor::TensorList tensors, int64_t dim, torch::executor::Tensor & out);
@@ -182,6 +190,8 @@ torch::executor::Tensor & gelu_out(const torch::executor::Tensor & self, torch::
 torch::executor::Tensor & gelu_out(torch::executor::KernelRuntimeContext & context, const torch::executor::Tensor & self, torch::executor::string_view approximate, torch::executor::Tensor & out);
 torch::executor::Tensor & glu_out(const torch::executor::Tensor & self, int64_t dim, torch::executor::Tensor & out);
 torch::executor::Tensor & glu_out(torch::executor::KernelRuntimeContext & context, const torch::executor::Tensor & self, int64_t dim, torch::executor::Tensor & out);
+torch::executor::Tensor & grid_sampler_2d_out(const torch::executor::Tensor & input, const torch::executor::Tensor & grid, int64_t interpolation_mode, int64_t padding_mode, bool align_corners, torch::executor::Tensor & out);
+torch::executor::Tensor & grid_sampler_2d_out(torch::executor::KernelRuntimeContext & context, const torch::executor::Tensor & input, const torch::executor::Tensor & grid, int64_t interpolation_mode, int64_t padding_mode, bool align_corners, torch::executor::Tensor & out);
 torch::executor::Tensor & gt_scalar_out(const torch::executor::Tensor & self, const torch::executor::Scalar & other, torch::executor::Tensor & out);
 torch::executor::Tensor & gt_scalar_out(torch::executor::KernelRuntimeContext & context, const torch::executor::Tensor & self, const torch::executor::Scalar & other, torch::executor::Tensor & out);
 torch::executor::Tensor & gt_tensor_out(const torch::executor::Tensor & self, const torch::executor::Tensor & other, torch::executor::Tensor & out);
