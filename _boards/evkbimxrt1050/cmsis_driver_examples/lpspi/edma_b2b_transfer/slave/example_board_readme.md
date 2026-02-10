@@ -31,32 +31,4 @@ Prepare the Demo
 3. Download the program to the target board.
 4. Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
 
-Running the demo
-================
-When the example runs successfully, you can see the similar information from the terminal as below.
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-LPSPI CMSIS interrupt transfer example start.
-
-This example use one lpspi instance as master and another as slave on one board.
-
-Master uses interrupt way and slave uses interrupt way.
-
-Note that some LPSPI instances interrupt is in INTMUX ,you should set the intmux when you porting this example accordingly
-
-Please make sure you make the correct line connection. Basically, the connection is:
-
-LPSPI_master -- LPSPI_slave
-
-   CLK      --    CLK
-
-   PCS      --    PCS
-
-   SOUT     --    SIN
-
-   SIN      --    SOUT
-
-This is SlaveSignalEvent.
-
-LPSPI transfer all data matched!
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
