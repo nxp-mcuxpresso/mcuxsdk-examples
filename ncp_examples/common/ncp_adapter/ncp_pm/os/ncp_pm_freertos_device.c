@@ -133,6 +133,8 @@ void ncp_pm_enable_wakeup_source(void *ws)
 
     if ((IRQn_Type)irqn == GPIO_INTA_IRQn)
     {
+        /* Clear interrupt status */
+        GPIO_PinClearInterruptFlag(GPIO, 1U, 10U, (uint32_t)kGPIO_InterruptA);
         NVIC_ClearPendingIRQ(GPIO_INTA_IRQn);
     }
 
@@ -151,6 +153,8 @@ void ncp_pm_disable_wakeup_source(void *ws)
 
     if ((IRQn_Type)irqn == GPIO_INTA_IRQn)
     {
+        /* Clear interrupt status */
+        GPIO_PinClearInterruptFlag(GPIO, 1U, 10U, (uint32_t)kGPIO_InterruptA);
         NVIC_ClearPendingIRQ(GPIO_INTA_IRQn);
     }
 
