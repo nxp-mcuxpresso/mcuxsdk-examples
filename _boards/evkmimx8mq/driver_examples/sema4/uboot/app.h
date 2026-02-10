@@ -1,6 +1,5 @@
 /*
- * Copyright 2017 NXP
- * All rights reserved.
+ * Copyright 2017, 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -13,7 +12,7 @@
 #define APP_PROC_NUM                 1
 #define APP_OTHER_PROC_NUM           0
 #define APP_SEMA4_GATE               0
-#define APP_SEMA4_GATE_ADDR          ((uint32_t)(&(APP_SEMA4->Gate00)))
+#define APP_SEMA4_GATE_ADDR          ((uint32_t)(&(APP_SEMA4->GATE[0])))
 #define SEMA4_IRQHandler             HS_CP1_IRQHandler
 #define SOC_EnableSEMA4Intterrupt()  NVIC_EnableIRQ(HS_CP1_IRQn)
 #define SOC_DisableSEMA4Intterrupt() NVIC_DisableIRQ(HS_CP1_IRQn)
