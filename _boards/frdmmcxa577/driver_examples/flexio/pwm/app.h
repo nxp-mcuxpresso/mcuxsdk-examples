@@ -11,7 +11,7 @@
  ******************************************************************************/
 /*${macro:start}*/
 #define DEMO_FLEXIO_BASEADDR  FLEXIO0
-#define DEMO_FLEXIO_OUTPUTPIN 0U /* Select FXIO_D16 as PWM output */
+#define DEMO_FLEXIO_OUTPUTPIN 0U /* Select FXIO_D0 as PWM output */
 #define DEMO_FLEXIO_TIMER_CH  0U /* Flexio timer0 used */
 
 #define DEMO_FLEXIO_CLOCK_FREQUENCY CLOCK_GetFlexioClkFreq()
