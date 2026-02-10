@@ -293,19 +293,29 @@ void BOARD_InitTenBaseT1SPins(void);
  */
 void BOARD_InitENETPins(void);
 
-#define PCR_DSE_dse0 0x00u /*!<@brief Drive Strength Enable: Low */
-#define PCR_IBE_ibe1 0x01u /*!<@brief Input Buffer Enable: Enables */
-#define PCR_INV_inv0 0x00u /*!<@brief Invert Input: Does not invert */
-#define PCR_ODE_ode0 0x00u /*!<@brief Open Drain Enable: Disables */
-#define PCR_PE_pe0 0x00u   /*!<@brief Pull Enable: Disables */
-#define PCR_PS_ps0 0x00u   /*!<@brief Pull Select: Enables internal pulldown resistor */
-#define PCR_SRE_sre0 0x00u /*!<@brief Slew Rate Enable: Fast */
+/*! @name PORT3_17 (coord G10), SW2
+  @{ */
+
+/* Symbols to be used with PORT driver */
+#define BOARD_INITSPIFILTERPINS_SW2_PORT PORT3                /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITSPIFILTERPINS_SW2_PIN 17U                   /*!<@brief PORT pin number */
+#define BOARD_INITSPIFILTERPINS_SW2_PIN_MASK (1U << 17U)      /*!<@brief PORT pin mask */
+                                                              /* @} */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
 void BOARD_InitSPIFILTERPins(void);
+
+/*! @name PORT3_17 (coord G10), SW2
+  @{ */
+
+/* Symbols to be used with PORT driver */
+#define BOARD_INITESPIPINS_SW2_PORT PORT3                /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITESPIPINS_SW2_PIN 17U                   /*!<@brief PORT pin number */
+#define BOARD_INITESPIPINS_SW2_PIN_MASK (1U << 17U)      /*!<@brief PORT pin mask */
+                                                         /* @} */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
