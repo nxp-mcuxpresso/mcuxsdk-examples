@@ -15,17 +15,17 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
+    BOARD_InitDEBUG_UARTPins();
+    BOARD_InitFLEXIO_MCULCDPins();
+    BOARD_InitBootClocks();
+    BOARD_InitDebugConsole();
+
     /* Attach peripheral clock */
     CLOCK_SetClockDiv(kCLOCK_DivFLEXIO0, 1u);
     CLOCK_AttachClk(kFRO_HF_to_FLEXIO0);
 
     CLOCK_EnableClock(kCLOCK_GateFLEXIO0);
     CLOCK_EnableClock(kCLOCK_GateDMA0);
-
-    BOARD_InitDEBUG_UARTPins();
-    BOARD_InitFLEXIO_MCULCDPins();
-    BOARD_InitBootClocks();
-    BOARD_InitDebugConsole();
 
     /* Enable DMA0 request for FLEXIO */
     EDMA_SocRequestEnable(DEMO_EDMA, DEMO_FLEXIO_TX_DMA_REQUEST, true);

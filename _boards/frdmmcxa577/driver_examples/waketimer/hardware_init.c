@@ -14,10 +14,10 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    CLOCK_SetupFRO16KClocking(kCLKE_16K_SYSTEM | kCLKE_16K_COREMAIN | kCLKE_16K_VBAT);
-
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
+
+    CLOCK_SetupFRO16KClocking(kCLKE_16K_SYSTEM | kCLKE_16K_COREMAIN | kCLKE_16K_VBAT);
 }
 /*${function:end}*/

@@ -14,14 +14,14 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    /* Attach peripheral clock */
-    CLOCK_SetClockDiv(kCLOCK_DivI3C0_FCLK, 1U);
-    CLOCK_AttachClk(kFRO_LF_DIV_to_I3C0FCLK);
-
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitI3CPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
+
+    /* Attach peripheral clock */
+    CLOCK_SetClockDiv(kCLOCK_DivI3C0_FCLK, 1U);
+    CLOCK_AttachClk(kFRO_LF_DIV_to_I3C0FCLK);
 
     /* Enable DMA0 request for I3C TX and RC */
     EDMA_SocRequestEnable(DMA0, EXAMPLE_I3C_TX_DMA_CHANNEL_MUX, true);

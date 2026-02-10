@@ -14,15 +14,15 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
+    BOARD_InitPins();
+    BOARD_InitBootClocks();
+    BOARD_InitDebugConsole();
+
     /* Attach peripheral clock */
     CLOCK_SetClockDiv(kCLOCK_DivDAC0, 1u);
     CLOCK_AttachClk(kFRO_LF_DIV_to_DAC0);
 
     /* Enable DAC0 */
     SPC0->ACTIVE_CFG1 |= 0x10;
-
-    BOARD_InitPins();
-    BOARD_InitBootClocks();
-    BOARD_InitDebugConsole();
 }
 /*${function:end}*/

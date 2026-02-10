@@ -14,16 +14,16 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
+    BOARD_InitDEBUG_UARTPins();
+    BOARD_InitFLEXIO_MCULCDPins();
+    BOARD_InitBootClocks();
+    BOARD_InitDebugConsole();
+
     /* Attach peripheral clock */
     CLOCK_SetClockDiv(kCLOCK_DivFLEXIO0, 1u);
     CLOCK_AttachClk(kFRO_HF_to_FLEXIO0);
 
     CLOCK_EnableClock(kCLOCK_GateFLEXIO0);
-
-    BOARD_InitDEBUG_UARTPins();
-    BOARD_InitFLEXIO_MCULCDPins();
-    BOARD_InitBootClocks();
-    BOARD_InitDebugConsole();
 }
 
 void BOARD_SetCSPin(bool set)

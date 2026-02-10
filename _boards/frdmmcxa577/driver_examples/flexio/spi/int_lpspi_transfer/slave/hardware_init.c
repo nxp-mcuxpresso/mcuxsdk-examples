@@ -13,6 +13,12 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
+    BOARD_InitDEBUG_UARTPins();
+    BOARD_InitFLEXIO_SPIPins();
+    BOARD_InitSPIPins();
+    BOARD_InitBootClocks();
+    BOARD_InitDebugConsole();
+
     /* Attach peripheral clock */
     CLOCK_SetClockDiv(kCLOCK_DivFLEXIO0, 2u);
     CLOCK_AttachClk(kFRO_HF_to_FLEXIO0);
@@ -23,11 +29,5 @@ void BOARD_InitHardware(void)
     /* Release peripheral reset */
     RESET_ReleasePeripheralReset(kFLEXIO0_RST_SHIFT_RSTn);
     RESET_ReleasePeripheralReset(kLPSPI2_RST_SHIFT_RSTn);
-
-    BOARD_InitDEBUG_UARTPins();
-    BOARD_InitFLEXIO_SPIPins();
-    BOARD_InitSPIPins();
-    BOARD_InitBootClocks();
-    BOARD_InitDebugConsole();
 }
 /*${function:end}*/

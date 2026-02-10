@@ -13,12 +13,12 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    /* Attach peripheral clock */
-    CLOCK_SetClockDiv(kCLOCK_DivFLEXIO0, 1u);
-    CLOCK_AttachClk(kPll1ClkDiv_to_FLEXIO0);
-
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitFLEXIO_UARTPins();
     BOARD_InitBootClocks();
+
+    /* Attach peripheral clock */
+    CLOCK_SetClockDiv(kCLOCK_DivFLEXIO0, 1u);
+    CLOCK_AttachClk(kPll1ClkDiv_to_FLEXIO0);
 }
 /*${function:end}*/

@@ -16,16 +16,16 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
+    BOARD_InitDEBUG_UARTPins();
+    BOARD_InitSPIPins();
+    BOARD_InitBootClocks();
+    BOARD_InitDebugConsole();
+
     /* Attach peripheral clock */
     CLOCK_SetClockDiv(kCLOCK_DivLPSPI1, 1u);
     CLOCK_AttachClk(kFRO_LF_DIV_to_LPSPI1);
 
     CLOCK_SetClockDiv(kCLOCK_DivLPSPI2, 1u);
     CLOCK_AttachClk(kFRO_LF_DIV_to_LPSPI2);
-
-    BOARD_InitDEBUG_UARTPins();
-    BOARD_InitSPIPins();
-    BOARD_InitBootClocks();
-    BOARD_InitDebugConsole();
 }
 /*${function:end}*/

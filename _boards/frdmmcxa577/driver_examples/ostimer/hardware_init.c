@@ -14,16 +14,16 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    /* Release peripheral reset */
-    RESET_ReleasePeripheralReset(kOSTIMER0_RST_SHIFT_RSTn);
+    BOARD_InitDEBUG_UARTPins();
+    BOARD_InitBootClocks();
+    BOARD_InitDebugConsole();
 
     /* Attach peripheral clock */
     CLOCK_SetupFRO16KClocking(kCLKE_16K_SYSTEM | kCLKE_16K_COREMAIN | kCLKE_16K_VBAT);
     CLOCK_AttachClk(kCLK_16K_to_OSTIMER);
 
-    BOARD_InitDEBUG_UARTPins();
-    BOARD_InitBootClocks();
-    BOARD_InitDebugConsole();
+    /* Release peripheral reset */
+    RESET_ReleasePeripheralReset(kOSTIMER0_RST_SHIFT_RSTn);
 }
 /* Enter deep sleep mode. */
 void EXAMPLE_EnterDeepSleep()

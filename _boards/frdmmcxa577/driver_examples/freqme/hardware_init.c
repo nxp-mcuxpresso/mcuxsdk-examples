@@ -14,13 +14,6 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    /* Release peripheral reset */
-    RESET_ReleasePeripheralReset(kINPUTMUX0_RST_SHIFT_RSTn);
-
-    /* Attach peripheral clock */
-    CLOCK_EnableClock(kCLOCK_GateFREQME);
-    CLOCK_SetClockDiv(kCLOCK_DivFRO_HF, 1u);
-    
     /* Enter safe mode before initialize the external osc clock */
     CLOCK_AttachClk(kFRO12M_to_MAIN_CLK);
     CLOCK_SetupExtClocking(24000000U);
@@ -29,5 +22,12 @@ void BOARD_InitHardware(void)
     BOARD_InitFREQMEPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
+
+    /* Attach peripheral clock */
+    CLOCK_EnableClock(kCLOCK_GateFREQME);
+    CLOCK_SetClockDiv(kCLOCK_DivFRO_HF, 1u);
+
+    /* Release peripheral reset */
+    RESET_ReleasePeripheralReset(kINPUTMUX0_RST_SHIFT_RSTn);
 }
 /*${function:end}*/

@@ -13,6 +13,12 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
+    BOARD_InitDEBUG_UARTPins();
+    BOARD_InitI2CPins();
+    BOARD_InitFLEXIO_I2CPins();
+    BOARD_InitBootClocks();
+    BOARD_InitDebugConsole();
+
     /* Attach peripheral clock */
     CLOCK_SetClockDiv(kCLOCK_DivFLEXIO0, 1u);
     CLOCK_AttachClk(kFRO_LF_DIV_to_FLEXIO0);
@@ -20,11 +26,5 @@ void BOARD_InitHardware(void)
     /* Attach peripheral clock */
     CLOCK_SetClockDiv(kCLOCK_DivLPI2C3, 1u);
     CLOCK_AttachClk(kFRO_LF_DIV_to_LPI2C3);
-
-    BOARD_InitDEBUG_UARTPins();
-    BOARD_InitI2CPins();
-    BOARD_InitFLEXIO_I2CPins();
-    BOARD_InitBootClocks();
-    BOARD_InitDebugConsole();
 }
 /*${function:end}*/

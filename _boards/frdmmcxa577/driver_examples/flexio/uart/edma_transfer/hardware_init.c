@@ -15,6 +15,10 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
+    BOARD_InitDEBUG_UARTPins();
+    BOARD_InitFLEXIO_UARTPins();
+    BOARD_InitBootClocks();
+
     /* Attach peripheral clock */
     CLOCK_SetClockDiv(kCLOCK_DivFLEXIO0, 1u);
     CLOCK_AttachClk(kPll1ClkDiv_to_FLEXIO0);
@@ -22,10 +26,6 @@ void BOARD_InitHardware(void)
     /* Release peripheral reset */
     RESET_ReleasePeripheralReset(kFLEXIO0_RST_SHIFT_RSTn);
     RESET_ReleasePeripheralReset(kDMA0_RST_SHIFT_RSTn);
-
-    BOARD_InitDEBUG_UARTPins();
-    BOARD_InitFLEXIO_UARTPins();
-    BOARD_InitBootClocks();
 
     /* Enable DMA0 request for FLEXIO */
     EDMA_SocRequestEnable(EXAMPLE_FLEXIO_UART_DMA_BASEADDR, EXAMPLE_TX_DMA_SOURCE, true);
