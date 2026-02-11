@@ -159,11 +159,11 @@ dbg_ext_logging_start             = rpmsg_sh_mem_end + 1;
 dbg_ext_logging_end               = dbg_ext_logging_start + dbg_ext_logging_size - 1;
 
 m_sqram_btblesqbuf_start          = dbg_ext_logging_end + 1;
-m_sqram_btblesqbuf_size           = 0x5500;
+m_sqram_btblesqbuf_size           = 0x5800; /*Increased to hold 5 advertising sets.*/
 m_sqram_btblesqbuf_end            = m_sqram_btblesqbuf_start + m_sqram_btblesqbuf_size - 1;
 
 m_sqram_btbleaesqbuf_start        = m_sqram_btblesqbuf_end + 1;
-m_sqram_btbleaesqbuf_size         = 0x2700;     /* was 0xF00 but was increased to hold 2 x 3 x 1650 bytes for advertising.*/
+m_sqram_btbleaesqbuf_size         = 0x3100; /*Increased to hold 5 advertising sets with 800 max adv data bytes each: 5 x 3 x 800.*/
 m_sqram_btbleaesqbuf_end          = m_sqram_btbleaesqbuf_start + m_sqram_btbleaesqbuf_size -1;
 
 m_sqram_rldat_ae_start            = m_sqram_btbleaesqbuf_end + 1;
