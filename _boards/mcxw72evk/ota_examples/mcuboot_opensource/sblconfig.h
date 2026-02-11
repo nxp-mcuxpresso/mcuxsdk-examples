@@ -24,8 +24,10 @@
 //#define CONFIG_BOOT_MODE_SINGLE_APPLICATION_SLOT
 #define CONFIG_BOOT_MODE_SWAP
 
-/* To be able to bootstrap signed image from debug session */
+/* Misc Config */
+
 #define CONFIG_BOOT_BOOTSTRAP
+#define CONFIG_BOOT_SERIAL_RECOVERY
 
 #define CONFIG_MCUBOOT_MAX_IMG_SECTORS 256
 

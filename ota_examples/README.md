@@ -28,7 +28,7 @@ Table below shows overview of upgrade modes.
 | Flash remap | CONFIG_BOOT_MODE_FLASH_REMAP | Image swapping offloaded to HW using flash remapping feature.<br>The mode supports revert function.<br>See ['MCUboot and flash remapping'](_doc/flash_remap_readme.md) |
 | Overwrite only | CONFIG_BOOT_MODE_OVERWRITE_ONLY | The image in the primary slot is overwritten with the new one in the secondary slot.<br>The revert to the previous version is not possible. |
 | Encrypted XIP | CONFIG_BOOT_MODE_ENCRYPTED_XIP |  Uses modified overwrite-only mode to utilize encrypted XIP.<br>The encrypted image (encrypted offline by imgtool) in the secondary slot is re-encrypted to the primary slot with hardware on-the-fly encryption.<br>See ['MCUboot and Encrypted XIP'](_doc/encrypted_xip_readme.md) |
-| Single application slot | CONFIG_BOOT_MODE_SINGLE_APPLICATION_SLOT | This mode is suitable for a device with limited flash memory resource as there is no second slot for image staging.<br>The update can be only done manually by blhost/programmer or from bootloader context using MCUboot's serial recovery feature. |
+| Single application slot | CONFIG_BOOT_MODE_SINGLE_APPLICATION_SLOT | This mode is suitable for a device with limited flash memory resource as there is no second slot for image staging.<br>The update can be only done manually by blhost/programmer or from bootloader context using MCUboot's ['serial recovery'](_doc/serial_recovery.md) feature. |
 
 
 
@@ -47,3 +47,5 @@ The example typically demostrate a Dual image feature (ROM utilizing flash remap
 ['OTA update by using SB3 file'](_doc/sb3_common_readme.md)
 
 ['Kconfig and customization of OTA examples'](_doc/kconfig_customization.md)
+
+['Serial recovery'](_doc/serial_recovery.md)

@@ -8,6 +8,7 @@ All notable changes to MCUboot fork in MCUXpresso SDK and related ota examples w
 - MCUboot updated to v2.3.0
 - Enabled ota_rom_basic for FRDM-MCXN236
 - Added new upgrade mode SINGLE_APPLICATION_SLOT
+- Enabled serial recovery feature (see [Serial Recovery doc](_doc/serial_recovery.md))
 
 ### Changed
 - Update Mbed TLS to 3.0 in ota_mcuboot_client example

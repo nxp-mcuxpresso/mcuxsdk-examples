@@ -17,6 +17,9 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+#define BOARD_SERIAL_RECOVERY_GPIO_PORT  BOARD_SW1_GPIO_PORT
+#define BOARD_SERIAL_RECOVERY_GPIO_PIN   BOARD_SW1_GPIO_PIN
+   
 /* Board specific register for flash remap functionality */
 #define FLASH_REMAP_START_REG           0x40134420
 #define FLASH_REMAP_END_REG             0x40134424
@@ -85,4 +88,9 @@ int main(void)
 
 void SBL_DisablePeripherals(void)
 {
+}
+
+int SBL_SerialRecovery_gpio_check(void)
+{
+    return 0;
 }

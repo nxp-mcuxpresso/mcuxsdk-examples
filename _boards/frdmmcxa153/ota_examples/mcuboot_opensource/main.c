@@ -18,7 +18,9 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-
+#define BOARD_SERIAL_RECOVERY_GPIO_PORT  BOARD_SW2_GPIO
+#define BOARD_SERIAL_RECOVERY_GPIO_PIN   BOARD_SW2_GPIO_PIN
+   
 #define MBC_BLOCK_SIZE  (8 * 1024)
 #define MBC_BLOCK_CNT   16
 #define MBC_GLBAC_RW    0
@@ -47,6 +49,7 @@ uint8_t glbac_app[MBC_BLOCK_CNT] = {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
  */
 int main(void)
 {
+    CLOCK_EnableClock(kCLOCK_GateGPIO3);
     BOARD_InitPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
@@ -148,4 +151,9 @@ void SBL_DisablePeripherals(void)
 status_t CRYPTO_InitHardware(void)
 {
     return kStatus_Success;
+}
+
+int SBL_SerialRecovery_gpio_check(void)
+{
+    return 0;
 }

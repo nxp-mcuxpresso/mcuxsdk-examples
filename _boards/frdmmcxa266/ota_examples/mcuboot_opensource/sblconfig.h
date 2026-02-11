@@ -28,6 +28,11 @@
 /* To be able to bootstrap signed image from debug session */
 #define CONFIG_BOOT_BOOTSTRAP
 
+/* Misc Config */
+
+#define CONFIG_BOOT_BOOTSTRAP
+#define CONFIG_BOOT_SERIAL_RECOVERY
+
 /* CONFIG_MCUBOOT_MAX_IMG_SECTORS >= (AppImageSize / SectorSize) */
 #define CONFIG_MCUBOOT_MAX_IMG_SECTORS 60
 

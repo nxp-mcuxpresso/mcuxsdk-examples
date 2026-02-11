@@ -14,6 +14,14 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
+    RESET_ReleasePeripheralReset(kPORT1_RST_SHIFT_RSTn);
+    RESET_ReleasePeripheralReset(kPORT3_RST_SHIFT_RSTn);
+    RESET_ReleasePeripheralReset(kGPIO1_RST_SHIFT_RSTn);
+    RESET_ReleasePeripheralReset(kGPIO3_RST_SHIFT_RSTn);
+
+    CLOCK_EnableClock(kCLOCK_GateGPIO1);
+    CLOCK_EnableClock(kCLOCK_GateGPIO3);
+
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();

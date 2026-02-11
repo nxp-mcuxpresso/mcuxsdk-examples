@@ -16,6 +16,8 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+#define BOARD_SERIAL_RECOVERY_GPIO_PORT  BOARD_SW2_GPIO
+#define BOARD_SERIAL_RECOVERY_GPIO_PIN   BOARD_SW2_GPIO_PIN
 
 /*******************************************************************************
  * Types
@@ -50,4 +52,13 @@ int main(void)
 void SBL_DisablePeripherals(void)
 {   
     DbgConsole_Deinit();
+}
+
+int SBL_SerialRecovery_gpio_check(void)
+{
+    if (GPIO_PinRead(BOARD_SERIAL_RECOVERY_GPIO_PORT, BOARD_SERIAL_RECOVERY_GPIO_PIN) == 0U)
+    {    
+        return 1;
+    }
+    return 0;
 }

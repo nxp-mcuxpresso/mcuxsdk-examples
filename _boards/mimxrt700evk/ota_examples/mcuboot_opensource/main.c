@@ -18,6 +18,8 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+#define BOARD_SERIAL_RECOVERY_GPIO_PORT  BOARD_SW5_GPIO
+#define BOARD_SERIAL_RECOVERY_GPIO_PIN   BOARD_SW5_GPIO_PIN  
 
 /*******************************************************************************
  * Prototypes
@@ -39,6 +41,9 @@ int main(void)
 
     CLOCK_AttachClk(kMAIN_PLL_PFD1_to_XSPI0);
     CLOCK_SetClkDiv(kCLOCK_DivXspi0Clk, 1u);     /*400MHz*/
+
+    RESET_ClearPeripheralReset(kGPIO0_RST_SHIFT_RSTn);
+    CLOCK_EnableClock(kCLOCK_Gpio0);
     
 #ifdef CONFIG_BOOT_USE_PSA_CRYPTO
     /* Disable system cache */
@@ -187,4 +192,13 @@ void SBL_DisableRemap(void)
 void SBL_DisablePeripherals(void)
 {
     DbgConsole_Deinit();
+}
+
+int SBL_SerialRecovery_gpio_check(void)
+{
+    if (GPIO_PinRead(BOARD_SERIAL_RECOVERY_GPIO_PORT, BOARD_SERIAL_RECOVERY_GPIO_PIN) == 0U)
+    {    
+        return 1;
+    }
+    return 0;
 }

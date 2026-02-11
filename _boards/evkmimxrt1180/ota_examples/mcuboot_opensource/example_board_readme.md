@@ -26,7 +26,6 @@ this should be done automatically by the tool.
 - Write alignment is 4 bytes
 - MCUBoot is configured to use `SWAP_MOVE` image handling strategy
 
-
 ### Image signing example
 
     imgtool sign   --key sign-ecdsa-p256-priv.pem

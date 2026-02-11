@@ -14,7 +14,9 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-
+#define BOARD_SERIAL_RECOVERY_GPIO_PORT  BOARD_SW2_GPIO
+#define BOARD_SERIAL_RECOVERY_GPIO_PIN   BOARD_SW2_GPIO_PIN
+   
 /*******************************************************************************
  * Types
  ******************************************************************************/
@@ -53,3 +55,7 @@ status_t CRYPTO_InitHardware(void)
     return kStatus_Success;
 }
 
+int SBL_SerialRecovery_gpio_check(void)
+{
+    return 0;
+}

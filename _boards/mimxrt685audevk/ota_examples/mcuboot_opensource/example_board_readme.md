@@ -21,7 +21,6 @@ Board settings
 - MCUBoot is configured to use its `DIRECT_XIP` image handling strategy
 - Flash remapping HW feature is used for zero-overhead image swapping
 
-
 ### Image signing example
 
     imgtool sign   --key sign-ecdsa-p256-priv.pem

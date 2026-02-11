@@ -41,7 +41,10 @@
 
 #define CONFIG_MCUBOOT_MAX_IMG_SECTORS 256
 
+/* Misc Config */
+
 #define CONFIG_BOOT_BOOTSTRAP
+//#define CONFIG_BOOT_SERIAL_RECOVERY
 
 /* Crypto Config */
 

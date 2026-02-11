@@ -19,6 +19,7 @@ Board settings
 - Signing algorithm is ECDSA-P256
 - Write alignment is 4 bytes
 - MCUBoot is configured to use `SWAP_MOVE` image handling strategy
+- To manually enter serial recovery mode, keep the user button pressed during reset, then release it
 
 
 ### Image signing example

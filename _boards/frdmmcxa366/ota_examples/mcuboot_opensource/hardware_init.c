@@ -17,5 +17,7 @@ void BOARD_InitHardware(void)
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
+    BOARD_InitLEDsPins();
+    BOARD_InitBUTTONsPins();
 }
 /*${function:end}*/

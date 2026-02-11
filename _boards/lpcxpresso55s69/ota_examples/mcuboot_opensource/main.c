@@ -16,6 +16,8 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+#define BOARD_SERIAL_RECOVERY_GPIO_PORT  BOARD_SW1_GPIO_PORT
+#define BOARD_SERIAL_RECOVERY_GPIO_PIN   BOARD_SW1_GPIO_PIN
 
 /*******************************************************************************
  * Prototypes
@@ -32,6 +34,9 @@ int main(void)
     BOARD_BootClockFROHF96M();
     BOARD_InitPins();
     BOARD_InitDebugConsole();
+    /* enable clock for GPIO*/
+    CLOCK_EnableClock(kCLOCK_Gpio0);
+    CLOCK_EnableClock(kCLOCK_Gpio1);
 
     PRINTF("hello sbl.\r\n");
 
@@ -43,4 +48,13 @@ int main(void)
 void SBL_DisablePeripherals(void)
 {
     DbgConsole_Deinit();
+}
+
+int SBL_SerialRecovery_gpio_check(void)
+{
+    if (GPIO_PinRead(GPIO, BOARD_SERIAL_RECOVERY_GPIO_PORT, BOARD_SERIAL_RECOVERY_GPIO_PIN) == 0U)
+    {    
+        return 1;
+    }
+    return 0;
 }

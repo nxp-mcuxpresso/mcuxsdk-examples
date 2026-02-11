@@ -16,7 +16,9 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-
+#define BOARD_SERIAL_RECOVERY_GPIO_PORT  BOARD_USER_BUTTON_GPIO
+#define BOARD_SERIAL_RECOVERY_GPIO_PIN   BOARD_USER_BUTTON_GPIO_PIN
+   
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -84,4 +86,13 @@ int main(void)
 
 void SBL_DisablePeripherals(void)
 {
+}
+
+int SBL_SerialRecovery_gpio_check(void)
+{
+    if (GPIO_PinRead(BOARD_SERIAL_RECOVERY_GPIO_PORT, BOARD_SERIAL_RECOVERY_GPIO_PIN) == 0U)
+    {    
+        return 1;
+    }
+    return 0;
 }

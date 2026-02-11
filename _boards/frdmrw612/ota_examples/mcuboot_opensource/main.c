@@ -16,6 +16,8 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+#define BOARD_SERIAL_RECOVERY_GPIO_PORT  BOARD_SW2_GPIO_PORT
+#define BOARD_SERIAL_RECOVERY_GPIO_PIN   BOARD_SW2_GPIO_PIN
 
 /*******************************************************************************
  * Prototypes
@@ -88,4 +90,9 @@ int main(void)
 void SBL_DisablePeripherals(void)
 {
     DbgConsole_Deinit();
+}
+
+int SBL_SerialRecovery_gpio_check(void)
+{
+    return 0;
 }

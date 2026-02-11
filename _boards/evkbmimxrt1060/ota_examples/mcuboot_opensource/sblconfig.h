@@ -16,12 +16,12 @@
 /*******************************************************************/
 #ifndef CONFIG_BOOT_CUSTOM_DEVICE_SETUP
 
-/* MCUBoot Flash Config */
+/* Flash Config */
 
 #define CONFIG_MCUBOOT_MAX_IMG_SECTORS 800
 
 /*
- * MCUBoot upgrade mode (default)
+ * Upgrade mode (default)
  * If supported by the device, an alternative upgrade mode can be selected.
  * For more information please see documentation (ota_examples/_doc).
  */
@@ -31,14 +31,11 @@
 //#define CONFIG_BOOT_MODE_SINGLE_APPLICATION_SLOT
 //#define CONFIG_BOOT_MODE_SWAP
 
-/*
- * Enable the encrypted XIP extension. This extension is not compatible with the 
- * flash remapping feature as it implicitly uses overwrite only mode.
- * For more information, please see readme file.
- */
-//#define CONFIG_BOOT_MODE_ENCRYPTED_XIP
+
+/* Misc Config */
 
 #define CONFIG_BOOT_BOOTSTRAP
+#define CONFIG_BOOT_SERIAL_RECOVERY
 
 /* Crypto Config */
 

@@ -19,7 +19,9 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-
+#define BOARD_SERIAL_RECOVERY_GPIO_PORT  BOARD_USER_BUTTON_GPIO
+#define BOARD_SERIAL_RECOVERY_GPIO_PIN   BOARD_USER_BUTTON_GPIO_PIN
+   
 #define TRDC_INSTANCE TRDC2
 
 /*******************************************************************************
@@ -207,4 +209,9 @@ void SBL_DisablePeripherals(void)
     XCACHE_DisableCache(XCACHE_PC);
     XCACHE_DisableCache(XCACHE_PS);
     ARM_MPU_Disable();
+}
+
+int SBL_SerialRecovery_gpio_check(void)
+{
+    return 0;
 }

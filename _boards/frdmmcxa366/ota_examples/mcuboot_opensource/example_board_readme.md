@@ -19,6 +19,7 @@ Board settings
 - Signing algorithm is ECDSA-P256
 - Write alignment is 16 bytes
 - Uses image swapping by `SWAP_USING_MOVE`
+- To manually enter serial recovery mode, keep the SW2 button pressed during reset, then release it
 
 ### Image signing example
 

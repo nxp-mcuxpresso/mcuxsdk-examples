@@ -68,7 +68,10 @@
 //#define CONFIG_BOOT_MODE_SINGLE_APPLICATION_SLOT
 //#define CONFIG_BOOT_MODE_SWAP
 
+/* Misc Config */
+
 #define CONFIG_BOOT_BOOTSTRAP
+#define CONFIG_BOOT_SERIAL_RECOVERY
 
 /* Crypto Config */
 /* uncomment to generate MCU boot for testing without image signature verification */

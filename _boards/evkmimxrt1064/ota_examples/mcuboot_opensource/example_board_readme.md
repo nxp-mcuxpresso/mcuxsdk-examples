@@ -20,6 +20,7 @@ Board settings
 - Write alignment is 4 bytes
 - MCUBoot is configured to use its DIRECT_XIP image handling strategy
 - Flash remapping HW feature is used for zero-overhead image swapping
+- To manually enter serial recovery mode, keep the user button pressed during reset, then release it
 
 
 ### Image signing example

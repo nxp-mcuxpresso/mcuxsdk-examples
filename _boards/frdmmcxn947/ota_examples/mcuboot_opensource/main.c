@@ -16,7 +16,9 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-
+#define BOARD_SERIAL_RECOVERY_GPIO_PORT  BOARD_SW2_GPIO
+#define BOARD_SERIAL_RECOVERY_GPIO_PIN   BOARD_SW2_GPIO_PIN
+   
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -35,6 +37,10 @@ int main(void)
     BOARD_InitBootClocks();
     CLOCK_EnableClock(kCLOCK_Flexspi);
     BOARD_InitDebugConsole();
+
+    /* enable clock for GPIO*/
+    CLOCK_EnableClock(kCLOCK_Gpio0);
+    CLOCK_EnableClock(kCLOCK_Gpio1);
 
     /* Disable prefetch buffer and flash cache */    
     SYSCON->NVM_CTRL |= SYSCON_NVM_CTRL_DIS_MBECC_ERR_INST_MASK | SYSCON_NVM_CTRL_DIS_MBECC_ERR_DATA_MASK;
@@ -68,4 +74,13 @@ void SBL_DisableRemap(void)
 {
     NPX0->REMAP = 0x5A5A;
     NPX0->REMAP = 0xA5A5;
+}
+
+int SBL_SerialRecovery_gpio_check(void)
+{
+    if (GPIO_PinRead(BOARD_SERIAL_RECOVERY_GPIO_PORT, BOARD_SERIAL_RECOVERY_GPIO_PIN) == 0U)
+    {    
+        return 1;
+    }
+    return 0;
 }

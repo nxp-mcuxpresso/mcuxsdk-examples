@@ -17,7 +17,9 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-
+#define BOARD_SERIAL_RECOVERY_GPIO_PORT  BOARD_SW2_GPIO
+#define BOARD_SERIAL_RECOVERY_GPIO_PIN   BOARD_SW2_GPIO_PIN
+   
 #define MBC_BLOCK_SIZE  (16 * 1024)
 #define MBC_BLOCK_CNT   64
 #define MBC_GLBAC_RW    0
@@ -198,3 +200,7 @@ status_t CRYPTO_InitHardware(void)
     return kStatus_Success;
 }
 
+int SBL_SerialRecovery_gpio_check(void)
+{
+    return 0;
+}

@@ -25,6 +25,7 @@ to use any of the MCUBoot's revert strategies like image swapping by move or str
 - Signing algorithm is ECDSA-P256
 - Write alignment is 4 bytes
 - MCUBoot is configured to use its OVERWRITE_ONLY image handling strategy
+- To manually enter serial recovery mode during reset, keep button SW1 pressed
 
 ### Image signing example
 

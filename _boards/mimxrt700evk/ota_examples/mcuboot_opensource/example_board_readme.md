@@ -22,6 +22,7 @@ In all cases, the MCUBOOT bootloader reserves 256kB at the beginning of the exte
 - Signing algorithm is ECDSA-P256
 - Write alignment is 4 bytes
 - MCUBoot is configured to use its `DIRECT_XIP` image handling strategy together with FlexSPI flash remapping
+- To manually enter serial recovery mode, keep the user button 1 (SW5) pressed during reset, then release it
 
 ### Image signing example
 
