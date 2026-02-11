@@ -176,6 +176,10 @@ int main(void)
      */
 
     IRTC_GetDefaultConfig(&irtcConfig);
+#if defined(APP_RTC_CLK_SRC)
+    irtcConfig.clockSelect = APP_RTC_CLK_SRC;
+#endif
+    
     if (IRTC_Init(RTC, &irtcConfig) == kStatus_Fail)
     {
         return 1;

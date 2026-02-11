@@ -16,7 +16,7 @@ void BOARD_InitHardware(void)
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 
-    /* RTC default uses the OSC32K */
+    /* RTC peripheral default uses the OSC32K */
     CLOCK_SetupOsc32KClocking(kCLOCK_Osc32kToAll);
 }
 /*${function:end}*/
