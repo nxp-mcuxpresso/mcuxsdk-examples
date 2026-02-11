@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+freertos_prp:
+  section-type: application
+  contents:
+    meta_path: examples/freertos_examples/freertos_prp
+    project-root-path: boards/${board}/freertos_examples/freertos_prp/${multicore_foldername}
+    document:
+      name: freertos_prp${core_id_suffix_name}
+      category: freertos_examples
+      brief: The FreeRTOS PRP (Parallel Redundancy Protocol) project is a
+        demonstration of implementing the IEC 62439-3 PRP protocol using
+        FreeRTOS.
+      example_readme:
+      - examples/freertos_examples/freertos_prp/readme.md
+      - ${board_root}/${board}/freertos_examples/freertos_prp/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
