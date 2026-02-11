@@ -28,22 +28,22 @@ initialization_file:
 mdk:
   shared-workspace: secure_faults
   sharing-workspace:
-  - ../../secure_faults_ns/mdk/secure_faults_ns_${core_id}
+  - ../../secure_faults_ns/mdk/secure_faults_ns${core_id_suffix_name}
 
 iar:
   shared-workspace: secure_faults
   sharing-workspace:
-  - ../../secure_faults_ns/iar/secure_faults_ns_${core_id}
+  - ../../secure_faults_ns/iar/secure_faults_ns${core_id_suffix_name}
   config:
     debug:
       download-extra-image:
-      - path: "../../secure_faults_ns/iar/debug/secure_faults_ns_${core_id}.out"
+      - path: "../../secure_faults_ns/iar/debug/secure_faults_ns${core_id_suffix_name}.out"
         item: 1
         offset: 0
         debug_info_only: false
     release:
       download-extra-image:
-      - path: "../../secure_faults_ns/iar/release/secure_faults_ns_${core_id}.out"
+      - path: "../../secure_faults_ns/iar/release/secure_faults_ns${core_id_suffix_name}.out"
         item: 1
         offset: 0
         debug_info_only: false

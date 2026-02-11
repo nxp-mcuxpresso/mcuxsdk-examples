@@ -39,3 +39,4 @@ For user buttons and LEDs assignment on particular board, see chapter "Running t
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/trustzone_examples/secure_gpio/secure_gpio_s/example_board_readme.md)
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/trustzone_examples/secure_gpio/secure_gpio_s/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/trustzone_examples/secure_gpio/secure_gpio_s/example_board_readme.md)
+- [MIMXRT700-EVK](../../_boards/mimxrt700evk/trustzone_examples/secure_gpio/secure_gpio_s/cm33_core0/example_board_readme.md)
