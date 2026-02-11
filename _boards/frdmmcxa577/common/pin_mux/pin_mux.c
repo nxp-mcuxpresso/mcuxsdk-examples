@@ -3923,21 +3923,21 @@ void BOARD_InitSPIFILTERPins(void)
 BOARD_InitESPIPins:
 - options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: F11, peripheral: eSPI0, signal: espi_clk, pin_signal: P3_16/LPUART4_RTS_B/CT_INP8/ESPI0_CLK/FLEXIO0_D24/LPSPI3_SCK/FLEXSPI0_B_SCLK/SMARTDMA_PIO16/PF_SPI_SCKIN,
+  - {pin_num: K3, peripheral: eSPI0, signal: espi_clk, pin_signal: P4_10/LPUART0_RTS_B/LPI2C4_SCL/CT3_MAT0/FLEXIO0_D18/SMARTDMA_PIO30/LPSPI5_SCK/ESPI0_CLK/TSI0_CH68,
     slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: G10, peripheral: eSPI0, signal: espi_csn, pin_signal: P3_17/WUU0_IN26/LPUART4_CTS_B/CT_INP9/ESPI0_CSN/FLEXIO0_D25/LPSPI3_PCS0/FLEXSPI0_B_SS0_B/SMARTDMA_PIO17/PF_SPI_CS0_N,
+  - {pin_num: K4, peripheral: eSPI0, signal: espi_csn, pin_signal: P4_11/LPUART0_CTS_B/LPI2C4_SDA/CT3_MAT1/FLEXIO0_D19/SMARTDMA_PIO31/LPSPI5_PCS0/ESPI0_CSN/TSI0_CH69,
     slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: G13, peripheral: eSPI0, signal: 'espi_data, 0', pin_signal: P3_15/LPUART2_TXD/LPUART3_RTS_B/CT_INP7/ESPI0_DATA0/FLEXIO0_D23/LPSPI3_SDO/FLEXSPI0_B_DATA0/SMARTDMA_PIO15/PF_SPI_DATA,
+  - {pin_num: K2, peripheral: eSPI0, signal: 'espi_data, 0', pin_signal: P4_9/LPUART0_TXD/LPI2C4_SCLS/CT_INP9/FLEXIO0_D17/SMARTDMA_PIO29/LPSPI5_SDO/ESPI0_DATA0/TSI0_CH67,
     slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: F12, peripheral: eSPI0, signal: 'espi_data, 1', pin_signal: P3_14/WUU0_IN25/LPUART2_RXD/LPUART3_CTS_B/CT_INP6/ESPI0_DATA1/FLEXIO0_D22/LPSPI3_SDI/FLEXSPI0_B_DATA1/SMARTDMA_PIO14,
+  - {pin_num: J3, peripheral: eSPI0, signal: 'espi_data, 1', pin_signal: P4_8/LPUART0_RXD/LPI2C4_SDAS/CT_INP8/FLEXIO0_D16/SMARTDMA_PIO28/LPSPI5_SDI/ESPI0_DATA1/TSI0_CH66,
     slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: F13, peripheral: eSPI0, signal: 'espi_data, 2', pin_signal: P3_13/LPUART2_CTS_B/LPUART3_RXD/CT1_MAT3/ESPI0_DATA2/FLEXIO0_D21/LPSPI3_PCS2/FLEXSPI0_B_DATA2/SMARTDMA_PIO13/PF_SPI_CS0_DIS_N,
-    slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: E12, peripheral: eSPI0, signal: 'espi_data, 3', pin_signal: P3_12/LPUART2_RTS_B/LPUART3_TXD/CT1_MAT2/ESPI0_DATA3/FLEXIO0_D20/LPSPI3_PCS3/FLEXSPI0_B_DATA3/SMARTDMA_PIO12/PF_SPI_CS1_DIS_N,
-    slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: H13, peripheral: eSPI0, signal: espi_notify, pin_signal: P3_20/WUU0_IN27/TRIG_OUT0/LPI2C3_SDA/LPUART1_RXD/CT2_MAT2/ESPI0_NOTIFY/FLEXIO0_D28/LPSPI3_SDO/SMARTDMA_PIO20/TSI0_CH52,
-    slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: H10, peripheral: eSPI0, signal: espi_rst, pin_signal: P3_21/TRIG_OUT1/LPI2C3_SCL/LPUART1_TXD/CT2_MAT3/ESPI0_RST/FLEXIO0_D29/LPSPI3_SCK/SMARTDMA_PIO21/TSI0_CH53,
+  - {pin_num: H2, peripheral: eSPI0, signal: 'espi_data, 2', pin_signal: P4_13/LPI2C3_SDAS/LPI2C4_HREQ/CT3_MAT3/LPSPI5_PCS2/I3C3_PUR/ESPI0_DATA2, slew_rate: fast,
+    open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+  - {pin_num: H3, peripheral: eSPI0, signal: 'espi_data, 3', pin_signal: P4_12/LPI2C3_SCLS/CT3_MAT2/LPSPI5_PCS3/I3C2_PUR/ESPI0_DATA3, slew_rate: fast, open_drain: disable,
+    drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+  - {pin_num: J2, peripheral: eSPI0, signal: espi_notify, pin_signal: P4_7/TRIG_IN5/LPI2C3_HREQ/LPUART3_RTS_B/CT_INP7/FLEXIO0_D15/SMARTDMA_PIO27/LPSPI2_PCS3/I3C3_SDA/ESPI0_NOTIFY/TSI0_CH65,
+    slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, pull_value: low, input_buffer: enable, invert_input: normal}
+  - {pin_num: K1, peripheral: eSPI0, signal: espi_rst, pin_signal: P4_6/TRIG_IN4/LPI2C2_HREQ/LPUART3_CTS_B/CT_INP6/FLEXIO0_D14/SMARTDMA_PIO26/LPSPI2_PCS2/I3C3_SCL/ESPI0_RST/TSI0_CH64,
     slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -3951,218 +3951,212 @@ BOARD_InitESPIPins:
  * END ****************************************************************************************************************/
 void BOARD_InitESPIPins(void)
 {
-    /* PORT3: Peripheral clock is enabled */
-    CLOCK_EnableClock(kCLOCK_GatePORT3);
-    /* FLEXSPI0 peripheral is released from reset */
-    RESET_ReleasePeripheralReset(kFLEXSPI0_RST_SHIFT_RSTn);
-    /* eSPI0 peripheral is released from reset */
-    RESET_ReleasePeripheralReset(kESPI0_RST_SHIFT_RSTn);
-    /* PORT3 peripheral is released from reset */
-    RESET_ReleasePeripheralReset(kPORT3_RST_SHIFT_RSTn);
-    /* GPIO3 peripheral is released from reset */
-    RESET_ReleasePeripheralReset(kGPIO3_RST_SHIFT_RSTn);
-    /* LPI2C3 peripheral is released from reset */
-    RESET_ReleasePeripheralReset(kLPI2C3_RST_SHIFT_RSTn);
+    /* PORT4: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GatePORT4);
+    /* PORT4 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kPORT4_RST_SHIFT_RSTn);
+    /* GPIO4 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kGPIO4_RST_SHIFT_RSTn);
 
-    const port_pin_config_t port3_12_pinE12_config = {/* Internal pull-up/down resistor is disabled */
-                                                      .pullSelect = kPORT_PullDisable,
-                                                      /* Low internal pull resistor value is selected. */
-                                                      .pullValueSelect = kPORT_LowPullResistor,
-                                                      /* Fast slew rate is configured */
-                                                      .slewRate = kPORT_FastSlewRate,
-                                                      /* Passive input filter is disabled */
-                                                      .passiveFilterEnable = kPORT_PassiveFilterDisable,
-                                                      /* Open drain output is disabled */
-                                                      .openDrainEnable = kPORT_OpenDrainDisable,
-                                                      /* Low drive strength is configured */
-                                                      .driveStrength = kPORT_LowDriveStrength,
-                                                      /* Normal drive strength is configured */
-                                                      .driveStrength1 = kPORT_NormalDriveStrength,
-                                                      /* Pin is configured as ESPI0_DATA3 */
-                                                      .mux = kPORT_MuxAlt5,
-                                                      /* Digital input enabled */
-                                                      .inputBuffer = kPORT_InputBufferEnable,
-                                                      /* Digital input is not inverted */
-                                                      .invertInput = kPORT_InputNormal,
-                                                      /* Pin Control Register fields [15:0] are not locked */
-                                                      .lockRegister = kPORT_UnlockRegister};
-    /* PORT3_12 (pin E12) is configured as ESPI0_DATA3 */
-    PORT_SetPinConfig(PORT3, 12U, &port3_12_pinE12_config);
+    const port_pin_config_t port4_10_pinK3_config = {/* Internal pull-up/down resistor is disabled */
+                                                     .pullSelect = kPORT_PullDisable,
+                                                     /* Low internal pull resistor value is selected. */
+                                                     .pullValueSelect = kPORT_LowPullResistor,
+                                                     /* Fast slew rate is configured */
+                                                     .slewRate = kPORT_FastSlewRate,
+                                                     /* Passive input filter is disabled */
+                                                     .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                     /* Open drain output is disabled */
+                                                     .openDrainEnable = kPORT_OpenDrainDisable,
+                                                     /* Low drive strength is configured */
+                                                     .driveStrength = kPORT_LowDriveStrength,
+                                                     /* Normal drive strength is configured */
+                                                     .driveStrength1 = kPORT_NormalDriveStrength,
+                                                     /* Pin is configured as ESPI0_CLK */
+                                                     .mux = kPORT_MuxAlt11,
+                                                     /* Digital input enabled */
+                                                     .inputBuffer = kPORT_InputBufferEnable,
+                                                     /* Digital input is not inverted */
+                                                     .invertInput = kPORT_InputNormal,
+                                                     /* Pin Control Register fields [15:0] are not locked */
+                                                     .lockRegister = kPORT_UnlockRegister};
+    /* PORT4_10 (pin K3) is configured as ESPI0_CLK */
+    PORT_SetPinConfig(PORT4, 10U, &port4_10_pinK3_config);
 
-    const port_pin_config_t port3_13_pinF13_config = {/* Internal pull-up/down resistor is disabled */
-                                                      .pullSelect = kPORT_PullDisable,
-                                                      /* Low internal pull resistor value is selected. */
-                                                      .pullValueSelect = kPORT_LowPullResistor,
-                                                      /* Fast slew rate is configured */
-                                                      .slewRate = kPORT_FastSlewRate,
-                                                      /* Passive input filter is disabled */
-                                                      .passiveFilterEnable = kPORT_PassiveFilterDisable,
-                                                      /* Open drain output is disabled */
-                                                      .openDrainEnable = kPORT_OpenDrainDisable,
-                                                      /* Low drive strength is configured */
-                                                      .driveStrength = kPORT_LowDriveStrength,
-                                                      /* Normal drive strength is configured */
-                                                      .driveStrength1 = kPORT_NormalDriveStrength,
-                                                      /* Pin is configured as ESPI0_DATA2 */
-                                                      .mux = kPORT_MuxAlt5,
-                                                      /* Digital input enabled */
-                                                      .inputBuffer = kPORT_InputBufferEnable,
-                                                      /* Digital input is not inverted */
-                                                      .invertInput = kPORT_InputNormal,
-                                                      /* Pin Control Register fields [15:0] are not locked */
-                                                      .lockRegister = kPORT_UnlockRegister};
-    /* PORT3_13 (pin F13) is configured as ESPI0_DATA2 */
-    PORT_SetPinConfig(PORT3, 13U, &port3_13_pinF13_config);
+    const port_pin_config_t port4_11_pinK4_config = {/* Internal pull-up/down resistor is disabled */
+                                                     .pullSelect = kPORT_PullDisable,
+                                                     /* Low internal pull resistor value is selected. */
+                                                     .pullValueSelect = kPORT_LowPullResistor,
+                                                     /* Fast slew rate is configured */
+                                                     .slewRate = kPORT_FastSlewRate,
+                                                     /* Passive input filter is disabled */
+                                                     .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                     /* Open drain output is disabled */
+                                                     .openDrainEnable = kPORT_OpenDrainDisable,
+                                                     /* Low drive strength is configured */
+                                                     .driveStrength = kPORT_LowDriveStrength,
+                                                     /* Normal drive strength is configured */
+                                                     .driveStrength1 = kPORT_NormalDriveStrength,
+                                                     /* Pin is configured as ESPI0_CSN */
+                                                     .mux = kPORT_MuxAlt11,
+                                                     /* Digital input enabled */
+                                                     .inputBuffer = kPORT_InputBufferEnable,
+                                                     /* Digital input is not inverted */
+                                                     .invertInput = kPORT_InputNormal,
+                                                     /* Pin Control Register fields [15:0] are not locked */
+                                                     .lockRegister = kPORT_UnlockRegister};
+    /* PORT4_11 (pin K4) is configured as ESPI0_CSN */
+    PORT_SetPinConfig(PORT4, 11U, &port4_11_pinK4_config);
 
-    const port_pin_config_t port3_14_pinF12_config = {/* Internal pull-up/down resistor is disabled */
-                                                      .pullSelect = kPORT_PullDisable,
-                                                      /* Low internal pull resistor value is selected. */
-                                                      .pullValueSelect = kPORT_LowPullResistor,
-                                                      /* Fast slew rate is configured */
-                                                      .slewRate = kPORT_FastSlewRate,
-                                                      /* Passive input filter is disabled */
-                                                      .passiveFilterEnable = kPORT_PassiveFilterDisable,
-                                                      /* Open drain output is disabled */
-                                                      .openDrainEnable = kPORT_OpenDrainDisable,
-                                                      /* Low drive strength is configured */
-                                                      .driveStrength = kPORT_LowDriveStrength,
-                                                      /* Normal drive strength is configured */
-                                                      .driveStrength1 = kPORT_NormalDriveStrength,
-                                                      /* Pin is configured as ESPI0_DATA1 */
-                                                      .mux = kPORT_MuxAlt5,
-                                                      /* Digital input enabled */
-                                                      .inputBuffer = kPORT_InputBufferEnable,
-                                                      /* Digital input is not inverted */
-                                                      .invertInput = kPORT_InputNormal,
-                                                      /* Pin Control Register fields [15:0] are not locked */
-                                                      .lockRegister = kPORT_UnlockRegister};
-    /* PORT3_14 (pin F12) is configured as ESPI0_DATA1 */
-    PORT_SetPinConfig(PORT3, 14U, &port3_14_pinF12_config);
+    const port_pin_config_t port4_12_pinH3_config = {/* Internal pull-up/down resistor is disabled */
+                                                     .pullSelect = kPORT_PullDisable,
+                                                     /* Low internal pull resistor value is selected. */
+                                                     .pullValueSelect = kPORT_LowPullResistor,
+                                                     /* Fast slew rate is configured */
+                                                     .slewRate = kPORT_FastSlewRate,
+                                                     /* Passive input filter is disabled */
+                                                     .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                     /* Open drain output is disabled */
+                                                     .openDrainEnable = kPORT_OpenDrainDisable,
+                                                     /* Low drive strength is configured */
+                                                     .driveStrength = kPORT_LowDriveStrength,
+                                                     /* Normal drive strength is configured */
+                                                     .driveStrength1 = kPORT_NormalDriveStrength,
+                                                     /* Pin is configured as ESPI0_DATA3 */
+                                                     .mux = kPORT_MuxAlt11,
+                                                     /* Digital input enabled */
+                                                     .inputBuffer = kPORT_InputBufferEnable,
+                                                     /* Digital input is not inverted */
+                                                     .invertInput = kPORT_InputNormal,
+                                                     /* Pin Control Register fields [15:0] are not locked */
+                                                     .lockRegister = kPORT_UnlockRegister};
+    /* PORT4_12 (pin H3) is configured as ESPI0_DATA3 */
+    PORT_SetPinConfig(PORT4, 12U, &port4_12_pinH3_config);
 
-    const port_pin_config_t port3_15_pinG13_config = {/* Internal pull-up/down resistor is disabled */
-                                                      .pullSelect = kPORT_PullDisable,
-                                                      /* Low internal pull resistor value is selected. */
-                                                      .pullValueSelect = kPORT_LowPullResistor,
-                                                      /* Fast slew rate is configured */
-                                                      .slewRate = kPORT_FastSlewRate,
-                                                      /* Passive input filter is disabled */
-                                                      .passiveFilterEnable = kPORT_PassiveFilterDisable,
-                                                      /* Open drain output is disabled */
-                                                      .openDrainEnable = kPORT_OpenDrainDisable,
-                                                      /* Low drive strength is configured */
-                                                      .driveStrength = kPORT_LowDriveStrength,
-                                                      /* Normal drive strength is configured */
-                                                      .driveStrength1 = kPORT_NormalDriveStrength,
-                                                      /* Pin is configured as ESPI0_DATA0 */
-                                                      .mux = kPORT_MuxAlt5,
-                                                      /* Digital input enabled */
-                                                      .inputBuffer = kPORT_InputBufferEnable,
-                                                      /* Digital input is not inverted */
-                                                      .invertInput = kPORT_InputNormal,
-                                                      /* Pin Control Register fields [15:0] are not locked */
-                                                      .lockRegister = kPORT_UnlockRegister};
-    /* PORT3_15 (pin G13) is configured as ESPI0_DATA0 */
-    PORT_SetPinConfig(PORT3, 15U, &port3_15_pinG13_config);
+    const port_pin_config_t port4_13_pinH2_config = {/* Internal pull-up/down resistor is disabled */
+                                                     .pullSelect = kPORT_PullDisable,
+                                                     /* Low internal pull resistor value is selected. */
+                                                     .pullValueSelect = kPORT_LowPullResistor,
+                                                     /* Fast slew rate is configured */
+                                                     .slewRate = kPORT_FastSlewRate,
+                                                     /* Passive input filter is disabled */
+                                                     .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                     /* Open drain output is disabled */
+                                                     .openDrainEnable = kPORT_OpenDrainDisable,
+                                                     /* Low drive strength is configured */
+                                                     .driveStrength = kPORT_LowDriveStrength,
+                                                     /* Normal drive strength is configured */
+                                                     .driveStrength1 = kPORT_NormalDriveStrength,
+                                                     /* Pin is configured as ESPI0_DATA2 */
+                                                     .mux = kPORT_MuxAlt11,
+                                                     /* Digital input enabled */
+                                                     .inputBuffer = kPORT_InputBufferEnable,
+                                                     /* Digital input is not inverted */
+                                                     .invertInput = kPORT_InputNormal,
+                                                     /* Pin Control Register fields [15:0] are not locked */
+                                                     .lockRegister = kPORT_UnlockRegister};
+    /* PORT4_13 (pin H2) is configured as ESPI0_DATA2 */
+    PORT_SetPinConfig(PORT4, 13U, &port4_13_pinH2_config);
 
-    const port_pin_config_t port3_16_pinF11_config = {/* Internal pull-up/down resistor is disabled */
-                                                      .pullSelect = kPORT_PullDisable,
-                                                      /* Low internal pull resistor value is selected. */
-                                                      .pullValueSelect = kPORT_LowPullResistor,
-                                                      /* Fast slew rate is configured */
-                                                      .slewRate = kPORT_FastSlewRate,
-                                                      /* Passive input filter is disabled */
-                                                      .passiveFilterEnable = kPORT_PassiveFilterDisable,
-                                                      /* Open drain output is disabled */
-                                                      .openDrainEnable = kPORT_OpenDrainDisable,
-                                                      /* Low drive strength is configured */
-                                                      .driveStrength = kPORT_LowDriveStrength,
-                                                      /* Normal drive strength is configured */
-                                                      .driveStrength1 = kPORT_NormalDriveStrength,
-                                                      /* Pin is configured as ESPI0_CLK */
-                                                      .mux = kPORT_MuxAlt5,
-                                                      /* Digital input enabled */
-                                                      .inputBuffer = kPORT_InputBufferEnable,
-                                                      /* Digital input is not inverted */
-                                                      .invertInput = kPORT_InputNormal,
-                                                      /* Pin Control Register fields [15:0] are not locked */
-                                                      .lockRegister = kPORT_UnlockRegister};
-    /* PORT3_16 (pin F11) is configured as ESPI0_CLK */
-    PORT_SetPinConfig(PORT3, 16U, &port3_16_pinF11_config);
+    const port_pin_config_t port4_6_pinK1_config = {/* Internal pull-up/down resistor is disabled */
+                                                    .pullSelect = kPORT_PullDisable,
+                                                    /* Low internal pull resistor value is selected. */
+                                                    .pullValueSelect = kPORT_LowPullResistor,
+                                                    /* Fast slew rate is configured */
+                                                    .slewRate = kPORT_FastSlewRate,
+                                                    /* Passive input filter is disabled */
+                                                    .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                    /* Open drain output is disabled */
+                                                    .openDrainEnable = kPORT_OpenDrainDisable,
+                                                    /* Low drive strength is configured */
+                                                    .driveStrength = kPORT_LowDriveStrength,
+                                                    /* Normal drive strength is configured */
+                                                    .driveStrength1 = kPORT_NormalDriveStrength,
+                                                    /* Pin is configured as ESPI0_RST */
+                                                    .mux = kPORT_MuxAlt11,
+                                                    /* Digital input enabled */
+                                                    .inputBuffer = kPORT_InputBufferEnable,
+                                                    /* Digital input is not inverted */
+                                                    .invertInput = kPORT_InputNormal,
+                                                    /* Pin Control Register fields [15:0] are not locked */
+                                                    .lockRegister = kPORT_UnlockRegister};
+    /* PORT4_6 (pin K1) is configured as ESPI0_RST */
+    PORT_SetPinConfig(PORT4, 6U, &port4_6_pinK1_config);
 
-    const port_pin_config_t SW2 = {/* Internal pull-up/down resistor is disabled */
-                                   .pullSelect = kPORT_PullDisable,
-                                   /* Low internal pull resistor value is selected. */
-                                   .pullValueSelect = kPORT_LowPullResistor,
-                                   /* Fast slew rate is configured */
-                                   .slewRate = kPORT_FastSlewRate,
-                                   /* Passive input filter is disabled */
-                                   .passiveFilterEnable = kPORT_PassiveFilterDisable,
-                                   /* Open drain output is disabled */
-                                   .openDrainEnable = kPORT_OpenDrainDisable,
-                                   /* Low drive strength is configured */
-                                   .driveStrength = kPORT_LowDriveStrength,
-                                   /* Normal drive strength is configured */
-                                   .driveStrength1 = kPORT_NormalDriveStrength,
-                                   /* Pin is configured as ESPI0_CSN */
-                                   .mux = kPORT_MuxAlt5,
-                                   /* Digital input enabled */
-                                   .inputBuffer = kPORT_InputBufferEnable,
-                                   /* Digital input is not inverted */
-                                   .invertInput = kPORT_InputNormal,
-                                   /* Pin Control Register fields [15:0] are not locked */
-                                   .lockRegister = kPORT_UnlockRegister};
-    /* PORT3_17 (pin G10) is configured as ESPI0_CSN */
-    PORT_SetPinConfig(BOARD_INITESPIPINS_SW2_PORT, BOARD_INITESPIPINS_SW2_PIN, &SW2);
+    const port_pin_config_t port4_7_pinJ2_config = {/* Internal pull-up/down resistor is disabled */
+                                                    .pullSelect = kPORT_PullDisable,
+                                                    /* Low internal pull resistor value is selected. */
+                                                    .pullValueSelect = kPORT_LowPullResistor,
+                                                    /* Fast slew rate is configured */
+                                                    .slewRate = kPORT_FastSlewRate,
+                                                    /* Passive input filter is disabled */
+                                                    .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                    /* Open drain output is disabled */
+                                                    .openDrainEnable = kPORT_OpenDrainDisable,
+                                                    /* Low drive strength is configured */
+                                                    .driveStrength = kPORT_LowDriveStrength,
+                                                    /* Normal drive strength is configured */
+                                                    .driveStrength1 = kPORT_NormalDriveStrength,
+                                                    /* Pin is configured as ESPI0_NOTIFY */
+                                                    .mux = kPORT_MuxAlt11,
+                                                    /* Digital input enabled */
+                                                    .inputBuffer = kPORT_InputBufferEnable,
+                                                    /* Digital input is not inverted */
+                                                    .invertInput = kPORT_InputNormal,
+                                                    /* Pin Control Register fields [15:0] are not locked */
+                                                    .lockRegister = kPORT_UnlockRegister};
+    /* PORT4_7 (pin J2) is configured as ESPI0_NOTIFY */
+    PORT_SetPinConfig(PORT4, 7U, &port4_7_pinJ2_config);
 
-    const port_pin_config_t port3_20_pinH13_config = {/* Internal pull-up/down resistor is disabled */
-                                                      .pullSelect = kPORT_PullDisable,
-                                                      /* Low internal pull resistor value is selected. */
-                                                      .pullValueSelect = kPORT_LowPullResistor,
-                                                      /* Fast slew rate is configured */
-                                                      .slewRate = kPORT_FastSlewRate,
-                                                      /* Passive input filter is disabled */
-                                                      .passiveFilterEnable = kPORT_PassiveFilterDisable,
-                                                      /* Open drain output is disabled */
-                                                      .openDrainEnable = kPORT_OpenDrainDisable,
-                                                      /* Low drive strength is configured */
-                                                      .driveStrength = kPORT_LowDriveStrength,
-                                                      /* Normal drive strength is configured */
-                                                      .driveStrength1 = kPORT_NormalDriveStrength,
-                                                      /* Pin is configured as ESPI0_NOTIFY */
-                                                      .mux = kPORT_MuxAlt5,
-                                                      /* Digital input enabled */
-                                                      .inputBuffer = kPORT_InputBufferEnable,
-                                                      /* Digital input is not inverted */
-                                                      .invertInput = kPORT_InputNormal,
-                                                      /* Pin Control Register fields [15:0] are not locked */
-                                                      .lockRegister = kPORT_UnlockRegister};
-    /* PORT3_20 (pin H13) is configured as ESPI0_NOTIFY */
-    PORT_SetPinConfig(PORT3, 20U, &port3_20_pinH13_config);
+    const port_pin_config_t port4_8_pinJ3_config = {/* Internal pull-up/down resistor is disabled */
+                                                    .pullSelect = kPORT_PullDisable,
+                                                    /* Low internal pull resistor value is selected. */
+                                                    .pullValueSelect = kPORT_LowPullResistor,
+                                                    /* Fast slew rate is configured */
+                                                    .slewRate = kPORT_FastSlewRate,
+                                                    /* Passive input filter is disabled */
+                                                    .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                    /* Open drain output is disabled */
+                                                    .openDrainEnable = kPORT_OpenDrainDisable,
+                                                    /* Low drive strength is configured */
+                                                    .driveStrength = kPORT_LowDriveStrength,
+                                                    /* Normal drive strength is configured */
+                                                    .driveStrength1 = kPORT_NormalDriveStrength,
+                                                    /* Pin is configured as ESPI0_DATA1 */
+                                                    .mux = kPORT_MuxAlt11,
+                                                    /* Digital input enabled */
+                                                    .inputBuffer = kPORT_InputBufferEnable,
+                                                    /* Digital input is not inverted */
+                                                    .invertInput = kPORT_InputNormal,
+                                                    /* Pin Control Register fields [15:0] are not locked */
+                                                    .lockRegister = kPORT_UnlockRegister};
+    /* PORT4_8 (pin J3) is configured as ESPI0_DATA1 */
+    PORT_SetPinConfig(PORT4, 8U, &port4_8_pinJ3_config);
 
-    const port_pin_config_t port3_21_pinH10_config = {/* Internal pull-up/down resistor is disabled */
-                                                      .pullSelect = kPORT_PullDisable,
-                                                      /* Low internal pull resistor value is selected. */
-                                                      .pullValueSelect = kPORT_LowPullResistor,
-                                                      /* Fast slew rate is configured */
-                                                      .slewRate = kPORT_FastSlewRate,
-                                                      /* Passive input filter is disabled */
-                                                      .passiveFilterEnable = kPORT_PassiveFilterDisable,
-                                                      /* Open drain output is disabled */
-                                                      .openDrainEnable = kPORT_OpenDrainDisable,
-                                                      /* Low drive strength is configured */
-                                                      .driveStrength = kPORT_LowDriveStrength,
-                                                      /* Normal drive strength is configured */
-                                                      .driveStrength1 = kPORT_NormalDriveStrength,
-                                                      /* Pin is configured as ESPI0_RST */
-                                                      .mux = kPORT_MuxAlt5,
-                                                      /* Digital input enabled */
-                                                      .inputBuffer = kPORT_InputBufferEnable,
-                                                      /* Digital input is not inverted */
-                                                      .invertInput = kPORT_InputNormal,
-                                                      /* Pin Control Register fields [15:0] are not locked */
-                                                      .lockRegister = kPORT_UnlockRegister};
-    /* PORT3_21 (pin H10) is configured as ESPI0_RST */
-    PORT_SetPinConfig(PORT3, 21U, &port3_21_pinH10_config);
+    const port_pin_config_t port4_9_pinK2_config = {/* Internal pull-up/down resistor is disabled */
+                                                    .pullSelect = kPORT_PullDisable,
+                                                    /* Low internal pull resistor value is selected. */
+                                                    .pullValueSelect = kPORT_LowPullResistor,
+                                                    /* Fast slew rate is configured */
+                                                    .slewRate = kPORT_FastSlewRate,
+                                                    /* Passive input filter is disabled */
+                                                    .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                    /* Open drain output is disabled */
+                                                    .openDrainEnable = kPORT_OpenDrainDisable,
+                                                    /* Low drive strength is configured */
+                                                    .driveStrength = kPORT_LowDriveStrength,
+                                                    /* Normal drive strength is configured */
+                                                    .driveStrength1 = kPORT_NormalDriveStrength,
+                                                    /* Pin is configured as ESPI0_DATA0 */
+                                                    .mux = kPORT_MuxAlt11,
+                                                    /* Digital input enabled */
+                                                    .inputBuffer = kPORT_InputBufferEnable,
+                                                    /* Digital input is not inverted */
+                                                    .invertInput = kPORT_InputNormal,
+                                                    /* Pin Control Register fields [15:0] are not locked */
+                                                    .lockRegister = kPORT_UnlockRegister};
+    /* PORT4_9 (pin K2) is configured as ESPI0_DATA0 */
+    PORT_SetPinConfig(PORT4, 9U, &port4_9_pinK2_config);
 }
 /***********************************************************************************************************************
  * EOF
