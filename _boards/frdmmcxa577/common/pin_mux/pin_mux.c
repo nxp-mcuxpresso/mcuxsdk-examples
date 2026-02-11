@@ -819,9 +819,9 @@ BOARD_InitFLEXIO_MCULCDPins:
     drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
   - {pin_num: L9, peripheral: GPIO2, signal: 'GPIO, 25', pin_signal: P2_25/TRIG_OUT7/CT_INP9, direction: INPUT, slew_rate: fast, open_drain: disable, drive_strength: low,
     pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: L7, peripheral: GPIO2, signal: 'GPIO, 30', pin_signal: P2_30, direction: INPUT, slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down,
+  - {pin_num: L7, peripheral: GPIO2, signal: 'GPIO, 30', pin_signal: P2_30, direction: OUTPUT, slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down,
     pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: L8, peripheral: GPIO2, signal: 'GPIO, 31', pin_signal: P2_31, direction: INPUT, slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down,
+  - {pin_num: L8, peripheral: GPIO2, signal: 'GPIO, 31', pin_signal: P2_31, direction: OUTPUT, slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down,
     pull_enable: disable, input_buffer: enable, invert_input: normal}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -1541,14 +1541,14 @@ void BOARD_InitFLEXIO_MCULCDPins(void)
     GPIO_PinInit(GPIO2, 25U, &gpio2_pinL9_config);
 
     gpio_pin_config_t gpio2_pinL7_config = {
-        .pinDirection = kGPIO_DigitalInput,
+        .pinDirection = kGPIO_DigitalOutput,
         .outputLogic = 0U
     };
     /* Initialize GPIO functionality on pin PIO2_30 (pin L7)  */
     GPIO_PinInit(GPIO2, 30U, &gpio2_pinL7_config);
 
     gpio_pin_config_t gpio2_pinL8_config = {
-        .pinDirection = kGPIO_DigitalInput,
+        .pinDirection = kGPIO_DigitalOutput,
         .outputLogic = 0U
     };
     /* Initialize GPIO functionality on pin PIO2_31 (pin L8)  */
