@@ -66,6 +66,13 @@ static void DEMO_CheckChipRevision(void);
 static gt911_handle_t touchHandle;
 static volatile bool s_touchPending = false;
 
+#if (LV_USE_GESTURE_RECOGNITION == 1)
+/* An array that stores the collected touch events */
+static lv_indev_touch_data_t touches[2];
+static uint8_t touch_cnt = 2;
+#endif
+
+
 #if defined(SDK_OS_FREE_RTOS)
 static SemaphoreHandle_t s_memWriteDone;
 #else
@@ -572,6 +579,13 @@ void lv_port_indev_init(void)
         lv_indev_t * indev = lv_indev_create();
         lv_indev_set_type(indev, LV_INDEV_TYPE_POINTER);
         lv_indev_set_read_cb(indev, DEMO_ReadTouch);
+
+#if (LV_USE_GESTURE_RECOGNITION == 1)
+        /*set threshold in indev creation*/
+        lv_indev_set_pinch_up_threshold(indev, 1.5f);
+        lv_indev_set_pinch_down_threshold(indev, 0.75f);
+        lv_indev_set_rotation_rad_threshold(indev, 0.2f);
+#endif
     }
 }
 
@@ -630,6 +644,61 @@ static void DEMO_ReadTouch(lv_indev_t *drv, lv_indev_data_t *data)
 
     GT911_GetMultiTouch(&touchHandle, &tp_count, tp);
 
+#if (LV_USE_GESTURE_RECOGNITION == 1)
+    /**
+     * Track 2 points to recognize gesture.
+     *
+     */
+    for (int i = 0; i < 2; i++) {
+        touches[i].id = i;
+        touches[i].point.x = 0;
+        touches[i].point.y = 0;
+        touches[i].state = LV_INDEV_STATE_RELEASED;
+    }
+
+    for (uint8_t i = 0; i < tp_count; i++)
+    {
+        if (tp[i].valid) {
+            switch (lcdHandle.orientationMode)
+            {
+                case kST7796S_Orientation0:
+                    touches[i].id = (int16_t)tp[i].touchID;
+                    touches[i].point.x = (int16_t)tp[i].x;
+                    touches[i].point.y = (int16_t)tp[i].y;
+                    touches[i].state = LV_INDEV_STATE_PRESSED;
+                    break;
+                case kST7796S_Orientation90:
+                    touches[i].id = (int16_t)tp[i].touchID;
+                    touches[i].point.x = (int16_t)(touchHandle.resolutionY - tp[i].y);
+                    touches[i].point.y = (int16_t)tp[i].x;
+                    touches[i].state = LV_INDEV_STATE_PRESSED;
+                    break;
+                case kST7796S_Orientation180:
+                    touches[i].id = (int16_t)tp[i].touchID;
+                    touches[i].point.x = (int16_t)(touchHandle.resolutionX - tp[i].x);
+                    touches[i].point.y = (int16_t)(touchHandle.resolutionY - tp[i].y);
+                    touches[i].state = LV_INDEV_STATE_PRESSED;
+                    break;
+                case kST7796S_Orientation270:
+                    touches[i].id = (int16_t)tp[i].touchID;
+                    touches[i].point.x = (int16_t)tp[i].y;
+                    touches[i].point.y = (int16_t)(touchHandle.resolutionX - tp[i].x);
+                    touches[i].state = LV_INDEV_STATE_PRESSED;
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            touches[i].id = i;
+            touches[i].state = LV_INDEV_STATE_RELEASED;
+        }
+    }
+
+    lv_indev_gesture_recognizers_update(drv, touches, touch_cnt);
+
+    /* Set the gesture information, before returning to LVGL */
+    lv_indev_gesture_recognizers_set_data(drv, data);
+#else
     /**
      * GT911 supports 5 points tracking, we only tracks ID #0.
      *
@@ -678,6 +747,7 @@ static void DEMO_ReadTouch(lv_indev_t *drv, lv_indev_data_t *data)
     {
         data->state = LV_INDEV_STATE_RELEASED;
     }
+#endif
 }
 
 void BOARD_TouchIntHandler(void)

@@ -161,12 +161,18 @@ static const gt911_config_t s_touchConfig = {
 #endif
     .intPinFunc       = BOARD_ConfigMIPIPanelTouchIntPin,
     .timeDelayMsFunc  = VIDEO_DelayMs,
-    .touchPointNum    = 1,
+    .touchPointNum    = 2,
     .i2cAddrMode      = kGT911_I2cAddrAny,
     .intTrigMode      = kGT911_IntRisingEdge,
 };
 static int s_touchResolutionX;
 static int s_touchResolutionY;
+#endif
+
+#if (LV_USE_GESTURE_RECOGNITION == 1)
+/* An array that stores the collected touch events */
+static lv_indev_touch_data_t touches[2];
+static uint8_t touch_cnt = 2;
 #endif
 
 static dc_fb_info_t fbInfo;
@@ -546,6 +552,13 @@ void lv_port_indev_init(void)
         lv_indev_t * indev = lv_indev_create();
         lv_indev_set_type(indev, LV_INDEV_TYPE_POINTER);
         lv_indev_set_read_cb(indev, DEMO_ReadTouch);
+
+#if (LV_USE_GESTURE_RECOGNITION == 1)
+        /*set threshold in indev creation*/
+        lv_indev_set_pinch_up_threshold(indev, 1.5f);
+        lv_indev_set_pinch_down_threshold(indev, 0.75f);
+        lv_indev_set_rotation_rad_threshold(indev, 0.2f);
+#endif
     }
 }
 
@@ -685,6 +698,36 @@ static bool DEMO_InitTouch(void)
 /* Will be called by the library to read the touchpad */
 static void DEMO_ReadTouch(lv_indev_t *drv, lv_indev_data_t *data)
 {
+#if (LV_USE_GESTURE_RECOGNITION == 1)
+    static touch_point_t touchPoints[2];
+    touch_cnt = 2;
+    for (int i = 0; i < 2; i++) {
+        touches[i].id = i;
+        touches[i].point.x = 0;
+        touches[i].point.y = 0;
+        touches[i].state = LV_INDEV_STATE_REL;
+    }
+
+    if (kStatus_Success == GT911_GetMultiTouch(&s_touchHandle, &touch_cnt, touchPoints))
+    {
+        for (int i = 0; i < 2; i++) {
+            if (touchPoints[i].valid) {
+                touches[i].id = touchPoints[i].touchID;
+                touches[i].point.x = touchPoints[i].x * DEMO_PANEL_WIDTH / s_touchResolutionX;
+                touches[i].point.y = touchPoints[i].y * DEMO_PANEL_HEIGHT / s_touchResolutionY;
+                touches[i].state = LV_INDEV_STATE_PR;
+            } else {
+                touches[i].id = i;
+                touches[i].state = LV_INDEV_STATE_REL;
+            }
+        }
+    }
+
+    lv_indev_gesture_recognizers_update(drv, touches, touch_cnt);
+
+    /* Set the gesture information, before returning to LVGL */
+    lv_indev_gesture_recognizers_set_data(drv, data);
+#else
     static int touch_x = 0;
     static int touch_y = 0;
 
@@ -698,12 +741,14 @@ static void DEMO_ReadTouch(lv_indev_t *drv, lv_indev_data_t *data)
     }
 
     /*Set the last pressed coordinates*/
+
 #if DEMO_USE_ROTATE
     data->point.x = DEMO_PANEL_HEIGHT - (touch_y * DEMO_PANEL_HEIGHT / s_touchResolutionY);
     data->point.y = touch_x * DEMO_PANEL_WIDTH / s_touchResolutionX;
 #else
     data->point.x = touch_x * DEMO_PANEL_WIDTH / s_touchResolutionX;
     data->point.y = touch_y * DEMO_PANEL_HEIGHT / s_touchResolutionY;
+#endif
 #endif
 }
 
