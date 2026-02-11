@@ -138,6 +138,20 @@ static inline bool ncp_pm_msg_is_valid(const ncp_pm_msg_t *msg)
 }
 
 /**
+ * @brief Get PM message ID from message buffer
+ * @param msg Pointer to the message
+ * @return Message ID if valid, PM_MSG_INVALID otherwise
+ */
+static inline pm_msg_id_t ncp_pm_msg_get_id(const ncp_pm_msg_t *msg)
+{
+    if ((msg != NULL) && (msg->magic == NCP_PM_MSG_MAGIC))
+    {
+        return (pm_msg_id_t)msg->msg_id;
+    }
+    return PM_MSG_INVALID;
+}
+
+/**
  * @brief Check if the PM message is valid and matches the expected ID
  * @param msg Pointer to the message
  * @param id Expected message ID

@@ -185,17 +185,29 @@ int ncp_pm_action_rx_enter(void *buf, size_t buf_sz)
     switch (s_pm_action_ctx.role)
     {
         case NCP_PM_ROLE_DEVICE:
-            if (ncp_pm_msg_is_match(buf, PM_MSG_SLEEP_CFM))
+            if (ncp_pm_msg_get_id((const ncp_pm_msg_t *)buf) == PM_MSG_SLEEP_CFM)
             {
                 post_event(NCP_PM_SM_EVENT_SLEEP_CFM);
                 ret = NCP_PM_STATUS_SKIP;
             }
             break;
         case NCP_PM_ROLE_HOST:
-            if (ncp_pm_msg_is_match(buf, PM_MSG_SLEEP_ACK))
+            switch (ncp_pm_msg_get_id((const ncp_pm_msg_t *)buf))
             {
-                post_event(NCP_PM_SM_EVENT_SLEEP_ACK);
-                ret = NCP_PM_STATUS_SKIP;
+                case PM_MSG_SLEEP_ENTER:
+                    post_event(NCP_PM_SM_EVENT_START);
+                    ret = NCP_PM_STATUS_SKIP;
+                    break;
+                case PM_MSG_SLEEP_ACK:
+                    post_event(NCP_PM_SM_EVENT_SLEEP_ACK);
+                    ret = NCP_PM_STATUS_SKIP;
+                    break;
+                case PM_MSG_SLEEP_EXIT:
+                    post_event(NCP_PM_SM_EVENT_STOP);
+                    ret = NCP_PM_STATUS_SKIP;
+                    break;
+                default:
+                    break;
             }
             break;
         default:
