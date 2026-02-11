@@ -30,7 +30,7 @@ void BOARD_InitHardware(void)
 
     /* Map Input pin to ADC trigger1 input. */
     INPUTMUX_Init(INPUTMUX0);
-    INPUTMUX_AttachSignal(INPUTMUX0, 1UL, kINPUTMUX_Gpio1pineventtrig0ToAdc0trig);
+    INPUTMUX_AttachSignal(INPUTMUX0, 1UL, kINPUTMUX_Gpio3pineventtrig0ToAdc0trig);
 
     GPIO_SetPinInterruptConfig(BOARD_SW2_GPIO, BOARD_SW2_GPIO_PIN, kGPIO_ActiveLowTriggerOutputEnable);
     EnableIRQ(BOARD_SW2_IRQ);
