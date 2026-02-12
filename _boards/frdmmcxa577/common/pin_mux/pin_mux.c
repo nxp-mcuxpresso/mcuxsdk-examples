@@ -4158,6 +4158,167 @@ void BOARD_InitESPIPins(void)
     /* PORT4_9 (pin K2) is configured as ESPI0_DATA0 */
     PORT_SetPinConfig(PORT4, 9U, &port4_9_pinK2_config);
 }
+
+/* clang-format off */
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitTsiPins:
+- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
+- pin_list:
+  - {pin_num: '55', peripheral: TSI0, signal: 'CH, 44', pin_signal: P2_20/TRIG_IN8/LPSPI1_PCS2/CT2_MAT0/FLEXIO0_D28/SMARTDMA_PIO22/TSI0_CH44, slew_rate: fast, open_drain: disable,
+    drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+  - {pin_num: '73', peripheral: TSI0, signal: 'CH, 0', pin_signal: P5_3/TRIG_IN11/TSI0_CH0, open_drain: disable, pull_select: down, pull_enable: disable, passive_filter: disable,
+    pull_value: low, input_buffer: disable, invert_input: normal}
+  - {pin_num: '74', peripheral: TSI0, signal: 'CH, 1', pin_signal: P5_4/TRIG_OUT7/SPC_LPREQ/TSI0_CH1, open_drain: disable, pull_select: down, pull_enable: disable,
+    passive_filter: disable, pull_value: low, input_buffer: disable, invert_input: normal}
+  - {pin_num: '75', peripheral: TSI0, signal: 'CH, 2', pin_signal: P5_5/TRIG_IN10/LPTMR0_ALT2/TSI0_CH2, open_drain: disable, pull_select: down, pull_enable: disable,
+    passive_filter: disable, pull_value: low, input_buffer: disable, invert_input: normal}
+  - {pin_num: '76', peripheral: TSI0, signal: 'CH, 3', pin_signal: P5_6/TRIG_OUT6/TSI0_CH3, open_drain: disable, pull_select: down, pull_enable: disable, passive_filter: disable,
+    pull_value: low, input_buffer: disable, invert_input: normal}
+  - {pin_num: '21', peripheral: GPIO4, signal: 'GPIO, 0', pin_signal: P4_0/TRIG_IN5/LPI2C3_SDA/CT_INP4/FLEXIO0_D8/SMARTDMA_PIO20/LPSPI2_PCS1/I3C2_PUR/TSI0_CH58}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+/* clang-format on */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitTsiPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitTSIPins(void)
+{
+    /* PORT2: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GatePORT2);
+    /* PORT2 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kPORT2_RST_SHIFT_RSTn);
+    /* PORT5: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GatePORT5);
+
+    const port_pin_config_t port2_20_pin55_config = {/* Internal pull-up/down resistor is disabled */
+                                                     .pullSelect = kPORT_PullDisable,
+                                                     /* Low internal pull resistor value is selected. */
+                                                     .pullValueSelect = kPORT_LowPullResistor,
+                                                     /* Fast slew rate is configured */
+                                                     .slewRate = kPORT_FastSlewRate,
+                                                     /* Passive input filter is disabled */
+                                                     .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                     /* Open drain output is disabled */
+                                                     .openDrainEnable = kPORT_OpenDrainDisable,
+                                                     /* Low drive strength is configured */
+                                                     .driveStrength = kPORT_LowDriveStrength,
+                                                     /* Normal drive strength is configured */
+                                                     .driveStrength1 = kPORT_NormalDriveStrength,
+                                                     /* Pin is configured as TSI0_CH44 */
+                                                     .mux = kPORT_MuxAlt12,
+                                                     /* Digital input enabled */
+                                                     .inputBuffer = kPORT_InputBufferEnable,
+                                                     /* Digital input is not inverted */
+                                                     .invertInput = kPORT_InputNormal,
+                                                     /* Pin Control Register fields [15:0] are not locked */
+                                                     .lockRegister = kPORT_UnlockRegister};
+    /* PORT2_20 (pin 55) is configured as TSI0_CH44 */
+    PORT_SetPinConfig(PORT2, 20U, &port2_20_pin55_config);
+    const port_pin_config_t port5_3_pin73_config = {/* Internal pull-up/down resistor is disabled */
+                                                    .pullSelect = kPORT_PullDisable,
+                                                    /* Low internal pull resistor value is selected. */
+                                                    .pullValueSelect = kPORT_LowPullResistor,
+                                                    /* Fast slew rate is configured */
+                                                    .slewRate = kPORT_FastSlewRate,
+                                                    /* Passive input filter is disabled */
+                                                    .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                    /* Open drain output is disabled */
+                                                    .openDrainEnable = kPORT_OpenDrainDisable,
+                                                    /* Low drive strength is configured */
+                                                    .driveStrength = kPORT_LowDriveStrength,
+                                                    /* Normal drive strength is configured */
+                                                    .driveStrength1 = kPORT_NormalDriveStrength,
+                                                    /* Pin is configured as TSI0_CH0 */
+                                                    .mux = kPORT_MuxAlt7,
+                                                     /* Digital input disabled; it is required for analog functions */
+                                                    .inputBuffer = kPORT_InputBufferDisable,
+                                                    /* Digital input is not inverted */
+                                                    .invertInput = kPORT_InputNormal,
+                                                    /* Pin Control Register fields [15:0] are not locked */
+                                                    .lockRegister = kPORT_UnlockRegister};
+    /* PORT5_3 (pin 73) is configured as TSI0_CH0 */
+    PORT_SetPinConfig(PORT5, 3U, &port5_3_pin73_config);
+
+    const port_pin_config_t port5_4_pin74_config = {/* Internal pull-up/down resistor is disabled */
+                                                    .pullSelect = kPORT_PullDisable,
+                                                    /* Low internal pull resistor value is selected. */
+                                                    .pullValueSelect = kPORT_LowPullResistor,
+                                                    /* Fast slew rate is configured */
+                                                    .slewRate = kPORT_FastSlewRate,
+                                                    /* Passive input filter is disabled */
+                                                    .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                    /* Open drain output is disabled */
+                                                    .openDrainEnable = kPORT_OpenDrainDisable,
+                                                    /* Low drive strength is configured */
+                                                    .driveStrength = kPORT_LowDriveStrength,
+                                                    /* Normal drive strength is configured */
+                                                    .driveStrength1 = kPORT_NormalDriveStrength,
+                                                    /* Pin is configured as TSI0_CH1 */
+                                                    .mux = kPORT_MuxAlt7,
+                                                     /* Digital input disabled; it is required for analog functions */
+                                                    .inputBuffer = kPORT_InputBufferDisable,
+                                                    /* Digital input is not inverted */
+                                                    .invertInput = kPORT_InputNormal,
+                                                    /* Pin Control Register fields [15:0] are not locked */
+                                                    .lockRegister = kPORT_UnlockRegister};
+    /* PORT5_4 (pin 74) is configured as TSI0_CH1 */
+    PORT_SetPinConfig(PORT5, 4U, &port5_4_pin74_config);
+
+    const port_pin_config_t port5_5_pin75_config = {/* Internal pull-up/down resistor is disabled */
+                                                    .pullSelect = kPORT_PullDisable,
+                                                    /* Low internal pull resistor value is selected. */
+                                                    .pullValueSelect = kPORT_LowPullResistor,
+                                                    /* Fast slew rate is configured */
+                                                    .slewRate = kPORT_FastSlewRate,
+                                                    /* Passive input filter is disabled */
+                                                    .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                    /* Open drain output is disabled */
+                                                    .openDrainEnable = kPORT_OpenDrainDisable,
+                                                    /* Low drive strength is configured */
+                                                    .driveStrength = kPORT_LowDriveStrength,
+                                                    /* Normal drive strength is configured */
+                                                    .driveStrength1 = kPORT_NormalDriveStrength,
+                                                    /* Pin is configured as TSI0_CH2 */
+                                                    .mux = kPORT_MuxAlt7,
+                                                     /* Digital input disabled; it is required for analog functions */
+                                                    .inputBuffer = kPORT_InputBufferDisable,
+                                                    /* Digital input is not inverted */
+                                                    .invertInput = kPORT_InputNormal,
+                                                    /* Pin Control Register fields [15:0] are not locked */
+                                                    .lockRegister = kPORT_UnlockRegister};
+    /* PORT5_5 (pin 75) is configured as TSI0_CH2 */
+    PORT_SetPinConfig(PORT5, 5U, &port5_5_pin75_config);
+
+    const port_pin_config_t port5_6_pin76_config = {/* Internal pull-up/down resistor is disabled */
+                                                    .pullSelect = kPORT_PullDisable,
+                                                    /* Low internal pull resistor value is selected. */
+                                                    .pullValueSelect = kPORT_LowPullResistor,
+                                                    /* Fast slew rate is configured */
+                                                    .slewRate = kPORT_FastSlewRate,
+                                                    /* Passive input filter is disabled */
+                                                    .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                    /* Open drain output is disabled */
+                                                    .openDrainEnable = kPORT_OpenDrainDisable,
+                                                    /* Low drive strength is configured */
+                                                    .driveStrength = kPORT_LowDriveStrength,
+                                                    /* Normal drive strength is configured */
+                                                    .driveStrength1 = kPORT_NormalDriveStrength,
+                                                    /* Pin is configured as TSI0_CH3 */
+                                                    .mux = kPORT_MuxAlt7,
+                                                     /* Digital input disabled; it is required for analog functions */
+                                                    .inputBuffer = kPORT_InputBufferDisable,
+                                                    /* Digital input is not inverted */
+                                                    .invertInput = kPORT_InputNormal,
+                                                    /* Pin Control Register fields [15:0] are not locked */
+                                                    .lockRegister = kPORT_UnlockRegister};
+    /* PORT5_6 (pin 76) is configured as TSI0_CH3 */
+    PORT_SetPinConfig(PORT5, 6U, &port5_6_pin76_config);
+}
 /***********************************************************************************************************************
  * EOF
  **********************************************************************************************************************/

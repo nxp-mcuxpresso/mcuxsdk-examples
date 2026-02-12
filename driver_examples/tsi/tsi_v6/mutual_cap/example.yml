@@ -18,5 +18,6 @@ tsi_v6_mutual_cap:
       - ${board_root}/${board}/driver_examples/tsi_v6/mutual_cap/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
+    frdmmcxa577: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []

@@ -38,6 +38,9 @@ static volatile bool s_tsiInProgress = true;
  ******************************************************************************/
 void TSI0_IRQHandler(void)
 {
+    /* Clear endOfScan flag */
+    TSI_ClearStatusFlags(APP_TSI, kTSI_EndOfScanFlag);
+
     if (TSI_GetRxMutualCapMeasuredChannel(APP_TSI) == (tsi_mutual_rx_channel_t)(BOARD_TSI_MUTUAL_RX_ELECTRODE_1 - 8U))
     {
         if (TSI_GetCounter(APP_TSI) > (uint16_t)(mutualCalibratedData[0] + TOUCH_DELTA_VALUE))
@@ -47,8 +50,6 @@ void TSI0_IRQHandler(void)
         }
     }
 
-    /* Clear endOfScan flag */
-    TSI_ClearStatusFlags(APP_TSI, kTSI_EndOfScanFlag);
     SDK_ISR_EXIT_BARRIER;
 }
 
@@ -136,6 +137,7 @@ int main(void)
     PRINTF("\r\nNOW, comes to the hardware trigger scan method!\r\n");
     PRINTF("After running, touch pad %s each time, you will see LED toggles.\r\n", PAD_TSI_MUTUAL_CAP_1_NAME);
     TSI_EnableModule(APP_TSI, false);
+    TSI_InitMutualCapMode(APP_TSI, &tsiConfig_mutualCap);
     TSI_EnableHardwareTriggerScan(APP_TSI, true);
     TSI_EnableInterrupts(APP_TSI, kTSI_GlobalInterruptEnable);
     TSI_EnableInterrupts(APP_TSI, kTSI_EndOfScanInterruptEnable);
@@ -145,7 +147,11 @@ int main(void)
     TSI_SetMutualCapTxChannel(APP_TSI, (tsi_mutual_tx_channel_t)BOARD_TSI_MUTUAL_TX_ELECTRODE_1);
     TSI_SetMutualCapRxChannel(APP_TSI, (tsi_mutual_rx_channel_t)(BOARD_TSI_MUTUAL_RX_ELECTRODE_1 - 8U));
     TSI_EnableModule(APP_TSI, true);
+#if defined (DEMO_INPUTMUX_TMR_TO_TSI)
+    INPUTMUX_AttachSignal(INPUTMUX0, 0U, DEMO_INPUTMUX_TMR_TO_TSI);
+#else
     INPUTMUX_AttachSignal(INPUTMUX0, 0U, kINPUTMUX_Lptmr0ToTsiTrigger);
+#endif
     LPTMR_StartTimer(LPTMR0); /* Start LPTMR triggering */
 
     while (1)

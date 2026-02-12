@@ -37,6 +37,9 @@ static volatile bool s_tsiInProgress = true;
  ******************************************************************************/
 void TSI0_IRQHandler(void)
 {
+    /* Clear endOfScan flag */
+    TSI_ClearStatusFlags(APP_TSI, kTSI_EndOfScanFlag);
+
 #if BOARD_TSI_ELECTRODE_1 > 15
     /* errata ERR051410: When reading TSI_COMFIG[TSICH] bitfield, the upper most bit will always be 0. */
     if ((TSI_GetSelfCapMeasuredChannel(APP_TSI) | 0x10U) == BOARD_TSI_ELECTRODE_1)
@@ -51,8 +54,6 @@ void TSI0_IRQHandler(void)
         }
     }
 
-    /* Clear endOfScan flag */
-    TSI_ClearStatusFlags(APP_TSI, kTSI_EndOfScanFlag);
     SDK_ISR_EXIT_BARRIER;
 }
 
@@ -150,6 +151,9 @@ int main(void)
     PRINTF("\r\nNOW, comes to the hardware trigger scan method!\r\n");
     PRINTF("After running, touch pad %s each time, you will see LED toggles.\r\n", PAD_TSI_ELECTRODE_1_NAME);
     TSI_EnableModule(APP_TSI, false);
+        /* Initialize the TSI */
+    TSI_InitSelfCapMode(APP_TSI, &tsiConfig_selfCap);
+
     TSI_EnableHardwareTriggerScan(APP_TSI, true);
     TSI_EnableInterrupts(APP_TSI, kTSI_EndOfScanInterruptEnable);
     TSI_ClearStatusFlags(APP_TSI, kTSI_EndOfScanFlag);
@@ -157,7 +161,11 @@ int main(void)
     TSI_SetSelfCapMeasuredChannel(APP_TSI,
                                   BOARD_TSI_ELECTRODE_1); /* Select BOARD_TSI_ELECTRODE_1 as detecting electrode. */
     TSI_EnableModule(APP_TSI, true);
+#if defined (DEMO_INPUTMUX_TMR_TO_TSI)
+    INPUTMUX_AttachSignal(INPUTMUX0, 0U, DEMO_INPUTMUX_TMR_TO_TSI);
+#else
     INPUTMUX_AttachSignal(INPUTMUX0, 0U, kINPUTMUX_Lptmr0ToTsiTrigger);
+#endif
     LPTMR_StartTimer(LPTMR0); /* Start LPTMR triggering */
 
     while (1)

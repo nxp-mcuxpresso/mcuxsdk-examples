@@ -323,6 +323,12 @@ void BOARD_InitSPIFILTERPins(void);
  */
 void BOARD_InitESPIPins(void);
 
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitTSIPins(void);
+
 #if defined(__cplusplus)
 }
 #endif
