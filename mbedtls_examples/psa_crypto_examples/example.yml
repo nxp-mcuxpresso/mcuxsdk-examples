@@ -13,5 +13,6 @@ psa_crypto_examples:
       - ${board_root}/${board}/mbedtls_examples/psa_crypto_examples/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    frdmmcxa366: []
-
+    frdmmcxa366:
+    - -mdk@debug
+    - -mdk@release
