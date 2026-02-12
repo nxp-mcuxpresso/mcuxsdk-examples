@@ -131,14 +131,14 @@ static int wlan_ncp_inet_connect(void *data)
     name->sa_len = tlv->socklen;
     memcpy(name->sa_data, linux_name->sa_data, tlv->socklen-sa_data_offset);
     /* for tcp socket, select this socket recv data before connect */
-    if (get_socket_type(ret) & SOCK_STREAM)
+    if (get_socket_type(tlv->socket) & SOCK_STREAM)
     {
         ncp_inet_set_bit(tlv->socket);
     }
     ret = connect(tlv->socket, name, tlv->socklen);
     if (ret)
     {
-        if (get_socket_type(ret) & SOCK_STREAM)
+        if (get_socket_type(tlv->socket) & SOCK_STREAM)
         {
             ncp_inet_clear_bit(tlv->socket);
         }
