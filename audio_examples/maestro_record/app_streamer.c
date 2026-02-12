@@ -21,14 +21,7 @@
 #define STREAMER_MESSAGE_TASK_NAME "StreamerMessage"
 
 #ifdef OPUS_ENCODE
-/* The STREAMER_OPUS_TASK_STACK_SIZE value is different for the IAR because the IAR allocates memory for VLA (variable
- * length array - used in the opus encoder) in the application heap and the opus task stack would be largely unused.
- */
-#if defined(__ICCARM__)
-#define STREAMER_OPUS_TASK_STACK_SIZE 5 * 1024
-#else
 #define STREAMER_OPUS_TASK_STACK_SIZE 30 * 1024
-#endif
 #endif
 
 #define STREAMER_TASK_STACK_SIZE         16 * 1024

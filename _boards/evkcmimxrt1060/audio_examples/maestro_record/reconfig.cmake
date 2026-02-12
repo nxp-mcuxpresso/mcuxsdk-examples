@@ -34,9 +34,6 @@ mcux_add_macro(
         -DOSA_USED\
         -DSHELL_TASK_STACK_SIZE=4000"
 )
-mcux_remove_iar_configuration(
-    LD "--config_def=__heap_size__=0x3000"
-)
 mcux_add_iar_configuration(
     CC "--vla\
         --align_sp_on_irq\
@@ -50,14 +47,7 @@ mcux_add_iar_configuration(
         --diag_suppress Pa050,Pa082,Pe188\
         --no_code_motion"                     # to disable iar compiler code motion optimizations - when enabled, opus_encode is not functioning properly
     CX "--no_code_motion"
-    LD "--config_def=__heap_size__=0xF000"
 )
-
-## Remove additional configuration
-#mcux_remove_iar_configuration(
-#    CC "--diag_suppress Pa082,Pa050"
-#    CX "--diag_suppress Pa082,Pa050"
-#)
 
 # Add or remove Linker File Configurations
 mcux_remove_iar_linker_script(
