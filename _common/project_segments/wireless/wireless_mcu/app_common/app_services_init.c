@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2022, 2024-2025 NXP
+ * Copyright 2020-2022, 2024-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -42,13 +42,6 @@
 /* -------------------------------------------------------------------------- */
 /*                               Private macros                               */
 /* -------------------------------------------------------------------------- */
-
-/* Define constraints for LPUART0 wake up so we can set/release the constraints at runtime based on application call
- * Wake up on serial can be done only on LPUART0 and FRO6M which are located in WAKE domain
- * We need to use the FRO6M as clock source for LPUART0
- * Regarding constraints, we need to keep the FRO6M running and keep the WAKE domain operational (SLEEP mode)
- */
-#define APP_LPUART0_WAKEUP_CONSTRAINTS 2, PM_RESC_FRO_6M_ON, PM_RESC_WAKE_PD_PERI_OPERATIONAL
 
 /* -------------------------------------------------------------------------- */
 /*                              Public Variables                              */
@@ -158,15 +151,6 @@ static void APP_ServiceInitLowpower(void)
 #endif
 
 #if (defined(gAppUseSerialManager_c) && (gAppUseSerialManager_c > 0))
-
-#if defined(gAppLpuart0WakeUpSourceEnable_d) && (gAppLpuart0WakeUpSourceEnable_d > 0)
-    /* To be able to wake up from LPUART0, we need to keep the FRO6M running
-     * also, we need to keep the WAKE domain is SLEEP.
-     * We can't put the WAKE domain in DEEP SLEEP because the LPUART0 is not mapped
-     * to the WUU as wake up source */
-    (void)PM_SetConstraints(PM_LP_STATE_NO_CONSTRAINT, APP_LPUART0_WAKEUP_CONSTRAINTS);
-#endif
-
     /* Register PWR functions into SerialManager module in order to disable device lowpower
         during SerialManager processing. Typically, allow only WFI instruction when
         uart data are processed by serail manager  */
