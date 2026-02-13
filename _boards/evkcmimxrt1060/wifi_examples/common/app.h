@@ -8,6 +8,7 @@
 #ifndef _APP_H_
 #define _APP_H_
 
+
 /*${header:start}*/
 #if CONFIG_WIFI_SMOKE_TESTS
 #include "fsl_phyksz8081.h"
@@ -36,7 +37,15 @@ extern phy_ksz8081_resource_t g_phy_resource;
  * Prototypes
  ******************************************************************************/
 /*${prototype:start}*/
+#ifdef __cplusplus
+extern "C"{
+#endif
+
 void BOARD_InitHardware(void);
 /*${prototype:end}*/
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _APP_H_ */
