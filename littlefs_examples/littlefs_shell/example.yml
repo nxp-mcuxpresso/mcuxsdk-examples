@@ -81,8 +81,6 @@ littlefs_shell:
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
     evkmimxrt1064:
-    - -armgcc@flexspi_nor_debug
-    - -armgcc@flexspi_nor_release
     - -iar@flexspi_nor_debug
     - -iar@flexspi_nor_release
     - -mdk@flexspi_nor_debug
