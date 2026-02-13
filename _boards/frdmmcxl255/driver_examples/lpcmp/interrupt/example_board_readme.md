@@ -19,6 +19,8 @@ Make sure you have solder bridges SJ1 and SJ2 set to
 - 2-1 for the main core (cm33)
 - 2-3 for AON core (cm0+)
 
+Make sure you have solder bridges SJ28 set to 2-3 for CM0+ core.
+
 Prepare the Demo
 ================
 1.  Connect a USB Type-C cable between the host PC and the MCU-Link USB port (J16) on the target board.
