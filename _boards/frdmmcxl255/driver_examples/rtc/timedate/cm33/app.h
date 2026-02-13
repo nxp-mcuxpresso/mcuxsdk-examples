@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -13,6 +13,7 @@
 /*${macro:start}*/
 #define RTC                             AON__RTC_AON
 #define CGU                             AON__CGU
+#define PMU                             AON__PMU
 #define SECURITY_RESET                  kAonSecurity_RST_SHIFT_RSTn
 #define WATCHDOG_COUNTER_VALUE          200U /* Watchdog shall be feed within 2s */
 #define RTC_DELAY_TIME_US               20000U /* RTC delay time us */
