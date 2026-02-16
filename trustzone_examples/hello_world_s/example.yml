@@ -15,7 +15,6 @@ hello_world_s:
       example_readme:
       - examples/trustzone_examples/hello_world_s/readme.md
       - ${board_root}/${board}/trustzone_examples/hello_world/hello_world_s/example_board_readme.md
-      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33:
     - -armgcc@debug
