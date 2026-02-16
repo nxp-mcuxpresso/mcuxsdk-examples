@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -73,8 +73,8 @@ int main(void)
         PRINTF("fail \r\n");
     }
 
-    PRINTF("ECC EdDSA verify signature Ed25519:");
-    if (mcuxClEcc_EdDSA_VerifySignature_Ed25519_example() == true)
+    PRINTF("ECC EdDSA Ed25519:");
+    if (mcuxClEcc_EdDSA_Ed25519ph_example() == true)
     {
         pass++;
         PRINTF("pass \r\n");
@@ -110,7 +110,7 @@ int main(void)
     }
 
     PRINTF("ECC EdDSA Ed25519:");
-    if (mcuxClEcc_EdDSA_Ed25519_example() == true)
+    if (mcuxClEcc_EdDSA_Ed25519ph_example() == true)
     {
         pass++;
         PRINTF("pass \r\n");
