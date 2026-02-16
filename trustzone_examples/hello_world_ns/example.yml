@@ -12,6 +12,9 @@ hello_world_ns:
         SDK build environments and board bring up. This demo application also utilizes
         TrustZone, so it demonstrates basic techniques for TrustZone applications
         development. This is non-secure part of the application.
+      example_readme:
+      - ${board_root}/${board}/examples_shared_readme.md
+
   boards:
     evk9mimx8ulp@cm33:
     - -armgcc@debug

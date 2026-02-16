@@ -10,6 +10,8 @@ mcx_secure_gpio_ns:
       category: trustzone_examples
       brief: Secure GPIO demo application demonstrates using GPIO which restrict usage
         of GPIO pins in nonsecure world. This is non-secure part of the application.
+      example_readme:
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []

@@ -12,6 +12,8 @@ secure_faults_ns:
         secure faults. This application is based on application Hello World. In addition,
         user can invoke different secure faults by setting testCaseNumber variable
         (see source code). This is non-secure part of the application.
+      example_readme:
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []

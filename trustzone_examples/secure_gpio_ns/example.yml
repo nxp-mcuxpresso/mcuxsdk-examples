@@ -11,6 +11,8 @@ secure_gpio_ns:
       brief: The Secure GPIO demo application demonstrates using of secure GPIO peripheral
         and GPIO mask feature in AHB secure controller. This is non-secure part of
         the application.
+      example_readme:
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []
