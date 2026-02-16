@@ -41,6 +41,7 @@ NBUDBG_MAX_NB_WARNINGS = 7
 
 # BTSNOOP constants
 BTSNOOP_MAGIC = b'btsnoop\x00'
+BTSNOOP_DATALINK_HCI_UART_H4 = 1001
 BTSNOOP_DATALINK_HCI_UART = 1002
 
 # HCI packet types
@@ -282,8 +283,8 @@ def extract_debug_from_btsnoop(filename: str) -> tuple:
         version = struct.unpack('>I', f.read(4))[0]
         datalink = struct.unpack('>I', f.read(4))[0]
 
-        if datalink != BTSNOOP_DATALINK_HCI_UART:
-            raise ValueError(f"Unsupported datalink type: {datalink}")
+        if datalink not in [BTSNOOP_DATALINK_HCI_UART_H4, BTSNOOP_DATALINK_HCI_UART]:
+            raise ValueError(f"Unsupported datalink type: {datalink} (expected 1001 or 1002)")
 
         # Read packets
         while True:
@@ -303,28 +304,47 @@ def extract_debug_from_btsnoop(filename: str) -> tuple:
             if len(packet_data) < incl_len:
                 break
 
-            # Check if this is an HCI event packet
             if len(packet_data) < 1:
                 continue
 
-            packet_type = packet_data[0]
-            if packet_type != HCI_EVENT:
-                continue
+            # Handle different datalink formats
+            if datalink == BTSNOOP_DATALINK_HCI_UART_H4:
+                # Datalink 1001: No packet type byte, use flags to determine direction
+                # flags & 0x01: 0=sent, 1=received
+                is_received = (flags & 0x01) == 1
 
-            # Parse HCI event: [type][event_code][param_len][params...]
-            if len(packet_data) < 3:
-                continue
+                if not is_received:
+                    continue  # Skip sent packets (commands)
 
-            event_code = packet_data[1]
-            param_len = packet_data[2]
+                # For received packets (events), first byte is event code
+                if len(packet_data) < 2:
+                    continue
+
+                event_code = packet_data[0]
+                param_len = packet_data[1]
+                params_offset = 2
+
+            else:  # BTSNOOP_DATALINK_HCI_UART (1002)
+                # Datalink 1002: Includes packet type indicator
+                packet_type = packet_data[0]
+
+                if packet_type != HCI_EVENT:
+                    continue
+
+                if len(packet_data) < 3:
+                    continue
+
+                event_code = packet_data[1]
+                param_len = packet_data[2]
+                params_offset = 3
 
             if event_code != HCI_VENDOR_EVENT:
                 continue
 
-            if len(packet_data) < 3 + param_len:
+            if len(packet_data) < params_offset + param_len:
                 continue
 
-            params = packet_data[3:3 + param_len]
+            params = packet_data[params_offset:params_offset + param_len]
 
             if len(params) < 3:
                 continue
