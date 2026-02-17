@@ -94,7 +94,7 @@ class NMemoryAllocator : public executorch::runtime::MemoryAllocator {
 };
 
 typedef struct {
-    float score;
+    int score;
     int index;
 } result_t;
 
@@ -165,7 +165,7 @@ int main(void)
     Tensor::SizesType sizes[] = {1, 3, 32, 32};
     Tensor::DimOrderType dim_order[] = {0, 1, 2, 3};
 
-    TensorImpl impl(ScalarType::Float, 4, sizes, image_data, dim_order);
+    TensorImpl impl(ScalarType::Char, 4, sizes, image_data, dim_order);
     Tensor tensor(&impl);
     Error status = method->set_input(tensor, 0);
     if (status != Error::Ok) {
@@ -208,19 +208,19 @@ int main(void)
 
     result_t topResults[NUM_RESULTS];
     for (int i = 0; i < NUM_RESULTS; i++) {
-        topResults[i] = {.score = 0.0f, .index = -1};
+        topResults[i] = {.score = -128, .index = -1};
     }
 
     for (int i = 0; i < outputs[0].toTensor().numel(); i++) {
-        float value = 0.0f;
-        if (outputs[0].toTensor().scalar_type() == ScalarType::Float) {
-	    value = outputs[0].toTensor().const_data_ptr<float>()[i];
+        int value = -128;
+        if (outputs[0].toTensor().scalar_type() == ScalarType::Char) {
+        	value = (int)outputs[0].toTensor().const_data_ptr<int8_t>()[i];
         }
 
-        if (value < (float)DETECTION_TRESHOLD/100) {
+        if (value < (int)((float)DETECTION_TRESHOLD * 2.56f) - 128) {
 	    continue;
         }
-        result_t pass = {.score = 0.0f, .index = -1};
+        result_t pass = {.score = -128, .index = -1};
         for (int n = 0; n < NUM_RESULTS; n++) {
             if (pass.index >= 0) {
                 result_t swap = topResults[n];
@@ -234,17 +234,17 @@ int main(void)
     }
 
     const char* label = "No label detected";
-    float confidence = 0;
+    float confidence = 0.0f;
 
     if (topResults[0].index >= 0) {
         auto result = topResults[0];
-        confidence = result.score;
+        confidence = (float)(result.score + 127) / 2.56f;
         int index = result.index;
-        if (confidence * 100 > DETECTION_TRESHOLD)
+        if (confidence > DETECTION_TRESHOLD)
             label = labels[index];
     }
 
-    int score = (int)(confidence * 100);
+    int score = (int)(confidence);
     PRINTF("----------------------------------------\r\n");
     PRINTF("     Inference time: %d us\r\n", endTime - startTime);
     PRINTF("     Detected: %s (%d%%)\r\n", label, score);
@@ -253,12 +253,9 @@ int main(void)
     for (int i = 0; i < (int)outputs.size(); ++i) {
         Tensor t = outputs[i].toTensor();
         for (int j = 0; j < outputs[i].toTensor().numel(); ++j) {
-            if (t.scalar_type() == ScalarType::Int) {
+            if (t.scalar_type() == ScalarType::Char) {
                 PRINTF("Output[%d][%d]: %d\r\n", i, j,
-                    outputs[i].toTensor().const_data_ptr<int>()[j]);
-            } else {
-                PRINTF("Output[%d][%d]: %f\r\n", i, j,
-                    outputs[i].toTensor().const_data_ptr<float>()[j]);
+                    outputs[i].toTensor().const_data_ptr<int8_t>()[j]);
             }
         }
     }
