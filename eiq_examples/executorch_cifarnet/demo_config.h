@@ -12,5 +12,7 @@
 #define DETECTION_TRESHOLD 60
 #define NUM_RESULTS        1
 #define DEMO_VERBOSE       false
+#define OUTPUT_MIN_RANGE   -128  // min value of int8_t
+#define CONFIDENCE_SCALE   2.56f // Scale factor to convert uint8 [0-255] to percentage [0-100]
 
 #endif // _DEMO_CONFIG_H_

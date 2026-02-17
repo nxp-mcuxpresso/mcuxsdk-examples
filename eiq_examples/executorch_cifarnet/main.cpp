@@ -109,7 +109,7 @@ int main(void)
 
     executorch::runtime::runtime_init();
 
-    PRINTF("CIFARNET example using a ExecuTorch model\r\n");
+    PRINTF("%s example using a %s model\r\n", EXAMPLE_NAME, FRAMEWORK_NAME);
     auto loader = BufferDataLoader(model_pte, sizeof(model_pte));
 
     Result<Program> program = Program::load(&loader);
@@ -208,19 +208,19 @@ int main(void)
 
     result_t topResults[NUM_RESULTS];
     for (int i = 0; i < NUM_RESULTS; i++) {
-        topResults[i] = {.score = -128, .index = -1};
+        topResults[i] = {.score = OUTPUT_MIN_RANGE, .index = -1};
     }
 
     for (int i = 0; i < outputs[0].toTensor().numel(); i++) {
-        int value = -128;
+        int value = OUTPUT_MIN_RANGE;
         if (outputs[0].toTensor().scalar_type() == ScalarType::Char) {
         	value = (int)outputs[0].toTensor().const_data_ptr<int8_t>()[i];
         }
 
-        if (value < (int)((float)DETECTION_TRESHOLD * 2.56f) - 128) {
+        if (value < (int)((float)DETECTION_TRESHOLD * CONFIDENCE_SCALE) + OUTPUT_MIN_RANGE) {
 	    continue;
         }
-        result_t pass = {.score = -128, .index = -1};
+        result_t pass = {.score = OUTPUT_MIN_RANGE, .index = -1};
         for (int n = 0; n < NUM_RESULTS; n++) {
             if (pass.index >= 0) {
                 result_t swap = topResults[n];
@@ -238,7 +238,7 @@ int main(void)
 
     if (topResults[0].index >= 0) {
         auto result = topResults[0];
-        confidence = (float)(result.score + 127) / 2.56f;
+        confidence = (float)(result.score - OUTPUT_MIN_RANGE) / CONFIDENCE_SCALE;
         int index = result.index;
         if (confidence > DETECTION_TRESHOLD)
             label = labels[index];
