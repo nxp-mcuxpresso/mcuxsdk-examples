@@ -163,7 +163,7 @@ int main(void)
 
     PRINTF("Preparing inputs...\r\n");
     Tensor::SizesType sizes[] = {1, 3, 32, 32};
-    Tensor::DimOrderType dim_order[] = {0, 1, 2, 3};
+    Tensor::DimOrderType dim_order[] = {0, 2, 3, 1};
 
     TensorImpl impl(ScalarType::Char, 4, sizes, image_data, dim_order);
     Tensor tensor(&impl);
