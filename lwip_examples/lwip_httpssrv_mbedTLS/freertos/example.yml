@@ -245,4 +245,5 @@ lwip_httpssrv_mbedTLS_freertos:
       - -mdk@hyperram_debug
       - -mdk@hyperram_release
       - -mdk@release
+    frdmmcxa577: []
     frdmmcxn947@cm33_core0: [-armgcc@debug]
