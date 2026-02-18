@@ -1,5 +1,5 @@
 #
-# Copyright 2025 NXP
+# Copyright 2025-2026 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -10,7 +10,6 @@ mcux_add_macro(
      CC "-DPRINTF_ADVANCED_ENABLE=1\
        -DOCOTP_NV_COUNTERS_RAM_EMULATION=1\
        -DPSA_CRYPTO_ACCELERATOR_DRIVER_PRESENT\
-       -DMBEDTLS_HKDF_C\
        "
 )
 #mdk configurations:
@@ -27,27 +26,14 @@ mcux_add_mdk_configuration(
 
 #armgcc configurations
 mcux_remove_macro(
-    TOOLCHAINS armgcc
+    TOOLCHAINS armgcc iar mdk
     TARGETS debug
     CC "-DDEBUG"
 )
 mcux_add_macro(
-    TOOLCHAINS armgcc
+    TOOLCHAINS armgcc iar mdk
     TARGETS debug
     CC "-DNDEBUG"
-)
-
-
-#iar configurations
-mcux_remove_iar_configuration(
-    TARGETS debug
-    CX "--diag_suppress=Pa082,Pa050"
-    CC "--diag_suppress=Pa082,Pa050 -On"
-)
-
-mcux_add_iar_configuration(
-    TARGETS debug
-    CC "-Oh"
 )
 #armgcc configurations
 mcux_remove_armgcc_configuration(
@@ -56,5 +42,23 @@ mcux_remove_armgcc_configuration(
 )
 mcux_add_armgcc_configuration(
     TARGETS debug
-    CC "-O1"
+    CC "-Os"
+)
+
+#iar configurations
+mcux_remove_iar_configuration(
+    TARGETS debug
+    CX "--diag_suppress=Pa082,Pa050"
+    CC "--diag_suppress=Pa082,Pa050 -On"
+)
+
+mcux_remove_iar_configuration(
+    TARGETS debug release
+    CX "-Oh"
+    CC "-Oh --debug --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa --no_clustering --no_scheduling"
+)
+
+mcux_add_iar_configuration(
+    TARGETS debug release
+    CC "-Ohz"
 )

@@ -1,5 +1,5 @@
 #
-# Copyright 2025 NXP
+# Copyright 2025-2026 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -30,10 +30,21 @@ mcux_add_mdk_configuration(
 
 mcux_remove_iar_configuration(
     TARGETS debug
-    CC "-On"
+    CC "-O0"
+)
+
+mcux_remove_iar_configuration(
+    TARGETS debug
+    CC "-O1"
+)
+
+mcux_remove_iar_configuration(
+    TARGETS debug release
+    CX "-Oh"
+    CC "-Oh --debug --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa --no_clustering --no_scheduling -On"
 )
 
 mcux_add_iar_configuration(
-    TARGETS debug
+    TARGETS debug release
     CC "-Ohz"
 )

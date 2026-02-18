@@ -53,33 +53,33 @@ TEST RESULT: PASSED
 
 TEST: 202 | DESCRIPTION: Testing crypto key management APIs | UT: psa_import_key
 [Info] Executing tests from non-secure
-[Check 1] Test psa_import_key with EC Public key
+No test available for the selected crypto configuration
 
-TEST RESULT: PASSED
+TEST RESULT: SKIPPED (Skip Code=0x2d)
 
 ******************************************
 
 TEST: 203 | DESCRIPTION: Testing crypto key management APIs | UT: psa_export_key
 [Info] Executing tests from non-secure
-[Check 1] Test psa_export_key with EC Public key
+No test available for the selected crypto configuration
 
-TEST RESULT: PASSED
+TEST RESULT: SKIPPED (Skip Code=0x2d)
 
 ******************************************
 
 TEST: 204 | DESCRIPTION: Testing crypto key management APIs | UT: psa_export_public_key
 [Info] Executing tests from non-secure
-[Check 1] Test psa_export_public_key with EC Public key
+No test available for the selected crypto configuration
 
-TEST RESULT: PASSED
+TEST RESULT: SKIPPED (Skip Code=0x2d)
 
 ******************************************
 
 TEST: 205 | DESCRIPTION: Testing crypto key management APIs | UT: psa_destroy_key
 [Info] Executing tests from non-secure
-[Check 1] Test psa_destroy_key with EC Public key
+No test available for the selected crypto configuration
 
-TEST RESULT: PASSED
+TEST RESULT: SKIPPED (Skip Code=0x2d)
 
 ******************************************
 
@@ -231,7 +231,7 @@ TEST RESULT: PASSED
 
 TEST: 219 | DESCRIPTION: Testing crypto key derivation APIs | UT: psa_key_derivation_key_agreement
 [Info] Executing tests from non-secure
-[Check 1] Test psa_key_derivation_key_agreement - KDF not a key agreement alg
+No test available for the selected crypto configuration
 
 TEST RESULT: SKIPPED (Skip Code=0x2d)
 
@@ -244,9 +244,6 @@ TEST: 220 | DESCRIPTION: Testing crypto key derivation APIs | UT: psa_key_deriva
 [Check 3] Test psa_key_derivation_output_bytes - capacity < output_length
 [Check 4] Test psa_key_derivation_output_bytes - missing info
 [Check 5] Test psa_key_derivation_output_bytes - missing salt/secret/info
-[Check 6] Test psa_key_derivation_output_bytes - TLS12_PRF
-[Check 7] Test psa_key_derivation_output_bytes - capacity < output_length
-[Check 8] Test psa_key_derivation_output_bytes - missing seed/secret/label
 
 TEST RESULT: PASSED
 
@@ -387,23 +384,17 @@ TEST RESULT: PASSED
 
 TEST: 232 | DESCRIPTION: Testing crypto symmetric cipher APIs | UT: psa_cipher_encrypt_setup
 [Info] Executing tests from non-secure
-[Check 1] Test psa_cipher_encrypt_setup - unknown cipher algorithm
-[Check 2] Test psa_cipher_encrypt_setup - EC Public key
-[Check 3] Test psa_cipher_encrypt_setup - Invalid key handle
-[Check 4] Test psa_cipher_encrypt_setup - Zero as key handle
+No test available for the selected crypto configuration
 
-TEST RESULT: PASSED
+TEST RESULT: SKIPPED (Skip Code=0x2d)
 
 ******************************************
 
 TEST: 233 | DESCRIPTION: Testing crypto symmetric cipher APIs | UT: psa_cipher_decrypt_setup
 [Info] Executing tests from non-secure
-[Check 1] Test psa_cipher_decrypt_setup - unknown cipher algorithm
-[Check 2] Test psa_cipher_decrypt_setup - EC Public key
-[Check 3] Test psa_cipher_decrypt_setup - Invalid key handle
-[Check 4] Test psa_cipher_decrypt_setup - Zero as key handle
+No test available for the selected crypto configuration
 
-TEST RESULT: PASSED
+TEST RESULT: SKIPPED (Skip Code=0x2d)
 
 ******************************************
 
@@ -465,28 +456,22 @@ TEST RESULT: SKIPPED (Skip Code=0x2d)
 
 TEST: 241 | DESCRIPTION: Testing crypto asymmetric APIs | UT: psa_sign_hash
 [Info] Executing tests from non-secure
-[Check 1] Test psa_sign_hash - ECDSA SECP256R1 SHA-256
-[Check 2] Test psa_sign_hash - Invalid key handle
-[Check 3] Test psa_sign_hash - Zero as key handle
+No test available for the selected crypto configuration
 
-TEST RESULT: PASSED
+TEST RESULT: SKIPPED (Skip Code=0x2d)
 
 ******************************************
 
 TEST: 242 | DESCRIPTION: Testing crypto asymmetric APIs | UT: psa_verify_hash
 [Info] Executing tests from non-secure
-[Check 1] Test psa_verify_hash - ECDSA KEY_PAIR SECP256R1 SHA-256
-[Check 2] Test psa_verify_hash - EC public key
-[Check 3] Test psa_verify_hash - Invalid key handle
-[Check 4] Test psa_verify_hash - Zero as key handle
+No test available for the selected crypto configuration
 
-TEST RESULT: PASSED
+TEST RESULT: SKIPPED (Skip Code=0x2d)
 
 ******************************************
 
 TEST: 243 | DESCRIPTION: Testing crypto key derivation APIs | UT: psa_raw_key_agreement
 [Info] Executing tests from non-secure
-[Check 1] Test psa_raw_key_agreement - Not a key agreement alg
 No test available for the selected crypto configuration
 
 TEST RESULT: SKIPPED (Skip Code=0x2d)
@@ -495,9 +480,9 @@ TEST RESULT: SKIPPED (Skip Code=0x2d)
 
 TEST: 244 | DESCRIPTION: Testing crypto key management APIs | UT: psa_copy_key
 [Info] Executing tests from non-secure
-[Check 1] Test psa_copy_key - EC Public key
+No test available for the selected crypto configuration
 
-TEST RESULT: PASSED
+TEST RESULT: SKIPPED (Skip Code=0x2d)
 
 ******************************************
 
@@ -552,22 +537,17 @@ TEST RESULT: SKIPPED (Skip Code=0x2d)
 
 TEST: 250 | DESCRIPTION: Testing crypto key management APIs | UT: psa_sign_message
 [Info] Executing tests from non-secure
-[Check 1] Test psa_sign_message - ECDSA SECP256R1 SHA-256
-[Check 2] Test psa_sign_message - Invalid key handle
-[Check 3] Test psa_sign_message - Zero as key handle
+No test available for the selected crypto configuration
 
-TEST RESULT: PASSED
+TEST RESULT: SKIPPED (Skip Code=0x2d)
 
 ******************************************
 
 TEST: 251 | DESCRIPTION: Testing crypto key management APIs | UT: psa_verify_message
 [Info] Executing tests from non-secure
-[Check 1] Test psa_verify_message - ECDSA KEY_PAIR SECP256R1 SHA-256
-[Check 2] Test psa_verify_message - ECDSA Public Key SECP256R1 SHA-256
-[Check 3] Test psa_verify_message - Invalid key handle
-[Check 4] Test psa_verify_message - Zero as key handle
+No test available for the selected crypto configuration
 
-TEST RESULT: PASSED
+TEST RESULT: SKIPPED (Skip Code=0x2d)
 
 ******************************************
 
@@ -715,10 +695,10 @@ TEST RESULT: PASSED
 
 ************ Crypto Suite Report **********
 TOTAL TESTS     : 61
-TOTAL PASSED    : 50
+TOTAL PASSED    : 39
 TOTAL SIM ERROR : 0
 TOTAL FAILED    : 0
-TOTAL SKIPPED   : 11
+TOTAL SKIPPED   : 22
 ******************************************
 
 Running.. Attestation Suite
@@ -1053,6 +1033,7 @@ TOTAL SKIPPED   : 6
 ******************************************
 
 Entering standby..
+
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

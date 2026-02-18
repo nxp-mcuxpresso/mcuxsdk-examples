@@ -101,6 +101,11 @@ void SystemInit(void)
   extern void *__VECTOR_TABLE[];
   SCB->VTOR = (uint32_t) & (__VECTOR_TABLE[0]);
 
+#if defined(MCXL254_cm33_SERIES)  
+  /* Disable ECC check for all RAMs */
+  SYSCON->RAM_CTRL = SYSCON_RAM_CTRL_RAMA_ECC_ENABLE(0) ;
+#endif
+
   //SystemInitHook();
 }
 

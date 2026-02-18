@@ -1,5 +1,5 @@
 #
-# Copyright 2025 NXP
+# Copyright 2025-2026 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -21,12 +21,10 @@ mcux_add_macro(
 mcux_remove_mdk_configuration(
     TARGETS debug release
     CC "-O1"
-    CX "-O1"
 )
 mcux_add_mdk_configuration(
     TARGETS debug release
-    CC "-O0"
-    CX "-O0"
+    CC "-Oz"
 )
 
 #armgcc configurations
@@ -59,6 +57,6 @@ mcux_remove_iar_configuration(
 )
 
 mcux_add_iar_configuration(
-    TARGETS debug
-    CC "-Oh"
+    TARGETS debug release
+    CC "-Ohz"
 )
