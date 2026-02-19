@@ -211,14 +211,15 @@ int main(void)
         topResults[i] = {.score = OUTPUT_MIN_RANGE, .index = -1};
     }
 
+    float threshold = DETECTION_TRESHOLD * CONFIDENCE_SCALE + OUTPUT_MIN_RANGE;
     for (int i = 0; i < outputs[0].toTensor().numel(); i++) {
         int value = OUTPUT_MIN_RANGE;
         if (outputs[0].toTensor().scalar_type() == ScalarType::Char) {
-        	value = (int)outputs[0].toTensor().const_data_ptr<int8_t>()[i];
+        	value = static_cast<int>(outputs[0].toTensor().const_data_ptr<int8_t>()[i]);
         }
 
-        if (value < (int)((float)DETECTION_TRESHOLD * CONFIDENCE_SCALE) + OUTPUT_MIN_RANGE) {
-	    continue;
+        if (static_cast<float>(value) < threshold) {
+            continue;
         }
         result_t pass = {.score = OUTPUT_MIN_RANGE, .index = -1};
         for (int n = 0; n < NUM_RESULTS; n++) {
@@ -238,13 +239,13 @@ int main(void)
 
     if (topResults[0].index >= 0) {
         auto result = topResults[0];
-        confidence = (float)(result.score - OUTPUT_MIN_RANGE) / CONFIDENCE_SCALE;
+        confidence = static_cast<float>(result.score);
         int index = result.index;
-        if (confidence > DETECTION_TRESHOLD)
+        if (confidence > threshold)
             label = labels[index];
     }
 
-    int score = (int)(confidence);
+    int score = static_cast<int>((confidence - OUTPUT_MIN_RANGE) / CONFIDENCE_SCALE);
     PRINTF("----------------------------------------\r\n");
     PRINTF("     Inference time: %d us\r\n", endTime - startTime);
     PRINTF("     Detected: %s (%d%%)\r\n", label, score);
