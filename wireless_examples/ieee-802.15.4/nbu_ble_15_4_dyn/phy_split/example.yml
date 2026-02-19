@@ -15,9 +15,6 @@ nbu_ble_15_4_dyn_phy:
     frdmmcxw72@cm33_core1:
     - -armgcc@debug
     - -armgcc@release
-    kw45b41zevk_nbu:
-    - -armgcc@debug
-    - -armgcc@release
     kw43evk_nbu:
     - -iar@debug
     - -iar@release
