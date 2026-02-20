@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -27,6 +27,8 @@
 #include "model_pte.h"
 #include "timer.h"
 
+#define POOL_SIZE (64 * 1024)
+
 using executorch::aten::ScalarType;
 using executorch::aten::Tensor;
 using executorch::aten::TensorImpl;
@@ -45,8 +47,8 @@ using executorch::runtime::Span;
 using executorch::runtime::Tag;
 using executorch::runtime::TensorInfo;
 
-static uint8_t method_allocator_pool[25 * 1024U] __ALIGNED(16);
-static uint8_t temp_allocator_pool[25 * 1024U] __ALIGNED(16);
+static uint8_t method_allocator_pool[POOL_SIZE] __ALIGNED(16);
+static uint8_t temp_allocator_pool[POOL_SIZE] __ALIGNED(16);
 
 class NMemoryAllocator : public executorch::runtime::MemoryAllocator {
     public:
@@ -57,9 +59,18 @@ class NMemoryAllocator : public executorch::runtime::MemoryAllocator {
             void* ret = executorch::runtime::MemoryAllocator::allocate(size, alignment);
             if (ret != nullptr) {
                 if ((size & (alignment - 1)) == 0) {
+                    // Return nullptr in case of insufficient space.
+                    if (used_ > POOL_SIZE - size) {
+                        return nullptr;
+                    }
                     used_ += size;
                 } else {
-                    used_ = (used_ | (alignment - 1)) + 1 + size;
+                    size_t aligned = (used_ | (alignment - 1)) + 1;
+                    // Return nullptr in case of insufficient space.
+                    if (aligned > POOL_SIZE - size) {
+                        return nullptr;
+                    }
+                    used_ = aligned + size;
                 }
             }
             return ret;
@@ -72,7 +83,12 @@ class NMemoryAllocator : public executorch::runtime::MemoryAllocator {
 
         // Returns the free size of the allocator's memory buffer.
         size_t free_size() const {
-            return executorch::runtime::MemoryAllocator::size() - used_;
+            size_t allocator_size = executorch::runtime::MemoryAllocator::size();
+
+            if (used_ > allocator_size) {
+	        return 0;
+            }
+            return allocator_size - used_;
         }
 
     private:
@@ -80,7 +96,7 @@ class NMemoryAllocator : public executorch::runtime::MemoryAllocator {
 };
 
 typedef struct {
-    float score;
+    int score;
     int index;
 } result_t;
 
@@ -91,7 +107,7 @@ int main(void)
     BOARD_Init();
     TIMER_Init();
 
-    PRINTF("Starting on DSP" EOL);
+    PRINTF("Starting on DSP\r\n");
 
     xthal_set_region_attribute((uint32_t *) method_allocator_pool, (uint32_t) sizeof(method_allocator_pool) + sizeof(temp_allocator_pool), XCHAL_CA_BYPASS, 0);
 
@@ -102,7 +118,7 @@ int main(void)
       PRINTF("Neutron initialization failed with error code %ld\r\n", neutronRC);
     }
 
-    PRINTF("CIFARNET example using a ExecuTorch model\r\n");
+    PRINTF("%s example using a %s model\r\n", EXAMPLE_NAME, FRAMEWORK_NAME);
     auto loader = BufferDataLoader(model_pte, sizeof(model_pte));
 
     PRINTF("Loading model\r\n");
@@ -157,9 +173,9 @@ int main(void)
 
     PRINTF("Preparing inputs...\r\n");
     Tensor::SizesType sizes[] = {1, 3, 32, 32};
-    Tensor::DimOrderType dim_order[] = {0, 1, 2, 3};
+    Tensor::DimOrderType dim_order[] = {0, 2, 3, 1};
 
-    TensorImpl impl(ScalarType::Float, 4, sizes, image_data, dim_order);
+    TensorImpl impl(ScalarType::Char, 4, sizes, image_data, dim_order);
     Tensor tensor(&impl);
     Error status = method->set_input(tensor, 0);
     if (status != Error::Ok) {
@@ -198,25 +214,26 @@ int main(void)
 	   method_allocator.used_size(), temp_allocator.used_size());
 
     std::vector<EValue> outputs(method->outputs_size());
-    PRINTF("%zu outputs: \r\n", outputs.size());
+    PRINTF("%d outputs: \r\n", outputs.size());
     status = method->get_outputs(outputs.data(), outputs.size());
     ET_CHECK(status == Error::Ok);
 
     result_t topResults[NUM_RESULTS];
     for (int i = 0; i < NUM_RESULTS; i++) {
-        topResults[i] = {.score = 0.0f, .index = -1};
+        topResults[i] = {.score = OUTPUT_MIN_RANGE, .index = -1};
     }
 
+    float threshold = DETECTION_TRESHOLD * CONFIDENCE_SCALE + OUTPUT_MIN_RANGE;
     for (int i = 0; i < outputs[0].toTensor().numel(); i++) {
-        float value = 0.0f;
-        if (outputs[0].toTensor().scalar_type() == ScalarType::Float) {
-	    value = outputs[0].toTensor().const_data_ptr<float>()[i];
+        int value = OUTPUT_MIN_RANGE;
+        if (outputs[0].toTensor().scalar_type() == ScalarType::Char) {
+        	value = static_cast<int>(outputs[0].toTensor().const_data_ptr<int8_t>()[i]);
         }
 
-        if (value < (float)DETECTION_TRESHOLD/100) {
-	    continue;
+        if (static_cast<float>(value) < threshold) {
+            continue;
         }
-        result_t pass = {.score = 0.0f, .index = -1};
+        result_t pass = {.score = OUTPUT_MIN_RANGE, .index = -1};
         for (int n = 0; n < NUM_RESULTS; n++) {
             if (pass.index >= 0) {
                 result_t swap = topResults[n];
@@ -230,17 +247,17 @@ int main(void)
     }
 
     const char* label = "No label detected";
-    float confidence = 0;
+    float confidence = 0.0f;
 
     if (topResults[0].index >= 0) {
         auto result = topResults[0];
-        confidence = result.score;
+        confidence = static_cast<float>(result.score);
         int index = result.index;
-        if (confidence * 100 > DETECTION_TRESHOLD)
+        if (confidence > threshold)
             label = labels[index];
     }
 
-    int score = (int)(confidence * 100);
+    int score = static_cast<int>((confidence - OUTPUT_MIN_RANGE) / CONFIDENCE_SCALE);
     PRINTF("----------------------------------------\r\n");
     PRINTF("     Inference time: %d us\r\n", endTime - startTime);
     PRINTF("     Detected: %s (%d%%)\r\n", label, score);
@@ -249,12 +266,9 @@ int main(void)
     for (int i = 0; i < (int)outputs.size(); ++i) {
         Tensor t = outputs[i].toTensor();
         for (int j = 0; j < outputs[i].toTensor().numel(); ++j) {
-            if (t.scalar_type() == ScalarType::Int) {
+            if (t.scalar_type() == ScalarType::Char) {
                 PRINTF("Output[%d][%d]: %d\r\n", i, j,
-                    outputs[i].toTensor().const_data_ptr<int>()[j]);
-            } else {
-                PRINTF("Output[%d][%d]: %f\r\n", i, j,
-                    outputs[i].toTensor().const_data_ptr<float>()[j]);
+                       (int)(outputs[i].toTensor().const_data_ptr<int8_t>()[j]));
             }
         }
     }
