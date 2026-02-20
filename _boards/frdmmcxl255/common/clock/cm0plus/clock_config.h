@@ -19,15 +19,16 @@
  * Definitions
  ******************************************************************************/
 #define BOARD_XTAL32K_CLK_HZ                          32768U  /*!< Board xtal32K frequency in Hz */
-#define VDD_CORE_AON_0_600V_VOLTAGE_32K              (0x2AU)  /*!< Vdd Core voltage 0.770V of the AON domain; Trim value = 42; the calculated AON Core voltage = 1V - (42 * 0.0095V) = 0.601V */
-#define VDD_CORE_AON_0_680V_VOLTAGE_0_75M            (0x21U)  /*!< Vdd Core voltage 0.770V of the AON domain; Trim value = 33; the calculated AON Core voltage = 1V - (33 * 0.0095V) = 0.687V */
-#define VDD_CORE_AON_0_713V_VOLTAGE_2_5M             (0x1EU)  /*!< Vdd Core voltage 0.770V of the AON domain; Trim value = 30; the calculated AON Core voltage = 1V - (30 * 0.0095V) = 0.715V */
-#define VDD_CORE_AON_0_720V_VOLTAGE_3M               (0x1DU)  /*!< Vdd Core voltage 0.770V of the AON domain; Trim value = 29; the calculated AON Core voltage = 1V - (29 * 0.0095V) = 0.725V */
-#define VDD_CORE_AON_0_740V_VOLTAGE_5M               (0x1BU)  /*!< Vdd Core voltage 0.770V of the AON domain; Trim value = 27; the calculated AON Core voltage = 1V - (27 * 0.0095V) = 0.744V */
+#define VDD_CORE_AON_0_600V_VOLTAGE_32K              (0x2AU)  /*!< Vdd Core voltage 0.600V of the AON domain; Trim value = 42; the calculated AON Core voltage = 1V - (42 * 0.0095V) = 0.601V */
+#define VDD_CORE_AON_0_680V_VOLTAGE_0_75M            (0x21U)  /*!< Vdd Core voltage 0.680V of the AON domain; Trim value = 33; the calculated AON Core voltage = 1V - (33 * 0.0095V) = 0.687V */
+#define VDD_CORE_AON_0_713V_VOLTAGE_2_5M             (0x1EU)  /*!< Vdd Core voltage 0.713V of the AON domain; Trim value = 30; the calculated AON Core voltage = 1V - (30 * 0.0095V) = 0.715V */
+#define VDD_CORE_AON_0_720V_VOLTAGE_3M               (0x1DU)  /*!< Vdd Core voltage 0.720V of the AON domain; Trim value = 29; the calculated AON Core voltage = 1V - (29 * 0.0095V) = 0.725V */
+#define VDD_CORE_AON_0_740V_VOLTAGE_5M               (0x1BU)  /*!< Vdd Core voltage 0.740V of the AON domain; Trim value = 27; the calculated AON Core voltage = 1V - (27 * 0.0095V) = 0.744V */
 #define VDD_CORE_AON_0_770V_VOLTAGE_10M              (0x18U)  /*!< Vdd Core voltage 0.770V of the AON domain; Trim value = 24; the calculated AON Core voltage = 1V - (24 * 0.0095V) = 0.772V */
 
 typedef enum {
-    kClockModule_CoreSupplyModes,
+    kClockModule_MainCoreSupplyMode,
+    kClockModule_AONCoreSupplyMode,
     kClockModule_FIRC,
     kClockModule_SIRC,
     kClockModule_FRO16K,

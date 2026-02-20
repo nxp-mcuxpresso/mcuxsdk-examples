@@ -120,7 +120,6 @@ settings:
 - {id: CLKOUT_INIT_Config, value: custom}
 - {id: CTIMER_GRP0_CLK_INIT_Config, value: custom}
 - {id: CTIMER_GRP1_CLK_INIT_Config, value: custom}
-- {id: CoreSupplyModes_INIT_Config, value: custom}
 - {id: DBG_TRACE_CLK_INIT_Config, value: custom}
 - {id: FIRC_INIT_Config, value: custom}
 - {id: FLASH_CLK_INIT_Config, value: custom}
@@ -153,7 +152,6 @@ settings:
 - {id: CGU.LPADC_CLK_SEL.sel, value: N/A}
 - {id: CGU.SLCD_CLK_SEL.sel, value: PMU.FRO_16K}
 - {id: CGU.TMR_GRP_SEL.sel, value: CGU.FRO_DIV4}
-- {id: CGU_ULPIRC_EN_CFG, value: Disabled}
 - {id: COM_GRP_CLK_DIV_HALT, value: Enable}
 - {id: MRCC.CLKOUTCLKDIV.scale, value: '9'}
 - {id: MRCC.P16KCLKSEL.sel, value: PMU.FRO_16K}
@@ -260,7 +258,8 @@ void BOARD_BootClockFRO10M_InitClockModule(clock_module_t module)
 
 void BOARD_BootClockFRO10M(void)
 {
-    CLOCK_EnableClock(kCLOCK_GateAonAPB);                       /* Enable APB clock gate for access to AON. */
+    /* Enable APB clock gate for access to AON. */
+    CLOCK_EnableClock(kCLOCK_GateAonAPB);
     BOARD_BootClockFRO10M_InitClockModule(kClockModule_FRO16K);
     BOARD_BootClockFRO10M_InitClockModule(kClockModule_ROSC);
     BOARD_BootClockFRO10M_InitClockModule(kClockModule_AON_CPU_ROOT_CLK);
