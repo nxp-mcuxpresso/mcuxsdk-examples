@@ -18,4 +18,6 @@ nbu_ble_15_4_dyn_phy:
     kw43evk_nbu:
     - -iar@debug
     - -iar@release
+    - -armgcc@debug
+    - -armgcc@release
 
