@@ -10,8 +10,10 @@ config MCUX_PRJSEG_module.board.display_support
     select MCUX_COMPONENT_driver.lpi2c
 
 # Which panels the board supports
-
 config MCUX_DEMO_PANEL_LVDS2HDMI_SUPPORT
+    default y
+
+config MCUX_DEMO_PANEL_LCD_SPEC_SUPPORT
     default y
 
 if MCUX_PRJSEG_module.board.display_support

@@ -410,6 +410,9 @@ void BOARD_InitDisplayInterface(void)
 #elif DPU_EXAMPLE_DI == DPU_DI_LVDS
     
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
+    BOARD_InitPCAL6524(&pcalHandle);
+    PCAL6524_SetDirection(&pcalHandle, (1 << BOARD_PCAL6524_EXT_5V0_PWR_EN), kPCAL6524_Output);
+    PCAL6524_SetPins(&pcalHandle, (1 << BOARD_PCAL6524_EXT_5V0_PWR_EN));
     /* LVDS configuration */
     LDB_Init(APP_LDB, APP_DPU_DISPLAY_INDEX, LDB_DUAL_PANEL, LVDS_SPWG);
 
@@ -444,7 +447,7 @@ void BOARD_InitDisplayInterface(void)
     HAL_ClockSetRootClk(&hal_lpi2c4ClkCfg);
     BOARD_InitPCAL6524(&pcalHandle);
     PCAL6524_SetDirection(&pcalHandle, (1 << BOARD_PCAL6524_LCD3_nRST), kPCAL6524_Output);
-    PCAL6524_SetDirection(&pcalHandle, (1 << BOARD_PCAL6524_LCD3_nRST), kPCAL6524_Output);
+    PCAL6524_SetPins(&pcalHandle, (1 << BOARD_PCAL6524_LCD3_nRST));
 
     BOARD_LPI2C_Init(LPI2C4, HAL_ClockGetIpFreq(hal_clock_lpi2c4));
     if (kStatus_Success != IT6263_Init(&it6263Handle, &displayConfig))

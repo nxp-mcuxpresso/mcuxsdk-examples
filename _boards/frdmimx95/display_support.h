@@ -11,6 +11,7 @@
  ******************************************************************************/
 #define DPU_DI_LVDS                0
 #define DPU_DI_MIPI                1
+#define DEMO_PANEL_LCD_SPEC        11
 #define DEMO_PANEL_LVDS2HDMI       15
 
 /* Use the MIPI interface. */
@@ -63,21 +64,22 @@
 
 
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
-#if (DEMO_PANEL == DEMO_PANEL_MX9_DSI_OLED)
+#if (DEMO_PANEL == DEMO_PANEL_LCD_SPEC)
 /*
  * The pixel clock is (height + VSW + VFP + VBP) * (width + HSW + HFP + HBP) * frame rate.
- * (2340 + 4 + 10 + 10) * (1080 + 4 + 12 + 8) * x 60Hz = 2364 * 1104 * x 60Hz = 2,609,856 x 57 = 148,761,792 Hz
+ * (800 + 6 + 2 + 15) * (1280 + 32 + 48 + 80) * x 60 = 823 * 1440 * x 60Hz = 71107200 Hz
  */
-#define APP_PANEL_HEIGHT 2340
-#define APP_PANEL_WIDTH  1080
-#define APP_HSW          4
-#define APP_HFP          12
-#define APP_HBP          8
-#define APP_VSW          4
-#define APP_VFP          10
-#define APP_VBP          10
+/* 1280*800 LVDS pannel */
+#define APP_PANEL_HEIGHT   800
+#define APP_PANEL_WIDTH    1280
+#define APP_HSW            32
+#define APP_HFP            48
+#define APP_HBP            80
+#define APP_VSW            6
+#define APP_VFP            2
+#define APP_VBP            15
+#define APP_PIXEL_CLOCK_HZ 72400000 /*497700000/7 = 711000000Hz*/
 #endif
-
 #else
 
 #if (DEMO_PANEL == DEMO_PANEL_LVDS2HDMI)

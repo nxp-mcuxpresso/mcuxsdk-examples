@@ -9,7 +9,9 @@ Hardware requirements
 
 Board settings
 ==============
-For LVDS2HDMI card(1920*1080), connect MINISAS port J16 to panel.
+For LVDS2HDMI card(1920*1080), connect HDMI port J17 to panel.
+For LCD_SPEC panel(1280*800), connect LVDS port J14 to panel.
+Ensure the J12 jumper connect to 12V, J15 jumper connect to 3.3V.
 
 Prepare the Demo
 ================
@@ -31,10 +33,14 @@ When Kconfig is used
 ----------------
 Below setting is for kconfig, you can fix below settings in dpu/fetch_yuv/cm7/prj.conf
 For default LVDS2HDMI card, you do not need to change anything.
+For LCD_SPEC panel(1280*800):
+CONFIG_LCD_SPEC=y
+CONFIG_APP_DISPLAY_EXTERNAL_CONVERTOR=n
 When package is used
 ----------------
 Below setting is for mcux_config.h.
 For default LVDS2HDMI card, you do not need to change anything.
+Setting DEMO_PANEL to 11 to use LCD_SPEC panel(1280*800), you need to set APP_DISPLAY_EXTERNAL_CONVERTOR to 0.
 
 Running the demo
 ================
