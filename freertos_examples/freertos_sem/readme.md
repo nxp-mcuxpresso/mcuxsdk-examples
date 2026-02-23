@@ -117,3 +117,4 @@ Consumer 2 accepted item.
 - [FRDM-MCXA266](../../_boards/frdmmcxa266/freertos_examples/freertos_sem/example_board_readme.md)
 - [FRDM-MCXA366](../../_boards/frdmmcxa366/freertos_examples/freertos_sem/example_board_readme.md)
 - [FRDM-MCXA577](../../_boards/frdmmcxa577/freertos_examples/freertos_sem/example_board_readme.md)
+- [FRDM-MCXC162](../../_boards/frdmmcxc162/freertos_examples/freertos_sem/example_board_readme.md)

@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
 #
-# Copyright 2024-2025 NXP
+# Copyright 2024-2026 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 freertos_swtimer:
@@ -12,8 +12,8 @@ freertos_swtimer:
       name: freertos_swtimer${core_id_suffix_name}
       category: freertos_examples
       brief: This document explains the freertos_swtimer example. It shows usage of
-        software timer and itscallback.The example application creates one software
-        timer SwTimer. The timer's callback SwTimerCallback isperiodically executed
+        software timer and its callback.The example application creates one software
+        timer SwTimer. The timer's callback SwTimerCallback is periodically executed
         and text "Tick." is printed to terminal.
       example_readme:
       - examples/freertos_examples/freertos_swtimer/readme.md
@@ -127,3 +127,4 @@ freertos_swtimer:
     frdmmcxa266: []
     frdmmcxa366: []
     frdmmcxa577: []
+    frdmmcxc162: []
