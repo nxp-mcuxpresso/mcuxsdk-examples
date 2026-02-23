@@ -96,17 +96,17 @@ mcux_remove_macro(
 mcux_remove_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER ${device_root}/Wireless/RW/RW612/gcc/RW612_flash.ld
+    LINKER ${device_root}/Wireless/RW/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}/gcc/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.ld
 )
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER ${device_root}/Wireless/RW/RW612/iar/RW612_flash.icf
+    LINKER ${device_root}/Wireless/RW/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}/iar/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.icf
 )
 mcux_remove_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER ${device_root}/Wireless/RW/RW612/arm/RW612_flash.scf
+    LINKER ${device_root}/Wireless/RW/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}/arm/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.scf
 )
 
 # Add or remove Linker File Configurations
