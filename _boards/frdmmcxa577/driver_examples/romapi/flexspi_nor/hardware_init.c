@@ -49,11 +49,9 @@ void BOARD_InitHardware(void)
 {
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitFLEXSPIPins();
+    /* ROM API uses PLL for FlexSPI, so Core use FROHF */
     BOARD_BootClockFROHF192M();
     BOARD_InitDebugConsole();
 
-    CLOCK_EnableClock(kCLOCK_GateFLEXSPI0);
-    CLOCK_SetClockDiv(kCLOCK_DivFLEXSPI0, 1U);
-    CLOCK_AttachClk(kFRO_HF_to_FLEXSPI); /*!< Switch FLEXSPI to FRO HF */
 }
 /*${function:end}*/
