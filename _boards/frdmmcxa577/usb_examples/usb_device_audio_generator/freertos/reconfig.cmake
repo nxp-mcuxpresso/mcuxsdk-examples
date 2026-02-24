@@ -26,13 +26,12 @@ mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
   INCLUDES
     "${board_root}/${board}/usb_examples/usb_device_audio_generator/freertos"
-    "${board_root}/${board}/usb_examples/usb_device_audio_generator/freertos/${core_id}"
 )
 
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "${board_root}/${board}/usb_examples/usb_device_audio_generator/freertos/${core_id}/usb_audio_config.h"
+    "${board_root}/${board}/usb_examples/usb_device_audio_generator/freertos/usb_audio_config.h"
     "${board_root}/${board}/usb_examples/usb_device_audio_generator/freertos/hardware_init.c"
     "examples/usb_examples/usb_device_audio_generator/freertos/audio_data.c"
 )

@@ -26,13 +26,12 @@ mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
   INCLUDES
     "${board_root}/${board}/usb_examples/usb_device_audio_generator/bm"
-    "${board_root}/${board}/usb_examples/usb_device_audio_generator/bm/${core_id}"
 )
 
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "${board_root}/${board}/usb_examples/usb_device_audio_generator/bm/${core_id}/usb_audio_config.h"
+    "${board_root}/${board}/usb_examples/usb_device_audio_generator/bm/usb_audio_config.h"
     "${board_root}/${board}/usb_examples/usb_device_audio_generator/bm/hardware_init.c"
     "examples/usb_examples/usb_device_audio_generator/bm/audio_data.c"
 )
