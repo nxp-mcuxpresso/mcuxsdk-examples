@@ -50,3 +50,4 @@ tfm_regression_ns:
     mcimx93evk:
     - -iar@debug
     - -iar@release
+    frdmmcxa577: []

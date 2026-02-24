@@ -54,3 +54,4 @@ tfm_regression_s:
     mcimx93evk:
     - -iar@debug
     - -iar@release
+    frdmmcxa577: []

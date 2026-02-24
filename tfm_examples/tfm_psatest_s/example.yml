@@ -54,3 +54,4 @@ tfm_psatest_s:
     - -mdk@flash_debug
     - -mdk@flash_release
     mcimx93evk: []
+    frdmmcxa577: []
