@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+#define STATIC_IMAGE_NAME "cat"
 
 // Image dimensions 32 x 32 x 3 (cat)
 static uint8_t image_data[] = {
