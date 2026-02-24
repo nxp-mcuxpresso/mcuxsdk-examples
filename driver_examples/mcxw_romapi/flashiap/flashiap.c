@@ -1,5 +1,5 @@
 /*
- * Copyright 2018, 2023-2025 NXP
+ * Copyright 2018, 2023-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -244,7 +244,7 @@ static status_t FlashEraseProgramDuringRAMInterrupt(flash_config_t *flashInstanc
     uint32_t counter = 1;
 
     /* Disable all the interrupts except for systick */
-    for (int i = NonMaskableInt_IRQn; i < WAKE_PAD_IRQn + 1; i++)
+    for (int i = NonMaskableInt_IRQn; i < CDOG_IRQn + 1; i++)
     {
         if (i != SysTick_IRQn)
         {
