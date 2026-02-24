@@ -5,6 +5,8 @@ iar:
     - scripts/guigenerator/templates/iar/general.eww
   config:
     __common__:
+      debugger_setting:
+        cmsisdap_resetlist: system
       debugger_extra_options:
       - --jlink_only_run_status_check
 mdk:
