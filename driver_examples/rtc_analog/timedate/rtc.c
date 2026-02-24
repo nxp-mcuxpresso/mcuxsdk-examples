@@ -42,13 +42,6 @@ static void PrintCurrentDateTime(void);
 static void PrintKeyData(uint32_t *keyData, uint8_t size);
 
 /*!
- * @brief Print key data
- * @param keyData pointer to key data array
- * @param size size of the key data array
- */
-static void PrintKeyData(uint32_t *keyData, uint8_t size);
-
-/*!
  * @brief Check if CPU is reset from tamper
  */
 bool IsResetFromTamper(void);
