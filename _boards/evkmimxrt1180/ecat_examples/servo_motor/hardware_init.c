@@ -12,12 +12,14 @@
 #include "fsl_iomuxc.h"
 #include "fsl_ecat.h"
 #include "fsl_ele_base_api.h"
+#include "fsl_gpt.h"
 
 #include "ecat_def.h"
 #include "ecatslv.h"
 #include "ecat_hw.h"
 #include "ecatappl.h"
 
+#include "servo_motor.h"
 #ifdef EEPROM_I2C_EMULATOR
 #include "fsl_lpi2c.h"
 #include "fsl_romapi.h"
@@ -281,8 +283,10 @@ static void Ecat_KickOff(void)
 UINT16 HW_Init(void)
 {
     UINT32 intMask;
-    UINT16 led_startus = 0;
+    UINT16 led_status = 0;
     xbar_control_config_t xbaraConfig;
+    uint32_t gptFreq;
+    gpt_config_t gptConfig;
     rgpio_pin_config_t pinConfig = {.pinDirection = kRGPIO_DigitalOutput, .outputLogic = 0};
 
     /* Init board hardware. */
@@ -302,8 +306,14 @@ UINT16 HW_Init(void)
     LPI2C_Slave_Init();
 #endif
 
-    /* Set systick reload value to generate 1ms interrupt */
-    SysTick_Config(SystemCoreClock / 1000U);
+    /*Enable GPT1*/
+    GPT_GetDefaultConfig(&gptConfig);
+    GPT_Init(GPT1, &gptConfig);
+    gptFreq = CLOCK_GetRootClockFreq(kCLOCK_Root_Gpt1);
+    GPT_SetClockDivider(GPT1, 100);
+    GPT_SetOutputCompareValue(GPT1, kGPT_OutputCompare_Channel1, gptFreq / 100000);
+    GPT_EnableInterrupts(GPT1, kGPT_OutputCompare1InterruptEnable);
+    EnableIRQ(GPT1_IRQn);
 
     /* Reset ecat PHY */
     RGPIO_PinInit(RGPIO4, 25, &pinConfig);
@@ -319,22 +329,22 @@ UINT16 HW_Init(void)
     ECAT_EscMdioWrite(ECAT, 0x00, 31, 0x07);
 
     /*enable prot0 coustomized LED */
-    ECAT_EscMdioRead(ECAT, 0x00, 19, &led_startus);
-    ECAT_EscMdioWrite(ECAT, 0x00, 19, led_startus | (1 << 3));
+    ECAT_EscMdioRead(ECAT, 0x00, 19, &led_status);
+    ECAT_EscMdioWrite(ECAT, 0x00, 19, led_status | (1 << 3));
 
     /*Set led1 to LINK100 and set led0 to ACK*/
-    ECAT_EscMdioRead(ECAT, 0x00, 17, &led_startus);
-    ECAT_EscMdioWrite(ECAT, 0x00, 17, led_startus | (1 << 3) | (1 << 5));
+    ECAT_EscMdioRead(ECAT, 0x00, 17, &led_status);
+    ECAT_EscMdioWrite(ECAT, 0x00, 17, led_status | (1 << 3) | (1 << 5));
     /*set port1 page register*/
     ECAT_EscMdioWrite(ECAT, 0x01, 31, 0x07);
 
     /*enable prot1 coustomized LED */
-    ECAT_EscMdioRead(ECAT, 0x01, 19, &led_startus);
-    ECAT_EscMdioWrite(ECAT, 0x01, 19, led_startus | (1 << 3));
+    ECAT_EscMdioRead(ECAT, 0x01, 19, &led_status);
+    ECAT_EscMdioWrite(ECAT, 0x01, 19, led_status | (1 << 3));
 
     /*Set led1 to LINK100 and set led0 to ACK*/
-    ECAT_EscMdioRead(ECAT, 0x01, 17, &led_startus);
-    ECAT_EscMdioWrite(ECAT, 0x01, 17, led_startus | (1 << 3) | (1 << 5));
+    ECAT_EscMdioRead(ECAT, 0x01, 17, &led_status);
+    ECAT_EscMdioWrite(ECAT, 0x01, 17, led_status | (1 << 3) | (1 << 5));
 
     /*Disable phy eee mode*/
     ECAT_EscMdioWrite(ECAT, 0x00, 31, 4);
@@ -390,13 +400,16 @@ UINT16 HW_Init(void)
     /*Enable PDI IRQ*/
     EnableIRQ(ECAT_INT_IRQn);
     NVIC_EnableIRQ(XBAR1_CH0_CH1_IRQn);
+    GPT_StartTimer(GPT1);
+    servo_motor_init();
 
     return 0;
 }
 
-void SysTick_Handler(void)
+void GPT1_IRQHandler(void)
 {
     /* Clear interrupt flag.*/
+    GPT_ClearStatusFlags(GPT1, kGPT_OutputCompare1Flag);
 #if ECAT_TIMER_INT
     ECAT_CheckTimer();
 #endif
@@ -443,6 +456,7 @@ void XBAR1_CH0_CH1_IRQHandler(void)
     {
         XBAR_ClearOutputStatusFlag(kXBAR1_OutputDma4MuxReq154);
         Sync0_Isr();
+        SM_StateMachineSlowTask();
     }
 
     XBAR_GetOutputStatusFlag(kXBAR1_OutputDma4MuxReq155, &status);
@@ -561,12 +575,14 @@ void ENABLE_ESC_INT(void)
 {
     NVIC_EnableIRQ(ECAT_INT_IRQn);
     NVIC_EnableIRQ(XBAR1_CH0_CH1_IRQn);
+    NVIC_EnableIRQ(GPT1_IRQn);
 }
 
 void DISABLE_ESC_INT(void)
 {
     NVIC_DisableIRQ(XBAR1_CH0_CH1_IRQn);
     NVIC_DisableIRQ(ECAT_INT_IRQn);
+    NVIC_DisableIRQ(GPT1_IRQn);
 }
 
 void HW_SetLed(UINT8 RunLed, UINT8 ErrorLed)
