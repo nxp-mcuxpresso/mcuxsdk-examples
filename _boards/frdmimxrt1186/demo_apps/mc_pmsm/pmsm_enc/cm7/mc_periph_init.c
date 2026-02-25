@@ -386,9 +386,10 @@ void M1_InitQD(void)
     
     g_sM1Enc.ui32QDTimerFrequency = (CLOCK_GetRootClockFreq(kCLOCK_Root_Bus_Wakeup)) >> ((EQDC1->FILT & EQDC_FILT_PRSC_MASK) >> EQDC_FILT_PRSC_SHIFT);
     
-    g_sM1Enc.i32Q10Cnt2PosGain = ((0xffffffffU/(4*(1*g_sM1Enc.ui16PulseNumber)))*1024);
-    g_sM1Enc.f32SpeedCalConst = (frac32_t)((60.0*g_sM1Enc.ui32QDTimerFrequency/(g_sM1Enc.ui16Pp*(4*g_sM1Enc.ui16PulseNumber)*M1_N_MAX)) * 134217728);
-    g_sM1Enc.fltSpeedFracToAngularCoeff = (float_t)(2*FLOAT_PI*M1_N_MAX*g_sM1Enc.ui16Pp/60.0);
+    g_sM1Enc.i32Q10Cnt2PosGain = ((0xffffffffU/(4*g_sM1Enc.ui16PulseNumber))*1024);
+        
+    g_sM1Enc.f32SpeedCalConst = (frac32_t)((2*FLOAT_PI*g_sM1Enc.ui32QDTimerFrequency/(4*g_sM1Enc.ui16PulseNumber*M1_N_MAX)) * 134217728);
+    g_sM1Enc.fltSpeedFracToAngularCoeff = (float_t)(M1_N_MAX); 
     
     g_sM1Enc.f32PosMechInit = FRAC32(0.0);
     g_sM1Enc.f32PosMechOffset = FRAC32(0.0);
