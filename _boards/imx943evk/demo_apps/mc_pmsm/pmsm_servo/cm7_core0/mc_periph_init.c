@@ -398,8 +398,6 @@ void InitEndat3(void)
     .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
   };
   
-  BLK_CTRL_WAKEUPMIX_Type *blk_base = BLK_CTRL_WAKEUPMIX; 
-  
   CLOCK_SetParent(&endat3Clk_rxtx);
   CLOCK_SetRate(&endat3Clk_rxtx);
   CLOCK_EnableClock(endat3Clk_rxtx.clkId);
