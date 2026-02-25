@@ -728,12 +728,11 @@ int main(void)
         int n = read_line(g_cmdLine, sizeof(g_cmdLine));
         if (n <= 0)
             continue;
-        char *saveptr = NULL;
-        char *cmd     = strtok_r(g_cmdLine, " \t\r\n", &saveptr);
+        char *cmd = strtok(g_cmdLine, " \t\r\n");
         if (!cmd)
             continue;
 
-        char *args = saveptr;
+        char *args = strtok(NULL, "");
         if (args)
         {
             while (*args && isspace((unsigned char)*args))
@@ -764,8 +763,8 @@ int main(void)
         }
         else if (strcmp(cmd, "send_vw_flag") == 0)
         {
-            char *arg_flag = strtok_r(NULL, " \t\r\n", &saveptr);
-            char *arg_val  = strtok_r(NULL, " \t\r\n", &saveptr);
+            char *arg_flag = strtok(NULL, " \t\r\n");
+            char *arg_val  = strtok(NULL, " \t\r\n");
             if (!arg_flag || !arg_val)
             {
                 (void)PRINTF("Usage: send_vw_flag <name> <val>\r\n");
