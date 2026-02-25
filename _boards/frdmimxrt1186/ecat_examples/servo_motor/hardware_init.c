@@ -12,6 +12,7 @@
 #include "fsl_iomuxc.h"
 #include "fsl_ecat.h"
 #include "fsl_ele_base_api.h"
+#include "fsl_gpt.h"
 
 #include "ecat_def.h"
 #include "ecatslv.h"
@@ -46,6 +47,8 @@ UINT16 HW_Init(void)
     UINT32 intMask;
     UINT16 led_startus = 0;
     xbar_control_config_t xbaraConfig;
+    int32_t gptFreq;
+    gpt_config_t gptConfig;
     rgpio_pin_config_t pinConfig = {.pinDirection = kRGPIO_DigitalOutput, .outputLogic = 0};
 
     /* Init board hardware. */
@@ -131,12 +134,19 @@ UINT16 HW_Init(void)
 
     HW_EscWriteDWord(intMask, ESC_AL_EVENTMASK_OFFSET);
 
-    /* Set systick reload value to generate 1ms interrupt */
-    SysTick_Config(SystemCoreClock / 1000U);
+    /*Enable GPT1*/
+    GPT_GetDefaultConfig(&gptConfig);
+    GPT_Init(GPT1, &gptConfig);
+    gptFreq = CLOCK_GetRootClockFreq(kCLOCK_Root_Gpt1);
+    GPT_SetClockDivider(GPT1, 100);
+    GPT_SetOutputCompareValue(GPT1, kGPT_OutputCompare_Channel1, gptFreq / 100000);
+    GPT_EnableInterrupts(GPT1, kGPT_OutputCompare1InterruptEnable);
+    EnableIRQ(GPT1_IRQn);
 
     /*Enable PDI IRQ*/
     EnableIRQ(ECAT_INT_IRQn);
     NVIC_EnableIRQ(XBAR1_CH0_CH1_IRQn);
+    GPT_StartTimer(GPT1);
     servo_motor_init();
     return 0;
 }
@@ -174,9 +184,10 @@ void HW_Release(void)
 {
 }
 
-void SysTick_Handler(void)
+void GPT1_IRQHandler(void)
 {
     /* Clear interrupt flag.*/
+    GPT_ClearStatusFlags(GPT1, kGPT_OutputCompare1Flag);
 #if ECAT_TIMER_INT
     ECAT_CheckTimer();
 #endif
@@ -219,12 +230,14 @@ void ENABLE_ESC_INT(void)
 {
     NVIC_EnableIRQ(ECAT_INT_IRQn);
     NVIC_EnableIRQ(XBAR1_CH0_CH1_IRQn);
+    NVIC_EnableIRQ(GPT1_IRQn);
 }
 
 void DISABLE_ESC_INT(void)
 {
     NVIC_DisableIRQ(XBAR1_CH0_CH1_IRQn);
     NVIC_DisableIRQ(ECAT_INT_IRQn);
+    NVIC_DisableIRQ(GPT1_IRQn);
 }
 
 void HW_SetLed(UINT8 RunLed, UINT8 ErrorLed)

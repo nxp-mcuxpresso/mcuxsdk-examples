@@ -22,9 +22,6 @@ Board settings
   |   J30  |   2-3  |
   |   J33  |   2-3  |
 
-- Remove and solder zero resistors:  
-  - Add zero resistors: R15, R17, R21, R40, R243, R448.
-
 - For detailed motor connection and motor control user guide, please refer:
   -   http://www.nxp.com/sdkmotorcontrol 
 
