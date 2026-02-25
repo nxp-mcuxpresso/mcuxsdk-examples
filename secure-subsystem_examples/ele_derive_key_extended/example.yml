@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+ele_derive_key_extended:
+  section-type: application
+  contents:
+    meta_path: examples/secure-subsystem_examples/ele_derive_key_extended
+    project-root-path: boards/${board}/secure-subsystem_examples/ele_derive_key_extended/${multicore_foldername}
+    document:
+      name: ele_derive_key_extended${core_id_suffix_name}
+      category: secure-subsystem_examples
+      brief: This example showcases key derivation functionality by using SSS API extensions.
+      example_readme:
+      - examples/secure-subsystem_examples/ele_derive_key_extended/readme.md
+      - ${board_root}/${board}/secure-subsystem_examples/ele_derive_key_extended/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    frdmmcxw71:
+    - +armgcc@debug
+    - +armgcc@release
+    mcxw71evk:
+    - +armgcc@debug
+    - +armgcc@release
