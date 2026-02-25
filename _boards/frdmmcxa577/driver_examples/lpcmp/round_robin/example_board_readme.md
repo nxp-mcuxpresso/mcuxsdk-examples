@@ -43,8 +43,8 @@ When the demo runs successfully, following information can be seen on the OpenSD
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 LPCMP RoundRobin Example.
+channel 0 comparison result is different from preset value!
 channel 1 comparison result is different from preset value!
 channel 2 comparison result is different from preset value!
-channel 3 comparison result is different from preset value!
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
