@@ -112,6 +112,9 @@ int main(void)
     EnableIRQ(APP_ISI_IRQn);
 
 #if CAMERA_NEED_LOAD_FM
+#if defined(APP_CAMERA_FW_EMBEDDED) && APP_CAMERA_FW_EMBEDDED
+    PRINTF("AP1302 firmware embedded at: 0x%x\r\n", APP_CAMERA_FW_ADDRESS);
+#else
     /* wait until put camera firmware into share memory. */
     uint8_t ch;
     do
@@ -120,6 +123,7 @@ int main(void)
         ch = GETCHAR();
     } while (ch != 'A');
     PRINTF("FW Load into memory done\r\n");
+#endif
 #endif
 
     status = CAMERA_DEVICE_Init(&cameraDevice, &cameraConfig);

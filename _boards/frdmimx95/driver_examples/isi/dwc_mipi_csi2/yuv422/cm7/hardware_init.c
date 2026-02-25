@@ -66,22 +66,14 @@ void BOARD_InitHardware(void)
         .did = HAL_POWER_PLATFORM_MIX_SLICE_IDX_CAMERA,
         .st = hal_power_state_on,
     };
-    hal_clk_t hal_lpi2c3ClkCfg = {
-        .clk_id = hal_clock_lpi2c3,
-        .pclk_id = hal_clock_osc24m,
-        .div = 1, /* 24Mhz for lpi2c */
-        .enable_clk = true,
-        .clk_round_opt = hal_clk_round_auto,
-    };
     /* provide CSI_CLK to connected sensor */
-    hal_clk_t hal_ccmclk1ClkCfg = {
-        .clk_id = hal_clock_ccmcko1,
+    hal_clk_t hal_ccmclk2ClkCfg = {
+        .clk_id = hal_clock_ccmcko2,
         .pclk_id = hal_clock_osc24m,
         .div = 1, /* 24Mhz for lpi2c */
         .enable_clk = true,
         .clk_round_opt = hal_clk_round_auto,
     };
-
     /* clang-format off */
     hal_clk_t hal_dispapbCLKCfg = {
         .clk_id = hal_clock_dispapb,
@@ -115,6 +107,13 @@ void BOARD_InitHardware(void)
         .enable_clk = true,
         .clk_round_opt = hal_clk_round_auto,
     };
+    hal_clk_t hal_lpi2c4ClkCfg = {
+        .clk_id = hal_clock_lpi2c4,
+        .pclk_id = hal_clock_osc24m,
+        .div = 1, /* 24Mhz for lpi2c */
+        .enable_clk = true,
+        .clk_round_opt = hal_clk_round_auto,
+    };
 
     SM_Platform_Init();
     /* Power on the Cameramix */
@@ -130,17 +129,16 @@ void BOARD_InitHardware(void)
     HAL_ClockSetRootClk(&hal_mipiphytestClkCfg);
     HAL_ClockSetRootClk(&hal_mipiphypllbypassClkCfg);
     HAL_ClockSetRootClk(&hal_mipiphypllRefClkCfg);
-    HAL_ClockSetRootClk(&hal_lpi2c3ClkCfg);
-    HAL_ClockSetRootClk(&hal_ccmclk1ClkCfg);
+    HAL_ClockSetRootClk(&hal_ccmclk2ClkCfg);
     HAL_ClockSetRootClk(&hal_dispapbCLKCfg);
     HAL_ClockSetRootClk(&hal_dispaxiCLKCfg);
     HAL_ClockSetRootClk(&hal_dispocramCLKCfg);
     HAL_ClockSetRootClk(&hal_lpi2c2ClkCfg);
+    HAL_ClockSetRootClk(&hal_lpi2c4ClkCfg);
 
     BOARD_BootClockRUN();
     BOARD_InitBootPins();
     BOARD_InitDebugConsole();
-    BOARD_ConfigMPU();
     APP_PrepareCamera();
     BOARD_PrepareDisplay();
 }
