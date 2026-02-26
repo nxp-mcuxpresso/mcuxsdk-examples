@@ -449,9 +449,10 @@ drive_mode_e BOARD_GetRtdDriveMode(void)
                 rtd_drive_mode = DRIVE_MODE_OD;
                 break;
             case PMIC_VOLTAGE_1_0V:
+            case PMIC_VOLTAGE_1_05V:
                 rtd_drive_mode = DRIVE_MODE_ND;
                 break;
-            case PMIC_VOLTAGE_0_9V:
+            case PMIC_VOLTAGE_0_95V:
                 rtd_drive_mode = DRIVE_MODE_UD;
                 break;
             default:
@@ -565,16 +566,16 @@ int32_t BOARD_UpdateM33CoreFreq(cgc_rtd_sys_clk_config_t *config)
                 {
                     config->src = clk_src[DRIVE_MODE_ND];
                     CLOCK_SetCm33SysClkConfig(config);
-                    if (voltage != PMIC_VOLTAGE_1_0V)
+                    if (voltage != PMIC_VOLTAGE_1_05V)
                     {
 	                /* update bias configuration */
                         status = UPOWER_ChngRTDDomBias(DRIVE_MODE_ND);
                         assert(status == 0);
-                        status = UPOWER_ChngPmicVoltage(PMIC_BUCK2, PMIC_VOLTAGE_1_0V);
+                        status = UPOWER_ChngPmicVoltage(PMIC_BUCK2, PMIC_VOLTAGE_1_05V);
                         if (status == 0)
                         {
                             status = UPOWER_GetPmicVoltage(PMIC_BUCK2, &voltage);
-                            if (status == 0 && voltage == PMIC_VOLTAGE_1_0V)
+                            if (status == 0 && voltage == PMIC_VOLTAGE_1_05V)
                             {
                             }
                             else
@@ -594,16 +595,16 @@ int32_t BOARD_UpdateM33CoreFreq(cgc_rtd_sys_clk_config_t *config)
                 {
                     config->src = clk_src[DRIVE_MODE_UD];
                     CLOCK_SetCm33SysClkConfig(config);
-                    if (voltage != PMIC_VOLTAGE_0_9V)
+                    if (voltage != PMIC_VOLTAGE_0_95V)
                     {
                         /* update bias configuration */
                         status = UPOWER_ChngRTDDomBias(DRIVE_MODE_UD);
                         assert(status == 0);
-                        status = UPOWER_ChngPmicVoltage(PMIC_BUCK2, PMIC_VOLTAGE_0_9V);
+                        status = UPOWER_ChngPmicVoltage(PMIC_BUCK2, PMIC_VOLTAGE_0_95V);
                         if (status == 0)
                         {
                             status = UPOWER_GetPmicVoltage(PMIC_BUCK2, &voltage);
-                            if (status == 0 && voltage == PMIC_VOLTAGE_0_9V)
+                            if (status == 0 && voltage == PMIC_VOLTAGE_0_95V)
                             {
                             }
                             else
@@ -634,16 +635,16 @@ int32_t BOARD_UpdateM33CoreFreq(cgc_rtd_sys_clk_config_t *config)
                 {
                     config->src = clk_src[DRIVE_MODE_UD];
                     CLOCK_SetCm33SysClkConfig(config);
-                    if (voltage != PMIC_VOLTAGE_0_9V)
+                    if (voltage != PMIC_VOLTAGE_0_95V)
                     {
                         /* update bias configuration */
                         status = UPOWER_ChngRTDDomBias(DRIVE_MODE_UD);
                         assert(status == 0);
-                        status = UPOWER_ChngPmicVoltage(PMIC_BUCK2, PMIC_VOLTAGE_0_9V);
+                        status = UPOWER_ChngPmicVoltage(PMIC_BUCK2, PMIC_VOLTAGE_0_95V);
                         if (status == 0)
                         {
                             status = UPOWER_GetPmicVoltage(PMIC_BUCK2, &voltage);
-                            if (status == 0 && voltage == PMIC_VOLTAGE_0_9V)
+                            if (status == 0 && voltage == PMIC_VOLTAGE_0_95V)
                             {
                             }
                             else
@@ -711,6 +712,28 @@ int32_t BOARD_UpdateM33CoreFreq(cgc_rtd_sys_clk_config_t *config)
                          m33_dest_core_frequency <= CM33_CORE_MAX_FREQ_ND)
                 {
                     config->src = clk_src[DRIVE_MODE_ND];
+                    if (voltage != PMIC_VOLTAGE_1_05V)
+                    {
+                        status = UPOWER_ChngPmicVoltage(PMIC_BUCK2, PMIC_VOLTAGE_1_05V);
+                        if (status == 0)
+                        {
+                            status = UPOWER_GetPmicVoltage(PMIC_BUCK2, &voltage);
+                        }
+                        else
+                        {
+                            assert(false);
+                        }
+                    }
+                    if (status == 0 && voltage == PMIC_VOLTAGE_1_05V)
+                    {
+                        /* update bias configuration */
+                        status = UPOWER_ChngRTDDomBias(DRIVE_MODE_ND);
+                        assert(status == 0);
+                    }
+                    else
+                    {
+                        assert(false);
+                    }
                 }
             }
             /* 0 MHz < current core clk of cortex-m33 <= 38.4 MHz */
@@ -749,9 +772,9 @@ int32_t BOARD_UpdateM33CoreFreq(cgc_rtd_sys_clk_config_t *config)
                          m33_dest_core_frequency <= CM33_CORE_MAX_FREQ_ND)
                 {
                     config->src = clk_src[DRIVE_MODE_ND];
-                    if (voltage != PMIC_VOLTAGE_1_0V)
+                    if (voltage != PMIC_VOLTAGE_1_05V)
                     {
-                        status = UPOWER_ChngPmicVoltage(PMIC_BUCK2, PMIC_VOLTAGE_1_0V);
+                        status = UPOWER_ChngPmicVoltage(PMIC_BUCK2, PMIC_VOLTAGE_1_05V);
                         if (status == 0)
                         {
                             status = UPOWER_GetPmicVoltage(PMIC_BUCK2, &voltage);
@@ -761,7 +784,7 @@ int32_t BOARD_UpdateM33CoreFreq(cgc_rtd_sys_clk_config_t *config)
                             assert(false);
                         }
                     }
-                    if (status == 0 && voltage == PMIC_VOLTAGE_1_0V)
+                    if (status == 0 && voltage == PMIC_VOLTAGE_1_05V)
                     {
                         /* update bias configuration */
                         status = UPOWER_ChngRTDDomBias(DRIVE_MODE_ND);
@@ -828,15 +851,15 @@ void BOARD_SwitchDriveMode(void)
      * UD() -> ND -> OD
      *       |      |
      *       ---<----
-     * UD: 0.9 V (only FRO is available for RTD in Under Drive Mode)
-     * ND: 1.0 V
+     * UD: 0.95 V (only FRO is available for RTD in Under Drive Mode)
+     * ND: 1.05 V
      * OD: 1.1 V
      */
     // clang-format on
     int voltage[] = {
-        PMIC_VOLTAGE_0_9V,
-	PMIC_VOLTAGE_1_0V,
-	PMIC_VOLTAGE_1_1V
+        PMIC_VOLTAGE_0_95V,
+        PMIC_VOLTAGE_1_05V,
+        PMIC_VOLTAGE_1_1V
     };
 
     (void)status; /*fix build warning when with -Os optimizetion level */
