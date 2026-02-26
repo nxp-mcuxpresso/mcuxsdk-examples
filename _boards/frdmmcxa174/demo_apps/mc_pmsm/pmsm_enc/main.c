@@ -98,7 +98,6 @@ ctrl_m1_mid_t g_sSpinMidSwitch;           /* Control Spin/MID switching */
  * Code
  ******************************************************************************/
 
-
 /*!
  * @brief   Application main function processing peripheral function calling and
  *          infinite loop
@@ -590,4 +589,5 @@ static void BOARD_Init(void)
     CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
 
     RESET_PeripheralReset(BOARD_DEBUG_UART_RST);
+  
 }

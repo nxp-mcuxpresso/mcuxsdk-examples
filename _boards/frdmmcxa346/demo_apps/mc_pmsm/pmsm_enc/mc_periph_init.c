@@ -287,8 +287,6 @@ static void InitADC(void)
     lpadcCommandConfig.conversionResolutionMode = kLPADC_ConversionResolutionStandard;
     lpadcCommandConfig.sampleTimeMode = kLPADC_SampleTimeADCK3;
     
-    
-    
     /* SET VOLT_DCB_CHANNEL_NUMBER (ADC0) */
     lpadcCommandConfig.channelNumber = VOLT_DCB_CHANNEL_NUMBER;
     lpadcCommandConfig.chainedNextCommandNumber = 0U;
@@ -299,8 +297,7 @@ static void InitADC(void)
     lpadcTriggerConfig.targetCommandId = 1U;
     lpadcTriggerConfig.enableHardwareTrigger = true;
     LPADC_SetConvTriggerConfig(ADC0, 0U, &lpadcTriggerConfig);
-    
-    
+   
     
     /* SET CURRENTS CHANNELS (ADC1) */
     lpadcCommandConfig.channelNumber = CUR_A_CHANNEL_NUMBER;
@@ -321,8 +318,6 @@ static void InitADC(void)
     lpadcTriggerConfig.enableHardwareTrigger = true;
     LPADC_SetConvTriggerConfig(ADC1, 0U, &lpadcTriggerConfig);
     
-    
-    
     /* Set watermark level selection */
     ADC1->FCTRL |= ADC_FCTRL_FWMARK(2);
     
@@ -330,8 +325,7 @@ static void InitADC(void)
     LPADC_EnableInterrupts(ADC1, kLPADC_FIFO0WatermarkInterruptEnable);
     NVIC_SetPriority(ADC1_IRQn, 0U);
     NVIC_EnableIRQ(ADC1_IRQn);  
-    
-    
+       
     /* ADC0 base address */
     g_sM1Curr3phDcBus.pToAdcBase = ADC0;
 
@@ -350,15 +344,9 @@ static void InitINPUTMUX(void)
     /* Write to INPUTMUX0: Peripheral clock is enabled */
     CLOCK_EnableClock(kCLOCK_GateINPUTMUX0);
     
-//    /* PWM0_SM0_OUT_TRIG0 is selected as trigger input for ADC0 channel 0 */
-//    INPUTMUX_AttachSignal(INPUTMUX0, 0U, kINPUTMUX_Pwm0Sm0OutTrig0ToAdc0Trigger);
-//    
-//    /* PWM0_SM0_OUT_TRIG0 is selected as trigger input for ADC1 channel 0 */
-//    INPUTMUX_AttachSignal(INPUTMUX0, 0U, kINPUTMUX_Pwm0Sm0OutTrig0ToAdc1Trigger);
-    
-    INPUTMUX0->ADC0_TRIG[0] = 0x12;
-    INPUTMUX0->ADC1_TRIG[0] = 0x12;
-
+    /* PWM0_SM0_OUT_TRIG0 is selected as trigger input for ADC0/ADC1 channel 0 */
+    INPUTMUX0->ADC0_TRIG[0] = 0x12;     /* Pwm0Sm0OutTrig0ToAdc0Trigger */
+    INPUTMUX0->ADC1_TRIG[0] = 0x12;     /* Pwm0Sm0OutTrig0ToAdc1Trigger */
 }
 
 
@@ -414,25 +402,42 @@ static void InitQD(void)
     CLOCK_EnableClock(kCLOCK_GateQDC0);    
     RESET_ReleasePeripheralReset(kQDC0_RST_SHIFT_RSTn);
     
+    EQDC0->CTRL2 &= ~EQDC_CTRL2_LDMOD_MASK;
+    EQDC0->CTRL &= ~EQDC_CTRL_LDOK_MASK;
+    
+    EQDC0->CTRL |= EQDC_CTRL_LDOK_MASK;
+    while (EQDC0->CTRL & EQDC_CTRL_LDOK_MASK);
+
     /* Pass initialization data into encoder driver structure */
     /* encoder position and speed measurement */
     g_sM1Enc.pui32QdBase   = (EQDC_Type *)EQDC0;
-    g_sM1Enc.sTo.fltPGain  = M1_POSPE_TO_KP_GAIN;
-    g_sM1Enc.sTo.fltIGain  = M1_POSPE_TO_KI_GAIN;
-    g_sM1Enc.sTo.fltThGain = M1_POSPE_TO_THETA_GAIN;
-    g_sM1Enc.a32PosMeGain  = M1_POSPE_MECH_POS_GAIN;
     g_sM1Enc.ui16Pp        = M1_MOTOR_PP;
     g_sM1Enc.bDirection    = M1_POSPE_ENC_DIRECTION;
-    g_sM1Enc.fltSpdEncMin  = M1_POSPE_ENC_N_MIN;
     g_sM1Enc.ui16PulseNumber = M1_POSPE_ENC_PULSES;
-    
-    /* Quadrature pulses per one revolution */
-    M1_MCDRV_ENC_SET_PULSES(&g_sM1Enc); 
-    /* Set encoder direction */
-    M1_MCDRV_ENC_SET_DIRECTION(&g_sM1Enc); 
+
     /* Enable modulo counting and revolution counter increment on roll-over */
     EQDC0->CTRL2 = EQDC_CTRL2_REVMOD_MASK;
-
+    
+    /* Prescaler for the timer within QDC, the prescaling value is 2^Mx_QDC_TIMER_PRESCALER */
+    EQDC0->FILT = EQDC_FILT_FILT_CNT(2) | EQDC_FILT_FILT_PER(1) | EQDC_FILT_PRSC(6);
+    
+    EQDC0->CTRL2 = EQDC_CTRL2_REVMOD_MASK | EQDC_CTRL2_PMEN_MASK;
+    
+    g_sM1Enc.ui32QDTimerFrequency = (CLOCK_GetFreq(kCLOCK_BusClk)) >> ((EQDC0->FILT & EQDC_FILT_PRSC_MASK) >> EQDC_FILT_PRSC_SHIFT);
+    
+    g_sM1Enc.i32Q10Cnt2PosGain = ((0xffffffffU/(4*g_sM1Enc.ui16PulseNumber))*1024);
+        
+    g_sM1Enc.f32SpeedCalConst = (frac32_t)((2*FLOAT_PI*g_sM1Enc.ui32QDTimerFrequency/(4*g_sM1Enc.ui16PulseNumber*M1_N_MAX)) * 134217728);
+    g_sM1Enc.fltSpeedFracToAngularCoeff = (float_t)(M1_N_MAX);
+    
+    g_sM1Enc.f32PosMechInit = FRAC32(0.0);
+    g_sM1Enc.f32PosMechOffset = FRAC32(0.0);
+    
+    M1_MCDRV_ENC_SET_DIRECTION(&g_sM1Enc);
+      
+    /* Initialization modulo counter*/
+    M1_MCDRV_ENC_SET_PULSES(&g_sM1Enc);
+	
 }
 
 
@@ -446,7 +451,6 @@ static void InitQD(void)
 #if M1_FAULT_ENABLE
 static void InitCMP(void)
 {
-    
     /* Attach peripheral clock */
     CLOCK_AttachClk(kFRO_LF_DIV_to_CMP2);
     CLOCK_SetClockDiv(kCLOCK_DivCMP2_FUNC, 1U);
