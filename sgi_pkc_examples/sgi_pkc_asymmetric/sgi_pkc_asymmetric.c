@@ -11,6 +11,9 @@
 #include "app.h"
 #include "mcuxCsslExamples.h"
 #include "sgi_pkc_asymmetric.h"
+
+#include "mcux_sgi.h"
+#include "mcux_pkc.h"
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -33,6 +36,18 @@ int main(void)
 
     /* Init board hardware. */
     BOARD_InitHardware();
+
+    /* Enable SGI and related HW */
+    if (SGI_PowerDownWakeupInit(SGI0) != kStatus_Success)
+    {
+        PRINTF("\r\nSGI init failed\r\n");
+    }
+
+    /* Enable PKC and related HW */
+    if (PKC_PowerDownWakeupInit(PKC0) != kStatus_Success)
+    {
+        PRINTF("\r\nPKC init failed\r\n");
+    }
 
     PRINTF("\r\nSGI PKC asymmetric cipher example\r\n");
     PRINTF("\r\n============================\r\n");

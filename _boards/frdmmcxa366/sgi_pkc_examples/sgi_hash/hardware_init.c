@@ -17,7 +17,5 @@ void BOARD_InitHardware(void)
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
-    
-    CLOCK_EnableClock(kCLOCK_GateSGI0);
 }
 /*${function:end}*/

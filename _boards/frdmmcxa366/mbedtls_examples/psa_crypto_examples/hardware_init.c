@@ -12,8 +12,6 @@
 
 #include "crypto_driver_random.h"
 
-//#include "fsl_trng.h"
-//#include "fsl_crc.h"
 /*${header:end}*/
 
 /*${function:start}*/
@@ -22,32 +20,6 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
-    
-    
-    RESET_ReleasePeripheralReset(kPKC0_RST_SHIFT_RSTn);
-    
-    RESET_ReleasePeripheralReset(kTRNG0_RST_SHIFT_RSTn);
-    
-    CLOCK_EnableClock(kCLOCK_GateSGI0);
-    
-    CLOCK_EnableClock(kCLOCK_GateTRNG0);
-    
-    CLOCK_EnableClock(kCLOCK_GatePKC0);
-    
-    /* Turn on interleaving for PKC RAM*/
-    SYSCON->RAM_INTERLEAVE = 0x00000001u;
-/*    
-    trng_config_t trngcon;
-    TRNG_GetDefaultConfig(&trngcon);
-    trngcon.oscillatorMode = kTRNG_DualOscillatorMode;
-    
-    TRNG_Init(TRNG0,&trngcon);
-    
-    CRC_Type *base = CRC0;
-    crc_config_t config;
-    CRC_GetDefaultConfig(&config);
-    CRC_Init(base, &config);
-*/
 }
 
 int mbedtls_platform_get_entropy(psa_driver_get_entropy_flags_t flags,

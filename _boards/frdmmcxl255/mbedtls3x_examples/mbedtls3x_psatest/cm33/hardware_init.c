@@ -18,30 +18,6 @@ void BOARD_InitHardware(void)
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
-            
-    SYSCON->SRAM_INTERLEAVE = 0x00000001u;
-    
-    RESET_ReleasePeripheralReset(kPKC0_RST_SHIFT_RSTn);
-    
-    RESET_ReleasePeripheralReset(kTRNG0_RST_SHIFT_RSTn);
-    
-    CLOCK_EnableClock(kCLOCK_GateSGI0);
 
-    SGI0->SGI_CTRL2 = SGI_SGI_CTRL2_FLUSH_MASK ;
-    
-    CLOCK_EnableClock(kCLOCK_GateTRNG0);
-    
-    CLOCK_EnableClock(kCLOCK_GatePKC0);
-
-    trng_config_t trngcon;
-    TRNG_GetDefaultConfig(&trngcon);
-    trngcon.oscillatorMode = kTRNG_DualOscillatorMode;
-
-    TRNG_Init(TRNG0,&trngcon);
-
-    CRC_Type *base = CRC0;
-    crc_config_t config;
-    CRC_GetDefaultConfig(&config);
-    CRC_Init(base, &config);
 }
 /*${function:end}*/

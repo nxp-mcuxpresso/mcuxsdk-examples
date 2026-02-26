@@ -12,6 +12,8 @@
 #include "mcuxCsslExamples.h"
 #include "sgi_hash.h"
 
+#include "mcux_sgi.h"
+
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -34,6 +36,12 @@ int main(void)
 
     /* Init board hardware. */
     BOARD_InitHardware();
+
+    /* Enable SGI and related HW */
+    if (SGI_PowerDownWakeupInit(SGI0) != kStatus_Success)
+    {
+        PRINTF("\r\nSGI init failed\r\n");
+    }
         
     PRINTF("\r\nSGI hash example\r\n");
     PRINTF("\r\n============================\r\n");
