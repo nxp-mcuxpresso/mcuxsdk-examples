@@ -19,7 +19,7 @@ void BOARD_InitHardware(void)
 
     /* Attach peripheral clock */
     CLOCK_SetClockDiv(kCLOCK_DivFLEXCAN0, 1U);
-    CLOCK_SetClockDiv(kCLOCK_DivFRO_HF, 1U);
-    CLOCK_AttachClk(kPll1ClkDiv_to_FLEXCAN0);
+    CLOCK_SetClockDiv(kCLOCK_DivFRO_HF, 4U);
+    CLOCK_AttachClk(kFRO_HF_DIV_to_FLEXCAN0);
 }
 /*${function:end}*/
