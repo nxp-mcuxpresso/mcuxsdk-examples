@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Micro USB cable
-- IMX95LPD5-EVK board
+- FRDM-IMX95 board
 - J-Link Debug Probe
 - 12V~20V power supply
 - Personal Computer
@@ -28,7 +28,7 @@ Prepare the Demo
 Running the demo
 ================
 When the example runs successfully, you can see the similar information from the terminal as below but you can't see LED toggled on the board
-because there is no led connected on the IMX95LPD5-EVK board .
+because there is no led connected on the FRDM-IMX95 board .
 
 ~~~~~~~~~~~~~~~~~~~~~
 Starting channel No.0 ...

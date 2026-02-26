@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - USB Type-C cable
-- IMX95LPD5-EVK board
+- FRDM-IMX95 board
 - J-Link Debug Probe
 - 12V~20V power supply
 - Personal Computer
@@ -21,7 +21,7 @@ Prepare the Demo
     - No parity
     - One stop bit
     - No flow control
-4.  Download the program to the target board (Please refer "Getting Started with MCUXpresso SDK for IMX95LPD5-EVK.pdf" for how to run different targets).
+4.  Download the program to the target board (Please refer "Getting Started with MCUXpresso SDK for FRDM-IMX95.pdf" for how to run different targets).
 5.  Launch the debugger in your IDE to begin running the example.
 
 Running the demo

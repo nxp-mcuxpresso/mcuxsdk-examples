@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Micro USB cable
-- two IMX95LPD5-EVK board
+- two FRDM-IMX95 board
 - JLink Plus
 - 12V~20V power supply
 - Personal Computer
