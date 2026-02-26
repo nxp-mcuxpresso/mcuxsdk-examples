@@ -5425,10 +5425,10 @@ int wlan_bcast_twt_command(int argc, char **argv)
     else if (0 == strncmp(argv[1], "set", 3))
     {
         btwt_cfg.action              = ACTION_SET;
-        btwt_cfg.bcast_bet_sta_wait  = a2hex_or_atoi(argv[2]);
-        btwt_cfg.bcast_offset        = a2hex_or_atoi(argv[3]);
-        btwt_cfg.bcast_twtli         = a2hex_or_atoi(argv[4]);
-        btwt_cfg.count               = a2hex_or_atoi(argv[5]);
+        btwt_cfg.bcast_bet_sta_wait  = (uint8_t)a2hex_or_atoi(argv[2]);
+        btwt_cfg.bcast_offset        = (uint16_t)a2hex_or_atoi(argv[3]);
+        btwt_cfg.bcast_twtli         = (uint8_t)a2hex_or_atoi(argv[4]);
+        btwt_cfg.count               = (uint8_t)a2hex_or_atoi(argv[5]);
 
         if (btwt_cfg.count < 2 || argc != 6 + 4 * btwt_cfg.count)
         {
@@ -5438,10 +5438,10 @@ int wlan_bcast_twt_command(int argc, char **argv)
 
         for (i = 0; i < btwt_cfg.count; ++i)
         {
-            btwt_cfg.btwt_sets[i].btwt_id        = a2hex_or_atoi(argv[6 + i * 4 + 0]);
-            btwt_cfg.btwt_sets[i].bcast_mantissa = a2hex_or_atoi(argv[6 + i * 4 + 1]);
-            btwt_cfg.btwt_sets[i].bcast_exponent = a2hex_or_atoi(argv[6 + i * 4 + 2]);
-            btwt_cfg.btwt_sets[i].nominal_wake   = a2hex_or_atoi(argv[6 + i * 4 + 3]);
+            btwt_cfg.btwt_sets[i].btwt_id        = (uint8_t)a2hex_or_atoi(argv[6 + i * 4 + 0]);
+            btwt_cfg.btwt_sets[i].bcast_mantissa = (uint16_t)a2hex_or_atoi(argv[6 + i * 4 + 1]);
+            btwt_cfg.btwt_sets[i].bcast_exponent = (uint8_t)a2hex_or_atoi(argv[6 + i * 4 + 2]);
+            btwt_cfg.btwt_sets[i].nominal_wake = (uint8_t)a2hex_or_atoi(argv[6 + i * 4 + 3]);
         }
 
         ret = wlan_send_btwt_command((uint8_t *)(void *)&btwt_cfg);
