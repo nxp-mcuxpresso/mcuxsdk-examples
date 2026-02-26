@@ -32,6 +32,7 @@
 #define I2C_TARGET_ADDR 0x00
 #define ESC_EMULATOR_EEPROM_SIZE 0x1000
 #define FLASH_NS   FMU0
+#define EMULATOR_EEPROM_UPDATE_TIME_MS   300
 
 #define FLASH_DUMMY_CYCLES 0x06
 #define FlexSpiInstance 1U
@@ -251,7 +252,7 @@ void LPI2C_Slave_Init()
 void eeprom_emulator_flash(uint16_t curr_time_ms)
 {
     if (eeprom_updated == 1) {
-        if ((uint16_t)(curr_time_ms - eeprom_emulator_get_update_time()) > 300) { // exceed 100ms
+        if ((uint16_t)(curr_time_ms - eeprom_emulator_get_update_time()) > EMULATOR_EEPROM_UPDATE_TIME_MS) { // exceed 300ms
             flash_eeprom_emulator_flash(esc_eeprom_cache, ESC_EMULATOR_EEPROM_SIZE);
             eeprom_emulator_set_update_status(0, curr_time_ms);
         }
