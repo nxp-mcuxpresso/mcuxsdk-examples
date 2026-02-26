@@ -30,6 +30,7 @@
 #define I2C_TARGET_ADDR 0x00
 #define ESC_EMULATOR_EEPROM_SIZE 0x1000
 #define FLASH_NS   FMU0
+#define EMULATOR_EEPROM_UPDATE_TIME_MS   300
 
 #define FLASH_DUMMY_CYCLES 0x06
 #define FlexSpiInstance 1U
@@ -249,7 +250,7 @@ void LPI2C_Slave_Init()
 void eeprom_emulator_flash(uint16_t curr_time_ms)
 {
     if (eeprom_updated == 1) {
-        if ((uint16_t)(curr_time_ms - eeprom_emulator_get_update_time()) > 300) { // exceed 100ms
+        if ((uint16_t)(curr_time_ms - eeprom_emulator_get_update_time()) > EMULATOR_EEPROM_UPDATE_TIME_MS) { // exceed 300ms
             flash_eeprom_emulator_flash(esc_eeprom_cache, ESC_EMULATOR_EEPROM_SIZE);
             eeprom_emulator_set_update_status(0, curr_time_ms);
         }
@@ -281,7 +282,7 @@ static void Ecat_KickOff(void)
 UINT16 HW_Init(void)
 {
     UINT32 intMask;
-    UINT16 led_startus = 0;
+    UINT16 led_status = 0;
     xbar_control_config_t xbaraConfig;
     rgpio_pin_config_t pinConfig = {.pinDirection = kRGPIO_DigitalOutput, .outputLogic = 0};
 
@@ -319,22 +320,22 @@ UINT16 HW_Init(void)
     ECAT_EscMdioWrite(ECAT, 0x00, 31, 0x07);
 
     /*enable prot0 coustomized LED */
-    ECAT_EscMdioRead(ECAT, 0x00, 19, &led_startus);
-    ECAT_EscMdioWrite(ECAT, 0x00, 19, led_startus | (1 << 3));
+    ECAT_EscMdioRead(ECAT, 0x00, 19, &led_status);
+    ECAT_EscMdioWrite(ECAT, 0x00, 19, led_status | (1 << 3));
 
     /*Set led1 to LINK100 and set led0 to ACK*/
-    ECAT_EscMdioRead(ECAT, 0x00, 17, &led_startus);
-    ECAT_EscMdioWrite(ECAT, 0x00, 17, led_startus | (1 << 3) | (1 << 5));
+    ECAT_EscMdioRead(ECAT, 0x00, 17, &led_status);
+    ECAT_EscMdioWrite(ECAT, 0x00, 17, led_status | (1 << 3) | (1 << 5));
     /*set port1 page register*/
     ECAT_EscMdioWrite(ECAT, 0x01, 31, 0x07);
 
     /*enable prot1 coustomized LED */
-    ECAT_EscMdioRead(ECAT, 0x01, 19, &led_startus);
-    ECAT_EscMdioWrite(ECAT, 0x01, 19, led_startus | (1 << 3));
+    ECAT_EscMdioRead(ECAT, 0x01, 19, &led_status);
+    ECAT_EscMdioWrite(ECAT, 0x01, 19, led_status | (1 << 3));
 
     /*Set led1 to LINK100 and set led0 to ACK*/
-    ECAT_EscMdioRead(ECAT, 0x01, 17, &led_startus);
-    ECAT_EscMdioWrite(ECAT, 0x01, 17, led_startus | (1 << 3) | (1 << 5));
+    ECAT_EscMdioRead(ECAT, 0x01, 17, &led_status);
+    ECAT_EscMdioWrite(ECAT, 0x01, 17, led_status | (1 << 3) | (1 << 5));
 
     /*Disable phy eee mode*/
     ECAT_EscMdioWrite(ECAT, 0x00, 31, 4);
