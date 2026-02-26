@@ -297,21 +297,6 @@ void BOARD_InitENETPins(void);
   @{ */
 
 /* Symbols to be used with PORT driver */
-#define BOARD_INITSPIFILTERPINS_SW2_PORT PORT3                /*!<@brief PORT peripheral base pointer */
-#define BOARD_INITSPIFILTERPINS_SW2_PIN 17U                   /*!<@brief PORT pin number */
-#define BOARD_INITSPIFILTERPINS_SW2_PIN_MASK (1U << 17U)      /*!<@brief PORT pin mask */
-                                                              /* @} */
-
-/*!
- * @brief Configures pin routing and optionally pin electrical features.
- *
- */
-void BOARD_InitSPIFILTERPins(void);
-
-/*! @name PORT3_17 (coord G10), SW2
-  @{ */
-
-/* Symbols to be used with PORT driver */
 #define BOARD_INITESPIPINS_SW2_PORT PORT3                /*!<@brief PORT peripheral base pointer */
 #define BOARD_INITESPIPINS_SW2_PIN 17U                   /*!<@brief PORT pin number */
 #define BOARD_INITESPIPINS_SW2_PIN_MASK (1U << 17U)      /*!<@brief PORT pin mask */
