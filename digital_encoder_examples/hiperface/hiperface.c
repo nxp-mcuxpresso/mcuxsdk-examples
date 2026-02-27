@@ -170,6 +170,9 @@ void DSL_RDB_DumpNodeDefiningValue(dsl_rdb_node_t *node, int level)
  */
 int main(void)
 {
+	uint64_t time;
+	uint8_t value;
+	uint32_t count;
 
 	BOARD_InitHardware();
 	dsl_encoder_version_info_t info;
@@ -193,14 +196,25 @@ int main(void)
 	PRINTF("Register access performance test:\r\n");
 	BOARD_InitSysTick();
 	volatile uint32_t *pos_h = (uint32_t *)&BOARD_HIPERFACE_BASEADDR->POS_PRIM[0];
-	uint8_t v;
-	v = *pos_h;
+	value = *pos_h;
 	SYSTICK_START_COUNT();
 	for (int i =0 ; i< 1000; i++) {
-		*pos_h = v;
+		*pos_h = value;
 	}
 
-	PRINTF("\tWrite access time: %d\r\n", SYSTICK_GET_COUNT());
+	count = SYSTICK_GET_COUNT();
+	time = (uint64_t) count * 1000000000/1000 / SystemCoreClock; /* ns */
+	PRINTF("\tWrite a 32bits register takes clock count:%u time:%dns\r\n",
+            count / 1000, (uint32_t) time);
+	SYSTICK_START_COUNT();
+	for (int i =0 ; i< 1000; i++) {
+		value = *pos_h;
+	}
+
+	count = SYSTICK_GET_COUNT();
+	time = (uint64_t) count * 1000000000/1000 / SystemCoreClock; /* ns */
+	PRINTF("\tRead a 32bits register takes clock count:%u time:%dns\r\n",
+            count / 1000, (uint32_t) time);
 
 	/* Cache all RDB infomation */
 	DSL_RDB_ReadAllNodeDefiningValue(BOARD_HIPERFACE_BASEADDR, &enc);
