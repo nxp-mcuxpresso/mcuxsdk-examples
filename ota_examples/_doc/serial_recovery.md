@@ -7,16 +7,18 @@ In OTA examples, the bootloader automatically falls into serial recovery if ther
 
 For more information see [MCUboot's serial recovery documentation](https://docs.mcuboot.com/serial_recovery.html)
 
-**IMPORTANT NOTE:**
+**Encrypted image support**
 
-Serial recovery is not fully supported in the current MCUboot version when using Encrypted XIP mode. However, MCUboot encrypted images can still be used as OTA containers without the PSA crypto backend. To enable this functionality, switch the crypto backend to either the mbedTLS legacy API or TinyCrypt, and add the following configuration to your `mcuboot_config.h` file.
+Serial recovery is not fully supported in the current MCUboot version when using Encrypted XIP mode. However, MCUboot encrypted images can still be used as OTA containers. To enable this functionality, switch the crypto backend to either the mbedTLS legacy API (PSA is not supported) or TinyCrypt, and add the following configuration to your `mcuboot_config.h` file.
 
 ~~~
-CONFIG_BOOT_ENCRYPT_RSA or CONFIG_BOOT_ENCRYPT_EC256
-CONFIG_BOOT_USE_MBEDTLS or CONFIG_BOOT_USE_TINYCRYPT
-~~~
+CONFIG_BOOT_ENCRYPT_EC256
 
-The decryption code uses variable length arrays (VLAs) whose size depends on the flash sector size. This may increase stack size requirements, so adjust the stack size accordingly to avoid stack overflow. Note that VLAs must also be enabled in the toolchain settings.
+//crypto backend
+CONFIG_BOOT_USE_MBEDTLS
+or
+CONFIG_BOOT_USE_TINYCRYPT
+~~~
 
 ## MCU Manager usage
 
