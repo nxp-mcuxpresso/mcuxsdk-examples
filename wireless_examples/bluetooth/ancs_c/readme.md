@@ -1,3 +1,3 @@
 # ancs_c
 
-For details about the this application please check out the [ANCS/AMS client (ancs_c)](<https://mcuxpresso.nxp.com/mcuxsdk/latest/html/middleware/wireless/bluetooth/doc/Bluetooth Low Energy Demo Applications Users Guide/topics/bluetooth_le_stack_and_demo_applications.html#ancs-ams-client-ancs-c>) section in the Bluetooth Low Energy Demo Applications Users Guide.
+For details about the this application please check out the {ref}`ANCS/AMS client (ancs_c)<examples__wireless_examples__bluetooth__ancs_c_docs>` section in the Bluetooth Low Energy Demo Applications Users Guide.

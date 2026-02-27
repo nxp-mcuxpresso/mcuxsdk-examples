@@ -1,3 +1,3 @@
 # ble_shell
 
-For details about the this application please check out the [Bluetooth LE Shell](<https://mcuxpresso.nxp.com/mcuxsdk/latest/html/middleware/wireless/bluetooth/doc/Bluetooth Low Energy Demo Applications Users Guide/topics/bluetooth_le_stack_and_demo_applications.html#bluetooth-le-shell>) section in the Bluetooth Low Energy Demo Applications Users Guide.
+For details about the this application please check out the {ref}`Bluetooth LE Shell<examples__wireless_examples__bluetooth__shell_docs>` section in the Bluetooth Low Energy Demo Applications Users Guide.

@@ -1,3 +1,3 @@
 # hid_host
 
-For details about the this application please check out the [HID Host](<https://mcuxpresso.nxp.com/mcuxsdk/latest/html/middleware/wireless/bluetooth/doc/Bluetooth Low Energy Demo Applications Users Guide/topics/bluetooth_le_stack_and_demo_applications.html#hid-host>) section in the Bluetooth Low Energy Demo Applications Users Guide.
+For details about the this application please check out the {ref}`HID Host<examples__wireless_examples__bluetooth__hid_host_docs>` section in the Bluetooth Low Energy Demo Applications Users Guide.
