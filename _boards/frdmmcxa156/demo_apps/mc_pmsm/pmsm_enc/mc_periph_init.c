@@ -392,28 +392,28 @@ static void InitQD(void)
     CLOCK_EnableClock(kCLOCK_GateQDC0);    
     RESET_ReleasePeripheralReset(kQDC0_RST_SHIFT_RSTn);
     
-    QDC0->CTRL2 &= ~QDC_CTRL2_LDMOD_MASK;
-    QDC0->CTRL &= ~QDC_CTRL_LDOK_MASK;
+    QDC0->CTRL2 &= ~EQDC_CTRL2_LDMOD_MASK;
+    QDC0->CTRL &= ~EQDC_CTRL_LDOK_MASK;
     
-    QDC0->CTRL |= QDC_CTRL_LDOK_MASK;
-    while (QDC0->CTRL & QDC_CTRL_LDOK_MASK);
+    QDC0->CTRL |= EQDC_CTRL_LDOK_MASK;
+    while (QDC0->CTRL & EQDC_CTRL_LDOK_MASK);
 
     /* Pass initialization data into encoder driver structure */
     /* encoder position and speed measurement */
-    g_sM1Enc.pui32QdBase   = (QDC_Type *)QDC0;
+    g_sM1Enc.pui32QdBase   = (EQDC_Type *)QDC0;
     g_sM1Enc.ui16Pp        = M1_MOTOR_PP;
     g_sM1Enc.bDirection    = M1_POSPE_ENC_DIRECTION;
     g_sM1Enc.ui16PulseNumber = M1_POSPE_ENC_PULSES;
 
     /* Enable modulo counting and revolution counter increment on roll-over */
-    QDC0->CTRL2 = QDC_CTRL2_REVMOD_MASK;
+    QDC0->CTRL2 = EQDC_CTRL2_REVMOD_MASK;
     
     /* Prescaler for the timer within QDC, the prescaling value is 2^Mx_QDC_TIMER_PRESCALER */
-    QDC0->FILT = QDC_FILT_FILT_CNT(2) | QDC_FILT_FILT_PER(1) | QDC_FILT_PRSC(6);
+    QDC0->FILT = EQDC_FILT_FILT_CNT(2) | EQDC_FILT_FILT_PER(1) | EQDC_FILT_PRSC(6);
     
-    QDC0->CTRL2 = QDC_CTRL2_REVMOD_MASK | QDC_CTRL2_PMEN_MASK;
+    QDC0->CTRL2 = EQDC_CTRL2_REVMOD_MASK | EQDC_CTRL2_PMEN_MASK;
     
-    g_sM1Enc.ui32QDTimerFrequency = (CLOCK_GetFreq(kCLOCK_BusClk)) >> ((QDC0->FILT & QDC_FILT_PRSC_MASK) >> QDC_FILT_PRSC_SHIFT);
+    g_sM1Enc.ui32QDTimerFrequency = (CLOCK_GetFreq(kCLOCK_BusClk)) >> ((QDC0->FILT & EQDC_FILT_PRSC_MASK) >> EQDC_FILT_PRSC_SHIFT);
     
     g_sM1Enc.i32Q10Cnt2PosGain = ((0xffffffffU/(4*g_sM1Enc.ui16PulseNumber))*1024);
         

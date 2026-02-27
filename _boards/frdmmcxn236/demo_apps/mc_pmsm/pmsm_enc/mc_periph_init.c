@@ -438,34 +438,44 @@ static void InitVref(void)
  */
 static void InitQD1(void)
 {
+   
+    /* Enable clock to ENC modules */
+    CLOCK_EnableClock(kCLOCK_Qdc1);    
     
-    // Setup clocks ************************************************************
-    // Enable clock to ENC modules
-    CLOCK_EnableClock(kCLOCK_Qdc1);
+//    RESET_ReleasePeripheralReset(kQDC0_RST_SHIFT_RSTn);
     
-    // Enable clock to the related PORT modules */
-    CLOCK_EnableClock(kCLOCK_Port1);
-    CLOCK_EnableClock(kCLOCK_Port2);
-    CLOCK_EnableClock(kCLOCK_Port4);
-    
-    // Enable INPUTMUX0 clock
-    CLOCK_EnableClock(kCLOCK_InputMux0);
-    
-    /* Enable modulo counting and revolution counter increment on roll-over */
-    QDC1->CTRL2 = (QDC_CTRL2_MOD_MASK | QDC_CTRL2_REVMOD_MASK);
+//    QDC1->CTRL2 &= ~EQDC_CTRL2_LDMOD_MASK;
+//    QDC1->CTRL &= ~EQDC_CTRL_LDOK_MASK;
+//    
+//    QDC1->CTRL |= EQDC_CTRL_LDOK_MASK;
+//    while (QDC1->CTRL & EQDC_CTRL_LDOK_MASK);
 
     /* Pass initialization data into encoder driver structure */
     /* encoder position and speed measurement */
     g_sM1Enc.pui32QdBase   = (QDC_Type *)QDC1;
-    g_sM1Enc.sTo.fltPGain  = M1_POSPE_TO_KP_GAIN;
-    g_sM1Enc.sTo.fltIGain  = M1_POSPE_TO_KI_GAIN;
-    g_sM1Enc.sTo.fltThGain = M1_POSPE_TO_THETA_GAIN;
-    g_sM1Enc.a32PosMeGain  = M1_POSPE_MECH_POS_GAIN;
     g_sM1Enc.ui16Pp        = M1_MOTOR_PP;
     g_sM1Enc.bDirection    = M1_POSPE_ENC_DIRECTION;
-    g_sM1Enc.fltSpdEncMin  = M1_POSPE_ENC_N_MIN;
     g_sM1Enc.ui16PulseNumber = M1_POSPE_ENC_PULSES;
-      
+
+    /* Enable modulo counting and revolution counter increment on roll-over */
+    QDC1->CTRL2 = QDC_CTRL2_REVMOD_MASK;
+    
+    /* Prescaler for the timer within QDC, the prescaling value is 2^Mx_QDC_TIMER_PRESCALER */
+    QDC1->FILT = QDC_FILT_FILT_CNT(2) | QDC_FILT_FILT_PER(1) | QDC_FILT_FILT_PRSC(6);
+    
+    QDC1->CTRL2 = QDC_CTRL2_REVMOD_MASK;
+    QDC1->CTRL3 = QDC_CTRL3_PMEN_MASK;
+    
+    g_sM1Enc.ui32QDTimerFrequency = (CLOCK_GetFreq(kCLOCK_BusClk)) >> ((QDC0->FILT & QDC_FILT_FILT_PRSC_MASK) >> QDC_FILT_FILT_PRSC_SHIFT);
+    
+    g_sM1Enc.i32Q10Cnt2PosGain = ((0xffffffffU/(4*g_sM1Enc.ui16PulseNumber))*1024);
+        
+    g_sM1Enc.f32SpeedCalConst = (frac32_t)((2*FLOAT_PI*g_sM1Enc.ui32QDTimerFrequency/(4*g_sM1Enc.ui16PulseNumber*M1_N_MAX)) * 134217728);
+    g_sM1Enc.fltSpeedFracToAngularCoeff = (float_t)(M1_N_MAX);
+    
+    g_sM1Enc.f32PosMechInit = FRAC32(0.0);
+    g_sM1Enc.f32PosMechOffset = FRAC32(0.0);
+    
     M1_MCDRV_ENC_SET_DIRECTION(&g_sM1Enc);
       
     /* Initialization modulo counter*/
