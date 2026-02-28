@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+tflm_power_consumption_primary:
+  section-type: application
+  use_sysbuild: true
+  contents:
+    meta_path: examples/eiq_examples/tflm_power_consumption/primary
+    project-root-path: boards/${board}/eiq_examples/tflm_power_consumption/${multicore_foldername}
+    document:
+      name: tflm_power_consumption_primary
+      category: eiq_examples
+      brief: 'This example demonstrates power consumption measurement while running
+        TensorFlow Lite Micro (TFLM) inference on RT700. It combines the power mode
+        testing framework with TFLM label image inference to measure power consumption
+        in various low power modes.'
+      example_readme:
+      - examples/eiq_examples/tflm_power_consumption/readme.md
+      - ${board_root}/${board}/eiq_examples/tflm_power_consumption/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    mimxrt700evk@cm33_core0:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    - +armgcc@flash_debug
+    - +armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -mdk@flash_debug
+    - -mdk@flash_release
