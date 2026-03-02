@@ -483,27 +483,69 @@ void InitADC_ETC(void)
  */
 void M1_InitQD(void)
 {
+
+//    /* Pass initialization data into encoder driver structure */
+//    /* encoder position and speed measurement */
+//    g_sM1Enc.pui32QdBase   = (ENC_Type *)ENC1;
+//    g_sM1Enc.sTo.fltPGain  = M1_POSPE_TO_KP_GAIN;
+//    g_sM1Enc.sTo.fltIGain  = M1_POSPE_TO_KI_GAIN;
+//    g_sM1Enc.sTo.fltThGain = M1_POSPE_TO_THETA_GAIN;
+//    g_sM1Enc.a32PosMeGain  = M1_POSPE_MECH_POS_GAIN;
+//    g_sM1Enc.ui16Pp        = M1_MOTOR_PP;
+//    g_sM1Enc.bDirection    = M1_POSPE_ENC_DIRECTION;
+//    g_sM1Enc.fltSpdEncMin  = M1_POSPE_ENC_N_MIN;
+//    g_sM1Enc.ui16PulseNumber = M1_POSPE_ENC_PULSES;
+//    M1_MCDRV_ENC_SET_DIRECTION(&g_sM1Enc);
+//      
+//    /* Initialization modulo counter*/
+//    M1_MCDRV_ENC_SET_PULSES(&g_sM1Enc);
+//
+//    /* Enable modulo counting and revolution counter increment on roll-over */
+//    ENC1->CTRL2 = (ENC_CTRL2_MOD_MASK | ENC_CTRL2_REVMOD_MASK);
+    
+    
     /* Enable clock to ENC modules */
     CLOCK_EnableClock(kCLOCK_Enc1);
+    
 
     /* Pass initialization data into encoder driver structure */
     /* encoder position and speed measurement */
     g_sM1Enc.pui32QdBase   = (ENC_Type *)ENC1;
-    g_sM1Enc.sTo.fltPGain  = M1_POSPE_TO_KP_GAIN;
-    g_sM1Enc.sTo.fltIGain  = M1_POSPE_TO_KI_GAIN;
-    g_sM1Enc.sTo.fltThGain = M1_POSPE_TO_THETA_GAIN;
-    g_sM1Enc.a32PosMeGain  = M1_POSPE_MECH_POS_GAIN;
     g_sM1Enc.ui16Pp        = M1_MOTOR_PP;
     g_sM1Enc.bDirection    = M1_POSPE_ENC_DIRECTION;
-    g_sM1Enc.fltSpdEncMin  = M1_POSPE_ENC_N_MIN;
     g_sM1Enc.ui16PulseNumber = M1_POSPE_ENC_PULSES;
+
+    /* Enable modulo counting and revolution counter increment on roll-over */
+    ENC1->CTRL2 = ENC_CTRL2_REVMOD_MASK;
+    
+//#define QDC_FILT_FILT_PRSC_MASK                  (0xE000U)
+//#define QDC_FILT_FILT_PRSC_SHIFT                 (13U)
+///*! FILT_PRSC - Prescaler Divide IPBus Clock to FILT Clock */
+//#define QDC_FILT_FILT_PRSC(x)                    (((uint16_t)(((uint16_t)(x)) << QDC_FILT_FILT_PRSC_SHIFT)) & QDC_FILT_FILT_PRSC_MASK)  
+    
+    /* Prescaler for the timer within QDC, the prescaling value is 2^Mx_QDC_TIMER_PRESCALER */
+    //ENC1->FILT = ENC_FILT_FILT_CNT(2) | ENC_FILT_FILT_PER(1) | ENC_FILT_FILT_PRSC(6);
+    ENC1->FILT = ENC_FILT_FILT_CNT(2) | ENC_FILT_FILT_PER(1) | (((uint16_t)(((uint16_t)(6)) << 13U)) & 0xE000U);
+    
+    ENC1->CTRL2 = ENC_CTRL2_REVMOD_MASK;
+    ENC1->CTRL3 = ENC_CTRL3_PMEN_MASK;
+    
+    g_sM1Enc.ui32QDTimerFrequency = (CLOCK_GetFreq(kCLOCK_BusClk)) >> ((ENC1->FILT & 0xE000U) >> 13U);
+    
+    g_sM1Enc.i32Q10Cnt2PosGain = ((0xffffffffU/(4*g_sM1Enc.ui16PulseNumber))*1024);
+        
+    g_sM1Enc.f32SpeedCalConst = (frac32_t)((2*FLOAT_PI*g_sM1Enc.ui32QDTimerFrequency/(4*g_sM1Enc.ui16PulseNumber*M1_N_MAX)) * 134217728);
+    g_sM1Enc.fltSpeedFracToAngularCoeff = (float_t)(M1_N_MAX);
+    
+    g_sM1Enc.f32PosMechInit = FRAC32(0.0);
+    g_sM1Enc.f32PosMechOffset = FRAC32(0.0);
+    
     M1_MCDRV_ENC_SET_DIRECTION(&g_sM1Enc);
       
     /* Initialization modulo counter*/
     M1_MCDRV_ENC_SET_PULSES(&g_sM1Enc);
-
-    /* Enable modulo counting and revolution counter increment on roll-over */
-    ENC1->CTRL2 = (ENC_CTRL2_MOD_MASK | ENC_CTRL2_REVMOD_MASK);
+    
+    
 }
 
 /*!

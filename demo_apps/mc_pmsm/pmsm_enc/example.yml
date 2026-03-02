@@ -13,8 +13,8 @@ mc_pmsm_enc:
       - ${board_root}/${board}/demo_apps/mc_pmsm/pmsm_enc/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    # evkmimxrt1180@cm7: []
-    # evkbmimxrt1170@cm7: []
+    evkmimxrt1180@cm7: []
+    evkbmimxrt1170@cm7: []
     frdmimxrt1186@cm7:
     - +armgcc@flexspi_nor_hyperram_debug
     - +armgcc@flexspi_nor_hyperram_release
