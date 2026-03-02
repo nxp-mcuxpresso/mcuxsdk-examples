@@ -328,3 +328,4 @@ cmsis_lpuart_edma_transfer:
     - +armgcc@release
     - +iar@debug
     - +iar@release
+    frdmmcxa577: []
