@@ -20,10 +20,18 @@ mcux_add_mcux_configuration(
   CX "-std=gnu++17"
 )
 
+
 mcux_add_armgcc_configuration(
-  CC "-Wall -fno-common -ffunction-sections -fdata-sections -fno-builtin -mthumb -mapcs -DNDEBUG  -O3"
-  CX "-Wall -fno-common -ffunction-sections -fdata-sections -fno-builtin -mthumb -mapcs -fno-rtti -fno-exceptions -DNDEBUG -O3"
+  CC "-Wall -fno-common -ffunction-sections -fdata-sections -fno-builtin -mthumb -mapcs -DNDEBUG -O3 -DET_LOG_ENABLED=0"
+  CX "-Wall -fno-common -ffunction-sections -fdata-sections -fno-builtin -mthumb -mapcs -fno-rtti -fno-exceptions -DNDEBUG -O3 -DET_LOG_ENABLED=0"
 )
+
+
+mcux_add_xtensa_configuration(
+  CC "-Wall -fno-common -ffunction-sections -fdata-sections -fno-builtin -DNDEBUG  -O3 -mlongcalls -DET_LOG_ENABLED=0"
+  CX "-Wall -fno-common -ffunction-sections -fdata-sections -fno-builtin -fno-rtti -fno-exceptions -DNDEBUG -O3 -mlongcalls -DET_LOG_ENABLED=0"
+)
+
 
 if(${CONFIG_MCUX_HW_CORE} STREQUAL "cm33" OR ${CONFIG_MCUX_HW_CORE} STREQUAL "cm33f")
   mcux_add_armgcc_configuration(
