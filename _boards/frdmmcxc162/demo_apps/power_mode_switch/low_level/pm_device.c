@@ -525,9 +525,6 @@ void APP_PowerPreSwitchHook(app_power_mode_t targetPowerMode)
  
     /* Keep SPC wakeup delay in sync for low power entry. */
     SPC_SetLowPowerWakeUpDelay(APP_SPC, APP_SPC_LDO_LPWKUP_DELAY);
-    
-    EnableIRQ(APP_CMC_IRQN);
-    RTC_Reset(RTC0);
 }
 
 void APP_PowerPostSwitchHook(void)

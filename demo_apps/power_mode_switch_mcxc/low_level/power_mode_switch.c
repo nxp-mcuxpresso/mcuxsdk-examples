@@ -177,6 +177,11 @@ void APP_WUU_IRQ_HANDLER(void)
     }
 }
 
+static inline void SystemNonMaskableInterruptSourceSet(uint8_t id){
+    SYSCON->NMISRC = ((SYSCON->NMISRC & ~SYSCON_NMISRC_IRQCPU0_MASK) |
+                      (SYSCON_NMISRC_IRQCPU0(id) | SYSCON_NMISRC_NMIENCPU0_MASK));
+}
+
 /*! @brief Get wakeup timeout and wakeup source. */
 static void APP_GetWakeupConfig(app_power_mode_t targetMode)
 {
@@ -184,6 +189,8 @@ static void APP_GetWakeupConfig(app_power_mode_t targetMode)
     uint8_t timeOutValue;
     char *isoDomains = NULL;
     wakeupSource = APP_SelectWakeupSource();
+    
+    CMC_EnableNonMaskablePinInterrupt(APP_CMC, true);
 
     switch (wakeupSource)
     {
@@ -197,6 +204,8 @@ static void APP_GetWakeupConfig(app_power_mode_t targetMode)
             WUU_SetInternalWakeUpModulesConfig(APP_WUU, APP_WUU_WAKEUP_TIMER_IDX,
                                                kWUU_InternalModuleInterrupt);
             APP_WakeUpTimerConfig(timeOutValue);
+
+            SystemNonMaskableInterruptSourceSet(APP_WUU_WAKEUP_TIMER_IRQN);
 
             if (targetMode > kAPP_PowerModeSleep)
             {
@@ -218,6 +227,8 @@ static void APP_GetWakeupConfig(app_power_mode_t targetMode)
             wakeupButtonConfig.mode  = kWUU_ExternalPinActiveAlways;
             WUU_SetExternalWakeUpPinsConfig(APP_WUU, APP_WUU_WAKEUP_BUTTON_IDX, &wakeupButtonConfig);
             EnableIRQ(APP_WUU_IRQN);
+            
+            SystemNonMaskableInterruptSourceSet(APP_WUU_IRQN);
 
             PRINTF("Please press %s to wakeup.\r\n", APP_WUU_WAKEUP_BUTTON_NAME);
 
