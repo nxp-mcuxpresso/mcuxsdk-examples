@@ -99,3 +99,4 @@ Press any key to run again.
 - [FRDM-MCXA266](../../../../_boards/frdmmcxa266/cmsis_driver_examples/lpspi/int_b2b_transfer/master/example_board_readme.md)
 - [FRDM-MCXA366](../../../../_boards/frdmmcxa366/cmsis_driver_examples/lpspi/int_b2b_transfer/master/example_board_readme.md)
 - [FRDM-MCXW72](../../../../_boards/frdmmcxw72/cmsis_driver_examples/lpspi/int_b2b_transfer/master/example_board_readme.md)
+- [FRDM-MCXA577](../../../../_boards/frdmmcxa577/cmsis_driver_examples/lpspi/int_b2b_transfer/master/example_board_readme.md)
