@@ -77,3 +77,4 @@ Slave example is running...
 - [FRDM-MCXA366](../../../../_boards/frdmmcxa366/cmsis_driver_examples/lpspi/edma_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXW72](../../../../_boards/frdmmcxw72/cmsis_driver_examples/lpspi/edma_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXA577](../../../../_boards/frdmmcxa577/cmsis_driver_examples/lpspi/edma_b2b_transfer/slave/example_board_readme.md)
+- [FRDM-MCXC162](../../../../_boards/frdmmcxc162/cmsis_driver_examples/lpspi/edma_b2b_transfer/slave/example_board_readme.md)

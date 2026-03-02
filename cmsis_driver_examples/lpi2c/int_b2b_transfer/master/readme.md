@@ -69,3 +69,4 @@ slave is correct.
 - [FRDM-MCXA366](../../../../_boards/frdmmcxa366/cmsis_driver_examples/lpi2c/int_b2b_transfer/master/example_board_readme.md)
 - [FRDM-MCXW72](../../../../_boards/frdmmcxw72/cmsis_driver_examples/lpi2c/int_b2b_transfer/master/example_board_readme.md)
 - [FRDM-MCXA577](../../../../_boards/frdmmcxa577/cmsis_driver_examples/lpi2c/int_b2b_transfer/master/example_board_readme.md)
+- [FRDM-MCXC162](../../../../_boards/frdmmcxc162/cmsis_driver_examples/lpi2c/int_b2b_transfer/master/example_board_readme.md)
