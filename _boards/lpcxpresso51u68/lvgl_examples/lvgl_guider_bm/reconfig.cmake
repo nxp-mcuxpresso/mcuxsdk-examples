@@ -16,23 +16,17 @@ mcux_add_armgcc_configuration(
     TARGETS debug
     CC "-O1"
 )
+
 mcux_add_mcux_configuration(
     TARGETS release
     CC "-g0"
 )
-
 
 mcux_remove_armgcc_configuration(
     TARGETS debug
     CC "-O0"
 )
 
-mcux_add_armgcc_configuration(
-    LD "-Xlinker --defsym=__stack_size__=0x1800"
-)
-mcux_add_iar_configuration(
-    LD "--config_def=__stack_size__=0x1800"
-)
-mcux_add_mdk_configuration(
-    LD "--predefine=\"-D__stack_size__=0x1800\""
+mcux_add_linker_symbol(
+    SYMBOLS "__stack_size__=0x2000"
 )
