@@ -55,7 +55,7 @@ void edgefast_bt_pal_shell_task(void *pvParameters)
     }
 
     bt_CommandInit(shell_handle);
-    PRINTF("Note：run bt.init to initialize Bluetooth firstly\r\n");
+    PRINTF("Note: run bt.init to initialize Bluetooth firstly\r\n");
     while (1)
     {
         vTaskDelay(1000);
