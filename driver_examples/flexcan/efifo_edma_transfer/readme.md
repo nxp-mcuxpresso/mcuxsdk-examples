@@ -31,3 +31,4 @@ them out using EDMA version FlexCAN transactional driver. The sent and received 
 - [MCXW72-LOC](../../../_boards/mcxw72loc/driver_examples/flexcan/efifo_edma_transfer/example_board_readme.md)
 - [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/driver_examples/flexcan/efifo_edma_transfer/example_board_readme.md)
 - [FRDM-MCXW72](../../../_boards/frdmmcxw72/driver_examples/flexcan/efifo_edma_transfer/example_board_readme.md)
+- [FRDM-MCXA577](../../../_boards/frdmmcxa577/driver_examples/flexcan/efifo_edma_transfer/example_board_readme.md)
