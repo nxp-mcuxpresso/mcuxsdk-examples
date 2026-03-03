@@ -96,11 +96,17 @@ char* strWhitenDescr[gMaxWhitenMode_c+1]        = {"Fixed",
                                                    " Chan"};
 
 #if defined(BOARD_LOCALIZATION_REVISION_SUPPORT) && (BOARD_LOCALIZATION_REVISION_SUPPORT > 0)
+#if (NXP_RADIO_GEN >= 470)
+char* strRFModeDescr[gMaxRFMode_c+1]            = {"ANT_A",
+                                                   "ANT_B",
+                                                   "ALL OFF"};
+#else
 char* strRFModeDescr[gMaxRFMode_c+1]            = {"RF1 (SMA1)",
                                                    "RF2 (ANT_A)",
                                                     "RF3 (ANT_B)",
                                                     "RF4 (SMA2)",
                                                     "ALL OFF"};
+#endif
 #endif /* BOARD_LOCALIZATION_REVISION_SUPPORT > 0 */
 
 #if (NXP_RADIO_GEN >= 300)
@@ -3027,7 +3033,9 @@ bool_t CT_RFSwitchControl(ct_event_t evType, void* pAssociatedValue)
     uint8_t u8UartData = 0xFF;
     bool_t bRFSwCtrl1State;
     bool_t bRFSwCtrl2State;
+#if (NXP_RADIO_GEN < 470)
     bool_t bRFSwCtrl3State;
+#endif
 
     switch (RFSwitchStateTest)
     {
@@ -3036,6 +3044,24 @@ bool_t CT_RFSwitchControl(ct_event_t evType, void* pAssociatedValue)
             /* Print Menu */
             PrintMenu(cu8RFSwitchCtrlMenu, (serial_write_handle_t)g_connWriteHandle);
 
+#if (NXP_RADIO_GEN >= 470)
+            bRFSwCtrl1State = ((BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_4_GPIO->PDOR & BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_4_GPIO_PIN_MASK) == BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_4_GPIO_PIN_MASK);
+            bRFSwCtrl2State = ((BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_5_GPIO->PDOR & BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_5_GPIO_PIN_MASK) == BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_5_GPIO_PIN_MASK);
+
+            /* Print Current RF Switch Mode */
+            if(bRFSwCtrl1State & (!bRFSwCtrl2State))
+            {
+                Serial_Print(mAppSerId, "\rCurrent Enabled Antenna: ANT_A\n\r", gAllowToBlock_d);
+            }
+            else if(bRFSwCtrl1State & bRFSwCtrl2State)
+            {
+                Serial_Print(mAppSerId, "\rCurrent Enabled Antenna: ANT_B\n\r", gAllowToBlock_d);
+            }
+            else if((!bRFSwCtrl1State) & (!bRFSwCtrl2State))
+            {
+                Serial_Print(mAppSerId, "\rCurrent Mode: ALL OFF\n\r", gAllowToBlock_d);
+            }
+#else
             bRFSwCtrl1State = ((BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_0_GPIO->PDOR & BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_0_GPIO_PIN_MASK) == BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_0_GPIO_PIN_MASK);
             bRFSwCtrl2State = ((BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_1_GPIO->PDOR & BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_1_GPIO_PIN_MASK) == BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_1_GPIO_PIN_MASK);
             bRFSwCtrl3State = ((BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_2_GPIO->PDOR & BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_2_GPIO_PIN_MASK) == BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_2_GPIO_PIN_MASK);
@@ -3061,6 +3087,7 @@ bool_t CT_RFSwitchControl(ct_event_t evType, void* pAssociatedValue)
             {
                 Serial_Print(mAppSerId, "\rCurrent Mode: ALL OFF\n\r", gAllowToBlock_d);
             }
+#endif /*(NXP_RADIO_GEN >= 470)*/
 
             /* Move to the next state */
             RFSwitchStateTest = gRFSwitchStateRun_c;
@@ -3072,7 +3099,35 @@ bool_t CT_RFSwitchControl(ct_event_t evType, void* pAssociatedValue)
             if(gCtEvtUart_c == evType)
             {
                 u8UartData = *((uint8_t*)pAssociatedValue);
+#if (NXP_RADIO_GEN >= 470)
+                /* ANT_A Mode */
+                if('1' == u8UartData)
+                {
+                    Serial_Print(mAppSerId, "\rANT_A Selected\n\r", gAllowToBlock_d);
+                    GPIO_PinWrite(BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_4_GPIO, BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_4_PIN, 1U);
+                    GPIO_PinWrite(BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_5_GPIO, BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_5_PIN, 0U);
 
+                    gaConfigParams[gConfParamRFMode].id = gRFModeANT_A_c;
+                }
+                /* ANT_B Mode */
+                else if('2' == u8UartData)
+                {
+                    Serial_Print(mAppSerId, "\rANT_B Selected\n\r", gAllowToBlock_d);
+                    GPIO_PinWrite(BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_4_GPIO, BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_4_PIN, 1U);
+                    GPIO_PinWrite(BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_5_GPIO, BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_5_PIN, 1U);
+
+                    gaConfigParams[gConfParamRFMode].id = gRFModeANT_B_c;
+                }
+                /* ALL OFF Mode */
+                else if('3' == u8UartData)
+                {
+                    Serial_Print(mAppSerId, "\rALL OFF Mode Selected\n\r", gAllowToBlock_d);
+                    GPIO_PinWrite(BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_4_GPIO, BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_4_PIN, 0U);
+                    GPIO_PinWrite(BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_5_GPIO, BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_5_PIN, 0U);
+
+                    gaConfigParams[gConfParamRFMode].id = gRFModeAllOff_c;
+                }
+#else
                 /* RF1 Mode */
                 if('1' == u8UartData)
                 {
@@ -3123,6 +3178,7 @@ bool_t CT_RFSwitchControl(ct_event_t evType, void* pAssociatedValue)
 
                     gaConfigParams[gConfParamRFMode].id = gRFModeAllOff_c;
                 }
+#endif /*(NXP_RADIO_GEN >= 470)*/
                 /* Exit from RF Switch Control menu */
                 else if('p' == u8UartData)
                 {

@@ -397,39 +397,26 @@ void BOARD_InitPins(void);
   @{ */
 
 /* Symbols to be used with GPIO driver */
-#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_0_GPIO GPIOA                /*!<@brief GPIO peripheral base pointer */
-#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_0_GPIO_PIN_MASK (1U << 18U) /*!<@brief GPIO pin mask */
+#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_4_GPIO GPIOD                /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_4_GPIO_PIN_MASK (1U << 1U)  /*!<@brief GPIO pin mask */
 
 /* Symbols to be used with PORT driver */
-#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_0_PORT PORTA                /*!<@brief PORT peripheral base pointer */
-#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_0_PIN 18U                   /*!<@brief PORT pin number */
-#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_0_PIN_MASK (1U << 18U)      /*!<@brief PORT pin mask */
+#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_4_PORT PORTD                /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_4_PIN 1U                    /*!<@brief PORT pin number */
+#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_4_PIN_MASK (1U << 1U)       /*!<@brief PORT pin mask */
                                                                          /* @} */
 
-/*! @name PORTA19 (number 14), BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_1_GPIO
+/*! @name PORTD2 (number 25), BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_1_GPIO
   @{ */
 
 /* Symbols to be used with GPIO driver */
-#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_1_GPIO GPIOA                /*!<@brief GPIO peripheral base pointer */
-#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_1_GPIO_PIN_MASK (1U << 19U) /*!<@brief GPIO pin mask */
+#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_5_GPIO GPIOD                /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_5_GPIO_PIN_MASK (1U << 2U)  /*!<@brief GPIO pin mask */
 
 /* Symbols to be used with PORT driver */
-#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_1_PORT PORTA                /*!<@brief PORT peripheral base pointer */
-#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_1_PIN 19U                   /*!<@brief PORT pin number */
-#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_1_PIN_MASK (1U << 19U)      /*!<@brief PORT pin mask */
-                                                                         /* @} */
-
-/*! @name PORTA20 (number 17), BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_2_GPIO
-  @{ */
-
-/* Symbols to be used with GPIO driver */
-#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_2_GPIO GPIOA                /*!<@brief GPIO peripheral base pointer */
-#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_2_GPIO_PIN_MASK (1U << 20U) /*!<@brief GPIO pin mask */
-
-/* Symbols to be used with PORT driver */
-#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_2_PORT PORTA                /*!<@brief PORT peripheral base pointer */
-#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_2_PIN 20U                   /*!<@brief PORT pin number */
-#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_2_PIN_MASK (1U << 20U)      /*!<@brief PORT pin mask */
+#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_5_PORT PORTD                /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_5_PIN 2U                    /*!<@brief PORT pin number */
+#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_5_PIN_MASK (1U << 2U)       /*!<@brief PORT pin mask */
                                                                          /* @} */
 
 /*!

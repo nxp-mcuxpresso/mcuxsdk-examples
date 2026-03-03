@@ -130,6 +130,13 @@ typedef enum ct_conf_param_idx_tag
 #define gDefaultWhitenMode_c    (gWhitenFixed_c)
 
 #if defined(BOARD_LOCALIZATION_REVISION_SUPPORT) && (BOARD_LOCALIZATION_REVISION_SUPPORT > 0)
+#if (NXP_RADIO_GEN >= 470)
+#define gRFModeANT_A_c          (0)
+#define gRFModeANT_B_c          (1)
+#define gRFModeAllOff_c         (2)
+#define gMaxRFMode_c            (gRFModeAllOff_c)
+#define gDefaultRFMode_c        (gRFModeANT_A_c)
+#else
 #define gRFModeRF1_c            (0)
 #define gRFModeRF2_c            (1)
 #define gRFModeRF3_c            (2)
@@ -137,6 +144,7 @@ typedef enum ct_conf_param_idx_tag
 #define gRFModeAllOff_c         (4)
 #define gMaxRFMode_c            (gRFModeAllOff_c)
 #define gDefaultRFMode_c        (gRFModeRF2_c)
+#endif /*(NXP_RADIO_GEN >= 470)*/
 #endif
 
 #elif (NXP_RADIO_GEN >= 300)
