@@ -19,6 +19,13 @@
 #include "mcdrv_adc_mcxn.h"
 #include "mcdrv_enc_qdc2.h"
 #include "m1_pmsm_appconfig.h"
+#include "peripherals.h"
+#include "fsl_common.h"
+#include "fsl_gpio.h"
+#include "fsl_inputmux.h"
+#include "fsl_port.h"
+#include "fsl_lpcmp.h"
+#include "fsl_spc.h"
 
 /* Switch between motor 1 and motor 2 connector */
 #define M1_CONNECTOR_ID_MC1		(1U)                    /* Motor connector 1 */

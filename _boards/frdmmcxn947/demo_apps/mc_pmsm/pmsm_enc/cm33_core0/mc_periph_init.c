@@ -7,13 +7,6 @@
  */
 
 #include "mc_periph_init.h"
-#include "peripherals.h"
-#include "fsl_common.h"
-#include "fsl_gpio.h"
-#include "fsl_inputmux.h"
-#include "fsl_port.h"
-#include "fsl_lpcmp.h"
-#include "fsl_spc.h"
 
 /*******************************************************************************
  * Defines
@@ -507,9 +500,9 @@ static void InitQD1(void)
     QDC1->FILT = QDC_FILT_FILT_CNT(2) | QDC_FILT_FILT_PER(1) | QDC_FILT_FILT_PRSC(6);
     
     QDC1->CTRL2 = QDC_CTRL2_REVMOD_MASK;
-    QDC1->CTRL3 = QDC_CTRL3_PMEN_MASK;
+    QDC1->CTRL3 = QDC_CTRL3_PMEN_MASK | QDC_CTRL3_PRSC(6);
     
-    g_sM1Enc.ui32QDTimerFrequency = (CLOCK_GetFreq(kCLOCK_BusClk)) >> ((QDC0->FILT & QDC_FILT_FILT_PRSC_MASK) >> QDC_FILT_FILT_PRSC_SHIFT);
+    g_sM1Enc.ui32QDTimerFrequency = (CLOCK_GetFreq(kCLOCK_SystickClk0)) >> ((QDC1->FILT & QDC_FILT_FILT_PRSC_MASK) >> QDC_FILT_FILT_PRSC_SHIFT);
     
     g_sM1Enc.i32Q10Cnt2PosGain = ((0xffffffffU/(4*g_sM1Enc.ui16PulseNumber))*1024);
         

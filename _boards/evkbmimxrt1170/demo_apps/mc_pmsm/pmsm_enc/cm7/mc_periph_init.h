@@ -11,8 +11,13 @@
 
 #include "mcdrv_adcetc_imxrt11xx.h"
 #include "mcdrv_pwm3ph_pwma.h"
-#include "mcdrv_enc_qd.h"
+#include "mcdrv_enc_qd2.h"
 #include "m1_pmsm_appconfig.h"
+#include "fsl_lpadc.h"
+#include "fsl_common.h"
+#include "fsl_xbara.h"
+#include "fsl_adc_etc.h"
+#include "fsl_acmp.h"
 
 /*******************************************************************************
  * Definitions
@@ -31,8 +36,6 @@ typedef struct _clock_setup
     uint16_t ui16M1PwmModulo;
     uint16_t ui16M1PwmDeadTime;
 } clock_setup_t;
-
-//typedef ENC_Type QD_BaseType;
 
 /******************************************************************************
  * Clock & PWM definition for motor 1

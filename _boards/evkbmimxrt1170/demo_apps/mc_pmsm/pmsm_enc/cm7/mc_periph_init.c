@@ -7,12 +7,6 @@
  */
 
 #include "mc_periph_init.h"
-#include "fsl_lpadc.h"
-#include "fsl_common.h"
-#include "fsl_xbara.h"
-#include "fsl_adc_etc.h"
-#include "mcdrv_enc_qd.h"
-#include "fsl_acmp.h"
 
 /*******************************************************************************
  * Variables
@@ -530,7 +524,7 @@ void M1_InitQD(void)
     ENC1->CTRL2 = ENC_CTRL2_REVMOD_MASK;
     ENC1->CTRL3 = ENC_CTRL3_PMEN_MASK;
     
-    g_sM1Enc.ui32QDTimerFrequency = (CLOCK_GetFreq(kCLOCK_BusClk)) >> ((ENC1->FILT & 0xE000U) >> 13U);
+    g_sM1Enc.ui32QDTimerFrequency = (CLOCK_GetFreq(kCLOCK_CoreSysClk)) >> ((ENC1->FILT & 0xE000U) >> 13U);
     
     g_sM1Enc.i32Q10Cnt2PosGain = ((0xffffffffU/(4*g_sM1Enc.ui16PulseNumber))*1024);
         
