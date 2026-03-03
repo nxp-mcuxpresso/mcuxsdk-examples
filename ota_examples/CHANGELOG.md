@@ -2,7 +2,15 @@
 
 All notable changes to MCUboot fork in MCUXpresso SDK and related ota examples will be documented in this file.
 
-## [26.03.0] - 03/2026
+## [26.06.0] - 06/2026 
+
+### Changed
+- optimized PSA configuration for mcuboot_opensource to reduce binary size
+- switch default TinyCrypt to PSA crypto backend to speed up boot process on boards FRDM-MCXA266 and FRDM-MCXA366
+    - to switch back to TinyCrypt see [Kconfig and customization of OTA examples](_doc/kconfig_customization.md)
+- changed flash partition layout on boards FRDM-MCXA266 and FRDM-MCXA366
+
+## [26.03.0] - 03/2026 
 
 ### Added
 - MCUboot updated to v2.3.0

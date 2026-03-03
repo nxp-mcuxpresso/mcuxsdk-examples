@@ -14,7 +14,7 @@
 **         Linker file for the GNU C Compiler
 **
 **     Copyright 2016 Freescale Semiconductor, Inc.
-**     Copyright 2016-2024 NXP
+**     Copyright 2016-2026 NXP
 **     SPDX-License-Identifier: BSD-3-Clause
 **
 **     http:                 www.nxp.com
@@ -24,9 +24,12 @@
 */
 
 /*
-  MCUBoot region   0x000000 - 0x010000 : 64kB  (0x10000 bytes)
-  Primary slot     0x010000 - 0x080000 : 448kB (0x70000 bytes)
-  Secondary slot   0x080000 - 0x0F0000 : 448kB (0x70000 bytes)
+  MCUBoot region            0x000000 - 0x020000 : 128kB (0x20000 bytes)
+  Primary slot              0x020000 - 0x08A000 : 424kB (0x6A000 bytes)
+  Secondary slot            0x08A000 - 0x0F4000 : 424kB (0x6A000 bytes)
+  Reserved                  0x0F4000 - 0x0F6000 : 8kB   (0x02000 bytes)
+  Secure installer (locked) 0x0F6000 - 0x0FE000 : 32kB  (0x08000 bytes)
+  CMPA (reserved)           0x0FE000 - 0x100000 : 8kB   (0x02000 bytes)
 */
 
 /* Entry Point */
@@ -38,8 +41,8 @@ STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x1000;
 /* Specify the memory areas */
 MEMORY
 {
-  m_interrupts          (RX)  : ORIGIN = 0x00010200, LENGTH = 0x00000400
-  m_text                (RX)  : ORIGIN = 0x00010600, LENGTH = 0x0006FC00
+  m_interrupts          (RX)  : ORIGIN = 0x00020200, LENGTH = 0x00000400
+  m_text                (RX)  : ORIGIN = 0x00020600, LENGTH = 0x00069A00
   m_data                (RW)  : ORIGIN = 0x20000000, LENGTH = 0x0003C000
   m_sramx0              (RW)  : ORIGIN = 0x04000000, LENGTH = 0x00002000
 }

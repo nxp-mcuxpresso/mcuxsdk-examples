@@ -50,11 +50,6 @@ void SBL_DisablePeripherals(void)
     DbgConsole_Deinit();
 }
 
-status_t CRYPTO_InitHardware(void)
-{
-    return kStatus_Success;
-}
-
 int SBL_SerialRecovery_gpio_check(void)
 {
     if (GPIO_PinRead(BOARD_SERIAL_RECOVERY_GPIO_PORT, BOARD_SERIAL_RECOVERY_GPIO_PIN) == 0U)
