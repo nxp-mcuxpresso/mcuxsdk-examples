@@ -36,6 +36,16 @@ void USB1_HS_IRQHandler(void)
 }
 #endif
 
+#if (defined(USB_DEVICE_CONFIG_EHCI) && (USB_DEVICE_CONFIG_EHCI > 0U))
+#if (defined(USB_DEVICE_CONFIG_CHARGER_DETECT) && (USB_DEVICE_CONFIG_CHARGER_DETECT > 0U)) && \
+    (defined(FSL_FEATURE_SOC_USBHSDCD_COUNT) && (FSL_FEATURE_SOC_USBHSDCD_COUNT > 0U))
+void USB1_HS_PHY_IRQHandler(void)
+{
+    USB_DeviceEhciIsrHSDCDFunction(g_UsbDeviceHidMouse.deviceHandle);
+}
+#endif
+#endif
+
 void USB_DeviceClockInit(void)
 {
 #if defined(USB_DEVICE_CONFIG_EHCI) && (USB_DEVICE_CONFIG_EHCI > 0U)
