@@ -23,21 +23,11 @@
 #include "lpm.h"
 #include "srtm_sai_sdma_adapter.h"
 #include "srtm_rpmsg_endpoint.h"
-#include "fsl_codec_adapter.h"
 
 #if APP_SRTM_PDM_USED
 #include "srtm_pdm_sdma_adapter.h"
 #endif
 
-#if APP_SRTM_CODEC_AK4497_USED
-#include "fsl_i2c.h"
-#include "srtm_i2c_codec_adapter.h"
-#include "fsl_ak4497.h"
-#endif
-
-#if APP_SRTM_CODEC_WM8524_USED
-#include "srtm_wm8524_adapter.h"
-#endif
 #include "fsl_debug_console.h"
 /*******************************************************************************
  * Definitions
@@ -70,9 +60,6 @@ srtm_sai_sdma_local_buf_t g_local_buf = {
 app_rpmsg_monitor_t rpmsgMonitor;
 volatile app_srtm_state_t srtmState = APP_SRTM_StateRun;
 
-codec_handle_t codecHandle;
-codec_config_t boardCodecConfig;
-
 static srtm_dispatcher_t disp;
 static srtm_peercore_t core;
 static srtm_service_t audioService;
@@ -86,14 +73,6 @@ TimerHandle_t linkupTimer;
 srtm_sai_adapter_t saiAdapter;
 #if APP_SRTM_PDM_USED
 srtm_sai_adapter_t pdmAdapter;
-#endif
-srtm_codec_adapter_t codecAdapter;
-#if APP_SRTM_CODEC_AK4497_USED
-srtm_i2c_codec_config_t i2cCodecConfig;
-ak4497_config_t ak4497Config;
-#endif
-#if APP_SRTM_CODEC_WM8524_USED
-srtm_wm8524_config_t wm8524Config;
 #endif
 /*******************************************************************************
  * Code
@@ -188,140 +167,6 @@ static uint32_t APP_SRTM_ConfPdmDevice(srtm_audio_format_type_t format, uint32_t
 }
 #endif
 
-#if APP_SRTM_CODEC_AK4497_USED
-static void i2c_release_bus_delay(void)
-{
-    uint32_t i = 0;
-    for (i = 0; i < APP_SRTM_I2C_DELAY; i++)
-    {
-        __NOP();
-    }
-}
-void APP_SRTM_I2C_ReleaseBus(void)
-{
-    uint8_t i                    = 0;
-    gpio_pin_config_t pin_config = {kGPIO_DigitalOutput, 1, kGPIO_NoIntmode};
-
-    IOMUXC_SetPinMux(IOMUXC_I2C3_SCL_GPIO5_IO18, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_I2C3_SCL_GPIO5_IO18, IOMUXC_SW_PAD_CTL_PAD_DSE(6U) | IOMUXC_SW_PAD_CTL_PAD_FSEL(2U) |
-                                                        IOMUXC_SW_PAD_CTL_PAD_ODE_MASK |
-                                                        IOMUXC_SW_PAD_CTL_PAD_HYS_MASK);
-    IOMUXC_SetPinMux(IOMUXC_I2C3_SDA_GPIO5_IO19, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_I2C3_SDA_GPIO5_IO19, IOMUXC_SW_PAD_CTL_PAD_DSE(6U) | IOMUXC_SW_PAD_CTL_PAD_FSEL(2U) |
-                                                        IOMUXC_SW_PAD_CTL_PAD_ODE_MASK |
-                                                        IOMUXC_SW_PAD_CTL_PAD_HYS_MASK);
-    GPIO_PinInit(APP_AUDIO_I2C_SCL_GPIO, APP_AUDIO_I2C_SCL_PIN, &pin_config);
-    GPIO_PinInit(APP_AUDIO_I2C_SDA_GPIO, APP_AUDIO_I2C_SDA_PIN, &pin_config);
-
-    /* Drive SDA low first to simulate a start */
-    GPIO_PinWrite(APP_AUDIO_I2C_SDA_GPIO, APP_AUDIO_I2C_SDA_PIN, 0U);
-    i2c_release_bus_delay();
-
-    /* Send 9 pulses on SCL and keep SDA high */
-    for (i = 0; i < 9; i++)
-    {
-        GPIO_PinWrite(APP_AUDIO_I2C_SCL_GPIO, APP_AUDIO_I2C_SCL_PIN, 0U);
-        i2c_release_bus_delay();
-
-        GPIO_PinWrite(APP_AUDIO_I2C_SDA_GPIO, APP_AUDIO_I2C_SDA_PIN, 1U);
-        i2c_release_bus_delay();
-
-        GPIO_PinWrite(APP_AUDIO_I2C_SCL_GPIO, APP_AUDIO_I2C_SCL_PIN, 1U);
-        i2c_release_bus_delay();
-        i2c_release_bus_delay();
-    }
-
-    /* Send stop */
-    GPIO_PinWrite(APP_AUDIO_I2C_SCL_GPIO, APP_AUDIO_I2C_SCL_PIN, 0U);
-    i2c_release_bus_delay();
-
-    GPIO_PinWrite(APP_AUDIO_I2C_SDA_GPIO, APP_AUDIO_I2C_SDA_PIN, 0U);
-    i2c_release_bus_delay();
-
-    GPIO_PinWrite(APP_AUDIO_I2C_SCL_GPIO, APP_AUDIO_I2C_SCL_PIN, 1U);
-    i2c_release_bus_delay();
-
-    GPIO_PinWrite(APP_AUDIO_I2C_SDA_GPIO, APP_AUDIO_I2C_SDA_PIN, 1U);
-    i2c_release_bus_delay();
-}
-/*
- * Audio board must be powered after the i.MX8MM EVK is powered.
- * To achieve this, the power gate of the audio board power is controled by the
- * PORT0_1 pin of the PCA6416APW device on the EVK board.
- * Therefore, the "APP_SRTM_PowerOnAudioBoard()" would be specially added in
- * this case.
- */
-static void APP_SRTM_PowerOnAudioBoard(void)
-{
-    uint8_t temp = 0;
-    i2c_master_transfer_t masterXfer;
-
-    /* Prepare transfer structure. */
-    masterXfer.slaveAddress   = 0x20; /* The PCA6416APW IC address */
-    masterXfer.direction      = kI2C_Write;
-    masterXfer.subaddress     = 0x6U; /* Configure the PORT0 of the PCA6416APW */
-    masterXfer.subaddressSize = 1U;
-    temp                      = 0xFD; /* Set P0_1 to output direction */
-    masterXfer.data           = &temp;
-    masterXfer.dataSize       = 1U;
-    masterXfer.flags          = kI2C_TransferDefaultFlag;
-
-    I2C_MasterTransferBlocking(APP_SRTM_I2C, &masterXfer);
-
-    i2c_release_bus_delay();                /* Ensure the I2C bus free. */
-    temp                      = 0xFF;
-    masterXfer.subaddress     = 0x2U;       /* Select the outputregister for port 0 */
-    masterXfer.direction      = kI2C_Write; /* Make P0_1 output high level */
-    masterXfer.subaddressSize = 1U;
-    masterXfer.data           = &temp;
-    I2C_MasterTransferBlocking(APP_SRTM_I2C, &masterXfer);
-}
-static void APP_SRTM_InitI2C(I2C_Type *base, uint32_t baudrate, uint32_t clockrate)
-{
-    i2c_master_config_t masterConfig;
-
-    /*
-     * masterConfig->baudRate_Bps = 100000U;
-     * masterConfig->enableHighDrive = false;
-     * masterConfig->enableStopHold = false;
-     * masterConfig->glitchFilterWidth = 0U;
-     * masterConfig->enableMaster = true;
-     */
-    I2C_MasterGetDefaultConfig(&masterConfig);
-    masterConfig.baudRate_Bps = baudrate;
-    /*  Set I2C Master IRQ Priority. */
-    NVIC_SetPriority(APP_SRTM_I2C_IRQn, APP_SRTM_I2C_IRQ_PRIO);
-
-    I2C_MasterInit(base, &masterConfig, clockrate);
-}
-
-static status_t APP_SRTM_ReadCodecRegMap(void *handle, uint32_t reg, uint32_t *val)
-{
-    status_t status = kStatus_Success;
-    LPM_IncreseBlockSleepCnt();
-    status = AK4497_ReadReg((ak4497_handle_t *)((uint32_t) & ((codec_handle_t *)handle)->codecDevHandle), reg,
-                            (uint8_t *)val);
-    LPM_DecreaseBlockSleepCnt();
-
-    return status;
-}
-
-static status_t APP_SRTM_WriteCodecRegMap(void *handle, uint32_t reg, uint32_t val)
-{
-    status_t status = kStatus_Success;
-    LPM_IncreseBlockSleepCnt();
-    status = AK4497_WriteReg((ak4497_handle_t *)((uint32_t) & ((codec_handle_t *)handle)->codecDevHandle), reg, val);
-    LPM_DecreaseBlockSleepCnt();
-
-    return status;
-}
-#endif
-#if APP_SRTM_CODEC_WM8524_USED
-static void APP_SRTM_WM8524_Mute_GPIO(uint32_t output)
-{
-    GPIO_PinWrite(APP_CODEC_MUTE_PIN, APP_CODEC_MUTE_PIN_NUM, output);
-}
-#endif
 static void APP_SRTM_PollLinkup(srtm_dispatcher_t dispatcher, void *param1, void *param2)
 {
     if (srtmState == APP_SRTM_StateRun)
@@ -469,33 +314,6 @@ static void APP_SRTM_InitAudioService(void)
 
     saiAdapter = SRTM_SaiSdmaAdapter_Create(APP_SRTM_SAI, APP_SRTM_DMA, &saiTxConfig, NULL);
     assert(saiAdapter);
-#if APP_SRTM_CODEC_AK4497_USED
-    APP_SRTM_InitI2C(APP_SRTM_I2C, APP_SRTM_I2C_BAUDRATE, APP_SRTM_I2C_CLOCK_FREQ);
-    APP_SRTM_PowerOnAudioBoard();
-    /* After power up the audio board, need to wait for a while to make sure the codec on the audio board is
-     * stable and the I2C communication is ok.*/
-    SDK_DelayAtLeastUs(500000U, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-
-    AK4497_DefaultConfig(&ak4497Config);
-    ak4497Config.i2cConfig.codecI2CInstance    = APP_CODEC_I2C_INSTANCE;
-    ak4497Config.i2cConfig.codecI2CSourceClock = APP_SRTM_I2C_CLOCK_FREQ;
-    ak4497Config.slaveAddress                  = AK4497_I2C_ADDR;
-
-    boardCodecConfig.codecDevConfig = &ak4497Config;
-    boardCodecConfig.codecDevType   = kCODEC_AK4497;
-
-    CODEC_Init(&codecHandle, &boardCodecConfig);
-
-    /* Create I2C Codec adaptor */
-    i2cCodecConfig.addrType    = kCODEC_RegAddr8Bit;
-    i2cCodecConfig.slaveAddr   = ak4497Config.slaveAddress;
-    i2cCodecConfig.i2cHandle   = (((ak4497_handle_t *)((uint32_t)(codecHandle.codecDevHandle)))->i2cHandle);
-    i2cCodecConfig.regWidth    = kCODEC_RegWidth8Bit;
-    i2cCodecConfig.writeRegMap = APP_SRTM_WriteCodecRegMap;
-    i2cCodecConfig.readRegMap  = APP_SRTM_ReadCodecRegMap;
-    codecAdapter               = SRTM_I2CCodecAdapter_Create(&codecHandle, &i2cCodecConfig);
-    assert(codecAdapter);
-#endif
 
 #if APP_SRTM_PDM_USED
     memset(&pdmConfig, 0, sizeof(srtm_pdm_sdma_config_t));
@@ -517,24 +335,6 @@ static void APP_SRTM_InitAudioService(void)
     pdmAdapter                          = SRTM_PdmSdmaAdapter_Create(APP_SRTM_PDM, APP_SRTM_DMA, &pdmConfig);
     assert(pdmAdapter);
 #endif
-
-#if APP_SRTM_CODEC_WM8524_USED
-    /* Set the direction of the mute pin to output */
-    gpio_pin_config_t config = {kGPIO_DigitalOutput, 0, kGPIO_NoIntmode};
-    GPIO_PinInit(APP_CODEC_MUTE_PIN, APP_CODEC_MUTE_PIN_NUM, &config);
-    /* Create WM8524 codec adapter */
-    wm8524Config.config.setMute     = APP_SRTM_WM8524_Mute_GPIO;
-    wm8524Config.config.setProtocol = NULL;
-    wm8524Config.config.protocol    = kWM8524_ProtocolI2S;
-
-    boardCodecConfig.codecDevConfig = &wm8524Config.config;
-    boardCodecConfig.codecDevType   = kCODEC_WM8524;
-
-    CODEC_Init(&codecHandle, &boardCodecConfig);
-
-    codecAdapter = SRTM_Wm8524Adapter_Create(&codecHandle, &wm8524Config);
-    assert(codecAdapter);
-#endif
     /*  Set SAI DMA IRQ Priority. */
     NVIC_SetPriority(APP_SRTM_DMA_IRQn, APP_SAI_TX_DMA_IRQ_PRIO);
     NVIC_SetPriority(APP_SRTM_SAI_IRQn, APP_SAI_IRQ_PRIO);
@@ -543,7 +343,7 @@ static void APP_SRTM_InitAudioService(void)
 #if DEMO_SAI_TX_CONFIG_UseLocalBuf
     SRTM_SaiSdmaAdapter_SetTxLocalBuf(saiAdapter, &g_local_buf);
 #endif
-    audioService = SRTM_AudioService_Create(saiAdapter, codecAdapter);
+    audioService = SRTM_AudioService_Create(saiAdapter, NULL);
 #if APP_SRTM_PDM_USED
     SRTM_AudioService_AddAudioInterface(audioService, pdmAdapter);
 #endif
