@@ -27,7 +27,7 @@
 #include "fsl_adapter_timer.h"
 /*${header:end}*/
 /*${variable:start}*/
-#define TIMER_SOURCE_CLOCK CLOCK_GetFreq(kCLOCK_BusClk)
+#define TIMER_SOURCE_CLOCK (16384)
 extern usb_hid_mouse_struct_t g_UsbDeviceHidMouse;
 static uint32_t systemTickControl;
 uint32_t g_halTimerHandle[(HAL_TIMER_HANDLE_SIZE + 3) / 4];
@@ -45,6 +45,13 @@ void BOARD_InitHardware(void)
     BOARD_InitBUTTONsPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
+    
+    /* Attach peripheral clock */
+    CLOCK_SetupFRO16KClocking(kCLKE_16K_SYSTEM | kCLKE_16K_COREMAIN | kCLKE_16K_VBAT);
+    CLOCK_AttachClk(kCLK_16K_to_OSTIMER);
+    
+    /* Release peripheral reset */
+    RESET_ReleasePeripheralReset(kOSTIMER0_RST_SHIFT_RSTn);
 }
 
 void BOARD_InitPins(void)
@@ -93,19 +100,27 @@ char *SW_GetName(void)
 
 void HW_TimerCallback(void *param)
 {
+    uint64_t timerTicks;
+
     g_UsbDeviceHidMouse.hwTick++;
     USB_DeviceUpdateHwTick(g_UsbDeviceHidMouse.deviceHandle, g_UsbDeviceHidMouse.hwTick);
+    timerTicks = HAL_TimerGetCurrentTicks(&g_halTimerHandle[0]);
+    HAL_TimerUpdateMatchValueInTicks(&g_halTimerHandle[0], timerTicks + MSEC_TO_COUNT(1, TIMER_SOURCE_CLOCK));
 }
 
 void HW_TimerInit(void)
 {
     hal_timer_config_t halTimerConfig;
+    uint64_t timerTicks;
+
     halTimerConfig.timeout            = 1000;
     halTimerConfig.srcClock_Hz        = TIMER_SOURCE_CLOCK;
     halTimerConfig.instance           = 0U;
     hal_timer_handle_t halTimerHandle = &g_halTimerHandle[0];
     HAL_TimerInit(halTimerHandle, &halTimerConfig);
     HAL_TimerInstallCallback(halTimerHandle, HW_TimerCallback, NULL);
+    timerTicks = HAL_TimerGetCurrentTicks(&g_halTimerHandle[0]);
+    HAL_TimerUpdateMatchValueInTicks(&g_halTimerHandle[0], timerTicks + MSEC_TO_COUNT(1, TIMER_SOURCE_CLOCK));
 }
 
 void HW_TimerControl(uint8_t enable)
