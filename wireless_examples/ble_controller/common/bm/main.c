@@ -100,7 +100,10 @@ int main(void)
     BOARD_InitHardware();
 
     PLATFORM_InitBle();
-#if (defined(CPU_KW47B42ZB7AFTA_cm33_core0) || defined(CPU_MCXW727CMFTA_cm33_core0))
+
+    APP_InitServices();
+
+#if (NXP_RADIO_GEN >= 470) && (!defined(FPGA_TARGET) || (FPGA_TARGET==0))
     PLATFORM_InitLcl();
 #endif
 #if (defined(gAppConfigureCOEX) && (gAppConfigureCOEX == 1))
@@ -133,8 +136,6 @@ int main(void)
     PLATFORM_SetLdoCoreNormalDriveVoltage();
     PLATFORM_SetNbuConstraintFrequency(PLATFORM_NBU_MIN_FREQ_64MHZ);
 #endif
-
-    APP_InitServices();
 
 #if defined(gAppUseSensors_d) && (gAppUseSensors_d > 0)
     /* for periodic temperature measurement */
