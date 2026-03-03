@@ -12,15 +12,8 @@ mcux_add_include(
     INCLUDES ${board_root}/${board}/lvgl_examples
 )
 
-mcux_add_iar_configuration(
-    LD "--config_def=__stack_size__=0x1800"
+mcux_add_linker_symbol(
+    SYMBOLS "__stack_size__=0x2000"
 )
-mcux_add_mdk_configuration(
-    LD "--predefine=\"-D__stack_size__=0x1800\""
-)
-mcux_add_armgcc_configuration(
-    LD "-Xlinker --defsym=__stack_size__=0x1800"
-)
-
 
 include(${SdkRootDirPath}/${board_root}/${board}/lvgl_examples/reconfig.cmake)
