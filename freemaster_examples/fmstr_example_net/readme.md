@@ -9,6 +9,7 @@ Example application demonstrates the Network communication over UDP or TCP proto
 - [EVK-MIMXRT1064](../../_boards/evkmimxrt1064/freemaster_examples/fmstr_net/example_board_readme.md)
 - [EVKB-IMXRT1050](../../_boards/evkbimxrt1050/freemaster_examples/fmstr_net/example_board_readme.md)
 - [FRDM-IMXRT1186](../../_boards/frdmimxrt1186/freemaster_examples/fmstr_net/example_board_readme.md)
+- [FRDM-MCXA577](../../_boards/frdmmcxa577/freemaster_examples/fmstr_net/example_board_readme.md
 - [FRDM-MCXE247](../../_boards/frdmmcxe247/freemaster_examples/fmstr_net/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/freemaster_examples/fmstr_net/example_board_readme.md)
 - [MIMXRT1060-EVKB](../../_boards/evkbmimxrt1060/freemaster_examples/fmstr_net/example_board_readme.md)

@@ -23,6 +23,9 @@
 // Code
 ////////////////////////////////////////////////////////////////////////////////
 
+/* The 10BASE-T1S phy does not use MDIO communication */
+#if !PHY_TENBASET
+
 static status_t MDIO_Write(uint8_t phyAddr, uint8_t regAddr, uint16_t data)
 {
     return ENET_MDIOWrite(EXAMPLE_MDIO_HANDLE, phyAddr, regAddr, data);
@@ -33,21 +36,39 @@ static status_t MDIO_Read(uint8_t phyAddr, uint8_t regAddr, uint16_t *pData)
     return ENET_MDIORead(EXAMPLE_MDIO_HANDLE, phyAddr, regAddr, pData);
 }
 
+#endif /* PHY_TENBASET */
+
 void Network_PhyInit(EXAMPLE_PHY_RES *phy_res, phy_operations_t *phy_ops, uint32_t csrClock_Hz)
 {
-    /* MDIO init*/
-    phy_res->write = MDIO_Write;
-    phy_res->read = MDIO_Read;
-
-    /* PHY init*/
+    /* PHY common init*/
     phy_ops->phyInit            = EXAMPLE_PHY_PREFIX(Init);
-    phy_ops->phyWrite           = EXAMPLE_PHY_PREFIX(Write);
-    phy_ops->phyRead            = EXAMPLE_PHY_PREFIX(Read);
     phy_ops->getAutoNegoStatus  = EXAMPLE_PHY_PREFIX(GetAutoNegotiationStatus);
     phy_ops->getLinkStatus      = EXAMPLE_PHY_PREFIX(GetLinkStatus);
     phy_ops->getLinkSpeedDuplex = EXAMPLE_PHY_PREFIX(GetLinkSpeedDuplex);
     phy_ops->setLinkSpeedDuplex = EXAMPLE_PHY_PREFIX(SetLinkSpeedDuplex);
     phy_ops->enableLoopback     = EXAMPLE_PHY_PREFIX(EnableLoopback);
+
+#if PHY_TENBASET
+    /* Init TENBASET PHY */
+    memset(phy_res, 0, sizeof(phy_tenbaset_resource_t));
+    TENBASET_PHY_GetDefaultConfig(&phy_res->config);
+    phy_res->base                     = T1S0;
+    phy_res->config.plcaConfig.enable = true;
+    phy_res->config.plcaConfig.nodeId = 1U;
+
+    /* Connect ENET to internal TENBASET_PHY instead of external PHY */
+    SYSCON->ENET_CTRL = SYSCON_ENET_CTRL_PHY_SEL(1) | SYSCON_ENET_CTRL_PHY_INTF(0);
+
+    /* Enable the interrupt */
+    EnableIRQ(TENBASET_PHY0_IRQn);
+#else
+    /* PHY read/write init*/
+    phy_ops->phyWrite           = EXAMPLE_PHY_PREFIX(Write);
+    phy_ops->phyRead            = EXAMPLE_PHY_PREFIX(Read);
+
+    /* MDIO init*/
+    phy_res->write = MDIO_Write;
+    phy_res->read = MDIO_Read;
 
     /* Make sure the Ethernet clock is enabled */
     CLOCK_EnableClock(s_enetClock[ENET_GetInstance(EXAMPLE_MDIO_HANDLE)]);
@@ -62,4 +83,6 @@ void Network_PhyInit(EXAMPLE_PHY_RES *phy_res, phy_operations_t *phy_ops, uint32
 #else
     ENET_SetSMI(EXAMPLE_MDIO_HANDLE, csrClock_Hz, false);
 #endif
+
+#endif /* PHY_TENBASET */
 }

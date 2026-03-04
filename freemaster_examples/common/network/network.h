@@ -16,11 +16,37 @@
 extern "C" {
 #endif
 
+/* The example supports one of the following PHYs */
+#ifndef PHY_RTL8201
+#define PHY_RTL8201     0
+#endif
+
+#ifndef PHY_KSZ8081
+#define PHY_KSZ8081     0
+#endif
+
+#ifndef PHY_RTL8211F
+#define PHY_RTL8211F    0
+#endif
+
+#ifndef PHY_LAN8741
+#define PHY_LAN8741     0
+#endif
+
+#ifndef PHY_YT8521
+#define PHY_YT8521      0
+#endif
+
+#ifndef PHY_TENBASET
+#define PHY_TENBASET    0
+#endif
+
 /******************************************************************************
  * Definitions
  ******************************************************************************/
-/* PHY */
-#ifdef PHY_RTL8201
+
+/* PHYs */
+#if PHY_RTL8201
 
 #include "fsl_phyrtl8201.h"
 #ifndef EXAMPLE_PHY_RES
@@ -30,7 +56,7 @@ extern "C" {
 #define EXAMPLE_PHY_PREFIX(m) PHY_RTL8201_##m
 #endif
 
-#elif defined(PHY_KSZ8081)
+#elif PHY_KSZ8081
 
 #include "fsl_phyksz8081.h"
 #ifndef EXAMPLE_PHY_RES
@@ -40,7 +66,7 @@ extern "C" {
 #define EXAMPLE_PHY_PREFIX(m) PHY_KSZ8081_##m
 #endif
 
-#elif defined(PHY_RTL8211F)
+#elif PHY_RTL8211F
 
 #include "fsl_phyrtl8211f.h"
 #ifndef EXAMPLE_PHY_RES
@@ -50,7 +76,7 @@ extern "C" {
 #define EXAMPLE_PHY_PREFIX(m) PHY_RTL8211F_##m
 #endif
 
-#elif defined(PHY_LAN8741)
+#elif PHY_LAN8741
 
 #include "fsl_phylan8741.h"
 #ifndef EXAMPLE_PHY_RES
@@ -60,7 +86,7 @@ extern "C" {
 #define EXAMPLE_PHY_PREFIX(m) PHY_LAN8741_##m
 #endif
 
-#elif defined(PHY_YT8521)
+#elif PHY_YT8521
 
 #include "fsl_phyyt8521.h"
 #ifndef EXAMPLE_PHY_RES
@@ -68,6 +94,16 @@ extern "C" {
 #endif
 #ifndef EXAMPLE_PHY_PREFIX
 #define EXAMPLE_PHY_PREFIX(m) PHY_YT8521_##m
+#endif
+
+#elif PHY_TENBASET
+
+#include "fsl_phytenbaset.h"
+#ifndef EXAMPLE_PHY_RES
+#define EXAMPLE_PHY_RES       phy_tenbaset_resource_t
+#endif
+#ifndef EXAMPLE_PHY_PREFIX
+#define EXAMPLE_PHY_PREFIX(m) PHY_TENBASET_##m
 #endif
 
 #else

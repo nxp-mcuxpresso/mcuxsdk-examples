@@ -31,7 +31,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /* Use DHCP for obtaining IP address */
+#ifndef EXAMPLE_USE_DHCP
 #define EXAMPLE_USE_DHCP 1
+#endif
 
 #if EXAMPLE_USE_DHCP
 #define EXAMPLE_IP_ADDR  0U

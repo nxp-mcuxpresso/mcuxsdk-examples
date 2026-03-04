@@ -247,6 +247,7 @@ fmstr_example_net:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     - -mdk@release
+    frdmmcxa577: []
     frdmmcxe247: []
     frdmmcxn947@cm33_core0: []
     frdmrw612:
