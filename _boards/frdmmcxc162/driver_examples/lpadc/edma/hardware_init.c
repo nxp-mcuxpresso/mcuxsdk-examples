@@ -27,7 +27,7 @@ void BOARD_InitHardware(void)
     CLOCK_SetClockDiv(kCLOCK_DivADC, 3u);
     CLOCK_AttachClk(kFRO_HF_to_ADC);
 
-    CLOCK_SetupFRO16KClocking(kCLKE_16K_SYSTEM | kCLKE_16K_COREMAIN);
+    CLOCK_SetupFRO16KClocking(kCLOCK_Clk16kToSysAndCore);
     
     /* Release peripheral reset */
     RESET_ReleasePeripheralReset(kDMA0_RST_SHIFT_RSTn);

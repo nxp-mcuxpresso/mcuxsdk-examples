@@ -23,6 +23,6 @@ void BOARD_InitHardware(void)
     CLOCK_SetClockDiv(kCLOCK_DivLPTMR0, 1u);
     CLOCK_AttachClk(kFRO_LF_DIV_to_LPTMR0);
 
-    CLOCK_SetupFRO16KClocking(kCLKE_16K_SYSTEM | kCLKE_16K_COREMAIN);
+    CLOCK_SetupFRO16KClocking(kCLOCK_Clk16kToSysAndCore);
 }
 /*${function:end}*/
