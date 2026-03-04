@@ -14,7 +14,6 @@ Connect EnDat3 sensor and power supply to FRDM-LVPMSM-FA
 
 EnDat3 connection:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-INSTANCE(FRDM-LVPMSM-FA)  CONNECTS TO  INSTANCE(EnDat2.2 sensor)
 Pin Name        Board Location              Signal Name
 ENC_DATA_IO_VENC_P      J70-5                     DATA_P
 ENC_DATA_IO_CENC_N      J70-10                    DATA_N
@@ -38,12 +37,15 @@ SW[4] ON 12V
 ~~~~~~~~~~~~~~~~
 
 The Jumper settings:
+~~~~~~~~~~~~~~~~
 To make the example work, the below jumpers should be connected:
 Jumper setting:
-    J72:   pin2 <--> pin 1
-    J72:   pin4 <--> pin 3
+    J72:   pin3 <--> pin 1
+    J72:   pin4 <--> pin 2
     J73:   pin2 <--> pin 1
     J300:  pin2 <--> pin 1
+~~~~~~~~~~~~~~~~
+
 Prepare the Demo
 ===============
 1.  Connect 12V~20V power supply and J-Link Debug Probe to the board, switch SW1(SYS_PWR) to power on the board.
