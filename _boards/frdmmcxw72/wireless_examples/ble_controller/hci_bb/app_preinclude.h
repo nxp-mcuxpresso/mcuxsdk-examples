@@ -49,6 +49,12 @@
  */
 #define FSL_OSA_BM_TIMER_CONFIG         FSL_OSA_BM_TIMER_SYSTICK
 
+/* Enable debug signals for the debug target */
+#if !defined(NDEBUG)
+#define FWK_LCL_ENABLE_DTEST
+#define FWK_LCL_ENABLE_GPIO_DEBUG
+#endif /* !defined(NDEBUG) */
+
 /*! *********************************************************************************
  *     RTOS Configuration
  ********************************************************************************** */
