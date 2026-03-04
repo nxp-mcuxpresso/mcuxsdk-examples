@@ -10,7 +10,7 @@ Board settings
 Pin Name  Board Location  checker channel number   pre-set value      trigger        
 CMP0_IN0/P2_2     J2-9         channel 0              1           input > DAC output
 CMP0_IN1/P1_3     J2-3         channel 1              0           input < DAC output
-CMP0_IN3/P1_0     J2-5         channel 2              1           input > DAC output
+CMP0_IN3/P1_0     J2-5         channel 3              1           input > DAC output
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This example uses LPCMP0 instance, the fixed port is plusMuxPort, the fixed channel is
@@ -43,8 +43,8 @@ When the demo runs successfully, following information can be seen on the OpenSD
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 LPCMP RoundRobin Example.
+channel 0 comparison result is different from preset value!
 channel 1 comparison result is different from preset value!
-channel 2 comparison result is different from preset value!
 channel 3 comparison result is different from preset value!
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
