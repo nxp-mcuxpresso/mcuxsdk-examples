@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2022, 2025 NXP
+ * Copyright 2016-2022, 2025-2026 NXP
  * All rights reserved.
  *
  *
@@ -336,7 +336,7 @@ status_t flexspi_nor_flash_erase_sector(FLEXSPI_Type *base, uint32_t address)
     return status;
 }
 
-status_t flexspi_nor_flash_read(FLEXSPI_Type *base, uint32_t dstAddr, const uint32_t *src, uint32_t length)
+status_t flexspi_nor_flash_read(FLEXSPI_Type *base, uint32_t srcAddr, uint32_t *dst, uint32_t length)
 {
     status_t status;
     flexspi_transfer_t flashXfer;
@@ -346,21 +346,13 @@ status_t flexspi_nor_flash_read(FLEXSPI_Type *base, uint32_t dstAddr, const uint
     flexspi_nor_disable_cache(&cacheStatus);
 #endif
 
-    /* Write enable */
-    status = flexspi_nor_write_enable(base, dstAddr);
-
-    if (status != kStatus_Success)
-    {
-        return status;
-    }
-
-    /* Prepare page program command */
-    flashXfer.deviceAddress = dstAddr;
+    /* Prepare read command */
+    flashXfer.deviceAddress = srcAddr;
     flashXfer.port          = FLASH_PORT;
     flashXfer.cmdType       = kFLEXSPI_Read;
     flashXfer.SeqNumber     = 1;
     flashXfer.seqIndex      = NOR_CMD_LUT_SEQ_IDX_READ_FAST_QUAD;
-    flashXfer.data          = (uint32_t *)src;
+    flashXfer.data          = dst;
     flashXfer.dataSize      = length;
     status                  = FLEXSPI_TransferBlocking(base, &flashXfer);
 
@@ -368,8 +360,6 @@ status_t flexspi_nor_flash_read(FLEXSPI_Type *base, uint32_t dstAddr, const uint
     {
         return status;
     }
-
-    status = flexspi_nor_wait_bus_busy(base);
 
     /* Do software reset or clear AHB buffer directly. */
 #if defined(FSL_FEATURE_SOC_OTFAD_COUNT) && defined(FLEXSPI_AHBCR_CLRAHBRXBUF_MASK) && \
