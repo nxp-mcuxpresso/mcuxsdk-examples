@@ -53,7 +53,7 @@ void APP_WUU_IRQ_HANDLER(void)
 
 void BOARD_InitHardware(void)
 {
-    CLOCK_SetupFRO16KClocking(kCLKE_16K_SYSTEM | kCLKE_16K_COREMAIN);
+    CLOCK_SetupFRO16KClocking(kCLOCK_Clk16kToSysAndCore);
 
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitBootClocks();

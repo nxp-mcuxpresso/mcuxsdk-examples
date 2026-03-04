@@ -17,7 +17,7 @@ void BOARD_InitHardware(void)
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 
-    CLOCK_SetupFRO16KClocking(kCLKE_16K_SYSTEM | kCLKE_16K_COREMAIN);    
+    CLOCK_SetupFRO16KClocking(kCLOCK_Clk16kToSysAndCore);    
     
     RESET_ReleasePeripheralReset(kTRNG0_RST_SHIFT_RSTn);
     
