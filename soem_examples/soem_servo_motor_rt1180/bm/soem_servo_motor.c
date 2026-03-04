@@ -19,11 +19,17 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define CYCLE_PERIOD_NS 	250000 // 250us
-
 #define ECAT_SUBDEVICE_1180_XSERVO 	1
 #define ECAT_SUBDEVICE_RT1180_EVK 	0
 #define ECAT_SUBDEVICE_IMX943_EVK 	0
+
+#if ECAT_SUBDEVICE_IMX943_EVK
+    #define CYCLE_PERIOD_NS 	250000 // 250us
+#elif ECAT_SUBDEVICE_RT1180_EVK || ECAT_SUBDEVICE_1180_XSERVO
+    #define CYCLE_PERIOD_NS 	1000000 // 1ms
+#else
+    #error "No EtherCAT subdevice selected!"
+#endif
 
 #define nxp_VendorId 		0x00000CC2
 #define nxp_ProductID 		0x00000002
