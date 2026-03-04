@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 20242026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -40,18 +40,18 @@ void BOARD_InitBootPins(void) {
 BOARD_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: J1, peripheral: FLEXSPI2, signal: FLEXSPI_B_DATA1, pin_signal: GPIO_EMC_B1_32, software_input_on: Enable}
-  - {pin_num: K1, peripheral: FLEXSPI2, signal: FLEXSPI_B_DATA0, pin_signal: GPIO_EMC_B1_33, software_input_on: Enable}
-  - {pin_num: L1, peripheral: FLEXSPI2, signal: FLEXSPI_A_DATA0, pin_signal: GPIO_EMC_B1_35, software_input_on: Enable}
-  - {pin_num: M1, peripheral: FLEXSPI2, signal: FLEXSPI_A_DATA1, pin_signal: GPIO_EMC_B1_36, software_input_on: Enable}
-  - {pin_num: N1, peripheral: FLEXSPI2, signal: FLEXSPI_A_DATA2, pin_signal: GPIO_EMC_B1_37, software_input_on: Enable}
-  - {pin_num: P1, peripheral: FLEXSPI2, signal: FLEXSPI_A_SS0_B, pin_signal: GPIO_EMC_B1_39, software_input_on: Enable}
-  - {pin_num: H2, peripheral: FLEXSPI2, signal: FLEXSPI_B_DATA3, pin_signal: GPIO_EMC_B1_30, software_input_on: Enable}
-  - {pin_num: J2, peripheral: FLEXSPI2, signal: FLEXSPI_B_DATA2, pin_signal: GPIO_EMC_B1_31, software_input_on: Enable}
+  - {pin_num: J1, peripheral: FLEXSPI2, signal: FLEXSPI_B_DATA1, pin_signal: GPIO_EMC_B1_32, software_input_on: Disable}
+  - {pin_num: K1, peripheral: FLEXSPI2, signal: FLEXSPI_B_DATA0, pin_signal: GPIO_EMC_B1_33, software_input_on: Disable}
+  - {pin_num: L1, peripheral: FLEXSPI2, signal: FLEXSPI_A_DATA0, pin_signal: GPIO_EMC_B1_35, software_input_on: Disable}
+  - {pin_num: M1, peripheral: FLEXSPI2, signal: FLEXSPI_A_DATA1, pin_signal: GPIO_EMC_B1_36, software_input_on: Disable}
+  - {pin_num: N1, peripheral: FLEXSPI2, signal: FLEXSPI_A_DATA2, pin_signal: GPIO_EMC_B1_37, software_input_on: Disable}
+  - {pin_num: P1, peripheral: FLEXSPI2, signal: FLEXSPI_A_SS0_B, pin_signal: GPIO_EMC_B1_39, software_input_on: Disable}
+  - {pin_num: H2, peripheral: FLEXSPI2, signal: FLEXSPI_B_DATA3, pin_signal: GPIO_EMC_B1_30, software_input_on: Disable}
+  - {pin_num: J2, peripheral: FLEXSPI2, signal: FLEXSPI_B_DATA2, pin_signal: GPIO_EMC_B1_31, software_input_on: Disable}
   - {pin_num: N2, peripheral: FLEXSPI2, signal: FLEXSPI_A_DQS, pin_signal: GPIO_EMC_B1_40, software_input_on: Enable}
-  - {pin_num: M2, peripheral: FLEXSPI2, signal: FLEXSPI_A_DATA3, pin_signal: GPIO_EMC_B1_38, software_input_on: Enable}
-  - {pin_num: L2, peripheral: FLEXSPI2, signal: FLEXSPI_B_SCLK, pin_signal: GPIO_EMC_B1_34, software_input_on: Enable}
-  - {pin_num: R1, peripheral: FLEXSPI2, signal: FLEXSPI_A_SCLK, pin_signal: GPIO_EMC_B1_41, software_input_on: Enable}
+  - {pin_num: M2, peripheral: FLEXSPI2, signal: FLEXSPI_A_DATA3, pin_signal: GPIO_EMC_B1_38, software_input_on: Disable}
+  - {pin_num: L2, peripheral: FLEXSPI2, signal: FLEXSPI_B_SCLK, pin_signal: GPIO_EMC_B1_34, software_input_on: Disable}
+  - {pin_num: R1, peripheral: FLEXSPI2, signal: FLEXSPI_A_SCLK, pin_signal: GPIO_EMC_B1_41, software_input_on: Disable}
   - {pin_num: B1, peripheral: LPUART1, signal: TXD, pin_signal: GPIO_AON_08}
   - {pin_num: A5, peripheral: LPUART1, signal: RXD, pin_signal: GPIO_AON_09}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********

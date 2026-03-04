@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 20242026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -41,13 +41,13 @@ BOARD_InitPins:
 - pin_list:
   - {pin_num: B1, peripheral: LPUART1, signal: TXD, pin_signal: GPIO_AON_08}
   - {pin_num: A5, peripheral: LPUART1, signal: RXD, pin_signal: GPIO_AON_09}
-  - {pin_num: A10, peripheral: FLEXSPI1, signal: FLEXSPI_A_DATA0, pin_signal: GPIO_B2_10, software_input_on: Enable}
-  - {pin_num: B9, peripheral: FLEXSPI1, signal: FLEXSPI_A_DATA1, pin_signal: GPIO_B2_11, software_input_on: Enable}
-  - {pin_num: A8, peripheral: FLEXSPI1, signal: FLEXSPI_A_DATA2, pin_signal: GPIO_B2_12, software_input_on: Enable}
-  - {pin_num: B8, peripheral: FLEXSPI1, signal: FLEXSPI_A_DATA3, pin_signal: GPIO_B2_13, software_input_on: Enable}
+  - {pin_num: A10, peripheral: FLEXSPI1, signal: FLEXSPI_A_DATA0, pin_signal: GPIO_B2_10, software_input_on: Disable}
+  - {pin_num: B9, peripheral: FLEXSPI1, signal: FLEXSPI_A_DATA1, pin_signal: GPIO_B2_11, software_input_on: Disable}
+  - {pin_num: A8, peripheral: FLEXSPI1, signal: FLEXSPI_A_DATA2, pin_signal: GPIO_B2_12, software_input_on: Disable}
+  - {pin_num: B8, peripheral: FLEXSPI1, signal: FLEXSPI_A_DATA3, pin_signal: GPIO_B2_13, software_input_on: Disable}
   - {pin_num: A6, peripheral: FLEXSPI1, signal: FLEXSPI_A_DQS, pin_signal: GPIO_B2_07, software_input_on: Enable}
-  - {pin_num: A7, peripheral: FLEXSPI1, signal: FLEXSPI_A_SCLK, pin_signal: GPIO_B2_08, software_input_on: Enable}
-  - {pin_num: D10, peripheral: FLEXSPI1, signal: FLEXSPI_A_SS0_B, pin_signal: GPIO_B2_09, software_input_on: Enable}
+  - {pin_num: A7, peripheral: FLEXSPI1, signal: FLEXSPI_A_SCLK, pin_signal: GPIO_B2_08, software_input_on: Disable}
+  - {pin_num: D10, peripheral: FLEXSPI1, signal: FLEXSPI_A_SS0_B, pin_signal: GPIO_B2_09, software_input_on: Disable}
   - {pin_num: D9, peripheral: FLEXSPI1, signal: FLEXSPI_A_DATA4, pin_signal: GPIO_B2_03}
   - {pin_num: C9, peripheral: FLEXSPI1, signal: FLEXSPI_A_DATA5, pin_signal: GPIO_B2_04}
   - {pin_num: A9, peripheral: FLEXSPI1, signal: FLEXSPI_A_DATA6, pin_signal: GPIO_B2_05}

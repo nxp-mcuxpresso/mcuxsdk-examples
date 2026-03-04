@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 ,2021 NXP
+ * Copyright 2019, 2021, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -42,12 +42,12 @@ BOARD_InitPins:
 - pin_list:
   - {pin_num: '3', peripheral: LPUART1, signal: RXD, pin_signal: GPIO_09, open_drain: Disable}
   - {pin_num: '2', peripheral: LPUART1, signal: TXD, pin_signal: GPIO_10, open_drain: Disable}
-  - {pin_num: '69', peripheral: FLEXSPI, signal: FLEXSPI_A_SS0_B, pin_signal: GPIO_SD_06, slew_rate: Fast, software_input_on: Enable, open_drain: Disable, speed: MHZ_200}
-  - {pin_num: '65', peripheral: FLEXSPI, signal: FLEXSPI_A_SCLK, pin_signal: GPIO_SD_10, slew_rate: Fast, software_input_on: Enable, speed: MHZ_200}
-  - {pin_num: '66', peripheral: FLEXSPI, signal: FLEXSPI_A_DATA0, pin_signal: GPIO_SD_09, slew_rate: Fast, software_input_on: Enable, speed: MHZ_200}
-  - {pin_num: '68', peripheral: FLEXSPI, signal: FLEXSPI_A_DATA1, pin_signal: GPIO_SD_07, slew_rate: Fast, software_input_on: Enable, speed: MHZ_200}
-  - {pin_num: '67', peripheral: FLEXSPI, signal: FLEXSPI_A_DATA2, pin_signal: GPIO_SD_08, slew_rate: Fast, software_input_on: Enable, speed: MHZ_200}
-  - {pin_num: '64', peripheral: FLEXSPI, signal: FLEXSPI_A_DATA3, pin_signal: GPIO_SD_11, slew_rate: Fast, software_input_on: Enable, speed: MHZ_200}
+  - {pin_num: '69', peripheral: FLEXSPI, signal: FLEXSPI_A_SS0_B, pin_signal: GPIO_SD_06, slew_rate: Fast, software_input_on: Disable, open_drain: Disable, speed: MHZ_200}
+  - {pin_num: '65', peripheral: FLEXSPI, signal: FLEXSPI_A_SCLK, pin_signal: GPIO_SD_10, slew_rate: Fast, software_input_on: Disable, speed: MHZ_200}
+  - {pin_num: '66', peripheral: FLEXSPI, signal: FLEXSPI_A_DATA0, pin_signal: GPIO_SD_09, slew_rate: Fast, software_input_on: Disable, speed: MHZ_200}
+  - {pin_num: '68', peripheral: FLEXSPI, signal: FLEXSPI_A_DATA1, pin_signal: GPIO_SD_07, slew_rate: Fast, software_input_on: Disable, speed: MHZ_200}
+  - {pin_num: '67', peripheral: FLEXSPI, signal: FLEXSPI_A_DATA2, pin_signal: GPIO_SD_08, slew_rate: Fast, software_input_on: Disable, speed: MHZ_200}
+  - {pin_num: '64', peripheral: FLEXSPI, signal: FLEXSPI_A_DATA3, pin_signal: GPIO_SD_11, slew_rate: Fast, software_input_on: Disable, speed: MHZ_200}
   - {pin_num: '62', peripheral: FLEXSPI, signal: FLEXSPI_A_DQS, pin_signal: GPIO_SD_12, slew_rate: Fast, software_input_on: Enable, speed: MHZ_200}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -63,12 +63,12 @@ void BOARD_InitPins(void) {
 
   IOMUXC_SetPinMux(IOMUXC_GPIO_09_LPUART1_RXD, 0U); 
   IOMUXC_SetPinMux(IOMUXC_GPIO_10_LPUART1_TXD, 0U); 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_SD_06_FLEXSPI_A_SS0_B, 1U); 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_SD_07_FLEXSPI_A_DATA1, 1U); 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_SD_08_FLEXSPI_A_DATA2, 1U); 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_SD_09_FLEXSPI_A_DATA0, 1U); 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_SD_10_FLEXSPI_A_SCLK, 1U); 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_SD_11_FLEXSPI_A_DATA3, 1U); 
+  IOMUXC_SetPinMux(IOMUXC_GPIO_SD_06_FLEXSPI_A_SS0_B, 0U); 
+  IOMUXC_SetPinMux(IOMUXC_GPIO_SD_07_FLEXSPI_A_DATA1, 0U); 
+  IOMUXC_SetPinMux(IOMUXC_GPIO_SD_08_FLEXSPI_A_DATA2, 0U); 
+  IOMUXC_SetPinMux(IOMUXC_GPIO_SD_09_FLEXSPI_A_DATA0, 0U); 
+  IOMUXC_SetPinMux(IOMUXC_GPIO_SD_10_FLEXSPI_A_SCLK, 0U); 
+  IOMUXC_SetPinMux(IOMUXC_GPIO_SD_11_FLEXSPI_A_DATA3, 0U); 
   IOMUXC_SetPinMux(IOMUXC_GPIO_SD_12_FLEXSPI_A_DQS, 1U); 
   IOMUXC_SetPinConfig(IOMUXC_GPIO_09_LPUART1_RXD, 0x10A0U); 
   IOMUXC_SetPinConfig(IOMUXC_GPIO_10_LPUART1_TXD, 0x10A0U); 

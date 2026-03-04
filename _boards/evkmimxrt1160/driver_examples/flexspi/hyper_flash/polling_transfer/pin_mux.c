@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NXP
+ * Copyright 20212026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -46,29 +46,29 @@ BOARD_InitPins:
     open_drain: Disable, drive_strength: High, slew_rate: Slow}
   - {pin_num: L13, peripheral: LPUART1, signal: TXD, pin_signal: GPIO_AD_24, software_input_on: Disable, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper,
     open_drain: Disable, drive_strength: High, slew_rate: Slow}
-  - {pin_num: F15, peripheral: FLEXSPI1, signal: 'flexspi_a_data, 00', pin_signal: GPIO_SD_B2_08, software_input_on: Enable, pull_down_pull_up_config: Pull_Down,
+  - {pin_num: F15, peripheral: FLEXSPI1, signal: 'flexspi_a_data, 00', pin_signal: GPIO_SD_B2_08, software_input_on: Disable, pull_down_pull_up_config: Pull_Down,
     pdrv_config: Normal_Driver, open_drain: Disable}
-  - {pin_num: H15, peripheral: FLEXSPI1, signal: 'flexspi_a_data, 01', pin_signal: GPIO_SD_B2_09, software_input_on: Enable, pull_down_pull_up_config: Pull_Down,
+  - {pin_num: H15, peripheral: FLEXSPI1, signal: 'flexspi_a_data, 01', pin_signal: GPIO_SD_B2_09, software_input_on: Disable, pull_down_pull_up_config: Pull_Down,
     pdrv_config: Normal_Driver, open_drain: Disable}
-  - {pin_num: H14, peripheral: FLEXSPI1, signal: 'flexspi_a_data, 02', pin_signal: GPIO_SD_B2_10, software_input_on: Enable, pull_down_pull_up_config: Pull_Down,
+  - {pin_num: H14, peripheral: FLEXSPI1, signal: 'flexspi_a_data, 02', pin_signal: GPIO_SD_B2_10, software_input_on: Disable, pull_down_pull_up_config: Pull_Down,
     pdrv_config: Normal_Driver, open_drain: Disable}
-  - {pin_num: F16, peripheral: FLEXSPI1, signal: 'flexspi_a_data, 03', pin_signal: GPIO_SD_B2_11, software_input_on: Enable, pull_down_pull_up_config: Pull_Down,
+  - {pin_num: F16, peripheral: FLEXSPI1, signal: 'flexspi_a_data, 03', pin_signal: GPIO_SD_B2_11, software_input_on: Disable, pull_down_pull_up_config: Pull_Down,
     pdrv_config: Normal_Driver, open_drain: Disable}
   - {pin_num: E14, peripheral: FLEXSPI1, signal: FLEXSPI_A_DQS, pin_signal: GPIO_SD_B2_05, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: Normal_Driver,
     open_drain: Disable}
-  - {pin_num: G14, peripheral: FLEXSPI1, signal: FLEXSPI_A_SCLK, pin_signal: GPIO_SD_B2_07, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: Normal_Driver,
+  - {pin_num: G14, peripheral: FLEXSPI1, signal: FLEXSPI_A_SCLK, pin_signal: GPIO_SD_B2_07, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: Normal_Driver,
     open_drain: Disable}
-  - {pin_num: F17, peripheral: FLEXSPI1, signal: flexspi_a_ss_b, pin_signal: GPIO_SD_B2_06, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: Normal_Driver,
+  - {pin_num: F17, peripheral: FLEXSPI1, signal: flexspi_a_ss_b, pin_signal: GPIO_SD_B2_06, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: Normal_Driver,
     open_drain: Disable}
-  - {pin_num: E15, peripheral: FLEXSPI1, signal: 'flexspi_b_data, 00', pin_signal: GPIO_SD_B2_03, software_input_on: Enable, pull_down_pull_up_config: Pull_Down,
+  - {pin_num: E15, peripheral: FLEXSPI1, signal: 'flexspi_b_data, 00', pin_signal: GPIO_SD_B2_03, software_input_on: Disable, pull_down_pull_up_config: Pull_Down,
     pdrv_config: Normal_Driver, open_drain: Disable}
-  - {pin_num: H13, peripheral: FLEXSPI1, signal: 'flexspi_b_data, 01', pin_signal: GPIO_SD_B2_02, software_input_on: Enable, pull_down_pull_up_config: Pull_Down,
+  - {pin_num: H13, peripheral: FLEXSPI1, signal: 'flexspi_b_data, 01', pin_signal: GPIO_SD_B2_02, software_input_on: Disable, pull_down_pull_up_config: Pull_Down,
     pdrv_config: Normal_Driver, open_drain: Disable}
-  - {pin_num: J14, peripheral: FLEXSPI1, signal: 'flexspi_b_data, 02', pin_signal: GPIO_SD_B2_01, software_input_on: Enable, pull_down_pull_up_config: Pull_Down,
+  - {pin_num: J14, peripheral: FLEXSPI1, signal: 'flexspi_b_data, 02', pin_signal: GPIO_SD_B2_01, software_input_on: Disable, pull_down_pull_up_config: Pull_Down,
     pdrv_config: Normal_Driver, open_drain: Disable}
-  - {pin_num: J15, peripheral: FLEXSPI1, signal: 'flexspi_b_data, 03', pin_signal: GPIO_SD_B2_00, software_input_on: Enable, pull_down_pull_up_config: Pull_Down,
+  - {pin_num: J15, peripheral: FLEXSPI1, signal: 'flexspi_b_data, 03', pin_signal: GPIO_SD_B2_00, software_input_on: Disable, pull_down_pull_up_config: Pull_Down,
     pdrv_config: Normal_Driver, open_drain: Disable}
-  - {pin_num: F14, peripheral: FLEXSPI1, signal: FLEXSPI_B_SCLK, pin_signal: GPIO_SD_B2_04, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: Normal_Driver,
+  - {pin_num: F14, peripheral: FLEXSPI1, signal: FLEXSPI_B_SCLK, pin_signal: GPIO_SD_B2_04, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: Normal_Driver,
     open_drain: Disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */

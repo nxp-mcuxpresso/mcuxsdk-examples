@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 20242026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -61,8 +61,8 @@ BOARD_InitPins:
   - {pin_num: A9, peripheral: FLEXSPI_SLV, signal: 'DATA, 6', pin_signal: GPIO_B2_05, software_input_on: Disable}
   - {pin_num: E8, peripheral: FLEXSPI_SLV, signal: 'DATA, 7', pin_signal: GPIO_B2_06, software_input_on: Disable}
   - {pin_num: A6, peripheral: FLEXSPI_SLV, signal: DQS, pin_signal: GPIO_B2_07, software_input_on: Disable}
-  - {pin_num: A7, peripheral: FLEXSPI_SLV, signal: CLK, pin_signal: GPIO_B2_08, software_input_on: Enable}
-  - {pin_num: D10, peripheral: FLEXSPI_SLV, signal: CS, pin_signal: GPIO_B2_09, software_input_on: Enable}
+  - {pin_num: A7, peripheral: FLEXSPI_SLV, signal: CLK, pin_signal: GPIO_B2_08, software_input_on: Disable}
+  - {pin_num: D10, peripheral: FLEXSPI_SLV, signal: CS, pin_signal: GPIO_B2_09, software_input_on: Disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
