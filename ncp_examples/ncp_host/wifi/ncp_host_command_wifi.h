@@ -199,13 +199,6 @@ enum wlan_mef_type
     MEF_TYPE_END,
 };
 
-#if CONFIG_NCP_WIFI_CAPA
-#define WIFI_SUPPORT_11AX   (1 << 3)
-#define WIFI_SUPPORT_11AC   (1 << 2)
-#define WIFI_SUPPORT_11N    (1 << 1)
-#define WIFI_SUPPORT_LEGACY (1 << 0)
-#endif
-
 /** Network wireless BSS role. */
 enum wlan_bss_role
 {
@@ -3628,4 +3621,53 @@ int wlan_process_network_remove_response(uint8_t *res);
  *
  */
 int wlan_ncp_iperf_command(int argc, char **argv);
+
+/**
+ * This API is used to set band configurations.
+ *
+ * \param[in] argc    Argument count, the number of string pointed to by argv,
+ *                    argc should be 2.
+ * \param[in] argv    Argument vector.\n
+ *                    argv[0]: should be "wlan-set-bandcfg".\n
+ *                    argv[1]: bitmap of band configurations.
+ *
+ * \return WM_SUCCESS if successful.
+ * \return -WM_FAIL if failure.
+ *
+ */
+int wlan_set_bandcfg_command(int argc, char **argv);
+
+/**
+ * This API is used to process the response of set bandcfg command.
+ *
+ * \param[in] res    A pointer to \ref MCU_NCPCmd_DS_COMMAND response.
+ *
+ * \return WM_SUCCESS if success.
+ * \return -WM_FAIL if failure.
+ */
+int wlan_process_set_bandcfg_response(uint8_t *res);
+
+/**
+ * This API is used to get band configurations.
+ *
+ * \param[in] argc    Argument count, the number of string pointed to by argv,
+ *                    argc should be 1.
+ * \param[in] argv    Argument vector.\n
+ *                    argv[0]: should be "wlan-get-bandcfg".
+ *
+ * \return WM_SUCCESS if successful.
+ * \return -WM_FAIL if failure.
+ *
+ */
+int wlan_get_bandcfg_command(int argc, char **argv);
+
+/**
+ * This API is used to process the response of get bandcfg command.
+ *
+ * \param[in] res    A pointer to \ref MCU_NCPCmd_DS_COMMAND response.
+ *
+ * \return WM_SUCCESS if success.
+ * \return -WM_FAIL if failure.
+ */
+int wlan_process_get_bandcfg_response(uint8_t *res);
 #endif /*__NCP_HOST_COMMAND_WIFI_H_*/

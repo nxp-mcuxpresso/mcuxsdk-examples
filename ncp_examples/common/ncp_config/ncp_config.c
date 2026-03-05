@@ -1353,10 +1353,7 @@ ncp_set_bss:
     /* If the network role is uAP, the following information also needs to be stored. */
     if (network->role == WLAN_BSS_ROLE_UAP)
     {
-        char capa[WLAN_CAPA_MAX_LEN], dtim[WLAN_DTIM_MAX_LEN], acs_band[WLAN_ACS_BAND_MAX_LEN];
-
-        snprintf(capa, sizeof(capa), "%u", network->wlan_capa);
-        ret += save_config(&file, WLAN_CAPA, capa, sizeof(capa));
+        char dtim[WLAN_DTIM_MAX_LEN], acs_band[WLAN_ACS_BAND_MAX_LEN];
 
         snprintf(dtim, sizeof(dtim), "%u", network->dtim_period);
         ret += save_config(&file, WLAN_DTIM, dtim, sizeof(dtim));
@@ -1576,10 +1573,7 @@ ncp_get_bss:
     /* If the network role is uAP, the following information also needs to be loaded. */
     if (bss_role == WLAN_BSS_ROLE_UAP)
     {
-        char capa[WLAN_CAPA_MAX_LEN], dtim[WLAN_DTIM_MAX_LEN], acs_band[WLAN_ACS_BAND_MAX_LEN];
-
-        ret += load_config(&file, WLAN_CAPA, capa, sizeof(capa));
-        network->wlan_capa = atoi(capa);
+        char dtim[WLAN_DTIM_MAX_LEN], acs_band[WLAN_ACS_BAND_MAX_LEN];
 
         ret += load_config(&file, WLAN_DTIM, dtim, sizeof(dtim));
         network->dtim_period = atoi(dtim);

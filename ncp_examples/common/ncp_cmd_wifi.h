@@ -397,10 +397,18 @@
 #define NCP_CMD_GET_TEMPERATUE (NCP_CMD_WLAN | NCP_CMD_WLAN_OTHER | NCP_MSG_TYPE_CMD | 0x00000009) /* wlan-get-temp */
 /** Wi-Fi get chip temperature command response ID */
 #define NCP_RSP_GET_TEMPERATUE (NCP_CMD_WLAN | NCP_CMD_WLAN_OTHER | NCP_MSG_TYPE_RESP | 0x00000009)
+/** Wi-Fi set bandcfg command ID */
+#define NCP_CMD_SET_BANDCFG (NCP_CMD_WLAN | NCP_CMD_WLAN_OTHER | NCP_MSG_TYPE_CMD | 0x0000000a) /* wlan-set-bandcfg */
+/** Wi-Fi set bandcfg command response ID */
+#define NCP_RSP_SET_BANDCFG (NCP_CMD_WLAN | NCP_CMD_WLAN_OTHER | NCP_MSG_TYPE_RESP | 0x0000000a)
+/** Wi-Fi get bandcfg command ID */
+#define NCP_CMD_GET_BANDCFG (NCP_CMD_WLAN | NCP_CMD_WLAN_OTHER | NCP_MSG_TYPE_CMD | 0x0000000b) /* wlan-get-bandcfg */
+/** Wi-Fi get bandcfg command response ID */
+#define NCP_RSP_GET_BANDCFG (NCP_CMD_WLAN | NCP_CMD_WLAN_OTHER | NCP_MSG_TYPE_RESP | 0x0000000b)
 /** Wi-Fi invalid command ID */
-#define NCP_CMD_INVALID_CMD    (NCP_CMD_WLAN | NCP_CMD_WLAN_OTHER | NCP_MSG_TYPE_CMD | 0x0000000a)
+#define NCP_CMD_INVALID_CMD    (NCP_CMD_WLAN | NCP_CMD_WLAN_OTHER | NCP_MSG_TYPE_CMD | 0x0000000c)
 /** Wi-Fi invalid command response ID */
-#define NCP_RSP_INVALID_CMD    (NCP_CMD_WLAN | NCP_CMD_WLAN_OTHER | NCP_MSG_TYPE_RESP | 0x0000000a)
+#define NCP_RSP_INVALID_CMD    (NCP_CMD_WLAN | NCP_CMD_WLAN_OTHER | NCP_MSG_TYPE_RESP | 0x0000000c)
       
 /*WLAN Regulatory command*/
 /** Wi-Fi enable/disable EU (encrypt unit) adaptivity command ID */
@@ -855,8 +863,6 @@ typedef NCP_TLV_PACK_START struct _ncp_wlan_network
     uint16_t beacon_period;
     /** DTIM period of associated BSS. */
     uint8_t dtim_period;
-    /** Wi-Fi network capability. */
-    uint8_t wlan_capa;
 } NCP_TLV_PACK_END NCP_WLAN_NETWORK;
 
 /** This structure is used for network information configuration. */
@@ -1277,17 +1283,6 @@ typedef NCP_TLV_PACK_START struct _DTIM_ParamSet_t
 } NCP_TLV_PACK_END DTIM_ParamSet_t;
 #endif
 
-#if CONFIG_NCP_WIFI_CAPA
-/** This structure is used for Wi-Fi capabilities configuration. */
-typedef NCP_TLV_PACK_START struct _CAPA_ParamSet_t
-{
-    /** Header type and size information. */
-    TypeHeader_t header;
-    /** Wi-Fi capabilities bitmap, such as 802.11n, 802.11ac, 802.11ax and legacy. */
-    uint8_t capa;
-} NCP_TLV_PACK_END CAPA_ParamSet_t;
-#endif
-
 /** This structure is used to store the information about the network to be added. */
 typedef NCP_TLV_PACK_START struct _NCP_CMD_NETWORK_ADD
 {
@@ -1304,7 +1299,6 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_NETWORK_ADD
      * IP address TLV, IP_ParamSet_t \n
      * Security TLV, Security_ParamSet_t \n
      * DTIM period TLV, DTIM_ParamSet_t \n
-     * CAPA TLV, CAPA_ParamSet_t \n
      * PMF TLV, PMF_ParamSet_t 
      */
     uint8_t tlv_buf[1];
@@ -2577,6 +2571,17 @@ typedef NCP_TLV_PACK_START struct _NCP_EVT_MDNS_RESOLVE
     } u_addr;
 } NCP_TLV_PACK_END NCP_EVT_MDNS_RESOLVE;
 
+typedef NCP_TLV_PACK_START struct _NCP_CMD_BANDCFG
+{
+    /** band configuration value, \n
+     *  bit 0: enable 802.11N,\n
+     *  bit 1: enable 802.11AC, \n
+     *  bit 2: enable 802.11AX.
+     */
+    uint32_t config_bands;
+    uint32_t fw_bands;
+} NCP_TLV_PACK_END NCP_CMD_BANDCFG;
+
 /** NCP command structure. */
 typedef NCP_TLV_PACK_START struct _NCPCmd_DS_COMMAND
 {
@@ -2744,6 +2749,8 @@ typedef NCP_TLV_PACK_START struct _NCPCmd_DS_COMMAND
         NCP_CMD_DATE_TIME_CFG date_time;
         /** Chip temperature. */
         NCP_CMD_TEMPERATURE temperature;
+        /** Set band configuration */
+        NCP_CMD_BANDCFG bandcfg;
 
         /** Wi-Fi connect. */
         NCP_CMD_WLAN_CONN wlan_connect;

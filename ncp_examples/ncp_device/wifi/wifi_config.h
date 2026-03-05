@@ -41,7 +41,6 @@
 #define CONFIG_SCAN_WITH_RSSIFILTER    1
 #define CONFIG_WIFI_DTIM_PERIOD        1
 #define CONFIG_UART_INTERRUPT          1
-#define CONFIG_WIFI_CAPA               1
 #define CONFIG_WIFI_11D_ENABLE         1
 #define CONFIG_WIFI_HIDDEN_SSID        1
 #define CONFIG_WMM_UAPSD               1
@@ -101,7 +100,6 @@
 /*NCP config*/
 #define CONFIG_NCP_IPV6               1
 #define CONFIG_NCP_5GHz_SUPPORT       1
-#define CONFIG_NCP_WIFI_CAPA          1
 #define CONFIG_NCP_WIFI_DTIM_PERIOD   1
 #define CONFIG_NCP_11K                1
 #define CONFIG_NCP_11V                1

@@ -21,7 +21,6 @@
 /* WLAN SCAN OPT */
 #define CONFIG_NCP_SCAN_WITH_RSSIFILTER  1
 #define CONFIG_NCP_WIFI_DTIM_PERIOD      1
-#define CONFIG_NCP_WIFI_CAPA             1
 #define CONFIG_NCP_11K                   1
 #define CONFIG_NCP_11V                   1
 #define CONFIG_NCP_11R                   1

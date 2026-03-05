@@ -396,16 +396,6 @@ static void wlan_network_info_copy(NCP_WLAN_NETWORK *network_info, struct wlan_n
 #endif
     network_info->security_specific = network->security_specific;
 
-#if CONFIG_WIFI_CAPA
-    if (network->role == WLAN_BSS_ROLE_UAP)
-    {
-        network_info->enable_11ac = wlan_check_11ac_capa(network->channel);
-        network_info->enable_11ax = wlan_check_11ax_capa(network->channel);
-        network_info->enable_11n  = wlan_check_11n_capa(network->channel);
-        network_info->wlan_capa   = network->wlan_capa;
-    }
-#endif
-
     network_info->is_sta_ipv4_connected = is_sta_ipv4_connected();
     if (!(network->role == WLAN_BSS_ROLE_STA && !network_info->is_sta_ipv4_connected))
     {
@@ -741,9 +731,6 @@ static int wlan_ncp_add(void *tlv)
         unsigned dtim : 1;
 #endif
         unsigned acs_band : 1;
-#if CONFIG_WIFI_CAPA
-        unsigned wlan_capa : 1;
-#endif
     } info;
 
     (void)memset(&info, 0, sizeof(info));
@@ -1137,16 +1124,6 @@ static int wlan_ncp_add(void *tlv)
                     info.acs_band                    = 1;
                 }
                 break;
-#if CONFIG_NCP_WIFI_CAPA
-            case NCP_CMD_NETWORK_CAPA_TLV:
-                if (!info.wlan_capa && network->role == WLAN_BSS_ROLE_UAP)
-                {
-                    CAPA_ParamSet_t *capa_tlv = (CAPA_ParamSet_t *)ptlv_pos;
-                    network->wlan_capa        = capa_tlv->capa;
-                    info.wlan_capa            = 1;
-                }
-                break;
-#endif
             default:
                 break;
         }
@@ -3898,6 +3875,129 @@ static int wlan_ncp_get_temperature(void *data)
     return WM_SUCCESS;
 }
 
+#define WLAN_NCP_BANDCFG_11N MBIT(0)
+#define WLAN_NCP_BANDCFG_11AC MBIT(1)
+#define WLAN_NCP_BANDCFG_11AX MBIT(2)
+
+static int wlan_ncp_set_bandcfg(void *data)
+{
+    NCP_CMD_BANDCFG *cfg = (NCP_CMD_BANDCFG *)data;
+    wlan_bandcfg_t bandcfg;
+    int ret  = 0;
+
+    if (is_sta_connected() || is_uap_started())
+    {
+        (void)PRINTF("Error: set-bandcfg command is not allowed when STA has connection or uAP is started\r\n");
+        wlan_ncp_prepare_status(NCP_RSP_SET_BANDCFG, NCP_CMD_RESULT_BUSY);
+        goto done;
+    }
+
+    (void)memset(&bandcfg, 0, sizeof(bandcfg));
+    ret = wlan_get_bandcfg(&bandcfg);
+    if (ret != WM_SUCCESS)
+    {
+        (void)PRINTF("Unable to get bandcfg\r\n");
+        wlan_ncp_prepare_status(NCP_RSP_SET_BANDCFG, NCP_CMD_RESULT_ERROR);
+        goto done;
+    }
+
+    if (!(cfg->config_bands & WLAN_NCP_BANDCFG_11N))
+    {
+        bandcfg.config_bands &= ~(BAND_AN | BAND_GN);
+    }
+    else
+    {
+        bandcfg.config_bands |= (BAND_AN | BAND_GN);
+    }
+    if (!(cfg->config_bands & WLAN_NCP_BANDCFG_11AC))
+    {
+        bandcfg.config_bands &= ~(BAND_AAC | BAND_GAC);
+    }
+    else
+    {
+        bandcfg.config_bands |= (BAND_AAC | BAND_GAC);
+    }
+    if (!(cfg->config_bands & WLAN_NCP_BANDCFG_11AX))
+    {
+        bandcfg.config_bands &= ~(BAND_AAX | BAND_GAX);
+    }
+    else
+    {
+        bandcfg.config_bands |= (BAND_AAX | BAND_GAX);
+    }
+
+    ret = wlan_set_bandcfg(&bandcfg);
+    if (ret != WM_SUCCESS)
+    {
+        wlan_ncp_prepare_status(NCP_RSP_SET_BANDCFG, NCP_CMD_RESULT_ERROR);
+    }
+    else
+    {
+       wlan_ncp_prepare_status(NCP_RSP_SET_BANDCFG, NCP_CMD_RESULT_OK);
+    }
+
+done:
+    return WM_SUCCESS;
+}
+
+static int wlan_ncp_get_bandcfg(void *data)
+{
+    int ret = WM_SUCCESS;
+    wlan_bandcfg_t bandcfg;
+
+    NCPCmd_DS_COMMAND *cmd_res = wlan_ncp_get_response_buffer();
+    cmd_res->header.cmd        = NCP_RSP_GET_BANDCFG;
+    cmd_res->header.size       = NCP_CMD_HEADER_LEN;
+    cmd_res->header.result     = NCP_CMD_RESULT_OK;
+
+    (void)memset(&bandcfg, 0, sizeof(bandcfg));
+    ret = wlan_get_bandcfg(&bandcfg);
+    if (ret != WM_SUCCESS)
+    {
+        ret = -WM_FAIL;
+        goto done;
+    }
+
+    NCP_CMD_BANDCFG *cfg = (NCP_CMD_BANDCFG *)&cmd_res->params.bandcfg;
+
+    if (bandcfg.config_bands & (BAND_AN | BAND_GN))
+    {
+        cfg->config_bands |= WLAN_NCP_BANDCFG_11N;
+    }
+    if (bandcfg.fw_bands & (BAND_AN | BAND_GN))
+    {
+        cfg->fw_bands |= WLAN_NCP_BANDCFG_11N;
+    }
+    if (bandcfg.config_bands & (BAND_AAC | BAND_GAC))
+    {
+        cfg->config_bands |= WLAN_NCP_BANDCFG_11AC;
+    }
+    if (bandcfg.fw_bands & (BAND_AAC | BAND_GAC))
+    {
+        cfg->fw_bands |= WLAN_NCP_BANDCFG_11AC;
+    }
+    if (bandcfg.config_bands & (BAND_AAX | BAND_GAX))
+    {
+        cfg->config_bands |= WLAN_NCP_BANDCFG_11AX;
+    }
+    if (bandcfg.fw_bands & (BAND_AAX | BAND_GAX))
+    {
+        cfg->fw_bands |= WLAN_NCP_BANDCFG_11AX;
+    }
+
+done:
+    if(ret == -WM_FAIL)
+    {
+        cmd_res->header.result     = NCP_CMD_RESULT_ERROR;
+    }
+    else
+    {
+        cmd_res->header.size       += sizeof(NCP_CMD_BANDCFG);
+    }
+
+    return WM_SUCCESS;
+}
+
 #if CONFIG_NCP_MDNS_ENABLE
 int wlan_ncp_prepare_mdns_result(mdns_result_ring_buffer_t *mdns_res)
 {
@@ -4588,6 +4688,8 @@ struct cmd_t wlan_cmd_other[] = {
     {NCP_CMD_REGION_CODE, "wlan-set/get-regioncode", wlan_ncp_region_code, CMD_SYNC},
     {NCP_CMD_DATE_TIME, "wlan-set/get-time", wlan_ncp_date_time, CMD_SYNC},
     {NCP_CMD_GET_TEMPERATUE, "wlan-get-temperature", wlan_ncp_get_temperature, CMD_SYNC},
+    {NCP_CMD_SET_BANDCFG, "wlan-set-bandcfg", wlan_ncp_set_bandcfg, CMD_SYNC},
+    {NCP_CMD_GET_BANDCFG, "wlan-get-bandcfg", wlan_ncp_get_bandcfg, CMD_SYNC},
     {NCP_CMD_INVALID, NULL, NULL, NULL},
 };
 
