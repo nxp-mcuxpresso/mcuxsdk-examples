@@ -484,10 +484,6 @@ static void ApplyCpuClockCfg(const app_cpu_clock_cfg_t *cfg)
     {
         BOARD_BootClockFROHF36M();
     }
-    else if ((cfg->source == kAPP_CpuClockSrcFroHf) && (cfg->freqHz == BOARD_BOOTCLOCKFROHF60M_CORE_CLOCK))
-    {
-        BOARD_BootClockFROHF60M();
-    }
     else if ((cfg->source == kAPP_CpuClockSrcFroHf) && (cfg->freqHz == BOARD_BOOTCLOCKFROHF72M_CORE_CLOCK))
     {
         BOARD_BootClockFROHF72M();
