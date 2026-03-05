@@ -17,6 +17,7 @@
  ******************************************************************************/
 #define ENC_ADDR           0x03
 #define DEMO_PWM_FREQUENCY (5U)
+#define TIMEOUT_MS         (100)
 
 /*******************************************************************************
  * Prototypes
@@ -145,13 +146,13 @@ int main(void)
     PRINTF("> Get the encoder ID ==> ");
     A_Format_Get_ID_IRQ(&encoder, ENCODER_ADDRESS_IT(ENC_ADDR), &enc_id);
     TPM_StartTimer(BOARD_TPM_BASEADDR, kTPM_SystemClock);
-    while ((!cmdFlag) && (timeout < 50))
+    while ((!cmdFlag) && (timeout < TIMEOUT_MS))
     {
         SDK_DelayAtLeastUs(1000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
         timeout++;
     }
     cmdFlag = false;
-    if (timeout >= 50)
+    if (timeout >= TIMEOUT_MS)
     {
         PRINTF("timeout\r\n");
     }
@@ -168,13 +169,13 @@ int main(void)
     PRINTF("****************\r\n* Test case  2 *\r\n****************\r\n");
     PRINTF("> Read the status of the encoder 0x%02X ==> ", ENC_ADDR);
     A_Format_Readout_Encoder_status_IRQ(&encoder, ENCODER_ADDRESS_IT(ENC_ADDR), &statusData);
-    while ((!cmdFlag) && (timeout < 50))
+    while ((!cmdFlag) && (timeout < TIMEOUT_MS))
     {
         SDK_DelayAtLeastUs(1000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
         timeout++;
     }
     cmdFlag = false;
-    if (timeout >= 50)
+    if (timeout >= TIMEOUT_MS)
     {
         PRINTF("timeout\r\n");
     }
@@ -191,13 +192,13 @@ int main(void)
     PRINTF("****************\r\n* Test case  3 *\r\n****************\r\n");
     PRINTF("> Get the temperature of the encoder ==> ");
     A_Format_Get_Temperature_IRQ(&encoder, ENCODER_ADDRESS_IT(ENC_ADDR), &temp);
-    while ((!cmdFlag) && (timeout < 50))
+    while ((!cmdFlag) && (timeout < TIMEOUT_MS))
     {
         SDK_DelayAtLeastUs(1000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
         timeout++;
     }
     cmdFlag = false;
-    if (timeout >= 50)
+    if (timeout >= TIMEOUT_MS)
     {
         PRINTF("timeout\r\n");
     }
@@ -214,13 +215,13 @@ int main(void)
     PRINTF("****************\r\n* Test case  4 *\r\n****************\r\n");
     PRINTF("> Get the multi-turn data of the encoder ==> ");
     A_Format_ABS_Readout_Multi_IRQ(&encoder, ENCODER_ADDRESS_IT(ENC_ADDR), &multiData);
-    while ((!cmdFlag) && (timeout < 50))
+    while ((!cmdFlag) && (timeout < TIMEOUT_MS))
     {
         SDK_DelayAtLeastUs(1000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
         timeout++;
     }
     cmdFlag = false;
-    if (timeout >= 50)
+    if (timeout >= TIMEOUT_MS)
     {
         PRINTF("timeout\r\n");
     }
@@ -237,13 +238,13 @@ int main(void)
     PRINTF("****************\r\n* Test case  5 *\r\n****************\r\n");
     PRINTF("> Get the single-turn data of the encoder ==> ");
     A_Format_ABS_Readout_Single_IRQ(&encoder, ENCODER_ADDRESS_IT(ENC_ADDR), &single_data);
-    while ((!cmdFlag) && (timeout < 50))
+    while ((!cmdFlag) && (timeout < TIMEOUT_MS))
     {
         SDK_DelayAtLeastUs(1000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
         timeout++;
     }
     cmdFlag = false;
-    if (timeout >= 50)
+    if (timeout >= TIMEOUT_MS)
     {
         PRINTF("timeout\r\n");
     }
