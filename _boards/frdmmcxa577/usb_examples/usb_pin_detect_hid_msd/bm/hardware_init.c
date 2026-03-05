@@ -33,7 +33,7 @@
  */
 void BOARD_InitHardware(void)
 {
-    BOARD_InitDEBUG_UARTPins();
+    BOARD_InitBootPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 }
@@ -85,6 +85,9 @@ static void USB_CLOCKInit(void)
     CLOCK_EnableUsbhsPhyPllClock(BOARD_XTAL0_CLK_HZ);
     CLOCK_EnableUsbhsClock();
     USB_EhciPhyInit(CONTROLLER_ID, BOARD_XTAL0_CLK_HZ, &phyConfig);
+
+    /* Set GPIO_IDDIG_SELECT bit to select the ID from GPIO */
+    USBHS1NC->CTRL2 |= 0x100000;
 #endif
 }
 
