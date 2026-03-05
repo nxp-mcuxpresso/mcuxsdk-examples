@@ -35,8 +35,8 @@
 /*${macro:start}*/
 /* USB DFU config*/
 /*! @brief DFU application address and size*/
-#define USB_DFU_APP_ADDRESS (0x04010000U)
-#define USB_DFU_APP_SIZE    (0x8000U)
+#define USB_DFU_APP_ADDRESS (0x2000C000)
+#define USB_DFU_APP_SIZE    (0x10000U)
 
 /*${macro:end}*/
 
