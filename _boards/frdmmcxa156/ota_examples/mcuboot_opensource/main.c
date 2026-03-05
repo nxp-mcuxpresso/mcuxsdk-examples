@@ -52,19 +52,19 @@ void mbc_print(void);
 
 struct mbc_conf mbc_config_sbl[] =
 {
-    {.addr = 0x0,     .size = 0x8000,  .glbac = MBC_GLBAC_RX}, /* bootloader            R/X */
-    {.addr = 0x8000,  .size = 0x7c000, .glbac = MBC_GLBAC_RW}, /* app primary           R/W */
-    {.addr = 0x84000, .size = 0x7c000, .glbac = MBC_GLBAC_RW}, /* app secondary         R/W */
+    {.addr = 0x0,     .size = 0x10000, .glbac = MBC_GLBAC_RX}, /* bootloader            R/X */
+    {.addr = 0x10000, .size = 0x70000, .glbac = MBC_GLBAC_RW}, /* app primary           R/W */
+    {.addr = 0x80000, .size = 0x70000, .glbac = MBC_GLBAC_RW}, /* app secondary         R/W */
 };
 
 /* MBC setup for running app */
 
 struct mbc_conf mbc_config_app[] =
 {
-    {.addr = 0x0,     .size = 0x8000,  .glbac = MBC_GLBAC_RX}, /* bootloader            R/X */
-    {.addr = 0x8000,  .size = 0x78000, .glbac = MBC_GLBAC_RX}, /* app primary           R/X */
-    {.addr = 0x80000, .size = 0x4000,  .glbac = MBC_GLBAC_RW}, /* app primary trailer   R/W */
-    {.addr = 0x84000, .size = 0x7c000, .glbac = MBC_GLBAC_RW}, /* app secondary         R/W */
+    {.addr = 0x0,     .size = 0x10000, .glbac = MBC_GLBAC_RX}, /* bootloader            R/X */
+    {.addr = 0x10000, .size = 0x70000, .glbac = MBC_GLBAC_RX}, /* app primary           R/X */
+    {.addr = 0x7C000, .size = 0x4000,  .glbac = MBC_GLBAC_RW}, /* app primary trailer   R/W */
+    {.addr = 0x80000, .size = 0x70000, .glbac = MBC_GLBAC_RW}, /* app secondary         R/W */
 };
 
 /*******************************************************************************
