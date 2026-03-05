@@ -21,8 +21,9 @@
 #include "board.h"
 /*${header:end}*/
 /*${variable:start}*/
-#define TIMER_SOURCE_CLOCK CLOCK_GetFreq(kCLOCK_BusClk)
+#define TIMER_SOURCE_CLOCK (16384)
 uint32_t g_halTimerHandle[(HAL_TIMER_HANDLE_SIZE + 3) / 4];
+static uint8_t s_timer_enable = 0;
 /*${variable:end}*/
 extern usb_device_dfu_app_struct_t g_UsbDeviceDfu;
 /*${function:start}*/
@@ -32,14 +33,31 @@ void BOARD_InitHardware(void)
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
+    
+    /* Attach peripheral clock */
+    CLOCK_SetupFRO16KClocking(kCLKE_16K_SYSTEM | kCLKE_16K_COREMAIN | kCLKE_16K_VBAT);
+    CLOCK_AttachClk(kCLK_16K_to_OSTIMER);
+    
+    /* Release peripheral reset */
+    RESET_ReleasePeripheralReset(kOSTIMER0_RST_SHIFT_RSTn);
 }
 
 void HW_TimerCallback(void *param)
 {
+    uint64_t timerTicks;
+
     DFU_TimerISR();
+    
+    if (1 == s_timer_enable)
+    {
+      timerTicks = HAL_TimerGetCurrentTicks(&g_halTimerHandle[0]);
+      HAL_TimerUpdateMatchValueInTicks(&g_halTimerHandle[0], timerTicks + MSEC_TO_COUNT(1, TIMER_SOURCE_CLOCK));
+    }
 }
 void DFU_TimerHWInit()
 {
+    uint64_t timerTicks;
+
     hal_timer_config_t halTimerConfig;
     halTimerConfig.timeout            = 1000;
     halTimerConfig.srcClock_Hz        = TIMER_SOURCE_CLOCK;
@@ -47,17 +65,25 @@ void DFU_TimerHWInit()
     hal_timer_handle_t halTimerHandle = &g_halTimerHandle[0];
     HAL_TimerInit(halTimerHandle, &halTimerConfig);
     HAL_TimerInstallCallback(halTimerHandle, HW_TimerCallback, NULL);
-    HAL_TimerDisable(g_halTimerHandle);
+    timerTicks = HAL_TimerGetCurrentTicks(&g_halTimerHandle[0]);
+    HAL_TimerUpdateMatchValueInTicks(&g_halTimerHandle[0], timerTicks + MSEC_TO_COUNT(1, TIMER_SOURCE_CLOCK));
+    DisableIRQ(OS_EVENT_IRQn);
 }
 void HW_TimerControl(uint8_t enable)
 {
+    uint64_t timerTicks;
+
     if (enable)
     {
-        HAL_TimerEnable(g_halTimerHandle);
+        s_timer_enable = 1;
+        timerTicks = HAL_TimerGetCurrentTicks(&g_halTimerHandle[0]);
+        HAL_TimerUpdateMatchValueInTicks(&g_halTimerHandle[0], timerTicks + MSEC_TO_COUNT(1, TIMER_SOURCE_CLOCK));
+        EnableIRQ(OS_EVENT_IRQn);
     }
     else
     {
-        HAL_TimerDisable(g_halTimerHandle);
+        s_timer_enable = 0;
+        DisableIRQ(OS_EVENT_IRQn);
     }
 }
 #if (defined(USB_DEVICE_CONFIG_EHCI) && (USB_DEVICE_CONFIG_EHCI > 0U))
