@@ -19,7 +19,9 @@ package_id: MCXN947VDF
 mcu_data: ksdk2_0
 processor_version: 0.16.32
 pin_labels:
-- {pin_num: L5, pin_signal: PIO1_21/TRIG_OUT2/FC5_P5/FC4_P1/CT3_MAT3/SCT0_OUT9/FLEXIO0_D29/EZH_PIO17/PLU_OUT7/ENET0_MDIO/SAI1_MCLK/CAN1_RXD/ADC1_A21/CMP2_IN3, label: WL_RST,
+- {pin_num: E8, pin_signal: P0_28/ADC0_B20/FC1_P4/FC0_P4/CT_INP0, label: WL_RST (WIFI_IW610_BOARD_MURATA_2LL_M2),
+  identifier: WL_RST}
+- {pin_num: L5, pin_signal: PIO1_21/TRIG_OUT2/FC5_P5/FC4_P1/CT3_MAT3/SCT0_OUT9/FLEXIO0_D29/EZH_PIO17/PLU_OUT7/ENET0_MDIO/SAI1_MCLK/CAN1_RXD/ADC1_A21/CMP2_IN3, label: WL_RST(Default),
   identifier: WL_RST}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -98,7 +100,9 @@ BOARD_InitPinsWifi:
   - {pin_num: H3, peripheral: USDHC0, signal: 'USDHC_DATA, 1', pin_signal: PIO2_2/WUU0_IN16/CLKOUT/FC9_P3/SDHC0_D1/SCT0_OUT0/PWM1_A2/FLEXIO0_D10/EZH_PIO22/FLEXSPI0_B_SS0_b/SINC0_MCLK0/SAI0_TXD0}
   - {pin_num: L2, peripheral: USDHC0, signal: 'USDHC_DATA, 2', pin_signal: PIO2_7/TRIG_IN5/FC9_P5/SDHC0_D2/SCT0_OUT5/PWM1_B0/FLEXIO0_D15/EZH_PIO27/FLEXSPI0_B_DATA3/SINC0_MBIT2/SAI0_TX_FS}
   - {pin_num: K2, peripheral: USDHC0, signal: 'USDHC_DATA, 3', pin_signal: PIO2_6/TRIG_IN4/FC9_P4/SDHC0_D3/SCT0_OUT4/PWM1_A0/FLEXIO0_D14/EZH_PIO26/FLEXSPI0_B_DATA2/SINC0_MCLK2/SAI0_TX_BCLK}
-  - {pin_num: L5, peripheral: GPIO1, signal: 'GPIO, 21', pin_signal: PIO1_21/TRIG_OUT2/FC5_P5/FC4_P1/CT3_MAT3/SCT0_OUT9/FLEXIO0_D29/EZH_PIO17/PLU_OUT7/ENET0_MDIO/SAI1_MCLK/CAN1_RXD/ADC1_A21/CMP2_IN3,
+  - {pin_num: E8, peripheral: GPIO0, signal: 'GPIO, 28', pin_signal: P0_28/ADC0_B20/FC1_P4/FC0_P4/CT_INP0, label: 'WL_RST (WIFI_IW610_BOARD_MURATA_2LL_M2)',
+    direction: OUTPUT, gpio_init_state: 'false'}
+  - {pin_num: L5, peripheral: GPIO1, signal: 'GPIO, 21', pin_signal: PIO1_21/TRIG_OUT2/FC5_P5/FC4_P1/CT3_MAT3/SCT0_OUT9/FLEXIO0_D29/EZH_PIO17/PLU_OUT7/ENET0_MDIO/SAI1_MCLK/CAN1_RXD/ADC1_A21/CMP2_IN3, label: 'WL_RST (Default)',
     direction: OUTPUT, gpio_init_state: 'false'}
   - {pin_num: L4, peripheral: GPIO1, signal: 'GPIO, 22', pin_signal: PIO1_22/TRIG_IN3/FC5_P6/FC4_P2/CT_INP14/SCT0_OUT4/FLEXIO0_D30/SMARTDMA_PIO18/ADC1_A22,
     direction: OUTPUT, gpio_init_state: 'false'}
@@ -114,8 +118,16 @@ BOARD_InitPinsWifi:
  * END ****************************************************************************************************************/
 void BOARD_InitPinsWifi(void)
 {
+#if defined(WIFI_IW610_BOARD_MURATA_2LL_M2)
+    /* Enables the clock for GPIO0: Enables clock */
+    CLOCK_EnableClock(kCLOCK_Gpio0);
+#endif
     /* Enables the clock for GPIO1: Enables clock */
     CLOCK_EnableClock(kCLOCK_Gpio1);
+#if defined(WIFI_IW610_BOARD_MURATA_2LL_M2)
+    /* Enables the clock for PORT0: Enables clock */
+    CLOCK_EnableClock(kCLOCK_Port0);
+#endif
     /* Enables the clock for PORT1: Enables clock */
     CLOCK_EnableClock(kCLOCK_Port1);
     /* Enables the clock for PORT2: Enables clock */
@@ -125,18 +137,27 @@ void BOARD_InitPinsWifi(void)
         .pinDirection = kGPIO_DigitalOutput,
         .outputLogic = 0U
     };
-    /* Initialize GPIO functionality on pin PIO1_21 (pin L5)  */
+    /*
+     * Initialize GPIO functionality on WL_RST
+     * - WIFI_IW610_BOARD_MURATA_2LL_M2, PORT0_28 (pin E8) is configured as PIO0_28
+     * - Other boards, PORT1_21 (pin L5) is configured as PIO1_21
+     */
     GPIO_PinInit(BOARD_INITPINSWIFI_WL_RST_GPIO, BOARD_INITPINSWIFI_WL_RST_PIN, &WL_RST_config);
 
-    /* PORT1_21 (pin L5) is configured as PIO1_21 */
+    /*
+     * Configures pin muxing of WL_RST
+     * - WIFI_IW610_BOARD_MURATA_2LL_M2, PORT0_28 (pin E8) is configured as PIO0_28
+     * - Other boards, PORT1_21 (pin L5) is configured as PIO1_21
+     */
     PORT_SetPinMux(BOARD_INITPINSWIFI_WL_RST_PORT, BOARD_INITPINSWIFI_WL_RST_PIN, kPORT_MuxAlt0);
 
-    PORT1->PCR[21] = ((PORT1->PCR[21] &
-                       /* Mask bits to zero which are setting */
-                       (~(PORT_PCR_IBE_MASK)))
+    BOARD_INITPINSWIFI_WL_RST_PORT->PCR[BOARD_INITPINSWIFI_WL_RST_PIN] =
+        ((BOARD_INITPINSWIFI_WL_RST_PORT->PCR[BOARD_INITPINSWIFI_WL_RST_PIN] &
+         /* Mask bits to zero which are setting */
+         (~(PORT_PCR_IBE_MASK)))
 
-                      /* Input Buffer Enable: Enables. */
-                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+         /* Input Buffer Enable: Enables. */
+         | PORT_PCR_IBE(PCR_IBE_ibe1));
 
     gpio_pin_config_t SDIO_RST_config = {
         .pinDirection = kGPIO_DigitalOutput,
