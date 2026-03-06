@@ -1,0 +1,17 @@
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+el2go_csr:
+  section-type: application
+  contents:
+    meta_path: examples/el2go_examples/el2go_csr/el2go_csr
+    project-root-path: boards/${board}/el2go_examples/el2go_csr/el2go_csr
+    document:
+      name: el2go_csr
+      category: el2go_examples
+      brief: The EL2GO CSR application is used to generate certificate signing requests.
+      example_readme:
+      - examples/el2go_examples/el2go_import_blob/el2go_csr/readme.md
+  boards:
+    frdmmcxe31b: []
+

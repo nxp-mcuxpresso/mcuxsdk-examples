@@ -1,0 +1,14 @@
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+rsource "${SdkRootDirPath}/Kconfig.mcuxpresso"
+
+mainmenu "EL2GO CSR Configuration"
+
+config DUMMY
+    default 0xBEEF
+    hex "An example value of the dummy config"
+    help
+        Dummy configuration for demonstration purposes
+
+
