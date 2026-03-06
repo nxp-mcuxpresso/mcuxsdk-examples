@@ -29,7 +29,7 @@
 #endif
 
 #ifndef CONFIG_NCP_BLE
-#define CONFIG_NCP_BLE      0
+#define CONFIG_NCP_BLE      1
 #endif
 
 #ifndef CONFIG_NCP_OT
