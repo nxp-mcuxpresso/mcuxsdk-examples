@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -1216,30 +1216,23 @@ BOARD_InitRFSwitchControlPins:
  * END ****************************************************************************************************************/
 void BOARD_InitRFSwitchControlPins(void)
 {
-    /* KW47-LOC uses different RF_GPO and pin mux setting (shared with COEX/FEM features and internal debug capability).
-     * Please refer to API uint8_t PLATFORM_InitLcl(void) in mcux-sdk-middleware-connectivity-framework module.
-     * The empty API is to avoid uselessly occupying pins and increasing power consumption.
+    /* This API is the basic setting for the MCXW72-LOC device.
+     * Later on different features LOC/COEX/FEM may be independently activated then RF_GPO and pin mux setting could be changed.
+     * Please refer to mcux-sdk-middleware-connectivity-framework module, file framework\platform\wireless_mcu\fwk_platform_lcl.h.
+     * APIs PLATFORM_InitLcl(), PLATFORM_InitCOEX(), PLATFORM_InitFEM().
      */
-#if 0
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_GpioA);
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_PortA);
-
     gpio_pin_config_t RF_SW_CTL_config = {
         .pinDirection = kGPIO_DigitalOutput,
-        .outputLogic = 0U
+        .outputLogic = 1U
     };
 
-    /* Initialize GPIO functionality on pin PTA18 (pin 13)  */
-    GPIO_PinInit(BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_0_GPIO, BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_0_PIN, &RF_SW_CTL_config);
-    /* Initialize GPIO functionality on pin PTA20 (pin 17)  */
-    GPIO_PinInit(BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_2_GPIO, BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_2_PIN, &RF_SW_CTL_config);
+    /* Initialize GPIO functionality on pin PTD1 (pin 24)  */
+    GPIO_PinInit(BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_4_GPIO, BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_4_PIN, &RF_SW_CTL_config);
 
-    RF_SW_CTL_config.outputLogic = 1U;
+    RF_SW_CTL_config.outputLogic = 0U;
 
-    /* Initialize GPIO functionality on pin PTA19 (pin 14)  */
-    GPIO_PinInit(BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_1_GPIO, BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_1_PIN, &RF_SW_CTL_config);
+    /* Initialize GPIO functionality on pin PTD2 (pin 25)  */
+    GPIO_PinInit(BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_5_GPIO, BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_5_PIN, &RF_SW_CTL_config);
 
     const port_pin_config_t RF_SW_CTL = {/* Internal pull-up resistor is enabled */
                                            (uint16_t)kPORT_PullDown,
@@ -1259,13 +1252,10 @@ void BOARD_InitRFSwitchControlPins(void)
                                            (uint16_t)kPORT_MuxAsGpio,
                                            /* Pin Control Register fields [15:0] are not locked */
                                            (uint16_t)kPORT_UnlockRegister};
-    /* PORTA18 (pin 13) is configured as RF_GPO_0 */
-    PORT_SetPinConfig(BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_0_PORT, BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_0_PIN, &RF_SW_CTL);
-    /* PORTA19 (pin 14) is configured as RF_GPO_1 */
-    PORT_SetPinConfig(BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_1_PORT, BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_1_PIN, &RF_SW_CTL);
-    /* PORTA20 (pin 17) is configured as RF_GPO_2 */
-    PORT_SetPinConfig(BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_2_PORT, BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_2_PIN, &RF_SW_CTL);
-#endif
+    /* PORTD1 (pin 24) is configured as RF_GPO_4 */
+    PORT_SetPinConfig(BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_4_PORT, BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_4_PIN, &RF_SW_CTL);
+    /* PORTD2 (pin 25) is configured as RF_GPO_5 */
+    PORT_SetPinConfig(BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_5_PORT, BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_5_PIN, &RF_SW_CTL);
 }
 
 /* clang-format off */
