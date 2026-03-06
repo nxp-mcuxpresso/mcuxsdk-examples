@@ -23,6 +23,18 @@ mcux_add_macro(
        -DPRINTF_FLOAT_ENABLE=1"
 )
 
+# Remove default release target optimization
+mcux_remove_armgcc_configuration(
+    TARGETS release
+    CC "-Os"
+)
+
+# Add optimization
+mcux_add_armgcc_configuration(
+    TARGETS release
+    CC "-O0"
+)
+
 include(${SdkRootDirPath}/${board_root}/${board}/digital_encoder_examples/a-format/PWM_trigger/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
