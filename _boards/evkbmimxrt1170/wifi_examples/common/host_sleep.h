@@ -26,10 +26,17 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
+#ifdef __cplusplus
+extern "C"{
+#endif
 
 #if CONFIG_HOST_SLEEP
 int hostsleep_init(void (*wlan_hs_pre_cfg)(void), void (*wlan_hs_post_cfg)(void));
 void mcu_suspend();
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif /*_HOST_SLEEP_H_*/

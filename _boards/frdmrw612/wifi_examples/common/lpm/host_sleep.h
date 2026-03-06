@@ -43,7 +43,10 @@
 /*******************************************************************************
  * API
  ******************************************************************************/
-void host_sleep_cli_notify(void);
+#ifdef __cplusplus
+extern "C"{
+#endif
+ void host_sleep_cli_notify(void);
 void host_sleep_pre_hook(void);
 int host_sleep_pre_cfg(int mode);
 void host_sleep_post_cfg(int mode);
@@ -55,5 +58,9 @@ void powerManager_EnterLowPower();
 #endif
 int host_sleep_cli_init(void);
 int hostsleep_init(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /*_HOST_SLEEP_H_*/

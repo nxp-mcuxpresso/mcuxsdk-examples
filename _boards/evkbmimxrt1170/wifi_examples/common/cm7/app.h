@@ -57,7 +57,15 @@ extern phy_rtl8211f_resource_t g_phy_resource;
  * Prototypes
  ******************************************************************************/
 /*${prototype:start}*/
+#ifdef __cplusplus
+extern "C"{
+#endif
+
 void BOARD_InitHardware(void);
+
+#ifdef __cplusplus
+}
+#endif
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */
