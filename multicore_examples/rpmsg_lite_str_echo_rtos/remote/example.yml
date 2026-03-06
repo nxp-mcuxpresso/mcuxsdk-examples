@@ -34,6 +34,7 @@ rpmsg_lite_str_echo_rtos_remote:
       - ${board_root}/${board}/multicore_examples/rpmsg_lite_str_echo_rtos/remote/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
+    evkmcimx7ulp: []
     evkmimx8mm: []
     evkmimx8mn: []
     evkmimx8mnddr3l: []

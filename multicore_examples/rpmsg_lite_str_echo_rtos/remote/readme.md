@@ -24,6 +24,7 @@ core equally. The shared memory start address is then exported from the linker
 to the application.
 
 ## Supported Boards
+- [EVK-MCIMX7ULP](../../../_boards/evkmcimx7ulp/multicore_examples/rpmsg_lite_str_echo_rtos/remote/example_board_readme.md)
 - [EVK9-MIMX8ULP](../../../_boards/evk9mimx8ulp/multicore_examples/rpmsg_lite_str_echo_rtos/remote/example_board_readme.md)
 - [IMX952LPD5EVK-19](../../../_boards/imx952evk/multicore_examples/rpmsg_lite_str_echo_rtos/remote/example_board_readme.md)
 - [IMX952LPD5EVK-15](../../../_boards/imx952evk/multicore_examples/rpmsg_lite_str_echo_rtos/remote/example_board_readme.md)
