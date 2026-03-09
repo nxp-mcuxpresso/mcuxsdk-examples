@@ -125,7 +125,7 @@ static void gpt_isr_handler(void)
 static uint32_t gpt_get_timer_frequency(void)
 {
 #if defined(MIMXRT1176_cm7_SERIES) || defined(MIMXRT1176_cm4_SERIES) || defined(MIMXRT1166_cm7_SERIES) || \
-    defined(MIMXRT1166_cm4_SERIES)
+    defined(MIMXRT1166_cm4_SERIES) || defined(MIMXRT1152_SERIES)
     return CLOCK_GetFreq(kCLOCK_OscRc48MDiv2);
 #elif defined(IMX8MSCALE_SERIES)
     return (CLOCK_GetPllFreq(kCLOCK_SystemPll1Ctrl) / (CLOCK_GetRootPreDivider(kCLOCK_RootGpt1)) /
