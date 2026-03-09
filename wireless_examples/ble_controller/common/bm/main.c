@@ -26,6 +26,9 @@
 #endif
 
 #include "fwk_platform.h"
+#if (NXP_RADIO_GEN >= 470) && (!defined(FPGA_TARGET) || (FPGA_TARGET==0))
+#include "fwk_platform_lcl.h"
+#endif
 #if defined(gAppLowpowerEnabled_d) && (gAppLowpowerEnabled_d > 0)
 #include "PWR_Interface.h"
 #endif
