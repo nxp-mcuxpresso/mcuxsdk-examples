@@ -5,8 +5,8 @@
 */
 
 /*
-    * FILE NAME: ../../../boards/frdmmcxa153/demo_apps/mc_pmsm/pmsm_enc/m1_pmsm_appconfig.h
-    * DATE: Wed Jun 11 2025, 13:46:20
+    * FILE NAME: ../../../examples/_boards/frdmmcxa153/demo_apps/mc_pmsm/pmsm_enc/m1_pmsm_appconfig.h
+    * DATE: Fri Mar 06 2026, 11:14:52
 */
 
 /*
@@ -40,7 +40,7 @@
         "parametersScalarUqMin": 1,
         "parametersAlignVoltage": 1,
         "parametersAlignDuration": 0.4,
-        "parametersScalarVHzRatio": 100
+        "parametersScalarVHzRatio": 150
     },
     "currentLoop": {
         "currentLoopSampleTime": 0.0000625,
@@ -50,15 +50,15 @@
     },
     "speedLoop": {
         "speedLoopSampleTime": 0.001,
-        "speedLoopF0": 28,
+        "speedLoopF0": 10,
         "speedLoopKsi": 1,
         "speedLoopIncUp": 10000,
         "speedLoopIncDown": 10000,
         "speedLoopCutOffFreq": 100,
         "speedLoopUpperLimit": 3,
         "speedLoopLowerLimit": -3,
-        "speedLoopSLKp": 0.003,
-        "speedLoopSLKi": 0.009,
+        "speedLoopSLKp": 0.0005,
+        "speedLoopSLKi": 0.008,
         "speedLoopManualConstantTunning": true
     },
     "sensors": {
@@ -120,7 +120,7 @@
 #define M1_UDCB_IIR_B0 FRAC32(0.00962842)
 #define M1_UDCB_IIR_B1 FRAC32(0.00962842)
 #define M1_UDCB_IIR_A1 FRAC32(0.480743)
-#define M1_SCALAR_VHZ_FACTOR_GAIN FRAC16(0.470046)
+#define M1_SCALAR_VHZ_FACTOR_GAIN FRAC16(0.705070)
 #define M1_SCALAR_VHZ_FACTOR_SHIFT (0)
 #define M1_SCALAR_INTEG_GAIN ACC32(0.0366667)
 #define M1_SCALAR_RAMP_UP FRAC32(0.000142045)
@@ -136,8 +136,8 @@
 #define M1_SPEED_RAMP_DOWN FRAC32(0.00227273)
 #define M1_SPEED_LOOP_HIGH_LIMIT FRAC16(0.363636)
 #define M1_SPEED_LOOP_LOW_LIMIT FRAC16(-0.363636)
-#define M1_SPEED_PI_PROP_GAIN ACC32(0.670206)
-#define M1_SPEED_PI_INTEG_GAIN ACC32(0.00201062)
+#define M1_SPEED_PI_PROP_GAIN ACC32(0.111701)
+#define M1_SPEED_PI_INTEG_GAIN ACC32(0.00178722)
 #define M1_SPEED_IIR_B0 FRAC32(0.119529)
 #define M1_SPEED_IIR_B1 FRAC32(0.119529)
 #define M1_SPEED_IIR_A1 FRAC32(0.260943)
