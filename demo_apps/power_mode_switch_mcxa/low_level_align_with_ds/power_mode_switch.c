@@ -45,15 +45,18 @@ int main(void)
     app_power_mode_t targetPowerMode;
     bool needSetWakeup = false;
 
-    if ((uint8_t)kCMC_WakeupFromResetInterruptOrPowerDown == CMC_GetWakeupSource(APP_CMC))
+    BOARD_InitHardware();
+    
+    if (((CMC_GetStickySystemResetStatus(APP_CMC) & kCMC_WakeUpReset) != 0UL))
     {
         /* Wakeup from Deep Power Down mode? => Clears peripherals and I/O pads isolation flags. */
         SPC_ClearPeriphIOIsolationFlag(APP_SPC);
     }
 
-    BOARD_InitHardware();
-
     PRINTF("\r\nNormal Boot.\r\n");
+
+    EnableIRQ(APP_WUU_IRQN);
+    EnableIRQ(APP_WUU_WAKEUP_TIMER_IRQN);
 
     while (1)
     {
@@ -152,8 +155,6 @@ static uint8_t APP_GetWakeupTimeout(void)
 /*! @brief WakeUp Timer configuration. */
 static void APP_WakeUpTimerConfig(uint8_t timeOutValue)
 {
-    CLOCK_SetupFRO16KClocking(kCLKE_16K_SYSTEM);
-
     lptmr_config_t lptmr_config;
     LPTMR_GetDefaultConfig(&lptmr_config);
     lptmr_config.prescalerClockSource = kLPTMR_PrescalerClock_1;
@@ -161,7 +162,6 @@ static void APP_WakeUpTimerConfig(uint8_t timeOutValue)
 
     LPTMR_SetTimerPeriod(APP_WUU_WAKEUP_TIMER, (APP_WUU_WAKEUP_TIMER_CLOCK_SOURCE * timeOutValue) - 1U);
     LPTMR_EnableInterrupts(APP_WUU_WAKEUP_TIMER, kLPTMR_TimerInterruptEnable);
-    EnableIRQ(APP_WUU_WAKEUP_TIMER_IRQN);
 
     LPTMR_StartTimer(APP_WUU_WAKEUP_TIMER);
 }
@@ -179,7 +179,6 @@ void APP_WUU_WAKEUP_TIMER_IRQ_HANDLER(void)
 /*! @brief WakeUp Button interrupt handler. */
 void APP_WUU_IRQ_HANDLER(void)
 {
-    PRINTF("\r\nWUU ISR.\r\n");
     if (WUU_GetExternalWakeUpPinsFlag(APP_WUU) == (1UL << (uint32_t)APP_WUU_WAKEUP_BUTTON_IDX))
     {
         WUU_ClearExternalWakeUpPinsFlag(APP_WUU, (1UL << (uint32_t)APP_WUU_WAKEUP_BUTTON_IDX));
@@ -209,7 +208,8 @@ static void APP_GetWakeupConfig(app_power_mode_t targetMode)
             
             if (targetMode > kAPP_PowerModeSleep)
             {
-                SPC_SetExternalVoltageDomainsConfig(APP_SPC, APP_SPC_WAKEUP_TIMER_LPISO_VALUE, 0x0U);
+                SPC_SetExternalVoltageDomainsConfig(APP_SPC, APP_SPC_WAKEUP_TIMER_LPISO_VALUE,
+                                                    APP_SPC_WAKEUP_TIMER_TIMER_LPISO_VALUE);
                 isoDomains = APP_SPC_WAKEUP_TIMER_ISO_DOMAINS;
                 PRINTF("Isolate power domains: %s\r\n", isoDomains);
             }
@@ -219,13 +219,15 @@ static void APP_GetWakeupConfig(app_power_mode_t targetMode)
         case kAPP_WakeupSourceButton:
         {
             PRINTF("Wakeup Button Selected As Wakeup Source.\r\n");
-            
+
             wuu_external_wakeup_pin_config_t wakeupButtonConfig;
+
             wakeupButtonConfig.edge  = kWUU_ExternalPinFallingEdge;
             wakeupButtonConfig.event = kWUU_ExternalPinInterrupt;
             wakeupButtonConfig.mode  = kWUU_ExternalPinActiveAlways;
+
             WUU_SetExternalWakeUpPinsConfig(APP_WUU, APP_WUU_WAKEUP_BUTTON_IDX, &wakeupButtonConfig);
-            EnableIRQ(APP_WUU_IRQN);
+
             PRINTF("Please press %s to wakeup.\r\n", APP_WUU_WAKEUP_BUTTON_NAME);
             
             if (targetMode > kAPP_PowerModeSleep)

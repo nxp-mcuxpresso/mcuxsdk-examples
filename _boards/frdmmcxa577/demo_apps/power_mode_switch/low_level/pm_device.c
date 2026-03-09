@@ -22,6 +22,9 @@ static const resc_status_t g_resc_ctrl_table[kResc_Max_Num][APP_LOW_POWER_MODE_C
     /*! Power domain modules */
     [kResc_LdoCore]             = {kResc_Status_On,     kResc_Status_On,        kResc_Status_On,        kResc_Status_On},
     [kResc_RamRetentionLdo]     = {kResc_Status_On,     kResc_Status_On,        kResc_Status_On,        kResc_Status_On},
+    [kResc_LpIref]              = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
+    [kResc_LpBuffer_Act]        = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
+    [kResc_LpBuffer_Lp]         = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_Core_Vdd_Lvd_Act]    = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_Core_Vdd_Hvd_Act]    = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_Sys_Vdd_Lvd_Act]     = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
@@ -59,19 +62,13 @@ static const app_core_ldo_ctrl_t g_core_ldo_ctrl_table[APP_LOW_POWER_MODE_COUNT]
     {
         .valid                 = true,
         .useActiveModeConfig   = true,
-        .lpIREF                = false,
-        .lpBuff                = false,
-        .bandgapMode           = kSPC_BandgapDisabled,
-        .coreLDOVoltage        = kSPC_CoreLDO_MidDriveVoltage,
-        .coreLDODriveStrength  = kSPC_CoreLDO_LowDriveStrength,
+        .coreLDOVoltage        = kSPC_CoreLDO_OverDriveVoltage,
+        .coreLDODriveStrength  = kSPC_CoreLDO_NormalDriveStrength,
     },
     /* DeepSleep */
     {
         .valid                 = true,
         .useActiveModeConfig   = false,
-        .lpIREF                = false,
-        .lpBuff                = false,
-        .bandgapMode           = kSPC_BandgapDisabled,
         .coreLDOVoltage        = kSPC_CoreLDO_MidDriveVoltage,
         .coreLDODriveStrength  = kSPC_CoreLDO_LowDriveStrength,
     },
@@ -79,9 +76,6 @@ static const app_core_ldo_ctrl_t g_core_ldo_ctrl_table[APP_LOW_POWER_MODE_COUNT]
     {
         .valid                 = true,
         .useActiveModeConfig   = false,
-        .lpIREF                = false,
-        .lpBuff                = false,
-        .bandgapMode           = kSPC_BandgapDisabled,
         .coreLDOVoltage        = kSPC_Core_LDO_RetentionVoltage,
         .coreLDODriveStrength  = kSPC_CoreLDO_LowDriveStrength,
     },
@@ -89,9 +83,6 @@ static const app_core_ldo_ctrl_t g_core_ldo_ctrl_table[APP_LOW_POWER_MODE_COUNT]
     {
         .valid                 = true,
         .useActiveModeConfig   = false,
-        .lpIREF                = false,
-        .lpBuff                = false,
-        .bandgapMode           = kSPC_BandgapDisabled,
         .coreLDOVoltage        = kSPC_Core_LDO_RetentionVoltage,
         .coreLDODriveStrength  = kSPC_CoreLDO_LowDriveStrength,
     },
@@ -290,6 +281,39 @@ static void SetVoltagePeripheralPowerStatus(resc_status_t resc_status, resc_name
             }
             break;
 
+        case kResc_LpIref:
+            if (resc_status == kResc_Status_Off)
+            {
+                SPC_EnableLowPowerModeLowPowerIREF(APP_SPC, false);
+            }
+            else
+            {
+                SPC_EnableLowPowerModeLowPowerIREF(APP_SPC, true);
+            }
+            break;
+
+        case kResc_LpBuffer_Act:
+            if (resc_status == kResc_Status_Off)
+            {
+                SPC_EnableActiveModeCMPBandgapBuffer(APP_SPC, false);
+            }
+            else
+            {
+                SPC_EnableActiveModeCMPBandgapBuffer(APP_SPC, true);
+            }
+            break;
+            
+        case kResc_LpBuffer_Lp:
+            if (resc_status == kResc_Status_Off)
+            {
+                SPC_EnableLowPowerModeCMPBandgapBufferMode(APP_SPC, false);
+            }
+            else
+            {
+                SPC_EnableLowPowerModeCMPBandgapBufferMode(APP_SPC, true);
+            }
+            break;
+            
         case kResc_Core_Vdd_Lvd_Act:
             if (resc_status == kResc_Status_Off)
             {
@@ -611,26 +635,21 @@ static void SetRegulatorsConfig(app_power_mode_t targetPowerMode)
 
     if (ctrl->useActiveModeConfig)
     {
-        spc_active_mode_regulators_config_t activeModeRegulatorOption;
+        spc_active_mode_core_ldo_option_t option;
 
-        activeModeRegulatorOption.lpBuff = ctrl->lpBuff;
-        activeModeRegulatorOption.bandgapMode = ctrl->bandgapMode;
-        activeModeRegulatorOption.CoreLDOOption.CoreLDOVoltage = ctrl->coreLDOVoltage;
-        activeModeRegulatorOption.CoreLDOOption.CoreLDODriveStrength = ctrl->coreLDODriveStrength;
+        option.CoreLDOVoltage = ctrl->coreLDOVoltage;
+        option.CoreLDODriveStrength = ctrl->coreLDODriveStrength;
 
-        (void)SPC_SetActiveModeRegulatorsConfig(APP_SPC, &activeModeRegulatorOption);
+        (void)SPC_SetActiveModeCoreLDORegulatorConfig(APP_SPC, &option);
     }
     else
     {
-        spc_lowpower_mode_regulators_config_t lowPowerRegulatorOption;
+        spc_lowpower_mode_core_ldo_option_t option;
 
-        lowPowerRegulatorOption.lpIREF = ctrl->lpIREF;
-        lowPowerRegulatorOption.lpBuff = ctrl->lpBuff;
-        lowPowerRegulatorOption.bandgapMode = ctrl->bandgapMode;
-        lowPowerRegulatorOption.CoreLDOOption.CoreLDOVoltage       = ctrl->coreLDOVoltage;
-        lowPowerRegulatorOption.CoreLDOOption.CoreLDODriveStrength = ctrl->coreLDODriveStrength;
+        option.CoreLDOVoltage       = ctrl->coreLDOVoltage;
+        option.CoreLDODriveStrength = ctrl->coreLDODriveStrength;
 
-        (void)SPC_SetLowPowerModeRegulatorsConfig(APP_SPC, &lowPowerRegulatorOption);
+        (void)SPC_SetLowPowerModeCoreLDORegulatorConfig(APP_SPC, &option);
     }
 }
 
@@ -647,7 +666,6 @@ static const app_cpu_clock_cfg_t *GetCpuClockCfg(app_power_mode_t mode)
     }
 }
 
-/*! Please note   */
 static void ApplyCpuClockCfg(const app_cpu_clock_cfg_t *cfg)
 {
     if ((cfg == NULL) || (!cfg->valid))
@@ -707,6 +725,6 @@ void APP_PowerPreSwitchHook(app_power_mode_t targetPowerMode)
 }
 
 void APP_PowerPostSwitchHook(void)
-{
+{ 
     BOARD_InitHardware();
 }

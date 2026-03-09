@@ -38,6 +38,9 @@ typedef enum _resc_name
     /*! Power domain modules */
     kResc_LdoCore,
     kResc_RamRetentionLdo,
+    kResc_LpIref,
+    kResc_LpBuffer_Act,
+    kResc_LpBuffer_Lp,
     
     /* When LVD/HVD is enabled, BGMODE should kept enabled. */
     kResc_Core_Vdd_Lvd_Act,
