@@ -441,14 +441,6 @@ static void InitQD1(void)
    
     /* Enable clock to ENC modules */
     CLOCK_EnableClock(kCLOCK_Qdc1);    
-    
-//    RESET_ReleasePeripheralReset(kQDC0_RST_SHIFT_RSTn);
-    
-//    QDC1->CTRL2 &= ~EQDC_CTRL2_LDMOD_MASK;
-//    QDC1->CTRL &= ~EQDC_CTRL_LDOK_MASK;
-//    
-//    QDC1->CTRL |= EQDC_CTRL_LDOK_MASK;
-//    while (QDC1->CTRL & EQDC_CTRL_LDOK_MASK);
 
     /* Pass initialization data into encoder driver structure */
     /* encoder position and speed measurement */

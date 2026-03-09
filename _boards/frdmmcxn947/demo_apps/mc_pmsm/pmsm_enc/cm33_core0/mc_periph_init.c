@@ -478,13 +478,6 @@ static void InitQD1(void)
     // Setup INPUTMUX  *********************************************************
     INPUTMUX_AttachSignal(INPUTMUX0, 0U, kINPUTMUX_TrigIn3ToQdc1Phasea);    //TRIG_IN3 -> ENC_A
     INPUTMUX_AttachSignal(INPUTMUX0, 0U, kINPUTMUX_TrigIn5ToQdc1Phaseb);    //TRIG_IN5 -> ENC_B
-    
-        
-//    QDC1->CTRL2 &= ~EQDC_CTRL2_LDMOD_MASK;
-//    QDC1->CTRL &= ~EQDC_CTRL_LDOK_MASK;
-//    
-//    QDC1->CTRL |= EQDC_CTRL_LDOK_MASK;
-//    while (QDC1->CTRL & EQDC_CTRL_LDOK_MASK);
 
     /* Pass initialization data into encoder driver structure */
     /* encoder position and speed measurement */
