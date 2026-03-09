@@ -1,7 +1,5 @@
 /*
- * Copyright 2024 NXP
- * All rights reserved.
- *
+ * Copyright 2024-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -71,6 +69,7 @@ uint8_t APP_GetCore0DomainID(void);
 void APP_InitInterCoreNotifications(void);
 uint32_t APP_GetInterCoreNotificationsData(void);
 void APP_SetInterCoreNotificationsData(uint32_t data);
+void APP_BootCore1(void);
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */

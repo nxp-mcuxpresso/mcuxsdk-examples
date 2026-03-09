@@ -1,7 +1,6 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016-2017, 2024 NXP
- * All rights reserved.
+ * Copyright 2016-2017, 2024, 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -68,8 +67,6 @@ uint8_t APP_GetCore1DomainID(void)
 {
     return APP_STATIC_DOMAIN_ID;
 }
-#else
-uint8_t APP_GetCore1DomainID(void);
 #endif
 
 /*******************************************************************************
@@ -130,7 +127,7 @@ int main(void)
     domainId = APP_GetCore1DomainID();
 
     /* Lock the sema42 gate. */
-    SEMA42_Lock(APP_SEMA42, SEMA42_GATE, domainId);
+    (void)SEMA42_Lock(APP_SEMA42, SEMA42_GATE, domainId);
 
 #if APP_BOARD_HAS_LED
     /* Turn off led */
@@ -144,7 +141,7 @@ int main(void)
     APP_SetInterCoreNotificationsData((uint32_t)SEMA42_CORE1_LOCK_FLAG);
 #endif
 
-    while (1)
+    for (;;)
     {
     }
 }

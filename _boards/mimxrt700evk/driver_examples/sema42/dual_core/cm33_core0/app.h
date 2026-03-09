@@ -1,7 +1,5 @@
 /*
- * Copyright 2023 NXP
- * All rights reserved.
- *
+ * Copyright 2023-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -37,6 +35,7 @@ void APP_InitCore0Domain(void);
 #ifdef CORE1_IMAGE_COPY_TO_RAM
 uint32_t get_core1_image_size(void);
 #endif
+void APP_BootCore1(void);
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */

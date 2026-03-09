@@ -1,7 +1,6 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016-2017, 2024 NXP
- * All rights reserved.
+ * Copyright 2016-2017, 2024, 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -79,13 +78,9 @@ uint8_t APP_GetCore0DomainID(void)
 {
     return APP_STATIC_DOMAIN_ID;
 }
-#else
-uint8_t APP_GetCore0DomainID(void);
 #endif
 
-#if CORE0_BOOT_CORE1_SPECIFIC_WAY
-void APP_BootCore1(void);
-#else
+#if (CORE0_BOOT_CORE1_SPECIFIC_WAY != 1)
 void APP_BootCore1(void)
 {
     MU_BootOtherCore(APP_MU, APP_CORE1_BOOT_MODE);
@@ -109,7 +104,7 @@ static void APP_CopyCore1Image(void)
        image to the target memory during startup automatically */
     uint32_t core1_image_size = get_core1_image_size();
 
-    PRINTF("Copy Secondary core image to address: 0x%x, size: %d\r\n", CORE1_BOOT_ADDRESS, core1_image_size);
+    (void)PRINTF("Copy Secondary core image to address: 0x%x, size: %d\r\n", CORE1_BOOT_ADDRESS, core1_image_size);
 
     /* Copy Secondary core application from FLASH to the target memory. */
 #if defined(__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U)
@@ -137,7 +132,7 @@ int main(void)
     /* Init board hardware.*/
     BOARD_InitHardware();
 
-    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+    (void)PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
 
     APP_CopyCore1Image();
 
@@ -154,12 +149,10 @@ int main(void)
 #endif
 
     /* Print the initial banner */
-    PRINTF("\r\nSema42 example!\r\n");
+    (void)PRINTF("\r\nSema42 example!\r\n");
 
     /* SEMA42 init */
     SEMA42_Init(APP_SEMA42);
-    /* Reset the sema42 gate */
-    SEMA42_ResetAllGates(APP_SEMA42);
 
 #if CORE0_BOOT_CORE1
     APP_InitDomain();
@@ -187,7 +180,7 @@ int main(void)
     domainId = APP_GetCore0DomainID();
 
     /* Lock the sema42 gate. */
-    SEMA42_Lock(APP_SEMA42, SEMA42_GATE, domainId);
+    (void)SEMA42_Lock(APP_SEMA42, SEMA42_GATE, domainId);
 
 #if USE_MU_NOTIFICATIONS
     MU_SetFlags(APP_MU, SEMA42_LOCK_FLAG);
@@ -197,9 +190,9 @@ int main(void)
 
     /* Wait until user press any key */
 #if APP_BOARD_HAS_LED
-    PRINTF("Press any key to unlock semaphore and Core 1 will turn off the LED\r\n");
+    (void)PRINTF("Press any key to unlock semaphore and Core 1 will turn off the LED\r\n");
 #else
-    PRINTF("Press any key to unlock semaphore and Core 1 will lock it\r\n");
+    (void)PRINTF("Press any key to unlock semaphore and Core 1 will lock it\r\n");
 #endif
     GETCHAR();
 
@@ -207,9 +200,9 @@ int main(void)
     SEMA42_Unlock(APP_SEMA42, SEMA42_GATE);
 
 #if APP_BOARD_HAS_LED
-    PRINTF("Now the LED should be turned off\r\n");
+    (void)PRINTF("Now the LED should be turned off\r\n");
 #else
-    PRINTF("Wait for core 1 lock the semaphore\r\n");
+    (void)PRINTF("Wait for core 1 lock the semaphore\r\n");
 #endif
     /* Wait for core 1 lock the sema */
 #if USE_MU_NOTIFICATIONS
@@ -224,9 +217,9 @@ int main(void)
     APP_DeinitDomain();
 #endif
 
-    PRINTF("\r\nSema42 example succeed!\r\n");
+    (void)PRINTF("\r\nSema42 example succeed!\r\n");
 
-    while (1)
+    for (;;)
     {
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -31,17 +31,17 @@ uint8_t APP_GetCore0DomainID(void)
 void APP_InitInterCoreNotifications(void)
 {
     /* Init IMU */
-    IMU_Init(kIMU_LinkCpu1Cpu2);
+    (void)IMU_Init(kIMU_LinkCpu1Cpu2);
 }
 uint32_t APP_GetInterCoreNotificationsData(void)
 {
-    uint32_t msg;
-    IMU_ReceiveMsgsBlocking(kIMU_LinkCpu1Cpu2, &msg, 1UL, NULL);
+    uint32_t msg = 0U;
+    (void)IMU_ReceiveMsgsBlocking(kIMU_LinkCpu1Cpu2, &msg, 1, NULL);
     return msg;
 }
 void APP_SetInterCoreNotificationsData(uint32_t data)
 {
-    IMU_SendMsgsBlocking(kIMU_LinkCpu1Cpu2, &data, 1UL, false);
+    (void)IMU_SendMsgsBlocking(kIMU_LinkCpu1Cpu2, &data, 1, false);
 }
 
 void APP_BootCore1(void)
