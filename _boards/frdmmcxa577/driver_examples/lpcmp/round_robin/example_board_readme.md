@@ -7,19 +7,19 @@ Hardware requirements
 Board settings
 ==============
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Pin Name  Board Location  checker channel number   pre-set value      trigger        
-CMP0_IN1/P1_3     R41          channel 0              1           input > DAC output
-CMP0_IN2/P1_4     R132         channel 1              0           input < DAC output
-CMP0_IN3/P1_0     R92          channel 2              1           input > DAC output
+Pin Name  Board Location  checker channel number   pre-set value      trigger
+CMP0_IN0/P1_0     R92          channel 0              1           input > DAC output
+CMP0_IN1/P1_3     R41          channel 1              0           input < DAC output
+CMP0_IN2/P1_4     R132         channel 2              1           input > DAC output
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This example uses LPCMP0 instance, the fixed port is plusMuxPort, the fixed channel is
-channel 7(Internal DAC module), and the checker channels are channel 1(CMP0_IN1, P1_3, R41),
-channel 2(CMP0_IN2, P1_4, R132) and channel 3(CMP0_IN3, P1_0, R92), in miusMuxPort.
+channel 7(Internal DAC module), and the checker channels are channel 0(CMP0_IN0, P1_0, R92),
+channel 1(CMP0_IN1, P1_3, R41) and channel 2(CMP0_IN2, P1_4, R132), in miusMuxPort.
 The LPCMP's internal DAC module output voltage signal(half of VREFI), the channel's pre-set value
 is 0x0AU.
 
-Set the input voltage of channel 1, channel 2 and channel 3 to be greater than, less than
+Set the input voltage of channel 0, channel 1 and channel 2 to be greater than, less than
 and greater than the output voltage of the DAC respectively. The comparison results of the 
 three channels are different from the pre-set value. So the interrupt occurred and the terminal
 will print corresponding channel changed information.
