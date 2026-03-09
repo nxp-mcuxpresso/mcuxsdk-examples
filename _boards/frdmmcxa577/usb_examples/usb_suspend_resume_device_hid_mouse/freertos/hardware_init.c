@@ -29,6 +29,7 @@
 /*${variable:start}*/
 #define TIMER_SOURCE_CLOCK (16384)
 extern usb_hid_mouse_struct_t g_UsbDeviceHidMouse;
+static uint8_t s_timer_enable = 0;
 static uint32_t systemTickControl;
 uint32_t g_halTimerHandle[(HAL_TIMER_HANDLE_SIZE + 3) / 4];
 uint32_t g_gpioHandle[(HAL_GPIO_HANDLE_SIZE + 3) / 4];
@@ -104,8 +105,11 @@ void HW_TimerCallback(void *param)
 
     g_UsbDeviceHidMouse.hwTick++;
     USB_DeviceUpdateHwTick(g_UsbDeviceHidMouse.deviceHandle, g_UsbDeviceHidMouse.hwTick);
-    timerTicks = HAL_TimerGetCurrentTicks(&g_halTimerHandle[0]);
-    HAL_TimerUpdateMatchValueInTicks(&g_halTimerHandle[0], timerTicks + MSEC_TO_COUNT(1, TIMER_SOURCE_CLOCK));
+    if (1 == s_timer_enable)
+    {
+		timerTicks = HAL_TimerGetCurrentTicks(&g_halTimerHandle[0]);
+		HAL_TimerUpdateMatchValueInTicks(&g_halTimerHandle[0], timerTicks + MSEC_TO_COUNT(1, TIMER_SOURCE_CLOCK));
+    }
 }
 
 void HW_TimerInit(void)
@@ -125,13 +129,21 @@ void HW_TimerInit(void)
 
 void HW_TimerControl(uint8_t enable)
 {
+    uint64_t timerTicks;
+
     if (enable)
     {
+        s_timer_enable = 1;
         HAL_TimerEnable(g_halTimerHandle);
+        timerTicks = HAL_TimerGetCurrentTicks(&g_halTimerHandle[0]);
+        HAL_TimerUpdateMatchValueInTicks(&g_halTimerHandle[0], timerTicks + MSEC_TO_COUNT(1, TIMER_SOURCE_CLOCK));
+        EnableIRQ(OS_EVENT_IRQn);
     }
     else
     {
+        s_timer_enable = 0;
         HAL_TimerDisable(g_halTimerHandle);
+        DisableIRQ(OS_EVENT_IRQn);
     }
 }
 
