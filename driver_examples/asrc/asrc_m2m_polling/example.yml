@@ -36,6 +36,7 @@ asrc_m2m_polling:
     - -iar@release
     - -iar@sdram_debug
     - -iar@sdram_release
+    - -iar@flexspi_nor_release
     - -mdk@debug
     - -mdk@release
     - -mdk@sdram_debug

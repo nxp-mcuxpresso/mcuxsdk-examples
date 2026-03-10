@@ -62,6 +62,7 @@ pdm_sai_multi_channel_edma:
     - -iar@release
     - -iar@sdram_debug
     - -iar@sdram_release
+    - -iar@flexspi_nor_release
     - -mdk@debug
     - -mdk@release
     - -mdk@sdram_debug

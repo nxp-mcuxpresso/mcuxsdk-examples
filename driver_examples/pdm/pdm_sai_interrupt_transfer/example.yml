@@ -116,6 +116,7 @@ pdm_sai_interrupt_transfer:
     - -iar@release
     - -iar@sdram_debug
     - -iar@sdram_release
+    - -iar@flexspi_nor_release
     - -mdk@debug
     - -mdk@release
     - -mdk@sdram_debug
