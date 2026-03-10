@@ -226,8 +226,17 @@ void APP_DPU_Display(void)
     DPU_Localdimming_Start(APP_DPU_LD);
 
     DPU_StartDisplay(APP_DPU, APP_DPU_DISPLAY_INDEX);
-    //MU_Init(DISPLAY__MUI_A1__MUA);
-    //NVIC_EnableIRQ(MU_D1_IRQn);
+
+    MU_Init(DISPLAY__MUI_A1__MUA);
+    EnableIRQ(MU_D1_IRQn);
+
+    /* Send a message to the CM0 MUB to trigger the local dimming panel initialization */
+    uint32_t msg[4] = {0, 0, 0, 4};
+
+    MU_SendMsg(DISPLAY__MUI_A1__MUA, 1, msg[1]);
+    MU_SendMsg(DISPLAY__MUI_A1__MUA, 2, msg[2]);
+    MU_SendMsg(DISPLAY__MUI_A1__MUA, 3, msg[3]);
+    MU_SendMsg(DISPLAY__MUI_A1__MUA, 0, msg[0]);
 
     /* Moving the float window. */
     for (;;)
