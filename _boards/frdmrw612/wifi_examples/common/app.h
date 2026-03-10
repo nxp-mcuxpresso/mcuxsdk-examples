@@ -18,7 +18,15 @@
  * Prototypes
  ******************************************************************************/
 /*${prototype:start}*/
+#ifdef __cplusplus
+extern "C"{
+#endif
+
 void BOARD_InitHardware(void);
+
+#ifdef __cplusplus
+}
+#endif
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */
