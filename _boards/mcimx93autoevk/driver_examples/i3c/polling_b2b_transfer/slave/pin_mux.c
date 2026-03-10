@@ -59,12 +59,10 @@ void BOARD_InitPins(void) {                                /*!< Function assigne
 
     IOMUXC_SetPinConfig(IOMUXC_PAD_I2C1_SCL__I3C1_SCL, 
                         IOMUXC_PAD_DSE(3U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_PD_MASK);
+                        IOMUXC_PAD_FSEL1(3U));
     IOMUXC_SetPinConfig(IOMUXC_PAD_I2C1_SDA__I3C1_SDA, 
                         IOMUXC_PAD_DSE(3U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_PD_MASK);
+                        IOMUXC_PAD_FSEL1(3U));
     IOMUXC_SetPinConfig(IOMUXC_PAD_UART2_RXD__LPUART2_RX, 
                         IOMUXC_PAD_PD_MASK);
     IOMUXC_SetPinConfig(IOMUXC_PAD_UART2_TXD__LPUART2_TX, 
