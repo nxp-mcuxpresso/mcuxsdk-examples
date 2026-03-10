@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NXP
+ * Copyright 2021, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -17,7 +17,5 @@ void BOARD_InitHardware(void)
     BOARD_InitPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
-
-    CIU2->CIU2_CPU_CPU2_CTRL |= CIU2_CIU2_CPU_CPU2_CTRL_CPU2_BOOT_IMEM_MUX_EN(1U);
 }
 /*${function:end}*/
