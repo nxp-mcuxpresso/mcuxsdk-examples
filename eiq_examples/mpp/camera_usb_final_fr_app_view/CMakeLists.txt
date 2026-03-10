@@ -2,12 +2,12 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(camera_usb_final_fr_app_view LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/eiq_examples/mpp/examples/camera_usb_final_fr_app_view)
+project(camera_usb_final_fr_app_view LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/eiq_examples/mpp/examples/camera_usb_final_fr_app_view/cm33_core0)
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/eiq_examples/mpp/camera_usb_final_fr_app_view/camera_usb_final_fr_app_view.c
-            ${board_root}/${board}/eiq_examples/mpp/examples//camera_usb_final_fr_app_view/mpp_config.h
+            ${board_root}/${board}/eiq_examples/mpp/examples//camera_usb_final_fr_app_view/cm33_core0/mpp_config.h
             examples/eiq_examples/mpp/camera_usb_final_fr_app_view/event_listener.c
             examples/eiq_examples/mpp/camera_usb_final_fr_app_view/main.c
             examples/eiq_examples/mpp/camera_usb_final_fr_app_view/*.h
@@ -18,7 +18,7 @@ mcux_add_source(
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES ${board_root}/${board}/eiq_examples/mpp/examples/camera_usb_final_fr_app_view/
+    INCLUDES ${board_root}/${board}/eiq_examples/mpp/examples/camera_usb_final_fr_app_view/cm33_core0/
               examples/eiq_examples/mpp/camera_usb_final_fr_app_view/
 )
 
@@ -59,7 +59,7 @@ mcux_add_source(
 # top level
 include(${SdkRootDirPath}/CMakeLists.txt)
 # board & app specific cmake
-include(${SdkRootDirPath}/${board_root}/${board}/eiq_examples/mpp/examples/camera_usb_final_fr_app_view/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/eiq_examples/mpp/examples/camera_usb_final_fr_app_view/cm33_core0/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
 

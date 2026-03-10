@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -11,6 +11,7 @@
 #include "mpp_config.h"
 #include "mpp_api_types.h"
 #include "fsl_common.h"
+#include <stdbool.h>
 
 #include APP_TFLITE_MOBILEFACENET_INFO
 #include APP_TFLITE_ANTISPOOFING_INFO
@@ -198,12 +199,17 @@
 #define OUTPUT_PRINT_PERIOD_MS 100  // console print period
 #define OUTPUT_NOTIFY_PERIOD_MS 300 // on-screen notification duration
 
+#define USER_DATA_WAIT_TIMEOUT_MS   5000
+
 #define FACE_LABEL_OUTSIDE          "face outside zone"
 #define FACE_LABEL_CENTER           "face not centered"
 #define FACE_LABEL_FAR              "face too far"
 #define FACE_LABEL_NOT_ALIGNED      "Face not aligned"
 #define FACE_LABEL_CLOSE            "face too close"
 #define FACE_LABEL_UNCLEAR          "face unclear"
+#define FACE_LABEL_POOR_QUALITY     "poor image quality"
+#define FACE_LABEL_POOR_BRIGHTNESS  "poor brightness"
+#define FACE_LABEL_POOR_CONTRAST    "poor contrast"
 #define FACE_LABEL_OK               "face ok"
 #define ZONE_LABEL_REGISTERED       "face registered as "
 #define ZONE_LABEL_REGISTRATION_END "Registration time expired."
@@ -217,8 +223,17 @@
 #define ZONE_LABEL_ANTISPOOFING     "checking liveness..."
 
 #define MAX_LABEL_RECTS     10
+/* Rectangle indices */
+#define ZONE_BOX_INDEX      0
+#define FIRST_FACE_INDEX    1
 #define NUM_BOXES_MAX       80
 #define LANDMARK_POINT_SIZE 2
+
+/* Image quality thresholds */
+#define MIN_BRIGHTNESS_THRESHOLD 20
+#define MAX_BRIGHTNESS_THRESHOLD 210
+#define MIN_CONTRAST_THRESHOLD   25
+#define MAX_CONTRAST_THRESHOLD   220
 
 /** Default priority for application tasks
    Tasks created by the application have a lower priority than pipeline tasks by default.
@@ -227,5 +242,10 @@
 
 /* define this debug flag to enable recognition preview */
 #undef DEBUG_PREVIEW_RECOGNITION
+
+/* defines used for configuration of virtual camera element */
+#define IN_ADVANCE_FRAME_ENQUEUE       true
+#define DISPLAY_STREAM_TYPE            RGB_STREAM
+#define INFERENCE_STREAM_TYPE          IR_STREAM
 
 #endif  /* APP_CONSTANTS_H */

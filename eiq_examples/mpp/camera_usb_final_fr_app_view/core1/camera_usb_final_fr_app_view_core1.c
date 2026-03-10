@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -18,17 +18,14 @@
 #include "hal_camera_shared.h"
 
 #include "images/kaggle_img_rgb_320_yuyv_jpg.h"
-#include "images/kaggle_img_ir_320_yuyv_jpg.h"
+#include "images/kaggle_img_ir_640_yuyv_jpg.h"
 
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
 #define APP_TASK_STACK_SIZE (256U)
 #define APP_RPMSG_READY_EVENT_DATA (1U)
-#define FRAME_RATE_CALC_INTERVAL (60U)   /* Number of frames before calculating frame rate */
-
-
-
+#define FPS_COMPUTATION_INTERVAL   (5000)  // ms
 
 /*******************************************************************************
  * Variables
@@ -207,7 +204,6 @@ static void app_task(void *param)
     uint32_t n_rgb_cnt = 0;
     uint32_t n_ir_cnt = 0;
     uint32_t start_time = 0;
-    uint32_t n = 0;
     uint32_t time;
 
     crt_rgb_image_data = rgb_image_data;
@@ -298,8 +294,7 @@ static void app_task(void *param)
         }
 
         /* Compute frame rates */
-        n++;
-        if (n > FRAME_RATE_CALC_INTERVAL)
+        if (((xTaskGetTickCount() - start_time) * portTICK_PERIOD_MS) > FPS_COMPUTATION_INTERVAL)
         {
             time = xTaskGetTickCount() - start_time;
 
@@ -309,7 +304,6 @@ static void app_task(void *param)
             n_ir_cnt = 0;
 
             start_time = xTaskGetTickCount();
-            n = 0;
         }
     }
 

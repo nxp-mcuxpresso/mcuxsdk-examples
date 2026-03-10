@@ -1,5 +1,5 @@
 /*
- * Copyright 2025-2026 NXP
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -19,39 +19,26 @@
  * Disabling HAL of unused/missing devices saves memory
  */
 
-#define HAL_ENABLE_CAMERA
-#define HAL_ENABLE_CAMERA_DEV_MipiOv5640      1
 #define HAL_ENABLE_DISPLAY
-#define HAL_ENABLE_DISPLAY_DEV_Lvgl           1
+#define HAL_ENABLE_DISPLAY_DEV_LcdifRk043fn   0
 #define HAL_ENABLE_2D_IMGPROC
 #define HAL_ENABLE_GFX_DEV_Pxp                0
 #define HAL_ENABLE_GFX_DEV_Cpu                0
-#define HAL_ENABLE_GFX_DEV_GPU                1
+#define HAL_ENABLE_GFX_DEV_GPU                0
 
 /**
  * This is the inference HAL configuration
  */
+
+/* disable inference engines */
 #define HAL_ENABLE_INFERENCE_TFLITE           0
+#define HAL_ENABLE_INFERENCE_GLOW             0
+#define HAL_ENABLE_INFERENCE_DVRT             0
 
 /**
  * This is the display HAL configuration
  */
 
-/* The display max byte per pixel */
-#define HAL_DISPLAY_MAX_BPP                   2
-
-/**
- * This is HAL debug configuration
- */
-
-/**
- * VGLite heap size for MIMXRT1170 CM7.
- */
-#define HAL_VGLITE_HEAP_SZ                    1048576 /* 1 MB */
-#define HAL_VGLITE_BUFFER_ALIGN               64
-
-/* GPU chip ID for EVKMIMXRT1170 board.*/
-#define HAL_GPU_CHIPID                        0x355
 
 /* Log level configuration
  * ERR:   0
@@ -59,7 +46,7 @@
  * DEBUG: 2
  */
 #ifndef HAL_LOG_LEVEL
-#define HAL_LOG_LEVEL 0
+#define HAL_LOG_LEVEL                         0
 #endif
 
 /**
@@ -74,31 +61,5 @@
  ******************************************************************************/
 
 /* Set here all the static configuration of the Application */
-
-/* camera parameters */
-#define APP_CAMERA_NAME    "MipiOv5640"
-#define APP_CAMERA_WIDTH   1280
-#define APP_CAMERA_HEIGHT  720
-#define APP_CAMERA_FORMAT MPP_PIXEL_BGRX
-/* camera alternate parameters (not supported by VGlite on rt1170) */
-#define APP_CAMERA_FORMAT1  MPP_PIXEL_YUV1P444
-
-/* select GPU as gfx backend, leave PXP for LVGL */
-#define APP_GFX_BACKEND_NAME "gfx_GPU"
-
-/* display parameters */
-#define APP_DISPLAY_NAME   "Lvgl"
-#define APP_DISPLAY_WIDTH  720
-#define APP_DISPLAY_HEIGHT 1280
-#define APP_DISPLAY_FORMAT MPP_PIXEL_RGB565
-
-/* other parameters */
-/* rotation is needed to display in landscape because display RK055 is portrait */
-#define APP_DISPLAY_LANDSCAPE_ROTATE ROTATE_90
-
-/* enable checksum computation on display framebuffer [TESTS ONLY] */
-#ifndef ENABLE_FB_CHEKSUM
-#define ENABLE_FB_CHEKSUM 0
-#endif
 
 #endif /* _MPP_CONFIG_H */
