@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 NXP
+ * Copyright 2024 - 2026  NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -19,6 +19,15 @@
 #define gAppLedCnt_c            0
 
 #define gDebugConsoleEnable_d   0
+
+#define gAppHighSystemClockFrequency_d 1
+
+/* To Use 3M baudrate on UART 0 with flow control */
+#define gBoardUse3MbOnUart0_d   0
+
+/* To use 460800 baudrate on UART 1 without flow control, increase SM Ring buffer size */
+// #define BOARD_APP_UART_BAUDRATE 460800
+// #define SERIAL_MANAGER_RING_BUFFER_SIZE (1024U)
 
 #define BOARD_LOCALIZATION_REVISION_SUPPORT 1
 
@@ -40,6 +49,22 @@
 
 /* Defines Size for Timer Task*/
 #define gTmrTaskStackSize_c             384
+
+/* Enable debug throught SWO trace */
+#define gDbg_SwoEnabled_d       0
+
+#if (defined(gDbg_SwoEnabled_d) && (gDbg_SwoEnabled_d == 1))
+ /* Define to 1 if you want to configure the DWT/ITM/TPIU-SWO via SW i.s.o.the probe */
+#define DBG_SWO_INIT_VIA_SW 1
+/* Define to 1 to route SWO signal on GPIO */
+/* Setting shall be done on Main Application Core PPB */
+#define DBG_SWO_PIN_ENABLE 1
+/* CoreSight Funnel SWO route Muxing configuration    */
+/* Setting shall be done on Main Application Core PPB */
+#define DBG_SWO_CORE_MAIN_CORE 1 // Main Core
+#define DBG_SWO_CORE_NBU_CORE  2 // Nbu Core
+#define DBG_SWO_FUNNEL_MUXING DBG_SWO_CORE_NBU_CORE
+#endif /* gDbg_SwoEnabled_d == 1 */
 
 #if !defined(__MCUXPRESSO)
 #define HCIBB_DBG_NBU_ENABLE    1
