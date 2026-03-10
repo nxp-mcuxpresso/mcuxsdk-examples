@@ -28,7 +28,7 @@ void BOARD_InitHardware(void)
     /* Release peripheral reset */
     RESET_ReleasePeripheralReset(kDMA0_RST_SHIFT_RSTn);
 
-    /* Enable DMA0 request for LPI2C0 */
+    /* Enable DMA0 request for FLEXCAN */
     EDMA_SocRequestEnable(EXAMPLE_CAN_DMA, FLEXCAN_DMA_REQUEST_SOURCE, true);
 }
 /*${function:end}*/
