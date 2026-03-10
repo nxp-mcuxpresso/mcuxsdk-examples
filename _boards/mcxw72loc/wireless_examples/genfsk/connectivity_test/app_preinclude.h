@@ -3,7 +3,7 @@
  * @{
  ********************************************************************************** */
 /*
-* Copyright 2020 NXP
+* Copyright 2024, 2026 NXP
 * All rights reserved.
 *
 * SPDX-License-Identifier: BSD-3-Clause
@@ -15,11 +15,7 @@
 /*! *********************************************************************************
  * 	Application Configuration
  ********************************************************************************** */
- /**********************************************************************************
- *     Mbedtls Configuration
- ***********************************************************************************/
  
- #define MBEDTLS_USER_CONFIG_FILE "SecLib_mbedtls_config.h"
 /*! *********************************************************************************
  * 	Drivers Configuration
  ********************************************************************************** */
@@ -31,14 +27,15 @@
 
 /* Number of LED required by the application */
 #define gAppLedCnt_c            2
+#define gBoardLedBlue_d         1
+#define gBoardLedGreen_d        1
+#define BOARD_LOCALIZATION_REVISION_SUPPORT 1
 
 /* Specifies if the LED operation is inverted. LED On = GPIO Set */
 #define gLED_InvertedMode_d     1
 
 /* Enable Generic FSK protocol in XCVR */
 #define XCVR_GENFSK_ENABLED     1
-
-#define BOARD_LOCALIZATION_REVISION_SUPPORT 1
 
 /*! *********************************************************************************
  * 	Framework Configuration
