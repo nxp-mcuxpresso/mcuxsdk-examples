@@ -18,8 +18,8 @@
 
 #define LPI2C_MASTER_CLOCK_FREQUENCY CLOCK_GetRate(LPI2C_MASTER_CLOCK_ROOT)
 #define EXAMPLE_LPI2C_MASTER_DMA     (EDMA5_2)
-#define LPI2C_TRANSMIT_DMA_CHANNEL  0
-#define LPI2C_RECEIVE_DMA_CHANNEL   1
+#define LPI2C_TRANSMIT_DMA_CHANNEL  2
+#define LPI2C_RECEIVE_DMA_CHANNEL   3
 /*${macro:end}*/
 
 /*******************************************************************************
