@@ -12,6 +12,7 @@ lpi2c
    interrupt/readme.md
    interrupt_b2b_transfer/index.rst
    interrupt_transfer/readme.md
+   master_read_sensor_p3t1755/readme.md
    polling_b2b/index.rst
    polling_transfer/readme.md
    read_accel_value_transfer/readme.md

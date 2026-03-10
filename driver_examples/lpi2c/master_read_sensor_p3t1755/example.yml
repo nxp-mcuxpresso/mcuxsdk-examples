@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lpi2c_master_read_sensor_p3t1755:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpi2c/master_read_sensor_p3t1755
+    project-root-path: boards/${board}/driver_examples/lpi2c/master_read_sensor_p3t1755/${multicore_foldername}
+    document:
+      name: lpi2c_master_read_sensor_p3t1755${core_id_suffix_name}
+      category: driver_examples/lpi2c
+      brief: The lpi2c_master_read_sensor_p3t1755 example shows how to use lpi2c driver
+        as master to communicate with sensor P3T1755.
+      example_readme:
+      - examples/driver_examples/lpi2c/master_read_sensor_p3t1755/readme.md
+      - ${board_root}/${board}/driver_examples/lpi2c/master_read_sensor_p3t1755/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxc162: []
