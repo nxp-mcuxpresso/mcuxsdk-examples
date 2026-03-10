@@ -21,14 +21,11 @@
 #include "app.h"
 #include "fsl_os_abstraction.h"
 #include "fwk_platform_ble.h"
-#if (defined(CPU_KW45B41Z83AFTA) || defined(CPU_KW47B42ZB7AFTA_cm33_core0) || defined(CPU_MCXW727CMFTA_cm33_core0))
+#if (NXP_RADIO_GEN >= 470) && (!defined(FPGA_TARGET) || (FPGA_TARGET==0))
 #include "fwk_platform_lcl.h"
 #endif
 
 #include "fwk_platform.h"
-#if (NXP_RADIO_GEN >= 470) && (!defined(FPGA_TARGET) || (FPGA_TARGET==0))
-#include "fwk_platform_lcl.h"
-#endif
 #if defined(gAppLowpowerEnabled_d) && (gAppLowpowerEnabled_d > 0)
 #include "PWR_Interface.h"
 #endif
