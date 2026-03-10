@@ -148,6 +148,7 @@ static void service(struct bt_conn *conn, uint32_t value)
 
 static void call(struct bt_conn *conn, uint32_t value)
 {
+	PRINTF("Call indicator value: %u\n", value);
     if (value == 1)
     {
         g_sCallStatus = 2;
@@ -161,7 +162,6 @@ static void call(struct bt_conn *conn, uint32_t value)
         g_hfOutCall = 0;
         app_dual_a2dp_src_resume();
     }
-    PRINTF("Call indicator value: %u\n", value);
 }
 
 static struct k_work setup_close_audio_work_intercom;
@@ -249,6 +249,7 @@ static void battery(struct bt_conn *conn, uint32_t value)
 
 static void ring_cb(struct bt_conn *conn)
 {
+	PRINTF("Transfer Ring from Phone\n");
 	app_hfp_ag_transfer_hf_ring_ind();
     g_sCallStatus = 1;
 }
@@ -365,6 +366,7 @@ void app_sco_connected_callback(struct bt_conn *acl, struct bt_conn *sco)
 		g_hfWbsEnable = (LMP_VOICE_AIR_CODING_TRANSPARENT == air_mode)? 1: 0; /* WBS or NBS */
 		if (g_phoneESCO && g_rhsESCO)
 		{
+			PRINTF("RHS eSCO connected ERROR !");
 			enable_esco_bridge(g_phoneESCO,g_rhsESCO);
 			return;
 		}
@@ -397,12 +399,11 @@ void app_sco_disconnected_callback(struct bt_conn *sco, uint8_t reason) {
 	PRINTF("\n Phone SCO disconnected, g_sCallStatus=%d\n",g_sCallStatus);
 	if (g_sCallStatus == 2) {
 		g_hfOutCall = 0;
+		PRINTF("\n g_sCallStatus=2, close rhs sco\n");
 		//app_hfp_ag_stop_incoming_call();
 	}
-	else if(g_rhsESCO)
-	{
-		app_hfp_ag_close_audio(RIDER_HEADSET);
-	}
+	PRINTF("\n close rhs SCO \n");
+	app_hfp_ag_close_audio(RIDER_HEADSET);
 
 	g_phoneESCO = 0;
 
@@ -491,7 +492,7 @@ void hfp_RejectCall(bool reject_with_msg)
 		app_map_push_message();
 #endif
 	}
-    g_sCallStatus = 0;
+    //g_sCallStatus = 0;
 }
 
 void hfp_set_hfp_nb_codec(void)

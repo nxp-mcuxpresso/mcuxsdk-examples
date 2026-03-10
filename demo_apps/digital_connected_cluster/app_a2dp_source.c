@@ -78,6 +78,9 @@ uint8_t g_riderHsAudioStart=0;
 uint8_t g_riderHsAudioStarting = 0;
 uint8_t g_riderHsAudioStopping = 0;
 uint8_t g_passengerHsAudioStart=0;
+uint8_t g_phsAudioStarting = 0;
+uint8_t g_phsAudioStopping = 0;
+
 uint8_t g_a2dpSnkPlayStatus = 0;
 uint8_t g_rhsIndex =0;
 uint8_t g_phsIndex =0;
@@ -90,10 +93,6 @@ uint8_t * media;
 uint8_t g_mallocA2dp = 0;
 uint8_t g_a2dpXtimer=0;
 uint8_t g_audioFileOpened=0;
-
-
-//BT_A2DP_SBC_SOURCE_ENDPOINT(sbcEndpoint, A2DP_SBC_SAMP_FREQ_44100 );
-//BT_A2DP_SBC_SOURCE_ENDPOINT(sbcEndpoint, A2DP_SBC_SAMP_FREQ_48000 );
 
 BT_A2DP_SBC_SOURCE_ENDPOINT(sbcEndpointIdx1, A2DP_SBC_SAMP_FREQ_44100 );
 BT_A2DP_SBC_SOURCE_ENDPOINT(sbcEndpointIdx2, A2DP_SBC_SAMP_FREQ_44100 );
@@ -489,18 +488,52 @@ uint8_t app_set_a2dp_music_source(uint8_t music_source)
 #ifdef APP_DEBUG_EN
 	    PRINTF("\nDUAL A2DP stop and Enable A2DP bridge!\n");
 #endif
+
+	    // Stop playback first
+	    g_dualA2dpSrcPlayback = 0U;
+
+	    // Reset flags BEFORE stopping to prevent read_audio hang
+	    g_playUsbMusic=0;
+	    g_playDefaultMusic=0;
+	    g_flagReadReady=0;
+	    g_mallocA2dp = 0;
+
+	    // Wait for any ongoing start/stop operations to complete
+	    uint8_t timeout = 50; // 500ms timeout
+	    while((g_riderHsAudioStarting || g_riderHsAudioStopping || g_phsAudioStarting || g_phsAudioStopping) && timeout > 0)
+	    {
+	        vTaskDelay(10);
+	        timeout--;
+	    }
+
 	    if(g_dualA2dpSrcMode)
-	    	app_a2dp_src_stop(1);
+	    {
+	        app_a2dp_src_stop(1);
+	        vTaskDelay(20);
+	    }
 
 	    app_a2dp_src_stop(0);
 
 	    bt_a2dp_set_ep_codec_enable(rhs_a2dp_endpoint_src,0);
-		g_playUsbMusic=0;
-	    g_playDefaultMusic=0;
+
 	    g_dualA2dpSrcMode = 0;
-	    g_flagReadReady=0;
-	    g_dualA2dpSrcPlayback=0;
+
 	    //avrcp_tg_notify(1,1);
+	    app_a2dp_snk_resume();
+
+
+	    // Close audio file if open
+	    if(g_audioFileOpened)
+	    {
+	        wav_file_close(&wav_file);
+	        g_audioFileOpened = 0;
+	    }
+
+#if ((defined(A2DP_BRIDGE_BUFFERING_ENABLE)) && (A2DP_BRIDGE_BUFFERING_ENABLE > 0U))
+	    a2dp_buffer_queue_reset();
+#endif
+
+	    vTaskDelay(10);
 	    app_a2dp_snk_resume();
 
 	}else if(music_source == 1)
@@ -508,10 +541,20 @@ uint8_t app_set_a2dp_music_source(uint8_t music_source)
 #ifdef APP_DEBUG_EN
 		PRINTF("\n DUAL A2DP start with USB Music set!\n");
 #endif
+
+		// Wait for any ongoing operations
+		uint8_t timeout = 50;
+		 while((g_riderHsAudioStarting || g_riderHsAudioStopping || g_phsAudioStarting || g_phsAudioStopping) && timeout > 0)
+		{
+		    vTaskDelay(10);
+		    timeout--;
+		}
+
 		if(g_riderHsAudioStart && !g_dualA2dpSrcMode)
 		{
 			//PRINTF("\n Phone Music should be paused when start DUAL streaming with headsets !\n");
 			app_a2dp_snk_pause();
+			vTaskDelay(10);
 		}
 		bt_a2dp_set_ep_codec_enable(rhs_a2dp_endpoint_src,1);
 		g_playDefaultMusic=0;
@@ -528,6 +571,18 @@ uint8_t app_set_a2dp_music_source(uint8_t music_source)
 #ifdef APP_DEBUG_EN
 		PRINTF("\n DUAL A2DP start with default Music set!\n");
 #endif
+		//If all ready in call or intercom then disallow this mode.
+
+		// If previous audio start\stop still ongoing wait for 100ms.
+
+		// Wait for any ongoing operations
+		uint8_t timeout = 50;
+		while((g_riderHsAudioStarting || g_riderHsAudioStopping || g_phsAudioStarting || g_phsAudioStopping) && timeout > 0)
+		{
+		    vTaskDelay(10);
+		    timeout--;
+		}
+
 		if(g_riderHsAudioStart && !g_dualA2dpSrcMode)
 		{
 			//PRINTF("\n Phone Music should be paused when start DUAL streaming with headsets !\n");
@@ -538,17 +593,30 @@ uint8_t app_set_a2dp_music_source(uint8_t music_source)
 
 		g_playUsbMusic=0;
 	    g_playDefaultMusic=1;
+
+		g_playUsbMusic=0;
+	    g_playDefaultMusic=1;
+	    g_flagReadReady=0; // Reset flag
+	    g_ToneIndex = 0;
+	    g_mallocA2dp = 0;
+
+	    // Close audio file if open
+	    if(g_audioFileOpened)
+	    {
+	        wav_file_close(&wav_file);
+	        g_audioFileOpened = 0;
+	    }
+
 	    app_set_dual_a2dp_src_mode(1);
 
 	    if(g_riderHsAudioStart || g_passengerHsAudioStart)
 	    		g_dualA2dpSrcPlayback = 1U;
 
 	    avrcp_tg_set_absolute_volume(64);
-	    avrcp_tg_notify(1,1);
-
+	    //avrcp_tg_notify(1,1);
 	}
-	else{
-
+	else
+	{
 		PRINTF("\n Invalid input ! \n");
 		PRINTF("\n Options 0: A2DP bridge mode(Phone Music)"
 				"1: DUAL a2dp USB Music 2:DUAL a2dp Default Music ! \n");
@@ -586,7 +654,7 @@ void app_a2dp_suspend_snk()
 #endif
     	g_a2dpSnkPlayStatus=1;
     	app_a2dp_snk_suspend();
-		vTaskDelay(100);
+		vTaskDelay(50);
     }
 }
 
@@ -620,9 +688,13 @@ uint8_t app_get_a2dp_mode()
 uint8_t app_get_a2dp_intercom_status()
 {
 	if( g_dualA2dpSrcMode || app_hfp_intercom_status())
-		return 0;
-	else
+	{
 		return 1;
+	}
+	else
+	{
+		return 0;
+	}
 }
 
 uint8_t app_a2dp_start_with_rhs()
@@ -716,7 +788,7 @@ void app_a2dp_src_start(uint8_t rider_hs)
 #ifdef APP_DEBUG_EN
 		PRINTF("\nA2DP streaming start to Passenger Headset !\n");
 #endif
-		vTaskDelay(20);
+		g_phsAudioStarting = 1;
 		bt_a2dp_start(phs_a2dp_endpoint_src);
 	}
 
@@ -742,6 +814,7 @@ void app_a2dp_src_stop(uint8_t rider_hs)
 	} else if(!rider_hs && g_passengerHsAudioStart)
 	{
 		PRINTF("\nPH audio stop \n ");
+		g_phsAudioStopping = 1;
 		err=bt_a2dp_stop(phs_a2dp_endpoint_src);
 
 		if(!err)
@@ -800,7 +873,7 @@ void app_dual_a2dp_src_pause()
 		app_a2dp_src_stop(1);
 		vTaskDelay(20);
 		app_a2dp_src_stop(0);
-		avrcp_tg_notify(1,0);
+		//avrcp_tg_notify_rhs(1,0);
 		vTaskDelay(10);
     }
 
@@ -812,7 +885,7 @@ void app_dual_a2dp_src_resume()
 	{
 		return;
 	}
-	if(g_dualA2dpPlayStatus && g_sCallStatus != 2)
+	if(g_dualA2dpPlayStatus && g_sCallStatus == 0 && g_sHfpInCallingStatus == 0)
     {
 #ifdef APP_DEBUG_EN
 		PRINTF("Resume DUAL A2DP ! %d \n",app_hfp_intercom_status());
@@ -820,7 +893,7 @@ void app_dual_a2dp_src_resume()
     	if(g_dualA2dpRhPlayStatus)
     	{
     		app_a2dp_src_start(1);
-    		avrcp_tg_notify(1,1);
+    		//avrcp_tg_notify_rhs(1,1);
     	}
 
     	if(g_dualA2dpPhPlayStatus)
@@ -875,17 +948,24 @@ static void a2dp_pl_playback_timeout_handler(TimerHandle_t timer_id)
 	int buff_count=0;
     if (0U == g_dualA2dpSrcPlayback)
     {
-    	/* Send buffered data if streaming */
-    	if (g_a2dpBufferQueue.streaming_started && g_riderHsAudioStart ) {
-    	   	g_timeoutCount++;
-    	   	if(g_timeoutCount>1)
-    	   	{
-    	   		buff_count = a2dp_buffer_queue_get_count();
-    	        if( buff_count >=2)
-    	   		{
-    	   			a2dp_buffer_queue_dequeue_and_send();
-    	   		}
-    	        g_timeoutCount=0;
+        // Check if we should still be running
+        if(!g_riderHsAudioStart || g_dualA2dpSrcMode)
+        {
+            return;
+        }
+
+        /* Send buffered data if streaming */
+        if (g_a2dpBufferQueue.streaming_started && g_riderHsAudioStart ) {
+        	g_timeoutCount++;
+        	if(g_timeoutCount>1)
+        	{
+        		buff_count = a2dp_buffer_queue_get_count();
+                if( buff_count >=2)
+        		{
+        			a2dp_buffer_queue_dequeue_and_send();
+        		}
+				g_timeoutCount=0;
+
         	}else {
         		buff_count = a2dp_buffer_queue_get_count();
         		if(buff_count >= 5)
@@ -897,6 +977,13 @@ static void a2dp_pl_playback_timeout_handler(TimerHandle_t timer_id)
         return;
     }
 #endif
+
+    // Verify we should still be playing
+    if(!g_dualA2dpSrcPlayback || (!g_playDefaultMusic && !g_playUsbMusic))
+    {
+        return;
+    }
+
     /* Get the current time */
     if (0U != __get_IPSR())
     {
@@ -1021,11 +1108,16 @@ static void music_control_idx1_a2dp_start_callback(int err)
 		g_riderHsAudioStarting = 0;
 
 		if(!g_dualA2dpSrcMode)
-			avrcp_tg_notify(1,1);
+		{
+			update_rhs_play_status(1);
+			avrcp_tg_notify_rhs(1,1);
+		}
 	}
 	if(g_phsIndex == 1)
 	{
 	  	 g_passengerHsAudioStart = 1;
+	  	 g_phsAudioStarting = 0;
+
 	}
 	music_control_a2dp_start_callback(err);
 }
@@ -1038,11 +1130,16 @@ static void music_control_idx2_a2dp_start_callback(int err)
 		g_riderHsAudioStarting = 0;
 
 		if(!g_dualA2dpSrcMode)
-			avrcp_tg_notify(1,1);
+		{
+			update_rhs_play_status(1);
+			avrcp_tg_notify_rhs(1,1);
+		}
 	}
 	if(g_phsIndex == 2)
 	{
 	   	g_passengerHsAudioStart = 1;
+	   	g_phsAudioStarting = 0;
+
 	}
     music_control_a2dp_start_callback(err);
 }
@@ -1060,11 +1157,15 @@ static void music_control_idx1_a2dp_stop_callback(int err)
         	g_riderHsAudioStopping = 0;
 
             if(!g_dualA2dpSrcMode)
-            	avrcp_tg_notify(1,0);
+            {
+            	update_rhs_play_status(0);
+            	avrcp_tg_notify_rhs(1,0);
+            }
     	}
     	if(g_phsIndex == 1)
     	{
     		   g_passengerHsAudioStart = 0;
+    		   g_phsAudioStopping = 0;
     	}
 
 }
@@ -1080,12 +1181,16 @@ static void music_control_idx2_a2dp_stop_callback(int err)
         	g_riderHsAudioStopping = 0;
 
             if(!g_dualA2dpSrcMode)
-            	avrcp_tg_notify(1,0);
+            {
+            	update_rhs_play_status(0);
+            	avrcp_tg_notify_rhs(1,0);
+            }
     	}
 
     	if(g_phsIndex == 2)
     	{
     		   g_passengerHsAudioStart = 0;
+    		   g_phsAudioStopping = 0;
     	}
 
 }
@@ -1095,6 +1200,31 @@ void read_audio(void *pvParameters)
 
 	while(1)
 	{
+
+		//If not in dual A2DP mode, don't process
+		if(!g_dualA2dpSrcPlayback || g_dualA2dpSrcMode == 0)
+		{
+			vTaskDelay(50); // Sleep to prevent busy-wait
+
+			// Reset flags when not in playback mode
+			if(g_flagReadReady == 1 && song != NULL)
+			{
+				vPortFree(song);
+				song = NULL;
+			}
+			// Also free media if allocated
+			if(g_mallocA2dp == 1 && media != NULL)
+			{
+				vPortFree(media);
+				media = NULL;
+				g_mallocA2dp = 0;
+			}
+
+			g_flagReadReady = 0;
+			continue;
+		}
+
+
 		if(g_flagReadReady==2)
 		{
 		 g_medialen = (g_a2dpSrcNumSamples << g_a2dpSrcNc);
@@ -1128,12 +1258,30 @@ void read_audio(void *pvParameters)
 				g_flagReadReady=1;
 			}
 			}
+
+
+		}else if(g_flagReadReady==2 && !g_playUsbMusic)
+		{
+			// Mode changed, reset flag
+			g_flagReadReady=0;
+			vTaskDelay(10);
+			continue;
 		}
 	//Header Media audio read
 
-		if(g_flagReadReady==3 && g_mallocA2dp == 0){
+		if(g_flagReadReady==3 && g_playDefaultMusic && g_mallocA2dp == 0)
+		{
 
 			//PRINTF("\n Read Audio!\n");
+
+			// Check if still in valid state
+			if(!g_dualA2dpSrcPlayback || !g_playDefaultMusic)
+			{
+				g_flagReadReady=0;
+				vTaskDelay(10);
+				continue;
+			}
+
 
 			/* Music Audio is Stereo */
 			    g_medialen = (g_a2dpSrcNumSamples << g_a2dpSrcNc);
@@ -1215,7 +1363,35 @@ void read_audio(void *pvParameters)
 	   		   }
 
 	    g_flagReadReady=4;
+
+		}else if(g_flagReadReady==3 && !g_playDefaultMusic)
+		{
+			// Mode changed, reset flag
+			g_flagReadReady=0;
+			g_mallocA2dp=0;
+			vTaskDelay(10);
+			continue;
 		}
+
+		// Reset flag 4 back to appropriate state
+		if(g_flagReadReady == 4)
+		{
+			if(g_playDefaultMusic && g_dualA2dpSrcPlayback)
+			{
+				g_flagReadReady = 0; // Will be set to 3 by timer
+			}
+			else if(g_playUsbMusic && g_dualA2dpSrcPlayback)
+			{
+				g_flagReadReady = 2; // Continue USB playback
+			}
+			else
+			{
+				g_flagReadReady = 0;
+			}
+		}
+
+		// Small delay to prevent busy-waiting
+		vTaskDelay(2);
 
 	}
 	vTaskDelete( NULL );

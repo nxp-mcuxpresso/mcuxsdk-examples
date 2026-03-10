@@ -353,11 +353,11 @@ static shell_status_t shellBt(shell_handle_t shellHandle, int32_t argc, char **a
 //**************AVRCP commands start ***************
     else if (strcmp(argv[1], "play") == 0)
     {
-			avrcp_play_button(1);
+			avrcp_play_button();
 	}
     else if (strcmp(argv[1], "pause") == 0)
 	{
-			avrcp_pause_button(1);
+			avrcp_pause_button();
 	}
     else if (strcmp(argv[1], "next") == 0)
     {
@@ -552,7 +552,8 @@ static shell_status_t shellBt(shell_handle_t shellHandle, int32_t argc, char **a
         		return kStatus_SHELL_Error;
         	}
         	//select_op = ch[0] - '0';
-		avrcp_ct_get_element_attributes();
+        if(!app_get_a2dp_intercom_status())
+        	avrcp_ct_get_element_attributes();
         	//avrcp_get_playsong_detail();
         }		
 //**************AVRCP commands end***************

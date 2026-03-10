@@ -21,16 +21,17 @@ int cmd_init_tg();
 void avrcp_control_connect(struct bt_conn *default_conn);
 void avrcp_browsing_connect(struct bt_conn *default_conn);
 
-void avrcp_play_button(uint8_t press);
-void avrcp_pause_button(uint8_t press);
+void avrcp_play_button();
+void avrcp_pause_button();
 void avrcp_forward_backward(uint8_t ind);
 void avrcp_volume_up_down(uint8_t ind);
+void update_rhs_play_status(uint8_t status);
 
 void avrcp_ct_get_element_attributes();
 int avrcp_tg_notify_track_changed();
 int avrcp_tg_notify_playback_status_changed();
 int avrcp_tg_notify_volume_changed(uint8_t value);
-int avrcp_tg_notify(uint8_t event,uint8_t status);
+int avrcp_tg_notify_rhs(uint8_t event,uint8_t status);
 void avrcp_tg_set_absolute_volume(uint8_t value);
 
 void avrcp_ct_register_notification(struct bt_conn *conn,uint8_t reg_notify_type);

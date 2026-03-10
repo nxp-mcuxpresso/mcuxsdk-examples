@@ -46,7 +46,7 @@ uint8_t g_hfWbsEnable = 0, g_agWbsEnable = 0,g_hfOutCall = 0;
 uint8_t g_sHfpInCallingStatus = 0xff,g_hfNbs =0 ,g_agRhNbs = 0 , g_agPhNbs = 0;
 
 uint8_t g_sHfpAgRhDisconnecting =0,g_sHfpAgPhDisconnecting =0;
-uint8_t g_intercomEnabled;
+uint8_t g_intercomEnabled=0;
 uint8_t g_intercomPaused =0;
 
 uint16_t g_phoneESCO = 0;
@@ -1003,17 +1003,18 @@ void app_intercom_to_rider_call()
 
 void app_rider_call_to_intercom()
 {
-	if (!g_phsESCO && !g_rhsESCO && !g_phsESCO)
+	if (!g_phsESCO && !g_rhsESCO && !g_phoneESCO)
 	{
 
 		if(g_intercomPaused && !g_sHfpInCallingStatus)
 		{
 			PRINTF("Enabled intercom back !");
-			vTaskDelay(50);
+			vTaskDelay(40);
 			app_enable_intercom(1);
+			vTaskDelay(5);
 		}
 
-		if(!g_intercomEnabled)
+		if(!g_intercomEnabled && !g_intercomPaused)
 		{
 			app_a2dp_snk_resume();
 			app_dual_a2dp_src_resume();
@@ -1177,7 +1178,7 @@ void hfp_ag_sco_disconnected_callback(struct bt_hfp_ag *ag)
 			vTaskDelay(10);
 		}
 
-		if(!g_intercomEnabled)
+		if(!g_intercomEnabled && !g_intercomPaused)
 		{
 			app_a2dp_snk_resume();
 			app_dual_a2dp_src_resume();

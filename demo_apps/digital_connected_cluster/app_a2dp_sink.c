@@ -49,7 +49,7 @@ struct bt_a2dp *default_a2dp_snk;
 struct bt_a2dp_endpoint *default_a2dp_endpoint_snk;
 static uint8_t g_audioStart;
 extern a2dp_codec_config_t g_phoneA2dpConfig; // Declare the external variable
-
+uint8_t suspend_init=0;
 
 BT_A2DP_SBC_SINK_ENDPOINT(sbcEndpoint);
 static uint8_t app_sdp_a2source_user(struct bt_conn *conn,
@@ -269,10 +269,17 @@ void app_a2dp_snk_suspend()
 
 	PRINTF("\nPhone audio suspend \n ");
 	if(g_audioStart)
+	{
+		suspend_init=1;
 		err=bt_a2dp_stop(default_a2dp_endpoint_snk);
+		avrcp_pause_button();
+	}
 
 	if(err)
+	{
+		suspend_init=0;
 		PRINTF("\nstop Error code=%d ",err);
+	}
 
 }
 
@@ -281,20 +288,29 @@ void sbc_start_play(int err)
 	if (err == 0)
 	{
 		g_audioStart = 1;
-		if(!app_get_a2dp_intercom_status())
-			app_a2dp_snk_suspend();
+		PRINTF("SBC_Start_Play \n");
+
 		if(app_a2dp_start_with_rhs())
 		{
 			/* Start Audio Player */
 			app_a2dp_src_start(1);
 
+		}else
+		{
+			app_a2dp_snk_suspend();
 		}
+
+		if(app_get_a2dp_mode())
+		{
+			PRINTF("DUAL A2DP mode, suspend Phone music \n");
+			app_a2dp_snk_suspend();
+		}
+
 	}
 	else
 	{
 		PRINTF("SBC_Start_Play Callback return (err %d)\n", err);
 	}
-
 }
 
 void app_a2dp_snk_suspend_to_start()
@@ -302,9 +318,12 @@ void app_a2dp_snk_suspend_to_start()
 	int err=0;
 
 	PRINTF("\nPhone audio start \n ");
-	if(!g_audioStart)
+	if(!g_audioStart && suspend_init)  // && suspend_init to be added
+	{
 		err=bt_a2dp_start(default_a2dp_endpoint_snk);
-
+		suspend_init=0;
+		avrcp_play_button();
+	}
 	if(err)
 		PRINTF("\nstart Error code=%d ",err);
 
