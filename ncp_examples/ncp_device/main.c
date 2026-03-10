@@ -43,7 +43,7 @@
 #else
 #define TASK_MAIN_PRIO         (PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-9)))
 #endif
-#define TASK_MAIN_STACK_SIZE   3072
+#define TASK_MAIN_STACK_SIZE   4096
 
 /*******************************************************************************
  * Prototypes
