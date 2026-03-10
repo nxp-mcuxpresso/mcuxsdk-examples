@@ -10,4 +10,3 @@ The picture file(*.png, jpeg...) must be converted to bitmap file(binary file: x
 - [IMX952LPD5EVK-19](../../../_boards/imx952evk/driver_examples/dpu_1/figure_display/example_board_readme.md)
 - [IMX952LPD5EVK-15](../../../_boards/imx952evk/driver_examples/dpu_1/figure_display/example_board_readme.md)
 - [IMX95LPD5EVK-19](../../../_boards/imx95lpd5evk19/driver_examples/dpu/figure_display/example_board_readme.md)
-- [imx95verdinevk](../../../_boards/imx95verdinevk/driver_examples/dpu/figure_display/example_board_readme.md)

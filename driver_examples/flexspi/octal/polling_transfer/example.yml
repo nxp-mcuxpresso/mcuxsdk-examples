@@ -60,7 +60,6 @@ flexspi_octal_polling_transfer:
     - -mdk@release
     frdmmcxn947@cm33_core0: []
     imx95lpd5evk19@cm7: []
-    imx95verdinevk@cm7: []
     lpcxpresso55s36: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []

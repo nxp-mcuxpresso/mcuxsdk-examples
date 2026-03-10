@@ -19,5 +19,4 @@ isi_dwc_mipi_csi2_yuv422:
   boards:
     imx95lpd5evk19@cm7: []
     imx95lp4xevk15@cm7: []
-    imx95verdinevk@cm7: []
     imx952evk@cm7: []

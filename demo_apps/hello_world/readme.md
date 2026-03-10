@@ -59,7 +59,6 @@ debug_console supports this, debug_console_lite doesn't support).
 - [FRDM-RW612](../../_boards/frdmrw612/demo_apps/hello_world/example_board_readme.md)
 - [IMX95LP4XEVK-15](../../_boards/imx95lp4xevk15/demo_apps/hello_world/example_board_readme.md)
 - [IMX95LPD5EVK-19](../../_boards/imx95lpd5evk19/demo_apps/hello_world/example_board_readme.md)
-- [imx95verdinevk](../../_boards/imx95verdinevk/demo_apps/hello_world/example_board_readme.md)
 - [FRDMIMX95](../../_boards/frdmimx95/demo_apps/hello_world/example_board_readme.md)
 - [KW45B41Z-EVK](../../_boards/kw45b41zevk/demo_apps/hello_world/example_board_readme.md)
 - [KW45B41Z-LOC](../../_boards/kw45b41zloc/demo_apps/hello_world/example_board_readme.md)

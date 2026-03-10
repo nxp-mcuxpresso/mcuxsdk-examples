@@ -55,7 +55,6 @@ Note: The example echo every 8 characters, so input 8 characters every time.
 - [MCX-W71-EVK](../../../_boards/mcxw71evk/cmsis_driver_examples/lpuart/interrupt_transfer/example_board_readme.md)
 - [IMX95LP4XEVK-15](../../../_boards/imx95lp4xevk15/cmsis_driver_examples/lpuart/interrupt_transfer/example_board_readme.md)
 - [IMX95LPD5EVK-19](../../../_boards/imx95lpd5evk19/cmsis_driver_examples/lpuart/interrupt_transfer/example_board_readme.md)
-- [imx95verdinevk](../../../_boards/imx95verdinevk/cmsis_driver_examples/lpuart/interrupt_transfer/example_board_readme.md)
 - [FRDMIMX95](../../../_boards/frdmimx95/cmsis_driver_examples/lpuart/interrupt_transfer/example_board_readme.md)
 - [KW45B41Z-EVK](../../../_boards/kw45b41zevk/cmsis_driver_examples/lpuart/interrupt_transfer/example_board_readme.md)
 - [KW47-EVK](../../../_boards/kw47evk/cmsis_driver_examples/lpuart/interrupt_transfer/example_board_readme.md)
