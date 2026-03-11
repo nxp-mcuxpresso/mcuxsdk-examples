@@ -32,9 +32,8 @@ Please select operate mode...
         B -- Pulse Width Measurement Mode.
 Frequency Measurement Mode Selected!
 Please select the target clock:
-                A -- CLK_IN
-                B -- FRO_12M
-                C -- FREQME_CLK_IN0
+                A -- FRO_12M
+                B -- FREQME_CLK_IN0
 Please input the scale factor of reference clock(Ranges from 0 to 31).
 20
 Target clock frequency is 11999725 Hz.

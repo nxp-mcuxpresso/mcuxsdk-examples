@@ -35,6 +35,7 @@
 #define DEMO_MAXEXPECTVALUE       (0x6FFFFFFFUL)
 #define DEMO_MINEXPECTVALUE       (0xFUL)
 #define DEMO_REF_CLK_FREQ         CLOCK_GetFreq(kCLOCK_FroHfDiv)
+#define DEMO_CLOCK_SOURCE_COUNT   2U
 /*${macro:end}*/
 
 /*******************************************************************************
