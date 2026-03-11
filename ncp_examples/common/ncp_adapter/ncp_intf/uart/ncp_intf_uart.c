@@ -110,7 +110,7 @@ lpuart_rtos_config_t ncp_uart_config = {
 
 extern uint32_t ncp_tlv_chksum(uint8_t *buf, uint16_t len);
 
-static uint8_t ncp_uart_tlvbuf[TLV_CMD_BUF_SIZE];
+static uint8_t ncp_uart_tlvbuf[TLV_CMD_BUF_SIZE] __attribute__((aligned(8)));
 static void ncp_uart_intf_task(void *argv);
 
 static OSA_TASK_HANDLE_DEFINE(ncp_uartTaskHandle);
@@ -123,9 +123,12 @@ static OSA_TASK_DEFINE(ncp_uart_intf_task, NCP_UART_TASK_PRIORITY, 1, NCP_UART_T
 static bool is_wakeup_magic_pattern(uint8_t *tlv_buf, size_t length)
 {
     uint32_t local_checksum = 0, remote_checksum = 0;
-    uint64_t magic_pattern = UART_WAKEUP_MAGIC_PATTERN;
+    const uint64_t magic_pattern = UART_WAKEUP_MAGIC_PATTERN;
+    const uint8_t *magic_bytes = (const uint8_t *)&magic_pattern;
 
-    if ((*(uint64_t *)tlv_buf) == magic_pattern)
+    /* Use memcmp to avoid unaligned access */
+    if (length >= sizeof(magic_pattern) &&
+        memcmp(tlv_buf, magic_bytes, sizeof(magic_pattern)) == 0)
     {
         return true;
     }
