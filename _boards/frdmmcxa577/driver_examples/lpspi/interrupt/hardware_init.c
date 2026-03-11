@@ -23,9 +23,9 @@ void BOARD_InitHardware(void)
 
     /* Attach peripheral clock */
     CLOCK_SetClockDiv(kCLOCK_DivLPSPI1, 1u);
-    CLOCK_AttachClk(kFRO_LF_DIV_to_LPSPI1);
+    CLOCK_AttachClk(kFRO_HF_DIV_to_LPSPI1);
 
     CLOCK_SetClockDiv(kCLOCK_DivLPSPI2, 1u);
-    CLOCK_AttachClk(kFRO_LF_DIV_to_LPSPI2);
+    CLOCK_AttachClk(kFRO_HF_DIV_to_LPSPI2);
 }
 /*${function:end}*/
