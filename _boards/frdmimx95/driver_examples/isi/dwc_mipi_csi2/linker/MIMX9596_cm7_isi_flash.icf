@@ -27,13 +27,13 @@
 /* Memory region from [0x80000000-0x80001FFF] is reserved for ROM header */
 /* Memory region from [0x20040000-0x2007FFFF] is reserved for A55 ATF */
 
-define symbol __ram_vector_table_size__ =  isdefinedsymbol(__ram_vector_table__) ? 0x00000800 : 0;
+define symbol __ram_vector_table_size__ =  isdefinedsymbol(__ram_vector_table__) ? 0x00001000 : 0;
 define symbol __ram_vector_table_offset__ =  isdefinedsymbol(__ram_vector_table__) ? 0x000007FF : 0;
 
 define symbol m_interrupts_start       = 0x28132000;
-define symbol m_interrupts_end         = 0x281327FF;
+define symbol m_interrupts_end         = 0x28132FFF;
 
-define symbol m_text_start             = 0x28132800;
+define symbol m_text_start             = 0x28133000;
 define symbol m_text_end               = 0X283FFFFF;
 
 define symbol m_rsc_tbl_start          = 0x20000000;
