@@ -267,15 +267,11 @@ static void InitADC(void)
     LPADC_GetDefaultConfig(&lpadcConfig);
     lpadcConfig.enableAnalogPreliminary = true;
     lpadcConfig.referenceVoltageSource = kLPADC_ReferenceVoltageAlt3;
-    lpadcConfig.conversionAverageMode = kLPADC_ConversionAverage1;
+    lpadcConfig.conversionAverageMode = kLPADC_ConversionAverage256;
     
     /* Release peripheral reset */
     RESET_ReleasePeripheralReset(kADC0_RST_SHIFT_RSTn);
     RESET_ReleasePeripheralReset(kADC1_RST_SHIFT_RSTn);
-
-    /* Attach peripheral clock */
-    CLOCK_SetClockDiv(kCLOCK_DivADC, 1u);
-    CLOCK_AttachClk(kFRO_LF_DIV_to_ADC);
 
     LPADC_Init(ADC0, &lpadcConfig);
     LPADC_DoOffsetCalibration(ADC0);

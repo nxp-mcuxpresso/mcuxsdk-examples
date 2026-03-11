@@ -271,7 +271,7 @@ static void InitADC(void)
     LPADC_GetDefaultConfig(&lpadcConfig);
     lpadcConfig.enableAnalogPreliminary = true;
     lpadcConfig.referenceVoltageSource = kLPADC_ReferenceVoltageAlt3;
-    lpadcConfig.conversionAverageMode = kLPADC_ConversionAverage1;
+    lpadcConfig.conversionAverageMode = kLPADC_ConversionAverage256;
     
     /* Release peripheral reset */
     RESET_ReleasePeripheralReset(kADC0_RST_SHIFT_RSTn);
