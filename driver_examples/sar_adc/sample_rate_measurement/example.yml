@@ -23,4 +23,19 @@ adc_sample_rate_measurement:
   boards:
     imx95lpd5evk19@cm7: []
     imx952evk@cm7: []
+    imx943evk@cm7_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
+    imx943evk@cm7_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
+    imx943evk@cm33_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
     frdmmcxe31b: []
