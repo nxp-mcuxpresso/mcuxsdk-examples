@@ -1,7 +1,15 @@
 # Copyright 2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
-board_runner_args(jlink "--device=MIMX94398")
+if(${core_id} STREQUAL cm33_core0)
+board_runner_args(jlink "--device=MIMX943_M33_0")
+elseif(${core_id} STREQUAL cm33_core1)
+board_runner_args(jlink "--device=MIMX943_M33_1")
+elseif(${core_id} STREQUAL cm7_core0)
+board_runner_args(jlink "--device=MIMX943_M7_0")
+elseif(${core_id} STREQUAL cm7_core1)
+board_runner_args(jlink "--device=MIMX943_M7_1")
+endif()
 board_runner_args(linkserver  "--device=MIMX94398:IMX943-ORANGEBOX")
 board_runner_args(pyocd "--target=imx943")
 

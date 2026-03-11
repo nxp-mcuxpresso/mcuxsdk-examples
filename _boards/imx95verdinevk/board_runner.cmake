@@ -2,8 +2,8 @@
 # All rights reserved.
 #
 # SPDX-License-Identifier: BSD-3-Clause
-board_runner_args(jlink "--device=MIMX9596")
-board_runner_args(linkserver  "--device=MIMX9596:IMX95-VERDIN")
+board_runner_args(jlink "--device=MIMX9596_M7")
+board_runner_args(linkserver  "--device=MIMX9596:IMX95VERDINEVK")
 board_runner_args(pyocd "--target=imx95")
 
 include(${SdkRootDirPath}/cmake/extension/runner/linkserver.board.cmake)
