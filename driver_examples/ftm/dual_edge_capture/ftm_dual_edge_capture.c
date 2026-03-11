@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016-2017, 2020 NXP
+ * Copyright 2016-2017, 2020, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -59,10 +59,10 @@ void FTM_INPUT_CAPTURE_HANDLER(void)
         g_capture2Val =
             FTM_GetInputCaptureValue(DEMO_FTM_BASEADDR, (ftm_chnl_t)(BOARD_FTM_INPUT_CAPTURE_CHANNEL_PAIR * 2 + 1));
         g_pluseCount++;
-        /* Enable first channel interrupt to start next pluse capture */
-        FTM_EnableInterrupts(DEMO_FTM_BASEADDR, FTM_FIRST_CHANNEL_INTERRUPT_ENABLE);
         g_secondChannelOverflowCount = g_timerOverflowInterruptCount;
         ftmFirstChannelInterruptFlag = false;
+        /* Enable first channel interrupt to start next pluse capture */
+        FTM_EnableInterrupts(DEMO_FTM_BASEADDR, FTM_FIRST_CHANNEL_INTERRUPT_ENABLE);
     }
     else
     {
