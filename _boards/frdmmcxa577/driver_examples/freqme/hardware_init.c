@@ -29,5 +29,7 @@ void BOARD_InitHardware(void)
 
     /* Release peripheral reset */
     RESET_ReleasePeripheralReset(kINPUTMUX0_RST_SHIFT_RSTn);
+    
+    CLOCK_SetupOsc32KClocking(kCLOCK_Osc32kToAll);
 }
 /*${function:end}*/
