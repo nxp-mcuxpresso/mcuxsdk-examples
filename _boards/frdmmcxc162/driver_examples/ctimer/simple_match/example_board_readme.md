@@ -27,4 +27,4 @@ The log below shows example output of the CTimer driver simple match demo in the
 CTimer match example to toggle the output on a match
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can see the red led blinking on board.
+You can see the white led blinking on board.
