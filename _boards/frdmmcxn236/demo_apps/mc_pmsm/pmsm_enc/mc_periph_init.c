@@ -252,6 +252,7 @@ static void InitAdc0(void)
     lpadcConfig.enableAnalogPreliminary = true;
     lpadcConfig.referenceVoltageSource = kLPADC_ReferenceVoltageAlt3;
     lpadcConfig.conversionAverageMode = kLPADC_ConversionAverage256;
+    lpadcConfig.powerLevelMode = kLPADC_PowerLevelAlt2;
     lpadcConfig.FIFO0Watermark = 2U;
 
     /* Set clocks */
