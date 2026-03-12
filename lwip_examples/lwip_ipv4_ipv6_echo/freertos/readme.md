@@ -127,7 +127,6 @@ In such case, you will be able to connect another PC:
 - [EVK-MIMXRT1064](../../../_boards/evkmimxrt1064/lwip_examples/lwip_ipv4_ipv6_echo/freertos/example_board_readme.md)
 - [MIMXRT1160-EVK](../../../_boards/evkmimxrt1160/lwip_examples/lwip_ipv4_ipv6_echo/freertos/example_board_readme.md)
 - [MIMXRT1180-EVK](../../../_boards/evkmimxrt1180/lwip_examples/lwip_ipv4_ipv6_echo/freertos/example_board_readme.md)
-- [FRDM-MCXA577](../../../_boards/frdmmcxa577/lwip_examples/lwip_ipv4_ipv6_echo/freertos/example_board_readme.md)
 - [FRDM-MCXE247](../../../_boards/frdmmcxe247/lwip_examples/lwip_ipv4_ipv6_echo/freertos/example_board_readme.md)
 - [FRDM-RW612](../../../_boards/frdmrw612/lwip_examples/lwip_ipv4_ipv6_echo/freertos/example_board_readme.md)
 - [LPCXpresso54628](../../../_boards/lpcxpresso54628/lwip_examples/lwip_ipv4_ipv6_echo/freertos/example_board_readme.md)

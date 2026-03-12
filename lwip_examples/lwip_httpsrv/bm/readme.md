@@ -98,7 +98,6 @@ The assigned unique local or global unique addresses could be typed into the web
 - [EVK-MIMXRT1064](../../../_boards/evkmimxrt1064/lwip_examples/lwip_httpsrv/bm/example_board_readme.md)
 - [MIMXRT1160-EVK](../../../_boards/evkmimxrt1160/lwip_examples/lwip_httpsrv/bm/example_board_readme.md)
 - [MIMXRT1180-EVK](../../../_boards/evkmimxrt1180/lwip_examples/lwip_httpsrv/bm/example_board_readme.md)
-- [FRDM-MCXA577](../../../_boards/frdmmcxa577/lwip_examples/lwip_httpsrv/bm/example_board_readme.md)
 - [FRDM-MCXE247](../../../_boards/frdmmcxe247/lwip_examples/lwip_httpsrv/bm/example_board_readme.md)
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/lwip_examples/lwip_httpsrv/bm/example_board_readme.md)
 - [FRDM-RW612](../../../_boards/frdmrw612/lwip_examples/lwip_httpsrv/bm/example_board_readme.md)

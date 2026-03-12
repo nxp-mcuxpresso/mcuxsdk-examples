@@ -261,7 +261,6 @@ lwip_ipv4_ipv6_echo_freertos:
       - -mdk@hyperram_debug
       - -mdk@hyperram_release
       - -mdk@release
-    frdmmcxa577: []
     frdmmcxe247: []
     frdmrw612:
       - -armgcc@debug

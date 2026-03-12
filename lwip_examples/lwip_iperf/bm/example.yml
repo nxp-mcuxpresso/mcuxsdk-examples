@@ -112,7 +112,6 @@ lwip_iperf_bm:
       - -mdk@hyperram_debug
       - -mdk@hyperram_release
     frdmimxrt1186@cm7: []
-    frdmmcxa577: [-armgcc@debug, -armgcc@release]
     frdmmcxe247: []
     frdmmcxn947@cm33_core0: []
     frdmrw612: []
