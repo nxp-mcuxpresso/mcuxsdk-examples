@@ -12,22 +12,26 @@ This script parses the NBU debug structure from a binary file, hex dump, or BTSN
 and provides essential debug information.
 
 Usage:
-    python debug_struct_parser.py <input_file> [--format bin|hex|btsnoop]
+    python debug_struct_parser.py <input_file> [--format bin|hex|btsnoop] [--extension EXT]
 
 Examples:
     # Parse from binary file
     python debug_struct_parser.py debug_struct.bin
 
-    # Parse from hex dump
-    python debug_struct_parser.py debug_dump.txt --format hex
+    # Parse from hex dump with BLE extension
+    python debug_struct_parser.py debug_dump.txt --format hex --extension ble
 
-    # Parse from BTSNOOP capture
-    python debug_struct_parser.py hci_capture.btsnoop --format btsnoop
+    # Parse from BTSNOOP capture with multiple extensions (NXP internal use only)
+    python debug_struct_parser.py hci_capture.btsnoop --format btsnoop --extension ble --extension zigbee
 """
 
 import struct
 import sys
 import argparse
+import os
+import importlib.util
+from pathlib import Path
+
 
 # Constants from fwk_debug_struct.h
 NBUDBG_VERSION = 2
@@ -50,6 +54,15 @@ HCI_VENDOR_EVENT = 0xFF
 DEBUG_SUBEVENT = 0xF1
 DEBUG_STRUCT_BUFFER_ID = 0
 STALL_BUFFER_ID = 2
+
+# Extension script descriptors
+# Dictionary mapping extension names to their relative script paths
+# Paths are relative to: ../../../../../middleware/wireless/
+EXTENSION_SCRIPT_PATHS = {
+    'ble': 'fw_v19_nb/src/build/iar/debug_struct_parser_ble.py',
+    # Add more extensions here as needed:
+    # 'matter': 'matter/debug/debug_struct_parser_matter.py',
+}
 
 class RegInfo:
     """Processor register information - 76 bytes total"""
@@ -172,7 +185,7 @@ def print_raw_data(label: str, data: bytes):
         print(f"  {i:04X}: {hex_str}")
 
 
-def analyze_debug_struct(debug_struct: NbuDebugStruct):
+def analyze_debug_struct(debug_struct: NbuDebugStruct, extension_decoders: dict):
     """Analyze and print debug structure information"""
     print(f"\nNBU Debug Structure Analysis")
     print("=" * 60)
@@ -234,7 +247,16 @@ def analyze_debug_struct(debug_struct: NbuDebugStruct):
             print(f"  Thread Name:    {ctx.thread_name}")
 
     if debug_struct.dbg_ble:
-        print_raw_data("\nBLE Debug Data", debug_struct.dbg_ble)
+        decode_ble_func = extension_decoders.get('ble')
+        if decode_ble_func:
+            try:
+                print("\nBLE Debug Data (Decoded):")
+                decode_ble_func(debug_struct.dbg_ble)
+            except Exception as e:
+                print(f"\nWarning: Failed to decode BLE data: {e}")
+                print_raw_data("\nBLE Debug Data (Raw)", debug_struct.dbg_ble)
+        else:
+            print_raw_data("\nBLE Debug Data", debug_struct.dbg_ble)
 
     print("\n" + "=" * 60)
 
@@ -382,14 +404,138 @@ def extract_debug_from_btsnoop(filename: str) -> tuple:
 
     return debug_structures, stall_detected
 
+
+def locate_parser_script_extension(module_name) -> str:
+    """
+    Locate the debug_struct_parser_XXX.py script.
+    
+    First checks the EXTENSION_SCRIPT_PATHS dictionary for a known path,
+    then falls back to directory search if not found.
+    
+    Returns:
+        str: Full path to extension script if found
+        
+    Raises:
+        FileNotFoundError: If the script cannot be found
+    """
+    # Get the directory of the current script
+    current_script = Path(__file__).resolve()
+    current_dir = current_script.parent
+    
+    # Navigate to ../../../../../middleware/wireless
+    target_dir = current_dir.parent.parent.parent.parent.parent.parent / "middleware" / "wireless"
+    target_filename = module_name + ".py"
+    
+    # Extract extension name from module_name (e.g., "debug_struct_parser_ble" -> "ble")
+    extension_name = module_name.replace("debug_struct_parser_", "")
+    
+    # Check if extension is in the predefined paths dictionary
+    if extension_name in EXTENSION_SCRIPT_PATHS:
+        explicit_path = target_dir / EXTENSION_SCRIPT_PATHS[extension_name]
+        if explicit_path.exists() and explicit_path.is_file():
+            return str(explicit_path)
+        else:
+            print(f"Warning: Predefined path not found: {explicit_path}")
+            print(f"Falling back to directory search...")
+    
+    # Fallback: Check in target_dir itself
+    ble_script_path = target_dir / target_filename
+    
+    if ble_script_path.exists() and ble_script_path.is_file():
+        return str(ble_script_path)
+
+    # If not found, raise error
+    raise FileNotFoundError(
+        target_filename + f" not found in {target_dir} or its subdirectories"
+    )
+
+
+def load_extension_module(script_path: str, module_name: str):
+    """
+    Dynamically load a Python module from a file path.
+    
+    Args:
+        script_path: Full path to the Python script
+        module_name: Name to assign to the loaded module
+        
+    Returns:
+        The loaded module object
+        
+    Raises:
+        ImportError: If the module cannot be loaded
+    """
+    spec = importlib.util.spec_from_file_location(module_name, script_path)
+    if spec is None or spec.loader is None:
+        raise ImportError(f"Cannot load module from {script_path}")
+    
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[module_name] = module
+    spec.loader.exec_module(module)
+    
+    return module
+
+
+def load_extension_decoders(extension_names: list) -> dict:
+    """
+    Load multiple extension decoder modules.
+    
+    Args:
+        extension_names: List of extension names (e.g., ['ble', 'zigbee'])
+        
+    Returns:
+        Dictionary mapping extension name to decode function
+        {
+            'ble': decode_ble_function,
+            'zigbee': decode_zigbee_function,
+            ...
+        }
+    """
+    extension_decoders = {}
+    
+    if not extension_names:
+        return extension_decoders
+    
+    for ext_name in extension_names:
+        try:
+            module_name = f"debug_struct_parser_{ext_name}"
+
+            script_path = locate_parser_script_extension(module_name)
+            print(f"Loading {ext_name.upper()} decoder from: {script_path}")
+            
+            extension_module = load_extension_module(script_path, module_name)
+            
+            # Look for decode function with pattern: decode_<ext_name>
+            decode_func_name = f"decode_debug_struct_{ext_name}"
+            if hasattr(extension_module, decode_func_name):
+                extension_decoders[ext_name] = getattr(extension_module, decode_func_name)
+                print(f"{ext_name.upper()} decoder loaded successfully\n")
+            else:
+                print(f"Warning: {decode_func_name} function not found in {ext_name} extension module\n")
+                
+        except FileNotFoundError as e:
+            print(f"Warning: {e}")
+            print(f"Continuing without {ext_name.upper()} decoder\n")
+        except Exception as e:
+            print(f"Warning: Failed to load {ext_name.upper()} decoder: {e}")
+            print(f"Continuing without {ext_name.upper()} decoder\n")
+    
+    return extension_decoders
+
+
 def main():
     parser = argparse.ArgumentParser(description='Parse and analyze NBU debug structure')
     parser.add_argument('input_file', help='Input file containing debug structure')
     parser.add_argument('--format', choices=['bin', 'hex', 'btsnoop'], default='bin',
                        help='Input file format (default: bin)')
+    parser.add_argument('--extension', '-e', action='append', dest='extensions',
+                       help='NXP internal use only. Enable extension decoder (can be specified multiple times). Available: ble')
 
     args = parser.parse_args()
 
+    # Load extension modules only if specified
+    extension_names = args.extensions if args.extensions else []
+    extension_decoders = load_extension_decoders(extension_names)
+    
     try:
         if args.format == 'bin':
             data_list = [read_binary_file(args.input_file)]
@@ -415,7 +561,7 @@ def main():
                     print(f"{'='*70}")
 
                 debug_struct = NbuDebugStruct(data)
-                analyze_debug_struct(debug_struct)
+                analyze_debug_struct(debug_struct, extension_decoders)
 
         # Print stall detection at the end
         if stall_detected:
