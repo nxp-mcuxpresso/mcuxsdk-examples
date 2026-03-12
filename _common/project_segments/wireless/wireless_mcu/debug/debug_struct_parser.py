@@ -12,7 +12,7 @@ This script parses the NBU debug structure from a binary file, hex dump, or BTSN
 and provides essential debug information.
 
 Usage:
-    python debug_struct_parser.py <input_file> [--format bin|hex|btsnoop] [--extension EXT]
+    python debug_struct_parser.py <input_file> [--format bin|hex|btsnoop|hexstring] [--extension EXT] [--elf ELF_FILE]
 
 Examples:
     # Parse from binary file
@@ -21,8 +21,11 @@ Examples:
     # Parse from hex dump with BLE extension
     python debug_struct_parser.py debug_dump.txt --format hex --extension ble
 
-    # Parse from BTSNOOP capture with multiple extensions (NXP internal use only)
-    python debug_struct_parser.py hci_capture.btsnoop --format btsnoop --extension ble --extension zigbee
+    # Parse from BTSNOOP capture with multiple extensions and elf file (NXP internal use only) 
+    python debug_struct_parser.py hci_capture.btsnoop --format btsnoop --extension ble --elf firmware.elf
+    
+    # Parse from hex string directly
+    python debug_struct_parser.py "02000000FFFFFFFF03000000..." --format hexstring
 """
 
 import struct
@@ -185,8 +188,14 @@ def print_raw_data(label: str, data: bytes):
         print(f"  {i:04X}: {hex_str}")
 
 
-def analyze_debug_struct(debug_struct: NbuDebugStruct, extension_decoders: dict):
-    """Analyze and print debug structure information"""
+def analyze_debug_struct(debug_struct: NbuDebugStruct, extension_decoders: dict, elf_file: str = None):
+    """Analyze and print debug structure information
+    
+    Args:
+        debug_struct: The NBU debug structure to analyze
+        extension_decoders: Dictionary mapping extension names to decode functions
+        elf_file: Optional path to ELF file for symbol resolution
+    """
     print(f"\nNBU Debug Structure Analysis")
     print("=" * 60)
     print(f"Version: 0x{debug_struct.version:04X}")
@@ -251,7 +260,7 @@ def analyze_debug_struct(debug_struct: NbuDebugStruct, extension_decoders: dict)
         if decode_ble_func:
             try:
                 print("\nBLE Debug Data (Decoded):")
-                decode_ble_func(debug_struct.dbg_ble)
+                decode_ble_func(debug_struct.dbg_ble, elf_file)
             except Exception as e:
                 print(f"\nWarning: Failed to decode BLE data: {e}")
                 print_raw_data("\nBLE Debug Data (Raw)", debug_struct.dbg_ble)
@@ -288,6 +297,39 @@ def read_hex_file(filename: str) -> bytes:
                     continue
 
     return bytes(data)
+
+
+def parse_hex_string(hex_string: str) -> bytes:
+    """Parse hex string and convert to binary
+    
+    Args:
+        hex_string: Hex string in format like "02000000FFFFFFFF03000000"
+                   Can contain spaces, 0x prefixes, colons, commas which will be stripped
+    
+    Returns:
+        bytes: Binary data
+        
+    Raises:
+        ValueError: If the hex string is invalid or has odd length
+    """
+    # Remove common separators and prefixes
+    cleaned = hex_string.replace(' ', '').replace('0x', '').replace(':', '').replace(',', '').replace('\n', '').replace('\r', '')
+    
+    # Check if the string has valid hex characters
+    if not all(c in '0123456789ABCDEFabcdef' for c in cleaned):
+        raise ValueError("Invalid hex string: contains non-hexadecimal characters")
+    
+    # Check if length is even
+    if len(cleaned) % 2 != 0:
+        raise ValueError(f"Invalid hex string: odd length ({len(cleaned)} characters). Hex string must have even number of characters.")
+    
+    # Convert to bytes
+    data = bytearray()
+    for i in range(0, len(cleaned), 2):
+        data.append(int(cleaned[i:i+2], 16))
+    
+    return bytes(data)
+
 
 def extract_debug_from_btsnoop(filename: str) -> tuple:
     """Extract debug structures from BTSNOOP file"""
@@ -524,13 +566,20 @@ def load_extension_decoders(extension_names: list) -> dict:
 
 def main():
     parser = argparse.ArgumentParser(description='Parse and analyze NBU debug structure')
-    parser.add_argument('input_file', help='Input file containing debug structure')
-    parser.add_argument('--format', choices=['bin', 'hex', 'btsnoop'], default='bin',
-                       help='Input file format (default: bin)')
+    parser.add_argument('input_file', help='Input file containing debug structure or hex string (when using --format hexstring)')
+    parser.add_argument('--format', choices=['bin', 'hex', 'btsnoop', 'hexstring'], default='bin',
+                       help='Input file format (default: bin). Use hexstring to pass hex data directly on command line.')
     parser.add_argument('--extension', '-e', action='append', dest='extensions',
                        help='NXP internal use only. Enable extension decoder (can be specified multiple times). Available: ble')
+    parser.add_argument('--elf', type=str, default=None,
+                       help='NXP internal use only. Path to ELF file for symbol resolution (optional)')
 
     args = parser.parse_args()
+
+    # Validate ELF file if provided
+    if args.elf and not os.path.isfile(args.elf):
+        print(f"Warning: ELF file '{args.elf}' not found. Continuing without symbol resolution.", file=sys.stderr)
+        args.elf = None
 
     # Load extension modules only if specified
     extension_names = args.extensions if args.extensions else []
@@ -542,6 +591,9 @@ def main():
             stall_detected = False # Not supported for this format
         elif args.format == 'hex':
             data_list = [read_hex_file(args.input_file)]
+            stall_detected = False # Not supported for this format
+        elif args.format == 'hexstring':
+            data_list = [parse_hex_string(args.input_file)]
             stall_detected = False # Not supported for this format
         elif args.format == 'btsnoop':
             data_list, stall_detected = extract_debug_from_btsnoop(args.input_file)
@@ -561,7 +613,7 @@ def main():
                     print(f"{'='*70}")
 
                 debug_struct = NbuDebugStruct(data)
-                analyze_debug_struct(debug_struct, extension_decoders)
+                analyze_debug_struct(debug_struct, extension_decoders, args.elf)
 
         # Print stall detection at the end
         if stall_detected:
