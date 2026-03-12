@@ -35,3 +35,4 @@ Position revolution value: 0
 - [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/driver_examples/eqdc/basic/example_board_readme.md)
 - [FRDM-MCXA266](../../../_boards/frdmmcxa266/driver_examples/eqdc/basic/example_board_readme.md)
 - [FRDM-MCXA366](../../../_boards/frdmmcxa366/driver_examples/eqdc/basic/example_board_readme.md)
+- [IMX943-EVK](../../../_boards/imx943evk/driver_examples/eqdc/basic/example_board_readme.md)

@@ -7,3 +7,6 @@ The SINC module works in trigger mode, and once a user inputs any key via the te
 The bitstream source is set as an external bitstream that connects to the SPI MOSI signal, and the input clock source is set as MCK_OUT0.
 Theoretically, the triggered SINC result should be equal to the SPI's output value, but there may be some deviations between different conversions.
 
+## Supported Boards
+- [IMX943-EVK](../../../_boards/imx943evk/driver_examples/sinc/lpspi_sinc_trigger/example_board_readme.md)
+

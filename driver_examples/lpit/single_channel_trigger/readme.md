@@ -23,3 +23,5 @@ Starting channel No.0 ...
  Channel No.0 interrupt is occurred !
  Channel No.0 interrupt is occurred !
 
+## Supported Boards
+- [IMX943-EVK](../../../_boards/imx943evk/driver_examples/lpit/single_channel_trigger/example_board_readme.md)

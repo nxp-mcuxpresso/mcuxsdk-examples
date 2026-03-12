@@ -7,3 +7,5 @@ In the example, you can send characters to the console back and they will be pri
 Note: Please input one character at a time. If you input too many characters each time, the receiver may overflow
 because the LPUART uses simple polling way for receiving.
 
+## Supported Boards
+- [IMX943-EVK](../../../_boards/imx943evk/driver_examples/lpuart/polling_trigger/example_board_readme.md)

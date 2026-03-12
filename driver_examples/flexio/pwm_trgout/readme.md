@@ -5,3 +5,5 @@ This demo describes how to use SDK drivers to implement the PWM feature by FLEXI
 It outputs the PWM singal with fixed frequency defined by "DEMO_FLEXIO_FREQUENCY" in source code
 and dynamic duty from 99 to 1 to one of the FLEXIO pins.
 
+## Supported Boards
+- [IMX943-EVK](../../../_boards/imx943evk/driver_examples/flexio/pwm_trgout/example_board_readme.md)

@@ -10,3 +10,7 @@ chain are disabled. The user should provide a voltage signal to each conversion 
 running the project, type any key into the debug console to get these three channels' conversion
 result, if the result of the channel conversion is valid, it will be printed to the debug console.
 
+
+## Supported Boards
+
+- [IMX943-EVK](../../../_boards/imx943evk/driver_examples/sar_adc/polling_trgout/example_board_readme.md)

@@ -6,4 +6,4 @@ with suspending all other cores.
 
 ## Supported Boards
 
-- [IMX943EVK](../../_boards/imx943evk/demo_apps/netc_switch_standalone/example_board_readme.md)
+- [IMX943-EVK](../../_boards/imx943evk/demo_apps/netc_switch_standalone/example_board_readme.md)

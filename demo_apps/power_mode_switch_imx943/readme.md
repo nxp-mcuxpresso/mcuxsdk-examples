@@ -15,4 +15,4 @@ source by following the debug console prompts. The purpose of this demo is to sh
  - Debug pins(e.g SWD_DIO) would consume addtional power, had better to disable related pins or disconnect them.
 
 ## Supported Boards
-- [IMX943EVK](../../_boards/imx943evk/demo_apps/power_mode_switch/example_board_readme.md)
+- [IMX943-EVK](../../_boards/imx943evk/demo_apps/power_mode_switch/example_board_readme.md)

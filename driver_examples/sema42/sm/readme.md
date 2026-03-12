@@ -12,3 +12,4 @@ the SM runs on the Cortex-M33 core.
 - [IMX95LPD5EVK-19](../../../_boards/imx95lpd5evk19/driver_examples/sema42/sm/example_board_readme.md)
 - [imx95verdinevk](../../../_boards/imx95verdinevk/driver_examples/sema42/sm/example_board_readme.md)
 - [FRDMIMX95](../../../_boards/frdmimx95/driver_examples/sema42/sm/example_board_readme.md)
+- [IMX943-EVK](../../../_boards/imx943evk/driver_examples/sema42/sm/example_board_readme.md)

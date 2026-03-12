@@ -38,3 +38,5 @@ The log below shows example output of the PWM driver demo in the oscilloscope :
   |    | |
   +----+-+--------->     submodule2
 
+# Supported Boards
+- [IMX943-EVK](../../_boards/imx943evk/driver_examples/pwm/pwm_trigger/example_board_readme.md)

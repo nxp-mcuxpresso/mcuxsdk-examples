@@ -10,3 +10,4 @@ Theoretically, the triggered SINC result should be equal to the SPI's output val
 ## Supported Boards
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/driver_examples/sinc/lpspi/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/driver_examples/sinc/lpspi/example_board_readme.md)
+- [IMX943-EVK](../../../_boards/imx943evk/driver_examples/sinc/lpspi/example_board_readme.md)

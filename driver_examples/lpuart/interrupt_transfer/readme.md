@@ -52,6 +52,7 @@ In the example, you can send characters to the console back and they will be pri
 - [MCIMX93-EVK](../../../_boards/mcimx93evk/driver_examples/lpuart/interrupt_transfer/example_board_readme.md)
 - [MCIMX93W-EVK](../../../_boards/mcimx93wevk/driver_examples/lpuart/interrupt_transfer/example_board_readme.md)
 - [MCIMX93-QSB](../../../_boards/mcimx93qsb/driver_examples/lpuart/interrupt_transfer/example_board_readme.md)
+- [IMX943-EVK](../../../_boards/imx943evk/driver_examples/lpuart/interrupt_transfer/example_board_readme.md)
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/driver_examples/lpuart/interrupt_transfer/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/driver_examples/lpuart/interrupt_transfer/example_board_readme.md)
 - [MCX-W72-EVK](../../../_boards/mcxw72evk/driver_examples/lpuart/interrupt_transfer/example_board_readme.md)

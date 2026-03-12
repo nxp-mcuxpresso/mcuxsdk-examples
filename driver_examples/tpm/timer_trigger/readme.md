@@ -6,4 +6,4 @@ It sets up the TPM hardware block to trigger an interrupt every 1 millisecond.
 When the TPM interrupt is triggered 1000 times, a message is printed on the UART terminal.
 
 ## Supported Boards
-- [IMX943EVK](../../../_boards/imx943evk/driver_examples/tpm/timer_trigger/example_board_readme.md)
+- [IMX943-EVK](../../../_boards/imx943evk/driver_examples/tpm/timer_trigger/example_board_readme.md)

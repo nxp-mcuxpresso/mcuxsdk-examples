@@ -27,3 +27,4 @@ error, and the corresponding error information will be printed to the debug cons
 - [FRDMIMX95](../../../_boards/frdmimx95/driver_examples/sar_adc/selftest/example_board_readme.md)
 - [MCIMX93-EVK](../../../_boards/mcimx93evk/driver_examples/sar_adc/selftest/example_board_readme.md)
 - [MCIMX93W-EVK](../../../_boards/mcimx93wevk/driver_examples/sar_adc/selftest/example_board_readme.md)
+- [IMX943-EVK](../../../_boards/imx943evk/driver_examples/sar_adc/selftest/example_board_readme.md)

@@ -19,4 +19,5 @@ The pdm hwvad example shows how to use pdm driver with hwvad:
 - [FRDMIMX95](../../../_boards/frdmimx95/driver_examples/pdm/pdm_hwvad/example_board_readme.md)
 - [MCIMX93-EVK](../../../_boards/mcimx93evk/driver_examples/pdm/pdm_hwvad/example_board_readme.md)
 - [MCIMX93-QSB](../../../_boards/mcimx93qsb/driver_examples/pdm/pdm_hwvad/example_board_readme.md)
+- [IMX943-EVK](../../../_boards/imx943evk/driver_examples/pdm/pdm_hwvad/example_board_readme.md)
 - [MIMXRT700-EVK](../../../_boards/mimxrt700evk/driver_examples/pdm/pdm_hwvad/example_board_readme.md)

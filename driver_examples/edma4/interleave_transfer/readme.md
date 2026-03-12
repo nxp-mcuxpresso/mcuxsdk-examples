@@ -13,6 +13,7 @@ The example demostrates the interleave transfer by features:
 - [MCIMX93-EVK](../../../_boards/mcimx93evk/driver_examples/edma4/interleave_transfer/example_board_readme.md)
 - [MCIMX93W-EVK](../../../_boards/mcimx93wevk/driver_examples/edma4/interleave_transfer/example_board_readme.md)
 - [MCIMX93-QSB](../../../_boards/mcimx93qsb/driver_examples/edma4/interleave_transfer/example_board_readme.md)
+- [IMX943-EVK](../../../_boards/imx943evk/driver_examples/edma4/interleave_transfer/example_board_readme.md)
 - [MIMXRT700-EVK](../../../_boards/mimxrt700evk/driver_examples/edma4/interleave_transfer/example_board_readme.md)
 - [FRDM-MCXE31B](../../../_boards/frdmmcxe31b/driver_examples/edma4/interleave_transfer/example_board_readme.md)
 - [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/driver_examples/edma4/interleave_transfer/example_board_readme.md)

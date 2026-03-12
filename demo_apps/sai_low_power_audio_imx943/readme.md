@@ -9,4 +9,4 @@ The protocol provides various commands for A core and M core to communicate with
 If there is no audio palyback, M core will enter the STOP mode, and the whole SOC system would enter deep sleep mode(DSM) once A core enter low power status.
 
 ## Supported Boards
-- [IMX943EVK](../../_boards/imx943evk/demo_apps/sai_low_power_audio/example_board_readme.md)
+- [IMX943-EVK](../../_boards/imx943evk/demo_apps/sai_low_power_audio/example_board_readme.md)

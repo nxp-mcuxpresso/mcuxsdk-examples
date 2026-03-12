@@ -25,6 +25,7 @@ In this example, pdm will trigger interrupt to transfer data when watermark valu
 - [FRDMIMX95](../../../_boards/frdmimx95/driver_examples/pdm/pdm_interrupt/example_board_readme.md)
 - [MCIMX93-EVK](../../../_boards/mcimx93evk/driver_examples/pdm/pdm_interrupt/example_board_readme.md)
 - [MCIMX93-QSB](../../../_boards/mcimx93qsb/driver_examples/pdm/pdm_interrupt/example_board_readme.md)
+- [IMX943-EVK](../../../_boards/imx943evk/driver_examples/pdm/pdm_interrupt/example_board_readme.md)
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/driver_examples/pdm/pdm_interrupt/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/driver_examples/pdm/pdm_interrupt/example_board_readme.md)
 - [MIMXRT700-EVK](../../../_boards/mimxrt700evk/driver_examples/pdm/pdm_interrupt/example_board_readme.md)

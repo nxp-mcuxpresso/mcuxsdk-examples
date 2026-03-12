@@ -8,3 +8,5 @@ the capture frequency value while the check is interrupted and waiting for the c
 The example also sets up one QTMR channel to output pwm. The user should probe a 50Khz PWM signal output with
 50% dutycycle with a oscilloscope.
 
+# Supported Boards
+- [IMX943-EVK](../../_boards/imx943evk/driver_examples/qtmr/outputpwm_trigger/example_board_readme.md)
