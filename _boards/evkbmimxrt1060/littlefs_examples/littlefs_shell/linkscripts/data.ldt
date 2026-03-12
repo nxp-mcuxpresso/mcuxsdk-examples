@@ -1,0 +1,7 @@
+        <#if memory.name=="SRAM_ITC">
+        *mflash_drv.o(.text .text* .rodata .rodata*)
+        *fsl_flexspi.o(.text .text* .rodata .rodata*)
+        *fsl_clock.o(.text .text* .rodata .rodata*)
+        *fsl_cache.o(.text* .rodata*)
+        *(.rodata.str*)
+        </#if>

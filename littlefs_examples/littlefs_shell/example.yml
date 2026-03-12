@@ -60,12 +60,18 @@ littlefs_shell:
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
     evkbmimxrt1060:
-    - -armgcc@flexspi_nor_debug
-    - -armgcc@flexspi_nor_release
-    - -iar@flexspi_nor_debug
-    - -iar@flexspi_nor_release
-    - -mdk@flexspi_nor_debug
-    - -mdk@flexspi_nor_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
     evkbmimxrt1170@cm4:
     - -armgcc@flexspi_nor_debug
     - -armgcc@flexspi_nor_release
@@ -80,17 +86,8 @@ littlefs_shell:
     - -iar@flexspi_nor_release
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
-    evkcmimxrt1060:
-    - -armgcc@flexspi_nor_debug
-    - -armgcc@flexspi_nor_release
-    - -iar@flexspi_nor_debug
-    - -iar@flexspi_nor_release
-    - -mdk@flexspi_nor_debug
-    - -mdk@flexspi_nor_release
+    evkcmimxrt1060: []
     evkmimxrt1064:
-    - -iar@flexspi_nor_debug
-    - -iar@flexspi_nor_release
-    - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
     evkmimxrt1160@cm4:
     - -armgcc@flexspi_nor_debug

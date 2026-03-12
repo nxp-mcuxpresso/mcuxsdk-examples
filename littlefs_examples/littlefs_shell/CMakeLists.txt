@@ -12,7 +12,11 @@ mcux_add_configuration(
 )
 
 mcux_add_configuration(
-    TARGETS release sdram_release hyperram_release flash_release
+    TARGETS release
+            sdram_release
+            hyperram_release
+            flash_release
+            flexspi_nor_release
     CC "-DLFS_NO_ASSERT"
 )
 
