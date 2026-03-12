@@ -2311,14 +2311,14 @@ usb_status_t USB_DeviceAudioUnifiedInit(usb_device_composite_struct_t *deviceCom
 
     g_deviceComposite->audioUnified.curSpeakerSampleFrequency             = AUDIO_OUT_SAMPLING_RATE;
     g_deviceComposite->audioUnified.speakerFreqControlRange.wNumSubRanges = 1U;
-    g_deviceComposite->audioUnified.speakerFreqControlRange.wMIN          = 48000U;
-    g_deviceComposite->audioUnified.speakerFreqControlRange.wMAX          = 48000U;
+    g_deviceComposite->audioUnified.speakerFreqControlRange.wMIN          = AUDIO_OUT_SAMPLING_RATE;
+    g_deviceComposite->audioUnified.speakerFreqControlRange.wMAX          = AUDIO_OUT_SAMPLING_RATE;
     g_deviceComposite->audioUnified.speakerFreqControlRange.wRES          = 0U;
 
     g_deviceComposite->audioUnified.curRecorderSampleFrequency             = AUDIO_IN_SAMPLING_RATE;
     g_deviceComposite->audioUnified.recorderFreqControlRange.wNumSubRanges = 1U;
-    g_deviceComposite->audioUnified.recorderFreqControlRange.wMIN          = 16000U;
-    g_deviceComposite->audioUnified.recorderFreqControlRange.wMAX          = 16000U;
+    g_deviceComposite->audioUnified.recorderFreqControlRange.wMIN          = AUDIO_IN_SAMPLING_RATE;
+    g_deviceComposite->audioUnified.recorderFreqControlRange.wMAX          = AUDIO_IN_SAMPLING_RATE;
     g_deviceComposite->audioUnified.recorderFreqControlRange.wRES          = 0U;
 
     g_deviceComposite->audioUnified.volumeControlRange.wNumSubRanges = 1U;

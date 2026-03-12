@@ -126,8 +126,8 @@ usb_audio_speaker_struct_t g_UsbDeviceAudioSpeaker = {
     .curMute20          = 0U,
     .curClockValid      = 1U,
     .curVolume20        = {0x00U, 0x1FU},
-    .curSampleFrequency = 48000U, /* This should be changed to 48000 if sampling rate is 48k */
-    .freqControlRange   = {1U, 48000U, 48000U, 0U},
+    .curSampleFrequency = AUDIO_SAMPLING_RATE,
+    .freqControlRange   = {1U, AUDIO_SAMPLING_RATE, AUDIO_SAMPLING_RATE, 0U},
     .volumeControlRange = {1U, 0x8001U, 0x7FFFU, 1U},
 #endif
     .speed                      = USB_SPEED_FULL,
