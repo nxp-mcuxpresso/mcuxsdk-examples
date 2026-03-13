@@ -1,0 +1,38 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+prp_switch:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/netc/prp_switch
+    project-root-path: boards/${board}/driver_examples/netc/prp_switch/${multicore_foldername}
+    document:
+      name: prp_switch${core_id_suffix_name}
+      category: driver_examples/netc
+      brief: The FreeRTOS PRP (Parallel Redundancy Protocol) project is a
+        demonstration of implementing the IEC 62439-3 PRP protocol using
+        FreeRTOS.
+      example_readme:
+      - examples/driver_examples/netc/prp_switch/readme.md
+      - ${board_root}/${board}/driver_examples/netc/prp_switch/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
+    imx943evk@cm7_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
+    imx943evk@cm7_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
+    imx943evk@cm33_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
