@@ -34,7 +34,7 @@ static void APP_EnableExtInterruptWakeup(uint8_t firstMode, uint8_t secondMode, 
 static void APP_EnableLptmrWakeup(uint8_t firstMode, uint8_t secondMode, uint8_t thirdMode);
 static void APP_EnableRTCAlarm0Wakeup(uint8_t firstMode, uint8_t secondMode, uint8_t thirdMode);
 static void APP_EnableRTCAlarm1Wakeup(uint8_t firstMode, uint8_t secondMode, uint8_t thirdMode);
-static bool APP_GetWakeupReason(void);
+static void APP_GetWakeupReason(void);
 /*******************************************************************************
  * Variables
  ******************************************************************************/
@@ -53,15 +53,12 @@ power_handle_t powerHandle __attribute__((section(".noinit.$rpmsg_sh_mem")));
 
 power_pd1_config_t pd1Config = {
     .mainWakeupSource      = kPower_WS_NONE,
-    .mainRamArraysToRetain = kPower_MainDomainAllRams,
     .enableIVSMode         = false,
     .fro16KOutputFreq      = kPMU_FRO16KOutput16KHz,
 };
 
 power_pd2_config_t pd2Config = {.mainWakeupSource      = kPower_WS_NONE,
                                 .aonWakeupSource       = kPower_WS_NONE,
-                                .aonRamArraysToRetain  = kPower_AonDomainAllRams,
-                                .mainRamArraysToRetain = kPower_MainDomainAllRams,
                                 .enableIVSMode         = false,
                                 .disableFRO10M         = true,
                                 .fro16KOutputFreq      = kPMU_FRO16KOutput16KHz,
@@ -217,20 +214,19 @@ int main(void)
 
 #if APP_ENABLE_ADVC
     ADVC_Init();
+    uint32_t tmp = AON__PMU->AWK_UP_TIME;
+    AON__PMU->AWK_UP_TIME = tmp;
+    SDK_DelayAtLeastUs(600, CLOCK_GetCoreSysClkFreq());
+    *(uint32_t *)0xa009706c = 0x2;
+    *(uint32_t *)0xa0097070 = 0x2;
+    *(uint32_t *)0xa009700C = (*(uint32_t *)0xa009700C & ~(0xF800UL)) | (2 << 11U);
     ADVC_Enable(kADVC_ModeOptimal, NULL);
+    tmp = AON__PMU->AWK_UP_TIME;
+    AON__PMU->AWK_UP_TIME = tmp;
+    SDK_DelayAtLeastUs(600, CLOCK_GetCoreSysClkFreq());
 #endif
-    
     while (1)
-    {
-        if (ADVC_IsEnabled() == true)
-        {
-            PRINTF("ADVC Enabled...\r\n");
-        }
-        else
-        {
-            PRINTF("ADVC Disabled...\r\n");
-        }      
-
+    {  
         powerTrans      = APP_GetTargetPowerTransition();
         targetLpMode    = APP_EnableWakeupSource(powerTrans);
         status_t status = Power_EnterLowPowerMode(targetLpMode, powerConfigs[(uint8_t)targetLpMode]);
@@ -238,6 +234,13 @@ int main(void)
         {
             /* Only when context saving is enabled. */
             BOARD_InitHardware();
+            Power_ClearLpPowerSettings();
+            Power_DisableAllWakeupSources();
+            CMC_EnableDebugOperation(CMC, false);
+
+            EnableIRQ(MU_A_RX_IRQn);
+            MU_EnableInterrupts(APP_MU, (kMU_Rx0FullInterruptEnable));          
+          
             PRINTF("Wakeup Successfully\r\n");
             CMC_ConfigFlashMode(CMC, true, true, true);
         }
@@ -247,6 +250,9 @@ int main(void)
             return -1;
         }
         Power_ClearTargetPowerMode();
+        PRINTF("\r\n--------- Next Loop ---------\r\n");
+        PRINTF("\r\n--------- Next Loop ---------\r\n");
+        PRINTF("\r\n--------- Next Loop ---------\r\n");
         PRINTF("\r\n--------- Next Loop ---------\r\n");
     }
 }
@@ -547,9 +553,15 @@ static void APP_EnableLptmrWakeup(uint8_t firstMode, uint8_t secondMode, uint8_t
         }
     }
 
+#if APP_ENABLE_ADVC
+    ADVC_PreVoltageChangeRequest(CLOCK_GetAonCoreSysClkFreq());
+#endif /* APP_ENABLE_ADVC */
     CLOCK_AttachClk(kFRO16K_to_AON_LPTMR);
     CLOCK_EnableClock(kCLOCK_GateAonLPTMR);
     RESET_ReleasePeripheralReset(kAonLPTMR_RST_SHIFT_RSTn);
+#if APP_ENABLE_ADVC
+    ADVC_PostVoltageChangeRequest();
+#endif /* APP_ENABLE_ADVC */
 
     lptmr_config_t lptmrConfig;
     LPTMR_GetDefaultConfig(&lptmrConfig);
@@ -644,7 +656,7 @@ static void APP_EnableRTCAlarm0Wakeup(uint8_t firstMode, uint8_t secondMode, uin
     rtc_free_run_alarm_config_t alarm0Config;
     alarm0Config.alarmCounter = RTC_ALARM0_TIME_SEC * 100;
     alarm0Config.enable       = true;
-    alarm0Config.mode         = kRTC_AlarmModeRepeat;
+    alarm0Config.mode         = kRTC_AlarmModeSingleShot;
     RTC_ConfigureFreeRunningAlarm(APP_RTC_BASE, kRTC_Alarm_0, &alarm0Config);
     RTC_EnableInterrupts(APP_RTC_BASE, kRTC_Alarm0InterruptEnable);
     EnableIRQ(RTC_ALARM0_IRQn);
@@ -734,44 +746,45 @@ static void APP_EnableRTCAlarm1Wakeup(uint8_t firstMode, uint8_t secondMode, uin
     rtc_free_run_alarm_config_t alarm1Config;
     alarm1Config.alarmCounter = RTC_ALARM1_TIME_SEC * 100;
     alarm1Config.enable       = true;
-    alarm1Config.mode         = kRTC_AlarmModeRepeat;
+    alarm1Config.mode         = kRTC_AlarmModeSingleShot;
     RTC_ConfigureFreeRunningAlarm(APP_RTC_BASE, kRTC_Alarm_1, &alarm1Config);
     RTC_EnableInterrupts(APP_RTC_BASE, kRTC_Alarm1InterruptEnable);
     EnableIRQ(RTC_ALARM1_IRQn);
 }
 
-static bool APP_GetWakeupReason(void)
+static void APP_GetWakeupReason(void)
 {
     uint32_t resetReasons = CMC_GetStickySystemResetStatus(CMC);
-    PRINTF("Reset Reasons: %x\r\n", resetReasons);
+    PRINTF("Reset Reasons: 0x%x\r\n", resetReasons);
 
+#if 0
     if (resetReasons == CMC_SSRS_WAKEUP_MASK)
     {
-        if (NVIC_GetPendingIRQ(LPTMR_AON_IRQn) != 0U)
-        {
-            PRINTF("Wakeup Source: LPTMR\r\n");
-            EnableIRQ(LPTMR_AON_IRQn);
-            NVIC_ClearPendingIRQ(LPTMR_AON_IRQn);
-        }
-        else if (NVIC_GetPendingIRQ(RTC_ALARM0_IRQn) != 0U)
+        uint32_t wakeupStatus = SMM_GetWakeupSourceStatus(AON__SMM);
+        (void)AON__SMM->WKUP_STAT;
+        PMU_DoHandshakeBetweenPMUAndPAC(AON__PMU);
+        if ((wakeupStatus & (1U << 0UL)) != 0UL)
         {
             PRINTF("Wakeup Source: RTC Alarm0\r\n");
             EnableIRQ(RTC_ALARM0_IRQn);
             NVIC_ClearPendingIRQ(RTC_ALARM0_IRQn);
         }
-        else if (NVIC_GetPendingIRQ(RTC_ALARM1_IRQn) != 0U)
+        if ((wakeupStatus & (1U << 1UL)) != 0UL)
         {
             PRINTF("Wakeup Source: RTC Alarm1\r\n");
             EnableIRQ(RTC_ALARM1_IRQn);
             NVIC_ClearPendingIRQ(RTC_ALARM1_IRQn);
         }
-        else
+        if ((wakeupStatus & (1U << 13UL)) != 0UL)
+        {
+            PRINTF("Wakeup Source: LPTMR\r\n");
+            EnableIRQ(LPTMR_AON_IRQn);
+            NVIC_ClearPendingIRQ(LPTMR_AON_IRQn);
+        }
+        if ((wakeupStatus & (1U << 5UL)) != 0UL)
         {
             PRINTF("Wakeup Source: EXT_INT\r\n");
         }
-
-        return true;
     }
-
-    return false;
+#endif
 }

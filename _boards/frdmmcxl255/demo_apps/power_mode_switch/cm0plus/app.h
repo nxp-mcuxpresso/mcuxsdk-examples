@@ -41,6 +41,7 @@
  * Prototypes
  ******************************************************************************/
 /*${prototype:start}*/
+void BOARD_BootAs3MHzClocks(void);
 void BOARD_InitTamper_ButtonPins(void);
 void BOARD_DeinitTamper_ButtonPins(void);
 void BOARD_InitHardware(void);

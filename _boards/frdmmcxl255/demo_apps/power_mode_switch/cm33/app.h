@@ -185,6 +185,8 @@ void BOARD_InitWakeupButtonAsWUUPin(void);
 void BOARD_InitExtIntButtonAsGPIO(void);
 void APP_BootCore1(void);
 uint32_t get_core1_image_size(void);
+void BOARD_InitDEBUG_UARTPins(void);
+void BOARD_Init96MClocksBoot(void);
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */

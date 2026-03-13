@@ -77,8 +77,17 @@ void BOARD_DeinitTamper_ButtonPins(void)
     CLOCK_DisableClock(kCLOCK_GateAonPORT);
 }
 
+void BOARD_DeinitDebugConsole(void)
+{
+    DbgConsole_Deinit();
+    RESET_SetPeripheralReset(kAonUART_RST_SHIFT_RSTn);
+    CLOCK_DisableClock(kCLOCK_GateAonPORT);
+    CLOCK_DisableClock(kCLOCK_GateAonGPIO);
+}
+
 void BOARD_InitHardware(void)
 {
+    CLOCK_DisableADVCControl();
     BOARD_BootAs3MHzClocks();
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitDebugConsole();

@@ -21,6 +21,9 @@
 #include "fsl_port.h"
 #include "fsl_gpio.h"
 #include "fsl_reset.h"
+#include "fsl_pmu.h"
+
+#include "fsl_rtc.h"
 /*${header:end}*/
 
 /*${function:start}*/
@@ -253,21 +256,28 @@ void BOARD_Init96MClocksBoot(void)
 void BOARD_InitHardware(void)
 {
     rosc_init_config_t roscInitConfig;
-    
+        
     BOARD_InitDEBUG_UARTPins();
     BOARD_Init96MClocksBoot();
     BOARD_InitDebugConsole();
 
     Power_ClearLpPowerSettings();
+    
+    PMU_EnableHighVolGlitchDetect(AON__PMU, false);
+    PMU_EnableLowVolGlitchDetect(AON__PMU, false);
+    PMU_CleanHighVolGlitchDetectReset(AON__PMU);
+    PMU_CleanLowVolGlitchDetectReset(AON__PMU);
+    
+    PMU_DoHandshakeBetweenPMUAndPAC(AON__PMU);
 
     CMC_EnableDebugOperation(CMC, false);
 
     EnableIRQ(MU_A_RX_IRQn);
     MU_EnableInterrupts(APP_MU, (kMU_Rx0FullInterruptEnable));
-
     /* Initialize Rosc if not already initialized */
     if (!CLOCK_IsRoscInitialized())
     {
+        AON__CGU->CLK_CONFIG |= CGU_CLK_CONFIG_XTAL32_OUT_EN_MASK;
         /* Get default Rosc initialization configuration */
         CLOCK_GetDefaultInitRoscConfig(&roscInitConfig);
         
@@ -279,6 +289,15 @@ void BOARD_InitHardware(void)
         
         CLOCK_InitRosc(&roscInitConfig);
     }
+    
+    rtc_alive_detector_config_t rtcAliveDetConfig = {
+        .enableAliveDetector = true,
+        .bypassAnalogAliveMechanism = false,
+        .mechanismPeriod = 0,
+    };
+    RTC_ConfigureAliveDetector(APP_RTC_BASE, &rtcAliveDetConfig);
+    
+    CLOCK_DisableADVCControl();
 }
 
 /*${function:end}*/
