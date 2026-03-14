@@ -13,6 +13,7 @@
 #include "fsl_spc.h"
 #include "fsl_vbat.h"
 #include "fsl_port.h"
+#include "fsl_clock.h"
 #include "fsl_lpuart.h"
 #include "clock_config.h"
 #include "fsl_debug_console.h"
@@ -41,7 +42,7 @@ typedef enum _resc_name
     kResc_LpIref,
     kResc_LpBuffer_Act,
     kResc_LpBuffer_Lp,
-    
+
     /* When LVD/HVD is enabled, BGMODE should kept enabled. */
     kResc_Core_Vdd_Lvd_Act,
     kResc_Core_Vdd_Hvd_Act,
@@ -55,12 +56,14 @@ typedef enum _resc_name
     kResc_GlitchDetector_Lp,
 
     /*! Memory modules */
+    kResc_Flash,
+    kResc_Lpcac,
     kResc_RamA0,
     kResc_RamA3,
     kResc_RamX,
     kResc_RamA,
     kResc_RamB,
-    
+
     /*! Analog modules */
     kResc_Vref,
     kResc_Usb,
@@ -70,7 +73,16 @@ typedef enum _resc_name
     kResc_Tsi0,
     kResc_Cmp0,
     kResc_Cmp0_Dac,
-    
+
+    /*! Peripheral clocks, This is for demonstration purposes only.
+     * In actual projects, the peripheral clock can be controlled
+     * according to specific needs.
+     */
+    kResc_RamA_Clk,
+    kResc_RamB_Clk,
+    kResc_RamX_Clk,
+    kResc_Peri_clk_all,
+
     kResc_Max_Num,
 } resc_name_t;
 

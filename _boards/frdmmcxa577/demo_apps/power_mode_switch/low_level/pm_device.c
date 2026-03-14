@@ -36,6 +36,8 @@ static const resc_status_t g_resc_ctrl_table[kResc_Max_Num][APP_LOW_POWER_MODE_C
     [kResc_GlitchDetector_Act]  = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_GlitchDetector_Lp]   = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     
+    [kResc_Flash]               = {kResc_Status_On,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Lp},
+    [kResc_Lpcac]               = {kResc_Status_On,     kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     /*! SRAM modules */
     [kResc_RamA0]               = {kResc_Status_On,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Lp},
     [kResc_RamA3]               = {kResc_Status_On,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Lp},
@@ -54,6 +56,12 @@ static const resc_status_t g_resc_ctrl_table[kResc_Max_Num][APP_LOW_POWER_MODE_C
     [kResc_Tsi0]                = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_Cmp0]                = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_Cmp0_Dac]            = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
+
+    /*! Peripheral clocks */
+    [kResc_RamA_Clk]            = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
+    [kResc_RamB_Clk]            = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
+    [kResc_RamX_Clk]            = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
+    [kResc_Peri_clk_all]        = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
 };
 
 /* LDO voltage level and drive strength control table for all power modes. */
@@ -432,11 +440,42 @@ static void SetVoltagePeripheralPowerStatus(resc_status_t resc_status, resc_name
     }
 }
 
-static void SetSramPowerStatus(resc_status_t resc_status, resc_name_t resc_name)
+static void SetMemoryPowerStatus(resc_status_t resc_status, resc_name_t resc_name)
 {
     uint32_t sramMask = 0U;
 
-    if (resc_name >= kResc_RamX)
+    if (resc_name == kResc_Flash)
+    {
+        if (resc_status == kResc_Status_Off)
+        {
+            /* Flash memory is placed in low power state. */
+            CMC_ConfigFlashMode(APP_CMC, false, false, true);
+        }
+        else if (resc_status == kResc_Status_Lp)
+        {
+            /* Flash is disabled while core is sleeping, wake on access. */
+            CMC_ConfigFlashMode(APP_CMC, true, true, false);
+        }
+        else
+        {
+            /* Flash is always on. */
+            CMC_ConfigFlashMode(APP_CMC, false, false, false);
+        }
+    }
+    else if (resc_name == kResc_Lpcac)
+    {
+        if (resc_status == kResc_Status_Off)
+        {
+            /* Disable LPCAC. */
+            SYSCON->LPCAC_CTRL |= SYSCON_LPCAC_CTRL_DIS_LPCAC_MASK;
+        }
+        else
+        {
+            /* Enable LPCAC. */
+            SYSCON->LPCAC_CTRL &= ~SYSCON_LPCAC_CTRL_DIS_LPCAC_MASK;
+        }
+    }
+    else if (resc_name >= kResc_RamX)
     {
         sramMask = (1UL << (uint32_t)(resc_name - kResc_RamX));
 
@@ -568,6 +607,106 @@ static void SetAnalogPeripheralPowerStatus(resc_status_t resc_status, resc_name_
     }
 }
 
+/* List of peripheral clocks to control for kResc_Peri_clk_all. */
+static const clock_ip_name_t g_peri_clk_list[] = {
+    kCLOCK_GateCTIMER0,
+    kCLOCK_GateCTIMER1,
+    kCLOCK_GateCTIMER2,
+    kCLOCK_GateCTIMER3,
+    kCLOCK_GateCTIMER4,
+    kCLOCK_GateDMA0,
+    kCLOCK_GateDMA1,
+    kCLOCK_GateCRC0,
+    kCLOCK_GateFLEXIO0,
+    kCLOCK_GateLPI2C0,
+    kCLOCK_GateLPI2C1,
+    kCLOCK_GateLPI2C2,
+    kCLOCK_GateLPI2C3,
+    kCLOCK_GateLPI2C4,
+    kCLOCK_GateLPSPI0,
+    kCLOCK_GateLPSPI1,
+    kCLOCK_GateLPSPI2,
+    kCLOCK_GateLPSPI3,
+    kCLOCK_GateLPSPI4,
+    kCLOCK_GateLPSPI5,
+    kCLOCK_GateADC0,
+    kCLOCK_GateADC1,
+    kCLOCK_GateI3C0,
+    kCLOCK_GateI3C1,
+    kCLOCK_GateI3C2,
+    kCLOCK_GateI3C3,
+    kCLOCK_GateFLEXCAN0,
+    kCLOCK_GateFLEXCAN1,
+};
+
+static void SetPeripheralClockStatus(resc_status_t resc_status, resc_name_t resc_name)
+{
+    switch (resc_name)
+    {
+        case kResc_RamA_Clk:
+            if (resc_status == kResc_Status_Off)
+            {
+                /* Enable RAMA auto clock gating. */
+                SYSCON->RAM_CTRL &= ~SYSCON_RAM_CTRL_RAMA_CG_OVERRIDE_MASK;
+            }
+            else
+            {
+                /* Disable RAMA auto clock gating (clock always on). */
+                SYSCON->RAM_CTRL |= SYSCON_RAM_CTRL_RAMA_CG_OVERRIDE_MASK;
+            }
+            break;
+
+        case kResc_RamB_Clk:
+            if (resc_status == kResc_Status_Off)
+            {
+                /* Enable RAMB auto clock gating. */
+                SYSCON->RAM_CTRL &= ~SYSCON_RAM_CTRL_RAMB_CG_OVERRIDE_MASK;
+            }
+            else
+            {
+                /* Disable RAMB auto clock gating (clock always on). */
+                SYSCON->RAM_CTRL |= SYSCON_RAM_CTRL_RAMB_CG_OVERRIDE_MASK;
+            }
+            break;
+
+        case kResc_RamX_Clk:
+            if (resc_status == kResc_Status_Off)
+            {
+                /* Enable RAMX auto clock gating. */
+                SYSCON->RAM_CTRL &= ~SYSCON_RAM_CTRL_RAMX_CG_OVERRIDE_MASK;
+            }
+            else
+            {
+                /* Disable RAMX auto clock gating (clock always on). */
+                SYSCON->RAM_CTRL |= SYSCON_RAM_CTRL_RAMX_CG_OVERRIDE_MASK;
+            }
+            break;
+
+        case kResc_Peri_clk_all:
+            if (resc_status == kResc_Status_Off)
+            {
+                for (uint32_t i = 0U; i < ARRAY_SIZE(g_peri_clk_list); i++)
+                {
+                    CLOCK_DisableClock(g_peri_clk_list[i]);
+                }
+            }
+            else
+            {
+                for (uint32_t i = 0U; i < ARRAY_SIZE(g_peri_clk_list); i++)
+                {
+                    CLOCK_EnableClock(g_peri_clk_list[i]);
+                }
+            }
+            break;
+
+        default:
+        {
+            assert(false);
+            break;
+        }
+    }
+}
+
 static void ApplyRescTableForMode(uint8_t modeIndex)
 {
     for (resc_name_t resc = (resc_name_t)0; resc < (resc_name_t)kResc_Max_Num; resc++)
@@ -584,11 +723,15 @@ static void ApplyRescTableForMode(uint8_t modeIndex)
         }
         else if (resc <= kResc_RamB)
         {
-            SetSramPowerStatus(status, resc);
+            SetMemoryPowerStatus(status, resc);
+        }
+        else if (resc <= kResc_Cmp0_Dac)
+        {
+            SetAnalogPeripheralPowerStatus(status, resc);
         }
         else
         {
-            SetAnalogPeripheralPowerStatus(status, resc);
+            SetPeripheralClockStatus(status, resc);
         }
     }
 }
