@@ -113,7 +113,7 @@ At this point the bootloader is in place, resident in the FLASH memory. You may 
 
 [Encrypted XIP support](../_doc/encrypted_xip_readme.md)
 
-[OTA update by using SB3 file](../_doc/sb3_readme.md)
+[OTA update by using SB3 file](../_doc/sb3_common_readme.md)
 
 ## Supported Boards
 
