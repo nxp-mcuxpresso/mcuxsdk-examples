@@ -1,0 +1,19 @@
+pwm_force_signal:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/pwm/force_signal
+    project-root-path: boards/${board}/driver_examples/pwm/force_signal/${multicore_foldername}
+    document:
+      name: pwm_force_signal${core_id_suffix_name}
+      category: driver_examples/pwm/force_signal
+      brief: This example demonstrates how to update eFlexPWM PWM parameters
+        glitch-free while the PWM output is running, using the FORCE_OUT mechanism
+        to apply one or more changes atomically.
+      example_readme:
+      - examples/driver_examples/pwm/force_signal/readme.md
+      - examples/_boards/${board}/driver_examples/pwm/force_signal/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxa153:
+    - +armgcc@debug
+    - +armgcc@release
