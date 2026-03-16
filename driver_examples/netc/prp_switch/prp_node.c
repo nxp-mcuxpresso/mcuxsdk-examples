@@ -425,6 +425,5 @@ void prp_print_hash_table_stats(prp_hash_table_t *table)
 
     PRINTF("Used buckets: %u / %d\n", used_buckets, PRP_HASH_TABLE_SIZE);
     PRINTF("Max chain length: %u\n", max_chain_len);
-    PRINTF("Load factor: %.2f\n", (float)table->node_count / PRP_HASH_TABLE_SIZE);
 }
 
