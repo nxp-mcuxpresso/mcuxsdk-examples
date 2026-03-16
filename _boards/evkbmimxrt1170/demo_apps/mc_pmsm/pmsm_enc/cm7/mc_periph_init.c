@@ -7,6 +7,12 @@
  */
 
 #include "mc_periph_init.h"
+#include "m1_pmsm_appconfig.h"
+#include "fsl_lpadc.h"
+#include "fsl_common.h"
+#include "fsl_xbara.h"
+#include "fsl_adc_etc.h"
+#include "fsl_acmp.h"
 
 /*******************************************************************************
  * Variables

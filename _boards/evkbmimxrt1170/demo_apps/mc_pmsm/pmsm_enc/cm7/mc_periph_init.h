@@ -12,12 +12,6 @@
 #include "mcdrv_adcetc_imxrt11xx.h"
 #include "mcdrv_pwm3ph_pwma.h"
 #include "mcdrv_enc_qd2.h"
-#include "m1_pmsm_appconfig.h"
-#include "fsl_lpadc.h"
-#include "fsl_common.h"
-#include "fsl_xbara.h"
-#include "fsl_adc_etc.h"
-#include "fsl_acmp.h"
 
 /*******************************************************************************
  * Definitions
