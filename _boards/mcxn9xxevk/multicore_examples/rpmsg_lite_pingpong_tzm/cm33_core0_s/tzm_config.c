@@ -18,7 +18,7 @@ processor: MCXN947
 package_id: MCXN947VDF
 mcu_data: ksdk2_0
 processor_version: 0.2412.70
-board: FRDM-MCXN947
+board: MCX-N9XX-EVK
 toolOptions:
   _output_type_: c_code
   _legacy_source_names_: 'yes'
