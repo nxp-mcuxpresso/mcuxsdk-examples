@@ -7,7 +7,7 @@ project(pwm LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/d
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/driver_examples/pwm/pwm.c
+    SOURCES examples/driver_examples/pwm/pwm_3ph/pwm.c
 )
 
 mcux_add_include(

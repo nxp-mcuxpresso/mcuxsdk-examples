@@ -1,11 +1,11 @@
 pwm:
   section-type: application
   contents:
-    meta_path: examples/driver_examples/pwm
-    project-root-path: boards/${board}/driver_examples/pwm/${multicore_foldername}
+    meta_path: examples/driver_examples/pwm/pwm_3ph
+    project-root-path: boards/${board}/driver_examples/pwm/pwm_3ph/${multicore_foldername}
     document:
       name: pwm${core_id_suffix_name}
-      category: driver_examples/pwm
+      category: driver_examples/pwm/pwm_3ph
       brief: The PWM project is a simple demonstration program of the SDK PWM driver.The
         pulse width modulator (PWM) module contains PWM submodules, each of which
         is set up to control a single half-bridge power stage.Fault channel support
@@ -13,7 +13,7 @@ pwm:
         highly sophisticated waveforms.It can be used to control all known Switched
         Mode Power Supplies (SMPS) topologies.
       example_readme:
-      - examples/driver_examples/pwm/readme.md
+      - examples/driver_examples/pwm/pwm_3ph/readme.md
       - ${board_root}/${board}/driver_examples/pwm/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
