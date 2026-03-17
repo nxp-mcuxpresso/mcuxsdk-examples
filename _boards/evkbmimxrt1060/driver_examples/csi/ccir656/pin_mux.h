@@ -1,6 +1,5 @@
 /*
- * Copyright 2018 ,2021 NXP
- * All rights reserved.
+ * Copyright 2018, 2021, 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -171,11 +170,11 @@ void BOARD_InitDEBUG_UARTPins(void);
 #define BOARD_INITSDRAMPINS_SEMC_CLK_PERIPHERAL                             SEMC   /*!< Peripheral name */
 #define BOARD_INITSDRAMPINS_SEMC_CLK_SIGNAL                             semc_clk   /*!< Signal name */
 
-/* GPIO_EMC_41 (coord C7), ENET_MDIO/U18[11] */
+/* GPIO_EMC_29 (coord E1), SEMC_CS0/U16[G9] */
 /* Routed pin properties */
-#define BOARD_INITSDRAMPINS_ENET_MDIO_PERIPHERAL                            SEMC   /*!< Peripheral name */
-#define BOARD_INITSDRAMPINS_ENET_MDIO_SIGNAL                                 CSX   /*!< Signal name */
-#define BOARD_INITSDRAMPINS_ENET_MDIO_CHANNEL                                 0U   /*!< Signal channel */
+#define BOARD_INITSDRAMPINS_SEMC_CS0_PERIPHERAL                             SEMC   /*!< Peripheral name */
+#define BOARD_INITSDRAMPINS_SEMC_CS0_SIGNAL                                   CS   /*!< Signal name */
+#define BOARD_INITSDRAMPINS_SEMC_CS0_CHANNEL                                  0U   /*!< Signal channel */
 
 /* GPIO_EMC_00 (coord E3), SEMC_D0/U16[A8] */
 /* Routed pin properties */
