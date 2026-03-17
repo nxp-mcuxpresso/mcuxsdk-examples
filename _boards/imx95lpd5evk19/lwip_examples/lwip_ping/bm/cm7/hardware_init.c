@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024, 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -180,6 +180,7 @@ void BOARD_InitHardware(void)
 {
     pcal6524_handle_t handle1;
     pcal6408_handle_t handle2;
+    pca6416a_handle_t handle3;
 
     /* clang-format off */
     /* enetClk 666.66MHz */
@@ -260,6 +261,11 @@ void BOARD_InitHardware(void)
     BOARD_InitPCAL6408_I2C5(&handle2);
     PCAL6408_SetDirection(&handle2, (1 << BOARD_PCAL6408_ETH_CLK_EN), kPCAL6408_Output);
     PCAL6408_ClearPins(&handle2, (1 << BOARD_PCAL6408_ETH_CLK_EN));
+    SDK_DelayAtLeastUs(100000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+
+    BOARD_InitPCA6416A(&handle3);
+    PCA6416A_SetDirection(&handle3, (1 << BOARD_PCA6416A_ENET2_RST_B), kPCA6416A_Output);
+    PCA6416A_ClearPins(&handle3, (1 << BOARD_PCA6416A_ENET2_RST_B));
     SDK_DelayAtLeastUs(100000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 
     /* Protocol configure */

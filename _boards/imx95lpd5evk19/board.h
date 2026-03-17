@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 NXP
+ * Copyright 2023, 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -178,11 +178,16 @@
 #define BOARD_PCA6416A_I2C_CLOCK_ROOT hal_clock_lpi2c6
 #define BOARD_PCA6416A_I2C_CLOCK_FREQ HAL_ClockGetRate(BOARD_PCA6416A_I2C_CLOCK_ROOT)
 
-#define BOARD_PCA6416A_CAN1_STBY_B     5U
-#define BOARD_PCA6416A_CAN1_EN         6U
-#define BOARD_PCA6416A_CAN1_WAKE       7U
+#define BOARD_PCA6416A_ENET2_INH_B          0U
+#define BOARD_PCA6416A_ENET2_CARD_DET_B     1U
+#define BOARD_PCA6416A_ENET2_WAKE_IN_OUT    3U
+#define BOARD_PCA6416A_ENET2_RST_B          4U
+#define BOARD_PCA6416A_CAN1_STBY_B          5U
+#define BOARD_PCA6416A_CAN1_EN              6U
+#define BOARD_PCA6416A_CAN1_WAKE            7U
 
 #define BOARD_PCA6416A_PDM_CAN_SEL     (8U + 2U)
+#define BOARD_PCA6416A_ENET2_SAI2_SEL  (8U + 3U)
 
 /* hal api and hal arguments */
 #define BOARD_PCAL6524_I2C_CLOCK_ROOT_HAL hal_clock_lpi2c2
