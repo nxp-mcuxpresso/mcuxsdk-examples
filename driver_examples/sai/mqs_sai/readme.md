@@ -7,3 +7,4 @@ In this example, one sai instance playbacks the audio data stored in flash/SRAM 
 MQS will covert audio stream to PWM signals.
 
 ## Supported Boards
+- [FRDM-IMX95](../../../_boards/frdmimx95/driver_examples/sai/mqs_sai/example_board_readme.md)
