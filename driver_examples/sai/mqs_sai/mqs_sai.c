@@ -62,9 +62,9 @@ int main(void)
 {
     sai_transfer_t xfer;
     uint32_t temp   = 0;
-    uint32_t mqsDiv = HMCLK_FREQ / (64 * 48000);
+    uint32_t mqsDiv = 1;
     sai_transceiver_t saiConfig;
-
+    
     BOARD_InitHardware();
 
     PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
@@ -93,11 +93,17 @@ int main(void)
     SAI_SetMasterClockConfig(DEMO_SAI, &mclkConfig);
 #endif
 
-    /* Enable MQS and set MQS clock divider */
+    /* Init MQS, Enable MQS and set MQS clock divider */
+    mqsDiv = HMCLK_FREQ / (64 * 48000);
+
+#if defined(AON_BLK_CTRL_NS_AONMIX_MQS_SETTINGS_MQS_EN)
+    BOARD_InitMQS(mqsDiv - 1U);
+#else
     IOMUXC_MQSEnterSoftwareReset(MQS_IOMUXC, true);
     IOMUXC_MQSEnterSoftwareReset(MQS_IOMUXC, false);
     IOMUXC_MQSConfig(MQS_IOMUXC, kIOMUXC_MqsPwmOverSampleRate64, mqsDiv - 1U);
     IOMUXC_MQSEnable(MQS_IOMUXC, true);
+#endif
 
     /*  xfer structure */
     temp          = (uint32_t)music;
