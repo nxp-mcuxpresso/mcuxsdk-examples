@@ -10,6 +10,7 @@
 #include "fsl_common.h"
 #include "fsl_debug_console.h"
 #include "hal_clock.h"
+#include "sm_platform.h"
 #include "clock_config.h"
 #if defined(BOARD_USE_PCAL6524) && BOARD_USE_PCAL6524
 #include "fsl_pcal6524.h"
@@ -175,6 +176,29 @@ extern "C" {
 void BOARD_InitDebugConsoleForCM7WithSM(void);
 void BOARD_InitDebugConsoleForCM7WithoutSM(void);
 void BOARD_InitDebugConsole(void);
+
+static inline void BOARD_ModifyMQSSettings(uint32_t clearMask, uint32_t setValue)
+{
+    uint32_t regValue;
+    uint32_t ctrlId = 1U;
+    uint32_t numVal = 1U;
+    
+    if (SCMI_ERR_SUCCESS != SCMI_MiscControlGet(SCMI_A2P, ctrlId, &numVal, &regValue))
+    {
+        PRINTF("\r\n Fail to get MQS_SETTINGS.");
+        assert(false);
+    }
+    
+    regValue &= ~clearMask;
+    regValue |= setValue;
+    
+    if (SCMI_ERR_SUCCESS != SCMI_MiscControlSet(SCMI_A2P, ctrlId, numVal, &regValue))
+    {
+        PRINTF("\r\n Fail to set MQS_SETTINGS.");
+        assert(false);
+    }
+}
+
 #if defined(SDK_I2C_BASED_COMPONENT_USED) && SDK_I2C_BASED_COMPONENT_USED
 void BOARD_LPI2C_Init(LPI2C_Type *base, uint32_t clkSrc_Hz);
 status_t BOARD_LPI2C_Send(LPI2C_Type *base,
@@ -257,6 +281,10 @@ void BOARD_InitPCAL6408_I2C5(pcal6408_handle_t *handle);
 void BOARD_McoreSUSPEND(void);
 
 void BOARD_ConfigMPU(void);
+
+/* MQS init helper used by examples/driver_examples/sai/mqs_sai */
+void BOARD_InitMQS(uint32_t clkDiv);
+
 #if defined(__cplusplus)
 }
 #endif /* __cplusplus */

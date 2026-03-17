@@ -24,52 +24,6 @@
  ******************************************************************************/
 
 /* Initialize debug console. */
-#if 0
-void BOARD_InitDebugConsoleWithArgs(unsigned int uart_instance, unsigned int uart_clk_freq, hal_clk_t *p_hal_clk)
-{
-    HAL_ClockSetRootClk(p_hal_clk);
-    DbgConsole_Init(uart_instance, BOARD_DEBUG_UART_BAUDRATE, BOARD_DEBUG_UART_TYPE,
-                    uart_clk_freq);
-}
-
-void BOARD_InitDebugConsoleForCM7WithSM(void)
-{
-    /* clang-format off */
-    hal_clk_t hal_clk = {
-        .clk_id = BOARD_DEBUG_UART_CLOCK_ROOT_FOR_CM7_WITH_SM,
-	.pclk_id = hal_clock_osc24m,
-	.div = 1,
-	.enable_clk = true,
-	.clk_round_opt = hal_clk_round_auto,
-    };
-    /* clang-format on */
-
-    //BOARD_InitDebugConsoleWithArgs(BOARD_DEBUG_UART_INSTANCE_FOR_CM7_WITH_SM, BOARD_DEBUG_UART_CLK_FREQ_FOR_CM7_WITH_SM, &hal_clk);
-    /* Don't know why the demo's uart is not workable when call BOARD_InitDebugConsoleWithArgs directly on zebu for cortex-m7  */
-    HAL_ClockSetRootClk(&hal_clk);
-    DbgConsole_Init(BOARD_DEBUG_UART_INSTANCE_FOR_CM7_WITH_SM, BOARD_DEBUG_UART_BAUDRATE, BOARD_DEBUG_UART_TYPE,
-                    BOARD_DEBUG_UART_CLK_FREQ_FOR_CM7_WITH_SM);
-}
-
-void BOARD_InitDebugConsoleForCM7WithoutSM(void)
-{
-    /* clang-format off */
-    hal_clk_t hal_clk = {
-        .clk_id = BOARD_DEBUG_UART_CLOCK_ROOT_FOR_CM7_WITHOUT_SM,
-	.pclk_id = hal_clock_osc24m,
-	.div = 1,
-	.enable_clk = true,
-	.clk_round_opt = hal_clk_round_auto,
-    };
-    /* clang-format on */
-
-    //BOARD_InitDebugConsoleWithArgs(BOARD_DEBUG_UART_INSTANCE_FOR_CM7_WITHOUT_SM, BOARD_DEBUG_UART_CLK_FREQ_FOR_CM7_WITHOUT_SM, &hal_clk);
-    /* Don't know why the demo's uart is not workable when call BOARD_InitDebugConsoleWithArgs directly on zebu for cortex-m7  */
-    HAL_ClockSetRootClk(&hal_clk);
-    DbgConsole_Init(BOARD_DEBUG_UART_INSTANCE_FOR_CM7_WITHOUT_SM, BOARD_DEBUG_UART_BAUDRATE, BOARD_DEBUG_UART_TYPE,
-                    BOARD_DEBUG_UART_CLK_FREQ_FOR_CM7_WITHOUT_SM);
-}
-#endif
 
 void BOARD_InitDebugConsole(void)
 {
@@ -85,6 +39,25 @@ void BOARD_InitDebugConsole(void)
     HAL_ClockEnable(&hal_clk);
     DbgConsole_Init(BOARD_DEBUG_UART_INSTANCE, BOARD_DEBUG_UART_BAUDRATE, BOARD_DEBUG_UART_TYPE,
                     HAL_ClockGetRate(hal_clk.clk_id));
+}
+
+void BOARD_InitMQS(uint32_t clkDiv)
+{
+    /* Soft reset MQS */
+    BOARD_ModifyMQSSettings(AON_BLK_CTRL_NS_AONMIX_MQS_SETTINGS_SOFT_RESET_MASK, 
+                            AON_BLK_CTRL_NS_AONMIX_MQS_SETTINGS_SOFT_RESET(1U));
+    BOARD_ModifyMQSSettings(AON_BLK_CTRL_NS_AONMIX_MQS_SETTINGS_SOFT_RESET_MASK, 
+                            AON_BLK_CTRL_NS_AONMIX_MQS_SETTINGS_SOFT_RESET(0U));
+    
+    /* Set clock divider and oversample to 64 */
+    BOARD_ModifyMQSSettings(AON_BLK_CTRL_NS_AONMIX_MQS_SETTINGS_CLK_DIVIDE_MASK | 
+                            AON_BLK_CTRL_NS_AONMIX_MQS_SETTINGS_OVERSAMPLE_MASK,
+                            AON_BLK_CTRL_NS_AONMIX_MQS_SETTINGS_CLK_DIVIDE(clkDiv) | 
+                            AON_BLK_CTRL_NS_AONMIX_MQS_SETTINGS_OVERSAMPLE(0U));
+    
+    /* Enable MQS */
+    BOARD_ModifyMQSSettings(AON_BLK_CTRL_NS_AONMIX_MQS_SETTINGS_MQS_EN_MASK, 
+                            AON_BLK_CTRL_NS_AONMIX_MQS_SETTINGS_MQS_EN(1U));
 }
 
 #if defined(SDK_I2C_BASED_COMPONENT_USED) && SDK_I2C_BASED_COMPONENT_USED
