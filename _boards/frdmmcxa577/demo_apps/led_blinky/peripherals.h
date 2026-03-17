@@ -32,7 +32,7 @@ extern "C" {
 /* SysTick interrupt vector ID (number). */
 #define SYSTICK_TIMER_REFERENCE_IRQN SysTick_IRQn
 /* SysTick interrupt handler identifier. */
-#define SysTick_Handler SysTick_Handler
+#define SYSTICK_TIMER_REFERENCE_IRQHANDLER SysTick_Handler
 
 /***********************************************************************************************************************
  * Initialization functions
