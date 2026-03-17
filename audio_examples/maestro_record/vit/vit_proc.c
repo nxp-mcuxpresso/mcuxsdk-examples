@@ -68,6 +68,7 @@
 #define MODEL_LOCATION VIT_MODEL_IN_SLOW_MEM
 #if DEMO_CODEC_CS42448
 #define MIC_NUM        8
+#define CHANNEL_OFFSET 4
 #endif
 
 #elif defined(PLATFORM_RT1170_EVKB)
@@ -94,8 +95,17 @@
 
 #endif
 
-#define SAMPLES_PER_FRAME VIT_SAMPLES_PER_30MS_FRAME
-#define MEMORY_ALIGNMENT  8                   // in bytes
+// Configure the detection period in second for each command
+// VIT will return UNKNOWN if no command is recognized during this time span.
+#ifdef SPEECH_TO_INTENT
+#define VIT_COMMAND_TIME_SPAN           5.0 // in second
+#else
+#define VIT_COMMAND_TIME_SPAN           3.0 // in second
+#endif
+
+#define SAMPLES_PER_FRAME         VIT_SAMPLES_PER_30MS_FRAME
+#define BOARD_NOISE_FLOOR         -81 // minimum value is -90dB
+#define VIT_NOISE_FLOOR_THRESHOLD 6   // dB difference from noise floor to validate a wake word trig
 
 static VIT_Handle_t VITHandle = PL_NULL;      // VIT handle pointer
 static VIT_InstanceParams_st VITInstParams;   // VIT instance parameters structure
@@ -123,6 +133,7 @@ VIT_ReturnStatus_en VIT_ModelInfo(void)
     {
         PRINTF("  Language supported: %s \r\n", Model_Info.pLanguage);
     }
+    PRINTF("  Zero Wake Word Delay supported : %d \n", Model_Info.ZeroWakeWordDelay);
     PRINTF("  Number of WakeWords supported : %d \r\n", Model_Info.NbOfWakeWords);
     PRINTF("  Number of Commands supported : %d \r\n", Model_Info.NbOfVoiceCmds);
 
@@ -309,7 +320,7 @@ int VIT_Initialize(void *arg)
             // reserve memory space
             // NB: VITMemoryTable.Region[PL_MEMREGION_PERSISTENT_FAST_DATA] should be allocated
             //      in the fastest memory of the platform (when possible) - this is not the case in this example.
-            pMemory[j] = OSA_MemoryAllocate(VITMemoryTable.Region[order[j]].Size + MEMORY_ALIGNMENT);
+            pMemory[j] = OSA_MemoryAllocate(VITMemoryTable.Region[order[j]].Size + PL_MEMORY_ALIGNMENT);
             if (!pMemory[j])
             {
                 return VIT_INVALID_NULLADDRESS;
@@ -345,9 +356,14 @@ int VIT_Initialize(void *arg)
     /*
      *   Set and Apply VIT control parameters
      */
-    VITControlParams.OperatingMode     = VIT_OPERATING_MODE;
-    VITControlParams.Feature_LowRes    = PL_FALSE;
-    VITControlParams.Command_Time_Span = VIT_CMD_TIME_SPAN;
+    VITControlParams.OperatingMode           = VIT_OPERATING_MODE;
+    VITControlParams.Feature_LowRes          = PL_FALSE;
+    VITControlParams.Command_Time_Span       = VIT_COMMAND_TIME_SPAN;
+    VITControlParams.Input_Noise_Floor       = BOARD_NOISE_FLOOR; // minimum value is -90dB
+    VITControlParams.Noise_Floor_Threshold   = VIT_NOISE_FLOOR_THRESHOLD; // dB difference from noise floor to validate a wake word trig
+    VITControlParams.WakeWordDelayRecovering = PL_FALSE; // this control parameter is linked to the VIT library capability Zero Wake Word Delay
+                                                         // if the model include in the library cover this use case you can
+                                                         // enable Wake Word Delay recovering (real time recovering for certain Wake Word trig)
 
     if (!InitPhase_Error)
     {
@@ -401,7 +417,7 @@ int VIT_Execute(void *arg, void *inputBuffer, int size)
         return VIT_INVALID_NULLADDRESS;
     }
 
-    /* Initialization of the variables */
+    /* Input data selection */
     buffer = (void *)(buf->buffer + *pkt_hdr_size);
 
 #if (defined(PLATFORM_MCXN947) || defined(PLATFORM_RT1170_EVKB) || defined(PLATFORM_RW61X) || DEMO_CODEC_CS42448)
@@ -413,14 +429,16 @@ int VIT_Execute(void *arg, void *inputBuffer, int size)
         return VIT_INVALID_FRAME_SIZE;
     }
 #endif
-    VIT_Status = VIT_Process(VITHandle,
+
 #if (defined(PLATFORM_MCXN947) || defined(PLATFORM_RT1170_EVKB) || defined(PLATFORM_RW61X))
-                             (void*)output_buffer,
+    buffer = (void*)output_buffer;
 #elif DEMO_CODEC_CS42448
-                             (void*)(&output_buffer[4 * VIT_SAMPLES_PER_30MS_FRAME]),
-#else
-                             buffer, // temporal audio input data
+    buffer = (void*)(&output_buffer[CHANNEL_OFFSET * VIT_SAMPLES_PER_30MS_FRAME]);
 #endif
+
+    VIT_Status = VIT_Process(VITHandle,
+                             (const void*)buffer,
+                             (const void*)buffer,
                              &VIT_DetectionResults);
 
     if (VIT_Status != VIT_SUCCESS)
