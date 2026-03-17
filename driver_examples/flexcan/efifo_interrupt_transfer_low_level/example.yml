@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+flexcan_efifo_interrupt_transfer_low_level:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexcan/efifo_interrupt_transfer_low_level
+    project-root-path: boards/${board}/driver_examples/flexcan/efifo_interrupt_transfer_low_level/${multicore_foldername}
+    document:
+      name: flexcan_efifo_interrupt_transfer_low_level${core_id_suffix_name}
+      category: driver_examples/flexcan
+      brief: flexcan_efifo_interrupt_transfer_low_level example shows how to use FlexCAN Enhanced
+        Rx FIFO with low-level hardware APIs in none-blocking interrupt way. This example demonstrates
+        direct hardware access without using the FlexCAN transfer layer. It implements a custom ISR
+        that calls hardware APIs directly to handle Enhanced Rx FIFO interrupts efficiently. The ISR
+        uses a ring buffer design to manage received frames between interrupt context and main loop.
+      example_readme:
+      - examples/driver_examples/flexcan/efifo_interrupt_transfer_low_level/readme.md
+      - ${board_root}/${board}/driver_examples/flexcan/efifo_interrupt_transfer_low_level/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    kw47evk@cm33_core0: []
+    frdmmcxe31b: []
