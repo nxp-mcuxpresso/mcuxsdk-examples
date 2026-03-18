@@ -53,5 +53,6 @@ void BOARD_InitHardware(void)
     BOARD_BootClockFROHF192M();
     BOARD_InitDebugConsole();
 
+    CLOCK_AttachClk(kPll1Clk_to_FLEXSPI);  /* !< ROM API uses PLL for FlexSPI */
 }
 /*${function:end}*/
