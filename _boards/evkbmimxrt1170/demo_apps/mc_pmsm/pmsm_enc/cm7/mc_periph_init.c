@@ -504,9 +504,11 @@ void M1_InitQD(void)
     
     g_sM1Enc.ui32QDTimerFrequency = (CLOCK_GetFreq(kCLOCK_SysPll3) >> 1U) >> ((ENC1->CTRL3 & ENC_CTRL3_PRSC_MASK) >> ENC_CTRL3_PRSC_SHIFT);
 
-    g_sM1Enc.i32Q10Cnt2PosGain = ((0xffffffffU/(4*g_sM1Enc.ui16PulseNumber))*1024);
-        
+	/* Position gain */
+    g_sM1Enc.i32Q10Cnt2PosGain = ((0xffffffffU/(4*g_sM1Enc.ui16PulseNumber))*0x400U);
+    /* Speed conversion constant: (2π · QD_timer_freq) / (4 · encoder_pulses · max_speed) scaled by 2^27 for frac32 format */    
     g_sM1Enc.f32SpeedCalConst = (frac32_t)((2*FLOAT_PI*g_sM1Enc.ui32QDTimerFrequency/(4*g_sM1Enc.ui16PulseNumber*M1_N_MAX)) * 0x8000000U);
+	/* Coefficient converting fractional speed into mechanical angular speed */
     g_sM1Enc.fltSpeedFracToAngularCoeff = (float_t)(M1_N_MAX);
     
     g_sM1Enc.f32PosMechInit = FRAC32(0.0);

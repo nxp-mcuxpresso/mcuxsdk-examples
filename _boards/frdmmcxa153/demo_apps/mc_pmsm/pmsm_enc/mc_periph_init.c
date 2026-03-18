@@ -409,8 +409,9 @@ static void InitQD(void)
     
     g_sM1Enc.ui32QDTimerFrequency = (CLOCK_GetFreq(kCLOCK_SYSTEM_CLK)) >> ((QDC0->FILT & EQDC_FILT_PRSC_MASK) >> EQDC_FILT_PRSC_SHIFT);
     
-    g_sM1Enc.i32Q10Cnt2PosGain = ((0xffffffffU/(4*g_sM1Enc.ui16PulseNumber))*1024);
-    
+	/* Position gain */
+    g_sM1Enc.i32Q10Cnt2PosGain = ((0xffffffffU/(4*g_sM1Enc.ui16PulseNumber))*0x400U);
+    /* Speed conversion constant */
     g_sM1Enc.f32SpeedCalConst = (frac32_t)((60.0F*g_sM1Enc.ui32QDTimerFrequency/(4*g_sM1Enc.ui16PulseNumber*M1_N_MAX)) * 0x8000000U);
     
     g_sM1Enc.f32PosMechInit = FRAC32(0.0);
