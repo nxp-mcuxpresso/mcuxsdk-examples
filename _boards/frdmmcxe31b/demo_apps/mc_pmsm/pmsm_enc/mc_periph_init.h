@@ -110,9 +110,10 @@ typedef struct _clock_setup
 /******************************************************************************
  * Define position and speed sensor - quadrature encoder for motor 1
  ******************************************************************************/
-#define M1_MCDRV_ENC_GET(par) (MCDRV_QdEncGet(par))
-#define M1_MCDRV_ENC_SET_DIRECTION(par) //(MCDRV_QdEncSetDirection(par))
-#define M1_MCDRV_ENC_SET_PULSES(par) //(MCDRV_QdEncSetPulses(par))
+#define M1_MCDRV_ENC_GET_DATA_FAST(par) (MCDRV_QdEncGet(par))
+#define M1_MCDRV_ENC_GET_DATA_SLOW(par)
+#define M1_MCDRV_ENC_SET_DIRECTION(par)
+#define M1_MCDRV_ENC_SET_PULSES(par)
 #define M1_MCDRV_ENC_CLEAR(par) (MCDRV_QdEncClear(par))
  
 /* SENSORS constants moved from MCAT calculations */
