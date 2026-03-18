@@ -4,6 +4,7 @@
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
+
 #ifndef _BOARD_H_
 #define _BOARD_H_
 
@@ -157,7 +158,7 @@
 #define LED_GREEN_ON() 
 #define LED_GREEN_OFF() 
 #define LED_GREEN_TOGGLE() 
-      
+
 #define LED_BLUE_INIT(output)                                            
 #define LED_BLUE_ON() 
 #define LED_BLUE_OFF() 

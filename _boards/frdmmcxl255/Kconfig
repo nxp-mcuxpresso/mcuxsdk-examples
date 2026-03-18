@@ -1,11 +1,10 @@
-# Copyright 2025 NXP
+# Copyright 2026 NXP
 # All rights reserved.
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
 rsource "${core_id}/Kconfig"
 rsource "Kconfig.defconfig"
-#rsource "../common/project_segments/display_support/Kconfig.prjseg"
 
 config MCUX_HW_BOARD_frdmmcxl255
     bool
@@ -20,7 +19,6 @@ config MCUX_HW_BOARD_frdmmcxl255
     imply MCUX_COMPONENT_driver.inputmux_connections
 
     ## Board project segment dependency data
-
     select MCUX_COMPONENT_driver.port if MCUX_PRJSEG_module.board.pinmux
     select MCUX_COMPONENT_driver.gpio if MCUX_PRJSEG_module.board.pinmux
     select MCUX_COMPONENT_driver.clock if MCUX_PRJSEG_module.board.clock    
