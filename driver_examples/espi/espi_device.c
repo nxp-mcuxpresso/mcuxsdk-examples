@@ -118,6 +118,7 @@ static void ExampleFlashOps(ESPI_Type *base, espi_handle_t *handle, espi_flash_r
         (void)PRINTF("[SAF] Write addr=0x%08X, len=%u, first bytes(Hex)=", (unsigned)addr, (unsigned)length);
         for (uint32_t i = 0U; (i < length) && (i < 8U); i++)
         {
+            assert((UINT32_MAX - i) >= addr);
             (void)PRINTF("%02X ", memory[addr + i]);
         }
         (void)PRINTF("\r\n");
@@ -165,6 +166,7 @@ static void ExampleFlashOps(ESPI_Type *base, espi_handle_t *handle, espi_flash_r
                 g_readQueue.item[g_readQueue.totIdx].rxType = rxType;
                 g_readQueue.totIdx++;
 
+                assert((UINT32_MAX - offset) >= transLen);
                 offset += transLen;
                 remaining -= transLen;
             }
@@ -196,9 +198,10 @@ static void ExampleFlashOps(ESPI_Type *base, espi_handle_t *handle, espi_flash_r
 /* Read one line from console into buffer. Returns length. */
 int read_line(char *buf, uint32_t maxlen)
 {
+    assert(maxlen > 0U);
     uint32_t idx = 0;
 
-    while (idx < maxlen - 1U)
+    while (idx < (maxlen - 1U))
     {
         int c = GETCHAR(); /* blocks until char */
 
@@ -249,22 +252,22 @@ int parse_hex_bytes(const char *s, uint8_t *out, int maxout)
         /* accept 0x prefix */
         if (p[0] == '0' && (p[1] == 'x' || p[1] == 'X'))
             p += 2;
-        int hi = -1, lo = -1;
+        uint32_t hi; uint32_t lo;
         if (isxdigit((unsigned char)p[0]))
         {
-            hi = (isdigit((unsigned char)p[0]) ? p[0] - '0' : (toupper((unsigned char)p[0]) - 'A' + 10));
+            hi = (uint32_t)(((p[0] >= '0') && (p[0] <= '9')) ? (p[0] - '0') : (toupper((unsigned char)p[0]) - 'A' + 10));
             p++;
             if (isxdigit((unsigned char)p[0]))
             {
-                lo = (isdigit((unsigned char)p[0]) ? p[0] - '0' : (toupper((unsigned char)p[0]) - 'A' + 10));
+                lo = (uint32_t)(((p[0] >= '0') && (p[0] <= '9')) ? (p[0] - '0') : (toupper((unsigned char)p[0]) - 'A' + 10));
                 p++;
             }
             else
             {
                 /* single nibble -> treat as low nibble */
-                lo = 0;
+                lo = 0U;
             }
-            out[len++] = (uint8_t)((hi << 4) | (lo & 0xF));
+            out[len++] = (uint8_t)((hi << 4U) | (lo & 0xFU));
         }
         else
         {
@@ -300,6 +303,7 @@ static void ESPI_PrintVWireFlagList(void)
         uint32_t width = 0U;
         for (uint32_t m = mask; m > 0U; m >>= 1U)
         {
+            assert((UINT32_MAX - width) >= (m & 1U));
             width += (m & 1U);
         }
         (void)PRINTF("  %-12s (bits=%u)%s\r\n", vw_flag_names[i].name, width, (width > 1U) ? " [multi-bit]" : "");
@@ -324,7 +328,7 @@ static bool ESPI_ParseVWireFlagName(const char *s, espi_vw_wr_flags_t *out)
         n = sizeof(namebuf) - 1U;
     for (size_t i = 0U; i < n; i++)
     {
-        namebuf[i] = (char)tolower((unsigned char)p[i]);
+        namebuf[i] = (char)(tolower((unsigned char)p[i]) & 0x7F);
     }
     namebuf[n] = '\0';
 
