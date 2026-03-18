@@ -10,7 +10,7 @@
 #include "fsl_netc_soc.h"
 
 /*
- * Example supports two ports to select
+ * Example supports three ports to select
  *
  * ENETC0
  * - NETC_PSI:       kNETC_ENETC0PSI0
