@@ -30,3 +30,6 @@ wireless_uart_bm:
     kw43evk:
     - -armgcc@debug
     - -armgcc@release
+    frdmmcxw70:
+    - -armgcc@debug
+    - -armgcc@release
