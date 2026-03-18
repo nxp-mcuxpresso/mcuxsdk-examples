@@ -20,3 +20,6 @@ mcux_add_include(
              ${board_root}/evkmcimx7ulp/multicore_examples/rpmsg_lite_str_echo_rtos/remote
 )
 
+mcux_add_macro(
+    CC "-DSDK_I2C_BASED_COMPONENT_USED=1"
+)

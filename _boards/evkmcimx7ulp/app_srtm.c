@@ -24,19 +24,18 @@
 #include "fsl_snvs_lp.h"
 #include "fsl_snvs_hp.h"
 #include "fsl_iomuxc.h"
-#include "fsl_wm8960.h"
 
 #include "srtm_dispatcher.h"
 #include "srtm_peercore.h"
 #include "srtm_message.h"
 #include "srtm_lfcl_service.h"
 #include "srtm_pmic_service.h"
+#include "srtm_i2c_service.h"
 #include "srtm_audio_service.h"
 #include "srtm_rtc_service.h"
 #include "srtm_io_service.h"
 #include "srtm_keypad_service.h"
 #include "srtm_pf1550_adapter.h"
-#include "srtm_i2c_codec_adapter.h"
 #include "srtm_snvs_lp_rtc_adapter.h"
 #include "srtm_sai_edma_adapter.h"
 #include "srtm_rpmsg_endpoint.h"
@@ -121,6 +120,28 @@ static status_t PMIC_I2C_SendFunc(
 static status_t PMIC_I2C_ReceiveFunc(
     uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, uint8_t *rxBuff, uint8_t rxBuffSize);
 
+static srtm_status_t APP_SRTM_I2C_Read(srtm_i2c_adapter_t adapter,
+                                       uint32_t base_addr,
+                                       srtm_i2c_type_t type,
+                                       uint16_t slaveAddr,
+                                       uint8_t *buf,
+                                       uint16_t len,
+                                       uint16_t flags);
+
+static srtm_status_t APP_SRTM_I2C_Write(srtm_i2c_adapter_t adapter,
+                                        uint32_t base_addr,
+                                        srtm_i2c_type_t type,
+                                        uint16_t slaveAddr,
+                                        uint8_t *buf,
+                                        uint16_t len,
+                                        uint16_t flags);
+
+static srtm_status_t APP_SRTM_I2C_SwitchChannel(srtm_i2c_adapter_t adapter,
+                                                uint32_t base_addr,
+                                                srtm_i2c_type_t type,
+                                                uint16_t slaveAddr,
+                                                srtm_i2c_switch_channel channel);
+
 extern void APP_UpdateSimDgo(uint32_t gpIdx, uint32_t mask, uint32_t value);
 
 /*******************************************************************************
@@ -173,18 +194,14 @@ static const srtm_io_event_t llwuPinModeEvents[] = {
     SRTM_IoEventEitherEdge   /* kLLWU_ExternalPinAnyEdge */
 };
 
-wm8960_config_t wm8960Config;
-codec_config_t boardCodecConfig = {.codecDevType = kCODEC_WM8960};
-codec_handle_t codecHandle;
-
-static lpi2c_rtos_handle_t lpi2c0Handle;
 static lpi2c_rtos_handle_t lpi2c3Handle;
-static bool lpi2c0Init, lpi2c3Init;
+static bool lpi2c3Init;
 static lpi2c_rtos_handle_t *pmicI2cHandle;
 static pf1550_handle_t pf1550Handle;
 static srtm_dispatcher_t disp;
 static srtm_peercore_t core;
 static srtm_sai_adapter_t saiAdapter;
+static srtm_service_t i2cService;
 static srtm_service_t audioService;
 static srtm_rtc_adapter_t rtcAdapter;
 static srtm_service_t rtcService;
@@ -200,6 +217,23 @@ static void *rpmsgMonitorParam;
 static app_irq_handler_t irqHandler;
 static void *irqHandlerParam;
 static TimerHandle_t linkupTimer;
+
+static struct _i2c_bus platform_i2c_buses[] = {
+    {.bus_id         = 0,
+     .base_addr      = LPI2C0_BASE,
+     .type           = SRTM_I2C_TYPE_LPI2C,
+     .switch_idx     = I2C_SWITCH_NONE,
+     .switch_channel = SRTM_I2C_SWITCH_CHANNEL_UNSPECIFIED},
+};
+
+static struct _srtm_i2c_adapter i2c_adapter = {.read          = APP_SRTM_I2C_Read,
+                                               .write         = APP_SRTM_I2C_Write,
+                                               .switchchannel = APP_SRTM_I2C_SwitchChannel,
+                                               .bus_structure = {
+                                                   .buses      = platform_i2c_buses,
+                                                   .bus_num    = sizeof(platform_i2c_buses) / sizeof(struct _i2c_bus),
+                                                   .switch_num = 0,
+                                               }};
 
 static PORT_Type *const ports[] = PORT_BASE_PTRS;
 static GPIO_Type *const gpios[] = GPIO_BASE_PTRS;
@@ -1190,6 +1224,12 @@ static void APP_SRTM_Linkup(void)
     chan                    = SRTM_RPMsgEndpoint_Create(&rpmsgConfig);
     SRTM_PeerCore_AddChannel(core, chan);
 
+    /* Create and add SRTM I2C channel to peer core*/
+    rpmsgConfig.rpmsgHandle = rpmsgHandle;
+    rpmsgConfig.epName = APP_SRTM_I2C_CHANNEL_NAME;
+    chan               = SRTM_RPMsgEndpoint_Create(&rpmsgConfig);
+    SRTM_PeerCore_AddChannel(core, chan);
+
     /* Create and add SRTM Audio channel to peer core */
     rpmsgConfig.rpmsgHandle = rpmsgHandle;
     rpmsgConfig.epName      = APP_SRTM_AUDIO_CHANNEL_NAME;
@@ -1400,24 +1440,6 @@ static void APP_SRTM_InitPmicService(void)
     SRTM_Dispatcher_RegisterService(disp, service);
 }
 
-static void APP_SRTM_InitCodecDevice(void)
-{
-    if (!lpi2c0Init)
-    {
-        APP_SRTM_InitI2C(&lpi2c0Handle, LPI2C0, APP_LPI2C0_BAUDRATE, CLOCK_GetIpFreq(kCLOCK_Lpi2c0));
-        lpi2c0Init = true;
-    }
-}
-
-static void APP_SRTM_DeinitCodecDevice(void)
-{
-    if (lpi2c0Init)
-    {
-        APP_SRTM_DeinitI2C(&lpi2c0Handle);
-        lpi2c0Init = false;
-    }
-}
-
 static void APP_SRTM_InitAudioDevice(void)
 {
     edma_config_t dmaConfig;
@@ -1432,26 +1454,12 @@ static void APP_SRTM_InitAudioDevice(void)
     DMAMUX_SetSource(DMA_CH_MUX0, APP_SAI_RX_DMA_CHANNEL, kDmaRequestMux0SAI0Rx);
     DMAMUX_EnableChannel(DMA_CH_MUX0, APP_SAI_TX_DMA_CHANNEL);
     DMAMUX_EnableChannel(DMA_CH_MUX0, APP_SAI_RX_DMA_CHANNEL);
-
-    APP_SRTM_InitCodecDevice();
-}
-
-static status_t APP_SRTM_ReadCodecRegMap(void *handle, uint32_t reg, uint32_t *val)
-{
-    return WM8960_ReadReg(reg, (uint16_t *)val);
-}
-
-static status_t APP_SRTM_WriteCodecRegMap(void *handle, uint32_t reg, uint32_t val)
-{
-    return WM8960_WriteReg((wm8960_handle_t *)((uint32_t) & (((codec_handle_t *)handle)->codecDevHandle)), reg, val);
 }
 
 static void APP_SRTM_InitAudioService(void)
 {
     srtm_sai_edma_config_t saiTxConfig;
     srtm_sai_edma_config_t saiRxConfig;
-    srtm_i2c_codec_config_t i2cCodecConfig;
-    srtm_codec_adapter_t codecAdapter;
 
     memset(&saiTxConfig, 0, sizeof(saiTxConfig));
     memset(&saiRxConfig, 0, sizeof(saiRxConfig));
@@ -1483,35 +1491,8 @@ static void APP_SRTM_InitAudioService(void)
     /*  Set LPI2C Master IRQ Priority. */
     NVIC_SetPriority(LPI2C0_IRQn, APP_LPI2C0_IRQ_PRIO);
 
-    wm8960Config.i2cConfig.codecI2CInstance    = 0;
-    wm8960Config.i2cConfig.codecI2CSourceClock = CLOCK_GetIpFreq(kCLOCK_Lpi2c0);
-    wm8960Config.route                         = kWM8960_RoutePlaybackandRecord;
-    wm8960Config.leftInputSource               = kWM8960_InputDifferentialMicInput3;
-    wm8960Config.rightInputSource              = kWM8960_InputClosed;
-    wm8960Config.playSource                    = kWM8960_PlaySourceDAC;
-    wm8960Config.slaveAddress                  = WM8960_I2C_ADDR;
-    wm8960Config.bus                           = kWM8960_BusI2S;
-    wm8960Config.format.mclk_HZ                = 6144000U;
-    wm8960Config.format.sampleRate             = kWM8960_AudioSampleRate16KHz;
-    wm8960Config.format.bitWidth               = kWM8960_AudioBitWidth16bit;
-    wm8960Config.master_slave                  = false;
-    boardCodecConfig.codecDevConfig            = &wm8960Config;
-    /* Initialize WM8960 codec */
-    CODEC_Init(&codecHandle, &boardCodecConfig);
-
-    /* Create I2C Codec adaptor */
-    i2cCodecConfig.mclk        = saiTxConfig.mclk;
-    i2cCodecConfig.slaveAddr   = 0U;
-    i2cCodecConfig.addrType    = kCODEC_RegAddr8Bit;
-    i2cCodecConfig.regWidth    = kCODEC_RegWidth8Bit;
-    i2cCodecConfig.writeRegMap = APP_SRTM_WriteCodecRegMap;
-    i2cCodecConfig.readRegMap  = APP_SRTM_ReadCodecRegMap;
-    i2cCodecConfig.i2cHandle   = NULL;
-    codecAdapter               = SRTM_I2CCodecAdapter_Create(&codecHandle, &i2cCodecConfig);
-    assert(codecAdapter);
-
     /* Create and register audio service */
-    audioService = SRTM_AudioService_Create(saiAdapter, codecAdapter);
+    audioService = SRTM_AudioService_Create(saiAdapter, NULL);
     SRTM_Dispatcher_RegisterService(disp, audioService);
 }
 
@@ -1621,10 +1602,38 @@ static void APP_SRTM_InitRtcService(void)
     SRTM_Dispatcher_RegisterService(disp, rtcService);
 }
 
+static void APP_SRTM_InitI2CDevice(void)
+{
+    lpi2c_master_config_t masterConfig;
+
+    LPI2C_MasterGetDefaultConfig(&masterConfig);
+    masterConfig.baudRate_Hz = APP_LPI2C0_BAUDRATE;
+    LPI2C_MasterInit(LPI2C0, &masterConfig, BOARD_CODEC_I2C_CLOCK_FREQ);
+}
+
+/*
+ * Sometimes i2c driver can not handle errors properly. Error flags are not cleard and i2c
+ * controller enters an abnormal state. Reinitialize i2c device as a workaround to ensure
+ * subsequent transmissions can proceed normally.
+ */
+static void APP_SRTM_ReInitI2CDevice(void)
+{
+    LPI2C_MasterDeinit(LPI2C0);
+    APP_SRTM_InitI2CDevice();
+}
+
+static void APP_SRTM_InitI2CService(void)
+{
+    APP_SRTM_InitI2CDevice();
+    i2cService = SRTM_I2CService_Create(&i2c_adapter);
+    SRTM_Dispatcher_RegisterService(disp, i2cService);
+}
+
 static void APP_SRTM_InitServices(void)
 {
     APP_SRTM_InitPmicService();
     APP_SRTM_InitRtcService();
+    APP_SRTM_InitI2CService();
     APP_SRTM_InitAudioService();
     APP_SRTM_InitLfclService();
     APP_SRTM_InitIoKeyService();
@@ -1977,7 +1986,6 @@ void APP_SRTM_Suspend(void)
     suspendContext.mu.CR = MUA->CR;
 
     APP_SRTM_DeinitPmicDevice();
-    APP_SRTM_DeinitCodecDevice();
 }
 
 void APP_SRTM_Resume(bool resume)
@@ -1986,13 +1994,10 @@ void APP_SRTM_Resume(bool resume)
     {
         APP_SRTM_InitPeriph(true);
         APP_SRTM_InitRtcDevice(true);
+        APP_SRTM_InitI2CDevice();
         APP_SRTM_InitAudioDevice();
         APP_SRTM_InitIoKeyDevice();
         MUA->CR = suspendContext.mu.CR;
-    }
-    else
-    {
-        APP_SRTM_InitCodecDevice();
     }
 
     /* Even if suspend fails, I2C handle is destroyed. Need to initialize again. */
@@ -2092,4 +2097,70 @@ void APP_SRTM_SetIRQHandler(app_irq_handler_t handler, void *param)
 struct rpmsg_lite_instance *APP_SRTM_GetRPMsgHandle(void)
 {
     return rpmsgHandle;
+}
+
+
+static srtm_status_t APP_SRTM_I2C_SwitchChannel(srtm_i2c_adapter_t adapter,
+                                                uint32_t base_addr,
+                                                srtm_i2c_type_t type,
+                                                uint16_t slaveAddr,
+                                                srtm_i2c_switch_channel channel)
+{
+    uint8_t txBuff[1];
+    assert(channel < SRTM_I2C_SWITCH_CHANNEL_UNSPECIFIED);
+    txBuff[0] = 1 << (uint8_t)channel;
+    return adapter->write(adapter, base_addr, type, slaveAddr, txBuff, sizeof(txBuff),
+                          SRTM_I2C_FLAG_NEED_STOP); // APP_SRTM_I2C_Write
+}
+
+static srtm_status_t APP_SRTM_I2C_Write(srtm_i2c_adapter_t adapter,
+                                        uint32_t base_addr,
+                                        srtm_i2c_type_t type,
+                                        uint16_t slaveAddr,
+                                        uint8_t *buf,
+                                        uint16_t len,
+                                        uint16_t flags)
+{
+    status_t retVal   = kStatus_Fail;
+    uint32_t needStop = (flags & SRTM_I2C_FLAG_NEED_STOP) ? kLPI2C_TransferDefaultFlag : kLPI2C_TransferNoStopFlag;
+
+    switch (type)
+    {
+        case SRTM_I2C_TYPE_LPI2C:
+            retVal = BOARD_LPI2C_Send((LPI2C_Type *)base_addr, slaveAddr, 0, 0, buf, len, needStop);
+            break;
+        default:
+            break;
+    }
+
+    if (retVal != kStatus_Success)
+        APP_SRTM_ReInitI2CDevice();
+
+    return (retVal == kStatus_Success) ? SRTM_Status_Success : SRTM_Status_TransferFailed;
+}
+
+static srtm_status_t APP_SRTM_I2C_Read(srtm_i2c_adapter_t adapter,
+                                       uint32_t base_addr,
+                                       srtm_i2c_type_t type,
+                                       uint16_t slaveAddr,
+                                       uint8_t *buf,
+                                       uint16_t len,
+                                       uint16_t flags)
+{
+    status_t retVal   = kStatus_Fail;
+    uint32_t needStop = (flags & SRTM_I2C_FLAG_NEED_STOP) ? kLPI2C_TransferDefaultFlag : kLPI2C_TransferNoStopFlag;
+
+    switch (type)
+    {
+        case SRTM_I2C_TYPE_LPI2C:
+            retVal = BOARD_LPI2C_Receive((LPI2C_Type *)base_addr, slaveAddr, 0, 0, buf, len, needStop);
+            break;
+        default:
+            break;
+    }
+
+    if (retVal != kStatus_Success)
+        APP_SRTM_ReInitI2CDevice();
+
+    return (retVal == kStatus_Success) ? SRTM_Status_Success : SRTM_Status_TransferFailed;
 }

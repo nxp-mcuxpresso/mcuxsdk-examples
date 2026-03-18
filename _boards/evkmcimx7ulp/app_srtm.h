@@ -32,8 +32,10 @@
 #define APP_SRTM_DISPATCHER_TASK_PRIO (3U)
 
 /* I2C baud rate */
-#define APP_LPI2C0_BAUDRATE (100000U)
+#define APP_LPI2C0_BAUDRATE (400000U)
 #define APP_LPI2C3_BAUDRATE (100000U)
+
+#define I2C_SWITCH_NONE 1
 
 /* Macro used to release I2C bus in initialization */
 #define APP_LPI2C_DELAY           (100U)
@@ -61,6 +63,7 @@
 #define RPMSG_LITE_SRTM_LINK_ID      (0U)
 #define APP_SRTM_PMIC_CHANNEL_NAME   "rpmsg-regulator-channel"
 #define APP_SRTM_LFCL_CHANNEL_NAME   "rpmsg-life-cycle-channel"
+#define APP_SRTM_I2C_CHANNEL_NAME    "rpmsg-i2c-channel"
 #define APP_SRTM_AUDIO_CHANNEL_NAME  "rpmsg-audio-channel"
 #define APP_SRTM_KEYPAD_CHANNEL_NAME "rpmsg-keypad-channel"
 #define APP_SRTM_IO_CHANNEL_NAME     "rpmsg-io-channel"

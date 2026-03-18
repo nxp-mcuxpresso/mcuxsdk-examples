@@ -46,6 +46,10 @@ mcux_add_macro(
        -DSRTM_DEBUG_VERBOSE_LEVEL=SRTM_DEBUG_VERBOSE_WARN"
 )
 
+mcux_add_macro(
+    CC "-DSDK_I2C_BASED_COMPONENT_USED=1"
+)
+
 # Add or remove Linker File Configurations
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
