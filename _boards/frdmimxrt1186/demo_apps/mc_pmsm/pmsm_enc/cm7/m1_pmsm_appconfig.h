@@ -5,8 +5,8 @@
 */
 
 /*
-    * FILE NAME: ../../../examples/_boards/frdmmimxrt1186/demo_apps/mc_pmsm/pmsm_enc/cm7/m1_pmsm_appconfig.h
-    * DATE: Fri Nov 21 2025, 10:22:07
+    * FILE NAME: ../../../examples/_boards/frdmimxrt1186/demo_apps/mc_pmsm/pmsm_enc/cm7/m1_pmsm_appconfig.h
+    * DATE: Thu Mar 19 2026, 08:44:47
 */
 
 /*
@@ -75,7 +75,7 @@
     },
     "positionLoop": {
         "positionLoopSampleTime": 0.001,
-        "positionLoopF0": 20,
+        "positionLoopF0": 5,
         "positionLoopKsi": 1,
         "servo_positionLoopUpperLimit": 3000,
         "servo_positionLoopLowerLimit": -3000,
@@ -162,14 +162,14 @@
 /* POSITIONLOOP*/
 #define M1_SERVO_POSITION_P_HIGH_LIMIT (1256.64F)
 #define M1_SERVO_POSITION_P_LOW_LIMIT (-1256.64F)
-#define M1_SERVO_POSITION_P_PROP_GAIN (1052.76F)
+#define M1_SERVO_POSITION_P_PROP_GAIN (263.189F)
 #define M1_SERVO_FEED_FRWD_K1 (16.7552F)
-#define M1_SERVO_FEED_FRWD_K2 (0.0666667F)
-#define M1_SERVO_IIR_ZC_B0 (0.0591174F)
-#define M1_SERVO_IIR_ZC_B1 (0.0591174F)
-#define M1_SERVO_IIR_ZC_A1 (0.881765F)
-#define M1_SERVO_SPEED_PI_PROP_GAIN (0.0172065F)
-#define M1_SERVO_SPEED_PI_INTEG_GAIN (0.00108111F)
+#define M1_SERVO_FEED_FRWD_K2 (0.266667F)
+#define M1_SERVO_IIR_ZC_B0 (0.0154650F)
+#define M1_SERVO_IIR_ZC_B1 (0.0154650F)
+#define M1_SERVO_IIR_ZC_A1 (0.969070F)
+#define M1_SERVO_SPEED_PI_PROP_GAIN (0.00430162F)
+#define M1_SERVO_SPEED_PI_INTEG_GAIN (0.0000675697F)
 #define M1_SERVO_SPEED_PI_HIGH_LIMIT (4.0F)
 #define M1_SERVO_SPEED_PI_LOW_LIMIT (-4.0F)
 /* SENSORLESS*/
