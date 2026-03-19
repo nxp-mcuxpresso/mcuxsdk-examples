@@ -63,16 +63,21 @@
  * |            1            |      2      |  8                    |  11               | 12               |
  * +------------------------------------------------------------------------------------------------------+
  */
-#define BOARD_LPUART8_USE_JTAG_PADS 1
-#define BOARD_LPUART8_USE_GPIO_IO12_GPIO_IO13_PADS 0
+
 /*
  * Debugging with jtag, pls define macros as below two lines, and pls connect usb2serial converter from pc to arduino interface as below
  * J43-6(pin name:  M1_SPI8_SS  ;pad: GPIO_IO12; function: LPUART8_TX) --> RX of usb2serial converter(3.3V)
  * J43-10(pin name: M1_SPI8_MISO;pad: GPIO_IO13; function: LPUART8_RX) <-- TX of usb2serial converter(3.3V)
  * J45-12(pin name: GND)                                               --- GND of usb2serial converter(3.3V)
  */
-//#define BOARD_LPUART8_USE_JTAG_PADS 0
-//#define BOARD_LPUART8_USE_GPIO_IO12_GPIO_IO13_PADS 1
+#if defined(BOARD_JTAG_ENABLED)
+#define BOARD_LPUART8_USE_JTAG_PADS 0
+#define BOARD_LPUART8_USE_GPIO_IO12_GPIO_IO13_PADS 1
+#else
+#define BOARD_LPUART8_USE_JTAG_PADS 1
+#define BOARD_LPUART8_USE_GPIO_IO12_GPIO_IO13_PADS 0
+#endif
+
 #if BOARD_LPUART8_USE_JTAG_PADS
 #if BOARD_LPUART8_USE_GPIO_IO12_GPIO_IO13_PADS
 #error "Cannot define macros(BOARD_LPUART8_USE_JTAG_PADS, BOARD_LPUART8_USE_GPIO_IO12_GPIO_IO13_PADS) to 1 at the same time"
@@ -183,6 +188,7 @@
 //#define BOARD_DEBUG_CONSOLE_TYPE BOARD_DEBUG_SWO_TYPE
 #if BOARD_DEBUG_CONSOLE_TYPE == BOARD_DEBUG_UART_TYPE
 #define BOARD_DEBUG_UART_INSTANCE 8
+//#define BOARD_DEBUG_UART_INSTANCE 3
 /* Pls use uart instance 1 when debugging with jtag */
 //#define BOARD_DEBUG_UART_INSTANCE 1
 #define BOARD_DEBUG_CONSOLE_PORT BOARD_DEBUG_UART_INSTANCE
