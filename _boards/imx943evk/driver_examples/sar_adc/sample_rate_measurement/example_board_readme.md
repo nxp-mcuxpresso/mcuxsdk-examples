@@ -32,9 +32,9 @@ When the example runs successfully, you will see similar information from the te
 ~~~~~~~~~~~~~~~~~~~~~
  ADC sample rate measurement demo.
  Please press any key to get the ADC sample rate.
- Adc sample rate: 406000 sps.
+ Adc sample rate: 735000 sps.
  Please press any key to get the ADC sample rate.
- Adc sample rate: 393000 sps.
+ Adc sample rate: 729000 sps.
  Please press any key to get the ADC sample rate.
- Adc sample rate: 404000 sps.
+ Adc sample rate: 734000 sps.
 ~~~~~~~~~~~~~~~~~~~~~
