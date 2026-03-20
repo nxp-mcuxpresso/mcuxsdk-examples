@@ -13,8 +13,14 @@
 #elif CONFIG_WPA_SUPP_MBEDTLS
 #include "wpa_supp_els_pkc_mbedtls_config.h"
 #else
-/* Fix build error for wmcrypto */
+
+/* Memory allocation configuration */
+/* Use FreeRTOS heap instead of C library heap to avoid memory exhaustion */
 #define MBEDTLS_PLATFORM_MEMORY
+#define MBEDTLS_PLATFORM_STD_CALLOC pvPortCalloc
+#define MBEDTLS_PLATFORM_STD_FREE vPortFree
+
+/* Fix build error for wmcrypto */
 #define MBEDTLS_SSL_TLS_C
 #define MBEDTLS_SSL_PROTO_TLS1_2
 #define MBEDTLS_SSL_CLI_C
