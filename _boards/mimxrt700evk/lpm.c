@@ -68,7 +68,7 @@ TickType_t LPM_EnterTicklessIdle(TickType_t xExpectedIdleTime, uint64_t *pCounte
 
     xOstimerStartValue = OSTIMER_GetCurrentTimerValue(TICKLESS_OSTIMER_BASE_PTR);
     assert((xOstimerStartValue + ulReloadValue) < UINT64_MAX);
-    status = OSTIMER_SetMatchValue(TICKLESS_OSTIMER_BASE_PTR, (xOstimerStartValue + ulReloadValue), NULL);
+    status = OSTIMER_SetMatchValueSafe(TICKLESS_OSTIMER_BASE_PTR, (xOstimerStartValue + ulReloadValue), NULL);
 
     if (status != kStatus_Success)
     {

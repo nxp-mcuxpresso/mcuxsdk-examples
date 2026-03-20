@@ -42,7 +42,7 @@ static status_t EXAMPLE_SetMatchInterruptTime(OSTIMER_Type *base, uint32_t ms, u
     timerTicks += MSEC_TO_COUNT(ms, freq);
 
     /* Set the match value with unit of ticks. */
-    return OSTIMER_SetMatchValue(base, timerTicks, cb);
+    return OSTIMER_SetMatchValueSafe(base, timerTicks, cb);
 }
 
 /*!

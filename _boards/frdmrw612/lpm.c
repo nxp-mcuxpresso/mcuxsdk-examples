@@ -39,7 +39,7 @@ static uint64_t LPM_EnterTicklessIdle(uint32_t timeoutMilliSec)
 
     OSTIMER_ClearStatusFlags(OSTIMER, kOSTIMER_MatchInterruptFlag);
     /* Set the match value with unit of ticks. */
-    status = OSTIMER_SetMatchValue(OSTIMER, match, NULL);
+    status = OSTIMER_SetMatchValueSafe(OSTIMER, match, NULL);
     if (status != kStatus_Success)
     {
         assert(false);
