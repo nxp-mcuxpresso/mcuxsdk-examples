@@ -14,3 +14,4 @@ clock in interrupt mode.
 - [KW47-LOC](../../../_boards/kw47loc/driver_examples/sfa/interrupt/example_board_readme.md)
 - [MCXW72-LOC](../../../_boards/mcxw72loc/driver_examples/sfa/interrupt/example_board_readme.md)
 - [FRDM-MCXW72](../../../_boards/frdmmcxw72/driver_examples/sfa/interrupt/example_board_readme.md)
+- [FRDM-KW43](../../../_boards/frdmkw43/driver_examples/sfa/interrupt/example_board_readme.md)

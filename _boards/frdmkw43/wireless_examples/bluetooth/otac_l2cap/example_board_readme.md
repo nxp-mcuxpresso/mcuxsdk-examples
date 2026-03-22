@@ -1,0 +1,28 @@
+Toolchain supported
+===================
+- IAR Embedded Workbench (IDE version details are in the Release Notes)
+- MCUXpresso IDE (IDE version details are in the Release Notes)
+- GCC ARM Embedded (IDE version details are in the Release Notes)
+
+Hardware requirements
+=====================
+- Type-C USB cable
+- MCX-W71-EVK Board
+- Personal Computer
+
+Hardware references
+===================
+|  Platform   | ADVSW | SCANSW | CONNLED  |
+|-------------|-------|--------|----------|
+| MCX-W71-EVK | SW2   | SW2    | LED2     |
+
+Board settings
+==============
+No special board setting.
+
+Prepare the Demo
+================
+1.  Connect a USB cable between the PC host and the OpenSDA USB port on the board.
+2.  Download the program to the target board.
+3.  Press the reset button on your board to begin running the demo.
+4.  Start the OTAP application from and follow the instructions in the manual.

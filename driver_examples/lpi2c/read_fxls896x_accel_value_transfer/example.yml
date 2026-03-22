@@ -25,3 +25,4 @@ lpi2c_read_fxls896x_accel_value_transfer:
     kw45b41zevk:
     - +armgcc@debug
     - +armgcc@release
+    frdmkw43: []

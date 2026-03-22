@@ -73,3 +73,4 @@ because the LPUART uses simple polling way for receiving.
 - [FRDM-MCXW72](../../../_boards/frdmmcxw72/driver_examples/lpuart/polling/example_board_readme.md)
 - [FRDM-MCXA577](../../../_boards/frdmmcxa577/driver_examples/lpuart/polling/example_board_readme.md)
 - [FRDM-MCXC162](../../../_boards/frdmmcxc162/driver_examples/lpuart/polling/example_board_readme.md)
+- [FRDM-KW43](../../../_boards/frdmkw43/driver_examples/lpuart/polling/example_board_readme.md)

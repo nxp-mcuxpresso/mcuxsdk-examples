@@ -339,3 +339,4 @@ lpuart_polling:
     - +iar@release
     frdmmcxa577: []
     frdmmcxc162: []
+    frdmkw43: []

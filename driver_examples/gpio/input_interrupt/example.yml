@@ -70,3 +70,4 @@ gpio_input_interrupt:
     mimxrt2660evk: []
     frdmmcxa577: []
     frdmmcxc162: []
+    frdmkw43: []

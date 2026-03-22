@@ -26,3 +26,4 @@ k4w1_romapi_flash:
     kw45b41zevk:
     - +armgcc@debug
     - +armgcc@release
+    frdmkw43: []

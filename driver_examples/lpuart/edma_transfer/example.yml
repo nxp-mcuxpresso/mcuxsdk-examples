@@ -324,3 +324,4 @@ lpuart_edma_transfer:
     - +iar@release
     frdmmcxa577: []
     frdmmcxc162: []
+    frdmkw43: []

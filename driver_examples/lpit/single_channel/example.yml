@@ -133,3 +133,4 @@ lpit_single_channel:
     - -mdk@hyperram_release
     - -mdk@release
     mimxrt2660evk: []
+    frdmkw43: []

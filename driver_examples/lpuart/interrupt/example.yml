@@ -334,3 +334,4 @@ lpuart_interrupt:
     - +iar@release
     frdmmcxa577: []
     frdmmcxc162: []
+    frdmkw43: []

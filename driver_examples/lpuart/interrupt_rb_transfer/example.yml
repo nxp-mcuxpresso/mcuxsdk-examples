@@ -333,3 +333,4 @@ lpuart_interrupt_rb_transfer:
     - +iar@release
     frdmmcxa577: []
     frdmmcxc162: []
+    frdmkw43: []

@@ -315,6 +315,7 @@ hello_world:
     - +armgcc@release
     kw45b41zloc: []
     kw47loc@cm33_core0: []
+    frdmkw43: []
     lpc845breakout: []
     lpcxpresso51u68: []
     lpcxpresso54628: []
@@ -375,3 +376,4 @@ hello_world:
     - +iar@release
     frdmmcxa577: []
     frdmmcxc162: []
+    frdmkw43: []

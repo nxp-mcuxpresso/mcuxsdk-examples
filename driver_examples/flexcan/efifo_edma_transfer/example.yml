@@ -111,3 +111,4 @@ flexcan_efifo_edma_transfer:
     - -mdk@hyperram_release
     - -mdk@release
     frdmmcxa577: []
+    frdmkw43: []

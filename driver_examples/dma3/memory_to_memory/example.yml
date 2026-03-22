@@ -45,3 +45,4 @@ dma3_memory_to_memory:
     kw45b41zevk:
     - +armgcc@debug
     - +armgcc@release
+    frdmkw43: []

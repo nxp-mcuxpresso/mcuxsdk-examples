@@ -29,3 +29,4 @@ ltc_aes:
     kw45b41zevk:
     - +armgcc@debug
     - +armgcc@release
+    frdmkw43: []

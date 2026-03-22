@@ -275,3 +275,4 @@ flexcan_interrupt_transfer:
     frdmmcxa266: []
     frdmmcxa366: []
     frdmmcxa577: []
+    frdmkw43: []

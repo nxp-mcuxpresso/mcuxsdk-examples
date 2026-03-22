@@ -126,3 +126,4 @@ tstmr:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     - -mdk@release
+    frdmkw43: []

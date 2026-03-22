@@ -136,3 +136,4 @@ lpuart_edma_rb_transfer:
     - -mdk@debug
     - -mdk@release
     mimxrt700evk@cm33_core1: []
+    frdmkw43: []

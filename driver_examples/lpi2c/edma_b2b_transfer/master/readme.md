@@ -65,3 +65,4 @@ slave is correct.
 - [FRDM-MCXA366](../../../../_boards/frdmmcxa366/driver_examples/lpi2c/edma_b2b_transfer/master/example_board_readme.md)
 - [FRDM-MCXA577](../../../../_boards/frdmmcxa577/driver_examples/lpi2c/edma_b2b_transfer/master/example_board_readme.md)
 - [FRDM-MCXC162](../../../../_boards/frdmmcxc162/driver_examples/lpi2c/edma_b2b_transfer/master/example_board_readme.md)
+- [FRDM-KW43](../../../../_boards/frdmkw43/driver_examples/lpi2c/edma_b2b_transfer/master/example_board_readme.md)
