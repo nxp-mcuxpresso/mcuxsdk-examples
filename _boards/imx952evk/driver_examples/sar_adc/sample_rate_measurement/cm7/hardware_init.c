@@ -22,6 +22,13 @@ void BOARD_InitHardware(void)
 	.clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
     };
 
+    clk_t adc_clk = {
+        .clkId = kCLOCK_adc,
+        .pclkId = kCLOCK_syspll1dfs1div2,
+        .rate = 80000000UL, /* 80MHz */
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
+    };
+
     SystemPlatformInit();
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
@@ -30,5 +37,9 @@ void BOARD_InitHardware(void)
 
     CLOCK_SetRate(&lpit_clk);
     CLOCK_EnableClock(lpit_clk.clkId);
+
+    CLOCK_SetParent(&adc_clk);
+    CLOCK_SetRate(&adc_clk);
+    CLOCK_EnableClock(adc_clk.clkId);
 }
 /*${function:end}*/

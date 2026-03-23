@@ -21,6 +21,13 @@ void BOARD_InitHardware(void)
         .rate = 133333333UL,
     };
 
+    clk_t adc_clk = {
+        .clkId = kCLOCK_Adc,
+        .pclkId = kCLOCK_Syspll1dfs1div2,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
+        .rate = 80000000UL,
+    };
+
     /* clang-format on */
     SystemPlatformInit();
     BOARD_InitDebugConsolePins();
@@ -31,5 +38,9 @@ void BOARD_InitHardware(void)
 
     CLOCK_SetRate(&lpit_clk);
     CLOCK_EnableClock(lpit_clk.clkId);
+
+    CLOCK_SetParent(&adc_clk);
+    CLOCK_SetRate(&adc_clk);
+    CLOCK_EnableClock(adc_clk.clkId);
 }
 /*${function:end}*/

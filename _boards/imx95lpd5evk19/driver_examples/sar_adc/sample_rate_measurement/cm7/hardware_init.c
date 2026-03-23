@@ -23,6 +23,14 @@ void BOARD_InitHardware(void)
         .clk_round_opt = hal_clk_round_auto,
     };
 
+    hal_clk_t hal_adc_clk = {
+        .clk_id        = hal_clock_adc,
+        .pclk_id       = hal_clock_syspll1dfs1div2,
+        .div           = 5, /* 400MHz / 5 = 80MHz */
+        .enable_clk    = true,
+        .clk_round_opt = hal_clk_round_auto,
+    };
+
     SM_Platform_Init();
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
@@ -30,5 +38,6 @@ void BOARD_InitHardware(void)
     BOARD_ConfigMPU();
 
     HAL_ClockSetRootClk(&hal_lpit_clk);
+    HAL_ClockSetRootClk(&hal_adc_clk);
 }
 /*${function:end}*/

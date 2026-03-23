@@ -15,7 +15,7 @@
 #define DEMO_ADC_IRQ_HANDLER_FUNC       ADC_EOC_IRQHandler
 #define DEMO_ADC_USED_CHANNELS          1U
 #define DEMO_ADC_CHANNEL                0U
-#define DEMO_ADC_CLOCK_FREQ             kADC_HalfBusFrequency
+#define DEMO_ADC_CLOCK_FREQ             kADC_FullBusFrequency
 #define DEMO_ADC_RES_ARRAY_SIZE         2500
 
 #define DEMO_LPIT_BASE                  LPIT1
