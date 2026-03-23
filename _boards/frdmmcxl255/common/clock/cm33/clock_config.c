@@ -25,11 +25,12 @@
 /* clang-format off */
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Clocks v18.0
+product: Clocks v19.0
 processor: MCXL255
 package_id: MCXL255VDF
 mcu_data: ksdk2_0
 processor_version: 0.0.0
+board: FRDM-MCXL255
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
 
@@ -115,7 +116,6 @@ outputs:
 settings:
 - {id: AON_SYSTICK_CLK_INIT_Config, value: custom}
 - {id: FREQMEAS_INIT_Config, value: custom}
-- {id: VDD_CORE_AON, value: voltage_0v770}
 - {id: VDD_CORE_MAIN, value: voltage_1v1}
 - {id: ADC0CLKDIV_HALT, value: Enable}
 - {id: AON_ACMP_CLK0_DIV_HALT, value: Enable}
@@ -154,6 +154,9 @@ settings:
 - {id: SYSCON.AONAUXCLKDIV.scale, value: '4', locked: true}
 - {id: SYSTICKCLKDIV_HALT, value: Enable}
 - {id: WWDT0CLKDIV_HALT, value: Enable}
+- {id: detectionDelayConfig, value: '50'}
+- {id: detectionDelaySwitchedModeConfig, value: '50'}
+- {id: detectionTimeoutSwitchedModeConfig, value: '50'}
 sources:
 - {id: RTC_AON.ROSC.outFreq, value: 32.768 kHz, enabled: true}
 - {id: SCG.FIRC.outFreq, value: 96 MHz}
@@ -177,8 +180,8 @@ static rosc_init_config_t roscConfig_BOARD_BootClockFRO96M =
     .detectionTimeout = 0,                        /* Timeout for detection of rosc initialization: 0ms */
     .detectionDelaySwitchedMode = 50,             /* Delay before start of rosc initialization detection: 50ms */
     .detectionTimeoutSwitchedMode = 50,           /* Timeout for detection of rosc initialization: 50ms */
-    .cbXi = 0,                                    /* RTC XI oscillator capacity load. */
-    .cbXo = 0,                                    /* RTC XO oscillator capacity load. */
+    .cbXi = 3,                                    /* RTC XI oscillator capacity load. */
+    .cbXo = 3,                                    /* RTC XO oscillator capacity load. */
     .vbatOver3V = true,                           /* The Vdd BAT voltage level is over 3V */
 };
 /*******************************************************************************
@@ -195,9 +198,9 @@ void BOARD_BootClockFRO96M_InitClockModule(clock_module_t module)
             /* Set the Vdd Core voltage of the Main domain. */
             PMU_UpdateVDDCore1P1InActiveMode(AON__PMU, vddCoreMainConfig.vddCoreMainAconfig);
             /* Set the low voltage detect trim control value for the PMU. */
-            AON__PMU->PMU_TRIM4 = (AON__PMU->PMU_TRIM4 & ~PMU_PMU_TRIM4_HVD_LV_TRIM_MASK) | PMU_PMU_TRIM4_HVD_LV_TRIM(vddCoreMainConfig.lvdLvTrim);
+            PMU_UpdateLvdLvTrim(AON__PMU, vddCoreMainConfig.lvdLvTrim);
             /* Set the high voltage detect trim control value for the PMU. */
-            AON__PMU->PMU_TRIM4 = (AON__PMU->PMU_TRIM4 & ~PMU_PMU_TRIM4_HVD_HV_TRIM_MASK) | PMU_PMU_TRIM4_HVD_HV_TRIM(vddCoreMainConfig.hvdLvTrim);
+            PMU_UpdateHvdLvTrim(AON__PMU, vddCoreMainConfig.hvdLvTrim);
             break;
         case kClockModule_AONCoreSupplyMode:
             /* Set the Vdd Core voltage of the AON domain to 0.770V to allow the AON Core operate at 10 MHz. */

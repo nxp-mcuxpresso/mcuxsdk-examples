@@ -25,11 +25,12 @@
 /* clang-format off */
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Clocks v18.0
+product: Clocks v19.0
 processor: MCXL255
 package_id: MCXL255VDF
 mcu_data: ksdk2_0
 processor_version: 0.0.0
+board: FRDM-MCXL255
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
 
@@ -139,7 +140,6 @@ settings:
 - {id: SystemClkDiv_INIT_Config, value: custom}
 - {id: SystemClkSrc_INIT_Config, value: custom}
 - {id: UTICK0_CLK_INIT_Config, value: custom}
-- {id: VDD_CORE_AON, value: voltage_0v770}
 - {id: VDD_CORE_MAIN, value: voltage_1v1}
 - {id: WUU_CLK_INIT_Config, value: custom}
 - {id: WWDT0_CLK_INIT_Config, value: custom}
@@ -156,6 +156,9 @@ settings:
 - {id: MRCC.CLKOUTCLKDIV.scale, value: '9'}
 - {id: MRCC.P16KCLKSEL.sel, value: PMU.FRO_16K}
 - {id: SYSCON.AONAUXCLKDIV.scale, value: '4', locked: true}
+- {id: detectionDelayConfig, value: '50'}
+- {id: detectionDelaySwitchedModeConfig, value: '50'}
+- {id: detectionTimeoutSwitchedModeConfig, value: '50'}
 sources:
 - {id: RTC_AON.ROSC.outFreq, value: 32.768 kHz, enabled: true}
 - {id: SCG.FIRC.outFreq, value: 96 MHz}
@@ -177,8 +180,8 @@ static rosc_init_config_t roscConfig_BOARD_BootClockFRO10M =
     .detectionTimeout = 0,                        /* Timeout for detection of rosc initialization: 0ms */
     .detectionDelaySwitchedMode = 50,             /* Delay before start of rosc initialization detection: 50ms */
     .detectionTimeoutSwitchedMode = 50,           /* Timeout for detection of rosc initialization: 50ms */
-    .cbXi = 0,                                    /* RTC XI oscillator capacity load. */
-    .cbXo = 0,                                    /* RTC XO oscillator capacity load. */
+    .cbXi = 3,                                    /* RTC XI oscillator capacity load. */
+    .cbXo = 3,                                    /* RTC XO oscillator capacity load. */
     .vbatOver3V = true,                           /* The Vdd BAT voltage level is over 3V */
 };
 /*******************************************************************************
