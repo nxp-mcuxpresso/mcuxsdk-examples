@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2025 NXP
+ * Copyright 2022-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  * The BSD-3-Clause license can be found at https://spdx.org/licenses/BSD-3-Clause.html
@@ -213,6 +213,7 @@ static int ncp_uart_deinit(void *argv)
 
 static int ncp_uart_recv(uint8_t *tlv_buf, size_t *tlv_sz)
 {
+    int ret = (int)NCP_STATUS_SUCCESS;
     osa_event_flags_t flags;
     lpuart_transfer_t receiveXfer;
     uint32_t cmd_len;
@@ -230,6 +231,7 @@ static int ncp_uart_recv(uint8_t *tlv_buf, size_t *tlv_sz)
     if (kStatus_Success != LPUART_ReceiveEDMA(NCP_UART, &s_uart_dma_handle, &receiveXfer))
     {
         NCP_LOG_ERR("Failed to start eDMA receive for header!");
+        ret = (int)NCP_STATUS_ERROR;
         goto exit;
     }
 
@@ -242,6 +244,7 @@ static int ncp_uart_recv(uint8_t *tlv_buf, size_t *tlv_sz)
     {
         NCP_LOG_ERR("Failed to receive TLV header!");
         NCP_UART_STATS_INC(drop);
+        ret = (int)NCP_STATUS_ERROR;
         goto exit;
     }
 
@@ -253,6 +256,7 @@ static int ncp_uart_recv(uint8_t *tlv_buf, size_t *tlv_sz)
         NCP_LOG_ERR("Invalid command length: %u", cmd_len);
         NCP_UART_STATS_INC(lenerr);
         NCP_UART_STATS_INC(drop);
+        ret = (int)NCP_STATUS_ERROR;
         goto exit;
     }
 
@@ -263,6 +267,7 @@ static int ncp_uart_recv(uint8_t *tlv_buf, size_t *tlv_sz)
     if (kStatus_Success != LPUART_ReceiveEDMA(NCP_UART, &s_uart_dma_handle, &receiveXfer))
     {
         NCP_LOG_ERR("Failed to start eDMA receive for payload!");
+        ret = (int)NCP_STATUS_ERROR;
         goto exit;
     }
 
@@ -279,21 +284,20 @@ static int ncp_uart_recv(uint8_t *tlv_buf, size_t *tlv_sz)
         NCP_UART_STATS_INC(rx);
         NCP_LOG_DBG("Received %zu bytes", *tlv_sz);
         NCP_LOG_HEXDUMP_DBG(tlv_buf, *tlv_sz + NCP_CHKSUM_LEN);
+        ret = (int)NCP_STATUS_SUCCESS;
     }
     else
     {
         NCP_LOG_ERR("LPUART RX eDMA transfer failed!");
         NCP_UART_STATS_INC(drop);
-        goto exit;
+        ret = (int)NCP_STATUS_ERROR;
     }
-
-    return (int)NCP_STATUS_SUCCESS;
 
 exit:
     s_uart_ctx.rx_state = RX_STATE_IDLE;
     LPUART_TransferAbortReceiveEDMA(NCP_UART, &s_uart_dma_handle);
 
-    return (int)NCP_STATUS_ERROR;
+    return ret;
 }
 
 static void ncp_uart_rx_task(void *argv)

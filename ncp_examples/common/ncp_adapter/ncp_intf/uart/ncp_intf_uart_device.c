@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2025 NXP
+ * Copyright 2022-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  * The BSD-3-Clause license can be found at https://spdx.org/licenses/BSD-3-Clause.html
@@ -419,6 +419,7 @@ static int ncp_uart_deinit(void *argv)
 
 static int ncp_uart_recv(uint8_t *tlv_buf, size_t *tlv_sz)
 {
+    int ret = (int)NCP_STATUS_SUCCESS;
     osa_event_flags_t flags;
     uint32_t cmd_len;
     uint32_t payload_len;
@@ -441,13 +442,15 @@ static int ncp_uart_recv(uint8_t *tlv_buf, size_t *tlv_sz)
     {
         NCP_LOG_DBG("UART RX frame error!");
         NCP_UART_STATS_INC(drop);
+        ret = (int)NCP_STATUS_ERROR;
         goto exit;
     }
 
     if (!(flags & UART_EVENT_RX_HEADER))
     {
         NCP_LOG_ERR("Failed to receive RX header!");
-        return (int)NCP_STATUS_ERROR;
+        ret = (int)NCP_STATUS_ERROR;
+        goto exit;
     }
 
     NCP_LOG_DBG("Received TLV header");
@@ -458,7 +461,13 @@ static int ncp_uart_recv(uint8_t *tlv_buf, size_t *tlv_sz)
         NCP_LOG_ERR("Invalid command length: %u", cmd_len);
         NCP_UART_STATS_INC(lenerr);
         NCP_UART_STATS_INC(drop);
+        ret = (int)NCP_STATUS_ERROR;
         goto exit;
+    }
+
+    if (s_pm_ops && s_pm_ops->enter_critical)
+    {
+        s_pm_ops->enter_critical();
     }
 
     payload_len = cmd_len - TLV_CMD_HEADER_LEN + NCP_CHKSUM_LEN;
@@ -476,21 +485,25 @@ static int ncp_uart_recv(uint8_t *tlv_buf, size_t *tlv_sz)
         NCP_UART_STATS_INC(rx);
         NCP_LOG_DBG("Received %zu bytes", *tlv_sz);
         NCP_LOG_HEXDUMP_DBG(tlv_buf, *tlv_sz + NCP_CHKSUM_LEN);
+        ret = (int)NCP_STATUS_SUCCESS;
     }
     else
     {
         NCP_LOG_ERR("UART RX DMA transfer failed!");
         NCP_UART_STATS_INC(drop);
-        goto exit;
+        ret = (int)NCP_STATUS_ERROR;
     }
 
-    return (int)NCP_STATUS_SUCCESS;
+    if (s_pm_ops && s_pm_ops->exit_critical)
+    {
+        s_pm_ops->exit_critical();
+    }
 
 exit:
     DMA_AbortTransfer(&s_dma_rx_handle);
     USART_EnableRxDMA(NCP_UART, false);
 
-    return (int)NCP_STATUS_ERROR;
+    return ret;
 }
 
 static void ncp_uart_rx_task(void *argv)
