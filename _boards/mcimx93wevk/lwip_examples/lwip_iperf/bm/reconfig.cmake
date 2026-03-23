@@ -1,4 +1,4 @@
-# Copyright 2025 NXP
+# Copyright 2025-2026 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -10,3 +10,8 @@ mcux_add_macro(
     TOOLCHAINS iar armgcc
     CC "-DFSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE"
 )
+mcux_add_macro(
+    TOOLCHAINS iar
+    CC "-DLWIPERF_QUICKACCESS_TX_BUFFER=0"
+)
+
