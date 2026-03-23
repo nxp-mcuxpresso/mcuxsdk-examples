@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 NXP
+ * Copyright 2023-2024, 2026 NXP
  * All rights reserved.
  *
  *
@@ -39,6 +39,7 @@ status_t xspi_nor_write_enable(XSPI_Type *base, uint32_t baseAddr, bool enableOc
     status_t status;
 
     /* Write enable */
+    assert(baseAddr <= (UINT32_MAX - EXAMPLE_XSPI_AMBA_BASE)); /* CERT-C INT30-C */
     flashXfer.deviceAddress   = EXAMPLE_XSPI_AMBA_BASE + baseAddr;
     flashXfer.cmdType         = kXSPI_Command;
     flashXfer.targetGroup     = kXSPI_TargetGroup0;
@@ -345,6 +346,7 @@ status_t xspi_nor_flash_erase_sector(XSPI_Type *base, uint32_t address)
         return status;
     }
 
+    assert(address <= (UINT32_MAX - EXAMPLE_XSPI_AMBA_BASE)); /* CERT-C INT30-C */
     flashXfer.deviceAddress   = EXAMPLE_XSPI_AMBA_BASE + address;
     flashXfer.cmdType         = kXSPI_Command;
     flashXfer.seqIndex        = NOR_CMD_LUT_SEQ_IDX_ERASE_SECTOR;
@@ -370,6 +372,7 @@ status_t xspi_nor_flash_read(XSPI_Type *base, uint32_t dstAddr, uint32_t *src, u
     xspi_transfer_t flashXfer;
 
     /* Prepare page program command */
+    assert(dstAddr <= (UINT32_MAX - EXAMPLE_XSPI_AMBA_BASE)); /* CERT-C INT30-C */
     flashXfer.deviceAddress   = EXAMPLE_XSPI_AMBA_BASE + dstAddr;
     flashXfer.cmdType         = kXSPI_Read;
     flashXfer.seqIndex        = NOR_CMD_LUT_SEQ_IDX_READ;
@@ -404,6 +407,7 @@ status_t xspi_nor_flash_program(XSPI_Type *base, uint32_t dstAddr, uint32_t *src
     }
 
     /* Prepare page program command */
+    assert(dstAddr <= (UINT32_MAX - EXAMPLE_XSPI_AMBA_BASE)); /* CERT-C INT30-C */
     flashXfer.deviceAddress   = EXAMPLE_XSPI_AMBA_BASE + dstAddr;
     flashXfer.cmdType         = kXSPI_Write;
     flashXfer.seqIndex        = NOR_CMD_LUT_SEQ_IDX_PAGEPROGRAM_OCTAL;
