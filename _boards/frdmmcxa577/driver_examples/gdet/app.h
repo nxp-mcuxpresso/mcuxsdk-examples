@@ -13,8 +13,8 @@
 /*${macro:start}*/
 #define APP_GDET DGDET0
 
-#define GDET_APP_IRQ GDET_IRQn
-#define APP_GDET_DriverIRQHandler GDET_DriverIRQHandler
+#define GDET_APP_IRQ DGDET0_IRQn
+#define APP_GDET_DriverIRQHandler DGDET0_IRQHandler
 /*${macro:end}*/
 
 /*******************************************************************************

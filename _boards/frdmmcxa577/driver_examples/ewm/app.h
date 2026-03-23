@@ -17,8 +17,8 @@
 #define SW_NAME     BOARD_SW2_NAME
 /* GPIO port input low-logic level when SW is pressed */
 #define SW_GPIO_PRESSED_VALUE 0U
-#define WDOG_EWM_IRQn         EWM0_IRQn
-#define WDOG_EWM_IRQHandler   EWM0_IRQHandler
+#define WDOG_EWM_IRQn         EWM_IRQn
+#define WDOG_EWM_IRQHandler   EWM_IRQHandler
 /*${macro:end}*/
 
 /*******************************************************************************
