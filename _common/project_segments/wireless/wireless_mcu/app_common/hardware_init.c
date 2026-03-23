@@ -86,6 +86,10 @@ void BOARD_InitHardware(void)
 {
     BOARD_DBGCONFIGINIT(TRUE); // internal debug
 
+#if defined(FSL_FEATURE_SOC_TSTMR_COUNT) && (FSL_FEATURE_SOC_TSTMR_COUNT > 0)
+    CLOCK_EnableClock(kCLOCK_Tstmr0);
+#endif
+
 #if !defined(FPGA_TARGET) || (FPGA_TARGET == 0)
     /* Set default value before XTAL start up but can be updated at run time through
        PLATFORM_Update32MhzTrimFromHwParam() from value stored in flash in hw param*/
@@ -115,10 +119,6 @@ void BOARD_InitHardware(void)
     (void)PLATFORM_InitOsc32K();
 #endif
 #endif /* #if !defined(FPGA_TARGET) || (FPGA_TARGET == 0) */
-
-#if defined(FSL_FEATURE_SOC_TSTMR_COUNT) && (FSL_FEATURE_SOC_TSTMR_COUNT > 0)
-    CLOCK_EnableClock(kCLOCK_Tstmr0);
-#endif
 
 #if defined(gBoardUseDcdc_d) && (gBoardUseDcdc_d > 0)
     /* Initialize DCDC and apply optimized configuration */
