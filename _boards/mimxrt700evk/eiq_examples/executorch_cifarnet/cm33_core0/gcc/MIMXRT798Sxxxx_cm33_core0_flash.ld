@@ -187,19 +187,24 @@ SECTIONS
   __NCACHE_REGION_SIZE  = LENGTH(m_ncache);
   __NDATA_ROM = __DATA_ROM + (__data_end__ - __data_start__); /* Symbol is used by startup for ncache data initialization */
 
+  /*
+  * .ncache.init is reserved for non-cacheable data that requires initialization
+  * .ncache is changed to NOLOAD because non-cacheable data is allocated at runtime
+  */
   .ncache.init : AT(__NDATA_ROM)
   {
-    __noncachedata_start__ = .;   /* create a global symbol at ncache data start */
-    *(NonCacheable.init)
-    . = ALIGN(4);
-    __noncachedata_init_end__ = .;   /* create a global symbol at initialized ncache data end */
+      __noncachedata_start__ = .;
+      *(NonCacheable.init)
+      . = ALIGN(4);
+      __noncachedata_init_end__ = .;
   } > m_ncache
-  . = __noncachedata_init_end__;
-  .ncache :
+
+  /* General purpose non-cacheable region - runtime initialization */
+  .ncache (NOLOAD) :
   {
-    *(NonCacheable)
-    . = ALIGN(4);
-    __noncachedata_end__ = .;     /* define a global symbol at ncache data end */
+      *(NonCacheable)
+      . = ALIGN(4);
+      __noncachedata_end__ = .;
   } > m_ncache
 
   __MDATA_REGION_START = ORIGIN(m_model);
@@ -208,6 +213,8 @@ SECTIONS
   .model.init : AT(__MDATA_ROM)
   {
     __modeldata_start__ = .;   /* create a global symbol at model data start */
+    *(.modeldata)
+    *(.modeldata*)
     . = ALIGN(4);
     __modeldata_init_end__ = .;   /* create a global symbol at initialized model data end */
   } > m_model
@@ -215,8 +222,6 @@ SECTIONS
   .model :
   {
     . = ALIGN(4);
-    *(.modeldata)
-    *(.modeldata*)
     __modeldata_end__ = .;
   } > m_model
 

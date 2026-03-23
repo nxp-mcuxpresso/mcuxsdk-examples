@@ -90,3 +90,30 @@ mcux_add_mcux_configuration(
   LD "-Xlinker --defsym=__heap_size__=0x10000\
       -Xlinker --defsym=__stack_size__=0x10000"
 )
+
+# IMPORTANT: Remove __STARTUP_INITIALIZE_NONCACHEDATA flag for CMSIS-DAP debugger compatibility
+# The executorch project uses 1MB ncache region (method_allocator_pool + temp_allocator_pool),
+# and zeroing this large region during startup can cause CMSIS-DAP debugger to timeout.
+# NonCacheable section variables will be used as-is without initialization.
+if(CMAKE_ASM_FLAGS MATCHES "__STARTUP_INITIALIZE_NONCACHEDATA")
+    string(REPLACE "-D__STARTUP_INITIALIZE_NONCACHEDATA" "" CMAKE_ASM_FLAGS "${CMAKE_ASM_FLAGS}")
+endif()
+if(CMAKE_C_FLAGS MATCHES "__STARTUP_INITIALIZE_NONCACHEDATA")
+    string(REPLACE "-D__STARTUP_INITIALIZE_NONCACHEDATA" "" CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
+endif()
+if(CMAKE_CXX_FLAGS MATCHES "__STARTUP_INITIALIZE_NONCACHEDATA")
+    string(REPLACE "-D__STARTUP_INITIALIZE_NONCACHEDATA" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+endif()
+
+# Also remove from debug-specific flags
+if(CMAKE_C_FLAGS_DEBUG MATCHES "__STARTUP_INITIALIZE_NONCACHEDATA")
+    string(REPLACE "-D__STARTUP_INITIALIZE_NONCACHEDATA" "" CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG}")
+endif()
+if(CMAKE_CXX_FLAGS_DEBUG MATCHES "__STARTUP_INITIALIZE_NONCACHEDATA")
+    string(REPLACE "-D__STARTUP_INITIALIZE_NONCACHEDATA" "" CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
+endif()
+if(CMAKE_ASM_FLAGS_DEBUG MATCHES "__STARTUP_INITIALIZE_NONCACHEDATA")
+    string(REPLACE "-D__STARTUP_INITIALIZE_NONCACHEDATA" "" CMAKE_ASM_FLAGS_DEBUG "${CMAKE_ASM_FLAGS_DEBUG}")
+endif()
+
+mcux_add_include(INCLUDES cm33)

@@ -10,6 +10,27 @@
 #include "board.h"
 #include "pmic_support.h"
 
+#if defined(__CC_ARM) || defined(__ARMCC_VERSION)
+#elif defined(__ICCARM__)
+#elif defined(__MCUXPRESSO)
+#elif defined(__GNUC__)
+extern uint32_t __modeldata_start__[];
+extern uint32_t __modeldata_init_end__[];
+extern uint32_t __MDATA_ROM[];
+
+void SystemInitHook(void)
+{
+    /* Copy initialized model data from Flash to RAM */
+    uint32_t *pDataSrc, *pDataDest;
+    pDataSrc  = (uint32_t *)__MDATA_ROM;
+    pDataDest = (uint32_t *)__modeldata_start__;
+    while (pDataDest < __modeldata_init_end__)
+    {
+        *pDataDest++ = *pDataSrc++;
+    }
+}
+#endif
+
 void BOARD_Init()
 {
     BOARD_InitPins();

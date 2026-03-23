@@ -211,12 +211,36 @@ SECTIONS
     __noncachedata_init_end__ = .;   /* create a global symbol at initialized ncache data end */
   } > m_ncache
   . = __noncachedata_init_end__;
-  .ncache :
+
+  /*
+  * .ncache.init is reserved for non-cacheable data that requires initialization
+  * .ncache is changed to NOLOAD because s_tensorArena is allocated at runtime
+  */
+  .ncache.init : AT(__NDATA_ROM)
   {
-    *(NonCacheable)
-    . = ALIGN(4);
-    __noncachedata_end__ = .;     /* define a global symbol at ncache data end */
+      __noncachedata_start__ = .;
+      *(NonCacheable.init)
+      . = ALIGN(4);
+      __noncachedata_init_end__ = .;
   } > m_ncache
+
+  /* NPU dedicated non-cacheable region - runtime initialization */
+  .npu_ncache (NOLOAD) :
+  {
+      KEEP(*(.npu_ncache_data))
+      KEEP(*(.npu_ncache_data*))
+  } > m_ncache
+
+  ASSERT(. < 0x20580000, "Error: .npu_ncache cannot go beyond SRAM P18")
+
+  /* General purpose non-cacheable region - runtime initialization */
+  .ncache (NOLOAD) :
+  {
+      *(NonCacheable)
+      . = ALIGN(4);
+      __noncachedata_end__ = .;
+  } > m_ncache
+
 
   __MDATA_REGION_START = ORIGIN(m_model);
   __MDATA_REGION_SIZE  = LENGTH(m_model);
