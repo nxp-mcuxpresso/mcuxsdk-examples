@@ -19,6 +19,6 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
 
     CLOCK_SetIpSrc(kCLOCK_Can0, kCLOCK_IpSrcSoscClk);
-    CLOCK_SetIpSrcDiv(kCLOCK_Can0, kSCG_SysClkDivBy1);
+    CLOCK_SetIpSrcDiv(kCLOCK_Can0, 1U);
 }
 /*${function:end}*/
