@@ -31,7 +31,7 @@ Note that this code CAN NOT be compiled directly. Please follow the steps below:
 		2. Transfer SSC source code format  
 			dos2unix Src/*
 		3. Apply patch  
-			patch -d Src < CiA402-combine-the-SSC-slave-with-ec_pmsm-support.patch
+			patch -d ./ -p1 -i ./CiA402-combine-the-SSC-slave-with-ec_pmsm-support.patch
 	- Windows:  
 		1. Download patch.exe and Unix2Dos.exe tool  
 			Download Windows Patch Utility from http://gnuwin32.sourceforge.net/downlinks/patch-bin-zip.php .  
@@ -39,7 +39,7 @@ Note that this code CAN NOT be compiled directly. Please follow the steps below:
 		2. Transfer the patch format  
 			$(Dos2Unix/Unix2Dos-DIR)/bin/unix2dos.exe  CiA402-combine-the-SSC-slave-with-ec_pmsm-support.patch
 		3. Apply patch  
-			patch.exe -i  CiA402-combine-the-SSC-slave-with-ec_pmsm-support.patch ./Src
+			patch.exe -d ./ -p1 -i ./CiA402-combine-the-SSC-slave-with-ec_pmsm-support.patch
 	
  After compilation and image download, the serial console will output:
 

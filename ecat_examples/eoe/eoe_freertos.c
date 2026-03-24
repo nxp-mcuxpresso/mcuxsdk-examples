@@ -150,6 +150,9 @@ UINT16 APPL_StopMailboxHandler(void)
 
 UINT16 APPL_StartInputHandler(UINT16 *pIntMask)
 {
+    /* Unmap DC event from the AL event register, as it has already been routed to DC ISR */
+    *pIntMask &= ~(SYNC0_EVENT | SYNC1_EVENT);
+    
     return ALSTATUSCODE_NOERROR;
 }
 

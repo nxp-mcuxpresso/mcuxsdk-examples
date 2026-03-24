@@ -1,6 +1,20 @@
---- cia402appl.c	2023-09-14 04:16:34.984979816 +0800
-+++ cia402appl.c	2023-09-14 04:13:39.744983452 +0800
-@@ -60,7 +60,7 @@
+From 72b1bcbe63e16d5b4b37365d1f1222fc964dc1a8 Mon Sep 17 00:00:00 2001
+From: jony zhang <jony.zhang@nxp.com>
+Date: Tue, 24 Mar 2026 11:15:42 +0800
+Subject: [PATCH] CiA402 combine the SSC slave with ec_pmsm support
+
+Signed-off-by: Wenbin Song <wenbin.song@nxp.com>
+Signed-off-by: jony zhang <jony.zhang@nxp.com>
+---
+ Src/cia402appl.c | 137 ++++++++++++++++++++++++++++++++++++++++-------
+ Src/cia402appl.h |  10 ++--
+ 2 files changed, 125 insertions(+), 22 deletions(-)
+
+diff --git a/Src/cia402appl.c b/Src/cia402appl.c
+index e3489a0..0481634 100644
+--- a/Src/cia402appl.c
++++ b/Src/cia402appl.c
+@@ -60,7 +60,7 @@ V4.30 : create file (state machine; handling state transition options; input fee
  #define _CiA402_
  #include "cia402appl.h"
  #undef _CiA402_
@@ -9,7 +23,7 @@
  
  /*--------------------------------------------------------------------------------------
  ------
-@@ -380,6 +380,7 @@
+@@ -380,6 +380,7 @@ void CiA402_StateMachine(void)
              else if (((ControlWord6040 & CONTROLWORD_COMMAND_SWITCHON_MASK) == CONTROLWORD_COMMAND_SWITCHON) ||
                      ((ControlWord6040 & CONTROLWORD_COMMAND_SWITCHON_ENABLEOPERATION_MASK) == CONTROLWORD_COMMAND_SWITCHON_ENABLEOPERATION))
                  {
@@ -17,7 +31,7 @@
                      pCiA402Axis->i16State = STATE_SWITCHED_ON;           // Transition 3
                  }
                  break;
-@@ -388,18 +389,23 @@
+@@ -388,18 +389,23 @@ void CiA402_StateMachine(void)
  
              if ((ControlWord6040 & CONTROLWORD_COMMAND_SHUTDOWN_MASK) == CONTROLWORD_COMMAND_SHUTDOWN)
              {
@@ -42,7 +56,7 @@
                          //The Axis function shall be enabled and all internal set-points cleared.
                      }
                      break;
-@@ -414,6 +420,7 @@
+@@ -414,6 +420,7 @@ void CiA402_StateMachine(void)
                      pCiA402Axis->u16PendingOptionCode = 0x605C; //STATE_TRANSITION (STATE_OPERATION_ENABLED,STATE_SWITCHED_ON);
                      return;
                  }
@@ -50,7 +64,7 @@
                  pCiA402Axis->i16State = STATE_SWITCHED_ON;           // Transition 5
              } else
                  if ((ControlWord6040 & CONTROLWORD_COMMAND_QUICKSTOP_MASK) == CONTROLWORD_COMMAND_QUICKSTOP)
-@@ -428,12 +435,13 @@
+@@ -428,12 +435,13 @@ void CiA402_StateMachine(void)
                              pCiA402Axis->u16PendingOptionCode = 0x605B; //STATE_TRANSITION (STATE_OPERATION_ENABLED,STATE_READY_TO_SWITCH_ON);
                              return;
                          }
@@ -65,7 +79,7 @@
                              pCiA402Axis->i16State = STATE_SWITCH_ON_DISABLED; // Transition 9
                          }
                          break;
-@@ -450,6 +458,7 @@
+@@ -450,6 +458,7 @@ void CiA402_StateMachine(void)
  
              if ((ControlWord6040 & CONTROLWORD_COMMAND_DISABLEVOLTAGE_MASK) == CONTROLWORD_COMMAND_DISABLEVOLTAGE)
              {
@@ -73,7 +87,7 @@
                  pCiA402Axis->i16State = STATE_SWITCH_ON_DISABLED; // Transition 12
              }
  
-@@ -472,6 +481,7 @@
+@@ -472,6 +481,7 @@ void CiA402_StateMachine(void)
  
              if ((ControlWord6040 & CONTROLWORD_COMMAND_FAULTRESET_MASK) == CONTROLWORD_COMMAND_FAULTRESET)
              {
@@ -81,7 +95,7 @@
                  pCiA402Axis->i16State = STATE_SWITCH_ON_DISABLED;// Transition 15
              }
              break;
-@@ -566,7 +576,6 @@
+@@ -566,7 +576,6 @@ void CiA402_LocalError(UINT16 ErrorCode)
  void CiA402_DummyMotionControl(TCiA402Axis *pCiA402Axis)
  {
      float IncFactor    = (float)0.0010922 * (float) pCiA402Axis->u32CycleTime;
@@ -89,7 +103,7 @@
      INT32 i32TargetVelocity = 0;
      /*Motion Controller shall only be triggered if application is trigger by DC Sync Signals,
      and a valid mode of operation is set*/
-@@ -591,23 +600,26 @@
+@@ -591,23 +600,26 @@ void CiA402_DummyMotionControl(TCiA402Axis *pCiA402Axis)
              switch(pCiA402Axis->Objects.objModesOfOperationDisplay)
              {
              case CYCLIC_SYNC_POSITION_MODE:
@@ -126,7 +140,7 @@
                      }
                  break;
              default:
-@@ -619,7 +631,7 @@
+@@ -619,7 +631,7 @@ void CiA402_DummyMotionControl(TCiA402Axis *pCiA402Axis)
              pCiA402Axis->Objects.objStatusWord |= STATUSWORD_INTERNAL_LIMIT;
          }
      }
@@ -135,7 +149,18 @@
  
      /*Accept new mode of operation*/
      pCiA402Axis->Objects.objModesOfOperationDisplay = pCiA402Axis->Objects.objModesOfOperation;
-@@ -1141,6 +1153,82 @@
+@@ -1030,6 +1042,10 @@ UINT16 APPL_StopMailboxHandler(void)
+ UINT16 APPL_StartInputHandler(UINT16 *pIntMask)
+ {
+     UINT32 Sync0CycleTime = 0;
++	
++	/* Unmap DC event from the AL event register, as it has already been routed to DC ISR */
++    *pIntMask &= ~(SYNC0_EVENT | SYNC1_EVENT);
++	
+     if(sConfiguredModuleIdentList.u16SubIndex0 == 0)
+     {
+         /* Object 0xF030 was not written before 
+@@ -1139,6 +1155,82 @@ UINT16 APPL_StopOutputHandler(void)
      return ALSTATUSCODE_NOERROR;
  }
  
@@ -218,7 +243,7 @@
  /////////////////////////////////////////////////////////////////////////////////////////
  /**
  \return     0(ALSTATUSCODE_NOERROR), NOERROR_INWORK
-@@ -1316,8 +1404,8 @@
+@@ -1314,8 +1406,8 @@ void APPL_InputMapping(UINT16* pData)
                  TCiA402PDO1A00 *pInputs = (TCiA402PDO1A00 *)pTmpData;
  
                  pInputs->ObjStatusWord = SWAPWORD(LocalAxes[AxisIndex].Objects.objStatusWord);
@@ -229,7 +254,7 @@
                  pInputs->ObjModesOfOperationDisplay = SWAPWORD((LocalAxes[AxisIndex].Objects.objModesOfOperationDisplay & 0x00FF));
  
                  /*shift pointer PDO mapping object following*/
-@@ -1330,7 +1418,7 @@
+@@ -1328,7 +1420,7 @@ void APPL_InputMapping(UINT16* pData)
                  TCiA402PDO1A01 *pInputs = (TCiA402PDO1A01 *)pTmpData;
  
                  pInputs->ObjStatusWord = SWAPWORD(LocalAxes[AxisIndex].Objects.objStatusWord);
@@ -238,7 +263,7 @@
  
                  /*shift pointer PDO mapping object following*/
                  if (j < (sTxPDOassign.u16SubIndex0 - 1))
-@@ -1344,7 +1432,7 @@
+@@ -1342,7 +1434,7 @@ void APPL_InputMapping(UINT16* pData)
                  TCiA402PDO1A02 *pInputs = (TCiA402PDO1A02 *)pTmpData;
  
                  pInputs->ObjStatusWord = SWAPWORD(LocalAxes[AxisIndex].Objects.objStatusWord);
@@ -247,7 +272,7 @@
              
                  /*shift pointer PDO mapping object following*/
                  if (j < (sTxPDOassign.u16SubIndex0 - 1))
-@@ -1386,6 +1474,12 @@
+@@ -1384,6 +1476,12 @@ void APPL_OutputMapping(UINT16* pData)
              LocalAxes[AxisIndex].Objects.objTargetVelocity    = SWAPDWORD(pOutputs->ObjTargetVelocity);
              LocalAxes[AxisIndex].Objects.objModesOfOperation = SWAPWORD((pOutputs->ObjModesOfOperation & 0x00FF));
  
@@ -260,7 +285,7 @@
              /*shift pointer PDO mapping object following*/
              if (j < (sRxPDOassign.u16SubIndex0 - 1))
              {
-@@ -1466,6 +1560,7 @@
+@@ -1463,6 +1561,7 @@ int main(void)
      do
      {
          MainLoop();
@@ -268,9 +293,11 @@
  
      } while (bRunApplication == TRUE);
  
---- cia402appl.h	2023-09-14 04:16:34.976979816 +0800
-+++ cia402appl.h	2023-09-14 04:13:39.744983452 +0800
-@@ -38,6 +38,10 @@
+diff --git a/Src/cia402appl.h b/Src/cia402appl.h
+index ccb754e..5eb578b 100644
+--- a/Src/cia402appl.h
++++ b/Src/cia402appl.h
+@@ -38,6 +38,10 @@ V5.01 : Start file change log
  
  #ifndef _CIA402_H_
  #define _CIA402_H_
@@ -281,7 +308,7 @@
  
  /*-----------------------------------------------------------------------------------------
  ------
-@@ -1212,13 +1216,13 @@
+@@ -1210,13 +1214,13 @@ PROTO TOBJECT    OBJMEM DefCiA402AxisObjDic[]
     /* Object 0x605E */
     {NULL,NULL, 0x605E, {DEFTYPE_INTEGER16 , 0 | (OBJCODE_VAR << 8)}, &sEntryDesc0x605E, aName0x605E, NULL, NULL, NULL, 0x0000 },
     /* Object 0x6060 */
@@ -298,3 +325,6 @@
     /* Object 0x6077 */
     {NULL,NULL, 0x6077, {DEFTYPE_INTEGER16 , 0 | (OBJCODE_VAR << 8)}, &sEntryDesc0x6077, aName0x6077, NULL, NULL, NULL, 0x0000 },
     /* Object 0x607D */
+-- 
+2.42.0.windows.2
+

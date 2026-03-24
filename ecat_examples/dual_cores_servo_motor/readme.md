@@ -30,7 +30,7 @@ Note that the EtherCAT communication code CAN NOT be compiled directly. Please f
 		2. Transfer SSC source code format  
 			dos2unix Src/*
 		3. Apply patch  
-			patch -d Src <  0001-SSC-Servo-dual-cores-servo-motor-control-support.patch
+			patch -d ./ -p1 -i ./0001-SSC-Servo-dual-cores-servo-motor-control-support.patch
 	- Windows:  
 		1. Download patch.exe and Unix2Dos.exe tool  
 			Download Windows Patch Utility from http://gnuwin32.sourceforge.net/downlinks/patch-bin-zip.php .  
@@ -38,7 +38,7 @@ Note that the EtherCAT communication code CAN NOT be compiled directly. Please f
 		2. Transfer the patch format  
 			$(Dos2Unix/Unix2Dos-DIR)/bin/unix2dos.exe 0001-SSC-Servo-dual-cores-servo-motor-control-support.patch
 		3. Apply patch  
-			patch.exe -i 0001-SSC-Servo-dual-cores-servo-motor-control-support.patch ./Src
+			patch.exe -d ./ -p1 -i ./0001-SSC-Servo-dual-cores-servo-motor-control-support.patch
 	
  After compilation and image download, the serial console for CM33_core1 will output:
 

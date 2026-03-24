@@ -1,21 +1,22 @@
-From 2e0d545c865fc62d044648b39fb06901da469ab1 Mon Sep 17 00:00:00 2001
-From: Wenbin Song <wenbin.song@nxp.com>
-Date: Thu, 21 Aug 2025 22:10:42 +0800
+From 25e885165775f0d4a7f0ee674c4957311c9af550 Mon Sep 17 00:00:00 2001
+From: jony zhang <jony.zhang@nxp.com>
+Date: Tue, 24 Mar 2026 10:54:45 +0800
 Subject: [PATCH] SSC Servo dual cores servo motor control support
 
 Signed-off-by: Wenbin Song <wenbin.song@nxp.com>
+Signed-off-by: jony zhang <jony.zhang@nxp.com>
 ---
- cia402appl.c | 282 ++++++++++++++++++++++++++++++++++++++++++++-------
- cia402appl.h |   4 +
- ecatappl.c   |  48 ++++-----
- ecatappl.h   |   2 +
- ecatslv.c    |   2 +-
- 5 files changed, 276 insertions(+), 62 deletions(-)
+ Src/cia402appl.c | 286 +++++++++++++++++++++++++++++++++++++++++------
+ Src/cia402appl.h |   4 +
+ Src/ecatappl.c   |  48 ++++----
+ Src/ecatappl.h   |   2 +
+ Src/ecatslv.c    |   2 +-
+ 5 files changed, 280 insertions(+), 62 deletions(-)
 
-diff --git a/cia402appl.c b/cia402appl.c
-index e3489a0..8aba7d5 100644
---- a/cia402appl.c
-+++ b/cia402appl.c
+diff --git a/Src/cia402appl.c b/Src/cia402appl.c
+index e3489a0..80fdcce 100644
+--- a/Src/cia402appl.c
++++ b/Src/cia402appl.c
 @@ -48,6 +48,7 @@ V4.30 : create file (state machine; handling state transition options; input fee
  ------
  -----------------------------------------------------------------------------------------*/
@@ -363,7 +364,18 @@ index e3489a0..8aba7d5 100644
  /*-----------------------------------------------------------------------------------------
  ------
  ------    generic functions
-@@ -1077,6 +1194,7 @@ UINT16 APPL_StartInputHandler(UINT16 *pIntMask)
+@@ -1030,6 +1147,10 @@ UINT16 APPL_StopMailboxHandler(void)
+ UINT16 APPL_StartInputHandler(UINT16 *pIntMask)
+ {
+     UINT32 Sync0CycleTime = 0;
++	
++	/* Unmap DC event from the AL event register, as it has already been routed to DC ISR */
++    *pIntMask &= ~(SYNC0_EVENT | SYNC1_EVENT);
++	
+     if(sConfiguredModuleIdentList.u16SubIndex0 == 0)
+     {
+         /* Object 0xF030 was not written before 
+@@ -1077,6 +1198,7 @@ UINT16 APPL_StartInputHandler(UINT16 *pIntMask)
      {
          UINT16 i;
          Sync0CycleTime = Sync0CycleTime / 1000; //get cycle time in us
@@ -371,7 +383,7 @@ index e3489a0..8aba7d5 100644
          for(i = 0; i< MAX_AXES;i++)
          {
                  if (LocalAxes[i].bAxisIsActive)
-@@ -1194,6 +1312,7 @@ UINT16 APPL_GenerateMapping(UINT16* pInputSize,UINT16* pOutputSize)
+@@ -1194,6 +1316,7 @@ UINT16 APPL_GenerateMapping(UINT16* pInputSize,UINT16* pOutputSize)
  
                  
                  LocalAxes[PDOAssignEntryCnt].bAxisIsActive = TRUE;
@@ -379,7 +391,7 @@ index e3489a0..8aba7d5 100644
              }
  
          }
-@@ -1214,6 +1333,7 @@ UINT16 APPL_GenerateMapping(UINT16* pInputSize,UINT16* pOutputSize)
+@@ -1214,6 +1337,7 @@ UINT16 APPL_GenerateMapping(UINT16* pInputSize,UINT16* pOutputSize)
  
                  
                  LocalAxes[PDOAssignEntryCnt].bAxisIsActive = FALSE;
@@ -387,7 +399,7 @@ index e3489a0..8aba7d5 100644
              }
          }
  
-@@ -1290,6 +1410,69 @@ UINT16 APPL_GenerateMapping(UINT16* pInputSize,UINT16* pOutputSize)
+@@ -1290,6 +1414,69 @@ UINT16 APPL_GenerateMapping(UINT16* pInputSize,UINT16* pOutputSize)
      return result;
  }
  
@@ -457,7 +469,7 @@ index e3489a0..8aba7d5 100644
  /////////////////////////////////////////////////////////////////////////////////////////
  /**
  \param      pData  pointer to input process data
-@@ -1297,10 +1480,18 @@ UINT16 APPL_GenerateMapping(UINT16* pInputSize,UINT16* pOutputSize)
+@@ -1297,10 +1484,18 @@ UINT16 APPL_GenerateMapping(UINT16* pInputSize,UINT16* pOutputSize)
              to the hardware
  *////////////////////////////////////////////////////////////////////////////////////////
  void APPL_InputMapping(UINT16* pData)
@@ -476,7 +488,7 @@ index e3489a0..8aba7d5 100644
  
      for (j = 0; j < sTxPDOassign.u16SubIndex0; j++)
      {
-@@ -1314,9 +1505,11 @@ void APPL_InputMapping(UINT16* pData)
+@@ -1314,9 +1509,11 @@ void APPL_InputMapping(UINT16* pData)
                  TCiA402PDO1A00 *pInputs = (TCiA402PDO1A00 *)pTmpData;
  
                  pInputs->ObjStatusWord = SWAPWORD(LocalAxes[AxisIndex].Objects.objStatusWord);
@@ -490,7 +502,7 @@ index e3489a0..8aba7d5 100644
  
                  /*shift pointer PDO mapping object following*/
                  if(j < (sTxPDOassign.u16SubIndex0 - 1))
-@@ -1328,7 +1521,8 @@ void APPL_InputMapping(UINT16* pData)
+@@ -1328,7 +1525,8 @@ void APPL_InputMapping(UINT16* pData)
                  TCiA402PDO1A01 *pInputs = (TCiA402PDO1A01 *)pTmpData;
  
                  pInputs->ObjStatusWord = SWAPWORD(LocalAxes[AxisIndex].Objects.objStatusWord);
@@ -500,7 +512,7 @@ index e3489a0..8aba7d5 100644
  
                  /*shift pointer PDO mapping object following*/
                  if (j < (sTxPDOassign.u16SubIndex0 - 1))
-@@ -1342,7 +1536,9 @@ void APPL_InputMapping(UINT16* pData)
+@@ -1342,7 +1540,9 @@ void APPL_InputMapping(UINT16* pData)
                  TCiA402PDO1A02 *pInputs = (TCiA402PDO1A02 *)pTmpData;
  
                  pInputs->ObjStatusWord = SWAPWORD(LocalAxes[AxisIndex].Objects.objStatusWord);
@@ -511,7 +523,7 @@ index e3489a0..8aba7d5 100644
              
                  /*shift pointer PDO mapping object following*/
                  if (j < (sTxPDOassign.u16SubIndex0 - 1))
-@@ -1353,6 +1549,7 @@ void APPL_InputMapping(UINT16* pData)
+@@ -1353,6 +1553,7 @@ void APPL_InputMapping(UINT16* pData)
              break;
          }    //switch TXPDO entry
      }
@@ -519,7 +531,7 @@ index e3489a0..8aba7d5 100644
  }
  
  /////////////////////////////////////////////////////////////////////////////////////////
-@@ -1367,7 +1564,7 @@ void APPL_OutputMapping(UINT16* pData)
+@@ -1367,7 +1568,7 @@ void APPL_OutputMapping(UINT16* pData)
      UINT16 j = 0;
      UINT8 *pTmpData = (UINT8 *)pData;
      UINT8 AxisIndex;
@@ -528,7 +540,7 @@ index e3489a0..8aba7d5 100644
      for (j = 0; j < sRxPDOassign.u16SubIndex0; j++)
      {
          /*The Axis index is based on the PDO mapping offset (0x10)*/
-@@ -1420,7 +1617,11 @@ void APPL_OutputMapping(UINT16* pData)
+@@ -1420,7 +1621,11 @@ void APPL_OutputMapping(UINT16* pData)
              }
              break;
          }
@@ -540,7 +552,7 @@ index e3489a0..8aba7d5 100644
  }
  /////////////////////////////////////////////////////////////////////////////////////////
  /**
-@@ -1430,14 +1631,21 @@ void APPL_OutputMapping(UINT16* pData)
+@@ -1430,14 +1635,21 @@ void APPL_OutputMapping(UINT16* pData)
  void APPL_Application(void)
  {
      UINT16 i;
@@ -564,10 +576,10 @@ index e3489a0..8aba7d5 100644
  }
  
  
-diff --git a/cia402appl.h b/cia402appl.h
+diff --git a/Src/cia402appl.h b/Src/cia402appl.h
 index ccb754e..c70cd5a 100644
---- a/cia402appl.h
-+++ b/cia402appl.h
+--- a/Src/cia402appl.h
++++ b/Src/cia402appl.h
 @@ -1097,6 +1097,10 @@ PROTO TOBJF030 sConfiguredModuleIdentList
  
  PROTO UINT8 Write0xF030( UINT16 index, UINT8 subindex, UINT32 dataSize, UINT16 MBXMEM * pData, UINT8 bCompleteAccess );
@@ -579,10 +591,10 @@ index ccb754e..c70cd5a 100644
  
  /** 
   * \brief Object 0xF050 (Detected Module List) variable to handle object data
-diff --git a/ecatappl.c b/ecatappl.c
+diff --git a/Src/ecatappl.c b/Src/ecatappl.c
 index 5ff3302..423506a 100644
---- a/ecatappl.c
-+++ b/ecatappl.c
+--- a/Src/ecatappl.c
++++ b/Src/ecatappl.c
 @@ -579,22 +579,22 @@ void Sync0_Isr(void)
      if(bDcSyncActive)
      {
@@ -648,10 +660,10 @@ index 5ff3302..423506a 100644
  /*ECATCHANGE_END(V5.13) ECAT 6*/
  
      }
-diff --git a/ecatappl.h b/ecatappl.h
+diff --git a/Src/ecatappl.h b/Src/ecatappl.h
 index f52d4fd..713d6e9 100644
---- a/ecatappl.h
-+++ b/ecatappl.h
+--- a/Src/ecatappl.h
++++ b/Src/ecatappl.h
 @@ -125,6 +125,8 @@ PROTO    void       PDO_InputMapping(void);
  
  PROTO    void       ECAT_SetLedIndication(void);
@@ -661,10 +673,10 @@ index f52d4fd..713d6e9 100644
  
  
  
-diff --git a/ecatslv.c b/ecatslv.c
+diff --git a/Src/ecatslv.c b/Src/ecatslv.c
 index b0fd563..486a2d2 100644
---- a/ecatslv.c
-+++ b/ecatslv.c
+--- a/Src/ecatslv.c
++++ b/Src/ecatslv.c
 @@ -1248,7 +1248,7 @@ UINT16 StartInputHandler(void)
      }
  
@@ -675,5 +687,5 @@ index b0fd563..486a2d2 100644
      return ALSTATUSCODE_NOERROR;
  }
 -- 
-2.25.1
+2.42.0.windows.2
 
