@@ -18,10 +18,11 @@
  * Include
  *************************************************************************************
  ************************************************************************************/
+#include "fwk_platform_definitions.h"
 #include "app.h"
 #include "fsl_os_abstraction.h"
 #include "fwk_platform_ble.h"
-#if (NXP_RADIO_GEN >= 470) && (!defined(FPGA_TARGET) || (FPGA_TARGET==0))
+#if (NXP_RADIO_GEN >= 470) && (!(defined(FWK_KW43_MCXW70_FAMILIES)) || (FWK_KW43_MCXW70_FAMILIES == 0))
 #include "fwk_platform_lcl.h"
 #endif
 
@@ -103,7 +104,7 @@ int main(void)
 
     APP_InitServices();
 
-#if (NXP_RADIO_GEN >= 470) && (!defined(FPGA_TARGET) || (FPGA_TARGET==0))
+#if (NXP_RADIO_GEN >= 470) && (!(defined(FWK_KW43_MCXW70_FAMILIES)) || (FWK_KW43_MCXW70_FAMILIES == 0))
     PLATFORM_InitLcl();
 #endif
 #if (defined(gAppConfigureCOEX) && (gAppConfigureCOEX == 1))
