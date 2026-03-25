@@ -14,7 +14,7 @@
 #include "app_mcuxpresso_config.h"
 #endif
 
-#if defined(WIFI_BOARD_RW610)
+#if defined(WIFI_BOARD_FRDM_RW61X)
 
 #ifndef RW612_SERIES
 #define RW612_SERIES
@@ -41,7 +41,7 @@
 #define WIFI_BT_TX_PWR_LIMITS "wlan_txpwrlimit_cfg_WW_rw610.h"
 #else
 #error "Please define macro for RW610 board"
-#endif  /* defined(WIFI_BOARD_RW610) */
+#endif  /* defined(WIFI_BOARD_FRDM_RW61X) */
 
 #include "wifi_config.h"
 

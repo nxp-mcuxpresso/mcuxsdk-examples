@@ -5,8 +5,6 @@
  *  SPDX-License-Identifier: BSD-3-Clause
  */
 
-// #define RW610
-
 #if CONFIG_MONOLITHIC_WIFI
 #define CONFIG_SOC_SERIES_RW6XX_REVISION_A2 1
 #endif

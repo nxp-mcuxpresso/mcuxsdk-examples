@@ -10,7 +10,7 @@
 
 #include "wifi_bt_module_config.h"
 
-#if defined(WIFI_BOARD_RW610)
+#if defined(WIFI_BOARD_FRDM_RW61X)
 
 #define WIFI_BT_TX_PWR_LIMITS "wlan_txpwrlimit_cfg_WW_rw610.h"
 #else
