@@ -2,6 +2,8 @@
 
 MCUXpresso SDK provides several examples and software to demonstrate OTA capabilities of NXP devices. The set of examples located in `ota_examples` targets to demonstrate usage of opensource MCUBoot or ROM bootloader in NXP devices.
 
+['Release notes'](CHANGELOG.md)
+
 ## MCUboot examples
 
 [MCUboot](https://docs.mcuboot.com/) is a second stage bootloader. A device typically needs a bootloader to be able to update firmware and verify its validity before executing it. NXP devices already implement a form of bootloader in their ROM code. The ROM bootloader often implements similar features such as code signature validation or mechanisms for firmware updates. If features offered by the ROM bootloader are not sufficient or a user has special requirements, the typical solution is to use a second-stage bootloader. The typical chain of execution is then: ROM bootloader → Second-stage bootloader → Application.
@@ -29,7 +31,8 @@ Table below shows overview of upgrade modes.
 | Swap | CONFIG_BOOT_MODE_SWAP | Yes | The mode performs a complex technique that swaps images and allows to revert back to the previous version.<br>It also produces more flash wear and requires that the flash is able to work with incremental writes within erased flash page. |
 | Flash remap | CONFIG_BOOT_MODE_FLASH_REMAP | Yes | Image swapping offloaded to HW using flash remapping feature.<br>See ['MCUboot and flash remapping'](_doc/flash_remap_readme.md) |
 | Overwrite only | CONFIG_BOOT_MODE_OVERWRITE_ONLY | No | The image in the primary slot is overwritten with the new one in the secondary slot. |
-| Encrypted XIP | CONFIG_BOOT_MODE_ENCRYPTED_XIP | No | Uses modified overwrite-only mode to utilize encrypted XIP.<br>The encrypted image (encrypted offline by imgtool) in the secondary slot is re-encrypted to the primary slot with hardware on-the-fly encryption.<br>See ['MCUboot and Encrypted XIP'](_doc/encrypted_xip.md) |
+| Encrypted XIP: Overwrite only | CONFIG_BOOT_MODE_ENCRYPTED_XIP_OVERWRITE | No | Uses modified overwrite-only mode to utilize encrypted XIP.<br>The encrypted image (encrypted offline by imgtool) in the secondary slot is re-encrypted to the primary slot with hardware on-the-fly encryption.<br>See ['MCUboot and Encrypted XIP'](_doc/encrypted_xip.md) |
+| Encrypted XIP: Flash remap | CONFIG_BOOT_MODE_ENCRYPTED_XIP_REMAP | Yes | (Experimental) Utilize Encrypted XIP with flash remapping feature. See ['MCUboot and Encrypted XIP'](_doc/encrypted_xip.md) |
 | Single application slot | CONFIG_BOOT_MODE_SINGLE_APPLICATION_SLOT | No | This mode is suitable for a device with limited flash memory resource as there is no second slot for image staging.<br>The update can be only done manually by blhost/programmer or from bootloader context using MCUboot's ['serial recovery'](_doc/serial_recovery.md) feature. |
 
 

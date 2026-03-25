@@ -4,6 +4,9 @@ All notable changes to MCUboot fork in MCUXpresso SDK and related ota examples w
 
 ## [26.06.0] - 06/2026 
 
+### Added
+- Encrypted XIP: Added experimental FLASH_REMAP mode (see [Encrypted XIP doc](_doc/encrypted_xip.md))
+
 ### Changed
 - Optimized PSA configuration for mcuboot_opensource to reduce binary size
 - Switch default TinyCrypt to PSA crypto backend to speed up boot process on boards FRDM-MCXA266 and FRDM-MCXA366

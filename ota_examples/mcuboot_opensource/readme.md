@@ -47,7 +47,7 @@ Alternatively the tool can be installed by the Python package manager:
 Please note that imgtool version installed by the Python package manager is not guaranteed to be compatible with MCUBoot present in your SDK package.
 
 The mcuboot_opensource SDK project comes with its set of private-public keys.
-The key pair is stored in the keys subdirectory (e.g. *boards/[board]/mcuboot_opensource/keys*).
+Key pairs used in ota examples are located in `middleware\mcuboot_opensource\boot\nxp_mcux_sdk\keys`.
 The public key is already pre-configured in the source code of MCUBoot in a form of an array initializer.
 
 To sign an application binary, imgtool must be provided with respective private key and a set of parameters as in the following example:
@@ -63,8 +63,6 @@ To sign an application binary, imgtool must be provided with respective private 
 	             app_binary_SIGNED.bin 
 
 NOTE that other boards may require different parameters - **check their readme file**.
-
-Key sets used in ota examples are located in `middleware\mcuboot_opensource\boot\nxp_mcux_sdk\keys`
 
 The parameters used in the example above are tested with out-of-the-box configuration of MCUBoot and OTA examples in the SDK package.
 However, some of them may depend on the application or board setup and thus may need to be modified.

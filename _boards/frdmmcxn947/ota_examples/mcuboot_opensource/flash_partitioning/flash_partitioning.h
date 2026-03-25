@@ -18,9 +18,9 @@
 #if defined(CONFIG_BOOT_CUSTOM_DEVICE_SETUP)
 /* Layout setup from Kconfig */
 
-#define BOOT_FLASH_ACT_APP              CONFIG_BOOT_FLASH_ACT_APP_ADDRESS
-#define BOOT_FLASH_CAND_APP             CONFIG_BOOT_FLASH_CAND_APP_ADDRESS
-#define BOOT_FLASH_ENC_META             CONFIG_BOOT_FLASH_ENC_META_ADDRESS
+#define BOOT_FLASH_ACT_APP                CONFIG_BOOT_FLASH_ACT_APP_ADDRESS
+#define BOOT_FLASH_CAND_APP               CONFIG_BOOT_FLASH_CAND_APP_ADDRESS
+#define BOOT_FLASH_SLOT0_ENC_CFG_ADDRESS  CONFIG_BOOT_FLASH_SLOT0_ENC_CFG_ADDRESS
 
 #else
 /*
@@ -61,8 +61,8 @@
 #define BOOT_FLASH_ACT_APP  0x00040000
 #define BOOT_FLASH_CAND_APP 0x00120000
 
-#if defined(CONFIG_BOOT_MODE_ENCRYPTED_XIP)
-#define BOOT_FLASH_ENC_META (BOOT_FLASH_ACT_APP - 8192U) /* Dummy area in this configuration, reserved for future use */
+#if defined(CONFIG_BOOT_MODE_ENCRYPTED_XIP_OVERWRITE)
+#define BOOT_FLASH_SLOT0_ENC_CFG_ADDRESS (BOOT_FLASH_ACT_APP - 8192U) /* Dummy area in this configuration, reserved for future use */
 #endif
 
 #endif /* !CONFIG_MCXN_CUSTOM_CFG_MAIN_FLASH_ONLY */

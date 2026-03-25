@@ -11,7 +11,6 @@ mcux_add_include(
 
 # Add additional configuration
 mcux_add_macro(
-    CC "-DWPL_NO_WLAN_INIT"
     CC "-DMCUBOOT_OTA_SB3_SUPPORT"
 )
 

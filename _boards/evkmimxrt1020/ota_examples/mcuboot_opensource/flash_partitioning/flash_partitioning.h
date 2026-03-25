@@ -16,11 +16,11 @@
 #if defined(CONFIG_BOOT_CUSTOM_DEVICE_SETUP)
 /* Layout setup from Kconfig */
 
-#define BOOT_FLASH_ACT_APP              CONFIG_BOOT_FLASH_ACT_APP_ADDRESS
-#define BOOT_FLASH_CAND_APP             CONFIG_BOOT_FLASH_CAND_APP_ADDRESS
+#define BOOT_FLASH_ACT_APP                CONFIG_BOOT_FLASH_ACT_APP_ADDRESS
+#define BOOT_FLASH_CAND_APP               CONFIG_BOOT_FLASH_CAND_APP_ADDRESS
 
-#if CONFIG_BOOT_MODE_ENCRYPTED_XIP
-#define BOOT_FLASH_ENC_META             CONFIG_BOOT_FLASH_ENC_META_ADDRESS
+#if CONFIG_BOOT_MODE_ENCRYPTED_XIP_OVERWRITE
+#define BOOT_FLASH_SLOT0_ENC_CFG_ADDRESS  CONFIG_BOOT_FLASH_SLOT0_ENC_CFG_ADDRESS
 #endif
 
 /* Default layout setup */
@@ -36,12 +36,12 @@ The memory is allocated as follows:
     - ENC_META:    0x001000 bytes @ 0x60440000 - encrypted XIP metadata
 */
 
-#define BOOT_FLASH_ACT_APP              0x60040000
-#define BOOT_FLASH_CAND_APP             0x60240000
+#define BOOT_FLASH_ACT_APP                0x60040000
+#define BOOT_FLASH_CAND_APP               0x60240000
 
-#if defined(CONFIG_BOOT_MODE_ENCRYPTED_XIP)
+#if defined(CONFIG_BOOT_MODE_ENCRYPTED_XIP_OVERWRITE)
 /* Encrypted XIP extension: offset of metadata region */
-#define BOOT_FLASH_ENC_META             0x60440000
+#define BOOT_FLASH_SLOT0_ENC_CFG_ADDRESS  0x60440000
 #endif
 
 #endif /* defined(CONFIG_BOOT_CUSTOM_DEVICE_SETUP) */

@@ -151,7 +151,7 @@ psa_status_t psa_fwu_query(psa_fwu_component_t component,
         p_component_ctx->info.version.build = bl_image_info.header.ih_ver.iv_build_num;
         p_component_ctx->info.max_size = IMAGE_SZ_MAX;
         p_component_ctx->info.flags = PSA_FWU_FLAG_VOLATILE_STAGING;
-#ifdef CONFIG_BOOT_MODE_ENCRYPTED_XIP
+#ifdef CONFIG_BOOT_MODE_ENCRYPTED_XIP_OVERWRITE
       p_component_ctx->info.flags |= PSA_FWU_FLAG_ENCRYPTION;
 #endif
         p_component_ctx->info.location = bl_image_info.faid;

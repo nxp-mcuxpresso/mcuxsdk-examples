@@ -37,7 +37,7 @@ OTA application:
 west build -p always examples/ota_examples/ota_mcuboot_basic -b frdmmcxn947 --config debug --toolchain iar --target guiproject -Dcore_id=cm33_core0 -DCONF_FILE="examples/ota_examples/_custom_cfg/mcxn/ota_mcuboot_basic.conf"
 ~~~
 
-2. Enable the define `CONFIG_BOOT_MODE_ENCRYPTED_XIP` in `sblconfig.h`.
+2. Enable the define `CONFIG_BOOT_MODE_ENCRYPTED_XIP_OVERWRITE` in `sblconfig.h`.
 3. Build mcuboot_opensource and the OTA application.
 
 ### 2.2 Sign and encrypt OTA image

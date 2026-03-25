@@ -1,0 +1,144 @@
+# ==================================  SB configuration from Secure Provisioning Tool  ==================================
+
+# ======================================================================================================================
+#                                                 == General Options ==                                                 
+# ======================================================================================================================
+# -------------------------------------===== The chip family name [Required] =====--------------------------------------
+# Description: NXP chip family identifier.
+family: rw612
+# ======================================================================================================================
+#                                                  == Basic Settings ==                                                 
+# ======================================================================================================================
+# -----------------------------------------===== SB3 filename [Required] =====------------------------------------------
+# Description: Generated SB3 container filename.
+containerOutputFile: bootable_images/ota_slot_1.sb
+# ======================================================================================================================
+#                                              == Image Signing Settings ==                                             
+# ======================================================================================================================
+# -------------------------------------===== Signer configuration [Required] =====--------------------------------------
+# Description: Signature provider configuration in format 'type=<sp_type>;<key1>=<value1>;<key2>=<value2>' or path to a
+# private key.
+signer: type=file;file_path=keys/IMG1_1_p256.pem
+# ======================================================================================================================
+#                                              == Certificate Block V2.1 ==                                             
+# ======================================================================================================================
+# -----------------------------===== Certificate Block binary/config file [Required] =====------------------------------
+# Description: Path to certificate block binary or config file.
+certBlock: keys/IMG1_1_cert_block.bin
+# ======================================================================================================================
+#                                           == Secure Binary v3.1 Settings ==                                           
+# ======================================================================================================================
+# ---------------------------------===== Part Common Key [Conditionally required] =====---------------------------------
+# Description: Path to PCK/NPK 256 or 128 bit key in plain hex string format or path to binary file or hex string.
+containerKeyBlobEncryptionKey: 9F95D6F4106A9D8033D353F73DF32D3B395FEABE711979DB2642C0C47FBFCA70
+# ------------------------------------------===== Description [Optional] =====------------------------------------------
+# Description: Description up to 16 characters, longer will be truncated. Stored in SB3.1 manifest.
+description: RW612 SB3
+# ======================================================================================================================
+#                                   == Secure Binary v3.1 / v4.0 Commands Settings ==                                   
+# ======================================================================================================================
+commands:
+
+  # Layout setup:
+  #  - BOOTLOADER:      0x040000 bytes @ 0x08000000 - MCUboot
+  #  - APP_ACT:         0x200000 bytes @ 0x08040000 - primary slot
+  #  - APP_CAND:        0x200000 bytes @ 0x08240000 - secondary slot
+  #  Encrypted XIP support:
+  #  - ENC_META_SLOT_0: 0x001000 bytes @ 0x08440000 - slot 0 encryption config block
+  #  - ENC_META_SLOT_1: 0x001000 bytes @ 0x08440000 - slot 1 encryption config block
+
+  # Configure external flash using FCB configuration file
+  # nxpimage utils binary-image extract -b .\mcuboot_opensource.bin -a 0x400 -s 512 -o parsed_fcb.bin
+  - load:
+      address: '0x2000F000'
+      data: source_images/parsed_fcb.bin
+  - configureMemory:
+      configAddress: '0x2000F000'
+      memoryId: 9
+
+  # Configure the Flash driver from the FCB of the MCUboot. Note: doesn't work
+  #- configureMemory:
+  #    configAddress: '0x08000400'
+  #    memoryId: 9
+
+  # Invalid any previous IPED configuration for slot 1
+  - erase:
+      address: '0x08441000'
+      memoryId: 9
+      size: '0x00001000'
+
+  # Erase application slot
+  # Note: Erasing big partition could take time in single SB command blocking the app, we assume the slot was erased by the app
+  #- erase:
+  #    address: '0x08240000'
+  #    memoryId: 9
+  #    size: '0x00200000'
+
+  # Set up IPED region for application:
+  # region size calculation:
+  # page_size = 0x100
+  # sector_size = 0x1000
+  # IPED block size = 5 * page_size = 0x500
+  # slot_size = 0x200000
+  # slot_size - trailer_size(sector_size) = 0x1FF000 
+  # -> round down to nearest IPED block size boundary -> 0x1FEF00 (physical size with interleaving IPED tags)
+  # -> calculate resulting logical size -> 0x1FEF00*4/5 = 0x198C00
+  # region 2: start 0x08240000, end (logical) 0x083D8C00, end (physical) 0x0843EF00
+  # flexspi_iped_config_arg_t iped_config = { 
+  #      .option = { 
+  #          .tag = FLEXSPI_IPED_CONFIG_TAG, //0xA
+  #          .offset = 0x2,
+  #          .count = 0x1, 
+  #      },
+  #      .prince_rounds = 0x0, //must match what is used for other regions
+  #      .regions = { 
+  #          { .start = iped_region_start, .end = iped_region_end, .locked = 0 }, 
+  #          { 0 }, 
+  #          { 0 }, 
+  #          { 0 }, 
+  #      },
+  #  };
+
+  # 0x2012FC00 is reserved area in linker for ROM IAP to avoid a conflict with an app
+  - load:
+      address: '0x2012FC00'
+      memoryId: 0
+      data: 0xA0000201,0x00000000,0x08240000,0x083D8C00,0x00000000,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0
+  - configureMemory:
+      configAddress: '0x2012FC00'
+      memoryId: 9
+
+  # Write/Encrypt application to Flash:
+  - load:
+      address: '0x08240000'
+      memoryId: 9
+      data: source_images/signed__ota_mcuboot_basic_iped_remap.bin
+  # Write slot trailer (unencrypted):
+  - load:
+      address: '0x0843FF00'
+      memoryId: 9
+      data: source_images/slot_trailer_page.bin
+  
+  # Persist IPED configuration for application
+  # flexspi_iped_write_arg_t iped_write_arg = { 
+  #    .option = {
+  #        .tag = FLEXSPI_WRITE_IPED_CFG_BLK_FOR_IMAGE_TAG, //0xAA
+  #        .offset = 0x2,
+  #        .count = 0x1, 
+  #    },
+  #    .address = 0x08441000,
+  #  };
+
+  # 0x2012FC00 is reserved in linker!
+  - load:
+      address: '0x2012FC00'
+      memoryId: '0x00'
+      data: 0xAA000201,0x08441000
+  - configureMemory:
+      configAddress: '0x2012FC00'
+      memoryId: '0x09'
+  # Write magic at the end of the metadata sector:
+  - load:
+      address: '0x08441F00'
+      memoryId: 9
+      data: source_images/iped_conf_magic_page.bin

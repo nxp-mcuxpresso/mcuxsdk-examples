@@ -32,7 +32,7 @@
  * array. Flash remap mode has to be disabled.
  * For more information please see readme file of mcuboot_opensource example.
  */
-//#define CONFIG_BOOT_MODE_ENCRYPTED_XIP
+//#define CONFIG_BOOT_MODE_ENCRYPTED_XIP_OVERWRITE
 
 /* MCUBoot Flash Config */
 
@@ -56,7 +56,7 @@
 /*
  * MCUBoot is located in main flash -> Use mbedTLS
  */
-#ifdef CONFIG_BOOT_MODE_ENCRYPTED_XIP
+#ifdef CONFIG_BOOT_MODE_ENCRYPTED_XIP_OVERWRITE
 #define CONFIG_BOOT_USE_MBEDTLS
 #define CONFIG_BOOT_ENCRYPT_EC256
 #else
@@ -74,7 +74,7 @@
 #endif /* CONFIG_BOOT_CUSTOM_DEVICE_SETUP */
 
 /* Config Guards */
-#if defined(CONFIG_BOOT_MODE_ENCRYPTED_XIP) && \
+#if defined(CONFIG_BOOT_MODE_ENCRYPTED_XIP_OVERWRITE) && \
     !defined(CONFIG_MCXN_CUSTOM_CFG_MAIN_FLASH_ONLY)
 #error "Encrypted XIP using NPX is not supported when MCUBoot is placed in IFR region."
 #endif

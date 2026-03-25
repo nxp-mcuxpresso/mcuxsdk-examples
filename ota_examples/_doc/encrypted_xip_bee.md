@@ -1,10 +1,10 @@
 # Encrypted XIP using BEE (Bus Encryption Engine)
 
-This document extends the documentation of [MCUBoot and encrypted XIP in OTA examples](encrypted_xip.md) and provides a walkthrough to evaluate it on devices with BEE module. 
+This document extends the documentation of [MCUBoot and encrypted XIP in OTA examples](encrypted_xip.md) and provides an additional information related to the BEE module. 
 
 ## 1. Introduction
 
-BEE is specific for RT10xx (except RT1010) and supports up to two separate regions using two separate AES keys. In the examples, BEE region 1 is used for encrypting the execution slot and BEE region 0 is reserved for a bootloader.
+BEE is specific for RT10xx (except RT1010) and supports up to two separate regions using two separate AES keys. In the ota examples, BEE region 1 is used for encrypting the execution slot and BEE region 0 is reserved for a bootloader.
 
 BEE configuration blocks are organized as __EPRDB__ (Encrypted Protection Region Descriptor Block), where the __EPRDB__ is encrypted using AES-CBC mode with AES key and IV located in __KIB__ (Key Info Block). The __KIB__ is encrypted as __EKIB__ (Encrypted KIB) using a key provisioned by the user. Each BEE region has its __PRDB/KIB pair__.
 
