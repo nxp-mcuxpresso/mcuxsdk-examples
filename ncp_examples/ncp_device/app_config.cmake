@@ -8,8 +8,13 @@ set(CONFIG_NCP_UART           1)
 set(CONFIG_NCP_SPI            0)
 set(CONFIG_NCP_USB            0)
 set(CONFIG_NCP_SDIO           0)
-# Eanble wpa supplicant, only valid when WIFI is enabled
-set(CONFIG_WPA_SUPPLICANT     1)
+
+# WPA_SUPPLICANT depends on NCP_WIFI - only enable if NCP_WIFI is enabled
+if(CONFIG_NCP_WIFI)
+    set(CONFIG_WPA_SUPPLICANT 1)
+else()
+    set(CONFIG_WPA_SUPPLICANT 0)
+endif()
 
 # ncp coex definitions
 target_compile_definitions(${MCUX_SDK_PROJECT_NAME}

@@ -2,7 +2,13 @@
 set(CONFIG_WIFI           1)
 set(CONFIG_BLE            1)
 set(CONFIG_OT             0)
-set(CONFIG_WPA_SUPPLICANT 1)
+
+# WPA_SUPPLICANT depends on WIFI - only enable if WIFI is enabled
+if(CONFIG_WIFI)
+    set(CONFIG_WPA_SUPPLICANT 1)
+else()
+    set(CONFIG_WPA_SUPPLICANT 0)
+endif()
 
 # coex defines
 target_compile_definitions(${MCUX_SDK_PROJECT_NAME}
