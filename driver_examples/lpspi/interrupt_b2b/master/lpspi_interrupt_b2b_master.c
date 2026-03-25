@@ -141,7 +141,7 @@ int main(void)
     masterConfig.pcsToSckDelayInNanoSec        = 1000000000U / (masterConfig.baudRate * 2U);
     masterConfig.lastSckToPcsDelayInNanoSec    = 1000000000U / (masterConfig.baudRate * 2U);
     masterConfig.betweenTransferDelayInNanoSec = 1000000000U / (masterConfig.baudRate * 2U);
-    
+
     srcClock_Hz = LPSPI_MASTER_CLK_FREQ;
     LPSPI_MasterInit(EXAMPLE_LPSPI_MASTER_BASEADDR, &masterConfig, srcClock_Hz);
 
@@ -280,5 +280,8 @@ int main(void)
 
         /* Increase loop count to change transmit buffer */
         loopCount++;
+
+        /* Delay to allow the slave device to prepare for the next transfer */
+        SDK_DelayAtLeastUs(100000U, SystemCoreClock);
     }
 }
