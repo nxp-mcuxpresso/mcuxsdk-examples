@@ -9,7 +9,7 @@ project(el2go_csr LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${bo
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 include(${SdkRootDirPath}/${board_root}/${board}/el2go_examples/reconfig.cmake OPTIONAL)
-include(${SdkRootDirPath}/${board_root}/${board}/el2go_examples/el2go_csr/el2go_csr/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/el2go_examples/el2go_csr/el2go_csr/reconfig.cmake)
 
 #-------- add mbedtls configs -----------
 mcux_remove_macro("-DMBEDTLS_CONFIG_FILE=\\\"mcux_mbedtls_psa_crypto_config.h\\\"")
@@ -35,11 +35,14 @@ mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/*.h
             middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/*.c
+            middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/pal/*.h
+            middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/driver/*.c
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr
+    INCLUDES middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/
+    INCLUDES middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/pal
 )
 
 mcux_add_macro(
