@@ -44,6 +44,11 @@ void MODEL_GetTopN(const uint8_t* tensorData, int tensorSize, tensor_type_t tens
         value = ((int)predictions[i] + 128) / 255.0;
         break;
       }
+      case kTensorType_INT16: {
+        const int16_t* predictions = reinterpret_cast<const int16_t*>(tensorData);
+        value = static_cast<float>(predictions[i]);
+        break;
+      }
     }
     // Only add it if it beats the threshold and has a chance at being in
     // the top N.

@@ -32,6 +32,6 @@ mcux_add_macro(
 INclude(${SdkRootDirPath}/${board_root}/${board}/eiq_examples/tflm_cifar10_hifi1/${core_id}/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(
-    tooLCHAINS armgcc mdk iar
+    TOOLCHAINS armgcc mdk iar
     BINARY ${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}/core1_image.bin
 )

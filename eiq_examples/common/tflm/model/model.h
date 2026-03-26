@@ -32,7 +32,8 @@ typedef enum
 {
     kTensorType_FLOAT32 = 0,
     kTensorType_UINT8 = 1,
-    kTensorType_INT8 = 2
+    kTensorType_INT8 = 2,
+    kTensorType_INT16 = 3
 } tensor_type_t;
 
 status_t MODEL_Init(void);

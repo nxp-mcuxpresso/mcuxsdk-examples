@@ -4,7 +4,7 @@ mcux_add_xtensa_configuration(
     -std=c++17"
 )
 mcux_add_xtensa_configuration(
-  TARGETS release
+  TARGETS debug release
   CC "-DTENSORARENA_NONCACHE=1"
   CX "-DTENSORARENA_NONCACHE=1"
 )
@@ -31,7 +31,17 @@ mcux_remove_configuration(
     LD "-mlsp=${XTENSA_LSP_RELEASE}"
 )
 
+mcux_remove_configuration(
+    TARGETS debug
+    LD "-mlsp=${XTENSA_LSP_DEBUG}"
+)
+
 mcux_add_xtensa_configuration(
     TARGETS release
     LD "-mlsp=${SdkRootDirPath}/${board_root}/${board}/eiq_examples/tflm_cifar10_hifi4_neutron/linker/hifi4/min-rt"
+)
+
+mcux_add_xtensa_configuration(
+    TARGETS debug
+    LD "-mlsp=${SdkRootDirPath}/${board_root}/${board}/eiq_examples/tflm_cifar10_hifi4_neutron/linker/hifi4/gdbio"
 )
