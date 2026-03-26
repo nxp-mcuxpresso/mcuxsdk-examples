@@ -22,6 +22,12 @@
 /*${macro:end}*/
 
 /*${variable:start}*/
+static status_t ENETC0_MDIO_Init(void);
+static status_t ENETC_EMDIOWrite(uint8_t phyAddr, uint8_t regAddr, uint16_t data);
+static status_t ENETC_EMDIORead(uint8_t phyAddr, uint8_t regAddr, uint16_t *pdata);
+static status_t ENETC_EMDIOC45Write(uint8_t portAddr, uint8_t devAddr, uint16_t regAddr, uint16_t data);
+static status_t ENETC_EMDIOC45Read(uint8_t portAddr, uint8_t devAddr, uint16_t regAddr, uint16_t *pData);
+
 static status_t ENETC0_PHY_Init(phy_handle_t *phy_handle, const phy_config_t *config);
 static status_t ENETC1_PHY_Init(phy_handle_t *phy_handle, const phy_config_t *config);
 static status_t ENETC2_PHY_Init(phy_handle_t *phy_handle, const phy_config_t *config);
@@ -120,6 +126,30 @@ static status_t ENETC0_PHY_Init(phy_handle_t *phy_handle, const phy_config_t *co
     return result;
 }
 
+static status_t ENETC1_PHY_TJA1104_SetRmiiMode(phy_handle_t *phy_handle)
+{
+    /* Write PHY register to set RMII(0b101) mode */
+    return ENETC_EMDIOC45Write(EXAMPLE_PHY_ADDRESS, PHY_MMD_VEND1, 0xAFC6U, 0x5U);
+}
+
+static status_t ENETC1_PHY_TJA1104_SetRgmiiDelays(phy_handle_t *phy_handle)
+{
+    /* RGMII TXC/RXC delays on iMX95 EVK */
+    return PHY_TJA1104_SetDelays(phy_handle, 1800, 1666);
+}
+
+static status_t ENETC1_PHY_TJA1104_SetRgmiiMode(phy_handle_t *phy_handle)
+{
+    status_t result;
+    
+    /* Write PHY register to set RGMII(0b111) mode */
+    result = ENETC_EMDIOC45Write(EXAMPLE_PHY_ADDRESS, PHY_MMD_VEND1, 0xAFC6U, 0x7U);
+    if(result != kStatus_Success)
+        return result;
+
+    return ENETC1_PHY_TJA1104_SetRgmiiDelays(phy_handle); 
+}
+
 static status_t ENETC_MDIO_Init(void)
 {
     status_t result = kStatus_Success;
@@ -173,6 +203,15 @@ static status_t ENETC1_PHY_Init(phy_handle_t *phy_handle, const phy_config_t *co
 
     /* Initialize PHY */
     result = PHY_TJA1104_Init(phy_handle, config);
+    if(NETC_MII_MODE == kNETC_RmiiMode)
+    {
+        result = ENETC1_PHY_TJA1104_SetRmiiMode(phy_handle);
+    }
+    else
+    {
+        result = ENETC1_PHY_TJA1104_SetRgmiiMode(phy_handle);
+    }
+
     return result;
 }
 
@@ -283,6 +322,15 @@ void BOARD_InitHardware(void)
 
     /* Pins and clocks init */
     BOARD_InitBootPins();
+    if(NETC_MII_MODE == kNETC_RmiiMode)
+    {
+        BOARD_InitPinsRmii();
+    }
+    else
+    {
+        BOARD_InitPinsRgmii();
+    }
+
     BOARD_BootClockRUN();
 
     HAL_ClockSetRootClk(&hal_enetclk);
@@ -312,7 +360,16 @@ void BOARD_InitHardware(void)
     SDK_DelayAtLeastUs(100000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 
     /* Protocol configure */
-    BLK_CTRL_NETCMIX->CFG_LINK_MII_PROT = 0x00000522;
+    if(NETC_MII_MODE == kNETC_RmiiMode)
+    {
+        BLK_CTRL_NETCMIX->CFG_LINK_MII_PROT = 0x00000512;
+    }
+    else
+    {
+        BLK_CTRL_NETCMIX->CFG_LINK_MII_PROT = 0x00000522;
+    }
+    BLK_CTRL_NETCMIX->CFG_LINK_PCS_PROT_0 = 0x00000000;
+    BLK_CTRL_NETCMIX->CFG_LINK_PCS_PROT_1 = 0x00000000;
     BLK_CTRL_NETCMIX->CFG_LINK_PCS_PROT_2 = 0x00000040;
 
     /* Unlock the IERB. It will warm reset whole NETC. */

@@ -1,5 +1,6 @@
 /*
- * Copyright 2025-2026 NXP
+ * Copyright 2026 NXP
+ * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -12,11 +13,12 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v16.0
+product: Pins v17.0
 processor: MIMX9596xxxxN
 package_id: MIMX9596AVZXN
 mcu_data: ksdk2_0
-processor_version: 16.1.0
+processor_version: 26.03.0
+board: IMX95LPD5EVK-19
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -42,6 +44,13 @@ BOARD_InitPins:
   - {pin_num: N51, peripheral: LPUART3, signal: lpuart_tx, pin_signal: GPIO_IO14, PD: ENABLED, FSEL1: SLIGHTLY_FAST_SLEW_RATE}
   - {pin_num: T46, peripheral: LPI2C5, signal: lpi2c_scl, pin_signal: GPIO_IO23, SION: ENABLED, OD: ENABLED, PD: DISABLED}
   - {pin_num: T44, peripheral: LPI2C5, signal: lpi2c_sda, pin_signal: GPIO_IO22, SION: ENABLED, OD: ENABLED, PD: DISABLED}
+  - {pin_num: AK40, peripheral: NETC, signal: netc_mdc, pin_signal: ENET1_MDC, DSE: X4}
+  - {pin_num: AJ39, peripheral: NETC, signal: netc_mdio, pin_signal: ENET1_MDIO, DSE: X4}
+  - {pin_num: K48, peripheral: LPI2C6, signal: lpi2c_sda, pin_signal: GPIO_IO02, SION: ENABLED, OD: ENABLED, PD: DISABLED, FSEL1: SLIGHTLY_FAST_SLEW_RATE, DSE: X4}
+  - {pin_num: K52, peripheral: LPI2C6, signal: lpi2c_scl, pin_signal: GPIO_IO03, SION: ENABLED, OD: ENABLED, PD: DISABLED, FSEL1: SLIGHTLY_FAST_SLEW_RATE, DSE: X4}
+  - {pin_num: M46, peripheral: LPI2C7, signal: lpi2c_scl, pin_signal: GPIO_IO09, SION: ENABLED, OD: ENABLED, PD: DISABLED, FSEL1: SLIGHTLY_FAST_SLEW_RATE, DSE: X4}
+  - {pin_num: M44, peripheral: LPI2C7, signal: lpi2c_sda, pin_signal: GPIO_IO08, SION: ENABLED, SMC: SMC_0, HYS: DISABLED, OD: ENABLED, PD: DISABLED, FSEL1: SLIGHTLY_FAST_SLEW_RATE,
+    DSE: X4}
   - {pin_num: AJ35, peripheral: ETH0, signal: 'eth_rgmii_rd, 0', pin_signal: ENET1_RD0, DSE: X4}
   - {pin_num: AK36, peripheral: ETH0, signal: 'eth_rgmii_rd, 1', pin_signal: ENET1_RD1, DSE: X4}
   - {pin_num: AJ37, peripheral: ETH0, signal: 'eth_rgmii_rd, 2', pin_signal: ENET1_RD2, DSE: X4}
@@ -54,22 +63,6 @@ BOARD_InitPins:
   - {pin_num: AG37, peripheral: ETH0, signal: 'eth_rgmii_td, 3', pin_signal: ENET1_TD3, DSE: X4}
   - {pin_num: AG31, peripheral: ETH0, signal: eth_rgmii_tx_clk, pin_signal: ENET1_TXC, DSE: X4}
   - {pin_num: AF32, peripheral: ETH0, signal: eth_rgmii_tx_ctl, pin_signal: ENET1_TX_CTL, DSE: X4}
-  - {pin_num: AK40, peripheral: NETC, signal: netc_mdc, pin_signal: ENET1_MDC, DSE: X4}
-  - {pin_num: AJ39, peripheral: NETC, signal: netc_mdio, pin_signal: ENET1_MDIO, DSE: X4}
-  - {pin_num: AJ27, peripheral: ETH1, signal: 'eth_rgmii_rd, 0', pin_signal: ENET2_RD0, DSE: X4}
-  - {pin_num: AK28, peripheral: ETH1, signal: 'eth_rgmii_rd, 1', pin_signal: ENET2_RD1, DSE: X4}
-  - {pin_num: AJ29, peripheral: ETH1, signal: 'eth_rgmii_rd, 2', pin_signal: ENET2_RD2, DSE: X4}
-  - {pin_num: AH30, peripheral: ETH1, signal: 'eth_rgmii_rd, 3', pin_signal: ENET2_RD3, DSE: X4}
-  - {pin_num: AJ25, peripheral: ETH1, signal: eth_rgmii_rx_clk, pin_signal: ENET2_RXC, DSE: X4}
-  - {pin_num: AH26, peripheral: ETH1, signal: eth_rgmii_rx_ctl, pin_signal: ENET2_RX_CTL, DSE: X4}
-  - {pin_num: AG25, peripheral: ETH1, signal: 'eth_rgmii_td, 0', pin_signal: ENET2_TD0, DSE: X4}
-  - {pin_num: AG27, peripheral: ETH1, signal: 'eth_rgmii_td, 1', pin_signal: ENET2_TD1, DSE: X4}
-  - {pin_num: AF28, peripheral: ETH1, signal: 'eth_rgmii_td, 2', pin_signal: ENET2_TD2, DSE: X4}
-  - {pin_num: AG29, peripheral: ETH1, signal: 'eth_rgmii_td, 3', pin_signal: ENET2_TD3, DSE: X4}
-  - {pin_num: AG23, peripheral: ETH1, signal: eth_rgmii_tx_clk, pin_signal: ENET2_TXC, DSE: X4}
-  - {pin_num: AF24, peripheral: ETH1, signal: eth_rgmii_tx_ctl, pin_signal: ENET2_TX_CTL, DSE: X4}
-  - {pin_num: M46, peripheral: LPI2C7, signal: lpi2c_scl, pin_signal: GPIO_IO09, SION: ENABLED, OD: ENABLED, PD: DISABLED}
-  - {pin_num: M44, peripheral: LPI2C7, signal: lpi2c_sda, pin_signal: GPIO_IO08, SION: ENABLED, OD: ENABLED, PD: DISABLED}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -150,66 +143,16 @@ void BOARD_InitPins(void) {                                /*!< Function assigne
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RD0__ETH1_RGMII_RD0, 0U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RD0__ETH1_RGMII_RD0, 
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO02__LPI2C6_SDA, 1U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO02__LPI2C6_SDA, 
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RD1__ETH1_RGMII_RD1, 0U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RD1__ETH1_RGMII_RD1, 
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO03__LPI2C6_SCL, 1U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO03__LPI2C6_SCL, 
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RD2__ETH1_RGMII_RD2, 0U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RD2__ETH1_RGMII_RD2, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RD3__ETH1_RGMII_RD3, 0U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RD3__ETH1_RGMII_RD3, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RXC__ETH1_RGMII_RX_CLK, 0U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RXC__ETH1_RGMII_RX_CLK, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(3U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RX_CTL__ETH1_RGMII_RX_CTL, 0U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RX_CTL__ETH1_RGMII_RX_CTL, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TD0__ETH1_RGMII_TD0, 0U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TD0__ETH1_RGMII_TD0, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TD1__ETH1_RGMII_TD1, 0U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TD1__ETH1_RGMII_TD1, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TD2__ETH1_RGMII_TD2, 0U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TD2__ETH1_RGMII_TD2, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TD3__ETH1_RGMII_TD3, 0U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TD3__ETH1_RGMII_TD3, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TXC__ETH1_RGMII_TX_CLK, 0U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TXC__ETH1_RGMII_TX_CLK, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(3U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TX_CTL__ETH1_RGMII_TX_CTL, 0U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TX_CTL__ETH1_RGMII_TX_CTL, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO08__LPI2C7_SDA, 1U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO08__LPI2C7_SDA, 
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
@@ -240,18 +183,169 @@ void BOARD_InitPins(void) {                                /*!< Function assigne
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO02__LPI2C6_SDA, 1U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO02__LPI2C6_SDA, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO03__LPI2C6_SCL,1U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO03__LPI2C6_SCL, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK);
 }
 
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitPinsRgmii:
+- options: {callFromInitBoot: 'false', coreID: cm7}
+- pin_list:
+  - {pin_num: AG29, peripheral: ETH1, signal: 'eth_rgmii_td, 3', pin_signal: ENET2_TD3, DSE: X4}
+  - {pin_num: AF28, peripheral: ETH1, signal: 'eth_rgmii_td, 2', pin_signal: ENET2_TD2, DSE: X4}
+  - {pin_num: AG27, peripheral: ETH1, signal: 'eth_rgmii_td, 1', pin_signal: ENET2_TD1, DSE: X4}
+  - {pin_num: AG25, peripheral: ETH1, signal: 'eth_rgmii_td, 0', pin_signal: ENET2_TD0, DSE: X4}
+  - {pin_num: AF24, peripheral: ETH1, signal: eth_rgmii_tx_ctl, pin_signal: ENET2_TX_CTL, DSE: X4}
+  - {pin_num: AG23, peripheral: ETH1, signal: eth_rgmii_tx_clk, pin_signal: ENET2_TXC, DSE: X4}
+  - {pin_num: AH26, peripheral: ETH1, signal: eth_rgmii_rx_ctl, pin_signal: ENET2_RX_CTL, DSE: X4}
+  - {pin_num: AJ25, peripheral: ETH1, signal: eth_rgmii_rx_clk, pin_signal: ENET2_RXC, DSE: X4}
+  - {pin_num: AJ27, peripheral: ETH1, signal: 'eth_rgmii_rd, 0', pin_signal: ENET2_RD0, DSE: X4}
+  - {pin_num: AK28, peripheral: ETH1, signal: 'eth_rgmii_rd, 1', pin_signal: ENET2_RD1, identifier: ENET2_RD1, DSE: X4}
+  - {pin_num: AJ29, peripheral: ETH1, signal: 'eth_rgmii_rd, 2', pin_signal: ENET2_RD2, DSE: X4}
+  - {pin_num: AH30, peripheral: ETH1, signal: 'eth_rgmii_rd, 3', pin_signal: ENET2_RD3, DSE: X4}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitPinsRgmii
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitPinsRgmii(void) {                           /*!< Function assigned for the core: Cortex-M7F[cm7] */
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RD0__ETH1_RGMII_RD0, 0U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RD0__ETH1_RGMII_RD0, 
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RD1__ETH1_RGMII_RD1, 0U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RD1__ETH1_RGMII_RD1, 
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RD2__ETH1_RGMII_RD2, 0U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RD2__ETH1_RGMII_RD2, 
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RD3__ETH1_RGMII_RD3, 0U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RD3__ETH1_RGMII_RD3, 
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RXC__ETH1_RGMII_RX_CLK, 0U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RXC__ETH1_RGMII_RX_CLK, 
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RX_CTL__ETH1_RGMII_RX_CTL, 0U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RX_CTL__ETH1_RGMII_RX_CTL, 
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TD0__ETH1_RGMII_TD0, 0U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TD0__ETH1_RGMII_TD0, 
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TD1__ETH1_RGMII_TD1, 0U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TD1__ETH1_RGMII_TD1, 
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TD2__ETH1_RGMII_TD2, 0U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TD2__ETH1_RGMII_TD2, 
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TD3__ETH1_RGMII_TD3, 0U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TD3__ETH1_RGMII_TD3, 
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TXC__ETH1_RGMII_TX_CLK, 0U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TXC__ETH1_RGMII_TX_CLK, 
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TX_CTL__ETH1_RGMII_TX_CTL, 0U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TX_CTL__ETH1_RGMII_TX_CTL, 
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+}
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitPinsRmii:
+- options: {callFromInitBoot: 'false', coreID: cm7}
+- pin_list:
+  - {pin_num: AH26, peripheral: ETH1, signal: eth_rmii_crs_dv, pin_signal: ENET2_RX_CTL, PD: ENABLED, FSEL1: SLIGHTLY_FAST_SLEW_RATE, DSE: X4}
+  - {pin_num: AF28, peripheral: ETH1, signal: eth_rmii_ref_clk, pin_signal: ENET2_TD2, APC_LCK: APC_LCK_2, PD: ENABLED, FSEL1: SLIGHTLY_FAST_SLEW_RATE, DSE: X6}
+  - {pin_num: AJ29, peripheral: ETH1, signal: eth_rmii_rx_er, pin_signal: ENET2_RD2, PD: ENABLED, FSEL1: SLIGHTLY_FAST_SLEW_RATE, DSE: X4}
+  - {pin_num: AJ27, peripheral: ETH1, signal: 'eth_rmii_rxd, 0', pin_signal: ENET2_RD0, PD: ENABLED, DSE: X4}
+  - {pin_num: AK28, peripheral: ETH1, signal: 'eth_rmii_rxd, 1', pin_signal: ENET2_RD1, PD: ENABLED, DSE: X4}
+  - {pin_num: AF24, peripheral: ETH1, signal: eth_rmii_tx_en, pin_signal: ENET2_TX_CTL, PD: ENABLED, DSE: X4}
+  - {pin_num: AG25, peripheral: ETH1, signal: 'eth_rmii_txd, 0', pin_signal: ENET2_TD0, PD: ENABLED, DSE: X4}
+  - {pin_num: AG27, peripheral: ETH1, signal: 'eth_rmii_txd, 1', pin_signal: ENET2_TD1, PD: ENABLED, DSE: X4}
+  - {pin_num: AG23, peripheral: ENET, signal: enet_clk_root, pin_signal: ENET2_TXC, APC_LCK: APC_LCK_2, PD: ENABLED, FSEL1: SLIGHTLY_FAST_SLEW_RATE, DSE: X6}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitPinsRmii
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitPinsRmii(void) {                            /*!< Function assigned for the core: Cortex-M7F[cm7] */
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RD0__ETH1_RMII_RXD0, 0U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RD0__ETH1_RMII_RXD0, 
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RD1__ETH1_RMII_RXD1, 0U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RD1__ETH1_RMII_RXD1, 
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RD2__ETH1_RMII_RX_ER, 0U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RD2__ETH1_RMII_RX_ER, 
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RX_CTL__ETH1_RMII_CRS_DV, 0U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_RX_CTL__ETH1_RMII_CRS_DV, 
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TD0__ETH1_RMII_TXD0, 0U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TD0__ETH1_RMII_TXD0, 
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TD1__ETH1_RMII_TXD1, 0U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TD1__ETH1_RMII_TXD1, 
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TD2__ETH1_RMII_REF50_CLK, 0U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TD2__ETH1_RMII_REF50_CLK, 
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_APC(32U));
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TXC__ENET_CLK_ROOT, 0U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TXC__ENET_CLK_ROOT, 
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_APC(32U));
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TX_CTL__ETH1_RMII_TX_EN, 0U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET2_TX_CTL__ETH1_RMII_TX_EN, 
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+}
 /***********************************************************************************************************************
  * EOF
  **********************************************************************************************************************/
