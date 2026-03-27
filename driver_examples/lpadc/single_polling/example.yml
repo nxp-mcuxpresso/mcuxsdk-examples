@@ -68,3 +68,4 @@ lpadc_single_polling:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    frdmkw43: []

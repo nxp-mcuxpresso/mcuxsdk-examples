@@ -11,14 +11,7 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define DEMO_LPADC_BASE         HSADC_0
-#define DEMO_LPADC_USER_CHANNEL 6U
-#define DEMO_LPADC_USER_CMDID   1U
-/* Use VDDA_ANA supply pin as the reference voltage */
-#define DEMO_LPADC_VREF_SOURCE           kLPADC_ReferenceVoltageAlt3
-#define DEMO_LPADC_DO_OFFSET_CALIBRATION true
-#define DEMO_LPADC_OFFSET_VALUE_A        0x10U
-#define DEMO_LPADC_OFFSET_VALUE_B        0x10U
+
 /*${macro:end}*/
 
 /*******************************************************************************
@@ -26,7 +19,6 @@
  ******************************************************************************/
 /*${prototype:start}*/
 void BOARD_InitHardware(void);
-void BOARD_InitDebugConsole(void);
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */

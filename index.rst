@@ -24,6 +24,7 @@ If a supported board includes a link, click it to access the board-specific docu
    audio_examples/index.rst
    bt_ble_examples/index.rst
    ce_examples/index.rst
+   ce_lite_examples/index.rst
    cmsis_driver_examples/index.rst
    coex_examples/index.rst
    component_examples/index.rst

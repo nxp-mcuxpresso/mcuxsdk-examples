@@ -67,3 +67,4 @@ lpadc_single_interrupt:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    frdmkw43: []
