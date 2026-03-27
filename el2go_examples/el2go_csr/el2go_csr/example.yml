@@ -11,7 +11,7 @@ el2go_csr:
       category: el2go_examples
       brief: The EL2GO CSR application is used to generate certificate signing requests.
       example_readme:
-      - examples/el2go_examples/el2go_import_blob/el2go_csr/readme.md
+      - examples/el2go_examples/el2go_csr/el2go_csr/readme.md
   boards:
     frdmmcxe31b: []
 
