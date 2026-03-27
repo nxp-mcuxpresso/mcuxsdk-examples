@@ -84,3 +84,4 @@ Slave example is running...
 - [FRDM-MCXA366](../../../../_boards/frdmmcxa366/driver_examples/lpspi/polling_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXA577](../../../../_boards/frdmmcxa577/driver_examples/lpspi/polling_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXC162](../../../../_boards/frdmmcxc162/driver_examples/lpspi/polling_b2b_transfer/slave/example_board_readme.md)
+- [FRDM-KW43](../../../../_boards/frdmkw43/driver_examples/lpspi/polling_b2b_transfer/slave/example_board_readme.md)

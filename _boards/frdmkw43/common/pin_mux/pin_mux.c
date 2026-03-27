@@ -459,13 +459,13 @@ void BOARD_InitCANPins(void)
 BOARD_InitFlashPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: '47', peripheral: LPSPI_1, signal: IN, pin_signal: ADC0_A10/PTB1/LPSPI1_SIN/TPM0_CH4, pull_select: down, pull_enable: disable, slew_rate: fast, open_drain: disable,
+  - {pin_num: '47', peripheral: LPSPI_1, signal: IN, pin_signal: ADC0_A10/PTB1/LPSPI1_SIN/TPM0_CH4, pull_select: up, pull_enable: enable, slew_rate: fast, open_drain: disable,
     drive_strength: low, invert_input: disable}
-  - {pin_num: '1', peripheral: LPSPI_1, signal: OUT, pin_signal: PTB3/LPSPI1_SOUT/LPUART1_RX/TPM3_CLKIN/PWM0_X0, pull_select: down, pull_enable: disable, slew_rate: fast,
+  - {pin_num: '1', peripheral: LPSPI_1, signal: OUT, pin_signal: PTB3/LPSPI1_SOUT/LPUART1_RX/TPM3_CLKIN/PWM0_X0, pull_select: up, pull_enable: enable, slew_rate: fast,
     open_drain: disable, drive_strength: low, invert_input: disable}
-  - {pin_num: '48', peripheral: LPSPI_1, signal: SCK, pin_signal: ADC0_A11/PTB2/LPSPI1_SCK/LPUART1_TX/TPM0_CH5, pull_select: down, pull_enable: disable, slew_rate: fast,
+  - {pin_num: '48', peripheral: LPSPI_1, signal: SCK, pin_signal: ADC0_A11/PTB2/LPSPI1_SCK/LPUART1_TX/TPM0_CH5, pull_select: up, pull_enable: enable, slew_rate: fast,
     open_drain: disable, drive_strength: low, invert_input: disable}
-  - {pin_num: '46', peripheral: LPSPI_1, signal: PCS0, pin_signal: ADC0_A9/PTB0/LPSPI1_PCS0/TPM0_CH3, pull_select: down, pull_enable: disable, slew_rate: fast, open_drain: disable,
+  - {pin_num: '46', peripheral: LPSPI_1, signal: PCS0, pin_signal: ADC0_A9/PTB0/LPSPI1_PCS0/TPM0_CH3, pull_select: up, pull_enable: enable, slew_rate: fast, open_drain: disable,
     drive_strength: low, invert_input: disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -482,8 +482,8 @@ void BOARD_InitFlashPins(void)
     /* Clock Config: Peripheral clocks are enabled; module does not stall low power mode entry */
     CLOCK_EnableClock(kCLOCK_PortB);
 
-    const port_pin_config_t port_b0_pin46_config = {/* Internal pull-up/down resistor is disabled */
-                                                    .pullSelect = (uint16_t)kPORT_PullDisable,
+    const port_pin_config_t port_b0_pin46_config = {/* Internal pull-up resistor is enabled */
+                                                    .pullSelect = (uint16_t)kPORT_PullUp,
                                                     /* Low internal pull resistor value is selected. */
                                                     .pullValueSelect = (uint16_t)kPORT_LowPullResistor,
                                                     /* Fast slew rate is configured */
@@ -503,8 +503,8 @@ void BOARD_InitFlashPins(void)
     /* PORT_B0 (pin 46) is configured as LPSPI1_PCS0 */
     PORT_SetPinConfig(PORT_B, 0U, &port_b0_pin46_config);
 
-    const port_pin_config_t port_b1_pin47_config = {/* Internal pull-up/down resistor is disabled */
-                                                    .pullSelect = (uint16_t)kPORT_PullDisable,
+    const port_pin_config_t port_b1_pin47_config = {/* Internal pull-up resistor is enabled */
+                                                    .pullSelect = (uint16_t)kPORT_PullUp,
                                                     /* Low internal pull resistor value is selected. */
                                                     .pullValueSelect = (uint16_t)kPORT_LowPullResistor,
                                                     /* Fast slew rate is configured */
@@ -524,8 +524,8 @@ void BOARD_InitFlashPins(void)
     /* PORT_B1 (pin 47) is configured as LPSPI1_SIN */
     PORT_SetPinConfig(PORT_B, 1U, &port_b1_pin47_config);
 
-    const port_pin_config_t port_b2_pin48_config = {/* Internal pull-up/down resistor is disabled */
-                                                    .pullSelect = (uint16_t)kPORT_PullDisable,
+    const port_pin_config_t port_b2_pin48_config = {/* Internal pull-up resistor is enabled */
+                                                    .pullSelect = (uint16_t)kPORT_PullUp,
                                                     /* Low internal pull resistor value is selected. */
                                                     .pullValueSelect = (uint16_t)kPORT_LowPullResistor,
                                                     /* Fast slew rate is configured */
@@ -545,8 +545,8 @@ void BOARD_InitFlashPins(void)
     /* PORT_B2 (pin 48) is configured as LPSPI1_SCK */
     PORT_SetPinConfig(PORT_B, 2U, &port_b2_pin48_config);
 
-    const port_pin_config_t port_b3_pin1_config = {/* Internal pull-up/down resistor is disabled */
-                                                   .pullSelect = (uint16_t)kPORT_PullDisable,
+    const port_pin_config_t port_b3_pin1_config = {/* Internal pull-up resistor is enabled */
+                                                   .pullSelect = (uint16_t)kPORT_PullUp,
                                                    /* Low internal pull resistor value is selected. */
                                                    .pullValueSelect = (uint16_t)kPORT_LowPullResistor,
                                                    /* Fast slew rate is configured */

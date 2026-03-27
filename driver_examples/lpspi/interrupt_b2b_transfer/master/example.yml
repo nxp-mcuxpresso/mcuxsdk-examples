@@ -131,3 +131,4 @@ lpspi_interrupt_b2b_transfer_master:
     frdmimx95@cm7: []
     frdmmcxa577: []
     frdmmcxc162: []
+    frdmkw43: []
