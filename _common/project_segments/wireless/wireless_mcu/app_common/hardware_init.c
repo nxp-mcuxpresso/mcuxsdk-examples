@@ -117,6 +117,11 @@ void BOARD_InitHardware(void)
      * The switch can still be done by the host processor by calling PLATFORM_SwitchToOsc32k if needed.
      * The fro32k MUST NOT be disabled now, this will be handled by the radio core or in PLATFORM_SwitchToOsc32k. */
     (void)PLATFORM_InitOsc32K();
+
+#if (defined(FWK_KW43_MCXW70_FAMILIES) && (FWK_KW43_MCXW70_FAMILIES == 1))
+    (void)PLATFORM_SwitchToOsc32k();
+#endif
+
 #endif
 #endif /* #if !defined(FPGA_TARGET) || (FPGA_TARGET == 0) */
 
