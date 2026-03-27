@@ -1,0 +1,53 @@
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+#
+
+config MCUX_PRJSEG_module.board.display_support
+    # select MCUX_COMPONENT_driver.display-co5300
+    select MCUX_COMPONENT_driver.display-rpi
+    select MCUX_COMPONENT_driver.dc-fb-dsi-cmd
+    select MCUX_COMPONENT_driver.dc-fb-lcdif
+    select MCUX_COMPONENT_driver.dc-fb-dbi
+    select MCUX_COMPONENT_driver.dbi_lcdif
+    select MCUX_COMPONENT_driver.dbi_flexio_edma
+    select MCUX_COMPONENT_driver.lpflexcomm_lpi2c
+    select MCUX_COMPONENT_driver.gpio
+    select MCUX_COMPONENT_driver.edma4
+    select DBI_USE_MIPI_PANEL
+
+config MCUX_DEMO_PANEL_RASPI_7INCH_SUPPORT
+    default y
+
+#config MCUX_DEMO_PANEL_ZC143AC72MIPI_SUPPORT
+#    default y
+
+if MCUX_PRJSEG_module.board.display_support
+
+    choice DISPLAY_SUPPORT_PANEL
+        default RASPI_7INCH
+    endchoice
+
+    # if ZC143AC72MIPI
+    #     config DEMO_CO5300_BUFFER_FORMAT
+    #         int
+    #         default 0 if DEMO_CO5300_BUFFER_RGB565
+    #         default 1 if DEMO_CO5300_BUFFER_RGB888
+    #         help
+    #             No prefix in generated macro
+
+    #     choice DEMO_CO5300_BUFFER_FORMAT_SELECTION
+    #         prompt "TFT_PROTO_5 pixel format"
+    #         default DEMO_CO5300_BUFFER_RGB565 if LV_COLOR_DEPTH_16
+    #         default DEMO_CO5300_BUFFER_RGB888 if LV_COLOR_DEPTH_24
+    #         default DEMO_CO5300_BUFFER_RGB565
+
+    #         config DEMO_CO5300_BUFFER_RGB565
+    #             bool "RGB565 - 16bit"
+
+    #         config DEMO_CO5300_BUFFER_RGB888
+    #             bool "RGB888 - 24bit"
+    #     endchoice
+    # endif
+
+endif

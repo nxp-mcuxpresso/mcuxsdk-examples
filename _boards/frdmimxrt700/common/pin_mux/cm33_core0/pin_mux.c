@@ -27,6 +27,7 @@ pin_labels:
 - {pin_num: AC22, pin_signal: PIO1_9/LP_FLEXCOMM1_P2/SCT0_GPIN7/SCT0_OUT3/CTIMER_C_INP15/CLKCTL0_CLKIN/CLKOUT_VDD1, label: LED_BLUE, identifier: LED_BLUE}
 - {pin_num: AD23, pin_signal: PIO1_13/LP_FLEXCOMM2_P4/UTICK0_CAP1/CTIMER2_MAT3/SWD_TRACEDATA2/32KHZ_CLKOUT, label: LED_GRN, identifier: LED_GRN}
 - {pin_num: AB24, pin_signal: PIO0_19/LP_FLEXCOMM6_P2/SCT0_GPIN2/SCT0_OUT2/CTIMER2_MAT2/SAI1_RX_SYNC, label: LED_BLU, identifier: LED_BLU}
+- {pin_num: AA8, pin_signal: PIO8_6/LP_FLEXCOMM17_P1/CTIMER6_MATCH0/CMP0_OUT, label: PWM_RED, identifier: PWM_RED}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -1790,26 +1791,31 @@ void BOARD_InitXSPI2Pins(void)
 /* clang-format off */
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOARD_InitPMIC_I2CPins:
+BOARD_InitPMICPins:
 - options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: AA14, peripheral: LPI2C15, signal: SCL, pin_signal: PMIC_I2C_SCL, open_drain: enable, input_buffer: enable}
   - {pin_num: Y14, peripheral: LPI2C15, signal: SDA, pin_signal: PMIC_I2C_SDA, open_drain: enable, input_buffer: enable}
+  - {pin_num: V2, peripheral: GPIO7, signal: 'GPIO, 14', pin_signal: PIO7_14/SDHC1_DATA5/LP_FLEXCOMM7_P0}
+  - {pin_num: V1, peripheral: GPIO7, signal: 'GPIO, 15', pin_signal: PIO7_15/SDHC1_DATA6/LP_FLEXCOMM7_P1}
+  - {pin_num: T1, peripheral: GPIO7, signal: 'GPIO, 16', pin_signal: PIO7_16/SDHC1_DATA7/LP_FLEXCOMM7_P2}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
 
 /* FUNCTION ************************************************************************************************************
  *
- * Function Name : BOARD_InitPMIC_I2CPins
+ * Function Name : BOARD_InitPMICPins
  * Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
 /* Function assigned for the Cortex-M33 (Core #0) */
-void BOARD_InitPMIC_I2CPins(void)
+void BOARD_InitPMICPins(void)
 {
     /* Reset IOPCTL1 module */
     RESET_ClearPeripheralReset(kIOPCTL1_RST_SHIFT_RSTn);
+    /* Reset IOPCTL2 module */
+    RESET_ClearPeripheralReset(kIOPCTL2_RST_SHIFT_RSTn);
 
     IOPCTL1->PMIC_I2C_SCL = ((IOPCTL1->PMIC_I2C_SCL &
                               /* Mask bits to zero which are setting */
@@ -1830,32 +1836,6 @@ void BOARD_InitPMIC_I2CPins(void)
 
                              /* Open-drain Mode Enable: Enables for simulated open-drain output (high drive disabled) */
                              | IOPCTL1_PMIC_I2C_SDA_ODENA(PMIC_I2C_SDA_ODENA_ODENA_1));
-}
-
-/* clang-format off */
-/*
- * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOARD_InitPMIC_DVSPins:
-- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
-- pin_list:
-  - {pin_num: V2, peripheral: GPIO7, signal: 'GPIO, 14', pin_signal: PIO7_14/SDHC1_DATA5/LP_FLEXCOMM7_P0}
-  - {pin_num: V1, peripheral: GPIO7, signal: 'GPIO, 15', pin_signal: PIO7_15/SDHC1_DATA6/LP_FLEXCOMM7_P1}
-  - {pin_num: T1, peripheral: GPIO7, signal: 'GPIO, 16', pin_signal: PIO7_16/SDHC1_DATA7/LP_FLEXCOMM7_P2}
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
- */
-/* clang-format on */
-
-/* FUNCTION ************************************************************************************************************
- *
- * Function Name : BOARD_InitPMIC_DVSPins
- * Description   : Configures pin routing and optionally pin electrical features.
- *
- * END ****************************************************************************************************************/
-/* Function assigned for the Cortex-M33 (Core #0) */
-void BOARD_InitPMIC_DVSPins(void)
-{
-    /* Reset IOPCTL2 module */
-    RESET_ClearPeripheralReset(kIOPCTL2_RST_SHIFT_RSTn);
 
     const uint32_t port7_pin14_config = (/* Pin is configured as PIO7_14 */
                                          IOPCTL_PIO_FUNC0 |
@@ -1907,318 +1887,6 @@ void BOARD_InitPMIC_DVSPins(void)
                                          IOPCTL_PIO_DRIVE_100OHM);
     /* PORT7 PIN16 (coords: T1) is configured as PIO7_16 */
     IOPCTL_PinMuxSet(7U, 16U, port7_pin16_config);
-}
-
-/* clang-format off */
-/*
- * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOARD_InitFLEXIO_PANELPins:
-- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
-- pin_list:
-  - {pin_num: L24, peripheral: FLEXIO, signal: 'IO, 3', pin_signal: PIO2_3/LPSPI16_SCK/EZH_PIO3/FLEXIO_D3/LCD_DOTCLK/LCD_DBI_RWDX, slew_rate: slow, input_buffer: enable,
-    pull_enable: enable}
-  - {pin_num: M24, peripheral: FLEXIO, signal: 'IO, 4', pin_signal: PIO2_4/LPSPI16_SIN/EZH_PIO4/FLEXIO_D4/LCD_HSYNC/LCD_DBI_WRX, slew_rate: slow, input_buffer: enable,
-    pull_enable: enable}
-  - {pin_num: K25, peripheral: FLEXIO, signal: 'IO, 6', pin_signal: PIO2_6/LPSPI16_PCS3/FLEXIO_D6/LCD_DATA0/LCD_DBI_DATA0, slew_rate: slow, input_buffer: enable,
-    pull_enable: enable}
-  - {pin_num: K24, peripheral: FLEXIO, signal: 'IO, 7', pin_signal: PIO2_7/LPSPI16_PCS2/EZH_PIO7/FLEXIO_D7/LCD_D1/LCD_DBI_D1, slew_rate: slow, input_buffer: enable,
-    pull_enable: enable}
-  - {pin_num: J23, peripheral: FLEXIO, signal: 'IO, 8', pin_signal: PIO2_8/LPSPI16_PCS1/EZH_PIO8/FLEXIO_D8/LCD_D2/LCD_DBI_D2, slew_rate: slow, input_buffer: enable,
-    pull_enable: enable}
-  - {pin_num: M25, peripheral: FLEXIO, signal: 'IO, 9', pin_signal: PIO2_9/EZH_PIO9/FLEXIO_D9/LCD_D3/LCD_DBI_D3, slew_rate: slow, input_buffer: enable, pull_enable: enable}
-  - {pin_num: K23, peripheral: FLEXIO, signal: 'IO, 10', pin_signal: PIO2_10/EZH_PIO10/FLEXIO_D10/LCD_D4/LCD_DBI_D4, slew_rate: slow, input_buffer: enable, pull_enable: enable}
-  - {pin_num: H25, peripheral: FLEXIO, signal: 'IO, 11', pin_signal: PIO2_11/EZH_PIO11/FLEXIO_D11/LCD_D5/LCD_DBI_D5, slew_rate: slow, input_buffer: enable, pull_enable: enable}
-  - {pin_num: H24, peripheral: FLEXIO, signal: 'IO, 12', pin_signal: PIO2_12/EZH_PIO12/FLEXIO_D12/LCD_D6/LCD_DBI_D6, slew_rate: slow, input_buffer: enable, pull_enable: enable}
-  - {pin_num: H23, peripheral: FLEXIO, signal: 'IO, 13', pin_signal: PIO2_13/EZH_PIO13/FLEXIO_D13/LCD_D7/LCD_DBI_D7, slew_rate: slow, input_buffer: enable, pull_enable: enable}
-  - {pin_num: P25, peripheral: GPIO2, signal: 'GPIO, 0', pin_signal: PIO2_0/USB0_OVERCURRENTN/EZH_PIO0/FLEXIO_D0/LCD_DBI_CSX_AB, direction: OUTPUT}
-  - {pin_num: M23, peripheral: GPIO2, signal: 'GPIO, 1', pin_signal: PIO2_1/USB0_PORTPWRN/EZH_PIO1/FLEXIO_D1/LCD_DBI_DCX_AB, direction: OUTPUT}
-  - {pin_num: K21, peripheral: GPIO2, signal: 'GPIO, 15', pin_signal: PIO2_15/EZH_PIO15/FLEXIO_D15/CLKCTL0_LOW_FREQ_CLKOUT_N, direction: OUTPUT}
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
- */
-/* clang-format on */
-
-/* FUNCTION ************************************************************************************************************
- *
- * Function Name : BOARD_InitFLEXIO_PANELPins
- * Description   : Configures pin routing and optionally pin electrical features.
- *
- * END ****************************************************************************************************************/
-/* Function assigned for the Cortex-M33 (Core #0) */
-void BOARD_InitFLEXIO_PANELPins(void)
-{
-
-    /* Enables the clock for the GPIO2 module */
-    CLOCK_EnableClock(kCLOCK_Gpio2);
-
-    gpio_pin_config_t gpio2_pinP25_config = {
-        .pinDirection = kGPIO_DigitalOutput,
-        .outputLogic = 0U
-    };
-    /* Initialize GPIO functionality on pin PIO2_0 (pin P25)  */
-    GPIO_PinInit(GPIO2, 0U, &gpio2_pinP25_config);
-
-    gpio_pin_config_t gpio2_pinM23_config = {
-        .pinDirection = kGPIO_DigitalOutput,
-        .outputLogic = 0U
-    };
-    /* Initialize GPIO functionality on pin PIO2_1 (pin M23)  */
-    GPIO_PinInit(GPIO2, 1U, &gpio2_pinM23_config);
-
-    gpio_pin_config_t gpio2_pinK21_config = {
-        .pinDirection = kGPIO_DigitalOutput,
-        .outputLogic = 0U
-    };
-    /* Initialize GPIO functionality on pin PIO2_15 (pin K21)  */
-    GPIO_PinInit(GPIO2, 15U, &gpio2_pinK21_config);
-    /* Reset IOPCTL0 module */
-    RESET_ClearPeripheralReset(kIOPCTL0_RST_SHIFT_RSTn);
-
-    const uint32_t port2_pin0_config = (/* Pin is configured as PIO2_0 */
-                                        IOPCTL_PIO_FUNC0 |
-                                        /* Disable pull-up / pull-down function */
-                                        IOPCTL_PIO_PUPD_DI |
-                                        /* Enable pull-down function */
-                                        IOPCTL_PIO_PULLDOWN_EN |
-                                        /* Disable input buffer function */
-                                        IOPCTL_PIO_INBUF_DI |
-                                        /* Normal mode */
-                                        IOPCTL_PIO_SLEW_RATE_NORMAL |
-                                        /* Analog mux is disabled */
-                                        IOPCTL_PIO_ANAMUX_DI |
-                                        /* Pseudo Output Drain is disabled */
-                                        IOPCTL_PIO_PSEDRAIN_DI |
-                                        /* Input function is not inverted */
-                                        IOPCTL_PIO_INV_DI);
-    /* PORT2 PIN0 (coords: P25) is configured as PIO2_0 */
-    IOPCTL_PinMuxSet(2U, 0U, port2_pin0_config);
-
-    const uint32_t port2_pin1_config = (/* Pin is configured as PIO2_1 */
-                                        IOPCTL_PIO_FUNC0 |
-                                        /* Disable pull-up / pull-down function */
-                                        IOPCTL_PIO_PUPD_DI |
-                                        /* Enable pull-down function */
-                                        IOPCTL_PIO_PULLDOWN_EN |
-                                        /* Disable input buffer function */
-                                        IOPCTL_PIO_INBUF_DI |
-                                        /* Normal mode */
-                                        IOPCTL_PIO_SLEW_RATE_NORMAL |
-                                        /* Analog mux is disabled */
-                                        IOPCTL_PIO_ANAMUX_DI |
-                                        /* Pseudo Output Drain is disabled */
-                                        IOPCTL_PIO_PSEDRAIN_DI |
-                                        /* Input function is not inverted */
-                                        IOPCTL_PIO_INV_DI);
-    /* PORT2 PIN1 (coords: M23) is configured as PIO2_1 */
-    IOPCTL_PinMuxSet(2U, 1U, port2_pin1_config);
-
-    const uint32_t port2_pin10_config = (/* Pin is configured as FLEXIO_D10 */
-                                         IOPCTL_PIO_FUNC5 |
-                                         /* Enable pull-up / pull-down function */
-                                         IOPCTL_PIO_PUPD_EN |
-                                         /* Enable pull-down function */
-                                         IOPCTL_PIO_PULLDOWN_EN |
-                                         /* Enables input buffer function */
-                                         IOPCTL_PIO_INBUF_EN |
-                                         /* Slow mode */
-                                         IOPCTL_PIO_SLEW_RATE_SLOW |
-                                         /* Analog mux is disabled */
-                                         IOPCTL_PIO_ANAMUX_DI |
-                                         /* Pseudo Output Drain is disabled */
-                                         IOPCTL_PIO_PSEDRAIN_DI |
-                                         /* Input function is not inverted */
-                                         IOPCTL_PIO_INV_DI);
-    /* PORT2 PIN10 (coords: K23) is configured as FLEXIO_D10 */
-    IOPCTL_PinMuxSet(2U, 10U, port2_pin10_config);
-
-    const uint32_t port2_pin11_config = (/* Pin is configured as FLEXIO_D11 */
-                                         IOPCTL_PIO_FUNC5 |
-                                         /* Enable pull-up / pull-down function */
-                                         IOPCTL_PIO_PUPD_EN |
-                                         /* Enable pull-down function */
-                                         IOPCTL_PIO_PULLDOWN_EN |
-                                         /* Enables input buffer function */
-                                         IOPCTL_PIO_INBUF_EN |
-                                         /* Slow mode */
-                                         IOPCTL_PIO_SLEW_RATE_SLOW |
-                                         /* Analog mux is disabled */
-                                         IOPCTL_PIO_ANAMUX_DI |
-                                         /* Pseudo Output Drain is disabled */
-                                         IOPCTL_PIO_PSEDRAIN_DI |
-                                         /* Input function is not inverted */
-                                         IOPCTL_PIO_INV_DI);
-    /* PORT2 PIN11 (coords: H25) is configured as FLEXIO_D11 */
-    IOPCTL_PinMuxSet(2U, 11U, port2_pin11_config);
-
-    const uint32_t port2_pin12_config = (/* Pin is configured as FLEXIO_D12 */
-                                         IOPCTL_PIO_FUNC5 |
-                                         /* Enable pull-up / pull-down function */
-                                         IOPCTL_PIO_PUPD_EN |
-                                         /* Enable pull-down function */
-                                         IOPCTL_PIO_PULLDOWN_EN |
-                                         /* Enables input buffer function */
-                                         IOPCTL_PIO_INBUF_EN |
-                                         /* Slow mode */
-                                         IOPCTL_PIO_SLEW_RATE_SLOW |
-                                         /* Analog mux is disabled */
-                                         IOPCTL_PIO_ANAMUX_DI |
-                                         /* Pseudo Output Drain is disabled */
-                                         IOPCTL_PIO_PSEDRAIN_DI |
-                                         /* Input function is not inverted */
-                                         IOPCTL_PIO_INV_DI);
-    /* PORT2 PIN12 (coords: H24) is configured as FLEXIO_D12 */
-    IOPCTL_PinMuxSet(2U, 12U, port2_pin12_config);
-
-    const uint32_t port2_pin13_config = (/* Pin is configured as FLEXIO_D13 */
-                                         IOPCTL_PIO_FUNC5 |
-                                         /* Enable pull-up / pull-down function */
-                                         IOPCTL_PIO_PUPD_EN |
-                                         /* Enable pull-down function */
-                                         IOPCTL_PIO_PULLDOWN_EN |
-                                         /* Enables input buffer function */
-                                         IOPCTL_PIO_INBUF_EN |
-                                         /* Slow mode */
-                                         IOPCTL_PIO_SLEW_RATE_SLOW |
-                                         /* Analog mux is disabled */
-                                         IOPCTL_PIO_ANAMUX_DI |
-                                         /* Pseudo Output Drain is disabled */
-                                         IOPCTL_PIO_PSEDRAIN_DI |
-                                         /* Input function is not inverted */
-                                         IOPCTL_PIO_INV_DI);
-    /* PORT2 PIN13 (coords: H23) is configured as FLEXIO_D13 */
-    IOPCTL_PinMuxSet(2U, 13U, port2_pin13_config);
-
-    const uint32_t port2_pin15_config = (/* Pin is configured as PIO2_15 */
-                                         IOPCTL_PIO_FUNC0 |
-                                         /* Disable pull-up / pull-down function */
-                                         IOPCTL_PIO_PUPD_DI |
-                                         /* Enable pull-down function */
-                                         IOPCTL_PIO_PULLDOWN_EN |
-                                         /* Disable input buffer function */
-                                         IOPCTL_PIO_INBUF_DI |
-                                         /* Normal mode */
-                                         IOPCTL_PIO_SLEW_RATE_NORMAL |
-                                         /* Analog mux is disabled */
-                                         IOPCTL_PIO_ANAMUX_DI |
-                                         /* Pseudo Output Drain is disabled */
-                                         IOPCTL_PIO_PSEDRAIN_DI |
-                                         /* Input function is not inverted */
-                                         IOPCTL_PIO_INV_DI);
-    /* PORT2 PIN15 (coords: K21) is configured as PIO2_15 */
-    IOPCTL_PinMuxSet(2U, 15U, port2_pin15_config);
-
-    const uint32_t port2_pin3_config = (/* Pin is configured as FLEXIO_D3 */
-                                        IOPCTL_PIO_FUNC5 |
-                                        /* Enable pull-up / pull-down function */
-                                        IOPCTL_PIO_PUPD_EN |
-                                        /* Enable pull-down function */
-                                        IOPCTL_PIO_PULLDOWN_EN |
-                                        /* Enables input buffer function */
-                                        IOPCTL_PIO_INBUF_EN |
-                                        /* Slow mode */
-                                        IOPCTL_PIO_SLEW_RATE_SLOW |
-                                        /* Analog mux is disabled */
-                                        IOPCTL_PIO_ANAMUX_DI |
-                                        /* Pseudo Output Drain is disabled */
-                                        IOPCTL_PIO_PSEDRAIN_DI |
-                                        /* Input function is not inverted */
-                                        IOPCTL_PIO_INV_DI);
-    /* PORT2 PIN3 (coords: L24) is configured as FLEXIO_D3 */
-    IOPCTL_PinMuxSet(2U, 3U, port2_pin3_config);
-
-    const uint32_t port2_pin4_config = (/* Pin is configured as FLEXIO_D4 */
-                                        IOPCTL_PIO_FUNC5 |
-                                        /* Enable pull-up / pull-down function */
-                                        IOPCTL_PIO_PUPD_EN |
-                                        /* Enable pull-down function */
-                                        IOPCTL_PIO_PULLDOWN_EN |
-                                        /* Enables input buffer function */
-                                        IOPCTL_PIO_INBUF_EN |
-                                        /* Slow mode */
-                                        IOPCTL_PIO_SLEW_RATE_SLOW |
-                                        /* Analog mux is disabled */
-                                        IOPCTL_PIO_ANAMUX_DI |
-                                        /* Pseudo Output Drain is disabled */
-                                        IOPCTL_PIO_PSEDRAIN_DI |
-                                        /* Input function is not inverted */
-                                        IOPCTL_PIO_INV_DI);
-    /* PORT2 PIN4 (coords: M24) is configured as FLEXIO_D4 */
-    IOPCTL_PinMuxSet(2U, 4U, port2_pin4_config);
-
-    const uint32_t port2_pin6_config = (/* Pin is configured as FLEXIO_D6 */
-                                        IOPCTL_PIO_FUNC5 |
-                                        /* Enable pull-up / pull-down function */
-                                        IOPCTL_PIO_PUPD_EN |
-                                        /* Enable pull-down function */
-                                        IOPCTL_PIO_PULLDOWN_EN |
-                                        /* Enables input buffer function */
-                                        IOPCTL_PIO_INBUF_EN |
-                                        /* Slow mode */
-                                        IOPCTL_PIO_SLEW_RATE_SLOW |
-                                        /* Analog mux is disabled */
-                                        IOPCTL_PIO_ANAMUX_DI |
-                                        /* Pseudo Output Drain is disabled */
-                                        IOPCTL_PIO_PSEDRAIN_DI |
-                                        /* Input function is not inverted */
-                                        IOPCTL_PIO_INV_DI);
-    /* PORT2 PIN6 (coords: K25) is configured as FLEXIO_D6 */
-    IOPCTL_PinMuxSet(2U, 6U, port2_pin6_config);
-
-    const uint32_t port2_pin7_config = (/* Pin is configured as FLEXIO_D7 */
-                                        IOPCTL_PIO_FUNC5 |
-                                        /* Enable pull-up / pull-down function */
-                                        IOPCTL_PIO_PUPD_EN |
-                                        /* Enable pull-down function */
-                                        IOPCTL_PIO_PULLDOWN_EN |
-                                        /* Enables input buffer function */
-                                        IOPCTL_PIO_INBUF_EN |
-                                        /* Slow mode */
-                                        IOPCTL_PIO_SLEW_RATE_SLOW |
-                                        /* Analog mux is disabled */
-                                        IOPCTL_PIO_ANAMUX_DI |
-                                        /* Pseudo Output Drain is disabled */
-                                        IOPCTL_PIO_PSEDRAIN_DI |
-                                        /* Input function is not inverted */
-                                        IOPCTL_PIO_INV_DI);
-    /* PORT2 PIN7 (coords: K24) is configured as FLEXIO_D7 */
-    IOPCTL_PinMuxSet(2U, 7U, port2_pin7_config);
-
-    const uint32_t port2_pin8_config = (/* Pin is configured as FLEXIO_D8 */
-                                        IOPCTL_PIO_FUNC5 |
-                                        /* Enable pull-up / pull-down function */
-                                        IOPCTL_PIO_PUPD_EN |
-                                        /* Enable pull-down function */
-                                        IOPCTL_PIO_PULLDOWN_EN |
-                                        /* Enables input buffer function */
-                                        IOPCTL_PIO_INBUF_EN |
-                                        /* Slow mode */
-                                        IOPCTL_PIO_SLEW_RATE_SLOW |
-                                        /* Analog mux is disabled */
-                                        IOPCTL_PIO_ANAMUX_DI |
-                                        /* Pseudo Output Drain is disabled */
-                                        IOPCTL_PIO_PSEDRAIN_DI |
-                                        /* Input function is not inverted */
-                                        IOPCTL_PIO_INV_DI);
-    /* PORT2 PIN8 (coords: J23) is configured as FLEXIO_D8 */
-    IOPCTL_PinMuxSet(2U, 8U, port2_pin8_config);
-
-    const uint32_t port2_pin9_config = (/* Pin is configured as FLEXIO_D9 */
-                                        IOPCTL_PIO_FUNC5 |
-                                        /* Enable pull-up / pull-down function */
-                                        IOPCTL_PIO_PUPD_EN |
-                                        /* Enable pull-down function */
-                                        IOPCTL_PIO_PULLDOWN_EN |
-                                        /* Enables input buffer function */
-                                        IOPCTL_PIO_INBUF_EN |
-                                        /* Slow mode */
-                                        IOPCTL_PIO_SLEW_RATE_SLOW |
-                                        /* Analog mux is disabled */
-                                        IOPCTL_PIO_ANAMUX_DI |
-                                        /* Pseudo Output Drain is disabled */
-                                        IOPCTL_PIO_PSEDRAIN_DI |
-                                        /* Input function is not inverted */
-                                        IOPCTL_PIO_INV_DI);
-    /* PORT2 PIN9 (coords: M25) is configured as FLEXIO_D9 */
-    IOPCTL_PinMuxSet(2U, 9U, port2_pin9_config);
 }
 
 /* clang-format off */
@@ -2797,7 +2465,7 @@ void BOARD_InitDMICPins(void)
 /* clang-format off */
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOOARD_InitSCTimerPins:
+BOARD_InitSCTimerPins:
 - options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: P21, peripheral: SCT0, signal: 'OUT, 6', pin_signal: PIO0_6/LP_FLEXCOMM4_P2/SCT0_GPIN6/SCT0_OUT6/CTIMER_C_INP10/LP_FLEXCOMM8_P0}
@@ -2808,12 +2476,12 @@ BOOARD_InitSCTimerPins:
 
 /* FUNCTION ************************************************************************************************************
  *
- * Function Name : BOOARD_InitSCTimerPins
+ * Function Name : BOARD_InitSCTimerPins
  * Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
 /* Function assigned for the Cortex-M33 (Core #0) */
-void BOOARD_InitSCTimerPins(void)
+void BOARD_InitSCTimerPins(void)
 {
     /* Reset IOPCTL0 module */
     RESET_ClearPeripheralReset(kIOPCTL0_RST_SHIFT_RSTn);

@@ -12,18 +12,13 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define DEMO_PANEL_TFT_PROTO_5 4 /* MikroE TFT Proto 5" CAPACITIVE FlexIO/LCD DBI Display */
-#define DEMO_PANEL_RK055AHD091 0 /* NXP "RK055HDMIPI4M" MIPI Rectangular Display */
-#define DEMO_PANEL_RK055IQH091 1 /* NXP RESERVED */
-#define DEMO_PANEL_RM67162     3 /* NXP "G1120B0MIPI" MIPI Circular Display */
-#define DEMO_PANEL_RK055MHD091 2 /* NXP "RK055MHD091A0-CTG MIPI Rectangular Display */
 #define DEMO_PANEL_RASPI_7INCH 5 /* Raspberry Pi panel 7 inch */
-#define DEMO_PANEL_CO5300      6 /* NXP ZC143AC72MIPI MIPI Circular Display */
+// #define DEMO_PANEL_CO5300      6 /* NXP ZC143AC72MIPI MIPI Circular Display */
 
 /* @TEST_ANCHOR */
 /* Configure this macro in Kconfig or directly in the generated mcux_config.h. */
 #ifndef DEMO_PANEL
-#define DEMO_PANEL DEMO_PANEL_RK055MHD091
+#define DEMO_PANEL DEMO_PANEL_RASPI_7INCH
 #endif
 
 #define DEMO_ALIGN_ADDR(addr, align) ((((addr) / (align) * (align)) == (addr)) ? (addr) : ((addr) / (align) * (align) + (align)))

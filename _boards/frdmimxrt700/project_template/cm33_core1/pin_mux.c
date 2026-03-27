@@ -15,7 +15,7 @@
 !!GlobalInfo
 product: Pins v15.0
 processor: MIMXRT798S
-package_id: MIMXRT798SGFOB
+package_id: MIMXRT798SGVKB
 mcu_data: ksdk2_0
 processor_version: 0.0.0
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********

@@ -23,7 +23,7 @@
 !!GlobalInfo
 product: Clocks v17.0
 processor: MIMXRT798S
-package_id: MIMXRT798SGFOB
+package_id: MIMXRT798SGVKB
 mcu_data: ksdk2_0
 processor_version: 0.2509.40
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
