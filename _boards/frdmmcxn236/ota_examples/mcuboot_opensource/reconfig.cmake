@@ -8,14 +8,26 @@ mcux_add_include(
 mcux_add_mdk_configuration(
     LD "--diag_suppress=L6329W"
 )
+
 mcux_add_armgcc_configuration(
     TARGETS debug
     CC "-Og"
 )
+
+mcux_add_iar_configuration(
+    TARGETS release
+    CC "-Ohz"
+)
+
 # Remove additional configuration
 mcux_remove_armgcc_configuration(
     TARGETS debug
     CC "-O0"
+)
+
+mcux_remove_iar_configuration(
+    TARGETS release
+    CC "-Oh"
 )
 
 # Remove the default linkers
