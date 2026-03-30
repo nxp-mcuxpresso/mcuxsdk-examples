@@ -36,6 +36,7 @@ static sd_io_voltage_t s_ioVoltage = {
 
 static sdmmchost_t s_host;
 GPIO_HANDLE_DEFINE(s_PowerResetGpioHandle);
+GPIO_HANDLE_DEFINE(s_VSELECTGpioHandle);
 
 #ifdef SDIO_ENABLED
 static sdio_card_int_t s_sdioInt;
@@ -45,33 +46,33 @@ static sdio_card_int_t s_sdioInt;
  ******************************************************************************/
 #if defined(SDIO_ENABLED) || defined(SD_ENABLED)
 
-uint32_t BOARD_USDHC1ClockConfiguration(void)
+uint32_t BOARD_USDHC0ClockConfiguration(void)
 {
     /*Make sure USDHC ram buffer has power up*/
-    POWER_DisablePD(kPDRUNCFG_APD_SDHC1_SRAM);
-    POWER_DisablePD(kPDRUNCFG_PPD_SDHC1_SRAM);
+    POWER_DisablePD(kPDRUNCFG_APD_SDHC0_SRAM);
+    POWER_DisablePD(kPDRUNCFG_PPD_SDHC0_SRAM);
     POWER_DisablePD(kPDRUNCFG_PD_LPOSC);
     POWER_ApplyPD();
 
-    /* USDHC1 */
+    /* USDHC0 */
     /* usdhc depend on 32K clock also */
     CLOCK_AttachClk(kLPOSC_DIV32_to_32K_WAKE);
     CLOCK_InitAudioPfd(kCLOCK_Pfd0, 24U); /* Target 400MHZ. */
-    CLOCK_AttachClk(kAUDIO_PLL_PFD0_to_SDIO1);
-    CLOCK_SetClkDiv(kCLOCK_DivSdio1Clk, 1);
+    CLOCK_AttachClk(kAUDIO_PLL_PFD0_to_SDIO0);
+    CLOCK_SetClkDiv(kCLOCK_DivSdio1Clk, 0);
 
-    return CLOCK_GetUsdhcClkFreq(1);
+    return CLOCK_GetUsdhcClkFreq(0);
 }
 
 void BOARD_SDCardDAT3PullFunction(uint32_t status)
 {
     if (status == kSD_DAT3PullDown)
     {
-        IOPCTL_PinMuxSet(7U, 22U, 0x41); /* PULL UP/PULL DOWN disable */
+        IOPCTL_PinMuxSet(7U, 9U, 0x41); /* PULL UP/PULL DOWN disable */
     }
     else
     {
-        IOPCTL_PinMuxSet(7U, 22U, 0x71);
+        IOPCTL_PinMuxSet(7U, 9U, 0x71);
     }
 }
 
@@ -94,7 +95,7 @@ void BOARD_SDCardDetectInit(sd_cd_t cd, void *userData)
 
 void BOARD_SDCardPowerResetInit(void)
 {
-    CLOCK_EnableClock(kCLOCK_Gpio7);
+    CLOCK_EnableClock(BOARD_SDMMC_SD_POWER_RESET_GPIO_CLOCK_NAME);
     hal_gpio_pin_config_t sw_config = {
         kHAL_GpioDirectionOut,
         0,
@@ -106,16 +107,26 @@ void BOARD_SDCardPowerResetInit(void)
 #endif
 void BOARD_SDCardIoVoltageControlInit(void)
 {
-    /* Intentional empty, since the default SD signal voltage is 1.8V already which is againist with SD3.0 spec, so
-    leave the voltage switch function as empty to workaround the limitation, then some SD3.0 card may works, but SD2.0
-    card cannot works on this board */
+    CLOCK_EnableClock(BOARD_SDMMC_SD_VSELECT_GPIO_CLOCK_NAME);
+    hal_gpio_pin_config_t sw_config = {
+        kHAL_GpioDirectionOut,
+        1,
+        BOARD_SDMMC_SD_VSELECT_GPIO_PORT,
+        BOARD_SDMMC_SD_VSELECT_GPIO_PIN,
+    };
+    HAL_GpioInit(s_VSELECTGpioHandle, &sw_config);
 }
 
 void BOARD_SDCardIoVoltageControl(sdmmc_operation_voltage_t voltage)
 {
-    /* Intentional empty, since the default SD signal voltage is 1.8V already which is againist with SD3.0 spec, so
-    leave the voltage switch function as empty to workaround the limitation, then some SD3.0 card may works, but SD2.0
-    card cannot works on this board */
+    if (voltage == kSDMMC_OperationVoltage330V)
+    {
+        HAL_GpioSetOutput(s_VSELECTGpioHandle, 0);
+    }
+    else if (voltage == kSDMMC_OperationVoltage180V)
+    {
+        HAL_GpioSetOutput(s_VSELECTGpioHandle, 1);
+    }
 }
 
 void BOARD_SDCardPowerControl(bool enable)
@@ -139,7 +150,7 @@ void BOARD_SD_Config(void *card, sd_cd_t cd, uint32_t hostIRQPriority, void *use
     s_host.dmaDesBufferWordsNum                              = BOARD_SDMMC_HOST_DMA_DESCRIPTOR_BUFFER_SIZE;
     ((sd_card_t *)card)->host                                = &s_host;
     ((sd_card_t *)card)->host->hostController.base           = BOARD_SDMMC_SD_HOST_BASEADDR;
-    ((sd_card_t *)card)->host->hostController.sourceClock_Hz = BOARD_USDHC1ClockConfiguration();
+    ((sd_card_t *)card)->host->hostController.sourceClock_Hz = BOARD_USDHC0ClockConfiguration();
 
     ((sd_card_t *)card)->host->tuningType = BOARD_SDMMC_SD_TUNING_TYPE;
 
@@ -166,7 +177,7 @@ void BOARD_SDIO_Config(void *card, sd_cd_t cd, uint32_t hostIRQPriority, sdio_in
     s_host.dmaDesBufferWordsNum                                = BOARD_SDMMC_HOST_DMA_DESCRIPTOR_BUFFER_SIZE;
     ((sdio_card_t *)card)->host                                = &s_host;
     ((sdio_card_t *)card)->host->hostController.base           = BOARD_SDMMC_SDIO_HOST_BASEADDR;
-    ((sdio_card_t *)card)->host->hostController.sourceClock_Hz = BOARD_USDHC1ClockConfiguration();
+    ((sdio_card_t *)card)->host->hostController.sourceClock_Hz = BOARD_USDHC0ClockConfiguration();
     ((sdio_card_t *)card)->host->tuningType                    = BOARD_SDMMC_SD_TUNING_TYPE;
 
     ((sdio_card_t *)card)->usrParam.cd        = &s_cd;
@@ -184,43 +195,5 @@ void BOARD_SDIO_Config(void *card, sd_cd_t cd, uint32_t hostIRQPriority, sdio_in
     BOARD_SDCardDetectInit(cd, NULL);
 
     NVIC_SetPriority(BOARD_SDMMC_SDIO_HOST_IRQ, hostIRQPriority);
-}
-#endif
-
-#ifdef MMC_ENABLED
-uint32_t BOARD_USDHC0ClockConfiguration(void)
-{
-    /*Make sure USDHC ram buffer has power up*/
-    POWER_DisablePD(kPDRUNCFG_APD_SDHC0_SRAM);
-    POWER_DisablePD(kPDRUNCFG_PPD_SDHC0_SRAM);
-    POWER_DisablePD(kPDRUNCFG_PD_LPOSC);
-    POWER_ApplyPD();
-
-    /* USDHC0 */
-    /* usdhc depend on 32K clock also */
-    CLOCK_AttachClk(kLPOSC_DIV32_to_32K_WAKE);
-    CLOCK_InitAudioPfd(kCLOCK_Pfd0, 24U); /* Target 400MHZ. */
-    CLOCK_AttachClk(kAUDIO_PLL_PFD0_to_SDIO0);
-    CLOCK_SetClkDiv(kCLOCK_DivSdio0Clk, 1);
-
-    return CLOCK_GetUsdhcClkFreq(0);
-}
-
-void BOARD_MMC_Config(void *card, uint32_t hostIRQPriority)
-{
-    assert(card);
-
-    s_host.dmaDesBuffer                                       = s_sdmmcHostDmaBuffer;
-    s_host.dmaDesBufferWordsNum                               = BOARD_SDMMC_HOST_DMA_DESCRIPTOR_BUFFER_SIZE;
-    ((mmc_card_t *)card)->host                                = &s_host;
-    ((mmc_card_t *)card)->host->hostController.base           = BOARD_SDMMC_MMC_HOST_BASEADDR;
-    ((mmc_card_t *)card)->host->hostController.sourceClock_Hz = BOARD_USDHC0ClockConfiguration();
-    ((mmc_card_t *)card)->host->tuningType                    = BOARD_SDMMC_MMC_TUNING_TYPE;
-    ((mmc_card_t *)card)->hostVoltageWindowVCC                = BOARD_SDMMC_MMC_VCC_SUPPLY;
-    ((mmc_card_t *)card)->hostVoltageWindowVCCQ               = BOARD_SDMMC_MMC_VCCQ_SUPPLY;
-
-    ((mmc_card_t *)card)->usrParam.capability |= BOARD_SDMMC_MMC_SUPPORT_8_BIT_DATA_WIDTH;
-
-    NVIC_SetPriority(BOARD_SDMMC_MMC_HOST_IRQ, hostIRQPriority);
 }
 #endif

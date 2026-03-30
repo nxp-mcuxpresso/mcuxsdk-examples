@@ -25,12 +25,10 @@
  * Definitions
  ******************************************************************************/
 /* @brief host basic configuration */
-#define BOARD_SDMMC_SD_HOST_BASEADDR   USDHC1
-#define BOARD_SDMMC_SD_HOST_IRQ        USDHC1_IRQn
-#define BOARD_SDMMC_MMC_HOST_BASEADDR  USDHC0
-#define BOARD_SDMMC_MMC_HOST_IRQ       USDHC0_IRQn
-#define BOARD_SDMMC_SDIO_HOST_BASEADDR USDHC1
-#define BOARD_SDMMC_SDIO_HOST_IRQ      USDHC1_IRQn
+#define BOARD_SDMMC_SD_HOST_BASEADDR   USDHC0
+#define BOARD_SDMMC_SD_HOST_IRQ        USDHC0_IRQn
+#define BOARD_SDMMC_SDIO_HOST_BASEADDR USDHC0
+#define BOARD_SDMMC_SDIO_HOST_IRQ      USDHC0_IRQn
 /* @brief card detect type
  *
  * Note: if you want to use DAT3 as card detect pin, please make sure the DAT3 is pulled down with 100K resistor on
@@ -48,6 +46,10 @@
 #define BOARD_SDMMC_SD_POWER_RESET_GPIO_BASE         GPIO7
 #define BOARD_SDMMC_SD_POWER_RESET_GPIO_PORT         7U
 #define BOARD_SDMMC_SD_POWER_RESET_GPIO_PIN          11U
+#define BOARD_SDMMC_SD_VSELECT_GPIO_CLOCK_NAME       kCLOCK_Gpio7
+#define BOARD_SDMMC_SD_VSELECT_GPIO_BASE             GPIO7
+#define BOARD_SDMMC_SD_VSELECT_GPIO_PORT             7
+#define BOARD_SDMMC_SD_VSELECT_GPIO_PIN              3U
 
 
 /* The EVK board require mannual tuning for sd, since there is a EMI filter between 595 and card socket which will
@@ -94,17 +96,6 @@ void BOARD_SD_Config(void *card, sd_cd_t cd, uint32_t hostIRQPriority, void *use
  */
 #ifdef SDIO_ENABLED
 void BOARD_SDIO_Config(void *card, sd_cd_t cd, uint32_t hostIRQPriority, sdio_int_t cardInt);
-#endif
-
-/*!
- * @brief BOARD MMC configurations.
- * @param card card descriptor
- * @param cd card detect callback
- * @param userData user data for callback
- */
-#ifdef MMC_ENABLED
-void BOARD_MMC_Config(void *card, uint32_t hostIRQPriority);
-
 #endif
 
 #if defined(__cplusplus)
