@@ -166,6 +166,128 @@ void print_paired_devices(void)
                paired_devices[i].name, paired_devices[i].device_type);
     }
 }
+void app_disconnect_device_and_delete(uint8_t device_index)
+{
+	struct bt_conn_info info;
+
+	uint8_t device_addr[6] = {0};
+	if (device_index < 1 || device_index > g_pairedDeviceCount)
+	{
+		PRINTF("Invalid device index! Choose between 1 and %d\n", g_pairedDeviceCount);
+		return;
+	}
+
+	//Get the correct paired device
+	uint8_t *addr = paired_devices[device_index - 1].addr;
+
+	//Reverse the address bytes (Little Endian → Big Endian)
+	for (int i = 0; i < 6; i++) {
+		device_addr[i] = addr[5 - i];
+	}
+
+	uint8_t dev_type = paired_devices[device_index - 1].device_type;
+
+
+	if (( (dev_type & 0x0F) == RIDER_PHONE) && 	(conn_rider_phone != NULL))
+	{
+		bt_conn_get_info(conn_rider_phone, &info);
+
+		if (0 == memcmp(info.br.dst, device_addr, 6U))
+		{
+			PRINTF("Disconnecting device...\n");
+			app_disconnect(RIDER_PHONE);
+			while(conn_rider_phone != NULL);
+		}else
+		{
+			PRINTF("Device not connected!\n");
+		}
+	}
+	else if (( (dev_type & 0x0F) == RIDER_HEADSET) && (conn_rider_hs != NULL))
+	{
+		bt_conn_get_info(conn_rider_hs, &info);
+
+		if (0 == memcmp(info.br.dst, device_addr, 6U))
+		{
+			PRINTF("Disconnecting device...\n");
+			app_disconnect(RIDER_HEADSET);
+			while(conn_rider_hs != NULL);
+		}else
+		{
+			PRINTF("Device not connected!\n");
+		}
+
+	}
+	else if (( (dev_type & 0x0F) == PASSENGER_HEADSET) && (conn_passenger_hs != NULL))
+	{
+		bt_conn_get_info(conn_passenger_hs, &info);
+
+		if (0 == memcmp(info.br.dst, device_addr, 6U))
+		{
+			PRINTF("Disconnecting device...\n");
+			app_disconnect(PASSENGER_HEADSET);
+			while(conn_passenger_hs != NULL);
+
+		}else
+		{
+			PRINTF("Device not connected!\n");
+		}
+
+	}else
+	{
+		PRINTF("Invalid device!\n");
+		return;
+	}
+
+	PRINTF("delete_device:%d\n",device_index);
+	delete_device(device_index);
+}
+
+void app_disconnect_devices_and_delete_all()
+{
+	int err = 0;
+
+	if (conn_rider_hs != NULL)
+	{
+		app_disconnect(RIDER_HEADSET);
+		while(conn_rider_hs != NULL);
+	}
+	if (conn_rider_phone != NULL)
+	{
+		app_disconnect(RIDER_PHONE);
+		while(conn_rider_phone != NULL);
+	}
+	if (conn_passenger_hs != NULL)
+	{
+		app_disconnect(PASSENGER_HEADSET);
+		while(conn_passenger_hs != NULL);
+	}
+
+	/*First need to read the paired device*/
+	if (!app_read_paired_devices())
+	{
+		uint8_t addr[6];
+		PRINTF("Number of paired device count is %d\n", g_pairedDeviceCount);
+		for(int i = 0;i < g_pairedDeviceCount; i++)
+		{
+			PRINTF("[%d] Address: %02X:%02X:%02X:%02X:%02X:%02X, Name: %s, Type: %d\n",
+					i + 1,
+					paired_devices[i].addr[0], paired_devices[i].addr[1], paired_devices[i].addr[2],
+					paired_devices[i].addr[3], paired_devices[i].addr[4], paired_devices[i].addr[5],
+					paired_devices[i].name, paired_devices[i].device_type);
+
+			if (memcmp(paired_devices[i].addr, addr, 6) == 0)
+			{
+				bt_unpair(BT_ID_DEFAULT,(bt_addr_le_t *)addr);
+			}
+		}
+
+		PRINTF("clear_paired_devices_from_lfs.\n\n");
+		vTaskDelay(pdMS_TO_TICKS(10));
+		app_clear_paired_devices();
+	 }
+
+
+}
 void app_update_last_connected_device(const uint8_t addr[6] , uint8_t device_type)
 {
 
@@ -287,6 +409,7 @@ void save_new_paired_device(struct bt_conn *conn, uint8_t isRiderHeadset)
 
 	app_save_paired_device(device_addr, name, device_type);
 	PRINTF("Updated Paired Devices list !!\n\n");
+	app_update_last_connected_device(addr,device_type);
 
 	app_read_paired_devices();
 }
@@ -386,10 +509,11 @@ int delete_device(int index)
     }
     g_pairedDeviceCount--;
 
-    vTaskDelay(pdMS_TO_TICKS(50));
+    vTaskDelay(pdMS_TO_TICKS(10));
     //Step 3: Save the updated paired list to LittleFS
     app_save_paired_devices();
 
+    vTaskDelay(pdMS_TO_TICKS(50));
     PRINTF("Device removed from paired list and LFS updated.\n");
 
     return 0;
@@ -466,7 +590,7 @@ void app_auto_connect_device(int device_type)
 
     if (!device_index)
     {
-	PRINTF("NOT LAST CONNECTED dev type %d",device_type);
+    	PRINTF("\nNOT LAST CONNECTED dev type %d",device_type);
     	app_auto_connect_paired_devices();
     	return;
     }

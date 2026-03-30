@@ -29,5 +29,6 @@ void hfp_last_dial(void);
 uint8_t get_device_type_from_cod(const uint8_t cod[3]);
 void app_auto_connect_device(int device_type);
 void app_update_last_connected_device(const uint8_t addr[6] , uint8_t device_type);
-
+void app_disconnect_device_and_delete(uint8_t device_index);
+void app_disconnect_devices_and_delete_all();
 #endif /* DISPLAY_INTERFACE_H_ */

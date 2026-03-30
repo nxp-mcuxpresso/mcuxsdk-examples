@@ -442,7 +442,7 @@ int data_send_source(uint8_t *data, uint32_t length)
 
 	if( rider_hs_a2dp_src == NULL )
 		{
-			//suspend if not rider headset connected
+		//suspend if rider headset not connected
 			app_a2dp_snk_suspend();
 			return 1;
 		}
@@ -452,7 +452,7 @@ int data_send_source(uint8_t *data, uint32_t length)
 			return 1;
 		}
 
-		if (aap_hf_call_status())
+	if ( aap_hf_call_status() || app_hfp_intercom_status())
 		{
 			return 1;
 		}
@@ -476,9 +476,15 @@ int data_send_source(uint8_t *data, uint32_t length)
 uint8_t app_set_a2dp_music_source(uint8_t music_source)
 {
 
-	if( g_phoneESCO || g_rhsESCO || g_phsESCO )
+	if( g_phoneESCO || aap_hf_call_status())
 	{
-		//PRINTF("\nA2DP mode not allowed during HFP call audio !\n");
+		PRINTF("\nA2DP mode change not allowed during call!\n");
+		return 0;
+	}
+
+	if( g_rhsESCO || g_phsESCO || app_hfp_intercom_status() )
+	{
+		PRINTF("\nA2DP mode change not allowed during intercom !\n");
 		return 0;
 	}
 
@@ -517,10 +523,6 @@ uint8_t app_set_a2dp_music_source(uint8_t music_source)
 	    bt_a2dp_set_ep_codec_enable(rhs_a2dp_endpoint_src,0);
 
 	    g_dualA2dpSrcMode = 0;
-
-	    //avrcp_tg_notify(1,1);
-	    app_a2dp_snk_resume();
-
 
 	    // Close audio file if open
 	    if(g_audioFileOpened)
@@ -625,20 +627,25 @@ uint8_t app_set_a2dp_music_source(uint8_t music_source)
 	return 1;
 }
 
+uint8_t app_get_dual_a2dp_status()
+{
+   return (g_passengerHsAudioStart | g_riderHsAudioStart );
+}
+
 void app_a2dp_snk_pause()
 {
 
 	if(conn_rider_phone == NULL)
     	 return;
 
-    if(app_get_snk_a2dp_status())
+    if(avrcp_rider_music_play_status() == 1)
     {
 #ifdef APP_DEBUG_EN
     	PRINTF("Pause Phone A2DP SNK ! \n");
 #endif
     	g_a2dpSnkPlayStatus=1;
     	avrcp_pause_button(1);
-		vTaskDelay(100);
+		vTaskDelay(10);
     }
 }
 
@@ -654,7 +661,7 @@ void app_a2dp_suspend_snk()
 #endif
     	g_a2dpSnkPlayStatus=1;
     	app_a2dp_snk_suspend();
-		vTaskDelay(50);
+		vTaskDelay(10);
     }
 }
 
@@ -674,9 +681,8 @@ void app_a2dp_snk_resume()
 #endif
     	g_a2dpSnkPlayStatus = 0;
     	app_a2dp_snk_suspend_to_start();
-    	vTaskDelay(30);
+    	vTaskDelay(10);
     	avrcp_play_button(1);
-
     }
 }
 
@@ -699,9 +705,25 @@ uint8_t app_get_a2dp_intercom_status()
 
 uint8_t app_a2dp_start_with_rhs()
 {
-	if( conn_rider_hs == NULL || g_rhsESCO || g_phsESCO || app_hfp_intercom_status())
+	if( conn_rider_hs == NULL || g_phsESCO || app_hfp_intercom_status())
 	{
 		return 0;
+	}
+
+	if (g_rhsESCO && !aap_hf_call_status())
+	{
+		//wait for 100ms to get eSCO disconnected event.
+	    uint8_t timeout = 10; // 100ms timeout
+	    while(g_rhsESCO && timeout > 0)
+	    {
+	        vTaskDelay(10);
+	        timeout--;
+	    }
+
+        if (g_rhsESCO)
+        	return 0;
+        else
+        	return 1;
 	}
 
 	return 1;

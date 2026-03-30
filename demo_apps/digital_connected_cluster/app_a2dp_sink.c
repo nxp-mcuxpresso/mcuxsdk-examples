@@ -267,9 +267,9 @@ void app_a2dp_snk_suspend()
 {
 	int err=0;
 
-	PRINTF("\nPhone audio suspend \n ");
 	if(g_audioStart)
 	{
+		PRINTF("\nPhone audio suspend \n ");
 		suspend_init=1;
 		err=bt_a2dp_stop(default_a2dp_endpoint_snk);
 		avrcp_pause_button();
@@ -295,14 +295,9 @@ void sbc_start_play(int err)
 			/* Start Audio Player */
 			app_a2dp_src_start(1);
 
-		}else
+		}else if(app_get_a2dp_mode())
 		{
-			app_a2dp_snk_suspend();
-		}
-
-		if(app_get_a2dp_mode())
-		{
-			PRINTF("DUAL A2DP mode, suspend Phone music \n");
+			PRINTF("Intercom or DUAL A2DP mode, suspend Phone music \n");
 			app_a2dp_snk_suspend();
 		}
 
@@ -317,12 +312,12 @@ void app_a2dp_snk_suspend_to_start()
 {
 	int err=0;
 
-	PRINTF("\nPhone audio start \n ");
 	if(!g_audioStart && suspend_init)  // && suspend_init to be added
 	{
+		PRINTF("\nPhone audio start \n ");
 		err=bt_a2dp_start(default_a2dp_endpoint_snk);
 		suspend_init=0;
-		avrcp_play_button();
+		//avrcp_play_button();
 	}
 	if(err)
 		PRINTF("\nstart Error code=%d ",err);
@@ -337,8 +332,8 @@ void sbc_stop_play(int err)
 		/* Stop Audio Player */
 		if(!app_get_a2dp_mode())
 		{
-			app_a2dp_src_stop(1);
 			PRINTF("a2dp stop playing\r\n");
+			app_a2dp_src_stop(1);
 		}
 	}
 	else
@@ -359,10 +354,7 @@ void sbc_streamer_data(uint8_t *data, uint32_t length)
 
 		if(!app_get_a2dp_mode())
 		{
-			//PRINTF("a2dp streamer \n");
-
 			data_send_source(data, length);
-
 		}
 	}
 }

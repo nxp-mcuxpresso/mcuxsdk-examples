@@ -32,7 +32,7 @@ static uint8_t g_coverNextGet;
 static uint8_t g_flagVolumeInit = 0, g_ctTgVolume = 64;
 uint8_t g_rhs_volume = 64;
 uint8_t g_phs_volume = 64;
-uint8_t g_snkPlayStatus = 0;
+uint8_t g_rider_music_play_status = 0;
 uint8_t g_rhs_playback_status =0;
 uint8_t g_phs_playback_status =0;
 uint8_t g_rspTypeSave = 0;
@@ -43,6 +43,7 @@ uint16_t g_playerIdToOperate = 0xFFu;
 uint8_t g_getTotalNumItems = 0;
 
 uint8_t g_phone_cap_response =0;
+uint8_t g_rhs_cap_response =0;
 uint8_t ca_init =0;
 
 bool g_avrcpControlConnectHfpHf = false;
@@ -781,6 +782,39 @@ void register_player_event_hs(uint8_t event_id, uint8_t tl)
     }
 }
 
+static void avrcp_rhs_tg_registration(struct k_work *work)
+{
+
+	PRINTF("avrcp_rhs_tg_registration\n");
+	// add schedule function to wait for capabilities response, then send registrations...
+	vTaskDelay(100);
+	// Wait for any ongoing operations
+	uint8_t timeout = 30;
+	while((!g_rhs_cap_response) && timeout > 0)
+	{
+		vTaskDelay(20);
+		timeout--;
+	}
+
+	g_rhs_cap_response=0;
+
+	g_flagVolumeInit = 1;
+	avrcp_ct_register_notification(conn_rider_hs, BT_AVRCP_EVENT_VOLUME_CHANGED);
+
+	if (!event_id_supported_by_rhs(BT_AVRCP_EVENT_VOLUME_CHANGED))
+	{
+		PRINTF("Event Volume change not supported by rhs !\n");
+	}
+	//send music stop indication
+	if(!app_get_a2dp_mode())
+	{
+		if(app_get_snk_a2dp_status())
+			avrcp_tg_notify_rhs(1,1);
+		else
+			avrcp_tg_notify_rhs(1,0);
+	}
+
+}
 static void avrcp_ct_registration(struct k_work *work)
 {
 	PRINTF("avrcp_ct_registration\n");
@@ -843,10 +877,10 @@ void avrcp_target_rsp_notify_cmd_interim(
 
 #ifdef APP_DEBUG_EN
 	if(conn_rider_hs == conn)
-			PRINTF(" RHS notify & interim \n");
+			PRINTF(" RHS notify_interim \n");
 
 	if(conn_rider_phone == conn)
-			PRINTF(" Phone notify & interim \n");
+			PRINTF(" Phone notify_interim \n");
 #endif
 
 	switch (event_id)
@@ -996,7 +1030,7 @@ void avrcp_target_rsp_notify_cmd_interim(
 
 	case BT_AVRCP_EVENT_VOLUME_CHANGED:
 #ifdef APP_AVRCP_DEBUG_EN
-		PRINTF( "    Event-ID ->BT_AVRCP_EVENT_VOLUME_CHANGED<0x%x>\n", event_id);
+		PRINTF( " Event-ID ->BT_AVRCP_EVENT_VOLUME_CHANGED<0x%x> g_rhs_volume %d g_ctTgVolume %d rsp->absolute_volume %d\n", event_id,g_rhs_volume,g_ctTgVolume,rsp->absolute_volume);
 #endif
 		rsp->absolute_volume = g_rhs_volume;
 
@@ -1342,8 +1376,10 @@ static void avrcp_target_handle_vendor_dependent_msg(struct bt_conn *conn, struc
 	case BT_AVRCP_PDU_ID_REQUEST_CONTINUING_RESPONSE:
 	{
 		uint8_t pdu_id = vendor_msg->parameter;
+#ifdef APP_AVRCP_DEBUG_EN
 		PRINTF("PDU-ID -> Request Continue Response<0x%x>\r\n", vendor_msg->pdu_id);
 		PRINTF("Continue PDU ID: 0x%02x\r\n", pdu_id);
+#endif
 		rsp_param = NULL;
 		rsp_len   = 0;
 		if (pdu_id == BT_AVRCP_PDU_ID_LIST_PLAYER_APP_SETTING_ATTR)
@@ -1386,10 +1422,17 @@ static void avrcp_target_handle_vendor_dependent_msg(struct bt_conn *conn, struc
 		rsp_param = &data[0];
 		response_type = BT_AVRCP_RESPONSE_TYPE_ACCEPTED;
 		rsp_len   = 1;
-		g_ctTgVolume = vendor_msg->parameter;
-		if (conn_rider_hs != NULL)
+		if(conn_rider_phone == conn)
 		{
+		g_ctTgVolume = vendor_msg->parameter;
+			PRINTF("Volume_From_Phone: 0x%02x (%d)\r\n", vendor_msg->parameter,g_ctTgVolume);
+			//g_ctTgVolume = vendor_msg->parameter;
+			g_rhs_volume = g_ctTgVolume;
 			avrcp_tg_set_absolute_volume(vendor_msg->parameter);
+
+		}else if (conn_rider_hs == conn)
+		{
+			PRINTF("Volume_From_RHS: 0x%02x\r\n", vendor_msg->parameter);
 		}
 
 		break;
@@ -2002,9 +2045,12 @@ void avrcp_print_vendor_cmd_rsp_content(struct bt_conn *conn_rsp,struct bt_avrcp
 		{
 #ifdef APP_AVRCP_DEBUG_EN
 			PRINTF("No. of Events Supported: %d: ", events->capability_count);
+#endif
 			for (uint8_t i = 0; i < events->capability_count; i++)
 			{
+#ifdef APP_AVRCP_DEBUG_EN
 				PRINTF("0x%02x,", events->event_ids[i]);
+#endif
 		        if(conn_rsp == conn_rider_phone && i < 15)
 		        {
 		        	rider_phone_event_ids[i]=events->event_ids[i];
@@ -2015,9 +2061,12 @@ void avrcp_print_vendor_cmd_rsp_content(struct bt_conn *conn_rsp,struct bt_avrcp
 		        } else if (conn_rsp == conn_rider_hs && i < 15)
 		        {
 		        	rhs_event_ids[i]=events->event_ids[i];
+
+		        	if(i == events->capability_count-1)
+		        		g_rhs_cap_response=1;
 		        }
 			}
-#endif
+
 		}
 		else
 		{
@@ -2131,8 +2180,8 @@ void avrcp_print_vendor_cmd_rsp_content(struct bt_conn *conn_rsp,struct bt_avrcp
 				&vendor_rsp->element_attr_rsp;
 
 #ifdef APP_AVRCP_DEBUG_EN
-#endif
 		PRINTF("No. of Attributes: %d\r\n", rsp->num_of_attr);
+#endif
 		for (i = 0; i < rsp->num_of_attr; i++)
 		{
 			if(rsp->attrs[i].string_len>254)
@@ -2146,23 +2195,38 @@ void avrcp_print_vendor_cmd_rsp_content(struct bt_conn *conn_rsp,struct bt_avrcp
 				memcpy(attr_val, rsp->attrs[i].string, rsp->attrs[i].string_len);
 				attr_val[rsp->attrs[i].string_len] = '\0';
 			}
-//#ifdef APP_AVRCP_DEBUG_EN
+#ifdef APP_AVRCP_DEBUG_EN
 			PRINTF("\nID: 0x%04x ", rsp->attrs[i].attr_id);
 			PRINTF("Value: %s,", attr_val);
 			PRINTF("Len:%d, Value: %s", rsp->attrs[i].string_len, attr_val);
-//#endif
+#endif
+			static char old_cover_art_handle[sizeof(cover_art_handle)] = {0};
 
 			if ((rsp->attrs[i].attr_id == 0x08u) && (rsp->attrs[i].string_len != 0u))
 			{
-#ifdef APP_AVRCP_DEBUG_EN
-				PRINTF("Get cover art image \r\n");
-#endif
 
 				memset(cover_art_handle, 0, sizeof(cover_art_handle));
 				g_coverArtHandleLen = rsp->attrs[i].string_len + 1;
-				memcpy(cover_art_handle, attr_val,
-						rsp->attrs[i].string_len > sizeof(cover_art_handle) - 1 ?
-								sizeof(cover_art_handle) - 1 : rsp->attrs[i].string_len);
+
+
+				size_t copy_len = rsp->attrs[i].string_len > sizeof(cover_art_handle) - 1 ?
+				                    sizeof(cover_art_handle) - 1 :
+				                    rsp->attrs[i].string_len;
+
+				memcpy(cover_art_handle, attr_val, copy_len);
+				cover_art_handle[copy_len] = '\0';
+
+
+				if (strcmp(cover_art_handle, old_cover_art_handle) == 0) {
+				    // Same handle → skip image fetch
+				    break;
+				}
+
+#ifdef APP_AVRCP_DEBUG_EN
+				PRINTF("Get cover art image \r\n");
+#endif
+				// Handle is new → update stored handle
+				memcpy(old_cover_art_handle, cover_art_handle, sizeof(old_cover_art_handle));
 
 				g_coverNextGet=0;
 				cover_art_get_image(0);
@@ -2230,14 +2294,6 @@ void avrcp_print_vendor_cmd_rsp_content(struct bt_conn *conn_rsp,struct bt_avrcp
 	case BT_AVRCP_PDU_ID_REQUEST_CONTINUING_RESPONSE: /* Fallthrough */
 	case BT_AVRCP_PDU_ID_ABORT_CONTINUING_RESPONSE:
 		break;
-
-	case BT_AVRCP_PDU_ID_SET_ABSOLUTE_VOLUME:
-	{
-#ifdef APP_AVRCP_DEBUG_EN
-		PRINTF("Volume: 0x%02x\r\n", vendor_rsp->parameter);
-#endif
-	}
-	break;
 
 	case BT_AVRCP_PDU_ID_SET_ADDRESSED_PLAYER:
 	case BT_AVRCP_PDU_ID_PLAY_ITEMS:         /* Fall Through */
@@ -2350,7 +2406,8 @@ void avrcp_print_vendor_cmd_rsp(struct bt_avrcp_vendor *vendor_rsp)
 
 	case BT_AVRCP_PDU_ID_SET_ABSOLUTE_VOLUME:
 #ifdef APP_AVRCP_DEBUG_EN
-		PRINTF("Set Absolute Volume<0x%x>\r\n", vendor_rsp->pdu_id);
+		PRINTF("Set Absolute Volume PDU_ID:<0x%x> Absolute Volume: 0x%02x\r\n", vendor_rsp->pdu_id,vendor_rsp->parameter);
+
 #endif
 		break;
 
@@ -2383,7 +2440,7 @@ void avrcp_print_vendor_cmd_rsp(struct bt_avrcp_vendor *vendor_rsp)
 	PRINTF("Param Length: 0x%04x\r\n", vendor_rsp->parameter_len);
 #endif
 
-	return;
+
 }
 
 void avrcp_control_rsp_received(struct bt_conn *conn, struct bt_avrcp_control_msg *msg, int err)
@@ -2413,17 +2470,18 @@ void avrcp_control_rsp_received(struct bt_conn *conn, struct bt_avrcp_control_ms
 	if (msg->header.ctype_response == BT_AVRCP_RESPONSE_TYPE_CHANGED)
 	   {
 
+#ifdef APP_AVRCP_DEBUG_EN
 	        if(conn == conn_rider_hs)
 	        {
-	        	printf("\n  for RHS++ ");
+	        	printf("\n changed rsp_received for RHS ");
 	        } else if (conn == conn_rider_phone)
 	        {
-	        	printf("\n for MD++ ");
+	        	printf("\n changed rsp_received for MD ");
 	        } else
 	        {
-	        	printf("\n for PHS++ ");
+	        	printf("\n changed rsp_received for PHS ");
 	        }
-
+#endif
 	        if(conn == conn_rider_phone)
 	        {
 
@@ -2451,7 +2509,7 @@ void avrcp_control_rsp_received(struct bt_conn *conn, struct bt_avrcp_control_ms
 				{
 					//can check if volume change from Phone or HS1.
 					PRINTF("\n  Absolute Volume  %u (�%u%%)",msg->vendor.event_rsp.absolute_volume );
-					PRINTF("\n  set abs to HS");
+					PRINTF("\n  set abs to HS %d",g_rhs_volume);
 					//Set abs volume
 					avrcp_tg_set_absolute_volume(g_rhs_volume);
 				}
@@ -2479,9 +2537,19 @@ void avrcp_control_rsp_received(struct bt_conn *conn, struct bt_avrcp_control_ms
 				}
 	#endif //AVRCP_1_4
 
+	        }else if(conn == conn_rider_hs)
+	        {
+	        	PRINTF("\n Changed Event from RHS %d \n",msg->vendor.event_rsp.event_id);
+
+				if (msg->vendor.event_rsp.event_id == BT_AVRCP_EVENT_VOLUME_CHANGED)
+				{
+		        	PRINTF("\n Register for RHS VOLUME_CHANGED");
+		        	avrcp_ct_register_notification(conn,BT_AVRCP_EVENT_VOLUME_CHANGED);
+				}
+
 	        }else
 	        {
-	        	PRINTF("\n  Changed Event from HS %d , Need to handle",msg->vendor.event_rsp.event_id);
+	        	PRINTF("\n  Changed Event from PHS %d NOT handled\n",msg->vendor.event_rsp.event_id);
 	        }
 
 	    }
@@ -2489,19 +2557,28 @@ void avrcp_control_rsp_received(struct bt_conn *conn, struct bt_avrcp_control_ms
 		if (msg->header.ctype_response == BT_AVRCP_RESPONSE_TYPE_INTERIM)
 		    {
 
+
+	    	if ((msg->vendor.pdu_id == BT_AVRCP_PDU_ID_SET_ABSOLUTE_VOLUME))
+	    	{
+				printf("\n Interim rsp_received for RHS BT_AVRCP_PDU_ID_SET_ABSOLUTE_VOLUME");
+
+	    	}
 		    	if ((msg->vendor.pdu_id == BT_AVRCP_PDU_ID_REGISTER_NOTIFICATION))
 		    	{
-		    		PRINTF("\n** interim rsp_received for EVENT ID %d.. ",msg->vendor.event_rsp.event_id);
+
+#ifdef APP_AVRCP_DEBUG_EN
 			        if(conn == conn_rider_hs)
 			        {
-			        	printf("\n  for RHS++ ");
+						printf("\n Interim rsp_received for RHS ");
 			        } else if (conn == conn_rider_phone)
 			        {
-			        	printf("\n for MD++ ");
+						printf("\n Interim rsp_received for MD ");
 			        } else
 			        {
-			        	printf("\n for PHS++ ");
+						printf("\n Interim rsp_received for PHS ");
 			        }
+					PRINTF(" EVENT ID %d.. \n",msg->vendor.event_rsp.event_id);
+#endif
 
 		    		if (msg->vendor.event_rsp.event_id == BT_AVRCP_EVENT_VOLUME_CHANGED)
 		    		{
@@ -2510,9 +2587,10 @@ void avrcp_control_rsp_received(struct bt_conn *conn, struct bt_avrcp_control_ms
 		    			 {
 							//can check if volume change from Phone or HS1.
 							PRINTF("\n*Absolute Volume: %u (�%u%%), set to HS or phone",msg->vendor.event_rsp.absolute_volume );
-
+							PRINTF("\n g_rhs_volume* %d\n",g_rhs_volume);
+							g_rhs_volume=msg->vendor.event_rsp.absolute_volume;
 							//Set abs volume
-							avrcp_tg_set_absolute_volume(g_rhs_volume);
+							avrcp_tg_notify_volume_change_phone(g_rhs_volume);
 		    			 } else
 		    			 {
 		    				 //Check if need to forward phone response to Headsets.
@@ -2526,12 +2604,25 @@ void avrcp_control_rsp_received(struct bt_conn *conn, struct bt_avrcp_control_ms
 		    			struct bt_avrcp_vendor *vendor_rsp=&msg->vendor;
 		    			struct bt_avrcp_event_rsp *event_res = &vendor_rsp->event_rsp;
 
-		    			g_rhs_playback_status=event_res->play_status;
-
-		    			if(!app_get_a2dp_intercom_status())
+		    			if (conn == conn_rider_phone)
 		    			{
-		    				PRINTF("\nNotify play status from Phone to RHS\n");
-		    				avrcp_tg_notify_rhs(BT_AVRCP_EVENT_PLAYBACK_STATUS_CHANGED,g_rhs_playback_status);
+		    				g_rider_music_play_status = event_res->play_status;
+
+							if(app_get_a2dp_intercom_status())
+							{
+								if(event_res->play_status == 1)
+								{
+									//If Phone send play music then pause it.
+									PRINTF("\n Send pause to phone\n");
+									app_a2dp_snk_pause();
+								}
+
+							}else if(event_res->play_status == 1)
+		    			{
+								PRINTF("\n Play back resuming if suspended\n");
+								app_a2dp_snk_resume();
+
+							}
 		    			}
 		    		}
 
@@ -2805,17 +2896,11 @@ void avrcp_control_connected(struct bt_conn *conn, int err)
 		{
 			PRINTF("fail to call bt_avrcp_send_vendor_dependent\r\n");
 		}
-		g_flagVolumeInit = 1;
-		avrcp_ct_register_notification(conn_rider_hs, BT_AVRCP_EVENT_VOLUME_CHANGED);
 
-		//send music stop indication
-		if(!app_get_a2dp_mode())
-		{
-			if(app_get_snk_a2dp_status())
-				avrcp_tg_notify_rhs(1,1);
-			else
-				avrcp_tg_notify_rhs(1,0);
-		}
+		k_work_init(&setup_ct_registration_work, avrcp_rhs_tg_registration);
+		k_work_submit(&setup_ct_registration_work);
+
+
 	}
 }
 
@@ -2844,6 +2929,11 @@ void avrcp_send_result(struct bt_conn *conn, int err)
 		PRINTF("send fail\r\n");
 #endif
 	}
+}
+
+uint8_t avrcp_rider_music_play_status()
+{
+	return g_rider_music_play_status;
 }
 
 void avrcp_play_button()
@@ -2930,21 +3020,6 @@ void avrcp_forward_backward(uint8_t ind)
 		PRINTF("fail to call bt_avrcp_send_passthrough\r\n");
 	}
 
-}
-
-void avrcp_ct_set_absolute_volume(uint8_t value)
-{
-	uint8_t volume = value;
-
-	if(conn_rider_phone == NULL)
-    	 return;
-
-	PRINTF("CT SetAbsoluteVolume\r\n");
-
-	if (bt_avrcp_send_vendor_dependent(conn_rider_phone, BT_AVRCP_PDU_ID_SET_ABSOLUTE_VOLUME, &volume))
-	{
-		PRINTF("AVRCP set absolute volume:Fail\r\n");
-	}
 }
 
 void avrcp_volume_up_down(uint8_t ind)
@@ -3867,7 +3942,7 @@ int avrcp_tg_notify_rhs(uint8_t event,uint8_t value)
 	uint16_t rsp_len;
 
 #ifdef APP_AVRCP_DEBUG_EN
-	PRINTF("\n avrcp_tg_notify_rhs Event:%d,value:%d\n",event, value);
+	PRINTF("\n avrcp_tg_notify_rhs Event:%d,value:%d g_rhs_volume%d\n",event, value,g_rhs_volume);
 #endif
 	if(conn_rider_hs == NULL)
 		return 0;
@@ -3929,13 +4004,36 @@ int avrcp_tg_notify_rhs(uint8_t event,uint8_t value)
 		break;
 
 	case BT_AVRCP_EVENT_VOLUME_CHANGED:
-		rsp->absolute_volume = value;
+		rsp->absolute_volume = g_rhs_volume;
 		break;
 
 	default:
 		break;
 	}
 	bt_avrcp_response_vendor_dependent(conn_rider_hs, BT_AVRCP_PDU_ID_REGISTER_NOTIFICATION,
+			registered_events[event - 1][1], BT_AVRCP_RESPONSE_TYPE_CHANGED,
+			rsp, rsp_len);
+	return 0;
+}
+
+int avrcp_tg_notify_volume_change_phone(uint8_t value)
+{
+	struct bt_avrcp_event_rsp *rsp;
+	DEF_DATA(32u);
+	uint16_t rsp_len;
+	uint8_t event=BT_AVRCP_EVENT_VOLUME_CHANGED;
+
+#ifdef APP_AVRCP_DEBUG_EN
+	PRINTF("\n avrcp_tg_notify_volume_change phone,value:%d\n", value);
+#endif
+	if(conn_rider_phone == NULL)
+		return 0;
+	rsp = (struct bt_avrcp_event_rsp *)&data[0];
+	rsp_len = sizeof(*rsp);
+	rsp->event_id = BT_AVRCP_EVENT_VOLUME_CHANGED;
+	rsp->absolute_volume = value;
+
+	bt_avrcp_response_vendor_dependent(conn_rider_phone, BT_AVRCP_PDU_ID_REGISTER_NOTIFICATION,
 			registered_events[event - 1][1], BT_AVRCP_RESPONSE_TYPE_CHANGED,
 			rsp, rsp_len);
 	return 0;

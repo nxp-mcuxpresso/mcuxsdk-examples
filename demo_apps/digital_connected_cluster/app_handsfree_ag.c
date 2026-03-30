@@ -43,7 +43,7 @@ struct bt_conn *conn_passenger_hs = NULL;
 
 volatile uint8_t g_sCallStatus = 0;
 uint8_t g_hfWbsEnable = 0, g_agWbsEnable = 0,g_hfOutCall = 0;
-uint8_t g_sHfpInCallingStatus = 0xff,g_hfNbs =0 ,g_agRhNbs = 0 , g_agPhNbs = 0;
+uint8_t g_sHfpInCallingStatus = 0,g_hfNbs =0 ,g_agRhNbs = 0 , g_agPhNbs = 0;
 
 uint8_t g_sHfpAgRhDisconnecting =0,g_sHfpAgPhDisconnecting =0;
 uint8_t g_intercomEnabled=0;
@@ -903,10 +903,15 @@ void app_hfp_ag_send_setup_call_indication(uint32_t value)
 }
 void app_enable_intercom(uint8_t en)
 {
+
+	if(g_phoneESCO)
+	{
+		PRINTF("\nIntercom %d, not allowed during call! \n",en);
+		return;
+	}
+
 	if(en)
 	{
-		if(g_phoneESCO)
-			return;
 		if(g_intercomEnabled && !g_intercomPaused )
 			return;
 		//Disconnect existing eSCO with Headsets may be needed.
@@ -921,6 +926,15 @@ void app_enable_intercom(uint8_t en)
 				app_dual_a2dp_src_pause();
 			else
 				app_a2dp_src_stop(1);
+
+		    // Wait for a2dp stop operations to complete
+		    uint8_t timeout = 30; // 300ms timeout
+		    while( app_get_dual_a2dp_status() && timeout > 0)
+		    {
+		        vTaskDelay(10);
+		        timeout--;
+		    }
+
 			//app_a2dp_snk_pause();
 			app_a2dp_suspend_snk();
 
@@ -952,6 +966,9 @@ void app_enable_intercom(uint8_t en)
 	}
 	else
 	{
+		if(!g_intercomEnabled && !g_intercomPaused )
+			return;
+
 #ifdef APP_DEBUG_EN
 		PRINTF("Intercom stopped!\n");
 #endif
@@ -1045,7 +1062,9 @@ void hfp_ag_sco_connected_callback(struct bt_hfp_ag *ag, struct bt_conn *sco_con
 	bt_conn_get_info(sco_conn, &sco_info);
         bt_hci_get_conn_handle(sco_conn,&sco_handle);
 	uint8_t air_mode = sco_info.sco.air_mode;
-	PRINTF("SCO connected,Handle: %u,air_mode : %u\r\n",sco_handle, air_mode);
+    uint8_t link_mode = sco_info.sco.link_type;
+	PRINTF("SCO connected,Handle: %u,air_mode : %u link_mode %d \r\n",sco_handle, air_mode,link_mode);
+
 	 ag_conn= bt_hfp_ag_get_conn(ag);
  	if(conn_rider_hs == ag_conn)
     {
@@ -1173,6 +1192,7 @@ void hfp_ag_sco_disconnected_callback(struct bt_hfp_ag *ag)
 
 		} else if(g_intercomEnabled && !g_intercomPaused)
 		{
+			PRINTF("Disabled intercom !\n");
 			g_intercomEnabled = 0;
 			//app_a2dp_snk_resume();
 			vTaskDelay(10);

@@ -26,6 +26,7 @@ void avrcp_pause_button();
 void avrcp_forward_backward(uint8_t ind);
 void avrcp_volume_up_down(uint8_t ind);
 void update_rhs_play_status(uint8_t status);
+uint8_t avrcp_rider_music_play_status();
 
 void avrcp_ct_get_element_attributes();
 int avrcp_tg_notify_track_changed();
@@ -48,6 +49,7 @@ void avrcp_browse_play_folder_items(uint8_t select_index);
 static void cover_art_get_image(uint8_t print);
 static void cover_art_set_handle(uint8_t **image_handle, uint16_t *image_handle_len);
 //void avrcp_ct_tg_init();
+int avrcp_tg_notify_volume_change_phone(uint8_t value);
 
 
 #endif /* _APPL_AVRCP_H_ */

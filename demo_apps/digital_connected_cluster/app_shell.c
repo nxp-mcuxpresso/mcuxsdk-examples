@@ -705,46 +705,7 @@ static shell_status_t shellBt(shell_handle_t shellHandle, int32_t argc, char **a
     }
 	else if (strcmp(argv[1], "delete_all") == 0)
     {
-		int err = 0;
-
-		if (conn_rider_hs != NULL)
-		{
-			app_disconnect(RIDER_HEADSET);
-			while(conn_rider_hs != NULL);
-		}
-		if (conn_rider_phone != NULL)
-		{
-			app_disconnect(RIDER_PHONE);
-			while(conn_rider_phone != NULL);
-		}
-		if (conn_passenger_hs != NULL)
-		{
-			app_disconnect(PASSENGER_HEADSET);
-			while(conn_passenger_hs != NULL);
-		}
-
-		/*First need to read the paired device*/
-		if (!app_read_paired_devices())
-		{
-			uint8_t addr[6];
-			PRINTF("Number of paired device count is %d\n", g_pairedDeviceCount);
-			for(int i = 0;i < g_pairedDeviceCount; i++)
-			{
-				PRINTF("[%d] Address: %02X:%02X:%02X:%02X:%02X:%02X, Name: %s, Type: %d\n",
-						i + 1,
-						paired_devices[i].addr[0], paired_devices[i].addr[1], paired_devices[i].addr[2],
-						paired_devices[i].addr[3], paired_devices[i].addr[4], paired_devices[i].addr[5],
-						paired_devices[i].name, paired_devices[i].device_type);
-
-				if (memcmp(paired_devices[i].addr, addr, 6) == 0)
-				{
-					bt_unpair(BT_ID_DEFAULT,(bt_addr_le_t *)addr);
-				}
-			}
-			PRINTF("clear_paired_devices_from_lfs.\n\n");
-			vTaskDelay(pdMS_TO_TICKS(50));
-			app_clear_paired_devices();
-		}
+		app_disconnect_devices_and_delete_all();
     }
 	else if (strcmp(argv[1], "delete_dev") == 0)
 	{
@@ -763,31 +724,8 @@ static shell_status_t shellBt(shell_handle_t shellHandle, int32_t argc, char **a
 			return kStatus_SHELL_Error;
 		}
 
-		uint8_t dev_type = paired_devices[device_index - 1].device_type;
+		app_disconnect_device_and_delete(device_index);
 
-
-		if (( (dev_type & 0x0F) == RIDER_PHONE) && 	(conn_rider_phone != NULL))
-		{
-			app_disconnect(RIDER_PHONE);
-			PRINTF("Disconnecting device...\n");
-			while(conn_rider_phone != NULL);
-		}
-		else if (( (dev_type & 0x0F) == RIDER_HEADSET) && (conn_rider_hs != NULL))
-		{
-			app_disconnect(RIDER_HEADSET);
-			PRINTF("Disconnecting device...\n");
-			while(conn_rider_hs != NULL);
-		}
-		else if (( (dev_type & 0x0F) == PASSENGER_HEADSET) && (conn_passenger_hs != NULL))
-		{
-			app_disconnect(PASSENGER_HEADSET);
-			PRINTF("Disconnecting device...\n");
-			while(conn_passenger_hs != NULL);
-		}
-
-		PRINTF("delete_device:%d\n",device_index);
-		vTaskDelay(pdMS_TO_TICKS(50));
-		delete_device(device_index);
 	}
 	else if (strcmp(argv[1], "paired_list") == 0)
     {

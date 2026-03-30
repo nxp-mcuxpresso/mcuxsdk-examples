@@ -251,7 +251,7 @@ static void ring_cb(struct bt_conn *conn)
 {
 	PRINTF("Transfer Ring from Phone\n");
 	app_hfp_ag_transfer_hf_ring_ind();
-    g_sCallStatus = 1;
+   // g_sCallStatus = 1;
 }
 static void call_phnum(struct bt_conn *conn, char *number)
 {
@@ -318,7 +318,7 @@ void hf_codec_selection(struct bt_conn *conn, uint8_t *codec)
 
 uint8_t aap_hf_call_status()
 {
-	return g_sCallStatus;
+	return (g_sCallStatus| g_sHfpInCallingStatus);
 }
 
 void indicator_status(struct bt_conn *conn, hf_indicator_status_t *status)
@@ -397,13 +397,21 @@ void app_sco_connected_callback(struct bt_conn *acl, struct bt_conn *sco)
 void app_sco_disconnected_callback(struct bt_conn *sco, uint8_t reason) {
 
 	PRINTF("\n Phone SCO disconnected, g_sCallStatus=%d\n",g_sCallStatus);
+
+	if(g_sCallStatus==1)
+		g_sCallStatus=0;
+
 	if (g_sCallStatus == 2) {
 		g_hfOutCall = 0;
 		PRINTF("\n g_sCallStatus=2, close rhs sco\n");
 		//app_hfp_ag_stop_incoming_call();
+		app_hfp_ag_close_audio(RIDER_HEADSET);
 	}
+	else if(g_rhsESCO)
+	{
 	PRINTF("\n close rhs SCO \n");
 	app_hfp_ag_close_audio(RIDER_HEADSET);
+	}
 
 	g_phoneESCO = 0;
 
@@ -476,7 +484,7 @@ int app_hfp_hf_discover(struct bt_conn *conn, uint8_t channel)
 void hfp_AnswerCall(void)
 {
     bt_hfp_hf_send_cmd(conn_rider_phone, BT_HFP_HF_ATA);
-    g_sCallStatus = 2;
+    g_sCallStatus = 1;
 }
 
 void hfp_RejectCall(bool reject_with_msg)
