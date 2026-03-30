@@ -42,7 +42,7 @@ Board settings
 | Secondary slot      | 0x60240000 | 0x6043FFFF | 2048kB |
 | Encryption metadata | 0x60440000 | 0x6047FFFF | 256kB  |
 
-This custom build generates a project with predefined configuration to utilize Encrypted XIP mode. For more information please see [Encrypted XIP and MCUboot](../../../../ota_examples/_doc/encrypted_xip_readme.md).
+This custom build generates a project with predefined configuration to utilize Encrypted XIP mode. For more information please see [Encrypted XIP and MCUboot](../../../../ota_examples/_doc/encrypted_xip.md).
 
 - MCUBoot header size is set to 1024 bytes
 - Signing algorithm is ECDSA-P256

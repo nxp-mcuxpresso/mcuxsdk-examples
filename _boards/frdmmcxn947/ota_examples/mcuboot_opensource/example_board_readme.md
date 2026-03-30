@@ -70,7 +70,7 @@ the following commands:
 | Primary slot   | 0x00040000 | 0x0011FFFF |  896kB |
 | Secondary slot | 0x00120000 | 0x001FFFFF |  896kB |
 
-This custom build generates a project with predefined configuration to utilize Encrypted XIP mode. For more information please see [Encrypted XIP and MCUboot](../../../../ota_examples/_doc/encrypted_xip_readme.md).
+This custom build generates a project with predefined configuration to utilize Encrypted XIP mode. For more information please see [Encrypted XIP and MCUboot](../../../../ota_examples/_doc/encrypted_xip.md).
 
 Note: Default layout setup using the bootloader in IFR region limits usage of some features such as hardware accelerated mbedTLS (due size of IFR region) or encrypted XIP (due limitation of ROM). This custom configuration moves the bootloader to main flash array.
 

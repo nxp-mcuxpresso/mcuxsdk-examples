@@ -1,8 +1,8 @@
-# Encrypted XIP and NPX 
+# Encrypted XIP and NPX (PRINCE encryption/decryption for on-chip flash)
 
-This document extends the documentation of [MCUBoot and encrypted XIP in OTA examples](encrypted_xip_readme.md) and provides a walkthrough to evaluate it on devices with NPX module. 
+This document extends the documentation of [MCUBoot and encrypted XIP in OTA examples](encrypted_xip.md) and provides a walkthrough to evaluate it on devices with NPX module. 
 
-__Note: The current state of NPX example implementation for SDK 25.06 is in an experimental state. The IV reconfiguration is not implemented yet and it's planned for SDK 25.09 release.__
+__Note: The current state of NPX example implementation for SDK 25.06 is in an experimental state. The IV reconfiguration is not implemented yet and it's planned for future release.__
 
 ## 1. Introduction
 

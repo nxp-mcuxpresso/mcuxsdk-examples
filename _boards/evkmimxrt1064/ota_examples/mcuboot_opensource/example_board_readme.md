@@ -47,7 +47,7 @@ the bootloader would reject the image for missing data in the trailer area.
 | Secondary slot      | 0x70140000 | 0x7023FFFF | 1024kB |
 | Encryption metadata | 0x70240000 | 0x70240FFF | 4kB    |
 
-This custom build generates a project with predefined configuration to utilize Encrypted XIP mode. For more information please see [Encrypted XIP and MCUboot](../../../../ota_examples/_doc/encrypted_xip_readme.md).
+This custom build generates a project with predefined configuration to utilize Encrypted XIP mode. For more information please see [Encrypted XIP and MCUboot](../../../../ota_examples/_doc/encrypted_xip.md).
 
 - MCUBoot header size is set to 1024 bytes
 - Signing algorithm is ECDSA-P256

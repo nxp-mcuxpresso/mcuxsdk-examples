@@ -4,7 +4,7 @@ The OTA examples supports alternative way to adjust default project settings usi
 
 ## Encrypted XIP mode
 
-This is one of the ways to build and evaluate projects configured for Encrypted XIP mode. For more information please see [Encrypted XIP and MCUboot](encrypted_xip_readme.md).
+This is one of the ways to build and evaluate projects configured for Encrypted XIP mode. For more information please see [Encrypted XIP and MCUboot](encrypted_xip.md).
 
 The following walkthrough for EVKBMIMXRT1060 and IAR toolchain demonstrates how to enable Encrypted XIP mode. 
 

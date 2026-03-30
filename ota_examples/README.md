@@ -18,17 +18,19 @@ The `ota_mcuboot_basic` is always supported. Network examples and its variants (
 
 ### Upgrade modes
 
-NXP implements several image handling strategies in ota_examples to cover specific use cases. Each upgrade mode expands in specific MCUboot configuration which can be found in `mcuboot_config.h`.
+NXP implements several image handling strategies in ota_examples to cover specific use cases. Each upgrade mode expands in specific MCUboot configuration which can be found in `mcuboot_config.h`. 
+
+Some upgrade modes of MCUBoot support a so-called revert function. An application can test itself during its first boot and mark itself with a confirmation flag. Otherwise, during the next boot, the bootloader invalidates (deletes) the unconfirmed application and boots the previous version.
 
 Table below shows overview of upgrade modes.
 
-| **Upgrade mode** | **slbconfig.h / Kconfig project configuration** | **Note** | 
-|---|---|---|
-| Swap | CONFIG_BOOT_MODE_SWAP | The mode performs a complex technique that swaps images and allows to revert back to the previous version.<br>It also produces more flash wear and requires that the flash is able to work with incremental writes within erased flash page. |
-| Flash remap | CONFIG_BOOT_MODE_FLASH_REMAP | Image swapping offloaded to HW using flash remapping feature.<br>The mode supports revert function.<br>See ['MCUboot and flash remapping'](_doc/flash_remap_readme.md) |
-| Overwrite only | CONFIG_BOOT_MODE_OVERWRITE_ONLY | The image in the primary slot is overwritten with the new one in the secondary slot.<br>The revert to the previous version is not possible. |
-| Encrypted XIP | CONFIG_BOOT_MODE_ENCRYPTED_XIP |  Uses modified overwrite-only mode to utilize encrypted XIP.<br>The encrypted image (encrypted offline by imgtool) in the secondary slot is re-encrypted to the primary slot with hardware on-the-fly encryption.<br>See ['MCUboot and Encrypted XIP'](_doc/encrypted_xip_readme.md) |
-| Single application slot | CONFIG_BOOT_MODE_SINGLE_APPLICATION_SLOT | This mode is suitable for a device with limited flash memory resource as there is no second slot for image staging.<br>The update can be only done manually by blhost/programmer or from bootloader context using MCUboot's ['serial recovery'](_doc/serial_recovery.md) feature. |
+| **Upgrade mode** | **slbconfig.h / Kconfig project configuration** | **Revert** | **Note** | 
+|---|---|---|---|
+| Swap | CONFIG_BOOT_MODE_SWAP | Yes | The mode performs a complex technique that swaps images and allows to revert back to the previous version.<br>It also produces more flash wear and requires that the flash is able to work with incremental writes within erased flash page. |
+| Flash remap | CONFIG_BOOT_MODE_FLASH_REMAP | Yes | Image swapping offloaded to HW using flash remapping feature.<br>See ['MCUboot and flash remapping'](_doc/flash_remap_readme.md) |
+| Overwrite only | CONFIG_BOOT_MODE_OVERWRITE_ONLY | No | The image in the primary slot is overwritten with the new one in the secondary slot. |
+| Encrypted XIP | CONFIG_BOOT_MODE_ENCRYPTED_XIP | No | Uses modified overwrite-only mode to utilize encrypted XIP.<br>The encrypted image (encrypted offline by imgtool) in the secondary slot is re-encrypted to the primary slot with hardware on-the-fly encryption.<br>See ['MCUboot and Encrypted XIP'](_doc/encrypted_xip.md) |
+| Single application slot | CONFIG_BOOT_MODE_SINGLE_APPLICATION_SLOT | No | This mode is suitable for a device with limited flash memory resource as there is no second slot for image staging.<br>The update can be only done manually by blhost/programmer or from bootloader context using MCUboot's ['serial recovery'](_doc/serial_recovery.md) feature. |
 
 
 
@@ -42,7 +44,7 @@ The example typically demostrate a Dual image feature (ROM utilizing flash remap
 
 ['MCUboot and flash remapping'](_doc/flash_remap_readme.md)
 
-['MCUboot and Encrypted XIP'](_doc/encrypted_xip_readme.md)
+['MCUboot and Encrypted XIP'](_doc/encrypted_xip.md)
 
 ['OTA update by using SB3 file'](_doc/sb3_common_readme.md)
 

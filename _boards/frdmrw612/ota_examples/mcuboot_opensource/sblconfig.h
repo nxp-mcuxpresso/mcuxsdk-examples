@@ -14,33 +14,6 @@
 #define FLASH_REMAP_END_REG             0x40134424      /* RW61x flash remap end address register */
 #define FLASH_REMAP_OFFSET_REG          0x40134428      /* RW61x flash remap offset register */
 
-/*
- * Maximum size of IPED region
- *
- * The PRINCE variant used in RW61x is based on AES in Galois/Counter Mode (GCM)
- * Algorithm of encryption unit consumes 1.25 (5/4) time of physical memory.
- * Also we need to take into account one sector reserved for the mcuboot trailer.
- *
- * Calculation: 
- * 2MB~2048kB slot size = 512 sectors
- * 512 sectors - 1 reserved sector for the trailer = 511 sectors
- * Aligning down to 510 sectors (2040kB) so the value is a multiple of 5 sectors
- * in size.
- * 510 sectors / 1.25 = 408 sectors ~ 1632kB is then size of IPED region usable
- * for a payload.
- * 1632kB of plaintext then generates 408kB of IPED tags. Both values suits
- * the boundaries of pages, sectors and the boundaries of encryption alignment.
- */
-#define CONFIG_ENCRYPT_XIP_IPED_REGION_MAX_SIZE  0x364000
-
-/*
- * Size of write buffer used for overwrite-only mode has to be adjusted if IPED 
- * encryption unit is used so that the size of data chunks written to flash are 
- * always a multiple of 4 pages in size.
- */
-#define CONFIG_ENCRYPT_XIP_OVERWRITE_ONLY_BUF_SIZE      (4*MFLASH_PAGE_SIZE)
-
-
 /*******************************************************************/
 /* Use default configuration if setup from Kconfig is not provided */
 /*******************************************************************/
