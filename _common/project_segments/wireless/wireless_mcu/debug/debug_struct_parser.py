@@ -506,6 +506,9 @@ def load_extension_module(script_path: str, module_name: str):
     Raises:
         ImportError: If the module cannot be loaded
     """
+    folder = str(Path(script_path).parent)
+    if folder not in sys.path:
+        sys.path.insert(0, folder)
     spec = importlib.util.spec_from_file_location(module_name, script_path)
     if spec is None or spec.loader is None:
         raise ImportError(f"Cannot load module from {script_path}")
