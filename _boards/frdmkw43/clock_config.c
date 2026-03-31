@@ -35,6 +35,7 @@ processor_version: 14.0.0
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
 
+#include "fsl_ccm32k.h"
 #include "clock_config.h"
 
 /*******************************************************************************
@@ -175,6 +176,13 @@ const scg_firc_config_t g_scgFircConfig_BOARD_BootClockRUN =
     .range = kSCG_FircRange96M,                   /* 96 Mhz FIRC clock selected */
     .trimConfig = &FircTrimConfig_BOARD_BootClockRUN,
 };
+static const ccm32k_osc_config_t g_ccm32kOscConfig_BOARD_BootClockRUN =
+{
+    .coarseAdjustment = kCCM32K_OscCoarseAdjustmentRange0,/* ESR_Range0 */
+    .enableInternalCapBank = true,                /* Internal capacitance bank is enabled */
+    .xtalCap = kCCM32K_OscXtal8pFCap,             /* 8 pF */
+    .extalCap = kCCM32K_OscExtal8pFCap,           /* 8 pF */
+};
 /*******************************************************************************
  * Code for BOARD_BootClockRUN configuration
  ******************************************************************************/
@@ -195,6 +203,25 @@ void BOARD_BootClockRUN(void)
     if (coreFreq <= BOARD_BOOTCLOCKRUN_CORE_CLOCK) {
         FMU->FCTRL = (FMU->FCTRL & ~((uint32_t)FMU_FCTRL_RWSC_MASK)) | (FMU_FCTRL_RWSC(0x2U));
     }
+
+    /* Config 32k Crystal Oscillator */
+    CCM32K_Set32kOscConfig(CCM32K, kCCM32K_Enable32kHzCrystalOsc, &g_ccm32kOscConfig_BOARD_BootClockRUN);
+    /* Monitor is disabled */
+    CLOCK_SetRoscMonitorMode(kSCG_RoscMonitorDisable);
+    /* Wait for the 32kHz crystal oscillator to be stable */
+    while ((CCM32K_GetStatusFlag(CCM32K) & CCM32K_STATUS_OSC32K_RDY_MASK) == 0UL)
+    {
+    }
+    /* OSC32K clock output is selected as clock source */
+    CCM32K_SelectClockSource(CCM32K, kCCM32K_ClockSourceSelectOsc32k);
+    /* Disable the FRO32K clock */
+    CCM32K_Enable32kFro(CCM32K, false);
+    /* Wait for RTC Oscillator to be Valid */
+    while (!CLOCK_IsRoscValid())
+    {
+    }
+
+    CLOCK_SetXtal32Freq(BOARD_BOOTCLOCKRUN_ROSC_CLOCK);
 
     /* Init FIRC */
     CLOCK_CONFIG_FircSafeConfig(&g_scgFircConfig_BOARD_BootClockRUN);

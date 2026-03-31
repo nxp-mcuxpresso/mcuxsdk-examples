@@ -102,3 +102,4 @@ Hello world.
 - [FRDM-MCXA366](../../_boards/frdmmcxa366/freertos_examples/freertos_hello/example_board_readme.md)
 - [FRDM-MCXA577](../../_boards/frdmmcxa577/freertos_examples/freertos_hello/example_board_readme.md)
 - [FRDM-MCXC162](../../_boards/frdmmcxc162/freertos_examples/freertos_hello/example_board_readme.md)
+- [FRDM-KW43](../../_boards/frdmkw43/freertos_examples/freertos_hello/example_board_readme.md)
