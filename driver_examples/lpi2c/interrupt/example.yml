@@ -218,6 +218,7 @@ lpi2c_interrupt:
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
     frdmmcxe31b: []
+    frdmmcxe32b@core0: []
     frdmmcxl255@cm33: []
     frdmmcxa174: []
     frdmmcxa344: []

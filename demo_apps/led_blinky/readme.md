@@ -28,6 +28,7 @@ The code of this demo has been prepared and updated for use with the MCUXpresso 
 - [TWR-KM34Z50MV3](../../_boards/twrkm34z50mv3/demo_apps/led_blinky/example_board_readme.md)
 - [TWR-KM35Z75M](../../_boards/twrkm35z75m/demo_apps/led_blinky/example_board_readme.md)
 - [FRDM-MCXE31B](../../_boards/frdmmcxe31b/demo_apps/led_blinky/example_board_readme.md)
+- [FRDM-MCXE32B](../../_boards/frdmmcxe32b/demo_apps/led_blinky/example_board_readme.md)
 - [MCXW72-LOC](../../_boards/mcxw72loc/demo_apps/led_blinky/example_board_readme.md)
 - [FRDM-MCXA577](../../_boards/frdmmcxa577/demo_apps/led_blinky/example_board_readme.md)
 - [FRDM-KW43](../../_boards/frdmkw43/demo_apps/led_blinky/example_board_readme.md)

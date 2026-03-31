@@ -39,3 +39,4 @@ adc_sample_rate_measurement:
     - +iar@release
     - +iar@debug
     frdmmcxe31b: []
+    frdmmcxe32b@core0: []

@@ -7,3 +7,4 @@ It configures eMIOS UC (Unified channel) as Output PWM Buffered (OPWMB) mode and
 
 ## Supported Boards
 - [FRDM-MCXE31B](../../../_boards/frdmmcxe31b/driver_examples/emios/simple_pwm/example_board_readme.md)
+- [FRDM-MCXE32B](../../../_boards/frdmmcxe32b/driver_examples/emios/simple_pwm/example_board_readme.md)

@@ -84,6 +84,7 @@ edma4_scatter_gather:
     - +iar@release
     - +iar@debug
     frdmmcxe31b: []
+    frdmmcxe32b@core0: []
     frdmimxrt1186@cm33:
     - -armgcc@debug
     - -armgcc@hyperram_debug

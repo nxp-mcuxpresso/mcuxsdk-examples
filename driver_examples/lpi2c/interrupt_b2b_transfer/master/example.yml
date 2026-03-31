@@ -279,6 +279,7 @@ lpi2c_interrupt_b2b_transfer_master:
     frdmmcxl255@cm33: []
     frdmmcxl255@cm0plus: []
     frdmmcxe31b: []
+    frdmmcxe32b@core0: []
     frdmimxrt1186@cm33:
     - -armgcc@debug
     - -armgcc@hyperram_debug

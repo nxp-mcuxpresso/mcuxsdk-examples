@@ -18,4 +18,5 @@ Please reference user manual for the detail of the feature.
 - [MIMXRT700-EVK](../../../_boards/mimxrt700evk/driver_examples/edma4/ping_pong_transfer/example_board_readme.md)
 - [FRDM-IMXRT700](../../_boards/frdmimxrt700/driver_examples/edma4/ping_pong_transfer/example_board_readme.md)
 - [FRDM-MCXE31B](../../../_boards/frdmmcxe31b/driver_examples/edma4/ping_pong_transfer/example_board_readme.md)
+- [FRDM-MCXE32B](../../../_boards/frdmmcxe32b/driver_examples/edma4/ping_pong_transfer/example_board_readme.md)
 - [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/driver_examples/edma4/ping_pong_transfer/example_board_readme.md)

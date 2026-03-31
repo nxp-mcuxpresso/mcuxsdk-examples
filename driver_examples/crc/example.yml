@@ -71,6 +71,7 @@ crc:
     - -mdk@debug
     - -mdk@release
     frdmmcxe31b: []
+    frdmmcxe32b@core0: []
     frdmmcxa174: []
     frdmmcxa344: []
     frdmmcxa266: []

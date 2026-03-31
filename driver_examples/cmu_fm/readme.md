@@ -5,3 +5,4 @@ The cmu_fm driver example is to demonstrate usage of the SDK CMU_FM driver with 
 
 ## Supported Boards
 - [FRDM-MCXE31B](../../_boards/frdmmcxe31b/driver_examples/cmu_fm/example_board_readme.md)
+- [FRDM-MCXE32B](../../_boards/frdmmcxe32b/driver_examples/cmu_fm/example_board_readme.md)

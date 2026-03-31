@@ -1,0 +1,22 @@
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+rsource "./boot_header/${core_id}/Kconfig"
+rsource "Kconfig.defconfig"
+
+config MCUX_HW_BOARD_frdmmcxe32b
+    bool
+    default y
+    imply MCUX_HW_DEVICE_MCXE32B
+    imply MCUX_COMPONENT_driver.cache_armv7_m7
+    imply MCUX_COMPONENT_driver.clock
+    imply MCUX_COMPONENT_driver.common
+    imply MCUX_COMPONENT_driver.memory
+    imply MCUX_COMPONENT_driver.siul2
+    imply MCUX_COMPONENT_driver.lpuart
+
+    ## Board project segment dependency data
+    imply MCUX_COMPONENT_driver.clock if MCUX_PRJSEG_module.board.clock
+    imply MCUX_COMPONENT_driver.lpuart if MCUX_PRJSEG_module.board.console_lite
+    imply MCUX_COMPONENT_component.lpuart_adapter if MCUX_PRJSEG_module.board.console_lite

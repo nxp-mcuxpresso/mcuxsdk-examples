@@ -19,3 +19,5 @@ PAD2 interrupt flag is cleared !
 TSPC example is finished !
 
 ## Supported Boards
+- [FRDM-MCXE31B](../../_boards/frdmmcxe31b/driver_examples/tspc/example_board_readme.md)
+- [FRDM-MCXE32B](../../_boards/frdmmcxe32b/driver_examples/tspc/example_board_readme.md)

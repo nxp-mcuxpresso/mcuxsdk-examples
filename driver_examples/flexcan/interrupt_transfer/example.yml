@@ -245,6 +245,7 @@ flexcan_interrupt_transfer:
     mcimx93qsb: []
     mcxn9xxevk@cm33_core0: []
     frdmmcxe31b: []
+    frdmmcxe32b@core0: []
     frdmimxrt1186@cm33:
     - -armgcc@debug
     - -armgcc@hyperram_debug

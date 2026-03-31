@@ -102,6 +102,7 @@ debug_console supports this, debug_console_lite doesn't support).
 - [TWR-MC56F8400](../../_boards/twrmc56f8400/demo_apps/hello_world/example_board_readme.md)
 - [MCXW23-EVK](../../_boards/mcxw23evk/demo_apps/hello_world/example_board_readme.md)
 - [FRDM-MCXE31B](../../_boards/frdmmcxe31b/demo_apps/hello_world/example_board_readme.md)
+- [FRDM-MCXE32B](../../_boards/frdmmcxe32b/demo_apps/hello_world/example_board_readme.md)
 - [MCXW72-LOC](../../_boards/mcxw72loc/demo_apps/hello_world/example_board_readme.md)
 - [FRDM-MCXA174](../../_boards/frdmmcxa174/demo_apps/hello_world/example_board_readme.md)
 - [FRDM-MCXA344](../../_boards/frdmmcxa344/demo_apps/hello_world/example_board_readme.md)

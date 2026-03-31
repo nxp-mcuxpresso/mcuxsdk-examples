@@ -7,3 +7,4 @@ will be printed to the terminal from interrupt callback function for this channe
 
 ## Supported Boards
 - [FRDM-MCXE31B](../../_boards/frdmmcxe31b/driver_examples/stm/example_board_readme.md)
+- [FRDM-MCXE32B](../../_boards/frdmmcxe32b/driver_examples/stm/example_board_readme.md)

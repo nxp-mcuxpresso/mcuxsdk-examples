@@ -27,3 +27,4 @@ Run in RTC call back.
 
 ## Supported Boards
 - FRDM-MCXE31B
+- FRDM-MCXE32B

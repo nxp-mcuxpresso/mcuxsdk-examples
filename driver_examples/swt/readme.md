@@ -29,3 +29,4 @@ SWT refresh with fixed service sequence in window mode done!
 
 ## Supported Boards
 - FRDM-MCXE31B
+- FRDM-MCXE32B

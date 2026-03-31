@@ -19,3 +19,5 @@ XBIC error data received successfully !
 XBIC Example finished !
 
 ## Supported Boards
+- [FRDM-MCXE31B](../../_boards/frdmmcxe31b/driver_examples/xbic/example_board_readme.md)
+- [FRDM-MCXE32B](../../_boards/frdmmcxe32b/driver_examples/xbic/example_board_readme.md)

@@ -19,3 +19,5 @@ LCU interrupt flag is cleared !
 LCU interrupt example is finished !
 
 ## Supported Boards
+- [FRDM-MCXE31B](../../_boards/frdmmcxe31b/driver_examples/lcu/example_board_readme.md)
+- [FRDM-MCXE32B](../../_boards/frdmmcxe32b/driver_examples/lcu/example_board_readme.md)

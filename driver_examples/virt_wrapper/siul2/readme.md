@@ -14,3 +14,4 @@ The log is shown in the terminal, if the demo runs to any issue, the log will sh
 
 ## Supported Boards
 - [FRDM-MCXE31B](../../../_boards/frdmmcxe31b/driver_examples/virt_wrapper/siul2/example_board_readme.md)
+- [FRDM-MCXE32B](../../../_boards/frdmmcxe32b/driver_examples/virt_wrapper/siul2/example_board_readme.md)

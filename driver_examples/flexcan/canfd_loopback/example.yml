@@ -184,6 +184,7 @@ canfd_loopback:
     mcimx93wevk: []
     mcimx93qsb: []
     frdmmcxe31b: []
+    frdmmcxe32b@core0: []
     frdmimxrt1186@cm33:
     - -armgcc@debug
     - -armgcc@hyperram_debug

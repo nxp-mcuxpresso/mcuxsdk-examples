@@ -14,3 +14,4 @@ the response of the key interrupt, and confirm the interrupt timeout by the flag
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/driver_examples/intm/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/driver_examples/intm/example_board_readme.md)
 - [FRDM-MCXE31B](../../_boards/frdmmcxe31b/driver_examples/intm/example_board_readme.md)
+- [FRDM-MCXE32B](../../_boards/frdmmcxe32b/driver_examples/intm/example_board_readme.md)

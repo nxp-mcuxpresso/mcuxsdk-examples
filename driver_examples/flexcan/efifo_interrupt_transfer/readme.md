@@ -28,6 +28,7 @@ the message content to terminal after receive 4 CAN FD messages.
 - [MCIMX93-QSB](../../../_boards/mcimx93qsb/driver_examples/flexcan/efifo_interrupt_transfer/example_board_readme.md)
 - [MCX-W72-EVK](../../../_boards/mcxw72evk/driver_examples/flexcan/efifo_interrupt_transfer/example_board_readme.md)
 - [FRDM-MCXE31B](../../../_boards/frdmmcxe31b/driver_examples/flexcan/efifo_interrupt_transfer/example_board_readme.md)
+- [FRDM-MCXE32B](../../../_boards/frdmmcxe32b/driver_examples/flexcan/efifo_interrupt_transfer/example_board_readme.md)
 - [KW47-LOC](../../../_boards/kw47loc/driver_examples/flexcan/efifo_interrupt_transfer/example_board_readme.md)
 - [MCXW72-LOC](../../../_boards/mcxw72loc/driver_examples/flexcan/efifo_interrupt_transfer/example_board_readme.md)
 - [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/driver_examples/flexcan/efifo_interrupt_transfer/example_board_readme.md)

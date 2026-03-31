@@ -22,3 +22,4 @@ siul2_input_interrupt:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxe31b: []
+    frdmmcxe32b@core0: []

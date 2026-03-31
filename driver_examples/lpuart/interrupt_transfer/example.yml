@@ -301,6 +301,7 @@ lpuart_interrupt_transfer:
     frdmmcxl255@cm33: []
     frdmmcxl255@cm0plus: []
     frdmmcxe31b: []
+    frdmmcxe32b@core0: []
     frdmimxrt1186@cm33:
     - -armgcc@debug
     - -armgcc@hyperram_debug

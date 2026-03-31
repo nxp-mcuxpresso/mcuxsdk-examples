@@ -54,3 +54,4 @@ adc_watchdog:
     mcimx93evk: []
     mcimx93wevk: []
     frdmmcxe31b: []
+    frdmmcxe32b@core0: []

@@ -26,3 +26,4 @@ XRDC example Success
 - [EVK-MCIMX7ULP](../../_boards/evkmcimx7ulp/driver_examples/xrdc/example_board_readme.md)
 - [FRDM-K32L3A6](../../_boards/frdmk32l3a6/driver_examples/xrdc/example_board_readme.md)
 - [FRDM-MCXE31B](../../_boards/frdmmcxe31b/driver_examples/xrdc/example_board_readme.md)
+- [FRDM-MCXE32B](../../_boards/frdmmcxe32b/driver_examples/xrdc/example_board_readme.md)

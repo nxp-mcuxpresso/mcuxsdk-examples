@@ -8,3 +8,4 @@ This example generates three 10kHz center aligned PWM, there duty cycle are 50%,
 
 ## Supported Boards
 - [FRDM-MCXE31B](../../../_boards/frdmmcxe31b/driver_examples/emios/center_aligned_pwm/example_board_readme.md)
+- [FRDM-MCXE32B](../../../_boards/frdmmcxe32b/driver_examples/emios/center_aligned_pwm/example_board_readme.md)

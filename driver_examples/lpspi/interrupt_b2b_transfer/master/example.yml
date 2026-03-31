@@ -130,6 +130,7 @@ lpspi_interrupt_b2b_transfer_master:
     - -mdk@release
     frdmmcxl255@cm33: []
     frdmmcxe31b: []
+    frdmmcxe32b@core0: []
     frdmmcxa174: []
     frdmmcxa344: []
     frdmmcxa266: []

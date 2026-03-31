@@ -49,6 +49,7 @@ lpcmp_interrupt:
     frdmmcxl255@cm33: []
     frdmmcxl255@cm0plus: []
     frdmmcxe31b: []
+    frdmmcxe32b@core0: []
     frdmmcxa174: []
     frdmmcxa344: []
     frdmmcxa266: []

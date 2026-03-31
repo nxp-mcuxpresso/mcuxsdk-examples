@@ -24,6 +24,7 @@ flexio_mculcd_polling:
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
     frdmmcxe31b: []
+    frdmmcxe32b@core0: []
     frdmmcxa266: []
     frdmmcxa366: []
     frdmmcxa577: []

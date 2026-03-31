@@ -78,6 +78,7 @@ Press any key to run again.
 - [MIMXRT700-EVK](../../../../_boards/mimxrt700evk/driver_examples/lpspi/interrupt_b2b_transfer/master/example_board_readme.md)
 - [FRDM-IMXRT700](../../_boards/frdmimxrt700/driver_examples/lpspi/interrupt_b2b_transfer/master/example_board_readme.md)
 - [FRDM-MCXE31B](../../../../_boards/frdmmcxe31b/driver_examples/lpspi/interrupt_b2b_transfer/master/example_board_readme.md)
+- [FRDM-MCXE32B](../../../../_boards/frdmmcxe32b/driver_examples/lpspi/interrupt_b2b_transfer/master/example_board_readme.md)
 - [FRDM-MCXL255](../../../../_boards/frdmmcxl255/driver_examples/lpspi/interrupt_b2b_transfer/master/example_board_readme.md)
 - [FRDM-MCXA174](../../../../_boards/frdmmcxa174/driver_examples/lpspi/interrupt_b2b_transfer/master/example_board_readme.md)
 - [FRDM-MCXA344](../../../../_boards/frdmmcxa344/driver_examples/lpspi/interrupt_b2b_transfer/master/example_board_readme.md)

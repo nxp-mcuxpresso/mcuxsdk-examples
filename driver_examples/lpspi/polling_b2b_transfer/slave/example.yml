@@ -272,6 +272,7 @@ lpspi_polling_b2b_transfer_slave:
     - -mdk@release
     frdmmcxl255@cm33: []
     frdmmcxe31b: []
+    frdmmcxe32b@core0: []
     frdmimxrt1186@cm33:
     - -armgcc@flexspi_nor_debug
     - -armgcc@hyperram_debug

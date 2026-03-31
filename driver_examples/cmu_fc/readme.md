@@ -5,3 +5,4 @@ The cmu_fc example is to demonstrate usage of the SDK cmu_fc driver to check if 
 
 ## Supported Boards
 - [FRDM-MCXE31B](../../_boards/frdmmcxe31b/driver_examples/cmu_fc/example_board_readme.md)
+- [FRDM-MCXE32B](../../_boards/frdmmcxe32b/driver_examples/cmu_fc/example_board_readme.md) 

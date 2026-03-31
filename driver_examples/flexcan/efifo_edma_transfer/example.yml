@@ -84,6 +84,7 @@ flexcan_efifo_edma_transfer:
     - +armgcc@debug
     - +armgcc@release
     frdmmcxe31b: []
+    frdmmcxe32b@core0: []
     frdmimxrt1186@cm33:
     - -armgcc@debug
     - -armgcc@hyperram_debug

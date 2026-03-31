@@ -16,3 +16,4 @@ program command uses quad mode, the write frequency is 48MHz * 4 = 192MHz.
 - [EVK-MCIMX7ULP](../../../_boards/evkmcimx7ulp/driver_examples/qspi/polling_transfer/example_board_readme.md)
 - [EVK-MIMX8MQ](../../../_boards/evkmimx8mq/driver_examples/qspi/polling_transfer/example_board_readme.md)
 - [FRDM-MCXE31B](../../../_boards/frdmmcxe31b/driver_examples/qspi/polling_transfer/example_board_readme.md)
+- [FRDM-MCXE32B](../../../_boards/frdmmcxe32b/driver_examples/qspi/polling_transfer/example_board_readme.md)

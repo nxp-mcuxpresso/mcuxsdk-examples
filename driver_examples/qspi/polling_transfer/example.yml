@@ -35,3 +35,4 @@ qspi_polling_transfer:
     - -iar@ddr_release
     frdmmcxe247: []
     frdmmcxe31b: []
+    frdmmcxe32b@core0: []
