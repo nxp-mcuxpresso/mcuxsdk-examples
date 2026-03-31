@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+nbu_dyn_full:
+  section-type: application
+  contents:
+    meta_path: examples/wireless_examples/ieee-802.15.4/nbu_dyn/full/
+    project-root-path: examples/wireless_examples/ieee-802.15.4/nbu_dyn/full/
+    document:
+      name: nbu_dyn_full
+      category: wireless_examples/ieee-802.15.4/nbu_dyn
+      brief: BLE/15.4 dynamic controller application. This is a full features variant.
+  boards:
+    mcxw72evk@cm33_core1:
+    - -armgcc@debug
+    - -armgcc@release
+    frdmmcxw72@cm33_core1:
+    - -armgcc@debug
+    - -armgcc@release
