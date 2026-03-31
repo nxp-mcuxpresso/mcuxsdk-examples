@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 NXP
+ * Copyright 2022-2023, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -120,7 +120,7 @@ void test_iap_mem_operation_user_managed_encrypted_flash()
     status_t status                = kStatus_Fail;
     const uint32_t fcb_address     = kOspiMem_BaseAddr + kOspiMem_ConfigBlockOffset;
     const uint32_t address         = kOspiMem_BaseAddr + 0x10000;
-    const uint32_t data            = 0x10203040;
+    const uint32_t data[0x100]     = {0x10203040};
     uint32_t remapped_address      = address + get_remap_offset();
     uint32_t page_size             = ((flexspi_nor_config_t *)fcb_address)->pageSize;
     uint32_t encrypted_region_size = remapped_address + 12 * page_size;
@@ -156,8 +156,8 @@ void test_iap_mem_operation_user_managed_encrypted_flash()
     status = iap_mem_erase(&apiCoreCtx, remapped_address, sizeof(uint32_t), kMemoryID_FlexspiNor);
     APP_ASSERT(kStatus_Success, status, "iap_mem_erase returned with code [0x%X]\r\n", status);
 
-    status = iap_mem_write(&apiCoreCtx, remapped_address, sizeof(data), (uint8_t *)&data, kMemoryID_FlexspiNor);
-    APP_ASSERT(kStatus_Success, status, "iap_mem_write returned with code [0x%X]\r\n", status);
+    status = iap_mem_write_blocked(&apiCoreCtx, remapped_address, sizeof(data), (uint8_t *)&data, kMemoryID_FlexspiNor);
+    APP_ASSERT(kStatus_Success, status, "iap_mem_write_blocked returned with code [0x%X]\r\n", status);
 
     status = iap_mem_flush(&apiCoreCtx);
     APP_ASSERT(kStatus_Success, status, "iap_mem_flush returned with code [0x%X]\r\n", status);
@@ -166,7 +166,7 @@ void test_iap_mem_operation_user_managed_encrypted_flash()
     CACHE64_InvalidateCache(CACHE64_CTRL0);
 
     // The test is pass, if the memory content was programmed.
-    APP_ASSERT(data, *((uint32_t *)remapped_address),
+    APP_ASSERT(data[0], *((uint32_t *)remapped_address),
                "memory content was not programmed correctly!\
                expected [0x%X], actual [0x%X]\r\n",
                data, *((uint32_t *)remapped_address));
@@ -178,7 +178,7 @@ void test_iap_mem_operation_user_managed_encrypted_flash()
     CACHE64_InvalidateCache(CACHE64_CTRL0);
 
     // When the region is disabled, the data is not readable.
-    if (data == *((uint32_t *)remapped_address))
+    if (data[0] == *((uint32_t *)remapped_address))
     {
         PRINTF("Example failed: ");
         PRINTF("memory content was readable after disabling encryption!");
