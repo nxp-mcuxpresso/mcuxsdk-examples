@@ -1,7 +1,8 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
+ *
  */
 
 /***********************************************************************************************************************
@@ -30,14 +31,13 @@ product: Clocks v11.0
 processor: KW45B41Z83xxxA
 package_id: KW45B41Z83AFTA
 mcu_data: ksdk2_0
-processor_version: 0.13.7
+processor_version: 14.0.0
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
 
-//#include "fsl_ccm32k.h"
-//#include "fsl_spc.h"
 #include "clock_config.h"
-#if 0
+#include "fsl_spc.h"
+
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -58,7 +58,7 @@ processor_version: 0.13.7
  *END**************************************************************************/
 static void CLOCK_CONFIG_SetScgOutSel(clock_clkout_src_t setting)
 {
-     SCG0->CLKOUTCNFG = SCG_CLKOUTCNFG_CLKOUTSEL(setting);
+     SCG_0->CLKOUTCNFG = SCG_CLKOUTCNFG_CLKOUTSEL(setting);
 }
 
 /*FUNCTION**********************************************************************
@@ -67,7 +67,7 @@ static void CLOCK_CONFIG_SetScgOutSel(clock_clkout_src_t setting)
  * Description   : This function is used to safely configure FIRC clock.
  *                 In default out of reset, the CPU is clocked from FIRC.
  *                 Before setting FIRC, change to use SIRC as system clock,
- *                 then configure FIRC.
+ *                 then configure FIRC. 
  * Param fircConfig  : FIRC configuration.
  *
  *END**************************************************************************/
@@ -108,30 +108,36 @@ void BOARD_InitBootClocks(void)
 name: BOARD_BootClockRUN
 called_from_default_init: true
 outputs:
-- {id: BUS_CLK.outFreq, value: 48 MHz}
-- {id: CPU_CLK.outFreq, value: 48 MHz}
+- {id: BUS_CLK.outFreq, value: 96 MHz}
+- {id: CPU_CLK.outFreq, value: 96 MHz}
 - {id: FIRC_CLK.outFreq, value: 96 MHz}
 - {id: FRO16K_CLK.outFreq, value: 16 kHz}
 - {id: RADIO_FRO192M_CLK.outFreq, value: 32 MHz}
 - {id: RADIO_FRO192M_FRODIV_CLK.outFreq, value: 16 MHz}
 - {id: ROSC_CLK.outFreq, value: 32.768 kHz}
 - {id: SCG.FIRC_EXT_REF_TRIM_CLK.outFreq, value: 1 MHz}
-- {id: SCGCLKOUT_CLK.outFreq, value: 16 MHz}
+- {id: SCGCLKOUT_CLK.outFreq, value: 24 MHz}
 - {id: SIRC_CLK.outFreq, value: 6 MHz}
-- {id: SLOW_CLK.outFreq, value: 16 MHz}
+- {id: SLOW_CLK.outFreq, value: 24 MHz}
 - {id: SOSC_CLK.outFreq, value: 32 MHz}
-- {id: System_clock.outFreq, value: 48 MHz}
+- {id: System_clock.outFreq, value: 96 MHz}
 settings:
+- {id: VDDCore, value: voltage_1v1}
 - {id: CCM32K.CCM32K_32K_SEL.sel, value: CCM32K.OSC_32K}
 - {id: CCM32K_FRO32K_CTRL_FRO_EN_CFG, value: Disabled}
+- {id: CCM32K_OSC32K_CTRL_CAP_SEL_EN_CFG, value: Enabled}
+- {id: CCM32K_OSC32K_CTRL_EXTAL_CAP_SEL_CFG, value: 8PF}
 - {id: CCM32K_OSC32K_CTRL_OSC_EN_CFG, value: Enabled}
-- {id: SCG.DIVCORE.scale, value: '2', locked: true}
-- {id: SCG.DIVSLOW.scale, value: '3', locked: true}
-- {id: SCG.FIRC_TRIMDIV.scale, value: '32'}
+- {id: CCM32K_OSC32K_CTRL_XTAL_CAP_SEL_CFG, value: 8PF}
+- {id: SCG.DIVCORE.scale, value: '1', locked: true}
+- {id: SCG.DIVSLOW.scale, value: '4', locked: true}
+- {id: SCG.FIRC_TRIMDIV.scale, value: '32', locked: true}
 - {id: SCG_FIRCCSR_TRIM_CFG, value: Autotrimming}
 - {id: SCG_SOSCCSR_SOSCEN_CFG, value: Enabled}
 sources:
 - {id: CCM32K.OSC_32K.outFreq, value: 32.768 kHz, enabled: true}
+- {id: RADIO.RADIO_FRO192M.outFreq, value: 32 MHz}
+- {id: SCG.FIRC.outFreq, value: 96 MHz}
 - {id: SCG.SOSC.outFreq, value: 32 MHz, enabled: true}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
@@ -149,7 +155,7 @@ static const scg_firc_trim_config_t FircTrimConfig_BOARD_BootClockRUN =
 };
 const scg_sys_clk_config_t g_sysClkConfig_BOARD_BootClockRUN =
 {
-    .divSlow = (uint32_t)kSCG_SysClkDivBy3,       /* Slow Clock Divider: divided by 3 */
+    .divSlow = (uint32_t)kSCG_SysClkDivBy2,       /* Slow Clock Divider: divided by 2 */
     .divBus = (uint32_t)kSCG_SysClkDivBy1,        /* Bus Clock Divider: divided by 1 */
     .divCore = (uint32_t)kSCG_SysClkDivBy2,       /* Core Clock Divider: divided by 2 */
     .src = (uint32_t)kSCG_SysClkSrcFirc,          /* Fast IRC is selected as System Clock Source */
@@ -170,7 +176,6 @@ const scg_firc_config_t g_scgFircConfig_BOARD_BootClockRUN =
     .range = kSCG_FircRange96M,                   /* 96 Mhz FIRC clock selected */
     .trimConfig = &FircTrimConfig_BOARD_BootClockRUN,
 };
-
 /*******************************************************************************
  * Code for BOARD_BootClockRUN configuration
  ******************************************************************************/
@@ -205,6 +210,7 @@ void BOARD_BootClockRUN(void)
     CLOCK_SetXtal0Freq(g_scgSysOscConfig_BOARD_BootClockRUN.freq);
     /* Init SIRC */
     (void)CLOCK_InitSirc(&g_scgSircConfig_BOARD_BootClockRUN);
+
     /* Set SystemCoreClock variable */
     SystemCoreClock = BOARD_BOOTCLOCKRUN_CORE_CLOCK;
 
@@ -220,43 +226,8 @@ void BOARD_BootClockRUN(void)
     /* Set SCG CLKOUT selection. */
     CLOCK_CONFIG_SetScgOutSel(kClockClkoutSelScgSlow);
 }
-/*******************************************************************************
- ********************* Configuration BOARD_BootClockHSRUN **********************
- ******************************************************************************/
-/* clang-format off */
-/* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-!!Configuration
-name: BOARD_BootClockHSRUN
-outputs:
-- {id: BUS_CLK.outFreq, value: 96 MHz}
-- {id: CPU_CLK.outFreq, value: 96 MHz}
-- {id: FIRC_CLK.outFreq, value: 96 MHz}
-- {id: FRO16K_CLK.outFreq, value: 16 kHz}
-- {id: RADIO_FRO192M_CLK.outFreq, value: 32 MHz}
-- {id: RADIO_FRO192M_FRODIV_CLK.outFreq, value: 16 MHz}
-- {id: ROSC_CLK.outFreq, value: 32.768 kHz}
-- {id: SCG.FIRC_EXT_REF_TRIM_CLK.outFreq, value: 1 MHz}
-- {id: SCGCLKOUT_CLK.outFreq, value: 24 MHz}
-- {id: SIRC_CLK.outFreq, value: 6 MHz}
-- {id: SLOW_CLK.outFreq, value: 24 MHz}
-- {id: SOSC_CLK.outFreq, value: 32 MHz}
-- {id: System_clock.outFreq, value: 96 MHz}
-settings:
-- {id: VDDCore, value: voltage_1v1}
-- {id: CCM32K.CCM32K_32K_SEL.sel, value: CCM32K.OSC_32K}
-- {id: CCM32K_OSC32K_CTRL_OSC_EN_CFG, value: Enabled}
-- {id: SCG.DIVCORE.scale, value: '1', locked: true}
-- {id: SCG.DIVSLOW.scale, value: '4', locked: true}
-- {id: SCG.FIRC_TRIMDIV.scale, value: '32', locked: true}
-- {id: SCG_FIRCCSR_TRIM_CFG, value: Autotrimming}
-- {id: SCG_SOSCCSR_SOSCEN_CFG, value: Enabled}
-sources:
-- {id: CCM32K.OSC_32K.outFreq, value: 32.768 kHz, enabled: true}
-- {id: SCG.SOSC.outFreq, value: 32 MHz, enabled: true}
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
-/* clang-format on */
 
-/*******************************************************************************
+ /*******************************************************************************
  * Variables for BOARD_BootClockHSRUN configuration
  ******************************************************************************/
 static const scg_firc_trim_config_t FircTrimConfig_BOARD_BootClockHSRUN =
@@ -269,6 +240,7 @@ static const scg_firc_trim_config_t FircTrimConfig_BOARD_BootClockHSRUN =
 };
 const scg_sys_clk_config_t g_sysClkConfig_BOARD_BootClockHSRUN =
 {
+    .divPlat = (uint32_t)kSCG_SysClkDivBy2,       /* Platform Clock Divider: divided by 2 */
     .divSlow = (uint32_t)kSCG_SysClkDivBy4,       /* Slow Clock Divider: divided by 4 */
     .divBus = (uint32_t)kSCG_SysClkDivBy1,        /* Bus Clock Divider: divided by 1 */
     .divCore = (uint32_t)kSCG_SysClkDivBy1,       /* Core Clock Divider: divided by 1 */
@@ -339,4 +311,3 @@ void BOARD_BootClockHSRUN(void)
     /* Set SCG CLKOUT selection. */
     CLOCK_CONFIG_SetScgOutSel(kClockClkoutSelScgSlow);
 }
-#endif

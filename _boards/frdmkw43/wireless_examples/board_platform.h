@@ -74,7 +74,7 @@
 #define BOARD_32KHZ_SRC_CLK_ACCURACY 0
 
 /* Define to 1 to use FRO 32KHz instead of crystal one, by default crystal will be used */
-#define gBoardUseFro32k_d 1
+//#define gBoardUseFro32k_d 1
 
 /* Define to 1 to use SWO on application core or 2 to use SWO on NBU core */
 //#define BOARD_DBG_SWO_CORE_FUNNEL 1
@@ -90,10 +90,11 @@
 #define BOARD_UART_CLKSRC_FRO192M 1U  // kCLOCK_IpSrcFro192M
 
 #if defined(FPGA_TARGET) && (FPGA_TARGET > 0)
-#define BOARD_APP_UART_INSTANCE 0U
 #define BOARD_APP_UART_CLK_FREQ   32000000U // Fro192M runs at 32M on the FPGA
 #define BOARD_DEBUG_UART_CLK_FREQ 32000000U
 #endif
+
+#define BOARD_APP_UART_INSTANCE 0U
 
 /*!
  * @brief Enable write for the Glikey protected registers.

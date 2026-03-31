@@ -11,8 +11,6 @@ mcux_add_configuration(
        -DCPU_KW43B43ZC7\
        -DCFG_BLE_PRJ=1\
        -DENABLE_RAM_VECTOR_TABLE=1\
-       -DNXP_SSSAPI\
-       -DNXP_ELE200\
        -DHAL_FLASH_ROMAPI_DRIVER=1\
        -DgUseHciTransportDownward_d=1\
        -DTM_ENABLE_TIME_STAMP=1\

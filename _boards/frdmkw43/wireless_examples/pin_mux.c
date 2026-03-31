@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -58,29 +58,6 @@ BOARD_InitPinButton0:
  * END ****************************************************************************************************************/
 void BOARD_InitPinButton0(void)
 {
-
-    const port_pin_config_t SW2 = {/* Internal pull-up resistor is enabled */
-                                   (uint16_t)kPORT_PullUp,
-                                   /* High internal pull resistor value is selected. */
-                                   (uint16_t)kPORT_HighPullResistor,
-                                   /* Fast slew rate is configured */
-                                   (uint16_t)kPORT_FastSlewRate,
-                                   /* Passive input filter is disabled */
-                                   (uint16_t)kPORT_PassiveFilterDisable,
-                                   /* Open drain output is enabled */
-                                   (uint16_t)kPORT_OpenDrainEnable,
-                                   /* Low drive strength is configured */
-                                   (uint16_t)kPORT_LowDriveStrength,
-#if defined(FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1) && FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1
-                                   /* Normal drive strength is configured */
-                                   (uint16_t)kPORT_NormalDriveStrength,
-#endif
-                                   /* Pin is configured as PTD1 */
-                                   (uint16_t)kPORT_MuxAsGpio,
-                                   /* Pin Control Register fields [15:0] are not locked */
-                                   (uint16_t)kPORT_UnlockRegister};
-    /* PORTD1 (pin 24) is configured as PTD1 */
-    PORT_SetPinConfig(BOARD_INITPINBUTTON0_SW2_PORT, BOARD_INITPINBUTTON0_SW2_PIN, &SW2);
 }
 
 /* clang-format off */
@@ -103,31 +80,6 @@ BOARD_InitPinButton1:
  * END ****************************************************************************************************************/
 void BOARD_InitPinButton1(void)
 {
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_PortC);
-
-    const port_pin_config_t SW3 = {/* Internal pull-up resistor is enabled */
-                                   (uint16_t)kPORT_PullUp,
-                                   /* Low internal pull resistor value is selected. */
-                                   (uint16_t)kPORT_LowPullResistor,
-                                   /* Slow slew rate is configured */
-                                   (uint16_t)kPORT_SlowSlewRate,
-                                   /* Passive input filter is disabled */
-                                   (uint16_t)kPORT_PassiveFilterDisable,
-                                   /* Open drain output is enabled */
-                                   (uint16_t)kPORT_OpenDrainEnable,
-                                   /* Low drive strength is configured */
-                                   (uint16_t)kPORT_LowDriveStrength,
-#if defined(FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1) && FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1
-                                   /* Normal drive strength is configured */
-                                   (uint16_t)kPORT_NormalDriveStrength,
-#endif
-                                   /* Pin is configured as PTC6 */
-                                   (uint16_t)kPORT_MuxAsGpio,
-                                   /* Pin Control Register fields [15:0] are not locked */
-                                   (uint16_t)kPORT_UnlockRegister};
-    /* PORTC6 (pin 44) is configured as PTC6 */
-    PORT_SetPinConfig(BOARD_INITPINBUTTON1_SW3_PORT, BOARD_INITPINBUTTON1_SW3_PIN, &SW3);
 }
 
 /* clang-format off */
@@ -151,31 +103,6 @@ BOARD_InitPinSWO:
  * END ****************************************************************************************************************/
 void BOARD_InitPinSWO(void)
 {
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_PortA);
-
-    const port_pin_config_t SWO = {/* Internal pull-down resistor is enabled */
-                                   (uint16_t)kPORT_PullDown,
-                                   /* Low internal pull resistor value is selected. */
-                                   (uint16_t)kPORT_LowPullResistor,
-                                   /* Fast slew rate is configured */
-                                   (uint16_t)kPORT_FastSlewRate,
-                                   /* Passive input filter is disabled */
-                                   (uint16_t)kPORT_PassiveFilterDisable,
-                                   /* Open drain output is disabled */
-                                   (uint16_t)kPORT_OpenDrainDisable,
-                                   /* Low drive strength is configured */
-                                   (uint16_t)kPORT_LowDriveStrength,
-#if defined(FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1) && FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1
-                                   /* Normal drive strength is configured */
-                                   (uint16_t)kPORT_NormalDriveStrength,
-#endif
-                                   /* Pin is configured as TRACE_SWO */
-                                   (uint16_t)kPORT_MuxAlt5,
-                                   /* Pin Control Register fields [15:0] are not locked */
-                                   (uint16_t)kPORT_UnlockRegister};
-    /* PORTA4 (pin 10) is configured as TRACE_SWO */
-    PORT_SetPinConfig(BOARD_INITPINSWO_PORT, BOARD_INITPINSWO_PIN, &SWO);
 }
 
 /* clang-format off */
@@ -198,31 +125,6 @@ BOARD_InitPinLED1:
  * END ****************************************************************************************************************/
 void BOARD_InitPinLED1(void)
 {
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_PortC);
-
-    const port_pin_config_t LED1 = {/* Internal pull-up/down resistor is disabled */
-                                    (uint16_t)kPORT_PullDisable,
-                                    /* Low internal pull resistor value is selected. */
-                                    (uint16_t)kPORT_LowPullResistor,
-                                    /* Slow slew rate is configured */
-                                    (uint16_t)kPORT_SlowSlewRate,
-                                    /* Passive input filter is disabled */
-                                    (uint16_t)kPORT_PassiveFilterDisable,
-                                    /* Open drain output is disabled */
-                                    (uint16_t)kPORT_OpenDrainDisable,
-                                    /* Low drive strength is configured */
-                                    (uint16_t)kPORT_LowDriveStrength,
-#if defined(FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1) && FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1
-                                    /* Normal drive strength is configured */
-                                    (uint16_t)kPORT_NormalDriveStrength,
-#endif
-                                    /* Pin is configured as PTC1 */
-                                    (uint16_t)kPORT_MuxAsGpio,
-                                    /* Pin Control Register fields [15:0] are not locked */
-                                    (uint16_t)kPORT_UnlockRegister};
-    /* PORTC1 (pin 38) is configured as PTC1 */
-    PORT_SetPinConfig(BOARD_INITPINLED1_LED1_PORT, BOARD_INITPINLED1_LED1_PIN, &LED1);
 }
 
 /* clang-format off */
@@ -245,31 +147,6 @@ BOARD_InitPinLED2:
  * END ****************************************************************************************************************/
 void BOARD_InitPinLED2(void)
 {
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_PortA);
-
-    const port_pin_config_t LED_R = {/* Internal pull-up/down resistor is disabled */
-                                     (uint16_t)kPORT_PullDisable,
-                                     /* Low internal pull resistor value is selected. */
-                                     (uint16_t)kPORT_LowPullResistor,
-                                     /* Slow slew rate is configured */
-                                     (uint16_t)kPORT_SlowSlewRate,
-                                     /* Passive input filter is disabled */
-                                     (uint16_t)kPORT_PassiveFilterDisable,
-                                     /* Open drain output is disabled */
-                                     (uint16_t)kPORT_OpenDrainDisable,
-                                     /* Low drive strength is configured */
-                                     (uint16_t)kPORT_LowDriveStrength,
-#if defined(FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1) && FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1
-                                     /* Normal drive strength is configured */
-                                     (uint16_t)kPORT_NormalDriveStrength,
-#endif
-                                     /* Pin is configured as PTA21 */
-                                     (uint16_t)kPORT_MuxAsGpio,
-                                     /* Pin Control Register fields [15:0] are not locked */
-                                     (uint16_t)kPORT_UnlockRegister};
-    /* PORTA21 (pin 18) is configured as PTA21 */
-    PORT_SetPinConfig(BOARD_INITPINLED2_LED_R_PORT, BOARD_INITPINLED2_LED_R_PIN, &LED_R);
 }
 
 /* clang-format off */
@@ -292,31 +169,6 @@ BOARD_InitPinLED3:
  * END ****************************************************************************************************************/
 void BOARD_InitPinLED3(void)
 {
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_PortA);
-
-    const port_pin_config_t LED_G = {/* Internal pull-up/down resistor is disabled */
-                                     (uint16_t)kPORT_PullDisable,
-                                     /* Low internal pull resistor value is selected. */
-                                     (uint16_t)kPORT_LowPullResistor,
-                                     /* Slow slew rate is configured */
-                                     (uint16_t)kPORT_SlowSlewRate,
-                                     /* Passive input filter is disabled */
-                                     (uint16_t)kPORT_PassiveFilterDisable,
-                                     /* Open drain output is disabled */
-                                     (uint16_t)kPORT_OpenDrainDisable,
-                                     /* Low drive strength is configured */
-                                     (uint16_t)kPORT_LowDriveStrength,
-#if defined(FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1) && FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1
-                                     /* Normal drive strength is configured */
-                                     (uint16_t)kPORT_NormalDriveStrength,
-#endif
-                                     /* Pin is configured as PTA19 */
-                                     (uint16_t)kPORT_MuxAsGpio,
-                                     /* Pin Control Register fields [15:0] are not locked */
-                                     (uint16_t)kPORT_UnlockRegister};
-    /* PORTA19 (pin 14) is configured as PTA19 */
-    PORT_SetPinConfig(BOARD_INITPINLED3_LED_G_PORT, BOARD_INITPINLED3_LED_G_PIN, &LED_G);
 }
 
 /* clang-format off */
@@ -339,31 +191,6 @@ BOARD_InitPinLED4:
  * END ****************************************************************************************************************/
 void BOARD_InitPinLED4(void)
 {
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_PortA);
-
-    const port_pin_config_t LED_B = {/* Internal pull-up/down resistor is disabled */
-                                     (uint16_t)kPORT_PullDisable,
-                                     /* Low internal pull resistor value is selected. */
-                                     (uint16_t)kPORT_LowPullResistor,
-                                     /* Slow slew rate is configured */
-                                     (uint16_t)kPORT_SlowSlewRate,
-                                     /* Passive input filter is disabled */
-                                     (uint16_t)kPORT_PassiveFilterDisable,
-                                     /* Open drain output is disabled */
-                                     (uint16_t)kPORT_OpenDrainDisable,
-                                     /* Low drive strength is configured */
-                                     (uint16_t)kPORT_LowDriveStrength,
-#if defined(FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1) && FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1
-                                     /* Normal drive strength is configured */
-                                     (uint16_t)kPORT_NormalDriveStrength,
-#endif
-                                     /* Pin is configured as PTA20 */
-                                     (uint16_t)kPORT_MuxAsGpio,
-                                     /* Pin Control Register fields [15:0] are not locked */
-                                     (uint16_t)kPORT_UnlockRegister};
-    /* PORTA20 (pin 17) is configured as PTA20 */
-    PORT_SetPinConfig(BOARD_INITPINLED4_LED_B_PORT, BOARD_INITPINLED4_LED_B_PIN, &LED_B);
 }
 
 /* clang-format off */
@@ -385,11 +212,29 @@ BOARD_InitPinLPUART0_RX:
  * END ****************************************************************************************************************/
 void BOARD_InitPinLPUART0_RX(void)
 {
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
+    /* Clock Config: Peripheral clocks are enabled; module does not stall low power mode entry */
     CLOCK_EnableClock(kCLOCK_PortA);
 
-    /* PORTA16 (pin 11) is configured as LPUART0_RX */
-    PORT_SetPinMux(PORT_A, 16U, kPORT_MuxAlt6);
+    const port_pin_config_t port_a18_pin11_config = {/* Internal pull-up/down resistor is disabled */
+                                                     .pullSelect = (uint16_t)kPORT_PullDisable,
+                                                     /* Low internal pull resistor value is selected. */
+                                                     .pullValueSelect = (uint16_t)kPORT_LowPullResistor,
+                                                     /* Fast slew rate is configured */
+                                                     .slewRate = (uint16_t)kPORT_FastSlewRate,
+                                                     /* Passive input filter is disabled */
+                                                     .passiveFilterEnable = (uint16_t)kPORT_PassiveFilterDisable,
+                                                     /* Open drain output is disabled */
+                                                     .openDrainEnable = (uint16_t)kPORT_OpenDrainDisable,
+                                                     /* Low drive strength is configured */
+                                                     .driveStrength = (uint16_t)kPORT_LowDriveStrength,
+                                                     /* Pin is configured as LPUART0_RX */
+                                                     .mux = (uint16_t)kPORT_MuxAlt10,
+                                                     /* Digital input is not inverted */
+                                                     .invertInput = (uint16_t)kPORT_InputNormal,
+                                                     /* Pin Control Register fields [15:0] are not locked */
+                                                     .lockRegister = (uint16_t)kPORT_UnlockRegister};
+    /* PORT_A16 (pin 11) is configured as LPUART0_RX */
+    PORT_SetPinConfig(PORT_A, 18U, &port_a18_pin11_config);
 }
 
 /* clang-format off */
@@ -411,11 +256,29 @@ BOARD_InitPinLPUART0_TX:
  * END ****************************************************************************************************************/
 void BOARD_InitPinLPUART0_TX(void)
 {
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
+    /* Clock Config: Peripheral clocks are enabled; module does not stall low power mode entry */
     CLOCK_EnableClock(kCLOCK_PortA);
 
-    /* PORTA17 (pin 12) is configured as LPUART0_TX */
-    PORT_SetPinMux(PORT_A, 17U, kPORT_MuxAlt6);
+    const port_pin_config_t port_a17_pin12_config = {/* Internal pull-up/down resistor is disabled */
+                                                     .pullSelect = (uint16_t)kPORT_PullDisable,
+                                                     /* Low internal pull resistor value is selected. */
+                                                     .pullValueSelect = (uint16_t)kPORT_LowPullResistor,
+                                                     /* Fast slew rate is configured */
+                                                     .slewRate = (uint16_t)kPORT_FastSlewRate,
+                                                     /* Passive input filter is disabled */
+                                                     .passiveFilterEnable = (uint16_t)kPORT_PassiveFilterDisable,
+                                                     /* Open drain output is disabled */
+                                                     .openDrainEnable = (uint16_t)kPORT_OpenDrainDisable,
+                                                     /* Low drive strength is configured */
+                                                     .driveStrength = (uint16_t)kPORT_LowDriveStrength,
+                                                     /* Pin is configured as LPUART0_TX */
+                                                     .mux = (uint16_t)kPORT_MuxAlt6,
+                                                     /* Digital input is not inverted */
+                                                     .invertInput = (uint16_t)kPORT_InputNormal,
+                                                     /* Pin Control Register fields [15:0] are not locked */
+                                                     .lockRegister = (uint16_t)kPORT_UnlockRegister};
+    /* PORT_A17 (pin 12) is configured as LPUART0_TX */
+    PORT_SetPinConfig(PORT_A, 17U, &port_a17_pin12_config);
 }
 
 /* clang-format off */
@@ -437,11 +300,6 @@ BOARD_InitPinLPUART1_RX:
  * END ****************************************************************************************************************/
 void BOARD_InitPinLPUART1_RX(void)
 {
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_PortC);
-
-    /* PORTC2 (pin 39) is configured as LPUART1_RX */
-    PORT_SetPinMux(PORT_C, 2U, kPORT_MuxAlt3);
 }
 
 /* clang-format off */
@@ -463,11 +321,6 @@ BOARD_InitPinLPUART1_TX:
  * END ****************************************************************************************************************/
 void BOARD_InitPinLPUART1_TX(void)
 {
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_PortC);
-
-    /* PORTC3 (pin 40) is configured as LPUART1_TX */
-    PORT_SetPinMux(PORT_C, 3U, kPORT_MuxAlt3);
 }
 
 /* clang-format off */
@@ -489,11 +342,6 @@ BOARD_UnInitPinLPUART0_RX:
  * END ****************************************************************************************************************/
 void BOARD_UnInitPinLPUART0_RX(void)
 {
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_PortA);
-
-    /* PORTA16 (pin 11) is configured as ADC0_A12 */
-    PORT_SetPinMux(PORT_C, 16U, kPORT_PinDisabledOrAnalog);
 }
 
 /* clang-format off */
@@ -515,11 +363,6 @@ BOARD_UnInitPinLPUART0_TX:
  * END ****************************************************************************************************************/
 void BOARD_UnInitPinLPUART0_TX(void)
 {
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_PortA);
-
-    /* PORTA17 (pin 12) is configured as ADC0_A13 */
-    PORT_SetPinMux(PORT_A, 17U, kPORT_PinDisabledOrAnalog);
 }
 
 /* clang-format off */
@@ -541,11 +384,6 @@ BOARD_UnInitPinLPUART1_RX:
  * END ****************************************************************************************************************/
 void BOARD_UnInitPinLPUART1_RX(void)
 {
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_PortC);
-
-    /* PORTC2 (pin 39) is disabled */
-    PORT_SetPinMux(PORT_C, 2U, kPORT_PinDisabledOrAnalog);
 }
 
 /* clang-format off */
@@ -567,11 +405,6 @@ BOARD_UnInitPinLPUART1_TX:
  * END ****************************************************************************************************************/
 void BOARD_UnInitPinLPUART1_TX(void)
 {
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_PortC);
-
-    /* PORTC3 (pin 40) is disabled */
-    PORT_SetPinMux(PORT_C, 3U, kPORT_PinDisabledOrAnalog);
 }
 
 /* clang-format off */
@@ -593,11 +426,6 @@ BOARD_UnInitPinButton1:
  * END ****************************************************************************************************************/
 void BOARD_UnInitPinButton1(void)
 {
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_PortC);
-
-    /* PORTC6 (pin 44) is configured as ADC0_A8 */
-    PORT_SetPinMux(BOARD_UNINITPINBUTTON1_SW3_PORT, BOARD_UNINITPINBUTTON1_SW3_PIN, kPORT_PinDisabledOrAnalog);
 }
 
 /* clang-format off */
@@ -619,9 +447,6 @@ BOARD_UnInitPinButton0:
  * END ****************************************************************************************************************/
 void BOARD_UnInitPinButton0(void)
 {
-
-    /* PORTD1 (pin 24) is configured as ADC0_B5 */
-    PORT_SetPinMux(BOARD_UNINITPINBUTTON0_SW2_PORT, BOARD_UNINITPINBUTTON0_SW2_PIN, kPORT_PinDisabledOrAnalog);
 }
 
 /* clang-format off */
@@ -644,11 +469,6 @@ BOARD_UnInitPinSWO:
  * END ****************************************************************************************************************/
 void BOARD_UnInitPinSWO(void)
 {
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_PortA);
-
-    /* PORTA4 (pin 10) is configured as disabled */
-    PORT_SetPinMux(BOARD_UNINITPINSWO_PORT, BOARD_UNINITPINSWO_PIN, kPORT_PinDisabledOrAnalog);
 }
 
 /* clang-format off */
@@ -671,11 +491,6 @@ BOARD_UnInitPinLED1:
  * END ****************************************************************************************************************/
 void BOARD_UnInitPinLED1(void)
 {
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_PortC);
-
-    /* PORTC1 (pin 38) is configured as LPSPI1_PCS3 */
-    PORT_SetPinMux(BOARD_UNINITPINLED1_LED1_PORT, BOARD_UNINITPINLED1_LED1_PIN, kPORT_PinDisabledOrAnalog);
 }
 
 /* clang-format off */
@@ -697,11 +512,6 @@ BOARD_UnInitPinLED2:
  * END ****************************************************************************************************************/
 void BOARD_UnInitPinLED2(void)
 {
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_PortA);
-
-    /* PORTA21 (pin 18) is configured as ADC0_A15 */
-    PORT_SetPinMux(BOARD_UNINITPINLED2_LED_R_PORT, BOARD_UNINITPINLED2_LED_R_PIN, kPORT_PinDisabledOrAnalog);
 }
 
 /* clang-format off */
@@ -723,11 +533,6 @@ BOARD_UnInitPinLED3:
  * END ****************************************************************************************************************/
 void BOARD_UnInitPinLED3(void)
 {
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_PortA);
-
-    /* PORTA19 (pin 14) is configured as CMP1_IN0 */
-    PORT_SetPinMux(BOARD_UNINITPINLED3_LED_G_PORT, BOARD_UNINITPINLED3_LED_G_PIN, kPORT_PinDisabledOrAnalog);
 }
 
 /* clang-format off */
@@ -749,11 +554,6 @@ BOARD_UnInitPinLED4:
  * END ****************************************************************************************************************/
 void BOARD_UnInitPinLED4(void)
 {
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_PortA);
-
-    /* PORTA20 (pin 17) is configured as ADC0_A14 */
-    PORT_SetPinMux(BOARD_UNINITPINLED4_LED_B_PORT, BOARD_UNINITPINLED4_LED_B_PIN, kPORT_PinDisabledOrAnalog);
 }
 
 /* clang-format off */
@@ -785,139 +585,6 @@ BOARD_InitExtFlashPins:
  * END ****************************************************************************************************************/
 void BOARD_InitExtFlashPins(void)
 {
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_GpioB);
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_PortB);
-
-    gpio_pin_config_t LPSPI1_PCS0_config = {
-        .pinDirection = kGPIO_DigitalOutput,
-        .outputLogic = 1U
-    };
-    /* Initialize GPIO functionality on pin PTB0 (pin 46)  */
-    GPIO_PinInit(BOARD_INITEXTFLASHPINS_LPSPI1_PCS0_GPIO, BOARD_INITEXTFLASHPINS_LPSPI1_PCS0_PIN, &LPSPI1_PCS0_config);
-
-    gpio_pin_config_t LPSPI1_PCS3_config = {
-        .pinDirection = kGPIO_DigitalOutput,
-        .outputLogic = 1U
-    };
-    /* Initialize GPIO functionality on pin PTB4 (pin 2)  */
-    GPIO_PinInit(BOARD_INITEXTFLASHPINS_LPSPI1_PCS3_GPIO, BOARD_INITEXTFLASHPINS_LPSPI1_PCS3_PIN, &LPSPI1_PCS3_config);
-
-    const port_pin_config_t LPSPI1_PCS0 = {/* Internal pull-up resistor is enabled */
-                                           (uint16_t)kPORT_PullUp,
-                                           /* Low internal pull resistor value is selected. */
-                                           (uint16_t)kPORT_LowPullResistor,
-                                           /* Fast slew rate is configured */
-                                           (uint16_t)kPORT_FastSlewRate,
-                                           /* Passive input filter is disabled */
-                                           (uint16_t)kPORT_PassiveFilterDisable,
-                                           /* Open drain output is disabled */
-                                           (uint16_t)kPORT_OpenDrainDisable,
-                                           /* High drive strength is configured */
-                                           (uint16_t)kPORT_HighDriveStrength,
-#if defined(FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1) && FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1
-                                           /* Normal drive strength is configured */
-                                           (uint16_t)kPORT_NormalDriveStrength,
-#endif
-                                           /* Pin is configured as PTB0 */
-                                           (uint16_t)kPORT_MuxAsGpio,
-                                           /* Pin Control Register fields [15:0] are not locked */
-                                           (uint16_t)kPORT_UnlockRegister};
-    /* PORTB0 (pin 46) is configured as PTB0 */
-    PORT_SetPinConfig(BOARD_INITEXTFLASHPINS_LPSPI1_PCS0_PORT, BOARD_INITEXTFLASHPINS_LPSPI1_PCS0_PIN, &LPSPI1_PCS0);
-
-    const port_pin_config_t portb1_pin47_config = {/* Internal pull-up/down resistor is disabled */
-                                                   (uint16_t)kPORT_PullDisable,
-                                                   /* Low internal pull resistor value is selected. */
-                                                   (uint16_t)kPORT_LowPullResistor,
-                                                   /* Fast slew rate is configured */
-                                                   (uint16_t)kPORT_FastSlewRate,
-                                                   /* Passive input filter is disabled */
-                                                   (uint16_t)kPORT_PassiveFilterDisable,
-                                                   /* Open drain output is disabled */
-                                                   (uint16_t)kPORT_OpenDrainDisable,
-                                                   /* High drive strength is configured */
-                                                   (uint16_t)kPORT_HighDriveStrength,
-#if defined(FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1) && FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1
-                                                   /* Normal drive strength is configured */
-                                                   (uint16_t)kPORT_NormalDriveStrength,
-#endif
-                                                   /* Pin is configured as LPSPI1_SIN */
-                                                   (uint16_t)kPORT_MuxAlt2,
-                                                   /* Pin Control Register fields [15:0] are not locked */
-                                                   (uint16_t)kPORT_UnlockRegister};
-    /* PORTB1 (pin 47) is configured as LPSPI1_SIN */
-    PORT_SetPinConfig(PORT_B, 1U, &portb1_pin47_config);
-
-    const port_pin_config_t portb2_pin48_config = {/* Internal pull-up/down resistor is disabled */
-                                                   (uint16_t)kPORT_PullDisable,
-                                                   /* Low internal pull resistor value is selected. */
-                                                   (uint16_t)kPORT_LowPullResistor,
-                                                   /* Fast slew rate is configured */
-                                                   (uint16_t)kPORT_FastSlewRate,
-                                                   /* Passive input filter is disabled */
-                                                   (uint16_t)kPORT_PassiveFilterDisable,
-                                                   /* Open drain output is disabled */
-                                                   (uint16_t)kPORT_OpenDrainDisable,
-                                                   /* High drive strength is configured */
-                                                   (uint16_t)kPORT_HighDriveStrength,
-#if defined(FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1) && FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1
-                                                   /* Normal drive strength is configured */
-                                                   (uint16_t)kPORT_NormalDriveStrength,
-#endif
-                                                   /* Pin is configured as LPSPI1_SCK */
-                                                   (uint16_t)kPORT_MuxAlt2,
-                                                   /* Pin Control Register fields [15:0] are not locked */
-                                                   (uint16_t)kPORT_UnlockRegister};
-    /* PORTB2 (pin 48) is configured as LPSPI1_SCK */
-    PORT_SetPinConfig(PORT_B, 2U, &portb2_pin48_config);
-
-    const port_pin_config_t portb3_pin1_config = {/* Internal pull-up/down resistor is disabled */
-                                                  (uint16_t)kPORT_PullDisable,
-                                                  /* Low internal pull resistor value is selected. */
-                                                  (uint16_t)kPORT_LowPullResistor,
-                                                  /* Fast slew rate is configured */
-                                                  (uint16_t)kPORT_FastSlewRate,
-                                                  /* Passive input filter is disabled */
-                                                  (uint16_t)kPORT_PassiveFilterDisable,
-                                                  /* Open drain output is disabled */
-                                                  (uint16_t)kPORT_OpenDrainDisable,
-                                                  /* High drive strength is configured */
-                                                  (uint16_t)kPORT_HighDriveStrength,
-#if defined(FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1) && FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1
-                                                  /* Normal drive strength is configured */
-                                                  (uint16_t)kPORT_NormalDriveStrength,
-#endif
-                                                  /* Pin is configured as LPSPI1_SOUT */
-                                                  (uint16_t)kPORT_MuxAlt2,
-                                                  /* Pin Control Register fields [15:0] are not locked */
-                                                  (uint16_t)kPORT_UnlockRegister};
-    /* PORTB3 (pin 1) is configured as LPSPI1_SOUT */
-    PORT_SetPinConfig(PORT_B, 3U, &portb3_pin1_config);
-
-    const port_pin_config_t LPSPI1_PCS3 = {/* Internal pull-up/down resistor is disabled */
-                                           (uint16_t)kPORT_PullDisable,
-                                           /* Low internal pull resistor value is selected. */
-                                           (uint16_t)kPORT_LowPullResistor,
-                                           /* Fast slew rate is configured */
-                                           (uint16_t)kPORT_FastSlewRate,
-                                           /* Passive input filter is disabled */
-                                           (uint16_t)kPORT_PassiveFilterDisable,
-                                           /* Open drain output is disabled */
-                                           (uint16_t)kPORT_OpenDrainDisable,
-                                           /* Low drive strength is configured */
-                                           (uint16_t)kPORT_LowDriveStrength,
-#if defined(FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1) && FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1
-                                           /* Normal drive strength is configured */
-                                           (uint16_t)kPORT_NormalDriveStrength,
-#endif
-                                           /* Pin is configured as PTB4 */
-                                           (uint16_t)kPORT_MuxAsGpio,
-                                           /* Pin Control Register fields [15:0] are not locked */
-                                           (uint16_t)kPORT_UnlockRegister};
-    /* PORTB4 (pin 2) is configured as PTB4 */
-    PORT_SetPinConfig(BOARD_INITEXTFLASHPINS_LPSPI1_PCS3_PORT, BOARD_INITEXTFLASHPINS_LPSPI1_PCS3_PIN, &LPSPI1_PCS3);
 }
 
 /* clang-format off */
@@ -949,139 +616,6 @@ BOARD_DeinitExtFlashPins:
  * END ****************************************************************************************************************/
 void BOARD_DeinitExtFlashPins(void)
 {
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_GpioB);
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_PortB);
-
-    gpio_pin_config_t LPSPI1_PCS0_config = {
-        .pinDirection = kGPIO_DigitalOutput,
-        .outputLogic = 0U
-    };
-    /* Initialize GPIO functionality on pin PTB0 (pin 46)  */
-    GPIO_PinInit(BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS0_GPIO, BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS0_PIN, &LPSPI1_PCS0_config);
-
-    gpio_pin_config_t LPSPI1_PCS3_config = {
-        .pinDirection = kGPIO_DigitalOutput,
-        .outputLogic = 0U
-    };
-    /* Initialize GPIO functionality on pin PTB4 (pin 2)  */
-    GPIO_PinInit(BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS3_GPIO, BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS3_PIN, &LPSPI1_PCS3_config);
-
-    const port_pin_config_t LPSPI1_PCS0 = {/* Internal pull-up/down resistor is disabled */
-                                           (uint16_t)kPORT_PullDisable,
-                                           /* Low internal pull resistor value is selected. */
-                                           (uint16_t)kPORT_LowPullResistor,
-                                           /* Fast slew rate is configured */
-                                           (uint16_t)kPORT_FastSlewRate,
-                                           /* Passive input filter is disabled */
-                                           (uint16_t)kPORT_PassiveFilterDisable,
-                                           /* Open drain output is disabled */
-                                           (uint16_t)kPORT_OpenDrainDisable,
-                                           /* Low drive strength is configured */
-                                           (uint16_t)kPORT_LowDriveStrength,
-#if defined(FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1) && FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1
-                                           /* Normal drive strength is configured */
-                                           (uint16_t)kPORT_NormalDriveStrength,
-#endif
-                                           /* Pin is configured as PTB0 */
-                                           (uint16_t)kPORT_MuxAsGpio,
-                                           /* Pin Control Register fields [15:0] are not locked */
-                                           (uint16_t)kPORT_UnlockRegister};
-    /* PORTB0 (pin 46) is configured as PTB0 */
-    PORT_SetPinConfig(BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS0_PORT, BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS0_PIN, &LPSPI1_PCS0);
-
-    const port_pin_config_t portb1_pin47_config = {/* Internal pull-up/down resistor is disabled */
-                                                   (uint16_t)kPORT_PullDisable,
-                                                   /* Low internal pull resistor value is selected. */
-                                                   (uint16_t)kPORT_LowPullResistor,
-                                                   /* Fast slew rate is configured */
-                                                   (uint16_t)kPORT_FastSlewRate,
-                                                   /* Passive input filter is disabled */
-                                                   (uint16_t)kPORT_PassiveFilterDisable,
-                                                   /* Open drain output is disabled */
-                                                   (uint16_t)kPORT_OpenDrainDisable,
-                                                   /* Low drive strength is configured */
-                                                   (uint16_t)kPORT_LowDriveStrength,
-#if defined(FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1) && FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1
-                                                   /* Normal drive strength is configured */
-                                                   (uint16_t)kPORT_NormalDriveStrength,
-#endif
-                                                   /* Pin is configured as PTB1 */
-                                                   (uint16_t)kPORT_MuxAsGpio,
-                                                   /* Pin Control Register fields [15:0] are not locked */
-                                                   (uint16_t)kPORT_UnlockRegister};
-    /* PORTB1 (pin 47) is configured as PTB1 */
-    PORT_SetPinConfig(PORT_B, 1U, &portb1_pin47_config);
-
-    const port_pin_config_t portb2_pin48_config = {/* Internal pull-up/down resistor is disabled */
-                                                   (uint16_t)kPORT_PullDisable,
-                                                   /* Low internal pull resistor value is selected. */
-                                                   (uint16_t)kPORT_LowPullResistor,
-                                                   /* Fast slew rate is configured */
-                                                   (uint16_t)kPORT_FastSlewRate,
-                                                   /* Passive input filter is disabled */
-                                                   (uint16_t)kPORT_PassiveFilterDisable,
-                                                   /* Open drain output is disabled */
-                                                   (uint16_t)kPORT_OpenDrainDisable,
-                                                   /* Low drive strength is configured */
-                                                   (uint16_t)kPORT_LowDriveStrength,
-#if defined(FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1) && FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1
-                                                   /* Normal drive strength is configured */
-                                                   (uint16_t)kPORT_NormalDriveStrength,
-#endif
-                                                   /* Pin is configured as PTB2 */
-                                                   (uint16_t)kPORT_MuxAsGpio,
-                                                   /* Pin Control Register fields [15:0] are not locked */
-                                                   (uint16_t)kPORT_UnlockRegister};
-    /* PORTB2 (pin 48) is configured as PTB2 */
-    PORT_SetPinConfig(PORT_B, 2U, &portb2_pin48_config);
-
-    const port_pin_config_t portb3_pin1_config = {/* Internal pull-up/down resistor is disabled */
-                                                  (uint16_t)kPORT_PullDisable,
-                                                  /* Low internal pull resistor value is selected. */
-                                                  (uint16_t)kPORT_LowPullResistor,
-                                                  /* Fast slew rate is configured */
-                                                  (uint16_t)kPORT_FastSlewRate,
-                                                  /* Passive input filter is disabled */
-                                                  (uint16_t)kPORT_PassiveFilterDisable,
-                                                  /* Open drain output is disabled */
-                                                  (uint16_t)kPORT_OpenDrainDisable,
-                                                  /* Low drive strength is configured */
-                                                  (uint16_t)kPORT_LowDriveStrength,
-#if defined(FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1) && FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1
-                                                  /* Normal drive strength is configured */
-                                                  (uint16_t)kPORT_NormalDriveStrength,
-#endif
-                                                  /* Pin is configured as PTB3 */
-                                                  (uint16_t)kPORT_MuxAsGpio,
-                                                  /* Pin Control Register fields [15:0] are not locked */
-                                                  (uint16_t)kPORT_UnlockRegister};
-    /* PORTB3 (pin 1) is configured as PTB3 */
-    PORT_SetPinConfig(PORT_B, 3U, &portb3_pin1_config);
-
-    const port_pin_config_t LPSPI1_PCS3 = {/* Internal pull-up/down resistor is disabled */
-                                           (uint16_t)kPORT_PullDisable,
-                                           /* Low internal pull resistor value is selected. */
-                                           (uint16_t)kPORT_LowPullResistor,
-                                           /* Fast slew rate is configured */
-                                           (uint16_t)kPORT_FastSlewRate,
-                                           /* Passive input filter is disabled */
-                                           (uint16_t)kPORT_PassiveFilterDisable,
-                                           /* Open drain output is disabled */
-                                           (uint16_t)kPORT_OpenDrainDisable,
-                                           /* Low drive strength is configured */
-                                           (uint16_t)kPORT_LowDriveStrength,
-#if defined(FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1) && FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1
-                                           /* Normal drive strength is configured */
-                                           (uint16_t)kPORT_NormalDriveStrength,
-#endif
-                                           /* Pin is configured as PTB4 */
-                                           (uint16_t)kPORT_MuxAsGpio,
-                                           /* Pin Control Register fields [15:0] are not locked */
-                                           (uint16_t)kPORT_UnlockRegister};
-    /* PORTB4 (pin 2) is configured as PTB4 */
-    PORT_SetPinConfig(BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS3_PORT, BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS3_PIN, &LPSPI1_PCS3);
 }
 
 /* clang-format off */
@@ -1104,31 +638,6 @@ BOARD_InitPinLPUART0_RTS:
  * END ****************************************************************************************************************/
 void BOARD_InitPinLPUART0_RTS(void)
 {
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_PortA);
-
-    const port_pin_config_t porta19_pin14_config = {/* Internal pull-up/down resistor is disabled */
-                                                    (uint16_t)kPORT_PullDisable,
-                                                    /* Low internal pull resistor value is selected. */
-                                                    (uint16_t)kPORT_LowPullResistor,
-                                                    /* Fast slew rate is configured */
-                                                    (uint16_t)kPORT_FastSlewRate,
-                                                    /* Passive input filter is disabled */
-                                                    (uint16_t)kPORT_PassiveFilterDisable,
-                                                    /* Open drain output is disabled */
-                                                    (uint16_t)kPORT_OpenDrainDisable,
-                                                    /* Low drive strength is configured */
-                                                    (uint16_t)kPORT_LowDriveStrength,
-#if defined(FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1) && FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1
-                                                    /* Normal drive strength is configured */
-                                                    (uint16_t)kPORT_NormalDriveStrength,
-#endif
-                                                    /* Pin is configured as LPUART0_RTS_b */
-                                                    (uint16_t)kPORT_MuxAlt3,
-                                                    /* Pin Control Register fields [15:0] are not locked */
-                                                    (uint16_t)kPORT_UnlockRegister};
-    /* PORTA19 (pin 14) is configured as LPUART0_RTS_b */
-    PORT_SetPinConfig(PORT_A, 19U, &porta19_pin14_config);
 }
 
 /* clang-format off */
@@ -1151,31 +660,6 @@ BOARD_InitPinLPUART0_CTS:
  * END ****************************************************************************************************************/
 void BOARD_InitPinLPUART0_CTS(void)
 {
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_PortA);
-
-    const port_pin_config_t porta18_pin13_config = {/* Internal pull-up/down resistor is disabled */
-                                                    (uint16_t)kPORT_PullDisable,
-                                                    /* Low internal pull resistor value is selected. */
-                                                    (uint16_t)kPORT_LowPullResistor,
-                                                    /* Fast slew rate is configured */
-                                                    (uint16_t)kPORT_FastSlewRate,
-                                                    /* Passive input filter is disabled */
-                                                    (uint16_t)kPORT_PassiveFilterDisable,
-                                                    /* Open drain output is disabled */
-                                                    (uint16_t)kPORT_OpenDrainDisable,
-                                                    /* Low drive strength is configured */
-                                                    (uint16_t)kPORT_LowDriveStrength,
-#if defined(FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1) && FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1
-                                                    /* Normal drive strength is configured */
-                                                    (uint16_t)kPORT_NormalDriveStrength,
-#endif
-                                                    /* Pin is configured as LPUART0_CTS_b */
-                                                    (uint16_t)kPORT_MuxAlt3,
-                                                    /* Pin Control Register fields [15:0] are not locked */
-                                                    (uint16_t)kPORT_UnlockRegister};
-    /* PORTA18 (pin 13) is configured as LPUART0_CTS_b */
-    PORT_SetPinConfig(PORT_A, 18U, &porta18_pin13_config);
 }
 /* clang-format off */
 /*
@@ -1198,31 +682,6 @@ BOARD_UnInitPinLPUART0_RTS:
  * END ****************************************************************************************************************/
 void BOARD_UnInitPinLPUART0_RTS(void)
 {
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_PortA);
-
-    const port_pin_config_t porta19_pin14_config = {/* Internal pull-up/down resistor is disabled */
-                                                    (uint16_t)kPORT_PullDisable,
-                                                    /* Low internal pull resistor value is selected. */
-                                                    (uint16_t)kPORT_LowPullResistor,
-                                                    /* Fast slew rate is configured */
-                                                    (uint16_t)kPORT_FastSlewRate,
-                                                    /* Passive input filter is disabled */
-                                                    (uint16_t)kPORT_PassiveFilterDisable,
-                                                    /* Open drain output is disabled */
-                                                    (uint16_t)kPORT_OpenDrainDisable,
-                                                    /* Low drive strength is configured */
-                                                    (uint16_t)kPORT_LowDriveStrength,
-#if defined(FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1) && FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1
-                                                    /* Normal drive strength is configured */
-                                                    (uint16_t)kPORT_NormalDriveStrength,
-#endif
-                                                    /* Pin is configured as PTA19 */
-                                                    (uint16_t)kPORT_MuxAsGpio,
-                                                    /* Pin Control Register fields [15:0] are not locked */
-                                                    (uint16_t)kPORT_UnlockRegister};
-    /* PORTA19 (pin 14) is configured as PTA19 */
-    PORT_SetPinConfig(PORT_A, 19U, &porta19_pin14_config);
 }
 
 /* clang-format off */
@@ -1245,31 +704,6 @@ BOARD_UnInitPinLPUART0_CTS:
  * END ****************************************************************************************************************/
 void BOARD_UnInitPinLPUART0_CTS(void)
 {
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_PortA);
-
-    const port_pin_config_t porta18_pin13_config = {/* Internal pull-up/down resistor is disabled */
-                                                    (uint16_t)kPORT_PullDisable,
-                                                    /* Low internal pull resistor value is selected. */
-                                                    (uint16_t)kPORT_LowPullResistor,
-                                                    /* Fast slew rate is configured */
-                                                    (uint16_t)kPORT_FastSlewRate,
-                                                    /* Passive input filter is disabled */
-                                                    (uint16_t)kPORT_PassiveFilterDisable,
-                                                    /* Open drain output is disabled */
-                                                    (uint16_t)kPORT_OpenDrainDisable,
-                                                    /* Low drive strength is configured */
-                                                    (uint16_t)kPORT_LowDriveStrength,
-#if defined(FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1) && FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1
-                                                    /* Normal drive strength is configured */
-                                                    (uint16_t)kPORT_NormalDriveStrength,
-#endif
-                                                    /* Pin is configured as PTA18 */
-                                                    (uint16_t)kPORT_MuxAsGpio,
-                                                    /* Pin Control Register fields [15:0] are not locked */
-                                                    (uint16_t)kPORT_UnlockRegister};
-    /* PORTA18 (pin 13) is configured as PTA18 */
-    PORT_SetPinConfig(PORT_A, 18U, &porta18_pin13_config);
 }
 
 /* FUNCTION ************************************************************************************************************
@@ -1280,45 +714,6 @@ void BOARD_UnInitPinLPUART0_CTS(void)
  * END ****************************************************************************************************************/
 void BOARD_InitPins(void)
 {
-#if !defined(FPGA_TARGET) || (FPGA_TARGET==0)
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_PortA);
-
-    /* PORTA4 (pin 10) is configured as disabled */
-    PORT_SetPinMux(BOARD_UNINITPINSWO_PORT, BOARD_UNINITPINSWO_PIN, kPORT_PinDisabledOrAnalog);
-#else
-    /* necessary for HDI signals to external radio on FPGA */
-    CLOCK_EnableClock(kCLOCK_PortC);
-    CLOCK_EnableClock(kCLOCK_PortB);
-    PORT_SetPinMux(PORTC, 0U, kPORT_MuxAlt8);
-    PORT_SetPinMux(PORTC, 1U, kPORT_MuxAlt8);
-    PORT_SetPinMux(PORTC, 2U, kPORT_MuxAlt8);
-    PORT_SetPinMux(PORTC, 3U, kPORT_MuxAlt8);
-    PORT_SetPinMux(PORTC, 4U, kPORT_MuxAlt8);
-    PORT_SetPinMux(PORTC, 5U, kPORT_MuxAlt8);
-    PORT_SetPinMux(PORTC, 6U, kPORT_MuxAlt8);
-    PORT_SetPinMux(PORT_B, 0U, kPORT_MuxAlt8);
-    PORT_SetPinMux(PORT_B, 1U, kPORT_MuxAlt8);
-    PORT_SetPinMux(PORT_B, 2U, kPORT_MuxAlt8);
-    PORT_SetPinMux(PORT_B, 3U, kPORT_MuxAlt8);
-    PORT_SetPinMux(PORT_B, 4U, kPORT_MuxAlt8);
-    PORT_SetPinMux(PORT_B, 5U, kPORT_MuxAlt8);
-    PORT_SetPinMux(PORTC, 7U, kPORT_MuxAlt8);
-    
-    /* Configure PTD1 as simple input for fine  FPGA / Daughter board synchronization */
-    /* Port D is always on so no MRCC action required */
-
-    gpio_pin_config_t FPGA_synch_config = {
-        .pinDirection = kGPIO_DigitalInput,
-        .outputLogic = 0U
-    };
-    /* Initialize GPIO functionality on pin PTD1 (pin 24)  */
-    GPIO_PinInit(GPIO_D, 1U, &FPGA_synch_config);
-
-    /* PORTD1 (pin 24) is configured as PTD1 */
-    PORT_SetPinMux(PORT_D, 1U, kPORT_MuxAsGpio);
-
-#endif
 }
 /***********************************************************************************************************************
  * EOF
