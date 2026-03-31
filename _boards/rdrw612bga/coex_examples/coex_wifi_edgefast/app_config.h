@@ -12,7 +12,7 @@
 
 #ifdef __MCUXPRESSO
 #include "app_mcuxpresso_config.h"
-#endif
+#endif /* __MCUXPRESSO */
 
 #if defined(WIFI_BOARD_RW610)
 
