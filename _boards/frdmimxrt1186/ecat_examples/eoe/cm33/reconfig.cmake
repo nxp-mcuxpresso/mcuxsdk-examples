@@ -10,12 +10,6 @@ mcux_add_macro(
        -DPRINTF_ADVANCED_ENABLE=1"
 )
 
-mcux_add_configuration(
-    TARGETS flexspi_nor_debug flexspi_nor_release
-    TOOLCHAINS IAR
-    CC "-DLWIP_TIMEVAL_PRIVATE=1"
-)
-
 mcux_add_armgcc_configuration(
     TARGETS flexspi_nor_debug flexspi_nor_release
     LD "-Xlinker --defsym=__stack_size__=0x2048 -Xlinker --defsym=__heap_size__=0x30000"
