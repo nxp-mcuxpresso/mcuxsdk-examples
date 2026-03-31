@@ -4,7 +4,7 @@
 
 mcux_set_variable(board frdmkw43)
 mcux_set_variable(board_root examples/_boards)
-mcux_set_variable(bluetooth_root bluetooth_private)
+mcux_set_variable(bluetooth_root bluetooth)
 
 if (NOT DEFINED device)
     mcux_set_variable(device KW43B43ZC7)
