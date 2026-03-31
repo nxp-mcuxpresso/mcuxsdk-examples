@@ -38,7 +38,6 @@ void BOARD_InitHardware(void)
     
     trng_config_t trngcon;
     TRNG_GetDefaultConfig(&trngcon);
-    trngcon.oscillatorMode = kTRNG_DualOscillatorMode;
     
     TRNG_Init(TRNG0,&trngcon);
 
