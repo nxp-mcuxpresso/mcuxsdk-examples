@@ -443,6 +443,7 @@ static void SetVoltagePeripheralPowerStatus(resc_status_t resc_status, resc_name
 static void SetMemoryPowerStatus(resc_status_t resc_status, resc_name_t resc_name)
 {
     uint32_t sramMask = 0U;
+    uint8_t vbatSramMask = 0U;
 
     if (resc_name == kResc_Flash)
     {
@@ -493,14 +494,16 @@ static void SetMemoryPowerStatus(resc_status_t resc_status, resc_name_t resc_nam
     else
     {
         sramMask = (1UL << (uint32_t)(resc_name - kResc_RamA0));
+        assert(sramMask <= UINT8_MAX);
+        vbatSramMask = (uint8_t)sramMask;
 
         if (resc_status == kResc_Status_Off)
         {
-            VBAT_PowerOffSRAMsInLowPowerModes(APP_VBAT, (uint8_t)sramMask);
+            VBAT_PowerOffSRAMsInLowPowerModes(APP_VBAT, vbatSramMask);
         }
         else
         {
-            VBAT_RetainSRAMsInLowPowerModes(APP_VBAT, (uint8_t)sramMask);
+            VBAT_RetainSRAMsInLowPowerModes(APP_VBAT, vbatSramMask);
             /* Default to SoC supply; board can extend to VBAT LDO supply if needed. */
             VBAT_SwitchSRAMPowerBySocSupply(APP_VBAT);
         }
