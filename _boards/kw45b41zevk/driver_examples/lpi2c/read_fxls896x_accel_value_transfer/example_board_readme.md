@@ -6,7 +6,7 @@ Hardware requirements
 
 Board settings
 ============
-No special is needed.
+Disconnect JP30.
 
 Prepare the Demo
 ===============
@@ -26,7 +26,7 @@ Running the demo
 When the example runs successfully, you can see the similar information from the terminal as below.
 
 LPI2C example -- Read Accelerometer Value
-Found an FXLS8965 on board , the device address is 0x18.
+Found an FXLS8964 on board , the device address is 0x19.
 The accel values:
 x =  -125 , y =    12 , z =   976
 x =  -125 , y =    12 , z =   976

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 NXP
+ * Copyright 2021-2023, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -14,11 +14,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v12.0
+product: Pins v17.0
 processor: KW45B41Z83xxxA
 package_id: KW45B41Z83AFTA
 mcu_data: ksdk2_0
-processor_version: 0.12.6
+processor_version: 0.2412.50
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -49,9 +49,9 @@ BOARD_InitPins:
   - {pin_num: '40', peripheral: LPUART1, signal: TX, pin_signal: PTC3/LPSPI1_SCK/LPUART1_TX/LPI2C1_SDAS/TPM1_CH3/FLEXIO0_D19, pull_select: down, pull_enable: disable,
     slew_rate: fast, open_drain: disable, drive_strength: low}
   - {pin_num: '37', peripheral: LPI2C1, signal: SCL, pin_signal: PTC0/WUU0_P7/LPSPI1_PCS2/CAN0_TX/I3C0_SDA/TPM1_CH0/LPI2C1_SCL/FLEXIO0_D16, pull_select: up, pull_enable: enable,
-    pull_value: low, slew_rate: fast, passive_filter: disable, open_drain: disable, drive_strength: low, drive_strength_1: normal}
+    pull_value: low, slew_rate: fast, passive_filter: disable, open_drain: enable, drive_strength: low, drive_strength_1: normal}
   - {pin_num: '38', peripheral: LPI2C1, signal: SDA, pin_signal: PTC1/WUU0_P8/LPSPI1_PCS3/CAN0_RX/I3C0_SCL/TPM1_CH1/LPI2C1_SDA/FLEXIO0_D17, pull_select: up, pull_enable: enable,
-    slew_rate: fast, passive_filter: disable, open_drain: disable, drive_strength: low, drive_strength_1: normal}
+    slew_rate: fast, passive_filter: disable, open_drain: enable, drive_strength: low, drive_strength_1: normal}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -68,86 +68,86 @@ void BOARD_InitPins(void)
     CLOCK_EnableClock(kCLOCK_PortC);
 
     const port_pin_config_t portc0_pin37_config = {/* Internal pull-up resistor is enabled */
-                                                   (uint16_t)kPORT_PullUp,
+                                                   .pullSelect = (uint16_t)kPORT_PullUp,
                                                    /* Low internal pull resistor value is selected. */
-                                                   (uint16_t)kPORT_LowPullResistor,
+                                                   .pullValueSelect = (uint16_t)kPORT_LowPullResistor,
                                                    /* Fast slew rate is configured */
-                                                   (uint16_t)kPORT_FastSlewRate,
+                                                   .slewRate = (uint16_t)kPORT_FastSlewRate,
                                                    /* Passive input filter is disabled */
-                                                   (uint16_t)kPORT_PassiveFilterDisable,
-                                                   /* Open drain output is disabled */
-                                                   (uint16_t)kPORT_OpenDrainDisable,
+                                                   .passiveFilterEnable = (uint16_t)kPORT_PassiveFilterDisable,
+                                                   /* Open drain output is enabled */
+                                                   .openDrainEnable = (uint16_t)kPORT_OpenDrainEnable,
                                                    /* Low drive strength is configured */
-                                                   (uint16_t)kPORT_LowDriveStrength,
+                                                   .driveStrength = (uint16_t)kPORT_LowDriveStrength,
                                                    /* Normal drive strength is configured */
-                                                   (uint16_t)kPORT_NormalDriveStrength,
+                                                   .driveStrength1 = (uint16_t)kPORT_NormalDriveStrength,
                                                    /* Pin is configured as LPI2C1_SCL */
-                                                   (uint16_t)kPORT_MuxAlt7,
+                                                   .mux = (uint16_t)kPORT_MuxAlt7,
                                                    /* Pin Control Register fields [15:0] are not locked */
-                                                   (uint16_t)kPORT_UnlockRegister};
+                                                   .lockRegister = (uint16_t)kPORT_UnlockRegister};
     /* PORTC0 (pin 37) is configured as LPI2C1_SCL */
     PORT_SetPinConfig(PORTC, 0U, &portc0_pin37_config);
 
     const port_pin_config_t portc1_pin38_config = {/* Internal pull-up resistor is enabled */
-                                                   (uint16_t)kPORT_PullUp,
+                                                   .pullSelect = (uint16_t)kPORT_PullUp,
                                                    /* Low internal pull resistor value is selected. */
-                                                   (uint16_t)kPORT_LowPullResistor,
+                                                   .pullValueSelect = (uint16_t)kPORT_LowPullResistor,
                                                    /* Fast slew rate is configured */
-                                                   (uint16_t)kPORT_FastSlewRate,
+                                                   .slewRate = (uint16_t)kPORT_FastSlewRate,
                                                    /* Passive input filter is disabled */
-                                                   (uint16_t)kPORT_PassiveFilterDisable,
-                                                   /* Open drain output is disabled */
-                                                   (uint16_t)kPORT_OpenDrainDisable,
+                                                   .passiveFilterEnable = (uint16_t)kPORT_PassiveFilterDisable,
+                                                   /* Open drain output is enabled */
+                                                   .openDrainEnable = (uint16_t)kPORT_OpenDrainEnable,
                                                    /* Low drive strength is configured */
-                                                   (uint16_t)kPORT_LowDriveStrength,
+                                                   .driveStrength = (uint16_t)kPORT_LowDriveStrength,
                                                    /* Normal drive strength is configured */
-                                                   (uint16_t)kPORT_NormalDriveStrength,
+                                                   .driveStrength1 = (uint16_t)kPORT_NormalDriveStrength,
                                                    /* Pin is configured as LPI2C1_SDA */
-                                                   (uint16_t)kPORT_MuxAlt7,
+                                                   .mux = (uint16_t)kPORT_MuxAlt7,
                                                    /* Pin Control Register fields [15:0] are not locked */
-                                                   (uint16_t)kPORT_UnlockRegister};
+                                                   .lockRegister = (uint16_t)kPORT_UnlockRegister};
     /* PORTC1 (pin 38) is configured as LPI2C1_SDA */
     PORT_SetPinConfig(PORTC, 1U, &portc1_pin38_config);
 
     const port_pin_config_t portc2_pin39_config = {/* Internal pull-up/down resistor is disabled */
-                                                   (uint16_t)kPORT_PullDisable,
+                                                   .pullSelect = (uint16_t)kPORT_PullDisable,
                                                    /* Low internal pull resistor value is selected. */
-                                                   (uint16_t)kPORT_LowPullResistor,
+                                                   .pullValueSelect = (uint16_t)kPORT_LowPullResistor,
                                                    /* Fast slew rate is configured */
-                                                   (uint16_t)kPORT_FastSlewRate,
+                                                   .slewRate = (uint16_t)kPORT_FastSlewRate,
                                                    /* Passive input filter is disabled */
-                                                   (uint16_t)kPORT_PassiveFilterDisable,
+                                                   .passiveFilterEnable = (uint16_t)kPORT_PassiveFilterDisable,
                                                    /* Open drain output is disabled */
-                                                   (uint16_t)kPORT_OpenDrainDisable,
+                                                   .openDrainEnable = (uint16_t)kPORT_OpenDrainDisable,
                                                    /* Low drive strength is configured */
-                                                   (uint16_t)kPORT_LowDriveStrength,
+                                                   .driveStrength = (uint16_t)kPORT_LowDriveStrength,
                                                    /* Normal drive strength is configured */
-                                                   (uint16_t)kPORT_NormalDriveStrength,
+                                                   .driveStrength1 = (uint16_t)kPORT_NormalDriveStrength,
                                                    /* Pin is configured as LPUART1_RX */
-                                                   (uint16_t)kPORT_MuxAlt3,
+                                                   .mux = (uint16_t)kPORT_MuxAlt3,
                                                    /* Pin Control Register fields [15:0] are not locked */
-                                                   (uint16_t)kPORT_UnlockRegister};
+                                                   .lockRegister = (uint16_t)kPORT_UnlockRegister};
     /* PORTC2 (pin 39) is configured as LPUART1_RX */
     PORT_SetPinConfig(PORTC, 2U, &portc2_pin39_config);
 
     const port_pin_config_t portc3_pin40_config = {/* Internal pull-up/down resistor is disabled */
-                                                   (uint16_t)kPORT_PullDisable,
+                                                   .pullSelect = (uint16_t)kPORT_PullDisable,
                                                    /* Low internal pull resistor value is selected. */
-                                                   (uint16_t)kPORT_LowPullResistor,
+                                                   .pullValueSelect = (uint16_t)kPORT_LowPullResistor,
                                                    /* Fast slew rate is configured */
-                                                   (uint16_t)kPORT_FastSlewRate,
+                                                   .slewRate = (uint16_t)kPORT_FastSlewRate,
                                                    /* Passive input filter is disabled */
-                                                   (uint16_t)kPORT_PassiveFilterDisable,
+                                                   .passiveFilterEnable = (uint16_t)kPORT_PassiveFilterDisable,
                                                    /* Open drain output is disabled */
-                                                   (uint16_t)kPORT_OpenDrainDisable,
+                                                   .openDrainEnable = (uint16_t)kPORT_OpenDrainDisable,
                                                    /* Low drive strength is configured */
-                                                   (uint16_t)kPORT_LowDriveStrength,
+                                                   .driveStrength = (uint16_t)kPORT_LowDriveStrength,
                                                    /* Normal drive strength is configured */
-                                                   (uint16_t)kPORT_NormalDriveStrength,
+                                                   .driveStrength1 = (uint16_t)kPORT_NormalDriveStrength,
                                                    /* Pin is configured as LPUART1_TX */
-                                                   (uint16_t)kPORT_MuxAlt3,
+                                                   .mux = (uint16_t)kPORT_MuxAlt3,
                                                    /* Pin Control Register fields [15:0] are not locked */
-                                                   (uint16_t)kPORT_UnlockRegister};
+                                                   .lockRegister = (uint16_t)kPORT_UnlockRegister};
     /* PORTC3 (pin 40) is configured as LPUART1_TX */
     PORT_SetPinConfig(PORTC, 3U, &portc3_pin40_config);
 }
