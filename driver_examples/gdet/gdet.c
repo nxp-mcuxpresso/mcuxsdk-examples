@@ -33,7 +33,7 @@
 /*******************************************************************************
  * Code
  ******************************************************************************/
-
+#if defined(GDET_IRQS)
 void APP_GDET_DriverIRQHandler(void)
 {
     NVIC_DisableIRQ(GDET_APP_IRQ);
@@ -42,6 +42,7 @@ void APP_GDET_DriverIRQHandler(void)
 
     NVIC_EnableIRQ(GDET_APP_IRQ);
 }
+#endif
 
 /*!
  * @brief Main function.
