@@ -8,3 +8,4 @@ ce_lite_examples
 
 
    matevd_test/readme.md
+   fft_test/readme.md

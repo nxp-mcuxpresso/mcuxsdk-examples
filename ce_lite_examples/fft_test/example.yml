@@ -1,0 +1,42 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+ce_lite_fft_test:
+  section-type: application
+  contents:
+    meta_path: examples/ce_lite_examples/fft_test
+    project-root-path: boards/${board}/ce_lite_examples/fft_test/${multicore_foldername}
+    complete_cmake_data:
+      files:
+        ${board_root}/${board}/ce_lite_examples/fft_test/fft32_cf16_input.txt:
+          project_relative_path: ./
+          type: src
+        ${board_root}/${board}/ce_lite_examples/fft_test/fft32_cf16_ref_output.txt:
+          project_relative_path: ./
+          type: src
+        ${board_root}/${board}/ce_lite_examples/fft_test/fft512_cf32_input.txt:
+          project_relative_path: ./
+          type: src
+        ${board_root}/${board}/ce_lite_examples/fft_test/fft512_cf32_ref_output.txt:
+          project_relative_path: ./
+          type: src
+        ${board_root}/${board}/ce_lite_examples/fft_test/ifft256_cf16_input.txt:
+          project_relative_path: ./
+          type: src
+        ${board_root}/${board}/ce_lite_examples/fft_test/ifft256_cf16_ref_output.txt:
+          project_relative_path: ./
+          type: src
+        ${board_root}/${board}/ce_lite_examples/fft_test/ifft256_cf32_input.txt:
+          project_relative_path: ./
+          type: src
+        ${board_root}/${board}/ce_lite_examples/fft_test/ifft256_cf32_ref_output.txt:
+          project_relative_path: ./
+          type: src
+    document:
+      name: ce_lite_fft_test${core_id_suffix_name}
+      category: ce_lite_examples
+      brief: Sample application that tests 16-bit and 32-bit FFT and IFFT functionalities.
+      example_readme:
+      - examples/ce_lite_examples/fft_test/readme.md
+      - ${board_root}/${board}/ce_lite_examples/fft_test/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmkw43: []

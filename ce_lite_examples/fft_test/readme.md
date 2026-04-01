@@ -1,4 +1,4 @@
-# ce_lite_matevd_test
+# ce_lite_fft_test
 
 ## Overview
 This application is a test vehicle for interfacing CM33 with ZV2118. This implements:
@@ -14,4 +14,4 @@ status buffer is placed at MEM address: 0x20028400
 This test is based on memory polling from both sides (CM33 and ZV)
 
 ## Supported Boards
-- [FRDM-KW43](../../_boards/frdmkw43/ce_lite_examples/matevd_test/example_board_readme.md)
+- [FRDM-KW43](../../_boards/frdmkw43/ce_lite_examples/fft_test/example_board_readme.md)
