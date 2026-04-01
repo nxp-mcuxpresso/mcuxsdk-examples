@@ -34,3 +34,4 @@ The RTC demo supports the following features:
 - [KW47-LOC](../../../_boards/kw47loc/demo_apps/rtc_func/example_board_readme.md)
 - [MCXW72-LOC](../../../_boards/mcxw72loc/demo_apps/rtc_func/example_board_readme.md)
 - [FRDM-MCXW72](../../../_boards/frdmmcxw72/demo_apps/rtc_func/example_board_readme.md)
+- [FRDM-KW43](../../../_boards/frdmkw43/demo_apps/rtc_func/example_board_readme.md)
