@@ -329,7 +329,13 @@ if (!isdefinedsymbol(__heap_size__))
     define symbol __heap_size__     = 0x0A00;
 }
 
-/* stack region */
+/* On A0 revisions of this chip, the CPU boot ROM does NOT correctly start the
+ * application if the initial Main Stack Pointer (MSP) is located in SRAM1.
+ * When the application’s SP is placed in SRAM1, the boot ROM refuses to jump
+ * to the application entry point, resulting in a silent boot failure.
+ *
+ * Do NOT relocate the cstack region on A0 silicon.
+ */
 define exported symbol m_cstack_start                   = m_core0_ram_start;
 define exported symbol m_cstack_end                     = m_cstack_start + __stack_size__ - 1;
 
