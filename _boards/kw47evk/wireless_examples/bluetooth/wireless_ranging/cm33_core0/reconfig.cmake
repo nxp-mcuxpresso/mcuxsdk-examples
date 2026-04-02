@@ -25,12 +25,12 @@ mcux_add_iar_configuration(
        --config_def=__ram_vector_table__=1\
        --config_def=gFlashNbuImage_d=1\
        --config_def=gUseProdInfoLegacyMode_d=1\
-       --config_def=__stack_size__=0x0BB8\
+       --config_def=__stack_size__=0x0CE4\
        --config_def=__use_shmem__=1"
 )
 
 mcux_add_armgcc_configuration(
-    CC "-Xlinker --defsym=__stack_size__=0x0BB8"
+    CC "-Xlinker --defsym=__stack_size__=0x0CE4"
     LD "-Xlinker --defsym=gUseNVMLink_d=1\
         -Xlinker --defsym=gEraseNVMLink_d=1\
         -Xlinker --defsym=__ram_vector_table__=1\
