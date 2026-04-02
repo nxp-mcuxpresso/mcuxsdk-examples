@@ -294,3 +294,4 @@ cmsis_lpspi_int_b2b_transfer_slave:
     imx952evk@cm7: []
     frdmmcxa577: []
     frdmmcxc162: []
+    frdmkw43: []
