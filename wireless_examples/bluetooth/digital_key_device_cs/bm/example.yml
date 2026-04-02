@@ -13,6 +13,7 @@ digital_key_device_cs_bm:
   boards:
     kw47evk@cm33_core0: []
     kw47loc@cm33_core0: []
+    frdmkw43: []
     kw43evk:
     - -armgcc@debug
     - -armgcc@release

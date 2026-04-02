@@ -17,6 +17,7 @@ wireless_ranging_bm:
     mcxw72evk@cm33_core0: []
     frdmmcxw72@cm33_core0: []
     mcxw72loc@cm33_core0: []
+    frdmkw43: []
     kw43evk:
     - -armgcc@debug
     - -armgcc@release

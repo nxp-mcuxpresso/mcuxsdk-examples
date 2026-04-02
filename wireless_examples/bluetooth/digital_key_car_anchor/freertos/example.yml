@@ -13,6 +13,7 @@ digital_key_car_anchor_freertos:
   boards:
     kw45b41zevk: []
     kw47evk@cm33_core0: []
+    frdmkw43: []
     kw43evk:
     - -armgcc@debug
     - -armgcc@release

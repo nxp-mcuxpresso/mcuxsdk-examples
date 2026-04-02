@@ -16,6 +16,7 @@ eatt_peripheral_freertos:
     kw47evk@cm33_core0: []
     mcxw72evk@cm33_core0: []
     frdmmcxw72@cm33_core0: []
+    frdmkw43: []
     frdmmcxw23:
     - -mdk@debug
     - -mdk@release
