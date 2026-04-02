@@ -225,6 +225,9 @@ void BOARD_BootClockRUN(void)
 
     /* Set SCG CLKOUT selection. */
     CLOCK_CONFIG_SetScgOutSel(kClockClkoutSelScgSlow);
+
+    /* Enable kCLOCK_Fro_hf_div so peripherals using the FRO192M clock can receive their required clock signal */
+    CLOCK_EnableClock(kCLOCK_Fro_hf_div);
 }
 
  /*******************************************************************************
@@ -310,4 +313,7 @@ void BOARD_BootClockHSRUN(void)
     SystemCoreClock = BOARD_BOOTCLOCKHSRUN_CORE_CLOCK;
     /* Set SCG CLKOUT selection. */
     CLOCK_CONFIG_SetScgOutSel(kClockClkoutSelScgSlow);
+
+    /* Enable kCLOCK_Fro_hf_div so peripherals using the FRO192M clock can receive their required clock signal */
+    CLOCK_EnableClock(kCLOCK_Fro_hf_div);
 }
