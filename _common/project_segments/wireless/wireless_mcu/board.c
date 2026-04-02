@@ -9,7 +9,6 @@
  ************************************************************************************/
 
 #include <stdint.h>
-#include "fwk_platform_definitions.h"
 #include "board_platform.h"
 #include "fsl_common.h"
 #include "clock_config.h"
@@ -166,10 +165,6 @@ void BOARD_InitAppConsole(void)
     /* enable clock with kCLOCK_IpClkControl_fun3 or kCLOCK_IpClkControl_fun2 to
      * keep wake up capability in low power (domain in sleep) */
     CLOCK_EnableClockLPMode(BOARD_APP_UART_CLK, kCLOCK_IpClkControl_fun3);
-#if (defined(FWK_KW43_MCXW70_FAMILIES) && (FWK_KW43_MCXW70_FAMILIES == 1))
-    CLOCK_SetIpSrcDiv(kCLOCK_Lpuart0, kSCG_SysClkDivBy5);
-    CLOCK_EnableClock(kCLOCK_Fro_hf_div);
-#endif
     /* init lpuart pins */
     BOARD_InitPinsAppConsole();
 }
