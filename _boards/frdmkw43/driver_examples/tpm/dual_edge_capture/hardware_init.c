@@ -13,10 +13,11 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    BOARD_InitBootPins();
+    BOARD_InitPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
+    /* Set the source for the TPM 0 module */
     CLOCK_SetIpSrc(kCLOCK_Tpm0, kCLOCK_IpSrcFro192M);
     CLOCK_SetIpSrcDiv(kCLOCK_Tpm0, 3U);
     CLOCK_EnableClock(kCLOCK_Fro_hf_div);

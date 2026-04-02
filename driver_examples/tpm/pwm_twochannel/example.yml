@@ -65,3 +65,4 @@ tpm_pwm_twochannel:
     mcimx93evk: []
     mcimx93wevk: []
     mcimx93qsb: []
+    frdmkw43: []

@@ -78,3 +78,4 @@ tpm_input_capture:
     - +armgcc@release
     - +iar@release
     - +iar@debug
+    frdmkw43: []

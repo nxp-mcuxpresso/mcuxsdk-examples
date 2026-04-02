@@ -38,7 +38,7 @@
 #define BOARD_LPSPI_NOR_BAUDRATE     24000000U
 
 /*! @brief The TPM channel used for board */
-#define BOARD_TPM_CHANNEL 0U
+#define BOARD_TPM_CHANNEL 2U
 
 #define LOGIC_LED_ON  0U
 #define LOGIC_LED_OFF 1U
