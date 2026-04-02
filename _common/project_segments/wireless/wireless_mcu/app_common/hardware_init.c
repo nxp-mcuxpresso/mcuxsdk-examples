@@ -5,6 +5,7 @@
  */
 
 /*${header:start}*/
+#include "fwk_platform_definitions.h"
 #include "board_platform.h"
 #include "board.h"
 #include "clock_config.h"
