@@ -144,7 +144,7 @@ void BOARD_AdcSwTrigger(uint32_t channel)
     LPADC_GetDefaultConvCommandConfig(&mLpadcCommandConfigStruct);
 
     mLpadcCommandConfigStruct.channelNumber = channel;
-    if (LPADC_TEMPEATURE_SENSOR_CHANNEL == channel)
+    if (LPADC_TEMPERATURE_SENSOR_CHANNEL == channel)
     {
         if (currentADCReference != LPADC_REFERENCE_TEMPERATURE)
         {
@@ -180,7 +180,7 @@ void BOARD_AdcSwTrigger(uint32_t channel)
     LPADC_GetDefaultConvTriggerConfig(&mLpadcTriggerConfigStruct);
     mLpadcTriggerConfigStruct.targetCommandId       = LPADC_USER_CMDID;
     mLpadcTriggerConfigStruct.enableHardwareTrigger = false;
-    if (LPADC_TEMPEATURE_SENSOR_CHANNEL == channel)
+    if (LPADC_TEMPERATURE_SENSOR_CHANNEL == channel)
     {
         mLpadcTriggerConfigStruct.channelAFIFOSelect = 1;
     }

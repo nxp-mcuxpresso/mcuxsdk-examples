@@ -12,7 +12,7 @@
 /*! @brief ADC used to monitor the temperature sensor. */
 #define LPADC_BASE ADC0
 /*! @brief ADC channel of the on-chip temperature sensor. */
-#define LPADC_TEMPEATURE_SENSOR_CHANNEL 26U
+#define LPADC_TEMPERATURE_SENSOR_CHANNEL 26U
 /*! @brief ID for command in command buffer. */
 #define LPADC_USER_CMDID 1U
 /*! @brief ADC reference, for temperature sensor monitoring, VREFO voltage reference driven from the VREF block is the best option. */
