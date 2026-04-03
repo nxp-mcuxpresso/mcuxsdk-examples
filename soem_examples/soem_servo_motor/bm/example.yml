@@ -37,6 +37,11 @@ soem_servo_motor_bm:
     - +armgcc@release
     - +iar@release
     - +iar@debug
+    imx943evk@cm7_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
     frdmimxrt1186@cm33:
     - -armgcc@debug
     - -armgcc@hyperram_debug
