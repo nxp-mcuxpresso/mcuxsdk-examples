@@ -78,6 +78,7 @@
 #define APP_PIN_WL_HOST_WAKE (0x001FU) /* PTA31 */
 #define APP_PIN_VOL_MINUS    (0x000DU) /* PTA13 */
 #define APP_PIN_VOL_PLUS     (0x0003U) /* PTA3 */
+#define APP_PIN_HP_DET       (0x0017U) /* PTA23 */
 
 /* Keypad index in Linux OS */
 #define APP_KEYPAD_INDEX_ONOFF     (116U)

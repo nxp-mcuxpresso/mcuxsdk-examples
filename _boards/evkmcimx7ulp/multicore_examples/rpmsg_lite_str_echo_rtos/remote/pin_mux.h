@@ -283,6 +283,16 @@
 #define BOARD_I2C3_SDA_LABEL                                          "I2C3_SDA"   /*!< Label */
 #define BOARD_I2C3_SDA_NAME                                           "I2C3_SDA"   /*!< Identifier */
 
+/* PTA23, HP_DET */
+/* Routed pin properties */
+#define BOARD_HP_DET_PERIPHERAL                                           PTA   /*!< Peripheral name */
+#define BOARD_HP_DET_SIGNAL                                              port   /*!< Signal name */
+#define BOARD_HP_DET_CHANNEL                                               23   /*!< Signal channel */
+#define BOARD_HP_DET_PIN_NAME                                           PTA23   /*!< Routed pin name */
+#define BOARD_HP_DET_PIN_FUNCTION_ID                       IOMUXC_PTA23_PTA23   /*!< Pin function id */
+#define BOARD_HP_DET_LABEL                                           "HP_DET"   /*!< Label */
+#define BOARD_HP_DET_NAME                                            "HP_DET"   /*!< Identifier */
+
 /*!
  * @addtogroup pin_mux
  * @{

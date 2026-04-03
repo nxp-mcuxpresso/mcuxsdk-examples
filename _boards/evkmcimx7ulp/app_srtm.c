@@ -57,10 +57,11 @@ enum
     APP_INPUT_VOL_MINUS    = 2U,
     APP_INPUT_BT_HOST_WAKE = 3U,
     APP_INPUT_WL_HOST_WAKE = 4U,
+    APP_INPUT_HP_DET       = 5U,
 
-    APP_OUTPUT_WL_REG_ON = 5U,
-    APP_OUTPUT_BT_REG_ON = 6U,
-    APP_IO_NUM           = 7U
+    APP_OUTPUT_WL_REG_ON = 6U,
+    APP_OUTPUT_BT_REG_ON = 7U,
+    APP_IO_NUM           = 8U
 };
 
 #define APP_INPUT_GPIO_START  APP_INPUT_VOL_PLUS
@@ -448,6 +449,17 @@ static void APP_HandleGPIOHander(uint8_t gpioIdx)
         {
             /* Only when CA7 is running or wakeup flag is set, we'll notify the event to CA7. */
             SRTM_IoService_NotifyInputEvent(ioService, APP_PIN_WL_HOST_WAKE);
+        }
+    }
+
+    if (APP_GPIO_IDX(APP_PIN_HP_DET) == gpioIdx &&
+        (1U << APP_PIN_IDX(APP_PIN_HP_DET)) & PORT_GetPinsInterruptFlags(port))
+    {
+        PORT_ClearPinsInterruptFlags(port, 1U << APP_PIN_IDX(APP_PIN_HP_DET));
+        if (suspendContext.io.data[APP_INPUT_HP_DET].wakeup || MU_GetOtherCorePowerMode(MUA) != kMU_PowerModeDsm)
+        {
+            /* Only when CA7 is running or wakeup flag is set, we'll notify the event to CA7. */
+            SRTM_IoService_NotifyInputEvent(ioService, APP_PIN_HP_DET);
         }
     }
 
@@ -1552,6 +1564,7 @@ static void APP_SRTM_InitIoKeyService(void)
     suspendContext.io.data[APP_INPUT_WL_HOST_WAKE].ioId = APP_PIN_WL_HOST_WAKE;
     suspendContext.io.data[APP_OUTPUT_WL_REG_ON].ioId   = APP_PIN_WL_REG_ON;
     suspendContext.io.data[APP_OUTPUT_BT_REG_ON].ioId   = APP_PIN_BT_REG_ON;
+    suspendContext.io.data[APP_INPUT_HP_DET].ioId       = APP_PIN_HP_DET;
 
     APP_SRTM_InitIoKeyDevice();
 
@@ -1566,6 +1579,7 @@ static void APP_SRTM_InitIoKeyService(void)
     SRTM_IoService_RegisterPin(ioService, APP_PIN_WL_REG_ON, APP_IO_SetOutput, APP_IO_GetInput, NULL, APP_IO_GetDirection, NULL);
     SRTM_IoService_RegisterPin(ioService, APP_PIN_BT_HOST_WAKE, NULL, APP_IO_GetInput, APP_IO_ConfIEvent, APP_IO_GetDirection, NULL);
     SRTM_IoService_RegisterPin(ioService, APP_PIN_WL_HOST_WAKE, NULL, APP_IO_GetInput, APP_IO_ConfIEvent, APP_IO_GetDirection, NULL);
+    SRTM_IoService_RegisterPin(ioService, APP_PIN_HP_DET, NULL, APP_IO_GetInput, APP_IO_ConfIEvent, APP_IO_GetDirection, NULL);
     SRTM_Dispatcher_RegisterService(disp, ioService);
 
     keypadService = SRTM_KeypadService_Create();
