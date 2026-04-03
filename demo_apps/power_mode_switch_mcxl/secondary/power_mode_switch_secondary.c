@@ -139,49 +139,50 @@ static bool APP_SecondaryCoreCallback(power_low_power_mode_t targetPowerMode, vo
 void SMM_EXT_IRQHandler(void)
 {
     SMM_ClearExternalIntFlag(AON__SMM);
-    Power_ClearLpPowerSettings();
 }
 
 void LPTMR_AON_IRQHandler(void)
 {
-    Power_ClearLpPowerSettings();
     DisableIRQ(LPTMR_AON_IRQn);
-    LPTMR_ClearStatusFlags(APP_LPTMR_BASE, kLPTMR_TimerCompareFlag);
-    LPTMR_StopTimer(APP_LPTMR_BASE);
-    LPTMR_DisableInterrupts(APP_LPTMR_BASE, kLPTMR_TimerInterruptEnable);
-    CLOCK_DisableClock(kCLOCK_GateAonLPTMR);
-    RESET_SetPeripheralReset(kAonLPTMR_RST_SHIFT_RSTn);
+    if (Power_GetPreviousPowerMode() != kPower_PowerDown2)
+    {
+        LPTMR_ClearStatusFlags(APP_LPTMR_BASE, kLPTMR_TimerCompareFlag);
+        LPTMR_StopTimer(APP_LPTMR_BASE);
+        LPTMR_DisableInterrupts(APP_LPTMR_BASE, kLPTMR_TimerInterruptEnable);
+        CLOCK_DisableClock(kCLOCK_GateAonLPTMR);
+        RESET_SetPeripheralReset(kAonLPTMR_RST_SHIFT_RSTn);
+    }
     __DSB();
     __ISB();
 }
 
 void RTC_ALARM0_IRQHandler(void)
 {
-    Power_ClearLpPowerSettings();
     DisableIRQ(RTC_ALARM0_IRQn);
-    RTC_DisableInterrupts(APP_RTC_BASE, kRTC_Alarm0InterruptEnable);
-    RTC_DisableAlarm(APP_RTC_BASE, kRTC_Alarm_0);
-    RTC_StopTimer(APP_RTC_BASE);
-    RTC_Deinit(APP_RTC_BASE);
+    if (Power_GetPreviousPowerMode() != kPower_PowerDown2)
+    {
+        RTC_DisableInterrupts(APP_RTC_BASE, kRTC_Alarm0InterruptEnable);
+        RTC_DisableAlarm(APP_RTC_BASE, kRTC_Alarm_0);
+        RTC_StopTimer(APP_RTC_BASE);
+        RTC_Deinit(APP_RTC_BASE);
+    }
     __DSB();
     __ISB();
 }
 
 void RTC_ALARM1_IRQHandler(void)
 {
-    Power_ClearLpPowerSettings();
     DisableIRQ(RTC_ALARM1_IRQn);
-    RTC_DisableInterrupts(APP_RTC_BASE, kRTC_Alarm1InterruptEnable);
-    RTC_DisableAlarm(APP_RTC_BASE, kRTC_Alarm_1);
-    RTC_StopTimer(APP_RTC_BASE);
-    RTC_Deinit(APP_RTC_BASE);
+    if (Power_GetPreviousPowerMode() != kPower_PowerDown2)
+    {
+        RTC_DisableInterrupts(APP_RTC_BASE, kRTC_Alarm1InterruptEnable);
+        RTC_DisableAlarm(APP_RTC_BASE, kRTC_Alarm_1);
+        RTC_StopTimer(APP_RTC_BASE);
+        RTC_Deinit(APP_RTC_BASE);
+    }
     __DSB();
     __ISB();
 }
-
-
-uint32_t toCheck1 = 0UL;
-uint32_t toCheck2 = 0UL;
 
 static void APP_DPD2ClockRecovery(void)
 {
@@ -241,6 +242,9 @@ int main(void)
     {
     }
     g_DualCoreSynced = false;
+#if (APP_ENABLE_CONTEXT_SAVING == 0)
+    Power_ClearLpPowerSettings();
+#endif 
     while (1)
     {
         if (Power_GetCurrentPowerMode(&curPowerMode) == kStatus_Success)
@@ -291,9 +295,11 @@ static void APP_ActiveOps(void)
     PRINTF("Start Interpret Request\r\n");
     /* Interpret request message. */
     DisableIRQ(MU_B_RX_IRQn);
+    uint32_t key = DisableGlobalIRQ();
     Power_InterpretRequest(g_MuBRxMsg);
     g_MuBRxMsg    = 0UL;
     g_MuBRxIsrHit = false;
+    EnableGlobalIRQ(key);
     EnableIRQ(MU_B_RX_IRQn);
 #if APP_ENABLE_CONTEXT_SAVING
     /* Wakeup with context saving enabled. */
@@ -332,20 +338,11 @@ static void APP_DeepPowerDown1Ops(void)
 {    
     if (Power_GetPreviousPowerMode() == kPower_DeepPowerDown2)
     {
-        /* System is in DPD1 and the previous mode was DPD2.  Two paths
-         * arrive here:
-         *  a) No context saving — cold start in DPD1 after DPD2 wakeup
-         *     (Seq F: DPD1->DPD2->DPD1, Seq I: Active->DPD2->DPD1).
-         *  b) Context saving enabled — APP_DPD1ToDPD2BackToDPD1 returned
-         *     and the main loop re-entered this function for the final
-         *     DPD1->Active step.
-         * In both cases: WFI until SMM_EXT triggers the DPD1->Active
-         * transition, then unblock CM33 (context saving only). */
         __WFI();
 #if APP_ENABLE_CONTEXT_SAVING
         /* DPD1->Active complete.  CM33 is now spinning on MSB_BCKP1;
          * write the sync token so it can resume from Power_EnterDeepPowerDown1. */
-         Power_NotifyCM33ToRun();
+        Power_NotifyCM33ToRun();
 #endif
     }
     else

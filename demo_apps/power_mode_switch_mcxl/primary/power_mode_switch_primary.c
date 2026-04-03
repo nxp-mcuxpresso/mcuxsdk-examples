@@ -147,14 +147,13 @@ void APP_WAKEUP_BUTTON_ISR(void)
 
 void APP_EXT_INT_ISR(void)
 {
-    Power_ClearLpPowerSettings();
+
     GPIO_GpioClearInterruptFlags(APP_EXT_INT_GPIO, 1U << APP_EXT_INT_PIN);
     DisableIRQ(APP_EXT_INT_IRQ);
 }
 
 void LPTMR_AON_IRQHandler(void)
 {
-    Power_ClearLpPowerSettings();
     DisableIRQ(LPTMR_AON_IRQn);
     LPTMR_ClearStatusFlags(APP_LPTMR_BASE, kLPTMR_TimerCompareFlag);
     LPTMR_StopTimer(APP_LPTMR_BASE);
@@ -165,7 +164,6 @@ void LPTMR_AON_IRQHandler(void)
 
 static void APP_RTCAlaramCallback(rtc_callback_type_t type)
 {
-    Power_ClearLpPowerSettings();
     if (type == kRTC_Alarm0Callback)
     {
         DisableIRQ(RTC_ALARM0_IRQn);
@@ -227,6 +225,11 @@ int main(void)
 #endif
     while (1)
     {  
+      
+        AON__PMU->BGR_CTRL &=  ~(0x2U);     
+        uint32_t dummyValue = AON__PMU->AWK_UP_TIME; 
+        AON__PMU ->AWK_UP_TIME = (AON__PMU->AWK_UP_TIME & ~PMU_AWK_UP_TIME_WKUP_TIME_MASK) | PMU_AWK_UP_TIME_WKUP_TIME(dummyValue);
+        SDK_DelayAtLeastUs(1000, CLOCK_GetCoreSysClkFreq());
         powerTrans      = APP_GetTargetPowerTransition();
         targetLpMode    = APP_EnableWakeupSource(powerTrans);
         status_t status = Power_EnterLowPowerMode(targetLpMode, powerConfigs[(uint8_t)targetLpMode]);
@@ -234,7 +237,6 @@ int main(void)
         {
             /* Only when context saving is enabled. */
             BOARD_InitHardware();
-            Power_ClearLpPowerSettings();
             Power_DisableAllWakeupSources();
             CMC_EnableDebugOperation(CMC, false);
 
@@ -249,7 +251,6 @@ int main(void)
             PRINTF("Fail to enter selected low power mode!\r\n");
             return -1;
         }
-        Power_ClearTargetPowerMode();
         PRINTF("\r\n--------- Next Loop ---------\r\n");
         PRINTF("\r\n--------- Next Loop ---------\r\n");
         PRINTF("\r\n--------- Next Loop ---------\r\n");

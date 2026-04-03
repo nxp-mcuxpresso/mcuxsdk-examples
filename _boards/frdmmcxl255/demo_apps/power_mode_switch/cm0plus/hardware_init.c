@@ -18,6 +18,7 @@
 #include "fsl_power.h"
 
 #include "fsl_lptmr.h"
+#include "fsl_smm.h"
 
 #include "fsl_debug_console.h"
 /*${header:end}*/
@@ -92,8 +93,7 @@ void BOARD_InitHardware(void)
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitDebugConsole();
 
-    Power_ClearLpPowerSettings();
-
+    SMM_DisableAonCpuIso(AON__SMM);
     EnableIRQ(SMM_EXT_IRQn);
     AON__SMM->PWDN_CONFIG &= ~SMM_PWDN_CONFIG_Q_TMT_EN_MASK;
 }

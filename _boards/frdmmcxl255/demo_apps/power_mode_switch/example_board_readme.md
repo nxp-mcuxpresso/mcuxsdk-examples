@@ -9,6 +9,9 @@ Board settings
 1. Connect pin 9(RX) and pin 11(TX) of J8 to a serial port adapter to enable the UART function of the AON domain.
 2. The data of power consumption is measured on JP4(VDD_BAT).
 
+Note: For boards with the schematic SCH-95308 REV E, ensure that SJ20 is connected to pins 2 and 3, 
+and SJ6 is connected to pins 2 and 3. This configuration allows simultaneous use of LPUART and AON_UART.
+
 
 Prepare the Demo
 ===============
