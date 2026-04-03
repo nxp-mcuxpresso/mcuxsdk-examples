@@ -9591,7 +9591,7 @@ static int ncp_inet_test_command(int argc, char **argv)
     return WM_SUCCESS;
 }
 #endif
-#if !COFNIG_NCP_SDIO_TEST_LOOPBACK
+#if !CONFIG_NCP_SDIO_TEST_LOOPBACK
 static struct ncp_host_cli_command ncp_host_app_cli_commands[] = {
     {"wlan-ncp-iperf", NULL, wlan_ncp_iperf_command},
     {"wlan-scan", NULL, wlan_scan_command},
@@ -9735,7 +9735,7 @@ static struct ncp_host_cli_command ncp_host_app_cli_commands[] = {
  */
 int ncp_host_wifi_command_init()
 {
-#if !(COFNIG_NCP_SDIO_TEST_LOOPBACK)
+#if !(CONFIG_NCP_SDIO_TEST_LOOPBACK)
     if (ncp_host_cli_register_commands(ncp_host_app_cli_commands,
                                        sizeof(ncp_host_app_cli_commands) / sizeof(struct ncp_host_cli_command)) != 0)
         return -WM_FAIL;

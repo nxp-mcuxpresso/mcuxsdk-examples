@@ -90,17 +90,21 @@ static int system_ncp_handle_cmd_input(uint8_t *cmd)
         }
     }
 
-#if !(COFNIG_NCP_SDIO_TEST_LOOPBACK)
+#if !(CONFIG_NCP_SDIO_TEST_LOOPBACK)
     if (msg_type == NCP_MSG_TYPE_RESP)
 #endif
     {
         /*If failed to receive response or successed to parse tlv reponse, release mcu command response semaphore to
          * allow processing new string commands. If reponse can't match to command, don't release command reponse
          * semaphore until receive response which id is same as command id.*/
+#if CONFIG_NCP_SDIO_TEST_LOOPBACK
+        if (mcu_last_resp_rcvd == 0 || mcu_last_resp_rcvd == mcu_last_cmd_sent)
+#else
         if (mcu_last_resp_rcvd == 0 || mcu_last_resp_rcvd == (mcu_last_cmd_sent | NCP_MSG_TYPE_RESP))
+#endif
             mcu_put_command_resp_sem();
         else
-            ncp_e("Receive %d command response and wait for %d comamnd response.", mcu_last_resp_rcvd,
+            ncp_e("Receive %d command response and wait for %d command response.", mcu_last_resp_rcvd,
                   mcu_last_cmd_sent);
     }
     return ret;

@@ -54,7 +54,7 @@
 #define CONFIG_NCP_SPI                    0
 #define CONFIG_NCP_USB                    0
 #define CONFIG_NCP_SDIO                   0
-#define COFNIG_NCP_SDIO_TEST_LOOPBACK     0
+#define CONFIG_NCP_SDIO_TEST_LOOPBACK     0
 #define CONFIG_SDIO_IO_DEBUG              0
 
 /* protocol options */

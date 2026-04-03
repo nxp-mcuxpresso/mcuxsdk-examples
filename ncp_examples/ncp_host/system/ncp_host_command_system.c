@@ -596,7 +596,7 @@ int system_process_response(uint8_t *res)
  *
  */
 static struct ncp_host_cli_command ncp_host_app_cli_commands_system[] = {
-#if !(COFNIG_NCP_SDIO_TEST_LOOPBACK)
+#if !(CONFIG_NCP_SDIO_TEST_LOOPBACK)
     {"ncp-set", "<module_name> <variable_name> <value>", ncp_set_command},
     {"ncp-get", "<module_name> <variable_name>", ncp_get_command},
 #else

@@ -30,7 +30,7 @@ For rdrw612bga device side:
 For evkbmimxrt1060 host side:
 1. Build ncp_host example
    Define macro ‘CONFIG_NCP_SDIO 1’ in ncp_host_config.h.
-   Define macro ‘COFNIG_NCP_SDIO_TEST_LOOPBACK 1’ in ncp_host_config.h.
+   Define macro ‘CONFIG_NCP_SDIO_TEST_LOOPBACK 1’ in ncp_host_config.h.
    Define macro ‘CONFIG_NCP_UART 0’ in ncp_host_config.h.
    Define macro ‘CONFIG_NCP_SPI 0’ in ncp_host_config.h.
    Define macro ‘CONFIG_NCP_USB 0’ in ncp_host_config.h.
