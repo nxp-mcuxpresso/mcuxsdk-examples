@@ -12,6 +12,7 @@ pdm
    pdm_interrupt/readme.md
    pdm_sai_edma/readme.md
    pdm_sai_interrupt/readme.md
+   pdm_sai_mqs_interrupt/readme.md
    pdm_sai_interrupt_transfer/readme.md
    pdm_sai_multi_channel_edma/readme.md
    pdm_sai_multi_channel_tdm_edma/readme.md
