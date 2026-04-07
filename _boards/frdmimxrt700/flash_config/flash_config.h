@@ -10,8 +10,8 @@
 
 /*! @name Driver version */
 /*@{*/
-/*! @brief FLASH_CONFIG driver version 2.0.1. */
-#define FSL_FLASH_CONFIG_DRIVER_VERSION (MAKE_VERSION(2, 0, 1))
+/*! @brief FLASH_CONFIG driver version 2.0.0. */
+#define FSL_FLASH_CONFIG_DRIVER_VERSION (MAKE_VERSION(2, 0, 0))
 /*@}*/
 
 /*******************************************************************************

@@ -7,6 +7,15 @@ iar:
     __common__:
       debugger_setting:
         cmsisdap_resetlist: system
+
+board-file:
+  files:
+  - attribute: board-file
+    package_path: project-root-path/iar
+    project_path: frdmimxrt700
+    source: ${board_root}/frdmimxrt700/FlashIMXRT700_FRDM.board
+    toolchains: iar
+
 mdk:
   project-templates:
   - scripts/guigenerator/templates/mdk/app_frdmimxrt700/app_frdmimxrt700_cm33_core0.uvoptx

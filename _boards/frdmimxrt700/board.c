@@ -163,7 +163,7 @@ void BOARD_ClockHSRunPreConfig(void)
 void BOARD_ClockPostConfig(void)
 {
     /* Call function BOARD_SetXspiClock() to set user configured clock source/divider for XSPI. */
-    BOARD_SetXspiClock(XSPI0, 3U, 1U); /* Main PLL PDF1 DIV1. */
+    BOARD_SetXspiClock(XSPI0, 3U, 3U); /* Main PLL PDF1 DIV3. */
 }
 
 void BOARD_ClockHSRunPostConfig(void)
@@ -327,6 +327,50 @@ void BOARD_DeinitXspi(XSPI_Type *base, CACHE64_CTRL_Type *cache)
     base->MCR |= XSPI_MCR_MDIS_MASK;
 }
 
+AT_QUICKACCESS_SECTION_CODE(static void BOARD_UpdateXspiDll(XSPI_Type *base, bool enableDDR, uint32_t rootclk))
+{
+    uint8_t tapNum = 0U;
+
+    if (enableDDR)
+    {
+        tapNum = FSL_FEATURE_XSPI_DLL_REF_VALUE_DDR_DELAY_TAP_NUM;
+    }
+    else
+    {
+        tapNum = FSL_FEATURE_XSPI_DLL_REF_VALUE_SDR_DELAY_TAP_NUM;
+    }
+
+    base->MCR |= XSPI_MCR_MDIS_MASK;
+        base->SMPR = (((base->SMPR) & (~XSPI_SMPR_DLLFSMPFA_MASK)) | XSPI_SMPR_DLLFSMPFA(tapNum));
+        base->MCR &= ~XSPI_MCR_MDIS_MASK;
+
+    bool enableHighFreq                   = false;
+    uint32_t refCounterValue               = 0UL;
+    uint32_t resolutionValue               = 0UL;
+    uint32_t tDiv16OffsetDelayElementCount = 0UL;
+    uint32_t offsetDelayElementCount = 0UL;
+
+    enableHighFreq = rootclk >= FSL_FEATURE_XSPI_DLL_REF_VALUE_AUTOUPDATE_FREQ_THRESHOLD ? true : false;
+    refCounterValue = FSL_FEATURE_XSPI_DLL_REF_VALUE_AUTOUPDATE_REF_COUNTER;
+    resolutionValue = FSL_FEATURE_XSPI_DLL_REF_VALUE_AUTOUPDATE_RES;
+    tDiv16OffsetDelayElementCount = FSL_FEATURE_XSPI_DLL_REF_VALUE_AUTOUPDATE_T_DIV16_OFFSET_DELAY_ELEMENT_COUNT;
+    offsetDelayElementCount = FSL_FEATURE_XSPI_DLL_REF_VALUE_AUTOUPDATE_OFFSET_DELAY_ELEMENT_COUNT;
+
+    /* Enable subordinate as auto update mode. */
+    base->DLLCR[0] |= XSPI_DLLCR_SLV_EN_MASK | XSPI_DLLCR_SLAVE_AUTO_UPDT_MASK;
+    /* program DLL to desired delay. */
+    base->DLLCR[0] |= XSPI_DLLCR_DLLRES(resolutionValue) | XSPI_DLLCR_DLL_REFCNTR(refCounterValue) |
+                              XSPI_DLLCR_SLV_FINE_OFFSET(offsetDelayElementCount) |
+                              XSPI_DLLCR_SLV_DLY_OFFSET(tDiv16OffsetDelayElementCount) | XSPI_DLLCR_FREQEN(enableHighFreq);
+    /* Load above settings into delay chain. */
+    base->DLLCR[0] |= XSPI_DLLCR_SLV_UPD_MASK;
+    base->DLLCR[0] |= XSPI_DLLCR_DLLEN_MASK;
+    base->DLLCR[0] &= ~XSPI_DLLCR_SLV_UPD_MASK;
+    while ((base->DLLSR & XSPI_DLLSR_SLVA_LOCK_MASK) == 0UL)
+    {
+    }
+}
+
 void BOARD_InitXspi(XSPI_Type *base, CACHE64_CTRL_Type *cache)
 {
     /* Enable XSPI module */
@@ -344,30 +388,7 @@ void BOARD_InitXspi(XSPI_Type *base, CACHE64_CTRL_Type *cache)
     base->MCR |= XSPI_MCR_MDIS_MASK;
     base->MCR |= XSPI_MCR_ISD3FA_MASK;
     base->MCR &= ~XSPI_MCR_MDIS_MASK;
-
-    base->MCR |= XSPI_MCR_MDIS_MASK;
-    base->SMPR = (((base->SMPR) & (~XSPI_SMPR_DLLFSMPFA_MASK)) |
-                  XSPI_SMPR_DLLFSMPFA(FSL_FEATURE_XSPI_DLL_REF_VALUE_DDR_DELAY_TAP_NUM));
-    base->MCR &= ~XSPI_MCR_MDIS_MASK;
-
-    base->DLLCR[0] &= ~(XSPI_DLLCR_SLV_DLL_BYPASS_MASK | XSPI_DLLCR_DLL_CDL8_MASK | XSPI_DLLCR_SLV_DLY_OFFSET_MASK |
-                        XSPI_DLLCR_SLV_FINE_OFFSET_MASK | XSPI_DLLCR_DLLRES_MASK | XSPI_DLLCR_DLL_REFCNTR_MASK |
-                        XSPI_DLLCR_FREQEN_MASK);
-    base->DLLCR[0] &= ~(XSPI_DLLCR_SLV_EN_MASK | XSPI_DLLCR_SLAVE_AUTO_UPDT_MASK | XSPI_DLLCR_DLLEN_MASK);
-    /* Enable subordinate as auto update mode. */
-    base->DLLCR[0] |= XSPI_DLLCR_SLV_EN_MASK | XSPI_DLLCR_SLAVE_AUTO_UPDT_MASK;
-    /* program DLL to desired delay. */
-    base->DLLCR[0] |= XSPI_DLLCR_DLLRES(FSL_FEATURE_XSPI_DLL_REF_VALUE_AUTOUPDATE_RES) |
-                      XSPI_DLLCR_DLL_REFCNTR(2U) | XSPI_DLLCR_DLL_CDL8(1U) |
-                      XSPI_DLLCR_SLV_FINE_OFFSET(0) | XSPI_DLLCR_SLV_DLY_OFFSET(0) | XSPI_DLLCR_FREQEN(1U);
-    /* Load above settings into delay chain. */
-    base->DLLCR[0] |= XSPI_DLLCR_SLV_UPD_MASK;
-    base->DLLCR[0] |= XSPI_DLLCR_DLLEN_MASK;
-    base->DLLCR[0] &= ~XSPI_DLLCR_SLV_UPD_MASK;
-
-    while ((base->DLLSR & XSPI_DLLSR_SLVA_LOCK_MASK) == 0UL)
-    {
-    }
+    BOARD_UpdateXspiDll(base, false, 166000000U);
 
     if ((cache->CCR & CACHE64_CTRL_CCR_ENCACHE_MASK) == 0x00U)
     {

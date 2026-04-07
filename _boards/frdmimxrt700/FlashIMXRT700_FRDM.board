@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<flash_board>
+  <pass>
+    <loader>$TOOLKIT_DIR$\config\flashloader\NXP\FlashIMXRT700_FRDM_XSPI0.flash</loader>
+    <range>CODE 0x28000000 0x2fffffff</range>
+  </pass>
+  <pass>
+    <loader>$TOOLKIT_DIR$\config\flashloader\NXP\FlashIMXRT700_FRDM_XSPI0.flash</loader>
+    <range>CODE 0x38000000 0x3fffffff</range>
+    <rel_offset>-0x10000000</rel_offset>
+  </pass>
+</flash_board>
+
+
