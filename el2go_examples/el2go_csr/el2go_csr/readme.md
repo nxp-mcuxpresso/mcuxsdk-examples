@@ -11,7 +11,7 @@ Additional information about EdgeLock 2GO Provisioning for MCUs can be found in 
 
 - **[GITHUB]**: refers to the case where the MCU SDK is cloned as GitHub Repository and the EdgeLock 2GO application is build using meta build sytem.
   More details can be found in https://mcuxpresso.nxp.com/mcuxsdk/latest/html/gsd/repo.html.
-- **[ZIP]**: refers to the case whete MCU SDK is generated as ZIP package and the EdgeLock 2GO application is imported and build in one of supported IDEs.
+- **[ZIP]**: refers to the case where MCU SDK is generated as ZIP package and the EdgeLock 2GO application is imported and build in one of supported IDEs.
   More details can be found in https://mcuxpresso.nxp.com/mcuxsdk/latest/html/gsd/package.html.
 
 ## Prerequisites
@@ -21,7 +21,7 @@ Additional information about EdgeLock 2GO Provisioning for MCUs can be found in 
 
 ## Hardware requirements
 
-- FRDM-MCXE31B  board
+- FRDM-MCXE31B board
 - Micro-USB cable
 - Personal Computer
 

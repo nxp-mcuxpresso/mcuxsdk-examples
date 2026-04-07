@@ -30,23 +30,37 @@ mcux_add_macro(
     CC "-DLFS_NO_ASSERT"
 )
 
+# ------- OS configs ------- (default: baremetal)
+set(EL2GO_CSR_OS "baremetal" CACHE STRING "Target OS (baremetal, zephyr)")
+set_property(CACHE EL2GO_CSR_OS PROPERTY STRINGS "baremetal" "zephyr")
+
 # ------- el2go csr related configs --------
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/*.h
-            middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/*.c
-            middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/pal/*.h
-            middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/driver/*.c
+    SOURCES middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/osal/inc/*.h
+            middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/osal/${EL2GO_CSR_OS}/inc/*.h
+            middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/osal/${EL2GO_CSR_OS}/src/*.c
+            middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/common/inc/*.h
+            middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/common/src/*.c
+            middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/pal/inc/*.h
+            middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/pal/boards/${board}/*.c 
+            middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/app/inc/*.h
+            middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/app/src/el2go_csr_tlv_parser.c
+            middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/app/src/el2go_csr.c # SPSDK mode
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/
-    INCLUDES middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/pal
+    INCLUDES middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/osal/${EL2GO_CSR_OS}/inc
+             middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/osal/inc
+             middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/pal/inc
+             middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/common/inc
+             middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/app/inc
 )
 
 mcux_add_macro(
     CC "PRINTF_ADVANCED_ENABLE=1"
 )
 
+# -------- add executable target -----------
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
