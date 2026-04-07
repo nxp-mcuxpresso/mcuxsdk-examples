@@ -335,5 +335,6 @@ cmsis_lpuart_interrupt_transfer:
     - +iar@debug
     - +iar@release
     frdmmcxa577: []
+    frdmmcxa287: []
     frdmmcxc162: []
     frdmkw43: []

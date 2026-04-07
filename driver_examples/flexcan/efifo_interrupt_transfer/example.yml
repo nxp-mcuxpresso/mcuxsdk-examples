@@ -114,4 +114,5 @@ flexcan_efifo_interrupt_transfer:
     - -mdk@hyperram_release
     - -mdk@release
     frdmmcxa577: []
+    frdmmcxa287: []
     frdmkw43: []

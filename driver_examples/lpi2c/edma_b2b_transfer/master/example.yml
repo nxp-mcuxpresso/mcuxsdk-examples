@@ -300,5 +300,6 @@ lpi2c_edma_b2b_transfer_master:
     frdmmcxa266: []
     frdmmcxa366: []
     frdmmcxa577: []
+    frdmmcxa287: []
     frdmmcxc162: []
     frdmkw43: []

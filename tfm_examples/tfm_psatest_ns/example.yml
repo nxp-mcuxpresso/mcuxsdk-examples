@@ -49,3 +49,4 @@ tfm_psatest_ns:
     - -mdk@flash_release
     mcimx93evk: []
     frdmmcxa577: []
+    frdmmcxa287: []

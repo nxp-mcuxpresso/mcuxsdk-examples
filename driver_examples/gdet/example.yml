@@ -26,4 +26,5 @@ gdet:
     - -mdk@release
     mimxrt700evk@cm33_core1: []
     frdmmcxa577: []
+    frdmmcxa287: []
     frdmkw43: []

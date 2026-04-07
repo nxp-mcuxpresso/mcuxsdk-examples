@@ -293,5 +293,6 @@ cmsis_lpspi_int_b2b_transfer_master:
     frdmmcxa366: []
     imx952evk@cm7: []
     frdmmcxa577: []
+    frdmmcxa287: []
     frdmmcxc162: []
     frdmkw43: []

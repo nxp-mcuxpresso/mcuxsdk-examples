@@ -25,6 +25,7 @@ i3c_master_read_sensor_p3t1755:
     frdmmcxa266: []
     frdmmcxa366: []
     frdmmcxa577: []
+    frdmmcxa287: []
     imx943evk@cm7_core0: []
     imx943evk@cm7_core1: []
     imx943evk@cm33_core1: []
