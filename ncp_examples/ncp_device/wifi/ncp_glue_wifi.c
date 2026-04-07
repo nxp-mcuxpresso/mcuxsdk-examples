@@ -3249,7 +3249,9 @@ static int wlan_ncp_set_rf_tx_frame(void *tlv)
                                rf_tx_frame->frame_length, rf_tx_frame->adjust_burst_sifs, rf_tx_frame->burst_sifs_in_us,
                                rf_tx_frame->short_preamble, rf_tx_frame->act_sub_ch, rf_tx_frame->short_gi,
                                rf_tx_frame->adv_coding, rf_tx_frame->tx_bf, rf_tx_frame->gf_mode, rf_tx_frame->stbc,
-                               rf_tx_frame->bssid);
+                               rf_tx_frame->bssid, rf_tx_frame->signal_bw, rf_tx_frame->NumPkt, rf_tx_frame->MaxPE,
+                               rf_tx_frame->BeamChange, rf_tx_frame->Dcm, rf_tx_frame->Doppler, rf_tx_frame->MidP,
+                               rf_tx_frame->QNum);
 
     if (!ret)
         wlan_ncp_prepare_status(NCP_RSP_WLAN_REGULATORY_SET_RF_TX_FRAME, NCP_CMD_RESULT_OK);

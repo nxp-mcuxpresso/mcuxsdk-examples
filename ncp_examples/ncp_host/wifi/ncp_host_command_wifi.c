@@ -7135,6 +7135,14 @@ int wlan_ncp_set_rf_tx_frame_command(int argc, char **argv)
     uint32_t gf_mode;
     uint32_t stbc;
     uint8_t bssid[NCP_WLAN_MAC_ADDR_LENGTH];
+    uint32_t signal_bw = (uint32_t)-1;
+    uint32_t NumPkt    = (uint32_t)-1;
+    uint32_t MaxPE     = (uint32_t)-1;
+    uint32_t BeamChange= (uint32_t)-1;
+    uint32_t Dcm       = (uint32_t)-1;
+    uint32_t Doppler   = (uint32_t)-1;
+    uint32_t MidP      = (uint32_t)-1;
+    uint32_t QNum      = (uint32_t)-1;
 
     if (!ncp_rf_test_mode)
     {
@@ -7159,7 +7167,7 @@ int wlan_ncp_set_rf_tx_frame_command(int argc, char **argv)
         stbc              = 0;
         (void)memset(bssid, 0, sizeof(bssid));
     }
-    else if (argc != 15)
+    else if (argc != 16 && argc != 23)
     {
         dump_wlan_set_tx_frame_usage();
         return -WM_FAIL;
@@ -7185,12 +7193,47 @@ int wlan_ncp_set_rf_tx_frame_command(int argc, char **argv)
             dump_wlan_set_tx_frame_usage();
             return -WM_FAIL;
         }
+        signal_bw  = strtol(argv[15], NULL, 10);
+        if (signal_bw != (uint32_t)-1 &&
+            signal_bw != 0U &&
+            signal_bw != 1U &&
+            signal_bw != 4U)
+        {
+            (void)PRINTF("Invalid Signal BW\r\n");
+            dump_wlan_set_tx_frame_usage();
+            return -WM_FAIL;
+        }
 
         if (enable > 1 || frame_length < 1 || frame_length > 0x400 || burst_sifs_in_us > 255 || short_preamble > 1 ||
             act_sub_ch == 2 || act_sub_ch > 3 || short_gi > 1 || adv_coding > 1 || tx_bf > 1 || gf_mode > 1 || stbc > 1)
         {
             dump_wlan_set_tx_frame_usage();
             return -WM_FAIL;
+        }
+
+        /* Parse 11ax optional parameters if provided */
+        if (argc == 23)
+        {
+            NumPkt     = strtol(argv[16], NULL, 0);
+            MaxPE      = strtol(argv[17], NULL, 10);
+            BeamChange = strtol(argv[18], NULL, 10);
+            Dcm        = strtol(argv[19], NULL, 10);
+            Doppler    = strtol(argv[20], NULL, 10);
+            MidP       = strtol(argv[21], NULL, 10);
+            QNum       = strtol(argv[22], NULL, 10);
+
+            /* 11ax parameter validation */
+            if ((Dcm != (uint32_t)-1 && Dcm != 0U && Dcm != 1U) ||
+                (Doppler != (uint32_t)-1 && Doppler != 0U && Doppler != 1U) ||
+                (MidP != (uint32_t)-1 && MidP != 10U && MidP != 20U) ||
+                (MaxPE != (uint32_t)-1 && MaxPE != 0U && MaxPE != 8U && MaxPE != 16U) ||
+                (BeamChange != (uint32_t)-1 && BeamChange != 0U && BeamChange != 1U) ||
+                (QNum != (uint32_t)-1 && ((QNum > 12U && QNum < 17U) || QNum > 20U)))
+            {
+                (void)PRINTF("Invalid 11ax arguments\r\n");
+                dump_wlan_set_tx_frame_usage();
+                return -WM_FAIL;
+            }
         }
     }
 
@@ -7214,6 +7257,15 @@ int wlan_ncp_set_rf_tx_frame_command(int argc, char **argv)
     rf_tx_frame->gf_mode             = gf_mode;
     rf_tx_frame->stbc                = stbc;
     memcpy(rf_tx_frame->bssid, bssid, sizeof(bssid));
+    rf_tx_frame->signal_bw           = signal_bw;
+    /* Set 11ax parameters */
+    rf_tx_frame->NumPkt              = NumPkt;
+    rf_tx_frame->MaxPE               = MaxPE;
+    rf_tx_frame->BeamChange          = BeamChange;
+    rf_tx_frame->Dcm                 = Dcm;
+    rf_tx_frame->Doppler             = Doppler;
+    rf_tx_frame->MidP                = MidP;
+    rf_tx_frame->QNum                = QNum;
     set_rf_tx_frame_command->header.size += sizeof(NCP_CMD_RF_TX_FRAME);
 
     return WM_SUCCESS;

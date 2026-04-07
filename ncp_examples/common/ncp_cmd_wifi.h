@@ -2337,6 +2337,22 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_RF_TX_FRAME
     uint32_t stbc;
     /** BSSID string. */
     uint8_t bssid[MLAN_MAC_ADDR_LENGTH];
+    /**signal bw*/
+    uint32_t signal_bw;
+    /** NumPkt */
+    uint32_t NumPkt;
+    /** MaxPE */
+    uint32_t MaxPE;
+    /** BeamChange */
+    uint32_t BeamChange;
+    /** Dcm */
+    uint32_t Dcm;
+    /** Doppler */
+    uint32_t Doppler;
+    /** MidP */
+    uint32_t MidP;
+    /** QNum */
+    uint32_t QNum;
 } NCP_TLV_PACK_END NCP_CMD_RF_TX_FRAME;
 
 /** This structure is used for RF per command configuration. */
