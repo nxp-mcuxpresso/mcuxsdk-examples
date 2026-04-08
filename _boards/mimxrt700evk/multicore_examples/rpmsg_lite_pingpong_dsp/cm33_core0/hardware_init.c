@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -26,7 +26,6 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
 
     BOARD_InitAHBSC();
-
 
     /* Powerup all the SRAM partitions. */
     PMC0->PDRUNCFG2 &= ~0x3FFC0000;
@@ -55,15 +54,4 @@ void invalidate_cache_for_core1_image_memory(uint32_t address, uint32_t size_byt
 }
 #endif /* APP_INVALIDATE_CACHE_FOR_SECONDARY_CORE_IMAGE_MEMORY */
 
-/*!
- * @brief Application-specific implementation of the SystemInitHook() weak function.
- */
-void SystemInitHook(void)
-{
-    /* Initialize MCMGR - low level multicore management library. Call this
-       function as close to the reset entry as possible to allow CoreUp event
-       triggering. The SystemInitHook() weak function overloading is used in this
-       application. */
-    (void)MCMGR_EarlyInit();
-}
 /*${function:end}*/

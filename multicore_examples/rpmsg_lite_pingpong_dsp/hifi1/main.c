@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -23,11 +23,11 @@
 #define APP_RPMSG_EP_READY_EVENT_DATA (2U)
 
 #if defined(CONFIG_RPMSG_LITE_PINGPONG_SWITCH_COMM) && (CONFIG_RPMSG_LITE_PINGPONG_SWITCH_COMM == 1)
-#define NO_MAX_DATA 199U
-#define LOCAL_EPT_ADDR                (31U)
+#define NO_MAX_DATA    199U
+#define LOCAL_EPT_ADDR (31U)
 #else
-#define NO_MAX_DATA 299U
-#define LOCAL_EPT_ADDR                (42U)
+#define NO_MAX_DATA    299U
+#define LOCAL_EPT_ADDR (42U)
 #endif
 
 typedef struct the_message
@@ -65,13 +65,6 @@ static int32_t my_ept_read_cb(void *payload, uint32_t payload_len, uint32_t src,
  */
 int main(void)
 {
-    /* Usually for Cortex the SystemInit() is called in startup.s file.
-     * For DSP there is not such a file, so call it here.
-     * This is required because it will call SystemInitHook() in which there is
-     * prepared hook function for MCMGR to call MCMGR_EarlyInit() in hardware_init.c file.
-     */
-    SystemInit();
-
     xos_start_main("main", 7, 0);
 
     volatile int32_t has_received                       = 0;

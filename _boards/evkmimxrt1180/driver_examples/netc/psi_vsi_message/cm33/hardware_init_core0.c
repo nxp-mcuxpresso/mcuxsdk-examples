@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 NXP
+ * Copyright 2022-2023, 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -116,11 +116,5 @@ status_t APP_PHY_GetLinkStatus(bool *link)
 void SystemInitHook(void)
 {
     Prepare_CM7(CORE1_KICKOFF_ADDRESS);
-
-    /* Initialize MCMGR - low level multicore management library. Call this
-       function as close to the reset entry as possible to allow CoreUp event
-       triggering. The SystemInitHook() weak function overloading is used in this
-       application. */
-    (void)MCMGR_EarlyInit();
 }
 /*${function:end}*/

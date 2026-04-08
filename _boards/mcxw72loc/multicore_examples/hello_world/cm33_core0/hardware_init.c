@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -26,23 +26,12 @@ void BOARD_InitHardware(void)
        to allow LED2_BLUE control from the secondary core application */
     TRDC_SetDacGlobalValid(TRDC);
     trdc_non_processor_domain_assignment_t domain = {
-      .domainId = 0U,
-      .privilegeAttr = kTRDC_ForcePrivilege,
-      .secureAttr = kTRDC_ForceSecure,
-      .bypassDomainId = 0U,
+        .domainId       = 0U,
+        .privilegeAttr  = kTRDC_ForcePrivilege,
+        .secureAttr     = kTRDC_ForceSecure,
+        .bypassDomainId = 0U,
     };
     TRDC_SetNonProcessorDomainAssignment(TRDC, 3U, &domain);
 }
 
-/*!
- * @brief Application-specific implementation of the SystemInitHook() weak function.
- */
-void SystemInitHook(void)
-{
-    /* Initialize MCMGR - low level multicore management library. Call this
-       function as close to the reset entry as possible to allow CoreUp event
-       triggering. The SystemInitHook() weak function overloading is used in this
-       application. */
-    (void)MCMGR_EarlyInit();
-}
 /*${function:end}*/

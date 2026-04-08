@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -45,7 +45,7 @@ const uint8_t slcd_lcd_gpio_seg_pin[] = {
 /*${function:start}*/
 void BOARD_SetSlcdBackPlanePhase(void)
 {
-    SLCD_SetBackPlanePhase(LCD, 1,  kSLCD_PhaseAActivate); /* SLCD COM1 --- LCD_P1. */
+    SLCD_SetBackPlanePhase(LCD, 1, kSLCD_PhaseAActivate);  /* SLCD COM1 --- LCD_P1. */
     SLCD_SetBackPlanePhase(LCD, 15, kSLCD_PhaseBActivate); /* SLCD COM2 --- LCD_P15. */
     SLCD_SetBackPlanePhase(LCD, 16, kSLCD_PhaseCActivate); /* SLCD COM3 --- LCD_P16. */
     SLCD_SetBackPlanePhase(LCD, 22, kSLCD_PhaseDActivate); /* SLCD COM4 --- LCD_P22. */
@@ -79,15 +79,4 @@ uint32_t get_core1_image_size(void)
 }
 #endif
 
-/*!
- * @brief Application-specific implementation of the SystemInitHook() weak function.
- */
-void SystemInitHook(void)
-{
-    /* Initialize MCMGR - low level multicore management library. Call this
-    function as close to the reset entry as possible to allow CoreUp event
-    triggering. The SystemInitHook() weak function overloading is used in this
-    application. */
-    (void)MCMGR_EarlyInit();
-}
 /*${function:end}*/

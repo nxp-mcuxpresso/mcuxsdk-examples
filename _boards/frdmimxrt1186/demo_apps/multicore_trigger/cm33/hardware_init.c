@@ -1,6 +1,5 @@
 /*
- * Copyright 2021-2023 NXP
- * All rights reserved.
+ * Copyright 2021-2023, 2026 NXP
  *
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -26,9 +25,9 @@
 
 #define CONTAINER_BASE_ADDR   0x14001000UL /* For FlexSPI, base addr(0x14000000) + 0x1000 offset */
 #define CONTAINER_MAX_NUM     2U
-#define CONTAINER_SIZE        0x400U /* in bytes */
-#define CONTAINER_HEADER_SIZE 16U    /* in bytes */
-#define IMAGE_ENTRY_SIZE      0x80U  /* in bytes */
+#define CONTAINER_SIZE        0x400U       /* in bytes */
+#define CONTAINER_HEADER_SIZE 16U          /* in bytes */
+#define IMAGE_ENTRY_SIZE      0x80U        /* in bytes */
 #define IMAGE_TAG_NUM         0x87U
 #define IMAGE_TYPE_EXECUTABLE 0x03U
 #define CORE_ID_CM7           0x02U
@@ -42,9 +41,7 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    MCMGR_EarlyInit();
-
-    BOARD_CommonSetting(); 
+    BOARD_CommonSetting();
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
@@ -216,7 +213,7 @@ void BOARD_PrepareCore1(uint32_t image_src_addr, uint32_t image_dest_addr, uint3
         pRamVect[0]         = pBootVect[0];
         pRamVect[1]         = pBootVect[1];
 #endif /* (defined(ENABLE_WORKAROUND_CM7_KICK_OFF) && (ENABLE_WORKAROUND_CM7_KICK_OFF > 0U)) */
-    }    
+    }
 }
 
 /*${function:end}*/

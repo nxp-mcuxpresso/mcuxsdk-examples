@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -78,7 +78,7 @@ static status_t APP_EMDIORead(uint8_t phyAddr, uint8_t regAddr, uint16_t *pData)
 
 status_t APP_PHY_Init(void)
 {
-    status_t result            = kStatus_Success;
+    status_t result              = kStatus_Success;
     phy_config_t phyyt8521Config = {
         .autoNeg   = false,
         .speed     = kPHY_Speed100M,
@@ -95,8 +95,8 @@ status_t APP_PHY_Init(void)
     SDK_DelayAtLeastUs(150000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 
     /* Initialize PHY for switch port1. */
-    s_phy_resource.write   = APP_EMDIOWrite;
-    s_phy_resource.read    = APP_EMDIORead;
+    s_phy_resource.write     = APP_EMDIOWrite;
+    s_phy_resource.read      = APP_EMDIORead;
     phyyt8521Config.resource = &s_phy_resource;
     phyyt8521Config.phyAddr  = BOARD_SWT_PORT0_PHY_ADDR;
 
@@ -117,11 +117,5 @@ status_t APP_PHY_GetLinkStatus(bool *link)
 void SystemInitHook(void)
 {
     Prepare_CM7(CORE1_KICKOFF_ADDRESS);
-
-    /* Initialize MCMGR - low level multicore management library. Call this
-       function as close to the reset entry as possible to allow CoreUp event
-       triggering. The SystemInitHook() weak function overloading is used in this
-       application. */
-    (void)MCMGR_EarlyInit();
 }
 /*${function:end}*/

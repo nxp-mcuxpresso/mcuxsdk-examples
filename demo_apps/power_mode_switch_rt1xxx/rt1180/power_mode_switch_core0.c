@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, 2025 NXP
+ * Copyright 2022, 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -353,7 +353,8 @@ static void APP_SetBBSMModeWakeupConfig(void)
     }
     else
     {
-        PRINTF("Since GPIO button is not working in BBSM mode, Press WAKEUP button %s to wake up system.\r\n", BOARD_WAKEUP_BUTTON_NAME);
+        PRINTF("Since GPIO button is not working in BBSM mode, Press WAKEUP button %s to wake up system.\r\n",
+               BOARD_WAKEUP_BUTTON_NAME);
     }
 }
 
@@ -496,11 +497,6 @@ static void APP_CopyCore1Image(void)
  */
 void SystemInitHook(void)
 {
-    /* Initialize MCMGR - low level multicore management library. Call this
-       function as close to the reset entry as possible to allow CoreUp event
-       triggering. The SystemInitHook() weak function overloading is used in this
-       application. */
-    (void)MCMGR_EarlyInit();
 #ifndef SINGLE_CORE_M33
     Prepare_CM7(0);
 #endif

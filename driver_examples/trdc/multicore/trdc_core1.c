@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2025 NXP
+ * Copyright 2022-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -12,10 +12,10 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define DEMO_SECURE 0
+#define DEMO_SECURE        0
 #define DEMO_NONSECURE_MBC 1
 #define DEMO_NONSECURE_MRC 2
-#define DEMO_OTHER 3
+#define DEMO_OTHER         3
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -24,22 +24,11 @@
  * Variables
  ******************************************************************************/
 AT_NONCACHEABLE_SECTION_INIT(volatile static bool g_hardfaultFlag) = false;
-AT_NONCACHEABLE_SECTION_INIT(volatile static uint8_t g_demo) = DEMO_SECURE;
+AT_NONCACHEABLE_SECTION_INIT(volatile static uint8_t g_demo)       = DEMO_SECURE;
 
 /*******************************************************************************
  * Code
  ******************************************************************************/
-/*!
- * @brief Application-specific implementation of the SystemInitHook() weak function.
- */
-void SystemInitHook(void)
-{
-    /* Initialize MCMGR - low level multicore management library. Call this
-       function as close to the reset entry as possible to allow CoreUp event
-       triggering. The SystemInitHook() weak function overloading is used in this
-       application. */
-    (void)MCMGR_EarlyInit();
-}
 
 void Fault_handler()
 {
@@ -117,12 +106,15 @@ int main(void)
     {
     }
 
-    PRINTF("\r\nIn secondary core demo we use 2 domains, one is for secure access only, and the other is for non-secure access only.\r\n");
+    PRINTF(
+        "\r\nIn secondary core demo we use 2 domains, one is for secure access only, and the other is for non-secure "
+        "access only.\r\n");
 
     /* 1. Enable all access to all blocks. */
     APP_SetTrdcGlobalConfig();
 
-    /* 2. In secondary core demo we use 2 domains, one is for secure access only, and the other is for non-secure access only. */
+    /* 2. In secondary core demo we use 2 domains, one is for secure access only, and the other is for non-secure access
+     * only. */
     APP_SetTrdcAccessControl();
 
     PRINTF("Secondary core secure access demo starts.\r\n");

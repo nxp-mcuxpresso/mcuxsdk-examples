@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -75,11 +75,5 @@ void SystemInitHook(void)
        Therefore it is called from SystemInit() during startup. The SystemInitHook()
        weak function overloading is used for this purpose. */
     BOARD_InitBootTEE();
-
-    /* Initialize MCMGR - low level multicore management library. Call this
-       function as close to the reset entry as possible to allow CoreUp event
-       triggering. The SystemInitHook() weak function overloading is used in this
-       application. */
-    (void)MCMGR_EarlyInit();
 }
 /*${function:end}*/

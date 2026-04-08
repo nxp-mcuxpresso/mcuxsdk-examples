@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2024 NXP
+ * Copyright 2019-2024, 2026 NXP
  *
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -46,11 +46,6 @@ uint32_t get_core1_image_size(void)
  */
 void SystemInitHook(void)
 {
-    /* Initialize MCMGR - low level multicore management library. Call this
-       function as close to the reset entry as possible to allow CoreUp event
-       triggering. The SystemInitHook() weak function overloading is used in this
-       application. */
-    (void)MCMGR_EarlyInit();
     Prepare_CM7(CORE1_KICKOFF_ADDRESS);
 }
 /*${function:end}*/

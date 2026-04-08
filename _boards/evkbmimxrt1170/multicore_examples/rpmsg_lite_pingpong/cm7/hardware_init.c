@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2024 NXP
+ * Copyright 2019-2024, 2026 NXP
  *
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -32,11 +32,11 @@ uint32_t get_core1_image_size(void)
     image_size = (uint32_t)&Image$$CORE1_REGION$$Length;
 #elif defined(__ICCARM__)
 #pragma section = "__core1_image"
-    uint32_t sec_end = (uint32_t)__section_end("__core1_image");
+    uint32_t sec_end     = (uint32_t)__section_end("__core1_image");
 #pragma section = "__core1_image"
     uint32_t core1_start = (uint32_t)&core1_image_start;
 #pragma section = "__core1_image"
-    image_size = sec_end - core1_start;
+    image_size           = sec_end - core1_start;
 #elif defined(__GNUC__)
     image_size = (uint32_t)core1_image_size;
 #endif
@@ -44,15 +44,4 @@ uint32_t get_core1_image_size(void)
 }
 #endif
 
-/*!
- * @brief Application-specific implementation of the SystemInitHook() weak function.
- */
-void SystemInitHook(void)
-{
-    /* Initialize MCMGR - low level multicore management library. Call this
-       function as close to the reset entry as possible to allow CoreUp event
-       triggering. The SystemInitHook() weak function overloading is used in this
-       application. */
-    (void)MCMGR_EarlyInit();
-}
 /*${function:end}*/

@@ -1,6 +1,5 @@
 /*
- * Copyright 2021-2023 NXP
- * All rights reserved.
+ * Copyright 2021-2023, 2026 NXP
  *
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -26,9 +25,9 @@
 
 #define CONTAINER_BASE_ADDR   0x38001000UL /* For FlexSPI, base addr(0x38000000) + 0x1000 offset */
 #define CONTAINER_MAX_NUM     2U
-#define CONTAINER_SIZE        0x400U /* in bytes */
-#define CONTAINER_HEADER_SIZE 16U    /* in bytes */
-#define IMAGE_ENTRY_SIZE      0x80U  /* in bytes */
+#define CONTAINER_SIZE        0x400U       /* in bytes */
+#define CONTAINER_HEADER_SIZE 16U          /* in bytes */
+#define IMAGE_ENTRY_SIZE      0x80U        /* in bytes */
 #define IMAGE_TAG_NUM         0x87U
 #define IMAGE_TYPE_EXECUTABLE 0x03U
 #define CORE_ID_CM7           0x02U
@@ -42,8 +41,6 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    MCMGR_EarlyInit();
-
     BOARD_CommonSetting();
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
