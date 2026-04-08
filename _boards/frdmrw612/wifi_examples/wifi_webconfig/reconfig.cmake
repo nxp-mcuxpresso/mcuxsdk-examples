@@ -10,6 +10,13 @@ mcux_add_source(
         ${board_root}/${board}/wifi_examples/common/hardware_init.c
         ${board_root}/${board}/wifi_examples/common/app.h
 )
+
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}
+    PREINCLUDE TRUE
+    SOURCES examples/wifi_examples/wifi_webconfig/wifi_config/wifi_config.h
+)
+
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES
@@ -20,6 +27,10 @@ mcux_add_iar_configuration(
     CX "--no_clustering"
     TARGETS flash_release
     CC "--no_inline"
+)
+
+mcux_add_macro(
+    CC "-DCONFIG_MONOLITHIC_WIFI=1"
 )
 
 # Rename wifi linker files on RW612
