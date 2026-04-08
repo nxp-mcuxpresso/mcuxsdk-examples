@@ -29,16 +29,12 @@ Prepare the Demo
 Note:
 1. the ap1302 is an external isp, it need special firmware from OnSemi GitHub.
    pls download ap1302_60fps_ar0144_27M_2Lane_awb_tuning.bin from: https://github.com/ONSemiconductor/ap1302_binaries/tree/main/NXP_i.MX93
-2. You can use Jlink or other method to load fw into memory.
-   such as Jlink tool: 'connect' then select 'MIMX95294_M7' device, 'S' select SWD.
-   loadbin "C:\***\ap1302_60fps_ar0144_27M_2Lane_awb_tuning.bin" 0x87000000
+2. download fw in to this location: ${SdkRootDirPath}/components/video/camera/device/ap1302/ap1302_60fps_ar0144_27M_2Lane_awb_tuning.bin, combine it into one bin file.
 
 ================
 Running the demo
 ================
 ISI MIPI-CSI2 example start...
-Please load camera firmware into memory:87000000, input 'A' in console after finished load
-FW Load into memory done
 CSI interface init pass.
 DISPLAY Device init pass.
 When the example runs successfully, you can see the expected figure shown in screen.
