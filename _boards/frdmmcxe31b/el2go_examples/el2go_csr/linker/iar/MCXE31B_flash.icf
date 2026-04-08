@@ -79,7 +79,6 @@ define region QACODE_region = mem:[from m_qacode_start to m_qacode_end];
 define region QADATA_region = mem:[from m_qadata_start to m_qadata_end];
 define region NCACHE_region = mem:[from m_ncache_start to m_ncache_end];
 
-define block EL2GO_CSR_CONF with alignment = 4 { section .el2go_csr_conf };
 define block CSTACK    with alignment = 8, size = __size_cstack__   { };
 define block HEAP      with alignment = 8, size = __size_heap__     { };
 define block RW        with alignment = 8, end alignment = 8  { readwrite };
@@ -89,12 +88,12 @@ define block QACCESS_CODE  { section CodeQuickAccess };
 define block QACCESS_DATA  { section DataQuickAccess };
 
 initialize by copy { readwrite, section .textrw, section CodeQuickAccess, section DataQuickAccess };
-do not initialize  { section .noinit };
+do not initialize  { section .noinit, section .el2go_csr_conf};
 
 place at address mem: m_interrupts_start    { readonly section .intvec };
 place in m_boot_header_region               { section .boot_header };
 place in TEXT_region                        { readonly };
-place in EL2GO_CSR_CONF_region              { block EL2GO_CSR_CONF  };
+place in EL2GO_CSR_CONF_region              { section .el2go_csr_conf  };
 place in DATA_region                        { block RW };
 place in DATA_region                        { block ZI };
 place in DATA_region                        { last block HEAP };

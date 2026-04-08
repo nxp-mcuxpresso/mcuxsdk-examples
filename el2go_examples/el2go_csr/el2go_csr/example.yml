@@ -20,7 +20,5 @@ el2go_csr:
     - -iar@release
     - -mdk@debug
     - -mdk@release
-    - -iar@flash_debug
-    - -iar@flash_release
     - -mdk@flash_debug
     - -mdk@flash_release
