@@ -56,10 +56,12 @@ static void LPADC_Configuration(void)
     LPADC_DoOffsetCalibration(DEMO_LPADC_BASE);
 #endif /* FSL_FEATURE_LPADC_HAS_OFSTRIM */
     /* Request gain calibration. */
+    SDK_DelayAtLeastUs(1U, SystemCoreClock);
     LPADC_DoAutoCalibration(DEMO_LPADC_BASE);
 #endif /* FSL_FEATURE_LPADC_HAS_CTRL_CALOFS */
 #if (defined(FSL_FEATURE_LPADC_HAS_CFG_CALOFS) && FSL_FEATURE_LPADC_HAS_CFG_CALOFS)
     /* Do auto calibration. */
+    SDK_DelayAtLeastUs(1U, SystemCoreClock);
     LPADC_DoAutoCalibration(DEMO_LPADC_BASE);
 #endif /* FSL_FEATURE_LPADC_HAS_CFG_CALOFS */
 

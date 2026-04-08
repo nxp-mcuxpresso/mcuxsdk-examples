@@ -170,6 +170,7 @@ void ADC_Configuration(void)
 
     LPADC_DoOffsetCalibration(DEMO_LPADC_BASE);
     /* Request gain calibration. */
+    SDK_DelayAtLeastUs(1U, SystemCoreClock);
     LPADC_DoAutoCalibration(DEMO_LPADC_BASE);
 
     /* Set conversion CMD configuration. */
