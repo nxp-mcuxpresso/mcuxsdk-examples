@@ -13,7 +13,7 @@
 /*${header:end}*/
 
 /*${function:start}*/
-#if ((DEMO_PANEL_RM67162 == DEMO_PANEL) && (!RM67162_USE_LCDIF))
+#if ((DEMO_PANEL_RM67162 == DEMO_PANEL) && (!RM67162_USE_LCDIF)) || (DEMO_PANEL_CO5300 == DEMO_PANEL)
 void BOARD_MIPI_TE_GPIO_IRQ_Handler(void)
 {
     uint32_t intStat;
@@ -22,7 +22,7 @@ void BOARD_MIPI_TE_GPIO_IRQ_Handler(void)
 
     GPIO_GpioClearInterruptFlags(BOARD_MIPI_TE_GPIO, 1U << BOARD_MIPI_TE_PIN);
 
-    if (intStat & (1U << BOARD_MIPI_TE_PIN))
+    if (intStat != 0U)
     {
         BOARD_DisplayTEPinHandler();
     }
