@@ -340,7 +340,7 @@ void BOARD_BootClockFRO48M(void);
 #define BOARD_BOOTCLOCKFRO96M_ROSC_CLOCK              32768U  /*!< ROSC clock frequency: 32768Hz */
 
 /* Clock outputs (values are in Hz): */
-#define BOARD_BOOTCLOCKFRO96M_ADC0_CLK                96000000UL     /* Clock consumers of ADC0_CLK output : LPADC */
+#define BOARD_BOOTCLOCKFRO96M_ADC0_CLK                48000000UL     /* Clock consumers of ADC0_CLK output : LPADC */
 #define BOARD_BOOTCLOCKFRO96M_AON_ACMP0_CLK0          2500000UL      /* Clock consumers of AON_ACMP0_CLK0 output : AON__ACMP0 */
 #define BOARD_BOOTCLOCKFRO96M_AON_ACMP0_CLK1          2500000UL      /* Clock consumers of AON_ACMP0_CLK1 output : AON__ACMP0 */
 #define BOARD_BOOTCLOCKFRO96M_AON_APB_CLK             10000000UL     /* Clock consumers of AON_APB_CLK output : N/A */
