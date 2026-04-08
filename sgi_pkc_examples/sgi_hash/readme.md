@@ -11,3 +11,4 @@ The SGI PKC application provides examples which demonstrate usage of most availa
 - [FRDM-MCXA366](../../_boards/frdmmcxa366/sgi_pkc_examples/sgi_hash/example_board_readme.md)
 - [FRDM-MCXL255](../../_boards/frdmmcxl255/sgi_pkc_examples/sgi_hash/cm33/example_board_readme.md)
 - [FRDM-MCXA577](../../_boards/frdmmcxa577/sgi_pkc_examples/sgi_hash/example_board_readme.md)
+- [FRDM-KW43](../../_boards/frdmkw43/sgi_pkc_examples/sgi_hash/example_board_readme.md)

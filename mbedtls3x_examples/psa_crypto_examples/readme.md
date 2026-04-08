@@ -31,3 +31,4 @@ PSA Crypto example to demonstrate cipher operation.
 - [FRDM-MCXA266](../../_boards/frdmmcxa266/mbedtls3x_examples/psa_crypto_examples/example_board_readme.md)
 - [FRDM-MCXA366](../../_boards/frdmmcxa366/mbedtls3x_examples/psa_crypto_examples/example_board_readme.md)
 - [FRDM-MCXL255](../../_boards/frdmmcxl255/mbedtls3x_examples/psa_crypto_examples/cm33/example_board_readme.md)
+- [FRDM-KW43](../../_boards/frdmkw43/mbedtls3x_examples/psa_crypto_examples/cm33/example_board_readme.md)
