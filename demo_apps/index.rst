@@ -20,7 +20,6 @@ demo_apps
    dac/index.rst
    dac32/index.rst
    dcdc_framework/readme.md
-   dmic/index.rst
    dsc_bootloader/readme.md
    dsc_dac/index.rst
    dspi/index.rst
@@ -57,7 +56,6 @@ demo_apps
    lpi2c/index.rst
    lpspi/index.rst
    mbedtls/index.rst
-   mbw/readme.md
    mc_bldc/readme.md
    mc_pmsm/index.rst
    meterlib1ph_test/readme.md
@@ -103,7 +101,6 @@ demo_apps
    power_mode_switch_mcxa/index.rst
    power_mode_switch_mcxe/index.rst
    power_mode_switch_mcxl/readme.md
-   power_mode_switch_mcxw/readme.md
    power_mode_switch_mcxw23/readme.md
    power_mode_switch_rt10xx/index.rst
    power_mode_switch_rt1xxx/index.rst

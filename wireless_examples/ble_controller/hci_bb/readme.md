@@ -1,5 +1,5 @@
 # HCI Black Box application
-----------------------------------------
+
 ## 1 - overview
 The Bluetooth LE HCI Black Box demo application gives access to the Bluetooth LE Controller via a serial interface using the HCI protocol over serial interface. 
 

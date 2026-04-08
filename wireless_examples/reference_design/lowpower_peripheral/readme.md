@@ -1,5 +1,5 @@
 # Low-power reference design peripheral application
-----------------------------------------
+
 ## 1 - overview
 Two low-power reference design applications are provided in the reference_design folder:
   - Low power peripheral application demonstrating the low power feature on an advertiser peripheral Bluetooth LE device.

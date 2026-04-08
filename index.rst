@@ -43,19 +43,16 @@ If a supported board includes a link, click it to access the board-specific docu
    ezhv_examples/index.rst
    fatfs_examples/index.rst
    freemaster_examples/index.rst
-   freertos_driver_examples/index.rst
    freertos_examples/index.rst
    issdk_examples/index.rst
    littlefs_examples/index.rst
    lvgl_examples/index.rst
    lwip_examples/index.rst
-   mbed-crypto_examples/index.rst
    mbedtls3x_examples/index.rst
    mbedtls_examples/index.rst
    mmcau_examples/index.rst
    modbus_examples/index.rst
    multicore_examples/index.rst
-   multiprocessor_examples/index.rst
    ncp_examples/index.rst
    openvg_examples/index.rst
    ota_examples/index.rst
