@@ -7,6 +7,4 @@ coex_examples
    :maxdepth: 1
 
 
-   coex_cli/readme.md
    coex_wifi_edgefast/readme.md
-   coex_wpa_supplicant/readme.md

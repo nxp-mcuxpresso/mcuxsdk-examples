@@ -7,11 +7,6 @@ multicore_examples
    :maxdepth: 1
 
 
-   erpc_matrix_multiply_mu/readme.md
-   erpc_matrix_multiply_mu_rtos/readme.md
-   erpc_matrix_multiply_rpmsg/readme.md
-   erpc_matrix_multiply_rpmsg_rtos/readme.md
-   erpc_two_way_rpc_rpmsg_rtos/readme.md
    freertos_message_buffers/readme.md
    hello_world/readme.md
    multicore_manager/readme.md

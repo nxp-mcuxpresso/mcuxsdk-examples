@@ -1,5 +1,5 @@
 # Low-power reference design central application
-----------------------------------------
+
 ## 1 - overview
 Please see the section overview of the peripheral application readme for the common description [lowpower_peripheral](../lowpower_peripheral/readme.md)
 

@@ -19,8 +19,5 @@ freertos_examples
    freertos_sem_static/readme.md
    freertos_swtimer/readme.md
    freertos_tickless/readme.md
-   freertos_tickless_lpc/readme.md
-   freertos_tickless_qn/readme.md
-   freertos_tickless_rgpio/readme.md
    freertos_tzm/index.rst
    visualization/index.rst
