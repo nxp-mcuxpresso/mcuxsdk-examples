@@ -129,8 +129,8 @@ void png_decode(void)
     fbInfo.pixelFormat = APP_FB_FORMAT;
     fbInfo.width       = image.width;
     fbInfo.height      = image.height;
-    fbInfo.startX      = (APP_FB_WIDTH - image.width) / 2U;
-    fbInfo.startY      = (APP_FB_HEIGHT - image.height) / 2U;
+    fbInfo.startX      = 0;
+    fbInfo.startY      = 0;
     fbInfo.strideBytes = image.width * APP_FB_BPP;
     if (kStatus_Success != g_dc.ops->setLayerConfig(&g_dc, 0, &fbInfo))
     {

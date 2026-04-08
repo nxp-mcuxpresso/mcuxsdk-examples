@@ -136,8 +136,8 @@ void DEMO_Decode_JPEG(void)
     fbInfo.pixelFormat = APP_FB_FORMAT;
     fbInfo.width       = s_decoderDespt.config.width;
     fbInfo.height      = s_decoderDespt.config.height;
-    fbInfo.startX      = (DEMO_PANEL_WIDTH - s_decoderDespt.config.width) / 2U;
-    fbInfo.startY      = (DEMO_PANEL_HEIGHT - s_decoderDespt.config.height) / 2U;
+    fbInfo.startX      = 0;
+    fbInfo.startY      = 0;
     fbInfo.strideBytes = s_decoderDespt.config.width * APP_FB_BPP;
     if (kStatus_Success != g_dc.ops->setLayerConfig(&g_dc, 0, &fbInfo))
     {
@@ -155,7 +155,7 @@ void DEMO_Decode_JPEG(void)
     }
 
     s_newFrameShown = true;
-    
+
     /* Step 11: Enable layer and display the decoded image. */
     g_dc.ops->enableLayer(&g_dc, 0);
 }
