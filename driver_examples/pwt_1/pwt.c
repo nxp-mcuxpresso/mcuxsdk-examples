@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 NXP
+ * Copyright 2017, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -34,22 +34,25 @@ volatile bool overflowFlag;
  *
  * This function changes the state of busyWait.
  */
-void PWT_EXAMPLE_HANDLER(void)
+void PWT0_READY_IRQHandler(void)
 {
-    if (PWT_GetStatusFlags(PWT) & kPWT_PulseWidthValidFlag)
+    if (PWT_GetStatusFlags(EXAMPLE_PWT_BASE) & kPWT_PulseWidthValidFlag)
     {
         /*
          * Disable PWT pulse ready interrupt, ;
          * we do not want to clear the PWTRDY status bit before reading the data
          */
-        PWT_DisableInterrupts(PWT, kPWT_PulseWidthReadyInterruptEnable);
+        PWT_DisableInterrupts(EXAMPLE_PWT_BASE, kPWT_PulseWidthReadyInterruptEnable);
         busyWait = false;
     }
-
-    if (PWT_GetStatusFlags(PWT) & kPWT_CounterOverflowFlag)
+    SDK_ISR_EXIT_BARRIER;
+}
+void PWT0_OVERFLOW_IRQHandler(void)
+{
+    if (PWT_GetStatusFlags(EXAMPLE_PWT_BASE) & kPWT_CounterOverflowFlag)
     {
         /* Clear overflow flag */
-        PWT_ClearStatusFlags(PWT, kPWT_CounterOverflowFlag);
+        PWT_ClearStatusFlags(EXAMPLE_PWT_BASE, kPWT_CounterOverflowFlag);
         overflowFlag = true;
     }
     SDK_ISR_EXIT_BARRIER;
@@ -72,15 +75,18 @@ int main(void)
 
     /* Init PWT */
     PWT_GetDefaultConfig(&pwtConfig);
-    PWT_Init(PWT, &pwtConfig);
+    PWT_Init(EXAMPLE_PWT_BASE, &pwtConfig);
 
     /* Enable at the NVIC */
-    EnableIRQ(PWT_INTERRUPT_NUMBER);
+    EnableIRQ(PWT0_OVERFLOW_IRQn);
+    EnableIRQ(PWT0_READY_IRQn);
 
     /* Enable Module Interrupt  */
-    PWT_EnableInterrupts(PWT, kPWT_ModuleInterruptEnable);
+    PWT_EnableInterrupts(EXAMPLE_PWT_BASE, kPWT_ModuleInterruptEnable);
     /* Start the PWT counter */
-    PWT_StartTimer(PWT);
+    PWT_StartTimer(EXAMPLE_PWT_BASE);
+
+    uint32_t t = 0U;
 
     /* This loop will set the print the pulse width */
     while (1)
@@ -89,7 +95,8 @@ int main(void)
         overflowFlag = false;
 
         /* Enable PWT pulse ready interrupt */
-        PWT_EnableInterrupts(PWT, kPWT_PulseWidthReadyInterruptEnable);
+        PWT_EnableInterrupts(EXAMPLE_PWT_BASE,
+                             kPWT_PulseWidthReadyInterruptEnable | kPWT_CounterOverflowInterruptEnable);
 
         /* Wait till ready interrupt occurs */
         while (busyWait)
@@ -101,15 +108,17 @@ int main(void)
         }
         else
         {
-            pulseWidth = PWT_ReadPositivePulseWidth(PWT);
-            pulseWidth = COUNT_TO_USEC(pulseWidth, PWT_SOURCE_CLOCK);
-            PRINTF("\r\nPositive pulse width=%d usec\r\n", pulseWidth);
+            pulseWidth = PWT_ReadPositivePulseWidth(EXAMPLE_PWT_BASE);
+            pulseWidth = ((pulseWidth >> 8U) & 0xffU) | ((pulseWidth << 8U) & 0xff00U);
+            t          = COUNT_TO_USEC(pulseWidth, PWT_SOURCE_CLOCK);
+            PRINTF("\r\nPositive pulse width=%d usec\r\n", t);
 
-            pulseWidth = PWT_ReadNegativePulseWidth(PWT);
-            pulseWidth = COUNT_TO_USEC(pulseWidth, PWT_SOURCE_CLOCK);
-            PRINTF("\r\nNegative pulse width=%d usec\r\n", pulseWidth);
+            pulseWidth = PWT_ReadNegativePulseWidth(EXAMPLE_PWT_BASE);
+            pulseWidth = ((pulseWidth >> 8U) & 0xffU) | ((pulseWidth << 8U) & 0xff00U);
+            t          = COUNT_TO_USEC(pulseWidth, PWT_SOURCE_CLOCK);
+            PRINTF("\r\nNegative pulse width=%d usec\r\n", t);
         }
         /* Clear pulse ready flag */
-        PWT_ClearStatusFlags(PWT, kPWT_PulseWidthValidFlag);
+        PWT_ClearStatusFlags(EXAMPLE_PWT_BASE, kPWT_PulseWidthValidFlag);
     }
 }

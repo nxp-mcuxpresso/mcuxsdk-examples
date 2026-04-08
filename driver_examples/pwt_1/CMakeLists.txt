@@ -2,12 +2,12 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(pwt_example LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/driver_examples/pwt)
+project(pwt_1_example LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/driver_examples/pwt)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/driver_examples/pwt/pwt.c
+    SOURCES examples/driver_examples/pwt_1/pwt.c
 )
 
 mcux_add_include(
