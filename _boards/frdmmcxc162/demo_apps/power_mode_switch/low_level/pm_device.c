@@ -5,7 +5,6 @@
  */
 
 #include "pm_device.h"
-#include "fsl_rtc.h"
 
 const resc_status_t g_resc_ctrl_table[kResc_Max_Num][APP_LOW_POWER_MODE_COUNT] = {
     /*! Clock modules. */
@@ -44,9 +43,18 @@ static const app_core_ldo_ctrl_t g_core_ldo_ctrl_table[APP_LOW_POWER_MODE_COUNT]
         .lpIREF                = false,
         .bandgapMode           = kSPC_BandgapDisabled,
         .coreLDOVoltage        = kSPC_CoreLDO_MidDriveVoltage,
-        .coreLDODriveStrength  = kSPC_CoreLDO_LowDriveStrength,
+        .coreLDODriveStrength  = kSPC_CoreLDO_NormalDriveStrength,
     },
     /* DeepSleep */
+    {
+        .valid                 = true,
+        .useActiveModeConfig   = true,
+        .lpIREF                = false,
+        .bandgapMode           = kSPC_BandgapDisabled,
+        .coreLDOVoltage        = kSPC_CoreLDO_MidDriveVoltage,
+        .coreLDODriveStrength  = kSPC_CoreLDO_NormalDriveStrength,
+    },
+    /* PowerDown */
     {
         .valid                 = true,
         .useActiveModeConfig   = false,
@@ -55,22 +63,13 @@ static const app_core_ldo_ctrl_t g_core_ldo_ctrl_table[APP_LOW_POWER_MODE_COUNT]
         .coreLDOVoltage        = kSPC_CoreLDO_MidDriveVoltage,
         .coreLDODriveStrength  = kSPC_CoreLDO_LowDriveStrength,
     },
-    /* PowerDown */
-    {
-        .valid                 = true,
-        .useActiveModeConfig   = false,
-        .lpIREF                = false,
-        .bandgapMode           = kSPC_BandgapDisabled,
-        .coreLDOVoltage        = kSPC_Core_LDO_RetentionVoltage,
-        .coreLDODriveStrength  = kSPC_CoreLDO_LowDriveStrength,
-    },
     /* DeepPowerDown */
     {
         .valid                 = true,
         .useActiveModeConfig   = false,
         .lpIREF                = false,
         .bandgapMode           = kSPC_BandgapDisabled,
-        .coreLDOVoltage        = kSPC_Core_LDO_RetentionVoltage,
+        .coreLDOVoltage        = kSPC_CoreLDO_MidDriveVoltage,
         .coreLDODriveStrength  = kSPC_CoreLDO_LowDriveStrength,
     },
 };
