@@ -298,6 +298,7 @@ lpspi_polling_b2b_transfer_master:
     frdmmcxa366: []
     imx952evk@cm7: []
     frdmimx95@cm7: []
+    frdmimx95pro@cm7: []
     frdmmcxa577: []
     frdmmcxc162: []
     frdmkw43: []

@@ -30,6 +30,7 @@ adc_polling:
     imx95lpd5evk19@cm7: []
     imx95lp4xevk15@cm7: []
     frdmimx95@cm7: []
+    frdmimx95pro@cm7: []
     imx952evk@cm7: []
     imx943evk@cm7_core1:
     - +armgcc@debug
