@@ -8,3 +8,4 @@ soem_servo_motor
 
 
    bm/readme.md
+   freertos/readme.md

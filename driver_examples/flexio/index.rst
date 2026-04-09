@@ -14,3 +14,5 @@ flexio
    pwm/readme.md
    spi/index.rst
    uart/index.rst
+   pwm_trgout/readme.md
+   pwm_trigger/readme.md

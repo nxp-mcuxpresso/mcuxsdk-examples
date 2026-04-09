@@ -17,3 +17,5 @@ lpi2c
    polling_transfer/readme.md
    read_accel_value_transfer/readme.md
    read_fxls896x_accel_value_transfer/readme.md
+   polling_trigger/readme.md
+   read_fxls897x_accel_value_transfer/readme.md

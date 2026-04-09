@@ -14,3 +14,4 @@ tpm
    pwm_twochannel/readme.md
    simple_pwm/readme.md
    timer/readme.md
+   timer_trigger/readme.md

@@ -9,3 +9,4 @@ sinc
 
    adc/readme.md
    lpspi/readme.md
+   lpspi_sinc_trigger/readme.md

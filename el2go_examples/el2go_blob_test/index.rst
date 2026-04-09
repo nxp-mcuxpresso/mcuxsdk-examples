@@ -9,3 +9,4 @@ el2go_blob_test
 
    el2go_blob_test_ns/readme.md
    el2go_blob_test_s/readme.md
+   el2go_blob_test/readme.md

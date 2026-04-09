@@ -1,7 +1,7 @@
 .. _examples__modbus_examples:
 
 modbus_examples
-#############
+###############
 
 .. toctree::
    :maxdepth: 1

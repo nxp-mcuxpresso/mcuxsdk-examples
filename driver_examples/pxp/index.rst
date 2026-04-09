@@ -18,3 +18,4 @@ pxp
    queue/readme.md
    rotate/readme.md
    scale/readme.md
+   rotate_output/readme.md

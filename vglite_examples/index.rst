@@ -13,3 +13,5 @@ vglite_examples
    tiger_freertos/readme.md
    tiled_freertos/readme.md
    vector_freertos/readme.md
+   decompress_etc2_freertos/readme.md
+   toolkit_freertos/readme.md

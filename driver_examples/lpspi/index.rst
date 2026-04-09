@@ -17,3 +17,5 @@ lpspi
    polling_b2b_transfer/index.rst
    polling_transfer/readme.md
    qspi_flash/readme.md
+   interrupt_trigger/readme.md
+   loopback/readme.md

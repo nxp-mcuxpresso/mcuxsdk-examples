@@ -20,3 +20,4 @@ lpuart
    interrupt_transfer_seven_bits/readme.md
    polling/readme.md
    polling_seven_bits/readme.md
+   polling_trigger/readme.md

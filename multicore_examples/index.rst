@@ -16,3 +16,4 @@ multicore_examples
    rpmsg_lite_pingpong_rtos_no_mcmgr/readme.md
    rpmsg_lite_pingpong_tzm/readme.md
    rpmsg_lite_str_echo_rtos/index.rst
+   rpmsg_lite_pingpong_dsp/readme.md

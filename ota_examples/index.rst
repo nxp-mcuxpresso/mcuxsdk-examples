@@ -13,3 +13,12 @@ ota_examples
    ota_mcuboot_client/index.rst
    ota_mcuboot_server/index.rst
    ota_rom_server/index.rst
+   ota_rom_basic/readme.md
+   README.md
+   CHANGELOG.md
+
+.. toctree::
+   :hidden:
+   :glob:
+
+   _doc/*

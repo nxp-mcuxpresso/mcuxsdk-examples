@@ -17,3 +17,4 @@ lpc_i2c
    read_accel_value_transfer/readme.md
    read_fxls89xx_accel_value_transfer/readme.md
    master_read_sensor_tmp117/readme.md
+   master_read_sensor_p3t1755/readme.md

@@ -15,3 +15,5 @@ iuart
    interrupt_transfer/readme.md
    polling/readme.md
    sdma_transfer/readme.md
+   9bit_interrupt_transfer/readme.md
+   9bit_polling/readme.md

@@ -8,3 +8,4 @@ soem_servo_motor_rt1180
 
 
    bm/readme.md
+   freertos/readme.md

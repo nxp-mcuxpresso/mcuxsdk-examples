@@ -12,3 +12,5 @@ sar_adc
    sample_rate_measurement/readme.md
    selftest/readme.md
    watchdog/readme.md
+   polling_trgout/readme.md
+   polling_trigger/readme.md

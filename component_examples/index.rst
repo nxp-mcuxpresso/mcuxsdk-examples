@@ -16,3 +16,5 @@ component_examples
    mpi_loader/index.rst
    pmic/index.rst
    sx1502_led_control/readme.md
+   coredump_fault/readme.md
+   smartdma_keyscan/readme.md

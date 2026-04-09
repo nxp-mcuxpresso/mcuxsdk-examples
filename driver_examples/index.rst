@@ -337,3 +337,20 @@ driver_examples
    xrdc/readme.md
    xrdc2/readme.md
    xspi/index.rst
+   audmix/index.rst
+   cmu_fc/readme.md
+   cmu_fm/readme.md
+   dcif/index.rst
+   ela_csec/readme.md
+   espi/readme.md
+   ewm/timer/readme.md
+   flash_c40/index.rst
+   fsl_romapi/romapi_flash/readme.md
+   fsl_romapi/romapi_lpspi/readme.md
+   lptmr/lptmr_trigger_out/readme.md
+   mcxw_romapi/index.rst
+   npx/readme.md
+   puf_1/readme.md
+   pwm/pwm_trgout/readme.md
+   pwm/pwm_trigger/readme.md
+   slcd_split/readme.md

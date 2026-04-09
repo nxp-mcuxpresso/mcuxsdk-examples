@@ -115,5 +115,3 @@ using <PERIPH_BASE>_NS means access through non-secure alias(address bit A28=0)
 For non-secure project using <PERIPH_BASE> means access through non-secure alias (address bit A28=0). 
 The non-secure project doesn't have access to secure memory or peripherals regions so the secure access is not defined.   
 
-----------------------------------------
-

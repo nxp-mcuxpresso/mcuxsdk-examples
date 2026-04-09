@@ -136,3 +136,12 @@ demo_apps
    wireless_uart_bridge/readme.md
    xbar/index.rst
    xrdc/index.rst
+   coremark_eembc/readme.md
+   digital_connected_cluster/readme.md
+   magnetic_switch/readme.md
+   netc_switch_standalone/readme.md
+   power_mode_switch_imx943/readme.md
+   power_mode_switch_imx952/readme.md
+   power_mode_switch_mcxc/index.rst
+   project_template/readme.md
+   sai_low_power_audio_imx943/readme.md
