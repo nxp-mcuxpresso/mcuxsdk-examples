@@ -12,3 +12,4 @@ dpu_1
    localdimming/readme.md
    rop/readme.md
    warp/readme.md
+   g2d_basic_test/readme.md

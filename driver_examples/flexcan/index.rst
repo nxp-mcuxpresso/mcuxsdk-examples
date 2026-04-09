@@ -23,3 +23,4 @@ flexcan
    ping_pong_buffer_transfer/readme.md
    pretended_networking_wakeup/readme.md
    remote_request/readme.md
+   remote_request_non_blocking/readme.md

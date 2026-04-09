@@ -10,3 +10,5 @@ power_mode_switch_rt1xxx
    rt1160/index.rst
    rt1170/index.rst
    rt1180/readme.md
+   rt1180/bm_dcdc/readme.md
+   rt1180/bm_pmic/readme.md

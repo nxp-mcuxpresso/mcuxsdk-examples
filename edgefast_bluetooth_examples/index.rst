@@ -45,3 +45,5 @@ edgefast_bluetooth_examples
    unicast_media_sender/readme.md
    wifi_cli_over_ble_wu/readme.md
    wireless_uart/readme.md
+   umr2bms/readme.md
+   ums_microphone/readme.md

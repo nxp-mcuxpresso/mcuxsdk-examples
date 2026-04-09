@@ -1,7 +1,7 @@
 .. _examples__canopennode_examples:
 
 canopennode_examples
-#########
+####################
 
 .. toctree::
    :maxdepth: 1

@@ -9,3 +9,4 @@ mau
 
    benchmark/readme.md
    calculation/readme.md
+   cmsis/readme.md

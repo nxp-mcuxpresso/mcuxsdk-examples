@@ -15,3 +15,4 @@ edma4
    ping_pong_transfer/readme.md
    scatter_gather/readme.md
    wrap_transfer/readme.md
+   memory_to_memory_trigger/readme.md

@@ -57,14 +57,14 @@ Additional information about EdgeLock 2GO Provisioning for MCUs can be found in 
     - When creating the secure objects on EdgeLock 2GO, select Custom policies.
     - For the AES key, ensure:
         - Permitted algorithm is set to ECB NO PADDING.
-        - Device Lifecycle matches the target device’s lifecycle.
+        - Device Lifecycle matches the target device's lifecycle.
         - ENCRYPT usage is enabled
     - For the ECC key pair following options should be selected:
-        - Device Lifecycle matches the target device’s lifecycle.
+        - Device Lifecycle matches the target device's lifecycle.
         - Permitted algorithm should be set to ECDSA SHA 256
         - SIGN MESSAGE usage should be selected
     - For the Certificate, ensure:
-        - Device Lifecycle matches the target device’s lifecycle.
+        - Device Lifecycle matches the target device's lifecycle.
         - Certificate validation is only possible if key pair validation is also enabled.
 
 2.  Enable secure boot:

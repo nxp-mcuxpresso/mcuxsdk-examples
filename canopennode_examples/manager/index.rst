@@ -8,3 +8,4 @@ manager
 
 
    basic/readme.md
+   bm/readme.md

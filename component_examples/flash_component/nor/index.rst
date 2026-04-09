@@ -9,3 +9,4 @@ nor
 
    flexspi/readme.md
    lpspi/readme.md
+   spifi/readme.md

@@ -23,3 +23,4 @@ cmsis_driver_examples
    spi/index.rst
    uart/index.rst
    usart/index.rst
+   gpio/button_toggle_led/readme.md

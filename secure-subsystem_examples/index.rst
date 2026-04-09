@@ -16,3 +16,6 @@ secure-subsystem_examples
    ele_keystore/readme.md
    ele_elgamal/readme.md
    ele_concurrent_access/readme.md
+   ele_derive_key/readme.md
+   ele_derive_key_extended/readme.md
+   ele_pqc/readme.md

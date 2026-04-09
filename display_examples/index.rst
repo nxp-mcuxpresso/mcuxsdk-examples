@@ -15,3 +15,4 @@ display_examples
    sd_jpeg/readme.md
    sd_png/readme.md
    smartdma_camera_flexio_mculcd/readme.md
+   decnano_decompress/readme.md

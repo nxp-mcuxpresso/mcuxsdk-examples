@@ -8,3 +8,4 @@ erm
 
 
    error_recording/readme.md
+   error_recording_sw/readme.md
