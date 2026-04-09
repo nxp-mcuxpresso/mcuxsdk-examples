@@ -105,7 +105,7 @@ int main(void)
     PRINTF("Default (Factory) trim value is :%d\r\n", VREF_GetTrim21Val(DEMO_VREF_BASE));
 
 #if (defined(FSL_FEATURE_VREF_SUPPORT_2V5) && FSL_FEATURE_VREF_SUPPORT_2V5)
-    for (trimVal = 0U; trimVal < 0x6U; trimVal++)
+    for (trimVal = 1U; trimVal < 0x6U; trimVal++)
 #else
     for (trimVal = 0U; trimVal < 0xCU; trimVal++)
 #endif
