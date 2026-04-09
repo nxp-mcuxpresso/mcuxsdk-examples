@@ -335,3 +335,4 @@ lpuart_interrupt_rb_transfer:
     frdmmcxa287: []
     frdmmcxc162: []
     frdmkw43: []
+    frdmmcxw70: []

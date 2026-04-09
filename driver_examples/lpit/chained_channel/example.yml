@@ -41,6 +41,7 @@ lpit_chained_channel:
     - +armgcc@debug
     - +armgcc@release
     frdmkw43: []
+    frdmmcxw70: []
     mcimx93autoevk: []
     mcimx93evk: []
     mcimx93wevk: []

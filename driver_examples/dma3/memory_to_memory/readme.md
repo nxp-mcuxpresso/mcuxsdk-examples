@@ -18,3 +18,4 @@ debugging and further development.
 - [MCXW72-LOC](../../../_boards/mcxw72loc/driver_examples/edma/memory_to_memory/example_board_readme.md)
 - [FRDM-MCXW72](../../../_boards/frdmmcxw72/driver_examples/edma/memory_to_memory/example_board_readme.md)
 - [FRDM-KW43](../../../_boards/frdmkw43/driver_examples/edma/memory_to_memory/example_board_readme.md)
+- [FRDM-MCXW70](../../../_boards/frdmmcxw70/driver_examples/edma/memory_to_memory/example_board_readme.md)

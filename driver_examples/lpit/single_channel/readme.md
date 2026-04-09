@@ -56,3 +56,4 @@ Starting channel No.0 ...
 - [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/driver_examples/lpit/single_channel/example_board_readme.md)
 - [FRDM-MCXW72](../../../_boards/frdmmcxw72/driver_examples/lpit/single_channel/example_board_readme.md)
 - [FRDM-KW43](../../../_boards/frdmkw43/driver_examples/lpit/single_channel/example_board_readme.md)
+- [FRDM-MCXW70](../../../_boards/frdmmcxw70/driver_examples/lpit/single_channel/example_board_readme.md)

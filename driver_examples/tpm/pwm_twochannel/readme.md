@@ -37,3 +37,4 @@ a change in LED brightness if user enter different values.
 - [MCXW72-LOC](../../../_boards/mcxw72loc/driver_examples/tpm/pwm_twochannel/example_board_readme.md)
 - [FRDM-MCXW72](../../../_boards/frdmmcxw72/driver_examples/tpm/pwm_twochannel/example_board_readme.md)
 - [FRDM-KW43](../../../_boards/frdmkw43/driver_examples/tpm/pwm_twochannel/example_board_readme.md)
+- [FRDM-MCXW70](../../../_boards/frdmmcxw70/driver_examples/tpm/pwm_twochannel/example_board_readme.md)

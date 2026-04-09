@@ -31,3 +31,4 @@ them to the terminal by using EDMA mode. so, you can see the your pressed charac
 - [MCXW72-LOC](../../../_boards/mcxw72loc/driver_examples/lpuart/edma_rb_transfer/example_board_readme.md)
 - [FRDM-MCXW72](../../../_boards/frdmmcxw72/driver_examples/lpuart/edma_rb_transfer/example_board_readme.md)
 - [FRDM-KW43](../../../_boards/frdmkw43/driver_examples/lpuart/edma_rb_transfer/example_board_readme.md)
+- [FRDM-MCXW70](../../../_boards/frdmmcxw70/driver_examples/lpuart/edma_rb_transfer/example_board_readme.md)

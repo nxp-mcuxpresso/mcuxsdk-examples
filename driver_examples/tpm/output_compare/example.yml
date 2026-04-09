@@ -81,3 +81,4 @@ tpm_output_compare:
     - +iar@release
     - +iar@debug
     frdmkw43: []
+    frdmmcxw70: []

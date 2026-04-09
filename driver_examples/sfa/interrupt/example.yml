@@ -25,3 +25,4 @@ sfa_interrupt:
     - +armgcc@debug
     - +armgcc@release
     frdmkw43: []
+    frdmmcxw70: []

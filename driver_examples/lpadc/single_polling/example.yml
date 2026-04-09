@@ -69,3 +69,4 @@ lpadc_single_polling:
     - -mdk@debug
     - -mdk@release
     frdmkw43: []
+    frdmmcxw70: []

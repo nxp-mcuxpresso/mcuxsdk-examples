@@ -96,3 +96,4 @@ Press any key to run again.
 - [FRDM-MCXA577](../../../../_boards/frdmmcxa577/driver_examples/lpspi/edma_b2b_transfer/master/example_board_readme.md)
 - [FRDM-MCXC162](../../../../_boards/frdmmcxc162/driver_examples/lpspi/edma_b2b_transfer/master/example_board_readme.md)
 - [FRDM-KW43](../../../../_boards/frdmkw43/driver_examples/lpspi/edma_b2b_transfer/master/example_board_readme.md)
+- [FRDM-MCXW70](../../../../_boards/frdmmcxw70/driver_examples/lpspi/edma_b2b_transfer/master/example_board_readme.md)

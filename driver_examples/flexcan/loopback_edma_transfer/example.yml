@@ -163,3 +163,4 @@ flexcan_loopback_edma_transfer:
     - -mdk@hyperram_release
     - -mdk@release
     frdmkw43: []
+    frdmmcxw70: []

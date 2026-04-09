@@ -80,3 +80,4 @@ tpm_input_capture:
     - +iar@release
     - +iar@debug
     frdmkw43: []
+    frdmmcxw70: []

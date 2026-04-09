@@ -64,3 +64,4 @@ syspm:
     - -mdk@hyperram_release
     - -mdk@release
     frdmkw43: []
+    frdmmcxw70: []

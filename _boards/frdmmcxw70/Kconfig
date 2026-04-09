@@ -1,0 +1,21 @@
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+rsource "Kconfig.defconfig"
+
+config MCUX_HW_BOARD_frdmmcxw70
+    bool
+    default y
+    imply MCUX_HW_DEVICE_MCXW70AC
+    imply MCUX_COMPONENT_driver.clock
+    imply MCUX_COMPONENT_driver.common
+    imply MCUX_COMPONENT_driver.lpuart
+    imply MCUX_COMPONENT_driver.port
+    imply MCUX_COMPONENT_driver.gpio
+    imply MCUX_COMPONENT_driver.ccm32k
+    imply MCUX_COMPONENT_driver.glikey
+
+config MCUX_COMPONENT_device.utility
+    bool "utility for MCXW70AC"
+    default n
