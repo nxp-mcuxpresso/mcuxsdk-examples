@@ -12,7 +12,6 @@ mcux_add_source(
             examples/_boards/${board}/edgefast_bluetooth_examples/map_mce/hardware_init.c
             examples/_boards/${board}/edgefast_bluetooth_examples/map_mce/pin_mux.c
             examples/_boards/${board}/edgefast_bluetooth_examples/map_mce/pin_mux.h
-            middleware/edgefast_bluetooth/source/impl/ethermind/controller/configs/mbedtls/mbedtls_config_client.h
             components/wifi_bt_module/incl/wifi_bt_module_config.h
 )
 

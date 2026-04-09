@@ -11,7 +11,6 @@ mcux_add_source(
     examples/_boards/${board}/edgefast_bluetooth_examples/unicast_media_receiver/hardware_init.c
     examples/_boards/${board}/edgefast_bluetooth_examples/unicast_media_receiver/pin_mux.c
     examples/_boards/${board}/edgefast_bluetooth_examples/unicast_media_receiver/pin_mux.h
-    middleware/edgefast_bluetooth/source/impl/ethermind/controller/configs/mbedtls/mbedtls_config_client.h
 )
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}

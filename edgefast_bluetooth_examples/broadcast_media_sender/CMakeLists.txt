@@ -33,7 +33,6 @@ mcux_add_source(
     examples/edgefast_bluetooth_examples/broadcast_media_sender/modules/lc3_codec.h
     examples/edgefast_bluetooth_examples/broadcast_media_sender/modules/wav_file.c
     examples/edgefast_bluetooth_examples/broadcast_media_sender/modules/wav_file.h
-    middleware/edgefast_bluetooth/source/impl/ethermind/controller/configs/mbedtls/mbedtls_config_client.h
     examples/edgefast_bluetooth_examples/config/mbedtls_user_config.h
 )
 
