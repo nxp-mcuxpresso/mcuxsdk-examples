@@ -44,6 +44,7 @@ void BOARD_InitBootPins(void)
     BOARD_InitPmicModePins();
     BOARD_InitLsm6dsoPins();
     BOARD_InitPdmPins();
+    BOARD_InitHPDetPins();
 }
 
 /*
@@ -345,6 +346,28 @@ void BOARD_InitPdmPins(void) {
                         IOMUXC_PCR_PS_MASK);
     IOMUXC_SetPinMux(IOMUXC_PTB3_MICFIL0_DATA23, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PTB3_MICFIL0_DATA23,
+                        IOMUXC_PCR_PE_MASK |
+                        IOMUXC_PCR_PS_MASK);
+}
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitHPDetPins:
+- options: {callFromInitBoot: 'true', coreID: cm33}
+- pin_list:
+  - {pin_num: C17, peripheral: GPIOB, signal: 'ptb, 14', pin_signal: PTB14, PS: UP, PE: ENABLED}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitHPDetPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitHPDetPins(void) {                        /*!< Function assigned for the core: Cortex-M33[cm33] */
+    IOMUXC_SetPinMux(IOMUXC_PTB14_PTB14, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PTB14_PTB14,
                         IOMUXC_PCR_PE_MASK |
                         IOMUXC_PCR_PS_MASK);
 }
