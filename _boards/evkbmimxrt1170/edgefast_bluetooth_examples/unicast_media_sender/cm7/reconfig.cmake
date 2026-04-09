@@ -118,3 +118,13 @@ mcux_add_armgcc_linker_script(
     flexspi_nor_debug
     flexspi_nor_release
 )
+
+mcux_remove_armgcc_configuration(
+    TARGETS flexspi_nor_debug
+    CC "-O0"
+)
+
+mcux_add_armgcc_configuration(
+    TARGETS flexspi_nor_debug
+    CC "-O1"
+)
