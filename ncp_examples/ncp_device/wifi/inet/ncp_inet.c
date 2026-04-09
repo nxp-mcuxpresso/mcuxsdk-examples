@@ -541,56 +541,77 @@ static void socket_recv_task(void *arg)
                     continue;
                 if (FD_ISSET(i, &readset))
                 {
-                do {
-                    mem_alloc_try_num = WIFI_NCP_RX_ALLOC_TRY_NUM;
-                    buf_len = ALIGN_D(NCP_INET_SOCKET_RECV_SIZE + sizeof(NCP_CMD_INET_RESP_RECVFROM_CFG)
-                      + sizeof(NCP_COMMAND)
+                    do {
+                        mem_alloc_try_num = WIFI_NCP_RX_ALLOC_TRY_NUM;
+                        buf_len = ALIGN_D(NCP_INET_SOCKET_RECV_SIZE + sizeof(NCP_CMD_INET_RESP_RECVFROM_CFG)
+                          + sizeof(NCP_COMMAND)
 #if CONFIG_NCP_USE_ENCRYPT
-                      + NCP_GCM_TAG_LEN
+                          + NCP_GCM_TAG_LEN
 #endif
-                      + chksum_len);
+                          + chksum_len);
 realloc_mem:
-                    p = ncp_buf_alloc(buf_len, 0);
-                    if (!p)
-                    {
-                        if (mem_alloc_try_num)
+                        p = ncp_buf_alloc(buf_len, 0);
+                        if (!p)
                         {
-                            mem_alloc_try_num--;
-                            OSA_TaskYield();
-                            goto realloc_mem;
+                            if (mem_alloc_try_num)
+                            {
+                                mem_alloc_try_num--;
+                                OSA_TaskYield();
+                                goto realloc_mem;
+                            }
+                            break;
                         }
-                        break;
-                    }
-                    recv_buf = p->payload;
-                    union ncp_sockaddr_aligned client_addr;
-                    socklen_t socklen = sizeof(client_addr);
-                    socklen = sizeof(client_addr);
-                    tlv_res = (NCP_CMD_INET_RESP_RECVFROM_CFG *)(recv_buf + sizeof(NCP_COMMAND));
-                    memset(recv_buf, 0x0, sizeof(NCP_COMMAND) + sizeof(NCP_CMD_INET_RESP_RECVFROM_CFG));
-                    /* read data from tcp/ip stack */
-                    ret = recvfrom(i, tlv_res->recv_data, NCP_INET_SOCKET_RECV_SIZE, MSG_DONTWAIT, (struct sockaddr *)&client_addr.sin6, &socklen);
-                    tlv_res->ret = ret;
-                    tlv_res->errno = errno;
-                    tlv_res->socket = i;
-                    if (ret > 0)
-                        tlv_res->recv_size = ret;
-                    else
-                    {
-                        ncp_buf_free(p);
-                        break;
-                    }
-                    struct linux_sockaddr *linux_addr = (struct linux_sockaddr *)tlv_res->sockaddr;
-                    linux_addr->sa_family      = client_addr.sa.sa_family;
-                    memcpy(linux_addr->sa_data, client_addr.sa.sa_data, socklen-sa_data_offset);
-                    tlv_res->socklen = socklen;
-                    ncp_inet_prepare_socket_recv_resp(recv_buf);
-                    if (wifi_ncp_forward_data((void *)p) != WM_SUCCESS)
-                    {
-                        ncp_e("ncp inet send receive event fail\r\n");
-                        ncp_buf_free(p);
-                        OSA_TaskYield();
-                    }
-                } while (ret > 0);
+                        recv_buf = p->payload;
+                        union ncp_sockaddr_aligned client_addr;
+                        socklen_t socklen = sizeof(client_addr);
+                        socklen = sizeof(client_addr);
+                        tlv_res = (NCP_CMD_INET_RESP_RECVFROM_CFG *)(recv_buf + sizeof(NCP_COMMAND));
+                        memset(recv_buf, 0x0, sizeof(NCP_COMMAND) + sizeof(NCP_CMD_INET_RESP_RECVFROM_CFG));
+                        /* read data from tcp/ip stack */
+                        ret = recvfrom(i, tlv_res->recv_data, NCP_INET_SOCKET_RECV_SIZE, MSG_DONTWAIT, (struct sockaddr *)&client_addr.sin6, &socklen);
+                        tlv_res->ret = ret;
+                        tlv_res->errno = errno;
+                        tlv_res->socket = i;
+                        if (ret > 0)
+                        {
+                            tlv_res->recv_size = ret;
+                        }
+                        else if (ret == 0)
+                        {
+                            /* TCP FIN */
+                            ncp_d("[%s-%d], ret = %d, errno = %d\n", __func__, __LINE__, ret, errno);
+                            ncp_inet_clear_bit(i);
+                        }
+                        else
+                        {
+                            if (errno == EAGAIN || errno == EWOULDBLOCK)
+                            { /* no data */
+                                ncp_buf_free(p);
+                                break;
+                            }
+                            else if (errno == ECONNRESET)
+                            { /* TCP RST */
+                                ncp_d("socket %d: RST received\n", i);
+                                ncp_inet_clear_bit(i);
+                            }
+                            else
+                            { /* other issue */
+                                ncp_d("socket %d: recv error %d\n", i, errno);
+                                ncp_inet_clear_bit(i);
+                            }
+                        }
+                        struct linux_sockaddr *linux_addr = (struct linux_sockaddr *)tlv_res->sockaddr;
+                        linux_addr->sa_family      = client_addr.sa.sa_family;
+                        memcpy(linux_addr->sa_data, client_addr.sa.sa_data, socklen-sa_data_offset);
+                        tlv_res->socklen = socklen;
+                        ncp_inet_prepare_socket_recv_resp(recv_buf);
+                        if (wifi_ncp_forward_data((void *)p) != WM_SUCCESS)
+                        {
+                            ncp_e("ncp inet send receive event fail\r\n");
+                            ncp_buf_free(p);
+                            OSA_TaskYield();
+                        }
+                    } while (ret > 0);
                 }
             }
         }
