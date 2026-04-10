@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 NXP
+ * Copyright 2023-2024, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -70,11 +70,9 @@ const uint32_t customLUT[CUSTOM_LUT_LENGTH] = {
     [5 * NOR_CMD_LUT_SEQ_IDX_READ_STATUS_OPI] =
         XSPI_LUT_SEQ(kXSPI_Command_DDR, kXSPI_8PAD, 0x05, kXSPI_Command_DDR, kXSPI_8PAD, 0xFA),
     [5 * NOR_CMD_LUT_SEQ_IDX_READ_STATUS_OPI + 1] =
-        XSPI_LUT_SEQ(kXSPI_Command_RADDR_DDR, kXSPI_8PAD, 0x20, kXSPI_Command_DUMMY_SDR, kXSPI_8PAD, 0x12),
+        XSPI_LUT_SEQ(kXSPI_Command_RADDR_DDR, kXSPI_8PAD, 0x20, kXSPI_Command_DUMMY_SDR, kXSPI_8PAD, 0x4),
     [5 * NOR_CMD_LUT_SEQ_IDX_READ_STATUS_OPI + 2] =
-        XSPI_LUT_SEQ(kXSPI_Command_DUMMY_SDR, kXSPI_8PAD, 0x2, kXSPI_Command_READ_DDR, kXSPI_8PAD, 0x8),
-    [5 * NOR_CMD_LUT_SEQ_IDX_READ_STATUS_OPI + 3] =
-        XSPI_LUT_SEQ(kXSPI_Command_STOP, kXSPI_8PAD, 0x0, 0, 0, 0),
+        XSPI_LUT_SEQ(kXSPI_Command_READ_DDR, kXSPI_8PAD, 0x8, kXSPI_Command_STOP, kXSPI_8PAD, 0x0),
 
     /*Write enable*/
     [5 * NOR_CMD_LUT_SEQ_IDX_WRITE_ENABLE] =
