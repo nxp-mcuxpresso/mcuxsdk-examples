@@ -25,9 +25,9 @@
 #define DEMO_USART                 Driver_USART2
 #define EXAMPLE_USART_DMA_BASEADDR DMA3
 
-#elif BOARD_DEBUG_UART_INSTANCE == 3
+#elif BOARD_DEBUG_UART_INSTANCE == 7
 
-#define DEMO_USART                 Driver_USART3
+#define DEMO_USART                 Driver_USART7
 #define EXAMPLE_USART_DMA_BASEADDR DMA5
 
 #endif

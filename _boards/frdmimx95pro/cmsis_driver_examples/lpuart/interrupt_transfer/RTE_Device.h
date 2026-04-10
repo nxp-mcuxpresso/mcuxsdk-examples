@@ -45,23 +45,23 @@ extern void LPUART2_DeinitPins();
 #define RTE_USART2_PIN_INIT   LPUART2_InitPins
 #define RTE_USART2_PIN_DEINIT LPUART2_DeinitPins
 
-#elif BOARD_DEBUG_UART_INSTANCE == 3
+#elif BOARD_DEBUG_UART_INSTANCE == 7
 
-extern void LPUART3_InitPins();
-extern void LPUART3_DeinitPins();
+extern void LPUART7_InitPins();
+extern void LPUART7_DeinitPins();
 
 /* Driver name mapping. */
 /* User needs to provide the implementation of LPUARTX_GetFreq/LPUARTX_InitPins/LPUARTX_DeinitPins for the enabled
  * LPUART instance. */
-#define RTE_USART3        1
-#define RTE_USART3_DMA_EN 0
+#define RTE_USART7        1
+#define RTE_USART7_DMA_EN 0
 
 /* UART configuration. */
 #define USART_RX_BUFFER_LEN     64
-#define USART3_RX_BUFFER_ENABLE 1
+#define USART7_RX_BUFFER_ENABLE 1
 
-#define RTE_USART3_PIN_INIT   LPUART3_InitPins
-#define RTE_USART3_PIN_DEINIT LPUART3_DeinitPins
+#define RTE_USART7_PIN_INIT   LPUART7_InitPins
+#define RTE_USART7_PIN_DEINIT LPUART7_DeinitPins
 
 #endif
 #endif /* _RTE_DEVICE_H */

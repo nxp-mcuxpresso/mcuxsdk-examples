@@ -37,8 +37,8 @@ void BOARD_InitHardware(void)
 uint32_t LPUART1_GetFreq(void)
 #elif BOARD_DEBUG_UART_INSTANCE == 2
 uint32_t LPUART2_GetFreq(void)
-#elif BOARD_DEBUG_UART_INSTANCE == 3
-uint32_t LPUART3_GetFreq(void)
+#elif BOARD_DEBUG_UART_INSTANCE == 7
+uint32_t LPUART7_GetFreq(void)
 #endif
 {
     return HAL_ClockGetIpFreq(BOARD_DEBUG_UART_CLOCK_ROOT_FOR_CM7_WITH_SM);

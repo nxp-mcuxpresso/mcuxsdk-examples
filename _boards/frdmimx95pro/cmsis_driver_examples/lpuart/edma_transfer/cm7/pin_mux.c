@@ -52,7 +52,7 @@ void BOARD_InitPins(void) {                                /*!< Function assigne
 
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-LPUART3_InitPins:
+LPUART7_InitPins:
 - options: {callFromInitBoot: 'false', coreID: cm7}
 - pin_list:
   - {pin_num: P44, peripheral: LPUART7, signal: lpuart_rx, pin_signal: GPIO_IO37, OD: DISABLED, PD: ENABLED, FSEL1: SLIGHTLY_FAST_SLEW_RATE, DSE: X4}
@@ -62,11 +62,11 @@ LPUART3_InitPins:
 
 /* FUNCTION ************************************************************************************************************
  *
- * Function Name : LPUART3_InitPins
+ * Function Name : LPUART7_InitPins
  * Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
-void LPUART3_InitPins(void) {                              /*!< Function assigned for the core: Cortex-M7F[cm7] */
+void LPUART7_InitPins(void) {                              /*!< Function assigned for the core: Cortex-M7F[cm7] */
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO36__LPUART7_TX, 0U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO36__LPUART7_TX, 
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
@@ -82,23 +82,23 @@ void LPUART3_InitPins(void) {                              /*!< Function assigne
 
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-LPUART3_DeinitPins:
+LPUART7_DeinitPins:
 - options: {callFromInitBoot: 'false', coreID: cm7}
 - pin_list:
-  - {pin_num: N51, peripheral: GPIO2, signal: 'gpio_io_bit, 14', pin_signal: GPIO_IO36}
-  - {pin_num: P44, peripheral: GPIO2, signal: 'gpio_io_bit, 15', pin_signal: GPIO_IO37}
+  - {pin_num: N51, peripheral: GPIO5, signal: 'gpio_io_bit, 16', pin_signal: GPIO_IO36}
+  - {pin_num: P44, peripheral: GPIO5, signal: 'gpio_io_bit, 17', pin_signal: GPIO_IO37}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
 /* FUNCTION ************************************************************************************************************
  *
- * Function Name : LPUART3_DeinitPins
+ * Function Name : LPUART7_DeinitPins
  * Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
-void LPUART3_DeinitPins(void) {                            /*!< Function assigned for the core: Cortex-M7F[cm7] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO14__GPIO2_IO_BIT14, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO15__GPIO2_IO_BIT15, 0U);
+void LPUART7_DeinitPins(void) {                            /*!< Function assigned for the core: Cortex-M7F[cm7] */
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO36__GPIO5_IO_BIT16, 0U);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO37__GPIO5_IO_BIT17, 0U);
 }
 
 /***********************************************************************************************************************

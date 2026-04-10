@@ -53,27 +53,27 @@ extern void LPUART2_DeinitPins();
 #define RTE_USART2_DMA_TX_PERI_SEL (uint8_t) Dma3RequestMuxLPUART2Tx
 #define RTE_USART2_DMA_TX_DMA_BASE DMA3
 
-#elif BOARD_DEBUG_UART_INSTANCE == 3
+#elif BOARD_DEBUG_UART_INSTANCE == 7
 
-extern void LPUART3_InitPins();
-extern void LPUART3_DeinitPins();
+extern void LPUART7_InitPins();
+extern void LPUART7_DeinitPins();
 
 /* Driver name mapping. */
 /* User needs to provide the implementation of LPUARTX_GetFreq/LPUARTX_InitPins/LPUARTX_DeinitPins for the enabled
  * LPUART instance. */
-#define RTE_USART3        1
-#define RTE_USART3_DMA_EN 1
+#define RTE_USART7        1
+#define RTE_USART7_DMA_EN 1
 
 /* UART configuration. */
 
-#define RTE_USART3_PIN_INIT        LPUART3_InitPins
-#define RTE_USART3_PIN_DEINIT      LPUART3_DeinitPins
-#define RTE_USART3_DMA_RX_CH       (uint8_t) Dma5RequestMuxLPUART3Rx
-#define RTE_USART3_DMA_RX_PERI_SEL (uint8_t) Dma5RequestMuxLPUART3Rx
-#define RTE_USART3_DMA_RX_DMA_BASE EDMA5_2
-#define RTE_USART3_DMA_TX_CH       (uint8_t) Dma5RequestMuxLPUART3Tx
-#define RTE_USART3_DMA_TX_PERI_SEL (uint8_t) Dma5RequestMuxLPUART3Tx
-#define RTE_USART3_DMA_TX_DMA_BASE EDMA5_2
+#define RTE_USART7_PIN_INIT        LPUART7_InitPins
+#define RTE_USART7_PIN_DEINIT      LPUART7_DeinitPins
+#define RTE_USART7_DMA_RX_CH       (uint8_t) Dma5RequestMuxLPUART7Rx
+#define RTE_USART7_DMA_RX_PERI_SEL (uint8_t) Dma5RequestMuxLPUART7Rx
+#define RTE_USART7_DMA_RX_DMA_BASE EDMA5_2
+#define RTE_USART7_DMA_TX_CH       (uint8_t) Dma5RequestMuxLPUART7Tx
+#define RTE_USART7_DMA_TX_PERI_SEL (uint8_t) Dma5RequestMuxLPUART7Tx
+#define RTE_USART7_DMA_TX_DMA_BASE EDMA5_2
 
 #endif
 
