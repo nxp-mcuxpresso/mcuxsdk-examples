@@ -2587,6 +2587,10 @@ typedef NCP_TLV_PACK_START struct _NCP_EVT_MDNS_RESOLVE
     } u_addr;
 } NCP_TLV_PACK_END NCP_EVT_MDNS_RESOLVE;
 
+#define WLAN_NCP_BANDCFG_11N (((uint32_t)1) << 0)
+#define WLAN_NCP_BANDCFG_11AC (((uint32_t)1) << 1)
+#define WLAN_NCP_BANDCFG_11AX (((uint32_t)1) << 2)
+
 typedef NCP_TLV_PACK_START struct _NCP_CMD_BANDCFG
 {
     /** band configuration value, \n
@@ -2594,8 +2598,8 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_BANDCFG
      *  bit 1: enable 802.11AC, \n
      *  bit 2: enable 802.11AX.
      */
-    uint32_t config_bands;
-    uint32_t fw_bands;
+    uint16_t config_bands;
+    uint16_t fw_bands;
 } NCP_TLV_PACK_END NCP_CMD_BANDCFG;
 
 /** NCP command structure. */

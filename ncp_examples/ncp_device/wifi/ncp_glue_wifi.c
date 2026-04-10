@@ -3877,57 +3877,21 @@ static int wlan_ncp_get_temperature(void *data)
     return WM_SUCCESS;
 }
 
-#define WLAN_NCP_BANDCFG_11N MBIT(0)
-#define WLAN_NCP_BANDCFG_11AC MBIT(1)
-#define WLAN_NCP_BANDCFG_11AX MBIT(2)
-
 static int wlan_ncp_set_bandcfg(void *data)
 {
     NCP_CMD_BANDCFG *cfg = (NCP_CMD_BANDCFG *)data;
     wlan_bandcfg_t bandcfg;
-    int ret  = 0;
+    int ret = 0;
 
     if (is_sta_connected() || is_uap_started())
     {
-        (void)PRINTF("Error: set-bandcfg command is not allowed when STA has connection or uAP is started\r\n");
+        ncp_e("Error: set-bandcfg command is not allowed when STA has connection or uAP is started.");
         wlan_ncp_prepare_status(NCP_RSP_SET_BANDCFG, NCP_CMD_RESULT_BUSY);
         goto done;
     }
 
     (void)memset(&bandcfg, 0, sizeof(bandcfg));
-    ret = wlan_get_bandcfg(&bandcfg);
-    if (ret != WM_SUCCESS)
-    {
-        (void)PRINTF("Unable to get bandcfg\r\n");
-        wlan_ncp_prepare_status(NCP_RSP_SET_BANDCFG, NCP_CMD_RESULT_ERROR);
-        goto done;
-    }
-
-    if (!(cfg->config_bands & WLAN_NCP_BANDCFG_11N))
-    {
-        bandcfg.config_bands &= ~(BAND_AN | BAND_GN);
-    }
-    else
-    {
-        bandcfg.config_bands |= (BAND_AN | BAND_GN);
-    }
-    if (!(cfg->config_bands & WLAN_NCP_BANDCFG_11AC))
-    {
-        bandcfg.config_bands &= ~(BAND_AAC | BAND_GAC);
-    }
-    else
-    {
-        bandcfg.config_bands |= (BAND_AAC | BAND_GAC);
-    }
-    if (!(cfg->config_bands & WLAN_NCP_BANDCFG_11AX))
-    {
-        bandcfg.config_bands &= ~(BAND_AAX | BAND_GAX);
-    }
-    else
-    {
-        bandcfg.config_bands |= (BAND_AAX | BAND_GAX);
-    }
-
+    bandcfg.band_cfg = cfg->config_bands;
     ret = wlan_set_bandcfg(&bandcfg);
     if (ret != WM_SUCCESS)
     {
@@ -3935,7 +3899,7 @@ static int wlan_ncp_set_bandcfg(void *data)
     }
     else
     {
-       wlan_ncp_prepare_status(NCP_RSP_SET_BANDCFG, NCP_CMD_RESULT_OK);
+        wlan_ncp_prepare_status(NCP_RSP_SET_BANDCFG, NCP_CMD_RESULT_OK);
     }
 
 done:
@@ -3961,31 +3925,8 @@ static int wlan_ncp_get_bandcfg(void *data)
     }
 
     NCP_CMD_BANDCFG *cfg = (NCP_CMD_BANDCFG *)&cmd_res->params.bandcfg;
-
-    if (bandcfg.config_bands & (BAND_AN | BAND_GN))
-    {
-        cfg->config_bands |= WLAN_NCP_BANDCFG_11N;
-    }
-    if (bandcfg.fw_bands & (BAND_AN | BAND_GN))
-    {
-        cfg->fw_bands |= WLAN_NCP_BANDCFG_11N;
-    }
-    if (bandcfg.config_bands & (BAND_AAC | BAND_GAC))
-    {
-        cfg->config_bands |= WLAN_NCP_BANDCFG_11AC;
-    }
-    if (bandcfg.fw_bands & (BAND_AAC | BAND_GAC))
-    {
-        cfg->fw_bands |= WLAN_NCP_BANDCFG_11AC;
-    }
-    if (bandcfg.config_bands & (BAND_AAX | BAND_GAX))
-    {
-        cfg->config_bands |= WLAN_NCP_BANDCFG_11AX;
-    }
-    if (bandcfg.fw_bands & (BAND_AAX | BAND_GAX))
-    {
-        cfg->fw_bands |= WLAN_NCP_BANDCFG_11AX;
-    }
+    cfg->config_bands = bandcfg.band_cfg;
+    cfg->fw_bands = bandcfg.supp_bands;
 
 done:
     if(ret == -WM_FAIL)

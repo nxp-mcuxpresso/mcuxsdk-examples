@@ -666,22 +666,39 @@ int wlan_set_okc_command(int argc, char **argv)
     return WM_SUCCESS;
 }
 
+static void dump_wlan_set_bandcfg_usage(void)
+{
+    (void)PRINTF(
+        "Usage:\r\n"
+        "    wlan-set-bandcfg <value>\r\n"
+        "        value -- 0x0: legacy\r\n"
+        "                 0x1: 11N\r\n"
+        "                 0x3: 11N + 11AC\r\n"
+        "                 0x5: 11N + 11AX\r\n"
+        "                 0x7: 11N + 11AC + 11AX\r\n"
+    );
+}
+
 int wlan_set_bandcfg_command(int argc, char **argv)
 {
     MCU_NCPCmd_DS_COMMAND *bandcfg_command = ncp_host_get_cmd_buffer_wifi();
-    uint32_t value = 0;
+    uint16_t value = 0;
 
     if (argc != 2)
     {
-        (void)PRINTF("Usage: %s <bitmap>\r\n", argv[0]);
-        (void)PRINTF("    Bits in Band:\r\n");
-        (void)PRINTF("    bit 0: 11N\r\n");
-        (void)PRINTF("    bit 1: 11AC\r\n");
-        (void)PRINTF("    bit 2: 11AX\r\n");
+        (void)PRINTF("Error! Invalid number of arguments.\r\n");
+        dump_wlan_set_bandcfg_usage();
         return -WM_FAIL;
     }
 
-    value = a2hex_or_atoi(argv[1]);
+    value = (uint16_t)a2hex_or_atoi(argv[1]);
+    if (value  != 0 && !(value & WLAN_NCP_BANDCFG_11N))
+    {
+        (void)PRINTF("Error: invalid parameter <value>\r\n");
+        dump_wlan_set_bandcfg_usage();
+        return -WM_FAIL;
+    }
+
     bandcfg_command->header.cmd      = NCP_CMD_SET_BANDCFG;
     bandcfg_command->header.size     = NCP_CMD_HEADER_LEN;
     bandcfg_command->header.result   = NCP_CMD_RESULT_OK;
