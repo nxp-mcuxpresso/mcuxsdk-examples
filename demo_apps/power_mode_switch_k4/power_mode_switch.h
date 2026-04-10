@@ -10,6 +10,14 @@
 
 #include "fsl_common.h"
 
+#ifndef DEMO_HAS_POWER_SWITCH_OFF
+#if (defined(FSL_FEATURE_SOC_VBAT_COUNT) && (FSL_FEATURE_SOC_VBAT_COUNT > 0))
+#define DEMO_HAS_POWER_SWITCH_OFF 1
+#else
+#define DEMO_HAS_POWER_SWITCH_OFF 0
+#endif
+#endif
+
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -30,7 +38,9 @@ typedef enum _app_power_mode
     kAPP_PowerModePowerDown4,
     kAPP_PowerModeDeepPowerDown1,
     kAPP_PowerModeDeepPowerDown2,
+#if DEMO_HAS_POWER_SWITCH_OFF
     kAPP_PowerSwitchOff,
+#endif
 #endif
     kAPP_PowerModeMax
 } app_power_mode_t;
@@ -39,7 +49,9 @@ typedef enum _app_wakeup_source
 {
     kAPP_WakeupSourceLptmr = 'A',  /*!< Wakeup by LPTMR.        */
     kAPP_WakeupSourceWakeupButton, /*!< Wakeup from button. */
+#if (defined(FSL_FEATURE_SOC_VBAT_COUNT) && (FSL_FEATURE_SOC_VBAT_COUNT > 0))
     kAPP_WakeupSourceVbat,         /*!< Wakeup from VBAT. */
+#endif
 } app_wakeup_source_t;
 
 /*! @name Always On Region */

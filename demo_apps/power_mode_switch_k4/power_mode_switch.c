@@ -11,17 +11,25 @@
 #include "fsl_spc.h"
 #include "fsl_clock.h"
 #include "fsl_debug_console.h"
+#include "app.h"
 #include "power_mode_switch.h"
 #include "peripherals.h"
-#include "app.h"
 #include "board.h"
 #include "fsl_lpuart.h"
+#if !(defined(DEMO_NOT_SUPPORT_WAKEUP_BOOT) && DEMO_NOT_SUPPORT_WAKEUP_BOOT)
 #include "fsl_crc.h"
+#endif
+#if (defined(FSL_FEATURE_SOC_VBAT_COUNT) && (FSL_FEATURE_SOC_VBAT_COUNT > 0))
 #include "fsl_vbat.h"
+#endif
 #include "fsl_ccm32k.h"
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+
+#ifndef APP_CLEAR_POWER_DOMAIN3_REQUEST
+#define APP_CLEAR_POWER_DOMAIN3_REQUEST 0
+#endif
 
 /*******************************************************************************
  * Prototypes
@@ -29,6 +37,7 @@
 static void APP_SetSPCConfiguration(void);
 static void APP_SetCMCConfiguration(void);
 static void APP_DeInitVbat(void);
+static void APP_WaitForSPCReady(void);
 
 static uint8_t APP_GetWakeupTimeout(void);
 static app_wakeup_source_t APP_SelectWakeupSource(app_power_mode_t targetMode);
@@ -37,29 +46,28 @@ static void APP_GetWakeupConfig(app_power_mode_t targetMode);
 static void APP_PowerPreSwitchHook(void);
 static void APP_PowerPostSwitchHook(void);
 
-static void APP_ShowPowerMode(cmc_low_power_mode_t powermode);
+static void APP_ShowPowerMode(cmc_low_power_mode_t powerMode);
 static void APP_EnterSleep1Mode(void);
 static void APP_EnterDeepSleep1Mode(void);
 static void APP_EnterDeepSleep2Mode(void);
 static void APP_EnterDeepSleep3Mode(void);
 static void APP_EnterDeepSleep4Mode(void);
-#if !(defined(DEMO_PD_MODE_NOT_OK) && DEMO_PD_MODE_NOT_OK)
 static void APP_EnterPowerDown1Mode(void);
 static void APP_EnterPowerDown2Mode(void);
 static void APP_EnterPowerDown3Mode(void);
 static void APP_EnterPowerDown4Mode(void);
 static void APP_EnterDeepPowerDown1Mode(void);
 static void APP_EnterDeepPowerDown2Mode(void);
-#endif
 static void APP_PowerModeSwitch(app_power_mode_t targetPowerMode);
 static app_power_mode_t APP_GetTargetPowerMode(void);
+static uint8_t APP_GetFilteredInputChar(void);
+static void APP_FlushDebugConsoleRx(void);
 
 #if !(defined(DEMO_NOT_SUPPORT_WAKEUP_BOOT) && DEMO_NOT_SUPPORT_WAKEUP_BOOT)
 static void APP_SaveRuntimeContext(void);
 static void APP_RestoreRuntimeContext(void);
-
-static void APP_WakeupFunction(void);
 static void APP_SetPowerDownModeWakeupConfig(void);
+static void APP_WakeupFunction(void);
 #endif
 
 /*******************************************************************************
@@ -67,25 +75,27 @@ static void APP_SetPowerDownModeWakeupConfig(void);
  ******************************************************************************/
 
 static uint8_t s_wakeupTimeout; /* Wakeup timeout. (Unit: Second) */
-volatile app_wakeup_source_t g_selectedWakeupSource;
+static volatile app_wakeup_source_t g_selectedWakeupSource;
 
+AT_ALWAYS_ON_DATA(app_power_mode_t g_targetPowerMode);
+AT_ALWAYS_ON_DATA_INIT(char *g_modeNameArray[]) = APP_MODE_NAME_ARRAY;
+AT_ALWAYS_ON_DATA_INIT(char *g_modeDescArray[]) = APP_MODE_DESC_ARRAY;
+
+#if !(defined(DEMO_NOT_SUPPORT_WAKEUP_BOOT) && DEMO_NOT_SUPPORT_WAKEUP_BOOT)
 AT_ALWAYS_ON_DATA(uint32_t g_scbVtor);
 AT_ALWAYS_ON_DATA(uint32_t g_scbIcsr);
 AT_ALWAYS_ON_DATA(uint32_t g_scbAircr);
 AT_ALWAYS_ON_DATA(uint32_t g_scbCCR);
-AT_ALWAYS_ON_DATA(uint8_t g_scbShp[12]);
+AT_ALWAYS_ON_DATA(uint8_t g_scbShp[12U]);
 AT_ALWAYS_ON_DATA(uint32_t g_scbShcsr);
 AT_ALWAYS_ON_DATA(uint32_t g_nvicIser[16U]);
 AT_ALWAYS_ON_DATA(uint8_t g_nvicIp[496U]);
 AT_ALWAYS_ON_DATA(uint32_t g_cpuControl);
-AT_ALWAYS_ON_DATA(uint32_t g_wakeupEntry[12]);
+AT_ALWAYS_ON_DATA(uint32_t g_wakeupEntry[12U]);
 AT_ALWAYS_ON_DATA(jmp_buf g_coreContext);
-AT_ALWAYS_ON_DATA(app_power_mode_t g_targetPowerMode);
-
-AT_ALWAYS_ON_DATA_INIT(char *g_modeNameArray[]) = APP_MODE_NAME_ARRAY;
-AT_ALWAYS_ON_DATA_INIT(char *g_modeDescArray[]) = APP_MODE_DESC_ARRAY;
 
 extern uint32_t m_warmboot_stack_end;
+#endif
 
 #ifndef DEMO_ASSERT_SW_RESET
 #define DEMO_ASSERT_SW_RESET    NVIC_SystemReset()
@@ -150,44 +160,88 @@ int main(void)
  * @brief In active mode, all HVDs/LVDs are disabled, DCDC regulated to 1.5V, Core LDO regulated to 1.1V;
  * In low power modes, all HVDs/LVDs are disabled, bandgap is disabled, DCDC regulated to 1.25V, Core LDO regulated to
  * 1.0V.
+ *
+ * @note Platform-conditional paths:
+ *   - VDD_SYS H/LVD disable is compiled only when FSL_FEATURE_SPC_HAS_VDD_SYS=1
+ *     (KW45 / KW47 / MCXW72 / MCXW727).
+ *   - VDD1P8 LVD disable is compiled only when FSL_FEATURE_SPC_HAS_VDD1P8_LVD=1
+ *     (KW43).
+ *   - System LDO and LP bandgap-buffer (lpBuff) fields are only assigned and
+ *     programmed when FSL_FEATURE_SPC_HAS_SYS_LDO / FSL_FEATURE_SPC_HAS_LPBUFF
+ *     are set; KW43 does not have either.
+ *   - The staged LP Core LDO transition is compiled only when
+ *     DEMO_NEED_STAGED_LP_CORELDO_WRITE is defined to 1 in the board's
+ *     app.h, for boards whose LP_CFG reset default is not the demo's target
+ *     (Mid voltage). It satisfies the SPC driver's interlock that LP Core
+ *     LDO voltage can only change while drive strength is Normal; see the
+ *     inline comment at the staged block for details.
+ *   - When DEMO_KEEP_LP_IREF_ENABLED is defined to 1 in the board's app.h,
+ *     lowPowerRegulatorOption.lpIREF is kept true so LP_CFG[LP_IREFEN]
+ *     stays set in DPDOWN. Required on platforms where LP IREF is a
+ *     shared PMC reference for an always-on rail (e.g. KW43 VDD_SYS_LV).
+ * The DCDC and LP regulator writes use a short retry loop so a transient
+ * kStatus_SPC_Busy does not fail the configuration; this path is universal
+ * and does not change behavior on platforms that succeed on the first try.
  */
 static void APP_SetSPCConfiguration(void)
 {
-    static volatile status_t status = kStatus_Success;
+    status_t status;
+    uint32_t retry;
+    spc_active_mode_regulators_config_t activeModeRegulatorOption;
+    spc_lowpower_mode_regulators_config_t lowPowerRegulatorOption;
+
+    (void)memset(&activeModeRegulatorOption, 0, sizeof(activeModeRegulatorOption));
+    (void)memset(&lowPowerRegulatorOption, 0, sizeof(lowPowerRegulatorOption));
+
+    APP_WaitForSPCReady();
 
     /* Disable LVDs and HVDs in Active mode. */
     SPC_EnableActiveModeCoreHighVoltageDetect(APP_SPC, false);
     SPC_EnableActiveModeCoreLowVoltageDetect(APP_SPC, false);
+#if defined(FSL_FEATURE_SPC_HAS_VDD_SYS) && FSL_FEATURE_SPC_HAS_VDD_SYS
     SPC_EnableActiveModeSystemHighVoltageDetect(APP_SPC, false);
     SPC_EnableActiveModeSystemLowVoltageDetect(APP_SPC, false);
+#endif
+#if defined(FSL_FEATURE_SPC_HAS_VDD1P8_LVD) && FSL_FEATURE_SPC_HAS_VDD1P8_LVD
+    SPC_EnableActiveModeVDD1P8LowVoltageDetect(APP_SPC, false);
+#endif
     SPC_EnableActiveModeIOHighVoltageDetect(APP_SPC, false);
     SPC_EnableActiveModeIOLowVoltageDetect(APP_SPC, false);
 
-    while (SPC_GetBusyStatusFlag(APP_SPC))
-    {}
+    APP_WaitForSPCReady();
 
-    spc_active_mode_regulators_config_t activeModeRegulatorOption;
     activeModeRegulatorOption.bandgapMode                      = kSPC_BandgapEnabledBufferDisabled;
-    activeModeRegulatorOption.lpBuff                           = false;
     activeModeRegulatorOption.DCDCOption.DCDCVoltage           = kSPC_DCDC_NormalVoltage; /* DCDC regulate to 1.5V. */
     activeModeRegulatorOption.DCDCOption.DCDCDriveStrength     = kSPC_DCDC_NormalDriveStrength;
+#if defined(FSL_FEATURE_SPC_HAS_LPBUFF) && FSL_FEATURE_SPC_HAS_LPBUFF
+    activeModeRegulatorOption.lpBuff                           = false;
+#endif
+#if defined(FSL_FEATURE_SPC_HAS_SYS_LDO) && FSL_FEATURE_SPC_HAS_SYS_LDO
     activeModeRegulatorOption.SysLDOOption.SysLDOVoltage       = kSPC_SysLDO_NormalVoltage;
     activeModeRegulatorOption.SysLDOOption.SysLDODriveStrength = kSPC_SysLDO_NormalDriveStrength;
-    activeModeRegulatorOption.CoreLDOOption.CoreLDOVoltage =
+#endif
+    activeModeRegulatorOption.CoreLDOOption.CoreLDOVoltage     =
         kSPC_CoreLDO_NormalVoltage; /* Core LDO regulate to 1.1V. */
 #if defined(FSL_FEATURE_SPC_HAS_CORELDO_VDD_DS) && FSL_FEATURE_SPC_HAS_CORELDO_VDD_DS
     activeModeRegulatorOption.CoreLDOOption.CoreLDODriveStrength = kSPC_CoreLDO_NormalDriveStrength;
 #endif /* FSL_FEATURE_SPC_HAS_CORELDO_VDD_DS */
-    if (SPC_SetActiveModeDCDCRegulatorConfig(APP_SPC, &activeModeRegulatorOption.DCDCOption) != kStatus_Success)
+    status = kStatus_SPC_Busy;
+    for (retry = 0U; (retry < 8U) && (status == kStatus_SPC_Busy); retry++)
+    {
+        APP_WaitForSPCReady();
+        status = SPC_SetActiveModeDCDCRegulatorConfig(APP_SPC, &activeModeRegulatorOption.DCDCOption);
+    }
+    if (status != kStatus_Success)
     {
         PRINTF("Fail to set DCDC in Active Mode!\r\n");
     }
-    while (SPC_GetBusyStatusFlag(APP_SPC))
-    {}
+    APP_WaitForSPCReady();
+#if defined(FSL_FEATURE_SPC_HAS_SYS_LDO) && FSL_FEATURE_SPC_HAS_SYS_LDO
     if (SPC_SetActiveModeSystemLDORegulatorConfig(APP_SPC, &activeModeRegulatorOption.SysLDOOption) != kStatus_Success)
     {
         PRINTF("Fail to set System LDO in Active Mode!\r\n ");
     }
+#endif
     if (SPC_SetActiveModeBandgapModeConfig(APP_SPC, activeModeRegulatorOption.bandgapMode) != kStatus_Success)
     {
         PRINTF("Fail to set bandgap mode in Active Mode!\r\n");
@@ -197,28 +251,105 @@ static void APP_SetSPCConfiguration(void)
     {
         PRINTF("Fail to set Core LDO in Active mode!\r\n");
     }
+#if defined(FSL_FEATURE_SPC_HAS_LPBUFF) && FSL_FEATURE_SPC_HAS_LPBUFF
     SPC_EnableActiveModeCMPBandgapBuffer(APP_SPC, activeModeRegulatorOption.lpBuff);
+#endif
 
-    spc_lowpower_mode_regulators_config_t lowPowerRegulatorOption;
+    APP_WaitForSPCReady();
 
+#if defined(DEMO_KEEP_LP_IREF_ENABLED) && DEMO_KEEP_LP_IREF_ENABLED
+    /*
+     * LP IREF is a shared PMC current reference on some platforms -- not
+     * only used by OSC32K but also as the bias for an always-on domain
+     * (e.g. VDD_SYS_LV on KW43). Disabling LP_IREF in DPDOWN would corrupt
+     * that AON rail, so the board keeps it enabled by setting this knob.
+     * LP_CFG[LP_IREFEN] is hardware-forced to 1 in every non-DPDOWN LP
+     * mode, so this field only matters for DPDOWN entry.
+     */
+    lowPowerRegulatorOption.lpIREF                             = true;
+#else
     lowPowerRegulatorOption.lpIREF                             = false;
+#endif
     lowPowerRegulatorOption.bandgapMode                        = kSPC_BandgapDisabled;
-    lowPowerRegulatorOption.lpBuff                             = false;
     lowPowerRegulatorOption.CoreIVS                            = false;
     lowPowerRegulatorOption.DCDCOption.DCDCVoltage             = kSPC_DCDC_LowUnderVoltage;
     lowPowerRegulatorOption.DCDCOption.DCDCDriveStrength       = kSPC_DCDC_LowDriveStrength;
+#if defined(FSL_FEATURE_SPC_HAS_LPBUFF) && FSL_FEATURE_SPC_HAS_LPBUFF
+    lowPowerRegulatorOption.lpBuff                             = false;
+#endif
+#if defined(FSL_FEATURE_SPC_HAS_SYS_LDO) && FSL_FEATURE_SPC_HAS_SYS_LDO
     lowPowerRegulatorOption.SysLDOOption.SysLDODriveStrength   = kSPC_SysLDO_LowDriveStrength;
+#endif
     lowPowerRegulatorOption.CoreLDOOption.CoreLDOVoltage       = kSPC_CoreLDO_MidDriveVoltage;
     lowPowerRegulatorOption.CoreLDOOption.CoreLDODriveStrength = kSPC_CoreLDO_LowDriveStrength;
 
-    status = SPC_SetLowPowerModeRegulatorsConfig(APP_SPC, &lowPowerRegulatorOption);
+#if defined(DEMO_NEED_STAGED_LP_CORELDO_WRITE) && DEMO_NEED_STAGED_LP_CORELDO_WRITE
+    /*
+     * Opt-in workaround for boards where a single-shot
+     * SPC_SetLowPowerModeRegulatorsConfig cannot reach the demo's target
+     * LP Core LDO state (voltage = Mid, drive strength = Low) from the
+     * LP_CFG reset default, because the driver's interlock rejects
+     * "change voltage while drive strength is Low" with
+     * kStatus_SPC_CORELDOVoltageSetFail
+     *
+     * Stage the transition in two steps: first enable the LP bandgap and
+     * set Core LDO to the target voltage with Normal drive strength
+     * (allowed path), then let the full LP regulator config below take the
+     * Low-drive path where the voltage check passes because preVoltage now
+     * already matches. The staged call's bandgap setting is overwritten by
+     * the final LP regulator config a few lines later, so this does not
+     * change the final LP bandgap state.
+     *
+     * A board defines DEMO_NEED_STAGED_LP_CORELDO_WRITE to 1 in its app.h
+     * when its LP_CFG[CORELDO_VDD_LVL] reset default is not the demo's
+     * target (Mid). Currently only frdmkw43 sets this knob (KW43 boots
+     * with CORELDO_VDD_LVL = 10b / Normal 1.1 V per KW43 RM LP_CFG reset
+     * row); KW45 / KW47 / MCXW72 / MCXW727 boot with the reset value
+     * already at Mid so the single-shot path succeeds for them.
+     */
+    spc_lowpower_mode_core_ldo_option_t stagedLowPowerCoreLDOOption = lowPowerRegulatorOption.CoreLDOOption;
+    stagedLowPowerCoreLDOOption.CoreLDODriveStrength                = kSPC_CoreLDO_NormalDriveStrength;
+
+    APP_WaitForSPCReady();
+    status = SPC_SetLowPowerModeBandgapmodeConfig(APP_SPC, kSPC_BandgapEnabledBufferDisabled);
     if (status != kStatus_Success)
     {
-        PRINTF("Fail to set regulators in Low Power Mode.");
+        PRINTF("Fail to stage bandgap for Low Power Mode, status = 0x%x.\r\n", status);
         return;
     }
 
+    APP_WaitForSPCReady();
+    status = SPC_SetLowPowerModeCoreLDORegulatorConfig(APP_SPC, &stagedLowPowerCoreLDOOption);
+    if (status != kStatus_Success)
+    {
+        PRINTF("Fail to stage Core LDO for Low Power Mode, status = 0x%x.\r\n", status);
+        return;
+    }
+#endif /* DEMO_NEED_STAGED_LP_CORELDO_WRITE */
+
+    status = kStatus_SPC_Busy;
+    for (retry = 0U; (retry < 8U) && (status == kStatus_SPC_Busy); retry++)
+    {
+        APP_WaitForSPCReady();
+        status = SPC_SetLowPowerModeRegulatorsConfig(APP_SPC, &lowPowerRegulatorOption);
+    }
+
+    if (status != kStatus_Success)
+    {
+        PRINTF("Fail to set regulators in Low Power Mode, status = 0x%x.\r\n", status);
+        return;
+    }
+
+    APP_WaitForSPCReady();
+
     SPC_SetLowPowerWakeUpDelay(APP_SPC, 0xFFFFU);
+}
+
+static void APP_WaitForSPCReady(void)
+{
+    while (SPC_GetBusyStatusFlag(APP_SPC))
+    {
+    }
 }
 
 /*!
@@ -238,6 +369,7 @@ static void APP_SetCMCConfiguration(void)
  */
 static void APP_DeInitVbat(void)
 {
+#if (defined(FSL_FEATURE_SOC_VBAT_COUNT) && (FSL_FEATURE_SOC_VBAT_COUNT > 0))
     VBAT_EnableBackupSRAMRegulator(APP_VBAT, false);
     VBAT_EnableFRO16k(APP_VBAT, false);
     while (VBAT_CheckFRO16kEnabled(APP_VBAT))
@@ -245,6 +377,7 @@ static void APP_DeInitVbat(void)
     VBAT_EnableBandgap(APP_VBAT, false);
     while (VBAT_CheckBandgapEnabled(APP_VBAT))
         ;
+#endif
 }
 
 static app_wakeup_source_t APP_SelectWakeupSource(app_power_mode_t targetMode)
@@ -252,33 +385,57 @@ static app_wakeup_source_t APP_SelectWakeupSource(app_power_mode_t targetMode)
     app_wakeup_source_t wakeupSource;
     uint8_t ch;
 
-    PRINTF("\r\nSelect the desired wakeup source:\r\n");
-#if !(defined(DEMO_PD_MODE_NOT_OK) && DEMO_PD_MODE_NOT_OK)
-    if (targetMode != kAPP_PowerSwitchOff)
+    while (1)
     {
+        PRINTF("\r\nSelect the desired wakeup source:\r\n");
+#if !(defined(DEMO_PD_MODE_NOT_OK) && DEMO_PD_MODE_NOT_OK)
+#if DEMO_HAS_POWER_SWITCH_OFF
+        if (targetMode != kAPP_PowerSwitchOff)
+        {
+            PRINTF("Press %c to select LPTMR0\r\n", kAPP_WakeupSourceLptmr);
+            PRINTF("Press %c to select button\r\n", kAPP_WakeupSourceWakeupButton);
+        }
+#else
         PRINTF("Press %c to select LPTMR0\r\n", kAPP_WakeupSourceLptmr);
         PRINTF("Press %c to select button\r\n", kAPP_WakeupSourceWakeupButton);
-    }
-#else
-    PRINTF("Press %c to select LPTMR0\r\n", kAPP_WakeupSourceLptmr);
-    PRINTF("Press %c to select button\r\n", kAPP_WakeupSourceWakeupButton);
+#endif
 #endif
 
-    PRINTF("Press %c to Select VBAT\r\n", kAPP_WakeupSourceVbat);
+#if (defined(FSL_FEATURE_SOC_VBAT_COUNT) && (FSL_FEATURE_SOC_VBAT_COUNT > 0))
+        PRINTF("Press %c to Select VBAT\r\n", kAPP_WakeupSourceVbat);
+#endif
 
-    PRINTF("\r\nWaiting for wakeup source select...\r\n");
+        PRINTF("\r\nWaiting for wakeup source select...\r\n");
 
-    ch = GETCHAR();
-    PUTCHAR(ch);
-    PRINTF("\n");
-    if ((ch >= 'a') && (ch <= 'z'))
-    {
-        ch -= 'a' - 'A';
+        ch = APP_GetFilteredInputChar();
+        PUTCHAR(ch);
+        PRINTF("\n");
+        if ((ch >= 'a') && (ch <= 'z'))
+        {
+            ch -= 'a' - 'A';
+        }
+
+        wakeupSource = (app_wakeup_source_t)ch;
+#if !(defined(DEMO_PD_MODE_NOT_OK) && DEMO_PD_MODE_NOT_OK)
+#if DEMO_HAS_POWER_SWITCH_OFF
+        if (targetMode != kAPP_PowerSwitchOff)
+#endif
+        {
+            if ((wakeupSource == kAPP_WakeupSourceLptmr) || (wakeupSource == kAPP_WakeupSourceWakeupButton))
+            {
+                return wakeupSource;
+            }
+        }
+#endif
+#if (defined(FSL_FEATURE_SOC_VBAT_COUNT) && (FSL_FEATURE_SOC_VBAT_COUNT > 0))
+        if (wakeupSource == kAPP_WakeupSourceVbat)
+        {
+            return wakeupSource;
+        }
+#endif
+
+        PRINTF("Wrong input, please re-try!\r\n");
     }
-
-    wakeupSource = (app_wakeup_source_t)ch;
-
-    return wakeupSource;
 }
 
 /* Get wakeup timeout and wakeup source. */
@@ -319,6 +476,7 @@ static void APP_GetWakeupConfig(app_power_mode_t targetMode)
             break;
         }
 
+#if (defined(FSL_FEATURE_SOC_VBAT_COUNT) && (FSL_FEATURE_SOC_VBAT_COUNT > 0))
         case kAPP_WakeupSourceVbat:
         {
 #if defined(SWITCH_WAKEUP_BUTTON_NAME)
@@ -341,12 +499,27 @@ static void APP_GetWakeupConfig(app_power_mode_t targetMode)
             VBAT_EnableWakeup(APP_VBAT, kVBAT_WakeupEnableWakeupPin);
             break;
         }
+#endif
         default:
         {
             assert(false);
             break;
         }
     }
+
+#if defined(DEMO_NOT_SUPPORT_WAKEUP_BOOT) && DEMO_NOT_SUPPORT_WAKEUP_BOOT
+    /*
+     * On boards without wakeup-boot support, Power Down and Deep
+     * Power Down wake up through the normal boot path (the banner
+     * is reprinted) rather than resuming in place. Announce this
+     * explicitly so the test harness can tell "normal boot after
+     * wake" apart from the regular "Next loop" path.
+     */
+    if (targetMode >= kAPP_PowerModePowerDown1)
+    {
+        PRINTF("Note: Wakeup cause a reset!\r\n");
+    }
+#endif
 }
 
 /*!
@@ -363,7 +536,7 @@ static uint8_t APP_GetWakeupTimeout(void)
         PRINTF("Eg. enter 5 to wake up in 5 seconds.\r\n");
         PRINTF("\r\nWaiting for input timeout value...\r\n\r\n");
 
-        timeout = GETCHAR();
+        timeout = APP_GetFilteredInputChar();
         PRINTF("%c\r\n", timeout);
         if ((timeout > '0') && (timeout <= '9'))
         {
@@ -403,6 +576,12 @@ static void APP_PowerPostSwitchHook(void)
         RFMC->RF2P4GHZ_CTRL &= ~RFMC_RF2P4GHZ_CTRL_LP_ENTER_MASK;
         SPC_ClearPowerDomainLowPowerRequestFlag(APP_SPC, kSPC_PowerDomain2);
     }
+#if APP_CLEAR_POWER_DOMAIN3_REQUEST
+    if (SPC_CheckPowerDomainLowPowerRequest(APP_SPC, kSPC_PowerDomain3))
+    {
+        SPC_ClearPowerDomainLowPowerRequestFlag(APP_SPC, kSPC_PowerDomain3);
+    }
+#endif
     SPC_ClearLowPowerRequest(APP_SPC);
 
     CLOCK_EnableClock(kCLOCK_Lpuart0);
@@ -434,7 +613,8 @@ static app_power_mode_t APP_GetTargetPowerMode(void)
         }
         PRINTF("\r\n\tWaiting for power mode select...\r\n\r\n");
 
-        ch = GETCHAR();
+        APP_FlushDebugConsoleRx();
+        ch = APP_GetFilteredInputChar();
 
         if ((ch >= 'a') && (ch <= 'z'))
         {
@@ -449,6 +629,42 @@ static app_power_mode_t APP_GetTargetPowerMode(void)
             return inputPowerMode;
         }
         PRINTF("Wrong input, please re-try!\r\n");
+    }
+}
+
+static uint8_t APP_GetFilteredInputChar(void)
+{
+    int chInput;
+    uint8_t ch;
+
+    while (1)
+    {
+        chInput = GETCHAR();
+        if ((chInput < 0) || (chInput > 0xFF))
+        {
+            continue;
+        }
+
+        ch = (uint8_t)chInput;
+        if ((ch == '\r') || (ch == '\n') || (ch == '\0'))
+        {
+            continue;
+        }
+        if ((ch < 0x20U) || (ch > 0x7EU))
+        {
+            APP_FlushDebugConsoleRx();
+            continue;
+        }
+
+        return ch;
+    }
+}
+
+static void APP_FlushDebugConsoleRx(void)
+{
+    while ((kLPUART_RxDataRegFullFlag & LPUART_GetStatusFlags((LPUART_Type *)BOARD_DEBUG_UART_BASEADDR)) != 0U)
+    {
+        (void)LPUART_ReadByte((LPUART_Type *)BOARD_DEBUG_UART_BASEADDR);
     }
 }
 
@@ -492,10 +708,12 @@ static void APP_PowerModeSwitch(app_power_mode_t targetPowerMode)
             case kAPP_PowerModeDeepPowerDown2:
                 APP_EnterDeepPowerDown2Mode();
                 break;
+#if DEMO_HAS_POWER_SWITCH_OFF
             case kAPP_PowerSwitchOff:
                 SPC_PowerModeControlPowerSwitch(APP_SPC);
                 APP_EnterDeepPowerDown1Mode();
                 break;
+#endif
 #endif
             default:
                 assert(false);
@@ -758,6 +976,7 @@ static void APP_EnterDeepPowerDown1Mode(void)
 #if !(defined(DEMO_NOT_SUPPORT_WAKEUP_BOOT) && DEMO_NOT_SUPPORT_WAKEUP_BOOT)
     APP_SetPowerDownModeWakeupConfig();
 
+#if (defined(FSL_FEATURE_SOC_VBAT_COUNT) && (FSL_FEATURE_SOC_VBAT_COUNT > 0))
     /* Enable VBAT backup SRAM regulator to supply STCM5, because CORE_LDO will be disabled in deep power down mode. */
     vbat_fro16k_config_t vbatFro16kConfig = {
         .enableFRO16k       = true,
@@ -767,6 +986,7 @@ static void APP_EnterDeepPowerDown1Mode(void)
     VBAT_EnableBandgap(VBAT0, true);
     VBAT_EnableBandgapRefreshMode(VBAT0, true);
     VBAT_EnableBackupSRAMRegulator(VBAT0, true);
+#endif
 
     APP_SaveRuntimeContext();
     memset(&g_coreContext, 0, sizeof(g_coreContext));
@@ -778,6 +998,7 @@ static void APP_EnterDeepPowerDown1Mode(void)
     APP_RestoreRuntimeContext();
     __enable_irq();
 #else
+#if (defined(FSL_FEATURE_SOC_VBAT_COUNT) && (FSL_FEATURE_SOC_VBAT_COUNT > 0))
     /* Enable VBAT backup SRAM regulator to supply STCM5, because CORE_LDO will be disabled in deep power down mode. */
     vbat_fro16k_config_t vbatFro16kConfig = {
         .enableFRO16k       = true,
@@ -787,6 +1008,9 @@ static void APP_EnterDeepPowerDown1Mode(void)
     VBAT_EnableBandgap(VBAT0, true);
     VBAT_EnableBandgapRefreshMode(VBAT0, true);
     VBAT_EnableBackupSRAMRegulator(VBAT0, true);
+#else
+    CMC_PowerOffSRAMLowPowerOnly(APP_CMC, APP_DEEPPOWERDOWN1_SRAM_POWER_MODE);
+#endif
 
     CMC_EnterLowPowerMode(APP_CMC, &config);
 #endif
@@ -817,6 +1041,7 @@ static inline void APP_EnterDeepPowerDown2Mode(void)
         CMC_EnterLowPowerMode(APP_CMC, &config);
     }
 #else
+    CMC_PowerOffSRAMLowPowerOnly(APP_CMC, APP_DEEPPOWERDOWN2_SRAM_POWER_MODE);
     CMC_EnterLowPowerMode(APP_CMC, &config);
 #endif
 }
