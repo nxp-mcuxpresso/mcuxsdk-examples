@@ -1026,5 +1026,41 @@ status_t BOARD_MIPIPanelTouch_I2C_Receive(
     return BOARD_I2C_Receive(BOARD_MIPI_PANEL_TOUCH_I2C_BASEADDR, deviceAddress, subAddress, subAddressSize, rxBuff,
                              rxBuffSize);
 }
+
+void BOARD_CAMERA_I2C_Init(void)
+{
+    CLOCK_AttachClk(kOSC_CLK_to_FCCLK0);
+    CLOCK_AttachClk(kFCCLK0_to_FLEXCOMM8);
+    CLOCK_EnableClock(kCLOCK_LPFlexComm8);
+    BOARD_I2C_Init(BOARD_MIPI_PANEL_TOUCH_I2C_BASEADDR, BOARD_MIPI_PANEL_TOUCH_I2C_CLOCK_FREQ);
+}
+status_t BOARD_CAMERA_I2C_Send(uint8_t deviceAddress,
+                         uint32_t subAddress,
+                         uint8_t subAddressSize,
+                         const uint8_t *txBuff,
+                         uint8_t txBuffSize)
+{
+      return BOARD_I2C_Send(BOARD_MIPI_PANEL_TOUCH_I2C_BASEADDR, deviceAddress, subAddress, subAddressSize, (void*)txBuff,
+                             txBuffSize);
+}
+status_t BOARD_CAMERA_I2C_Receive(uint8_t deviceAddress,
+                            uint32_t subAddress,
+                            uint8_t subAddressSize,
+                            uint8_t *rxBuff,
+                            uint8_t rxBuffSize)
+{
+     status_t status;
+     status = BOARD_I2C_Send(BOARD_MIPI_PANEL_TOUCH_I2C_BASEADDR, deviceAddress, subAddress, subAddressSize, (void*)0, 0);
+
+     if (kStatus_Success == status)
+     {
+         return BOARD_I2C_Receive(BOARD_MIPI_PANEL_TOUCH_I2C_BASEADDR, deviceAddress, 0, 0, rxBuff,
+                             rxBuffSize);
+     }
+     else
+     {
+       return status;
+     }
+}
 #endif
 #endif

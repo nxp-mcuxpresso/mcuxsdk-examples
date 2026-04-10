@@ -4,16 +4,16 @@
 **                          MIMXRT798SGFOB_cm33_core0
 **                          MIMXRT798SGVKB_cm33_core0
 **
-**     Compiler:            IAR ANSI C/C++ Compiler for ARM
+**     Compiler:            GNU C Compiler
 **     Reference manual:    iMXRT700RM Rev.5, 10/2025
 **     Version:             rev. 4.0, 2025-12-29
-**     Build:               b251229
+**     Build:               b260330
 **
 **     Abstract:
 **         Linker file for the GNU C Compiler
 **
 **     Copyright 2016 Freescale Semiconductor, Inc.
-**     Copyright 2016-2024 NXP
+**     Copyright 2016-2026 NXP
 **     SPDX-License-Identifier: BSD-3-Clause
 **
 **     http:                 www.nxp.com
@@ -210,6 +210,8 @@ SECTIONS
     . = ALIGN(4);
     __DATA_RAM = .;
     __data_start__ = .;      /* create a global symbol at data start */
+    *(CacheLineData.init)    /* CacheLineData.init sections */
+    . = ALIGN(16);           /* cache line size = 16 bytes */
     *(CodeQuickAccess)       /* CodeQuickAccess sections */
     *(DataQuickAccess)       /* DataQuickAccess sections */
     *(.data)                 /* .data sections */
@@ -260,6 +262,8 @@ SECTIONS
     . = ALIGN(4);
     __START_BSS = .;
     __bss_start__ = .;
+    *(CacheLineData)
+    . = ALIGN(16); /* cache line size = 16 bytes */
     *(.bss)
     *(.bss*)
     *(COMMON)

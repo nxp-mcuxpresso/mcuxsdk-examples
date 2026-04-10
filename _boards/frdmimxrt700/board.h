@@ -350,6 +350,18 @@ status_t BOARD_MIPIPanelTouch_I2C_Send(
     uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, const uint8_t *txBuff, uint8_t txBuffSize);
 status_t BOARD_MIPIPanelTouch_I2C_Receive(
     uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, uint8_t *rxBuff, uint8_t rxBuffSize);
+#define BOARD_CAMERA_I2C_API (1U)
+void BOARD_CAMERA_I2C_Init(void);
+status_t BOARD_CAMERA_I2C_Send(uint8_t deviceAddress,
+                         uint32_t subAddress,
+                         uint8_t subAddressSize,
+                         const uint8_t *txBuff,
+                         uint8_t txBuffSize);
+status_t BOARD_CAMERA_I2C_Receive(uint8_t deviceAddress,
+                            uint32_t subAddress,
+                            uint8_t subAddressSize,
+                            uint8_t *rxBuff,
+                            uint8_t rxBuffSize);
 #endif
 #endif /* SDK_I2C_BASED_COMPONENT_USED */
 
