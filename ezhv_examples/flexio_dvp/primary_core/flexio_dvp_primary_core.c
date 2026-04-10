@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024, 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -96,11 +96,6 @@ int main(void)
 {
     /* Init board hardware. */
     BOARD_InitHardware();
-    BOARD_InitPsRamPins_Xspi2();
-
-    BOARD_InitMipiPanelPinsEvk();
-
-    BOARD_Init16bitsPsRam(XSPI2);
 
     PRINTF("EZH-V flexIO DVP example started\r\n");
 

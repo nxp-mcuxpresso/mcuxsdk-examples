@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024, 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -17,6 +17,8 @@ void BOARD_InitHardware(void)
 {
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
+    BOARD_InitPsRamPins_Xspi2();
+    BOARD_InitMipiPanelPinsEvk();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
@@ -34,5 +36,7 @@ void BOARD_InitHardware(void)
      * in Jlink Script.
      */
     BOARD_EZHV_SetSecurePriv();
+
+    BOARD_Init16bitsPsRam(XSPI2);
 }
 /*${function:end}*/
