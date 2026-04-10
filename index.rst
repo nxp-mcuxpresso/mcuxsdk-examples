@@ -44,4 +44,6 @@ If a supported board includes a link, click it to access the board-specific docu
    _boards/**/readme_modules
    _boards/**/wifi_examples/common/*
    _boards/**/ecat_examples/servo_motor/topics/*
-   _boards/**/eiq_examples/mpp/board_readme
+   _boards/evkbmimxrt1170/eiq_examples/mpp/board_readme
+   _boards/frdmmcxn947/eiq_examples/mpp/board_readme
+   _boards/mimxrt700evk/eiq_examples/mpp/board_readme
