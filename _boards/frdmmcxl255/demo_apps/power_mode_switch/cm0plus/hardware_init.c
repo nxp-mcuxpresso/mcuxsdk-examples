@@ -29,6 +29,12 @@ void BOARD_BootAs3MHzClocks(void)
 {
     CLOCK_EnableClock(kCLOCK_GateAonAPB);
     AON__CGU->CLOCK_DIV |= CGU_CLOCK_DIV_CLK_DIV_EN_MASK;
+
+    /* After DPD2 exit both AON FROs may still be disabled (set during DPD2
+     * entry).  Re-enable them so CLOCK_SetupFROAonClocking can compute a
+     * valid coreClock_Hz for its internal delays. */
+    AON__CGU->CLK_CONFIG |= CGU_CLK_CONFIG_ULPIRC_EN_MASK | CGU_CLK_CONFIG_LPIRC_EN_MASK;
+
     CLOCK_SetupFROAonClocking(3000000U);
     CLOCK_EnableClock(kCLOCK_GateAonPORT);
     CLOCK_EnableClock(kCLOCK_GateAonGPIO);

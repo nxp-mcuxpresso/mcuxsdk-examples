@@ -82,42 +82,42 @@
     #if APP_ENABLE_ADVC
         /* Context Saving Disabled + ADVC Enabled */
         #define DEMO_POWER_MODE_DESC_DPD1_SINGLE \
-            "Selected to enter DPD1(No CM33 SRAM retained, CM0P execute WFI, 23.29uA@VDD_BAT), then wakeup to Active."
+            "Selected to enter DPD1(No CM33 SRAM retained, CM0P execute WFI, 19.57uA@VDD_BAT), then wakeup to Active."
         #define DEMO_POWER_MODE_DESC_DPD1_TO_DPD2_TO_DPD1 \
             "Selected to enter DPD1(No CM33 SRAM retained, CM0P active, 32uA@VDD_BAT), input any key with AON UART to enter " \
-            "DPD2(All AON SRAM retained, 5.8uA@VDD_BAT), wakeup to DPD1(CM0P execute WFI, 35uA) after 10s later with LPTMR, " \
+            "DPD2(All AON SRAM retained, 5.8uA@VDD_BAT), wakeup to DPD1(CM0P execute WFI, 32uA) after 10s later with LPTMR, " \
             "press SW5 back to Active."
         #define DEMO_POWER_MODE_DESC_DPD1_TO_DPD2_TO_ACTIVE \
             "Selected to enter DPD1(No CM33 SRAM retained, CM0P active, 32uA@VDD_BAT), input any key with AON UART to enter " \
             "DPD2(No AON SRAM retained, 2.6uA@VDD_BAT), wakeup to Active after 10s later with LPTMR."
         #define DEMO_POWER_MODE_DESC_DPD2_SINGLE \
-            "Selected to enter DPD2(No AON SRAM retained, 2.6uA@VDD_BAT), then wakeup to Active."
+            "Selected to enter DPD2(No AON SRAM retained, 2.5uA@VDD_BAT), then wakeup to Active."
         #define DEMO_POWER_MODE_DESC_DPD2_TO_DPD1 \
             "Selected to enter DPD2(All AON SRAM retained, 5.85uA@VDD_BAT), wakeup to DPD1(No CM33 SRAM retained, CM0P " \
             "execute WFI, 35uA@VDD_BAT) with selected wakeup source, press SW5 back to Active."
     #else
         /* Context Saving Disabled + ADVC Disabled */
         #define DEMO_POWER_MODE_DESC_DPD1_SINGLE \
-            "Selected to enter DPD1(No CM33 SRAM retained, CM0P execute WFI, 14.43uA@VDD_BAT), then wakeup to Active."
+            "Selected to enter DPD1(No CM33 SRAM retained, CM0P execute WFI, 24.12uA@VDD_BAT), then wakeup to Active."
         #define DEMO_POWER_MODE_DESC_DPD1_TO_DPD2_TO_DPD1 \
-            "Selected to enter DPD1(No CM33 SRAM retained, CM0P active, 14.52uA@VDD_BAT), input any key with AON UART to enter " \
-            "DPD2(All AON SRAM retained, 5.34uA@VDD_BAT), wakeup to DPD1(CM0P execute WFI, 24uA) after 10s later with LPTMR, " \
+            "Selected to enter DPD1(No CM33 SRAM retained, CM0P active, 41uA@VDD_BAT), input any key with AON UART to enter " \
+            "DPD2(All AON SRAM retained, 5.89uA@VDD_BAT), wakeup to DPD1(CM0P execute WFI, 41uA) after 10s later with LPTMR, " \
             "press SW5 back to Active."
         #define DEMO_POWER_MODE_DESC_DPD1_TO_DPD2_TO_ACTIVE \
-            "Selected to enter DPD1(No CM33 SRAM retained, CM0P active, 37.45uA@VDD_BAT), input any key with AON UART to enter " \
-            "DPD2(No AON SRAM retained, 2.45uA@VDD_BAT), wakeup to Active after 10s later with LPTMR."
+            "Selected to enter DPD1(No CM33 SRAM retained, CM0P active, 40uAuA@VDD_BAT), input any key with AON UART to enter " \
+            "DPD2(No AON SRAM retained, 2.52uA@VDD_BAT), wakeup to Active after 10s later with LPTMR."
         #define DEMO_POWER_MODE_DESC_DPD2_SINGLE \
             "Selected to enter DPD2(No AON SRAM retained, 2.45uA@VDD_BAT), then wakeup to Active."
         #define DEMO_POWER_MODE_DESC_DPD2_TO_DPD1 \
-            "Selected to enter DPD2(All AON SRAM retained, 5.39uA@VDD_BAT), wakeup to DPD1(No CM33 SRAM retained, CM0P " \
-            "execute WFI, 55.13uA@VDD_BAT) with selected wakeup source, press SW5 back to Active."
+            "Selected to enter DPD2(All AON SRAM retained, 5.90uA@VDD_BAT), wakeup to DPD1(No CM33 SRAM retained, CM0P " \
+            "execute WFI, 52uA@VDD_BAT) with selected wakeup source, press SW5 back to Active."
     #endif
 #endif
 
 /* Common tail descriptions (same for all configurations) */
 #define DEMO_POWER_MODE_DESC_TAIL \
-    "Selected to enter DPD3(695nA@VDD_BAT).", \
-    "Selected to enter SD(413nA@VDD_BAT)."
+    "Selected to enter DPD3(498nA@VDD_BAT).", \
+    "Selected to enter SD(175nA@VDD_BAT)."
 
 /* Final power mode description array - built from components */
 #define DEMO_POWER_MODE_DESC \

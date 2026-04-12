@@ -47,6 +47,8 @@ static void APP_DPD1ToDPD2BackToDPD1(void);
 static void APP_DPD1ToDPD2BackToActive(void);
 static void APP_ClearPendingIRQs(void);
 static void APP_PrepareDPD2Entry(const char *wakeDestLabel);
+static void APP_PrepareAonForLowPower(void);
+static void APP_RestoreAonAfterLowPower(void);
 /*******************************************************************************
  * Variables
  ******************************************************************************/
@@ -190,6 +192,7 @@ static void APP_DPD2ClockRecovery(void)
 #if APP_ENABLE_ADVC
     ADVC_PreVoltageChangeRequest(APP_DPD2_CLOCK_FREQ_HZ);
 #endif
+    AON__CGU->CLK_CONFIG |= CGU_CLK_CONFIG_ULPIRC_EN_MASK | CGU_CLK_CONFIG_LPIRC_EN_MASK;
     CLOCK_SetupFROAonClocking(APP_DPD2_CLOCK_FREQ_HZ);
     CLOCK_AttachClk(kFROdiv1_to_AON_CPU);
 #if APP_ENABLE_ADVC
@@ -338,7 +341,9 @@ static void APP_DeepPowerDown1Ops(void)
 {
     if (Power_GetPreviousPowerMode() == kPower_DeepPowerDown2)
     {
+        APP_PrepareAonForLowPower();
         __WFI();
+        APP_RestoreAonAfterLowPower();
 #if APP_ENABLE_CONTEXT_SAVING
         /* DPD1->Active complete.  CM33 is now spinning on MSB_BCKP1;
          * write the sync token so it can resume from Power_EnterDeepPowerDown1. */
@@ -375,6 +380,37 @@ static void APP_DeepPowerDown1Ops(void)
     }
 }
 
+/* Shut down AON peripherals that are not needed during DPD1 WFI to minimize
+ * leakage current.  Must be called AFTER the last PRINTF and BEFORE __WFI. */
+static void APP_PrepareAonForLowPower(void)
+{
+    /* Zero all AON PORT0 pin configs while PORT clock is still running,
+     * preventing leakage through floating digital inputs. */
+    for (uint8_t i = 0U; i < 27U; i++)
+    {
+        AON__PORT0->PCR[i] = 0UL;
+    }
+
+    /* DbgConsole_Deinit + UART reset + PORT/GPIO clock disable. */
+    BOARD_DeinitDebugConsole();
+
+    /* BOARD_DeinitDebugConsole does not gate the UART clock — do it here. */
+    CLOCK_DisableClock(kCLOCK_GateAonUART);
+}
+
+/* Restore AON peripherals after DPD1 WFI wakeup so that PRINTF works again.
+ * CM0+ does NOT reboot on DPD1->Active, so this is needed unconditionally. */
+static void APP_RestoreAonAfterLowPower(void)
+{
+    CLOCK_EnableClock(kCLOCK_GateAonPORT);
+    CLOCK_EnableClock(kCLOCK_GateAonGPIO);
+    CLOCK_EnableClock(kCLOCK_GateAonUART);
+    RESET_ReleasePeripheralReset(kAonUART_RST_SHIFT_RSTn);
+
+    BOARD_InitDEBUG_UARTPins();
+    BOARD_InitDebugConsole();
+}
+
 static void APP_DPD1ToActive(void)
 {
     power_dpd1_config_t dpd1Config;
@@ -392,8 +428,10 @@ static void APP_DPD1ToActive(void)
         EnableIRQ(RTC_ALARM1_IRQn);
     }
     PRINTF("Start to execute WFI\r\n");
-    /* In DPD1, execute WFI to get lower power number. */
+
+    APP_PrepareAonForLowPower();
     __WFI();
+    APP_RestoreAonAfterLowPower();
 
 #if APP_ENABLE_CONTEXT_SAVING
     /* Wakeup from DPD1, current is in Active, notify CM33 to execute. */
