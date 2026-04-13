@@ -173,6 +173,15 @@ if MCUX_DEMO_PANEL_MX9_LVDS_LD_SUPPORT
             No prefix in generated macro
 endif
 
+if MCUX_DEMO_PANEL_RK050HR01_SUPPORT
+    config DEMO_PANEL_RK050HR01
+        int
+        default 19
+        help
+            Driver selection for panel RK050HR01-CT
+            No prefix in generated macro
+endif
+
 config MCUX_PRJSEG_module.board.display_support
     bool "Enable Display Support"
 
@@ -233,6 +242,9 @@ config MCUX_DEMO_PANEL_CAP_TOUCH_DSI_SUPPORT
 config MCUX_DEMO_PANEL_MX9_LVDS_LD_SUPPORT
     bool
 
+config MCUX_DEMO_PANEL_RK050HR01_SUPPORT
+    bool
+
 if MCUX_PRJSEG_module.board.display_support
 
 config DEMO_PANEL
@@ -256,6 +268,7 @@ config DEMO_PANEL
     default 16 if CAP_TOUCH_LVDS
     default 17 if CAP_TOUCH_DSI
     default 18 if MX9_LVDS_LD
+    default 19 if RK050HR01
     help
         Panel selection for display support
         No prefix in generated macro
@@ -319,6 +332,9 @@ choice DISPLAY_SUPPORT_PANEL
 
     config MX9_LVDS_LD
         bool "MX9_LVDS_LD panel" if MCUX_DEMO_PANEL_MX9_LVDS_LD_SUPPORT
+
+    config RK050HR01
+        bool "RK050HR01-CT" if MCUX_DEMO_PANEL_RK050HR01_SUPPORT
 
 endchoice
 
