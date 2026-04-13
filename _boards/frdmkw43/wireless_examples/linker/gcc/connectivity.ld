@@ -1,7 +1,6 @@
 /*
 ** ###################################################################
-**     Processors:          KW43B43ZC7MFPA
-**                          KW43B43ZC7MFTA
+**     Processors:          KW43B43ZC7MFT
 **
 **     Compiler:            GNU C Compiler
 **

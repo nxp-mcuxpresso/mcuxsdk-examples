@@ -1,7 +1,7 @@
 /*
 ** ###################################################################
-**     Processors:          MCXW70ACMFTA
-**                          MCXW70ACMFYA
+**     Processors:          MCXW70ACMFT
+**                          MCXW70ACMMP
 **
 **     Compiler:            GNU C Compiler
 **
@@ -56,21 +56,31 @@ m_ram2_end    = m_ram2_start + m_ram_size - 1;
 m_ram3_start  = 0x20030000;
 m_ram3_end    = m_ram3_start + m_ram_size - 1;
 
-/* ~6.6K shared ram between core0 and core1 - located at the end of the second ram bank */
+/* 8k shared ram between core0 and core1 - located at the end of the third ram bank */
 m_shared_ram_size     = 0x2000;
-m_shared_ram_end      = m_ram1_end;
+m_shared_ram_end      = m_ram2_end;
 m_shared_ram_start    = m_shared_ram_end - m_shared_ram_size + 1;
 
-/* core0 reserved RAM (128K - m_shared_ram_size) */
-m_core0_ram_start = m_ram0_start;
-m_core0_ram_end   = m_shared_ram_start - 1;
-
-/* core1 reserved RAM - 128K dedicated */
-m_core1_ram_start = m_ram2_start;
+/* core1 reserved RAM (64K) */
+m_core1_ram_start = m_ram3_start;
 m_core1_ram_end   = m_ram3_end;
+m_core1_ram_size  = m_core1_ram_end - m_core1_ram_start + 1;
 
-/* Shared memory placements
- * Do not change shall be aligned with nbu firmware image */
+/* Shared memory placements */
+
+/* core0 and core1 RAM shared bank
+ * core0 : 16k
+ * core1 : 40k
+ * shared between both : 8k
+*/
+m_core1_shared_ram_end   = m_shared_ram_start - 1;
+m_core1_shared_ram_size  = 0xA000;
+m_core1_shared_ram_start = m_core1_shared_ram_end - m_core1_shared_ram_size + 1;
+
+/* core0 reserved RAM (128K + 16K) */
+m_core0_ram_start        = m_ram0_start;
+m_core0_ram_end          = m_core1_shared_ram_start - 1;
+
 
 /* Section allowing to share debug info between core0 and core1 */
 m_sqram_debug_start         = m_shared_ram_start;
