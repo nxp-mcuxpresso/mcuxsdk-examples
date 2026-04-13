@@ -134,3 +134,5 @@ lpuart_hardware_flow_control:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    frdmkw43: []
+    frdmmcxw70: []

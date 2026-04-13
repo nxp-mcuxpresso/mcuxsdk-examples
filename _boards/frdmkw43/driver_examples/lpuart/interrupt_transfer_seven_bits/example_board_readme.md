@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Type-C USB cable
-- FRDM-MCXW70 Board
+- FRDM-KW43 Board
 - Personal Computer
 - USB to serial (UART) converter
 
@@ -30,7 +30,8 @@ Running the demo
 ===============
 When the demo runs successfully, the log would be seen on the USB to serial (UART) converter terminal like:
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Lpuart polling example with seven data bits
-Board will send back received characters
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+Lpuart interrupt example with seven data bits
+Board receives 8 characters then sends them out
+Now please input:
+~~~~~~~~~~~~~~~~~~~~~

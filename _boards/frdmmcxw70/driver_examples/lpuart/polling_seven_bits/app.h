@@ -12,9 +12,9 @@
  ******************************************************************************/
 /*${macro:start}*/
 /* UART instance and clock */
-#define DEMO_LPUART          LPUART_1
-#define DEMO_LPUART_CLKSRC   kCLOCK_Lpuart1
-#define DEMO_LPUART_CLK_FREQ BOARD_DEBUG_UART_CLK_FREQ
+#define DEMO_LPUART          LPUART_0
+#define DEMO_LPUART_CLKSRC   kCLOCK_Lpuart0
+#define DEMO_LPUART_CLK_FREQ CLOCK_GetIpFreq(kCLOCK_Lpuart0)
 /*${macro:end}*/
 
 /*******************************************************************************
