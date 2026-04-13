@@ -21,7 +21,7 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-
+#define EXAMPLE_TDET_INSTANCE      (0U)
 /*******************************************************************************
  * Variables
  ******************************************************************************/
@@ -41,7 +41,11 @@ void VBAT0_DriverIRQHandler(void)
     PRINTF("TDET IRQ Reached!\r\n");
 
     PRINTF("Clear TDET IRQ r\n");
-    TDET_ClearStatusFlags(TDET0, kTDET_StatusAll);
+    
+    DIGTMP_Type *tdetBases[] = DIGTMP_BASE_PTRS;
+    DIGTMP_Type *base = tdetBases[EXAMPLE_TDET_INSTANCE];
+    
+    TDET_ClearStatusFlags(base, kTDET_StatusAll);
 
     NVIC_EnableIRQ(TAMPER_INTERRUPT);
 }
@@ -57,7 +61,8 @@ int main(void)
 
     tdet_config_t myConfig;
 
-    DIGTMP_Type *base = TDET0;
+    DIGTMP_Type *tdetBases[] = DIGTMP_BASE_PTRS;
+    DIGTMP_Type *base = tdetBases[EXAMPLE_TDET_INSTANCE];
 
     /* Init hardware */
     BOARD_InitHardware();

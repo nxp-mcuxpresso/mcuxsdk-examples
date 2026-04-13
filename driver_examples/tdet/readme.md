@@ -30,3 +30,4 @@ End of example
 - [FRDM-MCXA266](../../_boards/frdmmcxa266/driver_examples/tdet/example_board_readme.md)
 - [FRDM-MCXA366](../../_boards/frdmmcxa366/driver_examples/tdet/example_board_readme.md)
 - [FRDM-MCXA577](../../_boards/frdmmcxa577/driver_examples/tdet/example_board_readme.md)
+- [FRDM-KW43](../../_boards/frdmkw43/driver_examples/tdet/example_board_readme.md)
