@@ -19,6 +19,8 @@ connectivity_test_bm:
     kw45b41zloc: []
     mcxw72evk@cm33_core0: []
     kw43evk:
+    frdmmcxw70:
+    frdmkw43:
     mcxw72loc@cm33_core0:
     - -mcux@debug
     - -mcux@release
