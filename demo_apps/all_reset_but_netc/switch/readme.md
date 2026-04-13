@@ -5,4 +5,4 @@ The NETC Switch demo application demonstrates that the NETC is working fine duri
 
 ## Supported Boards
 
-- [IMX943-EVK](../../_boards/imx943evk/demo_apps/all_reset_but_netc/switch/example_board_readme.md)
+- [IMX943-EVK](../../../_boards/imx943evk/demo_apps/all_reset_but_netc/switch/example_board_readme.md)

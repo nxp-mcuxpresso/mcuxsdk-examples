@@ -21,5 +21,4 @@ Hash table created successfully
 Hash table created successfully
 
 ## Supported Boards
-- [MIMXRT1180-EVK](../../_boards/evkmimxrt1180/driver_examples/netc/prp_switch/example_board_readme.md)
-- [IMX943-EVK](../../../_boards/imx943evk/driver_examples/netc/prp_switch/example_board_readme.md)
+- [MIMXRT1180-EVK](../../../_boards/evkmimxrt1180/driver_examples/netc/prp_switch/example_board_readme.md)

@@ -5,4 +5,4 @@ The all_reset_but_netc reset trigger demo application demonstrates how to send t
 
 ## Supported Boards
 
-- [IMX943-EVK](../../_boards/imx943evk/demo_apps/all_reset_but_netc/trigger/example_board_readme.md)
+- [IMX943-EVK](../../../_boards/imx943evk/demo_apps/all_reset_but_netc/trigger/example_board_readme.md)

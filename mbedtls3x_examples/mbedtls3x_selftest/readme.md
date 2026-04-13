@@ -25,6 +25,5 @@ prints results to the terminal.
 - [KW47-LOC](../../_boards/kw47loc/mbedtls3x_examples/mbedtls3x_selftest/example_board_readme.md)
 - [MCXW72-LOC](../../_boards/mcxw72loc/mbedtls3x_examples/mbedtls3x_selftest/example_board_readme.md)
 - [FRDM-MCXW72](../../_boards/frdmmcxw72/mbedtls3x_examples/mbedtls3x_selftest/example_board_readme.md)
-- [MCXW23-EVK](../../_boards/mcxw23evk/mbedtls3x_examples/mbedtls3x_selftest/example_board_readme.md)
 - [LPCXpresso55S36](../../_boards/lpcxpresso55s36/mbedtls3x_examples/mbedtls3x_selftest/example_board_readme.md)
 - [FRDM-MCXE31B](../../_boards/frdmmcxe31b/mbedtls3x_examples/mbedtls3x_selftest/example_board_readme.md)

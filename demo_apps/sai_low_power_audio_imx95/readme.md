@@ -10,7 +10,5 @@ If there is no audio palyback, M core will enter the STOP mode, and the whole SO
 
 ## Supported Boards
 - [IMX95LP4XEVK-15](../../_boards/imx95lp4xevk15/demo_apps/sai_low_power_audio/example_board_readme.md)
-- [IMX952LPD5EVK-19](../../_boards/imx952evk/demo_apps/sai_low_power_audio_imx95/example_board_readme.md)
-- [IMX952LPD5EVK-15](../../_boards/imx952evk/demo_apps/sai_low_power_audio_imx95/example_board_readme.md)
 - [IMX95LPD5EVK-19](../../_boards/imx95lpd5evk19/demo_apps/sai_low_power_audio/example_board_readme.md)
 - [FRDM-IMX95](../../_boards/frdmimx95/demo_apps/sai_low_power_audio/example_board_readme.md)

@@ -16,4 +16,3 @@ source by following the debug console prompts. The purpose of this demo is to sh
 
 ## Supported Boards
 - [IMX952LPD5EVK-19](../../_boards/imx952evk/demo_apps/power_mode_switch/example_board_readme.md)
-- [IMX952LPD5EVK-15](../../_boards/imx952evk/demo_apps/power_mode_switch_imx952/example_board_readme.md)

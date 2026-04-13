@@ -10,7 +10,6 @@ it to the debug console.
 
 ## Supported Boards
 - [FRDM-MCXW71](../../../_boards/frdmmcxw71/driver_examples/lpadc/light_sensor/example_board_readme.md)
-- [MCX-W71-EVK](../../../_boards/mcxw71evk/driver_examples/lpadc/light_sensor/example_board_readme.md)
 - [FRDM-MCXW72](../../../_boards/frdmmcxw72/driver_examples/lpadc/light_sensor/example_board_readme.md)
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/driver_examples/lpadc/light_sensor/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/driver_examples/lpadc/light_sensor/example_board_readme.md)
