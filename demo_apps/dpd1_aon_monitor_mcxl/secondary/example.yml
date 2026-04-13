@@ -1,0 +1,22 @@
+---
+dpd1_aon_monitor_mcxl_secondary:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/dpd1_aon_monitor_mcxl/secondary
+    project-root-path: boards/${board}/demo_apps/dpd1_aon_monitor/${multicore_foldername}
+    document:
+      name: dpd1_aon_monitor_mcxl_secondary
+      category: demo_apps/dpd1_aon_monitor
+      brief: This example demonstrates the DPD1 ROM CGU-clobber workaround with CM0+
+        AON UART monitoring.
+      example_readme:
+        - examples/demo_apps/dpd1_aon_monitor_mcxl/readme.md
+        - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxl255@cm0plus:
+      - +armgcc@debug
+      - +armgcc@release
+      - +iar@debug
+      - +iar@release
+      - +mdk@debug
+      - +mdk@release
