@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+dcif_gamma:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dcif_1/gamma
+    project-root-path: boards/${board}/driver_examples/dcif/gamma/${multicore_foldername}
+    document:
+      name: dcif_gamma${core_id_suffix_name}
+      category: driver_examples/dcif_1
+      brief: This example demonstrates how to use the DCIF gamma correction feature.
+        In this example, the gamma corretion table is set to invert the original picture.
+        The original picture is gradual changed gray bars, the gamma correction is
+        continuously enabled and disabled, so you can see the screen switch between
+        the original picture and the inverted picture.
+      example_readme:
+      - examples/driver_examples/dcif_1/gamma/readme.md
+      - ${board_root}/${board}/driver_examples/dcif/dcif_examples_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:

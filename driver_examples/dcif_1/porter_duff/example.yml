@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+dcif_porter_duff:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dcif_1/porter_duff
+    project-root-path: boards/${board}/driver_examples/dcif/porter_duff/${multicore_foldername}
+    document:
+      name: dcif_porter_duff${core_id_suffix_name}
+      category: driver_examples/dcif_1
+      brief: This example demonstrates how to use the DCIF alpha blend function to
+        perform the Porter Duff compositing. In this example, a blue rectangle is
+        in the top left corner of the video/graphic layer as destination surface,
+        a red rectangle is in the bottom right of the overlay layer0 as source surface.
+        Every Porter Duff mode result is shown for 2 seconds, then switch to the next
+        mode.
+      example_readme:
+      - examples/driver_examples/dcif_1/porter_duff/readme.md
+      - ${board_root}/${board}/driver_examples/dcif/dcif_examples_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:

@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+dcif_basic:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dcif_1/basic
+    project-root-path: boards/${board}/driver_examples/dcif/basic/${multicore_foldername}
+    document:
+      name: dcif_basic${core_id_suffix_name}
+      category: driver_examples/dcif_1
+      brief: This example demonstrates how to use the DCIF driver to display a moving
+        color rectangle on the screen. The rectangle changes color each time it hits
+        a border. Both DPI and DBI display interfaces are supported.
+      example_readme:
+      - examples/driver_examples/dcif_1/basic/readme.md
+      - ${board_root}/${board}/driver_examples/dcif/dcif_examples_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    mimxrt2660evk: []
