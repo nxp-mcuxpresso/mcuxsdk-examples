@@ -28,7 +28,6 @@ API behaviours are implemented correctly.
 - [FRDM-MCXA266](../../_boards/frdmmcxa266/mbedtls3x_examples/mbedtls3x_psatest/example_board_readme.md)
 - [FRDM-MCXA366](../../_boards/frdmmcxa366/mbedtls3x_examples/mbedtls3x_psatest/example_board_readme.md)
 - [FRDM-MCXW72](../../_boards/frdmmcxw72/mbedtls3x_examples/mbedtls3x_psatest/example_board_readme.md)
-- [MCXW23-EVK](../../_boards/mcxw23evk/mbedtls3x_examples/mbedtls3x_psatest/example_board_readme.md)
 - [FRDM-MCXA266](../../_boards/frdmmcxa266/mbedtls3x_examples/mbedtls3x_psatest/example_board_readme.md)
 - [FRDM-MCXA366](../../_boards/frdmmcxa366/mbedtls3x_examples/mbedtls3x_psatest/example_board_readme.md)
 - [FRDM-MCXL255](../../_boards/frdmmcxl255/mbedtls3x_examples/mbedtls3x_psatest/cm33/example_board_readme.md)

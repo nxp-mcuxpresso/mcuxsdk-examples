@@ -20,4 +20,4 @@ __________________________                         __________________________
 ```
 
 ## Supported Boards
-- [IMX95LPD5EVK-19](../../_boards/imx95lpd5evk19/driver_examples/dpu/g2d_basic_test/example_board_readme.md)
+- [IMX95LPD5EVK-19](../../../_boards/imx95lpd5evk19/driver_examples/dpu/g2d_basic_test/example_board_readme.md)

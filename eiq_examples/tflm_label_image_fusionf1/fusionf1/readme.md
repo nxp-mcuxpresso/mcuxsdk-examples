@@ -89,4 +89,4 @@ Data for inference are ready
 ----------------------------------------
 
 ## Supported Boards
-- [MIMXRT700-EVK](../../_boards/mimxrt700evk/eiq_examples/tflm_label_image/example_board_readme.md)
+- [MIMXRT700-EVK](../../../_boards/mimxrt700evk/eiq_examples/tflm_label_image/example_board_readme.md)

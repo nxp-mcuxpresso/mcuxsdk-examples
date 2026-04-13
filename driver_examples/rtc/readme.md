@@ -20,7 +20,7 @@ and time.
 - [FRDM-MCXC444](../../_boards/frdmmcxc444/driver_examples/rtc/example_board_readme.md)
 - [FRDM-MCXE247](../../_boards/frdmmcxe247/driver_examples/rtc/example_board_readme.md)
 - [FRDM-MCXW71](../../_boards/frdmmcxw71/driver_examples/rtc/example_board_readme.md)
-- [MCX-W71-EVK](../../../_boards/mcxw71evk/driver_examples/rtc/example_board_readme.md)
+- [MCX-W71-EVK](../../_boards/mcxw71evk/driver_examples/rtc/example_board_readme.md)
 - [KW45B41Z-EVK](../../_boards/kw45b41zevk/driver_examples/rtc/example_board_readme.md)
 - [KW47-EVK](../../_boards/kw47evk/driver_examples/rtc/example_board_readme.md)
 - [MCX-W72-EVK](../../_boards/mcxw72evk/driver_examples/rtc/example_board_readme.md)

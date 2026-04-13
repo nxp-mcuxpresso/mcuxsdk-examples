@@ -63,8 +63,6 @@ The following figure is an example to attach one mouse device.
 
 ## Supported Boards
 - MIMXRT1170-EVKB
-- [IMX952LPD5EVK-19](../../_boards/imx952evk/usb_examples/usb_host_hid_mouse/bm/example_board_readme.md)
-- [IMX952LPD5EVK-15](../../_boards/imx952evk/usb_examples/usb_host_hid_mouse/bm/example_board_readme.md)
 - [FRDM-K22F](../../_boards/frdmk22f/usb_examples/usb_host_hid_mouse/example_board_readme.md)
 - [LPCXpresso55S69](../../_boards/lpcxpresso55s69/usb_examples/usb_host_hid_mouse/example_board_readme.md)
 - EVK-MIMXRT1064

@@ -11,4 +11,4 @@ The RTC project is a demonstration program of the SDK RTC driver working on time
 
 ## Supported Boards
 
-- [FRDM-MCXL255](../../_boards/frdmmcxl255/driver_examples/rtc/timedate/example_board_readme.md)
+- [FRDM-MCXL255](../../../_boards/frdmmcxl255/driver_examples/rtc/timedate/example_board_readme.md)

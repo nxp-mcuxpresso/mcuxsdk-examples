@@ -27,7 +27,6 @@ TEST 5: Invalid data access from normal world, example 2
 ## Supported Boards
 - [EVK-MIMXRT595](../../_boards/evkmimxrt595/trustzone_examples/secure_faults/secure_faults_s/example_board_readme.md)
 - [EVK-MIMXRT685](../../_boards/evkmimxrt685/trustzone_examples/secure_faults/secure_faults_s/example_board_readme.md)
-- [FRDM-MCXL255](../../_boards/frdmmcxl255/trustzone_examples/secure_faults/secure_faults_s/example_board_readme.md)
 - [FRDM-MCXN236](../../_boards/frdmmcxn236/trustzone_examples/secure_faults/secure_faults_s/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/trustzone_examples/secure_faults/secure_faults_s/example_board_readme.md)
 - [LPCXpresso55S06](../../_boards/lpcxpresso55s06/trustzone_examples/secure_faults/secure_faults_s/example_board_readme.md)
