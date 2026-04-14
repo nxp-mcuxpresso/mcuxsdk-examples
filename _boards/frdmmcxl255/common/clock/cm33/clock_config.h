@@ -19,12 +19,12 @@
  * Definitions
  ******************************************************************************/
 #define BOARD_XTAL32K_CLK_HZ                          32768U  /*!< Board xtal32K frequency in Hz */
-#define VDD_CORE_AON_0_600V_VOLTAGE_32K              (0x2AU)  /*!< Vdd Core voltage 0.600V of the AON domain; Trim value = 42; the calculated AON Core voltage = 1V - (42 * 0.0095V) = 0.601V */
-#define VDD_CORE_AON_0_680V_VOLTAGE_0_75M            (0x21U)  /*!< Vdd Core voltage 0.680V of the AON domain; Trim value = 33; the calculated AON Core voltage = 1V - (33 * 0.0095V) = 0.687V */
-#define VDD_CORE_AON_0_713V_VOLTAGE_2_5M             (0x1EU)  /*!< Vdd Core voltage 0.713V of the AON domain; Trim value = 30; the calculated AON Core voltage = 1V - (30 * 0.0095V) = 0.715V */
-#define VDD_CORE_AON_0_720V_VOLTAGE_3M               (0x1DU)  /*!< Vdd Core voltage 0.720V of the AON domain; Trim value = 29; the calculated AON Core voltage = 1V - (29 * 0.0095V) = 0.725V */
-#define VDD_CORE_AON_0_740V_VOLTAGE_5M               (0x1BU)  /*!< Vdd Core voltage 0.740V of the AON domain; Trim value = 27; the calculated AON Core voltage = 1V - (27 * 0.0095V) = 0.744V */
-#define VDD_CORE_AON_0_770V_VOLTAGE_10M              (0x18U)  /*!< Vdd Core voltage 0.770V of the AON domain; Trim value = 24; the calculated AON Core voltage = 1V - (24 * 0.0095V) = 0.772V */
+#define VDD_CORE_AON_0_630V_VOLTAGE_32K              (0x28U)  /*!< Vdd Core voltage 0.630V of the AON domain; Trim value = 40 */
+#define VDD_CORE_AON_0_706V_VOLTAGE_0_75M            (0x20U)  /*!< Vdd Core voltage 0.706V of the AON domain; Trim value = 32 */
+#define VDD_CORE_AON_0_744V_VOLTAGE_2_5M             (0x1CU)  /*!< Vdd Core voltage 0.744V of the AON domain; Trim value = 28 */
+#define VDD_CORE_AON_0_7535V_VOLTAGE_3M              (0x1BU)  /*!< Vdd Core voltage 0.7535V of the AON domain; Trim value = 27 */
+#define VDD_CORE_AON_0_763V_VOLTAGE_5M               (0x1AU)  /*!< Vdd Core voltage 0.763V of the AON domain; Trim value = 26 */
+#define VDD_CORE_AON_0_7915V_VOLTAGE_10M             (0x17U)  /*!< Vdd Core voltage 0.7915V of the AON domain; Trim value = 23 */
 
 typedef enum {
     kClockModule_MainCoreSupplyMode,
@@ -124,8 +124,8 @@ void BOARD_InitBootClocks(void);
 #define BOARD_BOOTCLOCKFRO96M_CTIMER_GRP1_CLK         48000000UL     /* Clock consumers of CTIMER_GRP1_CLK output : CTIMER1, CTIMER2 */
 #define BOARD_BOOTCLOCKFRO96M_DBG_TRACE_CLK           16384UL        /* Clock consumers of DBG_TRACE_CLK output : SWD */
 #define BOARD_BOOTCLOCKFRO96M_FLASH_CLK               12000000UL     /* Clock consumers of FLASH_CLK output : FMC0 */
-#define BOARD_BOOTCLOCKFRO96M_FREQMEAS_REF            12000000UL     /* Clock consumers of FREQMEAS_REF output : N/A */
-#define BOARD_BOOTCLOCKFRO96M_FREQMEAS_TAR            12000000UL     /* Clock consumers of FREQMEAS_TAR output : N/A */
+#define BOARD_BOOTCLOCKFRO96M_FREQMEAS_REF            12000000UL     /* Clock consumers of FREQMEAS_REF output : FREQME0 */
+#define BOARD_BOOTCLOCKFRO96M_FREQMEAS_TAR            12000000UL     /* Clock consumers of FREQMEAS_TAR output : FREQME0 */
 #define BOARD_BOOTCLOCKFRO96M_FRO12M_FLASH            12000000UL     /* Clock consumers of FRO12M_FLASH output : N/A */
 #define BOARD_BOOTCLOCKFRO96M_FRO12M_PERIPH           12000000UL     /* Clock consumers of FRO12M_PERIPH output : N/A */
 #define BOARD_BOOTCLOCKFRO96M_FRO_16K                 16384UL        /* Clock consumers of FRO_16K output : AON__PMU */
@@ -146,7 +146,7 @@ void BOARD_InitBootClocks(void);
 #define BOARD_BOOTCLOCKFRO96M_UTICK0_CLK              1000000UL      /* Clock consumers of UTICK0_CLK output : UTICK0 */
 #define BOARD_BOOTCLOCKFRO96M_WUU_CLK                 16384UL        /* Clock consumers of WUU_CLK output : WUU0 */
 #define BOARD_BOOTCLOCKFRO96M_WWDT0_CLK               1000000UL      /* Clock consumers of WWDT0_CLK output : WWDT0 */
-#define BOARD_BOOTCLOCKFRO96M_XTAL32K                 32768UL        /* Clock consumers of XTAL32K output : N/A */
+#define BOARD_BOOTCLOCKFRO96M_XTAL32K                 32768UL        /* Clock consumers of XTAL32K output : CMC */
 
 
 /*******************************************************************************
