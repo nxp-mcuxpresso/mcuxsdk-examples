@@ -12,11 +12,11 @@
  ******************************************************************************/
 /*${macro:start}*/
 /* Get source clock for LPIT driver */
-#define DEMO_LPUART            LPUART3
-#define LPUART_CLOCK_ROOT      hal_clock_lpuart3
+#define DEMO_LPUART            LPUART7
+#define LPUART_CLOCK_ROOT      hal_clock_lpuart7
 #define DEMO_LPUART_CLK_FREQ   HAL_ClockGetIpFreq(BOARD_DEBUG_UART_CLOCK_ROOT_FOR_CM7_WITHOUT_SM)
-#define DEMO_LPUART_IRQn       LPUART3_IRQn
-#define DEMO_LPUART_IRQHandler LPUART3_IRQHandler
+#define DEMO_LPUART_IRQn       LPUART7_IRQn
+#define DEMO_LPUART_IRQHandler LPUART7_IRQHandler
 /*${macro:end}*/
 
 /*******************************************************************************
