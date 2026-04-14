@@ -36,3 +36,22 @@ dual_cores_ecat_servo_motor_secondary_core:
     - -iar@hyperram_release
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
+    evkmimxrt1180@cm7:
+    - +armgcc@debug
+    - +armgcc@release
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - +iar@debug
+    - +iar@release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - +mdk@debug
+    - +mdk@release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release

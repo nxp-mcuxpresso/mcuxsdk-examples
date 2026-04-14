@@ -62,11 +62,14 @@ The cycle time of NC task depends on the cycle of slow task on subdevice.
       1. Select **Enc** node under **Axis 1** and then select **Parameter** tab.  
       2. Set **Scaling Factor Numerator** to **1**.
       3. Set **Scaling Factor Denominator**:
-          - Set **Scaling Factor Denominator** to **93206.75555** for Dual_cores_servo_motor demo on i.MX943EVK. 
-          - Set **Scaling Factor Denominator** to **22.22222** for servo_motor demo on evkmimxrt1180 or frdmimxrt1186.  
+          - Set **Scaling Factor Denominator** to **93206.75555** for Dual_cores_servo_motor demo on i.MX943EVK or frdmimxrt1186. 
+          - Set **Scaling Factor Denominator** to **8000** for Dual_cores_servo_motor demo on evkmimxrt1180.
+          - Set **Scaling Factor Denominator** to **8000** for servo_motor demo on evkmimxrt1180 or frdmimxrt1186.  
   
-        **Note:** the **Scaling Factor Denominator** is calculated as **the resolution of the encoder / 360**.  
+        **Note:** For T5PUXS4-H09/T5PUXS4-H18 motor, the **Scaling Factor Denominator** is calculated as **the resolution of the encoder / 360**.  
         -  The resolution of the Encoder on Dual_cores_servo_motor example is 25Bits，namely 33554432(2^25).   
+
+        **Note:** For Teknic 2311P motor, the **Scaling Factor Denominator** is calculated as **the resolution of the encoder**. 
         -  The resolution of the Encoder on servo_motor example is 8000.
   
       ![](../images/ONLINE_CONIFIG15.png "Enc 1 scaling factor setting")  
@@ -83,12 +86,10 @@ The cycle time of NC task depends on the cycle of slow task on subdevice.
       1. Select **Enc** node under **Axis 1** and then select **Parameter** tab.  
       2. Set **Scaling Factor Numerator** to **1**.
       3. Set **Scaling Factor Denominator**:
-          - Set **Scaling Factor Denominator** to **93206.75555** for Dual_cores_servo_motor demo on i.MX943EVK. 
-          - Set **Scaling Factor Denominator** to **22.22222** for servo_motor demo on evkmimxrt1180 or frdmimxrt1186.  
+          - Set **Scaling Factor Denominator** to **93206.75555** for Dual_cores_servo_motor demo on i.MX943EVK or frdmimxrt1186.
   
         **Note:** the **Scaling Factor Denominator** is calculated as **the resolution of the encoder / 360**.  
         -  The resolution of the Encoder on Dual_cores_servo_motor example is 25Bits，namely 33554432(2^25).   
-        -  The resolution of the Encoder on servo_motor example is 8000.
    
       ![](../images/ONLINE_CONIFIG19.png "Enc 2 scaling factor setting")  
 ## Save the project  

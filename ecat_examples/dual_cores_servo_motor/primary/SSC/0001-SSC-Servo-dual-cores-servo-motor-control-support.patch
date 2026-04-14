@@ -1,4 +1,4 @@
-From 25e885165775f0d4a7f0ee674c4957311c9af550 Mon Sep 17 00:00:00 2001
+From 18cfc2e9963133f143cb5dafe7d3cfbe2d26d1f3 Mon Sep 17 00:00:00 2001
 From: jony zhang <jony.zhang@nxp.com>
 Date: Tue, 24 Mar 2026 10:54:45 +0800
 Subject: [PATCH] SSC Servo dual cores servo motor control support
@@ -7,11 +7,11 @@ Signed-off-by: Wenbin Song <wenbin.song@nxp.com>
 Signed-off-by: jony zhang <jony.zhang@nxp.com>
 ---
  Src/cia402appl.c | 286 +++++++++++++++++++++++++++++++++++++++++------
- Src/cia402appl.h |   4 +
+ Src/cia402appl.h |  10 +-
  Src/ecatappl.c   |  48 ++++----
  Src/ecatappl.h   |   2 +
  Src/ecatslv.c    |   2 +-
- 5 files changed, 280 insertions(+), 62 deletions(-)
+ 5 files changed, 283 insertions(+), 65 deletions(-)
 
 diff --git a/Src/cia402appl.c b/Src/cia402appl.c
 index e3489a0..80fdcce 100644
@@ -577,7 +577,7 @@ index e3489a0..80fdcce 100644
  
  
 diff --git a/Src/cia402appl.h b/Src/cia402appl.h
-index ccb754e..c70cd5a 100644
+index ccb754e..6b39508 100644
 --- a/Src/cia402appl.h
 +++ b/Src/cia402appl.h
 @@ -1097,6 +1097,10 @@ PROTO TOBJF030 sConfiguredModuleIdentList
@@ -591,6 +591,23 @@ index ccb754e..c70cd5a 100644
  
  /** 
   * \brief Object 0xF050 (Detected Module List) variable to handle object data
+@@ -1210,13 +1214,13 @@ PROTO TOBJECT    OBJMEM DefCiA402AxisObjDic[]
+    /* Object 0x605E */
+    {NULL,NULL, 0x605E, {DEFTYPE_INTEGER16 , 0 | (OBJCODE_VAR << 8)}, &sEntryDesc0x605E, aName0x605E, NULL, NULL, NULL, 0x0000 },
+    /* Object 0x6060 */
+-    {NULL,NULL, 0x6060, {DEFTYPE_INTEGER8 , 0 | (OBJCODE_VAR << 8)}, &sEntryDesc0x6060, aName0x6060, NULL, NULL, NULL, 0x0000 },
++    {NULL,NULL, 0x6060, {DEFTYPE_INTEGER8 , 0 | (OBJCODE_VAR << 8)}, &sEntryDesc0x6060, aName0x6060, NULL, ObjRead0x6060, ObjWrite0x6060, 0x0000 },
+    /* Object 0x6061 */
+    {NULL,NULL, 0x6061, {DEFTYPE_INTEGER8 , 0 | (OBJCODE_VAR << 8)}, &sEntryDesc0x6061, aName0x6061, NULL, NULL, NULL, 0x0000 },
+    /* Object 0x6064 */
+-   {NULL,NULL, 0x6064, {DEFTYPE_INTEGER32 , 0 | (OBJCODE_VAR << 8)}, &sEntryDesc0x6064, aName0x6064, NULL, NULL, NULL, 0x0000 },
++   {NULL,NULL, 0x6064, {DEFTYPE_INTEGER32 , 0 | (OBJCODE_VAR << 8)}, &sEntryDesc0x6064, aName0x6064, NULL, ObjRead0x6064, NULL, 0x0000 },
+    /* Object 0x606C */
+-   {NULL,NULL, 0x606C, {DEFTYPE_INTEGER32 , 0 | (OBJCODE_VAR << 8)}, &sEntryDesc0x606C, aName0x606C, NULL, NULL, NULL, 0x0000 },
++   {NULL,NULL, 0x606C, {DEFTYPE_INTEGER32 , 0 | (OBJCODE_VAR << 8)}, &sEntryDesc0x606C, aName0x606C, NULL, ObjRead0x606c, NULL, 0x0000 },
+    /* Object 0x6077 */
+    {NULL,NULL, 0x6077, {DEFTYPE_INTEGER16 , 0 | (OBJCODE_VAR << 8)}, &sEntryDesc0x6077, aName0x6077, NULL, NULL, NULL, 0x0000 },
+    /* Object 0x607D */
 diff --git a/Src/ecatappl.c b/Src/ecatappl.c
 index 5ff3302..423506a 100644
 --- a/Src/ecatappl.c
