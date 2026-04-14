@@ -12,7 +12,8 @@ To configure and download the MCUXpresso SDK for the servo motor example buildin
 
     **Note:** The SDK version in the image is for reference only. Ensure to download the latest SDK version.
 
-    ![](../images/mcuxpresso_sdk_download_1180.png "Select a board")
+    (fig_asn_3fc_fzb)=
+![](../images/mcuxpresso_sdk_download_1180.png "Select a board")
 
 5.  Select the SDK version from which the SDK will be generated.
 6.  Click the **Build MCUXpresso SDK** button.

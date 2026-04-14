@@ -211,6 +211,7 @@ The encoder density of Tecknic2311P motor is 8,000 counts/rev. Tp configure Scal
     ![](../images/image39.png "Stop position lag monitoring")
 
 
+(startto)=
 ## Start to run motor 
 
 1.  Activate the configuration by clicking **TwinCAT \> Activate Configuration**.
@@ -222,7 +223,8 @@ The encoder density of Tecknic2311P motor is 8,000 counts/rev. Tp configure Scal
 4.  Click **Set**.
 5.  Set enabling and click **All**.
 
-    ![](../images/image40.png "Start to run motor")
+    (fig_mcz_13z_gzb)=
+![](../images/image40.png "Start to run motor")
 
 6.  Set **Target Position** and click the **F5** button. The motor will run to the target position.
 
