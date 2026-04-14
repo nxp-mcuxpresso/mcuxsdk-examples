@@ -26,7 +26,7 @@
 
 For a correct connection, the servo motor application requires you to remove and solder some zero-ohm resistors. Remove and solder zero-ohm resistors according to [Table 2](#table_ec66a671-27fc-496e-9eb1-036b287fb6f5).
 
-(table_ec66a671-27fc-496e-9eb1-036b287fb6f5)=
+<a id="table_ec66a671-27fc-496e-9eb1-036b287fb6f5"></a>
 |Add resistors|Remove resistors|
 |-------------|----------------|
 |R747|R767|R104|R146|
