@@ -227,7 +227,7 @@ int main(void)
     while (1)
     {  
       
-        AON__PMU->BGR_CTRL &=  ~(0x2U);     
+        AON__PMU->BGR_LVHV_DETECT_CTRL &=  ~(0x2U);     
         uint32_t dummyValue = AON__PMU->AWK_UP_TIME; 
         AON__PMU ->AWK_UP_TIME = (AON__PMU->AWK_UP_TIME & ~PMU_AWK_UP_TIME_WKUP_TIME_MASK) | PMU_AWK_UP_TIME_WKUP_TIME(dummyValue);
         SDK_DelayAtLeastUs(1000, CLOCK_GetCoreSysClkFreq());
@@ -758,34 +758,60 @@ static void APP_GetWakeupReason(void)
     uint32_t resetReasons = CMC_GetStickySystemResetStatus(CMC);
     PRINTF("Reset Reasons: 0x%x\r\n", resetReasons);
 
-#if 0
     if (resetReasons == CMC_SSRS_WAKEUP_MASK)
     {
         uint32_t wakeupStatus = SMM_GetWakeupSourceStatus(AON__SMM);
-        (void)AON__SMM->WKUP_STAT;
+        SMM_ClearWakeupSourceStatus(AON__SMM, wakeupStatus);
         PMU_DoHandshakeBetweenPMUAndPAC(AON__PMU);
         if ((wakeupStatus & (1U << 0UL)) != 0UL)
         {
-            PRINTF("Wakeup Source: RTC Alarm0\r\n");
+            if ((wakeupStatus & (1U << 5UL)) != 0UL)
+            {
+              PRINTF("DPD2 --> DPD1, Wakeup Source: RTC Alarm0\r\n");
+            }
+            else
+            {
+              PRINTF("Wakeup Source: RTC Alarm0\r\n");
+            }
             EnableIRQ(RTC_ALARM0_IRQn);
             NVIC_ClearPendingIRQ(RTC_ALARM0_IRQn);
         }
         if ((wakeupStatus & (1U << 1UL)) != 0UL)
         {
-            PRINTF("Wakeup Source: RTC Alarm1\r\n");
+            if ((wakeupStatus & (1U << 5UL)) != 0UL)
+            {
+              PRINTF("DPD2 --> DPD1, Wakeup Source: RTC Alarm1\r\n");
+            }
+            else
+            {
+              PRINTF("Wakeup Source: RTC Alarm1\r\n");
+            }
             EnableIRQ(RTC_ALARM1_IRQn);
             NVIC_ClearPendingIRQ(RTC_ALARM1_IRQn);
         }
         if ((wakeupStatus & (1U << 13UL)) != 0UL)
         {
-            PRINTF("Wakeup Source: LPTMR\r\n");
+            if ((wakeupStatus & (1U << 5UL)) != 0UL)
+            {
+              PRINTF("DPD2 --> DPD1, Wakeup Source: LPTMR\r\n");
+            }
+            else
+            {
+              PRINTF("Wakeup Source: LPTMR\r\n");
+            }
             EnableIRQ(LPTMR_AON_IRQn);
             NVIC_ClearPendingIRQ(LPTMR_AON_IRQn);
         }
         if ((wakeupStatus & (1U << 5UL)) != 0UL)
         {
-            PRINTF("Wakeup Source: EXT_INT\r\n");
+            if ((wakeupStatus & (1U << 13UL)) != 0UL)
+            {
+              PRINTF("DPD1 --> Active, Wakeup Source: EXT_INT\r\n");
+            }
+            else
+            {
+              PRINTF("Wakeup Source: EXT_INT\r\n");
+            }
         }
     }
-#endif
 }
