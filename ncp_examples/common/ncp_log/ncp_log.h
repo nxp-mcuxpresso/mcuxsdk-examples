@@ -11,11 +11,13 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include "fsl_debug_console.h"
 
 #define CONFIG_LOG_NCP_LEVEL          NCP_LOG_LEVEL_INF
 #define CONFIG_LOG_NCP_INTF_LEVEL     NCP_LOG_LEVEL_INF
 #define CONFIG_LOG_NCP_PM_LEVEL       NCP_LOG_LEVEL_INF
 #define CONFIG_LOG_NCP_ADAPTER_LEVEL  NCP_LOG_LEVEL_INF
+#define CONFIG_LOG_NCP_CRC_LEVEL      NCP_LOG_LEVEL_INF
 
 
 #define NCP_LOG_LEVEL_ERR   1

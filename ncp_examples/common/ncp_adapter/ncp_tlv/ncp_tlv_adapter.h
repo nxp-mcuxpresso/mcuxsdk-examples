@@ -132,27 +132,29 @@ extern ncp_stats_t ncp_stats;
  *
  * Used for queuing data messages to be transmitted
  */
-typedef NCP_TLV_PACK_START struct
+typedef struct
 {
     uint32_t is_ref;      /**< Reference flag */
-    size_t tlv_sz;       /**< Data size */
-    uint8_t *tlv_buf;    /**< Data buffer pointer */
-    void *ref_buf;       /**< Reference buffer */
+    uint16_t tlv_sz;      /**< Data size */
+    uint8_t *tlv_buf;     /**< Data buffer pointer */
+    void *ref_buf;        /**< Reference buffer */
     void (*ref_free_cb)(void *buf); /**< Reference buffer free callback  */
-} NCP_TLV_PACK_END ncp_tlv_data_qelem_t;
+    uint8_t reserved[14]; /**< explicit padding to make sizeof == 32 */
+} ncp_tlv_data_qelem_t;
 
 /**
  * @brief TX control queue element structure
  *
  * Used for queuing control messages to be transmitted
  */
-typedef NCP_TLV_PACK_START struct
+typedef struct
 {
     uint32_t event;       /**< Event code (see TX Event Types) */
     uint32_t seqnum;      /**< Message sequence number */
-    size_t ctrl_sz;       /**< Control data size in bytes */
+    uint16_t ctrl_sz;     /**< Control data size in bytes */
     uint8_t *ctrl_buf;    /**< Pointer to control data buffer */
-} NCP_TLV_PACK_END ncp_tlv_ctrl_qelem_t;
+    uint8_t  reserved[18];/**< explicit padding to make sizeof == 32 */
+} ncp_tlv_ctrl_qelem_t;
 
 /**
  * @brief TLV message handler callback function
@@ -239,7 +241,7 @@ void ncp_tlv_dispatch(void *tlv, size_t tlv_sz);
  * @param tlv_sz TLV buffer size in bytes
  * @return NCP_STATUS_SUCCESS on success, error code otherwise
  */
-ncp_status_t ncp_tlv_send(void *tlv_buf, size_t tlv_sz);
+ncp_status_t ncp_tlv_send(void *tlv_buf, uint16_t tlv_sz);
 
 /**
  * @brief Send TLV data message (reference mode)
@@ -250,7 +252,7 @@ ncp_status_t ncp_tlv_send(void *tlv_buf, size_t tlv_sz);
  * @param ref_buf Reference buffer
  * @return Status code
  */
-ncp_status_t ncp_tlv_ref_send(void *tlv_buf, size_t tlv_sz, uint32_t is_ref,
+ncp_status_t ncp_tlv_ref_send(void *tlv_buf, uint16_t tlv_sz, uint32_t is_ref,
                               void (*ref_free_cb)(void *buf), void *ref_buf);
 
 /**
@@ -261,7 +263,7 @@ ncp_status_t ncp_tlv_ref_send(void *tlv_buf, size_t tlv_sz, uint32_t is_ref,
  * @param ctrl_sz Control buffer size in bytes
  * @return 0 on success, negative error code on failure
  */
-int ncp_tlv_ctrl_send(uint32_t event, void *ctrl_buf, size_t ctrl_sz);
+int ncp_tlv_ctrl_send(uint32_t event, void *ctrl_buf, uint16_t ctrl_sz);
 
 /**
  * @brief Set TX event for notification

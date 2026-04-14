@@ -103,7 +103,7 @@ typedef struct _pm_notify_state
  */
 typedef struct _ncp_pm_tx_if
 {
-    int (*send_msg)(uint32_t event, void *msg, size_t size);   /**< Send a message buffer */
+    int (*send_msg)(uint32_t event, void *msg, uint16_t size);   /**< Send a message buffer */
     void (*post_event)(uint32_t event);               /**< Send a simple event code */
 } ncp_pm_tx_if_t;
 

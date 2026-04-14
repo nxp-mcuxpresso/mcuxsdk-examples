@@ -352,7 +352,11 @@ static void ncp_tlv_free_data_elmt(ncp_tlv_data_qelem_t **qbuf)
 {
     if ((*qbuf)->is_ref && (*qbuf)->ref_free_cb)
         (*qbuf)->ref_free_cb((*qbuf)->ref_buf);
+#if defined(__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U) && defined(DCP_USE_DCACHE) && (DCP_USE_DCACHE == 1U)
+    OSA_MemoryFreeAlign(*qbuf);
+#else
     OSA_MemoryFree(*qbuf);
+#endif
     *qbuf = NULL;
 }
 
@@ -432,7 +436,11 @@ static void ncp_tlv_tx_ctrl_dequeue(void)
         NCP_LOG_DBG("%s: send Control msg=%p: ctrl_buf=%p ctrl_sz=%lu",
                     __FUNCTION__, msg, msg->ctrl_buf, msg->ctrl_sz);
         ncp_tlv_adapter.intf_ops->send(msg->ctrl_buf, msg->ctrl_sz, NULL);
+#if defined(__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U) && defined(DCP_USE_DCACHE) && (DCP_USE_DCACHE == 1U)
+        OSA_MemoryFreeAlign(msg);
+#else
         OSA_MemoryFree(msg);
+#endif
         msg = NULL;
     }
 
@@ -688,7 +696,7 @@ void ncp_tlv_dispatch(void *tlv, size_t tlv_sz)
 
     /* check CRC */
     remote_checksum = NCP_GET_PEER_CHKSUM((uint8_t *)tlv, tlv_sz);
-    local_checksum  = ncp_tlv_chksum(tlv, tlv_sz);
+    local_checksum  = ncp_tlv_chksum(tlv, (uint16_t)tlv_sz);
     if (remote_checksum != local_checksum)
     {
         status = NCP_STATUS_CHKSUMERR;
@@ -698,7 +706,7 @@ void ncp_tlv_dispatch(void *tlv, size_t tlv_sz)
 
         NCP_TLV_STATS_INC(err);
         NCP_TLV_STATS_INC(drop);
-        NCP_LOG_ERR("Checksum validation failed!");
+        NCP_LOG_ERR("Checksum validation failed! local = 0x%08x, remote = 0x%08x", local_checksum, remote_checksum);
         return;
     }
 
@@ -733,17 +741,22 @@ void ncp_tlv_dispatch(void *tlv, size_t tlv_sz)
  * @param ctrl_sz Control buffer size
  * @return Status code
  */
-int ncp_tlv_ctrl_send(uint32_t event, void *ctrl_buf, size_t ctrl_sz)
+int ncp_tlv_ctrl_send(uint32_t event, void *ctrl_buf, uint16_t ctrl_sz)
 {
     ncp_status_t status = NCP_STATUS_SUCCESS;
     ncp_tlv_ctrl_qelem_t *qelem = NULL;
-    uint8_t * qbuf = NULL;
+    uint8_t *qbuf = NULL;
     uint16_t qlen = 0;
     uint32_t chksum = 0;
     uint8_t *chksum_buf = NULL;
 
     qlen = sizeof(ncp_tlv_ctrl_qelem_t) + ctrl_sz + NCP_CHKSUM_LEN;
+#if defined(__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U) && defined(DCP_USE_DCACHE) && (DCP_USE_DCACHE == 1U)
+    /* Allocate aligned buffers with sufficient trailing memory for safe clean/invalidate */
+    qbuf = (uint8_t *)OSA_MemoryAllocateAlign(DCACHE_ALIGNED_SIZE(qlen), DCACHE_LINESIZE_BYTE);
+#else
     qbuf = (uint8_t *)OSA_MemoryAllocate(qlen);
+#endif
     if (!qbuf)
     {
         NCP_TLV_STATS_INC(err);
@@ -763,7 +776,7 @@ int ncp_tlv_ctrl_send(uint32_t event, void *ctrl_buf, size_t ctrl_sz)
         (void)memcpy(qelem->ctrl_buf, ctrl_buf, ctrl_sz);
     }
 
-    chksum = ncp_tlv_chksum(qelem->ctrl_buf, (uint16_t)ctrl_sz);
+    chksum = ncp_tlv_chksum(qelem->ctrl_buf, ctrl_sz);
     chksum_buf = qelem->ctrl_buf + ctrl_sz;
     for (int i = 0; i < sizeof(chksum); i++) {
         chksum_buf[i] = (uint8_t)(chksum >> (8 * i));
@@ -778,7 +791,11 @@ int ncp_tlv_ctrl_send(uint32_t event, void *ctrl_buf, size_t ctrl_sz)
         NCP_LOG_ERR("ncp tlv ctrl enqueue element fail");
         if (qbuf)
         {
+#if defined(__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U) && defined(DCP_USE_DCACHE) && (DCP_USE_DCACHE == 1U)
+            OSA_MemoryFreeAlign(qbuf);
+#else
             OSA_MemoryFree(qbuf);
+#endif
             qbuf = NULL;
         }
 
@@ -792,7 +809,7 @@ int ncp_tlv_ctrl_send(uint32_t event, void *ctrl_buf, size_t ctrl_sz)
 /**
  * @brief Send TLV data message (copy mode)
  *
- * qbuf_len = sizeof(ncp_tlv_data_qelem_t) + sdio_intf_head + tlv_sz + chksum_len
+ * qbuf_len = sizeof(ncp_tlv_data_qelem_t) + sdio_intf_head + tlv_sz + NCP_CHKSUM_LEN
  * qbuf_tlv = qbuf + sizeof(ncp_tlv_data_qelem_t)
  * memcpy_buf = qbuf + sizeof(ncp_tlv_data_qelem_t) + sdio_intf_head
  * chksum_buf = qbuf + sizeof(ncp_tlv_data_qelem_t) + sdio_intf_head + tlv_sz
@@ -802,48 +819,56 @@ int ncp_tlv_ctrl_send(uint32_t event, void *ctrl_buf, size_t ctrl_sz)
  * @param tlv_sz TLV buffer size
  * @return Status code
  */
-ncp_status_t ncp_tlv_send(void *tlv_buf, size_t tlv_sz)
+ncp_status_t ncp_tlv_send(void *tlv_buf, uint16_t tlv_sz)
 {
     ncp_status_t status = NCP_STATUS_SUCCESS;
-    ncp_tlv_data_qelem_t *qbuf = NULL;
-    uint8_t *qbuf_tlv = NULL, *chksum_buf = NULL;
-    uint16_t qlen = 0, chksum_len = 4;
+    ncp_tlv_data_qelem_t *qelem = NULL;
+    uint8_t *qbuf = NULL;
+    uint8_t *chksum_buf = NULL;
+    uint16_t qlen = 0;
     uint32_t chksum = 0;
+
     qlen = sizeof(ncp_tlv_data_qelem_t) + tlv_sz
 #if CONFIG_NCP_USE_ENCRYPT
            + NCP_GCM_TAG_LEN
 #endif
-           + chksum_len;
-    qbuf = (ncp_tlv_data_qelem_t *)OSA_MemoryAllocate(qlen);
+           + NCP_CHKSUM_LEN;
+
+#if defined(__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U) && defined(DCP_USE_DCACHE) && (DCP_USE_DCACHE == 1U)
+    /* Allocate aligned buffers with sufficient trailing memory for safe clean/invalidate */
+    qbuf = (uint8_t *)OSA_MemoryAllocateAlign(DCACHE_ALIGNED_SIZE(qlen), DCACHE_LINESIZE_BYTE);
+#else
+    qbuf = (uint8_t *)OSA_MemoryAllocate(qlen);
+#endif
     if (!qbuf)
     {
-        NCP_TLV_STATS_INC(err);
-        NCP_TLV_STATS_INC(drop);
         NCP_LOG_ERR("%s: failed to allocate memory for tlv queue element qlen=%u", __FUNCTION__, qlen);
-        return NCP_STATUS_NOMEM;
+        status = NCP_STATUS_NOMEM;
+        goto error_exit;
     }
-    qbuf->tlv_sz = tlv_sz + chksum_len;
-    qbuf->is_ref = 0;
-    qbuf_tlv = (uint8_t *)qbuf + sizeof(ncp_tlv_data_qelem_t);
+
+    qelem = (ncp_tlv_data_qelem_t *)qbuf;
+    qelem->tlv_sz = tlv_sz + NCP_CHKSUM_LEN;
+    qelem->is_ref = 0;
+    qelem->tlv_buf = qbuf + sizeof(ncp_tlv_data_qelem_t);
 
     if (ncp_crypt_is_needed(tlv_buf, tlv_sz))
     {
 #if CONFIG_NCP_USE_ENCRYPT
-        (void)memcpy(qbuf_tlv, tlv_buf, TLV_CMD_HEADER_LEN);
-        NCP_HOST_COMMAND *header = (NCP_HOST_COMMAND *)qbuf_tlv;
+        (void)memcpy(qelem->tlv_buf, tlv_buf, TLV_CMD_HEADER_LEN);
+        NCP_COMMAND *header = (NCP_COMMAND *)qelem->tlv_buf;
         status = ncp_tlv_encrypt((unsigned char *)tlv_buf + TLV_CMD_HEADER_LEN,
-                        (unsigned char *)qbuf_tlv + TLV_CMD_HEADER_LEN,
+                        (unsigned char *)qelem->tlv_buf + TLV_CMD_HEADER_LEN,
                         tlv_sz - TLV_CMD_HEADER_LEN);
         if (status != NCP_STATUS_SUCCESS)
         {
-            NCP_TLV_STATS_INC(err);
-            NCP_TLV_STATS_INC(drop);
             NCP_LOG_ERR("ncp tlv encrypt err %d", (int)status);
-            OSA_MemoryFree(qbuf);
-            return NCP_STATUS_ERROR;
+            status = NCP_STATUS_ERROR;
+            goto error_exit;
         }
+
         /* Appending tag after the encrypted data */
-        qbuf->tlv_sz += NCP_GCM_TAG_LEN;
+        qelem->tlv_sz += NCP_GCM_TAG_LEN;
         tlv_sz += NCP_GCM_TAG_LEN;
         header->size += NCP_GCM_TAG_LEN;
         NCP_LOG_DBG("%s tlv_sz:%u", __FUNCTION__, tlv_sz);
@@ -851,111 +876,132 @@ ncp_status_t ncp_tlv_send(void *tlv_buf, size_t tlv_sz)
     }
     else
     {
-        (void)memcpy(qbuf_tlv, tlv_buf, tlv_sz);
+        (void)memcpy(qelem->tlv_buf, tlv_buf, tlv_sz);
     }
 
-    qbuf->tlv_buf = qbuf_tlv;
-    chksum = ncp_tlv_chksum(qbuf_tlv, (uint16_t)tlv_sz);
-    chksum_buf = qbuf_tlv + tlv_sz;
+    chksum = ncp_tlv_chksum(qelem->tlv_buf, (uint16_t)tlv_sz);
+    chksum_buf = qelem->tlv_buf + tlv_sz;
     for (int i = 0; i < sizeof(chksum); i++) {
         chksum_buf[i] = (uint8_t)(chksum >> (8 * i));
     }
 
-    NCP_LOG_DBG("%s: tlv_buf=%p tlv_sz=%lu", __FUNCTION__, qbuf->tlv_buf, qbuf->tlv_sz);
+    NCP_LOG_DBG("%s: tlv_buf=%p tlv_sz=%lu", __FUNCTION__, qelem->tlv_buf, qelem->tlv_sz);
 #if CONFIG_WIFI_IO_DUMP
-    NCP_LOG_ERR("%s: qbuf %p %u (%u %p %ld)", __FUNCTION__, qbuf, qlen, qbuf->is_ref, qbuf->tlv_buf, qbuf->tlv_sz);
-    ncp_dump_hex(qbuf->tlv_buf, MIN(qbuf->tlv_sz, 128));
+    NCP_LOG_ERR("%s: qbuf %p %u (%u %p %ld)", __FUNCTION__, qbuf, qlen, qelem->is_ref, qelem->tlv_buf, qelem->tlv_sz);
+    ncp_dump_hex(qelem->tlv_buf, MIN(qelem->tlv_sz, 128));
 #endif
 
-    status = ncp_tlv_tx_data_enqueue(qbuf);
+    status = ncp_tlv_tx_data_enqueue(qelem);
     if(status != NCP_STATUS_SUCCESS)
     {
-        NCP_TLV_STATS_INC(err);
-        NCP_TLV_STATS_INC(drop);
         NCP_LOG_ERR("ncp tlv data enque element fail");
-        if (qbuf)
-        {
-            OSA_MemoryFree(qbuf);
-            qbuf = NULL;
-        }
+        status = NCP_STATUS_ERROR;
+        goto error_exit;
+    }
+
+    return status;
+
+error_exit:
+    NCP_TLV_STATS_INC(err);
+    NCP_TLV_STATS_INC(drop);
+    if (qbuf != NULL)
+    {
+#if defined(__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U) && defined(DCP_USE_DCACHE) && (DCP_USE_DCACHE == 1U)
+        OSA_MemoryFreeAlign(qbuf);
+#else
+        OSA_MemoryFree(qbuf);
+#endif
+        qbuf = NULL;
     }
 
     return status;
 }
 
-ncp_status_t ncp_tlv_ref_send(void *tlv_buf, size_t tlv_sz, uint32_t is_ref,
+/* NOTE: Reference send is not supported with DCP dcache aligned buffer, please use ncp_tlv_send instead */
+ncp_status_t ncp_tlv_ref_send(void *tlv_buf, uint16_t tlv_sz, uint32_t is_ref,
                               void (*ref_free_cb)(void *buf), void *ref_buf)
 {
     ncp_status_t status = NCP_STATUS_SUCCESS;
-    ncp_tlv_data_qelem_t *qbuf = NULL;
-    uint8_t *qbuf_tlv = NULL, *chksum_buf = NULL;
-    uint16_t qlen = 0, chksum_len = 4;
+    ncp_tlv_data_qelem_t *qelem = NULL;
+    uint8_t *qbuf = NULL;
+    uint8_t *chksum_buf = NULL;
+    uint16_t qlen = 0;
     uint32_t chksum = 0;
 
     if (is_ref == 0)
         return ncp_tlv_send(tlv_buf, tlv_sz);
+#if defined(__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U) && defined(DCP_USE_DCACHE) && (DCP_USE_DCACHE == 1U)
+    else
+    {
+        NCP_LOG_ERR("Reference send not supported with dcache!");
+        return NCP_STATUS_ERROR;
+    }
+#endif
 
     qlen = sizeof(ncp_tlv_data_qelem_t);
-    qbuf = (ncp_tlv_data_qelem_t *)OSA_MemoryAllocate(qlen);
+    qbuf = (uint8_t *)OSA_MemoryAllocate(qlen);
     if (!qbuf)
     {
-        NCP_TLV_STATS_INC(err);
-        NCP_TLV_STATS_INC(drop);
         NCP_LOG_ERR("%s: failed to allocate memory for tlv queue element qlen=%u", __FUNCTION__, qlen);
-        return NCP_STATUS_NOMEM;
+        status = NCP_STATUS_NOMEM;
+        goto error_exit;
     }
 
-    qbuf->tlv_sz = tlv_sz + chksum_len;
-    qbuf->is_ref = 1;
-    qbuf->ref_buf = ref_buf;
-    qbuf->ref_free_cb = ref_free_cb;
-    qbuf_tlv = (uint8_t *)tlv_buf;
+    qelem = (ncp_tlv_data_qelem_t *)qbuf;
+    qelem->tlv_sz = tlv_sz + NCP_CHKSUM_LEN;
+    qelem->is_ref = 1;
+    qelem->ref_buf = ref_buf;
+    qelem->ref_free_cb = ref_free_cb;
+    qelem->tlv_buf = (uint8_t *)tlv_buf;
 
     if (ncp_crypt_is_needed(tlv_buf, tlv_sz))
     {
 #if CONFIG_NCP_USE_ENCRYPT
-        struct _NCP_CMD_HEADER *cmd_hdr = (struct _NCP_CMD_HEADER *)tlv_buf;
+        NCP_COMMAND *header = (NCP_COMMAND *)tlv_buf;
         status = ncp_tlv_encrypt((unsigned char *)tlv_buf + TLV_CMD_HEADER_LEN,
-                        (unsigned char *)qbuf_tlv + TLV_CMD_HEADER_LEN,
+                        (unsigned char *)qelem->tlv_buf + TLV_CMD_HEADER_LEN,
                         tlv_sz - TLV_CMD_HEADER_LEN);
         if (status != NCP_STATUS_SUCCESS)
         {
-            NCP_TLV_STATS_INC(err);
-            NCP_TLV_STATS_INC(drop);
             NCP_LOG_ERR("ncp tlv encrypt err %d", (int)status);
-            OSA_MemoryFree(qbuf);
-            return NCP_STATUS_ERROR;
+            status = NCP_STATUS_ERROR;
+            goto error_exit;
         }
         /* Appending tag after the encrypted data */
-        qbuf->tlv_sz += NCP_GCM_TAG_LEN;
+        qelem->tlv_sz += NCP_GCM_TAG_LEN;
         tlv_sz += NCP_GCM_TAG_LEN;
-        cmd_hdr->size += NCP_GCM_TAG_LEN;
+        header->size += NCP_GCM_TAG_LEN;
         NCP_LOG_DBG("%s tlv_sz:%u", __FUNCTION__, tlv_sz);
 #endif /* CONFIG_NCP_USE_ENCRYPT */
     }
 
-    qbuf->tlv_buf = qbuf_tlv;
-    chksum = ncp_tlv_chksum(qbuf_tlv, (uint16_t)tlv_sz);
-    chksum_buf = qbuf_tlv + tlv_sz;
+    chksum = ncp_tlv_chksum(qelem->tlv_buf, (uint16_t)tlv_sz);
+    chksum_buf = qelem->tlv_buf + tlv_sz;
     for (int i = 0; i < sizeof(chksum); i++) {
         chksum_buf[i] = (uint8_t)(chksum >> (8 * i));
     }
 #if CONFIG_WIFI_IO_DUMP
-    NCP_LOG_ERR("%s: qbuf %p %u (%u %p %ld)", __FUNCTION__, qbuf, qlen, qbuf->is_ref, qbuf->tlv_buf, qbuf->tlv_sz);
-    dump_hex(qbuf->tlv_buf, MIN(qbuf->tlv_sz, 128));
+    NCP_LOG_ERR("%s: qbuf %p %u (%u %p %ld)", __FUNCTION__, qbuf, qlen, qelem->is_ref, qelem->tlv_buf, qelem->tlv_sz);
+    dump_hex(qelem->tlv_buf, MIN(qelem->tlv_sz, 128));
 #endif
 
-    status = ncp_tlv_tx_data_enqueue(qbuf);
+    status = ncp_tlv_tx_data_enqueue(qelem);
     if (status != NCP_STATUS_SUCCESS)
     {
-        NCP_TLV_STATS_INC(err);
-        NCP_TLV_STATS_INC(drop);
         NCP_LOG_ERR("%s: ncp tlv enque element fail", __FUNCTION__);
-        if (qbuf)
-        {
-            OSA_MemoryFree(qbuf);
-            qbuf = NULL;
-        }
+        status = NCP_STATUS_ERROR;
+        goto error_exit;
+    }
+
+    return status;
+
+error_exit:
+    NCP_TLV_STATS_INC(err);
+    NCP_TLV_STATS_INC(drop);
+    if (qbuf)
+    {
+        OSA_MemoryFree(qbuf);
+        qbuf = NULL;
     }
 
     return status;
