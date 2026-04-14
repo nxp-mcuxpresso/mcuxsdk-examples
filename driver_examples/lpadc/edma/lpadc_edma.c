@@ -11,7 +11,6 @@
 #include "app.h"
 #include "fsl_common.h"
 #include "fsl_debug_console.h"
-#include "fsl_port.h"
 #include "fsl_lpadc.h"
 #include "fsl_edma.h"
 #include "fsl_lptmr.h"
