@@ -42,7 +42,7 @@ define symbol m_text_start                     = 0x00010000;
 define symbol m_text_end                       = 0x0001FFFF;
 
 
-define symbol m_data_start                     = 0x28004000;
+define symbol m_data_start                     = 0x28006000;
 define symbol m_data_end                       = 0x2801DFFF;
 
 define symbol rpmsg_sh_mem_start               = 0xA1006000;

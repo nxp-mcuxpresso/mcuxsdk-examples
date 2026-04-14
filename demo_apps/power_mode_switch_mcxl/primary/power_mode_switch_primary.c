@@ -91,16 +91,17 @@ power_dpd1_config_t dpd1Config = {.mainWakeupSource = kPower_WS_NONE,
 power_dpd2_config_t dpd2Config = {
     .mainWakeupSource = kPower_WS_NONE,
     .aonWakeupSource  = kPower_WS_NONE,
-    .enableIVSMode    = true,
-    .fro16KOutputFreq      = kPMU_FRO16KOutput16KHz,
 #if (APP_ENABLE_CONTEXT_SAVING == 0)
+    .enableIVSMode         = true,
     .aonRamArraysToRetain  = kPower_AonDomainNoneRams,
     .mainRamArraysToRetain = kPower_MainDomainNoneRams,
 #else
+    .enableIVSMode         = false,
     .aonRamArraysToRetain  = kPower_AonDomainAllRams,
     .mainRamArraysToRetain = kPower_MainDomainAllRams,
     .saveContext           = true,
 #endif
+    .fro16KOutputFreq      = kPMU_FRO16KOutput16KHz,
     .disableBandgap        = true,
     .switchToX32K          = true,
     .disableFRO10M         = true,
@@ -569,6 +570,7 @@ static void APP_EnableLptmrWakeup(uint8_t firstMode, uint8_t secondMode, uint8_t
     LPTMR_Init(APP_LPTMR_BASE, &lptmrConfig);
     LPTMR_SetTimerPeriod(APP_LPTMR_BASE, USEC_TO_COUNT(LPTMR_USEC_COUNT, LPTMR_SOURCE_CLOCK));
     LPTMR_EnableInterrupts(APP_LPTMR_BASE, kLPTMR_TimerInterruptEnable);
+    NVIC_ClearPendingIRQ(LPTMR_AON_IRQn);
     EnableIRQ(LPTMR_AON_IRQn);
     LPTMR_StartTimer(APP_LPTMR_BASE);
 }
@@ -607,7 +609,6 @@ static void APP_EnableRTCAlarm0Wakeup(uint8_t firstMode, uint8_t secondMode, uin
                 dpd2Config.saveContext           = true;
 #endif
                 dpd2Config.aonRamArraysToRetain = kPower_AonDomainAllRams;
-                dpd2Config.enableIVSMode        = false;
                 dpd2Config.wakeToDpd1           = true;
                 dpd2Config.aonWakeupSource      = kPower_WS_Aon_RtcAlarm0;
                 dpd2Config.mainWakeupSource     = kPower_WS_Main_ExternalINTRiseEdge;
@@ -620,7 +621,6 @@ static void APP_EnableRTCAlarm0Wakeup(uint8_t firstMode, uint8_t secondMode, uin
 #else
                 dpd2Config.mainRamArraysToRetain = kPower_MainDomainAllRams;
                 dpd2Config.saveContext           = true;
-                dpd2Config.enableIVSMode         = false;
 #endif
                 dpd2Config.aonWakeupSource  = kPower_WS_Aon_RtcAlarm0;
                 dpd2Config.mainWakeupSource = kPower_WS_Main_RtcAlarm0;
@@ -660,6 +660,7 @@ static void APP_EnableRTCAlarm0Wakeup(uint8_t firstMode, uint8_t secondMode, uin
     alarm0Config.mode         = kRTC_AlarmModeSingleShot;
     RTC_ConfigureFreeRunningAlarm(APP_RTC_BASE, kRTC_Alarm_0, &alarm0Config);
     RTC_EnableInterrupts(APP_RTC_BASE, kRTC_Alarm0InterruptEnable);
+    NVIC_ClearPendingIRQ(RTC_ALARM0_IRQn);
     EnableIRQ(RTC_ALARM0_IRQn);
 }
 
@@ -697,7 +698,6 @@ static void APP_EnableRTCAlarm1Wakeup(uint8_t firstMode, uint8_t secondMode, uin
                 dpd2Config.saveContext           = true;
 #endif
                 dpd2Config.aonRamArraysToRetain = kPower_AonDomainAllRams;
-                dpd2Config.enableIVSMode        = false;
                 dpd2Config.wakeToDpd1           = true;
                 dpd2Config.aonWakeupSource      = kPower_WS_Aon_RtcAlarm1;
                 dpd2Config.mainWakeupSource     = kPower_WS_Main_ExternalINTRiseEdge;
@@ -710,7 +710,6 @@ static void APP_EnableRTCAlarm1Wakeup(uint8_t firstMode, uint8_t secondMode, uin
 #else
                 dpd2Config.mainRamArraysToRetain = kPower_MainDomainAllRams;
                 dpd2Config.saveContext           = true;
-                dpd2Config.enableIVSMode         = false;
 #endif
                 dpd2Config.aonWakeupSource  = kPower_WS_Aon_RtcAlarm1;
                 dpd2Config.mainWakeupSource = kPower_WS_Main_RtcAlarm1;
@@ -750,6 +749,7 @@ static void APP_EnableRTCAlarm1Wakeup(uint8_t firstMode, uint8_t secondMode, uin
     alarm1Config.mode         = kRTC_AlarmModeSingleShot;
     RTC_ConfigureFreeRunningAlarm(APP_RTC_BASE, kRTC_Alarm_1, &alarm1Config);
     RTC_EnableInterrupts(APP_RTC_BASE, kRTC_Alarm1InterruptEnable);
+    NVIC_ClearPendingIRQ(RTC_ALARM1_IRQn);
     EnableIRQ(RTC_ALARM1_IRQn);
 }
 

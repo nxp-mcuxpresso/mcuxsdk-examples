@@ -461,11 +461,12 @@ static void APP_DPD1ToDPD2BackToDPD1(void)
 #if (APP_ENABLE_CONTEXT_SAVING == 0)
         .mainRamArraysToRetain = 0U,
         .saveContext           = false,
+        .enableIVSMode         = true,
 #else
         .mainRamArraysToRetain = kPower_MainDomainAllRams,
         .saveContext           = true,
+        .enableIVSMode         = false,
 #endif
-        .enableIVSMode         = true,
         .switchToX32K          = true,
         .disableFRO10M         = true,
         .disableFRO3M          = false,
@@ -503,12 +504,13 @@ static void APP_DPD1ToDPD2BackToActive(void)
         .aonRamArraysToRetain  = kPower_AonDomainNoneRams,
         .mainRamArraysToRetain = kPower_MainDomainNoneRams,
         .saveContext           = false,
+        .enableIVSMode         = true,
 #else
         .aonRamArraysToRetain  = kPower_AonDomainAllRams,
         .mainRamArraysToRetain = kPower_MainDomainAllRams,
         .saveContext           = true,
+        .enableIVSMode         = false,
 #endif
-        .enableIVSMode         = true,
         .disableBandgap        = true,
         .switchToX32K          = true,
         .disableFRO10M         = true,
