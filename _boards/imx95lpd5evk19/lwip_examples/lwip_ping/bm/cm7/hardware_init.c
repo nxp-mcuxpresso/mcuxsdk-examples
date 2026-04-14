@@ -62,18 +62,18 @@ const phy_operations_t g_app_phy_rtl8211f_ops = {.phyInit             = ENETC0_P
                                                  .clearInterrupt      = PHY_RTL8211F_ClearInterrupt};
 
 phy_tja1104_resource_t g_phy_tja1104_resource;
-const phy_operations_t g_app_phy_tja1104_ops =  {.phyInit             = ENETC1_PHY_Init,
-                                                 .phyWrite            = NULL,
-                                                 .phyRead             = NULL,
-                                                 .phyWriteC45         = PHY_TJA1104_Write,
-                                                 .phyReadC45          = PHY_TJA1104_Read,
-                                                 .getAutoNegoStatus   = PHY_TJA1104_GetAutoNegotiationStatus,
-                                                 .getLinkStatus       = PHY_TJA1104_GetLinkStatus,
-                                                 .getLinkSpeedDuplex  = PHY_TJA1104_GetLinkSpeedDuplex,
-                                                 .setLinkSpeedDuplex  = PHY_TJA1104_SetLinkSpeedDuplex,
-                                                 .enableLoopback      = PHY_TJA1104_EnableLoopback,
-                                                 .enableLinkInterrupt = PHY_TJA1104_EnableInterrupt,
-                                                 .clearInterrupt      = PHY_TJA1104_ClearInterrupt};
+const phy_operations_t g_app_phy_tja1104_ops = {.phyInit             = ENETC1_PHY_Init,
+                                                .phyWrite            = NULL,
+                                                .phyRead             = NULL,
+                                                .phyWriteC45         = PHY_TJA1104_Write,
+                                                .phyReadC45          = PHY_TJA1104_Read,
+                                                .getAutoNegoStatus   = PHY_TJA1104_GetAutoNegotiationStatus,
+                                                .getLinkStatus       = PHY_TJA1104_GetLinkStatus,
+                                                .getLinkSpeedDuplex  = PHY_TJA1104_GetLinkSpeedDuplex,
+                                                .setLinkSpeedDuplex  = PHY_TJA1104_SetLinkSpeedDuplex,
+                                                .enableLoopback      = PHY_TJA1104_EnableLoopback,
+                                                .enableLinkInterrupt = PHY_TJA1104_EnableInterrupt,
+                                                .clearInterrupt      = PHY_TJA1104_ClearInterrupt};
 /*${variable:end}*/
 
 /*${function:start}*/
@@ -87,7 +87,7 @@ static status_t ENETC0_MDIO_Init(void)
 
     /* EMDIO init */
     mdioConfig.mdio.type = kNETC_EMdio;
-    return  NETC_MDIOInit(&s_emdio_handle, &mdioConfig);
+    return NETC_MDIOInit(&s_emdio_handle, &mdioConfig);
 }
 
 static status_t ENETC_EMDIOWrite(uint8_t phyAddr, uint8_t regAddr, uint16_t data)
@@ -102,7 +102,7 @@ static status_t ENETC_EMDIORead(uint8_t phyAddr, uint8_t regAddr, uint16_t *pDat
 
 static status_t ENETC0_PHY_Init(phy_handle_t *phy_handle, const phy_config_t *config)
 {
-    status_t result            = kStatus_Success;
+    status_t result = kStatus_Success;
     pcal6408_handle_t handle;
 
     /* MDIO init */
@@ -141,13 +141,13 @@ static status_t ENETC1_PHY_TJA1104_SetRgmiiDelays(phy_handle_t *phy_handle)
 static status_t ENETC1_PHY_TJA1104_SetRgmiiMode(phy_handle_t *phy_handle)
 {
     status_t result;
-    
+
     /* Write PHY register to set RGMII(0b111) mode */
     result = ENETC_EMDIOC45Write(EXAMPLE_PHY_ADDRESS, PHY_MMD_VEND1, 0xAFC6U, 0x7U);
-    if(result != kStatus_Success)
+    if (result != kStatus_Success)
         return result;
 
-    return ENETC1_PHY_TJA1104_SetRgmiiDelays(phy_handle); 
+    return ENETC1_PHY_TJA1104_SetRgmiiDelays(phy_handle);
 }
 
 static status_t ENETC_MDIO_Init(void)
@@ -180,8 +180,8 @@ static status_t ENETC_MDIO_Init(void)
 
 static status_t ENETC1_PHY_Init(phy_handle_t *phy_handle, const phy_config_t *config)
 {
-    status_t result            = kStatus_Success;
-    pca6416a_handle_t  handle;
+    status_t result = kStatus_Success;
+    pca6416a_handle_t handle;
 
     /* MDIO init */
     result = ENETC_MDIO_Init();
@@ -191,19 +191,20 @@ static status_t ENETC1_PHY_Init(phy_handle_t *phy_handle, const phy_config_t *co
     }
 
     /* For a complete PHY reset of TJA1104, this pin must be asserted low.
-     * The pinstrap configuration and the PHY registers will be ready at least 
+     * The pinstrap configuration and the PHY
+     * registers will be ready at least 
      * 2ms after deasserting the RST_N pin.
      */
     BOARD_InitPCA6416A(&handle);
     PCA6416A_SetDirection(&handle, (1 << BOARD_PCA6416A_ENET2_RST_B), kPCA6416A_Output);
     PCA6416A_ClearPins(&handle, (1 << BOARD_PCA6416A_ENET2_RST_B));
     SDK_DelayAtLeastUs(20000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-    PCA6416A_SetPins(&handle, (1 <<  BOARD_PCA6416A_ENET2_RST_B));
+    PCA6416A_SetPins(&handle, (1 << BOARD_PCA6416A_ENET2_RST_B));
     SDK_DelayAtLeastUs(2000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 
     /* Initialize PHY */
     result = PHY_TJA1104_Init(phy_handle, config);
-    if(NETC_MII_MODE == kNETC_RmiiMode)
+    if (NETC_MII_MODE == kNETC_RmiiMode)
     {
         result = ENETC1_PHY_TJA1104_SetRmiiMode(phy_handle);
     }
@@ -227,7 +228,7 @@ static status_t ENETC_EMDIOC45Read(uint8_t portAddr, uint8_t devAddr, uint16_t r
 
 static status_t ENETC2_PHY_Init(phy_handle_t *phy_handle, const phy_config_t *config)
 {
-    status_t result            = kStatus_Success;
+    status_t result = kStatus_Success;
     pcal6408_handle_t handle;
 
     /* MDIO init */
@@ -316,13 +317,13 @@ void BOARD_InitHardware(void)
 
     /* Power up NETCMIX */
     HAL_PowerSetState(&pwrst);
-    while(HAL_PowerGetState(&pwrst))
+    while (HAL_PowerGetState(&pwrst))
     {
     }
 
     /* Pins and clocks init */
     BOARD_InitBootPins();
-    if(NETC_MII_MODE == kNETC_RmiiMode)
+    if (NETC_MII_MODE == kNETC_RmiiMode)
     {
         BOARD_InitPinsRmii();
     }
@@ -360,7 +361,7 @@ void BOARD_InitHardware(void)
     SDK_DelayAtLeastUs(100000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 
     /* Protocol configure */
-    if(NETC_MII_MODE == kNETC_RmiiMode)
+    if (NETC_MII_MODE == kNETC_RmiiMode)
     {
         BLK_CTRL_NETCMIX->CFG_LINK_MII_PROT = 0x00000512;
     }

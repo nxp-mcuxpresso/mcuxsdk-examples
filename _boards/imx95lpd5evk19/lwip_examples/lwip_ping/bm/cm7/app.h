@@ -71,20 +71,18 @@
     }
 #endif
 
-#define EXAMPLE_PHY_ADDRESS                           \
-        (NETC_PSI == kNETC_ENETC0PSI0) ? 0x1U :       \
-        (NETC_PSI == kNETC_ENETC1PSI0) ? 0x2U : 0x8U
+#define EXAMPLE_PHY_ADDRESS (NETC_PSI == kNETC_ENETC0PSI0) ? 0x1U : (NETC_PSI == kNETC_ENETC1PSI0) ? 0x2U : 0x8U
 
-#define EXAMPLE_PHY_OPS                                            \
-        (NETC_PSI == kNETC_ENETC0PSI0) ? &g_app_phy_rtl8211f_ops : \
-        (NETC_PSI == kNETC_ENETC1PSI0) ? &g_app_phy_tja1104_ops :  \
-                                         &g_app_phy_aqr113c_ops
-#define EXAMPLE_PHY_RESOURCE                                                \
-        (NETC_PSI == kNETC_ENETC0PSI0) ? (void *)&g_phy_rtl8211f_resource : \
-        (NETC_PSI == kNETC_ENETC1PSI0) ? (void *)&g_phy_tja1104_resource :  \
-                                         (void *)&g_phy_aqr113c_resource
+#define EXAMPLE_PHY_OPS                                        \
+    (NETC_PSI == kNETC_ENETC0PSI0) ? &g_app_phy_rtl8211f_ops : \
+    (NETC_PSI == kNETC_ENETC1PSI0) ? &g_app_phy_tja1104_ops :  \
+                                     &g_app_phy_aqr113c_ops
+#define EXAMPLE_PHY_RESOURCE                                            \
+    (NETC_PSI == kNETC_ENETC0PSI0) ? (void *)&g_phy_rtl8211f_resource : \
+    (NETC_PSI == kNETC_ENETC1PSI0) ? (void *)&g_phy_tja1104_resource :  \
+                                     (void *)&g_phy_aqr113c_resource
 
-#define EXAMPLE_CLOCK_FREQ   HAL_ClockGetIpFreq(hal_clock_enet)
+#define EXAMPLE_CLOCK_FREQ HAL_ClockGetIpFreq(hal_clock_enet)
 /*${macro:end}*/
 
 extern phy_aqr113c_resource_t g_phy_aqr113c_resource;

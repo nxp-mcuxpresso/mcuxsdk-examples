@@ -35,36 +35,34 @@
 #define CLOCK_NUM_SRC 41UL
 
 /*! Number of device pins */
-#define DEV_SM_NUM_PIN    108U
+#define DEV_SM_NUM_PIN 108U
 /*! Number of device daisy */
-#define DEV_SM_NUM_DAISY  68U
-#define SCMI_IOMUXC_BASE AON__IOMUXC0__IOMUXC_BASE
-#define SCMI_IOMUXC_CFGREG_OFF (SCMI_IOMUXC_BASE + (DEV_SM_NUM_PIN * 4U))
+#define DEV_SM_NUM_DAISY         68U
+#define SCMI_IOMUXC_BASE         AON__IOMUXC0__IOMUXC_BASE
+#define SCMI_IOMUXC_CFGREG_OFF   (SCMI_IOMUXC_BASE + (DEV_SM_NUM_PIN * 4U))
 #define SCMI_IOMUXC_DAISYREG_OFF (SCMI_IOMUXC_BASE + (DEV_SM_NUM_PIN * 8U))
 
-#define SCMI_LMID_M7 1
+#define SCMI_LMID_M7  1
 #define SCMI_LMID_A55 2
-#define SCMI_MU_SEL     8
+#define SCMI_MU_SEL   8
 
 #define SCMI_A2P    0
 #define SCMI_NOTIFY 1
 #define SCMI_P2A    2
 /* Doorbell interrupt request number */
-#define SCMI_DBIR_A2P    0    /* 0: A2P channel */
-#define SCMI_DBIR_NOTIFY 1    /* 1: P2A notification channel */
-#define SCMI_DBIR_P2A    3    /* 2: FuSa reverse channel 3: P2A channel */
-#define SCMI_SMA_ADDR    0    /* share memory address. 0: Use of internal MU SRAM */
+#define SCMI_DBIR_A2P    0 /* 0: A2P channel */
+#define SCMI_DBIR_NOTIFY 1 /* 1: P2A notification channel */
+#define SCMI_DBIR_P2A    3 /* 2: FuSa reverse channel 3: P2A channel */
+#define SCMI_SMA_ADDR    0 /* share memory address. 0: Use of internal MU SRAM */
 
 #if (SCMI_DBIR_NOTIFY == 1)
-#define MU_NOTIFY_GENINT_EN(base)  \
-    MU_EnableInterrupts(base, kMU_GenInt1InterruptEnable)
-#define MU_NOTIFY_GENINT_FLAG kMU_GenInt1Flag
+#define MU_NOTIFY_GENINT_EN(base) MU_EnableInterrupts(base, kMU_GenInt1InterruptEnable)
+#define MU_NOTIFY_GENINT_FLAG     kMU_GenInt1Flag
 #endif
 
 #if (SCMI_DBIR_P2A == 3)
-#define MU_P2A_GENINT_EN(base)  \
-    MU_EnableInterrupts(base, kMU_GenInt3InterruptEnable)
-#define MU_P2A_GENINT_FLAG kMU_GenInt1Flag
+#define MU_P2A_GENINT_EN(base) MU_EnableInterrupts(base, kMU_GenInt3InterruptEnable)
+#define MU_P2A_GENINT_FLAG     kMU_GenInt1Flag
 #endif
 
 /*
@@ -87,23 +85,23 @@
 /* boad type: imx95 emulator or imx95 lpddr5 19x19 evk */
 #define BOARD_DEBUG_UART_INSTANCE 3
 
-#define BOARD_DEBUG_UART_INSTANCE_FOR_CM7_WITH_SM 3U
+#define BOARD_DEBUG_UART_INSTANCE_FOR_CM7_WITH_SM   3U
 #define BOARD_DEBUG_UART_CLOCK_ROOT_FOR_CM7_WITH_SM hal_clock_lpuart3
 #define BOARD_DEBUG_UART_CLK_FREQ_FOR_CM7_WITH_SM   HAL_ClockGetRate(BOARD_DEBUG_UART_CLOCK_ROOT_FOR_CM7_WITH_SM)
 
-#define BOARD_DEBUG_UART_INSTANCE_FOR_CM7_WITHOUT_SM 3U
+#define BOARD_DEBUG_UART_INSTANCE_FOR_CM7_WITHOUT_SM   3U
 #define BOARD_DEBUG_UART_CLOCK_ROOT_FOR_CM7_WITHOUT_SM hal_clock_lpuart3
 #define BOARD_DEBUG_UART_CLK_FREQ_FOR_CM7_WITHOUT_SM   HAL_ClockGetRate(BOARD_DEBUG_UART_CLOCK_ROOT_FOR_CM7_WITHOUT_SM)
 
-#define BOARD_DEBUG_UART_INSTANCE_FOR_CM33_WITHOUT_SM 2U
+#define BOARD_DEBUG_UART_INSTANCE_FOR_CM33_WITHOUT_SM   2U
 #define BOARD_DEBUG_UART_CLOCK_ROOT_FOR_CM33_WITHOUT_SM hal_clock_lpuart2
 #define BOARD_DEBUG_UART_CLK_FREQ_FOR_CM33_WITHOUT_SM   HAL_ClockGetRate(BOARD_DEBUG_UART_CLOCK_ROOT_FOR_CM33_WITHOUT_SM)
 
 #define BOARD_DEBUG_UART_CLOCK_ROOT hal_clock_lpuart3
 
 #define BOARD_DEBUG_UART_CLK_FREQ HAL_ClockGetRate(BOARD_DEBUG_UART_CLOCK_ROOT)
-#define BOARD_DEBUG_UART_BAUDRATE   115200U
-#define BOARD_DEBUG_UART_TYPE       kSerialPort_Uart
+#define BOARD_DEBUG_UART_BAUDRATE 115200U
+#define BOARD_DEBUG_UART_TYPE     kSerialPort_Uart
 
 #define VDEV0_VRING_BASE (0x88000000U)
 #define VDEV1_VRING_BASE (0x88010000U)
@@ -133,8 +131,8 @@
 #define BOARD_PCAL6524_I2C_CLOCK_ROOT hal_clock_lpi2c7
 #define BOARD_PCAL6524_I2C_CLOCK_FREQ HAL_ClockGetRate(BOARD_PCAL6524_I2C_CLOCK_ROOT)
 
-#define BOARD_PCAL6524_SI5332_RST     (0x8U + 0x5U)
-#define BOARD_PCAL6524_USB2_PWR_EN    (0x3U)
+#define BOARD_PCAL6524_SI5332_RST  (0x8U + 0x5U)
+#define BOARD_PCAL6524_USB2_PWR_EN (0x3U)
 
 /* PCAL6408 */
 #define BOARD_PCAL6408_I2C1            LPI2C1
@@ -148,10 +146,10 @@
 #define BOARD_PCAL6408_I2C3_CLOCK_FREQ HAL_ClockGetRate(BOARD_PCAL6408_I2C3_CLOCK_ROOT)
 
 /* output for BOARD_PCAL6408_I2C3 */
-#define BOARD_PCAL6408_CSI1_SYNC         (0U)
-#define BOARD_PCAL6408_CSI1_PWDN         (1U)
-#define BOARD_PCAL6408_CSI1_RST_B        (2U)
-#define BOARD_PCAL6408_ETH_CLK_EN        (3U)
+#define BOARD_PCAL6408_CSI1_SYNC  (0U)
+#define BOARD_PCAL6408_CSI1_PWDN  (1U)
+#define BOARD_PCAL6408_CSI1_RST_B (2U)
+#define BOARD_PCAL6408_ETH_CLK_EN (3U)
 
 #define BOARD_PCAL6408_I2C4            LPI2C4
 #define BOARD_PCAL6408_I2C4_ADDR       (0x21U)
@@ -159,7 +157,7 @@
 #define BOARD_PCAL6408_I2C4_CLOCK_FREQ HAL_ClockGetRate(BOARD_PCAL6408_I2C4_CLOCK_ROOT)
 
 /* output for BOARD_PCAL6408_I2C4 */
-#define BOARD_PCAL6408_SLOT_SAI3_SEL     (7U)
+#define BOARD_PCAL6408_SLOT_SAI3_SEL (7U)
 
 #define BOARD_PCAL6408_I2C5            LPI2C5
 #define BOARD_PCAL6408_I2C5_ADDR       (0x21U)
@@ -178,25 +176,25 @@
 #define BOARD_PCA6416A_I2C_CLOCK_ROOT hal_clock_lpi2c6
 #define BOARD_PCA6416A_I2C_CLOCK_FREQ HAL_ClockGetRate(BOARD_PCA6416A_I2C_CLOCK_ROOT)
 
-#define BOARD_PCA6416A_ENET2_INH_B          0U
-#define BOARD_PCA6416A_ENET2_CARD_DET_B     1U
-#define BOARD_PCA6416A_ENET2_WAKE_IN_OUT    3U
-#define BOARD_PCA6416A_ENET2_RST_B          4U
-#define BOARD_PCA6416A_CAN1_STBY_B          5U
-#define BOARD_PCA6416A_CAN1_EN              6U
-#define BOARD_PCA6416A_CAN1_WAKE            7U
+#define BOARD_PCA6416A_ENET2_INH_B       0U
+#define BOARD_PCA6416A_ENET2_CARD_DET_B  1U
+#define BOARD_PCA6416A_ENET2_WAKE_IN_OUT 3U
+#define BOARD_PCA6416A_ENET2_RST_B       4U
+#define BOARD_PCA6416A_CAN1_STBY_B       5U
+#define BOARD_PCA6416A_CAN1_EN           6U
+#define BOARD_PCA6416A_CAN1_WAKE         7U
 
-#define BOARD_PCA6416A_PDM_CAN_SEL     (8U + 2U)
-#define BOARD_PCA6416A_ENET2_SAI2_SEL  (8U + 3U)
+#define BOARD_PCA6416A_PDM_CAN_SEL    (8U + 2U)
+#define BOARD_PCA6416A_ENET2_SAI2_SEL (8U + 3U)
 
 /* hal api and hal arguments */
 #define BOARD_PCAL6524_I2C_CLOCK_ROOT_HAL hal_clock_lpi2c2
 #define BOARD_PCAL6524_I2C_CLOCK_FREQ_HAL HAL_ClockGetRate(BOARD_PCAL6524_I2C_CLOCK_ROOT_HAL)
-#define BOARD_PCAL6524_I2C_CLOCK_GATE kCLOCK_Lpi2c2
+#define BOARD_PCAL6524_I2C_CLOCK_GATE     kCLOCK_Lpi2c2
 
-#define BOARD_PCAL6524_EXT1_PWREN  (8U + 5U)
-#define BOARD_PCAL6524_ENET1_NRST  (8U + 7U)
-#define BOARD_PCAL6524_ENET2_NRST  (16U + 0U)
+#define BOARD_PCAL6524_EXT1_PWREN (8U + 5U)
+#define BOARD_PCAL6524_ENET1_NRST (8U + 7U)
+#define BOARD_PCAL6524_ENET2_NRST (16U + 0U)
 
 #if defined(__cplusplus)
 extern "C" {
