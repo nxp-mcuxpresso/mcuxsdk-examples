@@ -39,7 +39,8 @@ The converted TensorFlow Lite Micro model `mobilenet_v1_1.0_224_int8_npu.tflite`
 * After downloading and extracting the Neutron SDK Zip package, you can find the Neutron Converter tool at the following path: `/eiq-neutron-sdk-linux-x.x.x/bin/neutron-converter`.
 
 The following are the commands required for model conversion, and please note:
-* Please make sure to add the `fetch_constants_to_sram true` parameter.
+* Please make sure to add the `--fetch_constants_to_sram true` parameter.
+* Please do not use the `--use-sequencer true` option in this external memory example, as it is incompatible with `--fetch-constants-from-sram true` when running models from external memory.
 * In this example, the program loads model data from the `mobilenet_v1_1.0_224_int8_npu.tflite` file, rather than using the model array from the `model_data.h` file.
 ```bash
 # Set environment variables
@@ -47,6 +48,7 @@ export NEUTRON_SDK_PATH="/path/to/eiq-neutron-sdk-linux-x.x.x"
 export LD_LIBRARY_PATH="${NEUTRON_SDK_PATH}/lib:${LD_LIBRARY_PATH}"
 export PATH="${NEUTRON_SDK_PATH}/bin:${PATH}"
 
+# Convert model
 ./neutron-converter --input mobilenet_v1_1.0_224_int8.tflite \
                     --output mobilenet_v1_1.0_224_int8_npu.tflite \
                     --target imxrt700 \
