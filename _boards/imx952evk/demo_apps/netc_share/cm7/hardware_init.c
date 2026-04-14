@@ -200,6 +200,7 @@ void BOARD_InitHardware(void)
 
     /* Pins and clocks init */
     BOARD_InitBootPins();
+    BOARD_InitNETPins();
     BOARD_BootClockRUN();
 
     CLOCK_SetParent(&enetclk);

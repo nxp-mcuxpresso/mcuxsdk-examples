@@ -7,8 +7,8 @@
 #ifndef _RTE_DEVICE_H
 #define _RTE_DEVICE_H
 
-extern void LPI2C6_InitPins();
-extern void LPI2C6_DeinitPins();
+extern void BOARD_InitI2C6Pins();
+extern void BOARD_DeInitI2C6Pins();
 
 /* Driver name mapping. */
 /* User needs to provide the implementation of LPI2CX_GetFreq/LPI2CX_InitPins/LPI2CX_DeinitPins for the enabled
@@ -18,7 +18,7 @@ extern void LPI2C6_DeinitPins();
 
 /* LPI2C configuration. */
 
-#define RTE_I2C6_PIN_INIT   LPI2C6_InitPins
-#define RTE_I2C6_PIN_DEINIT LPI2C6_DeinitPins
+#define RTE_I2C6_PIN_INIT   BOARD_InitI2C6Pins
+#define RTE_I2C6_PIN_DEINIT BOARD_DeInitI2C6Pins
 
 #endif /* _RTE_DEVICE_H */

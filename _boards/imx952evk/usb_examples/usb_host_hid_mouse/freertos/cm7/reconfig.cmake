@@ -25,6 +25,7 @@ mcux_add_mdk_configuration(
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
   INCLUDES "${board_root}/${board}/usb_examples/usb_host_hid_mouse/freertos/${core_id}"
+  INCLUDES "${board_root}/${board}/common/pin_mux/"
 )
 
 mcux_add_macro(
@@ -50,6 +51,6 @@ mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
     "${board_root}/${board}/usb_examples/usb_host_hid_mouse/freertos/${core_id}/hardware_init.c"
-    "${board_root}/${board}/usb_examples/usb_host_hid_mouse/freertos/${core_id}/pin_mux.c"
-    "${board_root}/${board}/usb_examples/usb_host_hid_mouse/freertos/${core_id}/pin_mux.h"
+    "${board_root}/${board}/common/pin_mux/pin_mux.c"
+    "${board_root}/${board}/common/pin_mux/pin_mux.h"
 )

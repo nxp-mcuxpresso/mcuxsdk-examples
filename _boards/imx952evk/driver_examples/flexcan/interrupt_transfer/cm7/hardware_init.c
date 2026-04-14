@@ -33,6 +33,8 @@ void BOARD_InitHardware(void)
     /* clang-format on */
     SystemPlatformInit();
     BOARD_InitBootPins();
+    BOARD_InitCANPins();
+    BOARD_InitI2C6Pins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
     BOARD_ConfigMPU();

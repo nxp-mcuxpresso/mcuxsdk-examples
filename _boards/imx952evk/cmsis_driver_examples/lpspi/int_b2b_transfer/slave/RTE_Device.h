@@ -7,8 +7,8 @@
 #ifndef _RTE_DEVICE_H
 #define _RTE_DEVICE_H
 
-extern void LPSPI7_InitPins();
-extern void LPSPI7_DeinitPins();
+extern void BOARD_InitLPSPIPins();
+extern void BOARD_DeInitLPSPIPins();
 
 /* Driver name mapping. */
 /* User needs to provide the implementation of LPSPIX_GetFreq/LPSPIX_InitPins/LPSPIX_DeinitPins for the enabled
@@ -22,7 +22,7 @@ extern void LPSPI7_DeinitPins();
 #define RTE_SPI7_BETWEEN_TRANSFER_DELAY 1000
 #define RTE_SPI7_MASTER_PCS_PIN_SEL     (kLPSPI_MasterPcs0)
 #define RTE_SPI7_SLAVE_PCS_PIN_SEL      (kLPSPI_SlavePcs0)
-#define RTE_SPI7_PIN_INIT               LPSPI7_InitPins
-#define RTE_SPI7_PIN_DEINIT             LPSPI7_DeinitPins
+#define RTE_SPI7_PIN_INIT               BOARD_InitLPSPIPins
+#define RTE_SPI7_PIN_DEINIT             BOARD_DeInitLPSPIPins
 
 #endif /* _RTE_DEVICE_H */

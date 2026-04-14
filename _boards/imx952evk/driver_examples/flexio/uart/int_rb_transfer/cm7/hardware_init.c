@@ -23,7 +23,7 @@ void BOARD_InitHardware(void)
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
     };
     SystemPlatformInit();
-    BOARD_InitBootPins();
+    BOARD_InitFLEXIOUARTPins();
     BOARD_BootClockRUN();
 
     CLOCK_SetRate(&flexioClkCfg);

@@ -24,7 +24,7 @@ xspi_device_ddr_config_t flashDDrConfig =
 xspi_device_config_t deviceConfig =
 {
     .xspiRootClk = 400000000,  /*!< 400MHz */
-    .enableCknPad = false,  /*!< Do not support differential clock */      
+    .enableCknPad = false,  /*!< Do not support differential clock */
     .deviceInterface = kXSPI_StrandardExtendedSPI,  /*!< Support Single IO and Octal IO */
     .interfaceSettings.strandardExtendedSPISettings.pageSize = FLASH_PAGE_SIZE,   /*!< 256 byte page buffer. */
     .CSHoldTime = 3,
@@ -142,6 +142,7 @@ void BOARD_InitHardware(void)
     SystemPlatformInit();
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
+    BOARD_InitXSPIPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsoleForCM7WithSM();
     xspi_clock_init();

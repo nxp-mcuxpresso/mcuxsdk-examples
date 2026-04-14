@@ -37,6 +37,8 @@ void BOARD_InitHardware(void)
      };
     SystemPlatformInit();
     BOARD_InitBootPins();
+    BOARD_InitI2C4Pins();
+    BOARD_InitSAIPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 

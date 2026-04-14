@@ -140,6 +140,7 @@ void BOARD_InitHardware(void)
     SystemPlatformInit();
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
+    BOARD_InitXSPIPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsoleForCM7WithSM();
     xspi_clock_init();

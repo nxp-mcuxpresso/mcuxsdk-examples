@@ -150,6 +150,10 @@ void BOARD_InitHardware(void)
 
     BOARD_BootClockRUN();
     BOARD_InitBootPins();
+    BOARD_InitCLKOPins();
+    BOARD_InitGPIO2Pins();
+    BOARD_InitI2C2Pins();
+    BOARD_InitI2C3Pins();
     BOARD_InitDebugConsole();
     BOARD_ConfigMPU();
     APP_PrepareCamera();

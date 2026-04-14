@@ -25,6 +25,7 @@ void BOARD_InitHardware(void)
     /* clang-format on */
     SystemPlatformInit();
     BOARD_InitBootPins();
+    BOARD_InitCANPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsoleForCM7WithSM();
 
