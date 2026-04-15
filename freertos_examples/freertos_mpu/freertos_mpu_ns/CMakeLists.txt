@@ -1,5 +1,5 @@
 #
-# Copyright 2024-2025 NXP
+# Copyright 2024-2026 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -30,12 +30,10 @@ mcux_add_source(
 
 mcux_add_source(
     SOURCES main_ns.c
-            ../FreeRTOSConfig.h
 )
 
 mcux_add_include(
     INCLUDES .
-             ../
 )
 
 mcux_add_mdk_configuration(

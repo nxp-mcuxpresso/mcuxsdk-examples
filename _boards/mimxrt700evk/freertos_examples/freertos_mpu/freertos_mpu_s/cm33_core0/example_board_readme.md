@@ -20,20 +20,6 @@ Prepare the Demo
 3.  Use secure project to download the program to target board. Please refer to "TrustZone application debugging" below for details.
 4.  Launch the debugger in your IDE to begin running the demo.
 
-Running the demo
-================
-The log below shows the output of the hello world demo in the terminal window:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Hello from secure world!
-Entering normal world.
-Welcome in normal world!
-This is a text printed from normal world!
-Comparing two string as a callback to normal world
-String 1: Test1
-String 2: Test2
-Both strings are not equal!                              
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 
 TrustZone Application Development in SDK
 ----------------------------------------
