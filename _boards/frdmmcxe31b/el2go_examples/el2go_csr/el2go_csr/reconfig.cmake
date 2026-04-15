@@ -13,35 +13,37 @@ mcux_add_macro(
         PSA_WANT_ALG_SHA_1"
 )
 
-# -------- adjust flash linker script for toolchains -----------
+#----------------------------------------------
+# Linker configurations for all toolchains
+#----------------------------------------------
+# remove predefined linker and use trustzone specific one
 mcux_remove_armgcc_linker_script(
-    TARGETS flash_debug flash_release
-    LINKER ${SdkRootDirPath}/devices/MCX/MCXE/MCXE31B/gcc/MCXE31B_flash.ld
+    BASE_PATH ${SdkRootDirPath}
+    LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/gcc/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.ld
 )
+
 mcux_add_armgcc_linker_script(
-            TARGETS flash_debug flash_release
-            BASE_PATH ${SdkRootDirPath}
-            LINKER ${board_root}/${board}/el2go_examples/el2go_csr/linker/gcc/MCXE31B_flash.ld
+    BASE_PATH ${SdkRootDirPath}
+    LINKER ${board_root}/${board}/el2go_examples/el2go_csr/linker/gcc/MCXE31B_flash.ld
 )
 
 mcux_remove_iar_linker_script(
-    TARGETS flash_debug flash_release
-    LINKER ${SdkRootDirPath}/devices/MCX/MCXE/MCXE31B/iar/MCXE31B_flash.icf
+    BASE_PATH ${SdkRootDirPath}
+    LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/iar/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.icf
 )
+
 mcux_add_iar_linker_script(
-            TARGETS flash_debug flash_release
-            BASE_PATH ${SdkRootDirPath}
-            LINKER ${board_root}/${board}/el2go_examples/el2go_csr/linker/iar/MCXE31B_flash.icf
+    BASE_PATH ${SdkRootDirPath}
+    LINKER ${board_root}/${board}/el2go_examples/el2go_csr/linker/iar/MCXE31B_flash.icf
 )
 
 mcux_remove_mdk_linker_script(
-    TARGETS flash_debug flash_release
-    LINKER ${SdkRootDirPath}/devices/MCX/MCXE/MCXE31B/arm/MCXE31B_flash.scf
+    BASE_PATH ${SdkRootDirPath}
+    LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/arm/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.icf
 )
 mcux_add_mdk_linker_script(
-            TARGETS flash_debug flash_release
-            BASE_PATH ${SdkRootDirPath}
-            LINKER ${board_root}/${board}/el2go_examples/el2go_csr/linker/arm/MCXE31B_flash.scf
+   BASE_PATH ${SdkRootDirPath}
+   LINKER ${board_root}/${board}/el2go_examples/el2go_csr/linker/arm/MCXE31B_flash.scf
 )
 
 # -------- adjust heap and stack size -----------
