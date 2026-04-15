@@ -15,7 +15,7 @@
 !!GlobalInfo
 product: TEE v10.0
 processor: MCXL255
-package_id: MCXL255VLL
+package_id: MCXL255VDF
 mcu_data: ksdk2_0
 processor_version: 0.0.0
 toolOptions:
