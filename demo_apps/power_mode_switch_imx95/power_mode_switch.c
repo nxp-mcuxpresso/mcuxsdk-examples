@@ -32,6 +32,14 @@ typedef enum _app_wakeup_source
     kAPP_WakeupSourceSM     /*!< Wakeup by SM message.    */
 } app_wakeup_source_t;
 
+#ifndef APP_UART
+#define APP_UART			LPUART3
+#define APP_UART_IRQ			LPUART3_IRQn
+#define APP_UART_IRQ_PRIO		APP_LPUART3_IRQ_PRIO
+#define APP_CPU_PER_LPI_IDX_UART	CPU_PER_LPI_IDX_LPUART3
+#define APP_UART_IRQHANDLER		LPUART3_IRQHandler
+#endif
+
 /*******************************************************************************
  * Function Prototypes
  ******************************************************************************/
@@ -200,13 +208,13 @@ static void APP_SetWakeupConfig(lpm_power_mode_t targetMode)
         }
         else
         {
-            PRINTF("LPUART3 is used for wakeup source.\r\n");
-            LPUART_EnableInterrupts(LPUART3, kLPUART_RxDataRegFullInterruptEnable);
+            PRINTF("LPUART is used for wakeup source.\r\n");
+            LPUART_EnableInterrupts(APP_UART, kLPUART_RxDataRegFullInterruptEnable);
             /* In low power mode, LPUART can generate wakeup via STAT[RXEDGIF]
              * Config STAT[RXINV] and BAUD[RXEDGIE] to enable STAT[RXEDGIF].
              */
-            LPUART3->STAT &= ~LPUART_STAT_RXINV_MASK;
-            LPUART3->BAUD |= LPUART_BAUD_RXEDGIE_MASK;
+            APP_UART->STAT &= ~LPUART_STAT_RXINV_MASK;
+            APP_UART->BAUD |= LPUART_BAUD_RXEDGIE_MASK;
 
             DisableIRQ(MU5_A_IRQn);
             /* Ensure not to be woken up by A55 messages */
@@ -218,7 +226,7 @@ static void APP_SetWakeupConfig(lpm_power_mode_t targetMode)
              * In to assure lpuart3 can be used as system suspend wakeup source.
              */
             scmi_per_lpm_config_t perLpmConfig;
-            perLpmConfig.perId = CPU_PER_LPI_IDX_LPUART3;
+            perLpmConfig.perId = APP_CPU_PER_LPI_IDX_UART;
             perLpmConfig.lpmSetting = SCMI_CPU_LPM_SETTING_ON_RUN_WAIT_STOP;
             status = SCMI_CpuPerLpmConfigSet(SCMI_A2P, CPU_IDX_M7P, 1U, &perLpmConfig);
             if (status != SCMI_ERR_SUCCESS)
@@ -262,14 +270,14 @@ void LPTMR2_IRQHandler(void)
     }
 }
 
-/* LPUART3 interrupt handler. */
-void LPUART3_IRQHandler(void)
+/* LPUART interrupt handler.*/
+void APP_UART_IRQHANDLER(void)
 {
     bool wakeup = false;
-    if (kLPUART_RxDataRegFullInterruptEnable & LPUART_GetEnabledInterrupts(LPUART3))
+    if (kLPUART_RxDataRegFullInterruptEnable & LPUART_GetEnabledInterrupts(APP_UART))
     {
-        LPUART_DisableInterrupts(LPUART3, kLPUART_RxDataRegFullInterruptEnable);
-        LPUART3->BAUD &= ~LPUART_BAUD_RXEDGIE_MASK;
+        LPUART_DisableInterrupts(APP_UART, kLPUART_RxDataRegFullInterruptEnable);
+        APP_UART->BAUD &= ~LPUART_BAUD_RXEDGIE_MASK;
         wakeup = true;
     }
 
@@ -301,9 +309,9 @@ void PowerModeSwitchTask(void *pvParameters)
     EnableIRQ(LPTMR2_IRQn);
 
     /* Setup LPUART. */
-    NVIC_SetPriority(LPUART3_IRQn, APP_LPUART3_IRQ_PRIO);
+    NVIC_SetPriority(APP_UART_IRQ, APP_UART_IRQ_PRIO);
 
-    EnableIRQ(LPUART3_IRQn);
+    EnableIRQ(APP_UART_IRQ);
 
     for (;;)
     {

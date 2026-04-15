@@ -12,7 +12,12 @@
  ******************************************************************************/
 /*${macro:start}*/
 #define APP_LPTMR2_IRQ_PRIO     (5U)
-#define APP_LPUART3_IRQ_PRIO    (5U)
+
+#define APP_UART			LPUART7
+#define APP_UART_IRQ			LPUART7_IRQn
+#define APP_UART_IRQ_PRIO		(5U)
+#define APP_CPU_PER_LPI_IDX_UART	CPU_PER_LPI_IDX_LPUART7
+#define APP_UART_IRQHANDLER		LPUART7_IRQHandler
 /*${macro:end}*/
 
 /*******************************************************************************
