@@ -11,3 +11,4 @@ Example will first erase the sector and program a page into the flash, at last c
 - [FRDM-MCXN947](../../../../_boards/frdmmcxn947/driver_examples/flexspi/octal/edma_transfer/example_board_readme.md)
 - [MCX-N5XX-EVK](../../../../_boards/mcxn5xxevk/driver_examples/flexspi/octal/edma_transfer/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../../_boards/mcxn9xxevk/driver_examples/flexspi/octal/edma_transfer/example_board_readme.md)
+- [FRDM-MCXA287](../../../../_boards/frdmmcxa287/driver_examples/flexspi/octal/edma_transfer/example_board_readme.md)

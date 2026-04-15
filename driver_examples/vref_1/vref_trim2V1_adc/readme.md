@@ -27,3 +27,4 @@ Note: This example is only used for platforms that have the UTRIM[TRIM2V1] funct
 - [MCXW72-LOC](../../../_boards/mcxw72loc/driver_examples/vref_1/example_board_readme.md)
 - [FRDM-MCXW72](../../../_boards/frdmmcxw72/driver_examples/vref_1/example_board_readme.md)
 - [FRDM-MCXA577](../../../_boards/frdmmcxa577/driver_examples/vref_1/example_board_readme.md)
+- [FRDM-MCXA287](../../../_boards/frdmmcxa287/driver_examples/vref_1/example_board_readme.md)

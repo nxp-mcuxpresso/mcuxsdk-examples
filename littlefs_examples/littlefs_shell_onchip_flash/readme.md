@@ -30,3 +30,4 @@ Demonstrates littlefs functionality by commands executed from shell.
 - [FRDM-MCXA577](../../_boards/frdmmcxa577/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md)
 - [FRDM-KW43](../../_boards/frdmkw43/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md)
 - [FRDM-MCXW70](../../_boards/frdmmcxw70/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md)
+- [FRDM-MCXA287](../../_boards/frdmmcxa287/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md)

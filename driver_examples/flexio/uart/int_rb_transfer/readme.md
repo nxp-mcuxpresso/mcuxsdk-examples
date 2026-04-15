@@ -63,3 +63,4 @@ Note: The example echo every 8 characters, so input 8 characters every time.
 - [FRDM-MCXA366](../../../../_boards/frdmmcxa366/driver_examples/flexio/uart/int_rb_transfer/example_board_readme.md)
 - [FRDM-MCXW72](../../../../_boards/frdmmcxw72/driver_examples/flexio/uart/int_rb_transfer/example_board_readme.md)
 - [FRDM-MCXA577](../../../../_boards/frdmmcxa577/driver_examples/flexio/uart/int_rb_transfer/example_board_readme.md)
+- [FRDM-MCXA287](../../../../_boards/frdmmcxa287/driver_examples/flexio/uart/int_rb_transfer/example_board_readme.md)

@@ -42,3 +42,4 @@ Example application demonstrates CAN bus communication. This requires a suitable
 - [FRDM-MCXA266](../../_boards/frdmmcxa266/freemaster_examples/fmstr_can/example_board_readme.md)
 - [FRDM-MCXA366](../../_boards/frdmmcxa366/freemaster_examples/fmstr_can/example_board_readme.md)
 - [FRDM-MCXW72](../../_boards/frdmmcxw72/freemaster_examples/fmstr_can/example_board_readme.md)
+- [FRDM-MCXA287](../../_boards/frdmmcxa287/freemaster_examples/fmstr_can/example_board_readme.md)

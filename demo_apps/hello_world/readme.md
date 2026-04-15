@@ -111,3 +111,4 @@ debug_console supports this, debug_console_lite doesn't support).
 - [IMX943-EVK](../../_boards/imx943evk/demo_apps/hello_world/example_board_readme.md)
 - [FRDM-KW43](../../_boards/frdmkw43/demo_apps/hello_world/example_board_readme.md)
 - [FRDM-MCXW70](../../_boards/frdmmcxw70/demo_apps/hello_world/example_board_readme.md)
+- [FRDM-MCXA287](../../_boards/frdmmcxa287/demo_apps/hello_world/example_board_readme.md)

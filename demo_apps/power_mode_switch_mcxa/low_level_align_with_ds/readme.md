@@ -26,3 +26,4 @@ This demo demonstrates 2 wake-up sources:
 
 ## Supported Boards
 - [FRDM-MCXA577](../../../_boards/frdmmcxa577/demo_apps/power_mode_switch/low_level/example_board_readme.md)
+- [FRDM-MCXA287](../../../_boards/frdmmcxa287/demo_apps/power_mode_switch/low_level/example_board_readme.md)

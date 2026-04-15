@@ -57,3 +57,4 @@ In this example, a flexio simulated i2c master connect to a LPI2C slave
 - [FRDM-MCXA366](../../../../_boards/frdmmcxa366/driver_examples/flexio/i2c/interrupt_lpi2c_transfer/example_board_readme.md)
 - [FRDM-MCXW72](../../../../_boards/frdmmcxw72/driver_examples/flexio/i2c/interrupt_lpi2c_transfer/example_board_readme.md)
 - [FRDM-MCXA577](../../../../_boards/frdmmcxa577/driver_examples/flexio/i2c/interrupt_lpi2c_transfer/example_board_readme.md)
+- [FRDM-MCXA287](../../../../_boards/frdmmcxa287/driver_examples/flexio/i2c/interrupt_lpi2c_transfer/example_board_readme.md)
