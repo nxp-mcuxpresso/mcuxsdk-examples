@@ -8,7 +8,6 @@ mcux_add_source(
             middleware/vglite/vglite_sdk/example/clock_freertos/layer.c
             middleware/vglite/vglite_sdk/example/vglite_window/vglite_window.h
             middleware/vglite/vglite_sdk/example/vglite_window/vglite_window.c
-            ${board_root}/${board}/FreeRTOSConfigBoard.h
 )
 
 mcux_add_include(
