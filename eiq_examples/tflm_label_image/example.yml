@@ -64,6 +64,25 @@ tflm_label_image:
     - +iar@flash_release
     - +mdk@flash_debug
     - +mdk@flash_release
+    mimxrt2660evk:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    - -armgcc@psram_debug
+    - -armgcc@psram_release
+    - -iar@psram_debug
+    - -iar@psram_release
+    - -mdk@psram_debug
+    - -mdk@psram_release
+    - -armgcc@psram_txt_debug
+    - -armgcc@psram_txt_release
+    - -iar@psram_txt_debug
+    - -iar@psram_txt_release
+    - -mdk@psram_txt_debug
+    - -mdk@psram_txt_release
     evkbmimxrt1170@cm7:
     - +armgcc@flexspi_nor_sdram_debug
     - +armgcc@flexspi_nor_sdram_release

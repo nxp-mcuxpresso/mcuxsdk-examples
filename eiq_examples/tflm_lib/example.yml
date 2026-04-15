@@ -38,7 +38,7 @@ tflm_lib:
     - -iar@flash_release
     - -mdk@flash_debug
     - -mdk@flash_release
-    mimxrt2660evk@cm85_core0:
+    mimxrt2660evk:
     - -armgcc@debug
     - -armgcc@release
     - -iar@debug
