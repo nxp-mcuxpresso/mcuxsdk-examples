@@ -16,9 +16,3 @@ ota_examples
    ota_rom_basic/readme.md
    README.md
    CHANGELOG.md
-
-.. toctree::
-   :hidden:
-   :glob:
-
-   _doc/*

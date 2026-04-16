@@ -22,25 +22,3 @@ If a supported board includes a link, click it to access the board-specific docu
    :glob:
 
    */index
-
-.. toctree::
-   :hidden:
-   :glob:
-
-   README
-   _boards/**/example_board_readme
-   _boards/**/examples_shared_readme
-   _boards/**/board_readme
-   _boards/**/lvgl_examples/*_readme
-   _boards/**/lcdif_examples_readme
-   _boards/**/lcdifv2_examples_readme
-   _boards/**/dcif_examples_readme
-   _boards/**/jpegdec/*_readme
-   _boards/**/ChangeLog_*
-   _boards/**/CHANGELOG
-   _boards/**/README
-   _boards/**/readme
-   _common/**
-   _boards/**/readme_modules
-   _boards/**/wifi_examples/common/*
-   _boards/**/ecat_examples/servo_motor/topics/*
