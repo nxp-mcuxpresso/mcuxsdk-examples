@@ -300,6 +300,7 @@ lpspi_edma_b2b_transfer_master:
     imx952evk@cm7: []
     frdmimx95@cm7: []
     frdmimx952@cm7: []
+    frdmimx937@cm7: []
     frdmmcxa577: []
     frdmmcxa287: []
     frdmmcxc162: []

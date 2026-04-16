@@ -16,3 +16,4 @@ sai_mqs_edma_transfer:
   boards:
     frdmimx95@cm7: []
     frdmimx952@cm7: []
+    frdmimx937@cm7: []

@@ -106,6 +106,7 @@ The assigned unique local or global unique addresses could be typed into the web
 - [IMX95LPD5EVK-19](../../../_boards/imx95lpd5evk19/lwip_examples/lwip_httpsrv/bm/example_board_readme.md)
 - [FRDM-IMX95](../../../_boards/frdmimx95/lwip_examples/lwip_httpsrv/bm/example_board_readme.md)
 - [FRDM-IMX952](../../../_boards/frdmimx952/lwip_examples/lwip_httpsrv/bm/example_board_readme.md)
+- [FRDM-IMX937](../../../_boards/frdmimx937/lwip_examples/lwip_httpsrv/bm/example_board_readme.md)
 - [LPCXpresso54628](../../../_boards/lpcxpresso54628/lwip_examples/lwip_httpsrv/bm/example_board_readme.md)
 - [LPCXpresso54S018](../../../_boards/lpcxpresso54s018/lwip_examples/lwip_httpsrv/bm/example_board_readme.md)
 - [LPCXpresso54S018M](../../../_boards/lpcxpresso54s018m/lwip_examples/lwip_httpsrv/bm/example_board_readme.md)

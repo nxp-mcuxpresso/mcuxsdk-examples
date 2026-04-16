@@ -52,6 +52,7 @@ slave is correct.
 - [IMX95LPD5EVK-19](../../../../_boards/imx95lpd5evk19/cmsis_driver_examples/lpi2c/int_b2b_transfer/master/example_board_readme.md)
 - [FRDM-IMX95](../../../../_boards/frdmimx95/cmsis_driver_examples/lpi2c/int_b2b_transfer/master/example_board_readme.md)
 - [FRDM-IMX952](../../../../_boards/frdmimx952/cmsis_driver_examples/lpi2c/int_b2b_transfer/master/example_board_readme.md)
+- [FRDM-IMX937](../../../../_boards/frdmimx937/cmsis_driver_examples/lpi2c/int_b2b_transfer/master/example_board_readme.md)
 - [KW45B41Z-EVK](../../../../_boards/kw45b41zevk/cmsis_driver_examples/lpi2c/int_b2b_transfer/master/example_board_readme.md)
 - [KW47-EVK](../../../../_boards/kw47evk/cmsis_driver_examples/lpi2c/int_b2b_transfer/master/example_board_readme.md)
 - [MCIMX93AUTO-EVK](../../../../_boards/mcimx93autoevk/cmsis_driver_examples/lpi2c/int_b2b_transfer/master/example_board_readme.md)

@@ -16,3 +16,4 @@ pdm_sai_mqs_interrupt:
   boards:
     frdmimx95@cm7: []
     frdmimx952@cm7: []
+    frdmimx937@cm7: []

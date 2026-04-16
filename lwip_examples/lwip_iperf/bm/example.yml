@@ -121,6 +121,7 @@ lwip_iperf_bm:
     imx952evk@cm7: []
     frdmimx95@cm7: []
     frdmimx952@cm7: []
+    frdmimx937@cm7: []
     lpcxpresso54628: [-armgcc@debug, -armgcc@release]
     lpcxpresso54s018: [-armgcc@debug, -armgcc@release]
     lpcxpresso54s018m: [-armgcc@debug, -armgcc@release]

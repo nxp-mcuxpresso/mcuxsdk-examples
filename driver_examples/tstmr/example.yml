@@ -77,6 +77,7 @@ tstmr:
     imx95lp4xevk15@cm7: []
     frdmimx95@cm7: []
     frdmimx952@cm7: []
+    frdmimx937@cm7: []
     imx952evk@cm7: []
     kw45b41zevk:
     - +armgcc@debug

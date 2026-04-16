@@ -13,3 +13,4 @@ debugging and further development.
 - [IMX95LPD5EVK-19](../../../_boards/imx95lpd5evk19/driver_examples/edma5/memory_to_memory/example_board_readme.md)
 - [FRDM-IMX95](../../../_boards/frdmimx95/driver_examples/edma5/memory_to_memory/example_board_readme.md)
 - [FRDM-IMX952](../../../_boards/frdmimx952/driver_examples/edma5/memory_to_memory/example_board_readme.md)
+- [FRDM-IMX937](../../../_boards/frdmimx937/driver_examples/edma5/memory_to_memory/example_board_readme.md)

@@ -45,6 +45,7 @@ slave is correct.
 - [IMX95LPD5EVK-19](../../../../_boards/imx95lpd5evk19/driver_examples/lpi2c/interrupt_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-IMX95](../../../../_boards/frdmimx95/driver_examples/lpi2c/interrupt_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-IMX952](../../../../_boards/frdmimx952/driver_examples/lpi2c/interrupt_b2b_transfer/slave/example_board_readme.md)
+- [FRDM-IMX937](../../../../_boards/frdmimx937/driver_examples/lpi2c/interrupt_b2b_transfer/slave/example_board_readme.md)
 - [KW45B41Z-EVK](../../../../_boards/kw45b41zevk/driver_examples/lpi2c/interrupt_b2b_transfer/slave/example_board_readme.md)
 - [KW47-EVK](../../../../_boards/kw47evk/driver_examples/lpi2c/interrupt_b2b_transfer/slave/example_board_readme.md)
 - [MCIMX93AUTO-EVK](../../../../_boards/mcimx93autoevk/driver_examples/lpi2c/interrupt_b2b_transfer/slave/example_board_readme.md)
