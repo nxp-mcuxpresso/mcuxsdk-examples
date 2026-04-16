@@ -9,3 +9,4 @@ next round starts, slot 0 will be switched on again.
 
 ## Supported Boards
 - [MIMXRT700-EVK](../../../_boards/mimxrt700evk/driver_examples/jpegdec/jpegdec_examples_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/driver_examples/jpegdec/jpegdec_examples_readme.md)

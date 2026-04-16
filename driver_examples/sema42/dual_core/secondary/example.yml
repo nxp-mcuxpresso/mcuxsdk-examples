@@ -30,6 +30,7 @@ sema42_dualcore_secondary_core:
     mcxn5xxevk@cm33_core1: []
     mcxn9xxevk@cm33_core1: []
     mimxrt700evk@cm33_core1: []
+    frdmimxrt700@cm33_core1: []
     evkmimxrt1180@cm7:
     - +armgcc@debug
     - +armgcc@release

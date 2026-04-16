@@ -229,6 +229,13 @@ log_bm:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    frdmimxrt700@cm33_core0:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     twrkm34z50mv3: []
     twrkm34z75m: []
     twrkm35z75m: []

@@ -48,6 +48,8 @@ new_project:
     lpcxpresso845max: []
     lpcxpresso860max: []
     mimxrt700evk@cm33_core0: []
+    frdmimxrt700@cm33_core0: []
     mimxrt700evk@cm33_core1: []
+    frdmimxrt700@cm33_core1: []
     twrkm34z50mv3: []
     twrkm35z75m: []

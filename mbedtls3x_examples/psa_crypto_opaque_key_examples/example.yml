@@ -36,6 +36,7 @@ psa_crypto_opaque_key_examples:
     mcxn9xxevk@cm33_core0: []
     rdrw612bga: []
     mimxrt700evk@cm33_core0: []
+    frdmimxrt700@cm33_core0: []
     evkbmimxrt1170@cm7:
     - -armgcc@debug
     - -armgcc@sdram_debug

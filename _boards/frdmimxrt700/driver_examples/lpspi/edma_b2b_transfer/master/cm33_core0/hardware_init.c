@@ -30,7 +30,7 @@ void BOARD_InitHardware(void)
     POWER_DisablePD(kPDRUNCFG_DSR_VDD2N_MEDIA);
     POWER_ApplyPD();
 
-    CLOCK_AttachClk(kFRO1_DIV1_to_LPSPI164);
+    CLOCK_AttachClk(kFRO1_DIV1_to_LPSPI16);
     CLOCK_SetClkDiv(kCLOCK_DivLpspi16Clk, 8U);
     RESET_ClearPeripheralReset(kLPSPI16_RST_SHIFT_RSTn);
 

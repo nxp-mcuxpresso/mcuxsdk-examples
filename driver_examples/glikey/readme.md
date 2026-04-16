@@ -45,6 +45,7 @@ End of example
 - [FRDM-MCXA346](../../_boards/frdmmcxa346/driver_examples/glikey/example_board_readme.md)
 - [FRDM-MCXL255](../../_boards/frdmmcxl255/driver_examples/glikey/example_board_readme.md)
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/driver_examples/glikey/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/driver_examples/glikey/example_board_readme.md)
 - [FRDM-MCXA174](../../_boards/frdmmcxa174/driver_examples/glikey/example_board_readme.md)
 - [FRDM-MCXA344](../../_boards/frdmmcxa344/driver_examples/glikey/example_board_readme.md)
 - [FRDM-MCXA266](../../_boards/frdmmcxa266/driver_examples/glikey/example_board_readme.md)

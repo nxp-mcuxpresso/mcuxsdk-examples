@@ -23,3 +23,4 @@ Part 4 is the invertion of backgroud frame buffer color.
 ## Supported Boards
 - [EVK-MIMXRT595](../../../_boards/evkmimxrt595/driver_examples/lcdif/lcdif_examples_readme.md)
 - [MIMXRT700-EVK](../../../_boards/mimxrt700evk/driver_examples/lcdif/lcdif_examples_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/driver_examples/lcdif/lcdif_examples_readme.md)

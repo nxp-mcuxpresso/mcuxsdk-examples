@@ -54,6 +54,7 @@ slave is correct.
 - [MCX-N9XX-EVK](../../../../_boards/mcxn9xxevk/driver_examples/lpi2c/interrupt_b2b_transfer/slave/example_board_readme.md)
 - [MCX-W72-EVK](../../../../_boards/mcxw72evk/driver_examples/lpi2c/interrupt_b2b_transfer/slave/example_board_readme.md)
 - [MIMXRT700-EVK](../../../../_boards/mimxrt700evk/driver_examples/lpi2c/interrupt_b2b_transfer/slave/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/driver_examples/lpi2c/interrupt_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXE31B](../../../../_boards/frdmmcxe31b/driver_examples/lpi2c/interrupt_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXL255](../../../../_boards/frdmmcxl255/driver_examples/lpi2c/interrupt_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXA174](../../../../_boards/frdmmcxa174/driver_examples/lpi2c/interrupt_b2b_transfer/slave/example_board_readme.md)

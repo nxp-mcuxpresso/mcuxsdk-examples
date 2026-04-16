@@ -41,6 +41,7 @@ the configuration structure's setting in application to fit the special requirem
 - [MCX-W72-EVK](../../../_boards/mcxw72evk/driver_examples/lpadc/polling/example_board_readme.md)
 - [MIMXRT685-AUD-EVK](../../../_boards/mimxrt685audevk/driver_examples/lpadc/polling/example_board_readme.md)
 - [MIMXRT700-EVK](../../../_boards/mimxrt700evk/driver_examples/lpadc/polling/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/driver_examples/lpadc/polling/example_board_readme.md)
 - [FRDM-MCXA174](../../../_boards/frdmmcxa174/driver_examples/lpadc/polling/example_board_readme.md)
 - [FRDM-MCXA344](../../../_boards/frdmmcxa344/driver_examples/lpadc/polling/example_board_readme.md)
 - [KW47-LOC](../../../_boards/kw47loc/driver_examples/lpadc/polling/example_board_readme.md)

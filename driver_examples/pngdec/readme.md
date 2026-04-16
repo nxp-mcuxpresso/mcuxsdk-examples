@@ -8,3 +8,4 @@ the picture is shown on panel.
 
 ## Supported Boards
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/driver_examples/pngdec/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/driver_examples/pngdec/example_board_readme.md)

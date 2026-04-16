@@ -35,3 +35,4 @@ block.
 
 ## Supported Boards
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/demo_apps/power_mode_with_hifi/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/demo_apps/power_mode_with_hifi/example_board_readme.md)

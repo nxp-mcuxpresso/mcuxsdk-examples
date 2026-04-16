@@ -15,4 +15,5 @@ the configuration structure's setting in application to fit the special requirem
 ## Supported Boards
 - [MIMXRT1180-EVK](../../../_boards/evkmimxrt1180/driver_examples/lpadc/dual_single_ended_conversion/example_board_readme.md)
 - [MIMXRT700-EVK](../../../_boards/mimxrt700evk/driver_examples/lpadc/dual_single_ended_conversion/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/driver_examples/lpadc/dual_single_ended_conversion/example_board_readme.md)
 - [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/driver_examples/lpadc/dual_single_ended_conversion/example_board_readme.md)

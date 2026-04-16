@@ -263,6 +263,13 @@ lpspi_polling_b2b_transfer_slave:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    frdmimxrt700@cm33_core0:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     frdmmcxl255@cm33: []
     frdmmcxe31b: []
     frdmimxrt1186@cm33:

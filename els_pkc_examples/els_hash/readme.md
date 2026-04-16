@@ -19,4 +19,5 @@ The ELS PKC application provides examples which demonstrate usage of most availa
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/els_pkc_examples/els_hash/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/els_pkc_examples/els_hash/example_board_readme.md)
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/els_pkc_examples/els_hash/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/els_pkc_examples/els_hash/example_board_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/els_pkc_examples/els_hash/example_board_readme.md)

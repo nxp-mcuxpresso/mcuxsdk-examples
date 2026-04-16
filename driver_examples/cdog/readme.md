@@ -47,6 +47,7 @@ SW reset does not clear pending fault flags.
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/driver_examples/cdog/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/driver_examples/cdog/example_board_readme.md)
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/driver_examples/cdog/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/driver_examples/cdog/example_board_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/driver_examples/cdog/example_board_readme.md)
 - [MCXW23-EVK](../../_boards/mcxw23evk/driver_examples/cdog/example_board_readme.md)
 - [FRDM-MCXA174](../../_boards/frdmmcxa174/driver_examples/cdog/example_board_readme.md)

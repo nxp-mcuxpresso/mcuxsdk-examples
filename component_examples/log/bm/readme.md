@@ -49,6 +49,7 @@ work with semihosting.
 - [MCX-W72-EVK](../../../_boards/mcxw72evk/component_examples/log/bm/example_board_readme.md)
 - [MIMXRT685-AUD-EVK](../../../_boards/mimxrt685audevk/component_examples/log/bm/example_board_readme.md)
 - [MIMXRT700-EVK](../../../_boards/mimxrt700evk/component_examples/log/bm/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/component_examples/log/bm/example_board_readme.md)
 - [TWR-KM34Z50MV3](../../../_boards/twrkm34z50mv3/component_examples/log/bm/example_board_readme.md)
 - [TWR-KM34Z75M](../../../_boards/twrkm34z75m/component_examples/log/bm/example_board_readme.md)
 - [TWR-KM35Z75M](../../../_boards/twrkm35z75m/component_examples/log/bm/example_board_readme.md)

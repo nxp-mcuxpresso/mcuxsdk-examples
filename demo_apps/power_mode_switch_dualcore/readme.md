@@ -8,3 +8,4 @@ Then the secondary core prepares the resource (data, message, etc) into the some
 ## Supported Boards
 - [FRDM-K32L3A6](../../_boards/frdmk32l3a6/demo_apps/power_mode_switch/example_board_readme.md)
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/demo_apps/power_mode_switch/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/demo_apps/power_mode_switch/example_board_readme.md)

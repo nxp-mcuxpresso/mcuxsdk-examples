@@ -95,3 +95,4 @@ fbdev_freertos:
     - -mdk@release
     evkmimxrt595@cm33: []
     mimxrt700evk@cm33_core0: []
+    frdmimxrt700@cm33_core0: []

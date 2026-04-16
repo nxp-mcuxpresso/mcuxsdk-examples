@@ -21,3 +21,4 @@ In this example, one sai instance record the audio data from input and playbacks
 - [FRDM-MCXN236](../../../_boards/frdmmcxn236/driver_examples/sai/edma_record_playback/example_board_readme.md)
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/driver_examples/sai/edma_record_playback/example_board_readme.md)
 - [MIMXRT700-EVK](../../../_boards/mimxrt700evk/driver_examples/sai/edma_record_playback/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/driver_examples/sai/edma_record_playback/example_board_readme.md)

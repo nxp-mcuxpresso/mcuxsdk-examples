@@ -268,7 +268,15 @@ lpuart_interrupt:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    frdmimxrt700@cm33_core0:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     mimxrt700evk@cm33_core1: []
+    frdmimxrt700@cm33_core1: []
     imx943evk@cm7_core1:
     - +armgcc@debug
     - +armgcc@release

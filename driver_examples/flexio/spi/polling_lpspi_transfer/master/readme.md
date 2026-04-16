@@ -19,4 +19,5 @@ In this example, a flexio simulated master connect to a lpspi slave.
 - [MIMXRT1160-EVK](../../../../../_boards/evkmimxrt1160/driver_examples/flexio/spi/polling_lpspi_transfer/master/example_board_readme.md)
 - [MIMXRT1180-EVK](../../../../../_boards/evkmimxrt1180/driver_examples/flexio/spi/polling_lpspi_transfer/master/example_board_readme.md)
 - [MIMXRT700-EVK](../../../../../_boards/mimxrt700evk/driver_examples/flexio/spi/polling_lpspi_transfer/master/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/driver_examples/flexio/spi/polling_lpspi_transfer/master/example_board_readme.md)
 - [FRDM-IMXRT1186](../../../../../_boards/frdmimxrt1186/driver_examples/flexio/spi/polling_lpspi_transfer/master/example_board_readme.md)

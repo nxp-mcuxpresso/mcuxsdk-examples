@@ -12,3 +12,4 @@ calculated per the specific formula.
 - [EVK-MCIMX7ULP](../../_boards/evkmcimx7ulp/demo_apps/pmc_temperature_sensor/example_board_readme.md)
 - [EVK-MIMXRT595](../../_boards/evkmimxrt595/demo_apps/pmc_temperature_sensor/example_board_readme.md)
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/demo_apps/pmc_temperature_sensor/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/demo_apps/pmc_temperature_sensor/example_board_readme.md)

@@ -40,5 +40,6 @@ End of example
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/driver_examples/itrc/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/driver_examples/itrc/example_board_readme.md)
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/driver_examples/itrc/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/driver_examples/itrc/example_board_readme.md)
 - [FRDM-MCXA577](../../_boards/frdmmcxa577/driver_examples/itrc/example_board_readme.md)
 - [FRDM-MCXA287](../../_boards/frdmmcxa287/driver_examples/itrc/example_board_readme.md)

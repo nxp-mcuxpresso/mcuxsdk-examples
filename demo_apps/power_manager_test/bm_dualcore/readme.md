@@ -12,3 +12,4 @@ The demo shows how the various power mode switch to each other based on power ma
 
 ## Supported Boards
 - [MIMXRT700-EVK](../../../_boards/mimxrt700evk/demo_apps/power_manager_test/bm/example_board_readme.md)
+- [FRDM-IMXRT700](../../../_boards/frdmimxrt700/demo_apps/power_manager_test/bm/example_board_readme.md)

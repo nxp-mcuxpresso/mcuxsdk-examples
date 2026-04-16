@@ -14,3 +14,4 @@ ezhv_bitfield_operate_ezhv:
       - examples/_boards/${board}/examples_shared_readme.md
   boards:
     mimxrt700evk@ezhv: []
+    frdmimxrt700@ezhv: []

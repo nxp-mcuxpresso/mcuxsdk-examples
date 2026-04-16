@@ -7,3 +7,4 @@ The rotate/flip mode is changing.
 
 ## Supported Boards
 - [MIMXRT700-EVK](../../../_boards/mimxrt700evk/driver_examples/lcdif/lcdif_examples_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/driver_examples/lcdif/lcdif_examples_readme.md)

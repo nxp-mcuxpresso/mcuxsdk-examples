@@ -69,6 +69,13 @@ utick_example:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    frdmimxrt700@cm33_core0:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     frdmmcxa174: []
     frdmmcxa344: []
     frdmmcxa266: []

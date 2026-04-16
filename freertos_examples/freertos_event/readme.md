@@ -96,6 +96,7 @@ Bit B1 is set
 - [MCX-W72-EVK](../../_boards/mcxw72evk/freertos_examples/freertos_event/example_board_readme.md)
 - [MIMXRT685-AUD-EVK](../../_boards/mimxrt685audevk/freertos_examples/freertos_event/example_board_readme.md)
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/freertos_examples/freertos_event/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/freertos_examples/freertos_event/example_board_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/freertos_examples/freertos_event/example_board_readme.md)
 - [TWR-KM34Z50MV3](../../_boards/twrkm34z50mv3/freertos_examples/freertos_event/example_board_readme.md)
 - [TWR-KM34Z75M](../../_boards/twrkm34z75m/freertos_examples/freertos_event/example_board_readme.md)

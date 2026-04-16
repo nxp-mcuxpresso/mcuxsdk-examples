@@ -14,3 +14,4 @@ ezhv_flexio_dvp_ezhv:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mimxrt700evk@ezhv: []
+    frdmimxrt700@ezhv: []

@@ -16,3 +16,4 @@ pmc_temperature_sensor:
     evkmcimx7ulp: []
     evkmimxrt595@cm33: []
     mimxrt700evk@cm33_core0: []
+    frdmimxrt700@cm33_core0: []

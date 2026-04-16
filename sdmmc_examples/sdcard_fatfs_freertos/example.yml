@@ -41,3 +41,4 @@ sdcard_fatfs_freertos:
     lpcxpresso55s28: []
     lpcxpresso55s69@cm33_core0: []
     mimxrt700evk@cm33_core0: []
+    frdmimxrt700@cm33_core0: []

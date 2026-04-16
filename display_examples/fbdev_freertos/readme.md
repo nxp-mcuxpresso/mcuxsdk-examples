@@ -12,3 +12,4 @@ its color changes when reached the border.
 - [MIMXRT1160-EVK](../../_boards/evkmimxrt1160/display_examples/fbdev_freertos/example_board_readme.md)
 - [EVK-MIMXRT595](../../_boards/evkmimxrt595/display_examples/fbdev_freertos/example_board_readme.md)
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/display_examples/fbdev_freertos/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/display_examples/fbdev_freertos/example_board_readme.md)

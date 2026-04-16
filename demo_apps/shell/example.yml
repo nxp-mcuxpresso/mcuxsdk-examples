@@ -76,6 +76,7 @@ shell:
     mcxn9xxevk@cm33_core0: []
     mimxrt685audevk@cm33: []
     mimxrt700evk@cm33_core0: []
+    frdmimxrt700@cm33_core0: []
     twrkm34z50mv3: []
     twrkm34z75m: []
     twrkm35z75m: []

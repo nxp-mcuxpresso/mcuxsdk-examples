@@ -36,6 +36,13 @@ sema42_dualcore_primary_core:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    frdmimxrt700@cm33_core0:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     evkmimxrt1180@cm33:
     - +armgcc@flexspi_nor_debug
     - +armgcc@flexspi_nor_release

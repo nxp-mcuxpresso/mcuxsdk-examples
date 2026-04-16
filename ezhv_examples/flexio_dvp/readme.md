@@ -5,3 +5,4 @@ This project shows how to use EZHV and FlexIO to enable display video port.
 
 ## Supported Boards
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/ezhv_examples/flexio_dvp/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/ezhv_examples/flexio_dvp/example_board_readme.md)

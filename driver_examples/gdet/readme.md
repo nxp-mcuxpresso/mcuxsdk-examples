@@ -22,6 +22,7 @@ End of example
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/driver_examples/gdet/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/driver_examples/gdet/example_board_readme.md)
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/driver_examples/gdet/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/driver_examples/gdet/example_board_readme.md)
 - [FRDM-MCXA577](../../_boards/frdmmcxa557/driver_examples/gdet/example_board_readme.md)
 - [FRDM-KW43](../../_boards/frdmkw43/driver_examples/gdet/example_board_readme.md)
 - [FRDM-MCXW70](../../_boards/frdmmcxw70/driver_examples/gdet/example_board_readme.md)

@@ -33,4 +33,5 @@ may be demonstrated if MBEDTLS_PSA_CRYPTO_STORAGE_C is enabled in the config fil
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/mbedtls3x_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/mbedtls3x_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/mbedtls3x_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/mbedtls3x_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
 - [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/mbedtls3x_examples/psa_crypto_opaque_key_examples/example_board_readme.md)

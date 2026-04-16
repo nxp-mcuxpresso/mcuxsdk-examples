@@ -28,3 +28,4 @@ Usual use consists of these steps:
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/driver_examples/puf_v3/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/driver_examples/puf_v3/example_board_readme.md)
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/driver_examples/puf_v3/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/driver_examples/puf_v3/example_board_readme.md)

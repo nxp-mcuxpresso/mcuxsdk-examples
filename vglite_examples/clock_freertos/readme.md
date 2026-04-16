@@ -10,4 +10,5 @@ clock on the screen.
 - [MIMXRT1160-EVK](../../_boards/evkmimxrt1160/vglite_examples/clock_freertos/example_board_readme.md)
 - [EVK-MIMXRT595](../../_boards/evkmimxrt595/vglite_examples/clock_freertos/example_board_readme.md)
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/vglite_examples/clock_freertos/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/vglite_examples/clock_freertos/example_board_readme.md)
 

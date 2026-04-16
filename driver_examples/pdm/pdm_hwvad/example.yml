@@ -106,6 +106,13 @@ pdm_hwvad:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    frdmimxrt700@cm33_core0:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     imx943evk@cm7_core1:
     - +armgcc@debug
     - +armgcc@release

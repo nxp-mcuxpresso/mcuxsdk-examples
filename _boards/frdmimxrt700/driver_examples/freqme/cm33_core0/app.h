@@ -10,24 +10,29 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define DEMO_CLOCK_SOURCE_COUNT 3U
-#define DEMO_CLOCK_SOURCE_NAME                  \
+
+#define DEMO_FREQ_TAR_CLOCK_SOURCE_NAME                  \
     {                                           \
         "OSC_CLK", "FRO1_DIV8", "LPOSC"         \
     }
 
-#define DEMO_REFERENCE_CLOCK_SOURCE_SIGNAL                                                   \
-    {                                                                                        \
-        kINPUTMUX_OscClkToFreqmeasRef, kINPUTMUX_Fro1Div8ToFreqmeasRef, kINPUTMUX_LposcToFreqmeasRef \
+#define DEMO_PULSE_TAR_CLOCK_SOURCE_NAME            \
+    {                                           \
+        "OSC_CLK", "FRO1_DIV8", "FRO1"       \
     }
 
-#define DEMO_TARGET_CLOCK_SOURCE_SIGNAL                                                            \
+#define DEMO_PULSE_TAR_CLOCK_SOURCE_SIGNAL                                                   \
+    {                                                                                        \
+        kINPUTMUX_OscClkToFreqmeasTar, kINPUTMUX_Fro1Div8ToFreqmeasTar, kINPUTMUX_Fro1ToFreqmeasTar \
+    }
+
+#define DEMO_FREQ_TAR_CLOCK_SOURCE_SIGNAL                                                            \
     {                                                                                              \
         kINPUTMUX_OscClkToFreqmeasTar, kINPUTMUX_Fro1Div8ToFreqmeasTar, kINPUTMUX_LposcToFreqmeasTar \
     }
 
-#define DEMO_REF_CLK_SOURCE    kINPUTMUX_Fro1ToFreqmeasRef
-#define DEMO_TARGET_CLK_SOURCE kINPUTMUX_Fro1ToFreqmeasTar
+#define DEMO_FREQ_REF_CLK_SOURCE    kINPUTMUX_Fro1ToFreqmeasRef
+#define DEMO_PULSE_REF_CLK_SOURCE kINPUTMUX_32KhzOscToFreqmeasRef
 #define DEMO_FREQME            FREQME
 #define FREQME_IRQHANDLER      Freqme_IRQHandler
 #define DEMO_MAXEXPECTVALUE    (0x6FFFFFFFUL)

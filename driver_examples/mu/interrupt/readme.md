@@ -14,5 +14,6 @@ In this example:
 - [MIMXRT1180-EVK](../../../_boards/evkmimxrt1180/driver_examples/mu/interrupt/example_board_readme.md)
 - [FRDM-K32L3A6](../../../_boards/frdmk32l3a6/driver_examples/mu/interrupt/example_board_readme.md)
 - [MIMXRT700-EVK](../../../_boards/mimxrt700evk/driver_examples/mu/interrupt/example_board_readme.md)
+- [FRDM-IMXRT700](../../../_boards/frdmimxrt700/driver_examples/mu/interrupt/example_board_readme.md)
 - [FRDM-MCXL255](../../../_boards/frdmmcxl255/driver_examples/mu/interrupt/example_board_readme.md)
 - [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/driver_examples/mu/interrupt/example_board_readme.md)

@@ -9,3 +9,4 @@ DEMO_PANEL_RK055IQH091, DEMO_PANEL_RK055MHD091 and DEMO_PANEL_RASPI_7INCH are su
 
 ## Supported Boards
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/display_examples/decnano_decompress/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/display_examples/decnano_decompress/example_board_readme.md)

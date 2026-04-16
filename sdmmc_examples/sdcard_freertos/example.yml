@@ -49,3 +49,4 @@ sdcard_freertos:
     mcxn9xxevk@cm33_core0: []
     mimxrt685audevk@cm33: []
     mimxrt700evk@cm33_core0: []
+    frdmimxrt700@cm33_core0: []

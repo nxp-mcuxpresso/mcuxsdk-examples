@@ -8,3 +8,4 @@ use the hardware to accelerate, otherwise will use the old software way.
 
 ## Supported Boards
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/display_examples/lib_jpeg_hw_accel/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/display_examples/lib_jpeg_hw_accel/example_board_readme.md)

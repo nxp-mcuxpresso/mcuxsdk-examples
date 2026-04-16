@@ -10,3 +10,4 @@ is moving in the screen, the cursor alpha value changes during moving.
 - [EVK-MIMX8ULP](../../../_boards/evkmimx8ulp/driver_examples/lcdif/lcdif_examples_readme.md)
 - [EVK-MIMXRT595](../../../_boards/evkmimxrt595/driver_examples/lcdif/lcdif_examples_readme.md)
 - [MIMXRT700-EVK](../../../_boards/mimxrt700evk/driver_examples/lcdif/lcdif_examples_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/driver_examples/lcdif/lcdif_examples_readme.md)

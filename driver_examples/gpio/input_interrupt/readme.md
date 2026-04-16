@@ -33,6 +33,7 @@ example uses the software button to control/toggle the LED.
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/driver_examples/gpio/input_interrupt/example_board_readme.md)
 - [MCX-W72-EVK](../../../_boards/mcxw72evk/driver_examples/gpio/input_interrupt/example_board_readme.md)
 - [MIMXRT700-EVK](../../../_boards/mimxrt700evk/driver_examples/gpio/input_interrupt/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/driver_examples/gpio/input_interrupt/example_board_readme.md)
 - [TWR-KM34Z50MV3](../../../_boards/twrkm34z50mv3/driver_examples/gpio/input_interrupt/example_board_readme.md)
 - [TWR-KM34Z75M](../../../_boards/twrkm34z75m/driver_examples/gpio/input_interrupt/example_board_readme.md)
 - [TWR-KM35Z75M](../../../_boards/twrkm35z75m/driver_examples/gpio/input_interrupt/example_board_readme.md)

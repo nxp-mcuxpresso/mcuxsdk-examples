@@ -28,3 +28,4 @@ power_mode_switch_secondary:
   boards:
     frdmk32l3a6@cm0plus: []
     mimxrt700evk@cm33_core1: []
+    frdmimxrt700@cm33_core1: []

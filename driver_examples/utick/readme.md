@@ -21,6 +21,7 @@ a message a printed on the UART terminal.
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/driver_examples/utick/example_board_readme.md)
 - [MIMXRT685-AUD-EVK](../../_boards/mimxrt685audevk/driver_examples/utick/example_board_readme.md)
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/driver_examples/utick/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/driver_examples/utick/example_board_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/driver_examples/utick/example_board_readme.md)
 - [MCXW23-EVK](../../_boards/mcxw23evk/driver_examples/utick/example_board_readme.md)
 - [FRDM-MCXA174](../../_boards/frdmmcxa174/driver_examples/utick/example_board_readme.md)

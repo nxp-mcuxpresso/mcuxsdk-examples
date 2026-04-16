@@ -156,6 +156,7 @@ psa_crypto_examples:
     mimxrt685audevk@cm33: []
     rdrw612bga: []
     mimxrt700evk@cm33_core0: []
+    frdmimxrt700@cm33_core0: []
     evkbmimxrt1170@cm4:
     - -iar@debug
     - -iar@release

@@ -39,4 +39,5 @@ The analog input is HIGHER than DAC output
 - [EVK-MIMXRT685](../../../_boards/evkmimxrt685/driver_examples/acmp/polling/example_board_readme.md)
 - [MIMXRT685-AUD-EVK](../../../_boards/mimxrt685audevk/driver_examples/acmp/polling/example_board_readme.md)
 - [MIMXRT700-EVK](../../../_boards/mimxrt700evk/driver_examples/acmp/polling/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/driver_examples/acmp/polling/example_board_readme.md)
 - [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/driver_examples/acmp/polling/example_board_readme.md)

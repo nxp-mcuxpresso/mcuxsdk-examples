@@ -41,6 +41,7 @@ NA
 - [LPCXpresso845MAX](../../_boards/lpcxpresso845max/demo_apps/new_project/example_board_readme.md)
 - [LPCXpresso860MAX](../../_boards/lpcxpresso860max/demo_apps/new_project/example_board_readme.md)
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/demo_apps/new_project/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/demo_apps/new_project/example_board_readme.md)
 - [TWR-KM34Z50MV3](../../_boards/twrkm34z50mv3/demo_apps/new_project/example_board_readme.md)
 - [TWR-KM35Z75M](../../_boards/twrkm35z75m/demo_apps/new_project/example_board_readme.md)
 - [MCXW23-EVK](../../_boards/mcxw23evk/demo_apps/new_project/example_board_readme.md)

@@ -8,3 +8,4 @@ After one descriptor finishes the other will be loaded.
 
 ## Supported Boards
 - [MIMXRT700-EVK](../../../_boards/mimxrt700evk/driver_examples/jpegdec/jpegdec_examples_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/driver_examples/jpegdec/jpegdec_examples_readme.md)

@@ -5,3 +5,4 @@ This project shows how to use EZHV message send and receive feature with event m
 
 ## Supported Boards
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/ezhv_examples/msg_send_receive/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/ezhv_examples/msg_send_receive/example_board_readme.md)

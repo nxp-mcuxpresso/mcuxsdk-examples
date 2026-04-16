@@ -36,3 +36,4 @@ card through host or gpio, make sure the pinmux configuration is correct.
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/sdmmc_examples/sdcard_interrupt/example_board_readme.md)
 - [MIMXRT685-AUD-EVK](../../_boards/mimxrt685audevk/sdmmc_examples/sdcard_interrupt/example_board_readme.md)
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/sdmmc_examples/sdcard_interrupt/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/sdmmc_examples/sdcard_interrupt/example_board_readme.md)

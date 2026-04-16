@@ -11,3 +11,4 @@ The array map means map an array of physical unit into an array of virtual addre
 
 ## Supported Boards
 - [MIMXRT700-EVK](../../../_boards/mimxrt700evk/driver_examples/mmu/xspi/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/driver_examples/mmu/xspi/example_board_readme.md)

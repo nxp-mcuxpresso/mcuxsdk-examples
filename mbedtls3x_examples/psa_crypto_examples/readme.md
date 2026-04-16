@@ -20,6 +20,7 @@ PSA Crypto example to demonstrate cipher operation.
 - [MCX-W72-EVK](../../_boards/mcxw72evk/mbedtls3x_examples/psa_crypto_examples/example_board_readme.md)
 - [MIMXRT685-AUD-EVK](../../_boards/mimxrt685audevk/mbedtls3x_examples/psa_crypto_examples/example_board_readme.md)
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/mbedtls3x_examples/psa_crypto_examples/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/mbedtls3x_examples/psa_crypto_examples/example_board_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/mbedtls3x_examples/psa_crypto_examples/example_board_readme.md)
 - [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/mbedtls3x_examples/psa_crypto_examples/example_board_readme.md)
 - [KW47-LOC](../../_boards/kw47loc/mbedtls3x_examples/psa_crypto_examples/example_board_readme.md)

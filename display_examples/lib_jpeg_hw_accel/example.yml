@@ -19,3 +19,4 @@ lib_jpeg_hw_accel:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mimxrt700evk@cm33_core0: []
+    frdmimxrt700@cm33_core0: []
