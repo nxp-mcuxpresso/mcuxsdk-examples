@@ -88,18 +88,6 @@ int main(void)
         PRINTF("fail \r\n");
     }
 
-    PRINTF("ECC EdDSA Ed25519:");
-    if (mcuxClEcc_EdDSA_Ed25519ph_example() == true)
-    {
-        pass++;
-        PRINTF("pass \r\n");
-    }
-    else
-    {
-        fail++;
-        PRINTF("fail \r\n");
-    }
-
     PRINTF("ECC MontDH Curve25519:");
     if (mcuxClEcc_MontDH_Curve25519_example() == true)
     {
@@ -112,6 +100,7 @@ int main(void)
         PRINTF("fail \r\n");
     }
 
+#if defined(MCUXCL_FEATURE_ECC_CURVE448)
     PRINTF("ECC MontDH Curve448:");
     if (mcuxClEcc_MontDH_Curve448_example() == true)
     {
@@ -123,6 +112,7 @@ int main(void)
         fail++;
         PRINTF("fail \r\n");
     }
+#endif /* defined(MCUXCL_FEATURE_ECC_CURVE448) */
 
     PRINTF("ECC EdDSA Ed25519:");
     if (mcuxClEcc_EdDSA_Ed25519ph_example() == true)
