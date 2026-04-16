@@ -33,8 +33,12 @@
         "Active --> Shut Down --> Active",                                                  \
     }
 
-#define APP_ENABLE_ADVC           (0)
-#define APP_ENABLE_CONTEXT_SAVING (0) /* Enable context saving will increase power consumption. */
+#ifndef APP_ENABLE_ADVC
+#define APP_ENABLE_ADVC           (CONFIG_APP_ENABLE_ADVC)
+#endif
+#ifndef APP_ENABLE_CONTEXT_SAVING
+#define APP_ENABLE_CONTEXT_SAVING (CONFIG_APP_ENABLE_CONTEXT_SAVING)
+#endif
 
 /* Common power mode descriptions (modes 0-3: same for all configurations) */
 #define DEMO_POWER_MODE_DESC_COMMON \

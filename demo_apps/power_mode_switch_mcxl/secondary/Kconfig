@@ -1,0 +1,27 @@
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+
+menu "Project Settings"
+
+config APP_ENABLE_ADVC
+    bool "Enable ADVC (Adaptive Voltage Controller)"
+    default n
+    help
+        Enable the Adaptive Voltage Controller to dynamically adjust
+        VDD_CORE_AON voltage based on operating frequency, reducing
+        power consumption in low power modes.
+
+config APP_ENABLE_CONTEXT_SAVING
+    bool "Enable context saving for low power modes"
+    default n
+    help
+        Save and restore CPU context across deep power down modes
+        (DPD1/DPD2) so the application resumes from where it left off
+        instead of performing a full reboot. This retains all SRAM
+        contents but increases power consumption during sleep.
+
+endmenu
+
+source "${SdkRootDirPath}/Kconfig.mcuxpresso"

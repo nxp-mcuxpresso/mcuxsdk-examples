@@ -11,8 +11,12 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define APP_ENABLE_ADVC           (0)
-#define APP_ENABLE_CONTEXT_SAVING (0)
+#ifndef APP_ENABLE_ADVC
+#define APP_ENABLE_ADVC           (CONFIG_APP_ENABLE_ADVC)
+#endif
+#ifndef APP_ENABLE_CONTEXT_SAVING
+#define APP_ENABLE_CONTEXT_SAVING (CONFIG_APP_ENABLE_CONTEXT_SAVING)
+#endif
 
 #define APP_MU         MUB
 #define APP_MU_CHANNEL (0)
