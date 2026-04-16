@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 NXP
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -36,8 +36,6 @@ void BOARD_InitBootPins(void);
  *
  */
 void BOARD_InitDebugConsolePins(void);        /* Function assigned for the Cortex-M7F */
-
-#define BOARD_INITCS42448PINS_IOMUXC_GPR_GPR42_GPIO_MUX3_GPIO_SEL_LOW_MASK 0x0200U /*!< GPIO3 and CM7_GPIO3 share same IO MUX function, GPIO_MUX3 selects one GPIO function: affected bits mask */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 NXP
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -12,11 +12,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v13.0
+product: Pins v17.0
 processor: MIMXRT1062xxxxB
 package_id: MIMXRT1062DVL6B
 mcu_data: ksdk2_0
-processor_version: 13.0.1
+processor_version: 26.03.10
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -43,11 +43,11 @@ BOARD_InitPins:
     pull_keeper_select: Keeper, pull_keeper_enable: Enable, open_drain: Disable, speed: MHZ_100, drive_strength: R0_6, slew_rate: Slow}
   - {pin_num: K14, peripheral: LPUART1, signal: TX, pin_signal: GPIO_AD_B0_12, software_input_on: Disable, hysteresis_enable: Disable, pull_up_down_config: Pull_Down_100K_Ohm,
     pull_keeper_select: Keeper, pull_keeper_enable: Enable, open_drain: Disable, speed: MHZ_100, drive_strength: R0_6, slew_rate: Slow}
-  - {pin_num: F14, peripheral: XBARA1, signal: 'IN, 21', pin_signal: GPIO_AD_B0_09, software_input_on: Enable, hysteresis_enable: Disable, pull_up_down_config: Pull_Down_100K_Ohm,
+  - {pin_num: F14, peripheral: XBARA1, signal: 'IN, 21', pin_signal: GPIO_AD_B0_09, software_input_on: Disable, hysteresis_enable: Disable, pull_up_down_config: Pull_Down_100K_Ohm,
     pull_keeper_select: Keeper, pull_keeper_enable: Enable, open_drain: Disable, speed: MHZ_100, drive_strength: R0_6, slew_rate: Slow}
-  - {pin_num: G13, peripheral: XBARA1, signal: 'IN, 22', pin_signal: GPIO_AD_B0_10, software_input_on: Enable, hysteresis_enable: Disable, pull_up_down_config: Pull_Down_100K_Ohm,
+  - {pin_num: G13, peripheral: XBARA1, signal: 'IN, 22', pin_signal: GPIO_AD_B0_10, software_input_on: Disable, hysteresis_enable: Disable, pull_up_down_config: Pull_Down_100K_Ohm,
     pull_keeper_select: Keeper, pull_keeper_enable: Enable, open_drain: Disable, speed: MHZ_100, drive_strength: R0_6, slew_rate: Slow}
-  - {pin_num: G10, peripheral: XBARA1, signal: 'IN, 23', pin_signal: GPIO_AD_B0_11, software_input_on: Enable, hysteresis_enable: Disable, pull_up_down_config: Pull_Down_100K_Ohm,
+  - {pin_num: G10, peripheral: XBARA1, signal: 'IN, 23', pin_signal: GPIO_AD_B0_11, software_input_on: Disable, hysteresis_enable: Disable, pull_up_down_config: Pull_Down_100K_Ohm,
     pull_keeper_select: Keeper, pull_keeper_enable: Enable, open_drain: Disable, speed: MHZ_100, drive_strength: R0_6, slew_rate: Slow}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -61,9 +61,9 @@ BOARD_InitPins:
 void BOARD_InitPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc);           
 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B0_09_XBAR1_IN21, 1U); 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B0_10_XBAR1_IN22, 1U); 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B0_11_XBAR1_IN23, 1U); 
+  IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B0_09_XBAR1_IN21, 0U); 
+  IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B0_10_XBAR1_IN22, 0U); 
+  IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B0_11_XBAR1_IN23, 0U); 
   IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B0_12_LPUART1_TX, 0U); 
   IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B0_13_LPUART1_RX, 0U); 
   IOMUXC_SetPinConfig(IOMUXC_GPIO_AD_B0_09_XBAR1_IN21, 0x10B0U); 
@@ -72,7 +72,6 @@ void BOARD_InitPins(void) {
   IOMUXC_SetPinConfig(IOMUXC_GPIO_AD_B0_12_LPUART1_TX, 0x10B0U); 
   IOMUXC_SetPinConfig(IOMUXC_GPIO_AD_B0_13_LPUART1_RX, 0x10B0U); 
 }
-
 /***********************************************************************************************************************
  * EOF
  **********************************************************************************************************************/

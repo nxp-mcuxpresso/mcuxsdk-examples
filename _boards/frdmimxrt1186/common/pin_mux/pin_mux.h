@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -300,19 +300,19 @@ void BOARD_InitFLEXIO_PWMPins(void);          /* Function assigned for the Corte
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
-void BOARD_InitFLEXIO_AFORMATPins(void);          /* Function assigned for the Cortex-M33 */
+void BOARD_InitFLEXIO_AFORMATPins(void);      /* Function assigned for the Cortex-M33 */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
-void BOARD_InitFLEXIO_TFORMATPins(void);          /* Function assigned for the Cortex-M33 */
+void BOARD_InitFLEXIO_TFORMATPins(void);      /* Function assigned for the Cortex-M33 */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
-void BOARD_InitFLEXIO_BISSPins(void);
+void BOARD_InitFLEXIO_BISSPins(void);         /* Function assigned for the Cortex-M33 */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.

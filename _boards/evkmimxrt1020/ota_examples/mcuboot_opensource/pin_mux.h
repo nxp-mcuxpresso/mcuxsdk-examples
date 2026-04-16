@@ -1,6 +1,5 @@
 /*
- * Copyright 2019 NXP
- * All rights reserved.
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -45,36 +44,44 @@ extern "C" {
 void BOARD_InitBootPins(void);
 
 /* GPIO_AD_B0_07 (number 101), UART1_RXD/J17[4] */
-#define BOARD_UART1_RXD_PERIPHERAL                                       LPUART1   /*!< Device name: LPUART1 */
-#define BOARD_UART1_RXD_SIGNAL                                                RX   /*!< LPUART1 signal: RX */
+/* Routed pin properties */
+#define BOARD_UART1_RXD_PERIPHERAL                                       LPUART1   /*!< Peripheral name */
+#define BOARD_UART1_RXD_SIGNAL                                                RX   /*!< Signal name */
 
 /* GPIO_AD_B0_06 (number 105), UART1_TXD/J17[6] */
-#define BOARD_UART1_TXD_PERIPHERAL                                       LPUART1   /*!< Device name: LPUART1 */
-#define BOARD_UART1_TXD_SIGNAL                                                TX   /*!< LPUART1 signal: TX */
+/* Routed pin properties */
+#define BOARD_UART1_TXD_PERIPHERAL                                       LPUART1   /*!< Peripheral name */
+#define BOARD_UART1_TXD_SIGNAL                                                TX   /*!< Signal name */
 
 /* GPIO_SD_B1_11 (number 19), FlexSPI_SS0/U13[1] */
-#define BOARD_FlexSPI_SS0_PERIPHERAL                                     FLEXSPI   /*!< Device name: FLEXSPI */
-#define BOARD_FlexSPI_SS0_SIGNAL                                 FLEXSPI_A_SS0_B   /*!< FLEXSPI signal: FLEXSPI_A_SS0_B */
+/* Routed pin properties */
+#define BOARD_FlexSPI_SS0_PERIPHERAL                                     FLEXSPI   /*!< Peripheral name */
+#define BOARD_FlexSPI_SS0_SIGNAL                                 FLEXSPI_A_SS0_B   /*!< Signal name */
 
 /* GPIO_SD_B1_07 (number 24), FlexSPI_CLK/U13[6] */
-#define BOARD_FlexSPI_CLK_PERIPHERAL                                     FLEXSPI   /*!< Device name: FLEXSPI */
-#define BOARD_FlexSPI_CLK_SIGNAL                                  FLEXSPI_A_SCLK   /*!< FLEXSPI signal: FLEXSPI_A_SCLK */
+/* Routed pin properties */
+#define BOARD_FlexSPI_CLK_PERIPHERAL                                     FLEXSPI   /*!< Peripheral name */
+#define BOARD_FlexSPI_CLK_SIGNAL                                  FLEXSPI_A_SCLK   /*!< Signal name */
 
 /* GPIO_SD_B1_08 (number 23), FlexSPI_D0_A/U13[5] */
-#define BOARD_FlexSPI_D0_A_PERIPHERAL                                    FLEXSPI   /*!< Device name: FLEXSPI */
-#define BOARD_FlexSPI_D0_A_SIGNAL                                FLEXSPI_A_DATA0   /*!< FLEXSPI signal: FLEXSPI_A_DATA0 */
+/* Routed pin properties */
+#define BOARD_FlexSPI_D0_A_PERIPHERAL                                    FLEXSPI   /*!< Peripheral name */
+#define BOARD_FlexSPI_D0_A_SIGNAL                                FLEXSPI_A_DATA0   /*!< Signal name */
 
 /* GPIO_SD_B1_10 (number 21), FlexSPI_D1_A/U13[2] */
-#define BOARD_FlexSPI_D1_A_PERIPHERAL                                    FLEXSPI   /*!< Device name: FLEXSPI */
-#define BOARD_FlexSPI_D1_A_SIGNAL                                FLEXSPI_A_DATA1   /*!< FLEXSPI signal: FLEXSPI_A_DATA1 */
+/* Routed pin properties */
+#define BOARD_FlexSPI_D1_A_PERIPHERAL                                    FLEXSPI   /*!< Peripheral name */
+#define BOARD_FlexSPI_D1_A_SIGNAL                                FLEXSPI_A_DATA1   /*!< Signal name */
 
 /* GPIO_SD_B1_09 (number 22), FlexSPI_D2_A/U13[3] */
-#define BOARD_FlexSPI_D2_A_PERIPHERAL                                    FLEXSPI   /*!< Device name: FLEXSPI */
-#define BOARD_FlexSPI_D2_A_SIGNAL                                FLEXSPI_A_DATA2   /*!< FLEXSPI signal: FLEXSPI_A_DATA2 */
+/* Routed pin properties */
+#define BOARD_FlexSPI_D2_A_PERIPHERAL                                    FLEXSPI   /*!< Peripheral name */
+#define BOARD_FlexSPI_D2_A_SIGNAL                                FLEXSPI_A_DATA2   /*!< Signal name */
 
 /* GPIO_SD_B1_06 (number 25), FlexSPI_D3_A/U13[7] */
-#define BOARD_FlexSPI_D3_A_PERIPHERAL                                    FLEXSPI   /*!< Device name: FLEXSPI */
-#define BOARD_FlexSPI_D3_A_SIGNAL                                FLEXSPI_A_DATA3   /*!< FLEXSPI signal: FLEXSPI_A_DATA3 */
+/* Routed pin properties */
+#define BOARD_FlexSPI_D3_A_PERIPHERAL                                    FLEXSPI   /*!< Peripheral name */
+#define BOARD_FlexSPI_D3_A_SIGNAL                                FLEXSPI_A_DATA3   /*!< Signal name */
 
 
 /*!

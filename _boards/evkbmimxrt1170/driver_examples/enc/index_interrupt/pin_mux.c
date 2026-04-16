@@ -1,6 +1,5 @@
 /*
- * Copyright 2020-2025 NXP
- * All rights reserved.
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -13,11 +12,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v9.0
+product: Pins v17.0
 processor: MIMXRT1176xxxxx
 package_id: MIMXRT1176DVMAB
 mcu_data: ksdk2_0
-processor_version: 0.9.6
+processor_version: 26.03.10
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -40,11 +39,11 @@ void BOARD_InitBootPins(void) {
 BOARD_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: D9, peripheral: XBARA1, signal: 'IN, 38', pin_signal: GPIO_DISP_B2_10, software_input_on: Enable}
-  - {pin_num: A6, peripheral: XBARA1, signal: 'IN, 39', pin_signal: GPIO_DISP_B2_11, software_input_on: Enable}
+  - {pin_num: D9, peripheral: XBARA1, signal: 'IN, 38', pin_signal: GPIO_DISP_B2_10, software_input_on: Disable}
+  - {pin_num: A6, peripheral: XBARA1, signal: 'IN, 39', pin_signal: GPIO_DISP_B2_11, software_input_on: Disable}
   - {pin_num: M15, peripheral: LPUART1, signal: RXD, pin_signal: GPIO_AD_25, software_input_on: Disable}
   - {pin_num: L13, peripheral: LPUART1, signal: TXD, pin_signal: GPIO_AD_24}
-  - {pin_num: B6, peripheral: XBARA1, signal: 'IN, 40', pin_signal: GPIO_DISP_B2_12, software_input_on: Enable}
+  - {pin_num: B6, peripheral: XBARA1, signal: 'IN, 40', pin_signal: GPIO_DISP_B2_12, software_input_on: Disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -65,13 +64,13 @@ void BOARD_InitPins(void) {
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_DISP_B2_10_XBAR1_INOUT38,   /* GPIO_DISP_B2_10 is configured as XBAR1_INOUT38 */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_DISP_B2_10 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_DISP_B2_11_XBAR1_INOUT39,   /* GPIO_DISP_B2_11 is configured as XBAR1_INOUT39 */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_DISP_B2_11 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_DISP_B2_12_XBAR1_INOUT40,   /* GPIO_DISP_B2_12 is configured as XBAR1_INOUT40 */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_DISP_B2_12 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_GPR->GPR21 = ((IOMUXC_GPR->GPR21 &
     (~(IOMUXC_GPR_GPR21_IOMUXC_XBAR_DIR_SEL_38_MASK | IOMUXC_GPR_GPR21_IOMUXC_XBAR_DIR_SEL_39_MASK | IOMUXC_GPR_GPR21_IOMUXC_XBAR_DIR_SEL_40_MASK))) /* Mask bits to zero which are setting */
       | IOMUXC_GPR_GPR21_IOMUXC_XBAR_DIR_SEL_38(0x00U) /* IOMUXC XBAR_INOUT38 function direction select: 0x00U */
@@ -79,7 +78,6 @@ void BOARD_InitPins(void) {
       | IOMUXC_GPR_GPR21_IOMUXC_XBAR_DIR_SEL_40(0x00U) /* IOMUXC XBAR_INOUT40 function direction select: 0x00U */
     );
 }
-
 /***********************************************************************************************************************
  * EOF
  **********************************************************************************************************************/

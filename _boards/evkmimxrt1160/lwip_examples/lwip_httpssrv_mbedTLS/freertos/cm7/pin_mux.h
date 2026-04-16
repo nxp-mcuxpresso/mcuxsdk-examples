@@ -1,5 +1,5 @@
 /*
- * Copyright 2021, 2023 NXP
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -56,6 +56,7 @@ void BOARD_InitPins(void);                    /* Function assigned for the Corte
 
 /* Symbols to be used with GPIO driver */
 #define BOARD_INITENETPINS_PHY_RESET_GPIO                                 GPIO12   /*!< GPIO peripheral base pointer */
+#define BOARD_INITENETPINS_PHY_RESET_INIT_GPIO_VALUE                          1U   /*!< GPIO output initial state */
 #define BOARD_INITENETPINS_PHY_RESET_GPIO_PIN                                12U   /*!< GPIO pin number */
 #define BOARD_INITENETPINS_PHY_RESET_GPIO_PIN_MASK                   (1U << 12U)   /*!< GPIO pin mask */
 
@@ -73,6 +74,7 @@ void BOARD_InitEnetPins(void);                /* Function assigned for the Corte
 
 /* Symbols to be used with GPIO driver */
 #define BOARD_INITENET1GPINS_PHY_RESET_GPIO                               GPIO11   /*!< GPIO peripheral base pointer */
+#define BOARD_INITENET1GPINS_PHY_RESET_INIT_GPIO_VALUE                        1U   /*!< GPIO output initial state */
 #define BOARD_INITENET1GPINS_PHY_RESET_GPIO_PIN                              14U   /*!< GPIO pin number */
 #define BOARD_INITENET1GPINS_PHY_RESET_GPIO_PIN_MASK                 (1U << 14U)   /*!< GPIO pin mask */
 

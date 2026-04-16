@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -12,11 +12,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v15.0
+product: Pins v17.0
 processor: MIMXRT1189xxxxx
 package_id: MIMXRT1189CVM8C
 mcu_data: ksdk2_0
-processor_version: 0.15.9
+processor_version: 26.03.10
 pin_labels:
 - {pin_num: N14, pin_signal: GPIO_AD_14, label: SD_PWREN_B, identifier: SD_PWREN_B}
 - {pin_num: N16, pin_signal: GPIO_AD_15, label: SD1_CD_B, identifier: SD_PWREN_B;SD1_CD_B}
@@ -44,26 +44,24 @@ void BOARD_InitBootPins(void) {
 BOARD_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: F6, peripheral: SAI1, signal: sai_tx_data0, pin_signal: GPIO_AON_21, software_input_on: Enable, pull_up_down_config: Pull_Down}
+  - {pin_num: F6, peripheral: SAI1, signal: sai_tx_data0, pin_signal: GPIO_AON_21, software_input_on: Disable, pull_up_down_config: Pull_Down}
   - {pin_num: C3, peripheral: SAI1, signal: sai_tx_sync, pin_signal: GPIO_AON_22, software_input_on: Enable, pull_up_down_config: Pull_Down}
   - {pin_num: C2, peripheral: SAI1, signal: sai_tx_bclk, pin_signal: GPIO_AON_23, software_input_on: Enable, pull_up_down_config: Pull_Down}
   - {pin_num: C1, peripheral: SAI1, signal: sai_mclk, pin_signal: GPIO_AON_24, software_input_on: Enable, pull_up_down_config: Pull_Down}
   - {pin_num: D3, peripheral: SAI1, signal: sai_rx_sync, pin_signal: GPIO_AON_27, software_input_on: Enable, pull_up_down_config: Pull_Down, pull_keeper_select: Pull,
-    open_drain: Disable, drive_strength: High, slew_rate: Slow}
-  - {pin_num: C4, peripheral: SAI1, signal: sai_rx_bclk, pin_signal: GPIO_AON_26, software_input_on: Enable, pull_up_down_config: Pull_Down, pull_keeper_select: Pull,
-    open_drain: Disable, drive_strength: High, slew_rate: Slow}
-  - {pin_num: D2, peripheral: SAI1, signal: sai_rx_data0, pin_signal: GPIO_AON_25, software_input_on: Enable, pull_up_down_config: Pull_Down, pull_keeper_select: Pull,
-    open_drain: Disable, drive_strength: High, slew_rate: Slow}
-  - {pin_num: A5, peripheral: LPUART1, signal: RXD, pin_signal: GPIO_AON_09, software_input_on: Enable, pull_up_down_config: Pull_Down}
-  - {pin_num: B1, peripheral: LPUART1, signal: TXD, pin_signal: GPIO_AON_08, pull_up_down_config: Pull_Down}
-  - {pin_num: K16, peripheral: LPI2C3, signal: SCL, pin_signal: GPIO_AD_18, software_input_on: Enable, pull_up_down_config: Pull_Up, pull_keeper_select: Keeper, open_drain: Enable,
-    force_ibe_off: no_init}
-  - {pin_num: L13, peripheral: LPI2C3, signal: SDA, pin_signal: GPIO_AD_19, software_input_on: Enable, pull_up_down_config: Pull_Up, pull_keeper_select: Keeper, open_drain: Enable,
-    force_ibe_off: no_init}
-  - {pin_num: E5, peripheral: RGPIO1, signal: 'gpio_io, 20', pin_signal: GPIO_AON_20, software_input_on: Disable, pull_up_down_config: Pull_Up, pull_keeper_select: Pull,
-    open_drain: Disable, drive_strength: High, slew_rate: Slow}
-  - {pin_num: D5, peripheral: RGPIO1, signal: 'gpio_io, 19', pin_signal: GPIO_AON_19, software_input_on: Disable, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper,
     open_drain: Disable, drive_strength: High, slew_rate: Fast}
+  - {pin_num: C4, peripheral: SAI1, signal: sai_rx_bclk, pin_signal: GPIO_AON_26, software_input_on: Enable, pull_up_down_config: Pull_Down, pull_keeper_select: Pull,
+    open_drain: Disable, drive_strength: High, slew_rate: Fast}
+  - {pin_num: D2, peripheral: SAI1, signal: sai_rx_data0, pin_signal: GPIO_AON_25, software_input_on: Disable, pull_up_down_config: Pull_Down, pull_keeper_select: Pull,
+    open_drain: Disable, drive_strength: High, slew_rate: Fast}
+  - {pin_num: A5, peripheral: LPUART1, signal: RXD, pin_signal: GPIO_AON_09, software_input_on: Disable, pull_up_down_config: Pull_Down}
+  - {pin_num: B1, peripheral: LPUART1, signal: TXD, pin_signal: GPIO_AON_08, pull_up_down_config: Pull_Down}
+  - {pin_num: K16, peripheral: LPI2C3, signal: SCL, pin_signal: GPIO_AD_18, software_input_on: Enable, pull_up_down_config: Pull_Up, pull_keeper_select: Keeper, open_drain: Enable}
+  - {pin_num: L13, peripheral: LPI2C3, signal: SDA, pin_signal: GPIO_AD_19, software_input_on: Enable, pull_up_down_config: Pull_Up, pull_keeper_select: Keeper, open_drain: Enable}
+  - {pin_num: E5, peripheral: RGPIO1, signal: 'gpio_io, 20', pin_signal: GPIO_AON_20, software_input_on: Disable, pull_up_down_config: Pull_Up, pull_keeper_select: Pull,
+    open_drain: Disable, drive_strength: High, slew_rate: Fast}
+  - {pin_num: D5, peripheral: RGPIO1, signal: 'gpio_io, 19', pin_signal: GPIO_AON_19, software_input_on: Disable, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper,
+    open_drain: Disable, drive_strength: High, slew_rate: Slow}
   - {pin_num: D14, peripheral: USDHC1, signal: 'usdhc_data, 0', pin_signal: GPIO_SD_B1_02}
   - {pin_num: D15, peripheral: USDHC1, signal: usdhc_clk, pin_signal: GPIO_SD_B1_01}
   - {pin_num: B16, peripheral: USDHC1, signal: usdhc_cmd, pin_signal: GPIO_SD_B1_00}
@@ -150,7 +148,7 @@ void BOARD_InitPins(void) {
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AON_09_LPUART1_RX,          /* GPIO_AON_09 is configured as LPUART1_RX */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_AON_09 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AON_19_GPIO1_IO19,          /* GPIO_AON_19 is configured as GPIO1_IO19 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
@@ -159,7 +157,7 @@ void BOARD_InitPins(void) {
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AON_21_SAI1_TX_DATA00,      /* GPIO_AON_21 is configured as SAI1_TX_DATA00 */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_AON_21 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AON_22_SAI1_TX_SYNC,        /* GPIO_AON_22 is configured as SAI1_TX_SYNC */
       1U);                                    /* Software Input On Field: Force input path of pad GPIO_AON_22 */
@@ -171,7 +169,7 @@ void BOARD_InitPins(void) {
       1U);                                    /* Software Input On Field: Force input path of pad GPIO_AON_24 */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AON_25_SAI1_RX_DATA00,      /* GPIO_AON_25 is configured as SAI1_RX_DATA00 */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_AON_25 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AON_26_SAI1_RX_BCLK,        /* GPIO_AON_26 is configured as SAI1_RX_BCLK */
       1U);                                    /* Software Input On Field: Force input path of pad GPIO_AON_26 */

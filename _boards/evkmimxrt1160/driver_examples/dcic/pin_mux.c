@@ -1,6 +1,5 @@
 /*
- * Copyright 2021 NXP
- * All rights reserved.
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -13,11 +12,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v9.0
+product: Pins v17.0
 processor: MIMXRT1166xxxxx
 package_id: MIMXRT1166DVM6A
 mcu_data: ksdk2_0
-processor_version: 0.0.0
+processor_version: 26.03.10
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -43,7 +42,7 @@ BOARD_InitLpuartPins:
 - options: {callFromInitBoot: 'true', coreID: cm7, enableClock: 'true'}
 - pin_list:
   - {pin_num: L13, peripheral: LPUART1, signal: TXD, pin_signal: GPIO_AD_24}
-  - {pin_num: M15, peripheral: LPUART1, signal: RXD, pin_signal: GPIO_AD_25, software_input_on: Enable}
+  - {pin_num: M15, peripheral: LPUART1, signal: RXD, pin_signal: GPIO_AD_25, software_input_on: Disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -61,9 +60,8 @@ void BOARD_InitLpuartPins(void) {
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AD_25_LPUART1_RXD,          /* GPIO_AD_25 is configured as LPUART1_RXD */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_AD_25 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
 }
-
 
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
@@ -96,7 +94,6 @@ void BOARD_InitMipiPanelPins(void) {
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
 }
 
-
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitDcicSignalPins:
@@ -119,7 +116,6 @@ void BOARD_InitDcicSignalPins(void) {
       IOMUXC_GPIO_AD_28_VIDEO_MUX_EXT_DCIC1,  /* GPIO_AD_28 is configured as VIDEO_MUX_EXT_DCIC1 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
 }
-
 /***********************************************************************************************************************
  * EOF
  **********************************************************************************************************************/

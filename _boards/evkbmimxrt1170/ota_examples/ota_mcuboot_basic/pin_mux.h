@@ -1,6 +1,5 @@
 /*
- * Copyright 2022 NXP
- * All rights reserved.
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -32,12 +31,12 @@ extern "C" {
  */
 void BOARD_InitBootPins(void);
 
-/* GPIO_AD_25 (coord M15), LPUART1_RXD/J32[2] */
+/* GPIO_AD_25 (coord M15), LPUART1_RXD */
 /* Routed pin properties */
 #define BOARD_INITPINS_LPUART1_RXD_PERIPHERAL                            LPUART1   /*!< Peripheral name */
 #define BOARD_INITPINS_LPUART1_RXD_SIGNAL                                    RXD   /*!< Signal name */
 
-/* GPIO_AD_24 (coord L13), LPUART1_TXD/J31[2] */
+/* GPIO_AD_24 (coord L13), LPUART1_TXD */
 /* Routed pin properties */
 #define BOARD_INITPINS_LPUART1_TXD_PERIPHERAL                            LPUART1   /*!< Peripheral name */
 #define BOARD_INITPINS_LPUART1_TXD_SIGNAL                                    TXD   /*!< Signal name */

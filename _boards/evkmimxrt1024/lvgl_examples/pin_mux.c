@@ -1,6 +1,5 @@
 /*
- * Copyright 2020 NXP
- * All rights reserved.
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -13,11 +12,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v8.0
+product: Pins v17.0
 processor: MIMXRT1024xxxxx
 package_id: MIMXRT1024DAG5A
 mcu_data: ksdk2_0
-processor_version: 0.0.0
+processor_version: 26.03.10
 board: MIMXRT1024-EVK
 pin_labels:
 - {pin_num: '93', pin_signal: GPIO_AD_B0_15, label: 'LCD_DC_GPIO_PIN/U11[25]/J19[2]', identifier: ENET_TXD1;LCD_DC_GPIO_PIN}
@@ -88,16 +87,15 @@ void BOARD_InitPins(void) {
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
 }
 
-
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 LPSPI1_InitPins:
 - options: {callFromInitBoot: 'false', coreID: core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: '98', peripheral: LPSPI1, signal: SCK, pin_signal: GPIO_AD_B0_10, software_input_on: Enable, open_drain: Disable, pull_keeper_enable: Enable}
-  - {pin_num: '97', peripheral: LPSPI1, signal: PCS0, pin_signal: GPIO_AD_B0_11, software_input_on: Enable, open_drain: Disable, pull_keeper_enable: Enable}
-  - {pin_num: '96', peripheral: LPSPI1, signal: SDO, pin_signal: GPIO_AD_B0_12, software_input_on: Enable, open_drain: Disable, pull_keeper_enable: Enable}
-  - {pin_num: '95', peripheral: LPSPI1, signal: SDI, pin_signal: GPIO_AD_B0_13, software_input_on: Enable, open_drain: Disable, pull_keeper_enable: Enable}
+  - {pin_num: '98', peripheral: LPSPI1, signal: SCK, pin_signal: GPIO_AD_B0_10, software_input_on: Disable, open_drain: Disable, pull_keeper_enable: Enable}
+  - {pin_num: '97', peripheral: LPSPI1, signal: PCS0, pin_signal: GPIO_AD_B0_11, software_input_on: Disable, open_drain: Disable, pull_keeper_enable: Enable}
+  - {pin_num: '96', peripheral: LPSPI1, signal: SDO, pin_signal: GPIO_AD_B0_12, software_input_on: Disable, open_drain: Disable, pull_keeper_enable: Enable}
+  - {pin_num: '95', peripheral: LPSPI1, signal: SDI, pin_signal: GPIO_AD_B0_13, software_input_on: Disable, open_drain: Disable, pull_keeper_enable: Enable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -112,21 +110,21 @@ void LPSPI1_InitPins(void) {
 
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AD_B0_10_LPSPI1_SCK,        /* GPIO_AD_B0_10 is configured as LPSPI1_SCK */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_AD_B0_10 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AD_B0_11_LPSPI1_PCS0,       /* GPIO_AD_B0_11 is configured as LPSPI1_PCS0 */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_AD_B0_11 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AD_B0_12_LPSPI1_SDO,        /* GPIO_AD_B0_12 is configured as LPSPI1_SDO */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_AD_B0_12 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AD_B0_13_LPSPI1_SDI,        /* GPIO_AD_B0_13 is configured as LPSPI1_SDI */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_AD_B0_13 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AD_B0_10_LPSPI1_SCK,        /* GPIO_AD_B0_10 PAD functional properties : */
       0x10B0U);                               /* Slew Rate Field: Slow Slew Rate
                                                  Drive Strength Field: R0/6
-                                                 Speed Field: medium(100MHz)
+                                                 Speed Field: 100MHz - 150MHz
                                                  Open Drain Enable Field: Open Drain Disabled
                                                  Pull / Keep Enable Field: Pull/Keeper Enabled
                                                  Pull / Keep Select Field: Keeper
@@ -136,7 +134,7 @@ void LPSPI1_InitPins(void) {
       IOMUXC_GPIO_AD_B0_11_LPSPI1_PCS0,       /* GPIO_AD_B0_11 PAD functional properties : */
       0x10B0U);                               /* Slew Rate Field: Slow Slew Rate
                                                  Drive Strength Field: R0/6
-                                                 Speed Field: medium(100MHz)
+                                                 Speed Field: 100MHz - 150MHz
                                                  Open Drain Enable Field: Open Drain Disabled
                                                  Pull / Keep Enable Field: Pull/Keeper Enabled
                                                  Pull / Keep Select Field: Keeper
@@ -146,7 +144,7 @@ void LPSPI1_InitPins(void) {
       IOMUXC_GPIO_AD_B0_12_LPSPI1_SDO,        /* GPIO_AD_B0_12 PAD functional properties : */
       0x10B0U);                               /* Slew Rate Field: Slow Slew Rate
                                                  Drive Strength Field: R0/6
-                                                 Speed Field: medium(100MHz)
+                                                 Speed Field: 100MHz - 150MHz
                                                  Open Drain Enable Field: Open Drain Disabled
                                                  Pull / Keep Enable Field: Pull/Keeper Enabled
                                                  Pull / Keep Select Field: Keeper
@@ -156,14 +154,13 @@ void LPSPI1_InitPins(void) {
       IOMUXC_GPIO_AD_B0_13_LPSPI1_SDI,        /* GPIO_AD_B0_13 PAD functional properties : */
       0x10B0U);                               /* Slew Rate Field: Slow Slew Rate
                                                  Drive Strength Field: R0/6
-                                                 Speed Field: medium(100MHz)
+                                                 Speed Field: 100MHz - 150MHz
                                                  Open Drain Enable Field: Open Drain Disabled
                                                  Pull / Keep Enable Field: Pull/Keeper Enabled
                                                  Pull / Keep Select Field: Keeper
                                                  Pull Up / Down Config. Field: 100K Ohm Pull Down
                                                  Hyst. Enable Field: Hysteresis Disabled */
 }
-
 
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
@@ -200,7 +197,6 @@ void LPSPI1_DeinitPins(void) {
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
 }
 
-
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 LPI2C4_InitPins:
@@ -231,7 +227,7 @@ void LPI2C4_InitPins(void) {
       IOMUXC_GPIO_SD_B1_02_LPI2C4_SCL,        /* GPIO_SD_B1_02 PAD functional properties : */
       0xD8B0U);                               /* Slew Rate Field: Slow Slew Rate
                                                  Drive Strength Field: R0/6
-                                                 Speed Field: medium(100MHz)
+                                                 Speed Field: 100MHz - 150MHz
                                                  Open Drain Enable Field: Open Drain Enabled
                                                  Pull / Keep Enable Field: Pull/Keeper Enabled
                                                  Pull / Keep Select Field: Keeper
@@ -241,14 +237,13 @@ void LPI2C4_InitPins(void) {
       IOMUXC_GPIO_SD_B1_03_LPI2C4_SDA,        /* GPIO_SD_B1_03 PAD functional properties : */
       0xD8B0U);                               /* Slew Rate Field: Slow Slew Rate
                                                  Drive Strength Field: R0/6
-                                                 Speed Field: medium(100MHz)
+                                                 Speed Field: 100MHz - 150MHz
                                                  Open Drain Enable Field: Open Drain Enabled
                                                  Pull / Keep Enable Field: Pull/Keeper Enabled
                                                  Pull / Keep Select Field: Keeper
                                                  Pull Up / Down Config. Field: 22K Ohm Pull Up
                                                  Hyst. Enable Field: Hysteresis Disabled */
 }
-
 
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
@@ -276,7 +271,6 @@ void LPI2C4_DeinitPins(void) {
       IOMUXC_GPIO_SD_B1_03_GPIO3_IO23,        /* GPIO_SD_B1_03 is configured as GPIO3_IO23 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
 }
-
 /***********************************************************************************************************************
  * EOF
  **********************************************************************************************************************/

@@ -1,6 +1,5 @@
 /*
- * Copyright 2021 NXP
- * All rights reserved.
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -13,11 +12,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v9.0
+product: Pins v17.0
 processor: MIMXRT1062xxxxB
 package_id: MIMXRT1062DVL6B
 mcu_data: ksdk2_0
-processor_version: 0.10.4
+processor_version: 26.03.10
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -46,7 +45,7 @@ BOARD_InitPins:
   - {pin_num: M13, peripheral: SAI1, signal: sai_mclk, pin_signal: GPIO_AD_B1_09, software_input_on: Enable, pull_up_down_config: Pull_Down_100K_Ohm}
   - {pin_num: G12, peripheral: SAI1, signal: sai_tx_bclk, pin_signal: GPIO_AD_B1_14, software_input_on: Enable, pull_up_down_config: Pull_Down_100K_Ohm}
   - {pin_num: J14, peripheral: SAI1, signal: sai_tx_sync, pin_signal: GPIO_AD_B1_15, software_input_on: Enable, pull_up_down_config: Pull_Down_100K_Ohm}
-  - {pin_num: H11, peripheral: SAI1, signal: sai_tx_data0, pin_signal: GPIO_AD_B1_13, software_input_on: Enable, pull_up_down_config: Pull_Down_100K_Ohm}
+  - {pin_num: H11, peripheral: SAI1, signal: sai_tx_data0, pin_signal: GPIO_AD_B1_13, software_input_on: Disable, pull_up_down_config: Pull_Down_100K_Ohm}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -60,7 +59,7 @@ void BOARD_InitPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc);           
 
   IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_09_SAI1_MCLK, 1U); 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_13_SAI1_TX_DATA00, 1U); 
+  IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_13_SAI1_TX_DATA00, 0U); 
   IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_14_SAI1_TX_BCLK, 1U); 
   IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_15_SAI1_TX_SYNC, 1U); 
   IOMUXC_SetPinConfig(IOMUXC_GPIO_AD_B1_09_SAI1_MCLK, 0x10B0U); 
@@ -69,18 +68,17 @@ void BOARD_InitPins(void) {
   IOMUXC_SetPinConfig(IOMUXC_GPIO_AD_B1_15_SAI1_TX_SYNC, 0x10B0U); 
 }
 
-
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitCS42448Pins:
 - options: {callFromInitBoot: 'false', coreID: core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: H12, peripheral: SAI1, signal: sai_rx_data0, pin_signal: GPIO_AD_B1_12, software_input_on: Enable, pull_up_down_config: Pull_Down_100K_Ohm}
+  - {pin_num: H12, peripheral: SAI1, signal: sai_rx_data0, pin_signal: GPIO_AD_B1_12, software_input_on: Disable, pull_up_down_config: Pull_Down_100K_Ohm}
   - {pin_num: J13, peripheral: SAI1, signal: sai_rx_bclk, pin_signal: GPIO_AD_B1_11, software_input_on: Enable, pull_up_down_config: Pull_Down_100K_Ohm}
   - {pin_num: L13, peripheral: SAI1, signal: sai_rx_sync, pin_signal: GPIO_AD_B1_10, software_input_on: Enable, pull_up_down_config: Pull_Down_100K_Ohm}
-  - {pin_num: C10, peripheral: SAI1, signal: sai_tx_data1, pin_signal: GPIO_B0_12, software_input_on: Enable, pull_up_down_config: Pull_Down_100K_Ohm}
-  - {pin_num: A10, peripheral: SAI1, signal: sai_tx_data2, pin_signal: GPIO_B0_11, software_input_on: Enable, pull_up_down_config: Pull_Down_100K_Ohm}
-  - {pin_num: D9, peripheral: SAI1, signal: sai_tx_data3, pin_signal: GPIO_B0_10, software_input_on: Enable, pull_up_down_config: Pull_Down_100K_Ohm}
+  - {pin_num: C10, peripheral: SAI1, signal: sai_tx_data1, pin_signal: GPIO_B0_12, software_input_on: Disable, pull_up_down_config: Pull_Down_100K_Ohm}
+  - {pin_num: A10, peripheral: SAI1, signal: sai_tx_data2, pin_signal: GPIO_B0_11, software_input_on: Disable, pull_up_down_config: Pull_Down_100K_Ohm}
+  - {pin_num: D9, peripheral: SAI1, signal: sai_tx_data3, pin_signal: GPIO_B0_10, software_input_on: Disable, pull_up_down_config: Pull_Down_100K_Ohm}
   - {pin_num: M11, peripheral: GPIO1, signal: 'gpio_io, 02', pin_signal: GPIO_AD_B0_02, direction: OUTPUT, hysteresis_enable: Enable, pull_up_down_config: Pull_Up_47K_Ohm,
     open_drain: Disable, speed: MHZ_100, drive_strength: R0, slew_rate: Fast}
   - {pin_num: M14, peripheral: GPIO1, signal: 'gpio_io, 00', pin_signal: GPIO_AD_B0_00, direction: OUTPUT, hysteresis_enable: Enable, pull_up_down_config: Pull_Up_47K_Ohm,
@@ -125,10 +123,10 @@ void BOARD_InitCS42448Pins(void) {
   IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_07_LPI2C3_SCL, 1U); 
   IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_10_SAI1_RX_SYNC, 1U); 
   IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_11_SAI1_RX_BCLK, 1U); 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_12_SAI1_RX_DATA00, 1U); 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_B0_10_SAI1_TX_DATA03, 1U); 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_B0_11_SAI1_TX_DATA02, 1U); 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_B0_12_SAI1_TX_DATA01, 1U); 
+  IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_12_SAI1_RX_DATA00, 0U); 
+  IOMUXC_SetPinMux(IOMUXC_GPIO_B0_10_SAI1_TX_DATA03, 0U); 
+  IOMUXC_SetPinMux(IOMUXC_GPIO_B0_11_SAI1_TX_DATA02, 0U); 
+  IOMUXC_SetPinMux(IOMUXC_GPIO_B0_12_SAI1_TX_DATA01, 0U); 
   IOMUXC_GPR->GPR26 = ((IOMUXC_GPR->GPR26 &
     (~(BOARD_INITCS42448PINS_IOMUXC_GPR_GPR26_GPIO_MUX1_GPIO_SEL_MASK))) 
       | IOMUXC_GPR_GPR26_GPIO_MUX1_GPIO_SEL(0x00U) 
@@ -144,7 +142,6 @@ void BOARD_InitCS42448Pins(void) {
   IOMUXC_SetPinConfig(IOMUXC_GPIO_B0_11_SAI1_TX_DATA02, 0x10B0U); 
   IOMUXC_SetPinConfig(IOMUXC_GPIO_B0_12_SAI1_TX_DATA01, 0x10B0U); 
 }
-
 
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
@@ -171,7 +168,6 @@ void BOARD_InitDebugConsolePins(void) {
   IOMUXC_SetPinConfig(IOMUXC_GPIO_AD_B0_13_LPUART1_RX, 0x10B0U); 
 }
 
-
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitWM8960Pins:
@@ -181,7 +177,7 @@ BOARD_InitWM8960Pins:
     pull_keeper_select: Keeper, pull_keeper_enable: Enable, open_drain: Enable, speed: MHZ_100, drive_strength: R0_6, slew_rate: Slow}
   - {pin_num: K11, peripheral: LPI2C1, signal: SDA, pin_signal: GPIO_AD_B1_01, software_input_on: Enable, hysteresis_enable: Disable, pull_up_down_config: Pull_Up_22K_Ohm,
     pull_keeper_select: Keeper, pull_keeper_enable: Enable, open_drain: Enable, speed: MHZ_100, drive_strength: R0_6, slew_rate: Slow}
-  - {pin_num: H12, peripheral: SAI1, signal: sai_rx_data0, pin_signal: GPIO_AD_B1_12, software_input_on: Enable, hysteresis_enable: Disable, pull_up_down_config: Pull_Down_100K_Ohm,
+  - {pin_num: H12, peripheral: SAI1, signal: sai_rx_data0, pin_signal: GPIO_AD_B1_12, software_input_on: Disable, hysteresis_enable: Disable, pull_up_down_config: Pull_Down_100K_Ohm,
     pull_keeper_select: Keeper, pull_keeper_enable: Enable, open_drain: Disable, speed: MHZ_100, drive_strength: R0_6, slew_rate: Slow}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -197,20 +193,19 @@ void BOARD_InitWM8960Pins(void) {
 
   IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_00_LPI2C1_SCL, 1U); 
   IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_01_LPI2C1_SDA, 1U); 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_12_SAI1_RX_DATA00, 1U); 
+  IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_12_SAI1_RX_DATA00, 0U); 
   IOMUXC_SetPinConfig(IOMUXC_GPIO_AD_B1_00_LPI2C1_SCL, 0xD8B0U); 
   IOMUXC_SetPinConfig(IOMUXC_GPIO_AD_B1_01_LPI2C1_SDA, 0xD8B0U); 
   IOMUXC_SetPinConfig(IOMUXC_GPIO_AD_B1_12_SAI1_RX_DATA00, 0x10B0U); 
 }
-
 
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitUSDHCPins:
 - options: {callFromInitBoot: 'true', coreID: core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: J3, peripheral: USDHC1, signal: usdhc_clk, pin_signal: GPIO_SD_B0_01, hysteresis_enable: Enable, pull_up_down_config: Pull_Up_47K_Ohm, pull_keeper_select: no_init,
-    pull_keeper_enable: Disable, speed: MHZ_200, drive_strength: R0, slew_rate: Fast}
+  - {pin_num: J3, peripheral: USDHC1, signal: usdhc_clk, pin_signal: GPIO_SD_B0_01, hysteresis_enable: Enable, pull_up_down_config: Pull_Up_47K_Ohm, pull_keeper_enable: Disable,
+    speed: MHZ_200, drive_strength: R0, slew_rate: Fast}
   - {pin_num: J4, peripheral: USDHC1, signal: usdhc_cmd, pin_signal: GPIO_SD_B0_00, hysteresis_enable: Enable, pull_up_down_config: Pull_Up_47K_Ohm, speed: MHZ_200,
     drive_strength: R0, slew_rate: Fast}
   - {pin_num: J1, peripheral: USDHC1, signal: 'usdhc_data, 0', pin_signal: GPIO_SD_B0_02, hysteresis_enable: Enable, pull_up_down_config: Pull_Up_47K_Ohm, speed: MHZ_200,
@@ -283,7 +278,6 @@ void BOARD_InitUSDHCPins(void) {
   IOMUXC_SetPinConfig(IOMUXC_GPIO_SD_B0_04_USDHC1_DATA2, 0x0150C9U); 
   IOMUXC_SetPinConfig(IOMUXC_GPIO_SD_B0_05_USDHC1_DATA3, 0x0150C9U); 
 }
-
 /***********************************************************************************************************************
  * EOF
  **********************************************************************************************************************/

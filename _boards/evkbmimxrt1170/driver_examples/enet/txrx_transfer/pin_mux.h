@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2021, 2023 NXP
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -38,6 +38,11 @@ void BOARD_InitBootPins(void);
 #define BOARD_INITPINS_PHY_INTR_PERIPHERAL                                 GPIO3   /*!< Peripheral name */
 #define BOARD_INITPINS_PHY_INTR_SIGNAL                               gpio_mux_io   /*!< Signal name */
 #define BOARD_INITPINS_PHY_INTR_CHANNEL                                      11U   /*!< Signal channel */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITPINS_PHY_INTR_GPIO                                       GPIO3   /*!< GPIO peripheral base pointer */
+#define BOARD_INITPINS_PHY_INTR_GPIO_PIN                                     11U   /*!< GPIO pin number */
+#define BOARD_INITPINS_PHY_INTR_GPIO_PIN_MASK                        (1U << 11U)   /*!< GPIO pin mask */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.

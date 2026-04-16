@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -12,11 +12,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v15.0
+product: Pins v17.0
 processor: MIMXRT1189xxxxx
 package_id: MIMXRT1189CVM8B
 mcu_data: ksdk2_0
-processor_version: 0.15.9
+processor_version: 26.03.10
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -40,11 +40,11 @@ BOARD_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm33, enableClock: 'true'}
 - pin_list:
   - {pin_num: A5, peripheral: LPUART1, signal: RXD, pin_signal: GPIO_AON_09, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper, open_drain: Disable, drive_strength: High,
-    slew_rate: Slow}
+    slew_rate: Fast}
   - {pin_num: B1, peripheral: LPUART1, signal: TXD, pin_signal: GPIO_AON_08, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper, open_drain: Disable, drive_strength: High,
-    slew_rate: Slow}
-  - {pin_num: E6, peripheral: CAN3, signal: TX, pin_signal: GPIO_AON_18, software_input_on: Enable}
-  - {pin_num: C8, peripheral: CAN3, signal: RX, pin_signal: GPIO_AON_03, software_input_on: Enable}
+    slew_rate: Fast}
+  - {pin_num: E6, peripheral: CAN3, signal: TX, pin_signal: GPIO_AON_18, software_input_on: Disable}
+  - {pin_num: C8, peripheral: CAN3, signal: RX, pin_signal: GPIO_AON_03, software_input_on: Disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -60,15 +60,15 @@ void BOARD_InitPins(void) {
 
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AON_03_CAN3_RX,             /* GPIO_AON_03 is configured as CAN3_RX */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_AON_03 */
-  IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AON_18_CAN3_TX,             /* GPIO_AON_18 is configured as CAN3_TX */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_AON_18 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AON_08_LPUART1_TX,          /* GPIO_AON_08 is configured as LPUART1_TX */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AON_09_LPUART1_RX,          /* GPIO_AON_09 is configured as LPUART1_RX */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_AON_18_CAN3_TX,             /* GPIO_AON_18 is configured as CAN3_TX */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AON_08_LPUART1_TX,          /* GPIO_AON_08 PAD functional properties : */

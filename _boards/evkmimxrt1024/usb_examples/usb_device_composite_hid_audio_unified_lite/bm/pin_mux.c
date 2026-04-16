@@ -1,6 +1,5 @@
 /*
- * Copyright 2020 ,2021 NXP
- * All rights reserved.
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -13,11 +12,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v9.0
+product: Pins v17.0
 processor: MIMXRT1024xxxxx
 package_id: MIMXRT1024DAG5A
 mcu_data: ksdk2_0
-processor_version: 9.0.0
+processor_version: 26.03.10
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -58,13 +57,13 @@ BOARD_InitPins:
     pull_keeper_select: Keeper, pull_keeper_enable: Enable, pull_up_down_config: Pull_Up_22K_Ohm, hysteresis_enable: Disable}
   - {pin_num: '128', peripheral: SAI3, signal: sai_mclk, pin_signal: GPIO_EMC_28, slew_rate: Slow, software_input_on: Enable, open_drain: Disable, speed: MHZ_100,
     drive_strength: R0_6, pull_keeper_select: Keeper, pull_keeper_enable: Enable, pull_up_down_config: Pull_Down_100K_Ohm, hysteresis_enable: Disable}
-  - {pin_num: '19', peripheral: SAI3, signal: sai_rx_data, pin_signal: GPIO_SD_B1_11, slew_rate: Slow, software_input_on: Enable, open_drain: Disable, speed: MHZ_100,
+  - {pin_num: '19', peripheral: SAI3, signal: sai_rx_data, pin_signal: GPIO_SD_B1_11, slew_rate: Slow, software_input_on: Disable, open_drain: Disable, speed: MHZ_100,
     drive_strength: R0_6, pull_keeper_select: Keeper, pull_keeper_enable: Enable, pull_up_down_config: Pull_Down_100K_Ohm, hysteresis_enable: Disable}
   - {pin_num: '25', peripheral: SAI3, signal: sai_tx_bclk, pin_signal: GPIO_SD_B1_06, slew_rate: Slow, software_input_on: Enable, open_drain: Disable, speed: MHZ_100,
     drive_strength: R0_6, pull_keeper_select: Keeper, pull_keeper_enable: Enable, pull_up_down_config: Pull_Down_100K_Ohm, hysteresis_enable: Disable}
   - {pin_num: '24', peripheral: SAI3, signal: sai_tx_sync, pin_signal: GPIO_SD_B1_07, slew_rate: Slow, software_input_on: Enable, open_drain: Disable, speed: MHZ_100,
     drive_strength: R0_6, pull_keeper_select: Keeper, pull_keeper_enable: Enable, pull_up_down_config: Pull_Down_100K_Ohm, hysteresis_enable: Disable}
-  - {pin_num: '23', peripheral: SAI3, signal: sai_tx_data, pin_signal: GPIO_SD_B1_08, slew_rate: Slow, software_input_on: Enable, open_drain: Disable, speed: MHZ_100,
+  - {pin_num: '23', peripheral: SAI3, signal: sai_tx_data, pin_signal: GPIO_SD_B1_08, slew_rate: Slow, software_input_on: Disable, open_drain: Disable, speed: MHZ_100,
     drive_strength: R0_6, pull_keeper_select: Keeper, pull_keeper_enable: Enable, pull_up_down_config: Pull_Down_100K_Ohm, hysteresis_enable: Disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -101,10 +100,10 @@ void BOARD_InitPins(void) {
       1U);                                    /* Software Input On Field: Force input path of pad GPIO_SD_B1_07 */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_SD_B1_08_SAI3_TX_DATA,      /* GPIO_SD_B1_08 is configured as SAI3_TX_DATA */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_SD_B1_08 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_SD_B1_11_SAI3_RX_DATA,      /* GPIO_SD_B1_11 is configured as SAI3_RX_DATA */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_SD_B1_11 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AD_B0_06_LPUART1_TX,        /* GPIO_AD_B0_06 PAD functional properties : */
       0x10B0U);                               /* Slew Rate Field: Slow Slew Rate
@@ -196,7 +195,6 @@ void BOARD_InitPins(void) {
                                                  Pull Up / Down Config. Field: 100K Ohm Pull Down
                                                  Hyst. Enable Field: Hysteresis Disabled */
 }
-
 /***********************************************************************************************************************
  * EOF
  **********************************************************************************************************************/

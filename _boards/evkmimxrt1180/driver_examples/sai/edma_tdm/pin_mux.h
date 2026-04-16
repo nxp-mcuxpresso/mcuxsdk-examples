@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -39,6 +39,7 @@ void BOARD_InitBootPins(void);
 
 /* Symbols to be used with GPIO driver */
 #define BOARD_INITPINS_SD_PWREN_B_GPIO                                    RGPIO4   /*!< GPIO peripheral base pointer */
+#define BOARD_INITPINS_SD_PWREN_B_INIT_GPIO_VALUE                             0U   /*!< GPIO output initial state */
 #define BOARD_INITPINS_SD_PWREN_B_GPIO_PIN                                   14U   /*!< GPIO pin number */
 #define BOARD_INITPINS_SD_PWREN_B_GPIO_PIN_MASK                      (1U << 14U)   /*!< GPIO pin mask */
 
@@ -61,6 +62,7 @@ void BOARD_InitBootPins(void);
 
 /* Symbols to be used with GPIO driver */
 #define BOARD_INITPINS_SD_VSELECT_GPIO                                    RGPIO4   /*!< GPIO peripheral base pointer */
+#define BOARD_INITPINS_SD_VSELECT_INIT_GPIO_VALUE                             0U   /*!< GPIO output initial state */
 #define BOARD_INITPINS_SD_VSELECT_GPIO_PIN                                   29U   /*!< GPIO pin number */
 #define BOARD_INITPINS_SD_VSELECT_GPIO_PIN_MASK                      (1U << 29U)   /*!< GPIO pin mask */
 

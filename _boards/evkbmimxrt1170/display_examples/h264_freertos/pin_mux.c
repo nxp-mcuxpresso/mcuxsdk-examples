@@ -1,6 +1,5 @@
 /*
- * Copyright 2021-2025 NXP
- * All rights reserved.
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -13,11 +12,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v8.0
+product: Pins v17.0
 processor: MIMXRT1176xxxxx
 package_id: MIMXRT1176DVMAB
 mcu_data: ksdk2_0
-processor_version: 0.8.1
+processor_version: 26.03.10
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -26,10 +25,10 @@ processor_version: 0.8.1
 #include "pin_mux.h"
 
 /* FUNCTION ************************************************************************************************************
- *
+ * 
  * Function Name : BOARD_InitBootPins
  * Description   : Calls initialization functions.
- *
+ * 
  * END ****************************************************************************************************************/
 void BOARD_InitBootPins(void) {
     BOARD_InitPins();
@@ -55,13 +54,12 @@ BOARD_InitPins:
 void BOARD_InitPins(void) {
 }
 
-
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitLPUART:
 - options: {callFromInitBoot: 'true', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: M15, peripheral: LPUART1, signal: RXD, pin_signal: GPIO_AD_25, software_input_on: Enable}
+  - {pin_num: M15, peripheral: LPUART1, signal: RXD, pin_signal: GPIO_AD_25, software_input_on: Disable}
   - {pin_num: L13, peripheral: LPUART1, signal: TXD, pin_signal: GPIO_AD_24}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -80,9 +78,8 @@ void BOARD_InitLPUART(void) {
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AD_25_LPUART1_RXD,          /* GPIO_AD_25 is configured as LPUART1_RXD */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_AD_25 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
 }
-
 
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
@@ -138,7 +135,7 @@ void BOARD_InitSDCARD(void) {
       IOMUXC_GPIO_SD_B1_05_USDHC1_DATA3,      /* GPIO_SD_B1_05 is configured as USDHC1_DATA3 */
       1U);                                    /* Software Input On Field: Force input path of pad GPIO_SD_B1_05 */
   IOMUXC_GPR->GPR43 = ((IOMUXC_GPR->GPR43 &
-    (~(IOMUXC_GPR_GPR43_GPIO_MUX3_GPIO_SEL_HIGH_MASK))) /* Mask bits to zero which are setting */
+    (~(BOARD_INITSDCARD_IOMUXC_GPR_GPR43_GPIO_MUX3_GPIO_SEL_HIGH_MASK))) /* Mask bits to zero which are setting */
       | IOMUXC_GPR_GPR43_GPIO_MUX3_GPIO_SEL_HIGH(0x8000U) /* GPIO3 and CM7_GPIO3 share same IO MUX function, GPIO_MUX3 selects one GPIO function: 0x8000U */
     );
   IOMUXC_SetPinConfig(
@@ -185,7 +182,6 @@ void BOARD_InitSDCARD(void) {
                                                  Domain write protection lock: Neither of DWP bits is locked */
 }
 
-
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitMIPI:
@@ -220,7 +216,7 @@ void BOARD_InitMIPI(void) {
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitLpi2cPins:
-- options: {callFromInitBoot: 'true', coreID: cm7, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', coreID: cm7, enableClock: 'true'}
 - pin_list:
   - {pin_num: N8, peripheral: LPI2C5, signal: SCL, pin_signal: GPIO_LPSR_05, software_input_on: Enable, open_drain: Enable, drive_strength: Normal}
   - {pin_num: N7, peripheral: LPI2C5, signal: SDA, pin_signal: GPIO_LPSR_04, software_input_on: Enable, open_drain: Enable, drive_strength: Normal}
@@ -246,7 +242,7 @@ void BOARD_InitLpi2cPins(void) {
       IOMUXC_GPIO_LPSR_04_LPI2C5_SDA,         /* GPIO_LPSR_04 PAD functional properties : */
       0x20U);                                 /* Slew Rate Field: Fast Slew Rate
                                                  Drive Strength Field: normal driver
-                                                 Pull / Keep Select Field: Pull Disable
+                                                 Pull Select Field: Pull Disable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain LPSR Field: Enabled
                                                  Domain write protection: Both cores are allowed
@@ -255,7 +251,7 @@ void BOARD_InitLpi2cPins(void) {
       IOMUXC_GPIO_LPSR_05_LPI2C5_SCL,         /* GPIO_LPSR_05 PAD functional properties : */
       0x20U);                                 /* Slew Rate Field: Fast Slew Rate
                                                  Drive Strength Field: normal driver
-                                                 Pull / Keep Select Field: Pull Disable
+                                                 Pull Select Field: Pull Disable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain LPSR Field: Enabled
                                                  Domain write protection: Both cores are allowed

@@ -1,6 +1,5 @@
 /*
- * Copyright 2018 ,2021 NXP
- * All rights reserved.
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -13,11 +12,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v9.0
+product: Pins v17.0
 processor: MIMXRT1021xxxxx
 package_id: MIMXRT1021DAG5A
 mcu_data: ksdk2_0
-processor_version: 9.0.1
+processor_version: 26.03.10
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -45,7 +44,7 @@ BOARD_InitPins:
   - {pin_num: '92', peripheral: SAI1, signal: sai_mclk, pin_signal: GPIO_AD_B1_00, software_input_on: Enable, open_drain: Disable}
   - {pin_num: '91', peripheral: SAI1, signal: sai_tx_bclk, pin_signal: GPIO_AD_B1_01, software_input_on: Enable, open_drain: Disable}
   - {pin_num: '90', peripheral: SAI1, signal: sai_tx_sync, pin_signal: GPIO_AD_B1_02, software_input_on: Enable}
-  - {pin_num: '89', peripheral: SAI1, signal: sai_tx_data0, pin_signal: GPIO_AD_B1_03, software_input_on: Enable, open_drain: Disable}
+  - {pin_num: '89', peripheral: SAI1, signal: sai_tx_data0, pin_signal: GPIO_AD_B1_03, software_input_on: Disable, open_drain: Disable}
   - {pin_num: '75', peripheral: LPI2C1, signal: SCL, pin_signal: GPIO_AD_B1_14, slew_rate: Slow, software_input_on: Enable, open_drain: Enable, speed: MHZ_100, drive_strength: R0_6,
     pull_keeper_select: Keeper, pull_keeper_enable: Enable, pull_up_down_config: Pull_Up_22K_Ohm, hysteresis_enable: Disable}
   - {pin_num: '74', peripheral: LPI2C1, signal: SDA, pin_signal: GPIO_AD_B1_15, software_input_on: Enable, open_drain: Enable, pull_keeper_enable: Enable, pull_up_down_config: Pull_Up_22K_Ohm,
@@ -67,7 +66,7 @@ void BOARD_InitPins(void) {
   IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_00_SAI1_MCLK, 1U); 
   IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_01_SAI1_TX_BCLK, 1U); 
   IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_02_SAI1_TX_SYNC, 1U); 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_03_SAI1_TX_DATA00, 1U); 
+  IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_03_SAI1_TX_DATA00, 0U); 
   IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_14_LPI2C1_SCL, 1U); 
   IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_15_LPI2C1_SDA, 1U); 
   IOMUXC_SetPinConfig(IOMUXC_GPIO_AD_B0_06_LPUART1_TX, 0x10B0U); 
@@ -78,7 +77,6 @@ void BOARD_InitPins(void) {
   IOMUXC_SetPinConfig(IOMUXC_GPIO_AD_B1_14_LPI2C1_SCL, 0xD8B0U); 
   IOMUXC_SetPinConfig(IOMUXC_GPIO_AD_B1_15_LPI2C1_SDA, 0xD8B0U); 
 }
-
 /***********************************************************************************************************************
  * EOF
  **********************************************************************************************************************/

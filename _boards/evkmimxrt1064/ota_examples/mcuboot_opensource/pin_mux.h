@@ -1,6 +1,5 @@
 /*
- * Copyright 2019-2020 NXP
- * All rights reserved.
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -45,17 +44,54 @@ extern "C" {
 void BOARD_InitBootPins(void);
 
 /* GPIO_AD_B0_13 (coord L14), UART1_RXD */
-#define BOARD_INITPINS_UART1_RXD_PERIPHERAL                              LPUART1   /*!< Device name: LPUART1 */
-#define BOARD_INITPINS_UART1_RXD_SIGNAL                                       RX   /*!< LPUART1 signal: RX */
+/* Routed pin properties */
+#define BOARD_INITPINS_UART1_RXD_PERIPHERAL                              LPUART1   /*!< Peripheral name */
+#define BOARD_INITPINS_UART1_RXD_SIGNAL                                       RX   /*!< Signal name */
 
 /* GPIO_AD_B0_12 (coord K14), UART1_TXD */
-#define BOARD_INITPINS_UART1_TXD_PERIPHERAL                              LPUART1   /*!< Device name: LPUART1 */
-#define BOARD_INITPINS_UART1_TXD_SIGNAL                                       TX   /*!< LPUART1 signal: TX */
+/* Routed pin properties */
+#define BOARD_INITPINS_UART1_TXD_PERIPHERAL                              LPUART1   /*!< Peripheral name */
+#define BOARD_INITPINS_UART1_TXD_SIGNAL                                       TX   /*!< Signal name */
 
 /* GPIO_AD_B0_10 (coord G13), JTAG_TDO/J21[13]/INT1_COMBO/ENET_INT/J22[6]/U32[11] */
-#define BOARD_INITPINS_INT1_COMBO_PERIPHERAL                                 ARM   /*!< Device name: ARM */
-#define BOARD_INITPINS_INT1_COMBO_SIGNAL                           arm_trace_swo   /*!< ARM signal: arm_trace_swo */
+/* Routed pin properties */
+#define BOARD_INITPINS_INT1_COMBO_PERIPHERAL                                 ARM   /*!< Peripheral name */
+#define BOARD_INITPINS_INT1_COMBO_SIGNAL                           arm_trace_swo   /*!< Signal name */
 
+/* GPIO_SD_B1_08 (coord P3), FlexSPI_D0_A */
+/* Routed pin properties */
+#define BOARD_INITPINS_FlexSPI_D0_A_PERIPHERAL                           FLEXSPI   /*!< Peripheral name */
+#define BOARD_INITPINS_FlexSPI_D0_A_SIGNAL                       FLEXSPI_A_DATA0   /*!< Signal name */
+
+/* GPIO_SD_B1_09 (coord N4), FlexSPI_D1_A */
+/* Routed pin properties */
+#define BOARD_INITPINS_FlexSPI_D1_A_PERIPHERAL                           FLEXSPI   /*!< Peripheral name */
+#define BOARD_INITPINS_FlexSPI_D1_A_SIGNAL                       FLEXSPI_A_DATA1   /*!< Signal name */
+
+/* GPIO_SD_B1_10 (coord P4), FlexSPI_D2_A */
+/* Routed pin properties */
+#define BOARD_INITPINS_FlexSPI_D2_A_PERIPHERAL                           FLEXSPI   /*!< Peripheral name */
+#define BOARD_INITPINS_FlexSPI_D2_A_SIGNAL                       FLEXSPI_A_DATA2   /*!< Signal name */
+
+/* GPIO_SD_B1_11 (coord P5), FlexSPI_D3_A */
+/* Routed pin properties */
+#define BOARD_INITPINS_FlexSPI_D3_A_PERIPHERAL                           FLEXSPI   /*!< Peripheral name */
+#define BOARD_INITPINS_FlexSPI_D3_A_SIGNAL                       FLEXSPI_A_DATA3   /*!< Signal name */
+
+/* GPIO_SD_B1_07 (coord L4), FlexSPI_CLK */
+/* Routed pin properties */
+#define BOARD_INITPINS_FlexSPI_CLK_PERIPHERAL                            FLEXSPI   /*!< Peripheral name */
+#define BOARD_INITPINS_FlexSPI_CLK_SIGNAL                         FLEXSPI_A_SCLK   /*!< Signal name */
+
+/* GPIO_SD_B1_06 (coord L3), FlexSPI_SS0 */
+/* Routed pin properties */
+#define BOARD_INITPINS_FlexSPI_SS0_PERIPHERAL                            FLEXSPI   /*!< Peripheral name */
+#define BOARD_INITPINS_FlexSPI_SS0_SIGNAL                        FLEXSPI_A_SS0_B   /*!< Signal name */
+
+/* GPIO_SD_B1_05 (coord N3), FlexSPI_DQS */
+/* Routed pin properties */
+#define BOARD_INITPINS_FlexSPI_DQS_PERIPHERAL                            FLEXSPI   /*!< Peripheral name */
+#define BOARD_INITPINS_FlexSPI_DQS_SIGNAL                          FLEXSPI_A_DQS   /*!< Signal name */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.

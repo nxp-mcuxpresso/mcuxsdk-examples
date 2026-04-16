@@ -1,6 +1,5 @@
 /*
- * Copyright 2022 NXP
- * All rights reserved.
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -31,6 +30,79 @@ extern "C" {
  *
  */
 void BOARD_InitBootPins(void);
+
+/* GPIO_DISP_B2_10 (coord D9), LPUART2_TXD/BT_UART_TXD/U354[4]/J25[3]/J9[4] */
+/* Routed pin properties */
+#define BOARD_INITPINS_BT_UART_TXD_PERIPHERAL                             GPIO11   /*!< Peripheral name */
+#define BOARD_INITPINS_BT_UART_TXD_SIGNAL                                gpio_io   /*!< Signal name */
+#define BOARD_INITPINS_BT_UART_TXD_CHANNEL                                   11U   /*!< Signal channel */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITPINS_BT_UART_TXD_GPIO                                   GPIO11   /*!< GPIO peripheral base pointer */
+#define BOARD_INITPINS_BT_UART_TXD_GPIO_PIN                                  11U   /*!< GPIO pin number */
+#define BOARD_INITPINS_BT_UART_TXD_GPIO_PIN_MASK                     (1U << 11U)   /*!< GPIO pin mask */
+
+/* GPIO_AD_25 (coord M15), LPUART1_RXD */
+/* Routed pin properties */
+#define BOARD_INITPINS_LPUART1_RXD_PERIPHERAL                            LPUART1   /*!< Peripheral name */
+#define BOARD_INITPINS_LPUART1_RXD_SIGNAL                                    RXD   /*!< Signal name */
+
+/* GPIO_AD_24 (coord L13), LPUART1_TXD */
+/* Routed pin properties */
+#define BOARD_INITPINS_LPUART1_TXD_PERIPHERAL                            LPUART1   /*!< Peripheral name */
+#define BOARD_INITPINS_LPUART1_TXD_SIGNAL                                    TXD   /*!< Signal name */
+
+/* GPIO_LPSR_06 (coord P8), I2C6_SDA */
+/* Routed pin properties */
+#define BOARD_INITPINS_I2C6_SDA_PERIPHERAL                                LPI2C6   /*!< Peripheral name */
+#define BOARD_INITPINS_I2C6_SDA_SIGNAL                                       SDA   /*!< Signal name */
+
+/* GPIO_LPSR_07 (coord R8), I2C6_SCL */
+/* Routed pin properties */
+#define BOARD_INITPINS_I2C6_SCL_PERIPHERAL                                LPI2C6   /*!< Peripheral name */
+#define BOARD_INITPINS_I2C6_SCL_SIGNAL                                       SCL   /*!< Signal name */
+
+/* GPIO_AD_22 (coord K12), SAI1_TX_BCLK/U368[E1]/BT_PCM_BCLK/U354[7]/U355[17] */
+/* Routed pin properties */
+#define BOARD_INITPINS_BT_PCM_BCLK_PERIPHERAL                               SAI1   /*!< Peripheral name */
+#define BOARD_INITPINS_BT_PCM_BCLK_SIGNAL                            sai_tx_bclk   /*!< Signal name */
+
+/* GPIO_AD_21 (coord K14), SAI1_TXD[0]/J62[1]/U354[6] */
+/* Routed pin properties */
+#define BOARD_INITPINS_BT_PCM_TXD_PERIPHERAL                                SAI1   /*!< Peripheral name */
+#define BOARD_INITPINS_BT_PCM_TXD_SIGNAL                           sai_tx_data00   /*!< Signal name */
+
+/* GPIO_AD_23 (coord J12), SAI1_TX_SYNC/U368[D3]/BT_PCM_SYNC/U354[8]/U355[16] */
+/* Routed pin properties */
+#define BOARD_INITPINS_BT_PCM_SYNC_PERIPHERAL                               SAI1   /*!< Peripheral name */
+#define BOARD_INITPINS_BT_PCM_SYNC_SIGNAL                            sai_tx_sync   /*!< Signal name */
+
+/* WAKEUP (coord T8), USER_BUTTON/SW7 */
+/* Routed pin properties */
+#define BOARD_INITPINS_USER_BUTTON_PERIPHERAL                             GPIO13   /*!< Peripheral name */
+#define BOARD_INITPINS_USER_BUTTON_SIGNAL                                gpio_io   /*!< Signal name */
+#define BOARD_INITPINS_USER_BUTTON_CHANNEL                                    0U   /*!< Signal channel */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITPINS_USER_BUTTON_GPIO                                   GPIO13   /*!< GPIO peripheral base pointer */
+#define BOARD_INITPINS_USER_BUTTON_GPIO_PIN                                   0U   /*!< GPIO pin number */
+#define BOARD_INITPINS_USER_BUTTON_GPIO_PIN_MASK                      (1U << 0U)   /*!< GPIO pin mask */
+
+/* GPIO_LPSR_09 (coord P5), DMIC_DATA0/U41[5]/LPSPI6_CS0/J26[11]/J78[4] */
+/* Routed pin properties */
+#define BOARD_INITPINS_DMIC_DATA0_PERIPHERAL                                 MIC   /*!< Peripheral name */
+#define BOARD_INITPINS_DMIC_DATA0_SIGNAL                           mic_bitstream   /*!< Signal name */
+#define BOARD_INITPINS_DMIC_DATA0_CHANNEL                                     0U   /*!< Signal channel */
+
+/* GPIO_DISP_B2_02 (coord E9), ENET_TXD0/BT_CFG[8] */
+/* Routed pin properties */
+#define BOARD_INITPINS_ENET_TXD0_PERIPHERAL                                 SAI1   /*!< Peripheral name */
+#define BOARD_INITPINS_ENET_TXD0_SIGNAL                            sai_tx_data01   /*!< Signal name */
+
+/* GPIO_LPSR_08 (coord U8), DMIC_CLK/U41[1]/U44[1]/J78[3]/J78[5]/J78[7]/J78[9] */
+/* Routed pin properties */
+#define BOARD_INITPINS_DMIC_CLK_PERIPHERAL                                   MIC   /*!< Peripheral name */
+#define BOARD_INITPINS_DMIC_CLK_SIGNAL                                       CLK   /*!< Signal name */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.

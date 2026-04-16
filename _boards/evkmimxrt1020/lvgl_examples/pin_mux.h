@@ -1,6 +1,5 @@
 /*
- * Copyright 2019 NXP
- * All rights reserved.
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -45,17 +44,29 @@ extern "C" {
 void BOARD_InitBootPins(void);
 
 /* GPIO_AD_B0_07 (number 101), UART1_RXD/J17[4] */
-#define BOARD_INITPINS_UART1_RXD_PERIPHERAL                              LPUART1   /*!< Device name: LPUART1 */
-#define BOARD_INITPINS_UART1_RXD_SIGNAL                                       RX   /*!< LPUART1 signal: RX */
+/* Routed pin properties */
+#define BOARD_INITPINS_UART1_RXD_PERIPHERAL                              LPUART1   /*!< Peripheral name */
+#define BOARD_INITPINS_UART1_RXD_SIGNAL                                       RX   /*!< Signal name */
 
 /* GPIO_AD_B0_06 (number 105), UART1_TXD/J17[6] */
-#define BOARD_INITPINS_UART1_TXD_PERIPHERAL                              LPUART1   /*!< Device name: LPUART1 */
-#define BOARD_INITPINS_UART1_TXD_SIGNAL                                       TX   /*!< LPUART1 signal: TX */
+/* Routed pin properties */
+#define BOARD_INITPINS_UART1_TXD_PERIPHERAL                              LPUART1   /*!< Peripheral name */
+#define BOARD_INITPINS_UART1_TXD_SIGNAL                                       TX   /*!< Signal name */
 
 /* GPIO_AD_B0_15 (number 93), LCD_DC_GPIO_PIN/U11[25]/J19[2] */
-#define BOARD_INITPINS_LCD_DC_GPIO_PIN_GPIO                                GPIO1   /*!< GPIO device name: GPIO1 */
-#define BOARD_INITPINS_LCD_DC_GPIO_PIN_PORT                                GPIO1   /*!< PORT device name: GPIO1 */
-#define BOARD_INITPINS_LCD_DC_GPIO_PIN_PIN                                   15U   /*!< GPIO1 pin index: 15 */
+/* Routed pin properties */
+#define BOARD_INITPINS_LCD_DC_GPIO_PIN_PERIPHERAL                          GPIO1   /*!< Peripheral name */
+#define BOARD_INITPINS_LCD_DC_GPIO_PIN_SIGNAL                            gpio_io   /*!< Signal name */
+#define BOARD_INITPINS_LCD_DC_GPIO_PIN_CHANNEL                               15U   /*!< Signal channel */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITPINS_LCD_DC_GPIO_PIN_GPIO                                GPIO1   /*!< GPIO peripheral base pointer */
+#define BOARD_INITPINS_LCD_DC_GPIO_PIN_INIT_GPIO_VALUE                        0U   /*!< GPIO output initial state */
+#define BOARD_INITPINS_LCD_DC_GPIO_PIN_GPIO_PIN                              15U   /*!< GPIO pin number */
+#define BOARD_INITPINS_LCD_DC_GPIO_PIN_GPIO_PIN_MASK                 (1U << 15U)   /*!< GPIO pin mask */
+#define BOARD_INITPINS_LCD_DC_GPIO_PIN_PORT                                GPIO1   /*!< PORT peripheral base pointer */
+#define BOARD_INITPINS_LCD_DC_GPIO_PIN_PIN                                   15U   /*!< PORT pin number */
+#define BOARD_INITPINS_LCD_DC_GPIO_PIN_PIN_MASK                      (1U << 15U)   /*!< PORT pin mask */
 
 
 /*!
@@ -65,20 +76,24 @@ void BOARD_InitBootPins(void);
 void BOARD_InitPins(void);
 
 /* GPIO_AD_B0_10 (number 98), ENET_RXD0/U11[16]/J19[6] */
-#define LPSPI1_INITPINS_ENET_RXD0_PERIPHERAL                              LPSPI1   /*!< Device name: LPSPI1 */
-#define LPSPI1_INITPINS_ENET_RXD0_SIGNAL                                     SCK   /*!< LPSPI1 signal: SCK */
+/* Routed pin properties */
+#define LPSPI1_INITPINS_ENET_RXD0_PERIPHERAL                              LPSPI1   /*!< Peripheral name */
+#define LPSPI1_INITPINS_ENET_RXD0_SIGNAL                                     SCK   /*!< Signal name */
 
 /* GPIO_AD_B0_11 (number 97), ENET_CRS_DV/U11[18]/J19[3] */
-#define LPSPI1_INITPINS_ENET_CRS_DV_PERIPHERAL                            LPSPI1   /*!< Device name: LPSPI1 */
-#define LPSPI1_INITPINS_ENET_CRS_DV_SIGNAL                                  PCS0   /*!< LPSPI1 signal: PCS0 */
+/* Routed pin properties */
+#define LPSPI1_INITPINS_ENET_CRS_DV_PERIPHERAL                            LPSPI1   /*!< Peripheral name */
+#define LPSPI1_INITPINS_ENET_CRS_DV_SIGNAL                                  PCS0   /*!< Signal name */
 
 /* GPIO_AD_B0_12 (number 96), ENET_RXER/U11[20]/J19[4] */
-#define LPSPI1_INITPINS_ENET_RXER_PERIPHERAL                              LPSPI1   /*!< Device name: LPSPI1 */
-#define LPSPI1_INITPINS_ENET_RXER_SIGNAL                                     SDO   /*!< LPSPI1 signal: SDO */
+/* Routed pin properties */
+#define LPSPI1_INITPINS_ENET_RXER_PERIPHERAL                              LPSPI1   /*!< Peripheral name */
+#define LPSPI1_INITPINS_ENET_RXER_SIGNAL                                     SDO   /*!< Signal name */
 
 /* GPIO_AD_B0_13 (number 95), ENET_TXEN/U11[23]/J19[5] */
-#define LPSPI1_INITPINS_ENET_TXEN_PERIPHERAL                              LPSPI1   /*!< Device name: LPSPI1 */
-#define LPSPI1_INITPINS_ENET_TXEN_SIGNAL                                     SDI   /*!< LPSPI1 signal: SDI */
+/* Routed pin properties */
+#define LPSPI1_INITPINS_ENET_TXEN_PERIPHERAL                              LPSPI1   /*!< Peripheral name */
+#define LPSPI1_INITPINS_ENET_TXEN_SIGNAL                                     SDI   /*!< Signal name */
 
 
 /*!
@@ -88,24 +103,60 @@ void BOARD_InitPins(void);
 void LPSPI1_InitPins(void);
 
 /* GPIO_AD_B0_10 (number 98), ENET_RXD0/U11[16]/J19[6] */
-#define LPSPI1_DEINITPINS_ENET_RXD0_GPIO                                   GPIO1   /*!< GPIO device name: GPIO1 */
-#define LPSPI1_DEINITPINS_ENET_RXD0_PORT                                   GPIO1   /*!< PORT device name: GPIO1 */
-#define LPSPI1_DEINITPINS_ENET_RXD0_PIN                                      10U   /*!< GPIO1 pin index: 10 */
+/* Routed pin properties */
+#define LPSPI1_DEINITPINS_ENET_RXD0_PERIPHERAL                             GPIO1   /*!< Peripheral name */
+#define LPSPI1_DEINITPINS_ENET_RXD0_SIGNAL                               gpio_io   /*!< Signal name */
+#define LPSPI1_DEINITPINS_ENET_RXD0_CHANNEL                                  10U   /*!< Signal channel */
+
+/* Symbols to be used with GPIO driver */
+#define LPSPI1_DEINITPINS_ENET_RXD0_GPIO                                   GPIO1   /*!< GPIO peripheral base pointer */
+#define LPSPI1_DEINITPINS_ENET_RXD0_GPIO_PIN                                 10U   /*!< GPIO pin number */
+#define LPSPI1_DEINITPINS_ENET_RXD0_GPIO_PIN_MASK                    (1U << 10U)   /*!< GPIO pin mask */
+#define LPSPI1_DEINITPINS_ENET_RXD0_PORT                                   GPIO1   /*!< PORT peripheral base pointer */
+#define LPSPI1_DEINITPINS_ENET_RXD0_PIN                                      10U   /*!< PORT pin number */
+#define LPSPI1_DEINITPINS_ENET_RXD0_PIN_MASK                         (1U << 10U)   /*!< PORT pin mask */
 
 /* GPIO_AD_B0_11 (number 97), ENET_CRS_DV/U11[18]/J19[3] */
-#define LPSPI1_DEINITPINS_ENET_CRS_DV_GPIO                                 GPIO1   /*!< GPIO device name: GPIO1 */
-#define LPSPI1_DEINITPINS_ENET_CRS_DV_PORT                                 GPIO1   /*!< PORT device name: GPIO1 */
-#define LPSPI1_DEINITPINS_ENET_CRS_DV_PIN                                    11U   /*!< GPIO1 pin index: 11 */
+/* Routed pin properties */
+#define LPSPI1_DEINITPINS_ENET_CRS_DV_PERIPHERAL                           GPIO1   /*!< Peripheral name */
+#define LPSPI1_DEINITPINS_ENET_CRS_DV_SIGNAL                             gpio_io   /*!< Signal name */
+#define LPSPI1_DEINITPINS_ENET_CRS_DV_CHANNEL                                11U   /*!< Signal channel */
+
+/* Symbols to be used with GPIO driver */
+#define LPSPI1_DEINITPINS_ENET_CRS_DV_GPIO                                 GPIO1   /*!< GPIO peripheral base pointer */
+#define LPSPI1_DEINITPINS_ENET_CRS_DV_GPIO_PIN                               11U   /*!< GPIO pin number */
+#define LPSPI1_DEINITPINS_ENET_CRS_DV_GPIO_PIN_MASK                  (1U << 11U)   /*!< GPIO pin mask */
+#define LPSPI1_DEINITPINS_ENET_CRS_DV_PORT                                 GPIO1   /*!< PORT peripheral base pointer */
+#define LPSPI1_DEINITPINS_ENET_CRS_DV_PIN                                    11U   /*!< PORT pin number */
+#define LPSPI1_DEINITPINS_ENET_CRS_DV_PIN_MASK                       (1U << 11U)   /*!< PORT pin mask */
 
 /* GPIO_AD_B0_12 (number 96), ENET_RXER/U11[20]/J19[4] */
-#define LPSPI1_DEINITPINS_ENET_RXER_GPIO                                   GPIO1   /*!< GPIO device name: GPIO1 */
-#define LPSPI1_DEINITPINS_ENET_RXER_PORT                                   GPIO1   /*!< PORT device name: GPIO1 */
-#define LPSPI1_DEINITPINS_ENET_RXER_PIN                                      12U   /*!< GPIO1 pin index: 12 */
+/* Routed pin properties */
+#define LPSPI1_DEINITPINS_ENET_RXER_PERIPHERAL                             GPIO1   /*!< Peripheral name */
+#define LPSPI1_DEINITPINS_ENET_RXER_SIGNAL                               gpio_io   /*!< Signal name */
+#define LPSPI1_DEINITPINS_ENET_RXER_CHANNEL                                  12U   /*!< Signal channel */
+
+/* Symbols to be used with GPIO driver */
+#define LPSPI1_DEINITPINS_ENET_RXER_GPIO                                   GPIO1   /*!< GPIO peripheral base pointer */
+#define LPSPI1_DEINITPINS_ENET_RXER_GPIO_PIN                                 12U   /*!< GPIO pin number */
+#define LPSPI1_DEINITPINS_ENET_RXER_GPIO_PIN_MASK                    (1U << 12U)   /*!< GPIO pin mask */
+#define LPSPI1_DEINITPINS_ENET_RXER_PORT                                   GPIO1   /*!< PORT peripheral base pointer */
+#define LPSPI1_DEINITPINS_ENET_RXER_PIN                                      12U   /*!< PORT pin number */
+#define LPSPI1_DEINITPINS_ENET_RXER_PIN_MASK                         (1U << 12U)   /*!< PORT pin mask */
 
 /* GPIO_AD_B0_13 (number 95), ENET_TXEN/U11[23]/J19[5] */
-#define LPSPI1_DEINITPINS_ENET_TXEN_GPIO                                   GPIO1   /*!< GPIO device name: GPIO1 */
-#define LPSPI1_DEINITPINS_ENET_TXEN_PORT                                   GPIO1   /*!< PORT device name: GPIO1 */
-#define LPSPI1_DEINITPINS_ENET_TXEN_PIN                                      13U   /*!< GPIO1 pin index: 13 */
+/* Routed pin properties */
+#define LPSPI1_DEINITPINS_ENET_TXEN_PERIPHERAL                             GPIO1   /*!< Peripheral name */
+#define LPSPI1_DEINITPINS_ENET_TXEN_SIGNAL                               gpio_io   /*!< Signal name */
+#define LPSPI1_DEINITPINS_ENET_TXEN_CHANNEL                                  13U   /*!< Signal channel */
+
+/* Symbols to be used with GPIO driver */
+#define LPSPI1_DEINITPINS_ENET_TXEN_GPIO                                   GPIO1   /*!< GPIO peripheral base pointer */
+#define LPSPI1_DEINITPINS_ENET_TXEN_GPIO_PIN                                 13U   /*!< GPIO pin number */
+#define LPSPI1_DEINITPINS_ENET_TXEN_GPIO_PIN_MASK                    (1U << 13U)   /*!< GPIO pin mask */
+#define LPSPI1_DEINITPINS_ENET_TXEN_PORT                                   GPIO1   /*!< PORT peripheral base pointer */
+#define LPSPI1_DEINITPINS_ENET_TXEN_PIN                                      13U   /*!< PORT pin number */
+#define LPSPI1_DEINITPINS_ENET_TXEN_PIN_MASK                         (1U << 13U)   /*!< PORT pin mask */
 
 
 /*!

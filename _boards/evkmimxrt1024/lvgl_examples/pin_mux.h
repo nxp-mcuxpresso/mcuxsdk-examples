@@ -1,6 +1,5 @@
 /*
- * Copyright 2020 NXP
- * All rights reserved.
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -62,6 +61,7 @@ void BOARD_InitBootPins(void);
 
 /* GPIO_AD_B0_15 (number 93), LCD_DC_GPIO_PIN/U11[25]/J19[2] */
 #define BOARD_INITPINS_LCD_DC_GPIO_PIN_GPIO                                GPIO1   /*!< GPIO device name: GPIO1 */
+#define BOARD_INITPINS_LCD_DC_GPIO_PIN_INIT_GPIO_VALUE                        0U   /*!< GPIO output initial state */
 #define BOARD_INITPINS_LCD_DC_GPIO_PIN_PORT                                GPIO1   /*!< PORT device name: GPIO1 */
 #define BOARD_INITPINS_LCD_DC_GPIO_PIN_PIN                                   15U   /*!< GPIO1 pin index: 15 */
 

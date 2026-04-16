@@ -1,6 +1,5 @@
 /*
- * Copyright 2019-2020 ,2021 NXP
- * All rights reserved.
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -13,11 +12,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v9.0
+product: Pins v17.0
 processor: MIMXRT1011xxxxx
 package_id: MIMXRT1011DAE5A
 mcu_data: ksdk2_0
-processor_version: 9.0.1
+processor_version: 26.03.10
 board: MIMXRT1010-EVK
 pin_labels:
 - {pin_num: '3', pin_signal: GPIO_09, label: LPUART1_RXD, identifier: LPUART1_RXD}
@@ -62,9 +61,9 @@ BOARD_InitPins:
     pull_keeper_select: Keeper, pull_keeper_enable: Enable, pull_up_down_config: Pull_Down_100K_Ohm, hysteresis_enable: Disable}
   - {pin_num: '5', peripheral: SAI1, signal: sai_tx_sync, pin_signal: GPIO_07, slew_rate: Slow, software_input_on: Enable, open_drain: Disable, drive_strength: R0_4,
     pull_keeper_select: Keeper, pull_keeper_enable: Enable, pull_up_down_config: Pull_Down_100K_Ohm, hysteresis_enable: Disable}
-  - {pin_num: '9', peripheral: SAI1, signal: sai_tx_data0, pin_signal: GPIO_04, slew_rate: Slow, software_input_on: Enable, open_drain: Disable, drive_strength: R0_4,
+  - {pin_num: '9', peripheral: SAI1, signal: sai_tx_data0, pin_signal: GPIO_04, slew_rate: Slow, software_input_on: Disable, open_drain: Disable, drive_strength: R0_4,
     pull_keeper_select: Keeper, pull_keeper_enable: Enable, pull_up_down_config: Pull_Down_100K_Ohm, hysteresis_enable: Disable}
-  - {pin_num: '10', peripheral: SAI1, signal: sai_rx_data0, pin_signal: GPIO_03, slew_rate: Slow, software_input_on: Enable, open_drain: Disable, drive_strength: R0_4,
+  - {pin_num: '10', peripheral: SAI1, signal: sai_rx_data0, pin_signal: GPIO_03, slew_rate: Slow, software_input_on: Disable, open_drain: Disable, drive_strength: R0_4,
     pull_keeper_select: Keeper, pull_keeper_enable: Enable, pull_up_down_config: Pull_Down_100K_Ohm, hysteresis_enable: Disable}
   - {pin_num: '11', peripheral: LPI2C1, signal: SCL, pin_signal: GPIO_02, slew_rate: Slow, software_input_on: Enable, open_drain: Enable, drive_strength: R0_4, pull_keeper_select: Keeper,
     pull_keeper_enable: Enable, pull_up_down_config: Pull_Up_22K_Ohm, hysteresis_enable: Disable}
@@ -85,8 +84,8 @@ void BOARD_InitPins(void) {
 
   IOMUXC_SetPinMux(IOMUXC_GPIO_01_LPI2C1_SDA, 1U); 
   IOMUXC_SetPinMux(IOMUXC_GPIO_02_LPI2C1_SCL, 1U); 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_03_SAI1_RX_DATA00, 1U); 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_04_SAI1_TX_DATA00, 1U); 
+  IOMUXC_SetPinMux(IOMUXC_GPIO_03_SAI1_RX_DATA00, 0U); 
+  IOMUXC_SetPinMux(IOMUXC_GPIO_04_SAI1_TX_DATA00, 0U); 
   IOMUXC_SetPinMux(IOMUXC_GPIO_06_SAI1_TX_BCLK, 1U); 
   IOMUXC_SetPinMux(IOMUXC_GPIO_07_SAI1_TX_SYNC, 1U); 
   IOMUXC_SetPinMux(IOMUXC_GPIO_08_SAI1_MCLK, 1U); 
@@ -104,7 +103,6 @@ void BOARD_InitPins(void) {
   IOMUXC_SetPinConfig(IOMUXC_GPIO_10_LPUART1_TXD, 0x10A0U); 
   IOMUXC_SetPinConfig(IOMUXC_GPIO_AD_09_ARM_TRACE_SWO, 0x90B1U); 
 }
-
 /***********************************************************************************************************************
  * EOF
  **********************************************************************************************************************/

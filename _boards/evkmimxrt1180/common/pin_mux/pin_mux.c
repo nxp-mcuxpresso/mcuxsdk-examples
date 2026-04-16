@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 NXP
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -16,7 +16,7 @@ product: Pins v17.0
 processor: MIMXRT1189xxxxx
 package_id: MIMXRT1189CVM8C
 mcu_data: ksdk2_0
-processor_version: 0.2506.40
+processor_version: 26.03.10
 board: MIMXRT1180-EVK
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -61,9 +61,9 @@ BOARD_InitDEBUG_UARTPins:
 - options: {callFromInitBoot: 'true', coreID: cm33, enableClock: 'true'}
 - pin_list:
   - {pin_num: A5, peripheral: LPUART1, signal: RXD, pin_signal: GPIO_AON_09, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper, open_drain: Disable, drive_strength: High,
-    slew_rate: Slow}
+    slew_rate: Fast}
   - {pin_num: B1, peripheral: LPUART1, signal: TXD, pin_signal: GPIO_AON_08, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper, open_drain: Disable, drive_strength: High,
-    slew_rate: Slow}
+    slew_rate: Fast}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -484,8 +484,8 @@ void BOARD_InitSDRAMPins(void) {
 BOARD_InitCANPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: E6, peripheral: CAN3, signal: TX, pin_signal: GPIO_AON_18, software_input_on: Enable}
-  - {pin_num: C8, peripheral: CAN3, signal: RX, pin_signal: GPIO_AON_03, software_input_on: Enable}
+  - {pin_num: E6, peripheral: CAN3, signal: TX, pin_signal: GPIO_AON_18, software_input_on: Disable}
+  - {pin_num: C8, peripheral: CAN3, signal: RX, pin_signal: GPIO_AON_03, software_input_on: Disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -501,10 +501,10 @@ void BOARD_InitCANPins(void) {
 
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AON_03_CAN3_RX,             /* GPIO_AON_03 is configured as CAN3_RX */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_AON_03 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AON_18_CAN3_TX,             /* GPIO_AON_18 is configured as CAN3_TX */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_AON_18 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
 }
 
 
@@ -515,11 +515,11 @@ BOARD_InitSDHCPins:
 - pin_list:
   - {pin_num: D15, peripheral: USDHC1, signal: usdhc_clk, pin_signal: GPIO_SD_B1_01, software_input_on: Enable, pull_down_pull_up_config: No_Pull, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: B16, peripheral: USDHC1, signal: usdhc_cmd, pin_signal: GPIO_SD_B1_00, software_input_on: Enable, pull_down_pull_up_config: Pull_Up}
-  - {pin_num: D14, peripheral: USDHC1, signal: 'usdhc_data, 0', pin_signal: GPIO_SD_B1_02, software_input_on: Enable, pdrv_config: High_Driver}
-  - {pin_num: C15, peripheral: USDHC1, signal: 'usdhc_data, 1', pin_signal: GPIO_SD_B1_03, software_input_on: Enable, pdrv_config: High_Driver}
-  - {pin_num: B15, peripheral: USDHC1, signal: 'usdhc_data, 2', pin_signal: GPIO_SD_B1_04, software_input_on: Enable, pdrv_config: High_Driver}
-  - {pin_num: A16, peripheral: USDHC1, signal: 'usdhc_data, 3', pin_signal: GPIO_SD_B1_05, software_input_on: Enable, pdrv_config: High_Driver}
+  - {pin_num: B16, peripheral: USDHC1, signal: usdhc_cmd, pin_signal: GPIO_SD_B1_00, software_input_on: Disable, pull_down_pull_up_config: Pull_Up}
+  - {pin_num: D14, peripheral: USDHC1, signal: 'usdhc_data, 0', pin_signal: GPIO_SD_B1_02, software_input_on: Disable, pdrv_config: High_Driver}
+  - {pin_num: C15, peripheral: USDHC1, signal: 'usdhc_data, 1', pin_signal: GPIO_SD_B1_03, software_input_on: Disable, pdrv_config: High_Driver}
+  - {pin_num: B15, peripheral: USDHC1, signal: 'usdhc_data, 2', pin_signal: GPIO_SD_B1_04, software_input_on: Disable, pdrv_config: High_Driver}
+  - {pin_num: A16, peripheral: USDHC1, signal: 'usdhc_data, 3', pin_signal: GPIO_SD_B1_05, software_input_on: Disable, pdrv_config: High_Driver}
   - {pin_num: N16, peripheral: RGPIO4, signal: 'gpio_io, 15', pin_signal: GPIO_AD_15, direction: OUTPUT, software_input_on: Disable}
   - {pin_num: N14, peripheral: RGPIO4, signal: 'gpio_io, 14', pin_signal: GPIO_AD_14, direction: OUTPUT}
   - {pin_num: L15, peripheral: RGPIO4, signal: 'gpio_io, 29', pin_signal: GPIO_AD_29, direction: OUTPUT}
@@ -570,22 +570,22 @@ void BOARD_InitSDHCPins(void) {
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_SD_B1_00_USDHC1_CMD,        /* GPIO_SD_B1_00 is configured as USDHC1_CMD */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_SD_B1_00 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_SD_B1_01_USDHC1_CLK,        /* GPIO_SD_B1_01 is configured as USDHC1_CLK */
       1U);                                    /* Software Input On Field: Force input path of pad GPIO_SD_B1_01 */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_SD_B1_02_USDHC1_DATA0,      /* GPIO_SD_B1_02 is configured as USDHC1_DATA0 */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_SD_B1_02 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_SD_B1_03_USDHC1_DATA1,      /* GPIO_SD_B1_03 is configured as USDHC1_DATA1 */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_SD_B1_03 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_SD_B1_04_USDHC1_DATA2,      /* GPIO_SD_B1_04 is configured as USDHC1_DATA2 */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_SD_B1_04 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_SD_B1_05_USDHC1_DATA3,      /* GPIO_SD_B1_05 is configured as USDHC1_DATA3 */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_SD_B1_05 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_SD_B1_00_USDHC1_CMD,        /* GPIO_SD_B1_00 PAD functional properties : */
       0x04U);                                 /* PDRV Field: high driver
@@ -792,13 +792,13 @@ void BOARD_InitNETPins(void) {
 BOARD_InitFLASHPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: A10, peripheral: FLEXSPI1, signal: FLEXSPI_A_DATA0, pin_signal: GPIO_B2_10, software_input_on: Enable}
-  - {pin_num: B9, peripheral: FLEXSPI1, signal: FLEXSPI_A_DATA1, pin_signal: GPIO_B2_11, software_input_on: Enable}
-  - {pin_num: A8, peripheral: FLEXSPI1, signal: FLEXSPI_A_DATA2, pin_signal: GPIO_B2_12, software_input_on: Enable}
-  - {pin_num: B8, peripheral: FLEXSPI1, signal: FLEXSPI_A_DATA3, pin_signal: GPIO_B2_13, software_input_on: Enable}
+  - {pin_num: A10, peripheral: FLEXSPI1, signal: FLEXSPI_A_DATA0, pin_signal: GPIO_B2_10, software_input_on: Disable}
+  - {pin_num: B9, peripheral: FLEXSPI1, signal: FLEXSPI_A_DATA1, pin_signal: GPIO_B2_11, software_input_on: Disable}
+  - {pin_num: A8, peripheral: FLEXSPI1, signal: FLEXSPI_A_DATA2, pin_signal: GPIO_B2_12, software_input_on: Disable}
+  - {pin_num: B8, peripheral: FLEXSPI1, signal: FLEXSPI_A_DATA3, pin_signal: GPIO_B2_13, software_input_on: Disable}
   - {pin_num: A6, peripheral: FLEXSPI1, signal: FLEXSPI_A_DQS, pin_signal: GPIO_B2_07, software_input_on: Enable}
-  - {pin_num: A7, peripheral: FLEXSPI1, signal: FLEXSPI_A_SCLK, pin_signal: GPIO_B2_08, software_input_on: Enable}
-  - {pin_num: D10, peripheral: FLEXSPI1, signal: FLEXSPI_A_SS0_B, pin_signal: GPIO_B2_09, software_input_on: Enable}
+  - {pin_num: A7, peripheral: FLEXSPI1, signal: FLEXSPI_A_SCLK, pin_signal: GPIO_B2_08, software_input_on: Disable}
+  - {pin_num: D10, peripheral: FLEXSPI1, signal: FLEXSPI_A_SS0_B, pin_signal: GPIO_B2_09, software_input_on: Disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -816,22 +816,22 @@ void BOARD_InitFLASHPins(void) {
       1U);                                    /* Software Input On Field: Force input path of pad GPIO_B2_07 */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_B2_08_FLEXSPI1_BUS2BIT_A_SCLK,  /* GPIO_B2_08 is configured as FLEXSPI1_BUS2BIT_A_SCLK */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_B2_08 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_B2_09_FLEXSPI1_BUS2BIT_A_SS0_B,  /* GPIO_B2_09 is configured as FLEXSPI1_BUS2BIT_A_SS0_B */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_B2_09 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_B2_10_FLEXSPI1_BUS2BIT_A_DATA00,  /* GPIO_B2_10 is configured as FLEXSPI1_BUS2BIT_A_DATA00 */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_B2_10 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_B2_11_FLEXSPI1_BUS2BIT_A_DATA01,  /* GPIO_B2_11 is configured as FLEXSPI1_BUS2BIT_A_DATA01 */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_B2_11 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_B2_12_FLEXSPI1_BUS2BIT_A_DATA02,  /* GPIO_B2_12 is configured as FLEXSPI1_BUS2BIT_A_DATA02 */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_B2_12 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_B2_13_FLEXSPI1_BUS2BIT_A_DATA03,  /* GPIO_B2_13 is configured as FLEXSPI1_BUS2BIT_A_DATA03 */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_B2_13 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
 }
 
 
@@ -842,7 +842,7 @@ BOARD_InitI2SPins:
 - pin_list:
   - {pin_num: C5, peripheral: LPI2C2, signal: SCL, pin_signal: GPIO_AON_16, software_input_on: Enable, pull_up_down_config: Pull_Up, open_drain: Enable}
   - {pin_num: B3, peripheral: LPI2C2, signal: SDA, pin_signal: GPIO_AON_15, software_input_on: Enable, pull_up_down_config: Pull_Up, open_drain: Enable}
-  - {pin_num: F6, peripheral: SAI1, signal: sai_tx_data0, pin_signal: GPIO_AON_21, software_input_on: Enable, pull_up_down_config: Pull_Down}
+  - {pin_num: F6, peripheral: SAI1, signal: sai_tx_data0, pin_signal: GPIO_AON_21, software_input_on: Disable, pull_up_down_config: Pull_Down}
   - {pin_num: C3, peripheral: SAI1, signal: sai_tx_sync, pin_signal: GPIO_AON_22, software_input_on: Enable, pull_up_down_config: Pull_Down}
   - {pin_num: C2, peripheral: SAI1, signal: sai_tx_bclk, pin_signal: GPIO_AON_23, software_input_on: Enable, pull_up_down_config: Pull_Down}
   - {pin_num: C1, peripheral: SAI1, signal: sai_mclk, pin_signal: GPIO_AON_24, software_input_on: Enable, pull_up_down_config: Pull_Down}
@@ -866,7 +866,7 @@ void BOARD_InitI2SPins(void) {
       1U);                                    /* Software Input On Field: Force input path of pad GPIO_AON_16 */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AON_21_SAI1_TX_DATA00,      /* GPIO_AON_21 is configured as SAI1_TX_DATA00 */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_AON_21 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AON_22_SAI1_TX_SYNC,        /* GPIO_AON_22 is configured as SAI1_TX_SYNC */
       1U);                                    /* Software Input On Field: Force input path of pad GPIO_AON_22 */
