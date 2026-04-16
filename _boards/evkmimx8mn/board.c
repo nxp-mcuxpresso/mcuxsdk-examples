@@ -31,15 +31,19 @@ void BOARD_InitDebugConsole(void)
 /* Initialize MPU, configure memory attributes for each region */
 void BOARD_InitMemory(void)
 {
+#if defined(__ICACHE_PRESENT) && __ICACHE_PRESENT
     /* Disable I cache and D cache */
     if (SCB_CCR_IC_Msk == (SCB_CCR_IC_Msk & SCB->CCR))
     {
         SCB_DisableICache();
     }
+#endif
+#if defined(__DCACHE_PRESENT) && __DCACHE_PRESENT
     if (SCB_CCR_DC_Msk == (SCB_CCR_DC_Msk & SCB->CCR))
     {
         SCB_DisableDCache();
     }
+#endif
 
     /* Disable MPU */
     ARM_MPU_Disable();
@@ -95,18 +99,25 @@ void BOARD_InitMemory(void)
     MPU->RBAR = ARM_MPU_RBAR(2, 0x08000000U);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 1, 1, 0, 0, 0, ARM_MPU_REGION_SIZE_128MB);
 
-    /* Region 3 TCMU[0x2000_0000 - 0x2002_0000]: Memory with Normal type, shareable, non-cacheable */
-    MPU->RBAR = ARM_MPU_RBAR(3, 0x20000000U);
+    /* Region 3 QSPI[0x0800_0000 - 0x0810_0000] for vector table + text regions(e.g. in MIMX8MN6xxxJZ_flash.ld): privilege read only access, Memory with Normal type, executable, non-shareable, cacheable, non-bufferable. */
+    MPU->RBAR = ARM_MPU_RBAR(3, 0x08000000U);
+    MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_PRO, 0, 0, 1, 0, 0, ARM_MPU_REGION_SIZE_1MB);
+
+    /* Region 4 TCMU[0x2000_0000 - 0x2002_0000]: Memory with Normal type, shareable, non-cacheable */
+    MPU->RBAR = ARM_MPU_RBAR(4, 0x20000000U);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 1, 1, 0, 0, 0, ARM_MPU_REGION_SIZE_128KB);
 
-    /* Region 4 DDR[0x4000_0000 - 0x8000_0000]: Memory with Normal type, shareable, non-cacheable */
-    MPU->RBAR = ARM_MPU_RBAR(4, 0x40000000U);
+    /* Region 5 DDR[0x4000_0000 - 0x8000_0000]: Memory with Normal type, shareable, non-cacheable */
+    MPU->RBAR = ARM_MPU_RBAR(5, 0x40000000U);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 1, 1, 0, 0, 0, ARM_MPU_REGION_SIZE_1GB);
 
-    /* Region 5 DDR[0x8000_0000 - 0xF000_0000]: Memory with Normal type, shareable, non-cacheable */
-    MPU->RBAR = ARM_MPU_RBAR(5, 0x80000000U);
+    /* Region 6 DDR[0x8000_0000 - 0xF000_0000]: Memory with Normal type, shareable, non-cacheable */
+    MPU->RBAR = ARM_MPU_RBAR(6, 0x80000000U);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 1, 1, 0, 0, 0, ARM_MPU_REGION_SIZE_1GB);
 
+    /* Region 7 DDR[0x8000_0000 - 0x801F_FFFF] for vector table + text regions(e.g. in MIMX8MN6xxxJZ_ddr_ram.ld): privilege read only access, Memory with Normal type, executable, non-shareable, cacheable, non-bufferable. */
+    MPU->RBAR = ARM_MPU_RBAR(7, 0x80000000U);
+    MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_PRO, 0, 0, 1, 0, 0, ARM_MPU_REGION_SIZE_2MB);
     /*
      * Enable MPU and HFNMIENA feature
      * HFNMIENA ensures that M7 core uses MPU configuration when in hard fault, NMI, and FAULTMASK handlers,
@@ -124,6 +135,14 @@ void BOARD_InitMemory(void)
         *(uint32_t *)(GPV5_BASE_ADDR + FORCE_INCR_OFFSET) =
             *(uint32_t *)(GPV5_BASE_ADDR + FORCE_INCR_OFFSET) | FORCE_INCR_BIT_MASK;
     }
+
+    /* Enable I cache */
+#if defined(__ICACHE_PRESENT) && __ICACHE_PRESENT
+    if (SCB_CCR_IC_Msk == (SCB_CCR_IC_Msk & SCB->CCR))
+    {
+        SCB_EnableICache();
+    }
+#endif
 }
 
 void BOARD_RdcInit(void)
