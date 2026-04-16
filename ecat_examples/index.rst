@@ -12,9 +12,3 @@ ecat_examples
    foe/readme.md
    servo_motor/readme.md
    dual_cores_servo_motor/readme.md
-
-.. toctree::
-   :hidden:
-   :glob:
-
-   topics/*

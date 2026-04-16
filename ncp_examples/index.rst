@@ -8,9 +8,3 @@ ncp_examples
 
 
    ncp_host/readme.md
-
-.. toctree::
-   :hidden:
-
-   ncp_host/NCP_API_reference.md
-   ncp_device/topics/run_ncp_device_example_using_mcuxvsc.md
