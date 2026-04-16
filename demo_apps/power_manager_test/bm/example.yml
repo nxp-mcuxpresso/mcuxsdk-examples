@@ -1,4 +1,8 @@
 # yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 power_manager_test_bm:
   section-type: application
   contents:
@@ -35,6 +39,7 @@ power_manager_test_bm:
     frdmmcxw72@cm33_core0: []
     mcxw71evk: []
     frdmrw612: []
+    frdmkw43: []
     kw45b41zevk:
     - +armgcc@debug
     - +armgcc@release
