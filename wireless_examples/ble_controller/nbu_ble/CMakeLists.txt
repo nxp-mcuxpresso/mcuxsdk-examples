@@ -89,3 +89,51 @@ mcux_convert_binary(
     TOOLCHAINS armgcc mdk iar
     BINARY ${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}/nbu_ble.bin
 )
+
+# =============================================================================
+# Build Timestamp
+# =============================================================================
+string(TIMESTAMP BUILD_DATE "%Y/%m/%d")
+string(TIMESTAMP BUILD_TIME "%H:%M:%S")
+# =============================================================================
+# Manifest Repository Commit SHA
+# =============================================================================
+# Retrieve the short SHA from the west manifest repository.
+# Falls back to "unknown"/"none" if west command fails or not in a west workspace.
+# =============================================================================
+execute_process(
+  COMMAND west forall manifest -c "git rev-parse --short HEAD"
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  OUTPUT_VARIABLE GITCOMMIT_RAW
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+  ERROR_QUIET
+  RESULT_VARIABLE WEST_RESULT
+)
+if(WEST_RESULT EQUAL 0 AND GITCOMMIT_RAW)
+  # Extract SHA: everything after the last colon
+  string(REGEX REPLACE ".*:" "" GITCOMMIT "${GITCOMMIT_RAW}")
+  string(STRIP "${GITCOMMIT}" GITCOMMIT)
+  if(GITCOMMIT MATCHES "^[0-9a-fA-F]+$")
+    # Valid SHA - keep GITCOMMIT as is
+  else()
+    set(GITCOMMIT "unknown")
+  endif()
+else()
+  set(GITCOMMIT "none")
+endif()
+# =============================================================================
+# Build User
+# =============================================================================
+set(BUILD_USER "unknown")
+# =============================================================================
+# Pass individual components
+# =============================================================================
+mcux_add_macro(COMMIT_INFO=\\\"${GITCOMMIT}\\\")
+mcux_add_macro(BUILD_USER=\\\"${BUILD_USER}\\\")
+mcux_add_macro(BUILD_DATE=\\\"${BUILD_DATE}\\\")
+mcux_add_macro(BUILD_TIME=\\\"${BUILD_TIME}\\\")
+# =============================================================================
+# Build Output
+# =============================================================================
+message(STATUS "Build Date: ${BUILD_DATE} ${BUILD_TIME}")
+message(STATUS "Manifest Commit: ${GITCOMMIT}")
