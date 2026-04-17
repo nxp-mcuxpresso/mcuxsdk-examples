@@ -1,0 +1,4 @@
+config MCUX_PRJSEG_module.board.lvgl
+    select MCUX_COMPONENT_driver.gt911
+    select MCUX_COMPONENT_driver.lpi2c
+    select MCUX_PRJSEG_module.board.display_support
