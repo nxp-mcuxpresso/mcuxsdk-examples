@@ -261,6 +261,12 @@ static int ncp_sys_wakeup_host(void *tlv)
     return WM_SUCCESS;
 }
 
+static int ncp_sys_invalid_cmd(void *tlv)
+{
+    ncp_sys_prepare_status(NCP_RSP_SYSTEM_INVALID_CMD, NCP_CMD_RESULT_OK);
+    return WM_SUCCESS;
+}
+
 void ncp_sys_set_host_type(int type)
 {
     ncp_host_type = type;
@@ -279,6 +285,8 @@ int ncp_sys_host_type(void *tlv)
     ncp_sys_prepare_status(NCP_RSP_SYSTEM_HOST_TYPE, NCP_CMD_RESULT_OK);
     return WM_SUCCESS;
 }
+
+struct cmd_t system_error_ack_cmd = {NCP_CMD_SYSTEM_INVALID_CMD, "invalid command", ncp_sys_invalid_cmd, CMD_SYNC};
 
 struct cmd_t system_cmd_config[] = {
     {NCP_CMD_SYSTEM_CONFIG_SET, "ncp-set", ncp_sys_set_config, CMD_SYNC},

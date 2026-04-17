@@ -6,9 +6,14 @@
  */
 #if CONFIG_CRC32_HW_ACCELERATE
 #include "fsl_dcp.h"
+#if defined(__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U)
+#include "fsl_cache.h"
+#endif
 #include "ncp_crc.h"
 
 NCP_LOG_MODULE_REGISTER(ncp_crc, CONFIG_LOG_NCP_CRC_LEVEL);
+
+AT_NONCACHEABLE_SECTION(uint8_t output[4]);
 
 OSA_MUTEX_HANDLE_DEFINE(s_crc_mutex);
 static bool s_crc_mutex_created = false;
@@ -36,7 +41,6 @@ uint32_t ncp_tlv_chksum(uint8_t *buf, uint16_t len)
 {
     status_t status;
     dcp_handle_t m_handle;
-    AT_NONCACHEABLE_SECTION_INIT(static uint8_t output[4]);
 
     OSA_MutexLock((osa_mutex_handle_t)s_crc_mutex, osaWaitForever_c);
 
@@ -52,11 +56,6 @@ uint32_t ncp_tlv_chksum(uint8_t *buf, uint16_t len)
     DCACHE_CleanByRange((uint32_t)buf, len);
 #endif
     status = DCP_HASH(DCP, &m_handle, kDCP_Crc32, buf, len, output, &outLength);
-
-#if defined(__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U) && defined(DCP_USE_DCACHE) && (DCP_USE_DCACHE == 1U)
-    DCACHE_InvalidateByRange((uint32_t)output, outLength);
-#endif
-
     assert(status == kStatus_Success);
     assert(outLength == 4u);
 

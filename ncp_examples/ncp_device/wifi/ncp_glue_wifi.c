@@ -4497,7 +4497,7 @@ static int wlan_ncp_error_ack(void *tlv)
     wlan_ncp_prepare_status(NCP_RSP_INVALID_CMD, NCP_CMD_RESULT_ERROR);
     return WM_SUCCESS;
 }
-struct cmd_t error_ack_cmd = {0, "lookup cmd fail", wlan_ncp_error_ack, CMD_SYNC};
+struct cmd_t wlan_error_ack_cmd = {0, "lookup cmd fail", wlan_ncp_error_ack, CMD_SYNC};
 
 struct cmd_t wlan_cmd_sta[] = {
     {NCP_CMD_WLAN_STA_SCAN, "wlan-scan", wlan_ncp_scan, CMD_ASYNC},

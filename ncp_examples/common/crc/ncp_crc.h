@@ -10,9 +10,6 @@
 
 #include "fsl_common.h"
 #include "fsl_os_abstraction.h"
-#if defined(__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U)
-#include "fsl_cache.h"
-#endif
 #include "ncp_log.h"
 
 /*******************************************************************************
@@ -23,8 +20,7 @@
 #if defined(__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U)
 #define DCACHE_LINESIZE_BYTE FSL_FEATURE_L1DCACHE_LINESIZE_BYTE
 /* This macro computes cache line aligned size for data size */
-#define DCACHE_ALIGNED_SIZE(size) \
-    ((((size) + FSL_FEATURE_L1DCACHE_LINESIZE_BYTE - 1U) / FSL_FEATURE_L1DCACHE_LINESIZE_BYTE) * FSL_FEATURE_L1DCACHE_LINESIZE_BYTE)
+#define DCACHE_ALIGNED_SIZE(size)  SDK_SIZEALIGN(size, DCACHE_LINESIZE_BYTE)
 #endif
 
 /*******************************************************************************

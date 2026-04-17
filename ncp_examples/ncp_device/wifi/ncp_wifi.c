@@ -67,6 +67,7 @@ extern uint32_t current_cmd;
 extern uint16_t g_cmd_seqno;
 extern uint8_t cmd_buf[NCP_INBUF_SIZE];
 extern uint8_t wifi_res_buf[NCP_INBUF_SIZE];
+extern struct cmd_t wlan_error_ack_cmd;
 
 /*WIFI NCP COMMAND TASK*/
 #define WIFI_NCP_COMMAND_QUEUE_NUM 80
@@ -197,7 +198,7 @@ static int wifi_ncp_command_handle_input(uint8_t *cmd)
     if (NULL == command)
     {
         ncp_d("ncp wifi lookup cmd failed\r\n");
-        return -WM_FAIL;
+        command = &wlan_error_ack_cmd;
     }
     ncp_d("ncp wifi got command: <%s>", command->help);
     ret = command->handler(cmd_tlv);
