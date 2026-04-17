@@ -510,7 +510,6 @@ BOARD_InitPDMPins:
 - pin_list:
   - {pin_num: F46, peripheral: PDM, signal: pdm_clk, pin_signal: PDM_CLK, PD: DISABLED, FSEL1: FAST_SLEW_RATE}
   - {pin_num: G45, peripheral: PDM, signal: 'pdm_bit_stream_, 0', pin_signal: PDM_BIT_STREAM0, PD: DISABLED, FSEL1: FAST_SLEW_RATE}
-  - {pin_num: H46, peripheral: PDM, signal: 'pdm_bit_stream_, 1', pin_signal: PDM_BIT_STREAM1, PD: DISABLED, FSEL1: FAST_SLEW_RATE}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -523,10 +522,6 @@ BOARD_InitPDMPins:
 void BOARD_InitPDMPins(void) {                             /*!< Function assigned for the core: Cortex-M7F[cm7] */
     IOMUXC_SetPinMux(IOMUXC_PAD_PDM_BIT_STREAM0__PDM_BIT_STREAM_0, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_PDM_BIT_STREAM0__PDM_BIT_STREAM_0, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(3U));
-    IOMUXC_SetPinMux(IOMUXC_PAD_PDM_BIT_STREAM1__PDM_BIT_STREAM_1, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_PDM_BIT_STREAM1__PDM_BIT_STREAM_1, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(3U));
     IOMUXC_SetPinMux(IOMUXC_PAD_PDM_CLK__PDM_CLK, 0U);
