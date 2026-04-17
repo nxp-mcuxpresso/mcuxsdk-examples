@@ -241,6 +241,7 @@ flexio_uart_int_rb_transfer:
     imx95lpd5evk19@cm7: []
     imx95lp4xevk15@cm7: []
     frdmimx95@cm7: []
+    frdmimx95pro@cm7: []
     imx952evk@cm7: []
     kw47evk@cm33_core0: []
     kw47loc@cm33_core0: []
@@ -306,3 +307,4 @@ flexio_uart_int_rb_transfer:
     frdmmcxa266: []
     frdmmcxa366: []
     frdmmcxa577: []
+    frdmmcxa287: []

@@ -264,4 +264,7 @@ lpuart_interrupt_transfer_seven_bits:
     frdmmcxa266: []
     frdmmcxa366: []
     frdmmcxa577: []
+    frdmmcxa287: []
     frdmmcxc162: []
+    frdmkw43: []
+    frdmmcxw70: []

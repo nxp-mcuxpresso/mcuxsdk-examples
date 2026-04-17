@@ -5,6 +5,8 @@ mcux_add_source(
             ${board_root}/${board}/lpm.h
             ${board_root}/${board}/demo_apps/power_mode_switch/FreeRTOSConfig.h
             ${board_root}/${board}/FreeRTOSConfigBoard.h
+            ${board_root}/${board}/drivers/lpi2c/fsl_lpi2c_freertos.c
+            ${board_root}/${board}/drivers/lpi2c/fsl_lpi2c_freertos.h
             ${board_root}/${board}/demo_apps/power_mode_switch/rpmsg_config.h
             ${board_root}/${board}/demo_apps/power_mode_switch/clock_scg.c
             ${board_root}/${board}/demo_apps/power_mode_switch/power_mode_switch.c
@@ -15,21 +17,6 @@ mcux_add_source(
             ${board_root}/${board}/srtm_config.h
             ${board_root}/${board}/app_srtm.c
             ${board_root}/${board}/app_srtm.h
-            middleware/issdk/algorithms/pedometer/include/libinclude/KeynetikPedometer.h
-            middleware/issdk/algorithms/pedometer/source/pedometer.c
-            middleware/issdk/algorithms/pedometer/include/pedometer.h
-)
-
-mcux_add_include(
-    BASE_PATH ${SdkRootDirPath}
-    INCLUDES middleware/issdk/algorithms/pedometer/include/libinclude
-             middleware/issdk/algorithms/pedometer/source
-             middleware/issdk/algorithms/pedometer/include
-)
-
-mcux_add_library(
-	BASE_PATH ${SdkRootDirPath}
-        LIBS middleware/issdk/algorithms/pedometer/lib/libpedometerm4.a
 )
 
 mcux_add_source(
@@ -47,6 +34,7 @@ mcux_add_source(
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES middleware/multicore/remoteproc
+             ${board_root}/${board}/drivers/lpi2c
 )
 
 mcux_add_macro(
@@ -56,6 +44,10 @@ mcux_add_macro(
     TARGETS flash_debug debug
     CC "-DSRTM_DEBUG_MESSAGE_FUNC=DbgConsole_Printf\
        -DSRTM_DEBUG_VERBOSE_LEVEL=SRTM_DEBUG_VERBOSE_WARN"
+)
+
+mcux_add_macro(
+    CC "-DSDK_I2C_BASED_COMPONENT_USED=1"
 )
 
 # Add or remove Linker File Configurations

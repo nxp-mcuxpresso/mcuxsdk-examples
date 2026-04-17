@@ -1,0 +1,29 @@
+/*
+ * Copyright 2026 NXP
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+#ifndef _APP_H_
+#define _APP_H_
+
+/*******************************************************************************
+ * Definitions
+ ******************************************************************************/
+/*${macro:start}*/
+#define APP_GDET DGDET0
+
+#if defined(GDET_IRQS)
+#define GDET_APP_IRQ DGDET0_IRQn
+#define APP_GDET_DriverIRQHandler DGDET0_IRQHandler
+#endif
+/*${macro:end}*/
+
+/*******************************************************************************
+ * Prototypes
+ ******************************************************************************/
+/*${prototype:start}*/
+void BOARD_InitHardware(void);
+/*${prototype:end}*/
+
+#endif /* _APP_H_ */

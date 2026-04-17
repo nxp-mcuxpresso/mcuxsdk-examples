@@ -20,6 +20,7 @@ void BOARD_InitHardware(void)
 
     /* clang-format on */
     BOARD_InitBootPins();
+    BOARD_InitGPIO2Pins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
     BOARD_ConfigMPU();

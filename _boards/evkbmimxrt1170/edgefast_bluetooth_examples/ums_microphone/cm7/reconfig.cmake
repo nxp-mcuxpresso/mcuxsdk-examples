@@ -12,7 +12,6 @@ mcux_add_source(
     examples/_boards/${board}/edgefast_bluetooth_examples/ums_microphone/${core_id}/pin_mux.c
     examples/_boards/${board}/edgefast_bluetooth_examples/ums_microphone/${core_id}/pin_mux.h
     examples/_boards/${board}/edgefast_bluetooth_examples/ums_microphone/${core_id}/call_codec.c
-    middleware/edgefast_bluetooth/source/impl/ethermind/controller/configs/mbedtls/mbedtls_config_client.h
 )
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}

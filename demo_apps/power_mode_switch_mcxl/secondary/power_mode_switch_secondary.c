@@ -47,6 +47,8 @@ static void APP_DPD1ToDPD2BackToDPD1(void);
 static void APP_DPD1ToDPD2BackToActive(void);
 static void APP_ClearPendingIRQs(void);
 static void APP_PrepareDPD2Entry(const char *wakeDestLabel);
+static void APP_PrepareAonForLowPower(void);
+static void APP_RestoreAonAfterLowPower(void);
 /*******************************************************************************
  * Variables
  ******************************************************************************/
@@ -139,56 +141,58 @@ static bool APP_SecondaryCoreCallback(power_low_power_mode_t targetPowerMode, vo
 void SMM_EXT_IRQHandler(void)
 {
     SMM_ClearExternalIntFlag(AON__SMM);
-    Power_ClearLpPowerSettings();
 }
 
 void LPTMR_AON_IRQHandler(void)
 {
-    Power_ClearLpPowerSettings();
     DisableIRQ(LPTMR_AON_IRQn);
-    LPTMR_ClearStatusFlags(APP_LPTMR_BASE, kLPTMR_TimerCompareFlag);
-    LPTMR_StopTimer(APP_LPTMR_BASE);
-    LPTMR_DisableInterrupts(APP_LPTMR_BASE, kLPTMR_TimerInterruptEnable);
-    CLOCK_DisableClock(kCLOCK_GateAonLPTMR);
-    RESET_SetPeripheralReset(kAonLPTMR_RST_SHIFT_RSTn);
+    if (Power_GetPreviousPowerMode() != kPower_PowerDown2)
+    {
+        LPTMR_ClearStatusFlags(APP_LPTMR_BASE, kLPTMR_TimerCompareFlag);
+        LPTMR_StopTimer(APP_LPTMR_BASE);
+        LPTMR_DisableInterrupts(APP_LPTMR_BASE, kLPTMR_TimerInterruptEnable);
+        CLOCK_DisableClock(kCLOCK_GateAonLPTMR);
+        RESET_SetPeripheralReset(kAonLPTMR_RST_SHIFT_RSTn);
+    }
     __DSB();
     __ISB();
 }
 
 void RTC_ALARM0_IRQHandler(void)
 {
-    Power_ClearLpPowerSettings();
     DisableIRQ(RTC_ALARM0_IRQn);
-    RTC_DisableInterrupts(APP_RTC_BASE, kRTC_Alarm0InterruptEnable);
-    RTC_DisableAlarm(APP_RTC_BASE, kRTC_Alarm_0);
-    RTC_StopTimer(APP_RTC_BASE);
-    RTC_Deinit(APP_RTC_BASE);
+    if (Power_GetPreviousPowerMode() != kPower_PowerDown2)
+    {
+        RTC_DisableInterrupts(APP_RTC_BASE, kRTC_Alarm0InterruptEnable);
+        RTC_DisableAlarm(APP_RTC_BASE, kRTC_Alarm_0);
+        RTC_StopTimer(APP_RTC_BASE);
+        RTC_Deinit(APP_RTC_BASE);
+    }
     __DSB();
     __ISB();
 }
 
 void RTC_ALARM1_IRQHandler(void)
 {
-    Power_ClearLpPowerSettings();
     DisableIRQ(RTC_ALARM1_IRQn);
-    RTC_DisableInterrupts(APP_RTC_BASE, kRTC_Alarm1InterruptEnable);
-    RTC_DisableAlarm(APP_RTC_BASE, kRTC_Alarm_1);
-    RTC_StopTimer(APP_RTC_BASE);
-    RTC_Deinit(APP_RTC_BASE);
+    if (Power_GetPreviousPowerMode() != kPower_PowerDown2)
+    {
+        RTC_DisableInterrupts(APP_RTC_BASE, kRTC_Alarm1InterruptEnable);
+        RTC_DisableAlarm(APP_RTC_BASE, kRTC_Alarm_1);
+        RTC_StopTimer(APP_RTC_BASE);
+        RTC_Deinit(APP_RTC_BASE);
+    }
     __DSB();
     __ISB();
 }
-
-
-uint32_t toCheck1 = 0UL;
-uint32_t toCheck2 = 0UL;
 
 static void APP_DPD2ClockRecovery(void)
 {
     /* Stage 1: switch AON CPU clock back to FRO, let ADVC re-lock. */
 #if APP_ENABLE_ADVC
     ADVC_PreVoltageChangeRequest(APP_DPD2_CLOCK_FREQ_HZ);
-#endif 
+#endif
+    AON__CGU->CLK_CONFIG |= CGU_CLK_CONFIG_ULPIRC_EN_MASK | CGU_CLK_CONFIG_LPIRC_EN_MASK;
     CLOCK_SetupFROAonClocking(APP_DPD2_CLOCK_FREQ_HZ);
     CLOCK_AttachClk(kFROdiv1_to_AON_CPU);
 #if APP_ENABLE_ADVC
@@ -222,12 +226,6 @@ int main(void)
 
     /* Start from POR. */
     BOARD_InitHardware();
-    
-#if (APP_ENABLE_ADVC && (!APP_ENABLE_CONTEXT_SAVING))
-    /* When ADVC enabled but context saving disabled, wake up from DPD2 cause
-      reset, invoke this function to clear pending IRQ. */
-    APP_ClearPendingIRQs();
-#endif /* APP_ENABLE_ADVC && (!APP_ENABLE_CONTEXT_SAVING) */
 
     PRINTF(
         "\r\n###########################  Power Mode Switch Demo Secondary "
@@ -241,6 +239,15 @@ int main(void)
     {
     }
     g_DualCoreSynced = false;
+
+#if (APP_ENABLE_ADVC && (!APP_ENABLE_CONTEXT_SAVING))
+    /* When ADVC enabled but context saving disabled, wake up from DPD2 cause
+      reset, invoke this function to clear pending IRQ. */
+    APP_ClearPendingIRQs();
+#endif /* APP_ENABLE_ADVC && (!APP_ENABLE_CONTEXT_SAVING) */
+#if (APP_ENABLE_CONTEXT_SAVING == 0)
+    Power_ClearLpPowerSettings();
+#endif
     while (1)
     {
         if (Power_GetCurrentPowerMode(&curPowerMode) == kStatus_Success)
@@ -274,10 +281,10 @@ static void APP_ActiveOps(void)
     power_low_power_mode_t curLpMode;
     MU_EnableInterrupts(APP_MU, kMU_Rx0FullInterruptEnable);
     APP_ClearPendingIRQs();
-    
+
     /* Enable MU_B_RX interrupt for dual core message. */
     EnableIRQ(MU_B_RX_IRQn);
-    
+
     /* Loop until receive any request from CM33. */
     while (g_MuBRxIsrHit == false)
     {
@@ -291,9 +298,11 @@ static void APP_ActiveOps(void)
     PRINTF("Start Interpret Request\r\n");
     /* Interpret request message. */
     DisableIRQ(MU_B_RX_IRQn);
+    uint32_t key = DisableGlobalIRQ();
     Power_InterpretRequest(g_MuBRxMsg);
     g_MuBRxMsg    = 0UL;
     g_MuBRxIsrHit = false;
+    EnableGlobalIRQ(key);
     EnableIRQ(MU_B_RX_IRQn);
 #if APP_ENABLE_CONTEXT_SAVING
     /* Wakeup with context saving enabled. */
@@ -303,14 +312,14 @@ static void APP_ActiveOps(void)
 
         power_low_power_mode_t curMode;
         Power_GetCurrentPowerMode(&curMode);
-        
+
         if (curMode == kPower_DeepPowerDown1)
-        {    
+        {
             /* Wakeup from DPD2, current is in DPD1. */
             /* Clear pending interrupts, we just wakeup by interrupt. */
             PRINTF("DPD1 Mode\r\n");
             APP_ClearPendingIRQs();
-            
+
             /* Enable SMM_EXT interrupt, allow wakeup from DPD1 to Active. */
             EnableIRQ(SMM_EXT_IRQn);
             AON__SMM->PWDN_CONFIG &= ~SMM_PWDN_CONFIG_Q_TMT_EN_MASK;
@@ -329,23 +338,16 @@ static void APP_ActiveOps(void)
 }
 
 static void APP_DeepPowerDown1Ops(void)
-{    
+{
     if (Power_GetPreviousPowerMode() == kPower_DeepPowerDown2)
     {
-        /* System is in DPD1 and the previous mode was DPD2.  Two paths
-         * arrive here:
-         *  a) No context saving — cold start in DPD1 after DPD2 wakeup
-         *     (Seq F: DPD1->DPD2->DPD1, Seq I: Active->DPD2->DPD1).
-         *  b) Context saving enabled — APP_DPD1ToDPD2BackToDPD1 returned
-         *     and the main loop re-entered this function for the final
-         *     DPD1->Active step.
-         * In both cases: WFI until SMM_EXT triggers the DPD1->Active
-         * transition, then unblock CM33 (context saving only). */
+        APP_PrepareAonForLowPower();
         __WFI();
+        APP_RestoreAonAfterLowPower();
 #if APP_ENABLE_CONTEXT_SAVING
         /* DPD1->Active complete.  CM33 is now spinning on MSB_BCKP1;
          * write the sync token so it can resume from Power_EnterDeepPowerDown1. */
-         Power_NotifyCM33ToRun();
+        Power_NotifyCM33ToRun();
 #endif
     }
     else
@@ -378,6 +380,37 @@ static void APP_DeepPowerDown1Ops(void)
     }
 }
 
+/* Shut down AON peripherals that are not needed during DPD1 WFI to minimize
+ * leakage current.  Must be called AFTER the last PRINTF and BEFORE __WFI. */
+static void APP_PrepareAonForLowPower(void)
+{
+    /* Zero all AON PORT0 pin configs while PORT clock is still running,
+     * preventing leakage through floating digital inputs. */
+    for (uint8_t i = 0U; i < 27U; i++)
+    {
+        AON__PORT0->PCR[i] = 0UL;
+    }
+
+    /* DbgConsole_Deinit + UART reset + PORT/GPIO clock disable. */
+    BOARD_DeinitDebugConsole();
+
+    /* BOARD_DeinitDebugConsole does not gate the UART clock — do it here. */
+    CLOCK_DisableClock(kCLOCK_GateAonUART);
+}
+
+/* Restore AON peripherals after DPD1 WFI wakeup so that PRINTF works again.
+ * CM0+ does NOT reboot on DPD1->Active, so this is needed unconditionally. */
+static void APP_RestoreAonAfterLowPower(void)
+{
+    CLOCK_EnableClock(kCLOCK_GateAonPORT);
+    CLOCK_EnableClock(kCLOCK_GateAonGPIO);
+    CLOCK_EnableClock(kCLOCK_GateAonUART);
+    RESET_ReleasePeripheralReset(kAonUART_RST_SHIFT_RSTn);
+
+    BOARD_InitDEBUG_UARTPins();
+    BOARD_InitDebugConsole();
+}
+
 static void APP_DPD1ToActive(void)
 {
     power_dpd1_config_t dpd1Config;
@@ -395,8 +428,10 @@ static void APP_DPD1ToActive(void)
         EnableIRQ(RTC_ALARM1_IRQn);
     }
     PRINTF("Start to execute WFI\r\n");
-    /* In DPD1, execute WFI to get lower power number. */
+
+    APP_PrepareAonForLowPower();
     __WFI();
+    APP_RestoreAonAfterLowPower();
 
 #if APP_ENABLE_CONTEXT_SAVING
     /* Wakeup from DPD1, current is in Active, notify CM33 to execute. */
@@ -425,12 +460,13 @@ static void APP_DPD1ToDPD2BackToDPD1(void)
         .disableBandgap       = true,
 #if (APP_ENABLE_CONTEXT_SAVING == 0)
         .mainRamArraysToRetain = 0U,
-        .saveContext = false,
+        .saveContext           = false,
+        .enableIVSMode         = true,
 #else
         .mainRamArraysToRetain = kPower_MainDomainAllRams,
         .saveContext           = true,
+        .enableIVSMode         = false,
 #endif
-        .enableIVSMode         = true,
         .switchToX32K          = true,
         .disableFRO10M         = true,
         .disableFRO3M          = false,
@@ -460,20 +496,21 @@ static void APP_DPD1ToDPD2BackToDPD1(void)
 static void APP_DPD1ToDPD2BackToActive(void)
 {
     APP_PrepareDPD2Entry("Active");
-    
+
     /* Set configuration in DPD2 mode, want to back to active, no need to
     retain ram blocks. */
     power_dpd2_config_t dpd2Config = {
 #if (APP_ENABLE_CONTEXT_SAVING == 0)
         .aonRamArraysToRetain  = kPower_AonDomainNoneRams,
         .mainRamArraysToRetain = kPower_MainDomainNoneRams,
-        .saveContext = false,
+        .saveContext           = false,
+        .enableIVSMode         = true,
 #else
         .aonRamArraysToRetain  = kPower_AonDomainAllRams,
         .mainRamArraysToRetain = kPower_MainDomainAllRams,
         .saveContext           = true,
+        .enableIVSMode         = false,
 #endif
-        .enableIVSMode         = true,
         .disableBandgap        = true,
         .switchToX32K          = true,
         .disableFRO10M         = true,
@@ -522,7 +559,7 @@ static void APP_EnableLptmrWakeup(void)
     LPTMR_SetTimerPeriod(APP_LPTMR_BASE, USEC_TO_COUNT(LPTMR_USEC_COUNT, LPTMR_SOURCE_CLOCK));
     LPTMR_EnableInterrupts(APP_LPTMR_BASE, kLPTMR_TimerInterruptEnable);
     LPTMR_StartTimer(APP_LPTMR_BASE);
-    
+
 #if APP_ENABLE_ADVC
     if (ADVC_PostVoltageChangeRequest() != kADVC_Stat_Ok)
     {
@@ -547,4 +584,3 @@ static void APP_ClearPendingIRQs(void)
         EnableIRQ(RTC_ALARM1_IRQn);
     }
 }
-

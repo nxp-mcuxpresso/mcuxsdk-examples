@@ -19,16 +19,7 @@
 #include "mu_ipc_shm_host.h"
 #define IPC_SHM_SIZE  4096
 
-#if defined(__ICCARM__) /* IAR Workbench */
-#pragma location = "rpmsg_sh_mem_section"
-static char ipc_shm_section[IPC_SHM_SIZE];
-#elif defined(__CC_ARM) || defined(__ARMCC_VERSION) /* Keil MDK */
-static char ipc_shm_section[IPC_SHM_SIZE] __attribute__((section("rpmsg_sh_mem_section")));
-#elif defined(__GNUC__)
-static char ipc_shm_section[IPC_SHM_SIZE] __attribute__((section(".ncache.init")));
-#else
-#error "ipc_shm: Please provide your definition of ipc_shm_section[]!"
-#endif
+AT_NONCACHEABLE_SECTION_ALIGN(static char ipc_shm_section[IPC_SHM_SIZE], 4U);
 
 static UINT32 EcatTimerCnt;
 

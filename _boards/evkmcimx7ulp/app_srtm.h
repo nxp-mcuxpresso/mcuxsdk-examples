@@ -32,8 +32,10 @@
 #define APP_SRTM_DISPATCHER_TASK_PRIO (3U)
 
 /* I2C baud rate */
-#define APP_LPI2C0_BAUDRATE (100000U)
+#define APP_LPI2C0_BAUDRATE (400000U)
 #define APP_LPI2C3_BAUDRATE (100000U)
+
+#define I2C_SWITCH_NONE 1
 
 /* Macro used to release I2C bus in initialization */
 #define APP_LPI2C_DELAY           (100U)
@@ -61,11 +63,11 @@
 #define RPMSG_LITE_SRTM_LINK_ID      (0U)
 #define APP_SRTM_PMIC_CHANNEL_NAME   "rpmsg-regulator-channel"
 #define APP_SRTM_LFCL_CHANNEL_NAME   "rpmsg-life-cycle-channel"
+#define APP_SRTM_I2C_CHANNEL_NAME    "rpmsg-i2c-channel"
 #define APP_SRTM_AUDIO_CHANNEL_NAME  "rpmsg-audio-channel"
 #define APP_SRTM_KEYPAD_CHANNEL_NAME "rpmsg-keypad-channel"
 #define APP_SRTM_IO_CHANNEL_NAME     "rpmsg-io-channel"
 #define APP_SRTM_RTC_CHANNEL_NAME    "rpmsg-rtc-channel"
-#define APP_SRTM_SENSOR_CHANNEL_NAME "rpmsg-sensor-channel"
 
 #define APP_PIN_ONOFF        (0xFFFFU) /* SNVS Power Pin */
 #define APP_PIN_A7_POW_EN    (0x0019U) /* PTA25 */
@@ -76,6 +78,7 @@
 #define APP_PIN_WL_HOST_WAKE (0x001FU) /* PTA31 */
 #define APP_PIN_VOL_MINUS    (0x000DU) /* PTA13 */
 #define APP_PIN_VOL_PLUS     (0x0003U) /* PTA3 */
+#define APP_PIN_HP_DET       (0x0017U) /* PTA23 */
 
 /* Keypad index in Linux OS */
 #define APP_KEYPAD_INDEX_ONOFF     (116U)
@@ -89,12 +92,6 @@
 #define LLWU_MODULE_CMP1   (3U)
 #define LLWU_MODULE_SNVS   (4U)
 #define LLWU_MODULE_USBPHY (6U)
-
-#define APP_PEDOMETER_POLL_DELAY_MIN     (500U)                              /* Half second. */
-#define APP_PEDOMETER_POLL_DELAY_MAX     (3600000U)                          /* 1 hour. */
-#define APP_PEDOMETER_SAMPLE_RATE        (50U)                               /* sample 50 times per second. */
-#define APP_PEDOMETER_SAMPLE_WINDOW      (1000U / APP_PEDOMETER_SAMPLE_RATE) /* sample every 20ms. */
-#define APP_PEDOMETER_SENSOR_SAMPLE_RATE (FXOS8700_CTRL_REG1_DR_SINGLE_50_HZ)
 
 #define APP_GPIO_IDX(ioId) ((uint8_t)(((uint16_t)(ioId)) >> 8U))
 #define APP_PIN_IDX(ioId)  ((uint8_t)ioId)

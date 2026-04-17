@@ -27,3 +27,4 @@ the configuration structure's setting in application to fit the special requirem
 - [MCXW72-LOC](../../../_boards/mcxw72loc/driver_examples/lpadc/single_polling/example_board_readme.md)
 - [FRDM-MCXW72](../../../_boards/frdmmcxw72/driver_examples/lpadc/single_polling/example_board_readme.md)
 - [FRDM-KW43](../../../_boards/frdmkw43/driver_examples/lpadc/single_polling/example_board_readme.md)
+- [FRDM-MCXW70](../../../_boards/frdmmcxw70/driver_examples/lpadc/single_polling/example_board_readme.md)

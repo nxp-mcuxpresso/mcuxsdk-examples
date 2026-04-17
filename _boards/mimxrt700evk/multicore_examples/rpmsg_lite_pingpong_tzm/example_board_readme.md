@@ -63,9 +63,10 @@ Message: DATA = 1051
 
 RPMsg demo ends
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Note:
-The "Copy CORE1 image to address..." log message is not displayed on the terminal window when MCUXpresso IDE is used.
-In case of MCUXpresso IDE the secondary core image is copied to the target memory during startup automatically.
+
+Note
+====
+This example is currently not supported in MCUXpresso IDE.
 
 
 TrustZone Application Development in SDK

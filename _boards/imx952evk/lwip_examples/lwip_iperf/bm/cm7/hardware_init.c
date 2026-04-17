@@ -235,6 +235,9 @@ void BOARD_InitHardware(void)
 
     /* Pins init */
     BOARD_InitBootPins();
+    BOARD_InitGPIO5Pins();
+    BOARD_InitI2C7Pins();
+    BOARD_InitNETPins();
 
     /* Clocks init */
     BOARD_BootClockRUN();

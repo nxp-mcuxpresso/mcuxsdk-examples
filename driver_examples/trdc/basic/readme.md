@@ -35,3 +35,4 @@ the hardfault occurs.
 - [FRDM-MCXW72](../../../_boards/frdmmcxw72/driver_examples/trdc/basic/example_board_readme.md)
 - [FRDM-MCXA577](../../../_boards/frdmmcxa577/driver_examples/trdc/basic/example_board_readme.md)
 - [FRDM-MCXC162](../../../_boards/frdmmcxc162/driver_examples/trdc/basic/example_board_readme.md)
+- [FRDM-MCXA287](../../../_boards/frdmmcxa287/driver_examples/trdc/example_board_readme.md)

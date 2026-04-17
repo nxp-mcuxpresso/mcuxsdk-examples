@@ -1,0 +1,255 @@
+pwm:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/pwm/pwm_3ph
+    project-root-path: boards/${board}/driver_examples/pwm/pwm_3ph/${multicore_foldername}
+    document:
+      name: pwm${core_id_suffix_name}
+      category: driver_examples/pwm/pwm_3ph
+      brief: The PWM project is a simple demonstration program of the SDK PWM driver.The
+        pulse width modulator (PWM) module contains PWM submodules, each of which
+        is set up to control a single half-bridge power stage.Fault channel support
+        is provided. This PWM module can generate various switching patterns, including
+        highly sophisticated waveforms.It can be used to control all known Switched
+        Mode Power Supplies (SMPS) topologies.
+      example_readme:
+      - examples/driver_examples/pwm/pwm_3ph/readme.md
+      - ${board_root}/${board}/driver_examples/pwm/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkbmimxrt1060:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkbmimxrt1170@cm4:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkbmimxrt1170@cm7:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkcmimxrt1060:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt1010:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt1015:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt1020:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt1024:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt1040:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt1064:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt1160@cm4:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt1160@cm7:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt1180@cm33:
+    - -armgcc@debug
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -armgcc@release
+    - -iar@debug
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    - -mdk@release
+    evkmimxrt1180@cm7:
+    - -armgcc@debug
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -armgcc@release
+    - -iar@debug
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    - -mdk@release
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa346: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    lpcxpresso55s36: []
+    mcxn9xxevk@cm33_core0: []
+    imx943evk@cm7_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
+    imx943evk@cm7_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
+    imx943evk@cm33_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
+    frdmimxrt1186@cm33:
+    - -armgcc@debug
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -armgcc@release
+    - -iar@debug
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    - -mdk@release
+    frdmimxrt1186@cm7:
+    - -armgcc@debug
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -armgcc@release
+    - -iar@debug
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    - -mdk@release
+    frdmmcxa174: []
+    frdmmcxa344: []
+    frdmmcxa266: []
+    frdmmcxa366: []
+    frdmmcxc162: []

@@ -22,3 +22,4 @@ flexspi_octal_dma3_transfer:
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
     frdmmcxa577: []
+    frdmmcxa287: []

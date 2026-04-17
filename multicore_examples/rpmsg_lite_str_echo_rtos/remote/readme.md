@@ -24,6 +24,7 @@ core equally. The shared memory start address is then exported from the linker
 to the application.
 
 ## Supported Boards
+- [EVK-MCIMX7ULP](../../../_boards/evkmcimx7ulp/multicore_examples/rpmsg_lite_str_echo_rtos/remote/example_board_readme.md)
 - [EVK9-MIMX8ULP](../../../_boards/evk9mimx8ulp/multicore_examples/rpmsg_lite_str_echo_rtos/remote/example_board_readme.md)
 - [IMX952LPD5EVK-19](../../../_boards/imx952evk/multicore_examples/rpmsg_lite_str_echo_rtos/remote/example_board_readme.md)
 - [IMX952LPD5EVK-15](../../../_boards/imx952evk/multicore_examples/rpmsg_lite_str_echo_rtos/remote/example_board_readme.md)
@@ -35,7 +36,8 @@ to the application.
 - [EVK-MIMX8ULP](../../../_boards/evkmimx8ulp/multicore_examples/rpmsg_lite_str_echo_rtos/remote/example_board_readme.md)
 - [IMX95LP4XEVK-15](../../../_boards/imx95lp4xevk15/multicore_examples/rpmsg_lite_str_echo_rtos/remote/example_board_readme.md)
 - [IMX95LPD5EVK-19](../../../_boards/imx95lpd5evk19/multicore_examples/rpmsg_lite_str_echo_rtos/remote/example_board_readme.md)
-- [FRDMIMX95](../../../_boards/frdmimx95/multicore_examples/rpmsg_lite_str_echo_rtos/remote/example_board_readme.md)
+- [FRDM-IMX95](../../../_boards/frdmimx95/multicore_examples/rpmsg_lite_str_echo_rtos/remote/example_board_readme.md)
+- [FRDM-IMX95-PRO](../../../_boards/frdmimx95pro/multicore_examples/rpmsg_lite_str_echo_rtos/remote/example_board_readme.md)
 - [MCIMX93AUTO-EVK](../../../_boards/mcimx93autoevk/multicore_examples/rpmsg_lite_str_echo_rtos/remote/example_board_readme.md)
 - [MCIMX93-EVK](../../../_boards/mcimx93evk/multicore_examples/rpmsg_lite_str_echo_rtos/remote/example_board_readme.md)
 - [MCIMX93W-EVK](../../../_boards/mcimx93wevk/multicore_examples/rpmsg_lite_str_echo_rtos/remote/example_board_readme.md)

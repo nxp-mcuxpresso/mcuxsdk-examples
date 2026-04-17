@@ -300,6 +300,29 @@ BOARD_InitPinLPUART1_RX:
  * END ****************************************************************************************************************/
 void BOARD_InitPinLPUART1_RX(void)
 {
+    /* Clock Config: Peripheral clocks are enabled; module does not stall low power mode entry */
+    CLOCK_EnableClock(kCLOCK_PortC);
+
+    const port_pin_config_t port_c2_pin39_config = {/* Internal pull-up/down resistor is disabled */
+                                                    .pullSelect = (uint16_t)kPORT_PullDisable,
+                                                    /* Low internal pull resistor value is selected. */
+                                                    .pullValueSelect = (uint16_t)kPORT_LowPullResistor,
+                                                    /* Fast slew rate is configured */
+                                                    .slewRate = (uint16_t)kPORT_FastSlewRate,
+                                                    /* Passive input filter is disabled */
+                                                    .passiveFilterEnable = (uint16_t)kPORT_PassiveFilterDisable,
+                                                    /* Open drain output is disabled */
+                                                    .openDrainEnable = (uint16_t)kPORT_OpenDrainDisable,
+                                                    /* Low drive strength is configured */
+                                                    .driveStrength = (uint16_t)kPORT_LowDriveStrength,
+                                                    /* Pin is configured as LPUART1_RX */
+                                                    .mux = (uint16_t)kPORT_MuxAlt3,
+                                                    /* Digital input is not inverted */
+                                                    .invertInput = (uint16_t)kPORT_InputNormal,
+                                                    /* Pin Control Register fields [15:0] are not locked */
+                                                    .lockRegister = (uint16_t)kPORT_UnlockRegister};
+    /* PORT_C2 (pin 39) is configured as LPUART1_RX */
+    PORT_SetPinConfig(PORT_C, 2U, &port_c2_pin39_config);
 }
 
 /* clang-format off */
@@ -321,6 +344,29 @@ BOARD_InitPinLPUART1_TX:
  * END ****************************************************************************************************************/
 void BOARD_InitPinLPUART1_TX(void)
 {
+    /* Clock Config: Peripheral clocks are enabled; module does not stall low power mode entry */
+    CLOCK_EnableClock(kCLOCK_PortC);
+
+    const port_pin_config_t port_c3_pin40_config = {/* Internal pull-up/down resistor is disabled */
+                                                    .pullSelect = (uint16_t)kPORT_PullDisable,
+                                                    /* Low internal pull resistor value is selected. */
+                                                    .pullValueSelect = (uint16_t)kPORT_LowPullResistor,
+                                                    /* Fast slew rate is configured */
+                                                    .slewRate = (uint16_t)kPORT_FastSlewRate,
+                                                    /* Passive input filter is disabled */
+                                                    .passiveFilterEnable = (uint16_t)kPORT_PassiveFilterDisable,
+                                                    /* Open drain output is disabled */
+                                                    .openDrainEnable = (uint16_t)kPORT_OpenDrainDisable,
+                                                    /* Low drive strength is configured */
+                                                    .driveStrength = (uint16_t)kPORT_LowDriveStrength,
+                                                    /* Pin is configured as LPUART1_TX */
+                                                    .mux = (uint16_t)kPORT_MuxAlt3,
+                                                    /* Digital input is not inverted */
+                                                    .invertInput = (uint16_t)kPORT_InputNormal,
+                                                    /* Pin Control Register fields [15:0] are not locked */
+                                                    .lockRegister = (uint16_t)kPORT_UnlockRegister};
+    /* PORT_C3 (pin 40) is configured as LPUART1_TX */
+    PORT_SetPinConfig(PORT_C, 3U, &port_c3_pin40_config);
 }
 
 /* clang-format off */

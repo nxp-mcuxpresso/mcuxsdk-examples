@@ -1,0 +1,68 @@
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+#
+
+config MCUX_PRJSEG_module.board.display_support
+    select MCUX_COMPONENT_driver.display-rm692c9
+    select MCUX_COMPONENT_driver.display-adv7535
+    select MCUX_COMPONENT_driver.display-it6263
+    select MCUX_COMPONENT_driver.lpi2c
+
+# Which panels the board supports
+config MCUX_DEMO_PANEL_LVDS2HDMI_SUPPORT
+    default y
+
+config MCUX_DEMO_PANEL_LCD_SPEC_SUPPORT
+    default y
+
+if MCUX_PRJSEG_module.board.display_support
+
+    config DPU_EXAMPLE_DI
+        string
+        default DPU_DI_MIPI if MCUX_PRJSEG_module.board.display_support.DPU_DI_MIPI
+        default DPU_DI_LVDS if MCUX_PRJSEG_module.board.display_support.DPU_DI_LVDS
+        help
+            Port selection for display support
+            No prefix in generated macro
+
+    choice MCUX_PRJSEG_module.board.display_support.port
+        prompt "port Selection"
+        default MCUX_PRJSEG_module.board.display_support.DPU_DI_LVDS
+
+        config MCUX_PRJSEG_module.board.display_support.DPU_DI_MIPI
+            bool "DPU_DI_MIPI port"
+
+        config MCUX_PRJSEG_module.board.display_support.DPU_DI_LVDS
+            bool "DPU_DI_LVDS port"
+    endchoice
+
+    config APP_DISPLAY_EXTERNAL_CONVERTOR
+        bool "MIPI or LVDS to HDMI convertor card"
+        help
+            No prefix in generated macro
+
+    config LDB_DUAL_PANEL
+        int
+        default 0 if MCUX_PRJSEG_module.board.display_support.LDB_DUAL_PANEL_DISABLE
+        default 1 if MCUX_PRJSEG_module.board.display_support.LDB_DUAL_PANEL_ENABLE
+        help
+            Ldb dual panel setting selection for display support
+            No prefix in generated macro
+
+    choice MCUX_PRJSEG_module.board.display_support.ldb
+        prompt "dual panel Selection"
+        default MCUX_PRJSEG_module.board.display_support.LDB_DUAL_PANEL_DISABLE
+
+        config MCUX_PRJSEG_module.board.display_support.LDB_DUAL_PANEL_DISABLE
+            bool "Disable DUAL panel setting for LDB"
+
+        config MCUX_PRJSEG_module.board.display_support.LDB_DUAL_PANEL_ENABLE
+            bool "Enable DUAL panel setting for LDB"
+    endchoice
+
+    choice DISPLAY_SUPPORT_PANEL
+        default LVDS2HDMI
+    endchoice
+
+endif

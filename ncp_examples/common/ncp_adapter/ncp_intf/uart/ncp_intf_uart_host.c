@@ -40,7 +40,7 @@ extern uint32_t BOARD_DebugConsoleSrcFreq(void);
 
 static const ncp_pm_ops_t *s_pm_ops = NULL;
 
-static lpuart_edma_handle_t s_uart_dma_handle;
+AT_NONCACHEABLE_SECTION(static lpuart_edma_handle_t s_uart_dma_handle);
 static edma_handle_t s_dma_tx_handle;
 static edma_handle_t s_dma_rx_handle;
 
@@ -52,7 +52,7 @@ typedef struct {
 
 static ncp_uart_ctx_t s_uart_ctx = {0};
 
-AT_NONCACHEABLE_SECTION_ALIGN(static uint8_t rx_buffer[TLV_CMD_BUF_SIZE], 4);
+AT_NONCACHEABLE_SECTION_ALIGN(static uint8_t rx_buffer[TLV_CMD_BUF_SIZE], 32);
 
 static void ncp_uart_rx_task(void *argv);
 static OSA_TASK_HANDLE_DEFINE(s_uart_task_handle);

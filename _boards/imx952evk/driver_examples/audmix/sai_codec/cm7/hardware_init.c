@@ -82,6 +82,8 @@ void BOARD_InitHardware(void)
     /* clang-format on */
     SystemPlatformInit();
     BOARD_InitBootPins();
+    BOARD_InitI2C4Pins();
+    BOARD_InitSAIPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsoleForCM7WithSM();
 

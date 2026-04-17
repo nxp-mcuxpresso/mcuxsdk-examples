@@ -73,7 +73,7 @@ static uint8_t BYTECLIP(int val)
     }
 }
 
-void Convert_yuv420_to_rgb565(uint16_t width, uint16_t height, uint32_t yuvAddr, uint32_t rgbAddr)
+void Convert_yuv420_to_rgb888(uint16_t width, uint16_t height, uint32_t yuvAddr, uint32_t rgbAddr)
 {
     uint8_t *rgb = (void *)rgbAddr;
     int16_t r, g, b;
@@ -173,7 +173,7 @@ void APP_Decode_JPEG()
     jpeg_destroy_decompress(&cinfo);
 
 #if LIB_JPEG_USE_HW_ACCEL
-    Convert_yuv420_to_rgb565(cinfo.image_width, cinfo.image_height, APP_YUV_ADDR, APP_RGB_ADDR);
+    Convert_yuv420_to_rgb888(cinfo.image_width, cinfo.image_height, APP_YUV_ADDR, APP_RGB_ADDR);
 #endif
 }
 
@@ -183,8 +183,8 @@ void APP_DisplayDecodedImage(void)
     fbInfo.pixelFormat = APP_FB_FORMAT;
     fbInfo.width       = (uint16_t)cinfo.output_width;
     fbInfo.height      = (uint16_t)cinfo.output_height;
-    fbInfo.startX      = (DEMO_PANEL_WIDTH - (uint16_t)cinfo.output_width) / 2U;
-    fbInfo.startY      = (DEMO_PANEL_HEIGHT - (uint16_t)cinfo.output_height) / 2U;
+    fbInfo.startX      = 0;
+    fbInfo.startY      = 0;
     fbInfo.strideBytes = cinfo.output_width * APP_FB_BPP;
     if (kStatus_Success != g_dc.ops->setLayerConfig(&g_dc, 0, &fbInfo))
     {

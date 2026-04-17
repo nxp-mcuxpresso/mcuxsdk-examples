@@ -47,8 +47,8 @@ extern void LPUART2_DeinitPins();
 
 #elif BOARD_DEBUG_UART_INSTANCE == 3
 
-extern void LPUART3_InitPins();
-extern void LPUART3_DeinitPins();
+extern void BOARD_InitDEBUG_UARTPins();
+extern void BOARD_DeInitDEBUG_UARTPins();
 
 /* Driver name mapping. */
 /* User needs to provide the implementation of LPUARTX_GetFreq/LPUARTX_InitPins/LPUARTX_DeinitPins for the enabled
@@ -60,8 +60,8 @@ extern void LPUART3_DeinitPins();
 #define USART_RX_BUFFER_LEN     64
 #define USART3_RX_BUFFER_ENABLE 1
 
-#define RTE_USART3_PIN_INIT   LPUART3_InitPins
-#define RTE_USART3_PIN_DEINIT LPUART3_DeinitPins
+#define RTE_USART3_PIN_INIT   BOARD_InitDEBUG_UARTPins
+#define RTE_USART3_PIN_DEINIT BOARD_DeInitDEBUG_UARTPins
 
 #endif
 #endif /* _RTE_DEVICE_H */

@@ -75,6 +75,7 @@ freertos_queue:
     imx95lpd5evk19@cm7: []
     imx95lp4xevk15@cm7: []
     frdmimx95@cm7: []
+    frdmimx95pro@cm7: []
     imx952evk@cm7: []
     kw45b41zevk:
     - +armgcc@debug
@@ -131,5 +132,7 @@ freertos_queue:
     frdmmcxa266: []
     frdmmcxa366: []
     frdmmcxa577: []
+    frdmmcxa287: []
     frdmmcxc162: []
     frdmkw43: []
+    frdmmcxw70: []

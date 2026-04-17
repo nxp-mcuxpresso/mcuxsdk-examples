@@ -858,6 +858,7 @@ static void inet_socket_recv_queue_close(int socket)
     handle->socket = -1;
     handle->socket_type = IPPROTO_NONE;	
     handle->write_errorn = 0;
+    handle->read_errorn = 0;
     handle->recv_timeout_ms = 0;
     memset(handle->name, '\0', sizeof(handle->name));
 }

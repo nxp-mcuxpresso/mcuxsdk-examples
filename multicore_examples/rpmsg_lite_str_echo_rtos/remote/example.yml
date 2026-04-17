@@ -34,6 +34,7 @@ rpmsg_lite_str_echo_rtos_remote:
       - ${board_root}/${board}/multicore_examples/rpmsg_lite_str_echo_rtos/remote/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
+    evkmcimx7ulp: []
     evkmimx8mm: []
     evkmimx8mn: []
     evkmimx8mnddr3l: []
@@ -48,6 +49,7 @@ rpmsg_lite_str_echo_rtos_remote:
     imx95lpd5evk19@cm7: []
     imx95lp4xevk15@cm7: []
     frdmimx95@cm7: []
+    frdmimx95pro@cm7: []
     imx952evk@cm7: []
     imx943evk@cm7_core1:
     - +armgcc@debug

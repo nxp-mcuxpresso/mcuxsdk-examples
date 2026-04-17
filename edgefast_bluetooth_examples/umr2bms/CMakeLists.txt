@@ -33,7 +33,6 @@ mcux_add_source(
     examples/edgefast_bluetooth_examples/umr2bms/umr2bms.h
     examples/edgefast_bluetooth_examples/umr2bms/unicast_media_receiver.c
     examples/edgefast_bluetooth_examples/umr2bms/unicast_media_receiver.h
-    middleware/edgefast_bluetooth/source/impl/ethermind/controller/configs/mbedtls/mbedtls_config_client.h
     examples/edgefast_bluetooth_examples/config/mbedtls_user_config.h
 )
 

@@ -45,6 +45,7 @@ dev_suspend_resume_hid_mouse_bm:
     frdmmcxa266: []
     frdmmcxa366: []
     frdmmcxa577: []
+    frdmmcxa287: []
     frdmmcxc242: []
     frdmmcxc444: []
     frdmmcxn236: []

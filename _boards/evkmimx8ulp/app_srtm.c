@@ -776,6 +776,13 @@ static void APP_HandleGPIOHander(uint8_t gpioIdx)
         xTimerStartFromISR(suspendContext.io.data[APP_INPUT_TOUCH_INT].timer, &reschedule);
     }
 
+    if (APP_GPIO_IDX(APP_PIN_HP_DET) == gpioIdx &&
+        (1U << APP_PIN_IDX(APP_PIN_HP_DET)) & RGPIO_GetPinsInterruptFlags(gpio, APP_GPIO_INT_SEL))
+    {
+        RGPIO_ClearPinsInterruptFlags(gpio, APP_GPIO_INT_SEL, 1U << APP_PIN_IDX(APP_PIN_HP_DET));
+        xTimerStartFromISR(suspendContext.io.data[APP_INPUT_HP_DET].timer, &reschedule);
+    }
+
     if (APP_GPIO_IDX(APP_LSM6DSO_INT1_B_PIN) == gpioIdx &&
         (1U << APP_PIN_IDX(APP_LSM6DSO_INT1_B_PIN)) & RGPIO_GetPinsInterruptFlags(gpio, APP_GPIO_INT_SEL))
     {
@@ -958,7 +965,7 @@ void BBNSM_IRQHandler(void)
     }
 }
 
-static uint16_t ioIdTable[APP_IO_NUM] = {APP_PIN_RTD_BTN1, APP_PIN_RTD_BTN2, APP_PIN_PTA19, APP_PIN_PTB5};
+static uint16_t ioIdTable[APP_IO_NUM] = {APP_PIN_RTD_BTN1, APP_PIN_RTD_BTN2, APP_PIN_PTA19, APP_PIN_PTB5, APP_PIN_PTB14};
 
 #define PIN_FUNC_ID_SIZE (5)
 static uint32_t pinFuncId[APP_IO_NUM][PIN_FUNC_ID_SIZE] = {
@@ -966,6 +973,7 @@ static uint32_t pinFuncId[APP_IO_NUM][PIN_FUNC_ID_SIZE] = {
     {IOMUXC_PTB12_PTB12},
     {IOMUXC_PTA19_PTA19},
     {IOMUXC_PTB5_PTB5},
+    {IOMUXC_PTB14_PTB14},
 };
 
 static uint32_t inputMask[APP_IO_NUM] = {
@@ -973,11 +981,13 @@ static uint32_t inputMask[APP_IO_NUM] = {
     IOMUXC_PCR_IBE_MASK,
     IOMUXC_PCR_PE_MASK | IOMUXC_PCR_PS_MASK,
     IOMUXC_PCR_PE_MASK | IOMUXC_PCR_PS_MASK,
+    IOMUXC_PCR_PE_MASK | IOMUXC_PCR_PS_MASK,
 };
 
 static uint32_t outputMask[APP_IO_NUM] = {
     IOMUXC_PCR_IBE_MASK,
     IOMUXC_PCR_IBE_MASK,
+    IOMUXC_PCR_OBE_MASK,
     IOMUXC_PCR_OBE_MASK,
     IOMUXC_PCR_OBE_MASK,
 };
@@ -1303,6 +1313,15 @@ static void APP_TouchIntPinTimerCallback(TimerHandle_t xTimer)
     {
         /* When A Core(CA35) is running, notify the event to A Core(CA35). */
         SRTM_IoService_NotifyInputEvent(ioService, APP_PIN_TOUCH_INT);
+    }
+}
+
+static void APP_HPDetPinTimerCallback(TimerHandle_t xTimer)
+{
+    if (AD_CurrentMode == AD_ACT)
+    {
+        /* When A Core(CA35) is running, notify the event to A Core(CA35). */
+        SRTM_IoService_NotifyInputEvent(ioService, APP_PIN_HP_DET);
     }
 }
 
@@ -2081,6 +2100,7 @@ static void APP_SRTM_InitIoKeyService(void)
     suspendContext.io.data[APP_INPUT_RTD_BTN2].ioId = APP_PIN_RTD_BTN2;
     suspendContext.io.data[APP_INPUT_PTA19].ioId    = APP_PIN_PTA19;
     suspendContext.io.data[APP_INPUT_PTB5].ioId     = APP_PIN_PTB5;
+    suspendContext.io.data[APP_INPUT_PTB14].ioId    = APP_PIN_PTB14;
 
     APP_SRTM_InitIoKeyDevice();
 
@@ -2100,6 +2120,7 @@ static void APP_SRTM_InitIoKeyService(void)
     ioService = SRTM_IoService_Create();
     SRTM_IoService_RegisterPin(ioService, APP_PIN_PTA19, APP_IO_SetOutput, APP_IO_GetInput, APP_IO_ConfIEvent, APP_IO_GetDirection, NULL);
     SRTM_IoService_RegisterPin(ioService, APP_PIN_PTB5, APP_IO_SetOutput, APP_IO_GetInput, APP_IO_ConfIEvent, APP_IO_GetDirection, NULL);
+    SRTM_IoService_RegisterPin(ioService, APP_PIN_PTB14, APP_IO_SetOutput, APP_IO_GetInput, APP_IO_ConfIEvent, APP_IO_GetDirection, NULL);
     SRTM_Dispatcher_RegisterService(disp, ioService);
 
     keypadService = SRTM_KeypadService_Create();
@@ -2589,6 +2610,9 @@ void APP_SRTM_Init(void)
     suspendContext.io.data[APP_INPUT_TOUCH_INT].timer =
         xTimerCreate("TouchInt", APP_MS2TICK(5), pdFALSE, NULL, APP_TouchIntPinTimerCallback);
     assert(suspendContext.io.data[APP_INPUT_TOUCH_INT].timer);
+    suspendContext.io.data[APP_INPUT_HP_DET].timer =
+        xTimerCreate("HPDet", APP_MS2TICK(5), pdFALSE, NULL, APP_HPDetPinTimerCallback);
+    assert(suspendContext.io.data[APP_INPUT_HP_DET].timer);
 
     /* Create SRTM dispatcher */
     disp = SRTM_Dispatcher_Create();

@@ -72,8 +72,8 @@
 /* Where the frame buffer is shown in the screen. */
 #define DEMO_BUFFER_START_X      6U
 #define DEMO_BUFFER_START_Y      0U
-#define DEMO_BUFFER_END_X        472U
-#define DEMO_BUFFER_END_Y        466U
+#define DEMO_BUFFER_END_X        471U
+#define DEMO_BUFFER_END_Y        465U
 #endif
 #endif
 

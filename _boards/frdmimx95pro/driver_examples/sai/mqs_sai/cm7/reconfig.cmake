@@ -1,0 +1,3 @@
+
+# Remove targets inherited from arch/soc/board level
+

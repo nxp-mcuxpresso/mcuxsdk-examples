@@ -158,6 +158,7 @@ static void DEMO_DoLpadcConfig(ADC_Type *base)
 #endif /* FSL_FEATURE_LPADC_HAS_CTRL_CALOFS */
 
 #if defined(FSL_FEATURE_LPADC_HAS_CTRL_CAL_REQ) && FSL_FEATURE_LPADC_HAS_CTRL_CAL_REQ
+    SDK_DelayAtLeastUs(1U, SystemCoreClock);
     LPADC_DoAutoCalibration(base);
 #endif /* FSL_FEATURE_LPADC_HAS_CTRL_CAL_REQ */
 

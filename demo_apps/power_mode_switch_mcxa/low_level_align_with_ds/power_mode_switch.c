@@ -44,10 +44,11 @@ int main(void)
     uint32_t freq;
     app_power_mode_t targetPowerMode;
     bool needSetWakeup = false;
+    const uint32_t wakeUpResetMask = (uint32_t)CMC_SRS_WAKEUP_MASK;
 
     BOARD_InitHardware();
     
-    if (((CMC_GetStickySystemResetStatus(APP_CMC) & kCMC_WakeUpReset) != 0UL))
+    if ((CMC_GetStickySystemResetStatus(APP_CMC) & wakeUpResetMask) != 0UL)
     {
         /* Wakeup from Deep Power Down mode? => Clears peripherals and I/O pads isolation flags. */
         SPC_ClearPeriphIOIsolationFlag(APP_SPC);
@@ -156,11 +157,18 @@ static uint8_t APP_GetWakeupTimeout(void)
 static void APP_WakeUpTimerConfig(uint8_t timeOutValue)
 {
     lptmr_config_t lptmr_config;
+    uint32_t timerPeriod;
+
+    assert(timeOutValue > 0U);
+    assert((uint32_t)timeOutValue <= (UINT32_MAX / APP_WUU_WAKEUP_TIMER_CLOCK_SOURCE));
+
+    timerPeriod = ((uint32_t)timeOutValue * APP_WUU_WAKEUP_TIMER_CLOCK_SOURCE) - 1U;
+
     LPTMR_GetDefaultConfig(&lptmr_config);
     lptmr_config.prescalerClockSource = kLPTMR_PrescalerClock_1;
     LPTMR_Init(LPTMR0, &lptmr_config);
 
-    LPTMR_SetTimerPeriod(APP_WUU_WAKEUP_TIMER, (APP_WUU_WAKEUP_TIMER_CLOCK_SOURCE * timeOutValue) - 1U);
+    LPTMR_SetTimerPeriod(APP_WUU_WAKEUP_TIMER, timerPeriod);
     LPTMR_EnableInterrupts(APP_WUU_WAKEUP_TIMER, kLPTMR_TimerInterruptEnable);
 
     LPTMR_StartTimer(APP_WUU_WAKEUP_TIMER);

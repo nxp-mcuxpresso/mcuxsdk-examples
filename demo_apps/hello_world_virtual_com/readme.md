@@ -41,3 +41,4 @@ The purpose of this demo is to demonstrate how to use virtual com and provide a 
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/demo_apps/hello_world_virtual_com/example_board_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/demo_apps/hello_world_virtual_com/example_board_readme.md)
 - [FRDM-IMXRT1186](../../_boards/frdmimxrt1186/demo_apps/hello_world_virtual_com/example_board_readme.md)
+- [FRDM-MCXA287](../../_boards/frdmmcxa287/demo_apps/hello_world_virtual_com/example_board_readme.md)

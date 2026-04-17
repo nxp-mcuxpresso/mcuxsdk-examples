@@ -3,9 +3,13 @@ Hardware requirements
 - Micro USB cable
 - MIMXRT700-EVK
 - Personal Computer
+- TFT Proto 5" CAPACITIVE board HW REV 1.01 by Mikroelektronika. (Named as SSD1963 panel in project. Not necessary if use MIPI panel)
+- LCD_PAR_S035 (Not necessary if use MIPI panel)
 - RK055AHD091 MIPI panel (Not necessary if use other panel)
 - RK055MHD091 MIPI panel (Not necessary if use other panel)
 - RaspberryPi Panel (Not necessary if use other panel)
+- G1120B0MIPI(RM67162) MIPI Circular Display (Not necessary if use other panel)
+- ZC143AC72MIPI(CO5300) MIPI Circular Display (Not necessary if use other panel)
 
 Board settings
 ============

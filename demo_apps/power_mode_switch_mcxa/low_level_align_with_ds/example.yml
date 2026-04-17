@@ -14,3 +14,4 @@ power_mode_switch_mcxa:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxa577: []
+    frdmmcxa287: []

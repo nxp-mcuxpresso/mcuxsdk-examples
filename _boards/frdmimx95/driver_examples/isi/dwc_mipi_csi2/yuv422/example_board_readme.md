@@ -5,13 +5,14 @@ Hardware requirements
 - J-Link Debug Probe
 - 12V~20V power supply
 - Personal Computer
-- DUAL LVDS panel
+- LVDS2HDMI card
 - AP1302 sensor
 
 Board settings
 ==============
-For DUAL LVDS panel(1920*1200), connect MINISAS ports J15 and J16 to panel.
+For LVDS2HDMI card(1920*1080), connect HDMI port J17 to panel.
 For AP1302 sensor with MINISAS connect to MIPI-CSI2 0 interface(J13)
+Ensure the J12 jumper connect to 12V, J15 jumper connect to 3.3V.
 Prepare the Demo
 ================
 1.  Connect 12V power supply and J-Link Debug Probe to the board, switch SW4 to power on the board.
@@ -28,15 +29,13 @@ Prepare the Demo
 Note:
 1. the ap1302 is an external isp, it need special firmware from OnSemi GitHub.
    pls download ap1302_60fps_ar0144_27M_2Lane_awb_tuning.bin from: https://github.com/ONSemiconductor/ap1302_binaries/tree/main/NXP_i.MX93
-2. You can use Jlink or other method to load fw into memory.
-   such as Jlink tool: 'connect' then select 'MIMX9596_M7' device, 'S' select SWD.
-   loadbin "C:\***\ap1302_60fps_ar0144_27M_2Lane_awb_tuning.bin" 0x87000000
+2. this board not support Jlink port in hardware, download fw in to this location: ${SdkRootDirPath}/components/video/camera/device/ap1302/ap1302_60fps_ar0144_27M_2Lane_awb_tuning.bin, combine it into one bin file.
 ================
 Running the demo
 ================
+MCUX SDK version: 2026.06.00-pvw1
 ISI MIPI-CSI2 example start...
-Please load camera firmware into memory:87000000, input 'A' in console after finished load
-FW Load into memory done
+AP1302 firmware embedded at: 0xc670
 CSI interface init pass.
 DISPLAY Device init pass.
 When the example runs successfully, you can see the expected figure shown in screen.

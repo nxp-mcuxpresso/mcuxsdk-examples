@@ -220,7 +220,6 @@ void BOARD_Init96MClocksBoot(void)
     CLOCK_SetupFRO12MClocking();             /* Setup FRO12M clock */
 
     CLOCK_EnableClock(kCLOCK_GateAonAPB);    /* Required for access to AON*/
-    CLOCK_SetupFROAonClocking(3000000U);
 
     /*!< Set up clock selectors - Attach clocks to the peripheries */
     CLOCK_AttachClk(kFIRC_to_MAIN_CLK);            /* !< Switch MAIN_CLK to FIRC */
@@ -262,11 +261,6 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
 
     Power_ClearLpPowerSettings();
-    
-    PMU_EnableHighVolGlitchDetect(AON__PMU, false);
-    PMU_EnableLowVolGlitchDetect(AON__PMU, false);
-    PMU_CleanHighVolGlitchDetectReset(AON__PMU);
-    PMU_CleanLowVolGlitchDetectReset(AON__PMU);
     
     PMU_DoHandshakeBetweenPMUAndPAC(AON__PMU);
 

@@ -11,8 +11,23 @@
  ******************************************************************************/
 /*${macro:start}*/
 #define CAMERA_DEVICE_OUTPUT_FORMAT     kCSI2RX_DataTypeYUV422_8Bit
+
+/* AP1302 firmware embedding is controlled from board reconfig.cmake.
+ * These are fallbacks only.
+ */
+#ifndef CAMERA_NEED_LOAD_FM
 #define CAMERA_NEED_LOAD_FM             1
-#define APP_CAMERA_FW_ADDRESS           (0x87000000U)
+#endif
+#ifndef APP_CAMERA_FW_EMBEDDED
+#define APP_CAMERA_FW_EMBEDDED          1
+#endif
+
+/* Linker-provided symbol, see board reconfig.cmake which generates an .S file
+ * using .incbin and places the firmware into the normal text/rodata region (m_text).
+ */
+extern const uint8_t __ap1302_fw_start[];
+#define APP_CAMERA_FW_ADDRESS           ((uint32_t)__ap1302_fw_start)
+
 /*${macro:end}*/
 
 /*******************************************************************************

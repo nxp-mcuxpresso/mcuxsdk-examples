@@ -55,8 +55,8 @@ extern void LPUART2_DeinitPins();
 
 #elif BOARD_DEBUG_UART_INSTANCE == 3
 
-extern void LPUART3_InitPins();
-extern void LPUART3_DeinitPins();
+extern void BOARD_InitDEBUG_UARTPins();
+extern void BOARD_DeInitDEBUG_UARTPins();
 
 /* Driver name mapping. */
 /* User needs to provide the implementation of LPUARTX_GetFreq/LPUARTX_InitPins/LPUARTX_DeinitPins for the enabled
@@ -66,8 +66,8 @@ extern void LPUART3_DeinitPins();
 
 /* UART configuration. */
 
-#define RTE_USART3_PIN_INIT        LPUART3_InitPins
-#define RTE_USART3_PIN_DEINIT      LPUART3_DeinitPins
+#define RTE_USART3_PIN_INIT        BOARD_InitDEBUG_UARTPins
+#define RTE_USART3_PIN_DEINIT      BOARD_DeInitDEBUG_UARTPins
 #define RTE_USART3_DMA_RX_CH       (uint8_t) Dma5RequestMuxLPUART3Rx
 #define RTE_USART3_DMA_RX_PERI_SEL (uint8_t) Dma5RequestMuxLPUART3Rx
 #define RTE_USART3_DMA_RX_DMA_BASE EDMA5_2

@@ -1,5 +1,6 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2026 NXP
+ * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -12,11 +13,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v16.0
+product: Pins v17.0
 processor: MIMX9529xxxxx
 package_id: MIMX9529xxVZx
 mcu_data: ksdk2_0
-processor_version: 16.1.0
+processor_version: 0.2603.90
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -57,8 +58,8 @@ void BOARD_InitPins(void) {                                /*!< Function assigne
 BOARD_InitDEBUG_UARTPins:
 - options: {callFromInitBoot: 'true', coreID: cm7}
 - pin_list:
-  - {pin_num: P44, peripheral: LPUART3, signal: lpuart_rx, pin_signal: GPIO_IO15, PD: ENABLED, FSEL1: SlOW_SLEW_RATE, DSE: NO_DRIVE}
-  - {pin_num: N51, peripheral: LPUART3, signal: lpuart_tx, pin_signal: GPIO_IO14, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X4}
+  - {pin_num: N51, peripheral: LPUART3, signal: lpuart_tx, pin_signal: GPIO_IO14, DSE: DSE_0011_11}
+  - {pin_num: P44, peripheral: LPUART3, signal: lpuart_rx, pin_signal: GPIO_IO15, DSE: DSE_0011_11}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -71,474 +72,14 @@ BOARD_InitDEBUG_UARTPins:
 void BOARD_InitDEBUG_UARTPins(void) {                      /*!< Function assigned for the core: Cortex-M7F[cm7] */
     IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO14__LPUART3_TX, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO14__LPUART3_TX, 
-                        IOMUXC_PAD_DSE(15U));
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_PD_MASK);
     IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO15__LPUART3_RX, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO15__LPUART3_RX, 
-                        IOMUXC_PAD_PD_MASK);
-}
-
-
-/*
- * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOARD_InitCLKOPins:
-- options: {callFromInitBoot: 'false', coreID: cm7}
-- pin_list:
-  - {pin_num: AH20, peripheral: CCMSRCGPCMIX, signal: 'ccmsrcgpcmix_clko, 1', pin_signal: CCM_CLKO1, SION: ENABLED, PD: DISABLED, PU: ENABLED, DSE: X4}
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
- */
-
-/* FUNCTION ************************************************************************************************************
- *
- * Function Name : BOARD_InitCLKOPins
- * Description   : Configures pin routing and optionally pin electrical features.
- *
- * END ****************************************************************************************************************/
-void BOARD_InitCLKOPins(void) {                            /*!< Function assigned for the core: Cortex-M7F[cm7] */
-    IOMUXC_SetPinMux(IOMUXC_PAD_CCM_CLKO1__CLKO_1, 1U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_CCM_CLKO1__CLKO_1, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_PU_MASK);
-}
-
-
-/*
- * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOARD_InitXSPI1Pins:
-- options: {callFromInitBoot: 'false', coreID: cm7}
-- pin_list:
-  - {pin_num: AJ45, peripheral: FLEXSPI1, signal: 'flexspi_a_data_bit, 0', pin_signal: XSPI1_DATA0, DSE: X4}
-  - {pin_num: AH46, peripheral: FLEXSPI1, signal: 'flexspi_a_data_bit, 1', pin_signal: XSPI1_DATA1, DSE: X4}
-  - {pin_num: AJ47, peripheral: FLEXSPI1, signal: 'flexspi_a_data_bit, 2', pin_signal: XSPI1_DATA2, DSE: X4}
-  - {pin_num: AK48, peripheral: FLEXSPI1, signal: 'flexspi_a_data_bit, 3', pin_signal: XSPI1_DATA3, DSE: X4}
-  - {pin_num: AJ49, peripheral: FLEXSPI1, signal: 'flexspi_a_data_bit, 4', pin_signal: XSPI1_DATA4, DSE: X4}
-  - {pin_num: AK50, peripheral: FLEXSPI1, signal: 'flexspi_a_data_bit, 5', pin_signal: XSPI1_DATA5, DSE: X4}
-  - {pin_num: AJ51, peripheral: FLEXSPI1, signal: 'flexspi_a_data_bit, 6', pin_signal: XSPI1_DATA6, DSE: X4}
-  - {pin_num: AH50, peripheral: FLEXSPI1, signal: 'flexspi_a_data_bit, 7', pin_signal: XSPI1_DATA7, DSE: X4}
-  - {pin_num: AJ43, peripheral: FLEXSPI1, signal: flexspi_a_sclk, pin_signal: XSPI1_SCLK, DSE: X4}
-  - {pin_num: AJ41, peripheral: FLEXSPI1, signal: 'flexspi_a_ss_b, 0', pin_signal: XSPI1_SS0_B, DSE: X4}
-  - {pin_num: AH42, peripheral: FLEXSPI1, signal: 'flexspi_a_ss_b, 1', pin_signal: XSPI1_SS1_B, DSE: X4}
-  - {pin_num: AK44, peripheral: FLEXSPI1, signal: flexspi_a_dqs, pin_signal: XSPI1_DQS, DSE: X4}
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
- */
-
-/* FUNCTION ************************************************************************************************************
- *
- * Function Name : BOARD_InitXSPI1Pins
- * Description   : Configures pin routing and optionally pin electrical features.
- *
- * END ****************************************************************************************************************/
-void BOARD_InitXSPI1Pins(void) {                           /*!< Function assigned for the core: Cortex-M7F[cm7] */
-    IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DATA0__FLEXSPI1_A_DATA0_BIT0, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DATA0__FLEXSPI1_A_DATA0_BIT0, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_PD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DATA1__FLEXSPI1_A_DATA0_BIT1, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DATA1__FLEXSPI1_A_DATA0_BIT1, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_PD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DATA2__FLEXSPI1_A_DATA0_BIT2, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DATA2__FLEXSPI1_A_DATA0_BIT2, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_PD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DATA3__FLEXSPI1_A_DATA0_BIT3, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DATA3__FLEXSPI1_A_DATA0_BIT3, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_PD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DATA4__FLEXSPI1_A_DATA0_BIT4, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DATA4__FLEXSPI1_A_DATA0_BIT4, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_PD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DATA5__FLEXSPI1_A_DATA0_BIT5, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DATA5__FLEXSPI1_A_DATA0_BIT5, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_PD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DATA6__FLEXSPI1_A_DATA0_BIT6, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DATA6__FLEXSPI1_A_DATA0_BIT6, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_PD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DATA7__FLEXSPI1_A_DATA0_BIT7, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DATA7__FLEXSPI1_A_DATA0_BIT7, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_PD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DQS__FLEXSPI1_A_DQS, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DQS__FLEXSPI1_A_DQS, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_PD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_SCLK__FLEXSPI1_A_SCLK, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_SCLK__FLEXSPI1_A_SCLK, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_PD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_SS0_B__FLEXSPI1_A_SS0_B, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_SS0_B__FLEXSPI1_A_SS0_B, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_PD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_SS1_B__FLEXSPI1_A_SS1_B, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_SS1_B__FLEXSPI1_A_SS1_B, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_PD_MASK);
-}
-
-
-/*
- * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOARD_InitI2C3Pins:
-- options: {callFromInitBoot: 'false', coreID: cm7}
-- pin_list:
-  - {pin_num: J51, peripheral: LPI2C3, signal: lpi2c_scl, pin_signal: GPIO_IO01, DSE: X4}
-  - {pin_num: J49, peripheral: LPI2C3, signal: lpi2c_sda, pin_signal: GPIO_IO00, DSE: X4}
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
- */
-
-/* FUNCTION ************************************************************************************************************
- *
- * Function Name : BOARD_InitI2C3Pins
- * Description   : Configures pin routing and optionally pin electrical features.
- *
- * END ****************************************************************************************************************/
-void BOARD_InitI2C3Pins(void) {                            /*!< Function assigned for the core: Cortex-M7F[cm7] */
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO00__LPI2C3_SDA, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO00__LPI2C3_SDA, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_PD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO01__LPI2C3_SCL, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO01__LPI2C3_SCL, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_PD_MASK);
-}
-
-
-/*
- * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOARD_InitLPSPI1Pins:
-- options: {callFromInitBoot: 'false', coreID: cm7}
-- pin_list:
-  - {pin_num: G49, peripheral: LPSPI1, signal: 'lpspi_pcs, 0', pin_signal: SAI1_TXFS, DSE: X4}
-  - {pin_num: G51, peripheral: LPSPI1, signal: lpspi_sin, pin_signal: SAI1_TXC, DSE: X4}
-  - {pin_num: H52, peripheral: LPSPI1, signal: lpspi_sout, pin_signal: SAI1_RXD0, DSE: X4}
-  - {pin_num: H48, peripheral: LPSPI1, signal: lpspi_sck, pin_signal: SAI1_TXD0, DSE: X4}
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
- */
-
-/* FUNCTION ************************************************************************************************************
- *
- * Function Name : BOARD_InitLPSPI1Pins
- * Description   : Configures pin routing and optionally pin electrical features.
- *
- * END ****************************************************************************************************************/
-void BOARD_InitLPSPI1Pins(void) {                          /*!< Function assigned for the core: Cortex-M7F[cm7] */
-    IOMUXC_SetPinMux(IOMUXC_PAD_SAI1_RXD0__LPSPI1_SOUT, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_SAI1_RXD0__LPSPI1_SOUT, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_PD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_SAI1_TXC__LPSPI1_SIN, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_SAI1_TXC__LPSPI1_SIN, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_PD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_SAI1_TXD0__LPSPI1_SCK, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_SAI1_TXD0__LPSPI1_SCK, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_PD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_SAI1_TXFS__LPSPI1_PCS0, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_SAI1_TXFS__LPSPI1_PCS0, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_PD_MASK);
-}
-
-
-/*
- * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOARD_InitI2CPins:
-- options: {callFromInitBoot: 'false', coreID: cm7}
-- pin_list: []
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
- */
-
-/* FUNCTION ************************************************************************************************************
- *
- * Function Name : BOARD_InitI2CPins
- * Description   : Configures pin routing and optionally pin electrical features.
- *
- * END ****************************************************************************************************************/
-void BOARD_InitI2CPins(void) {                             /*!< Function assigned for the core: Cortex-M7F[cm7] */
-}
-
-
-/*
- * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOARD_InitLPI2C1Pins:
-- options: {callFromInitBoot: 'false', coreID: cm7}
-- pin_list:
-  - {pin_num: D48, peripheral: LPI2C1, signal: lpi2c_scl, pin_signal: I2C1_SCL, SION: ENABLED, OD: ENABLED, PD: DISABLED, DSE: X4}
-  - {pin_num: D52, peripheral: LPI2C1, signal: lpi2c_sda, pin_signal: I2C1_SDA, SION: ENABLED, OD: ENABLED, PD: DISABLED, DSE: X4}
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
- */
-
-/* FUNCTION ************************************************************************************************************
- *
- * Function Name : BOARD_InitLPI2C1Pins
- * Description   : Configures pin routing and optionally pin electrical features.
- *
- * END ****************************************************************************************************************/
-void BOARD_InitLPI2C1Pins(void) {                          /*!< Function assigned for the core: Cortex-M7F[cm7] */
-    IOMUXC_SetPinMux(IOMUXC_PAD_I2C1_SCL__LPI2C1_SCL, 1U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_I2C1_SCL__LPI2C1_SCL, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_OD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_I2C1_SDA__LPI2C1_SDA, 1U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_I2C1_SDA__LPI2C1_SDA, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_OD_MASK);
-}
-
-
-/*
- * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOARD_InitLPI2C2Pins:
-- options: {callFromInitBoot: 'false', coreID: cm7}
-- pin_list:
-  - {pin_num: E43, peripheral: LPI2C2, signal: lpi2c_scl, pin_signal: I2C2_SCL, SION: ENABLED, OD: ENABLED, PD: DISABLED, DSE: X4}
-  - {pin_num: E45, peripheral: LPI2C2, signal: lpi2c_sda, pin_signal: I2C2_SDA, SION: ENABLED, OD: ENABLED, PD: DISABLED, DSE: X4}
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
- */
-
-/* FUNCTION ************************************************************************************************************
- *
- * Function Name : BOARD_InitLPI2C2Pins
- * Description   : Configures pin routing and optionally pin electrical features.
- *
- * END ****************************************************************************************************************/
-void BOARD_InitLPI2C2Pins(void) {                          /*!< Function assigned for the core: Cortex-M7F[cm7] */
-    IOMUXC_SetPinMux(IOMUXC_PAD_I2C2_SCL__LPI2C2_SCL, 1U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_I2C2_SCL__LPI2C2_SCL, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_OD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_I2C2_SDA__LPI2C2_SDA, 1U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_I2C2_SDA__LPI2C2_SDA, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_OD_MASK);
-}
-
-
-/*
- * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOARD_InitLPI2C3Pins:
-- options: {callFromInitBoot: 'false', coreID: cm7}
-- pin_list:
-  - {pin_num: J51, peripheral: LPI2C3, signal: lpi2c_scl, pin_signal: GPIO_IO01, SION: ENABLED, OD: ENABLED, PD: DISABLED, DSE: X4}
-  - {pin_num: J49, peripheral: LPI2C3, signal: lpi2c_sda, pin_signal: GPIO_IO00, SION: ENABLED, OD: ENABLED, PD: DISABLED, DSE: X4}
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
- */
-
-/* FUNCTION ************************************************************************************************************
- *
- * Function Name : BOARD_InitLPI2C3Pins
- * Description   : Configures pin routing and optionally pin electrical features.
- *
- * END ****************************************************************************************************************/
-void BOARD_InitLPI2C3Pins(void) {                          /*!< Function assigned for the core: Cortex-M7F[cm7] */
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO00__LPI2C3_SDA, 1U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO00__LPI2C3_SDA, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_OD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO01__LPI2C3_SCL, 1U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO01__LPI2C3_SCL, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_OD_MASK);
-}
-
-
-/*
- * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOARD_InitLPI2C4Pins:
-- options: {callFromInitBoot: 'false', coreID: cm7}
-- pin_list:
-  - {pin_num: V48, peripheral: LPI2C4, signal: lpi2c_scl, pin_signal: GPIO_IO31, SION: ENABLED, OD: ENABLED, PD: DISABLED}
-  - {pin_num: V46, peripheral: LPI2C4, signal: lpi2c_sda, pin_signal: GPIO_IO30, SION: ENABLED, OD: ENABLED, PD: DISABLED}
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
- */
-
-/* FUNCTION ************************************************************************************************************
- *
- * Function Name : BOARD_InitLPI2C4Pins
- * Description   : Configures pin routing and optionally pin electrical features.
- *
- * END ****************************************************************************************************************/
-void BOARD_InitLPI2C4Pins(void) {                          /*!< Function assigned for the core: Cortex-M7F[cm7] */
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO30__LPI2C4_SDA, 1U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO30__LPI2C4_SDA, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_OD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO31__LPI2C4_SCL, 1U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO31__LPI2C4_SCL, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_OD_MASK);
-}
-
-
-/*
- * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOARD_InitLPI2C5Pins:
-- options: {callFromInitBoot: 'false', coreID: cm7}
-- pin_list:
-  - {pin_num: T46, peripheral: LPI2C5, signal: lpi2c_scl, pin_signal: GPIO_IO23, SION: ENABLED, OD: ENABLED, PD: DISABLED, DSE: no_init}
-  - {pin_num: T44, peripheral: LPI2C5, signal: lpi2c_sda, pin_signal: GPIO_IO22, SION: ENABLED, OD: ENABLED, PD: DISABLED}
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
- */
-
-/* FUNCTION ************************************************************************************************************
- *
- * Function Name : BOARD_InitLPI2C5Pins
- * Description   : Configures pin routing and optionally pin electrical features.
- *
- * END ****************************************************************************************************************/
-void BOARD_InitLPI2C5Pins(void) {                          /*!< Function assigned for the core: Cortex-M7F[cm7] */
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO22__LPI2C5_SDA, 1U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO22__LPI2C5_SDA, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_OD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO23__LPI2C5_SCL, 1U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO23__LPI2C5_SCL, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_OD_MASK);
-}
-
-
-/*
- * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOARD_InitLPI2C6Pins:
-- options: {callFromInitBoot: 'false', coreID: cm7}
-- pin_list:
-  - {pin_num: K52, peripheral: LPI2C6, signal: lpi2c_scl, pin_signal: GPIO_IO03, SION: ENABLED, OD: ENABLED, PD: DISABLED, DSE: X4}
-  - {pin_num: K48, peripheral: LPI2C6, signal: lpi2c_sda, pin_signal: GPIO_IO02, SION: ENABLED, OD: ENABLED, PD: DISABLED, DSE: X4}
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
- */
-
-/* FUNCTION ************************************************************************************************************
- *
- * Function Name : BOARD_InitLPI2C6Pins
- * Description   : Configures pin routing and optionally pin electrical features.
- *
- * END ****************************************************************************************************************/
-void BOARD_InitLPI2C6Pins(void) {                          /*!< Function assigned for the core: Cortex-M7F[cm7] */
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO02__LPI2C6_SDA, 1U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO02__LPI2C6_SDA, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_OD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO03__LPI2C6_SCL, 1U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO03__LPI2C6_SCL, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_OD_MASK);
-}
-
-
-/*
- * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOARD_InitLPI2C7Pins:
-- options: {callFromInitBoot: 'false', coreID: cm7}
-- pin_list:
-  - {pin_num: M46, peripheral: LPI2C7, signal: lpi2c_scl, pin_signal: GPIO_IO09, SION: ENABLED, OD: ENABLED, PD: DISABLED}
-  - {pin_num: M44, peripheral: LPI2C7, signal: lpi2c_sda, pin_signal: GPIO_IO08, SION: ENABLED, OD: ENABLED, PD: DISABLED}
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
- */
-
-/* FUNCTION ************************************************************************************************************
- *
- * Function Name : BOARD_InitLPI2C7Pins
- * Description   : Configures pin routing and optionally pin electrical features.
- *
- * END ****************************************************************************************************************/
-void BOARD_InitLPI2C7Pins(void) {                          /*!< Function assigned for the core: Cortex-M7F[cm7] */
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO08__LPI2C7_SDA, 1U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO08__LPI2C7_SDA, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_OD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO09__LPI2C7_SCL, 1U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO09__LPI2C7_SCL, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_OD_MASK);
-}
-
-
-/*
- * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOARD_InitCANPins:
-- options: {callFromInitBoot: 'false', coreID: cm7}
-- pin_list:
-  - {pin_num: F46, peripheral: CAN1, signal: can_tx, pin_signal: PDM_CLK, PD: ENABLED}
-  - {pin_num: G45, peripheral: CAN1, signal: can_rx, pin_signal: PDM_BIT_STREAM0, PD: ENABLED}
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
- */
-
-/* FUNCTION ************************************************************************************************************
- *
- * Function Name : BOARD_InitCANPins
- * Description   : Configures pin routing and optionally pin electrical features.
- *
- * END ****************************************************************************************************************/
-void BOARD_InitCANPins(void) {                             /*!< Function assigned for the core: Cortex-M7F[cm7] */
-    IOMUXC_SetPinMux(IOMUXC_PAD_PDM_BIT_STREAM0__CAN1_RX, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_PDM_BIT_STREAM0__CAN1_RX, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_PD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_PDM_CLK__CAN1_TX, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_PDM_CLK__CAN1_TX, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_PD_MASK);
-}
-
-
-/*
- * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOARD_InitGPIO2Pins:
-- options: {callFromInitBoot: 'false', coreID: cm7}
-- pin_list:
-  - {pin_num: V44, peripheral: GPIO2, signal: 'gpio_io_bit, 29', pin_signal: GPIO_IO29, SION: no_init, APC_LCK: no_init, SMC: no_init, PD: no_init, PU: no_init, DSE: no_init}
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
- */
-
-/* FUNCTION ************************************************************************************************************
- *
- * Function Name : BOARD_InitGPIO2Pins
- * Description   : Configures pin routing and optionally pin electrical features.
- *
- * END ****************************************************************************************************************/
-void BOARD_InitGPIO2Pins(void) {                           /*!< Function assigned for the core: Cortex-M7F[cm7] */
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO29__GPIO2_IO_BIT29, 0U);
 }
 
 
@@ -547,8 +88,20 @@ void BOARD_InitGPIO2Pins(void) {                           /*!< Function assigne
 BOARD_InitNETPins:
 - options: {callFromInitBoot: 'false', coreID: cm7}
 - pin_list:
-  - {pin_num: AK40, peripheral: NETC, signal: netc_mdc, pin_signal: ENET1_MDC, PD: DISABLED, DSE: X4}
-  - {pin_num: AJ39, peripheral: NETC, signal: netc_mdio, pin_signal: ENET1_MDIO, PD: DISABLED, DSE: X4}
+  - {pin_num: AK40, peripheral: NETC, signal: netc_mdc, pin_signal: ENET1_MDC, PD: DISABLED}
+  - {pin_num: AJ39, peripheral: NETC, signal: netc_mdio, pin_signal: ENET1_MDIO, PD: DISABLED}
+  - {pin_num: AG33, peripheral: ETH0, signal: 'eth_rgmii_td, 0', pin_signal: ENET1_TD0, PD: DISABLED}
+  - {pin_num: AG35, peripheral: ETH0, signal: 'eth_rgmii_td, 1', pin_signal: ENET1_TD1, PD: DISABLED}
+  - {pin_num: AF36, peripheral: ETH0, signal: 'eth_rgmii_td, 2', pin_signal: ENET1_TD2, PD: DISABLED}
+  - {pin_num: AG37, peripheral: ETH0, signal: 'eth_rgmii_td, 3', pin_signal: ENET1_TD3, PD: DISABLED}
+  - {pin_num: AG31, peripheral: ETH0, signal: eth_rgmii_tx_clk, pin_signal: ENET1_TXC, PD: DISABLED}
+  - {pin_num: AF32, peripheral: ETH0, signal: eth_rgmii_tx_ctl, pin_signal: ENET1_TX_CTL, PD: DISABLED}
+  - {pin_num: AJ33, peripheral: ETH0, signal: eth_rgmii_rx_clk, pin_signal: ENET1_RXC, PD: DISABLED}
+  - {pin_num: AH34, peripheral: ETH0, signal: eth_rgmii_rx_ctl, pin_signal: ENET1_RX_CTL, PD: DISABLED}
+  - {pin_num: AJ35, peripheral: ETH0, signal: 'eth_rgmii_rd, 0', pin_signal: ENET1_RD0, PD: DISABLED}
+  - {pin_num: AK36, peripheral: ETH0, signal: 'eth_rgmii_rd, 1', pin_signal: ENET1_RD1, PD: DISABLED}
+  - {pin_num: AJ37, peripheral: ETH0, signal: 'eth_rgmii_rd, 2', pin_signal: ENET1_RD2, PD: DISABLED}
+  - {pin_num: AH38, peripheral: ETH0, signal: 'eth_rgmii_rd, 3', pin_signal: ENET1_RD3, PD: DISABLED}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -567,36 +120,6 @@ void BOARD_InitNETPins(void) {                             /*!< Function assigne
     IOMUXC_SetPinConfig(IOMUXC_PAD_ENET1_MDIO__NETC_MDIO, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U));
-}
-
-
-/*
- * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOARD_InitETH0Pins:
-- options: {callFromInitBoot: 'false', coreID: cm7}
-- pin_list:
-  - {pin_num: AG37, peripheral: ETH0, signal: 'eth_rgmii_td, 3', pin_signal: ENET1_TD3, PD: DISABLED, DSE: X4}
-  - {pin_num: AF36, peripheral: ETH0, signal: 'eth_rgmii_td, 2', pin_signal: ENET1_TD2, PD: DISABLED, DSE: X4}
-  - {pin_num: AG35, peripheral: ETH0, signal: 'eth_rgmii_td, 1', pin_signal: ENET1_TD1, PD: DISABLED, DSE: X4}
-  - {pin_num: AG33, peripheral: ETH0, signal: 'eth_rgmii_td, 0', pin_signal: ENET1_TD0, PD: DISABLED, DSE: X4}
-  - {pin_num: AF32, peripheral: ETH0, signal: eth_rgmii_tx_ctl, pin_signal: ENET1_TX_CTL, PD: DISABLED, DSE: X4}
-  - {pin_num: AG31, peripheral: ETH0, signal: eth_rgmii_tx_clk, pin_signal: ENET1_TXC, PD: DISABLED, DSE: X4}
-  - {pin_num: AH34, peripheral: ETH0, signal: eth_rgmii_rx_ctl, pin_signal: ENET1_RX_CTL, PD: DISABLED, DSE: X4}
-  - {pin_num: AJ33, peripheral: ETH0, signal: eth_rgmii_rx_clk, pin_signal: ENET1_RXC, PD: DISABLED, DSE: X4}
-  - {pin_num: AJ35, peripheral: ETH0, signal: 'eth_rgmii_rd, 0', pin_signal: ENET1_RD0, PD: DISABLED, DSE: X4}
-  - {pin_num: AK36, peripheral: ETH0, signal: 'eth_rgmii_rd, 1', pin_signal: ENET1_RD1, PD: DISABLED, DSE: X4}
-  - {pin_num: AJ37, peripheral: ETH0, signal: 'eth_rgmii_rd, 2', pin_signal: ENET1_RD2, PD: DISABLED, DSE: X4}
-  - {pin_num: AH38, peripheral: ETH0, signal: 'eth_rgmii_rd, 3', pin_signal: ENET1_RD3, PD: DISABLED, DSE: X4}
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
- */
-
-/* FUNCTION ************************************************************************************************************
- *
- * Function Name : BOARD_InitETH0Pins
- * Description   : Configures pin routing and optionally pin electrical features.
- *
- * END ****************************************************************************************************************/
-void BOARD_InitETH0Pins(void) {                            /*!< Function assigned for the core: Cortex-M7F[cm7] */
     IOMUXC_SetPinMux(IOMUXC_PAD_ENET1_RD0__ETH0_RGMII_RD0, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_ENET1_RD0__ETH0_RGMII_RD0, 
                         IOMUXC_PAD_DSE(15U) |
@@ -650,117 +173,333 @@ void BOARD_InitETH0Pins(void) {                            /*!< Function assigne
 
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOARD_InitETH1Pins:
+BOARD_InitI2C7Pins:
 - options: {callFromInitBoot: 'false', coreID: cm7}
 - pin_list:
-  - {pin_num: AG29, peripheral: ETH1, signal: 'eth_rgmii_td, 3', pin_signal: ENET2_TD3, PD: DISABLED, DSE: X4}
-  - {pin_num: AF28, peripheral: ETH1, signal: 'eth_rgmii_td, 2', pin_signal: ENET2_TD2, PD: DISABLED, DSE: X4}
-  - {pin_num: AG27, peripheral: ETH1, signal: 'eth_rgmii_td, 1', pin_signal: ENET2_TD1, PD: DISABLED, DSE: X4}
-  - {pin_num: AG25, peripheral: ETH1, signal: 'eth_rgmii_td, 0', pin_signal: ENET2_TD0, PD: DISABLED, DSE: X4}
-  - {pin_num: AF24, peripheral: ETH1, signal: eth_rgmii_tx_ctl, pin_signal: ENET2_TX_CTL, PD: DISABLED, DSE: X4}
-  - {pin_num: AG23, peripheral: ETH1, signal: eth_rgmii_tx_clk, pin_signal: ENET2_TXC, PD: DISABLED, DSE: X4}
-  - {pin_num: AH26, peripheral: ETH1, signal: eth_rgmii_rx_ctl, pin_signal: ENET2_RX_CTL, PD: DISABLED, DSE: X4}
-  - {pin_num: AJ25, peripheral: ETH1, signal: eth_rgmii_rx_clk, pin_signal: ENET2_RXC, PD: DISABLED, DSE: X4}
-  - {pin_num: AJ27, peripheral: ETH1, signal: 'eth_rgmii_rd, 0', pin_signal: ENET2_RD0, PD: DISABLED, DSE: X4}
-  - {pin_num: AK28, peripheral: ETH1, signal: 'eth_rgmii_rd, 1', pin_signal: ENET2_RD1, PD: DISABLED, DSE: X4}
-  - {pin_num: AJ29, peripheral: ETH1, signal: 'eth_rgmii_rd, 2', pin_signal: ENET2_RD2, PD: DISABLED, DSE: X4}
-  - {pin_num: AH30, peripheral: ETH1, signal: 'eth_rgmii_rd, 3', pin_signal: ENET2_RD3, PD: DISABLED, DSE: X4}
+  - {pin_num: M44, peripheral: LPI2C7, signal: lpi2c_sda, pin_signal: GPIO_IO08, SION: ENABLED, OD: ENABLED, PD: DISABLED}
+  - {pin_num: M46, peripheral: LPI2C7, signal: lpi2c_scl, pin_signal: GPIO_IO09, SION: ENABLED, OD: ENABLED, PD: DISABLED}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
 /* FUNCTION ************************************************************************************************************
  *
- * Function Name : BOARD_InitETH1Pins
+ * Function Name : BOARD_InitI2C7Pins
  * Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
-void BOARD_InitETH1Pins(void) {                            /*!< Function assigned for the core: Cortex-M7F[cm7] */
-    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_RD0__ETH1_RGMII_RD0, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_ENET2_RD0__ETH1_RGMII_RD0, 
+void BOARD_InitI2C7Pins(void) {                            /*!< Function assigned for the core: Cortex-M7F[cm7] */
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO08__LPI2C7_SDA, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO08__LPI2C7_SDA, 
                         IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U));
-    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_RD1__ETH1_RGMII_RD1, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_ENET2_RD1__ETH1_RGMII_RD1, 
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_OD_MASK);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO09__LPI2C7_SCL, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO09__LPI2C7_SCL, 
                         IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U));
-    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_RD2__ETH1_RGMII_RD2, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_ENET2_RD2__ETH1_RGMII_RD2, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U));
-    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_RD3__ETH1_RGMII_RD3, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_ENET2_RD3__ETH1_RGMII_RD3, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U));
-    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_RXC__ETH1_RGMII_RX_CLK, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_ENET2_RXC__ETH1_RGMII_RX_CLK, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U));
-    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_RX_CTL__ETH1_RGMII_RX_CTL, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_ENET2_RX_CTL__ETH1_RGMII_RX_CTL, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U));
-    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_TD0__ETH1_RGMII_TD0, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_ENET2_TD0__ETH1_RGMII_TD0, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U));
-    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_TD1__ETH1_RGMII_TD1, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_ENET2_TD1__ETH1_RGMII_TD1, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U));
-    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_TD2__ETH1_RGMII_TD2, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_ENET2_TD2__ETH1_RGMII_TD2, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U));
-    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_TD3__ETH1_RGMII_TD3, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_ENET2_TD3__ETH1_RGMII_TD3, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U));
-    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_TXC__ETH1_RGMII_TX_CLK, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_ENET2_TXC__ETH1_RGMII_TX_CLK, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U));
-    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_TX_CTL__ETH1_RGMII_TX_CTL, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_ENET2_TX_CTL__ETH1_RGMII_TX_CTL, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U));
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_OD_MASK);
 }
 
 
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOARD_InitSAI3Pins:
+BOARD_InitGPIO5Pins:
 - options: {callFromInitBoot: 'false', coreID: cm7}
 - pin_list:
-  - {pin_num: P46, peripheral: SAI3, signal: sai_tx_bclk, pin_signal: GPIO_IO16, SION: ENABLED, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X4}
-  - {pin_num: P48, peripheral: SAI3, signal: sai_mclk, pin_signal: GPIO_IO17, SION: ENABLED, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X4}
-  - {pin_num: R49, peripheral: SAI3, signal: 'sai_rx_data_bit, 0', pin_signal: GPIO_IO20, SION: ENABLED, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X4}
-  - {pin_num: R51, peripheral: SAI3, signal: 'sai_tx_data_bit, 0', pin_signal: GPIO_IO21, SION: ENABLED, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X4}
-  - {pin_num: U45, peripheral: SAI3, signal: sai_tx_sync, pin_signal: GPIO_IO26, SION: ENABLED, PD: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: X4}
+  - {pin_num: V52, peripheral: GPIO5, signal: 'gpio_io_, 12', pin_signal: GPIO_IO32, OD: ENABLED, PD: DISABLED}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
 /* FUNCTION ************************************************************************************************************
  *
- * Function Name : BOARD_InitSAI3Pins
+ * Function Name : BOARD_InitGPIO5Pins
  * Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
-void BOARD_InitSAI3Pins(void) {                            /*!< Function assigned for the core: Cortex-M7F[cm7] */
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO16__SAI3_TX_BCLK, 1U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO16__SAI3_TX_BCLK, 
+void BOARD_InitGPIO5Pins(void) {                           /*!< Function assigned for the core: Cortex-M7F[cm7] */
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO32__GPIO5_IO_12, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO32__GPIO5_IO_12, 
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_OD_MASK);
+}
+
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitCANPins:
+- options: {callFromInitBoot: 'false', coreID: cm7}
+- pin_list:
+  - {pin_num: G45, peripheral: CAN1, signal: can_rx, pin_signal: PDM_BIT_STREAM0, PD: ENABLED}
+  - {pin_num: F46, peripheral: CAN1, signal: can_tx, pin_signal: PDM_CLK, PD: ENABLED}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitCANPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitCANPins(void) {                             /*!< Function assigned for the core: Cortex-M7F[cm7] */
+    IOMUXC_SetPinMux(IOMUXC_PAD_PDM_BIT_STREAM0__CAN1_RX, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_PDM_BIT_STREAM0__CAN1_RX, 
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinMux(IOMUXC_PAD_PDM_CLK__CAN1_TX, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_PDM_CLK__CAN1_TX, 
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_PD_MASK);
+}
+
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitI2C6Pins:
+- options: {callFromInitBoot: 'false', coreID: cm7}
+- pin_list:
+  - {pin_num: K48, peripheral: LPI2C6, signal: lpi2c_sda, pin_signal: GPIO_IO02, SION: ENABLED, OD: ENABLED, PD: DISABLED}
+  - {pin_num: K52, peripheral: LPI2C6, signal: lpi2c_scl, pin_signal: GPIO_IO03, SION: ENABLED, OD: ENABLED, PD: DISABLED}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitI2C6Pins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitI2C6Pins(void) {                            /*!< Function assigned for the core: Cortex-M7F[cm7] */
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO02__LPI2C6_SDA, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO02__LPI2C6_SDA, 
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_OD_MASK);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO03__LPI2C6_SCL, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO03__LPI2C6_SCL, 
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_OD_MASK);
+}
+
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitITPMPins:
+- options: {callFromInitBoot: 'false', coreID: cm7}
+- pin_list:
+  - {pin_num: E43, peripheral: TPM2, signal: 'tpm_ch, 2', pin_signal: I2C2_SCL}
+  - {pin_num: E45, peripheral: TPM2, signal: 'tpm_ch, 3', pin_signal: I2C2_SDA}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitITPMPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitITPMPins(void) {                            /*!< Function assigned for the core: Cortex-M7F[cm7] */
+    IOMUXC_SetPinMux(IOMUXC_PAD_I2C2_SCL__TPM2_CH2, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_I2C2_SDA__TPM2_CH3, 0U);
+}
+
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitLPSPIPins:
+- options: {callFromInitBoot: 'false', coreID: cm7}
+- pin_list:
+  - {pin_num: L45, peripheral: LPSPI7, signal: lpspi_sin, pin_signal: GPIO_IO05, PD: ENABLED}
+  - {pin_num: K46, peripheral: LPSPI7, signal: 'lpspi_pcs, 0', pin_signal: GPIO_IO04, PD: ENABLED}
+  - {pin_num: L49, peripheral: LPSPI7, signal: lpspi_sout, pin_signal: GPIO_IO06, PD: ENABLED}
+  - {pin_num: L51, peripheral: LPSPI7, signal: lpspi_sck, pin_signal: GPIO_IO07, PD: ENABLED}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitLPSPIPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitLPSPIPins(void) {                           /*!< Function assigned for the core: Cortex-M7F[cm7] */
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO04__LPSPI7_PCS0, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO04__LPSPI7_PCS0, 
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO05__LPSPI7_SIN, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO05__LPSPI7_SIN, 
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO06__LPSPI7_SOUT, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO06__LPSPI7_SOUT, 
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO07__LPSPI7_SCK, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO07__LPSPI7_SCK, 
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_PD_MASK);
+}
+
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_DeInitLPSPIPins:
+- options: {callFromInitBoot: 'false', coreID: cm7}
+- pin_list:
+  - {pin_num: L45, peripheral: GPIO2, signal: 'gpio_io_, 5', pin_signal: GPIO_IO05}
+  - {pin_num: K46, peripheral: GPIO2, signal: 'gpio_io_, 4', pin_signal: GPIO_IO04}
+  - {pin_num: L49, peripheral: GPIO2, signal: 'gpio_io_, 6', pin_signal: GPIO_IO06}
+  - {pin_num: L51, peripheral: GPIO2, signal: 'gpio_io_, 7', pin_signal: GPIO_IO07}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_DeInitLPSPIPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_DeInitLPSPIPins(void) {                         /*!< Function assigned for the core: Cortex-M7F[cm7] */
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO04__GPIO2_IO_4, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO05__GPIO2_IO_5, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO06__GPIO2_IO_6, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO07__GPIO2_IO_7, 0U);
+}
+
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitI2C4Pins:
+- options: {callFromInitBoot: 'false', coreID: cm7}
+- pin_list:
+  - {pin_num: V46, peripheral: LPI2C4, signal: lpi2c_sda, pin_signal: GPIO_IO30, SION: ENABLED, OD: ENABLED, PD: DISABLED}
+  - {pin_num: V48, peripheral: LPI2C4, signal: lpi2c_scl, pin_signal: GPIO_IO31, SION: ENABLED, OD: ENABLED, PD: DISABLED}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitI2C4Pins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitI2C4Pins(void) {                            /*!< Function assigned for the core: Cortex-M7F[cm7] */
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO30__LPI2C4_SDA, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO30__LPI2C4_SDA, 
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_OD_MASK);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO31__LPI2C4_SCL, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO31__LPI2C4_SCL, 
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_OD_MASK);
+}
+
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitSAIPins:
+- options: {callFromInitBoot: 'false', coreID: cm7}
+- pin_list:
+  - {pin_num: P46, peripheral: AUDMIX, signal: audmix_tdm_out_txbclk, pin_signal: GPIO_IO16, SION: ENABLED, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
+  - {pin_num: U45, peripheral: AUDMIX, signal: audmix_tdm_out_txsync, pin_signal: GPIO_IO26, SION: ENABLED, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
+  - {pin_num: R51, peripheral: AUDMIX, signal: audmix_tdm_out_txdata, pin_signal: GPIO_IO21, SION: ENABLED, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
+  - {pin_num: P48, peripheral: SAI3, signal: sai_mclk, pin_signal: GPIO_IO17, SION: ENABLED, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
+  - {pin_num: R49, peripheral: SAI3, signal: 'sai_rx_data_, 0', pin_signal: GPIO_IO20, SION: ENABLED, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitSAIPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitSAIPins(void) {                             /*!< Function assigned for the core: Cortex-M7F[cm7] */
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO16__AUDMIX_TDM_OUT_TXBCLK, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO16__AUDMIX_TDM_OUT_TXBCLK, 
                         IOMUXC_PAD_DSE(15U));
     IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO17__SAI3_MCLK, 1U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO17__SAI3_MCLK, 
                         IOMUXC_PAD_DSE(15U));
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO20__SAI3_RX_DATA0_BIT0, 1U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO20__SAI3_RX_DATA0_BIT0, 
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO20__SAI3_RX_DATA_0, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO20__SAI3_RX_DATA_0, 
                         IOMUXC_PAD_DSE(15U));
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO21__SAI3_TX_DATA0_BIT0, 1U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO21__SAI3_TX_DATA0_BIT0, 
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO21__AUDMIX_TDM_OUT_TXDATA, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO21__AUDMIX_TDM_OUT_TXDATA, 
                         IOMUXC_PAD_DSE(15U));
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO26__SAI3_TX_SYNC, 1U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO26__SAI3_TX_SYNC, 
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO26__AUDMIX_TDM_OUT_TXSYNC, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO26__AUDMIX_TDM_OUT_TXSYNC, 
                         IOMUXC_PAD_DSE(15U));
+}
+
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitI2C2Pins:
+- options: {callFromInitBoot: 'false', coreID: cm7}
+- pin_list:
+  - {pin_num: E43, peripheral: LPI2C2, signal: lpi2c_scl, pin_signal: I2C2_SCL, SION: ENABLED, OD: ENABLED, PD: DISABLED}
+  - {pin_num: E45, peripheral: LPI2C2, signal: lpi2c_sda, pin_signal: I2C2_SDA, SION: ENABLED, OD: ENABLED, PD: DISABLED}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitI2C2Pins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitI2C2Pins(void) {                            /*!< Function assigned for the core: Cortex-M7F[cm7] */
+    IOMUXC_SetPinMux(IOMUXC_PAD_I2C2_SCL__LPI2C2_SCL, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_I2C2_SCL__LPI2C2_SCL, 
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_OD_MASK);
+    IOMUXC_SetPinMux(IOMUXC_PAD_I2C2_SDA__LPI2C2_SDA, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_I2C2_SDA__LPI2C2_SDA, 
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_OD_MASK);
+}
+
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitFLEXIOUARTPins:
+- options: {callFromInitBoot: 'false', coreID: cm7}
+- pin_list:
+  - {pin_num: N51, peripheral: FLEXIO1, signal: 'flexio_flexio_, 14', pin_signal: GPIO_IO14, PD: ENABLED}
+  - {pin_num: P44, peripheral: FLEXIO1, signal: 'flexio_flexio_, 15', pin_signal: GPIO_IO15, PD: ENABLED}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitFLEXIOUARTPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitFLEXIOUARTPins(void) {                      /*!< Function assigned for the core: Cortex-M7F[cm7] */
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO14__FLEXIO1_FLEXIO_14, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO14__FLEXIO1_FLEXIO_14, 
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO15__FLEXIO1_FLEXIO_15, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO15__FLEXIO1_FLEXIO_15, 
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_PD_MASK);
 }
 
 
@@ -769,8 +508,8 @@ void BOARD_InitSAI3Pins(void) {                            /*!< Function assigne
 BOARD_InitPDMPins:
 - options: {callFromInitBoot: 'false', coreID: cm7}
 - pin_list:
-  - {pin_num: G45, peripheral: PDM, signal: 'pdm_bit_stream_bit, 0', pin_signal: PDM_BIT_STREAM0, PD: DISABLED, FSEL1: FAST_SLEW_RATE}
   - {pin_num: F46, peripheral: PDM, signal: pdm_clk, pin_signal: PDM_CLK, PD: DISABLED, FSEL1: FAST_SLEW_RATE}
+  - {pin_num: G45, peripheral: PDM, signal: 'pdm_bit_stream_, 0', pin_signal: PDM_BIT_STREAM0, PD: DISABLED, FSEL1: FAST_SLEW_RATE}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -781,8 +520,8 @@ BOARD_InitPDMPins:
  *
  * END ****************************************************************************************************************/
 void BOARD_InitPDMPins(void) {                             /*!< Function assigned for the core: Cortex-M7F[cm7] */
-    IOMUXC_SetPinMux(IOMUXC_PAD_PDM_BIT_STREAM0__PDM_BIT_STREAM0_BIT0, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_PDM_BIT_STREAM0__PDM_BIT_STREAM0_BIT0, 
+    IOMUXC_SetPinMux(IOMUXC_PAD_PDM_BIT_STREAM0__PDM_BIT_STREAM_0, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_PDM_BIT_STREAM0__PDM_BIT_STREAM_0, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(3U));
     IOMUXC_SetPinMux(IOMUXC_PAD_PDM_CLK__PDM_CLK, 0U);
@@ -794,21 +533,143 @@ void BOARD_InitPDMPins(void) {                             /*!< Function assigne
 
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOARD_InitTPMPins:
+BOARD_DeInitI2C6Pins:
 - options: {callFromInitBoot: 'false', coreID: cm7}
 - pin_list:
-  - {pin_num: E43, peripheral: TPM2, signal: 'tpm_ch, 2', pin_signal: I2C2_SCL}
+  - {pin_num: K48, peripheral: GPIO2, signal: 'gpio_io_, 2', pin_signal: GPIO_IO02}
+  - {pin_num: K52, peripheral: GPIO2, signal: 'gpio_io_, 3', pin_signal: GPIO_IO03}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
 /* FUNCTION ************************************************************************************************************
  *
- * Function Name : BOARD_InitTPMPins
+ * Function Name : BOARD_DeInitI2C6Pins
  * Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
-void BOARD_InitTPMPins(void) {                             /*!< Function assigned for the core: Cortex-M7F[cm7] */
-    IOMUXC_SetPinMux(IOMUXC_PAD_I2C2_SCL__TPM2_CH2, 0U);
+void BOARD_DeInitI2C6Pins(void) {                          /*!< Function assigned for the core: Cortex-M7F[cm7] */
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO02__GPIO2_IO_2, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO03__GPIO2_IO_3, 0U);
+}
+
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitXSPIPins:
+- options: {callFromInitBoot: 'false', coreID: cm7}
+- pin_list:
+  - {pin_num: AJ43, peripheral: XSPI1, signal: xspi_a_sclk, pin_signal: XSPI1_SCLK, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
+  - {pin_num: AH42, peripheral: XSPI1, signal: xspi_a_ss_b, pin_signal: XSPI1_SS1_B, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
+  - {pin_num: AJ41, peripheral: XSPI1, signal: xspi_a_ss_b, pin_signal: XSPI1_SS0_B, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
+  - {pin_num: AK44, peripheral: XSPI1, signal: xspi_a_dqs, pin_signal: XSPI1_DQS, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
+  - {pin_num: AJ45, peripheral: XSPI1, signal: 'xspi_a_data_, 0', pin_signal: XSPI1_DATA0, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
+  - {pin_num: AH46, peripheral: XSPI1, signal: 'xspi_a_data_, 1', pin_signal: XSPI1_DATA1, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
+  - {pin_num: AJ47, peripheral: XSPI1, signal: 'xspi_a_data_, 2', pin_signal: XSPI1_DATA2, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
+  - {pin_num: AK48, peripheral: XSPI1, signal: 'xspi_a_data_, 3', pin_signal: XSPI1_DATA3, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
+  - {pin_num: AJ49, peripheral: XSPI1, signal: 'xspi_a_data_, 4', pin_signal: XSPI1_DATA4, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
+  - {pin_num: AH50, peripheral: XSPI1, signal: 'xspi_a_data_, 7', pin_signal: XSPI1_DATA7, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
+  - {pin_num: AK50, peripheral: XSPI1, signal: 'xspi_a_data_, 5', pin_signal: XSPI1_DATA5, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
+  - {pin_num: AJ51, peripheral: XSPI1, signal: 'xspi_a_data_, 6', pin_signal: XSPI1_DATA6, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitXSPIPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitXSPIPins(void) {                            /*!< Function assigned for the core: Cortex-M7F[cm7] */
+    IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DATA0__XSPI1_A_DATA_0, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DATA0__XSPI1_A_DATA_0, 
+                        IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DATA1__XSPI1_A_DATA_1, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DATA1__XSPI1_A_DATA_1, 
+                        IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DATA2__XSPI1_A_DATA_2, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DATA2__XSPI1_A_DATA_2, 
+                        IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DATA3__XSPI1_A_DATA_3, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DATA3__XSPI1_A_DATA_3, 
+                        IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DATA4__XSPI1_A_DATA_4, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DATA4__XSPI1_A_DATA_4, 
+                        IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DATA5__XSPI1_A_DATA_5, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DATA5__XSPI1_A_DATA_5, 
+                        IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DATA6__XSPI1_A_DATA_6, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DATA6__XSPI1_A_DATA_6, 
+                        IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DATA7__XSPI1_A_DATA_7, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DATA7__XSPI1_A_DATA_7, 
+                        IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DQS__XSPI1_A_DQS, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DQS__XSPI1_A_DQS, 
+                        IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_SCLK__XSPI1_A_SCLK, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_SCLK__XSPI1_A_SCLK, 
+                        IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_SS0_B__XSPI1_A_SS0_B, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_SS0_B__XSPI1_A_SS0_B, 
+                        IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_SS1_B__XSPI1_A_SS1_B, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_SS1_B__XSPI1_A_SS1_B, 
+                        IOMUXC_PAD_DSE(15U));
+}
+
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitI2C3Pins:
+- options: {callFromInitBoot: 'false', coreID: cm7}
+- pin_list:
+  - {pin_num: J49, peripheral: LPI2C3, signal: lpi2c_sda, pin_signal: GPIO_IO00, SION: ENABLED, OD: ENABLED, PD: DISABLED}
+  - {pin_num: J51, peripheral: LPI2C3, signal: lpi2c_scl, pin_signal: GPIO_IO01, SION: ENABLED, OD: ENABLED, PD: DISABLED}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitI2C3Pins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitI2C3Pins(void) {                            /*!< Function assigned for the core: Cortex-M7F[cm7] */
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO00__LPI2C3_SDA, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO00__LPI2C3_SDA, 
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_OD_MASK);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO01__LPI2C3_SCL, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO01__LPI2C3_SCL, 
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_OD_MASK);
+}
+
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitCLKOPins:
+- options: {callFromInitBoot: 'false', coreID: cm7}
+- pin_list:
+  - {pin_num: AH20, peripheral: CCMSRCGPCMIX, signal: 'ccmsrcgpcmix_clko, 1', pin_signal: CCM_CLKO1, SION: ENABLED, OD: DISABLED, PD: DISABLED, PU: ENABLED}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitCLKOPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitCLKOPins(void) {                            /*!< Function assigned for the core: Cortex-M7F[cm7] */
+    IOMUXC_SetPinMux(IOMUXC_PAD_CCM_CLKO1__CLKO_1, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_CCM_CLKO1__CLKO_1, 
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_PU_MASK);
 }
 
 
@@ -817,12 +678,10 @@ void BOARD_InitTPMPins(void) {                             /*!< Function assigne
 BOARD_InitFLEXIOPins:
 - options: {callFromInitBoot: 'false', coreID: cm7}
 - pin_list:
-  - {pin_num: K48, peripheral: FLEXIO1, signal: 'flexio_flexio_bit, 2', pin_signal: GPIO_IO02, SION: ENABLED, OD: ENABLED, PD: DISABLED, FSEL1: SLIGHTLY_FAST_SLEW_RATE}
-  - {pin_num: K52, peripheral: FLEXIO1, signal: 'flexio_flexio_bit, 3', pin_signal: GPIO_IO03, SION: ENABLED, OD: ENABLED, PD: DISABLED}
-  - {pin_num: K46, peripheral: FLEXIO1, signal: 'flexio_flexio_bit, 4', pin_signal: GPIO_IO04, SION: ENABLED, OD: ENABLED, PD: DISABLED}
-  - {pin_num: L45, peripheral: FLEXIO1, signal: 'flexio_flexio_bit, 5', pin_signal: GPIO_IO05, SION: ENABLED, OD: ENABLED, PD: DISABLED}
-  - {pin_num: M44, peripheral: FLEXIO1, signal: 'flexio_flexio_bit, 8', pin_signal: GPIO_IO08, SION: ENABLED, OD: ENABLED, PD: DISABLED}
-  - {pin_num: M46, peripheral: FLEXIO1, signal: 'flexio_flexio_bit, 9', pin_signal: GPIO_IO09, SION: ENABLED, OD: ENABLED, PD: DISABLED}
+  - {pin_num: M44, peripheral: FLEXIO1, signal: 'flexio_flexio_, 8', pin_signal: GPIO_IO08, SION: ENABLED, OD: ENABLED, PD: DISABLED, PU: DISABLED}
+  - {pin_num: M46, peripheral: FLEXIO1, signal: 'flexio_flexio_, 9', pin_signal: GPIO_IO09, SION: ENABLED, OD: ENABLED, PD: DISABLED, PU: DISABLED}
+  - {pin_num: K48, peripheral: FLEXIO1, signal: 'flexio_flexio_, 2', pin_signal: GPIO_IO02, SION: ENABLED, OD: DISABLED, PD: DISABLED}
+  - {pin_num: K52, peripheral: FLEXIO1, signal: 'flexio_flexio_, 3', pin_signal: GPIO_IO03, SION: ENABLED, PD: DISABLED}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -833,36 +692,97 @@ BOARD_InitFLEXIOPins:
  *
  * END ****************************************************************************************************************/
 void BOARD_InitFLEXIOPins(void) {                          /*!< Function assigned for the core: Cortex-M7F[cm7] */
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO02__FLEXIO1_FLEXIO_BIT2, 1U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO02__FLEXIO1_FLEXIO_BIT2, 
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO02__FLEXIO1_FLEXIO_2, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO02__FLEXIO1_FLEXIO_2, 
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U));
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO03__FLEXIO1_FLEXIO_3, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO03__FLEXIO1_FLEXIO_3, 
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U));
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO08__FLEXIO1_FLEXIO_8, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO08__FLEXIO1_FLEXIO_8, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_OD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO03__FLEXIO1_FLEXIO_BIT3, 1U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO03__FLEXIO1_FLEXIO_BIT3, 
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO09__FLEXIO1_FLEXIO_9, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO09__FLEXIO1_FLEXIO_9, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_OD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO04__FLEXIO1_FLEXIO_BIT4, 1U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO04__FLEXIO1_FLEXIO_BIT4, 
+}
+
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitI3CPins:
+- options: {callFromInitBoot: 'false', coreID: cm7}
+- pin_list:
+  - {pin_num: AJ39, peripheral: I3C2, signal: i3c_sda, pin_signal: ENET1_MDIO, SION: ENABLED}
+  - {pin_num: AK40, peripheral: I3C2, signal: i3c_scl, pin_signal: ENET1_MDC, SION: ENABLED}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitI3CPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitI3CPins(void) {                             /*!< Function assigned for the core: Cortex-M7F[cm7] */
+    IOMUXC_SetPinMux(IOMUXC_PAD_ENET1_MDC__I3C2_SCL, 1U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_ENET1_MDIO__I3C2_SDA, 1U);
+}
+
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitGPIO2Pins:
+- options: {callFromInitBoot: 'false', coreID: cm7}
+- pin_list:
+  - {pin_num: V44, peripheral: GPIO2, signal: 'gpio_io_, 29', pin_signal: GPIO_IO29, PD: DISABLED}
+  - {pin_num: K52, peripheral: GPIO2, signal: 'gpio_io_, 3', pin_signal: GPIO_IO03, PD: ENABLED}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitGPIO2Pins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitGPIO2Pins(void) {                           /*!< Function assigned for the core: Cortex-M7F[cm7] */
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO03__GPIO2_IO_3, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO03__GPIO2_IO_3, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_OD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO05__FLEXIO1_FLEXIO_BIT5, 1U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO05__FLEXIO1_FLEXIO_BIT5, 
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO29__GPIO2_IO_29, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO29__GPIO2_IO_29, 
                         IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_OD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO08__FLEXIO1_FLEXIO_BIT8, 1U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO08__FLEXIO1_FLEXIO_BIT8, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_OD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO09__FLEXIO1_FLEXIO_BIT9, 1U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO09__FLEXIO1_FLEXIO_BIT9, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_OD_MASK);
+                        IOMUXC_PAD_FSEL1(2U));
+}
+
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_DeInitDEBUG_UARTPins:
+- options: {callFromInitBoot: 'false', coreID: cm7}
+- pin_list:
+  - {pin_num: N51, peripheral: GPIO2, signal: 'gpio_io_, 14', pin_signal: GPIO_IO14}
+  - {pin_num: P44, peripheral: GPIO2, signal: 'gpio_io_, 15', pin_signal: GPIO_IO15}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_DeInitDEBUG_UARTPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_DeInitDEBUG_UARTPins(void) {                    /*!< Function assigned for the core: Cortex-M7F[cm7] */
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO14__GPIO2_IO_14, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO15__GPIO2_IO_15, 0U);
 }
 
 /***********************************************************************************************************************

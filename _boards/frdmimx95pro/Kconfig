@@ -1,0 +1,10 @@
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+rsource "Kconfig.defconfig"
+
+config MCUX_HW_BOARD_frdmimx95pro
+    bool
+    default y
+    imply MCUX_HW_DEVICE_MIMX9596

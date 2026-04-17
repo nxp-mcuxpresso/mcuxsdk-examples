@@ -37,24 +37,6 @@ typedef enum
 #define APP_SRTM_PDM_USED (0U)
 #endif
 
-#if APP_SRTM_CODEC_AK4497_USED
-
-#define APP_SRTM_I2C           I2C3
-#define APP_SRTM_I2C_IRQn      I2C3_IRQn
-#define APP_SRTM_I2C_IRQ_PRIO  (5U)
-#define APP_SRTM_I2C_DELAY     (100U)
-#define APP_SRTM_I2C_BAUDRATE  (100000U)
-#define APP_CODEC_I2C_INSTANCE (3U)
-#define APP_SRTM_I2C_CLOCK_FREQ                                                            \
-    CLOCK_GetPllFreq(kCLOCK_SystemPll1Ctrl) / (CLOCK_GetRootPreDivider(kCLOCK_RootI2c3)) / \
-        (CLOCK_GetRootPostDivider(kCLOCK_RootI2c3)) / 5
-
-#define APP_AUDIO_I2C_SCL_GPIO GPIO5
-#define APP_AUDIO_I2C_SCL_PIN  (18U)
-#define APP_AUDIO_I2C_SDA_GPIO GPIO5
-#define APP_AUDIO_I2C_SDA_PIN  (19U)
-#endif
-
 #if APP_SRTM_CODEC_WM8524_USED
 #define APP_SRTM_SAI      (I2S3)
 #define APP_SRTM_SAI_IRQn I2S3_IRQn
@@ -105,13 +87,6 @@ typedef enum
 #define APP_SRTM_PDM_CHANNEL_NAME       "rpmsg-micfil-channel"
 #endif
 
-#if APP_SRTM_CODEC_WM8524_USED
-/* WM8524 Pin Set*/
-#define APP_CODEC_BUS_PIN      (NULL)
-#define APP_CODEC_BUS_PIN_NUM  (0)
-#define APP_CODEC_MUTE_PIN     (GPIO5)
-#define APP_CODEC_MUTE_PIN_NUM (21)
-#endif
 /* Define the timeout ms to polling the CA7 link up status */
 #define APP_LINKUP_TIMER_PERIOD_MS (10U)
 
@@ -145,10 +120,7 @@ void APP_SRTM_SetRpmsgMonitor(app_rpmsg_monitor_t monitor, void *param);
 
 /* Set SNVS IRQ handler for application */
 void APP_SRTM_SetIRQHandler(app_irq_handler_t handler, void *param);
-#if APP_SRTM_CODEC_AK4497_USED
-/* Release I2C buses used by SRTM services */
-void APP_SRTM_I2C_ReleaseBus(void);
-#endif
+
 /* Check the SRTM services busy or idle.*/
 bool APP_SRTM_ServiceIdle(void);
 #if defined(__cplusplus)

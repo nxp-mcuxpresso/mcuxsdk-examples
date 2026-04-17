@@ -17,3 +17,4 @@ protection against tampering, protection against spurious memory/register update
 - [TWR-KM34Z75M](../../_boards/twrkm34z75m/driver_examples/irtc/example_board_readme.md)
 - [TWR-KM35Z75M](../../_boards/twrkm35z75m/driver_examples/irtc/example_board_readme.md)
 - [FRDM-MCXA577](../../_boards/frdmmcxa577/driver_examples/irtc/example_board_readme.md)
+- [FRDM-MCXA287](../../_boards/frdmmcxa287/driver_examples/irtc/example_board_readme.md)

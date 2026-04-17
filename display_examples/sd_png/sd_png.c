@@ -139,8 +139,8 @@ void APP_SetLayerConfig(uint32_t width, uint32_t height)
     fbInfo.pixelFormat = APP_FB_FORMAT;
     fbInfo.width       = (uint16_t)width;
     fbInfo.height      = (uint16_t)height;
-    fbInfo.startX      = (APP_FB_WIDTH - (uint16_t)width) / 2U;
-    fbInfo.startY      = (APP_FB_HEIGHT - (uint16_t)height) / 2U;
+    fbInfo.startX      = 0;
+    fbInfo.startY      = 0;
     fbInfo.strideBytes = (uint16_t)width * APP_FB_BPP;
     if (kStatus_Success != g_dc.ops->setLayerConfig(&g_dc, 0, &fbInfo))
     {

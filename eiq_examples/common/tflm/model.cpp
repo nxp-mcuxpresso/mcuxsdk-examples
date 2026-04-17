@@ -119,6 +119,9 @@ uint8_t* GetTensorData(TfLiteTensor* tensor, tensor_dims_t* dims, tensor_type_t*
         case kTfLiteInt8:
             *type = kTensorType_INT8;
             break;
+        case kTfLiteInt16:
+            *type = kTensorType_INT16;
+            break;
         default:
             assert("Unknown input tensor data type!\r\n");
     };
@@ -159,7 +162,14 @@ void MODEL_ConvertInput(uint8_t* data, tensor_dims_t* dims, tensor_type_t type)
             for (int i = size - 1; i >= 0; i--)
             {
                 reinterpret_cast<int8_t*>(data)[i] =
-                    static_cast<int>(data[i]) - 127;
+                    static_cast<int>(data[i]) - 128;
+            }
+            break;
+        case kTensorType_INT16:
+            for (int i = size - 1; i >= 0; i--)
+            {
+                reinterpret_cast<int16_t*>(data)[i] =
+                    static_cast<int16_t>(data[i]);
             }
             break;
         case kTensorType_FLOAT32:

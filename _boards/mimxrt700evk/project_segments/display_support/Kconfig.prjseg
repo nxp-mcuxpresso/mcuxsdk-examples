@@ -54,178 +54,165 @@ if MCUX_PRJSEG_module.board.display_support
         default RK055MHD091A0
     endchoice
 
-    if TFT_PROTO_5
+    config SSD1963_DRIVEN_BY
+        int
+        default 0 if DEMO_PANEL_TFT_PROTO_5_FLEXIO
+        default 1 if DEMO_PANEL_TFT_PROTO_5_LCDIF
+        help
+            Driver selection for panel TFT_PROTO_5
+            No prefix in generated macro
 
-        config SSD1963_DRIVEN_BY
-            int
-            default 0 if DEMO_PANEL_TFT_PROTO_5_FLEXIO
-            default 1 if DEMO_PANEL_TFT_PROTO_5_LCDIF
-            help
-                Driver selection for panel TFT_PROTO_5
-                No prefix in generated macro
+    choice DEMO_PANEL_TFT_PROTO_5_DRIVER
+        prompt "TFT_PROTO_5 driver Selection"
+        default DEMO_PANEL_TFT_PROTO_5_LCDIF
 
-        choice DEMO_PANEL_TFT_PROTO_5_DRIVER
-            prompt "TFT_PROTO_5 driver Selection"
-            default DEMO_PANEL_TFT_PROTO_5_LCDIF
+        config DEMO_PANEL_TFT_PROTO_5_FLEXIO
+            bool "Use FLEXIO to drive TFT_PROTO_5"
 
-            config DEMO_PANEL_TFT_PROTO_5_FLEXIO
-                bool "Use FLEXIO to drive TFT_PROTO_5"
+        config DEMO_PANEL_TFT_PROTO_5_LCDIF
+            bool "Use LCDIF to drive TFT_PROTO_5"
 
-            config DEMO_PANEL_TFT_PROTO_5_LCDIF
-                bool "Use LCDIF to drive TFT_PROTO_5"
+    endchoice
 
-        endchoice
+    config DEMO_SSD1963_BUFFER_FORMAT
+        int
+        default 0 if DEMO_SSD1963_BUFFER_RGB565
+        default 1 if DEMO_SSD1963_BUFFER_RGB888
+        help
+            No prefix in generated macro
 
-        config DEMO_SSD1963_BUFFER_FORMAT
-            int
-            default 0 if DEMO_SSD1963_BUFFER_RGB565
-            default 1 if DEMO_SSD1963_BUFFER_RGB888
-            help
-                No prefix in generated macro
+    choice DEMO_SSD1963_BUFFER_FORMAT_SELECTION
+        prompt "TFT_PROTO_5 panel pixel format"
+        default DEMO_SSD1963_BUFFER_RGB565 if LV_COLOR_DEPTH_16
+        default DEMO_SSD1963_BUFFER_RGB888 if LV_COLOR_DEPTH_24
+        default DEMO_SSD1963_BUFFER_RGB565
 
-        choice DEMO_SSD1963_BUFFER_FORMAT_SELECTION
-            prompt "TFT_PROTO_5 panel pixel format"
-            default DEMO_SSD1963_BUFFER_RGB565 if LV_COLOR_DEPTH_16
-            default DEMO_SSD1963_BUFFER_RGB888 if LV_COLOR_DEPTH_24
-            default DEMO_SSD1963_BUFFER_RGB565
+        config DEMO_SSD1963_BUFFER_RGB565
+            bool "RGB565 - 16bit"
 
-            config DEMO_SSD1963_BUFFER_RGB565
-                bool "RGB565 - 16bit"
+        config DEMO_SSD1963_BUFFER_RGB888
+            bool "RGB888 - 24bit"
+    endchoice
 
-            config DEMO_SSD1963_BUFFER_RGB888
-                bool "RGB888 - 24bit"
-        endchoice
 
-    endif
+    config DEMO_RM67162_BUFFER_FORMAT
+        int
+        default 0 if DEMO_RM67162_BUFFER_RGB565
+        default 1 if DEMO_RM67162_BUFFER_RGB888
+        help
+            No prefix in generated macro
 
-    if G1120B0MIPI
-        config DEMO_RM67162_BUFFER_FORMAT
-            int
-            default 0 if DEMO_RM67162_BUFFER_RGB565
-            default 1 if DEMO_RM67162_BUFFER_RGB888
-            help
-                No prefix in generated macro
+    choice DEMO_RM67162_BUFFER_FORMAT_SELECTION
+        prompt "G1120B0MIPI panel pixel format"
+        default DEMO_RM67162_BUFFER_RGB565 if LV_COLOR_DEPTH_16
+        default DEMO_RM67162_BUFFER_RGB888 if LV_COLOR_DEPTH_24
+        default DEMO_RM67162_BUFFER_RGB565
 
-        choice DEMO_RM67162_BUFFER_FORMAT_SELECTION
-            prompt "G1120B0MIPI panel pixel format"
-            default DEMO_RM67162_BUFFER_RGB565 if LV_COLOR_DEPTH_16
-            default DEMO_RM67162_BUFFER_RGB888 if LV_COLOR_DEPTH_24
-            default DEMO_RM67162_BUFFER_RGB565
+        config DEMO_RM67162_BUFFER_RGB565
+            bool "RGB565 - 16bit"
 
-            config DEMO_RM67162_BUFFER_RGB565
-                bool "RGB565 - 16bit"
+        config DEMO_RM67162_BUFFER_RGB888
+            bool "RGB888 - 24bit"
+    endchoice
 
-            config DEMO_RM67162_BUFFER_RGB888
-                bool "RGB888 - 24bit"
-        endchoice
-    endif
+    config DEMO_CO5300_BUFFER_FORMAT
+        int
+        default 0 if DEMO_CO5300_BUFFER_RGB565
+        default 1 if DEMO_CO5300_BUFFER_RGB888
+        help
+            No prefix in generated macro
 
-    if ZC143AC72MIPI
-        config DEMO_CO5300_BUFFER_FORMAT
-            int
-            default 0 if DEMO_CO5300_BUFFER_RGB565
-            default 1 if DEMO_CO5300_BUFFER_RGB888
-            help
-                No prefix in generated macro
+    choice DEMO_CO5300_BUFFER_FORMAT_SELECTION
+        prompt "ZC143AC72MIPI pixel format"
+        default DEMO_CO5300_BUFFER_RGB565 if LV_COLOR_DEPTH_16
+        default DEMO_CO5300_BUFFER_RGB888 if LV_COLOR_DEPTH_24 || MCUX_COMPONENT_middleware.libjpeg
+        default DEMO_CO5300_BUFFER_RGB565
 
-        choice DEMO_CO5300_BUFFER_FORMAT_SELECTION
-            prompt "TFT_PROTO_5 pixel format"
-            default DEMO_CO5300_BUFFER_RGB565 if LV_COLOR_DEPTH_16
-            default DEMO_CO5300_BUFFER_RGB888 if LV_COLOR_DEPTH_24
-            default DEMO_CO5300_BUFFER_RGB565
+        config DEMO_CO5300_BUFFER_RGB565
+            bool "RGB565 - 16bit"
 
-            config DEMO_CO5300_BUFFER_RGB565
-                bool "RGB565 - 16bit"
+        config DEMO_CO5300_BUFFER_RGB888
+            bool "RGB888 - 24bit"
+    endchoice
 
-            config DEMO_CO5300_BUFFER_RGB888
-                bool "RGB888 - 24bit"
-        endchoice
-    endif
+    config DEMO_RK055AHD091_USE_XRGB8888
+        int
+        default 0 if DEMO_RK055AHD091_BUFFER_RGB565
+        default 1 if DEMO_RK055AHD091_BUFFER_XRGB8888
+        help
+            No prefix in generated macro
 
-    if RK055AHD091
-        config DEMO_RK055AHD091_USE_XRGB8888
-            int
-            default 0 if DEMO_RK055AHD091_BUFFER_RGB565
-            default 1 if DEMO_RK055AHD091_BUFFER_XRGB8888
-            help
-                No prefix in generated macro
+    choice DEMO_RK055AHD091_BUFFER_FORMAT_SELECTION
+        prompt "RK055HDMIPI4M MIPI Panel pixel format"
+        default DEMO_RK055AHD091_BUFFER_RGB565   if LV_COLOR_DEPTH_16
+        default DEMO_RK055AHD091_BUFFER_XRGB8888 if LV_COLOR_DEPTH_32
+        default DEMO_RK055AHD091_BUFFER_RGB565
 
-        choice DEMO_RK055AHD091_BUFFER_FORMAT_SELECTION
-            prompt "RK055HDMIPI4M MIPI Panel pixel format"
-            default DEMO_RK055AHD091_BUFFER_RGB565   if LV_COLOR_DEPTH_16
-            default DEMO_RK055AHD091_BUFFER_XRGB8888 if LV_COLOR_DEPTH_32
-            default DEMO_RK055AHD091_BUFFER_RGB565
+        config DEMO_RK055AHD091_BUFFER_RGB565
+            bool "RGB565 - 16bit"
 
-            config DEMO_RK055AHD091_BUFFER_RGB565
-                bool "RGB565 - 16bit"
+        config DEMO_RK055AHD091_BUFFER_XRGB8888
+            bool "XRGB888 - 32bit"
+    endchoice
 
-            config DEMO_RK055AHD091_BUFFER_XRGB8888
-                bool "XRGB888 - 32bit"
-        endchoice
-    endif
+    config DEMO_RK055MHD091_USE_XRGB8888
+        int
+        default 0 if DEMO_RK055MHD091_BUFFER_RGB565
+        default 1 if DEMO_RK055MHD091_BUFFER_XRGB8888
+        help
+            No prefix in generated macro
 
-    if RK055MHD091A0
-        config DEMO_RK055MHD091_USE_XRGB8888
-            int
-            default 0 if DEMO_RK055MHD091_BUFFER_RGB565
-            default 1 if DEMO_RK055MHD091_BUFFER_XRGB8888
-            help
-                No prefix in generated macro
+    choice DEMO_RK055MHD091_BUFFER_FORMAT_SELECTION
+        prompt "RK055MHD091A0-CTG MIPI Panel pixel format"
+        default DEMO_RK055MHD091_BUFFER_RGB565   if LV_COLOR_DEPTH_16
+        default DEMO_RK055MHD091_BUFFER_XRGB8888 if LV_COLOR_DEPTH_32
+        default DEMO_RK055MHD091_BUFFER_RGB565
 
-        choice DEMO_RK055MHD091_BUFFER_FORMAT_SELECTION
-            prompt "RK055HDMIPI4M MIPI Panel pixel format"
-            default DEMO_RK055MHD091_BUFFER_RGB565   if LV_COLOR_DEPTH_16
-            default DEMO_RK055MHD091_BUFFER_XRGB8888 if LV_COLOR_DEPTH_32
-            default DEMO_RK055MHD091_BUFFER_RGB565
+        config DEMO_RK055MHD091_BUFFER_RGB565
+            bool "RGB565 - 16bit"
 
-            config DEMO_RK055MHD091_BUFFER_RGB565
-                bool "RGB565 - 16bit"
+        config DEMO_RK055MHD091_BUFFER_XRGB8888
+            bool "XRGB888 - 32bit"
+    endchoice
 
-            config DEMO_RK055MHD091_BUFFER_XRGB8888
-                bool "XRGB888 - 32bit"
-        endchoice
-    endif
+    config ST7796S_DRIVEN_BY
+        int
+        default 0 if DEMO_PANEL_LCD_PAR_S035_FLEXIO
+        default 1 if DEMO_PANEL_LCD_PAR_S035_LCDIF
+        help
+            Driver selection for panel LCD_PAR_S035
+            No prefix in generated macro
 
-    if LCD_PAR_S035
-        config ST7796S_DRIVEN_BY
-            int
-            default 0 if DEMO_PANEL_LCD_PAR_S035_FLEXIO
-            default 1 if DEMO_PANEL_LCD_PAR_S035_LCDIF
-            help
-                Driver selection for panel LCD_PAR_S035
-                No prefix in generated macro
+    choice DEMO_PANEL_LCD_PAR_S035_DRIVER
+        prompt "LCD_PAR_S035 driver Selection"
+        default DEMO_PANEL_LCD_PAR_S035_LCDIF
 
-        choice DEMO_PANEL_LCD_PAR_S035_DRIVER
-            prompt "LCD_PAR_S035 driver Selection"
-            default DEMO_PANEL_LCD_PAR_S035_LCDIF
+        config DEMO_PANEL_LCD_PAR_S035_FLEXIO
+            bool "Use FLEXIO to drive LCD_PAR_S035"
 
-            config DEMO_PANEL_LCD_PAR_S035_FLEXIO
-                bool "Use FLEXIO to drive LCD_PAR_S035"
+        config DEMO_PANEL_LCD_PAR_S035_LCDIF
+            bool "Use LCDIF to drive LCD_PAR_S035"
 
-            config DEMO_PANEL_LCD_PAR_S035_LCDIF
-                bool "Use LCDIF to drive LCD_PAR_S035"
+    endchoice
 
-        endchoice
+    config DEMO_LCD_PAR_S035_BUFFER_FORMAT
+        int
+        default 0 if DEMO_LCD_PAR_S035_BUFFER_RGB565
+        default 1 if DEMO_LCD_PAR_S035_BUFFER_RGB888
+        help
+            No prefix in generated macro
 
-        config DEMO_LCD_PAR_S035_BUFFER_FORMAT
-            int
-            default 0 if DEMO_LCD_PAR_S035_BUFFER_RGB565
-            default 1 if DEMO_LCD_PAR_S035_BUFFER_RGB888
-            help
-                No prefix in generated macro
+    choice DEMO_LCD_PAR_S035_BUFFER_FORMAT_SELECTION
+        prompt "LCD-PAR-S035 panel pixel format"
+        default DEMO_LCD_PAR_S035_BUFFER_RGB565 if LV_COLOR_DEPTH_16
+        default DEMO_LCD_PAR_S035_BUFFER_RGB888 if LV_COLOR_DEPTH_24
+        default DEMO_LCD_PAR_S035_BUFFER_RGB565
 
-        choice DEMO_LCD_PAR_S035_BUFFER_FORMAT_SELECTION
-            prompt "LCD-PAR-S035 panel pixel format"
-            default DEMO_LCD_PAR_S035_BUFFER_RGB565 if LV_COLOR_DEPTH_16
-            default DEMO_LCD_PAR_S035_BUFFER_RGB888 if LV_COLOR_DEPTH_24
-            default DEMO_LCD_PAR_S035_BUFFER_RGB565
+        config DEMO_LCD_PAR_S035_BUFFER_RGB565
+            bool "RGB565 - 16bit"
 
-            config DEMO_LCD_PAR_S035_BUFFER_RGB565
-                bool "RGB565 - 16bit"
-
-            config DEMO_LCD_PAR_S035_BUFFER_RGB888
-                bool "RGB888 - 24bit"
-        endchoice
-    endif
+        config DEMO_LCD_PAR_S035_BUFFER_RGB888
+            bool "RGB888 - 24bit"
+    endchoice
 
 endif

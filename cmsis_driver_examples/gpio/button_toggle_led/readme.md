@@ -8,3 +8,6 @@ print to the console to indicate a button press event is detected.
 
 ## Supported Boards
 - [FRDM-KW43](../../../_boards/frdmkw43/cmsis_driver_examples/gpio/button_toggle_led/example_board_readme.md)
+- [FRDM-MCXW70](../../../_boards/frdmmcxw70/cmsis_driver_examples/gpio/button_toggle_led/example_board_readme.md)
+- [FRDM-MCXA287](../../../_boards/frdmmcxa287/cmsis_driver_examples/gpio/button_toggle_led/example_board_readme.md)
+

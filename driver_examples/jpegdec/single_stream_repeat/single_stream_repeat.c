@@ -179,8 +179,8 @@ void APP_InitDisplay(void)
     fbInfo.pixelFormat = APP_FB_FORMAT;
     fbInfo.width       = APP_FB_WIDTH;
     fbInfo.height      = APP_FB_HEIGHT;
-    fbInfo.startX      = (DEMO_PANEL_WIDTH - APP_FB_WIDTH) / 2U;
-    fbInfo.startY      = (DEMO_PANEL_HEIGHT - APP_FB_HEIGHT) / 2U;
+    fbInfo.startX      = 0;
+    fbInfo.startY      = 0;
     fbInfo.strideBytes = APP_FB_WIDTH * APP_FB_BPP;
     if (kStatus_Success != g_dc.ops->setLayerConfig(&g_dc, 0, &fbInfo))
     {

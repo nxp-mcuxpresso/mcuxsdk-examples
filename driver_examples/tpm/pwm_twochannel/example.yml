@@ -53,6 +53,7 @@ tpm_pwm_twochannel:
     imx95lpd5evk19@cm7: []
     imx95lp4xevk15@cm7: []
     frdmimx95@cm7: []
+    frdmimx95pro@cm7: []
     imx952evk@cm7: []
     kw47evk@cm33_core0: []
     kw47loc@cm33_core0: []
@@ -66,3 +67,4 @@ tpm_pwm_twochannel:
     mcimx93wevk: []
     mcimx93qsb: []
     frdmkw43: []
+    frdmmcxw70: []

@@ -203,7 +203,6 @@ void MainTask(void *pvParameters)
     GPC_Init(BOARD_GPC_BASEADDR, APP_PowerUpSlot, APP_PowerDnSlot);
     GPC_EnableIRQ(BOARD_GPC_BASEADDR, BOARD_MU_IRQ_NUM);
     GPC_EnableIRQ(BOARD_GPC_BASEADDR, SYSTICK_IRQn);
-    GPC_EnableIRQ(BOARD_GPC_BASEADDR, I2C3_IRQn);
     while (true)
     {
         /* Use App task logic to replace vTaskDelay */
@@ -218,10 +217,6 @@ int main(void)
 {
     char *taskID = "A";
     BOARD_InitHardware();
-#if APP_SRTM_CODEC_AK4497_USED
-    APP_SRTM_I2C_ReleaseBus();
-    BOARD_I2C_ConfigurePins();
-#endif
 #if APP_SRTM_PDM_USED
     BOARD_PDM_ConfigurePins();
 #endif

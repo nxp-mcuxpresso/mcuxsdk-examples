@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, 2025 NXP
+ * Copyright 2023, 2025-2026 NXP
  *
  * SPDXLicense-Identifier: BSD-3-Clause
  */
@@ -71,12 +71,11 @@ const fc_static_platform_config_t flash_config = {
                 /* Read Status OPI */
                 [5 * 2 + 0] =
                     FC_XSPI_LUT_SEQ(FC_CMD_DDR, FC_XSPI_8PAD, 0x05, FC_CMD_DDR, FC_XSPI_8PAD, 0xFA),
-                [5 * 2 + 1] =
-                    FC_XSPI_LUT_SEQ(FC_CMD_RADDR_DDR, FC_XSPI_8PAD, 0x20, FC_CMD_DUMMY_SDR, FC_XSPI_8PAD, 0x12),
+                 [5 * 2 + 1] =
+                    FC_XSPI_LUT_SEQ(FC_CMD_RADDR_DDR, FC_XSPI_8PAD, 0x20, FC_CMD_DUMMY_SDR, FC_XSPI_8PAD, 0x4),
                 [5 * 2 + 2] =
-                    FC_XSPI_LUT_SEQ(FC_CMD_DUMMY_SDR, FC_XSPI_8PAD, 0x2, FC_CMD_READ_DDR, FC_XSPI_8PAD, 0x4),
-                [5 * 2 + 3] =
-                    FC_XSPI_LUT_SEQ(FC_CMD_STOP, FC_XSPI_8PAD, 0x0, 0, 0, 0),
+                    FC_XSPI_LUT_SEQ( FC_CMD_READ_DDR, FC_XSPI_8PAD, 0x4, FC_CMD_STOP, FC_XSPI_8PAD, 0x0),
+ 
 
                 /*Write enable*/
                 [5 * 3 + 0] =

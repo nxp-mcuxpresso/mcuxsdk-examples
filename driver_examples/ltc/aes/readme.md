@@ -70,3 +70,4 @@ ba fd 2c 65 a 62 7c 18 a0 df b4 20 bb fb 68 27
 - [MCXW72-LOC](../../../_boards/mcxw72loc/driver_examples/ltc/aes/example_board_readme.md)
 - [FRDM-MCXW72](../../../_boards/frdmmcxw72/driver_examples/ltc/aes/example_board_readme.md)
 - [FRDM-KW43](../../../_boards/frdmkw43/driver_examples/ltc/aes/example_board_readme.md)
+- [FRDM-MCXW70](../../../_boards/frdmmcxw70/driver_examples/ltc/aes/example_board_readme.md)

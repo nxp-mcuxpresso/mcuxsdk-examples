@@ -17,3 +17,4 @@ the virtual serial port on board.
 - [KW47-EVK](../../../_boards/kw47evk/driver_examples/lpi2c/read_fxls896x_accel_value_transfer/example_board_readme.md)
 - [MCX-W72-EVK](../../../_boards/mcxw72evk/driver_examples/lpi2c/read_fxls896x_accel_value_transfer/example_board_readme.md)
 - [FRDM-KW43](../../../_boards/frdmkw43/driver_examples/lpi2c/read_fxls896x_accel_value_transfer/example_board_readme.md)
+- [FRDM-MCXW70](../../../_boards/frdmmcxw70/driver_examples/lpi2c/read_fxls896x_accel_value_transfer/example_board_readme.md)

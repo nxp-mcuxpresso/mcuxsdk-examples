@@ -29,7 +29,7 @@ product: Clocks v19.0
 processor: MCXL255
 package_id: MCXL255VDF
 mcu_data: ksdk2_0
-processor_version: 0.2603.90
+processor_version: 0.0.0
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
 
@@ -199,8 +199,8 @@ void BOARD_BootClockFRO12M_InitClockModule(clock_module_t module)
             PMU_UpdateHvdLvTrim(AON__PMU, vddCoreMainConfig.hvdLvTrim);
             break;
         case kClockModule_AONCoreSupplyMode:
-            /* Set the Vdd Core voltage of the AON domain to 0.770V to allow the AON Core operate at 10 MHz. */
-            PMU_UpdateVDDCoreInActiveMode(AON__PMU, VDD_CORE_AON_0_770V_VOLTAGE_10M);
+            /* Set the Vdd Core voltage of the AON domain to 0.7915V to allow the AON Core operate at 10 MHz. */
+            PMU_UpdateVDDCoreInActiveMode(AON__PMU, VDD_CORE_AON_0_7915V_VOLTAGE_10M);
             break;
         case kClockModule_ROSC:
             /* Monitor is disabled */
@@ -578,8 +578,8 @@ void BOARD_BootClockFRO24M_InitClockModule(clock_module_t module)
             PMU_UpdateHvdLvTrim(AON__PMU, vddCoreMainConfig.hvdLvTrim);
             break;
         case kClockModule_AONCoreSupplyMode:
-            /* Set the Vdd Core voltage of the AON domain to 0.770V to allow the AON Core operate at 10 MHz. */
-            PMU_UpdateVDDCoreInActiveMode(AON__PMU, VDD_CORE_AON_0_770V_VOLTAGE_10M);
+            /* Set the Vdd Core voltage of the AON domain to 0.7915V to allow the AON Core operate at 10 MHz. */
+            PMU_UpdateVDDCoreInActiveMode(AON__PMU, VDD_CORE_AON_0_7915V_VOLTAGE_10M);
             break;
         case kClockModule_ROSC:
             /* Monitor is disabled */
@@ -957,8 +957,8 @@ void BOARD_BootClockFRO48M_InitClockModule(clock_module_t module)
             PMU_UpdateHvdLvTrim(AON__PMU, vddCoreMainConfig.hvdLvTrim);
             break;
         case kClockModule_AONCoreSupplyMode:
-            /* Set the Vdd Core voltage of the AON domain to 0.770V to allow the AON Core operate at 10 MHz. */
-            PMU_UpdateVDDCoreInActiveMode(AON__PMU, VDD_CORE_AON_0_770V_VOLTAGE_10M);
+            /* Set the Vdd Core voltage of the AON domain to 0.7915V to allow the AON Core operate at 10 MHz. */
+            PMU_UpdateVDDCoreInActiveMode(AON__PMU, VDD_CORE_AON_0_7915V_VOLTAGE_10M);
             break;
         case kClockModule_ROSC:
             /* Monitor is disabled */
@@ -1203,7 +1203,7 @@ void BOARD_BootClockFRO48M(void)
 name: BOARD_BootClockFRO96M
 called_from_default_init: true
 outputs:
-- {id: ADC0_CLK.outFreq, value: 96 MHz, locked: true, accuracy: '0.001'}
+- {id: ADC0_CLK.outFreq, value: 48 MHz, locked: true, accuracy: '0.001'}
 - {id: AON_ACMP0_CLK0.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
 - {id: AON_ACMP0_CLK1.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
 - {id: AON_APB_CLK.outFreq, value: 10 MHz}
@@ -1276,6 +1276,7 @@ settings:
 - {id: GLB_CC0_PGRP1_CFG, value: 'Yes'}
 - {id: GROUP0CLKDIV_HALT, value: Enable}
 - {id: GROUP1CLKDIV_HALT, value: Enable}
+- {id: MRCC.ADC0CLKDIV.scale, value: '2', locked: true}
 - {id: MRCC.CLKOUTCLKDIV.scale, value: '1', locked: true}
 - {id: MRCC.CLKOUTCLKSEL.sel, value: SYSCON.SLOW_CLK}
 - {id: MRCC.CMP0FUNCCLKDIV.scale, value: '1', locked: true}
@@ -1338,8 +1339,8 @@ void BOARD_BootClockFRO96M_InitClockModule(clock_module_t module)
             PMU_UpdateHvdLvTrim(AON__PMU, vddCoreMainConfig.hvdLvTrim);
             break;
         case kClockModule_AONCoreSupplyMode:
-            /* Set the Vdd Core voltage of the AON domain to 0.770V to allow the AON Core operate at 10 MHz. */
-            PMU_UpdateVDDCoreInActiveMode(AON__PMU, VDD_CORE_AON_0_770V_VOLTAGE_10M);
+            /* Set the Vdd Core voltage of the AON domain to 0.7915V to allow the AON Core operate at 10 MHz. */
+            PMU_UpdateVDDCoreInActiveMode(AON__PMU, VDD_CORE_AON_0_7915V_VOLTAGE_10M);
             break;
         case kClockModule_ROSC:
             /* Monitor is disabled */
@@ -1455,8 +1456,8 @@ void BOARD_BootClockFRO96M_InitClockModule(clock_module_t module)
         case kClockModule_ADC0_CLK:
             /* !< Switch ADC0 to FRO_HF_DIV */
             CLOCK_AttachClk(kFRO_HF_DIV_to_ADC0);
-            /* !< Set ADC0CLKDIV divider to value 1 */
-            CLOCK_SetClockDiv(kCLOCK_DivADC0, 1U);
+            /* !< Set ADC0CLKDIV divider to value 2 */
+            CLOCK_SetClockDiv(kCLOCK_DivADC0, 2U);
             break;
         case kClockModule_SYSTICK_CLK:
             /* !< Switch SYSTICK to CPU_CLK */

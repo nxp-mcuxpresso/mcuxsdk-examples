@@ -116,6 +116,9 @@ void BOARD_InitPins(void) {                                /*!< Function assigne
                         IOMUXC0_SW_MUX_CTL_PAD_IBE_MASK |
                         IOMUXC0_SW_MUX_CTL_PAD_PE_MASK |
                         IOMUXC0_SW_MUX_CTL_PAD_PS_MASK);
+    IOMUXC_SetPinMux(BOARD_HP_DET_PIN_FUNCTION_ID, 0U);
+    IOMUXC_SetPinConfig(BOARD_HP_DET_PIN_FUNCTION_ID,
+                        IOMUXC0_SW_MUX_CTL_PAD_OBE_MASK);
 }
 
 

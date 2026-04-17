@@ -11,7 +11,6 @@ mcux_add_source(
     examples/_boards/${board}/edgefast_bluetooth_examples/unicast_media_sender/${core_id}/hardware_init.c
     examples/_boards/${board}/edgefast_bluetooth_examples/unicast_media_sender/${core_id}/pin_mux.c
     examples/_boards/${board}/edgefast_bluetooth_examples/unicast_media_sender/${core_id}/pin_mux.h
-    middleware/edgefast_bluetooth/source/impl/ethermind/controller/configs/mbedtls/mbedtls_config_client.h
 )
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
@@ -118,4 +117,14 @@ mcux_add_armgcc_linker_script(
   TARGETS
     flexspi_nor_debug
     flexspi_nor_release
+)
+
+mcux_remove_armgcc_configuration(
+    TARGETS flexspi_nor_debug
+    CC "-O0"
+)
+
+mcux_add_armgcc_configuration(
+    TARGETS flexspi_nor_debug
+    CC "-O1"
 )

@@ -75,6 +75,9 @@ void BOARD_InitHardware(void)
 
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
+    BOARD_InitCLKOPins();
+    BOARD_InitI2C2Pins();
+    BOARD_InitI2C3Pins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 

@@ -22,17 +22,19 @@ void BOARD_InitHardware(void)
         //.enable_clk = true,
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
     };
-    
+
     clk_t flexioclk = {
         .clkId = kCLOCK_flexio1,
         .pclkId = kCLOCK_osc24m,
         .rate = 24000000UL,
         //.enable_clk = true,
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
-    };    
+    };
     /* clang-format on */
     SystemPlatformInit();
     BOARD_InitBootPins();
+    BOARD_InitFLEXIOPins();
+    BOARD_InitI2C6Pins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
     BOARD_ConfigMPU();

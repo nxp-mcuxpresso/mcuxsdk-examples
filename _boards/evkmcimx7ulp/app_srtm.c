@@ -24,26 +24,21 @@
 #include "fsl_snvs_lp.h"
 #include "fsl_snvs_hp.h"
 #include "fsl_iomuxc.h"
-#include "fsl_wm8960.h"
 
 #include "srtm_dispatcher.h"
 #include "srtm_peercore.h"
 #include "srtm_message.h"
 #include "srtm_lfcl_service.h"
 #include "srtm_pmic_service.h"
+#include "srtm_i2c_service.h"
 #include "srtm_audio_service.h"
 #include "srtm_rtc_service.h"
 #include "srtm_io_service.h"
 #include "srtm_keypad_service.h"
-#include "srtm_sensor_service.h"
 #include "srtm_pf1550_adapter.h"
-#include "srtm_i2c_codec_adapter.h"
 #include "srtm_snvs_lp_rtc_adapter.h"
 #include "srtm_sai_edma_adapter.h"
 #include "srtm_rpmsg_endpoint.h"
-
-#include "fxos8700.h"
-#include "KeynetikPedometer.h"
 
 #include "app_srtm.h"
 #include "board.h"
@@ -62,10 +57,11 @@ enum
     APP_INPUT_VOL_MINUS    = 2U,
     APP_INPUT_BT_HOST_WAKE = 3U,
     APP_INPUT_WL_HOST_WAKE = 4U,
+    APP_INPUT_HP_DET       = 5U,
 
-    APP_OUTPUT_WL_REG_ON = 5U,
-    APP_OUTPUT_BT_REG_ON = 6U,
-    APP_IO_NUM           = 7U
+    APP_OUTPUT_WL_REG_ON = 6U,
+    APP_OUTPUT_BT_REG_ON = 7U,
+    APP_IO_NUM           = 8U
 };
 
 #define APP_INPUT_GPIO_START  APP_INPUT_VOL_PLUS
@@ -114,16 +110,6 @@ typedef struct
     } mu;
 } app_suspend_ctx_t;
 
-typedef struct
-{
-    bool stateEnabled;
-    bool dataEnabled;
-    uint32_t pollDelay;
-    uint32_t expired;    /* milli-seconds since last data report. */
-    uint32_t lastCount;  /* step counter reported last time. */
-    TimerHandle_t timer; /* Sensor polling timer */
-} app_pedometer_t;
-
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -135,26 +121,27 @@ static status_t PMIC_I2C_SendFunc(
 static status_t PMIC_I2C_ReceiveFunc(
     uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, uint8_t *rxBuff, uint8_t rxBuffSize);
 
-/* Send data to Sensor device on I2C Bus. */
-static status_t Sensor_I2C_SendFunc(
-    uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, const uint8_t *txBuff, uint8_t txBuffSize);
+static srtm_status_t APP_SRTM_I2C_Read(srtm_i2c_adapter_t adapter,
+                                       uint32_t base_addr,
+                                       srtm_i2c_type_t type,
+                                       uint16_t slaveAddr,
+                                       uint8_t *buf,
+                                       uint16_t len,
+                                       uint16_t flags);
 
-/* Receive data from Sensor device on I2C Bus. */
-static status_t Sensor_I2C_ReceiveFunc(
-    uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, uint8_t *rxBuff, uint8_t rxBuffSize);
+static srtm_status_t APP_SRTM_I2C_Write(srtm_i2c_adapter_t adapter,
+                                        uint32_t base_addr,
+                                        srtm_i2c_type_t type,
+                                        uint16_t slaveAddr,
+                                        uint8_t *buf,
+                                        uint16_t len,
+                                        uint16_t flags);
 
-static srtm_status_t APP_SRTM_Sensor_EnableStateDetector(srtm_sensor_adapter_t adapter,
-                                                         srtm_sensor_type_t type,
-                                                         uint8_t index,
-                                                         bool enable);
-static srtm_status_t APP_SRTM_Sensor_EnableDataReport(srtm_sensor_adapter_t adapter,
-                                                      srtm_sensor_type_t type,
-                                                      uint8_t index,
-                                                      bool enable);
-static srtm_status_t APP_SRTM_Sensor_SetPollDelay(srtm_sensor_adapter_t adapter,
-                                                  srtm_sensor_type_t type,
-                                                  uint8_t index,
-                                                  uint32_t millisec);
+static srtm_status_t APP_SRTM_I2C_SwitchChannel(srtm_i2c_adapter_t adapter,
+                                                uint32_t base_addr,
+                                                srtm_i2c_type_t type,
+                                                uint16_t slaveAddr,
+                                                srtm_i2c_switch_channel channel);
 
 extern void APP_UpdateSimDgo(uint32_t gpIdx, uint32_t mask, uint32_t value);
 
@@ -208,23 +195,14 @@ static const srtm_io_event_t llwuPinModeEvents[] = {
     SRTM_IoEventEitherEdge   /* kLLWU_ExternalPinAnyEdge */
 };
 
-wm8960_config_t wm8960Config;
-codec_config_t boardCodecConfig = {.codecDevType = kCODEC_WM8960};
-codec_handle_t codecHandle;
-
-static struct _srtm_sensor_adapter sensorAdapter = {.enableStateDetector = APP_SRTM_Sensor_EnableStateDetector,
-                                                    .enableDataReport    = APP_SRTM_Sensor_EnableDataReport,
-                                                    .setPollDelay        = APP_SRTM_Sensor_SetPollDelay};
-
-static lpi2c_rtos_handle_t lpi2c0Handle;
 static lpi2c_rtos_handle_t lpi2c3Handle;
-static bool lpi2c0Init, lpi2c3Init;
+static bool lpi2c3Init;
 static lpi2c_rtos_handle_t *pmicI2cHandle;
-static lpi2c_rtos_handle_t *sensorI2cHandle;
 static pf1550_handle_t pf1550Handle;
 static srtm_dispatcher_t disp;
 static srtm_peercore_t core;
 static srtm_sai_adapter_t saiAdapter;
+static srtm_service_t i2cService;
 static srtm_service_t audioService;
 static srtm_rtc_adapter_t rtcAdapter;
 static srtm_service_t rtcService;
@@ -240,31 +218,23 @@ static void *rpmsgMonitorParam;
 static app_irq_handler_t irqHandler;
 static void *irqHandlerParam;
 static TimerHandle_t linkupTimer;
-static app_pedometer_t pedometer = {.stateEnabled = false,
-                                    .dataEnabled  = false,
-                                    .pollDelay    = 1000, /* 1 sec by default. */
-                                    .expired      = 0,
-                                    .lastCount    = 0};
 
-static KeynetikConfig pedoConfig = {
-    /* Step length in centimeters. Auto calculate. */
-    .steplength = 0,
-    /* Height in centimeters */
-    .height = 175,
-    /* Weight in kilograms */
-    .weight = 80,
-    /* 4 steps in 3 seconds */
-    .filtersteps = 4,
-    .bits =
-        {
-            .filtertime = 3,
-            .male       = 1,
-        },
-    /* Calculate speed every 5 seconds */
-    .speedperiod = 5,
-    /* Threshold 0.13G to decide a step. */
-    .stepthreshold = 130,
+static struct _i2c_bus platform_i2c_buses[] = {
+    {.bus_id         = 0,
+     .base_addr      = LPI2C0_BASE,
+     .type           = SRTM_I2C_TYPE_LPI2C,
+     .switch_idx     = I2C_SWITCH_NONE,
+     .switch_channel = SRTM_I2C_SWITCH_CHANNEL_UNSPECIFIED},
 };
+
+static struct _srtm_i2c_adapter i2c_adapter = {.read          = APP_SRTM_I2C_Read,
+                                               .write         = APP_SRTM_I2C_Write,
+                                               .switchchannel = APP_SRTM_I2C_SwitchChannel,
+                                               .bus_structure = {
+                                                   .buses      = platform_i2c_buses,
+                                                   .bus_num    = sizeof(platform_i2c_buses) / sizeof(struct _i2c_bus),
+                                                   .switch_num = 0,
+                                               }};
 
 static PORT_Type *const ports[] = PORT_BASE_PTRS;
 static GPIO_Type *const gpios[] = GPIO_BASE_PTRS;
@@ -479,6 +449,17 @@ static void APP_HandleGPIOHander(uint8_t gpioIdx)
         {
             /* Only when CA7 is running or wakeup flag is set, we'll notify the event to CA7. */
             SRTM_IoService_NotifyInputEvent(ioService, APP_PIN_WL_HOST_WAKE);
+        }
+    }
+
+    if (APP_GPIO_IDX(APP_PIN_HP_DET) == gpioIdx &&
+        (1U << APP_PIN_IDX(APP_PIN_HP_DET)) & PORT_GetPinsInterruptFlags(port))
+    {
+        PORT_ClearPinsInterruptFlags(port, 1U << APP_PIN_IDX(APP_PIN_HP_DET));
+        if (suspendContext.io.data[APP_INPUT_HP_DET].wakeup || MU_GetOtherCorePowerMode(MUA) != kMU_PowerModeDsm)
+        {
+            /* Only when CA7 is running or wakeup flag is set, we'll notify the event to CA7. */
+            SRTM_IoService_NotifyInputEvent(ioService, APP_PIN_HP_DET);
         }
     }
 
@@ -823,248 +804,6 @@ static status_t PMIC_I2C_ReceiveFunc(
 {
     /* Calling I2C Transfer API to start receive. */
     return I2C_ReceiveFunc(pmicI2cHandle, deviceAddress, subAddress, subAddressSize, rxBuff, rxBuffSize);
-}
-
-static status_t Sensor_I2C_SendFunc(
-    uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, const uint8_t *txBuff, uint8_t txBuffSize)
-{
-    /* Calling I2C Transfer API to start send. */
-    return I2C_SendFunc(sensorI2cHandle, deviceAddress, subAddress, subAddressSize, txBuff, txBuffSize);
-}
-
-static status_t Sensor_I2C_ReceiveFunc(
-    uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, uint8_t *rxBuff, uint8_t rxBuffSize)
-{
-    /* Calling I2C Transfer API to start receive. */
-    return I2C_ReceiveFunc(sensorI2cHandle, deviceAddress, subAddress, subAddressSize, rxBuff, rxBuffSize);
-}
-
-static void APP_SRTM_PollSensor(srtm_dispatcher_t dispatcher, void *param1, void *param2)
-{
-    FXOS8700_DR_STATUS_t drStatus;
-    uint8_t readBuffer[6];
-    int16_t accel[3];
-    uint32_t events;
-    status_t status;
-
-    if (pedometer.stateEnabled || pedometer.dataEnabled)
-    {
-        status = Sensor_I2C_ReceiveFunc(FXOS8700_DEVICE_ADDR_SA_00, FXOS8700_STATUS, 1, &drStatus.w, 1);
-        assert(status == kStatus_Success);
-        if (status != kStatus_Success)
-        {
-            return;
-        }
-
-        if (drStatus.b.zyxdr != 0)
-        {
-            /* Have sensor data, then accumulate in pedometer library. */
-            status = Sensor_I2C_ReceiveFunc(FXOS8700_DEVICE_ADDR_SA_00, FXOS8700_OUT_X_MSB, 1, readBuffer, 6);
-            assert(status == kStatus_Success);
-            if (status != kStatus_Success)
-            {
-                return;
-            }
-
-            accel[0] = (int16_t)((readBuffer[0] << 8) | readBuffer[1]) / 4;
-            accel[1] = (int16_t)((readBuffer[2] << 8) | readBuffer[3]) / 4;
-            accel[2] = (int16_t)((readBuffer[4] << 8) | readBuffer[5]) / 4;
-
-            events = KeynetikHandleIncomingEvent(accel[0], accel[1], accel[2]);
-            if (pedometer.stateEnabled && (events & KEYNETIK_STEP))
-            {
-                /* Step detected, then update peer core. */
-                assert(sensorAdapter.updateState && sensorAdapter.service);
-                sensorAdapter.updateState(sensorAdapter.service, SRTM_SensorTypePedometer, 0);
-            }
-        }
-
-        if (pedometer.dataEnabled)
-        {
-            pedometer.expired += (APP_MS2TICK(APP_PEDOMETER_SAMPLE_WINDOW)) * portTICK_PERIOD_MS;
-            if (pedometer.expired >= pedometer.pollDelay)
-            {
-                /* Report time: need to check whether need to report */
-                if (pedometer.lastCount != keynetikStepCount)
-                {
-                    pedometer.lastCount = keynetikStepCount;
-                    assert(sensorAdapter.reportData && sensorAdapter.service);
-                    sensorAdapter.reportData(sensorAdapter.service, SRTM_SensorTypePedometer, 0,
-                                             (uint8_t *)(&pedometer.lastCount), sizeof(pedometer.lastCount));
-                }
-                pedometer.expired = 0;
-            }
-        }
-    }
-}
-
-static void APP_PedometerTimerCallback(TimerHandle_t xTimer)
-{
-    srtm_procedure_t proc = SRTM_Procedure_Create(APP_SRTM_PollSensor, NULL, NULL);
-
-    /* Need to poll sensor data in SRTM task context */
-    if (proc)
-    {
-        SRTM_Dispatcher_PostProc(disp, proc);
-    }
-}
-
-static srtm_status_t APP_SRTM_Sensor_InitPedometer(void)
-{
-    uint8_t data;
-    status_t status;
-
-    status = Sensor_I2C_ReceiveFunc(FXOS8700_DEVICE_ADDR_SA_00, FXOS8700_WHO_AM_I, 1, &data, 1);
-    assert(status == kStatus_Success && data == FXOS8700_WHO_AM_I_PROD_VALUE);
-
-    /* Put the device into standby mode so that configuration can be applied.*/
-    status = Sensor_I2C_ReceiveFunc(FXOS8700_DEVICE_ADDR_SA_00, FXOS8700_CTRL_REG1, 1, &data, 1);
-    assert(status == kStatus_Success);
-    data   = (data & ~FXOS8700_CTRL_REG1_ACTIVE_MASK) | FXOS8700_CTRL_REG1_ACTIVE_STANDBY_MODE;
-    status = Sensor_I2C_SendFunc(FXOS8700_DEVICE_ADDR_SA_00, FXOS8700_CTRL_REG1, 1, &data, 1);
-    assert(status == kStatus_Success);
-    /* Configure the fxos8700 to 50Hz sampling rate. */
-    data   = (data & ~FXOS8700_CTRL_REG1_DR_MASK) | APP_PEDOMETER_SENSOR_SAMPLE_RATE;
-    status = Sensor_I2C_SendFunc(FXOS8700_DEVICE_ADDR_SA_00, FXOS8700_CTRL_REG1, 1, &data, 1);
-    assert(status == kStatus_Success);
-    /* Configure the fxos8700 as accel only mode.*/
-    status = Sensor_I2C_ReceiveFunc(FXOS8700_DEVICE_ADDR_SA_00, FXOS8700_M_CTRL_REG2, 1, &data, 1);
-    assert(status == kStatus_Success);
-    data   = (data & ~FXOS8700_M_CTRL_REG2_M_AUTOINC_MASK) | FXOS8700_M_CTRL_REG2_M_AUTOINC_ACCEL_ONLY_MODE;
-    status = Sensor_I2C_SendFunc(FXOS8700_DEVICE_ADDR_SA_00, FXOS8700_M_CTRL_REG2, 1, &data, 1);
-    assert(status == kStatus_Success);
-    /* Put the device into active mode and ready for reading data.*/
-    status = Sensor_I2C_ReceiveFunc(FXOS8700_DEVICE_ADDR_SA_00, FXOS8700_CTRL_REG1, 1, &data, 1);
-    assert(status == kStatus_Success);
-    data   = (data & ~FXOS8700_CTRL_REG1_ACTIVE_MASK) | FXOS8700_CTRL_REG1_ACTIVE_ACTIVE_MODE;
-    status = Sensor_I2C_SendFunc(FXOS8700_DEVICE_ADDR_SA_00, FXOS8700_CTRL_REG1, 1, &data, 1);
-    assert(status == kStatus_Success);
-
-    /* captured value 4096 from FXOS8700 stands for 1G in 2G scale. */
-    KeynetikInitialize(4096, APP_PEDOMETER_SAMPLE_RATE, &pedoConfig);
-
-    xTimerChangePeriod(pedometer.timer, APP_MS2TICK(APP_PEDOMETER_SAMPLE_WINDOW), portMAX_DELAY);
-    xTimerStart(pedometer.timer, portMAX_DELAY);
-
-    return status == kStatus_Success ? SRTM_Status_Success : SRTM_Status_Error;
-}
-
-static srtm_status_t APP_SRTM_Sensor_DeinitPedometer(void)
-{
-    uint8_t data;
-    status_t status;
-
-    xTimerStop(pedometer.timer, portMAX_DELAY);
-    KeynetikTerminate();
-
-    /* Put the device into standby mode.*/
-    status = Sensor_I2C_ReceiveFunc(FXOS8700_DEVICE_ADDR_SA_00, FXOS8700_CTRL_REG1, 1, &data, 1);
-    assert(status == kStatus_Success);
-    if (status == kStatus_Success)
-    {
-        data   = (data & ~FXOS8700_CTRL_REG1_ACTIVE_MASK) | FXOS8700_CTRL_REG1_ACTIVE_STANDBY_MODE;
-        status = Sensor_I2C_SendFunc(FXOS8700_DEVICE_ADDR_SA_00, FXOS8700_CTRL_REG1, 1, &data, 1);
-        assert(status == kStatus_Success);
-    }
-
-    return status == kStatus_Success ? SRTM_Status_Success : SRTM_Status_Error;
-}
-
-static srtm_status_t APP_SRTM_Sensor_EnableStateDetector(srtm_sensor_adapter_t adapter,
-                                                         srtm_sensor_type_t type,
-                                                         uint8_t index,
-                                                         bool enable)
-{
-    srtm_status_t status = SRTM_Status_Success;
-
-    if (type != SRTM_SensorTypePedometer)
-    {
-        /* Only support pedometer now. */
-        return SRTM_Status_InvalidParameter;
-    }
-
-    if (enable)
-    {
-        if (!pedometer.stateEnabled && !pedometer.dataEnabled)
-        {
-            /* Initialize Pedometer. */
-            status = APP_SRTM_Sensor_InitPedometer();
-        }
-        if (status == SRTM_Status_Success)
-        {
-            pedometer.stateEnabled = true;
-        }
-    }
-    else if (pedometer.stateEnabled)
-    {
-        pedometer.stateEnabled = false;
-        if (!pedometer.dataEnabled)
-        {
-            status = APP_SRTM_Sensor_DeinitPedometer();
-        }
-    }
-
-    return status;
-}
-
-static srtm_status_t APP_SRTM_Sensor_EnableDataReport(srtm_sensor_adapter_t adapter,
-                                                      srtm_sensor_type_t type,
-                                                      uint8_t index,
-                                                      bool enable)
-{
-    srtm_status_t status = SRTM_Status_Success;
-
-    if (type != SRTM_SensorTypePedometer)
-    {
-        /* Only support pedometer now. */
-        return SRTM_Status_InvalidParameter;
-    }
-
-    if (enable && !pedometer.dataEnabled)
-    {
-        if (!pedometer.stateEnabled)
-        {
-            /* Initialize Pedometer. */
-            status = APP_SRTM_Sensor_InitPedometer();
-        }
-        if (status == SRTM_Status_Success)
-        {
-            pedometer.dataEnabled = true;
-            pedometer.expired     = 0;
-            pedometer.lastCount   = keynetikStepCount;
-        }
-    }
-    else if (!enable && pedometer.dataEnabled)
-    {
-        pedometer.dataEnabled = false;
-        if (!pedometer.stateEnabled)
-        {
-            status = APP_SRTM_Sensor_DeinitPedometer();
-        }
-    }
-
-    return status;
-}
-
-static srtm_status_t APP_SRTM_Sensor_SetPollDelay(srtm_sensor_adapter_t adapter,
-                                                  srtm_sensor_type_t type,
-                                                  uint8_t index,
-                                                  uint32_t millisec)
-{
-    if (type != SRTM_SensorTypePedometer)
-    {
-        /* Only support pedometer now. */
-        return SRTM_Status_InvalidParameter;
-    }
-
-    if (millisec > APP_PEDOMETER_POLL_DELAY_MAX || millisec < APP_PEDOMETER_POLL_DELAY_MIN)
-    {
-        return SRTM_Status_InvalidParameter;
-    }
-
-    pedometer.pollDelay = millisec;
-
-    return SRTM_Status_Success;
 }
 
 void APP_UpdateSimDgo(uint32_t gpIdx, uint32_t mask, uint32_t value)
@@ -1497,6 +1236,12 @@ static void APP_SRTM_Linkup(void)
     chan                    = SRTM_RPMsgEndpoint_Create(&rpmsgConfig);
     SRTM_PeerCore_AddChannel(core, chan);
 
+    /* Create and add SRTM I2C channel to peer core*/
+    rpmsgConfig.rpmsgHandle = rpmsgHandle;
+    rpmsgConfig.epName = APP_SRTM_I2C_CHANNEL_NAME;
+    chan               = SRTM_RPMsgEndpoint_Create(&rpmsgConfig);
+    SRTM_PeerCore_AddChannel(core, chan);
+
     /* Create and add SRTM Audio channel to peer core */
     rpmsgConfig.rpmsgHandle = rpmsgHandle;
     rpmsgConfig.epName      = APP_SRTM_AUDIO_CHANNEL_NAME;
@@ -1526,12 +1271,6 @@ static void APP_SRTM_Linkup(void)
     /* Create and add SRTM RTC channel to peer core */
     rpmsgConfig.rpmsgHandle = rpmsgHandle;
     rpmsgConfig.epName      = APP_SRTM_RTC_CHANNEL_NAME;
-    chan                    = SRTM_RPMsgEndpoint_Create(&rpmsgConfig);
-    SRTM_PeerCore_AddChannel(core, chan);
-
-    /* Create and add SRTM Sensor channel to peer core */
-    rpmsgConfig.rpmsgHandle = rpmsgHandle;
-    rpmsgConfig.epName      = APP_SRTM_SENSOR_CHANNEL_NAME;
     chan                    = SRTM_RPMsgEndpoint_Create(&rpmsgConfig);
     SRTM_PeerCore_AddChannel(core, chan);
 
@@ -1713,55 +1452,6 @@ static void APP_SRTM_InitPmicService(void)
     SRTM_Dispatcher_RegisterService(disp, service);
 }
 
-static void APP_SRTM_InitSensorDevice(void)
-{
-    if (!lpi2c3Init)
-    {
-        APP_SRTM_InitI2C(&lpi2c3Handle, LPI2C3, APP_LPI2C3_BAUDRATE, CLOCK_GetIpFreq(kCLOCK_Lpi2c3));
-        lpi2c3Init = true;
-    }
-    sensorI2cHandle = &lpi2c3Handle;
-}
-
-static void APP_SRTM_DeinitSensorDevice(void)
-{
-    if (lpi2c3Init)
-    {
-        APP_SRTM_DeinitI2C(&lpi2c3Handle);
-        lpi2c3Init = false;
-    }
-    sensorI2cHandle = NULL;
-}
-
-static void APP_SRTM_InitSensorService(void)
-{
-    srtm_service_t service;
-
-    APP_SRTM_InitSensorDevice();
-
-    /* Create and register Sensor service */
-    service = SRTM_SensorService_Create(&sensorAdapter);
-    SRTM_Dispatcher_RegisterService(disp, service);
-}
-
-static void APP_SRTM_InitCodecDevice(void)
-{
-    if (!lpi2c0Init)
-    {
-        APP_SRTM_InitI2C(&lpi2c0Handle, LPI2C0, APP_LPI2C0_BAUDRATE, CLOCK_GetIpFreq(kCLOCK_Lpi2c0));
-        lpi2c0Init = true;
-    }
-}
-
-static void APP_SRTM_DeinitCodecDevice(void)
-{
-    if (lpi2c0Init)
-    {
-        APP_SRTM_DeinitI2C(&lpi2c0Handle);
-        lpi2c0Init = false;
-    }
-}
-
 static void APP_SRTM_InitAudioDevice(void)
 {
     edma_config_t dmaConfig;
@@ -1776,26 +1466,12 @@ static void APP_SRTM_InitAudioDevice(void)
     DMAMUX_SetSource(DMA_CH_MUX0, APP_SAI_RX_DMA_CHANNEL, kDmaRequestMux0SAI0Rx);
     DMAMUX_EnableChannel(DMA_CH_MUX0, APP_SAI_TX_DMA_CHANNEL);
     DMAMUX_EnableChannel(DMA_CH_MUX0, APP_SAI_RX_DMA_CHANNEL);
-
-    APP_SRTM_InitCodecDevice();
-}
-
-static status_t APP_SRTM_ReadCodecRegMap(void *handle, uint32_t reg, uint32_t *val)
-{
-    return WM8960_ReadReg(reg, (uint16_t *)val);
-}
-
-static status_t APP_SRTM_WriteCodecRegMap(void *handle, uint32_t reg, uint32_t val)
-{
-    return WM8960_WriteReg((wm8960_handle_t *)((uint32_t) & (((codec_handle_t *)handle)->codecDevHandle)), reg, val);
 }
 
 static void APP_SRTM_InitAudioService(void)
 {
     srtm_sai_edma_config_t saiTxConfig;
     srtm_sai_edma_config_t saiRxConfig;
-    srtm_i2c_codec_config_t i2cCodecConfig;
-    srtm_codec_adapter_t codecAdapter;
 
     memset(&saiTxConfig, 0, sizeof(saiTxConfig));
     memset(&saiRxConfig, 0, sizeof(saiRxConfig));
@@ -1827,35 +1503,8 @@ static void APP_SRTM_InitAudioService(void)
     /*  Set LPI2C Master IRQ Priority. */
     NVIC_SetPriority(LPI2C0_IRQn, APP_LPI2C0_IRQ_PRIO);
 
-    wm8960Config.i2cConfig.codecI2CInstance    = 0;
-    wm8960Config.i2cConfig.codecI2CSourceClock = CLOCK_GetIpFreq(kCLOCK_Lpi2c0);
-    wm8960Config.route                         = kWM8960_RoutePlaybackandRecord;
-    wm8960Config.leftInputSource               = kWM8960_InputDifferentialMicInput3;
-    wm8960Config.rightInputSource              = kWM8960_InputClosed;
-    wm8960Config.playSource                    = kWM8960_PlaySourceDAC;
-    wm8960Config.slaveAddress                  = WM8960_I2C_ADDR;
-    wm8960Config.bus                           = kWM8960_BusI2S;
-    wm8960Config.format.mclk_HZ                = 6144000U;
-    wm8960Config.format.sampleRate             = kWM8960_AudioSampleRate16KHz;
-    wm8960Config.format.bitWidth               = kWM8960_AudioBitWidth16bit;
-    wm8960Config.master_slave                  = false;
-    boardCodecConfig.codecDevConfig            = &wm8960Config;
-    /* Initialize WM8960 codec */
-    CODEC_Init(&codecHandle, &boardCodecConfig);
-
-    /* Create I2C Codec adaptor */
-    i2cCodecConfig.mclk        = saiTxConfig.mclk;
-    i2cCodecConfig.slaveAddr   = 0U;
-    i2cCodecConfig.addrType    = kCODEC_RegAddr8Bit;
-    i2cCodecConfig.regWidth    = kCODEC_RegWidth8Bit;
-    i2cCodecConfig.writeRegMap = APP_SRTM_WriteCodecRegMap;
-    i2cCodecConfig.readRegMap  = APP_SRTM_ReadCodecRegMap;
-    i2cCodecConfig.i2cHandle   = NULL;
-    codecAdapter               = SRTM_I2CCodecAdapter_Create(&codecHandle, &i2cCodecConfig);
-    assert(codecAdapter);
-
     /* Create and register audio service */
-    audioService = SRTM_AudioService_Create(saiAdapter, codecAdapter);
+    audioService = SRTM_AudioService_Create(saiAdapter, NULL);
     SRTM_Dispatcher_RegisterService(disp, audioService);
 }
 
@@ -1915,6 +1564,7 @@ static void APP_SRTM_InitIoKeyService(void)
     suspendContext.io.data[APP_INPUT_WL_HOST_WAKE].ioId = APP_PIN_WL_HOST_WAKE;
     suspendContext.io.data[APP_OUTPUT_WL_REG_ON].ioId   = APP_PIN_WL_REG_ON;
     suspendContext.io.data[APP_OUTPUT_BT_REG_ON].ioId   = APP_PIN_BT_REG_ON;
+    suspendContext.io.data[APP_INPUT_HP_DET].ioId       = APP_PIN_HP_DET;
 
     APP_SRTM_InitIoKeyDevice();
 
@@ -1929,6 +1579,7 @@ static void APP_SRTM_InitIoKeyService(void)
     SRTM_IoService_RegisterPin(ioService, APP_PIN_WL_REG_ON, APP_IO_SetOutput, APP_IO_GetInput, NULL, APP_IO_GetDirection, NULL);
     SRTM_IoService_RegisterPin(ioService, APP_PIN_BT_HOST_WAKE, NULL, APP_IO_GetInput, APP_IO_ConfIEvent, APP_IO_GetDirection, NULL);
     SRTM_IoService_RegisterPin(ioService, APP_PIN_WL_HOST_WAKE, NULL, APP_IO_GetInput, APP_IO_ConfIEvent, APP_IO_GetDirection, NULL);
+    SRTM_IoService_RegisterPin(ioService, APP_PIN_HP_DET, NULL, APP_IO_GetInput, APP_IO_ConfIEvent, APP_IO_GetDirection, NULL);
     SRTM_Dispatcher_RegisterService(disp, ioService);
 
     keypadService = SRTM_KeypadService_Create();
@@ -1965,11 +1616,38 @@ static void APP_SRTM_InitRtcService(void)
     SRTM_Dispatcher_RegisterService(disp, rtcService);
 }
 
+static void APP_SRTM_InitI2CDevice(void)
+{
+    lpi2c_master_config_t masterConfig;
+
+    LPI2C_MasterGetDefaultConfig(&masterConfig);
+    masterConfig.baudRate_Hz = APP_LPI2C0_BAUDRATE;
+    LPI2C_MasterInit(LPI2C0, &masterConfig, BOARD_CODEC_I2C_CLOCK_FREQ);
+}
+
+/*
+ * Sometimes i2c driver can not handle errors properly. Error flags are not cleard and i2c
+ * controller enters an abnormal state. Reinitialize i2c device as a workaround to ensure
+ * subsequent transmissions can proceed normally.
+ */
+static void APP_SRTM_ReInitI2CDevice(void)
+{
+    LPI2C_MasterDeinit(LPI2C0);
+    APP_SRTM_InitI2CDevice();
+}
+
+static void APP_SRTM_InitI2CService(void)
+{
+    APP_SRTM_InitI2CDevice();
+    i2cService = SRTM_I2CService_Create(&i2c_adapter);
+    SRTM_Dispatcher_RegisterService(disp, i2cService);
+}
+
 static void APP_SRTM_InitServices(void)
 {
     APP_SRTM_InitPmicService();
-    APP_SRTM_InitSensorService();
     APP_SRTM_InitRtcService();
+    APP_SRTM_InitI2CService();
     APP_SRTM_InitAudioService();
     APP_SRTM_InitLfclService();
     APP_SRTM_InitIoKeyService();
@@ -2305,10 +1983,6 @@ void APP_SRTM_Init(void)
         xTimerCreate("OnOff", APP_MS2TICK(50), pdTRUE, NULL, APP_OnOffTimerCallback);
     assert(suspendContext.io.data[APP_INPUT_ONOFF].timer);
 
-    /* Create timer used in pedometer polling. Period 10 will be overwritten in Pedometer initialization. */
-    pedometer.timer = xTimerCreate("Pedometer", 10, pdTRUE, NULL, APP_PedometerTimerCallback);
-    assert(pedometer.timer);
-
     /* Create procedure message to wake up CA7 core, used in IRQ handler. Parameter 1 stands for USB wakeup. */
     wakeupCA7Proc = SRTM_Procedure_Create(APP_SRTM_DoWakeupCA7, (void *)1, NULL);
     assert(wakeupCA7Proc);
@@ -2326,8 +2000,6 @@ void APP_SRTM_Suspend(void)
     suspendContext.mu.CR = MUA->CR;
 
     APP_SRTM_DeinitPmicDevice();
-    APP_SRTM_DeinitSensorDevice();
-    APP_SRTM_DeinitCodecDevice();
 }
 
 void APP_SRTM_Resume(bool resume)
@@ -2336,18 +2008,14 @@ void APP_SRTM_Resume(bool resume)
     {
         APP_SRTM_InitPeriph(true);
         APP_SRTM_InitRtcDevice(true);
+        APP_SRTM_InitI2CDevice();
         APP_SRTM_InitAudioDevice();
         APP_SRTM_InitIoKeyDevice();
         MUA->CR = suspendContext.mu.CR;
     }
-    else
-    {
-        APP_SRTM_InitCodecDevice();
-    }
 
     /* Even if suspend fails, I2C handle is destroyed. Need to initialize again. */
     APP_SRTM_InitPmicDevice();
-    APP_SRTM_InitSensorDevice();
 }
 
 void APP_SRTM_BootCA7(void)
@@ -2443,4 +2111,70 @@ void APP_SRTM_SetIRQHandler(app_irq_handler_t handler, void *param)
 struct rpmsg_lite_instance *APP_SRTM_GetRPMsgHandle(void)
 {
     return rpmsgHandle;
+}
+
+
+static srtm_status_t APP_SRTM_I2C_SwitchChannel(srtm_i2c_adapter_t adapter,
+                                                uint32_t base_addr,
+                                                srtm_i2c_type_t type,
+                                                uint16_t slaveAddr,
+                                                srtm_i2c_switch_channel channel)
+{
+    uint8_t txBuff[1];
+    assert(channel < SRTM_I2C_SWITCH_CHANNEL_UNSPECIFIED);
+    txBuff[0] = 1 << (uint8_t)channel;
+    return adapter->write(adapter, base_addr, type, slaveAddr, txBuff, sizeof(txBuff),
+                          SRTM_I2C_FLAG_NEED_STOP); // APP_SRTM_I2C_Write
+}
+
+static srtm_status_t APP_SRTM_I2C_Write(srtm_i2c_adapter_t adapter,
+                                        uint32_t base_addr,
+                                        srtm_i2c_type_t type,
+                                        uint16_t slaveAddr,
+                                        uint8_t *buf,
+                                        uint16_t len,
+                                        uint16_t flags)
+{
+    status_t retVal   = kStatus_Fail;
+    uint32_t needStop = (flags & SRTM_I2C_FLAG_NEED_STOP) ? kLPI2C_TransferDefaultFlag : kLPI2C_TransferNoStopFlag;
+
+    switch (type)
+    {
+        case SRTM_I2C_TYPE_LPI2C:
+            retVal = BOARD_LPI2C_Send((LPI2C_Type *)base_addr, slaveAddr, 0, 0, buf, len, needStop);
+            break;
+        default:
+            break;
+    }
+
+    if (retVal != kStatus_Success)
+        APP_SRTM_ReInitI2CDevice();
+
+    return (retVal == kStatus_Success) ? SRTM_Status_Success : SRTM_Status_TransferFailed;
+}
+
+static srtm_status_t APP_SRTM_I2C_Read(srtm_i2c_adapter_t adapter,
+                                       uint32_t base_addr,
+                                       srtm_i2c_type_t type,
+                                       uint16_t slaveAddr,
+                                       uint8_t *buf,
+                                       uint16_t len,
+                                       uint16_t flags)
+{
+    status_t retVal   = kStatus_Fail;
+    uint32_t needStop = (flags & SRTM_I2C_FLAG_NEED_STOP) ? kLPI2C_TransferDefaultFlag : kLPI2C_TransferNoStopFlag;
+
+    switch (type)
+    {
+        case SRTM_I2C_TYPE_LPI2C:
+            retVal = BOARD_LPI2C_Receive((LPI2C_Type *)base_addr, slaveAddr, 0, 0, buf, len, needStop);
+            break;
+        default:
+            break;
+    }
+
+    if (retVal != kStatus_Success)
+        APP_SRTM_ReInitI2CDevice();
+
+    return (retVal == kStatus_Success) ? SRTM_Status_Success : SRTM_Status_TransferFailed;
 }

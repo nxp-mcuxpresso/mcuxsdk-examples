@@ -1,6 +1,5 @@
 /*
  * Copyright 2026 NXP
- * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -25,7 +24,7 @@
 /* clang-format off */
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Clocks v19.0
+product: Clocks v20.0
 processor: MCXL255
 package_id: MCXL255VDF
 mcu_data: ksdk2_0
@@ -126,6 +125,7 @@ settings:
 - {id: FLASH_CLK_INIT_Config, value: custom}
 - {id: FREQMEAS_INIT_Config, value: custom}
 - {id: FRO16K_CPU_Core_Config, value: cm0plus}
+- {id: FRO_CPU_Core_Config, value: both}
 - {id: FRO_HF_DIV_INIT_Config, value: custom}
 - {id: MRCC_FRO16K_SEL_INIT_Config, value: custom}
 - {id: OSTIMER0_CLK_INIT_Config, value: custom}
@@ -208,6 +208,9 @@ void BOARD_BootClockFRO10M_InitClockModule(clock_module_t module)
             /* Enable the XTAL 32.768KHz towards the CGU. */
             AON__RTC_AON->CONFIG |= RTC_CONFIG_XTAL32_EN_MASK;
             break;
+        case kClockModule_FRO:
+            CLOCK_SetupFROAonClocking(10000000U);               /* Setup ROOT_CLK clock source */
+            break;
         case kClockModule_FRO16K:
             PMU_EnableFRO16K(AON__PMU, true);                   /* Initialize the FRO16K clock source */
             PMU_UpdateFRO16KFreq(AON__PMU, kPMU_FRO16KOutput16KHz);/* Select the output frequency of the FRO16K */
@@ -265,6 +268,7 @@ void BOARD_BootClockFRO10M(void)
     CLOCK_EnableClock(kCLOCK_GateAonAPB);
     BOARD_BootClockFRO10M_InitClockModule(kClockModule_FRO16K);
     BOARD_BootClockFRO10M_InitClockModule(kClockModule_ROSC);
+    BOARD_BootClockFRO10M_InitClockModule(kClockModule_FRO);
     BOARD_BootClockFRO10M_InitClockModule(kClockModule_AON_CPU_ROOT_CLK);
     BOARD_BootClockFRO10M_InitClockModule(kClockModule_AON_COM_CLK);
     BOARD_BootClockFRO10M_InitClockModule(kClockModule_AON_TMR_GRP_CLK);
@@ -277,4 +281,3 @@ void BOARD_BootClockFRO10M(void)
     /* Set SystemCoreClock variable */
     SystemCoreClock = BOARD_BOOTCLOCKFRO10M_AON_CPU_CLK;
 }
-

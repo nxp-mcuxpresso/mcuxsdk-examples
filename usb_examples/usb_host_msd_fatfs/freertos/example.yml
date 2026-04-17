@@ -56,6 +56,7 @@ host_msd_fatfs_freertos:
     frdmmcxa266: []
     frdmmcxa366: []
     frdmmcxa577: []
+    frdmmcxa287: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
     frdmrw612: []

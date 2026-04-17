@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  * The BSD-3-Clause license can be found at https://spdx.org/licenses/BSD-3-Clause.html
@@ -10,6 +10,7 @@
 #define CRC32_POLY   0x04c11db7
 
 static uint32_t crc32_table[256] = {0,};
+
 void ncp_tlv_chksum_init(void)
 {
     int i, j;

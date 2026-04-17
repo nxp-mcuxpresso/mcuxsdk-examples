@@ -3,15 +3,21 @@ Hardware requirements
 - Type-C USB cable
 - FRDM-KW43 Board
 - Personal Computer
+- USB to serial (UART) converter
 
 Board settings
 ============
-No special is needed.
+Using instance 0 of LPUART interface to transfer data to USB to serial (UART) converter.
+
+LPUART0     CONNECTS TO         USB to serial (UART) converter
+Pin Name    Board Location      Pin Name
+TXD         JP19-1              RXD
+RXD         J19-1               TXD
 
 Prepare the Demo
 ===============
 1. Connect a USB cable between the host PC and the FRDM board J28.
-2. Open a serial terminal on PC for OpenSDA serial device with these settings:
+2. Open a serial terminal on PC for USB to serial (UART) converter serial device with these settings:
    - 115200 baud rate
    - 7 data bits
    - No parity
@@ -22,11 +28,9 @@ Prepare the Demo
 
 Running the demo
 ===============
-When the demo runs successfully, the log would be seen on the OpenSDA terminal like:
+When the demo runs successfully, the log would be seen on the USB to serial (UART) converter terminal like:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Lpuart polling example with seven data bits
 Board will send back received characters
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Note: Only the MCU-Link with CMSIS-DAP debugger protocol firmware supports the seven bits transfer.
-Please check the getting started guide on how to update the MCU-Link debugger firmware.

@@ -17,6 +17,7 @@ sai
    edma_tdm/readme.md
    edma_tdm_record_playback/readme.md
    edma_transfer/readme.md
+   mqs_edma_transfer/readme.md
    interrupt/readme.md
    interrupt_record_playback/readme.md
    interrupt_transfer/readme.md

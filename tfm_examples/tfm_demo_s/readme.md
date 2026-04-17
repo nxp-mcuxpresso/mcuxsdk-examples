@@ -20,3 +20,4 @@ Workspace structure:
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/tfm_examples/tfm_demo/tfm_demo_s/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/tfm_examples/tfm_demo/tfm_demo_s/example_board_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/tfm_examples/tfm_demo/tfm_demo_s/example_board_readme.md)
+- [FRDM-MCXA287](../../_boards/frdmmcxa287/tfm_examples/tfm_demo/tfm_demo_s/example_board_readme.md)

@@ -27,6 +27,7 @@ void BOARD_InitHardware(void)
     /* clang-format on */
     SystemPlatformInit();
     BOARD_InitBootPins();
+    BOARD_InitGPIO2Pins();
     BOARD_BootClockRUN();
 
     CLOCK_SetRate(&clk);

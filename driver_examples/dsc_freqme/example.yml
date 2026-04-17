@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+dsc_freqme_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_freqme
+    project-root-path: boards/${board}/driver_examples/freqme/${multicore_foldername}
+    document:
+      name: dsc_freqme_interrupt${core_id_suffix_name}
+      category: driver_examples/dsc_freqme
+      brief: The dsc_freqme_interrupt is a demonstration program of the SDK DSC_FREQME
+        driver's features. The example demonstrates the usage of frequency measurement
+        operate mode and pulse width measurement operate mode.
+      example_readme:
+      - examples/driver_examples/dsc_freqme/readme.md
+      - ${board_root}/${board}/driver_examples/freqme/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+

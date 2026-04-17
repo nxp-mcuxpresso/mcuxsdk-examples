@@ -17,7 +17,6 @@ extern struct cmd_subclass_t cmd_subclass_ble[9];
 extern struct cmd_subclass_t cmd_subclass_15D4[3];
 #endif
 extern struct cmd_subclass_t cmd_subclass_system[2];
-extern struct cmd_t error_ack_cmd;
 
 #define CMD_SUBCLASS_WLAN_LEN   (sizeof(cmd_subclass_wlan) / sizeof(struct cmd_subclass_t))
 #if CONFIG_NCP_BLE
@@ -164,9 +163,6 @@ struct cmd_t *lookup_class(uint32_t cmd_class, uint32_t cmd_subclass, uint32_t c
         }
     }
 
-    if (cmd == NULL)
-        return &error_ack_cmd;
-    else
-        return cmd;
+    return cmd;
 }
 

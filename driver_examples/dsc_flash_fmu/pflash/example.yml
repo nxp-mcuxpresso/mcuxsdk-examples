@@ -1,0 +1,15 @@
+dsc_pflash_fmu:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_flash_fmu/pflash
+    project-root-path: boards/${board}/driver_examples/flash/pflash/${multicore_foldername}
+    document:
+      name: dsc_pflash_fmu${core_id_suffix_name}
+      category: driver_examples/flash
+      brief: The pflash example shows how to use flash driver to operate program flash.
+      example_readme:
+      - examples/driver_examples/dsc_flash_fmu/pflash/readme.md
+      - ${board_root}/${board}/driver_examples/flash/pflash/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    mc56f85xxxevk: []

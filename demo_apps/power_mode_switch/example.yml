@@ -32,6 +32,7 @@ power_mode_switch:
       - ${board_root}/${board}/demo_apps/power_mode_switch/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
+    evkmcimx7ulp: []
     frdmk22f: []
     frdmk32l2a4s: []
     frdmk32l2b: []

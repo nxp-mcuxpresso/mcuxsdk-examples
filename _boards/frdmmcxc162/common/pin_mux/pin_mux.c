@@ -51,7 +51,7 @@ void BOARD_InitBootPins(void)
 BOARD_InitDEBUG_UARTPins:
 - options: {callFromInitBoot: 'true', coreID: cm23_core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: '40', peripheral: LPUART0, signal: RX, pin_signal: P0_2/TDO/LPUART0_RXD/LPSPI0_SCK/CT0_MAT0, slew_rate: fast, open_drain: disable, drive_strength: high,
+  - {pin_num: '40', peripheral: LPUART0, signal: RX, pin_signal: P0_2/TDO/SWO/LPUART0_RXD/LPSPI0_SCK/CT0_MAT0, slew_rate: fast, open_drain: disable, drive_strength: high,
     pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
   - {pin_num: '41', peripheral: LPUART0, signal: TX, pin_signal: P0_3/TDI/LPUART0_TXD/LPSPI0_SDO/CT0_MAT1/CMP0_OUT, slew_rate: fast, open_drain: disable, drive_strength: low,
     pull_select: up, pull_enable: enable, input_buffer: enable, invert_input: normal}
@@ -954,13 +954,13 @@ void BOARD_InitCMPPins(void)
 BOARD_InitPWMPins:
 - options: {callFromInitBoot: 'false', coreID: cm23_core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: '36', peripheral: FlexPWM0, signal: 'A, 0', pin_signal: P3_0/TRIG_IN0/LPI2C0_SCL/CT_INP16/PWM0_A0, slew_rate: fast, open_drain: disable, drive_strength: low,
+  - {pin_num: '36', peripheral: FLEXPWM0, signal: 'A, 0', pin_signal: P3_0/TRIG_IN0/LPI2C0_SCL/CT_INP16/PWM0_A0, slew_rate: fast, open_drain: disable, drive_strength: low,
     extra_drive_strength: normal, pull_select: down, pull_enable: disable, passive_filter: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: '34', peripheral: FlexPWM0, signal: 'A, 1', pin_signal: P3_8/TRIG_IN3/LPSPI0_SDO/LPUART1_RXD/CT_INP4/PWM0_A1/CLKOUT, slew_rate: fast, open_drain: disable,
+  - {pin_num: '34', peripheral: FLEXPWM0, signal: 'A, 1', pin_signal: P3_8/TRIG_IN3/LPSPI0_SDO/LPUART1_RXD/CT_INP4/PWM0_A1/CLKOUT, slew_rate: fast, open_drain: disable,
     drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: '32', peripheral: FlexPWM0, signal: 'A, 2', pin_signal: P3_10/TRIG_IN5/LPSPI0_SCK/LPUART1_RTS_B/CT1_MAT0/PWM0_A2, slew_rate: fast, open_drain: disable,
+  - {pin_num: '32', peripheral: FLEXPWM0, signal: 'A, 2', pin_signal: P3_10/TRIG_IN5/LPSPI0_SCK/LPUART1_RTS_B/CT1_MAT0/PWM0_A2, slew_rate: fast, open_drain: disable,
     drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: '35', peripheral: FlexPWM0, signal: 'B, 0', pin_signal: P3_1/TRIG_IN1/LPI2C0_SDA/CT_INP17/PWM0_B0/FREQME_CLK_OUT0, slew_rate: fast, open_drain: disable,
+  - {pin_num: '35', peripheral: FLEXPWM0, signal: 'B, 0', pin_signal: P3_1/TRIG_IN1/LPI2C0_SDA/CT_INP17/PWM0_B0/FREQME_CLK_OUT0, slew_rate: fast, open_drain: disable,
     drive_strength: low, extra_drive_strength: normal, pull_select: down, pull_enable: disable, passive_filter: disable, input_buffer: enable, invert_input: normal}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */

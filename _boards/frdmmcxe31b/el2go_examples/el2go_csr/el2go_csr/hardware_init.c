@@ -8,12 +8,14 @@
 #include "fsl_common.h"
 #include "pin_mux.h"
 #include "board.h"
+#include "fsl_cache.h"
 /*${header:end}*/
 
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    BOARD_ConfigMPU();
+    BOARD_ConfigMPU(); // This API enables the CACHE
+    L1CACHE_DisableDCache();
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
 

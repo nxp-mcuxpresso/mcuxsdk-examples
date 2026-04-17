@@ -31,6 +31,7 @@ extern uint32_t current_cmd;
 extern uint16_t g_cmd_seqno;
 extern uint8_t cmd_buf[NCP_INBUF_SIZE];
 extern uint8_t sys_res_buf[NCP_SYS_INBUF_SIZE];
+extern struct cmd_t system_error_ack_cmd;
 
 #define SYSTEM_TASK_PRIO        (PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-3)))
 #if CONFIG_NCP_USE_ENCRYPT
@@ -137,7 +138,7 @@ static int system_ncp_command_handle_input(uint8_t *cmd)
     if (NULL == command)
     {
         ncp_d("ncp system lookup cmd failed\r\n");
-        return -NCP_FAIL;
+        command = &system_error_ack_cmd;
     }
     ncp_d("ncp system got command: <%s>", command->help);
     ret = command->handler(cmd_tlv);

@@ -687,6 +687,7 @@ void BOARD_InitTempSensor(void)
     LPADC_Init(APP_LPADC_BASE, &mLpadcConfigStruct);
 
     /* Request gain calibration. */
+    SDK_DelayAtLeastUs(1U, SystemCoreClock);
     LPADC_DoAutoCalibration(APP_LPADC_BASE);
 
     /* Set conversion CMD configuration. */

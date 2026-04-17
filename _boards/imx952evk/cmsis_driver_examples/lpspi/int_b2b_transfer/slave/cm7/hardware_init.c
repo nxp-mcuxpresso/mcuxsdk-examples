@@ -38,6 +38,9 @@ void BOARD_InitHardware(void)
     /* clang-format on */
     SystemPlatformInit();
     BOARD_InitBootPins();
+    BOARD_InitGPIO2Pins();
+    BOARD_InitI2C6Pins();
+    BOARD_InitLPSPIPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
     BOARD_ConfigMPU();

@@ -94,8 +94,6 @@
 #define BOARD_DEBUG_UART_CLK_FREQ 32000000U
 #endif
 
-#define BOARD_APP_UART_INSTANCE 0U
-
 /*!
  * @brief Enable write for the Glikey protected registers.
  *

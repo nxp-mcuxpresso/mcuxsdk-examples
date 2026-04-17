@@ -112,11 +112,13 @@ int main(void)
 
 #if defined(FSL_FEATURE_LPADC_HAS_CTRL_CAL_REQ) && FSL_FEATURE_LPADC_HAS_CTRL_CAL_REQ
     /* Request auto calibration (including gain error calibration and linearity error calibration). */
+    SDK_DelayAtLeastUs(1U, SystemCoreClock);
     LPADC_DoAutoCalibration(DEMO_LPADC_BASE);
 #endif /* FSL_FEATURE_LPADC_HAS_CTRL_CAL_REQ */
 
 #if (defined(FSL_FEATURE_LPADC_HAS_CFG_CALOFS) && FSL_FEATURE_LPADC_HAS_CFG_CALOFS)
     /* Do auto calibration. */
+    SDK_DelayAtLeastUs(1U, SystemCoreClock);
     LPADC_DoAutoCalibration(DEMO_LPADC_BASE);
 #endif /* FSL_FEATURE_LPADC_HAS_CFG_CALOFS */
 

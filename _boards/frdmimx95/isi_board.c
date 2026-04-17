@@ -5,6 +5,7 @@
  */
 
 #include "board.h"
+#include "fsl_adp5585.h"
 #include "isi_example.h"
 #include "fsl_isi_camera_adapter.h"
 #include "fsl_dwc_mipi_csi2rx.h"
@@ -19,9 +20,9 @@
 #define APP_ISI_IRQHandler           ISI_IRQHandler
 
 /* ADP5585 */
-#define APP_CAMERA_ADP5585_I2C            LPI2C3
+#define APP_CAMERA_ADP5585_I2C            LPI2C4
 #define APP_CAMERA_ADP5585_I2C_ADDR       (0x34U)
-#define APP_CAMERA_ADP5585_I2C_CLOCK_ROOT hal_clock_lpi2c3
+#define APP_CAMERA_ADP5585_I2C_CLOCK_ROOT hal_clock_lpi2c4
 #define APP_CAMERA_ADP5585_I2C_CLOCK_FREQ HAL_ClockGetIpFreq(APP_CAMERA_ADP5585_I2C_CLOCK_ROOT)
 
 #define ADP5585_DVDD_SEL        0
@@ -35,7 +36,7 @@
 #define ADP5585_PWREN4          11
 #define ADP5585_PWREN5          12
 
-pcal6408_handle_t pcal_handle;
+pcal6524_handle_t pcal_handle;
 adp5585_handle_t handle;
 isi_private_data_t isiPrivateData;
 
@@ -49,7 +50,6 @@ isi_resource_t isiResource = {
  * Code
  ******************************************************************************/
 
-#if defined(BOARD_USE_ADP5585) && BOARD_USE_ADP5585
 void APP_CAMERA_ADP5585_I2C_Init(void)
 {
     BOARD_LPI2C_Init(APP_CAMERA_ADP5585_I2C, APP_CAMERA_ADP5585_I2C_CLOCK_FREQ);
@@ -88,8 +88,6 @@ void APP_CAMERA_InitADP5585(adp5585_handle_t *handle)
 
     ADP5585_Init(handle, &config);
 }
-
-#endif /* BOARD_USE_ADP5585. */
 
 status_t APP_LPI2C_Send(LPI2C_Type *base,
                           uint8_t deviceAddress,
@@ -218,28 +216,19 @@ void APP_PullCameraReset(bool reset)
 {
     if (reset != false)
     {
-        PCAL6408_SetDirection(&pcal_handle, (1 << BOARD_PCAL6408_CSI1_RST_B), kPCAL6408_Output);
-        PCAL6408_SetPins(&pcal_handle, (1 << BOARD_PCAL6408_CSI1_RST_B));
+        PCAL6524_SetDirection(&pcal_handle, (1 << BOARD_PCAL6524_CSI1_nRST), kPCAL6524_Output);
+        PCAL6524_SetPins(&pcal_handle, (1 << BOARD_PCAL6524_CSI1_nRST));
     }
     else
     {
-        PCAL6408_SetDirection(&pcal_handle, (1 << BOARD_PCAL6408_CSI1_RST_B), kPCAL6408_Output);
-        PCAL6408_ClearPins(&pcal_handle, (1 << BOARD_PCAL6408_CSI1_RST_B));
+        PCAL6524_SetDirection(&pcal_handle, (1 << BOARD_PCAL6524_CSI1_nRST), kPCAL6524_Output);
+        PCAL6524_ClearPins(&pcal_handle, (1 << BOARD_PCAL6524_CSI1_nRST));
     }
 }
 
 void APP_PullCameraPowerDown(bool powerdown)
 {
-    if (powerdown != false)
-    {
-        PCAL6408_SetDirection(&pcal_handle, (1 << BOARD_PCAL6408_CSI1_PWDN), kPCAL6408_Output);
-        PCAL6408_SetPins(&pcal_handle, (1 << BOARD_PCAL6408_CSI1_PWDN));
-    }
-    else
-    {
-        PCAL6408_SetDirection(&pcal_handle, (1 << BOARD_PCAL6408_CSI1_PWDN), kPCAL6408_Output);
-        PCAL6408_ClearPins(&pcal_handle, (1 << BOARD_PCAL6408_CSI1_PWDN));
-    }
+    /* Have not power down line in board hardware level. */
 }
 
 void APP_PullCameraEnableIsp(bool isp_en)
@@ -321,7 +310,7 @@ void APP_ISI_IRQHandler(void)
 void APP_PrepareCamera()
 {
     /* Initialize the camera I2C. */
-    BOARD_InitPCAL6408_I2C3(&pcal_handle);
+    BOARD_InitPCAL6524(&pcal_handle);
     SDK_DelayAtLeastUs(100000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 }
 

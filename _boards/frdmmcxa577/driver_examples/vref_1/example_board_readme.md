@@ -24,32 +24,30 @@ Running the demo
 ===============
 The log below shows the output of the hello world demo in the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+MCUX SDK version: 2026.06.00-pvw1
+
 VREF example
 ADC Full Range: 65536
 Default (Factory) trim value is :0
 
-Use trim value: 0
-ADC conversion result: 20214
-Actual voltage on VREF_OUT: 1.006V
-
 Use trim value: 1
-ADC conversion result: 25110
-Actual voltage on VREF_OUT: 1.249V
+ADC conversion result: 24920
+Actual voltage on VREF_OUT: 1.240V
 
 Use trim value: 2
-ADC conversion result: 30150
-Actual voltage on VREF_OUT: 1.500V
+ADC conversion result: 29863
+Actual voltage on VREF_OUT: 1.485V
 
 Use trim value: 3
-ADC conversion result: 36212
-Actual voltage on VREF_OUT: 1.801V
+ADC conversion result: 35963
+Actual voltage on VREF_OUT: 1.789V
 
 Use trim value: 4
-ADC conversion result: 41135
-Actual voltage on VREF_OUT: 2.046V
+ADC conversion result: 40938
+Actual voltage on VREF_OUT: 2.036V
 
 Use trim value: 5
-ADC conversion result: 50208
-Actual voltage on VREF_OUT: 2.498V
+ADC conversion result: 49924
+Actual voltage on VREF_OUT: 2.483V
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

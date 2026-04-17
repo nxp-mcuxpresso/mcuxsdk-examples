@@ -271,3 +271,4 @@ flexio_spi_edma_lpspi_transfer_master:
     frdmmcxa266: []
     frdmmcxa366: []
     frdmmcxa577: []
+    frdmmcxa287: []

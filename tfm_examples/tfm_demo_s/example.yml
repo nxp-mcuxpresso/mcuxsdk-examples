@@ -54,3 +54,4 @@ tfm_demo_s:
     - -mdk@flash_release
     mcimx93evk: []
     frdmmcxa577: []
+    frdmmcxa287: []

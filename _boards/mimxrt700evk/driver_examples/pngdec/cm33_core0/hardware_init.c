@@ -23,7 +23,7 @@ void BOARD_MIPI_TE_GPIO_IRQ_Handler(void)
 
     GPIO_GpioClearInterruptFlags(BOARD_MIPI_TE_GPIO, 1U << BOARD_MIPI_TE_PIN);
 
-    if (intStat & (1U << BOARD_MIPI_TE_PIN))
+    if (intStat != 0U)
     {
         BOARD_DisplayTEPinHandler();
     }

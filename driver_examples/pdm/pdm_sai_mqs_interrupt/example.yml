@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+pdm_sai_mqs_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/pdm/pdm_sai_mqs_interrupt
+    project-root-path: boards/${board}/driver_examples/pdm/pdm_sai_mqs_interrupt/${multicore_foldername}
+    document:
+      name: pdm_sai_mqs_interrupt${core_id_suffix_name}
+      category: driver_examples/pdm
+      brief: The pdm_sai_mqs_interrupt example shows how to use the PDM driver with interrupt.
+        In this example, PDM gathers audio data and SAI sends it to MQS.
+      example_readme:
+      - examples/driver_examples/pdm/pdm_sai_mqs_interrupt/readme.md
+      - ${board_root}/${board}/driver_examples/pdm/pdm_sai_mqs_interrupt/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmimx95@cm7: []
+    frdmimx95pro@cm7: []
