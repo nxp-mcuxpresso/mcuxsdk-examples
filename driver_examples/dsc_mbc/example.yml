@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+dsc_mbc:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_mbc
+    project-root-path: boards/${board}/driver_examples/dsc_mbc/${multicore_foldername}
+    document:
+      name: dsc_mbc${core_id_suffix_name}
+      category: driver_examples/dsc_mbc
+      brief: The dsc_mbc example shows how to control the memory block checker (MBC)
+        access policy. A MBC memory block is set to unaccessible, then an access
+        violation error occurs and is resolved.
+      example_readme:
+      - examples/driver_examples/dsc_mbc/readme.md
+  boards:
+    mc56f85000evk@dsp56800ef_core0: []
