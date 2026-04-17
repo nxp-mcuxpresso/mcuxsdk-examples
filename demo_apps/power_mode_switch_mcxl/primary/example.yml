@@ -13,3 +13,20 @@ power_mode_switch_mcxl_primary:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxl255@cm33:
+power_mode_switch_mcxl_primary@advc_enabled:
+  use_sysbuild: true
+  section-type: custom_application
+  contents:
+    meta_path: examples/demo_apps/power_mode_switch_mcxl/primary
+    project-root-path: boards/${board}/demo_apps/power_mode_switch/${multicore_foldername}
+    document:
+      name: power_mode_switch_mcxl_primary@advc_enabled
+      category: demo_apps/power_mode_switch
+      brief: This example demonstrate features of low power modes with ADVC enabled.
+      example_readme:
+      - examples/demo_apps/power_mode_switch_mcxl/readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+      extra_build_args:
+        - -DCONFIG_APP_ENABLE_ADVC=y -Dpower_mode_switch_mcxl_secondary_CONFIG_APP_ENABLE_ADVC=y
+  boards:
+    frdmmcxl255@cm33:
