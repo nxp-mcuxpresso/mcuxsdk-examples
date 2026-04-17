@@ -28,3 +28,4 @@ dsp_sema42:
     - -iar@debug
     - -iar@release
     mimxrt700evk@cm33_core0: []
+    frdmimxrt700@cm33_core0: []
