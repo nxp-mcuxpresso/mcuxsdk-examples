@@ -22,12 +22,12 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-bool g_trigger1CompletedFlag = false;
-bool g_trigger2CompletedFlag = false;
+volatile bool g_trigger1CompletedFlag = false;
+volatile bool g_trigger2CompletedFlag = false;
 
-uint16_t g_lowData[4];
-uint16_t g_highData;
-uint8_t g_cmdLoopCount = 0U;
+volatile uint16_t g_lowData[4];
+volatile uint16_t g_highData;
+volatile uint8_t g_cmdLoopCount = 0U;
 /*******************************************************************************
  * Code
  ******************************************************************************/
