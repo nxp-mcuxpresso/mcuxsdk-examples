@@ -1,0 +1,18 @@
+---
+aon_lpuart_wakeup_mcxl_primary:
+  use_sysbuild: true
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/aon_lpuart_wakeup_mcxl/primary
+    project-root-path: boards/${board}/demo_apps/aon_lpuart_wakeup/${multicore_foldername}
+    document:
+      name: aon_lpuart_wakeup_mcxl_primary
+      category: demo_apps/aon_lpuart_wakeup
+      brief: This example demonstrates using AON LPUART as wakeup source across low
+        power modes.
+      example_readme:
+        - examples/demo_apps/aon_lpuart_wakeup_mcxl/readme.md
+        - ${board_root}/${board}/demo_apps/aon_lpuart_wakeup/example_board_readme.md
+        - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxl255@cm33:

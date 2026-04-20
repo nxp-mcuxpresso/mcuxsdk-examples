@@ -1,0 +1,21 @@
+---
+iar:
+  shared-workspace: aon_lpuart_wakeup_mcxl
+  sharing-workspace:
+    - ../../aon_lpuart_wakeup_mcxl_secondary/iar/aon_lpuart_wakeup_mcxl_secondary_${SB_CONFIG_secondary_core_id}
+  config:
+    __common__:
+      asym-multicore-debugger:
+        enable: true
+        slave-workspace: ../../aon_lpuart_wakeup_mcxl_secondary/iar/aon_lpuart_wakeup_mcxl_secondary_${SB_CONFIG_secondary_core_id}.eww
+        slave-project: aon_lpuart_wakeup_mcxl_secondary_${SB_CONFIG_secondary_core_id}
+    debug:
+      asym-multicore-debugger:
+        slave-configuration: debug
+    release:
+      asym-multicore-debugger:
+        slave-configuration: release
+mdk:
+  shared-workspace: aon_lpuart_wakeup_mcxl
+  sharing-workspace:
+    - ../../aon_lpuart_wakeup_mcxl_secondary/mdk/aon_lpuart_wakeup_mcxl_secondary_${SB_CONFIG_secondary_core_id}
