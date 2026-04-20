@@ -124,11 +124,23 @@ static int ncp_pm_release_lp_constraint(int power_mode)
 int ncp_pm_enter_critical(void)
 {
     int ret = NCP_PM_STATUS_SUCCESS;
+    uint32_t pri_mask = DisableGlobalIRQ();
 
-    ret = ncp_pm_set_lp_constraint(s_pm_ctx.pm_runtime_constraint);
-    if (ret == NCP_PM_STATUS_SUCCESS) {
-        s_pm_ctx.critical_enter_cnt++;
+    if (s_pm_ctx.critical_enter_cnt == 0U)
+    {
+        ret = ncp_pm_set_lp_constraint(s_pm_ctx.pm_runtime_constraint);
+        if (ret != NCP_PM_STATUS_SUCCESS)
+        {
+            ret = NCP_PM_STATUS_ERROR;
+            NCP_LOG_ERR("Failed to set pm constraint");
+            goto out;
+        }
     }
+
+    s_pm_ctx.critical_enter_cnt++;
+
+out:
+    EnableGlobalIRQ(pri_mask);
 
     return ret;
 }
@@ -136,15 +148,28 @@ int ncp_pm_enter_critical(void)
 int ncp_pm_exit_critical(void)
 {
     int ret = NCP_PM_STATUS_SUCCESS;
+    uint32_t pri_mask = DisableGlobalIRQ();
 
-    if (s_pm_ctx.critical_enter_cnt == 0) {
-        return NCP_PM_STATUS_ERROR;
+    if (s_pm_ctx.critical_enter_cnt == 0U) {
+        ret = NCP_PM_STATUS_ERROR;
+        goto out;
     }
 
-    ret = ncp_pm_release_lp_constraint(s_pm_ctx.pm_runtime_constraint);
-    if (ret == NCP_PM_STATUS_SUCCESS) {
-        s_pm_ctx.critical_enter_cnt--;
+    s_pm_ctx.critical_enter_cnt--;
+
+    if (s_pm_ctx.critical_enter_cnt == 0U)
+    {
+        ret = ncp_pm_release_lp_constraint(s_pm_ctx.pm_runtime_constraint);
+        if (ret != NCP_PM_STATUS_SUCCESS) {
+            s_pm_ctx.critical_enter_cnt++;
+            ret = NCP_PM_STATUS_ERROR;
+            NCP_LOG_ERR("Failed to release pm constraint");
+            goto out;
+        }
     }
+
+out:
+    EnableGlobalIRQ(pri_mask);
 
     return ret;
 }
