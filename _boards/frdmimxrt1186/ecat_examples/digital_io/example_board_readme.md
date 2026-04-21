@@ -1,6 +1,6 @@
 Hardware requirements
 =====================
-- FRDM-IMXRT1186
+- FRDM-IMXRT1186 A2
 - RJ45 Network cable
 - Mini/micro USB cable
 - Personal Computer on which the TwinCat3 has been installed(Windows 10 is recommended)
@@ -9,6 +9,43 @@ Board settings
 ==============
 - J12(2-3)/J13(2-3): eCAT0 Function Via J57A(Default).
 - J18(2-3)/J17(2-3): eCAT1 Function Via J57B(Default).
+
+EEPROM LPI2C Emulator
+================
+1. FRDM-IMXRT1186 supports EEPROM LPI2C emulator, please skip this chapter if you used EEPROM hardware.
+2. Hardware Setting
+
+	- Remove Jumper:
+
+	  J31: pin1 - pin2
+
+	  J35: pin1 - pin2
+
+	- Remove Resistors:
+
+	  R297: pin1 - pin2
+
+	  R299: pin1 - pin2
+
+	- Add Resistors:
+
+	  R30
+
+	  R31
+
+	  R297: pin1 - pin3
+
+	  R299: pin1 - pin3
+
+	- Connection:
+  
+      J31: pin1  <-->  J2: pin18
+
+      J35: pin1  <-->  J2: pin20  
+
+3. Add EEPROM_I2C_EMULATOR macro 
+	- Add EEPROM_I2C_EMULATOR macro to enable eeprom i2c emulator funtion
+4. Now you can refer "Prepare the Demo" to setup ecat_examples
 
 Prepare the Demo
 ================

@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -50,13 +50,13 @@ void BOARD_ECAT_MDIO_InitPins(void);          /* Function assigned for the Corte
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
-void BOARD_Port0_RMII_InitPins(void);         /* Function assigned for the Cortex-M7F */
+void BOARD_Port0_MII_InitPins(void);         /* Function assigned for the Cortex-M7F */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
-void BOARD_Port1_RMII_InitPins(void);         /* Function assigned for the Cortex-M7F */
+void BOARD_Port1_MII_InitPins(void);         /* Function assigned for the Cortex-M7F */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.

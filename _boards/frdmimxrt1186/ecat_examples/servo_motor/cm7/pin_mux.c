@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -41,6 +41,8 @@ BOARD_InitPins:
   - {pin_num: A7, peripheral: LPUART1, signal: TXD, pin_signal: GPIO_AON_08, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper, open_drain: Disable, drive_strength: High,
     slew_rate: Slow}
   - {pin_num: C12, peripheral: ECAT, signal: CLKOUT25M, pin_signal: GPIO_B2_00}
+  - {pin_num: N7, peripheral: LPI2C3, signal: SCL, pin_signal: GPIO_EMC_B2_19, software_input_on: Enable, pull_down_pull_up_config: Pull_Up, open_drain: Enable}
+  - {pin_num: M8, peripheral: LPI2C3, signal: SDA, pin_signal: GPIO_EMC_B2_20, software_input_on: Enable, pull_down_pull_up_config: Pull_Up, open_drain: Enable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -108,6 +110,22 @@ void BOARD_InitPins(void) {
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_B2_00_ECAT_CLK_ECAT_CLK25,
       0xc);
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B2_19_LPI2C3_SCL,       /* GPIO_EMC_B2_19 is configured as LPI2C3_SCL */
+      1U);                                    /* Software Input On Field: Force input path of pad GPIO_EMC_B2_19 */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B2_20_LPI2C3_SDA,       /* GPIO_EMC_B2_20 is configured as LPI2C3_SDA */
+      1U);                                    /* Software Input On Field: Force input path of pad GPIO_EMC_B2_20 */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_EMC_B2_19_LPI2C3_SCL,       /* GPIO_EMC_B2_19 PAD functional properties : */
+      0x14U);                                 /* PDRV Field: high driver
+                                                 Pull Down Pull Up Field: PU
+                                                 Open Drain Field: Enabled */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_EMC_B2_20_LPI2C3_SDA,       /* GPIO_EMC_B2_20 PAD functional properties : */
+      0x14U);                                 /* PDRV Field: high driver
+                                                 Pull Down Pull Up Field: PU
+                                                 Open Drain Field: Enabled */
 }
 
 
