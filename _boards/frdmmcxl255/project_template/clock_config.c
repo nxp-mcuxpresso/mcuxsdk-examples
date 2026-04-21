@@ -242,7 +242,6 @@ void BOARD_BootClockFRO12M_InitClockModule(clock_module_t module)
             CLOCK_SetupFROAonClocking(10000000U);               /* Setup ROOT_CLK clock source */
             break;
         case kClockModule_FRO16K:
-            PMU_EnableFRO16K(AON__PMU, true);                   /* Initialize the FRO16K clock source */
             PMU_UpdateFRO16KFreq(AON__PMU, kPMU_FRO16KOutput16KHz);/* Select the output frequency of the FRO16K */
             AON__PMU->PMU_DPD3_CTRL |= PMU_PMU_DPD3_CTRL_FRO16KHZ_ACT_MASK;/* Enable the FRO16K even during DPD3 and shutdown modes */
             break;
@@ -621,7 +620,6 @@ void BOARD_BootClockFRO24M_InitClockModule(clock_module_t module)
             CLOCK_SetupFROAonClocking(10000000U);               /* Setup ROOT_CLK clock source */
             break;
         case kClockModule_FRO16K:
-            PMU_EnableFRO16K(AON__PMU, true);                   /* Initialize the FRO16K clock source */
             PMU_UpdateFRO16KFreq(AON__PMU, kPMU_FRO16KOutput16KHz);/* Select the output frequency of the FRO16K */
             AON__PMU->PMU_DPD3_CTRL |= PMU_PMU_DPD3_CTRL_FRO16KHZ_ACT_MASK;/* Enable the FRO16K even during DPD3 and shutdown modes */
             break;
@@ -1000,7 +998,6 @@ void BOARD_BootClockFRO48M_InitClockModule(clock_module_t module)
             CLOCK_SetupFROAonClocking(10000000U);               /* Setup ROOT_CLK clock source */
             break;
         case kClockModule_FRO16K:
-            PMU_EnableFRO16K(AON__PMU, true);                   /* Initialize the FRO16K clock source */
             PMU_UpdateFRO16KFreq(AON__PMU, kPMU_FRO16KOutput16KHz);/* Select the output frequency of the FRO16K */
             AON__PMU->PMU_DPD3_CTRL |= PMU_PMU_DPD3_CTRL_FRO16KHZ_ACT_MASK;/* Enable the FRO16K even during DPD3 and shutdown modes */
             break;
@@ -1383,7 +1380,6 @@ void BOARD_BootClockFRO96M_InitClockModule(clock_module_t module)
             CLOCK_SetupFROAonClocking(10000000U);               /* Setup ROOT_CLK clock source */
             break;
         case kClockModule_FRO16K:
-            PMU_EnableFRO16K(AON__PMU, true);                   /* Initialize the FRO16K clock source */
             PMU_UpdateFRO16KFreq(AON__PMU, kPMU_FRO16KOutput16KHz);/* Select the output frequency of the FRO16K */
             AON__PMU->PMU_DPD3_CTRL |= PMU_PMU_DPD3_CTRL_FRO16KHZ_ACT_MASK;/* Enable the FRO16K even during DPD3 and shutdown modes */
             break;
