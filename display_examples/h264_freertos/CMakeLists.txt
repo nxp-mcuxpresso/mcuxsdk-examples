@@ -9,7 +9,6 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/display_examples/h264_freertos/h264_freertos.c
-            examples/display_examples/h264_freertos/FreeRTOS_POSIX_portable.h
             examples/display_examples/h264_freertos/display.c
             examples/display_examples/h264_freertos/display.h
             examples/display_examples/h264_freertos/h264_dec.h
@@ -17,33 +16,6 @@ mcux_add_source(
             examples/display_examples/h264_freertos/sdcard.c
             examples/display_examples/h264_freertos/sdcard.h
             examples/display_examples/h264_freertos/FreeRTOSConfig.h
-            examples/display_examples/h264_freertos/freertos_libraries/abstractions/posix/include/FreeRTOS_POSIX/errno.h
-            examples/display_examples/h264_freertos/freertos_libraries/abstractions/posix/include/FreeRTOS_POSIX/fcntl.h
-            examples/display_examples/h264_freertos/freertos_libraries/abstractions/posix/include/FreeRTOS_POSIX/mqueue.h
-            examples/display_examples/h264_freertos/freertos_libraries/abstractions/posix/include/FreeRTOS_POSIX/pthread.h
-            examples/display_examples/h264_freertos/freertos_libraries/abstractions/posix/include/FreeRTOS_POSIX/sched.h
-            examples/display_examples/h264_freertos/freertos_libraries/abstractions/posix/include/FreeRTOS_POSIX/semaphore.h
-            examples/display_examples/h264_freertos/freertos_libraries/abstractions/posix/include/FreeRTOS_POSIX/signal.h
-            examples/display_examples/h264_freertos/freertos_libraries/abstractions/posix/include/FreeRTOS_POSIX/time.h
-            examples/display_examples/h264_freertos/freertos_libraries/abstractions/posix/include/FreeRTOS_POSIX/unistd.h
-            examples/display_examples/h264_freertos/freertos_libraries/abstractions/posix/include/FreeRTOS_POSIX/utils.h
-            examples/display_examples/h264_freertos/freertos_libraries/abstractions/posix/include/FreeRTOS_POSIX/sys/types.h
-            examples/display_examples/h264_freertos/freertos_libraries/freertos_plus/standard/freertos_plus_posix/include/FreeRTOS_POSIX.h
-            examples/display_examples/h264_freertos/freertos_libraries/freertos_plus/standard/freertos_plus_posix/include/FreeRTOS_POSIX_internal.h
-            examples/display_examples/h264_freertos/freertos_libraries/freertos_plus/standard/freertos_plus_posix/include/FreeRTOS_POSIX_portable_default.h
-            examples/display_examples/h264_freertos/freertos_libraries/freertos_plus/standard/freertos_plus_posix/include/FreeRTOS_POSIX_types.h
-            examples/display_examples/h264_freertos/freertos_libraries/freertos_plus/standard/freertos_plus_posix/source/FreeRTOS_POSIX_clock.c
-            examples/display_examples/h264_freertos/freertos_libraries/freertos_plus/standard/freertos_plus_posix/source/FreeRTOS_POSIX_mqueue.c
-            examples/display_examples/h264_freertos/freertos_libraries/freertos_plus/standard/freertos_plus_posix/source/FreeRTOS_POSIX_pthread.c
-            examples/display_examples/h264_freertos/freertos_libraries/freertos_plus/standard/freertos_plus_posix/source/FreeRTOS_POSIX_pthread_barrier.c
-            examples/display_examples/h264_freertos/freertos_libraries/freertos_plus/standard/freertos_plus_posix/source/FreeRTOS_POSIX_pthread_cond.c
-            examples/display_examples/h264_freertos/freertos_libraries/freertos_plus/standard/freertos_plus_posix/source/FreeRTOS_POSIX_pthread_mutex.c
-            examples/display_examples/h264_freertos/freertos_libraries/freertos_plus/standard/freertos_plus_posix/source/FreeRTOS_POSIX_sched.c
-            examples/display_examples/h264_freertos/freertos_libraries/freertos_plus/standard/freertos_plus_posix/source/FreeRTOS_POSIX_semaphore.c
-            examples/display_examples/h264_freertos/freertos_libraries/freertos_plus/standard/freertos_plus_posix/source/FreeRTOS_POSIX_timer.c
-            examples/display_examples/h264_freertos/freertos_libraries/freertos_plus/standard/freertos_plus_posix/source/FreeRTOS_POSIX_unistd.c
-            examples/display_examples/h264_freertos/freertos_libraries/freertos_plus/standard/freertos_plus_posix/source/FreeRTOS_POSIX_utils.c
-            examples/display_examples/h264_freertos/freertos_libraries/c_sdk/standard/common/include/private/iot_doubly_linked_list.h
             ${board_root}/${board}/sdmmc_config.h
             ${board_root}/${board}/sdmmc_config.c
             ${board_root}/${board}/FreeRTOSConfigBoard.h
@@ -55,10 +27,6 @@ mcux_add_include(
              ${board_root}/${board}/display_examples/h264_freertos
              ${board_root}/${board}/display_examples/h264_freertos/${multicore_foldername}
              examples/display_examples/h264_freertos/
-             examples/display_examples/h264_freertos/freertos_libraries/abstractions/posix/include
-             examples/display_examples/h264_freertos/freertos_libraries/abstractions/posix/include/FreeRTOS_POSIX/sys
-             examples/display_examples/h264_freertos/freertos_libraries/freertos_plus/standard/freertos_plus_posix/include
-             examples/display_examples/h264_freertos/freertos_libraries/c_sdk/standard/common/include/private
 )
 
 
