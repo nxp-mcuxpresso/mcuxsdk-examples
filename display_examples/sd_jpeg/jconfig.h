@@ -60,8 +60,10 @@ static __INLINE size_t write_file(FIL *file, uint8_t *buf, uint32_t sizeofbuf)
 
 #define JFWRITE(file, buf, sizeofbuf) write_file(file, buf, sizeofbuf)
 
+#ifndef fprintf
 /* Macros for IO. */
 #define fprintf(s, ...) printf(__VA_ARGS__)
+#endif
 
 /* Macros for the memory allocation. */
 #define JMALLOC malloc
