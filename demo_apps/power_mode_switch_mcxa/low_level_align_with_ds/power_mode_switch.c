@@ -29,6 +29,7 @@ __WEAK void APP_PowerPostSwitchHook(void);
 static app_power_mode_t APP_GetTargetPowerMode(void);
 static void APP_GetWakeupConfig(app_power_mode_t targetMode);
 static void APP_PowerModeSwitch(app_power_mode_t targetPowerMode);
+static uint32_t APP_GetWakeupTimeout(void);
 
 /*******************************************************************************
  * Variables
@@ -130,7 +131,7 @@ static app_wakeup_source_t APP_SelectWakeupSource(void)
 }
 
 /*! @brief  Get input from user about wakeup timeout */
-static uint8_t APP_GetWakeupTimeout(void)
+static uint32_t APP_GetWakeupTimeout(void)
 {
     uint8_t timeout;
 
@@ -146,7 +147,7 @@ static uint8_t APP_GetWakeupTimeout(void)
 
         if ((timeout > '0') && (timeout <= '9'))
         {
-            return timeout - '0';
+            return (uint32_t)(timeout - '0');
         }
 
         PRINTF("Wrong value!\r\n");
@@ -154,15 +155,15 @@ static uint8_t APP_GetWakeupTimeout(void)
 }
 
 /*! @brief WakeUp Timer configuration. */
-static void APP_WakeUpTimerConfig(uint8_t timeOutValue)
+static void APP_WakeUpTimerConfig(uint32_t timeOutValue)
 {
     lptmr_config_t lptmr_config;
     uint32_t timerPeriod;
 
     assert(timeOutValue > 0U);
-    assert((uint32_t)timeOutValue <= (UINT32_MAX / APP_WUU_WAKEUP_TIMER_CLOCK_SOURCE));
+    assert(timeOutValue <= (UINT32_MAX / APP_WUU_WAKEUP_TIMER_CLOCK_SOURCE));
 
-    timerPeriod = ((uint32_t)timeOutValue * APP_WUU_WAKEUP_TIMER_CLOCK_SOURCE) - 1U;
+    timerPeriod = (timeOutValue * APP_WUU_WAKEUP_TIMER_CLOCK_SOURCE) - 1U;
 
     LPTMR_GetDefaultConfig(&lptmr_config);
     lptmr_config.prescalerClockSource = kLPTMR_PrescalerClock_1;
@@ -197,7 +198,7 @@ void APP_WUU_IRQ_HANDLER(void)
 static void APP_GetWakeupConfig(app_power_mode_t targetMode)
 {
     app_wakeup_source_t wakeupSource;
-    uint8_t timeOutValue;
+    uint32_t timeOutValue;
     char *isoDomains = NULL;
     wakeupSource = APP_SelectWakeupSource();
 

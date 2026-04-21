@@ -52,8 +52,8 @@ typedef enum _resc_name
     kResc_Core_Vdd_Hvd_Lp,
     kResc_Sys_Vdd_Lvd_Lp,
     kResc_Sys_Vdd_Hvd_Lp,
-    kResc_GlitchDetector_Act,
-    kResc_GlitchDetector_Lp,
+    kResc_Glitch_Detector_Act,
+    kResc_Glitch_Detector_Lp,
 
     /*! Memory modules */
     kResc_Flash,
@@ -63,6 +63,9 @@ typedef enum _resc_name
     kResc_RamX,
     kResc_RamA,
     kResc_RamB,
+    kResc_Ram_Lpcac,
+    kResc_Ram_Dma_Can_Enet,
+    kResc_Ram_Usb_FlexSpi,
 
     /*! Analog modules */
     kResc_Vref,
@@ -73,6 +76,8 @@ typedef enum _resc_name
     kResc_Tsi0,
     kResc_Cmp0,
     kResc_Cmp0_Dac,
+    kResc_Vbat_Lp,
+    kResc_Clkmon,
 
     /*! Peripheral clocks, This is for demonstration purposes only.
      * In actual projects, the peripheral clock can be controlled

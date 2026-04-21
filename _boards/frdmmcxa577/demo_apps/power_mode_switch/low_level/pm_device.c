@@ -33,8 +33,8 @@ static const resc_status_t g_resc_ctrl_table[kResc_Max_Num][APP_LOW_POWER_MODE_C
     [kResc_Core_Vdd_Hvd_Lp]     = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_Sys_Vdd_Lvd_Lp]      = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_Sys_Vdd_Hvd_Lp]      = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
-    [kResc_GlitchDetector_Act]  = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
-    [kResc_GlitchDetector_Lp]   = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
+    [kResc_Glitch_Detector_Act]  = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
+    [kResc_Glitch_Detector_Lp]   = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     
     [kResc_Flash]               = {kResc_Status_On,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Lp},
     [kResc_Lpcac]               = {kResc_Status_On,     kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
@@ -42,10 +42,13 @@ static const resc_status_t g_resc_ctrl_table[kResc_Max_Num][APP_LOW_POWER_MODE_C
     [kResc_RamA0]               = {kResc_Status_On,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Lp},
     [kResc_RamA3]               = {kResc_Status_On,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Lp},
     
-    /* In certain power modes, the hardware will power off SRAM. Even if you select power on or retain here, it will have no effect. */
+    /*! In certain power modes, the hardware will power off SRAM. Even if you select power on or retain here, it will have no effect. */
     [kResc_RamX]                = {kResc_Status_On,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Lp},
     [kResc_RamA]                = {kResc_Status_On,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Lp},
     [kResc_RamB]                = {kResc_Status_On,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Lp},
+    [kResc_Ram_Lpcac]           = {kResc_Status_On,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Lp},
+    [kResc_Ram_Dma_Can_Enet]    = {kResc_Status_On,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Lp},
+    [kResc_Ram_Usb_FlexSpi]     = {kResc_Status_On,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Lp},
 
     /*! Analog modules */
     [kResc_Vref]                = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
@@ -56,6 +59,8 @@ static const resc_status_t g_resc_ctrl_table[kResc_Max_Num][APP_LOW_POWER_MODE_C
     [kResc_Tsi0]                = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_Cmp0]                = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_Cmp0_Dac]            = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
+    [kResc_Vbat_Lp]             = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
+    [kResc_Clkmon]              = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
 
     /*! Peripheral clocks */
     [kResc_RamA_Clk]            = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
@@ -64,47 +69,51 @@ static const resc_status_t g_resc_ctrl_table[kResc_Max_Num][APP_LOW_POWER_MODE_C
     [kResc_Peri_clk_all]        = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
 };
 
-/* LDO voltage level and drive strength control table for all power modes. */
+/*! LDO voltage level and drive strength control table for all power modes. */
 static const app_core_ldo_ctrl_t g_core_ldo_ctrl_table[APP_LOW_POWER_MODE_COUNT] = {
-    /* Sleep */
+    /*! Sleep */
     {
         .valid                 = true,
         .useActiveModeConfig   = true,
+        .bandgapMode           = kSPC_BandgapDisabled,
         .coreLDOVoltage        = kSPC_CoreLDO_OverDriveVoltage,
         .coreLDODriveStrength  = kSPC_CoreLDO_NormalDriveStrength,
     },
-    /* DeepSleep */
+    /*! DeepSleep */
     {
         .valid                 = true,
         .useActiveModeConfig   = false,
+        .bandgapMode           = kSPC_BandgapDisabled,
         .coreLDOVoltage        = kSPC_CoreLDO_MidDriveVoltage,
         .coreLDODriveStrength  = kSPC_CoreLDO_LowDriveStrength,
     },
-    /* PowerDown */
+    /*! PowerDown */
     {
         .valid                 = true,
         .useActiveModeConfig   = false,
+        .bandgapMode           = kSPC_BandgapDisabled,
         .coreLDOVoltage        = kSPC_Core_LDO_RetentionVoltage,
         .coreLDODriveStrength  = kSPC_CoreLDO_LowDriveStrength,
     },
-    /* DeepPowerDown */
+    /*! DeepPowerDown */
     {
         .valid                 = true,
         .useActiveModeConfig   = false,
+        .bandgapMode           = kSPC_BandgapDisabled,
         .coreLDOVoltage        = kSPC_Core_LDO_RetentionVoltage,
         .coreLDODriveStrength  = kSPC_CoreLDO_LowDriveStrength,
     },
 };
 
-/* CPU clock control table for Active/Sleep mode. Other modes are intentionally left empty. */
+/*! CPU clock control table for Active/Sleep mode. Other modes are intentionally left empty. */
 static const app_cpu_clock_cfg_t g_cpu_clock_cfg_table[] = {
-    /* Active */
+    /*! Active */
     {
         .valid  = true,
         .source = kAPP_CpuClockSrcPll,
         .freqHz = BOARD_BOOTCLOCKPLL240M_CORE_CLOCK,
     },
-    /* Sleep */
+    /*! Sleep */
     {
         .valid  = true,
         .source = kAPP_CpuClockSrcPll,
@@ -112,7 +121,110 @@ static const app_cpu_clock_cfg_t g_cpu_clock_cfg_table[] = {
     },
 };
 
-static void SetSystemPeripheralPowerStatus(resc_status_t resc_status, resc_name_t resc_name)
+static const uint8_t sram_ret_map[] =
+{
+    [kResc_RamA0] = 0U, /* RET0 -> RAMA0 */
+    [kResc_RamA3] = 3U, /* RET3 -> RAMA3 */
+};
+
+static const uint8_t sram_map[] =
+{
+    [kResc_RamX] = 0U,              /* Bit0 -> RAMX0~RAMX3 */
+    [kResc_RamA] = 1U,              /* Bit1 -> RAMA1/A2/A4~A11 */
+    [kResc_RamB] = 2U,              /* Bit2 -> RAMB0~RAMB7 */
+    [kResc_Ram_Lpcac] = 24U,        /* Bit24 -> LPCAC */
+    [kResc_Ram_Dma_Can_Enet] = 25U, /* Bit25 -> DMA/CAN/ENET */
+    [kResc_Ram_Usb_FlexSpi] = 26U,  /* Bit26 -> USB/FlexSPI */
+};
+
+/* List of peripheral clocks to control for kResc_Peri_clk_all. */
+static const clock_ip_name_t g_peri_clk_list[] = {
+    kCLOCK_GateINPUTMUX0,
+    kCLOCK_GateFREQME,
+    kCLOCK_GateCTIMER0,
+    kCLOCK_GateCTIMER1,
+    kCLOCK_GateCTIMER2,
+    kCLOCK_GateCTIMER3,
+    kCLOCK_GateCTIMER4,
+    kCLOCK_GateUTICK0,
+    kCLOCK_GateWWDT0,
+    kCLOCK_GateWWDT1,
+    kCLOCK_GateDMA0,
+    kCLOCK_GateDMA1,
+    kCLOCK_GateAOI0,
+    kCLOCK_GateCRC0,
+    kCLOCK_GateEIM0,
+    kCLOCK_GateERM0,
+    kCLOCK_GateFLEXIO0,
+    kCLOCK_GateLPI2C0,
+    kCLOCK_GateLPI2C1,
+    kCLOCK_GateLPI2C2,
+    kCLOCK_GateLPI2C3,
+    kCLOCK_GateLPI2C4,
+    kCLOCK_GateLPUART0,
+    kCLOCK_GateLPUART1,
+    kCLOCK_GateLPUART2,
+    kCLOCK_GateLPUART3,
+    kCLOCK_GateLPUART4,
+    kCLOCK_GateLPUART5,
+    kCLOCK_GateOSTIMER0,
+    kCLOCK_GateLPSPI0,
+    kCLOCK_GateLPSPI1,
+    kCLOCK_GateLPSPI2,
+    kCLOCK_GateLPSPI3,
+    kCLOCK_GateLPSPI4,
+    kCLOCK_GateLPSPI5,
+    kCLOCK_GatePORT0,
+    kCLOCK_GatePORT1,
+    kCLOCK_GatePORT2,
+    kCLOCK_GatePORT3,
+    kCLOCK_GatePORT4,
+    kCLOCK_GatePORT5,
+    kCLOCK_GateADC0,
+    kCLOCK_GateADC1,
+    kCLOCK_GateCMP0,
+    kCLOCK_GateDAC0,
+    kCLOCK_GateDAC1,
+    kCLOCK_GateVREF0,
+    kCLOCK_GateTSI0,
+    kCLOCK_GateI3C0,
+    kCLOCK_GateI3C1,
+    kCLOCK_GateI3C2,
+    kCLOCK_GateI3C3,
+    kCLOCK_GateFLEXCAN0,
+    kCLOCK_GateFLEXCAN1,
+    kCLOCK_GateE1588,
+    kCLOCK_GateRMII,
+    kCLOCK_GateENET0,
+    kCLOCK_GateTENBASET_PHY0,
+    kCLOCK_GateFLEXSPI0,
+    kCLOCK_GateSPIFILTER0,
+    kCLOCK_GateESPI0,
+    kCLOCK_GateUSBHS,
+    kCLOCK_GateUSBHS_PHY,
+    kCLOCK_GateEWM0,
+    kCLOCK_GateRAMA,
+    kCLOCK_GateRAMB,
+    kCLOCK_GateGPIO0,
+    kCLOCK_GateGPIO1,
+    kCLOCK_GateGPIO2,
+    kCLOCK_GateGPIO3,
+    kCLOCK_GateGPIO4,
+    kCLOCK_GateGPIO5,
+    kCLOCK_GateROMC,
+    kCLOCK_GateSMARTDMA0,
+    kCLOCK_GateSECCON,
+    kCLOCK_GateGLIKEY0,
+    kCLOCK_GateTDET0,
+    kCLOCK_GatePKC0,
+    kCLOCK_GateSGI0,
+    kCLOCK_GateTRNG0,
+    kCLOCK_GateUDF0,
+    kCLOCK_GateDGDET0,
+    kCLOCK_GateITRC0,
+};
+
+static void SetClockModulePowerStatus(resc_status_t resc_status, resc_name_t resc_name)
 {
     switch (resc_name)
     {
@@ -126,6 +238,19 @@ static void SetSystemPeripheralPowerStatus(resc_status_t resc_status, resc_name_
 
                 SCG0->FIRCCSR &= ~SCG_FIRCCSR_FIRC_FCLK_PERIPH_EN_MASK;
                 SCG0->FIRCCSR &= ~SCG_FIRCCSR_FIRC_SCLK_PERIPH_EN_MASK;
+                SCG0->FIRCCSR &= ~SCG_FIRCCSR_FIRCEN_MASK;
+                SCG0->FIRCCSR |= SCG_FIRCCSR_LK_MASK;
+            }
+            else if(resc_status == kResc_Status_Lp)
+            {
+                if ((SCG0->FIRCCSR & SCG_FIRCCSR_LK_MASK) == SCG_FIRCCSR_LK_MASK)
+                {
+                    SCG0->FIRCCSR &= ~SCG_FIRCCSR_LK_MASK;
+                }
+
+                SCG0->FIRCCSR |= SCG_FIRCCSR_FIRCEN_MASK;
+                SCG0->FIRCCSR &= ~SCG_FIRCCSR_FIRC_FCLK_PERIPH_EN_MASK;
+                SCG0->FIRCCSR &= ~SCG_FIRCCSR_FIRC_SCLK_PERIPH_EN_MASK;
                 SCG0->FIRCCSR |= SCG_FIRCCSR_LK_MASK;
             }
             else
@@ -134,7 +259,8 @@ static void SetSystemPeripheralPowerStatus(resc_status_t resc_status, resc_name_
                 {
                     SCG0->FIRCCSR &= ~SCG_FIRCCSR_LK_MASK;
                 }
-
+                
+                SCG0->FIRCCSR |= SCG_FIRCCSR_FIRCEN_MASK;
                 SCG0->FIRCCSR |= SCG_FIRCCSR_FIRC_FCLK_PERIPH_EN_MASK;
                 SCG0->FIRCCSR |= SCG_FIRCCSR_FIRC_SCLK_PERIPH_EN_MASK;
 
@@ -147,7 +273,7 @@ static void SetSystemPeripheralPowerStatus(resc_status_t resc_status, resc_name_
             break;
             
         case kResc_Fro_12M:
-            if (resc_status == kResc_Status_Off)
+            if (resc_status == kResc_Status_Off || resc_status == kResc_Status_Lp)
             {
                 if ((SCG0->SIRCCSR & SCG_SIRCCSR_LK_MASK) == SCG_SIRCCSR_LK_MASK)
                 {
@@ -178,12 +304,24 @@ static void SetSystemPeripheralPowerStatus(resc_status_t resc_status, resc_name_
             if (resc_status == kResc_Status_Off)
             {
                  VBAT_EnableFRO16k(APP_VBAT, false);
+                 /*! The application should modify the configuration here according to actual needs. */
                  VBAT_GateFRO16k(APP_VBAT, kVBAT_EnableClockToDomain0);
+                 VBAT_GateFRO16k(APP_VBAT, kVBAT_EnableClockToDomain1);
+                 VBAT_GateFRO16k(APP_VBAT, kVBAT_EnableClockToDomain2);
+            }
+            else if (resc_status == kResc_Status_Lp)
+            {
+                 VBAT_EnableFRO16k(APP_VBAT, true);
+                 VBAT_GateFRO16k(APP_VBAT, kVBAT_EnableClockToDomain0);
+                 VBAT_GateFRO16k(APP_VBAT, kVBAT_EnableClockToDomain1);
+                 VBAT_GateFRO16k(APP_VBAT, kVBAT_EnableClockToDomain2);
             }
             else
             {
                  VBAT_EnableFRO16k(APP_VBAT, true);
                  VBAT_UngateFRO16k(APP_VBAT, kVBAT_EnableClockToDomain0);
+                 VBAT_UngateFRO16k(APP_VBAT, kVBAT_EnableClockToDomain1);
+                 VBAT_UngateFRO16k(APP_VBAT, kVBAT_EnableClockToDomain2);
             }
             break;
 
@@ -192,9 +330,23 @@ static void SetSystemPeripheralPowerStatus(resc_status_t resc_status, resc_name_
             {
                  VBAT_EnableCrystalOsc32k(APP_VBAT, false);
             }
+            else if (resc_status == kResc_Status_Lp)
+            {
+                 osc_32k_config_t config;
+                 CLOCK_GetDefaultOsc32KConfig(&config);
+                 config.mode = kVBAT_OscLowpowerModeEnable;
+                 config.updateTrim = false; 
+                 CLOCK_SetupOsc32KClockingConfig(config);
+                 VBAT_GateOsc32k(APP_VBAT, kVBAT_EnableClockToDomain0 | kVBAT_EnableClockToDomain1 | kVBAT_EnableClockToDomain2);
+            }
             else
             {
-                 VBAT_EnableCrystalOsc32k(APP_VBAT, true);
+                 osc_32k_config_t config;
+                 CLOCK_GetDefaultOsc32KConfig(&config);
+                 config.mode = kVBAT_OscLowpowerModeEnable;
+                 config.updateTrim = false; 
+                 config.id = (osc32k_clk_gate_id_t) (kCLOCK_Osc32kToVbat | kCLOCK_Osc32kToCore);
+                 CLOCK_SetupOsc32KClockingConfig(config);
             }
             break;
 
@@ -252,7 +404,7 @@ static void SetSystemPeripheralPowerStatus(resc_status_t resc_status, resc_name_
     }
 }
 
-static void SetVoltagePeripheralPowerStatus(resc_status_t resc_status, resc_name_t resc_name)
+static void SetVoltageModulePowerStatus(resc_status_t resc_status, resc_name_t resc_name)
 {
     switch (resc_name)
     {
@@ -276,16 +428,20 @@ static void SetVoltagePeripheralPowerStatus(resc_status_t resc_status, resc_name
                 }
                 VBAT_EnableBandgapRefreshMode(APP_VBAT, false);
                 VBAT_EnableBandgap(APP_VBAT, false);
+                /*! Disable SRAM LDO, use SoC to supply SRAM. */
+                VBAT_SwitchSRAMPowerBySocSupply(APP_VBAT);
             }
             else
             {
-                /* FRO16K must be enabled before enabling the Bandgap: set kResc_Fro_16K to kResc_Status_On. */
+                /*! FRO16K must be enabled before enabling the Bandgap: set kResc_Fro_16K to kResc_Status_On. */
                 VBAT_EnableBandgap(APP_VBAT, true);
                 VBAT_EnableBandgapRefreshMode(APP_VBAT, true);
                 if (kStatus_Success != VBAT_EnableBackupSRAMRegulator(APP_VBAT, true))
                 {
                     assert(false);
                 }
+                /*! Enable SRAM LDO, use SRAMLDO to supply SRAM. */
+                VBAT_SwitchSRAMPowerByLDOSRAM(APP_VBAT);
             }
             break;
 
@@ -410,7 +566,7 @@ static void SetVoltagePeripheralPowerStatus(resc_status_t resc_status, resc_name
             }
             break;
             
-        case kResc_GlitchDetector_Act:
+        case kResc_Glitch_Detector_Act:
             if (resc_status == kResc_Status_Off)
             {
                 SPC_DisableActiveModeVddCoreGlitchDetect(APP_SPC, true);
@@ -421,7 +577,7 @@ static void SetVoltagePeripheralPowerStatus(resc_status_t resc_status, resc_name
             }
             break;
             
-        case kResc_GlitchDetector_Lp:
+        case kResc_Glitch_Detector_Lp:
             if (resc_status == kResc_Status_Off)
             {
                 SPC_DisableLowPowerModeVddCoreGlitchDetect(APP_SPC, true);
@@ -443,19 +599,18 @@ static void SetVoltagePeripheralPowerStatus(resc_status_t resc_status, resc_name
 static void SetMemoryPowerStatus(resc_status_t resc_status, resc_name_t resc_name)
 {
     uint32_t sramMask = 0U;
-    uint8_t vbatSramMask = 0U;
 
     if (resc_name == kResc_Flash)
     {
         if (resc_status == kResc_Status_Off)
         {
-            /* Flash memory is placed in low power state. */
-            CMC_ConfigFlashMode(APP_CMC, false, false, true);
+            /* Flash in low-power state, no wake up */
+            CMC_ConfigFlashMode(APP_CMC, false, true, true);
         }
         else if (resc_status == kResc_Status_Lp)
         {
-            /* Flash is disabled while core is sleeping, wake on access. */
-            CMC_ConfigFlashMode(APP_CMC, true, true, false);
+            /* Flash in low-power state, wake on access. */
+            CMC_ConfigFlashMode(APP_CMC, true, true, true);
         }
         else
         {
@@ -478,11 +633,12 @@ static void SetMemoryPowerStatus(resc_status_t resc_status, resc_name_t resc_nam
     }
     else if (resc_name >= kResc_RamX)
     {
-        sramMask = (1UL << (uint32_t)(resc_name - kResc_RamX));
+        sramMask = (1UL << (uint32_t)sram_map[resc_name]);        
 
         if (resc_status == kResc_Status_Off)
         {
-            CMC_PowerOffSRAMAllMode(APP_CMC, sramMask);
+            /* This API will clear SRAMRET0 first, so need to or SRAMRET0 */
+            CMC_PowerOffSRAMLowPowerOnly(APP_CMC, sramMask | CMC->SRAMRET[0]);
         }
         else
         {
@@ -493,24 +649,20 @@ static void SetMemoryPowerStatus(resc_status_t resc_status, resc_name_t resc_nam
     }
     else
     {
-        sramMask = (1UL << (uint32_t)(resc_name - kResc_RamA0));
-        assert(sramMask <= UINT8_MAX);
-        vbatSramMask = (uint8_t)sramMask;
+        sramMask = (1UL << (uint32_t)sram_ret_map[resc_name]);
 
         if (resc_status == kResc_Status_Off)
         {
-            VBAT_PowerOffSRAMsInLowPowerModes(APP_VBAT, vbatSramMask);
+            VBAT_PowerOffSRAMsInLowPowerModes(APP_VBAT, (uint8_t)sramMask);
         }
         else
         {
-            VBAT_RetainSRAMsInLowPowerModes(APP_VBAT, vbatSramMask);
-            /* Default to SoC supply; board can extend to VBAT LDO supply if needed. */
-            VBAT_SwitchSRAMPowerBySocSupply(APP_VBAT);
+            VBAT_RetainSRAMsInLowPowerModes(APP_VBAT, (uint8_t)sramMask);
         }
     }
 }
 
-static void SetAnalogPeripheralPowerStatus(resc_status_t resc_status, resc_name_t resc_name)
+static void SetAnalogModulePowerStatus(resc_status_t resc_status, resc_name_t resc_name)
 {
     switch (resc_name)
     {
@@ -601,7 +753,29 @@ static void SetAnalogPeripheralPowerStatus(resc_status_t resc_status, resc_name_
                 SPC_EnableActiveModeAnalogModules(APP_SPC, kSPC_controlCmp0Dac);
             }
             break;
-            
+
+        case kResc_Vbat_Lp:
+            if (resc_status == kResc_Status_Off)
+            {
+                SPC_DisableLowPowerModeAnalogModules(APP_SPC, kSPC_controlVbat);
+            }
+            else
+            {
+                SPC_EnableLowPowerModeAnalogModules(APP_SPC, kSPC_controlVbat);
+            }
+            break;
+
+        case kResc_Clkmon:
+            if (resc_status == kResc_Status_Off)
+            {
+                VBAT0->MONCTLA &= ~VBAT_MONCTLA_MON_EN_MASK;
+            }
+            else
+            {
+                VBAT0->MONCTLA |= VBAT_MONCTLA_MON_EN_MASK;
+            }
+            break;
+
         default:
         {
             assert(false);
@@ -609,38 +783,6 @@ static void SetAnalogPeripheralPowerStatus(resc_status_t resc_status, resc_name_
         }
     }
 }
-
-/* List of peripheral clocks to control for kResc_Peri_clk_all. */
-static const clock_ip_name_t g_peri_clk_list[] = {
-    kCLOCK_GateCTIMER0,
-    kCLOCK_GateCTIMER1,
-    kCLOCK_GateCTIMER2,
-    kCLOCK_GateCTIMER3,
-    kCLOCK_GateCTIMER4,
-    kCLOCK_GateDMA0,
-    kCLOCK_GateDMA1,
-    kCLOCK_GateCRC0,
-    kCLOCK_GateFLEXIO0,
-    kCLOCK_GateLPI2C0,
-    kCLOCK_GateLPI2C1,
-    kCLOCK_GateLPI2C2,
-    kCLOCK_GateLPI2C3,
-    kCLOCK_GateLPI2C4,
-    kCLOCK_GateLPSPI0,
-    kCLOCK_GateLPSPI1,
-    kCLOCK_GateLPSPI2,
-    kCLOCK_GateLPSPI3,
-    kCLOCK_GateLPSPI4,
-    kCLOCK_GateLPSPI5,
-    kCLOCK_GateADC0,
-    kCLOCK_GateADC1,
-    kCLOCK_GateI3C0,
-    kCLOCK_GateI3C1,
-    kCLOCK_GateI3C2,
-    kCLOCK_GateI3C3,
-    kCLOCK_GateFLEXCAN0,
-    kCLOCK_GateFLEXCAN1,
-};
 
 static void SetPeripheralClockStatus(resc_status_t resc_status, resc_name_t resc_name)
 {
@@ -718,19 +860,19 @@ static void ApplyRescTableForMode(uint8_t modeIndex)
 
         if (resc <= kResc_Spll)
         {
-            SetSystemPeripheralPowerStatus(status, resc);
+            SetClockModulePowerStatus(status, resc);
         }
-        else if (resc <= kResc_GlitchDetector_Lp)
+        else if (resc <= kResc_Glitch_Detector_Lp)
         {
-            SetVoltagePeripheralPowerStatus(status, resc);
+            SetVoltageModulePowerStatus(status, resc);
         }
-        else if (resc <= kResc_RamB)
+        else if (resc <= kResc_Ram_Usb_FlexSpi)
         {
             SetMemoryPowerStatus(status, resc);
         }
-        else if (resc <= kResc_Cmp0_Dac)
+        else if (resc <= kResc_Clkmon)
         {
-            SetAnalogPeripheralPowerStatus(status, resc);
+            SetAnalogModulePowerStatus(status, resc);
         }
         else
         {
@@ -787,6 +929,8 @@ static void SetRegulatorsConfig(app_power_mode_t targetPowerMode)
         option.CoreLDODriveStrength = ctrl->coreLDODriveStrength;
 
         (void)SPC_SetActiveModeCoreLDORegulatorConfig(APP_SPC, &option);
+
+        SPC_SetActiveModeBandgapModeConfig(APP_SPC, ctrl->bandgapMode);
     }
     else
     {
@@ -796,6 +940,8 @@ static void SetRegulatorsConfig(app_power_mode_t targetPowerMode)
         option.CoreLDODriveStrength = ctrl->coreLDODriveStrength;
 
         (void)SPC_SetLowPowerModeCoreLDORegulatorConfig(APP_SPC, &option);
+
+        SPC_SetLowPowerModeBandgapmodeConfig(APP_SPC, ctrl->bandgapMode);
     }
 }
 
@@ -822,6 +968,10 @@ static void ApplyCpuClockCfg(const app_cpu_clock_cfg_t *cfg)
     if ((cfg->source == kAPP_CpuClockSrcFro12M) && (cfg->freqHz == BOARD_BOOTCLOCKFRO12M_CORE_CLOCK))
     {
         BOARD_BootClockFRO12M();
+    }
+    else if ((cfg->source == kAPP_CpuClockSrcFroHf) && (cfg->freqHz == BOARD_BOOTCLOCKFROHF48M_CORE_CLOCK))
+    {
+        BOARD_BootClockFROHF48M();
     }
     else if ((cfg->source == kAPP_CpuClockSrcFroHf) && (cfg->freqHz == BOARD_BOOTCLOCKFROHF192M_CORE_CLOCK))
     {
@@ -861,6 +1011,8 @@ void APP_PowerPreSwitchHook(app_power_mode_t targetPowerMode)
     DbgConsole_Deinit();
     PORT_SetPinMux(APP_DEBUG_CONSOLE_RX_PORT, APP_DEBUG_CONSOLE_RX_PIN, kPORT_MuxAsGpio);
     PORT_SetPinMux(APP_DEBUG_CONSOLE_TX_PORT, APP_DEBUG_CONSOLE_TX_PIN, kPORT_MuxAsGpio);
+    APP_DEBUG_CONSOLE_RX_PORT->PCR[APP_DEBUG_CONSOLE_RX_PIN] &= ~PORT_PCR_IBE_MASK;
+    APP_DEBUG_CONSOLE_TX_PORT->PCR[APP_DEBUG_CONSOLE_TX_PIN] &= ~PORT_PCR_IBE_MASK;
 
     ApplyCpuClockCfg(GetCpuClockCfg(targetPowerMode));
     ApplyRescTableForMode(modeIndex);
