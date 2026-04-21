@@ -10,6 +10,13 @@ mcux_add_xtensa_configuration(
 mcux_add_custom_command(
   TOOLCHAINS xtensa
   BUILD_EVENT POST_BUILD
+  BUILD_COMMAND ${CMAKE_COMMAND}
+  -E make_directory ${full_project_board_port_path}/binary
+)
+
+mcux_add_custom_command(
+  TOOLCHAINS xtensa
+  BUILD_EVENT POST_BUILD
   BUILD_COMMAND ${CMAKE_OBJCOPY}
   --xtensa-params= -Obinary ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf ${full_project_board_port_path}/binary/dsp_text_${CMAKE_BUILD_TYPE}.bin
   --xtensa-core=${XTENSA_CORE}

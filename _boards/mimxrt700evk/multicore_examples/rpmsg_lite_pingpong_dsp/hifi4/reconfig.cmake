@@ -6,6 +6,14 @@
 mcux_add_xtensa_configuration(
     CC "-DXOS_CLOCK_FREQ=230000000"
 )
+
+mcux_add_custom_command(
+  TOOLCHAINS xtensa
+  BUILD_EVENT POST_BUILD
+  BUILD_COMMAND ${CMAKE_COMMAND}
+  -E make_directory ${full_project_board_port_path}/binary
+)
+
 mcux_add_custom_command(
   TOOLCHAINS xtensa
   BUILD_EVENT POST_BUILD
