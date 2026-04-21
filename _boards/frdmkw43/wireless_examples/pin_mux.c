@@ -58,6 +58,30 @@ BOARD_InitPinButton0:
  * END ****************************************************************************************************************/
 void BOARD_InitPinButton0(void)
 {
+    /* Clock Config: Peripheral clocks are enabled; module does not stall low power mode entry */
+    CLOCK_EnableClock(kCLOCK_GpioA);
+    /* Clock Config: Peripheral clocks are enabled; module does not stall low power mode entry */
+    CLOCK_EnableClock(kCLOCK_PortA);
+    const port_pin_config_t SW4 = {/* Internal pull-up resistor is enabled */
+                                   .pullSelect = (uint16_t)kPORT_PullUp,
+                                   /* Low internal pull resistor value is selected. */
+                                   .pullValueSelect = (uint16_t)kPORT_LowPullResistor,
+                                   /* Fast slew rate is configured */
+                                   .slewRate = (uint16_t)kPORT_FastSlewRate,
+                                   /* Passive input filter is disabled */
+                                   .passiveFilterEnable = (uint16_t)kPORT_PassiveFilterDisable,
+                                   /* Open drain output is disabled */
+                                   .openDrainEnable = (uint16_t)kPORT_OpenDrainDisable,
+                                   /* Low drive strength is configured */
+                                   .driveStrength = (uint16_t)kPORT_LowDriveStrength,
+                                   /* Pin is configured as PTA0 */
+                                   .mux = (uint16_t)kPORT_MuxAsGpio,
+                                   /* Digital input is not inverted */
+                                   .invertInput = (uint16_t)kPORT_InputNormal,
+                                   /* Pin Control Register fields [15:0] are not locked */
+                                   .lockRegister = (uint16_t)kPORT_UnlockRegister};
+    /* PORT_A5 (pin 10) is configured as PTA5 */
+    PORT_SetPinConfig(BOARD_INITPINBUTTON0_SW4_PORT, BOARD_INITPINBUTTON0_SW4_PIN, &SW4);
 }
 
 /* clang-format off */
@@ -80,6 +104,26 @@ BOARD_InitPinButton1:
  * END ****************************************************************************************************************/
 void BOARD_InitPinButton1(void)
 {
+    const port_pin_config_t SW3 = {/* Internal pull-up resistor is enabled */
+                                   .pullSelect = (uint16_t)kPORT_PullUp,
+                                   /* Low internal pull resistor value is selected. */
+                                   .pullValueSelect = (uint16_t)kPORT_LowPullResistor,
+                                   /* Fast slew rate is configured */
+                                   .slewRate = (uint16_t)kPORT_FastSlewRate,
+                                   /* Passive input filter is disabled */
+                                   .passiveFilterEnable = (uint16_t)kPORT_PassiveFilterDisable,
+                                   /* Open drain output is disabled */
+                                   .openDrainEnable = (uint16_t)kPORT_OpenDrainDisable,
+                                   /* Low drive strength is configured */
+                                   .driveStrength = (uint16_t)kPORT_LowDriveStrength,
+                                   /* Pin is configured as PTD1 */
+                                   .mux = (uint16_t)kPORT_MuxAsGpio,
+                                   /* Digital input is not inverted */
+                                   .invertInput = (uint16_t)kPORT_InputNormal,
+                                   /* Pin Control Register fields [15:0] are not locked */
+                                   .lockRegister = (uint16_t)kPORT_UnlockRegister};
+    /* PORT_D1 (pin 24) is configured as PTD1 */
+    PORT_SetPinConfig(BOARD_INITPINBUTTON1_SW3_PORT, BOARD_INITPINBUTTON1_SW3_PIN, &SW3);
 }
 
 /* clang-format off */

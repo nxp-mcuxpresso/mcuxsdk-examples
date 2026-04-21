@@ -27,7 +27,12 @@
  * Definitions
  ******************************************************************************/
 /* Helper macro to switch from PORTx address to corresponding index */
-#define PORT_ADDR2IDX(port) (((uint32_t)(port) - (uint32_t)PORTA_BASE) / 0x1000u)
+#define PORT_ADDR2IDX(port) \
+    ((uint32_t)(port) == (uint32_t)PORTA_BASE ? 0U : \
+     (uint32_t)(port) == (uint32_t)PORTB_BASE ? 1U : \
+     (uint32_t)(port) == (uint32_t)PORTC_BASE ? 2U : \
+     (uint32_t)(port) == (uint32_t)PORTD_BASE ? 3U : ~0U)
+
 
 /*Mapping led pin to the correct device pins*/
 #define BOARD_RED_GPIO_PORT_INSTANCE     2U
@@ -82,6 +87,7 @@
 #define BOARD_BUTTON1_GPIO_PORT_INSTANCE     PORT_ADDR2IDX(BOARD_INITPINBUTTON1_PORT)
 #define BOARD_BUTTON1_GPIO_PIN               BOARD_INITPINBUTTON1_PIN
 #define BOARD_BUTTON1_GPIO_PIN_DEFAULT_STATE 1U
+
 #endif
 
 /* There is no RGB led on the localization board so the naming is not right, we could name those macros LED1/LED2 but it
