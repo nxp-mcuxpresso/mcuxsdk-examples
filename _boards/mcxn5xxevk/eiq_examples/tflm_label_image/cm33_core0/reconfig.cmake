@@ -1,15 +1,11 @@
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
   INCLUDES  ${board_root}/${board}/eiq_examples/tflm_label_image/pcq_npu
-  middleware/eiq/neutron/common/include
-  middleware/eiq/neutron/driver/include
   )
 mcux_add_source(
   BASE_PATH ${SdkRootDirPath}
   SOURCES ${board_root}/${board}/eiq_examples/tflm_label_image/pcq_npu/model_mobilenet_ops_npu.cpp
   ${board_root}/${board}/eiq_examples/tflm_label_image/pcq_npu/model_data.h
-  middleware/eiq/neutron/mcxn/libNeutronFirmware.a
-  middleware/eiq/neutron/mcxn/libNeutronDriver.a
   )
 
 mcux_add_iar_configuration(

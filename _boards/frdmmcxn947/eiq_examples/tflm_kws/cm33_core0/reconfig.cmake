@@ -1,15 +1,11 @@
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
   INCLUDES  ${board_root}/${board}/eiq_examples/tflm_kws/npu
-  middleware/eiq/neutron/common/include
-  middleware/eiq/neutron/driver/include
   )
 mcux_add_source(
   BASE_PATH ${SdkRootDirPath}
   SOURCES ${board_root}/${board}/eiq_examples/tflm_kws/npu/model_ds_cnn_ops_npu.cpp
   ${board_root}/${board}/eiq_examples/tflm_kws/npu/model_data.h
-  middleware/eiq/neutron/mcxn/libNeutronFirmware.a
-  middleware/eiq/neutron/mcxn/libNeutronDriver.a
   )
 
 # Add or remove Linker File Configurations

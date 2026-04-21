@@ -16,14 +16,10 @@ mcux_remove_configuration(
 
 mcux_add_include(
   INCLUDES .
-  ../../../../../../middleware/eiq/neutron/common/include
-  ../../../../../../middleware/eiq/neutron/driver/include
   )
 mcux_add_source(
   SOURCES model_cifarnet_ops_npu.cpp
   model_data.h
-  ../../../../../../middleware/eiq/neutron/rt700/hifi4/libNeutronFirmware.a
-  ../../../../../../middleware/eiq/neutron/rt700/hifi4/libNeutronDriver.a
   )
 
 mcux_remove_configuration(

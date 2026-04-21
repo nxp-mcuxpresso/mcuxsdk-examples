@@ -1,16 +1,4 @@
 
-mcux_add_source(
-  BASE_PATH ${SdkRootDirPath}
-  SOURCES middleware/eiq/neutron/mcxn/libNeutronFirmware.a
-          middleware/eiq/neutron/mcxn/libNeutronDriver.a
-)
-
-mcux_add_include(
-  BASE_PATH ${SdkRootDirPath}
-  INCLUDES middleware/eiq/neutron/common/include
-           middleware/eiq/neutron/driver/include
-)
-
 mcux_remove_iar_configuration(
 	CC "-Oh -On"
 )

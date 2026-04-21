@@ -1,14 +1,10 @@
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
   INCLUDES ${board_root}/${board}/eiq_examples/executorch_cifarnet/npu
-  middleware/eiq/neutron/common/include
-  middleware/eiq/neutron/driver/include
 )
 mcux_add_source(
   BASE_PATH ${SdkRootDirPath}
   SOURCES ${board_root}/${board}/eiq_examples/executorch_cifarnet/npu/model_pte.h
-  middleware/eiq/neutron/rt700/cm33/libNeutronFirmware.a
-  middleware/eiq/neutron/rt700/cm33/libNeutronDriver.a
 )
 
 mcux_remove_armgcc_linker_script(

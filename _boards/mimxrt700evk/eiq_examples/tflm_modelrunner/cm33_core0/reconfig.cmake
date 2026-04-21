@@ -11,14 +11,6 @@ mcux_add_source(
     SOURCES examples/eiq_examples/common/timer.c
             examples/eiq_examples/common/timer.h
 	    examples/driver_examples/xspi/psram/polling_transfer/xspi_psram_ops.c
-	    middleware/eiq/neutron/rt700/cm33/libNeutronFirmware.a
-	    middleware/eiq/neutron/rt700/cm33/libNeutronDriver.a
-)
-
-mcux_add_include(
-    BASE_PATH ${SdkRootDirPath}
-    INCLUDES middleware/eiq/neutron/common/include
-             middleware/eiq/neutron/driver/include
 )
 
 mcux_remove_iar_configuration(
