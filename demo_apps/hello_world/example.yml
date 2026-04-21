@@ -121,7 +121,6 @@ hello_world:
     - +iar@ddr_release
     imx95lp4xevk15@cm7: []
     frdmimx95@cm7: []
-    frdmimx95pro@cm7: []
     imx952evk@cm7:
     - +armgcc@debug
     - +armgcc@release

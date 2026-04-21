@@ -15,4 +15,3 @@ sai_mqs_edma_transfer:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmimx95@cm7: []
-    frdmimx95pro@cm7: []

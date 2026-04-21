@@ -76,7 +76,6 @@ When the demo runs, the log would be seen on the terminal like:
 - [IMX95LP4XEVK-15](../../../_boards/imx95lp4xevk15/lwip_examples/lwip_ping/freertos/example_board_readme.md)
 - [IMX95LPD5EVK-19](../../../_boards/imx95lpd5evk19/lwip_examples/lwip_ping/freertos/example_board_readme.md)
 - [FRDM-IMX95](../../../_boards/frdmimx95/lwip_examples/lwip_ping/freertos/example_board_readme.md)
-- [FRDM-IMX95-PRO](../../../_boards/frdmimx95pro/lwip_examples/lwip_ping/freertos/example_board_readme.md)
 - [LPCXpresso54628](../../../_boards/lpcxpresso54628/lwip_examples/lwip_ping/freertos/example_board_readme.md)
 - [LPCXpresso54S018](../../../_boards/lpcxpresso54s018/lwip_examples/lwip_ping/freertos/example_board_readme.md)
 - [LPCXpresso54S018M](../../../_boards/lpcxpresso54s018m/lwip_examples/lwip_ping/freertos/example_board_readme.md)

@@ -129,7 +129,6 @@ lpspi_interrupt_b2b_transfer_slave:
     frdmmcxa366: []
     imx952evk@cm7: []
     frdmimx95@cm7: []
-    frdmimx95pro@cm7: []
     frdmmcxa577: []
     frdmmcxa287: []
     frdmmcxc162: []

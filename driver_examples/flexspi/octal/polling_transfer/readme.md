@@ -14,7 +14,6 @@ Example will first erase the sector and program a page into the flash, at last c
 - [FRDM-MCXN947](../../../../_boards/frdmmcxn947/driver_examples/flexspi/octal/polling_transfer/example_board_readme.md)
 - [IMX95LPD5EVK-19](../../../../_boards/imx95lpd5evk19/driver_examples/flexspi/octal/polling_transfer/example_board_readme.md)
 - [FRDM-IMX95](../../../../_boards/frdmimx95/driver_examples/flexspi/octal/polling_transfer/example_board_readme.md)
-- [FRDM-IMX95-PRO](../../../../_boards/frdmimx95pro/driver_examples/flexspi/octal/polling_transfer/example_board_readme.md)
 - [LPCXpresso55S36](../../../../_boards/lpcxpresso55s36/driver_examples/flexspi/octal/polling_transfer/example_board_readme.md)
 - [MCX-N5XX-EVK](../../../../_boards/mcxn5xxevk/driver_examples/flexspi/octal/polling_transfer/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../../_boards/mcxn9xxevk/driver_examples/flexspi/octal/polling_transfer/example_board_readme.md)
