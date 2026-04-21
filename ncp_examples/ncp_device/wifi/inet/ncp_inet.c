@@ -189,7 +189,7 @@ static int wlan_ncp_inet_bind(void *data)
 }
 
 /*inet close command*/
-static int wlan_nxp_inet_close(void *data)
+static int wlan_ncp_inet_close(void *data)
 {
     int ret = 0;
     ncp_d("NCP: run %s!\r\n", __func__);
@@ -197,7 +197,7 @@ static int wlan_nxp_inet_close(void *data)
     ncp_inet_clear_bit(tlv->socket);
     inet_close_socket(tlv->socket);
     ret = close(tlv->socket);
-    if (ret > 0)
+    if (ret != 0)
         ncp_e("NCP: close socket[%d] fail!\r\n", tlv->socket);
     NCPCmd_DS_INET_COMMAND *cmd_res     = (NCPCmd_DS_INET_COMMAND *)wlan_ncp_get_response_buffer();
     NCP_CMD_INET_RESP_CLOSE_CFG *tlv_res = (NCP_CMD_INET_RESP_CLOSE_CFG *)&cmd_res->params.inet_close;
@@ -741,7 +741,7 @@ struct cmd_t wlan_cmd_inet[] = {
     {NCP_CMD_WLAN_INET_SOCKET, "wlan-inet-socket", wlan_ncp_inet_socket, CMD_SYNC},
     {NCP_CMD_WLAN_INET_CON, "wlan-inet-connect", wlan_ncp_inet_connect, CMD_SYNC},
     {NCP_CMD_WLAN_INET_BIND, "wlan-inet-bind", wlan_ncp_inet_bind, CMD_SYNC},
-    {NCP_CMD_WLAN_INET_CLOSE, "wlan-inet-close", wlan_nxp_inet_close, CMD_SYNC},
+    {NCP_CMD_WLAN_INET_CLOSE, "wlan-inet-close", wlan_ncp_inet_close, CMD_SYNC},
     {NCP_CMD_WLAN_INET_LISTEN, "wlan-inet-listen", wlan_ncp_inet_listen, CMD_SYNC},
     {NCP_CMD_WLAN_INET_ACCEPT, "wlan-inet-accept", wlan_ncp_inet_accept, CMD_SYNC},
 //    {NCP_CMD_WLAN_INET_SEND, "wlan-inet-send", wlan_ncp_inet_send, CMD_SYNC},

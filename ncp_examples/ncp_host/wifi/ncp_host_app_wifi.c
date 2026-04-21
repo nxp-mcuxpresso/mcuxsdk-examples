@@ -649,6 +649,15 @@ void ncp_iperf_tx_task(void *pvParameters)
                 server_addr.sin_port		= PP_HTONS(5001);
                 server_addr.sin_addr.s_addr = dest_addr.s_addr;
                 client_sockfd = ncp_socket(PF_INET, (SOCK_STREAM | SOCK_CLOEXEC), IPPROTO_TCP);
+                if (client_sockfd < 0)
+                {
+                    ncp_adap_e("socket creation failed!");
+                    continue;
+                }
+                else
+                {
+                    ncp_adap_d("\t[OK] socket Created: client_sockfd=%d", client_sockfd);
+                }
                 if (ncp_connect(client_sockfd, (struct sockaddr *) &server_addr, sizeof(server_addr)))
                 {
                     ncp_adap_e("connect to server failed!");
@@ -806,6 +815,15 @@ void ncp_iperf_rx_task(void *pvParameters)
                 server_addr.sin_port		= PP_HTONS(NCP_IPERF_TCP_SERVER_PORT_DEFAULT);
                 server_addr.sin_addr.s_addr     = dest_addr.s_addr;
                 client_sockfd = ncp_socket(PF_INET, (SOCK_STREAM | SOCK_CLOEXEC), IPPROTO_TCP);
+                if (client_sockfd < 0)
+                {
+                    ncp_adap_e("socket creation failed!");
+                    continue;
+                }
+                else
+                {
+                    ncp_adap_d("\t[OK] socket Created: client_sockfd=%d", client_sockfd);
+                }
                 if (ncp_connect(client_sockfd, (struct sockaddr *) &server_addr, sizeof(server_addr)))
                 {
                     ncp_adap_e("connect to server failed!");
