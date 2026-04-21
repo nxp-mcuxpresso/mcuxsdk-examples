@@ -32,10 +32,10 @@ mcux_add_source(
   examples/eiq_examples/common/image/image_utils.h
   examples/eiq_examples/common/image/image_load.c
 
-  examples/eiq_examples/tflm_cifar10/image_data.h
-  examples/eiq_examples/tflm_cifar10/labels.h
-  examples/eiq_examples/tflm_cifar10/ship.bmp
-  examples/eiq_examples/tflm_cifar10/demo_config.h
+  examples/eiq_examples/tflm_cifar10_hifi4_neutron/hifi4/image_data.h
+  examples/eiq_examples/tflm_cifar10_hifi4_neutron/hifi4/labels.h
+  examples/eiq_examples/tflm_cifar10_hifi4_neutron/hifi4/ship.bmp
+  examples/eiq_examples/tflm_cifar10_hifi4_neutron/hifi4/demo_config.h
   examples/eiq_examples/common/tflm/model/output_postproc.h
   examples/eiq_examples/common/tflm/model/output_postproc.cpp
   )
