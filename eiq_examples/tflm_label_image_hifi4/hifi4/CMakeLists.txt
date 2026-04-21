@@ -43,6 +43,10 @@ mcux_add_source(
   examples/eiq_examples/common/tflm/model/output_postproc.cpp
 )
 
+mcux_add_xtensa_configuration(
+  CC "-mlongcalls"
+  CX "-mlongcalls"
+)
 include(${SdkRootDirPath}/${board_root}/${board}/eiq_examples/tflm_label_image_hifi4/${core_id}/reconfig.cmake OPTIONAL)
 
 include(${SdkRootDirPath}/examples/eiq_examples/${core_id}.cmake)
