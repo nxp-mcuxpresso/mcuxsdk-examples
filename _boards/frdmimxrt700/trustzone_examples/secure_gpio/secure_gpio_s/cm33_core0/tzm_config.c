@@ -44,6 +44,10 @@ toolOptions:
 #define SAU_REGION_1_END 0x201FFFFFU
 #define SAU_REGION_2_BASE 0x280FFE00U
 #define SAU_REGION_2_END 0x280FFFFFU
+#define SAU_REGION_3_BASE 0x40100000U
+#define SAU_REGION_3_END 0x40100FFFU
+#define SAU_REGION_4_BASE 0x40103000U
+#define SAU_REGION_4_END 0x40103FFFU
 
 /* clang-format off */
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
@@ -461,8 +465,8 @@ functional_group:
     - generate_code_for_disabled_regions: 'false'
     - core: 'cm33_core0'
     - regions: [{index: '0', enabled: 'true', security: ns, start: '0x28100000', size: '0x00100000'}, {index: '1', enabled: 'true', security: ns, start: '0x20100000',
-        size: '0x00100000'}, {index: '2', enabled: 'true', security: nsc, start: '0x280FFE00', size: '0x00000200'}, {index: '3', enabled: 'false', security: ns, start: '0x00000000',
-        size: '0x00000020'}, {index: '4', enabled: 'false', security: ns, start: '0x00000000', size: '0x00000020'}, {index: '5', enabled: 'false', security: ns, start: '0x00000000',
+        size: '0x00100000'}, {index: '2', enabled: 'true', security: nsc, start: '0x280FFE00', size: '0x00000200'}, {index: '3', enabled: 'true', security: ns, start: '0x40100000',
+        size: '0x00001000'}, {index: '4', enabled: 'true', security: ns, start: '0x40103000', size: '0x00001000'}, {index: '5', enabled: 'false', security: ns, start: '0x00000000',
         size: '0x00000020'}, {index: '6', enabled: 'false', security: ns, start: '0x00000000', size: '0x00000020'}, {index: '7', enabled: 'false', security: ns, start: '0x00000000',
         size: '0x00000020'}]
 - global_options:
@@ -732,6 +736,24 @@ void BOARD_InitTrustZone()
     /* Region end address */
     SAU->RLAR = (SAU_REGION_2_END & SAU_RLAR_LADDR_Msk)
         | ((1U << SAU_RLAR_NSC_Pos) & SAU_RLAR_NSC_Msk)
+        | ((1U << SAU_RLAR_ENABLE_Pos) & SAU_RLAR_ENABLE_Msk);
+    
+    /* Set SAU region number */
+    SAU->RNR = 3;
+    /* Region base address */
+    SAU->RBAR = SAU_REGION_3_BASE & SAU_RBAR_BADDR_Msk;
+    /* Region end address */
+    SAU->RLAR = (SAU_REGION_3_END & SAU_RLAR_LADDR_Msk)
+        | ((0U << SAU_RLAR_NSC_Pos) & SAU_RLAR_NSC_Msk)
+        | ((1U << SAU_RLAR_ENABLE_Pos) & SAU_RLAR_ENABLE_Msk);
+    
+    /* Set SAU region number */
+    SAU->RNR = 4;
+    /* Region base address */
+    SAU->RBAR = SAU_REGION_4_BASE & SAU_RBAR_BADDR_Msk;
+    /* Region end address */
+    SAU->RLAR = (SAU_REGION_4_END & SAU_RLAR_LADDR_Msk)
+        | ((0U << SAU_RLAR_NSC_Pos) & SAU_RLAR_NSC_Msk)
         | ((1U << SAU_RLAR_ENABLE_Pos) & SAU_RLAR_ENABLE_Msk);
     
     /* Force memory writes before continuing */

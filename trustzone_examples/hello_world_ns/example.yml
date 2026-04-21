@@ -77,6 +77,13 @@ hello_world_ns:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    frdmimxrt700@cm33_core0:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     evkmimxrt1180@cm33:
     - -armgcc@hyperram_debug
     - -armgcc@hyperram_release

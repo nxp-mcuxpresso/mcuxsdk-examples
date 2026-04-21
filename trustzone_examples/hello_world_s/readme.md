@@ -51,3 +51,4 @@ so it demonstrates following techniques for TrustZone applications development:
 - [KW47-LOC](../../_boards/kw47loc/trustzone_examples/hello_world/hello_world_s/example_board_readme.md)
 - [MCXW72-LOC](../../_boards/mcxw72loc/trustzone_examples/hello_world/hello_world_s/example_board_readme.md)
 - [FRDM-MCXW72](../../_boards/frdmmcxw72/trustzone_examples/hello_world/hello_world_s/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/trustzone_examples/hello_world/hello_world_s/example_board_readme.md)

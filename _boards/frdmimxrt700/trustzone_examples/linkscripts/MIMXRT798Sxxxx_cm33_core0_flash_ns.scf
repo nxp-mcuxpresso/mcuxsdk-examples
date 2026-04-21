@@ -2,8 +2,8 @@
 /*
 ** ###################################################################
 **     Processors:          MIMXRT798SGAWBR_cm33_core0
-**                          MIMXRT798SGVKB_cm33_core0
 **                          MIMXRT798SGFOB_cm33_core0
+**                          MIMXRT798SGVKB_cm33_core0
 **
 **     Compiler:            Keil ARM C/C++ Compiler
 **     Reference manual:    iMXRT700RM Rev.3 DraftA, 05/2024
@@ -14,7 +14,7 @@
 **         Linker file for the Keil ARM C/C++ Compiler
 **
 **     Copyright 2016 Freescale Semiconductor, Inc.
-**     Copyright 2016-2024 NXP
+**     Copyright 2016-2026 NXP
 **     SPDX-License-Identifier: BSD-3-Clause
 **
 **     http:                 www.nxp.com
@@ -51,26 +51,17 @@
 #define m_interrupts_start             0x28100000
 #define m_interrupts_size              0x00000300
 
-#define  priv_func_start               0x28100300
-#define  priv_func_size                0x00008000
-
-#define  sys_calls_start               0x28108300
-#define  sys_calls_size                0x00004000
-
-#define m_text_start                   0x2810C300
+#define m_text_start                   0x28100300
 #define m_text_size                    0x000FFD00
 
 #define m_core1_image_maximum_size     0x00080000
 #define m_ezhv_image_maximum_size      0x00008000
 
-#define  priv_data_start               0x20100000
-#define  priv_data_size                0x0000D000
-
-#define m_interrupts_ram_start         0x2010D000
+#define m_interrupts_ram_start         0x20100000
 #define m_interrupts_ram_size          __ram_vector_table_size__
 
 #define m_data_start                   (m_interrupts_ram_start + m_interrupts_ram_size)
-#define m_data_size                    (0x00100000 - m_interrupts_ram_size - priv_data_size)
+#define m_data_size                    (0x00100000 - m_interrupts_ram_size)
 
 #define m_boot_flash_conf_start        0x28100000
 
@@ -95,23 +86,10 @@ LR_m_interrupts m_interrupts_start m_text_start+m_text_size-m_interrupts_start {
     * (.isr_vector,+FIRST)
   }
 
-  ER_priv_func priv_func_start FIXED priv_func_size { ; load address = execution address
-    * (InRoot$$Sections)
-    * (privileged_functions)
-  }
-
-  ER_sys_calls sys_calls_start FIXED sys_calls_size { ; load address = execution address
-    *(freertos_system_calls)
-  }
-  
   ER_m_text m_text_start FIXED m_text_size { ; load address = execution address
+    * (InRoot$$Sections)
     .ANY (+RO)
   }
-
-  RW_priv_data priv_data_start priv_data_size { ; privileged data
-    *(privileged_data)
-  }
-
   CORE1_REGION +0 ALIGN 16 m_core1_image_maximum_size {
     .ANY (.core1_code)
   }

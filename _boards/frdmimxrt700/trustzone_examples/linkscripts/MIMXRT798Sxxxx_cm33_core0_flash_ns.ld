@@ -13,7 +13,7 @@
 **         Linker file for the GNU C Compiler
 **
 **     Copyright 2016 Freescale Semiconductor, Inc.
-**     Copyright 2016-2024 NXP
+**     Copyright 2016-2026 NXP
 **     SPDX-License-Identifier: BSD-3-Clause
 **
 **     http:                 www.nxp.com
@@ -88,21 +88,6 @@ SECTIONS
   /* The program code and other data goes into internal ram */
   .text :
   {
-    . = ALIGN(32);
-    __privileged_functions_start__ = .;
-    *(privileged_functions)
-    *(privileged_functions*)
-    . = ALIGN(32);
-    __privileged_functions_end__ = .;
-    . += 32; /* force a space between regions */
-    . = ALIGN(32);
-    __syscalls_flash_start__ = .;
-    *(freertos_system_calls)
-    *(freertos_system_calls*)
-    . = ALIGN(32);
-    __syscalls_flash_end__ = .;
-    . += 32; /* force a space between regions */
-    __unprivileged_flash_start__ = .;
     . = ALIGN(4);
     *(.text)                 /* .text sections (code) */
     *(.text*)                /* .text* sections (code) */
@@ -204,8 +189,6 @@ SECTIONS
     PROVIDE_HIDDEN (__fini_array_end = .);
   } > m_text
 
-  . = ALIGN(32);
-  __unprivileged_flash_end__ = .;
   __etext = .;    /* define a global symbol at end of code */
   __DATA_ROM = .; /* Symbol is used by startup for data initialization */
 
@@ -235,15 +218,6 @@ SECTIONS
     *(.data)                 /* .data sections */
     *(.data*)                /* .data* sections */
     KEEP(*(.jcr*))
-    
-    . = ALIGN(32);
-    __privileged_sram_start__ = .;
-    *(privileged_data)
-    *(privileged_data*)
-    . = ALIGN(32);
-    __privileged_sram_end__ = .;
-    . += 1; /* For a space between regions */
-
     . = ALIGN(4);
     __data_end__ = .;        /* define a global symbol at data end */
   } > m_data

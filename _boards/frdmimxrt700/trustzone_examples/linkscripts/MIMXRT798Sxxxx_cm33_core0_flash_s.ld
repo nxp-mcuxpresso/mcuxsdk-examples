@@ -13,7 +13,7 @@
 **         Linker file for the GNU C Compiler
 **
 **     Copyright 2016 Freescale Semiconductor, Inc.
-**     Copyright 2016-2024 NXP
+**     Copyright 2016-2026 NXP
 **     SPDX-License-Identifier: BSD-3-Clause
 **
 **     http:                 www.nxp.com
@@ -30,18 +30,19 @@ ENTRY(Reset_Handler)
 M_VECTOR_RAM_SIZE = DEFINED(__ram_vector_table__) ? 0x00000300 : 0;
 
 m_core1_image_maximum_size = 0x00080000;
+m_core1_ns_image_maximum_size = 0x00020000;
 m_ezhv_image_maximum_size = 0x00008000;
 
-DATA_START   = 0x20100000;
-DATA_SIZE    = 0x00100000;
+DATA_START   = 0x30080000;
+DATA_SIZE    = 0x00080000;
 
-NCACHE_START = DEFINED(__use_shmem__) ? 0x20202000 : 0x20200000;
+NCACHE_START = DEFINED(__use_shmem__) ? 0x30202000 : 0x30200000;
 NCACHE_SIZE  = DEFINED(__use_shmem__) ? 0x001FE000 : 0x00200000;
 
 HEAP_SIZE    = DEFINED(__heap_size__)  ? __heap_size__  : 0x0400;
 STACK_SIZE   = DEFINED(__stack_size__) ? __stack_size__ : 0x0400;
 
-RPMSG_SHMEM_START = 0x20200000;
+RPMSG_SHMEM_START = 0x30200000;
 RPMSG_SHMEM_SIZE = DEFINED(__use_shmem__) ? 0x2000 : 0;
 
 DATA_END     = DATA_START + DATA_SIZE - 1 - (DEFINED(__heap_noncacheable__) ? 0 : HEAP_SIZE);
@@ -49,15 +50,12 @@ NCACHE_END   = NCACHE_START + NCACHE_SIZE - 1 - (DEFINED(__heap_noncacheable__) 
 HEAP_START   = DEFINED(__heap_noncacheable__) ? NCACHE_END + 1 : DATA_END + 1;
 
 /* Specify the memory areas */
-/* The SRAM region [0x000000-0x013FFF] is reserved for ROM bootloader execution. Can be reused after boot. */
-/* The SRAM region [0x014000-0x07FFFF] is reserved for Non-cached shared memory or application data. */
-/* The SRAM region [0x080000-0x3FFFFF] is reserved for CPU0 application, last 2MB non-cacheable data for NPU/GPU/Display etc. */
-/* The SRAM region [0x400000-0x57FFFF] is reserved for HiFi4 application. */
 MEMORY
 {
-  m_flash_config        (RX)  : ORIGIN = 0x28100000, LENGTH = 0x00004000
-  m_interrupts          (RX)  : ORIGIN = 0x28100000, LENGTH = 0x00000300
-  m_text                (RX)  : ORIGIN = 0x28100300, LENGTH = 0x000FFD00
+  m_flash_config        (RX)  : ORIGIN = 0x38000000, LENGTH = 0x00004000
+  m_interrupts          (RX)  : ORIGIN = 0x38004000, LENGTH = 0x00000300
+  m_text                (RX)  : ORIGIN = 0x38004300, LENGTH = 0x000FBB00
+  m_veneer_table        (RX)  : ORIGIN = 0x280FFE00, LENGTH = 0x00000200
   m_data                (RW)  : ORIGIN = DATA_START, LENGTH = DATA_END - DATA_START + 1
   m_ncache              (RW)  : ORIGIN = NCACHE_START, LENGTH = NCACHE_SIZE
   m_heap                (RW)  : ORIGIN = HEAP_START, LENGTH = HEAP_SIZE
@@ -88,21 +86,6 @@ SECTIONS
   /* The program code and other data goes into internal ram */
   .text :
   {
-    . = ALIGN(32);
-    __privileged_functions_start__ = .;
-    *(privileged_functions)
-    *(privileged_functions*)
-    . = ALIGN(32);
-    __privileged_functions_end__ = .;
-    . += 32; /* force a space between regions */
-    . = ALIGN(32);
-    __syscalls_flash_start__ = .;
-    *(freertos_system_calls)
-    *(freertos_system_calls*)
-    . = ALIGN(32);
-    __syscalls_flash_end__ = .;
-    . += 32; /* force a space between regions */
-    __unprivileged_flash_start__ = .;
     . = ALIGN(4);
     *(.text)                 /* .text sections (code) */
     *(.text*)                /* .text* sections (code) */
@@ -121,6 +104,13 @@ SECTIONS
     core1_image_end = .;
     . = ALIGN(4);
 
+    . = ALIGN(16);
+    core1_ns_image_start = .;
+    KEEP (*(.core1_ns_code))
+    *(.core1_ns_code*)
+    core1_ns_image_end = .;
+    . = ALIGN(4);
+
     ezhv_image_start = .;
     KEEP (*(.ezhv_code))
     *(.ezhv_code*)
@@ -128,7 +118,18 @@ SECTIONS
     . = ALIGN(4);
   } > m_text
 
+  /* section for veneer table */
+  .gnu.sgstubs :
+  {
+     . = ALIGN(32);
+     _start_sg = .;
+    *(.gnu.sgstubs*)
+     . = ALIGN(32);
+     _end_sg = .;
+  } > m_veneer_table
+
   ASSERT((core1_image_end - core1_image_start) <= m_core1_image_maximum_size, "Core1 image size exceeds the limit")
+  ASSERT((core1_ns_image_end - core1_ns_image_start) <= m_core1_ns_image_maximum_size, "Core1 NS image size exceeds the limit")
   ASSERT((ezhv_image_end - ezhv_image_start) <= m_ezhv_image_maximum_size, "EZHV image size exceeds the limit")
 
   .ARM.extab :
@@ -143,25 +144,11 @@ SECTIONS
     __exidx_end = .;
   } > m_text
 
-
- .ctors :
+  .ctors :
   {
     __CTOR_LIST__ = .;
-    /* gcc uses crtbegin.o to find the start of
-       the constructors, so we make sure it is
-       first.  Because this is a wildcard, it
-       doesn't matter if the user does not
-       actually link against crtbegin.o; the
-       linker won't look for a file to match a
-       wildcard.  The wildcard also means that it
-       doesn't matter which directory crtbegin.o
-       is in.  */
     KEEP (*crtbegin.o(.ctors))
     KEEP (*crtbegin?.o(.ctors))
-    /* We don't want to include the .ctor section from
-       from the crtend.o file until after the sorted ctors.
-       The .ctor section from the crtend file contains the
-       end of ctors marker and it must be last */
     KEEP (*(EXCLUDE_FILE(*crtend?.o *crtend.o) .ctors))
     KEEP (*(SORT(.ctors.*)))
     KEEP (*(.ctors))
@@ -179,7 +166,6 @@ SECTIONS
     __DTOR_END__ = .;
   } > m_text
 
-
   .preinit_array :
   {
     PROVIDE_HIDDEN (__preinit_array_start = .);
@@ -195,7 +181,6 @@ SECTIONS
     PROVIDE_HIDDEN (__init_array_end = .);
   } > m_text
 
-
   .fini_array :
   {
     PROVIDE_HIDDEN (__fini_array_start = .);
@@ -204,8 +189,6 @@ SECTIONS
     PROVIDE_HIDDEN (__fini_array_end = .);
   } > m_text
 
-  . = ALIGN(32);
-  __unprivileged_flash_end__ = .;
   __etext = .;    /* define a global symbol at end of code */
   __DATA_ROM = .; /* Symbol is used by startup for data initialization */
 
@@ -235,22 +218,13 @@ SECTIONS
     *(.data)                 /* .data sections */
     *(.data*)                /* .data* sections */
     KEEP(*(.jcr*))
-    
-    . = ALIGN(32);
-    __privileged_sram_start__ = .;
-    *(privileged_data)
-    *(privileged_data*)
-    . = ALIGN(32);
-    __privileged_sram_end__ = .;
-    . += 1; /* For a space between regions */
-
     . = ALIGN(4);
     __data_end__ = .;        /* define a global symbol at data end */
   } > m_data
 
   __NCACHE_REGION_START = NCACHE_START;
   __NCACHE_REGION_SIZE  = NCACHE_SIZE;
-  __NDATA_ROM = __DATA_ROM + (__data_end__ - __data_start__); /* Symbol is used by startup for ncache data initialization */
+  __NDATA_ROM = __DATA_ROM + (__data_end__ - __data_start__);
 
   .ncache.init : AT(__NDATA_ROM)
   {
@@ -268,7 +242,6 @@ SECTIONS
   } > m_ncache
 
   __DATA_END = __NDATA_ROM + (__noncachedata_init_end__ - __noncachedata_start__);
-
   text_end = ORIGIN(m_text) + LENGTH(m_text);
   ASSERT(__DATA_END <= text_end, "region m_text overflowed with text and data")
   _image_size = __DATA_END - __VECTOR_TABLE;

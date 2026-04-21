@@ -1,0 +1,49 @@
+
+flash_programming_file:
+  files:
+  - source: ${board_root}/${board}/trustzone_examples/secure_faults/secure_faults_s/${core_id}/secure_faults_download_flash_debug.ini
+    attribute: flash_programming_file
+    toolchains: mdk
+    targets: flash_debug
+  - source: ${board_root}/${board}/trustzone_examples/secure_faults/secure_faults_s/${core_id}/secure_faults_download_flash_release.ini
+    attribute: flash_programming_file
+    toolchains: mdk
+    targets: flash_release
+
+initialization_file:
+  files:
+  - source: ${board_root}/${board}/trustzone_examples/secure_faults/secure_faults_s/${core_id}/secure_faults_debug_flash_debug.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: flash_debug
+    package_path: boards/${board}/trustzone_examples/secure_faults/./secure_faults_s/${core_id}/mdk
+    project_path: _boards/${board}/trustzone_examples/secure_faults/secure_faults_s/${core_id}
+  - source: ${board_root}/${board}/trustzone_examples/secure_faults/secure_faults_s/${core_id}/secure_faults_debug_flash_release.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: flash_release
+    package_path: boards/${board}/trustzone_examples/secure_faults/./secure_faults_s/${core_id}/mdk
+    project_path: _boards/${board}/trustzone_examples/secure_faults/secure_faults_s/${core_id}
+
+mdk:
+  shared-workspace: secure_faults
+  sharing-workspace:
+  - ../../secure_faults_ns/mdk/secure_faults_ns${core_id_suffix_name}
+
+iar:
+  shared-workspace: secure_faults
+  sharing-workspace:
+  - ../../secure_faults_ns/iar/secure_faults_ns${core_id_suffix_name}
+  config:
+    flash_debug:
+      download-extra-image:
+      - path: "../../secure_faults_ns/iar/secure_faults_ns${core_id_suffix_name}.out"
+        item: 1
+        offset: 0
+        debug_info_only: false
+    flash_release:
+      download-extra-image:
+      - path: "../../secure_faults_ns/iar/secure_faults_ns${core_id_suffix_name}.out"
+        item: 1
+        offset: 0
+        debug_info_only: false
