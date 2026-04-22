@@ -17,8 +17,8 @@
 #define DEMO_LPCMP_IRQ_ID                              CMP0_IRQn
 #define DEMO_LPCMP_IRQ_HANDLER_FUNC                    CMP0_IRQHandler
 #define DEMO_LPCMP_ROUND_ROBIN_FIXED_CHANNEL           7U
-#define DEMO_LPCMP_ROUND_ROBIN_CHANNELS_CHECKER_MASK   0x07U
-#define DEMO_LPCMP_ROUND_ROBIN_CHANNELS_PRE_STATE_MASK 0x05U
+#define DEMO_LPCMP_ROUND_ROBIN_CHANNELS_CHECKER_MASK   0x34U
+#define DEMO_LPCMP_ROUND_ROBIN_CHANNELS_PRE_STATE_MASK 0x24U
 #define DEMO_LPCMP_ROUND_ROBIN_FIXED_MUX_PORT          kLPCMP_FixedPlusMuxPort
 
 /* (LPCMPx_RRCR0[RR_NSAM] / roundrobin clock period) should bigger than CMP propagation delay, roundrobin clock period

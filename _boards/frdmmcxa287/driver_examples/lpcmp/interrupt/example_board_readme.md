@@ -8,13 +8,13 @@ Board settings
 ==============
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Pin Name       Board Location     Pin Name    Board Location
-CMP0_IN2/P1_4      R132           VDD or GND
+CMP0_IN2/P1_4      J9-24          VDD or GND
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This example project uses LPCMP0 to compare the voltage signal input from CMP0_IN2(P1_4, R132)
 with the voltage signal(half of VREFI) output by LPCMP's internal DAC.
 Connect J8-28(P2_7,VREFI) to J8-1(VDD), this will set the VREFI to VDD(The VREFI is used as LPCMP reference voltage).
-Change the IO state of CMP0_IN2(P1_4, R132) will toggle the RED LED.
+Change the IO state of CMP0_IN2(P1_4, J9-24) will toggle the RED LED.
 
 Prepare the Demo
 ================
