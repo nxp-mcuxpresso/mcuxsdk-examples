@@ -6,24 +6,21 @@
 #include "fsl_debug_console.h"
 #include "board.h"
 #include "fsl_rgpio.h"
-#include "fsl_adp5585.h"
 #include "fsl_pcal6524.h"
 #include "display_support.h"
 #include "sm_platform.h"
 #include "fsl_video_common.h"
 #include "fsl_display.h"
 #include "fsl_lpi2c.h"
+static pcal6524_handle_t pcalHandle;
 #if DPU_EXAMPLE_DI == DPU_DI_MIPI
-static adp5585_handle_t adpHandle;
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
 #include "fsl_mipi_dsi.h"
-#include "fsl_rm692c9.h"
+#include "fsl_waveshare_dsi2dpi.h"
 #else
 #include "fsl_mipi_dsi.h"
-#include "fsl_adv7535.h"
 #endif
 #elif DPU_EXAMPLE_DI == DPU_DI_LVDS
-static pcal6524_handle_t pcalHandle;
 #include "fsl_ldb.h"
 #if APP_DISPLAY_EXTERNAL_CONVERTOR
 #include "fsl_it6263.h"
@@ -37,8 +34,6 @@ uint32_t phyRefClkFreq_Hz;
 extern void DPU_IRQHandler(void);
 #if (DPU_EXAMPLE_DI == DPU_DI_MIPI)
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
-status_t RM692c9_DSI_Transfer(dsi_transfer_t *xfer);
-static void RM692c9_PullResetPin(bool pullUp);
 #endif
 
 #elif (DPU_EXAMPLE_DI == DPU_DI_LVDS)
@@ -52,21 +47,6 @@ static void IT6263_PullResetPin(bool pullUp);
  ******************************************************************************/
 #if (DPU_EXAMPLE_DI == DPU_DI_MIPI)
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
-
-static mipi_dsi_device_t dsiDevice = {
-    .virtualChannel = 0,
-    .xferFunc       = RM692c9_DSI_Transfer,
-};
-
-static const rm692c9_resource_t rm692c9Resource = {
-    .dsiDevice    = &dsiDevice,
-    .pullResetPin = RM692c9_PullResetPin,
-};
-
-static display_handle_t rm692c9Handle = {
-    .resource = &rm692c9Resource,
-    .ops      = &rm692c9_ops,
-};
 #endif
 
 #elif (DPU_EXAMPLE_DI == DPU_DI_LVDS)
@@ -87,22 +67,6 @@ static display_handle_t rm692c9Handle = {
 
 #if (DPU_EXAMPLE_DI == DPU_DI_MIPI)
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
-status_t RM692c9_DSI_Transfer(dsi_transfer_t *xfer)
-{
-    return DSI_TransferBlocking(MIPI_DSI, xfer);
-}
-
-static void RM692c9_PullResetPin(bool pullUp)
-{
-    if (pullUp)
-    {
-        ADP5585_SetPins(&adpHandle, (1 << DSICSI_RST_SYNC));
-    }
-    else
-    {
-        ADP5585_ClearPins(&adpHandle, (1 << DSICSI_RST_SYNC));
-    }
-}
 #endif
 
 #elif (DPU_EXAMPLE_DI == DPU_DI_LVDS)
@@ -196,21 +160,21 @@ void BOARD_PrepareDisplay(void)
     hal_clk_t hal_videopll1vcoCLKCfg = {
         .clk_id = hal_clock_videopll1ctl,
         .clk_round_opt = hal_clk_round_auto,
-        .ratel = 4008000000,
+        .ratel = 3000000000,
         .rateu = 0,
     };
 
     hal_clk_t hal_videopll1CLKCfg = {
         .clk_id = hal_clock_videopll1,
         .clk_round_opt = hal_clk_round_auto,
-        .ratel = 446333333,
+        .ratel = 500000000,
         .rateu = 0,
     };
 
     hal_clk_t hal_disp1pixlCLKCfg = {
         .clk_id        = hal_clock_disp1pix,
         .pclk_id       = hal_clock_videopll1,
-        .div           = 3,
+        .div           = 10,
         .enable_clk    = true,
         .clk_round_opt = hal_clk_round_auto,
     };
@@ -258,7 +222,6 @@ void BOARD_PrepareDisplay(void)
     HAL_ClockSetRootClk(&hal_mipiphypllrefCLKCfg);
     phyRefClkFreq_Hz = HAL_ClockGetIpFreq(hal_clock_mipiPhyPllRef);
     HAL_ClockSetRootClk(&hal_mipitestbyteCLKCfg);
-
 #elif (DPU_EXAMPLE_DI == DPU_DI_LVDS)
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
     hal_clk_t hal_ldbpllvcoCLKCfg = {
@@ -320,34 +283,41 @@ void BOARD_InitLcdPanel(void)
         .clk_round_opt = hal_clk_round_auto,
     };
     HAL_ClockSetRootClk(&hal_lpi2cClkCfg);
-    BOARD_InitADP5585(&adpHandle);
-    ADP5585_SetDirection(&adpHandle, (1 << DSICSI_EN_PWDN), kADP5585_Output);
-    ADP5585_SetDirection(&adpHandle, (1 << DSICSI_RST_SYNC), kADP5585_Output);
-
-    ADP5585_SetPins(&adpHandle, (1 << DSICSI_EN_PWDN));
-    ADP5585_SetPins(&adpHandle, (1 << DSICSI_RST_SYNC));
+    BOARD_InitPCAL6524(&pcalHandle);
+    PCAL6524_SetDirection(&pcalHandle, (1 << BOARD_PCAL6524_EXT_5V0_PWR_EN), kPCAL6524_Output);
+    PCAL6524_SetPins(&pcalHandle, (1 << BOARD_PCAL6524_EXT_5V0_PWR_EN));
+    PCAL6524_SetDirection(&pcalHandle, (1 << BOARD_PCAL6524_DSICSI1_nRST), kPCAL6524_Output);
+    PCAL6524_SetPins(&pcalHandle, (1 << BOARD_PCAL6524_DSICSI1_nRST));
+    SDK_DelayAtLeastUs(10000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
     if (DPU_EXAMPLE_DI == DPU_DI_MIPI)
     {
-        RM692c9_Init(&rm692c9Handle, &displayConfig);
+        hal_clk_t hal_lpi2c4ClkCfg = {
+            .clk_id = hal_clock_lpi2c4,
+            .pclk_id = hal_clock_osc24m,
+            .div = 1, /* 24Mhz for lpi2c */
+            .enable_clk = true,
+            .clk_round_opt = hal_clk_round_auto,
+        };
+        HAL_ClockSetRootClk(&hal_lpi2c4ClkCfg);
+        BOARD_LPI2C_Init(LPI2C4, HAL_ClockGetIpFreq(hal_clock_lpi2c4));
+
+        static waveshare_dsi2dpi_resource_t waveshareResource;
+
+        static display_handle_t wavesharehandle = {
+            .resource = &waveshareResource,
+            .ops      = &waveshare_dsi2dpi_ops,
+	};
+        /* Init the resource for waveshare_dsi2dpi. */
+        waveshareResource.i2cAddr        = 0x45;
+        waveshareResource.i2cSendFunc    = BOARD_Display_I2C_Send;
+        waveshareResource.i2cReceiveFunc = BOARD_Display_I2C_Receive;
+        WAVESHARE_DSI2DPI_Init(&wavesharehandle, &displayConfig);
     }
 #else
-    static adv7535_resource_t adv7535Resource;
-
-    static display_handle_t advhandle = {
-        .resource = &adv7535Resource,
-        .ops      = &adv7535_ops,
-    };
-    /* Init the resource for adv7535. */
-    adv7535Resource.i2cAddr        = 0x3D;
-    adv7535Resource.i2cSendFunc    = BOARD_Display_I2C_Send;
-    adv7535Resource.i2cReceiveFunc = BOARD_Display_I2C_Receive;
-
-    ADV7535_Init(&advhandle, &displayConfig);
 #endif
     /* Disable the MIPI DSI command mode */
     DSI_EnableCommandMode(MIPI_DSI, false);
-
     return;
 #endif
 }

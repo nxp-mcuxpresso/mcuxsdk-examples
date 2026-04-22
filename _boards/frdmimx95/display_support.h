@@ -9,27 +9,28 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define DPU_DI_LVDS                0
-#define DPU_DI_MIPI                1
-#define DEMO_PANEL_LCD_SPEC        11
-#define DEMO_PANEL_LVDS2HDMI       15
+#define DPU_DI_LVDS                  0
+#define DPU_DI_MIPI                  1
+#define DEMO_PANEL_LCD_SPEC          11
+#define DEMO_PANEL_LVDS2HDMI         15
+#define DEMO_PANEL_WAVESHARE_DSI2DPI 20
 
 /* Use the MIPI interface. */
 #ifndef DPU_EXAMPLE_DI
-#define DPU_EXAMPLE_DI DPU_DI_LVDS
+#define DPU_EXAMPLE_DI DPU_DI_MIPI
 #endif
 
 #ifndef DEMO_PANEL
-#define DEMO_PANEL  DEMO_PANEL_LVDS2HDMI
+#define DEMO_PANEL  DEMO_PANEL_WAVESHARE_DSI2DPI
 #endif
 
 #ifndef LDB_DUAL_PANEL
 #define LDB_DUAL_PANEL  0
 #endif
 
-/* Whether use external convertor such as MIPI2HDMI convertor (ADV7535) */
+/* Whether use external convertor such as MIPI2HDMI convertor (IT6263) */
 #ifndef APP_DISPLAY_EXTERNAL_CONVERTOR
-#define APP_DISPLAY_EXTERNAL_CONVERTOR 1
+#define APP_DISPLAY_EXTERNAL_CONVERTOR 0
 #endif
 
 #if (DPU_EXAMPLE_DI == DPU_DI_LVDS)
@@ -64,10 +65,27 @@
 
 
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
+#if (DEMO_PANEL == DEMO_PANEL_WAVESHARE_DSI2DPI)
+/*
+ * The pixel clock is (height + VSW + VFP + VBP) * (width + HSW + HFP + HBP) * frame rate.
+ * (600 + 10 + 10 + 10) x (1024 + 100 + 100 + 100) x 60 = 630 x 1324 x 60Hz = 50047200 Hz
+ */
+/* 1280*800 LVDS pannel */
+#define APP_PANEL_HEIGHT   600
+#define APP_PANEL_WIDTH    1024
+#define APP_HSW            100
+#define APP_HFP            100
+#define APP_HBP            100
+#define APP_VSW            10
+#define APP_VFP            10
+#define APP_VBP            10
+#define APP_PIXEL_CLOCK_HZ 50000000
+#endif
+
 #if (DEMO_PANEL == DEMO_PANEL_LCD_SPEC)
 /*
  * The pixel clock is (height + VSW + VFP + VBP) * (width + HSW + HFP + HBP) * frame rate.
- * (800 + 6 + 2 + 15) * (1280 + 32 + 48 + 80) * x 60 = 823 * 1440 * x 60Hz = 71107200 Hz
+ * (800 + 6 + 2 + 15) x (1280 + 32 + 48 + 80) x 60 = 823 x 1440 x 60Hz = 71107200 Hz
  */
 /* 1280*800 LVDS pannel */
 #define APP_PANEL_HEIGHT   800
@@ -85,7 +103,7 @@
 #if (DEMO_PANEL == DEMO_PANEL_LVDS2HDMI)
 /*
  * The pixel clock is (height + VSW + VFP + VBP) * (width + HSW + HFP + HBP) * frame rate.
- * (1080 + 4 + 36 + 5) * (1920 + 88 + 148 + 44) * x 60 = 1125 * 2200 * x 60Hz = 148500000 Hz
+ * (1080 + 4 + 36 + 5) x (1920 + 88 + 148 + 44) x 60 = 1125 x 2200 x 60Hz = 148500000 Hz
  */
 /* 1920*1080 IT6263 MIPI2HDMI card */
 #define APP_PANEL_HEIGHT   1080
@@ -106,8 +124,8 @@
 #if DPU_EXAMPLE_DI == DPU_DI_MIPI
 #define APP_MIPI_DSI_BASE MIPI_DSI_BASE
 #define APP_MIPI_DSI      ((MIPI_DSI_Type *)APP_MIPI_DSI_BASE)
-/* The MIPI DSI support 4 line. */
-#define APP_MIPI_DSI_LANE_NUM 4
+/* The MIPI DSI support 2 line. */
+#define APP_MIPI_DSI_LANE_NUM 2
 #define BYTE_PER_PIXEL        3
 #define BPP                   24
 #elif DPU_EXAMPLE_DI == DPU_DI_LVDS

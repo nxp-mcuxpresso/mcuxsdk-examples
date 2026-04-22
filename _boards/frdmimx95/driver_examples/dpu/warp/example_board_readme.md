@@ -4,7 +4,7 @@ Hardware requirements
 - FRDMIMX95 board
 - J-Link Debug Probe
 - USB power supply
-- LVDS2HDMI card
+- WAVESHARE_DSI2DPI panel
 - Personal Computer
 
 Board settings
@@ -12,6 +12,14 @@ Board settings
 For LVDS2HDMI card(1920*1080), connect HDMI port J17 to panel.
 For LCD_SPEC panel(1280*800), connect LVDS port J14 to panel.
 Ensure the J12 jumper connect to 12V, J15 jumper connect to 3.3V
+For WAVESHARE_DSI2DPI panel(1024*600), connect MIPI DSI port J10 to panel
+Use Dupont wires to connect the following pins.
+ ——————————————————————————————————
+| panel FAN 5V ----------- J19-2  |
+| panel FAN GND ---------- J19-39 |
+| panel FAN SCL1 --------- J2-7   |
+| panel FAN SDA1 --------- J2-9   |
+ —————————————————————————————————
 
 Prepare the Demo
 ================
@@ -27,20 +35,25 @@ Prepare the Demo
 
 Steps to configure the panels
 ===============
-Default panel is LVDS2HDMI card, default port is DPU_DI_LVDS, default setting for APP_DISPLAY_EXTERNAL_CONVERTOR is enabled
-Tips: The APP_DISPLAY_EXTERNAL_CONVERTOR can be set as 1 when you are using MIPI2HDMI card(ADV7535) or LVDS2HDMI card(IT6263) only.
+Default panel is WAVESHARE_DSI2DPI panel, default port is DPU_DI_MIPI, default setting for APP_DISPLAY_EXTERNAL_CONVERTOR is disabled
+Tips: The APP_DISPLAY_EXTERNAL_CONVERTOR can be set as 1 when you are using LVDS2HDMI card(IT6263) only.
 When Kconfig is used
 ----------------
 Below setting is for kconfig, you can fix below settings in dpu/wap/cm7/prj.conf
-For default LVDS2HDMI card, you do not need to change anything.
+For default WAVESHARE_DSI2DPI panel, you do not need to change anything.
 For LCD_SPEC panel(1280*800):
 CONFIG_LCD_SPEC=y
-CONFIG_APP_DISPLAY_EXTERNAL_CONVERTOR=n
+CONFIG_MCUX_PRJSEG_module.board.display_support.DPU_DI_LVDS=y
+For LVDS2HDMI card(1920*1080):
+CONFIG_APP_DISPLAY_EXTERNAL_CONVERTOR=y
+CONFIG_LVDS2HDMI=y
+CONFIG_MCUX_PRJSEG_module.board.display_support.DPU_DI_LVDS=y
 When package is used
 ----------------
 Below setting is for mcux_config.h.
-For default LVDS2HDMI card, you do not need to change anything.
-Setting DEMO_PANEL to 11 to use LCD_SPEC panel(1280*800), you need to set APP_DISPLAY_EXTERNAL_CONVERTOR to 0.
+For default WAVESHARE_DSI2DPI panel, you do not need to change anything.
+Setting DEMO_PANEL to 11 to use LCD_SPEC panel(1280*800), you need to set DPU_EXAMPLE_DI to DPU_DI_LVDS.
+Setting DEMO_PANEL to 15 to use LVDS2HDMI card(1920*1080), you need to set APP_DISPLAY_EXTERNAL_CONVERTOR to 1 and set DPU_EXAMPLE_DI to DPU_DI_LVDS.
 
 Running the demo
 ================
