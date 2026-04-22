@@ -47,6 +47,7 @@ mcux_add_source(
             middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/app/inc/*.h
             middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/app/src/el2go_csr_tlv_parser.c
             middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/app/src/el2go_csr.c # SPSDK mode
+            middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/port/*.h
 )
 
 mcux_add_include(
@@ -56,10 +57,12 @@ mcux_add_include(
              middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/pal/inc
              middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/common/inc
              middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/app/inc
+             middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/port
 )
 
 mcux_add_macro(
-    CC "PRINTF_ADVANCED_ENABLE=1"
+    CC "PRINTF_ADVANCED_ENABLE=1\
+        MBEDTLS_USER_CONFIG_FILE=\\\"el2go_csr_mbedtls_user_config.h\\\""
 )
 
 # -------- add executable target -----------

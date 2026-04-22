@@ -50,18 +50,18 @@ mcux_add_mdk_linker_script(
 # min 8kB needed, for swapping flash sector on pflash 
 # with read-modify-write pattern
 mcux_add_iar_configuration(
-  LD "--config_def=__heap_size__=0x2400"
+  LD "--config_def=__heap_size__=0x4000"
 )
 mcux_add_iar_configuration(
-  LD "--config_def=__stack_size__=0x2400"
+  LD "--config_def=__stack_size__=0x4000"
 )
 mcux_add_mdk_configuration(
-  LD "--predefine=-D__heap_size__=0x2400\
-     --predefine=-D__stack_size__=0x2400"
+  LD "--predefine=-D__heap_size__=0x4000\
+     --predefine=-D__stack_size__=0x4000"
   )
 mcux_add_armgcc_configuration(
-  LD "-Xlinker --defsym=__heap_size__=0x2400\
-      -Xlinker --defsym=__stack_size__=0x2400"
+  LD "-Xlinker --defsym=__heap_size__=0x4000\
+      -Xlinker --defsym=__stack_size__=0x4000"
   )
 
 # --------- add suppression flags -----------
