@@ -66,8 +66,8 @@ mcux_add_armgcc_configuration(
 
 # --------- add suppression flags -----------
 mcux_add_iar_configuration(
-    CC "--diag_suppress Pe188,Pe177"
-    CX "--diag_suppress Pe188,Pe177"
+    CC "--diag_suppress Pe188,Pe177,Pe186"
+    CX "--diag_suppress Pe188,Pe177,Pe186"
 )
 mcux_add_armgcc_configuration(
     CC "-Wno-unused-function"
