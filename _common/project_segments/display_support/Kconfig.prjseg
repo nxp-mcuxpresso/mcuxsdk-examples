@@ -182,6 +182,15 @@ if MCUX_DEMO_PANEL_RK050HR01_SUPPORT
             No prefix in generated macro
 endif
 
+if MCUX_DEMO_PANEL_WAVESHARE_DSI2DPI_SUPPORT
+    config DEMO_PANEL_WAVESHARE_DSI2DPI
+        int
+        default 20
+        help
+            Driver selection for panel WAVESHARE_DSI2DPI
+            No prefix in generated macro
+endif
+
 config MCUX_PRJSEG_module.board.display_support
     bool "Enable Display Support"
 
@@ -245,6 +254,9 @@ config MCUX_DEMO_PANEL_MX9_LVDS_LD_SUPPORT
 config MCUX_DEMO_PANEL_RK050HR01_SUPPORT
     bool
 
+config MCUX_DEMO_PANEL_WAVESHARE_DSI2DPI_SUPPORT
+    bool
+
 if MCUX_PRJSEG_module.board.display_support
 
 config DEMO_PANEL
@@ -269,6 +281,7 @@ config DEMO_PANEL
     default 17 if CAP_TOUCH_DSI
     default 18 if MX9_LVDS_LD
     default 19 if RK050HR01
+    default 20 if WAVESHARE_DSI2DPI
     help
         Panel selection for display support
         No prefix in generated macro
@@ -336,6 +349,8 @@ choice DISPLAY_SUPPORT_PANEL
     config RK050HR01
         bool "RK050HR01-CT" if MCUX_DEMO_PANEL_RK050HR01_SUPPORT
 
+    config WAVESHARE_DSI2DPI
+         bool "WAVESHARE_DSI2DPI" if MCUX_DEMO_PANEL_WAVESHARE_DSI2DPI_SUPPORT
 endchoice
 
 endif
