@@ -26,7 +26,7 @@ void BOARD_InitHardware(void)
 
 void BOARD_MemoryInit(void)
 {
-    SYSCON->RAM_CTRL |= SYSCON_RAM_CTRL_RAMA_ECC_ENABLE_MASK;
+    SYSCON->SRAM_CTRL |= SYSCON_SRAM_CTRL_RAMA_ECC_ENABLE_MASK;
     /* RAMA0(8KB): 0x28000000 ~ 0x28001FFF */
     uint32_t *ramAddress = (uint32_t *)APP_ERM_RAM_START_ADDR;
     uint32_t ramSize     = APP_ERM_RAM_SIZE;
@@ -40,11 +40,11 @@ void BOARD_MemoryInit(void)
 
 void APP_ecc_enable(void) 
 {
-  SYSCON->RAM_CTRL |= SYSCON_RAM_CTRL_RAMA_ECC_ENABLE_MASK;
+  SYSCON->SRAM_CTRL |= SYSCON_SRAM_CTRL_RAMA_ECC_ENABLE_MASK;
 }
 
 void APP_ecc_disable(void) 
 {
-  SYSCON->RAM_CTRL &= ~(SYSCON_RAM_CTRL_RAMA_ECC_ENABLE_MASK);
+  SYSCON->SRAM_CTRL &= ~(SYSCON_SRAM_CTRL_RAMA_ECC_ENABLE_MASK);
 }
 /*${function:end}*/
