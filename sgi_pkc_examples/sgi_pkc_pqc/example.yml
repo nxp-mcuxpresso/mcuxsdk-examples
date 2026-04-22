@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+sgi_pkc_pqc:
+  section-type: application
+  contents:
+    meta_path: examples/sgi_pkc_examples/sgi_pkc_pqc/.
+    project-root-path: boards/${board}/sgi_pkc_examples/sgi_pkc_pqc/${multicore_foldername}
+    document:
+      name: sgi_pkc_pqc${core_id_suffix_name}
+      category: sgi_pkc_examples
+      brief: The SGI PKC application provides examples which demonstrate usage of
+        PQC algorithms and a crypto library lightweight testing.
+      example_readme:
+      - examples/sgi_pkc_examples/sgi_pkc_pqc/readme.md
+      - ${board_root}/${board}/sgi_pkc_examples/sgi_pkc_pqc/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxa577: []
+    frdmmcxa287: []
+    frdmkw43: []
