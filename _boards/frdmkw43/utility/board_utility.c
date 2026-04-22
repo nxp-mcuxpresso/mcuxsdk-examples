@@ -158,7 +158,7 @@ void BOARD_AdcSwTrigger(uint32_t channel)
         mLpadcCommandConfigStruct.sampleChannelMode   = kLPADC_SampleChannelSingleEndSideA;
         mLpadcCommandConfigStruct.sampleTimeMode      = kLPADC_SampleTimeADCK35;
         mLpadcCommandConfigStruct.hardwareAverageMode = kLPADC_HardwareAverageCount16;
-        mLpadcCommandConfigStruct.loopCount           = 1U;
+        mLpadcCommandConfigStruct.loopCount           = 0U;
 
         triggerState = BOARD_AdcTriggerBattery;
     }
