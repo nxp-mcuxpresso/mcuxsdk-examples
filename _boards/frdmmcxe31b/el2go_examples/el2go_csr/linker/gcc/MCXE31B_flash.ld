@@ -107,7 +107,7 @@ SECTIONS
     . = ALIGN(4);
   } > m_text
 
-  .el2go_csr_conf : 
+  .el2go_csr_conf (NOLOAD):
   {
     . = ALIGN(4);
     KEEP(*(.el2go_csr_conf))  /* EL2GO CSR configuration */
