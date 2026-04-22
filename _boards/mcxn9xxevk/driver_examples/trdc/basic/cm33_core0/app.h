@@ -16,9 +16,9 @@
  ******************************************************************************/
 /*${macro:start}*/
 #define EXAMPLE_TRDC_INSTANCE                        TRDC
-#define EXAMPLE_TRDC_MBC_SLAVE_INDEX                 2 /* IFR1 */
-#define EXAMPLE_TRDC_MBC_MEMORY_INDEX                0
-#define EXAMPLE_TRDC_MBC_ACCESS_CONTROL_POLICY_INDEX 5
+#define EXAMPLE_TRDC_MBC_SLAVE_INDEX                 1 /* IFR0 */
+#define EXAMPLE_TRDC_MBC_MEMORY_INDEX                2
+#define EXAMPLE_TRDC_MBC_ACCESS_CONTROL_POLICY_INDEX 0
 /*${macro:end}*/
 
 /*******************************************************************************
