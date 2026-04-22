@@ -10,12 +10,6 @@ mcux_add_source(
 )
 mcux_add_include(BASE_PATH ${SdkRootDirPath} INCLUDES ${project_board_port_path})
 
-mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}
-    SOURCES
-      ${project_board_port_path}/pin_mux.c
-      ${project_board_port_path}/pin_mux.h
-)
 mcux_add_include(BASE_PATH ${SdkRootDirPath} INCLUDES ${project_board_core_path})
 
 mcux_add_source(

@@ -18,10 +18,5 @@ mcux_add_source(
 )
 mcux_add_include(BASE_PATH ${SdkRootDirPath} INCLUDES ${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/${core_id}_s)
 
-mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}
-    SOURCES ${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/${core_id}_s/pin_mux.c
-            ${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/${core_id}_s/pin_mux.h
-)
 mcux_add_include(BASE_PATH ${SdkRootDirPath} INCLUDES ${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/${core_id}_s)
 
