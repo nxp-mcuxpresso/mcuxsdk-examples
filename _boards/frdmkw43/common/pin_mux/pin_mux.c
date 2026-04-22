@@ -269,7 +269,7 @@ BOARD_InitButtonsPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
   - {pin_num: '10', peripheral: GPIO_A, signal: 'GPIO, 5', pin_signal: ADC0_A3/CMP0_IN0/PTA5/RF_GPO_9/TRACE_SWO/BOOT_CONFIG/LPSPI2_PCS0, direction: INPUT, gpio_per_interrupt: kGPIO_InterruptStatusFlagDisabled,
-    pull_select: up, pull_enable: enable, slew_rate: fast, open_drain: disable, drive_strength: low, invert_input: disable}
+    pull_select: down, pull_enable: enable, slew_rate: fast, open_drain: disable, drive_strength: low, invert_input: disable}
   - {pin_num: '24', peripheral: GPIO_D, signal: 'GPIO, 1', pin_signal: ADC0_A13/PTD1/SPC0_LPREQ/NMI_b/RF_GPO_4/TPM2_CLKIN/RF_GPO_7, direction: INPUT, gpio_per_interrupt: kGPIO_InterruptStatusFlagDisabled,
     pull_select: up, pull_enable: enable, pull_value: low, passive_filter: disable, open_drain: disable}
   - {pin_num: '5', peripheral: GPIO_A, signal: 'GPIO, 0', pin_signal: ADC0_A0/PTA0/TPM1_CLKIN/TRGMUX0_IN1/LPSPI2_SCK, direction: INPUT, gpio_per_interrupt: kGPIO_InterruptStatusFlagDisabled,
@@ -312,8 +312,8 @@ void BOARD_InitButtonsPins(void)
     /* PORT_A0 (pin 5) is configured as PTA0 */
     PORT_SetPinConfig(BOARD_INITBUTTONSPINS_SW4_PORT, BOARD_INITBUTTONSPINS_SW4_PIN, &SW4);
 
-    const port_pin_config_t SW2 = {/* Internal pull-up resistor is enabled */
-                                   .pullSelect = (uint16_t)kPORT_PullUp,
+    const port_pin_config_t SW2 = {/* Internal pull-down resistor is enabled */
+                                   .pullSelect = (uint16_t)kPORT_PullDown,
                                    /* Low internal pull resistor value is selected. */
                                    .pullValueSelect = (uint16_t)kPORT_LowPullResistor,
                                    /* Fast slew rate is configured */
