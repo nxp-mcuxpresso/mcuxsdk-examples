@@ -8,14 +8,14 @@ Board settings
 ==============
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Pin Name  Board Location  checker channel number   pre-set value      trigger
-CMP0_IN0/P1_0     R92          channel 0              1           input > DAC output
-CMP0_IN1/P1_3     R41          channel 1              0           input < DAC output
-CMP0_IN2/P1_4     R132         channel 2              1           input > DAC output
+CMP0_IN2/P1_4     R132         channel 2             1           input > DAC output
+CMP0_IN4/P2_2     J8-23        channel 4             0           input < DAC output
+CMP0_IN5/P2_3     J9-14        channel 5             1           input > DAC output
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This example uses LPCMP0 instance, the fixed port is plusMuxPort, the fixed channel is
-channel 7(Internal DAC module), and the checker channels are channel 0(CMP0_IN0, P1_0, R92),
-channel 1(CMP0_IN1, P1_3, R41) and channel 2(CMP0_IN2, P1_4, R132), in miusMuxPort.
+channel 7(Internal DAC module), and the checker channels are channel 2(CMP0_IN2, P1_4, R132),
+channel 4(CMP0_IN4, P2_2, J8-23) and channel 5(CMP0_IN5, P2_3, J9-14), in miusMuxPort.
 The LPCMP's internal DAC module output voltage signal(half of VREFI), the channel's pre-set value
 is 0x0AU.
 
@@ -43,8 +43,8 @@ When the demo runs successfully, following information can be seen on the OpenSD
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 LPCMP RoundRobin Example.
-channel 0 comparison result is different from preset value!
-channel 1 comparison result is different from preset value!
 channel 2 comparison result is different from preset value!
+channel 4 comparison result is different from preset value!
+channel 5 comparison result is different from preset value!
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
