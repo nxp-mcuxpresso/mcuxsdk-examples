@@ -29,6 +29,8 @@ volatile uint32_t g_systickCounter;
 static flexspi_nor_config_t norConfig;
 static uint8_t eeprom_updated = 0;
 static uint16_t eeprom_updated_time = 0;
+static uint8_t eeprom_verified = 0;
+static uint16_t eeprom_verified_time = 0;
 enum EEPROM_access_status
 {
     memory_reading = 0,
@@ -150,6 +152,17 @@ uint16_t eeprom_emulator_get_update_time()
     return eeprom_updated_time;
 }
 
+void eeprom_emulator_set_verify_status(uint8_t status, uint16_t time)
+{
+    eeprom_verified = status;
+    eeprom_verified_time = time;
+}
+
+uint16_t eeprom_emulator_get_verify_time()
+{
+    return eeprom_verified_time;
+}
+
 void flash_eeprom_emulator_update(uint8_t *buf, uint32_t len)
 {
     MEMCPY(buf, (void const *)(FLEXSPI_AMBA_BASE + pflashEscDataOffset), len);
@@ -226,10 +239,11 @@ void LPI2C_Slave_Init()
 
 void eeprom_emulator_flash(uint16_t curr_time_ms)
 {
-    if (eeprom_updated == 1) {
-        if ((uint16_t)(curr_time_ms - eeprom_emulator_get_update_time()) > EMULATOR_EEPROM_UPDATE_TIME_MS) { // exceed 100ms
+    if (eeprom_updated == 1 && eeprom_verified == 1) {
+        if ((uint16_t)(curr_time_ms - eeprom_emulator_get_verify_time()) > EMULATOR_EEPROM_UPDATE_TIME_MS) { // exceed 300ms
             flash_eeprom_emulator_flash(esc_eeprom_cache, ESC_EMULATOR_EEPROM_SIZE);
             eeprom_emulator_set_update_status(0, curr_time_ms);
+            eeprom_emulator_set_verify_status(0, curr_time_ms);
         }
     }
 }
@@ -508,12 +522,14 @@ void LPI2C3_IRQHandler(void)
 
             if (0U != (flags & (uint32_t)kLPI2C_SlaveStopDetectFlag)) {
                 if (EEPROM_status == memory_writing) {
+                    eeprom_emulator_set_verify_status(0, g_systickCounter);
                     eeprom_emulator_set_update_status(1, g_systickCounter);
+                } else if (EEPROM_status == memory_reading) {
+                    eeprom_emulator_set_verify_status(1, g_systickCounter);
                 } else {
                 }
                 EEPROM_status = memory_addr_hi;
                 break;
-
             }
         }
     }
