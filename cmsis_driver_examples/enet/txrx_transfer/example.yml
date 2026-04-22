@@ -21,6 +21,7 @@ cmsis_enet_txrx_transfer:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxe247: []
+    frdmmcxa577: []
     evkbimxrt1050:
     - -armgcc@debug
     - -armgcc@release
