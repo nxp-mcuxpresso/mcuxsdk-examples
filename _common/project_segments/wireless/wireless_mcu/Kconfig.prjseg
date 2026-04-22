@@ -21,7 +21,7 @@ config MCUX_PRJSEG_module.board.wireless.app_lce
     select MCUX_COMPONENT_component.lce
     select MCUX_COMPONENT_driver.mu1
     depends on MCUX_PRJSEG_module.board.wireless.board
-    depends on MCUX_HW_DEVICE_KW47B42ZB7 || MCUX_HW_DEVICE_MCXW727C || MCUX_HW_DEVICE_KW47B42Z97 || MCUX_HW_DEVICE_KW47B42Z96 || MCUX_HW_DEVICE_KW47B42ZB6
+    depends on MCUX_HW_DEVICE_KW47B42ZB7 || MCUX_HW_DEVICE_MCXW727C || MCUX_HW_DEVICE_KW47B42Z97 || MCUX_HW_DEVICE_KW47B42Z96 || MCUX_HW_DEVICE_KW47B42ZB6 || MCUX_HW_DEVICE_KW43B43ZC7 || MCUX_HW_DEVICE_MCXW70AC
     help
       This is the initialization module for the DSP-V (Localization Compute Engine).
 
