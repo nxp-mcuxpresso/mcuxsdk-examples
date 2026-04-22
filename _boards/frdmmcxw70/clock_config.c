@@ -36,6 +36,7 @@ processor_version: 14.0.0
 /* clang-format on */
 
 #include "fsl_ccm32k.h"
+#include "fsl_spc.h"
 #include "clock_config.h"
 
 /*******************************************************************************
@@ -190,6 +191,7 @@ void BOARD_BootClockRUN(void)
 {
     uint32_t coreFreq;
     scg_sys_clk_config_t curConfig;
+    spc_active_mode_core_ldo_option_t ldoOption;
 
     /* Unlock FIRC, SIRC, ROSC and SOSC control status registers */
     CLOCK_UnlockFircControlStatusReg();
@@ -201,7 +203,14 @@ void BOARD_BootClockRUN(void)
     coreFreq = CLOCK_GetSysClkFreq(kSCG_SysClkCore);
 
     if (coreFreq <= BOARD_BOOTCLOCKRUN_CORE_CLOCK) {
+        /* Set the LDO_CORE VDD regulator level */
+        ldoOption.CoreLDOVoltage = kSPC_CoreLDO_SafeModeVoltage;
+        ldoOption.CoreLDODriveStrength = kSPC_CoreLDO_NormalDriveStrength;
+        (void)SPC_SetActiveModeCoreLDORegulatorConfig(SPC0, &ldoOption);
+        /* Configure Flash to support different voltage level and frequency */
         FMU->FCTRL = (FMU->FCTRL & ~((uint32_t)FMU_FCTRL_RWSC_MASK)) | (FMU_FCTRL_RWSC(0x2U));
+        /* Specifies the operating voltage for the SRAM's read/write timing margin */
+        SPC_SetSRAMOperateVoltage(SPC0, kSPC_SRAM_OperatVoltage1P1V);
     }
 
     /* Config 32k Crystal Oscillator */
@@ -244,6 +253,12 @@ void BOARD_BootClockRUN(void)
     if (coreFreq > BOARD_BOOTCLOCKRUN_CORE_CLOCK) {
         /* Configure Flash to support different voltage level and frequency */
         FMU->FCTRL = (FMU->FCTRL & ~((uint32_t)FMU_FCTRL_RWSC_MASK)) | (FMU_FCTRL_RWSC(0x2U));
+        /* Specifies the operating voltage for the SRAM's read/write timing margin */
+        SPC_SetSRAMOperateVoltage(SPC0, kSPC_SRAM_OperatVoltage1P1V);
+        /* Set the LDO_CORE VDD regulator level */
+        ldoOption.CoreLDOVoltage = kSPC_CoreLDO_SafeModeVoltage;
+        ldoOption.CoreLDODriveStrength = kSPC_CoreLDO_NormalDriveStrength;
+        (void)SPC_SetActiveModeCoreLDORegulatorConfig(SPC0, &ldoOption);
     }
 
     /* Set SCG CLKOUT selection. */

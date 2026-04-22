@@ -15,6 +15,7 @@ config MCUX_HW_BOARD_frdmkw43
     imply MCUX_COMPONENT_driver.gpio
     imply MCUX_COMPONENT_driver.ccm32k
     imply MCUX_COMPONENT_driver.glikey
+    imply MCUX_COMPONENT_driver.spc
 
 config MCUX_COMPONENT_device.utility
     bool "utility for KW43B43ZC7"
