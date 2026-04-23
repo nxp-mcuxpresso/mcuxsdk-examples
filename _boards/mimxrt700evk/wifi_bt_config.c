@@ -19,6 +19,7 @@
  ******************************************************************************/
 extern uint32_t BOARD_USDHC1ClockConfiguration(void);
 extern void BOARD_SDCardIoVoltageControl(sdmmc_operation_voltage_t voltage);
+extern void BOARD_SDCardDAT3PullFunction(uint32_t status);
 
 /*******************************************************************************
  * Variables
@@ -26,6 +27,8 @@ extern void BOARD_SDCardIoVoltageControl(sdmmc_operation_voltage_t voltage);
 /*!brief sdmmc dma buffer */
 AT_NONCACHEABLE_SECTION_ALIGN(static uint32_t s_sdmmcHostDmaBuffer[BOARD_SDMMC_HOST_DMA_DESCRIPTOR_BUFFER_SIZE],
                               SDMMCHOST_DMA_DESCRIPTOR_BUFFER_ALIGN_SIZE);
+
+static sd_detect_card_t s_cd;
 static sd_io_voltage_t s_ioVoltage = {
     .type = BOARD_SDMMC_SD_IO_VOLTAGE_CONTROL_TYPE,
     .func = BOARD_SDCardIoVoltageControl,
@@ -67,6 +70,18 @@ void BOARD_WIFI_BT_Enable(bool enable)
     }
 }
 
+void BOARD_WIFI_BT_CardDetectInit(sd_cd_t cd, void *userData)
+{
+    /* install card detect callback */
+    s_cd.cdDebounce_ms = BOARD_SDMMC_SD_CARD_DETECT_DEBOUNCE_DELAY_MS;
+    s_cd.type          = kSD_DetectCardByHostDATA3;
+    s_cd.callback      = cd;
+    s_cd.userData      = userData;
+
+    /* register DAT3 pull function switch function pointer */
+    s_cd.dat3PullFunc = BOARD_SDCardDAT3PullFunction;
+}
+
 void BOARD_WIFI_BT_Config(void *card, sdio_int_t cardInt)
 {
     assert(card);
@@ -78,7 +93,7 @@ void BOARD_WIFI_BT_Config(void *card, sdio_int_t cardInt)
     ((sdio_card_t *)card)->host->hostController.sourceClock_Hz = BOARD_USDHC1ClockConfiguration();
     ((sdio_card_t *)card)->host->tuningType                    = BOARD_SDMMC_SD_TUNING_TYPE;
 
-    ((sdio_card_t *)card)->usrParam.cd = NULL;
+    ((sdio_card_t *)card)->usrParam.cd = &s_cd;
     ((sdio_card_t *)card)->usrParam.pwr       = NULL;
     ((sdio_card_t *)card)->usrParam.ioVoltage = &s_ioVoltage;
     if (cardInt != NULL)
@@ -87,6 +102,7 @@ void BOARD_WIFI_BT_Config(void *card, sdio_int_t cardInt)
         ((sdio_card_t *)card)->usrParam.sdioInt = &s_sdioInt;
     }
 
+    BOARD_WIFI_BT_CardDetectInit(NULL, NULL);
     NVIC_SetPriority(BOARD_SDMMC_SDIO_HOST_IRQ, BOARD_SDMMC_SDIO_HOST_IRQ_PRIORITY);
 
     BOARD_WIFI_BT_Enable(false);

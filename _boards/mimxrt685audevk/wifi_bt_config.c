@@ -24,6 +24,7 @@ extern void BOARD_SDCardIoVoltageControlInit(void);
 extern void BOARD_SDCardIoVoltageControl(sdmmc_operation_voltage_t voltage);
 extern void BOARD_SDCardPowerResetInit(void);
 extern void BOARD_SDCardPowerControl(bool enable);
+extern void BOARD_SDCardDAT3PullFunction(uint32_t status);
 #endif
 
 /*******************************************************************************
@@ -33,6 +34,8 @@ extern void BOARD_SDCardPowerControl(bool enable);
 /*!brief sdmmc dma buffer */
 AT_NONCACHEABLE_SECTION_ALIGN(static uint32_t s_sdmmcHostDmaBuffer[BOARD_SDMMC_HOST_DMA_DESCRIPTOR_BUFFER_SIZE],
                               SDMMCHOST_DMA_DESCRIPTOR_BUFFER_ALIGN_SIZE);
+
+static sd_detect_card_t s_cd;
 static sd_io_voltage_t s_ioVoltage = {
     .type = BOARD_SDMMC_SD_IO_VOLTAGE_CONTROL_TYPE,
     .func = BOARD_SDCardIoVoltageControl,
@@ -87,6 +90,18 @@ void BOARD_WIFI_BT_Enable(bool enable)
     }
 }
 
+void BOARD_WIFI_BT_CardDetectInit(sd_cd_t cd, void *userData)
+{
+    /* install card detect callback */
+    s_cd.cdDebounce_ms = BOARD_SDMMC_SD_CARD_DETECT_DEBOUNCE_DELAY_MS;
+    s_cd.type          = kSD_DetectCardByHostDATA3;
+    s_cd.callback      = cd;
+    s_cd.userData      = userData;
+
+    /* register DAT3 pull function switch function pointer */
+    s_cd.dat3PullFunc = BOARD_SDCardDAT3PullFunction;
+}
+
 void BOARD_WIFI_BT_Config(void *card, sdio_int_t cardInt)
 {
 #ifdef WIFI_BT_USE_M2_INTERFACE
@@ -105,12 +120,14 @@ void BOARD_WIFI_BT_Config(void *card, sdio_int_t cardInt)
         ((sdio_card_t *)card)->usrParam.sdioInt = &s_sdioInt;
     }
 
+    ((sdio_card_t *)card)->usrParam.cd         = &s_cd;
     ((sdio_card_t *)card)->usrParam.pwr       = BOARD_SDCardPowerControl;
     ((sdio_card_t *)card)->usrParam.ioVoltage = &s_ioVoltage;
 
     BOARD_SDCardPowerResetInit();
     BOARD_SDCardIoVoltageControlInit();
 
+    BOARD_WIFI_BT_CardDetectInit(NULL, NULL);
     NVIC_SetPriority(BOARD_SDMMC_SDIO_HOST_IRQ, BOARD_SDMMC_SDIO_HOST_IRQ_PRIORITY);
 #elif defined(WIFI_BT_USE_USD_INTERFACE)
     BOARD_SDIO_Config(card, NULL, BOARD_SDMMC_SDIO_HOST_IRQ_PRIORITY, cardInt);
