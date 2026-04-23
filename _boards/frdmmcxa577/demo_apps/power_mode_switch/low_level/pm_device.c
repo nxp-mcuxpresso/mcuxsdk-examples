@@ -871,6 +871,19 @@ void APP_PowerPreSwitchHook(app_power_mode_t targetPowerMode)
 }
 
 void APP_PowerPostSwitchHook(void)
-{ 
+{
+    /*
+     * After waking from DeepSleep/PowerDown/DeepPowerDown, clear the SPC
+     * external-voltage-domain isolation state that was configured before entry.
+     *
+     * SPC lives in the SYSTEM power domain and is not reset by a warm reset
+     * (including debugger-triggered reset when downloading the next image).
+     * If the LPISO/ISO bits and the PERIPH_IO_ISO latch are left set, the
+     * next application will see VDD_USB / VDD_P2 / VDD_P3 / VDD_P4 held in
+     * the isolated state.
+     */
+    SPC_ClearPeriphIOIsolationFlag(APP_SPC);
+    SPC_SetExternalVoltageDomainsConfig(APP_SPC, 0x0U, 0x0U);
+
     BOARD_InitHardware();
 }
