@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 NXP
+ * Copyright 2023-2024, 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -84,8 +84,8 @@
 
 /* display params (default values) */
 #define APP_DISPLAY_NAME   "McuLcdST7796S"
-#define APP_DISPLAY_WIDTH  128
-#define APP_DISPLAY_HEIGHT 128
+#define APP_DISPLAY_WIDTH  160
+#define APP_DISPLAY_HEIGHT 120
 #define APP_DISPLAY_FORMAT MPP_PIXEL_RGB565
 #define APP_DISPLAY_LANDSCAPE_ROTATE ROTATE_0
 

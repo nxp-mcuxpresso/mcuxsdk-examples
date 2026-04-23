@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -50,7 +50,7 @@ void *image2_data = (void *)zebra_256_206_rgb565le_data;
 #define SRC2_IMAGE_WIDTH SRC_IMAGE_ZEBRA_256_206_RGB565LE_WIDTH
 void *image1_data = (void *)stopwatch168_208_vuyx_data;
 void *image2_data = (void *)zebra_256_206_rgb565le_data;
-#define SRC1_EXPECTED_CHECKSUM 0xb0923d3b
+#define SRC1_EXPECTED_CHECKSUM 0xd0743d10
 #define SRC2_EXPECTED_CHECKSUM 0xdbaf11b5
 #elif (APP_CONFIG==2)
 #include "images/skigirl_COCO_320_256_rgb565.h"
@@ -67,8 +67,8 @@ void *image2_data = (void *)zebra_256_206_rgb565le_data;
 #define SRC2_IMAGE_WIDTH SRC_IMAGE_STOPWATCH320_240_RGB565LE_WIDTH
 void *image1_data = (void *)skigirl_COCO_320_256_rgb565_data;
 void *image2_data = (void *)stopwatch320_240_rgb565le_data;
-#define SRC1_EXPECTED_CHECKSUM 0xb343afd4
-#define SRC2_EXPECTED_CHECKSUM 0x5b022729
+#define SRC1_EXPECTED_CHECKSUM 0x8a7ea90f
+#define SRC2_EXPECTED_CHECKSUM 0x39d06ad1
 #elif (APP_CONFIG==3)
 #include "images/couple_COCO_160_120_rgb565.h"
 #include "images/skigirl_COCO_160_120_rgb565.h"

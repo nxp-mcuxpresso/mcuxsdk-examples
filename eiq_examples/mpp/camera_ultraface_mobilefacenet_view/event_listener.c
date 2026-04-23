@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 NXP
+ * Copyright 2024-2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -46,7 +46,8 @@ int mpp_event_listener(mpp_t mpp, mpp_evt_t evt, void *evt_data, void *user_data
                         inf_output,
 						app_priv->db,
 						app_priv->db_max,
-                        &result);
+                        &result,
+                        0.0f);
 
                 /* copy recognition results */
                 memcpy(&app_priv->result, &result, sizeof(result));

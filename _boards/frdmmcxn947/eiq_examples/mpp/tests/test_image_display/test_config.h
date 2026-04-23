@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 NXP
+ * Copyright 2024-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -46,8 +46,8 @@ void *image_data = (void *)stopwatch320_240_rgb565le_data;
 #define SRC_IMAGE_WIDTH SRC_IMAGE_ZEBRA_256_206_RGB565LE_WIDTH
 void *image_data = (void *)zebra_256_206_rgb565le_data;
 /* define the output image position in the screen */
-#define OUTPUT_WINDOW_TOP    136
-#define OUTPUT_WINDOW_LEFT   271
+#define OUTPUT_WINDOW_TOP    36
+#define OUTPUT_WINDOW_LEFT   96
 #define EXPECTED_CHECKSUM    0xa4927e6b
 #endif
 

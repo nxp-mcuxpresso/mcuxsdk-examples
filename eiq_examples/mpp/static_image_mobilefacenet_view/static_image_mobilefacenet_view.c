@@ -1,5 +1,5 @@
 /*
-* Copyright 2024-2025 NXP
+* Copyright 2024-2026 NXP
 * All rights reserved.
 *
 * SPDX-License-Identifier: BSD-3-Clause
@@ -207,7 +207,8 @@ int mpp_event_listener(mpp_t mpp, mpp_evt_t evt, void *evt_data, void *user_data
                 inf_output,
                 g_embedding_db,
                 NUM_FACES,
-                &result);
+                &result,
+                0.0f);
 		/* check that we can modify the user data (not accessed by other task) */
 		if (Atomic_CompareAndSwap_u32(&app_priv->accessing, 1, 0) == ATOMIC_COMPARE_AND_SWAP_SUCCESS)
 		{

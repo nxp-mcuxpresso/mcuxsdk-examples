@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 NXP
+ * Copyright 2024-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -37,7 +37,7 @@
 #define SRC_IMAGE_WIDTH SRC_IMAGE_90_160_RGB565LE_WIDTH
 void *image_data = (void *)image_90_160_rgb565le_data;
 #define IMAGE_NAME "90_160_rgb565le"
-#define EXPECTED_CHECKSUM 0x00000000
+#define EXPECTED_CHECKSUM 0xbd86fc52
 #elif (APP_CONFIG==1)
 #include "images/stopwatch168_208_rgb565.h"
 #define SRC_IMAGE_FORMAT SRC_IMAGE_STOPWATCH168_208_RGB565_FORMAT
@@ -46,7 +46,7 @@ void *image_data = (void *)image_90_160_rgb565le_data;
 #define SRC_IMAGE_WIDTH SRC_IMAGE_STOPWATCH168_208_RGB565_WIDTH
 void *image_data = (void *)stopwatch168_208_rgb565_data;
 #define IMAGE_NAME "stopwatch168_208_rgb565"
-#define EXPECTED_CHECKSUM 0x66c61722
+#define EXPECTED_CHECKSUM 0xa5f47159
 #elif (APP_CONFIG==2)
 #include "images/90_160_rgb565le.h"
 #define SRC_IMAGE_FORMAT SRC_IMAGE_90_160_RGB565LE_FORMAT

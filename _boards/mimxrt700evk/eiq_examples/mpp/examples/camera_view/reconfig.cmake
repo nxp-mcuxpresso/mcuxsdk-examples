@@ -6,7 +6,7 @@ mcux_add_source(
                 ${board_root}/${board}/eiq_examples/mpp/src/image_process.c
                 ${board_root}/${board}/eiq_examples/mpp/inc/host_video.h
                 ${board_root}/${board}/eiq_examples/mpp/inc/image_process.h
-    )
+)
 
 mcux_add_macro(
     CC "-DRTOS_HEAP_SIZE=2000 \

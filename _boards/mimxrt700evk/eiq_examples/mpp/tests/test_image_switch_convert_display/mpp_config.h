@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -80,5 +80,7 @@
 /* other parameters */
 /* rotation is needed to display in landscape because display RK055 is portrait */
 #define APP_DISPLAY_LANDSCAPE_ROTATE          ROTATE_90
+
+#define ENABLE_PISANO_CHECKSUM          1
 
 #endif /* _MPP_CONFIG_H */

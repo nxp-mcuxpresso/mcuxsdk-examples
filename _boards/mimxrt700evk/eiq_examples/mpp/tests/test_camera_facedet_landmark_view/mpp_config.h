@@ -169,7 +169,7 @@
 #define MODEL_NUM_LANDMARKS SCRFD_NUM_LANDMARKS
 
 #if defined(USE_SCRFD_320_256_MODEL)
-#define APP_STATIC_IMAGE_PATH "images/couple_COCO_256_320_rgb.h"
+#define APP_STATIC_IMAGE_PATH "images/couple_COCO_320_256_rgb.h"
 #elif defined(USE_SCRFD_256_256_MODEL)
 #define APP_STATIC_IMAGE_PATH "images/couple_COCO_256_256_rgb.h"
 #else

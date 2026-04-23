@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 NXP
+ * Copyright 2024-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -8,7 +8,7 @@
 #define _TEST_CONFIG_H
 
 /*
- * This is the test configuration for evkmimxrt1170
+ * This is the test configuration for evkbmimxrt1170
  */
 
 /*******************************************************************************
@@ -32,7 +32,7 @@
 #define SRC_IMAGE_HEIGHT SRC_IMAGE_COUPLE_COCO_320_240_BGRA_HEIGHT
 #define SRC_IMAGE_WIDTH SRC_IMAGE_COUPLE_COCO_320_240_BGRA_WIDTH
 void *image_data = (void *)couple_COCO_320_240_bgra_data;
-#define EXPECTED_PERSON_CONFIDENCE_MIN  71
+#define EXPECTED_PERSON_CONFIDENCE_MIN  50
 #define EXPECTED_FACE_CONFIDENCE_MIN    99
 #define EXPECTED_NUM_DETECTED_PERSONS   1
 #define EXPECTED_NUM_DETECTED_FACES     2

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 NXP
+ * Copyright 2023-2024, 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -55,7 +55,7 @@
 #define HAL_MUTEX_TIMEOUT_MS   (5000)
 
 /* enable checksum computation using Pisano when using MCXN [TESTS ONLY] */
-#define ENABLE_PISANO_CHECKSUM 0
+#define ENABLE_PISANO_CHECKSUM 1
 
 /*******************************************************************************
  * Application configuration (Optional)
@@ -67,8 +67,8 @@
 
 /* display params (default values) */
 #define APP_DISPLAY_NAME   "McuLcdST7796S"
-#define APP_DISPLAY_WIDTH  320
-#define APP_DISPLAY_HEIGHT 480
+#define APP_DISPLAY_WIDTH  480
+#define APP_DISPLAY_HEIGHT 320
 #define APP_DISPLAY_FORMAT MPP_PIXEL_RGB565
 #define APP_DISPLAY_LANDSCAPE_ROTATE ROTATE_0
 
@@ -84,7 +84,9 @@
  * 0: disabled
  * 1: enabled
  */
-#define APP_STRIPE_MODE 1
+#ifndef APP_STRIPE_MODE
+#define APP_STRIPE_MODE 0
+#endif
 
 #endif /* _MPP_CONFIG_H */
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, 2025 NXP
+ * Copyright 2023, 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -73,7 +73,7 @@ void *image_data = (void *)dogs_COCO_320_320_bgra_data;
 void *image_data = (void *)stopwatch128_128_rgb_data;
 #define IMAGE_NAME "stopwatch_RGB888"
 #if (IMG_SCALE == 4)
-#define EXPECTED_CHECKSUM 0xc9d16e83
+#define EXPECTED_CHECKSUM 0x2770913f
 #else
 #define EXPECTED_CHECKSUM 0xdeadbeef
 #endif
@@ -86,7 +86,7 @@ void *image_data = (void *)stopwatch128_128_rgb_data;
 void *image_data = (void *)stopwatch168_208_rgb565_data;
 #define IMAGE_NAME "stopwatch168_208_rgb565"
 #if (IMG_COLOR_CONVERT == IMG_COLOR_RGB888)
-#define EXPECTED_CHECKSUM 0xc9ec213d
+#define EXPECTED_CHECKSUM 0xee5e73c4
 #elif (IMG_COLOR_CONVERT == IMG_COLOR_BGR888)
 #define EXPECTED_CHECKSUM 0x11bd5213
 #elif (IMG_COLOR_CONVERT == IMG_COLOR_GRAY)

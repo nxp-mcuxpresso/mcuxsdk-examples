@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2025 NXP
+ * Copyright 2022-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -8,7 +8,7 @@
 #define _TEST_CONFIG_H
 
 /*
- * This is the test configuration for evkbmimxrt1070
+ * This is the test configuration for evkbmimxrt1170
  */
 
 /*******************************************************************************
@@ -49,7 +49,7 @@ void *image_data = (void *)image_90_160_rgb565le_data;
 #define SRC_IMAGE_WIDTH SRC_IMAGE_STOPWATCH168_208_VUYX_WIDTH
 void *image_data = (void *)stopwatch168_208_vuyx_data;
 #define IMAGE_NAME "stopwatch168_208_vuyx"
-#define EXPECTED_CHECKSUM 0x4deb696c
+#define EXPECTED_CHECKSUM 0x0c973d61
 #elif (APP_CONFIG==2)
 #include "images/dogs_COCO_320_320_bgra.h"
 #define SRC_IMAGE_FORMAT SRC_IMAGE_DOGS_COCO_320_320_BGRA_FORMAT
@@ -58,7 +58,7 @@ void *image_data = (void *)stopwatch168_208_vuyx_data;
 #define SRC_IMAGE_WIDTH SRC_IMAGE_DOGS_COCO_320_320_BGRA_WIDTH
 void *image_data = (void *)dogs_COCO_320_320_bgra_data;
 #define IMAGE_NAME "dogs_COCO_320_320_bgra.h"
-#define EXPECTED_CHECKSUM 0xd0513fe8
+#define EXPECTED_CHECKSUM 0x7de45e3e
 #elif (APP_CONFIG==3)
 #include "images/stopwatch128_128_rgb.h"
 #define SRC_IMAGE_FORMAT SRC_IMAGE_STOPWATCH128_128_RGB_FORMAT
@@ -265,7 +265,7 @@ void *image_data = (void *)stopwatch168_208_rgb565_data;
 #define SRC_IMAGE_WIDTH SRC_IMAGE_STOPWATCH168_208_RGB565_WIDTH
 void *image_data = (void *)stopwatch168_208_rgb565_data;
 #define IMAGE_NAME "stopwatch168_208_rgb565"
-#define EXPECTED_CHECKSUM 0x5b02f800
+#define EXPECTED_CHECKSUM 0xfdaf8d4c
 #elif (APP_CONFIG==26)/* UPSCALE + 90*/
 #include "images/stopwatch168_208_rgb565.h"
 #define SRC_IMAGE_FORMAT SRC_IMAGE_STOPWATCH168_208_RGB565_FORMAT
@@ -274,7 +274,7 @@ void *image_data = (void *)stopwatch168_208_rgb565_data;
 #define SRC_IMAGE_WIDTH SRC_IMAGE_STOPWATCH168_208_RGB565_WIDTH
 void *image_data = (void *)stopwatch168_208_rgb565_data;
 #define IMAGE_NAME "stopwatch168_208_rgb565"
-#define EXPECTED_CHECKSUM 0x50f51338
+#define EXPECTED_CHECKSUM 0x7c1a5d49
 #elif (APP_CONFIG==27)/* 180*/
 #include "images/stopwatch168_208_rgb565.h"
 #define SRC_IMAGE_FORMAT SRC_IMAGE_STOPWATCH168_208_RGB565_FORMAT
@@ -283,7 +283,7 @@ void *image_data = (void *)stopwatch168_208_rgb565_data;
 #define SRC_IMAGE_WIDTH SRC_IMAGE_STOPWATCH168_208_RGB565_WIDTH
 void *image_data = (void *)stopwatch168_208_rgb565_data;
 #define IMAGE_NAME "stopwatch168_208_rgb565"
-#define EXPECTED_CHECKSUM 0xaa11c2f6
+#define EXPECTED_CHECKSUM 0x136b5af7
 #elif (APP_CONFIG==28) /* UPSCALE + 180*/
 #include "images/stopwatch168_208_rgb565.h"
 #define SRC_IMAGE_FORMAT SRC_IMAGE_STOPWATCH168_208_RGB565_FORMAT
@@ -292,7 +292,7 @@ void *image_data = (void *)stopwatch168_208_rgb565_data;
 #define SRC_IMAGE_WIDTH SRC_IMAGE_STOPWATCH168_208_RGB565_WIDTH
 void *image_data = (void *)stopwatch168_208_rgb565_data;
 #define IMAGE_NAME "stopwatch168_208_rgb565"
-#define EXPECTED_CHECKSUM 0x165c01da
+#define EXPECTED_CHECKSUM 0x71fa3ee4
 #elif (APP_CONFIG==29)
 #include "images/stopwatch168_208_rgb565.h"
 #define SRC_IMAGE_FORMAT SRC_IMAGE_STOPWATCH168_208_RGB565_FORMAT
@@ -301,7 +301,7 @@ void *image_data = (void *)stopwatch168_208_rgb565_data;
 #define SRC_IMAGE_WIDTH SRC_IMAGE_STOPWATCH168_208_RGB565_WIDTH
 void *image_data = (void *)stopwatch168_208_rgb565_data;
 #define IMAGE_NAME "stopwatch168_208_rgb565"
-#define EXPECTED_CHECKSUM 0x9b8caadb
+#define EXPECTED_CHECKSUM 0x57693bc3
 #elif (APP_CONFIG==30)
 #include "images/stopwatch168_208_rgb565.h"
 #define SRC_IMAGE_FORMAT SRC_IMAGE_STOPWATCH168_208_RGB565_FORMAT
@@ -310,7 +310,7 @@ void *image_data = (void *)stopwatch168_208_rgb565_data;
 #define SRC_IMAGE_WIDTH SRC_IMAGE_STOPWATCH168_208_RGB565_WIDTH
 void *image_data = (void *)stopwatch168_208_rgb565_data;
 #define IMAGE_NAME "stopwatch168_208_rgb565"
-#define EXPECTED_CHECKSUM 0x6f5060b4
+#define EXPECTED_CHECKSUM 0x6038625e
 #elif (APP_CONFIG==31)
 #include "images/stopwatch168_208_rgb565.h"
 #define SRC_IMAGE_FORMAT SRC_IMAGE_STOPWATCH168_208_RGB565_FORMAT
@@ -346,7 +346,7 @@ void *image_data = (void *)stopwatch168_208_rgb565_data;
 #define SRC_IMAGE_WIDTH SRC_IMAGE_STOPWATCH168_208_RGB565_WIDTH
 void *image_data = (void *)stopwatch168_208_rgb565_data;
 #define IMAGE_NAME "stopwatch168_208_rgb565"
-#define EXPECTED_CHECKSUM 0x05ede218
+#define EXPECTED_CHECKSUM 0x4fb57620
 #elif (APP_CONFIG==35)
 #include "images/stopwatch168_208_rgb565.h"
 #define SRC_IMAGE_FORMAT SRC_IMAGE_STOPWATCH168_208_RGB565_FORMAT
@@ -355,7 +355,7 @@ void *image_data = (void *)stopwatch168_208_rgb565_data;
 #define SRC_IMAGE_WIDTH SRC_IMAGE_STOPWATCH168_208_RGB565_WIDTH
 void *image_data = (void *)stopwatch168_208_rgb565_data;
 #define IMAGE_NAME "stopwatch168_208_rgb565"
-#define EXPECTED_CHECKSUM 0x4487ccd0
+#define EXPECTED_CHECKSUM 0xdbd6728b
 #elif (APP_CONFIG==36)
 #include "images/couple_COCO_320_240_rgba.h"
 #define SRC_IMAGE_FORMAT SRC_IMAGE_COUPLE_COCO_320_240_RGBA_FORMAT
@@ -364,7 +364,7 @@ void *image_data = (void *)stopwatch168_208_rgb565_data;
 #define SRC_IMAGE_WIDTH SRC_IMAGE_COUPLE_COCO_320_240_RGBA_WIDTH
 void *image_data = (void *)couple_COCO_320_240_rgba_data;
 #define IMAGE_NAME "couple_COCO_320_240_rgba"
-#define EXPECTED_CHECKSUM 0x0
+#define EXPECTED_CHECKSUM 0x9c0ab75e
 #elif (APP_CONFIG==37)
 #include "images/dogs_COCO_320_320_bgra.h"
 #define SRC_IMAGE_FORMAT SRC_IMAGE_DOGS_COCO_320_320_BGRA_FORMAT

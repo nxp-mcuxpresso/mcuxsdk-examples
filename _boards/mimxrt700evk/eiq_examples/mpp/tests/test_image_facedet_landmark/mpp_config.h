@@ -1,11 +1,13 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
 #ifndef _MPP_CONFIG_H
 #define _MPP_CONFIG_H
+
+#include "test_config.h"
 
 /* This header configures the MPP HAL and the application according to the board model */
 
@@ -56,8 +58,6 @@
 
 /* select inference model converted for NPU */
 #define APP_USE_NEUTRON64_MODEL
-// #define USE_SCRFD_320_256_MODEL
-// #define USE_SCRFD_256_256_MODEL
 
 /* detection boxes params */
 /* maximum number of boxes stored in RAM by APP (1box ~= 16B) */

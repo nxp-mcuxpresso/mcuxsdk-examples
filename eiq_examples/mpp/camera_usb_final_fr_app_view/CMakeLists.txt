@@ -2,12 +2,12 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(camera_usb_final_fr_app_view LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/eiq_examples/mpp/examples/camera_usb_final_fr_app_view)
+project(camera_usb_final_fr_app_view LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/eiq_examples/mpp/examples/camera_usb_final_fr_app_view/${core_id})
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/eiq_examples/mpp/camera_usb_final_fr_app_view/camera_usb_final_fr_app_view.c
-            ${board_root}/${board}/eiq_examples/mpp/examples//camera_usb_final_fr_app_view/mpp_config.h
+            ${board_root}/${board}/eiq_examples/mpp/examples/camera_usb_final_fr_app_view/${core_id}/mpp_config.h
             examples/eiq_examples/mpp/camera_usb_final_fr_app_view/event_listener.c
             examples/eiq_examples/mpp/camera_usb_final_fr_app_view/main.c
             examples/eiq_examples/mpp/camera_usb_final_fr_app_view/*.h
@@ -18,12 +18,13 @@ mcux_add_source(
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES ${board_root}/${board}/eiq_examples/mpp/examples/camera_usb_final_fr_app_view/
+    INCLUDES ${board_root}/${board}/eiq_examples/mpp/examples/camera_usb_final_fr_app_view/${core_id}/
               examples/eiq_examples/mpp/camera_usb_final_fr_app_view/
 )
 
 # board files
 include(${SdkRootDirPath}/${board_root}/${board}/eiq_examples/mpp/board.cmake)
+
 # model and post-processing
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}/middleware/eiq/mpp
@@ -59,7 +60,15 @@ mcux_add_source(
 # top level
 include(${SdkRootDirPath}/CMakeLists.txt)
 # board & app specific cmake
-include(${SdkRootDirPath}/${board_root}/${board}/eiq_examples/mpp/examples/camera_usb_final_fr_app_view/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/eiq_examples/mpp/examples/camera_usb_final_fr_app_view/${core_id}/reconfig.cmake OPTIONAL)
+
+# When sysbuild is not enabled, use pre-built core1 image that drives the USB camera
+if(NOT SYSBUILD)
+   file(COPY ${SdkRootDirPath}/${board_root}/${board}/eiq_examples/mpp/examples/camera_usb_final_fr_app_view/${core_id}/core1_image_QVGA_VGA.bin
+        DESTINATION ${SdkRootDirPath}/examples/eiq_examples/mpp/camera_usb_final_fr_app_view/)
+   file(RENAME ${SdkRootDirPath}/examples/eiq_examples/mpp/camera_usb_final_fr_app_view/core1_image_QVGA_VGA.bin
+               ${SdkRootDirPath}/examples/eiq_examples/mpp/camera_usb_final_fr_app_view/core1_image.bin)
+endif()
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
 

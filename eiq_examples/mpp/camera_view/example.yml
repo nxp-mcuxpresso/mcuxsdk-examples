@@ -34,14 +34,14 @@ camera_view:
     - -mdk@flash_debug
     - -mdk@flash_release
     frdmmcxn947@cm33_core0:
-    - -armgcc@debug
-    - -armgcc@release
+    - +armgcc@debug
+    - +armgcc@release
     - -iar@debug
     - -iar@release
     - -mdk@debug
     - -mdk@release
-    - +armgcc@flash_debug
-    - +armgcc@flash_release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
     - -iar@flash_debug
     - -iar@flash_release
     - -mdk@flash_debug

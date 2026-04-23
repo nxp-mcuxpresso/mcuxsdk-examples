@@ -1,11 +1,13 @@
 /*
- * Copyright 2021-2024 NXP
+ * Copyright 2021-2024, 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
 #ifndef _MPP_CONFIG_H
 #define _MPP_CONFIG_H
+
+#include "test_config.h"
 
 /* This header configures the MPP HAL and the application according to the board model */
 

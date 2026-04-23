@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 NXP
+ * Copyright 2024-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -82,7 +82,7 @@
 #ifndef USE_NAS_OPTIMIZED_MODEL
 #define APP_TFLITE_PERSONDETECT_DATA "models/persondetect/persondetect_160_128_tflite.h"
 #define APP_TFLITE_PERSONDETECT_INFO "models/persondetect/persondetect_160_128_tflite_info.h"
-#define APP_STATIC_IMAGE_NAME "images/couple_COCO_160_128_rgb565.h"
+#define APP_STATIC_IMAGE_NAME "images/skigirl_COCO_160_128_rgb565.h"
 #else
 #define APP_TFLITE_PERSONDETECT_DATA "models/persondetect/persondetect_220_220_tflite.h"
 #define APP_TFLITE_PERSONDETECT_INFO "models/persondetect/persondetect_220_220_tflite_info.h"

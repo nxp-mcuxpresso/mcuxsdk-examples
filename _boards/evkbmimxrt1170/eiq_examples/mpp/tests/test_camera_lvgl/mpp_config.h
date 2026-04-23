@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -47,7 +47,7 @@
 /**
  * VGLite heap size for MIMXRT1170 CM7.
  */
-#define HAL_VGLITE_HEAP_SZ                    2097152 /* 2 MB */
+#define HAL_VGLITE_HEAP_SZ                    1048576 /* 1 MB */
 #define HAL_VGLITE_BUFFER_ALIGN               64
 
 /* GPU chip ID for EVKMIMXRT1170 board.*/

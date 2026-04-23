@@ -1,11 +1,13 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024, 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
 #ifndef _MPP_CONFIG_H
 #define _MPP_CONFIG_H
+
+#include "test_config.h"
 
 /* This header configures the MPP HAL and the application according to the board model */
 
@@ -19,12 +21,23 @@
  * Disabling HAL of unused/missing devices saves memory
  */
 #define HAL_ENABLE_2D_IMGPROC
-#define HAL_ENABLE_GFX_DEV_Pxp 1
-#define HAL_ENABLE_GFX_DEV_Cpu 0
+#define HAL_ENABLE_GFX_DEV_Pxp 0
+#define HAL_ENABLE_GFX_DEV_Cpu 1
 #define HAL_ENABLE_GFX_DEV_GPU 0
 /**
  * This is the inference HAL configuration
  */
+
+#define APP_GFX_BACKEND_NAME "gfx_CPU"
+
+/**
+ * VGLite heap size for MIMXRT1170 EVK.
+ */
+#define HAL_VGLITE_HEAP_SZ                    0x100000 /* 1 MB */
+#define HAL_VGLITE_BUFFER_ALIGN               64
+
+/* GPU chip ID for MIMXRT700EVK board.*/
+#define HAL_GPU_CHIPID                        0x355
 
 /* This example uses TFlite inference engine */
 #define HAL_ENABLE_INFERENCE_TFLITE 1
@@ -77,7 +90,7 @@
 #define APP_ULTRAFACE_ULTRASLIM
 
 /* define a static image that will be included if needed */
-#define APP_STATIC_IMAGE_NAME "images/couple_COCO_128_128_rgb.h"
+#define APP_STATIC_IMAGE_NAME "images/couple_COCO_220_220_rgb.h"
 
 /* detection boxes params */
 /* maximum number of boxes stored in RAM by APP (1box ~= 16B) */

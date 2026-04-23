@@ -1,11 +1,13 @@
 /*
- * Copyright 2024-2025 NXP
+ * Copyright 2024-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
 #ifndef _MPP_CONFIG_H
 #define _MPP_CONFIG_H
+
+#include "test_config.h"
 
 /* This header configures the MPP HAL and the application according to the board model */
 
@@ -35,7 +37,7 @@
 
 /* The size of Tensor Arena buffer for TensorFlowLite-Micro */
 /* minimum required arena size for Nanodet-m converted for NPU */
-#define HAL_TFLM_TENSOR_ARENA_SIZE_KB        1153
+#define HAL_TFLM_TENSOR_ARENA_SIZE_KB        1753
 
 /*
  * Enable this flag to define TFlite tensor arena non-cacheable.

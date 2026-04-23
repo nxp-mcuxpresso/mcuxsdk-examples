@@ -1,11 +1,13 @@
 /*
- * Copyright 2024-2025 NXP
+ * Copyright 2024-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
 #ifndef _MPP_CONFIG_H
 #define _MPP_CONFIG_H
+
+#include "test_config.h"
 
 /* This header configures the MPP HAL and the application according to the board model */
 
@@ -24,7 +26,18 @@
 #define HAL_ENABLE_2D_IMGPROC
 #define HAL_ENABLE_GFX_DEV_Pxp                0
 #define HAL_ENABLE_GFX_DEV_Cpu                0
-#define HAL_ENABLE_GFX_DEV_GPU                0
+#define HAL_ENABLE_GFX_DEV_GPU                1
+
+ #define APP_GFX_BACKEND_NAME "gfx_GPU"
+
+/*
+ * VGLite heap size for MIMXRT700 EVK.
+ */
+#define HAL_VGLITE_HEAP_SZ                    0x100000 /* 1 MB */
+#define HAL_VGLITE_BUFFER_ALIGN               64
+
+/* GPU chip ID for MIMXRT700EVK board.*/
+#define HAL_GPU_CHIPID                        0x555
 
 /**
  * This is the inference HAL configuration
@@ -73,14 +86,14 @@
 #define APP_USE_NEUTRON64_MODEL
 
 /* define a Tensorflow lite model data input */
-#define APP_TFLITE_PERSONDETECT_DATA "models/persondetect/persondetect_220_220_npu64_tflite.h"
-#define APP_TFLITE_PERSONDETECT_INFO "models/persondetect/persondetect_220_220_npu64_tflite_info.h"
+#define APP_TFLITE_PERSONDETECT_DATA "models/persondetect/persondetect_160_128_npu64_tflite.h"
+#define APP_TFLITE_PERSONDETECT_INFO "models/persondetect/persondetect_160_128_npu64_tflite_info.h"
 #define APP_TFLITE_ULTRAFACE_DATA "models/ultraface_slim_quant_int8/ultraface_slim_ultraslim_npu64_tflite.h"
 #define APP_TFLITE_ULTRAFACE_INFO "models/ultraface_slim_quant_int8/ultraface_slim_ultraslim_npu64_tflite_info.h"
 #define APP_ULTRAFACE_ULTRASLIM
 
 /* define a static image that will be included if needed */
-#define APP_STATIC_IMAGE_NAME "images/couple_COCO_128_128_rgb.h"
+#define APP_STATIC_IMAGE_NAME "images/couple_COCO_220_220_rgb.h"
 
 /* detection boxes params */
 /* maximum number of boxes stored in RAM by APP (1box ~= 16B) */

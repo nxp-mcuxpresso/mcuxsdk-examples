@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -34,6 +34,7 @@
 #include "mpp_api.h"
 #include "mpp_app_task_notify.h"
 #include "app_msg.h"
+#include "app_types.h"
 
 /*******************************************************************************
  * Definitions
@@ -48,7 +49,7 @@ shell_status_t stop(shell_handle_t shellHandle, int32_t argc, char **argv);
 shell_status_t register_person(shell_handle_t shellHandle, int32_t argc, char **argv);
 
 static void ctrl_task(void *params);
-extern void mpp_app_start(volatile uint16_t *mcmgr_event_data_p, struct rpmsg_lite_instance *rpmsg_inst);
+extern void mpp_app_start(mpp_app_params_t *params);
 void ctrl_task_notify(uint8_t cmd, msg_t* para);
 
 /*******************************************************************************
@@ -281,6 +282,7 @@ static void ctrl_task(void *params)
     (void) params;
     msg_t *recv_cmd;
     BaseType_t ret = pdFALSE;
+    mpp_app_params_t mpp_params = {0};
 
     /* Boot secondary core */
     volatile uint16_t *mcmgr_event_data_p = mpp_boot_secondary_core();
@@ -319,7 +321,10 @@ static void ctrl_task(void *params)
     SHELL_RegisterCommand(s_shellHandle, SHELL_COMMAND(add));
 
     /* Start MPP task */
-    mpp_app_start(mcmgr_event_data_p, rpmsg_inst);
+    mpp_params.mcmgr_event_data_p = mcmgr_event_data_p;
+    mpp_params.rpmsg_inst_p = rpmsg_inst;
+    mpp_params.recognition_threshold = 0.0f;
+    mpp_app_start(&mpp_params);
 
     for (;;)
     {
@@ -379,9 +384,6 @@ err:
 int main(void)
 {
     BaseType_t ret = pdFAIL;
-
-    /* Early init mcmgr - this function must be called at the start of the main function */
-    mpp_mcmgr_early_init();
 
     /* Init board hardware. */
     BOARD_Init();
