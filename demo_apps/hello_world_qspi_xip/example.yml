@@ -23,3 +23,5 @@ hello_world_qspi_xip:
     lpcxpresso55s36: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
+    frdmmcxa577: []
+    frdmmcxa287: []

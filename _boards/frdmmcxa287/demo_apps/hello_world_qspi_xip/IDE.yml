@@ -1,0 +1,5 @@
+iar:
+  config:
+    __common__:
+      debugger_extra_options:
+      - "--macro_param initFlexSPI=1"
