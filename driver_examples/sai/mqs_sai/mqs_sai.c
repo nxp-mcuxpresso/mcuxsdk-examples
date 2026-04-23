@@ -96,7 +96,7 @@ int main(void)
     /* Init MQS, Enable MQS and set MQS clock divider */
     mqsDiv = HMCLK_FREQ / (64 * 48000);
 
-#if defined(AON_BLK_CTRL_NS_AONMIX_MQS_SETTINGS_MQS_EN)
+#if defined(INIT_MQS_IN_BOARD)
     BOARD_InitMQS(mqsDiv - 1U);
 #else
     IOMUXC_MQSEnterSoftwareReset(MQS_IOMUXC, true);

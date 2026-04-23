@@ -22,6 +22,7 @@
 #define SAI_CLOCK_ROOT    hal_clock_sai1
 #define DEMO_SAI_CLK_FREQ HAL_ClockGetIpFreq(SAI_CLOCK_ROOT)
 #define HMCLK_FREQ DEMO_SAI_CLK_FREQ
+#define INIT_MQS_IN_BOARD 1
 
 /*${macro:end}*/
 
