@@ -698,6 +698,7 @@ outputs:
 - {id: WWDT0_clock.outFreq, value: 1 MHz}
 - {id: WWDT1_clock.outFreq, value: 16.384 kHz}
 settings:
+- {id: FLEXSPI0Clk_INIT_Config, value: custom}
 - {id: VDD_CORE, value: voltage_1v2}
 - {id: CLK16K_0_clock, value: Enabled}
 - {id: CLK16K_1_clock, value: Enabled}
@@ -853,9 +854,6 @@ void BOARD_BootClockFROHF192M_InitClockModule(clock_module_t module)
         case kClockModule_USB1Clk:
             CLOCK_AttachClk(kNONE_to_USBHS_PHY);           /* !< Switch USBHS_PHY to  */
             break;
-        case kClockModule_FLEXSPI0Clk:
-            CLOCK_AttachClk(kNONE_to_FLEXSPI);             /* !< Switch FLEXSPI to  */
-            break;
         case kClockModule_TSI0Clk:
             CLOCK_AttachClk(kNONE_to_TSI0);                /* !< Switch TSI0 to  */
             break;
@@ -966,7 +964,6 @@ void BOARD_BootClockFROHF192M(void)
     BOARD_BootClockFROHF192M_InitClockModule(kClockModule_SYSTICKClk);
     BOARD_BootClockFROHF192M_InitClockModule(kClockModule_TRACEClk);
     BOARD_BootClockFROHF192M_InitClockModule(kClockModule_USB1Clk);
-    BOARD_BootClockFROHF192M_InitClockModule(kClockModule_FLEXSPI0Clk);
     BOARD_BootClockFROHF192M_InitClockModule(kClockModule_TSI0Clk);
     BOARD_BootClockFROHF192M_InitClockModule(kClockModule_E1588Clk);
     BOARD_BootClockFROHF192M_InitClockModule(kClockModule_RMIIClk);
