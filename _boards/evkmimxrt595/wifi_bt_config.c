@@ -18,7 +18,7 @@
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
-extern void BOARD_SDCardDAT3PullFunction(uint32_t status);
+
 /*******************************************************************************
  * Variables
  ******************************************************************************/
@@ -95,19 +95,7 @@ void BOARD_WIFI_BT_Enable(bool enable)
         vTaskDelay(pdMS_TO_TICKS(100));
     }
 }
-#ifdef WIFI_BT_USE_M2_INTERFACE
-void BOARD_WIFI_BT_CardDetectInit(sd_cd_t cd, void *userData)
-{
-    /* install card detect callback */
-    s_cd.cdDebounce_ms = BOARD_SDMMC_SD_CARD_DETECT_DEBOUNCE_DELAY_MS;
-    s_cd.type          = kSD_DetectCardByHostDATA3;
-    s_cd.callback      = cd;
-    s_cd.userData      = userData;
 
-    /* register DAT3 pull function switch function pointer */
-    s_cd.dat3PullFunc = BOARD_SDCardDAT3PullFunction;
-}
-#endif
 void BOARD_WIFI_BT_Config(void *card, sdio_int_t cardInt)
 {
 #ifdef WIFI_BT_USE_M2_INTERFACE
@@ -119,6 +107,7 @@ void BOARD_WIFI_BT_Config(void *card, sdio_int_t cardInt)
     ((sdio_card_t *)card)->host->hostController.sourceClock_Hz = BOARD_USDHC1ClockConfiguration();
     ((sdio_card_t *)card)->host->tuningType                    = BOARD_SDMMC_SD_TUNING_TYPE;
 
+    memset(&s_cd, 0, sizeof(sd_detect_card_t));
     ((sdio_card_t *)card)->usrParam.cd        = &s_cd;
     ((sdio_card_t *)card)->usrParam.pwr       = NULL;
     ((sdio_card_t *)card)->usrParam.ioVoltage = NULL;
@@ -128,7 +117,6 @@ void BOARD_WIFI_BT_Config(void *card, sdio_int_t cardInt)
         ((sdio_card_t *)card)->usrParam.sdioInt = &s_sdioInt;
     }
 
-    BOARD_WIFI_BT_CardDetectInit(NULL, NULL);
     NVIC_SetPriority(BOARD_WIFI_BT_M2_SLOT_HOST_IRQ, BOARD_SDMMC_SDIO_HOST_IRQ_PRIORITY);
 
 #elif defined(WIFI_BT_USE_USD_INTERFACE)
