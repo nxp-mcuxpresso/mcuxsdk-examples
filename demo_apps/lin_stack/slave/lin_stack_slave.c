@@ -77,7 +77,7 @@ void DEMO_TPM_IRQHandler(void)
 
         TPM_ClearStatusFlags(DEMO_TPM_BASEADDR, DEMO_TPM_CH_OUT_FLG);
         counterVal                                             = (uint16_t)(DEMO_TPM_BASEADDR->CNT);
-        (DEMO_TPM_BASEADDR->CONTROLS[DEMO_TPM_CH_OUT_NUM].CnV) = counterVal + DEMO_MODULO_VALUE;
+        (DEMO_TPM_BASEADDR->CONTROLS[DEMO_TPM_CH_OUT_NUM].CnV) = (uint16_t)(counterVal + DEMO_MODULO_VALUE);
 
         /* Timer Interrupt Handler. */
         lin_lld_timeout_service(LI0);

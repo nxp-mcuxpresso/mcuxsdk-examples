@@ -1,12 +1,7 @@
 Overview
 ========
-The LIN (Local Interconnect Network) demo application is a use-case of LIN stack driver built on Low Power UART. 
-This application demonstrates a signal transfer between the two nodes. Master node and slave node signals. Both 
-master and slave node must have implemented the timer that is used by timeout service routine every 500 us and 
-master node use the same timer to check for switch of the frame table scheduler every 5 ms, but the real period between
-frames may larger than 5ms according to the configurations.
-
-User can press the SW3 button to stop ticks count, and press the SW2 button to restart the ticks count.
+The LIN (Local Interconnect Network) demo application is built on Low Power UART.
+SW3 is used as button 1 to stop ticks count and SW2 is used as button 2 to restart the ticks count.
 
 Hardware requirements
 =====================
@@ -34,20 +29,3 @@ Prepare the Demo
     - One stop bit
     - No flow control
 6.  Download the program for slave node to the target board.
-
-Running the demo
-================
-If communication is succesfull, press the SW3 button to increase the ticks count then you will see the LED red is ON.
-Then press the SW2 button to reset the ticks count then you will see the LED blue is ON.
-And slave node will print:
-~~~~~~~~~~~~
-LIN slave demo start!
-Slave will send data to master and receive command from master.
-Slave will control the LED according to the command from master.
- -> LED 2 is ON!
- -> LED 3 is ON!
- -> LED 2 is ON!
- -> LED 3 is ON!
- -> LED 2 is ON!
-
-~~~~~~~~~~~~
