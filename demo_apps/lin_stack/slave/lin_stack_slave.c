@@ -11,6 +11,8 @@
 #include "app.h"
 #include "lin.h"
 #include "lin_common_api.h"
+#include "lin_commontl_api.h"
+#include "lin_diagnostic_service.h"
 #include "fsl_tpm.h"
 
 /*******************************************************************************
@@ -250,6 +252,10 @@ static void DEMO_SlaveTaskStart(void)
     /* Initialize LIN network interface */
     l_sys_init();
     l_ifc_init(LI0);
+    /* Initialize the transport layer so the slave can handle diagnostic frames
+     * (0x3C/0x3D). Without this the TL rx/tx queue data pointers remain NULL,
+     * causing a fault when the master sends the first master-request frame. */
+    ld_init(LI0);
 
     /* Set IRQ priority for LIN stack. */
     NVIC_SetPriority(DEMO_LIN_IRQn, DEMO_LIN_PRIO);
@@ -308,6 +314,15 @@ static void DEMO_SlaveTaskStart(void)
                 {
                 }
             }
+        }
+
+        /* Check if master sent a READ_BY_IDENTIFIER diagnostic request.
+         * The middleware processes the request and sends the response
+         * automatically; this block gives the application visibility. */
+        if (diag_get_flag(LI0, LI0_DIAGSRV_READ_BY_IDENTIFIER_ORDER) == 1U)
+        {
+            diag_clear_flag(LI0, LI0_DIAGSRV_READ_BY_IDENTIFIER_ORDER);
+            PRINTF("Diagnostic: READ_BY_IDENTIFIER request handled.\r\n");
         }
     }
 }

@@ -8,6 +8,11 @@ Both master and slave node must have implemented the timer that is used by timeo
 every 500 us and master node uses the same timer to check for switch of the frame table scheduler
 every 5 ms, but the real period between frames may be larger than 5ms according to the configurations.
 
+- Shortly after the demo starts, the master sends a READ_BY_IDENTIFIER diagnostic request inside
+  a master-request frame (PID 0x3C). The slave transport layer processes the request and
+  automatically sends the slave's product identity (supplier ID 0x001E, function ID 0x0001,
+  variant 0x00) back to the master in a slave-response frame (PID 0x3D). The application
+  prints a confirmation line when the request has been handled.
 - The master node is in NormalTable schedule table and it uses the LIN frame Motor1State_Cycl
   to receive data from slave node and send selection signal Motor1Selection command to slave
   node by Motor1Control.
@@ -31,6 +36,7 @@ And slave node will print:
 LIN slave demo start!
 Slave will send data to master and receive command from master.
 Slave will control the LED according to the command from master.
+Diagnostic: READ_BY_IDENTIFIER request handled.
  -> LED 2 is ON!
  -> LED 1 is ON!
  -> LED 2 is ON!

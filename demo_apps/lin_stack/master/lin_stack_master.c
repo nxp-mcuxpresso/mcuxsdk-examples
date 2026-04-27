@@ -11,6 +11,8 @@
 #include "app.h"
 #include "lin.h"
 #include "lin_common_api.h"
+#include "lin_commontl_api.h"
+#include "lin_diagnostic_service.h"
 #include "fsl_tpm.h"
 
 /*******************************************************************************
@@ -26,6 +28,13 @@
 #define MOTOR1_SELECTION_DECREASE 0x02
 #define MOTOR1_SELECTION_STOP     0x03
 
+/* Slave node diagnostic identity (matches slave lin_cfg.c). */
+#define SLAVE_NAD         0x02U
+#define SLAVE_SUPPLIER_ID 0x001EU
+#define SLAVE_FUNCTION_ID 0x0001U
+/* Timeout in 500us timer ticks (1200 ticks = 600ms) for the full diagnostic exchange. */
+#define DIAG_TIMEOUT_TICKS 1200U
+
 /*******************************************************************************
  * Variables
  ******************************************************************************/
@@ -38,6 +47,9 @@ volatile l_u8 g_motorSelectionCmd    = 0U;
  ******************************************************************************/
 /* LIN master task. */
 static void DEMO_MasterTaskStart(void);
+
+/* Diagnostic frame: identify slave via READ_BY_IDENTIFIER. */
+static void DEMO_DiagReadSlaveId(void);
 
 /* Timer initialize for LIN cluster used. */
 static void DEMO_TimerInit(void);
@@ -188,6 +200,55 @@ void DEMO_LIN_IRQHandler(void)
     SDK_ISR_EXIT_BARRIER;
 }
 
+/*!
+ * Identify the slave node via the LIN diagnostic READ_BY_IDENTIFIER service.
+ * Runs the normal schedule so the middleware can interleave the 0x3C request
+ * and 0x3D response frames automatically, then returns when the exchange is done.
+ */
+static void DEMO_DiagReadSlaveId(void)
+{
+    lin_product_id_t productId = {0};
+    l_u8 rsid                  = 0U;
+    l_u8 errorCode             = 0U;
+    l_u8 status;
+    uint16_t startTick;
+
+    PRINTF("Diagnostic: reading slave node identity...\r\n");
+
+    /* Queue READ_BY_IDENTIFIER request for product identity (id = 0). */
+    ld_read_by_id(LI0, SLAVE_NAD, SLAVE_SUPPLIER_ID, SLAVE_FUNCTION_ID, 0U, &productId);
+
+    /* Wait for the complete diagnostic exchange (0x3C sent + 0x3D received).
+     * The middleware drives both phases; poll until IDLE or ERROR.
+     * Two normal-table cycles are needed before the exchange completes (~300ms),
+     * so use a 600ms timeout (1200 ticks at 500us each). */
+    startTick = timerOverflowInterruptCount;
+    do
+    {
+        status = ld_is_ready(LI0);
+    } while ((status == (l_u8)LD_SERVICE_BUSY || status == (l_u8)LD_REQUEST_FINISHED) &&
+             ((uint16_t)(timerOverflowInterruptCount - startTick) < DIAG_TIMEOUT_TICKS));
+
+    if (status != (l_u8)LD_SERVICE_IDLE)
+    {
+        PRINTF("Diagnostic: exchange failed (status=0x%02X).\r\n", (unsigned)status);
+        return;
+    }
+
+    ld_check_response(LI0, &rsid, &errorCode);
+    if (errorCode == 0U)
+    {
+        PRINTF("Diagnostic: slave identified - Supplier=0x%04X Function=0x%04X Variant=0x%02X\r\n",
+               productId.supplier_id, productId.function_id, productId.variant);
+    }
+    else
+    {
+        PRINTF("Diagnostic: negative response - RSID=0x%02X Error=0x%02X\r\n", rsid, errorCode);
+    }
+
+    PRINTF("Diagnostic complete. Starting motor control.\r\n");
+}
+
 /* @brief LIN master task.
  *        This task will emulate a master node to receive data from slave node.
  *        And according to the temp data, send different command to slave node.
@@ -197,8 +258,16 @@ static void DEMO_MasterTaskStart(void)
     /* Initialize LIN network interface */
     l_sys_init();
     l_ifc_init(LI0);
+
+    /* Initialize the transport layer so ld_send_message can queue PDUs. */
+    ld_init(LI0);
+
     /* Set Schedule table to Normal */
     l_sch_set(LI0, LI0_NormalTable, 0u);
+
+    /* Run startup diagnostic to identify the slave node. */
+    DEMO_DiagReadSlaveId();
+
     /* Infinite loop */
     for (;;)
     {

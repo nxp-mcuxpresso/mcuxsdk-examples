@@ -8,6 +8,13 @@ Both master and slave node must have implemented the timer that is used by timeo
 every 500 us and master node uses the same timer to check for switch of the frame table scheduler
 every 5 ms, but the real period between frames may be larger than 5ms according to the configurations.
 
+- At startup, the master performs a LIN diagnostic READ_BY_IDENTIFIER exchange to identify the
+  slave node. It queues the request via the transport layer (`ld_read_by_id`) and the Lin stack
+  automatically injects the master-request frame (PID 0x3C) at normal-schedule-table boundaries
+  using DIAG_INTERLEAVE_MODE. The master then waits for the slave-response frame (PID 0x3D).
+  If the exchange succeeds, the slave's supplier ID, function ID, and variant are printed to the
+  console; if no response is received within the timeout the error status is logged and motor
+  control starts regardless.
 - The master node is in NormalTable schedule table and it uses the LIN frame Motor1State_Cycl
   to receive data from slave node and send selection signal Motor1Selection command to slave
   node by Motor1Control.
@@ -32,6 +39,9 @@ If communication is successful, the master node will print:
 ~~~~~~~~~~~~
 LIN master demo start.
 LIN master will receive data from slave node, and send control command to slave.
+Diagnostic: reading slave node identity...
+Diagnostic: slave identified - Supplier=0x001E Function=0x0001 Variant=0x00
+Diagnostic complete. Starting motor control.
  -> LED 2 is ON!
  -> LED 1 is ON!
  -> LED 2 is ON!
