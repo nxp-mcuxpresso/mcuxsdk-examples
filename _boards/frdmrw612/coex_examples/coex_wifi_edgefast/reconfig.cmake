@@ -17,7 +17,6 @@ mcux_add_source(
             middleware/wireless/coex/third_party/platform/rw612/ot_config.cmake
             examples/coex_examples/coex_wifi_edgefast/app_config.cmake
             examples/_boards/${board}/coex_examples/coex_wifi_edgefast/FreeRTOSConfig.h
-            middleware/wireless/coex/third_party/mcuxpresso_support/app.h
 )
 
 mcux_add_source(

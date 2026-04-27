@@ -23,15 +23,12 @@ mcux_add_include(
 
 # Add MCUXPRESSO IDE support
 mcux_add_include(
-    BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/coex_examples/coex_wifi_edgefast/mcuxpresso_config
-             middleware/wireless/coex/third_party/mcuxpresso_support
-             middleware/wireless/coex/third_party/mcuxpresso_support/lib
+    INCLUDES
+        mcuxpresso_config
 )
 
 mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/coex_examples/coex_wifi_edgefast/mcuxpresso_config/app_mcuxpresso_config.h
+    SOURCES mcuxpresso_config/app_mcuxpresso_config.h
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/coex_examples/coex_wifi_edgefast/reconfig.cmake OPTIONAL)
