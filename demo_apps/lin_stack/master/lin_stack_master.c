@@ -19,14 +19,18 @@
  * Definitions
  ******************************************************************************/
 /* Values for motor1 control. */
-#define MOTOR1_MAX_VALUE  100
-#define MOTOR1_MIN_VALUE  50
-#define MOTOR1_STOP_VALUE 150
+#define MOTOR1_MAX_VALUE          100
+#define MOTOR1_MIN_VALUE          50
+#define MOTOR1_STOP_VALUE_DEFAULT 150U
 
 /* Selection command. */
 #define MOTOR1_SELECTION_INCREASE 0X01
 #define MOTOR1_SELECTION_DECREASE 0x02
 #define MOTOR1_SELECTION_STOP     0x03
+
+/* Bit 2 of the Motor1Control frame byte used to signal a sporadic command to increase the motor stop
+   value. Bits [7:2] are unused by any defined signal so they do not need the signal write macros. */
+#define MOTOR1_SELECTION_INC_STOP_BIT (1U << 2U)
 
 /* Slave node diagnostic identity (matches slave lin_cfg.c). */
 #define SLAVE_NAD         0x02U
@@ -41,6 +45,9 @@
 uint16_t timerOverflowInterruptCount = 0U;
 volatile l_u8 g_motorTickCount       = 0U;
 volatile l_u8 g_motorSelectionCmd    = 0U;
+volatile l_u8 g_motor1StopValue      = MOTOR1_STOP_VALUE_DEFAULT;
+volatile bool g_busAwake             = false;
+volatile bool g_sendSporadic         = false;
 
 /*******************************************************************************
  * Prototypes
@@ -53,6 +60,9 @@ static void DEMO_DiagReadSlaveId(void);
 
 /* Timer initialize for LIN cluster used. */
 static void DEMO_TimerInit(void);
+
+/* Button 2 action: wake up the bus or schedule a sporadic frame. */
+static void DEMO_HandleButton2Press(void);
 
 /*******************************************************************************
  * Code
@@ -105,13 +115,47 @@ void timerGetTimeIntervalCallback0(uint32_t *ns)
 }
 #endif
 
+/* If button 2 was pressed: wake up the bus if sleeping, or send a sporadic frame
+ * to increase MOTOR1_STOP_VALUE by 10 if the bus is already awake. */
+static void DEMO_HandleButton2Press(void)
+{
+    if (g_busAwake)
+    {
+        if (!g_sendSporadic) /* ignore rapid double-press while a sporadic is pending */
+        {
+            g_motor1StopValue += 10U;
+
+            /* Set the corresponding bit in the Motor1Control byte as indicator and clear the
+             * signal flag so lin_check_sporadic_update() sees a pending update. */
+            g_lin_frame_data_buffer[LIN_LI0_Motor1Selection_BYTE_OFFSET] |=
+                (l_u8)MOTOR1_SELECTION_INC_STOP_BIT;
+            LIN_CLEAR_BIT(g_lin_flag_handle_tbl[LIN_LI0_Motor1Selection_FLAG_BYTE_OFFSET],
+                          LIN_LI0_Motor1Selection_FLAG_BIT_OFFSET);
+
+            /* Clear any stale Motor1Control frame flag left from the NormalTable so the
+             * main-loop detection only fires after the sporadic slot actually transmits. */
+            l_flg_clr_LI0_Motor1Control_flag();
+
+            g_sendSporadic = true;
+            l_sch_set(LI0, LI0_SporadicTable, 0u);
+        }
+    }
+    else
+    {
+        l_ifc_wake_up(LI0);
+        l_sch_set(LI0, LI0_NormalTable, 0u);
+        g_busAwake = true;
+    }
+}
+
 #if (defined(DEMO_SW_USE_SEPARATE_HANDLER) && DEMO_SW_USE_SEPARATE_HANDLER)
 /*!
  * This interrupt routine puts a node sends wakeup signal on button press
  */
 void DEMO_SW2_IRQ_HANDLER(void)
 {
-    /* If button 2 was pressed, send the wake up signal to and start the normal table. */
+    /* If button 2 was pressed: wake up the bus if sleeping, or send a sporadic frame
+     * to increase MOTOR1_STOP_VALUE by 10 if the bus is already awake. */
 #if (defined(FSL_FEATURE_PORT_HAS_NO_INTERRUPT) && FSL_FEATURE_PORT_HAS_NO_INTERRUPT)
     if (GPIO_GpioGetInterruptFlags(DEMO_BUTTON2_GPIO) & (1U << DEMO_BUTTON2_PIN))
 #else
@@ -124,9 +168,7 @@ void DEMO_SW2_IRQ_HANDLER(void)
 #else
         GPIO_PortClearInterruptFlags(DEMO_BUTTON2_GPIO, 1U << DEMO_BUTTON2_PIN);
 #endif
-        /* Switch to normal table */
-        l_ifc_wake_up(LI0);
-        l_sch_set(LI0, LI0_NormalTable, 0u);
+        DEMO_HandleButton2Press();
     }
     else
     {
@@ -140,7 +182,7 @@ void DEMO_SW2_IRQ_HANDLER(void)
  */
 void DEMO_SW3_IRQ_HANDLER(void)
 {
-    /* If button 1 was pressed, send the sleep signal. */
+    /* If button 1 was pressed, send the sleep signal and reset the sporadic stop value. */
 #if (defined(FSL_FEATURE_PORT_HAS_NO_INTERRUPT) && FSL_FEATURE_PORT_HAS_NO_INTERRUPT)
     if (GPIO_GpioGetInterruptFlags(DEMO_BUTTON1_GPIO) & (1U << DEMO_BUTTON1_PIN))
 #else
@@ -154,6 +196,8 @@ void DEMO_SW3_IRQ_HANDLER(void)
         GPIO_PortClearInterruptFlags(DEMO_BUTTON1_GPIO, 1U << DEMO_BUTTON1_PIN);
 #endif
         l_sch_set(LI0, LI0_GOTO_SLEEP_SCHEDULE, 0u);
+        g_busAwake        = false;
+        g_motor1StopValue = MOTOR1_STOP_VALUE_DEFAULT;
     }
     else
     {
@@ -167,21 +211,20 @@ void DEMO_SW3_IRQ_HANDLER(void)
  */
 void DEMO_SW_IRQ_HANDLER(void)
 {
-    /* If button 1 was pressed, send the sleep signal. */
+    /* If button 1 was pressed, send the sleep signal and reset the sporadic stop value. */
     if (GPIO_PortGetInterruptFlags(DEMO_BUTTON1_GPIO) & (1U << DEMO_BUTTON1_PIN))
     {
         /* Clear external interrupt flag. */
         GPIO_PortClearInterruptFlags(DEMO_BUTTON1_GPIO, 1U << DEMO_BUTTON1_PIN);
         l_sch_set(LI0, LI0_GOTO_SLEEP_SCHEDULE, 0u);
+        g_busAwake        = false;
+        g_motor1StopValue = MOTOR1_STOP_VALUE_DEFAULT;
     }
-    /* If button 2 was pressed, send the wake up signal to and start the normal table. */
+    /* If button 2 was pressed: wake up the bus if sleeping, or send a sporadic frame
+     * to increase MOTOR1_STOP_VALUE by 10 if the bus is already awake. */
     else if (GPIO_PortGetInterruptFlags(DEMO_BUTTON2_GPIO) & (1U << DEMO_BUTTON2_PIN))
     {
-        /* Clear external interrupt flag. */
-        GPIO_PortClearInterruptFlags(DEMO_BUTTON2_GPIO, 1U << DEMO_BUTTON2_PIN);
-        /* Switch to normal table */
-        l_ifc_wake_up(LI0);
-        l_sch_set(LI0, LI0_NormalTable, 0u);
+        DEMO_HandleButton2Press();
     }
     else
     {
@@ -268,9 +311,29 @@ static void DEMO_MasterTaskStart(void)
     /* Run startup diagnostic to identify the slave node. */
     DEMO_DiagReadSlaveId();
 
+    g_busAwake = true;
+
     /* Infinite loop */
     for (;;)
     {
+        /* If a sporadic frame was requested and the LIN stack has transmitted Motor1Control,
+         * clear the MOTOR1_SELECTION_INC_STOP_BIT bit, switch back to the normal schedule,
+         * and report. */
+        if (g_sendSporadic && l_flg_tst_LI0_Motor1Control_flag())
+        {
+            l_flg_clr_LI0_Motor1Control_flag();
+
+            g_lin_frame_data_buffer[LIN_LI0_Motor1Selection_BYTE_OFFSET] &=
+                (l_u8)(~MOTOR1_SELECTION_INC_STOP_BIT);
+
+            g_sendSporadic = false;
+
+            l_sch_set(LI0, LI0_NormalTable, 0u);
+
+            PRINTF("Sporadic frame sent: MOTOR1_STOP_VALUE raised to %d\r\n",
+                   (int)g_motor1StopValue);
+        }
+
         /* Check if information about the Motor1 tick count has been received */
         if (l_flg_tst_LI0_Motor1Temp_flag())
         {
@@ -281,7 +344,7 @@ static void DEMO_MasterTaskStart(void)
             g_motorTickCount = l_u8_rd_LI0_Motor1Temp();
 
             /* If the tick count value from slave node is larger than stop value, stop slave tick count. */
-            if (MOTOR1_STOP_VALUE < g_motorTickCount)
+            if (g_motor1StopValue < g_motorTickCount)
             {
                 if (g_motorSelectionCmd != MOTOR1_SELECTION_STOP)
                 {

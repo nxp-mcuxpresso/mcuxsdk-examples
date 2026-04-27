@@ -27,6 +27,10 @@ every 5 ms, but the real period between frames may be larger than 5ms according 
   and send the data to master node.
 - If button 2 was pressed, the slave will set the tick count to 20, and start another loop count.
 - Once running successfully, the state of LEDs on master node and slave node will keep aligned.
+- If master button 2 was pressed while the bus is awake, the master sends a LIN 2.1 Sporadic frame
+  with an indicator in bit 2 of the Motor1Control byte. The slave detects this indicator and
+  increments its own MOTOR1_STOP_VALUE by 10, then prints a confirmation. MOTOR1_STOP_VALUE resets
+  to the default (150) when a go-to-sleep signal is received from the master.
 
 ## Running the demo
 If communication is successful, press the SW3 button to increase the ticks count then you will see the LED red is ON.
@@ -45,6 +49,8 @@ Diagnostic: READ_BY_IDENTIFIER request handled.
  -> LED 3 is ON!
  <press slave button 2>
  -> LED 2 is ON!
+  <press master button 2>
+Sporadic frame received: MOTOR1_STOP_VALUE raised to 160
  -> LED 1 is ON!
 ........
 ~~~~~~~~~~~~

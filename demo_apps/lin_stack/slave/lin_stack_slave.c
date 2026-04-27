@@ -19,12 +19,16 @@
  * Definitions
  ******************************************************************************/
 /* Values for motor1 control. */
-#define MOTOR1_STOP_VALUE 150
+#define MOTOR1_STOP_VALUE_DEFAULT 150U
 
 /* Selection command. */
 #define MOTOR1_SELECTION_INCREASE 0X01
 #define MOTOR1_SELECTION_DECREASE 0x02
 #define MOTOR1_SELECTION_STOP     0x03
+
+/* Bit 2 of the Motor1Control frame byte used to signal a sporadic command to increase the motor stop
+   value. Bits [7:2] are unused by any defined signal so they do not need the signal write macros. */
+#define MOTOR1_SELECTION_INC_STOP_BIT (1U << 2U)
 
 /* Interrupt priority. */
 #define DEMO_LIN_PRIO   0
@@ -38,6 +42,7 @@ volatile l_u8 g_motorSelectionCmd    = 0U;
 volatile l_u8 g_motorTickCount       = 10U;
 volatile uint32_t capturedValue      = 0U;
 uint16_t timerCounterValue[2]        = {0u};
+volatile l_u8 g_motor1StopValue      = MOTOR1_STOP_VALUE_DEFAULT;
 
 /*******************************************************************************
  * Prototypes
@@ -198,7 +203,7 @@ void DEMO_SW3_IRQ_HANDLER(void)
         GPIO_PortClearInterruptFlags(DEMO_BUTTON1_GPIO, 1U << DEMO_BUTTON1_PIN);
 #endif
         /* Set the tick count larger than stop value. */
-        g_motorTickCount = MOTOR1_STOP_VALUE + 20U;
+        g_motorTickCount = g_motor1StopValue + 20U;
     }
     else
     {
@@ -216,7 +221,7 @@ void DEMO_SW_IRQ_HANDLER(void)
         /* Clear external interrupt flag. */
         GPIO_PortClearInterruptFlags(DEMO_BUTTON1_GPIO, 1U << DEMO_BUTTON1_PIN);
         /* Set the tick count larger than stop value. */
-        g_motorTickCount = MOTOR1_STOP_VALUE + 20U;
+        g_motorTickCount = g_motor1StopValue + 20U;
     }
     /* If button 2 was pressed, reset the tick count to a low value
      * and restart the increase cycle. */
@@ -268,6 +273,20 @@ static void DEMO_SlaveTaskStart(void)
         {
             /* Clear this flag... */
             l_flg_clr_LI0_Motor1Selection_flag();
+
+            /* Check for sporadic INC_STOP command encoded in bit 2 of the Motor1Control byte.
+             * This bit is set by the master when Button 2 is pressed while the bus is awake. */
+            if (g_lin_frame_data_buffer[LIN_LI0_Motor1Selection_BYTE_OFFSET] &
+                (l_u8)MOTOR1_SELECTION_INC_STOP_BIT)
+            {
+                g_lin_frame_data_buffer[LIN_LI0_Motor1Selection_BYTE_OFFSET] &=
+                    (l_u8)(~MOTOR1_SELECTION_INC_STOP_BIT);
+
+                g_motor1StopValue += 10U;
+
+                PRINTF("Sporadic frame received: MOTOR1_STOP_VALUE raised to %d\r\n",
+                       (int)g_motor1StopValue);
+            }
 
             /* Update the temp data. */
             l_u8_wr_LI0_Motor1Temp(g_motorTickCount);
@@ -323,6 +342,13 @@ static void DEMO_SlaveTaskStart(void)
         {
             diag_clear_flag(LI0, LI0_DIAGSRV_READ_BY_IDENTIFIER_ORDER);
             PRINTF("Diagnostic: READ_BY_IDENTIFIER request handled.\r\n");
+        }
+
+        /* Reset the sporadic stop value when the bus goes to sleep so that it returns
+         * to the default after a sleep/wake cycle. */
+        if (l_ifc_read_status(LI0) & GO_TO_SLEEP_SET)
+        {
+            g_motor1StopValue = MOTOR1_STOP_VALUE_DEFAULT;
         }
     }
 }

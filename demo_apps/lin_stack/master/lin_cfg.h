@@ -109,7 +109,7 @@ typedef enum
 } l_frame_handle;
 
 /* Number of schedule tables */
-#define LIN_NUM_OF_SCHD_TBL 5U
+#define LIN_NUM_OF_SCHD_TBL 6U
 
 /* List of schedules */
 typedef enum
@@ -119,7 +119,8 @@ typedef enum
     LI0_GOTO_SLEEP_SCHEDULE,
     LI0_MasterReqTable,
     LI0_SlaveRespTable,
-    LI0_NormalTable
+    LI0_NormalTable,
+    LI0_SporadicTable
 } l_schedule_handle;
 
 /* Size of configuration in ROM and RAM used for interface: LI0 */

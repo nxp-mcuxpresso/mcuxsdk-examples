@@ -16,7 +16,7 @@ volatile l_u8 g_buffer_backup_data[8];
 
 /* LIN frame data buffer. */
 volatile l_u8 g_lin_frame_data_buffer[LIN_FRAME_BUF_SIZE] = {
-    0xfc, /* 0 : 11111100, start of frame LI0_Motor1Control. */
+    0xf8, /* 0 : 11111000, start of frame LI0_Motor1Control. Bit2=0 reserved for sporadic INC_STOP. */
     0x00, /* 1 : 00000101, start of frame LI0_Motor1State_Cycl. */
     0x00, /* 2 : 00000000 */
     0x00, /* 3 : 00000000 */
@@ -129,6 +129,13 @@ static const lin_schedule_data_t LI0_MasterReqTable_data[1] = {
 static const lin_schedule_data_t LI0_SlaveRespTable_data[1] = {
     {LI0_SlaveResp, 2, {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}}};
 
+/* Sporadic schedule: SporadicControlFrame replaces the unconditional Motor1Control slot.
+ * This ensures lin_check_sporadic_update() can detect a pending Motor1Control update
+ * without the unconditional slot having already reset the signal flags. */
+static const lin_schedule_data_t LI0_SporadicTable_data[2] = {
+    {LI0_SporadicControlFrame, 15, {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}},
+    {LI0_Motor1State_Cycl,     15, {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}}};
+
 /* LIN schedule table. */
 static const lin_schedule_t lin_schedule_tbl[LIN_NUM_OF_SCHD_TBL] = {
     /*interface_name = LI0 */
@@ -136,7 +143,8 @@ static const lin_schedule_t lin_schedule_tbl[LIN_NUM_OF_SCHD_TBL] = {
     {1, LIN_SCH_TBL_GO_TO_SLEEP, &LI0_lin_gotosleep_data[0]},
     {1, LIN_SCH_TBL_DIAG, &LI0_MasterReqTable_data[0]},
     {1, LIN_SCH_TBL_DIAG, &LI0_SlaveRespTable_data[0]},
-    {2, LIN_SCH_TBL_NORM, &LI0_NormalTable_data[0]}};
+    {2, LIN_SCH_TBL_NORM, &LI0_NormalTable_data[0]},
+    {2, LIN_SCH_TBL_NORM, &LI0_SporadicTable_data[0]}};
 
 /* LIN interface configuration array. */
 const lin_protocol_user_config_t g_lin_protocol_user_cfg_array[LIN_NUM_OF_IFCS] = {
@@ -154,7 +162,7 @@ const lin_protocol_user_config_t g_lin_protocol_user_cfg_array[LIN_NUM_OF_IFCS] 
         .list_identifiers_ROM_ptr = LI0_lin_configuration_ROM, /*  *configuration_ROM */
         .list_identifiers_RAM_ptr = LI0_lin_configuration_RAM, /*  *configuration_RAM */
         .max_idle_timeout_cnt     = 10000,                     /* Max Idle Timeout Count */
-        .num_of_schedules         = 5,                         /*  num_of_schedules */
+        .num_of_schedules         = 6,                         /*  num_of_schedules */
         .schedule_start           = 0,                         /*  schedule_start */
         .schedule_tbl             = lin_schedule_tbl,          /* schedule_tbl */
 

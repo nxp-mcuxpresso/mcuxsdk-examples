@@ -19,7 +19,7 @@ volatile l_u8 g_buffer_backup_data[8];
 
 /* Frame data buffer of signal array. */
 volatile l_u8 g_lin_frame_data_buffer[LIN_FRAME_BUF_SIZE] = {
-    0xfc, /* 0 : 11111100, Frame LI0_Motor1Control. */
+    0xf8, /* 0 : 11111000, Frame LI0_Motor1Control. Bit2=0 reserved for sporadic INC_STOP. */
     0x00, /* 1 : 00000101, Frame LI0_Motor1State_Cycl. */
     0x00, /* 2 : 00000000 */
     0x00, /* 3 : 00000000 */

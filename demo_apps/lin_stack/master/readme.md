@@ -33,6 +33,11 @@ every 5 ms, but the real period between frames may be larger than 5ms according 
 - If the master button 2 was pressed while master in sleep mode, a wake-up signal will be sent by the
   master node to wake up LIN cluster.
 - Once running successfully, the state of LEDs on master node and slave node will keep aligned.
+- If master button 2 was pressed while the bus is already awake, the master sends a LIN 2.1 Sporadic
+  frame with an indicator in bit 2 of the Motor1Control byte. This causes MOTOR1_STOP_VALUE to be
+  incremented by 10 on both the master and the slave. Each additional press while the bus is awake
+  raises the threshold by another 10. MOTOR1_STOP_VALUE resets to the default (150) on both nodes
+  after a sleep/wake cycle.
 
 ## Running the demo
 If communication is successful, the master node will print:
@@ -50,6 +55,8 @@ Diagnostic complete. Starting motor control.
  -> LED 3 is ON!
  <press slave button 2>
  -> LED 2 is ON!
+ <press master button 2>
+Sporadic frame sent: MOTOR1_STOP_VALUE raised to 160
  -> LED 1 is ON!
 ........
 ~~~~~~~~~~~~
