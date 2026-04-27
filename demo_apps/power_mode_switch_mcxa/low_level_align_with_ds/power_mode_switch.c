@@ -160,9 +160,6 @@ static void APP_WakeUpTimerConfig(uint32_t timeOutValue)
     lptmr_config_t lptmr_config;
     uint32_t timerPeriod;
 
-    assert(timeOutValue > 0U);
-    assert(timeOutValue <= (UINT32_MAX / APP_WUU_WAKEUP_TIMER_CLOCK_SOURCE));
-
     timerPeriod = (timeOutValue * APP_WUU_WAKEUP_TIMER_CLOCK_SOURCE) - 1U;
 
     LPTMR_GetDefaultConfig(&lptmr_config);
