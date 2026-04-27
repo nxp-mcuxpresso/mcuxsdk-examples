@@ -6,7 +6,7 @@ project(lin_stack_slave LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
-    SOURCES lin_stack_slave.c
+    SOURCES lin_stack_slave.c lin_cfg.c lin_cfg.h
 )
 
 mcux_add_include(
