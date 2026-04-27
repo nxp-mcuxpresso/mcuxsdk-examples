@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 NXP
+ * Copyright 2019,2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -21,7 +21,7 @@
 #define MOTOR1_MIN_VALUE  50
 #define MOTOR1_STOP_VALUE 150
 
-/* Selction command. */
+/* Selection command. */
 #define MOTOR1_SELECTION_INCREASE 0X01
 #define MOTOR1_SELECTION_DECREASE 0x02
 #define MOTOR1_SELECTION_STOP     0x03
@@ -31,7 +31,7 @@
  ******************************************************************************/
 uint16_t timerOverflowInterruptCount = 0U;
 volatile l_u8 g_motorTickCount       = 0U;
-volatile l_u8 g_motorSelctionCmd     = 0U;
+volatile l_u8 g_motorSelectionCmd    = 0U;
 
 /*******************************************************************************
  * Prototypes
@@ -189,7 +189,7 @@ void DEMO_LIN_IRQHandler(void)
 }
 
 /* @brief LIN master task.
- *        This task will emulate a master to node to receive data from slave node.
+ *        This task will emulate a master node to receive data from slave node.
  *        And according to the temp data, send different command to slave node.
  */
 static void DEMO_MasterTaskStart(void)
@@ -214,11 +214,11 @@ static void DEMO_MasterTaskStart(void)
             /* If the tick count value from slave node is larger than stop value, stop slave tick count. */
             if (MOTOR1_STOP_VALUE < g_motorTickCount)
             {
-                if (g_motorSelctionCmd != MOTOR1_SELECTION_STOP)
+                if (g_motorSelectionCmd != MOTOR1_SELECTION_STOP)
                 {
-                    g_motorSelctionCmd = MOTOR1_SELECTION_STOP;
+                    g_motorSelectionCmd = MOTOR1_SELECTION_STOP;
                     /* Update the selction command. */
-                    l_u8_wr_LI0_Motor1Selection(g_motorSelctionCmd);
+                    l_u8_wr_LI0_Motor1Selection(g_motorSelectionCmd);
 
                     /* Set the LED 3 on. */
                     DEMO_LED1_OFF();
@@ -231,11 +231,11 @@ static void DEMO_MasterTaskStart(void)
             /* If value is larger than MAX value, set slave node to decrease the count. */
             else if (MOTOR1_MAX_VALUE < g_motorTickCount)
             {
-                if (g_motorSelctionCmd != MOTOR1_SELECTION_DECREASE)
+                if (g_motorSelectionCmd != MOTOR1_SELECTION_DECREASE)
                 {
-                    g_motorSelctionCmd = MOTOR1_SELECTION_DECREASE;
+                    g_motorSelectionCmd = MOTOR1_SELECTION_DECREASE;
                     /* Update the selction command. */
-                    l_u8_wr_LI0_Motor1Selection(g_motorSelctionCmd);
+                    l_u8_wr_LI0_Motor1Selection(g_motorSelectionCmd);
 
                     /* Set the LED 1 on. */
                     DEMO_LED1_ON();
@@ -248,11 +248,11 @@ static void DEMO_MasterTaskStart(void)
             /* If value is less than the MIN value, set slave to increase the count. */
             else if (MOTOR1_MIN_VALUE > g_motorTickCount)
             {
-                if (g_motorSelctionCmd != MOTOR1_SELECTION_INCREASE)
+                if (g_motorSelectionCmd != MOTOR1_SELECTION_INCREASE)
                 {
-                    g_motorSelctionCmd = MOTOR1_SELECTION_INCREASE;
+                    g_motorSelectionCmd = MOTOR1_SELECTION_INCREASE;
                     /* Update the selction command. */
-                    l_u8_wr_LI0_Motor1Selection(g_motorSelctionCmd);
+                    l_u8_wr_LI0_Motor1Selection(g_motorSelectionCmd);
 
                     /* Set the LED 2 on. */
                     DEMO_LED1_OFF();
@@ -271,7 +271,7 @@ static void DEMO_MasterTaskStart(void)
 }
 
 /*!
- *@brief Timer initialize for LIN cluster.
+ * @brief Timer initialize for LIN cluster.
  *       Initialize a timer for LIN cluster used, the time period is 500us.
  */
 static void DEMO_TimerInit(void)

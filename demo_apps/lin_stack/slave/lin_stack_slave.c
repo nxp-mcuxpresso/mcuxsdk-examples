@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 NXP
+ * Copyright 2019,2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -17,11 +17,9 @@
  * Definitions
  ******************************************************************************/
 /* Values for motor1 control. */
-#define MOTOR1_MAX_VALUE  100
-#define MOTOR1_MIN_VALUE  50
 #define MOTOR1_STOP_VALUE 150
 
-/* Selction command. */
+/* Selection command. */
 #define MOTOR1_SELECTION_INCREASE 0X01
 #define MOTOR1_SELECTION_DECREASE 0x02
 #define MOTOR1_SELECTION_STOP     0x03
@@ -156,12 +154,10 @@ void timerGetTimeIntervalCallback0(uint32_t *ns)
 #endif
 
 #if (defined(DEMO_SW_USE_SEPARATE_HANDLER) && DEMO_SW_USE_SEPARATE_HANDLER)
-/*!
- * This interrupt routine puts a node into sleep mode or sends wakeup signal on button press
- */
 void DEMO_SW2_IRQ_HANDLER(void)
 {
-    /* If button 2 was pressed, send the wake up signal to and start the normal table. */
+    /* If button 2 was pressed, reset the tick count to a low value
+     * and restart the increase cycle. */
 #if (defined(FSL_FEATURE_PORT_HAS_NO_INTERRUPT) && FSL_FEATURE_PORT_HAS_NO_INTERRUPT)
     if (GPIO_GpioGetInterruptFlags(DEMO_BUTTON2_GPIO) & (1U << DEMO_BUTTON2_PIN))
 #else
@@ -174,7 +170,6 @@ void DEMO_SW2_IRQ_HANDLER(void)
 #else
         GPIO_PortClearInterruptFlags(DEMO_BUTTON2_GPIO, 1U << DEMO_BUTTON2_PIN);
 #endif
-        /* Set the tick count larger than stop value. */
         g_motorTickCount = 20U;
     }
     else
@@ -186,7 +181,8 @@ void DEMO_SW2_IRQ_HANDLER(void)
 
 void DEMO_SW3_IRQ_HANDLER(void)
 {
-    /* If button 1 was pressed, send the sleep signal. */
+    /* If button 1 was pressed, force the tick count above MOTOR1_STOP_VALUE
+     * causing the master to send the STOP command. */
 #if (defined(FSL_FEATURE_PORT_HAS_NO_INTERRUPT) && FSL_FEATURE_PORT_HAS_NO_INTERRUPT)
     if (GPIO_GpioGetInterruptFlags(DEMO_BUTTON1_GPIO) & (1U << DEMO_BUTTON1_PIN))
 #else
@@ -209,12 +205,10 @@ void DEMO_SW3_IRQ_HANDLER(void)
     SDK_ISR_EXIT_BARRIER;
 }
 #else
-/*!
- * This interrupt routine puts a node into sleep mode or sends wakeup signal on button press
- */
 void DEMO_SW_IRQ_HANDLER(void)
 {
-    /* If button 1 was pressed, send the sleep signal. */
+    /* If button 1 was pressed, force the tick count above MOTOR1_STOP_VALUE
+     * causing the master to send the STOP command. */
     if (GPIO_PortGetInterruptFlags(DEMO_BUTTON1_GPIO) & (1U << DEMO_BUTTON1_PIN))
     {
         /* Clear external interrupt flag. */
@@ -222,12 +216,12 @@ void DEMO_SW_IRQ_HANDLER(void)
         /* Set the tick count larger than stop value. */
         g_motorTickCount = MOTOR1_STOP_VALUE + 20U;
     }
-    /* If button 2 was pressed, send the wake up signal to and start the normal table. */
+    /* If button 2 was pressed, reset the tick count to a low value
+     * and restart the increase cycle. */
     else if (GPIO_PortGetInterruptFlags(DEMO_BUTTON2_GPIO) & (1U << DEMO_BUTTON2_PIN))
     {
         /* Clear external interrupt flag. */
         GPIO_PortClearInterruptFlags(DEMO_BUTTON2_GPIO, 1U << DEMO_BUTTON2_PIN);
-        /* Set the tick count larger than stop value. */
         g_motorTickCount = 20U;
     }
     else
@@ -248,8 +242,8 @@ void DEMO_LIN_IRQHandler(void)
 }
 
 /* @brief LIN slave task.
- *        This task will emulate a master to node to receive data from slave node.
- *        And according to the temp data, send different command to slave node.
+*        This task will emulate a slave node to send temp data to the master node.
+*        And according to the command from master, control the LED state.
  */
 static void DEMO_SlaveTaskStart(void)
 {
@@ -320,7 +314,7 @@ static void DEMO_SlaveTaskStart(void)
 
 /*!
  * @brief Initialize a timer for LIN slave.
- * This function will initialzie a timer for LIN stack network, the time period is 500us.
+ * This function will initialize a timer for LIN stack network, the time period is 500us.
  */
 static void DEMO_TimerInit(void)
 {
