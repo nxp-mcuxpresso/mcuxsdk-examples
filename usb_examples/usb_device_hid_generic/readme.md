@@ -190,6 +190,7 @@ For example, data "12 34 56 78 90 ab cd ef" is sent to the device. The message "
 - [FRDM-K32L2A4S](../../_boards/frdmk32l2a4s/usb_examples/usb_device_hid_generic/example_board_readme.md)
 - EVK-MIMXRT1020
 - MIMXRT700-EVK
+- FRDM-IMXRT700
 - FRDM-MCXA156
 - EVK-MIMXRT595
 - EVK-MIMXRT685

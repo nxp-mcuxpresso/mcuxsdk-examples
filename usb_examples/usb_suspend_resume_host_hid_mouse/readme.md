@@ -142,6 +142,7 @@ The host will wake up the device by delivering the resume signal if it is waked 
 - FRDM-K32L2A4S
 - EVK-MIMXRT1020
 - MIMXRT700-EVK
+- FRDM-IMXRT700
 - EVK-MIMXRT595
 - EVK-MIMXRT685
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/usb_examples/usb_suspend_resume_host_hid_mouse/example_board_readme.md)

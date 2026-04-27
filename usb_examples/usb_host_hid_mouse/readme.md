@@ -85,6 +85,7 @@ The following figure is an example to attach one mouse device.
 - [FRDM-K32L2A4S](../../_boards/frdmk32l2a4s/usb_examples/usb_host_hid_mouse/example_board_readme.md)
 - EVK-MIMXRT1020
 - MIMXRT700-EVK
+- FRDM-IMXRT700
 - [EVK-MIMXRT595](../../_boards/evkmimxrt595/usb_examples/usb_host_hid_mouse/example_board_readme.md)
 - [EVK-MIMXRT685](../../_boards/evkmimxrt685/usb_examples/usb_host_hid_mouse/example_board_readme.md)
 - IMX95LPD5EVK-19

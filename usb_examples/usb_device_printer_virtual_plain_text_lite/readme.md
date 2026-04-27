@@ -121,6 +121,7 @@ The demo does not parse the data and outputs it to the debug console directly.
 - FRDM-K32L2A4S
 - EVK-MIMXRT1020
 - MIMXRT700-EVK
+- FRDM-IMXRT700
 - FRDM-MCXA156
 - EVK-MIMXRT595
 - EVK-MIMXRT685

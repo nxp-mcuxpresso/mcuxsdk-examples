@@ -88,6 +88,7 @@ The following image shows how to attach a USB audio speaker device.
 - [FRDM-K32L2A4S](../../_boards/frdmk32l2a4s/usb_examples/usb_host_audio_speaker/example_board_readme.md)
 - EVK-MIMXRT1020
 - MIMXRT700-EVK
+- FRDM-IMXRT700
 - EVK-MIMXRT595
 - EVK-MIMXRT685
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/usb_examples/usb_host_audio_speaker/example_board_readme.md)

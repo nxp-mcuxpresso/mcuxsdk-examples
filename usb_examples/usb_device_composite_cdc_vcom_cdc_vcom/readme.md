@@ -148,6 +148,7 @@ Step 7. Now the CDC driver should be installed successfully.
 - [FRDM-K32L2A4S](../../_boards/frdmk32l2a4s/usb_examples/usb_device_composite_cdc_vcom_cdc_vcom/example_board_readme.md)
 - EVK-MIMXRT1020
 - MIMXRT700-EVK
+- FRDM-IMXRT700
 - FRDM-MCXA156
 - EVK-MIMXRT595
 - EVK-MIMXRT685

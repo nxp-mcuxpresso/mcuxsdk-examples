@@ -18,4 +18,5 @@ host_lpm_hid_mouse_freertos:
     lpcxpresso54s018: []
     lpcxpresso54s018m: []
     mimxrt685audevk@cm33: []
+    frdmimxrt700@cm33_core0: []
     mimxrt700evk@cm33_core0: []

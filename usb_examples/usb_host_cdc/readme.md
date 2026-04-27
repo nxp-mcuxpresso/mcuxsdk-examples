@@ -85,6 +85,7 @@ It enumerates a COM port and echoes back the data from the UART as follows:
 - [FRDM-K32L2A4S](../../_boards/frdmk32l2a4s/usb_examples/usb_host_cdc/example_board_readme.md)
 - EVK-MIMXRT1020
 - MIMXRT700-EVK
+- FRDM-IMXRT700
 - EVK-MIMXRT595
 - EVK-MIMXRT685
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/usb_examples/usb_host_cdc/example_board_readme.md)

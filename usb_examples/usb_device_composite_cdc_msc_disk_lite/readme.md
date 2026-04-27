@@ -152,6 +152,7 @@ Step 7. Now the CDC driver should be installed successfully.
 - MIMXRT1180-EVK
 - EVK-MIMXRT1020
 - MIMXRT700-EVK
+- FRDM-IMXRT700
 - EVK-MIMXRT595
 - EVK-MIMXRT685
 - MCX-N9XX-EVK

@@ -100,6 +100,7 @@ as the following image.
 - MIMXRT1180-EVK
 - EVK-MIMXRT1020
 - MIMXRT700-EVK
+- FRDM-IMXRT700
 - [EVK-MIMXRT595](../../_boards/evkmimxrt595/usb_examples/usb_host_video_camera/example_board_readme.md)
 - EVK-MIMXRT685
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/usb_examples/usb_host_video_camera/example_board_readme.md)

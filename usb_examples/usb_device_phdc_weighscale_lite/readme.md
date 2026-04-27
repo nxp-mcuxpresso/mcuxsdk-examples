@@ -86,6 +86,7 @@ device to simulate the personal weight scale data, such as body mass and body ma
 - FRDM-K32L2A4S
 - EVK-MIMXRT1020
 - MIMXRT700-EVK
+- FRDM-IMXRT700
 - FRDM-MCXA156
 - EVK-MIMXRT595
 - EVK-MIMXRT685

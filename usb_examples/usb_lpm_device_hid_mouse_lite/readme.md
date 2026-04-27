@@ -80,3 +80,4 @@ Or the device can remote wake-up the host by delivering the resume signal when t
 - EVK-MIMXRT595
 - LPCXpresso54S018M
 - LPCXpresso54628
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/usb_examples/usb_lpm_device_hid_mouse_lite/example_board_readme.md)

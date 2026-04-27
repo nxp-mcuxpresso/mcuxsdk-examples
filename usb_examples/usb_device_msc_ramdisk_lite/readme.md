@@ -110,6 +110,7 @@ Otherwise, Mac OS shows "not enough space for allocate" and can't format the dis
 - FRDM-K32L2A4S
 - EVK-MIMXRT1020
 - MIMXRT700-EVK
+- FRDM-IMXRT700
 - FRDM-MCXA156
 - EVK-MIMXRT595
 - EVK-MIMXRT685

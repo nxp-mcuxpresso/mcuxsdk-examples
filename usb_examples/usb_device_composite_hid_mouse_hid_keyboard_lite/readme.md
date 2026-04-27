@@ -81,6 +81,7 @@ The application is a simple demonstration program based on the MCUXpresso SDK. T
 - FRDM-K32L2A4S
 - EVK-MIMXRT1020
 - MIMXRT700-EVK
+- FRDM-IMXRT700
 - FRDM-MCXA156
 - EVK-MIMXRT595
 - EVK-MIMXRT685

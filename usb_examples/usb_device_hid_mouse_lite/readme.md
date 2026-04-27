@@ -78,6 +78,7 @@ It is enumerated as a mouse. Users can see the mouse arrow moving on the PC scre
 - FRDM-K32L2A4S
 - EVK-MIMXRT1020
 - MIMXRT700-EVK
+- FRDM-IMXRT700
 - FRDM-MCXA156
 - EVK-MIMXRT595
 - EVK-MIMXRT685

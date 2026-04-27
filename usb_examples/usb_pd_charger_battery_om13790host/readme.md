@@ -103,6 +103,7 @@ The PD charger + battery example is a simple demonstration based on the MCUXpres
 - FRDM-K32L2A4S
 - EVK-MIMXRT1020
 - MIMXRT700-EVK
+- FRDM-IMXRT700
 - EVK-MIMXRT595
 - EVK-MIMXRT685
 - MCX-N9XX-EVK

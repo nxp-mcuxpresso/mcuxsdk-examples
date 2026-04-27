@@ -108,6 +108,7 @@ Otherwise, Mac OS shows "not enough space for allocate" and can't format the dis
 - [FRDM-K32L2A4S](../../_boards/frdmk32l2a4s/usb_examples/usb_device_msc_ramdisk/example_board_readme.md)
 - EVK-MIMXRT1020
 - MIMXRT700-EVK
+- FRDM-IMXRT700
 - FRDM-MCXA156
 - EVK-MIMXRT595
 - EVK-MIMXRT685

@@ -118,3 +118,4 @@ USB_DEVICE_WORKAROUND_AUDIO_20_WINDOWS when meets the following conditions:
 - EVKB-IMXRT1050
 - [RD-RW612-BGA](../../_boards/rdrw612bga/usb_examples/usb_device_composite_hid_audio_unified/example_board_readme.md)
 - EVK-MIMXRT1015
+- FRDM-IMXRT700

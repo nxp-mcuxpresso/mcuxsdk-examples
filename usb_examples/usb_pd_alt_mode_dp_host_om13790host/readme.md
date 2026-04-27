@@ -72,6 +72,7 @@ It recognize attached video adapters (like "Type-C to DisplayPort" or "Type-C to
 - MIMXRT1180-EVK
 - FRDM-K32L2A4S
 - MIMXRT700-EVK
+- FRDM-IMXRT700
 - EVK-MIMXRT595
 - EVK-MIMXRT685
 - MCX-N9XX-EVK

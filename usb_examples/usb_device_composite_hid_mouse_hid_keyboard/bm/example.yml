@@ -52,6 +52,7 @@ dev_composite_hid_mouse_hid_keyboard_bm:
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
     mimxrt685audevk@cm33: []
+    frdmimxrt700@cm33_core0: []
     mimxrt700evk@cm33_core0: []
     rdrw612bga: []
     frdmmcxa266: []

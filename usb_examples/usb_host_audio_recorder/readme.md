@@ -95,6 +95,7 @@ count, sampwidth is byte width, framerate is sample rate. In the current test ca
 - MIMXRT1180-EVK
 - EVK-MIMXRT1020
 - MIMXRT700-EVK
+- FRDM-IMXRT700
 - [EVK-MIMXRT595](../../_boards/evkmimxrt595/usb_examples/usb_host_audio_recorder/example_board_readme.md)
 - EVK-MIMXRT685
 - MCX-N9XX-EVK
