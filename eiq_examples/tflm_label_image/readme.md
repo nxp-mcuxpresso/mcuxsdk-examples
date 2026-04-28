@@ -131,13 +131,6 @@ After importing a **Freestanding** project from the MCU SDK, the project structu
 ├── stopwatch.bmp
 ├── image_data.h
 ├── image/*
-├── cm33                   # Neutron-Software related
-│   ├── libNeutronDriver.a
-│   └── libNeutronFirmware.a
-├── driver_include         # Neutron-Software related
-│   └── NeutronDriver.h
-├── include                # Neutron-Software related
-│   └── NeutronErrors.h
 ├── common
 │   ├── timer.c
 │   ├── timer.h

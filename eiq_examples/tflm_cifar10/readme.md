@@ -125,13 +125,6 @@ After importing a **Freestanding** project from the MCU SDK, the project structu
 ├── labels.h                 
 ├── image_data.h             # Static image array
 ├── ship.bmp                 # Static test image
-├── cm33                     # Neutron-Software related
-│   ├── libNeutronDriver.a
-│   └── libNeutronFirmware.a
-├── driver_include           # Neutron-Software related
-│   └── NeutronDriver.h
-├── include                  # Neutron-Software related
-│   └── NeutronErrors.h
 ├── common/                 
 │   └── timer.c/h
 ├── image/*                  # Image processing module

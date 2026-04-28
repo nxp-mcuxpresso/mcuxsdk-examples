@@ -197,13 +197,6 @@ After importing a **Freestanding** project from the MCU SDK, the project structu
 │   ├── timer.c
 │   ├── timer.h
 │   └── timer_xtensa.h
-├── cm33                   # Neutron-Software related
-│   ├── libNeutronDriver.a
-│   └── libNeutronFirmware.a
-├── driver_include         # Neutron-Software related
-│   └── NeutronDriver.h
-├── include                # Neutron-Software related
-│   └── NeutronErrors.h
 ├── labels.h
 ├── main.cpp
 ├── model
@@ -219,10 +212,6 @@ After importing a **Freestanding** project from the MCU SDK, the project structu
 ├── output_postproc.cpp
 └── train.py
 ```
-
-The library files and header files in the `cm33/`, `driver_include/`, and `include/` folders are Neutron-Software related files.
-
-Users can update the Neutron-Software version in this project by replacing these four files: `NeutronDriver.h`, `NeutronErrors.h`, `libNeutronDriver.a`, and `libNeutronFirmware.a`.
 
 (For the boards without NPU hardware, the CPU version of the model file is located in the `cpu/` folder.)
 
