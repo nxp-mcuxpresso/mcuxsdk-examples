@@ -8,6 +8,7 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/driver_examples/sai/mqs_edma_transfer/sai_mqs_edma_transfer.c
+            examples/driver_examples/sai/music.h
 )
 
 mcux_add_include(
