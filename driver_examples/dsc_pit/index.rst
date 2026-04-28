@@ -9,3 +9,4 @@ dsc_pit
 
    basic/readme.md
    scout/readme.md
+   basic_generic/readme.md
