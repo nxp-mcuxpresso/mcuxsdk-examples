@@ -10,6 +10,7 @@ This example demonstrates a TensorFlow Lite Micro-based image classifier that us
 - **NPU Acceleration**: Utilizes Neutron NPU with `fetch_constants_to_sram` parameter
 - **Input**: 3-channel color image (224×224 pixels)
 - **Output**: Classification into 1000 classes
+- **Neutron Software Version**: MCU SDK 26.03 comes with a default Neutron Software Version of 3.0.0
 
 ### Usage Modes
 

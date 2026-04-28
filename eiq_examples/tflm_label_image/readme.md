@@ -6,12 +6,13 @@ This example demonstrates a TensorFlow Lite Micro model for image classification
 
 In this example, a static test image ("stopwatch") is evaluated for classification into one of 1000 ImageNet classes.
 
-### Features
+### Key Features
 
 - **Model Architecture**: Mobilenet V1 0.25 128 quantized convolutional neural network
 - **Input**: 3-channel color image (128×128 pixels)
 - **Output**: Classification into 1000 classes
 - **Detection Threshold**: 23%
+- **Neutron Software Version**: MCU SDK 26.03 comes with a default Neutron Software Version of 3.0.0
 
 ### Network Structure
 

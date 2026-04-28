@@ -6,13 +6,14 @@ This example demonstrates a **Convolutional Neural Network (CNN)** for image cla
 
 In this example, a static test images ("ship") is evaluated for classification into one of 10 CIFAR-10 classes.
 
-### Features
+### Key Features
 
 - **Model Architecture**: CifarNet CNN with 3 convolution layers
 - **Input**: 32×32 pixel color image
 - **Output**: Classification into 10 classes
 - **Model Size**: 91 KB
 - **Detection Threshold**: 60%
+- **Neutron Software Version**: MCU SDK 26.03 comes with a default Neutron Software Version of 3.0.0
 
 ### Network Structure
 
