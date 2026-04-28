@@ -334,6 +334,28 @@ static void DEMO_MasterTaskStart(void)
                    (int)g_motor1StopValue);
         }
 
+        /* Check whether an event-triggered frame response was received.
+         * Use the signal-level flag (Motor1ErrorCode) rather than the frame-level flag
+         * (Motor1State_Event).  The frame flag is set in the UART ISR before
+         * lin_master_update_signal() has had a chance to copy the received ETF bytes
+         * into g_lin_frame_data_buffer[], so reading it can race and return stale zeroes.
+         * The signal flags are set by lin_master_update_signal() only AFTER the buffer
+         * copy completes, so they guarantee that the data is valid when we read it. */
+        if (l_flg_tst_LI0_Motor1ErrorCode_flag())
+        {
+            /* A zero errCode means the slave had no pending event (post-event reset after
+             * the slave clears the buffer); skip logging in that case. */
+            l_u8 errCode = l_u8_rd_LI0_Motor1ErrorCode();
+            l_u8 errVal  = l_u8_rd_LI0_Motor1ErrorValue();
+            l_flg_clr_LI0_Motor1ErrorCode_flag();
+            l_flg_clr_LI0_Motor1ErrorValue_flag();
+            if (errCode != 0U)
+            {
+                PRINTF("Event-triggered frame received: ErrorCode=0x%02X ErrorValue=0x%02X\r\n",
+                       (unsigned)errCode, (unsigned)errVal);
+            }
+        }
+
         /* Check if information about the Motor1 tick count has been received */
         if (l_flg_tst_LI0_Motor1Temp_flag())
         {

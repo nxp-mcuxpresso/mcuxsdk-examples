@@ -1,5 +1,5 @@
 /*
- * Copyright 2019,2025 NXP
+ * Copyright 2019,2025,2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -90,7 +90,7 @@ typedef enum
 } l_signal_handle;
 
 /* Number of frames */
-#define LIN_NUM_OF_FRMS 10U
+#define LIN_NUM_OF_FRMS 11U
 
 /* List of frames */
 typedef enum
@@ -105,11 +105,12 @@ typedef enum
     LI0_MotorsControl,
     LI0_SporadicControlFrame,
     LI0_MasterReq,
-    LI0_SlaveResp
+    LI0_SlaveResp,
+    LI0_EventTriggeredFrame
 } l_frame_handle;
 
 /* Number of schedule tables */
-#define LIN_NUM_OF_SCHD_TBL 6U
+#define LIN_NUM_OF_SCHD_TBL 7U
 
 /* List of schedules */
 typedef enum
@@ -120,11 +121,12 @@ typedef enum
     LI0_MasterReqTable,
     LI0_SlaveRespTable,
     LI0_NormalTable,
-    LI0_SporadicTable
+    LI0_SporadicTable,
+    LI0_EventTriggerCollisionTable
 } l_schedule_handle;
 
 /* Size of configuration in ROM and RAM used for interface: LI0 */
-#define LI0_LIN_SIZE_OF_CFG 12U
+#define LI0_LIN_SIZE_OF_CFG 13U
 
 /*!
  * @breief l_bool_rd
@@ -588,6 +590,9 @@ typedef enum
 
 #define l_flg_tst_LI0_SlaveResp_flag() g_lin_frame_flag_handle_tbl[LI0_SlaveResp]
 #define l_flg_clr_LI0_SlaveResp_flag() g_lin_frame_flag_handle_tbl[LI0_SlaveResp] = 0
+
+#define l_flg_tst_LI0_EventTriggeredFrame_flag() g_lin_frame_flag_handle_tbl[LI0_EventTriggeredFrame]
+#define l_flg_clr_LI0_EventTriggeredFrame_flag() g_lin_frame_flag_handle_tbl[LI0_EventTriggeredFrame] = 0
 
 /*!
  * @brief l_sch_tick_interface

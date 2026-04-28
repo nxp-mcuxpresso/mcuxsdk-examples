@@ -38,6 +38,11 @@ every 5 ms, but the real period between frames may be larger than 5ms according 
   incremented by 10 on both the master and the slave. Each additional press while the bus is awake
   raises the threshold by another 10. MOTOR1_STOP_VALUE resets to the default (150) on both nodes
   after a sleep/wake cycle.
+- The schedule includes a LIN 2.1 Event-triggered frame slot. The master sends the ETF header every
+  schedule cycle. If the slave has a pending event, in this demo it is when slave button 1 is pressed
+  5 times, it responds with the PID of its associated unconditional frame followed by the event data.
+  The master decodes the response, reads the error code and value signals, and prints them to the
+  console.
 
 ## Running the demo
 If communication is successful, the master node will print:
@@ -59,6 +64,8 @@ Diagnostic complete. Starting motor control.
 Sporadic frame sent: MOTOR1_STOP_VALUE raised to 160
  -> LED 1 is ON!
 ........
+ <after pressing slave button 1 5 times>
+Event-triggered frame received: ErrorCode=0x 1 ErrorValue=0x 5
 ~~~~~~~~~~~~
 
 ## Supported Boards

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 NXP
+ * Copyright 2019,2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -27,8 +27,8 @@ volatile l_u8 g_lin_frame_data_buffer[LIN_FRAME_BUF_SIZE] = {
     0x00, /* 5 : 00000000 */
     0xfe, /* 6 : 11111110 */
     0xff, /* 7 : 11111111, Frame LI0_Motor1State_Event. */
-    0x05, /* 8 : 00000101 */
-    0x01, /* 9 : 00000001 */
+    0x00, /* 8 : 00000000 */
+    0x00, /* 9 : 00000000 */
     0x00, /* 10 : 00000000, Frame LI0_MotorsControl. */
     0xf0, /* 11 : 11110000 */
     0xff, /* 12 : 11111111 */
@@ -43,15 +43,16 @@ volatile l_u8 g_lin_frame_data_buffer[LIN_FRAME_BUF_SIZE] = {
 volatile l_u8 g_lin_flag_handle_tbl[LIN_FLAG_BUF_SIZE] = {
     0x00, /* 0: start of flag frame LI0_Motor1Control */
     0x00, /* 1: start of flag frame LI0_Motor1State_Cycl */
-    0x00, /* 2: start of flag frame LI0_Motor1State_Event */
+    0x03, /* 2: start of flag frame LI0_Motor1State_Event — bits 0,1 set (Motor1ErrorCode/Value not
+             pending) so the slave does not respond to an ETF before the application writes event data */
     0x00  /* 3: start of flag frame LI0_MotorsControl */
 };
 
 /* Frame flag table. */
-l_bool g_lin_frame_flag_handle_tbl[LIN_NUM_OF_FRMS] = {0, 0, 0, 0, 0, 0, 0};
+l_bool g_lin_frame_flag_handle_tbl[LIN_NUM_OF_FRMS] = {0, 0, 0, 0, 0, 0, 0, 0};
 
 /* Frame flag for updating signal in frame. */
-volatile l_u8 g_lin_frame_updating_flag_tbl[LIN_NUM_OF_FRMS] = {0, 0, 0, 0, 0, 0, 0};
+volatile l_u8 g_lin_frame_updating_flag_tbl[LIN_NUM_OF_FRMS] = {0, 0, 0, 0, 0, 0, 0, 0};
 
 /*!
  * lin configuration structure
@@ -63,6 +64,11 @@ lin_user_config_t lin1_InitConfig0 = {
     .timerGetTimeIntervalCallback = timerGetTimeIntervalCallback0, /* Call back fucntion for timer service. */
 };
 
+/* Event-triggered frame related. */
+static const l_frame_handle LI0_EventTriggeredFrame_assoc_data[1] = {LI0_Motor1State_Event};
+static const lin_associate_frame_t LI0_EventTriggeredFrame_info   = {
+    1, &LI0_EventTriggeredFrame_assoc_data[0], 0xFF}; /* coll_resolv_schd unused on slave */
+
 /* LIN frame table. */
 static const lin_frame_t lin_frame_tbl[LIN_NUM_OF_FRMS] = {
 
@@ -72,13 +78,14 @@ static const lin_frame_t lin_frame_tbl[LIN_NUM_OF_FRMS] = {
     {LIN_FRM_UNCD, 8, LIN_RES_SUB, 10, 3, 1, (lin_associate_frame_t *)0},
     {LIN_FRM_SPRDC, 1, LIN_RES_SUB, 0, 0, 0, (lin_associate_frame_t *)0},
     {LIN_FRM_DIAG, 8, LIN_RES_SUB, 0, 0, 0, (lin_associate_frame_t *)0},
-    {LIN_FRM_DIAG, 8, LIN_RES_PUB, 0, 0, 0, (lin_associate_frame_t *)0}};
+    {LIN_FRM_DIAG, 8, LIN_RES_PUB, 0, 0, 0, (lin_associate_frame_t *)0},
+    {LIN_FRM_EVNT, 3, LIN_RES_PUB, 7, 2, 1, &LI0_EventTriggeredFrame_info}};
 
 /*  LIN configuration stored in RAM. */
-static l_u8 LI0_lin_configuration_RAM[LI0_LIN_SIZE_OF_CFG] = {0x00, 0x30, 0x33, 0x36, 0x2D, 0xFF, 0x3C, 0x3D, 0xFF};
+static l_u8 LI0_lin_configuration_RAM[LI0_LIN_SIZE_OF_CFG] = {0x00, 0x30, 0x33, 0x36, 0x2D, 0xFF, 0x3C, 0x3D, 0x38, 0xFF};
 /* LIN configuration stored in ROM, can't be changed. */
-static const l_u16 LI0_lin_configuration_ROM[LI0_LIN_SIZE_OF_CFG] = {0x0000, 0x30, 0x33, 0x36,  0x2D,
-                                                                     0xFF,   0x3C, 0x3D, 0xFFFF};
+static const l_u16 LI0_lin_configuration_ROM[LI0_LIN_SIZE_OF_CFG] = {0x0000, 0x30, 0x33, 0x36, 0x2D,
+                                                                     0xFF,   0x3C, 0x3D, 0x38, 0xFFFF};
 
 /* Related LIN configurations. */
 static l_u8 LI0_lin_configured_NAD                = 0x02;
@@ -118,7 +125,7 @@ const lin_protocol_user_config_t g_lin_protocol_user_cfg_array[LIN_NUM_OF_IFCS] 
         .diagnostic_class = LIN_DIAGNOSTIC_CLASS_I,            /* LIN Diagnostic Class */
         .function         = (bool)LIN_SLAVE,                   /*  function LIN_SLAVE*/
 
-        .number_of_configurable_frames = 7,                    /*  num_of_frames */
+        .number_of_configurable_frames = 8,                    /*  num_of_frames */
         .frame_start                   = 0,                    /*  frame_start */
         .frame_tbl_ptr                 = lin_frame_tbl,        /*  frame_tbl */
 

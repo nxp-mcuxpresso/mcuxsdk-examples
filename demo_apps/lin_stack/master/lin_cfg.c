@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 NXP
+ * Copyright 2019,2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -24,8 +24,8 @@ volatile l_u8 g_lin_frame_data_buffer[LIN_FRAME_BUF_SIZE] = {
     0x00, /* 5 : 00000000 */
     0xfe, /* 6 : 11111110 */
     0xff, /* 7 : 11111111, Start of frame LI0_Motor1State_Event. */
-    0x05, /* 8 : 00000101 */
-    0x01, /* 9 : 00000001 */
+    0x00, /* 8 : 00000000 */
+    0x00, /* 9 : 00000000 */
     0xfc, /* 10 : 11111100, Start of frame LI0_Motor2Control. */
     0x00, /* 11 : 00000000, Start of frame LI0_Motor2State_Cycl. */
     0x00, /* 12 : 00000000 */
@@ -58,10 +58,10 @@ volatile l_u8 g_lin_flag_handle_tbl[LIN_FLAG_BUF_SIZE] = {
 };
 
 /* LIN frame frame flag handle table. */
-l_bool g_lin_frame_flag_handle_tbl[LIN_NUM_OF_FRMS] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+l_bool g_lin_frame_flag_handle_tbl[LIN_NUM_OF_FRMS] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 /* LIN frame update falg table. */
-volatile l_u8 g_lin_frame_updating_flag_tbl[LIN_NUM_OF_FRMS] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+volatile l_u8 g_lin_frame_updating_flag_tbl[LIN_NUM_OF_FRMS] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 /* lin user configuration. */
 lin_user_config_t lin1_InitConfig0 = {
@@ -78,6 +78,11 @@ static const l_frame_handle LI0_SporadicControlFrame_info_data[2] = {
 
 static const lin_associate_frame_t LI0_SporadicControlFrame_info = {2, &LI0_SporadicControlFrame_info_data[0], 0xFF};
 
+/* Event-triggered frame related. */
+static const l_frame_handle LI0_EventTriggeredFrame_assoc_data[1] = {LI0_Motor1State_Event};
+static const lin_associate_frame_t LI0_EventTriggeredFrame_info   = {
+    1, &LI0_EventTriggeredFrame_assoc_data[0], LI0_EventTriggerCollisionTable};
+
 /* LIN frame table. */
 static const lin_frame_t lin_frame_tbl[LIN_NUM_OF_FRMS] = {
 
@@ -90,14 +95,15 @@ static const lin_frame_t lin_frame_tbl[LIN_NUM_OF_FRMS] = {
     {LIN_FRM_UNCD, 8, LIN_RES_PUB, 20, 6, 1, (lin_associate_frame_t *)0},
     {LIN_FRM_SPRDC, 1, LIN_RES_PUB, 0, 0, 0, &LI0_SporadicControlFrame_info},
     {LIN_FRM_DIAG, 8, LIN_RES_PUB, 0, 0, 0, (lin_associate_frame_t *)0},
-    {LIN_FRM_DIAG, 8, LIN_RES_SUB, 0, 0, 0, (lin_associate_frame_t *)0}};
+    {LIN_FRM_DIAG, 8, LIN_RES_SUB, 0, 0, 0, (lin_associate_frame_t *)0},
+    {LIN_FRM_EVNT, 3, LIN_RES_SUB, 7, 2, 1, &LI0_EventTriggeredFrame_info}};
 
 /* LIN configuration stored in RAM. */
 static l_u8 LI0_lin_configuration_RAM[LI0_LIN_SIZE_OF_CFG] = {0x00, 0x30, 0x33, 0x36, 0x31, 0x34,
-                                                              0x37, 0x2D, 0xFF, 0x3C, 0x3D, 0xFF};
+                                                              0x37, 0x2D, 0xFF, 0x3C, 0x3D, 0x38, 0xFF};
 /* LIN configuration stored in ROM, can't be changed. */
 static const l_u16 LI0_lin_configuration_ROM[LI0_LIN_SIZE_OF_CFG] = {0x0000, 0x30, 0x33, 0x36, 0x31, 0x34,
-                                                                     0x37,   0x2D, 0xFF, 0x3C, 0x3D, 0xFFFF};
+                                                                     0x37,   0x2D, 0xFF, 0x3C, 0x3D, 0x38, 0xFFFF};
 
 /* Go to sleep function.
  * Delay of this schedule table is: (1.4*(34+10*(8+1))*1000/LIN_speed+jitter) ms
@@ -107,9 +113,10 @@ static const lin_schedule_data_t LI0_lin_gotosleep_data[1] = {
     {LI0_MasterReq, 2, {0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF}}};
 
 /* Normal table for Schedule. */
-static const lin_schedule_data_t LI0_NormalTable_data[2] = {
-    {LI0_Motor1Control, 15, {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}},
-    {LI0_Motor1State_Cycl, 15, {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}}};
+static const lin_schedule_data_t LI0_NormalTable_data[3] = {
+    {LI0_Motor1Control,       15, {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}},
+    {LI0_Motor1State_Cycl,    15, {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}},
+    {LI0_EventTriggeredFrame, 15, {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}}};
 
 /*
  * Master request table.
@@ -129,6 +136,11 @@ static const lin_schedule_data_t LI0_MasterReqTable_data[1] = {
 static const lin_schedule_data_t LI0_SlaveRespTable_data[1] = {
     {LI0_SlaveResp, 2, {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}}};
 
+/* Collision resolver schedule for event-triggered frame: polls Motor1State_Event
+ * unconditionally so the master can retrieve event data after an ETF collision. */
+static const lin_schedule_data_t LI0_EventTriggerCollisionTable_data[1] = {
+    {LI0_Motor1State_Event, 15, {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}}};
+
 /* Sporadic schedule: SporadicControlFrame replaces the unconditional Motor1Control slot.
  * This ensures lin_check_sporadic_update() can detect a pending Motor1Control update
  * without the unconditional slot having already reset the signal flags. */
@@ -143,8 +155,9 @@ static const lin_schedule_t lin_schedule_tbl[LIN_NUM_OF_SCHD_TBL] = {
     {1, LIN_SCH_TBL_GO_TO_SLEEP, &LI0_lin_gotosleep_data[0]},
     {1, LIN_SCH_TBL_DIAG, &LI0_MasterReqTable_data[0]},
     {1, LIN_SCH_TBL_DIAG, &LI0_SlaveRespTable_data[0]},
-    {2, LIN_SCH_TBL_NORM, &LI0_NormalTable_data[0]},
-    {2, LIN_SCH_TBL_NORM, &LI0_SporadicTable_data[0]}};
+    {3, LIN_SCH_TBL_NORM, &LI0_NormalTable_data[0]},
+    {2, LIN_SCH_TBL_NORM, &LI0_SporadicTable_data[0]},
+    {1, LIN_SCH_TBL_COLL_RESOLV, &LI0_EventTriggerCollisionTable_data[0]}};
 
 /* LIN interface configuration array. */
 const lin_protocol_user_config_t g_lin_protocol_user_cfg_array[LIN_NUM_OF_IFCS] = {
@@ -155,14 +168,14 @@ const lin_protocol_user_config_t g_lin_protocol_user_cfg_array[LIN_NUM_OF_IFCS] 
         .diagnostic_class = LIN_DIAGNOSTIC_CLASS_I,            /* LIN Diagnostic Class */
         .function         = (bool)LIN_MASTER,                  /*  function LIN_MASTER*/
 
-        .number_of_configurable_frames = 10,                   /*  num_of_frames */
+        .number_of_configurable_frames = 11,                   /*  num_of_frames */
         .frame_start                   = 0,                    /*  frame_start */
         .frame_tbl_ptr                 = lin_frame_tbl,        /*  frame_tbl */
 
         .list_identifiers_ROM_ptr = LI0_lin_configuration_ROM, /*  *configuration_ROM */
         .list_identifiers_RAM_ptr = LI0_lin_configuration_RAM, /*  *configuration_RAM */
         .max_idle_timeout_cnt     = 10000,                     /* Max Idle Timeout Count */
-        .num_of_schedules         = 6,                         /*  num_of_schedules */
+        .num_of_schedules         = 7,                         /*  num_of_schedules */
         .schedule_start           = 0,                         /*  schedule_start */
         .schedule_tbl             = lin_schedule_tbl,          /* schedule_tbl */
 

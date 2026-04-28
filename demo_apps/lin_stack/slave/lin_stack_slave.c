@@ -26,6 +26,10 @@
 #define MOTOR1_SELECTION_DECREASE 0x02
 #define MOTOR1_SELECTION_STOP     0x03
 
+/* Button 1 press count threshold to trigger a system error event via event-triggered frame. */
+#define SLAVE_BTN1_EVENT_THRESHOLD   5U
+#define MOTOR1_ERROR_CODE_SYS_EVENT  0x01U
+
 /* Bit 2 of the Motor1Control frame byte used to signal a sporadic command to increase the motor stop
    value. Bits [7:2] are unused by any defined signal so they do not need the signal write macros. */
 #define MOTOR1_SELECTION_INC_STOP_BIT (1U << 2U)
@@ -43,6 +47,8 @@ volatile l_u8 g_motorTickCount       = 10U;
 volatile uint32_t capturedValue      = 0U;
 uint16_t timerCounterValue[2]        = {0u};
 volatile l_u8 g_motor1StopValue      = MOTOR1_STOP_VALUE_DEFAULT;
+static volatile l_u8 g_btn1EventCount  = 0U;
+static volatile bool g_eventDataPending = false;
 
 /*******************************************************************************
  * Prototypes
@@ -51,6 +57,8 @@ volatile l_u8 g_motor1StopValue      = MOTOR1_STOP_VALUE_DEFAULT;
 static void DEMO_SlaveTaskStart(void);
 /* LIN timer initialize. */
 static void DEMO_TimerInit(void);
+/* Button 2 press handling. */
+static void DEMO_HandleButton1Press(void);
 
 /*******************************************************************************
  * Code
@@ -160,6 +168,23 @@ void timerGetTimeIntervalCallback0(uint32_t *ns)
 }
 #endif
 
+/* If button 1 was pressed, force the tick count above MOTOR1_STOP_VALUE causing the master to
+ * send the STOP command. On every 5th press signal a system error event via event-triggered frame */
+static void DEMO_HandleButton1Press(void)
+{
+    /* Set the tick count larger than stop value. */
+    g_motorTickCount = g_motor1StopValue + 20U;
+
+    g_btn1EventCount++;
+    if (g_btn1EventCount >= SLAVE_BTN1_EVENT_THRESHOLD)
+    {
+        l_u8_wr_LI0_Motor1ErrorCode(MOTOR1_ERROR_CODE_SYS_EVENT);
+        l_u8_wr_LI0_Motor1ErrorValue(g_btn1EventCount);
+        g_btn1EventCount  = 0U;
+        g_eventDataPending = true;
+    }
+}
+
 #if (defined(DEMO_SW_USE_SEPARATE_HANDLER) && DEMO_SW_USE_SEPARATE_HANDLER)
 void DEMO_SW2_IRQ_HANDLER(void)
 {
@@ -188,8 +213,6 @@ void DEMO_SW2_IRQ_HANDLER(void)
 
 void DEMO_SW3_IRQ_HANDLER(void)
 {
-    /* If button 1 was pressed, force the tick count above MOTOR1_STOP_VALUE
-     * causing the master to send the STOP command. */
 #if (defined(FSL_FEATURE_PORT_HAS_NO_INTERRUPT) && FSL_FEATURE_PORT_HAS_NO_INTERRUPT)
     if (GPIO_GpioGetInterruptFlags(DEMO_BUTTON1_GPIO) & (1U << DEMO_BUTTON1_PIN))
 #else
@@ -202,8 +225,7 @@ void DEMO_SW3_IRQ_HANDLER(void)
 #else
         GPIO_PortClearInterruptFlags(DEMO_BUTTON1_GPIO, 1U << DEMO_BUTTON1_PIN);
 #endif
-        /* Set the tick count larger than stop value. */
-        g_motorTickCount = g_motor1StopValue + 20U;
+        DEMO_HandleButton1Press();
     }
     else
     {
@@ -214,14 +236,12 @@ void DEMO_SW3_IRQ_HANDLER(void)
 #else
 void DEMO_SW_IRQ_HANDLER(void)
 {
-    /* If button 1 was pressed, force the tick count above MOTOR1_STOP_VALUE
-     * causing the master to send the STOP command. */
     if (GPIO_PortGetInterruptFlags(DEMO_BUTTON1_GPIO) & (1U << DEMO_BUTTON1_PIN))
     {
         /* Clear external interrupt flag. */
         GPIO_PortClearInterruptFlags(DEMO_BUTTON1_GPIO, 1U << DEMO_BUTTON1_PIN);
-        /* Set the tick count larger than stop value. */
-        g_motorTickCount = g_motor1StopValue + 20U;
+
+        DEMO_HandleButton1Press();
     }
     /* If button 2 was pressed, reset the tick count to a low value
      * and restart the increase cycle. */
@@ -342,6 +362,24 @@ static void DEMO_SlaveTaskStart(void)
         {
             diag_clear_flag(LI0, LI0_DIAGSRV_READ_BY_IDENTIFIER_ORDER);
             PRINTF("Diagnostic: READ_BY_IDENTIFIER request handled.\r\n");
+        }
+
+        /* Check whether the ETF response for Motor1State_Event was just transmitted.
+         * The stack sets the ETF frame flag after lin_update_tx_flags() completes. */
+        if (l_flg_tst_LI0_EventTriggeredFrame_flag())
+        {
+            l_flg_clr_LI0_EventTriggeredFrame_flag();
+            if (g_eventDataPending)
+            {
+                g_eventDataPending = false;
+                PRINTF("Event-triggered frame sent: system error reported to master.\r\n");
+                /* Zero the event bytes directly (not via the write macro) so the pending flag is
+                 * not re-armed.  The collision resolver polls Motor1State_Event as an unconditional
+                 * frame and the slave always answers; clearing here ensures that subsequent polls
+                 * return 0x00/0x00, which the master ignores via its errCode != 0 guard. */
+                g_lin_frame_data_buffer[LIN_LI0_Motor1ErrorCode_BYTE_OFFSET]  = 0x00U;
+                g_lin_frame_data_buffer[LIN_LI0_Motor1ErrorValue_BYTE_OFFSET] = 0x00U;
+            }
         }
 
         /* Reset the sporadic stop value when the bus goes to sleep so that it returns
