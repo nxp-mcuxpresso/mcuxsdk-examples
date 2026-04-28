@@ -29,7 +29,7 @@ mcux_add_macro(
     CC "-DDSP_IMAGE_COPY_TO_RAM=1"
 )
 
-INclude(${SdkRootDirPath}/${board_root}/${board}/eiq_examples/tflm_cifar10_hifi1/${core_id}/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/eiq_examples/tflm_cifar10_hifi1/${core_id}/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(
     TOOLCHAINS armgcc mdk iar

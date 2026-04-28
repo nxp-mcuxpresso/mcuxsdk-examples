@@ -107,11 +107,11 @@ mcux_add_armgcc_configuration(
 mcux_add_source(
   BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/eiq_examples/tflm_label_image_ext_mem/pcq_npu/
   SOURCES model_data.S
-  TOOLCHAINS mdk armgcc mcux
+  TOOLCHAINS mdk armgcc mcux iar
 )
 
 mcux_add_iar_configuration(
-  LD "--image_input=${SdkRootDirPath}/${board_root}/${board}/eiq_examples/tflm_label_image_ext_mem/pcq_npu/mobilenet_v1_1.0_224_int8_npu.tflite,model_data,.modeldata,16\
-      --keep=model_data"
+  LD "--keep=model_data\
+      --keep=model_data_end"
 )
 

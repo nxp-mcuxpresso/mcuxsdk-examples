@@ -42,6 +42,11 @@ static uint8_t s_tensorArena[kTensorArenaSize] __ALIGNED(16);
 #endif
 
 static uint32_t s_tensorArenaSizeUsed = 0;
+
+#ifdef EXTERNAL_MEM
+extern "C" uint8_t model_data_end[];
+#endif
+
 status_t MODEL_Init(void)
 {
     // Map the model into a usable data structure. This doesn't involve any
@@ -88,10 +93,16 @@ status_t MODEL_Init(void)
 #endif
     PRINTF("TensorArena Addr: 0x%x - 0x%x\r\n", s_tensorArena, s_tensorArena + kTensorArenaSize);
     PRINTF("TensorArena Size: Total 0x%x (%d B); Used 0x%x (%d B)\r\n" , kTensorArenaSize, kTensorArenaSize, s_tensorArenaSizeUsed, s_tensorArenaSizeUsed);
+#ifdef EXTERNAL_MEM
+    uint32_t modelSize = model_data_end - model_data;
+    PRINTF("Model Addr: 0x%x - 0x%x\r\n" , model_data, model_data_end);
+    PRINTF("Model Size: 0x%x (%d B)\r\n" , modelSize, modelSize);
+    PRINTF("Total Size Used: %d B (Model (%d B) + TensorArena (%d B))\r\n" , (modelSize + s_tensorArenaSizeUsed), modelSize, s_tensorArenaSizeUsed);
+#else
     PRINTF("Model Addr: 0x%x - 0x%x\r\n" , model_data, model_data + sizeof(model_data));
     PRINTF("Model Size: 0x%x (%d B)\r\n" , sizeof(model_data), sizeof(model_data));
     PRINTF("Total Size Used: %d B (Model (%d B) + TensorArena (%d B))\r\n" , (sizeof(model_data) + s_tensorArenaSizeUsed), sizeof(model_data), s_tensorArenaSizeUsed);
-
+#endif
     return kStatus_Success;
 }
 
