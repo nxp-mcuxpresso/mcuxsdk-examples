@@ -5,4 +5,4 @@ config secondary_config
 
 config secondary_core_id
     string
-    default "cm33_core1" if $(core_id) = "cm33_core0"
+    default "cm33_core1"
