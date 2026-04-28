@@ -8,8 +8,8 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/driver_examples/lin/slave/lin_slave.c
-            ${board_root}/${board}/driver_examples/lin/slave/lin_cfg.h
-            ${board_root}/${board}/driver_examples/lin/slave/lin_cfg.c
+            examples/driver_examples/lin/slave/lin_cfg.h
+            examples/driver_examples/lin/slave/lin_cfg.c
 )
 
 mcux_add_include(

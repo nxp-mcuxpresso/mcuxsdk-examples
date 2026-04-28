@@ -1,11 +1,7 @@
 Overview
 ========
-The LIN (Local Interconnect Network) demo application is a use-case of LIN low level driver built on Low Power UART. This application demonstrates a signal transfer between the two nodes. Master node and slave node signals are represented by the character array. Both master and slave node must have implemented the timer that is used by timeout service routine every 500 us and master node use the same timer to check for switch of the frame table scheduler every 5 ms.
-The application and driver use the state machines to handle various of states of the bus on different levels.
-User can use the SW3 button to set master node to sleep and SW2 button to wakeup the master node which is indicated by LED state.
-This application supports only unconditional frame types.
-
-Note: Autobaudrate feature should stay disabled since the driver needs to be updated.
+The LIN (Local Interconnect Network) demo application is built on Low Power UART.
+SW3 is used as button 1 to set master node to sleep and SW2 is used as button 2 to wakeup the master node.
 
 Hardware requirements
 =====================
@@ -33,14 +29,3 @@ Prepare the Demo
     - One stop bit
     - No flow control
 6.  Download the program for master node to the target board.
-
-Running the demo
-================
-Master starts communication on button SW2 press. First frame is sent from master to slave. Slave will update its frame buffer and continue to send its own frame. After that slave will repeate the response from master and master will send the new frame in the next turn. The next two frames are of diagnostic type and could be used for customer purposes (for example LIN cluster go to sleep command). This sequence is than repeated.
-
-If communication is succesfull the master and slave node will both repeatedly print:
-
-LIN DEMO
-SLAVE
-LIN DEMO
-MASTER
