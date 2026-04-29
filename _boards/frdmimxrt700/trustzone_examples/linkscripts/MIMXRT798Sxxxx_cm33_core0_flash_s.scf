@@ -48,13 +48,13 @@
   #define __ram_vector_table_size__    0x00000000
 #endif
 
-#define m_interrupts_start             0x38004000
+#define m_interrupts_start             0x28004000
 #define m_interrupts_size              0x00000300
 
-#define m_text_start                   0x38004300
+#define m_text_start                   0x28004300
 #define m_text_size                    0x000FBB00
 
-#define m_veneer_table_start           0x380FFE00
+#define m_veneer_table_start           0x280FFE00
 #define m_veneer_table_size            0x00000200
 
 #define m_core1_image_maximum_size     0x00080000

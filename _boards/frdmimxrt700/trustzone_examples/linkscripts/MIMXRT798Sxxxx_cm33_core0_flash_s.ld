@@ -52,9 +52,9 @@ HEAP_START   = DEFINED(__heap_noncacheable__) ? NCACHE_END + 1 : DATA_END + 1;
 /* Specify the memory areas */
 MEMORY
 {
-  m_flash_config        (RX)  : ORIGIN = 0x38000000, LENGTH = 0x00004000
-  m_interrupts          (RX)  : ORIGIN = 0x38004000, LENGTH = 0x00000300
-  m_text                (RX)  : ORIGIN = 0x38004300, LENGTH = 0x000FBB00
+  m_flash_config        (RX)  : ORIGIN = 0x28000000, LENGTH = 0x00004000
+  m_interrupts          (RX)  : ORIGIN = 0x28004000, LENGTH = 0x00000300
+  m_text                (RX)  : ORIGIN = 0x28004300, LENGTH = 0x000FBB00
   m_veneer_table        (RX)  : ORIGIN = 0x280FFE00, LENGTH = 0x00000200
   m_data                (RW)  : ORIGIN = DATA_START, LENGTH = DATA_END - DATA_START + 1
   m_ncache              (RW)  : ORIGIN = NCACHE_START, LENGTH = NCACHE_SIZE
