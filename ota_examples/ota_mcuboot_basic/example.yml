@@ -262,6 +262,9 @@ ota_mcuboot_basic:
     mcxw72evk:
     - -mdk@release
     - -mdk@debug
+    frdmmcxc162:
+    - -mdk@release
+    - -mdk@debug
 ota_mcuboot_basic@mcxn_encrypted_xip:
   section-type: custom_application
   contents:

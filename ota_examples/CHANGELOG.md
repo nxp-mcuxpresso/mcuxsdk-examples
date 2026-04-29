@@ -6,6 +6,7 @@ All notable changes to MCUboot fork in MCUXpresso SDK and related ota examples w
 
 ### Added
 - Encrypted XIP: Added experimental FLASH_REMAP mode (see [Encrypted XIP doc](_doc/encrypted_xip.md))
+- Added basic support for FRDM-MCXC162 board
 
 ### Changed
 - Optimized PSA configuration for mcuboot_opensource to reduce binary size

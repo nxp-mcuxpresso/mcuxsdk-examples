@@ -262,6 +262,10 @@ mcuboot_opensource:
     mcxw72evk:
     - -mdk@release
     - -mdk@debug
+    frdmmcxc162:
+    - -mdk@release
+    - -mdk@debug
+    - -iar@debug
 mcuboot_opensource@mcxn_encrypted_xip:
   section-type: custom_application
   contents:
