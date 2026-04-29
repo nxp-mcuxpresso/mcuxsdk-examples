@@ -1,4 +1,3 @@
-
 mcux_add_armgcc_configuration(
   LD "-Xlinker --defsym=__heap_size__=0x2000"
 )

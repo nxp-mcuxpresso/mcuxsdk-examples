@@ -29,10 +29,5 @@ mcux_add_source(
     "${board_root}/${board}/usb_examples/usb_device_dfu/bm/${core_id}/usb_device_dfu_config.h"
     "middleware/usb/utility/usb_dfu_ram.c"
     "middleware/usb/utility/usb_flash.h"
-
 )
 
-mcux_add_include(
-  BASE_PATH "${SdkRootDirPath}"
-  INCLUDES
-)

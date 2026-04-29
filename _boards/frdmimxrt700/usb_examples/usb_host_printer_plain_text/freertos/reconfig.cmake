@@ -1,4 +1,3 @@
-
 mcux_add_armgcc_configuration(
   LD "-Xlinker --defsym=__heap_size__=0x2000"
 )
@@ -38,10 +37,4 @@ mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
     "${board_root}/${board}/usb_examples/usb_host_printer_plain_text/freertos/${core_id}/hardware_init.c"
-
-)
-
-mcux_add_include(
-  BASE_PATH "${SdkRootDirPath}"
-  INCLUDES
 )
