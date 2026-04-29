@@ -88,12 +88,12 @@ define block QACCESS_CODE  { section CodeQuickAccess };
 define block QACCESS_DATA  { section DataQuickAccess };
 
 initialize by copy { readwrite, section .textrw, section CodeQuickAccess, section DataQuickAccess };
-do not initialize  { section .noinit, section .el2go_csr_conf};
+do not initialize  { section .noinit, section .el2go_csr_conf* };
 
 place at address mem: m_interrupts_start    { readonly section .intvec };
 place in m_boot_header_region               { section .boot_header };
 place in TEXT_region                        { readonly };
-place in EL2GO_CSR_CONF_region              { section .el2go_csr_conf  };
+place in EL2GO_CSR_CONF_region              { section .el2go_csr_conf* };
 place in DATA_region                        { block RW };
 place in DATA_region                        { block ZI };
 place in DATA_region                        { last block HEAP };
