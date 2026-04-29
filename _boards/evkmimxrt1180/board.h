@@ -208,6 +208,7 @@ void BOARD_FlexspiClockSafeConfig(void);
 AT_QUICKACCESS_SECTION_CODE(void BOARD_SetFlexspiClock(FLEXSPI_Type *base, uint8_t src, uint32_t divider));
 AT_QUICKACCESS_SECTION_CODE(void BOARD_DeinitFlash(FLEXSPI_Type *base));
 AT_QUICKACCESS_SECTION_CODE(void BOARD_InitFlash(FLEXSPI_Type *base));
+AT_QUICKACCESS_SECTION_CODE(void BOARD_ConfigFlexspiPrefetchBuffer(FLEXSPI_Type *base));
 void EdgeLock_SetClock(uint8_t mux, uint8_t div);
 void DCDC_SetVoltage(uint8_t core, uint8_t targetVoltage);
 

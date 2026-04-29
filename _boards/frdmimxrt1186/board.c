@@ -627,6 +627,8 @@ void BOARD_InitFlash(FLEXSPI_Type *base)
     uint32_t lastStatus;
     uint32_t retry;
 
+    BOARD_ConfigFlexspiPrefetchBuffer(base);
+
     /* If serial root clock is >= 100 MHz, DLLEN set to 1, OVRDEN set to 0, then SLVDLYTARGET setting of 0x0 is
      * recommended. */
     base->DLLCR[0] = 0x1U;
@@ -693,6 +695,47 @@ void BOARD_InitFlash(FLEXSPI_Type *base)
         __DSB();
     }
 #endif
+}
+
+#define BOARD_FLEXSPI_MASTER_ID_NETC        (0U)
+#define BOARD_FLEXSPI_MASTER_ID_USB         (1U)
+#define BOARD_FLEXSPI_MASTER_ID_FLEXSPI_FLR (2U)
+#define BOARD_FLEXSPI_MASTER_ID_CM33        (8U)
+#define BOARD_FLEXSPI_MASTER_ID_CM7         (9U)
+#define BOARD_FLEXSPI_MASTER_ID_EDGELOCK    (10U)
+#define BOARD_FLEXSPI_MASTER_ID_DMA3        (11U)
+#define BOARD_FLEXSPI_MASTER_ID_DMA4        (12U)
+
+/* NOTE: This function should be customized according to real application to accelerate flash access. */
+void BOARD_ConfigFlexspiPrefetchBuffer(FLEXSPI_Type *base)
+{
+    uint32_t i;
+
+    /* Configure AHBRXBUF if prefetch enabled. */
+    if ((base->AHBCR & FLEXSPI_AHBCR_PREFETCHEN_MASK) != 0U)
+    {
+        /* Allocate 512 bytes prefetch buffer and medium priority for NETC */
+        base->AHBRXBUFCR0[0] = FLEXSPI_AHBRXBUFCR0_PREFETCHEN_MASK |
+                               FLEXSPI_AHBRXBUFCR0_PRIORITY(4) |
+                               FLEXSPI_AHBRXBUFCR0_MSTRID(BOARD_FLEXSPI_MASTER_ID_NETC) |
+                               FLEXSPI_AHBRXBUFCR0_BUFSZ(512U / 8U);
+        /* Allocate 512 bytes prefetch buffer and high priority for CM33 */
+        base->AHBRXBUFCR0[1] = FLEXSPI_AHBRXBUFCR0_PREFETCHEN_MASK |
+                               FLEXSPI_AHBRXBUFCR0_PRIORITY(7) |
+                               FLEXSPI_AHBRXBUFCR0_MSTRID(BOARD_FLEXSPI_MASTER_ID_CM33) |
+                               FLEXSPI_AHBRXBUFCR0_BUFSZ(512U / 8U);
+        /* Allocate 512 bytes prefetch buffer and high priority for CM7 */
+        base->AHBRXBUFCR0[2] = FLEXSPI_AHBRXBUFCR0_PREFETCHEN_MASK |
+                               FLEXSPI_AHBRXBUFCR0_PRIORITY(7) |
+                               FLEXSPI_AHBRXBUFCR0_MSTRID(BOARD_FLEXSPI_MASTER_ID_CM7) |
+                               FLEXSPI_AHBRXBUFCR0_BUFSZ(512U / 8U);
+        /* AHBRXBUFCR0 3 - 6 not used, 7 uses all remaining RX buffer size and low priority for the other masters. */
+        for (i = 3U; i < FLEXSPI_AHBRXBUFCR0_COUNT; i++)
+        {
+            base->AHBRXBUFCR0[i] = FLEXSPI_AHBRXBUFCR0_PREFETCHEN_MASK |
+                                   FLEXSPI_AHBRXBUFCR0_BUFSZ(0U / 8U);
+        }
+    }
 }
 
 /* BOARD_SetFlexspiClock run in RAM used to configure FlexSPI clock source and divider when XIP. */
@@ -1029,7 +1072,7 @@ static bool TRDC_IsValidMbcMem(TRDC_Type *trdc, uint8_t mbc, uint8_t mem)
                         r = true;
                         break;
                     case 1: /* TRDC1 MBC_A0 Edgelock             */
-                        break; /* Intentional, Edgelock region not touched. */  
+                        break; /* Intentional, Edgelock region not touched. */
                     case 2: /* TRDC1 MBC_A0 GPIO1                */
                         r = true;
                         break;
