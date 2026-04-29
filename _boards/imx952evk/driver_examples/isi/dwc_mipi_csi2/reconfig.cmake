@@ -41,7 +41,7 @@ if(APP_CAMERA_FW_EMBEDDED)
         -DBIN_COPY=${_ap1302_fw_bin_copy}
         -DOUTPUT_OBJ=${_ap1302_fw_obj}
         -DOBJCOPY=${CMAKE_OBJCOPY}
-        -P ${SdkRootDirPath}/${board_root}/frdmimx95/driver_examples/isi/dwc_mipi_csi2/ap1302_embed_objcopy.cmake
+        -P ${SdkRootDirPath}/${board_root}/imx952evk/driver_examples/isi/dwc_mipi_csi2/ap1302_embed_objcopy.cmake
     )
 
     mcux_add_source(BASE_PATH ${CMAKE_CURRENT_BINARY_DIR} SOURCES ap1302_fw.o)
@@ -57,7 +57,7 @@ if(APP_CAMERA_FW_EMBEDDED)
       BUILD_COMMAND ${CMAKE_COMMAND}
         -DINPUT_BIN=${AP1302_FW_BIN}
         -DOUTPUT_S=${_ap1302_fw_iar_s}
-        -P ${SdkRootDirPath}/${board_root}/frdmimx95/driver_examples/isi/dwc_mipi_csi2/ap1302_bin2iar_s.cmake
+        -P ${SdkRootDirPath}/${board_root}/imx952evk/driver_examples/isi/dwc_mipi_csi2/ap1302_bin2iar_s.cmake
     )
 
     mcux_add_source(BASE_PATH ${CMAKE_CURRENT_BINARY_DIR} SOURCES ap1302_fw.s)
