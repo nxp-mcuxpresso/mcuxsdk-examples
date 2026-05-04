@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+tpms_monitor_bm:
+  section-type: application
+  contents:
+    meta_path: examples/wireless_examples/bluetooth/tpms_monitor/bm
+    project-root-path: boards/${board}/wireless_examples/bluetooth/tpms_monitor/bm/${multicore_foldername}
+    document:
+      name: tpms_monitor_bm
+      category: wireless_examples/bluetooth/tpms_monitor/bm/
+      brief: The BLE Tire Pressure Monitor application is a simple demonstration program based
+        on the MCUXpresso SDK. The application implements a GATT-based TPM profile in the Monitor role.
+  boards:
+    kw45b41zevk: []
+    kw47evk@cm33_core0: []
+    frdmkw43: []
+
+
