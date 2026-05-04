@@ -25,53 +25,56 @@ ENTRY(Reset_Handler)
 HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x0400;
 STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x0400;
 
-m_itcm_start             = 0x00000000;
-m_itcm_end               = 0x00007FFF;
+m_itcm_start                  = 0x00000000;
+m_itcm_end                    = 0x00007FFF;
 
-m_dtcm_start             = 0x20000000;
-m_dtcm_end               = 0x2000FFFF;
+m_dtcm_start                  = 0x20000000;
+m_dtcm_end                    = 0x2000FFFF;
 
-m_stdby_ram_start        = 0x20400000;
-m_stdby_ram_end          = 0x20407FFF;
+m_stdby_ram_start             = 0x20400000;
+m_stdby_ram_end               = 0x20407FFF;
 
-m_interrupts_start       = 0x00401000;
-m_interrupts_end         = 0x004013FF;
+m_interrupts_start            = 0x00401000;
+m_interrupts_end              = 0x004013FF;
 
-m_boot_header_start      = 0x00400000;
-m_boot_header_end        = 0x004000FF;
+m_boot_header_start           = 0x00400000;
+m_boot_header_end             = 0x004000FF;
 
-m_text_start             = 0x00401400;
-m_text_end               = 0x007D1FFF;
+m_text_start                  = 0x00401400;
+m_text_end                    = 0x007D1FFF;
 
-m_el2go_csr_conf_start   = 0x007D2000;
-m_el2go_csr_conf_end     = 0x007D3FFF;
+m_el2go_csr_conf_start        = 0x10015F80;
+m_el2go_csr_conf_end          = 0x10015FFB;
 
-m_data_start             = 0x20408000;
-m_data_end               = 0x2044FFFF;
+m_el2go_csr_statuscode_start  = m_el2go_csr_conf_end + 1;
+m_el2go_csr_statuscode_end    = m_el2go_csr_statuscode_start + 3;
 
-m_ncache_size            = 0x00004000;
-m_ncache_start           = m_dtcm_start;
-m_ncache_end             = m_ncache_start + m_ncache_size - 1;
+m_data_start                  = 0x20408000;
+m_data_end                    = 0x2044FFFF;
 
-m_qacode_start           = m_itcm_start;
-m_qacode_end             = m_itcm_end;
-m_qadata_start           = m_ncache_end + 1;
-m_qadata_end             = m_dtcm_end;
+m_ncache_size                 = 0x00004000;
+m_ncache_start                = m_dtcm_start;
+m_ncache_end                  = m_ncache_start + m_ncache_size - 1;
+
+m_qacode_start                = m_itcm_start;
+m_qacode_end                  = m_itcm_end;
+m_qadata_start                = m_ncache_end + 1;
+m_qadata_end                  = m_dtcm_end;
 
 /* Specify the memory areas */
 /* The flash memory region [0x007D4000-0x7FFFFF] is reserved for security. */
 MEMORY
 {
-  m_boot_header     (RX)  : ORIGIN = m_boot_header_start,     LENGTH = m_boot_header_end - m_boot_header_start + 1
-  m_interrupts      (RX)  : ORIGIN = m_interrupts_start,      LENGTH = m_interrupts_end - m_interrupts_start + 1
-  m_text            (RX)  : ORIGIN = m_text_start,            LENGTH = m_text_end - m_text_start + 1
-  m_el2go_csr_conf  (RW)  : ORIGIN = m_el2go_csr_conf_start,  LENGTH = m_el2go_csr_conf_end - m_el2go_csr_conf_start + 1
-  m_data            (RW)  : ORIGIN = m_data_start,            LENGTH = m_data_end - m_data_start + 1
-  m_ncache          (RW)  : ORIGIN = m_ncache_start,          LENGTH = m_ncache_size
-  m_qacode          (RW)  : ORIGIN = m_qacode_start,          LENGTH = m_qacode_end - m_qacode_start + 1
-  m_qadata          (RW)  : ORIGIN = m_qadata_start,          LENGTH = m_qadata_end - m_qadata_start + 1
+  m_boot_header           (RX)  : ORIGIN = m_boot_header_start,           LENGTH = m_boot_header_end - m_boot_header_start + 1
+  m_interrupts            (RX)  : ORIGIN = m_interrupts_start,            LENGTH = m_interrupts_end - m_interrupts_start + 1
+  m_text                  (RX)  : ORIGIN = m_text_start,                  LENGTH = m_text_end - m_text_start + 1
+  m_el2go_csr_conf        (RW)  : ORIGIN = m_el2go_csr_conf_start,        LENGTH = m_el2go_csr_conf_end - m_el2go_csr_conf_start + 1
+  m_el2go_csr_statuscode  (RW)  : ORIGIN = m_el2go_csr_statuscode_start,  LENGTH = m_el2go_csr_statuscode_end - m_el2go_csr_statuscode_start + 1
+  m_data                  (RW)  : ORIGIN = m_data_start,                  LENGTH = m_data_end - m_data_start + 1
+  m_ncache                (RW)  : ORIGIN = m_ncache_start,                LENGTH = m_ncache_size
+  m_qacode                (RW)  : ORIGIN = m_qacode_start,                LENGTH = m_qacode_end - m_qacode_start + 1
+  m_qadata                (RW)  : ORIGIN = m_qadata_start,                LENGTH = m_qadata_end - m_qadata_start + 1
 }
-
 
 /* Define output sections */
 SECTIONS
@@ -110,9 +113,16 @@ SECTIONS
   .el2go_csr_conf (NOLOAD):
   {
     . = ALIGN(4);
-    KEEP(*(SORT(.el2go_csr_conf*)))  /* EL2GO CSR configuration */
+    KEEP(*(.el2go_csr_conf))
     . = ALIGN(4);
   } > m_el2go_csr_conf
+
+  .el2go_csr_statuscode (NOLOAD):
+  {
+    . = ALIGN(4);
+    KEEP(*(.el2go_csr_statuscode))
+    . = ALIGN(4);
+  } > m_el2go_csr_statuscode
 
   .ARM.extab :
   {
