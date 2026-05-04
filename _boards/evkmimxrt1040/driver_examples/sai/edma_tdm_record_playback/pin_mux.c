@@ -26,10 +26,10 @@ board: MIMXRT1040-EVK
 #include "pin_mux.h"
 
 /* FUNCTION ************************************************************************************************************
- * 
+ *
  * Function Name : BOARD_InitBootPins
  * Description   : Calls initialization functions.
- * 
+ *
  * END ****************************************************************************************************************/
 void BOARD_InitBootPins(void) {
     BOARD_InitPins();
@@ -54,6 +54,12 @@ BOARD_InitPins:
     pull_keeper_select: Pull, pull_keeper_enable: Enable, open_drain: Disable, speed: MHZ_100, drive_strength: R0_6, slew_rate: Slow}
   - {pin_num: A12, peripheral: SAI1, signal: sai_tx_data0, pin_signal: GPIO_B1_01, software_input_on: Disable, hysteresis_enable: Disable, pull_up_down_config: Pull_Down_100K_Ohm,
     pull_keeper_select: Pull, pull_keeper_enable: Enable, open_drain: Disable, speed: MHZ_100, drive_strength: R0_6, slew_rate: Slow}
+  - {pin_num: E11, peripheral: SAI1, signal: sai_tx_data1, pin_signal: GPIO_B0_12, software_input_on: Disable, hysteresis_enable: Disable, pull_up_down_config: Pull_Down_100K_Ohm,
+    pull_keeper_select: Pull, pull_keeper_enable: Enable, open_drain: Disable, speed: MHZ_100, drive_strength: R0_6, slew_rate: Slow}
+  - {pin_num: D12, peripheral: SAI1, signal: sai_tx_data2, pin_signal: GPIO_B0_11, software_input_on: Disable, hysteresis_enable: Disable, pull_up_down_config: Pull_Down_100K_Ohm,
+    pull_keeper_select: Pull, pull_keeper_enable: Enable, open_drain: Disable, speed: MHZ_100, drive_strength: R0_6, slew_rate: Slow}
+  - {pin_num: C12, peripheral: SAI1, signal: sai_tx_data3, pin_signal: GPIO_B0_10, software_input_on: Disable, hysteresis_enable: Disable, pull_up_down_config: Pull_Down_100K_Ohm,
+    pull_keeper_select: Pull, pull_keeper_enable: Enable, open_drain: Disable, speed: MHZ_100, drive_strength: R0_6, slew_rate: Slow}
   - {pin_num: E10, peripheral: SAI1, signal: sai_tx_sync, pin_signal: GPIO_B1_03, software_input_on: Enable, hysteresis_enable: Disable, pull_up_down_config: Pull_Down_100K_Ohm,
     pull_keeper_select: Pull, pull_keeper_enable: Enable, open_drain: Disable, speed: MHZ_100, drive_strength: R0_6, slew_rate: Slow}
   - {pin_num: H10, peripheral: LPI2C3, signal: SDA, pin_signal: GPIO_AD_B1_06, software_input_on: Enable, hysteresis_enable: Disable, pull_up_down_config: Pull_Up_22K_Ohm,
@@ -74,38 +80,44 @@ BOARD_InitPins:
  *
  * END ****************************************************************************************************************/
 void BOARD_InitPins(void) {
-  CLOCK_EnableClock(kCLOCK_Iomuxc);           
+  CLOCK_EnableClock(kCLOCK_Iomuxc);
 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B0_12_LPUART1_TX, 0U); 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B0_13_LPUART1_RX, 0U); 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_06_LPI2C3_SDA, 1U); 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_07_LPI2C3_SCL, 1U); 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_B0_06_GPIO2_IO06, 0U); 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_B0_08_GPIO2_IO08, 0U); 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_B0_13_SAI1_MCLK, 1U); 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_B0_14_SAI1_RX_SYNC, 1U); 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_B0_15_SAI1_RX_BCLK, 1U); 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_B1_00_SAI1_RX_DATA00, 0U); 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_B1_01_SAI1_TX_DATA00, 0U); 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_B1_02_SAI1_TX_BCLK, 1U); 
-  IOMUXC_SetPinMux(IOMUXC_GPIO_B1_03_SAI1_TX_SYNC, 1U); 
+  IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B0_12_LPUART1_TX, 0U);
+  IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B0_13_LPUART1_RX, 0U);
+  IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_06_LPI2C3_SDA, 1U);
+  IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_07_LPI2C3_SCL, 1U);
+  IOMUXC_SetPinMux(IOMUXC_GPIO_B0_06_GPIO2_IO06, 0U);
+  IOMUXC_SetPinMux(IOMUXC_GPIO_B0_08_GPIO2_IO08, 0U);
+  IOMUXC_SetPinMux(IOMUXC_GPIO_B0_13_SAI1_MCLK, 1U);
+  IOMUXC_SetPinMux(IOMUXC_GPIO_B0_14_SAI1_RX_SYNC, 1U);
+  IOMUXC_SetPinMux(IOMUXC_GPIO_B0_15_SAI1_RX_BCLK, 1U);
+  IOMUXC_SetPinMux(IOMUXC_GPIO_B1_00_SAI1_RX_DATA00, 0U);
+  IOMUXC_SetPinMux(IOMUXC_GPIO_B1_01_SAI1_TX_DATA00, 0U);
+  IOMUXC_SetPinMux(IOMUXC_GPIO_B1_02_SAI1_TX_BCLK, 1U);
+  IOMUXC_SetPinMux(IOMUXC_GPIO_B1_03_SAI1_TX_SYNC, 1U);
+  IOMUXC_SetPinMux(IOMUXC_GPIO_B0_10_SAI1_TX_DATA03, 0U);
+  IOMUXC_SetPinMux(IOMUXC_GPIO_B0_11_SAI1_TX_DATA02, 0U);
+  IOMUXC_SetPinMux(IOMUXC_GPIO_B0_12_SAI1_TX_DATA01, 0U);
   IOMUXC_GPR->GPR27 = ((IOMUXC_GPR->GPR27 &
-    (~(BOARD_INITPINS_IOMUXC_GPR_GPR27_GPIO_MUX2_GPIO_SEL_MASK))) 
-      | IOMUXC_GPR_GPR27_GPIO_MUX2_GPIO_SEL(0x00U) 
+    (~(BOARD_INITPINS_IOMUXC_GPR_GPR27_GPIO_MUX2_GPIO_SEL_MASK)))
+      | IOMUXC_GPR_GPR27_GPIO_MUX2_GPIO_SEL(0x00U)
     );
-  IOMUXC_SetPinConfig(IOMUXC_GPIO_AD_B0_12_LPUART1_TX, 0x10B0U); 
-  IOMUXC_SetPinConfig(IOMUXC_GPIO_AD_B0_13_LPUART1_RX, 0x10B0U); 
-  IOMUXC_SetPinConfig(IOMUXC_GPIO_AD_B1_06_LPI2C3_SDA, 0xD8B0U); 
-  IOMUXC_SetPinConfig(IOMUXC_GPIO_AD_B1_07_LPI2C3_SCL, 0xD8B0U); 
-  IOMUXC_SetPinConfig(IOMUXC_GPIO_B0_06_GPIO2_IO06, 0x0110B1U); 
-  IOMUXC_SetPinConfig(IOMUXC_GPIO_B0_08_GPIO2_IO08, 0xF008U); 
-  IOMUXC_SetPinConfig(IOMUXC_GPIO_B0_13_SAI1_MCLK, 0x30B0U); 
-  IOMUXC_SetPinConfig(IOMUXC_GPIO_B0_14_SAI1_RX_SYNC, 0x30B0U); 
-  IOMUXC_SetPinConfig(IOMUXC_GPIO_B0_15_SAI1_RX_BCLK, 0x30B0U); 
-  IOMUXC_SetPinConfig(IOMUXC_GPIO_B1_00_SAI1_RX_DATA00, 0x30B0U); 
-  IOMUXC_SetPinConfig(IOMUXC_GPIO_B1_01_SAI1_TX_DATA00, 0x30B0U); 
-  IOMUXC_SetPinConfig(IOMUXC_GPIO_B1_02_SAI1_TX_BCLK, 0x30B0U); 
-  IOMUXC_SetPinConfig(IOMUXC_GPIO_B1_03_SAI1_TX_SYNC, 0x30B0U); 
+  IOMUXC_SetPinConfig(IOMUXC_GPIO_AD_B0_12_LPUART1_TX, 0x10B0U);
+  IOMUXC_SetPinConfig(IOMUXC_GPIO_AD_B0_13_LPUART1_RX, 0x10B0U);
+  IOMUXC_SetPinConfig(IOMUXC_GPIO_AD_B1_06_LPI2C3_SDA, 0xD8B0U);
+  IOMUXC_SetPinConfig(IOMUXC_GPIO_AD_B1_07_LPI2C3_SCL, 0xD8B0U);
+  IOMUXC_SetPinConfig(IOMUXC_GPIO_B0_06_GPIO2_IO06, 0x0110B1U);
+  IOMUXC_SetPinConfig(IOMUXC_GPIO_B0_08_GPIO2_IO08, 0xF008U);
+  IOMUXC_SetPinConfig(IOMUXC_GPIO_B0_13_SAI1_MCLK, 0x30B0U);
+  IOMUXC_SetPinConfig(IOMUXC_GPIO_B0_14_SAI1_RX_SYNC, 0x30B0U);
+  IOMUXC_SetPinConfig(IOMUXC_GPIO_B0_15_SAI1_RX_BCLK, 0x30B0U);
+  IOMUXC_SetPinConfig(IOMUXC_GPIO_B1_00_SAI1_RX_DATA00, 0x30B0U);
+  IOMUXC_SetPinConfig(IOMUXC_GPIO_B1_01_SAI1_TX_DATA00, 0x30B0U);
+  IOMUXC_SetPinConfig(IOMUXC_GPIO_B1_02_SAI1_TX_BCLK, 0x30B0U);
+  IOMUXC_SetPinConfig(IOMUXC_GPIO_B1_03_SAI1_TX_SYNC, 0x30B0U);
+  IOMUXC_SetPinConfig(IOMUXC_GPIO_B0_10_SAI1_TX_DATA03, 0x10B0U);
+  IOMUXC_SetPinConfig(IOMUXC_GPIO_B0_11_SAI1_TX_DATA02, 0x10B0U);
+  IOMUXC_SetPinConfig(IOMUXC_GPIO_B0_12_SAI1_TX_DATA01, 0x10B0U);
 }
 /***********************************************************************************************************************
  * EOF
