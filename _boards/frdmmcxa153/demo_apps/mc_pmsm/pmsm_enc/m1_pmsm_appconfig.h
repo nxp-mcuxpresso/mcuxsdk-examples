@@ -6,7 +6,7 @@
 
 /*
     * FILE NAME: ../../../examples/_boards/frdmmcxa153/demo_apps/mc_pmsm/pmsm_enc/m1_pmsm_appconfig.h
-    * DATE: Fri Mar 06 2026, 11:14:52
+    * DATE: Tue May 05 2026, 07:38:13
 */
 
 /*
@@ -15,7 +15,7 @@
         "parametersNmax": 4400,
         "parametersImax": 8.25,
         "parametersEmax": 15.1,
-        "parametersPP": 4,
+        "parametersPp": 4,
         "parametersRs": 0.54,
         "parametersLd": 0.0003356,
         "parametersLq": 0.000218,

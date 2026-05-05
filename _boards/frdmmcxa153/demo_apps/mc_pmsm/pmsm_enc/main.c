@@ -132,6 +132,9 @@ int main(void)
     /* FreeMASTER driver initialization */
     FMSTR_Init();
 
+    /* Call MID init routine before EnableGlobalIRQ to fill all default MID FreeMASTER variables. */
+    MID_Init_AR();
+    
     /* Enable interrupts  */
     EnableGlobalIRQ(ui32PrimaskReg);
 

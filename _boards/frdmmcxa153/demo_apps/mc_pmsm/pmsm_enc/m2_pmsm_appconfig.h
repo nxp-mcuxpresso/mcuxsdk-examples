@@ -5,8 +5,8 @@
 */
 
 /*
-    * FILE NAME: ../../../boards/frdmmcxa153/demo_apps/mc_pmsm/pmsm_enc/m2_pmsm_appconfig.h
-    * DATE: Wed Jun 11 2025, 13:46:27
+    * FILE NAME: ../../../examples/_boards/frdmmcxa153/demo_apps/mc_pmsm/pmsm_enc/m2_pmsm_appconfig.h
+    * DATE: Tue May 05 2026, 07:41:58
 */
 
 /*
@@ -15,7 +15,7 @@
         "parametersNmax": 4400,
         "parametersImax": 8.25,
         "parametersEmax": 15.1,
-        "parametersPP": 2,
+        "parametersPp": 2,
         "parametersRs": 0.45,
         "parametersLd": 0.000375,
         "parametersLq": 0.000429,
