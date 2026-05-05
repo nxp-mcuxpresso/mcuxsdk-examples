@@ -98,6 +98,9 @@ int main(void)
     /* Turn off application */
     M1_SetAppSwitch(0U);
 
+    /* Call MID init routine before EnableGlobalIRQ to fill all default MID FreeMASTER variables. */
+    MID_Init_AR();
+
     /* Enable interrupts. */
     __EI(0);
 

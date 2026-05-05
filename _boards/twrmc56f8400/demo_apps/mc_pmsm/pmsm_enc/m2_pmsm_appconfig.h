@@ -15,7 +15,7 @@
         "parametersNmax": 4400,
         "parametersImax": 8,
         "parametersEmax": 15.1,
-        "parametersPP": 2,
+        "parametersPp": 2,
         "parametersRs": 0.55,
         "parametersLd": 0.000403,
         "parametersLq": 0.000512,

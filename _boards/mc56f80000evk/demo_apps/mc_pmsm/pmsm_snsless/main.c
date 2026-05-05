@@ -101,8 +101,8 @@ int main(void)
     /* Turn off application */
     M1_SetAppSwitch(0U);
 #else
-    /* Call MID init routine. */
-    MID_Init();
+    /* Call MID init routine before EnableGlobalIRQ to fill all default MID FreeMASTER variables. */
+    MID_Init_AR();
 #endif
 
     /* Enable interrupts. */
