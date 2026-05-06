@@ -40,4 +40,8 @@ mcux_add_include(
     INCLUDES ../mu_interrupt_secondary_core/${CONFIG_TOOLCHAIN}/
 )
 
+mcux_add_codewarrior_lib_path(
+    LIB_PATH "${APPLICATION_BINARY_DIR}/../mu_interrupt_secondary_core"
+)
+
 include(${SdkRootDirPath}/${board_root}/${board}/driver_examples/mu/interrupt/${core_id}/reconfig.cmake OPTIONAL)

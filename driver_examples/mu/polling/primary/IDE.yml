@@ -36,3 +36,11 @@ iar:
     flexspi_nor_release:
       asym-multicore-debugger:
         slave-configuration: release
+
+codewarrior:
+  sharing-workspace:
+  - ../../mu_polling_secondary_core/codewarrior/mu_polling_secondary_core_${SB_CONFIG_secondary_core_id}
+  config:
+    __common__:
+      lib-search-path:
+      - path: ${ProjDirPath}/../../mu_polling_secondary_core/codewarrior/build/${ConfigName}
