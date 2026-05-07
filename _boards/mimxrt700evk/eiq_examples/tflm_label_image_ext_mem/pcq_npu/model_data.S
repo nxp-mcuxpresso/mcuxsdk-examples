@@ -13,13 +13,4 @@
 model_data:
         .incbin "mobilenet_v1_1.0_224_int8_npu.tflite"
 model_data_end:
-#elif defined(__ICCARM__)
-        SECTION .modeldata:CONST:NOROOT(4)
-        PUBLIC model_data
-        PUBLIC model_data_end
-
-model_data
-        INCBIN "mobilenet_v1_1.0_224_int8_npu.tflite"
-model_data_end
-        END
 #endif

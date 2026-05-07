@@ -44,7 +44,8 @@ static uint8_t s_tensorArena[kTensorArenaSize] __ALIGNED(16);
 static uint32_t s_tensorArenaSizeUsed = 0;
 
 #ifdef EXTERNAL_MEM
-extern "C" uint8_t model_data_end[];
+extern const uint8_t model_data[];
+extern const uint8_t model_data_end[];
 #endif
 
 status_t MODEL_Init(void)
@@ -94,10 +95,17 @@ status_t MODEL_Init(void)
     PRINTF("TensorArena Addr: 0x%x - 0x%x\r\n", s_tensorArena, s_tensorArena + kTensorArenaSize);
     PRINTF("TensorArena Size: Total 0x%x (%d B); Used 0x%x (%d B)\r\n" , kTensorArenaSize, kTensorArenaSize, s_tensorArenaSizeUsed, s_tensorArenaSizeUsed);
 #ifdef EXTERNAL_MEM
-    uint32_t modelSize = model_data_end - model_data;
-    PRINTF("Model Addr: 0x%x - 0x%x\r\n" , model_data, model_data_end);
-    PRINTF("Model Size: 0x%x (%d B)\r\n" , modelSize, modelSize);
-    PRINTF("Total Size Used: %d B (Model (%d B) + TensorArena (%d B))\r\n" , (modelSize + s_tensorArenaSizeUsed), modelSize, s_tensorArenaSizeUsed);
+	#if defined(__ICCARM__)
+    		PRINTF("Model Addr: 0x%x - 0x%x\r\n" , model_data, model_data + model_data_len);
+    		PRINTF("Model Size: 0x%x (%d B)\r\n" , model_data_len, model_data_len);
+    		PRINTF("Total Size Used: %d B (Model (%d B) + TensorArena (%d B))\r\n" , (model_data_len + s_tensorArenaSizeUsed), model_data_len, s_tensorArenaSizeUsed);
+
+	#else
+		uint32_t modelSize = model_data_end - model_data;
+    		PRINTF("Model Addr: 0x%x - 0x%x\r\n" , model_data, model_data_end);
+    		PRINTF("Model Size: 0x%x (%d B)\r\n" , modelSize, modelSize);
+    		PRINTF("Total Size Used: %d B (Model (%d B) + TensorArena (%d B))\r\n" , (modelSize + s_tensorArenaSizeUsed), modelSize, s_tensorArenaSizeUsed);
+	#endif
 #else
     PRINTF("Model Addr: 0x%x - 0x%x\r\n" , model_data, model_data + sizeof(model_data));
     PRINTF("Model Size: 0x%x (%d B)\r\n" , sizeof(model_data), sizeof(model_data));
