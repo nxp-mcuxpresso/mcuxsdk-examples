@@ -973,7 +973,7 @@ static srtm_status_t APP_IO_ConfInput(uint16_t ioId, srtm_io_event_t event, bool
     HAL_GpioInit(suspendContext.io.data[portIdx][pinIdx].p_gpioHandle, &config);
     suspendContext.io.data[portIdx][pinIdx].direction = SRTM_IoDirectionInput;
     suspendContext.io.data[portIdx][pinIdx].ioId = ioId;
-    HAL_GpioInstallCallback(suspendContext.io.data[portIdx][pinIdx].p_gpioHandle, (hal_gpio_callback_t)APP_HandleGPIOHander, (void *)&suspendContext.io.data[portIdx][pinIdx].ioId);
+    HAL_GpioInstallCallback(suspendContext.io.data[portIdx][pinIdx].p_gpioHandle, (hal_gpio_callback_t)APP_HandleGPIOHander, (void *)suspendContext.io.data[portIdx][pinIdx].ioId);
 
     switch (event)
     {
