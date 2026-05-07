@@ -73,7 +73,7 @@ m_core1_ram_size  = m_core1_ram_end - m_core1_ram_start + 1;
  * shared between both : 8k
 */
 m_core1_shared_ram_end   = m_shared_ram_start - 1;
-m_core1_shared_ram_size  = 0xA000;
+m_core1_shared_ram_size  = 0x5200;
 m_core1_shared_ram_start = m_core1_shared_ram_end - m_core1_shared_ram_size + 1;
 
 /* core0 reserved RAM (128K + 16K) */
