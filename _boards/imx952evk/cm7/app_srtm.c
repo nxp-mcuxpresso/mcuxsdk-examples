@@ -195,7 +195,7 @@ static app_suspend_ctx_t suspendContext = {
                 .value = 0,
                 .direction = SRTM_IoDirectionInput,
                 .pinFuncId = {IOMUXC_PAD_GPIO_IO11__GPIO2_IO_11},
-                .inputMask = IOMUXC_PAD_PU(1) | IOMUXC_PAD_FSEL1(0x2) | IOMUXC_PAD_DSE(0xF),
+                .inputMask = IOMUXC_PAD_PU(1) | IOMUXC_PAD_PD(0) | IOMUXC_PAD_FSEL1(0x2) | IOMUXC_PAD_DSE(0xF),
                 .outputMask = IOMUXC_PAD_PU(1) | IOMUXC_PAD_FSEL1(0x2) | IOMUXC_PAD_DSE(0xF),
                 .p_gpioHandle = g_GpioPort2Pin11Handle,
              },
