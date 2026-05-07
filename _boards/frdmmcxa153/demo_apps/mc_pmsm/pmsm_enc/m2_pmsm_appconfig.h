@@ -6,7 +6,7 @@
 
 /*
     * FILE NAME: ../../../examples/_boards/frdmmcxa153/demo_apps/mc_pmsm/pmsm_enc/m2_pmsm_appconfig.h
-    * DATE: Tue May 05 2026, 07:41:58
+    * DATE: Thu May 07 2026, 08:44:35
 */
 
 /*
@@ -61,13 +61,7 @@
         "speedLoopSLKi": 0.009,
         "speedLoopManualConstantTunning": true
     },
-    "sensors": {
-        "sensorEncPulseNumber": 1000,
-        "sensorEncDir": 1,
-        "sensorEncNmin": 0,
-        "sensorObsrvParSampleTime": 0.0000625,
-        "sensorObsrvParF0": 100,
-        "sensorObsrvParKsi": 1,
+    "positionLoop": {
         "positionLoopPLKp": 0.05
     },
     "sensorless": {
@@ -141,18 +135,8 @@
 #define M1_SPEED_IIR_B0 FRAC32(0.119529)
 #define M1_SPEED_IIR_B1 FRAC32(0.119529)
 #define M1_SPEED_IIR_A1 FRAC32(0.260943)
-/* SENSORS*/
-#define M1_POSPE_ENC_PULSES (1000)
-#define M1_POSPE_ENC_DIRECTION (1)
-#define M1_POSPE_ENC_N_MIN FRAC32(0.0)
-#define M1_POSPE_MECH_POS_GAIN ACC32(16.384)
+/* POSITIONLOOP*/
 #define M1_POS_P_PROP_GAIN FRAC16(0.05)
-#define M1_POSPE_TO_KP_SHIFT (2)
-#define M1_POSPE_TO_KP_GAIN FRAC16(0.681818)
-#define M1_POSPE_TO_KI_SHIFT (-4)
-#define M1_POSPE_TO_KI_GAIN FRAC16(0.856798)
-#define M1_POSPE_TO_THETA_SHIFT (-6)
-#define M1_POSPE_TO_THETA_GAIN FRAC16(0.586667)
 /* SENSORLESS*/
 #define M1_OL_START_RAMP_INC FRAC32(0.0000426136)
 #define M1_OL_START_I FRAC16(0.0727273)
