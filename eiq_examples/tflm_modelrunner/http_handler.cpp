@@ -5,7 +5,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#ifdef USE_RTOS
+#if (defined(USE_RTOS) && (USE_RTOS > 0U))
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>

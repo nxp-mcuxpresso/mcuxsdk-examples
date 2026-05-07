@@ -11,7 +11,7 @@
 
 #include "modelrunner.h"
 #include "tf_benchmark.h"
-#ifdef USE_RTOS
+#if (defined(USE_RTOS) && (USE_RTOS > 0U))
 #include "http.h"
 #endif
 
@@ -107,7 +107,7 @@ int modelrunner(){
     FlashInit(config);
     server->flash_config = config;
 
-#ifdef USE_RTOS
+#if (defined(USE_RTOS) && (USE_RTOS > 0U))
     http(server);
 #endif
     parse_cmd(server);

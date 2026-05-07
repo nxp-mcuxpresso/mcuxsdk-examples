@@ -13,7 +13,7 @@
 #ifndef __LWIPOPTS_H__
 #define __LWIPOPTS_H__
 
-#if USE_RTOS
+#if (defined(USE_RTOS) && (USE_RTOS > 0U))
 
 #define MEM_LIBC_MALLOC 1
 //#define MEMP_MEM_MALLOC 1
