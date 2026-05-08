@@ -194,6 +194,24 @@ __HEAP_end__    = m_data0_end;
 firmware_ram_lower_limit            = m_core0_ram_start;
 firmware_ram_upper_limit            = m_core0_ram_end;
 
+/********************************************** Localization Compute Engine (CE) Memory **********************************************/
+mReserveCeRam_d                     = DEFINED(gReserveCeRam_d) ? gReserveCeRam_d : 0;
+/* The LCE code is placed in the core0 flash memory (13K)*/
+/* memory used for the LCE stack (2K)*/
+m_ce_stack_start                    = 0x20040000;
+m_ce_stack_size                     = mReserveCeRam_d ? 0x800 : 0x0;
+m_ce_stack_end                      = m_ce_stack_start + m_ce_stack_size -1;
+/* memory used for Core0<-->LCE communication (1.5K)*/
+m_ce_ctrl_start                     = m_ce_stack_end + 1;
+m_ce_ctrl_size                      = mReserveCeRam_d ? 0x640 : 0x0;
+m_ce_ctrl_end                       = m_ce_ctrl_start + m_ce_ctrl_size -1;
+/* memory used for LCE heap (16.4K)*/
+m_ce_heap_start                     = m_ce_ctrl_end + 1;
+m_ce_heap_size                      = mReserveCeRam_d ? 0x41C0 : 0x0;
+m_ce_heap_end                       = m_ce_heap_start + m_ce_heap_size -1;
+
+__CE_MEM_HEAP_end__                = m_ce_heap_end;
+
 /* Specify the memory areas */
 MEMORY
 {
@@ -208,6 +226,9 @@ MEMORY
   rpmsg_sh_mem          (RW)  : ORIGIN = rpmsg_sh_mem_start, LENGTH = rpmsg_sh_mem_size
   m_shared_data         (RW)  : ORIGIN = m_shared_data_start, LENGTH = m_shared_data_size
   m_lowpower_flag       (RW)  : ORIGIN = m_lowpower_flag_start, LENGTH = m_lowpower_flag_size
+  m_ce_stack            (RW)  : ORIGIN = m_ce_stack_start, LENGTH = m_ce_stack_size
+  m_ce_ctrl             (RW)  : ORIGIN = m_ce_ctrl_start, LENGTH = m_ce_ctrl_size
+  m_ce_heap             (RW)  : ORIGIN = m_ce_heap_start, LENGTH = m_ce_heap_size
 }
 
 /* Define output sections */
@@ -460,6 +481,17 @@ SECTIONS
     *(.heap)
   } > m_data0
 
+  .ceCtrl (NOLOAD) :
+  {
+    . = ALIGN(4);
+    *(ceCtrl)
+  } > m_ce_ctrl
+
+  .ceHeap (NOLOAD) :
+  {
+    . = ALIGN(4);
+    *(ceHeap)
+  } > m_ce_heap
   .ARM.attributes 0 : { *(.ARM.attributes) }
 
   /* ASSERT(__StackLimit >= __HeapLimit, "region m_data1 overflowed with stack and heap") */

@@ -258,71 +258,60 @@ define exported symbol __VECTOR_TABLE                   = m_text_start;
 /*
 Default address values are indicated between brackets they can be overridden if necessary by linker flags
 
-              0x20039FFF                    m_ram1_end
+
                     - - - +---------------+ - - - - - - - -
-                          |               | m_data1_unused_end
+            (0x20044FFF)  |               | m_ce_heap_end
                           |               |
                           |               | Enable with gReserveCeRam_d=1
                           |               |
-                          |               | m_data1_unused_start
+            (0x20040E40)  |               | m_ce_heap_start
                     - - - +---------------+ - - - - - - - -
-            (0x20037FFF)  |               | m_ce_data_reserved_end
+            (0x20040E3F)  |               | m_ce_ctrl_end
                           |               |
                           |               | Enable with gReserveCeRam_d=1
                           |               |
-            (0x20037000)  |               | m_ce_data_reserved_start
+            (0x20040800)  |               | m_ce_ctrl_start
                     - - - +---------------+ - - - - - - - -
-            (0x20036FFF)  |               | m_ce_data2_end
+            (0x200407FF)  |               | m_ce_stack_end
                           |               |
                           |               | Enable with gReserveCeRam_d=1
                           |               |
-            (0x20030000)  |               | m_ce_data2_start
+            (0x20040000)  |               | m_ce_stack_start
+                   - - - +---------------+ - - - - - - - -
+            (0x2003FFFF)  |               | m_core1_ram_end
+                          |               |
+                          |               |
+            (0x20030000)  |               | m_core1_ram_start
                     - - - +---------------+ - - - - - - - -
-            (0x2002FFFF)  |               | m_ce_data1_end
+            (0x2002FFFF)  |               | m_shared_ram_end
                           |               |
-                          |               | Enable with gReserveCeRam_d=1
                           |               |
-            (0x20028640)  |               | m_ce_data1_start
+            (0x2002E000)  |               | m_shared_ram_start
                     - - - +---------------+ - - - - - - - -
-            (0x2002863F)  |               | m_ce_ctrl_end
+            (0x2002DFFF)  |               | m_core1_shared_ram_end
                           |               |
-                          |               | Enable with gReserveCeRam_d=1
                           |               |
-            (0x20028000)  |               | m_ce_ctrl_start
+            (0x20028E00)  |               | m_core1_shared_ram_start
                     - - - +---------------+ - - - - - - - -
-            (0x20027FFF)  |               | m_ce_image_end
-                          |               |
-                          |               | Enable with gReserveCeRam_d=1
-                          |               |
-            (0x20020000)  |               | m_ce_image_start
-                    - - - +---------------+ - - - - - - - -
-              m_data1_end |     HEAP      | __HEAP_end__
+              0x20028DFF  |     HEAP      | m_core0_ram_end \ m_data0_end \ __HEAP_end__
                           |               |
                           |               |
                           |...............| __HEAP_start__
                           |               |
-                          .     Data1     .
+                          .     Data0     .
                           .               .
-            m_data1_start |               |
+
+            (0x20000E00)  |               | m_data0_start
                     - - - +---------------+ - - - - - - - -
                           |               | m_interrupts_ram_end
                           | vector table  |
-                          |               |
-            (0x20004E00)  |               | m_interrupts_ram_start
+            (0x20000A00)  |               | m_interrupts_ram_start
                     - - - +---------------+ - - - - - - - -
                           |               | m_cstack_end
-                          |    CStack     |
-            (0x20004400)  |               | m_cstack_start
-                    - - - +---------------+ - - - - - - - -
-                          |               | m_warmboot_stack_end
-                          |   Warm stack  |
-            (0x20004000)  |               | m_warmboot_stack_start
-                    - - - +---------------+ - - - - - - - -
-                          |               | m_ram1_reserved_end
                           |    Reserved   |
-                          |               | m_ram1_reserved_start
+                          |               | m_cstack_start
                     - - - +---------------+ - - - - - - - -
-              0x20000000  |               | m_ram1_start
+              0x20000000  |               | m_core0_ram_start
 
 **************************************************************************************************/
 
@@ -452,48 +441,37 @@ if(gFlashNbuImage_d) {
     place in nbu_flash_region                       { block NBU_FLASH_IMAGE_BLOCK };
 }
 
-/********************************************** Computeur Engine (CE) Memory **********************************************/
+/********************************************** Localization Compute Engine (CE) Memory **********************************************/
 if (gReserveCeRam_d)
 {
-    define symbol m_ce_image_start                = m_ram1_start;
-    define symbol m_ce_image_size                 = 0x8000;
-    define symbol m_ce_image_end                  = m_ce_image_start + m_ce_image_size - 1;
-    define symbol m_ce_ctrl_start                 = m_ce_image_end + 1;
+/* The LCE code is placed in the core0 flash memory (13K)*/
+
+/* memory used for the LCE stack (2K)*/
+    define symbol m_ce_stack_start                = 0x20040000;
+    define symbol m_ce_stack_size                 = 0x800;
+    define symbol m_ce_stack_end                  = m_ce_stack_start + m_ce_stack_size -1;
+/* memory used for Core0<-->LCE communication (1.5K)*/
+    define symbol m_ce_ctrl_start                 = m_ce_stack_end + 1;
     define symbol m_ce_ctrl_size                  = 0x640;
     define symbol m_ce_ctrl_end                   = m_ce_ctrl_start + m_ce_ctrl_size -1;
-    define symbol m_ce_data1_start                = m_ce_ctrl_end + 1;
-    define symbol m_ce_data1_size                 = 0x79C0;
-    define symbol m_ce_data1_end                  = m_ce_data1_start + m_ce_data1_size -1;
-    define symbol m_ce_data2_start                = m_ce_data1_end + 1;
-    define symbol m_ce_data2_size                 = 0x7000;
-    define symbol m_ce_data2_end                  = m_ce_data2_start + m_ce_data2_size -1;
-    define symbol m_ce_data_reserved_start        = m_ce_data2_end + 1;
-    define symbol m_ce_data_reserved_size         = 0x1000;
-    define symbol m_ce_data_reserved_end          = m_ce_data_reserved_start + m_ce_data_reserved_size -1;
-    define symbol m_data1_unused_start            = m_ce_data_reserved_end + 1;
-    define symbol m_data1_unused_end              = m_ram1_end;
+/* memory used for LCE heap (16.4K)*/
+    define symbol m_ce_heap_start                 = m_ce_ctrl_end + 1;
+    define symbol m_ce_heap_size                  = 0x41C0;
+    define symbol m_ce_heap_end                   = m_ce_heap_start + m_ce_heap_size -1;
 
     define region CE_CTRL_region            = mem:[from m_ce_ctrl_start to m_ce_ctrl_end];
-    define region CE_DATA1_region           = mem:[from m_ce_data1_start to m_ce_data1_end];
-    define region CE_DATA2_region           = mem:[from m_ce_data2_start to m_ce_data2_end];
-    define region CE_DATA_RESERVED_region   = mem:[from m_ce_data_reserved_start to m_ce_data_reserved_end];
-    define region DATA1_unused_region       = mem:[from m_data1_unused_start to m_data1_unused_end];
+    define region CE_HEAP_region            = mem:[from m_ce_heap_start to m_ce_heap_end];
+    define region CE_STACK_region           = mem:[from m_ce_stack_start to m_ce_stack_end];
 
     define block ce_ctrl_blk        { section ceCtrl };
-    define block ce_data1_blk       { section ceHeap_1 };
-    define block ce_data2_blk       { section ceHeap_2 };
+    define block ce_heap_blk        { section ceHeap };
 
-/*  DATA1_unused_region is 8K, can be used for customer specific code */
-    define block DATA1_unused_blk   {  };
+/* There are two heap memory areas defined in the localization applications: 
+     - the main heap is accommodated at the end of DATA0_region
+     - the heap used by LCE is accommodated in CE_HEAP_region   (14.4K) */
 
     place in CE_CTRL_region         { block ce_ctrl_blk };
-    place in CE_DATA1_region        { block ce_data1_blk };
-    place in CE_DATA2_region        { block ce_data2_blk };
-    place in DATA1_unused_region    { block DATA1_unused_blk };
+    place in CE_HEAP_region         { block ce_heap_blk };
 
-    define exported symbol __CE_MEM_HEAP1_end__            = m_ce_data1_end;
-    define exported symbol __CE_MEM_HEAP2_end__            = m_ce_data2_end;
-
-/*  ce image will be loaded here in initialization stage */
-    define region ce_image_region  = mem:[from m_ce_image_start to m_ce_image_end];
+    define exported symbol __CE_MEM_HEAP_end__            = m_ce_heap_end;
 }
