@@ -135,6 +135,7 @@ int main(void)
 #endif
     /* Erase a sector from target device dest address */
     serialNorAddress = serialNorTotalSize - (SECTOR_INDEX_FROM_END * serialNorSectorSize);
+    assert(serialNorAddress <= (0xFFFFFFFFU - EXAMPLE_FLEXSPI_AMBA_BASE));
     AHBNorAddress    = EXAMPLE_FLEXSPI_AMBA_BASE + serialNorAddress;
 
     /* Erase one sector. */
@@ -172,8 +173,9 @@ int main(void)
     memcpy(s_buffer_rbc, (void *)(AHBNorAddress), sizeof(s_buffer_rbc));
     if (memcmp(s_buffer_rbc, s_buffer, sizeof(s_buffer)) == 0)
     {
+        assert(AHBNorAddress <= (0xFFFFFFFFU - (uint32_t)sizeof(s_buffer)));
         PRINTF("\r\n Successfully programmed and verified location FLEXSPI AMBA memory 0x%x -> 0x%x \r\n",
-               (AHBNorAddress), (AHBNorAddress + sizeof(s_buffer)));
+               (AHBNorAddress), (AHBNorAddress + (uint32_t)sizeof(s_buffer)));
     }
     else
     {
