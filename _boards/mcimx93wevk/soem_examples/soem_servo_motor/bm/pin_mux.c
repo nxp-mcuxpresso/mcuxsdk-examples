@@ -1,5 +1,6 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2026 NXP
+ * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -12,11 +13,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v12.0
+product: Pins v17.0
 processor: MIMX93W52xxxxxM
 package_id: MIMX93W52610GCM
 mcu_data: ksdk2_0
-processor_version: 0.12.3
+processor_version: 0.2603.40
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -38,24 +39,24 @@ void BOARD_InitBootPins(void)
 BOARD_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm33}
 - pin_list:
-  - {pin_num: F20, peripheral: LPUART2, signal: lpuart_rx, pin_signal: UART2_RXD, HYS: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: NO_DRIVE}
-  - {pin_num: F21, peripheral: LPUART2, signal: lpuart_tx, pin_signal: UART2_TXD, HYS: DISABLED, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
-  - {pin_num: Y7, peripheral: ENET1, signal: enet_mdc, pin_signal: ENET2_MDC, HYS: DISABLED, DSE: X4}
-  - {pin_num: AA6, peripheral: ENET1, signal: enet_mdio, pin_signal: ENET2_MDIO, HYS: DISABLED, DSE: X4}
-  - {pin_num: AA4, peripheral: ENET1, signal: 'enet_rgmii_rd, 0', pin_signal: ENET2_RD0, HYS: DISABLED, DSE: X4}
-  - {pin_num: Y5, peripheral: ENET1, signal: 'enet_rgmii_rd, 1', pin_signal: ENET2_RD1, HYS: DISABLED, DSE: X4}
-  - {pin_num: AA5, peripheral: ENET1, signal: 'enet_rgmii_rd, 2', pin_signal: ENET2_RD2, HYS: DISABLED, DSE: X4}
-  - {pin_num: Y6, peripheral: ENET1, signal: 'enet_rgmii_rd, 3', pin_signal: ENET2_RD3, HYS: DISABLED, DSE: X4}
-  - {pin_num: Y4, peripheral: ENET1, signal: enet_rgmii_rx_ctl, pin_signal: ENET2_RX_CTL, HYS: DISABLED, DSE: X4}
-  - {pin_num: AA3, peripheral: ENET1, signal: enet_rgmii_rxc, pin_signal: ENET2_RXC, HYS: DISABLED, FSEL1: FAST_SLEW_RATE, DSE: X4}
-  - {pin_num: T8, peripheral: ENET1, signal: 'enet_rgmii_td, 0', pin_signal: ENET2_TD0, HYS: DISABLED, PD: DISABLED, DSE: X4}
-  - {pin_num: U8, peripheral: ENET1, signal: 'enet_rgmii_td, 1', pin_signal: ENET2_TD1, HYS: DISABLED, PD: DISABLED, DSE: X4}
-  - {pin_num: V8, peripheral: ENET1, signal: 'enet_rgmii_td, 2', pin_signal: ENET2_TD2, HYS: DISABLED, PD: DISABLED, DSE: X4}
-  - {pin_num: T10, peripheral: ENET1, signal: 'enet_rgmii_td, 3', pin_signal: ENET2_TD3, HYS: DISABLED, PD: DISABLED, DSE: X4}
-  - {pin_num: V6, peripheral: ENET1, signal: enet_rgmii_tx_ctl, pin_signal: ENET2_TX_CTL, HYS: DISABLED, PD: DISABLED, DSE: X4}
-  - {pin_num: U6, peripheral: ENET1, signal: enet_rgmii_txc, pin_signal: ENET2_TXC, HYS: DISABLED, PD: DISABLED, FSEL1: FAST_SLEW_RATE, DSE: X4}
-  - {pin_num: D20, peripheral: LPI2C2, signal: lpi2c_scl, pin_signal: I2C2_SCL, SION: ENABLED, HYS: DISABLED, OD: ENABLED, PD: DISABLED}
-  - {pin_num: D21, peripheral: LPI2C2, signal: lpi2c_sda, pin_signal: I2C2_SDA, SION: ENABLED, HYS: DISABLED, OD: ENABLED, PD: DISABLED}
+  - {pin_num: H22, peripheral: LPUART2, signal: lpuart_rx, pin_signal: UART2_RXD, HYS: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: NO_DRIVE}
+  - {pin_num: D18, peripheral: LPUART2, signal: lpuart_tx, pin_signal: UART2_TXD, HYS: DISABLED, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
+  - {pin_num: AB7, peripheral: ENET1, signal: enet_mdc, pin_signal: ENET2_MDC, HYS: DISABLED, DSE: X4}
+  - {pin_num: AC6, peripheral: ENET1, signal: enet_mdio, pin_signal: ENET2_MDIO, HYS: DISABLED, DSE: X4}
+  - {pin_num: AC4, peripheral: ENET1, signal: 'enet_rgmii_rd, 0', pin_signal: ENET2_RD0, HYS: DISABLED, DSE: X4}
+  - {pin_num: AB5, peripheral: ENET1, signal: 'enet_rgmii_rd, 1', pin_signal: ENET2_RD1, HYS: DISABLED, DSE: X4}
+  - {pin_num: AC5, peripheral: ENET1, signal: 'enet_rgmii_rd, 2', pin_signal: ENET2_RD2, HYS: DISABLED, DSE: X4}
+  - {pin_num: AB6, peripheral: ENET1, signal: 'enet_rgmii_rd, 3', pin_signal: ENET2_RD3, HYS: DISABLED, DSE: X4}
+  - {pin_num: AB4, peripheral: ENET1, signal: enet_rgmii_rx_ctl, pin_signal: ENET2_RX_CTL, HYS: DISABLED, DSE: X4}
+  - {pin_num: AC3, peripheral: ENET1, signal: enet_rgmii_rxc, pin_signal: ENET2_RXC, HYS: DISABLED, FSEL1: FAST_SLEW_RATE, DSE: X4}
+  - {pin_num: V8, peripheral: ENET1, signal: 'enet_rgmii_td, 0', pin_signal: ENET2_TD0, HYS: DISABLED, PD: DISABLED, DSE: X4}
+  - {pin_num: W8, peripheral: ENET1, signal: 'enet_rgmii_td, 1', pin_signal: ENET2_TD1, HYS: DISABLED, PD: DISABLED, DSE: X4}
+  - {pin_num: Y8, peripheral: ENET1, signal: 'enet_rgmii_td, 2', pin_signal: ENET2_TD2, HYS: DISABLED, PD: DISABLED, DSE: X4}
+  - {pin_num: V10, peripheral: ENET1, signal: 'enet_rgmii_td, 3', pin_signal: ENET2_TD3, HYS: DISABLED, PD: DISABLED, DSE: X4}
+  - {pin_num: Y6, peripheral: ENET1, signal: enet_rgmii_tx_ctl, pin_signal: ENET2_TX_CTL, HYS: DISABLED, PD: DISABLED, DSE: X4}
+  - {pin_num: W6, peripheral: ENET1, signal: enet_rgmii_txc, pin_signal: ENET2_TXC, HYS: DISABLED, PD: DISABLED, FSEL1: FAST_SLEW_RATE, DSE: X4}
+  - {pin_num: B14, peripheral: LPI2C2, signal: lpi2c_scl, pin_signal: I2C2_SCL, SION: ENABLED, HYS: DISABLED, OD: ENABLED, PD: DISABLED}
+  - {pin_num: B15, peripheral: LPI2C2, signal: lpi2c_sda, pin_signal: I2C2_SDA, SION: ENABLED, HYS: DISABLED, OD: ENABLED, PD: DISABLED}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -65,86 +66,85 @@ BOARD_InitPins:
  * Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
-void BOARD_InitPins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
+void BOARD_InitPins(void) {                                /*!< Function assigned for the core: Cortex-M33[cm33] */
     IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_MDC__ENET1_MDC, 0U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_MDIO__ENET1_MDIO, 0U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_RD0__ENET1_RGMII_RD0, 0U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_RD1__ENET1_RGMII_RD1, 0U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_RD2__ENET1_RGMII_RD2, 0U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_RD3__ENET1_RGMII_RD3, 0U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_RXC__ENET1_RGMII_RXC, 0U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_RX_CTL__ENET1_RGMII_RX_CTL, 0U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_TD0__ENET1_RGMII_TD0, 0U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_TD1__ENET1_RGMII_TD1, 0U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_TD2__ENET1_RGMII_TD2, 0U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_TD3__ENET1_RGMII_TD3, 0U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_TXC__ENET1_RGMII_TXC, 0U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_TX_CTL__ENET1_RGMII_TX_CTL, 0U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_I2C2_SCL__LPI2C2_SCL, 1U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_I2C2_SDA__LPI2C2_SDA, 1U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_UART2_RXD__LPUART2_RX, 0U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_UART2_TXD__LPUART2_TX, 0U);
-
     IOMUXC_SetPinConfig(IOMUXC_PAD_ENET2_MDC__ENET1_MDC, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_MDIO__ENET1_MDIO, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_ENET2_MDIO__ENET1_MDIO, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_RD0__ENET1_RGMII_RD0, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_ENET2_RD0__ENET1_RGMII_RD0, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_RD1__ENET1_RGMII_RD1, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_ENET2_RD1__ENET1_RGMII_RD1, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_RD2__ENET1_RGMII_RD2, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_ENET2_RD2__ENET1_RGMII_RD2, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_RD3__ENET1_RGMII_RD3, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_ENET2_RD3__ENET1_RGMII_RD3, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_RXC__ENET1_RGMII_RXC, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_ENET2_RXC__ENET1_RGMII_RXC, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(3U) |
                         IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_RX_CTL__ENET1_RGMII_RX_CTL, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_ENET2_RX_CTL__ENET1_RGMII_RX_CTL, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_TD0__ENET1_RGMII_TD0, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_ENET2_TD0__ENET1_RGMII_TD0, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U));
+    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_TD1__ENET1_RGMII_TD1, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_ENET2_TD1__ENET1_RGMII_TD1, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U));
+    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_TD2__ENET1_RGMII_TD2, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_ENET2_TD2__ENET1_RGMII_TD2, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U));
+    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_TD3__ENET1_RGMII_TD3, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_ENET2_TD3__ENET1_RGMII_TD3, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U));
+    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_TXC__ENET1_RGMII_TXC, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_ENET2_TXC__ENET1_RGMII_TXC, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(3U));
+    IOMUXC_SetPinMux(IOMUXC_PAD_ENET2_TX_CTL__ENET1_RGMII_TX_CTL, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_ENET2_TX_CTL__ENET1_RGMII_TX_CTL, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U));
+    IOMUXC_SetPinMux(IOMUXC_PAD_I2C2_SCL__LPI2C2_SCL, 1U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_I2C2_SCL__LPI2C2_SCL, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_OD_MASK);
+    IOMUXC_SetPinMux(IOMUXC_PAD_I2C2_SDA__LPI2C2_SDA, 1U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_I2C2_SDA__LPI2C2_SDA, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_OD_MASK);
+    IOMUXC_SetPinMux(IOMUXC_PAD_UART2_RXD__LPUART2_RX, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_UART2_RXD__LPUART2_RX, 
                         IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinMux(IOMUXC_PAD_UART2_TXD__LPUART2_TX, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_UART2_TXD__LPUART2_TX, 
                         IOMUXC_PAD_DSE(15U));
 }

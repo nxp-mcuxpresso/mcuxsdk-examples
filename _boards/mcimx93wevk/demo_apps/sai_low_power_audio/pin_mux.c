@@ -1,5 +1,6 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2026 NXP
+ * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -12,11 +13,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v12.0
+product: Pins v17.0
 processor: MIMX93W52xxxxxM
 package_id: MIMX93W52610GCM
 mcu_data: ksdk2_0
-processor_version: 0.12.3
+processor_version: 0.2603.40
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -38,8 +39,8 @@ void BOARD_InitBootPins(void)
 BOARD_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm33}
 - pin_list:
-  - {pin_num: F20, peripheral: LPUART2, signal: lpuart_rx, pin_signal: UART2_RXD, FSEL1: SlOW_SLEW_RATE, DSE: NO_DRIVE}
-  - {pin_num: F21, peripheral: LPUART2, signal: lpuart_tx, pin_signal: UART2_TXD, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
+  - {pin_num: H22, peripheral: LPUART2, signal: lpuart_rx, pin_signal: UART2_RXD, FSEL1: SlOW_SLEW_RATE, DSE: NO_DRIVE}
+  - {pin_num: D18, peripheral: LPUART2, signal: lpuart_tx, pin_signal: UART2_TXD, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -49,50 +50,13 @@ BOARD_InitPins:
  * Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
-void BOARD_InitPins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO16__SAI3_TX_BCLK, 0U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO17__SAI3_MCLK, 0U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO19__SAI3_TX_DATA00, 0U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO20__SAI3_RX_DATA00, 0U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO26__SAI3_TX_SYNC, 0U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_I2C1_SCL__LPI2C1_SCL, 1U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_I2C1_SDA__LPI2C1_SDA, 1U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_I2C2_SCL__LPI2C2_SCL, 1U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_I2C2_SDA__LPI2C2_SDA, 1U);
+void BOARD_InitPins(void) {                                /*!< Function assigned for the core: Cortex-M33[cm33] */
     IOMUXC_SetPinMux(IOMUXC_PAD_UART2_RXD__LPUART2_RX, 0U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_UART2_TXD__LPUART2_TX, 0U);
-
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO16__SAI3_TX_BCLK,
-                        IOMUXC_PAD_DSE(15U));
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO17__SAI3_MCLK,
-                        IOMUXC_PAD_DSE(15U));
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO19__SAI3_TX_DATA00,
-                        IOMUXC_PAD_DSE(15U));
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO20__SAI3_RX_DATA00,
-                        IOMUXC_PAD_DSE(15U));
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO26__SAI3_TX_SYNC,
-                        IOMUXC_PAD_DSE(15U));
-    IOMUXC_SetPinConfig(IOMUXC_PAD_I2C1_SCL__LPI2C1_SCL,
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_OD_MASK);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_I2C1_SDA__LPI2C1_SDA,
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_OD_MASK);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_I2C2_SCL__LPI2C2_SCL,
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_OD_MASK);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_I2C2_SDA__LPI2C2_SDA,
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_OD_MASK);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_UART2_RXD__LPUART2_RX,
+    IOMUXC_SetPinConfig(IOMUXC_PAD_UART2_RXD__LPUART2_RX, 
                         IOMUXC_PAD_PD_MASK);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_UART2_TXD__LPUART2_TX,
+    IOMUXC_SetPinMux(IOMUXC_PAD_UART2_TXD__LPUART2_TX, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_UART2_TXD__LPUART2_TX, 
                         IOMUXC_PAD_DSE(15U));
-
 }
 
 /***********************************************************************************************************************

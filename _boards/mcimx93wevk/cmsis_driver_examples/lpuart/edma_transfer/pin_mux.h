@@ -1,5 +1,6 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2026 NXP
+ * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -37,19 +38,19 @@ void BOARD_InitBootPins(void);
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
-void BOARD_InitPins(void);                                 /*!< Function assigned for the core: undefined[cm33] */
+void BOARD_InitPins(void);                                 /*!< Function assigned for the core: Cortex-M33[cm33] */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
-void LPUART2_InitPins(void);                               /*!< Function assigned for the core: undefined[cm33] */
+void LPUART2_InitPins(void);                               /*!< Function assigned for the core: Cortex-M33[cm33] */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
-void LPUART2_DeinitPins(void);                             /*!< Function assigned for the core: undefined[cm33] */
+void LPUART2_DeinitPins(void);                             /*!< Function assigned for the core: Cortex-M33[cm33] */
 
 #if defined(__cplusplus)
 }

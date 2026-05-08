@@ -1,5 +1,6 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2026 NXP
+ * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -12,11 +13,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v13.0
+product: Pins v17.0
 processor: MIMX93W52xxxxxM
 package_id: MIMX93W52610GCM
 mcu_data: ksdk2_0
-processor_version: 0.13.1
+processor_version: 0.2603.40
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -38,18 +39,18 @@ void BOARD_InitBootPins(void)
 BOARD_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm33}
 - pin_list:
-  - {pin_num: M20, peripheral: LPSPI3, signal: 'lpspi_pcs, 0', pin_signal: GPIO_IO08, PD: ENABLED, PU: DISABLED}
-  - {pin_num: M21, peripheral: LPSPI3, signal: lpspi_sin, pin_signal: GPIO_IO09, PD: ENABLED}
-  - {pin_num: N17, peripheral: LPSPI3, signal: lpspi_sout, pin_signal: GPIO_IO10, PD: ENABLED}
-  - {pin_num: N18, peripheral: LPSPI3, signal: lpspi_sck, pin_signal: GPIO_IO11, PD: ENABLED}
-  - {pin_num: D20, peripheral: LPI2C2, signal: lpi2c_scl, pin_signal: I2C2_SCL, OD: ENABLED, PD: DISABLED}
-  - {pin_num: D21, peripheral: LPI2C2, signal: lpi2c_sda, pin_signal: I2C2_SDA, OD: ENABLED, PD: DISABLED}
-  - {pin_num: F21, peripheral: LPUART2, signal: lpuart_tx, pin_signal: UART2_TXD, OD: no_init, PD: DISABLED, PU: DISABLED, FSEL1: SlOW_SLEW_RATE}
-  - {pin_num: F20, peripheral: LPUART2, signal: lpuart_rx, pin_signal: UART2_RXD, OD: DISABLED, PD: ENABLED, PU: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: NO_DRIVE}
-  - {pin_num: K20, peripheral: FLEXIO1, signal: 'flexio_flexio, 02', pin_signal: GPIO_IO02, PD: DISABLED, FSEL1: SLIGHTLY_FAST_SLEW_RATE}
-  - {pin_num: K21, peripheral: FLEXIO1, signal: 'flexio_flexio, 03', pin_signal: GPIO_IO03, PD: DISABLED}
-  - {pin_num: L17, peripheral: FLEXIO1, signal: 'flexio_flexio, 04', pin_signal: GPIO_IO04, PD: DISABLED}
-  - {pin_num: L18, peripheral: FLEXIO1, signal: 'flexio_flexio, 05', pin_signal: GPIO_IO05, PD: DISABLED}
+  - {pin_num: T26, peripheral: LPSPI3, signal: 'lpspi_pcs, 0', pin_signal: GPIO_IO08, PD: ENABLED, PU: DISABLED}
+  - {pin_num: T27, peripheral: LPSPI3, signal: lpspi_sin, pin_signal: GPIO_IO09, PD: ENABLED}
+  - {pin_num: U26, peripheral: LPSPI3, signal: lpspi_sout, pin_signal: GPIO_IO10, PD: ENABLED}
+  - {pin_num: U27, peripheral: LPSPI3, signal: lpspi_sck, pin_signal: GPIO_IO11, PD: ENABLED}
+  - {pin_num: B14, peripheral: LPI2C2, signal: lpi2c_scl, pin_signal: I2C2_SCL, OD: ENABLED, PD: DISABLED}
+  - {pin_num: B15, peripheral: LPI2C2, signal: lpi2c_sda, pin_signal: I2C2_SDA, OD: ENABLED, PD: DISABLED}
+  - {pin_num: D18, peripheral: LPUART2, signal: lpuart_tx, pin_signal: UART2_TXD, PD: DISABLED, PU: DISABLED, FSEL1: SlOW_SLEW_RATE}
+  - {pin_num: H22, peripheral: LPUART2, signal: lpuart_rx, pin_signal: UART2_RXD, OD: DISABLED, PD: ENABLED, PU: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: NO_DRIVE}
+  - {pin_num: N26, peripheral: FLEXIO1, signal: 'flexio_flexio, 02', pin_signal: GPIO_IO02, PD: DISABLED, FSEL1: SLIGHTLY_FAST_SLEW_RATE}
+  - {pin_num: N27, peripheral: FLEXIO1, signal: 'flexio_flexio, 03', pin_signal: GPIO_IO03, PD: DISABLED}
+  - {pin_num: P26, peripheral: FLEXIO1, signal: 'flexio_flexio, 04', pin_signal: GPIO_IO04, PD: DISABLED}
+  - {pin_num: P27, peripheral: FLEXIO1, signal: 'flexio_flexio, 05', pin_signal: GPIO_IO05, PD: DISABLED}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -96,12 +97,12 @@ void BOARD_InitPins(void) {                                /*!< Function assigne
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_PD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_I2C2_SCL__LPI2C2_SCL, 1U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_I2C2_SCL__LPI2C2_SCL, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_I2C2_SCL__LPI2C2_SCL, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_OD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_I2C2_SDA__LPI2C2_SDA, 1U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_I2C2_SDA__LPI2C2_SDA, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_I2C2_SDA__LPI2C2_SDA, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |

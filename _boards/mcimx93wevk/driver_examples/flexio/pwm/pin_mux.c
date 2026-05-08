@@ -1,5 +1,6 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2026 NXP
+ * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -12,11 +13,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v13.0
+product: Pins v17.0
 processor: MIMX93W52xxxxxM
 package_id: MIMX93W52610GCM
 mcu_data: ksdk2_0
-processor_version: 0.13.6
+processor_version: 0.2603.40
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -38,9 +39,9 @@ void BOARD_InitBootPins(void)
 BOARD_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm33}
 - pin_list:
-  - {pin_num: F21, peripheral: LPUART2, signal: lpuart_tx, pin_signal: UART2_TXD, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
-  - {pin_num: F20, peripheral: LPUART2, signal: lpuart_rx, pin_signal: UART2_RXD, PD: ENABLED, FSEL1: SlOW_SLEW_RATE, DSE: NO_DRIVE}
-  - {pin_num: K20, peripheral: FLEXIO1, signal: 'flexio_flexio, 02', pin_signal: GPIO_IO02, SION: ENABLED, OD: DISABLED, PD: DISABLED}
+  - {pin_num: D18, peripheral: LPUART2, signal: lpuart_tx, pin_signal: UART2_TXD, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
+  - {pin_num: H22, peripheral: LPUART2, signal: lpuart_rx, pin_signal: UART2_RXD, PD: ENABLED, FSEL1: SlOW_SLEW_RATE, DSE: NO_DRIVE}
+  - {pin_num: N26, peripheral: FLEXIO1, signal: 'flexio_flexio, 02', pin_signal: GPIO_IO02, SION: ENABLED, OD: DISABLED, PD: DISABLED}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -52,14 +53,14 @@ BOARD_InitPins:
  * END ****************************************************************************************************************/
 void BOARD_InitPins(void) {                                /*!< Function assigned for the core: Cortex-M33[cm33] */
     IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO02__FLEXIO1_FLEXIO02, 1U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO02__FLEXIO1_FLEXIO02,
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO02__FLEXIO1_FLEXIO02, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U));
     IOMUXC_SetPinMux(IOMUXC_PAD_UART2_RXD__LPUART2_RX, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_UART2_RXD__LPUART2_RX,
+    IOMUXC_SetPinConfig(IOMUXC_PAD_UART2_RXD__LPUART2_RX, 
                         IOMUXC_PAD_PD_MASK);
     IOMUXC_SetPinMux(IOMUXC_PAD_UART2_TXD__LPUART2_TX, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_UART2_TXD__LPUART2_TX,
+    IOMUXC_SetPinConfig(IOMUXC_PAD_UART2_TXD__LPUART2_TX, 
                         IOMUXC_PAD_DSE(15U));
 }
 

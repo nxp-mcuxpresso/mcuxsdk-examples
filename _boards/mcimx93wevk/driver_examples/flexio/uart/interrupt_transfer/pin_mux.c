@@ -1,5 +1,6 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2026 NXP
+ * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -12,11 +13,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v13.0
+product: Pins v17.0
 processor: MIMX93W52xxxxxM
 package_id: MIMX93W52610GCM
 mcu_data: ksdk2_0
-processor_version: 0.13.6
+processor_version: 0.2603.40
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -38,8 +39,8 @@ void BOARD_InitBootPins(void)
 BOARD_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm33}
 - pin_list:
-  - {pin_num: K20, peripheral: FLEXIO1, signal: 'flexio_flexio, 02', pin_signal: GPIO_IO02}
-  - {pin_num: K21, peripheral: FLEXIO1, signal: 'flexio_flexio, 03', pin_signal: GPIO_IO03}
+  - {pin_num: N26, peripheral: FLEXIO1, signal: 'flexio_flexio, 02', pin_signal: GPIO_IO02}
+  - {pin_num: N27, peripheral: FLEXIO1, signal: 'flexio_flexio, 03', pin_signal: GPIO_IO03}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
