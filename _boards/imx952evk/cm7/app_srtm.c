@@ -875,7 +875,7 @@ static void APP_SRTM_InitAudioService(void)
 #endif
 
 #if SRTM_IO_SERVICE_USED
-static void APP_HandleGPIOHander(uint16_t ioId);
+static void APP_HandleGPIOHander(void *param);
 /*
  * @brief Set pad control register
  * @param asInput    use gpio as input, unless use as output
@@ -973,7 +973,7 @@ static srtm_status_t APP_IO_ConfInput(uint16_t ioId, srtm_io_event_t event, bool
     HAL_GpioInit(suspendContext.io.data[portIdx][pinIdx].p_gpioHandle, &config);
     suspendContext.io.data[portIdx][pinIdx].direction = SRTM_IoDirectionInput;
     suspendContext.io.data[portIdx][pinIdx].ioId = ioId;
-    HAL_GpioInstallCallback(suspendContext.io.data[portIdx][pinIdx].p_gpioHandle, (hal_gpio_callback_t)APP_HandleGPIOHander, (void *)suspendContext.io.data[portIdx][pinIdx].ioId);
+    HAL_GpioInstallCallback(suspendContext.io.data[portIdx][pinIdx].p_gpioHandle, (hal_gpio_callback_t)APP_HandleGPIOHander, (void *)&suspendContext.io.data[portIdx][pinIdx].ioId);
 
     switch (event)
     {
@@ -1071,8 +1071,9 @@ static void APP_SRTM_InitIoService(void)
     SRTM_Dispatcher_RegisterService(disp, ioService);
 }
 
-static void APP_HandleGPIOHander(uint16_t ioId)
+static void APP_HandleGPIOHander(void *param)
 {
+    uint16_t ioId = *(uint16_t *)param;
     SRTM_IoService_NotifyInputEvent(ioService, ioId);
 }
 #endif
