@@ -7,6 +7,7 @@ mcux_add_macro(
         -DFSL_ETH_ENABLE_CACHE_CONTROL\
         -DMAX_MBX_QUEUE_SIZE=100\
         -DEOE_RECEIVE_TASK_PRIORITY=3\
+        -DUSE_RTOS=1\
        -DPRINTF_ADVANCED_ENABLE=1"
 )
 

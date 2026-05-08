@@ -19,17 +19,7 @@
 #define LWIP_MDNS_RESPONDER        1
 #define LWIP_NUM_NETIF_CLIENT_DATA (LWIP_MDNS_RESPONDER)
 
-#define SDK_OS_FREE_RTOS 1
-
-#ifndef USE_RTOS
-#ifdef SDK_OS_FREE_RTOS
-#define USE_RTOS 1
-#else
-#define USE_RTOS 0
-#endif /* SDK_OS_FREE_RTOS */
-#endif /* USE_RTOS */
-
-#if USE_RTOS
+#if (defined(USE_RTOS) && (USE_RTOS > 0U))
 
 /**
  * SYS_LIGHTWEIGHT_PROT==1: if you want inter-task protection for certain
