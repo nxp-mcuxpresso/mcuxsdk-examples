@@ -13,7 +13,7 @@ In this example, a static test images ("ship") is evaluated for classification i
 - **Output**: Classification into 10 classes
 - **Model Size**: 91 KB
 - **Detection Threshold**: 60%
-- **Neutron Software Version**: MCU SDK 26.03 comes with a default Neutron Software Version of 3.0.0
+- **Neutron Software Version**: MCU SDK 26.06.00 comes with a default Neutron Software Version of 3.1.1
 
 ### Network Structure
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 NXP
+ * Copyright 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -11,17 +11,13 @@
 
 tflite::MicroOpResolver &MODEL_GetOpsResolver()
 {
-    static tflite::MicroMutableOpResolver<8> s_microOpResolver;
+    static tflite::MicroMutableOpResolver<5> s_microOpResolver;
 
-    s_microOpResolver.AddDepthwiseConv2D();
-    s_microOpResolver.AddDequantize();
-    s_microOpResolver.AddPad();
     s_microOpResolver.AddQuantize();
-    s_microOpResolver.AddReshape();
-    s_microOpResolver.AddSlice();
+    s_microOpResolver.AddPad();
     s_microOpResolver.AddSoftmax();
-    s_microOpResolver.AddCustom(tflite::GetString_NEUTRON_GRAPH(),
-        tflite::Register_NEUTRON_GRAPH());
+    s_microOpResolver.AddDequantize();
+    s_microOpResolver.AddCustom(tflite::GetString_NEUTRON_GRAPH(), tflite::Register_NEUTRON_GRAPH());
 
     return s_microOpResolver;
 }
