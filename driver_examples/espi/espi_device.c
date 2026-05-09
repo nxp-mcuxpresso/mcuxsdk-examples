@@ -10,6 +10,7 @@
 #include "fsl_espi.h"
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <ctype.h>
 
 #ifndef EXAMPLE_ESPI_DEBUG_LOG
@@ -75,7 +76,7 @@ static const espi_port_config_t g_portCfg[] = {
         .type       = kESPI_PortType_MailboxSingle,
         .direction  = 0U,
         .ramOffset  = 0x0300U,
-        .ramSize    = kESPI_RamSize512B,
+        .ramSize    = kESPI_RamSize256B,
         .addrOffset = 0x0300U,
         .addrBase   = kESPI_AddrBaseDirect,
     },
@@ -125,6 +126,12 @@ static void ExampleFlashOps(ESPI_Type *base, espi_handle_t *handle, espi_flash_r
     }
     else if (req->type == kESPI_FlashTransRead)
     {
+        /* Promira WAIT_STATE workaround: host sends one extra clock cycle,
+           triggering a spurious callback with length=0. Skip it. */
+        if (length == 0U)
+        {
+            return;
+        }
         uint32_t maxPayload = ESPI_GetFlashMaxPayload(base);
 
         if (req->readStart)
@@ -252,7 +259,8 @@ int parse_hex_bytes(const char *s, uint8_t *out, int maxout)
         /* accept 0x prefix */
         if (p[0] == '0' && (p[1] == 'x' || p[1] == 'X'))
             p += 2;
-        uint32_t hi; uint32_t lo;
+        uint32_t hi;
+        uint32_t lo;
         if (isxdigit((unsigned char)p[0]))
         {
             hi = (uint32_t)((((p[0] >= '0') && (p[0] <= '9')) ? (p[0] - '0') : (toupper((unsigned char)p[0]) - 'A' + 10)) & 0xF);
@@ -264,8 +272,7 @@ int parse_hex_bytes(const char *s, uint8_t *out, int maxout)
             }
             else
             {
-                /* single nibble -> treat as low nibble */
-                lo = 0U;
+                return -1;
             }
             out[len++] = (uint8_t)(((hi << 4U) | (lo & 0xFU)) & 0xFFU);
         }
@@ -624,13 +631,18 @@ static void ESPI_PortCallback(ESPI_Type *base, espi_handle_t *handle, uint32_t p
             if ((status & kESPI_PortWriteInterrupt) != 0U)
             {
                 ESPI_GetEndpointData(base, port, &idx, &data);
-                (void)PRINTF("Received endpont message: idx = 0x%X, datain = 0x%X\r\n", idx, data);
+                (void)PRINTF("Received endpoint message: idx = 0x%X, datain = 0x%X\r\n", idx, data);
+                /* Send data back. */
+                if (idx == 0U)
+                {
+                    ESPI_WritePortData(base, port, data);
+                    (void)PRINTF("Endpoint data ready: 0x%X\r\n", data);
+                }
             }
             if ((status & kESPI_PortReadInterrupt) != 0U)
             {
                 ESPI_GetEndpointData(base, port, &idx, &data);
-                ESPI_WritePortData(base, port, 0xAA);
-                (void)PRINTF("Endpont data sent back: idx = 0x%X, dataout =0x%X\r\n", idx, 0xAA);
+                (void)PRINTF("Endpoint data read: idx = 0x%X\r\n", idx);
             }
         }
         else if (type == kESPI_PortType_ACPIIndexData)
@@ -652,29 +664,29 @@ static void ESPI_PortCallback(ESPI_Type *base, espi_handle_t *handle, uint32_t p
         {
             if ((status & (kESPI_PortWriteInterrupt | kESPI_PortSpec0Interrupt)) != 0U)
             {
-                uint8_t *oobBuf = ESPI_GetPortRamBuffer(base, port);
+                uint8_t *ramBuf = ESPI_GetPortRamBuffer(base, port);
                 uint32_t msgLen = ESPI_GetPortMsgLen(base, port);
 
-                assert(msgLen <= sizeof(g_msgBuffer));
-                (void)memcpy(g_msgBuffer, oobBuf, msgLen);
+                if (msgLen > sizeof(g_msgBuffer))
+                    msgLen = sizeof(g_msgBuffer);
+                (void)memcpy(g_msgBuffer, ramBuf, msgLen);
                 (void)PRINTF("Mailbox received (%u bytes): ", msgLen);
-                for (uint32_t i = 0; (i < msgLen) && (i < sizeof(g_msgBuffer)); i++)
+                for (uint32_t i = 0; i < msgLen; i++)
                     (void)PRINTF("%02X ", g_msgBuffer[i]);
                 (void)PRINTF("\r\n");
+
+                base->PORT[port].IRULESTAT = (base->PORT[port].IRULESTAT & ~ESPI_IRULESTAT_SSTCL_MASK) |
+                                             ESPI_IRULESTAT_SSTCL((uint32_t)kESPI_SSTCL_MailboxWrEmpty);
             }
             if (status & kESPI_PortReadInterrupt)
             {
-                if (((status & ESPI_STAT_RDSTAT_MASK) >> ESPI_STAT_RDSTAT_SHIFT) == 3U)
-                {
-                    (void)PRINTF("Mailbox partial read.");
-                }
                 if ((status & kESPI_PortSpec1Interrupt) != 0U)
                 {
-                    (void)PRINTF("First read.\r\n");
+                    (void)PRINTF("Mailbox read started.\r\n");
                 }
                 if ((status & kESPI_PortSpec3Interrupt) != 0U)
                 {
-                    (void)PRINTF("Last read.\r\n");
+                    (void)PRINTF("Mailbox read done.\r\n");
                 }
             }
         }
@@ -684,6 +696,7 @@ static void ESPI_PortCallback(ESPI_Type *base, espi_handle_t *handle, uint32_t p
 void print_help(void)
 {
     (void)PRINTF("\r\nInteractive commands:\r\n");
+    (void)PRINTF(" show_config               -- Show eSPI configuration\r\n");
     (void)PRINTF(" status                    -- Show eSPI status flags\r\n");
     (void)PRINTF(" send_vw_mask <hexmask>    -- Apply VW by mask (32-bit hex)\r\n");
     (void)PRINTF(" send_vw_flag <name> <val> -- Set VW flag by name (val may be multi-bit)\r\n");
@@ -748,6 +761,11 @@ int main(void)
             print_help();
             continue;
         }
+        else if (strcmp(cmd, "show_config") == 0)
+        {
+            print_espi_config(EXAMPLE_ESPI_BASE);
+            continue;
+        }
         else if (strcmp(cmd, "status") == 0)
         {
             (void)PRINTF("eSPI status: 0x%08X\r\n", ESPI_GetStatusFlags(EXAMPLE_ESPI_BASE));
@@ -767,9 +785,9 @@ int main(void)
         }
         else if (strcmp(cmd, "send_vw_flag") == 0)
         {
-            char *arg_flag = strtok(NULL, " \t\r\n");
-            char *arg_val  = strtok(NULL, " \t\r\n");
-            if (!arg_flag || !arg_val)
+            char flag_name[32];
+            unsigned int val = 0U;
+            if (!args || (sscanf(args, "%31s %u", flag_name, &val) != 2))
             {
                 (void)PRINTF("Usage: send_vw_flag <name> <val>\r\n");
                 ESPI_PrintVWireFlagList();
@@ -777,16 +795,15 @@ int main(void)
             }
 
             espi_vw_wr_flags_t flag;
-            if (!ESPI_ParseVWireFlagName(arg_flag, &flag))
+            if (!ESPI_ParseVWireFlagName(flag_name, &flag))
             {
-                (void)PRINTF("Unknown VW flag name: %s\r\n", arg_flag);
+                (void)PRINTF("Unknown VW flag name: %s\r\n", flag_name);
                 ESPI_PrintVWireFlagList();
                 continue;
             }
 
-            uint32_t val = (uint32_t)strtoul(arg_val, NULL, 0);
             status_t res = ESPI_SendVWire(EXAMPLE_ESPI_BASE, flag, val);
-            (void)PRINTF("\r\nESPI_SendVWire(%s, val=%u) -> %d\r\n", arg_flag, val, res);
+            (void)PRINTF("\r\nESPI_SendVWire(%s, val=%u) -> %d\r\n", flag_name, val, res);
             continue;
         }
         else if (strcmp(cmd, "vw_flags") == 0)
@@ -807,6 +824,11 @@ int main(void)
             if (maxOob > sizeof(g_msgBuffer))
                 maxOob = sizeof(g_msgBuffer);
             int len = parse_hex_bytes(args, g_msgBuffer, (int)maxOob);
+            if (len < 0)
+            {
+                (void)PRINTF("Invalid hex input (use two chars per byte, e.g. AA BB)\r\n");
+                continue;
+            }
             if (len == 0)
             {
                 (void)PRINTF("No OOB data parsed\r\n");

@@ -8,6 +8,10 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/driver_examples/espi/espi_device.c
+            examples/driver_examples/espi/scripts/espi_host.py
+            examples/driver_examples/espi/scripts/espi_autotest.py
+            examples/driver_examples/espi/scripts/espi_capture.py
+            examples/driver_examples/espi/scripts/espi_promira_guide.md
 )
 
 mcux_add_include(

@@ -1,8 +1,8 @@
+#!/usr/bin/env python3
 # Copyright 2026 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-#!/usr/bin/env python3
 #==========================================================================
 # (c) 2014-2019 Total Phase, Inc.
 #--------------------------------------------------------------------------
@@ -31,55 +31,102 @@
 #==========================================================================
 # IMPORTS
 #==========================================================================
-from __future__ import division, with_statement, print_function
 import sys
+import os
 import time
+
+_script_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, _script_dir)
+if hasattr(os, 'add_dll_directory'):
+    os.add_dll_directory(_script_dir)
 
 from promira_py import *
 from promact_is_py import *
-
 from espi_simulator import *
 
+
+class NxpEspiSimulator(EspiSimulator):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        ps_phy_level_shift(self.channel, 3.3)
+
+    def espi_transact(self, pkts, debug=False):
+        io_mode = self.io[self.slave_id]
+        if io_mode != 4:
+            super().espi_transact(pkts, debug)
+            return
+        word_size = 4
+        ps_queue_clear(self.queue)
+        for pkt in pkts:
+            cmd = pkt[0]
+            resp = pkt[1]
+            if debug:
+                n = 64
+                print("[>]", ['%02x' % x for x in (cmd + resp)[:n]],
+                      end=' ')
+                print("..." if len(cmd + resp) > n else "")
+            raw = self._espi_pack_data(*pkt, single_on_dual=False)
+            raw_len = len(raw) * 2
+            ps_queue_spi_ss(self.queue, self.ss_mask)
+            if self.sim_mode == ESPI_SIMULATOR_MODE_TRANS:
+                ps_queue_spi_write(self.queue, io_mode, word_size,
+                                   raw_len, raw)
+            else:
+                cmd_words = (len(cmd) + 1) * 2
+                ps_queue_spi_write(self.queue, io_mode, word_size,
+                                   cmd_words, raw)
+                ps_queue_spi_read(self.queue, io_mode, word_size,
+                                  raw_len - cmd_words)
+            ps_queue_spi_ss(self.queue, 0)
+        self._spi_submit()
+
+
+# Flash channel config (SET_CONFIGURATION offset 0x40):
+#   Byte 0 = 0x05: ch_enable=1, erase_block_size=1 (4K)
+#   Byte 1 = 0x2A: max_payload + max_read_request encoding
+FLASH_CH_CONFIG = [0x05, 0x2A, 0x00, 0x00]
 
 #==========================================================================
 # eSPI FUNCTIONS
 #==========================================================================
 def espi_reset(simulator):
     """ Send a RESET """
-    simulator.espi_config_slave(0)
     simulator.espi_toggle_reset()
 
 def espi_alert(simulator):
     """ Send an ALERT """
-    simulator.espi_config_slave(0)
     simulator.espi_toggle_alert()
 
 def espi_inband_reset(simulator):
     """ Send an INBAND RESET """
-    simulator.espi_config_slave(0)
     simulator.espi_inband_reset()
 
-def espi_set_config_io(simulator, io_mode):
-    simulator.espi_config_slave(0)
-    # set config, 50Mhz
-    simulator.espi_set_config_08h(0, io_mode)
+def espi_setup_channels(simulator):
+    """Enable all channels in current IO mode (call before switching to quad)."""
+    simulator.espi_set_config_10h(7, 3, 1, 1)        # Peripheral
+    simulator.espi_set_config_20h(7, 1)              # VWire (0-based: 7 = 8 groups, NXP HW max)
+    simulator.espi_set_config_30h(2, 1)              # OOB
+    simulator.espi_set_config(0x40, FLASH_CH_CONFIG) # Flash
 
-def espi_set_config_io_single(simulator):
-    """ Send a SET_CONFIGURATION command to configure IO MODE as SINGLE """
-    espi_set_config_io(simulator, 0)
+def espi_raw_get_config(simulator, offset):
+    """GET_CONFIGURATION at given offset (hex). E.g. raw_get_config 0x10"""
+    data = [0, 0, 0, 0]
+    simulator.espi_get_config(int(offset, 0), data)
+    time.sleep(0.05)
 
-def espi_set_config_io_dual(simulator):
-    """ Send a SET_CONFIGURATION command to configure IO MODE as DUAL """
-    espi_set_config_io(simulator, 1)
-
-def espi_set_config_io_quad(simulator):
-    """ Send a SET_CONFIGURATION command to configure IO MODE as QUAD """
-    espi_set_config_io(simulator, 2)
+def espi_set_bus_config(simulator, io_mode_name, freq_mhz):
+    """SET_CONFIGURATION(0x08) with both frequency and IO mode.
+    io_mode_name: 'single'/'dual'/'quad'
+    freq_mhz: '20'/'25'/'33'/'50'/'66'
+    """
+    io_map = {'single': 0, 'dual': 1, 'quad': 2}
+    freq_map = {'20': 0, '25': 1, '33': 2, '50': 3, '66': 4}
+    simulator.espi_set_config_08h(freq_map[freq_mhz], io_map[io_mode_name])
 
 def espi_set_config_10h(simulator):
     """ Send a SET_CONFIGURATION command to configure the peripheral channel \
 operating mode. Maximum Read Request Size: 4096 bytes, Maximum Payload Size: 256 bytes """
-    simulator.espi_config_slave(0)
     # max_req_size : 4096, max_payload_size : 256, bus_enable, ch_enable
     simulator.espi_set_config_10h(7, 3, 1, 1)
 
@@ -88,7 +135,7 @@ def espi_put_msg(simulator):
     msg_data = [ 1, 2, 3, 4, 5 ]
 
     # put msg on slave 0
-    simulator.espi_config_slave(0)
+
     for _ in range(1):
         tag = random.randrange(0, 15)
         data = random.sample(range(0, 0xff), random.randrange(0, 32))
@@ -99,7 +146,7 @@ def espi_put_msg(simulator):
 
     # put msg on slave 1
     msg_data = [ 5, 4, 3, 2, 1 ]
-    simulator.espi_config_slave(0)
+
     for _ in range(2):
         tag = random.randrange(0, 15)
         data = random.sample(range(0, 0xff), random.randrange(0, 32))
@@ -111,7 +158,7 @@ def espi_put_msg(simulator):
 def espi_get_status(simulator):
     """ Send a GET_STATUS command """
     resp_data  = []
-    simulator.espi_config_slave(0)
+
     # Send a get_status command indicating that the
     # slave has a posted/completion rx queue free
     simulator.espi_get_status(resp_data, RESP_ACCEPTED, STAT_NORMAL)
@@ -119,7 +166,7 @@ def espi_get_status(simulator):
 def espi_get_status_pc_free(simulator):
     """ Send a GET_STATUS command indicating a free posted/completion RX queue"""
     resp_data  = []
-    simulator.espi_config_slave(0)
+
     # Send a get_status command indicating that the
     # slave has a posted/completion rx queue free
     simulator.espi_get_status(resp_data, RESP_ACCEPTED, STAT_PC_FREE)
@@ -127,7 +174,7 @@ def espi_get_status_pc_free(simulator):
 def espi_get_status_np_free(simulator):
     """ Send a GET_STATUS command indicating a free non-posted RX queue"""
     resp_data  = []
-    simulator.espi_config_slave(0)
+
     # Send a get_status command indicating that the
     # slave has a non-posted rx queue free
     simulator.espi_get_status(resp_data, RESP_ACCEPTED, STAT_NP_FREE)
@@ -135,7 +182,7 @@ def espi_get_status_np_free(simulator):
 def espi_perif_downstream_wr32(simulator):
     """ Send a downstream memory write to a 32-bit address. Address: 0xFF008000, Tag: 0xA, Data: 8 bytes """
     write_data = [10, 11, 12, 13, 14, 15, 16 , 17]
-    simulator.espi_config_slave(0)
+
     # Send downstream posted write command with 8 bytes of data
     # to address 0xFF008000, Tag value: 0xA
     # Command   : PUT_PC
@@ -148,7 +195,7 @@ def espi_perif_downstream_wr32(simulator):
 def espi_perif_downstream_rd32(simulator):
     """ Send a downstream memory read request to a 32-bit address with a connected completion (successful with data, only). Address: 0x80800000, Tag: 0xA, Data: 16 bytes """
     cmpl_data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-    simulator.espi_config_slave(0)
+
     # Send a downstream non posted read request with an ACCEPT
     # response to a 32 bit address 0x80800000, Tag value: 0xA
     # Command   : PUT_NP
@@ -162,7 +209,7 @@ def espi_perif_downstream_rd32(simulator):
 def espi_perif_downstream_rd64(simulator):
     """ Send a downstream memory read request to a 64-bit address with a connected completion (successful with data, only). Address: 0xFFFFC00080800000, Tag: 0xA, Data: 16 bytes """
     cmpl_data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-    simulator.espi_config_slave(0)
+
     # Send a downstream non posted read request with an ACCEPT response
     # to a 64 bit address 0xFFFFC00080800000, Tag value: 0xA
     # Command   : PUT_NP
@@ -261,8 +308,6 @@ Channel Mapping:
 """
 
 def espi_mcux_sts_get(simulator):
-    simulator.espi_config_slave(0)
-
     simulator.espi_get_status(
         resp_data=[],
         resp_code=RESP_ACCEPTED,
@@ -270,48 +315,68 @@ def espi_mcux_sts_get(simulator):
     )
 
 def espi_mcux_vw_put(simulator):
-    # 04 size index0 value0 ... crc
-
-    simulator.espi_config_slave(0)
-    # Enable 10 VW groups
-    simulator.espi_set_config_20h(10, 1)
-
+    """Send all 8 VWire groups in a single PUT_VW (used by S01 serial verification)."""
     vw_cmds = [
-        0x02, 0x77,  # SLP_Sx: SLP_S5#, SLP_S4#, SLP_S3# Valid[7:4] = 0111 State[3:0] = 0111(SLP_S5/4/3)
-        0x03, 0x77,  # OOB_RST_WARN, PLTRST#, SUS_STAT#
-        0x07, 0x11,  # HOST_RST_WARN. RM note: For index 7, we do not support writing to bits 2 and 1, which are “NMIOUT#” and “SMIOUT#”
-        0x41, 0xFF,  # SUS_WARN#, SUS_PWRDN_ACK, SLP_A#, SLP_LAN#
-        0x42, 0x33,  # SLP_LAN#, SLP_WLAN#
-        0x47, 0x11,  # HOST_C10: active
+        0x02, 0x77,  # SLP_S3#, SLP_S4#, SLP_S5#
+        0x03, 0x77,  # SUS_STAT, PLTRST#, OOB_RST_WARN
+        0x07, 0x11,  # HOST_RST_WARN
+        0x41, 0x77,  # SUS_WARN, SUS_PWRDN_ACKN, SLP_AN
+        0x42, 0x33,  # SLP_LAN, SLP_WLAN
+        0x43, 0x55,  # P2E lower nibble
+        0x44, 0x55,  # P2E upper nibble
+        0x47, 0x11,  # HOST_C10N
     ]
-
     vw_count = (len(vw_cmds) // 2) - 1
     simulator.espi_vw_put(vw_count, vw_cmds, resp_code=RESP_ACCEPTED, status=STAT_NORMAL)
 
-def espi_mcux_vw_get(simulator):
-    # 05 1B(crc)
-    # RSP count index0 value0 ... sts crc
+def espi_mcux_vw_put_p1(simulator):
+    """PUT_VW batch 1/3: groups 0x02, 0x03, 0x07 (3 groups)."""
+    vw = [0x02, 0x77, 0x03, 0x77, 0x07, 0x11]
+    simulator.espi_vw_put(len(vw) // 2 - 1, vw, resp_code=RESP_ACCEPTED, status=STAT_NORMAL)
 
-    simulator.espi_config_slave(0)
-    simulator.espi_set_config_20h(10, 10)
-    simulator.espi_get_status(resp_data=[])
+def espi_mcux_vw_put_p2(simulator):
+    """PUT_VW batch 2/3: groups 0x41, 0x42, 0x43 (3 groups)."""
+    vw = [0x41, 0x77, 0x42, 0x33, 0x43, 0x55]
+    simulator.espi_vw_put(len(vw) // 2 - 1, vw, resp_code=RESP_ACCEPTED, status=STAT_NORMAL)
 
+def espi_mcux_vw_put_p3(simulator):
+    """PUT_VW batch 3/3: groups 0x44, 0x47 (2 groups)."""
+    vw = [0x44, 0x55, 0x47, 0x11]
+    simulator.espi_vw_put(len(vw) // 2 - 1, vw, resp_code=RESP_ACCEPTED, status=STAT_NORMAL)
+
+def espi_raw_vw_config(simulator):
+    simulator.espi_set_config_20h(6, 1)
+
+def espi_raw_vw_get(simulator):
     vw_data = [0,0] * 4
     simulator.espi_vw_get(2, vw_data)
-    # Typical Cmd  05 1B
-    # Typical Resp 08 00 06 87 0F 03 EC
+
+def espi_mcux_vw_get(simulator):
+    espi_raw_vw_config(simulator)
+    espi_raw_vw_get(simulator)
+
+def espi_raw_get_config_20h(simulator):
+    # GET_CONFIGURATION for VWire channel (offset 0x20)
+    # CMD: 21 00 20 crc
+    # RSP: rsp_code config[4B] status[2B] crc
+    data = [0, 0, 0, 0]
+    simulator.espi_get_config(0x20, data)
+
+def espi_raw_oob_config(simulator):
+    simulator.espi_set_config_30h(max_payload_size=3, ch_enable=1)
+
+def espi_raw_oob_get(simulator):
+    oob_data = [0] * 6
+    simulator.espi_oob_get(tag=9, data=oob_data)
 
 def espi_mcux_oob_put(simulator):
-    # GET_OOB(06) CYCLE_OOB(0x21) tag length_all slave_addr cmd_code byte_count data... crc
+    # PUT_OOB(06) CYCLE_OOB(0x21) tag length_all slave_addr cmd_code byte_count data... crc
 
     """ Send an OOB PUT message. Typical case: 8-byte SMBus-like message """
-    simulator.espi_config_slave(0)
     ### max_payload_size = 1..3
     simulator.espi_set_config_30h(3, 1)
 
-    write_data = []
-    for i in range(0, 128):
-        write_data.append(i)
+    write_data = list(range(128))
     oob_data = [
         (0x50 << 1) | 0,  # Slave Address with Write bit (0xA0)
         0xA0,             # Command Code
@@ -322,125 +387,90 @@ def espi_mcux_oob_put(simulator):
     simulator.espi_oob_put(tag, oob_data)
 
 def espi_mcux_oob_get(simulator):
-    # GET_OOB(07) crc
-    # data... crc
-
-    simulator.espi_config_slave(0)
-
-    # max_payload_size: 1=64B, 2=128B, 3=256B
-    simulator.espi_set_config_30h(max_payload_size=3, ch_enable=1)
-
-    oob_data = [0] * 6
-    simulator.espi_oob_get(
-        tag=9,
-        data=oob_data,
-    )
+    espi_raw_oob_config(simulator)
+    espi_raw_oob_get(simulator)
 
 def espi_mcux_saf_erase(simulator):
-    simulator.espi_config_slave(0)
-    data = [0x05,0x2A,0x00,0x00]
-    simulator.espi_set_config(0x40, data)
+    simulator.espi_set_config(0x40, FLASH_CH_CONFIG)
 
-    write_data = []
-    for i in range(0, 128):
-        write_data.append(i)
+    write_data = list(range(128))
     simulator.espi_flash_erase(True, 5, 0x500, len(write_data), CYCLE_FLASH_ER)
-    simulator.espi_flash_erase_cmpl(True, 0, CYCLE_FLASH_ER)
+    simulator.espi_flash_erase_cmpl(True, 5, CYCLE_FLASH_ER)
 
 def espi_mcux_saf_write(simulator):
     # PUT_FLASH_NP(0x0A) CYCLE_TYPE(1) Tag(4bits)+Len(4bits) Len Addr(32bits 32-0) Data
-
-    simulator.espi_config_slave(0)
     ### max_req_size     = 1..7 = 64,128,256,..4096 bytes
     ### max_payload_size = 1..3 = 64,128,256
     ### block_erase_size = 1..5 = 4K, 64K, 4K/64K, 128K, 256K
     ### ch_enable        = 0..1 = disable,enable
-    #simulator.espi_set_config_40h(5, 3, 1, 1)
-    data = [0x05,0x2A,0x00,0x00]
-    simulator.espi_set_config(0x40, data)
+    simulator.espi_set_config(0x40, FLASH_CH_CONFIG)
 
-    write_data = []
-    for i in range(0, 128):
-        write_data.append(i)
+    write_data = list(range(128))
     simulator.espi_flash_write(True, 5, 0x500, write_data, CYCLE_FLASH_WR)
-    simulator.espi_flash_write_cmpl(True, 0, CYCLE_FLASH_WR)
-    data = []
-    for i in range(0, 128):
-        data.append(127-i)
+    simulator.espi_flash_write_cmpl(True, 5, CYCLE_FLASH_WR)
+    data = list(range(127, -1, -1))
     simulator.espi_flash_write(True, 5, 0x580, data, CYCLE_FLASH_WR)
-    simulator.espi_flash_write_cmpl(True, 0, CYCLE_FLASH_WR)
+    simulator.espi_flash_write_cmpl(True, 5, CYCLE_FLASH_WR)
 
 def espi_mcux_saf_read(simulator):
-    simulator.espi_config_slave(0)
-    data = [0x05,0x2A,0x00,0x00]
-    simulator.espi_set_config(0x40, data)
+    simulator.espi_set_config(0x40, FLASH_CH_CONFIG)
 
     simulator.espi_flash_read(True, 5, 0x500, 256, CYCLE_FLASH_RD, resp_data=[])
     time.sleep(0.1)
     # WAIT_STATE needs one more cycle to take last byte
     read_data = [0] * 257
-    simulator.espi_flash_read_cmpl(True, 0, CYCLE_FLASH_RD, read_data)
+    simulator.espi_flash_read_cmpl(True, 5, CYCLE_FLASH_RD, read_data)
 
 def espi_mcux_saf_read_compl(simulator):
-    simulator.espi_config_slave(0)
-
     # WAIT_STATE needs one more cycle to take last byte
     read_data = [0] * 257
-    simulator.espi_flash_read_cmpl(True, 0, CYCLE_FLASH_RD, read_data)
+    simulator.espi_flash_read_cmpl(True, 5, CYCLE_FLASH_RD, read_data)
 
 def espi_mcux_saf_wrd(simulator):
-    simulator.espi_config_slave(0)
-    reg = [0x05,0x2A,0x00,0x00]
-    simulator.espi_set_config(0x40, reg)
+    simulator.espi_set_config(0x40, FLASH_CH_CONFIG)
 
-    data = []
-    for i in range(0,128):
-        data.append(i)
-
+    data = list(range(128))
+    simulator.espi_flash_erase(True, 5, 0x500, len(data), CYCLE_FLASH_ER)
+    simulator.espi_flash_erase_cmpl(True, 5, CYCLE_FLASH_ER)
     simulator.espi_flash_write(True, 5, 0x500, data, CYCLE_FLASH_WR)
     simulator.espi_flash_write_cmpl(True, 5, CYCLE_FLASH_WR)
-    simulator.espi_flash_read(True, 5, 0x500, len(data), CYCLE_FLASH_RD, resp_data=[])
+    data2 = list(range(127, -1, -1))
+    simulator.espi_flash_write(True, 5, 0x580, data2, CYCLE_FLASH_WR)
+    simulator.espi_flash_write_cmpl(True, 5, CYCLE_FLASH_WR)
+    simulator.espi_flash_read(True, 5, 0x500, 256, CYCLE_FLASH_RD, resp_data=[])
     time.sleep(0.1)
-    read_data = [0] * 129
-    simulator.espi_flash_read_cmpl(True, 0, CYCLE_FLASH_RD, read_data)
+    read_data = [0] * 257
+    simulator.espi_flash_read_cmpl(True, 5, CYCLE_FLASH_RD, read_data)
 
 # Endpoint. Write base address 0 data, address 4 command
 def espi_mcux_ep_write_p80(simulator):
-    simulator.espi_config_slave(0)
     data = [0x88]
     simulator.espi_perif_write_io(0x80, data)
 
 def espi_mcux_ep_write_data(simulator):
-    simulator.espi_config_slave(0)
     data = [0x56]
     simulator.espi_perif_write_io(0x0100, data)
 
 def espi_mcux_ep_write_cmd(simulator):
-    simulator.espi_config_slave(0)
     cmd = [0x57]
     simulator.espi_perif_write_io(0x0104, cmd)
 
 def espi_mcux_ep_read_data(simulator):
-    simulator.espi_config_slave(0)
     data = [0]
     simulator.espi_perif_read_io(0x0100, data)
 
 # Index-data.
 def espi_mcux_idx_write_data(simulator):
-    # PUT_FLASH_NP(0x0A) CYCLE_TYPE(1) Tag(4bits)+Len(4bits) Len Addr(32bits 32-0) Data
-    simulator.espi_config_slave(0)
     data = [0x58]
     simulator.espi_perif_write_io(0x0200, data)
 
 def espi_mcux_idx_write_cmd(simulator):
-    simulator.espi_config_slave(0)
     cmd = [0x59]
     simulator.espi_perif_write_io(0x0201, cmd)
 
 # Mailbox.
 def espi_mcux_mb_write(simulator):
     # PUT_PC(0x00) CYCLE_TYPE(1) Tag(4b)+Len(4b) Len(8b) Addr(32b 32-0) Data CRC
-    simulator.espi_config_slave(0)
     write_data = [1, 2, 3, 4, 8, 7, 6, 5]
     simulator.espi_perif_write_mem(True, 0xA, 0x0300, True, write_data)
     # Typical Cmd  00 01 A0 08 00 00 04 00 01 02 03 04 08 07 06 05 1E
@@ -449,9 +479,7 @@ def espi_mcux_mb_write(simulator):
 def espi_mcux_mb_read(simulator):
     # PUT_NP(0x02) CYCLE_TYPE(CYCLE_MEMRD32 = 0) Tag(4bits)+Len(4bits) Len Addr(32bits 32-0) Data CRC
     read_data = [0] * 9
-    simulator.espi_config_slave(0)
     # Send a downstream non posted read request with an ACCEPT
-    # response to a 32 bit address 0x80800000, Tag value: 0xA
     # Command   : PUT_NP
     # Cycle type: MEMORY READ 32
     # Tag value : 0xA
@@ -461,63 +489,73 @@ def espi_mcux_mb_read(simulator):
     # Typical Resp 08 cycle_type(0F) A0 08 01 02 03 04 08 07 06 05 STAT(0F 03) 85
 
 def espi_mcux_mb_wrd(simulator):
-    simulator.espi_config_slave(0)
-    simulator.espi_set_config_10h(7, 2, 1, 1)
+    simulator.espi_set_config_10h(7, 3, 1, 1)
 
-    data = []
-    for i in range(0, 128):
-        data.append(i)
+    data = list(range(256))
     simulator.espi_perif_write_mem(True, 0xA, 0x0300, True, data)
     simulator.espi_perif_read_mem(True, 0xA, 0x0300, True, len(data), CYCLE_SC_DATA_11, data)
 
 #==========================================================================
 # MAIN PROGRAM
 #==========================================================================
-if (len(sys.argv) < 3):
-    print("usage: espi_generator IP sim_mode command1 command2 ... commnadn")
-    print("- sim_mode 0 : transaction mode that generates eSPI transaction")
-    print("  sim_mode 1 : master mode that generates eSPI command phase " +
-          "and clock only for TAR and response phase")
-    print("\n")
-    print("Available commands are ")
-    func_names = [ f[5:] for f in dir(sys.modules[__name__])
-                   if f.startswith('espi_') ]
-    for f in func_names:
-       doc = eval('espi_%s.__doc__'%f)
-       if doc:
-          print('%-25s : %s' % (f, eval('espi_%s.__doc__' % f)))
-    print("\n")
-    print("- To generate a sequence of espi packets that satisfy the condition")
-    print("  for advance trigger mode 1 example 'capture_espi_trig1.py' using")
-    print("  Promira espi analyzer, use the following command:")
-    print("  espi_generator.py IP 0 set_config_10h get_status_pc_free perif_downstream_wr32")
-    print("\n")
-    print("- To generate a sequence of espi packets that satisfy the condition")
-    print("  for advance trigger mode 2 example 'capture_espi_trig2.py' using")
-    print("  Promira espi analyzer, use the following command:")
-    print("  espi_generator.py IP 0 set_config_10h get_status_np_free perif_downstream_rd64")
-    print("\n")
-    print("- To generate a sequence of espi packets that satisfy the condition")
-    print("  for advance trigger eerror code mode example 'capture_espi_trig_err.py' using")
-    print("  Promira espi analyzer, use the following command:")
-    print("  espi_generator.py IP 0 set_config_10h get_status perif_downstream_rd32")
-    sys.exit()
+if __name__ == '__main__':
+    if (len(sys.argv) < 3):
+        print("usage: espi_generator IP sim_mode command1 command2 ... command")
+        print("- sim_mode 0 : transaction mode that generates eSPI transaction")
+        print("  sim_mode 1 : master mode that generates eSPI command phase " +
+              "and clock only for TAR and response phase")
+        print("\n")
+        print("Available commands are ")
+        func_names = [ f[5:] for f in dir(sys.modules[__name__])
+                       if f.startswith('espi_') ]
+        for f in func_names:
+           doc = eval('espi_%s.__doc__'%f)
+           if doc:
+              print('%-25s : %s' % (f, eval('espi_%s.__doc__' % f)))
+        print("\n")
+        print("- To generate a sequence of espi packets that satisfy the condition")
+        print("  for advance trigger mode 1 example 'capture_espi_trig1.py' using")
+        print("  Promira espi analyzer, use the following command:")
+        print("  espi_host.py IP 0 set_config_10h get_status_pc_free perif_downstream_wr32")
+        print("\n")
+        print("- To generate a sequence of espi packets that satisfy the condition")
+        print("  for advance trigger mode 2 example 'capture_espi_trig2.py' using")
+        print("  Promira espi analyzer, use the following command:")
+        print("  espi_host.py IP 0 set_config_10h get_status_np_free perif_downstream_rd64")
+        print("\n")
+        print("- To generate a sequence of espi packets that satisfy the condition")
+        print("  for advance trigger eerror code mode example 'capture_espi_trig_err.py' using")
+        print("  Promira espi analyzer, use the following command:")
+        print("  espi_host.py IP 0 set_config_10h get_status perif_downstream_rd32")
+        sys.exit()
 
-ip       = sys.argv[1]
-sim_mode = int(sys.argv[2])
-cmds     = sys.argv[3:]
+    ip       = sys.argv[1]
+    sim_mode = int(sys.argv[2])
+    cmds     = sys.argv[3:]
 
-# Open the device
-simulator = EspiSimulator(ip)
-simulator.espi_config_mode(sim_mode)
+    # Open the device
+    simulator = NxpEspiSimulator(ip)
+    simulator.espi_config_mode(sim_mode)
 
-for cmd in cmds:
-    try:
-        print('simulating %s' % cmd)
-        eval('espi_%s(simulator)' % cmd)
-    except:
-        print('unknown command or failed: %s' % cmd)
+    if '--reset' in cmds:
+        simulator.espi_inband_reset()
+        cmds = [c for c in cmds if c != '--reset']
 
-# Close the device
-simulator.close()
+    commands = []
+    for token in cmds:
+        if hasattr(sys.modules[__name__], 'espi_' + token):
+            commands.append([token])
+        elif commands:
+            commands[-1].append(token)
 
+    for parts in commands:
+        cmd, args = parts[0], parts[1:]
+        try:
+            print('simulating %s %s' % (cmd, ' '.join(args)))
+            func = getattr(sys.modules[__name__], 'espi_' + cmd)
+            func(simulator, *args)
+        except Exception as e:
+            print('unknown command or failed: %s (%s)' % (cmd, e))
+
+    # Close the device
+    simulator.close()
