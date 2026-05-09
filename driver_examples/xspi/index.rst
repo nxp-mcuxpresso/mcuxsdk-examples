@@ -10,3 +10,4 @@ xspi
    nor/index.rst
    octal/index.rst
    psram/index.rst
+   quad/index.rst
