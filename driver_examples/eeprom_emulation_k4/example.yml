@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+eeprom_emulation_k4:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/eeprom_emulation_k4
+    project-root-path: boards/${board}/driver_examples/eeprom_emulation_k4/${multicore_foldername}
+    document:
+      name: eeprom_emulation_k4${core_id_suffix_name}
+      category: driver_examples/flash
+      brief: 'The eeprom_emulation_k4 example shows how to use eeprom emulation to operate
+        flash as eeprom on k4 compatible devices:'
+      example_readme:
+      - examples/driver_examples/eeprom_emulation_k4/readme.md
+      - ${board_root}/${board}/driver_examples/eeprom_emulation_k4/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxw71: []
+    mcxw71evk: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
