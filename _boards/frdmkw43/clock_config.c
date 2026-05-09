@@ -203,14 +203,34 @@ void BOARD_BootClockRUN(void)
     coreFreq = CLOCK_GetSysClkFreq(kSCG_SysClkCore);
 
     if (coreFreq <= BOARD_BOOTCLOCKRUN_CORE_CLOCK) {
-        /* Set the LDO_CORE VDD regulator level */
-        ldoOption.CoreLDOVoltage = kSPC_CoreLDO_SafeModeVoltage;
-        ldoOption.CoreLDODriveStrength = kSPC_CoreLDO_NormalDriveStrength;
-        (void)SPC_SetActiveModeCoreLDORegulatorConfig(SPC0, &ldoOption);
+        /* Bump LDO_CORE only when below normal voltage. ACTIVE_CFG reset
+         * default is CORELDO_VDD_LVL=10b (1.1 V) and APP_SetSPCConfiguration
+         * also lands the rail at 1.1 V, so first boot and Sleep wake both
+         * find the LDO already adequate for 96 MHz. Sleep wake
+         * preserves SPC state and re-enters this function via the
+         * wake notification: rewriting the same voltage retriggers a
+         * regulator transition, and the follow-up SRAMCTL[REQ] without a
+         * matching SC[BUSY]=0 wait can leave the SRAM voltage update
+         * unacknowledged, hanging the wake path. */
+        if (SPC_GetActiveModeCoreLDOVDDVoltageLevel(SPC0) < kSPC_CoreLDO_NormalVoltage) {
+            ldoOption.CoreLDOVoltage = kSPC_CoreLDO_SafeModeVoltage;
+            ldoOption.CoreLDODriveStrength = kSPC_CoreLDO_NormalDriveStrength;
+            (void)SPC_SetActiveModeCoreLDORegulatorConfig(SPC0, &ldoOption);
+            /* Require SC[BUSY]=0 before the SRAM voltage
+             * The driver only waits on SC[REG_BUSY]. */
+            while ((SPC0->SC & SPC_SC_BUSY_MASK) != 0U) {
+            }
+        }
         /* Configure Flash to support different voltage level and frequency */
         FMU->FCTRL = (FMU->FCTRL & ~((uint32_t)FMU_FCTRL_RWSC_MASK)) | (FMU_FCTRL_RWSC(0x2U));
-        /* Specifies the operating voltage for the SRAM's read/write timing margin */
-        SPC_SetSRAMOperateVoltage(SPC0, kSPC_SRAM_OperatVoltage1P1V);
+        /* SRAM read/write timing margin. Skip when VSM already matches:
+         * without an actual voltage change the hardware does not assert
+         * SRAMCTL[ACK] and SPC_SetSRAMOperateVoltage() spins forever
+         * (KW43RM 40.7.8). */
+        if (((SPC0->SRAMCTL & SPC_SRAMCTL_VSM_MASK) >> SPC_SRAMCTL_VSM_SHIFT) !=
+            (uint32_t)kSPC_SRAM_OperatVoltage1P1V) {
+            (void)SPC_SetSRAMOperateVoltage(SPC0, kSPC_SRAM_OperatVoltage1P1V);
+        }
     }
 
     /* Config 32k Crystal Oscillator */
@@ -253,12 +273,22 @@ void BOARD_BootClockRUN(void)
     if (coreFreq > BOARD_BOOTCLOCKRUN_CORE_CLOCK) {
         /* Configure Flash to support different voltage level and frequency */
         FMU->FCTRL = (FMU->FCTRL & ~((uint32_t)FMU_FCTRL_RWSC_MASK)) | (FMU_FCTRL_RWSC(0x2U));
-        /* Specifies the operating voltage for the SRAM's read/write timing margin */
-        SPC_SetSRAMOperateVoltage(SPC0, kSPC_SRAM_OperatVoltage1P1V);
-        /* Set the LDO_CORE VDD regulator level */
-        ldoOption.CoreLDOVoltage = kSPC_CoreLDO_SafeModeVoltage;
-        ldoOption.CoreLDODriveStrength = kSPC_CoreLDO_NormalDriveStrength;
-        (void)SPC_SetActiveModeCoreLDORegulatorConfig(SPC0, &ldoOption);
+        /* SRAM read/write timing margin -- skip when VSM already matches so
+         * that an unchanged-voltage REQ does not stall on a missing ACK 
+         */
+        if (((SPC0->SRAMCTL & SPC_SRAMCTL_VSM_MASK) >> SPC_SRAMCTL_VSM_SHIFT) !=
+            (uint32_t)kSPC_SRAM_OperatVoltage1P1V) {
+            (void)SPC_SetSRAMOperateVoltage(SPC0, kSPC_SRAM_OperatVoltage1P1V);
+        }
+        /* Set the LDO_CORE VDD regulator level only when below the level
+         * adequate for the new (lower) frequency. */
+        if (SPC_GetActiveModeCoreLDOVDDVoltageLevel(SPC0) < kSPC_CoreLDO_NormalVoltage) {
+            ldoOption.CoreLDOVoltage = kSPC_CoreLDO_SafeModeVoltage;
+            ldoOption.CoreLDODriveStrength = kSPC_CoreLDO_NormalDriveStrength;
+            (void)SPC_SetActiveModeCoreLDORegulatorConfig(SPC0, &ldoOption);
+            while ((SPC0->SC & SPC_SC_BUSY_MASK) != 0U) {
+            }
+        }
     }
 
     /* Set SCG CLKOUT selection. */
