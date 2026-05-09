@@ -6,7 +6,7 @@ Hardware requirements
 
 Board settings
 ============
-No special settings are required.
+Please ensure a 220nF capacitor is added between P2_7 and GND on the FRDM-MCXA577 board.
 
 Prepare the Demo
 ===============
