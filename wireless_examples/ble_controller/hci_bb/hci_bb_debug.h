@@ -41,6 +41,15 @@ enum
 #define _GET24(pData) ((uint32_t)(pData)[0] | ((uint32_t)(pData)[1] << 8U) | ((uint32_t)(pData)[2] << 16U))
 #define _GET16(pData) ((uint16_t)(pData)[0] | ((uint16_t)(pData)[1] << 8U))
 
+#define TSRMR0_BASE 0x40030000U
+
+/** TSTMR - Register Layout Typedef */
+typedef struct
+{
+    __I uint32_t L; /**< TIMESTAMP Low, offset: 0x0 */
+    __I uint32_t H; /**< TIMESTAMP High, offset: 0x4 */
+} TSTMR_Type;
+
 typedef struct
 {
     uint8_t  config_valid;                  // valid config received or not
@@ -108,9 +117,11 @@ static void Test_SendAclPacketToLinkLayer(int max_nb_pkt_to_send);
 
 static uint64_t Test_GetTimestamp(void)
 {
+    TSTMR_Type *base = (TSTMR_Type *)TSRMR0_BASE;
+
     // read the current time in us
-    volatile uint32_t l = TSTMR0->L;
-    volatile uint32_t h = TSTMR0->H;
+    volatile uint32_t l = base->L;
+    volatile uint32_t h = base->H;
 
     return (uint64_t)h*0x100000000ULL+l;
 }
