@@ -92,6 +92,46 @@ static void CLOCK_CONFIG_FircSafeConfig(const scg_firc_config_t *fircConfig)
     (void)CLOCK_InitFirc(fircConfig);
 }
 
+/*FUNCTION**********************************************************************
+ *
+ * Function Name : CLOCK_CONFIG_SetCoreLDOForFreq
+ * Description   : Configure Core LDO voltage level for the target CPU frequency.
+ *                 Freq > 64 MHz             : SafeMode voltage (11b, OD, 1.2 V)
+ *                 48 MHz < Freq <= 64 MHz   : Normal voltage   (10b, SD, 1.1 V)
+ *                 Freq <= 48 MHz            : MidDrive voltage (01b, MD, 1.0 V)
+ *                 No-op when the LDO is already at the required level.
+ * Param targetFreqHz : Target CPU core clock frequency in Hz.
+ *
+ *END**************************************************************************/
+static void CLOCK_CONFIG_SetCoreLDOForFreq(uint32_t targetFreqHz)
+{
+    spc_core_ldo_voltage_level_t targetVoltage;
+    spc_active_mode_core_ldo_option_t ldoOption;
+
+    if (targetFreqHz > 64000000U)
+    {
+        targetVoltage = kSPC_CoreLDO_SafeModeVoltage;  /* 11b, OD mode 1.2 V */
+    }
+    else if (targetFreqHz > 48000000U)
+    {
+        targetVoltage = kSPC_CoreLDO_NormalVoltage;    /* 10b, SD mode 1.1 V */
+    }
+    else
+    {
+        targetVoltage = kSPC_CoreLDO_MidDriveVoltage;  /* 01b, MD mode 1.0 V */
+    }
+
+    if (SPC_GetActiveModeCoreLDOVDDVoltageLevel(SPC0) != targetVoltage)
+    {
+        ldoOption.CoreLDOVoltage       = targetVoltage;
+        ldoOption.CoreLDODriveStrength = kSPC_CoreLDO_NormalDriveStrength;
+        (void)SPC_SetActiveModeCoreLDORegulatorConfig(SPC0, &ldoOption);
+        while ((SPC0->SC & SPC_SC_BUSY_MASK) != 0U)
+        {
+        }
+    }
+}
+
 /*******************************************************************************
  ************************ BOARD_InitBootClocks function ************************
  ******************************************************************************/
@@ -191,7 +231,6 @@ void BOARD_BootClockRUN(void)
 {
     uint32_t coreFreq;
     scg_sys_clk_config_t curConfig;
-    spc_active_mode_core_ldo_option_t ldoOption;
 
     /* Unlock FIRC, SIRC, ROSC and SOSC control status registers */
     CLOCK_UnlockFircControlStatusReg();
@@ -203,24 +242,7 @@ void BOARD_BootClockRUN(void)
     coreFreq = CLOCK_GetSysClkFreq(kSCG_SysClkCore);
 
     if (coreFreq <= BOARD_BOOTCLOCKRUN_CORE_CLOCK) {
-        /* Bump LDO_CORE only when below normal voltage. ACTIVE_CFG reset
-         * default is CORELDO_VDD_LVL=10b (1.1 V) and APP_SetSPCConfiguration
-         * also lands the rail at 1.1 V, so first boot and Sleep wake both
-         * find the LDO already adequate for 96 MHz. Sleep wake
-         * preserves SPC state and re-enters this function via the
-         * wake notification: rewriting the same voltage retriggers a
-         * regulator transition, and the follow-up SRAMCTL[REQ] without a
-         * matching SC[BUSY]=0 wait can leave the SRAM voltage update
-         * unacknowledged, hanging the wake path. */
-        if (SPC_GetActiveModeCoreLDOVDDVoltageLevel(SPC0) < kSPC_CoreLDO_NormalVoltage) {
-            ldoOption.CoreLDOVoltage = kSPC_CoreLDO_SafeModeVoltage;
-            ldoOption.CoreLDODriveStrength = kSPC_CoreLDO_NormalDriveStrength;
-            (void)SPC_SetActiveModeCoreLDORegulatorConfig(SPC0, &ldoOption);
-            /* Require SC[BUSY]=0 before the SRAM voltage
-             * The driver only waits on SC[REG_BUSY]. */
-            while ((SPC0->SC & SPC_SC_BUSY_MASK) != 0U) {
-            }
-        }
+        CLOCK_CONFIG_SetCoreLDOForFreq(BOARD_BOOTCLOCKRUN_CORE_CLOCK);
         /* Configure Flash to support different voltage level and frequency */
         FMU->FCTRL = (FMU->FCTRL & ~((uint32_t)FMU_FCTRL_RWSC_MASK)) | (FMU_FCTRL_RWSC(0x2U));
         /* SRAM read/write timing margin. Skip when VSM already matches:
@@ -274,21 +296,13 @@ void BOARD_BootClockRUN(void)
         /* Configure Flash to support different voltage level and frequency */
         FMU->FCTRL = (FMU->FCTRL & ~((uint32_t)FMU_FCTRL_RWSC_MASK)) | (FMU_FCTRL_RWSC(0x2U));
         /* SRAM read/write timing margin -- skip when VSM already matches so
-         * that an unchanged-voltage REQ does not stall on a missing ACK 
+         * that an unchanged-voltage REQ does not stall on a missing ACK
          */
         if (((SPC0->SRAMCTL & SPC_SRAMCTL_VSM_MASK) >> SPC_SRAMCTL_VSM_SHIFT) !=
             (uint32_t)kSPC_SRAM_OperatVoltage1P1V) {
             (void)SPC_SetSRAMOperateVoltage(SPC0, kSPC_SRAM_OperatVoltage1P1V);
         }
-        /* Set the LDO_CORE VDD regulator level only when below the level
-         * adequate for the new (lower) frequency. */
-        if (SPC_GetActiveModeCoreLDOVDDVoltageLevel(SPC0) < kSPC_CoreLDO_NormalVoltage) {
-            ldoOption.CoreLDOVoltage = kSPC_CoreLDO_SafeModeVoltage;
-            ldoOption.CoreLDODriveStrength = kSPC_CoreLDO_NormalDriveStrength;
-            (void)SPC_SetActiveModeCoreLDORegulatorConfig(SPC0, &ldoOption);
-            while ((SPC0->SC & SPC_SC_BUSY_MASK) != 0U) {
-            }
-        }
+        CLOCK_CONFIG_SetCoreLDOForFreq(BOARD_BOOTCLOCKRUN_CORE_CLOCK);
     }
 
     /* Set SCG CLKOUT selection. */
