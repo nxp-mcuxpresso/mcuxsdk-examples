@@ -16,9 +16,9 @@
 !!GlobalInfo
 product: Pins v17.0
 processor: MCXA287
-package_id: MCXA287VLQ
+package_id: MCXA287VPN
 mcu_data: ksdk2_0
-processor_version: 0.2512.0
+processor_version: 0.0.0
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -44,14 +44,15 @@ void BOARD_InitBootPins(void)
 BOARD_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: '35', peripheral: DAC0, signal: OUT, pin_signal: P2_2/TRIG_IN6/LPUART0_RTS_B/LPUART2_TXD/CT_INP12/CT2_MAT2/FLEXIO0_D10/SMARTDMA_PIO26/LPSPI2_SDI/TSI0_CH32/ADC0_A4/DAC0_OUT,
-    slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: disable, invert_input: normal}
-  - {pin_num: '35', peripheral: ADC0, signal: 'A, 4', pin_signal: P2_2/TRIG_IN6/LPUART0_RTS_B/LPUART2_TXD/CT_INP12/CT2_MAT2/FLEXIO0_D10/SMARTDMA_PIO26/LPSPI2_SDI/TSI0_CH32/ADC0_A4/DAC0_OUT}
-  - {pin_num: '1', peripheral: LPUART1, signal: RX, pin_signal: P1_8/WUU0_IN10/FREQME_CLK_IN0/LPUART1_RXD/LPI2C2_SDA/CT_INP8/CT0_MAT2/FLEXIO0_D16/SMARTDMA_PIO4/ENET0_TXD2/I3C1_SDA,
+  - {pin_num: B2, peripheral: LPUART1, signal: RX, pin_signal: P1_8/WUU0_IN10/FREQME_CLK_IN0/LPUART1_RXD/LPI2C2_SDA/CT_INP8/CT0_MAT2/FLEXIO0_D16/SMARTDMA_PIO4/ENET0_TXD2/I3C1_SDA,
     slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, passive_filter: disable, pull_value: low, input_buffer: enable,
     invert_input: normal}
-  - {pin_num: '2', peripheral: LPUART1, signal: TX, pin_signal: P1_9/FREQME_CLK_IN1/LPUART1_TXD/LPI2C2_SCL/CT_INP9/CT0_MAT3/FLEXIO0_D17/SMARTDMA_PIO5/ENET0_TXD3/I3C1_SCL,
+  - {pin_num: B1, peripheral: LPUART1, signal: TX, pin_signal: P1_9/FREQME_CLK_IN1/LPUART1_TXD/LPI2C2_SCL/CT_INP9/CT0_MAT3/FLEXIO0_D17/SMARTDMA_PIO5/ENET0_TXD3/I3C1_SCL,
     slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, passive_filter: disable, input_buffer: enable, invert_input: normal}
+  - {pin_num: M1, peripheral: DAC0, signal: OUT, pin_signal: P2_2/TRIG_IN6/LPUART0_RTS_B/LPUART2_TXD/CT_INP12/CT2_MAT2/FLEXIO0_D10/SMARTDMA_PIO26/LPSPI2_SDI/TSI0_CH32/ADC0_A4/CMP0_INN4/DAC0_OUT,
+    slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: disable, invert_input: normal}
+  - {pin_num: M1, peripheral: ADC0, signal: 'A, 4', pin_signal: P2_2/TRIG_IN6/LPUART0_RTS_B/LPUART2_TXD/CT_INP12/CT2_MAT2/FLEXIO0_D10/SMARTDMA_PIO26/LPSPI2_SDI/TSI0_CH32/ADC0_A4/CMP0_INN4/DAC0_OUT}
+  - {pin_num: M1, peripheral: CMP0, signal: 'IN, 4N', pin_signal: P2_2/TRIG_IN6/LPUART0_RTS_B/LPUART2_TXD/CT_INP12/CT2_MAT2/FLEXIO0_D10/SMARTDMA_PIO26/LPSPI2_SDI/TSI0_CH32/ADC0_A4/CMP0_INN4/DAC0_OUT}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -79,57 +80,7 @@ void BOARD_InitPins(void)
     /* PORT2 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kPORT2_RST_SHIFT_RSTn);
 
-    const port_pin_config_t port1_8_pin1_config = {/* Internal pull-up/down resistor is disabled */
-                                                   .pullSelect = kPORT_PullDisable,
-                                                   /* Low internal pull resistor value is selected. */
-                                                   .pullValueSelect = kPORT_LowPullResistor,
-                                                   /* Fast slew rate is configured */
-                                                   .slewRate = kPORT_FastSlewRate,
-                                                   /* Passive input filter is disabled */
-                                                   .passiveFilterEnable = kPORT_PassiveFilterDisable,
-                                                   /* Open drain output is disabled */
-                                                   .openDrainEnable = kPORT_OpenDrainDisable,
-                                                   /* Low drive strength is configured */
-                                                   .driveStrength = kPORT_LowDriveStrength,
-                                                   /* Normal drive strength is configured */
-                                                   .driveStrength1 = kPORT_NormalDriveStrength,
-                                                   /* Pin is configured as LPUART1_RXD */
-                                                   .mux = kPORT_MuxAlt2,
-                                                   /* Digital input enabled */
-                                                   .inputBuffer = kPORT_InputBufferEnable,
-                                                   /* Digital input is not inverted */
-                                                   .invertInput = kPORT_InputNormal,
-                                                   /* Pin Control Register fields [15:0] are not locked */
-                                                   .lockRegister = kPORT_UnlockRegister};
-    /* PORT1_8 (pin 1) is configured as LPUART1_RXD */
-    PORT_SetPinConfig(PORT1, 8U, &port1_8_pin1_config);
-
-    const port_pin_config_t port1_9_pin2_config = {/* Internal pull-up/down resistor is disabled */
-                                                   .pullSelect = kPORT_PullDisable,
-                                                   /* Low internal pull resistor value is selected. */
-                                                   .pullValueSelect = kPORT_LowPullResistor,
-                                                   /* Fast slew rate is configured */
-                                                   .slewRate = kPORT_FastSlewRate,
-                                                   /* Passive input filter is disabled */
-                                                   .passiveFilterEnable = kPORT_PassiveFilterDisable,
-                                                   /* Open drain output is disabled */
-                                                   .openDrainEnable = kPORT_OpenDrainDisable,
-                                                   /* Low drive strength is configured */
-                                                   .driveStrength = kPORT_LowDriveStrength,
-                                                   /* Normal drive strength is configured */
-                                                   .driveStrength1 = kPORT_NormalDriveStrength,
-                                                   /* Pin is configured as LPUART1_TXD */
-                                                   .mux = kPORT_MuxAlt2,
-                                                   /* Digital input enabled */
-                                                   .inputBuffer = kPORT_InputBufferEnable,
-                                                   /* Digital input is not inverted */
-                                                   .invertInput = kPORT_InputNormal,
-                                                   /* Pin Control Register fields [15:0] are not locked */
-                                                   .lockRegister = kPORT_UnlockRegister};
-    /* PORT1_9 (pin 2) is configured as LPUART1_TXD */
-    PORT_SetPinConfig(PORT1, 9U, &port1_9_pin2_config);
-
-    const port_pin_config_t port2_2_pin35_config = {/* Internal pull-up/down resistor is disabled */
+    const port_pin_config_t port1_8_pinB2_config = {/* Internal pull-up/down resistor is disabled */
                                                     .pullSelect = kPORT_PullDisable,
                                                     /* Low internal pull resistor value is selected. */
                                                     .pullValueSelect = kPORT_LowPullResistor,
@@ -143,7 +94,57 @@ void BOARD_InitPins(void)
                                                     .driveStrength = kPORT_LowDriveStrength,
                                                     /* Normal drive strength is configured */
                                                     .driveStrength1 = kPORT_NormalDriveStrength,
-                                                    /* Pin is configured as DAC0_OUT, ADC0_A4 */
+                                                    /* Pin is configured as LPUART1_RXD */
+                                                    .mux = kPORT_MuxAlt2,
+                                                    /* Digital input enabled */
+                                                    .inputBuffer = kPORT_InputBufferEnable,
+                                                    /* Digital input is not inverted */
+                                                    .invertInput = kPORT_InputNormal,
+                                                    /* Pin Control Register fields [15:0] are not locked */
+                                                    .lockRegister = kPORT_UnlockRegister};
+    /* PORT1_8 (pin B2) is configured as LPUART1_RXD */
+    PORT_SetPinConfig(PORT1, 8U, &port1_8_pinB2_config);
+
+    const port_pin_config_t port1_9_pinB1_config = {/* Internal pull-up/down resistor is disabled */
+                                                    .pullSelect = kPORT_PullDisable,
+                                                    /* Low internal pull resistor value is selected. */
+                                                    .pullValueSelect = kPORT_LowPullResistor,
+                                                    /* Fast slew rate is configured */
+                                                    .slewRate = kPORT_FastSlewRate,
+                                                    /* Passive input filter is disabled */
+                                                    .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                    /* Open drain output is disabled */
+                                                    .openDrainEnable = kPORT_OpenDrainDisable,
+                                                    /* Low drive strength is configured */
+                                                    .driveStrength = kPORT_LowDriveStrength,
+                                                    /* Normal drive strength is configured */
+                                                    .driveStrength1 = kPORT_NormalDriveStrength,
+                                                    /* Pin is configured as LPUART1_TXD */
+                                                    .mux = kPORT_MuxAlt2,
+                                                    /* Digital input enabled */
+                                                    .inputBuffer = kPORT_InputBufferEnable,
+                                                    /* Digital input is not inverted */
+                                                    .invertInput = kPORT_InputNormal,
+                                                    /* Pin Control Register fields [15:0] are not locked */
+                                                    .lockRegister = kPORT_UnlockRegister};
+    /* PORT1_9 (pin B1) is configured as LPUART1_TXD */
+    PORT_SetPinConfig(PORT1, 9U, &port1_9_pinB1_config);
+
+    const port_pin_config_t port2_2_pinM1_config = {/* Internal pull-up/down resistor is disabled */
+                                                    .pullSelect = kPORT_PullDisable,
+                                                    /* Low internal pull resistor value is selected. */
+                                                    .pullValueSelect = kPORT_LowPullResistor,
+                                                    /* Fast slew rate is configured */
+                                                    .slewRate = kPORT_FastSlewRate,
+                                                    /* Passive input filter is disabled */
+                                                    .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                    /* Open drain output is disabled */
+                                                    .openDrainEnable = kPORT_OpenDrainDisable,
+                                                    /* Low drive strength is configured */
+                                                    .driveStrength = kPORT_LowDriveStrength,
+                                                    /* Normal drive strength is configured */
+                                                    .driveStrength1 = kPORT_NormalDriveStrength,
+                                                    /* Pin is configured as DAC0_OUT, ADC0_A4, CMP0_INN4 */
                                                     .mux = kPORT_MuxAlt0,
                                                     /* Digital input disabled; it is required for analog functions */
                                                     .inputBuffer = kPORT_InputBufferDisable,
@@ -151,8 +152,8 @@ void BOARD_InitPins(void)
                                                     .invertInput = kPORT_InputNormal,
                                                     /* Pin Control Register fields [15:0] are not locked */
                                                     .lockRegister = kPORT_UnlockRegister};
-    /* PORT2_2 (pin 35) is configured as DAC0_OUT, ADC0_A4 */
-    PORT_SetPinConfig(PORT2, 2U, &port2_2_pin35_config);
+    /* PORT2_2 (pin M1) is configured as DAC0_OUT, ADC0_A4, CMP0_INN4 */
+    PORT_SetPinConfig(PORT2, 2U, &port2_2_pinM1_config);
 }
 /***********************************************************************************************************************
  * EOF

@@ -16,7 +16,7 @@
 !!GlobalInfo
 product: Pins v17.0
 processor: MCXA577
-package_id: MCXA577VLQ
+package_id: MCXA577VPN
 mcu_data: ksdk2_0
 processor_version: 0.0.0
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
@@ -44,9 +44,9 @@ void BOARD_InitBootPins(void)
 BOARD_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: '131', peripheral: LPUART5, signal: RX, pin_signal: P0_24/CT0_MAT0/LPUART5_RXD, slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down,
+  - {pin_num: C5, peripheral: LPUART5, signal: RX, pin_signal: P0_24/CT0_MAT0/LPUART5_RXD, slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down,
     pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: '132', peripheral: LPUART5, signal: TX, pin_signal: P0_25/CT0_MAT1/LPUART5_TXD, slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down,
+  - {pin_num: D4, peripheral: LPUART5, signal: TX, pin_signal: P0_25/CT0_MAT1/LPUART5_TXD, slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down,
     pull_enable: disable, input_buffer: enable, invert_input: normal}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -67,55 +67,55 @@ void BOARD_InitPins(void)
     /* PORT0 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kPORT0_RST_SHIFT_RSTn);
 
-    const port_pin_config_t port0_24_pin131_config = {/* Internal pull-up/down resistor is disabled */
-                                                      .pullSelect = kPORT_PullDisable,
-                                                      /* Low internal pull resistor value is selected. */
-                                                      .pullValueSelect = kPORT_LowPullResistor,
-                                                      /* Fast slew rate is configured */
-                                                      .slewRate = kPORT_FastSlewRate,
-                                                      /* Passive input filter is disabled */
-                                                      .passiveFilterEnable = kPORT_PassiveFilterDisable,
-                                                      /* Open drain output is disabled */
-                                                      .openDrainEnable = kPORT_OpenDrainDisable,
-                                                      /* Low drive strength is configured */
-                                                      .driveStrength = kPORT_LowDriveStrength,
-                                                      /* Normal drive strength is configured */
-                                                      .driveStrength1 = kPORT_NormalDriveStrength,
-                                                      /* Pin is configured as LPUART5_RXD */
-                                                      .mux = kPORT_MuxAlt8,
-                                                      /* Digital input enabled */
-                                                      .inputBuffer = kPORT_InputBufferEnable,
-                                                      /* Digital input is not inverted */
-                                                      .invertInput = kPORT_InputNormal,
-                                                      /* Pin Control Register fields [15:0] are not locked */
-                                                      .lockRegister = kPORT_UnlockRegister};
-    /* PORT0_24 (pin 131) is configured as LPUART5_RXD */
-    PORT_SetPinConfig(PORT0, 24U, &port0_24_pin131_config);
+    const port_pin_config_t port0_24_pinC5_config = {/* Internal pull-up/down resistor is disabled */
+                                                     .pullSelect = kPORT_PullDisable,
+                                                     /* Low internal pull resistor value is selected. */
+                                                     .pullValueSelect = kPORT_LowPullResistor,
+                                                     /* Fast slew rate is configured */
+                                                     .slewRate = kPORT_FastSlewRate,
+                                                     /* Passive input filter is disabled */
+                                                     .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                     /* Open drain output is disabled */
+                                                     .openDrainEnable = kPORT_OpenDrainDisable,
+                                                     /* Low drive strength is configured */
+                                                     .driveStrength = kPORT_LowDriveStrength,
+                                                     /* Normal drive strength is configured */
+                                                     .driveStrength1 = kPORT_NormalDriveStrength,
+                                                     /* Pin is configured as LPUART5_RXD */
+                                                     .mux = kPORT_MuxAlt8,
+                                                     /* Digital input enabled */
+                                                     .inputBuffer = kPORT_InputBufferEnable,
+                                                     /* Digital input is not inverted */
+                                                     .invertInput = kPORT_InputNormal,
+                                                     /* Pin Control Register fields [15:0] are not locked */
+                                                     .lockRegister = kPORT_UnlockRegister};
+    /* PORT0_24 (pin C5) is configured as LPUART5_RXD */
+    PORT_SetPinConfig(PORT0, 24U, &port0_24_pinC5_config);
 
-    const port_pin_config_t port0_25_pin132_config = {/* Internal pull-up/down resistor is disabled */
-                                                      .pullSelect = kPORT_PullDisable,
-                                                      /* Low internal pull resistor value is selected. */
-                                                      .pullValueSelect = kPORT_LowPullResistor,
-                                                      /* Fast slew rate is configured */
-                                                      .slewRate = kPORT_FastSlewRate,
-                                                      /* Passive input filter is disabled */
-                                                      .passiveFilterEnable = kPORT_PassiveFilterDisable,
-                                                      /* Open drain output is disabled */
-                                                      .openDrainEnable = kPORT_OpenDrainDisable,
-                                                      /* Low drive strength is configured */
-                                                      .driveStrength = kPORT_LowDriveStrength,
-                                                      /* Normal drive strength is configured */
-                                                      .driveStrength1 = kPORT_NormalDriveStrength,
-                                                      /* Pin is configured as LPUART5_TXD */
-                                                      .mux = kPORT_MuxAlt8,
-                                                      /* Digital input enabled */
-                                                      .inputBuffer = kPORT_InputBufferEnable,
-                                                      /* Digital input is not inverted */
-                                                      .invertInput = kPORT_InputNormal,
-                                                      /* Pin Control Register fields [15:0] are not locked */
-                                                      .lockRegister = kPORT_UnlockRegister};
-    /* PORT0_25 (pin 132) is configured as LPUART5_TXD */
-    PORT_SetPinConfig(PORT0, 25U, &port0_25_pin132_config);
+    const port_pin_config_t port0_25_pinD4_config = {/* Internal pull-up/down resistor is disabled */
+                                                     .pullSelect = kPORT_PullDisable,
+                                                     /* Low internal pull resistor value is selected. */
+                                                     .pullValueSelect = kPORT_LowPullResistor,
+                                                     /* Fast slew rate is configured */
+                                                     .slewRate = kPORT_FastSlewRate,
+                                                     /* Passive input filter is disabled */
+                                                     .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                     /* Open drain output is disabled */
+                                                     .openDrainEnable = kPORT_OpenDrainDisable,
+                                                     /* Low drive strength is configured */
+                                                     .driveStrength = kPORT_LowDriveStrength,
+                                                     /* Normal drive strength is configured */
+                                                     .driveStrength1 = kPORT_NormalDriveStrength,
+                                                     /* Pin is configured as LPUART5_TXD */
+                                                     .mux = kPORT_MuxAlt8,
+                                                     /* Digital input enabled */
+                                                     .inputBuffer = kPORT_InputBufferEnable,
+                                                     /* Digital input is not inverted */
+                                                     .invertInput = kPORT_InputNormal,
+                                                     /* Pin Control Register fields [15:0] are not locked */
+                                                     .lockRegister = kPORT_UnlockRegister};
+    /* PORT0_25 (pin D4) is configured as LPUART5_TXD */
+    PORT_SetPinConfig(PORT0, 25U, &port0_25_pinD4_config);
 }
 /***********************************************************************************************************************
  * EOF
