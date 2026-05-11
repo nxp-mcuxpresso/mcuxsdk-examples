@@ -8,6 +8,7 @@ lpadc
 
 
    dma/readme.md
+   dma3/readme.md
    dual_single_ended_conversion/readme.md
    edma/readme.md
    interrupt/readme.md

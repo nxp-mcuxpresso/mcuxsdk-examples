@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lpadc_dma3:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpadc/dma3
+    project-root-path: boards/${board}/driver_examples/lpadc/dma3/${multicore_foldername}
+    document:
+      name: lpadc_dma3${core_id_suffix_name}
+      category: driver_examples/lpadc
+      brief: The lpadc_dma3 example shows how to use LPADC FIFO watermark DMA
+        requests with the DMA3 driver. In this example, typing any key into the
+        debug console triggers a software LPADC conversion sequence. Each FIFO
+        watermark request triggers DMA3 to move one conversion result from the
+        LPADC result FIFO to memory. The application waits until the DMA transfer
+        completes, then prints the sampled result.
+      example_readme:
+      - examples/driver_examples/lpadc/dma3/readme.md
+      - ${board_root}/${board}/driver_examples/lpadc/dma3/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxw70: []
+    frdmkw43: []
