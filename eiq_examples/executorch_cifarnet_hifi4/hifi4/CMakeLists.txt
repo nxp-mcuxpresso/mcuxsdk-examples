@@ -28,7 +28,7 @@ mcux_add_source(
   examples/eiq_examples/common/image/image_load.c
   # miles edit
 
-  examples/eiq_examples/executorch_cifarnet_hifi4/hifi4/model_pte.h
+  ${board_root}/${board}/eiq_examples/executorch_cifarnet_hifi4/hifi4/model_pte.h
   examples/eiq_examples/executorch_cifarnet_hifi4/hifi4/demo_config.h
   examples/eiq_examples/executorch_cifarnet_hifi4/hifi4/image_data.h
   examples/eiq_examples/executorch_cifarnet_hifi4/hifi4/labels.h
