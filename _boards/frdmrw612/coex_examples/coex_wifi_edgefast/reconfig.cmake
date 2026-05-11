@@ -5,6 +5,7 @@ mcux_add_source(
             middleware/wireless/coex/build/${board}/common/hardware_init.c
             middleware/wireless/coex/build/${board}/common/peripherals.c
             middleware/wireless/coex/build/${board}/common/peripherals.h
+            middleware/wireless/coex/build/${board}/common/app.h
             ${board_root}/${board}/coex_examples/coex_wifi_edgefast/pin_mux.c
             ${board_root}/${board}/coex_examples/coex_wifi_edgefast/pin_mux.h
             middleware/wireless/coex/src/configs/rw61x/wifi/wifi_config.h
@@ -17,7 +18,6 @@ mcux_add_source(
             middleware/wireless/coex/third_party/platform/rw612/ot_config.cmake
             examples/coex_examples/coex_wifi_edgefast/app_config.cmake
             examples/_boards/${board}/coex_examples/coex_wifi_edgefast/FreeRTOSConfig.h
-            middleware/wireless/coex/third_party/mcuxpresso_support/app.h
 )
 
 mcux_add_source(
