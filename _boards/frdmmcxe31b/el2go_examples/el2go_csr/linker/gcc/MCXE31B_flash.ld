@@ -46,8 +46,8 @@ m_text_end                    = 0x007D1FFF;
 m_el2go_csr_conf_start        = 0x10015F80;
 m_el2go_csr_conf_end          = 0x10015FFB;
 
-m_el2go_csr_statuscode_start  = m_el2go_csr_conf_end + 1;
-m_el2go_csr_statuscode_end    = m_el2go_csr_statuscode_start + 3;
+m_el2go_csr_statuscode_start  = 0x10015FFC;
+m_el2go_csr_statuscode_end    = 0x10015FFF;
 
 m_data_start                  = 0x20408000;
 m_data_end                    = 0x2044FFFF;
