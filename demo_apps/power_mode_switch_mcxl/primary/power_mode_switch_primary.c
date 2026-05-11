@@ -202,8 +202,19 @@ int main(void)
     PRINTF("Core Clock Frequency: %d\r\n", CLOCK_GetCoreSysClkFreq());
     CMC_ConfigFlashMode(CMC, true, true, true);
     APP_GetWakeupReason();
-    APP_CopyCore1Image();
-    APP_BootCore1();
+    if (powerHandle.previousPowerMode == kPower_DeepPowerDown1)
+    {
+        /* DPD1 wakeup: CM0+ is still running in AON domain.
+         * Skip image copy to avoid overwriting CM0+ runtime data
+         * (g_Handle_Offset in .data section). */
+        PRINTF("DPD1 wakeup - CM0P still running, skip image copy\r\n");
+        powerHandle.previousPowerMode = kPower_Active;
+    }
+    else
+    {
+        APP_CopyCore1Image();
+        APP_BootCore1();
+    }
     PRINTF("Start to communication with secondary core...\r\n");
     if (Power_CreateHandle(&powerHandle, &drvConfig) != kStatus_Success)
     {
