@@ -93,3 +93,8 @@ hello_world_ns:
     - -mdk@hyperram_release
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
+    frdmkw43:
+    - -armgcc@debug
+    - -armgcc@release
+    - -mdk@debug
+    - -mdk@release
