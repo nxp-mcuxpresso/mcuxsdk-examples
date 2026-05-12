@@ -99,7 +99,7 @@ void BOARD_InitBootClocks(void);
 #define BOARD_BOOTCLOCKFRO12M_AON_ACMP0_CLK1          2500000UL      /* Clock consumers of AON_ACMP0_CLK1 output : AON__ACMP0 */
 #define BOARD_BOOTCLOCKFRO12M_AON_APB_CLK             10000000UL     /* Clock consumers of AON_APB_CLK output : N/A */
 #define BOARD_BOOTCLOCKFRO12M_AON_AUX_CLK             12000000UL     /* Clock consumers of AON_AUX_CLK output : N/A */
-#define BOARD_BOOTCLOCKFRO12M_AON_BUS_CLK             10000000UL     /* Clock consumers of AON_BUS_CLK output : AON__ACMP0, AON__KPP0, AON_LPADC, AON__LPI2C0, AON__LPTMR0, AON__LPUART0, AON__PMU, AON__SGLCD0_AON, AON__TMR0, AON__TMR1, SGLCD_FAULT_DETECT */
+#define BOARD_BOOTCLOCKFRO12M_AON_BUS_CLK             10000000UL     /* Clock consumers of AON_BUS_CLK output : AON__ACMP0, AON__KPP0, AON__LPACMP, AON_LPADC, AON__LPI2C0, AON__LPTMR0, AON__LPUART0, AON__PMU, AON__SGLCD0_AON, AON__TMR0, AON__TMR1, SGLCD_FAULT_DETECT */
 #define BOARD_BOOTCLOCKFRO12M_AON_CPU_CLK             10000000UL     /* Clock consumers of AON_CPU_CLK output : AON__LPTMR0 */
 #define BOARD_BOOTCLOCKFRO12M_AON_I2C_CLK             2500000UL      /* Clock consumers of AON_I2C_CLK output : AON__LPI2C0 */
 #define BOARD_BOOTCLOCKFRO12M_AON_KPP_CLK             16384UL        /* Clock consumers of AON_KPP_CLK output : AON__KPP0 */
@@ -109,7 +109,7 @@ void BOARD_InitBootClocks(void);
 #define BOARD_BOOTCLOCKFRO12M_AON_QTMR0_CLK           2500000UL      /* Clock consumers of AON_QTMR0_CLK output : AON__TMR0 */
 #define BOARD_BOOTCLOCKFRO12M_AON_QTMR1_CLK           2500000UL      /* Clock consumers of AON_QTMR1_CLK output : AON__TMR1 */
 #define BOARD_BOOTCLOCKFRO12M_AON_SYSTEM_CLK          10000000UL     /* Clock consumers of AON_SYSTEM_CLK output : SysTick1 */
-#define BOARD_BOOTCLOCKFRO12M_AON_SYSTICK_CLK         0UL            /* Clock consumers of AON_SYSTICK_CLK output : SysTick1 */
+#define BOARD_BOOTCLOCKFRO12M_AON_SYSTICK_CLK         10000000UL     /* Clock consumers of AON_SYSTICK_CLK output : SysTick1 */
 #define BOARD_BOOTCLOCKFRO12M_AON_UART_CLK            2500000UL      /* Clock consumers of AON_UART_CLK output : AON__LPUART0 */
 #define BOARD_BOOTCLOCKFRO12M_LPIRC_TRIMCLK_OUT       32768UL        /* Clock consumers of CGU.LPIRC_TRIMCLK_OUT output : N/A */
 #define BOARD_BOOTCLOCKFRO12M_ULPIRC_TRIMCLK_OUT      32768UL        /* Clock consumers of CGU.ULPIRC_TRIMCLK_OUT output : N/A */
@@ -181,7 +181,7 @@ void BOARD_BootClockFRO12M(void);
 #define BOARD_BOOTCLOCKFRO24M_AON_ACMP0_CLK1          2500000UL      /* Clock consumers of AON_ACMP0_CLK1 output : AON__ACMP0 */
 #define BOARD_BOOTCLOCKFRO24M_AON_APB_CLK             10000000UL     /* Clock consumers of AON_APB_CLK output : N/A */
 #define BOARD_BOOTCLOCKFRO24M_AON_AUX_CLK             12000000UL     /* Clock consumers of AON_AUX_CLK output : N/A */
-#define BOARD_BOOTCLOCKFRO24M_AON_BUS_CLK             10000000UL     /* Clock consumers of AON_BUS_CLK output : AON__ACMP0, AON__KPP0, AON_LPADC, AON__LPI2C0, AON__LPTMR0, AON__LPUART0, AON__PMU, AON__SGLCD0_AON, AON__TMR0, AON__TMR1, SGLCD_FAULT_DETECT */
+#define BOARD_BOOTCLOCKFRO24M_AON_BUS_CLK             10000000UL     /* Clock consumers of AON_BUS_CLK output : AON__ACMP0, AON__KPP0, AON__LPACMP, AON_LPADC, AON__LPI2C0, AON__LPTMR0, AON__LPUART0, AON__PMU, AON__SGLCD0_AON, AON__TMR0, AON__TMR1, SGLCD_FAULT_DETECT */
 #define BOARD_BOOTCLOCKFRO24M_AON_CPU_CLK             10000000UL     /* Clock consumers of AON_CPU_CLK output : AON__LPTMR0 */
 #define BOARD_BOOTCLOCKFRO24M_AON_I2C_CLK             2500000UL      /* Clock consumers of AON_I2C_CLK output : AON__LPI2C0 */
 #define BOARD_BOOTCLOCKFRO24M_AON_KPP_CLK             16384UL        /* Clock consumers of AON_KPP_CLK output : AON__KPP0 */
@@ -191,7 +191,7 @@ void BOARD_BootClockFRO12M(void);
 #define BOARD_BOOTCLOCKFRO24M_AON_QTMR0_CLK           2500000UL      /* Clock consumers of AON_QTMR0_CLK output : AON__TMR0 */
 #define BOARD_BOOTCLOCKFRO24M_AON_QTMR1_CLK           2500000UL      /* Clock consumers of AON_QTMR1_CLK output : AON__TMR1 */
 #define BOARD_BOOTCLOCKFRO24M_AON_SYSTEM_CLK          10000000UL     /* Clock consumers of AON_SYSTEM_CLK output : SysTick1 */
-#define BOARD_BOOTCLOCKFRO24M_AON_SYSTICK_CLK         0UL            /* Clock consumers of AON_SYSTICK_CLK output : SysTick1 */
+#define BOARD_BOOTCLOCKFRO24M_AON_SYSTICK_CLK         10000000UL     /* Clock consumers of AON_SYSTICK_CLK output : SysTick1 */
 #define BOARD_BOOTCLOCKFRO24M_AON_UART_CLK            2500000UL      /* Clock consumers of AON_UART_CLK output : AON__LPUART0 */
 #define BOARD_BOOTCLOCKFRO24M_LPIRC_TRIMCLK_OUT       32768UL        /* Clock consumers of CGU.LPIRC_TRIMCLK_OUT output : N/A */
 #define BOARD_BOOTCLOCKFRO24M_ULPIRC_TRIMCLK_OUT      32768UL        /* Clock consumers of CGU.ULPIRC_TRIMCLK_OUT output : N/A */
@@ -263,7 +263,7 @@ void BOARD_BootClockFRO24M(void);
 #define BOARD_BOOTCLOCKFRO48M_AON_ACMP0_CLK1          2500000UL      /* Clock consumers of AON_ACMP0_CLK1 output : AON__ACMP0 */
 #define BOARD_BOOTCLOCKFRO48M_AON_APB_CLK             10000000UL     /* Clock consumers of AON_APB_CLK output : N/A */
 #define BOARD_BOOTCLOCKFRO48M_AON_AUX_CLK             12000000UL     /* Clock consumers of AON_AUX_CLK output : N/A */
-#define BOARD_BOOTCLOCKFRO48M_AON_BUS_CLK             10000000UL     /* Clock consumers of AON_BUS_CLK output : AON__ACMP0, AON__KPP0, AON_LPADC, AON__LPI2C0, AON__LPTMR0, AON__LPUART0, AON__PMU, AON__SGLCD0_AON, AON__TMR0, AON__TMR1, SGLCD_FAULT_DETECT */
+#define BOARD_BOOTCLOCKFRO48M_AON_BUS_CLK             10000000UL     /* Clock consumers of AON_BUS_CLK output : AON__ACMP0, AON__KPP0, AON__LPACMP, AON_LPADC, AON__LPI2C0, AON__LPTMR0, AON__LPUART0, AON__PMU, AON__SGLCD0_AON, AON__TMR0, AON__TMR1, SGLCD_FAULT_DETECT */
 #define BOARD_BOOTCLOCKFRO48M_AON_CPU_CLK             10000000UL     /* Clock consumers of AON_CPU_CLK output : AON__LPTMR0 */
 #define BOARD_BOOTCLOCKFRO48M_AON_I2C_CLK             2500000UL      /* Clock consumers of AON_I2C_CLK output : AON__LPI2C0 */
 #define BOARD_BOOTCLOCKFRO48M_AON_KPP_CLK             16384UL        /* Clock consumers of AON_KPP_CLK output : AON__KPP0 */
@@ -273,7 +273,7 @@ void BOARD_BootClockFRO24M(void);
 #define BOARD_BOOTCLOCKFRO48M_AON_QTMR0_CLK           2500000UL      /* Clock consumers of AON_QTMR0_CLK output : AON__TMR0 */
 #define BOARD_BOOTCLOCKFRO48M_AON_QTMR1_CLK           2500000UL      /* Clock consumers of AON_QTMR1_CLK output : AON__TMR1 */
 #define BOARD_BOOTCLOCKFRO48M_AON_SYSTEM_CLK          10000000UL     /* Clock consumers of AON_SYSTEM_CLK output : SysTick1 */
-#define BOARD_BOOTCLOCKFRO48M_AON_SYSTICK_CLK         0UL            /* Clock consumers of AON_SYSTICK_CLK output : SysTick1 */
+#define BOARD_BOOTCLOCKFRO48M_AON_SYSTICK_CLK         10000000UL     /* Clock consumers of AON_SYSTICK_CLK output : SysTick1 */
 #define BOARD_BOOTCLOCKFRO48M_AON_UART_CLK            2500000UL      /* Clock consumers of AON_UART_CLK output : AON__LPUART0 */
 #define BOARD_BOOTCLOCKFRO48M_LPIRC_TRIMCLK_OUT       32768UL        /* Clock consumers of CGU.LPIRC_TRIMCLK_OUT output : N/A */
 #define BOARD_BOOTCLOCKFRO48M_ULPIRC_TRIMCLK_OUT      32768UL        /* Clock consumers of CGU.ULPIRC_TRIMCLK_OUT output : N/A */
@@ -345,7 +345,7 @@ void BOARD_BootClockFRO48M(void);
 #define BOARD_BOOTCLOCKFRO96M_AON_ACMP0_CLK1          2500000UL      /* Clock consumers of AON_ACMP0_CLK1 output : AON__ACMP0 */
 #define BOARD_BOOTCLOCKFRO96M_AON_APB_CLK             10000000UL     /* Clock consumers of AON_APB_CLK output : N/A */
 #define BOARD_BOOTCLOCKFRO96M_AON_AUX_CLK             24000000UL     /* Clock consumers of AON_AUX_CLK output : N/A */
-#define BOARD_BOOTCLOCKFRO96M_AON_BUS_CLK             10000000UL     /* Clock consumers of AON_BUS_CLK output : AON__ACMP0, AON__KPP0, AON_LPADC, AON__LPI2C0, AON__LPTMR0, AON__LPUART0, AON__PMU, AON__SGLCD0_AON, AON__TMR0, AON__TMR1, SGLCD_FAULT_DETECT */
+#define BOARD_BOOTCLOCKFRO96M_AON_BUS_CLK             10000000UL     /* Clock consumers of AON_BUS_CLK output : AON__ACMP0, AON__KPP0, AON__LPACMP, AON_LPADC, AON__LPI2C0, AON__LPTMR0, AON__LPUART0, AON__PMU, AON__SGLCD0_AON, AON__TMR0, AON__TMR1, SGLCD_FAULT_DETECT */
 #define BOARD_BOOTCLOCKFRO96M_AON_CPU_CLK             10000000UL     /* Clock consumers of AON_CPU_CLK output : AON__LPTMR0 */
 #define BOARD_BOOTCLOCKFRO96M_AON_I2C_CLK             2500000UL      /* Clock consumers of AON_I2C_CLK output : AON__LPI2C0 */
 #define BOARD_BOOTCLOCKFRO96M_AON_KPP_CLK             16384UL        /* Clock consumers of AON_KPP_CLK output : AON__KPP0 */
@@ -355,7 +355,7 @@ void BOARD_BootClockFRO48M(void);
 #define BOARD_BOOTCLOCKFRO96M_AON_QTMR0_CLK           2500000UL      /* Clock consumers of AON_QTMR0_CLK output : AON__TMR0 */
 #define BOARD_BOOTCLOCKFRO96M_AON_QTMR1_CLK           2500000UL      /* Clock consumers of AON_QTMR1_CLK output : AON__TMR1 */
 #define BOARD_BOOTCLOCKFRO96M_AON_SYSTEM_CLK          10000000UL     /* Clock consumers of AON_SYSTEM_CLK output : SysTick1 */
-#define BOARD_BOOTCLOCKFRO96M_AON_SYSTICK_CLK         0UL            /* Clock consumers of AON_SYSTICK_CLK output : SysTick1 */
+#define BOARD_BOOTCLOCKFRO96M_AON_SYSTICK_CLK         10000000UL     /* Clock consumers of AON_SYSTICK_CLK output : SysTick1 */
 #define BOARD_BOOTCLOCKFRO96M_AON_UART_CLK            2500000UL      /* Clock consumers of AON_UART_CLK output : AON__LPUART0 */
 #define BOARD_BOOTCLOCKFRO96M_LPIRC_TRIMCLK_OUT       32768UL        /* Clock consumers of CGU.LPIRC_TRIMCLK_OUT output : N/A */
 #define BOARD_BOOTCLOCKFRO96M_ULPIRC_TRIMCLK_OUT      32768UL        /* Clock consumers of CGU.ULPIRC_TRIMCLK_OUT output : N/A */

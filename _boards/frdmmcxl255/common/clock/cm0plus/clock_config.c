@@ -78,6 +78,7 @@ outputs:
 - {id: AON_QTMR0_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
 - {id: AON_QTMR1_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
 - {id: AON_SYSTEM_CLK.outFreq, value: 10 MHz}
+- {id: AON_SYSTICK_CLK.outFreq, value: 10 MHz}
 - {id: AON_UART_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
 - {id: CGU.LPIRC_TRIMCLK_OUT.outFreq, value: 32.768 kHz}
 - {id: CGU.ULPIRC_TRIMCLK_OUT.outFreq, value: 32.768 kHz}
@@ -143,16 +144,12 @@ settings:
 - {id: VDD_CORE_MAIN, value: voltage_1v1}
 - {id: WUU_CLK_INIT_Config, value: custom}
 - {id: WWDT0_CLK_INIT_Config, value: custom}
-- {id: AON_ACMP_CLK0_DIV_HALT, value: Enable}
-- {id: AON_ACMP_CLK1_DIV_HALT, value: Enable}
-- {id: AON_CPU_CLK_DIV_HALT, value: Enable}
 - {id: CGU.ACMP0_CLK_SEL.sel, value: N/A}
 - {id: CGU.COM_GRP_SEL.sel, value: N/A}
 - {id: CGU.KPP_CLK_SEL.sel, value: PMU.FRO_16K}
 - {id: CGU.LPADC_CLK_SEL.sel, value: N/A}
 - {id: CGU.SLCD_CLK_SEL.sel, value: PMU.FRO_16K}
 - {id: CGU.TMR_GRP_SEL.sel, value: CGU.FRO_DIV4}
-- {id: COM_GRP_CLK_DIV_HALT, value: Enable}
 - {id: MRCC.CLKOUTCLKDIV.scale, value: '9'}
 - {id: MRCC.P16KCLKSEL.sel, value: PMU.FRO_16K}
 - {id: SYSCON.AONAUXCLKDIV.scale, value: '4', locked: true}
@@ -218,14 +215,14 @@ void BOARD_BootClockFRO10M_InitClockModule(clock_module_t module)
         case kClockModule_AON_CPU_ROOT_CLK:
             /* !< Switch AON_CPU to FROdiv1 */
             CLOCK_AttachClk(kFROdiv1_to_AON_CPU);
-            /* !< Set AON_CPU_CLK_DIV divider to value 1 */
-            CLOCK_SetClockDiv(kCLOCK_DIVAonCPU, 1U);
+            /* !< Bypass AON_CPU_CLK_DIV divider */
+            CLOCK_HaltClockDiv(kCLOCK_DIVAonCPU);
             break;
         case kClockModule_AON_COM_CLK:
             /* !< Switch AON_COM to FROdiv4 */
             CLOCK_AttachClk(kFROdiv4_to_AON_COM);
-            /* !< Set COM_GRP_CLK_DIV divider to value 1 */
-            CLOCK_SetClockDiv(kCLOCK_DIVAonCMP, 1U);
+            /* !< Bypass COM_GRP_CLK_DIV divider */
+            CLOCK_HaltClockDiv(kCLOCK_DIVAonCMP);
             break;
         case kClockModule_AON_TMR_GRP_CLK:
             /* !< Switch AON_TMR to FROdiv4 */
@@ -250,10 +247,14 @@ void BOARD_BootClockFRO10M_InitClockModule(clock_module_t module)
         case kClockModule_AON_ACMP0_CLK:
             /* !< Switch AON_CMP0 to FROdiv4 */
             CLOCK_AttachClk(kFROdiv4_to_AON_CMP0);
-            /* !< Set AON_ACMP_CLK0_DIV divider to value 1 */
-            CLOCK_SetClockDiv(kCLOCK_DIVAonACMP0CLK0, 1U);
-            /* !< Set AON_ACMP_CLK1_DIV divider to value 1 */
-            CLOCK_SetClockDiv(kCLOCK_DIVAonACMP0CLK1, 1U);
+            /* !< Bypass AON_ACMP_CLK0_DIV divider */
+            CLOCK_HaltClockDiv(kCLOCK_DIVAonACMP0CLK0);
+            /* !< Bypass AON_ACMP_CLK1_DIV divider */
+            CLOCK_HaltClockDiv(kCLOCK_DIVAonACMP0CLK1);
+            /* !< Enable the AON_ACMP0_CLK0 clock. */
+            CLOCK_EnableClock(kCLOCK_GateAonACMP0RR);
+            /* !< Enable the AON_ACMP0_CLK1 clock. */
+            CLOCK_EnableClock(kCLOCK_GateAonACMP0);
             break;
         default:
             assert(false);

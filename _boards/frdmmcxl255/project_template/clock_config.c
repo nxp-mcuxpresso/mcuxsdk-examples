@@ -25,7 +25,7 @@
 /* clang-format off */
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Clocks v19.0
+product: Clocks v20.0
 processor: MCXL255
 package_id: MCXL255VDF
 mcu_data: ksdk2_0
@@ -78,6 +78,7 @@ outputs:
 - {id: AON_QTMR0_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
 - {id: AON_QTMR1_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
 - {id: AON_SYSTEM_CLK.outFreq, value: 10 MHz}
+- {id: AON_SYSTICK_CLK.outFreq, value: 10 MHz}
 - {id: AON_UART_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
 - {id: CGU.LPIRC_TRIMCLK_OUT.outFreq, value: 32.768 kHz}
 - {id: CGU.ULPIRC_TRIMCLK_OUT.outFreq, value: 32.768 kHz}
@@ -116,9 +117,6 @@ settings:
 - {id: FREQMEAS_INIT_Config, value: custom}
 - {id: SCGMode, value: SIRC}
 - {id: ADC0CLKDIV_HALT, value: Enable}
-- {id: AON_ACMP_CLK0_DIV_HALT, value: Enable}
-- {id: AON_ACMP_CLK1_DIV_HALT, value: Enable}
-- {id: AON_CPU_CLK_DIV_HALT, value: Enable}
 - {id: CGU.ACMP0_CLK_SEL.sel, value: N/A}
 - {id: CGU.COM_GRP_SEL.sel, value: N/A}
 - {id: CGU.KPP_CLK_SEL.sel, value: PMU.FRO_16K}
@@ -128,7 +126,6 @@ settings:
 - {id: CGU_ROOT_AUX_CLK_EN_CFG, value: Disabled}
 - {id: CLKOUTCLKDIV_HALT, value: Enable}
 - {id: CMP0FUNCCLKDIV_HALT, value: Enable}
-- {id: COM_GRP_CLK_DIV_HALT, value: Enable}
 - {id: CTIMER_GRP0_CLKDIV_HALT, value: Enable}
 - {id: CTIMER_GRP1_CLKDIV_HALT, value: Enable}
 - {id: DBGTRACECLKDIV_HALT, value: Enable}
@@ -272,20 +269,20 @@ void BOARD_BootClockFRO12M_InitClockModule(clock_module_t module)
         case kClockModule_ROOT_AUX_CLK_SEL:
             /* !< Switch AON_ROOT_AUX to XTAL32K */
             CLOCK_AttachClk(kXTAL32K_to_AON_ROOT_AUX);
-            /* !< Disable the ROOT_AUX_CLK clock for CGU */
+            /* !< Disable the CGU ROOT_AUX_CLK clock. */
             CLOCK_DisableClock(kCLOCK_GateAonRootAux);
             break;
         case kClockModule_AON_CPU_ROOT_CLK:
             /* !< Switch AON_CPU to FROdiv1 */
             CLOCK_AttachClk(kFROdiv1_to_AON_CPU);
-            /* !< Set AON_CPU_CLK_DIV divider to value 1 */
-            CLOCK_SetClockDiv(kCLOCK_DIVAonCPU, 1U);
+            /* !< Bypass AON_CPU_CLK_DIV divider */
+            CLOCK_HaltClockDiv(kCLOCK_DIVAonCPU);
             break;
         case kClockModule_AON_COM_CLK:
             /* !< Switch AON_COM to FROdiv4 */
             CLOCK_AttachClk(kFROdiv4_to_AON_COM);
-            /* !< Set COM_GRP_CLK_DIV divider to value 1 */
-            CLOCK_SetClockDiv(kCLOCK_DIVAonCMP, 1U);
+            /* !< Bypass COM_GRP_CLK_DIV divider */
+            CLOCK_HaltClockDiv(kCLOCK_DIVAonCMP);
             break;
         case kClockModule_CLKOUT:
             /* !< Switch CLKOUT to SLOW_CLK */
@@ -328,7 +325,7 @@ void BOARD_BootClockFRO12M_InitClockModule(clock_module_t module)
             CLOCK_AttachClk(kFRO12M_to_PERIPH_GROUP0);
             /* !< Set PGRP0CLKDIV divider to value 1 */
             CLOCK_SetClockDiv(kCLOCK_DivPeriphGroup0, 1U);
-            /* !< Enable the PERIPH_GROUP_0_CLK clock for MRCC */
+            /* !< Enable the MRCC PERIPH_GROUP_0_CLK clock. */
             CLOCK_EnableClock(kCLOCK_GatePERIPH_GROUP0);
             break;
         case kClockModule_PERIPH_GROUP_1_CLK:
@@ -336,14 +333,14 @@ void BOARD_BootClockFRO12M_InitClockModule(clock_module_t module)
             CLOCK_AttachClk(kFRO12M_to_PERIPH_GROUP1);
             /* !< Set PGRP1CLKDIV divider to value 1 */
             CLOCK_SetClockDiv(kCLOCK_DivPeriphGroup1, 1U);
-            /* !< Enable the PERIPH_GROUP_1_CLK clock for MRCC */
+            /* !< Enable the MRCC PERIPH_GROUP_1_CLK clock. */
             CLOCK_EnableClock(kCLOCK_GatePERIPH_GROUP1);
             break;
         case kClockModule_ACMP_CLK:
             /* !< Switch CMP0 to FRO12M */
             CLOCK_AttachClk(kFRO12M_to_CMP0);
             /* !< Halt CMP0RRCLKDIV divider */
-            CLOCK_SetClockDiv(kCLOCK_DivCMP0_RR, 0U);
+            CLOCK_HaltClockDiv(kCLOCK_DivCMP0_RR);
             /* !< Set CMP0FUNCCLKDIV divider to value 1 */
             CLOCK_SetClockDiv(kCLOCK_DivCMP0_FUNC, 1U);
             break;
@@ -382,10 +379,14 @@ void BOARD_BootClockFRO12M_InitClockModule(clock_module_t module)
         case kClockModule_AON_ACMP0_CLK:
             /* !< Switch AON_CMP0 to FROdiv4 */
             CLOCK_AttachClk(kFROdiv4_to_AON_CMP0);
-            /* !< Set AON_ACMP_CLK0_DIV divider to value 1 */
-            CLOCK_SetClockDiv(kCLOCK_DIVAonACMP0CLK0, 1U);
-            /* !< Set AON_ACMP_CLK1_DIV divider to value 1 */
-            CLOCK_SetClockDiv(kCLOCK_DIVAonACMP0CLK1, 1U);
+            /* !< Bypass AON_ACMP_CLK0_DIV divider */
+            CLOCK_HaltClockDiv(kCLOCK_DIVAonACMP0CLK0);
+            /* !< Bypass AON_ACMP_CLK1_DIV divider */
+            CLOCK_HaltClockDiv(kCLOCK_DIVAonACMP0CLK1);
+            /* !< Enable the AON_ACMP0_CLK0 clock. */
+            CLOCK_EnableClock(kCLOCK_GateAonACMP0RR);
+            /* !< Enable the AON_ACMP0_CLK1 clock. */
+            CLOCK_EnableClock(kCLOCK_GateAonACMP0);
             break;
         default:
             assert(false);
@@ -458,6 +459,7 @@ outputs:
 - {id: AON_QTMR0_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
 - {id: AON_QTMR1_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
 - {id: AON_SYSTEM_CLK.outFreq, value: 10 MHz}
+- {id: AON_SYSTICK_CLK.outFreq, value: 10 MHz}
 - {id: AON_UART_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
 - {id: CGU.LPIRC_TRIMCLK_OUT.outFreq, value: 32.768 kHz}
 - {id: CGU.ULPIRC_TRIMCLK_OUT.outFreq, value: 32.768 kHz}
@@ -495,9 +497,6 @@ settings:
 - {id: AON_SYSTICK_CLK_INIT_Config, value: custom}
 - {id: FREQMEAS_INIT_Config, value: custom}
 - {id: ADC0CLKDIV_HALT, value: Enable}
-- {id: AON_ACMP_CLK0_DIV_HALT, value: Enable}
-- {id: AON_ACMP_CLK1_DIV_HALT, value: Enable}
-- {id: AON_CPU_CLK_DIV_HALT, value: Enable}
 - {id: CGU.ACMP0_CLK_SEL.sel, value: N/A}
 - {id: CGU.COM_GRP_SEL.sel, value: N/A}
 - {id: CGU.KPP_CLK_SEL.sel, value: PMU.FRO_16K}
@@ -507,7 +506,6 @@ settings:
 - {id: CGU_ROOT_AUX_CLK_EN_CFG, value: Disabled}
 - {id: CLKOUTCLKDIV_HALT, value: Enable}
 - {id: CMP0FUNCCLKDIV_HALT, value: Enable}
-- {id: COM_GRP_CLK_DIV_HALT, value: Enable}
 - {id: CTIMER_GRP0_CLKDIV_HALT, value: Enable}
 - {id: CTIMER_GRP1_CLKDIV_HALT, value: Enable}
 - {id: DBGTRACECLKDIV_HALT, value: Enable}
@@ -650,20 +648,20 @@ void BOARD_BootClockFRO24M_InitClockModule(clock_module_t module)
         case kClockModule_ROOT_AUX_CLK_SEL:
             /* !< Switch AON_ROOT_AUX to XTAL32K */
             CLOCK_AttachClk(kXTAL32K_to_AON_ROOT_AUX);
-            /* !< Disable the ROOT_AUX_CLK clock for CGU */
+            /* !< Disable the CGU ROOT_AUX_CLK clock. */
             CLOCK_DisableClock(kCLOCK_GateAonRootAux);
             break;
         case kClockModule_AON_CPU_ROOT_CLK:
             /* !< Switch AON_CPU to FROdiv1 */
             CLOCK_AttachClk(kFROdiv1_to_AON_CPU);
-            /* !< Set AON_CPU_CLK_DIV divider to value 1 */
-            CLOCK_SetClockDiv(kCLOCK_DIVAonCPU, 1U);
+            /* !< Bypass AON_CPU_CLK_DIV divider */
+            CLOCK_HaltClockDiv(kCLOCK_DIVAonCPU);
             break;
         case kClockModule_AON_COM_CLK:
             /* !< Switch AON_COM to FROdiv4 */
             CLOCK_AttachClk(kFROdiv4_to_AON_COM);
-            /* !< Set COM_GRP_CLK_DIV divider to value 1 */
-            CLOCK_SetClockDiv(kCLOCK_DIVAonCMP, 1U);
+            /* !< Bypass COM_GRP_CLK_DIV divider */
+            CLOCK_HaltClockDiv(kCLOCK_DIVAonCMP);
             break;
         case kClockModule_CLKOUT:
             /* !< Switch CLKOUT to SLOW_CLK */
@@ -706,7 +704,7 @@ void BOARD_BootClockFRO24M_InitClockModule(clock_module_t module)
             CLOCK_AttachClk(kFRO12M_to_PERIPH_GROUP0);
             /* !< Set PGRP0CLKDIV divider to value 1 */
             CLOCK_SetClockDiv(kCLOCK_DivPeriphGroup0, 1U);
-            /* !< Enable the PERIPH_GROUP_0_CLK clock for MRCC */
+            /* !< Enable the MRCC PERIPH_GROUP_0_CLK clock. */
             CLOCK_EnableClock(kCLOCK_GatePERIPH_GROUP0);
             break;
         case kClockModule_PERIPH_GROUP_1_CLK:
@@ -714,14 +712,14 @@ void BOARD_BootClockFRO24M_InitClockModule(clock_module_t module)
             CLOCK_AttachClk(kFRO12M_to_PERIPH_GROUP1);
             /* !< Set PGRP1CLKDIV divider to value 1 */
             CLOCK_SetClockDiv(kCLOCK_DivPeriphGroup1, 1U);
-            /* !< Enable the PERIPH_GROUP_1_CLK clock for MRCC */
+            /* !< Enable the MRCC PERIPH_GROUP_1_CLK clock. */
             CLOCK_EnableClock(kCLOCK_GatePERIPH_GROUP1);
             break;
         case kClockModule_ACMP_CLK:
             /* !< Switch CMP0 to FRO12M */
             CLOCK_AttachClk(kFRO12M_to_CMP0);
             /* !< Halt CMP0RRCLKDIV divider */
-            CLOCK_SetClockDiv(kCLOCK_DivCMP0_RR, 0U);
+            CLOCK_HaltClockDiv(kCLOCK_DivCMP0_RR);
             /* !< Set CMP0FUNCCLKDIV divider to value 1 */
             CLOCK_SetClockDiv(kCLOCK_DivCMP0_FUNC, 1U);
             break;
@@ -760,10 +758,14 @@ void BOARD_BootClockFRO24M_InitClockModule(clock_module_t module)
         case kClockModule_AON_ACMP0_CLK:
             /* !< Switch AON_CMP0 to FROdiv4 */
             CLOCK_AttachClk(kFROdiv4_to_AON_CMP0);
-            /* !< Set AON_ACMP_CLK0_DIV divider to value 1 */
-            CLOCK_SetClockDiv(kCLOCK_DIVAonACMP0CLK0, 1U);
-            /* !< Set AON_ACMP_CLK1_DIV divider to value 1 */
-            CLOCK_SetClockDiv(kCLOCK_DIVAonACMP0CLK1, 1U);
+            /* !< Bypass AON_ACMP_CLK0_DIV divider */
+            CLOCK_HaltClockDiv(kCLOCK_DIVAonACMP0CLK0);
+            /* !< Bypass AON_ACMP_CLK1_DIV divider */
+            CLOCK_HaltClockDiv(kCLOCK_DIVAonACMP0CLK1);
+            /* !< Enable the AON_ACMP0_CLK0 clock. */
+            CLOCK_EnableClock(kCLOCK_GateAonACMP0RR);
+            /* !< Enable the AON_ACMP0_CLK1 clock. */
+            CLOCK_EnableClock(kCLOCK_GateAonACMP0);
             break;
         default:
             assert(false);
@@ -836,6 +838,7 @@ outputs:
 - {id: AON_QTMR0_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
 - {id: AON_QTMR1_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
 - {id: AON_SYSTEM_CLK.outFreq, value: 10 MHz}
+- {id: AON_SYSTICK_CLK.outFreq, value: 10 MHz}
 - {id: AON_UART_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
 - {id: CGU.LPIRC_TRIMCLK_OUT.outFreq, value: 32.768 kHz}
 - {id: CGU.ULPIRC_TRIMCLK_OUT.outFreq, value: 32.768 kHz}
@@ -873,9 +876,6 @@ settings:
 - {id: AON_SYSTICK_CLK_INIT_Config, value: custom}
 - {id: FREQMEAS_INIT_Config, value: custom}
 - {id: ADC0CLKDIV_HALT, value: Enable}
-- {id: AON_ACMP_CLK0_DIV_HALT, value: Enable}
-- {id: AON_ACMP_CLK1_DIV_HALT, value: Enable}
-- {id: AON_CPU_CLK_DIV_HALT, value: Enable}
 - {id: CGU.ACMP0_CLK_SEL.sel, value: N/A}
 - {id: CGU.COM_GRP_SEL.sel, value: N/A}
 - {id: CGU.KPP_CLK_SEL.sel, value: PMU.FRO_16K}
@@ -885,7 +885,6 @@ settings:
 - {id: CGU_ROOT_AUX_CLK_EN_CFG, value: Disabled}
 - {id: CLKOUTCLKDIV_HALT, value: Enable}
 - {id: CMP0FUNCCLKDIV_HALT, value: Enable}
-- {id: COM_GRP_CLK_DIV_HALT, value: Enable}
 - {id: CTIMER_GRP0_CLKDIV_HALT, value: Enable}
 - {id: CTIMER_GRP1_CLKDIV_HALT, value: Enable}
 - {id: DBGTRACECLKDIV_HALT, value: Enable}
@@ -1028,20 +1027,20 @@ void BOARD_BootClockFRO48M_InitClockModule(clock_module_t module)
         case kClockModule_ROOT_AUX_CLK_SEL:
             /* !< Switch AON_ROOT_AUX to XTAL32K */
             CLOCK_AttachClk(kXTAL32K_to_AON_ROOT_AUX);
-            /* !< Disable the ROOT_AUX_CLK clock for CGU */
+            /* !< Disable the CGU ROOT_AUX_CLK clock. */
             CLOCK_DisableClock(kCLOCK_GateAonRootAux);
             break;
         case kClockModule_AON_CPU_ROOT_CLK:
             /* !< Switch AON_CPU to FROdiv1 */
             CLOCK_AttachClk(kFROdiv1_to_AON_CPU);
-            /* !< Set AON_CPU_CLK_DIV divider to value 1 */
-            CLOCK_SetClockDiv(kCLOCK_DIVAonCPU, 1U);
+            /* !< Bypass AON_CPU_CLK_DIV divider */
+            CLOCK_HaltClockDiv(kCLOCK_DIVAonCPU);
             break;
         case kClockModule_AON_COM_CLK:
             /* !< Switch AON_COM to FROdiv4 */
             CLOCK_AttachClk(kFROdiv4_to_AON_COM);
-            /* !< Set COM_GRP_CLK_DIV divider to value 1 */
-            CLOCK_SetClockDiv(kCLOCK_DIVAonCMP, 1U);
+            /* !< Bypass COM_GRP_CLK_DIV divider */
+            CLOCK_HaltClockDiv(kCLOCK_DIVAonCMP);
             break;
         case kClockModule_CLKOUT:
             /* !< Switch CLKOUT to SLOW_CLK */
@@ -1084,7 +1083,7 @@ void BOARD_BootClockFRO48M_InitClockModule(clock_module_t module)
             CLOCK_AttachClk(kFRO12M_to_PERIPH_GROUP0);
             /* !< Set PGRP0CLKDIV divider to value 1 */
             CLOCK_SetClockDiv(kCLOCK_DivPeriphGroup0, 1U);
-            /* !< Enable the PERIPH_GROUP_0_CLK clock for MRCC */
+            /* !< Enable the MRCC PERIPH_GROUP_0_CLK clock. */
             CLOCK_EnableClock(kCLOCK_GatePERIPH_GROUP0);
             break;
         case kClockModule_PERIPH_GROUP_1_CLK:
@@ -1092,14 +1091,14 @@ void BOARD_BootClockFRO48M_InitClockModule(clock_module_t module)
             CLOCK_AttachClk(kFRO12M_to_PERIPH_GROUP1);
             /* !< Set PGRP1CLKDIV divider to value 1 */
             CLOCK_SetClockDiv(kCLOCK_DivPeriphGroup1, 1U);
-            /* !< Enable the PERIPH_GROUP_1_CLK clock for MRCC */
+            /* !< Enable the MRCC PERIPH_GROUP_1_CLK clock. */
             CLOCK_EnableClock(kCLOCK_GatePERIPH_GROUP1);
             break;
         case kClockModule_ACMP_CLK:
             /* !< Switch CMP0 to FRO12M */
             CLOCK_AttachClk(kFRO12M_to_CMP0);
             /* !< Halt CMP0RRCLKDIV divider */
-            CLOCK_SetClockDiv(kCLOCK_DivCMP0_RR, 0U);
+            CLOCK_HaltClockDiv(kCLOCK_DivCMP0_RR);
             /* !< Set CMP0FUNCCLKDIV divider to value 1 */
             CLOCK_SetClockDiv(kCLOCK_DivCMP0_FUNC, 1U);
             break;
@@ -1138,10 +1137,14 @@ void BOARD_BootClockFRO48M_InitClockModule(clock_module_t module)
         case kClockModule_AON_ACMP0_CLK:
             /* !< Switch AON_CMP0 to FROdiv4 */
             CLOCK_AttachClk(kFROdiv4_to_AON_CMP0);
-            /* !< Set AON_ACMP_CLK0_DIV divider to value 1 */
-            CLOCK_SetClockDiv(kCLOCK_DIVAonACMP0CLK0, 1U);
-            /* !< Set AON_ACMP_CLK1_DIV divider to value 1 */
-            CLOCK_SetClockDiv(kCLOCK_DIVAonACMP0CLK1, 1U);
+            /* !< Bypass AON_ACMP_CLK0_DIV divider */
+            CLOCK_HaltClockDiv(kCLOCK_DIVAonACMP0CLK0);
+            /* !< Bypass AON_ACMP_CLK1_DIV divider */
+            CLOCK_HaltClockDiv(kCLOCK_DIVAonACMP0CLK1);
+            /* !< Enable the AON_ACMP0_CLK0 clock. */
+            CLOCK_EnableClock(kCLOCK_GateAonACMP0RR);
+            /* !< Enable the AON_ACMP0_CLK1 clock. */
+            CLOCK_EnableClock(kCLOCK_GateAonACMP0);
             break;
         default:
             assert(false);
@@ -1215,6 +1218,7 @@ outputs:
 - {id: AON_QTMR0_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
 - {id: AON_QTMR1_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
 - {id: AON_SYSTEM_CLK.outFreq, value: 10 MHz}
+- {id: AON_SYSTICK_CLK.outFreq, value: 10 MHz}
 - {id: AON_UART_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
 - {id: CGU.LPIRC_TRIMCLK_OUT.outFreq, value: 32.768 kHz}
 - {id: CGU.ULPIRC_TRIMCLK_OUT.outFreq, value: 32.768 kHz}
@@ -1253,9 +1257,6 @@ settings:
 - {id: FREQMEAS_INIT_Config, value: custom}
 - {id: VDD_CORE_MAIN, value: voltage_1v1}
 - {id: ADC0CLKDIV_HALT, value: Enable}
-- {id: AON_ACMP_CLK0_DIV_HALT, value: Enable}
-- {id: AON_ACMP_CLK1_DIV_HALT, value: Enable}
-- {id: AON_CPU_CLK_DIV_HALT, value: Enable}
 - {id: CGU.ACMP0_CLK_SEL.sel, value: N/A}
 - {id: CGU.COM_GRP_SEL.sel, value: N/A}
 - {id: CGU.KPP_CLK_SEL.sel, value: PMU.FRO_16K}
@@ -1265,7 +1266,6 @@ settings:
 - {id: CGU_ROOT_AUX_CLK_EN_CFG, value: Disabled}
 - {id: CLKOUTCLKDIV_HALT, value: Enable}
 - {id: CMP0FUNCCLKDIV_HALT, value: Enable}
-- {id: COM_GRP_CLK_DIV_HALT, value: Enable}
 - {id: CTIMER_GRP0_CLKDIV_HALT, value: Enable}
 - {id: CTIMER_GRP1_CLKDIV_HALT, value: Enable}
 - {id: DBGTRACECLKDIV_HALT, value: Enable}
@@ -1410,20 +1410,20 @@ void BOARD_BootClockFRO96M_InitClockModule(clock_module_t module)
         case kClockModule_ROOT_AUX_CLK_SEL:
             /* !< Switch AON_ROOT_AUX to XTAL32K */
             CLOCK_AttachClk(kXTAL32K_to_AON_ROOT_AUX);
-            /* !< Disable the ROOT_AUX_CLK clock for CGU */
+            /* !< Disable the CGU ROOT_AUX_CLK clock. */
             CLOCK_DisableClock(kCLOCK_GateAonRootAux);
             break;
         case kClockModule_AON_CPU_ROOT_CLK:
             /* !< Switch AON_CPU to FROdiv1 */
             CLOCK_AttachClk(kFROdiv1_to_AON_CPU);
-            /* !< Set AON_CPU_CLK_DIV divider to value 1 */
-            CLOCK_SetClockDiv(kCLOCK_DIVAonCPU, 1U);
+            /* !< Bypass AON_CPU_CLK_DIV divider */
+            CLOCK_HaltClockDiv(kCLOCK_DIVAonCPU);
             break;
         case kClockModule_AON_COM_CLK:
             /* !< Switch AON_COM to FROdiv4 */
             CLOCK_AttachClk(kFROdiv4_to_AON_COM);
-            /* !< Set COM_GRP_CLK_DIV divider to value 1 */
-            CLOCK_SetClockDiv(kCLOCK_DIVAonCMP, 1U);
+            /* !< Bypass COM_GRP_CLK_DIV divider */
+            CLOCK_HaltClockDiv(kCLOCK_DIVAonCMP);
             break;
         case kClockModule_CLKOUT:
             /* !< Switch CLKOUT to SLOW_CLK */
@@ -1466,7 +1466,7 @@ void BOARD_BootClockFRO96M_InitClockModule(clock_module_t module)
             CLOCK_AttachClk(kFRO12M_to_PERIPH_GROUP0);
             /* !< Set PGRP0CLKDIV divider to value 1 */
             CLOCK_SetClockDiv(kCLOCK_DivPeriphGroup0, 1U);
-            /* !< Enable the PERIPH_GROUP_0_CLK clock for MRCC */
+            /* !< Enable the MRCC PERIPH_GROUP_0_CLK clock. */
             CLOCK_EnableClock(kCLOCK_GatePERIPH_GROUP0);
             break;
         case kClockModule_PERIPH_GROUP_1_CLK:
@@ -1474,14 +1474,14 @@ void BOARD_BootClockFRO96M_InitClockModule(clock_module_t module)
             CLOCK_AttachClk(kFRO12M_to_PERIPH_GROUP1);
             /* !< Set PGRP1CLKDIV divider to value 1 */
             CLOCK_SetClockDiv(kCLOCK_DivPeriphGroup1, 1U);
-            /* !< Enable the PERIPH_GROUP_1_CLK clock for MRCC */
+            /* !< Enable the MRCC PERIPH_GROUP_1_CLK clock. */
             CLOCK_EnableClock(kCLOCK_GatePERIPH_GROUP1);
             break;
         case kClockModule_ACMP_CLK:
             /* !< Switch CMP0 to FRO12M */
             CLOCK_AttachClk(kFRO12M_to_CMP0);
             /* !< Halt CMP0RRCLKDIV divider */
-            CLOCK_SetClockDiv(kCLOCK_DivCMP0_RR, 0U);
+            CLOCK_HaltClockDiv(kCLOCK_DivCMP0_RR);
             /* !< Set CMP0FUNCCLKDIV divider to value 1 */
             CLOCK_SetClockDiv(kCLOCK_DivCMP0_FUNC, 1U);
             break;
@@ -1520,10 +1520,14 @@ void BOARD_BootClockFRO96M_InitClockModule(clock_module_t module)
         case kClockModule_AON_ACMP0_CLK:
             /* !< Switch AON_CMP0 to FROdiv4 */
             CLOCK_AttachClk(kFROdiv4_to_AON_CMP0);
-            /* !< Set AON_ACMP_CLK0_DIV divider to value 1 */
-            CLOCK_SetClockDiv(kCLOCK_DIVAonACMP0CLK0, 1U);
-            /* !< Set AON_ACMP_CLK1_DIV divider to value 1 */
-            CLOCK_SetClockDiv(kCLOCK_DIVAonACMP0CLK1, 1U);
+            /* !< Bypass AON_ACMP_CLK0_DIV divider */
+            CLOCK_HaltClockDiv(kCLOCK_DIVAonACMP0CLK0);
+            /* !< Bypass AON_ACMP_CLK1_DIV divider */
+            CLOCK_HaltClockDiv(kCLOCK_DIVAonACMP0CLK1);
+            /* !< Enable the AON_ACMP0_CLK0 clock. */
+            CLOCK_EnableClock(kCLOCK_GateAonACMP0RR);
+            /* !< Enable the AON_ACMP0_CLK1 clock. */
+            CLOCK_EnableClock(kCLOCK_GateAonACMP0);
             break;
         default:
             assert(false);
