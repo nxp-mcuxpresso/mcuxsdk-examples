@@ -90,7 +90,7 @@ mcux_add_macro(
       -DLFS_NO_ERROR=1\
       -DLFS_NO_INTRINSICS=1\
       -DSDIO_ENABLED=1\
-      -DCONFIG_BLE_SLIM=1\
+      -DCONFIG_BLE_SLIM=0\
       -DUSB_HOST_CONFIG_BUFFER_PROPERTY_CACHEABLE=1\
       -DgMemManagerLight=0\
       -DCONTROLLER_INIT_ESCAPE=1"
