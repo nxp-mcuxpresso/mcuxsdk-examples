@@ -8,4 +8,10 @@ board.hardware_data:
         name: QSPI_FLASH
         size: 8388608
         type: ExtFlash
+      - access: RO
+        addr: 402653184
+        id: QSPI_FLASH_SECURE_${board}
+        name: QSPI_FLASH_SECURE
+        size: 8388608
+        type: ExtFlash
   section-type: manifest_content
