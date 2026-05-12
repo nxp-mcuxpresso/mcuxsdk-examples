@@ -19,28 +19,3 @@ Prepare the Demo
 3.  Download the program to the target board.
 4.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
 
-Running the demo
-===============
-When the example runs successfully, you can see the similar information from the terminal as below.
-
-ITRC Peripheral Driver Example
-
-Pass: No Event/Action triggered in STATUS after Init
-
-Enable ITRC IRQ Action response to SW Event 0
-
-Trigger SW Event 0
-
-ITRC IRQ Reached!
-ITRC STATUS:
-Input event IN14 occured!
-
-Clear ITRC IRQ and SW Event 0 STATUS
-
-Disable ITRC IRQ Action response to SW Event 0
-
-Trigger SW Event 0
-
-Pass: No Action triggered
-
-End of example

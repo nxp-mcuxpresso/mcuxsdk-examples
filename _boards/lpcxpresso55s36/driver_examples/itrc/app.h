@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -11,10 +11,15 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define ITRC ITRC0
-
 /* ITRC Software event 0 is mapped to signal name IN14 */
-#define APP_ITRC_IN kITRC_In14
+#define APP_ITRC_IN      kITRC_In14
+#define APP_ITRC_IN_MASK ITRC_STATUS_IN14_STATUS_MASK
+
+/* ITRC IRQ is mapped to OUT0 */
+#define IRQ_ITRC_OUT      kITRC_Out_0
+#define IRQ_ITRC_OUT_MASK ITRC_STATUS_OUT0_STATUS_MASK
+
+#define APP_ITRC_IRQN ITRC0_IRQn
 /*${macro:end}*/
 
 /*******************************************************************************

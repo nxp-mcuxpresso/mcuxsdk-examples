@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 NXP
+ * Copyright 2022, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -33,29 +33,76 @@ void ITRC_Demo_Status_Print(void);
 /*******************************************************************************
  * Code
  ******************************************************************************/
-
+#if defined(ITRC0)
 void ITRC0_DriverIRQHandler(void)
 {
-    NVIC_DisableIRQ(ITRC0_IRQn);
+    NVIC_DisableIRQ(APP_ITRC_IRQN);
     PRINTF("ITRC IRQ Reached!\r\n");
 
     ITRC_Demo_Status_Print();
 
     PRINTF("Clear ITRC IRQ and SW Event 0 STATUS\r\n\r\n");
-    ITRC_ClearStatus(ITRC, ((uint32_t)kITRC_Irq | (uint32_t)APP_ITRC_IN));
 
-    NVIC_EnableIRQ(ITRC0_IRQn);
+    /* Clear SW Event 0 STATUS */
+    if (APP_ITRC_IN > 16U)
+    {
+        ITRC_ClearStatus1(ITRC, APP_ITRC_IN_MASK);
+    }
+    else
+    {
+        ITRC_ClearStatus(ITRC, APP_ITRC_IN_MASK);
+    }
+    /* Clear ITRC IRQ flag event */
+    ITRC_ClearStatus(ITRC, IRQ_ITRC_OUT_MASK);
+
+    NVIC_EnableIRQ(APP_ITRC_IRQN);
 }
+#endif /* defined(ITRC0_DriverIRQHandler) */
+
+#if defined(ITRC)
+void ITRC_DriverIRQHandler(void)
+{
+    NVIC_DisableIRQ(APP_ITRC_IRQN);
+    PRINTF("ITRC IRQ Reached!\r\n");
+
+    ITRC_Demo_Status_Print();
+
+    PRINTF("Clear ITRC IRQ and SW Event 0 STATUS\r\n\r\n");
+
+    /* Clear SW Event 0 STATUS */
+    if (APP_ITRC_IN > 16U)
+    {
+        ITRC_ClearStatus1(ITRC, APP_ITRC_IN_MASK);
+    }
+    else
+    {
+        ITRC_ClearStatus(ITRC, APP_ITRC_IN_MASK);
+    }
+    /* Clear ITRC IRQ flag event */
+    ITRC_ClearStatus(ITRC, IRQ_ITRC_OUT_MASK);
+
+    NVIC_EnableIRQ(APP_ITRC_IRQN);
+}
+#endif /* defined(ITRC_DriverIRQHandler) */
 
 void ITRC_Demo_Status_Print(void)
 {
-    uint32_t status_word = ITRC_GetStatus(ITRC);
+    uint32_t status_word = 0u;
 
+    /* Clear SW Event 0 STATUS */
+    if (APP_ITRC_IN > 16U)
+    {
+        status_word = ITRC_GetStatus1(ITRC);
+    }
+    else
+    {
+        status_word = ITRC_GetStatus(ITRC);
+    }
     /* Mapping to input/output signals can be found in reference manual */
-    PRINTF("ITRC STATUS:\r\n");
-    /* Check Input Event signal 14 - mapped to SW Event0 */
-    if (ITRC_STATUS_IN14_STATUS_MASK & status_word)
-        PRINTF("Input event IN14 occured!\r\n");
+    PRINTF("ITRC STATUS: ");
+    /* Check SW Event 0 status */
+    if (APP_ITRC_IN_MASK & status_word)
+        PRINTF("SW Event 0 occured!\r\n");
 
     PRINTF("\r\n");
 }
@@ -102,7 +149,7 @@ int main(void)
 
     /* Set ITRC IRQ action upon SW Event 0 */
     PRINTF("Enable ITRC IRQ Action response to SW Event 0\r\n\r\n");
-    ITRC_SetActionToEvent(ITRC, kITRC_Irq, APP_ITRC_IN, kITRC_Unlock, kITRC_Enable);
+    ITRC_SetActionToEvent(ITRC, IRQ_ITRC_OUT, APP_ITRC_IN, kITRC_Unlock, kITRC_Enable);
     if (result != kStatus_Success)
     {
         PRINTF("Error seting ITRC.\r\n");
@@ -127,7 +174,7 @@ int main(void)
 
     /* Disable ITRC IRQ action upon SW Event 0 */
     PRINTF("Disable ITRC IRQ Action response to SW Event 0\r\n\r\n");
-    ITRC_SetActionToEvent(ITRC, kITRC_Irq, APP_ITRC_IN, kITRC_Unlock, kITRC_Disable);
+    ITRC_SetActionToEvent(ITRC, IRQ_ITRC_OUT, APP_ITRC_IN, kITRC_Unlock, kITRC_Disable);
     if (result != kStatus_Success)
     {
         PRINTF("Error seting ITRC.\r\n");

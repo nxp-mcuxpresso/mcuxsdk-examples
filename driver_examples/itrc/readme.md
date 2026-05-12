@@ -10,16 +10,14 @@ When the demo runs successfully, the terminal displays similar information like 
 
 ITRC Peripheral Driver Example
 
-Pass: No Event/Action triggered after Init
+Pass: No Event/Action triggered in STATUS after Init
 
 Enable ITRC IRQ Action response to SW Event 0
 
 Trigger SW Event 0
 
 ITRC IRQ Reached!
-ITRC STATUS:
-SW Event0 occured!
-Generated ITRC interrupt!
+ITRC STATUS: SW Event 0 occured!
 
 Clear ITRC IRQ and SW Event 0 STATUS
 
@@ -43,3 +41,4 @@ End of example
 - [FRDM-IMXRT700](../../_boards/frdmimxrt700/driver_examples/itrc/example_board_readme.md)
 - [FRDM-MCXA577](../../_boards/frdmmcxa577/driver_examples/itrc/example_board_readme.md)
 - [FRDM-MCXA287](../../_boards/frdmmcxa287/driver_examples/itrc/example_board_readme.md)
+- [FRDM-KW43](../../_boards/frdmkw43/driver_examples/itrc/example_board_readme.md)
