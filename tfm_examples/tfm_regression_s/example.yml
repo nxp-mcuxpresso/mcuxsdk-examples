@@ -56,3 +56,4 @@ tfm_regression_s:
     - -iar@release
     frdmmcxa577: []
     frdmmcxa287: []
+    frdmkw43: []
