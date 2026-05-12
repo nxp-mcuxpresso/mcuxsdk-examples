@@ -21,6 +21,20 @@
 
 /*${function:start}*/
 
+/*
+ * MCUXpresso IDE uses a C startup file that does not call Power_LowPowerBoot().
+ * The GCC/IAR/MDK assembly startups call it via __ENABLE_LP_BOOT.
+ * Override SystemInitHook() so that Power_LowPowerBoot() runs after SystemInit()
+ * but before data/bss initialisation — exactly where the context-restore check
+ * must happen.
+ */
+#if defined(__MCUXPRESSO)
+void SystemInitHook(void)
+{
+    Power_LowPowerBoot();
+}
+#endif
+
 void BOARD_BootAs3MHzClocks(void)
 {
     CLOCK_EnableClock(kCLOCK_GateAonAPB);
