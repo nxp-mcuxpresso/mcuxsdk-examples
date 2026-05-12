@@ -100,9 +100,9 @@ int main(void)
 
     BOARD_InitHardware();
 
-    PLATFORM_InitBle();
-
     APP_InitServices();
+
+    assert(APP_InitBle() == 0);
 
 #if (NXP_RADIO_GEN >= 470)
     PLATFORM_InitLcl();
@@ -127,15 +127,6 @@ int main(void)
         uint8_t FEM_status = PLATFORM_InitFEM(NULL, 0U /*N/A*/);   /* use default configuration */
         assert(FEM_status==0U);
     }
-#endif
-#if defined(gAppHighNBUClockFrequency_d) && (gAppHighNBUClockFrequency_d > 0)
-    /* HCI_BB requests NBU to run at 64 MHz.
-     * Increase LDO core voltage to 1.1v - make sure the DCDC output voltage is at least 1.35mV
-     * Request Radio core to switch to higher frequency
-     * @warning : make sure LDO core is not decreased to lower voltage after this step (when going to low power for instance)
-     **/
-    PLATFORM_SetLdoCoreNormalDriveVoltage();
-    PLATFORM_SetNbuConstraintFrequency(PLATFORM_NBU_MIN_FREQ_64MHZ);
 #endif
 
 #if defined(gAppUseSensors_d) && (gAppUseSensors_d > 0)
