@@ -32,6 +32,7 @@ mc_pmsm_snsless:
     # twrmc56f8200: []
     frdmmcxc162:
     - -armgcc@debug
+    - -armgcc@release
     - -iar@debug
     - -mdk@debug
     - -mcux@debug
