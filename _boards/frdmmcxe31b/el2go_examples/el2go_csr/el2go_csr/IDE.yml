@@ -1,0 +1,13 @@
+mdk:
+flash_programming_file:
+  files:
+  - source: ${board_root}/${board}/el2go_examples/el2go_csr/el2go_csr/el2go_csr_flashdownload.ini
+    attribute: flash_programming_file
+    toolchains: mdk
+    targets: debug release
+initialization_file:
+  files:
+  - source: ${board_root}/${board}/el2go_examples/el2go_csr/el2go_csr/el2go_csr_flashdebug.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: debug release

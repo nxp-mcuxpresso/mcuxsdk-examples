@@ -88,7 +88,7 @@ The application flow consists of the following steps:
 
 ## Running the application
 
-The application is designed to be controlled by SPSDK tooling. The configuration data is passed to the application through a predefined memory region (`el2go_csr_conf_data`), and the operation status is returned via the `el2go_spsdk_status` variable, which is mapped to a specific memory address for SPSDK to retrieve.
+The application is designed to be controlled by SPSDK tooling. The configuration data is passed to the application through the memory region (`el2go_csr_conf_data`), and the operation status is returned via the `el2go_spsdk_status` variable, which is mapped to a specific memory address for SPSDK to retrieve.
 
 ### CSR Generation Mode
 
