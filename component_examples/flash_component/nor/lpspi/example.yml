@@ -51,3 +51,5 @@ flash_component_nor_lpspi:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     - -mdk@release
+    frdmkw43: []
+    frdmmcxw70: []
