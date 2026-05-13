@@ -64,7 +64,7 @@
 /*! Enable NVM to be used as non volatile storage management by the host stack
     This is mandatory if one of these gAppUseBonding_d, gRngSeedHwParamStorage_d
       or gControllerPreserveXcvrDacTrimValue_d are set */
-//#define gAppUseNvm_d                    1
+#define gAppUseNvm_d                    1
 
 /*! Erase NVM pages at download(armgcc only) */
 #if ((defined gAppUseNvm_d) && (gAppUseNvm_d != 0)) && defined(__GNUC__)
