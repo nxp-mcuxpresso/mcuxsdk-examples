@@ -34,7 +34,7 @@ void SystemInit(void)
 
 #if defined(MCXL254_cm33_SERIES)  
   /* Disable ECC check for all RAMs */
-  SYSCON->RAM_CTRL = SYSCON_RAM_CTRL_RAMA_ECC_ENABLE(0) ;
+  SYSCON->SRAM_CTRL = SYSCON_SRAM_CTRL_RAMA_ECC_ENABLE(0) ;
 #endif
 
   //SystemInitHook();
