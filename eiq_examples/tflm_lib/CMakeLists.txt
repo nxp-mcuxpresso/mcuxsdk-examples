@@ -33,6 +33,20 @@ if(${CONFIG_MCUX_HW_CORE} STREQUAL "cm85" OR ${CONFIG_MCUX_HW_CORE} STREQUAL "cm
     CX "-mcpu=cortex-m85 -mfloat-abi=hard -mfpu=fpv5-d16"
   )
 endif()
+if(${CONFIG_MCUX_HW_CORE} STREQUAL "cm55" OR ${CONFIG_MCUX_HW_CORE} STREQUAL "cm55f")
+  mcux_add_iar_configuration(
+    CC "--cpu=cortex-m55.no_se --fpu=VFPv5_d16 -DARM_MATH_MVEI -DARM_MATH_AUTOVECTORIZE"
+    CX "--cpu=cortex-m55.no_se --fpu=VFPv5_d16 -DARM_MATH_MVEI -DARM_MATH_AUTOVECTORIZE"
+  )
+  mcux_add_mdk_configuration(
+    CC "-mcpu=cortex-m55 -mfpu=fpv5-sp-d16"
+    CX "-mcpu=cortex-m55 -mfpu=fpv5-sp-d16"
+  )
+  mcux_add_armgcc_configuration(
+    CC "-mcpu=cortex-m55 -mfloat-abi=hard -mfpu=fpv5-d16"
+    CX "-mcpu=cortex-m55 -mfloat-abi=hard -mfpu=fpv5-d16"
+  )
+endif()
 if(${CONFIG_MCUX_HW_CORE} STREQUAL "cm33" OR ${CONFIG_MCUX_HW_CORE} STREQUAL "cm33f")
   mcux_add_iar_configuration(
     CC "--cpu=cortex-m33.no_se --fpu=VFPv5_sp"

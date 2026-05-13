@@ -1,0 +1,15 @@
+ethosu_tflm_cifar10:
+  section-type: application
+  contents:
+    meta_path: examples/eiq_examples/ethosu/ethosu_tflm_cifar10
+    project-root-path: boards/${board}/eiq_examples/ethosu/ethosu_tflm_cifar10/${multicore_foldername}
+    document:
+      name: ethosu_tflm_cifar10${core_id_suffix_name}
+      category: eiq_examples
+      brief: Ethos-U CIFAR-10 example for TensorFlow Lite Micro
+      example_readme:
+      - examples/eiq_examples/ethosu/ethosu_tflm_cifar10/readme.md
+      - ${board_root}/${board}/eiq_examples/ethosu/ethosu_tflm_cifar10/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    fpga_imxrtl3750: []
