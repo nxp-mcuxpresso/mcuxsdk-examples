@@ -10,7 +10,7 @@
 /*
  *  Copyright The Mbed TLS Contributors
  *  SPDX-License-Identifier: Apache-2.0
- *  Copyright 2017, 2021 NXP. Not a Contribution
+ *  Copyright 2017, 2026 NXP. Not a Contribution
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use this file except in compliance with the License.
@@ -346,7 +346,7 @@
 #define FSL_MD_COOKIE_USE_SHA256
 #endif
 
-#if defined(USE_RTOS) && defined(SDK_OS_FREE_RTOS)
+#if defined(USE_RTOS) && (USE_RTOS > 0U) && defined(SDK_OS_FREE_RTOS)
 #include "FreeRTOS.h"
 
 void *pvPortCalloc(size_t num, size_t size); /*Calloc for HEAP3.*/
