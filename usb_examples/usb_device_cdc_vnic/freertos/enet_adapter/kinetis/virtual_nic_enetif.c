@@ -268,7 +268,12 @@ enet_err_t ENETIF_Init(void)
 
     ENET_GetDefaultConfig(&config);
 #if FSL_FEATURE_ENET_QUEUE > 1
+#ifdef EXAMPLE_PHY_INTERFACE_RGMII
+    config.miiMode = kENET_RgmiiMode;
+#else
     config.miiMode = kENET_RmiiMode;
+#endif
+
 #else
 
 #endif
