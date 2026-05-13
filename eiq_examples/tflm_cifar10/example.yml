@@ -3,6 +3,11 @@ tflm_cifar10:
   contents:
     meta_path: examples/eiq_examples/tflm_cifar10/.
     project-root-path: boards/${board}/eiq_examples/tflm_cifar10/${core_id}
+    freestanding_copied_folders:
+    - middleware/eiq/
+    freestanding_extra_args:
+    - -DCONFIG_MCUX_PRJSEG_middleware.eiq.neutron=y
+    - -DCONFIG_MCUX_COMPONENT_middleware.eiq.neutron=n
     document:
       name: tflm_cifar10${core_id_suffix_name}
       category: eiq_examples
