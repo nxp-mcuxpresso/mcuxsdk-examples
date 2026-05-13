@@ -22,7 +22,5 @@ extern bool mcuxClRsa_KeyGeneration_example(void);
 extern bool mcuxClEcc_EdDSA_VerifySignature_Ed25519_example(void);
 extern bool mcuxClEcc_MontDH_Curve25519_example(void);
 extern bool mcuxClEcc_MontDH_Curve448_example(void);
-extern bool mcuxClEcc_EdDSA_Ed25519ph_example(void);
-extern bool mcuxClEcc_ECDSA_FixedKeys_NIST_P256_example(void);
-
+extern bool mcuxClEcc_EdDSA_Ed25519_example(void);
 #endif /* _SGI_PKC_ASYMMETRIC_H_ */

@@ -115,7 +115,7 @@ int main(void)
 #endif /* defined(MCUXCL_FEATURE_ECC_CURVE448) */
 
     PRINTF("ECC EdDSA Ed25519:");
-    if (mcuxClEcc_EdDSA_Ed25519ph_example() == true)
+    if (mcuxClEcc_EdDSA_Ed25519_example() == true)
     {
         pass++;
         PRINTF("pass \r\n");
