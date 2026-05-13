@@ -15,6 +15,12 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
+    BOARD_InitDEBUG_UARTPins();
+    BOARD_InitLEDsPins();
+    BOARD_InitTSIPins();
+    BOARD_InitBootClocks();
+    BOARD_InitDebugConsole();
+
     /* INPUTMUX0: Peripheral clock is enabled */
     CLOCK_EnableClock(kCLOCK_GateINPUTMUX0);
     /* INPUTMUX0 peripheral is released from reset */
@@ -26,11 +32,5 @@ void BOARD_InitHardware(void)
 
     CLOCK_SetClockDiv(kCLOCK_DivTSI0, 10);
     CLOCK_AttachClk(kFRO_HF_DIV_to_TSI0);
-
-    BOARD_InitDEBUG_UARTPins();
-    BOARD_InitLEDsPins();
-    BOARD_InitTSIPins();
-    BOARD_InitBootClocks();
-    BOARD_InitDebugConsole();
 }
 /*${function:end}*/
