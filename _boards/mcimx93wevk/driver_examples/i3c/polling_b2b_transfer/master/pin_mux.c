@@ -41,8 +41,8 @@ BOARD_InitPins:
 - pin_list:
   - {pin_num: H22, peripheral: LPUART2, signal: lpuart_rx, pin_signal: UART2_RXD, HYS: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: NO_DRIVE}
   - {pin_num: D18, peripheral: LPUART2, signal: lpuart_tx, pin_signal: UART2_TXD, HYS: DISABLED, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
-  - {pin_num: A14, peripheral: I3C1, signal: i3c_scl, pin_signal: I2C1_SCL, SION: ENABLED, HYS: DISABLED}
-  - {pin_num: A15, peripheral: I3C1, signal: i3c_sda, pin_signal: I2C1_SDA, SION: ENABLED, HYS: DISABLED}
+  - {pin_num: A14, peripheral: I3C1, signal: i3c_scl, pin_signal: I2C1_SCL, SION: ENABLED, HYS: DISABLED, PD: DISABLED, FSEL1: FAST_SLEW_RATE, DSE: X2}
+  - {pin_num: A15, peripheral: I3C1, signal: i3c_sda, pin_signal: I2C1_SDA, SION: ENABLED, HYS: DISABLED, PD: DISABLED, FSEL1: FAST_SLEW_RATE, DSE: X2}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -55,14 +55,12 @@ BOARD_InitPins:
 void BOARD_InitPins(void) {                                /*!< Function assigned for the core: Cortex-M33[cm33] */
     IOMUXC_SetPinMux(IOMUXC_PAD_I2C1_SCL__I3C1_SCL, 1U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_I2C1_SCL__I3C1_SCL, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_PD_MASK);
+                        IOMUXC_PAD_DSE(3U) |
+                        IOMUXC_PAD_FSEL1(3U));
     IOMUXC_SetPinMux(IOMUXC_PAD_I2C1_SDA__I3C1_SDA, 1U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_I2C1_SDA__I3C1_SDA, 
-                        IOMUXC_PAD_DSE(15U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_PD_MASK);
+                        IOMUXC_PAD_DSE(3U) |
+                        IOMUXC_PAD_FSEL1(3U));
     IOMUXC_SetPinMux(IOMUXC_PAD_UART2_RXD__LPUART2_RX, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_UART2_RXD__LPUART2_RX, 
                         IOMUXC_PAD_PD_MASK);

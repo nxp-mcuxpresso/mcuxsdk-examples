@@ -41,6 +41,15 @@ BOARD_InitPins:
 - pin_list:
   - {pin_num: H22, peripheral: LPUART2, signal: lpuart_rx, pin_signal: UART2_RXD, FSEL1: SlOW_SLEW_RATE, DSE: NO_DRIVE}
   - {pin_num: D18, peripheral: LPUART2, signal: lpuart_tx, pin_signal: UART2_TXD, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
+  - {pin_num: Y26, peripheral: SAI3, signal: sai_tx_bclk, pin_signal: GPIO_IO16}
+  - {pin_num: Y27, peripheral: SAI3, signal: sai_mclk, pin_signal: GPIO_IO17}
+  - {pin_num: AA26, peripheral: SAI3, signal: 'sai_tx_data, 00', pin_signal: GPIO_IO19}
+  - {pin_num: AC25, peripheral: SAI3, signal: 'sai_rx_data, 00', pin_signal: GPIO_IO20}
+  - {pin_num: AC22, peripheral: SAI3, signal: sai_tx_sync, pin_signal: GPIO_IO26}
+  - {pin_num: A14, peripheral: LPI2C1, signal: lpi2c_scl, pin_signal: I2C1_SCL, SION: ENABLED, OD: ENABLED, PD: DISABLED}
+  - {pin_num: A15, peripheral: LPI2C1, signal: lpi2c_sda, pin_signal: I2C1_SDA, SION: ENABLED, OD: ENABLED, PD: DISABLED}
+  - {pin_num: B14, peripheral: LPI2C2, signal: lpi2c_scl, pin_signal: I2C2_SCL, SION: ENABLED, OD: ENABLED, PD: DISABLED}
+  - {pin_num: B15, peripheral: LPI2C2, signal: lpi2c_sda, pin_signal: I2C2_SDA, SION: ENABLED, OD: ENABLED, PD: DISABLED, DSE: X4}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -51,6 +60,31 @@ BOARD_InitPins:
  *
  * END ****************************************************************************************************************/
 void BOARD_InitPins(void) {                                /*!< Function assigned for the core: Cortex-M33[cm33] */
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO16__SAI3_TX_BCLK, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO17__SAI3_MCLK, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO19__SAI3_TX_DATA00, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO20__SAI3_RX_DATA00, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO26__SAI3_TX_SYNC, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_I2C1_SCL__LPI2C1_SCL, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_I2C1_SCL__LPI2C1_SCL, 
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_OD_MASK);
+    IOMUXC_SetPinMux(IOMUXC_PAD_I2C1_SDA__LPI2C1_SDA, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_I2C1_SDA__LPI2C1_SDA, 
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_OD_MASK);
+    IOMUXC_SetPinMux(IOMUXC_PAD_I2C2_SCL__LPI2C2_SCL, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_I2C2_SCL__LPI2C2_SCL, 
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_OD_MASK);
+    IOMUXC_SetPinMux(IOMUXC_PAD_I2C2_SDA__LPI2C2_SDA, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_I2C2_SDA__LPI2C2_SDA, 
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_OD_MASK);
     IOMUXC_SetPinMux(IOMUXC_PAD_UART2_RXD__LPUART2_RX, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_UART2_RXD__LPUART2_RX, 
                         IOMUXC_PAD_PD_MASK);

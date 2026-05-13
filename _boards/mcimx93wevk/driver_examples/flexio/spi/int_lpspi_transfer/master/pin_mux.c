@@ -43,8 +43,8 @@ BOARD_InitPins:
   - {pin_num: T27, peripheral: LPSPI3, signal: lpspi_sin, pin_signal: GPIO_IO09, PD: ENABLED}
   - {pin_num: U26, peripheral: LPSPI3, signal: lpspi_sout, pin_signal: GPIO_IO10, PD: ENABLED}
   - {pin_num: U27, peripheral: LPSPI3, signal: lpspi_sck, pin_signal: GPIO_IO11, PD: ENABLED}
-  - {pin_num: B14, peripheral: LPI2C2, signal: lpi2c_scl, pin_signal: I2C2_SCL, OD: ENABLED, PD: DISABLED}
-  - {pin_num: B15, peripheral: LPI2C2, signal: lpi2c_sda, pin_signal: I2C2_SDA, OD: ENABLED, PD: DISABLED}
+  - {pin_num: B14, peripheral: LPI2C2, signal: lpi2c_scl, pin_signal: I2C2_SCL, SION: ENABLED, OD: ENABLED, PD: DISABLED}
+  - {pin_num: B15, peripheral: LPI2C2, signal: lpi2c_sda, pin_signal: I2C2_SDA, SION: ENABLED, OD: ENABLED, PD: DISABLED}
   - {pin_num: D18, peripheral: LPUART2, signal: lpuart_tx, pin_signal: UART2_TXD, PD: DISABLED, PU: DISABLED, FSEL1: SlOW_SLEW_RATE}
   - {pin_num: H22, peripheral: LPUART2, signal: lpuart_rx, pin_signal: UART2_RXD, OD: DISABLED, PD: ENABLED, PU: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: NO_DRIVE}
   - {pin_num: N26, peripheral: FLEXIO1, signal: 'flexio_flexio, 02', pin_signal: GPIO_IO02, PD: DISABLED, FSEL1: SLIGHTLY_FAST_SLEW_RATE}
@@ -97,12 +97,12 @@ void BOARD_InitPins(void) {                                /*!< Function assigne
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_PD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_I2C2_SCL__LPI2C2_SCL, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_I2C2_SCL__LPI2C2_SCL, 1U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_I2C2_SCL__LPI2C2_SCL, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_OD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_I2C2_SDA__LPI2C2_SDA, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_I2C2_SDA__LPI2C2_SDA, 1U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_I2C2_SDA__LPI2C2_SDA, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |
