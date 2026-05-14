@@ -2664,6 +2664,13 @@ void APP_SRTM_SetRpmsgMonitor(app_rpmsg_monitor_t monitor, void *param)
     rpmsgMonitorParam = param;
 }
 
+static void APP_SRTM_ReInitI2CDevice(void)
+{
+    LPI2C_MasterDeinit(LPI2C0);
+    LPI2C_MasterDeinit(LPI2C1);
+    APP_SRTM_InitI2CDevice();
+}
+
 static srtm_status_t APP_SRTM_I2C_SwitchChannel(srtm_i2c_adapter_t adapter,
                                                 uint32_t base_addr,
                                                 srtm_i2c_type_t type,
@@ -2700,6 +2707,10 @@ static srtm_status_t APP_SRTM_I2C_Write(srtm_i2c_adapter_t adapter,
     if (retVal == kStatus_LPI2C_Timeout)
     {
         BOARD_I2C_ReleaseBus((int32_t)LPI2C_GetInstance((LPI2C_Type *)base_addr));
+    }
+    else if (retVal == kStatus_LPI2C_Nak || retVal == kStatus_LPI2C_FifoError)
+    {
+        APP_SRTM_ReInitI2CDevice();
     }
 
     return (retVal == kStatus_Success) ? SRTM_Status_Success : SRTM_Status_TransferFailed;
