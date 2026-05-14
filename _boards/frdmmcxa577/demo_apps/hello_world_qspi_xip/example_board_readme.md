@@ -22,8 +22,9 @@ Prepare the Demo
          Another way to enter ISP mode.
               nxpdebugmbox.exe -i pyocd ispmode -m 0
     4.2  Type the following command into the command prompt
-	blhost -p COMxx write-memory 0x11002000 <SDK_root>\boards\<EVK name>\demo_apps\hello_world_qspi_xip\bootfromflexspi.bin
-	Note: "xx" in the command above should be replaced with the COM port number of your EVK.
+        blhost -p COMxx -- flash-erase-region 0x11002000 0x400
+        blhost -p COMxx write-memory 0x11002000 <SDK_root>\boards\<EVK name>\demo_apps\hello_world_qspi_xip\bootfromflexspi.bin
+    Note: "xx" in the command above should be replaced with the COM port number of your EVK.
 5.  After successfully running the script above, press and release the reset button (SW1 - N9 RST key). 
 6.  Open a serial terminal with the following settings :
     - 115200 baud rate
