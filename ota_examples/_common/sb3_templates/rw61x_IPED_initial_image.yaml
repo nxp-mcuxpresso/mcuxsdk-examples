@@ -68,11 +68,10 @@ commands:
       size: '0x00001000'
 
   # Erase application slot
-  # Note: Erasing big partition could take time in single SB command blocking the app, we assume the slot was erased by the app
-  #- erase:
-  #    address: '0x08040000'
-  #    memoryId: 9
-  #    size: '0x00200000'
+  - erase:
+      address: '0x08040000'
+      memoryId: 9
+      size: '0x00200000'
 
   # Set up IPED region for application:
   # region size calculation:
@@ -112,7 +111,7 @@ commands:
   - load:
       address: '0x08040000'
       memoryId: 9
-      data: source_images/signed__ota_mcuboot_basic_iped_remap.bin
+      data: source_images/signed__ota_mcuboot_basic.bin
   # Write slot trailer (unencrypted):
   - load:
       address: '0x0823FF00'

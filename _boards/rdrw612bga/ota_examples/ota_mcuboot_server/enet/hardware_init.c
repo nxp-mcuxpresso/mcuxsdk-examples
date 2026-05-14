@@ -53,6 +53,7 @@ void BOARD_InitHardware(void)
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
     BOARD_InitModuleClock();
+    CLOCK_EnableClock(kCLOCK_Otp);
 
     ENET_ResetHardware();
 

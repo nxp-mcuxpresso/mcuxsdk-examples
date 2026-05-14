@@ -9,7 +9,7 @@ For more information see [MCUboot's serial recovery documentation](https://docs.
 
 **Encrypted image support**
 
-Serial recovery is not fully supported in the current MCUboot version when using Encrypted XIP mode. However, MCUboot encrypted images can still be used as OTA containers. To enable this functionality, switch the crypto backend to either the mbedTLS legacy API (PSA is not supported) or TinyCrypt, and add the following configuration to your `mcuboot_config.h` file.
+Serial recovery is not fully supported in the current MCUboot version when using an encrypted XIP mode. However, MCUboot encrypted images can still be used as OTA containers. To enable this functionality, switch the crypto backend to either the mbedTLS legacy API (PSA is not supported) or TinyCrypt, and add the following configuration to your `mcuboot_config.h` file.
 
 ~~~
 CONFIG_BOOT_ENCRYPT_EC256

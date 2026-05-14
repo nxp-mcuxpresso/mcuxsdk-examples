@@ -54,16 +54,16 @@ The encrypted XIP extension uses a reserved area called encryption metadata, whi
 
 The metadata sector consists of platform-specific configuration block and a magic id. The magic acts as a confirmation of the integrity of the configuration block as it is written as last in a separate flash page.
 
-It's recommended to have both blocks (config and magic) in a common flash sector so they are separated by flash page granularity and deleted simultaneously during sector erase. Typically, in the example code, the configuration block is placed at the beginning of the sector and the magic is placed at the end of the sector.
+It's recommended to have the configuration block and the magic id in a common flash sector so they are separated by flash page granularity and deleted simultaneously during sector erase. Typically, in the example code, the configuration block is placed at the beginning of the sector and the magic is placed at the end of the sector.
 
-During an OTA update, the extension generates a new configuration block, holds it as context in RAM, and reconfigures the encryption unit for the updated area. If the update and verification of the execution area are successful, the configuration block is then written to Flash. This approach is necessary for some encryption modules (such as IPED and NPX), as reading invalid cipher causes a device reset and a possible endless reset loop.
+During an OTA update, the extension generates a new configuration block, holds it as a context in RAM, and reconfigures the encryption unit for the updated area. If the OTA update and verification of the execution area are successful, the configuration block is then persisted in Flash. This approach is necessary for some encryption modules (such as IPED and NPX), as reading invalid cipher causes a device reset leading to a possible endless reset loop.
 
 <!-- TOC --><a name="3-encrypted-xip-upgrade-modes"></a>
 ## 3. Encrypted XIP upgrade modes
 
 The extension supports __OVERWRITE_ONLY__ and __FLASH_REMAP__ upgrade modes. Each strategy has its advantages and disadvantages, so the selection depends on the user and their requirements.
 
-__Note: Encrypted XIP with FLASH_REMAP support is currently in an experimental state and enabled only for RW61x devices using IPED encryption. The mode can be evaluated only with `ota_mcuboot_basic_iped_remap` example__
+__Note: Encrypted XIP with FLASH_REMAP support is currently in an experimental state and enabled only for RW61x devices using IPED encryption. The mode can be evaluated only with `ota_mcuboot_basic` example__
 
 <!-- TOC --><a name="31-overwrite_only"></a>
 ### 3.1 OVERWRITE_ONLY
@@ -74,7 +74,7 @@ Following image shows simplified OTA update flow of device fleet using encrypted
 
 ![Image](encrypted_xip_pics/device_fleet_graph.jpg)
 
-The device fleet shares a common MCUboot private key used for decryption of encrypted OTA images residing in staging areas. The MCUboot AES key and hardware encryption module are then used for image re-encryption to the execution area. The hardware key is provisioned by NXP or the user and is typically unique per device instance to prevent image cloning.
+The device fleet shares a common MCUboot private key used for decryption of encrypted OTA images residing in staging areas. The MCUboot AES key and hardware encryption module are then used for image re-encryption to the execution area. The hardware key is provisioned by NXP or a user and is typically unique per device instance to prevent image cloning.
 
 For __OVERWRITE_ONLY__ mode an image encrypted by MCUboot is used as a secure capsule for transport and staging in the non-XIP area of a device. This is a feature of MCUboot - for more information please see [MCUboot Encrypted images documentation](https://docs.mcuboot.com/encrypted_images.html).
 
@@ -119,7 +119,7 @@ Following image shows simplified OTA update flow of device fleet using encrypted
 
 An OTA image is always downloaded to the inactive slot and marked for testing on the next boot. If the new image doesn't mark itself as OK (confirmed), it will be deleted and the previous version will boot again. This feature is called revert.
 
-The hardware key is provisioned by NXP or the user and is typically unique per device instance to prevent image cloning.
+The hardware key is provisioned by NXP or a user and is typically unique per device instance to prevent image cloning.
 
 Compared to OVERWRITE_ONLY mode, this update strategy doesn't use MCUboot encrypted images, so there is no need to secure the MCUboot private key. However, the OTA image is then just a signed plaintext, which is exposed during transport. If the transport isn't secure, the user must implement their own secure container or utilize [SB3 as a secure capsule](sb3_common_readme.md) for the MCUboot image.
 
@@ -148,7 +148,7 @@ Before jumping to the booting process, the on-the-fly decryption is initialized 
 <!-- TOC --><a name="323-limitations-of-flash_remap-mode"></a>
 #### 3.2.3 Limitations of FLASH_REMAP mode
 
-[The flash remap feature](flash_remap_readme.md) combined with encrypted XIP adds another layer of complexity. Encrypted data can be decrypted on-the-fly only by logical access (code read, code fetch), as physical access (using the flash driver) passes encrypted data. Due to this, from the application context with active flash remap, the decrypted content such as the image header and image payload in the inactive (overlayed) slot are not accessible. For example, from the application context it is not possible to calculate a hash of written data - which is required by some certifications (https://arm-software.github.io/psa-api/fwu/).
+[The flash remap feature](flash_remap_readme.md) combined with encrypted XIP adds another layer of complexity. Encrypted data can be decrypted on-the-fly only through logical access (code read, code fetch), as physical access (using the flash driver) returns encrypted data. Due to this, from the application context with an active flash remap, the decrypted content such as the image header and image payload in the inactive (overlaid) slot is not accessible. For example, from the application context, it is not possible to calculate a hash of written data—which is required by some certifications (https://arm-software.github.io/psa-api/fwu/).
 
 <!-- TOC --><a name="33-summary-of-encrypted-xip-upgrade-modes"></a>
 ### 3.3 Summary of Encrypted XIP upgrade modes

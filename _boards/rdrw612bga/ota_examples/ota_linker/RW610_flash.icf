@@ -50,7 +50,11 @@ define symbol m_interrupts_ram_start           = 0x20000000;
 define symbol m_interrupts_ram_end             = 0x20000000 + __ram_vector_table_offset__;
 
 define symbol m_data_start                     = m_interrupts_ram_start + __ram_vector_table_size__;
-define symbol m_data_end                       = 0x2012FFFF;
+define symbol m_data_end                       = 0x2012FBFF;
+
+/* Reserve 1 kB of ram for ROM IAP variables (see Encrypted XIP documentation) */
+define symbol m_romiap_reserved_start          = 0x2012FC00;
+define symbol m_romiap_reserved_end            = 0x2012FFFF;
 
 define symbol m_mbox1_start                    = 0x41380000;
 define symbol m_mbox1_end                      = 0x41380487;

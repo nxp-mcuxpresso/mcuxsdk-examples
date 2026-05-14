@@ -36,9 +36,9 @@ The whole IPED initialization, metadata handling and image re-encryption are res
 
 Additional information for IPED in RW61x can be found in its reference manual.
 
-## 2. Bootloader encryption (OVERWRITE_ONLY only)
+## 2. Encryption of MCUboot (OVERWRITE_ONLY only)
 
-Note: Encrypting the mcuboot partition is required only for case when a private key used for offline encryption is embedded in bootloader code as C array, otherwise, it's optional.
+Encrypting the mcuboot partition is required only for case when a private key used for offline encryption is embedded in bootloader code as C array, otherwise, it's optional.
 
 To simplify the workflow, the MCUXpresso Secure Provisioning Tool (SEC tool) is used.
 
@@ -70,7 +70,7 @@ Note: This operation provisions the device with __RKTH__ and __CUST_MK_SK__ perm
 
 ## 3. Initial SB3 image, OTA SB3 image (FLASH_REMAP only)
 
-__Note: Encrypted XIP with FLASH_REMAP support is currently in an experimental state. The mode can be evaluated only with ota_mcuboot_basic_iped_remap example__
+__Note: Encrypted XIP with FLASH_REMAP support is currently in an experimental state. The mode can be evaluated only with ota_mcuboot_basic example__
 
 Due of customized placement of configuration structures out of FCB, an initial SB3 is required for safe deployment during end-product manufacturing. SB3 container can be also used as secure capsule for signed image providing an encryption during the OTA image transport. Additional information can be found ib [SB3 documentation](sb3_common_readme.md)
 
@@ -96,7 +96,7 @@ For initial image:
 1. Get the device into ISP mode
     * Typically on development boards hold the ISP button and press the reset button
     * Test the ISP connection in SEC tool
-2. The initial imag can be loaded using `blhost`
-    * `blhost -p COM3,115200 receive-sb-file initial_image_slot_0.sb`
+2. The initial image can be loaded using `blhost`
+    * `blhost -t 100000 -p COM3,115200 receive-sb-file initial_image_slot_0.sb`
 
 For OTA update using SB3 follow instructions [MCUBoot and encrypted XIP in OTA examples](encrypted_xip.md).

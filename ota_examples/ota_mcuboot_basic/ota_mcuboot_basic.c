@@ -24,6 +24,14 @@
 #include "sb3_api.h"
 #endif
 
+#if defined(CONFIG_BOOT_MODE_ENCRYPTED_XIP_REMAP)
+#include "encrypted_xip.h"
+#endif
+
+#if defined(ENCRYPTED_XIP_IPED)
+#include "fsl_iped.h"
+#endif
+
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -95,6 +103,9 @@ static uint32_t progbuf[1024/sizeof(uint32_t)];
 
 static hashctx_t sha256_xmodem_ctx;
 
+static struct flash_area *fa_update;
+static struct flash_area *fa_meta;
+
 /*******************************************************************************
  * Code
  ******************************************************************************/
@@ -155,6 +166,9 @@ static shell_status_t shellCmd_image(shell_handle_t shellHandle, int32_t argc, c
 
     if (argc == 1 || (argc == 2 && !strcmp(argv[1], "info")))
     {
+#if defined(CONFIG_BOOT_MODE_ENCRYPTED_XIP_REMAP)
+        PRINTF("Note: This is Remap + Encrypted XIP, image payload can't be read\n");
+#endif
         bl_print_image_info(flash_sha256);
         return kStatus_SHELL_Success;
     }
@@ -228,6 +242,33 @@ static shell_status_t shellCmd_image(shell_handle_t shellHandle, int32_t argc, c
             return kStatus_SHELL_Error;
         }
 
+#if defined(CONFIG_BOOT_MODE_ENCRYPTED_XIP_REMAP)
+        /*
+         * Encrypted XIP: Before erase always invalidate related configuration 
+         * block and turn of encryption for erased region 
+         */
+        PRINTF("Encrypted XIP: Erasing the configuration block of the inactive slot\n");
+        if((ptn.start + BOOT_FLASH_BASE) == BOOT_FLASH_ACT_APP)
+        {
+            ret = mflash_drv_sector_erase(BOOT_FLASH_SLOT0_ENC_CFG_ADDRESS - BOOT_FLASH_BASE);
+            IPED_SetRegionEnable(FLEXSPI, kIPED_Region1, false);
+        }
+        else if ((ptn.start + BOOT_FLASH_BASE) == BOOT_FLASH_CAND_APP)
+        {
+            ret = mflash_drv_sector_erase(BOOT_FLASH_SLOT1_ENC_CFG_ADDRESS - BOOT_FLASH_BASE);
+            IPED_SetRegionEnable(FLEXSPI, kIPED_Region2, false);
+        }
+        else
+        {
+            assert(0);
+        }
+        if (ret)
+        {
+            PRINTF("\nFailed to erase configuration block (ret=%d)\n", ret);
+            return kStatus_SHELL_Error;
+        }
+#endif
+        
         uint32_t slotaddr     = ptn.start;
         uint32_t slotsize     = ptn.size;
         uint32_t slotcnt      = (slotsize-1 + MFLASH_SECTOR_SIZE) / MFLASH_SECTOR_SIZE;
@@ -326,8 +367,17 @@ static int process_received_data(uint32_t dst_addr, uint32_t offset, uint32_t si
 {
     int ret;
     uint32_t *data = progbuf;
+    
+#if defined(CONFIG_BOOT_MODE_ENCRYPTED_XIP_REMAP)
+    //todo add image size check for fist packet
+    ret = encrypted_xip_flash_write(fa_update, offset, data, size);
+    if (ret)
+    {
+        PRINTF("Failed to process data at offset %x (ret %d)\n", offset, ret);
+        return -1;
+    }
+#else
     uint32_t addr = dst_addr + offset;
-
     /* 1kB programming buffer should be ok with all page size alignments */
     while (size)
     {
@@ -349,7 +399,7 @@ static int process_received_data(uint32_t dst_addr, uint32_t offset, uint32_t si
         data += chunk/sizeof(uint32_t);
         size -= chunk;
     }
-
+#endif
     return 0;
 }
 
@@ -514,6 +564,36 @@ static shell_status_t shellCmd_xmodem(shell_handle_t shellHandle, int32_t argc, 
     sha256_init(&sha256_xmodem_ctx);
 
     PRINTF("Initiated XMODEM-CRC transfer. Receiving... (Press 'x' to cancel)\n");
+    
+#if defined(CONFIG_BOOT_MODE_ENCRYPTED_XIP_REMAP)
+    encrypted_xip_init();
+    uint32_t slot;
+    if(prt_ota.start == BOOT_FLASH_ACT_APP - BOOT_FLASH_BASE)
+    {
+        /* Targetting slot 0 */
+        fa_update = &boot_flash_map[0];
+        fa_meta = &boot_flash_meta_map[0];
+        slot = 0;
+    }
+    else if(prt_ota.start == BOOT_FLASH_CAND_APP - BOOT_FLASH_BASE)
+    {
+        /* Targetting slot 1 */
+        fa_update = &boot_flash_map[1];
+        fa_meta = &boot_flash_meta_map[1];
+        slot = 1;
+    }
+    else
+    {
+        PRINTF("Invalid slot number\n");
+        return kStatus_SHELL_Error;
+    }
+    if(encrypted_xip_config_region(fa_meta, fa_update) != kStatus_Success)
+    {
+        PRINTF("\nencrypted_xip_config_region failed\n");
+        return kStatus_SHELL_Error;
+    }
+    PRINTF("Encrypted XIP: Configured configuration block for slot %d\n", slot);
+#endif
 
     recvsize = xmodem_receive(&cfg);
 
@@ -526,6 +606,22 @@ static shell_status_t shellCmd_xmodem(shell_handle_t shellHandle, int32_t argc, 
         return kStatus_SHELL_Error;
     }
     PRINTF("\nReceived %u bytes\n", recvsize);
+    
+#if defined(CONFIG_BOOT_MODE_ENCRYPTED_XIP_REMAP)
+    if(encrypted_xip_flash_write_finish(fa_update) != kStatus_Success)
+    {
+        PRINTF("\nencrypted_xip_flash_write_finish failed\n");
+        return kStatus_SHELL_Error;
+    }
+    
+    if(encrypted_xip_config_write(fa_meta) != kStatus_Success)
+    {
+        PRINTF("\nencrypted_xip_config_write failed\n");
+        return kStatus_SHELL_Error;
+    }
+    encrypted_xip_finish();
+    PRINTF("Note: This is Remap + Encrypted XIP, image payload can't be read, so SHA256 will differ...\n");
+#endif
 
     sha256_finish(&sha256_xmodem_ctx, sha256_recv);
     flash_sha256(prt_ota.start, recvsize, sha256_flash);

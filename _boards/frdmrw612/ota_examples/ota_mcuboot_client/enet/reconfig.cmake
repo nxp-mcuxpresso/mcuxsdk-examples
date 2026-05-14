@@ -1,6 +1,7 @@
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES ${board_root}/${board}/ota_examples/ota_mcuboot_client/mbedtls_user_config.h
+            middleware/mcuboot_opensource/boot/nxp_mcux_sdk/flashapi/flash_api.c
 )
 
 mcux_add_include(
@@ -10,7 +11,8 @@ mcux_add_include(
 
 mcux_add_macro(
     CC "-DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_user_config.h\\\"\
-       -DFSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE"
+       -DFSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE\
+       -DENCRYPTED_XIP_IPED"
 )
 
 # Add or remove Linker File Configurations

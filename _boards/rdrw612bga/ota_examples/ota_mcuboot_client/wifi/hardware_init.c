@@ -17,6 +17,7 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
+    CLOCK_EnableClock(kCLOCK_Otp);
 
     /* Reset GMDA */
     RESET_PeripheralReset(kGDMA_RST_SHIFT_RSTn);

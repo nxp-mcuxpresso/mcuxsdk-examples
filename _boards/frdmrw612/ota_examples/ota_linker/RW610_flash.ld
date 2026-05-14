@@ -38,7 +38,9 @@ MEMORY
 {
   m_interrupts          (RX)  : ORIGIN = 0x08040400, LENGTH = 0x00000280
   m_text                (RX)  : ORIGIN = 0x08040680, LENGTH = 0x001FE980
-  m_data                (RW)  : ORIGIN = 0x20000000, LENGTH = 0x00130000
+  m_data                (RW)  : ORIGIN = 0x20000000, LENGTH = 0x0012FC00
+  /* Reserve 1 kB of ram for ROM IAP variables (see Encrypted XIP documentation) */
+  m_romiap_reserved     (RW)  : ORIGIN = 0x2012FC00, LENGTH = 0x00000400
   m_mbox1               (RW) : ORIGIN = 0x41380000, LENGTH = 0x00000488
   m_txq1                (RW) : ORIGIN = 0x41380488, LENGTH = 0x00001000
   m_mbox2               (RW) : ORIGIN = 0x443C0000, LENGTH = 0x00000488

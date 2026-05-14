@@ -2,6 +2,7 @@ mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/ota_examples/_common/sb3_api/sb3_api.h
             examples/ota_examples/_common/sb3_api/sb3_api_rw61x.c
+            middleware/mcuboot_opensource/boot/nxp_mcux_sdk/flashapi/flash_api.c
 )
 
 mcux_add_include(
@@ -11,7 +12,8 @@ mcux_add_include(
 
 # Add additional configuration
 mcux_add_macro(
-    CC "-DMCUBOOT_OTA_SB3_SUPPORT"
+    CC "-DMCUBOOT_OTA_SB3_SUPPORT\
+        -DENCRYPTED_XIP_IPED"
 )
 
 # Add or remove Linker File Configurations

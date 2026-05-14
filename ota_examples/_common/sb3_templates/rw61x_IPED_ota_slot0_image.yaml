@@ -112,7 +112,7 @@ commands:
   - load:
       address: '0x08040000'
       memoryId: 9
-      data: source_images/signed__ota_mcuboot_basic_iped_remap.bin
+      data: source_images/signed__ota_mcuboot_basic.bin
   # Write slot trailer (unencrypted):
   - load:
       address: '0x0823FF00'

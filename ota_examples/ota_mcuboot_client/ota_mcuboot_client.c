@@ -41,6 +41,10 @@
  * Definitions
  ******************************************************************************/
 
+#if defined(CONFIG_BOOT_MODE_ENCRYPTED_XIP_REMAP)
+#error "This example is currently not compatible with Encrypted XIP mode utilizing flash remap"
+#endif
+
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
