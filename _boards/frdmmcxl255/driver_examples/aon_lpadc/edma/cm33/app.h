@@ -24,7 +24,7 @@
 #define DEMO_ADC_CMD_INDEX              kADC_Cmd1
 #define DEMO_ADC_FIFO_INDEX             kADC_Fifo0
 #define DEMO_ADC_TRIG_INDEX             kADC_Trig0
-#define DEMO_EDMA_REQUEST               kDma0RequestMuxLPAdc0FifoRequest
+#define DEMO_EDMA_REQUEST               kDma0RequestMuxAdc0FifoRequest
 #define DEMO_EDMA_CHANNEL               0U
 #define DEMO_EDMA_BASE                  DMA0
 #define DEMO_EDMA_IRQ                   DMA0_CH0_IRQn
