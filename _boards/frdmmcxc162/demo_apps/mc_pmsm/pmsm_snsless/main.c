@@ -13,7 +13,7 @@
 #include "fsl_lpuart.h"
 #include "fsl_lpadc.h"
 #include "board.h"
-#include "m1_sm_snsless_enc.h"
+#include "m1_sm_snsless.h"
 #include "mc_periph_init.h"
 #include "mid_sm_states.h"
 #include "m1_mid_switch.h"
