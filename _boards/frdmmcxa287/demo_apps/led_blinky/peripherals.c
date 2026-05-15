@@ -15,10 +15,10 @@ product: Peripherals v15.0
 processor: MCXA287
 package_id: MCXA287VPN
 mcu_data: ksdk2_0
-processor_version: 0.2603.90
+processor_version: 0.2606.20
 functionalGroups:
 - name: BOARD_InitPeripherals
-  UUID: 349dcd2f-5a7f-40a5-b029-a15d17fcfb8e
+  UUID: 4cff9e57-ad79-4ec3-bc89-84e3a61695f2
   called_from_default_init: true
   selectedCore: cm33_core0
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
