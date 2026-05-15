@@ -22,7 +22,7 @@
  ******************************************************************************/
 uint8_t masterRxData[TRANSFER_SIZE] = {0U};
 uint8_t masterTxData[TRANSFER_SIZE] = {0U};
-volatile uint32_t g_systickCounter  = 20U;
+
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -30,14 +30,6 @@ volatile uint32_t g_systickCounter  = 20U;
 /*******************************************************************************
  * Code
  ******************************************************************************/
-void SysTick_Handler(void)
-{
-    if (g_systickCounter != 0U)
-    {
-        g_systickCounter--;
-    }
-}
-
 int main(void)
 {
     BOARD_InitHardware();
@@ -116,17 +108,7 @@ int main(void)
         LPSPI_MasterTransferBlocking(EXAMPLE_LPSPI_MASTER_BASEADDR, &masterXfer);
 
         /* Delay to wait slave is ready */
-        if (SysTick_Config(SystemCoreClock / 1000U))
-        {
-            while (1)
-            {
-            }
-        }
-        /* Delay 20 ms */
-        g_systickCounter = 20U;
-        while (g_systickCounter != 0U)
-        {
-        }
+        SDK_DelayAtLeastUs(20000U, SystemCoreClock);
 
         /* Start master transfer, receive data from slave */
         masterXfer.txData   = NULL;
