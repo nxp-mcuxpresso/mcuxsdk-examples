@@ -19,8 +19,8 @@
 extern void __RscTblStart;
 extern void __RscTblInDramStart;
 #elif defined(__GNUC__)
-extern const void __RscTblStart;
-extern const void __RscTblInDramStart;
+extern const char __RscTblStart;
+extern const char __RscTblInDramStart;
 #else
 #error Not support the compiler.
 #endif
