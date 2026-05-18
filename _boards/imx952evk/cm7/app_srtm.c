@@ -885,6 +885,8 @@ static void APP_IO_SetPinConfig(uint16_t ioId, bool asInput)
 {
     uint8_t portIdx = APP_GPIO_IDX(ioId);
     uint8_t pinIdx  = APP_PIN_IDX(ioId);
+    assert(portIdx < APP_PORT_NUM);
+    assert(pinIdx < APP_PIN_NUM);
 
     /* coverity[cert_arr30_c_violation] */
     IOMUXC_SetPinConfig(suspendContext.io.data[portIdx][pinIdx].pinFuncId[0], suspendContext.io.data[portIdx][pinIdx].pinFuncId[1], suspendContext.io.data[portIdx][pinIdx].pinFuncId[2], suspendContext.io.data[portIdx][pinIdx].pinFuncId[3],
@@ -895,6 +897,8 @@ static srtm_status_t APP_IO_ConfOutput(uint16_t ioId, srtm_io_value_t ioValue)
 {
     uint8_t portIdx = APP_GPIO_IDX(ioId);
     uint8_t pinIdx  = APP_PIN_IDX(ioId);
+    assert(portIdx < APP_PORT_NUM);
+    assert(pinIdx < APP_PIN_NUM);
 
     /* coverity[cert_arr30_c_violation] */
     if (suspendContext.io.data[portIdx][pinIdx].p_gpioHandle != NULL)
@@ -918,6 +922,8 @@ static srtm_status_t APP_IO_SetOutput(srtm_service_t service,
 {
     uint8_t portIdx = APP_GPIO_IDX(ioId);
     uint8_t pinIdx  = APP_PIN_IDX(ioId);
+    assert(portIdx < APP_PORT_NUM);
+    assert(pinIdx < APP_PIN_NUM);
 
     /* coverity[cert_arr30_c_violation] */
     if (suspendContext.io.data[portIdx][pinIdx].p_gpioHandle != NULL)
@@ -937,6 +943,8 @@ static srtm_status_t APP_IO_GetInput(srtm_service_t service,
 {
     uint8_t portIdx = APP_GPIO_IDX(ioId);
     uint8_t pinIdx  = APP_PIN_IDX(ioId);
+    assert(portIdx < APP_PORT_NUM);
+    assert(pinIdx < APP_PIN_NUM);
     uint8_t pinState;
 
     /* coverity[cert_arr30_c_violation] */
@@ -958,6 +966,8 @@ static srtm_status_t APP_IO_GetDirection(srtm_service_t service,
 {
     uint8_t portIdx = APP_GPIO_IDX(ioId);
     uint8_t pinIdx  = APP_PIN_IDX(ioId);
+    assert(portIdx < APP_PORT_NUM);
+    assert(pinIdx < APP_PIN_NUM);
 
     /* coverity[cert_arr30_c_violation] */
     if (suspendContext.io.data[portIdx][pinIdx].p_gpioHandle != NULL)
@@ -974,6 +984,8 @@ static srtm_status_t APP_IO_ConfInput(uint16_t ioId, srtm_io_event_t event, bool
 {
     uint8_t portIdx = APP_GPIO_IDX(ioId);
     uint8_t pinIdx  = APP_PIN_IDX(ioId);
+    assert(portIdx < APP_PORT_NUM);
+    assert(pinIdx < APP_PIN_NUM);
     hal_gpio_pin_config_t config;
 
     APP_IO_SetPinConfig(ioId, true);
@@ -1038,6 +1050,8 @@ static srtm_status_t APP_IO_ConfIEvent(
 {
     uint8_t portIdx = APP_GPIO_IDX(ioId);
     uint8_t pinIdx  = APP_PIN_IDX(ioId);
+    assert(portIdx < APP_PORT_NUM);
+    assert(pinIdx < APP_PIN_NUM);
 
     /* coverity[cert_arr30_c_violation] */
     if (suspendContext.io.data[portIdx][pinIdx].p_gpioHandle != NULL)
