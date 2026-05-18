@@ -290,17 +290,17 @@ void gpu_init(void)
     /* Initialize GPU. */
     BOARD_PrepareVGLiteController();
 
-    if (vg_lite_init(DEFAULT_VG_LITE_TW_WIDTH, DEFAULT_VG_LITE_TW_HEIGHT) != VG_LITE_SUCCESS)
+    if (vg_lite_set_command_buffer_size(VG_LITE_COMMAND_BUFFER_SIZE) != VG_LITE_SUCCESS)
     {
-        PRINTF("VGLite init error. STOP.");
+        PRINTF("VGLite set command buffer. STOP.");
         vg_lite_close();
         while (1)
             ;
     }
 
-    if (vg_lite_set_command_buffer_size(VG_LITE_COMMAND_BUFFER_SIZE) != VG_LITE_SUCCESS)
+    if (vg_lite_init(DEFAULT_VG_LITE_TW_WIDTH, DEFAULT_VG_LITE_TW_HEIGHT) != VG_LITE_SUCCESS)
     {
-        PRINTF("VGLite set command buffer. STOP.");
+        PRINTF("VGLite init error. STOP.");
         vg_lite_close();
         while (1)
             ;
