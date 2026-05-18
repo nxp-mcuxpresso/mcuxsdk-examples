@@ -927,6 +927,7 @@ status_t BOARD_I2C_ReleaseBus(int32_t i2cInstIdx)
         { kCLOCK_invalid, I2C3_RELEASE_SCL_GPIO, I2C3_RELEASE_SDA_GPIO, I2C3_RELEASE_SCL_PIN, I2C3_RELEASE_SDA_PIN},
         { kCLOCK_invalid, I2C4_RELEASE_SCL_GPIO, I2C4_RELEASE_SDA_GPIO, I2C4_RELEASE_SCL_PIN, I2C4_RELEASE_SDA_PIN},
     };
+    /* coverity[cert_int31_c_violation] */
     assert(i2cInstIdx < ARRAY_SIZE(i2c_infos));
     i2c_rls_info_t *i2c_info = &i2c_infos[i2cInstIdx];
 
