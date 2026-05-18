@@ -8,14 +8,14 @@
 #include "fsl_clock.h"
 #include "fsl_reset.h"
 #include "board.h"
-
 /*${header:end}*/
 
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    BOARD_InitBootPins();
+    BOARD_InitDEBUG_UARTPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
+
 }
 /*${function:end}*/

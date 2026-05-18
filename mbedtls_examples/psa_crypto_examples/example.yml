@@ -104,6 +104,8 @@ psa_crypto_examples:
     - -iar@sdram_release
     - -mdk@sdram_debug
     - -mdk@sdram_release
-    frdmmcxa366:
-    - -mdk@debug
-    - -mdk@release
+    frdmmcxa366: []
+    frdmmcxa266: []
+    frdmmcxa287: []
+    frdmmcxa577: []
+    frdmmcxl255@cm33: []

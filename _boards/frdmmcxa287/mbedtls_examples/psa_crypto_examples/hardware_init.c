@@ -1,5 +1,5 @@
 /*
- * Copyright 2025-2026 NXP
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -12,10 +12,12 @@
 /*${header:end}*/
 
 /*${function:start}*/
+
 void BOARD_InitHardware(void)
 {
-    BOARD_InitBootPins();
+    BOARD_InitDEBUG_UARTPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
+
 }
 /*${function:end}*/
