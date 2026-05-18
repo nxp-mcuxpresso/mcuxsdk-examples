@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2024,2025 NXP
+ * Copyright 2019-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -74,10 +74,6 @@
 #ifndef BOARD_UART_CLKSRC
 /* Use FRO192M. Note that FRO6M is not recommended on some platforms */
 #define BOARD_UART_CLKSRC BOARD_UART_CLKSRC_FRO192M
-#endif
-
-#if (BOARD_UART_CLKSRC == BOARD_UART_CLKSRC_FRO192M) && defined(gAppLpuart0WakeUpSourceEnable_d) && (gAppLpuart0WakeUpSourceEnable_d == 1)
-#warning "FRO192M is not available in deep sleep. To be able to wake up from LPUART0, FRO6M needs to be used"
 #endif
 
 #if (defined(HAL_UART_DMA_ENABLE) && (HAL_UART_DMA_ENABLE > 0U))
