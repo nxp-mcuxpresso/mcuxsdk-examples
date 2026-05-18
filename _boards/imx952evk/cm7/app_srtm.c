@@ -441,6 +441,7 @@ static srtm_status_t APP_SRTM_I2C_SwitchChannel(srtm_i2c_adapter_t adapter,
     uint8_t txBuff[1];
 
     assert(channel < SRTM_I2C_SWITCH_CHANNEL_UNSPECIFIED);
+    /* coverity[cert_int31_c_violation] */
     txBuff[0] = 1 << (uint8_t)channel;
     return adapter->write(adapter, base_addr, type, slaveAddr, txBuff, sizeof(txBuff),
                           SRTM_I2C_FLAG_NEED_STOP); // APP_SRTM_I2C_Write
@@ -885,6 +886,7 @@ static void APP_IO_SetPinConfig(uint16_t ioId, bool asInput)
     uint8_t portIdx = APP_GPIO_IDX(ioId);
     uint8_t pinIdx  = APP_PIN_IDX(ioId);
 
+    /* coverity[cert_arr30_c_violation] */
     IOMUXC_SetPinConfig(suspendContext.io.data[portIdx][pinIdx].pinFuncId[0], suspendContext.io.data[portIdx][pinIdx].pinFuncId[1], suspendContext.io.data[portIdx][pinIdx].pinFuncId[2], suspendContext.io.data[portIdx][pinIdx].pinFuncId[3],
                         suspendContext.io.data[portIdx][pinIdx].pinFuncId[4], asInput ? (suspendContext.io.data[portIdx][pinIdx].inputMask) : (suspendContext.io.data[portIdx][pinIdx].outputMask));
 }
@@ -894,11 +896,14 @@ static srtm_status_t APP_IO_ConfOutput(uint16_t ioId, srtm_io_value_t ioValue)
     uint8_t portIdx = APP_GPIO_IDX(ioId);
     uint8_t pinIdx  = APP_PIN_IDX(ioId);
 
+    /* coverity[cert_arr30_c_violation] */
     if (suspendContext.io.data[portIdx][pinIdx].p_gpioHandle != NULL)
     {
         APP_IO_SetPinConfig(ioId, false);
 
+        /* coverity[cert_arr30_c_violation] */
         HAL_GpioSetOutput(suspendContext.io.data[portIdx][pinIdx].p_gpioHandle, (uint8_t)ioValue);
+        /* coverity[cert_arr30_c_violation] */
         suspendContext.io.data[portIdx][pinIdx].direction = SRTM_IoDirectionOutput;
         return SRTM_Status_Success;
     }
@@ -914,8 +919,10 @@ static srtm_status_t APP_IO_SetOutput(srtm_service_t service,
     uint8_t portIdx = APP_GPIO_IDX(ioId);
     uint8_t pinIdx  = APP_PIN_IDX(ioId);
 
+    /* coverity[cert_arr30_c_violation] */
     if (suspendContext.io.data[portIdx][pinIdx].p_gpioHandle != NULL)
     {
+        /* coverity[cert_arr30_c_violation] */
         suspendContext.io.data[portIdx][pinIdx].value = (uint8_t)ioValue;
 
         return APP_IO_ConfOutput(ioId, ioValue);
@@ -932,8 +939,10 @@ static srtm_status_t APP_IO_GetInput(srtm_service_t service,
     uint8_t pinIdx  = APP_PIN_IDX(ioId);
     uint8_t pinState;
 
+    /* coverity[cert_arr30_c_violation] */
     if (suspendContext.io.data[portIdx][pinIdx].p_gpioHandle != NULL)
     {
+        /* coverity[cert_arr30_c_violation] */
         HAL_GpioGetInput(suspendContext.io.data[portIdx][pinIdx].p_gpioHandle, &pinState);
         *pIoValue = pinState ? SRTM_IoValueHigh : SRTM_IoValueLow;
 
@@ -950,8 +959,10 @@ static srtm_status_t APP_IO_GetDirection(srtm_service_t service,
     uint8_t portIdx = APP_GPIO_IDX(ioId);
     uint8_t pinIdx  = APP_PIN_IDX(ioId);
 
+    /* coverity[cert_arr30_c_violation] */
     if (suspendContext.io.data[portIdx][pinIdx].p_gpioHandle != NULL)
     {
+        /* coverity[cert_arr30_c_violation] */
         *pIoDir = suspendContext.io.data[portIdx][pinIdx].direction;
 
         return SRTM_Status_Success;
@@ -970,35 +981,51 @@ static srtm_status_t APP_IO_ConfInput(uint16_t ioId, srtm_io_event_t event, bool
     config.direction = kHAL_GpioDirectionIn;
     config.port = portIdx;
     config.pin = pinIdx;
+    /* coverity[cert_arr30_c_violation] */
     HAL_GpioInit(suspendContext.io.data[portIdx][pinIdx].p_gpioHandle, &config);
+    /* coverity[cert_arr30_c_violation] */
     suspendContext.io.data[portIdx][pinIdx].direction = SRTM_IoDirectionInput;
+    /* coverity[cert_arr30_c_violation] */
     suspendContext.io.data[portIdx][pinIdx].ioId = ioId;
+    /* coverity[cert_arr30_c_violation] */
     HAL_GpioInstallCallback(suspendContext.io.data[portIdx][pinIdx].p_gpioHandle, (hal_gpio_callback_t)APP_HandleGPIOHander, (void *)&suspendContext.io.data[portIdx][pinIdx].ioId);
 
     switch (event)
     {
         case SRTM_IoEventRisingEdge:
+	    /* coverity[cert_arr30_c_violation] */
 	    HAL_GpioSetTriggerMode(suspendContext.io.data[portIdx][pinIdx].p_gpioHandle, kHAL_GpioInterruptRisingEdge);
+	    /* coverity[cert_arr30_c_violation] */
 	    suspendContext.io.data[portIdx][pinIdx].event = SRTM_IoEventRisingEdge;
             break;
         case SRTM_IoEventFallingEdge:
+	    /* coverity[cert_arr30_c_violation] */
 	    HAL_GpioSetTriggerMode(suspendContext.io.data[portIdx][pinIdx].p_gpioHandle, kHAL_GpioInterruptFallingEdge);
+	    /* coverity[cert_arr30_c_violation] */
 	    suspendContext.io.data[portIdx][pinIdx].event = SRTM_IoEventFallingEdge;
             break;
         case SRTM_IoEventEitherEdge:
+	    /* coverity[cert_arr30_c_violation] */
 	    HAL_GpioSetTriggerMode(suspendContext.io.data[portIdx][pinIdx].p_gpioHandle, kHAL_GpioInterruptEitherEdge);
+	    /* coverity[cert_arr30_c_violation] */
 	    suspendContext.io.data[portIdx][pinIdx].event = SRTM_IoEventEitherEdge;
             break;
         case SRTM_IoEventLowLevel:
+	    /* coverity[cert_arr30_c_violation] */
 	    HAL_GpioSetTriggerMode(suspendContext.io.data[portIdx][pinIdx].p_gpioHandle, kHAL_GpioInterruptLogicZero);
+	    /* coverity[cert_arr30_c_violation] */
 	    suspendContext.io.data[portIdx][pinIdx].event = SRTM_IoEventLowLevel;
             break;
         case SRTM_IoEventHighLevel:
+	    /* coverity[cert_arr30_c_violation] */
 	    HAL_GpioSetTriggerMode(suspendContext.io.data[portIdx][pinIdx].p_gpioHandle, kHAL_GpioInterruptLogicOne);
+	    /* coverity[cert_arr30_c_violation] */
 	    suspendContext.io.data[portIdx][pinIdx].event = SRTM_IoEventHighLevel;
             break;
         default:
+	    /* coverity[cert_arr30_c_violation] */
 	    HAL_GpioSetTriggerMode(suspendContext.io.data[portIdx][pinIdx].p_gpioHandle, kHAL_GpioInterruptDisable);
+	    /* coverity[cert_arr30_c_violation] */
 	    suspendContext.io.data[portIdx][pinIdx].event = SRTM_IoEventNone;
             break;
     }
@@ -1012,9 +1039,12 @@ static srtm_status_t APP_IO_ConfIEvent(
     uint8_t portIdx = APP_GPIO_IDX(ioId);
     uint8_t pinIdx  = APP_PIN_IDX(ioId);
 
+    /* coverity[cert_arr30_c_violation] */
     if (suspendContext.io.data[portIdx][pinIdx].p_gpioHandle != NULL)
     {
+        /* coverity[cert_arr30_c_violation] */
         suspendContext.io.data[portIdx][pinIdx].event  = event;
+        /* coverity[cert_arr30_c_violation] */
         suspendContext.io.data[portIdx][pinIdx].wakeup = wakeup;
 
         return APP_IO_ConfInput(ioId, event, wakeup);
