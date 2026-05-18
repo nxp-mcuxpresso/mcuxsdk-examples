@@ -48,13 +48,3 @@ mcux_add_iar_configuration(
     TARGETS debug release
     CC "-Ohz"
 )
-
-if(DEFINED device AND "${device}" STREQUAL "MCXL254")
-    # more options: By default first part of crypto tests included 
-    # Other options ENABLE_CRYPTO_PART2 or ENABLE_CRYPTO_PART3 or ENABLE_STORAGE_TESTS 
-    # to test different suites in psatest
-    # add cc-defines
-    mcux_add_macro(
-         CC "-DREDUCED_PSA_TESTS"
-    )
-endif()
