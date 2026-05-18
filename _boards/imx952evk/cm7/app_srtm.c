@@ -60,8 +60,8 @@ static srtm_service_t ioService;
 /* + 1: there is no GPIO0, but index start from 0 */
 #define APP_PORT_NUM (FSL_FEATURE_SOC_RGPIO_COUNT + 1)
 #define APP_PIN_NUM 32
-#define APP_GPIO_IDX(ioId) ((uint8_t)(((uint16_t)ioId) >> 8U))
-#define APP_PIN_IDX(ioId)  ((uint8_t)ioId)
+#define APP_GPIO_IDX(ioId) ((uint8_t)((((uint16_t)(ioId)) >> 8U) & 0xFFU))
+#define APP_PIN_IDX(ioId)  ((uint8_t)((ioId) & 0xFFU))
 
 typedef struct
 {
@@ -390,7 +390,7 @@ static srtm_status_t APP_SRTM_I2C_Write(srtm_i2c_adapter_t adapter,
     switch (type)
     {
         case SRTM_I2C_TYPE_LPI2C:
-            retVal = BOARD_LPI2C_Send((LPI2C_Type *)base_addr, slaveAddr, 0, 0, buf, len, needStop);
+            retVal = BOARD_LPI2C_Send((LPI2C_Type *)base_addr, (uint8_t)(slaveAddr & 0xFFU), 0, 0, buf, (uint8_t)(len & 0xFFU), needStop);
             break;
         default:
             break;
@@ -418,7 +418,7 @@ static srtm_status_t APP_SRTM_I2C_Read(srtm_i2c_adapter_t adapter,
     switch (type)
     {
         case SRTM_I2C_TYPE_LPI2C:
-            retVal = BOARD_LPI2C_Receive((LPI2C_Type *)base_addr, slaveAddr, 0, 0, buf, len, needStop);
+            retVal = BOARD_LPI2C_Receive((LPI2C_Type *)base_addr, (uint8_t)(slaveAddr & 0xFFU), 0, 0, buf, (uint8_t)(len & 0xFFU), needStop);
             break;
         default:
             break;
