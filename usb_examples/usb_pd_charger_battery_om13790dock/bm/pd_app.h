@@ -156,7 +156,7 @@ typedef struct _pd_app
     volatile uint8_t retryCount;
     uint8_t portNumber;
     uint8_t portShieldVersion;
-
+    uint8_t reserved[2];
     /* application can maintain these values for command evaluation */
     volatile uint32_t prSwapAccept : 1;    /* pr_swap and fr_swap */
     volatile uint32_t vconnSwapAccept : 1; /* vconn_swap */

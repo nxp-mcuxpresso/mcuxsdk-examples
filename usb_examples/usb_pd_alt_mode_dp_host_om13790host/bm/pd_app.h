@@ -147,13 +147,14 @@ typedef struct _pd_app
     uint8_t msgSop;
     uint8_t portNumber;
     uint8_t portShieldVersion;
+    uint8_t reqestResponse;
 
     pd_source_cap_ext_data_block_t selfExtCap;
     pd_status_data_block_t selfStatus;
     pd_battery_cap_data_block_t selfBatteryCap;
     pd_battery_status_data_object_t selfBatteryStatus;
     pd_manufac_info_data_block_t selfManufacInfo;
-    uint8_t reqestResponse;
+
     /* application can maintain these values for command evaluation */
     volatile uint32_t prSwapAccept : 1;    /* pr_swap and fr_swap */
     volatile uint32_t drSwapAccept : 1;    /* dr_swap */
