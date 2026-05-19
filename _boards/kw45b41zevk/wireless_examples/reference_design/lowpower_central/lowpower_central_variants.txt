@@ -34,9 +34,9 @@ $lp_test_disable_privacy_bonding_pairing
 #define gAppUseBonding_d                               0
 #define gAppUsePairing_d                               0
 
-// No change in app behavior, we disable lowpower on CM3
+// No change in app behavior, we disable lowpower on NBU
 $lp_test_NBU_lowpower_disable
-#define gPLATFORM_DisableNbuLowpower_d                 1
+#define gAppDisableControllerLowPower_d                1
 
 // No change in app behavior, the CM33 will go in power down when scanning (only for A1)
 $lp_test_powerdown_scanning
