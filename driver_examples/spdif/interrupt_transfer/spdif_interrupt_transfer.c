@@ -57,9 +57,8 @@ static void rxCallback(SPDIF_Type *base, spdif_handle_t *handle, status_t status
 {
     if (status == kStatus_SPDIF_RxCnew)
     {
-        /* Copy C channel contents to tx */
-        base->STCSCH = base->SRCSH;
-        base->STCSCL = base->SRCSL;
+        /* Copy received channel-status data into the transmit path. */
+        SPDIF_CopyRxChannelStatusToTx(base);
     }
 
     if (status == kStatus_SPDIF_RxIdle)
