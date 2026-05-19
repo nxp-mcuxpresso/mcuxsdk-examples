@@ -8,9 +8,7 @@
 #include "board.h"
 #include "app.h"
 #include "fsl_rtc.h"
-#include "fsl_smm.h"
 #include "fsl_cmc.h"
-#include "fsl_pmu.h"
 
 /*******************************************************************************
  * Definitions
@@ -220,10 +218,6 @@ int main(void)
     /* Enable system reset for tamper occurs */
     /* Enable AON domain reset */
     RESET_SetPeripheralReset(SECURITY_RESET);
-    /* Clear the low voltage glitch detect reset flag */
-    PMU_CleanLowVolGlitchDetectReset(PMU);
-    /* Clear the high voltage glitch detect reset flag */
-    PMU_CleanHighVolGlitchDetectReset(PMU);
     /* Enable main domain reset */
     EnableTamperFaultDetect();
     /* If reset from tamper */
