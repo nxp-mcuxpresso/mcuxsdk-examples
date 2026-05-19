@@ -20,3 +20,5 @@ flexio_mculcd_smartdma_transfer:
     mcxn9xxevk@cm33_core0: []
     frdmmcxa266: []
     frdmmcxa366: []
+    frdmmcxa577: []
+    frdmmcxa287: []

@@ -2862,7 +2862,8 @@ void BOARD_InitFlexioCameraPins(void)
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitFlexioMculcdSmartdmaTrigger:
 - options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
-- pin_list: []
+- pin_list:
+  - {peripheral: SMARTDMA, signal: 'TRIG, 0', pin_signal: flexio0_irq}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -2875,6 +2876,12 @@ BOARD_InitFlexioMculcdSmartdmaTrigger:
  * END ****************************************************************************************************************/
 void BOARD_InitFlexioMculcdSmartdmaTrigger(void)
 {
+    /* INPUTMUX0: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GateINPUTMUX0);
+    /* INPUTMUX0 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kINPUTMUX0_RST_SHIFT_RSTn);
+    /*  Flexio0Irq connect to Smartdmatrig 0 */
+    INPUTMUX_AttachSignal(INPUTMUX0, 0U, kINPUTMUX_Flexio0irqToSmartdmatrig);
 }
 
 /* clang-format off */

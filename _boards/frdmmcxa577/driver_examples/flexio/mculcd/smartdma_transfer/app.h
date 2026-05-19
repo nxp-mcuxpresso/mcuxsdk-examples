@@ -18,21 +18,21 @@
 #define DEMO_PANEL_HEIGHT 320U
 
 /* Macros for the LCD controller. */
-#define BOARD_LCD_RST_GPIO GPIO4
-#define BOARD_LCD_RST_PIN  3
-#define BOARD_LCD_CS_GPIO  GPIO3
-#define BOARD_LCD_CS_PIN   16
-#define BOARD_LCD_RS_GPIO  GPIO4
-#define BOARD_LCD_RS_PIN   1
+#define BOARD_LCD_RST_GPIO GPIO2
+#define BOARD_LCD_RST_PIN  30
+#define BOARD_LCD_CS_GPIO  GPIO2
+#define BOARD_LCD_CS_PIN   24
+#define BOARD_LCD_RS_GPIO  GPIO2
+#define BOARD_LCD_RS_PIN   31
 
 #define DEMO_FLEXIO              FLEXIO0
 #define DEMO_FLEXIO_CLOCK_FREQ   CLOCK_GetFlexioClkFreq()
 #define DEMO_FLEXIO_BAUDRATE_BPS 160000000U
 
 /* Macros for FlexIO shifter, timer, and pins. */
-#define DEMO_FLEXIO_WR_PIN           7
-#define DEMO_FLEXIO_RD_PIN           8
-#define DEMO_FLEXIO_DATA_PIN_START   16
+#define DEMO_FLEXIO_WR_PIN           27
+#define DEMO_FLEXIO_RD_PIN           26
+#define DEMO_FLEXIO_DATA_PIN_START   0
 #define DEMO_FLEXIO_TX_START_SHIFTER 0
 #define DEMO_FLEXIO_RX_START_SHIFTER 0
 #define DEMO_FLEXIO_TX_END_SHIFTER   3

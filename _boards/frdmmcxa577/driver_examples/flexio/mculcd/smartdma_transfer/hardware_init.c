@@ -15,8 +15,8 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    BOARD_InitBootPins();
-    BOARD_InitFlexioMculcdPins();
+    BOARD_InitDEBUG_UARTPins();
+    BOARD_InitFLEXIO_MCULCDPins();
     BOARD_InitFlexioMculcdSmartdmaTrigger();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
