@@ -874,13 +874,13 @@ void BOARD_InitSPIFlashPins(void)
 BOARD_InitLEDsPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true', fullInit: 'true'}
 - pin_list:
-  - {pin_num: C3, peripheral: GPIO1, signal: 'GPIO, 15', pin_signal: P1_15/FREQME_CLK_IN0/LPSPI1_SDO/UTICK_CAP1/TRIG_OUT4/CT1_MAT0/SLCD_9, direction: OUTPUT, gpio_init_state: 'true',
+  - {pin_num: C3, peripheral: GPIO1, signal: 'GPIO, 15', pin_signal: P1_15/FREQME_CLK_IN0/LPSPI1_SDO/UTICK_CAP1/TRIG_OUT4/CT1_MAT0/SLCD_9, direction: OUTPUT, gpio_init_state: 'false',
     slew_rate: fast, open_drain: disable, drive_strength: low, extra_drive_strength: normal, pull_select: down, pull_enable: disable, passive_filter: disable, pull_value: low,
     input_buffer: enable, invert_input: normal}
   - {pin_num: D3, peripheral: GPIO1, signal: 'GPIO, 16', pin_signal: P1_16/FREQME_CLK_IN1/LPI2C0_HREQ/LPSPI1_SCK/UTICK_CAP2/TRIG_OUT5/CT1_MAT1/SLCD_10/WUU_P6, direction: OUTPUT,
-    gpio_init_state: 'true', slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+    gpio_init_state: 'false', slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
   - {pin_num: R3, peripheral: GPIO2, signal: 'GPIO, 12', pin_signal: P2_12/TRIG_IN0/LPI2C0_SCL/LPSPI0_SCK/LPUART1_RTS_B/TRIG_OUT2/CT1_MAT2/SLCD_52, direction: OUTPUT,
-    gpio_init_state: 'true', slew_rate: fast, open_drain: disable, drive_strength: low, extra_drive_strength: normal, pull_select: down, pull_enable: disable, passive_filter: disable,
+    gpio_init_state: 'false', slew_rate: fast, open_drain: disable, drive_strength: low, extra_drive_strength: normal, pull_select: down, pull_enable: disable, passive_filter: disable,
     pull_value: low, input_buffer: enable, invert_input: normal}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -988,21 +988,21 @@ void BOARD_InitLEDsPins(void)
 
     gpio_pin_config_t LED_RED_config = {
         .pinDirection = kGPIO_DigitalOutput,
-        .outputLogic = 1U
+        .outputLogic = 0U
     };
     /* Initialize GPIO functionality on pin P1_15 (pin C3)  */
     GPIO_PinInit(BOARD_INITLEDSPINS_LED_RED_GPIO, BOARD_INITLEDSPINS_LED_RED_PIN, &LED_RED_config);
 
     gpio_pin_config_t LED_GREEN_config = {
         .pinDirection = kGPIO_DigitalOutput,
-        .outputLogic = 1U
+        .outputLogic = 0U
     };
     /* Initialize GPIO functionality on pin P1_16 (pin D3)  */
     GPIO_PinInit(BOARD_INITLEDSPINS_LED_GREEN_GPIO, BOARD_INITLEDSPINS_LED_GREEN_PIN, &LED_GREEN_config);
 
     gpio_pin_config_t LED_BLUE_config = {
         .pinDirection = kGPIO_DigitalOutput,
-        .outputLogic = 1U
+        .outputLogic = 0U
     };
     /* Initialize GPIO functionality on pin P2_12 (pin R3)  */
     GPIO_PinInit(BOARD_INITLEDSPINS_LED_BLUE_GPIO, BOARD_INITLEDSPINS_LED_BLUE_PIN, &LED_BLUE_config);
