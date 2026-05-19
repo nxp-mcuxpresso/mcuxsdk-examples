@@ -154,7 +154,7 @@ typedef struct _user_data_t {
 	box_data final_boxes[NUM_BOXES_MAX];
 	uint32_t accessing; /* boolean protecting access */
 	int detected_count; /* number of detected boxes */
-	int inference_time_ms;
+	uint32_t inference_time_ms;
 } user_data_t;
 
 /*******************************************************************************
@@ -480,7 +480,7 @@ static void app_task(void *params)
 		xTaskDelayUntil( &xLastWakeTime, xFrequency );
 		if (Atomic_CompareAndSwap_u32(&user_data.accessing, 1, 0)) {
 			if (last_inf_frame_num != user_data.inference_frame_num) {
-				PRINTF("\ninference time %d ms \r\n", user_data.inference_time_ms);
+				PRINTF("\ninference time %u ms \r\n", user_data.inference_time_ms);
 				if (user_data.detected_count <= 0) {
 					PRINTF("persondetect : no person detected\r\n");
 				} else {

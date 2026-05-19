@@ -24,29 +24,29 @@ HOW TO USE THE APPLICATION:
 
 ### High-level description
 ```
-                                                                   +--------------------------------------------------------+
-                                                                   |                                                        |
-                                                                   |                                                        |
-                                                                  \ /                                                       |
-                  +-------------+      +-------------+      +-------------+      +-------------+      +-------------+       |
-                  |             |      |             |      |             |      |             |      |             |       |
-Pipeline 0        |    camera   | -->  |  2D convert | -->  |   labeled   | -->  |  2D convert | -->  |    Display  |       |
-                  |             |  |   |(color+flip) |      |  rectangle  |      | (rotation)  |      |             |       |
-                  +-------------+  |   +-------------+      +-------------+      +-------------+      +-------------+       |
-                                   |                                                                                        |
-                                   |     +-------------+      +--------------+      +-------------+                         |
-                                   |     |             |      |              |      |             |                         |
-Pipeline 1                         +---> |  2D convert | -->  | ML Inference | -->  |  NULL sink  |                         |
-                                         |             |      |              |      |             |                         |
-                                         +-------------+      +--------------+      +-------------+                         |
-                                                                       |                                                    |
-                                                                       |                                                    |
-        +-----------------+                                            |                                                    |
-        |  Main app:      |                                            |                                                    |
-        | ML output       |   <----- ML Inference output callback -----+                                                    |
-        | post processing |                                                                                                 |
-        |                 |   ------   labeled rectangle update   ----------------------------------------------------------+
-        +-----------------+
+                                                                           +--------------------------------------------------------------+
+                                                                           |                                                              |
+                                                                           |                                                              |
+                                                                          \ /                                                             |
+             +-------------+     +-----------+     +-------------+      +-------------+      +------------------+       +-------------+   |
+             |             |     |   JPEG    |     |             |      |             |      |                  |       |             |   |
+Pipeline 0   |    camera   | --> |  decoder  | --> |  2D convert | -->  |   labeled   | -->  |    2D convert    |  -->  |    Display  |   |
+             |             |     | (usb cam) |  |  |(color+flip) |      |  rectangle  |      | (rotation+scale) |       |             |   |
+             +-------------+     +-----------+  |  +-------------+      +-------------+      +------------------+       +-------------+   |
+                                                |                                                                                         |
+                                                |    +-------------+      +--------------+      +-------------+                           |
+                                                |    |             |      |              |      |             |                           |
+Pipeline 1                                      +--> |  2D convert | -->  | ML Inference | -->  |  NULL sink  |                           |
+                                                     |             |      |              |      |             |                           |
+                                                     +-------------+      +--------------+      +-------------+                           |
+                                                                                   |                                                      |
+                                                                                   |                                                      |
+    +-----------------+                                                            |                                                      |
+    |  Main app:      |                                                            |                                                      |
+    | ML output       |   <----- ML Inference output callback ---------------------+                                                      |
+    | post processing |                                                                                                                   |
+    |                 |   ------ Adding detected labeled rectangles ----------------------------------------------------------------------+
+    +-----------------+
 ```
 ### Detailed description
 
@@ -56,22 +56,25 @@ Application creates two pipelines:
 - Another pipeline that runs the ML inference on the image coming from the camera or the static image.
 - Pipeline 1 is split from pipeline 0
 - Pipeline 0 executes the processing of each element sequentially and CANNOT be preempted by another pipeline.
-- Pipeline 1 executes the processing of each element sequentially but CAN be preempted.
+- Pipeline 1 is composed of two parts: one that CANNOT be preempted (2D convert element) and one that CAN be preempted (ML inference).
 
 ### Pipelines elements description
 
 * Camera element is configured for a specific pixel format and resolution (board dependent)
-* Static image element is configured for a specific pixel format and resolution (board dependent)
 * Display element is configured for a specific pixel format and resolution (board dependent)
-* 2D convert element on pipeline 0 is configured to perform:
-  - color space conversion from the camera pixel format to the display pixel format
-  - rotation depending on the display orientation compared to landscape mode (NB: Rotation should be performed 
-  after the labeled-rectangle to get labels in the right orientation).
-
+* JPEG decoder element decodes the camera input stream from JPEG format to raw image data (YUV format)
+  This element is present in the pipeline only when camera output is in JPEG format (eg. USB camera)
+* First 2D convert element on pipeline 0 is configured to perform:
+  - color space conversion from camera pixel format to the display pixel format
+  - image flip if required by the display orientation
+* Second 2D convert element on pipeline 0 is configured to perform:
+  - rotation depending on the display orientation compared to camera orientation
+  - scaling to match the display resolution
 * 2D convert element on pipeline 1 is configured to perform:
-  - color space conversion from the camera pixel format to RGB888
+  - color space conversion from camera pixel format to RGB888
   - cropping to maintain image aspect ratio
   - scaling to 160x128 as mandated by the persondetection model
+  - image flip if required by the display orientation
 
 * The labeled rectangle element draws a crop window from which the camera image is sent to
   the ML inference element. 

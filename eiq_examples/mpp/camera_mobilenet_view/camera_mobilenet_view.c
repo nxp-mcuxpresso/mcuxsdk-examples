@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2025 NXP
+ * Copyright 2022-2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -52,7 +52,7 @@ typedef struct _user_data_t {
     mpp_labeled_rect_t labels[1];
     mobilenet_post_proc_data_t inf_out;
     uint32_t accessing; /* boolean protecting access to user data */
-    int inference_time_ms;
+    uint32_t inference_time_ms;
 } user_data_t;
 
 /*******************************************************************************
@@ -61,6 +61,18 @@ typedef struct _user_data_t {
 
 #ifndef APP_STRIPE_MODE
 #define APP_STRIPE_MODE 0
+#endif
+
+#ifndef PRINT_API_STATS
+#define PRINT_API_STATS 0
+#endif
+
+#ifndef PRINT_MPP_STATS
+#define PRINT_MPP_STATS 0
+#endif
+
+#ifndef PRINT_ELEM_STATS
+#define PRINT_ELEM_STATS 0
 #endif
 
 /* Model data input */
@@ -82,6 +94,19 @@ typedef struct _user_data_t {
 #define DISPLAY_SMALL_DIM MIN(APP_DISPLAY_WIDTH, APP_DISPLAY_HEIGHT)
 #define DISPLAY_LARGE_DIM MAX(APP_DISPLAY_WIDTH, APP_DISPLAY_HEIGHT)
 
+/* View small and large dims */
+#define VIEW_SMALL_DIM MIN(APP_CAMERA_WIDTH, APP_CAMERA_HEIGHT)
+#define VIEW_LARGE_DIM MAX(APP_CAMERA_WIDTH, APP_CAMERA_HEIGHT)
+
+/* if display_aspect_ratio > view_aspect_ratio */
+#if (DISPLAY_LARGE_DIM * VIEW_SMALL_DIM > VIEW_LARGE_DIM * DISPLAY_SMALL_DIM)
+#define SCALED_VIEW_WIDTH APP_DISPLAY_WIDTH
+#define SCALED_VIEW_HEIGHT (APP_DISPLAY_WIDTH * APP_CAMERA_WIDTH / APP_CAMERA_HEIGHT )
+#else /* if display_aspect_ratio < view_aspect_ratio */
+#define SCALED_VIEW_WIDTH (APP_DISPLAY_HEIGHT * APP_CAMERA_HEIGHT / APP_CAMERA_WIDTH )
+#define SCALED_VIEW_HEIGHT APP_DISPLAY_HEIGHT
+#endif
+
 #define RECT_LINE_WIDTH 2
 
 #define MODEL_ASPECT_RATIO   (1.0f * MOBILENET_WIDTH / MOBILENET_HEIGHT)
@@ -91,55 +116,34 @@ typedef struct _user_data_t {
 #define CAMERA_ASPECT_RATIO  (1.0f * APP_CAMERA_WIDTH / APP_CAMERA_HEIGHT)
 
 /*
- * The detection zone is a rectangle centered on the display. It has the same shape as the model input.
- * The rectangle dimensions are calculated based on the display small dim and respecting the model aspect ratio
- * The detection zone width and height depend on the display_aspect_ratio compared to the model aspect_ratio:
- * if the display_aspect_ratio >= model_aspect_ratio then :
- *                  (width, height) = (display_small_dim * model_aspect_ratio, display_small_dim)
- * if the display_aspect_ratio < model_aspect_ratio then :
- *                  (width, height) = (display_small_dim, display_small_dim / model_aspect_ratio)
+ * The detection zone is a rectangle centered on the camera view. It has the same shape as the model input.
+ * The rectangle dimensions are calculated based on the camera height and respecting the model aspect ratio
+ * The detection zone width and height depend on the camera_aspect_ratio compared to the model_aspect_ratio:
+ * if the camera_aspect_ratio >= model_aspect_ratio then :
+ *                  (width, height) = (camera_height * model_aspect_ratio, camera_height)
+ * if the camera_aspect_ratio < model_aspect_ratio then :
+ *                  (width, height) = (camera_height, camera_height / model_aspect_ratio)
  *
  * */
-#define DETECTION_ZONE_RECT_HEIGHT ((DISPLAY_ASPECT_RATIO >= MODEL_ASPECT_RATIO) ? \
-		DISPLAY_SMALL_DIM : (DISPLAY_SMALL_DIM / MODEL_ASPECT_RATIO))
-#define DETECTION_ZONE_RECT_WIDTH  ((DISPLAY_ASPECT_RATIO >= MODEL_ASPECT_RATIO) ? \
-		(DISPLAY_SMALL_DIM * MODEL_ASPECT_RATIO) : DISPLAY_SMALL_DIM)
+#define DETECTION_ZONE_RECT_HEIGHT ((CAMERA_ASPECT_RATIO >= MODEL_ASPECT_RATIO) ? \
+		APP_CAMERA_HEIGHT : (APP_CAMERA_HEIGHT / MODEL_ASPECT_RATIO))
+#define DETECTION_ZONE_RECT_WIDTH  ((CAMERA_ASPECT_RATIO >= MODEL_ASPECT_RATIO) ? \
+		(APP_CAMERA_HEIGHT * MODEL_ASPECT_RATIO) : APP_CAMERA_HEIGHT)
 
 /* detection zone top/left offsets */
-#define DETECTION_ZONE_RECT_TOP  (DISPLAY_SMALL_DIM - DETECTION_ZONE_RECT_HEIGHT)/2
-#define DETECTION_ZONE_RECT_LEFT (DISPLAY_LARGE_DIM - DETECTION_ZONE_RECT_WIDTH)/2
+#define DETECTION_ZONE_RECT_TOP  (APP_CAMERA_HEIGHT - DETECTION_ZONE_RECT_HEIGHT)/2
+#define DETECTION_ZONE_RECT_LEFT (APP_CAMERA_WIDTH - DETECTION_ZONE_RECT_WIDTH)/2
 
 /*
- *  The computation of the crop size(width and height) and the crop top/left depends on the detection
- *  zone dims and offsets and on the camera-display scaling factor SF which is calculated differently
- *  depending on 2 constraints:
- *           * Constraint 1: display aspect ratio compared to the camera aspect ratio.
- *           * Constraint 2: SWAP_DIMS value.
- * if the display_aspect_ratio < camera_aspect_ratio :
- *            - SWAP_DIMS = 0: SF = APP_DISPLAY_WIDTH / APP_CAMERA_WIDTH
- *            - SWAP_DIMS = 1: SF = APP_DISPLAY_HEIGHT / APP_CAMERA_HEIGHT
- * if the display_aspect_ratio >= camera_aspect_ratio:
- *            - SWAP_DIMS = 0: SF = APP_DISPLAY_HEIGHT / APP_CAMERA_HEIGHT
- *            - SWAP_DIMS = 1: SF = APP_DISPLAY_WIDTH / APP_CAMERA_WIDTH
- * the crop dims and offsets are calculated in the following way:
- * CROP_SIZE_TOP = DETECTION_ZONE_RECT_HEIGHT / SF
- * CROP_SIZE_LEFT = DETECTION_ZONE_RECT_WIDTH / SF
- * CROP_TOP = DETECTION_ZONE_RECT_HEIGHT / SF
- * CROP_LEFT = DETECTION_ZONE_RECT_LEFT / SF
- * */
-#if ((DISPLAY_LARGE_DIM * APP_CAMERA_HEIGHT) < (DISPLAY_SMALL_DIM * APP_CAMERA_WIDTH))
-#define CROP_SIZE_TOP   ((DETECTION_ZONE_RECT_HEIGHT * APP_CAMERA_WIDTH) / (SWAP_DIMS ? APP_DISPLAY_HEIGHT : APP_DISPLAY_WIDTH))
-#define CROP_SIZE_LEFT  ((DETECTION_ZONE_RECT_WIDTH * APP_CAMERA_WIDTH) / (SWAP_DIMS ? APP_DISPLAY_HEIGHT : APP_DISPLAY_WIDTH))
-
-#define CROP_TOP  ((DETECTION_ZONE_RECT_TOP * APP_CAMERA_WIDTH) / (SWAP_DIMS ? APP_DISPLAY_HEIGHT : APP_DISPLAY_WIDTH))
-#define CROP_LEFT ((DETECTION_ZONE_RECT_LEFT * APP_CAMERA_WIDTH) / (SWAP_DIMS ? APP_DISPLAY_HEIGHT : APP_DISPLAY_WIDTH))
-#else   /* DISPLAY_ASPECT_RATIO() >= CAMERA_ASPECT_RATIO() */
-#define CROP_SIZE_TOP   ((DETECTION_ZONE_RECT_HEIGHT * APP_CAMERA_HEIGHT) / (SWAP_DIMS ? APP_DISPLAY_WIDTH : APP_DISPLAY_HEIGHT))
-#define CROP_SIZE_LEFT  ((DETECTION_ZONE_RECT_WIDTH * APP_CAMERA_HEIGHT) / (SWAP_DIMS ? APP_DISPLAY_WIDTH : APP_DISPLAY_HEIGHT))
-
-#define CROP_TOP  ((DETECTION_ZONE_RECT_TOP * APP_CAMERA_HEIGHT) / (SWAP_DIMS ? APP_DISPLAY_WIDTH : APP_DISPLAY_HEIGHT))
-#define CROP_LEFT ((DETECTION_ZONE_RECT_LEFT * APP_CAMERA_HEIGHT) / (SWAP_DIMS ? APP_DISPLAY_WIDTH : APP_DISPLAY_HEIGHT))
-#endif  /* DISPLAY_ASPECT_RATIO() < CAMERA_ASPECT_RATIO() */
+  * Crop parameters are the same as the DETECTION_ZONE parameters 
+  * They define the region of interest from the camera frame that will be fed to the model
+  * Because the labeled rectangles are added before upscaling and other operations needed for display, 
+  * it is safe to assume that the crop parameters have the same values as the detection zone parameters
+  */
+#define CROP_SIZE_TOP       DETECTION_ZONE_RECT_HEIGHT
+#define CROP_SIZE_LEFT      DETECTION_ZONE_RECT_WIDTH
+#define CROP_TOP            DETECTION_ZONE_RECT_TOP
+#define CROP_LEFT           DETECTION_ZONE_RECT_LEFT
 
 static const char s_display_name[] = APP_DISPLAY_NAME;
 static const char s_camera_name[] = APP_CAMERA_NAME;
@@ -238,21 +242,53 @@ static void app_task(void *params)
     PRINTF("[%s]\r\n", mpp_get_version());
     PRINTF("Inference Engine: TensorFlow-Lite Micro \r\n");
 
+    /* Print camera parameters */
+    PRINTF("\r\n=== Camera Parameters ===\r\n");
+    PRINTF("APP_CAMERA_WIDTH: %d\r\n", APP_CAMERA_WIDTH);
+    PRINTF("APP_CAMERA_HEIGHT: %d\r\n", APP_CAMERA_HEIGHT);
+    
+    /* Print model input dimensions */
+    PRINTF("\r\n=== Model Input Dimensions ===\r\n");
+    PRINTF("MOBILENET_WIDTH: %d\r\n", MOBILENET_WIDTH);
+    PRINTF("MOBILENET_HEIGHT: %d\r\n", MOBILENET_HEIGHT);
+    PRINTF("\r\n");
+    
+    /* Print display dimensions */
+    PRINTF("\r\n=== Display Dimensions ===\r\n");
+    PRINTF("DISPLAY_SMALL_DIM: %d\r\n", (int)DISPLAY_SMALL_DIM);
+    PRINTF("DISPLAY_LARGE_DIM: %d\r\n", (int)DISPLAY_LARGE_DIM);
+    PRINTF("APP_DISPLAY_WIDTH: %d\r\n", (int)APP_DISPLAY_WIDTH);
+    PRINTF("APP_DISPLAY_HEIGHT: %d\r\n", (int)APP_DISPLAY_HEIGHT);
+    PRINTF("SWAP_DIMS: %d\r\n", SWAP_DIMS);
+    
+    /* Print detection zone parameters */
+    PRINTF("\r\n=== Detection Zone Parameters ===\r\n");
+    PRINTF("DETECTION_ZONE_RECT_WIDTH: %d\r\n", (int)DETECTION_ZONE_RECT_WIDTH);
+    PRINTF("DETECTION_ZONE_RECT_HEIGHT: %d\r\n", (int)DETECTION_ZONE_RECT_HEIGHT);
+    PRINTF("DETECTION_ZONE_RECT_LEFT: %d\r\n", (int)DETECTION_ZONE_RECT_LEFT);
+    PRINTF("DETECTION_ZONE_RECT_TOP: %d\r\n", (int)DETECTION_ZONE_RECT_TOP);
+    
+    /* Print crop parameters */
+    PRINTF("\r\n=== Crop Parameters ===\r\n");
+    PRINTF("CROP_SIZE_LEFT: %d\r\n", (int)CROP_SIZE_LEFT);
+    PRINTF("CROP_SIZE_TOP: %d\r\n", (int)CROP_SIZE_TOP);
+    PRINTF("CROP_LEFT: %d\r\n", (int)CROP_LEFT);
+    PRINTF("CROP_TOP: %d\r\n", (int)CROP_TOP);
+
     mpp_api_params_t api_params = {0};
 #if ((defined APP_RC_CYCLE_INC) && (defined APP_RC_CYCLE_MIN))
     /* fine-tune RC cycle for stripe mode */
     api_params.rc_cycle_inc = APP_RC_CYCLE_INC;
     api_params.rc_cycle_min = APP_RC_CYCLE_MIN;
 #endif
-    mpp_stats_t api_stats;
-    memset(&api_stats, 0, sizeof(api_stats));
+    static mpp_stats_t api_stats = {0};
     api_params.stats = &api_stats;
     ret = mpp_api_init(&api_params);
     if (ret)
         goto err;
 
     mpp_t mp;
-    mpp_stats_t mpp_stats;
+    static mpp_stats_t mpp_stats = {0};
     mpp_params_t mpp_params;
     memset(&mpp_params, 0, sizeof(mpp_params));
     mpp_params.evt_callback_f = &mpp_event_listener;
@@ -278,11 +314,43 @@ static void app_task(void *params)
         goto err;
     }
 
-    /* split the pipeline into 2 branches */
+    static mpp_stats_t decoder_stats = {0};
+    if (APP_CAMERA_FORMAT == MPP_PIXEL_JPEG)
+    {
+        /* Add element jpeg decode */
+        mpp_element_params_t elem_params_decoder;
+        memset(&elem_params_decoder, 0, sizeof(mpp_element_params_t));
+#ifdef APP_DECODE_BACKEND_NAME
+        elem_params_decoder.decode.dev_name = APP_DECODE_BACKEND_NAME;
+#else
+        elem_params_decoder.decode.dev_name = NULL;
+#endif
+        elem_params_decoder.decode.width = APP_CAMERA_WIDTH;
+        elem_params_decoder.decode.height = APP_CAMERA_HEIGHT;
+
+        elem_params_decoder.decode.out_format = MPP_PIXEL_YUYV;
+
+        elem_params_decoder.stats = &decoder_stats;
+
+        ret = mpp_element_add(mp, MPP_ELEMENT_IMG_DECODE, &elem_params_decoder, NULL);
+        if (ret)
+        {
+            PRINTF("Failed to add element DECODE\n");
+            goto err;
+        }
+        else{
+            PRINTF("Added HW jpeg decoder to the branch mp !\r\n");
+        }
+    }
+
+    /* split the pipeline into 2 branches
+	 * - first for the conversion to model
+	 * - second for the label-rect draw & display
+	 * this order is needed to avoid running inference on an image containing label-rect */
     mpp_t mp_split;
-    mpp_stats_t split_stats;
-    mpp_params.stats = &split_stats;
-    mpp_params.exec_flag = MPP_EXEC_INHERIT;
+    static mpp_stats_t mpp_split_stats = {0};
+    mpp_params.stats = &mpp_split_stats;
+	mpp_params.exec_flag = MPP_EXEC_RC;
     ret = mpp_split(mp, 1 , &mpp_params, &mp_split);
     if (ret) {
         PRINTF("Failed to split pipeline\n");
@@ -293,6 +361,7 @@ static void app_task(void *params)
     /* First do crop + resize + color convert */
     mpp_element_params_t elem_params;
     memset(&elem_params, 0, sizeof(elem_params));
+    static mpp_stats_t convert_stats = {0};
     /* pick default device from the first listed and supported by Hw */
     elem_params.convert.dev_name = NULL;
     /* set output buffer dims */
@@ -311,8 +380,15 @@ static void app_task(void *params)
     elem_params.convert.scale.width = MOBILENET_WIDTH;
     elem_params.convert.scale.height = MOBILENET_HEIGHT;
     elem_params.convert.ops |= MPP_CONVERT_SCALE;
+    /* then add a flip */
+#ifndef APP_SKIP_CONVERT_FOR_DISPLAY
+    elem_params.convert.flip = APP_SRC_DISPLAY_FLIP;
+    elem_params.convert.ops |=  MPP_CONVERT_ROTATE;
+#endif
     elem_params.convert.stripe_in = stripe_mode;
     elem_params.convert.stripe_out = false; /* model takes full frames */
+
+    elem_params.stats = &convert_stats;
 
     ret = mpp_element_add(mp, MPP_ELEMENT_CONVERT, &elem_params, NULL);
     if (ret ) {
@@ -324,8 +400,8 @@ static void app_task(void *params)
      * because it may take longer than capture period.
      * Inference runs a MobilenetV1 model in TF-Lite format */
     mpp_t mp_bg;
-    mpp_stats_t bg_stats;
-    mpp_params.stats = &bg_stats;
+    static mpp_stats_t mpp_stats_bg = {0};
+    mpp_params.stats = &mpp_stats_bg;
     mpp_params.exec_flag = MPP_EXEC_PREEMPT;
 
     ret = mpp_background(mp, &mpp_params, &mp_bg);
@@ -339,9 +415,6 @@ static void app_task(void *params)
     static mpp_stats_t mobilenet_stats;
     memset(&mobilenet_params, 0 , sizeof(mpp_element_params_t));
 
-#ifdef APP_USE_NEUTRON64_MODEL
-    copy_mobilenet_to_ram();
-#endif
     mobilenet_params.ml_inference.model_data = mobilenet_data;
     mobilenet_params.ml_inference.model_size = mobilenet_data_len;
     mobilenet_params.ml_inference.model_input_mean = MOBILENET_INPUT_MEAN;
@@ -369,14 +442,23 @@ static void app_task(void *params)
     /* On the secondary branch of the pipeline, send the frame to the display */
     /* First do color-convert + flip */
     memset(&elem_params, 0, sizeof(elem_params));
+    static mpp_stats_t convert_display_stats = {0};
     /* pick default device from the first listed and supported by Hw */
     elem_params.convert.dev_name = NULL;
     /* set output buffer dims */
     elem_params.convert.out_buf.width = APP_CAMERA_WIDTH;
     elem_params.convert.out_buf.height = APP_CAMERA_HEIGHT;
+
+    /* Add color convert */
     elem_params.convert.pixel_format = APP_DISPLAY_FORMAT;
-    elem_params.convert.flip = FLIP_HORIZONTAL;
-    elem_params.convert.ops = MPP_CONVERT_COLOR | MPP_CONVERT_ROTATE;
+    elem_params.convert.ops = MPP_CONVERT_COLOR;
+
+    /* then add a flip */
+    elem_params.convert.flip = APP_SRC_DISPLAY_FLIP;
+    elem_params.convert.ops |=  MPP_CONVERT_ROTATE;
+
+    elem_params.stats = &convert_display_stats;
+
     ret = mpp_element_add(mp_split, MPP_ELEMENT_CONVERT, &elem_params, NULL);
 
     if (ret) {
@@ -388,6 +470,7 @@ static void app_task(void *params)
     /* add one label rectangle */
     memset(&elem_params, 0, sizeof(elem_params));
     memset(&user_data.labels, 0, sizeof(user_data.labels));
+    static mpp_stats_t labels_stats = {0};
 
     /* params init */
     elem_params.labels.max_rect = 1;
@@ -403,6 +486,8 @@ static void app_task(void *params)
     user_data.labels[0].line_color.rgb.B = 0xff;
     strcpy((char *)user_data.labels[0].label, "no label");
 
+    elem_params.stats = &labels_stats;
+
     /* retrieve the element handle while add api */
     ret = mpp_element_add(mp_split, MPP_ELEMENT_LABELED_RECTANGLE, &elem_params, &user_data.elem);
     if (ret) {
@@ -415,13 +500,23 @@ static void app_task(void *params)
 
 #ifndef APP_SKIP_CONVERT_FOR_DISPLAY
     /* then rotate if needed */
+    static mpp_stats_t rotate_stats = {0};
     if (APP_DISPLAY_LANDSCAPE_ROTATE != ROTATE_0) {
     	memset(&elem_params, 0, sizeof(elem_params));
     	/* set output buffer dims */
     	elem_params.convert.out_buf.width = APP_DISPLAY_WIDTH;
     	elem_params.convert.out_buf.height = APP_DISPLAY_HEIGHT;
+
+        /* Add rotate */
     	elem_params.convert.angle = APP_DISPLAY_LANDSCAPE_ROTATE;
     	elem_params.convert.ops = MPP_CONVERT_ROTATE;
+#ifdef SCALED_VIEW
+        /* Add scale */
+        elem_params.convert.scale.width =  SCALED_VIEW_WIDTH;
+        elem_params.convert.scale.height = SCALED_VIEW_HEIGHT;
+        elem_params.convert.ops |= MPP_CONVERT_SCALE;
+#endif
+        elem_params.stats = &rotate_stats;
     	ret = mpp_element_add(mp_split, MPP_ELEMENT_CONVERT, &elem_params, NULL);
 
     	if (ret) {
@@ -473,43 +568,74 @@ static void app_task(void *params)
     const TickType_t xFrequency = STATS_PRINT_PERIOD_MS / portTICK_PERIOD_MS;
     xLastWakeTime = xTaskGetTickCount();
     uint32_t last_inf_frame_num = user_data.inference_frame_num;
-#if (configGENERATE_RUN_TIME_STATS == 1)
+#if ((configGENERATE_RUN_TIME_STATS == 1) && PRINT_API_STATS)
     static char task_stats_buf[512];
 #endif
     for (;;) {
         xTaskDelayUntil( &xLastWakeTime, xFrequency );
-        if (last_inf_frame_num != user_data.inference_frame_num) 
+        if (Atomic_CompareAndSwap_u32(&user_data.accessing, 1, 0) == ATOMIC_COMPARE_AND_SWAP_SUCCESS)
         {
-            mpp_stats_disable(MPP_STATS_GRP_API);
-            mpp_stats_disable(MPP_STATS_GRP_MPP);
-            mpp_stats_disable(MPP_STATS_GRP_ELEMENT);
-            PRINTF("API stats ------------------------------\r\n");
-            PRINTF("rc_cycle = %u ms rc_cycle_max %u ms\r\n",
-                    api_stats.api.rc_cycle, api_stats.api.rc_cycle_max);
-            PRINTF("pr_slot  = %u ms pr_rounds %u app_slot %u ms\r\n",
-                    api_stats.api.pr_slot, api_stats.api.pr_rounds, api_stats.api.app_slot);
-            PRINTF("MPP stats ------------------------------\r\n");
-            PRINTF("mp %p exec_time %u ms\r\n", mpp_stats.mpp.mpp, mpp_stats.mpp.mpp_exec_time);
-            PRINTF("mp_split %p exec_time %u ms\r\n", split_stats.mpp.mpp, split_stats.mpp.mpp_exec_time);
-            PRINTF("mp_bg %p exec_time %u ms\r\n", bg_stats.mpp.mpp, bg_stats.mpp.mpp_exec_time);
-            PRINTF("Element stats --------------------------\r\n");
-            PRINTF("Inference : exec_time %u ms\r\n", mobilenet_stats.elem.elem_exec_time);
-            if (Atomic_CompareAndSwap_u32(&user_data.accessing, 1, 0) == ATOMIC_COMPARE_AND_SWAP_SUCCESS)
+            if (last_inf_frame_num != user_data.inference_frame_num) 
             {
                 PRINTF("Inference results --------------------------\r\n");
                 PRINTF("mobilenet : %s (%d%%)\r\n", user_data.inf_out.label, user_data.inf_out.score);
-                PRINTF("mobilenet : %d ms\r\n", user_data.inference_time_ms);
-                __atomic_store_n(&user_data.accessing, 0, __ATOMIC_SEQ_CST);
+                PRINTF("inference time %u ms\r\n", user_data.inference_time_ms);
+                last_inf_frame_num = user_data.inference_frame_num;
             }
-            mpp_stats_enable(MPP_STATS_GRP_MPP);
-            mpp_stats_enable(MPP_STATS_GRP_API);
-            mpp_stats_enable(MPP_STATS_GRP_ELEMENT);
-            last_inf_frame_num = user_data.inference_frame_num;
+
+            __atomic_store_n(&user_data.accessing, 0, __ATOMIC_SEQ_CST);
         }
 
-#if (configGENERATE_RUN_TIME_STATS == 1)
+#if ((configGENERATE_RUN_TIME_STATS == 1) && PRINT_API_STATS)
         vTaskGetRunTimeStats(task_stats_buf);
         PRINTF(task_stats_buf);
+#endif
+
+#if PRINT_API_STATS
+        /* Print API stats */
+        mpp_stats_disable(MPP_STATS_GRP_API);
+        PRINTF("\r\n=== API Stats ===\r\n");
+        PRINTF("RC cycle: %d ms\r\n", api_stats.api.rc_cycle);
+        PRINTF("RC cycle max: %d ms\r\n", api_stats.api.rc_cycle_max);
+        PRINTF("PR slot: %d ms\r\n", api_stats.api.pr_slot);
+        PRINTF("PR rounds: %d\r\n", api_stats.api.pr_rounds);
+        PRINTF("App slot: %d ms\r\n", api_stats.api.app_slot);
+        PRINTF("CPU load: %d %%\r\n", api_stats.api.cpu_load);
+        mpp_stats_enable(MPP_STATS_GRP_API);
+#endif
+
+#if PRINT_MPP_STATS
+        /* Print MPP stats */
+        mpp_stats_disable(MPP_STATS_GRP_MPP);
+        PRINTF("\r\n=== MPP Stats ===\r\n");
+        PRINTF("Main pipeline fps: %d\r\n", mpp_stats.mpp.fps);
+        PRINTF("Main pipeline exec_time: %d ms\r\n", mpp_stats.mpp.mpp_exec_time);
+        PRINTF("Split pipeline fps: %d\r\n", mpp_split_stats.mpp.fps);
+        PRINTF("Split pipeline exec_time: %d ms\r\n", mpp_split_stats.mpp.mpp_exec_time);
+        PRINTF("Background pipeline fps: %d\r\n", mpp_stats_bg.mpp.fps);
+        PRINTF("Background pipeline exec_time: %d ms\r\n", mpp_stats_bg.mpp.mpp_exec_time);
+        mpp_stats_enable(MPP_STATS_GRP_MPP);
+#endif
+
+#if PRINT_ELEM_STATS
+        /* Print Element stats */
+        mpp_stats_disable(MPP_STATS_GRP_ELEMENT);
+        PRINTF("\r\n=== Element Stats ===\r\n");
+        PRINTF("Decoder exec_time: %d ms\r\n", decoder_stats.elem.elem_exec_time);
+        PRINTF("Convert exec_time: %d ms\r\n", convert_stats.elem.elem_exec_time);
+        PRINTF("Mobilenet exec_time: %d ms\r\n", mobilenet_stats.elem.elem_exec_time);
+#ifndef APP_SKIP_CONVERT_FOR_DISPLAY
+        PRINTF("Convert Display exec_time: %d ms\r\n", convert_display_stats.elem.elem_exec_time);
+#endif
+        PRINTF("Labels exec_time: %d ms\r\n", labels_stats.elem.elem_exec_time);
+#ifndef APP_SKIP_CONVERT_FOR_DISPLAY
+        PRINTF("Rotate exec_time: %d ms\r\n", rotate_stats.elem.elem_exec_time);
+#endif
+        mpp_stats_enable(MPP_STATS_GRP_ELEMENT);
+#endif
+
+#if (PRINT_API_STATS || PRINT_MPP_STATS || PRINT_ELEM_STATS)
+        PRINTF("\r\n");
 #endif
     }
 

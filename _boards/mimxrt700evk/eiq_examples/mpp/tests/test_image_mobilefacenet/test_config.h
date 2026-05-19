@@ -16,7 +16,7 @@
 #endif
 
 #if (APP_CONFIG==0) /* default app config */
-#define EXPECTED_INF_TIME            (40) /* ms */
+#define EXPECTED_INF_TIME            (40U) /* ms */
 #define EXPECTED_RECO_PERS           "thispersondoesnotexist_4"
 #define EXPECTED_INF_SCORE           80 /* % */
 #else

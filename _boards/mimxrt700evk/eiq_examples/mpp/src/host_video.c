@@ -1,5 +1,5 @@
 /*
- * Copyright 2019, 2025 NXP
+ * Copyright 2019, 2025-2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -27,29 +27,21 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#ifdef MATCH_RESOLUTION_FIXED
-#define RGB_BUFFER_SIZE (APP_CAMERA_WIDTH * APP_CAMERA_HEIGHT * 3)
-#else
-#define RGB_BUFFER_SIZE (320 * 240 * 3)
-#endif
-
-
+#ifndef USB_IMG_BUFFER_DYNALLOC
 #ifdef USE_UNCACHED_JPG_BUFFERS
-AT_NONCACHEABLE_SECTION_ALIGN(uint8_t  aImgBuff0[RGB_BUFFER_SIZE], 64);
-AT_NONCACHEABLE_SECTION_ALIGN(uint8_t  aImgBuff1[RGB_BUFFER_SIZE], 64);
+AT_NONCACHEABLE_SECTION_ALIGN(uint8_t aImgBuff0[CAMERA_USB_MAX_BUFF_SIZE], CAMERA_DEV_BUFFER_ALIGN);
+AT_NONCACHEABLE_SECTION_ALIGN(uint8_t aImgBuff1[CAMERA_USB_MAX_BUFF_SIZE], CAMERA_DEV_BUFFER_ALIGN);
 #elif defined(USE_PSRAM_JPG_BUFFERS)
 uint8_t * aImgBuff0 = (uint8_t *) JPEG_BUFF0_ADDR;
 uint8_t * aImgBuff1 = (uint8_t *) JPEG_BUFF1_ADDR;
-
 #else
-__ALIGNED(64) uint8_t  aImgBuff0[RGB_BUFFER_SIZE];
-__ALIGNED(64) uint8_t  aImgBuff1[RGB_BUFFER_SIZE];
+__ALIGNED(CAMERA_DEV_BUFFER_ALIGN) uint8_t  aImgBuff0[CAMERA_USB_MAX_BUFF_SIZE];
+__ALIGNED(CAMERA_DEV_BUFFER_ALIGN) uint8_t  aImgBuff1[CAMERA_USB_MAX_BUFF_SIZE];
+#endif
 #endif
 
-#ifndef USB_IMG_BUFFER_DYNALLOC
-/* These buffers are only used when capturing mjpeg and could be removed otherwise */
-AT_NONCACHEABLE_SECTION_ALIGN(uint8_t  usbbuff[2][256*1024], 64); /* use macros for these */
-#endif
+#define VG_LITE_ALIGN(number, alignment)  (((number) + ((alignment) - 1)) & ~((alignment) - 1))
+
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -317,6 +309,8 @@ static void USB_HostVideoStreamDataInCallback(void *param, uint8_t *data, uint32
     uint32_t presentationTime;
     static uint8_t s_savePicture            = 0;
     static uint32_t s_currentFrameTimeStamp = 0;
+    usb_frame_ready_msg_t frameReadyMsg;
+
     OSA_SR_ALLOC();
 
     if (videoAppInstance->devState != kStatus_DEV_Attached)
@@ -404,12 +398,27 @@ static void USB_HostVideoStreamDataInCallback(void *param, uint8_t *data, uint32
                         USB_HostVideoSdcardBufferState(videoAppInstance, videoAppInstance->pictureBufferIndex, 1);
                         videoAppInstance->sdcardPictureLength[videoAppInstance->pictureBufferIndex] =
                             s_pictureBufferDataLength[videoAppInstance->pictureBufferIndex];
+                        /* Send message to mpp queue indicating frame is ready */
+                        frameReadyMsg.pictureBufferIndex = videoAppInstance->pictureBufferIndex;
+                        frameReadyMsg.pictureLength      = s_pictureBufferDataLength[videoAppInstance->pictureBufferIndex];
+                        frameReadyMsg.pictureBuffer      = (uint8_t *)&s_pictureBuffer[videoAppInstance->pictureBufferIndex][0];
+                        s_pictureBufferDataLength[videoAppInstance->pictureBufferIndex] = 0U;
+                        if (xQueueSend(videoAppInstance->mppQueue, &frameReadyMsg, 0) == pdFALSE)
+                        {
+                            /* Failed to send message to queue, restore buffer state */
+                            USB_HostVideoSdcardBufferState(videoAppInstance, videoAppInstance->pictureBufferIndex, 0);
+                            videoAppInstance->sdcardPictureLength[videoAppInstance->pictureBufferIndex] = 0;
+                            /* Do not switch buffer as it may still be in use by the mpp pipeline*/
+                        }
+                        else
+                        {
+                            /* switch to another buffer to save picture frame */
+                            videoAppInstance->pictureBufferIndex = 1 - videoAppInstance->pictureBufferIndex;
+                        }
                         /* toggle the expected frame id */
                         videoAppInstance->expect_frame_id = 1 - videoAppInstance->expect_frame_id;
                         s_savePicture                     = 1;
-                        s_pictureBufferDataLength[videoAppInstance->pictureBufferIndex] = 0U;
-                        /* switch to another buffer to save picture frame */
-                        videoAppInstance->pictureBufferIndex = 1 - videoAppInstance->pictureBufferIndex;
+
                     }
                 }
             }
@@ -808,12 +817,6 @@ void USB_HostVideoTask(void *param)
 #ifdef MATCH_RESOLUTION_FIXED
                         if ( (APP_CAMERA_WIDTH == fd_width) &&  (APP_CAMERA_HEIGHT == fd_height))
                         {
-#else
-                        resolution    = fd_width * fd_height;
-                        if (minResolution > resolution)
-                        {
-                        	minResolution = resolution;
-#endif
                             minSolutionFrameIndex = index;
                             if (videoAppInstance->cameraDeviceFormatType == USB_HOST_DESC_SUBTYPE_VS_FORMAT_MJPEG)
                             {
@@ -832,6 +835,30 @@ void USB_HostVideoTask(void *param)
                         else
                         {
                         }
+#else
+                        resolution    = fd_width * fd_height;
+                        if (minResolution > resolution)
+                        {
+                        	minResolution = resolution;
+                            minSolutionFrameIndex = index;
+                            if (videoAppInstance->cameraDeviceFormatType == USB_HOST_DESC_SUBTYPE_VS_FORMAT_MJPEG)
+                            {
+                                videoAppInstance->videoStreamMjpegFrameDescriptor =
+                                    (usb_host_video_stream_payload_mjpeg_frame_desc_t *)frameDesc;
+                                videoAppInstance->videoStreamUncompressedFrameDescriptor = NULL;
+                            }
+                            else if (videoAppInstance->cameraDeviceFormatType ==
+                                     USB_HOST_DESC_SUBTYPE_VS_FORMAT_UNCOMPRESSED)
+                            {
+                                videoAppInstance->videoStreamUncompressedFrameDescriptor =
+                                    (usb_host_video_stream_payload_uncompressed_frame_desc_t *)frameDesc;
+                                videoAppInstance->videoStreamMjpegFrameDescriptor = NULL;
+                            }
+                        }
+                        else
+                        {
+                        }
+#endif
                     }
                 }
 
@@ -1108,27 +1135,21 @@ void USB_HostVideoTask(void *param)
                 videoAppInstance->videoCameraPictureBufferSize = videoAppInstance->videoCameraPictureBufferSize / 100U;
                 videoAppInstance->videoCameraPictureBufferSize =
                     videoAppInstance->videoCameraPictureBufferSize * USB_MJPEG_COMPRESSION_RATIO;
-//#define USB_IMG_BUFFER_DYNALLOC 1
 #ifdef USB_IMG_BUFFER_DYNALLOC
-#if 0
-                s_pictureBuffer_unaligned[0] = (uint32_t *)pvPortMalloc(videoAppInstance->videoCameraPictureBufferSize);
-                s_pictureBuffer_unaligned[1] = (uint32_t *)pvPortMalloc(videoAppInstance->videoCameraPictureBufferSize);
-                s_pictureBuffer[0] = s_pictureBuffer_unaligned[0];
-                s_pictureBuffer[1] = s_pictureBuffer_unaligned[1];
-#else
-#define VG_LITE_ALIGN(number, alignment)    \
-        (((number) + ((alignment) - 1)) & ~((alignment) - 1))
-
-                s_pictureBuffer_unaligned[0] = (uint32_t *)pvPortMalloc(videoAppInstance->videoCameraPictureBufferSize+63);
-                s_pictureBuffer_unaligned[1] = (uint32_t *)pvPortMalloc(videoAppInstance->videoCameraPictureBufferSize+63);
-                s_pictureBuffer[0] = (uint32_t *) VG_LITE_ALIGN((uint32_t)s_pictureBuffer_unaligned[0], 64);
-                s_pictureBuffer[1] = (uint32_t *) VG_LITE_ALIGN((uint32_t)s_pictureBuffer_unaligned[1], 64);
-#endif
+                s_pictureBuffer_unaligned[0] = (uint32_t *)pvPortMalloc(videoAppInstance->videoCameraPictureBufferSize+CAMERA_DEV_BUFFER_ALIGN-1);
+                s_pictureBuffer_unaligned[1] = (uint32_t *)pvPortMalloc(videoAppInstance->videoCameraPictureBufferSize+CAMERA_DEV_BUFFER_ALIGN-1);
+                s_pictureBuffer[0] = (uint32_t *) VG_LITE_ALIGN((uint32_t)s_pictureBuffer_unaligned[0], CAMERA_DEV_BUFFER_ALIGN);
+                s_pictureBuffer[1] = (uint32_t *) VG_LITE_ALIGN((uint32_t)s_pictureBuffer_unaligned[1], CAMERA_DEV_BUFFER_ALIGN);
 #else
                 /* Preallocated buffers */
-                extern uint8_t  usbbuff[2][256*1024];
-                s_pictureBuffer[0] = (uint32_t *) &usbbuff[0][0];
-                s_pictureBuffer[1] = (uint32_t *) &usbbuff[1][0];
+                s_pictureBuffer[0] = (uint32_t *) aImgBuff0;
+                s_pictureBuffer[1] = (uint32_t *) aImgBuff1;
+                if (videoAppInstance->videoCameraPictureBufferSize > CAMERA_USB_MAX_BUFF_SIZE)
+                {
+                    s_pictureBuffer[0] = NULL;
+                    s_pictureBuffer[1] = NULL;
+                    usb_echo("Preallocated USB image buffer too small, required:%d, allocated:%d\r\n", videoAppInstance->videoCameraPictureBufferSize, CAMERA_USB_MAX_BUFF_SIZE);
+                }
 #endif
                 usb_echo("picture format is MJPEG (buff size %d) buff1:%p buff2:%p \r\n",
                 		videoAppInstance->videoCameraPictureBufferSize, s_pictureBuffer[0], s_pictureBuffer[1]);
@@ -1152,42 +1173,21 @@ void USB_HostVideoTask(void *param)
                 videoAppInstance->videoCameraPictureBufferSize += videoAppInstance->unMultipleIsoMaxPacketSize;
 
 #ifdef USB_IMG_BUFFER_DYNALLOC
-#if 0
-                s_pictureBuffer_unaligned[0] = (uint32_t *)pvPortMalloc(videoAppInstance->videoCameraPictureBufferSize);
-                s_pictureBuffer_unaligned[1] = (uint32_t *)pvPortMalloc(videoAppInstance->videoCameraPictureBufferSize);
-                s_pictureBuffer[0] = s_pictureBuffer_unaligned[0];
-                s_pictureBuffer[1] = s_pictureBuffer_unaligned[1];
-#else
-#define VG_LITE_ALIGN(number, alignment)    \
-        (((number) + ((alignment) - 1)) & ~((alignment) - 1))
-
-                s_pictureBuffer_unaligned[0] = (uint32_t *)pvPortMalloc(videoAppInstance->videoCameraPictureBufferSize+63);
-                s_pictureBuffer_unaligned[1] = (uint32_t *)pvPortMalloc(videoAppInstance->videoCameraPictureBufferSize+63);
-                s_pictureBuffer[0] = (uint32_t *) VG_LITE_ALIGN((uint32_t)s_pictureBuffer_unaligned[0], 64);
-                s_pictureBuffer[1] = (uint32_t *) VG_LITE_ALIGN((uint32_t)s_pictureBuffer_unaligned[1], 64);
-#endif
+                s_pictureBuffer_unaligned[0] = (uint32_t *)pvPortMalloc(videoAppInstance->videoCameraPictureBufferSize+CAMERA_DEV_BUFFER_ALIGN-1);
+                s_pictureBuffer_unaligned[1] = (uint32_t *)pvPortMalloc(videoAppInstance->videoCameraPictureBufferSize+CAMERA_DEV_BUFFER_ALIGN-1);
+                s_pictureBuffer[0] = (uint32_t *) VG_LITE_ALIGN((uint32_t)s_pictureBuffer_unaligned[0], CAMERA_DEV_BUFFER_ALIGN);
+                s_pictureBuffer[1] = (uint32_t *) VG_LITE_ALIGN((uint32_t)s_pictureBuffer_unaligned[1], CAMERA_DEV_BUFFER_ALIGN);
 #else
                 /* Preallocated buffers */
-#if 0
-#define CAPT_BUFFER_SIZE 256*1024
-                extern uint8_t  usbbuff[2][CAPT_BUFFER_SIZE];
-                s_pictureBuffer[0] = (uint32_t *) &usbbuff[0][0];
-                s_pictureBuffer[1] = (uint32_t *) &usbbuff[1][0];
-#else
-#define CAPT_BUFFER_SIZE (APP_CAMERA_WIDTH * APP_CAMERA_HEIGHT * 3)
-                extern uint8_t * aImgBuff0;
-                extern uint8_t * aImgBuff1;
                 s_pictureBuffer[0] = (uint32_t *) aImgBuff0;
                 s_pictureBuffer[1] = (uint32_t *) aImgBuff1;
-#endif
-                if (videoAppInstance->videoCameraPictureBufferSize > CAPT_BUFFER_SIZE)
+                if (videoAppInstance->videoCameraPictureBufferSize > CAMERA_USB_MAX_BUFF_SIZE)
                 {
-                	s_pictureBuffer[0] = NULL;
-                	s_pictureBuffer[1] = NULL;
-                    usb_echo("Preallocated USB image buffer too small, required:%d, allocated:%d\r\n", videoAppInstance->videoCameraPictureBufferSize, CAPT_BUFFER_SIZE);
+                    s_pictureBuffer[0] = NULL;
+                    s_pictureBuffer[1] = NULL;
+                    usb_echo("Preallocated USB image buffer too small, required:%d, allocated:%d\r\n", videoAppInstance->videoCameraPictureBufferSize, CAMERA_USB_MAX_BUFF_SIZE);
                 }
 #endif
-
                 usb_echo("picture format is ");
                 if (memcmp(&videoAppInstance->videoStreamUncompressedFormatDescriptor->guidFormat[0],
                            &g_YUY2FormatGUID[0], 16) == 0)
@@ -1247,7 +1247,8 @@ void USB_HostVideoTask(void *param)
             break;
         }
         case kUSB_HostVideoStart:
-            USB_HostVideoWriteSDCard(param);
+            vTaskDelay(pdMS_TO_TICKS(2000));
+            /* Do nothing here. Data is sent to MPP hal via USB_HostVideoStreamDataInCallback */
             break;
         default:
             break;

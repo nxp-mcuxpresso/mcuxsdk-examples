@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2025 NXP
+ * Copyright 2023-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -93,6 +93,9 @@
 /* other parameters */
 /* rotation is needed to display in landscape because display RK055 is portrait */
 #define APP_DISPLAY_LANDSCAPE_ROTATE ROTATE_90
+#define APP_SRC_DISPLAY_FLIP         FLIP_HORIZONTAL
+
+#define APP_DECODE_BACKEND_NAME NULL
 
 /* detection boxes params */
 /* maximum number of boxes stored in RAM by APP (1box ~= 16B) */

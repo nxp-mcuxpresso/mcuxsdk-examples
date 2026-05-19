@@ -16,7 +16,7 @@
 #endif
 
 #if (APP_CONFIG==0) /* default app config */
-#define EXPECTED_INF_TIME            (4) /* ms */
+#define EXPECTED_INF_TIME            (4U) /* ms */
 #define EXPECTED_LIVENESS_RES        0 // 0 fake face, 1 real face
 #define EXPECTED_INF_SCORE           99 /* % */
 #else

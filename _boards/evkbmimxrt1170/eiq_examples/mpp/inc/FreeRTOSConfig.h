@@ -70,10 +70,22 @@
 #define configUSE_NEWLIB_REENTRANT              0
 #define configENABLE_BACKWARD_COMPATIBILITY     1
 #define configNUM_THREAD_LOCAL_STORAGE_POINTERS 5
+
+#ifndef OPENH264
 #define configUSE_APPLICATION_TASK_TAG          0
+#else  /* OPENH264 */
+#define configUSE_APPLICATION_TASK_TAG          1
+#define configUSE_POSIX_ERRNO                   1
+#endif /* OPENH264 */
 
 /* Memory allocation related definitions. */
+
+#ifndef OPENH264
 #define configSUPPORT_STATIC_ALLOCATION         0
+#else  /* OPENH264 */
+#define configSUPPORT_STATIC_ALLOCATION         1
+#endif /* OPENH264 */
+
 #define configSUPPORT_DYNAMIC_ALLOCATION        1
 #define configTOTAL_HEAP_SIZE                   ((size_t)(RTOS_HEAP_SIZE * 1024))
 #define configAPPLICATION_ALLOCATED_HEAP        0
@@ -125,6 +137,10 @@ unsigned long vGetTimerForRunTimeStats(void);
 #define INCLUDE_xTaskAbortDelay                 0
 #define INCLUDE_xTaskGetHandle                  0
 #define INCLUDE_xTaskResumeFromISR              1
+
+#ifdef OPENH264
+#define INCLUDE_xSemaphoreGetMutexHolder        1
+#endif /* OPENH264 */
 
 #ifdef __NVIC_PRIO_BITS
 /* __BVIC_PRIO_BITS will be specified when CMSIS is being used. */

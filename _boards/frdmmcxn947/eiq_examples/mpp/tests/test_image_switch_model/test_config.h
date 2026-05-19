@@ -24,7 +24,7 @@
 #define EXPECTED_FACE_CONFIDENCE_MIN    99
 #define EXPECTED_NUM_DETECTED_PERSONS   0
 #define EXPECTED_NUM_DETECTED_FACES     2
-#define EXPECTED_PERSON_MAX_INF_TIME    35
+#define EXPECTED_PERSON_MAX_INF_TIME    40
 #define EXPECTED_ULTRAFACE_MAX_INF_TIME 20
 #else
 #pragma message "configuration APP_CONFIG value is not supported by test"

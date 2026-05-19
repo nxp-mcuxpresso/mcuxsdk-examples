@@ -16,7 +16,7 @@
 #endif
 
 #if (APP_CONFIG==0) /* default app config */
-#define EXPECTED_INF_TIME   (3) /* ms */
+#define EXPECTED_INF_TIME   (3U) /* ms */
 #define EXPECTED_LABEL      "stopwatch"
 #define EXPECTED_INF_SCORE  81 /* % */
 #else

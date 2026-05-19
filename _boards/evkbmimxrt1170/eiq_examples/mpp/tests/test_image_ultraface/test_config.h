@@ -16,11 +16,11 @@
 #endif
 
 #if (APP_CONFIG==0) /* default app config */
-#define EXPECTED_INF_TIME            (390) /* ms */
+#define EXPECTED_INF_TIME            (390U) /* ms */
 #define EXPECTED_INF_DETECTION_CNT   1
 #define EXPECTED_INF_SCORE           92 /* % */
 #elif (APP_CONFIG==1)
-#define EXPECTED_INF_TIME            (70) /* ms */
+#define EXPECTED_INF_TIME            (70U) /* ms */
 #define EXPECTED_INF_DETECTION_CNT   2
 #define EXPECTED_INF_SCORE           99 /* % */
 #else

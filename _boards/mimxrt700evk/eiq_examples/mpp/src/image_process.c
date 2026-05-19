@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -48,8 +48,8 @@ static inline int USB_DbgConsole_Disabled(void)
 #endif
 
 
-extern QueueHandle_t usbcameraqueue_mppin;              /* When a picture is ready, send to this queue*/
-extern QueueHandle_t usbcameraqueue_mppdone;           /* When mpp has finishes using a picture buffer, it will be placed in this queue */
+QueueHandle_t usbcameraqueue_mppin = NULL;              /* When a picture is ready, send to this queue*/
+QueueHandle_t usbcameraqueue_mppdone = NULL;           /* When mpp has finishes using a picture buffer, it will be placed in this queue */
 
 /*
  * @note Address and size should be aligned to XCACHE_LINESIZE_BYTE due to the cache operation unit
@@ -120,6 +120,7 @@ int Process_Image_Frame(uint8_t *imagebuffer, uint32_t imagesize, uint32_t width
 
 	msg.cmd = USB_CAMERA_FRAME_READY;
 	msg.parameter = imagebuffer;
+	msg.size = imagesize;
 
 	if (usbcameraqueue_mppin)
 	{
@@ -152,6 +153,11 @@ int Process_Image_Frame(uint8_t *imagebuffer, uint32_t imagesize, uint32_t width
 			process_echo("Process Image: Unexpected camera queue receive error\r\n");
 			return -4;
 		}
+	}
+	else
+	{
+		process_echo("Process Image: MPP Camera queue not initialized\r\n");
+		return -5;
 	}
 
 	return 0;

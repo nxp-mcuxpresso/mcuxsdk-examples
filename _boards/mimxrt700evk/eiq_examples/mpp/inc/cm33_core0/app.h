@@ -70,6 +70,7 @@ typedef struct usb_camera_msg_{
 	uint8_t cmd;
 	uint8_t reserved[3]; // for alignment
 	void* parameter;
+	uint32_t size;
 }usb_camera_msg_t;
 
 #define MATCH_RESOLUTION_FIXED 1

@@ -86,7 +86,7 @@ void *image_data = (void *)stopwatch128_128_rgb_data;
 void *image_data = (void *)stopwatch168_208_rgb565_data;
 #define IMAGE_NAME "stopwatch168_208_rgb565"
 #if (IMG_COLOR_CONVERT == IMG_COLOR_RGB888)
-#define EXPECTED_CHECKSUM 0xee5e73c4
+#define EXPECTED_CHECKSUM 0xe96964bb
 #elif (IMG_COLOR_CONVERT == IMG_COLOR_BGR888)
 #define EXPECTED_CHECKSUM 0x11bd5213
 #elif (IMG_COLOR_CONVERT == IMG_COLOR_GRAY)

@@ -35,7 +35,7 @@
 void *image_data = (void *)skigirl_COCO_160_128_rgb565_data;
 #define EXPECTED_CONFIDENCE_MIN       0
 #define EXPECTED_NUM_DETECTED_PERSONS 1
-#define EXPECTED_CHECKSUM             0x420b1e22 //TODO fix moving boxes with the old 160 x 128 model
+#define EXPECTED_CHECKSUM             0xe60da6e1 //TODO fix moving boxes with the old 160 x 128 model
 #else
 #include APP_STATIC_IMAGE_NAME
 #define SRC_IMAGE_FORMAT SRC_IMAGE_COUPLE_COCO_220_220_RGB565_FORMAT

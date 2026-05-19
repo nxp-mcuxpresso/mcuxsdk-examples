@@ -1,4 +1,4 @@
-/* Copyright 2024-2025 NXP
+/* Copyright 2024-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -15,7 +15,8 @@
  *
  */
 #ifdef USE_USB_CAMERA
-#define MATCH_FORMAT 1
+#include "host_video.h"
+#define MATCH_FORMAT MATCH_FORMAT_MJPEG
 #endif
 
 /*******************************************************************************
@@ -44,7 +45,7 @@
  */
 
 /* enable JPEG SW decoder */
-#if (MATCH_FORMAT != 2)
+#if (MATCH_FORMAT != MATCH_FORMAT_UNCOMPRESSED)
 #define HAL_ENABLE_JPEG_CPU                   0
 #define HAL_ENABLE_JPEG_HW                    1
 #endif
@@ -97,11 +98,13 @@
 /* camera parameters */
 #ifdef USE_USB_CAMERA
 #define APP_CAMERA_NAME    "USB_cam"
-#define APP_CAMERA_WIDTH   1280   //320 //1280 //640 //352
-#define APP_CAMERA_HEIGHT  720   //240 // 720 //480 //288
-#if (MATCH_FORMAT == 2) /* MATCH_FORMAT_UNCOMPRESSED */
+#if (MATCH_FORMAT == MATCH_FORMAT_UNCOMPRESSED)
+#define APP_CAMERA_WIDTH   320   //320 //1280 //640 //352
+#define APP_CAMERA_HEIGHT  240   //240 // 720 //480 //288
 #define APP_CAMERA_FORMAT  MPP_PIXEL_YUYV
 #else
+#define APP_CAMERA_WIDTH   640   //320 //1280 //640 //352
+#define APP_CAMERA_HEIGHT  480   //240 // 720 //480 //288
 #define APP_CAMERA_FORMAT  MPP_PIXEL_JPEG
 #endif
 #else /* Flexio camera parameters */
@@ -139,7 +142,7 @@
 /* 30fps capture */
 #define APP_RC_CYCLE_INC 3
 #ifdef USE_USB_CAMERA
-#define APP_RC_CYCLE_MIN 200
+#define APP_RC_CYCLE_MIN 66
 #else
 #define APP_RC_CYCLE_MIN 33
 #endif

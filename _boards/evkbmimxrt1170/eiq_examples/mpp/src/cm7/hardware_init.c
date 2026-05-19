@@ -75,6 +75,9 @@ void BOARD_Init()
     BOARD_InitDebugConsole();
 #endif
     BOARD_InitMipiCameraPins();
+#ifdef OPENH264
+    BOARD_InitSDCARD();
+#endif /* OPENH264 */
     /*
      * Reset the displaymix, otherwise during debugging, the
      * debugger may not reset the display, then the behavior

@@ -42,7 +42,7 @@
 
 /* The size of Tensor Arena buffer for TensorFlowLite-Micro */
 /* minimum required arena size for mobilefacenet > ultraface */
-#define HAL_TFLM_TENSOR_ARENA_SIZE_KB         1390
+#define HAL_TFLM_TENSOR_ARENA_SIZE_KB         895
 
 /*
  * TFLite tensor arena buffer alignment requirement:

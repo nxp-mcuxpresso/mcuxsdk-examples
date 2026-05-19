@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -41,6 +41,9 @@
 /* display small & large dims */
 #define DISPLAY_SMALL_DIM MIN(APP_DISPLAY_WIDTH, APP_DISPLAY_HEIGHT)
 #define DISPLAY_LARGE_DIM MAX(APP_DISPLAY_WIDTH, APP_DISPLAY_HEIGHT)
+
+#define INF_SRC_WIDTH   (SRC_WIDTH)
+#define INF_SRC_HEIGHT  (SRC_HEIGHT)
 
 #define RECT_LINE_WIDTH 2
 

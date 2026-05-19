@@ -106,6 +106,8 @@
 /* rotation is needed to display in landscape because display RK055 is portrait */
 #define APP_DISPLAY_LANDSCAPE_ROTATE ROTATE_90
 
+#define APP_SRC_DISPLAY_FLIP         FLIP_HORIZONTAL
+
 /* detection boxes params */
 /* maximum number of boxes stored in RAM by APP (1box ~= 16B) */
 #define APP_MAX_BOXES 10000

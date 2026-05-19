@@ -16,11 +16,11 @@
 #endif
 
 #if (APP_CONFIG==0) /* default app config */
-#define EXPECTED_INF_TIME   (20) /* ms */
+#define EXPECTED_INF_TIME   (20U) /* ms */
 #define EXPECTED_LABEL      "stopwatch"
 #define EXPECTED_INF_SCORE  80 /* % */
 #elif (APP_CONFIG==1)
-#define EXPECTED_INF_TIME   (20) /* ms */
+#define EXPECTED_INF_TIME   (20U) /* ms */
 #define EXPECTED_LABEL      "stopwatch"
 #define EXPECTED_INF_SCORE  80 /* % */
 #else

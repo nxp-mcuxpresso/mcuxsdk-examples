@@ -1,5 +1,5 @@
 /*
- * Copyright 2019, 2025 NXP
+ * Copyright 2019, 2025-2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -9,6 +9,10 @@
 #define _HOST_VIDEO_H_
 
 #ifdef USE_USB_CAMERA
+
+#include "usb_host_config.h"
+#include "usb_host.h"
+#include "usb_host_video.h"
 
 /*******************************************************************************
  * Definitions
@@ -24,7 +28,21 @@
 #define USB_VIDEO_STREAM_BUFFER_COUNT \
     (6U) /*!< the prime count, the value shouldn't be more than 6 because of USB dedicated ram limination */
 #define USB_MJPEG_COMPRESSION_RATIO \
-    (25U) /*!< the approximate mjep picture compression radio of device camera, 50 means 50% */
+    (50U) /*!< the approximate mjpeg picture compression radio of device camera, 50 means 50% */
+
+#define CAMERA_USB_MAX_WIDTH  1280 /* maximum supported width */
+#define CAMERA_USB_MAX_HEIGHT 720  /* maximum supported height */
+#define CAMERA_USB_MAX_BPP 2 /* YUYV */
+#define CAMERA_DEV_BUFFER_ALIGN 64      /* alignment requirement TODO */
+#define CAMERA_USB_RAW_BUFF_SIZE CAMERA_USB_MAX_WIDTH * CAMERA_USB_MAX_HEIGHT * CAMERA_USB_MAX_BPP
+#define CAMERA_USB_JPEG_BUFF_SIZE (CAMERA_USB_RAW_BUFF_SIZE * USB_MJPEG_COMPRESSION_RATIO) / 100
+
+/* Add the max ISO packet size */
+#if ((MATCH_FORMAT == MATCH_FORMAT_MJPEG) || (MATCH_FORMAT == MATCH_FORMAT_ANY))
+#define CAMERA_USB_MAX_BUFF_SIZE (CAMERA_USB_JPEG_BUFF_SIZE + HIGH_SPEED_ISO_MAX_PACKET_SIZE_ZERO_ADDITION)
+#else /* MATCH_FORMAT_UNCOMPRESSED */
+#define CAMERA_USB_MAX_BUFF_SIZE (CAMERA_USB_RAW_BUFF_SIZE + HIGH_SPEED_ISO_MAX_PACKET_SIZE_ZERO_ADDITION)
+#endif
 
 /*! @brief host app run status */
 typedef enum _usb_host_vidio_run_state
@@ -82,7 +100,15 @@ typedef struct _usb_host_video_camera_instance
     volatile uint8_t expect_frame_id;            /*!< the frame id host expects */
     uint8_t discardFirstPicture;                 /*!< dicard the first picture */
     uint8_t step;
+    QueueHandle_t mppQueue;                      /*!< queue to send messages to usb camera hal */
 } usb_host_video_camera_instance_t;
+
+typedef struct usb_frame_ready_msg
+{
+    uint8_t  *pictureBuffer;                      /*!< pointer to the picture buffer */
+    uint32_t  pictureBufferIndex;                 /*!< the index of the picture buffer */
+    uint32_t  pictureLength;                      /*!< the length of the frame data */
+} usb_frame_ready_msg_t;
 
 /*******************************************************************************
  * API

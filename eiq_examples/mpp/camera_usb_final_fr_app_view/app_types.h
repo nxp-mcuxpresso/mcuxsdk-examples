@@ -62,7 +62,7 @@ typedef struct _user_data_t {
     mpp_element_params_t *p_params_compose;
     uint32_t accessing;     /* boolean protecting access */
     int detected_count;     /* number of detected boxes */
-    int inference_time_ms;
+    uint32_t inference_time_ms;
     e_state state;          /* state-machine for the app */
     face_t * db;            /* embeddings database */
     int db_max;             /* embeddings database max size. */

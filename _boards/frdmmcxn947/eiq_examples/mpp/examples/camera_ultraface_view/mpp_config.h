@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 NXP
+ * Copyright 2023-2024, 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -100,6 +100,8 @@
  * use display rotation to match camera orientation
  */
 #define APP_SKIP_CONVERT_FOR_DISPLAY
+
+#define APP_DECODE_BACKEND_NAME NULL
 
 /* stripe mode for camera and display
  * 0: disabled

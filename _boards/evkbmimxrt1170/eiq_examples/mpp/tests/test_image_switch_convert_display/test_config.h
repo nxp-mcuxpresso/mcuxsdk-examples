@@ -50,7 +50,7 @@ void *image2_data = (void *)zebra_256_206_rgb565le_data;
 #define SRC2_IMAGE_WIDTH SRC_IMAGE_ZEBRA_256_206_RGB565LE_WIDTH
 void *image1_data = (void *)stopwatch168_208_vuyx_data;
 void *image2_data = (void *)zebra_256_206_rgb565le_data;
-#define SRC1_EXPECTED_CHECKSUM 0xd0743d10
+#define SRC1_EXPECTED_CHECKSUM 0x8a2c1532
 #define SRC2_EXPECTED_CHECKSUM 0xdbaf11b5
 #elif (APP_CONFIG==2)
 #include "images/skigirl_COCO_320_256_rgb565.h"

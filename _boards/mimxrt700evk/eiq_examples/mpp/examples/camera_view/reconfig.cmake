@@ -10,8 +10,10 @@ mcux_add_source(
 
 mcux_add_macro(
     CC "-DRTOS_HEAP_SIZE=2000 \
-    -DconfigGENERATE_RUN_TIME_STATS=1"
-    CX "DconfigGENERATE_RUN_TIME_STATS=1"
+    -DconfigGENERATE_RUN_TIME_STATS=1 \
+    -DUSE_UNCACHED_JPG_BUFFERS"
+    CX "DconfigGENERATE_RUN_TIME_STATS=1 \
+    -DUSE_UNCACHED_JPG_BUFFERS"
 )
 
 #increase __ncache_size__ also increases the size of npu_ncache section accessible to NPU

@@ -28,13 +28,11 @@ mcux_add_macro(
         -DUSB_STACK_FREERTOS \
         -DUSE_RTOS=1 \
         -DPROCESS_IMAGE=1 \
-        -DUSE_PSRAM_JPG_BUFFERS=1 \
         -DARM_MATH_CM33"
     CX "-DARM_MATH_CM33\
         -DUSB_STACK_FREERTOS \
         -DUSE_RTOS=1 \
         -DPROCESS_IMAGE=1 \
-        -DUSE_PSRAM_JPG_BUFFERS=1 \
         -D__FPU_PRESENT=1"
 )
 

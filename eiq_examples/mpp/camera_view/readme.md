@@ -20,17 +20,20 @@ Refer to board.readme for hardware setup requirements.
 
 The pipeline created by the application is:
 ```
-+-------------+      +-------------+      +-------------+
-|             |      |             |      |             |
-|    camera   | -->  |  2D convert | -->  |    Display  |
-|             |      |             |      |             |
-+-------------+      +-------------+      +-------------+
++-------------+     +-----------+       +-------------+      +-------------+
+|             |     |   JPEG    |       |             |      |             |
+|    camera   | --> |  decoder  |  -->  |  2D convert | -->  |    Display  |
+|             |     | (usb cam) |       |             |      |             |
++-------------+     +-----------+       +-------------+      +-------------+
 ```
 Camera element is configured for a specific pixel format and resolution (board dependent)
 Display element is configured for a specific pixel format and resolution (board dependent)
+JPEG decoder element decodes the camera input stream from JPEG format to raw image data (YUV format)
+  This element is present in the pipeline only when camera output is in JPEG format (eg. USB camera)
 2D convert is configured to perform:
   - color space conversion from the camera pixel format to the display pixel format
   - rotation depending on the camera vs display orientation
+  - scaling to match the display resolution
 
 
 ## Running the demo

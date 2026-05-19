@@ -92,6 +92,8 @@
 /* rotation is needed to display in landscape because display RK055 is portrait */
 #define APP_DISPLAY_LANDSCAPE_ROTATE ROTATE_90
 
+#define APP_SRC_DISPLAY_FLIP         FLIP_HORIZONTAL
+
 
 /* Tensorflow lite Model data */
 #ifdef APP_USE_NEUTRON64_MODEL

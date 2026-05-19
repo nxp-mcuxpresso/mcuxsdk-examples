@@ -198,7 +198,7 @@ void print_conditional(user_data_t *user_data)
 					{
 						PRINTF("%s : box %d score %d(%%)\r\n", ULTRAFACE_NAME, i,
 								(int)(user_data->final_boxes[i].score * 100.0f));
-						PRINTF("Ultraface inference time %d ms \r\n", user_data->inference_time_ms);
+						PRINTF("Ultraface inference time %u ms \r\n", user_data->inference_time_ms);
 					}
 				}
 			}
@@ -209,7 +209,7 @@ void print_conditional(user_data_t *user_data)
 		    {
 		        PRINTF("%s : name %s score %d(%%)\r\n", MOBILEFACENET_NAME,
 		                                            user_data->result.recognized_name, user_data->result.similarity_percentage);
-		        PRINTF("Mobilefacenet inference time %d ms \r\n", user_data->inference_time_ms);
+		        PRINTF("Mobilefacenet inference time %u ms \r\n", user_data->inference_time_ms);
 		    }
 		}
 

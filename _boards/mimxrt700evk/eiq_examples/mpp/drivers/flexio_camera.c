@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 NXP
+ * Copyright 2024-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -64,8 +64,8 @@ static volatile bool g_MasterCompletionFlag = false;
 /* flag of I2C transfer with no ack. */
 static volatile bool g_MasterNackFlag       = false;
 /* camera buffers */
-AT_NONCACHEABLE_SECTION_ALIGN(uint8_t s_buf[CAMERA_HEIGHT*CAMERA_STRIDE], 128);
-AT_NONCACHEABLE_SECTION_ALIGN(uint8_t s_buf1[CAMERA_HEIGHT*CAMERA_STRIDE], 128);
+uint8_t s_buf[CAMERA_HEIGHT*CAMERA_STRIDE] __attribute__((section(".ezhv_camera"))) __attribute__((aligned(128)));
+uint8_t s_buf1[CAMERA_HEIGHT*CAMERA_STRIDE] __attribute__((section(".ezhv_camera"))) __attribute__((aligned(128)));
 
 volatile uint32_t g_newVideoFrame = 0;
 
