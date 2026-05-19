@@ -83,7 +83,7 @@ static bool ValidateMsgRecv(void)
     uint32_t i;
     for (i = 0U; i < CONFIG_MSG_LENGTH; i++)
     {
-        PRINTF("Send: %d. Receive %d\r\n", g_msgSend[i], g_msgRecv[i]);
+        PRINTF("Send: %ld. Receive %ld\r\n", g_msgSend[i], g_msgRecv[i]);
 
         if (g_msgRecv[i] != g_msgSend[i])
         {

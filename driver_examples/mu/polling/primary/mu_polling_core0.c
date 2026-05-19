@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016-2019, 2023-2025 NXP
+ * Copyright 2016-2019, 2023-2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -82,7 +82,7 @@ static bool ValidateMsgRecv(void)
     uint32_t i;
     for (i = 0U; i < CONFIG_MSG_LENGTH; i++)
     {
-        PRINTF("Send: %d. Receive %d\r\n", g_msgSend[i], g_msgRecv[i]);
+        PRINTF("Send: %ld. Receive %ld\r\n", g_msgSend[i], g_msgRecv[i]);
 
         if (g_msgRecv[i] != g_msgSend[i])
         {

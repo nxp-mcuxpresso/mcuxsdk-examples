@@ -1,5 +1,5 @@
 #
-# Copyright 2024 NXP
+# Copyright 2024-2026 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -17,6 +17,10 @@ mcux_add_source(
 
 mcux_add_include(
     INCLUDES .
+)
+
+mcux_add_macro(
+    CC "-DPRINTF_ADVANCED_ENABLE=1"
 )
 
 mcux_add_iar_configuration(
