@@ -27,7 +27,7 @@
 /* @TEST_ANCHOR */
 
 #ifndef TESTCASE_MODE
-#define TESTCASE_MODE 5
+#define TESTCASE_MODE FAULT_NONE
 #endif
 
 /* typedef for non-secure callback functions, this type is needed for TEST 1  */
