@@ -55,3 +55,7 @@
     - +iar@debug
     - +iar@release
     frdmmcxw70:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release
