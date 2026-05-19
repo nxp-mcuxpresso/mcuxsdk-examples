@@ -14,12 +14,17 @@
  ******************************************************************************/
 #define CE_IMAGE_START     ce_fw
 #define CE_IMAGE_SIZE      sizeof(ce_fw)
-#define CE_STCM_ADDRESSESS 0x04030000
+#define CE_STCM_ADDRESSES  0x04030000
 
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-unsigned char ce_fw[] = {
+#if defined(__ICCARM__)
+#pragma data_alignment = 128
+const unsigned char ce_fw[] = {
+#elif defined(__GNUC__)
+const unsigned char ce_fw[] __attribute__((aligned(128))) = {
+#endif
 #include "ce_kw43_mcxw70.txt"
 };
 /*******************************************************************************
@@ -31,7 +36,10 @@ void BOARD_CE_Init(void)
 
     ce_image.srcAddr  = (uint32_t)CE_IMAGE_START;
     ce_image.size     = CE_IMAGE_SIZE;
-    ce_image.destAddr = CE_STCM_ADDRESSESS;
+    /* If ce_image.destAddr is set to 0, DSP-V Lite loads firmware directly from flash.
+     * To load firmware from SRAM instead, set ce_image.destAddr to CE_STCM_ADDRESSES.
+     */
+    ce_image.destAddr = 0;
 
     CE_Init(&ce_image);
 }
