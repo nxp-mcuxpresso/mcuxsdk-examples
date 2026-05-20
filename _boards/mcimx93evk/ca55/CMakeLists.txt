@@ -4,6 +4,7 @@
 
 mcux_add_source(
     SOURCES
+        ./board.c
         ./mmu.c
 )
 
