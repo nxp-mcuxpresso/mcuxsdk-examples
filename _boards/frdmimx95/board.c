@@ -38,7 +38,7 @@ void BOARD_InitDebugConsole(void)
     HAL_ClockSetRate(&hal_clk);
     HAL_ClockEnable(&hal_clk);
     DbgConsole_Init(BOARD_DEBUG_UART_INSTANCE, BOARD_DEBUG_UART_BAUDRATE, BOARD_DEBUG_UART_TYPE,
-                    HAL_ClockGetRate(hal_clk.clk_id));
+                    (uint32_t)(HAL_ClockGetRate(hal_clk.clk_id) & 0xFFFFFFFFU));
 }
 
 void BOARD_InitMQS(uint32_t clkDiv)
@@ -456,7 +456,7 @@ void BOARD_ConfigMPU(void)
     {
         /* The MPU region size should be 2^N, 5<=N<=32, region base should be multiples of size. */
         //assert(!(nonCacheStart % size));
-        assert(size == (uint32_t)(1 << i));
+        assert(size == (1U << (uint32_t)i));
         assert(i >= 5);
 
         /* Region 10 setting: Memory with Normal type, shareable, non-cacheable */
