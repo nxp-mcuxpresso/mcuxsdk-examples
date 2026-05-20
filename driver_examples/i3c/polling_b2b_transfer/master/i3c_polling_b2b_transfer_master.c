@@ -1,5 +1,5 @@
 /*
- * Copyright 2019, 2022-2025 NXP
+ * Copyright 2019, 2022-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -23,6 +23,7 @@
 
 #define I3C_BROADCAST_ADDR 0x7EU
 #define I3C_VENDOR_ID      0x11BU
+#define I3C_PART_NUMBER    0x0U
 
 /*******************************************************************************
  * Prototypes
@@ -206,7 +207,7 @@ int main(void)
     devList = I3C_MasterGetDeviceListAfterDAA(EXAMPLE_MASTER, &devCount);
     for (devIndex = 0; devIndex < devCount; devIndex++)
     {
-        if (devList[devIndex].vendorID == I3C_VENDOR_ID)
+        if (devList[devIndex].vendorID == I3C_VENDOR_ID && devList[devIndex].partNumber == I3C_PART_NUMBER)
         {
             slaveAddr = devList[devIndex].dynamicAddr;
             break;

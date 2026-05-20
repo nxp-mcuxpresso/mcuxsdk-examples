@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2025 NXP
+ * Copyright 2021-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -21,7 +21,8 @@
 #define I3C_MASTER_SLAVE_ADDR_7BIT 0x1EU
 #define I3C_DATA_LENGTH 34U
 
-#define I3C_VENDOR_ID 0x11BU
+#define I3C_VENDOR_ID   0x11BU
+#define I3C_PART_NUMBER 0x0U
 
 /*******************************************************************************
  * Prototypes
@@ -138,6 +139,7 @@ int main(void)
     I3C_SlaveGetDefaultConfig(&slaveConfig);
     slaveConfig.staticAddr = I3C_MASTER_SLAVE_ADDR_7BIT;
     slaveConfig.vendorID   = I3C_VENDOR_ID;
+    slaveConfig.partNumber = I3C_PART_NUMBER;
     slaveConfig.offline    = false;
     I3C_SlaveInit(EXAMPLE_SLAVE, &slaveConfig, I3C_SLAVE_CLOCK_FREQUENCY);
     I3C_SlaveTransferCreateHandle(EXAMPLE_SLAVE, &g_i3c_s_handle, i3c_slave_callback, NULL);
