@@ -109,3 +109,13 @@ psa_crypto_examples:
     frdmmcxa287: []
     frdmmcxa577: []
     frdmmcxl255@cm33: []
+    mcxw71evk: []
+    frdmmcxw71: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    frdmmcxw72@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    mcxw72loc@cm33_core0: []
+    kw47evk@cm33_core0: []
+    kw47loc@cm33_core0: []
