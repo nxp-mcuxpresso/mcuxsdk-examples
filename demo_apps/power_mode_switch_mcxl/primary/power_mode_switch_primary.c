@@ -52,16 +52,16 @@ power_handle_t powerHandle __attribute__((section(".noinit.$rpmsg_sh_mem")));
 #endif
 
 power_pd1_config_t pd1Config = {
-    .mainWakeupSource      = kPower_WS_NONE,
-    .enableIVSMode         = false,
-    .fro16KOutputFreq      = kPMU_FRO16KOutput16KHz,
+    .mainWakeupSource = kPower_WS_NONE,
+    .enableIVSMode    = false,
+    .fro16KOutputFreq = kPMU_FRO16KOutput16KHz,
 };
 
-power_pd2_config_t pd2Config = {.mainWakeupSource      = kPower_WS_NONE,
-                                .aonWakeupSource       = kPower_WS_NONE,
-                                .enableIVSMode         = false,
-                                .disableFRO10M         = true,
-                                .fro16KOutputFreq      = kPMU_FRO16KOutput16KHz,
+power_pd2_config_t pd2Config = {.mainWakeupSource = kPower_WS_NONE,
+                                .aonWakeupSource  = kPower_WS_NONE,
+                                .enableIVSMode    = false,
+                                .disableFRO10M    = true,
+                                .fro16KOutputFreq = kPMU_FRO16KOutput16KHz,
 #if APP_ENABLE_ADVC
                                 .vddCoreAonVoltage = kPower_VddCoreAon_AdvcControl
 #else
@@ -70,10 +70,10 @@ power_pd2_config_t pd2Config = {.mainWakeupSource      = kPower_WS_NONE,
 };
 
 power_dpd1_config_t dpd1Config = {.mainWakeupSource = kPower_WS_NONE,
-                                  .fro16KOutputFreq      = kPMU_FRO16KOutput16KHz,
-                                  .disableBandgap        = true,
-                                  .enableIVSMode         = true,
-                                  .disableFRO10M         = true,
+                                  .fro16KOutputFreq = kPMU_FRO16KOutput16KHz,
+                                  .disableBandgap   = true,
+                                  .enableIVSMode    = true,
+                                  .disableFRO10M    = true,
 #if (APP_ENABLE_CONTEXT_SAVING == 0)
                                   .mainRamArraysToRetain = kPower_MainDomainNoneRams,
 #else
@@ -110,8 +110,8 @@ power_dpd2_config_t dpd2Config = {
 };
 
 power_dpd3_config_t dpd3Config = {
-    .wakeupSource = kPower_WS_NONE,
-    .fro16KOutputFreq      = kPMU_FRO16KOutput16KHz,
+    .wakeupSource     = kPower_WS_NONE,
+    .fro16KOutputFreq = kPMU_FRO16KOutput16KHz,
 };
 
 power_sd_config_t sdConfig = {
@@ -148,7 +148,6 @@ void APP_WAKEUP_BUTTON_ISR(void)
 
 void APP_EXT_INT_ISR(void)
 {
-
     GPIO_GpioClearInterruptFlags(APP_EXT_INT_GPIO, 1U << APP_EXT_INT_PIN);
     DisableIRQ(APP_EXT_INT_IRQ);
 }
@@ -190,8 +189,8 @@ int main(void)
     uint32_t powerTrans;
     power_low_power_mode_t targetLpMode;
     power_drv_config_t drvConfig = {
-      .muChannelId = APP_MU_CHANNEL,
-      .noSyncCM0P = false,
+        .muChannelId = APP_MU_CHANNEL,
+        .noSyncCM0P  = false,
     };
 
     BOARD_InitHardware();
@@ -212,6 +211,10 @@ int main(void)
     }
     else
     {
+#if APP_ENABLE_ADVC
+        PRINTF("Loading ADVC table...\r\n");
+        ADVC_Init();
+#endif /* APP_ENABLE_ADVC */
         APP_CopyCore1Image();
         APP_BootCore1();
     }
@@ -222,25 +225,12 @@ int main(void)
         return 0;
     }
 
-#if APP_ENABLE_ADVC
-    ADVC_Init();
-    uint32_t tmp = AON__PMU->AWK_UP_TIME;
-    AON__PMU->AWK_UP_TIME = tmp;
-    SDK_DelayAtLeastUs(600, CLOCK_GetCoreSysClkFreq());
-    *(uint32_t *)0xa009706c = 0x2;
-    *(uint32_t *)0xa0097070 = 0x2;
-    *(uint32_t *)0xa009700C = (*(uint32_t *)0xa009700C & ~(0xF800UL)) | (2 << 11U);
-    ADVC_Enable(kADVC_ModeOptimal, NULL);
-    tmp = AON__PMU->AWK_UP_TIME;
-    AON__PMU->AWK_UP_TIME = tmp;
-    SDK_DelayAtLeastUs(600, CLOCK_GetCoreSysClkFreq());
-#endif
     while (1)
-    {  
-      
-        AON__PMU->BGR_LVHV_DETECT_CTRL &=  ~(0x2U);     
-        uint32_t dummyValue = AON__PMU->AWK_UP_TIME; 
-        AON__PMU ->AWK_UP_TIME = (AON__PMU->AWK_UP_TIME & ~PMU_AWK_UP_TIME_WKUP_TIME_MASK) | PMU_AWK_UP_TIME_WKUP_TIME(dummyValue);
+    {
+        AON__PMU->BGR_LVHV_DETECT_CTRL &= ~(PMU_BGR_LVHV_DETECT_CTRL_DET_RST_EN_MASK);
+        uint32_t dummyValue = AON__PMU->AWK_UP_TIME;
+        AON__PMU->AWK_UP_TIME =
+            (AON__PMU->AWK_UP_TIME & ~PMU_AWK_UP_TIME_WKUP_TIME_MASK) | PMU_AWK_UP_TIME_WKUP_TIME(dummyValue);
         SDK_DelayAtLeastUs(1000, CLOCK_GetCoreSysClkFreq());
         powerTrans      = APP_GetTargetPowerTransition();
         targetLpMode    = APP_EnableWakeupSource(powerTrans);
@@ -253,8 +243,8 @@ int main(void)
             CMC_EnableDebugOperation(CMC, false);
 
             EnableIRQ(MU_A_RX_IRQn);
-            MU_EnableInterrupts(APP_MU, (kMU_Rx0FullInterruptEnable));          
-          
+            MU_EnableInterrupts(APP_MU, (kMU_Rx0FullInterruptEnable));
+
             PRINTF("Wakeup Successfully\r\n");
             CMC_ConfigFlashMode(CMC, true, true, true);
         }
@@ -778,11 +768,11 @@ static void APP_GetWakeupReason(void)
         {
             if ((wakeupStatus & (1U << 5UL)) != 0UL)
             {
-              PRINTF("DPD2 --> DPD1, Wakeup Source: RTC Alarm0\r\n");
+                PRINTF("DPD2 --> DPD1, Wakeup Source: RTC Alarm0\r\n");
             }
             else
             {
-              PRINTF("Wakeup Source: RTC Alarm0\r\n");
+                PRINTF("Wakeup Source: RTC Alarm0\r\n");
             }
             EnableIRQ(RTC_ALARM0_IRQn);
             NVIC_ClearPendingIRQ(RTC_ALARM0_IRQn);
@@ -791,11 +781,11 @@ static void APP_GetWakeupReason(void)
         {
             if ((wakeupStatus & (1U << 5UL)) != 0UL)
             {
-              PRINTF("DPD2 --> DPD1, Wakeup Source: RTC Alarm1\r\n");
+                PRINTF("DPD2 --> DPD1, Wakeup Source: RTC Alarm1\r\n");
             }
             else
             {
-              PRINTF("Wakeup Source: RTC Alarm1\r\n");
+                PRINTF("Wakeup Source: RTC Alarm1\r\n");
             }
             EnableIRQ(RTC_ALARM1_IRQn);
             NVIC_ClearPendingIRQ(RTC_ALARM1_IRQn);
@@ -804,11 +794,11 @@ static void APP_GetWakeupReason(void)
         {
             if ((wakeupStatus & (1U << 5UL)) != 0UL)
             {
-              PRINTF("DPD2 --> DPD1, Wakeup Source: LPTMR\r\n");
+                PRINTF("DPD2 --> DPD1, Wakeup Source: LPTMR\r\n");
             }
             else
             {
-              PRINTF("Wakeup Source: LPTMR\r\n");
+                PRINTF("Wakeup Source: LPTMR\r\n");
             }
             EnableIRQ(LPTMR_AON_IRQn);
             NVIC_ClearPendingIRQ(LPTMR_AON_IRQn);
@@ -817,11 +807,11 @@ static void APP_GetWakeupReason(void)
         {
             if ((wakeupStatus & (1U << 13UL)) != 0UL)
             {
-              PRINTF("DPD1 --> Active, Wakeup Source: EXT_INT\r\n");
+                PRINTF("DPD1 --> Active, Wakeup Source: EXT_INT\r\n");
             }
             else
             {
-              PRINTF("Wakeup Source: EXT_INT\r\n");
+                PRINTF("Wakeup Source: EXT_INT\r\n");
             }
         }
     }

@@ -78,6 +78,17 @@ void MU_B_RX_IRQHandler(void)
         PRINTF("Syncing with CM33\r\n");
         if (Power_MuSyncCallback(msg, APP_MU_CHANNEL) == kStatus_Success)
         {
+#if APP_ENABLE_ADVC
+            PRINTF("Enabling ADVC As Optimal Mode...\r\n");
+            if (ADVC_Enable(kADVC_ModeOptimal, NULL) != kADVC_Stat_Ok)
+            {
+                PRINTF("Fail to enable ADVC!!!\r\n");
+                assert(false);
+            }
+            uint32_t tmp          = AON__PMU->AWK_UP_TIME;
+            AON__PMU->AWK_UP_TIME = tmp;
+            SDK_DelayAtLeastUs(600, CLOCK_GetAonCoreSysClkFreq());
+#endif
             Power_RegisterUserCallback(APP_SecondaryCoreCallback, NULL);
             g_DualCoreSynced = true;
         }
@@ -195,6 +206,7 @@ static void APP_DPD2ClockRecovery(void)
     AON__CGU->CLK_CONFIG |= CGU_CLK_CONFIG_ULPIRC_EN_MASK | CGU_CLK_CONFIG_LPIRC_EN_MASK;
     CLOCK_SetupFROAonClocking(APP_DPD2_CLOCK_FREQ_HZ);
     CLOCK_AttachClk(kFROdiv1_to_AON_CPU);
+    AON__CGU->CLK_CONFIG &= ~CGU_CLK_CONFIG_ROOT_AUX_CLK_EN_MASK;
 #if APP_ENABLE_ADVC
     ADVC_PostVoltageChangeRequest();
 
@@ -202,13 +214,6 @@ static void APP_DPD2ClockRecovery(void)
     while ((APP_ADVC_STATUS_REG & APP_ADVC_OPTIMAL_DONE_MASK) == 0UL)
     {
     }
-
-    /* Stage 2: disable the auxiliary root clock. */
-    ADVC_PreVoltageChangeRequest(APP_DPD2_CLOCK_FREQ_HZ);
-#endif
-    AON__CGU->CLK_CONFIG &= ~CGU_CLK_CONFIG_ROOT_AUX_CLK_EN_MASK;
-#if APP_ENABLE_ADVC
-    ADVC_PostVoltageChangeRequest();
 #endif
 }
 
