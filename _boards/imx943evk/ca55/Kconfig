@@ -1,0 +1,9 @@
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+config MCUX_HW_BOARD_imx943evk_ca55
+    bool
+    default y
+    select MCUX_COMPONENT_component.sm.imx943_ca55
+    select MCUX_COMPONENT_driver.sm_cfg
