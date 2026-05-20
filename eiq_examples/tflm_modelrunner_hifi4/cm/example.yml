@@ -19,8 +19,8 @@ tflm_modelrunner_hifi4:
     - -iar@release
     - -mdk@debug
     - -mdk@release
-    - +armgcc@flash_debug
-    - +armgcc@flash_release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
     - -iar@flash_debug
     - -iar@flash_release
     - -mdk@flash_debug

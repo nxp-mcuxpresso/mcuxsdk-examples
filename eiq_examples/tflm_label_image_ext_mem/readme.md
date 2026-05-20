@@ -27,7 +27,10 @@ A 3-channel color image is input to the quantized MobileNet convolutional neural
 The key innovation in this example is the **fetch-weights-to-SRAM** mechanism:
 
 - **Model Storage**: The complete model (~4.3 MB) is stored in external xSPI flash memory
+
 - **Weight Fetching**: During inference, model weights are fetched from external flash to internal SRAM (scratch buffer)
+    > **Note**: Scratch memory is only required when using a Neutron-enabled model. For non-Neutron models, the scratch memory is not needed.
+
 - **NPU Execution**: The Neutron NPU executes operations using weights cached in internal SRAM
 
 This technique enables running large models that exceed the available internal SRAM capacity.
@@ -58,6 +61,7 @@ export PATH="${NEUTRON_SDK_PATH}/bin:${PATH}"
 ```
 
 The minimum size of SRAM scratch memory will be displayed in the Neutron Converter terminal. Please note the value: `SRAM scratch = 1,082,368 (bytes)`
+
 ```bash
 Memory:
   Total data    = 1,355,760 (bytes) (Inputs + Outputs + Intermediate Variable Tensors)
