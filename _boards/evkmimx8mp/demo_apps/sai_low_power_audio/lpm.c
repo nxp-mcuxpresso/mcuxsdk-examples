@@ -6,6 +6,8 @@
  */
 
 /* FreeRTOS header */
+#include <assert.h>
+#include <stdint.h>
 #include "FreeRTOS.h"
 #include "semphr.h"
 #include "task.h"
@@ -89,8 +91,10 @@ uint32_t LPM_EnterTicklessIdle(uint32_t timeoutMilliSec, uint64_t *pCounter)
         NVIC_ClearPendingIRQ(SYSTICK_IRQn);
         expired = countPerTick;
     }
+    assert(expired <= UINT32_MAX - GPT_GetCurrentTimerCount(SYSTICK_BASE));
     expired += GPT_GetCurrentTimerCount(SYSTICK_BASE);
     /* Minus those already expired to get accurate waiting counter. */
+    assert(counter >= expired);
     counter -= expired;
 
     /* Enable GPT free-run mode, the counter is not reset when compare events occur.
@@ -99,6 +103,7 @@ uint32_t LPM_EnterTicklessIdle(uint32_t timeoutMilliSec, uint64_t *pCounter)
      */
     SYSTICK_BASE->CR |= GPT_CR_FRR_MASK;
     /* Convert count in systick freq to tickless clock count */
+    assert(counter > 0U);
     GPT_SetOutputCompareValue(SYSTICK_BASE, kGPT_OutputCompare_Channel1, counter - 1UL);
     /* Restart timer, GPT CR_ENMOD=1, counter value is reset when restart timer. */
     GPT_StartTimer(SYSTICK_BASE);
@@ -127,22 +132,26 @@ void LPM_ExitTicklessIdle(uint32_t timeoutTicks, uint64_t timeoutCounter)
          * lost ticks into completeTicks. Completed ticks minus 1 because pending interrupt will be handled immediately
          * when interrupt unmasked.
          */
-        expiredTicks  = (expired - timeoutCounter) / countPerTick;
+        expiredTicks  = (uint32_t)(((expired - timeoutCounter) / countPerTick) & 0xFFFFFFFFU);
+        assert((uint64_t)expiredTicks + timeoutTicks >= 1U);
         completeTicks = expiredTicks + timeoutTicks - 1;
 
         /* Continue the uncompleted tick. */
+        assert(countPerTick >= (expired - timeoutCounter) % countPerTick);
         counter = countPerTick - (expired - timeoutCounter) % countPerTick;
     }
     else
     {
         /* Remaining counter. */
-        counter       = timeoutCounter - expired;
+        counter       = (uint32_t)((timeoutCounter - expired) & 0xFFFFFFFFU);
+        assert(timeoutTicks >= (counter - 1U) / countPerTick + 1U);
         completeTicks = timeoutTicks - (counter - 1) / countPerTick - 1;
         counter       = (counter - 1) % countPerTick + 1;
     }
 
     /* Now reinit Systick. */
     SYSTICK_BASE->CR &= ~GPT_CR_FRR_MASK;
+    assert(counter > 0U);
     GPT_SetOutputCompareValue(SYSTICK_BASE, kGPT_OutputCompare_Channel1, counter - 1UL);
     /* Restart timer */
     GPT_StartTimer(SYSTICK_BASE);
@@ -175,11 +184,13 @@ void SYSTICK_HANDLER(void)
 
 void LPM_IncreseBlockSleepCnt(void)
 {
+    assert(s_BlockEventCnt < UINT32_MAX);
     s_BlockEventCnt++;
 }
 
 void LPM_DecreaseBlockSleepCnt(void)
 {
+    assert(s_BlockEventCnt > 0U);
     s_BlockEventCnt--;
 }
 
