@@ -938,8 +938,10 @@ bool LPM_SystemPowerDown(void)
     extern void __stext;
     extern void __etext;
 #elif defined(__GNUC__)
-    extern const char __stext;
-    extern const char __etext;
+    /* coverity[pw_useless_type_qualifiers] : const void required for linker symbol compatibility */
+    extern const void __stext;
+    /* coverity[pw_useless_type_qualifiers] */
+    extern const void __etext;
 #else
 #error Not support the compiler.
 #endif

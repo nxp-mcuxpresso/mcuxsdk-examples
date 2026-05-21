@@ -23,6 +23,8 @@
 #include "power_mode_switch.h"
 #include "fsl_rtd_cmc.h"
 #include "fsl_sentinel.h"
+#include <assert.h>
+#include <stdint.h>
 #include "fsl_rgpio.h"
 #include "fsl_wuu.h"
 
@@ -373,7 +375,7 @@ static void APP_IRQDispatcher(IRQn_Type irq, void *param)
         wake_acore_flag = false;
     }
 
-    current_state.give_semaphore_flag = APP_AllowGiveSig(s_curMode, irq);
+    current_state.give_semaphore_flag = APP_AllowGiveSig(s_curMode, (uint32_t)(int32_t)irq);
 
     if (!current_state.give_semaphore_flag)
     {
@@ -414,7 +416,7 @@ static uint32_t APP_GetWakeupTimeout(void)
 
         do
         {
-            c = GETCHAR();
+            c = (uint8_t)(GETCHAR() & 0xFFU);
             if ((c >= '0') && (c <= '9'))
             {
                 PRINTF("%c", c);
@@ -454,7 +456,7 @@ static app_wakeup_source_t APP_GetWakeupSource(void)
 
         PRINTF("\r\nWaiting for key press..\r\n\r\n");
 
-        ch = GETCHAR();
+        ch = (uint8_t)(GETCHAR() & 0xFFU);
 
         if ((ch >= 'a') && (ch <= 'z'))
         {
@@ -498,6 +500,7 @@ static void APP_SetWakeupConfig(lpm_rtd_power_mode_e targetMode)
 {
     if (kAPP_WakeupSourceLptmr == s_wakeupSource)
     {
+        assert(s_wakeupTimeout <= (UINT32_MAX / 1000UL));
         LPTMR_SetTimerPeriod(LPTMR1, (1000UL * s_wakeupTimeout / 16U));
         LPTMR_StartTimer(LPTMR1);
         LPTMR_EnableInterrupts(LPTMR1, kLPTMR_TimerInterruptEnable);
@@ -647,7 +650,7 @@ void PowerModeSwitchTask(void *pvParameters)
         /* Wait for user response */
         do
         {
-            ch = GETCHAR();
+            ch = (uint8_t)(GETCHAR() & 0xFFU);
         } while ((ch == '\r') || (ch == '\n'));
 
         if ((ch >= 'a') && (ch <= 'z'))
