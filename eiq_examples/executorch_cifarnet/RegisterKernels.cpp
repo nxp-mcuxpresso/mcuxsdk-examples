@@ -32,11 +32,11 @@ namespace function {
 namespace {
 
 static Kernel kernels_to_register[] = {
-    Kernel(
+Kernel(
         "aten::add.out",
         [](torch::executor::KernelRuntimeContext & context, Span<EValue*> stack) {
-        ET_KERNEL_CHECK_MSG(context, stack.size() == 5, InvalidProgram, /*void*/, "Expected %" ET_PRIsize_t "args received %" ET_PRIsize_t, (size_t)5, stack.size());
-        EValue& self = *stack[0];
+            ET_KERNEL_CHECK_MSG(context, stack.size() == 5, InvalidProgram, /*void*/, "Expected %" ET_PRIsize_t "args received %" ET_PRIsize_t, (size_t)5, stack.size());
+            EValue& self = *stack[0];
     	EValue& other = *stack[1];
     	EValue& alpha = *stack[2];
     	EValue& out = *stack[3];
@@ -45,19 +45,22 @@ static Kernel kernels_to_register[] = {
     	const torch::executor::Scalar & alpha_base = alpha.to<torch::executor::Scalar>();
     	torch::executor::Tensor & out_base = out.to<torch::executor::Tensor>();
 
-        internal::EventTracerProfileOpScope event_tracer_op_scope(context.internal_event_tracer(), "native_call_add.out");
-        EXECUTORCH_SCOPE_PROF("native_call_add.out");
-        torch::executor::native::add_out(context, self_base, other_base, alpha_base, out_base);
-        internal::event_tracer_log_evalue(context.internal_event_tracer(), *stack[3]);
+
+            internal::EventTracerProfileOpScope event_tracer_op_scope(context.internal_event_tracer(), "native_call_add.out");
+            EXECUTORCH_SCOPE_PROF("native_call_add.out");
+            torch::executor::native::add_out(context, self_base, other_base, alpha_base, out_base);
+
+            internal::event_tracer_log_evalue(context.internal_event_tracer(), *stack[3]);
+
 
         }
     ),
 
-    Kernel(
+Kernel(
         "aten::addmm.out",
         [](torch::executor::KernelRuntimeContext & context, Span<EValue*> stack) {
-        ET_KERNEL_CHECK_MSG(context, stack.size() == 7, InvalidProgram, /*void*/, "Expected %" ET_PRIsize_t "args received %" ET_PRIsize_t, (size_t)7, stack.size());
-        EValue& self = *stack[0];
+            ET_KERNEL_CHECK_MSG(context, stack.size() == 7, InvalidProgram, /*void*/, "Expected %" ET_PRIsize_t "args received %" ET_PRIsize_t, (size_t)7, stack.size());
+            EValue& self = *stack[0];
     	EValue& mat1 = *stack[1];
     	EValue& mat2 = *stack[2];
     	EValue& beta = *stack[3];
@@ -70,19 +73,22 @@ static Kernel kernels_to_register[] = {
     	const torch::executor::Scalar & alpha_base = alpha.to<torch::executor::Scalar>();
     	torch::executor::Tensor & out_base = out.to<torch::executor::Tensor>();
 
-        internal::EventTracerProfileOpScope event_tracer_op_scope(context.internal_event_tracer(), "native_call_addmm.out");
-        EXECUTORCH_SCOPE_PROF("native_call_addmm.out");
-        torch::executor::native::addmm_out(context, self_base, mat1_base, mat2_base, beta_base, alpha_base, out_base);
-        internal::event_tracer_log_evalue(context.internal_event_tracer(), *stack[5]);
+
+            internal::EventTracerProfileOpScope event_tracer_op_scope(context.internal_event_tracer(), "native_call_addmm.out");
+            EXECUTORCH_SCOPE_PROF("native_call_addmm.out");
+            torch::executor::native::addmm_out(context, self_base, mat1_base, mat2_base, beta_base, alpha_base, out_base);
+
+            internal::event_tracer_log_evalue(context.internal_event_tracer(), *stack[5]);
+
 
         }
     ),
 
-    Kernel(
+Kernel(
         "aten::_softmax.out",
         [](torch::executor::KernelRuntimeContext & context, Span<EValue*> stack) {
-        ET_KERNEL_CHECK_MSG(context, stack.size() == 5, InvalidProgram, /*void*/, "Expected %" ET_PRIsize_t "args received %" ET_PRIsize_t, (size_t)5, stack.size());
-        EValue& self = *stack[0];
+            ET_KERNEL_CHECK_MSG(context, stack.size() == 5, InvalidProgram, /*void*/, "Expected %" ET_PRIsize_t "args received %" ET_PRIsize_t, (size_t)5, stack.size());
+            EValue& self = *stack[0];
     	EValue& dim = *stack[1];
     	EValue& half_to_float = *stack[2];
     	EValue& out = *stack[3];
@@ -91,42 +97,48 @@ static Kernel kernels_to_register[] = {
     	bool half_to_float_base = half_to_float.to<bool>();
     	torch::executor::Tensor & out_base = out.to<torch::executor::Tensor>();
 
-        internal::EventTracerProfileOpScope event_tracer_op_scope(context.internal_event_tracer(), "native_call__softmax.out");
-        EXECUTORCH_SCOPE_PROF("native_call__softmax.out");
-        torch::executor::native::softmax_out(context, self_base, dim_base, half_to_float_base, out_base);
-        internal::event_tracer_log_evalue(context.internal_event_tracer(), *stack[3]);
+
+            internal::EventTracerProfileOpScope event_tracer_op_scope(context.internal_event_tracer(), "native_call__softmax.out");
+            EXECUTORCH_SCOPE_PROF("native_call__softmax.out");
+            torch::executor::native::softmax_out(context, self_base, dim_base, half_to_float_base, out_base);
+
+            internal::event_tracer_log_evalue(context.internal_event_tracer(), *stack[3]);
+
 
         }
     ),
 
-    Kernel(
+Kernel(
         "aten::constant_pad_nd.out",
         [](torch::executor::KernelRuntimeContext & context, Span<EValue*> stack) {
-        ET_KERNEL_CHECK_MSG(context, stack.size() == 5, InvalidProgram, /*void*/, "Expected %" ET_PRIsize_t "args received %" ET_PRIsize_t, (size_t)5, stack.size());
-        EValue& self = *stack[0];
+            ET_KERNEL_CHECK_MSG(context, stack.size() == 5, InvalidProgram, /*void*/, "Expected %" ET_PRIsize_t "args received %" ET_PRIsize_t, (size_t)5, stack.size());
+            EValue& self = *stack[0];
     	EValue& pad = *stack[1];
     	EValue& value = *stack[2];
     	EValue& out = *stack[3];
     	const torch::executor::Tensor & self_base = self.to<torch::executor::Tensor>();
 
-        auto pad_list_out = pad.toIntList();
+    	    auto pad_list_out = pad.toIntList();
 
     	const torch::executor::Scalar & value_base = value.to<torch::executor::Scalar>();
     	torch::executor::Tensor & out_base = out.to<torch::executor::Tensor>();
 
-        internal::EventTracerProfileOpScope event_tracer_op_scope(context.internal_event_tracer(), "native_call_constant_pad_nd.out");
-        EXECUTORCH_SCOPE_PROF("native_call_constant_pad_nd.out");
-        torch::executor::native::constant_pad_nd_out(context, self_base, pad_list_out, value_base, out_base);
-        internal::event_tracer_log_evalue(context.internal_event_tracer(), *stack[3]);
+
+            internal::EventTracerProfileOpScope event_tracer_op_scope(context.internal_event_tracer(), "native_call_constant_pad_nd.out");
+            EXECUTORCH_SCOPE_PROF("native_call_constant_pad_nd.out");
+            torch::executor::native::constant_pad_nd_out(context, self_base, pad_list_out, value_base, out_base);
+
+            internal::event_tracer_log_evalue(context.internal_event_tracer(), *stack[3]);
+
 
         }
     ),
 
-    Kernel(
+Kernel(
         "aten::convolution.out",
         [](torch::executor::KernelRuntimeContext & context, Span<EValue*> stack) {
-        ET_KERNEL_CHECK_MSG(context, stack.size() == 11, InvalidProgram, /*void*/, "Expected %" ET_PRIsize_t "args received %" ET_PRIsize_t, (size_t)11, stack.size());
-        EValue& input = *stack[0];
+            ET_KERNEL_CHECK_MSG(context, stack.size() == 11, InvalidProgram, /*void*/, "Expected %" ET_PRIsize_t "args received %" ET_PRIsize_t, (size_t)11, stack.size());
+            EValue& input = *stack[0];
     	EValue& weight = *stack[1];
     	EValue& bias = *stack[2];
     	EValue& stride = *stack[3];
@@ -139,28 +151,40 @@ static Kernel kernels_to_register[] = {
     	const torch::executor::Tensor & input_base = input.to<torch::executor::Tensor>();
     	const torch::executor::Tensor & weight_base = weight.to<torch::executor::Tensor>();
 
-        auto bias_opt_out = bias.toOptional<torch::executor::Tensor>();
-        auto stride_list_out = stride.toIntList();
-        auto padding_list_out = padding.toIntList();
-        auto dilation_list_out = dilation.toIntList();
+    	    auto bias_opt_out = bias.toOptional<torch::executor::Tensor>();
+
+
+    	    auto stride_list_out = stride.toIntList();
+
+
+    	    auto padding_list_out = padding.toIntList();
+
+
+    	    auto dilation_list_out = dilation.toIntList();
+
     	bool transposed_base = transposed.to<bool>();
-        auto output_padding_list_out = output_padding.toIntList();
+
+    	    auto output_padding_list_out = output_padding.toIntList();
+
     	int64_t groups_base = groups.to<int64_t>();
     	torch::executor::Tensor & out_base = out.to<torch::executor::Tensor>();
 
-        internal::EventTracerProfileOpScope event_tracer_op_scope(context.internal_event_tracer(), "native_call_convolution.out");
-        EXECUTORCH_SCOPE_PROF("native_call_convolution.out");
-        torch::executor::native::convolution_out(context, input_base, weight_base, bias_opt_out, stride_list_out, padding_list_out, dilation_list_out, transposed_base, output_padding_list_out, groups_base, out_base);
-        internal::event_tracer_log_evalue(context.internal_event_tracer(), *stack[9]);
+
+            internal::EventTracerProfileOpScope event_tracer_op_scope(context.internal_event_tracer(), "native_call_convolution.out");
+            EXECUTORCH_SCOPE_PROF("native_call_convolution.out");
+            torch::executor::native::convolution_out(context, input_base, weight_base, bias_opt_out, stride_list_out, padding_list_out, dilation_list_out, transposed_base, output_padding_list_out, groups_base, out_base);
+
+            internal::event_tracer_log_evalue(context.internal_event_tracer(), *stack[9]);
+
 
         }
     ),
 
-    Kernel(
+Kernel(
         "aten::max_pool2d_with_indices.out",
         [](torch::executor::KernelRuntimeContext & context, Span<EValue*> stack) {
-        ET_KERNEL_CHECK_MSG(context, stack.size() == 9, InvalidProgram, /*void*/, "Expected %" ET_PRIsize_t "args received %" ET_PRIsize_t, (size_t)9, stack.size());
-        EValue& self = *stack[0];
+            ET_KERNEL_CHECK_MSG(context, stack.size() == 9, InvalidProgram, /*void*/, "Expected %" ET_PRIsize_t "args received %" ET_PRIsize_t, (size_t)9, stack.size());
+            EValue& self = *stack[0];
     	EValue& kernel_size = *stack[1];
     	EValue& stride = *stack[2];
     	EValue& padding = *stack[3];
@@ -170,48 +194,62 @@ static Kernel kernels_to_register[] = {
     	EValue& indices = *stack[7];
     	const torch::executor::Tensor & self_base = self.to<torch::executor::Tensor>();
 
-        auto kernel_size_list_out = kernel_size.toIntList();
-        auto stride_list_out = stride.toIntList();
-        auto padding_list_out = padding.toIntList();
-        auto dilation_list_out = dilation.toIntList();
+    	    auto kernel_size_list_out = kernel_size.toIntList();
+
+
+    	    auto stride_list_out = stride.toIntList();
+
+
+    	    auto padding_list_out = padding.toIntList();
+
+
+    	    auto dilation_list_out = dilation.toIntList();
+
     	bool ceil_mode_base = ceil_mode.to<bool>();
     	torch::executor::Tensor & out_base = out.to<torch::executor::Tensor>();
     	torch::executor::Tensor & indices_base = indices.to<torch::executor::Tensor>();
 
-        internal::EventTracerProfileOpScope event_tracer_op_scope(context.internal_event_tracer(), "native_call_max_pool2d_with_indices.out");
-        EXECUTORCH_SCOPE_PROF("native_call_max_pool2d_with_indices.out");
-        torch::executor::native::max_pool2d_with_indices_out(context, self_base, kernel_size_list_out, stride_list_out, padding_list_out, dilation_list_out, ceil_mode_base, out_base, indices_base);
-        internal::event_tracer_log_evalue(context.internal_event_tracer(), *stack[6]);
-        internal::event_tracer_log_evalue(context.internal_event_tracer(), *stack[7]);
+
+            internal::EventTracerProfileOpScope event_tracer_op_scope(context.internal_event_tracer(), "native_call_max_pool2d_with_indices.out");
+            EXECUTORCH_SCOPE_PROF("native_call_max_pool2d_with_indices.out");
+            torch::executor::native::max_pool2d_with_indices_out(context, self_base, kernel_size_list_out, stride_list_out, padding_list_out, dilation_list_out, ceil_mode_base, out_base, indices_base);
+
+            internal::event_tracer_log_evalue(context.internal_event_tracer(), *stack[6]);
+    internal::event_tracer_log_evalue(context.internal_event_tracer(), *stack[7]);
+
 
         }
     ),
 
-    Kernel(
+Kernel(
         "aten::permute_copy.out",
         [](torch::executor::KernelRuntimeContext & context, Span<EValue*> stack) {
-        ET_KERNEL_CHECK_MSG(context, stack.size() == 4, InvalidProgram, /*void*/, "Expected %" ET_PRIsize_t "args received %" ET_PRIsize_t, (size_t)4, stack.size());
-        EValue& self = *stack[0];
+            ET_KERNEL_CHECK_MSG(context, stack.size() == 4, InvalidProgram, /*void*/, "Expected %" ET_PRIsize_t "args received %" ET_PRIsize_t, (size_t)4, stack.size());
+            EValue& self = *stack[0];
     	EValue& dims = *stack[1];
     	EValue& out = *stack[2];
     	const torch::executor::Tensor & self_base = self.to<torch::executor::Tensor>();
 
-        auto dims_list_out = dims.toIntList();
+    	    auto dims_list_out = dims.toIntList();
 
     	torch::executor::Tensor & out_base = out.to<torch::executor::Tensor>();
-        internal::EventTracerProfileOpScope event_tracer_op_scope(context.internal_event_tracer(), "native_call_permute_copy.out");
-        EXECUTORCH_SCOPE_PROF("native_call_permute_copy.out");
-        torch::executor::native::permute_copy_out(context, self_base, dims_list_out, out_base);
-        internal::event_tracer_log_evalue(context.internal_event_tracer(), *stack[2]);
+
+
+            internal::EventTracerProfileOpScope event_tracer_op_scope(context.internal_event_tracer(), "native_call_permute_copy.out");
+            EXECUTORCH_SCOPE_PROF("native_call_permute_copy.out");
+            torch::executor::native::permute_copy_out(context, self_base, dims_list_out, out_base);
+
+            internal::event_tracer_log_evalue(context.internal_event_tracer(), *stack[2]);
+
 
         }
     ),
 
-    Kernel(
+Kernel(
         "quantized_decomposed::dequantize_per_tensor.out",
         [](torch::executor::KernelRuntimeContext & context, Span<EValue*> stack) {
-        ET_KERNEL_CHECK_MSG(context, stack.size() == 9, InvalidProgram, /*void*/, "Expected %" ET_PRIsize_t "args received %" ET_PRIsize_t, (size_t)9, stack.size());
-        EValue& input = *stack[0];
+            ET_KERNEL_CHECK_MSG(context, stack.size() == 9, InvalidProgram, /*void*/, "Expected %" ET_PRIsize_t "args received %" ET_PRIsize_t, (size_t)9, stack.size());
+            EValue& input = *stack[0];
     	EValue& scale = *stack[1];
     	EValue& zero_point = *stack[2];
     	EValue& quant_min = *stack[3];
@@ -225,22 +263,27 @@ static Kernel kernels_to_register[] = {
     	int64_t quant_min_base = quant_min.to<int64_t>();
     	int64_t quant_max_base = quant_max.to<int64_t>();
     	torch::executor::ScalarType dtype_base = dtype.to<torch::executor::ScalarType>();
-        auto out_dtype_opt_out = out_dtype.toOptional<torch::executor::ScalarType>();
+
+    	    auto out_dtype_opt_out = out_dtype.toOptional<torch::executor::ScalarType>();
 
     	torch::executor::Tensor & out_base = out.to<torch::executor::Tensor>();
-        internal::EventTracerProfileOpScope event_tracer_op_scope(context.internal_event_tracer(), "native_call_dequantize_per_tensor.out");
-        EXECUTORCH_SCOPE_PROF("native_call_dequantize_per_tensor.out");
-        torch::executor::native::dequantize_per_tensor_out(context, input_base, scale_base, zero_point_base, quant_min_base, quant_max_base, dtype_base, out_dtype_opt_out, out_base);
-        internal::event_tracer_log_evalue(context.internal_event_tracer(), *stack[7]);
+
+
+            internal::EventTracerProfileOpScope event_tracer_op_scope(context.internal_event_tracer(), "native_call_dequantize_per_tensor.out");
+            EXECUTORCH_SCOPE_PROF("native_call_dequantize_per_tensor.out");
+            torch::executor::native::dequantize_per_tensor_out(context, input_base, scale_base, zero_point_base, quant_min_base, quant_max_base, dtype_base, out_dtype_opt_out, out_base);
+
+            internal::event_tracer_log_evalue(context.internal_event_tracer(), *stack[7]);
+
 
         }
     ),
- 
-    Kernel(
+
+Kernel(
         "quantized_decomposed::quantize_per_tensor.out",
         [](torch::executor::KernelRuntimeContext & context, Span<EValue*> stack) {
-        ET_KERNEL_CHECK_MSG(context, stack.size() == 8, InvalidProgram, /*void*/, "Expected %" ET_PRIsize_t "args received %" ET_PRIsize_t, (size_t)8, stack.size());
-        EValue& input = *stack[0];
+            ET_KERNEL_CHECK_MSG(context, stack.size() == 8, InvalidProgram, /*void*/, "Expected %" ET_PRIsize_t "args received %" ET_PRIsize_t, (size_t)8, stack.size());
+            EValue& input = *stack[0];
     	EValue& scale = *stack[1];
     	EValue& zero_point = *stack[2];
     	EValue& quant_min = *stack[3];
@@ -255,14 +298,16 @@ static Kernel kernels_to_register[] = {
     	torch::executor::ScalarType dtype_base = dtype.to<torch::executor::ScalarType>();
     	torch::executor::Tensor & out_base = out.to<torch::executor::Tensor>();
 
-        internal::EventTracerProfileOpScope event_tracer_op_scope(context.internal_event_tracer(), "native_call_quantize_per_tensor.out");
-        EXECUTORCH_SCOPE_PROF("native_call_quantize_per_tensor.out");
-        torch::executor::native::quantize_per_tensor_out(context, input_base, scale_base, zero_point_base, quant_min_base, quant_max_base, dtype_base, out_base);
-        internal::event_tracer_log_evalue(context.internal_event_tracer(), *stack[6]);
+
+            internal::EventTracerProfileOpScope event_tracer_op_scope(context.internal_event_tracer(), "native_call_quantize_per_tensor.out");
+            EXECUTORCH_SCOPE_PROF("native_call_quantize_per_tensor.out");
+            torch::executor::native::quantize_per_tensor_out(context, input_base, scale_base, zero_point_base, quant_min_base, quant_max_base, dtype_base, out_base);
+
+            internal::event_tracer_log_evalue(context.internal_event_tracer(), *stack[6]);
+
 
         }
-    ),
-};
+    ),};
 
 // Explicitly convert to Span, so that the API can take an empty C array of
 // Kernels.
