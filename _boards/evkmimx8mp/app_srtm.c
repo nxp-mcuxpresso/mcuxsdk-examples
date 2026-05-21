@@ -6,6 +6,8 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+#include <assert.h>
+#include <stdint.h>
 #include "FreeRTOS.h"
 #include "semphr.h"
 #include "task.h"
@@ -281,6 +283,7 @@ static void APP_SRTM_InitAudioDevice(bool enable)
     }
     else
     {
+        assert(sdmaUseCnt > 0U);
         sdmaUseCnt--;
         if (sdmaUseCnt == 0U) /* SDMA is not used anymore, deinit it for power saving. */
         {
@@ -484,7 +487,7 @@ static srtm_status_t APP_SRTM_I2C_SwitchChannel(srtm_i2c_adapter_t adapter,
 {
     uint8_t txBuff[1];
     assert(channel < SRTM_I2C_SWITCH_CHANNEL_UNSPECIFIED);
-    txBuff[0] = 1 << (uint8_t)channel;
+    txBuff[0] = (uint8_t)(1U << (uint8_t)channel);
     return adapter->write(adapter, base_addr, type, slaveAddr, txBuff, sizeof(txBuff),
                           SRTM_I2C_FLAG_NEED_STOP); // APP_SRTM_I2C_Write
 }
@@ -541,7 +544,7 @@ static srtm_status_t APP_SRTM_I2C_Write(srtm_i2c_adapter_t adapter,
     switch (type)
     {
         case SRTM_I2C_TYPE_I2C:
-            retVal = SRTM_I2C_Send((I2C_Type *)baseAddr, slaveAddr, buf, len, flags);
+            retVal = SRTM_I2C_Send((I2C_Type *)baseAddr, (uint8_t)(slaveAddr & 0xFFU), buf, len, flags);
             break;
         default:
             break;
@@ -561,7 +564,7 @@ static srtm_status_t APP_SRTM_I2C_Read(srtm_i2c_adapter_t adapter,
     switch (type)
     {
         case SRTM_I2C_TYPE_I2C:
-            retVal = SRTM_I2C_Read((I2C_Type *)baseAddr, slaveAddr, buf, len, flags);
+            retVal = SRTM_I2C_Read((I2C_Type *)baseAddr, (uint8_t)(slaveAddr & 0xFFU), buf, len, flags);
             break;
         default:
             break;
