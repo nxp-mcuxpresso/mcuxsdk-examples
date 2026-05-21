@@ -2081,6 +2081,7 @@ static void APP_SRTM_InitIoKeyDevice(void)
     /* Init input configuration */
     for (i = APP_INPUT_GPIO_START; i <= APP_INPUT_GPIO_END; i++)
     {
+        assert(APP_GPIO_IDX(suspendContext.io.data[i].ioId) < (sizeof(gpios) / sizeof(gpios[0])));
         RGPIO_PinInit(gpios[APP_GPIO_IDX(suspendContext.io.data[i].ioId)], APP_PIN_IDX(suspendContext.io.data[i].ioId),
                       &gpioConfig);
         if (!suspendContext.io.data[i].overridden)
@@ -2682,6 +2683,7 @@ static srtm_status_t APP_SRTM_I2C_SwitchChannel(srtm_i2c_adapter_t adapter,
 {
     uint8_t txBuff[1];
     assert(channel < SRTM_I2C_SWITCH_CHANNEL_UNSPECIFIED);
+    assert((uint8_t)channel < 8U);
     txBuff[0] = (uint8_t)(1U << (uint8_t)channel);
     return adapter->write(adapter, base_addr, type, slaveAddr, txBuff, sizeof(txBuff),
                           SRTM_I2C_FLAG_NEED_STOP); // APP_SRTM_I2C_Write
