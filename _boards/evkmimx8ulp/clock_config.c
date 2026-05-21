@@ -5,6 +5,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+#include <assert.h>
 #include "clock_config.h"
 #include "board.h"
 #include "fsl_upower.h"
@@ -266,7 +267,7 @@ void BOARD_BootClockRUN(void)
      * 5 - CM33 CORE/PLAT CLK
      */
     BOARD_CalculateDivider(SystemCoreClock, BOARD_NOR_FLASH_READ_MAXIMUM_FREQ, &freq_divider);
-    BOARD_SetFlexspiClock(FLEXSPI0, 5U, freq_divider - 1, 0U); /* flexspi0's clock is CM33_PLATCLK / div */
+    assert(freq_divider > 0); BOARD_SetFlexspiClock(FLEXSPI0, 5U, (uint8_t)((uint32_t)(freq_divider - 1) & 0xFFU), 0U); /* flexspi0's clock is CM33_PLATCLK / div */
 }
 
 /*
@@ -306,7 +307,7 @@ void BOARD_ResumeClockInit(void)
          * 5 - CM33 CORE/PLAT CLK
          */
         BOARD_CalculateDivider(SystemCoreClock, BOARD_NOR_FLASH_READ_MAXIMUM_FREQ, &freq_divider);
-        BOARD_SetFlexspiClock(FLEXSPI0, 5U, freq_divider - 1, 0U); /* flexspi0's clock is CM33_PLATCLK / div */
+        assert(freq_divider > 0); BOARD_SetFlexspiClock(FLEXSPI0, 5U, (uint8_t)((uint32_t)(freq_divider - 1) & 0xFFU), 0U); /* flexspi0's clock is CM33_PLATCLK / div */
         /* Reinitialize debug console */
         BOARD_InitDebugConsole();
     }
@@ -358,7 +359,7 @@ drive_mode_e BOARD_CalculateCoreClkDivider(cgc_rtd_sys_clk_src_t clk_src, int *c
     {
         BOARD_CalculateDivider(freq, drive_mode_and_clk[drive_mode].max_core_clk_freq, core_clk_divider);
         tmp_sys_clk_cfg.src = clk_src;
-        tmp_sys_clk_cfg.divCore = *core_clk_divider - 1;
+        assert(*core_clk_divider > 0); tmp_sys_clk_cfg.divCore = (uint32_t)((uint32_t)(*core_clk_divider - 1) & 0xFFFFFFFFU);
         freq /= (*core_clk_divider); /* calculate core clock frequency */
         if ((slow_clk_divider != NULL) && (bus_clk_divider != NULL))
         {
@@ -369,8 +370,8 @@ drive_mode_e BOARD_CalculateCoreClkDivider(cgc_rtd_sys_clk_src_t clk_src, int *c
             {
                 *slow_clk_divider = *slow_clk_divider + 1;
             }
-            tmp_sys_clk_cfg.divBus = *bus_clk_divider - 1;
-            tmp_sys_clk_cfg.divSlow = *slow_clk_divider - 1;
+            assert(*bus_clk_divider > 0); tmp_sys_clk_cfg.divBus = (uint32_t)((uint32_t)(*bus_clk_divider - 1) & 0xFFFFFFFFU);
+            assert(*slow_clk_divider > 0); tmp_sys_clk_cfg.divSlow = (uint32_t)((uint32_t)(*slow_clk_divider - 1) & 0xFFFFFFFFU);
         }
         memcpy(&tmp_cfg, &tmp_sys_clk_cfg, sizeof(tmp_sys_clk_cfg));
         freq = CLOCK_GetRtdSysClkFreq(tmp_cfg, kCGC_SysClkCorePlat);
@@ -407,9 +408,9 @@ drive_mode_e BOARD_SwitchToFROClk(drive_mode_e drive_mode)
 
         new_drive_mode = BOARD_CalculateCoreClkDivider((cgc_rtd_sys_clk_src_t)g_sysClkConfigFroSource.src, &core_clk_divider, &bus_clk_divider, &slow_clk_divider, drive_mode);
         assert(new_drive_mode == drive_mode);
-        g_sysClkConfigFroSource.divCore = core_clk_divider - 1;
-        g_sysClkConfigFroSource.divBus = bus_clk_divider - 1;
-        g_sysClkConfigFroSource.divSlow = slow_clk_divider - 1;
+        assert(core_clk_divider > 0); g_sysClkConfigFroSource.divCore = (uint32_t)((uint32_t)(core_clk_divider - 1) & 0xFFFFFFFFU);
+        assert(bus_clk_divider > 0); g_sysClkConfigFroSource.divBus = (uint32_t)((uint32_t)(bus_clk_divider - 1) & 0xFFFFFFFFU);
+        assert(slow_clk_divider > 0); g_sysClkConfigFroSource.divSlow = (uint32_t)((uint32_t)(slow_clk_divider - 1) & 0xFFFFFFFFU);
         CLOCK_SetCm33SysClkConfig(&g_sysClkConfigFroSource);
         SystemCoreClockUpdate();
 
@@ -922,9 +923,9 @@ void BOARD_SwitchDriveMode(void)
             break;
     }
     next_drive_mode = new_drive_mode;
-    g_sysClkConfigRun.divBus = bus_clk_divider - 1;
-    g_sysClkConfigRun.divSlow = slow_clk_divider - 1;
-    g_sysClkConfigRun.divCore = core_clk_divider - 1;
+    assert(bus_clk_divider > 0); g_sysClkConfigRun.divBus = (uint32_t)((uint32_t)(bus_clk_divider - 1) & 0xFFFFFFFFU);
+    assert(slow_clk_divider > 0); g_sysClkConfigRun.divSlow = (uint32_t)((uint32_t)(slow_clk_divider - 1) & 0xFFFFFFFFU);
+    assert(core_clk_divider > 0); g_sysClkConfigRun.divCore = (uint32_t)((uint32_t)(core_clk_divider - 1) & 0xFFFFFFFFU);
     g_sysClkConfigRun.src = next_clk_src;
 
     /* switch other clock source to FRO to avoid clock glitch issue */
@@ -960,7 +961,7 @@ void BOARD_SwitchDriveMode(void)
      * 5 - CM33 CORE/PLAT CLK
      */
     BOARD_CalculateDivider(SystemCoreClock, BOARD_NOR_FLASH_READ_MAXIMUM_FREQ, &freq_divider);
-    BOARD_SetFlexspiClock(FLEXSPI0, 5U, freq_divider - 1, 0U); /* flexspi0's clock is CM33_PLATCLK / div */
+    assert(freq_divider > 0); BOARD_SetFlexspiClock(FLEXSPI0, 5U, (uint8_t)((uint32_t)(freq_divider - 1) & 0xFFU), 0U); /* flexspi0's clock is CM33_PLATCLK / div */
 
     /* Note: All of IP modules that use CM33_CORECLK, CM33_BUSCLK, CM33_SLOWCLK need be reinitialized again */
     assert(BOARD_GetRtdDriveMode() == next_drive_mode);
