@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Micro USB cable
-- FRDMMCXL255 board
+- FRDMMCXA577 board
 - Personal Computer
 
 Board settings
