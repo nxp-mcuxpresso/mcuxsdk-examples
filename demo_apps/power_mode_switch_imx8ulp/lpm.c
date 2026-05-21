@@ -935,13 +935,11 @@ bool LPM_SystemPowerDown(void)
     memcpy(&pwr_sys_cfg->ps_rtd_pmic_reg_data_cfg, &rtd_pmic_reg_cfgs_pd, sizeof(ps_rtd_pmic_reg_data_cfgs_t));
 
 #if defined(__ICCARM__)
-    extern void __stext;
-    extern void __etext;
+    extern char __stext;
+    extern char __etext;
 #elif defined(__GNUC__)
-    /* coverity[pw_useless_type_qualifiers] : const void required for linker symbol compatibility */
-    extern const void __stext;
-    /* coverity[pw_useless_type_qualifiers] */
-    extern const void __etext;
+    extern const char __stext;
+    extern const char __etext;
 #else
 #error Not support the compiler.
 #endif
