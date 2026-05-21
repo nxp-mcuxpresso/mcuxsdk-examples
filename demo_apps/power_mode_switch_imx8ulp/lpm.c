@@ -5,6 +5,8 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+#include <assert.h>
+#include <stdint.h>
 #include "FreeRTOS.h"
 #include "task.h"
 #include "semphr.h"
@@ -514,6 +516,7 @@ bool LPM_SystemDeepSleep(void)
      * Switch clock source from PLL0/1 to FRO to save more power during Power Down,
      * then switch back after wakeup in function BOARD_ResumeClockInit()
      */
+    assert(BOARD_GetRtdDriveMode() < 3U);
     BOARD_SwitchToFROClk(BOARD_GetRtdDriveMode());
     BOARD_DisablePlls();
 
@@ -539,12 +542,12 @@ void LPM_NvicStateSave(void)
 
     s_nvicContext.PriorityGroup = NVIC_GetPriorityGrouping();
 
-    for (i = 0; i < irqRegs; i++)
+    for (i = 0; i < irqRegs && i < 8U; i++)
     {
         s_nvicContext.ISER[i] = NVIC->ISER[i];
     }
 
-    for (i = 0; i < irqNum; i++)
+    for (i = 0; i < irqNum && i < 240U; i++)
     {
         s_nvicContext.IPR[i] = NVIC->IPR[i];
     }
@@ -580,12 +583,12 @@ void LPM_NvicStateRestore(void)
 
     NVIC_SetPriorityGrouping(s_nvicContext.PriorityGroup);
 
-    for (i = 0; i < irqRegs; i++)
+    for (i = 0; i < irqRegs && i < 8U; i++)
     {
         NVIC->ISER[i] = s_nvicContext.ISER[i];
     }
 
-    for (i = 0; i < irqNum; i++)
+    for (i = 0; i < irqNum && i < 240U; i++)
     {
         NVIC->IPR[i] = s_nvicContext.IPR[i];
     }
@@ -617,7 +620,7 @@ void LPM_SaveRegister(uint32_t *buf, uint32_t *index, uint32_t base, uint32_t be
     while (offset <= end)
     {
         buf[*index] = (*((volatile uint32_t *)(base + offset))) & bitmap;
-        (*index)++;
+        assert(*index < UINT32_MAX); (*index)++;
         offset += 4;
     }
 }
@@ -634,7 +637,7 @@ AT_QUICKACCESS_SECTION_CODE(void LPM_RestoreRegister(
         tmp &= ~bitmap;
         tmp |= buf[*index];
         *((volatile uint32_t *)(base + offset)) = tmp;
-        (*index)++;
+        assert(*index < UINT32_MAX); (*index)++;
         offset += 4;
     }
 }
@@ -729,7 +732,7 @@ AT_QUICKACCESS_SECTION_CODE(void LPM_RestoreFlexspi0(void))
     FLEXSPI0->LUTCR  = FLEXSPI_LUTCR_UNLOCK_MASK;
     for (uint32_t i = 0; i < CUSTOM_LUT_LENGTH; i++)
     {
-        FLEXSPI0->LUT[i] = s_flexspi0Context[s_flexspi0ContextIndex + i];
+        assert(s_flexspi0ContextIndex <= UINT32_MAX - i); FLEXSPI0->LUT[i] = s_flexspi0Context[s_flexspi0ContextIndex + i];
     }
     FLEXSPI0->LUTKEY = FLEXSPI_LUT_KEY_VAL;
     FLEXSPI0->LUTCR  = FLEXSPI_LUTCR_LOCK_MASK;
@@ -824,6 +827,7 @@ bool LPM_Suspend()
 
     /* Switch clock source from PLL0/1 to FRO to save more power during Power Down,
      * then switch back after wakeup in function BOARD_ResumeClockInit() ``*/
+    assert(BOARD_GetRtdDriveMode() < 3U);
     BOARD_SwitchToFROClk(BOARD_GetRtdDriveMode());
     BOARD_DisablePlls();
 
@@ -903,8 +907,8 @@ bool LPM_SystemPowerDown(void)
         (SIM_SEC->DGO_CTRL0 & ~(SIM_SEC_DGO_CTRL0_UPDATE_DGO_GP0_MASK)) | SIM_SEC_DGO_CTRL0_WR_ACK_DGO_GP0_MASK;
 
     /* Unlock and disabled in powerdown and deep sleep */
-    CGC_RTD->LPOSCCSR &= ~(1 << 23);
-    CGC_RTD->LPOSCCSR &= ~(0x3 << 1);
+    CGC_RTD->LPOSCCSR &= ~(1U << 23);
+    CGC_RTD->LPOSCCSR &= ~(0x3U << 1);
     while (!(CGC_RTD->LPOSCCSR & (1 << 24)))
         ;
 
@@ -934,13 +938,13 @@ bool LPM_SystemPowerDown(void)
     extern void __stext;
     extern void __etext;
 #elif defined(__GNUC__)
-    extern const void __stext;
-    extern const void __etext;
+    extern const char __stext;
+    extern const char __etext;
 #else
 #error Not support the compiler.
 #endif
     code_start_addr = (uint32_t)&__stext;
-    code_size       = (uint32_t)&__etext - (uint32_t)&__stext + 1;
+    assert((uintptr_t)&__etext >= (uintptr_t)&__stext); code_size = (uint32_t)((uintptr_t)&__etext - (uintptr_t)&__stext + 1UL);
     SENTINEL_SetPowerDown(code_start_addr, code_size);
 
     status = LPM_Suspend();
@@ -980,8 +984,8 @@ AT_QUICKACCESS_SECTION_CODE(bool LPM_SystemDeepPowerDown(void))
     int i               = 0;
 
     /* Unlock and disabled in powerdown and deep sleep */
-    CGC_RTD->LPOSCCSR &= ~(1 << 23);
-    CGC_RTD->LPOSCCSR &= ~(0x3 << 1);
+    CGC_RTD->LPOSCCSR &= ~(1U << 23);
+    CGC_RTD->LPOSCCSR &= ~(0x3U << 1);
     while (!(CGC_RTD->LPOSCCSR & (1 << 24)))
         ;
 
@@ -1011,6 +1015,7 @@ AT_QUICKACCESS_SECTION_CODE(bool LPM_SystemDeepPowerDown(void))
      * Switch clock source from PLL0/1 to FRO to save more power during Power Down,
      * then switch back after wakeup in function BOARD_ResumeClockInit()
      */
+    assert(BOARD_GetRtdDriveMode() < 3U);
     BOARD_SwitchToFROClk(BOARD_GetRtdDriveMode());
     BOARD_DisablePlls();
 
