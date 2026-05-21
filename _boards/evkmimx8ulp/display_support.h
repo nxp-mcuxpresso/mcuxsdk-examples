@@ -60,8 +60,8 @@
 
 #if APP_DISPLAY_EXTERNAL_CONVERTOR
 /* GPIO */
-#define APP_GPIO_IDX(ioId)          ((uint8_t)(((uint16_t)ioId) >> 8U))
-#define APP_PIN_IDX(ioId)           ((uint8_t)ioId)
+#define APP_GPIO_IDX(ioId)          ((uint8_t)(((uint16_t)(ioId) >> 8U) & 0xFFU))
+#define APP_PIN_IDX(ioId)           ((uint8_t)((uint16_t)(ioId) & 0xFFU))
 #define APP_IT6161_INT_PIN          (0x0013U) /* PTA19, 0x00: PTA, 0x13: pin 19 */
 #define APP_IT6161_INT_PIN_INT_SEL  (kRGPIO_InterruptOutput2)
 #define APP_IT6161_INT_PIN_INT_CFG  (kRGPIO_InterruptLogicOne)

@@ -39,6 +39,7 @@
 #include "rsc_table.h"
 #include "fsl_bbnsm.h"
 #include "fsl_sentinel.h"
+#include <stdint.h>
 
 /*******************************************************************************
  * Definitions
@@ -1509,7 +1510,7 @@ static srtm_status_t APP_SRTM_Sensor_EnableDataReport(srtm_sensor_adapter_t adap
         }
         if (status == SRTM_Status_Success)
         {
-            uint16_t stepCnt;
+            uint16_t stepCnt = 0U;
 
             LSM_GetPedometerCnt(&lsmHandle, &stepCnt);
             sensor.dataEnabled   = true;
@@ -1867,6 +1868,7 @@ static void APP_SRTM_InitPdmDevice(bool enable)
     }
     else
     {
+        assert(edmaUseCnt > 0U);
         edmaUseCnt--;
         if (edmaUseCnt == 0U)
         {
@@ -2237,6 +2239,7 @@ int32_t MU0_A_IRQHandler(void)
 // clang-format on
 void CMC1_IRQHandler(void)
 {
+    assert(apd_boot_cnt < INT64_MAX);
     apd_boot_cnt++;
     DisableIRQ(CMC1_IRQn);
     NVIC_ClearPendingIRQ(CMC1_IRQn);
@@ -2679,7 +2682,7 @@ static srtm_status_t APP_SRTM_I2C_SwitchChannel(srtm_i2c_adapter_t adapter,
 {
     uint8_t txBuff[1];
     assert(channel < SRTM_I2C_SWITCH_CHANNEL_UNSPECIFIED);
-    txBuff[0] = 1 << (uint8_t)channel;
+    txBuff[0] = (uint8_t)(1U << (uint8_t)channel);
     return adapter->write(adapter, base_addr, type, slaveAddr, txBuff, sizeof(txBuff),
                           SRTM_I2C_FLAG_NEED_STOP); // APP_SRTM_I2C_Write
 }
@@ -2698,7 +2701,7 @@ static srtm_status_t APP_SRTM_I2C_Write(srtm_i2c_adapter_t adapter,
     switch (type)
     {
         case SRTM_I2C_TYPE_LPI2C:
-            retVal = BOARD_LPI2C_Send((LPI2C_Type *)base_addr, slaveAddr, 0, 0, buf, len, needStop);
+            retVal = BOARD_LPI2C_Send((LPI2C_Type *)base_addr, (uint8_t)(slaveAddr & 0xFFU), 0, 0, buf, len, needStop);
             break;
         default:
             break;
@@ -2730,7 +2733,7 @@ static srtm_status_t APP_SRTM_I2C_Read(srtm_i2c_adapter_t adapter,
     switch (type)
     {
         case SRTM_I2C_TYPE_LPI2C:
-            retVal = BOARD_LPI2C_Receive((LPI2C_Type *)base_addr, slaveAddr, 0, 0, buf, len, needStop);
+            retVal = BOARD_LPI2C_Receive((LPI2C_Type *)base_addr, (uint8_t)(slaveAddr & 0xFFU), 0, 0, buf, len, needStop);
             break;
         default:
             break;
@@ -2789,7 +2792,7 @@ static void APP_SRTM_DoSetWakeupModule(srtm_dispatcher_t dispatcher, void *param
     uint32_t module                          = (uint32_t)param1;
     wuu_internal_wakeup_module_event_t event = (wuu_internal_wakeup_module_event_t)(uint32_t)param2;
 
-    WUU_SetInternalWakeUpModulesConfig(WUU0, module, event);
+    WUU_SetInternalWakeUpModulesConfig(WUU0, (uint8_t)(module & 0xFFU), event);
 }
 
 void APP_SRTM_SetWakeupModule(uint32_t module, uint16_t event)
@@ -2808,7 +2811,7 @@ static void APP_SRTM_DoClrWakeupModule(srtm_dispatcher_t dispatcher, void *param
     uint32_t module                          = (uint32_t)param1;
     wuu_internal_wakeup_module_event_t event = (wuu_internal_wakeup_module_event_t)(uint32_t)param2;
 
-    WUU_ClearInternalWakeUpModulesConfig(WUU0, module, event);
+    WUU_ClearInternalWakeUpModulesConfig(WUU0, (uint8_t)(module & 0xFFU), event);
 }
 
 void APP_SRTM_ClrWakeupModule(uint32_t module, uint16_t event)
@@ -2824,8 +2827,8 @@ void APP_SRTM_ClrWakeupModule(uint32_t module, uint16_t event)
 
 static void APP_SRTM_DoSetWakeupPin(srtm_dispatcher_t dispatcher, void *param1, void *param2)
 {
-    uint16_t ioId    = (uint32_t)param1;
-    uint16_t event   = (uint32_t)param2;
+    uint16_t ioId    = (uint16_t)((uint32_t)param1 & 0xFFFFU);
+    uint16_t event   = (uint16_t)((uint32_t)param2 & 0xFFFFU);
     uint8_t inputIdx = APP_IO_GetIoIndex(ioId);
     bool wakeup      = (bool)(event >> 8);
     uint8_t pinMode  = (uint8_t)event;

@@ -153,8 +153,8 @@ enum
 #define LPTMR1_WUU_WAKEUP_EVENT (kWUU_InternalModuleInterrupt)
 
 /* GPIO */
-#define APP_GPIO_IDX(ioId) ((uint8_t)(((uint16_t)ioId) >> 8U))
-#define APP_PIN_IDX(ioId)  ((uint8_t)ioId)
+#define APP_GPIO_IDX(ioId) ((uint8_t)(((uint16_t)(ioId) >> 8U) & 0xFFU))
+#define APP_PIN_IDX(ioId)  ((uint8_t)((uint16_t)(ioId) & 0xFFU))
 #define APP_GPIO_INT_SEL   (kRGPIO_InterruptOutput2)
 #define APP_PIN_PTA19      (0x0013U)          /* PTA19 use for it6161(mipi to hdmi converter ic) interrupt */
 #define APP_PIN_IT6161_INT (APP_PIN_PTA19)
