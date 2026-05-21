@@ -29,8 +29,8 @@ mcux_add_linker_symbol(
 )
 
 mcux_add_iar_configuration(
-    CX "--diag_suppress Pe111,Pe188"
-    CC "--diag_suppress Pe111,Pe188"
+    CX "--diag_suppress=Pe111,Pe188,Pa217"
+    CC "--diag_suppress=Pe111,Pe188,Pa217"
 )
 
 mcux_add_mdk_configuration(
