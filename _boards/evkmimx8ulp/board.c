@@ -30,6 +30,8 @@
 #endif /* BOARD_USE_PCA6416A */
 #include "fsl_trdc.h"
 #include "fsl_mu.h"
+#include <assert.h>
+#include <stdint.h>
 
 /*******************************************************************************
  * Definitions
@@ -272,7 +274,7 @@ static uint32_t BOARD_MapFsbFuseIndex(uint32_t bank, uint32_t word, bool *redund
     }
 
     if (i == size)
-        return -1; /* Failed to find */
+        return 0xFFFFFFFFU; /* Failed to find */
 
     if (fsb_mapping_table[i].redundancy)
     {
@@ -281,7 +283,7 @@ static uint32_t BOARD_MapFsbFuseIndex(uint32_t bank, uint32_t word, bool *redund
     }
 
     *redundancy = false;
-    return word + word_pos;
+    assert(word <= UINT32_MAX - word_pos); return word + word_pos;
 }
 
 /*
@@ -300,7 +302,7 @@ int32_t BOARD_FuseRead(uint32_t bank, uint32_t word, uint32_t *val)
         return ret;
     }
 
-    word_index = BOARD_MapFsbFuseIndex(bank, word, &redundancy);
+    { uint32_t tmp_idx = BOARD_MapFsbFuseIndex(bank, word, &redundancy); word_index = (tmp_idx == 0xFFFFFFFFU) ? -1 : (int32_t)tmp_idx; }
     if (word_index >= 0)
     {
         *val = *(uint32_t *)(FSB_BASE_ADDR + FSB_OTP_SHADOW + (word_index << 2));
@@ -533,6 +535,7 @@ void BOARD_SetTrdcGlobalConfig(void)
                     return;
                 }
 
+                assert(mrc_end_addr[i] >= mrc_start_addr[i]);
                 for (m = 0U; m < n; m++)
                 {
                     mrcRegionConfig.regionIdx = m;
@@ -690,6 +693,7 @@ void BOARD_SetTrdcGlobalConfig(void)
                     return;
                 }
 
+                assert(mrc_end_addr[i] >= mrc_start_addr[i]);
                 for (m = 0U; m < n; m++)
                 {
                     mrcRegionConfig.regionIdx = m;
@@ -776,6 +780,7 @@ void BOARD_SetTrdcGlobalConfig(void)
                     return;
                 }
 
+                assert(mrc_end_addr[i] >= mrc_start_addr[i]);
                 for (m = 0U; m < n; m++)
                 {
                     mrcRegionConfig.regionIdx = m;
@@ -814,6 +819,7 @@ void BOARD_SetTrdcGlobalConfig(void)
                     return;
                 }
 
+                assert(mrc_end_addr[i] >= mrc_start_addr[i]);
                 for (m = 0U; m < n; m++)
                 {
                     mrcRegionConfig.regionIdx = m;
@@ -852,6 +858,7 @@ void BOARD_SetTrdcGlobalConfig(void)
                     return;
                 }
 
+                assert(mrc_end_addr[i] >= mrc_start_addr[i]);
                 for (m = 0U; m < n; m++)
                 {
                     mrcRegionConfig.regionIdx = m;
@@ -1187,7 +1194,7 @@ bool BOARD_HandshakeWithUboot(void)
 
 #ifdef SDK_OS_FREE_RTOS
         vTaskDelay(pdMS_TO_TICKS(BOARD_WAIT_MU0_MUB_F0_FLG_FROM_UBOOT_MS));
-        if (currTick + xTicksToWait < xTaskGetTickCount())
+        assert(currTick <= UINT32_MAX - xTicksToWait); if (currTick + xTicksToWait < xTaskGetTickCount())
 #else
         SDK_DelayAtLeastUs(BOARD_WAIT_MU0_MUB_F0_FLG_FROM_UBOOT_MS * 1000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
         curr_time += BOARD_WAIT_MU0_MUB_F0_FLG_FROM_UBOOT_MS * 1000;
@@ -1220,7 +1227,7 @@ bool BOARD_HandshakeWithUboot(void)
         }
 #ifdef SDK_OS_FREE_RTOS
         vTaskDelay(pdMS_TO_TICKS(BOARD_WAIT_MU0_MUB_F0_FLG_FROM_UBOOT_MS));
-        if (currTick + xTicksToWait < xTaskGetTickCount())
+        assert(currTick <= UINT32_MAX - xTicksToWait); if (currTick + xTicksToWait < xTaskGetTickCount())
 #else
         SDK_DelayAtLeastUs(BOARD_WAIT_MU0_MUB_F0_FLG_FROM_UBOOT_MS * 1000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
         curr_time += BOARD_WAIT_MU0_MUB_F0_FLG_FROM_UBOOT_MS * 1000;
@@ -1637,7 +1644,7 @@ void BOARD_FlexspiClockSafeConfig(void)
      * 6 - clock source of flexspi0 is FRO
      */
     BOARD_CalculateDivider(CLK_FRO_192MHZ, BOARD_NOR_FLASH_READ_MAXIMUM_FREQ, &freq_divider);
-    BOARD_SetFlexspiClock(FLEXSPI0, 6U, freq_divider - 1, 0U); /* flexspi0's clock is FRO(192 MHz) / div */
+    assert(freq_divider > 0); BOARD_SetFlexspiClock(FLEXSPI0, 6U, (uint8_t)((uint32_t)(freq_divider - 1) & 0xFFU), 0U); /* flexspi0's clock is FRO(192 MHz) / div */
 }
 
 #if defined(SDK_I2C_BASED_COMPONENT_USED) && SDK_I2C_BASED_COMPONENT_USED
@@ -1709,7 +1716,7 @@ void BOARD_Accel_I2C_Init(void)
 status_t BOARD_Accel_I2C_Send(
     uint8_t deviceAddress, uint32_t subAddress, uint8_t subaddressSize, uint32_t txBuff, uint32_t flags)
 {
-    uint8_t data = (uint8_t)txBuff;
+    uint8_t data = (uint8_t)(txBuff & 0xFFU);
 
     return BOARD_LPI2C_Send(BOARD_ACCEL_I2C_BASEADDR, deviceAddress, subAddress, subaddressSize, &data, 1, flags);
 }
@@ -1949,7 +1956,10 @@ static void ddrInit(uint32_t dram_class, struct dram_cfg *dram_timing_cfg)
         /* restore only the diff. */
         LPDDR->DENALI_PHY_1537 = 0;
         for (i = 0; i < PHY_DIFF_NUM; i++)
+        {
+            assert(freq_specific_reg_array[i] <= UINT32_MAX / 4UL);
             W32(LPDDR_BASE + 0x4000 + freq_specific_reg_array[i] * 4, dram_timing_cfg->phy_diff[i]);
+        }
     }
 
     /* Re-enable MULTICAST mode */
@@ -2002,6 +2012,7 @@ void BOARD_DdrSave(void)
         /* save only the frequency based diff config to save memory */
         for (i = 0; i < PHY_DIFF_NUM; i++)
         {
+            assert(freq_specific_reg_array[i] <= UINT32_MAX / 4UL);
             dram_timing_cfg->phy_diff[i] = R32(LPDDR_BASE + 0x4000 + freq_specific_reg_array[i] * 4);
         }
     }
@@ -2412,8 +2423,8 @@ void BOARD_I2C_ReleaseBus(int32_t i2cInstIdx)
         { kCLOCK_RgpioA, I2C0_RELEASE_SCL_GPIO, I2C0_RELEASE_SDA_GPIO, I2C0_RELEASE_SCL_PIN, I2C0_RELEASE_SDA_PIN},
         { kCLOCK_RgpioA, I2C1_RELEASE_SCL_GPIO, I2C1_RELEASE_SDA_GPIO, I2C1_RELEASE_SCL_PIN, I2C1_RELEASE_SDA_PIN},
     };
-    assert(i2cInstIdx < ARRAY_SIZE(i2c_infos));
-    i2c_rls_info_t *i2c_info = &i2c_infos[i2cInstIdx];
+    assert(i2cInstIdx >= 0); assert(i2cInstIdx < (int32_t)ARRAY_SIZE(i2c_infos));
+    i2c_rls_info_t *i2c_info = &i2c_infos[(uint32_t)i2cInstIdx];
 
     pin_config.pinDirection = kRGPIO_DigitalOutput;
     pin_config.outputLogic  = 1U;
