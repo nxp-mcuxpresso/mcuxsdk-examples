@@ -133,7 +133,7 @@ void BOARD_InitMemory(void)
         /* The MPU region size should be 2^N, 5<=N<=32, region base should be multiples of size. */
         assert((size & (size - 1)) == 0);
         assert(!(cacheStart % size));
-        assert(size == (uint32_t)(1 << i));
+        assert(size == (uint32_t)(1U << i));
         assert(i >= 5);
 
         /* Region 6 DDR[cacheStart]: Memory with Normal type, not shareable, cacheable */
