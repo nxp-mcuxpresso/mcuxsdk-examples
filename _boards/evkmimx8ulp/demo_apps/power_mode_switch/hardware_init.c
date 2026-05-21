@@ -18,6 +18,8 @@
 #include "app_srtm.h"
 #include "fsl_reset.h"
 #include "fsl_upower.h"
+#include <assert.h>
+#include <stdint.h>
 #include "lpm.h"
 #include "fsl_mu.h"
 #include "fsl_fusion.h"
@@ -198,6 +200,7 @@ static void APP_Suspend(void)
                 IOMUXC0->PCR0_IOMUXCARRAY1[i] = 0;
             }
         }
+        assert(backupIndex < UINT32_MAX);
         backupIndex++;
     }
 
@@ -216,6 +219,7 @@ static void APP_Suspend(void)
             IOMUXC0->PCR0_IOMUXCARRAY2[i] = 0;
         }
 
+        assert(backupIndex < UINT32_MAX);
         backupIndex++;
     }
 
@@ -251,6 +255,7 @@ static void APP_Resume(bool resume)
     {
         IOMUXC0->PCR0_IOMUXCARRAY1[i] = iomuxBackup[backupIndex];
         GPIOB->ICR[i]                 = gpioICRBackup[backupIndex];
+        assert(backupIndex < UINT32_MAX);
         backupIndex++;
     }
 
@@ -259,6 +264,7 @@ static void APP_Resume(bool resume)
     {
         IOMUXC0->PCR0_IOMUXCARRAY2[i] = iomuxBackup[backupIndex];
         GPIOC->ICR[i]                 = gpioICRBackup[backupIndex];
+        assert(backupIndex < UINT32_MAX);
         backupIndex++;
     }
 
