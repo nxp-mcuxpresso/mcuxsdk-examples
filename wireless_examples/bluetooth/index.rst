@@ -32,6 +32,8 @@ bluetooth
    otas/readme.md
    temp_coll/readme.md
    temp_sens/readme.md
+   tpms_monitor/readme.md
+   tpms_sensor/readme.md
    w_uart/readme.md
    w_uart_genfsk/readme.md
    w_uart_host/readme.md
