@@ -23,7 +23,7 @@ secure_faults_trdc_ns:
     - -armgcc@release
     - -iar@debug
     - -iar@release
-    mcimx93autoevk: []
-    mcimx93evk: []
+    mcimx93autoevk@cm33: []
+    mcimx93evk@cm33: []
     mcimx93wevk: []
     mcimx93qsb: []

@@ -224,7 +224,7 @@ sai_edma_transfer:
     imx95lpd5evk19@cm7: []
     imx95lp4xevk15@cm7: []
     imx952evk@cm7: []
-    mcimx93evk: []
+    mcimx93evk@cm33: []
     mcimx93wevk: []
     mcimx93qsb: []
     mcxn5xxevk@cm33_core0: []

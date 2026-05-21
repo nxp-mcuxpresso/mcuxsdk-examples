@@ -52,7 +52,7 @@ tfm_demo_s:
     - -iar@flash_release
     - -mdk@flash_debug
     - -mdk@flash_release
-    mcimx93evk: []
+    mcimx93evk@cm33: []
     frdmmcxa577: []
     frdmmcxa287: []
     frdmkw43: []

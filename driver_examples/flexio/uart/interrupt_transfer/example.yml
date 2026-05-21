@@ -255,8 +255,8 @@ flexio_uart_interrupt_transfer:
     kw45b41zevk:
     - +armgcc@debug
     - +armgcc@release
-    mcimx93autoevk: []
-    mcimx93evk: []
+    mcimx93autoevk@cm33: []
+    mcimx93evk@cm33: []
     mcimx93wevk: []
     mcimx93qsb: []
     mcxn5xxevk@cm33_core0: []

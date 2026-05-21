@@ -69,6 +69,6 @@ enet_qos_txrx_multiring_transfer:
     - -iar@flash_debug
     - -iar@flash_release
     frdmmcxe31b: []
-    mcimx93evk: []
+    mcimx93evk@cm33: []
     mcimx93wevk: []
     mcimx93qsb: []

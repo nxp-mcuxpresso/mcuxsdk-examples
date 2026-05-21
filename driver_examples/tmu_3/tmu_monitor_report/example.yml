@@ -18,7 +18,7 @@ tmu_3_monitor_report:
       - ${board_root}/${board}/driver_examples/tmu/tmu_monitor_report/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    mcimx93autoevk: []
-    mcimx93evk: []
+    mcimx93autoevk@cm33: []
+    mcimx93evk@cm33: []
     mcimx93wevk: []
     mcimx93qsb: []
