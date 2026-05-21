@@ -255,11 +255,11 @@ int parse_hex_bytes(const char *s, uint8_t *out, int maxout)
         uint32_t hi; uint32_t lo;
         if (isxdigit((unsigned char)p[0]))
         {
-            hi = (uint32_t)(((p[0] >= '0') && (p[0] <= '9')) ? (p[0] - '0') : (toupper((unsigned char)p[0]) - 'A' + 10));
+            hi = (uint32_t)((((p[0] >= '0') && (p[0] <= '9')) ? (p[0] - '0') : (toupper((unsigned char)p[0]) - 'A' + 10)) & 0xF);
             p++;
             if (isxdigit((unsigned char)p[0]))
             {
-                lo = (uint32_t)(((p[0] >= '0') && (p[0] <= '9')) ? (p[0] - '0') : (toupper((unsigned char)p[0]) - 'A' + 10));
+                lo = (uint32_t)((((p[0] >= '0') && (p[0] <= '9')) ? (p[0] - '0') : (toupper((unsigned char)p[0]) - 'A' + 10)) & 0xF);
                 p++;
             }
             else
@@ -267,7 +267,7 @@ int parse_hex_bytes(const char *s, uint8_t *out, int maxout)
                 /* single nibble -> treat as low nibble */
                 lo = 0U;
             }
-            out[len++] = (uint8_t)((hi << 4U) | (lo & 0xFU));
+            out[len++] = (uint8_t)(((hi << 4U) | (lo & 0xFU)) & 0xFFU);
         }
         else
         {
