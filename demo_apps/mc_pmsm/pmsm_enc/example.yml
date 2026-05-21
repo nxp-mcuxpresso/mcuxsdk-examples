@@ -13,21 +13,21 @@ mc_pmsm_enc:
       - ${board_root}/${board}/demo_apps/mc_pmsm/pmsm_enc/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkmimxrt1180@cm7: []
-    evkbmimxrt1170@cm7: []
-    frdmimxrt1152@cm7: []
-    frdmimxrt1186@cm7:
-    - +armgcc@flexspi_nor_hyperram_debug
-    - +armgcc@flexspi_nor_hyperram_release
-    - +iar@flexspi_nor_hyperram_debug
-    - +iar@flexspi_nor_hyperram_release
-    - +mdk@flexspi_nor_hyperram_debug
-    - +mdk@flexspi_nor_hyperram_release
-    # frdmmcxa153:
-    # - -armgcc@debug
-    # - -iar@debug
-    # - -mdk@debug
-    # - -mcux@debug
+    # evkmimxrt1180@cm7: []
+    # evkbmimxrt1170@cm7: []
+    # frdmimxrt1152@cm7: []
+    # frdmimxrt1186@cm7:
+    # - +armgcc@flexspi_nor_hyperram_debug
+    # - +armgcc@flexspi_nor_hyperram_release
+    # - +iar@flexspi_nor_hyperram_debug
+    # - +iar@flexspi_nor_hyperram_release
+    # - +mdk@flexspi_nor_hyperram_debug
+    # - +mdk@flexspi_nor_hyperram_release
+    frdmmcxa153:
+    - -armgcc@debug
+    - -iar@debug
+    - -mdk@debug
+    - -mcux@debug
     # frdmmcxa156:
     # - -armgcc@release
     # - -iar@debug
@@ -38,18 +38,18 @@ mc_pmsm_enc:
     # - -iar@debug
     # - -mdk@debug
     # - -mcux@debug
-    frdmmcxn947@cm33_core0:
-    - -armgcc@debug
-    - -iar@debug
-    - -mdk@debug
-    - -mcux@debug
+    # frdmmcxn947@cm33_core0:
+    # - -armgcc@debug
+    # - -iar@debug
+    # - -mdk@debug
+    # - -mcux@debug
     # lpcxpresso55s36: []
     # mc56f81000evk: []
     # mc56f83000evk: []
     # twrmc56f8400: []
-    frdmmcxa174: []
-    frdmmcxa346: []
-    frdmmcxe31b: []
-    frdmmcxa344: []
+    # frdmmcxa174: []
+    # frdmmcxa346: []
+    # frdmmcxe31b: []
+    # frdmmcxa344: []
     # frdmmcxa266: []
-    frdmmcxa366: []
+    # frdmmcxa366: []

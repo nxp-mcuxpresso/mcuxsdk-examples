@@ -13,15 +13,15 @@ mc_pmsm_servo_dual:
       - ${board_root}/${board}/demo_apps/mc_pmsm/pmsm_servo_dual/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    imx943evk@cm7_core0:
-    - +iar@debug
-    - +armgcc@debug
-    - +iar@release
-    - +armgcc@release
-    frdmimxrt1186@cm7:
-    - +armgcc@flexspi_nor_hyperram_debug
-    - +armgcc@flexspi_nor_hyperram_release
-    - +iar@flexspi_nor_hyperram_debug
-    - +iar@flexspi_nor_hyperram_release
-    - +mdk@flexspi_nor_hyperram_debug
-    - +mdk@flexspi_nor_hyperram_release
+    # imx943evk@cm7_core0:
+    # - +iar@debug
+    # - +armgcc@debug
+    # - +iar@release
+    # - +armgcc@release
+    # frdmimxrt1186@cm7:
+    # - +armgcc@flexspi_nor_hyperram_debug
+    # - +armgcc@flexspi_nor_hyperram_release
+    # - +iar@flexspi_nor_hyperram_debug
+    # - +iar@flexspi_nor_hyperram_release
+    # - +mdk@flexspi_nor_hyperram_debug
+    # - +mdk@flexspi_nor_hyperram_release
