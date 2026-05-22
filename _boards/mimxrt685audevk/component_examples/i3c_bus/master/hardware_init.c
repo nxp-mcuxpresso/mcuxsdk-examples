@@ -26,6 +26,9 @@ void BOARD_InitHardware(void)
     CLOCK_AttachClk(kMAIN_CLK_to_I3C_CLK);
     CLOCK_SetClkDiv(kCLOCK_DivI3cClk, 20);
 
+    CLOCK_AttachClk(kLPOSC_to_I3C_TC_CLK);
+    CLOCK_SetClkDiv(kCLOCK_DivI3cSlowClk, 1);
+
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();

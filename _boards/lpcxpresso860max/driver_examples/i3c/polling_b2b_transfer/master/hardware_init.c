@@ -21,6 +21,10 @@ void BOARD_InitHardware(void)
     CLOCK_Select(kI3C_Clk_From_Fro);
     CLOCK_SetI3CFClkDiv(5);
 
+    CLOCK_Select(kI3C_TC_Clk_From_LpOsc);
+    CLOCK_SetI3CTCClkDiv(1);
+    CLOCK_SetI3CSClkDiv(1);
+
     BOARD_InitPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();

@@ -30,6 +30,11 @@ void BOARD_InitHardware(void)
     CLOCK_SetClkDiv(kCLOCK_DivI3cFclk, 6U, false);
     CLOCK_AttachClk(kMAIN_CLK_to_I3CFCLK);
 
+    SYSCON->CLOCK_CTRL |= SYSCON_CLOCK_CTRL_FRO1MHZ_CLK_ENA_MASK;
+    CLOCK_SetClkDiv(kCLOCK_DivI3cFclkS, 0U, true);
+    CLOCK_SetClkDiv(kCLOCK_DivI3cFclkS, 1U, false);
+    CLOCK_AttachClk(kFRO1M_to_I3CFCLKSTC);
+
     BOARD_InitPins();
     BOARD_BootClockPLL150M();
     BOARD_InitDebugConsole();

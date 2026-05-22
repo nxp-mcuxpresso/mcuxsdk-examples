@@ -23,6 +23,10 @@ void BOARD_InitHardware(void)
     /* I3C FCLK = 60M/4 = 15M */
     CLOCK_SetI3CFClkDiv(4);
 
+    CLOCK_Select(kI3C_TC_Clk_From_LpOsc);
+    CLOCK_SetI3CTCClkDiv(1);
+    CLOCK_SetI3CSClkDiv(1);
+
     BOARD_InitPins();
     BOARD_BootClockFRO60M();
     BOARD_InitDebugConsole();
