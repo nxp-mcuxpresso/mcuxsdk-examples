@@ -119,3 +119,29 @@ psa_crypto_examples:
     mcxw72loc@cm33_core0: []
     kw47evk@cm33_core0: []
     kw47loc@cm33_core0: []
+    evkmimxrt1180@cm33:
+    - -armgcc@debug
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -armgcc@release
+    - -iar@debug
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    - -mdk@release
+    frdmimxrt1186@cm33:
+    - -armgcc@debug
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -armgcc@release
+    - -iar@debug
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    - -mdk@release
