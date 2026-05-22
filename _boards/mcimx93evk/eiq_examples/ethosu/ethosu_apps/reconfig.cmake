@@ -10,7 +10,7 @@ mcux_add_armgcc_configuration(
 )
 mcux_add_iar_configuration(
     LD "--semihosting"
-    CC "--diag_suppress Pe830"
+    CC "--diag_suppress=Pe546,Pe830"
 )
 mcux_add_iar_configuration(
     TARGETS release
