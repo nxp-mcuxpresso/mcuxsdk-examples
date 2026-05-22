@@ -12,8 +12,6 @@ mdk:
   project-templates:
   - scripts/guigenerator/templates/mdk/app_frdmmcxl255/app_frdmmcxl255_core1.uvprojx
   - scripts/guigenerator/templates/mdk/app_frdmmcxl255/app_frdmmcxl255_core1.uvoptx
-  - scripts/guigenerator/templates/mdk/app_frdmmcxl255/core1/JLinkSettings.JLinkScript
-  - scripts/guigenerator/templates/mdk/app_frdmmcxl255/core1/JLinkSettings.ini
   - scripts/guigenerator/templates/mdk/app_frdmmcxl255/core1/ramdebug.ini
   config:
     __common__:

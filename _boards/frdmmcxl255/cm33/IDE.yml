@@ -18,5 +18,3 @@ mdk:
   project-templates:
   - scripts/guigenerator/templates/mdk/app_frdmmcxl255/app_frdmmcxl255.uvprojx
   - scripts/guigenerator/templates/mdk/app_frdmmcxl255/app_frdmmcxl255.uvoptx
-  - scripts/guigenerator/templates/mdk/app_frdmmcxl255/JLinkSettings.JLinkScript
-  - scripts/guigenerator/templates/mdk/app_frdmmcxl255/JLinkSettings.ini
