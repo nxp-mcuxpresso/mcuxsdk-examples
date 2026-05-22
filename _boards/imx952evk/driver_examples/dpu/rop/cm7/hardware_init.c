@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -68,6 +68,7 @@ void BOARD_InitHardware(void)
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
     BOARD_InitI2C2Pins();
+    BOARD_InitLVDSPWMPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 

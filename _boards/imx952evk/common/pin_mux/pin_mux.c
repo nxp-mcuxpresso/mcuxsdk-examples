@@ -737,6 +737,30 @@ void BOARD_InitI3CPins(void) {                             /*!< Function assigne
 
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitLVDSPWMPins:
+- options: {callFromInitBoot: 'true', coreID: cm7}
+- pin_list:
+  - {pin_num: N49, peripheral: GPIO2, signal: 'gpio_io, 13', pin_signal: GPIO_IO13, OD: ENABLED, PD: DISABLED}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitLVDSPWMPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitLVDSPWMPins(void) {                         /*!< Function assigned for the core: Cortex-M7F[cm7] */
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO13__GPIO2_IO_13, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO13__GPIO2_IO_13,
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_OD_MASK);
+}
+
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitGPIO2Pins:
 - options: {callFromInitBoot: 'false', coreID: cm7}
 - pin_list:

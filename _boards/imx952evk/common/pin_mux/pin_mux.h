@@ -171,6 +171,12 @@ void BOARD_InitGPIO2Pins(void);                            /*!< Function assigne
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
+void BOARD_InitLVDSPWMPins(void);                          /*!< Function assigned for the core: Cortex-M7F[cm7] */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
 void BOARD_DeInitDEBUG_UARTPins(void);                     /*!< Function assigned for the core: Cortex-M7F[cm7] */
 
 #if defined(__cplusplus)
