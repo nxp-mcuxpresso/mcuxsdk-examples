@@ -26,3 +26,14 @@ mcux_add_armgcc_linker_script(
     TARGETS debug release
     LINKER ${board_root}/${board}/ota_examples/mcuboot_opensource/linker/MCXC162_flash.ld
 )
+
+mcux_remove_armgcc_configuration(
+    TARGETS debug
+    CC "-O0"
+)
+
+mcux_add_configuration(
+    TARGETS debug
+    CC "-Os"
+    TOOLCHAINS armgcc
+)
