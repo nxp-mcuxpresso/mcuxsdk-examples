@@ -20,7 +20,7 @@
  * ENETC1
  * - NETC_PSI:       kNETC_ENETC1PSI0
  * - NETC_MII_MODE:  kNETC_SgmiiMode
- * - NETC_MII_SPEED: kNETC_MiiSpeed2500M
+ * - NETC_MII_SPEED: kNETC_MiiSpeed1000M
  */
 #define NETC_PSI         kNETC_ENETC0PSI0
 #define NETC_MII_MODE    kNETC_RgmiiMode

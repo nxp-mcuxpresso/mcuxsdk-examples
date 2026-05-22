@@ -8,6 +8,7 @@ Board settings
 ==============
 In default, the example uses only ENETC0 (EP0).
 To enable ENETC1 (EP1), install M.2 2.5G ETH card and change EXAMPLE_EP_NUM to 2U in app.h.
+ENETC1 supports up to 1G speed.
 
 Prepare the Demo
 ===============

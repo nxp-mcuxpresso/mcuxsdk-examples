@@ -24,9 +24,6 @@ static phy_gpy215_resource_t s_phy_gpy215_resource;
 static phy_handle_t s_phy_handle[EXAMPLE_EP_NUM];
 static uint8_t s_phy_addr[EXAMPLE_EP_NUM] = EXAMPLE_EP_PHY_ADDR;
 
-/* GPY215 PHY Regisgers*/
-#define PHY_MMD_VSPEC1         (0x1eU)
-#define VSPEC1_SGMII_CTRL_REG  (0x8U)
 
 /*${variable:end}*/
 
@@ -162,7 +159,7 @@ void BOARD_InitHardware(void)
 
     /* Protocol configure */
     BLK_CTRL_NETCMIX->CFG_LINK_MII_PROT = 0x00000032;
-    BLK_CTRL_NETCMIX->CFG_LINK_PCS_PROT_1 = 0x00000002;
+    BLK_CTRL_NETCMIX->CFG_LINK_PCS_PROT_1 = 0x00000001;
     BLK_CTRL_NETCMIX->CFG_LINK_IO_VAR = 0x00000010;
 
     /* Unlock the IERB. It will warm reset whole NETC. */
@@ -243,7 +240,7 @@ status_t APP_PHY_Init(void)
 #if (EXAMPLE_EP_NUM == 2)
     phy_config_t phygpy215Config = {
         .autoNeg   = true,
-        .speed     = kPHY_Speed2500M,
+        .speed     = kPHY_Speed1000M,
         .duplex    = kPHY_FullDuplex,
         .enableEEE = false,
         .ops       = &phygpy215_ops,
@@ -273,7 +270,7 @@ status_t APP_PHY_Init(void)
 
     /* EP1 PHY Init */
 
-    NETC_PHYInit(&s_mdio_handle, kNETC_SGMII2G5);
+    NETC_PHYInit(&s_mdio_handle, kNETC_SGMII1G);
 
     s_phy_gpy215_resource.write = APP_EMDIOWrite;
     s_phy_gpy215_resource.read  = APP_EMDIORead;
@@ -288,8 +285,6 @@ status_t APP_PHY_Init(void)
         return result;
     }
 
-    /* Need to configure PHY SGMII mode */
-    PHY_GPY215_WriteC45(&s_phy_handle[EXAMPLE_EP1_PORT], PHY_MMD_VSPEC1, VSPEC1_SGMII_CTRL_REG, 0x24faU);
 
     result = PHY_EnableLoopback(&s_phy_handle[EXAMPLE_EP1_PORT], kPHY_LocalLoop, phygpy215Config.speed, true);
     if (result != kStatus_Success)

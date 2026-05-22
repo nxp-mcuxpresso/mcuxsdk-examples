@@ -18,9 +18,6 @@
 /*${header:end}*/
 
 /*${macro:start}*/
-/* GPY215 PHY Regisgers*/
-#define PHY_MMD_VSPEC1         (0x1eU)
-#define VSPEC1_SGMII_CTRL_REG  (0x8U)
 /*${macro:end}*/
 
 /*${variable:start}*/
@@ -127,13 +124,11 @@ static status_t ENETC1_PHY_Init(phy_handle_t *phy_handle, const phy_config_t *co
     }
 
     /* PHY WRAPPER Init */
-    NETC_PHYInit(&s_mdio_handle, kNETC_SGMII2G5);
+    NETC_PHYInit(&s_mdio_handle, kNETC_SGMII1G);
 
     /* Initialize PHY */
     result = PHY_GPY215_Init(phy_handle, config);
 
-    /* Need to configure PHY SGMII mode */
-    PHY_GPY215_WriteC45(phy_handle, PHY_MMD_VSPEC1, VSPEC1_SGMII_CTRL_REG, 0x24faU);
 
     return result;
 }
@@ -289,7 +284,7 @@ void BOARD_InitHardware(void)
 
     /* Protocol configure */
     BLK_CTRL_NETCMIX->CFG_LINK_MII_PROT = 0x00000032;
-    BLK_CTRL_NETCMIX->CFG_LINK_PCS_PROT_1 = 0x00000002;
+    BLK_CTRL_NETCMIX->CFG_LINK_PCS_PROT_1 = 0x00000001;
     BLK_CTRL_NETCMIX->CFG_LINK_IO_VAR = 0x00000010;
 
     /* Unlock the IERB. It will warm reset whole NETC. */
