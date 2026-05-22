@@ -14,6 +14,5 @@ wifi_examples
    wifi_ipv4_ipv6_echo/readme.md
    wifi_mqtt/readme.md
    wifi_setup/readme.md
-   wifi_test_mode/readme.md
    wifi_webconfig/readme.md
    wifi_wpa_supplicant/readme.md

@@ -56,6 +56,8 @@
 #define CONFIG_ANT_DETECT 1
 #endif
 
+#define CONFIG_RF_TEST_MODE 1
+
 /* WLCMGR debug */
 #define CONFIG_WLCMGR_DEBUG 0
 /*
