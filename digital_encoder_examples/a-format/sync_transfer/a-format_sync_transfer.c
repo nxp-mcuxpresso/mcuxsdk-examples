@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -75,7 +75,7 @@ void tpm_init(void)
         PRINTF("\r\nSetup PWM fail!\r\n");
         return;
     }
-    control = TPM_GetChannelContorlBits(BOARD_TPM_BASEADDR, (tpm_chnl_t)BOARD_TPM_CHANNEL);
+    control = TPM_GetChannelControlBits(BOARD_TPM_BASEADDR, (tpm_chnl_t)BOARD_TPM_CHANNEL);
     TPM_EnableChannel(BOARD_TPM_BASEADDR, (tpm_chnl_t)BOARD_TPM_CHANNEL, control);
     TPM_EnableInterrupts(BOARD_TPM_BASEADDR, BOARD_TPM_INTERRUPT_ENABLE);
 }
