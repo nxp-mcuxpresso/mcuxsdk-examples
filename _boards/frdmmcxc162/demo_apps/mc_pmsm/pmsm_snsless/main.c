@@ -6,6 +6,11 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+/* MID enabled only when IAR or MDK toolchain is used. */
+#if defined(__IAR_SYSTEMS_ICC__) || defined(__CC_ARM) 
+#define MID_ENABLE
+#endif
+
 #include "pin_mux.h"
 #include "peripherals.h"
 #include "freemaster.h"
@@ -15,12 +20,16 @@
 #include "board.h"
 #include "m1_sm_snsless.h"
 #include "mc_periph_init.h"
+
+#ifdef MID_ENABLE
 #include "mid_sm_states.h"
 #include "m1_mid_switch.h"
+#endif
 
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+
 /* Version info */
 #define MCRSP_VER "2.0.0" /* motor control package version */
 
@@ -132,8 +141,10 @@ int main(void)
     /* FreeMASTER driver initialization */
     FMSTR_Init();
 
+#ifdef MID_ENABLE
     /* Call MID init routine before EnableGlobalIRQ to fill all default MID FreeMASTER variables. */
     MID_Init_AR();
+#endif
 
     /* Enable interrupts  */
     EnableGlobalIRQ(ui32PrimaskReg);
@@ -161,6 +172,7 @@ void ADC0_IRQHandler(void)
     /* Start CPU tick number couting */
     SYSTICK_START_COUNT();
 
+#ifdef MID_ENABLE
     switch(M1_MID_Get_State())
     {
     case kStateM1:
@@ -174,6 +186,10 @@ void ADC0_IRQHandler(void)
     default:
       ;
     }
+#else
+    /* Spin state machine */
+    SM_StateMachineFast(&g_sM1Ctrl);
+#endif
 
     /* stop CPU tick number couting and store actual and maximum ticks */
     SYSTICK_STOP_COUNT(g_ui32NumberOfCycles);
@@ -206,8 +222,10 @@ void CTIMER0_IRQHandler(void)
     /* M1 Slow StateMachine call */
     SM_StateMachineSlow(&g_sM1Ctrl);
 
+#ifdef MID_ENABLE
     /* Check if transtion between M1/MID was requested. */
     M1_MID_Switch_BL();
+#endif
 
     /* If in STOP state turn on RED */
     if (M1_GetAppState() == 2U)
