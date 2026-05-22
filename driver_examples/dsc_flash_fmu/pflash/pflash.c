@@ -69,10 +69,10 @@ void hexdump_dsc(uint32_t addr, size_t size)
             PRINTF("|");
             for (int j = n; j >= 0; j--)
                 PUTCHAR(isprint(src8[i - j]) ? src8[i - j] : '.');
-            PRINTF("|\n");
+            PRINTF("|\r\n");
         }
     }
-    PUTCHAR('\n');
+    PRINTF("\r\n");
 }
 
 /*
@@ -146,11 +146,11 @@ int main(void)
     PRINTF("\r\nPFlash Example Start \r\n");
     /* Print flash information - PFlash. */
     PRINTF("\r\nFlash Information for Flash 0 Array: ");
-    PRINTF("\r\n Program Flash block bass address:\t%lu, Hex: (0x%lx)", (pflashBlock0Base / 1024), pflashBlock0Base);
+    PRINTF("\r\n Program Flash block bass address:\t 0x%lx", pflashBlock0Base);
     PRINTF("\r\n Program Flash block Size:\t\t%lu KB, Hex: (0x%lx)", (pflashBlock0Size / 1024), pflashBlock0Size);
     PRINTF("\r\n Program Flash block Sector Size:\t%lu KB, Hex: (0x%lx)", (pflashSectorSize / 1024), pflashSectorSize);
     PRINTF("\r\nFlash Information for Flash 1 Array: ");
-    PRINTF("\r\n Program Flash block bass address:\t%lu, Hex: (0x%lx)\r\n", (pflashBlock1Base / 1024), pflashBlock1Base);
+    PRINTF("\r\n Program Flash block bass address:\t0x%lx\r\n", pflashBlock1Base);
 
 
 /* In case of the protected sectors at the end of the pFlash just select
@@ -165,7 +165,7 @@ SECTOR_INDEX_FROM_END = 2 means (the last sector - 1) ...
     /* Erase a sector from destAdrss. */
     destAddr = pflashBlock1Base + (pflashBlock0Size - (SECTOR_INDEX_FROM_END * pflashSectorSize));
 
-    PRINTF("\r\nErase a sector of flash at address %lx\r\n\r\n", destAddr);
+    PRINTF("\r\nErase a sector of flash at address 0x%lx\r\n\r\n", destAddr);
     PRINTF("Sector content:\r\n");
 
     hexdump_dsc(destAddr, HEXDUMPLEN);
@@ -234,7 +234,7 @@ SECTOR_INDEX_FROM_END = 2 means (the last sector - 1) ...
     PRINTF("Successfully Programmed and Verified Location 0x%lx -> 0x%lx \r\n\r\n", destAddr,
            (destAddr + sizeof(s_buffer)));
 
-    PRINTF("Test erase verify:\r\n");
+    PRINTF("Do erase verify:\r\n");
     PRINTF(" Programmed SECTOR:");
     result = FLASH_VerifyEraseSector(&s_flashDriver, FLASH, destAddr, pflashSectorSize);
     PRINTF("\t%s\r\n", result == kStatus_FLASH_Success ? "ERASED" : "NOT_ERASED");
