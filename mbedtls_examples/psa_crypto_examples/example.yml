@@ -145,3 +145,11 @@ psa_crypto_examples:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     - -mdk@release
+    frdmmcxn236: []
+    mcxn9xxevk@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    frdmmcxn947@cm33_core0: []
+    frdmrw612: []
+    rdrw612bga: []
+    frdmimxrt700@cm33_core0: []
+    mimxrt700evk@cm33_core0: []

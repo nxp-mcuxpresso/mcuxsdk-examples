@@ -21,6 +21,15 @@ include(${SdkRootDirPath}/${board_root}/${board}/mbedtls_examples/psa_crypto_exa
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
 
+# IAR requires __write to be defined when dl7M_tln.a's putchar is pulled in via
+# the tf-psa-crypto -> snprintf -> xprintffull_nomb -> _Prout -> putchar chain.
+# SDK_DEBUGCONSOLE_UART enables the __write implementation in fsl_debug_console_lite.
+mcux_add_macro(
+    TOOLCHAINS iar
+    CC "-DSDK_DEBUGCONSOLE_UART"
+    CX "-DSDK_DEBUGCONSOLE_UART"
+)
+
 #iar common configs
 mcux_add_iar_configuration(
     CC "--diag_suppress=Pa082,Pa050,Pe546,Pe188,Pe111,Pa084,Pe068,Pe177,Pe223,Pa217"
