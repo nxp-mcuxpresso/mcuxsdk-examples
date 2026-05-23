@@ -1,0 +1,63 @@
+# Replace Linker File Configurations
+mcux_remove_iar_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER ${device_root}/RT/RT1160/MIMXRT1166/iar/MIMXRT1166xxxxx_cm7_ram.icf
+)
+mcux_remove_iar_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS flexspi_nor_debug flexspi_nor_release
+    LINKER ${device_root}/RT/RT1160/MIMXRT1166/iar/MIMXRT1166xxxxx_cm7_flexspi_nor.icf
+)
+mcux_remove_mdk_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER ${device_root}/RT/RT1160/MIMXRT1166/arm/MIMXRT1166xxxxx_cm7_ram.scf
+)
+mcux_remove_mdk_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS flexspi_nor_debug flexspi_nor_release
+    LINKER ${device_root}/RT/RT1160/MIMXRT1166/arm/MIMXRT1166xxxxx_cm7_flexspi_nor.scf
+)
+mcux_remove_armgcc_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER ${device_root}/RT/RT1160/MIMXRT1166/gcc/MIMXRT1166xxxxx_cm7_ram.ld
+)
+mcux_remove_armgcc_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS flexspi_nor_debug flexspi_nor_release
+    LINKER ${device_root}/RT/RT1160/MIMXRT1166/gcc/MIMXRT1166xxxxx_cm7_flexspi_nor.ld
+)
+
+# Add or remove Linker File Configurations
+mcux_add_iar_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER ${board_root}/${board}/mbedtls_examples/linker/MIMXRT1166xxxxx_cm7_ram_ocram.icf
+)
+mcux_add_iar_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS flexspi_nor_debug flexspi_nor_release
+    LINKER ${board_root}/${board}/mbedtls_examples/linker/MIMXRT1166xxxxx_cm7_flexspi_nor_ocram.icf
+)
+mcux_add_mdk_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER ${board_root}/${board}/mbedtls_examples/linker/MIMXRT1166xxxxx_cm7_ram_ocram.scf
+)
+mcux_add_mdk_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS flexspi_nor_debug flexspi_nor_release
+    LINKER ${board_root}/${board}/mbedtls_examples/linker/MIMXRT1166xxxxx_cm7_flexspi_nor_ocram.scf
+)
+mcux_add_armgcc_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER ${board_root}/${board}/mbedtls_examples/linker/MIMXRT1166xxxxx_cm7_ram_ocram.ld
+)
+mcux_add_armgcc_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS flexspi_nor_debug flexspi_nor_release
+    LINKER ${board_root}/${board}/mbedtls_examples/linker/MIMXRT1166xxxxx_cm7_flexspi_nor_ocram.ld
+)

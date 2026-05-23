@@ -119,6 +119,58 @@ psa_crypto_examples:
     mcxw72loc@cm33_core0: []
     kw47evk@cm33_core0: []
     kw47loc@cm33_core0: []
+    evkbmimxrt1170@cm4:
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -armgcc@release
+    - -armgcc@sdram_release
+    - -armgcc@debug
+    - -armgcc@sdram_debug
+    - -mdk@debug
+    - -mdk@sdram_debug
+    - -mdk@release
+    - -mdk@sdram_release
+    evkbmimxrt1170@cm7:
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -armgcc@release
+    - -armgcc@sdram_release
+    - -armgcc@debug
+    - -armgcc@sdram_debug
+    - -mdk@debug
+    - -mdk@sdram_debug
+    - -mdk@release
+    - -mdk@sdram_release
+    evkmimxrt1160@cm4:
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -armgcc@release
+    - -armgcc@sdram_release
+    - -armgcc@debug
+    - -armgcc@sdram_debug
+    - -mdk@debug
+    - -mdk@sdram_debug
+    - -mdk@release
+    - -mdk@sdram_release
+    evkmimxrt1160@cm7:
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -armgcc@release
+    - -armgcc@sdram_release
+    - -armgcc@debug
+    - -armgcc@sdram_debug
+    - -mdk@debug
+    - -mdk@sdram_debug
+    - -mdk@release
+    - -mdk@sdram_release
     evkmimxrt1180@cm33:
     - -armgcc@debug
     - -armgcc@hyperram_debug
