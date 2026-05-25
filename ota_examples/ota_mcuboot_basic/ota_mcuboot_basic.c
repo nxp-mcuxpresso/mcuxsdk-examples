@@ -50,7 +50,9 @@
 static int flash_sha256(uint32_t offset, size_t size, uint8_t sha256[32]);
 #if !defined(CONFIG_BOOT_MODE_SINGLE_APPLICATION_SLOT)
 static int process_received_data(uint32_t dst_addr, uint32_t offset, uint32_t size);
+#ifdef MCUBOOT_OTA_SB3_SUPPORT
 static int process_received_data_sb3(uint32_t dst_addr, uint32_t offset, uint32_t size);
+#endif
 
 static shell_status_t shellCmd_image(shell_handle_t shellHandle, int32_t argc, char **argv);
 static shell_status_t shellCmd_xmodem(shell_handle_t shellHandle, int32_t argc, char **argv);

@@ -130,7 +130,7 @@ int main(void)
 
 void mbc_setup(const struct mbc_conf conf[], size_t cnt)
 {
-    for (int c = 0; c < cnt; c++)
+    for (uint32_t c = 0; c < cnt; c++)
     {
         assert((conf[c].addr % MBC_BLOCK_SIZE) == 0);
         assert((conf[c].size % MBC_BLOCK_SIZE) == 0);
@@ -138,7 +138,7 @@ void mbc_setup(const struct mbc_conf conf[], size_t cnt)
         uint32_t block_start = conf[c].addr / MBC_BLOCK_SIZE;
         uint32_t block_cnt   = conf[c].size / MBC_BLOCK_SIZE;
 
-        for (int block = block_start; block < (block_start + block_cnt); block++)
+        for (uint32_t block = block_start; block < (block_start + block_cnt); block++)
         {
             /* 8 block per CFG_W */
             uint32_t wid = block / 8;
