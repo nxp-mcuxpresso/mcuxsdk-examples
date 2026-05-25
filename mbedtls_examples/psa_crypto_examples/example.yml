@@ -111,6 +111,7 @@ psa_crypto_examples:
     frdmmcxl255@cm33: []
     mcxw71evk: []
     frdmmcxw71: []
+    frdmmcxw23: []
     kw45b41zevk:
     - +armgcc@debug
     - +armgcc@release

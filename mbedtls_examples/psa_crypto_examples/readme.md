@@ -15,6 +15,7 @@ PSA Crypto example to demonstrate cipher operation.
 - [FRDM-MCXA366](../../_boards/frdmmcxa366/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
 - [MCX-W71-EVK](../../_boards/mcxw71evk/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
 - [FRDM-MCXW71](../../_boards/frdmmcxw71/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
+- [FRDM-MCXW23](../../_boards/frdmmcxw23/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
 - [KW45B41Z-EVK](../../_boards/kw45b41zevk/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
 - [FRDM-MCXW72](../../_boards/frdmmcxw72/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
 - [MCX-W72-EVK](../../_boards/mcxw72evk/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
