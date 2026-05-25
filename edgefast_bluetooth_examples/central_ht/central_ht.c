@@ -389,7 +389,7 @@ static void bt_ready(int err)
 
     PRINTF("Scanning started\n");
 
-#if defined(APP_LOWPOWER_ENABLED) && (APP_LOWPOWER_ENABLED > 0)
+#if defined(APP_LOWPOWER_ENABLED) && (APP_LOWPOWER_ENABLED > 0) && !defined(CONFIG_COEX_APP)
     /* Release the WFI constraint, the device will go to a lower power mode
      * during idle */
     PWR_ReleaseLowPowerModeConstraint(PWR_WFI);

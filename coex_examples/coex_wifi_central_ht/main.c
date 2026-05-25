@@ -208,6 +208,10 @@ int main(void)
 
     extern void BOARD_InitHardware(void);    /*fix build warning: function declared implicitly.*/
     BOARD_InitHardware();
+#if (defined(APP_LOWPOWER_ENABLED) && (APP_LOWPOWER_ENABLED > 0))|| \
+    (defined(APP_USE_SENSORS) && (APP_USE_SENSORS > 0))
+    APP_InitServices();
+#endif
 #if defined(MBEDTLS_THREADING_C) && defined(MBEDTLS_THREADING_ALT)
     config_mbedtls_threading_alt();
 #endif
@@ -223,11 +227,6 @@ int main(void)
     PRINTF("        Coex APP\r\n");
     printSeparator();
  
-#if (defined(APP_LOWPOWER_ENABLED) && (APP_LOWPOWER_ENABLED > 0))|| \
-    (defined(APP_USE_SENSORS) && (APP_USE_SENSORS > 0))
-    APP_InitServices();
-#endif
-
     result =
         xTaskCreate(task_main, "main", TASK_MAIN_STACK_SIZE, NULL, TASK_MAIN_PRIO, &task_main_handle);
     assert(pdPASS == result);    
