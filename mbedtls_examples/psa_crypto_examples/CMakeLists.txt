@@ -29,10 +29,3 @@ mcux_add_macro(
     CC "-DSDK_DEBUGCONSOLE_UART"
     CX "-DSDK_DEBUGCONSOLE_UART"
 )
-
-#iar common configs
-mcux_add_iar_configuration(
-    CC "--diag_suppress=Pa082,Pa050,Pe546,Pe188,Pe111,Pa084,Pe068,Pe177,Pe223,Pa217"
-    CX "--diag_suppress=Pa082,Pa050,Pe546,Pe188,Pe111,Pa084,Pe068,Pe177,Pe223,Pa217"
-)
-

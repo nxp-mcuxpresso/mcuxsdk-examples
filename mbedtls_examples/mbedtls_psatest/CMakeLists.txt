@@ -28,11 +28,6 @@ mcux_add_linker_symbol(
              __heap_size__=0x8000"
 )
 
-mcux_add_iar_configuration(
-    CX "--diag_suppress=Pe111,Pe188,Pa217"
-    CC "--diag_suppress=Pe111,Pe188,Pa217"
-)
-
 mcux_add_mdk_configuration(
     CC "-Wno-typedef-redefinition"
     CX "-Wno-typedef-redefinition"
