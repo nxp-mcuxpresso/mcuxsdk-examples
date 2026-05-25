@@ -167,7 +167,9 @@
 
 #define BOARD_SERIAL_MGR_IF_INVALID 0xFFu
 
+#ifndef BOARD_OtaExtStoragePartitionKbSize_c
 #define BOARD_OtaExtStoragePartitionKbSize_c 1024u
+#endif
 #define BOARD_OtaExtStoragePartitionOffset_c 0U
 
 #if defined(__cplusplus)
