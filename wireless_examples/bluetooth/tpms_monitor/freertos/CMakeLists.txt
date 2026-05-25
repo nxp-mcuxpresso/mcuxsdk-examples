@@ -4,11 +4,9 @@ include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
 project(tpms_monitor_freertos LANGUAGES C CXX ASM
     PROJECT_BOARD_PORT_PATH ${board_root}/${board}/wireless_examples
-    CUSTOM_PRJ_CONF_PATH examples/wireless_examples/bluetooth/
-        ${board_root}/${board}/wireless_examples/bluetooth/
+    CUSTOM_PRJ_CONF_PATH ${board_root}/${board}/wireless_examples/bluetooth/
         ${board_root}/${board}/wireless_examples/freertos
-        examples/_boards/${board}/wireless_examples/bluetooth/tpms_monitor/
-        examples/_boards/${board}/wireless_examples/bluetooth/tpms_monitor/${core_id}/freertos
+        ${board_root}/${board}/wireless_examples/bluetooth/tpms_monitor/${core_id}/freertos
 )
 
 include(${SdkRootDirPath}/CMakeLists.txt)
