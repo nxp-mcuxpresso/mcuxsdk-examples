@@ -7,17 +7,11 @@ project(mbedtls_psatest LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     SOURCES main.c
-            # mcux_mbedtls_psatest_config.h
 )
 
 mcux_add_include(
     INCLUDES /.
 )
-
-# mcux_remove_macro("-DMBEDTLS_CONFIG_FILE=\\\"mcux_mbedtls_psa_crypto_config.h\\\"")
-# mcux_add_macro(
-#     "-DMBEDTLS_CONFIG_FILE=\\\"mcux_mbedtls_psatest_config.h\\\""
-# )
 
 include(${SdkRootDirPath}/${board_root}/${board}/mbedtls_examples/mbedtls_psatest/reconfig.cmake OPTIONAL)
 
