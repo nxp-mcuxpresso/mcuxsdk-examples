@@ -29,6 +29,7 @@ __WEAK void APP_PowerPostSwitchHook(void);
 static app_power_mode_t APP_GetTargetPowerMode(void);
 static void APP_GetWakeupConfig(app_power_mode_t targetMode);
 static void APP_PowerModeSwitch(app_power_mode_t targetPowerMode);
+static void APP_ClearAllWakeupConfig(void);
 
 /*******************************************************************************
  * Variables
@@ -44,15 +45,22 @@ int main(void)
     uint32_t freq;
     app_power_mode_t targetPowerMode;
     bool needSetWakeup = false;
-    const uint32_t wakeUpResetMask = (uint32_t)CMC_SRS_WAKEUP_MASK;
+    bool wakeUpReset;
 
-    if ((CMC_GetStickySystemResetStatus(APP_CMC) & wakeUpResetMask) != 0UL)
+    wakeUpReset = ((CMC_GetStickySystemResetStatus(APP_CMC) & (uint32_t)CMC_SRS_WAKEUP_MASK) != 0UL);
+    if (wakeUpReset)
     {
         /* Wakeup from Deep Power Down mode? => Clears peripherals and I/O pads isolation flags. */
         SPC_ClearPeriphIOIsolationFlag(APP_SPC);
     }
 
     BOARD_InitHardware();
+
+    if (wakeUpReset)
+    {
+        APP_ClearAllWakeupConfig();
+        CMC_ClearStickySystemResetStatus(APP_CMC, (uint32_t)CMC_SRS_WAKEUP_MASK);
+    }
 
     EnableIRQ(NonMaskableInt_IRQn);
 
@@ -162,69 +170,12 @@ static void APP_WakeUpTimerConfig(uint8_t timeOutValue)
     LPTMR_StartTimer(APP_WUU_WAKEUP_TIMER);
 }
 
-void APP_WUU_WAKEUP_TIMER_IRQ_HANDLER(void)
-{
-    if ((LPTMR_GetStatusFlags(APP_WUU_WAKEUP_TIMER) & (uint32_t)kLPTMR_TimerCompareFlag) != 0UL)
-    {
-        LPTMR_DisableInterrupts(APP_WUU_WAKEUP_TIMER, kLPTMR_TimerInterruptEnable);
-        LPTMR_ClearStatusFlags(APP_WUU_WAKEUP_TIMER, kLPTMR_TimerCompareFlag);
-        LPTMR_StopTimer(APP_WUU_WAKEUP_TIMER);
-    }
-}
-
-/*! @brief WakeUp Button interrupt handler. */
-void APP_WUU_IRQ_HANDLER(void)
-{
-    const uint32_t wakeupButtonMask = (1UL << (uint32_t)APP_WUU_WAKEUP_BUTTON_IDX);
-
-    DisableIRQ(APP_WUU_IRQN);
-    if ((WUU_GetExternalWakeUpPinsFlag(APP_WUU) & wakeupButtonMask) != 0UL)
-    {
-        WUU_ClearExternalWakeUpPinsFlag(APP_WUU, wakeupButtonMask);
-    }
-}
-
-static inline IRQn_Type SystemNonMaskableInterruptSourceGet(void)
-{
-    return (IRQn_Type)((SYSCON->NMISRC & SYSCON_NMISRC_IRQCPU0_MASK) >> SYSCON_NMISRC_IRQCPU0_SHIFT);
-}
-
-static inline void SystemNonMaskableInterruptSourceClear(void)
-{
-    SYSCON->NMISRC &= ~(SYSCON_NMISRC_IRQCPU0_MASK | SYSCON_NMISRC_NMIENCPU0_MASK);
-    CMC_EnableNonMaskablePinInterrupt(APP_CMC, false);
-}
-
+/*! @brief Set Non-Maskable Interrupt source. */
 static inline void SystemNonMaskableInterruptSourceSet(IRQn_Type id)
 {
     SYSCON->NMISRC = ((SYSCON->NMISRC & ~(SYSCON_NMISRC_IRQCPU0_MASK | SYSCON_NMISRC_NMIENCPU0_MASK)) |
                       (SYSCON_NMISRC_IRQCPU0((uint32_t)id) | SYSCON_NMISRC_NMIENCPU0_MASK));
     CMC_EnableNonMaskablePinInterrupt(APP_CMC, true);
-}
-
-void NMI_Handler(void)
-{
-    IRQn_Type nmiSource = SystemNonMaskableInterruptSourceGet();
-
-    switch (nmiSource)
-    {
-        case APP_WUU_WAKEUP_TIMER_IRQN:
-            APP_WUU_WAKEUP_TIMER_IRQ_HANDLER();
-            WUU_ClearInternalWakeUpModulesConfig(APP_WUU, APP_WUU_WAKEUP_TIMER_IDX, kWUU_InternalModuleInterrupt);
-            IRQ_ClearPendingIRQ(APP_WUU_WAKEUP_TIMER_IRQN);
-            break;
-
-        case APP_WUU_IRQN:
-            APP_WUU_IRQ_HANDLER();
-            WUU_ClearExternalWakeupPinsConfig(APP_WUU, APP_WUU_WAKEUP_BUTTON_IDX);
-            IRQ_ClearPendingIRQ(APP_WUU_IRQN);
-            break;
-
-        default:
-            break;
-    }
-
-    SystemNonMaskableInterruptSourceClear();
 }
 
 /*! @brief Get wakeup timeout and wakeup source. */
@@ -291,6 +242,95 @@ static void APP_GetWakeupConfig(app_power_mode_t targetMode)
             assert(false);
             break;
     }
+}
+
+/*! @brief Clear wakeup timer configuration. */
+static void APP_ClearWakeupTimerConfig(void)
+{
+    DisableIRQ(APP_WUU_WAKEUP_TIMER_IRQN);
+
+    LPTMR_DisableInterrupts(APP_WUU_WAKEUP_TIMER, kLPTMR_TimerInterruptEnable);
+    LPTMR_ClearStatusFlags(APP_WUU_WAKEUP_TIMER, kLPTMR_TimerCompareFlag);
+    LPTMR_StopTimer(APP_WUU_WAKEUP_TIMER);
+
+    WUU_ClearInternalWakeUpModulesConfig(APP_WUU, APP_WUU_WAKEUP_TIMER_IDX, kWUU_InternalModuleInterrupt);
+    IRQ_ClearPendingIRQ(APP_WUU_WAKEUP_TIMER_IRQN);
+}
+
+/*! @brief Clear wakeup button configuration. */
+static void APP_ClearWakeupButtonConfig(void)
+{
+    const uint32_t wakeupButtonMask = (1UL << (uint32_t)APP_WUU_WAKEUP_BUTTON_IDX);
+
+    DisableIRQ(APP_WUU_IRQN);
+
+    WUU_ClearExternalWakeupPinsConfig(APP_WUU, APP_WUU_WAKEUP_BUTTON_IDX);
+    WUU_ClearExternalWakeUpPinsFlag(APP_WUU, wakeupButtonMask);
+    IRQ_ClearPendingIRQ(APP_WUU_IRQN);
+}
+
+/*! @brief Clear Non-Maskable Interrupt source. */
+static inline void SystemNonMaskableInterruptSourceClear(void)
+{
+    SYSCON->NMISRC &= ~(SYSCON_NMISRC_IRQCPU0_MASK | SYSCON_NMISRC_NMIENCPU0_MASK);
+    CMC_EnableNonMaskablePinInterrupt(APP_CMC, false);
+}
+
+/*! @brief Clear all wakeup configurations. */
+static void APP_ClearAllWakeupConfig(void)
+{
+    APP_ClearWakeupTimerConfig();
+    APP_ClearWakeupButtonConfig();
+    SystemNonMaskableInterruptSourceClear();
+}
+
+/*! @brief WakeUp Timer interrupt handler. */
+void APP_WUU_WAKEUP_TIMER_IRQ_HANDLER(void)
+{
+    if ((LPTMR_GetStatusFlags(APP_WUU_WAKEUP_TIMER) & (uint32_t)kLPTMR_TimerCompareFlag) != 0UL)
+    {
+        LPTMR_DisableInterrupts(APP_WUU_WAKEUP_TIMER, kLPTMR_TimerInterruptEnable);
+        LPTMR_ClearStatusFlags(APP_WUU_WAKEUP_TIMER, kLPTMR_TimerCompareFlag);
+        LPTMR_StopTimer(APP_WUU_WAKEUP_TIMER);
+    }
+}
+
+/*! @brief WakeUp Button interrupt handler. */
+void APP_WUU_IRQ_HANDLER(void)
+{
+    const uint32_t wakeupButtonMask = (1UL << (uint32_t)APP_WUU_WAKEUP_BUTTON_IDX);
+
+    DisableIRQ(APP_WUU_IRQN);
+    if ((WUU_GetExternalWakeUpPinsFlag(APP_WUU) & wakeupButtonMask) != 0UL)
+    {
+        WUU_ClearExternalWakeUpPinsFlag(APP_WUU, wakeupButtonMask);
+    }
+}
+
+/*! @brief Non-Maskable Interrupt handler. */
+void NMI_Handler(void)
+{
+    IRQn_Type nmiSource = (IRQn_Type)((SYSCON->NMISRC & SYSCON_NMISRC_IRQCPU0_MASK) >> SYSCON_NMISRC_IRQCPU0_SHIFT);
+
+    switch (nmiSource)
+    {
+        case APP_WUU_WAKEUP_TIMER_IRQN:
+            APP_WUU_WAKEUP_TIMER_IRQ_HANDLER();
+            WUU_ClearInternalWakeUpModulesConfig(APP_WUU, APP_WUU_WAKEUP_TIMER_IDX, kWUU_InternalModuleInterrupt);
+            IRQ_ClearPendingIRQ(APP_WUU_WAKEUP_TIMER_IRQN);
+            break;
+
+        case APP_WUU_IRQN:
+            APP_WUU_IRQ_HANDLER();
+            WUU_ClearExternalWakeupPinsConfig(APP_WUU, APP_WUU_WAKEUP_BUTTON_IDX);
+            IRQ_ClearPendingIRQ(APP_WUU_IRQN);
+            break;
+
+        default:
+            break;
+    }
+
+    SystemNonMaskableInterruptSourceClear();
 }
 /************************** Wakeup Configuration *******************************/
 
