@@ -41,8 +41,6 @@ int main(void)
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 
-    SCB_DisableDCache();
-
     PRINTF("hello sbl.\r\n");
 
     (void)sbl_boot_main();

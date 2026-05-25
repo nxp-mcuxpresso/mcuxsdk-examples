@@ -70,8 +70,6 @@ int main(void)
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 
-    SCB_DisableDCache();
-
     PRINTF("hello sbl.\r\n");
 
 #if defined(MCUBOOT_DIRECT_XIP) && defined(CONFIG_BOOT_MODE_FLASH_REMAP)
