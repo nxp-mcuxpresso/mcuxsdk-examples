@@ -21,17 +21,15 @@ The keys generated in the example for RT1180 are generated within ELE enclave's 
 For MCXN and RW612 based devices the location for opaque keys is 0xc00401 which indicates the
 keys are generated within ELS50 subsystem keyslots and never leave the ELS50 in plain format.
 
-The example also demonstrated generation of keys with different persistence level. Persistent keys
+The example also demonstrates generation of keys with different persistence levels. Persistent keys
 may be demonstrated if MBEDTLS_PSA_CRYPTO_STORAGE_C is enabled in the config file.
 
 ## Supported Boards
-- [MIMXRT1180-EVK](../../_boards/evkmimxrt1180/mbedtls3x_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
-- [FRDM-MCXN236](../../_boards/frdmmcxn236/mbedtls3x_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
-- [FRDM-MCXN947](../../_boards/frdmmcxn947/mbedtls3x_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
-- [FRDM-RW612](../../_boards/frdmrw612/mbedtls3x_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
-- [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/mbedtls3x_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
-- [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/mbedtls3x_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
-- [RD-RW612-BGA](../../_boards/rdrw612bga/mbedtls3x_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
-- [MIMXRT700-EVK](../../_boards/mimxrt700evk/mbedtls3x_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
-- [FRDM-IMXRT700](../../_boards/frdmimxrt700/mbedtls3x_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
-- [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/mbedtls3x_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
+- [MCX-W71-EVK](../../_boards/mcxw71evk/mbedtls_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
+- [FRDM-MCXW71](../../_boards/frdmmcxw71/mbedtls_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
+- [KW45B41Z-EVK](../../_boards/kw45b41zevk/mbedtls_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
+- [FRDM-MCXW72](../../_boards/frdmmcxw72/mbedtls_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
+- [MCX-W72-EVK](../../_boards/mcxw72evk/mbedtls_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
+- [MCX-W72-LOC](../../_boards/mcxw72loc/mbedtls_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
+- [KW47-EVK](../../_boards/kw47evk/mbedtls_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
+- [KW47-LOC](../../_boards/kw47loc/mbedtls_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
