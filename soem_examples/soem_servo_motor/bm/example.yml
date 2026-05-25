@@ -4,7 +4,7 @@ soem_servo_motor_bm:
     meta_path: examples/soem_examples/soem_servo_motor/bm
     project-root-path: boards/${board}/soem_examples/soem_servo_motor/bm/${multicore_foldername}
     document:
-      name: soem_servo_motor${core_id_suffix_name}
+      name: soem_servo_motor_bm${core_id_suffix_name}
       category: soem_examples
       brief: SOEM servo motor netc example
       example_readme:

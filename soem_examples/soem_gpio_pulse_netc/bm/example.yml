@@ -4,7 +4,7 @@ soem_gpio_pulse_netc_bm:
     meta_path: examples/soem_examples/soem_gpio_pulse_netc/bm
     project-root-path: boards/${board}/soem_examples/soem_gpio_pulse/bm/${multicore_foldername}
     document:
-      name: soem_gpio_pulse_bm${core_id_suffix_name}
+      name: soem_gpio_pulse_netc_bm${core_id_suffix_name}
       category: soem_examples
       brief: SOEM gpio pulse netc example
   boards:

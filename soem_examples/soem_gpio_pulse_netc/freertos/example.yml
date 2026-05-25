@@ -4,7 +4,7 @@ soem_gpio_pulse_netc_freertos:
     meta_path: examples/soem_examples/soem_gpio_pulse_netc/freertos
     project-root-path: boards/${board}/soem_examples/soem_gpio_pulse/freertos/${multicore_foldername}
     document:
-      name: soem_gpio_pulse_freertos${core_id_suffix_name}
+      name: soem_gpio_pulse_netc_freertos${core_id_suffix_name}
       category: soem_examples
       brief: SOEM gpio pulse netc example
   boards:
