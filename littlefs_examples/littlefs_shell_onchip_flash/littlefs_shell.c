@@ -149,6 +149,7 @@ static shell_status_t lfs_ls_handler(shell_handle_t shellHandle, int32_t argc, c
 {
     int res;
     char *path;
+    char path_buf[LFS_NAME_MAX + 1];
     lfs_dir_t dir = {0};
     struct lfs_info info;
     int files;
@@ -172,7 +173,9 @@ static shell_status_t lfs_ls_handler(shell_handle_t shellHandle, int32_t argc, c
     }
     else
     {
-        path = argv[1];
+        strncpy(path_buf, argv[1], sizeof(path_buf) - 1U);
+        path_buf[sizeof(path_buf) - 1U] = '\0';
+        path = path_buf;
     }
 
     /* open the directory */
@@ -228,6 +231,7 @@ static shell_status_t lfs_ls_handler(shell_handle_t shellHandle, int32_t argc, c
 static shell_status_t lfs_rm_handler(shell_handle_t shellHandle, int32_t argc, char **argv)
 {
     int res;
+    char path[LFS_NAME_MAX + 1];
 
     if (!lfs_mounted)
     {
@@ -235,7 +239,9 @@ static shell_status_t lfs_rm_handler(shell_handle_t shellHandle, int32_t argc, c
         return kStatus_SHELL_Success;
     }
 
-    res = lfs_remove(&lfs, argv[1]);
+    strncpy(path, argv[1], sizeof(path) - 1U);
+    path[sizeof(path) - 1U] = '\0';
+    res = lfs_remove(&lfs, path);
 
     if (res)
     {
@@ -248,6 +254,7 @@ static shell_status_t lfs_rm_handler(shell_handle_t shellHandle, int32_t argc, c
 static shell_status_t lfs_mkdir_handler(shell_handle_t shellHandle, int32_t argc, char **argv)
 {
     int res;
+    char path[LFS_NAME_MAX + 1];
 
     if (!lfs_mounted)
     {
@@ -255,7 +262,9 @@ static shell_status_t lfs_mkdir_handler(shell_handle_t shellHandle, int32_t argc
         return kStatus_SHELL_Success;
     }
 
-    res = lfs_mkdir(&lfs, argv[1]);
+    strncpy(path, argv[1], sizeof(path) - 1U);
+    path[sizeof(path) - 1U] = '\0';
+    res = lfs_mkdir(&lfs, path);
 
     if (res)
     {
@@ -269,6 +278,7 @@ static shell_status_t lfs_write_handler(shell_handle_t shellHandle, int32_t argc
 {
     int res;
     lfs_file_t file;
+    char path[LFS_NAME_MAX + 1];
 
     if (!lfs_mounted)
     {
@@ -276,14 +286,16 @@ static shell_status_t lfs_write_handler(shell_handle_t shellHandle, int32_t argc
         return kStatus_SHELL_Success;
     }
 
-    res = lfs_file_open(&lfs, &file, argv[1], LFS_O_WRONLY | LFS_O_APPEND | LFS_O_CREAT);
+    strncpy(path, argv[1], sizeof(path) - 1U);
+    path[sizeof(path) - 1U] = '\0';
+    res = lfs_file_open(&lfs, &file, path, LFS_O_WRONLY | LFS_O_APPEND | LFS_O_CREAT);
     if (res)
     {
         PRINTF("\rError opening file: %i\r\n", res);
         return kStatus_SHELL_Success;
     }
 
-    res = lfs_file_write(&lfs, &file, argv[2], strlen(argv[2]));
+    res = lfs_file_write(&lfs, &file, argv[2], strnlen(argv[2], LFS_NAME_MAX));
     if (res > 0)
         res = lfs_file_write(&lfs, &file, "\r\n", 2);
 
@@ -306,6 +318,7 @@ static shell_status_t lfs_cat_handler(shell_handle_t shellHandle, int32_t argc, 
     int res;
     lfs_file_t file;
     uint8_t buf[16];
+    char path[LFS_NAME_MAX + 1];
 
     if (!lfs_mounted)
     {
@@ -313,7 +326,9 @@ static shell_status_t lfs_cat_handler(shell_handle_t shellHandle, int32_t argc, 
         return kStatus_SHELL_Success;
     }
 
-    res = lfs_file_open(&lfs, &file, argv[1], LFS_O_RDONLY);
+    strncpy(path, argv[1], sizeof(path) - 1U);
+    path[sizeof(path) - 1U] = '\0';
+    res = lfs_file_open(&lfs, &file, path, LFS_O_RDONLY);
     if (res)
     {
         PRINTF("\rError opening file: %i\r\n", res);
