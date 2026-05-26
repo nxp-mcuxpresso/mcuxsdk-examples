@@ -56,11 +56,11 @@ static uint8_t CRC_Calc(a_format_crc_para_t *crc)
     uint8_t poly = crc->polynomial << (8 - crc->type);
 
     for (j = 0; j < crc->message_len; j++) {
-        remainder ^= (crc->inputBitSwap ? Swap_Byte(crc->message[j]) : crc->message[j]);
+        remainder ^= (uint8_t)(crc->inputBitSwap ? Swap_Byte(crc->message[j]) : crc->message[j]);
 
         for (i = 0; i < 8; i++) {
             if (remainder & 0x80)
-                remainder = (remainder << 1) ^ poly;
+                remainder = (uint8_t)((remainder << 1) ^ poly);
             else
                 remainder <<= 1;
         }
@@ -82,7 +82,7 @@ status_t A_Format_Get_ID_CMD(uint8_t enc_addr)
     cdf = A_FORMAT_PACK_CDF(enc_addr, A_FORMAT_REQ_IT_ID_CODE_READ1, 0);
     crc_data = A_FORMAT_GET_CRC_DATA_CDF(cdf);
     crc = CRC_Calc(&crc3_para);
-    cdf = A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
+    cdf = (uint16_t)A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
 
     memset(res2, 0, sizeof(a_format_res2_t));
 
@@ -141,7 +141,7 @@ status_t A_Format_Readout_Encoder_status_CMD(uint8_t enc_addr)
     cdf = A_FORMAT_PACK_CDF(enc_addr, cmd, 0);
     crc_data = A_FORMAT_GET_CRC_DATA_CDF(cdf);
     crc = CRC_Calc(&crc3_para);
-    cdf = A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
+    cdf = (uint16_t)A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
 
     nEncoder = is_MultiTrans ? (enc_addr + 1) : 1;
     memset(res2, 0, sizeof(a_format_res2_t) * nEncoder);
@@ -160,7 +160,10 @@ status_t A_Format_Readout_Encoder_status_Parse(encoder_a_format_t *enc, a_format
         crc8_para.message = (uint8_t const *)&res[i];
         if ((A_FORMAT_GET_CMD_CODE_IF(res[i].IF) != cmd) || (CRC_Calc(&crc8_para) != 0))
         {
-            cmdErr++;
+            if (cmdErr < UINT8_MAX)
+            {
+                cmdErr++;
+            }
             statusData[i].es = kFLEXIO_A_FORMAT_ES_FrameErr;
             continue;
         }
@@ -169,7 +172,10 @@ status_t A_Format_Readout_Encoder_status_Parse(encoder_a_format_t *enc, a_format
         statusData[i].es    = A_FORMAT_GET_ENC_STAT_IF(res[i].IF);
         if (statusData[i].es != kFLEXIO_A_FORMAT_ES_NoErr)
         {
-            cmdErr++;
+            if (cmdErr < UINT8_MAX)
+            {
+                cmdErr++;
+            }
         }
 
         statusData[i].status = res[i].DF[0];
@@ -214,7 +220,7 @@ status_t A_Format_Get_Temperature_CMD(uint8_t enc_addr)
     cdf = A_FORMAT_PACK_CDF(enc_addr, A_FORMAT_REQ_IT_TEMPERATURE_10BIT, 0);
     crc_data = A_FORMAT_GET_CRC_DATA_CDF(cdf);
     crc = CRC_Calc(&crc3_para);
-    cdf = A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
+    cdf = (uint16_t)A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
 
     memset(res2, 0, sizeof(a_format_res2_t));
 
@@ -270,7 +276,7 @@ status_t A_Format_ABS_Readout_Multi_CMD(uint8_t enc_addr)
     cdf = A_FORMAT_PACK_CDF(enc_addr, cmd, 0);
     crc_data = A_FORMAT_GET_CRC_DATA_CDF(cdf);
     crc = CRC_Calc(&crc3_para);
-    cdf = A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
+    cdf = (uint16_t)A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
 
     nEncoder = is_MultiTrans ? (enc_addr + 1) : 1;
     memset(res2, 0, sizeof(a_format_res2_t) * nEncoder);
@@ -290,7 +296,10 @@ status_t A_Format_ABS_Readout_Multi_Parse(encoder_a_format_t *enc, a_format_res2
         crc8_para.message = (uint8_t const *)&res[i];
         if ((A_FORMAT_GET_CMD_CODE_IF(res[i].IF) != cmd) || (CRC_Calc(&crc8_para) != 0))
         {
-            cmdErr++;
+            if (cmdErr < UINT8_MAX)
+            {
+                cmdErr++;
+            }
             multiData[i].es = kFLEXIO_A_FORMAT_ES_FrameErr;
             continue;
         }
@@ -299,7 +308,10 @@ status_t A_Format_ABS_Readout_Multi_Parse(encoder_a_format_t *enc, a_format_res2
         multiData[i].es    = A_FORMAT_GET_ENC_STAT_IF(res[i].IF);
         if (multiData[i].es != kFLEXIO_A_FORMAT_ES_NoErr)
         {
-            cmdErr++;
+            if (cmdErr < UINT8_MAX)
+            {
+                cmdErr++;
+            }
         }
 
         memcpy(&temp_val, res[i].DF, sizeof(uint32_t));
@@ -346,7 +358,7 @@ status_t A_Format_ABS_Readout_Single_CMD(uint8_t enc_addr)
     cdf = A_FORMAT_PACK_CDF(enc_addr, cmd, 0);
     crc_data = A_FORMAT_GET_CRC_DATA_CDF(cdf);
     crc = CRC_Calc(&crc3_para);
-    cdf = A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
+    cdf = (uint16_t)A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
 
     nEncoder = is_MultiTrans ? (enc_addr + 1) : 1;
     memset(res2, 0, sizeof(a_format_res2_t) * nEncoder);
@@ -366,7 +378,10 @@ status_t A_Format_ABS_Readout_Single_Parse(encoder_a_format_t *enc, a_format_res
         crc8_para.message = (uint8_t const *)&res[i];
         if ((A_FORMAT_GET_CMD_CODE_IF(res[i].IF) != cmd) || (CRC_Calc(&crc8_para) != 0))
         {
-            cmdErr++;
+            if (cmdErr < UINT8_MAX)
+            {
+                cmdErr++;
+            }
             single_data[i].es = kFLEXIO_A_FORMAT_ES_FrameErr;
             continue;
         }
@@ -375,7 +390,10 @@ status_t A_Format_ABS_Readout_Single_Parse(encoder_a_format_t *enc, a_format_res
         single_data[i].es    = A_FORMAT_GET_ENC_STAT_IF(res[i].IF);
         if (single_data[i].es != kFLEXIO_A_FORMAT_ES_NoErr)
         {
-            cmdErr++;
+            if (cmdErr < UINT8_MAX)
+            {
+                cmdErr++;
+            }
         }
 
         memcpy(&temp_val, res[i].DF, sizeof(uint32_t));
@@ -420,7 +438,10 @@ status_t A_Format_ABS_Readout_Multi_Single_Parse(encoder_a_format_t *enc, a_form
         crc8_para.message = (uint8_t const *)&res[i];
         if ((A_FORMAT_GET_CMD_CODE_IF(res[i].IF) != cmd) || (CRC_Calc(&crc8_para) != 0))
         {
-            cmdErr++;
+            if (cmdErr < UINT8_MAX)
+            {
+                cmdErr++;
+            }
             abs_data[i].es = kFLEXIO_A_FORMAT_ES_FrameErr;
             continue;
         }
@@ -429,7 +450,10 @@ status_t A_Format_ABS_Readout_Multi_Single_Parse(encoder_a_format_t *enc, a_form
         abs_data[i].es    = A_FORMAT_GET_ENC_STAT_IF(res[i].IF);
         if (abs_data[i].es != kFLEXIO_A_FORMAT_ES_NoErr)
         {
-            cmdErr++;
+            if (cmdErr < UINT8_MAX)
+            {
+                cmdErr++;
+            }
         }
 
         memcpy(&temp_val1, res[i].DF, sizeof(uint32_t));
@@ -455,7 +479,7 @@ status_t A_Format_ABS_Readout_Multi_Single_CMD(uint8_t enc_addr)
     cdf = A_FORMAT_PACK_CDF(enc_addr, cmd, 0);
     crc_data = A_FORMAT_GET_CRC_DATA_CDF(cdf);
     crc = CRC_Calc(&crc3_para);
-    cdf = A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
+    cdf = (uint16_t)A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
 
     nEncoder = is_MultiTrans ? (enc_addr + 1) : 1;
     memset(res3, 0, sizeof(a_format_res3_t) * nEncoder);

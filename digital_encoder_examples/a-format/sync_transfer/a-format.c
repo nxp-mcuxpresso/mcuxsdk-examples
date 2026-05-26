@@ -297,7 +297,7 @@ status_t A_Format_ABS_Readout_Multi_Parse(encoder_a_format_t *enc, a_format_res2
             cmdErr++;
         }
 
-        multiData[i].multiTurn = (uint16_t)((*(uint32_t *)res[i].DF >> (enc->singleTurnRevolution - 16)) & enc->multi_turn_sign_mask);
+        multiData[i].multiTurn = (uint16_t)((*(uint32_t *)res[i].DF >> (enc->singleTurnRevolution - 16)) & enc->multi_turn_sign_mask & 0xFFFFU);
     }
 
     return cmdErr ? kStatus_Fail : kStatus_Success;
@@ -424,7 +424,7 @@ status_t A_Format_ABS_Readout_Multi_Single_Parse(encoder_a_format_t *enc, a_form
         }
 
         abs_data[i].singleTurn = *(uint32_t *)res[i].DF & enc->single_turn_sign_mask;
-        abs_data[i].multiTurn  = (uint16_t)((*(uint32_t *)&(res[i].DF[1]) >> (enc->singleTurnRevolution - 16)) & enc->multi_turn_sign_mask);
+        abs_data[i].multiTurn  = (uint16_t)((*(uint32_t *)&(res[i].DF[1]) >> (enc->singleTurnRevolution - 16)) & enc->multi_turn_sign_mask & 0xFFFFU);
     }
 
     return cmdErr ? kStatus_Fail : kStatus_Success;
