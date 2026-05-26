@@ -38,16 +38,16 @@ int main(void)
     /* Structure of initialize A-format encoder */
     flexio_a_format_config_t devConfig;
     FLEXIO_A_FORMAT_Type encDev;
-    a_format_abs_multi_t multiData[A_FORMAT_ENCODER_MAX_NUM];
-    a_format_abs_single_t singleData[A_FORMAT_ENCODER_MAX_NUM];
-    a_format_single_stat_t singleStat[A_FORMAT_ENCODER_MAX_NUM];
-    a_format_single_temp_t singleTemp[A_FORMAT_ENCODER_MAX_NUM];
-    a_format_abs_multi_single_t enc_abs[4], abs_save;
+    a_format_abs_multi_t multiData[A_FORMAT_ENCODER_MAX_NUM] = {0};
+    a_format_abs_single_t singleData[A_FORMAT_ENCODER_MAX_NUM] = {0};
+    a_format_single_stat_t singleStat[A_FORMAT_ENCODER_MAX_NUM] = {0};
+    a_format_single_temp_t singleTemp[A_FORMAT_ENCODER_MAX_NUM] = {0};
+    a_format_abs_multi_single_t enc_abs[4] = {0}, abs_save = {0};
     uint32_t enc_id = 0;
     uint32_t clock;
-    float temp, temp_save;
+    float temp = 0.0f, temp_save = 0.0f;
     uint32_t time = 0;
-    a_format_status_t statusData[A_FORMAT_ENCODER_MAX_NUM];
+    a_format_status_t statusData[A_FORMAT_ENCODER_MAX_NUM] = {0};
     a_format_eeprom_t eeprom = {
         .address = 0x01,
         .data = 0x5A2B
@@ -304,7 +304,7 @@ int main(void)
     {
         /* Delay at least 90 ms. */
         SDK_DelayAtLeastUs(90000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-        time++;
+        time = time < UINT32_MAX ? time + 1 : 0;
         status = A_Format_ABS_Readout_Multi_Single(&encoder, ENCODER_ADDRESS_IT(ENC_ADDR), &enc_abs[0]);
         if (enc_abs[0].es == kFLEXIO_A_FORMAT_ES_FrameErr)
         {
@@ -318,7 +318,11 @@ int main(void)
         {
             continue;
         }
-        if ((abs(enc_abs[0].singleTurn - abs_save.singleTurn) > 500) || (fabs((double)temp - (double)temp_save) > 0.1))
+
+        uint32_t singleTurnDiff = (enc_abs[0].singleTurn > abs_save.singleTurn) ?
+                                  (enc_abs[0].singleTurn - abs_save.singleTurn) :
+                                  (abs_save.singleTurn - enc_abs[0].singleTurn);
+        if ((singleTurnDiff > 500) || (fabs((double)temp - (double)temp_save) > 0.1))
         {
             PRINTF("[%.2fs] Multi-turn data: %d, single-turn data: %d\r\n\t Temperature: %f\r\n\r\n",
                    time/10.0, enc_abs[0].multiTurn, enc_abs[0].singleTurn, (double)temp);
