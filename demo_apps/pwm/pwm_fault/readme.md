@@ -1,9 +1,9 @@
 # pwm_fault
 
 ## Overview
-This demo application demonstrates the EflexPWM fault demo.
-This application demonstrates the pulse with modulation function of EflexPWM module. It outputs the
-PWM to control the intensity of the LED. PWM shut down when a fault signal is detected on the CMP
+This demo application demonstrates the FlexPWM fault protection.
+This application demonstrates the pulse width modulation function of FlexPWM module. It outputs the
+PWM to control the intensity of the LED. PWM shuts down when a fault signal is detected on the CMP
 output. One input of CMP, other input is from internal DAC.
 
 ## Supported Boards

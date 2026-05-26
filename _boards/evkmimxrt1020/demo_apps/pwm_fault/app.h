@@ -14,10 +14,9 @@
 /*${macro:start}*/
 /* The PWM base address */
 #define DEMO_PWM_BASEADDR                  PWM1
-#define DEMO_PWM_SUBMODULE                 kPWM_Module_0
-#define DEMO_PWM_FAULT_INPUT_PIN           kPWM_Fault_0
-#define DEMO_PWM_CONTROL_SUBMODULE         kPWM_Control_Module_0
-#define DEMO_PWM_CHANNEL                   kPWM_PwmA
+#define DEMO_PWM_SUBMODULE                 (0U)
+#define DEMO_PWM_SUBMODULE_MASK            kFLEXPWM_SubmoduleMask_0
+#define DEMO_PWM_FAULT_INPUT_PIN_MASK      kFLEXPWM_FaultMask_0
 #define DEMO_PWM_DELAY_VAL                 0x0FFFU
 #define DEMO_PWM_CHANNEL_LOCATION_ON_BOARD "J17-8"
 
