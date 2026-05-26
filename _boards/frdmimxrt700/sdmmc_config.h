@@ -27,8 +27,8 @@
 /* @brief host basic configuration */
 #define BOARD_SDMMC_SD_HOST_BASEADDR   USDHC0
 #define BOARD_SDMMC_SD_HOST_IRQ        USDHC0_IRQn
-#define BOARD_SDMMC_SDIO_HOST_BASEADDR USDHC0
-#define BOARD_SDMMC_SDIO_HOST_IRQ      USDHC0_IRQn
+#define BOARD_SDMMC_SDIO_HOST_BASEADDR USDHC1
+#define BOARD_SDMMC_SDIO_HOST_IRQ      USDHC1_IRQn
 /* @brief card detect type
  *
  * Note: if you want to use DAT3 as card detect pin, please make sure the DAT3 is pulled down with 100K resistor on
@@ -45,14 +45,13 @@
 #define BOARD_SDMMC_SD_POWER_RESET_GPIO_RESET_SOURCE kGPIO7_RST_SHIFT_RSTn
 #define BOARD_SDMMC_SD_POWER_RESET_GPIO_BASE         GPIO7
 #define BOARD_SDMMC_SD_POWER_RESET_GPIO_PORT         7U
-#define BOARD_SDMMC_SD_POWER_RESET_GPIO_PIN          11U
+#define BOARD_SDMMC_SD_POWER_RESET_GPIO_PIN          10U
 #define BOARD_SDMMC_SD_VSELECT_GPIO_CLOCK_NAME       kCLOCK_Gpio7
 #define BOARD_SDMMC_SD_VSELECT_GPIO_BASE             GPIO7
 #define BOARD_SDMMC_SD_VSELECT_GPIO_PORT             7
 #define BOARD_SDMMC_SD_VSELECT_GPIO_PIN              3U
 
-
-/* The EVK board require mannual tuning for sd, since there is a EMI filter between 595 and card socket which will
+/* The board require manual tuning for sd, since there is a EMI filter between SOC and card socket which will
  * affect the standard tuning*/
 #define BOARD_SDMMC_SD_TUNING_TYPE             1
 #define BOARD_SDMMC_SD_IO_VOLTAGE_CONTROL_TYPE kSD_IOVoltageCtrlByGpio
@@ -66,7 +65,6 @@
 
 /*!@ brief host interrupt priority*/
 #define BOARD_SDMMC_SD_HOST_IRQ_PRIORITY   (5U)
-#define BOARD_SDMMC_MMC_HOST_IRQ_PRIORITY  (5U)
 #define BOARD_SDMMC_SDIO_HOST_IRQ_PRIORITY (5U)
 /*!@brief dma descriptor buffer size */
 #define BOARD_SDMMC_HOST_DMA_DESCRIPTOR_BUFFER_SIZE (32U)
