@@ -12,7 +12,7 @@
 /*${macro:start}*/
 #define BOARD_PWM_BASEADDR     (FLEXPWM0)
 #define PWM_SRC_CLK_FREQ       (CLOCK_GetFreq(kCLOCK_MainClk))
-#define DEMO_PWM_CLOCK_DIVIDER (kPWM_Prescale_Divide_4)
+#define DEMO_PWM_CLOCK_DIVIDER (kFLEXPWM_Prescale_Divide_4)
 #define DEMO_PWM_FAULT_LEVEL   true
 
 /* GPIO toggled on every phase transition (Green LED: GPIO3 pin 13) */
