@@ -1,12 +1,12 @@
 # pwm
 
 ## Overview
-The PWM project is a simple demonstration program of the SDK PWM driver.
+The PWM project is a simple demonstration program of the SDK FlexPWM driver.
 The pulse width modulator (PWM) module contains PWM submodules, each of which is set up to control a single half-bridge power stage.
 Fault channel support is provided. This PWM module can generate various switching patterns, including highly sophisticated waveforms.
 It can be used to control all known Switched Mode Power Supplies (SMPS) topologies.
 
-The project uses eFlexPWM to generate A-phase pwm, B-phase pwm and C-phase pwm through submodule 0, submodule 1, submodule 2.
+The project uses FlexPWM to generate A-phase pwm, B-phase pwm and C-phase pwm through submodule 0, submodule 1, submodule 2.
 
 Submodule 0 can generate one complementary PWM: PWM A and PWM B. For PWM A, PWM A(1kHz 50% duty cycle) is setup, PWM A works
 based on SignedCenterAligned. PWM B operates in PWM A complementary mode, so the dutycycle field of PWM B does not matter.
@@ -22,11 +22,12 @@ value of pwmVal in this mode.
 In this project, the duty cycle of submodule 0 is pwmVal, the duty cycle of submodule 1 is pwmVal divided by 2 and the duty
 cycle of submodule 2 is pwmVal divided by 4.
 
-PWM_SetPwmLdok() can issue the load command to multiple submodules at the same time. The values are loaded immediately if
-kPWM_ReloadImmediate option was choosen during config. Else the values are loaded at the next PWM reload point.
+FLEXPWM_SetLoadOkay() can issue the load command to multiple submodules at the same time. The values are loaded immediately if
+kFLEXPWM_LoadMode_Immediate option was chosen during config. Else the values are loaded at the next PWM reload point.
 
 The log below shows example output of the PWM driver demo in the oscilloscope :
 
+~~~~~~~~~~~~~~~~~~~~~~
   ^
   | +--------+
   | |        |
@@ -37,6 +38,7 @@ The log below shows example output of the PWM driver demo in the oscilloscope :
   |    +-+
   |    | |
   +----+-+--------->     submodule2
+~~~~~~~~~~~~~~~~~~~~~~
 
 ## Supported Boards
 - [EVKB-IMXRT1050](../../../_boards/evkbimxrt1050/driver_examples/pwm/example_board_readme.md)
