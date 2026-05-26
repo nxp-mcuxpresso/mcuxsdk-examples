@@ -22,8 +22,9 @@ mcux_add_include(
 
 mcux_add_iar_configuration(
 	CC "--dlib_config full\
-		--no_inline"
-	CX "--no_clustering"
+		--no_inline\
+		--diag_suppress=Pa217"
+	CX "--no_clustering --diag_suppress=Pa217"
 	LD "--semihosting"
 )
 

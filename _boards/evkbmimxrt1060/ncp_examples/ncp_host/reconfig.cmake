@@ -19,7 +19,8 @@ mcux_add_source(
 
 
 mcux_add_iar_configuration(
-    CX "--no_clustering"
+    CC "--diag_suppress=Pa217"
+    CX "--no_clustering --diag_suppress=Pa217"
 )
 
 mcux_add_macro(
