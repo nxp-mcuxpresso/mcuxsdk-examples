@@ -113,7 +113,7 @@ status_t A_Format_Set_Encoder_Address_1to1(encoder_a_format_t *enc, uint8_t enc_
     crc_data = A_FORMAT_GET_CRC_DATA_CDF(cdf);
     crc = CRC_Calc(&crc3_para);
 
-    cdf = A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
+    cdf = (uint16_t)A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
 
     FLEXIO_A_Format_Config_DR_length(enc->controller, 1);
 
@@ -147,7 +147,7 @@ status_t A_Format_Set_ID_1to1(encoder_a_format_t *enc, uint32_t id)
     cdf = A_FORMAT_PACK_CDF(0, A_FORMAT_REQ_IT_ID_CODE_WRITE2, 0);
     crc_data = A_FORMAT_GET_CRC_DATA_CDF(cdf);
     crc = CRC_Calc(&crc3_para);
-    cdf = A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
+    cdf = (uint16_t)A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
 
     for (uint8_t i = 0; i < 3; i++)
     {
@@ -189,7 +189,7 @@ status_t A_Format_Get_ID_1to1(encoder_a_format_t *enc, uint32_t *id)
     cdf = A_FORMAT_PACK_CDF(0, A_FORMAT_REQ_IT_ID_CODE_READ2, 0);
     crc_data = A_FORMAT_GET_CRC_DATA_CDF(cdf);
     crc = CRC_Calc(&crc3_para);
-    cdf = A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
+    cdf = (uint16_t)A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
 
     FLEXIO_A_Format_Config_DR_length(enc->controller, 1);
 
@@ -223,7 +223,7 @@ status_t A_Format_Set_Encoder_Address_MATCH_ID(encoder_a_format_t *enc, uint32_t
     cdf = A_FORMAT_PACK_CDF((enc_addr & 0x7), A_FORMAT_REQ_IT_SET_ENCODER_ADDR2, 0);
     crc_data = A_FORMAT_GET_CRC_DATA_CDF(cdf);
     crc = CRC_Calc(&crc3_para);
-    cdf = A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
+    cdf = (uint16_t)A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
 
     for (uint8_t i = 0; i < 3; i++)
     {
@@ -270,7 +270,7 @@ status_t A_Format_Set_ID(encoder_a_format_t *enc, uint8_t enc_addr, uint32_t id)
     cdf = A_FORMAT_PACK_CDF((enc_addr & 0x7), A_FORMAT_REQ_IT_ID_CODE_WRITE1, 0);
     crc_data = A_FORMAT_GET_CRC_DATA_CDF(cdf);
     crc = CRC_Calc(&crc3_para);
-    cdf = A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
+    cdf = (uint16_t)A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
 
     for (uint8_t i = 0; i < 3; i++)
     {
@@ -318,7 +318,7 @@ status_t A_Format_Get_ID_CMD(uint8_t enc_addr)
     cdf = A_FORMAT_PACK_CDF(enc_addr, A_FORMAT_REQ_IT_ID_CODE_READ1, 0);
     crc_data = A_FORMAT_GET_CRC_DATA_CDF(cdf);
     crc = CRC_Calc(&crc3_para);
-    cdf = A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
+    cdf = (uint16_t)A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
 
     memset(res2, 0, sizeof(a_format_res2_t));
 
@@ -368,7 +368,7 @@ status_t A_Format_Memory_Write(encoder_a_format_t *enc, uint8_t enc_addr, a_form
     cdf = A_FORMAT_PACK_CDF((enc_addr & 0x7), A_FORMAT_REQ_IT_MEMORY_WRITE, 0);
     crc_data = A_FORMAT_GET_CRC_DATA_CDF(cdf);
     crc = CRC_Calc(&crc3_para);
-    cdf = A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
+    cdf = (uint16_t)A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
 
     for (uint8_t i = 0; i < 3; i++)
     {
@@ -409,7 +409,7 @@ status_t A_Format_Memory_Read(encoder_a_format_t *enc, uint8_t enc_addr, a_forma
     cdf = A_FORMAT_PACK_CDF((enc_addr & 0x7), A_FORMAT_REQ_IT_MEMORY_READ, 0);
     crc_data = A_FORMAT_GET_CRC_DATA_CDF(cdf);
     crc = CRC_Calc(&crc3_para);
-    cdf = A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
+    cdf = (uint16_t)A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
 
     crc_data = A_FORMAT_GET_CRC_DATA_MDF(mdf);
     crc = CRC_Calc(&crc3_para);
@@ -450,7 +450,7 @@ status_t A_Format_Readout_Encoder_status_CMD(uint8_t enc_addr)
     cdf = A_FORMAT_PACK_CDF(enc_addr, cmd, 0);
     crc_data = A_FORMAT_GET_CRC_DATA_CDF(cdf);
     crc = CRC_Calc(&crc3_para);
-    cdf = A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
+    cdf = (uint16_t)A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
 
     nEncoder = is_MultiTrans ? (enc_addr + 1) : 1;
     memset(res2, 0, sizeof(a_format_res2_t) * nEncoder);
@@ -516,7 +516,7 @@ status_t A_Format_Get_Temperature_CMD(uint8_t enc_addr)
     cdf = A_FORMAT_PACK_CDF(enc_addr, A_FORMAT_REQ_IT_TEMPERATURE_10BIT, 0);
     crc_data = A_FORMAT_GET_CRC_DATA_CDF(cdf);
     crc = CRC_Calc(&crc3_para);
-    cdf = A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
+    cdf = (uint16_t)A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
 
     memset(res2, 0, sizeof(a_format_res2_t));
 
@@ -564,7 +564,7 @@ status_t A_Format_ABS_Readout_Multi_CMD(uint8_t enc_addr)
     cdf = A_FORMAT_PACK_CDF(enc_addr, cmd, 0);
     crc_data = A_FORMAT_GET_CRC_DATA_CDF(cdf);
     crc = CRC_Calc(&crc3_para);
-    cdf = A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
+    cdf = (uint16_t)A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
 
     nEncoder = is_MultiTrans ? (enc_addr + 1) : 1;
     memset(res2, 0, sizeof(a_format_res2_t) * nEncoder);
@@ -632,7 +632,7 @@ status_t A_Format_ABS_Readout_Single_CMD(uint8_t enc_addr)
     cdf = A_FORMAT_PACK_CDF(enc_addr, cmd, 0);
     crc_data = A_FORMAT_GET_CRC_DATA_CDF(cdf);
     crc = CRC_Calc(&crc3_para);
-    cdf = A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
+    cdf = (uint16_t)A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
 
     nEncoder = is_MultiTrans ? (enc_addr + 1) : 1;
     memset(res2, 0, sizeof(a_format_res2_t) * nEncoder);
@@ -698,7 +698,7 @@ status_t A_Format_ABS_Readout_Single_with_status(encoder_a_format_t *enc, uint8_
     cdf = A_FORMAT_PACK_CDF((enc_addr & 0x7), cmd, 0);
     crc_data = A_FORMAT_GET_CRC_DATA_CDF(cdf);
     crc = CRC_Calc(&crc3_para);
-    cdf = A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
+    cdf = (uint16_t)A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
 
     nEncoder = is_MultiTrans ? ((enc_addr & 0x7) + 1) : 1;
     memset(res, 0, sizeof(a_format_res3_t) * nEncoder);
@@ -747,7 +747,7 @@ status_t A_Format_ABS_Readout_Single_with_temperature(encoder_a_format_t *enc, u
     cdf = A_FORMAT_PACK_CDF((enc_addr & 0x7), cmd, 0);
     crc_data = A_FORMAT_GET_CRC_DATA_CDF(cdf);
     crc = CRC_Calc(&crc3_para);
-    cdf = A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
+    cdf = (uint16_t)A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
 
     nEncoder = is_MultiTrans ? ((enc_addr & 0x7) + 1) : 1;
     memset(res, 0, sizeof(a_format_res3_t) * nEncoder);
@@ -831,7 +831,7 @@ status_t A_Format_ABS_Readout_Multi_Single_CMD(uint8_t enc_addr)
     cdf = A_FORMAT_PACK_CDF(enc_addr, cmd, 0);
     crc_data = A_FORMAT_GET_CRC_DATA_CDF(cdf);
     crc = CRC_Calc(&crc3_para);
-    cdf = A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
+    cdf = (uint16_t)A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
 
     nEncoder = is_MultiTrans ? (enc_addr + 1) : 1;
     memset(res3, 0, sizeof(a_format_res3_t) * nEncoder);
