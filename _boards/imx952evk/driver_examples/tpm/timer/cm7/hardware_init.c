@@ -28,6 +28,7 @@ void BOARD_InitHardware(void)
     SystemPlatformInit();
     /* clang-format on */
     BOARD_InitBootPins();
+    BOARD_InitTPMPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
     BOARD_ConfigMPU();
