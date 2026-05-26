@@ -13,7 +13,7 @@
 /*${macro:start}*/
 #define AHB_SECURE_CTRL    AHBSC__AHBSC0
 #define DEMO_CODE_START_NS 0x00020000
-#define AHB_LAYERS_COUNT   12U
+#define AHB_LAYERS_COUNT   8U
 /*${macro:end}*/
 
 /*******************************************************************************

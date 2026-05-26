@@ -110,5 +110,6 @@ TZM_IS_NOSECURE_ENTRY uint32_t StringCompare_NSE(volatile callbackptr callback, 
     PRINTF("String 2: ");
     PRINTF(s2);
     result = callback_NS(s1, s2);
-    return result;
+    /* Explicit mapping: 0 = equal, 1 = not equal */
+    return (result == 0) ? 0u : 1u;
 }

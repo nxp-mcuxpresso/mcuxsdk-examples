@@ -24,15 +24,12 @@
  */
 int main(void)
 {
-    int result;
-
     BOARD_InitHardware();
 
     PRINTF_NSE("Welcome in normal world!\r\n");
     PRINTF_NSE("This is a text printed from normal world!\r\n");
 
-    result = StringCompare_NSE(&strcmp, "Test1\r\n", "Test2\r\n");
-    if (result == 0)
+    if (StringCompare_NSE(&strcmp, "Test1\r\n", "Test2\r\n") == 0u)
     {
         PRINTF_NSE("Both strings are equal!\r\n");
     }

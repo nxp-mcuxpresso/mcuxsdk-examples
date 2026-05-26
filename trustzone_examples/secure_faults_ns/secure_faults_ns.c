@@ -32,7 +32,6 @@ uint32_t testCaseNumber;
  */
 int main(void)
 {
-    int result;
     uint32_t *test_ptr;
     volatile uint32_t test_value = 0;
     funcptr_t func_ptr;
@@ -110,8 +109,7 @@ int main(void)
     }
     PRINTF_NSE("This is a text printed from normal world!\r\n");
 
-    result = StringCompare_NSE(&strcmp, "Test1\r\n", "Test2\r\n");
-    if (result == 0)
+    if (StringCompare_NSE(&strcmp, "Test1\r\n", "Test2\r\n") == 0u)
     {
         PRINTF_NSE("Both strings are equal!\r\n");
     }

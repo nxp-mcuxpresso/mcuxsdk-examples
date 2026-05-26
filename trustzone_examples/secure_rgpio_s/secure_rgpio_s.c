@@ -56,7 +56,9 @@ void SysTick_Handler(void)
     App_SetTrdcMBCNSE(0, 3, 0, false);
     App_SetTrdcMBCNSE(0, 3, 1, false);
 
-    TEST_SW7_GPIO->PCNS &= (~(1 << TEST_SW7_GPIO_PIN));
+    uint32_t mask = (uint32_t)1u << TEST_SW7_GPIO_PIN;
+
+    TEST_SW7_GPIO->PCNS &= ~mask;
     if (RGPIO_PinRead(TEST_SW7_GPIO, TEST_SW7_GPIO_PIN) != SW_PRESSED)
     {
         RGPIO_PinWrite(TEST_NS_GPIOA, TEST_GPIOA_PIN15, 0);
@@ -70,12 +72,12 @@ void SysTick_Handler(void)
     if (RGPIO_PinRead(TEST_SW8_GPIO, TEST_SW8_GPIO_PIN) != SW_PRESSED)
     {
         /*secure access*/
-        TEST_SW7_GPIO->PCNS &= (~(1 << TEST_SW7_GPIO_PIN));
+        TEST_SW7_GPIO->PCNS &= ~mask;
     }
     else
     {
         /*non-secure access*/
-        TEST_SW7_GPIO->PCNS |= (1 << TEST_SW7_GPIO_PIN);
+        TEST_SW7_GPIO->PCNS |= mask;
     }
 
     App_SetTrdcMBCNSE(0, 3, 0, true);
