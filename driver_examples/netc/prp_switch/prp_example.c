@@ -396,20 +396,21 @@ status_t APP_SWT_ReceiveFrame(uint8_t **buffer, uint32_t *length, uint8_t *porti
 #if defined(FSL_FEATURE_NETC_HAS_SWITCH_TAG) && FSL_FEATURE_NETC_HAS_SWITCH_TAG
 static int frame_add_switch_tag(uint8_t *txFrame, uint8_t *data, uint16_t len, uint8_t portid)
 {
-    netc_swt_tag_port_no_ts_t *tag;
+    netc_swt_tag_port_no_ts_t tmp = {
+        .comTag = {
+            .tpid    = NETC_SWITCH_DEFAULT_ETHER_TYPE,
+            .subType = kNETC_TagToPortNoTs,
+            .type    = kNETC_TagToPort,
+            .qv      = 1,
+            .ipv     = 0,
+            .dr      = 0,
+            .swtId   = 1,
+            .port    = portid
+        }
+    };
 
     memmove(txFrame, data, 12);
-
-    tag = (netc_swt_tag_port_no_ts_t *)(txFrame + 12);
-    memset(tag, 0, sizeof(netc_swt_tag_port_no_ts_t));
-    tag->comTag.tpid = NETC_SWITCH_DEFAULT_ETHER_TYPE;
-    tag->comTag.subType = kNETC_TagToPortNoTs;
-    tag->comTag.type = kNETC_TagToPort;
-    tag->comTag.qv = 1;
-    tag->comTag.ipv = 0;
-    tag->comTag.dr = 0;
-    tag->comTag.swtId = 1;
-    tag->comTag.port = portid;
+    memcpy(txFrame + 12, &tmp, sizeof(tmp));
 
     return 0;
 }
