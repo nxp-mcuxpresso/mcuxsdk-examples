@@ -81,7 +81,7 @@ safety_iec60730b:
     # - -mdk@hyperram_release
     # - -mdk@debug
     # - -mdk@release
-    mcimx93evk@cm33:
+    mcimx93evk:
     - -armgcc@debug
     - -armgcc@release
     - -iar@release

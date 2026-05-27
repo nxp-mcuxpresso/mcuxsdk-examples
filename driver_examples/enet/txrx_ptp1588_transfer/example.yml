@@ -187,6 +187,6 @@ enet_txrx_ptp1588_transfer:
     - -mdk@sdram_debug
     - -mdk@sdram_release
     frdmmcxe247: []
-    mcimx93autoevk@cm33: []
-    mcimx93evk@cm33: []
+    mcimx93autoevk: []
+    mcimx93evk: []
     mcimx93wevk: []

@@ -32,7 +32,7 @@ power_mode_switch_rtos_imx93:
       - ${board_root}/${board}/demo_apps/power_mode_switch/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    mcimx93autoevk@cm33: []
-    mcimx93evk@cm33: []
+    mcimx93autoevk: []
+    mcimx93evk: []
     mcimx93wevk: []
     mcimx93qsb: []

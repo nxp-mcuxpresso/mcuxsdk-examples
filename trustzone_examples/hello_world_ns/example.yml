@@ -46,12 +46,12 @@ hello_world_ns:
     lpcxpresso55s16: []
     lpcxpresso55s36: []
     lpcxpresso55s69@cm33_core0: []
-    mcimx93autoevk@cm33:
+    mcimx93autoevk:
     - +armgcc@debug
     - +armgcc@release
     - +iar@debug
     - +iar@release
-    mcimx93evk@cm33:
+    mcimx93evk:
     - +armgcc@debug
     - +armgcc@release
     - +iar@debug
