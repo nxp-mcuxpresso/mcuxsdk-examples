@@ -3,7 +3,5 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 include(${SdkRootDirPath}/arch/arm/target/ram.cmake)
-include(${SdkRootDirPath}/arch/arm/target/ddr.cmake)
 include(${SdkRootDirPath}/examples/_common/project_setting/arm_common.cmake)
-include(${SdkRootDirPath}/examples/_boards/mcimx93evk/${core_id}/setting.cmake OPTIONAL)
 

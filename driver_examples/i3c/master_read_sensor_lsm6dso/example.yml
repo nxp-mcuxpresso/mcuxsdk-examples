@@ -58,7 +58,7 @@ i3c_master_read_sensor_lsm6dso:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     - -mdk@release
-    mcimx93autoevk@cm33: []
-    mcimx93evk@cm33: []
+    mcimx93autoevk: []
+    mcimx93evk: []
     mcimx93wevk: []
     mcimx93qsb: []

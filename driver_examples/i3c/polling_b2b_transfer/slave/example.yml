@@ -73,8 +73,8 @@ i3c_polling_b2b_transfer_slave:
     - +armgcc@release
     lpcxpresso55s36: []
     lpcxpresso860max: []
-    mcimx93autoevk@cm33: []
-    mcimx93evk@cm33: []
+    mcimx93autoevk: []
+    mcimx93evk: []
     mcimx93wevk: []
     mcimx93qsb: []
     mcxn5xxevk@cm33_core0: []

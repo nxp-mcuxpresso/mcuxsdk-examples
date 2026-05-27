@@ -60,8 +60,8 @@ tpm_output_compare:
     kw45b41zevk:
     - +armgcc@debug
     - +armgcc@release
-    mcimx93autoevk@cm33: []
-    mcimx93evk@cm33: []
+    mcimx93autoevk: []
+    mcimx93evk: []
     mcimx93wevk: []
     mcimx93qsb: []
     imx943evk@cm7_core1:

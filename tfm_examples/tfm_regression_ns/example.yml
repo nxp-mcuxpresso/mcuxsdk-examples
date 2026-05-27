@@ -47,7 +47,7 @@ tfm_regression_ns:
     - -iar@flash_release
     - -mdk@flash_debug
     - -mdk@flash_release
-    mcimx93evk@cm33:
+    mcimx93evk:
     - -iar@debug
     - -iar@release
     frdmmcxa577: []

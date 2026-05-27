@@ -114,7 +114,7 @@ pdm_edma_transfer:
     imx95lp4xevk15@cm7: []
     frdmimx95@cm7: []
     imx952evk@cm7: []
-    mcimx93evk@cm33: []
+    mcimx93evk: []
     mcimx93qsb: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []

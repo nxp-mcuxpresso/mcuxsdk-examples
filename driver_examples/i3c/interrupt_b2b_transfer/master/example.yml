@@ -74,8 +74,8 @@ i3c_interrupt_b2b_transfer_master:
     - +armgcc@release
     lpcxpresso55s36: []
     lpcxpresso860max: []
-    mcimx93autoevk@cm33: []
-    mcimx93evk@cm33: []
+    mcimx93autoevk: []
+    mcimx93evk: []
     mcimx93wevk: []
     mcimx93qsb: []
     mcxn5xxevk@cm33_core0: []
