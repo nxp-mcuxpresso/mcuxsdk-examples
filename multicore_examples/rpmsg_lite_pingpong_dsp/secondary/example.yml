@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
 #
-# Copyright 2025 NXP
+# Copyright 2025, 2026 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 #
@@ -20,3 +20,4 @@ rpmsg_lite_pingpong_dsp_secondary_core:
       - ${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_dsp/example_board_readme.md
   boards:
     mimxrt700evk@cm33_core1: []
+    # frdmimxrt700@cm33_core1: []

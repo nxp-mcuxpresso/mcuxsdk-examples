@@ -56,3 +56,4 @@ west build -b mimxrt700evk examples/multicore_examples/rpmsg_lite_pingpong_dsp/p
 ## Supported Boards
 
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/multicore_examples/rpmsg_lite_pingpong_dsp/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/multicore_examples/rpmsg_lite_pingpong_dsp/example_board_readme.md)

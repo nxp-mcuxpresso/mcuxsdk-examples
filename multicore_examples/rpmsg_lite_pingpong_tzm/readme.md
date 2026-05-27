@@ -58,3 +58,4 @@ west build --sysbuild examples/multicore_examples/rpmsg_lite_pingpong_tzm/primar
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/multicore_examples/rpmsg_lite_pingpong_tzm/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/multicore_examples/rpmsg_lite_pingpong_tzm/example_board_readme.md)
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/multicore_examples/rpmsg_lite_pingpong_tzm/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/multicore_examples/rpmsg_lite_pingpong_tzm/example_board_readme.md)

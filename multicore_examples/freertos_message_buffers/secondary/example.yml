@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
 #
-# Copyright 2024 NXP
+# Copyright 2024, 2026 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 freertos_message_buffers_secondary_core:
@@ -128,3 +128,4 @@ freertos_message_buffers_secondary_core:
     lpcxpresso55s69@cm33_core1: []
     mcxn5xxevk@cm33_core1: []
     mcxn9xxevk@cm33_core1: []
+    frdmimxrt700@cm33_core1: []

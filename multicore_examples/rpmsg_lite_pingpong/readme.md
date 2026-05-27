@@ -50,3 +50,4 @@ west build --sysbuild examples/multicore_examples/rpmsg_lite_pingpong/primary --
 - [FRDM-MCXL255](../../_boards/frdmmcxl255/multicore_examples/rpmsg_lite_pingpong/example_board_readme.md)
 - [MCXW72-LOC](../../_boards/mcxw72loc/multicore_examples/rpmsg_lite_pingpong/example_board_readme.md)
 - [FRDM-IMXRT1186](../../_boards/frdmimxrt1186/multicore_examples/rpmsg_lite_pingpong/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/multicore_examples/rpmsg_lite_pingpong/example_board_readme.md)

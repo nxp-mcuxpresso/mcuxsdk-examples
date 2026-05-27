@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
 #
-# Copyright 2024 NXP
+# Copyright 2024, 2026 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 rpmsg_lite_pingpong_tzm_secondary_core_s:
@@ -51,3 +51,4 @@ rpmsg_lite_pingpong_tzm_secondary_core_s:
     - +armgcc@release
     - +iar@debug
     - +iar@release
+    frdmimxrt700@cm33_core1: []
