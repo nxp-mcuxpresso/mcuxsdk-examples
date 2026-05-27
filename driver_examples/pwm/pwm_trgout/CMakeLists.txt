@@ -7,7 +7,7 @@ project(pwm_trgout LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${b
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/driver_examples/pwm/pwm_trgout/pwm.c
+    SOURCES examples/driver_examples/pwm/pwm_trgout/pwm_trgout.c
 )
 
 mcux_add_include(

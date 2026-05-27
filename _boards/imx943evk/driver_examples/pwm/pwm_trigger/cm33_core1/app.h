@@ -14,7 +14,7 @@
 #define BOARD_PWM_BASEADDR PWM1
 
 #define PWM_SRC_CLK_FREQ       CLOCK_GetRate(kCLOCK_Busaon)
-#define DEMO_PWM_CLOCK_DEVIDER kPWM_Prescale_Divide_4
+#define DEMO_PWM_CLOCK_DEVIDER kFLEXPWM_Prescale_Divide_4
 /*${macro:end}*/
 
 /* define instance */

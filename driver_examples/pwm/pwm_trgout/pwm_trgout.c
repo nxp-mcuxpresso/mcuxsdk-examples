@@ -8,9 +8,8 @@
 #include "board.h"
 #include "app.h"
 #include "fsl_flexpwm.h"
-#include "fsl_tpm.h"
 #include "fsl_xbar.h"
-
+#include "fsl_lpit.h"
 
 /*******************************************************************************
  * Definitions
@@ -19,8 +18,6 @@
 #ifndef APP_DEFAULT_PWM_FREQUENCY
 #define APP_DEFAULT_PWM_FREQUENCY (1000UL)
 #endif
-
-#define DEMO_PWM_FREQUENCY (800U)
 
 /* Helper macro to calculate two's complement for signed center aligned mode */
 #define FLEXPWM_GET_COMPLEMENT_U16(value) ((MCUX_MASK_INVERT_16(value) + 1U) & 0xFFFFU)
@@ -35,10 +32,54 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
+volatile bool lpitIsrFlag = false;
 
 /*******************************************************************************
  * Code
  ******************************************************************************/
+void DEMO_LPIT_IRQHandler(void)
+{
+    /* Clear interrupt flag.*/
+    LPIT_ClearStatusFlags(DEMO_LPIT_BASE, kLPIT_Channel0TimerFlag);
+    lpitIsrFlag = true;
+    SDK_ISR_EXIT_BARRIER;
+}
+
+static void lpit_init(void)
+{
+    /* Structure of initialize LPIT */
+    lpit_config_t lpitConfig;
+    lpit_chnl_params_t lpitChannelConfig;
+
+    LPIT_GetDefaultConfig(&lpitConfig);
+    LPIT_Init(DEMO_LPIT_BASE, &lpitConfig);
+
+    lpitChannelConfig.chainChannel          = false;
+    lpitChannelConfig.enableReloadOnTrigger = false;
+    lpitChannelConfig.enableStartOnTrigger  = true;
+    lpitChannelConfig.enableStopOnTimeout   = true;
+    lpitChannelConfig.timerMode             = kLPIT_PeriodicCounter;
+    /* Set default values for the trigger source */
+    lpitChannelConfig.triggerSelect = kLPIT_Trigger_TimerChn0;
+    lpitChannelConfig.triggerSource = kLPIT_TriggerSource_External;
+
+    /* Init lpit channel 0 */
+    LPIT_SetupChannel(DEMO_LPIT_BASE, kLPIT_Chnl_0, &lpitChannelConfig);
+
+    /* Set timer period for channel 0 */
+    LPIT_SetTimerPeriod(DEMO_LPIT_BASE, kLPIT_Chnl_0, USEC_TO_COUNT(1000000U, LPIT_SOURCECLOCK));
+
+    /* Enable timer interrupts for channel 0 */
+    LPIT_EnableInterrupts(DEMO_LPIT_BASE, kLPIT_Channel0TimerInterruptEnable);
+
+    /* Enable at the NVIC */
+    EnableIRQ(DEMO_LPIT_IRQn);
+
+    /* Start channel 0 */
+    PRINTF("\r\nStarting channel No.0 ...");
+    LPIT_StartTimer(DEMO_LPIT_BASE, kLPIT_Chnl_0);
+}
+
 static void PWM_DRV_Init3PhPwm(uint16_t modValue, uint16_t deadTimeVal)
 {
     flexpwm_pwm_config_t pwmConfig;
@@ -78,29 +119,6 @@ static void PWM_DRV_Init3PhPwm(uint16_t modValue, uint16_t deadTimeVal)
     FLEXPWM_SetDTCNT1(BOARD_PWM_BASEADDR, 2U, deadTimeVal);
 }
 
-void tpm_init(void)
-{
-    tpm_config_t tpmInfo;
-    tpm_chnl_pwm_signal_param_t tpmParam;
-    int updatedDutycycle = 5;
-    uint8_t control;
-
-    TPM_GetDefaultConfig(&tpmInfo);
-    tpmInfo.prescale = TPM_CalculateCounterClkDiv(BOARD_TPM_BASEADDR, DEMO_PWM_FREQUENCY, TPM_SOURCE_CLOCK);
-    TPM_Init(BOARD_TPM_BASEADDR, &tpmInfo);
-    tpmParam.chnlNumber = (tpm_chnl_t)BOARD_TPM_CHANNEL;
-    tpmParam.level            = kTPM_HighTrue;
-    tpmParam.dutyCyclePercent = updatedDutycycle;
-    if (kStatus_Success != TPM_SetupPwm(BOARD_TPM_BASEADDR, &tpmParam, 1U, kTPM_CenterAlignedPwm, DEMO_PWM_FREQUENCY, TPM_SOURCE_CLOCK)) {
-	    PRINTF("\r\nSetup PWM fail!\r\n");
-	    return;
-    }
-    TPM_StartTimer(BOARD_TPM_BASEADDR, kTPM_SystemClock);
-    control = TPM_GetChannelControlBits(BOARD_TPM_BASEADDR, (tpm_chnl_t)BOARD_TPM_CHANNEL);
-    TPM_EnableChannel(BOARD_TPM_BASEADDR, (tpm_chnl_t)BOARD_TPM_CHANNEL, control);
-    TPM_EnableInterrupts(BOARD_TPM_BASEADDR, kTPM_TimeOverflowInterruptEnable);
-}
-
 /*!
  * @brief Main function
  */
@@ -110,24 +128,23 @@ int main(void)
     flexpwm_submodule_config_t submoduleConfig;
     flexpwm_fault_config_t faultConfig;
     flexpwm_fault_submodule_config_t faultSubmoduleConfig;
+    flexpwm_output_trigger_config_t outputTriggerConfig;
     uint32_t pwmSourceClockInHz;
     uint32_t pwmFrequencyInHz = APP_DEFAULT_PWM_FREQUENCY;
     uint16_t modValue;
     uint16_t deadTimeVal;
-    uint32_t pwmVal = 0;
 
     /* Board pin, clock, debug console init */
     BOARD_InitHardware();
 
     PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
 
-    PRINTF("FlexPWM driver example\r\n");
-
     XBAR_Init(kXBAR_DSC1);
-    XBAR_SetSignalsConnection(kXBAR1_InputTpm6LptpmChTrigger0, kXBAR1_OutputFlexpwm1ExtSync0);
+    BLK_CTRL_WAKEUPMIX->LPIT_TRIG_SEL |= BLK_CTRL_WAKEUPMIX_LPIT_TRIG_SEL_LPIT1_TRIG0_INPUT_SEL(1);
+    XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux0Trigger0, kXBAR1_OutputLpit1LpitExtTrigIn0);
     PRINTF("\r\nIPSYNC trigger signal connected! \r\n");
 
-    tpm_init();
+    PRINTF("FlexPWM driver example\r\n");
 
     /* Initialize FlexPWM module */
     (void)FLEXPWM_Init(BOARD_PWM_BASEADDR);
@@ -176,7 +193,7 @@ int main(void)
     /* Configure for signed center-aligned mode */
     submoduleConfig.counterConfig.initValue = FLEXPWM_GET_COMPLEMENT_U16(modValue / 2U);
     submoduleConfig.counterConfig.modValue = modValue / 2U - 1U;
-    submoduleConfig.counterConfig.initSource = kFLEXPWM_InitSource_ExtSync;
+    submoduleConfig.counterConfig.initSource = kFLEXPWM_InitSource_LocalSync;
 
     /* Use full cycle reload */
     submoduleConfig.reloadConfig.loadMode = kFLEXPWM_LoadMode_Opportunity;
@@ -237,6 +254,7 @@ int main(void)
     FLEXPWM_ConfigFaultSubmodule(BOARD_PWM_BASEADDR, 1U, &faultSubmoduleConfig);
     FLEXPWM_ConfigFaultSubmodule(BOARD_PWM_BASEADDR, 2U, &faultSubmoduleConfig);
 
+
     /*
      * Call the init function with demo configuration.
      * Recommend to invoke PWM configuration after submodule and fault configuration,
@@ -244,6 +262,17 @@ int main(void)
      * But set OUTEN register before MCTRL register is okay.
      */
     PWM_DRV_Init3PhPwm(modValue, deadTimeVal);
+
+    /* Configure output trigger for submodule 0 */
+    /* Set VAL4 compare value for trigger timing */
+    FLEXPWM_SetVAL4(BOARD_PWM_BASEADDR, 0U, 0xff20U);
+    
+    /* Configure output trigger - VAL4 match triggers PWM_OUT_TRIG0 */
+    outputTriggerConfig.outTriggerEnable = kFLEXPWM_OutputTriggerMask_VAL4;
+    outputTriggerConfig.muxTrig0Source = kFLEXPWM_TriggerMuxSource_GeneratedTrigger;
+    outputTriggerConfig.muxTrig1Source = kFLEXPWM_TriggerMuxSource_GeneratedTrigger;
+    outputTriggerConfig.triggerFrequency = kFLEXPWM_TriggerFrequency_EveryCycle;
+    FLEXPWM_ConfigOutputTrigger(BOARD_PWM_BASEADDR, 0U, &outputTriggerConfig);
 
     /* Enable PWM output for all submodules */
     FLEXPWM_EnablePWMOutput(BOARD_PWM_BASEADDR, DEMO_SUBMODULE_MASK, DEMO_SUBMODULE_MASK, 0U);
@@ -254,56 +283,17 @@ int main(void)
     /* Start the PWM generation from Submodules 0, 1 and 2 */
     FLEXPWM_EnableSubmoduleCounter(BOARD_PWM_BASEADDR, DEMO_SUBMODULE_MASK);
 
-    while (1U)
+    PRINTF("LPIT init\r\n");
+    lpit_init();
+
+    while (true)
     {
-        /* Delay at least 100 PWM periods. */
-        SDK_DelayAtLeastUs((1000000U / APP_DEFAULT_PWM_FREQUENCY) * 100, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-
-        pwmVal = pwmVal + 4;
-
-        /* Reset the duty cycle percentage */
-        if (pwmVal > 100)
+        /* Check whether occur interupt and toggle LED */
+        if (true == lpitIsrFlag)
         {
-            pwmVal = 0;
+            PRINTF("\r\n Channel No.0 interrupt is occurred !");
+            LED_TOGGLE();
+            lpitIsrFlag = false;
         }
-
-        /*
-         * Update duty cycles for all 3 PWM signals 
-         * For signed center-aligned mode, calculate VAL3 based on duty cycle:
-         * VAL3 = (modValue / 2) * (dutyCycle / 100)
-         * VAL2 = -VAL3 (two's complement)
-         * 
-         * Special case for 100% duty cycle (submodule 0 only):
-         * VAL2 = initValue (counter start point)
-         * VAL3 = modValue / 2 (counter end point + 1, never matches)
-         */
-        uint16_t val2_sm0, val3_sm0;
-        uint16_t val3_sm1 = ((uint32_t)(modValue / 2U) * (pwmVal >> 1U)) / 100U;
-        uint16_t val3_sm2 = ((uint32_t)(modValue / 2U) * (pwmVal >> 2U)) / 100U;
-
-        /* Handle 100% duty cycle for submodule 0 */
-        if (pwmVal == 100U)
-        {
-            val2_sm0 = FLEXPWM_GET_COMPLEMENT_U16(modValue / 2U);  /* initValue */
-            val3_sm0 = modValue / 2U;                              /* modValue + 1 */
-        }
-        else
-        {
-            val3_sm0 = ((uint32_t)(modValue / 2U) * pwmVal) / 100U;
-            val2_sm0 = FLEXPWM_GET_COMPLEMENT_U16(val3_sm0);
-        }
-
-        /* Update VAL2 (turn-on point) and VAL3 (turn-off point) for each submodule */
-        FLEXPWM_SetVAL2(BOARD_PWM_BASEADDR, 0U, val2_sm0);
-        FLEXPWM_SetVAL3(BOARD_PWM_BASEADDR, 0U, val3_sm0);
-
-        FLEXPWM_SetVAL2(BOARD_PWM_BASEADDR, 1U, FLEXPWM_GET_COMPLEMENT_U16(val3_sm1));
-        FLEXPWM_SetVAL3(BOARD_PWM_BASEADDR, 1U, val3_sm1);
-
-        FLEXPWM_SetVAL2(BOARD_PWM_BASEADDR, 2U, FLEXPWM_GET_COMPLEMENT_U16(val3_sm2));
-        FLEXPWM_SetVAL3(BOARD_PWM_BASEADDR, 2U, val3_sm2);
-
-        /* Set the load okay bit for all submodules to load registers from their buffer */
-        FLEXPWM_SetLoadOkay(BOARD_PWM_BASEADDR, DEMO_SUBMODULE_MASK);
     }
 }
