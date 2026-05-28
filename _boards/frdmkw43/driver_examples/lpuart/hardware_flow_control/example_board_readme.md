@@ -12,7 +12,7 @@ enabled on this example. So, please make sure the correct connection for example
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Pin Name    Board Location    connect to     Pin Name    Board Location
-LPUART_TX   JP19  Pin 1       ----------     LPUART_RX   J19   pin 1
+LPUART_TX   JP19  Pin 1       ----------     LPUART_RX   JP18  pin 1
 LPUART_CTS  J19   Pin 2       ----------     LPUART_RTS  J23   Pin 4
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
