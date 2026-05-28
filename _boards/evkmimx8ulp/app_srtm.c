@@ -141,6 +141,16 @@ static srtm_status_t APP_SRTM_I2C_SwitchChannel(srtm_i2c_adapter_t adapter,
                                                 uint16_t slaveAddr,
                                                 srtm_i2c_switch_channel channel);
 
+static srtm_status_t APP_SRTM_I2C_WriteRead(srtm_i2c_adapter_t adapter,
+                                             uint32_t base_addr,
+                                             srtm_i2c_type_t type,
+                                             uint16_t slaveAddr,
+                                             uint8_t *txBuf,
+                                             uint16_t txLen,
+                                             uint8_t *rxBuf,
+                                             uint16_t rxLen,
+                                             uint16_t flags);
+
 static srtm_status_t APP_IO_ConfIEvent(
     srtm_service_t service, srtm_peercore_t core, uint16_t ioId, srtm_io_event_t event, bool wakeup);
 
@@ -309,6 +319,7 @@ static struct _i2c_bus platform_i2c_buses[] = {
 
 static struct _srtm_i2c_adapter i2c_adapter = {.read          = APP_SRTM_I2C_Read,
                                                .write         = APP_SRTM_I2C_Write,
+                                               .write_read    = APP_SRTM_I2C_WriteRead,
                                                .switchchannel = APP_SRTM_I2C_SwitchChannel,
                                                .bus_structure = {
                                                    .buses      = platform_i2c_buses,
@@ -2725,6 +2736,58 @@ static srtm_status_t APP_SRTM_I2C_Read(srtm_i2c_adapter_t adapter,
     {
         case SRTM_I2C_TYPE_LPI2C:
             retVal = BOARD_LPI2C_Receive((LPI2C_Type *)base_addr, (uint8_t)(slaveAddr & 0xFFU), 0, 0, buf, len, needStop);
+            break;
+        default:
+            break;
+    }
+
+    if (retVal == kStatus_LPI2C_Timeout)
+    {
+        BOARD_I2C_ReleaseBus((int32_t)LPI2C_GetInstance((LPI2C_Type *)base_addr));
+    }
+
+    return (retVal == kStatus_Success) ? SRTM_Status_Success : SRTM_Status_TransferFailed;
+}
+
+/*
+ * APP_SRTM_I2C_WriteRead - Combined write-then-read I2C transfer.
+ *
+ * Performs an atomic I2C combined transfer: write sub-address bytes (txBuf)
+ * followed by a repeated-START and read of rxLen bytes into rxBuf.
+ * This uses BOARD_LPI2C_Receive with subAddress parameters to generate:
+ *   START -> slave(W) -> txBuf[0..txLen-1] -> ReSTART -> slave(R) -> rxBuf[0..rxLen-1] -> STOP
+ */
+static srtm_status_t APP_SRTM_I2C_WriteRead(srtm_i2c_adapter_t adapter,
+                                             uint32_t base_addr,
+                                             srtm_i2c_type_t type,
+                                             uint16_t slaveAddr,
+                                             uint8_t *txBuf,
+                                             uint16_t txLen,
+                                             uint8_t *rxBuf,
+                                             uint16_t rxLen,
+                                             uint16_t flags)
+{
+    status_t retVal = kStatus_Fail;
+    uint32_t subAddress = 0U;
+    uint8_t subAddressSize = txLen;
+    uint8_t i;
+
+    /* Assemble sub-address from txBuf (big-endian, max 4 bytes) */
+    if (subAddressSize > 4U)
+    {
+        subAddressSize = 4U;
+    }
+    for (i = 0U; i < subAddressSize; i++)
+    {
+        subAddress = (subAddress << 8U) | (uint32_t)txBuf[i];
+    }
+
+    switch (type)
+    {
+        case SRTM_I2C_TYPE_LPI2C:
+            retVal = BOARD_LPI2C_Receive((LPI2C_Type *)base_addr, (uint8_t)(slaveAddr & 0xFFU),
+                                         subAddress, subAddressSize, rxBuf, rxLen,
+                                         kLPI2C_TransferDefaultFlag);
             break;
         default:
             break;
