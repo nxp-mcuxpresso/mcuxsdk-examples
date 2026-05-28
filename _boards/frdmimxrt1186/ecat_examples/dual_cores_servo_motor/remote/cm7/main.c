@@ -145,7 +145,7 @@ int Cia402_status_machine_trans(uint8_t axis, uint8_t trans_id, struct param_t *
                break;
            case 4:
                M1_SetAppSwitch(1);
-               i64EthercatPosTargetM1 = g_sM1Enc.i64RevCounter * (33554432) + g_sM1Enc.ui64EndatPosition;
+               i64EthercatPosTargetM1 = g_sM1Enc.i64RevCounter * (33554432) + g_sM1Enc.i64EndatPosition;
                if (g_sM1Ctrl.eState != kSM_AppRun || g_eM1StateRun != kRunState_Spin)
                {
                    ret = -1;
@@ -176,7 +176,7 @@ int Cia402_status_machine_trans(uint8_t axis, uint8_t trans_id, struct param_t *
            case 3: M2_OpenPWM(); break;
            case 4:
                M2_SetAppSwitch(1);
-               i64EthercatPosTargetM2 = g_sM2Enc.i64RevCounter * (33554432) + g_sM2Enc.ui64EndatPosition;
+               i64EthercatPosTargetM2 = g_sM2Enc.i64RevCounter * (33554432) + g_sM2Enc.i64EndatPosition;
                if (g_sM2Ctrl.eState != kSM_AppRun || g_eM2StateRun != kRunState_Spin) {
                    ret = -1;
                }
