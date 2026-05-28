@@ -165,7 +165,6 @@ outputs:
 settings:
 - {id: VDDCore, value: voltage_1v1}
 - {id: CCM32K.CCM32K_32K_SEL.sel, value: CCM32K.OSC_32K}
-- {id: CCM32K_FRO32K_CTRL_FRO_EN_CFG, value: Disabled}
 - {id: CCM32K_OSC32K_CTRL_CAP_SEL_EN_CFG, value: Enabled}
 - {id: CCM32K_OSC32K_CTRL_EXTAL_CAP_SEL_CFG, value: 8PF}
 - {id: CCM32K_OSC32K_CTRL_OSC_EN_CFG, value: Enabled}
@@ -265,8 +264,8 @@ void BOARD_BootClockRUN(void)
     }
     /* OSC32K clock output is selected as clock source */
     CCM32K_SelectClockSource(CCM32K, kCCM32K_ClockSourceSelectOsc32k);
-    /* Disable the FRO32K clock */
-    CCM32K_Enable32kFro(CCM32K, false);
+    /* Enabled the FRO32K clock */
+    CCM32K_Enable32kFro(CCM32K, true);
     /* Wait for RTC Oscillator to be Valid */
     while (!CLOCK_IsRoscValid())
     {
