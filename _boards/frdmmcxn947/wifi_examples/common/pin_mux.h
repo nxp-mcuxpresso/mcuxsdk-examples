@@ -39,7 +39,7 @@ void BOARD_InitBootPins(void);
  */
 void BOARD_InitPins(void);
 
-#if defined(WIFI_IW610_BOARD_MURATA_2LL_M2)
+#if CONFIG_FRDM_M2_ADAPTER_V1
 /*! @name PORT0_28 (coord E8), WL_RST
   @{ */
 

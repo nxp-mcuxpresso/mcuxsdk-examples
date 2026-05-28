@@ -118,13 +118,13 @@ BOARD_InitPinsWifi:
  * END ****************************************************************************************************************/
 void BOARD_InitPinsWifi(void)
 {
-#if defined(WIFI_IW610_BOARD_MURATA_2LL_M2)
+#if CONFIG_FRDM_M2_ADAPTER_V1
     /* Enables the clock for GPIO0: Enables clock */
     CLOCK_EnableClock(kCLOCK_Gpio0);
 #endif
     /* Enables the clock for GPIO1: Enables clock */
     CLOCK_EnableClock(kCLOCK_Gpio1);
-#if defined(WIFI_IW610_BOARD_MURATA_2LL_M2)
+#if CONFIG_FRDM_M2_ADAPTER_V1
     /* Enables the clock for PORT0: Enables clock */
     CLOCK_EnableClock(kCLOCK_Port0);
 #endif
