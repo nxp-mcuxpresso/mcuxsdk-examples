@@ -164,114 +164,116 @@ int main(void)
 
     MemoryManager memory_manager(&method_allocator, &planned_memory, &temp_allocator);
 
-    Result<Method> method = program->load_method(method_name, &memory_manager);
-    if (!method.ok()) {
+    {
+      Result<Method> method = program->load_method(method_name, &memory_manager);
+      if (!method.ok()) {
         PRINTF("Loading of method %s failed with status %d\r\n",
-	    method_name, method.error());
-    }
-    PRINTF("Method loaded.\r\n");
+               method_name, method.error());
+      }
+      PRINTF("Method loaded.\r\n");
 
-    PRINTF("Preparing inputs...\r\n");
-    Tensor::SizesType sizes[] = {1, 3, 32, 32};
-    Tensor::DimOrderType dim_order[] = {0, 2, 3, 1};
+      PRINTF("Preparing inputs...\r\n");
+      Tensor::SizesType sizes[] = {1, 3, 32, 32};
+      Tensor::DimOrderType dim_order[] = {0, 2, 3, 1};
 
-    TensorImpl impl(ScalarType::Char, 4, sizes, image_data, dim_order);
-    Tensor tensor(&impl);
-    Error status = method->set_input(tensor, 0);
-    if (status != Error::Ok) {
+      TensorImpl impl(ScalarType::Char, 4, sizes, image_data, dim_order);
+      Tensor tensor(&impl);
+      Error status = method->set_input(tensor, 0);
+      if (status != Error::Ok) {
         PRINTF("Preparing inputs tensors for method %s failed with status 0x%...\r\n",
-	       method_name, status);
-    }
-    PRINTF("Input prepared. \r\n");
-
-    PRINTF("Starting the model execution...\r\n");
-
-    auto startTime = TIMER_GetTimeInUS();
-    status = method->execute();
-    auto endTime = TIMER_GetTimeInUS();
-    if (status != Error::Ok) {
-	PRINTF("Execution of method %s failed with status 0x%\r\n" PRIx32,
                method_name, status);
-    } else {
+      }
+      PRINTF("Input prepared. \r\n");
+
+      PRINTF("Starting the model execution...\r\n");
+
+      auto startTime = TIMER_GetTimeInUS();
+      status = method->execute();
+      auto endTime = TIMER_GetTimeInUS();
+      if (status != Error::Ok) {
+        PRINTF("Execution of method %s failed with status 0x%\r\n" PRIx32,
+               method_name, status);
+      } else {
         PRINTF("Model executed successfully.\r\n");
-    }
+      }
 
-    PRINTF("Core/NPU Frequency: %d MHz\r\n", CLOCK_GetFreq(kCLOCK_CoreSysClk)/1000000);
-    PRINTF("method_allocator Addr: 0x%x - 0x%x\r\n", method_allocator_pool, method_allocator_pool + method_allocator.size());
-    PRINTF("method_allocator_used: Total 0x%x (%d B); Used 0x%x (%d B); Used/Total %d %%\r\n",
-           method_allocator.size(), method_allocator.size(), method_allocator.used_size(), method_allocator.used_size(),
-	   100 * method_allocator.used_size() / method_allocator.size());
-    PRINTF("temp_allocator Addr: 0x%x - 0x%x\r\n", temp_allocator_pool, temp_allocator_pool + temp_allocator.size());
-    PRINTF("temp_allocator_used: Total 0x%x (%d B); Used 0x%x (%d B); Used/Total %d %%\r\n",
-           temp_allocator.size(), temp_allocator.size(), temp_allocator.used_size(), temp_allocator.used_size(),
-	   100 * temp_allocator.used_size() / temp_allocator.size());
-    PRINTF("Model Addr: 0x%x - 0x%x\r\n", model_pte, model_pte + sizeof(model_pte));
-    PRINTF("Model Size: 0x%x (%d B)\r\n", sizeof(model_pte), sizeof(model_pte));
-    PRINTF("Image Addr: 0x%x - 0x%x\r\n", image_data, image_data + sizeof(image_data));
-    PRINTF("Image Size: 0x%x (%d B)\r\n", sizeof(image_data), sizeof(image_data));
-    PRINTF("Total Size Used: %d B (Model (%d B) + method_allocator (%d B) + temp_allocator (%d B))\r\n",
-           (sizeof(model_pte) + method_allocator.used_size() + temp_allocator.used_size()), sizeof(model_pte),
-	   method_allocator.used_size(), temp_allocator.used_size());
+      PRINTF("Core/NPU Frequency: %d MHz\r\n", CLOCK_GetFreq(kCLOCK_CoreSysClk)/1000000);
+      PRINTF("method_allocator Addr: 0x%x - 0x%x\r\n", method_allocator_pool, method_allocator_pool + method_allocator.size());
+      PRINTF("method_allocator_used: Total 0x%x (%d B); Used 0x%x (%d B); Used/Total %d %%\r\n",
+             method_allocator.size(), method_allocator.size(), method_allocator.used_size(), method_allocator.used_size(),
+             100 * method_allocator.used_size() / method_allocator.size());
+      PRINTF("temp_allocator Addr: 0x%x - 0x%x\r\n", temp_allocator_pool, temp_allocator_pool + temp_allocator.size());
+      PRINTF("temp_allocator_used: Total 0x%x (%d B); Used 0x%x (%d B); Used/Total %d %%\r\n",
+             temp_allocator.size(), temp_allocator.size(), temp_allocator.used_size(), temp_allocator.used_size(),
+             100 * temp_allocator.used_size() / temp_allocator.size());
+      PRINTF("Model Addr: 0x%x - 0x%x\r\n", model_pte, model_pte + sizeof(model_pte));
+      PRINTF("Model Size: 0x%x (%d B)\r\n", sizeof(model_pte), sizeof(model_pte));
+      PRINTF("Image Addr: 0x%x - 0x%x\r\n", image_data, image_data + sizeof(image_data));
+      PRINTF("Image Size: 0x%x (%d B)\r\n", sizeof(image_data), sizeof(image_data));
+      PRINTF("Total Size Used: %d B (Model (%d B) + method_allocator (%d B) + temp_allocator (%d B))\r\n",
+             (sizeof(model_pte) + method_allocator.used_size() + temp_allocator.used_size()), sizeof(model_pte),
+             method_allocator.used_size(), temp_allocator.used_size());
 
-    std::vector<EValue> outputs(method->outputs_size());
-    PRINTF("%d outputs: \r\n", outputs.size());
-    status = method->get_outputs(outputs.data(), outputs.size());
-    ET_CHECK(status == Error::Ok);
+      std::vector<EValue> outputs(method->outputs_size());
+      PRINTF("%d outputs: \r\n", outputs.size());
+      status = method->get_outputs(outputs.data(), outputs.size());
+      ET_CHECK(status == Error::Ok);
 
-    result_t topResults[NUM_RESULTS];
-    for (int i = 0; i < NUM_RESULTS; i++) {
+      result_t topResults[NUM_RESULTS];
+      for (int i = 0; i < NUM_RESULTS; i++) {
         topResults[i] = {.score = OUTPUT_MIN_RANGE, .index = -1};
-    }
+      }
 
-    float threshold = DETECTION_TRESHOLD * CONFIDENCE_SCALE + OUTPUT_MIN_RANGE;
-    for (int i = 0; i < outputs[0].toTensor().numel(); i++) {
+      float threshold = DETECTION_TRESHOLD * CONFIDENCE_SCALE + OUTPUT_MIN_RANGE;
+      for (int i = 0; i < outputs[0].toTensor().numel(); i++) {
         int value = OUTPUT_MIN_RANGE;
         if (outputs[0].toTensor().scalar_type() == ScalarType::Char) {
-        	value = static_cast<int>(outputs[0].toTensor().const_data_ptr<int8_t>()[i]);
+          value = static_cast<int>(outputs[0].toTensor().const_data_ptr<int8_t>()[i]);
         }
 
         if (static_cast<float>(value) < threshold) {
-            continue;
+          continue;
         }
         result_t pass = {.score = OUTPUT_MIN_RANGE, .index = -1};
         for (int n = 0; n < NUM_RESULTS; n++) {
-            if (pass.index >= 0) {
-                result_t swap = topResults[n];
-                topResults[n] = pass;
-                pass = swap;
-            } else if (topResults[n].score < value) {
-                pass = topResults[n];
-                topResults[n] = {.score = value, .index = i};
-            }
+          if (pass.index >= 0) {
+            result_t swap = topResults[n];
+            topResults[n] = pass;
+            pass = swap;
+          } else if (topResults[n].score < value) {
+            pass = topResults[n];
+            topResults[n] = {.score = value, .index = i};
+          }
         }
-    }
+      }
 
-    const char* label = "No label detected";
-    float confidence = 0.0f;
+      const char* label = "No label detected";
+      float confidence = 0.0f;
 
-    if (topResults[0].index >= 0) {
+      if (topResults[0].index >= 0) {
         auto result = topResults[0];
         confidence = static_cast<float>(result.score);
         int index = result.index;
         if (confidence > threshold)
-            label = labels[index];
-    }
+          label = labels[index];
+      }
 
-    int score = static_cast<int>((confidence - OUTPUT_MIN_RANGE) / CONFIDENCE_SCALE);
-    PRINTF("----------------------------------------\r\n");
-    PRINTF("     Inference time: %d us\r\n", endTime - startTime);
-    PRINTF("     Detected: %s (%d%%)\r\n", label, score);
-    PRINTF("----------------------------------------\r\n");
+      int score = static_cast<int>((confidence - OUTPUT_MIN_RANGE) / CONFIDENCE_SCALE);
+      PRINTF("----------------------------------------\r\n");
+      PRINTF("     Inference time: %d us\r\n", endTime - startTime);
+      PRINTF("     Detected: %s (%d%%)\r\n", label, score);
+      PRINTF("----------------------------------------\r\n");
 
-    for (int i = 0; i < (int)outputs.size(); ++i) {
+      for (int i = 0; i < (int)outputs.size(); ++i) {
         Tensor t = outputs[i].toTensor();
         for (int j = 0; j < outputs[i].toTensor().numel(); ++j) {
-            if (t.scalar_type() == ScalarType::Char) {
-                PRINTF("Output[%d][%d]: %d\r\n", i, j,
-                       (int)(outputs[i].toTensor().const_data_ptr<int8_t>()[j]));
-            }
+          if (t.scalar_type() == ScalarType::Char) {
+            PRINTF("Output[%d][%d]: %d\r\n", i, j,
+                   (int)(outputs[i].toTensor().const_data_ptr<int8_t>()[j]));
+          }
         }
-    }
+      }
+    } // Destruct the method object before destroying the Neutron Device.
 
     neutronDeinit();
     PRINTF("Program complete, exiting.\r\n");
