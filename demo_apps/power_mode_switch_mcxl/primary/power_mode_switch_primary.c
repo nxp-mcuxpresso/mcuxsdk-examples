@@ -201,6 +201,10 @@ int main(void)
     PRINTF("Core Clock Frequency: %d\r\n", CLOCK_GetCoreSysClkFreq());
     CMC_ConfigFlashMode(CMC, true, true, true);
     APP_GetWakeupReason();
+#if APP_ENABLE_ADVC
+    PRINTF("Loading ADVC table...\r\n");
+    ADVC_Init();
+#endif /* APP_ENABLE_ADVC */
     if (powerHandle.previousPowerMode == kPower_DeepPowerDown1)
     {
         /* DPD1 wakeup: CM0+ is still running in AON domain.
@@ -211,10 +215,6 @@ int main(void)
     }
     else
     {
-#if APP_ENABLE_ADVC
-        PRINTF("Loading ADVC table...\r\n");
-        ADVC_Init();
-#endif /* APP_ENABLE_ADVC */
         APP_CopyCore1Image();
         APP_BootCore1();
     }

@@ -80,6 +80,7 @@ void MU_B_RX_IRQHandler(void)
         {
 #if APP_ENABLE_ADVC
             PRINTF("Enabling ADVC As Optimal Mode...\r\n");
+            ADVC_Disable();
             if (ADVC_Enable(kADVC_ModeOptimal, NULL) != kADVC_Stat_Ok)
             {
                 PRINTF("Fail to enable ADVC!!!\r\n");
