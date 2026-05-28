@@ -38,7 +38,10 @@ typedef enum _resc_name
 
     /*! Power domain modules */
     kResc_LdoCore,
+    kResc_ScgLdo,
     kResc_RamRetentionLdo,
+    kResc_VbatBandgap,
+    kResc_VbatBandgapRefresh,
     kResc_LpIref,
     kResc_LpBuffer_Act,
     kResc_LpBuffer_Lp,
@@ -54,10 +57,13 @@ typedef enum _resc_name
     kResc_Sys_Vdd_Hvd_Lp,
     kResc_Glitch_Detector_Act,
     kResc_Glitch_Detector_Lp,
+    kResc_SpcSocCtrl_Act,
+    kResc_SpcSocCtrl_Lp,
 
     /*! Memory modules */
     kResc_Flash,
     kResc_Lpcac,
+    kResc_SysconRamCtrl,
     kResc_RamA0,
     kResc_RamA3,
     kResc_RamX,
@@ -77,6 +83,7 @@ typedef enum _resc_name
     kResc_Cmp0,
     kResc_Cmp0_Dac,
     kResc_Vbat_Lp,
+    kResc_VbatDpdPower,
     kResc_Clkmon,
 
     /*! Peripheral clocks, This is for demonstration purposes only.
@@ -100,6 +107,10 @@ typedef struct _app_core_ldo_ctrl
     spc_bandgap_mode_t bandgapMode;
     spc_core_ldo_voltage_level_t coreLDOVoltage;
     spc_core_ldo_drive_strength_t coreLDODriveStrength;
+    bool updateActiveModeConfig;
+    spc_bandgap_mode_t activeBandgapMode;
+    spc_core_ldo_voltage_level_t activeCoreLDOVoltage;
+    spc_core_ldo_drive_strength_t activeCoreLDODriveStrength;
 } app_core_ldo_ctrl_t;
 
 typedef enum _app_cpu_clock_source

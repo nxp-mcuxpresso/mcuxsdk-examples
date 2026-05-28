@@ -24,7 +24,7 @@
  * Prototypes
  ******************************************************************************/
 __WEAK void APP_PowerPreSwitchHook(app_power_mode_t targetPowerMode);
-__WEAK void APP_PowerPostSwitchHook(void);
+__WEAK void APP_PowerPostSwitchHook(app_power_mode_t targetPowerMode);
 
 static app_power_mode_t APP_GetTargetPowerMode(void);
 static void APP_GetWakeupConfig(app_power_mode_t targetMode);
@@ -52,6 +52,7 @@ int main(void)
     if ((CMC_GetStickySystemResetStatus(APP_CMC) & wakeUpResetMask) != 0UL)
     {
         /* Wakeup from Deep Power Down mode? => Clears peripherals and I/O pads isolation flags. */
+        SPC_SetExternalVoltageDomainsConfig(APP_SPC, 0x0U, 0x0U);
         SPC_ClearPeriphIOIsolationFlag(APP_SPC);
     }
 
@@ -102,7 +103,7 @@ int main(void)
             APP_GetWakeupConfig(targetPowerMode);
             APP_PowerPreSwitchHook(targetPowerMode);
             APP_PowerModeSwitch(targetPowerMode);
-            APP_PowerPostSwitchHook();
+            APP_PowerPostSwitchHook(targetPowerMode);
         }
 
         PRINTF("\r\nNext loop.\r\n");
@@ -161,6 +162,13 @@ static void APP_WakeUpTimerConfig(uint32_t timeOutValue)
     uint32_t timerPeriod;
 
     timerPeriod = (timeOutValue * APP_WUU_WAKEUP_TIMER_CLOCK_SOURCE) - 1U;
+
+    CLOCK_SetClockDiv(kCLOCK_DivLPTMR0, 1U);
+    CLOCK_AttachClk(kFRO_LF_DIV_to_LPTMR0);
+
+    LPTMR_StopTimer(APP_WUU_WAKEUP_TIMER);
+    LPTMR_ClearStatusFlags(APP_WUU_WAKEUP_TIMER, kLPTMR_TimerCompareFlag);
+    NVIC_ClearPendingIRQ(APP_WUU_WAKEUP_TIMER_IRQN);
 
     LPTMR_GetDefaultConfig(&lptmr_config);
     lptmr_config.prescalerClockSource = kLPTMR_PrescalerClock_1;
@@ -296,6 +304,9 @@ static void APP_PowerModeSwitch(app_power_mode_t targetPowerMode)
 {
     cmc_power_domain_config_t config;
 
+    config.clock_mode  = kCMC_GateNoneClock;
+    config.main_domain = kCMC_ActiveOrSleepMode;
+
     if (targetPowerMode != kAPP_PowerModeActive)
     {
         switch (targetPowerMode)
@@ -321,7 +332,11 @@ static void APP_PowerModeSwitch(app_power_mode_t targetPowerMode)
                 break;
         }
 
-        CMC_SetPowerModeProtection(APP_CMC, kCMC_AllowAllLowPowerModes);
+        CMC_SetPowerModeProtection(APP_CMC,
+                       (targetPowerMode == kAPP_PowerModeDeepSleep) ? kCMC_AllowDeepSleepMode :
+                                   (targetPowerMode == kAPP_PowerModePowerDown) ? kCMC_AllowPowerDownMode :
+                                              kCMC_AllowAllLowPowerModes);
+
         CMC_EnterLowPowerMode(APP_CMC, &config);
     }
 }
@@ -331,8 +346,9 @@ __WEAK void APP_PowerPreSwitchHook(app_power_mode_t targetPowerMode)
     (void)targetPowerMode;
 }
 
-__WEAK void APP_PowerPostSwitchHook(void)
+__WEAK void APP_PowerPostSwitchHook(app_power_mode_t targetPowerMode)
 {
+    (void)targetPowerMode;
 }
 
 /*************************** Power Mode Switch ********************************/

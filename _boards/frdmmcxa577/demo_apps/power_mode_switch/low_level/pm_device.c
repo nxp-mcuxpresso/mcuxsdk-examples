@@ -5,61 +5,70 @@
  */
 
 #include "pm_device.h"
+#include "fsl_lptmr.h"
+#include "pin_mux.h"
+
+#ifndef APP_POWERDOWN_WAKE_RESTORE_TIMEOUT
+#define APP_POWERDOWN_WAKE_RESTORE_TIMEOUT 1000000U
+#endif
 
 static const resc_status_t g_resc_ctrl_table[kResc_Max_Num][APP_LOW_POWER_MODE_COUNT] = {
     /*! Clock modules */
-    [kResc_Fro_192M]            = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
+    [kResc_Fro_192M]            = {kResc_Status_Lp,     kResc_Status_On,        kResc_Status_On,        kResc_Status_On},
     [kResc_Fro_12M]             = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_Fro_16K]             = {kResc_Status_On,     kResc_Status_On,        kResc_Status_On,        kResc_Status_On},
     [kResc_Osc_Rtc]             = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
-    
-    /*! Keep SPLL and SOSC always open, because in the current demo, the CPU clock comes from SPLL, and the source of SPLL is SOSC,
-     * so we cannot clock them at runtime.
-     */
-    [kResc_Osc_Sys]             = {kResc_Status_On,    kResc_Status_On,       kResc_Status_On,       kResc_Status_On},
-    [kResc_Spll]                = {kResc_Status_On,    kResc_Status_On,       kResc_Status_On,       kResc_Status_On},
+    [kResc_Osc_Sys]             = {kResc_Status_On,     kResc_Status_On,        kResc_Status_On,        kResc_Status_Off},
+    [kResc_Spll]                = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
 
     /*! Power domain modules */
     [kResc_LdoCore]             = {kResc_Status_On,     kResc_Status_On,        kResc_Status_On,        kResc_Status_On},
-    [kResc_RamRetentionLdo]     = {kResc_Status_On,     kResc_Status_On,        kResc_Status_On,        kResc_Status_On},
+    [kResc_ScgLdo]              = {kResc_Status_Lp,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Lp},
+    [kResc_RamRetentionLdo]     = {kResc_Status_Off,     kResc_Status_On,        kResc_Status_On,        kResc_Status_Off},
+    [kResc_VbatBandgap]         = {kResc_Status_Off,    kResc_Status_On,        kResc_Status_On,        kResc_Status_On},
+    [kResc_VbatBandgapRefresh]  = {kResc_Status_Off,    kResc_Status_On,        kResc_Status_On,        kResc_Status_On},
     [kResc_LpIref]              = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_LpBuffer_Act]        = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_LpBuffer_Lp]         = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
-    [kResc_Core_Vdd_Lvd_Act]    = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
-    [kResc_Core_Vdd_Hvd_Act]    = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
-    [kResc_Sys_Vdd_Lvd_Act]     = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
-    [kResc_Sys_Vdd_Hvd_Act]     = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
-    [kResc_Core_Vdd_Lvd_Lp]     = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
-    [kResc_Core_Vdd_Hvd_Lp]     = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
-    [kResc_Sys_Vdd_Lvd_Lp]      = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
-    [kResc_Sys_Vdd_Hvd_Lp]      = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
-    [kResc_Glitch_Detector_Act]  = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
-    [kResc_Glitch_Detector_Lp]   = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
+    [kResc_Core_Vdd_Lvd_Act]    = {kResc_Status_On,     kResc_Status_On,        kResc_Status_On,        kResc_Status_On},
+    [kResc_Core_Vdd_Hvd_Act]    = {kResc_Status_On,     kResc_Status_On,        kResc_Status_On,        kResc_Status_On},
+    [kResc_Sys_Vdd_Lvd_Act]     = {kResc_Status_On,     kResc_Status_On,        kResc_Status_On,        kResc_Status_On},
+    [kResc_Sys_Vdd_Hvd_Act]     = {kResc_Status_On,     kResc_Status_On,        kResc_Status_On,        kResc_Status_On},
+    [kResc_Core_Vdd_Lvd_Lp]     = {kResc_Status_Off,    kResc_Status_On,        kResc_Status_Off,       kResc_Status_Off},
+    [kResc_Core_Vdd_Hvd_Lp]     = {kResc_Status_Off,    kResc_Status_On,        kResc_Status_Off,       kResc_Status_Off},
+    [kResc_Sys_Vdd_Lvd_Lp]      = {kResc_Status_Off,    kResc_Status_On,        kResc_Status_Off,       kResc_Status_Off},
+    [kResc_Sys_Vdd_Hvd_Lp]      = {kResc_Status_Off,    kResc_Status_On,        kResc_Status_Off,       kResc_Status_Off},
+    [kResc_Glitch_Detector_Act] = {kResc_Status_On,     kResc_Status_On,        kResc_Status_On,        kResc_Status_On},
+    [kResc_Glitch_Detector_Lp]  = {kResc_Status_Off,    kResc_Status_On,        kResc_Status_Off,       kResc_Status_Off},
+    [kResc_SpcSocCtrl_Act]      = {kResc_Status_On,     kResc_Status_On,        kResc_Status_On,        kResc_Status_On},
+    [kResc_SpcSocCtrl_Lp]       = {kResc_Status_On,     kResc_Status_On,        kResc_Status_On,        kResc_Status_Off},
     
-    [kResc_Flash]               = {kResc_Status_On,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Lp},
-    [kResc_Lpcac]               = {kResc_Status_On,     kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
+    [kResc_Flash]               = {kResc_Status_Lp,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Lp},
+    [kResc_Lpcac]               = {kResc_Status_On,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Lp},
+    [kResc_SysconRamCtrl]       = {kResc_Status_On,     kResc_Status_On,        kResc_Status_On,        kResc_Status_Lp},
     /*! SRAM modules */
-    [kResc_RamA0]               = {kResc_Status_On,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Lp},
-    [kResc_RamA3]               = {kResc_Status_On,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Lp},
+    [kResc_RamA0]               = {kResc_Status_On,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Off},
+    [kResc_RamA3]               = {kResc_Status_On,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Off},
     
     /*! In certain power modes, the hardware will power off SRAM. Even if you select power on or retain here, it will have no effect. */
-    [kResc_RamX]                = {kResc_Status_On,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Lp},
-    [kResc_RamA]                = {kResc_Status_On,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Lp},
-    [kResc_RamB]                = {kResc_Status_On,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Lp},
-    [kResc_Ram_Lpcac]           = {kResc_Status_On,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Lp},
-    [kResc_Ram_Dma_Can_Enet]    = {kResc_Status_On,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Lp},
-    [kResc_Ram_Usb_FlexSpi]     = {kResc_Status_On,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Lp},
+    [kResc_RamX]                = {kResc_Status_On,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Off},
+    [kResc_RamA]                = {kResc_Status_On,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Off},
+    [kResc_RamB]                = {kResc_Status_On,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Off},
+    [kResc_Ram_Lpcac]           = {kResc_Status_Lp,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Off},
+    [kResc_Ram_Dma_Can_Enet]    = {kResc_Status_Lp,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Off},
+    [kResc_Ram_Usb_FlexSpi]     = {kResc_Status_Lp,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Off},
 
     /*! Analog modules */
     [kResc_Vref]                = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_Usb]                 = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
-    [kResc_Vbat]                = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
+    [kResc_Vbat]                = {kResc_Status_On,     kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_Dac0]                = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_Dac1]                = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_Tsi0]                = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_Cmp0]                = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_Cmp0_Dac]            = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
-    [kResc_Vbat_Lp]             = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
+    [kResc_Vbat_Lp]             = {kResc_Status_On,     kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
+    [kResc_VbatDpdPower]        = {kResc_Status_On,     kResc_Status_On,        kResc_Status_On,        kResc_Status_Off},
     [kResc_Clkmon]              = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
 
     /*! Peripheral clocks */
@@ -75,7 +84,7 @@ static const app_core_ldo_ctrl_t g_core_ldo_ctrl_table[APP_LOW_POWER_MODE_COUNT]
     {
         .valid                 = true,
         .useActiveModeConfig   = true,
-        .bandgapMode           = kSPC_BandgapDisabled,
+        .bandgapMode           = kSPC_BandgapEnabledBufferDisabled,
         .coreLDOVoltage        = kSPC_CoreLDO_OverDriveVoltage,
         .coreLDODriveStrength  = kSPC_CoreLDO_NormalDriveStrength,
     },
@@ -83,29 +92,37 @@ static const app_core_ldo_ctrl_t g_core_ldo_ctrl_table[APP_LOW_POWER_MODE_COUNT]
     {
         .valid                 = true,
         .useActiveModeConfig   = false,
-        .bandgapMode           = kSPC_BandgapDisabled,
-        .coreLDOVoltage        = kSPC_CoreLDO_MidDriveVoltage,
-        .coreLDODriveStrength  = kSPC_CoreLDO_LowDriveStrength,
+        .bandgapMode           = kSPC_BandgapEnabledBufferDisabled,
+        .coreLDOVoltage        = kSPC_CoreLDO_OverDriveVoltage,
+        .coreLDODriveStrength  = kSPC_CoreLDO_NormalDriveStrength,
     },
     /*! PowerDown */
     {
-        .valid                 = true,
-        .useActiveModeConfig   = false,
-        .bandgapMode           = kSPC_BandgapDisabled,
-        .coreLDOVoltage        = kSPC_Core_LDO_RetentionVoltage,
-        .coreLDODriveStrength  = kSPC_CoreLDO_LowDriveStrength,
+        .valid                       = true,
+        .useActiveModeConfig         = false,
+        .bandgapMode                 = kSPC_BandgapDisabled,
+        .coreLDOVoltage              = kSPC_Core_LDO_RetentionVoltage,
+        .coreLDODriveStrength        = kSPC_CoreLDO_LowDriveStrength,
+        .updateActiveModeConfig      = true,
+        .activeBandgapMode           = kSPC_BandgapEnabledBufferDisabled,
+        .activeCoreLDOVoltage        = kSPC_CoreLDO_MidDriveVoltage,
+        .activeCoreLDODriveStrength = kSPC_CoreLDO_NormalDriveStrength,
     },
     /*! DeepPowerDown */
     {
-        .valid                 = true,
-        .useActiveModeConfig   = false,
-        .bandgapMode           = kSPC_BandgapDisabled,
-        .coreLDOVoltage        = kSPC_Core_LDO_RetentionVoltage,
-        .coreLDODriveStrength  = kSPC_CoreLDO_LowDriveStrength,
+        .valid                       = true,
+        .useActiveModeConfig         = false,
+        .bandgapMode                 = kSPC_BandgapDisabled,
+        .coreLDOVoltage              = kSPC_CoreLDO_MidDriveVoltage,
+        .coreLDODriveStrength        = kSPC_CoreLDO_LowDriveStrength,
+        .updateActiveModeConfig      = true,
+        .activeBandgapMode           = kSPC_BandgapEnabledBufferDisabled,
+        .activeCoreLDOVoltage        = kSPC_CoreLDO_MidDriveVoltage,
+        .activeCoreLDODriveStrength = kSPC_CoreLDO_NormalDriveStrength,
     },
 };
 
-/*! CPU clock control table for Active/Sleep mode. Other modes are intentionally left empty. */
+/*! CPU clock control table for active and low power mode. */
 static const app_cpu_clock_cfg_t g_cpu_clock_cfg_table[] = {
     /*! Active */
     {
@@ -116,10 +133,31 @@ static const app_cpu_clock_cfg_t g_cpu_clock_cfg_table[] = {
     /*! Sleep */
     {
         .valid  = true,
-        .source = kAPP_CpuClockSrcPll,
-        .freqHz = BOARD_BOOTCLOCKPLL240M_CORE_CLOCK,
+        .source = kAPP_CpuClockSrcFroHf,
+        .freqHz = BOARD_BOOTCLOCKFROHF192M_CORE_CLOCK,
+    },
+    /*! DeepSleep */
+    {
+        .valid  = true,
+        .source = kAPP_CpuClockSrcFroHf,
+        .freqHz = BOARD_BOOTCLOCKFROHF192M_CORE_CLOCK,
+    },
+    /*! PowerDown */
+    {
+        .valid  = true,
+        .source = kAPP_CpuClockSrcFroHf,
+        .freqHz = BOARD_BOOTCLOCKFROHF48M_CORE_CLOCK,
+    },
+    /*! DeepPowerDown */
+    {
+        .valid  = true,
+        .source = kAPP_CpuClockSrcFroHf,
+        .freqHz = BOARD_BOOTCLOCKFROHF48M_CORE_CLOCK,
     },
 };
+
+#define APP_SCG_LDO_VOUT_SEL_1V1             4U
+#define APP_SPC_SOC_CNTRL_WAKE_TIMER_CLOCK    (1UL << 2U)
 
 static const uint8_t sram_ret_map[] =
 {
@@ -383,6 +421,7 @@ static void SetClockModulePowerStatus(resc_status_t resc_status, resc_name_t res
                 
                 SCG0->SPLLCSR &= ~(SCG_SPLLCSR_SPLLPWREN_MASK | SCG_SPLLCSR_SPLLCLKEN_MASK);
                 SCG0->SPLLCSR &= ~SCG_SPLLCSR_SPLL_LOCK_MASK;
+                SCG0->SPLLCTRL = 0U;
             }
             else
             {
@@ -419,6 +458,21 @@ static void SetVoltageModulePowerStatus(resc_status_t resc_status, resc_name_t r
             }
             break;
 
+        case kResc_ScgLdo:
+            if (resc_status == kResc_Status_Lp)
+            {
+                SCG0->LDOCSR = SCG_LDOCSR_VOUT_SEL(APP_SCG_LDO_VOUT_SEL_1V1);
+            }
+            else if (resc_status == kResc_Status_Off)
+            {
+                SCG0->LDOCSR &= ~SCG_LDOCSR_LDOEN_MASK;
+            }
+            else
+            {
+                /* Keep the boot/default SCG LDO configuration. */
+            }
+            break;
+
         case kResc_RamRetentionLdo:
             if (resc_status == kResc_Status_Off)
             {
@@ -443,6 +497,14 @@ static void SetVoltageModulePowerStatus(resc_status_t resc_status, resc_name_t r
                 /*! Enable SRAM LDO, use SRAMLDO to supply SRAM. */
                 VBAT_SwitchSRAMPowerByLDOSRAM(APP_VBAT);
             }
+            break;
+
+        case kResc_VbatBandgap:
+            (void)VBAT_EnableBandgap(APP_VBAT, (resc_status != kResc_Status_Off));
+            break;
+
+        case kResc_VbatBandgapRefresh:
+            VBAT_EnableBandgapRefreshMode(APP_VBAT, (resc_status != kResc_Status_Off));
             break;
 
         case kResc_LpIref:
@@ -587,6 +649,16 @@ static void SetVoltageModulePowerStatus(resc_status_t resc_status, resc_name_t r
                 SPC_DisableLowPowerModeVddCoreGlitchDetect(APP_SPC, false);
             }
             break;
+
+        case kResc_SpcSocCtrl_Act:
+            APP_SPC->ACTIVE_CFG1 = SPC_ACTIVE_CFG1_SOC_CNTRL(
+                (resc_status == kResc_Status_Off) ? 0U : APP_SPC_SOC_CNTRL_WAKE_TIMER_CLOCK);
+            break;
+
+        case kResc_SpcSocCtrl_Lp:
+            APP_SPC->LP_CFG1 = SPC_LP_CFG1_SOC_CNTRL(
+                (resc_status == kResc_Status_Off) ? 0U : APP_SPC_SOC_CNTRL_WAKE_TIMER_CLOCK);
+            break;
             
         default:
         {
@@ -625,10 +697,30 @@ static void SetMemoryPowerStatus(resc_status_t resc_status, resc_name_t resc_nam
             /* Disable LPCAC. */
             SYSCON->LPCAC_CTRL |= SYSCON_LPCAC_CTRL_DIS_LPCAC_MASK;
         }
+        else if (resc_status == kResc_Status_Lp)
+        {
+            SYSCON->LPCAC_CTRL = SYSCON_LPCAC_CTRL_DIS_LPCAC_WTBF(1U) |
+                                 SYSCON_LPCAC_CTRL_LIM_LPCAC_WTBF(1U);
+        }
         else
         {
             /* Enable LPCAC. */
             SYSCON->LPCAC_CTRL &= ~SYSCON_LPCAC_CTRL_DIS_LPCAC_MASK;
+        }
+    }
+    else if (resc_name == kResc_SysconRamCtrl)
+    {
+        if (resc_status == kResc_Status_Lp)
+        {
+            SYSCON->RAM_CTRL = SYSCON_RAM_CTRL_RAMA_ECC_ENABLE(1U);
+        }
+        else if (resc_status == kResc_Status_Off)
+        {
+            SYSCON->RAM_CTRL = 0U;
+        }
+        else
+        {
+            /* Keep the current RAM_CTRL configuration. */
         }
     }
     else if (resc_name >= kResc_RamX)
@@ -765,6 +857,18 @@ static void SetAnalogModulePowerStatus(resc_status_t resc_status, resc_name_t re
             }
             break;
 
+        case kResc_VbatDpdPower:
+            if (resc_status == kResc_Status_Off)
+            {
+                APP_VBAT->FROCTLA = 0U;
+                APP_VBAT->FROCLKE = 0U;
+                APP_VBAT->LDORAMC = 0U;
+                APP_VBAT->OSCCTLA = 0U;
+                APP_VBAT->OSCCLKE = 0U;
+                APP_VBAT->MONCTLA = 0U;
+            }
+            break;
+
         case kResc_Clkmon:
             if (resc_status == kResc_Status_Off)
             {
@@ -858,11 +962,16 @@ static void ApplyRescTableForMode(uint8_t modeIndex)
     {
         resc_status_t status = g_resc_ctrl_table[(uint32_t)resc][(uint32_t)modeIndex];
 
+        if (resc == kResc_Fro_16K)
+        {
+            continue;
+        }
+
         if (resc <= kResc_Spll)
         {
             SetClockModulePowerStatus(status, resc);
         }
-        else if (resc <= kResc_Glitch_Detector_Lp)
+        else if (resc <= kResc_SpcSocCtrl_Lp)
         {
             SetVoltageModulePowerStatus(status, resc);
         }
@@ -879,6 +988,12 @@ static void ApplyRescTableForMode(uint8_t modeIndex)
             SetPeripheralClockStatus(status, resc);
         }
     }
+}
+
+static void ApplySpcSocCtrlForMode(uint8_t modeIndex)
+{
+    SetVoltageModulePowerStatus(g_resc_ctrl_table[kResc_SpcSocCtrl_Act][modeIndex], kResc_SpcSocCtrl_Act);
+    SetVoltageModulePowerStatus(g_resc_ctrl_table[kResc_SpcSocCtrl_Lp][modeIndex], kResc_SpcSocCtrl_Lp);
 }
 
 static inline bool GetLowPowerModeIndex(app_power_mode_t mode, uint8_t *modeIndex)
@@ -921,6 +1036,17 @@ static void SetRegulatorsConfig(app_power_mode_t targetPowerMode)
         return;
     }
 
+    if (ctrl->updateActiveModeConfig)
+    {
+        spc_active_mode_core_ldo_option_t activeOption;
+
+        activeOption.CoreLDOVoltage       = ctrl->activeCoreLDOVoltage;
+        activeOption.CoreLDODriveStrength = ctrl->activeCoreLDODriveStrength;
+
+        (void)SPC_SetActiveModeBandgapModeConfig(APP_SPC, ctrl->activeBandgapMode);
+        (void)SPC_SetActiveModeCoreLDORegulatorConfig(APP_SPC, &activeOption);
+    }
+
     if (ctrl->useActiveModeConfig)
     {
         spc_active_mode_core_ldo_option_t option;
@@ -928,9 +1054,9 @@ static void SetRegulatorsConfig(app_power_mode_t targetPowerMode)
         option.CoreLDOVoltage = ctrl->coreLDOVoltage;
         option.CoreLDODriveStrength = ctrl->coreLDODriveStrength;
 
-        (void)SPC_SetActiveModeCoreLDORegulatorConfig(APP_SPC, &option);
-
         SPC_SetActiveModeBandgapModeConfig(APP_SPC, ctrl->bandgapMode);
+
+        (void)SPC_SetActiveModeCoreLDORegulatorConfig(APP_SPC, &option);
     }
     else
     {
@@ -939,9 +1065,19 @@ static void SetRegulatorsConfig(app_power_mode_t targetPowerMode)
         option.CoreLDOVoltage       = ctrl->coreLDOVoltage;
         option.CoreLDODriveStrength = ctrl->coreLDODriveStrength;
 
-        (void)SPC_SetLowPowerModeCoreLDORegulatorConfig(APP_SPC, &option);
-
-        SPC_SetLowPowerModeBandgapmodeConfig(APP_SPC, ctrl->bandgapMode);
+        if (ctrl->coreLDODriveStrength == kSPC_CoreLDO_LowDriveStrength)
+        {
+            (void)SPC_SetLowPowerModeBandgapmodeConfig(APP_SPC, kSPC_BandgapEnabledBufferDisabled);
+            (void)SPC_SetLowPowerModeCoreLDORegulatorDriveStrength(APP_SPC, kSPC_CoreLDO_NormalDriveStrength);
+            (void)SPC_SetLowPowerModeCoreLDORegulatorVoltageLevel(APP_SPC, ctrl->coreLDOVoltage);
+            (void)SPC_SetLowPowerModeCoreLDORegulatorDriveStrength(APP_SPC, kSPC_CoreLDO_LowDriveStrength);
+            (void)SPC_SetLowPowerModeBandgapmodeConfig(APP_SPC, ctrl->bandgapMode);
+        }
+        else
+        {
+            (void)SPC_SetLowPowerModeBandgapmodeConfig(APP_SPC, ctrl->bandgapMode);
+            (void)SPC_SetLowPowerModeCoreLDORegulatorConfig(APP_SPC, &option);
+        }
     }
 }
 
@@ -953,6 +1089,12 @@ static const app_cpu_clock_cfg_t *GetCpuClockCfg(app_power_mode_t mode)
             return &g_cpu_clock_cfg_table[0];
         case kAPP_PowerModeSleep:
             return &g_cpu_clock_cfg_table[1];
+        case kAPP_PowerModeDeepSleep:
+            return &g_cpu_clock_cfg_table[2];
+        case kAPP_PowerModePowerDown:
+            return &g_cpu_clock_cfg_table[3];
+        case kAPP_PowerModeDeepPowerDown:
+            return &g_cpu_clock_cfg_table[4];
         default:
             return NULL;
     }
@@ -991,10 +1133,141 @@ static void ApplyCpuClockCfg(const app_cpu_clock_cfg_t *cfg)
     }
 }
 
+static bool IsWakeTimerRunning(void)
+{
+    return (APP_WUU_WAKEUP_TIMER->CSR & LPTMR_CSR_TEN_MASK) != 0UL;
+}
+
+static void KeepWakeTimerClock(void)
+{
+    CLOCK_SetClockDiv(kCLOCK_DivLPTMR0, 1U);
+    CLOCK_AttachClk(kFRO_LF_DIV_to_LPTMR0);
+}
+
+static void KeepFro16kForWakeTimer(void)
+{
+    uint32_t clockMask = kVBAT_EnableClockToVddWake;
+
+    if (IsWakeTimerRunning())
+    {
+        clockMask |= kVBAT_EnableClockToVddBat;
+    }
+
+    VBAT_EnableFRO16k(APP_VBAT, true);
+    VBAT_UngateFRO16k(APP_VBAT, clockMask);
+    VBAT_GateFRO16k(APP_VBAT, (kVBAT_EnableClockToVddBat | kVBAT_EnableClockToVddSys |
+                               kVBAT_EnableClockToVddWake | kVBAT_EnableClockToVddMain) &
+                                  ~clockMask);
+}
+
+static bool APP_WaitPowerDownWakeSpcNotBusy(void)
+{
+    uint32_t timeout = APP_POWERDOWN_WAKE_RESTORE_TIMEOUT;
+
+    while ((APP_SPC->SC & SPC_SC_BUSY_MASK) != 0UL)
+    {
+        if (timeout == 0U)
+        {
+            return false;
+        }
+        timeout--;
+    }
+
+    return true;
+}
+
+static bool APP_SetPowerDownWakeSramOperateVoltage(spc_sram_operate_voltage_t operateVoltage)
+{
+    uint32_t timeout = APP_POWERDOWN_WAKE_RESTORE_TIMEOUT;
+
+    APP_SPC->SRAMCTL = SPC_SRAMCTL_VSM(operateVoltage);
+    APP_SPC->SRAMCTL |= SPC_SRAMCTL_REQ_MASK;
+
+    while ((APP_SPC->SRAMCTL & SPC_SRAMCTL_ACK_MASK) == 0UL)
+    {
+        if (timeout == 0U)
+        {
+            APP_SPC->SRAMCTL &= ~SPC_SRAMCTL_REQ_MASK;
+            return false;
+        }
+        timeout--;
+    }
+
+    APP_SPC->SRAMCTL &= ~SPC_SRAMCTL_REQ_MASK;
+
+    return true;
+}
+
+static bool APP_PreparePowerDownWakeActiveVoltage(void)
+{
+    uint32_t reg;
+
+    if (kStatus_Success != SPC_SetActiveModeBandgapModeConfig(APP_SPC, kSPC_BandgapEnabledBufferDisabled))
+    {
+        return false;
+    }
+
+    reg = APP_SPC->ACTIVE_CFG;
+    reg &= ~SPC_ACTIVE_CFG_CORELDO_VDD_DS_MASK;
+    reg |= SPC_ACTIVE_CFG_CORELDO_VDD_DS(kSPC_CoreLDO_NormalDriveStrength);
+    APP_SPC->ACTIVE_CFG = reg;
+    if (!APP_WaitPowerDownWakeSpcNotBusy())
+    {
+        return false;
+    }
+
+    reg = APP_SPC->ACTIVE_CFG;
+    reg &= ~SPC_ACTIVE_CFG_CORELDO_VDD_LVL_MASK;
+    reg |= SPC_ACTIVE_CFG_CORELDO_VDD_LVL(kSPC_CoreLDO_OverDriveVoltage);
+    APP_SPC->ACTIVE_CFG = reg;
+    if (!APP_WaitPowerDownWakeSpcNotBusy())
+    {
+        return false;
+    }
+
+    CLOCK_SetFLASHAccessCyclesForFreq(BOARD_BOOTCLOCKPLL240M_CORE_CLOCK, kOD_Mode);
+
+    if (!APP_SetPowerDownWakeSramOperateVoltage(kSPC_sramOperateAt1P2V))
+    {
+        return false;
+    }
+
+    return true;
+}
+
+static bool APP_RestoreActiveClockAfterPowerDownWake(void)
+{
+    const app_cpu_clock_cfg_t *powerDownClockCfg = GetCpuClockCfg(kAPP_PowerModePowerDown);
+
+    ApplyCpuClockCfg(powerDownClockCfg);
+    __DSB();
+    __ISB();
+
+    if (!APP_PreparePowerDownWakeActiveVoltage())
+    {
+        return false;
+    }
+
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_SOSC);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_SIRC);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_FIRC);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_VBAT);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_PLL);
+    BOARD_BootClockPLL240M_InitClockModule(kClockModule_SystemClk);
+
+    __DSB();
+    __ISB();
+
+    SystemCoreClock = BOARD_BOOTCLOCKPLL240M_CORE_CLOCK;
+
+    return true;
+}
+
 void APP_PowerPreSwitchHook(app_power_mode_t targetPowerMode)
 {
     uint8_t modeIndex = 0U;
     bool modeIndexValid = GetLowPowerModeIndex(targetPowerMode, &modeIndex);
+    bool wakeTimerRunning = IsWakeTimerRunning();
 
     assert(modeIndexValid);
 
@@ -1014,15 +1287,33 @@ void APP_PowerPreSwitchHook(app_power_mode_t targetPowerMode)
     APP_DEBUG_CONSOLE_RX_PORT->PCR[APP_DEBUG_CONSOLE_RX_PIN] &= ~PORT_PCR_IBE_MASK;
     APP_DEBUG_CONSOLE_TX_PORT->PCR[APP_DEBUG_CONSOLE_TX_PIN] &= ~PORT_PCR_IBE_MASK;
 
+    if ((targetPowerMode != kAPP_PowerModeDeepPowerDown) || wakeTimerRunning)
+    {
+        KeepFro16kForWakeTimer();
+    }
     ApplyCpuClockCfg(GetCpuClockCfg(targetPowerMode));
+    if (wakeTimerRunning)
+    {
+        KeepWakeTimerClock();
+    }
     ApplyRescTableForMode(modeIndex);
     SetRegulatorsConfig(targetPowerMode);
+    ApplySpcSocCtrlForMode(modeIndex);
 
     /* Keep SPC wakeup delay in sync for low power entry. */
     SPC_SetLowPowerWakeUpDelay(APP_SPC, APP_LDO_LPWKUP_DELAY);
+
+    if ((targetPowerMode != kAPP_PowerModeDeepPowerDown) || wakeTimerRunning)
+    {
+        KeepFro16kForWakeTimer();
+    }
+    if (wakeTimerRunning)
+    {
+        KeepWakeTimerClock();
+    }
 }
 
-void APP_PowerPostSwitchHook(void)
+void APP_PowerPostSwitchHook(app_power_mode_t targetPowerMode)
 {
     /*
      * After waking from DeepSleep/PowerDown/DeepPowerDown, clear the SPC
@@ -1034,8 +1325,27 @@ void APP_PowerPostSwitchHook(void)
      * next application will see VDD_USB / VDD_P2 / VDD_P3 / VDD_P4 held in
      * the isolated state.
      */
+    SPC_ClearPowerDomainLowPowerRequestFlag(APP_SPC, kSPC_PowerDomain0);
+    SPC_ClearLowPowerRequest(APP_SPC);
+
+    if (kCMC_CoreClockGated == CMC_GetCoreClockGatedStatus(APP_CMC))
+    {
+        CMC_ClearCoreClockGatedStatus(APP_CMC);
+    }
+
     SPC_ClearPeriphIOIsolationFlag(APP_SPC);
     SPC_SetExternalVoltageDomainsConfig(APP_SPC, 0x0U, 0x0U);
 
-    BOARD_InitHardware();
+    if (targetPowerMode == kAPP_PowerModePowerDown)
+    {
+        (void)APP_RestoreActiveClockAfterPowerDownWake();
+    }
+    else
+    {
+        BOARD_InitBootClocks();
+    }
+
+    BOARD_InitBUTTONsPins();
+    BOARD_InitDEBUG_UARTPins();
+    BOARD_InitDebugConsole();
 }
