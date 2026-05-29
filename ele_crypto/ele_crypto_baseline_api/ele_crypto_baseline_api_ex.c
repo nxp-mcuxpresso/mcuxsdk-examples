@@ -65,7 +65,7 @@ int main(void)
      */
 
     status_t result = kStatus_Fail;
-    uint32_t fwstatus, fwversion, fuse_value, keyID;
+    uint32_t fwstatus, fwversion, fwcommit, fuse_value, keyID;
     do
     {
         /* HW init */
@@ -147,7 +147,6 @@ int main(void)
                 PRINTF("Bit 27 of fwversion is set - this means response come from FW \r\n\r\n");
             }
         }
-
         /****************** Load EdgeLock FW message ***********************/
         PRINTF("****************** Load EdgeLock FW ***********************\r\n");
         if (ELE_LoadFw(S3MU, ele_fw) != kStatus_Success)
@@ -159,17 +158,20 @@ int main(void)
         {
             PRINTF("EdgeLock FW loaded and authenticated successfully.\r\n\r\n");
         }
-
-        /****************** FW version  service ***********************/
+        /****************** FW version + commit service ***********************/
         PRINTF("****************** Get FW version ELE *********************\r\n");
-        if (ELE_GetFwVersion(S3MU, &fwversion) != kStatus_Success)
+        /*
+         * Use this API to retrieve both firmware version and commit SHA1,
+         * instead of only the firmware version.
+         */
+        if (ELE_GetFwVersionAndCommitSHA1(S3MU, &fwversion, &fwcommit) != kStatus_Success)
         {
             result = kStatus_Fail;
             break;
         }
         else
         {
-            PRINTF("Get FW version successfully. Version: 0x%x\r\n", fwversion);
+            PRINTF("Get FW version successfully. Version: 0x%x Commit: %x\r\n", fwversion, fwcommit);
             /* Check if bit 27 is set, this can be used to differentiate between ROM and FW*/
             if ((fwversion & 0x08000000) == 0U)
             {

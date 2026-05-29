@@ -9,7 +9,7 @@ its services with direct use of Messaging Unit driver.
 Example output on terminal:
 
 EdgeLock Enclave Sub-System crypto base API example:
-
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ****************** Initialize EdgeLock services ***********
 EdgeLock services initialized successfully.
 
@@ -29,7 +29,7 @@ Bit 27 of fwversion is not set - this means response come from ROM
 EdgeLock FW loaded and authenticated successfully.
 
 ****************** Get FW version ELE *********************
-Get FW version successfully. Version: 0x8010010
+Get FW version successfully. Version: 0x8010010 Commit: dfee257d
 Bit 27 is set - this means response come from FW
 Bit 24 is not set - BASE FW is running
 
@@ -73,8 +73,7 @@ Get ELE Events successfully
 ELE Event triggered successfully
 
 End of Example with SUCCESS!!
-
-End of Example with SUCCESS!!
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## Supported Boards
 - [MIMXRT1180-EVK](../../_boards/evkmimxrt1180/ele_crypto/ele_crypto_baseline_api/example_board_readme.md)
