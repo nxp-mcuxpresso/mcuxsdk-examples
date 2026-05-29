@@ -6,8 +6,7 @@ mcux_add_macro(
         -DSERIAL_PORT_TYPE_UART=1\
        -DPRINTF_ADVANCED_ENABLE=1\
        -DEC_MAXSLAVE=32\
-       -DFSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE\
-       -DBOARD_NETWORK_USE_100M_ENET_PORT=1"
+       -DFSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1"
 )
 
 mcux_add_armgcc_configuration(

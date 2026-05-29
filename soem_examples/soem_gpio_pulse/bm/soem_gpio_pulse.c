@@ -40,7 +40,8 @@
  ******************************************************************************/
 
 #define NUM_1M      (1000000UL)
-#define SOEM_PERIOD NUM_1M /* 1 second */
+#define TIMER_NOTIFY_PERIOD    NUM_1M
+#define SOEM_PERIOD 125 /* 125us */
 
 #define SOEM_PORT_NAME "enet0"
 
@@ -225,7 +226,7 @@ void control_task(char *ifname)
     struct timeval last_time;
     struct timeval diff_time;
     sleep_time.tv_sec  = 0;
-    sleep_time.tv_usec = 125;
+    sleep_time.tv_usec = SOEM_PERIOD;
 
     /* initialise SOEM, and if_port */
     if (ec_init(ifname))
@@ -310,12 +311,11 @@ void control_task(char *ifname)
                 {
                     timersub(&target_time, &current_time, &sleep_time);
                     osal_usleep(sleep_time.tv_usec);
-                    sleep_time.tv_usec = 125;
+                    sleep_time.tv_usec = SOEM_PERIOD;
                 }
                 else
                 {
-                    while (1)
-                        ;
+                    PRINTF("Timeout!\r\n");
                 }
             }
         }
@@ -333,7 +333,7 @@ int main(void)
 
     PRINTF("Start the soem_gpio_pulse baremetal example\r\n");
 
-    osal_timer_init(SOEM_PERIOD, 0);
+    osal_timer_init(TIMER_NOTIFY_PERIOD, 0);
     if_port_init();
     control_task(SOEM_PORT_NAME);
     return 0;

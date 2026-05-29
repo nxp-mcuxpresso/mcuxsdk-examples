@@ -1,28 +1,34 @@
 /*
- * Copyright 2018-2020,2022-2024 NXP
+ * Copyright 2018-2020, 2022-2024, 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
 /*${header:start}*/
-#include "app.h"
-#include "pin_mux.h"
-#include "clock_config.h"
-#include "board.h"
-#include "fsl_gpio.h"
-#include "fsl_iomuxc.h"
 #include "fsl_enet.h"
+#include "pin_mux.h"
+#include "board.h"
+#include "app.h"
+#include "fsl_gpio.h"
 /*${header:end}*/
 
 /*${variable:start}*/
-phy_ksz8081_resource_t g_phy_resource;
+phy_rtl8201_resource_t g_phy_resource;
+#if (defined(APP_PHY_LINK_INTR_SUPPORT) && (APP_PHY_LINK_INTR_SUPPORT))
+extern void PHY_LinkStatusChange(void);
+#endif
 /*${variable:end}*/
 
 /*${function:start}*/
-
-#if !(defined(BOARD_NETWORK_USE_100M_ENET_PORT) && (BOARD_NETWORK_USE_100M_ENET_PORT == 1))
-#error "ERROR: This example only supports the 100M ENET port."
-#endif
+void BOARD_InitModuleClock(void)
+{
+    const clock_sys_pll1_config_t sysPll1Config = {
+        .pllDiv2En = true,
+    };
+    CLOCK_InitSysPll1(&sysPll1Config);
+    clock_root_config_t rootCfg = {.mux = 4, .div = 10}; /* Generate 50M root clock. */
+    CLOCK_SetRootClock(kCLOCK_Root_Enet1, &rootCfg);
+}
 
 static void MDIO_Init(void)
 {
@@ -40,38 +46,7 @@ static status_t MDIO_Read(uint8_t phyAddr, uint8_t regAddr, uint16_t *pData)
     return ENET_MDIORead(EXAMPLE_ENET, phyAddr, regAddr, pData);
 }
 
-void BOARD_InitModuleClock(void)
-{
-    const clock_sys_pll1_config_t sysPll1Config = {
-        .pllDiv2En = true,
-    };
-    CLOCK_InitSysPll1(&sysPll1Config);
-
-    clock_root_config_t rootCfg = {.mux = 4, .div = 10}; /* Generate 50M root clock. */
-    CLOCK_SetRootClock(kCLOCK_Root_Enet1, &rootCfg);
-
-    /* Select syspll2pfd3, 528*18/24 = 396M */
-    CLOCK_InitPfd(kCLOCK_PllSys2, kCLOCK_Pfd3, 24);
-    rootCfg.mux = 7;
-    rootCfg.div = 2;
-    CLOCK_SetRootClock(kCLOCK_Root_Bus, &rootCfg); /* Generate 198M bus clock. */
-}
-
-void IOMUXC_SelectENETClock(void)
-{
-    IOMUXC_GPR->GPR4 |= 0x3; /* 50M ENET_REF_CLOCK output to PHY and ENET module. */
-
-    /* wait 1 ms for stabilizing clock */
-    SDK_DelayAtLeastUs(1000, CLOCK_GetFreq(kCLOCK_CpuClk));
-}
-
-/* return the ENET MDIO interface clock frequency */
-uint32_t BOARD_GetMDIOClock(void)
-{
-    return CLOCK_GetRootClockFreq(kCLOCK_Root_Bus);
-}
-
-void BOARD_InitHardware()
+void BOARD_InitHardware(void)
 {
     gpio_pin_config_t gpio_config = {kGPIO_DigitalOutput, 0, kGPIO_NoIntmode};
 
@@ -81,16 +56,45 @@ void BOARD_InitHardware()
     BOARD_InitDebugConsole();
     BOARD_InitModuleClock();
 
-    IOMUXC_SelectENETClock();
+    /* 50M ENET_REF_CLOCK output to PHY and ENET module. */
+    IOMUXC_GPR->GPR4 |= IOMUXC_GPR_GPR4_ENET_REF_CLK_DIR_MASK;
+
+    /* Errata ERR050396: For some bus masters, writing access to CM7 TCM is handled by a NIC301 block which does
+     * not support sparse write conversion. It results in a data corruption when sparse writing to CM7 TCM happens.
+     * For ENET: If CM7 TCM is the destination for writing, IOMUXC_GPR_GPR28[CACHE_ENET] should be cleared. If
+     * IOMUXC_GPR_GPR28[CACHE_ENET] is set, write buffers must be placed in OCRAM or external RAM. */
+    IOMUXC_GPR->GPR28 &= (~IOMUXC_GPR_GPR28_CACHE_ENET_MASK);
 
     GPIO_PinInit(GPIO12, 12, &gpio_config);
     SDK_DelayAtLeastUs(10000, CLOCK_GetFreq(kCLOCK_CpuClk));
     GPIO_WritePinOutput(GPIO12, 12, 1);
     SDK_DelayAtLeastUs(150000, CLOCK_GetFreq(kCLOCK_CpuClk));
 
+#if (defined(APP_PHY_LINK_INTR_SUPPORT) && (APP_PHY_LINK_INTR_SUPPORT))
+    IRQ_ClearPendingIRQ(GPIO3_Combined_0_15_IRQn);
+    EnableIRQ(GPIO3_Combined_0_15_IRQn);
+#endif
+
     MDIO_Init();
     g_phy_resource.read  = MDIO_Read;
     g_phy_resource.write = MDIO_Write;
 }
 
+#if (defined(APP_PHY_LINK_INTR_SUPPORT) && (APP_PHY_LINK_INTR_SUPPORT))
+void GPIO_EnableLinkIntr(void)
+{
+    GPIO_EnableInterrupts(GPIO3, 1U << 11);
+}
+
+void GPIO3_Combined_0_15_IRQHandler(void)
+{
+    if (0U != (GPIO_GetPinsInterruptFlags(GPIO3) & (1U << 11)))
+    {
+        PHY_LinkStatusChange();
+        GPIO_DisableInterrupts(GPIO3, 1U << 11);
+        GPIO_ClearPinsInterruptFlags(GPIO3, 1U << 11);
+    }
+    SDK_ISR_EXIT_BARRIER;
+}
+#endif
 /*${function:end}*/

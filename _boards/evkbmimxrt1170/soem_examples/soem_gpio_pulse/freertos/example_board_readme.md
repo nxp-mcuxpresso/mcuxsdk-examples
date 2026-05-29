@@ -10,7 +10,9 @@ Hardware requirements
 
 Board settings
 ============
-No special settings are required.
+On MIMXRT1170-EVKB REVC board, GPIO_AD_32 uses as ENET_MDC in this example which is muxed with the SD1_CD_B,
+please check the R1926 and R136 connected to SD1_CD_B. If they are populated with resistor and SD card is
+inserted, this time enet can't access PHY.
 
 Prepare the Demo
 ================
