@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2024 NXP
+ * Copyright 2020-2024, 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -36,6 +36,19 @@ void BOARD_InitBootPins(void);
  *
  */
 void BOARD_InitPins(void);                    /* Function assigned for the Cortex-M7F */
+
+#define BOARD_INITPINS_IOMUXC_GPR_GPR42_GPIO_MUX3_GPIO_SEL_LOW_MASK 0x0800U /*!< GPIO3 and CM7_GPIO3 share same IO MUX function, GPIO_MUX3 selects one GPIO function: affected bits mask */
+
+/* GPIO_AD_12 (coord P17), PHY_INTR */
+/* Routed pin properties */
+#define BOARD_INITPINS_PHY_INTR_PERIPHERAL                                 GPIO3   /*!< Peripheral name */
+#define BOARD_INITPINS_PHY_INTR_SIGNAL                               gpio_mux_io   /*!< Signal name */
+#define BOARD_INITPINS_PHY_INTR_CHANNEL                                      11U   /*!< Signal channel */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITPINS_PHY_INTR_GPIO                                       GPIO3   /*!< GPIO peripheral base pointer */
+#define BOARD_INITPINS_PHY_INTR_GPIO_PIN                                     11U   /*!< GPIO pin number */
+#define BOARD_INITPINS_PHY_INTR_GPIO_PIN_MASK                        (1U << 11U)   /*!< GPIO pin mask */
 
 #if defined(__cplusplus)
 }
