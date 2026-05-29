@@ -13,7 +13,6 @@ flexcan
    efifo_edma_transfer/readme.md
    efifo_interrupt_transfer/readme.md
    interrupt_transfer/readme.md
-   interrupt_transfer_appHandle/readme.md
    legacy_fifo_edma_transfer/readme.md
    linux/readme.md
    loopback_transfer/readme.md
