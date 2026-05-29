@@ -426,6 +426,11 @@ int main(void)
             APP_PowerModeSwitch(curPowerState, targetPowerMode);
             APP_PowerPostSwitchHook(curPowerState, targetPowerMode);
 
+            if (kAPP_PowerModeVlps == targetPowerMode)
+            {
+                PRINTF("\r\nEntered VLPS mode and woke up.\r\n");
+            }
+
             PRINTF("\r\nNext loop\r\n");
         }
     }

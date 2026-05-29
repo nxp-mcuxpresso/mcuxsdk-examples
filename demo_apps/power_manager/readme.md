@@ -1,11 +1,11 @@
 # power_manager
 
 ## Overview
-The power manager demo application demonstrates how to change power modes in the KSDK. The difference between this demo
-and power_mode_switch is, this demo uses a notification framework to inform application about the mode change.
-Application could register callback to the notification framework, when power mode changes, the callback
-function is called and user can do something, such as closing debug console before entering low power mode, and
-opening debug console after exiting low power mode.
+The power manager demo application demonstrates how to change power modes in the KSDK. Unlike the Power Mode Switch demo,
+which directly controls the target mode from the menu flow, this demo uses a notification framework to inform the
+application about the mode change. An application can register a callback to the notification framework; when the power
+mode changes, the callback function is called so the application can do something, such as closing the debug console
+before entering low power mode and opening the debug console after exiting low power mode.
 
 When this demo runs, the power mode menu is shown in the debug console, where the user can set the MCU to a specific power mode.
 User can also set the wakeup source following the debug console prompts.

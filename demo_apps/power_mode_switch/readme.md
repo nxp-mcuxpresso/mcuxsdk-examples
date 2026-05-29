@@ -4,7 +4,11 @@
 The Power mode switch demo application demonstrates the use of power modes in the KSDK. The demo prints the power mode menu
 through the debug console, where the user can set the MCU to a specific power mode. The user can also set the wakeup
 source by following the debug console prompts. The purpose of this demo is to show how to switch between different power
- modes, and how to configure a wakeup source and wakeup the MCU from low power modes.
+modes, and how to configure a wakeup source and wakeup the MCU from low power modes.
+
+This demo directly controls the target power mode from the menu flow. Use the Power Manager demo when an application needs
+the notification framework to run callbacks before entering and after exiting a power mode, such as deinitializing and
+reinitializing peripherals around the transition.
 
  Tips:
  This demo is to show how the various power mode can switch to each other. However, in actual low power use case, to save energy and reduce the consumption even more, many things can be done including:

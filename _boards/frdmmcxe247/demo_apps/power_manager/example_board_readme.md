@@ -25,6 +25,9 @@ Running the demo
 When running the demo, the debug console shows the menu to tell how to set MCU
 to target power mode.
 
+This Power Manager demo uses notification callbacks around each power mode transition. Use the Power Mode Switch demo when
+the application only needs direct menu-driven power mode control without the notification framework.
+
 NOTE: Only input when the demo asks to input, input at other time might make the
 debug console overflow and get wrong result.
 ~~~~~~~~~~~~~~~~~~~~~
@@ -42,4 +45,12 @@ Press  D for enter: VLPS     - Very Low Power Stop mode
 Press  E for enter: HSRUN    - High Speed RUN mode
 
 Waiting for power mode select..
+~~~~~~~~~~~~~~~~~~~~~
+
+When VLPS mode is selected and the configured wakeup event occurs, the debug console prints:
+
+~~~~~~~~~~~~~~~~~~~~~
+Entered VLPS mode and woke up.
+
+Next loop
 ~~~~~~~~~~~~~~~~~~~~~

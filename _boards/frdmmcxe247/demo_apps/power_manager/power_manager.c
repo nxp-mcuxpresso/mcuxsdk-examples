@@ -473,6 +473,10 @@ int main(void)
             callbackData0.originPowerState = currentPowerState;
             targetConfigIndex              = targetPowerMode - kAPP_PowerModeMin - 1;
             NOTIFIER_SwitchConfig(&powerModeHandle, targetConfigIndex, kNOTIFIER_PolicyAgreement);
+            if (kAPP_PowerModeVlps == targetPowerMode)
+            {
+                PRINTF("\r\nEntered VLPS mode and woke up.\r\n");
+            }
             PRINTF("\r\nNext loop\r\n");
         }
     }
