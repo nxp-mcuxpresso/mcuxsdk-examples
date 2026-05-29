@@ -102,7 +102,10 @@ int main(void)
 
     APP_InitServices();
 
-    assert(APP_InitBle() == 0);
+    if (APP_InitBle() != 0)
+    {
+      assert(0);
+    }
 
 #if (NXP_RADIO_GEN >= 470)
     PLATFORM_InitLcl();
