@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+canfd_interrupt_transfer_low_level:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexcan/canfd_interrupt_transfer_low_level
+    project-root-path: boards/${board}/driver_examples/canfd/interrupt_transfer_low_level/${multicore_foldername}
+    document:
+      name: canfd_interrupt_transfer_low_level${core_id_suffix_name}
+      category: driver_examples/canfd
+      brief: The canfd_interrupt_transfer_low_level example shows how to use FlexCAN driver in non-blocking
+        interrupt way using low-level hardware APIs. This design demonstrates one-way communication between
+        two FlexCAN peripherals on the same board using low-level interrupt-driven APIs.
+      example_readme:
+      - examples/driver_examples/flexcan/canfd_interrupt_transfer_low_level/readme.md
+      - ${board_root}/${board}/driver_examples/canfd/interrupt_transfer_low_level/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxe31b:

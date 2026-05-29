@@ -3076,6 +3076,8 @@ BOARD_InitFlexCANPins:
 - pin_list:
   - {pin_num: '100', peripheral: FLEXCAN_0, signal: TX, pin_signal: PTA7}
   - {pin_num: '102', peripheral: FLEXCAN_0, signal: RX, pin_signal: PTA6}
+  - {pin_num: '160', peripheral: FLEXCAN_1, signal: TX, pin_signal: PTA11}
+  - {pin_num: '159', peripheral: FLEXCAN_1, signal: RX, pin_signal: PTA12}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -3150,6 +3152,66 @@ void BOARD_InitFlexCANPins(void)
     };
     SIUL2_PinInit(&BOARD_INITFLEXCANPINS_PTA6);
 
+    /* PTA11 (pin 160) is configured as FLEXCAN_1 TX */
+    const siul2_pin_settings_t BOARD_INITFLEXCANPINS_PTA11 =
+    {
+        .base                        = SIUL2,
+        .pinPortIdx                  = 11u,
+        .mux                         = kPORT_MUX_ALT1,
+        .safeMode                    = kPORT_SAFE_MODE_DISABLED,
+        .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
+        .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
+        .pullConfig                  = kPORT_INTERNAL_PULL_NOT_ENABLED,
+        .slewRateCtrlSel             = kPORT_SLEW_RATE_NOT_AVAILABLE,
+        .pullKeep                    = kPORT_PULL_KEEP_DISABLED,
+        .invert                      = kPORT_INVERT_DISABLED,
+        .inputBuffer                 = kPORT_INPUT_BUFFER_DISABLED,
+        .outputBuffer                = kPORT_OUTPUT_BUFFER_ENABLED,
+        .adcInterleaves              = { kMUX_MODE_NOT_AVAILABLE, kMUX_MODE_NOT_AVAILABLE },
+        .initValue                   = 2u
+    };
+    SIUL2_PinInit(&BOARD_INITFLEXCANPINS_PTA11);
+    
+    /* PTA12 (pin 159) is configured as FLEXCAN_1 RX */
+    const siul2_pin_settings_t BOARD_INITFLEXCANPINS_PTA12 =
+    {
+        .base                        = SIUL2,
+        .pinPortIdx                  = 12u,
+        .mux                         = kPORT_MUX_ALT3,
+        .safeMode                    = kPORT_SAFE_MODE_DISABLED,
+        .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
+        .driveStrength               = kPORT_DRIVE_STRENTGTH_NOT_AVAILABLE,
+        .pullConfig                  = kPORT_INTERNAL_PULL_NOT_ENABLED,
+        .slewRateCtrlSel             = kPORT_SLEW_RATE_NOT_AVAILABLE,
+        .pullKeep                    = kPORT_PULL_KEEP_DISABLED,
+        .invert                      = kPORT_INVERT_DISABLED,
+        .inputBuffer                 = kPORT_INPUT_BUFFER_ENABLED,
+        .outputBuffer                = kPORT_OUTPUT_BUFFER_DISABLED,
+        .adcInterleaves              = { kMUX_MODE_NOT_AVAILABLE, kMUX_MODE_NOT_AVAILABLE },
+        .inputMuxReg                 = {
+                                         1u
+                                       },
+        .inputMux                    = { 
+                                         kPORT_INPUT_MUX_ALT2,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT
+                                       },
+        .initValue                   = 2u
+    };
+    SIUL2_PinInit(&BOARD_INITFLEXCANPINS_PTA12);
 }
 
 /* clang-format off */

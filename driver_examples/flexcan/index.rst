@@ -8,11 +8,14 @@ flexcan
 
 
    canfd_interrupt_transfer/readme.md
+   canfd_interrupt_transfer_low_level/readme.md
    canfd_loopback_transfer/readme.md
    canfd_ping_pong_buffer_transfer/readme.md
    efifo_edma_transfer/readme.md
    efifo_interrupt_transfer/readme.md
+   efifo_interrupt_transfer_low_level/readme.md
    interrupt_transfer/readme.md
+   interrupt_transfer_low_level/readme.md
    legacy_fifo_edma_transfer/readme.md
    linux/readme.md
    loopback_transfer/readme.md
