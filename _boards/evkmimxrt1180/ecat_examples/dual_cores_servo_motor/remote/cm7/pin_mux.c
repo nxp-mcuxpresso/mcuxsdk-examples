@@ -50,11 +50,11 @@ BOARD_InitPins:
     slew_rate: Slow}
   - {pin_num: M14, peripheral: RGPIO4, signal: 'gpio_io, 26', pin_signal: GPIO_AD_26}
   - {pin_num: M15, peripheral: RGPIO4, signal: 'gpio_io, 25', pin_signal: GPIO_AD_25}
-  - {pin_num: T14, peripheral: RGPIO4, signal: 'gpio_io, 8', pin_signal: GPIO_AD_08, direction: OUTPUT, gpio_init_state: 'false'}
-  - {pin_num: N15, peripheral: RGPIO4, signal: 'gpio_io, 13', pin_signal: GPIO_AD_13, direction: OUTPUT}
-  - {pin_num: P17, peripheral: RGPIO4, signal: 'gpio_io, 12', pin_signal: GPIO_AD_12, direction: OUTPUT, pull_up_down_config: Pull_Down}
-  - {pin_num: B4, peripheral: RGPIO1, signal: 'gpio_io, 4', pin_signal: GPIO_AON_04, pull_up_down_config: Pull_Up}
-  - {pin_num: M16, peripheral: RGPIO4, signal: 'gpio_io, 27', pin_signal: GPIO_AD_27, direction: OUTPUT}
+  - {pin_num: T14, peripheral: RGPIO4, signal: 'gpio_io, 08', pin_signal: GPIO_AD_08}
+  - {pin_num: N15, peripheral: RGPIO4, signal: 'gpio_io, 13', pin_signal: GPIO_AD_13}
+  - {pin_num: P17, peripheral: RGPIO4, signal: 'gpio_io, 12', pin_signal: GPIO_AD_12}
+  - {pin_num: B4, peripheral: RGPIO1, signal: 'gpio_io, 04', pin_signal: GPIO_AON_04}
+  - {pin_num: M16, peripheral: RGPIO4, signal: 'gpio_io, 27', pin_signal: GPIO_AD_27}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
