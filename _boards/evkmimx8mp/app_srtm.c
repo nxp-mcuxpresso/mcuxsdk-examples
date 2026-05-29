@@ -588,7 +588,6 @@ static srtm_status_t APP_SRTM_I2C_Read(srtm_i2c_adapter_t adapter,
  *
  * Performs an atomic I2C combined transfer: write sub-address bytes (txBuf)
  * followed by a repeated-START and read of rxLen bytes into rxBuf.
- * This uses BOARD_LPI2C_Receive with subAddress parameters to generate:
  *   START -> slave(W) -> txBuf[0..txLen-1] -> ReSTART -> slave(R) -> rxBuf[0..rxLen-1] -> STOP
  */
 static srtm_status_t APP_SRTM_I2C_WriteRead(srtm_i2c_adapter_t adapter,
@@ -605,6 +604,7 @@ static srtm_status_t APP_SRTM_I2C_WriteRead(srtm_i2c_adapter_t adapter,
     uint32_t subAddress = 0U;
     uint8_t subAddressSize = (uint8_t)txLen;
     uint8_t i;
+    i2c_master_transfer_t masterXfer;
 
     /* Assemble sub-address from txBuf (big-endian, max 4 bytes) */
     if (subAddressSize > 4U)
@@ -618,15 +618,23 @@ static srtm_status_t APP_SRTM_I2C_WriteRead(srtm_i2c_adapter_t adapter,
 
     switch (type)
     {
-        case SRTM_I2C_TYPE_LPI2C:
-            retVal = BOARD_LPI2C_Receive((LPI2C_Type *)base_addr, (uint8_t)(slaveAddr & 0xFFU),
-                                         subAddress, subAddressSize, rxBuf, rxLen,
-                                         kLPI2C_TransferDefaultFlag);
+        case SRTM_I2C_TYPE_I2C:
+            memset(&masterXfer, 0U, sizeof(i2c_master_transfer_t));
+            masterXfer.slaveAddress   = (uint8_t)(slaveAddr & 0xFFU);
+            masterXfer.direction      = kI2C_Read;
+            masterXfer.subaddress     = subAddress;
+            masterXfer.subaddressSize = subAddressSize;
+            masterXfer.data           = rxBuf;
+            masterXfer.dataSize       = rxLen;
+            masterXfer.flags          = kI2C_TransferDefaultFlag;
+
+            LPM_IncreseBlockSleepCnt();
+            retVal = I2C_MasterTransferBlocking((I2C_Type *)base_addr, &masterXfer);
+            LPM_DecreaseBlockSleepCnt();
             break;
         default:
             break;
     }
-
 
     return (retVal == kStatus_Success) ? SRTM_Status_Success : SRTM_Status_TransferFailed;
 }
