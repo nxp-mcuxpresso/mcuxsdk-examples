@@ -76,10 +76,10 @@ static void APP_HandShake(void);
  ******************************************************************************/
 
 /*
- * In this example, the PXP block size is 8*8, so the buffer for hand shake
- * should be 16 lines.
+ * In this example, the PXP block size is 16*16, so the buffer for hand shake
+ * should be 32 lines.
  */
-AT_NONCACHEABLE_SECTION_ALIGN(static pixel_t s_HandShakeBuffer[8 * 2][APP_IMG_WIDTH], FRAME_BUFFER_ALIGN);
+AT_NONCACHEABLE_SECTION_ALIGN(static pixel_t s_HandShakeBuffer[16 * 2][APP_IMG_WIDTH], FRAME_BUFFER_ALIGN);
 AT_NONCACHEABLE_SECTION_ALIGN(static pixel_t s_psBufferPxp[APP_PS_HEIGHT][APP_PS_WIDTH], FRAME_BUFFER_ALIGN);
 AT_NONCACHEABLE_SECTION_ALIGN(static pixel_t s_asBufferPxp[APP_AS_HEIGHT][APP_AS_WIDTH], FRAME_BUFFER_ALIGN);
 
@@ -185,7 +185,7 @@ static void APP_InitPxp(void)
     /* Disable CSC1, it is enabled by default. */
     PXP_EnableCsc1(APP_PXP, false);
 
-    PXP_SetProcessBlockSize(APP_PXP, kPXP_BlockSize8);
+    PXP_SetProcessBlockSize(APP_PXP, kPXP_BlockSize16);
 
     PXP_EnableLcdHandShake(APP_PXP, true);
 }
