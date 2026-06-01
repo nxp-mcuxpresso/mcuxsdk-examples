@@ -18,6 +18,15 @@
 
 #define NUM_VRINGS 0x02
 
+#if defined(__ICCARM__)
+extern void __RscTblStart;
+#elif defined(__GNUC__)
+extern const void __RscTblStart;
+#else
+#error Not support the compiler.
+#endif
+
+
 /* Place resource table in special ELF section */
 #if defined(__ARMCC_VERSION) || defined(__GNUC__)
 __attribute__((section(".resource_table")))
@@ -81,8 +90,11 @@ const struct remote_resource_table resources = {
 
 void copyResourceTable(void)
 {
+    uint32_t dst_addr = 0U;
+
     /* On startup, DDR might not be enabled when M4 does resource table copy.
        So we cannot copy to VDEV0_VRING_BASE. Here we take M4 suspend area
        to copy the resource table. */
-    memcpy((void *)0x0FFF8000U, &resources, sizeof(resources));
+    dst_addr = (uint32_t)&__RscTblStart;
+    memcpy((void *)dst_addr, &resources, sizeof(resources));
 }
