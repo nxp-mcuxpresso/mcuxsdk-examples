@@ -27,7 +27,6 @@ void BOARD_InitHardware(void)
     GIC_Enable();
     irq_register(irq, SM_platform_MU_IRQHandler, NULL, portLOWEST_USABLE_INTERRUPT_PRIORITY - 1);
     SM_Platform_Init();
-    BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 }

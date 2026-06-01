@@ -1485,6 +1485,75 @@ void BOARD_ShowEleFwInfo(void)
 }
 #endif
 
+
+/*******************************************************************************
+ * Motor Control MUX Selection
+ ******************************************************************************/
+
+void BOARD_SelectM1PWM(void)
+{
+    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);
+}
+
+void BOARD_SelectM1Encoder(void)
+{
+    BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);
+    SDK_DelayAtLeastUs(2000U, SystemCoreClock);
+    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);
+    SDK_DelayAtLeastUs(10000U, SystemCoreClock);
+}
+
+void BOARD_SelectM1SINC(void)
+{
+    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, SD1_SEL);
+}
+
+void BOARD_SelectM1Faults(void)
+{
+    BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, CAN5_SEL);
+    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, CAN5_SEL);
+    SDK_DelayAtLeastUs(100U, SystemCoreClock);
+    BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, SAI3_SEL);
+    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, SAI3_SEL);
+    SDK_DelayAtLeastUs(100U, SystemCoreClock);
+}
+
+void BOARD_SelectM1ENDAT(void)
+{
+    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);
+    SDK_DelayAtLeastUs(100U, SystemCoreClock);
+}
+
+void BOARD_SelectM2PWM(void)
+{
+    BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);
+    SDK_DelayAtLeastUs(2000U, SystemCoreClock);
+    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);
+    SDK_DelayAtLeastUs(10000U, SystemCoreClock);
+}
+
+void BOARD_SelectM2Encoder(void)
+{
+    BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);
+    SDK_DelayAtLeastUs(2000U, SystemCoreClock);
+    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);
+    SDK_DelayAtLeastUs(10000U, SystemCoreClock);
+}
+
+void BOARD_SelectM2SINC(void)
+{
+    BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, SD2_SEL);
+    SDK_DelayAtLeastUs(2000U, SystemCoreClock);
+    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, SD2_SEL);
+    SDK_DelayAtLeastUs(10000U, SystemCoreClock);
+}
+
+void BOARD_SelectM2ENDAT(void)
+{
+    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);
+    SDK_DelayAtLeastUs(100U, SystemCoreClock);
+}
+
 void BOARD_SelectFTUART(void)
 {
     BOARD_InitI2C6Pins();

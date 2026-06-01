@@ -28,7 +28,7 @@ void BOARD_InitHardware(void)
         .div = 1
     };
     /* clang-format on */
-    BOARD_InitBootPins();
+    BOARD_InitDebugConsolePins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
     BOARD_ConfigMPU();

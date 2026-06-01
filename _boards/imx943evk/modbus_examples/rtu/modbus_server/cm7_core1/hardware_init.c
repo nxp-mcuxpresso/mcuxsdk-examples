@@ -32,7 +32,8 @@ void BOARD_InitHardware(void)
     SystemPlatformInit();
     BOARD_InitLpuartPins(DEMO_LPUART_INSTANCE_IDX);
     BOARD_InitDebugConsolePins();
-    BOARD_InitBootPins();
+    BOARD_InitGPIOPins();
+    BOARD_InitI2C6Pins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
     BOARD_ConfigMPU();

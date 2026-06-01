@@ -24,8 +24,8 @@ void BOARD_InitHardware(void)
         .rate = 24000000UL,
     };
     SystemPlatformInit();
+    BOARD_InitDebugConsolePins();
     /* clang-format on */
-    BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
     BOARD_ConfigMPU();

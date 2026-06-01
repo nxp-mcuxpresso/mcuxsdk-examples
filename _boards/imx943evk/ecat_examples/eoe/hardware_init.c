@@ -72,7 +72,8 @@ UINT16 HW_Init(void)
     UINT32 intMask;
     uint32_t gptFreq;
     gpt_config_t gptConfig;
-	SystemPlatformInit();	
+	SystemPlatformInit();
+    BOARD_InitDebugConsolePins();	
 
     clk_t ecatClk = {
         .clkId = kCLOCK_Ecat,
@@ -96,7 +97,18 @@ UINT16 HW_Init(void)
     CLOCK_EnableClock(gpt2Clk.clkId);
 
     /* Init board hardware. */
-    BOARD_InitBootPins();
+    BOARD_InitEcatLinkPins();
+#ifdef ECAT_RMII_PORT
+    BOARD_InitEcatPortRmiiPins();
+#else
+    BOARD_InitEcatPortMiiPins();
+#endif
+    BOARD_InitEcatI2CPins();
+    BOARD_InitEcatMDIOPins();
+    BOARD_InitEcatCLKPins();
+    BOARD_InitEcatResetPins();
+    BOARD_InitI2C6Pins();
+    BOARD_InitGPIOPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
     BOARD_ConfigMPU();

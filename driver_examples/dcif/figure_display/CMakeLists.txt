@@ -8,8 +8,6 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/driver_examples/dcif/figure_display/dcif_figure_display.c
-            ${board_root}/${board}/driver_examples/dcif/pin_mux.c
-            ${board_root}/${board}/driver_examples/dcif/pin_mux.h
             ${board_root}/${board}/driver_examples/dcif/${multicore_foldername}/hardware_init.c
             ${board_root}/${board}/driver_examples/dcif/${multicore_foldername}/app.h
             ${board_root}/${board}/driver_examples/dcif/dcif_support.c

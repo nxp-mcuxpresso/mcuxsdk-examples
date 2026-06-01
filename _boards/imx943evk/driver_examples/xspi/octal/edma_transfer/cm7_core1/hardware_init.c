@@ -182,7 +182,7 @@ void BOARD_InitHardware(void)
     SystemPlatformInit();
     BOARD_ConfigMPU();
     BOARD_InitDebugConsolePins();
-    BOARD_InitBootPins();
+    BOARD_InitXspiPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
     xspi_clock_init();

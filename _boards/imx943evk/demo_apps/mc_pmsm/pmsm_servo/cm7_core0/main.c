@@ -125,8 +125,21 @@ int main(void)
   SystemPlatformInit();
   BOARD_ConfigMPU();
   BOARD_InitDebugConsolePins();
-  BOARD_InitBootPins();
   BOARD_BootClockRUN();
+
+  /* Init motor control pins */
+  BOARD_InitI2C6Pins();
+  XBAR_Init(kXBAR_DSC1);
+  BOARD_SelectFTUART();
+  BOARD_SelectM1PWM();
+  BOARD_Init_M1_PWM();
+  BOARD_Init_M1_Encoder();
+  BOARD_SelectM1Encoder();
+  BOARD_SelectM1SINC();
+  BOARD_Init_M1_SINC();
+  BOARD_SelectM1Faults();
+  BOARD_Init_M1_FAULTS();
+  XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm2Mux0Trigger0, kXBAR1_OutputSinc1ExtTrigger0);
   
   /* FreeMASTER communication layer initialization */
   init_freemaster_lpuart();

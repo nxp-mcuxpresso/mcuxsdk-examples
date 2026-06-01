@@ -123,7 +123,14 @@ void BOARD_InitHardware(void)
     SystemPlatformInit();
 
     BOARD_InitDebugConsolePins();
-    BOARD_InitBootPins();
+    BOARD_InitNETC_ETH0_Pins();
+    BOARD_InitNETC_ETH1_Pins();
+    BOARD_InitNETC_ETH2_Pins();
+    BOARD_InitNETC_ETH3_Pins();
+    BOARD_InitNETC_ETH4_Pins();
+    BOARD_InitI2C6Pins();
+
+    BOARD_InitI2C3Pins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
     BOARD_ConfigMPU();

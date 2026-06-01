@@ -21,7 +21,7 @@ void BOARD_InitHardware(void)
         .rate = 24000000UL,
     };
     SystemPlatformInit();
-    BOARD_InitBootPins();
+    BOARD_InitFlexio1UartPins();
     BOARD_BootClockRUN();
 
     CLOCK_SetRate(&flexioClkCfg);

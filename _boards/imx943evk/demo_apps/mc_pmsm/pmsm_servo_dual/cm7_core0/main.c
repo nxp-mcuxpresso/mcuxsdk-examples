@@ -140,8 +140,36 @@ int main(void)
     SystemPlatformInit();
     BOARD_ConfigMPU();
     BOARD_InitDebugConsolePins();
-    BOARD_InitBootPins();
     BOARD_BootClockRUN();
+
+    /* Init motor control pins */
+    BOARD_InitI2C6Pins();
+    XBAR_Init(kXBAR_DSC1);
+    BOARD_SelectFTUART();
+
+    /* Motor controller 1 */
+    BOARD_SelectM1PWM();
+    BOARD_Init_M1_PWM();
+    BOARD_Init_M1_ENDAT2P2();
+    BOARD_SelectM1ENDAT();
+    BOARD_SelectM1SINC();
+    BOARD_Init_M1_SINC();
+    BOARD_SelectM1Faults();
+    BOARD_Init_M1_FAULTS();
+    XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm2Mux0Trigger0, kXBAR1_OutputSinc1ExtTrigger0);
+
+    /* Motor controller 2 */
+    BOARD_SelectM2PWM();
+    BOARD_Init_M2_PWM();
+    BOARD_Init_M2_ENDAT2P2();
+    BOARD_SelectM2ENDAT();
+    BOARD_SelectM2SINC();
+    BOARD_Init_M2_SINC();
+    BOARD_Init_M2_FAULTS();
+    XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux0Trigger0, kXBAR1_OutputSinc2ExtTrigger0);
+
+    /* Route synchronization signal FlexPWM2_SM0_trig1 -> FlexPWM1_SM0_ExtSync0 */
+    XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm2Mux1Trigger0, kXBAR1_OutputFlexpwm1ExtSync0);
     
     /* FreeMASTER communication layer initialization */
     init_freemaster_lpuart();

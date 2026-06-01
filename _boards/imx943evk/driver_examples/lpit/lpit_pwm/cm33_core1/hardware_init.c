@@ -15,7 +15,7 @@ void BOARD_InitHardware(void)
 {
     SystemPlatformInit();
     BOARD_InitDebugConsolePins();
-    BOARD_InitBootPins();
+    BOARD_InitLpitPwmPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
     BOARD_ConfigMPU();

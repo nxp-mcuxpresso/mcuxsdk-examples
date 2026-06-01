@@ -30,8 +30,9 @@ void BOARD_InitHardware(void)
 
     SystemPlatformInit();
     BOARD_InitDebugConsolePins();
+    BOARD_InitFlexio1UartPins();
     BOARD_BootClockRUN();
-    BOARD_InitBootPins();
+    BOARD_InitI2C4Pins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
     BOARD_ConfigMPU();

@@ -23,8 +23,8 @@ void BOARD_InitHardware(void)
 
     SystemPlatformInit();
     BOARD_InitDebugConsolePins();
+    BOARD_InitFlexio1PwmPins();
     BOARD_BootClockRUN();
-    BOARD_InitBootPins();
     BOARD_InitDebugConsole();
     BOARD_ConfigMPU();
 

@@ -55,7 +55,6 @@ int main(void)
     /* Board initialization */
     SystemPlatformInit();
     BOARD_InitDebugConsolePins();
-    BOARD_InitBootPins();
     BOARD_BootClockRUN();
 
     /* FreeMASTER communication layer initialization */

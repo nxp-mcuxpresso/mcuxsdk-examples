@@ -259,7 +259,36 @@ int main(void)
     /* BootPins must be initialzed after MU_ipc_shm_client_init
      * due to BOARD_PCA6416_I2C6 is in conflicat with CM33 core.
     */
-    BOARD_InitBootPins();
+    BOARD_InitI2C6Pins();         /* Init I2C pins to be able control MUX signals */
+    XBAR_Init(kXBAR_DSC1);
+
+    /* LPUART11/12 via FTDI chip (J15 connector). SW7-2 to ON for LPUART12 via FTDI. */
+    BOARD_SelectFTUART();
+
+    /* Motor controller 1 (main connector for motor control example) */
+    BOARD_SelectM1PWM();
+    BOARD_Init_M1_PWM();          /* Init PWM pins */
+    BOARD_Init_M1_Encoder();     /* Init encoder pins */
+    BOARD_SelectM1Encoder();
+    BOARD_SelectM1SINC();
+    BOARD_Init_M1_SINC();         /* Init SINC filter pins */
+    BOARD_SelectM1Faults();
+    BOARD_Init_M1_FAULTS();       /* Init over-current and over-voltage protection pins */
+    XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm2Mux0Trigger0, kXBAR1_OutputSinc1ExtTrigger0);   /* Route FlexPWM2_SM0_trig0 -> SINC1_htrig0 */
+
+    /* Motor controller 2 (main connector for motor control example) */
+    BOARD_SelectM2PWM();
+    BOARD_Init_M2_PWM();          /* Init PWM pins */
+    BOARD_Init_M2_Encoder();         /* Init encoder pins */
+    BOARD_SelectM2Encoder();
+    BOARD_SelectM2SINC();
+    BOARD_Init_M2_SINC();         /* Init SINC filter pins */
+    BOARD_Init_M2_FAULTS();       /* Init over-current and over-voltage protection pins */
+    XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux0Trigger0, kXBAR1_OutputSinc2ExtTrigger0);   /* Route FlexPWM1_SM0_trig0 -> SINC2_htrig0 */
+
+    /* Route synchronization signal FlexPWM2_SM0_trig1 -> FlexPWM1_SM0_ExtSync0 */
+    XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm2Mux1Trigger0, kXBAR1_OutputFlexpwm1ExtSync0);
+
     /* FreeMASTER communication layer initialization */
     init_freemaster_lpuart();
     FMSTR_Init();

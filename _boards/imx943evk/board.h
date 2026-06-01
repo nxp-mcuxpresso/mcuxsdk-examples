@@ -761,6 +761,18 @@ void BOARD_InitLpuartPins(uint32_t instIdx);
 void BOARD_ShowEleFwInfo(void);
 
 void BOARD_SelectFTUART(void);
+
+/* Motor control MUX selection */
+void BOARD_SelectM1PWM(void);
+void BOARD_SelectM1Encoder(void);
+void BOARD_SelectM1SINC(void);
+void BOARD_SelectM1Faults(void);
+void BOARD_SelectM1ENDAT(void);
+void BOARD_SelectM2PWM(void);
+void BOARD_SelectM2Encoder(void);
+void BOARD_SelectM2SINC(void);
+void BOARD_SelectM2ENDAT(void);
+
 #if defined(__cplusplus)
 }
 #endif /* __cplusplus */

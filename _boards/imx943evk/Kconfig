@@ -22,6 +22,7 @@ config MCUX_HW_BOARD_imx943evk
     imply MCUX_COMPONENT_component.sm.crc
     imply MCUX_COMPONENT_component.sm.scmi
     imply MCUX_COMPONENT_component.sm.smt
+    imply MCUX_COMPONENT_driver.xbar_1
     select MCUX_PRJSEG_module.srtm_config if MCUX_COMPONENT_driver.srtm
     select MCUX_PRJSEG_module.custom_rsc_table if MCUX_COMPONENT_driver.srtm
 
