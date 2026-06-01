@@ -65,6 +65,7 @@ Hello world.
 - [IMX943EVK CM33_CORE1](../../_boards/imx943evk/freertos_examples/freertos_hello/cm33_core1/example_board_readme.md)
 - [IMX943EVK CM7_CORE0](../../_boards/imx943evk/freertos_examples/freertos_hello/cm7_core0/example_board_readme.md)
 - [IMX943EVK CM7_CORE1](../../_boards/imx943evk/freertos_examples/freertos_hello/cm7_core1/example_board_readme.md)
+- [IMX943EVK CA55](../../_boards/imx943evk/freertos_examples/freertos_hello/ca55/example_board_readme.md)
 - [IMX95LP4XEVK-15](../../_boards/imx95lp4xevk15/freertos_examples/freertos_hello/example_board_readme.md)
 - [IMX95LPD5EVK-19](../../_boards/imx95lpd5evk19/freertos_examples/freertos_hello/example_board_readme.md)
 - [FRDM-IMX95](../../_boards/frdmimx95/freertos_examples/freertos_hello/example_board_readme.md)
