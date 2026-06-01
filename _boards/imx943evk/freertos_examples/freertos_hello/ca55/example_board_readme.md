@@ -9,11 +9,6 @@ Board settings
 ============
 No special settings are required.
 
-#### Please note this application can only support running with Real-Time Edge U-Boot ####
-[Real-Time Edge Software](https://www.nxp.com/rtedge)
-[Real-Time Edge U-Boot](https://github.com/nxp-real-time-edge-sw/real-time-edge-uboot)
-
-
 Run the Demo
 ===============
 1.  Connect 12V~20V power supply, switch SW1(SYS_PWR) to power on the board.
@@ -31,8 +26,16 @@ Run the Demo
     - One stop bit
     - No flow control
 4.  Starting the FreeRTOS from the U-Boot command line:
-    u-boot=> load mmc 1:2 0xD0000000 <path-to-image>/freertos_hello_ca55.bin;
-    u-boot=> dcache flush;
-    u-boot=> cpu 3 release 0xD0000000
+    - Running the example on boot-core (core0) using the builtin 'go' command:
+      u-boot=> load mmc 1:2 0xD0000000 <path-to-image>/freertos_hello_ca55.bin;
+      u-boot=> dcache flush;
+      u-boot=> go 0xD0000000
+    - Or running the example on non-boot-core using the [Real-Time Edge U-Boot](https://github.com/nxp-real-time-edge-sw/real-time-edge-uboot) provided 'cpu' command:
+      u-boot=> load mmc 1:2 0xD0000000 <path-to-image>/freertos_hello_ca55.bin;
+      u-boot=> dcache flush;
+      u-boot=> cpu 3 release 0xD0000000
 5.  The FreeRTOS console will print out:
     'Hello world.'
+
+#### Note ####
+Refer to [Real-Time Edge Software](https://www.nxp.com/rtedge) for getting and programming the Real-Time Edge U-Boot.
