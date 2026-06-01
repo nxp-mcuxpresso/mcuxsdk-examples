@@ -17,4 +17,5 @@ dsp_audio_demo_bm:
     evkmimxrt685@cm33: []
     mimxrt685audevk@cm33: []
     evkmimxrt595@cm33: []
+    frdmimxrt700@cm33_core0: []
     mimxrt700evk@cm33_core0: []

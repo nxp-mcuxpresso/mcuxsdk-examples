@@ -13,3 +13,4 @@ This example cannot be imported into Config Tools because the xtensa toolchain i
 - [EVK-MIMXRT685](../../_boards/evkmimxrt685/dsp_examples/audio_demo_bm/example_board_readme.md)
 - [MIMXRT685-AUD-EVK](../../_boards/mimxrt685audevk/dsp_examples/audio_demo_bm/example_board_readme.md)
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/dsp_examples/audio_demo_bm/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/dsp_examples/audio_demo_bm/example_board_readme.md)
