@@ -616,13 +616,13 @@ void BOARD_SetTrdcGlobalConfig(void)
         }
 
         /* Special configurations for cortex-A35 */
-        /* non secure state can access 0x1fff8000(it is used for resource table of rpmsg) for cortex-A35 */
+        /* non secure state can access 0x20000000(it is used for resource table of rpmsg) for cortex-A35 */
         mbcBlockConfig.memoryAccessControlSelect = TRDC_MBC_ACCESS_CONTROL_POLICY_ALL_INDEX;
         mbcBlockConfig.nseEnable                 = true; /* non secure state can access the block for cortex-A35 */
         mbcBlockConfig.mbcIdx                    = 0U;   /* MBC0 */
         mbcBlockConfig.domainIdx                 = 7U;   /* MBC0_DOM7 */
         mbcBlockConfig.slaveMemoryIdx            = 2U;   /* MBC0_DOM7_MEM2 */
-        mbcBlockConfig.memoryBlockIdx            = 31U;  /* MBC0_DOM7_MEM2_BLK_CFG_W31 */
+        mbcBlockConfig.memoryBlockIdx            = 0U;  /* MBC0_DOM7_MEM2_BLK_CFG_W0 */
         TRDC_MbcSetMemoryBlockConfig(TRDC, &mbcBlockConfig);
 
         /* non secure state can access CGC0: PBrigge0 slot 47 and PCC0 slot 48 for cortex-A35 */
