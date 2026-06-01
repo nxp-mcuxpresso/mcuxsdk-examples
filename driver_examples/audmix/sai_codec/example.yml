@@ -13,4 +13,5 @@ audmix_sai_codec:
       - examples/driver_examples/audmix/sai_codec/readme.md
       - ${board_root}/${board}/driver_examples/audmix/sai_codec/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
-  boards: {}
+  boards:
+    imx952evk@cm7: []

@@ -7,7 +7,6 @@ This example demonstrates how to use the AUDMIX (Audio Mixer) peripheral with SA
 The example initializes three SAI peripherals:
 - SAI1: Configured as TDM1 input to AUDMIX
 - SAI2: Configured as TDM2 input to AUDMIX
-- SAI3: Configured to receive the AUDMIX output
 
 After initialization, the example checks if the TDM streams from SAI1 and SAI2 are synchronized (both clock frequency and frame rate). If synchronized, it enables mixed output mode and demonstrates attenuation control. If not synchronized, it falls back to using only TDM1 as the output source.
 

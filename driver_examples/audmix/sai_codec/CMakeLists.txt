@@ -8,7 +8,6 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/driver_examples/audmix/sai_codec/main.c
-            examples/driver_examples/audmix/sai_codec/music.h
 )
 
 mcux_add_include(

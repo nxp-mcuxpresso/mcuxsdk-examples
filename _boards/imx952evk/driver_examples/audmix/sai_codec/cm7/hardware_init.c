@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -32,8 +32,8 @@ wm8962_config_t wm8962Config = {
             .rightHeadphonePGASource   = kWM8962_OutputPGASourceDAC,
         },
     .slaveAddress = WM8962_I2C_ADDR,
-    .bus          = kWM8962_BusI2S,
-    .format       = {.sampleRate = kWM8962_AudioSampleRate16KHz, .bitWidth = kWM8962_AudioBitWidth16bit},
+    .bus          = (kWM8962_BusTDM | kWM8962_BusPCMA),
+    .format       = {.sampleRate = kWM8962_AudioSampleRate48KHz, .bitWidth = kWM8962_AudioBitWidth32bit},
     .fllClock =
         {
             .fllClockSource        = kWM8962_FLLClkSourceMCLK,
@@ -85,7 +85,10 @@ void BOARD_InitHardware(void)
     BOARD_InitI2C4Pins();
     BOARD_InitSAIPins();
     BOARD_BootClockRUN();
-    BOARD_InitDebugConsoleForCM7WithSM();
+    BOARD_InitDebugConsole();
+
+    /* Set AUDMIX to bypass mode */
+    BOARD_SetAudmixMode(0x0U);
 
     CLOCK_SetRate(&audiopll1vcoCLKCfg);
     CLOCK_EnableClock(audiopll1vcoCLKCfg.clkId);
@@ -93,22 +96,15 @@ void BOARD_InitHardware(void)
     CLOCK_EnableClock(audiopll1CLKCfg.clkId);
     CLOCK_SetRate(&lpi2cCLKCfg);
     CLOCK_EnableClock(lpi2cCLKCfg.clkId);
+    CLOCK_SetParent(&saiCLKCfg);
     CLOCK_SetRate(&saiCLKCfg);
     CLOCK_EnableClock(saiCLKCfg.clkId);
-
-    /* Select SAI3 signals */
-    pcal6408_handle_t handle;
-    BOARD_InitPCAL6408_I2C4(&handle);
-    PCAL6408_SetDirection(&handle, (1 << BOARD_PCAL6408_SLOT_SAI3_SEL), kPCAL6408_Output);
-    PCAL6408_ClearPins(&handle, (1 << BOARD_PCAL6408_SLOT_SAI3_SEL));
-    SDK_DelayAtLeastUs(1000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 
     /* select MCLK direction(Enable MCLK clock) */
     saiMasterCfg.mclkSourceClkHz = DEMO_SAI_CLK_FREQ;            /* setup source clock for MCLK */
     saiMasterCfg.mclkHz          = saiMasterCfg.mclkSourceClkHz; /* setup target clock of MCLK */
-    SAI_SetMasterClockConfig(DEMO_SAI1, &saiMasterCfg);
-    SAI_SetMasterClockConfig(DEMO_SAI2, &saiMasterCfg);
-    SAI_SetMasterClockConfig(DEMO_SAI3, &saiMasterCfg);
+    SAI_SetMasterClockConfig(DEMO_TDM1, &saiMasterCfg);
+    SAI_SetMasterClockConfig(DEMO_TDM2, &saiMasterCfg);
 
     wm8962Config.i2cConfig.codecI2CSourceClock = DEMO_I2C_CLK_FREQ;
     wm8962Config.format.mclk_HZ                = DEMO_SAI_CLK_FREQ;
