@@ -82,6 +82,8 @@ Hello world.
 - [LPCXpresso55S36](../../_boards/lpcxpresso55s36/freertos_examples/freertos_hello/example_board_readme.md)
 - [LPCXpresso55S69](../../_boards/lpcxpresso55s69/freertos_examples/freertos_hello/example_board_readme.md)
 - [LPCXpresso860MAX](../../_boards/lpcxpresso860max/freertos_examples/freertos_hello/example_board_readme.md)
+- [MCIMX91-EVK](../../_boards/mcimx91evk/freertos_examples/freertos_hello/example_board_readme.md)
+- [MCIMX91-QSB](../../_boards/mcimx91qsb/freertos_examples/freertos_hello/example_board_readme.md)
 - [MCIMX93AUTO-EVK](../../_boards/mcimx93autoevk/freertos_examples/freertos_hello/example_board_readme.md)
 - [MCIMX93-EVK](../../_boards/mcimx93evk/freertos_examples/freertos_hello/example_board_readme.md)
 - [MCIMX93W-EVK](../../_boards/mcimx93wevk/freertos_examples/freertos_hello/example_board_readme.md)
