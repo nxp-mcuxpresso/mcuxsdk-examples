@@ -19,7 +19,7 @@
 #define DEMO_TMU_AMPVREF_VALUE kTMU_AmplifierReferenceVoltage652_5
 #ifndef DEMO_TMU_TEST
 #define DEMO_TMU_IMMEDIATE_THRESOLD        (48U - 21U)
-#define DEMO_TMU_AVERAGE_THRESOLD          (50U - 21U)
+#define DEMO_TMU_AVERAGE_THRESOLD          (30U - 21U)
 #define DEMO_TMU_AVERAGE_CRITICAL_THRESOLD (88U - 21U)
 #endif
 #define DEMO_TMU_IRQ              TEMPMON_LOW_IRQn
