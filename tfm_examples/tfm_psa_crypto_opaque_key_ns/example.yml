@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+tfm_psa_crypto_opaque_key_ns:
+  use_sysbuild: true
+  section-type: application
+  contents:
+    meta_path: examples/tfm_examples/tfm_psa_crypto_opaque_key_ns
+    project-root-path: boards/${board}/tfm_examples/tfm_psa_crypto_opaque_key/tfm_psa_crypto_opaque_key_ns
+    document:
+      name: tfm_psa_crypto_opaque_key_ns${core_id_suffix_name}
+      category: tfm_examples
+      brief: This example demonstrates the use of PSA Crypto APIs through TF‑M to handle
+        opaque keys. A key is securely generated and used within the secure environment,
+        with optional export as a wrapped blob and re-import for later use, 
+        without exposing plaintext key material to non-secure world.
+  boards:
+    frdmkw43: []
+
