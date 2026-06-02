@@ -32,7 +32,7 @@ Pin 1 is set as active tamper rx and Pin 4 as active tamper tx.
 
 Without connecting tamper pin it should trigger tamper event and output log should look like log below
 
-When Tamper 0 is connected to 3V3, In output log line Line Tampering detected on PIN0 should change to No tampering detected on PIN0
+When Tamper 0 is connected to 3V3, In output log line Line Tampering detected on Passive TAMPER should change to No tampering detected on Passive TAMPER
 
 When Tamper 1 and 4 is connected together, In output log line Tampering detected on active tamper should change to No tampering detected on active tamper
 

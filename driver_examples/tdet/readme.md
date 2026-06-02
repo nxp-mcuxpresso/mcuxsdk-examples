@@ -7,19 +7,14 @@ Then tests the expected behaviour.
 ## Running the demo
 When the demo runs successfully, the terminal displays similar information like the following:
 ~~~~~~~~~~~~~~~~~~
-
 TDET Peripheral Driver Example
 
 Tampering detected Tamper Detect Flag is set
 
 Passive tamper example
-No tampering detected on PIN0
-
-Active tamper example
-No tampering detected on active tamper
+Tampering detected on Passive TAMPER
 
 End of example
-
 ~~~~~~~~~~~~~~~~~~
 
 ## Supported Boards
