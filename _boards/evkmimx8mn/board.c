@@ -138,10 +138,7 @@ void BOARD_InitMemory(void)
 
     /* Enable I cache */
 #if defined(__ICACHE_PRESENT) && __ICACHE_PRESENT
-    if (SCB_CCR_IC_Msk == (SCB_CCR_IC_Msk & SCB->CCR))
-    {
-        SCB_EnableICache();
-    }
+    SCB_EnableICache();
 #endif
 }
 
