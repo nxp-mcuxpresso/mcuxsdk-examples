@@ -46,12 +46,12 @@ mcux_add_macro(
 )
 
 mcux_add_mdk_configuration(
-    TARGETS flexspi_nor_release
+    TARGETS flash_release
     CC "-Os"
 )
 
 mcux_remove_mdk_configuration(
-    TARGETS flexspi_nor_release
+    TARGETS flash_release
     CC "-Oz"
 )
 
