@@ -67,22 +67,22 @@
 #define LED1_INIT(output)                                        \
     GPIO_PinWrite(BOARD_LED1_GPIO, BOARD_LED1_GPIO_PIN, output); \
     BOARD_LED1_GPIO->PDDR |= (1U << BOARD_LED1_GPIO_PIN)                          /*!< Enable target LED1 */
-#define LED1_OFF()    GPIO_PortClear(BOARD_LED1_GPIO, 1U << BOARD_LED1_GPIO_PIN)  /*!< Turn on target LED1 */
-#define LED1_ON()     GPIO_PortSet(BOARD_LED1_GPIO, 1U << BOARD_LED1_GPIO_PIN)    /*!< Turn off target LED1 */
+#define LED1_OFF()    GPIO_PortClear(BOARD_LED1_GPIO, 1U << BOARD_LED1_GPIO_PIN)  /*!< Turn off target LED1 */
+#define LED1_ON()     GPIO_PortSet(BOARD_LED1_GPIO, 1U << BOARD_LED1_GPIO_PIN)    /*!< Turn on target LED1 */
 #define LED1_TOGGLE() GPIO_PortToggle(BOARD_LED1_GPIO, 1U << BOARD_LED1_GPIO_PIN) /*!< Toggle on target LED1 */
 
 #define LED2_INIT(output)                                        \
     GPIO_PinWrite(BOARD_LED2_GPIO, BOARD_LED2_GPIO_PIN, output); \
     BOARD_LED2_GPIO->PDDR |= (1U << BOARD_LED2_GPIO_PIN)                          /*!< Enable target LED2 */
-#define LED2_OFF()    GPIO_PortClear(BOARD_LED2_GPIO, 1U << BOARD_LED2_GPIO_PIN)  /*!< Turn on target LED2 */
-#define LED2_ON()     GPIO_PortSet(BOARD_LED2_GPIO, 1U << BOARD_LED2_GPIO_PIN)    /*!< Turn off target LED2 */
+#define LED2_OFF()    GPIO_PortClear(BOARD_LED2_GPIO, 1U << BOARD_LED2_GPIO_PIN)  /*!< Turn off target LED2 */
+#define LED2_ON()     GPIO_PortSet(BOARD_LED2_GPIO, 1U << BOARD_LED2_GPIO_PIN)    /*!< Turn on target LED2 */
 #define LED2_TOGGLE() GPIO_PortToggle(BOARD_LED2_GPIO, 1U << BOARD_LED2_GPIO_PIN) /*!< Toggle on target LED2 */
 
 #define LED3_INIT(output)                                        \
     GPIO_PinWrite(BOARD_LED3_GPIO, BOARD_LED3_GPIO_PIN, output); \
     BOARD_LED3_GPIO->PDDR |= (1U << BOARD_LED3_GPIO_PIN)                          /*!< Enable target LED3 */
-#define LED3_OFF()    GPIO_PortClear(BOARD_LED3_GPIO, 1U << BOARD_LED3_GPIO_PIN)  /*!< Turn on target LED3 */
-#define LED3_ON()     GPIO_PortSet(BOARD_LED3_GPIO, 1U << BOARD_LED3_GPIO_PIN)    /*!< Turn off target LED3 */
+#define LED3_OFF()    GPIO_PortClear(BOARD_LED3_GPIO, 1U << BOARD_LED3_GPIO_PIN)  /*!< Turn off target LED3 */
+#define LED3_ON()     GPIO_PortSet(BOARD_LED3_GPIO, 1U << BOARD_LED3_GPIO_PIN)    /*!< Turn on target LED3 */
 #define LED3_TOGGLE() GPIO_PortToggle(BOARD_LED3_GPIO, 1U << BOARD_LED3_GPIO_PIN) /*!< Toggle on target LED3 */
 
 #define BOARD_SW2_NAME        "SW2"
@@ -117,20 +117,6 @@ extern "C" {
  * @brief Initialize debug console.
  */
 void BOARD_InitDebugConsole(void);
-
-/*!
- * @brief Enable write for the Glikey protected registers.
- *
- * @param base GLIKEY peripheral base pointer
- * @param idx target index.
- */
-void GlikeyWriteEnable(GLIKEY_Type *base, uint8_t idx);
-/*!
- * @brief Reset the Glikey to init status.
- *
- * @param base GLIKEY peripheral base pointer
- */
-void GlikeyClearConfig(GLIKEY_Type *base);
 
 #if defined(__cplusplus)
 }
