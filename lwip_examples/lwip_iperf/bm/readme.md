@@ -148,6 +148,7 @@ For RTOS applications, DEFAULT_THREAD_PRIO and TCPIP_THREAD_PRIO values can have
 - [IMX95LP4XEVK-15](../../../_boards/imx95lp4xevk15/lwip_examples/lwip_iperf/bm/example_board_readme.md)
 - [IMX95LPD5EVK-19](../../../_boards/imx95lpd5evk19/lwip_examples/lwip_iperf/bm/example_board_readme.md)
 - [FRDM-IMX95](../../../_boards/frdmimx95/lwip_examples/lwip_iperf/bm/example_board_readme.md)
+- [FRDM-IMX952](../../../_boards/frdmimx952/lwip_examples/lwip_iperf/bm/example_board_readme.md)
 - [LPCXpresso54628](../../../_boards/lpcxpresso54628/lwip_examples/lwip_iperf/bm/example_board_readme.md)
 - [LPCXpresso54S018](../../../_boards/lpcxpresso54s018/lwip_examples/lwip_iperf/bm/example_board_readme.md)
 - [LPCXpresso54S018M](../../../_boards/lpcxpresso54s018m/lwip_examples/lwip_iperf/bm/example_board_readme.md)

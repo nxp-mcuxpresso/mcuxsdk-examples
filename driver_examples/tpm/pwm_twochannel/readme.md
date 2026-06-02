@@ -25,6 +25,7 @@ a change in LED brightness if user enter different values.
 - [IMX95LP4XEVK-15](../../../_boards/imx95lp4xevk15/driver_examples/tpm/pwm_twochannel/example_board_readme.md)
 - [IMX95LPD5EVK-19](../../../_boards/imx95lpd5evk19/driver_examples/tpm/pwm_twochannel/example_board_readme.md)
 - [FRDM-IMX95](../../../_boards/frdmimx95/driver_examples/tpm/pwm_twochannel/example_board_readme.md)
+- [FRDM-IMX952](../../../_boards/frdmimx952/driver_examples/tpm/pwm_twochannel/example_board_readme.md)
 - [KW45B41Z-EVK](../../../_boards/kw45b41zevk/driver_examples/tpm/pwm_twochannel/example_board_readme.md)
 - [KW47-EVK](../../../_boards/kw47evk/driver_examples/tpm/pwm_twochannel/example_board_readme.md)
 - [MCIMX93AUTO-EVK](../../../_boards/mcimx93autoevk/driver_examples/tpm/pwm_twochannel/example_board_readme.md)

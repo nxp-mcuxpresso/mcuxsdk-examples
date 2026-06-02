@@ -18,3 +18,4 @@ source by following the debug console prompts. The purpose of this demo is to sh
 - [IMX95LP4XEVK-15](../../_boards/imx95lp4xevk15/demo_apps/power_mode_switch/example_board_readme.md)
 - [IMX95LPD5EVK-19](../../_boards/imx95lpd5evk19/demo_apps/power_mode_switch/example_board_readme.md)
 - [FRDM-IMX95](../../_boards/frdmimx95/demo_apps/power_mode_switch/example_board_readme.md)
+- [FRDM-IMX952](../../_boards/frdmimx952/demo_apps/power_mode_switch_imx95/example_board_readme.md)

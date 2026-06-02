@@ -12,4 +12,5 @@ In this demo, NETC PSI sends/receives frames with external loopback cable. Use M
 - [IMX95LPD5EVK-19](../../../_boards/imx95lpd5evk19/driver_examples/netc/txrx_transfer/example_board_readme.md)
 - [IMX943-EVK](../../../_boards/imx943evk/driver_examples/netc/txrx_transfer/example_board_readme.md)
 - [FRDM-IMX95](../../../_boards/frdmimx95/driver_examples/netc/txrx_transfer/example_board_readme.md)
+- [FRDM-IMX952](../../../_boards/frdmimx952/driver_examples/netc/txrx_transfer/example_board_readme.md)
 - [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/driver_examples/netc/txrx_transfer/example_board_readme.md)

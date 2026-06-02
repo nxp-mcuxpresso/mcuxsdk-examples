@@ -16,3 +16,4 @@ mqs_sai:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmimx95@cm7: []
+    frdmimx952@cm7: []

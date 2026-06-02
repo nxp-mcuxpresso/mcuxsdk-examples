@@ -18,6 +18,7 @@ result, if the result of the channel conversion is valid, it will be printed to 
 - [IMX95LP4XEVK-15](../../../_boards/imx95lp4xevk15/driver_examples/sar_adc/polling/example_board_readme.md)
 - [IMX95LPD5EVK-19](../../../_boards/imx95lpd5evk19/driver_examples/sar_adc/polling/example_board_readme.md)
 - [FRDM-IMX95](../../../_boards/frdmimx95/driver_examples/sar_adc/polling/example_board_readme.md)
+- [FRDM-IMX952](../../../_boards/frdmimx952/driver_examples/sar_adc/polling/example_board_readme.md)
 - [MCIMX93-EVK](../../../_boards/mcimx93evk/driver_examples/sar_adc/polling/example_board_readme.md)
 - [MCIMX93W-EVK](../../../_boards/mcimx93wevk/driver_examples/sar_adc/polling/example_board_readme.md)
 - [IMX943-EVK](../../../_boards/imx943evk/driver_examples/sar_adc/polling/example_board_readme.md)
