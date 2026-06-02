@@ -51,11 +51,11 @@ void BOARD_InitHardware(void)
     CLOCK_EnableClock(kCLOCK_GateGPIO3);
 
     /* Attach LPUART0 clock */
-    CLOCK_SetClockDiv(kCLOCK_DivLPUART0, 1u);
     CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
-
-    CLOCK_SetClockDiv(kCLOCK_DivLPTMR0, 1u);
     CLOCK_AttachClk(kFRO12M_to_LPTMR0);
+
+    CLOCK_SetClockDiv(kCLOCK_DivLPUART0, 1u);
+    CLOCK_SetClockDiv(kCLOCK_DivLPTMR0, 1u);
 
     CLOCK_SetupFRO16KClocking(0x3);
 

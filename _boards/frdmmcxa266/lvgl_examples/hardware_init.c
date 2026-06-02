@@ -47,11 +47,11 @@ static void BOARD_InitSmartDMA(void)
 void BOARD_InitHardware(void)
 {
     /* Attach peripheral clock */
-    CLOCK_SetClockDiv(kCLOCK_DivFLEXIO0, 1u);
     CLOCK_AttachClk(kFRO_HF_to_FLEXIO0);
-
-    CLOCK_SetClockDiv(kCLOCK_DivLPI2C3, 1u);
     CLOCK_AttachClk(kFRO_LF_DIV_to_LPI2C3);
+
+    CLOCK_SetClockDiv(kCLOCK_DivFLEXIO0, 1u);
+    CLOCK_SetClockDiv(kCLOCK_DivLPI2C3, 1u);
     
     CLOCK_EnableClock(kCLOCK_GateGPIO3);
     CLOCK_EnableClock(kCLOCK_GatePORT3);

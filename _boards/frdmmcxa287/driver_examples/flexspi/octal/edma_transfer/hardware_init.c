@@ -191,8 +191,8 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
 
     CLOCK_EnableClock(kCLOCK_GateFLEXSPI0);
-    CLOCK_SetClockDiv(kCLOCK_DivFLEXSPI0, 4U);
     CLOCK_AttachClk(kFRO_HF_to_FLEXSPI); /*!< Switch FLEXSPI to FRO HF */
+    CLOCK_SetClockDiv(kCLOCK_DivFLEXSPI0, 4U);
 
     /* Enable DMA0 request for FLEXSPI */
     EDMA_SocRequestEnable(EXAMPLE_FLEXSPI_DMA, FLEXSPI_TX_DMA_REQUEST_SOURCE, true);

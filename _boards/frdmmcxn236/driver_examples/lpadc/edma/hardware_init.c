@@ -20,15 +20,15 @@
 void BOARD_InitHardware(void)
 {
     /* attach FRO 12M to FLEXCOMM4 (debug console) */
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1U);
     CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1U);
 
     /* Enable INPUTMUX0 */
     CLOCK_EnableClock(kCLOCK_InputMux0);
 
     /* attach FRO HF to ADC0 */
-    CLOCK_SetClkDiv(kCLOCK_DivAdc0Clk, 1U);
     CLOCK_AttachClk(kFRO12M_to_ADC0);
+    CLOCK_SetClkDiv(kCLOCK_DivAdc0Clk, 1U);
 
     /* Enable 12MHz FRO to LPTMR */
     CLOCK_SetupClockCtrl(kCLOCK_FRO12MHZ_ENA);

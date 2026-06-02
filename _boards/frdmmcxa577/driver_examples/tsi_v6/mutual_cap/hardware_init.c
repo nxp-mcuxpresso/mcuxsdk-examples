@@ -31,7 +31,7 @@ void BOARD_InitHardware(void)
     CLOCK_SetupOsc32KClocking(kCLOCK_Osc32kToAll);
 
     CLOCK_SetupFROHFClocking(48000000U);
-    CLOCK_SetClockDiv(kCLOCK_DivTSI0, 4);
     CLOCK_AttachClk(kFRO_HF_DIV_to_TSI0);
+    CLOCK_SetClockDiv(kCLOCK_DivTSI0, 4);
 }
 /*${function:end}*/

@@ -15,8 +15,8 @@
 void BOARD_InitHardware(void)
 {
     /* Attach peripheral clock */
-    CLOCK_SetClockDiv(kCLOCK_DivLPTMR0, 1u);
     CLOCK_AttachClk(kFRO12M_to_LPTMR0);
+    CLOCK_SetClockDiv(kCLOCK_DivLPTMR0, 1u);
 
     CLOCK_SetupFRO16KClocking(kCLKE_16K_SYSTEM | kCLKE_16K_COREMAIN);
 

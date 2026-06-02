@@ -20,11 +20,11 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
 
     /* Attach peripheral clock */
-    CLOCK_SetClockDiv(kCLOCK_DivFLEXIO0, 2u);
     CLOCK_AttachClk(kFRO_HF_to_FLEXIO0);
-
-    CLOCK_SetClockDiv(kCLOCK_DivLPSPI2, 1u);
     CLOCK_AttachClk(kFRO_LF_DIV_to_LPSPI2);
+
+    CLOCK_SetClockDiv(kCLOCK_DivFLEXIO0, 2u);
+    CLOCK_SetClockDiv(kCLOCK_DivLPSPI2, 1u);
 
     /* Release peripheral reset */
     RESET_ReleasePeripheralReset(kFLEXIO0_RST_SHIFT_RSTn);

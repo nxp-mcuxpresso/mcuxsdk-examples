@@ -19,7 +19,7 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
 
     /*Clock setting for FLEXCAN*/
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcan012PeClk, 1U);
     CLOCK_AttachClk(kAIPS_PLAT_CLK_to_FLEXCAN012_PE);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcan012PeClk, 1U);
 }
 /*${function:end}*/

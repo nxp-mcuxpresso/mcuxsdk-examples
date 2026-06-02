@@ -55,20 +55,20 @@ int BOARD_CODEC_Init(void)
 void BOARD_InitHardware(void)
 {
     /* attach FRO 12M to FLEXCOMM4 (debug console) */
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
     CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
 
     /* attach FRO 12M to LPFLEXCOMM2 */
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom2Clk, 1u);
     CLOCK_AttachClk(kFRO12M_to_FLEXCOMM2);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom2Clk, 1u);
 
     /* attach FRO HF to SAI1 */
-    CLOCK_SetClkDiv(kCLOCK_DivSai1Clk, 1u);
     CLOCK_AttachClk(kFRO_HF_to_SAI1);
+    CLOCK_SetClkDiv(kCLOCK_DivSai1Clk, 1u);
 
     /* attach FRO HF to USDHC */
-    CLOCK_SetClkDiv(kCLOCK_DivUSdhcClk, 1u);
     CLOCK_AttachClk(kFRO_HF_to_USDHC);
+    CLOCK_SetClkDiv(kCLOCK_DivUSdhcClk, 1u);
 
     /* Enables the clock for GPIO0 */
     CLOCK_EnableClock(kCLOCK_Gpio0);
@@ -93,8 +93,8 @@ void BOARD_InitHardware(void)
     CLOCK_SetClkDiv(kCLOCK_DivPLL1Clk0, 5U);
 
     /* attach PLL1_CLK0 to PDM, PDM_CLK = 24.576MHz */
-    CLOCK_SetClkDiv(kCLOCK_DivMicfilFClk, 1U);
     CLOCK_AttachClk(kPLL1_CLK0_to_MICFILF);
+    CLOCK_SetClkDiv(kCLOCK_DivMicfilFClk, 1U);
 }
 
 void BOARD_MASTER_CLOCK_CONFIG(void)

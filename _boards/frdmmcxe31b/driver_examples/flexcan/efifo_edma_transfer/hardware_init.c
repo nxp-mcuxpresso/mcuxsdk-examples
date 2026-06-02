@@ -19,8 +19,8 @@ void BOARD_InitHardware(void)
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcan012PeClk, 1U);
     CLOCK_AttachClk(kAIPS_PLAT_CLK_to_FLEXCAN012_PE);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcan012PeClk, 1U);
 
     CLOCK_EnableClock(kCLOCK_Tcd0);
 }

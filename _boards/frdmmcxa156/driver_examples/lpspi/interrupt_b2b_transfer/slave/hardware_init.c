@@ -17,8 +17,8 @@
 void BOARD_InitHardware(void)
 {
     /* Attach peripheral clock */
-    CLOCK_SetClockDiv(kCLOCK_DivLPSPI1, 1u);
     CLOCK_AttachClk(kFRO12M_to_LPSPI1);
+    CLOCK_SetClockDiv(kCLOCK_DivLPSPI1, 1u);
 
     BOARD_InitPins();
     BOARD_InitBootClocks();

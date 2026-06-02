@@ -29,8 +29,8 @@ void BOARD_InitHardware(void)
     RESET_PeripheralReset(kLPUART0_RST_SHIFT_RSTn);
     RESET_PeripheralReset(kPORT0_RST_SHIFT_RSTn);
 
-    CLOCK_SetClockDiv(kCLOCK_DivLPUART0, 1u);
     CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
+    CLOCK_SetClockDiv(kCLOCK_DivLPUART0, 1u);
 
     BOARD_InitBootPins();
     BOARD_InitBootClocks();

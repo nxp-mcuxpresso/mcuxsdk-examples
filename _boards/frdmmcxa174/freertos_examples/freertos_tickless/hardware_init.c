@@ -22,8 +22,8 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
 
 #if configUSE_TICKLESS_IDLE == 2
-    CLOCK_SetClockDiv(kCLOCK_DivLPTMR0, 1u);
     CLOCK_AttachClk(kFRO_LF_DIV_to_LPTMR0);
+    CLOCK_SetClockDiv(kCLOCK_DivLPTMR0, 1u);
 
     CLOCK_SetupFRO16KClocking(kCLKE_16K_SYSTEM | kCLKE_16K_COREMAIN);
 

@@ -25,8 +25,8 @@ void BOARD_InitHardware(void)
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 
-    CLOCK_SetClockDiv(kCLOCK_DivADC0, 1U);
     CLOCK_AttachClk(kFRO12M_to_ADC0);
+    CLOCK_SetClockDiv(kCLOCK_DivADC0, 1U);
 
     /* Map Input pin to ADC trigger1 input. */
     INPUTMUX_Init(INPUTMUX0);

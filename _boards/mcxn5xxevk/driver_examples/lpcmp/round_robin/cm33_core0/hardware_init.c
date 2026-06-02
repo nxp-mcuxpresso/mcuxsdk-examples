@@ -20,12 +20,12 @@ void BOARD_InitHardware(void)
     vref_config_t vrefConfig;
 
     /* attach FRO 12M to FLEXCOMM4 (debug console) */
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1U);
     CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1U);
 
     /* attach FRO 12M to CMP0 */
-    CLOCK_SetClkDiv(kCLOCK_DivCmp0rrClk, 0x0FU);
     CLOCK_AttachClk(kFRO12M_to_CMP0RR);
+    CLOCK_SetClkDiv(kCLOCK_DivCmp0rrClk, 0x0FU);
 
     /* enable CMP0, CMP0_DAC  and VREF. */
     SPC_EnableActiveModeAnalogModules(DEMO_SPC_BASE, (kSPC_controlCmp0 | kSPC_controlCmp0Dac | kSPC_controlVref));

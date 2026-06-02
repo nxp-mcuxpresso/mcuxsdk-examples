@@ -25,7 +25,7 @@ void BOARD_InitHardware(void)
     RESET_ReleasePeripheralReset(kDMA0_RST_SHIFT_RSTn);
 
     /* Attach peripheral clock */
-    CLOCK_SetClockDiv(kCLOCK_DivLPSPI0, 1u);
     CLOCK_AttachClk(kFRO_LF_DIV_to_LPSPI0);
+    CLOCK_SetClockDiv(kCLOCK_DivLPSPI0, 1u);
 }
 /*${function:end}*/

@@ -53,8 +53,8 @@ void BOARD_InitHardware(void)
     BOARD_InitPins();
     BOARD_InitBootClocks();
 
-    CLOCK_SetClkDiv(kCLOCK_DivArmTrClkDiv, 1U, false);         /*!< Set TRACECLKDIV divider to value 1 */
     CLOCK_AttachClk(kTRACE_DIV_to_TRACE);
+    CLOCK_SetClkDiv(kCLOCK_DivArmTrClkDiv, 1U, false);         /*!< Set TRACECLKDIV divider to value 1 */
 
     BOARD_InitKey();
 }

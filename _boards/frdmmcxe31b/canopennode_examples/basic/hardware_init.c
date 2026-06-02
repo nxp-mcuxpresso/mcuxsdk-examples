@@ -40,8 +40,8 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
 
     /* Clock setting for FLEXCAN */
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcan012PeClk, 1U);
     CLOCK_AttachClk(kAIPS_PLAT_CLK_to_FLEXCAN012_PE);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcan012PeClk, 1U);
 
     LPUART_TransferCreateHandle(EXAMPLE_LPUART, &g_lpuartHandle, LPUART_UserCallback, NULL);
 }

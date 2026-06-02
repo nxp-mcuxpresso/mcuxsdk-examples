@@ -21,8 +21,8 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
 
     /* Attach peripheral clock */
-    CLOCK_SetClockDiv(kCLOCK_DivCTIMER0, 1u);
     CLOCK_AttachClk(kFRO_HF_to_CTIMER0);
+    CLOCK_SetClockDiv(kCLOCK_DivCTIMER0, 1u);
     
     /* Enable DMA0 request for CTIMER */
     EDMA_SocRequestEnable(EXAMPLE_DMA_BASEADDR, DEMO_DMA_REQUEST_SOURCE, true);

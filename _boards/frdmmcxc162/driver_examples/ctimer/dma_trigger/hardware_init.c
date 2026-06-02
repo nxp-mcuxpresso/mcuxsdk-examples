@@ -19,7 +19,7 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
 
     /* Attach peripheral clock */
-    CLOCK_SetClockDiv(kCLOCK_DivCTIMER0, 1u);
     CLOCK_AttachClk(kFRO_HF_to_CTIMER0);
+    CLOCK_SetClockDiv(kCLOCK_DivCTIMER0, 1u);
 }
 /*${function:end}*/

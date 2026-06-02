@@ -184,16 +184,16 @@ const uint32_t customLUTOctalMode[CUSTOM_LUT_LENGTH] = {
 void BOARD_InitHardware(void)
 {
     /* attach FRO 12M to FLEXCOMM4 (debug console) */
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
     CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
 
     BOARD_InitPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 
     /* Flexspi frequency 150MHz / 2 = 75MHz */
-    CLOCK_SetClkDiv(kCLOCK_DivFlexspiClk, 2U);
     CLOCK_AttachClk(kPLL0_to_FLEXSPI); /*!< Switch FLEXSPI to PLL0 */
+    CLOCK_SetClkDiv(kCLOCK_DivFlexspiClk, 2U);
 
     /* Enable DMA clock. */
     CLOCK_EnableClock(kCLOCK_Dma0);

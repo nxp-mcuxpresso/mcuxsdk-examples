@@ -22,8 +22,8 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
 
     /* Attach peripheral clock */
-    CLOCK_SetClockDiv(kCLOCK_DivADC, 3u);
     CLOCK_AttachClk(kFRO_HF_to_ADC);
+    CLOCK_SetClockDiv(kCLOCK_DivADC, 3u);
 
     /* enable VREF */
     SPC0->ACTIVE_CFG1 |= 0x1;

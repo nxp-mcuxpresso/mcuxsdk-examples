@@ -75,8 +75,8 @@ void BOARD_InitHardware(void)
     BOARD_InitFLASHPins();
 
     /* Set QuadSPI SFCK from PLL_PHI1_CLK. */
-    CLOCK_SetClkDiv(kCLOCK_DivQspiSfckClk, 4U);
     CLOCK_AttachClk(kPLL_PHI1_CLK_to_QSPI_SFCK);
+    CLOCK_SetClkDiv(kCLOCK_DivQspiSfckClk, 4U);
 }
 
 void BOARD_QspiSocConfigure(QuadSPI_Type *base)

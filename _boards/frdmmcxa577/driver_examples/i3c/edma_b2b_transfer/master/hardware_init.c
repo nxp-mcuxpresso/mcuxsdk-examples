@@ -20,8 +20,8 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
 
     /* Attach peripheral clock */
-    CLOCK_SetClockDiv(kCLOCK_DivI3C0_FCLK, 1U);
     CLOCK_AttachClk(kFRO_LF_DIV_to_I3C0FCLK);
+    CLOCK_SetClockDiv(kCLOCK_DivI3C0_FCLK, 1U);
 
     /* Enable DMA0 request for I3C */
     EDMA_SocRequestEnable(EXAMPLE_DMA, EXAMPLE_I3C_TX_DMA_CHANNEL_MUX, true);

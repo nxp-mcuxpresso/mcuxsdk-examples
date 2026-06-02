@@ -18,8 +18,8 @@
 void BOARD_InitHardware(void)
 {
     /* attach FRO 12M to FLEXCOMM2 */
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom2Clk, 1u);
     CLOCK_AttachClk(kFRO12M_to_FLEXCOMM2);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom2Clk, 1u);
 
     BOARD_InitPins();
     BOARD_InitBootClocks();

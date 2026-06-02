@@ -15,12 +15,12 @@
 void BOARD_InitHardware(void)
 {
     /* attach FRO 12M to FLEXCOMM4 (debug console) */
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
     CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
 
     /* attach FRO HF to DAC0 */
-    CLOCK_SetClkDiv(kCLOCK_DivDac0Clk, 1u);
     CLOCK_AttachClk(kFRO_HF_to_DAC0);
+    CLOCK_SetClkDiv(kCLOCK_DivDac0Clk, 1u);
 
     /* enable DAC0 and VREF */
     SPC0->ACTIVE_CFG1 |= 0x11;

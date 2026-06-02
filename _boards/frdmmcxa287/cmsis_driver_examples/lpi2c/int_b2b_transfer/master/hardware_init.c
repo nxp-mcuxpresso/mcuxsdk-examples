@@ -23,8 +23,8 @@ void BOARD_InitHardware(void)
 	
     /* Attach peripheral clock */
     CLOCK_SetupFRO12MClocking();
-    CLOCK_SetClockDiv(kCLOCK_DivLPI2C0, 1u);
     CLOCK_AttachClk(kFRO_LF_DIV_to_LPI2C0);
+    CLOCK_SetClockDiv(kCLOCK_DivLPI2C0, 1u);
 }
 
 uint32_t LPI2C0_GetFreq(void)

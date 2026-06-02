@@ -19,12 +19,12 @@
 void BOARD_InitHardware(void)
 {
     /* attach FRO 12M to FLEXCOMM4 (debug console) */
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
     CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
 
     /* attach TRACECLKDIV to TRACE */
-    CLOCK_SetClkDiv(kCLOCK_DivTraceClk, 2U);
     CLOCK_AttachClk(kTRACE_DIV_to_TRACE);
+    CLOCK_SetClkDiv(kCLOCK_DivTraceClk, 2U);
 
     /* enable the Flash clock if not already set */
     CLOCK_SetupClockCtrl(SYSCON_CLOCK_CTRL_FRO12MHZ_ENA_MASK);

@@ -19,8 +19,8 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
 
     /* Attach peripheral clock */
-    CLOCK_SetClockDiv(kCLOCK_DivDAC0, 1u);
     CLOCK_AttachClk(kFRO_LF_DIV_to_DAC0);
+    CLOCK_SetClockDiv(kCLOCK_DivDAC0, 1u);
 
     /* Enable DAC0 */
     SPC0->ACTIVE_CFG1 |= 0x10;

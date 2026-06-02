@@ -35,15 +35,15 @@ static void BOARD_InitSmartDMA(void)
 void BOARD_InitHardware(void)
 {
     /* attach FRO 12M to FLEXCOMM4 (debug console) */
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
     CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
 
     /* attach FRO 12M to FLEXCOMM2 */
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom2Clk, 1u);
     CLOCK_AttachClk(kFRO12M_to_FLEXCOMM2);
-
-    CLOCK_SetClkDiv(kCLOCK_DivFlexioClk, 1u);
     CLOCK_AttachClk(kPLL0_to_FLEXIO);
+
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom2Clk, 1u);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexioClk, 1u);
     BOARD_InitBootClocks();
     CLOCK_EnableClock(kCLOCK_Port4);
     BOARD_I2C_ReleaseBus(2);

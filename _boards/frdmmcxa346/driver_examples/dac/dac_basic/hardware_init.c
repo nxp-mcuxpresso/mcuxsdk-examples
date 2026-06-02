@@ -17,8 +17,8 @@
 void APP_InitDebugConsole(void)
 {
     /* attach 12 MHz clock to LPUART3 (debug console) */
-    CLOCK_SetClockDiv(kCLOCK_DivLPUART3, 1u);
     CLOCK_AttachClk(kFRO_LF_DIV_to_LPUART3);
+    CLOCK_SetClockDiv(kCLOCK_DivLPUART3, 1u);
 
     RESET_PeripheralReset(kLPUART3_RST_SHIFT_RSTn);
 
@@ -29,8 +29,8 @@ void APP_InitDebugConsole(void)
 void BOARD_InitHardware(void)
 {
     /* Attach peripheral clock */
-    CLOCK_SetClockDiv(kCLOCK_DivDAC0, 1u);
     CLOCK_AttachClk(kFRO_LF_DIV_to_DAC0);
+    CLOCK_SetClockDiv(kCLOCK_DivDAC0, 1u);
 
     /* Release peripheral reset */
     RESET_ReleasePeripheralReset(kDAC0_RST_SHIFT_RSTn);

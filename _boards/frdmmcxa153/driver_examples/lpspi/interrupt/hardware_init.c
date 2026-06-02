@@ -18,12 +18,12 @@
 void BOARD_InitHardware(void)
 {
     /* Attach peripheral clock */
-    CLOCK_SetClockDiv(kCLOCK_DivFRO_HF_DIV, 1u);
-    CLOCK_SetClockDiv(kCLOCK_DivLPSPI0, 1u);
     CLOCK_AttachClk(kFRO_HF_DIV_to_LPSPI0);
-
-    CLOCK_SetClockDiv(kCLOCK_DivLPSPI1, 1u);
     CLOCK_AttachClk(kFRO_HF_DIV_to_LPSPI1);
+    CLOCK_SetClockDiv(kCLOCK_DivFRO_HF_DIV, 1u);
+
+    CLOCK_SetClockDiv(kCLOCK_DivLPSPI0, 1u);
+    CLOCK_SetClockDiv(kCLOCK_DivLPSPI1, 1u);
 
     BOARD_InitPins();
     BOARD_BootClockFRO48M();

@@ -23,8 +23,8 @@
 static void DEMO_InitDebugConsole(void)
 {
     /* attach 12 MHz clock to FLEXCOMM3 (debug console) */
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom3Clk, 1u);
     CLOCK_AttachClk(kFRO12M_to_FLEXCOMM3);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom3Clk, 1u);
 
     RESET_ClearPeripheralReset(kFC3_RST_SHIFT_RSTn);
 
@@ -63,8 +63,8 @@ void BOARD_InitHardware(void)
     CLOCK_SetClkDiv(kCLOCK_DivClkOut, 25U);
 
     /* Enable flexio clock */
-    CLOCK_SetClkDiv(kCLOCK_DivFlexioClk, 1u);
     CLOCK_AttachClk(kPLL0_to_FLEXIO);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexioClk, 1u);
 
     /* Enable RST/RS/CS pins' GPIO clock. */
     CLOCK_EnableClock(kCLOCK_Gpio0);

@@ -16,8 +16,8 @@
 void BOARD_InitHardware(void)
 {
     /* Attach 12 MHz clock to LPUART (debug console) */
-    CLOCK_SetClockDiv(kCLOCK_DivLPUART2, 1u);
     CLOCK_AttachClk(kFRO12M_to_LPUART2);
+    CLOCK_SetClockDiv(kCLOCK_DivLPUART2, 1u);
 
     BOARD_InitPins();
     BOARD_InitBootClocks();

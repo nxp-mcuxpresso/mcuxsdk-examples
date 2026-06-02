@@ -22,8 +22,8 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
 	
 	/* Attach peripheral clock */
-    CLOCK_SetClockDiv(kCLOCK_DivLPSPI0, 1u);
     CLOCK_AttachClk(kFRO_LF_DIV_to_LPSPI0);
+    CLOCK_SetClockDiv(kCLOCK_DivLPSPI0, 1u);
 }
 
 uint32_t LPSPI0_GetFreq()

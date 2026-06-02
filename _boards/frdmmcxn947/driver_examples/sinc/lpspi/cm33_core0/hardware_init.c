@@ -18,19 +18,19 @@
 void BOARD_InitHardware(void)
 {
     /* attach FRO 12M to FLEXCOMM4 (debug console) */
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
     CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
 
     /* attach FRO 12M to FLEXCOMM1 */
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom1Clk, 1u);
     CLOCK_AttachClk(kFRO12M_to_FLEXCOMM1);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom1Clk, 1u);
 
     /* Attach FRO_HF to SINC. */
     CLOCK_AttachClk(kFRO_HF_to_SINCFILT);
 
     /* attach TRACECLKDIV to TRACE */
-    CLOCK_SetClkDiv(kCLOCK_DivTraceClk, 2U);
     CLOCK_AttachClk(kTRACE_DIV_to_TRACE);
+    CLOCK_SetClkDiv(kCLOCK_DivTraceClk, 2U);
 	
     BOARD_InitBootPins();
     BOARD_InitBootClocks();

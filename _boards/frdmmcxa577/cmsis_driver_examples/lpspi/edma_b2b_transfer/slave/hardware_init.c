@@ -26,8 +26,8 @@ void BOARD_InitHardware(void)
     /* Release peripheral RESET */
     RESET_PeripheralReset(kDMA0_RST_SHIFT_RSTn);
     /* Attach peripheral clock */
-    CLOCK_SetClockDiv(kCLOCK_DivLPSPI1, 1u);
     CLOCK_AttachClk(kFRO_LF_DIV_to_LPSPI1);
+    CLOCK_SetClockDiv(kCLOCK_DivLPSPI1, 1u);
     
     /* Enable DMA0 request for LPSPI */
     EDMA_SocRequestEnable(RTE_SPI1_DMA_TX_DMA_BASE, RTE_SPI1_DMA_TX_PERI_SEL, true);

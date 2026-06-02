@@ -14,8 +14,8 @@
 void BOARD_InitHardware(void)
 {
     /* Attach peripheral clock */
-    CLOCK_SetClockDiv(kCLOCK_DivDAC0, 1u);
     CLOCK_AttachClk(kFRO12M_to_DAC0);
+    CLOCK_SetClockDiv(kCLOCK_DivDAC0, 1u);
 
     /* Release peripheral reset */
     RESET_ReleasePeripheralReset(kDAC0_RST_SHIFT_RSTn);

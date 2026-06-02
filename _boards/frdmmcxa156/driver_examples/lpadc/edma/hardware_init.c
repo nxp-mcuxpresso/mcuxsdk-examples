@@ -20,8 +20,8 @@ void BOARD_InitHardware(void)
 
     CLOCK_SetupFRO16KClocking(kCLKE_16K_SYSTEM | kCLKE_16K_COREMAIN);
 
-    CLOCK_SetClockDiv(kCLOCK_DivADC1, 1U);
     CLOCK_AttachClk(kFRO12M_to_ADC1);
+    CLOCK_SetClockDiv(kCLOCK_DivADC1, 1U);
 
     RESET_ReleasePeripheralReset(kINPUTMUX0_RST_SHIFT_RSTn);
     CLOCK_EnableClock(kCLOCK_GateINPUTMUX0);

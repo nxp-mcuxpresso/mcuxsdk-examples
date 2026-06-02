@@ -159,12 +159,12 @@ void BOARD_InitHardware(void)
     CLOCK_EnableClock(kCLOCK_InputMux);
 
     /* attach FRO 12M to LPFLEXCOMM4 (debug console) */
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
     CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
 
     /* attach FRO 12M to LPFLEXCOMM2 */
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom2Clk, 1u);
     CLOCK_AttachClk(kFRO12M_to_FLEXCOMM2);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom2Clk, 1u);
 
 #if (defined USB_DEVICE_CONFIG_KHCI) && (USB_DEVICE_CONFIG_KHCI)
     /*!< Set up PLL0 */
@@ -201,17 +201,17 @@ void BOARD_InitHardware(void)
     CLOCK_SetClkDiv(kCLOCK_DivPllClk, 1U);
 
     /* attach PLL0 to SAI1 */
-    CLOCK_SetClkDiv(kCLOCK_DivSai1Clk, 1u);
     CLOCK_AttachClk(kPLL0_to_SAI1);
+    CLOCK_SetClkDiv(kCLOCK_DivSai1Clk, 1u);
 
 #if (defined USB_DEVICE_CONFIG_EHCI) && (USB_DEVICE_CONFIG_EHCI)
-    CLOCK_SetClkDiv(kCLOCK_DivCtimer0Clk, 1u);
     CLOCK_AttachClk(kPLL0_to_CTIMER0);
+    CLOCK_SetClkDiv(kCLOCK_DivCtimer0Clk, 1u);
 #elif (defined USB_DEVICE_CONFIG_KHCI) && (USB_DEVICE_CONFIG_KHCI)
-    CLOCK_SetClkDiv(kCLOCK_DivCtimer0Clk, 1u);
     CLOCK_AttachClk(kPLL0_to_CTIMER0);
-    CLOCK_SetClkDiv(kCLOCK_DivCtimer1Clk, 1u);
     CLOCK_AttachClk(kFRO_HF_to_CTIMER1);
+    CLOCK_SetClkDiv(kCLOCK_DivCtimer0Clk, 1u);
+    CLOCK_SetClkDiv(kCLOCK_DivCtimer1Clk, 1u);
 #endif
 
     BOARD_USB_AUDIO_KEYBOARD_Init();

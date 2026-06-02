@@ -21,7 +21,7 @@ void BOARD_InitHardware(void)
 
     SPC_EnableActiveModeAnalogModules(SPC0, (kSPC_controlOpamp0 | kSPC_controlOpamp1));
 
-    CLOCK_SetClockDiv(kCLOCK_DivADC, 1U);
     CLOCK_AttachClk(kFRO_LF_DIV_to_ADC);
+    CLOCK_SetClockDiv(kCLOCK_DivADC, 1U);
 }
 /*${function:end}*/

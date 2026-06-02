@@ -21,8 +21,8 @@ i3c_device_control_info_t i3cMasterCtlInfo        = {
 void BOARD_InitHardware(void)
 {
     /* Attach peripheral clock */
-    CLOCK_SetClockDiv(kCLOCK_DivI3C0_FCLK, 4U);
     CLOCK_AttachClk(kFRO_HF_DIV_to_I3C0FCLK);
+    CLOCK_SetClockDiv(kCLOCK_DivI3C0_FCLK, 4U);
 
     BOARD_InitPins();
     BOARD_InitBootClocks();

@@ -24,8 +24,8 @@ void BOARD_InitHardware(void)
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 
-    CLOCK_SetClkDiv(kCLOCK_DivFlexioClk, 1u);
     CLOCK_AttachClk(kPLL0_to_FLEXIO);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexioClk, 1u);
 
     CLOCK_EnableClock(kCLOCK_Gpio0);
     CLOCK_EnableClock(kCLOCK_Gpio4);

@@ -22,8 +22,8 @@ void BOARD_InitHardware(void)
     
     /* Attach peripheral clock */
     CLOCK_SetupFRO12MClocking();
-    CLOCK_SetClockDiv(kCLOCK_DivLPI2C2, 1u);
     CLOCK_AttachClk(kFRO_LF_DIV_to_LPI2C2);
+    CLOCK_SetClockDiv(kCLOCK_DivLPI2C2, 1u);
     
     /* Enable DMA clock. */
     CLOCK_EnableClock(kCLOCK_GateDMA0);

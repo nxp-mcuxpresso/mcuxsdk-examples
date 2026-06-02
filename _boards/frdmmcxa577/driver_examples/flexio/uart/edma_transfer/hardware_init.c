@@ -20,8 +20,8 @@ void BOARD_InitHardware(void)
     BOARD_InitBootClocks();
 
     /* Attach peripheral clock */
-    CLOCK_SetClockDiv(kCLOCK_DivFLEXIO0, 1u);
     CLOCK_AttachClk(kPll1ClkDiv_to_FLEXIO0);
+    CLOCK_SetClockDiv(kCLOCK_DivFLEXIO0, 1u);
 
     /* Release peripheral reset */
     RESET_ReleasePeripheralReset(kFLEXIO0_RST_SHIFT_RSTn);

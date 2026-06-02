@@ -15,15 +15,15 @@ void BOARD_InitHardware(void)
     RESET_PeripheralReset(kDMA0_RST_SHIFT_RSTn);
 
     /* attach FRO 12M to FLEXCOMM4 (debug console) */
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
     CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
 
     /* Attach PLL0 clock to I3C, 150MHz / 6 = 25MHz. */
-    CLOCK_SetClkDiv(kCLOCK_DivI3c1FClk, 6U);
     CLOCK_AttachClk(kPLL0_to_I3C1FCLK);
-
-    CLOCK_SetClkDiv(kCLOCK_DivI3c1FClkS, 1U);
     CLOCK_AttachClk(kCLK_1M_to_I3C1FCLKS);
+
+    CLOCK_SetClkDiv(kCLOCK_DivI3c1FClk, 6U);
+    CLOCK_SetClkDiv(kCLOCK_DivI3c1FClkS, 1U);
 
     /* Enable 1MHz clock. */
     SYSCON->CLOCK_CTRL |= SYSCON_CLOCK_CTRL_FRO1MHZ_CLK_ENA_MASK;

@@ -17,7 +17,7 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
     BOARD_InitESPIPins();
 
-    CLOCK_SetClockDiv(kCLOCK_DivESPI0, 1U);
     CLOCK_AttachClk(kFRO_HF_to_ESPI);
+    CLOCK_SetClockDiv(kCLOCK_DivESPI0, 1U);
 }
 /*${function:end}*/

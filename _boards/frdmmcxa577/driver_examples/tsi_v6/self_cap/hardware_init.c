@@ -30,7 +30,7 @@ void BOARD_InitHardware(void)
     CLOCK_SetupFRO16KClocking(kCLKE_16K_SYSTEM | kCLKE_16K_COREMAIN | kCLKE_16K_VBAT);
     CLOCK_SetupOsc32KClocking(kCLOCK_Osc32kToAll);
 
-    CLOCK_SetClockDiv(kCLOCK_DivTSI0, 10);
     CLOCK_AttachClk(kFRO_HF_DIV_to_TSI0);
+    CLOCK_SetClockDiv(kCLOCK_DivTSI0, 10);
 }
 /*${function:end}*/

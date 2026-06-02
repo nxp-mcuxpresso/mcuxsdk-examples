@@ -20,8 +20,8 @@ i3c_device_control_info_t i3cMasterCtlInfo        = {
 void BOARD_InitHardware(void)
 {
     /* Attach 24M clock to I3C */
-    CLOCK_SetClockDiv(kCLOCK_DivI3C0_FCLK, 4U);
     CLOCK_AttachClk(kFRO_HF_DIV_to_I3C0FCLK);
+    CLOCK_SetClockDiv(kCLOCK_DivI3C0_FCLK, 4U);
 
     BOARD_InitPins();
     BOARD_InitBootClocks();

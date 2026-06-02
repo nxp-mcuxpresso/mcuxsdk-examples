@@ -84,16 +84,16 @@ void BOARD_InitHardware(void)
     osa_status_t status;
 
     /* attach FRO 12M to FLEXCOMM4 (debug console) */
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
     CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
 
     /* attach FRO 12M to FLEXCOMM2 (M.2) */
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom2Clk, 1u);
     CLOCK_AttachClk(BOARD_BT_UART_CLK_ATTACH);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom2Clk, 1u);
 
     /* attach FRO HF to USDHC */
-    CLOCK_SetClkDiv(kCLOCK_DivUSdhcClk, 1u);
     CLOCK_AttachClk(kFRO_HF_to_USDHC);
+    CLOCK_SetClkDiv(kCLOCK_DivUSdhcClk, 1u);
 
     /* Enables the clock for GPIO0 */
     CLOCK_EnableClock(kCLOCK_Gpio0);

@@ -77,8 +77,8 @@ void BOARD_InitHardware(void)
       
     BOARD_InitPins();
 
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 4U);
     CLOCK_AttachClk(kFRO_HF_DIV_to_FLEXCOMM4);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 4U);
     DbgConsole_Init(BOARD_DEBUG_UART_INSTANCE, BOARD_DEBUG_UART_BAUDRATE, BOARD_DEBUG_UART_TYPE, BOARD_DEBUG_UART_CLK_FREQ);
 
     /* Disable unused clocks. */

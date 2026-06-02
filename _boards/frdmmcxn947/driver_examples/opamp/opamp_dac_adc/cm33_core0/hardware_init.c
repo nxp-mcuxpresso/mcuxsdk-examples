@@ -16,16 +16,16 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
     CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
 
     /* attach FRO HF to DAC0 */
-    CLOCK_SetClkDiv(kCLOCK_DivDac0Clk, 1u);
     CLOCK_AttachClk(kFRO_HF_to_DAC0);
+    CLOCK_SetClkDiv(kCLOCK_DivDac0Clk, 1u);
 
     /* attach FRO HF to ADC1 */
-    CLOCK_SetClkDiv(kCLOCK_DivAdc1Clk, 1u);
     CLOCK_AttachClk(kFRO_HF_to_ADC1);
+    CLOCK_SetClkDiv(kCLOCK_DivAdc1Clk, 1u);
 
     /* enable analog module */
     SPC0->ACTIVE_CFG1 |= 0x111;

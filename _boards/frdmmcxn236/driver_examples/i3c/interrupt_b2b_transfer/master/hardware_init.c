@@ -14,12 +14,12 @@
 void BOARD_InitHardware(void)
 {
     /* Attach FRO 12M to FLEXCOMM4 (debug console) */
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1U);
     CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1U);
 
     /* Attach PLL0 clock to I3C, 150MHz / 6 = 12.5MHz. */
-    CLOCK_SetClkDiv(kCLOCK_DivI3c1FClk, 12U);
     CLOCK_AttachClk(kPLL0_to_I3C1FCLK);
+    CLOCK_SetClkDiv(kCLOCK_DivI3c1FClk, 12U);
 
     BOARD_InitPins();
     BOARD_InitBootClocks();

@@ -188,8 +188,8 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
 
     CLOCK_EnableClock(kCLOCK_GateFLEXSPI0);
-    CLOCK_SetClockDiv(kCLOCK_DivFLEXSPI0, 4U);
     CLOCK_AttachClk(kFRO_HF_to_FLEXSPI); /*!< Switch FLEXSPI to FRO HF */
+    CLOCK_SetClockDiv(kCLOCK_DivFLEXSPI0, 4U);
 }
 
 #if EXAMPLE_FLASH_TYPE == FLASH_W25Q64

@@ -20,15 +20,15 @@
 void BOARD_InitHardware(void)
 {
     /* attach FRO 12M to FLEXCOMM4 (debug console) */
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
     CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
 
     BOARD_InitPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 
     /* Flexspi frequency 48MHz */
-    CLOCK_SetClkDiv(kCLOCK_DivFlexspiClk, 1U);
     CLOCK_AttachClk(kFRO_HF_to_FLEXSPI); /*!< Switch FLEXSPI to FRO_HF */
+    CLOCK_SetClkDiv(kCLOCK_DivFlexspiClk, 1U);
 }
 /*${function:end}*/

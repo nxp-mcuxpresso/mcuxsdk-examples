@@ -28,9 +28,9 @@ void BOARD_InitHardware(void)
     CLOCK_EnableClock(kCLOCK_Sysctl);
     /* Enable watchdog clock */
     CLOCK_Enable1MFRO(true);
-    CLOCK_SetClkDiv(kCLOCK_DivWdtClk, 10U, true);
-
     CLOCK_AttachClk(kOSC32K_to_CTIMER0);
+
+    CLOCK_SetClkDiv(kCLOCK_DivWdtClk, 10U, true);
 
     BOARD_Configure32kOsc();
 

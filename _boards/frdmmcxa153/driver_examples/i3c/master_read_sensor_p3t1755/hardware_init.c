@@ -14,8 +14,8 @@
 void BOARD_InitHardware(void)
 {
     /* Attach clock to I3C 24MHZ */
-    CLOCK_SetClockDiv(kCLOCK_DivI3C0_FCLK, 2U);
     CLOCK_AttachClk(kFRO_HF_DIV_to_I3C0FCLK);
+    CLOCK_SetClockDiv(kCLOCK_DivI3C0_FCLK, 2U);
 
     BOARD_InitPins();
     BOARD_BootClockFRO48M();

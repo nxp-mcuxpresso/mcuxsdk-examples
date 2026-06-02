@@ -15,8 +15,8 @@
 void BOARD_InitHardware(void)
 {
     /* Attach peripheral clock */
-    CLOCK_SetClockDiv(kCLOCK_DivLPUART3, 1u);
     CLOCK_AttachClk(kFRO_LF_DIV_to_LPUART3);
+    CLOCK_SetClockDiv(kCLOCK_DivLPUART3, 1u);
 
     BOARD_InitPins();
     BOARD_InitBootClocks();

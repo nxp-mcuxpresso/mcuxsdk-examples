@@ -36,12 +36,12 @@ sai_master_clock_t mclkConfig;
 void BOARD_InitHardware(void)
 {
     /* attach FRO 12M to LPFLEXCOMM4 (debug console) */
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
     CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
 
     /* attach FRO 12M to LPFLEXCOMM2 */
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom2Clk, 1u);
     CLOCK_AttachClk(kFRO12M_to_FLEXCOMM2);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom2Clk, 1u);
 
     CLOCK_EnableClock(kCLOCK_Scg);
     CLOCK_SetupFROHFClocking(48000000U);
@@ -55,8 +55,8 @@ void BOARD_InitHardware(void)
     CLOCK_SetClkDiv(kCLOCK_DivPLL1Clk0, 1U);
 
     /* attach PLL1 to SAI1 */
-    CLOCK_SetClkDiv(kCLOCK_DivSai1Clk, 1u);
     CLOCK_AttachClk(kPLL1_CLK0_to_SAI1);
+    CLOCK_SetClkDiv(kCLOCK_DivSai1Clk, 1u);
 
     BOARD_InitPins();
     BOARD_InitBootClocks();

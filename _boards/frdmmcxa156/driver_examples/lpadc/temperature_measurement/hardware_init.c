@@ -76,8 +76,8 @@ void BOARD_InitHardware(void)
     RESET_ReleasePeripheralReset(kADC0_RST_SHIFT_RSTn);
 
     /* Attach peripheral clock */
-    CLOCK_SetClockDiv(kCLOCK_DivADC0, 1u);
     CLOCK_AttachClk(kFRO12M_to_ADC0);
+    CLOCK_SetClockDiv(kCLOCK_DivADC0, 1u);
 
     BOARD_InitPins();
     BOARD_InitBootClocks();

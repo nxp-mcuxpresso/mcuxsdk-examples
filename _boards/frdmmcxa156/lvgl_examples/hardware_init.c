@@ -28,11 +28,11 @@ void BOARD_I2C_ReleaseBus(void);
 void BOARD_InitHardware(void)
 {
     /* Attach peripheral clock */
-    CLOCK_SetClockDiv(kCLOCK_DivFLEXIO0, 1u);
     CLOCK_AttachClk(kFRO_HF_to_FLEXIO0);
-
-    CLOCK_SetClockDiv(kCLOCK_DivLPI2C2, 1u);
     CLOCK_AttachClk(kFRO12M_to_LPI2C2);
+
+    CLOCK_SetClockDiv(kCLOCK_DivFLEXIO0, 1u);
+    CLOCK_SetClockDiv(kCLOCK_DivLPI2C2, 1u);
 
     CLOCK_EnableClock(kCLOCK_GateGPIO0);
     CLOCK_EnableClock(kCLOCK_GateGPIO1);

@@ -18,8 +18,8 @@
 void BOARD_InitHardware(void)
 {
     /* CTimer functional clock needs to be greater than or equal to SYSTEM_CLK */
-    CLOCK_SetClockDiv(kCLOCK_DivCTIMER0, 1u);
     CLOCK_AttachClk(kFRO_HF_to_CTIMER0);
+    CLOCK_SetClockDiv(kCLOCK_DivCTIMER0, 1u);
 
     BOARD_InitPins();
     BOARD_InitBootClocks();

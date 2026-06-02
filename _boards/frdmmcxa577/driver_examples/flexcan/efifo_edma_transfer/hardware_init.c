@@ -21,9 +21,9 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
 
     /* Attach peripheral clock */
+    CLOCK_AttachClk(kFRO_HF_DIV_to_FLEXCAN0);
     CLOCK_SetClockDiv(kCLOCK_DivFLEXCAN0, 1U);
     CLOCK_SetClockDiv(kCLOCK_DivFRO_HF, 4U);
-    CLOCK_AttachClk(kFRO_HF_DIV_to_FLEXCAN0);
     
     /* Release peripheral reset */
     RESET_ReleasePeripheralReset(kDMA0_RST_SHIFT_RSTn);

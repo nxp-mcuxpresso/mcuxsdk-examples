@@ -20,8 +20,8 @@ void BOARD_InitHardware(void)
     RESET_ReleasePeripheralReset(kDMA0_RST_SHIFT_RSTn);
 
     /* Attach peripheral clock */
-    CLOCK_SetClockDiv(kCLOCK_DivLPI2C2, 1u);
     CLOCK_AttachClk(kFRO_LF_DIV_to_LPI2C2);
+    CLOCK_SetClockDiv(kCLOCK_DivLPI2C2, 1u);
 
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitI2CPins();

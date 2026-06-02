@@ -44,8 +44,8 @@ void BOARD_InitHardware(void)
     CLOCK_SetClkDiv(kCLOCK_DivClkOut, 25U);
 
     /* Enable flexio clock */
-    CLOCK_SetClkDiv(kCLOCK_DivFlexioClk, 1u);
     CLOCK_AttachClk(kPLL0_to_FLEXIO);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexioClk, 1u);
 
     /* Enable RST/RS/CS pins' GPIO clock. */
     CLOCK_EnableClock(kCLOCK_Gpio0);
