@@ -7,7 +7,7 @@ Hardware requirements
 Board settings
 ============
 - U30 and U12C affects the LPSPI1_SIN signal, causing it to remain at a low level.
-  Please remove resistor R32 before running this example.
+  Note: Short JP6 to disable U30 before running this example.
 
 Prepare the Demo
 ================
