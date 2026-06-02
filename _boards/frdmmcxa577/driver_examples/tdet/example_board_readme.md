@@ -21,15 +21,15 @@ Prepare the Demo
 
 Running the demo
 ================
-This example using TAMPER0 pin as passive tamper.
+This example using TAMPER5 pin as passive tamper.
 
-| TAMPER pin | Function   | PIN NAME | Arduino header |
+| TAMPER pin | Function   | PIN NAME | Mikrobus header|
 |------------|------------|----------|----------------|
-| 0          | Passive    | P5_2     | A5             |
+| 5          | Passive    | P5_7     | RST            |
 
 Without connecting tamper pin it should trigger tamper event and output log should look like log below
 
-When Tamper 0 is connected to 3V3, In output log line Line Tampering detected on PIN0 should change to No tampering detected on PIN0
+When Tamper 5 is connected to 3V3, In output log line Line Tampering detected on Passive TAMPER should change to No tampering detected on Passive TAMPER
 
 The log below shows the output of the tdet driver demo in the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -38,7 +38,7 @@ TDET Peripheral Driver Example
 Tampering detected Tamper Detect Flag is set
 
 Passive tamper example
-No tampering detected on Passive TAMPER
+Tampering detected on Passive TAMPER
 
 End of example
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
