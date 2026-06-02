@@ -20,6 +20,7 @@ rectangle in the panel, drag it, then it will move in the screen.
 - [MIMXRT1160-EVK](../../_boards/evkmimxrt1160/lvgl_examples/lvgl_examples_readme.md)
 - [EVK-MIMXRT595](../../_boards/evkmimxrt595/lvgl_examples/lvgl_examples_readme.md)
 - [EVK-MIMXRT685](../../_boards/evkmimxrt685/lvgl_examples/lvgl_examples_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/lvgl_examples/lvgl_examples_readme.md)
 - [FRDM-K22F](../../_boards/frdmk22f/lvgl_examples/lvgl_examples_readme.md)
 - [FRDM-MCXA156](../../_boards/frdmmcxa156/lvgl_examples/lvgl_examples_readme.md)
 - [FRDM-MCXN236](../../_boards/frdmmcxn236/lvgl_examples/lvgl_examples_readme.md)

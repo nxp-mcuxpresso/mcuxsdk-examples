@@ -326,6 +326,7 @@ lvgl_guider_bm:
     mcxn9xxevk@cm33_core0: []
     mimxrt685audevk@cm33: []
     mimxrt700evk@cm33_core0: []
+    frdmimxrt700@cm33_core0: []
     rdrw612bga:
     - -armgcc@debug
     - -armgcc@release
