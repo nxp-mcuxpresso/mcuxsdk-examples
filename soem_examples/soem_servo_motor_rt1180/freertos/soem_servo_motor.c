@@ -309,18 +309,18 @@ void control_task(void *ifname)
 
 	/* initialise SOEM, and if_port */
 	if (ec_init(ifname)) {
-		printf("ec_init on %s succeeded.\n",ifname);
+		PRINTF("ec_init on %s succeeded.\n",ifname);
 		/* find and auto-config slaves */
 		if ( ec_config_init(FALSE) > 0 ) {
-			printf("%d slaves found and configured.\n",ec_slavecount);
+			PRINTF("%d slaves found and configured.\n",ec_slavecount);
 			if (ec_slavecount < MAX_SERVO) {
-				printf("The number of Servo scanned is not consistent with configed, please reconfirm\n");
+				PRINTF("The number of Servo scanned is not consistent with configed, please reconfirm\n");
 				return;
 			}
 
 			i = servo_slave_check(servo, MAX_SERVO);
 			if (i < 0) {
-				printf("The infomation of Servo:%d is not consistent with scanned, please reconfirm\n", -i);
+				PRINTF("The infomation of Servo:%d is not consistent with scanned, please reconfirm\n", -i);
 				return;
 			}
 
@@ -343,18 +343,18 @@ void control_task(void *ifname)
 			for (i = 0; i < MAX_AXIS; i++) {
 				axis_nc_init(&axis[i], tp[i], CYCLE_PERIOD_NS);
 			}
-			printf("Slaves mapped, state to SAFE_OP.\n");
+			PRINTF("Slaves mapped, state to SAFE_OP.\n");
 			/* wait for all slaves to reach SAFE_OP state */
 			ec_statecheck(0, EC_STATE_SAFE_OP,  EC_TIMEOUTSTATE * 4);
 			for (i = 0; i < MAX_AXIS; i++) {
 				PDO_write_targe_position(&axis[i], axis[i].current_position);
 				axis_nc_start(&axis[i]);
 			}
-			printf("segments : %d : %lu %lu %lu %lu\n",ec_group[0].nsegments ,ec_group[0].IOsegment[0],ec_group[0].IOsegment[1],ec_group[0].IOsegment[2],ec_group[0].IOsegment[3]);
+			PRINTF("segments : %d : %lu %lu %lu %lu\n",ec_group[0].nsegments ,ec_group[0].IOsegment[0],ec_group[0].IOsegment[1],ec_group[0].IOsegment[2],ec_group[0].IOsegment[3]);
 
-			printf("Request operational state for all slaves\n");
+			PRINTF("Request operational state for all slaves\n");
 			expectedWKC = (ec_group[0].outputsWKC * 2) + ec_group[0].inputsWKC;
-			printf("Calculated workcounter %d\n", expectedWKC);
+			PRINTF("Calculated workcounter %d\n", expectedWKC);
 			ec_slave[0].state = EC_STATE_OPERATIONAL;
 			/* send one valid process data to make outputs in slaves happy*/
 			ec_send_processdata();
@@ -435,8 +435,8 @@ void control_task(void *ifname)
 					ec_send_processdata();
 					ulTaskNotifyTake(pdFALSE, xBlockTime);
 				}
-				printf("wkc_lost = %d\r\n", wkc_lost);
-				printf("\r\nRequest init state for all slaves\r\n");
+				PRINTF("wkc_lost = %d\r\n", wkc_lost);
+				PRINTF("\r\nRequest init state for all slaves\r\n");
 				for(i = 1; i<=ec_slavecount ; i++) {
 					if(ec_slave[i].state != EC_STATE_OPERATIONAL) {
 						PRINTF("Slave %d State=0x%2.2x StatusCode=0x%4.4x : %s\r\n",
@@ -451,7 +451,7 @@ void control_task(void *ifname)
 			/* stop SOEM, close socket */
 			ec_close();
 		} else {
-			printf("No socket connection on %s\nExecute as root\r\n",ifname);
+			PRINTF("No socket connection on %s\nExecute as root\r\n",ifname);
 		}
 	} else {
 		PRINTF("ec_init error\r\n");
