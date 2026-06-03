@@ -146,30 +146,43 @@ Only primary files are listed here:
 
 ```bash
 .
-├── eiq/                     
-│   ├── neutron/             # Neutron NPU support
+├── eiq
+│   ├── neutron       # Neutron-Software files
+│   │   ├── common
+│   │   │   └── include
+│   │   │       └── NeutronErrors.h
+│   │   ├── driver
+│   │   │   └── include
+│   │   │       └── NeutronDriver.h
+│   │   └── rt700
+│   │       └── cm33
+│   │           ├── libNeutronDriver.a
+│   │           └── libNeutronFirmware.a
 │   └── tensorflow-lite/     
-├── source/                  # Example source files
-│   ├── audio.h
-│   ├── audio_data.h
-│   ├── audio_load.cpp
-│   ├── get_top_n.cpp
-│   ├── get_top_n.h
-│   ├── kws_mfcc.cpp
-│   ├── kws_mfcc.hpp
-│   ├── labels.h
-│   ├── main.cpp
-│   ├── mfcc.cpp
-│   ├── model.cpp
-│   ├── model.h
-│   ├── model_data.h
-│   ├── model_ds_cnn_ops_npu.cpp
-│   ├── off.wav
-│   ├── output_postproc.cpp
-│   ├── output_postproc.h
-│   ├── timer.c
-│   ├── timer.h
-│   └── train.py
+├── source
+│   ├── audio/
+│   ├── board_init.h
+│   ├── demo_info.cpp
+│   ├── demo_info.h
+│   ├── labels.h
+│   ├── main.cpp
+│   ├── mcux_config.h
+│   ├── mcuxsdk_version.h
+│   ├── model
+│   │   ├── get_top_n.cpp
+│   │   ├── get_top_n.h
+│   │   ├── model.cpp
+│   │   ├── model.h
+│   │   ├── model_data.h   # Model data file
+│   │   ├── model_ds_cnn_ops_npu.cpp
+│   │   └── output_postproc.h
+│   ├── output_postproc.cpp
+│   ├── pmic_support.c
+│   ├── pmic_support.h
+│   ├── semihost_hardfault.c
+│   ├── timer.c
+│   ├── timer.h
+│   └── train.py
 └── doc/                     # Documentation
     └── readme.md
 ```
@@ -204,17 +217,27 @@ After importing a **Freestanding** project from the MCU SDK, the project structu
 │   ├── get_top_n.h
 │   ├── model.h
 │   └── output_postproc.h
-├── npu                     # NPU version of the model files
+├── npu                       # NPU version of the model files
 │   ├── ds_cnn_s_npu.tflite
-│   ├── model_data.h
+│   ├── model_data.h          # Model data file
 │   └── model_ds_cnn_ops_npu.cpp
+├── <board_name_folder> (e.g. mimxrt700evk_cm33_core0) 
+│   └── middleware_eiq_neutron # Neutron-Software files
+│       ├── NeutronDriver.h
+│       ├── NeutronErrors.h
+│       └── cm33
+│           ├── libNeutronDriver.a
+│           └── libNeutronFirmware.a
 ├── off.wav
 ├── output_postproc.cpp
 └── train.py
 ```
 
-(For the boards without NPU hardware, the CPU version of the model file is located in the `cpu/` folder.)
+For the boards with NPU hardware, the NPU model file is located in the `npu/` folder. (For the boards without NPU hardware, the CPU version of the model file is located in the `cpu/` folder.)
 
+The header files and library files in the `<board_name_folder>/middleware_eiq_neutron` folder are Neutron-Software related files.
+
+Users can update the Neutron-Software version in this project by replacing these four files: `NeutronDriver.h`, `NeutronErrors.h`, `libNeutronDriver.a`, and `libNeutronFirmware.a`.
 
 ## Replace the model file
 
