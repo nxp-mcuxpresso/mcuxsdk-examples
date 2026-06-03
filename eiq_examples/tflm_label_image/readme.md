@@ -85,26 +85,43 @@ Only primary files are listed here:
 
 ```bash
 .
-├── eiq/                     
-│   ├── neutron/             # Neutron NPU support
+├── eiq
+│   ├── neutron       # Neutron-Software files
+│   │   ├── common
+│   │   │   └── include
+│   │   │       └── NeutronErrors.h
+│   │   ├── driver
+│   │   │   └── include
+│   │   │       └── NeutronDriver.h
+│   │   └── rt700
+│   │       └── cm33
+│   │           ├── libNeutronDriver.a
+│   │           └── libNeutronFirmware.a
 │   └── tensorflow-lite/     
-├── source/                  # Example source files
-│   ├── get_top_n.cpp
-│   ├── get_top_n.h
-│   ├── image.h
-│   ├── image_data.h
-│   ├── image_utils.h
-│   ├── labels.h
-│   ├── main.cpp
-│   ├── model.cpp
-│   ├── model.h
-│   ├── model_data.h
-│   ├── model_mobilenet_ops_npu.cpp
-│   ├── output_postproc.cpp
-│   ├── output_postproc.h
-│   ├── stopwatch.bmp
-│   ├── timer.c
-│   └── timer.h
+source
+│   ├── board_init.h
+│   ├── demo_config.h
+│   ├── demo_info.cpp
+│   ├── demo_info.h
+│   ├── image/*
+│   ├── labels.h
+│   ├── main.cpp
+│   ├── mcux_config.h
+│   ├── mcuxsdk_version.h
+│   ├── model
+│   │   ├── get_top_n.cpp
+│   │   ├── get_top_n.h
+│   │   ├── model.cpp
+│   │   ├── model.h
+│   │   ├── model_data.h    # Model data file
+│   │   ├── model_mobilenet_ops_npu.cpp
+│   │   ├── output_postproc.cpp
+│   │   └── output_postproc.h
+│   ├── pmic_support.c
+│   ├── pmic_support.h
+│   ├── semihost_hardfault.c
+│   ├── timer.c
+│   └── timer.h
 └── doc/                     # Documentation
     └── readme.md
 ```
@@ -143,19 +160,25 @@ After importing a **Freestanding** project from the MCU SDK, the project structu
 │   └── output_postproc.h
 ├── pcq_npu
 │   ├── mobilenet_v1_0.25_128_quant_int8_npu.tflite
-│   ├── model_data.h
+│   ├── model_data.h             # Model data file
 │   └── model_mobilenet_ops_npu.cpp
+├── <board_name_folder> (e.g. mimxrt700evk_cm33_core0) 
+│   └── middleware_eiq_neutron   # Neutron-Software files
+│       ├── NeutronDriver.h
+│       ├── NeutronErrors.h
+│       └── cm33
+│           ├── libNeutronDriver.a
+│           └── libNeutronFirmware.a
 └── tflm
     ├── demo_info.cpp
     └── model.cpp
 ```
 
-The library files and header files in the `cm33/`, `driver_include/`, and `include/` folders are Neutron-Software related files.
+For the boards with NPU hardware, the NPU model file is located in the `pcq_npu/` folder.  (For the boards without NPU hardware, the CPU version of the model file is located in the `pcq/` folder.)
+
+The header files and library files in the `<board_name_folder>/middleware_eiq_neutron` folder are Neutron-Software related files.
 
 Users can update the Neutron-Software version in this project by replacing these four files: `NeutronDriver.h`, `NeutronErrors.h`, `libNeutronDriver.a`, and `libNeutronFirmware.a`.
-
-(For the boards without NPU hardware, the CPU version of the model file is located in the `pcq/` folder.)
-
 
 ## Replace the model file
 

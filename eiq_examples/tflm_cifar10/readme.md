@@ -86,22 +86,45 @@ Only primary files are listed here:
 
 ```bash
 .
-├── eiq/                     # eIQ library files
-│   ├── neutron/             # Neutron NPU support
+├── eiq
+│   ├── neutron       # Neutron-Software files
+│   │   ├── common
+│   │   │   └── include
+│   │   │       └── NeutronErrors.h
+│   │   ├── driver
+│   │   │   └── include
+│   │   │       └── NeutronDriver.h
+│   │   └── rt700
+│   │       └── cm33
+│   │           ├── libNeutronDriver.a
+│   │           └── libNeutronFirmware.a
 │   └── tensorflow-lite/     
-├── source/                  # Example source files
-│   ├── main.cpp             # Main application entry
-│   ├── get_top_n.cpp/h      # Top-N results retrieval
-│   ├── model.cpp/h          
-│   ├── model_data.h         # Model data (from .tflite)
-│   ├── model_cifarnet_ops_npu.cpp  # operations registration
-│   ├── output_postproc.cpp/h # Output processing
-│   ├── image_data.h         # Static image array
-│   ├── ship.bmp             # Static test image
-│   ├── labels.h             
-│   ├── timer.c/h            # Timer utilities
-│   └── image/*              # Image processing module
-└── doc/                     # Documentation
+├── source/
+│   ├── board_init.h
+│   ├── image/
+│   │   ├── image.h
+│   │   ├── image_data.h
+│   │   ├── image_decode_raw.c
+│   │   ├── image_load.c
+│   │   ├── image_utils.h
+│   │   └── ship.bmp
+│   ├── labels.h
+│   ├── main.cpp
+│   ├── model/
+│   │   ├── get_top_n.cpp
+│   │   ├── get_top_n.h
+│   │   ├── model.cpp
+│   │   ├── model.h
+│   │   ├── model_cifarnet_ops_npu.cpp
+│   │   ├── model_data.h   # Model data file
+│   │   ├── output_postproc.cpp
+│   │   └── output_postproc.h
+│   ├── pmic_support.c
+│   ├── pmic_support.h
+│   ├── semihost_hardfault.c
+│   ├── timer.c
+│   └── timer.h
+└── doc/                    # Documentation
     └── readme.md
 ```
 
@@ -125,8 +148,7 @@ After importing a **Freestanding** project from the MCU SDK, the project structu
 ├── labels.h                 
 ├── image_data.h             # Static image array
 ├── ship.bmp                 # Static test image
-├── common/                 
-│   └── timer.c/h
+├── common/*                 
 ├── image/*                  # Image processing module
 ├── model/                   
 │   ├── get_top_n.cpp/h      # Top-N results retrieval
@@ -134,17 +156,24 @@ After importing a **Freestanding** project from the MCU SDK, the project structu
 │   └── model.h              
 ├── tflm/                    
 │   └── model.cpp            
-└── pcq_npu/                 # NPU version of the model files
-    ├── cifarnet_quant_int8_npu.tflite  
-    ├── model_cifarnet_ops_npu.cpp      
-    └── model_data.h         
+│── pcq_npu/                  # NPU version of the model files
+│   ├── cifarnet_quant_int8_npu.tflite  
+│   ├── model_cifarnet_ops_npu.cpp      
+│   └── model_data.h           # Model data file
+└── <board_name_folder> (e.g. mimxrt700evk_cm33_core0)
+    └── middleware_eiq_neutron # Neutron-Software files
+        ├── NeutronDriver.h
+        ├── NeutronErrors.h
+        └── cm33
+            ├── libNeutronDriver.a
+            └── libNeutronFirmware.a
 ```
 
-The library files and header files in the `cm33/`, `driver_include/`, and `include/` folders are Neutron-Software related files.
+For the boards with NPU hardware, the model file is located in the `pcq_npu/` folder. (For the boards without NPU hardware, the CPU version of the model file is located in the `pcq/` folder.)
+
+The header files and library files in the `<board_name_folder>/middleware_eiq_neutron` folder are Neutron-Software related files.
 
 Users can update the Neutron-Software version in this project by replacing these four files: `NeutronDriver.h`, `NeutronErrors.h`, `libNeutronDriver.a`, and `libNeutronFirmware.a`.
-
-(For the boards without NPU hardware, the CPU version of the model file is located in the `pcq/` folder.)
 
 
 ## Replace the model file
