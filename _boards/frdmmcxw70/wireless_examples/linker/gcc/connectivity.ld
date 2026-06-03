@@ -69,15 +69,15 @@ m_core1_ram_size  = m_core1_ram_end - m_core1_ram_start + 1;
 /* Shared memory placements */
 
 /* core0 and core1 RAM shared bank
- * core0 : 16k
- * core1 : 40k
+ * core0 : 0x8E00 (35.5K)
+ * core1 : 0x5200 (20.5K)
  * shared between both : 8k
 */
 m_core1_shared_ram_end   = m_shared_ram_start - 1;
 m_core1_shared_ram_size  = 0x5200;
 m_core1_shared_ram_start = m_core1_shared_ram_end - m_core1_shared_ram_size + 1;
 
-/* core0 reserved RAM (128K + 16K) */
+/* core0 reserved RAM (128K + 0x8E00 = 163.5K) */
 m_core0_ram_start        = m_ram0_start;
 m_core0_ram_end          = m_core1_shared_ram_start - 1;
 
