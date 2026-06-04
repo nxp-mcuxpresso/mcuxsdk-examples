@@ -39,7 +39,6 @@ After connecting the two boards, these instructions display on each terminal win
 One board must be chosen as node A and the other board as node B. (Note: Node B should start first)
 Data is sent continuously between the node A and the node B.
 
-~~~~~~~~~~~~~~~~~~~~~
 This message displays on the node A terminal:
 
 FlexCAN pretended networking wake up example.
@@ -47,22 +46,22 @@ Please select local node as A or B:
 Note: Node B should start first.
 Node:a
 Press any key to trigger one-shot transmission
-Send message ID: 0x123, payload: 0x0055000000000000
+Send message ID: 0x123, payload: 0x0000000000005500
 
 Press any key to trigger the next transmission!
-Send message ID: 0x123, payload: 0x0155000000000000
+Send message ID: 0x123, payload: 0x0000000000005501
 
 Press any key to trigger the next transmission!
-Send message ID: 0x125, payload: 0x0255000000000000
+Send message ID: 0x125, payload: 0x0000000000005502
 
 Press any key to trigger the next transmission!
-Send message ID: 0x125, payload: 0x0355000000000000
+Send message ID: 0x125, payload: 0x0000000000005503
 
 Press any key to trigger the next transmission!
-Send message ID: 0x123, payload: 0x0455000000000000
+Send message ID: 0x123, payload: 0x0000000000005504
 
 Press any key to trigger the next transmission!
-Send message ID: 0x123, payload: 0x0056000000000000
+Send message ID: 0x123, payload: 0x0000000000005600
 
 ...
 
@@ -77,12 +76,12 @@ Node:b
 Note B will enter lower power mode and wake up until received 4 specific messages.
 Wake up message format: Standard (11 bit id)
 Wake up message ID range: 0x123 to 0x124
-Wake up payload range : 0x0055000000000000 to 0x0056000000000000
+Wake up payload range : 0x0000000000005500 to 0x0000000000005600
 Waken up!
-Match message 0 ID: 0x123, payload: 0x0055000000000000
-Match message 1 ID: 0x123, payload: 0x0155000000000000
-Match message 2 ID: 0x123, payload: 0x0455000000000000
-Match message 3 ID: 0x123, payload: 0x0056000000000000
+Match message 0 ID: 0x123, payload: 0x0000000000005500
+Match message 1 ID: 0x123, payload: 0x0000000000005501
+Match message 2 ID: 0x123, payload: 0x0000000000005504
+Match message 3 ID: 0x123, payload: 0x0000000000005600
 Enter lower power mode again!
 
 ~~~~~~~~~~~~~~~~~~~~~

@@ -1,6 +1,5 @@
 /*
- * Copyright 2021-2022 NXP
- * All rights reserved.
+ * Copyright 2021-2022, 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -24,6 +23,15 @@
 #endif
 /* Fix MISRA_C-2012 Rule 17.7. */
 #define LOG_INFO (void)PRINTF
+
+/* Helper macros for little-endian payload formatting */
+/* Byte swap 32-bit word */
+#define BSWAP32(x) ((((x) & 0xFF000000U) >> 24) | (((x) & 0x00FF0000U) >> 8) | \
+                    (((x) & 0x0000FF00U) << 8)  | (((x) & 0x000000FFU) << 24))
+/* Convert big-endian Word0/Word1 to little-endian format for split printing */
+/* Note: Not using %016llx to avoid uint64_t format unsupported on some platforms */
+#define WORDS_TO_LE_HI32(word0, word1) BSWAP32(word1)  /* High 32 bits */
+#define WORDS_TO_LE_LO32(word0, word1) BSWAP32(word0)  /* Low 32 bits */
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -161,7 +169,11 @@ int main(void)
 #if defined(EXAMPLE_SET_SPC_CONFIG) && EXAMPLE_SET_SPC_CONFIG
         App_SetSPCConfiguration();
 #endif
-        /* Setup Pretended Networking mode to make FlexCAN detect specific wakeup frames under lower power mode. */
+        /* 
+         * Setup Pretended Networking mode to make FlexCAN detect specific wakeup frames under lower power mode.
+         * In this example, the node will wake up until received 4 messages with ID in range 0x123 - 0x124 and
+         * payload in range 0x0000000000005500 - 0x0000000000005600.
+         */
         (void)memset(&pnConfig, 0, sizeof(pnConfig));
         pnConfig.enableMatch   = true;
         pnConfig.matchSrc      = kFLEXCAN_PNMatSrcIDAndData;
@@ -181,8 +193,11 @@ int main(void)
                  DEMO_WAKEUP_FRAME_NUM);
         LOG_INFO("Wake up message format: Standard (11 bit id)\r\n");
         LOG_INFO("Wake up message ID range: 0x%x to 0x%x\r\n", DEMO_WAKEUP_FRAME_ID, DEMO_WAKEUP_FRAME_ID + 1U);
-        LOG_INFO("Wake up payload range : 0x%08x%08x to 0x%08x%08x\r\n", pnConfig.lowerWord0, pnConfig.lowerWord1,
-                 pnConfig.upperWord0, pnConfig.upperWord1);
+        LOG_INFO("Wake up payload range : 0x%08x%08x to 0x%08x%08x\r\n",
+                 WORDS_TO_LE_HI32(pnConfig.lowerWord0, pnConfig.lowerWord1),
+                 WORDS_TO_LE_LO32(pnConfig.lowerWord0, pnConfig.lowerWord1),
+                 WORDS_TO_LE_HI32(pnConfig.upperWord0, pnConfig.upperWord1),
+                 WORDS_TO_LE_LO32(pnConfig.upperWord0, pnConfig.upperWord1));
     }
 
     while (true)
@@ -198,7 +213,8 @@ int main(void)
             };
             txComplete = false;
             LOG_INFO("Send message ID: 0x%3x, payload: 0x%08x%08x\r\n\r\n", frame.id >> CAN_ID_STD_SHIFT,
-                     frame.dataWord0, frame.dataWord1);
+                        WORDS_TO_LE_HI32(frame.dataWord0, frame.dataWord1),
+                        WORDS_TO_LE_LO32(frame.dataWord0, frame.dataWord1));
             LOG_INFO("Press any key to trigger the next transmission!\r\n");
 
             /* Polling to send normal frames and wake up frames. */
@@ -233,8 +249,9 @@ int main(void)
                      i++)
                 {
                     (void)FLEXCAN_ReadPNWakeUpMB(EXAMPLE_CAN, i, &frame);
-                    LOG_INFO("Match message %d ID: 0x%3x, payload: 0x%08x%08x\r\n", i, frame.id >> CAN_ID_STD_SHIFT,
-                             frame.dataWord0, frame.dataWord1);
+                    LOG_INFO("Match message %d ID: 0x%3x, payload: 0x%08x%08x\r\n",i, frame.id >> CAN_ID_STD_SHIFT,
+                        WORDS_TO_LE_HI32(frame.dataWord0, frame.dataWord1),
+                        WORDS_TO_LE_LO32(frame.dataWord0, frame.dataWord1));
                 }
                 LOG_INFO("Enter lower power mode again!\r\n\r\n");
             };
