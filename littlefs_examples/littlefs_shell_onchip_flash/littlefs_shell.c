@@ -295,7 +295,12 @@ static shell_status_t lfs_write_handler(shell_handle_t shellHandle, int32_t argc
         return kStatus_SHELL_Success;
     }
 
-    res = lfs_file_write(&lfs, &file, argv[2], strnlen(argv[2], LFS_NAME_MAX));
+    /* Compute the write length using strlen, capped at LFS_NAME_MAX
+     * to avoid writing beyond the intended maximum file name length. */
+    size_t len = strlen(argv[2]);
+    if (len > LFS_NAME_MAX) len = LFS_NAME_MAX;
+    res = lfs_file_write(&lfs, &file, argv[2], len);
+
     if (res > 0)
         res = lfs_file_write(&lfs, &file, "\r\n", 2);
 
