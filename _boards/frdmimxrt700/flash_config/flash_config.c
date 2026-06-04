@@ -55,7 +55,7 @@ const fc_static_platform_config_t flash_config = {
 
                             /* Erase Sector */
                             [5 * 5 + 0] =
-                                FC_XSPI_LUT_SEQ(FC_CMD_SDR, FC_XSPI_4PAD, 0x21, FC_CMD_RADDR_DDR, FC_XSPI_4PAD, 0x20),
+                                FC_XSPI_LUT_SEQ(FC_CMD_SDR, FC_XSPI_4PAD, 0x21, FC_CMD_RADDR_SDR, FC_XSPI_4PAD, 0x20),
 
                             /* Page program */
                             [5 * 9 + 0] =

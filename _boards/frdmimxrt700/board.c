@@ -163,7 +163,7 @@ void BOARD_ClockHSRunPreConfig(void)
 void BOARD_ClockPostConfig(void)
 {
     /* Call function BOARD_SetXspiClock() to set user configured clock source/divider for XSPI. */
-    BOARD_SetXspiClock(XSPI0, 3U, 3U); /* Main PLL PDF1 DIV3. */
+    BOARD_SetXspiClock(XSPI0, 3U, 2U); /* Main PLL PDF1 DIV2. */
 }
 
 void BOARD_ClockHSRunPostConfig(void)
@@ -460,14 +460,6 @@ void BOARD_XspiClockSafeConfig(void)
 {
     BOARD_SetXspiClock(XSPI0, 0U, 1U);
     BOARD_SetXspiClock(XSPI1, 0U, 1U);
-
-    /* For A0 Silicon, the XSPI AHB Buffer need to be reconfigured to allow the PKC, eDMA1, GPU to access external
-     * memory.*/
-    if (SYSCON3->SILICONREV_ID == 0xA0000UL)
-    {
-        BOARD_ReConfigXspiAhbBuffer(XSPI0);
-        BOARD_ReConfigXspiAhbBuffer(XSPI1);
-    }
 }
 
 static void xspi_hyper_ram_get_mcr(XSPI_Type *base, uint32_t regAddr, uint8_t *mrVal)
