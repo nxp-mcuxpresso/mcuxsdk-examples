@@ -36,9 +36,11 @@ typedef enum _resc_name
     kResc_Osc_Sys,
     kResc_Spll,
 
-    /*! Power domain modules */
+    /*! Voltage modules */
     kResc_LdoCore,
     kResc_RamRetentionLdo,
+    kResc_VbatBandgap,
+    kResc_VbatBandgapRefresh,
     kResc_LpIref,
     kResc_LpBuffer_Act,
     kResc_LpBuffer_Lp,

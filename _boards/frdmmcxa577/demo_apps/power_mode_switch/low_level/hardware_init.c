@@ -12,8 +12,11 @@
 
 void BOARD_InitHardware(void)
 {
-    BOARD_InitBootClocks();
+    BOARD_BootClockFROHF48M();
     BOARD_InitBUTTONsPins();
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitDebugConsole();
+    
+    CLOCK_SetClockDiv(kCLOCK_DivLPTMR0, 1U);
+    CLOCK_AttachClk(kFRO_LF_DIV_to_LPTMR0);
 }
