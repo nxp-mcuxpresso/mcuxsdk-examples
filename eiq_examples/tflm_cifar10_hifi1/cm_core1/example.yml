@@ -14,3 +14,4 @@ tflm_cifar10_hifi1:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mimxrt700evk@cm33_core1: []
+    frdmimxrt700@cm33_core1: []

@@ -1,0 +1,4 @@
+     <#if memory.name=="SRAM">
+     *model.o(.text .text* .rodata .rodata.* .constdata .constdata.*)
+     *(.data*)
+     </#if>

@@ -14,3 +14,6 @@ tflm_cifar10_hifi1:
     mimxrt700evk@hifi1:
     - +xtensa@debug
     - +xtensa@release
+    frdmimxrt700@hifi1:
+    - +xtensa@debug
+    - +xtensa@release

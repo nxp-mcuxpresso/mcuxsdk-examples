@@ -69,6 +69,19 @@ tflm_modelrunner:
     - +iar@flash_release
     - -mdk@flash_debug
     - -mdk@flash_release
+    frdmimxrt700@cm33_core0:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    - +armgcc@flash_debug
+    - +armgcc@flash_release
+    - +iar@flash_debug
+    - +iar@flash_release
+    - -mdk@flash_debug
+    - -mdk@flash_release
     evkbmimxrt1170@cm7:
     - +armgcc@flexspi_nor_sdram_debug
     - +armgcc@flexspi_nor_sdram_release
