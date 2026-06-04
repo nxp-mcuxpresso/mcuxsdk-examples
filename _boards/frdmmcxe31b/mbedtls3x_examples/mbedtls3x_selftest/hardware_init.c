@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -16,6 +16,10 @@ void BOARD_InitHardware(void)
 {
     BOARD_ConfigMPU(); // This API enables the CACHE
     L1CACHE_DisableDCache();
+    /* Disable flash prefetch; see the ERR052645 errata for more information */
+    PFLASH->PFCR[0] &= ~(PFLASH_PFCR_P0_DPFEN_MASK);
+    PFLASH->PFCR[1] &= ~(PFLASH_PFCR_P1_DPFEN_MASK);
+
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
 
