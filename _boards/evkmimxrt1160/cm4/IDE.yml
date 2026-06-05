@@ -44,7 +44,7 @@ jlink_script_file:
   files:
     - source: ${board_root}/evkmimxrt1160/evkmimxrt1160_connect_cm4_cm4side.jlinkscript
       attribute: jlink_script_file
-      toolchains: iar
+      toolchains: iar mdk
       targets: debug release
                ram_0x1400_debug ram_0x1400_release
                flexspi_nor_debug flexspi_nor_release
@@ -52,7 +52,7 @@ jlink_script_file:
 
     - source: ${board_root}/evkmimxrt1160/evkmimxrt1160_connect_cm4_cm4side_sdram.jlinkscript
       attribute: jlink_script_file
-      toolchains: iar
+      toolchains: iar mdk
       targets: sdram_debug sdram_release
                flexspi_nor_sdram_debug flexspi_nor_sdram_release
                sdram_txt_debug sdram_txt_release
