@@ -1,0 +1,181 @@
+/*!
+Face recognition solution change log.
+  Current version is PRC phase 4
+
+  - PRC phase 4
+    - New Features
+      - Mobilefacenet recognition threshold configurable by user through mpp_app_start API
+    - Models
+      - Face landmark IR & RGB (SCRFD: detection + landmarks)
+      - Face recognition IR & RGB (Mobilefacenet)
+      - Antispoofing IR(could be activated/deactivated)
+    - Bug fixes
+      - Increased the max number of tasks in the system supported by MPP HAL to 50.
+      - Fixed multiple issues (race conditions) related to user data access
+      - Only changing data from text are is updated (the draw time is reduced significantly and the flicker is not present anymore)
+    - Tools
+      - offline registration tool with encrypted or non-encrypted model and input from jpeg image or camera.
+    - Application
+      - Full pipeline from dual camera(on core1):
+        - on preemptable branch: run face detection & landmark + antispoofing + recognition on IR stream
+        - on high priority branch: Compose logo and text and RGB stream, then display
+    - Supported evaluation boards:
+      - mimxrt700evk
+    - Known issues
+      - N/A
+
+  - PRC phase 3.5
+    - New Features
+      - N/A
+    - Models
+      - Face landmark IR & RGB (SCRFD: detection + landmarks)
+      - Face recognition IR & RGB (Mobilefacenet)
+      - Antispoofing IR(could be activated/deactivated)
+    - Bug fixes
+      - Fixed the face database potential overflow.
+      - Increased the maximum face database size to 100.
+      - Increased the max number of tasks in the system supported by MPP HAL to 30.
+    - Tools
+      - offline registration tool with encrypted or non-encrypted model and input from jpeg image or camera.
+    - Application
+      - Full pipeline from dual camera(on core1):
+        - on preemptable branch: run face detection & landmark + antispoofing + recognition on IR stream
+        - on high priority branch: Compose logo and text and RGB stream, then display
+    - Supported evaluation boards:
+      - mimxrt700evk
+    - Known issues
+      - Text area flickers because display has single framebuffer
+
+  - EAR phase 3.4
+    - New Features
+      - Possibility to config MPP HAL to use OS timer instead of utick for stats generation
+	  - Added debug feature to dump the inference input image and display it on the screen
+    - Models
+      - Face landmark IR & RGB (SCRFD: detection + landmarks)
+      - Face recognition IR & RGB (Mobilefacenet)
+      - Antispoofing IR(could be activated/deactivated)
+    - Bug fixes
+      - Allow face registration request command when MPP is in FR disable LCD off state. 
+      - Inference time is correctly computed and displayed.
+      - The display image is now correctly flipped horizontally.
+    - Tools
+      - offline registration tool with encrypted or non-encrypted model and input from jpeg image or camera.
+    - Application
+      - Full pipeline from dual camera(on core1):
+        - on preemptable branch: run face detection & landmark + antispoofing + recognition on IR stream
+        - on high priority branch: Compose logo and text and RGB stream, then display
+    - Supported evaluation boards:
+      - mimxrt700evk
+    - Known issues
+      - Text area flickers because display has single framebuffer
+
+  - EAR phase 3.3
+    - New Features
+      - Replaced 128x128 SCRD model by a higher resolution version: 256x256.
+      - Capturing IR frame in VGA and RGB frame in QVGA.
+    - Models
+      - Face landmark IR & RGB (SCRFD: detection + landmarks)
+      - Face recognition IR & RGB (Mobilefacenet)
+      - Antispoofing IR(could be activated/deactivated)
+    - Bug fixes
+      - Fixed error messages on console when face is crossing detection zone. 
+      - Fixed issue with multiple faces confusing recognition, only closest face to the camera is detected/recognized.
+      - Fixed antispoofing performance printing on the GUI when activated.
+      - Improved face recognition distance(≃ 1m).
+      - Moved NXP logo to flash to decrease SRAM memory footprint.
+    - Tools
+      - offline registration tool with encrypted or non-encrypted model and input from jpeg image or camera.
+    - Application
+      - Full pipeline from dual camera(on core1):
+        - on preemptable branch: run face detection & landmark + antispoofing + recognition on IR stream
+        - on high priority branch: Compose logo and text and RGB stream, then display
+    - Supported evaluation boards:
+      - mimxrt700evk
+    - Known issues
+      - Text area flickers because display has single framebuffer
+      
+  - EAR phase 3.2
+    - New Features
+      - Support rotation by the GUI compositor element
+      - Support stats drawing on display.
+      - Use face landmarks to check face alignment.
+      - Allow tuning of pipeline's tasks priorities.
+    - Models
+      - Face landmark IR & RGB (SCRFD: detection + landmarks)
+      - Face recognition IR & RGB (Mobilefacenet)
+      - Antispoofing IR
+    - Bug fixes
+      - Fixed issues with different frame numbers between the different models.
+      - Fixed issues related to Mobilefacenet accuracy.
+      - Fixed dequeue issue with stop/start of pipeline
+    - Tools
+      - offline registration tool with encrypted or non-encrypted model and input from jpeg image or camera.
+    - Application
+      - Full pipeline from dual camera(on core1):
+        - on preemptable branch: run face detection & landmark + antispoofing + recognition on IR stream
+        - on high priority branch: Compose logo and text and RGB stream, then display
+    - Supported evaluation boards:
+      - mimxrt700evk
+    - Known issues
+      - Text area flickers because display has single framebuffer
+      - error messages on console when face is crossing detection zone
+ 
+  - EAR phase 3.1
+    - New Features
+      - Support virtual dual camera.
+      - Support JPEG HW decode.
+      - Support GUI compositor element(Need to add rotation)
+      - Support landmarks drawing on the screen.
+    - Models
+      - Face landmark IR & RGB (SCRFD: detection + landmark)
+      - Face recognition IR & RGB (Mobilefacenet)
+      - Antispoofing IR
+    - Bug fixes
+      - VGLite no context error when switching the face recognition model fixed. Full pipeline image processing element accelerated by GPU.
+      - Fixed issues with CPU load calculation.
+      - Fixed issues in pipeline cache maintenance mechanism.
+      - Fixed deadlock in viewfinder with camera_ultraface_mobilefacenet_view application.
+    - Tools
+      - offline registration tool with encrypted or non-encrypted model and input from jpeg image or camera.
+    - Application
+      - Full pipeline from dual camera(on core1) + jpeg HW decode + face detection + face antispoofing + face recognition + display
+    - Supported evaluation boards:
+      - mimxrt700evk
+ 
+  - phase 2
+    - New Features
+      - Support Grayscale format in all pipeline elements.
+      - Multi-source static image element
+      - Implement CPU load calculation in API global stats.
+    - Models
+      - Face detection IR & RGB (Ultraface-Ultraslim)
+      - Face recognition IR & RGB (Mobilefacenet)
+      - Antispoofing IR
+    - Bug fixes
+      - Removed restricted face recognition zone.
+      - Increased face recognition distance.
+      - NPU models converted wiht neutron-converter custom version for better performance(mobilefacenet: 40ms, ultraface & antispoofing 5ms).
+    - Tools
+      - offline registration tool with encrypted or non-encrypted model and input from jpeg image or camera.
+    - Application
+      - Full face detection + recognition pipeline from RGB camera + on-board face registration using shell console to enter person's name on both RT1170 and RT700.
+      - Full face detection + antispoofing + recognition from multiple IR images + on-board face registration using shell console to enter person's name on RT700.
+    - Supported evaluation boards:
+      - evkbmimxrt1170 (CM7 only)
+      - mimxrt700evk
+      
+  - phase 1
+    - New Features
+      - Support ML model switching.
+      - Support shell console in application.
+    - Models
+      - Face detection RGB (Ultraface-Ultraslim)
+      - Face recognition RGB (Mobilefacenet)
+    - Tools
+      - offline registration tool with encrypted model and input from jpeg image or camera.
+    - Application
+      - Full face detection + recognition pipeline from RGB camera + on-board face registration using shell console to enter person's name.
+    - Supported evaluation boards:
+      - evkbmimxrt1170 (CM7 only)
+
+*/

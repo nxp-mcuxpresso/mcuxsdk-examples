@@ -29,12 +29,9 @@ include(${SdkRootDirPath}/${board_root}/${board}/eiq_examples/mpp/board.cmake)
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}/middleware/eiq/mpp
     INCLUDES    models
-                internal/models
-                internal/models/mobilefacenet
-                internal/models/antispoofing
-                internal/models/scrfd_kps_500m_full_integer_quant
-                internal/face_recognition/utils
-                internal/face_recognition
+                models/mobilefacenet
+                models/antispoofing
+                models/scrfd_kps_500m_full_integer_quant
                 middleware/eiq/mpp/common/
 )
 
@@ -46,15 +43,14 @@ mcux_add_source(
             models/utils.h
             models/database_utils.h
             models/database_utils.c
-            internal/models/mobilefacenet/mobilefacenet_output_postproc_quantized.cpp
-            internal/models/mobilefacenet/*.h
-            internal/models/antispoofing/antispoofing_output_postproc_quantized.cpp
-            internal/face_recognition/utils/face_box_utils.c    
-            internal/face_recognition/utils/face_box_utils.h
-            internal/face_recognition/face_database.h
-            internal/models/antispoofing/*.h
-            internal/models/scrfd_kps_500m_full_integer_quant/scrfd_kps_output_postproc.c
-            internal/models/scrfd_kps_500m_full_integer_quant/*.h
+            models/mobilefacenet/mobilefacenet_output_postproc_quantized.cpp
+            models/mobilefacenet/*.h
+            models/antispoofing/antispoofing_output_postproc_quantized.cpp
+            models/face_box_utils.c    
+            models/face_box_utils.h
+            models/antispoofing/*.h
+            models/scrfd_kps_500m_full_integer_quant/scrfd_kps_output_postproc.c
+            models/scrfd_kps_500m_full_integer_quant/*.h
 )
 
 # top level

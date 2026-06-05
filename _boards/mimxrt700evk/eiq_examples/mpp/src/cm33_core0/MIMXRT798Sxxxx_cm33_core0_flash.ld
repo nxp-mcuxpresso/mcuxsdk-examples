@@ -280,7 +280,7 @@ SECTIONS
     __ezhv_camera_end__ = .;
   } > m_ncache
   /* Make sure camera buffers are not placed beyond P17. This is a hardware limitation of EZHV core */
-  ASSERT(. < 0x20540000, "Error: .npu_ncache/ezhv_camera cannot go beyond SRAM P17. Increase the __ncache_size__ from reconfig.cmake")
+  ASSERT((__ezhv_camera_end__ - __ezhv_camera_start__) == 0 || . < 0x20540000, "Error: .npu_ncache/ezhv_camera cannot go beyond SRAM P17. Increase the __ncache_size__ from reconfig.cmake")
   .ncache(NOLOAD) :
   {
     KEEP(*(NonCacheable))

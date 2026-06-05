@@ -172,9 +172,12 @@ static void init_text_area(void* buf, uint32_t size, text_info_t* text)
     memset(buf,0,size);
     init_text_buf(&text_ctx, buf, size, TEXT_WIDTH, TEXT_HEIGHT, TEXT_WIDTH);
 
+    draw_text_line(&text_ctx, "THIS IS A DEMO", row_indentation,start_y_middle);
+    start_y_middle += get_font_height();
+
     draw_text_line(&text_ctx, "User name:",row_indentation,start_y_middle);
     start_y_middle += get_font_height();
-    x_pos = draw_text_line(&text_ctx, "   ", row_indentation, start_y_middle );
+    x_pos = draw_text_line(&text_ctx, "    ", row_indentation, start_y_middle );
     text_position.name_start_x = x_pos;
     text_position.name_stop_x = x_pos;
 
@@ -198,7 +201,7 @@ static void init_text_area(void* buf, uint32_t size, text_info_t* text)
 
 #if USE_ANTISPOOFING
     start_y_middle += get_font_height();
-    x_pos = draw_text_line(&text_ctx, "   spoof:", row_indentation, start_y_middle );
+    x_pos = draw_text_line(&text_ctx, "    spoof:", row_indentation, start_y_middle );
     text_position.antispoofing_start_x = x_pos;
     text_position.antispoofing_stop_x = x_pos;
 
@@ -221,7 +224,7 @@ static void draw_text_area(text_info_t* text)
     char tmp[MAX_STRING_SIZE];
     int x_start, clear_width = 0;
 
-    start_y_middle += get_font_height();
+    start_y_middle += 2 * get_font_height();
     memset(tmp,0,sizeof(tmp));
     snprintf(tmp,sizeof(tmp),"%s",text->name);
     x_start = text_position.name_start_x;
