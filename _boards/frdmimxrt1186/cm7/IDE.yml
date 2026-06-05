@@ -28,7 +28,7 @@ jlink_script_file:
   files:
     - source: ${board_root}/frdmimxrt1186/jlinkscript/frdmimxrt1186_cm7.jlinkscript
       attribute: jlink_script_file
-      toolchains: iar
+      toolchains: iar mdk
       choose: true
 
 macro-file:
