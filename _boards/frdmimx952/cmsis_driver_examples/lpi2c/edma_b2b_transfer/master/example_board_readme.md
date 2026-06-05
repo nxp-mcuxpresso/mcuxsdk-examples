@@ -12,12 +12,18 @@ Connection as below:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 MASTER(LPI2C6)                connect to        SLAVE(LPI2C6)
 Pin Name    Board Location                      Pin Name    Board Location
-SCL         J22 pin 3                         SCL         J22 pin 3
-SDA         J22 pin 5                         SDA         J22 pin 5
-GND         J22 pin 7                         GND         J22 pin 7
+SCL         J18 pin 5                           SCL         J18 pin 5
+SDA         J18 pin 3                           SDA         J18 pin 3
+GND         J18 pin 2                           GND         J18 pin 2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#### Please note this application can't support running with Linux BSP! ####
+Note: J18 is the 40-PIN GPIO HDR expansion connector.
+      - J18-Pin5: LPI2C6_SCL (GPIO_IO03)
+      - J18-Pin3: LPI2C6_SDA (GPIO_IO02)
+      - J18-Pin2: Common Ground (any GND pin on J18 can be used)
+      - Pull-up resistors: 2.2kΩ @ 3.3V (built-in, no external pull-ups needed)
+      - Each board must be powered independently
+      - No IO expander configuration required for this example
 
 Prepare the Demo
 ================
