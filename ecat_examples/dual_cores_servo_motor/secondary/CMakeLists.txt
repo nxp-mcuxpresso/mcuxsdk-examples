@@ -28,8 +28,6 @@ mcux_add_source(
 	SOURCES ${board_root}/${board}/ecat_examples/dual_cores_servo_motor/remote/${core_id}/main.c
 	SOURCES ${board_root}/${board}/ecat_examples/dual_cores_servo_motor/remote/${core_id}/m1_pmsm_appconfig.h
 	SOURCES ${board_root}/${board}/ecat_examples/dual_cores_servo_motor/remote/${core_id}/m2_pmsm_appconfig.h
-	SOURCES ${board_root}/${board}/ecat_examples/dual_cores_servo_motor/remote/${core_id}/pin_mux.c
-	SOURCES ${board_root}/${board}/ecat_examples/dual_cores_servo_motor/remote/${core_id}/pin_mux.h
 	SOURCES ${board_root}/${board}/ecat_examples/dual_cores_servo_motor/remote/${core_id}/clock_config.c
 	SOURCES ${board_root}/${board}/ecat_examples/dual_cores_servo_motor/remote/${core_id}/clock_config.h
 	SOURCES ${board_root}/${board}/ecat_examples/dual_cores_servo_motor/remote/${core_id}/peripherals.c
