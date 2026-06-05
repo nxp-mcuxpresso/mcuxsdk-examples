@@ -94,10 +94,7 @@ int main(void)
     edma_config_t edmaConfig;
     flexcan_config_t flexcanConfig;
     flexcan_rx_fifo_config_t rxFifoConfig;
-
-#if !(defined(ENABLE_LOOPBACK) && ENABLE_LOOPBACK)
     uint8_t node_type;
-#endif
     uint32_t i;
 
     /* Initialize board hardware. */
@@ -106,9 +103,6 @@ int main(void)
     PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
 
     LOG_INFO("FlexCAN Legacy Rx FIFO edma example.\r\n");
-#if (defined(ENABLE_LOOPBACK) && ENABLE_LOOPBACK)
-    LOG_INFO("Loopback mode, Message buffer %d used for Tx, Legacy Rx FIFO used for Rx.\r\n", TX_MESSAGE_BUFFER_NUM);
-#else
     LOG_INFO("Board to board mode.\r\n");
     LOG_INFO("Node B Legacy Rx FIFO used for Rx.\r\n");
     LOG_INFO("Node A Message buffer %d used for Tx.\r\n", TX_MESSAGE_BUFFER_NUM);
@@ -122,7 +116,6 @@ int main(void)
         LOG_INFO("%c", node_type);
         LOG_INFO("\r\n");
     } while ((node_type != 'A') && (node_type != 'B') && (node_type != 'a') && (node_type != 'b'));
-#endif
 
     /* Get FlexCAN module default Configuration. */
     /*
@@ -145,10 +138,6 @@ int main(void)
     flexcanConfig.clkSrc = EXAMPLE_CAN_CLK_SOURCE;
 #endif
 
-#if (defined(ENABLE_LOOPBACK) && ENABLE_LOOPBACK)
-    flexcanConfig.enableLoopBack = true;
-#endif
-
 #if (defined(USE_IMPROVED_TIMING_CONFIG) && USE_IMPROVED_TIMING_CONFIG)
     flexcan_timing_config_t timing_config;
     memset(&timing_config, 0, sizeof(flexcan_timing_config_t));
@@ -165,10 +154,8 @@ int main(void)
 
     FLEXCAN_Init(EXAMPLE_CAN, &flexcanConfig, EXAMPLE_CAN_CLK_FREQ);
 
-#if !(defined(ENABLE_LOOPBACK) && ENABLE_LOOPBACK)
     if ((node_type == 'A') || (node_type == 'a'))
     {
-#endif
         /* Setup Tx Message Buffer. */
         FLEXCAN_SetTxMbConfig(EXAMPLE_CAN, TX_MESSAGE_BUFFER_NUM, true);
         /* Send messages through Tx Message Buffer. */
@@ -180,11 +167,9 @@ int main(void)
         txFrame.length    = (uint8_t)DLC;
         txXfer.frame      = &txFrame;
         txXfer.mbIdx      = (uint8_t)TX_MESSAGE_BUFFER_NUM;
-#if !(defined(ENABLE_LOOPBACK) && ENABLE_LOOPBACK)
     }
     else
     {
-#endif
 #if defined(FSL_FEATURE_SOC_DMAMUX_COUNT) && FSL_FEATURE_SOC_DMAMUX_COUNT
 #if defined(EXAMPLE_CAN_DMAMUX_CHANNEL)
         /* Configure DMA. */
@@ -228,20 +213,16 @@ int main(void)
         /* Create FlexCAN EDMA handle structure and set call back function. */
         FLEXCAN_TransferCreateHandleEDMA(EXAMPLE_CAN, &flexcanEdmaHandle, flexcan_dma_callback, NULL,
                                          &flexcanRxFifoEdmaHandle);
-#if !(defined(ENABLE_LOOPBACK) && ENABLE_LOOPBACK)
         LOG_INFO("Start to Wait data from Node A.\r\n\r\n");
     }
-#endif
 
     /* Create FlexCAN handle structure and set call back function. */
     FLEXCAN_TransferCreateHandle(EXAMPLE_CAN, &flexcanHandle, flexcan_callback, NULL);
 
     while (true)
     {
-#if !(defined(ENABLE_LOOPBACK) && ENABLE_LOOPBACK)
         if ((node_type == 'A') || (node_type == 'a'))
         {
-#endif
             LOG_INFO("Press any key to trigger %d transmission.\r\n\r\n", RX_MESSAGE_COUNT);
             GETCHAR();
             for (i = 0; i < RX_MESSAGE_COUNT; i++)
@@ -258,11 +239,9 @@ int main(void)
                 txFrame.dataWord0++;
             }
             LOG_INFO("\r\n");
-#if !(defined(ENABLE_LOOPBACK) && ENABLE_LOOPBACK)
         }
         else
         {
-#endif
             /* Receive data through Legacy Rx FIFO. */
             if (FLEXCAN_TransferReceiveFifoEDMA(EXAMPLE_CAN, &flexcanEdmaHandle, &rxFifoXfer) != kStatus_Success)
             {
@@ -282,9 +261,7 @@ int main(void)
                 }
                 LOG_INFO("\r\n");
             }
-#if !(defined(ENABLE_LOOPBACK) && ENABLE_LOOPBACK)
             LOG_INFO("Wait for the next %d messages!\r\n\r\n", RX_MESSAGE_COUNT);
         }
-#endif
     }
 }

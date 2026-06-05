@@ -62,84 +62,6 @@ uint32_t rxEnFifoFilter[] = {FLEXCAN_ENHANCED_RX_FIFO_STD_MASK_AND_FILTER(0x123,
  * Code
  ******************************************************************************/
 /*!
- * @brief CAN transceiver configuration function
- */
-static void FLEXCAN_PHY_Config(void)
-{
-#if (defined(USE_PHY_TJA1152) && USE_PHY_TJA1152)
-    /* Setup Tx Message Buffer. */
-    FLEXCAN_SetFDTxMbConfig(EXAMPLE_CAN, TX_MESSAGE_BUFFER_NUM, true);
-
-    /* Initialize TJA1152. */
-    /* STB=H, configuration CAN messages are expected from the local host via TXD pin. */
-    RGPIO_PortSet(EXAMPLE_STB_RGPIO, 1u << EXAMPLE_STB_RGPIO_PIN);   
-
-    /* Classical CAN messages with standard identifier 0x555 must be transmitted 
-     * by the local host controller until acknowledged by the TJA1152 for
-     * automatic bit rate detection. Do not set frame.brs = 1U to keep nominal
-     * bit rate in CANFD frame data phase. */
-    txFrameCfg.id     = FLEXCAN_ID_STD(0x555);
-    txFrameCfg.format = (uint8_t)kFLEXCAN_FrameFormatStandard;
-    txFrameCfg.type   = (uint8_t)kFLEXCAN_FrameTypeData;
-    txFrameCfg.length = 0U;
-    txXferCfg.mbIdx = (uint8_t)TX_MESSAGE_BUFFER_NUM;
-    txXferCfg.framefd = &txFrameCfg;
-    (void)FLEXCAN_TransferFDSendNonBlocking(EXAMPLE_CAN, &flexcanHandle, &txXferCfg);
-    while (!txComplete)
-    {
-    };
-    txComplete = false;
-
-    /* Configuration of spoofing protection. */
-    /* Add 0x123 to 0x126 to Transmission Whitelist. */
-    /* Set mask 0x007 to allow 0x123 to 0x126 transfer. */
-    txFrameCfg.id     = FLEXCAN_ID_EXT(0x18DA00F1);
-    txFrameCfg.format = (uint8_t)kFLEXCAN_FrameFormatExtend;
-    txFrameCfg.type   = (uint8_t)kFLEXCAN_FrameTypeData;
-    txFrameCfg.length = 6U;
-    txFrameCfg.dataWord[0] = CAN_WORD_DATA_BYTE_0(0x10) | CAN_WORD_DATA_BYTE_1(0x00) | CAN_WORD_DATA_BYTE_2(0x51) |
-                             CAN_WORD_DATA_BYTE_3(0x23);
-    txFrameCfg.dataWord[1] = CAN_WORD_DATA_BYTE_4(0x00) | CAN_WORD_DATA_BYTE_5(0x07);
-    (void)FLEXCAN_TransferFDSendNonBlocking(EXAMPLE_CAN, &flexcanHandle, &txXferCfg);
-    while (!txComplete)
-    {
-    };
-    txComplete = false;
-
-    /* Configuration of command message ID. */
-    /* Reconfiguration is only accepted locally. Keep CONFIG_ID as default value 0x18DA00F1. */
-    txFrameCfg.length = 5U;
-    txFrameCfg.dataWord[0] = CAN_WORD_DATA_BYTE_0(0x60) | CAN_WORD_DATA_BYTE_1(0x98) | CAN_WORD_DATA_BYTE_2(0xDA) |
-                             CAN_WORD_DATA_BYTE_3(0x00);
-    txFrameCfg.dataWord[1] = CAN_WORD_DATA_BYTE_4(0xF1);
-    (void)FLEXCAN_TransferFDSendNonBlocking(EXAMPLE_CAN, &flexcanHandle, &txXferCfg);
-    while (!txComplete)
-    {
-    };
-    txComplete = false;
-
-    /* Leaving configuration mode. */
-    /* Configuration into volatile memory only. */
-    txFrameCfg.length = 8U;
-    txFrameCfg.dataWord[0] = CAN_WORD_DATA_BYTE_0(0x71) | CAN_WORD_DATA_BYTE_1(0x02) | CAN_WORD_DATA_BYTE_2(0x03) |
-                             CAN_WORD_DATA_BYTE_3(0x04);
-    txFrameCfg.dataWord[1] = CAN_WORD_DATA_BYTE_4(0x05) | CAN_WORD_DATA_BYTE_5(0x06) | CAN_WORD_DATA_BYTE_6(0x07) |
-                             CAN_WORD_DATA_BYTE_7(0x08);
-    (void)FLEXCAN_TransferFDSendNonBlocking(EXAMPLE_CAN, &flexcanHandle, &txXferCfg);
-    while (!txComplete)
-    {
-    };
-    txComplete = false;
-
-    LOG_INFO("Initialize TJA1152 successfully!\r\n\r\n");
-
-    /* STB=L, TJA1152 switch from secure standby mode to normal mode. */
-    RGPIO_PortClear(EXAMPLE_STB_RGPIO, 1u << EXAMPLE_STB_RGPIO_PIN);
-    /* Initialize TJA1152 end. */
-#endif
-}
-
-/*!
  * @brief FlexCAN Call Back function
  */
 static FLEXCAN_CALLBACK(flexcan_callback)
@@ -171,9 +93,7 @@ int main(void)
     edma_config_t edmaConfig;
     flexcan_config_t flexcanConfig;
     flexcan_enhanced_rx_fifo_config_t rxEhFifoConfig;
-#if !(defined(ENABLE_LOOPBACK) && ENABLE_LOOPBACK)
     uint8_t node_type;
-#endif
     uint32_t i;
 
     /* Initialize board hardware. */
@@ -182,9 +102,6 @@ int main(void)
     PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
 
     LOG_INFO("FlexCAN Enhanced Rx FIFO edma example.\r\n");
-#if (defined(ENABLE_LOOPBACK) && ENABLE_LOOPBACK)
-    LOG_INFO("Loopback mode, Message buffer %d used for Tx, Enhanced Rx FIFO used for Rx.\r\n", TX_MESSAGE_BUFFER_NUM);
-#else
     LOG_INFO("Board to board mode.\r\n");
     LOG_INFO("Node B Enhanced Rx FIFO used for Rx.\r\n");
     LOG_INFO("Node A Message buffer %d used for Tx.\r\n", TX_MESSAGE_BUFFER_NUM);
@@ -198,7 +115,6 @@ int main(void)
         LOG_INFO("%c", node_type);
         LOG_INFO("\r\n");
     } while ((node_type != 'A') && (node_type != 'B') && (node_type != 'a') && (node_type != 'b'));
-#endif
 
     /* Get FlexCAN module default Configuration. */
     /*
@@ -228,10 +144,6 @@ int main(void)
     flexcanConfig.clkSrc = EXAMPLE_CAN_CLK_SOURCE;
 #endif
 
-#if (defined(ENABLE_LOOPBACK) && ENABLE_LOOPBACK)
-    flexcanConfig.enableLoopBack = true;
-#endif
-
 #if (defined(USE_IMPROVED_TIMING_CONFIG) && USE_IMPROVED_TIMING_CONFIG)
     flexcan_timing_config_t timing_config;
     memset(&timing_config, 0, sizeof(flexcan_timing_config_t));
@@ -249,10 +161,8 @@ int main(void)
 
     FLEXCAN_FDInit(EXAMPLE_CAN, &flexcanConfig, EXAMPLE_CAN_CLK_FREQ, BYTES_IN_MB, true);
 
-#if !(defined(ENABLE_LOOPBACK) && ENABLE_LOOPBACK)
     if ((node_type == 'A') || (node_type == 'a') || (node_type == 'T') || (node_type == 't'))
     {
-#endif
         /* Setup Tx Message Buffer. */
         FLEXCAN_SetFDTxMbConfig(EXAMPLE_CAN, TX_MESSAGE_BUFFER_NUM, true);
         /* Send messages through Tx Message Buffer. */
@@ -266,11 +176,9 @@ int main(void)
         txFrame.length      = (uint8_t)DLC;
         txXfer.framefd      = &txFrame;
         txXfer.mbIdx        = (uint8_t)TX_MESSAGE_BUFFER_NUM;
-#if !(defined(ENABLE_LOOPBACK) && ENABLE_LOOPBACK)
     }
     else
     {
-#endif
 #if defined(FSL_FEATURE_SOC_DMAMUX_COUNT) && FSL_FEATURE_SOC_DMAMUX_COUNT
 #if defined(EXAMPLE_CAN_DMAMUX_CHANNEL)
         /* Configure DMA. */
@@ -324,23 +232,16 @@ int main(void)
         /* Create FlexCAN EDMA handle structure and set call back function. */
         FLEXCAN_TransferCreateHandleEDMA(EXAMPLE_CAN, &flexcanEdmaHandle, flexcan_dma_callback, NULL,
                                          &flexcanRxFifoEdmaHandle);
-#if !(defined(ENABLE_LOOPBACK) && ENABLE_LOOPBACK)
         LOG_INFO("Start to Wait data from Node A.\r\n\r\n");
     }
-#endif
 
     /* Create FlexCAN handle structure and set call back function. */
     FLEXCAN_TransferCreateHandle(EXAMPLE_CAN, &flexcanHandle, flexcan_callback, NULL);
 
-    /* Configure CAN transceiver */
-    FLEXCAN_PHY_Config();
-
     while (true)
     {
-#if !(defined(ENABLE_LOOPBACK) && ENABLE_LOOPBACK)
         if ((node_type == 'A') || (node_type == 'a'))
         {
-#endif
             LOG_INFO("Press any key to trigger %d transmission.\r\n\r\n", RX_MESSAGE_COUNT);
             GETCHAR();
             for (i = 0; i < RX_MESSAGE_COUNT; i++)
@@ -357,11 +258,9 @@ int main(void)
                 txFrame.dataWord[0]++;
             }
             LOG_INFO("\r\n");
-#if !(defined(ENABLE_LOOPBACK) && ENABLE_LOOPBACK)
         }
         else
         {
-#endif
             /* Receive data through Enhanced Rx FIFO. */
             if (FLEXCAN_TransferReceiveEnhancedFifoEDMA(EXAMPLE_CAN, &flexcanEdmaHandle, &rxFifoXfer) !=
                 kStatus_Success)
@@ -384,9 +283,7 @@ int main(void)
                 }
                 LOG_INFO("\r\n");
             }
-#if !(defined(ENABLE_LOOPBACK) && ENABLE_LOOPBACK)
             LOG_INFO("Wait for the next %d messages!\r\n\r\n", RX_MESSAGE_COUNT);
         }
-#endif
     }
 }
