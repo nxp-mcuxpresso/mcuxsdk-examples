@@ -51,6 +51,7 @@ mcux_add_macro(
       -DCONFIG_WPA_SUPP_CRYPTO_MBEDTLS_PSA\
       -DLWIP_HOOK_FILENAME=\\\"lwip_default_hooks.h\\\"\
       -DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_config_client.h\\\"\
+      -DMBEDTLS_WPA_SUPPLICANT_CONFIG_FILE=\\\"wpa_supp_els_pkc_mbedtls_config.h\\\"\
       -DCONFIG_HOSTAPD=0"
 )
 

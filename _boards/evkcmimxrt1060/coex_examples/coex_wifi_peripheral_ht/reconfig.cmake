@@ -62,6 +62,7 @@ mcux_add_macro(
     CC "-DFSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE\
        -DCONFIG_WPA_SUPP_CRYPTO_MBEDTLS_PSA\
        -DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_config_client.h\\\"\
+       -DMBEDTLS_WPA_SUPPLICANT_CONFIG_FILE=\\\"wpa_supp_mbedtls_config.h\\\"\
        -DCONFIG_HOSTAPD=0"
 )
 

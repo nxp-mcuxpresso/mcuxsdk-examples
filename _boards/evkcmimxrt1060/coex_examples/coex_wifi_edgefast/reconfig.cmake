@@ -26,6 +26,7 @@ mcux_add_source(
             middleware/wireless/coex/src/edgefast/coex_shell.c
             middleware/wireless/coex/src/edgefast/coex_shell.h
             # middleware/wireless/coex/third_party/third_party.cmake
+            middleware/wireless/coex/third_party/platform/rt1060/ot_config.cmake
             examples/coex_examples/coex_wifi_edgefast/app_config.cmake
             # examples/_boards/${board}/coex_examples/coex_wifi_edgefast/FreeRTOSConfig.h
             middleware/wireless/coex/src/configs/mimxrt1062/edgefast/app_bluetooth_config.h
@@ -101,6 +102,7 @@ mcux_add_macro(
     CC "-DFSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE\
        -DCONFIG_WPA_SUPP_CRYPTO_MBEDTLS_PSA\
        -DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_config_client.h\\\"\
+       -DMBEDTLS_WPA_SUPPLICANT_CONFIG_FILE=\\\"wpa_supp_mbedtls_config.h\\\"\
        -DCONFIG_HOSTAPD=0"
 )
 
@@ -194,7 +196,7 @@ mcux_add_armgcc_linker_script(
 
 mcux_add_armgcc_configuration(
     LD "-Xlinker --defsym=__stack_size__=0x400\
-        -Xlinker --defsym=__heap_size__=0x400"
+        -Xlinker --defsym=__heap_size__=0x1000"
 )
 
 mcux_add_armgcc_configuration(

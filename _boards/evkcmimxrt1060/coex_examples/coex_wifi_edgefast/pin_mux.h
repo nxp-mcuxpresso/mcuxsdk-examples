@@ -126,6 +126,21 @@ void BOARD_InitPinsM2(void);
  */
 void BOARD_InitM2UARTPins(void);
 
+#define BOARD_INITM2SPIPINS_IOMUXC_GPR_GPR27_GPIO_MUX2_GPIO_SEL_MASK \
+    0x10U /*!< GPIO2 and GPIO7 share same IO MUX function, GPIO_MUX2 selects one GPIO function: affected bits mask */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitM2I2CPins(void);
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitM2SPIPins(void);
+
 #if defined(__cplusplus)
 }
 #endif
