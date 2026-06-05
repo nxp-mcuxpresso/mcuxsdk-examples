@@ -58,12 +58,26 @@
  
  #define PCR_IBE_ibe1 0x01u /*!<@brief Input Buffer Enable: Enables */
  
+ #if defined(WIFI_IW610_BOARD_MURATA_2LL_M2)
+ /*! @name PORT0_28 (coord E8), WL_RST
+   @{ */
+ 
+ /* Symbols to be used with GPIO driver */
+ #define BOARD_INITPINSWIFI_WL_RST_GPIO GPIO0                /*!<@brief GPIO peripheral base pointer */
+ #define BOARD_INITPINSWIFI_WL_RST_GPIO_PIN 28U              /*!<@brief GPIO pin number */
+ #define BOARD_INITPINSWIFI_WL_RST_GPIO_PIN_MASK (1U << 28U) /*!<@brief GPIO pin mask */
+ 
+ /* Symbols to be used with PORT driver */
+ #define BOARD_INITPINSWIFI_WL_RST_PORT PORT0                /*!<@brief PORT peripheral base pointer */
+ #define BOARD_INITPINSWIFI_WL_RST_PIN 28U                   /*!<@brief PORT pin number */
+ #define BOARD_INITPINSWIFI_WL_RST_PIN_MASK (1U << 28U)      /*!<@brief PORT pin mask */
+                                                             /* @} */
+ #else
  /*! @name PORT1_21 (coord L5), WL_RST
    @{ */
  
  /* Symbols to be used with GPIO driver */
  #define BOARD_INITPINSWIFI_WL_RST_GPIO GPIO1                /*!<@brief GPIO peripheral base pointer */
- #define BOARD_INITPINSWIFI_WL_RST_INIT_GPIO_VALUE 0U        /*!<@brief GPIO output initial state */
  #define BOARD_INITPINSWIFI_WL_RST_GPIO_PIN 21U              /*!<@brief GPIO pin number */
  #define BOARD_INITPINSWIFI_WL_RST_GPIO_PIN_MASK (1U << 21U) /*!<@brief GPIO pin mask */
  
@@ -71,7 +85,8 @@
  #define BOARD_INITPINSWIFI_WL_RST_PORT PORT1                /*!<@brief PORT peripheral base pointer */
  #define BOARD_INITPINSWIFI_WL_RST_PIN 21U                   /*!<@brief PORT pin number */
  #define BOARD_INITPINSWIFI_WL_RST_PIN_MASK (1U << 21U)      /*!<@brief PORT pin mask */
-                                                                /* @} */
+                                                             /* @} */
+ #endif
  
  /*!
   * @brief Configures pin routing and optionally pin electrical features.

@@ -20,8 +20,10 @@ package_id: MCXN947VDF
 mcu_data: ksdk2_0
 processor_version: 24.12.10
 pin_labels:
-- {pin_num: L5, pin_signal: PIO1_21/TRIG_OUT2/FC5_P5/FC4_P1/CT3_MAT3/SCT0_OUT9/FLEXIO0_D29/SMARTDMA_PIO17/PLU_OUT7/ENET0_MDIO/SAI1_MCLK/CAN1_RXD/ADC1_A21/CMP2_IN3,
-  label: WL_RST, identifier: WL_RST}
+- {pin_num: E8, pin_signal: P0_28/ADC0_B20/FC1_P4/FC0_P4/CT_INP0, label: WL_RST (WIFI_IW610_BOARD_MURATA_2LL_M2),
+  identifier: WL_RST}
+- {pin_num: L5, pin_signal: PIO1_21/TRIG_OUT2/FC5_P5/FC4_P1/CT3_MAT3/SCT0_OUT9/FLEXIO0_D29/SMARTDMA_PIO17/PLU_OUT7/ENET0_MDIO/SAI1_MCLK/CAN1_RXD/ADC1_A21/CMP2_IN3, label: WL_RST(Default),
+  identifier: WL_RST}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -449,8 +451,10 @@ void BOARD_InitArduinoUARTPins(void)
 BOARD_InitPinsWifi:
 - options: {callFromInitBoot: 'true', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: L5, peripheral: GPIO1, signal: 'GPIO, 21', pin_signal: PIO1_21/TRIG_OUT2/FC5_P5/FC4_P1/CT3_MAT3/SCT0_OUT9/FLEXIO0_D29/SMARTDMA_PIO17/PLU_OUT7/ENET0_MDIO/SAI1_MCLK/CAN1_RXD/ADC1_A21/CMP2_IN3,
-    direction: OUTPUT}
+  - {pin_num: E8, peripheral: GPIO0, signal: 'GPIO, 28', pin_signal: P0_28/ADC0_B20/FC1_P4/FC0_P4/CT_INP0, label: 'WL_RST (WIFI_IW610_BOARD_MURATA_2LL_M2)',
+    direction: OUTPUT, gpio_init_state: 'false'}
+  - {pin_num: L5, peripheral: GPIO1, signal: 'GPIO, 21', pin_signal: PIO1_21/TRIG_OUT2/FC5_P5/FC4_P1/CT3_MAT3/SCT0_OUT9/FLEXIO0_D29/SMARTDMA_PIO17/PLU_OUT7/ENET0_MDIO/SAI1_MCLK/CAN1_RXD/ADC1_A21/CMP2_IN3, label: 'WL_RST (Default)',
+    direction: OUTPUT, gpio_init_state: 'false'}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -463,8 +467,16 @@ BOARD_InitPinsWifi:
  * END ****************************************************************************************************************/
 void BOARD_InitPinsWifi(void)
 {
+#if defined(WIFI_IW610_BOARD_MURATA_2LL_M2)
+    /* Enables the clock for GPIO0: Enables clock */
+    CLOCK_EnableClock(kCLOCK_Gpio0);
+#endif
     /* Enables the clock for GPIO1: Enables clock */
     CLOCK_EnableClock(kCLOCK_Gpio1);
+#if defined(WIFI_IW610_BOARD_MURATA_2LL_M2)
+    /* Enables the clock for PORT0: Enables clock */
+    CLOCK_EnableClock(kCLOCK_Port0);
+#endif
     /* Enables the clock for PORT1: Enables clock */
     CLOCK_EnableClock(kCLOCK_Port1);
 
@@ -472,18 +484,27 @@ void BOARD_InitPinsWifi(void)
         .pinDirection = kGPIO_DigitalOutput,
         .outputLogic = 0U
     };
-    /* Initialize GPIO functionality on pin PIO1_21 (pin L5)  */
+    /*
+     * Initialize GPIO functionality on WL_RST
+     * - WIFI_IW610_BOARD_MURATA_2LL_M2, PORT0_28 (pin E8) is configured as PIO0_28
+     * - Other boards, PORT1_21 (pin L5) is configured as PIO1_21
+     */
     GPIO_PinInit(BOARD_INITPINSWIFI_WL_RST_GPIO, BOARD_INITPINSWIFI_WL_RST_PIN, &WL_RST_config);
 
-    /* PORT1_21 (pin L5) is configured as PIO1_21 */
+    /*
+     * Configures pin muxing of WL_RST
+     * - WIFI_IW610_BOARD_MURATA_2LL_M2, PORT0_28 (pin E8) is configured as PIO0_28
+     * - Other boards, PORT1_21 (pin L5) is configured as PIO1_21
+     */
     PORT_SetPinMux(BOARD_INITPINSWIFI_WL_RST_PORT, BOARD_INITPINSWIFI_WL_RST_PIN, kPORT_MuxAlt0);
 
-    PORT1->PCR[21] = ((PORT1->PCR[21] &
-                       /* Mask bits to zero which are setting */
-                       (~(PORT_PCR_IBE_MASK)))
+    BOARD_INITPINSWIFI_WL_RST_PORT->PCR[BOARD_INITPINSWIFI_WL_RST_PIN] =
+        ((BOARD_INITPINSWIFI_WL_RST_PORT->PCR[BOARD_INITPINSWIFI_WL_RST_PIN] &
+         /* Mask bits to zero which are setting */
+         (~(PORT_PCR_IBE_MASK)))
 
-                      /* Input Buffer Enable: Enables. */
-                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+         /* Input Buffer Enable: Enables. */
+         | PORT_PCR_IBE(PCR_IBE_ibe1));
 }
 /***********************************************************************************************************************
  * EOF
