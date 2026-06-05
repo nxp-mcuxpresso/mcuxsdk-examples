@@ -51,7 +51,7 @@ BOARD_InitPins:
   - {pin_num: B1, peripheral: LPUART1, signal: TXD, pin_signal: GPIO_AON_08, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper, open_drain: Disable, drive_strength: High,
     slew_rate: Slow}
   - {pin_num: P17, peripheral: RGPIO4, signal: 'gpio_io, 12', pin_signal: GPIO_AD_12, direction: OUTPUT, pull_up_down_config: Pull_Down}
-  - {pin_num: B4, peripheral: RGPIO1, signal: 'gpio_io, 04', pin_signal: GPIO_AON_04}
+  - {pin_num: B4, peripheral: RGPIO1, signal: 'gpio_io, 4', pin_signal: GPIO_AON_04, pull_up_down_config: Pull_Up}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
