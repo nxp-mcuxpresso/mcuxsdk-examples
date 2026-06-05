@@ -32,7 +32,7 @@ wm8962_config_t wm8962Config = {
             .rightHeadphonePGASource   = kWM8962_OutputPGASourceDAC,
         },
     .slaveAddress = WM8962_I2C_ADDR,
-    .bus          = (kWM8962_BusTDM | kWM8962_BusPCMA),
+    .bus          = kWM8962_BusTDM,
     .format       = {.sampleRate = kWM8962_AudioSampleRate48KHz, .bitWidth = kWM8962_AudioBitWidth32bit},
     .fllClock =
         {
