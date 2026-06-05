@@ -2469,7 +2469,7 @@ void BOARD_InitBT_UARTPins(void)
 /* clang-format off */
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOARD_InitSDHC1Pins:
+BOARD_InitWIFIPins:
 - options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: V3, peripheral: USDHC1, signal: 'USDHC_DATA, 0', pin_signal: PIO7_19/SDHC1_DATA0/LP_FLEXCOMM1_P4/LP_FLEXCOMM7_P3, input_buffer: enable, pull_select: up,
@@ -2487,12 +2487,12 @@ BOARD_InitSDHC1Pins:
 
 /* FUNCTION ************************************************************************************************************
  *
- * Function Name : BOARD_InitSDHC1Pins
+ * Function Name : BOARD_InitWIFIPins
  * Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
 /* Function assigned for the Cortex-M33 (Core #0) */
-void BOARD_InitSDHC1Pins(void)
+void BOARD_InitWIFIPins(void)
 {
     /* Reset IOPCTL2 module */
     RESET_ClearPeripheralReset(kIOPCTL2_RST_SHIFT_RSTn);

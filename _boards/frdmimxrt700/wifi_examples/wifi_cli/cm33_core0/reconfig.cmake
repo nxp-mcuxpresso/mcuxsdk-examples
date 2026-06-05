@@ -6,10 +6,7 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES ${board_root}/${board}/common/pin_mux/cm33_core0/pin_mux.c
-            ${board_root}/${board}/wifi_examples/common/pin_mux.c
-            ${board_root}/${board}/wifi_examples/common/pin_mux.h
-            middleware/wifi_nxp/example/wifi_cli/lwip_config/lwippools.h
+    SOURCES middleware/wifi_nxp/example/wifi_cli/lwip_config/lwippools.h
             middleware/wifi_nxp/example/wifi_cli/lwip_config/lwiphooks.h
             middleware/wifi_nxp/example/wifi_cli/freertos_config/FreeRTOSConfig.h
             middleware/wifi_nxp/example/wifi_cli/lwip_config/lwipopts.h

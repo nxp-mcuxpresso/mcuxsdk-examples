@@ -45,20 +45,21 @@ void BOARD_WIFI_BT_Enable(bool enable)
     if (enable)
     {
         /* Enable module */
-
-        /// TODO: Add logic to enable WL_PWREN if needed for board bring-up */
+        /* Enable power supply */
+        GPIO_PortSet(BOARD_INITWIFIPINS_PDN_PERIPHERAL, BOARD_INITWIFIPINS_PDN_GPIO_PIN_MASK);
 
         /* Set WL_RST to 1 */
-        GPIO_PortSet(BOARD_INITPINSWIFI_WL_RST_PERIPHERAL, BOARD_INITPINSWIFI_WL_RST_PIN_MASK);
+        GPIO_PortSet(BOARD_INITWIFIPINS_WL_RST_PERIPHERAL, BOARD_INITWIFIPINS_WL_RST_GPIO_PIN_MASK);
         vTaskDelay(pdMS_TO_TICKS(100));
 
     }
     else
     {
         /* Disable module */
+        GPIO_PortClear(BOARD_INITWIFIPINS_PDN_PERIPHERAL, BOARD_INITWIFIPINS_PDN_GPIO_PIN_MASK);
 
         /* Set WL_RST to 0 */
-        GPIO_PortClear(BOARD_INITPINSWIFI_WL_RST_PERIPHERAL, BOARD_INITPINSWIFI_WL_RST_PIN_MASK);
+        GPIO_PortClear(BOARD_INITWIFIPINS_WL_RST_PERIPHERAL, BOARD_INITWIFIPINS_WL_RST_GPIO_PIN_MASK);
 
         vTaskDelay(pdMS_TO_TICKS(100));
     }

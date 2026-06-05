@@ -19,16 +19,11 @@
 void BOARD_InitHardware(void)
 {
     BOARD_ConfigMPU();
-    BOARD_InitPins();
+    BOARD_InitBootPins();
+    BOARD_InitWIFIPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
-    BOARD_InitAHBSC();
-
-    CLOCK_EnableClock(kCLOCK_Gpio3);
-    CLOCK_EnableClock(kCLOCK_Gpio7);
-    RESET_PeripheralReset(kGPIO3_RST_SHIFT_RSTn);
-    RESET_PeripheralReset(kGPIO7_RST_SHIFT_RSTn);
-    BOARD_InitPinsWifi();
+    BOARD_InitAHBSC();  
 }
 /*${function:end}*/
