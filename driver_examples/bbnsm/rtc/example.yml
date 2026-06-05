@@ -1,0 +1,46 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+bbnsm_rtc:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/bbnsm/rtc
+    project-root-path: boards/${board}/driver_examples/bbnsm/rtc/${multicore_foldername}
+    document:
+      name: bbnsm_rtc${core_id_suffix_name}
+      category: driver_examples/bbnsm
+      brief: The BBNSM RTC project is a simple demonstration program of the SDK BBNSM
+        driver's RTC function. It sets up the RTC inside the Battery-Backed Non-Secure
+        Module to trigger an alarm after a user-specified time period. The example sets
+        the current date and time to a predefined value and the alarm is set with
+        reference to that time. It also detects whether the RTC survived a power-off
+        cycle by checking a magic value in the BBNSM General Purpose Register.
+      example_readme:
+      - examples/driver_examples/bbnsm/rtc/readme.md
+      - ${board_root}/${board}/driver_examples/bbnsm/rtc/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1180@cm33:
+    - -armgcc@debug
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -armgcc@release
+    - -iar@debug
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    - -mdk@release
+    frdmimxrt1186@cm33:
+    - -armgcc@debug
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -armgcc@release
+    - -iar@debug
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    - -mdk@release
