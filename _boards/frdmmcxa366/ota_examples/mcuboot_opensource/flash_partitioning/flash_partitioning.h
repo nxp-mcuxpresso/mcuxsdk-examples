@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 NXP
+ * Copyright 2025 NXP
  *
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -8,7 +8,9 @@
 #ifndef _FLASH_PARTITIONING_H_
 #define _FLASH_PARTITIONING_H_
 
+
 #define BOOT_FLASH_BASE     0x00000000
+
 
 #if defined(CONFIG_BOOT_CUSTOM_DEVICE_SETUP)
 /* Layout setup from Kconfig */
@@ -20,13 +22,13 @@
 /* Default layout setup */
 
 /*
-  MCUBoot region   0x000000 - 0x020000 : 128kB (0x20000 bytes)
-  Primary slot     0x020000 - 0x08A000 : 424kB (0x6A000 bytes)
-  Secondary slot   0x08A000 - 0x0F4000 : 424kB (0x6A000 bytes)
+  MCUBoot region   0x000000 - 0x010000 : 64kB  (0x10000 bytes)
+  Primary slot     0x010000 - 0x080000 : 448kB (0x70000 bytes)
+  Secondary slot   0x080000 - 0x0F0000 : 448kB (0x70000 bytes)
 */
 
-#define BOOT_FLASH_ACT_APP  0x00020000
-#define BOOT_FLASH_CAND_APP 0x0008A000
+#define BOOT_FLASH_ACT_APP  0x00010000
+#define BOOT_FLASH_CAND_APP 0x00080000
 
 #endif /* CONFIG_BOOT_CUSTOM_DEVICE_SETUP */
 

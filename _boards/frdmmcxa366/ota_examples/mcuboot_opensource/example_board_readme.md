@@ -11,9 +11,9 @@ Board settings
 
 | Region         | From       | To         | Size   |
 |----------------|------------|------------|--------|
-| MCUboot code   | 0x00000000 | 0x0001FFFF |  128kB |
-| Primary slot   | 0x00020000 | 0x00089FFF |  424kB |
-| Secondary slot | 0x0008A000 | 0x000F3FFF |  424kB |
+| MCUboot code   | 0x00000000 | 0x0000FFFF |   64kB |
+| Primary slot   | 0x00010000 | 0x0007FFFF |  448kB |
+| Secondary slot | 0x00080000 | 0x000EFFFF |  448kB |
 
 - MCUBoot header size is set to 512 bytes
 - Signing algorithm is ECDSA-P256
@@ -26,7 +26,7 @@ Board settings
     imgtool sign   --key sign-ecdsa-p256-priv.pem
                    --align 16
                    --version 1.1
-                   --slot-size 0x6A000
+                   --slot-size 0x70000
                    --header-size 0x200
                    --pad-header
                    --max-sectors 64
