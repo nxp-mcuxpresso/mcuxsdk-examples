@@ -10,7 +10,6 @@ All notable changes to MCUboot fork in MCUXpresso SDK and related ota examples w
 
 ### Changed
 - Optimized PSA configuration for mcuboot_opensource to reduce binary size
-- Changed flash partition layout on boards FRDM-MCXA266 and FRDM-MCXA366
 - (Encrypted XIP) Moved IPED dependencies in MCUBoot loader code to flash backend and reworked the extension
 - (Encrypted XIP) Documentation updated
 
