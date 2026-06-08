@@ -52,6 +52,42 @@ static inline void BOARD_HoldCore1InReset(void)
     RFMC->RF2P4GHZ_CTRL |= RFMC_RF2P4GHZ_CTRL_CPU_RST_MASK;
 }
 
+/*
+ * Drive the RF 2.4 GHz (NBU) low-power entry that matches the host power state.
+ * The NBU/Core1 is held in reset in this single-core example and no NBU firmware
+ * runs to manage its own low power, so the application owns the radio low-power
+ * entry. Programming the per-state LP_MODE via RFMC.RF2P4GHZ_CTRL lets Deep Sleep
+ * and deeper modes reach the radio low-power state and wake/resume as documented.
+ */
+static void APP_ApplyRadioLowPowerMode(uint8_t powerState)
+{
+    uint32_t rfCtrl;
+    uint32_t lpMode;
+
+    switch (powerState)
+    {
+        case PM_LP_STATE_SLEEP:
+            lpMode = 0x1U;
+            break;
+        case PM_LP_STATE_DEEP_SLEEP:
+            lpMode = 0x3U;
+            break;
+        case PM_LP_STATE_POWER_DOWN:
+            lpMode = 0x7U;
+            break;
+        case PM_LP_STATE_DEEP_POWER_DOWN:
+            RF_CMC1->RAM_PWR = 0x000004FFU;
+            lpMode = 0xFU;
+            break;
+        default:
+            return;
+    }
+
+    rfCtrl = RFMC->RF2P4GHZ_CTRL & ~RFMC_RF2P4GHZ_CTRL_LP_MODE_MASK;
+    RFMC->RF2P4GHZ_CTRL = rfCtrl | RFMC_RF2P4GHZ_CTRL_LP_MODE(lpMode);
+    RFMC->RF2P4GHZ_CTRL |= RFMC_RF2P4GHZ_CTRL_LP_ENTER_MASK;
+}
+
 void BOARD_InitHardware(void)
 {
     BOARD_HoldCore1InReset();
@@ -73,6 +109,10 @@ status_t APP_UartControlCallback(pm_event_type_t eventType, uint8_t powerState, 
 {
     if (eventType == kPM_EventEnteringSleep)
     {
+        /* The application drives the NBU/radio low-power entry before CMC
+         * low-power entry. */
+        APP_ApplyRadioLowPowerMode(powerState);
+
         if (powerState >= PM_LP_STATE_POWER_DOWN)
         {
             PRINTF("KW43 A0 ROM resumes Power Down and Deep Power Down through normal boot.\r\n");
