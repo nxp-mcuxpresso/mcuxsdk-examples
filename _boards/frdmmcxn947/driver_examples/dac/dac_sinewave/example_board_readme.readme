@@ -1,7 +1,7 @@
 Hardware requirements
 ===================
 - Mini/Micro USB cable
-- LPCXpresso55S36 board
+- FRDM-MCXN947 Board
 - Personal Computer
 - Oscilloscope
 
@@ -32,4 +32,3 @@ When the demo runs successfully, the log would be seen on the terminal like:
  Dac output sinewave frequency is 50 Hz
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Then user can use the oscilloscope to measure the sinewave.
-Please note the maximum sinewave frequency is 12000 Hz.
