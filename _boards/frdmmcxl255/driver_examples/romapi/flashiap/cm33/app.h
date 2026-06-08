@@ -11,7 +11,8 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define SECTOR_INDEX_FROM_END 2U /* start from the last 2 page*/
+/* start from the sector before Secure Installer */
+#define SECTOR_INDEX_FROM_END 14U
 /*${macro:end}*/
 
 /*******************************************************************************
