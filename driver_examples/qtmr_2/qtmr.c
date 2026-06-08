@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016-2017 NXP
+ * Copyright 2016-2017, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -22,6 +22,14 @@
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
+/*!
+ * @brief Converts a timer period in milliseconds into the 16-bit count value.
+ *
+ * @param periodMs   Desired timer period, in milliseconds.
+ * @param clockFreq  Timer counting clock frequency, in Hz.
+ * @return The period count clamped to the 16-bit QTMR range.
+ */
+static uint16_t QTMR_GetTimerPeriodCount(uint32_t periodMs, uint32_t clockFreq);
 
 /*******************************************************************************
  * Variables
@@ -48,6 +56,21 @@ void TMR0_IRQHandler(void)
 
     qtmrIsrFlag = true;
     SDK_ISR_EXIT_BARRIER;
+}
+
+static uint16_t QTMR_GetTimerPeriodCount(uint32_t periodMs, uint32_t clockFreq)
+{
+    uint64_t periodCount = MSEC_TO_COUNT(periodMs, clockFreq);
+
+    if (periodCount > 0xFFFFU)
+    {
+        PRINTF("\r\nWarning: %u ms timer period exceeds the QTMR 16-bit range "
+               "(max 65535); clamping to 65535.\r\n",
+               (uint32_t)periodMs);
+        periodCount = 0xFFFFU;
+    }
+
+    return (uint16_t)periodCount;
 }
 
 /*!
@@ -85,7 +108,7 @@ int main(void)
     QTMR_Init(TMR1, &qtmrConfig);
 
     /* Set timer period to be 200 millisecond */
-    QTMR_SetTimerPeriod(TMR1, MSEC_TO_COUNT(200U, (BUS_CLK_FREQ / 128)));
+    QTMR_SetTimerPeriod(TMR1, QTMR_GetTimerPeriodCount(200U, (BUS_CLK_FREQ / 128)));
 
     /* Enable timer compare interrupt */
     QTMR_EnableInterrupts(TMR1, kQTMR_CompareInterruptEnable);
@@ -119,7 +142,7 @@ int main(void)
     QTMR_Init(TMR1, &qtmrConfig);
 
     /* Set timer 0 period to be 1 millisecond */
-    QTMR_SetTimerPeriod(TMR0, MSEC_TO_COUNT(1U, (BUS_CLK_FREQ / 128)));
+    QTMR_SetTimerPeriod(TMR0, QTMR_GetTimerPeriodCount(1U, (BUS_CLK_FREQ / 128)));
 
     /* Set timer 1 count which increases every millisecond, set compare event for 10 second */
     QTMR_SetTimerPeriod(TMR1, 10000);
