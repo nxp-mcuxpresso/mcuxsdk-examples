@@ -13,11 +13,7 @@
 #define DPU_DI_MIPI                0
 #define DPU_DI_LVDS                1
 #define DEMO_PANEL_LCD_SPEC        11
-#define DEMO_PANEL_LVDS_DUAL_PANEL 12
-#define DEMO_PANEL_MX9_DSI_OLED    13
-#define DEMO_PANEL_MIPI2HDMI       14
 #define DEMO_PANEL_LVDS2HDMI       15
-#define DEMO_PANEL_MX9_LVDS_LD     18
 
 /* Use the LVDS interface. */
 #ifndef DPU_EXAMPLE_DI
@@ -32,7 +28,7 @@
 #define LDB_DUAL_PANEL  0
 #endif
 
-/* Whether use external convertor such as MIPI2HDMI convertor (ADV7535) or LVDS2HDMI convertor (IT6263) */
+/* Whether use external convertor such as LVDS2HDMI convertor (IT6263) */
 #ifndef APP_DISPLAY_EXTERNAL_CONVERTOR
 #define APP_DISPLAY_EXTERNAL_CONVERTOR 0
 #endif
@@ -88,20 +84,6 @@ Interrupt Enable register 0.
 #define LVDS_PWM        (3U)
 
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
-#if (DEMO_PANEL == DEMO_PANEL_MX9_DSI_OLED)
-/*
- * The pixel clock is (height + VSW + VFP + VBP) * (width + HSW + HFP + HBP) * frame rate.
- * (2340 + 4 + 10 + 10) * (1080 + 4 + 12 + 8) * 57Hz = 2364 * 1104 * 57Hz = 2,609,856 * 57 = 148,761,792 Hz
- */
-#define APP_PANEL_HEIGHT 2340
-#define APP_PANEL_WIDTH  1080
-#define APP_HSW          4
-#define APP_HFP          10
-#define APP_HBP          10
-#define APP_VSW          4
-#define APP_VFP          10
-#define APP_VBP          10
-#endif
 #if (DEMO_PANEL == DEMO_PANEL_LCD_SPEC)
 /*
  * The pixel clock is (height + VSW + VFP + VBP) * (width + HSW + HFP + HBP) * frame rate.
@@ -117,56 +99,8 @@ Interrupt Enable register 0.
 #define APP_VBP            15
 /* 497.7 / 7 = 71.1 MHz */
 #endif
-#if (DEMO_PANEL == DEMO_PANEL_LVDS_DUAL_PANEL)
-/*
- * The pixel clock is (height + VSW + VFP + VBP) * (width + HSW + HFP + HBP) * frame rate.
- * (1200 + 5 + 4 + 6) * (1920 + 30 + 100 + 100) * 60 = 1215 * 2150 * 60Hz = 156735000 Hz
- */
-/* 1920*1200 LVDS dual panel */
-#define APP_PANEL_HEIGHT   1200
-#define APP_PANEL_WIDTH    1920
-#define APP_HSW            30
-#define APP_HFP            100
-#define APP_HBP            100
-#define APP_VSW            5
-#define APP_VFP            4
-#define APP_VBP            6
-/* 1097.04/7 = 156.72 MHz */
-#define APP_PIXEL_CLOCK_HZ 156720000
-#endif
-#if (DEMO_PANEL == DEMO_PANEL_MX9_LVDS_LD)
-/*
- * The pixel clock is (height + VSW + VFP + VBP) * (width + HSW + HFP + HBP) * frame rate.
- * (720 + 3 + 9 + 20) * (1920 + 24 + 52 + 32) * 60 = 752 * 2028 * 60Hz = 91,464,960 Hz
- */
-/* 1920*720 i.MX9 local dimming LVDS dual port panel */
-#define APP_PANEL_HEIGHT   720
-#define APP_PANEL_WIDTH    1920
-#define APP_HSW            24
-#define APP_HFP            52
-#define APP_HBP            32
-#define APP_VSW            3
-#define APP_VFP            9
-#define APP_VBP            20
-/* 641.2 / 7 = 91.6 MHz */
-#endif
 #else
 
-#if (DEMO_PANEL == DEMO_PANEL_MIPI2HDMI)
-/*
- * The pixel clock is (height + VSW + VFP + VBP) * (width + HSW + HFP + HBP) * frame rate.
- * (1080 + 4 + 36 + 5) * (1920 + 88 + 148 + 44) * 60 = 1125 * 2200 * 60Hz = 148500000 Hz
- */
-/* 1920*1080 ADV7535 4 lane MIPI2HDMI card */
-#define APP_PANEL_HEIGHT   1080
-#define APP_PANEL_WIDTH    1920
-#define APP_HFP            88
-#define APP_HBP            148
-#define APP_HSW            44
-#define APP_VFP            4
-#define APP_VBP            36
-#define APP_VSW            5
-#endif
 #if (DEMO_PANEL == DEMO_PANEL_LVDS2HDMI)
 /*
  * The pixel clock is (height + VSW + VFP + VBP) * (width + HSW + HFP + HBP) * frame rate.
@@ -248,9 +182,6 @@ Interrupt Enable register 0.
 /* Prepare the display, such as enable display module clock and interrupts. */
 extern void BOARD_PrepareDisplay(void);
 extern void APP_InitPixelLink(void);
-#if (DEMO_PANEL == DEMO_PANEL_MX9_LVDS_LD)
-extern void BOARD_ConfigCm0Csr(void);
-#endif
 
 void BOARD_InitDisplayInterface(void);
 

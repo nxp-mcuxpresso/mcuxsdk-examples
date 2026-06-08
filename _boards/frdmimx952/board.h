@@ -199,6 +199,8 @@
 #define BOARD_PCA6416A_CAN_STBY        6U
 
 #define BOARD_PCA6416A_ENET2_SAI2_SEL  (8U + 3U)
+#define BOARD_PCA6416A_EXT_5V0_PWR_EN  (8U + 4U)
+#define BOARD_PCA6416A_EXT_3V3_PWR_EN  (8U + 5U)
 
 /* hal api and hal arguments */
 #define BOARD_PCAL6524_I2C_CLOCK_ROOT_HAL kCLOCK_lpi2c2

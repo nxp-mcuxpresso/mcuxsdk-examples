@@ -68,6 +68,7 @@ void BOARD_InitHardware(void)
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
     BOARD_InitI2C2Pins();
+    BOARD_InitI2C4Pins();
     BOARD_InitLVDSPWMPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();

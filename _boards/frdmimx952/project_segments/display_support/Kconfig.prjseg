@@ -1,31 +1,21 @@
-# Copyright 2026-2026 NXP
+# Copyright 2026 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 #
 
 config MCUX_PRJSEG_module.board.display_support
-    select MCUX_COMPONENT_driver.display-rm692c9
-    select MCUX_COMPONENT_driver.display-adv7535
     select MCUX_COMPONENT_driver.display-it6263
+    select MCUX_COMPONENT_driver.display-waveshare-dsi2dpi
     select MCUX_COMPONENT_driver.lpi2c
 
 # Which panels the board supports
 config MCUX_DEMO_PANEL_LCD_SPEC_SUPPORT
     default y
 
-config MCUX_DEMO_PANEL_LVDS_DUAL_PANEL_SUPPORT
-    default y
-
-config MCUX_DEMO_PANEL_MX9_DSI_OLED_SUPPORT
-    default y
-
-config MCUX_DEMO_PANEL_MIPI2HDMI_SUPPORT
-    default y
-
 config MCUX_DEMO_PANEL_LVDS2HDMI_SUPPORT
     default y
 
-config MCUX_DEMO_PANEL_MX9_LVDS_LD_SUPPORT
+config MCUX_DEMO_PANEL_WAVESHARE_DSI2DPI_SUPPORT
     default y
 
 if MCUX_PRJSEG_module.board.display_support

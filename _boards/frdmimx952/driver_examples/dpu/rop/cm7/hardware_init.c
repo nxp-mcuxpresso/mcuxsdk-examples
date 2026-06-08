@@ -68,6 +68,7 @@ void BOARD_InitHardware(void)
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
     BOARD_InitI2C2Pins();
+    BOARD_InitI2C4Pins();
     BOARD_InitLVDSPWMPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
@@ -80,7 +81,6 @@ void BOARD_InitHardware(void)
     CLOCK_EnableClock(dispocramCLKCfg.clkId);
     CLOCK_SetRate(&lpi2cClkCfg);
     CLOCK_EnableClock(lpi2cClkCfg.clkId);
-
     BOARD_PrepareDisplay();
 }
 /*${function:end}*/

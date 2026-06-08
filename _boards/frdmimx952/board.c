@@ -183,14 +183,14 @@ status_t BOARD_LPI2C_Receive(LPI2C_Type *base,
 status_t BOARD_Display_I2C_Send(
     uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, const uint8_t *txBuff, uint8_t txBuffSize)
 {
-    return BOARD_LPI2C_Send(LPI2C2, deviceAddress, subAddress, subAddressSize, (uint8_t *)txBuff,
+    return BOARD_LPI2C_Send(LPI2C4, deviceAddress, subAddress, subAddressSize, (uint8_t *)txBuff,
                             txBuffSize, 0);
 }
 
 status_t BOARD_Display_I2C_Receive(
     uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, uint8_t *rxBuff, uint8_t rxBuffSize)
 {
-    return BOARD_LPI2C_Receive(LPI2C2, deviceAddress, subAddress, subAddressSize, rxBuff,
+    return BOARD_LPI2C_Receive(LPI2C4, deviceAddress, subAddress, subAddressSize, rxBuff,
                                rxBuffSize, 0);
 }
 

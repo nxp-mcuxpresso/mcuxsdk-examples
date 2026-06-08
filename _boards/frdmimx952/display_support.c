@@ -11,8 +11,8 @@
 #include "display_support.h"
 #include "fsl_video_common.h"
 #include "fsl_display.h"
-static adp5585_handle_t adpHandle;
 #if DPU_EXAMPLE_DI == DPU_DI_MIPI
+static adp5585_handle_t adpHandle;
 #include "fsl_mipi_dsi2_dwc_dphy.h"
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
 #include "fsl_rm692c9.h"
@@ -20,11 +20,9 @@ static adp5585_handle_t adpHandle;
 #include "fsl_adv7535.h"
 #endif
 #elif DPU_EXAMPLE_DI == DPU_DI_LVDS
+#include "fsl_pca6416a.h"
+pca6416a_handle_t pca6416ahandle;
 #include "fsl_ldb.h"
-#if (DEMO_PANEL == DEMO_PANEL_MX9_LVDS_LD)
-#include "fsl_pi4io6408.h"
-static pi4io6408_handle_t pi4io_handle;
-#endif
 #if APP_DISPLAY_EXTERNAL_CONVERTOR
 #include "fsl_it6263.h"
 #endif
@@ -49,7 +47,6 @@ extern void DPU_IRQHandler(void);
 status_t RM692c9_DSI_Transfer(dsi_transfer_t *xfer);
 static void RM692c9_PullResetPin(bool pullUp);
 #endif
-
 #elif (DPU_EXAMPLE_DI == DPU_DI_LVDS)
 #if APP_DISPLAY_EXTERNAL_CONVERTOR
 static void IT6263_PullResetPin(bool pullUp);
@@ -120,11 +117,11 @@ static void IT6263_PullResetPin(bool pullUp)
 {
     if (pullUp)
     {
-        ADP5585_SetPins(&adpHandle, (1 << LVDS1_RST));
+        //PCA6416A_SetPins(&pca6416ahandle, (1 << LVDS1_RST));
     }
     else
     {
-        ADP5585_ClearPins(&adpHandle, (1 << LVDS1_RST));
+        //PCA6416A_ClearPins(&pca6416ahandle, (1 << LVDS1_RST));
     }
 }
 #endif
@@ -183,18 +180,6 @@ void BOARD_InitDpuInterrupt(void)
     DPU_IRQSTEER->CHN_MASK[1] = 0x7U;
     (void)EnableIRQ(DISP_IRQSTEER7_IRQn);
 }
-
-#if (DEMO_PANEL == DEMO_PANEL_MX9_LVDS_LD)
-void BOARD_ConfigCm0Csr(void)
-{
-    /* Set the clock gating of CM0P and LPCAC as not gated */
-    DISPLAY__CM0_CSR->CM0P_CLOCK_GATING &= ~DISPLAY_CM0_CSR_CM0P_CLOCK_GATING_DISP_CM0P_CLK_MASK;
-    DISPLAY__CM0_CSR->CM0P_ADDR_OFFSET2 = 0x4B30000;
-    DISPLAY__CM0_CSR->CM0P_CPUWAIT = DISPLAY_CM0_CSR_CM0P_CPUWAIT_RST_MASK | DISPLAY_CM0_CSR_CM0P_CPUWAIT_CPW_MASK;
-    /* Controls CM0P CPUWAIT input signal as running */
-    DISPLAY__CM0_CSR->CM0P_CPUWAIT &= ~DISPLAY_CM0_CSR_CM0P_CPUWAIT_CPW_MASK;
-}
-#endif
 
 void APP_InitPixelLink(void)
 {
@@ -271,26 +256,7 @@ void BOARD_PrepareDisplay(void)
     CLOCK_SetRate(&mipitestbyteCLKCfg);
 #elif (DPU_EXAMPLE_DI == DPU_DI_LVDS)
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
-#if (DEMO_PANEL == DEMO_PANEL_MX9_LVDS_LD)
-    clk_t ldbpllvcoCLKCfg = {
-        .clkId = kCLOCK_ldbpllctl,
-        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
-        .rate = 2564800000,
-    };
-
-    clk_t ldbpllCLKCfg = {
-        .clkId = kCLOCK_ldbpll,
-        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
-        .rate = 641200000,
-    };
-
-    clk_t spi9CLKCfg = {
-        .clkId = kCLOCK_displpspi,
-        .pclkId = kCLOCK_syspll1dfs0div2,
-        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
-        .rate = 20000000,
-    };
-#else
+#if (DEMO_PANEL == DEMO_PANEL_LCD_SPEC)
     clk_t ldbpllvcoCLKCfg = {
         .clkId = kCLOCK_ldbpllctl,
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
@@ -321,23 +287,6 @@ void BOARD_PrepareDisplay(void)
     CLOCK_EnableClock(ldbpllvcoCLKCfg.clkId);
     CLOCK_SetRate(&ldbpllCLKCfg);
     CLOCK_EnableClock(ldbpllCLKCfg.clkId);
-#if (DEMO_PANEL == DEMO_PANEL_MX9_LVDS_LD)
-    CLOCK_SetParent(&spi9CLKCfg);
-    CLOCK_SetRate(&spi9CLKCfg);
-    CLOCK_EnableClock(spi9CLKCfg.clkId);
-    EnableIRQ(LPSPI9_IRQn);
-#endif
-    /* Select LVDS related pin by using ADP5585 */
-    BOARD_InitADP5585(&adpHandle);
-    ADP5585_SetDirection(&adpHandle, (1 << LVDS1_RST), kADP5585_Output);
-    ADP5585_SetDirection(&adpHandle, (1 << LVDS1_EN), kADP5585_Output);
-    ADP5585_SetDirection(&adpHandle, (1 << LVDS0_RST), kADP5585_Output);
-    ADP5585_SetDirection(&adpHandle, (1 << LVDS0_EN), kADP5585_Output);
-
-    ADP5585_SetPins(&adpHandle, (1 << LVDS1_RST));
-    ADP5585_SetPins(&adpHandle, (1 << LVDS1_EN));
-    ADP5585_SetPins(&adpHandle, (1 << LVDS0_RST));
-    ADP5585_SetPins(&adpHandle, (1 << LVDS0_EN));
 #endif
     BOARD_InitDpuInterrupt();
 }
@@ -469,22 +418,10 @@ void BOARD_InitDisplayInterface(void)
 #elif DPU_EXAMPLE_DI == DPU_DI_LVDS
 
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
-#if (DEMO_PANEL == DEMO_PANEL_MX9_LVDS_LD)
-    BOARD_InitPI4IO6408_I2C3(&pi4io_handle);
-    PI4IO6408_EnableAllPinOutput(&pi4io_handle);
-    PI4IO6408_SetDirection(&pi4io_handle, (1 << 3), kPI4IO6408_Output);
-    PI4IO6408_SetPins(&pi4io_handle, (1 << 3));
-    SDK_DelayAtLeastUs(100, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-    PI4IO6408_SetDirection(&pi4io_handle, (1 << 1), kPI4IO6408_Output);
-    PI4IO6408_SetPins(&pi4io_handle, (1 << 1));
-    SDK_DelayAtLeastUs(100, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-    PI4IO6408_SetDirection(&pi4io_handle, (1 << 2), kPI4IO6408_Output);
-    PI4IO6408_SetPins(&pi4io_handle, (1 << 2));
-    SDK_DelayAtLeastUs(100, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-    PI4IO6408_SetDirection(&pi4io_handle, (1 << 4), kPI4IO6408_Output);
-    PI4IO6408_SetPins(&pi4io_handle, (1 << 4));
-    SDK_DelayAtLeastUs(100, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-#endif
+    BOARD_InitPCA6416A(&pca6416ahandle);
+    PCA6416A_SetDirection(&pca6416ahandle, (1 << BOARD_PCA6416A_EXT_5V0_PWR_EN), kPCA6416A_Output);
+    PCA6416A_SetPins(&pca6416ahandle, (1 << BOARD_PCA6416A_EXT_5V0_PWR_EN));
+    SDK_DelayAtLeastUs(1000U, SystemCoreClock);
     /* LVDS configuration */
     LDB_Init(APP_LDB, APP_DPU_DISPLAY_INDEX, LDB_DUAL_PANEL, LVDS_SPWG);
 
@@ -499,21 +436,15 @@ void BOARD_InitDisplayInterface(void)
         .vbp           = APP_VBP,
         .controlFlags  = 0,
     };
-
-    clk_t lpi2cClkCfg = {
-        .clkId = kCLOCK_lpi2c2,
-        .rate = 24000000UL, /* 24Mhz for lpi2c */
+    BOARD_InitPCA6416A(&pca6416ahandle);
+    clk_t lpi2c4ClkCfg = {
+        .clkId = kCLOCK_lpi2c4,
+        .rate = 24000000UL, /* 24Mhz for lpi2c4 */
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
     };
-    CLOCK_SetRate(&lpi2cClkCfg);
-    CLOCK_EnableClock(lpi2cClkCfg.clkId);
-
-    BOARD_InitADP5585(&adpHandle);
-    ADP5585_SetDirection(&adpHandle, (1 << LVDS1_RST), kADP5585_Output);
-    ADP5585_SetDirection(&adpHandle, (1 << LVDS1_EN), kADP5585_Output);
-    ADP5585_SetPins(&adpHandle, (1 << LVDS1_RST));
-    ADP5585_SetPins(&adpHandle, (1 << LVDS1_EN));
-
+    CLOCK_SetRate(&lpi2c4ClkCfg);
+    CLOCK_EnableClock(lpi2c4ClkCfg.clkId);
+    BOARD_LPI2C_Init(LPI2C4, CLOCK_GetRate(kCLOCK_lpi2c4));
     if (kStatus_Success != IT6263_Init(&it6263Handle, &displayConfig))
     {
         PRINTF("Error: Failed to init the IT6263 convert card\r\n");
