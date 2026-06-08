@@ -7,17 +7,12 @@
 #ifndef _APP_H_
 #define _APP_H_
 
-/*${header:start}*/
-#include "board.h"
-/*${header:end}*/
-
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define LED_INIT()          LED_RED_INIT(LOGIC_LED_OFF)
-#define LED_TOGGLE()        LED_RED_TOGGLE()
-#define APP_MU              MU2_B
+#define LED_INIT()   LED_RED_INIT(LOGIC_LED_OFF)
+#define LED_TOGGLE() LED_RED_TOGGLE()
 /*${macro:end}*/
 
 /*******************************************************************************

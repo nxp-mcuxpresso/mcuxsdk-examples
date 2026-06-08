@@ -3,23 +3,20 @@
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
-
 #ifndef _APP_H_
 #define _APP_H_
 
 /*${header:start}*/
-#include "board.h"
+#include "mcmgr.h"
 /*${header:end}*/
 
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define LED_INIT()          LED_RED_INIT(LOGIC_LED_OFF)
-#define LED_TOGGLE()        LED_RED_TOGGLE()
-#define APP_MU              MU2_B
+#define RPMSG_LITE_LINK_ID (RL_PLATFORM_MCXE32B_LINK_ID)
+#define MCMGR_USED
 /*${macro:end}*/
-
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -28,6 +25,3 @@ void BOARD_InitHardware(void);
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */
-/*******************************************************************************
- * EOF
- ******************************************************************************/

@@ -15,8 +15,8 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define LED_INIT()          //not possible to use on-board LED from the secondary core
-#define LED_TOGGLE()        //not possible to use on-board LED from the secondary core
+#define LED_INIT()          LED_RED_INIT(LOGIC_LED_OFF)
+#define LED_TOGGLE()        LED_RED_TOGGLE()
 
 /* core1 (M7_1, secondary) uses the B-side of MU2, the inter-CPU messaging unit.
  * MU2_B has dedicated NVIC lines on MCXE32B (TX, RX and general-purpose).

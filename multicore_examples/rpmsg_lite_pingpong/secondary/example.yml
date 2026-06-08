@@ -128,4 +128,5 @@ rpmsg_lite_pingpong_secondary_core:
     - +armgcc@release
     - +iar@debug
     - +iar@release
+    frdmmcxe32b@core1: []
     frdmimxrt700@cm33_core1: []
