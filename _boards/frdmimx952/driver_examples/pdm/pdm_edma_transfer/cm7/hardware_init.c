@@ -15,7 +15,6 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    pca6416a_handle_t handle;
     /* clang-format off */
     clk_t audiopll1vcoCLKCfg = {
         .clkId = kCLOCK_audiopll1ctl,
@@ -59,9 +58,6 @@ void BOARD_InitHardware(void)
     CLOCK_SetRate(&lpi2c6clk);
     CLOCK_EnableClock(lpi2c6clk.clkId);
 
-    BOARD_InitPCA6416A(&handle);
 
-    PCA6416A_SetDirection(&handle, (1 << BOARD_PCA6416A_MQS_EN), kPCA6416A_Output);
-    PCA6416A_ClearPins(&handle, (1 << BOARD_PCA6416A_MQS_EN));
 }
 /*${function:end}*/

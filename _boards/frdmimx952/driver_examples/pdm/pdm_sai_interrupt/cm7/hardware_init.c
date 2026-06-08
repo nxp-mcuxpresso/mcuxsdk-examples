@@ -50,7 +50,6 @@ codec_config_t boardCodecConfig = {.codecDevType = kCODEC_WM8962, .codecDevConfi
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    pca6416a_handle_t handle;
     /* clang-format off */
     clk_t audiopll1vcoCLKCfg = {
         .clkId = kCLOCK_audiopll1ctl,
@@ -122,11 +121,6 @@ void BOARD_InitHardware(void)
     CLOCK_SetParent(&saiCLKCfg);
     CLOCK_SetRate(&saiCLKCfg);
     CLOCK_EnableClock(saiCLKCfg.clkId);
-
-    BOARD_InitPCA6416A(&handle);
-
-    PCA6416A_SetDirection(&handle, (1 << BOARD_PCA6416A_MQS_EN), kPCA6416A_Output);
-    PCA6416A_ClearPins(&handle, (1 << BOARD_PCA6416A_MQS_EN));
 
     /* select MCLK direction(Enable MCLK clock) */
     saiMasterCfg.mclkSourceClkHz = DEMO_SAI_CLK_FREQ;            /* setup source clock for MCLK */
