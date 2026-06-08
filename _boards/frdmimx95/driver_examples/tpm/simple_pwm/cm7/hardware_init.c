@@ -17,6 +17,7 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
+    pcal6524_handle_t handle;
     /* clang-format off */
 
     SM_Platform_Init();
@@ -25,6 +26,9 @@ void BOARD_InitHardware(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
     BOARD_ConfigMPU();
+    BOARD_InitPCAL6524(&handle);
+    PCAL6524_SetDirection(&handle, (1 << BOARD_PCAL6524_CH_PWM_SEL), kPCAL6524_Output);
+    PCAL6524_SetPins(&handle, (1 << BOARD_PCAL6524_CH_PWM_SEL));
 
 }
 /*${function:end}*/
