@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+wifi_secure_enterprise:
+  section-type: application
+  contents:
+    meta_path: examples/wifi_examples/wifi_secure_enterprise
+    project-root-path: boards/${board}/wifi_examples/wifi_secure_enterprise/${multicore_foldername}
+    document:
+      name: wifi_secure_enterprise${core_id_suffix_name}
+      category: wifi_examples
+      brief: wifi_secure_enterprise
+      example_readme:
+      - examples/wifi_examples/wifi_secure_enterprise/readme.md
+      - ${board_root}/${board}/wifi_examples/common/wifi_examples_readme.md
+      - ${board_root}/${board}/wifi_examples/readme_modules.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmrw612:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    rdrw612bga:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
