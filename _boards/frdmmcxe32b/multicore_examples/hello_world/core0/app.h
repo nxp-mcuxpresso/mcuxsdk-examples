@@ -7,17 +7,14 @@
 #ifndef _APP_H_
 #define _APP_H_
 
-/*${header:start}*/
-#include "board.h"
-/*${header:end}*/
-
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define LED_INIT()          LED_RED_INIT(LOGIC_LED_OFF)
-#define LED_TOGGLE()        LED_RED_TOGGLE()
-#define APP_MU              MU2_B
+/* Flash address where the secondary core (M7_1) image is programmed and runs
+ * in place. The secondary core is released by writing this address to the
+ * MC_ME PRTN0_CORE1 interface; the image is not copied to RAM. */
+#define CORE1_BOOT_ADDRESS 0x00600000
 /*${macro:end}*/
 
 /*******************************************************************************

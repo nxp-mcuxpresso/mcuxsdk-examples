@@ -136,6 +136,7 @@ rpmsg_lite_pingpong_primary_core:
     mcxw72loc@cm33_core0: []
     frdmmcxw72@cm33_core0: []
     frdmmcxl255@cm33: []
+    frdmmcxe32b@core0: []
     frdmimxrt700@cm33_core0:
     - -armgcc@debug
     - +armgcc@flash_debug

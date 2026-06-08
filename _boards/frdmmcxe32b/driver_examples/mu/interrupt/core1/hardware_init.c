@@ -43,6 +43,7 @@ void APP_EnableMu2Clock(void)
 void BOARD_InitHardware(void)
 {
     BOARD_InitBootPins();
+    BOARD_InitLEDsPins();
 
     /* Make sure the MU2_B clock is gated on before this core touches MU2 or
      * its ISR can fire. */
