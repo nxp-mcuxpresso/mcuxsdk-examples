@@ -1,20 +1,24 @@
 Hardware requirements
 =====================
 - Micro USB cable
-- IMX952-EVK  board
+- FRDM-IMX952 board
 - J-Link Debug Probe
 - 12V~20V power supply
 - Personal Computer
 
 Board settings
 ==============
-Connect J22-3(GPIO_IO03 pad, I2C6_SCL_3V3) and j22-8(GND) to oscilloscope
+Connect J18 pin 5 (GPIO_IO03) and J18 pin 6 (GND) to oscilloscope.
+
+Note: J18 is the 40-PIN GPIO HDR expansion connector.
+      - J18-Pin5: GPIO_IO03 (RGPIO2_IO03) - GPIO output signal
+      - J18-Pin6: Common Ground
 
 #### Please note this application can't support running with Linux BSP! ####
 
 Prepare the Demo
 ================
-1.  Connect 12V~20V power supply and JLink Plus to the board, switch SW4 to power on the board
+1.  Connect 12V~20V power supply and J-Link Debug Probe to the board, switch SW4 to power on the board.
 2.  Connect a micro USB cable between the host PC and the J31 USB port on the target board.
 3.  Open a serial terminal with the following settings:
     - 115200 baud rate
