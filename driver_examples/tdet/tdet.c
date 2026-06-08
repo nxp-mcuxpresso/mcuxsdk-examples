@@ -34,7 +34,8 @@
  * Code
  ******************************************************************************/
 
-void VBAT0_DriverIRQHandler(void)
+/* Redefined IRQ handler defined by user APP */
+void TDET_DriverIRQHandler(void)
 {
     NVIC_DisableIRQ(TAMPER_INTERRUPT);
 
@@ -44,10 +45,12 @@ void VBAT0_DriverIRQHandler(void)
     
     DIGTMP_Type *tdetBases[] = DIGTMP_BASE_PTRS;
     DIGTMP_Type *base = tdetBases[EXAMPLE_TDET_INSTANCE];
-    
-    TDET_ClearStatusFlags(base, kTDET_StatusAll);
+
+    (void)TDET_ClearStatusFlags(base, (uint32_t)kTDET_StatusAll);
 
     NVIC_EnableIRQ(TAMPER_INTERRUPT);
+
+    SDK_ISR_EXIT_BARRIER;
 }
 
 /*!
