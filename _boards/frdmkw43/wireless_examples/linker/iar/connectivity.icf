@@ -34,8 +34,8 @@ define symbol m_flw_start = 0x00800000;
 define symbol m_flw_size  = 0x180000;
 define symbol m_flw_end   = m_flw_start + m_flw_size - 1;
 
-/* 352K reserved flash space for the Radio core at the beginning of the flash */
-define symbol m_flash_radio_size    = 44 * m_sector_size;
+/* 320K reserved flash space for the Radio core at the beginning of the flash */
+define symbol m_flash_radio_size    = 40 * m_sector_size;
 define symbol m_flash_radio_start   = m_flash_start;
 define symbol m_flash_radio_end     = m_flash_radio_start + m_flash_radio_size - 1;
 
@@ -466,7 +466,7 @@ if (gReserveCeRam_d)
     define block ce_ctrl_blk        { section ceCtrl };
     define block ce_heap_blk        { section ceHeap };
 
-/* There are two heap memory areas defined in the localization applications: 
+/* There are two heap memory areas defined in the localization applications:
      - the main heap is accommodated at the end of DATA0_region
      - the heap used by LCE is accommodated in CE_HEAP_region   (14.4K) */
 

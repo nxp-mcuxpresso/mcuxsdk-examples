@@ -38,8 +38,8 @@ m_flw_start = 0x00800000;
 m_flw_size  = 0x180000;
 m_flw_end   = m_flw_start + m_flw_size - 1;
 
-/* 352K reserved flash space for the Radio core at the beginning of the flash */
-m_flash_radio_size    = 0x58000;
+/* 320K reserved flash space for the Radio core at the beginning of the flash */
+m_flash_radio_size    = 0x50000;
 m_flash_radio_start   = m_flash_start;
 m_flash_radio_end     = m_flash_radio_start + m_flash_radio_size - 1;
 
