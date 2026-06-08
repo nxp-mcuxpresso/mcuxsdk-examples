@@ -57,15 +57,23 @@ edma_config_t dmaConfig = {0};
  ******************************************************************************/
 static void callback(I2S_Type *base, sai_edma_handle_t *handle, status_t status, void *userData)
 {
+    uint32_t transferCount = MUSIC_LEN / DEMO_XFER_BUFFER_SIZE;
+
     if (kStatus_SAI_RxError == status)
     {
     }
     else
     {
-        finishIndex++;
-        emptyBlock++;
+        if (finishIndex < transferCount)
+        {
+            finishIndex++;
+        }
+        if (emptyBlock < BUFFER_NUM)
+        {
+            emptyBlock++;
+        }
         /* Judge whether the music array is completely transfered. */
-        if (MUSIC_LEN / DEMO_XFER_BUFFER_SIZE == finishIndex)
+        if (transferCount == finishIndex)
         {
             isFinished = true;
         }

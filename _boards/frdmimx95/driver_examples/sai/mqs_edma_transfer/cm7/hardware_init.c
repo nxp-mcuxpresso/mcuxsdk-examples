@@ -20,14 +20,20 @@
 /*${function:start}*/
 void BOARD_MQS_Init(void)
 {
-    uint32_t mqsDiv = 1U;
+    uint32_t mqsDiv     = 0U;
+    uint64_t mqsDivWide = HAL_ClockGetIpFreq(SAI_CLOCK_ROOT) / (64ULL * 48000ULL);
 
     /*
      * MQS oversample is 64.
      * Divider uses HMCLK (SAI MCLK root) / (64 * sample_rate * 6).
      * Keep consistent with pdm_sai_mqs_interrupt on this board.
      */
-    mqsDiv = HMCLK_FREQ / (64U * 48000U);
+    if ((mqsDivWide == 0ULL) || (mqsDivWide > UINT32_MAX))
+    {
+        return;
+    }
+
+    mqsDiv = (uint32_t)mqsDivWide;
     BOARD_InitMQS(mqsDiv - 1U);
 }
 
