@@ -44,7 +44,7 @@ ModelRunner is a benchmarking tool for running TensorFlow Lite models on NXP mic
 2. **Upload Model**
 
    ```
-   curl -X PUT http://10.193.20.56:10818/v1 -F 'block_content=@<path_to_model>.tflite'
+   curl -X PUT http://10.193.20.56:10818/v1 -F 'file=@"{model_name}.tflite";filename="model_name;name=block_content"'
    ```
    users can get agent response as below:
    ```
@@ -58,10 +58,10 @@ ModelRunner is a benchmarking tool for running TensorFlow Lite models on NXP mic
    curl -s -X POST http://<IP>:10818/v1?run=1
    ```
 
-   users can get agent response of inference time:
+   users can get agent response of inference time (us):
    ```
    {
-      "timing": 511
+      "timing":54238
    }
    ```
 
@@ -71,12 +71,14 @@ ModelRunner is a benchmarking tool for running TensorFlow Lite models on NXP mic
    ```
    users can get detail model info:
    ```
-   {"timing":54065000,"ktensor_arena_size":22820,"inputs":[{"name":"input_1","scale":0.58470290899276733,"zero_points":83,"datatype":"INT8","shape":[1,49,10,1]}],"outputs":[{"name":"Identity","scale":0.00390625,"zero_points":-128,"datatype":"INT8","shape":[1,12]}],"layer_count":13,"layers":[{"name":"functional_1/activation/Relu;functional_1/batch_normalization/FusedBatchNormV3;functional_1/conv2d/BiasAdd/ReadVariableOp/resource;functional_1/conv2d/BiasAdd;functional_1/conv2d_4/Conv2D;functional_1/conv2d/Conv2D1","type":"CONV_2D","avg_timing":8249000,"tensor":{"timing":8249000}},{"name":"functional_1/activation_1/Relu;functional_1/batch_normalization_1/FusedBatchNormV3;functional_1/depthwise_conv2d/depthwise;functional_1/depthwise_conv2d/BiasAdd;functional_1/conv2d_4/Conv2D;functional_1/depthwise_conv2d/BiasAdd/ReadVariableOp/resource1","type":"DEPTHWISE_CONV_2D","avg_timing":3969000,"tensor":{"timing":3969000}},{"name":"functional_1/activation_2/Relu;functional_1/batch_normalization_2/FusedBatchNormV3;functional_1/conv2d_1/BiasAdd/ReadVariableOp/resource;functional_1/conv2d_1/BiasAdd;functional_1/conv2d_4/Conv2D;functional_1/conv2d_1/Conv2D1","type":"CONV_2D","avg_timing":7373000,"tensor":{"timing":7373000}},{"name":"functional_1/activation_3/Relu;functional_1/batch_normalization_3/FusedBatchNormV3;functional_1/depthwise_conv2d_1/depthwise;functional_1/depthwise_conv2d_1/BiasAdd;functional_1/conv2d_4/Conv2D;functional_1/depthwise_conv2d_1/BiasAdd/ReadVariableOp/resource1","type":"DEPTHWISE_CONV_2D","avg_timing":3968000,"tensor":{"timing":3968000}},{"name":"functional_1/activation_4/Relu;functional_1/batch_normalization_4/FusedBatchNormV3;functional_1/conv2d_2/BiasAdd/ReadVariableOp/resource;functional_1/conv2d_2/BiasAdd;functional_1/conv2d_4/Conv2D;functional_1/conv2d_2/Conv2D1","type":"CONV_2D","avg_timing":7371000,"tensor":{"timing":7371000}},{"name":"functional_1/activation_5/Relu;functional_1/batch_normalization_5/FusedBatchNormV3;functional_1/depthwise_conv2d_2/depthwise;functional_1/depthwise_conv2d_2/BiasAdd;functional_1/conv2d_4/Conv2D;functional_1/depthwise_conv2d_2/BiasAdd/ReadVariableOp/resource1","type":"DEPTHWISE_CONV_2D","avg_timing":3968000,"tensor":{"timing":3968000}},{"name":"functional_1/activation_6/Relu;functional_1/batch_normalization_6/FusedBatchNormV3;functional_1/conv2d_3/BiasAdd/ReadVariableOp/resource;functional_1/conv2d_3/BiasAdd;functional_1/conv2d_4/Conv2D;functional_1/conv2d_3/Conv2D1","type":"CONV_2D","avg_timing":7371000,"tensor":{"timing":7371000}},{"name":"functional_1/activation_7/Relu;functional_1/batch_normalization_7/FusedBatchNormV3;functional_1/depthwise_conv2d_3/depthwise;functional_1/depthwise_conv2d_3/BiasAdd;functional_1/conv2d_4/Conv2D;functional_1/depthwise_conv2d_3/BiasAdd/ReadVariableOp/resource1","type":"DEPTHWISE_CONV_2D","avg_timing":3968000,"tensor":{"timing":3968000}},{"name":"functional_1/activation_8/Relu;functional_1/batch_normalization_8/FusedBatchNormV3;functional_1/conv2d_4/BiasAdd/ReadVariableOp/resource;functional_1/conv2d_4/BiasAdd;functional_1/conv2d_4/Conv2D1","type":"CONV_2D","avg_timing":7371000,"tensor":{"timing":7371000}},{"name":"functional_1/average_pooling2d/AvgPool","type":"AVERAGE_POOL_2D","avg_timing":401000,"tensor":{"timing":401000}},{"name":"functional_1/flatten/Reshape","type":"RESHAPE","avg_timing":6000,"tensor":{"timing":6000}},{"name":"functional_1/dense/BiasAdd","type":"FULLY_CONNECTED","avg_timing":25000,"tensor":{"timing":25000}},{"name":"Identity","type":"SOFTMAX","avg_timing":25000,"tensor":{"timing":25000}}]}
+   {"timing": 54238,"model_size": 53936,"ktensor_arena_size": 22812,"inputs": [{"name": "input_1","scale": 0.584703,"zero_points": 83,"data_type": "INT8","shape": [1,49,10,1]}],"outputs": [{"name": "Identity","scale": 0.003906,"zero_points": -128,"data_type": "INT8","shape": [1,12]}],"layer_count": 13,"layers": [{"name": "functional_1/activation/Relu;functional_1/batch_normalization/FusedBatchNormV3;functional_1/conv2d/BiasAdd/ReadVariableOp/resource;functional_1/conv2d/BiasAdd;functional_1/conv2d_4/Conv2D;functional_1/conv2d/Conv2D1","type": "CONV_2D","timing": 8257,"process_unit": "CPU","shape": [1,49,10,1]},{"name": "functional_1/activation_1/Relu;functional_1/batch_normalization_1/FusedBatchNormV3;functional_1/depthwise_conv2d/depthwise;functional_1/depthwise_conv2d/BiasAdd;functional_1/conv2d_4/Conv2D;functional_1/depthwise_conv2d/BiasAdd/ReadVariableOp/resource1","type": "DEPTHWISE_CONV_2D","timing": 4055,"process_unit": "CPU","shape": [1,25,5,64]},{"name": "functional_1/activation_2/Relu;functional_1/batch_normalization_2/FusedBatchNormV3;functional_1/conv2d_1/BiasAdd/ReadVariableOp/resource;functional_1/conv2d_1/BiasAdd;functional_1/conv2d_4/Conv2D;functional_1/conv2d_1/Conv2D1","type": "CONV_2D","timing": 7374,"process_unit": "CPU","shape": [1,25,5,64]},{"name": "functional_1/activation_3/Relu;functional_1/batch_normalization_3/FusedBatchNormV3;functional_1/depthwise_conv2d_1/depthwise;functional_1/depthwise_conv2d_1/BiasAdd;functional_1/conv2d_4/Conv2D;functional_1/depthwise_conv2d_1/BiasAdd/ReadVariableOp/resource1","type": "DEPTHWISE_CONV_2D","timing": 3982,"process_unit": "CPU","shape": [1,25,5,64]},{"name": "functional_1/activation_4/Relu;functional_1/batch_normalization_4/FusedBatchNormV3;functional_1/conv2d_2/BiasAdd/ReadVariableOp/resource;functional_1/conv2d_2/BiasAdd;functional_1/conv2d_4/Conv2D;functional_1/conv2d_2/Conv2D1","type": "CONV_2D","timing": 7448,"process_unit": "CPU","shape": [1,25,5,64]},{"name": "functional_1/activation_5/Relu;functional_1/batch_normalization_5/FusedBatchNormV3;functional_1/depthwise_conv2d_2/depthwise;functional_1/depthwise_conv2d_2/BiasAdd;functional_1/conv2d_4/Conv2D;functional_1/depthwise_conv2d_2/BiasAdd/ReadVariableOp/resource1","type": "DEPTHWISE_CONV_2D","timing": 3983,"process_unit": "CPU","shape": [1,25,5,64]},{"name": "functional_1/activation_6/Relu;functional_1/batch_normalization_6/FusedBatchNormV3;functional_1/conv2d_3/BiasAdd/ReadVariableOp/resource;functional_1/conv2d_3/BiasAdd;functional_1/conv2d_4/Conv2D;functional_1/conv2d_3/Conv2D1","type": "CONV_2D","timing": 7372,"process_unit": "CPU","shape": [1,25,5,64]},{"name": "functional_1/activation_7/Relu;functional_1/batch_normalization_7/FusedBatchNormV3;functional_1/depthwise_conv2d_3/depthwise;functional_1/depthwise_conv2d_3/BiasAdd;functional_1/conv2d_4/Conv2D;functional_1/depthwise_conv2d_3/BiasAdd/ReadVariableOp/resource1","type": "DEPTHWISE_CONV_2D","timing": 3984,"process_unit": "CPU","shape": [1,25,5,64]},{"name": "functional_1/activation_8/Relu;functional_1/batch_normalization_8/FusedBatchNormV3;functional_1/conv2d_4/BiasAdd/ReadVariableOp/resource;functional_1/conv2d_4/BiasAdd;functional_1/conv2d_4/Conv2D1","type": "CONV_2D","timing": 7375,"process_unit": "CPU","shape": [1,25,5,64]},{"name": "functional_1/average_pooling2d/AvgPool","type": "AVERAGE_POOL_2D","timing": 350,"process_unit": "CPU","shape": [1,25,5,64]},{"name": "functional_1/flatten/Reshape","type": "RESHAPE","timing": 6,"process_unit": "CPU","shape": [1,1,1,64]},{"name": "functional_1/dense/BiasAdd","type": "FULLY_CONNECTED","timing": 27,"process_unit": "CPU","shape": [1,64]},{"name": "Identity","type": "SOFTMAX","timing": 25,"process_unit": "CPU","shape": [1,12]}]}
    ```
 
 5. **Upload Input Tensor & Get Output**
+
+
    ```bash
-   curl -s -X POST "http://<IP>:10818/v1?run=1&output=Identity" -F 'block_content=@<path_to_input_tensor>.bin' |jq .outputs[0].data | xargs -i echo {$i} |base64 -d |hexdump -C
+   curl -s -X POST "http://<IP>:10818/v1?run=1&output=Identity" -F 'file=@tst_000011_Left_2.bin;filename="input_tensor;name=input_1"' |jq .outputs[0].data | xargs -i echo {$i} |base64 -d |hexdump -C
    ```
    users can get output data by hexdump for further post-process:
    ```
@@ -98,6 +100,9 @@ ModelRunner is a benchmarking tool for running TensorFlow Lite models on NXP mic
   ```
 
 2. **Run HTTP-to-UART agent on x86**
+
+  HTTP-to-UART agent scripts are under ${project_files}/scripts. User can install dependency from requirement.txt in the server that have local platforms plugined in. The agent is implemented by PEXPECT that can operate URAT serial, it can transfer data packages between agent ethernet port and target device serial port.
+
    ```bash
    python3 main.py
    ```
@@ -133,12 +138,23 @@ ModelRunner is a benchmarking tool for running TensorFlow Lite models on NXP mic
       "reply": "success"
    }
    ```
+  Model will upload to modelrunner, it may take different time for different model size, it will generate log file under agent repo that you can track model upload log with this command:
+   ```
+  tail -f logs/tty-<serial-id>.log
+   ```
+ The sample log as below:
+   ```
+model_loadb 53936936
+######### Ready for TFLite model download MEM
+
+######### 53936 bytes received #########
+   ```
 
   4.2. **Run Latency Benchmark**
    ```bash
    curl -X POST http://<IP>:<port>/serial/<serial-id>/v1?run=1
    ```
-   users can get agent response of inference time:
+   users can get agent response of inference time (us): 
    ```
    {
       "timing": 511
@@ -201,7 +217,7 @@ ModelRunner is a benchmarking tool for running TensorFlow Lite models on NXP mic
   4.4. **Upload Input Tensor & Get Output Data**
    ```bash
    curl -X POST "http://<IP>:<port>/serial/<serial-id>/v1?run=1&output=${output_tensor_name}" \
-     -F 'file=@<path_to_input_tensor>.bin'
+     -F 'file=@<path_to_input_tensor>.bin;filename="input_tensor;name=${input_tensor_name}"'
    ```  
    users can get output data and do post-process accordingly:
    ```
