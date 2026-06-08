@@ -42,6 +42,46 @@ void BOARD_InitBootPins(void);
 #define IOPCTL_PIO_PUPD_DI 0x00u          /*!<@brief Disable pull-up / pull-down function */
 #define IOPCTL_PIO_SLEW_RATE_NORMAL 0x00u /*!<@brief Normal mode */
 
+/*! @name PIO8_14 (number AE12), U82M[AE12]/U9[5]
+  @{ */
+/* Routed pin properties */
+/*!
+ * @brief Peripheral name */
+#define BOARD_INITDEBUG_UARTPINS_SENSE_RT_P8_14_FC19_RXD_PERIPHERAL LP_FLEXCOMM19
+/*!
+ * @brief Signal name */
+#define BOARD_INITDEBUG_UARTPINS_SENSE_RT_P8_14_FC19_RXD_SIGNAL P0
+/*!
+ * @brief PORT peripheral base pointer */
+#define BOARD_INITDEBUG_UARTPINS_SENSE_RT_P8_14_FC19_RXD_PORT 8U
+/*!
+ * @brief PORT pin number */
+#define BOARD_INITDEBUG_UARTPINS_SENSE_RT_P8_14_FC19_RXD_PIN 14U
+/*!
+ * @brief PORT pin mask */
+#define BOARD_INITDEBUG_UARTPINS_SENSE_RT_P8_14_FC19_RXD_PIN_MASK (1U << 14U)
+/* @} */
+
+/*! @name PIO8_15 (coord Y12), U82M[Y12]/U9[6]
+  @{ */
+/* Routed pin properties */
+/*!
+ * @brief Peripheral name */
+#define BOARD_INITDEBUG_UARTPINS_SENSE_RT_P8_15_FC19_TXD_PERIPHERAL LP_FLEXCOMM19
+/*!
+ * @brief Signal name */
+#define BOARD_INITDEBUG_UARTPINS_SENSE_RT_P8_15_FC19_TXD_SIGNAL P1
+/*!
+ * @brief PORT peripheral base pointer */
+#define BOARD_INITDEBUG_UARTPINS_SENSE_RT_P8_15_FC19_TXD_PORT 8U
+/*!
+ * @brief PORT pin number */
+#define BOARD_INITDEBUG_UARTPINS_SENSE_RT_P8_15_FC19_TXD_PIN 15U
+/*!
+ * @brief PORT pin mask */
+#define BOARD_INITDEBUG_UARTPINS_SENSE_RT_P8_15_FC19_TXD_PIN_MASK (1U << 15U)
+/* @} */
+
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
  *
@@ -58,6 +98,36 @@ void BOARD_InitDEBUG_UARTPins_Sense(void); /* Function assigned for the Cortex-M
 #define IOPCTL_PIO_PUPD_DI 0x00u          /*!<@brief Disable pull-up / pull-down function */
 #define IOPCTL_PIO_SLEW_RATE_NORMAL 0x00u /*!<@brief Normal mode */
 
+/*! @name PIO8_20 (number AC12), U82M[AC12]/JP44[1]
+  @{ */
+/* Routed pin properties */
+#define BOARD_INITI3CPINS_SENSE_I3C3_PUR_PERIPHERAL I3C3            /*!<@brief Peripheral name */
+#define BOARD_INITI3CPINS_SENSE_I3C3_PUR_SIGNAL PUR                 /*!<@brief Signal name */
+#define BOARD_INITI3CPINS_SENSE_I3C3_PUR_PORT 8U                    /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITI3CPINS_SENSE_I3C3_PUR_PIN 20U                    /*!<@brief PORT pin number */
+#define BOARD_INITI3CPINS_SENSE_I3C3_PUR_PIN_MASK (1U << 20U)       /*!<@brief PORT pin mask */
+                                                                    /* @} */
+
+/*! @name PIO8_22 (number AA12), U82M[AA12]/U1[2]
+  @{ */
+/* Routed pin properties */
+#define BOARD_INITI3CPINS_SENSE_I3C3_SCL_PERIPHERAL I3C3           /*!<@brief Peripheral name */
+#define BOARD_INITI3CPINS_SENSE_I3C3_SCL_SIGNAL SCL                /*!<@brief Signal name */
+#define BOARD_INITI3CPINS_SENSE_I3C3_SCL_PORT 8U                   /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITI3CPINS_SENSE_I3C3_SCL_PIN 22U                   /*!<@brief PORT pin number */
+#define BOARD_INITI3CPINS_SENSE_I3C3_SCL_PIN_MASK (1U << 22U)      /*!<@brief PORT pin mask */
+                                                                   /* @} */
+
+/*! @name PIO8_21 (number AD12), U82M[AD12]/U1[1]
+  @{ */
+/* Routed pin properties */
+#define BOARD_INITI3CPINS_SENSE_I3C3_SDA_PERIPHERAL I3C3           /*!<@brief Peripheral name */
+#define BOARD_INITI3CPINS_SENSE_I3C3_SDA_SIGNAL SDA                /*!<@brief Signal name */
+#define BOARD_INITI3CPINS_SENSE_I3C3_SDA_PORT 8U                   /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITI3CPINS_SENSE_I3C3_SDA_PIN 21U                   /*!<@brief PORT pin number */
+#define BOARD_INITI3CPINS_SENSE_I3C3_SDA_PIN_MASK (1U << 21U)      /*!<@brief PORT pin mask */
+                                                                   /* @} */
+
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
  *
@@ -73,6 +143,37 @@ void BOARD_InitI3CPins_Sense(void); /* Function assigned for the Cortex-M33 (Cor
 #define IOPCTL_PIO_PULLDOWN_EN 0x00u      /*!<@brief Enable pull-down function */
 #define IOPCTL_PIO_PUPD_DI 0x00u          /*!<@brief Disable pull-up / pull-down function */
 #define IOPCTL_PIO_SLEW_RATE_NORMAL 0x00u /*!<@brief Normal mode */
+
+/*! @name PIO8_5 (number AD8), U82M[AD8]/SW6[1]
+  @{ */
+/* Routed pin properties */
+/*!
+ * @brief Peripheral name */
+#define BOARD_INITBUTTONSPINS_SENSE_USER_Button3_PERIPHERAL GPIO8
+/*!
+ * @brief Signal name */
+#define BOARD_INITBUTTONSPINS_SENSE_USER_Button3_SIGNAL GPIO
+/*!
+ * @brief Signal channel */
+#define BOARD_INITBUTTONSPINS_SENSE_USER_Button3_CHANNEL 5
+
+/* Symbols to be used with GPIO driver */
+/*!
+ * @brief GPIO peripheral base pointer */
+#define BOARD_INITBUTTONSPINS_SENSE_USER_Button3_GPIO GPIO8
+/*!
+ * @brief GPIO pin mask */
+#define BOARD_INITBUTTONSPINS_SENSE_USER_Button3_GPIO_PIN_MASK (1U << 5U)
+/*!
+ * @brief PORT peripheral base pointer */
+#define BOARD_INITBUTTONSPINS_SENSE_USER_Button3_PORT 8U
+/*!
+ * @brief PORT pin number */
+#define BOARD_INITBUTTONSPINS_SENSE_USER_Button3_PIN 5U
+/*!
+ * @brief PORT pin mask */
+#define BOARD_INITBUTTONSPINS_SENSE_USER_Button3_PIN_MASK (1U << 5U)
+/* @} */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.

@@ -17,16 +17,26 @@ product: Pins v17.0
 processor: MIMXRT798S
 package_id: MIMXRT798SGVKB
 mcu_data: ksdk2_0
-processor_version: 25.12.10
+processor_version: 0.2606.50
+board: FRDM-IMXRT700
 pin_labels:
+- {pin_num: T24, pin_signal: PIO0_2/LP_FLEXCOMM8_P4/SCT0_GPIN2/SCT0_OUT2/CTIMER0_MAT1/SAI0_RX_DATA/LP_FLEXCOMM9_P0, label: 'U82E[D24]/U29[D2]', identifier: 'SAI0_RXD[0];SAI0_RXD0'}
+- {pin_num: V25, pin_signal: PIO0_4/LP_FLEXCOMM4_P1/SCT0_GPIN4/SCT0_OUT4/CTIMER0_MAT3/SAI0_TX_DATA, label: 'U82E[V25]/U29[D1]', identifier: 'SAI0_TXD[0];SAI0_TXD0'}
+- {pin_num: V23, pin_signal: PIO0_10/LP_FLEXCOMM5_P0/SCT0_GPIN4/SCT0_OUT4/CTIMER1_MAT0/CTIMER_C_INP0/SAI2_RX_DATA, label: SW5, identifier: SW5}
+- {pin_num: V24, pin_signal: PIO0_14/LP_FLEXCOMM5_P4/SCT0_GPIN0/SCT0_OUT8/CTIMER_C_INP2/SAI2_RX_DATA/CLKOUT_VDD2, label: 'U82E[V24]/U68A[59]', identifier: 'SAI2_RXD[0];SAI2_RXD0'}
+- {pin_num: AB24, pin_signal: PIO0_19/LP_FLEXCOMM6_P2/SCT0_GPIN2/SCT0_OUT2/CTIMER2_MAT2/SAI1_RX_SYNC, label: LED_BLU, identifier: LED_BLU}
+- {pin_num: AB25, pin_signal: PIO0_21/LP_FLEXCOMM6_P0/SCT0_GPIN6/SCT0_OUT6/CTIMER_C_INP4/SAI1_TX_DATA/CLKCTL0_MCLK, label: MCLK, identifier: MCLK}
+- {pin_num: AC22, pin_signal: PIO1_9/LP_FLEXCOMM1_P2/SCT0_GPIN7/SCT0_OUT3/CTIMER_C_INP15/CLKCTL0_CLKIN/CLKOUT_VDD1, label: LED_BLUE, identifier: LED_BLUE}
+- {pin_num: AD22, pin_signal: PIO1_11/LP_FLEXCOMM2_P0/CTIMER2_MAT2/SWD_TRACEDATA0, label: BT_UART_RXD, identifier: BT_UART_RXD}
+- {pin_num: AE22, pin_signal: PIO1_12/LP_FLEXCOMM2_P1/SCT0_GPIN3/SCT0_OUT9/CTIMER1_MAT1/SWD_TRACEDATA1, label: BT_UART_TXD, identifier: BT_UART_TXD}
+- {pin_num: AD23, pin_signal: PIO1_13/LP_FLEXCOMM2_P4/UTICK0_CAP1/CTIMER2_MAT3/SWD_TRACEDATA2/32KHZ_CLKOUT, label: LED_GRN, identifier: LED_GRN}
+- {pin_num: AE24, pin_signal: PIO1_14/LP_FLEXCOMM2_P2/CTIMER3_MAT0/SWD_TRACEDATA3, label: BT_UART_RTS, identifier: BT_UART_RTS}
+- {pin_num: Y21, pin_signal: PIO1_15/LP_FLEXCOMM2_P3/CTIMER3_MAT1/CLKCTL0_CLKIN, label: BT_UART_CTS, identifier: BT_UART_CTS}
+- {pin_num: B14, pin_signal: PIO4_11/XSPI2_SCLK0_N/LP_FLEXCOMM9_P4/XSPI2_SS1_N, label: PDN, identifier: PDN}
 - {pin_num: C21, pin_signal: PIO7_3/SDHC0_DATA5/LP_FLEXCOMM12_P1, label: SD_VSELECT, identifier: SD_VSELECT}
 - {pin_num: A24, pin_signal: PIO7_10/SDHC0_WR_PRT/LP_FLEXCOMM1_P0/SDHC0_DS, label: SD_PWREN_B, identifier: SD_;SD_PWR_EN_B;SD_PWREN_B}
 - {pin_num: F18, pin_signal: PIO7_11/SDHC0_CARD_DET_N/LP_FLEXCOMM1_P1, label: SD_CARD_DET_N, identifier: SDHC0_CARD_DET_N;SDH_CARD_DET_N;SD_CARD_DET_N}
-- {pin_num: AB25, pin_signal: PIO0_21/LP_FLEXCOMM6_P0/SCT0_GPIN6/SCT0_OUT6/CTIMER_C_INP4/SAI1_TX_DATA/CLKCTL0_MCLK, label: MCLK, identifier: MCLK}
-- {pin_num: V23, pin_signal: PIO0_10/LP_FLEXCOMM5_P0/SCT0_GPIN4/SCT0_OUT4/CTIMER1_MAT0/CTIMER_C_INP0/SAI2_RX_DATA, label: SW5, identifier: SW5}
-- {pin_num: AC22, pin_signal: PIO1_9/LP_FLEXCOMM1_P2/SCT0_GPIN7/SCT0_OUT3/CTIMER_C_INP15/CLKCTL0_CLKIN/CLKOUT_VDD1, label: LED_BLUE, identifier: LED_BLUE}
-- {pin_num: AD23, pin_signal: PIO1_13/LP_FLEXCOMM2_P4/UTICK0_CAP1/CTIMER2_MAT3/SWD_TRACEDATA2/32KHZ_CLKOUT, label: LED_GRN, identifier: LED_GRN}
-- {pin_num: AB24, pin_signal: PIO0_19/LP_FLEXCOMM6_P2/SCT0_GPIN2/SCT0_OUT2/CTIMER2_MAT2/SAI1_RX_SYNC, label: LED_BLU, identifier: LED_BLU}
+- {pin_num: A2, pin_signal: PIO6_9/XSPI0_DATA5/LP_FLEXCOMM13_P1/LP_FLEXCOMM11_P3, label: WL_RST, identifier: WL_RST}
 - {pin_num: AA8, pin_signal: PIO8_6/LP_FLEXCOMM17_P1/CTIMER6_MATCH0/CMP0_OUT, label: PWM_RED, identifier: PWM_RED}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -71,43 +81,43 @@ void BOARD_InitDEBUG_UARTPins_Sense(void)
     /* Reset IOPCTL1 module */
     RESET_ClearPeripheralReset(kIOPCTL1_RST_SHIFT_RSTn);
 
-    const uint32_t port8_pin14_config = (/* Pin is configured as LP_FLEXCOMM19_P0 */
-                                         IOPCTL_PIO_FUNC1 |
-                                         /* Disable pull-up / pull-down function */
-                                         IOPCTL_PIO_PUPD_DI |
-                                         /* Enable pull-down function */
-                                         IOPCTL_PIO_PULLDOWN_EN |
-                                         /* Enables input buffer function */
-                                         IOPCTL_PIO_INBUF_EN |
-                                         /* Normal mode */
-                                         IOPCTL_PIO_SLEW_RATE_NORMAL |
-                                         /* Analog mux is disabled */
-                                         IOPCTL_PIO_ANAMUX_DI |
-                                         /* Pseudo Output Drain is disabled */
-                                         IOPCTL_PIO_PSEDRAIN_DI |
-                                         /* Input function is not inverted */
-                                         IOPCTL_PIO_INV_DI);
+    const uint32_t RT_P8_14_FC19_RXD = (/* Pin is configured as LP_FLEXCOMM19_P0 */
+                                        IOPCTL_PIO_FUNC1 |
+                                        /* Disable pull-up / pull-down function */
+                                        IOPCTL_PIO_PUPD_DI |
+                                        /* Enable pull-down function */
+                                        IOPCTL_PIO_PULLDOWN_EN |
+                                        /* Enables input buffer function */
+                                        IOPCTL_PIO_INBUF_EN |
+                                        /* Normal mode */
+                                        IOPCTL_PIO_SLEW_RATE_NORMAL |
+                                        /* Analog mux is disabled */
+                                        IOPCTL_PIO_ANAMUX_DI |
+                                        /* Pseudo Output Drain is disabled */
+                                        IOPCTL_PIO_PSEDRAIN_DI |
+                                        /* Input function is not inverted */
+                                        IOPCTL_PIO_INV_DI);
     /* PORT8 PIN14 (coords: AE12) is configured as LP_FLEXCOMM19_P0 */
-    IOPCTL_PinMuxSet(8U, 14U, port8_pin14_config);
+    IOPCTL_PinMuxSet(BOARD_INITDEBUG_UARTPINS_SENSE_RT_P8_14_FC19_RXD_PORT, BOARD_INITDEBUG_UARTPINS_SENSE_RT_P8_14_FC19_RXD_PIN, RT_P8_14_FC19_RXD);
 
-    const uint32_t port8_pin15_config = (/* Pin is configured as LP_FLEXCOMM19_P1 */
-                                         IOPCTL_PIO_FUNC1 |
-                                         /* Disable pull-up / pull-down function */
-                                         IOPCTL_PIO_PUPD_DI |
-                                         /* Enable pull-down function */
-                                         IOPCTL_PIO_PULLDOWN_EN |
-                                         /* Disable input buffer function */
-                                         IOPCTL_PIO_INBUF_DI |
-                                         /* Normal mode */
-                                         IOPCTL_PIO_SLEW_RATE_NORMAL |
-                                         /* Analog mux is disabled */
-                                         IOPCTL_PIO_ANAMUX_DI |
-                                         /* Pseudo Output Drain is disabled */
-                                         IOPCTL_PIO_PSEDRAIN_DI |
-                                         /* Input function is not inverted */
-                                         IOPCTL_PIO_INV_DI);
+    const uint32_t RT_P8_15_FC19_TXD = (/* Pin is configured as LP_FLEXCOMM19_P1 */
+                                        IOPCTL_PIO_FUNC1 |
+                                        /* Disable pull-up / pull-down function */
+                                        IOPCTL_PIO_PUPD_DI |
+                                        /* Enable pull-down function */
+                                        IOPCTL_PIO_PULLDOWN_EN |
+                                        /* Disable input buffer function */
+                                        IOPCTL_PIO_INBUF_DI |
+                                        /* Normal mode */
+                                        IOPCTL_PIO_SLEW_RATE_NORMAL |
+                                        /* Analog mux is disabled */
+                                        IOPCTL_PIO_ANAMUX_DI |
+                                        /* Pseudo Output Drain is disabled */
+                                        IOPCTL_PIO_PSEDRAIN_DI |
+                                        /* Input function is not inverted */
+                                        IOPCTL_PIO_INV_DI);
     /* PORT8 PIN15 (coords: Y12) is configured as LP_FLEXCOMM19_P1 */
-    IOPCTL_PinMuxSet(8U, 15U, port8_pin15_config);
+    IOPCTL_PinMuxSet(BOARD_INITDEBUG_UARTPINS_SENSE_RT_P8_15_FC19_TXD_PORT, BOARD_INITDEBUG_UARTPINS_SENSE_RT_P8_15_FC19_TXD_PIN, RT_P8_15_FC19_TXD);
 }
 
 /* clang-format off */
@@ -135,62 +145,62 @@ void BOARD_InitI3CPins_Sense(void)
     /* Reset IOPCTL1 module */
     RESET_ClearPeripheralReset(kIOPCTL1_RST_SHIFT_RSTn);
 
-    const uint32_t port8_pin20_config = (/* Pin is configured as I3C3_PUR */
-                                         IOPCTL_PIO_FUNC4 |
-                                         /* Disable pull-up / pull-down function */
-                                         IOPCTL_PIO_PUPD_DI |
-                                         /* Enable pull-down function */
-                                         IOPCTL_PIO_PULLDOWN_EN |
-                                         /* Enables input buffer function */
-                                         IOPCTL_PIO_INBUF_EN |
-                                         /* Normal mode */
-                                         IOPCTL_PIO_SLEW_RATE_NORMAL |
-                                         /* Analog mux is disabled */
-                                         IOPCTL_PIO_ANAMUX_DI |
-                                         /* Pseudo Output Drain is disabled */
-                                         IOPCTL_PIO_PSEDRAIN_DI |
-                                         /* Input function is not inverted */
-                                         IOPCTL_PIO_INV_DI);
+    const uint32_t I3C3_PUR = (/* Pin is configured as I3C3_PUR */
+                               IOPCTL_PIO_FUNC4 |
+                               /* Disable pull-up / pull-down function */
+                               IOPCTL_PIO_PUPD_DI |
+                               /* Enable pull-down function */
+                               IOPCTL_PIO_PULLDOWN_EN |
+                               /* Enables input buffer function */
+                               IOPCTL_PIO_INBUF_EN |
+                               /* Normal mode */
+                               IOPCTL_PIO_SLEW_RATE_NORMAL |
+                               /* Analog mux is disabled */
+                               IOPCTL_PIO_ANAMUX_DI |
+                               /* Pseudo Output Drain is disabled */
+                               IOPCTL_PIO_PSEDRAIN_DI |
+                               /* Input function is not inverted */
+                               IOPCTL_PIO_INV_DI);
     /* PORT8 PIN20 (coords: AC12) is configured as I3C3_PUR */
-    IOPCTL_PinMuxSet(8U, 20U, port8_pin20_config);
+    IOPCTL_PinMuxSet(BOARD_INITI3CPINS_SENSE_I3C3_PUR_PORT, BOARD_INITI3CPINS_SENSE_I3C3_PUR_PIN, I3C3_PUR);
 
-    const uint32_t port8_pin21_config = (/* Pin is configured as I3C3_SDA */
-                                         IOPCTL_PIO_FUNC4 |
-                                         /* Disable pull-up / pull-down function */
-                                         IOPCTL_PIO_PUPD_DI |
-                                         /* Enable pull-down function */
-                                         IOPCTL_PIO_PULLDOWN_EN |
-                                         /* Enables input buffer function */
-                                         IOPCTL_PIO_INBUF_EN |
-                                         /* Normal mode */
-                                         IOPCTL_PIO_SLEW_RATE_NORMAL |
-                                         /* Analog mux is disabled */
-                                         IOPCTL_PIO_ANAMUX_DI |
-                                         /* Pseudo Output Drain is disabled */
-                                         IOPCTL_PIO_PSEDRAIN_DI |
-                                         /* Input function is not inverted */
-                                         IOPCTL_PIO_INV_DI);
+    const uint32_t I3C3_SDA = (/* Pin is configured as I3C3_SDA */
+                               IOPCTL_PIO_FUNC4 |
+                               /* Disable pull-up / pull-down function */
+                               IOPCTL_PIO_PUPD_DI |
+                               /* Enable pull-down function */
+                               IOPCTL_PIO_PULLDOWN_EN |
+                               /* Enables input buffer function */
+                               IOPCTL_PIO_INBUF_EN |
+                               /* Normal mode */
+                               IOPCTL_PIO_SLEW_RATE_NORMAL |
+                               /* Analog mux is disabled */
+                               IOPCTL_PIO_ANAMUX_DI |
+                               /* Pseudo Output Drain is disabled */
+                               IOPCTL_PIO_PSEDRAIN_DI |
+                               /* Input function is not inverted */
+                               IOPCTL_PIO_INV_DI);
     /* PORT8 PIN21 (coords: AD12) is configured as I3C3_SDA */
-    IOPCTL_PinMuxSet(8U, 21U, port8_pin21_config);
+    IOPCTL_PinMuxSet(BOARD_INITI3CPINS_SENSE_I3C3_SDA_PORT, BOARD_INITI3CPINS_SENSE_I3C3_SDA_PIN, I3C3_SDA);
 
-    const uint32_t port8_pin22_config = (/* Pin is configured as I3C3_SCL */
-                                         IOPCTL_PIO_FUNC4 |
-                                         /* Disable pull-up / pull-down function */
-                                         IOPCTL_PIO_PUPD_DI |
-                                         /* Enable pull-down function */
-                                         IOPCTL_PIO_PULLDOWN_EN |
-                                         /* Enables input buffer function */
-                                         IOPCTL_PIO_INBUF_EN |
-                                         /* Normal mode */
-                                         IOPCTL_PIO_SLEW_RATE_NORMAL |
-                                         /* Analog mux is disabled */
-                                         IOPCTL_PIO_ANAMUX_DI |
-                                         /* Pseudo Output Drain is disabled */
-                                         IOPCTL_PIO_PSEDRAIN_DI |
-                                         /* Input function is not inverted */
-                                         IOPCTL_PIO_INV_DI);
+    const uint32_t I3C3_SCL = (/* Pin is configured as I3C3_SCL */
+                               IOPCTL_PIO_FUNC4 |
+                               /* Disable pull-up / pull-down function */
+                               IOPCTL_PIO_PUPD_DI |
+                               /* Enable pull-down function */
+                               IOPCTL_PIO_PULLDOWN_EN |
+                               /* Enables input buffer function */
+                               IOPCTL_PIO_INBUF_EN |
+                               /* Normal mode */
+                               IOPCTL_PIO_SLEW_RATE_NORMAL |
+                               /* Analog mux is disabled */
+                               IOPCTL_PIO_ANAMUX_DI |
+                               /* Pseudo Output Drain is disabled */
+                               IOPCTL_PIO_PSEDRAIN_DI |
+                               /* Input function is not inverted */
+                               IOPCTL_PIO_INV_DI);
     /* PORT8 PIN22 (coords: AA12) is configured as I3C3_SCL */
-    IOPCTL_PinMuxSet(8U, 22U, port8_pin22_config);
+    IOPCTL_PinMuxSet(BOARD_INITI3CPINS_SENSE_I3C3_SCL_PORT, BOARD_INITI3CPINS_SENSE_I3C3_SCL_PIN, I3C3_SCL);
 }
 
 /* clang-format off */
@@ -216,24 +226,24 @@ void BOARD_InitBUTTONsPins_Sense(void)
     /* Reset IOPCTL1 module */
     RESET_ClearPeripheralReset(kIOPCTL1_RST_SHIFT_RSTn);
 
-    const uint32_t port8_pin5_config = (/* Pin is configured as PIO8_5 */
-                                        IOPCTL_PIO_FUNC0 |
-                                        /* Disable pull-up / pull-down function */
-                                        IOPCTL_PIO_PUPD_DI |
-                                        /* Enable pull-down function */
-                                        IOPCTL_PIO_PULLDOWN_EN |
-                                        /* Enables input buffer function */
-                                        IOPCTL_PIO_INBUF_EN |
-                                        /* Normal mode */
-                                        IOPCTL_PIO_SLEW_RATE_NORMAL |
-                                        /* Analog mux is disabled */
-                                        IOPCTL_PIO_ANAMUX_DI |
-                                        /* Pseudo Output Drain is disabled */
-                                        IOPCTL_PIO_PSEDRAIN_DI |
-                                        /* Input function is not inverted */
-                                        IOPCTL_PIO_INV_DI);
+    const uint32_t USER_Button3 = (/* Pin is configured as PIO8_5 */
+                                   IOPCTL_PIO_FUNC0 |
+                                   /* Disable pull-up / pull-down function */
+                                   IOPCTL_PIO_PUPD_DI |
+                                   /* Enable pull-down function */
+                                   IOPCTL_PIO_PULLDOWN_EN |
+                                   /* Enables input buffer function */
+                                   IOPCTL_PIO_INBUF_EN |
+                                   /* Normal mode */
+                                   IOPCTL_PIO_SLEW_RATE_NORMAL |
+                                   /* Analog mux is disabled */
+                                   IOPCTL_PIO_ANAMUX_DI |
+                                   /* Pseudo Output Drain is disabled */
+                                   IOPCTL_PIO_PSEDRAIN_DI |
+                                   /* Input function is not inverted */
+                                   IOPCTL_PIO_INV_DI);
     /* PORT8 PIN5 (coords: AD8) is configured as PIO8_5 */
-    IOPCTL_PinMuxSet(8U, 5U, port8_pin5_config);
+    IOPCTL_PinMuxSet(BOARD_INITBUTTONSPINS_SENSE_USER_Button3_PORT, BOARD_INITBUTTONSPINS_SENSE_USER_Button3_PIN, USER_Button3);
 }
 
 /* clang-format off */
