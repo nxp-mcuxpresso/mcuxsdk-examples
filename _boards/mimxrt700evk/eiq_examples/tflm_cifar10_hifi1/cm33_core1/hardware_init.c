@@ -18,6 +18,9 @@ void BOARD_InitHardware(void)
     BOARD_InitAHBSC();
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
+#if defined(EIQ_EXAMPLE_HSRUN_CLOCK)
+    BOARD_BootClockHSRUN();
+#endif
 
     BOARD_InitDebugConsole();
 }

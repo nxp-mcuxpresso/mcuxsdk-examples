@@ -40,6 +40,7 @@ void BOARD_InitHardware(void)
     BOARD_InitPmicPins();
     BOARD_InitPmic();
     BOARD_SetPmicVdd2Voltage(1100000U); /* 1.1v for 325MHz clock. */
+    BOARD_SetPmicVdd1Voltage(1100000U); /* 1.1v for Sense domain 250MHz clock. */
 
     BOARD_BootClockHSRUN();
 #endif
