@@ -9,3 +9,4 @@ Example will write/read through the whole chip, using EDMA transfer way.
 
 ## Supported Boards
 - [MIMXRT700-EVK](../../../../_boards/mimxrt700evk/driver_examples/xspi/psram/edma_transfer/example_board_readme.md)
+- [FRDM-IMXRT700](../../../../_boards/frdmimxrt700/driver_examples/xspi/psram/edma_transfer/example_board_readme.md)

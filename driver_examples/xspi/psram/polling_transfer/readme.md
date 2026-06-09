@@ -9,3 +9,4 @@ Example will write/read through the whole chip, through IP command and AHB comma
 
 ## Supported Boards
 - [MIMXRT700-EVK](../../../../_boards/mimxrt700evk/driver_examples/xspi/psram/polling_transfer/example_board_readme.md)
+- [FRDM-IMXRT700](../../../../_boards/frdmimxrt700/driver_examples/xspi/psram/polling_transfer/example_board_readme.md)

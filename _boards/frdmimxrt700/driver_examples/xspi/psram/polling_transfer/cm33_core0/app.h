@@ -14,7 +14,7 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define DEMO_USE_XSPI2 1
+#define DEMO_USE_XSPI1 1
 
 #if defined(DEMO_USE_XSPI2) && DEMO_USE_XSPI2
 #define EXAMPLE_XSPI                    XSPI2

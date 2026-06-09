@@ -21,9 +21,9 @@ xspi_device_ddr_config_t deviceDdrConfig = {
 
 xspi_device_config_t deviceConfig = {
 #if defined(DEMO_USE_XSPI2) && DEMO_USE_XSPI2
-   .xspiRootClk = 500000000, /*!< 500MHz for W958D6NBKX4I. */
+   .xspiRootClk = 500000000, /*!< 500MHz for XSPI2. */
 #elif defined(DEMO_USE_XSPI1) && DEMO_USE_XSPI1
-   .xspiRootClk = 400000000, /*!< 400MHz for W958D6NBKX5I. */
+   .xspiRootClk = 400000000, /*!< 400MHz for XSPI1. */
 #endif
    .enableCknPad = true,
    .deviceInterface = kXSPI_HyperBus,
