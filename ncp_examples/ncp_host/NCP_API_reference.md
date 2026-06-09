@@ -10,11 +10,8 @@ implement their own sample application which runs on their host
 platform.
 
 Note: Default NCP host MCU platform: RT1060 EVKB. NCP device supported
-two kinds redfinch boards:
-
-RD-RW612-BGA: UART/SPI/USB/SDIO,
-
-FRDM-RW612: UART/SPI/USB.
+two kinds redfinch boards: RD-RW612-BGA: UART/SPI/USB/SDIO, FRDM-RW612:
+UART/SPI/USB.
 
 ### Abbreviations and acronyms
 
@@ -371,6 +368,8 @@ FRDM-RW612: UART/SPI/USB.
 </tbody>
 </table>
 
+# 
+
 # File Index
 
 ## File List
@@ -383,19 +382,24 @@ Here is a list of all documented files with brief descriptions:
 
 **ht.h (Health Thermometer Profile definitions )**
 
-**ncp\_cmd\_ble.h (NCP Bluetooth LE command and structure definitions )**
+**ncp\_cmd\_ble.h (NCP Bluetooth LE command and structure definitions
+)**
 
-**ncp\_cmd\_system.h (This file provides power save commands for NCP system )**
+**ncp\_cmd\_system.h (This file provies power save commands for NCP
+system )**
 
 **ncp\_cmd\_wifi.h (NCP Wi-Fi command/response definitions )**
 
-**ncp\_host\_command\_ble.h (NCP Bluetooth LE host command interfaces )**
+**ncp\_host\_command\_ble.h (NCP Bluetooth LE host command interfaces
+)**
 
 **ncp\_host\_command\_wifi.h (NCP host command interfaces )**
 
-**otopcode.h (This file provides interface to get Open Thread commands corresponding opcode )**
+**otopcode.h (This file provides interface to get Open Thread commands
+corresponding opcode )**
 
-**otopcode\_private.h (This file provides the OpenThread (OT) commands )**
+**otopcode\_private.h (This file provides the OpenThread (OT) commands
+)**
 
 **service.h (Bluetooth service definitions )**
 
@@ -487,35 +491,6 @@ This structure is used for BSS role configuration.
 > 0: STA,
 > 
 > 1: UAP.
-
-#### The documentation for this struct was generated from the following file:
-
-  - ncp\_cmd\_wifi.h
-
-#### 
-
-## \_CAPA\_ParamSet\_t Struct Reference
-
-### Data Fields
-
-  - TypeHeader\_t header
-
-  - uint8\_t capa
-
-### Detailed Description
-
-This structure is used for Wi-Fi capabilities configuration.
-
-### Field Documentation
-
-#### TypeHeader\_t \_CAPA\_ParamSet\_t::header
-
-> Header type and size information.
-
-#### uint8\_t \_CAPA\_ParamSet\_t::capa
-
-> Wi-Fi capabilities bitmap, such as 802.11n, 802.11ac, 802.11ax and
-> legacy.
 
 #### The documentation for this struct was generated from the following file:
 
@@ -2036,6 +2011,20 @@ This structure is used for NCP Bluetooth LE get mtu size.
 
 #### 
 
+## \_NCP\_CMD\_HOST\_TYPE Struct Reference
+
+### Data Fields
+
+  - uint32\_t **host\_type**
+
+### Detailed Description
+
+This structure is used for region code configuration.
+
+The documentation for this struct was generated from the following file:
+
+  - ncp\_cmd\_system.h
+
 ## \_NCP\_CMD\_HTTP\_CONNECT\_CFG Struct Reference
 
 ### Data Fields
@@ -2636,8 +2625,6 @@ added.
 > 
 > DTIM period TLV, DTIM\_ParamSet\_t
 > 
-> CAPA TLV, CAPA\_ParamSet\_t
-> 
 > PMF TLV, PMF\_ParamSet\_t
 
 #### The documentation for this struct was generated from the following file:
@@ -2920,9 +2907,9 @@ transmitter PHY or receiver PHY in use.
 
   - uint8\_t enable
 
-  - uint8\_t is\_manual
+  - uint8\_t pm\_mode
 
-  - int rtc\_timeout
+  - uint32\_t timeout
 
 ### Detailed Description
 
@@ -2932,16 +2919,16 @@ NCP device sleep configuration
 
 #### uint8\_t \_NCP\_CMD\_POWERMGMT\_MCU\_SLEEP::enable
 
-> 0x0: disable, 0x1: enable
+> Enable flag: 0 = Disabled 1 = Enabled
 
-#### uint8\_t \_NCP\_CMD\_POWERMGMT\_MCU\_SLEEP::is\_manual
+#### uint8\_t \_NCP\_CMD\_POWERMGMT\_MCU\_SLEEP::pm\_mode
 
-> 0x0: power manager, 0x1: manual
+> Host power management mode: 1 = PM1 2 = PM2 3 = PM3
 
-#### int \_NCP\_CMD\_POWERMGMT\_MCU\_SLEEP::rtc\_timeout
+#### uint32\_t \_NCP\_CMD\_POWERMGMT\_MCU\_SLEEP::timeout
 
-> used to configure timeout for RTC timer and it is used with power
-> manager only
+> Duration to stay in the selected power management mode (in
+> milliseconds)
 
 #### The documentation for this struct was generated from the following file:
 
@@ -3059,34 +3046,6 @@ This structure is used for power management sleep period configuration.
 
 #### 
 
-## \_NCP\_CMD\_POWERMGMT\_SUSPEND Struct Reference
-
-### Data Fields
-
-  - int mode
-
-### Detailed Description
-
-This structure is used for suspend mode of power management.
-
-### Field Documentation
-
-#### int \_NCP\_CMD\_POWERMGMT\_SUSPEND::mode
-
-> Suspend mode,
-> 
-> 1: PM1,
-> 
-> 2: PM2,
-> 
-> 3: PM3.
-
-#### The documentation for this struct was generated from the following file:
-
-  - ncp\_cmd\_wifi.h
-
-#### 
-
 ## \_NCP\_CMD\_POWERMGMT\_UAPSD Struct Reference
 
 ### Data Fields
@@ -3111,40 +3070,6 @@ delivery) flag configuration.
 #### The documentation for this struct was generated from the following file:
 
   - ncp\_cmd\_wifi.h
-
-#### 
-
-## \_NCP\_CMD\_POWERMGMT\_WAKE\_CFG Struct Reference
-
-### Data Fields
-
-  - uint8\_t wake\_mode
-
-  - uint8\_t subscribe\_evt
-
-  - uint32\_t wake\_duration
-
-### Detailed Description
-
-NCP power manager wakeup configuration
-
-### Field Documentation
-
-#### uint8\_t \_NCP\_CMD\_POWERMGMT\_WAKE\_CFG::wake\_mode
-
-> host wake up mode, 0x1: INTF 0x2: wakes up through GPIO
-
-#### uint8\_t \_NCP\_CMD\_POWERMGMT\_WAKE\_CFG::subscribe\_evt
-
-> 0 – unsubscribe(default) 1 – subscribe(mandatory if wake\_mode == 0x2)
-
-#### uint32\_t \_NCP\_CMD\_POWERMGMT\_WAKE\_CFG::wake\_duration
-
-> wake up duration, minimum is 0
-
-#### The documentation for this struct was generated from the following file:
-
-  - ncp\_cmd\_system.h
 
 #### 
 
@@ -3613,6 +3538,22 @@ This structure is used for RF TX continuous configuration.
 
   - uint8\_t bssid \[MLAN\_MAC\_ADDR\_LENGTH\]
 
+  - uint32\_t signal\_bw
+
+  - uint32\_t NumPkt
+
+  - uint32\_t MaxPE
+
+  - uint32\_t BeamChange
+
+  - uint32\_t Dcm
+
+  - uint32\_t Doppler
+
+  - uint32\_t MidP
+
+  - uint32\_t QNum
+
 ### Detailed Description
 
 This structure is used for RF TX frame configuration.
@@ -3712,6 +3653,38 @@ This structure is used for RF TX frame configuration.
 #### uint8\_t \_NCP\_CMD\_RF\_TX\_FRAME::bssid\[MLAN\_MAC\_ADDR\_LENGTH\]
 
 > BSSID string.
+
+#### uint32\_t \_NCP\_CMD\_RF\_TX\_FRAME::signal\_bw
+
+> signal bw
+
+#### uint32\_t \_NCP\_CMD\_RF\_TX\_FRAME::NumPkt
+
+> NumPkt
+
+#### uint32\_t \_NCP\_CMD\_RF\_TX\_FRAME::MaxPE
+
+> MaxPE
+
+#### uint32\_t \_NCP\_CMD\_RF\_TX\_FRAME::BeamChange
+
+> BeamChange
+
+#### uint32\_t \_NCP\_CMD\_RF\_TX\_FRAME::Dcm
+
+> Dcm
+
+#### uint32\_t \_NCP\_CMD\_RF\_TX\_FRAME::Doppler
+
+> Doppler
+
+#### uint32\_t \_NCP\_CMD\_RF\_TX\_FRAME::MidP
+
+> MidP
+
+#### uint32\_t \_NCP\_CMD\_RF\_TX\_FRAME::QNum
+
+> QNum
 
 #### The documentation for this struct was generated from the following file:
 
@@ -6736,8 +6709,6 @@ This structure is used for network monitor configuration.
 
   - uint8\_t dtim\_period
 
-  - uint8\_t wlan\_capa
-
 ### Detailed Description
 
 This structure is used to store a Wi-Fi network profile.
@@ -6895,10 +6866,6 @@ This structure is used to store a Wi-Fi network profile.
 #### uint8\_t \_ncp\_wlan\_network::dtim\_period
 
 > DTIM period of associated BSS.
-
-#### uint8\_t \_ncp\_wlan\_network::wlan\_capa
-
-> Wi-Fi network capability.
 
 #### The documentation for this struct was generated from the following file:
 
@@ -7318,8 +7285,6 @@ This structure is used to store the information of one scanned AP
 
   -   NCP\_CMD\_POWERMGMT\_WOWLAN\_CFG wowlan\_config
 
-  -   NCP\_CMD\_POWERMGMT\_SUSPEND suspend\_config
-
   -   WLAN\_RESET\_data reset\_config
 
   -   NCP\_CMD\_TWT\_REPORT twt\_report
@@ -7357,6 +7322,8 @@ This structure is used to store the information of one scanned AP
   -   NCP\_CMD\_DATE\_TIME\_CFG date\_time
 
   -   NCP\_CMD\_TEMPERATURE temperature
+
+  -   NCP\_CMD\_BANDCFG bandcfg
 
   -   NCP\_CMD\_WLAN\_CONN wlan\_connect
 
@@ -7624,10 +7591,6 @@ NCP command structure.
 
 > Wakeup configuration.
 
-#### NCP\_CMD\_POWERMGMT\_SUSPEND \_NCPCmd\_DS\_COMMAND::suspend\_config
-
-> Enter suspend configuration.
-
 #### WLAN\_RESET\_data \_NCPCmd\_DS\_COMMAND::reset\_config
 
 > Wi-Fi reset config.
@@ -7703,6 +7666,10 @@ NCP command structure.
 #### NCP\_CMD\_TEMPERATURE \_NCPCmd\_DS\_COMMAND::temperature
 
 > Chip temperature.
+
+#### NCP\_CMD\_BANDCFG \_NCPCmd\_DS\_COMMAND::bandcfg
+
+> Set band configuration
 
 #### NCP\_CMD\_WLAN\_CONN \_NCPCmd\_DS\_COMMAND::wlan\_connect
 
@@ -8139,13 +8106,13 @@ input to the Bluetooth LE TLV command.
 
   -   NCP\_CMD\_SYSTEM\_CFG system\_cfg
 
-  -   NCP\_CMD\_POWERMGMT\_WAKE\_CFG wake\_config
-
   -   NCP\_CMD\_POWERMGMT\_MCU\_SLEEP mcu\_sleep\_config
 
   -   NCP\_CMD\_POWERMGMT\_WAKEUP\_HOST host\_wakeup\_ctrl
 
   -   NCP\_CMD\_ENCRYPT encrypt
+
+  -   NCP\_CMD\_HOST\_TYPE host\_type
 
   - } params
 
@@ -8163,10 +8130,6 @@ NCP system command
 
 > System configuration
 
-#### NCP\_CMD\_POWERMGMT\_WAKE\_CFG \_NCPCmd\_DS\_SYS\_COMMAND::wake\_config
-
-> NCP power manager wakeup configuration
-
 #### NCP\_CMD\_POWERMGMT\_MCU\_SLEEP \_NCPCmd\_DS\_SYS\_COMMAND::mcu\_sleep\_config
 
 > NCP device sleep configuration.
@@ -8178,6 +8141,10 @@ NCP system command
 #### NCP\_CMD\_ENCRYPT \_NCPCmd\_DS\_SYS\_COMMAND::encrypt
 
 > NCP host and device encrypted communication.
+
+#### NCP\_CMD\_HOST\_TYPE \_NCPCmd\_DS\_SYS\_COMMAND::host\_type
+
+> NCP host and device host type communication.
 
 #### union { ... } \_NCPCmd\_DS\_SYS\_COMMAND::params
 
@@ -15547,6 +15514,22 @@ This file provies power save commands for NCP system.
 
 > system configuration encrypted communication command response ID
 
+#### \#define NCP\_CMD\_SYSTEM\_HOST\_TYPE  (NCP\_CMD\_SYSTEM | NCP\_CMD\_SYSTEM\_CONFIG | NCP\_MSG\_TYPE\_CMD | 0x00000004)
+
+> system configuration host type communication command ID
+
+#### \#define NCP\_RSP\_SYSTEM\_HOST\_TYPE  (NCP\_CMD\_SYSTEM | NCP\_CMD\_SYSTEM\_CONFIG | NCP\_MSG\_TYPE\_RESP | 0x00000004)
+
+> system configuration host type communication command response ID
+
+#### \#define NCP\_CMD\_SYSTEM\_CONFIG\_DEVICE\_RESET  (NCP\_CMD\_SYSTEM | NCP\_CMD\_SYSTEM\_CONFIG | NCP\_MSG\_TYPE\_CMD | 0x00000005) /\* ncp-dev-reset \*/
+
+> system configuration device reset command ID
+
+#### \#define NCP\_RSP\_SYSTEM\_CONFIG\_DEVICE\_RESET  (NCP\_CMD\_SYSTEM | NCP\_CMD\_SYSTEM\_CONFIG | NCP\_MSG\_TYPE\_RESP | 0x00000005)
+
+> system configuration device reset command response ID
+
 #### \#define NCP\_CMD\_SYSTEM\_POWERMGMT\_WAKE\_CFG  (NCP\_CMD\_SYSTEM | NCP\_CMD\_SYSTEM\_POWERMGMT | NCP\_MSG\_TYPE\_CMD | 0x00000001) /\* ncp-wake-cfg \*/
 
 > Wi-Fi system power manager wakeup configuration command ID
@@ -15571,22 +15554,6 @@ This file provies power save commands for NCP system.
 
 > Wi-Fi system power manager wakeup host command response ID
 
-#### \#define NCP\_CMD\_SYSTEM\_POWERMGMT\_MCU\_SLEEP\_CFM  (NCP\_CMD\_SYSTEM | NCP\_CMD\_SYSTEM\_POWERMGMT | NCP\_MSG\_TYPE\_CMD | 0x00000004)
-
-> Wi-Fi system power manager MCU sleep command ID
-
-#### \#define NCP\_RSP\_SYSTEM\_POWERMGMT\_MCU\_SLEEP\_CFM  (NCP\_CMD\_SYSTEM | NCP\_CMD\_SYSTEM\_POWERMGMT | NCP\_MSG\_TYPE\_RESP | 0x00000004)
-
-> Wi-Fi system power manager MCU sleep command response ID
-
-#### \#define NCP\_EVENT\_MCU\_SLEEP\_ENTER  (NCP\_CMD\_SYSTEM | NCP\_CMD\_SYSTEM\_ASYNC\_EVENT | NCP\_MSG\_TYPE\_EVENT | 0x00000001)
-
-> Wi-Fi enter MCU sleep mode event ID
-
-#### \#define NCP\_EVENT\_MCU\_SLEEP\_EXIT  (NCP\_CMD\_SYSTEM | NCP\_CMD\_SYSTEM\_ASYNC\_EVENT | NCP\_MSG\_TYPE\_EVENT | 0x00000002)
-
-> Wi-Fi exit MCU sleep mode event ID
-
 #### \#define NCP\_EVENT\_SYSTEM\_ENCRYPT  (NCP\_CMD\_SYSTEM | NCP\_CMD\_SYSTEM\_CONFIG | NCP\_MSG\_TYPE\_EVENT | 0x00000003)
 
 > NCP host device encrypted communication event ID
@@ -15594,6 +15561,10 @@ This file provies power save commands for NCP system.
 #### \#define NCP\_EVENT\_SYSTEM\_ENCRYPT\_STOP  (NCP\_CMD\_SYSTEM | NCP\_CMD\_SYSTEM\_CONFIG | NCP\_MSG\_TYPE\_EVENT | 0x00000004)
 
 > NCP host device encrypted communication stop event ID
+
+#### \#define NCP\_EVENT\_SYSTEM\_DEV\_RESET  (NCP\_CMD\_SYSTEM | NCP\_CMD\_SYSTEM\_CONFIG | NCP\_MSG\_TYPE\_EVENT | 0x00000005)
+
+> NCP system device reset event ID
 
 #### \#define NCP\_CMD\_SYSTEM\_TEST\_LOOPBACK  (NCP\_CMD\_SYSTEM | NCP\_CMD\_SYSTEM\_TEST | NCP\_MSG\_TYPE\_CMD | 0x00000001) /\* test-loopback \*/
 
@@ -16258,14 +16229,6 @@ NCP Wi-Fi command/response definitions.
 
 > Wi-Fi set wakeup conditions command response ID
 
-#### \#define NCP\_CMD\_WLAN\_POWERMGMT\_SUSPEND  (NCP\_CMD\_WLAN | NCP\_CMD\_WLAN\_POWERMGMT | NCP\_MSG\_TYPE\_CMD | 0x0000000a) /\* wlan-suspend \*/
-
-> Wi-Fi device enter power save mode command ID
-
-#### \#define NCP\_RSP\_WLAN\_POWERMGMT\_SUSPEND  (NCP\_CMD\_WLAN | NCP\_CMD\_WLAN\_POWERMGMT | NCP\_MSG\_TYPE\_RESP | 0x0000000a)
-
-> Wi-Fi device enter power save mode command response ID
-
 #### \#define NCP\_CMD\_WLAN\_UAP\_MAX\_CLIENT\_CNT  (NCP\_CMD\_WLAN | NCP\_CMD\_WLAN\_UAP | NCP\_MSG\_TYPE\_CMD | 0x00000001) /\* wlan-set-max-clients-count \*/
 
 > WLAN UAP command Wi-Fi set maximum client count command ID
@@ -16346,11 +16309,27 @@ NCP Wi-Fi command/response definitions.
 
 > Wi-Fi get chip temperature command response ID
 
-#### \#define NCP\_CMD\_INVALID\_CMD  (NCP\_CMD\_WLAN | NCP\_CMD\_WLAN\_OTHER | NCP\_MSG\_TYPE\_CMD | 0x0000000a)
+#### \#define NCP\_CMD\_SET\_BANDCFG  (NCP\_CMD\_WLAN | NCP\_CMD\_WLAN\_OTHER | NCP\_MSG\_TYPE\_CMD | 0x0000000a) /\* wlan-set-bandcfg \*/
+
+> Wi-Fi set bandcfg command ID
+
+#### \#define NCP\_RSP\_SET\_BANDCFG  (NCP\_CMD\_WLAN | NCP\_CMD\_WLAN\_OTHER | NCP\_MSG\_TYPE\_RESP | 0x0000000a)
+
+> Wi-Fi set bandcfg command response ID
+
+#### \#define NCP\_CMD\_GET\_BANDCFG  (NCP\_CMD\_WLAN | NCP\_CMD\_WLAN\_OTHER | NCP\_MSG\_TYPE\_CMD | 0x0000000b) /\* wlan-get-bandcfg \*/
+
+> Wi-Fi get bandcfg command ID
+
+#### \#define NCP\_RSP\_GET\_BANDCFG  (NCP\_CMD\_WLAN | NCP\_CMD\_WLAN\_OTHER | NCP\_MSG\_TYPE\_RESP | 0x0000000b)
+
+> Wi-Fi get bandcfg command response ID
+
+#### \#define NCP\_CMD\_INVALID\_CMD  (NCP\_CMD\_WLAN | NCP\_CMD\_WLAN\_OTHER | NCP\_MSG\_TYPE\_CMD | 0x0000000c)
 
 > Wi-Fi invalid command ID
 
-#### \#define NCP\_RSP\_INVALID\_CMD  (NCP\_CMD\_WLAN | NCP\_CMD\_WLAN\_OTHER | NCP\_MSG\_TYPE\_RESP | 0x0000000a)
+#### \#define NCP\_RSP\_INVALID\_CMD  (NCP\_CMD\_WLAN | NCP\_CMD\_WLAN\_OTHER | NCP\_MSG\_TYPE\_RESP | 0x0000000c)
 
 > Wi-Fi invalid command response ID
 
@@ -23435,6 +23414,107 @@ NCP host command interfaces.
 > 
 > \-WM\_FAIL if failure
 
+#### int wlan\_set\_bandcfg\_command (int *argc*, char \*\* *argv*)
+
+> This API is used to set band configurations.
+
+##### Parameters
+
+<table>
+<tbody>
+<tr class="odd">
+<td>in</td>
+<td><em>argc</em></td>
+<td>Argument count, the number of string pointed to by argv, argc should be 2.</td>
+</tr>
+<tr class="even">
+<td>in</td>
+<td><em>argv</em></td>
+<td><p>Argument vector.</p>
+<p>argv[0]: should be "wlan-set-bandcfg".</p>
+<p>argv[1]: bitmap of band configurations.</p></td>
+</tr>
+</tbody>
+</table>
+
+##### Returns
+
+> WM\_SUCCESS if successful.
+> 
+> \-WM\_FAIL if failure.
+
+#### int wlan\_process\_set\_bandcfg\_response (uint8\_t \* *res*)
+
+> This API is used to process the response of set bandcfg command.
+
+##### Parameters
+
+<table>
+<tbody>
+<tr class="odd">
+<td>in</td>
+<td><em>res</em></td>
+<td>A pointer to MCU_NCPCmd_DS_COMMAND response.</td>
+</tr>
+</tbody>
+</table>
+
+##### Returns
+
+> WM\_SUCCESS if success.
+> 
+> \-WM\_FAIL if failure.
+
+#### int wlan\_get\_bandcfg\_command (int *argc*, char \*\* *argv*)
+
+> This API is used to get band configurations.
+
+##### Parameters
+
+<table>
+<tbody>
+<tr class="odd">
+<td>in</td>
+<td><em>argc</em></td>
+<td>Argument count, the number of string pointed to by argv, argc should be 1.</td>
+</tr>
+<tr class="even">
+<td>in</td>
+<td><em>argv</em></td>
+<td><p>Argument vector.</p>
+<p>argv[0]: should be "wlan-get-bandcfg".</p></td>
+</tr>
+</tbody>
+</table>
+
+##### Returns
+
+> WM\_SUCCESS if successful.
+> 
+> \-WM\_FAIL if failure.
+
+#### int wlan\_process\_get\_bandcfg\_response (uint8\_t \* *res*)
+
+> This API is used to process the response of get bandcfg command.
+
+##### Parameters
+
+<table>
+<tbody>
+<tr class="odd">
+<td>in</td>
+<td><em>res</em></td>
+<td>A pointer to MCU_NCPCmd_DS_COMMAND response.</td>
+</tr>
+</tbody>
+</table>
+
+##### Returns
+
+> WM\_SUCCESS if success.
+> 
+> \-WM\_FAIL if failure.
+
 ### Macro Documentation
 
 #### \#define MLAN\_MAX\_VER\_STR\_LEN  128
@@ -23948,6 +24028,10 @@ Bluetooth service definitions.
 #### \#define NCP\_BLE\_SERVICE\_PRIO  PRIORITY\_RTOS\_TO\_OSA((configMAX\_PRIORITIES - 1))
 
 > NCP Bluetooth LE priority
+
+#### \#define NCP\_BLE\_SERVICE\_STACK\_SIZE  1024
+
+> NCP Bluetooth LE task stack size
 
 #### \#define BT\_BYTES\_LIST\_LE16( \_v)
 
