@@ -5,11 +5,14 @@ Hardware requirements
 - 5V power supply
 - Personal Computer
 - FRDM-LVPMSM-FA board
+- 4-pin Mini DIN power supply
 
 Board settings
 ============
 This example requires connecting between FRDM-IMXRT1186 board and FRDM-LVPMSM-FA board.
+- Short J4-1 and J4-2 on the FRDM-IMXRT1186 board
 - Short J300-1 and J300-2 on the FRDM-LVPMSM-FA board
+- J72 and J73 jumpers are left unconnected on the FRDM-LVPMSM-FA board
 - FRDM-LVPMSM-FA SW90[1-4] = 0111
 - FRDM-LVPMSM-FA SW30[1-4] = 0100
 - FRDM-LVPMSM-FA J70-1 -> 5.0V pin of encoder
@@ -21,14 +24,15 @@ Prepare the Demo
 ===============
 1. Connect a USB Type-C cable between the PC host and the OpenSDA USB port on the FRDM-IMXRT1186 board.
 2. Connect 5V power supply, then switch SW5 to power on the FRDM-IMXRT1186 board.
-3. Open a serial terminal with the following settings:
+3. Connect 4-pin Mini DIN power supply to J10 on the FRDM-LVPMSM-FA board.
+4. Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
     - No parity
     - One stop bit
     - No flow control
-4. Download the program to the target board.
-5. Either re-power up your board or launch the debugger in your IDE to begin running the example.
+5. Download the program to the target board.
+6. Either re-power up your board or launch the debugger in your IDE to begin running the example.
 
 Running the demo
 ================
