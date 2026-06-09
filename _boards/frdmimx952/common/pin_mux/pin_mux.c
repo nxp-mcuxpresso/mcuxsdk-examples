@@ -276,11 +276,13 @@ void BOARD_InitI2C6Pins(void) {                            /*!< Function assigne
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO02__LPI2C6_SDA, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_PU_MASK |
                         IOMUXC_PAD_OD_MASK);
     IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO03__LPI2C6_SCL, 1U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO03__LPI2C6_SCL, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_PU_MASK |
                         IOMUXC_PAD_OD_MASK);
 }
 
