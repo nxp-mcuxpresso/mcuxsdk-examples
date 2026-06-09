@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 NXP
+ * Copyright 2021-2022,2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -259,7 +259,18 @@ status_t BOARD_MIPIPanelTouch_I2C_Receive(
 
 /* MPU configuration. */
 #if __CORTEX_M == 7
-void BOARD_ConfigMPU(void)
+/**
+ * @brief BOARD_EarlyInit function.
+ *
+ * This weak function allows board to initialize MPU or memory at early stage before .data,
+ * .bss initialization.
+ * It minimizes the risk of speculative access to uninitialized memory allowed by default
+ * MPU attributes. Meanwhile it also make it possible to enable I/D caches to boost boot up
+ * speed.
+ * NOTE: No global/static data access is allowed in this function since they have not been
+ * initialized yet.
+ */
+void BOARD_EarlyInit(void)
 {
 #if defined(__CC_ARM) || defined(__ARMCC_VERSION)
     extern uint32_t Image$$RW_m_ncache$$Base[];
@@ -458,6 +469,41 @@ void BOARD_ConfigMPU(void)
 #if defined(__ICACHE_PRESENT) && __ICACHE_PRESENT
     SCB_EnableICache();
 #endif
+}
+
+/* Disable cache and MPU and clear all MPU regions which is needed before whole MPU reconfiguration. */
+void BOARD_ResetMPU(void)
+{
+    uint32_t i;
+    uint32_t region_count = (MPU->TYPE & MPU_TYPE_DREGION_Msk) >> MPU_TYPE_DREGION_Pos;
+
+    /* Disable I cache and D cache */
+#if defined(__ICACHE_PRESENT) && __ICACHE_PRESENT
+    if (SCB_CCR_IC_Msk == (SCB_CCR_IC_Msk & SCB->CCR))
+    {
+        SCB_DisableICache();
+    }
+#endif
+#if defined(__DCACHE_PRESENT) && __DCACHE_PRESENT
+    if (SCB_CCR_DC_Msk == (SCB_CCR_DC_Msk & SCB->CCR))
+    {
+        SCB_DisableDCache();
+    }
+#endif
+
+    /* Disable MPU */
+    ARM_MPU_Disable();
+    
+    
+    for (i = 0; i < region_count; i++)
+    {
+        ARM_MPU_ClrRegion(i);
+    }
+}
+
+void BOARD_ConfigMPU(void)
+{
+    /* Do nothing since BOARD_EarlyInit() has been called on startup. */
 }
 #elif __CORTEX_M == 4
 void BOARD_ConfigMPU(void)

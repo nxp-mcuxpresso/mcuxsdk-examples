@@ -6,6 +6,9 @@
 - Initial version
     - Replaced the XXX_SERIES macros with the CPU_xxx macros in the common configuration file
     - Added the legacy IAR supporting Mac file
+### [26.09.00]
+- Added BOARD_EarlyInit() which move MPU/cache configuration on CM7 core at very beginning of startup.
+- Empty BOARD_ConfigMPU() on CM7 core since the configuration already moved forward into BOARD_EarlyInit().
 
 ## clock\_config
 

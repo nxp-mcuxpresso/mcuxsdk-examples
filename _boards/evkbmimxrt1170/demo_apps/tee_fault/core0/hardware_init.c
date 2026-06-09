@@ -179,6 +179,7 @@ uint32_t get_core1_image_size()
 
 void BOARD_InitHardware(void)
 {
+    BOARD_ResetMPU(); /* To clear enabled regions configured earlier. */
     BOARD_InitBootTEE();
     BOARD_InitBootPins();
     BOARD_InitBootClocks();

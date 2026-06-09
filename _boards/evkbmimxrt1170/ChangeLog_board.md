@@ -6,6 +6,9 @@
 - Initial version
     - Added IW610_2LL_USD module support
     - Updated display_support project segment
+### [26.09.00]
+- Added BOARD_EarlyInit() which move MPU/cache configuration on CM7 core at very beginning of startup.
+- Empty BOARD_ConfigMPU() on CM7 core since the configuration already moved forward into BOARD_EarlyInit().
 
 ## clock\_config
 
