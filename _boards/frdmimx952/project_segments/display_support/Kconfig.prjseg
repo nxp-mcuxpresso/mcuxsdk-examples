@@ -30,7 +30,7 @@ if MCUX_PRJSEG_module.board.display_support
 
     choice MCUX_PRJSEG_module.board.display_support.port
         prompt "port Selection"
-        default MCUX_PRJSEG_module.board.display_support.DPU_DI_LVDS
+        default MCUX_PRJSEG_module.board.display_support.DPU_DI_MIPI
 
         config MCUX_PRJSEG_module.board.display_support.DPU_DI_MIPI
             bool "DPU_DI_MIPI port"
@@ -64,7 +64,7 @@ if MCUX_PRJSEG_module.board.display_support
     endchoice
 
     choice DISPLAY_SUPPORT_PANEL
-        default LCD_SPEC
+        default WAVESHARE_DSI2DPI
     endchoice
 
 endif

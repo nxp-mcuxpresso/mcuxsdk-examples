@@ -7,21 +7,16 @@
 #include "fsl_debug_console.h"
 #include "board.h"
 #include "fsl_rgpio.h"
-#include "fsl_adp5585.h"
 #include "display_support.h"
 #include "fsl_video_common.h"
 #include "fsl_display.h"
+#include "fsl_pca6416a.h"
 #if DPU_EXAMPLE_DI == DPU_DI_MIPI
-static adp5585_handle_t adpHandle;
 #include "fsl_mipi_dsi2_dwc_dphy.h"
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
-#include "fsl_rm692c9.h"
-#else
-#include "fsl_adv7535.h"
+#include "fsl_waveshare_dsi2dpi.h"
 #endif
 #elif DPU_EXAMPLE_DI == DPU_DI_LVDS
-#include "fsl_pca6416a.h"
-pca6416a_handle_t pca6416ahandle;
 #include "fsl_ldb.h"
 #if APP_DISPLAY_EXTERNAL_CONVERTOR
 #include "fsl_it6263.h"
@@ -38,14 +33,13 @@ uint32_t testByteClkFreq_Hz;
 uint32_t phyRefClkFreq_Hz;
 uint32_t phyByteClkFreq_Hz;
 uint32_t mediaPixClkFreq_Hz;
+pca6416a_handle_t pca6416ahandle;
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
 extern void DPU_IRQHandler(void);
 #if (DPU_EXAMPLE_DI == DPU_DI_MIPI)
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
-status_t RM692c9_DSI_Transfer(dsi_transfer_t *xfer);
-static void RM692c9_PullResetPin(bool pullUp);
 #endif
 #elif (DPU_EXAMPLE_DI == DPU_DI_LVDS)
 #if APP_DISPLAY_EXTERNAL_CONVERTOR
@@ -58,21 +52,6 @@ static void IT6263_PullResetPin(bool pullUp);
  ******************************************************************************/
 #if (DPU_EXAMPLE_DI == DPU_DI_MIPI)
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
-
-static mipi_dsi_device_t dsiDevice = {
-    .virtualChannel = 0,
-    .xferFunc       = RM692c9_DSI_Transfer,
-};
-
-static const rm692c9_resource_t rm692c9Resource = {
-    .dsiDevice    = &dsiDevice,
-    .pullResetPin = RM692c9_PullResetPin,
-};
-
-static display_handle_t rm692c9Handle = {
-    .resource = &rm692c9Resource,
-    .ops      = &rm692c9_ops,
-};
 #endif
 
 #elif (DPU_EXAMPLE_DI == DPU_DI_LVDS)
@@ -93,22 +72,6 @@ static display_handle_t rm692c9Handle = {
 
 #if (DPU_EXAMPLE_DI == DPU_DI_MIPI)
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
-status_t RM692c9_DSI_Transfer(dsi_transfer_t *xfer)
-{
-    return DSI_TransferBlocking(DSI_MAIN, DSI_HOST, DSI_INT, xfer);
-}
-
-static void RM692c9_PullResetPin(bool pullUp)
-{
-    if (pullUp)
-    {
-        ADP5585_SetPins(&adpHandle, (1 << DSICSI_RST_SYNC));
-    }
-    else
-    {
-        ADP5585_ClearPins(&adpHandle, (1 << DSICSI_RST_SYNC));
-    }
-}
 #endif
 
 #elif (DPU_EXAMPLE_DI == DPU_DI_LVDS)
@@ -203,20 +166,20 @@ void BOARD_PrepareDisplay(void)
     clk_t videopll1vcoCLKCfg = {
         .clkId = kCLOCK_videopll1ctl,
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
-        .rate = 4009500000,
+        .rate = 3000000000,
     };
 
     clk_t videopll1CLKCfg = {
         .clkId = kCLOCK_videopll1,
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
-        .rate = 445500000,
+        .rate = 300000000,
     };
 
     clk_t disp1pixlCLKCfg = {
         .clkId = kCLOCK_disp1pix,
         .pclkId = kCLOCK_videopll1,
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
-        .rate = 148500000,
+        .rate = 50000000,
     };
 
     clk_t mipiphycfgCLKCfg = {
@@ -229,14 +192,14 @@ void BOARD_PrepareDisplay(void)
         .clkId = kCLOCK_mipiPhyPllBypass,
         .pclkId = kCLOCK_videopll1,
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
-        .rate = 445500000,
+        .rate = 300000000,
     };
 
     clk_t mipitestbyteCLKCfg = {
         .clkId = kCLOCK_mipiTestByte,
         .pclkId = kCLOCK_videopll1,
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
-        .rate = 445500000,
+        .rate = 300000000,
     };
 
     CLOCK_SetRate(&videopll1vcoCLKCfg);
@@ -305,7 +268,6 @@ void BOARD_InitLcdPanel(void)
         .controlFlags = 0,
         .dsiLanes     = APP_MIPI_DSI_LANE_NUM,
     };
-    /* Init the DSI related resource. I.MX952 uses ADP5585 GPIO expander  */
     clk_t lpi2cClkCfg = {
         .clkId = kCLOCK_lpi2c2,
         .rate = 1000000UL, /* 24Mhz for lpi2c */
@@ -313,30 +275,43 @@ void BOARD_InitLcdPanel(void)
     };
     CLOCK_SetRate(&lpi2cClkCfg);
     CLOCK_EnableClock(lpi2cClkCfg.clkId);
-    BOARD_InitADP5585(&adpHandle);
-    ADP5585_SetDirection(&adpHandle, (1 << DSICSI_EN_PWDN), kADP5585_Output);
-    ADP5585_SetDirection(&adpHandle, (1 << DSICSI_RST_SYNC), kADP5585_Output);
 
-    ADP5585_SetPins(&adpHandle, (1 << DSICSI_EN_PWDN));
-    ADP5585_SetPins(&adpHandle, (1 << DSICSI_RST_SYNC));
+    BOARD_InitPCA6416A(&pca6416ahandle);
+    PCA6416A_SetDirection(&pca6416ahandle, (1 << BOARD_PCA6416A_EXT_5V0_PWR_EN), kPCA6416A_Output);
+    PCA6416A_ClearPins(&pca6416ahandle, (1 << BOARD_PCA6416A_EXT_5V0_PWR_EN));
+    SDK_DelayAtLeastUs(1000U, SystemCoreClock);
+
+    PCA6416A_SetPins(&pca6416ahandle, (1 << BOARD_PCA6416A_EXT_5V0_PWR_EN));
+    SDK_DelayAtLeastUs(1000U, SystemCoreClock);
+
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
     if (DPU_EXAMPLE_DI == DPU_DI_MIPI)
     {
-        RM692c9_Init(&rm692c9Handle, &displayConfig);
+        clk_t lpi2c4ClkCfg = {
+            .clkId = kCLOCK_lpi2c4,
+            .rate = 24000000UL, /* 24Mhz for lpi2c4 */
+            .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
+        };
+        CLOCK_SetRate(&lpi2c4ClkCfg);
+        CLOCK_EnableClock(lpi2c4ClkCfg.clkId);
+        BOARD_LPI2C_Init(LPI2C4, CLOCK_GetRate(kCLOCK_lpi2c4));
+        SDK_DelayAtLeastUs(1000U, SystemCoreClock);
+        static waveshare_dsi2dpi_resource_t waveshareResource;
+
+        static display_handle_t wavesharehandle = {
+            .resource = &waveshareResource,
+            .ops      = &waveshare_dsi2dpi_ops,
+	};
+        /* Init the resource for waveshare_dsi2dpi. */
+        waveshareResource.i2cAddr        = 0x45;
+        waveshareResource.i2cSendFunc    = BOARD_Display_I2C_Send;
+        waveshareResource.i2cReceiveFunc = BOARD_Display_I2C_Receive;
+        SDK_DelayAtLeastUs(1000U, SystemCoreClock);
+        WAVESHARE_DSI2DPI_Init(&wavesharehandle, &displayConfig);
+
     }
 #else
-    static adv7535_resource_t adv7535Resource;
-
-    static display_handle_t advhandle = {
-        .resource = &adv7535Resource,
-        .ops      = &adv7535_ops,
-    };
-    /* Init the resource for adv7535. */
-    adv7535Resource.i2cAddr        = 0x3D;
-    adv7535Resource.i2cSendFunc    = BOARD_Display_I2C_Send;
-    adv7535Resource.i2cReceiveFunc = BOARD_Display_I2C_Receive;
-
-    ADV7535_Init(&advhandle, &displayConfig);
+    /* Not support MIPI2HDMI card */
 #endif
 
     return;
@@ -394,7 +369,7 @@ void BOARD_InitDisplayInterface(void)
     phyConfig.hs2lp_time = 0x10000U;
     phyConfig.esccmd_time = 0x90000U;
     phyConfig.escbyte_time = 0xe0000U;
-    phyConfig.lptx_clkdiv = 4U;
+    phyConfig.lptx_clkdiv = 2U;
     phyConfig.tolerance_time = 0U;
     phyConfig.cal_time = 0U;
     phyConfig.ulps_wakeuptime = 0U;

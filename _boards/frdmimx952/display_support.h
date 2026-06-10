@@ -10,18 +10,19 @@
  * Definitions
  ******************************************************************************/
 
-#define DPU_DI_MIPI                0
-#define DPU_DI_LVDS                1
-#define DEMO_PANEL_LCD_SPEC        11
-#define DEMO_PANEL_LVDS2HDMI       15
+#define DPU_DI_MIPI                  0
+#define DPU_DI_LVDS                  1
+#define DEMO_PANEL_LCD_SPEC          11
+#define DEMO_PANEL_LVDS2HDMI         15
+#define DEMO_PANEL_WAVESHARE_DSI2DPI 20
 
 /* Use the LVDS interface. */
 #ifndef DPU_EXAMPLE_DI
-#define DPU_EXAMPLE_DI DPU_DI_LVDS
+#define DPU_EXAMPLE_DI DPU_DI_MIPI
 #endif
 
 #ifndef DEMO_PANEL
-#define DEMO_PANEL  DEMO_PANEL_LCD_SPEC
+#define DEMO_PANEL  DEMO_PANEL_WAVESHARE_DSI2DPI
 #endif
 
 #ifndef LDB_DUAL_PANEL
@@ -84,6 +85,23 @@ Interrupt Enable register 0.
 #define LVDS_PWM        (3U)
 
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
+#if (DEMO_PANEL == DEMO_PANEL_WAVESHARE_DSI2DPI)
+/*
+ * The pixel clock is (height + VSW + VFP + VBP) * (width + HSW + HFP + HBP) * frame rate.
+ * (600 + 10 + 10 + 10) x (1024 + 100 + 100 + 100) x 60 = 630 x 1324 x 60Hz = 50047200 Hz
+ */
+/* 1280*800 LVDS pannel */
+#define APP_PANEL_HEIGHT   600
+#define APP_PANEL_WIDTH    1024
+#define APP_HSW            100
+#define APP_HFP            100
+#define APP_HBP            100
+#define APP_VSW            10
+#define APP_VFP            10
+#define APP_VBP            10
+#define APP_PIXEL_CLOCK_HZ 50000000
+#endif
+
 #if (DEMO_PANEL == DEMO_PANEL_LCD_SPEC)
 /*
  * The pixel clock is (height + VSW + VFP + VBP) * (width + HSW + HFP + HBP) * frame rate.
@@ -122,8 +140,8 @@ Interrupt Enable register 0.
 #if DPU_EXAMPLE_DI == DPU_DI_MIPI
 #define APP_MIPI_DSI_BASE MIPI_DSI_BASE
 #define APP_MIPI_DSI      ((MIPI_DSI_Type *)APP_MIPI_DSI_BASE)
-/* The MIPI DSI support 4 line, value in reg is 0x3. */
-#define APP_MIPI_DSI_LANE_NUM                   4
+/* The MIPI DSI support 2 line, value in reg is 0x1. */
+#define APP_MIPI_DSI_LANE_NUM                   2
 #define APP_IPI_PIXEL_DEPTH                     960
 #define MIPI_DSI_BPP                            24
 #define MIPI_DSI_DIV                            32
