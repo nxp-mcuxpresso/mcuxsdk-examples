@@ -13,7 +13,8 @@ mcux_add_include(
 # Add additional configuration
 mcux_add_macro(
     CC "-DMCUBOOT_OTA_SB3_SUPPORT\
-        -DENCRYPTED_XIP_IPED"
+        -DENCRYPTED_XIP_IPED\
+        -DCONFIG_FLASH_IPED=1"
 )
 
 # Add or remove Linker File Configurations

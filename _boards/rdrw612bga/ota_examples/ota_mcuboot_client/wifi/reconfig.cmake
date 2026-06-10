@@ -14,7 +14,8 @@ mcux_add_mdk_configuration(
 
 mcux_add_macro(
     CC "-DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_user_config.h\\\"\
-       -DCONFIG_MONOLITHIC_WIFI=1"
+       -DCONFIG_MONOLITHIC_WIFI=1\
+       -DCONFIG_FLASH_IPED=1"
 )
 
 mcux_remove_mdk_configuration(

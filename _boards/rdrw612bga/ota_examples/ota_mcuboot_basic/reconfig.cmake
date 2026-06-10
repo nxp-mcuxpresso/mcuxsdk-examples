@@ -13,6 +13,7 @@ mcux_add_include(
 mcux_add_macro(
     CC "-DWPL_NO_WLAN_INIT"
     CC "-DMCUBOOT_OTA_SB3_SUPPORT"
+    CC "-DCONFIG_FLASH_IPED=1"
 )
 mcux_add_mdk_configuration(
     LD "--diag_suppress=L6329W"

@@ -1,5 +1,6 @@
 mcux_add_macro(
-    CC "-DCONFIG_MONOLITHIC_WIFI=1"
+    CC "-DCONFIG_MONOLITHIC_WIFI=1\
+        -DCONFIG_FLASH_IPED=1"
 )
 
 mcux_add_iar_configuration(

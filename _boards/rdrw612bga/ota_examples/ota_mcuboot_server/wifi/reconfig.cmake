@@ -5,6 +5,7 @@ mcux_add_mdk_configuration(
 
 mcux_add_macro(
     CC "-DCONFIG_MONOLITHIC_WIFI=1"
+    CC "-DCONFIG_FLASH_IPED=1"
 )
 
 mcux_remove_mdk_configuration(
