@@ -8,7 +8,7 @@ Hardware requirements
 Board settings
 ==============
 No special is needed.
-Use oscilloscope to measure the output 48KHz PWM signal pin at J5-8 pin.
+Use oscilloscope to measure the output 48KHz PWM signal pin at J64-8 pin.
 
 Prepare the Demo
 ================

@@ -10,10 +10,10 @@ To make the example work, connections needed to be as follows:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  SLAVE(LPSPI16) connect to               MASTER(FlexIO0)
 Pin Name   Board Location            Pin Name  Board Location
-SOUT        J22 pin 6                SIN       J5 pin 3
-SIN         J22 pin 5                SOUT      J5 Pin 6
-SCK         J22 pin 4                SCK       J5 pin 4
-PCS0        J22 pin 3                PCS       J5 pin 5
+SOUT        J22 pin 6                SIN       J64 pin 3
+SIN         J22 pin 5                SOUT      J64 Pin 6
+SCK         J22 pin 4                SCK       J64 pin 4
+PCS0        J22 pin 3                PCS       J64 pin 5
 GND         J22 pin 8                GND       J6 pin 7
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

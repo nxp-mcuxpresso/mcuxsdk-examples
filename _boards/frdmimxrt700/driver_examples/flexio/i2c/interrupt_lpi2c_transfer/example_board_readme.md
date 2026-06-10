@@ -11,8 +11,8 @@ Jumper setting:
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     MASTER(FLEXIO_I2C)                connect to        SLAVE(LPI2C8)
     Pin Name    Board Location                      Pin Name    Board Location
-    SCL         J5 pin 6                            SCL         J11 Pin5
-    SDA         J5 pin 5                            SDA         J11 Pin6
+    SCL         J64 pin 6                            SCL         J11 Pin5
+    SDA         J64 pin 5                            SDA         J11 Pin6
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     Other jumpers keep default configuration.
 

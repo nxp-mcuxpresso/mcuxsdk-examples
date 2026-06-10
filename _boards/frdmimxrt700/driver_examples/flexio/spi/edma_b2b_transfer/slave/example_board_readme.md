@@ -10,10 +10,10 @@ To make the example work, connections needed to be as follows:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 MASTER(FlexIO SPI)          connect to      SLAVE(FlexIO SPI)
 Pin Name   Board Location                   Pin Name    Board Location
-MOSI       J5 Pin 6                         MOSI      J5 pin 6
-MISO       J5 pin 3                         MISO      J5 Pin 3
-SCK        J5 pin 4                         SCK       J5 pin 4
-PCS        J5 pin 5                         PCS       J5 pin 5
+MOSI       J64 Pin 6                         MOSI      J64 pin 6
+MISO       J64 pin 3                         MISO      J64 Pin 3
+SCK        J64 pin 4                         SCK       J64 pin 4
+PCS        J64 pin 5                         PCS       J64 pin 5
 GND        J6 pin 7                         GND       J6 pin 7
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

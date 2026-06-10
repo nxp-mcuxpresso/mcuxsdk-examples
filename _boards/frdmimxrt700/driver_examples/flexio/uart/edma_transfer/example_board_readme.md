@@ -8,8 +8,8 @@ Hardware requirements
 Board settings
 ============
 Connect pin:
-- RX of USB2COM to J5-5(FLEXIO TX)
-- TX of USB2COM to J5-6(FLEXIO RX)
+- RX of USB2COM to J64-5(FLEXIO TX)
+- TX of USB2COM to J64-6(FLEXIO RX)
 - GND of USB2COM to J6-7
 
 Prepare the Demo
