@@ -14,6 +14,9 @@ Board settings
 1. Connect the RK043FN02H-CT or RK043FN66HS-CT6 to board.
 2. Unzip the pics.zip, place the jpg pictures to the SD card.
 3. Insert the SDCARD into card slot.
+4. Make sure jumper J57 is set to 2-3 (the board default) so the SD card
+   interface is enabled. The demo will hang on SD card access if J57 is
+   set to 1-2.
 
 Prepare the Demo
 ================
