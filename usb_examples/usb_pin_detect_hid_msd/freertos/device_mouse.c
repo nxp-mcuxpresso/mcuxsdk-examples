@@ -147,6 +147,8 @@ static usb_status_t USB_DeviceHidMouseAction(void)
 static usb_status_t USB_DeviceHidMouseCallback(class_handle_t handle, uint32_t event, void *param)
 {
     usb_status_t error = kStatus_USB_InvalidRequest;
+    usb_device_endpoint_callback_message_struct_t *ep_cb_param;
+    ep_cb_param           = (usb_device_endpoint_callback_message_struct_t *)param;
 
     switch (event)
     {
@@ -154,6 +156,10 @@ static usb_status_t USB_DeviceHidMouseCallback(class_handle_t handle, uint32_t e
             /* Resport sent */
             if (g_UsbDeviceHidMouse.attach)
             {
+                if (ep_cb_param->length == USB_CANCELLED_TRANSFER_LENGTH)
+                {
+                    return kStatus_USB_Success;
+                }
                 error = USB_DeviceHidMouseAction();
             }
             break;

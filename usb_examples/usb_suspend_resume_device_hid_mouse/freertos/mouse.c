@@ -183,7 +183,7 @@ static usb_status_t USB_DeviceHidMouseCallback(class_handle_t handle, uint32_t e
                 /* endpoint callback length is USB_CANCELLED_TRANSFER_LENGTH (0xFFFFFFFFU) when transfer is canceled */
                 if ((NULL != message) && (message->length == USB_CANCELLED_TRANSFER_LENGTH))
                 {
-                    return error;
+                    return kStatus_USB_Success;
                 }
                 if (kStatus_MouseIdle == g_UsbDeviceHidMouse.suspend)
                 {

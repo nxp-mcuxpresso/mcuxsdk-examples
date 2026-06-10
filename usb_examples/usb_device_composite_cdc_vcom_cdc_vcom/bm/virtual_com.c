@@ -119,7 +119,11 @@ usb_status_t USB_DeviceCdcVcomCallback(class_handle_t handle, uint32_t event, vo
     {
         case kUSB_DeviceCdcEventSendResponse:
         {
-            if ((epCbParam->length != 0) && (!(epCbParam->length % vcomInstance->bulkInEndpointMaxPacketSize)))
+            if (epCbParam->length == USB_CANCELLED_TRANSFER_LENGTH)
+            {
+                error = kStatus_USB_Success;
+            }
+            else if ((epCbParam->length != 0) && (!(epCbParam->length % vcomInstance->bulkInEndpointMaxPacketSize)))
             {
                 /* If the last packet is the size of endpoint, then send also zero-ended packet,
                  ** meaning that we want to inform the host that we do not have any additional
@@ -144,7 +148,11 @@ usb_status_t USB_DeviceCdcVcomCallback(class_handle_t handle, uint32_t event, vo
         break;
         case kUSB_DeviceCdcEventRecvResponse:
         {
-            if ((1 == vcomInstance->attach) && (1 == vcomInstance->startTransactions))
+            if (epCbParam->length == USB_CANCELLED_TRANSFER_LENGTH)
+            {
+                error = kStatus_USB_Success;
+            }
+            else if ((1 == vcomInstance->attach) && (1 == vcomInstance->startTransactions))
             {
                 vcomInstance->recvSize = epCbParam->length;
 

@@ -79,11 +79,7 @@ static usb_status_t USB_DeviceHidGenericInterruptIn(usb_device_handle handle,
                                                     usb_device_endpoint_callback_message_struct_t *message,
                                                     void *callbackParam)
 {
-    if (g_UsbDeviceHidGeneric.attach)
-    {
-    }
-
-    return kStatus_USB_Error;
+    return kStatus_USB_Success;
 }
 
 /* The hid generic interrupt OUT endpoint callback */
@@ -92,10 +88,7 @@ static usb_status_t USB_DeviceHidGenericInterruptOut(usb_device_handle handle,
                                                      void *callbackParam)
 {
     if (g_UsbDeviceHidGeneric.attach
-#if (defined(USB_DEVICE_CONFIG_ROOT2_TEST) && (USB_DEVICE_CONFIG_ROOT2_TEST > 0U))
-        && (message->length != (USB_CANCELLED_TRANSFER_LENGTH))
-#endif
-    )
+        && (message->length != (USB_CANCELLED_TRANSFER_LENGTH)))
     {
         USB_DeviceSendRequest(g_UsbDeviceHidGeneric.deviceHandle, USB_HID_GENERIC_ENDPOINT_IN,
                               (uint8_t *)&g_UsbDeviceHidGeneric.buffer[g_UsbDeviceHidGeneric.bufferIndex][0],
@@ -104,6 +97,14 @@ static usb_status_t USB_DeviceHidGenericInterruptOut(usb_device_handle handle,
         return USB_DeviceRecvRequest(g_UsbDeviceHidGeneric.deviceHandle, USB_HID_GENERIC_ENDPOINT_OUT,
                                      (uint8_t *)&g_UsbDeviceHidGeneric.buffer[g_UsbDeviceHidGeneric.bufferIndex][0],
                                      USB_HID_GENERIC_OUT_BUFFER_LENGTH);
+    }
+    else if (message->length == USB_CANCELLED_TRANSFER_LENGTH)
+    {
+        return kStatus_USB_Success;
+    }
+    else
+    {
+        /* no action */
     }
 
     return kStatus_USB_Error;

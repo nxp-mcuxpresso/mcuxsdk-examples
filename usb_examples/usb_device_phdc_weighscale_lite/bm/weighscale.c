@@ -640,10 +640,10 @@ static usb_status_t USB_DeviceWeightScaleInterruptInCallback(usb_device_handle h
                                                              void *callbackParam)
 {
     usb_status_t error = kStatus_USB_Error;
-    /* endpoint callback length is USB_CANCELLED_TRANSFER_LENGTH (0xFFFFFFFFU) when transfer is canceled */
-    if ((NULL == message) || (USB_CANCELLED_TRANSFER_LENGTH == message->length))
+
+    if (USB_CANCELLED_TRANSFER_LENGTH == message->length)
     {
-        error = kStatus_USB_Error;
+        error = kStatus_USB_Success;
     }
     else
     {
@@ -667,10 +667,10 @@ static usb_status_t USB_DeviceWeightScaleBulkInCallback(usb_device_handle handle
                                                         void *callbackParam)
 {
     usb_status_t error = kStatus_USB_Error;
-    /* endpoint callback length is USB_CANCELLED_TRANSFER_LENGTH (0xFFFFFFFFU) when transfer is canceled */
-    if ((NULL == message) || (USB_CANCELLED_TRANSFER_LENGTH == message->length))
+
+    if (USB_CANCELLED_TRANSFER_LENGTH == message->length)
     {
-        error = kStatus_USB_Error;
+        error = kStatus_USB_Success;
     }
     else
     {
@@ -693,6 +693,10 @@ static usb_status_t USB_DeviceWeightScaleBulkOutCallback(usb_device_handle handl
                                                          usb_device_endpoint_callback_message_struct_t *message,
                                                          void *callbackParam)
 {
+    if (USB_CANCELLED_TRANSFER_LENGTH == message->length)
+    {
+        return kStatus_USB_Success;
+    }
     return USB_ShimAgentRecvComplete((void *)handle, message);
 }
 

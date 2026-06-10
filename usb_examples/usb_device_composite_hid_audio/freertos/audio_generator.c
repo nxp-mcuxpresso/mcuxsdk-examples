@@ -466,6 +466,14 @@ usb_status_t USB_DeviceAudioGeneratorCallback(class_handle_t handle, uint32_t ev
                                                 HS_ISO_IN_ENDP_PACKET_SIZE :
                                                 FS_ISO_IN_ENDP_PACKET_SIZE);
             }
+            else if (ep_cb_param->length == USB_CANCELLED_TRANSFER_LENGTH)
+            {
+                error = kStatus_USB_Success;
+            }
+            else
+            {
+                /* no action */
+            }
             break;
 
         default:

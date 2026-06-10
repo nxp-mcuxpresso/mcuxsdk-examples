@@ -84,6 +84,11 @@ static usb_status_t USB_DevicePrinterBulkInCallback(usb_device_handle handle,
                                                     usb_device_endpoint_callback_message_struct_t *message,
                                                     void *callbackParam)
 {
+    if (message->length == USB_CANCELLED_TRANSFER_LENGTH)
+    {
+        return kStatus_USB_Success;
+    }
+
     USB_DeviceSendRequest(g_DevicePrinterApp.deviceHandle, USB_PRINTER_BULK_ENDPOINT_IN, g_DevicePrinterApp.sendBuffer,
                           g_DevicePrinterApp.sendLength);
     return kStatus_USB_Success;
@@ -96,8 +101,6 @@ static usb_status_t USB_DevicePrinterBulkOutCallback(usb_device_handle handle,
                                                      usb_device_endpoint_callback_message_struct_t *message,
                                                      void *callbackParam)
 {
-    usb_status_t status = kStatus_USB_Error;
-
     if ((g_DevicePrinterApp.attach) && (g_DevicePrinterApp.prnterTaskState == kPrinter_Receiving))
     {
         /* endpoint callback length is USB_CANCELLED_TRANSFER_LENGTH (0xFFFFFFFFU) when transfer is canceled */
@@ -113,7 +116,7 @@ static usb_status_t USB_DevicePrinterBulkOutCallback(usb_device_handle handle,
         g_DevicePrinterApp.stateChanged = 1;
     }
 
-    return status;
+    return kStatus_USB_Success;
 }
 
 usb_status_t USB_DeviceCallback(usb_device_handle handle, uint32_t event, void *param)

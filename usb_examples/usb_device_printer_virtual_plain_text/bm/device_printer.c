@@ -153,6 +153,11 @@ static usb_status_t USB_DevicePrinterAppCallback(class_handle_t classHandle, uin
             break;
 
         case kUSB_DevicePrinterEventSendResponse:
+            message = (usb_device_endpoint_callback_message_struct_t *)param;
+            if (message->length == USB_CANCELLED_TRANSFER_LENGTH)
+            {
+                return kStatus_USB_Success;
+            }
             status = USB_DevicePrinterSend(g_DevicePrinterApp.classHandle, USB_PRINTER_BULK_ENDPOINT_IN,
                                            g_DevicePrinterApp.sendBuffer, g_DevicePrinterApp.sendLength);
             break;

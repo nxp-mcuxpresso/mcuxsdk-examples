@@ -951,6 +951,14 @@ usb_status_t USB_DeviceAudioCompositeCallback(class_handle_t handle, uint32_t ev
                                                 FS_ISO_IN_ENDP_PACKET_SIZE);
                 }
             }
+            else if (ep_cb_param->length == USB_CANCELLED_TRANSFER_LENGTH)
+            {
+                error = kStatus_USB_Success;
+            }
+            else
+            {
+                /* no action */
+            }
             break;
         case kUSB_DeviceAudioEventStreamRecvResponse:
             /* endpoint callback length is USB_CANCELLED_TRANSFER_LENGTH (0xFFFFFFFFU) when transfer is canceled */
@@ -973,6 +981,14 @@ usb_status_t USB_DeviceAudioCompositeCallback(class_handle_t handle, uint32_t ev
 #endif
                 error = USB_DeviceAudioRecv(handle, USB_AUDIO_SPEAKER_STREAM_ENDPOINT, &audioPlayPacket[0],
                                             (FS_ISO_OUT_ENDP_PACKET_SIZE));
+            }
+            else if (ep_cb_param->length == USB_CANCELLED_TRANSFER_LENGTH)
+            {
+                error = kStatus_USB_Success;
+            }
+            else
+            {
+                /* no action */
             }
             break;
 

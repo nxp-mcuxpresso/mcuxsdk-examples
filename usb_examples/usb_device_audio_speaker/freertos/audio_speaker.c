@@ -1080,6 +1080,14 @@ usb_status_t USB_DeviceAudioCallback(class_handle_t handle, uint32_t event, void
                                                 g_UsbDeviceAudioSpeaker.currentFeedbackMaxPacketSize);
                 }
             }
+            else if (ep_cb_param->length == USB_CANCELLED_TRANSFER_LENGTH)
+            {
+                error = kStatus_USB_Success;
+            }
+            else
+            {
+                /* no action */
+            }
             break;
 #endif
         case kUSB_DeviceAudioEventStreamRecvResponse:
@@ -1158,6 +1166,14 @@ usb_status_t USB_DeviceAudioCallback(class_handle_t handle, uint32_t event, void
                 g_UsbDeviceAudioSpeaker.usbRecvTimes++;
                 error = USB_DeviceAudioRecv(handle, USB_AUDIO_SPEAKER_STREAM_ENDPOINT, &audioPlayPacket[0],
                                             g_UsbDeviceAudioSpeaker.currentStreamOutMaxPacketSize);
+            }
+            else if (ep_cb_param->length == USB_CANCELLED_TRANSFER_LENGTH)
+            {
+                error = kStatus_USB_Success;
+            }
+            else
+            {
+                /* no action */
             }
             break;
 

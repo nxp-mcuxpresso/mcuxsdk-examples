@@ -170,6 +170,11 @@ usb_status_t USB_DeviceCdcAcmBulkIn(usb_device_handle handle,
 
     if (1 == g_cdcVnic.attach)
     {
+        if (message->length == USB_CANCELLED_TRANSFER_LENGTH)
+        {
+            return kStatus_USB_Success;
+        }
+
         if (NULL == message->buffer)
         {
             return error;
@@ -212,6 +217,11 @@ usb_status_t USB_DeviceCdcAcmBulkOut(usb_device_handle handle,
 
     if (1 == g_cdcVnic.attach)
     {
+        if (message->length == USB_CANCELLED_TRANSFER_LENGTH)
+        {
+            return kStatus_USB_Success;
+        }
+
         switch (g_cdcVnic.nicTrafficInfo.usbRxState)
         {
             case RX_PART_ONE_PROCESS:

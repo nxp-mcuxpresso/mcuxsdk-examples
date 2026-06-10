@@ -158,6 +158,14 @@ usb_status_t USB_DeviceAudioIsoOut(usb_device_handle deviceHandle,
             deviceHandle, USB_AUDIO_STREAM_ENDPOINT, s_wavBuff,
             (USB_SPEED_HIGH == s_audioGenerator.speed) ? HS_ISO_IN_ENDP_PACKET_SIZE : FS_ISO_IN_ENDP_PACKET_SIZE);
     }
+    else if (ep_cb_param->length == USB_CANCELLED_TRANSFER_LENGTH)
+    {
+        return kStatus_USB_Success;
+    }
+    else
+    {
+        /* no action */
+    }
 
     return kStatus_USB_Error;
 }

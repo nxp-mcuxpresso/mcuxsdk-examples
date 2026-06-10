@@ -1685,6 +1685,15 @@ usb_status_t USB_DeviceAudioIsoOut(usb_device_handle deviceHandle,
         error = USB_DeviceRecvRequest(deviceHandle, USB_AUDIO_SPEAKER_STREAM_ENDPOINT, &audioPlayPacket[0],
                                       g_UsbDeviceAudioSpeaker.currentStreamOutMaxPacketSize);
     }
+    else if (ep_cb_param->length == USB_CANCELLED_TRANSFER_LENGTH)
+    {
+        error = kStatus_USB_Success;
+    }
+    else
+    {
+        /* no action */
+    }
+
     return error;
 }
 

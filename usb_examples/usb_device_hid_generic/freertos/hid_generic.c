@@ -93,10 +93,8 @@ usb_device_class_config_list_struct_t g_UsbDeviceHidConfigList = {
 static usb_status_t USB_DeviceHidGenericCallback(class_handle_t handle, uint32_t event, void *param)
 {
     usb_status_t error = kStatus_USB_InvalidRequest;
-#if (defined(USB_DEVICE_CONFIG_ROOT2_TEST) && (USB_DEVICE_CONFIG_ROOT2_TEST > 0U))
     usb_device_endpoint_callback_message_struct_t *ep_cb_param;
     ep_cb_param = (usb_device_endpoint_callback_message_struct_t *)param;
-#endif
 
     switch (event)
     {
@@ -105,10 +103,7 @@ static usb_status_t USB_DeviceHidGenericCallback(class_handle_t handle, uint32_t
             break;
         case kUSB_DeviceHidEventRecvResponse:
             if (g_UsbDeviceHidGeneric.attach
-#if (defined(USB_DEVICE_CONFIG_ROOT2_TEST) && (USB_DEVICE_CONFIG_ROOT2_TEST > 0U))
-                && (ep_cb_param->length != (USB_CANCELLED_TRANSFER_LENGTH))
-#endif
-            )
+                && (ep_cb_param->length != (USB_CANCELLED_TRANSFER_LENGTH)))
             {
                 USB_DeviceHidSend(g_UsbDeviceHidGeneric.hidHandle, USB_HID_GENERIC_ENDPOINT_IN,
                                   (uint8_t *)&g_UsbDeviceHidGeneric.buffer[g_UsbDeviceHidGeneric.bufferIndex][0],
@@ -117,6 +112,14 @@ static usb_status_t USB_DeviceHidGenericCallback(class_handle_t handle, uint32_t
                 return USB_DeviceHidRecv(g_UsbDeviceHidGeneric.hidHandle, USB_HID_GENERIC_ENDPOINT_OUT,
                                          (uint8_t *)&g_UsbDeviceHidGeneric.buffer[g_UsbDeviceHidGeneric.bufferIndex][0],
                                          USB_HID_GENERIC_OUT_BUFFER_LENGTH);
+            }
+            else if (ep_cb_param->length == USB_CANCELLED_TRANSFER_LENGTH)
+            {
+                error = kStatus_USB_Success;
+            }
+            else
+            {
+                /* no action */
             }
             break;
         case kUSB_DeviceHidEventGetReport:

@@ -68,8 +68,15 @@ static usb_status_t USB_DeviceHidKeyboardInterruptIn(usb_device_handle handle,
                                                      usb_device_endpoint_callback_message_struct_t *message,
                                                      void *callbackParam)
 {
+    usb_device_endpoint_callback_message_struct_t *ep_cb_param;
+    ep_cb_param           = (usb_device_endpoint_callback_message_struct_t *)message;
+
     if (g_UsbDeviceComposite->attach)
     {
+        if (ep_cb_param->length == USB_CANCELLED_TRANSFER_LENGTH)
+        {
+            return kStatus_USB_Success;
+        }
         return USB_DeviceHidKeyboardAction();
     }
 

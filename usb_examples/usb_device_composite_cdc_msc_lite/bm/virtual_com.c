@@ -79,9 +79,8 @@ usb_status_t USB_DeviceCdcAcmInterruptIn(usb_device_handle handle,
                                          usb_device_endpoint_callback_message_struct_t *message,
                                          void *callbackParam)
 {
-    usb_status_t error                      = kStatus_USB_Error;
     g_deviceComposite->cdcVcom.hasSentState = 0;
-    return error;
+    return kStatus_USB_Success;
 }
 
 /*!
@@ -102,7 +101,11 @@ usb_status_t USB_DeviceCdcAcmBulkIn(usb_device_handle handle,
 {
     usb_status_t error = kStatus_USB_Error;
 
-    if ((message->length != 0) && (!(message->length % s_usbBulkMaxPacketSize)))
+    if (message->length == USB_CANCELLED_TRANSFER_LENGTH)
+    {
+        error = kStatus_USB_Success;
+    }
+    else if ((message->length != 0) && (!(message->length % s_usbBulkMaxPacketSize)))
     {
         /* If the last packet is the size of endpoint, then send also zero-ended packet,
          ** meaning that we want to inform the host that we do not have any additional
@@ -151,7 +154,11 @@ usb_status_t USB_DeviceCdcAcmBulkOut(usb_device_handle handle,
 {
     usb_status_t error = kStatus_USB_Error;
 
-    if ((1 == g_deviceComposite->cdcVcom.attach) && (1 == g_deviceComposite->cdcVcom.startTransactions))
+    if (message->length == USB_CANCELLED_TRANSFER_LENGTH)
+    {
+        error = kStatus_USB_Success;
+    }
+    else if ((1 == g_deviceComposite->cdcVcom.attach) && (1 == g_deviceComposite->cdcVcom.startTransactions))
     {
         /* Save the received data length, the data will be handled in USB_DeviceCdcVcomTask. Certainly, the received
            data also can be handled by any other user's application. Meanwhile, once complete handling the received data

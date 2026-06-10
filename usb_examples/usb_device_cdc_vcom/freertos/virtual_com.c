@@ -160,8 +160,12 @@ usb_status_t USB_DeviceCdcVcomCallback(class_handle_t handle, uint32_t event, vo
     {
         case kUSB_DeviceCdcEventSendResponse:
         {
-            if ((epCbParam->length != 0) &&
-                (0U == (epCbParam->length % g_UsbDeviceCdcVcomDicEndpoints[0].maxPacketSize)))
+            if (epCbParam->length == USB_CANCELLED_TRANSFER_LENGTH)
+            {
+                error = kStatus_USB_Success;
+            }
+            else if ((epCbParam->length != 0) &&
+                 (0U == (epCbParam->length % g_UsbDeviceCdcVcomDicEndpoints[0].maxPacketSize)))
             {
                 /* If the last packet is the size of endpoint, then send also zero-ended packet,
                  ** meaning that we want to inform the host that we do not have any additional
@@ -195,7 +199,11 @@ usb_status_t USB_DeviceCdcVcomCallback(class_handle_t handle, uint32_t event, vo
         break;
         case kUSB_DeviceCdcEventRecvResponse:
         {
-            if ((1U == s_cdcVcom.attach) && (1U == s_cdcVcom.startTransactions))
+            if (epCbParam->length == USB_CANCELLED_TRANSFER_LENGTH)
+            {
+                error = kStatus_USB_Success;
+            }
+            else if ((1U == s_cdcVcom.attach) && (1U == s_cdcVcom.startTransactions))
             {
                 /* Save the received data length, the data will be handled in USB_DeviceCdcVcomTask. Certainly, the
                    received data also can be handled by any other user's application. Meanwhile, once complete handling
@@ -223,6 +231,10 @@ usb_status_t USB_DeviceCdcVcomCallback(class_handle_t handle, uint32_t event, vo
                     USB0->INTEN &= ~USB_INTEN_SOFTOKEN_MASK;
 #endif
                 }
+            }
+            else
+            {
+                /* no action */
             }
         }
         break;

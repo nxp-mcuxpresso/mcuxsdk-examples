@@ -255,8 +255,15 @@ static usb_status_t USB_DeviceVideoIsoIn(usb_device_handle deviceHandle,
                                          usb_device_endpoint_callback_message_struct_t *event,
                                          void *arg)
 {
+    usb_device_endpoint_callback_message_struct_t *ep_cb_param;
+    ep_cb_param           = (usb_device_endpoint_callback_message_struct_t *)event;
+
     if (g_UsbDeviceVideoVirtualCamera.attach)
     {
+        if (ep_cb_param->length == USB_CANCELLED_TRANSFER_LENGTH)
+        {
+            return kStatus_USB_Success;
+        }
         USB_DeviceVideoPrepareVideoData();
         return USB_DeviceSendRequest(deviceHandle, USB_VIDEO_VIRTUAL_CAMERA_STREAM_ENDPOINT_IN,
                                      g_UsbDeviceVideoVirtualCamera.imageBuffer,

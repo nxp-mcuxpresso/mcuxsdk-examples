@@ -592,7 +592,7 @@ usb_status_t USB_DeviceMscBulkIn(usb_device_handle deviceHandle,
             mscHandle->cswPrimeFlag = 1;
             mscHandle->stallStatus  = 0;
         }
-        return error;
+        return kStatus_USB_Success;
     }
     if (mscHandle->transferRemaining >= event->length)
     {

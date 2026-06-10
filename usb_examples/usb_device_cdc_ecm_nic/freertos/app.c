@@ -436,6 +436,10 @@ usb_status_t USB_DeviceCdcEcmCallback(usb_device_handle handle, uint32_t event, 
     switch (event)
     {
         case kUSB_DeviceCdcEcmEventSendResponse:
+            if (epMsg->length == USB_CANCELLED_TRANSFER_LENGTH)
+            {
+                return kStatus_USB_Success;
+            }
             APP_TransferEthernet2USB_USBSend();
             break;
 
@@ -450,6 +454,10 @@ usb_status_t USB_DeviceCdcEcmCallback(usb_device_handle handle, uint32_t event, 
                     (void)usb_echo("USB(DATA OUT CALLBACK): Lost frame.\r\n");
                 }
                 (void)USB_DeviceCdcEcmRecv(ethNicHandle.cdcEcmHandle, USB_DEVICE_CDC_ECM_DATA_BULK_OUT_EP_NUMBER, dataOutBuffer, APP_ETH_FRAME_MAX_LENGTH);
+            }
+            else
+            {
+                status = kStatus_USB_Success;
             }
             break;
 

@@ -370,6 +370,8 @@ static usb_status_t USB_DeviceVideoRequest(class_handle_t handle, uint32_t event
 static usb_status_t USB_DeviceVideoCallback(class_handle_t handle, uint32_t event, void *param)
 {
     usb_status_t error = kStatus_USB_InvalidRequest;
+    usb_device_endpoint_callback_message_struct_t *ep_cb_param;
+    ep_cb_param           = (usb_device_endpoint_callback_message_struct_t *)param;
 
     switch (event)
     {
@@ -377,6 +379,10 @@ static usb_status_t USB_DeviceVideoCallback(class_handle_t handle, uint32_t even
             /* Stream data dent */
             if (g_UsbDeviceVideoVirtualCamera.attach)
             {
+                if (ep_cb_param->length == USB_CANCELLED_TRANSFER_LENGTH)
+                {
+                   return kStatus_USB_Success;
+                }
                 /* Prepare the next stream data */
                 USB_DeviceVideoPrepareVideoData();
                 error = USB_DeviceVideoSend(

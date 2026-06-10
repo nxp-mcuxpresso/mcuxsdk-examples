@@ -338,6 +338,14 @@ usb_status_t USB_DeviceAudioIsoIN(usb_device_handle deviceHandle,
                                           FS_ISO_IN_ENDP_PACKET_SIZE);
         }
     }
+    else if (ep_cb_param->length == USB_CANCELLED_TRANSFER_LENGTH)
+    {
+        error = kStatus_USB_Success;
+    }
+    else
+    {
+        /* no action */
+    }
 
     return error;
 }
@@ -375,6 +383,15 @@ usb_status_t USB_DeviceAudioIsoOUT(usb_device_handle deviceHandle,
         error = USB_DeviceRecvRequest(deviceHandle, USB_AUDIO_SPEAKER_STREAM_ENDPOINT, &audioPlayPacket[0],
                                       (FS_ISO_OUT_ENDP_PACKET_SIZE));
     }
+    else if (ep_cb_param->length == USB_CANCELLED_TRANSFER_LENGTH)
+    {
+        error = kStatus_USB_Success;
+    }
+    else
+    {
+        /* no action */
+    }
+
     return error;
 }
 

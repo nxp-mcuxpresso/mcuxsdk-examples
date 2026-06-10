@@ -630,10 +630,9 @@ static usb_status_t USB_DeviceWeightScaleCallback(void *handle, uint32_t event, 
             usb_device_endpoint_callback_message_struct_t *message =
                 (usb_device_endpoint_callback_message_struct_t *)param;
 
-            /* endpoint callback length is USB_CANCELLED_TRANSFER_LENGTH (0xFFFFFFFFU) when transfer is canceled */
-            if ((NULL != message) && (message->length == USB_CANCELLED_TRANSFER_LENGTH))
+            if (message->length == USB_CANCELLED_TRANSFER_LENGTH)
             {
-                error = kStatus_USB_Error;
+                error = kStatus_USB_Success;
             }
             else
             {

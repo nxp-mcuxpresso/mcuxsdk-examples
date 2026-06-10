@@ -572,7 +572,7 @@ usb_status_t USB_DeviceMscBulkIn(usb_device_handle deviceHandle,
             mscHandle->cswPrimeFlag = 1;
             mscHandle->stallStatus  = 0;
         }
-        return error;
+        return kStatus_USB_Success;
     }
     if (mscHandle->transferRemaining >= event->length)
     {
@@ -670,7 +670,7 @@ usb_status_t USB_DeviceMscBulkOut(usb_device_handle deviceHandle,
                                   USB_DEVICE_MSC_CBW_LENGTH);
             mscHandle->cbwPrimeFlag = 1;
         }
-        return error;
+        return kStatus_USB_Success;
     }
 
     if (mscHandle->transferRemaining >= event->length)

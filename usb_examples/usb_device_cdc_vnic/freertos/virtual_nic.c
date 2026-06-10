@@ -570,6 +570,11 @@ usb_status_t USB_DeviceCdcVnicCallback(class_handle_t handle, uint32_t event, vo
         {
             if (1 == g_cdcVnic.attach)
             {
+                if (epCbParam->length == USB_CANCELLED_TRANSFER_LENGTH)
+                {
+                    return kStatus_USB_Success;
+                }
+
                 if (NULL == epCbParam->buffer)
                 {
                     return error;
@@ -597,6 +602,11 @@ usb_status_t USB_DeviceCdcVnicCallback(class_handle_t handle, uint32_t event, vo
         {
             if (1 == g_cdcVnic.attach)
             {
+                if (epCbParam->length == USB_CANCELLED_TRANSFER_LENGTH)
+                {
+                    return kStatus_USB_Success;
+                }
+
                 switch (g_cdcVnic.nicTrafficInfo.usbRxState)
                 {
                     case RX_PART_ONE_PROCESS:

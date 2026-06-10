@@ -118,8 +118,15 @@ usb_status_t USB_DeviceHidInterruptIn(usb_device_handle deviceHandle,
                                       usb_device_endpoint_callback_message_struct_t *event,
                                       void *arg)
 {
+    usb_device_endpoint_callback_message_struct_t *ep_cb_param;
+    ep_cb_param           = (usb_device_endpoint_callback_message_struct_t *)event;
+
     if (g_deviceComposite->hidMouse.attach)
     {
+        if (ep_cb_param->length == USB_CANCELLED_TRANSFER_LENGTH)
+        {
+            return kStatus_USB_Success;
+        }
         return USB_DeviceMouseAction();
     }
 

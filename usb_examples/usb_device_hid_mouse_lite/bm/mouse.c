@@ -158,10 +158,9 @@ static usb_status_t USB_DeviceHidInterruptIn(usb_device_handle deviceHandle,
     /* Resport sent */
     if (0U != g_UsbDeviceHidMouse.attach)
     {
-        /* endpoint callback length is USB_CANCELLED_TRANSFER_LENGTH (0xFFFFFFFFU) when transfer is canceled */
-        if ((NULL != event) && (event->length == USB_CANCELLED_TRANSFER_LENGTH))
+        if (event->length == USB_CANCELLED_TRANSFER_LENGTH)
         {
-            return kStatus_USB_Error;
+            return kStatus_USB_Success;
         }
         return USB_DeviceHidMouseAction();
     }

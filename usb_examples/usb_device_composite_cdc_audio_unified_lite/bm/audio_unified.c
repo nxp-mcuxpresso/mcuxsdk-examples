@@ -302,14 +302,19 @@ usb_status_t USB_DeviceAudioIsoIN(usb_device_handle deviceHandle,
                                   void *arg)
 {
     usb_status_t error = kStatus_USB_Error;
+    usb_device_endpoint_callback_message_struct_t *ep_cb_param;
+    ep_cb_param = (usb_device_endpoint_callback_message_struct_t *)event;
+
+    if (ep_cb_param->length == USB_CANCELLED_TRANSFER_LENGTH)
+    {
+       return kStatus_USB_Success;
+    }
 
 #if defined(USB_DEVICE_AUDIO_USE_SYNC_MODE) && (USB_DEVICE_AUDIO_USE_SYNC_MODE > 0U)
     if (0)
     {
     }
 #else
-    usb_device_endpoint_callback_message_struct_t *ep_cb_param;
-    ep_cb_param = (usb_device_endpoint_callback_message_struct_t *)event;
     if ((g_deviceComposite->audioUnified.attach) &&
         (ep_cb_param->length == ((USB_SPEED_HIGH == g_deviceComposite->audioUnified.speed) ?
                                      HS_ISO_FEEDBACK_ENDP_PACKET_SIZE :
@@ -425,6 +430,14 @@ usb_status_t USB_DeviceAudioIsoOut(usb_device_handle deviceHandle,
         g_deviceComposite->audioUnified.usbRecvCount += ep_cb_param->length;
         error = USB_DeviceRecvRequest(deviceHandle, USB_AUDIO_SPEAKER_STREAM_ENDPOINT, &audioPlayPacket[0],
                                       g_deviceComposite->audioUnified.currentStreamOutMaxPacketSize);
+    }
+    else if (ep_cb_param->length == USB_CANCELLED_TRANSFER_LENGTH)
+    {
+        error = kStatus_USB_Success;
+    }
+    else
+    {
+        /* no action */
     }
     return error;
 }

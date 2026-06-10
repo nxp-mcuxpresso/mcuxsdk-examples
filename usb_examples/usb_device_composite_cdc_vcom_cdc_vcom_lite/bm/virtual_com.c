@@ -91,6 +91,11 @@ usb_status_t USB_DeviceCdcAcmInterruptIn(usb_device_handle handle,
     usb_status_t error = kStatus_USB_Error;
     uint8_t i;
 
+    if (message->length == USB_CANCELLED_TRANSFER_LENGTH)
+    {
+        return kStatus_USB_Success;
+    }
+
     for (i = 0; i < USB_DEVICE_CONFIG_CDC_ACM; i++)
     {
         if (*((uint8_t *)callbackParam) == g_deviceComposite->cdcVcom[i].communicationInterfaceNumber)
@@ -126,6 +131,11 @@ usb_status_t USB_DeviceCdcAcmBulkIn(usb_device_handle handle,
     usb_status_t error = kStatus_USB_Error;
     uint8_t i;
 
+    if (message->length == USB_CANCELLED_TRANSFER_LENGTH)
+    {
+        return kStatus_USB_Success;
+    }
+
     for (i = 0; i < USB_DEVICE_CONFIG_CDC_ACM; i++)
     {
         if (*((uint8_t *)callbackParam) == g_deviceComposite->cdcVcom[i].dataInterfaceNumber)
@@ -138,7 +148,7 @@ usb_status_t USB_DeviceCdcAcmBulkIn(usb_device_handle handle,
         return error;
     }
     vcomInstance = &g_deviceComposite->cdcVcom[i];
-    ;
+
     if ((message->length != 0) && (!(message->length % vcomInstance->bulkInEndpointMaxPacketSize)))
     {
         /* If the last packet is the size of endpoint, then send also zero-ended packet,
@@ -182,6 +192,11 @@ usb_status_t USB_DeviceCdcAcmBulkOut(usb_device_handle handle,
     usb_status_t error = kStatus_USB_Error;
     uint8_t i;
 
+    if (message->length == USB_CANCELLED_TRANSFER_LENGTH)
+    {
+        return kStatus_USB_Success;
+    }
+
     for (i = 0; i < USB_DEVICE_CONFIG_CDC_ACM; i++)
     {
         if (*((uint8_t *)callbackParam) == g_deviceComposite->cdcVcom[i].dataInterfaceNumber)
@@ -194,7 +209,6 @@ usb_status_t USB_DeviceCdcAcmBulkOut(usb_device_handle handle,
         return error;
     }
     vcomInstance = &g_deviceComposite->cdcVcom[i];
-    ;
 
     if ((1 == vcomInstance->attach) && (1 == vcomInstance->startTransactions))
     {
