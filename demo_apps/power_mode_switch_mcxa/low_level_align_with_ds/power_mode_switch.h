@@ -30,6 +30,8 @@ typedef enum _app_wakeup_source
     kAPP_WakeupSourceButton,            /*!< Wakeup by Wakeup pin. */
 } app_wakeup_source_t;
 
+extern bool g_isTimerWakeupSourceSelected;
+
 /*! Low power modes are a contiguous subset of app_power_mode_t: Sleep .. (Max - 1)
  *  Some modules (e.g. resource control tables) need a dense 0..N-1 index.
  */

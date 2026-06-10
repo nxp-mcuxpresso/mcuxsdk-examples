@@ -37,6 +37,7 @@ static uint32_t APP_GetWakeupTimeout(void);
  ******************************************************************************/
 char *const g_modeNameArray[] = APP_POWER_MODE_NAME;
 char *const g_modeDescArray[] = APP_POWER_MODE_DESC;
+bool g_isTimerWakeupSourceSelected = false;
 
 /*******************************************************************************
  * Code
@@ -201,6 +202,7 @@ static void APP_GetWakeupConfig(app_power_mode_t targetMode)
         case kAPP_WakeupSourceTimer:
         {
             PRINTF("Timer Selected As Wakeup Source!\r\n");
+            g_isTimerWakeupSourceSelected = true;
             
             timeOutValue = APP_GetWakeupTimeout();
             PRINTF("Will wakeup in %d seconds.\r\n", timeOutValue);
@@ -221,6 +223,7 @@ static void APP_GetWakeupConfig(app_power_mode_t targetMode)
         case kAPP_WakeupSourceButton:
         {
             PRINTF("Wakeup Button Selected As Wakeup Source.\r\n");
+            g_isTimerWakeupSourceSelected = false;
 
             wuu_external_wakeup_pin_config_t wakeupButtonConfig;
 

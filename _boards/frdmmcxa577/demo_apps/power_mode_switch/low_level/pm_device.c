@@ -5,7 +5,6 @@
  */
 
 #include "pm_device.h"
-#include "fsl_lptmr.h"
 #include "pin_mux.h"
 
 #ifndef APP_POWERDOWN_WAKE_RESTORE_TIMEOUT
@@ -15,14 +14,14 @@
 static const resc_status_t g_resc_ctrl_table[kResc_Max_Num][APP_LOW_POWER_MODE_COUNT] = {
     /*! Clock modules */
     [kResc_Fro_192M]            = {kResc_Status_On,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Lp},
-    [kResc_Fro_12M]             = {kResc_Status_Off,     kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
-    [kResc_Fro_16K]             = {kResc_Status_On,     kResc_Status_On,        kResc_Status_On,        kResc_Status_On},
+    [kResc_Fro_12M]             = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
+    [kResc_Fro_16K]             = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_Osc_Rtc]             = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_Osc_Sys]             = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_Spll]                = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
 
     /*! Power domain modules */
-    [kResc_LdoCore]             = {kResc_Status_On,     kResc_Status_On,        kResc_Status_On,        kResc_Status_Off},
+    [kResc_LdoCore]             = {kResc_Status_On,     kResc_Status_On,        kResc_Status_On,        kResc_Status_On},
     [kResc_RamRetentionLdo]     = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_VbatBandgap]         = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_VbatBandgapRefresh]  = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
@@ -59,13 +58,13 @@ static const resc_status_t g_resc_ctrl_table[kResc_Max_Num][APP_LOW_POWER_MODE_C
     /*! Analog modules */
     [kResc_Vref]                = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_Usb]                 = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
-    [kResc_Vbat]                = {kResc_Status_On,     kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
+    [kResc_Vbat]                = {kResc_Status_On,     kResc_Status_On,        kResc_Status_On,        kResc_Status_On},
     [kResc_Dac0]                = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_Dac1]                = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_Tsi0]                = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_Cmp0]                = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_Cmp0_Dac]            = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
-    [kResc_Vbat_Lp]             = {kResc_Status_On,     kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
+    [kResc_Vbat_Lp]             = {kResc_Status_On,     kResc_Status_On,        kResc_Status_On,        kResc_Status_Off},
     [kResc_Clkmon]              = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
 
     /*! Peripheral clocks */
@@ -263,20 +262,28 @@ static void SetClockModulePowerStatus(resc_status_t resc_status, resc_name_t res
             break;
 
         case kResc_Fro_16K:
+            if (g_isTimerWakeupSourceSelected)
+            {
+                break;
+            }
+
             if (resc_status == kResc_Status_Off)
             {
                  VBAT_EnableFRO16k(APP_VBAT, false);
-                 VBAT_GateFRO16k(APP_VBAT, kVBAT_EnableClockToDomain2);
+                 VBAT_GateFRO16k(APP_VBAT, (kVBAT_EnableClockToDomain0 | kVBAT_EnableClockToDomain1 |
+                                            kVBAT_EnableClockToDomain2));
             }
             else if (resc_status == kResc_Status_Lp)
             {
                  VBAT_EnableFRO16k(APP_VBAT, true);
-                 VBAT_GateFRO16k(APP_VBAT, kVBAT_EnableClockToDomain2);
+                 VBAT_GateFRO16k(APP_VBAT, (kVBAT_EnableClockToDomain0 | kVBAT_EnableClockToDomain1 |
+                                            kVBAT_EnableClockToDomain2));
             }
             else
             {
                  VBAT_EnableFRO16k(APP_VBAT, true);
-                 VBAT_UngateFRO16k(APP_VBAT, kVBAT_EnableClockToDomain2);
+                 VBAT_UngateFRO16k(APP_VBAT, (kVBAT_EnableClockToDomain0 | kVBAT_EnableClockToDomain1 |
+                                              kVBAT_EnableClockToDomain2));
             }
             break;
 
@@ -383,12 +390,12 @@ static void SetVoltageModulePowerStatus(resc_status_t resc_status, resc_name_t r
                 }
                 VBAT_EnableBandgapRefreshMode(APP_VBAT, false);
                 VBAT_EnableBandgap(APP_VBAT, false);
-                /*! Disable SRAM LDO, use SoC to supply SRAM. */
+                /* Disable SRAM LDO, use SoC to supply SRAM. */
                 VBAT_SwitchSRAMPowerBySocSupply(APP_VBAT);
             }
             else
             {
-                /*! FRO16K must be enabled before enabling the Bandgap: set kResc_Fro_16K to kResc_Status_On. */
+                /* FRO16K must be enabled before enabling the Bandgap: set kResc_Fro_16K to kResc_Status_On. */
                 VBAT_EnableBandgap(APP_VBAT, true);
                 VBAT_EnableBandgapRefreshMode(APP_VBAT, true);
                 if (kStatus_Success != VBAT_EnableBackupSRAMRegulator(APP_VBAT, true))
@@ -588,11 +595,6 @@ static void SetMemoryPowerStatus(resc_status_t resc_status, resc_name_t resc_nam
         {
             /* Disable LPCAC. */
             SYSCON->LPCAC_CTRL |= SYSCON_LPCAC_CTRL_DIS_LPCAC_MASK;
-        }
-        else if (resc_status == kResc_Status_Lp)
-        {
-            SYSCON->LPCAC_CTRL = SYSCON_LPCAC_CTRL_DIS_LPCAC_WTBF(1U) |
-                                 SYSCON_LPCAC_CTRL_LIM_LPCAC_WTBF(1U);
         }
         else
         {
