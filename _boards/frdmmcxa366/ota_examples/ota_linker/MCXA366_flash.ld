@@ -24,9 +24,11 @@
 */
 
 /*
-  MCUBoot region   0x000000 - 0x010000 : 64kB  (0x10000 bytes)
-  Primary slot     0x010000 - 0x080000 : 448kB (0x70000 bytes)
-  Secondary slot   0x080000 - 0x0F0000 : 448kB (0x70000 bytes)
+  MCUBoot region            0x000000 - 0x00BFFF : 48kB  (0x0C000 bytes)
+  Primary slot              0x00C000 - 0x07DFFF : 456kB (0x72000 bytes)
+  Secondary slot            0x07E000 - 0x0EFFFF : 456kB (0x72000 bytes)
+  Secure installer (locked) 0x0F0000 - 0x0FDFFF : 56kB  (0x0E000 bytes)
+  CMPA (reserved)           0x0FE000 - 0x100000 : 8kB   (0x02000 bytes)
 */
 
 /* Entry Point */
@@ -40,8 +42,8 @@ RAM_OFFSET = DEFINED(__pkc__) ? 0x4000 : 0;
 /* Specify the memory areas */
 MEMORY
 {
-  m_interrupts          (RX)  : ORIGIN = 0x00010200, LENGTH = 0x00000400
-  m_text                (RX)  : ORIGIN = 0x00010600, LENGTH = 0x0006FC00
+  m_interrupts          (RX)  : ORIGIN = 0x0000C200, LENGTH = 0x00000400
+  m_text                (RX)  : ORIGIN = 0x0000C600, LENGTH = 0x00071A00
   m_data                (RW)  : ORIGIN = 0x20000000 + RAM_OFFSET, LENGTH = 0x0003C000 - RAM_OFFSET
   m_sramx0              (RW)  : ORIGIN = 0x04000000, LENGTH = 0x00002000
 }
