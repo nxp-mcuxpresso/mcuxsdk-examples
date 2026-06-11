@@ -81,7 +81,7 @@ void BOARD_InitI2C6Pins(void);                             /*!< Function assigne
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
-void BOARD_InitTPMPins(void);                             /*!< Function assigned for the core: Cortex-M7F[cm7] */
+void BOARD_InitITPMPins(void);                             /*!< Function assigned for the core: Cortex-M7F[cm7] */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
