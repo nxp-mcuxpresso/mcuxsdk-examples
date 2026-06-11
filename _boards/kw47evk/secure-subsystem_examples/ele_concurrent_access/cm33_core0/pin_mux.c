@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2024 NXP
+ * Copyright 2021-2024, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -68,41 +68,7 @@ BOARD_InitPins:
 void BOARD_InitPins(void)
 {
     /* Clock Config: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_GpioA);
-    /* Clock Config: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_PortA);
-    /* Clock Config: Peripheral clocks are enabled; module does not stall low power mode entry */
     CLOCK_EnableClock(kCLOCK_PortC);
-
-    gpio_pin_config_t LED_RED_config = {
-        .pinDirection = kGPIO_DigitalOutput,
-        .outputLogic = 0U
-    };
-    /* Initialize GPIO functionality on pin PTA21 (pin 18)  */
-    GPIO_PinInit(BOARD_INITPINS_LED_RED_GPIO, BOARD_INITPINS_LED_RED_PIN, &LED_RED_config);
-
-    const port_pin_config_t LED_RED = {/* Internal pull-up/down resistor is disabled */
-                                       (uint16_t)kPORT_PullDisable,
-                                       /* Low internal pull resistor value is selected. */
-                                       (uint16_t)kPORT_LowPullResistor,
-                                       /* Fast slew rate is configured */
-                                       (uint16_t)kPORT_FastSlewRate,
-                                       /* Passive input filter is disabled */
-                                       (uint16_t)kPORT_PassiveFilterDisable,
-                                       /* Open drain output is disabled */
-                                       (uint16_t)kPORT_OpenDrainDisable,
-                                       /* Low drive strength is configured */
-                                       (uint16_t)kPORT_LowDriveStrength,
-                                       /* Normal drive strength is configured */
-                                       (uint16_t)kPORT_NormalDriveStrength,
-                                       /* Pin is configured as PTA21 */
-                                       (uint16_t)kPORT_MuxAsGpio,
-                                       /* Does not invert */
-                                       (uint16_t)kPORT_InputNormal,
-                                       /* Pin Control Register fields [15:0] are not locked */
-                                       (uint16_t)kPORT_UnlockRegister};
-    /* PORTA21 (pin 18) is configured as PTA21 */
-    PORT_SetPinConfig(BOARD_INITPINS_LED_RED_PORT, BOARD_INITPINS_LED_RED_PIN, &LED_RED);
 
     const port_pin_config_t portc2_pin39_config = {/* Internal pull-up/down resistor is disabled */
                                                    (uint16_t)kPORT_PullDisable,
