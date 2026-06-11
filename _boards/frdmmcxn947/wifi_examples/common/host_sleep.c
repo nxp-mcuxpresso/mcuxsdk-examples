@@ -286,10 +286,20 @@ static void APP_EnterPowerDownMode(void)
 
     /* Power off some RAM blocks. */
     CMC_PowerOffSRAMLowPowerOnly(APP_CMC, APP_RAM_ARRAYS_PD);
-    L1CACHE_InvalidateCodeCache();
+
+    /* The LPCAC code-cache RAM is not retained in Power Down mode. Disable the
+     * cache before entering low power so that no cache line is allocated during
+     * the power-down entry sequence; otherwise the controller would hit a stale
+     * line after wakeup (its backing RAM lost power) and fault. */
+    L1CACHE_DisableCodeCache();
+
     /* Enable CORE VDD Internal Voltage scaling to decrease current consumption in power down mode. */
     SPC_EnableLowPowerModeCoreVDDInternalVoltageScaling(APP_SPC, true);
     CMC_EnterLowPowerMode(APP_CMC, &config);
+
+    /* Woken up from Power Down: invalidate any stale cache content, then re-enable. */
+    L1CACHE_InvalidateCodeCache();
+    L1CACHE_EnableCodeCache();
 }
 
 static void APP_EnterDeepPowerDownMode(void)
