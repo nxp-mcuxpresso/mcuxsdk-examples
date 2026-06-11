@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2024 NXP
+ * Copyright 2021-2024, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -64,39 +64,6 @@ BOARD_InitPins:
  * END ****************************************************************************************************************/
 void BOARD_InitPins(void)
 {
-
-    gpio_pin_config_t LED2_BLUE_config = {
-        .pinDirection = kGPIO_DigitalOutput,
-        .outputLogic = 1U
-    };
-    /* Initialize GPIO functionality on pin PTD3 (pin 26)  */
-    GPIO_PinInit(BOARD_INITPINS_LED2_BLUE_GPIO, BOARD_INITPINS_LED2_BLUE_PIN, &LED2_BLUE_config);
-
-    /* EFT detect interrupts configuration on PORTD */
-    PORT_DisableEFTDetectInterrupts(PORTD, 0x08u);
-
-    const port_pin_config_t LED2_BLUE = {/* Internal pull-up/down resistor is disabled */
-                                         .pullSelect = (uint16_t)kPORT_PullDisable,
-                                         /* Low internal pull resistor value is selected. */
-                                         .pullValueSelect = (uint16_t)kPORT_LowPullResistor,
-                                         /* Fast slew rate is configured */
-                                         .slewRate = (uint16_t)kPORT_FastSlewRate,
-                                         /* Passive input filter is disabled */
-                                         .passiveFilterEnable = (uint16_t)kPORT_PassiveFilterDisable,
-                                         /* Open drain output is disabled */
-                                         .openDrainEnable = (uint16_t)kPORT_OpenDrainDisable,
-                                         /* Low drive strength is configured */
-                                         .driveStrength = (uint16_t)kPORT_LowDriveStrength,
-                                         /* Normal drive strength is configured */
-                                         .driveStrength1 = (uint16_t)kPORT_NormalDriveStrength,
-                                         /* Pin is configured as PTD3 */
-                                         .mux = (uint16_t)kPORT_MuxAsGpio,
-                                         /* Digital input is not inverted */
-                                         .invertInput = (uint16_t)kPORT_InputNormal,
-                                         /* Pin Control Register fields [15:0] are not locked */
-                                         .lockRegister = (uint16_t)kPORT_UnlockRegister};
-    /* PORTD3 (pin 26) is configured as PTD3 */
-    PORT_SetPinConfig(BOARD_INITPINS_LED2_BLUE_PORT, BOARD_INITPINS_LED2_BLUE_PIN, &LED2_BLUE);
 }
 /***********************************************************************************************************************
  * EOF
