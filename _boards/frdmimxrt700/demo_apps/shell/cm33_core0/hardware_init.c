@@ -16,12 +16,15 @@ void BOARD_InitHardware(void)
 {
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
+    BOARD_InitLEDsPins();
     BOARD_BootClockRUN();
 
     BOARD_InitDebugConsole();
-    
+
     CLOCK_EnableClock(kCLOCK_Gpio0);
     RESET_ClearPeripheralReset(kGPIO0_RST_SHIFT_RSTn);
+    CLOCK_EnableClock(kCLOCK_Gpio1);
+    RESET_ClearPeripheralReset(kGPIO1_RST_SHIFT_RSTn);
 }
 
 void Led_Init(void)

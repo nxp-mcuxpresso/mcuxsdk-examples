@@ -6,8 +6,7 @@ Hardware requirements
 
 Board settings
 ============
-To make the example work with cm33_core0, connections needed to be as follows:
-Make sure R581, R586, R589 are soldered and R582, R585, R588 are removed.
+
 
 Prepare the Demo
 ===============
