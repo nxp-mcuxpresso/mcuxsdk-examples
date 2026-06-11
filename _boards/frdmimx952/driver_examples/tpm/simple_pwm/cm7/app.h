@@ -13,7 +13,7 @@
 /*${macro:start}*/
 
 /* define instance */
-#define BOARD_TPM_BASEADDR TPM2
+#define BOARD_TPM_BASEADDR TPM4
 #define BOARD_TPM_CHANNEL  kTPM_Chnl_2
 
 /* Interrupt to enable and flag to read; depends on the TPM channel used */
@@ -21,11 +21,11 @@
 #define TPM_CHANNEL_FLAG             kTPM_Chnl2Flag
 
 /* Interrupt number and interrupt handler for the TPM instance used */
-#define TPM_INTERRUPT_NUMBER TPM2IRQn
-#define TPM_LED_HANDLER      TPM2_IRQHandler
+#define TPM_INTERRUPT_NUMBER TPM4_IRQn
+#define TPM_LED_HANDLER      TPM4_IRQHandler
 
 /* Get source clock for TPM driver */
-#define LPTPM_CLOCK_ROOT kCLOCK_tpm2
+#define LPTPM_CLOCK_ROOT kCLOCK_tpm4
 #define TPM_SOURCE_CLOCK CLOCK_GetRate(LPTPM_CLOCK_ROOT)
 /*${macro:end}*/
 

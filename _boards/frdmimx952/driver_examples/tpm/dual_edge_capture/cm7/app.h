@@ -12,7 +12,7 @@
  ******************************************************************************/
 /*${macro:start}*/
 /* define instance */
-#define DEMO_TPM_BASEADDR TPM2
+#define DEMO_TPM_BASEADDR TPM4
 
 /* TPM channel pair used for the dual-edge capture, channel pair 1 uses channels 2 and 3 */
 #define BOARD_TPM_INPUT_CAPTURE_CHANNEL_PAIR kTPM_Chnl_1
@@ -24,11 +24,11 @@
 #define TPM_SECOND_CHANNEL_FLAG             kTPM_Chnl3Flag
 
 /* Interrupt number and interrupt handler for the TPM instance used */
-#define TPM_INTERRUPT_NUMBER      TPM2_IRQn
-#define TPM_INPUT_CAPTURE_HANDLER TPM2_IRQHandler
+#define TPM_INTERRUPT_NUMBER      TPM4_IRQn
+#define TPM_INPUT_CAPTURE_HANDLER TPM4_IRQHandler
 
 /* Get source clock for TPM driver */
-#define LPTPM_CLOCK_ROOT kCLOCK_tpm2
+#define LPTPM_CLOCK_ROOT kCLOCK_tpm4
 #define TPM_SOURCE_CLOCK CLOCK_GetRate(LPTPM_CLOCK_ROOT)
 /*${macro:end}*/
 

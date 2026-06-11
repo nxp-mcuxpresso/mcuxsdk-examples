@@ -8,7 +8,7 @@ Hardware requirements
 
 Board settings
 ==============
-- CM7: Connect input signal to TP86
+- CM7: Connect input signal to GPIO_IO13(J18-33)
 - note: square wave at fixed rate is recommended as the input signal for easily checking the result. 
 
 Prepare the Demo

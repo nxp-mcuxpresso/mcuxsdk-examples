@@ -292,8 +292,8 @@ void BOARD_InitI2C6Pins(void) {                            /*!< Function assigne
 BOARD_InitTPMPins:
 - options: {callFromInitBoot: 'false', coreID: cm7}
 - pin_list:
-  - {pin_num: E43, peripheral: TPM2, signal: 'tpm_ch, 2', pin_signal: I2C2_SCL}
-  - {pin_num: E45, peripheral: TPM2, signal: 'tpm_ch, 3', pin_signal: I2C2_SDA}
+  - {pin_num: M48, peripheral: TPM4, signal: 'tpm_ch, 2', pin_signal: GPIO_IO13}
+  - {pin_num: K48, peripheral: TPM4, signal: 'tpm_ch, 3', pin_signal: GPIO_IO25}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -304,8 +304,8 @@ BOARD_InitTPMPins:
  *
  * END ****************************************************************************************************************/
 void BOARD_InitTPMPins(void) {                            /*!< Function assigned for the core: Cortex-M7F[cm7] */
-    IOMUXC_SetPinMux(IOMUXC_PAD_I2C2_SCL__TPM2_CH2, 0U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_I2C2_SDA__TPM2_CH3, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO13__TPM4_CH2, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO25__TPM4_CH3, 0U);
 }
 
 

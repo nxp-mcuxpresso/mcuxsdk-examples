@@ -9,7 +9,7 @@ Hardware requirements
 
 Board settings
 ==============
-- CM7: connect TP86 and (GND) to Oscilloscope
+- CM7: connect GPIO_IO13(J18-33) and (GND) to Oscilloscope
 
 Prepare the Demo
 ===============

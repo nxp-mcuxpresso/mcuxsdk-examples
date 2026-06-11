@@ -8,7 +8,7 @@ Hardware requirements
 
 Board settings
 ==============
-- CM7: Connect input signal to TP86 and (GND).
+- CM7: Connect input signal to GPIO_IO13(J18-33) and (GND).
 
 Prepare the Demo
 ===============
