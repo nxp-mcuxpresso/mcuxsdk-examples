@@ -15,3 +15,5 @@ authentication api. (4)bootloader api
 - [KW47-LOC](../../../_boards/kw47loc/driver_examples/fsl_romapi/romapi_lpspi/example_board_readme.md)
 - [MCXW72-LOC](../../../_boards/mcxw72loc/driver_examples/fsl_romapi/romapi_lpspi/example_board_readme.md)
 - [FRDM-MCXW72](../../../_boards/frdmmcxw72/driver_examples/fsl_romapi/romapi_lpspi/example_board_readme.md)
+- [FRDM-KW43](../../../_boards/frdmkw43/driver_examples/fsl_romapi/romapi_lpspi/example_board_readme.md)
+- [FRDM-MCXW70](../../../_boards/frdmmcxw70/driver_examples/fsl_romapi/romapi_lpspi/example_board_readme.md)

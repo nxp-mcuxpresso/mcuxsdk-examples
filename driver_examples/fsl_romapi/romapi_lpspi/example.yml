@@ -25,3 +25,5 @@ k4w1_romapi_lpspi:
     kw45b41zevk:
     - +armgcc@debug
     - +armgcc@release
+    frdmkw43: []
+    frdmmcxw70: []
