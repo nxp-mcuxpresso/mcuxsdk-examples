@@ -18,7 +18,7 @@ void BOARD_MQS_Init(void)
 {
     uint32_t mqsDiv = 1U;
 
-    mqsDiv = HMCLK_FREQ / (64U * 16000U);
+    mqsDiv = HMCLK_FREQ / (64U * 16000U * 6);
     BOARD_InitMQS(mqsDiv - 1U);
 }
 
