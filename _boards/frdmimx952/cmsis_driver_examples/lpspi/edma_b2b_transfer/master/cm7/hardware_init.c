@@ -15,7 +15,6 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    pca6416a_handle_t handle;
     /* clang-format off */
     clk_t lpspiClkCfg = {
         .clkId = kCLOCK_lpspi7,
@@ -33,19 +32,9 @@ void BOARD_InitHardware(void)
     //    .div = 4
     //};
 
-    clk_t lpi2cclk = {
-        .clkId = kCLOCK_lpi2c6,
-        .pclkId = kCLOCK_osc24m,
-        .rate = 24000000UL,
-        //.enable_clk = true,
-        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
-    };
-
     /* clang-format on */
     SystemPlatformInit();
     BOARD_InitBootPins();
-    BOARD_InitGPIO2Pins();
-    BOARD_InitI2C6Pins();
     BOARD_InitLPSPIPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
@@ -53,15 +42,6 @@ void BOARD_InitHardware(void)
     CLOCK_SetRate(&lpspiClkCfg);
     CLOCK_EnableClock(lpspiClkCfg.clkId);
 
-    CLOCK_SetRate(&lpi2cclk);
-    CLOCK_EnableClock(lpi2cclk.clkId);
-
-    BOARD_InitPCA6416A(&handle);
-
-    PCA6416A_SetDirection(&handle, (1 << BOARD_PCA6416A_ENET2_SAI2_SEL), kPCA6416A_Output);
-
-    /* Select ENET2_SAI2_SEL etc */
-    PCA6416A_ClearPins(&handle, (1 << BOARD_PCA6416A_ENET2_SAI2_SEL));
 }
 
 uint32_t LPSPI7_GetFreq(void)
