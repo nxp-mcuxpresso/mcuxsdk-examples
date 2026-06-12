@@ -268,7 +268,7 @@ int main(void)
     /* Motor controller 1 (main connector for motor control example) */
     BOARD_SelectM1PWM();
     BOARD_Init_M1_PWM();          /* Init PWM pins */
-    BOARD_Init_M1_Encoder();     /* Init encoder pins */
+    BOARD_InitEncoder2Pins();     /* Init encoder pins */
     BOARD_SelectM1Encoder();
     BOARD_SelectM1SINC();
     BOARD_Init_M1_SINC();         /* Init SINC filter pins */
@@ -279,7 +279,7 @@ int main(void)
     /* Motor controller 2 (main connector for motor control example) */
     BOARD_SelectM2PWM();
     BOARD_Init_M2_PWM();          /* Init PWM pins */
-    BOARD_Init_M2_Encoder();         /* Init encoder pins */
+    BOARD_InitEncoder1Pins();         /* Init encoder pins */
     BOARD_SelectM2Encoder();
     BOARD_SelectM2SINC();
     BOARD_Init_M2_SINC();         /* Init SINC filter pins */

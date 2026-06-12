@@ -409,14 +409,6 @@ void BOARD_Init_M1_FAULTS(void)
   XBAR_SetSignalsConnection(kXBAR1_InputIomuxXbarIn20, kXBAR1_OutputFlexpwm2IppIndFault1);
 }
 
-void BOARD_Init_M1_Encoder(void)
-{
-  /* Init Encoder 1 routed to Motor controller 1 */
-  IOMUXC_SetPinMux(IOMUXC_PAD_ETH2_RXD0__DIG_ENCODER2_DATA_EN, 0U);
-  IOMUXC_SetPinMux(IOMUXC_PAD_ETH2_RXD1__DIG_ENCODER2_DATA_CLK, 0U);
-  IOMUXC_SetPinMux(IOMUXC_PAD_ETH2_RXD2__DIG_ENCODER2_DATA_OUT ,0U);
-  IOMUXC_SetPinMux(IOMUXC_PAD_ETH2_RXD3__DIG_ENCODER2_DATA_IN ,0U);
-}
 
 void BOARD_Init_M1_SINC(void)
 {
@@ -476,14 +468,6 @@ void BOARD_Init_M2_FAULTS(void)
   XBAR_SetSignalsConnection(kXBAR1_InputIomuxXbarIn08, kXBAR1_OutputFlexpwm1IppIndFault1);
 }
 
-void BOARD_Init_M2_Encoder(void)
-{
-  /* Init Encoder 2 routed to Motor controller 2 */
-  IOMUXC_SetPinMux(IOMUXC_PAD_ETH3_RXD0__DIG_ENCODER1_DATA_EN, 0U);
-  IOMUXC_SetPinMux(IOMUXC_PAD_ETH3_RXD1__DIG_ENCODER1_DATA_CLK, 0U);
-  IOMUXC_SetPinMux(IOMUXC_PAD_ETH3_RXD2__DIG_ENCODER1_DATA_OUT, 0U);
-  IOMUXC_SetPinMux(IOMUXC_PAD_ETH3_RXD3__DIG_ENCODER1_DATA_IN, 0U);
-}
 
 void BOARD_Init_M2_SINC(void)
 {

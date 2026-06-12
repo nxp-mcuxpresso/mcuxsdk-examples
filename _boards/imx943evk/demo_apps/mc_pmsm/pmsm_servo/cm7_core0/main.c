@@ -133,7 +133,7 @@ int main(void)
   BOARD_SelectFTUART();
   BOARD_SelectM1PWM();
   BOARD_Init_M1_PWM();
-  BOARD_Init_M1_Encoder();
+  BOARD_InitEncoder2Pins();
   BOARD_SelectM1Encoder();
   BOARD_SelectM1SINC();
   BOARD_Init_M1_SINC();

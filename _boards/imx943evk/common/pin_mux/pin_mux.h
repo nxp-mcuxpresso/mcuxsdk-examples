@@ -61,11 +61,9 @@ void BOARD_InitEncoder2Pins(void);
 /* Motor Control */
 void BOARD_Init_M1_PWM(void);
 void BOARD_Init_M1_FAULTS(void);
-void BOARD_Init_M1_Encoder(void);
 void BOARD_Init_M1_SINC(void);
 void BOARD_Init_M2_PWM(void);
 void BOARD_Init_M2_FAULTS(void);
-void BOARD_Init_M2_Encoder(void);
 void BOARD_Init_M2_SINC(void);
 
 /* PWM */
