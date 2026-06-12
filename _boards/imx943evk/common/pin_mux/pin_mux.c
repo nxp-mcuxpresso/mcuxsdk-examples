@@ -107,32 +107,7 @@ void BOARD_InitLPSPI8Pins(void) {
                         IOMUXC_PAD_PU_MASK);
 }
 
-void BOARD_InitSincLpspi3Pins(void)
-{
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO08__LPSPI3_PCS0, 1U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO08__LPSPI3_PCS0,
-                        IOMUXC_PAD_DSE(7U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_PD_MASK);
 
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO09__LPSPI3_SIN, 1U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO09__LPSPI3_SIN,
-                        IOMUXC_PAD_DSE(7U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_PD_MASK);
-
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO10__LPSPI3_SOUT, 1U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO10__LPSPI3_SOUT,
-                        IOMUXC_PAD_DSE(7U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_PD_MASK);
-
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO11__LPSPI3_SCK, 1U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO11__LPSPI3_SCK,
-                        IOMUXC_PAD_DSE(7U) |
-                        IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_PD_MASK);
-}
 
 /*******************************************************************************
  * SAI/Audio Pin Configuration

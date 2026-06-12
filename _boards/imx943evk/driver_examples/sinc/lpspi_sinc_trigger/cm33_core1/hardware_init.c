@@ -24,7 +24,7 @@ void BOARD_InitHardware(void)
     };
     SystemPlatformInit();
     BOARD_InitDebugConsolePins();
-    BOARD_InitSincLpspi3Pins();
+    BOARD_InitLPSPI3Pins();
 
     BOARD_InitSinc2Pins();
 
