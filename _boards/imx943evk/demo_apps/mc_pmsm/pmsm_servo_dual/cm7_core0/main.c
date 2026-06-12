@@ -150,7 +150,7 @@ int main(void)
     /* Motor controller 1 */
     BOARD_SelectM1PWM();
     BOARD_Init_M1_PWM();
-    BOARD_Init_M1_ENDAT2P2();
+    BOARD_Init_M1_Encoder();
     BOARD_SelectM1ENDAT();
     BOARD_SelectM1SINC();
     BOARD_Init_M1_SINC();
@@ -161,7 +161,7 @@ int main(void)
     /* Motor controller 2 */
     BOARD_SelectM2PWM();
     BOARD_Init_M2_PWM();
-    BOARD_Init_M2_ENDAT2P2();
+    BOARD_Init_M2_Encoder();
     BOARD_SelectM2ENDAT();
     BOARD_SelectM2SINC();
     BOARD_Init_M2_SINC();

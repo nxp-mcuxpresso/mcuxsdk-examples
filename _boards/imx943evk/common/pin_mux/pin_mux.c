@@ -432,14 +432,6 @@ void BOARD_Init_M1_SINC(void)
   IOMUXC_SetPinMux(IOMUXC_PAD_SD1_DATA6__SINC1_MOD_CLK0, 0);
 }
 
-void BOARD_Init_M1_ENDAT2P2(void)
-{
-  /* Init Encoder 1 routed to Motor controller 1 */
-  IOMUXC_SetPinMux(IOMUXC_PAD_ETH2_RXD0__DIG_ENCODER2_DATA_EN, 0U);
-  IOMUXC_SetPinMux(IOMUXC_PAD_ETH2_RXD1__DIG_ENCODER2_DATA_CLK, 0U);
-  IOMUXC_SetPinMux(IOMUXC_PAD_ETH2_RXD2__DIG_ENCODER2_DATA_OUT ,0U);
-  IOMUXC_SetPinMux(IOMUXC_PAD_ETH2_RXD3__DIG_ENCODER2_DATA_IN ,0U);
-}
 
 void BOARD_Init_M2_PWM(void)
 {
@@ -507,14 +499,6 @@ void BOARD_Init_M2_SINC(void)
   IOMUXC_SetPinMux(IOMUXC_PAD_SD2_GPIO0__SINC2_MOD_CLK1, 0);
 }
 
-void BOARD_Init_M2_ENDAT2P2(void)
-{
-  /* Init Encoder 2 routed to Motor controller 2 */
-  IOMUXC_SetPinMux(IOMUXC_PAD_ETH3_RXD0__DIG_ENCODER1_DATA_EN, 0U);
-  IOMUXC_SetPinMux(IOMUXC_PAD_ETH3_RXD1__DIG_ENCODER1_DATA_CLK, 0U);
-  IOMUXC_SetPinMux(IOMUXC_PAD_ETH3_RXD2__DIG_ENCODER1_DATA_OUT, 0U);
-  IOMUXC_SetPinMux(IOMUXC_PAD_ETH3_RXD3__DIG_ENCODER1_DATA_IN, 0U);
-}
 
 /*******************************************************************************
  * PWM Pin Configuration
