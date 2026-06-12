@@ -10,6 +10,7 @@
 #include "clock_config.h"
 #include "board.h"
 #include "fsl_clock.h"
+#include "fsl_vbat.h"
 /*${header:end}*/
 
 /*${variable:start}*/
@@ -26,20 +27,27 @@ void ITRC_CDOG_EnableIRQ(void)
 void VBAT_Init(void)
 {
     // Enable and ungate FRO16K clock
-    VBAT0->FROCTLA = VBAT_FROCTLA_FRO_EN(0x1);
-    VBAT0->FROCTLB = VBAT_FROCTLB_INVERSE(0x0);
-    VBAT0->FROCLKE = VBAT_FROCLKE_CLKE(0x1);
+    vbat_fro16k_config_t fro16kConfig = {
+        .enableFRO16k = true,
+        .enabledConnectionsMask = (uint8_t)kVBAT_EnableClockToDomain0,
+    };
+    VBAT_ConfigFRO16k(VBAT0, &fro16kConfig);
+
+    VBAT_EnableBandgap(VBAT0, true);
 
     // Configure the VBAT voltage and temperature monitors
-    VBAT0->TAMCTLA = VBAT_TAMCTLA_VOLT_EN(0x1) | VBAT_TAMCTLA_TEMP_EN(0x1);
-    VBAT0->TAMCTLB = VBAT_TAMCTLB_INVERSE(0xc);
+    vbat_tamper_config_t tamperConfig = {
+        .enableVoltageDetect = true,
+        .enableTemperatureDetect = true,
+        .lock = false,
+    };
+    VBAT_InitTamper(VBAT0, &tamperConfig);
 
     // Wait for the above changes to take effect and clear the STATUS flags
-    uint32_t mask = VBAT_STATUSA_VOLT_DET(0x1) | VBAT_STATUSA_POR_DET(0x1);
-    while (((VBAT0->STATUSA & VBAT_STATUSA_VOLT_DET_MASK) != 0) || ((VBAT0->STATUSA & VBAT_STATUSA_POR_DET_MASK) != 0))
+    uint32_t mask = (uint32_t)kVBAT_StatusFlagVoltageDetect | (uint32_t)kVBAT_StatusFlagPORDetect;
+    while ((VBAT_GetStatusFlags(VBAT0) & mask) != 0U)
     {
-        VBAT0->STATUSA = mask;
-        VBAT0->STATUSB = ~mask;
+        VBAT_ClearStatusFlags(VBAT0, mask);
     }
 }
 
