@@ -23,6 +23,10 @@ if (CONFIG_MCUX_PRJSEG_config.arm.shared)
                 hyperram_debug
                 hyperram_txt_debug
                 ram_0x1400_debug
+                psram_debug
+                psram_txt_debug
+                xspi_nor_debug
+                xspi_nor_psram_debug
         CC "-DDEBUG"
         CX "-DDEBUG"
         TOOLCHAINS iar mdk armgcc
@@ -39,6 +43,10 @@ if (CONFIG_MCUX_PRJSEG_config.arm.shared)
                 hyperram_release
                 hyperram_txt_release
                 ram_0x1400_release
+                psram_release
+                psram_txt_release
+                xspi_nor_release
+                xspi_nor_psram_release
         CC "-DNDEBUG"
         CX "-DNDEBUG"
         TOOLCHAINS iar mdk armgcc
