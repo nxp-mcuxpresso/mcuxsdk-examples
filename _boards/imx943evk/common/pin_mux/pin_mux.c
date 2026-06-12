@@ -305,40 +305,40 @@ void BOARD_InitEcatPortMiiPins(void)
 void BOARD_InitXspiPins(void) {
     IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_SCLK__XSPI1_A_SCLK, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_SCLK__XSPI1_A_SCLK,
-                        IOMUXC_PAD_DSE(63U));
+                        IOMUXC_PAD_DSE(7U));
     IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_SS0_B__XSPI1_A_SS0_B, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_SS0_B__XSPI1_A_SS0_B,
-                        IOMUXC_PAD_DSE(63U));
+                        IOMUXC_PAD_DSE(7U));
     IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_SS1_B__XSPI1_A_SS1_B, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_SS1_B__XSPI1_A_SS1_B,
-                        IOMUXC_PAD_DSE(63U));
+                        IOMUXC_PAD_DSE(7U));
     IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DQS__XSPI1_A_DQS, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DQS__XSPI1_A_DQS,
-                        IOMUXC_PAD_DSE(63U));
+                        IOMUXC_PAD_DSE(7U));
     IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DATA0__XSPI1_A_DATA0, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DATA0__XSPI1_A_DATA0,
-                        IOMUXC_PAD_DSE(63U));
+                        IOMUXC_PAD_DSE(7U));
     IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DATA1__XSPI1_A_DATA1, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DATA1__XSPI1_A_DATA1,
-                        IOMUXC_PAD_DSE(63U));
+                        IOMUXC_PAD_DSE(7U));
     IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DATA2__XSPI1_A_DATA2, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DATA2__XSPI1_A_DATA2,
-                        IOMUXC_PAD_DSE(63U));
+                        IOMUXC_PAD_DSE(7U));
     IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DATA3__XSPI1_A_DATA3, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DATA3__XSPI1_A_DATA3,
-                        IOMUXC_PAD_DSE(63U));
+                        IOMUXC_PAD_DSE(7U));
     IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DATA4__XSPI1_A_DATA4, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DATA4__XSPI1_A_DATA4,
-                        IOMUXC_PAD_DSE(63U));
+                        IOMUXC_PAD_DSE(7U));
     IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DATA5__XSPI1_A_DATA5, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DATA5__XSPI1_A_DATA5,
-                        IOMUXC_PAD_DSE(63U));
+                        IOMUXC_PAD_DSE(7U));
     IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DATA6__XSPI1_A_DATA6, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DATA6__XSPI1_A_DATA6,
-                        IOMUXC_PAD_DSE(63U));
+                        IOMUXC_PAD_DSE(7U));
     IOMUXC_SetPinMux(IOMUXC_PAD_XSPI1_DATA7__XSPI1_A_DATA7, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_XSPI1_DATA7__XSPI1_A_DATA7,
-                        IOMUXC_PAD_DSE(63U));
+                        IOMUXC_PAD_DSE(7U));
 }
 
 /*******************************************************************************
