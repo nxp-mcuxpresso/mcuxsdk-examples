@@ -107,7 +107,7 @@ void BOARD_InitLPSPI8Pins(void) {
                         IOMUXC_PAD_PU_MASK);
 }
 
-void BOARD_InitLpspi3Pins(void)
+void BOARD_InitSincLpspi3Pins(void)
 {
     IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO08__LPSPI3_PCS0, 1U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO08__LPSPI3_PCS0,

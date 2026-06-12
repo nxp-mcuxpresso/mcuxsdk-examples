@@ -31,7 +31,7 @@ void BOARD_InitI3c2Pins(void);
 /* SPI */
 void BOARD_InitLPSPI3Pins(void);
 void BOARD_InitLPSPI8Pins(void);
-void BOARD_InitLpspi3Pins(void);
+void BOARD_InitSincLpspi3Pins(void);
 
 /* SAI/Audio */
 void BOARD_InitSAI1Pins(void);
