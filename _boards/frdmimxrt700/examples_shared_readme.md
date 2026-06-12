@@ -4,7 +4,7 @@ The example specific information can be found in *readme.md* or *example_board_r
 # General Example Settings
 
 ## Hardware requirements
-- Micro USB cable
+- Type-C USB cable
 - FRDM-IMXRT700 board
 - Personal Computer
 

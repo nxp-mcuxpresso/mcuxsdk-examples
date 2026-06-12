@@ -1,6 +1,6 @@
 Hardware requirements
 =====================
-- Micro USB cable
+- Type-C USB cable
 - J-Link debugger for DSP debug configurations
 - FRDM-IMXRT700 board
 - Personal Computer

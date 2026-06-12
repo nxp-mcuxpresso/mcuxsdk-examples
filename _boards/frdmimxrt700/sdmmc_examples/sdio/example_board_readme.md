@@ -1,6 +1,6 @@
 Hardware requirements
 =====================
-- Micro USB cable
+- Type-C USB cable
 - FRDM-IMXRT700 board
 - Personal Computer
 - SDIO card

@@ -1,5 +1,5 @@
 # Hardware requirements
-- Micro USB cable
+- Type-C USB cable
 - FRDM-IMXRT700
 - Personal Computer
 - RaspberryPi Panel (Not necessary if use other panel)

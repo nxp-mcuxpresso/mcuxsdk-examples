@@ -1,6 +1,6 @@
 Hardware requirements
 =====================
-- Micro USB cable
+- Type-C USB cable
 - RT700 board
 - Personal Computer
 

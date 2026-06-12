@@ -5,7 +5,7 @@ The ROM API project is a simple demonstration program of the SDK ROM API driver.
 
 Hardware requirements
 =====================
-- Micro USB cable
+- Type-C USB cable
 - Target board
 - Personal Computer
 

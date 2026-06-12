@@ -1,6 +1,6 @@
 Hardware requirements
 =====================
-- Micro USB cable
+- Type-C USB cable
 - Target microcontroller board
 - Personal Computer
 
