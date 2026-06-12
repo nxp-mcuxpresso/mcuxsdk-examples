@@ -58,8 +58,6 @@ void BOARD_InitXspiPins(void);
 /* Encoder */
 void BOARD_InitEncoder1Pins(void);
 void BOARD_InitEncoder2Pins(void);
-void BOARD_InitENCODER1Pins(void);
-void BOARD_InitENCODER2Pins(void);
 
 /* Motor Control */
 void BOARD_Init_M1_PWM(void);

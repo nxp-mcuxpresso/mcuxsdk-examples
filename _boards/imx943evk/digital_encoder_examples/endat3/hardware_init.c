@@ -75,8 +75,8 @@ void BOARD_InitHardware(void)
 
     SystemPlatformInit();
     BOARD_InitDebugConsolePins();
-    BOARD_InitENCODER1Pins();
-    BOARD_InitENCODER2Pins();
+    BOARD_InitEncoder2Pins();
+    BOARD_InitEncoder1Pins();
     BOARD_InitI2C6Pins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
