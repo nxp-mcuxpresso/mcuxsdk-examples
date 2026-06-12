@@ -3,7 +3,7 @@ Overview
 The romapi_flash example shows how to use ROMAPI to operate program flash:
 
 The project is a simple demonstration program of the SDK FLASHIAP driver. It erases and programs
-a portion of on-chip flash memory. A message a printed on the UART terminal as various operations on
+a portion of on-chip flash memory. A message is printed on the UART terminal as various operations on
 flash memory are performed.
 
 Hardware requirements

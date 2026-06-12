@@ -4,7 +4,7 @@ Overview
 The romapi_lpspi example shows how to use ROMAPI to operate program SPI flash:
 
 The project is a simple demonstration program of the SDK FLASIAP driver. It erases and programs
-a portion of on-board SPI flash memory. A message a printed on the UART terminal as various
+a portion of on-board SPI flash memory. A message is printed on the UART terminal as various
 operations on SPI flash memory are performed.
 
 Hardware requirements
