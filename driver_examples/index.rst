@@ -72,6 +72,7 @@ driver_examples
    dsc_gpio/index.rst
    dsc_i2c/index.rst
    dsc_lpi2c/index.rst
+   dsc_mau/readme.md
    dsc_mscan/index.rst
    dsc_opamp_1/readme.md
    dsc_pdb/index.rst
