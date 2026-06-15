@@ -1771,21 +1771,6 @@ void BOARD_InitBT_UARTPins(void); /* Function assigned for the Cortex-M33 (Core 
 #define BOARD_INITWIFIPINS_SDHC1_CLK_PIN_MASK (1U << 17U)      /*!<@brief PORT pin mask */
                                                                /* @} */
 
-/*! @name PIO6_9 (coord A2), WL_RST
-  @{ */
-/* Routed pin properties */
-#define BOARD_INITWIFIPINS_WL_RST_PERIPHERAL GPIO6                   /*!<@brief Peripheral name */
-#define BOARD_INITWIFIPINS_WL_RST_SIGNAL GPIO                        /*!<@brief Signal name */
-#define BOARD_INITWIFIPINS_WL_RST_CHANNEL 9                          /*!<@brief Signal channel */
-
-/* Symbols to be used with GPIO driver */
-#define BOARD_INITWIFIPINS_WL_RST_GPIO GPIO6                         /*!<@brief GPIO peripheral base pointer */
-#define BOARD_INITWIFIPINS_WL_RST_GPIO_PIN_MASK (1U << 9U)           /*!<@brief GPIO pin mask */
-#define BOARD_INITWIFIPINS_WL_RST_PORT 6U                            /*!<@brief PORT peripheral base pointer */
-#define BOARD_INITWIFIPINS_WL_RST_PIN 9U                             /*!<@brief PORT pin number */
-#define BOARD_INITWIFIPINS_WL_RST_PIN_MASK (1U << 9U)                /*!<@brief PORT pin mask */
-                                                                     /* @} */
-
 /*! @name PIO4_11 (coord B14), PDN
   @{ */
 /* Routed pin properties */
@@ -1800,6 +1785,21 @@ void BOARD_InitBT_UARTPins(void); /* Function assigned for the Cortex-M33 (Core 
 #define BOARD_INITWIFIPINS_PDN_PIN 11U                            /*!<@brief PORT pin number */
 #define BOARD_INITWIFIPINS_PDN_PIN_MASK (1U << 11U)               /*!<@brief PORT pin mask */
                                                                   /* @} */
+
+/*! @name PIO6_9 (coord A2), WL_RST
+  @{ */
+/* Routed pin properties */
+#define BOARD_INITWIFIPINS_WL_RST_PERIPHERAL GPIO6                   /*!<@brief Peripheral name */
+#define BOARD_INITWIFIPINS_WL_RST_SIGNAL GPIO                        /*!<@brief Signal name */
+#define BOARD_INITWIFIPINS_WL_RST_CHANNEL 9                          /*!<@brief Signal channel */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITWIFIPINS_WL_RST_GPIO GPIO6                         /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITWIFIPINS_WL_RST_GPIO_PIN_MASK (1U << 9U)           /*!<@brief GPIO pin mask */
+#define BOARD_INITWIFIPINS_WL_RST_PORT 6U                            /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITWIFIPINS_WL_RST_PIN 9U                             /*!<@brief PORT pin number */
+#define BOARD_INITWIFIPINS_WL_RST_PIN_MASK (1U << 9U)                /*!<@brief PORT pin mask */
+                                                                     /* @} */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.

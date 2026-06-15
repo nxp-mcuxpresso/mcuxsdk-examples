@@ -17,7 +17,7 @@ product: Pins v17.0
 processor: MIMXRT798S
 package_id: MIMXRT798SGVKB
 mcu_data: ksdk2_0
-processor_version: 25.12.10
+processor_version: 0.2606.60
 board: FRDM-IMXRT700
 pin_labels:
 - {pin_num: T24, pin_signal: PIO0_2/LP_FLEXCOMM8_P4/SCT0_GPIN2/SCT0_OUT2/CTIMER0_MAT1/SAI0_RX_DATA/LP_FLEXCOMM9_P0, label: 'U82E[D24]/U29[D2]', identifier: 'SAI0_RXD[0];SAI0_RXD0'}
@@ -2481,6 +2481,8 @@ BOARD_InitWIFIPins:
   - {pin_num: T2, peripheral: USDHC1, signal: 'USDHC_DATA, 3', pin_signal: PIO7_22/SDHC1_DATA3/LP_FLEXCOMM2_P2, input_buffer: enable, pull_select: up, pull_enable: enable}
   - {pin_num: T3, peripheral: USDHC1, signal: USDHC_CMD, pin_signal: PIO7_18/SDHC1_CMD/LP_FLEXCOMM2_P1, input_buffer: enable, pull_select: up, pull_enable: enable}
   - {pin_num: U3, peripheral: USDHC1, signal: USDHC_CLK, pin_signal: PIO7_17/SDHC1_CLK/LP_FLEXCOMM2_P0, input_buffer: enable, pull_select: up, pull_enable: enable}
+  - {pin_num: B14, peripheral: GPIO4, signal: 'GPIO, 11', pin_signal: PIO4_11/XSPI2_SCLK0_N/LP_FLEXCOMM9_P4/XSPI2_SS1_N, direction: OUTPUT, gpio_init_state: 'true'}
+  - {pin_num: A2, peripheral: GPIO6, signal: 'GPIO, 9', pin_signal: PIO6_9/XSPI0_DATA5/LP_FLEXCOMM13_P1/LP_FLEXCOMM11_P3, direction: OUTPUT}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -2494,8 +2496,62 @@ BOARD_InitWIFIPins:
 /* Function assigned for the Cortex-M33 (Core #0) */
 void BOARD_InitWIFIPins(void)
 {
+
+    /* Enables the clock for the GPIO4 module */
+    CLOCK_EnableClock(kCLOCK_Gpio4);
+
+    /* Enables the clock for the GPIO6 module */
+    CLOCK_EnableClock(kCLOCK_Gpio6);
+
+    gpio_pin_config_t PDN_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 1U
+    };
+    /* Initialize GPIO functionality on pin PIO4_11 (pin B14)  */
+    GPIO_PinInit(BOARD_INITWIFIPINS_PDN_GPIO, BOARD_INITWIFIPINS_PDN_PIN, &PDN_config);
+
+    gpio_pin_config_t WL_RST_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PIO6_9 (pin A2)  */
+    GPIO_PinInit(BOARD_INITWIFIPINS_WL_RST_GPIO, BOARD_INITWIFIPINS_WL_RST_PIN, &WL_RST_config);
     /* Reset IOPCTL2 module */
     RESET_ClearPeripheralReset(kIOPCTL2_RST_SHIFT_RSTn);
+
+    const uint32_t PDN = (/* Pin is configured as PIO4_11 */
+                          IOPCTL_PIO_FUNC0 |
+                          /* Disable pull-up / pull-down function */
+                          IOPCTL_PIO_PUPD_DI |
+                          /* Enable pull-down function */
+                          IOPCTL_PIO_PULLDOWN_EN |
+                          /* Disable input buffer function */
+                          IOPCTL_PIO_INBUF_DI |
+                          /* Pseudo Output Drain is disabled */
+                          IOPCTL_PIO_PSEDRAIN_DI |
+                          /* Input function is not inverted */
+                          IOPCTL_PIO_INV_DI |
+                          /* Selects transmitter current drive 100ohm */
+                          IOPCTL_PIO_DRIVE_100OHM);
+    /* PORT4 PIN11 (coords: B14) is configured as PIO4_11 */
+    IOPCTL_PinMuxSet(BOARD_INITWIFIPINS_PDN_PORT, BOARD_INITWIFIPINS_PDN_PIN, PDN);
+
+    const uint32_t WL_RST = (/* Pin is configured as PIO6_9 */
+                             IOPCTL_PIO_FUNC0 |
+                             /* Disable pull-up / pull-down function */
+                             IOPCTL_PIO_PUPD_DI |
+                             /* Enable pull-down function */
+                             IOPCTL_PIO_PULLDOWN_EN |
+                             /* Disable input buffer function */
+                             IOPCTL_PIO_INBUF_DI |
+                             /* Pseudo Output Drain is disabled */
+                             IOPCTL_PIO_PSEDRAIN_DI |
+                             /* Input function is not inverted */
+                             IOPCTL_PIO_INV_DI |
+                             /* Selects transmitter current drive 100ohm */
+                             IOPCTL_PIO_DRIVE_100OHM);
+    /* PORT6 PIN9 (coords: A2) is configured as PIO6_9 */
+    IOPCTL_PinMuxSet(BOARD_INITWIFIPINS_WL_RST_PORT, BOARD_INITWIFIPINS_WL_RST_PIN, WL_RST);
 
     const uint32_t SDHC1_CLK = (/* Pin is configured as SDHC1_CLK */
                                 IOPCTL_PIO_FUNC1 |
