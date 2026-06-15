@@ -9,3 +9,4 @@ nand
 
    flexspi/readme.md
    semc/readme.md
+   xspi/readme.md
