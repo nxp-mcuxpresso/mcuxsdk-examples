@@ -8,7 +8,7 @@ Hardware requirements
 
 Board settings
 ============
-Use the jumper to connect the J20 1-2, 3-4, 5-6
+Populate a 100k resistor at R213, and a 200k resistor at R215
 
 #### Please note this application can't support running with Linux BSP! ####
 
@@ -31,21 +31,21 @@ When the example runs successfully, you will see similar information from the te
 
 ~~~~~~~~~~~~~~~~~~~~~
  ADC selftest example.
- The channel 0 ADC conversion data is 4079.
- The channel 1 ADC conversion data is 3743.
- The channel 2 ADC conversion data is 2048.
- The channel 0 ADC conversion data is 4092.
- The channel 1 ADC conversion data is 3742.
- The channel 2 ADC conversion data is 2050.
- The channel 0 ADC conversion data is 4092.
- The channel 1 ADC conversion data is 3744.
- The channel 2 ADC conversion data is 2051.
- The channel 0 ADC conversion data is 4093.
- The channel 1 ADC conversion data is 3741.
- The channel 2 ADC conversion data is 2051.
- The channel 0 ADC conversion data is 4091.
- The channel 1 ADC conversion data is 3744.
+ The channel 34 ADC conversion data is 4084.
+ The channel 2 ADC conversion data is 2047.
+ The channel 3 ADC conversion data is 1365.
+ The channel 34 ADC conversion data is 4086.
  The channel 2 ADC conversion data is 2049.
+ The channel 3 ADC conversion data is 1363.
+ The channel 34 ADC conversion data is 4083.
+ The channel 2 ADC conversion data is 2046.
+ The channel 3 ADC conversion data is 1366.
+ The channel 34 ADC conversion data is 4085.
+ The channel 2 ADC conversion data is 2048.
+ The channel 3 ADC conversion data is 1364.
+ The channel 34 ADC conversion data is 4084.
+ The channel 2 ADC conversion data is 2047.
+ The channel 3 ADC conversion data is 1365.
  Self-test error occurred!
  ADC self-test watchdog sequence error occurred.
 ~~~~~~~~~~~~~~~~~~~~~

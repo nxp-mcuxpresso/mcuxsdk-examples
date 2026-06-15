@@ -8,7 +8,7 @@ Hardware requirements
 
 Board settings
 ============
-Use the jumper to connect the J20 1-2, 3-4, 5-6
+Populate a 100k resistor at R213, and a 200k resistor at R215
 
 #### Please note this application can't support running with Linux BSP! ####
 
@@ -32,15 +32,7 @@ When the example runs successfully, you will see similar information from the te
 ~~~~~~~~~~~~~~~~~~~~~
  ADC polling example.
  Please press any key to get the conversion result.
- The channel 0 ADC conversion data is 4084.
- The channel 1 ADC conversion data is 3740.
- The channel 2 ADC conversion data is 2049.
- Please press any key to get the conversion result.
- The channel 0 ADC conversion data is 4085.
- The channel 1 ADC conversion data is 3741.
- The channel 2 ADC conversion data is 2049.
- Please press any key to get the conversion result.
- The channel 0 ADC conversion data is 4084.
- The channel 1 ADC conversion data is 3739.
- The channel 2 ADC conversion data is 2049.
+ The channel 34 ADC conversion data is 4084.
+ The channel 2 ADC conversion data is 2047.
+ The channel 3 ADC conversion data is 1365.
 ~~~~~~~~~~~~~~~~~~~~~
