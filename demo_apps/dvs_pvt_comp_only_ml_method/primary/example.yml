@@ -26,3 +26,14 @@ dvs_pvt_comp_only_ml_method_primary:
     - -mdk@release
     - -mdk@flash_debug
     - -mdk@flash_release
+    frdmimxrt700@cm33_core0:
+    - -iar@debug
+    - -iar@release
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@flash_debug
+    - -mdk@flash_release

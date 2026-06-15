@@ -20,4 +20,9 @@ dvs_pvt_comp_only_ml_method_secondary:
     - -armgcc@release
     - -mdk@debug
     - -mdk@release
+    frdmimxrt700@cm33_core1:
+    - -armgcc@debug
+    - -armgcc@release
+    - -mdk@debug
+    - -mdk@release
 
