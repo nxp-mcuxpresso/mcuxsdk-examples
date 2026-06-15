@@ -102,9 +102,11 @@ static void DEMO_ReadTouch(lv_indev_t *drv, lv_indev_data_t *data);
 static void DEMO_BufferSwitchOffCallback(void *param, void *switchOffBuffer);
 
 #if (DEMO_PANEL_RASPI_7INCH != DEMO_PANEL)
+#if !(defined(BOARD_USE_PCAL6524) && BOARD_USE_PCAL6524)
 static void BOARD_PullMIPIPanelTouchResetPin(bool pullUp);
 
 static void BOARD_ConfigMIPIPanelTouchIntPin(gt911_int_pin_mode_t mode);
+#endif
 #endif
 static void DEMO_WaitBufferSwitchOff(void);
 
@@ -147,7 +149,7 @@ static const gt911_config_t s_touchConfig = {
     .I2C_SendFunc     = BOARD_MIPIPanelTouch_I2C_Send,
     .I2C_ReceiveFunc  = BOARD_MIPIPanelTouch_I2C_Receive,
     .pullResetPinFunc = BOARD_PullMIPIPanelTouchResetPin,
-    .intPinFunc       = BOARD_ConfigMIPIPanelTouchIntPin,
+    .intPinFunc       = (gt911_int_pin_func_t)BOARD_ConfigMIPIPanelTouchIntPin,
     .timeDelayMsFunc  = VIDEO_DelayMs,
     .touchPointNum    = 2,
     .i2cAddrMode      = kGT911_I2cAddrMode0,
@@ -453,6 +455,7 @@ void lv_port_indev_init(void)
     }
 }
 #if (DEMO_PANEL_RASPI_7INCH != DEMO_PANEL)
+#if !(defined(BOARD_USE_PCAL6524) && BOARD_USE_PCAL6524)
 static void BOARD_PullMIPIPanelTouchResetPin(bool pullUp)
 {
     if (pullUp)
@@ -486,6 +489,7 @@ static void BOARD_ConfigMIPIPanelTouchIntPin(gt911_int_pin_mode_t mode)
     }
 }
 #endif
+#endif
 /*Initialize your touchpad*/
 #if (DEMO_PANEL_RASPI_7INCH == DEMO_PANEL)
 static bool DEMO_InitTouch(void)
@@ -507,10 +511,12 @@ static bool DEMO_InitTouch(void)
 {
     status_t status;
 
+#if !defined(BOARD_USE_PCAL6524)
     const gpio_pin_config_t resetPinConfig = {
         .direction = kGPIO_DigitalOutput, .outputLogic = 0, .interruptMode = kGPIO_NoIntmode};
     GPIO_PinInit(BOARD_MIPI_PANEL_TOUCH_INT_GPIO, BOARD_MIPI_PANEL_TOUCH_INT_PIN, &resetPinConfig);
     GPIO_PinInit(BOARD_MIPI_PANEL_TOUCH_RST_GPIO, BOARD_MIPI_PANEL_TOUCH_RST_PIN, &resetPinConfig);
+#endif
 
     status = GT911_Init(&s_touchHandle, &s_touchConfig);
 
