@@ -8,3 +8,4 @@ nand_flash_management
 
 
    semc/readme.md
+   xspi/readme.md

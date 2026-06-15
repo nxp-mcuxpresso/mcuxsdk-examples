@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+nand_flash_management_xspi:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/nand_flash_management/xspi/
+    project-root-path: boards/${board}/demo_apps/nand_flash_management/xspi/${multicore_foldername}
+    document:
+      name: nand_flash_management_xspi${core_id_suffix_name}
+      category: demo_apps/nand_flash_management/xspi
+      brief: NAND flash management demo using DHARA FTL + FatFS + FreeRTOS shell
+        over an SPI interface. Demonstrates file write/read/delete and
+        format operations.
+      example_readme:
+      - examples/demo_apps/nand_flash_management/xspi/readme.md
+      - ${board_root}/${board}/demo_apps/nand_flash_management/xspi/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmimxrt700@cm33_core0: {}

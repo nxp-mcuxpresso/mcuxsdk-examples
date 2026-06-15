@@ -7,8 +7,8 @@ project(nand_flash_management LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${boar
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/demo_apps/nand_flash_management/semc/nand_flash_management.c
-            examples/demo_apps/nand_flash_management/semc/dhara_nand_device.c
+    SOURCES examples/demo_apps/nand_flash_management/nand_flash_management.c
+            examples/demo_apps/nand_flash_management/dhara_nand_device.c
             examples/demo_apps/nand_flash_management/semc/dhara_nand_config.h
             ${board_root}/${board}/FreeRTOSConfigBoard.h
 )
