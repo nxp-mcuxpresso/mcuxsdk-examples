@@ -77,7 +77,11 @@ int main(void)
     while (1)
     {
         /* Toggle GPIO output pin. */
+#ifdef BOARD_OUTPUT_USE_GPIO
+        GPIO_PortToggle(BOARD_GPIO_OUTPUT_PORT, 1U << BOARD_GPIO_OUTPUT_PORT_PIN);
+#else
         RGPIO_PortToggle(BOARD_RGPIO_OUPUT_PORT, 1U << BOARD_RGPIO_OUPUT_PORT_PIN);
+#endif
         SDK_DelayAtLeastUs(1000000U, SystemCoreClock);
 
         /* reset the interrupt flag . */
