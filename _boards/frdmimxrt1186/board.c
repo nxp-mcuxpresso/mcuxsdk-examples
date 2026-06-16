@@ -198,17 +198,10 @@ status_t BOARD_Codec_I2C_Receive(
 /* MPU configuration. */
 #if __CORTEX_M == 7
 /**
- * @brief BOARD_EarlyInit function.
- *
- * This weak function allows board to initialize MPU or memory at early stage before .data,
- * .bss initialization.
- * It minimizes the risk of speculative access to uninitialized memory allowed by default
- * MPU attributes. Meanwhile it also make it possible to enable I/D caches to boost boot up
- * speed.
  * NOTE: No global/static data access is allowed in this function since they have not been
  * initialized yet.
  */
-void BOARD_EarlyInit(void)
+static void BOARD_EarlyConfigMPU(void)
 {
 #if defined(__CC_ARM) || defined(__ARMCC_VERSION)
     extern uint32_t Image$$RW_m_ncache$$Base[];
@@ -399,6 +392,22 @@ void BOARD_EarlyInit(void)
     /* Enable I cache and D cache */
     L1CACHE_EnableDCache();
     L1CACHE_EnableICache();
+}
+
+/**
+ * @brief BOARD_EarlyInit function.
+ *
+ * This weak function allows board to initialize MPU or memory at early stage before .data,
+ * .bss initialization.
+ * It minimizes the risk of speculative access to uninitialized memory allowed by default
+ * MPU attributes. Meanwhile it also make it possible to enable I/D caches to boost boot up
+ * speed.
+ * NOTE: No global/static data access is allowed in this function since they have not been
+ * initialized yet.
+ */
+void BOARD_EarlyInit(void)
+{
+    BOARD_EarlyConfigMPU();
 }
 
 void BOARD_ConfigMPU(void)
