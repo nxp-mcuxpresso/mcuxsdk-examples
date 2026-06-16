@@ -30,8 +30,8 @@ void APP_ConfigMPU(void)
     /* Disable MPU */
     ARM_MPU_Disable();
 
-    /* Region 5 setting: Memory with Normal type, not shareable, outer/inner write through */
-    MPU->RBAR = ARM_MPU_RBAR(5, 0x80000000U);
+    /* Region SEMC setting: Memory with Normal type, not shareable, outer/inner write through */
+    MPU->RBAR = ARM_MPU_RBAR(BOARD_MPU_REGION_SEMC, 0x80000000U);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 0, 0, 1, 0, 0, ARM_MPU_REGION_SIZE_64MB);
 
     /* Enable MPU */

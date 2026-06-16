@@ -59,8 +59,8 @@ void BOARD_ConfigUSBMPU()
      * 1=sub-region is disabled. param Size              Region size of the region to be configured. use
      * ARM_MPU_REGION_SIZE_xxx MACRO in core_cm7.h.
      */
-    MPU->RBAR = ARM_MPU_RBAR(7, 0x80000000U);
-    MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 0, 1, 1, 1, 0, ARM_MPU_REGION_SIZE_32MB);
+    MPU->RBAR = ARM_MPU_RBAR(BOARD_MPU_REGION_SEMC, 0x80000000U);
+    MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 0, 1, 1, 1, 0, ARM_MPU_REGION_SIZE_64MB);
     /* Enable MPU */
     ARM_MPU_Enable(MPU_CTRL_PRIVDEFENA_Msk | MPU_CTRL_HFNMIENA_Msk);
 

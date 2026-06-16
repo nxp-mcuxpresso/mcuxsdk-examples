@@ -134,8 +134,8 @@ void ConfigMPU(void)
     ARM_MPU_Disable();
 
 #if defined(XIP_EXTERNAL_FLASH) && (XIP_EXTERNAL_FLASH == 1)
-    /* Region 8 setting: Memory with Normal type, not shareable, outer/inner write back. */
-    MPU->RBAR = ARM_MPU_RBAR(8, 0x30000000U);
+    /* Region FLEXSPI setting: Memory with Normal type, not shareable, outer/inner write back. */
+    MPU->RBAR = ARM_MPU_RBAR(BOARD_MPU_REGION_FLEXSPI1, 0x30000000U);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_RO, 0, 0, 1, 1, 0, ARM_MPU_REGION_SIZE_8KB);
 #endif
 

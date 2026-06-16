@@ -1,5 +1,5 @@
 /*
- * Copyright 2021, 2023 NXP
+ * Copyright 2021,2023,2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -209,6 +209,41 @@
 /* @TEST_ANCHOR */
 #ifndef BOARD_NETWORK_USE_100M_ENET_PORT
 #define BOARD_NETWORK_USE_100M_ENET_PORT (0U)
+#endif
+
+/* Board MPU region index definition. Higher index takes priority on memory overlap. */
+#if __CORTEX_M == 7
+#define BOARD_MPU_REGION_FULL_BG         (0) /* Whole 4G space background without access permission.
+						Needed for Arm errata 1013783-B */
+#define BOARD_MPU_REGION_SEMC_BG         (1) /* SEMC background */
+#define BOARD_MPU_REGION_FLEXSPI2        (2) /* FLEXSPI2 */
+#define BOARD_MPU_REGION_CODE_SRAM_BG    (3) /* Code/SRAM background space under 1GB */
+#define BOARD_MPU_REGION_ITCM            (4) /* ITCM */
+#define BOARD_MPU_REGION_DTCM            (5) /* DTCM */
+#define BOARD_MPU_REGION_OCRAM_A         (6) /* OCRAM first region */
+#define BOARD_MPU_REGION_OCRAM_B         (7) /* OCRAM second region */
+#define BOARD_MPU_REGION_FLEXSPI1        (8) /* FLEXSPI1 */
+#define BOARD_MPU_REGION_SEMC            (9) /* SEMC */
+#define BOARD_MPU_REGION_NONCACHE        (10) /* Noncacheable space in application */
+#define BOARD_MPU_REGION_AIPS            (11) /* AIPS 1-4 */
+#define BOARD_MPU_REGION_SIM_M_DISP      (12) /* SIM_M/DISP configuration space */
+#define BOARD_MPU_REGION_SIM_M7          (13) /* SIM_M7 configuration space */
+#define BOARD_MPU_REGION_GPU2D_CDOG      (14) /* GPU2D/CDOG */
+#define BOARD_MPU_REGION_AIPS_M7         (15) /* AIPS M7 */
+#else /* CM4 */
+#if defined(CACHE_MODE_WRITE_THROUGH) && CACHE_MODE_WRITE_THROUGH
+#define BOARD_MPU_REGION_OCRAM_A         (0) /* OCRAM first region */
+#define BOARD_MPU_REGION_OCRAM_B         (1) /* OCRAM second region */
+#define BOARD_MPU_REGION_SEMC            (2) /* SEMC */
+#define BOARD_MPU_REGION_NONCACHE        (3) /* Noncacheable space in application */
+#define BOARD_MPU_REGION_RPMSG_SHMEM     (4) /* RPMsg shared memory */
+#else
+#define BOARD_MPU_REGION_NONCACHE        (0) /* Noncacheable space in application */
+#define BOARD_MPU_REGION_RPMSG_SHMEM     (1) /* RPMsg shared memory */
+#define BOARD_MPU_REGION_OCRAM_A         (2) /* OCRAM first region */
+#define BOARD_MPU_REGION_OCRAM_B         (3) /* OCRAM second region */
+#define BOARD_MPU_REGION_SEMC            (4) /* SEMC */
+#endif
 #endif
 
 #if defined(__cplusplus)

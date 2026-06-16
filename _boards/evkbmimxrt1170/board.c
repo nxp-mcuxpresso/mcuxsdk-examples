@@ -363,61 +363,61 @@ void BOARD_EarlyInit(void)
      *
      */
     /* Region 0 setting: Instruction access disabled, No data access permission. */
-    MPU->RBAR = ARM_MPU_RBAR(0, 0x00000000U);
+    MPU->RBAR = ARM_MPU_RBAR(BOARD_MPU_REGION_FULL_BG, 0x00000000U);
     MPU->RASR = ARM_MPU_RASR(1, ARM_MPU_AP_NONE, 0, 0, 0, 0, 0, ARM_MPU_REGION_SIZE_4GB);
 
     /* Region 1 setting: Memory with Device type, not shareable, non-cacheable. */
-    MPU->RBAR = ARM_MPU_RBAR(1, 0x80000000U);
+    MPU->RBAR = ARM_MPU_RBAR(BOARD_MPU_REGION_SEMC_BG, 0x80000000U);
     MPU->RASR = ARM_MPU_RASR(1, ARM_MPU_AP_FULL, 2, 0, 0, 0, 0, ARM_MPU_REGION_SIZE_512MB);
 
     /* Region 2 setting: Memory with Device type, not shareable,  non-cacheable. */
-    MPU->RBAR = ARM_MPU_RBAR(2, 0x60000000U);
+    MPU->RBAR = ARM_MPU_RBAR(BOARD_MPU_REGION_FLEXSPI2, 0x60000000U);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 2, 0, 0, 0, 0, ARM_MPU_REGION_SIZE_512MB);
 
     /* Region 3 setting: Memory with Device type, not shareable, non-cacheable. */
-    MPU->RBAR = ARM_MPU_RBAR(3, 0x00000000U);
+    MPU->RBAR = ARM_MPU_RBAR(BOARD_MPU_REGION_CODE_SRAM_BG, 0x00000000U);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 2, 0, 0, 0, 0, ARM_MPU_REGION_SIZE_1GB);
 
     /* Region 4 setting: Memory with Normal type, not shareable, outer/inner write back */
-    MPU->RBAR = ARM_MPU_RBAR(4, 0x00000000U);
+    MPU->RBAR = ARM_MPU_RBAR(BOARD_MPU_REGION_ITCM, 0x00000000U);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 0, 0, 1, 1, 0, ARM_MPU_REGION_SIZE_256KB);
 
     /* Region 5 setting: Memory with Normal type, not shareable, outer/inner write back */
-    MPU->RBAR = ARM_MPU_RBAR(5, 0x20000000U);
+    MPU->RBAR = ARM_MPU_RBAR(BOARD_MPU_REGION_DTCM, 0x20000000U);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 0, 0, 1, 1, 0, ARM_MPU_REGION_SIZE_256KB);
 
 #if defined(CACHE_MODE_WRITE_THROUGH) && CACHE_MODE_WRITE_THROUGH
     /* Region 6 setting: Memory with Normal type, not shareable, write through */
-    MPU->RBAR = ARM_MPU_RBAR(6, 0x20200000U);
+    MPU->RBAR = ARM_MPU_RBAR(BOARD_MPU_REGION_OCRAM_A, 0x20200000U);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 0, 0, 1, 0, 0, ARM_MPU_REGION_SIZE_1MB);
 
     /* Region 7 setting: Memory with Normal type, not shareable, write trough */
-    MPU->RBAR = ARM_MPU_RBAR(7, 0x20300000U);
+    MPU->RBAR = ARM_MPU_RBAR(BOARD_MPU_REGION_OCRAM_B, 0x20300000U);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 0, 0, 1, 0, 0, ARM_MPU_REGION_SIZE_512KB);
 #else
     /* Region 6 setting: Memory with Normal type, not shareable, outer/inner write back */
-    MPU->RBAR = ARM_MPU_RBAR(6, 0x20200000U);
+    MPU->RBAR = ARM_MPU_RBAR(BOARD_MPU_REGION_OCRAM_A, 0x20200000U);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 0, 0, 1, 1, 0, ARM_MPU_REGION_SIZE_1MB);
 
     /* Region 7 setting: Memory with Normal type, not shareable, outer/inner write back */
-    MPU->RBAR = ARM_MPU_RBAR(7, 0x20300000U);
+    MPU->RBAR = ARM_MPU_RBAR(BOARD_MPU_REGION_OCRAM_B, 0x20300000U);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 0, 0, 1, 1, 0, ARM_MPU_REGION_SIZE_512KB);
 #endif
 
 #if defined(XIP_EXTERNAL_FLASH) && (XIP_EXTERNAL_FLASH == 1)
     /* Region 8 setting: Memory with Normal type, not shareable, outer/inner write back. */
-    MPU->RBAR = ARM_MPU_RBAR(8, 0x30000000U);
+    MPU->RBAR = ARM_MPU_RBAR(BOARD_MPU_REGION_FLEXSPI1, 0x30000000U);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_RO, 0, 0, 1, 1, 0, ARM_MPU_REGION_SIZE_16MB);
 #endif
 
 #ifdef USE_SDRAM
 #if defined(CACHE_MODE_WRITE_THROUGH) && CACHE_MODE_WRITE_THROUGH
     /* Region 9 setting: Memory with Normal type, not shareable, write trough */
-    MPU->RBAR = ARM_MPU_RBAR(9, 0x80000000U);
+    MPU->RBAR = ARM_MPU_RBAR(BOARD_MPU_REGION_SEMC, 0x80000000U);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 0, 0, 1, 0, 0, ARM_MPU_REGION_SIZE_64MB);
 #else
     /* Region 9 setting: Memory with Normal type, not shareable, outer/inner write back */
-    MPU->RBAR = ARM_MPU_RBAR(9, 0x80000000U);
+    MPU->RBAR = ARM_MPU_RBAR(BOARD_MPU_REGION_SEMC, 0x80000000U);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 0, 0, 1, 1, 0, ARM_MPU_REGION_SIZE_64MB);
 #endif
 #endif
@@ -435,28 +435,28 @@ void BOARD_EarlyInit(void)
         assert(i >= 5);
 
         /* Region 10 setting: Memory with Normal type, not shareable, non-cacheable */
-        MPU->RBAR = ARM_MPU_RBAR(10, nonCacheStart);
+        MPU->RBAR = ARM_MPU_RBAR(BOARD_MPU_REGION_NONCACHE, nonCacheStart);
         MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 1, 0, 0, 0, 0, i - 1);
     }
 
     /* Region 11 setting: Memory with Device type, not shareable, non-cacheable */
-    MPU->RBAR = ARM_MPU_RBAR(11, 0x40000000);
+    MPU->RBAR = ARM_MPU_RBAR(BOARD_MPU_REGION_AIPS, 0x40000000);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 2, 0, 0, 0, 0, ARM_MPU_REGION_SIZE_16MB);
 
     /* Region 12 setting: Memory with Device type, not shareable, non-cacheable */
-    MPU->RBAR = ARM_MPU_RBAR(12, 0x41000000);
+    MPU->RBAR = ARM_MPU_RBAR(BOARD_MPU_REGION_SIM_M_DISP, 0x41000000);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 2, 0, 0, 0, 0, ARM_MPU_REGION_SIZE_2MB);
 
     /* Region 13 setting: Memory with Device type, not shareable, non-cacheable */
-    MPU->RBAR = ARM_MPU_RBAR(13, 0x41400000);
+    MPU->RBAR = ARM_MPU_RBAR(BOARD_MPU_REGION_SIM_M7, 0x41400000);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 2, 0, 0, 0, 0, ARM_MPU_REGION_SIZE_1MB);
 
     /* Region 14 setting: Memory with Device type, not shareable, non-cacheable */
-    MPU->RBAR = ARM_MPU_RBAR(14, 0x41800000);
+    MPU->RBAR = ARM_MPU_RBAR(BOARD_MPU_REGION_GPU2D_CDOG, 0x41800000);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 2, 0, 0, 0, 0, ARM_MPU_REGION_SIZE_2MB);
 
     /* Region 15 setting: Memory with Device type, not shareable, non-cacheable */
-    MPU->RBAR = ARM_MPU_RBAR(15, 0x42000000);
+    MPU->RBAR = ARM_MPU_RBAR(BOARD_MPU_REGION_AIPS_M7, 0x42000000);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 2, 0, 0, 0, 0, ARM_MPU_REGION_SIZE_1MB);
 
     /* Enable MPU */
@@ -588,15 +588,15 @@ void BOARD_ConfigMPU(void)
 
 #if defined(CACHE_MODE_WRITE_THROUGH) && CACHE_MODE_WRITE_THROUGH
     /* Region 0 setting: Memory with Normal type, not shareable, write trough */
-    MPU->RBAR = ARM_MPU_RBAR(0, 0x20200000U);
+    MPU->RBAR = ARM_MPU_RBAR(BOARD_MPU_REGION_OCRAM_A, 0x20200000U);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 0, 0, 1, 0, 0, ARM_MPU_REGION_SIZE_1MB);
 
     /* Region 1 setting: Memory with Normal type, not shareable, write through */
-    MPU->RBAR = ARM_MPU_RBAR(1, 0x20300000U);
+    MPU->RBAR = ARM_MPU_RBAR(BOARD_MPU_REGION_OCRAM_B, 0x20300000U);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 0, 0, 1, 0, 0, ARM_MPU_REGION_SIZE_512KB);
 
     /* Region 2 setting: Memory with Normal type, not shareable, write through */
-    MPU->RBAR = ARM_MPU_RBAR(2, 0x80000000U);
+    MPU->RBAR = ARM_MPU_RBAR(BOARD_MPU_REGION_SEMC, 0x80000000U);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 0, 0, 1, 0, 0, ARM_MPU_REGION_SIZE_64MB);
 
     while ((nonCacheSize >> i) > 0x1U)
@@ -612,7 +612,7 @@ void BOARD_ConfigMPU(void)
         assert(i >= 5);
 
         /* Region 3 setting: Memory with device type, not shareable, non-cacheable */
-        MPU->RBAR = ARM_MPU_RBAR(3, nonCacheStart);
+        MPU->RBAR = ARM_MPU_RBAR(BOARD_MPU_REGION_NONCACHE, nonCacheStart);
         MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 2, 0, 0, 0, 0, i - 1);
     }
 
@@ -632,7 +632,7 @@ void BOARD_ConfigMPU(void)
         assert(i >= 5);
 
         /* Region 4 setting: Memory with device type, not shareable, non-cacheable */
-        MPU->RBAR = ARM_MPU_RBAR(4, rpmsgShmemStart);
+        MPU->RBAR = ARM_MPU_RBAR(BOARD_MPU_REGION_RPMSG_SHMEM, rpmsgShmemStart);
         MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 2, 0, 0, 0, 0, i - 1);
     }
 #endif
@@ -650,7 +650,7 @@ void BOARD_ConfigMPU(void)
         assert(i >= 5);
 
         /* Region 0 setting: Memory with device type, not shareable, non-cacheable */
-        MPU->RBAR = ARM_MPU_RBAR(0, nonCacheStart);
+        MPU->RBAR = ARM_MPU_RBAR(BOARD_MPU_REGION_NONCACHE, nonCacheStart);
         MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 2, 0, 0, 0, 0, i - 1);
     }
 
@@ -670,7 +670,7 @@ void BOARD_ConfigMPU(void)
         assert(i >= 5);
 
         /* Region 1 setting: Memory with device type, not shareable, non-cacheable */
-        MPU->RBAR = ARM_MPU_RBAR(1, rpmsgShmemStart);
+        MPU->RBAR = ARM_MPU_RBAR(BOARD_MPU_REGION_RPMSG_SHMEM, rpmsgShmemStart);
         MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 2, 0, 0, 0, 0, i - 1);
     }
 #endif
