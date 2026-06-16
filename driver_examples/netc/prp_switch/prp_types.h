@@ -40,6 +40,8 @@
 #define PRP_HASH_TABLE_SIZE         256
 #define PRP_HASH_TABLE_MASK         (PRP_HASH_TABLE_SIZE - 1)
 
+#define PRP_MAX_NODE_NUM            1024
+
 #ifndef htons
 #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
 #define htons(x) ((uint16_t)((((x) & 0x00ff) << 8) | (((x) & 0xff00) >> 8)))

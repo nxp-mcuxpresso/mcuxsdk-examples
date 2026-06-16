@@ -15,8 +15,10 @@ static uint32_t prp_hash_mac(const uint8_t *mac)
 {
     uint32_t hash = 0;
 
-    hash = mac[0] | (mac[1] << 8) | (mac[2] << 16) | (mac[3] << 24);
-    hash ^= (mac[4] | (mac[5] << 8));
+    for (int i = 0; i < 6; i++) {
+        hash ^= (uint32_t)mac[i];
+        hash = (hash << 5) | (hash >> 27);
+    }
 
     return hash & PRP_HASH_TABLE_MASK;
 }
@@ -79,6 +81,9 @@ bool prp_hash_table_add(prp_hash_table_t *table, prp_node_t *node)
     if (!table || !node) {
         return false;
     }
+
+    if (table->node_count >= PRP_MAX_NODE_NUM)
+        return false;
 
     uint32_t hash = prp_hash_mac(node->macaddress_A);
 
@@ -199,7 +204,7 @@ bool prp_register_frame_out(prp_node_t *node, prp_port_type_t port_type,
 
     uint16_t last_seq = node->seq_out[port_type];
     bool duplicate = false;
-    uint8_t bit_value;
+    uint64_t bit_value;
     int32_t diff;
 
     TickType_t now = xTaskGetTickCount();

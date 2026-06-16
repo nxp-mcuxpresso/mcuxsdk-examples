@@ -118,7 +118,7 @@ uint8_t *prp_create_tagged_frame(prp_priv_t *prp, prp_frame_t *frame,
     rct = (prp_rct_t *)(frame->data + tagged_len - PRP_HLEN);
 
     eth_hdr = (eth_hdr_t *)frame->data;
-    lsdu_size = tagged_len - ETH_HLEN;;
+    lsdu_size = tagged_len - ETH_HLEN;
     if (eth_hdr->h_proto == htons(ETH_P_8021Q)) {
         lsdu_size -= VLAN_HLEN;
     }

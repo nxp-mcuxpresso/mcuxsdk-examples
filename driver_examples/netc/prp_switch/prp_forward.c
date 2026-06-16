@@ -65,7 +65,10 @@ static void prp_handle_supervision_frame(prp_priv_t *prp, prp_frame_t *frame)
         if (node) {
             node->time_in[frame->port_rcv] = xTaskGetTickCount();
             node->time_in_stale[frame->port_rcv] = false;
-	    prp_hash_table_add(prp->node_db, node);
+            if (!prp_hash_table_add(prp->node_db, node)) {
+                vPortFree(node);
+                node = NULL;
+            }
         }
     }
     xSemaphoreGive(prp->nodes_mutex);
@@ -113,7 +116,10 @@ static void prp_handle_normal_frame(prp_priv_t *prp, prp_frame_t *frame)
                 snode->time_in[frame->port_rcv] = xTaskGetTickCount();
                 snode->time_in_stale[frame->port_rcv] = false;
 
-                prp_hash_table_add(prp->node_db, snode);
+                if (!prp_hash_table_add(prp->node_db, snode)) {
+                    vPortFree(snode);
+                    snode = NULL;
+                }
             }
         } else if (frame->port_rcv == PRP_PT_INTERLINK) {
             snode = prp_create_node(smac, NODE_TYPE_SAN);
@@ -121,7 +127,10 @@ static void prp_handle_normal_frame(prp_priv_t *prp, prp_frame_t *frame)
                 snode->time_in[frame->port_rcv] = xTaskGetTickCount();
                 snode->time_in_stale[frame->port_rcv] = false;
 
-                prp_hash_table_add(prp->proxy_node_db, snode);
+                if (!prp_hash_table_add(prp->proxy_node_db, snode)) {
+                    vPortFree(snode);
+                    snode = NULL;
+                }
             }
         }
     } else if (frame->port_rcv != PRP_PT_INTERLINK) {
