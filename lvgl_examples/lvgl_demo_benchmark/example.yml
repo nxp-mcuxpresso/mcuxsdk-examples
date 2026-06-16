@@ -274,3 +274,5 @@ lvgl_demo_benchmark:
     - -mdk@release
     frdmmcxa266: []
     frdmmcxa366: []
+    frdmmcxa287: []
+    frdmmcxa577: []
