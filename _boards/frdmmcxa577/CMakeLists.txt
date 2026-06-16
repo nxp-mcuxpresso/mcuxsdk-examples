@@ -4,4 +4,6 @@
 #include(${SdkRootDirPath}/arch/arm/target/ram.cmake)
 include(${SdkRootDirPath}/arch/arm/target/flash.cmake)
 include(${SdkRootDirPath}/examples/_common/project_setting/arm_common.cmake)
+include(${SdkRootDirPath}/examples/_common/project_segments/lvgl/prjseg.cmake)
+include(${SdkRootDirPath}/examples/lvgl_examples/lvgl_sdk/lvgl_support/mcx_flexio/lvgl_support.cmake)
 include(${SdkRootDirPath}/examples/_common/project_segments/freertos/examples/tickless/prjseg.cmake)
