@@ -583,6 +583,7 @@ int main(void)
     BOARD_InitHardware();
 
     PRINTF("Start the soem_gpio_pulse baremetal example...\r\n");
+    PRINTF("Wait for PHY link up...\r\n");
 
     osal_timer_init(NUM_1M, 0);
 

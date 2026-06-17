@@ -521,6 +521,7 @@ int main(void)
     BOARD_InitHardware();
 
     PRINTF("Start the soem_servo_rt1180 FreeRTOS example...\r\n");
+	PRINTF("Wait for PHY link up...\r\n");
 
     osal_timer_init(SOEM_PERIOD, configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY);
     if_port_init();
