@@ -245,6 +245,22 @@ int read_line(char *buf, uint32_t maxlen)
     return idx;
 }
 
+/* Convert one hex digit to 0..15, or -1 if invalid. */
+static int hex_nibble(char c)
+{
+    unsigned int uc = (unsigned int)(unsigned char)c;
+    if ((uc >= (unsigned int)'0') && (uc <= (unsigned int)'9'))
+    {
+        return (int)(uc - (unsigned int)'0');
+    }
+    uc |= 0x20U; /* fold 'A'-'F' to 'a'-'f' */
+    if ((uc >= (unsigned int)'a') && (uc <= (unsigned int)'f'))
+    {
+        return (int)((uc - (unsigned int)'a') + 10U);
+    }
+    return -1;
+}
+
 /* Helper: parse hex string (spaces allowed) into bytes. Returns byte count. */
 int parse_hex_bytes(const char *s, uint8_t *out, int maxout)
 {
@@ -259,22 +275,17 @@ int parse_hex_bytes(const char *s, uint8_t *out, int maxout)
         /* accept 0x prefix */
         if (p[0] == '0' && (p[1] == 'x' || p[1] == 'X'))
             p += 2;
-        uint32_t hi;
-        uint32_t lo;
-        if (isxdigit((unsigned char)p[0]))
+        int hi = hex_nibble(p[0]);
+        if (hi >= 0)
         {
-            hi = (uint32_t)((((p[0] >= '0') && (p[0] <= '9')) ? (p[0] - '0') : (toupper((unsigned char)p[0]) - 'A' + 10)) & 0xF);
             p++;
-            if (isxdigit((unsigned char)p[0]))
-            {
-                lo = (uint32_t)((((p[0] >= '0') && (p[0] <= '9')) ? (p[0] - '0') : (toupper((unsigned char)p[0]) - 'A' + 10)) & 0xF);
-                p++;
-            }
-            else
+            int lo = hex_nibble(p[0]);
+            if (lo < 0)
             {
                 return -1;
             }
-            out[len++] = (uint8_t)(((hi << 4U) | (lo & 0xFU)) & 0xFFU);
+            p++;
+            out[len++] = (uint8_t)((((unsigned int)hi << 4U) | ((unsigned int)lo & 0xFU)) & 0xFFU);
         }
         else
         {
