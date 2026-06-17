@@ -29,7 +29,7 @@ NOTE,
 
 Prepare the Demo
 ===============
-1.  Connect a micro USB cable between the PC host and the MCU-LINK on the board
+1.  Connect a USB cable between the PC host and the MCU-LINK on the board
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits

@@ -38,7 +38,7 @@ The example outputs inference time and recognized keywords via UART debug consol
 
 ## Hardware Requirements
 
-- Mini/micro USB cable
+- Type-C USB cable
 - FRDMIMXRT700 board
 - Personal computer
 

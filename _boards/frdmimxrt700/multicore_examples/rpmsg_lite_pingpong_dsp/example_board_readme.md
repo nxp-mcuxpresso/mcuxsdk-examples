@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 
-- Mini/micro USB cable
+- Type-C USB cable
 - FRDM-IMXRT700 board
 - Personal Computer
 

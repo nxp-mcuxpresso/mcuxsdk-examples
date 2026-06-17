@@ -9,15 +9,15 @@ Board settings
 1. Make sure JP12 is installed
 2. SPI two boards:
 Transfer data from one board instance to another board's instance.
-SPI14 pins are connected with SPI14 pins of another board
+SPI16 pins are connected with SPI16 pins of another board
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-INSTANCE0(SPI14)     CONNECTS TO         INSTANCE0(SPI14)
+INSTANCE0(SPI16)     CONNECTS TO         INSTANCE0(SPI16)
 Pin Name   Board Location           Pin Name  Board Location
-SOUT        J20 pin 3                   SIN       J20 pin 5
-SIN         J20 pin 5                   SOUT      J20 pin 3
-SCK         J20 pin 7                   SCK       J20 pin 7
-PCS0        J20 pin 1                   PCS0      J20 pin 1
-GND         J20 pin 9                   GND       J20 pin 9
+SOUT        J22 pin 6                   SIN       J22 pin 5
+SIN         J22 pin 5                   SOUT      J22 pin 6
+SCK         J22 pin 4                   SCK       J22 pin 4
+PCS0        J22 pin 3                   PCS0      J22 pin 3
+GND         J22 pin 8                   GND       J22 pin 8
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Prepare the Demo

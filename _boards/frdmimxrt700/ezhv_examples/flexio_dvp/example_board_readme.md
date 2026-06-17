@@ -14,7 +14,7 @@ Connect the panel to J8. Then connect the panel's 5V pin to JP43-1, GND pin to J
 Prepare the Demo
 ===============
 The demo use MIPI RaspberryPi panel by default. 
-1.  Connect a micro USB cable between the PC host and the USB port on the board
+1.  Connect a USB cable between the PC host and the USB port on the board
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits

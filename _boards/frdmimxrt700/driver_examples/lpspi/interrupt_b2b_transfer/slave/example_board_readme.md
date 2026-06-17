@@ -22,7 +22,7 @@ GND         J22 pin 8                   GND       J22 pin 8
 
 Prepare the Demo
 ===============
-1.  Connect a micro USB cable between the PC host and the MCU-Link USB port on the board.
+1.  Connect a USB cable between the PC host and the MCU-Link USB port on the board.
 2.  Open a serial terminal on PC for MCU-Link serial device with these settings:
     - 115200 baud rate
     - 8 data bits

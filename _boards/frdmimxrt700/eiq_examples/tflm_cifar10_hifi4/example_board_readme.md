@@ -1,6 +1,6 @@
 Hardware requirements
 =====================
-- Mini/micro USB cable
+- Type-C USB cable
 - MIMXRT700-EVK board
 - Personal computer
 
