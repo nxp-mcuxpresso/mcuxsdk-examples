@@ -11,7 +11,7 @@
  ******************************************************************************/
 /*${macro:start}*/
 #define EXAMPLE_PINT_BASE      PINT0
-#define DEMO_PINT_PIN_INT0_SRC kINPUTMUX_GpioPort0Pin9ToPintsel
+#define DEMO_PINT_PIN_INT0_SRC kINPUTMUX_GpioPort0Pin10ToPintsel
 #define DEMO_PIN_NUM           1U
 /*${macro:end}*/
 /*******************************************************************************
