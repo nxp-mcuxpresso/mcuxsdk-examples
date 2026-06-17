@@ -33,3 +33,5 @@ power_mode_switch_rtos_imx952:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     imx952evk@cm7: []
+    frdmimx952@cm7: []
+    frdmimx937@cm7: []
