@@ -112,35 +112,6 @@
 #define m_shmem_start                  m_ocram2_start
 #endif
 
-#if defined(XIP_BOOT_HEADER_ENABLE) && (XIP_BOOT_HEADER_ENABLE == 1)
-; load region
-LR_m_header   m_fcb_start   (m_container_start) + (m_container_size) - (m_fcb_start)
-{
-  ; Flash Configuration Block
-  FCB                          m_fcb_start                            FIXED         m_fcb_size
-  {
-    .ANY (.boot_hdr.conf)
-  }
-
-  ; XMCD Block
-  XMCD                         m_xmcd_start                           FIXED         m_xmcd_size
-  {
-    .ANY (.boot_hdr.xmcd_data)
-  }
-
-  ; Container
-  Container                    m_container_start                      FIXED         m_container_size
-  {
-    .ANY (.boot_hdr.container)
-  }
-
-  ; Empty region added for container configuration
-  ER_m_container_image_offset  (m_text_start) - (m_container_start)   EMPTY         0
-  {
-  }
-}
-#endif
-
 ; load region
 LR_m_text   m_text_start   m_text_size
 {
