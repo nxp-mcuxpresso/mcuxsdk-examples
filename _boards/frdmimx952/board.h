@@ -194,6 +194,7 @@
 #define BOARD_PCA6416A_I2C_CLOCK_FREQ CLOCK_GetRate(BOARD_PCA6416A_I2C_CLOCK_ROOT)
 
 /* P0_4: CH_CAN_SEL - IO switch select: H=GPIO_IO25/IO27 route to CAN2_TXD/RXD, L=route to UART3_TXD/RXD */
+#define BOARD_PCA6416A_CH_SPI_SEL     2U
 #define BOARD_PCA6416A_CH_CAN_SEL     4U
 /* P0_6: CAN_STBY - TJA1057BT STBY pin (0=Normal mode, 1=Silent mode) */
 #define BOARD_PCA6416A_CAN_STBY        6U
