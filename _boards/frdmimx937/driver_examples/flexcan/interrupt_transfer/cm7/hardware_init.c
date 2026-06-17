@@ -38,6 +38,7 @@ void BOARD_InitHardware(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
     BOARD_ConfigMPU();
+
     CLOCK_SetRate(&flexcanclk);
     CLOCK_EnableClock(flexcanclk.clkId);
     CLOCK_SetRate(&lpi2cclk);
@@ -45,12 +46,9 @@ void BOARD_InitHardware(void)
 
     BOARD_InitPCA6416A(&handle);
 
-    PCA6416A_SetDirection(&handle, (1 << BOARD_PCA6416A_CH_CAN_SEL), kPCA6416A_Output);
+    /* CAN1 uses PDM_CLK/PDM_BIT_STREAM0 pins directly - CH_CAN_SEL is for CAN2 only */
+    /* Initialize TJA1057BT: set STBY=0 for Normal mode */
     PCA6416A_SetDirection(&handle, (1 << BOARD_PCA6416A_CAN_STBY), kPCA6416A_Output);
-
-    PCA6416A_ClearPins(&handle, (1 << BOARD_PCA6416A_CH_CAN_SEL));
     PCA6416A_ClearPins(&handle, (1 << BOARD_PCA6416A_CAN_STBY));
-
-    SDK_DelayAtLeastUs(100U, SystemCoreClock);
 }
 /*${function:end}*/
