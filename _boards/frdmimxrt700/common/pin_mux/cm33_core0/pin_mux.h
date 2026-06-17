@@ -188,21 +188,6 @@ void BOARD_InitDEBUG_UARTPins(void); /* Function assigned for the Cortex-M33 (Co
 #define BOARD_INITSDCARDPINS_SDHC0_DATA2_PIN_MASK (1U << 8U)       /*!<@brief PORT pin mask */
                                                                    /* @} */
 
-/*! @name PIO7_11 (coord F18), SD_CARD_DET_N
-  @{ */
-/* Routed pin properties */
-#define BOARD_INITSDCARDPINS_SD_CARD_DET_N_PERIPHERAL GPIO7          /*!<@brief Peripheral name */
-#define BOARD_INITSDCARDPINS_SD_CARD_DET_N_SIGNAL GPIO               /*!<@brief Signal name */
-#define BOARD_INITSDCARDPINS_SD_CARD_DET_N_CHANNEL 11                /*!<@brief Signal channel */
-
-/* Symbols to be used with GPIO driver */
-#define BOARD_INITSDCARDPINS_SD_CARD_DET_N_GPIO GPIO7                /*!<@brief GPIO peripheral base pointer */
-#define BOARD_INITSDCARDPINS_SD_CARD_DET_N_GPIO_PIN_MASK (1U << 11U) /*!<@brief GPIO pin mask */
-#define BOARD_INITSDCARDPINS_SD_CARD_DET_N_PORT 7U                   /*!<@brief PORT peripheral base pointer */
-#define BOARD_INITSDCARDPINS_SD_CARD_DET_N_PIN 11U                   /*!<@brief PORT pin number */
-#define BOARD_INITSDCARDPINS_SD_CARD_DET_N_PIN_MASK (1U << 11U)      /*!<@brief PORT pin mask */
-                                                                     /* @} */
-
 /*! @name PIO7_10 (coord A24), SD_PWREN_B
   @{ */
 /* Routed pin properties */
@@ -217,6 +202,16 @@ void BOARD_InitDEBUG_UARTPins(void); /* Function assigned for the Cortex-M33 (Co
 #define BOARD_INITSDCARDPINS_SD_PWREN_B_PIN 10U                   /*!<@brief PORT pin number */
 #define BOARD_INITSDCARDPINS_SD_PWREN_B_PIN_MASK (1U << 10U)      /*!<@brief PORT pin mask */
                                                                   /* @} */
+
+/*! @name PIO7_11 (coord F18), SD_CARD_DET_N
+  @{ */
+/* Routed pin properties */
+#define BOARD_INITSDCARDPINS_SD_CARD_DET_N_PERIPHERAL USDHC0         /*!<@brief Peripheral name */
+#define BOARD_INITSDCARDPINS_SD_CARD_DET_N_SIGNAL USDHC_CARD_DET     /*!<@brief Signal name */
+#define BOARD_INITSDCARDPINS_SD_CARD_DET_N_PORT 7U                   /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITSDCARDPINS_SD_CARD_DET_N_PIN 11U                   /*!<@brief PORT pin number */
+#define BOARD_INITSDCARDPINS_SD_CARD_DET_N_PIN_MASK (1U << 11U)      /*!<@brief PORT pin mask */
+                                                                     /* @} */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.

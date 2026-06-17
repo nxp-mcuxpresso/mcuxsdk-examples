@@ -158,8 +158,9 @@ BOARD_InitSDCardPins:
     input_buffer: enable, pull_select: up, pull_enable: enable}
   - {pin_num: C22, peripheral: USDHC0, signal: 'USDHC_DATA, 2', pin_signal: PIO7_8/SDHC0_DATA2/LP_FLEXCOMM12_P6/LP_FLEXCOMM7_P3, selects_transmitter_current_drive: O_33_or_full,
     input_buffer: enable, pull_select: up, pull_enable: enable}
-  - {pin_num: F18, peripheral: GPIO7, signal: 'GPIO, 11', pin_signal: PIO7_11/SDHC0_CARD_DET_N/LP_FLEXCOMM1_P1, identifier: SD_CARD_DET_N}
   - {pin_num: A24, peripheral: GPIO7, signal: 'GPIO, 10', pin_signal: PIO7_10/SDHC0_WR_PRT/LP_FLEXCOMM1_P0/SDHC0_DS, identifier: SD_PWREN_B}
+  - {pin_num: F18, peripheral: USDHC0, signal: USDHC_CARD_DET, pin_signal: PIO7_11/SDHC0_CARD_DET_N/LP_FLEXCOMM1_P1, identifier: SD_CARD_DET_N, input_buffer: enable,
+    pull_select: up, pull_enable: enable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -227,21 +228,21 @@ void BOARD_InitSDCardPins(void)
     /* PORT7 PIN10 (coords: A24) is configured as PIO7_10 */
     IOPCTL_PinMuxSet(BOARD_INITSDCARDPINS_SD_PWREN_B_PORT, BOARD_INITSDCARDPINS_SD_PWREN_B_PIN, SD_PWREN_B);
 
-    const uint32_t SD_CARD_DET_N = (/* Pin is configured as PIO7_11 */
-                                    IOPCTL_PIO_FUNC0 |
-                                    /* Disable pull-up / pull-down function */
-                                    IOPCTL_PIO_PUPD_DI |
-                                    /* Enable pull-down function */
-                                    IOPCTL_PIO_PULLDOWN_EN |
-                                    /* Disable input buffer function */
-                                    IOPCTL_PIO_INBUF_DI |
+    const uint32_t SD_CARD_DET_N = (/* Pin is configured as SDHC0_CARD_DET_N */
+                                    IOPCTL_PIO_FUNC1 |
+                                    /* Enable pull-up / pull-down function */
+                                    IOPCTL_PIO_PUPD_EN |
+                                    /* Enable pull-up function */
+                                    IOPCTL_PIO_PULLUP_EN |
+                                    /* Enables input buffer function */
+                                    IOPCTL_PIO_INBUF_EN |
                                     /* Pseudo Output Drain is disabled */
                                     IOPCTL_PIO_PSEDRAIN_DI |
                                     /* Input function is not inverted */
                                     IOPCTL_PIO_INV_DI |
                                     /* Selects transmitter current drive 100ohm */
                                     IOPCTL_PIO_DRIVE_100OHM);
-    /* PORT7 PIN11 (coords: F18) is configured as PIO7_11 */
+    /* PORT7 PIN11 (coords: F18) is configured as SDHC0_CARD_DET_N */
     IOPCTL_PinMuxSet(BOARD_INITSDCARDPINS_SD_CARD_DET_N_PORT, BOARD_INITSDCARDPINS_SD_CARD_DET_N_PIN, SD_CARD_DET_N);
 
     const uint32_t SD_VSELECT = (/* Pin is configured as PIO7_3 */
