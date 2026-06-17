@@ -11,17 +11,17 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define EXAMPLE_LPSPI_MASTER_BASEADDR         LPSPI3
-#define LPSPI_MASTER_CLOCK_ROOT               kCLOCK_lpspi3
+#define EXAMPLE_LPSPI_MASTER_BASEADDR         LPSPI7
+#define LPSPI_MASTER_CLOCK_ROOT               kCLOCK_lpspi7
 #define LPSPI_MASTER_CLK_FREQ                 (CLOCK_GetRate(LPSPI_MASTER_CLOCK_ROOT))
 #define EXAMPLE_LPSPI_MASTER_PCS_FOR_INIT     kLPSPI_Pcs0
 #define EXAMPLE_LPSPI_MASTER_PCS_FOR_TRANSFER kLPSPI_MasterPcs0
 
-#define DEMO_LPSPI_TRANSMIT_EDMA_CHANNEL    Dma5RequestMuxLPSPI3Tx
-#define DEMO_LPSPI_RECEIVE_EDMA_CHANNEL     Dma5RequestMuxLPSPI3Rx
+#define DEMO_LPSPI_TRANSMIT_EDMA_CHANNEL    Dma5RequestMuxLPSPI7Tx
+#define DEMO_LPSPI_RECEIVE_EDMA_CHANNEL     Dma5RequestMuxLPSPI7Rx
 #define EXAMPLE_LPSPI_MASTER_DMA_BASE       EDMA5_2
-#define EXAMPLE_LPSPI_MASTER_DMA_RX_CHANNEL Dma5RequestMuxLPSPI3Rx
-#define EXAMPLE_LPSPI_MASTER_DMA_TX_CHANNEL Dma5RequestMuxLPSPI3Tx
+#define EXAMPLE_LPSPI_MASTER_DMA_RX_CHANNEL 0
+#define EXAMPLE_LPSPI_MASTER_DMA_TX_CHANNEL 1
 
 #define EXAMPLE_LPSPI_DEALY_COUNT 0xfffff
 /*${macro:end}*/

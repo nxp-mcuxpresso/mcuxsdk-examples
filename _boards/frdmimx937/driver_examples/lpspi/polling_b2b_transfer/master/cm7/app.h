@@ -11,8 +11,8 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define EXAMPLE_LPSPI_MASTER_BASEADDR         LPSPI3
-#define LPSPI_MASTER_CLOCK_ROOT               kCLOCK_lpspi3
+#define EXAMPLE_LPSPI_MASTER_BASEADDR         LPSPI7
+#define LPSPI_MASTER_CLOCK_ROOT               kCLOCK_lpspi7
 #define LPSPI_MASTER_CLK_FREQ                 (CLOCK_GetRate(LPSPI_MASTER_CLOCK_ROOT))
 #define EXAMPLE_LPSPI_MASTER_PCS_FOR_INIT     kLPSPI_Pcs0
 #define EXAMPLE_LPSPI_MASTER_PCS_FOR_TRANSFER kLPSPI_MasterPcs0

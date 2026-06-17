@@ -372,10 +372,10 @@ void BOARD_InitITPMPins(void) {                            /*!< Function assigne
 BOARD_InitLPSPIPins:
 - options: {callFromInitBoot: 'false', coreID: cm7}
 - pin_list:
-  - {pin_num: M20, peripheral: LPSPI3, signal: 'lpspi_pcs, 0', pin_signal: GPIO_IO08, PD: ENABLED}
-  - {pin_num: M21, peripheral: LPSPI3, signal: lpspi_sin, pin_signal: GPIO_IO09, PD: ENABLED}
-  - {pin_num: N17, peripheral: LPSPI3, signal: lpspi_sout, pin_signal: GPIO_IO10, PD: ENABLED}
-  - {pin_num: N18, peripheral: LPSPI3, signal: lpspi_sck, pin_signal: GPIO_IO11, PD: ENABLED}
+  - {pin_num: L45, peripheral: LPSPI7, signal: lpspi_sin, pin_signal: GPIO_IO05, PD: ENABLED}
+  - {pin_num: K46, peripheral: LPSPI7, signal: 'lpspi_pcs, 0', pin_signal: GPIO_IO04, PD: ENABLED}
+  - {pin_num: L49, peripheral: LPSPI7, signal: lpspi_sout, pin_signal: GPIO_IO06, PD: ENABLED}
+  - {pin_num: L51, peripheral: LPSPI7, signal: lpspi_sck, pin_signal: GPIO_IO07, PD: ENABLED}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -386,23 +386,23 @@ BOARD_InitLPSPIPins:
  *
  * END ****************************************************************************************************************/
 void BOARD_InitLPSPIPins(void) {                           /*!< Function assigned for the core: Cortex-M7F[cm7] */
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO08__LPSPI3_PCS0, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO08__LPSPI3_PCS0, 
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO04__LPSPI7_PCS0, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO04__LPSPI7_PCS0, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_PD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO09__LPSPI3_SIN, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO09__LPSPI3_SIN, 
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO05__LPSPI7_SIN, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO05__LPSPI7_SIN, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_PD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO10__LPSPI3_SOUT, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO10__LPSPI3_SOUT, 
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO06__LPSPI7_SOUT, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO06__LPSPI7_SOUT, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_PD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO11__LPSPI3_SCK, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO11__LPSPI3_SCK, 
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO07__LPSPI7_SCK, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO07__LPSPI7_SCK, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_PD_MASK);
