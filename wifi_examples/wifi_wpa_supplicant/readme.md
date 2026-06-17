@@ -14,4 +14,5 @@ wifi_wpa_supplicant
 - [EVK-MIMXRT685](../../_boards/evkmimxrt685/wifi_examples/common/wifi_examples_readme.md)
 - [FRDM-RW612](../../_boards/frdmrw612/wifi_examples/common/wifi_examples_readme.md)
 - [MIMXRT685-AUD-EVK](../../_boards/mimxrt685audevk/wifi_examples/common/wifi_examples_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/wifi_examples/common/wifi_examples_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/wifi_examples/common/wifi_examples_readme.md)

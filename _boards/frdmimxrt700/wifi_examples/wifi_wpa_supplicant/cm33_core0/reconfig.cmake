@@ -6,11 +6,11 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/wifi_nxp/example/wifi_cli/lwip_config/lwippools.h
-            middleware/wifi_nxp/example/wifi_cli/lwip_config/lwiphooks.h
-            middleware/wifi_nxp/example/wifi_cli/freertos_config/FreeRTOSConfig.h
-            middleware/wifi_nxp/example/wifi_cli/lwip_config/lwipopts.h
-            middleware/wifi_nxp/example/wifi_cli/wifi_config/wifi_config.h
+    SOURCES middleware/wifi_nxp/example/wifi_wpa_supplicant/lwip_config/lwippools.h
+            middleware/wifi_nxp/example/wifi_wpa_supplicant/lwip_config/lwiphooks.h
+            middleware/wifi_nxp/example/wifi_wpa_supplicant/freertos_config/FreeRTOSConfig.h
+            middleware/wifi_nxp/example/wifi_wpa_supplicant/lwip_config/lwipopts.h
+            middleware/wifi_nxp/example/wifi_wpa_supplicant/wifi_config/wifi_config.h
             ${board_root}/${board}/wifi_examples/common/cm33_core0/hardware_init.c
             ${board_root}/${board}/wifi_examples/common/cm33_core0/app.h
             ${board_root}/${board}/sdmmc_config.c
@@ -24,9 +24,9 @@ mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES ${board_root}/${board}/wifi_examples/common
              ${board_root}/${board}/wifi_examples/common/cm33_core0
-             middleware/wifi_nxp/example/wifi_cli/wifi_config
-             middleware/wifi_nxp/example/wifi_cli/lwip_config
-             middleware/wifi_nxp/example/wifi_cli/freertos_config
+             middleware/wifi_nxp/example/wifi_wpa_supplicant/wifi_config
+             middleware/wifi_nxp/example/wifi_wpa_supplicant/lwip_config
+             middleware/wifi_nxp/example/wifi_wpa_supplicant/freertos_config
 )
 
 mcux_add_iar_configuration(
@@ -35,6 +35,8 @@ mcux_add_iar_configuration(
 
 mcux_add_macro(
     CC "-DUSE_RTOS=1\
+       -DCONFIG_WPA_SUPP_CRYPTO_MBEDTLS_PSA\
+       -DMBEDTLS_USER_CONFIG_FILE=\\\"wpa_supp_mbedtls_config.h\\\"\
        -DPRINTF_ADVANCED_ENABLE=1\
        -DFSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1"
 )
@@ -53,5 +55,3 @@ mcux_add_mdk_configuration(
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/wifi_examples/common/cm33_core0/reconfig.cmake)
-
-
