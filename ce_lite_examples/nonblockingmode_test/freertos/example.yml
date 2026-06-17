@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+ce_lite_nonblockingmode_test_freertos:
+  section-type: application
+  contents:
+    meta_path: examples/ce_lite_examples/nonblockingmode_test/freertos
+    project-root-path: boards/${board}/ce_lite_examples/nonblockingmode_test/${multicore_foldername}/freertos
+    complete_cmake_data:
+      files:
+        ${board_root}/${board}/ce_lite_examples/nonblockingmode_test/freertos/fft32_cf16_input.txt:
+          project_relative_path: ./
+          type: src
+        ${board_root}/${board}/ce_lite_examples/nonblockingmode_test/freertos/fft32_cf16_ref_output.txt:
+          project_relative_path: ./
+          type: src
+        ${board_root}/${board}/ce_lite_examples/nonblockingmode_test/freertos/fft512_cf32_input.txt:
+          project_relative_path: ./
+          type: src
+        ${board_root}/${board}/ce_lite_examples/nonblockingmode_test/freertos/fft512_cf32_ref_output.txt:
+          project_relative_path: ./
+          type: src
+    document:
+      name: ce_lite_nonblockingmode_test_freertos${core_id_suffix_name}
+      category: ce_lite_examples
+      brief: Sample application that tests the non-blocking mode operation of ZV2118
+        using two concurrent FreeRTOS tasks performing CFFT operations.
+      example_readme:
+      - examples/ce_lite_examples/nonblockingmode_test/freertos/readme.md
+      - ${board_root}/${board}/ce_lite_examples/nonblockingmode_test/freertos/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmkw43: []
+    frdmmcxw70: []

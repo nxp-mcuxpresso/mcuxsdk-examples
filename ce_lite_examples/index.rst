@@ -9,3 +9,5 @@ ce_lite_examples
 
    matevd_test/readme.md
    fft_test/readme.md
+   nonblockingmode_test/bm/readme.md
+   nonblockingmode_test/freertos/readme.md
