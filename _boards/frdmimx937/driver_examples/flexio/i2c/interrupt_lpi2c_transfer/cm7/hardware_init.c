@@ -9,6 +9,7 @@
 #include "app.h"
 #include "clock_config.h"
 #include "fsl_iomuxc.h"
+#include "fsl_common.h"
 /*${header:end}*/
 
 /*${function:start}*/
@@ -29,21 +30,36 @@ void BOARD_InitHardware(void)
         .rate = 24000000UL,
         //.enable_clk = true,
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
-    };    
+    };
+    clk_t lpi2c2clk = {
+        .clkId = kCLOCK_lpi2c2,
+        .pclkId = kCLOCK_osc24m,
+        .rate = 24000000UL,
+        //.enable_clk = true,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
+    };
     /* clang-format on */
     SystemPlatformInit();
     BOARD_InitBootPins();
     BOARD_InitFLEXIOPins();
     BOARD_InitI2C6Pins();
+    BOARD_InitI2C2Pins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
     BOARD_ConfigMPU();
 
-    CLOCK_SetParent(&lpi2cclk);
     CLOCK_SetRate(&lpi2cclk);
     CLOCK_EnableClock(lpi2cclk.clkId);
-    CLOCK_SetParent(&flexioclk);
     CLOCK_SetRate(&flexioclk);
     CLOCK_EnableClock(flexioclk.clkId);
+    CLOCK_SetParent(&lpi2c2clk);
+    CLOCK_SetRate(&lpi2c2clk);
+    CLOCK_EnableClock(lpi2c2clk.clkId);
+
+    pca6416a_handle_t handle;
+    BOARD_InitPCA6416A(&handle);
+    PCA6416A_SetDirection(&handle, (1 << BOARD_PCA6416A_CH_SPI_SEL), kPCA6416A_Output);
+    PCA6416A_SetPins(&handle, (1 << BOARD_PCA6416A_CH_SPI_SEL));
+    SDK_DelayAtLeastUs(100U, SystemCoreClock);
 }
 /*${function:end}*/

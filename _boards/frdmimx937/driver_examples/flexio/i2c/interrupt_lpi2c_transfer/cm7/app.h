@@ -20,8 +20,8 @@
 #define BOARD_FLEXIO_BASE      FLEXIO1
 #define LPI2C_CLOCK_FREQUENCY  CLOCK_GetRate(kCLOCK_lpi2c6)
 #define FLEXIO_CLOCK_FREQUENCY CLOCK_GetRate(kCLOCK_flexio1)
-#define FLEXIO_I2C_SDA_PIN     0U
-#define FLEXIO_I2C_SCL_PIN     1U
+#define FLEXIO_I2C_SDA_PIN     8U
+#define FLEXIO_I2C_SCL_PIN     9U
 
 /* I2C Baudrate 400K */
 #define I2C_BAUDRATE (400000)

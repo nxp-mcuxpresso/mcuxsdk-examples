@@ -1,15 +1,16 @@
 Hardware requirements
 =====================
 - Type-C USB cable
-- FRDM-IMX937  board
+- FRDM-IMX937 board
 - J-Link Debug Probe
 - 12V~20V power supply
 - Personal Computer
 
 Board settings
 ============
-Connect J19-3 to J19-27
-Connect J19-5 to J19-28
+Connect wires on J18 (40-PIN GPIO HDR) to establish connection between FLEXIO1 (master) and LPI2C6 (slave):
+- J18-5  (GPIO_IO03, FLEXIO1_FLEXIO[3]) <-> J18-21 (GPIO_IO09, FLEXIO1_FLEXIO[9])  [SCL]
+- J18-3  (GPIO_IO02, FLEXIO1_FLEXIO[2]) <-> J18-24 (GPIO_IO08, FLEXIO1_FLEXIO[8])  [SDA]
 
 **Please note this application can't support running with Linux BSP!**
 

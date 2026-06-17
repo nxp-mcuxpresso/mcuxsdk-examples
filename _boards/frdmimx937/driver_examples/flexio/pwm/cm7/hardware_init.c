@@ -32,7 +32,6 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
     BOARD_ConfigMPU();
 
-    CLOCK_SetParent(&flexioClkCfg);
     CLOCK_SetRate(&flexioClkCfg);
     CLOCK_EnableClock(flexioClkCfg.clkId);
 }

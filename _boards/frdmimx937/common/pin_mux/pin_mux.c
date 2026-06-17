@@ -334,11 +334,13 @@ void BOARD_InitI2C6Pins(void) {                            /*!< Function assigne
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO02__LPI2C6_SDA, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_PU_MASK |
                         IOMUXC_PAD_OD_MASK);
     IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO03__LPI2C6_SCL, 1U);
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO03__LPI2C6_SCL, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_PU_MASK |
                         IOMUXC_PAD_OD_MASK);
 }
 
@@ -688,10 +690,10 @@ void BOARD_InitCLKOPins(void) {                            /*!< Function assigne
 BOARD_InitFLEXIOPins:
 - options: {callFromInitBoot: 'false', coreID: cm7}
 - pin_list:
+  - {pin_num: M44, peripheral: FLEXIO1, signal: 'flexio_flexio_, 8', pin_signal: GPIO_IO08, SION: ENABLED, OD: ENABLED, PD: DISABLED, PU: DISABLED}
+  - {pin_num: M46, peripheral: FLEXIO1, signal: 'flexio_flexio_, 9', pin_signal: GPIO_IO09, SION: ENABLED, OD: ENABLED, PD: DISABLED, PU: DISABLED}
   - {pin_num: K48, peripheral: FLEXIO1, signal: 'flexio_flexio_, 2', pin_signal: GPIO_IO02, SION: ENABLED, OD: DISABLED, PD: DISABLED}
   - {pin_num: K52, peripheral: FLEXIO1, signal: 'flexio_flexio_, 3', pin_signal: GPIO_IO03, SION: ENABLED, PD: DISABLED}
-  - {peripheral: FLEXIO1, signal: 'flexio_flexio_bit, 0', pin_signal: GPIO_IO00, SION: ENABLED, OD: ENABLED, PD: DISABLED}
-  - {peripheral: FLEXIO1, signal: 'flexio_flexio_bit, 1', pin_signal: GPIO_IO01, SION: ENABLED, OD: ENABLED, PD: DISABLED}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -710,14 +712,14 @@ void BOARD_InitFLEXIOPins(void) {                          /*!< Function assigne
     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO03__FLEXIO1_FLEXIO_3, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U));
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO00__FLEXIO1_FLEXIO_0, 1U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO00__FLEXIO1_FLEXIO_0, 
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO08__FLEXIO1_FLEXIO_8, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO08__FLEXIO1_FLEXIO_8, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_PU_MASK |
                         IOMUXC_PAD_OD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO01__FLEXIO1_FLEXIO_1, 1U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO01__FLEXIO1_FLEXIO_1, 
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO09__FLEXIO1_FLEXIO_9, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO09__FLEXIO1_FLEXIO_9, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_PU_MASK |

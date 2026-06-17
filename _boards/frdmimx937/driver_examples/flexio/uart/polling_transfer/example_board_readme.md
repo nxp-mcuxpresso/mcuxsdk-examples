@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Type-C USB cable
-- IMX9372-EVK  board
+- FRDM-IMX937 board
 - J-Link Debug Probe
 - 12V~20V power supply
 - Personal Computer

@@ -1,16 +1,16 @@
 Hardware requirements
 =====================
 - Type-C USB cable
-- FRDM-IMX937  board
+- FRDM-IMX937 board
 - J-Link Debug Probe
 - 12V~20V power supply
 - Personal Computer
 
 Board settings
 ============
-Connect J19-3(GPIO_IO02 pad, I2C6_SDA_3V3) and J19-9(GND) to oscilloscope
+Connect J18-3 (GPIO_IO02, FLEXIO1_FLEXIO[2]) and J18-4 (GND) to oscilloscope
 
-**Please note this application can't support running with Linux BSP!**
+#### Please note this application can't support running with Linux BSP! ####
 
 Note
 ====
