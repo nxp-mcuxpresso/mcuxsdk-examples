@@ -347,7 +347,7 @@ void BOARD_InitI2C6Pins(void) {                            /*!< Function assigne
 
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOARD_InitITPMPins:
+BOARD_InitTPMPins:
 - options: {callFromInitBoot: 'false', coreID: cm7}
 - pin_list:
   - {pin_num: N47, peripheral: TPM3, signal: 'tpm_ch, 2', pin_signal: GPIO_IO12}
@@ -357,11 +357,11 @@ BOARD_InitITPMPins:
 
 /* FUNCTION ************************************************************************************************************
  *
- * Function Name : BOARD_InitITPMPins
+ * Function Name : BOARD_InitTPMPins
  * Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
-void BOARD_InitITPMPins(void) {                            /*!< Function assigned for the core: Cortex-M7F[cm7] */
+void BOARD_InitTPMPins(void) {                            /*!< Function assigned for the core: Cortex-M7F[cm7] */
     IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO12__TPM3_CH2, 0U);
     IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO24__TPM3_CH3, 0U);
 }
