@@ -201,8 +201,8 @@ void BOARD_BootClockFRO96M_InitClockModule(clock_module_t module)
             PMU_UpdateHvdLvTrim(AON__PMU, vddCoreMainConfig.hvdLvTrim);
             break;
         case kClockModule_AONCoreSupplyMode:
-            /* Set the Vdd Core voltage of the AON domain to 0.7915V to allow the AON Core operate at 10 MHz. */
-            PMU_UpdateVDDCoreInActiveMode(AON__PMU, VDD_CORE_AON_0_7915V_VOLTAGE_10M);
+            /* Set the Vdd Core voltage of the AON domain to 0.785V to allow the AON Core operate at 10 MHz. */
+            PMU_UpdateVDDCoreInActiveMode(AON__PMU, VDD_CORE_AON_0_785V);
             break;
         case kClockModule_ROSC:
             /* Monitor is disabled */

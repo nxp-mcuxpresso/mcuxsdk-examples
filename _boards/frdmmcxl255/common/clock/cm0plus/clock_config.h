@@ -18,12 +18,10 @@
  * Definitions
  ******************************************************************************/
 #define BOARD_XTAL32K_CLK_HZ                          32768U  /*!< Board xtal32K frequency in Hz */
-#define VDD_CORE_AON_0_630V_VOLTAGE_32K              (0x28U)  /*!< Vdd Core voltage 0.630V of the AON domain; Trim value = 40 */
-#define VDD_CORE_AON_0_706V_VOLTAGE_0_75M            (0x20U)  /*!< Vdd Core voltage 0.706V of the AON domain; Trim value = 32 */
-#define VDD_CORE_AON_0_744V_VOLTAGE_2_5M             (0x1CU)  /*!< Vdd Core voltage 0.744V of the AON domain; Trim value = 28 */
-#define VDD_CORE_AON_0_7535V_VOLTAGE_3M              (0x1BU)  /*!< Vdd Core voltage 0.7535V of the AON domain; Trim value = 27 */
-#define VDD_CORE_AON_0_763V_VOLTAGE_5M               (0x1AU)  /*!< Vdd Core voltage 0.763V of the AON domain; Trim value = 26 */
-#define VDD_CORE_AON_0_7915V_VOLTAGE_10M             (0x17U)  /*!< Vdd Core voltage 0.7915V of the AON domain; Trim value = 23 */
+#define VDD_CORE_AON_0_700V                          (0x1EU)  /*!< Vdd Core voltage 0.700V of the AON domain; Trim value = 30 */
+#define VDD_CORE_AON_0_750V                          (0x19U)  /*!< Vdd Core voltage 0.750V of the AON domain; Trim value = 25 */
+#define VDD_CORE_AON_0_760V                          (0x18U)  /*!< Vdd Core voltage 0.760V of the AON domain; Trim value = 24 */
+#define VDD_CORE_AON_0_785V                          (0x15U)  /*!< Vdd Core voltage 0.785V of the AON domain; Trim value = 21 */
 
 typedef enum {
     kClockModule_MainCoreSupplyMode,
