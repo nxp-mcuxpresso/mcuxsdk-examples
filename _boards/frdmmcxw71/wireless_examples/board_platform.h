@@ -107,8 +107,8 @@
 #define BOARD_32MHZ_XTAL_CDAC_VALUE BOARD_32MHZ_XTAL_TRIM_DEFAULT
 #endif
 
-#if ((defined(gBoardUseFro32k_d) && defined(BOARD_32KHZ_SRC_CLK_ACCURACY)) && \
-     ((gBoardUseFro32k_d == 1) && (BOARD_32KHZ_SRC_CLK_ACCURACY != 0)))
+#if ((defined(gBoardUseFro32k_d) && (gBoardUseFro32k_d == 1)) && \
+      ((!defined(BOARD_32KHZ_SRC_CLK_ACCURACY)) || (BOARD_32KHZ_SRC_CLK_ACCURACY != 0)))
 #error "The clock accuracy needs to be 500ppm if using FRO 32kHz"
 #endif
 
