@@ -42,7 +42,7 @@ void TIMER_Init(void)
 {
     uint32_t priorityGroup = NVIC_GetPriorityGrouping();
 
-#if (defined(CPU_MIMXRT2662AVJ7A) || defined(CPU_MIMXRT2662AVM7A) || defined(CPU_MIMXRT2662CVJ8A) || defined(CPU_MIMXRT2662CVL8A) || defined(CPU_MIMXRT2662CVM8A) || defined(CPU_MIMXRT2662DVJAA) || defined(CPU_MIMXRT2662DVLAA) || defined(CPU_MIMXRT2662DVMAA) || defined(CPU_MIMXRT2662XVJ78A) || defined(CPU_MIMXRT2662XVL8A) || defined(CPU_MIMXRT2662XVM8A))
+#if (defined(CPU_MIMXRT2663AHP8A) || defined(CPU_MIMXRT2663CHPAA) || defined(CPU_MIMXRT2663CVVAA) || defined(CPU_MIMXRT2663DHPAA) || defined(CPU_MIMXRT2663DVVAA) || defined(CPU_MIMXRT2663XHP8A) || defined(CPU_MIMXRT2663XVV8A))
     SysTick_Config(12000000 / (SYSTICK_PRESCALE * 1000U));
 #else
     SysTick_Config(CLOCK_GetFreq(kCLOCK_CoreSysClk) / (SYSTICK_PRESCALE * 1000U));
@@ -52,7 +52,7 @@ void TIMER_Init(void)
 
 int TIMER_GetTimeInUS(void)
 {
-#if (defined(CPU_MIMXRT2662AVJ7A) || defined(CPU_MIMXRT2662AVM7A) || defined(CPU_MIMXRT2662CVJ8A) || defined(CPU_MIMXRT2662CVL8A) || defined(CPU_MIMXRT2662CVM8A) || defined(CPU_MIMXRT2662DVJAA) || defined(CPU_MIMXRT2662DVLAA) || defined(CPU_MIMXRT2662DVMAA) || defined(CPU_MIMXRT2662XVJ78A) || defined(CPU_MIMXRT2662XVL8A) || defined(CPU_MIMXRT2662XVM8A))
+#if (defined(CPU_MIMXRT2663AHP8A) || defined(CPU_MIMXRT2663CHPAA) || defined(CPU_MIMXRT2663CVVAA) || defined(CPU_MIMXRT2663DHPAA) || defined(CPU_MIMXRT2663DVVAA) || defined(CPU_MIMXRT2663XHP8A) || defined(CPU_MIMXRT2663XVV8A))
     int us = (12000 - SysTick->VAL) / (12000000 / 1000000);
 #else
     int us = ((SystemCoreClock / 1000) - SysTick->VAL) / (SystemCoreClock / 1000000);
