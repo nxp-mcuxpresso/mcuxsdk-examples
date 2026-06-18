@@ -479,7 +479,7 @@ static void APP_DPD1ToDPD2BackToDPD1(void)
         .wakeToDpd1            = true,
         .aonWakeupSource       = kPower_WS_Aon_LptmrInt,
         .mainWakeupSource      = kPower_WS_NONE,
-        .dpd2VddCoreAonVoltage = kPower_VddCoreAon_601_5mV,
+        .dpd2VddCoreAonVoltage = kPower_VddCoreAon_700mV,
         .fro16KOutputFreq      = kPMU_FRO16KOutput16KHz,
     };
     if (Power_EnterDeepPowerDown2(&dpd2Config) == kStatus_Power_WakeupFromDPD2)
@@ -524,7 +524,7 @@ static void APP_DPD1ToDPD2BackToActive(void)
         .wakeToDpd1            = false,
         .mainWakeupSource      = kPower_WS_Main_LptmrInt,
         .aonWakeupSource       = kPower_WS_Aon_LptmrInt,
-        .dpd2VddCoreAonVoltage = kPower_VddCoreAon_601_5mV,
+        .dpd2VddCoreAonVoltage = kPower_VddCoreAon_700mV,
         .fro16KOutputFreq      = kPMU_FRO16KOutput16KHz,
     };
     if (Power_EnterDeepPowerDown2(&dpd2Config) == kStatus_Power_WakeupFromDPD2)

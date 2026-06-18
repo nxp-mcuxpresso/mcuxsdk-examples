@@ -65,7 +65,7 @@ power_pd2_config_t pd2Config = {.mainWakeupSource = kPower_WS_NONE,
 #if APP_ENABLE_ADVC
                                 .vddCoreAonVoltage = kPower_VddCoreAon_AdvcControl
 #else
-    .vddCoreAonVoltage     = kPower_VddCoreAon_725mV,
+    .vddCoreAonVoltage     = kPower_VddCoreAon_750mV,
 #endif
 };
 
@@ -84,7 +84,7 @@ power_dpd1_config_t dpd1Config = {.mainWakeupSource = kPower_WS_NONE,
 #if APP_ENABLE_ADVC
                                   .vddCoreAonVoltage = kPower_VddCoreAon_AdvcControl
 #else
-    .vddCoreAonVoltage     = kPower_VddCoreAon_725mV,
+    .vddCoreAonVoltage     = kPower_VddCoreAon_750mV,
 #endif
 };
 
@@ -106,7 +106,7 @@ power_dpd2_config_t dpd2Config = {
     .switchToX32K          = true,
     .disableFRO10M         = true,
     .disableFRO3M          = false,
-    .dpd2VddCoreAonVoltage = kPower_VddCoreAon_601_5mV,
+    .dpd2VddCoreAonVoltage = kPower_VddCoreAon_700mV,
 };
 
 power_dpd3_config_t dpd3Config = {
