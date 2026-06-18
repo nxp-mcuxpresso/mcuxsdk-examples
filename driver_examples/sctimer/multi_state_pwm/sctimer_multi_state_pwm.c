@@ -30,7 +30,7 @@ int main(void)
     sctimer_config_t sctimerInfo;
     sctimer_pwm_signal_param_t pwmParam;
     uint32_t stateNumber;
-    uint32_t eventFirstNumberOutput, eventSecondNumberOutput, eventNumberInput;
+    uint32_t periodEvent, pulseEventFirst, pulseEventSecond, eventNumberInput;
     uint32_t sctimerClock;
 
     /* Board pin, clock, debug console init */
@@ -61,10 +61,11 @@ int main(void)
     pwmParam.level            = kSCTIMER_HighTrue;
     pwmParam.dutyCyclePercent = 10;
 
-    /* Schedule events in current state; State 0 */
-    /* Schedule events for generating a 24KHz PWM with 10% duty cycle from first Out in the current state */
-    if (SCTIMER_SetupPwm(SCT0, &pwmParam, kSCTIMER_EdgeAlignedPwm, 24000U, sctimerClock, &eventFirstNumberOutput) ==
-        kStatus_Fail)
+    /* Schedule events in current state; State 0. Generate a 24 kHz PWM with 10% duty cycle from the first
+     * out in the current state.
+     */
+    if (SCTIMER_SetupSharedPeriodPwm(SCT0, &pwmParam, kSCTIMER_EdgeAlignedPwm, 24000U, sctimerClock, &periodEvent,
+                                     &pulseEventFirst) != kStatus_Success)
     {
         return -1;
     }
@@ -82,24 +83,20 @@ int main(void)
     /* Go to next state; State 1 */
     SCTIMER_IncreaseState(SCT0);
 
-    /* Schedule events in State 1 */
-    /* Schedule events for generating a 24KHz PWM with 50% duty cycle from second Out in this new state */
+    /* Schedule events in State 1. Generate a 24 kHz PWM with 50% duty cycle from the second Out in this new state. */
     pwmParam.output           = DEMO_SECOND_SCTIMER_OUT;
     pwmParam.dutyCyclePercent = 50;
-    if (SCTIMER_SetupPwm(SCT0, &pwmParam, kSCTIMER_EdgeAlignedPwm, 24000U, sctimerClock, &eventSecondNumberOutput) ==
-        kStatus_Fail)
+    if (SCTIMER_SetupSharedPeriodPwm(SCT0, &pwmParam, kSCTIMER_EdgeAlignedPwm, 24000U, sctimerClock, &periodEvent,
+                                     &pulseEventSecond) != kStatus_Success)
     {
         return -1;
     }
 
-    /* Re-enable PWM coming out from Out 4 by scheduling the PWM events in this new state */
-    /* To get a PWM, the SCTIMER_SetupPwm() function creates 2 events; 1 for the pulse period and
-     * and 1 for the pulse, we need to schedule both events in this new state
-     */
-    /* Schedule the period event for the PWM */
-    SCTIMER_ScheduleEvent(SCT0, eventFirstNumberOutput);
-    /* Schedule the pulse event for the PWM */
-    SCTIMER_ScheduleEvent(SCT0, eventFirstNumberOutput + 1);
+    /* Keep the first Out's PWM active in State 1 too. The shared period event and the first channel's
+     * pulse event were enabled in State 0 only; re-schedule both into this state (the period event is
+     * shared, so it must be enabled in every state that runs any channel of the group). */
+    SCTIMER_ScheduleEvent(SCT0, periodEvent);
+    SCTIMER_ScheduleEvent(SCT0, pulseEventFirst);
 
     /* Schedule an event to look for a rising edge on input 1 in this state */
     if (SCTIMER_CreateAndScheduleEvent(SCT0, kSCTIMER_InputRiseEvent, 0, kSCTIMER_Input_1, kSCTIMER_Counter_U,
@@ -108,8 +105,8 @@ int main(void)
         return -1;
     }
 
-    /* Transition back to State 0 when a rising edge is detected on input 1 */
-    /* State 0 has only 1 PWM active, there will be no PWM from Out 2 */
+    /* Transition back to State 0 when a rising edge is detected on input 1. Back in State 0 only the
+     * first output's PWM is active; the second output is off. */
     SCTIMER_SetupNextStateActionwithLdMethod(SCT0, stateNumber, eventNumberInput, true);
 
     /* Start the 32-bit unify timer */

@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+sctimer_complementary_pwm:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/sctimer/complementary_pwm
+    project-root-path: boards/${board}/driver_examples/sctimer/complementary_pwm/${multicore_foldername}
+    document:
+      name: sctimer_complementary_pwm${core_id_suffix_name}
+      category: driver_examples/sctimer
+      brief: The SCTimer complementary PWM project demonstrates the SDK SCTimer driver generating
+        two center-aligned complementary PWM output pairs with programmable dead time on one
+        SCTimer; both pairs share the frequency and unified counter, and each pair's duty cycle is
+        continuously ramped up and down (glitchless, applied at the next period) with pair 2
+        ramping in the opposite direction to pair 1.
+      example_readme:
+      - examples/driver_examples/sctimer/complementary_pwm/readme.md
+      - ${board_root}/${board}/driver_examples/sctimer/complementary_pwm/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso55s36: []

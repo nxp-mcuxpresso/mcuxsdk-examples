@@ -33,7 +33,8 @@ int main(void)
 {
     sctimer_config_t sctimerInfo;
     sctimer_pwm_signal_param_t pwmParam;
-    uint32_t event;
+    uint32_t periodEvent;
+    uint32_t pulseEvent;
     uint32_t sctimerClock;
 
     /* Board pin, clock, debug console init */
@@ -52,20 +53,25 @@ int main(void)
     /* Initialize SCTimer module */
     SCTIMER_Init(SCT0, &sctimerInfo);
 
-    /* Configure first PWM with frequency 24kHZ from first output */
+    /* Both channels run at the same 24 kHz frequency. Each SCTIMER_SetupSharedPeriodPwm() call
+     * configures one channel from pwmParam: the first call creates the shared period/limit event and
+     * that channel's pulse event; the second call reuses the same period event and adds only its own
+     * pulse event. pwmParam is consumed during each call, so it is reused for the second channel, and
+     * the returned event numbers are not needed after setup, so pulseEvent is reused as well. */
     pwmParam.output           = DEMO_FIRST_SCTIMER_OUT;
     pwmParam.level            = kSCTIMER_HighTrue;
     pwmParam.dutyCyclePercent = DUTY_CYCLE_CH1;
-    if (SCTIMER_SetupPwm(SCT0, &pwmParam, PWM_MODE, 24000U, sctimerClock, &event) == kStatus_Fail)
+    if (SCTIMER_SetupSharedPeriodPwm(SCT0, &pwmParam, PWM_MODE, 24000U, sctimerClock, &periodEvent,
+                                     &pulseEvent) != kStatus_Success)
     {
         return -1;
     }
 
-    /* Configure second PWM with different duty cycle but same frequency as before */
     pwmParam.output           = DEMO_SECOND_SCTIMER_OUT;
     pwmParam.level            = kSCTIMER_LowTrue;
     pwmParam.dutyCyclePercent = DUTY_CYCLE_CH2;
-    if (SCTIMER_SetupPwm(SCT0, &pwmParam, PWM_MODE, 24000U, sctimerClock, &event) == kStatus_Fail)
+    if (SCTIMER_SetupSharedPeriodPwm(SCT0, &pwmParam, PWM_MODE, 24000U, sctimerClock, &periodEvent,
+                                     &pulseEvent) != kStatus_Success)
     {
         return -1;
     }

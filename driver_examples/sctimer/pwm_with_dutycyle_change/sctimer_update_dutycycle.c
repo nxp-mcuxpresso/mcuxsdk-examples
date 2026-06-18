@@ -29,7 +29,8 @@ void delay(void);
 volatile bool sctimerIsrFlag      = false;
 volatile bool brightnessUp        = true; /* Indicate LED is brighter or dimmer */
 volatile uint8_t updatedDutycycle = 10U;
-uint32_t eventNumberOutput;
+uint32_t eventNumberOutput; /* Shared period event (also the interrupt source) */
+uint32_t pulseEventOutput;  /* This channel's pulse (duty) event */
 
 /*******************************************************************************
  * Code
@@ -100,17 +101,17 @@ int main(void)
     /* Initialize SCTimer module */
     SCTIMER_Init(SCT0, &sctimerInfo);
 
-    /* Configure PWM params with frequency 24kHZ from output */
+    /* Configure a single 24 kHz PWM channel. */
     pwmParam.output           = DEMO_SCTIMER_OUT;
     pwmParam.level            = kSCTIMER_HighTrue;
     pwmParam.dutyCyclePercent = updatedDutycycle;
-    if (SCTIMER_SetupPwm(SCT0, &pwmParam, kSCTIMER_CenterAlignedPwm, 24000U, sctimerClock, &eventNumberOutput) ==
-        kStatus_Fail)
+    if (SCTIMER_SetupSharedPeriodPwm(SCT0, &pwmParam, kSCTIMER_CenterAlignedPwm, 24000U, sctimerClock,
+                                     &eventNumberOutput, &pulseEventOutput) != kStatus_Success)
     {
         return -1;
     }
 
-    /* Enable interrupt flag for event associated with out 4, we use the interrupt to update dutycycle */
+    /* Enable the interrupt for the PWM period event; the ISR uses it to update the duty cycle. */
     SCTIMER_EnableInterrupts(SCT0, (1 << eventNumberOutput));
 
     /* Receive notification when event is triggered */
@@ -122,10 +123,10 @@ int main(void)
     /* Start the 32-bit unify timer */
     SCTIMER_StartTimer(SCT0, kSCTIMER_Counter_U);
 
-    /* Code below updates the PWM dutycycle for Out */
+    /* Periodically update the PWM duty cycle from the main loop. */
     while (1)
     {
-        /* Use interrupt to update the PWM dutycycle on output */
+        /* The ISR sets sctimerIsrFlag each PWM period; apply the next duty cycle when it does. */
         if (true == sctimerIsrFlag)
         {
             /* Disable interrupt to retain current dutycycle for a few seconds */
@@ -133,8 +134,10 @@ int main(void)
 
             sctimerIsrFlag = false;
 
-            /* Update PWM duty cycle */
-            SCTIMER_UpdatePwmDutycycle(SCT0, DEMO_SCTIMER_OUT, updatedDutycycle, eventNumberOutput);
+            /* Update PWM duty cycle using the explicit period/pulse events, applied at the next counter
+             * cycle (kSCTIMER_UpdateOnNextPeriod) so the counter is not halted and the output is glitchless. */
+            SCTIMER_UpdatePwmDutycycleByEvent(SCT0, DEMO_SCTIMER_OUT, updatedDutycycle, eventNumberOutput,
+                                              pulseEventOutput, kSCTIMER_UpdateOnNextPeriod);
 
             /* Delay to view the updated PWM dutycycle */
             delay();
