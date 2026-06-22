@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Mini/micro USB cable
-- FRDM-KW43 Board
+- FRDM-MCXW70 Board
 - Personal Computer
 
 Board settings

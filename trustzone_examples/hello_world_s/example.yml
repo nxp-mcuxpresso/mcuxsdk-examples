@@ -95,8 +95,9 @@ hello_world_s:
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
     frdmkw43:
-    - -armgcc@debug
-    - -armgcc@release
+    - -mdk@debug
+    - -mdk@release
+    frdmmcxw70:
     - -mdk@debug
     - -mdk@release
     frdmmcxa577: []
