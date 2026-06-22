@@ -66,7 +66,7 @@ static power_pd2_config_t pd2Config = {
     .enableIVSMode     = false,
     .disableFRO10M     = false,
     .fro16KOutputFreq  = kPMU_FRO16KOutput16KHz,
-    .vddCoreAonVoltage = kPower_VddCoreAon_725mV,
+    .vddCoreAonVoltage = kPower_VddCoreAon_785mV,
 };
 
 static power_dpd1_config_t dpd1Config = {
@@ -93,7 +93,7 @@ static power_dpd2_config_t dpd2Config = {
     .saveContext           = false,
     .disableFRO3M          = true,
     .wakeToDpd1            = false,
-    .dpd2VddCoreAonVoltage = kPower_VddCoreAon_601_5mV,
+    .dpd2VddCoreAonVoltage = kPower_VddCoreAon_700mV,
 };
 
 static void *powerConfigs[8U] = {
