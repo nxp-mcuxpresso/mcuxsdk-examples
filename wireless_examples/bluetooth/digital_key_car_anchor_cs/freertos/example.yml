@@ -17,6 +17,3 @@ digital_key_car_anchor_cs_freertos:
     kw43evk:
     - -armgcc@debug
     - -armgcc@release
-    frdmmcxw70:
-    - -armgcc@debug
-    - -armgcc@release
