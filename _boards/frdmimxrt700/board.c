@@ -714,10 +714,10 @@ void BOARD_InitI2c3PinAsGpio(void)
 
     /* PORT1 PIN17 is configured as PIO1_17 */
     i2c_iomux[0]        = IOPCTL0->PIO[1][17];
-    IOPCTL0->PIO[1][17] = 0x440u; /* GPIO with inputbuffer and pseudo uutput drain enabled. */
+    IOPCTL0->PIO[1][17] = 0x400u; /* GPIO with pseudo output drain enabled. */
     /* PORT1 PIN18 is configured as PIO1_18 */
     i2c_iomux[1]        = IOPCTL0->PIO[1][18];
-    IOPCTL0->PIO[1][18] = 0x400U; /* GPIO with pseudo uutput drain enabled. */
+    IOPCTL0->PIO[1][18] = 0x440U; /* GPIO with inputbuffer and pseudo output drain enabled. */
 }
 
 void BOARD_RestoreI2c3PinMux(void)

@@ -28,7 +28,7 @@
 #define DEMO_SAI_CLK_FREQ CLOCK_GetSaiClkFreq()
 
 /* Get frequency of lpi2c clock */
-#define DEMO_I2C_CLK_FREQ 24000000U /* CLOCK_GetLPI2cClkFreq(2) */
+#define DEMO_I2C_CLK_FREQ 24000000U
 #define BOARD_SAI_RXCONFIG(config, mode)
 /*${macro:end}*/
 
