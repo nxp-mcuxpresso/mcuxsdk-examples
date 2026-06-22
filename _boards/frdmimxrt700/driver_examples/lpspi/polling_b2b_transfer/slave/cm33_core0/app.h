@@ -10,7 +10,7 @@
  ******************************************************************************/
 /*${macro:start}*/
 /* Master related */
-#define EXAMPLE_LPSPI_SLAVE_BASEADDR (LPSPI14)
+#define EXAMPLE_LPSPI_SLAVE_BASEADDR (LPSPI16)
 
 #define EXAMPLE_LPSPI_SLAVE_PCS_FOR_INIT     (kLPSPI_Pcs0)
 #define EXAMPLE_LPSPI_SLAVE_PCS_FOR_TRANSFER (kLPSPI_SlavePcs0)

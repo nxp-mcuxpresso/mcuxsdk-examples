@@ -11,9 +11,9 @@
  ******************************************************************************/
 /*${macro:start}*/
 /* Master related */
-#define EXAMPLE_LPSPI_SLAVE_BASEADDR         (LPSPI14)
-#define DEMO_LPSPI_TRANSMIT_EDMA_CHANNEL     kDmaRequestMuxLpspi14Tx
-#define DEMO_LPSPI_RECEIVE_EDMA_CHANNEL      kDmaRequestMuxLpspi14Rx
+#define EXAMPLE_LPSPI_SLAVE_BASEADDR         (LPSPI16)
+#define DEMO_LPSPI_TRANSMIT_EDMA_CHANNEL     kDmaRequestMuxLpspi16Tx
+#define DEMO_LPSPI_RECEIVE_EDMA_CHANNEL      kDmaRequestMuxLpspi16Rx
 
 
 #define EXAMPLE_LPSPI_SLAVE_PCS_FOR_INIT     (kLPSPI_Pcs0)

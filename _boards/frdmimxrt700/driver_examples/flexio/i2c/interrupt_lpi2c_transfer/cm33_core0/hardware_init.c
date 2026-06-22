@@ -25,7 +25,7 @@ void BOARD_InitHardware(void)
 
     BOARD_InitDebugConsole();
 
-    /* The domain own LPSPI14 and FLEXIO, disable mask in SHARED_MASK0. */
+    /* The domain own FLEXIO, disable mask in SHARED_MASK0. */
     POWER_DisableLPRequestMask(kPower_MaskFlexio);
 
     CLOCK_AttachClk(kFCCLK0_to_FLEXCOMM8);

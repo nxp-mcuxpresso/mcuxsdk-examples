@@ -29,7 +29,7 @@ void BOARD_InitHardware(void)
     POWER_ApplyPD();
 
     /* The domain own FLEXIO, disable mask in SHARED_MASK0. */
-    POWER_DisableLPRequestMask(kPower_MaskFlexio);
+    POWER_DisableLPRequestMask(kPower_MaskLpspi16 | kPower_MaskFlexio);
 
     CLOCK_AttachClk(kFRO1_DIV1_to_LPSPI16);
     CLOCK_SetClkDiv(kCLOCK_DivLpspi16Clk, 16U);

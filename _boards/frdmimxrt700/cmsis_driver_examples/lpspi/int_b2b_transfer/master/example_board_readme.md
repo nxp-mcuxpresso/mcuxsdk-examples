@@ -6,8 +6,7 @@ Hardware requirements
 
 Board settings
 ==============
-1. Make sure JP12 is installed
-2. SPI two boards:
+1. SPI two boards:
 Transfer data from one board instance to another board's instance.
 SPI16 pins are connected with SPI16 pins of another board
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

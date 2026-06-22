@@ -12,10 +12,10 @@
 /*${macro:start}*/
 /* Master related */
 
-#define LPSPI_MASTER_CLK_FREQ                 CLOCK_GetFreq(kCLOCK_LPSpi14Clk)
-#define EXAMPLE_LPSPI_MASTER_BASEADDR         (LPSPI14)
-#define DEMO_LPSPI_TRANSMIT_EDMA_CHANNEL      kDmaRequestMuxLpspi14Tx
-#define DEMO_LPSPI_RECEIVE_EDMA_CHANNEL       kDmaRequestMuxLpspi14Rx
+#define LPSPI_MASTER_CLK_FREQ                 CLOCK_GetFreq(kCLOCK_LPSpi16Clk)
+#define EXAMPLE_LPSPI_MASTER_BASEADDR         (LPSPI16)
+#define DEMO_LPSPI_TRANSMIT_EDMA_CHANNEL      kDmaRequestMuxLpspi16Tx
+#define DEMO_LPSPI_RECEIVE_EDMA_CHANNEL       kDmaRequestMuxLpspi16Rx
 
 #define EXAMPLE_LPSPI_MASTER_PCS_FOR_INIT     (kLPSPI_Pcs0)
 #define EXAMPLE_LPSPI_MASTER_PCS_FOR_TRANSFER (kLPSPI_MasterPcs0)
