@@ -23,18 +23,19 @@ mcux_add_macro(
     CC "-DPRINTF_ADVANCED_ENABLE=1"
 )
 
+# The secondary core (M7_1) image is embedded inside this primary flash image
+# and linked to a dedicated flash region (0x00600000) so that flashing the
+# primary also programs the secondary; M7_1 then runs in place from flash. The
+# secondary is NOT copied to RAM, so CORE1_IMAGE_COPY_TO_RAM is not defined.
+#
+# IAR: --image_input embeds the secondary binary into the __core1_image section,
+# which the core0 flash linker pins at 0x00600000.
 mcux_add_iar_configuration(
-        CC "-DCORE1_IMAGE_COPY_TO_RAM"
         LD "--image_input=${APPLICATION_BINARY_DIR}/../mu_interrupt_secondary_core/iar/core1_image.bin,_core1_image,__core1_image,4 \
             --keep _core1_image"
 )
 
-mcux_add_armgcc_configuration(
-        CC "-DCORE1_IMAGE_COPY_TO_RAM"
-)
-
 mcux_add_mdk_configuration(
-        CC "-DCORE1_IMAGE_COPY_TO_RAM"
         LD "--library_type=standardlib --keep=*(*core1_code)"
 )
 
