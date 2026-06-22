@@ -36,7 +36,7 @@
     }
 
 #define DEMO_FREQ_REF_CLK_SOURCE    kINPUTMUX_FroHfDivToFreqmeasRef
-#define DEMO_PULSE_REF_CLK_SOURCE kINPUTMUX_FreqmeClkIn1IToFreqmeasRef
+#define DEMO_PULSE_REF_CLK_SOURCE kINPUTMUX_FreqmeClkIn1ToFreqmeasRef
 
 #define DEMO_MAXEXPECTVALUE    (0x6FFFFFFFUL)
 #define DEMO_MINEXPECTVALUE    (0xFUL)
