@@ -6,7 +6,9 @@
 #include "fsl_common.h"
 #include "fsl_debug_console.h"
 #include "fsl_freqme.h"
+#if !(defined(FSL_FEATURE_FREQME_HAS_CLOCK_SOURCE_SELECT) && FSL_FEATURE_FREQME_HAS_CLOCK_SOURCE_SELECT)
 #include "fsl_inputmux.h"
+#endif
 
 #include "board.h"
 #include "app.h"
@@ -38,10 +40,17 @@ static void DEMO_GetReferenceClockScaleFactor(freq_measure_config_t *config);
 static const char *g_freqClockNameArray[DEMO_CLOCK_SOURCE_COUNT] = DEMO_FREQ_TAR_CLOCK_SOURCE_NAME;
 static const char *g_pulseClockNameArray[DEMO_CLOCK_SOURCE_COUNT] = DEMO_PULSE_TAR_CLOCK_SOURCE_NAME;
 
+#if (defined(FSL_FEATURE_FREQME_HAS_CLOCK_SOURCE_SELECT) && FSL_FEATURE_FREQME_HAS_CLOCK_SOURCE_SELECT)
+static const uint32_t g_freqClockSourceSignalArray[DEMO_CLOCK_SOURCE_COUNT] =
+    DEMO_FREQ_TAR_CLOCK_SOURCE_SIGNAL;
+static const uint32_t g_pulseClockSourceSignalArray[DEMO_CLOCK_SOURCE_COUNT] =
+    DEMO_PULSE_TAR_CLOCK_SOURCE_SIGNAL;
+#else
 static const inputmux_connection_t g_freqClockSourceSignalArray[DEMO_CLOCK_SOURCE_COUNT] =
     DEMO_FREQ_TAR_CLOCK_SOURCE_SIGNAL;
 static const inputmux_connection_t g_pulseClockSourceSignalArray[DEMO_CLOCK_SOURCE_COUNT] =
     DEMO_PULSE_TAR_CLOCK_SOURCE_SIGNAL;
+#endif
 
 volatile bool g_measurementCompleted = false;
 volatile bool g_errorOccurred        = false;
@@ -74,8 +83,11 @@ int main(void)
     BOARD_InitHardware();
 
     PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
-    INPUTMUX_Init(INPUTMUX);
     PRINTF("FREQME Interrupt Example!\r\n");
+
+#if !(defined(FSL_FEATURE_FREQME_HAS_CLOCK_SOURCE_SELECT) && FSL_FEATURE_FREQME_HAS_CLOCK_SOURCE_SELECT)
+    INPUTMUX_Init(INPUTMUX);
+#endif
 
     EnableIRQ(Freqme_IRQn);
     while (1)
@@ -129,7 +141,11 @@ static void DEMO_DoFreqMeasurement(void)
      * the time defined by 2^CTRL_W[REF_SCALE] periods of the reference clock, so recommend
      * to set the reference clock frequency greater than target clock frequency.
      */
+#if (defined(FSL_FEATURE_FREQME_HAS_CLOCK_SOURCE_SELECT) && FSL_FEATURE_FREQME_HAS_CLOCK_SOURCE_SELECT)
+    FREQME_SetReferenceClk(DEMO_FREQME, DEMO_FREQ_REF_CLK_SOURCE);
+#else
     INPUTMUX_AttachSignal(INPUTMUX, 0UL, DEMO_FREQ_REF_CLK_SOURCE);
+#endif
 
     /*
      * config->operateMode = kFREQME_FreqMeasurementMode;
@@ -178,7 +194,11 @@ static void DEMO_DoPulseMeasurement(void)
      * If the reference clock has a high period of 1 ms and 1000 target pulses occur during
      * that time, the target frequency is 1 MHz.
      */
+#if (defined(FSL_FEATURE_FREQME_HAS_CLOCK_SOURCE_SELECT) && FSL_FEATURE_FREQME_HAS_CLOCK_SOURCE_SELECT)
+    FREQME_SetReferenceClk(DEMO_FREQME, DEMO_PULSE_REF_CLK_SOURCE);
+#else
     INPUTMUX_AttachSignal(INPUTMUX, 0U, DEMO_PULSE_REF_CLK_SOURCE);
+#endif
 
     /*
      * config->operateMode = kFREQME_FreqMeasurementMode;
@@ -240,6 +260,16 @@ static void DEMO_GetClockSelection(freq_measure_config_t *config)
         chInput -= 'A';
         if (chInput < DEMO_CLOCK_SOURCE_COUNT)
         {
+#if (defined(FSL_FEATURE_FREQME_HAS_CLOCK_SOURCE_SELECT) && FSL_FEATURE_FREQME_HAS_CLOCK_SOURCE_SELECT)
+            if (config->operateMode == kFREQME_FreqMeasurementMode)
+            {
+                FREQME_SetTargetClk(DEMO_FREQME, g_freqClockSourceSignalArray[(uint8_t)chInput]);
+            }
+            else
+            {
+                FREQME_SetTargetClk(DEMO_FREQME, g_pulseClockSourceSignalArray[(uint8_t)chInput]);
+            }
+#else
             if (config->operateMode == kFREQME_FreqMeasurementMode)
             {
                 INPUTMUX_AttachSignal(INPUTMUX, 0UL, g_freqClockSourceSignalArray[(uint8_t)chInput]);
@@ -248,6 +278,7 @@ static void DEMO_GetClockSelection(freq_measure_config_t *config)
             {
                 INPUTMUX_AttachSignal(INPUTMUX, 0UL, g_pulseClockSourceSignalArray[(uint8_t)chInput]);
             }
+#endif
             break;
         }
         else
