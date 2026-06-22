@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+cmsis_pflash:
+  section-type: application
+  contents:
+    meta_path: examples/cmsis_driver_examples/flash/pflash
+    project-root-path: boards/${board}/cmsis_driver_examples/flash/pflash
+    document:
+      name: cmsis_pflash${core_id_suffix_name}
+      category: cmsis_driver_examples/flash
+      brief: 
+        The CMSIS pflash example shows how to use CMSIS flash driver to operate program flash
+      example_readme:
+      - examples/cmsis_driver_examples/flash/pflash/readme.md
+      - ${board_root}/${board}/cmsis_driver_examples/flash/pflash/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxa577: []

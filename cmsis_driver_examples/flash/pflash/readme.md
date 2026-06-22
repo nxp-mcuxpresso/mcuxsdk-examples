@@ -11,8 +11,10 @@ When the example runs successfully, you can see the similar information from the
  PFlash Information:
  Total Program Flash Size: xx KB, Hex: (xx)
  Program Flash Sector Size: xx KB, hex: (xx)
+
  Erase a sector of flash
  Successfully Erased Sector xx -> xx
+
  Program a buffer to a sector of flash
  Successfully Programmed and Verified Location xx -> xx
 
