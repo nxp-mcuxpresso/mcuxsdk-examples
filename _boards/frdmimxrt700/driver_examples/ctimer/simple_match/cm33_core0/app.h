@@ -11,7 +11,7 @@
  ******************************************************************************/
 /*${macro:start}*/
 #define CTIMER          CTIMER2         /* Timer 2 */
-#define CTIMER_MAT_OUT  kCTIMER_Match_2 /* Match output 2 */
+#define CTIMER_MAT_OUT  kCTIMER_Match_3 /* Match output 3 */
 #define CTIMER_CLK_FREQ CLOCK_GetCTimerClkFreq(2U)
 /*${macro:end}*/
 

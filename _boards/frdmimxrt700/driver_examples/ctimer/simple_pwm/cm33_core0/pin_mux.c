@@ -1,5 +1,6 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2026 NXP
+ * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -13,11 +14,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v16.0
+product: Pins v17.0
 processor: MIMXRT798S
 package_id: MIMXRT798SGVKB
 mcu_data: ksdk2_0
-processor_version: 0.2412.10
+processor_version: 0.2606.70
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -43,9 +44,9 @@ void BOARD_InitBootPins(void)
 BOARD_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: N4, peripheral: LP_FLEXCOMM0, signal: P0, pin_signal: PIO0_31/LP_FLEXCOMM0_P0/UTICK0_CAP2/SCT0_OUT8/CTIMER4_MAT0, input_buffer: enable}
-  - {pin_num: N5, peripheral: LP_FLEXCOMM0, signal: P1, pin_signal: PIO1_0/LP_FLEXCOMM0_P1/SCT0_OUT9/CTIMER4_MAT1}
-  - {pin_num: R2, peripheral: CTIMER2, signal: 'MATCH, 2', pin_signal: PIO1_11/LP_FLEXCOMM2_P0/CTIMER2_MAT2/SWD_TRACEDATA0, input_buffer: enable}
+  - {pin_num: V21, peripheral: LP_FLEXCOMM0, signal: P0, pin_signal: PIO0_31/LP_FLEXCOMM0_P0/UTICK0_CAP2/SCT0_OUT8/CTIMER4_MAT0, input_buffer: enable}
+  - {pin_num: AD25, peripheral: LP_FLEXCOMM0, signal: P1, pin_signal: PIO1_0/LP_FLEXCOMM0_P1/SCT0_OUT9/CTIMER4_MAT1}
+  - {pin_num: AD24, peripheral: CTIMER4, signal: 'MATCH, 0', pin_signal: PIO1_18/LP_FLEXCOMM3_P0/USB0_PORTPWRN/CTIMER4_MAT0/I3C0_SDA}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -76,7 +77,7 @@ void BOARD_InitPins(void)
                                          IOPCTL_PIO_INV_DI |
                                          /* Selects transmitter current drive 100ohm */
                                          IOPCTL_PIO_DRIVE_100OHM);
-    /* PORT0 PIN31 (coords: N4) is configured as LP_FLEXCOMM0_P0 */
+    /* PORT0 PIN31 (coords: V21) is configured as LP_FLEXCOMM0_P0 */
     IOPCTL_PinMuxSet(0U, 31U, port0_pin31_config);
 
     const uint32_t port1_pin0_config = (/* Pin is configured as LP_FLEXCOMM0_P1 */
@@ -93,25 +94,25 @@ void BOARD_InitPins(void)
                                         IOPCTL_PIO_INV_DI |
                                         /* Selects transmitter current drive 100ohm */
                                         IOPCTL_PIO_DRIVE_100OHM);
-    /* PORT1 PIN0 (coords: N5) is configured as LP_FLEXCOMM0_P1 */
+    /* PORT1 PIN0 (coords: AD25) is configured as LP_FLEXCOMM0_P1 */
     IOPCTL_PinMuxSet(1U, 0U, port1_pin0_config);
 
-    const uint32_t port1_pin11_config = (/* Pin is configured as CTIMER2_MAT2 */
+    const uint32_t port1_pin18_config = (/* Pin is configured as CTIMER4_MAT0 */
                                          IOPCTL_PIO_FUNC4 |
                                          /* Disable pull-up / pull-down function */
                                          IOPCTL_PIO_PUPD_DI |
                                          /* Enable pull-down function */
                                          IOPCTL_PIO_PULLDOWN_EN |
-                                         /* Enables input buffer function */
-                                         IOPCTL_PIO_INBUF_EN |
+                                         /* Disable input buffer function */
+                                         IOPCTL_PIO_INBUF_DI |
                                          /* Pseudo Output Drain is disabled */
                                          IOPCTL_PIO_PSEDRAIN_DI |
                                          /* Input function is not inverted */
                                          IOPCTL_PIO_INV_DI |
                                          /* Selects transmitter current drive 100ohm */
                                          IOPCTL_PIO_DRIVE_100OHM);
-    /* PORT1 PIN11 (coords: R2) is configured as CTIMER2_MAT2 */
-    IOPCTL_PinMuxSet(1U, 11U, port1_pin11_config);
+    /* PORT1 PIN18 (coords: AD24) is configured as CTIMER4_MAT0 */
+    IOPCTL_PinMuxSet(1U, 18U, port1_pin18_config);
 }
 /***********************************************************************************************************************
  * EOF
