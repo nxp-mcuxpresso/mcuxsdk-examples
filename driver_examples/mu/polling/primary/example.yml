@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
 #
-# Copyright 2024 NXP
+# Copyright 2024, 2026 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 mu_polling_primary_core:
@@ -113,3 +113,4 @@ mu_polling_primary_core:
     - -mdk@debug
     - -mdk@release
     frdmmcxl255@cm33: []
+    frdmmcxe32b@core0: []

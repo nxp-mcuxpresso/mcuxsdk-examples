@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
 #
-# Copyright 2024 NXP
+# Copyright 2024, 2026 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 mu_interrupt_secondary_core:
@@ -105,3 +105,4 @@ mu_interrupt_secondary_core:
     - +armgcc@release
     - +iar@debug
     - +iar@release
+    frdmmcxe32b@core1: []

@@ -1,3 +1,9 @@
+#
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+#
+
 config secondary_config
     string
     default "debug" if $(config) = "debug"
@@ -5,4 +11,4 @@ config secondary_config
 
 config secondary_core_id
     string
-    default "core0" if $(core_id) = "core1"
+    default "core1" if $(core_id) = "core0"
