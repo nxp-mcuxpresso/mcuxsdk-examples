@@ -92,8 +92,6 @@ hello_world_s:
     - -iar@hyperram_release
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
-    - -mdk@flexspi_nor_debug
-    - -mdk@flexspi_nor_release
     frdmkw43:
     - -mdk@debug
     - -mdk@release
