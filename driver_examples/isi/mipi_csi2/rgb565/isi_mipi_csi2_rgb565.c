@@ -80,8 +80,6 @@ int main(void)
 
     PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
 
-    SOC_SetIsiPermission((uint32_t)s_frameBuffer, (((uint32_t)(s_frameBuffer)) + sizeof(s_frameBuffer) - 1U));
-
     memset(s_frameBuffer, 0, sizeof(s_frameBuffer));
 
     PRINTF("ISI MIPI-CSI2 example start...\r\n");
