@@ -29,7 +29,8 @@ Application Layer (Board Debug Layer)
 Application Layer (Board Debug Layer)
 ├── board_debug_nbu.h/.c           # High-level API with fault and warning analysis
 ├── board_debug_nbu_port.h         # HCI logger port interface
-├── board_debug_nbu_lpuart_port.c  # LPUART implementation for HCI logging
+├── board_debug_nbu_lpuart_port.c  # LPUART implementation for HCI logging (dedicated second UART)
+├── board_debug_nbu_serialmgr_port.c # Serial Manager implementation for HCI logging (main serial port)
 ├── hci_to_btsnoop.py              # Python tool to capture HCI logs to BTSNOOP format
 └── debug_struct_parser.py         # Python tool to parse debug structures from BTSNOOP files
 │
@@ -369,6 +370,56 @@ Each captured packet follows this format:
 
 - **direction**: 0x00=TX (host→controller), 0x01=RX (controller→host)
 - **packet_type**: 0x01=CMD, 0x02=ACL, 0x04=EVENT, 0x05=ISO
+
+### Base64 Framing (shared serial port)
+
+When the HCI log is routed to the **main serial port** (the `serialmgr` port), it shares
+the line with human-readable console text. Raw binary HCI would corrupt that text stream,
+so the firmware can Base64-encode each packet and emit it as a single ASCII-safe line:
+
+```
+@<base64( [direction][packet_type][packet_data...] )>\n
+```
+
+- The leading `@` is a single-character marker that is not part of the Base64 alphabet,
+  so the host tool can unambiguously pick packet lines out of the mixed text stream.
+- The direction byte, packet type and payload are concatenated and encoded as one unit,
+  giving exactly one line (and one marker) per packet.
+
+Enable it with the Kconfig option
+`CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu.enable_hci_log_base64=y`
+(defaults on for the `serialmgr` port; it sets `-DBOARD_NBUDBG_HCI_LOG_BASE64=1`).
+
+On the host side, run the capture tool in Base64 mode so it decodes these lines and
+ignores the surrounding console text:
+
+```bash
+python hci_to_btsnoop.py -p COM3 -b 115200 -o capture.btsnoop --base64
+```
+
+The dedicated second UART (`lpuart` port) carries binary HCI only, so Base64 is not needed
+there and the tool is used without `--base64`.
+
+#### Processing a saved log file (offline)
+
+Because Base64 lines are plain ASCII, a console log captured from the main serial port
+can be saved to a text file and converted to BTSNOOP later, without being connected to
+the board. Pass the log file with `-i/--input` instead of `-p/--port`:
+
+```bash
+# Generate a btsnoop from a previously saved console log
+python hci_to_btsnoop.py -i console_log.txt --base64 -o capture.btsnoop
+
+# Same, and auto-parse the debug structures afterwards
+python hci_to_btsnoop.py -i console_log.txt --base64 -o capture.btsnoop --parse-debug
+```
+
+Notes:
+- `--input` requires `--base64`. Offline file processing only supports the Base64 line
+  framing.
+- `--input` and `--port` are mutually exclusive: choose either live capture or file
+  processing.
+
 
 ## Benefits
 

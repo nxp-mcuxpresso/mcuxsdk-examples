@@ -283,11 +283,26 @@ void BOARD_DbgNbuPortWrite(const uint8_t *data, uint32_t length);
 void BOARD_DbgNbuPortReinit(void);
 ```
 
+### Available Port Implementations
+
+The output port is selected via the `debug_nbu_hci_log_port_selection` choice:
+
+- `CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu_hci_log_port_lpuart` (default)
+  Sends the HCI log over a dedicated second LPUART (`board_debug_nbu_lpuart_port.c`).
+- `CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu_hci_log_port_serialmgr`
+  Sends the HCI log over the main application serial port using the Serial Manager
+  (`board_debug_nbu_serialmgr_port.c`).
+  the data is emitted on the same serial interface the application already uses.
+  Note: mixing continuous binary HCI logging with human-readable console output on the
+  same port is not recommended.
+  This option is mainly intended together with the "log on fault only" and "base64" mode described below.
+- `CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu_hci_log_port_custom`
+  Use your own port implementation.
+
 ### Using a Different Port
 
 **Create Custom Port Implementation**
 
-By default the configuration `CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu_hci_log_port_lpuart` is used.
 To use a custom port, please select the following configuration:
 `CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu_hci_log_port_custom=y`.
 
@@ -297,6 +312,70 @@ the APIs.
 Then update your build system to add the custom port file to your project.
 
 You can implement any interface that supports serial transmission.
+
+### Logging Only on NBU Fault
+
+By default, every HCI packet is logged continuously. To instead log only when the NBU
+hits a fatal fault, enable:
+
+`CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu.enable_hci_log_on_fault_only=y`
+
+This defines `BOARD_NBUDBG_HCI_LOG_ON_FAULT_ONLY=1`. When set, the HCI log callback drops
+all packets until `PLATFORM_IsNbuFaultSet()` returns true. That function reads the NBU
+fault status register directly, so detection is immediate and accurate. From the fault
+onward, every packet - including the automatically generated coredump HCI - is forwarded
+to the selected port.
+
+This mode is port-independent and works with any of the port implementations above.
+It pairs well with the main serial port option, so the coredump can be captured on the
+application's existing serial interface without a dedicated UART connection.
+
+### Base64 Encoded Output (shared serial port)
+
+When the HCI log is routed to the **main serial port** (the `serialmgr` port), it shares
+the line with human-readable console text. Raw binary HCI bytes would corrupt that text
+stream, so the firmware can Base64-encode each packet and emit it as a single ASCII-safe
+line:
+
+```
+@<base64( [direction][packet_type][packet_data...] )>\n
+```
+
+- The leading `@` is a single-character marker that is not part of the Base64 alphabet,
+  so the host tool can unambiguously pick packet lines out of the mixed text stream.
+- The direction byte (0x00 = TX, 0x01 = RX), the packet type and the payload are
+  concatenated and encoded as a single unit, producing exactly one line (and one marker)
+  per packet.
+
+Enable it with:
+
+`CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu.enable_hci_log_base64=y`
+
+This option is enabled by default when the `serialmgr` port is selected.
+
+On the host side, run the capture tool in Base64 mode so it decodes these lines and ignores
+the surrounding console text:
+
+```bash
+python hci_to_btsnoop.py -p COM3 -b 115200 -o capture.btsnoop --base64
+```
+
+The dedicated second UART (`lpuart` port) carries binary HCI only, so Base64 is not needed
+there and the tool is used without `--base64`.
+
+#### Processing a saved log file (offline)
+
+A console log captured from the main serial port can be saved to a text file and
+converted to BTSNOOP later, without being connected to the board. Pass the log file
+with `-i/--input` instead of `-p/--port`:
+
+```bash
+# Generate a btsnoop from a previously saved console log
+python hci_to_btsnoop.py -i console_log.txt --base64 -o capture.btsnoop
+```
+
+`--input` requires `--base64` and is mutually exclusive with `--port`.
+
 
 ### Important Considerations
 

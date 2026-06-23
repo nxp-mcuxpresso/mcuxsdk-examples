@@ -100,6 +100,7 @@ config MCUX_PRJSEG_module.board.wireless.board.debug_nbu.enable_app_log
 
 config MCUX_PRJSEG_module.board.wireless.board.debug_nbu.enable_hci_log
     bool "HCI Packet Logger"
+    default y if !MCUX_COMPONENT_middleware.wireless.framework.fsci
     depends on MCUX_PRJSEG_module.board.wireless.board.debug_nbu
     help
       Enable HCI packet logger for BLE protocol debugging.
@@ -108,12 +109,35 @@ if MCUX_PRJSEG_module.board.wireless.board.debug_nbu.enable_hci_log
 
 choice MCUX_PRJSEG_module.board.wireless.board.debug_nbu_hci_log_port_selection
     prompt "Debug NBU output port"
+    config MCUX_PRJSEG_module.board.wireless.board.debug_nbu_hci_log_port_serialmgr
+        bool "Debug NBU output to main serial port"
+        depends on !MCUX_COMPONENT_middleware.wireless.framework.fsci
+        select MCUX_COMPONENT_component.serial_manager
     config MCUX_PRJSEG_module.board.wireless.board.debug_nbu_hci_log_port_lpuart
         bool "Debug NBU output to second UART"
         select MCUX_COMPONENT_driver.lpuart
     config MCUX_PRJSEG_module.board.wireless.board.debug_nbu_hci_log_port_custom
         bool "Custom port (user implemented)"
 endchoice
+
+config MCUX_PRJSEG_module.board.wireless.board.debug_nbu.enable_hci_log_on_fault_only
+    bool "Log HCI packets only on NBU fault"
+    default y if MCUX_PRJSEG_module.board.wireless.board.debug_nbu_hci_log_port_serialmgr
+    help
+      Instead of continuously logging every HCI packet, only forward packets once an
+      NBU fatal fault has been detected (checked directly via PLATFORM_IsNbuFaultSet()).
+      This is useful to capture the automatically generated coredump HCI on fault while
+      avoiding continuous logging overhead.
+
+config MCUX_PRJSEG_module.board.wireless.board.debug_nbu.enable_hci_log_base64
+    bool "Base64-encode HCI log output"
+    default y if MCUX_PRJSEG_module.board.wireless.board.debug_nbu_hci_log_port_serialmgr
+    help
+      Base64-encode each HCI packet before writing it to the log port and emit it as a
+      single line "@<base64>\n". This keeps the output ASCII-safe so it can be safely
+      interleaved with human-readable console text (recommended when logging to the main
+      serial port). Not needed on a dedicated binary port. The host capture tool must be
+      run in Base64 mode (see hci_to_btsnoop.py --base64) to decode these lines.
 
 endif
 
