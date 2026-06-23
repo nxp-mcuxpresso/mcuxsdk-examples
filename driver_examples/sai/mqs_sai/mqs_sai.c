@@ -76,7 +76,11 @@ int main(void)
     SAI_TransferTxCreateHandle(DEMO_SAI, &txHandle, callback, NULL);
 
     /* I2S mode configurations */
+#if defined(DEMO_SAI_LEFT_JUSTIFIED_FORMAT) && DEMO_SAI_LEFT_JUSTIFIED_FORMAT
+    SAI_GetLeftJustifiedConfig(&saiConfig, DEMO_AUDIO_BIT_WIDTH, kSAI_Stereo, kSAI_Channel0Mask);
+#else
     SAI_GetClassicI2SConfig(&saiConfig, DEMO_AUDIO_BIT_WIDTH, kSAI_Stereo, kSAI_Channel0Mask);
+#endif
     SAI_TransferTxSetConfig(DEMO_SAI, &txHandle, &saiConfig);
 
     /* set bit clock divider */
