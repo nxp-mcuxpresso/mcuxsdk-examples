@@ -73,7 +73,7 @@
 #if CONFIG_FREERTOS_LOW_MEMORY_FOOTPRINT
 #define configTOTAL_HEAP_SIZE            ((size_t)(180 * 1024))
 #else
-#define configTOTAL_HEAP_SIZE            ((size_t)(240 * 1024))
+#define configTOTAL_HEAP_SIZE            ((size_t)(250 * 1024))
 #endif /* CONFIG_FREERTOS_LOW_MEMORY_FOOTPRINT */
 #define configAPPLICATION_ALLOCATED_HEAP 0
 
