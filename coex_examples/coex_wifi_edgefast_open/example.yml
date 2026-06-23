@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+coex_wifi_edgefast_open:
+  section-type: application
+  contents:
+    meta_path: examples/coex_examples/coex_wifi_edgefast_open
+    project-root-path: boards/${board}/coex_examples/coex_wifi_edgefast_open/${multicore_foldername}
+    document:
+      name: coex_wifi_edgefast_open${core_id_suffix_name}
+      category: coex_examples
+      brief: Wi-Fi + BT coexistence example combining wifi_cli and edgefast_open BT shell.
+      example_readme:
+      - examples/coex_examples/coex_wifi_edgefast_open/readme.md
+      - ${board_root}/${board}/coex_examples/coex_wifi_edgefast_open/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmimxrt700@cm33_core0:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@debug
+    - -iar@release
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@flash_debug
+    - -mdk@flash_release

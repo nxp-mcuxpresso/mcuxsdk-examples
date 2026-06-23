@@ -1,0 +1,50 @@
+/*
+ *  Copyright 2026 NXP
+ *  All rights reserved.
+ *
+ *  SPDX-License-Identifier: BSD-3-Clause
+ */
+
+#include "edgefast_open_config.h"
+
+#define CONTROLLER_INIT_ESCAPE 1
+
+#define FLASH_ADAPTER_SIZE 0x10000
+#define porting_errno      1
+
+#if (defined(WIFI_IW416_BOARD_MURATA_1XK_M2) || defined(WIFI_88W8987_BOARD_MURATA_1ZM_M2) || \
+     defined(WIFI_IW612_BOARD_MURATA_2EL_M2) || defined(WIFI_IW610_BOARD_MURATA_2LL_M2))
+#include "wifi_bt_module_config.h"
+#include "wifi_config.h"
+#else
+#error The transceiver module is unsupported
+#endif
+
+#define OSA_USED 1
+#if defined(WIFI_IW612_BOARD_MURATA_2EL_M2)
+#undef SD_TIMING_MAX
+#define SD_TIMING_MAX kSD_TimingDDR50Mode
+#endif /*#define WIFI_IW612_BOARD_MURATA_2EL_M2*/
+
+#if CONFIG_BT_HAS
+#undef CONFIG_UTF8
+#define CONFIG_UTF8 1
+#endif
+
+#if CONFIG_BT_MCS
+#undef CONFIG_MCTL_LOCAL_PLAYER_REMOTE_CONTROL
+#define CONFIG_MCTL_LOCAL_PLAYER_REMOTE_CONTROL 1
+#endif
+
+#if CONFIG_MCTL
+#undef CONFIG_MCTL_LOCAL_PLAYER_CONTROL
+#define CONFIG_MCTL_LOCAL_PLAYER_CONTROL 1
+#undef CONFIG_MCTL_LOCAL_PLAYER_LOCAL_CONTROL
+#define CONFIG_MCTL_LOCAL_PLAYER_LOCAL_CONTROL 1
+#undef CONFIG_MCTL_LOCAL_PLAYER_REMOTE_CONTROL
+#define CONFIG_MCTL_LOCAL_PLAYER_REMOTE_CONTROL 1
+#undef CONFIG_MCTL_REMOTE_PLAYER_CONTROL
+#define CONFIG_MCTL_REMOTE_PLAYER_CONTROL 1
+#undef CONFIG_MCTL_REMOTE_PLAYER_CONTROL_OBJECTS
+#define CONFIG_MCTL_REMOTE_PLAYER_CONTROL_OBJECTS 1
+#endif
