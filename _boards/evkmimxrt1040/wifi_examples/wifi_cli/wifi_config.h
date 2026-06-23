@@ -75,6 +75,8 @@
 
 #endif
 
+#define CONFIG_RF_TEST_MODE 1
+
 /* Logs */
 #define CONFIG_ENABLE_ERROR_LOGS   1
 #define CONFIG_ENABLE_WARNING_LOGS 1
