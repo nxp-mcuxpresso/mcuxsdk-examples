@@ -44,17 +44,19 @@ MEMORY
 /* Define output sections */
 SECTIONS
 {
-  /* section for storing the secondary core image */
+  /* section for storing the secondary core image.
+   * Do NOT redeclare core1_image_start / core1_image_end / core1_image_size
+   * here — fsl_incbin.S provides them, with core1_image_size as a real
+   * 4-byte data word.  Re-declaring core1_image_size in the linker turns
+   * it into an absolute symbol; a C read of `extern int core1_image_size`
+   * then dereferences a flash byte at the symbol's numeric value. */
   .core1_code :
   {
      . = ALIGN(4) ;
-    core1_image_start = .;
     KEEP (*(.core1_code))
      *(.core1_code*)
      . = ALIGN(4) ;
-    core1_image_end = .;
   } > m_core1_image
-  core1_image_size = core1_image_end - core1_image_start;
 
   /* NOINIT section for rpmsg_sh_mem */
   .noinit_rpmsg_sh_mem (NOLOAD) : ALIGN(4)

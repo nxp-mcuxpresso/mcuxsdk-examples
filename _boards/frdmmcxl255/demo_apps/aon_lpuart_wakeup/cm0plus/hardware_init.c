@@ -57,6 +57,11 @@ void BOARD_InitHardware(void)
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitDebugConsole();
 
+    /* Clear stale NVIC pending bits.  The CM0+ CPU reset via CGU
+     * RST_SUB_BLK does not clear the NVIC.  After DPD2 wakeup the
+     * LPUART0_AON pending bit may survive from the previous cycle. */
+    NVIC_ClearPendingIRQ(LPUART0_AON_IRQn);
+
     SMM_DisableAonCpuIso(AON__SMM);
     EnableIRQ(SMM_EXT_IRQn);
     AON__SMM->PWDN_CONFIG &= ~SMM_PWDN_CONFIG_Q_TMT_EN_MASK;

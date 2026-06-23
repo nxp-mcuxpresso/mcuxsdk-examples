@@ -101,8 +101,17 @@ static bool APP_SecondaryCoreCallback(power_low_power_mode_t targetPowerMode, vo
     {
         /* PD2/DPD2: CM0+ enters WFI in InterpretRequest.  Ensure LPUART
          * peripheral RX interrupt and NVIC IRQ are enabled so incoming
-         * character wakes CM0+ from WFI. */
+         * character wakes CM0+ from WFI.
+         *
+         * Clear any stale NVIC pending bit first.  The CM0+ CPU reset
+         * (CGU RST_SUB_BLK CM0P_RST_REL) does NOT clear NVIC pending
+         * bits.  After a DPD2 reboot the ISR's DisableIRQ leaves IRQ 3
+         * pending (LPUART re-asserts because RDRF was intentionally not
+         * read).  LPUART_SoftwareReset in InitDebugConsole clears the
+         * peripheral, but the stale NVIC pending bit survives and would
+         * cause the next WFI to return immediately. */
         LPUART_EnableInterrupts(APP_AON_LPUART, kLPUART_RxDataRegFullInterruptEnable);
+        NVIC_ClearPendingIRQ(APP_AON_LPUART_IRQn);
         EnableIRQ(APP_AON_LPUART_IRQn);
         MU_DisableInterrupts(APP_MU, kMU_Rx0FullInterruptEnable);
     }
@@ -207,6 +216,7 @@ static void APP_DPD1ToActive(void)
      * the debug console so it can serve as the wakeup source. */
     PRINTF("Waiting for AON LPUART character to wakeup from DPD1...\r\n");
     LPUART_EnableInterrupts(APP_AON_LPUART, kLPUART_RxDataRegFullInterruptEnable);
+    NVIC_ClearPendingIRQ(APP_AON_LPUART_IRQn);
     EnableIRQ(APP_AON_LPUART_IRQn);
     __WFI();
 
