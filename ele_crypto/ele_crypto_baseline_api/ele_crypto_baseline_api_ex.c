@@ -296,7 +296,16 @@ int main(void)
             PRINTF("SOC ID number 0x%x%x \r\n\r\n", info[5], info[4]);
         }
 
+#if defined(FSL_FEATURE_ELE_S4XX) && (FSL_FEATURE_ELE_S4XX > 0)
         /****************** ELE clock change start ***********************/
+        /* ELE-S4xx (RT1180 family) exposes a dedicated EDGELOCK clock root
+         * that the application can retune via
+         * CLOCK_SetRootClock(kCLOCK_Root_Edgelock, ...). Non-S4xx SoCs (e.g.
+         * RT2660 Sentinel) do not expose an equivalent root in fsl_clock.h,
+         * so the whole clock-change block is gated out for them.
+         * TODO(non-S4xx): once the Sentinel clock model and corresponding
+         * fsl_clock.h enums are landed for those SoCs, add an #elif branch
+         * here that performs the equivalent retune. */
         PRINTF("****************** ELE clock change start *****************\r\n");
         if (ELE_ClockChangeStart(S3MU) != kStatus_Success)
         {
@@ -341,6 +350,12 @@ int main(void)
         {
             PRINTF("ELE clock is now 100Mhz as expected.\r\n\r\n");
         }
+#else
+        PRINTF("****************** ELE clock change skipped ***************\r\n");
+        PRINTF("This SoC does not expose an ELE/Sentinel clock root in\r\n"
+               "fsl_clock.h; the clock-change sub-test is omitted. See the\r\n"
+               "FSL_FEATURE_ELE_S4XX guard in this file for details.\r\n\r\n");
+#endif /* FSL_FEATURE_ELE_S4XX */
 
         /****************** Device attestation ***********************/
         PRINTF("****************** Device attestation *********************\r\n");

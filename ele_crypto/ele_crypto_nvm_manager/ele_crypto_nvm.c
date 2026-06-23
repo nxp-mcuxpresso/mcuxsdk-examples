@@ -209,8 +209,14 @@ int main(void)
     {
         /* HW init */
         BOARD_InitHardware();
+#if defined(FSL_FEATURE_SOC_XCACHE_COUNT) && (FSL_FEATURE_SOC_XCACHE_COUNT > 0)
+        /* Cortex-M33 XCACHE instances (RT1180 family). On SoCs without XCACHE
+         * (e.g. Cortex-M85 RT2660, which uses the ARMv7-M L1 cache), this
+         * example relies on the SDMMC host driver to do per-DMA-buffer cache
+         * maintenance around descriptor and data accesses. */
         XCACHE_DisableCache(XCACHE_PC);
         XCACHE_DisableCache(XCACHE_PS);
+#endif
 
         /* Initialize the filesystem with SD backend */
         sd_fs_initialize();
