@@ -24,6 +24,8 @@ void BOARD_InitHardware(void)
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 
+    BOARD_InitBUTTONsPins();
+
     /* Connect trigger sources to PINT, PINT should be enabled before configuring INPUTMUX. */
     RESET_ClearPeripheralReset(kPINT_RST_SHIFT_RSTn);
     CLOCK_EnableClock(kCLOCK_Pint);

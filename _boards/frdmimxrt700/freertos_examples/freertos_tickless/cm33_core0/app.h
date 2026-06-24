@@ -19,7 +19,7 @@
 
 #define PINT                   PINT0
 #define INPUTMUX               INPUTMUX0
-#define BOARD_PINT_PIN_INT_SRC kINPUTMUX_GpioPort0Pin9ToPintsel
+#define BOARD_PINT_PIN_INT_SRC kINPUTMUX_GpioPort0Pin10ToPintsel
 /* @brief FreeRTOS tickless timer configuration. */
 #define BOARD_OSTIMER_TIMER_INSTANCE OSTIMER_CPU0  /*!< Tickless timer base address. */
 #define BOARD_OSTIMER_TIMER_IRQ      OS_EVENT_IRQn /*!< Tickless timer IRQ number. */

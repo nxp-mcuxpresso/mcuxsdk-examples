@@ -21,6 +21,7 @@ void BOARD_InitHardware(void)
 {
     BOARD_InitAHBSC();
     BOARD_InitBootPins();
+    BOARD_InitBUTTONsPins_Sense();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 
