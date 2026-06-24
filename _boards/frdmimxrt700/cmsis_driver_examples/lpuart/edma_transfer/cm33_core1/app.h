@@ -16,7 +16,7 @@
 /*${macro:start}*/
 #define DEMO_USART                 Driver_USART19
 #define EXAMPLE_USART_DMA_BASEADDR DMA2
-#define EXAMPLE_DMA_CLOCK          kCLOCK_Dma0
+#define EXAMPLE_DMA_CLOCK          kCLOCK_Dma2
 #define DEMO_USART_CLK_FREQ       CLOCK_GetLPFlexCommClkFreq(19u)
 #define DEMO_USART_TX_EDMA_CHANNEL kDmaRequestMuxLpFlexcomm19Tx
 #define DEMO_USART_RX_EDMA_CHANNEL kDmaRequestMuxLpFlexcomm19Rx
