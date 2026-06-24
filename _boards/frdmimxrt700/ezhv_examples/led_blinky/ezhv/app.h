@@ -11,7 +11,7 @@
  ******************************************************************************/
 /*${macro:start}*/
 #define BOARD_LED_GPIO     MSDK_REG_SECURE_ADDR(GPIO0)
-#define BOARD_LED_GPIO_PIN 17
+#define BOARD_LED_GPIO_PIN 19
 /*${macro:end}*/
 
 /*******************************************************************************
