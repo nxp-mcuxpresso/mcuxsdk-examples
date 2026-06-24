@@ -13,11 +13,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v16.0
+product: Pins v17.0
 processor: MIMXRT798S
 package_id: MIMXRT798SGVKB
 mcu_data: ksdk2_0
-processor_version: 0.2412.10
+processor_version: 26.06.0
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -43,8 +43,8 @@ void BOARD_InitBootPins(void)
 BOARD_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: N5, peripheral: LP_FLEXCOMM0, signal: P1, pin_signal: PIO1_0/LP_FLEXCOMM0_P1/SCT0_OUT9/CTIMER4_MAT1}
-  - {pin_num: N4, peripheral: LP_FLEXCOMM0, signal: P0, pin_signal: PIO0_31/LP_FLEXCOMM0_P0/UTICK0_CAP2/SCT0_OUT8/CTIMER4_MAT0}
+  - {pin_num: AD25, peripheral: LP_FLEXCOMM0, signal: P1, pin_signal: PIO1_0/LP_FLEXCOMM0_P1/SCT0_OUT9/CTIMER4_MAT1}
+  - {pin_num: V21, peripheral: LP_FLEXCOMM0, signal: P0, pin_signal: PIO0_31/LP_FLEXCOMM0_P0/UTICK0_CAP2/SCT0_OUT8/CTIMER4_MAT0, input_buffer: enable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -67,15 +67,15 @@ void BOARD_InitPins(void)
                                          IOPCTL_PIO_PUPD_DI |
                                          /* Enable pull-down function */
                                          IOPCTL_PIO_PULLDOWN_EN |
-                                         /* Disable input buffer function */
-                                         IOPCTL_PIO_INBUF_DI |
+                                         /* Enables input buffer function */
+                                         IOPCTL_PIO_INBUF_EN |
                                          /* Pseudo Output Drain is disabled */
                                          IOPCTL_PIO_PSEDRAIN_DI |
                                          /* Input function is not inverted */
                                          IOPCTL_PIO_INV_DI |
                                          /* Selects transmitter current drive 100ohm */
                                          IOPCTL_PIO_DRIVE_100OHM);
-    /* PORT0 PIN31 (coords: N4) is configured as LP_FLEXCOMM0_P0 */
+    /* PORT0 PIN31 (coords: V21) is configured as LP_FLEXCOMM0_P0 */
     IOPCTL_PinMuxSet(0U, 31U, port0_pin31_config);
 
     const uint32_t port1_pin0_config = (/* Pin is configured as LP_FLEXCOMM0_P1 */
@@ -92,7 +92,7 @@ void BOARD_InitPins(void)
                                         IOPCTL_PIO_INV_DI |
                                         /* Selects transmitter current drive 100ohm */
                                         IOPCTL_PIO_DRIVE_100OHM);
-    /* PORT1 PIN0 (coords: N5) is configured as LP_FLEXCOMM0_P1 */
+    /* PORT1 PIN0 (coords: AD25) is configured as LP_FLEXCOMM0_P1 */
     IOPCTL_PinMuxSet(1U, 0U, port1_pin0_config);
 }
 
@@ -102,10 +102,10 @@ void BOARD_InitPins(void)
 LPSPI16_InitPins:
 - options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: N23, peripheral: LPSPI16, signal: PCS0, pin_signal: PIO2_5/LPSPI16_PCS0, input_buffer: enable}
-  - {pin_num: L24, peripheral: LPSPI16, signal: SCK, pin_signal: PIO2_3/LPSPI16_SCK, input_buffer: enable}
-  - {pin_num: M24, peripheral: LPSPI16, signal: SIN, pin_signal: PIO2_4/LPSPI16_SIN, input_buffer: enable}
-  - {pin_num: P23, peripheral: LPSPI16, signal: SOUT, pin_signal: PIO2_2/LPSPI16_SOUT, input_buffer: enable}
+  - {pin_num: P23, peripheral: LPSPI16, signal: SOUT, pin_signal: PIO2_2/LPSPI16_SOUT/EZH_PIO2/FLEXIO_D2/LCD_ENABLE/LCD_DBI_DATA_OEN, input_buffer: enable}
+  - {pin_num: L24, peripheral: LPSPI16, signal: SCK, pin_signal: PIO2_3/LPSPI16_SCK/EZH_PIO3/FLEXIO_D3/LCD_DOTCLK/LCD_DBI_RWDX, input_buffer: enable}
+  - {pin_num: M24, peripheral: LPSPI16, signal: SIN, pin_signal: PIO2_4/LPSPI16_SIN/EZH_PIO4/FLEXIO_D4/LCD_HSYNC/LCD_DBI_WRX, input_buffer: enable}
+  - {pin_num: N23, peripheral: LPSPI16, signal: PCS0, pin_signal: PIO2_5/LPSPI16_PCS0/EZH_PIO5/FLEXIO_D5/LCD_VSYNC/LCD_DBI_E, input_buffer: enable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -205,10 +205,10 @@ void LPSPI16_InitPins(void)
 LPSPI16_DeinitPins:
 - options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: N23, peripheral: GPIO2, signal: 'GPIO, 5', pin_signal: PIO2_5/LPSPI16_PCS0}
-  - {pin_num: L24, peripheral: GPIO2, signal: 'GPIO, 3', pin_signal: PIO2_3/LPSPI16_SCK}
-  - {pin_num: M24, peripheral: GPIO2, signal: 'GPIO, 4', pin_signal: PIO2_4/LPSPI16_SIN}
-  - {pin_num: P23, peripheral: GPIO2, signal: 'GPIO, 2', pin_signal: PIO2_2/LPSPI16_SOUT}
+  - {pin_num: P23, peripheral: GPIO2, signal: 'GPIO, 2', pin_signal: PIO2_2/LPSPI16_SOUT/EZH_PIO2/FLEXIO_D2/LCD_ENABLE/LCD_DBI_DATA_OEN}
+  - {pin_num: L24, peripheral: GPIO2, signal: 'GPIO, 3', pin_signal: PIO2_3/LPSPI16_SCK/EZH_PIO3/FLEXIO_D3/LCD_DOTCLK/LCD_DBI_RWDX}
+  - {pin_num: M24, peripheral: GPIO2, signal: 'GPIO, 4', pin_signal: PIO2_4/LPSPI16_SIN/EZH_PIO4/FLEXIO_D4/LCD_HSYNC/LCD_DBI_WRX}
+  - {pin_num: N23, peripheral: GPIO2, signal: 'GPIO, 5', pin_signal: PIO2_5/LPSPI16_PCS0/EZH_PIO5/FLEXIO_D5/LCD_VSYNC/LCD_DBI_E}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
