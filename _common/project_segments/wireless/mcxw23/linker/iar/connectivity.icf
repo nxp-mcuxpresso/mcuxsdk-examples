@@ -1,4 +1,4 @@
-/*
+﻿/*
 ** ###################################################################
 **     Processors:          MCXW236AIHNAR
 **                          MCXW236AIUKAR
@@ -127,10 +127,18 @@ if (isdefinedsymbol(__USE_DLIB_PERTHREAD))
   initialize by copy with packing = none { section __DLIB_PERTHREAD };
 }
 
+keep { section ._settings_handler_static* };
+define block ._settings_handler_static with fixed order { readonly section ._settings_handler_static* };
+define image symbol _settings_handler_static_list_start = ADDR(._settings_handler_static);
+define image symbol _settings_handler_static_list_end   = END(._settings_handler_static);
+
+
 do not initialize  { section .noinit };
 do not initialize  { section .heap };
 
+
 place at address mem: m_interrupts_start    { readonly section .intvec };
+place in TEXT_region                        { block ._settings_handler_static };
 place in TEXT_region                        { readonly };
 place in DATA_region                        { block RW };
 place in DATA_region                        { block ZI };

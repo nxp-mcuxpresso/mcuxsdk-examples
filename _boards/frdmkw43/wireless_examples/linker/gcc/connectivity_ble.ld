@@ -298,6 +298,15 @@ SECTIONS
     __exidx_end = .;
   } > m_text
 
+  ._settings_handler_static :
+  {
+    . = ALIGN(4);
+    _settings_handler_static_list_start = .;
+    KEEP(*(SORT(._settings_handler_static.static.*)))
+    _settings_handler_static_list_end = .;
+    . = ALIGN(4);
+  } > m_text
+
  .ctors :
   {
     __CTOR_LIST__ = .;

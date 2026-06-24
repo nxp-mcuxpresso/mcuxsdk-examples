@@ -1,4 +1,4 @@
-/*
+﻿/*
 ** ###################################################################
 **     Processors:          KW45B41Z83AFPA
 **                          KW45B41Z83AFTA
@@ -371,9 +371,15 @@ if (isdefinedsymbol(__USE_DLIB_PERTHREAD))
 
 do not initialize  { section .noinit };
 do not initialize  { section .heap };
+keep { section ._settings_handler_static* };
+define block SETTINGS_HANDLERS with fixed order { readonly section ._settings_handler_static* };
+define image symbol _settings_handler_static_list_start = ADDR(SETTINGS_HANDLERS);
+define image symbol _settings_handler_static_list_end   = END(SETTINGS_HANDLERS);
+
 
 place in VECT_region                            { block VECT };
 place in TEXT_region                            { block TEXT };
+place in TEXT_region                            { block SETTINGS_HANDLERS };
 place in PROD_INFO_region                       { block PROD_INFO };
 place in DATA0_region                           { block DATA0 };
 place in DATA1_region                           { block DATA1 };

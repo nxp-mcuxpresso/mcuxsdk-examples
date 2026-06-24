@@ -404,6 +404,11 @@ do not initialize  { section .noinit };
 do not initialize  { section .heap };
 do not initialize  { section .rpmsg_sh_mem_section};
 
+keep { section ._settings_handler_static* };
+define block SETTINGS_HANDLERS with fixed order { readonly section ._settings_handler_static* };
+define image symbol _settings_handler_static_list_start = ADDR(SETTINGS_HANDLERS);
+define image symbol _settings_handler_static_list_end   = END(SETTINGS_HANDLERS);
+
 /********************************************** PLACEMENT **********************************************/
 
 /* shared memory placements */
@@ -412,6 +417,7 @@ place in m_shared_data_region                   { section .m_shared_data };
 
 /* core0 memory placements */
 place in TEXT_region                            { block TEXT };
+place in TEXT_region                            { block SETTINGS_HANDLERS };
 place in DATA0_region                           { block DATA0 };
 place in CSTACK_region                          { block CSTACK };
 

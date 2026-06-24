@@ -1,4 +1,4 @@
-/*
+﻿/*
 ** ###################################################################
 **     Processors:          KW45B41Z83_SERIES
 **                          K32W1480_SERIES
@@ -258,6 +258,15 @@ SECTIONS
     PROVIDE_HIDDEN (__fini_array_end = .);
   } > m_text
 
+
+  ._settings_handler_static :
+  {
+    . = ALIGN(4);
+    _settings_handler_static_list_start = .;
+    KEEP(*(SORT(._settings_handler_static.static.*)))
+    _settings_handler_static_list_end = .;
+    . = ALIGN(4);
+  } > m_text
   __etext = .;    /* define a global symbol at end of code */
   __DATA_ROM = .; /* Symbol is used by startup for data initialization */
 
