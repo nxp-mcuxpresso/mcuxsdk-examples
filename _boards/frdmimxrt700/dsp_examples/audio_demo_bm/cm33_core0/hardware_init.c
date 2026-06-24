@@ -53,7 +53,7 @@ void BOARD_InitHardware(void)
     BOARD_InitAHBSC();
 
     /*Clock setting for LPI2C */
-    CLOCK_AttachClk(kFCCLK0_to_FLEXCOMM2);
+    CLOCK_AttachClk(kFCCLK0_to_FLEXCOMM3);
 
     POWER_DisablePD(kPDRUNCFG_APD_DMA0_1_PKC_ETF);
     POWER_DisablePD(kPDRUNCFG_PPD_DMA0_1_PKC_ETF);

@@ -53,8 +53,8 @@ BOARD_InitPins:
   - {pin_num: J4, peripheral: SAI0, signal: TX_BCLK, pin_signal: PIO0_3, input_buffer: enable}
   - {pin_num: K4, peripheral: SAI0, signal: TXD0, pin_signal: PIO0_4, input_buffer: enable}
   - {pin_num: K3, peripheral: SAI0, signal: TX_SYNC, pin_signal: PIO0_5, input_buffer: enable}
-  - {pin_num: R2, peripheral: LP_FLEXCOMM2, signal: P0, pin_signal: PIO1_11, open_drain: enable, input_buffer: enable}
-  - {pin_num: R1, peripheral: LP_FLEXCOMM2, signal: P1, pin_signal: PIO1_12, open_drain: enable, input_buffer: enable}
+  - {pin_num: AD24, peripheral: LP_FLEXCOMM3, signal: P0, pin_signal: PIO1_18, open_drain: enable, input_buffer: enable}
+  - {pin_num: AC23, peripheral: LP_FLEXCOMM3, signal: P1, pin_signal: PIO1_17, open_drain: enable, input_buffer: enable}
   - {pin_num: U18, peripheral: PDM, signal: CLK, pin_signal: PIO10_8}
   - {pin_num: T18, peripheral: PDM, signal: 'DATA, 0', pin_signal: PIO10_9, input_buffer: enable}
   - {pin_num: M2, peripheral: CLKCTL0, signal: MCLK, pin_signal: PIO0_21, selects_transmitter_current_drive: O_33, input_buffer: enable}
@@ -229,7 +229,7 @@ void BOARD_InitPins(void)
     /* PORT1 PIN0 (coords: N5) is configured as LP_FLEXCOMM0_P1 */
     IOPCTL_PinMuxSet(1U, 0U, port1_pin0_config);
 
-    const uint32_t port1_pin11_config = (/* Pin is configured as LP_FLEXCOMM2_P0 */
+    const uint32_t port1_pin18_config = (/* Pin is configured as LP_FLEXCOMM3_P0 */
                                          IOPCTL_PIO_FUNC1 |
                                          /* Disable pull-up / pull-down function */
                                          IOPCTL_PIO_PUPD_DI |
@@ -243,10 +243,10 @@ void BOARD_InitPins(void)
                                          IOPCTL_PIO_INV_DI |
                                          /* Selects transmitter current drive 100ohm */
                                          IOPCTL_PIO_DRIVE_100OHM);
-    /* PORT1 PIN11 (coords: R2) is configured as LP_FLEXCOMM2_P0 */
-    IOPCTL_PinMuxSet(1U, 11U, port1_pin11_config);
+    /* PORT1 PIN18 (coords: AD24) is configured as LP_FLEXCOMM3_P0 */
+    IOPCTL_PinMuxSet(1U, 18U, port1_pin18_config);
 
-    const uint32_t port1_pin12_config = (/* Pin is configured as LP_FLEXCOMM2_P1 */
+    const uint32_t port1_pin17_config = (/* Pin is configured as LP_FLEXCOMM3_P1 */
                                          IOPCTL_PIO_FUNC1 |
                                          /* Disable pull-up / pull-down function */
                                          IOPCTL_PIO_PUPD_DI |
@@ -260,8 +260,8 @@ void BOARD_InitPins(void)
                                          IOPCTL_PIO_INV_DI |
                                          /* Selects transmitter current drive 100ohm */
                                          IOPCTL_PIO_DRIVE_100OHM);
-    /* PORT1 PIN12 (coords: R1) is configured as LP_FLEXCOMM2_P1 */
-    IOPCTL_PinMuxSet(1U, 12U, port1_pin12_config);
+    /* PORT1 PIN17 (coords: AC23) is configured as LP_FLEXCOMM3_P1 */
+    IOPCTL_PinMuxSet(1U, 17U, port1_pin17_config);
 
     const uint32_t port10_pin8_config = (/* Pin is configured as MICFIL_CLK */
                                          IOPCTL_PIO_FUNC5 |
