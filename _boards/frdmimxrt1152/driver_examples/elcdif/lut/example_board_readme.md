@@ -19,15 +19,15 @@ Prepare the Demo
     - No parity
     - One stop bit
     - No flow control
-3.  Build the project, the project uses RK055MHD091 by default, to use other panels,
+3.  Build the project, the project uses RaspberryPi by default, to use other panels,
     change
-    #define USE_MIPI_PANEL MIPI_PANEL_RK055MHD091
+    #define USE_MIPI_PANEL MIPI_PANEL_RASPI_7INCH
     to
+    #define USE_MIPI_PANEL MIPI_PANEL_RK055MHD091
+    or
     #define USE_MIPI_PANEL MIPI_PANEL_RK055IQH091
     or
     #define USE_MIPI_PANEL MIPI_PANEL_RK055AHD091
-    or
-    #define USE_MIPI_PANEL DEMO_PANEL_RASPI_7INCH
     in elcdif_support.h.
 4.  Download the program to the target board.
 5.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
