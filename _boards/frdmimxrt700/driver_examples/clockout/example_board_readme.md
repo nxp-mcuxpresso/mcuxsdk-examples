@@ -32,4 +32,4 @@ Please choose one output clock.
 	C -- FRO0 Max Clock.
 	D -- FRO1 Max Clock.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-To measure the output clock signal, please use the oscilloscope to probe SJ254.
+To measure the output clock signal, please use the oscilloscope to probe SJ453-1.
