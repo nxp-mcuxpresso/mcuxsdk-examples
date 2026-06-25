@@ -1,3 +1,0 @@
-        <#if memory.name=="SRAM_DTC">
-        *bt_db_gen.o*(.bss*)
-        </#if>

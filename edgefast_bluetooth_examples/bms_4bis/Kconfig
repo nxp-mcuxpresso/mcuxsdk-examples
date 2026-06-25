@@ -1,2 +1,0 @@
-source "middleware/edgefast_bluetooth/Kconfig"
-source "Kconfig.mcuxpresso"
