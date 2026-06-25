@@ -1,0 +1,11 @@
+mdk:
+  config:
+    __common__:
+      update-before-debug: false
+
+initialization_file:
+  files:
+    - source: ${board_root}/mimxrt700evk/driver_examples/xspi/quad/mimxrt700evk_quad_flash_ram.ini
+      targets: debug release
+      attribute: initialization_file
+      toolchains: mdk

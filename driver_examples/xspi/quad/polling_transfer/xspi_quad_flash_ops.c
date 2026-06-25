@@ -15,6 +15,13 @@
 /* QE bit is bit 1 of Status Register-2 for W25Q25PWZEIM */
 #define FLASH_QUAD_ENABLE_BIT (1U << 1U)
 
+/* QPI (4-4-4) vs plain Quad I/O (1-4-4): both move data on 4 lines; QPI also sends
+ * the command on 4 lines and needs a stateful Enter-QPI. Set EXAMPLE_FLASH_QPI_MODE
+ * to 0 for parts with no QPI mode (e.g. W25Q512NW) to stay in Quad I/O (1-4-4). */
+#ifndef EXAMPLE_FLASH_QPI_MODE
+#define EXAMPLE_FLASH_QPI_MODE 1
+#endif
+
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -65,8 +72,13 @@ static void xspi_quad_set_ahb_read_spi(XSPI_Type *base)
 static void xspi_quad_set_ahb_read_qpi(XSPI_Type *base)
 {
     uint32_t qpiLUT[5] = {0U};
+#if EXAMPLE_FLASH_QPI_MODE
+    const uint8_t cmdPad = kXSPI_4PAD; /* QPI (4-4-4): command on 4 pads */
+#else
+    const uint8_t cmdPad = kXSPI_1PAD; /* Quad I/O (1-4-4): command on 1 pad */
+#endif
 
-    qpiLUT[0] = XSPI_LUT_SEQ(kXSPI_Command_SDR, kXSPI_4PAD, 0xEC, kXSPI_Command_RADDR_SDR, kXSPI_4PAD, 0x20);
+    qpiLUT[0] = XSPI_LUT_SEQ(kXSPI_Command_SDR, cmdPad, 0xEC, kXSPI_Command_RADDR_SDR, kXSPI_4PAD, 0x20);
     qpiLUT[1] = XSPI_LUT_SEQ(kXSPI_Command_MODE_SDR, kXSPI_4PAD, 0xFF, kXSPI_Command_DUMMY_SDR, kXSPI_4PAD, 0x0A);
     qpiLUT[2] = XSPI_LUT_SEQ(kXSPI_Command_READ_SDR, kXSPI_4PAD, 0x08, kXSPI_Command_STOP, kXSPI_1PAD, 0x0);
 
@@ -624,8 +636,10 @@ status_t xspi_quad_enable_quad_mode(XSPI_Type *base)
         XSPI_ClearAhbBuffer(base);
     }
 
+#if EXAMPLE_FLASH_QPI_MODE
     /* Step 2: Enter QPI mode (0x38, SPI 1-pad).
-     * After this the flash responds only to QPI (4-4-4) commands. */
+     * After this the flash responds only to QPI (4-4-4) commands.
+     * Skipped (EXAMPLE_FLASH_QPI_MODE 0) for parts that have no QPI mode. */
     flashXfer.cmdType  = kXSPI_Command;
     flashXfer.seqIndex = NOR_CMD_LUT_SEQ_IDX_ENTER_QPI;
     flashXfer.data     = NULL;
@@ -635,8 +649,9 @@ status_t xspi_quad_enable_quad_mode(XSPI_Type *base)
     {
         return status;
     }
+#endif
 
-    /* Step 3: Set Read Parameters (0xC0, QPI 4-pad).
+    /* Step 3: Set Read Parameters (0xC0).
      * Write P[7:0] = 0x50 → P[6:4]=101: SDR(0xEC) 12 dummy / 166MHz max. */
     writeValue         = 0x50U;
     flashXfer.cmdType  = kXSPI_Write;

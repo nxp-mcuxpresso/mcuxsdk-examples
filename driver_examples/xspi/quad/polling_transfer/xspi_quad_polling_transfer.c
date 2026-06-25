@@ -43,7 +43,7 @@ int main(void)
     BOARD_InitHardware();
 
     PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
-    PRINTF("XSPI QPI SDR (4-4-4) polling example started!\r\n");
+    PRINTF("XSPI Quad I/O polling example started!\r\n");
 
     status = xspi_quad_full_init(EXAMPLE_XSPI, &vendorID);
     if (status != kStatus_Success)
@@ -54,7 +54,7 @@ int main(void)
     }
 
     PRINTF("4-byte address mode entered.\r\n");
-    PRINTF("QPI (4-4-4) mode enabled.\r\n");
+    PRINTF("Quad I/O mode enabled.\r\n");
     PRINTF("Flash vendor ID: 0x%02X\r\n", vendorID);
 
     for (t = 0U; t < numTests; t++)
@@ -119,7 +119,7 @@ int main(void)
         }
     }
 
-    PRINTF("\r\nXSPI QPI SDR (4-4-4) polling example finished.\r\n");
+    PRINTF("\r\nXSPI Quad I/O polling example finished.\r\n");
     PRINTF("Flash reset to default SPI mode.\r\n");
     xspi_quad_reset_and_halt(EXAMPLE_XSPI);
 

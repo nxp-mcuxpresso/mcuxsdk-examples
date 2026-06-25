@@ -25,3 +25,10 @@ xspi_quad_polling_transfer:
       - -iar@release
       - -mdk@debug
       - -mdk@release
+    mimxrt700evk@cm33_core0:
+      - -armgcc@flash_debug
+      - -armgcc@flash_release
+      - -iar@flash_debug
+      - -iar@flash_release
+      - -mdk@flash_debug
+      - -mdk@flash_release
