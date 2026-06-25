@@ -13,6 +13,7 @@
 #include "board_lp.h"
 #include "fwk_platform_lowpower.h"
 #include "fsl_pm_core.h"
+#include "fsl_power.h"
 #include "fwk_debug.h"
 #include "fsl_usart.h"
 #include "fsl_debug_console.h"
@@ -187,7 +188,8 @@ static status_t BOARD_LowpowerCallback(pm_event_type_t eventType, uint8_t powerS
         }
         else
         {
-            if (powerState >= PLATFORM_POWER_DOWN_STATE)
+            /* Perform recovery context when enter PM3 successfully */
+            if ((powerState >= PLATFORM_POWER_DOWN_STATE) && (POWER_GetWakenMode() >= PLATFORM_POWER_DOWN_STATE))
             {
                 BOARD_ExitPowerDown();
             }
