@@ -477,15 +477,30 @@ failed_init:
  */
 int main(void)
 {
-    psa_status_t status;
+    psa_status_t psa_status;   
     BOARD_InitHardware();
+    
+    /* Crypto initialization */
     config_mbedtls_threading_alt();
-    status = psa_crypto_init();
-    if (status != PSA_SUCCESS)
+    /* Force module reset before PSA init */
+    mbedtls_psa_crypto_free();
+    /* MCUX-88767 - this is workaround to fix random issues with 
+     * entropy source on devices with DCP module */
+    for(int i = 0; i < 10; i++)
     {
-        PRINTF("Failed to initialize MBEDTLS crypto! PSA error %d\r\n", status);
-        while (1)
-            ;
+        psa_status = psa_crypto_init();
+        if(psa_status == PSA_SUCCESS)
+        {
+            break;
+        }
+        PRINTF("Warning: failed to init PSA crypto backend...trying again the initialization\n");
+        mbedtls_psa_crypto_free();
+    }
+    if (psa_status != PSA_SUCCESS)
+    {
+        PRINTF("FAILED to init PSA crypto backend! PSA error %d\n", psa_status);
+        while(1)
+          ;
     }
 
     mflash_drv_init();
