@@ -2,13 +2,13 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 if(${core_id} STREQUAL cm33_core0)
-board_runner_args(jlink "--device=MIMX943_M33_0")
+board_runner_args(jlink "--device=IMX943_M33_0")
 elseif(${core_id} STREQUAL cm33_core1)
-board_runner_args(jlink "--device=MIMX943_M33_1")
+board_runner_args(jlink "--device=IMX943_M33_1")
 elseif(${core_id} STREQUAL cm7_core0)
-board_runner_args(jlink "--device=MIMX943_M7_0")
+board_runner_args(jlink "--device=IMX943_M7_0")
 elseif(${core_id} STREQUAL cm7_core1)
-board_runner_args(jlink "--device=MIMX943_M7_1")
+board_runner_args(jlink "--device=IMX943_M7_1")
 endif()
 board_runner_args(linkserver  "--device=MIMX94398:IMX943-ORANGEBOX")
 board_runner_args(pyocd "--target=imx943")
