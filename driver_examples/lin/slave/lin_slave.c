@@ -1,5 +1,5 @@
 /*
- * Copyright  2016-2020,2025 NXP
+ * Copyright  2016-2020,2025-2026 NXP
  * All rights reserved.
  *
  *
@@ -750,10 +750,14 @@ int main(void)
     lin_state_t linCurrentState;
     lin_status_t status;
     uint32_t linfreq;
+
+#if defined(TJA_WAKEUP) && TJA_WAKEUP
     gpio_pin_config_t slpn_config = {
         kGPIO_DigitalOutput,
         1,
     };
+#endif
+
     /* Init board hardware. */
     BOARD_InitHardware();
 

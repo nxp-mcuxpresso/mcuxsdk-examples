@@ -71,3 +71,5 @@ Event-triggered frame received: ErrorCode=0x 1 ErrorValue=0x 5
 ## Supported Boards
 - [KW45B41Z-EVK](../../../_boards/kw45b41zevk/demo_apps/lin_stack/master/example_board_readme.md)
 - [KW47-EVK](../../../_boards/kw47evk/demo_apps/lin_stack/master/example_board_readme.md)
+- [FRDM-KW43](../../../_boards/frdmkw43/demo_apps/lin_stack/master/example_board_readme.md)
+- [FRDM-MCXW70](../../../_boards/frdmmcxw70/demo_apps/lin_stack/master/example_board_readme.md)

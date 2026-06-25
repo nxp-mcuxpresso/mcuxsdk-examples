@@ -29,3 +29,5 @@ MASTER
 ## Supported Boards
 - [KW45B41Z-EVK](../../../_boards/kw45b41zevk/driver_examples/lin/slave/example_board_readme.md)
 - [KW47-EVK](../../../_boards/kw47evk/driver_examples/lin/slave/example_board_readme.md)
+- [FRDM-KW43](../../../_boards/frdmkw43/driver_examples/lin/slave/example_board_readme.md)
+- [FRDM-MCXW70](../../../_boards/frdmmcxw70/driver_examples/lin/slave/example_board_readme.md)

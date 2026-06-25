@@ -1,5 +1,5 @@
 /*
- * Copyright  2016-2020,2025 NXP
+ * Copyright  2016-2020,2025-2026 NXP
  * All rights reserved.
  *
  *
@@ -803,10 +803,12 @@ int main(void)
         kGPIO_DigitalInput,
         0,
     };
+#if defined(TJA_WAKEUP) && TJA_WAKEUP
     gpio_pin_config_t slpn_config = {
         kGPIO_DigitalOutput,
         1,
     };
+#endif
 
     tpm_config_t tpmInfo;
     lin_user_config_t linUserConfigMaster;
