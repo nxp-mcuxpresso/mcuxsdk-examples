@@ -252,3 +252,4 @@ flexspi_nor_polling_transfer:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     - -mdk@release
+    evkmimx8mn: []

@@ -170,7 +170,7 @@ void BOARD_RdcInit(void)
 
     if (BOARD_IS_XIP_FLEXSPI())
     {
-        CLOCK_EnableClock(kCLOCK_Qspi);
+        CLOCK_EnableClock(kCLOCK_Flexspi);
     }
 
     CLOCK_ControlGate(kCLOCK_SysPll1Gate, kCLOCK_ClockNeededAll);   /* Enable the CCGR gate for SysPLL1 in Domain 1 */
