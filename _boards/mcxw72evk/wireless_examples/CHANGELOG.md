@@ -1,3 +1,10 @@
+#### 26.09.00-pvw1
+- [debug_nbu] Added Serial Manager port (`board_debug_nbu_serialmgr_port.c`) to route HCI logs over the main application serial port.
+- [debug_nbu] Added fault-only HCI logging mode (`enable_hci_log_on_fault_only`): packets are forwarded only after an NBU fatal fault is detected, avoiding continuous logging overhead.
+- [debug_nbu] Added Base64-encoded HCI log output (`enable_hci_log_base64`): each packet is emitted as a single ASCII-safe `@<base64>\n` line, allowing HCI logs to be safely interleaved with human-readable console text on the shared serial port.
+- [hci_to_btsnoop.py] Added `--base64` mode to decode Base64 line-framed packets from live serial capture.
+- [hci_to_btsnoop.py] Added `-i/--input` option to convert a previously saved console log file to BTSNOOP offline (requires `--base64`).
+
 #### 25.09.00-rfp
 - [refdes] Enabled NBU debug module to detect NBU faults and extract debug data.
 - [refdes] Enabled debug console. Used to dump NBU context/state on NBU fault detection.
