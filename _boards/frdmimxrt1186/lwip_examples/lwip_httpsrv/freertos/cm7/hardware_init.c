@@ -121,6 +121,10 @@ void BOARD_InitHardware(void)
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 
+    /* Disable PHY IRQ erroneously enabled by bootrom (MCUX-88575) */
+    RGPIO_SetPinInterruptConfig(RGPIO1, 9U, kRGPIO_InterruptOutput0, kRGPIO_InterruptOrDMADisabled);
+    NVIC_ClearPendingIRQ(GPIO1_0_IRQn);
+
     BOARD_NETC_Init();
     APP_MDIO_Init();
 }
