@@ -21,8 +21,8 @@
 #define DEMO_LPSPI_TRANSMIT_EDMA_CHANNEL   Dma5RequestMuxLPSPI7Tx
 #define DEMO_LPSPI_RECEIVE_EDMA_CHANNEL    Dma5RequestMuxLPSPI7Rx
 #define EXAMPLE_LPSPI_SLAVE_DMA_BASE       EDMA5_2
-#define EXAMPLE_LPSPI_SLAVE_DMA_RX_CHANNEL Dma5RequestMuxLPSPI7Rx
-#define EXAMPLE_LPSPI_SLAVE_DMA_TX_CHANNEL Dma5RequestMuxLPSPI7Tx
+#define EXAMPLE_LPSPI_SLAVE_DMA_RX_CHANNEL 0
+#define EXAMPLE_LPSPI_SLAVE_DMA_TX_CHANNEL 1
 /*${macro:end}*/
 
 /*******************************************************************************
