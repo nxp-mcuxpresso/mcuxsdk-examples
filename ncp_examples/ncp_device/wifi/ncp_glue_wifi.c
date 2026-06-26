@@ -362,8 +362,13 @@ static int wlan_ncp_set_roaming(void *tlv)
 {
     NCP_CMD_ROAMING *roaming_cmd = (NCP_CMD_ROAMING *)tlv;
     int ret                      = 0;
+    uint8_t bitmap;
 
-    ret = wlan_set_roaming(roaming_cmd->enable, roaming_cmd->rssi_threshold);
+    /* Map legacy NCP enable/disable to new bitmap API:
+     * enable=1 -> bitmap=0x01 (RSSI_LOW only), enable=0 -> bitmap=0 (disable) */
+    bitmap = (roaming_cmd->enable != 0U) ? 0x01U : 0x00U;
+
+    ret = wlan_set_roaming(bitmap, roaming_cmd->rssi_threshold, 0);
     if (!ret)
         wlan_ncp_prepare_status(NCP_RSP_WLAN_STA_ROAMING, NCP_CMD_RESULT_OK);
     else
