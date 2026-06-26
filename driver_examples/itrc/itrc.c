@@ -33,7 +33,11 @@ void ITRC_Demo_Status_Print(void);
 /*******************************************************************************
  * Code
  ******************************************************************************/
-#if defined(ITRC0)
+void ITRC_DriverIRQHandler(void)
+{
+ ITRC0_DriverIRQHandler();
+}
+
 void ITRC0_DriverIRQHandler(void)
 {
     NVIC_DisableIRQ(APP_ITRC_IRQN);
@@ -57,33 +61,6 @@ void ITRC0_DriverIRQHandler(void)
 
     NVIC_EnableIRQ(APP_ITRC_IRQN);
 }
-#endif /* defined(ITRC0_DriverIRQHandler) */
-
-#if defined(ITRC)
-void ITRC_DriverIRQHandler(void)
-{
-    NVIC_DisableIRQ(APP_ITRC_IRQN);
-    PRINTF("ITRC IRQ Reached!\r\n");
-
-    ITRC_Demo_Status_Print();
-
-    PRINTF("Clear ITRC IRQ and SW Event 0 STATUS\r\n\r\n");
-
-    /* Clear SW Event 0 STATUS */
-    if (APP_ITRC_IN > 16U)
-    {
-        ITRC_ClearStatus1(ITRC, APP_ITRC_IN_MASK);
-    }
-    else
-    {
-        ITRC_ClearStatus(ITRC, APP_ITRC_IN_MASK);
-    }
-    /* Clear ITRC IRQ flag event */
-    ITRC_ClearStatus(ITRC, IRQ_ITRC_OUT_MASK);
-
-    NVIC_EnableIRQ(APP_ITRC_IRQN);
-}
-#endif /* defined(ITRC_DriverIRQHandler) */
 
 void ITRC_Demo_Status_Print(void)
 {
