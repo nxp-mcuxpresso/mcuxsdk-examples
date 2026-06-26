@@ -46,6 +46,10 @@
 #define configMAX_PRIORITIES                    18
 #define configMINIMAL_STACK_SIZE                ((unsigned short)90)
 #define configMAX_TASK_NAME_LEN                 13
+#define configENABLE_FPU                        0
+#define configENABLE_MPU                        0
+#define configENABLE_TRUSTZONE                  0
+#define configENABLE_MVE                        0
 #define configUSE_16_BIT_TICKS                  0
 #define configIDLE_SHOULD_YIELD                 1
 #define configUSE_TASK_NOTIFICATIONS            1
