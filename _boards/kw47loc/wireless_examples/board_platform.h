@@ -118,6 +118,10 @@
  * Platform specific - do not change
  ******************************************************************************/
 
+#if defined(gBoardUseFro32k_d) && (gBoardUseFro32k_d > 0)
+#define BOARD_32KHZ_SRC_CLK_ACCURACY      0
+#endif
+
  #define BOARD_UART_CLKSRC_FRO6M   2U  // kCLOCK_IpSrcFro6M
  #define BOARD_UART_CLKSRC_FRO192M 3U  // kCLOCK_IpSrcFro192M
 
