@@ -209,3 +209,4 @@ psa_crypto_examples:
     rdrw612bga: []
     frdmimxrt700@cm33_core0: []
     mimxrt700evk@cm33_core0: []
+    frdmmcxe31b: []
