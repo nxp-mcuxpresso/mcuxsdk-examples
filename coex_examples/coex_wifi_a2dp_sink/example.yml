@@ -12,20 +12,20 @@ coex_wifi_a2dp_sink:
       - ${board_root}/${board}/coex_examples/coex_wifi_a2dp_sink/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkcmimxrt1060:
-    - -armgcc@debug
-    - -armgcc@release
-    - -armgcc@sdram_debug
-    - -armgcc@sdram_release
-    - -iar@debug
-    - -iar@release
-    - -iar@sdram_debug
-    - -iar@sdram_release
-    - -iar@flexspi_nor_debug
-    - -iar@flexspi_nor_release
-    - -mdk@debug
-    - -mdk@release
-    - -mdk@sdram_debug
-    - -mdk@sdram_release
-    - -mdk@flexspi_nor_debug
-    - -mdk@flexspi_nor_release
+   #evkcmimxrt1060:
+   #- -armgcc@debug
+   #- -armgcc@release
+   #- -armgcc@sdram_debug
+   #- -armgcc@sdram_release
+   #- -iar@debug
+   #- -iar@release
+   #- -iar@sdram_debug
+   #- -iar@sdram_release
+   #- -iar@flexspi_nor_debug
+   #- -iar@flexspi_nor_release
+   #- -mdk@debug
+   #- -mdk@release
+   #- -mdk@sdram_debug
+   #- -mdk@sdram_release
+   #- -mdk@flexspi_nor_debug
+   #- -mdk@flexspi_nor_release
