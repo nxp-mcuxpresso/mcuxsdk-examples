@@ -26,6 +26,7 @@ PSA Crypto example to demonstrate cipher operation.
 - [KW47-EVK](../../_boards/kw47evk/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
 - [KW47-LOC](../../_boards/kw47loc/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
 - [FRDM-MCXE31B](../../_boards/frdmmcxe31b/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
+- [FRDM-MCXE32B](../../_boards/frdmmcxe32b/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
 
 ## Running the demo
 The log below shows the output of the PSA crypto examples in the terminal window:
