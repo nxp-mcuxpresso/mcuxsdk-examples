@@ -63,3 +63,4 @@ mbedtls3x_selftest:
     frdmimxrt700@cm33_core0: []
     frdmmcxw23: []
     frdmmcxe31b: []
+    frdmmcxe32b@core0: []

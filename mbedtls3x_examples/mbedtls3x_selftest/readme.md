@@ -27,3 +27,4 @@ prints results to the terminal.
 - [FRDM-MCXW72](../../_boards/frdmmcxw72/mbedtls3x_examples/mbedtls3x_selftest/example_board_readme.md)
 - [LPCXpresso55S36](../../_boards/lpcxpresso55s36/mbedtls3x_examples/mbedtls3x_selftest/example_board_readme.md)
 - [FRDM-MCXE31B](../../_boards/frdmmcxe31b/mbedtls3x_examples/mbedtls3x_selftest/example_board_readme.md)
+- [FRDM-MCXE32B](../../_boards/frdmmcxe32b/mbedtls3x_examples/mbedtls3x_selftest/example_board_readme.md)

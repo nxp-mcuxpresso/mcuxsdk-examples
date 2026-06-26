@@ -173,6 +173,7 @@ psa_crypto_examples:
     evkbmimxrt1170@cm7: []
     frdmmcxw23: []
     frdmmcxe31b: []
+    frdmmcxe32b@core0: []
     frdmmcxa266: []
     frdmmcxa366: []
     frdmmcxl255@cm33: []

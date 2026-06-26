@@ -160,6 +160,7 @@ mbedtls3x_psatest:
     frdmmcxw23: []
     frdmmcxl255@cm33: []
     frdmmcxe31b: []
+    frdmmcxe32b@core0: []
     frdmmcxa577: []
     frdmmcxa287: []
     frdmkw43: []
