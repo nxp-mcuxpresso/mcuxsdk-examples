@@ -37,3 +37,4 @@ Demo end
 
 ## Supported Boards
 - [FRDM-MCXE31B](../../_boards/frdmmcxe31b/ele_hseb/ele_hseb_demo/example_board_readme.md)
+- [FRDM-MCXE32B](../../_boards/frdmmcxe32b/ele_hseb/ele_hseb_demo/example_board_readme.md)

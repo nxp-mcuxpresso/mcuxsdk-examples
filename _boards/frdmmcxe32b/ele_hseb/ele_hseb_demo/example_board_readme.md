@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Type-C USB cable
-- FRDM-MCXE31B board
+- FRDM-MCXE32B board
 - Personal Computer
 
 Board settings

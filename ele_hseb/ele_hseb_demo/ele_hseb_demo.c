@@ -140,7 +140,7 @@ void getFwVersionService(void)
 {
     hseSrvResponse_t gSresponse = HSE_SRV_RSP_GENERAL_ERROR;
     gSresponse = HSE_GetVersion_Example(&gHseFwVersion);
-    
+
     if (HSE_SRV_RSP_OK == gSresponse)
         testStatus |= GET_VERSION_DONE;
 }
@@ -180,11 +180,11 @@ void MU1_B_DriverIRQHandler(void)
 int main()
 {
     testStatus = NO_TEST_EXECUTED;
-    
+
     BOARD_InitHardware();
-    
+
     PRINTF("* ELE_HSEB Demo started *\r\n\r\n");
- 
+
     fwversion[0].reserved = gHseFwVersion.reserved;
 
     /* Check if HSE FW usage flag is already enabled,
@@ -205,7 +205,7 @@ int main()
     PRINTF("Get FW version...");
     ASSERT(HSE_SRV_RSP_OK == HSE_GetVersion_Example(&gHseFwVersion));
     PRINTF("Sucess\r\n");
-    
+
     /* Check if NVM and RAM keys already formatted */
     /* format NVM and RAM key catalog */
     /* import keys for cryptographic operation and secure boot */
@@ -228,8 +228,8 @@ int main()
     /*HSE crypto examples: sym/asym services; sync/async operation mode*/
     PRINTF("\r\nExercise crypto operations:\r\n");
     gsrvResponse = HSE_Crypto();
-    
-    
+
+
     if (gsrvResponse == HSE_SRV_RSP_OK)
     {
         PRINTF("\r\nAll tests passed!!\r\n");
@@ -238,9 +238,9 @@ int main()
     {
         PRINTF("FAIL!!\r\n");
     }
-    
+
     PRINTF("Demo end\r\n");
-    
+
     while(1)
     {
         GETCHAR();
