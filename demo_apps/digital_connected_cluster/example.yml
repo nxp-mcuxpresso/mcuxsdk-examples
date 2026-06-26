@@ -12,19 +12,19 @@ edgefast_bluetooth_dcc_app:
       - ${board_root}/${board}/demo_apps/digital_connected_cluster/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkbmimxrt1170@cm7:
-    - -armgcc@debug
-    - -armgcc@release
-    - -armgcc@sdram_debug
-    - -armgcc@sdram_release
-    - -iar@debug
-    - -iar@release
-    - -iar@sdram_debug
-    - -iar@sdram_release
-    - -mdk@debug
-    - -mdk@release
-    - -mdk@sdram_debug
-    - -mdk@sdram_release
+   #evkbmimxrt1170@cm7:
+   #- -armgcc@debug
+   #- -armgcc@release
+   #- -armgcc@sdram_debug
+   #- -armgcc@sdram_release
+   #- -iar@debug
+   #- -iar@release
+   #- -iar@sdram_debug
+   #- -iar@sdram_release
+   #- -mdk@debug
+   #- -mdk@release
+   #- -mdk@sdram_debug
+   #- -mdk@sdram_release
 
 edgefast_bluetooth_dcc_app@multiple_conns:
   section-type: custom_application
@@ -33,16 +33,16 @@ edgefast_bluetooth_dcc_app@multiple_conns:
       extra_build_args:
       - -DCONF_FILE=examples/demo_apps/digital_connected_cluster/prj.conf
   boards:
-    evkbmimxrt1170@cm7:
-    - -armgcc@debug
-    - -armgcc@release
-    - -armgcc@sdram_debug
-    - -armgcc@sdram_release
-    - -iar@debug
-    - -iar@release
-    - -iar@sdram_debug
-    - -iar@sdram_release
-    - -mdk@debug
-    - -mdk@release
-    - -mdk@sdram_debug
-    - -mdk@sdram_release
+   #evkbmimxrt1170@cm7:
+   #- -armgcc@debug
+   #- -armgcc@release
+   #- -armgcc@sdram_debug
+   #- -armgcc@sdram_release
+   #- -iar@debug
+   #- -iar@release
+   #- -iar@sdram_debug
+   #- -iar@sdram_release
+   #- -mdk@debug
+   #- -mdk@release
+   #- -mdk@sdram_debug
+   #- -mdk@sdram_release
