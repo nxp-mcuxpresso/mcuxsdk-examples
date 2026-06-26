@@ -14,9 +14,9 @@
  ******************************************************************************/
 /*${macro:start}*/
 #define EXAMPLE_DMA_BASEADDR EDMA5_2
-#define DEMO_DMA_CHANNEL_0   0U
-#define APP_DMA_IRQ          DMA5_2_0_1_IRQn
-#define APP_DMA_IRQ_HANDLER  DMA5_2_0_1_IRQHandler
+#define DEMO_DMA_CHANNEL_0   2U
+#define APP_DMA_IRQ          DMA5_2_2_3_IRQn
+#define APP_DMA_IRQ_HANDLER  DMA5_2_2_3_IRQHandler
 /*${macro:end}*/
 
 /*******************************************************************************
