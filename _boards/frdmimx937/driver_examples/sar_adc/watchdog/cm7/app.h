@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 NXP
+ * Copyright 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -15,7 +15,7 @@
 #define DEMO_ADC_IRQn             ADC_WD_IRQn
 #define DEMO_ADC_IRQ_HANDLER_FUNC ADC_WD_IRQHandler
 
-#define DEMO_ADC_CHANNEL      0U
+#define DEMO_ADC_CHANNEL      34U
 #define DEMO_ADC_WDGID        0U
 #define DEMO_ADC_WDG_INT_TYPE kADC_HighThresholdIntEnable
 

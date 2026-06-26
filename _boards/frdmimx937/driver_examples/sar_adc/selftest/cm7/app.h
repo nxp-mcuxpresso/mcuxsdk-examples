@@ -16,7 +16,7 @@
 #define DEMO_ADC_IRQ_HANDLER_FUNC ADC_ER_IRQHandler
 
 #define DEMO_USED_CHANNELS 3U
-#define DEMO_ADC_CHANNEL0  0U
+#define DEMO_ADC_CHANNEL0  34U
 #define DEMO_ADC_CHANNEL1  2U
 #define DEMO_ADC_CHANNEL2  3U
 /*${macro:end}*/

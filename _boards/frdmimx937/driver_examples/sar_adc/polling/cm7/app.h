@@ -13,7 +13,7 @@
 /*${macro:start}*/
 #define DEMO_ADC_BASE      ADC
 #define DEMO_USED_CHANNELS 3U
-#define DEMO_ADC_CHANNEL0  0U
+#define DEMO_ADC_CHANNEL0  34U
 #define DEMO_ADC_CHANNEL1  2U
 #define DEMO_ADC_CHANNEL2  3U
 /*${macro:end}*/
