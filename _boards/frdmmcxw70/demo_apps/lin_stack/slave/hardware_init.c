@@ -64,7 +64,7 @@ void BOARD_InitHardware(void)
     EnableIRQ(DEMO_SW2_IRQn);
     EnableIRQ(DEMO_SW3_IRQn);
 
-    /* Initizlize LEDs. */
+    /* Initialize LEDs. */
     GPIO_PinInit(DEMO_LED1_GPIO, DEMO_LED1_PIN, &led_config);
     GPIO_PinInit(DEMO_LED2_GPIO, DEMO_LED2_PIN, &led_config);
     GPIO_PinInit(DEMO_LED3_GPIO, DEMO_LED3_PIN, &led_config);
