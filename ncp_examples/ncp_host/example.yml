@@ -18,11 +18,17 @@ ncp_host:
     - -armgcc@release
     - -armgcc@sdram_debug
     - -armgcc@sdram_release
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
     - -iar@debug
     - -iar@release
     - -iar@sdram_debug
     - -iar@sdram_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
     - -mdk@debug
     - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release

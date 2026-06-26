@@ -16,6 +16,8 @@ coex_wifi_peripheral_ht:
     rdrw612bga:
     - -armgcc@debug
     - -armgcc@release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
     - -iar@debug
     - -iar@release
     - -iar@flash_debug
@@ -27,6 +29,8 @@ coex_wifi_peripheral_ht:
     frdmrw612:
     - -armgcc@debug
     - -armgcc@release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
     - -iar@debug
     - -iar@release
     - -iar@flash_debug
@@ -41,6 +45,7 @@ coex_wifi_peripheral_ht:
     - -armgcc@sdram_debug
     - -armgcc@sdram_release
     - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
     - -iar@debug
     - -iar@release
     - -iar@sdram_debug
@@ -59,6 +64,7 @@ coex_wifi_peripheral_ht:
     - -armgcc@sdram_debug
     - -armgcc@sdram_release
     - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
     - -iar@debug
     - -iar@release
     - -iar@sdram_debug

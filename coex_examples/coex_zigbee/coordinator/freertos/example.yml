@@ -12,8 +12,8 @@ coex_zigbee_coordinator:
              The application implements a Coex-Zigbee coordinator that can form a network and steer it.
   boards:
     frdmrw612:
-    - +armgcc@flash_debug
-    - +armgcc@flash_release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
     - -armgcc@debug
     - -armgcc@release
     - -iar@debug
@@ -25,8 +25,8 @@ coex_zigbee_coordinator:
     - -mdk@flash_release
     - -mdk@release
     rdrw612bga:
-    - +armgcc@flash_debug
-    - +armgcc@flash_release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
     - -armgcc@debug
     - -armgcc@release
     - -iar@debug
