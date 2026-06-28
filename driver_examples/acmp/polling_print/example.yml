@@ -21,6 +21,7 @@ acmp_polling_print:
       - ${board_root}/${board}/driver_examples/acmp/polling/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
+    frdmimxrt1152: []
     evkmimxrt595@cm33:
     - -armgcc@debug
     - -armgcc@release

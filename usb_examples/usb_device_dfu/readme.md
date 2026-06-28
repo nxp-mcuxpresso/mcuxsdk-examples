@@ -183,6 +183,7 @@ install_path:\\msys64\\home\\~your user name\\build\\bin
 - EVK-MIMXRT1020
 - MIMXRT700-EVK
 - FRDM-IMXRT700
+- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/usb_examples/usb_device_dfu/example_board_readme.md)
 - [FRDM-MCXA156](../../_boards/frdmmcxa156/usb_examples/usb_device_dfu/example_board_readme.md)
 - EVK-MIMXRT685
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/usb_examples/usb_device_dfu/example_board_readme.md)

@@ -20,6 +20,7 @@ host_msd_fatfs_bm:
     evkbmimxrt1060: []
     evkbmimxrt1170@cm7: []
     evkcmimxrt1060: []
+    frdmimxrt1152: []
     evkmimxrt1010:
     - -armgcc@debug
     - -armgcc@release

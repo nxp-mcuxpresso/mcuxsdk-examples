@@ -21,6 +21,7 @@ dev_hid_generic_lite_bm:
     evkbmimxrt1060: []
     evkbmimxrt1170@cm7: []
     evkcmimxrt1060: []
+    frdmimxrt1152: []
     evkmimxrt1010: []
     evkmimxrt1015: []
     evkmimxrt1020: []

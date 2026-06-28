@@ -59,6 +59,7 @@ enet_qos_txrx_ptp1588_transfer:
     - -iar@sdram_release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    frdmimxrt1152: []
     evkmimx8mp:
     - -armgcc@ddr_debug
     - -armgcc@ddr_release

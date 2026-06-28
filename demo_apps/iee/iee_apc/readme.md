@@ -8,3 +8,4 @@ The IEE APC demo application demonstrates usage of the IEE and IEE APC driver. T
 - [MIMXRT1160-EVK](../../../_boards/evkmimxrt1160/demo_apps/iee_apc/example_board_readme.md)
 - [MIMXRT1180-EVK](../../../_boards/evkmimxrt1180/demo_apps/iee_apc/example_board_readme.md)
 - [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/demo_apps/iee_apc/example_board_readme.md)
+- [FRDM-IMXRT1152](../../../_boards/frdmimxrt1152/demo_apps/iee_apc/example_board_readme.md)

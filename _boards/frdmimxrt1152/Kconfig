@@ -1,0 +1,23 @@
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+rsource "Kconfig.defconfig"
+
+config MCUX_HW_BOARD_frdmimxrt1152
+    bool
+    default y
+    imply MCUX_HW_DEVICE_MIMXRT1152
+
+    imply MCUX_COMPONENT_driver.clock
+    imply MCUX_COMPONENT_driver.igpio
+    imply MCUX_COMPONENT_driver.iomuxc
+    imply MCUX_COMPONENT_driver.anatop_ai
+    imply MCUX_COMPONENT_driver.memory
+    imply MCUX_COMPONENT_driver.dcdc_2
+    imply MCUX_COMPONENT_driver.gpc_xxx_ctrl
+    imply MCUX_COMPONENT_driver.pgmc
+    imply MCUX_COMPONENT_driver.anadig_pmu
+    imply MCUX_COMPONENT_driver.src_2
+    select MCUX_COMPONENT_component.lpuart_adapter  if MCUX_COMPONENT_component.serial_manager_uart
+    select MCUX_COMPONENT_component.lpuart_adapter  if MCUX_COMPONENT_utility.debug_console_lite

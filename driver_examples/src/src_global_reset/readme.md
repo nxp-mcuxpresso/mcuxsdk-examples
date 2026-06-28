@@ -12,3 +12,4 @@ If not, enable the predicted global system reset, after which the predicted glob
 - [MIMXRT1160-EVK](../../../_boards/evkmimxrt1160/driver_examples/src/src_global_reset/example_board_readme.md)
 - [MIMXRT1180-EVK](../../../_boards/evkmimxrt1180/driver_examples/src/src_global_reset/example_board_readme.md)
 - [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/driver_examples/src/src_global_reset/example_board_readme.md)
+- [FRDM-IMXRT1152](../../../_boards/frdmimxrt1152/driver_examples/src/src_global_reset/example_board_readme.md)

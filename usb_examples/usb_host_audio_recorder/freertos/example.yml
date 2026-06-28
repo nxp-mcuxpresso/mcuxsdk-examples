@@ -44,6 +44,7 @@ host_audio_recorder_freertos:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    frdmimxrt1152: []
     evkmimxrt1020:
     - -armgcc@debug
     - -armgcc@flexspi_nor_debug

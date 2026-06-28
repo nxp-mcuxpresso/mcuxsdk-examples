@@ -82,6 +82,7 @@ flexio_spi_edma_lpspi_transfer_slave_dynamic:
     - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    frdmimxrt1152: []
     evkmimxrt1010:
     - -armgcc@debug
     - -armgcc@release

@@ -73,6 +73,21 @@ ota_mcuboot_basic:
     - -mdk@sdram_release
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
+    frdmimxrt1152:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@debug
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
     evkmimxrt1020:
     - -armgcc@debug
     - -armgcc@release

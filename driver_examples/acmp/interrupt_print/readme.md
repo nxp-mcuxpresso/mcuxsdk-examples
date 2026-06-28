@@ -31,6 +31,7 @@ The analog input is HIGHER than DAC output
 ## Supported Boards
 - [EVK9-MIMX8ULP](../../../_boards/evk9mimx8ulp/driver_examples/acmp/interrupt/example_board_readme.md)
 - [MIMXRT1170-EVKB](../../../_boards/evkbmimxrt1170/driver_examples/acmp/interrupt/example_board_readme.md)
+- [FRDM-IMXRT1152](../../../_boards/frdmimxrt1152/driver_examples/acmp/interrupt/example_board_readme.md)
 - [EVK-MCIMX7ULP](../../../_boards/evkmcimx7ulp/driver_examples/acmp/interrupt/example_board_readme.md)
 - [EVK-MIMX8ULP](../../../_boards/evkmimx8ulp/driver_examples/acmp/interrupt/example_board_readme.md)
 - [MIMXRT1160-EVK](../../../_boards/evkmimxrt1160/driver_examples/acmp/interrupt/example_board_readme.md)

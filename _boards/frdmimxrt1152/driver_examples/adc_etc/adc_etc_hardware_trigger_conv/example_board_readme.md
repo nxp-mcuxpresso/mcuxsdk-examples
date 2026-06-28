@@ -1,0 +1,40 @@
+Hardware requirements
+=====================
+- Type-C USB cable
+- FRDM-IMXRT1152 board
+- Personal Computer
+
+Board settings
+============
+ADC1_IN0 and ADC1_IN3 are ADC inputs. Please sample voltage by J47-8 and J47-4 pins.
+
+Prepare the Demo
+===============
+1.  Connect a USB cable between the host PC and the OpenSDA USB port on the target board. 
+2.  Open a serial terminal with the following settings:
+    - 115200 baud rate
+    - 8 data bits
+    - No parity
+    - One stop bit
+    - No flow control
+3.  Download the program to the target board.
+4.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
+
+Running the demo
+================
+The log below shows the output of the ADC_ETC hardware trigger conversion demo in the terminal window:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ADC_ETC_Hardware_Trigger_Conv Example Start!
+ADC Full Range:4096 
+Please press any key to get user channel's ADC value.
+ADC conversion value is 107 and 3882
+ADC conversion value is 103 and 3884
+ADC conversion value is 104 and 3880
+ADC conversion value is 88 and 3890
+ADC conversion value is 88 and 3890
+ADC conversion value is 88 and 3890
+ADC conversion value is 104 and 3882
+ADC conversion value is 104 and 3882
+...
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The analog voltage input range about is 0-1.8v.

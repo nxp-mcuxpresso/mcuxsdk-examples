@@ -21,6 +21,7 @@ the configuration structure's setting in application to fit the special requirem
 - [EVK-MIMXRT595](../../../_boards/evkmimxrt595/driver_examples/lpadc/polling/example_board_readme.md)
 - [EVK-MIMXRT685](../../../_boards/evkmimxrt685/driver_examples/lpadc/polling/example_board_readme.md)
 - [FRDM-K32L3A6](../../../_boards/frdmk32l3a6/driver_examples/lpadc/polling/example_board_readme.md)
+- [FRDM-IMXRT1152](../../../_boards/frdmimxrt1152/driver_examples/lpadc/polling/example_board_readme.md)
 - [FRDM-MCXA153](../../../_boards/frdmmcxa153/driver_examples/lpadc/polling/example_board_readme.md)
 - [FRDM-MCXA156](../../../_boards/frdmmcxa156/driver_examples/lpadc/polling/example_board_readme.md)
 - [FRDM-MCXA346](../../../_boards/frdmmcxa346/driver_examples/lpadc/polling/example_board_readme.md)

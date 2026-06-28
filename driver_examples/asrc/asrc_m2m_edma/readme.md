@@ -11,3 +11,4 @@ In this example, asrc will convert the audio data and playback the through SAI.
 - [IMX952LPD5EVK-15](../../../_boards/imx952evk/driver_examples/asrc/asrc_m2m_edma/example_board_readme.md)
 - [MIMXRT1160-EVK](../../../_boards/evkmimxrt1160/driver_examples/asrc/asrc_m2m_edma/example_board_readme.md)
 - [MIMXRT1180-EVK](../../../_boards/evkmimxrt1180/driver_examples/asrc/asrc_m2m_edma/example_board_readme.md)
+- [FRDM-IMXRT1152](../../../_boards/frdmimxrt1152/driver_examples/asrc/asrc_m2m_edma/example_board_readme.md)

@@ -22,6 +22,7 @@ iled_blinky:
     evkbmimxrt1170@cm4: []
     evkbmimxrt1170@cm7: []
     evkcmimxrt1060: []
+    frdmimxrt1152: []
     evkmimxrt1010: []
     evkmimxrt1015: []
     evkmimxrt1020: []

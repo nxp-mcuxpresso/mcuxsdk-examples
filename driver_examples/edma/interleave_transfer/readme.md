@@ -54,6 +54,7 @@ Please reference user manual for the detail of the feature.
 - [MIMXRT1060-EVKB](../../../_boards/evkbmimxrt1060/driver_examples/edma/interleave_transfer/example_board_readme.md)
 - [MIMXRT1170-EVKB](../../../_boards/evkbmimxrt1170/driver_examples/edma/interleave_transfer/example_board_readme.md)
 - [MIMXRT1060-EVKC](../../../_boards/evkcmimxrt1060/driver_examples/edma/interleave_transfer/example_board_readme.md)
+- [FRDM-IMXRT1152](../../../_boards/frdmimxrt1152/driver_examples/edma/interleave_transfer/example_board_readme.md)
 - [EVK-MIMXRT1010](../../../_boards/evkmimxrt1010/driver_examples/edma/interleave_transfer/example_board_readme.md)
 - [EVK-MIMXRT1015](../../../_boards/evkmimxrt1015/driver_examples/edma/interleave_transfer/example_board_readme.md)
 - [EVK-MIMXRT1020](../../../_boards/evkmimxrt1020/driver_examples/edma/interleave_transfer/example_board_readme.md)

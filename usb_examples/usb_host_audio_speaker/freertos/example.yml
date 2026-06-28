@@ -20,6 +20,7 @@ host_audio_speaker_freertos:
     evkbmimxrt1060: []
     evkbmimxrt1170@cm7: []
     evkcmimxrt1060: []
+    frdmimxrt1152: []
     evkmimxrt1010:
     - -armgcc@debug
     - -armgcc@release

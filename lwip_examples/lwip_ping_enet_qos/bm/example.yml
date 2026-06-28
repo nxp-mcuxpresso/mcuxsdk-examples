@@ -55,6 +55,7 @@ lwip_ping_enet_qos_bm:
     - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    frdmimxrt1152: []
     mcimx93evk: []
     mcimx93wevk: []
     mcimx93qsb: []

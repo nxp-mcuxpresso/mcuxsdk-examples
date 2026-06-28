@@ -1,0 +1,12 @@
+Hardware requirements
+=====================
+- Micro USB cable
+- frdmimxrt1152 board
+- Personal Computer
+
+
+Board settings
+==============
+To use on chip MAYA-W276 WiFi module:
+1. J22: Move jumper from position 1-2 → 2-3
+2. J19: Place jumper to enable 1.8V power supply for the module

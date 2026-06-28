@@ -57,4 +57,5 @@ lwip_mqtt_enet_qos_freertos:
     - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    frdmimxrt1152: []
     frdmmcxe31b: []

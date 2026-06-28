@@ -80,6 +80,7 @@ lwip_dhcp_freertos:
       - -mdk@release
       - -mdk@sdram_debug
       - -mdk@sdram_release
+    frdmimxrt1152: []
     evkmimxrt1040:
       - -armgcc@debug
       - -armgcc@release

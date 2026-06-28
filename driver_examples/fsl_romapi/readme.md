@@ -12,6 +12,7 @@ flash, at last check if the data in flash is correct.
 - [MIMXRT1060-EVKB](../../_boards/evkbmimxrt1060/driver_examples/fsl_romapi/example_board_readme.md)
 - [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/driver_examples/fsl_romapi/example_board_readme.md)
 - [MIMXRT1060-EVKC](../../_boards/evkcmimxrt1060/driver_examples/fsl_romapi/example_board_readme.md)
+- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/driver_examples/fsl_romapi/example_board_readme.md)
 - [EVK-MIMXRT1015](../../_boards/evkmimxrt1015/driver_examples/fsl_romapi/example_board_readme.md)
 - [EVK-MIMXRT1020](../../_boards/evkmimxrt1020/driver_examples/fsl_romapi/example_board_readme.md)
 - [MIMXRT1024-EVK](../../_boards/evkmimxrt1024/driver_examples/fsl_romapi/example_board_readme.md)

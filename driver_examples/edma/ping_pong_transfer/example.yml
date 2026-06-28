@@ -82,6 +82,7 @@ edma_ping_pong_transfer:
     - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    frdmimxrt1152: []
     evkmimxrt1010:
     - -armgcc@debug
     - -armgcc@release

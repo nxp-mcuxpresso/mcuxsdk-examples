@@ -1,0 +1,65 @@
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+#
+
+config MCUX_PRJSEG_module.board.display_support
+    select MCUX_COMPONENT_driver.display-rm68200
+    select MCUX_COMPONENT_driver.display-rm68191
+    select MCUX_COMPONENT_driver.display-hx8394
+    select MCUX_COMPONENT_driver.display-rpi
+    select MCUX_COMPONENT_driver.dc-fb-elcdif
+    select MCUX_COMPONENT_driver.dc-fb-lcdifv2
+    select MCUX_COMPONENT_driver.lpi2c
+
+# Which panels the board supports
+config MCUX_DEMO_PANEL_RK055AHD091_SUPPORT
+    default y
+
+config MCUX_DEMO_PANEL_RK055IQH091_SUPPORT
+    default y
+
+config MCUX_DEMO_PANEL_RK055MHD091A0_SUPPORT
+    default y
+
+config MCUX_DEMO_PANEL_RASPI_7INCH_SUPPORT
+    default y
+
+if MCUX_PRJSEG_module.board.display_support
+
+    choice DISPLAY_SUPPORT_PANEL
+        default RASPI_7INCH
+    endchoice
+
+    config DEMO_DISPLAY_CONTROLLER
+        int
+        default 0 if DEMO_PANEL_elcdif
+        default 1 if DEMO_PANEL_lcdifv2
+        help
+            Panel driver selection for display support
+            No prefix in generated macro
+
+
+    choice DEMO_PANEL_display_controller
+        prompt "Display Controller Selection"
+        default DEMO_PANEL_lcdifv2
+
+        config DEMO_PANEL_elcdif
+            bool "eLCDIF"
+
+        config DEMO_PANEL_lcdifv2
+            bool "LCDIFv2"
+
+    endchoice
+
+    config DEMO_USE_XRGB8888
+        bool "Use XRGB8888 pixel format"
+        help
+            No prefix in generated macro
+
+    config DEMO_USE_LUT8
+        bool "Use LUT 8 pixel format"
+        help
+            No prefix in generated macro
+
+endif

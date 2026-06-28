@@ -106,6 +106,19 @@ hello_world:
     - +mdk@ram_0x1400_release
     - +mdk@sdram_txt_debug
     - +mdk@sdram_txt_release
+    frdmimxrt1152:
+    - +iar@flexspi_nor_hyperram_debug
+    - +iar@flexspi_nor_hyperram_release
+    - +iar@hyperram_txt_debug
+    - +iar@hyperram_txt_release
+    - +armgcc@flexspi_nor_hyperram_debug
+    - +armgcc@flexspi_nor_hyperram_release
+    - +armgcc@hyperram_txt_debug
+    - +armgcc@hyperram_txt_release
+    - +mdk@flexspi_nor_hyperram_debug
+    - +mdk@flexspi_nor_hyperram_release
+    - +mdk@hyperram_txt_debug
+    - +mdk@hyperram_txt_release
     evkmcimx7ulp: []
     evkmimx8mm: []
     evkmimx8mn: []

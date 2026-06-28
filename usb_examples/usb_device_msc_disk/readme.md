@@ -104,6 +104,7 @@ note<br>
 - LPCXpresso54628
 - MCX-N5XX-EVK
 - [MIMXRT1060-EVKC](../../_boards/evkcmimxrt1060/usb_examples/usb_device_msc_disk/example_board_readme.md)
+- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/usb_examples/usb_device_msc_disk/example_board_readme.md)
 - MIMXRT1160-EVK
 - MIMXRT1180-EVK
 - EVK-MIMXRT1020

@@ -20,6 +20,7 @@ lpadc_high_sample_rate_sample_signal:
   boards:
     evkbmimxrt1170@cm4: []
     evkbmimxrt1170@cm7: []
+    frdmimxrt1152: []
     evkmimxrt1160@cm4: []
     evkmimxrt1160@cm7: []
     evkmimxrt1180@cm33: []

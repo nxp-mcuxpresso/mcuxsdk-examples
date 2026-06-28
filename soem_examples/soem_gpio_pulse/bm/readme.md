@@ -72,6 +72,7 @@ When the demo is running, the serial port will output:
 - [MIMXRT1060-EVKB](../../../_boards/evkbmimxrt1060/soem_examples/soem_gpio_pulse/bm/example_board_readme.md)
 - [MIMXRT1170-EVKB](../../../_boards/evkbmimxrt1170/soem_examples/soem_gpio_pulse/bm/example_board_readme.md)
 - [MIMXRT1060-EVKC](../../../_boards/evkcmimxrt1060/soem_examples/soem_gpio_pulse/bm/example_board_readme.md)
+- [FRDM-IMXRT1152](../../../_boards/frdmimxrt1152/soem_examples/soem_gpio_pulse/bm/example_board_readme.md)
 - [EVK-MIMXRT1020](../../../_boards/evkmimxrt1020/soem_examples/soem_gpio_pulse/bm/example_board_readme.md)
 - [MIMXRT1024-EVK](../../../_boards/evkmimxrt1024/soem_examples/soem_gpio_pulse/bm/example_board_readme.md)
 - [MIMXRT1040-EVK](../../../_boards/evkmimxrt1040/soem_examples/soem_gpio_pulse/bm/example_board_readme.md)

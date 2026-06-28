@@ -97,6 +97,7 @@ lpspi_interrupt_b2b_master:
     - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    frdmimxrt1152: []
     evkmcimx7ulp:
     - -armgcc@flash_debug
     - -armgcc@flash_release

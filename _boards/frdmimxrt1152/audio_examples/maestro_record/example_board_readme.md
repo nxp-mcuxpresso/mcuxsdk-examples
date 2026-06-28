@@ -1,0 +1,1 @@
+The [readme file](../../../../../middleware/audio_voice/maestro/doxygen/maestro_record.md) is located in the Maestro audio framework repository itself.

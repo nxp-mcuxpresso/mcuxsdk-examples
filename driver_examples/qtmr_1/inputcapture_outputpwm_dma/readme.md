@@ -13,6 +13,7 @@ The user can enter a value to update the Duty cycle, when 5 is entered, the duty
 - [MIMXRT1060-EVKB](../../../_boards/evkbmimxrt1060/driver_examples/qtmr/inputcapture_outputpwm_dma/example_board_readme.md)
 - [MIMXRT1170-EVKB](../../../_boards/evkbmimxrt1170/driver_examples/qtmr/inputcapture_outputpwm_dma/example_board_readme.md)
 - [MIMXRT1060-EVKC](../../../_boards/evkcmimxrt1060/driver_examples/qtmr/inputcapture_outputpwm_dma/example_board_readme.md)
+- [FRDM-IMXRT1152](../../../_boards/frdmimxrt1152/driver_examples/qtmr/inputcapture_outputpwm_dma/example_board_readme.md)
 - [EVK-MIMXRT1015](../../../_boards/evkmimxrt1015/driver_examples/qtmr/inputcapture_outputpwm_dma/example_board_readme.md)
 - [EVK-MIMXRT1020](../../../_boards/evkmimxrt1020/driver_examples/qtmr/inputcapture_outputpwm_dma/example_board_readme.md)
 - [MIMXRT1024-EVK](../../../_boards/evkmimxrt1024/driver_examples/qtmr/inputcapture_outputpwm_dma/example_board_readme.md)

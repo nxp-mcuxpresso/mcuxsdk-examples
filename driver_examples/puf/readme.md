@@ -26,6 +26,7 @@ Usual use consists of these steps:
 - [MIMXRT1160-EVK](../../_boards/evkmimxrt1160/driver_examples/puf/example_board_readme.md)
 - [EVK-MIMXRT595](../../_boards/evkmimxrt595/driver_examples/puf/example_board_readme.md)
 - [EVK-MIMXRT685](../../_boards/evkmimxrt685/driver_examples/puf/example_board_readme.md)
+- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/driver_examples/puf/example_board_readme.md)
 - [LPCXpresso54S018](../../_boards/lpcxpresso54s018/driver_examples/puf/example_board_readme.md)
 - [LPCXpresso54S018M](../../_boards/lpcxpresso54s018m/driver_examples/puf/example_board_readme.md)
 - [LPCXpresso55S06](../../_boards/lpcxpresso55s06/driver_examples/puf/example_board_readme.md)

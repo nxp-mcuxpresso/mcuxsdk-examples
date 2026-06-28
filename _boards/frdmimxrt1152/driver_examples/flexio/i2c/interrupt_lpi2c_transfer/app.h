@@ -1,0 +1,37 @@
+/*
+ * Copyright 2026 NXP
+ *
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+#ifndef _APP_H_
+#define _APP_H_
+
+/*******************************************************************************
+ * Definitions
+ ******************************************************************************/
+/*${macro:start}*/
+#define BOARD_LPI2C_SLAVE_BASE LPI2C1
+#define BOARD_LPI2C_SLAVE_IRQn LPI2C1_IRQn
+#define BOARD_FLEXIO_BASE      FLEXIO1
+
+/* Get frequency of lpi2c clock */
+#define LPI2C_CLOCK_FREQUENCY (CLOCK_GetRootClockFreq(kCLOCK_Root_Lpi2c1))
+
+#define FLEXIO_CLOCK_FREQUENCY (CLOCK_GetRootClockFreq(kCLOCK_Root_Flexio1))
+
+#define FLEXIO_I2C_SDA_PIN 1U
+#define FLEXIO_I2C_SCL_PIN 0U
+
+/* I2C Baudrate 10K */
+#define I2C_BAUDRATE (10000)
+/*${macro:end}*/
+
+/*******************************************************************************
+ * Prototypes
+ ******************************************************************************/
+/*${prototype:start}*/
+void BOARD_InitHardware(void);
+/*${prototype:end}*/
+
+#endif /* _APP_H_ */

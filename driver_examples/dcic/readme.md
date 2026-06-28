@@ -12,3 +12,4 @@ output signal frequency is 1/4 of the frequency when right frame is shown.
 ## Supported Boards
 - [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/driver_examples/dcic/example_board_readme.md)
 - [MIMXRT1160-EVK](../../_boards/evkmimxrt1160/driver_examples/dcic/example_board_readme.md)
+- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/driver_examples/dcic/example_board_readme.md)

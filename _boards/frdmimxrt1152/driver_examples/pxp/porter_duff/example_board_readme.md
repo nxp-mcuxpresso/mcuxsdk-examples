@@ -1,0 +1,32 @@
+Hardware requirements
+=====================
+- Type-C USB cable
+- FRDM-IMXRT1152 board
+- Personal Computer
+- RK055MHD091 panel or RK055AHD091 panel or RK055IQH091 panel
+
+Board settings
+============
+Connect the panel to J62
+
+Prepare the Demo
+===============
+1.  Connect a USB cable between the host PC and the OpenSDA USB port on the target board.
+2.  Open a serial terminal with the following settings:
+    - 115200 baud rate
+    - 8 data bits
+    - No parity
+    - One stop bit
+    - No flow control
+3.  Build the project, the project uses RK055MHD091 by default, to use other panels,
+set the coresponding panel DEMO_PANEL_xxx(without '_SUPPORT') to y in prj.conf under board example folder before project generation.
+The supported panels can be found in examples\_boards\<board>\project_segments\display_support\Kconfig.prjseg.
+Or change the macro DEMO_PANEL in mcux_config.h of the project,
+which number represents which panel can be found in display_support.h and mcux_config.h
+1.  Download the program to the target board.
+2.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
+
+Running the demo
+================
+When the demo runs successfully, press any key in the terminal, the panel
+shows different porter duff mode result.

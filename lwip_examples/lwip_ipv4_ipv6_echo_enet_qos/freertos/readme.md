@@ -10,3 +10,4 @@ or UDP is available.
 
 ## Supported Boards
 - [MIMXRT1170-EVKB](../../../_boards/evkbmimxrt1170/lwip_examples/lwip_ipv4_ipv6_echo_enet_qos/freertos/example_board_readme.md)
+- [FRDM-IMXRT1152](../../../_boards/frdmimxrt1152/lwip_examples/lwip_ipv4_ipv6_echo_enet_qos/freertos/example_board_readme.md)

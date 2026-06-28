@@ -16,6 +16,7 @@ through internal loopback interconnect and print out the Message payload to term
 - [MIMXRT1060-EVKB](../../../_boards/evkbmimxrt1060/driver_examples/flexcan/loopback_transfer/example_board_readme.md)
 - [MIMXRT1170-EVKB](../../../_boards/evkbmimxrt1170/driver_examples/flexcan/loopback_transfer/example_board_readme.md)
 - [MIMXRT1060-EVKC](../../../_boards/evkcmimxrt1060/driver_examples/flexcan/loopback_transfer/example_board_readme.md)
+- [FRDM-IMXRT1152](../../../_boards/frdmimxrt1152/driver_examples/flexcan/loopback_transfer/example_board_readme.md)
 - [EVK-MIMX8MP](../../../_boards/evkmimx8mp/driver_examples/flexcan/loopback_transfer/example_board_readme.md)
 - [EVK-MIMX8ULP](../../../_boards/evkmimx8ulp/driver_examples/flexcan/loopback_transfer/example_board_readme.md)
 - [EVK-MIMXRT1020](../../../_boards/evkmimxrt1020/driver_examples/flexcan/loopback_transfer/example_board_readme.md)

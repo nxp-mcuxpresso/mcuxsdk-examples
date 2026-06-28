@@ -17,6 +17,7 @@ debug_console supports this, debug_console_lite doesn't support).
 - [MIMXRT1060-EVKB](../../_boards/evkbmimxrt1060/demo_apps/hello_world/example_board_readme.md)
 - [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/demo_apps/hello_world/example_board_readme.md)
 - [MIMXRT1060-EVKC](../../_boards/evkcmimxrt1060/demo_apps/hello_world/example_board_readme.md)
+- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/demo_apps/hello_world/example_board_readme.md)
 - [EVK-MCIMX7ULP](../../_boards/evkmcimx7ulp/demo_apps/hello_world/example_board_readme.md)
 - [EVK-MIMX8MM](../../_boards/evkmimx8mm/demo_apps/hello_world/example_board_readme.md)
 - [EVK-MIMX8MN](../../_boards/evkmimx8mn/demo_apps/hello_world/example_board_readme.md)

@@ -8,3 +8,4 @@ The example demos the fast GPIO usage and performance comparsion with normal GPI
 ## Supported Boards
 - [MIMXRT1170-EVKB](../../../_boards/evkbmimxrt1170/driver_examples/gpio/fast_gpio/example_board_readme.md)
 - [MIMXRT1160-EVK](../../../_boards/evkmimxrt1160/driver_examples/gpio/fast_gpio/example_board_readme.md)
+- [FRDM-IMXRT1152](../../../_boards/frdmimxrt1152/driver_examples/gpio/fast_gpio/example_board_readme.md)

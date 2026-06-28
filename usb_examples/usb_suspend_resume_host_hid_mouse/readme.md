@@ -124,6 +124,7 @@ The host will wake up the device by delivering the resume signal if it is waked 
 - [LPCXpresso55S69](../../_boards/lpcxpresso55s69/usb_examples/usb_suspend_resume_host_hid_mouse/example_board_readme.md)
 - EVK-MIMXRT1064
 - MIMXRT685-AUD-EVK
+- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/usb_examples/usb_suspend_resume_host_hid_mouse/example_board_readme.md)
 - [LPCXpresso54S018](../../_boards/lpcxpresso54s018/usb_examples/usb_suspend_resume_host_hid_mouse/example_board_readme.md)
 - [LPCXpresso55S16](../../_boards/lpcxpresso55s16/usb_examples/usb_suspend_resume_host_hid_mouse/example_board_readme.md)
 - [LPCXpresso54S018M](../../_boards/lpcxpresso54s018m/usb_examples/usb_suspend_resume_host_hid_mouse/example_board_readme.md)

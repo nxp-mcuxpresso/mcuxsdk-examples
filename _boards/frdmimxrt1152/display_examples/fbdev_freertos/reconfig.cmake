@@ -1,0 +1,4 @@
+
+mcux_add_macro(
+    CC "-DBOARD_USE_PCAL6524=1 -DSDK_I2C_BASED_COMPONENT_USED=1"
+)

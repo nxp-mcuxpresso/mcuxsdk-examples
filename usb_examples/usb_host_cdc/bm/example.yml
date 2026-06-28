@@ -18,6 +18,7 @@ host_cdc_bm:
     evkbmimxrt1060: []
     evkbmimxrt1170@cm7: []
     evkcmimxrt1060: []
+    frdmimxrt1152: []
     evkmimxrt1010:
     - -armgcc@debug
     - -iar@debug

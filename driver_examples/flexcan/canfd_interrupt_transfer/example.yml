@@ -79,6 +79,7 @@ canfd_interrupt_transfer:
     - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    frdmimxrt1152: []
     evkmimx8ulp@cm33:
     - -armgcc@flash_debug
     - -armgcc@flash_release

@@ -8,6 +8,7 @@ This `ota_mcuboot_basic` example demonstrates a basic application that uses MCUB
 - [MIMXRT1060-EVKB](../../_boards/evkbmimxrt1060/ota_examples/ota_mcuboot_basic/example_board_readme.md)
 - [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/ota_examples/ota_mcuboot_basic/example_board_readme.md)
 - [MIMXRT1060-EVKC](../../_boards/evkcmimxrt1060/ota_examples/ota_mcuboot_basic/example_board_readme.md)
+- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/ota_examples/ota_mcuboot_basic/example_board_readme.md)
 - [EVK-MIMXRT1020](../../_boards/evkmimxrt1020/ota_examples/ota_mcuboot_basic/example_board_readme.md)
 - [MIMXRT1040-EVK](../../_boards/evkmimxrt1040/ota_examples/ota_mcuboot_basic/example_board_readme.md)
 - [EVK-MIMXRT1064](../../_boards/evkmimxrt1064/ota_examples/ota_mcuboot_basic/example_board_readme.md)

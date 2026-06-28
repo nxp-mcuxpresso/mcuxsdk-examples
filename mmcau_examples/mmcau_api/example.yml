@@ -16,6 +16,7 @@ mmcau:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm4: []
+    frdmimxrt1152: []
     evkmcimx7ulp: []
     evkmimxrt1160@cm4: []
     frdmk32l2a4s: []

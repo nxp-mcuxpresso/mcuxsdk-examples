@@ -116,6 +116,7 @@ At this point the bootloader is in place, resident in the FLASH memory. You may 
 ## Supported Boards
 
 - [LPCXpresso55S69](../../_boards/lpcxpresso55s69/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/ota_examples/mcuboot_opensource/example_board_readme.md)
 - [EVK-MIMXRT1020](../../_boards/evkmimxrt1020/ota_examples/mcuboot_opensource/example_board_readme.md)
 - [MIMXRT1040-EVK](../../_boards/evkmimxrt1040/ota_examples/mcuboot_opensource/example_board_readme.md)
 - [EVKB-IMXRT1050](../../_boards/evkbimxrt1050/ota_examples/mcuboot_opensource/example_board_readme.md)

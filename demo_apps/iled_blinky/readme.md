@@ -11,6 +11,7 @@ The code of this demo has been prepared and updated for use with the MCUXpresso 
 - [MIMXRT1060-EVKB](../../_boards/evkbmimxrt1060/demo_apps/led_blinky/example_board_readme.md)
 - [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/demo_apps/led_blinky/example_board_readme.md)
 - [MIMXRT1060-EVKC](../../_boards/evkcmimxrt1060/demo_apps/led_blinky/example_board_readme.md)
+- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/demo_apps/led_blinky/example_board_readme.md)
 - [EVK-MIMXRT1010](../../_boards/evkmimxrt1010/demo_apps/led_blinky/example_board_readme.md)
 - [EVK-MIMXRT1015](../../_boards/evkmimxrt1015/demo_apps/led_blinky/example_board_readme.md)
 - [EVK-MIMXRT1020](../../_boards/evkmimxrt1020/demo_apps/led_blinky/example_board_readme.md)

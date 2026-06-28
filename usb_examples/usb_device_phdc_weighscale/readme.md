@@ -67,6 +67,7 @@ device to simulate the personal weight scale data, such as body mass and body ma
 - MIMXRT685-AUD-EVK
 - LPCXpresso51U68
 - LPCXpresso54S018
+- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/usb_examples/usb_device_phdc_weighscale/example_board_readme.md)
 - [LPCXpresso55S16](../../_boards/lpcxpresso55s16/usb_examples/usb_device_phdc_weighscale/example_board_readme.md)
 - LPCXpresso54S018M
 - MIMXRT1060-EVKB

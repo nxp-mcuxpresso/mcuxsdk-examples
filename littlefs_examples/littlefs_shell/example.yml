@@ -13,6 +13,13 @@ littlefs_shell:
       - ${board_root}/${board}/littlefs_examples/littlefs_shell/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
+    frdmimxrt1152:
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
     evkmimxrt1020:
     - -armgcc@debug
     - -armgcc@release

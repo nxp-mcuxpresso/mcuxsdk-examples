@@ -95,6 +95,7 @@ enc_index_interrupt:
     - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    frdmimxrt1152: []
     evkmimxrt1015:
     - -armgcc@debug
     - -armgcc@release

@@ -80,6 +80,7 @@ sai_edma_record_playback:
     - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    frdmimxrt1152: []
     evkmimxrt1010:
     - -armgcc@debug
     - -iar@debug

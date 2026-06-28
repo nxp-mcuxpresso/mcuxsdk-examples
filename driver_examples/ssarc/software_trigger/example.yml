@@ -41,6 +41,7 @@ ssarc_software_trigger:
     - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    frdmimxrt1152: []
     evkmimxrt1160@cm4:
     - -armgcc@debug
     - -armgcc@release

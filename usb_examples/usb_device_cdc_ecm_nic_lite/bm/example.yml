@@ -17,6 +17,7 @@ dev_cdc_ecm_nic_lite_bm:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm7: []
+    frdmimxrt1152: []
     frdmmcxn947@cm33_core0: []
     frdmrw612: []
     mcxn5xxevk@cm33_core0: []

@@ -11,3 +11,4 @@ Users can use some tools such as EXCEL to recover the input signal based on thos
 - [MIMXRT1160-EVK](../../../../_boards/evkmimxrt1160/demo_apps/lpadc_high_sample_rate/sample_signal/example_board_readme.md)
 - [MIMXRT1180-EVK](../../../../_boards/evkmimxrt1180/demo_apps/lpadc_high_sample_rate/sample_signal/example_board_readme.md)
 - [FRDM-IMXRT1186](../../../../_boards/frdmimxrt1186/demo_apps/lpadc_high_sample_rate/sample_signal/example_board_readme.md)
+- [FRDM-IMXRT1152](../../../../_boards/frdmimxrt1152/demo_apps/lpadc_high_sample_rate/sample_signal/example_board_readme.md)

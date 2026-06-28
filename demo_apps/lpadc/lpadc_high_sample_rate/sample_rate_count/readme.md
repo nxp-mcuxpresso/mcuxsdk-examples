@@ -15,3 +15,4 @@ maximin value). So theoretically, sample rate = maximum frequency / total conver
 - [MIMXRT1160-EVK](../../../../_boards/evkmimxrt1160/demo_apps/lpadc_high_sample_rate/sample_rate_count/example_board_readme.md)
 - [MIMXRT1180-EVK](../../../../_boards/evkmimxrt1180/demo_apps/lpadc_high_sample_rate/sample_rate_count/example_board_readme.md)
 - [FRDM-IMXRT1186](../../../../_boards/frdmimxrt1186/demo_apps/lpadc_high_sample_rate/sample_rate_count/example_board_readme.md)
+- [FRDM-IMXRT1152](../../../../_boards/frdmimxrt1152/demo_apps/lpadc_high_sample_rate/sample_rate_count/example_board_readme.md)

@@ -21,3 +21,4 @@ compliant test instrument.
 ## Supported Boards
 - [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/display_examples/mipi_dsi_compliant_test/example_board_readme.md)
 - [MIMXRT1160-EVK](../../_boards/evkmimxrt1160/display_examples/mipi_dsi_compliant_test/example_board_readme.md)
+- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/display_examples/mipi_dsi_compliant_test/example_board_readme.md)

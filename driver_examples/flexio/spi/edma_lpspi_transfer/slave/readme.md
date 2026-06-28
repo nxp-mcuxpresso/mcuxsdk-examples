@@ -28,6 +28,7 @@ End of Example.
 - [MIMXRT1060-EVKB](../../../../../_boards/evkbmimxrt1060/driver_examples/flexio/spi/edma_lpspi_transfer/slave/example_board_readme.md)
 - [MIMXRT1170-EVKB](../../../../../_boards/evkbmimxrt1170/driver_examples/flexio/spi/edma_lpspi_transfer/slave/example_board_readme.md)
 - [MIMXRT1060-EVKC](../../../../../_boards/evkcmimxrt1060/driver_examples/flexio/spi/edma_lpspi_transfer/slave/example_board_readme.md)
+- [FRDM-IMXRT1152](../../../../../_boards/frdmimxrt1152/driver_examples/flexio/spi/edma_lpspi_transfer/slave/example_board_readme.md)
 - [EVK-MCIMX7ULP](../../../../../_boards/evkmcimx7ulp/driver_examples/flexio/spi/edma_lpspi_transfer/slave/example_board_readme.md)
 - [EVK-MIMX8ULP](../../../../../_boards/evkmimx8ulp/driver_examples/flexio/spi/edma_lpspi_transfer/slave/example_board_readme.md)
 - [EVK-MIMXRT1010](../../../../../_boards/evkmimxrt1010/driver_examples/flexio/spi/edma_lpspi_transfer/slave/example_board_readme.md)

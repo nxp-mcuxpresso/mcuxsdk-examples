@@ -1,0 +1,411 @@
+/*
+ * Copyright 2026 NXP
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+__var rev;
+
+// Initialize SYS_PLL3 (480 MHz PLL) used as base clock for PFD outputs.
+// ANADIG_PLL_SYS_PLL3_CTRL register (0x40C84210) bit fields:
+//   [3]    SYS_PLL3_DIV2    - Enable divide-by-2 output (240 MHz)
+//   [4]    PLL_REG_EN       - PLL regulator enable
+//   [11]   HOLD_RING_OFF    - Hold ring oscillator off during power-up sequence
+//   [13]   ENABLE_CLK       - Enable PLL clock output
+//   [21]   POWERUP          - Power up the PLL
+//   [29]   SYS_PLL3_STABLE  - PLL lock indicator (read-only)
+//   [30]   SYS_PLL3_GATE    - Gate PLL output (1=gated)
+initSysPll3()
+{
+    __var t;
+
+    // ANADIG_PLL_SYS_PLL3_CTRL
+    t = __readMemory32(0x40C84210, "Memory");
+    // Check bit 21 (POWERUP) - if set, PLL is already powered up
+    if (t & 0x200000)
+    {
+        // SysPll3 has been initialized, ensure clock output is enabled
+        if ((t & 0x2000) == 0)
+        {
+            // Set bit 13 (ENABLE_CLK) if not already set
+            t |= 0x2000;
+            __writeMemory32(t, 0x40C84210, "Memory");
+        }
+        if (t & 0x40000000)
+        {
+            // Clear bit 30 (SYS_PLL3_GATE) to un-gate PLL output
+            t &= ~0x40000000;
+            __writeMemory32(t, 0x40C84210, "Memory");
+        }
+        __message "syspll3 has been initialized already";
+        return;
+    }
+
+    // Gate all PFDs (set bit 7 of each PFD byte in SYS_PLL3_PFD register)
+    t = __readMemory32(0x40C84230, "Memory");
+    t |= 0x80808080;
+    __writeMemory32(t, 0x40C84230, "Memory");
+
+    // Enable PLL regulator (bit 4) and gate output (bit 30) during configuration
+    t = __readMemory32(0x40C84210, "Memory");
+    t |= 0x10 | 0x40000000;
+    __writeMemory32(t, 0x40C84210, "Memory");
+    __delay(30);
+
+    // Power up PLL (bit 21) with ring oscillator held off (bit 11)
+    t = __readMemory32(0x40C84210, "Memory");
+    t |= 0x200000 | 0x800;
+    __writeMemory32(t, 0x40C84210, "Memory");
+    __delay(30);
+
+    // Release ring oscillator (clear bit 11 HOLD_RING_OFF) to start PLL locking
+    t = __readMemory32(0x40C84210, "Memory");
+    t &= ~0x800;
+    __writeMemory32(t, 0x40C84210, "Memory");
+
+    // Wait for bit 29 (SYS_PLL3_STABLE) to indicate PLL has locked
+    do
+    {
+        t = __readMemory32(0x40C84210, "Memory");
+    } while ((t & 0x20000000) == 0);
+
+    // Enable clock output (bit 13) and divide-by-2 output (bit 3)
+    t |= 0x2000 | 0x8;
+    __writeMemory32(t, 0x40C84210, "Memory");
+
+    // Un-gate PLL output (clear bit 30 SYS_PLL3_GATE)
+    t &= ~0x40000000;
+    __writeMemory32(t, 0x40C84210, "Memory");
+}
+
+
+// Initialize SYS_PLL3 PFD0 to 664.6 MHz for FlexSPI2 clock source.
+// ANADIG_PLL_SYS_PLL3_PFD register (0x40C84230) bit fields:
+//   [5:0]  PFD0_FRAC   - Fractional divider value (valid range 13-35)
+//   [6]    PFD0_STABLE  - PFD0 clock stable indicator (read-only)
+//   [7]    PFD0_CLKGATE - PFD0 clock gate (1=gated/off, 0=enabled)
+initSysPll3Pfd0()
+{
+    __var t, stable;
+
+    // ANADIG_PLL_SYS_PLL3_PFD
+    t = __readMemory32(0x40C84230, "Memory");
+    // Check if PFD0 is gated (bit 7) or FRAC is not set to 13
+    if (((t & 0x80) != 0) || ((t & 0x3F) != 13))
+    {
+        // Save current stable status to detect toggle after reconfiguration
+        stable = t & 0x40;
+
+        // Gate PFD0 before changing FRAC value (bit 7 = PFD0_CLKGATE)
+        t |= 0x80;
+        __writeMemory32(t, 0x40C84230, "Memory");
+
+        // Set PFD0_FRAC = 13 => PFD0 = 480 MHz * 18 / 13 = 664.6 MHz
+        t = __readMemory32(0x40C84230, "Memory");
+        t &= ~0x3F;
+        t |= 13;
+        __writeMemory32(t, 0x40C84230, "Memory");
+
+        // ANADIG_PLL_SYS_PLL3_UPDATE (0x40C84220) - toggle bit 1 (PFD0_UPDATE)
+        // to latch new FRAC value
+        t = __readMemory32(0x40C84220, "Memory");
+        t ^= 0x2;
+        __writeMemory32(t, 0x40C84220, "Memory");
+
+        // Un-gate PFD0 (clear bit 7 = PFD0_CLKGATE)
+        t = __readMemory32(0x40C84230, "Memory");
+        t &= ~0x80;
+        __writeMemory32(t, 0x40C84230, "Memory");
+
+        // Wait for PFD0_STABLE (bit 6) to toggle, indicating PFD0 has relocked
+        do
+        {
+            t = __readMemory32(0x40C84230, "Memory") & 0x40;
+        } while (t == stable);
+    }
+    else
+    {
+        __message "syspll3 pfd0 has been initialized already";
+        // Ensure PFD0 is un-gated (clear bit 7)
+        t &= ~0x80;
+        __writeMemory32(t, 0x40C84230, "Memory");
+    }
+}
+
+// Trigger FlexSPI2 software reset and wait for completion.
+// FlexSPI2 base address: 0x400D0000
+// MCR0 bit 0 (SWRESET): write 1 to trigger reset, HW auto-clears when done.
+_FLEXSPI2_ModuleReset()
+{
+  __var reg;
+  reg = __readMemory32(0x400D0000, "Memory");          // FlexSPI2->MCR0
+  if( (reg & 0x02) == 0)  // Module Enabled (MDIS bit 1 = 0)
+  {
+    reg = __readMemory32(0x400D0000, "Memory");
+    __writeMemory32((reg | 0x1), 0x400D0000, "Memory");  // Set SWRESET (bit 0)
+    do
+    {
+      reg = __readMemory32(0x400D0000, "Memory");        // FlexSPI2->MCR0
+    }while((reg & 0x1) != 0);                            // Wait for SWRESET to self-clear
+  }
+}
+
+// Wait for FlexSPI2 bus to become idle before performing configuration.
+// MCR0 bit 1 (MDIS): 0=module enabled, 1=module disabled.
+// STS0 (0x400D00E0) bits [1:0]: ARBIDLE and SEQIDLE, both 1 when bus is idle.
+_FLEXSPI2_WaitBusIdle()
+{
+    __var reg;
+
+    reg = __readMemory32(0x400D0000, "Memory");          // FlexSPI2->MCR0
+    if( (reg & 0x02) == 0)  // Module Enabled (MDIS bit 1 = 0)
+    {
+        do
+        {
+            reg = __readMemory32(0x400D00E0, "Memory");  // FlexSPI2->STS0
+        } while ((reg & 0x3) != 0x3);                   // Wait for ARBIDLE and SEQIDLE
+    }
+}
+
+// Initialize FlexSPI2 root clock source.
+// First initializes SYS_PLL3 (480 MHz) and its PFD0 (664.6 MHz),
+// then configures the FlexSPI2 clock root to use PFD0 / 2 = 332.3 MHz.
+// The FlexSPI module internally divides by 2, resulting in 166.15 MHz serial clock.
+_FLEXSPI2_ClockInit()
+{
+  initSysPll3();
+  initSysPll3Pfd0();
+
+  // CCM CLOCK_ROOT for FlexSPI2 (0x40CC0A80)
+  // MUX=4 (SYS_PLL3_PFD0), DIV=1 (divide by 2) => 664.6 / 2 = 332.3 MHz
+  __writeMemory32(0x401, 0x40cc0a80, "Memory");
+
+  __message "clock init done\n";
+}
+
+// Pin mux value 0x14 = ALT4 (FlexSPI2 function) with SION enabled.
+// Pad config 0x0A = drive strength and slew rate for high-speed FlexSPI2 signals.
+// SELECT_INPUT registers (0x400E857C-0x400E858C) set daisy chain input path selection.
+_FlexSPI2_SetPinForOctalMode()
+{
+  // IOMUXC pin mux registers (0x400E80xx) - set ALT4 for FlexSPI2 function
+  __writeMemory32(0x00000014, 0x400E80E0, "Memory");  // IOMUXC_GPIO_EMC_B2_10_FLEXSPI2_A_SCLK
+  __writeMemory32(0x00000014, 0x400E80E4, "Memory");  // IOMUXC_GPIO_EMC_B2_11_FLEXSPI2_A_SS0_B
+  __writeMemory32(0x00000014, 0x400E80E8, "Memory");  // IOMUXC_GPIO_EMC_B2_12_FLEXSPI2_A_DQS
+  __writeMemory32(0x00000014, 0x400E80EC, "Memory");  // IOMUXC_GPIO_EMC_B2_13_FLEXSPI2_A_DATA00
+  __writeMemory32(0x00000014, 0x400E80F0, "Memory");  // IOMUXC_GPIO_EMC_B2_14_FLEXSPI2_A_DATA01
+  __writeMemory32(0x00000014, 0x400E80F4, "Memory");  // IOMUXC_GPIO_EMC_B2_15_FLEXSPI2_A_DATA02
+  __writeMemory32(0x00000014, 0x400E80F8, "Memory");  // IOMUXC_GPIO_EMC_B2_16_FLEXSPI2_A_DATA03
+  __writeMemory32(0x00000014, 0x400E80FC, "Memory");  // IOMUXC_GPIO_EMC_B2_17_FLEXSPI2_A_DATA04
+  __writeMemory32(0x00000014, 0x400E8100, "Memory");  // IOMUXC_GPIO_EMC_B2_18_FLEXSPI2_A_DATA05
+  __writeMemory32(0x00000014, 0x400E8104, "Memory");  // IOMUXC_GPIO_EMC_B2_19_FLEXSPI2_A_DATA06
+  __writeMemory32(0x00000014, 0x400E8108, "Memory");  // IOMUXC_GPIO_EMC_B2_20_FLEXSPI2_A_DATA07
+
+  // IOMUXC pad config registers (0x400E83xx) - configure drive strength/slew rate
+  __writeMemory32(0x0A, 0x400E8324, "Memory");        // EMC_B2_10
+  __writeMemory32(0x0A, 0x400E8328, "Memory");        // EMC_B2_11
+  __writeMemory32(0x0A, 0x400E832C, "Memory");        // EMC_B2_12
+  __writeMemory32(0x0A, 0x400E8330, "Memory");        // EMC_B2_13
+  __writeMemory32(0x0A, 0x400E8334, "Memory");        // EMC_B2_14
+  __writeMemory32(0x0A, 0x400E8338, "Memory");        // EMC_B2_15
+  __writeMemory32(0x0A, 0x400E833C, "Memory");        // EMC_B2_16
+  __writeMemory32(0x0A, 0x400E8340, "Memory");        // EMC_B2_17
+  __writeMemory32(0x0A, 0x400E8344, "Memory");        // EMC_B2_18
+  __writeMemory32(0x0A, 0x400E8348, "Memory");        // EMC_B2_19
+  __writeMemory32(0x0A, 0x400E834C, "Memory");        // EMC_B2_20
+
+  // SCLK, DATA[3:0] also need SELECT_INPUT daisy chain configuration 
+  __writeMemory32(0x00000000, 0x400E857C, "Memory");   // SELECT_INPUT: DATA00 daisy chain
+  __writeMemory32(0x00000000, 0x400E8580, "Memory");   // SELECT_INPUT: DATA01 daisy chain
+  __writeMemory32(0x00000000, 0x400E8584, "Memory");   // SELECT_INPUT: DATA02 daisy chain
+  __writeMemory32(0x00000000, 0x400E8588, "Memory");   // SELECT_INPUT: DATA03 daisy chain
+  __writeMemory32(0x00000000, 0x400E858C, "Memory");   // SELECT_INPUT: SCLK daisy chain
+}
+
+// Configure FlexSPI2 module registers for HyperRAM operation.
+// FlexSPI2 base: 0x400D0000
+// Register offsets:
+//   0x00: MCR0   - Module Configuration Register 0
+//   0x04: MCR1   - Module Configuration Register 1
+//   0x08: MCR2   - Module Configuration Register 2
+//   0x0C: AHBCR  - AHB Bus Control Register (prefetch enable)
+//   0x20-0x3C: AHBRXBUF0CR0-AHBRXBUF7CR0 - AHB RX Buffer Control
+//   0x60: FLASHA1CR0 - Flash A1 size (0x8000 = 32MB)
+//   0x70: FLASHA1CR1 - Flash A1 timing parameters
+//   0x80: FLASHA1CR2 - Flash A1 sequence index
+//   0x94: FLASHA1CR4 - Flash A1 write enable settings
+//   0xB8: IPRXFCR - IP RX FIFO Control
+//   0xBC: IPTXFCR - IP TX FIFO Control
+//   0xC0: DLLACR  - DLL Control Register A
+//   0x18: LUTKEY  - LUT Key Register (unlock value: 0x5AF05AF0)
+//   0x1C: LUTCR   - LUT Control Register (2=unlock, 1=lock)
+//   0x200-0x24C: LUT[0]-LUT[19] - Lookup Table entries for HyperRAM commands
+_FLEXSPI2_ModuleInit()
+{
+  __var reg;
+
+  // Enable module first (clear MDIS bit 1 in MCR0)
+  reg = __readMemory32(0x400D0000, "Memory");
+  __writeMemory32((reg & 0xFFFFFFFD), 0x400D0000, "Memory");
+  _FLEXSPI2_ModuleReset();
+
+  // Configure module control registers
+  __writeMemory32(0xFFFF3032, 0x400D0000, "Memory"); // MCR0 - MDIS set (stop mode), RXCLKSRC=1 (loopback)
+  __writeMemory32(0xFFFFFFFF, 0x400D0004, "Memory"); // MCR1 - CS hold/setup time
+  __writeMemory32(0x200001F7, 0x400D0008, "Memory"); // MCR2 - resume wait, command sequence timeout
+  __writeMemory32(0x00000078, 0x400D000C, "Memory"); // AHBCR - AHB prefetch enable
+  // Configure AHB RX buffers
+  __writeMemory32(0x800F0000, 0x400D0020, "Memory"); // AHBRXBUF0CR0
+  __writeMemory32(0x800F0000, 0x400D0024, "Memory"); // AHBRXBUF1CR0
+  __writeMemory32(0x800F0000, 0x400D0028, "Memory"); // AHBRXBUF2CR0
+  __writeMemory32(0x800F0000, 0x400D002C, "Memory"); // AHBRXBUF3CR0
+  __writeMemory32(0x800F0000, 0x400D0030, "Memory"); // AHBRXBUF4CR0
+  __writeMemory32(0x800F0000, 0x400D0034, "Memory"); // AHBRXBUF5CR0
+  __writeMemory32(0x80000020, 0x400D0038, "Memory"); // AHBRXBUF6CR0
+  __writeMemory32(0x80000020, 0x400D003C, "Memory"); // AHBRXBUF7CR0
+  __writeMemory32(0x00000000, 0x400D00B8, "Memory"); // IPRXFCR - IP RX FIFO clear
+  __writeMemory32(0x00000000, 0x400D00BC, "Memory"); // IPTXFCR - IP TX FIFO clear
+
+  _FLEXSPI2_WaitBusIdle();
+
+  // Configure flash memory size and timing
+  __writeMemory32(0x00008000, 0x400D0060, "Memory"); // FLASHA1CR0 - 32MB size
+  __writeMemory32(0x00021C63, 0x400D0070, "Memory"); // FLASHA1CR1 - CS interval, column addr width, word-addressable
+  __writeMemory32(0x00000100, 0x400D0080, "Memory"); // FLASHA1CR2 - AHB read sequence index
+
+  _FLEXSPI2_WaitBusIdle();
+
+  // Configure DLL
+  __writeMemory32(0x00000079, 0x400D00C0, "Memory"); // DLLCRA - DLL enable with override
+  __writeMemory32(0xFFFF3030, 0x400D0000, "Memory"); // MCR0 - exit stop mode to start DLL calibration (clear MDIS bit 1 in MCR0)
+
+  // Wait for Port A DLL lock by polling STS2 register (offset 0xE8)
+  // Bit 0: ASLVLOCK - Port A DLL slave delay line lock
+  // Bit 1: AREFLOCK - Port A DLL reference delay line lock
+  // Both must be 1 before FlexSPI can operate at configured clock speed
+  do
+  {
+      reg = __readMemory32(0x400D00E8, "Memory");     // FlexSPI2->STS2
+  } while (0x3 != (reg & 0x3));
+  __delay(1);
+
+  // Re-enter stop mode to safely configure FLASHCR4 write enable settings
+  __writeMemory32(0xFFFF3032, 0x400D0000, "Memory"); // MCR0 - enter stop mode (set MDIS bit 1)
+  __writeMemory32(0x000000C2, 0x400D0094, "Memory"); // FLASHCR4 - write enable command index
+  __writeMemory32(0x000000C6, 0x400D0094, "Memory"); // FLASHCR4 - update with write enable volatile
+  __writeMemory32(0xFFFF3030, 0x400D0000, "Memory"); // MCR0 - exit stop mode
+
+  _FLEXSPI2_WaitBusIdle();
+
+  // Program LUT entries for HyperRAM read/write sequences
+  // LUTKEY must be written with 0x5AF05AF0 to unlock LUT, LUTCR=2 to allow writes
+  __writeMemory32(0x5AF05AF0, 0x400D0018, "Memory"); // LUTKEY - unlock key
+  __writeMemory32(0x00000002, 0x400D001C, "Memory"); // LUTCR  - unlock LUT for writing
+  // LUT[0-3]: Seq0 - HyperRAM Read (8-byte address, read data)
+  __writeMemory32(0x8B1887A0, 0x400D0200, "Memory"); // LUT[0]
+  __writeMemory32(0xB7078F10, 0x400D0204, "Memory"); // LUT[1]
+  __writeMemory32(0x0000A704, 0x400D0208, "Memory"); // LUT[2]
+  __writeMemory32(0x00000000, 0x400D020C, "Memory"); // LUT[3]
+  // LUT[4-7]: Seq1 - HyperRAM Write (8-byte address, write data)
+  __writeMemory32(0x8B188720, 0x400D0210, "Memory"); // LUT[4]
+  __writeMemory32(0xB7078F10, 0x400D0214, "Memory"); // LUT[5]
+  __writeMemory32(0x0000A304, 0x400D0218, "Memory"); // LUT[6]
+  __writeMemory32(0x00000000, 0x400D021C, "Memory"); // LUT[7]
+  // LUT[8-11]: Seq2 - HyperRAM Register Read
+  __writeMemory32(0x8B1887E0, 0x400D0220, "Memory"); // LUT[8]
+  __writeMemory32(0xB7078F10, 0x400D0224, "Memory"); // LUT[9]
+  __writeMemory32(0x0000A704, 0x400D0228, "Memory"); // LUT[10]
+  __writeMemory32(0x00000000, 0x400D022C, "Memory"); // LUT[11]
+  // LUT[12-15]: Seq3 - HyperRAM Register Write
+  __writeMemory32(0x8B188760, 0x400D0230, "Memory"); // LUT[12]
+  __writeMemory32(0xA3048F10, 0x400D0234, "Memory"); // LUT[13]
+  __writeMemory32(0x00000000, 0x400D0238, "Memory"); // LUT[14]
+  __writeMemory32(0x00000000, 0x400D023C, "Memory"); // LUT[15]
+  __writeMemory32(0x5AF05AF0, 0x400D0018, "Memory"); // LUTKEY - unlock key
+  __writeMemory32(0x00000001, 0x400D001C, "Memory"); // LUTCR  - lock LUT
+
+  /* Restore HyperRAM CR0 register */
+  __writeMemory32(0x00001000, 0x400D00A0, "Memory"); // IPCR0 - address 0x1000 (CR0 in HyperRAM register space)
+  __writeMemory32(0x00030002, 0x400D00A4, "Memory"); // IPCR1 - seq index 3 (register write), data size 2 bytes
+  __writeMemory32(0x00000001, 0x400D00BC, "Memory"); // IPTXFCR - clear TX FIFO
+  __writeMemory32(0x2F8F2F8F, 0x400D0180, "Memory"); // TFDR - 0x8F2F is default value of W958D8NBYA4I CR0
+  __writeMemory32(0x00000040, 0x400D0014, "Memory"); // INTR - set IPTXWE to push TX FIFO data
+  __writeMemory32(0x00000001, 0x400D00B0, "Memory"); // IPCMD - trigger IP command
+  do
+  {
+      reg = __readMemory32(0x400D0014, "Memory");    // INTR
+  } while ((reg & 0x1) == 0x0);                      // Wait for IPCMDDONE
+  __writeMemory32(0x00000001, 0x400D0014, "Memory"); // INTR - clear IPCMDDONE flag
+
+  /* Restore HyperRAM CR1 register */
+  __writeMemory32(0x00001002, 0x400D00A0, "Memory"); // IPCR0 - address 0x1002 (CR1 in HyperRAM register space)
+  __writeMemory32(0x00030002, 0x400D00A4, "Memory"); // IPCR1 - seq index 3 (register write), data size 2 bytes
+  __writeMemory32(0x00000001, 0x400D00BC, "Memory"); // IPTXFCR - clear TX FIFO
+  __writeMemory32(0xC1FFC1FF, 0x400D0180, "Memory"); // TFDR - 0xFFC1 is default value of W958D8NBYA4I CR1
+  __writeMemory32(0x00000040, 0x400D0014, "Memory"); // INTR - set IPTXWE to push TX FIFO data
+  __writeMemory32(0x00000001, 0x400D00B0, "Memory"); // IPCMD - trigger IP command
+  do
+  {
+      reg = __readMemory32(0x400D0014, "Memory");    // INTR
+  } while ((reg & 0x1) == 0x0);                      // Wait for IPCMDDONE
+  __writeMemory32(0x00000001, 0x400D0014, "Memory"); // INTR - clear IPCMDDONE flag
+
+  _FLEXSPI2_ModuleReset();
+
+  __message "HyperRAM init done\n";
+}
+
+// Restore FlexRAM bank allocation to default configuration via IOMUXC_GPR.
+// IOMUXC_GPR base: 0x400E4000
+//   GPR16 (+0x40): FlexRAM control - bit 2: FLEXRAM_BANK_CFG_SEL (use GPR config),
+//                  bit 1: INIT_DTCM_EN, bit 0: INIT_ITCM_EN
+//   GPR17 (+0x44): FlexRAM bank config for banks 0-7 (2 bits per bank)
+//   GPR18 (+0x48): FlexRAM bank config for banks 8-15 (2 bits per bank)
+// Bank encoding: 00=not used, 01=OCRAM, 10=DTCM, 11=ITCM
+// 0xFFAA pattern: banks 0-3 = DTCM (10), banks 4-7 = ITCM (11)
+restoreFlexRAM()
+{
+    __var base;
+    __var value;
+
+    base = 0x400E4000;
+
+    // GPR17: configure FlexRAM banks 0-7
+    value = __readMemory32(base + 0x44, "Memory");
+    value &= ~(0xFFFF);
+    value |= 0xFFAA;
+    __writeMemory32(value, base + 0x44, "Memory");
+
+    // GPR18: configure FlexRAM banks 8-15
+    value = __readMemory32(base + 0x48, "Memory");
+    value &= ~(0xFFFF);
+    value |= 0xFFAA;
+    __writeMemory32(value, base + 0x48, "Memory");
+
+    // GPR16: enable GPR-based FlexRAM config (bit 2), enable DTCM (bit 1) and ITCM (bit 0)
+    value = __readMemory32(base + 0x40, "Memory");
+    value &= ~(0xFF << 8);
+    value |= 0x7 | (0xAA << 8);
+    __writeMemory32(value, base + 0x40, "Memory");
+    __message "FlexRAM configuration is restored";
+}
+
+HyperRAM_Init()
+{
+    __message "Init HyperRAM";
+
+    _FLEXSPI2_WaitBusIdle();
+    _FLEXSPI2_ModuleReset();
+
+    _FlexSPI2_SetPinForOctalMode();
+    _FLEXSPI2_ClockInit();
+    _FLEXSPI2_ModuleInit();
+
+    __message "HyperRAM init done\n";
+}
+
+execUserPreload()
+{
+    restoreFlexRAM();
+    HyperRAM_Init();
+}

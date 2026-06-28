@@ -40,6 +40,7 @@ lwip_iperf_bm:
       - -mdk@flexspi_nor_release
       - -mdk@release
     evkcmimxrt1060: []
+    frdmimxrt1152: []
     evkmimxrt1020:
       - -armgcc@debug
       - -armgcc@release

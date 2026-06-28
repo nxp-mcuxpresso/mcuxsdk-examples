@@ -27,6 +27,7 @@ in other larger RAM region.
 - [MIMXRT1060-EVKB](../../_boards/evkbmimxrt1060/display_examples/h264_freertos/example_board_readme.md)
 - [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/display_examples/h264_freertos/example_board_readme.md)
 - [MIMXRT1060-EVKC](../../_boards/evkcmimxrt1060/display_examples/h264_freertos/example_board_readme.md)
+- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/display_examples/h264_freertos/example_board_readme.md)
 - [MIMXRT1040-EVK](../../_boards/evkmimxrt1040/display_examples/h264_freertos/example_board_readme.md)
 - [EVK-MIMXRT1064](../../_boards/evkmimxrt1064/display_examples/h264_freertos/example_board_readme.md)
 - [MIMXRT1160-EVK](../../_boards/evkmimxrt1160/display_examples/h264_freertos/example_board_readme.md)

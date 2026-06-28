@@ -93,6 +93,7 @@ lwip_httpsrv_freertos:
       - -mdk@release
       - -mdk@sdram_debug
       - -mdk@sdram_release
+    frdmimxrt1152: []
     evkmimxrt1020:
       - +armgcc@flexspi_nor_sdram_debug
       - +armgcc@flexspi_nor_sdram_release

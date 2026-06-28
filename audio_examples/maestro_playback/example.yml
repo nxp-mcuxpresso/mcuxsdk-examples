@@ -42,6 +42,21 @@ maestro_playback:
     - -mdk@sdram_release
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
+    frdmimxrt1152:
+    - -iar@debug
+    - -iar@release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
     lpcxpresso55s69@cm33_core0:
     - -mdk@debug
     - -mdk@release

@@ -47,6 +47,19 @@ soem_gpio_pulse_freertos:
     - -iar@sdram_release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    frdmimxrt1152:
+    - -armgcc@flexspi_nor_hyperram_debug
+    - -armgcc@flexspi_nor_hyperram_release
+    - -iar@flexspi_nor_hyperram_debug
+    - -iar@flexspi_nor_hyperram_release
+    - -mdk@flexspi_nor_hyperram_debug
+    - -mdk@flexspi_nor_hyperram_release
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
     evkmimxrt1020:
     - +armgcc@flexspi_nor_sdram_debug
     - +armgcc@flexspi_nor_sdram_release

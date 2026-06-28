@@ -20,6 +20,7 @@ usb_pd_alt_mode_dp_host_bm_om13790host:
     evkbmimxrt1060: []
     evkbmimxrt1170@cm7: []
     evkcmimxrt1060: []
+    frdmimxrt1152: []
     evkmimxrt1015:
     - -armgcc@debug
     - -armgcc@release

@@ -16,6 +16,7 @@ lpadc_etc_software_trigger_conv:
       - ${board_root}/${board}/driver_examples/adc_etc/adc_etc_software_trigger_conv/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
+    frdmimxrt1152: []
     evkmimxrt1160@cm4:
     - -armgcc@debug
     - -armgcc@release

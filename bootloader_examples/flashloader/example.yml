@@ -96,6 +96,28 @@ flashloader:
     - -mdk@flexspi_nor_release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    frdmimxrt1152:
+    - -armgcc@debug
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@debug
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@debug
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
     evkmimxrt1010:
     - -armgcc@debug
     - -armgcc@flexspi_nor_debug

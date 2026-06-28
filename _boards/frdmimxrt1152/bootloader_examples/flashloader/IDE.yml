@@ -1,0 +1,8 @@
+initialization_file:
+  files:
+  - source: middleware/mcu_bootloader/boards/${board}/flashloader/Debug_RAM.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: debug release
+    package_path: examples/frdmimxrt1152/bootloader_examples/flashloader/mdk
+    project_path: mcu_bootloader/boards/frdmimxrt1152/flashloader

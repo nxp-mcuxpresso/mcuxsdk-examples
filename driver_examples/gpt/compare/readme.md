@@ -8,3 +8,4 @@ The gpt_compare project is a simple demonstration program of the SDK GPT driver'
 - [MIMXRT1160-EVK](../../../_boards/evkmimxrt1160/driver_examples/gpt/compare/example_board_readme.md)
 - [MIMXRT1180-EVK](../../../_boards/evkmimxrt1180/driver_examples/gpt/compare/example_board_readme.md)
 - [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/driver_examples/gpt/compare/example_board_readme.md)
+- [FRDM-IMXRT1152](../../../_boards/frdmimxrt1152/driver_examples/gpt/compare/example_board_readme.md)

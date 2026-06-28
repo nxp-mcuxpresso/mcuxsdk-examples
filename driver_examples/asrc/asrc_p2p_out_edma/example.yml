@@ -27,6 +27,7 @@ asrc_p2p_out_edma:
     - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    frdmimxrt1152: []
     evkmimxrt1160@cm7:
     - -armgcc@debug
     - -armgcc@release

@@ -58,6 +58,7 @@ The following figure is an example for attaching one HID generic device.
 
 ## Supported Boards
 - MIMXRT1170-EVKB
+- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/usb_examples/usb_host_hid_generic/example_board_readme.md)
 - [FRDM-K22F](../../_boards/frdmk22f/usb_examples/usb_host_hid_generic/example_board_readme.md)
 - [LPCXpresso55S69](../../_boards/lpcxpresso55s69/usb_examples/usb_host_hid_generic/example_board_readme.md)
 - EVK-MIMXRT1064

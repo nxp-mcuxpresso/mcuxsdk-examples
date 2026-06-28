@@ -80,6 +80,7 @@ flexio_spi_polling_lpspi_transfer_master:
     - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    frdmimxrt1152: []
     evkmimxrt1010:
     - -armgcc@debug
     - -armgcc@release

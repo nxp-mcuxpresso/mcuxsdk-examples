@@ -106,6 +106,7 @@ USB_DEVICE_WORKAROUND_AUDIO_20_WINDOWS when meets the following conditions:
 - MIMXRT1040-EVK
 - MIMXRT1024-EVK
 - LPCXpresso55S28
+- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/usb_examples/usb_device_composite_hid_audio_unified/example_board_readme.md)
 - [LPCXpresso55S36](../../_boards/lpcxpresso55s36/usb_examples/usb_device_composite_hid_audio_unified/example_board_readme.md)
 - MCX-N5XX-EVK
 - MIMXRT1060-EVKC

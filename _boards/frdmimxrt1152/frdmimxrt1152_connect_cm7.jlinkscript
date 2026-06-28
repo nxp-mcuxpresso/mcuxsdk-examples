@@ -1,0 +1,515 @@
+/*
+ * Copyright 2026 NXP
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+// Initialize SYS_PLL3 PFD0 to 664.6 MHz for FlexSPI2 clock source.
+// ANADIG_PLL_SYS_PLL3_PFD register (0x40C84230) bit fields:
+//   [5:0]  PFD0_FRAC   - Fractional divider value (valid range 13-35)
+//   [6]    PFD0_STABLE  - PFD0 clock stable indicator (read-only)
+//   [7]    PFD0_CLKGATE - PFD0 clock gate (1=gated/off, 0=enabled)
+void InitSysPll3Pfd0()
+{
+    unsigned int val;
+    unsigned int stable;
+
+    // ANADIG_PLL_SYS_PLL3_PFD
+    val = MEM_ReadU32(0x40C84230);
+    // Check if PFD0 is gated (bit 7) or FRAC is not set to 13
+    if (((val & 0x80) != 0) || ((val & 0x3F) != 13))
+    {
+        // Save current stable status to detect toggle after reconfiguration
+        stable = val & 0x40;
+
+        // Gate PFD0 before changing FRAC value (bit 7 = PFD0_CLKGATE)
+        val |= 0x80;
+        MEM_WriteU32(0x40C84230, val);
+
+        // Set PFD0_FRAC = 13 => PFD0 = 480 MHz * 18 / 13 = 664.6 MHz
+        val = MEM_ReadU32(0x40C84230);
+        val &= ~0x3F;
+        val |= 13;
+        MEM_WriteU32(0x40C84230, val);
+
+        // ANADIG_PLL_SYS_PLL3_UPDATE (0x40C84220) - toggle bit 1 (PFD0_UPDATE)
+        // to latch new FRAC value
+        val = MEM_ReadU32(0x40C84220);
+        val ^= 0x2;
+        MEM_WriteU32(0x40C84220, val);
+
+        // Un-gate PFD0 (clear bit 7 = PFD0_CLKGATE)
+        val = MEM_ReadU32(0x40C84230);
+        val &= ~0x80;
+        MEM_WriteU32(0x40C84230, val);
+        // Wait for PFD0_STABLE (bit 6) to toggle, indicating PFD0 has relocked
+        do
+        {
+            val = MEM_ReadU32(0x40C84230) & 0x40;
+        } while (val == stable);
+    }
+    else
+    {
+        Report("syspll3 pfd0 has been initialized already");
+        // Ensure PFD0 is un-gated (clear bit 7)
+        val &= ~0x80;
+        MEM_WriteU32(0x40C84230, val);
+    }
+}
+
+// Initialize SYS_PLL3 (480 MHz PLL) used as base clock for PFD outputs.
+// ANADIG_PLL_SYS_PLL3_CTRL register (0x40C84210) bit fields:
+//   [3]    SYS_PLL3_DIV2    - Enable divide-by-2 output (240 MHz)
+//   [4]    PLL_REG_EN       - PLL regulator enable
+//   [11]   HOLD_RING_OFF    - Hold ring oscillator off during power-up sequence
+//   [13]   ENABLE_CLK       - Enable PLL clock output
+//   [21]   POWERUP          - Power up the PLL
+//   [29]   SYS_PLL3_STABLE  - PLL lock indicator (read-only)
+//   [30]   SYS_PLL3_GATE    - Gate PLL output (1=gated)
+void InitSysPll3()
+{
+    unsigned int val;
+
+    // ANADIG_PLL_SYS_PLL3_CTRL
+    val = MEM_ReadU32(0x40C84210);
+    // Check bit 21 (POWERUP) - if set, PLL is already powered up
+    if (val & 0x200000)
+    {
+        // SysPll3 has been initialized, ensure clock output is enabled
+        if ((val & 0x2000) == 0)
+        {
+            // Set bit 13 (ENABLE_CLK) if not already set
+            val |= 0x2000;
+            MEM_WriteU32(0x40C84210, val);
+        }
+        if (val & 0x40000000)
+        {
+            // Clear bit 30 (SYS_PLL3_GATE) to un-gate PLL output
+            val &= ~0x40000000;
+            MEM_WriteU32(0x40C84210, val);
+        }
+        Report("syspll3 has been initialized already");
+        return;
+    }
+
+    // Gate all PFDs (set bit 7 of each PFD byte in SYS_PLL3_PFD register)
+    val = MEM_ReadU32(0x40C84230);
+    val |= 0x80808080;
+    MEM_WriteU32(0x40C84230, val);
+
+    // Enable PLL regulator (bit 4) and gate output (bit 30) during configuration
+    val = MEM_ReadU32(0x40C84210);
+    val |= 0x10 | 0x40000000;
+    MEM_WriteU32(0x40C84210, val);
+    SYS_Sleep(30);
+
+    // Power up PLL (bit 21) with ring oscillator held off (bit 11)
+    val = MEM_ReadU32(0x40C84210);
+    val |= 0x200000 | 0x800;
+    MEM_WriteU32(0x40C84210, val);
+    SYS_Sleep(30);
+
+    // Release ring oscillator (clear bit 11 HOLD_RING_OFF) to start PLL locking
+    val = MEM_ReadU32(0x40C84210);
+    val &= ~0x800;
+    MEM_WriteU32(0x40C84210, val);
+
+    // Wait for bit 29 (SYS_PLL3_STABLE) to indicate PLL has locked
+    do
+    {
+        val = MEM_ReadU32(0x40C84210);
+    } while ((val & 0x20000000) == 0);
+
+    // Enable clock output (bit 13) and divide-by-2 output (bit 3)
+    val |= 0x2000 | 0x8;
+    MEM_WriteU32(0x40C84210, val);
+
+    // Un-gate PLL output (clear bit 30 SYS_PLL3_GATE)
+    val &= ~0x40000000;
+    MEM_WriteU32(0x40C84210, val);
+}
+
+// Pin mux value 0x14 = ALT4 (FlexSPI2 function) with SION enabled.
+// Pad config 0x0A = drive strength and slew rate for high-speed FlexSPI2 signals.
+// SELECT_INPUT registers (0x400E857C-0x400E858C) set daisy chain input path selection.
+void _FlexSPI2_SetPinForOctalMode()
+{
+    // IOMUXC pin mux registers (0x400E80xx) - set ALT4 for FlexSPI2 function
+    MEM_WriteU32(0x400E80E0, 0x00000014);		// IOMUXC_GPIO_EMC_B2_10_FLEXSPI2_A_SCLK
+    MEM_WriteU32(0x400E80E4, 0x00000014);		// IOMUXC_GPIO_EMC_B2_11_FLEXSPI2_A_SS0_B
+    MEM_WriteU32(0x400E80E8, 0x00000014);		// IOMUXC_GPIO_EMC_B2_12_FLEXSPI2_A_DQS
+    MEM_WriteU32(0x400E80EC, 0x00000014);		// IOMUXC_GPIO_EMC_B2_13_FLEXSPI2_A_DATA00
+    MEM_WriteU32(0x400E80F0, 0x00000014);		// IOMUXC_GPIO_EMC_B2_14_FLEXSPI2_A_DATA01
+    MEM_WriteU32(0x400E80F4, 0x00000014);		// IOMUXC_GPIO_EMC_B2_15_FLEXSPI2_A_DATA02
+    MEM_WriteU32(0x400E80F8, 0x00000014);		// IOMUXC_GPIO_EMC_B2_16_FLEXSPI2_A_DATA03
+    MEM_WriteU32(0x400E80FC, 0x00000014);		// IOMUXC_GPIO_EMC_B2_17_FLEXSPI2_A_DATA04
+    MEM_WriteU32(0x400E8100, 0x00000014);		// IOMUXC_GPIO_EMC_B2_18_FLEXSPI2_A_DATA05
+    MEM_WriteU32(0x400E8104, 0x00000014);		// IOMUXC_GPIO_EMC_B2_19_FLEXSPI2_A_DATA06
+    MEM_WriteU32(0x400E8108, 0x00000014);		// IOMUXC_GPIO_EMC_B2_20_FLEXSPI2_A_DATA07
+
+    // IOMUXC pad config registers (0x400E83xx) - configure drive strength/slew rate
+    MEM_WriteU32(0x400E8324, 0x0A);             // Pad config: drive strength
+    MEM_WriteU32(0x400E8328, 0x0A);
+    MEM_WriteU32(0x400E832C, 0x0A);
+    MEM_WriteU32(0x400E8330, 0x0A);
+    MEM_WriteU32(0x400E8334, 0x0A);
+    MEM_WriteU32(0x400E8338, 0x0A);
+    MEM_WriteU32(0x400E833C, 0x0A);
+    MEM_WriteU32(0x400E8340, 0x0A);
+    MEM_WriteU32(0x400E8344, 0x0A);
+    MEM_WriteU32(0x400E8348, 0x0A);
+    MEM_WriteU32(0x400E834C, 0x0A);				
+    
+    // SCLK, DATA[3:0] also need SELECT_INPUT daisy chain configuration
+    MEM_WriteU32(0x400E857C, 0x00000000);		// SELECT_INPUT: DATA00 daisy chain
+    MEM_WriteU32(0x400E8580, 0x00000000);		// SELECT_INPUT: DATA01 daisy chain
+    MEM_WriteU32(0x400E8584, 0x00000000);		// SELECT_INPUT: DATA02 daisy chain
+    MEM_WriteU32(0x400E8588, 0x00000000);		// SELECT_INPUT: DATA03 daisy chain
+    MEM_WriteU32(0x400E858C, 0x00000000);		// SELECT_INPUT: SCLK daisy chain
+}
+
+// Trigger FlexSPI2 software reset and wait for completion.
+// FlexSPI2 base address: 0x400D0000
+// MCR0 bit 0 (SWRESET): write 1 to trigger reset, HW auto-clears when done.
+void _FLEXSPI2_ModuleReset()
+{
+    unsigned int reg;
+    reg = MEM_ReadU32(0x400D0000);				// FlexSPI2->MCR0
+    if( (reg & 0x02) == 0)  // Module Enabled
+    {
+        reg = MEM_ReadU32(0x400D0000);
+        MEM_WriteU32(0x400D0000, (reg | 0x1));		// Set SWRESET (bit 0)
+        do
+        {
+            reg = MEM_ReadU32(0x400D0000);				// FlexSPI2->MCR0
+        }while((reg & 0x1) != 0);					// Wait for SWRESET to self-clear
+    }
+}
+
+// Wait for FlexSPI2 bus to become idle before performing configuration.
+// MCR0 bit 1 (MDIS): 0=module enabled, 1=module disabled.
+// STS0 (0x400D00E0) bits [1:0]: ARBIDLE and SEQIDLE, both 1 when bus is idle.
+void _FLEXSPI2_WaitBusIdle()
+{
+    unsigned int reg;
+
+    reg = MEM_ReadU32(0x400D0000);				// FlexSPI2->MCR0
+    if( (reg & 0x02) == 0)						// Check MDIS bit - module enabled?
+    {
+        do
+        {
+            reg = MEM_ReadU32(0x400D00E0);		// FlexSPI2->STS0
+        } while ((reg & 0x3) != 0x3);			// Wait for ARBIDLE and SEQIDLE
+    }
+}
+
+// Initialize FlexSPI2 root clock source.
+// First initializes SYS_PLL3 (480 MHz) and its PFD0 (664.6 MHz),
+// then configures the FlexSPI2 clock root to use PFD0 / 2 = 332.3 MHz.
+// The FlexSPI module internally divides by 2, resulting in 166.15 MHz serial clock.
+void _FLEXSPI2_ClockInit()
+{
+    unsigned int reg;
+    unsigned int val;
+
+    InitSysPll3();
+    InitSysPll3Pfd0();
+
+    // CCM CLOCK_ROOT for FlexSPI2 (0x40CC0A80)
+    // MUX=4 (SYS_PLL3_PFD0), DIV=1 (divide by 2) => 664.6 / 2 = 332.3 MHz
+    reg = 0x40CC0A80;
+    val = 0x401;
+    MEM_WriteU32(reg, val);
+
+  Report("Flexspi2 Clock Init Done");
+}
+
+// Configure FlexSPI2 module registers for HyperRAM operation.
+// FlexSPI2 base: 0x400D0000
+// Register offsets:
+//   0x00: MCR0   - Module Configuration Register 0
+//   0x04: MCR1   - Module Configuration Register 1
+//   0x08: MCR2   - Module Configuration Register 2
+//   0x0C: AHBCR  - AHB Bus Control Register (prefetch enable)
+//   0x20-0x3C: AHBRXBUF0CR0-AHBRXBUF7CR0 - AHB RX Buffer Control
+//   0x60: FLASHA1CR0 - Flash A1 size (0x8000 = 32MB)
+//   0x70: FLASHA1CR1 - Flash A1 timing parameters
+//   0x80: FLASHA1CR2 - Flash A1 sequence index
+//   0x94: FLASHA1CR4 - Flash A1 write enable settings
+//   0xB8: IPRXFCR - IP RX FIFO Control
+//   0xBC: IPTXFCR - IP TX FIFO Control
+//   0xC0: DLLACR  - DLL Control Register A
+//   0x18: LUTKEY  - LUT Key Register (unlock value: 0x5AF05AF0)
+//   0x1C: LUTCR   - LUT Control Register (2=unlock, 1=lock)
+//   0x200-0x24C: LUT[0]-LUT[19] - Lookup Table entries for HyperRAM commands
+void _FLEXSPI2_ModuleInit()
+{
+  // Enable module first (clear MDIS bit 1 in MCR0)
+  unsigned int reg;
+  reg = MEM_ReadU32(0x400D0000);
+  MEM_WriteU32(0x400D0000, (reg & 0xFFFFFFFD));		// Clear MDIS (bit 1)
+  _FLEXSPI2_ModuleReset();
+
+  // Configure module control registers
+  MEM_WriteU32(0x400D0000, 0xFFFF3032); // MCR0 - MDIS set (stop mode), RXCLKSRC=1 (loopback)
+  MEM_WriteU32(0x400D0004, 0xFFFFFFFF); // MCR1 - CS hold/setup time
+  MEM_WriteU32(0x400D0008, 0x200001f7); // MCR2 - resume wait, command sequence timeout
+  MEM_WriteU32(0x400D000C, 0x00000078); // AHBCR - AHB prefetch enable
+
+  // Configure AHB RX buffers
+  MEM_WriteU32(0x400D0020, 0x800F0000); // AHBRXBUF0CR0
+  MEM_WriteU32(0x400D0024, 0x800F0000); // AHBRXBUF1CR0
+  MEM_WriteU32(0x400D0028, 0x800F0000); // AHBRXBUF2CR0
+  MEM_WriteU32(0x400D002C, 0x800F0000); // AHBRXBUF3CR0
+  MEM_WriteU32(0x400D0030, 0x800F0000); // AHBRXBUF4CR0
+  MEM_WriteU32(0x400D0034, 0x800F0000); // AHBRXBUF5CR0
+  MEM_WriteU32(0x400D0038, 0x80000020); // AHBRXBUF6CR0
+  MEM_WriteU32(0x400D003C, 0x80000020); // AHBRXBUF7CR0
+  MEM_WriteU32(0x400D00B8, 0x00000000); // IPRXFCR - IP RX FIFO clear
+  MEM_WriteU32(0x400D00BC, 0x00000000); // IPTXFCR - IP TX FIFO clear
+
+  _FLEXSPI2_WaitBusIdle();
+
+  // Configure flash memory size and timing
+  MEM_WriteU32(0x400D0060, 0x00008000); // FLASHA1CR0 - 32MB size
+  MEM_WriteU32(0x400D0070, 0x00021C63); // FLASHA1CR1 - CS interval, column addr width, word-addressable
+  MEM_WriteU32(0x400D0080, 0x00000100); // FLASHA1CR2 - AHB read sequence index
+
+  _FLEXSPI2_WaitBusIdle();
+
+  // Configure DLL
+  MEM_WriteU32(0x400D00C0, 0x00000079); // DLLCRA - DLL enable with override
+  MEM_WriteU32(0x400D0000, 0xFFFF3030); // MCR0 - exit stop mode to start DLL calibration (clear MDIS bit 1 in MCR0)
+
+  // Wait for Port A DLL lock by polling STS2 register (offset 0xE8)
+  // Bit 0: ASLVLOCK - Port A DLL slave delay line lock
+  // Bit 1: AREFLOCK - Port A DLL reference delay line lock
+  // Both must be 1 before FlexSPI can operate at configured clock speed
+  do
+  {
+      reg = MEM_ReadU32(0x400D00E8);     // FlexSPI2->STS2
+  } while (0x3 != (reg & 0x3));
+  SYS_Sleep(1);
+
+  // Re-enter stop mode to safely configure FLASHCR4 write enable settings
+  MEM_WriteU32(0x400D0000, 0xFFFF3032); // MCR0 - enter stop mode (set MDIS bit 1)
+  MEM_WriteU32(0x400D0094, 0x000000C2); // FLASHCR4 - write enable command index
+  MEM_WriteU32(0x400D0094, 0x000000C6); // FLASHCR4 - update with write enable volatile
+  MEM_WriteU32(0x400D0000, 0xFFFF3030); // MCR0 - exit stop mode
+
+  _FLEXSPI2_WaitBusIdle();
+
+  // Program LUT entries for HyperRAM read/write sequences
+  // LUTKEY must be written with 0x5AF05AF0 to unlock LUT, LUTCR=2 to allow writes
+  MEM_WriteU32(0x400D0018, 0x5AF05AF0); // LUTKEY - unlock key
+  MEM_WriteU32(0x400D001C, 0x00000002); // LUTCR  - unlock LUT for writing
+  // LUT[0-3]: Seq0 - HyperRAM Read (8-byte address, read data)
+  MEM_WriteU32(0x400D0200, 0x8b1887a0); // LUT[0]
+  MEM_WriteU32(0x400D0204, 0xb7078f10); // LUT[1]
+  MEM_WriteU32(0x400D0208, 0x0000a704); // LUT[2]
+  MEM_WriteU32(0x400D020C, 0x00000000); // LUT[3]
+  // LUT[4-7]: Seq1 - HyperRAM Write (8-byte address, write data)
+  MEM_WriteU32(0x400D0210, 0x8b188720); // LUT[4]
+  MEM_WriteU32(0x400D0214, 0xb7078f10); // LUT[5]
+  MEM_WriteU32(0x400D0218, 0x0000a304); // LUT[6]
+  MEM_WriteU32(0x400D021C, 0x00000000); // LUT[7]
+  // LUT[8-11]: Seq2 - HyperRAM Register Read
+  MEM_WriteU32(0x400D0220, 0x8b1887e0); // LUT[8]
+  MEM_WriteU32(0x400D0224, 0xb7078f10); // LUT[9]
+  MEM_WriteU32(0x400D0228, 0x0000a704); // LUT[10]
+  MEM_WriteU32(0x400D022C, 0x00000000); // LUT[11]
+  // LUT[12-15]: Seq3 - HyperRAM Register Write
+  MEM_WriteU32(0x400D0230, 0x8b188760); // LUT[12]
+  MEM_WriteU32(0x400D0234, 0xa3048f10); // LUT[13]
+  MEM_WriteU32(0x400D0238, 0x00000000); // LUT[14]
+  MEM_WriteU32(0x400D023C, 0x00000000); // LUT[15]
+  // LUT[16-19]: Unused (zeroed out)
+  MEM_WriteU32(0x400D0240, 0x00000000); // LUT[16]
+  MEM_WriteU32(0x400D0244, 0x00000000); // LUT[17]
+  MEM_WriteU32(0x400D0248, 0x00000000); // LUT[18]
+  MEM_WriteU32(0x400D024C, 0x00000000); // LUT[19]
+  MEM_WriteU32(0x400D0018, 0x5AF05AF0); // LUTKEY - unlock key
+  MEM_WriteU32(0x400D001C, 0x00000001); // LUTCR  - lock LUT
+
+  /* Restore hyperram CR0 register */
+  MEM_WriteU32(0x400D00A0, 0x00001000); // IPCR0 - address 0x1000 (CR0 in HyperRAM register space)
+  MEM_WriteU32(0x400D00A4, 0x00030002); // IPCR1 - seq index 3 (register write), data size 2 bytes
+  MEM_WriteU32(0x400D00BC, 0x00000001); // IPTXFCR - clear TX FIFO
+  MEM_WriteU32(0x400D0180, 0x2F8F2F8F); // TFDR - 0x8F2F is default value of W958D8NBYA4I CR0
+  MEM_WriteU32(0x400D0014, 0x00000040); // INTR - set IPTXWE to push TX FIFO data
+  MEM_WriteU32(0x400D00B0, 0x00000001); // IPCMD - trigger IP command
+  do
+  {
+      reg = MEM_ReadU32(0x400D0014); // INTR
+  } while ((reg & 0x1) == 0x0);        // Wait for IPCMDDONE
+  MEM_WriteU32(0x400D0014, 0x00000001); // INTR - clear IPCMDDONE flag
+
+  /* Restore hyperram CR1 register */
+  MEM_WriteU32(0x400D00A0, 0x00001002); // IPCR0 - address 0x1002 (CR1 in HyperRAM register space)
+  MEM_WriteU32(0x400D00A4, 0x00030002); // IPCR1 - seq index 3 (register write), data size 2 bytes
+  MEM_WriteU32(0x400D00BC, 0x00000001); // IPTXFCR - clear TX FIFO
+  MEM_WriteU32(0x400D0180, 0xC1FFC1FF); // TFDR - 0xFFC1 is default value of W958D8NBYA4I CR1
+  MEM_WriteU32(0x400D0014, 0x00000040); // INTR - set IPTXWE to push TX FIFO data
+  MEM_WriteU32(0x400D00B0, 0x00000001); // IPCMD - trigger IP command
+  do
+  {
+      reg = MEM_ReadU32(0x400D0014); // INTR
+  } while ((reg & 0x1) == 0x0);        // Wait for IPCMDDONE
+  MEM_WriteU32(0x400D0014, 0x00000001); // INTR - clear IPCMDDONE flag
+
+  _FLEXSPI2_ModuleReset();
+
+  Report("HyperRAM init done\n");
+}
+
+// Restore FlexRAM bank allocation to default configuration via IOMUXC_GPR.
+// IOMUXC_GPR base: 0x400E4000
+//   GPR16 (+0x40): FlexRAM control - bit 2: FLEXRAM_BANK_CFG_SEL (use GPR config),
+//                  bit 1: INIT_DTCM_EN, bit 0: INIT_ITCM_EN
+//   GPR17 (+0x44): FlexRAM bank config for banks 0-7 (2 bits per bank)
+//   GPR18 (+0x48): FlexRAM bank config for banks 8-15 (2 bits per bank)
+// Bank encoding: 00=not used, 01=OCRAM, 10=DTCM, 11=ITCM
+// 0xFFAA pattern: banks 0-3 = DTCM (10), banks 4-7 = ITCM (11)
+void RestoreFlexRAM()
+{
+    unsigned int base;
+    unsigned int value;
+
+    base = 0x400E4000;		// IOMUXC_GPR base
+
+    // GPR17: configure FlexRAM banks 0-7
+    value = MEM_ReadU32(base + 0x44);
+    value &= ~(0xFFFF);
+    value |= 0xFFAA;
+    MEM_WriteU32(base + 0x44, value);
+
+    // GPR18: configure FlexRAM banks 8-15
+    value = MEM_ReadU32(base + 0x48);
+    value &= ~(0xFFFF);
+    value |= 0xFFAA;
+    MEM_WriteU32(base + 0x48, value);
+
+    // GPR16: enable GPR-based FlexRAM config (bit 2), enable DTCM (bit 1) and ITCM (bit 0)
+    value = MEM_ReadU32(base + 0x40);
+    value &= ~(0xFF << 8);
+    value |= 0x7 | (0xAA << 8);
+    MEM_WriteU32(base + 0x40, value);
+    Report("FlexRAM configuration is restored");
+}
+
+void ReleaseCM4(void) {
+    MEM_WriteU32(0x40C04000, 1);
+    Report("CM4 is released");
+}
+
+void CM7VectReset(void) {
+    MEM_WriteU32(0xE000ED0C, 0x5FA0001);
+    SYS_Sleep(10);
+    Report("CM7 Vector Reset");
+}
+
+void CM7SrcReset(void) {
+    unsigned int t;
+
+    /* Issue M7 reset */
+    MEM_WriteU32(0x40c042a4, 1);
+
+    /* Check M7 reset status */
+    t = MEM_ReadU32(0x40c042b0);
+    t &= 0x1;
+    while (t)
+    {
+        t = MEM_ReadU32(0x40c042b0);
+        t &= 0x1;
+    }
+    SYS_Sleep(10);
+    Report("CM7 SRC reset");
+}
+
+void ResetCM7(void) {
+    CM7SrcReset();
+}
+
+void ResetDisplayMix()
+{
+    unsigned int t;
+
+    /* Issue DISPLAYMIX reset */
+    MEM_WriteU32(0x40c04224, 1);
+
+    /* Check DISPLAYMIX reset status */
+    t = MEM_ReadU32(0x40c04230);
+    t &= 0x1;
+    while (t)
+    {
+        t = MEM_ReadU32(0x40c04230);
+        t &= 0x1;
+    }
+    SYS_Sleep(10);
+    Report("DISPLAYMIX SRC reset");
+}
+
+void ResetPeripherals()
+{
+    ResetDisplayMix();
+}
+
+void InitTarget(void) {
+    CPU = CORTEX_M7;
+    // Manually configure AP
+    JLINK_CORESIGHT_AddAP(0, CORESIGHT_AHB_AP); // First AP is a AHB-AP
+    JLINK_CORESIGHT_AddAP(1, CORESIGHT_AHB_AP);
+    JLINK_CORESIGHT_AddAP(2, CORESIGHT_APB_AP);
+    CORESIGHT_IndexAHBAPToUse = 0;
+
+    // Dummy read
+    JLINK_CORESIGHT_ReadAP(JLINK_CORESIGHT_AP_REG_IDR);
+    SYS_Sleep(10);
+
+    // Disable system reset caused by sysrstreq from each core
+    JLINK_CORESIGHT_WriteAP(JLINK_CORESIGHT_AP_REG_ADDR, 0x40C04004);
+    JLINK_CORESIGHT_WriteAP(JLINK_CORESIGHT_AP_REG_DATA, 0xF << 10);
+
+    JLINK_ExecCommand("SetEnableFlashbank 0x60000000=0");  // Disable Flashbank "FlexSPI2"
+}
+
+void HyperRAM_Init()
+{
+    JLINK_SYS_Report("***************************************************");
+    JLINK_SYS_Report("Init HyperRAM");
+
+    _FLEXSPI2_WaitBusIdle();
+    _FLEXSPI2_ModuleReset(); 
+
+    _FlexSPI2_SetPinForOctalMode();
+    _FLEXSPI2_ClockInit();
+    _FLEXSPI2_ModuleInit();
+
+    JLINK_SYS_Report("***************************************************");
+}
+
+void ResetTarget(void) {
+    unsigned int r;
+    JLINK_TARGET_Halt();
+    ResetPeripherals();
+    ResetCM7();
+    r = JLINK_TARGET_IsHalted();
+    if (r == 0)
+        r = JLINK_TARGET_Halt();
+    r = JLINK_TARGET_IsHalted();
+    if (r == 0)
+        Report("CM7 is halted");
+}
+
+void SetupTarget(void) {
+    return 0;
+    //RestoreFlexRAM();
+    //HyperRAM_Init();
+}
+
+void AfterResetTarget(void) {    
+    JLINK_CORESIGHT_WriteAP(JLINK_CORESIGHT_AP_REG_ADDR, 0x40C04004);
+    JLINK_CORESIGHT_WriteAP(JLINK_CORESIGHT_AP_REG_DATA, 0xF << 10);
+    RestoreFlexRAM();
+    HyperRAM_Init();
+}

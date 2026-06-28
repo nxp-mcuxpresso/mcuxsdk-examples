@@ -41,3 +41,4 @@ sai_edma_standalone_transfer:
     - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    frdmimxrt1152: []

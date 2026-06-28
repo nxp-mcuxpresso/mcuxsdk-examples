@@ -20,3 +20,4 @@ received data:
 
 ## Supported Boards
 - [MIMXRT1170-EVKB](../../../_boards/evkbmimxrt1170/driver_examples/sai/edma_standalone_transfer/example_board_readme.md)
+- [FRDM-IMXRT1152](../../../_boards/frdmimxrt1152/driver_examples/sai/edma_standalone_transfer/example_board_readme.md)

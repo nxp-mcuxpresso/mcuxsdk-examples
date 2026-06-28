@@ -35,6 +35,7 @@ dev_dfu_bm:
     evkbmimxrt1060: []
     evkbmimxrt1170@cm7: []
     evkcmimxrt1060: []
+    frdmimxrt1152: []
     evkmimxrt1020: []
     evkmimxrt1024: []
     evkmimxrt1040: []

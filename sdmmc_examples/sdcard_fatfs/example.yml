@@ -23,6 +23,7 @@ sdcard_fatfs:
     evkbmimxrt1170@cm4: []
     evkbmimxrt1170@cm7: []
     evkcmimxrt1060: []
+    frdmimxrt1152: []
     evkmimxrt1020:
     - -armgcc@debug
     - -armgcc@sdram_debug

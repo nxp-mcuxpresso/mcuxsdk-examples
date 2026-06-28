@@ -1,0 +1,70 @@
+mdk:
+  project-templates:
+    - scripts/guigenerator/templates/mdk/app_frdmimxrt1152/app_frdmimxrt1152.uvprojx
+    - scripts/guigenerator/templates/mdk/app_frdmimxrt1152/app_frdmimxrt1152.uvoptx
+  config:
+    flexspi_nor_debug:
+      update-before-debug: true
+    flexspi_nor_release:
+      update-before-debug: true
+    flexspi_nor_hyperram_debug:
+      update-before-debug: true
+    flexspi_nor_hyperram_release:
+      update-before-debug: true
+
+iar:
+  project-templates:
+    - scripts/guigenerator/templates/iar/app_cmsisdap/generic.ewp
+    - scripts/guigenerator/templates/iar/app_cmsisdap/generic.ewd
+    - scripts/guigenerator/templates/iar/general.eww
+  config:
+    __common__:
+      debugger_setting:
+        cmsisdap_resetlist: software
+
+macro-file:
+  files:
+    - source: ${board_root}/frdmimxrt1152/frdmimxrt1152_connect_cm7.mac
+      attribute: macro-file
+      toolchains: iar
+      choose: true
+
+jlink_script_file:
+  files:
+    - source: ${board_root}/frdmimxrt1152/frdmimxrt1152_connect_cm7.jlinkscript
+      attribute: jlink_script_file
+      toolchains: iar
+      choose: false
+
+initialization_file:
+  files:
+    - source: ${board_root}/frdmimxrt1152/frdmimxrt1152_ram.ini
+      attribute: initialization_file
+      toolchains: mdk
+      targets: debug release
+               hyperram_debug hyperram_release
+
+    - source: ${board_root}/frdmimxrt1152/frdmimxrt1152_ram_0x1400.ini
+      attribute: initialization_file
+      toolchains: mdk
+      targets: ram_0x1400_debug ram_0x1400_release
+
+    - source: ${board_root}/frdmimxrt1152/frdmimxrt1152_flexspi_nor.ini
+      attribute: initialization_file
+      toolchains: mdk
+      targets: flexspi_nor_debug flexspi_nor_release
+
+    - source: ${board_root}/frdmimxrt1152/frdmimxrt1152_flexspi_nor_hyperram.ini
+      attribute: initialization_file
+      toolchains: mdk
+      targets: flexspi_nor_hyperram_debug flexspi_nor_hyperram_release
+
+    - source: ${board_root}/frdmimxrt1152/frdmimxrt1152_hyperram_init.ini
+      attribute: initialization_file
+      toolchains: mdk
+      targets: hyperram_debug hyperram_release
+
+    - source: ${board_root}/frdmimxrt1152/frdmimxrt1152_hyperram_txt_init.ini
+      attribute: initialization_file
+      toolchains: mdk
+      targets: hyperram_txt_debug hyperram_txt_release

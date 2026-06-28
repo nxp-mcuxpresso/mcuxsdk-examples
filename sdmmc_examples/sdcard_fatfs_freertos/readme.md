@@ -11,6 +11,7 @@ and freertos.
 - [MIMXRT1060-EVKB](../../_boards/evkbmimxrt1060/sdmmc_examples/sdcard_fatfs_freertos/example_board_readme.md)
 - [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/sdmmc_examples/sdcard_fatfs_freertos/example_board_readme.md)
 - [MIMXRT1060-EVKC](../../_boards/evkcmimxrt1060/sdmmc_examples/sdcard_fatfs_freertos/example_board_readme.md)
+- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/sdmmc_examples/sdcard_fatfs_freertos/example_board_readme.md)
 - [EVK-MIMXRT1020](../../_boards/evkmimxrt1020/sdmmc_examples/sdcard_fatfs_freertos/example_board_readme.md)
 - [MIMXRT1024-EVK](../../_boards/evkmimxrt1024/sdmmc_examples/sdcard_fatfs_freertos/example_board_readme.md)
 - [MIMXRT1040-EVK](../../_boards/evkmimxrt1040/sdmmc_examples/sdcard_fatfs_freertos/example_board_readme.md)

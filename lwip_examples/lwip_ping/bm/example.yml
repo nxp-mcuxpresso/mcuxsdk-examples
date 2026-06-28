@@ -94,6 +94,7 @@ lwip_ping_bm:
       - -mdk@release
       - -mdk@sdram_debug
       - -mdk@sdram_release
+    frdmimxrt1152: []
     evkmimxrt1020:
       - -armgcc@debug
       - -armgcc@release

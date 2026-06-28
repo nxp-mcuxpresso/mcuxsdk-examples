@@ -30,6 +30,7 @@ freertos_event:
     evkbmimxrt1170@cm4: []
     evkbmimxrt1170@cm7: []
     evkcmimxrt1060: []
+    frdmimxrt1152: []
     evkmcimx7ulp: []
     evkmimx8mm: []
     evkmimx8mn: []

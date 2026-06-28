@@ -10,6 +10,7 @@ sends the ICMP echo reply back to the PC.
 
 ## Supported Boards
 - [MIMXRT1170-EVKB](../../../_boards/evkbmimxrt1170/lwip_examples/lwip_ping_enet_qos/freertos/example_board_readme.md)
+- [FRDM-IMXRT1152](../../../_boards/frdmimxrt1152/lwip_examples/lwip_ping_enet_qos/freertos/example_board_readme.md)
 - [MCIMX93-EVK](../../../_boards/mcimx93evk/lwip_examples/lwip_ping_enet_qos/freertos/example_board_readme.md)
 - [MCIMX93W-EVK](../../../_boards/mcimx93wevk/lwip_examples/lwip_ping_enet_qos/freertos/example_board_readme.md)
 - [MCIMX93-QSB](../../../_boards/mcimx93qsb/lwip_examples/lwip_ping_enet_qos/freertos/example_board_readme.md)

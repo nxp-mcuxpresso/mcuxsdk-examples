@@ -33,6 +33,7 @@ SW reset does not clear pending fault flags.
 ## Supported Boards
 - [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/driver_examples/cdog/example_board_readme.md)
 - [MIMXRT1160-EVK](../../_boards/evkmimxrt1160/driver_examples/cdog/example_board_readme.md)
+- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/driver_examples/cdog/example_board_readme.md)
 - [FRDM-MCXA153](../../_boards/frdmmcxa153/driver_examples/cdog/example_board_readme.md)
 - [FRDM-MCXA156](../../_boards/frdmmcxa156/driver_examples/cdog/example_board_readme.md)
 - [FRDM-MCXA346](../../_boards/frdmmcxa346/driver_examples/cdog/example_board_readme.md)
