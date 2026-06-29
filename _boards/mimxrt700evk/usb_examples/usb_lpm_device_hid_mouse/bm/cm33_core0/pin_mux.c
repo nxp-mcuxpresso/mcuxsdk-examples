@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -18,7 +18,7 @@ product: Pins v17.0
 processor: MIMXRT798S
 package_id: MIMXRT798SGFOB
 mcu_data: ksdk2_0
-processor_version: 0.2412.60
+processor_version: 26.06.0
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -131,6 +131,107 @@ void BOARD_InitPins(void)
                                         IOPCTL_PIO_DRIVE_100OHM);
     /* PORT1 PIN0 (coords: N5) is configured as LP_FLEXCOMM0_P1 */
     IOPCTL_PinMuxSet(1U, 0U, port1_pin0_config);
+}
+
+/* clang-format off */
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitPMICPins:
+- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
+- pin_list:
+  - {pin_num: U8, peripheral: LPI2C15, signal: SCL, pin_signal: PMIC_I2C_SCL, open_drain: enable, input_buffer: enable}
+  - {pin_num: U7, peripheral: LPI2C15, signal: SDA, pin_signal: PMIC_I2C_SDA, open_drain: enable, input_buffer: enable}
+  - {pin_num: P14, peripheral: GPIO7, signal: 'GPIO, 14', pin_signal: PIO7_14/SDHC1_DATA5/LP_FLEXCOMM7_P0}
+  - {pin_num: M14, peripheral: GPIO7, signal: 'GPIO, 15', pin_signal: PIO7_15/SDHC1_DATA6/LP_FLEXCOMM7_P1}
+  - {pin_num: M15, peripheral: GPIO7, signal: 'GPIO, 16', pin_signal: PIO7_16/SDHC1_DATA7/LP_FLEXCOMM7_P2}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+/* clang-format on */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitPMICPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+/* Function assigned for the Cortex-M33 (Core #0) */
+void BOARD_InitPMICPins(void)
+{
+    /* Reset IOPCTL1 module */
+    RESET_ClearPeripheralReset(kIOPCTL1_RST_SHIFT_RSTn);
+    /* Reset IOPCTL2 module */
+    RESET_ClearPeripheralReset(kIOPCTL2_RST_SHIFT_RSTn);
+
+    IOPCTL1->PMIC_I2C_SCL = ((IOPCTL1->PMIC_I2C_SCL &
+                              /* Mask bits to zero which are setting */
+                              (~(IOPCTL1_PMIC_I2C_SCL_IBENA_MASK | IOPCTL1_PMIC_I2C_SCL_ODENA_MASK)))
+
+                             /* Input Buffer Enable: Enables */
+                             | IOPCTL1_PMIC_I2C_SCL_IBENA(PMIC_I2C_SCL_IBENA_IBENA_1)
+
+                             /* Open-drain Mode Enable: Enables for simulated open-drain output (high drive disabled) */
+                             | IOPCTL1_PMIC_I2C_SCL_ODENA(PMIC_I2C_SCL_ODENA_ODENA_1));
+
+    IOPCTL1->PMIC_I2C_SDA = ((IOPCTL1->PMIC_I2C_SDA &
+                              /* Mask bits to zero which are setting */
+                              (~(IOPCTL1_PMIC_I2C_SDA_IBENA_MASK | IOPCTL1_PMIC_I2C_SDA_ODENA_MASK)))
+
+                             /* Input Buffer Enable: Enables */
+                             | IOPCTL1_PMIC_I2C_SDA_IBENA(PMIC_I2C_SDA_IBENA_IBENA_1)
+
+                             /* Open-drain Mode Enable: Enables for simulated open-drain output (high drive disabled) */
+                             | IOPCTL1_PMIC_I2C_SDA_ODENA(PMIC_I2C_SDA_ODENA_ODENA_1));
+
+    const uint32_t port7_pin14_config = (/* Pin is configured as PIO7_14 */
+                                         IOPCTL_PIO_FUNC0 |
+                                         /* Disable pull-up / pull-down function */
+                                         IOPCTL_PIO_PUPD_DI |
+                                         /* Enable pull-down function */
+                                         IOPCTL_PIO_PULLDOWN_EN |
+                                         /* Disable input buffer function */
+                                         IOPCTL_PIO_INBUF_DI |
+                                         /* Pseudo Output Drain is disabled */
+                                         IOPCTL_PIO_PSEDRAIN_DI |
+                                         /* Input function is not inverted */
+                                         IOPCTL_PIO_INV_DI |
+                                         /* Selects transmitter current drive 100ohm */
+                                         IOPCTL_PIO_DRIVE_100OHM);
+    /* PORT7 PIN14 (coords: P14) is configured as PIO7_14 */
+    IOPCTL_PinMuxSet(7U, 14U, port7_pin14_config);
+
+    const uint32_t port7_pin15_config = (/* Pin is configured as PIO7_15 */
+                                         IOPCTL_PIO_FUNC0 |
+                                         /* Disable pull-up / pull-down function */
+                                         IOPCTL_PIO_PUPD_DI |
+                                         /* Enable pull-down function */
+                                         IOPCTL_PIO_PULLDOWN_EN |
+                                         /* Disable input buffer function */
+                                         IOPCTL_PIO_INBUF_DI |
+                                         /* Pseudo Output Drain is disabled */
+                                         IOPCTL_PIO_PSEDRAIN_DI |
+                                         /* Input function is not inverted */
+                                         IOPCTL_PIO_INV_DI |
+                                         /* Selects transmitter current drive 100ohm */
+                                         IOPCTL_PIO_DRIVE_100OHM);
+    /* PORT7 PIN15 (coords: M14) is configured as PIO7_15 */
+    IOPCTL_PinMuxSet(7U, 15U, port7_pin15_config);
+
+    const uint32_t port7_pin16_config = (/* Pin is configured as PIO7_16 */
+                                         IOPCTL_PIO_FUNC0 |
+                                         /* Disable pull-up / pull-down function */
+                                         IOPCTL_PIO_PUPD_DI |
+                                         /* Enable pull-down function */
+                                         IOPCTL_PIO_PULLDOWN_EN |
+                                         /* Disable input buffer function */
+                                         IOPCTL_PIO_INBUF_DI |
+                                         /* Pseudo Output Drain is disabled */
+                                         IOPCTL_PIO_PSEDRAIN_DI |
+                                         /* Input function is not inverted */
+                                         IOPCTL_PIO_INV_DI |
+                                         /* Selects transmitter current drive 100ohm */
+                                         IOPCTL_PIO_DRIVE_100OHM);
+    /* PORT7 PIN16 (coords: M15) is configured as PIO7_16 */
+    IOPCTL_PinMuxSet(7U, 16U, port7_pin16_config);
 }
 /***********************************************************************************************************************
  * EOF

@@ -29,6 +29,8 @@
 #include "usb_phy.h"
 #include "clock_config.h"
 #include "board.h"
+#include "fsl_pca9422.h"
+#include "pmic_support.h"
 #include "fsl_adapter_timer.h"
 /*${header:end}*/
 /*${variable:start}*/
@@ -58,6 +60,49 @@ void USB_WaitClockLocked(void);
 /*${prototype:end}*/
 extern usb_hid_mouse_struct_t g_UsbDeviceHidMouse;
 /*${function:start}*/
+
+/* Configure regulator output enable in Run mode. */
+void BOARD_ConfigPMICRegEnable(pca9422_handle_t *handle)
+{
+    pca9422_regulatoren_t cfg;
+
+    /* Configure Regulator Enable */
+    PCA9422_GetDefaultRegEnableConfig(&cfg);
+
+    PCA9422_WriteRegEnableConfig(handle, cfg);
+}
+
+void BOARD_ConfigPMICEnMode(pca9422_handle_t *handle)
+{
+    pca9422_enmodecfg_t cfg;
+    /* Configure ENMODE */
+    PCA9422_GetDefaultEnModeConfig(&cfg);
+
+    PCA9422_WriteEnModeConfig(handle, cfg);
+}
+
+void BOARD_PowerInitPMIC(void)
+{
+    pca9422_modecfg_t pca9422ModeCfg[12];
+    uint32_t i;
+
+    BOARD_InitPmic();
+    for (i = 0; i < ARRAY_SIZE(pca9422ModeCfg); i++)
+    {
+        PCA9422_GetDefaultPowerModeConfig(&pca9422ModeCfg[i]);
+    }
+    /* Use default PMIC configuration. */
+    for (i = 0; i < ARRAY_SIZE(pca9422ModeCfg); i++)
+    {
+        PCA9422_WritePowerModeConfigs(&pca9422Handle, (pca9422_power_mode_t)i, pca9422ModeCfg[i]);
+    }
+    BOARD_ConfigPMICRegEnable(&pca9422Handle);
+    BOARD_ConfigPMICEnMode(&pca9422Handle);
+
+    /* Switch to a new DVS mode before re-configuring the VDD1/VDD2 per CPU frequency. */
+    BOARD_SetPmicDVSPinStatus(0x1);
+}
+
 void BOARD_InitHardware(void)
 {
     /* Define the init structure for the input switch pin */
@@ -68,11 +113,14 @@ void BOARD_InitHardware(void)
 
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
+    BOARD_InitPMICPins();
     BOARD_InitBUTTONsPins();
     BOARD_BootClockRUN();
 
     BOARD_InitDebugConsole();
     BOARD_InitAHBSC();
+
+    BOARD_PowerInitPMIC();
 
     RESET_ClearPeripheralReset(kGPIO0_RST_SHIFT_RSTn);
     CLOCK_EnableClock(kCLOCK_Gpio0);
