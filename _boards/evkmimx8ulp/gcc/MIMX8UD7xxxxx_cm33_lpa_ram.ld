@@ -34,7 +34,8 @@ MEMORY
 {
   m_interrupts          (RX)  : ORIGIN = 0x0FFC2000, LENGTH = 0x00000320
   m_text                (RX)  : ORIGIN = 0x0FFC2320, LENGTH = 0x0003DCE0
-  m_data                (RW)  : ORIGIN = 0x20000000, LENGTH = 0x00020000
+  m_rsc_tbl             (RW)  : ORIGIN = 0x20000000, LENGTH = 0x00001000
+  m_data                (RW)  : ORIGIN = 0x20001000, LENGTH = 0x0001F000
   m_data2               (RW)  : ORIGIN = 0x20020000, LENGTH = 0x00040000
 }
 
@@ -227,6 +228,10 @@ SECTIONS
   __StackTop   = ORIGIN(m_data) + LENGTH(m_data);
   __StackLimit = __StackTop - STACK_SIZE;
   PROVIDE(__stack = __StackTop);
+
+  /* For Resource table region in dtcm, Cortex-A read the resource table from here */
+  __RscTblStart = ORIGIN(m_rsc_tbl);
+  __RscTblEnd = ORIGIN(m_rsc_tbl) + LENGTH(m_rsc_tbl);
 
   .ARM.attributes 0 : { *(.ARM.attributes) }
 
