@@ -1,0 +1,2 @@
+        *(EXCLUDE_FILE(*flexspi_nor_flash_ops.o *fsl_flexspi.o *fsl_clock.o) .rodata*)
+        *(EXCLUDE_FILE(*flexspi_nor_flash_ops.o *fsl_flexspi.o *fsl_clock.o) .rodata)
