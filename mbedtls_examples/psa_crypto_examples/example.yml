@@ -211,3 +211,4 @@ psa_crypto_examples:
     mimxrt700evk@cm33_core0: []
     frdmmcxe31b: []
     frdmmcxe32b@core0: []
+    frdmkw43: []
