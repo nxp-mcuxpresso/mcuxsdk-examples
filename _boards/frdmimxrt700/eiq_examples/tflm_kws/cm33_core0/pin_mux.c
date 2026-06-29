@@ -72,6 +72,7 @@ BOARD_InitPins:
 /* Function assigned for the Cortex-M33 (Core #0) */
 void BOARD_InitPins(void)
 {
+    BOARD_InitDEBUG_UARTPins();
 }
 
 /* clang-format off */

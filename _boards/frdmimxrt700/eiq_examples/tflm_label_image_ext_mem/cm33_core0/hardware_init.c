@@ -133,7 +133,9 @@ void BOARD_Init()
 {
     edma_config_t userConfig;
 
-    BOARD_InitPins();
+    // BOARD_InitPins();
+    BOARD_InitBootPins();
+    BOARD_InitXSPI0Pins();
 
     // Disable LDO
     POWER_SetVddnSupplySrc(kVddSrc_PMIC);
@@ -141,7 +143,7 @@ void BOARD_Init()
     POWER_SetVdd2SupplySrc(kVddSrc_PMIC);
     POWER_ApplyPD();
 
-    BOARD_InitPmicPins();
+    BOARD_InitPMICPins();
     BOARD_InitPmic();
     BOARD_SetPmicVdd2Voltage(1100000U); /* 1.1v for 325MHz clock. */
 

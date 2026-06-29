@@ -32,6 +32,7 @@ extern "C" {
  *
  */
 void BOARD_InitBootPins(void);
+void BOARD_InitXSPI0Pins(void);
 
 #define IOPCTL_PIO_ANAMUX_DI 0x00u        /*!<@brief Analog mux is disabled */
 #define IOPCTL_PIO_FUNC1 0x01u            /*!<@brief Selects pin function 1 */
@@ -71,7 +72,7 @@ void BOARD_InitPins(void); /* Function assigned for the Cortex-M33 */
  *  * @brief Configures pin routing and optionally pin electrical features.
  *   *
  *    */
-void BOARD_InitPmicPins(void); /* Function assigned for the Cortex-M33 (Core #0) */
+void BOARD_InitPMICPins(void); /* Function assigned for the Cortex-M33 (Core #0) */
 #if defined(__cplusplus)
 }
 #endif

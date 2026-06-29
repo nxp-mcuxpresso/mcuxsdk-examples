@@ -29,17 +29,17 @@ mcux_remove_armgcc_linker_script(
 mcux_add_armgcc_linker_script(
   TARGETS flash_debug flash_release
   BASE_PATH ${SdkRootDirPath}
-  LINKER ${board_root}/mimxrt700evk/eiq_examples/tflm_label_image_ext_mem/cm33_core0/gcc/MIMXRT798Sxxxx_cm33_core0_flash.ld
+  LINKER ${board_root}/${board}/eiq_examples/tflm_label_image_ext_mem/cm33_core0/gcc/MIMXRT798Sxxxx_cm33_core0_flash.ld
   )
 mcux_add_mdk_linker_script(
   TARGETS flash_debug flash_release
   BASE_PATH ${SdkRootDirPath}
-  LINKER ${board_root}/mimxrt700evk/eiq_examples/tflm_label_image_ext_mem/cm33_core0/arm/MIMXRT798Sxxxx_cm33_core0_flash.scf
+  LINKER ${board_root}/${board}/eiq_examples/tflm_label_image_ext_mem/cm33_core0/arm/MIMXRT798Sxxxx_cm33_core0_flash.scf
   )
 mcux_add_iar_linker_script(
   TARGETS flash_debug flash_release
   BASE_PATH ${SdkRootDirPath}
-  LINKER ${board_root}/mimxrt700evk/eiq_examples/tflm_label_image_ext_mem/cm33_core0/iar/MIMXRT798Sxxxx_cm33_core0_flash.icf
+  LINKER ${board_root}/${board}/eiq_examples/tflm_label_image_ext_mem/cm33_core0/iar/MIMXRT798Sxxxx_cm33_core0_flash.icf
   )
 
 mcux_add_macro(
