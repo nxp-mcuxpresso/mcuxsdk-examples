@@ -18,13 +18,13 @@ product: Pins v17.0
 processor: MCXA577
 package_id: MCXA577VPN
 mcu_data: ksdk2_0
-processor_version: 0.0.0
+processor_version: 0.2606.70
 pin_labels:
 - {pin_num: A9, pin_signal: P0_6/ISPMODE_N/LPI2C0_HREQ/LPSPI0_PCS1/CT_INP2/FLEXIO0_D6/SMARTDMA_PIO2/ADC0_A15, label: SW3, identifier: SW3}
 - {pin_num: M5, pin_signal: P2_14/CT4_MAT2/FLEXIO0_D22, label: LED_RED, identifier: LED_RED}
 - {pin_num: K9, pin_signal: P2_22/CT2_MAT2/FLEXIO0_D30, label: LED_GREEN, identifier: LED_GREEN}
 - {pin_num: N9, pin_signal: P2_23/TRIG_OUT5/CT2_MAT3/FLEXIO0_D31/CMP0_INP5, label: LED_BLUE, identifier: LED_BLUE}
-- {pin_num: G10, pin_signal: P3_17/WUU0_IN26/LPUART4_CTS_B/CT_INP9/ESPI0_CSN/FLEXIO0_D25/LPSPI3_PCS0/FLEXSPI0_B_SS0_B/SMARTDMA_PIO17/PF_SPI_CS0_N, label: SW2, identifier: SW2}
+- {pin_num: G10, pin_signal: P3_17/WUU0_IN26/LPUART4_CTS_B/CT_INP9/ESPI0_CSN/FLEXIO0_D25/LPSPI3_PCS0/FLEXSPI0_B_SS0_B/SMARTDMA_PIO17, label: SW2, identifier: SW2}
 - {pin_num: C2, pin_signal: P1_10/LPUART1_RTS_B/LPI2C2_SDAS/CT2_MAT0/FLEXIO0_D18/SMARTDMA_PIO6/LPUART5_TXD/CAN0_TXD/TSI0_CH20/ADC1_A8, label: EPHY_RSTB, identifier: EPHY_RSTB}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -270,9 +270,9 @@ BOARD_InitBUTTONsPins:
 - pin_list:
   - {pin_num: A9, peripheral: GPIO0, signal: 'GPIO, 6', pin_signal: P0_6/ISPMODE_N/LPI2C0_HREQ/LPSPI0_PCS1/CT_INP2/FLEXIO0_D6/SMARTDMA_PIO2/ADC0_A15, direction: INPUT,
     slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: G10, peripheral: GPIO3, signal: 'GPIO, 17', pin_signal: P3_17/WUU0_IN26/LPUART4_CTS_B/CT_INP9/ESPI0_CSN/FLEXIO0_D25/LPSPI3_PCS0/FLEXSPI0_B_SS0_B/SMARTDMA_PIO17/PF_SPI_CS0_N,
+  - {pin_num: G10, peripheral: GPIO3, signal: 'GPIO, 17', pin_signal: P3_17/WUU0_IN26/LPUART4_CTS_B/CT_INP9/ESPI0_CSN/FLEXIO0_D25/LPSPI3_PCS0/FLEXSPI0_B_SS0_B/SMARTDMA_PIO17,
     direction: INPUT, slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: G10, peripheral: WUU0, signal: 'P, 26', pin_signal: P3_17/WUU0_IN26/LPUART4_CTS_B/CT_INP9/ESPI0_CSN/FLEXIO0_D25/LPSPI3_PCS0/FLEXSPI0_B_SS0_B/SMARTDMA_PIO17/PF_SPI_CS0_N,
+  - {pin_num: G10, peripheral: WUU0, signal: 'P, 26', pin_signal: P3_17/WUU0_IN26/LPUART4_CTS_B/CT_INP9/ESPI0_CSN/FLEXIO0_D25/LPSPI3_PCS0/FLEXSPI0_B_SS0_B/SMARTDMA_PIO17,
     identifier: ''}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -798,8 +798,8 @@ BOARD_InitFLEXIO_MCULCDPins:
     slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
   - {pin_num: M3, peripheral: FLEXIO0, signal: 'D, 14', pin_signal: P2_6/TRIG_OUT4/LPSPI1_PCS1/LPUART4_RXD/CT_INP18/CT1_MAT2/FLEXIO0_D14/SMARTDMA_PIO30/LPSPI2_PCS1/TSI0_CH36/ADC1_A3,
     slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: N3, peripheral: FLEXIO0, signal: 'D, 15', pin_signal: P2_7/TRIG_IN5/LPUART4_TXD/CT_INP19/CT1_MAT3/FLEXIO0_D15/SMARTDMA_PIO31/TSI0_CH37/VREFI/VREFO/ADC0_A7,
-    slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+  - {pin_num: J2, peripheral: FLEXIO0, signal: 'D, 15', pin_signal: P4_7/TRIG_IN5/LPI2C3_HREQ/LPUART3_RTS_B/CT_INP7/FLEXIO0_D15/SMARTDMA_PIO27/LPSPI2_PCS3/I3C3_SDA/ESPI0_NOTIFY/TSI0_CH65,
+    slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, pull_value: low, input_buffer: enable, invert_input: normal}
   - {pin_num: H10, peripheral: LPI2C3, signal: SCL, pin_signal: P3_21/TRIG_OUT1/LPI2C3_SCL/LPUART1_TXD/CT2_MAT3/ESPI0_RST/FLEXIO0_D29/LPSPI3_SCK/SMARTDMA_PIO21/TSI0_CH53,
     slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
   - {pin_num: H13, peripheral: LPI2C3, signal: SDA, pin_signal: P3_20/WUU0_IN27/TRIG_OUT0/LPI2C3_SDA/LPUART1_RXD/CT2_MAT2/ESPI0_NOTIFY/FLEXIO0_D28/LPSPI3_SDO/SMARTDMA_PIO20/TSI0_CH52,
@@ -839,6 +839,8 @@ void BOARD_InitFLEXIO_MCULCDPins(void)
     CLOCK_EnableClock(kCLOCK_GatePORT2);
     /* PORT3: Peripheral clock is enabled */
     CLOCK_EnableClock(kCLOCK_GatePORT3);
+    /* PORT4: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GatePORT4);
     /* GPIO2: Peripheral clock is enabled */
     CLOCK_EnableClock(kCLOCK_GateGPIO2);
     /* FLEXIO0 peripheral is released from reset */
@@ -859,6 +861,10 @@ void BOARD_InitFLEXIO_MCULCDPins(void)
     RESET_ReleasePeripheralReset(kGPIO3_RST_SHIFT_RSTn);
     /* PORT3 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kPORT3_RST_SHIFT_RSTn);
+    /* GPIO4 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kGPIO4_RST_SHIFT_RSTn);
+    /* PORT4 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kPORT4_RST_SHIFT_RSTn);
 
     const port_pin_config_t port0_10_pinC9_config = {/* Internal pull-up/down resistor is disabled */
                                                      .pullSelect = kPORT_PullDisable,
@@ -1360,31 +1366,6 @@ void BOARD_InitFLEXIO_MCULCDPins(void)
     /* PORT2_6 (pin M3) is configured as FLEXIO0_D14 */
     PORT_SetPinConfig(PORT2, 6U, &port2_6_pinM3_config);
 
-    const port_pin_config_t port2_7_pinN3_config = {/* Internal pull-up/down resistor is disabled */
-                                                    .pullSelect = kPORT_PullDisable,
-                                                    /* Low internal pull resistor value is selected. */
-                                                    .pullValueSelect = kPORT_LowPullResistor,
-                                                    /* Fast slew rate is configured */
-                                                    .slewRate = kPORT_FastSlewRate,
-                                                    /* Passive input filter is disabled */
-                                                    .passiveFilterEnable = kPORT_PassiveFilterDisable,
-                                                    /* Open drain output is disabled */
-                                                    .openDrainEnable = kPORT_OpenDrainDisable,
-                                                    /* Low drive strength is configured */
-                                                    .driveStrength = kPORT_LowDriveStrength,
-                                                    /* Normal drive strength is configured */
-                                                    .driveStrength1 = kPORT_NormalDriveStrength,
-                                                    /* Pin is configured as FLEXIO0_D15 */
-                                                    .mux = kPORT_MuxAlt6,
-                                                    /* Digital input enabled */
-                                                    .inputBuffer = kPORT_InputBufferEnable,
-                                                    /* Digital input is not inverted */
-                                                    .invertInput = kPORT_InputNormal,
-                                                    /* Pin Control Register fields [15:0] are not locked */
-                                                    .lockRegister = kPORT_UnlockRegister};
-    /* PORT2_7 (pin N3) is configured as FLEXIO0_D15 */
-    PORT_SetPinConfig(PORT2, 7U, &port2_7_pinN3_config);
-
     const port_pin_config_t port2_8_pinL4_config = {/* Internal pull-up/down resistor is disabled */
                                                     .pullSelect = kPORT_PullDisable,
                                                     /* Low internal pull resistor value is selected. */
@@ -1509,6 +1490,31 @@ void BOARD_InitFLEXIO_MCULCDPins(void)
                                                      .lockRegister = kPORT_UnlockRegister};
     /* PORT3_4 (pin E11) is configured as FLEXIO0_D12 */
     PORT_SetPinConfig(PORT3, 4U, &port3_4_pinE11_config);
+
+    const port_pin_config_t port4_7_pinJ2_config = {/* Internal pull-up/down resistor is disabled */
+                                                    .pullSelect = kPORT_PullDisable,
+                                                    /* Low internal pull resistor value is selected. */
+                                                    .pullValueSelect = kPORT_LowPullResistor,
+                                                    /* Fast slew rate is configured */
+                                                    .slewRate = kPORT_FastSlewRate,
+                                                    /* Passive input filter is disabled */
+                                                    .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                    /* Open drain output is disabled */
+                                                    .openDrainEnable = kPORT_OpenDrainDisable,
+                                                    /* Low drive strength is configured */
+                                                    .driveStrength = kPORT_LowDriveStrength,
+                                                    /* Normal drive strength is configured */
+                                                    .driveStrength1 = kPORT_NormalDriveStrength,
+                                                    /* Pin is configured as FLEXIO0_D15 */
+                                                    .mux = kPORT_MuxAlt6,
+                                                    /* Digital input enabled */
+                                                    .inputBuffer = kPORT_InputBufferEnable,
+                                                    /* Digital input is not inverted */
+                                                    .invertInput = kPORT_InputNormal,
+                                                    /* Pin Control Register fields [15:0] are not locked */
+                                                    .lockRegister = kPORT_UnlockRegister};
+    /* PORT4_7 (pin J2) is configured as FLEXIO0_D15 */
+    PORT_SetPinConfig(PORT4, 7U, &port4_7_pinJ2_config);
 
     gpio_pin_config_t gpio2_pinN1_config = {
         .pinDirection = kGPIO_DigitalOutput,
@@ -2333,21 +2339,21 @@ void BOARD_InitI3CPins(void)
 BOARD_InitFLEXSPIPins:
 - options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: A13, peripheral: FLEXSPI0, signal: FLEXSPI_A_SS0_B, pin_signal: P3_0/WUU0_IN22/TRIG_IN0/LPI2C3_SDA/LPUART3_RXD/CT_INP16/FLEXIO0_D8/LPSPI3_PCS0/FLEXSPI0_A_SS0_B/SMARTDMA_PIO0/PF_QSPI_CS0_DIS,
+  - {pin_num: A13, peripheral: FLEXSPI0, signal: FLEXSPI_A_SS0_B, pin_signal: P3_0/WUU0_IN22/TRIG_IN0/LPI2C3_SDA/LPUART3_RXD/CT_INP16/FLEXIO0_D8/LPSPI3_PCS0/FLEXSPI0_A_SS0_B/SMARTDMA_PIO0,
     slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: B12, peripheral: FLEXSPI0, signal: FLEXSPI_A_SS1_B, pin_signal: P3_1/TRIG_IN1/LPI2C3_SCL/LPUART3_TXD/CT_INP17/FLEXIO0_D9/LPSPI3_PCS1/FLEXSPI0_B_DQS/FLEXSPI0_A_SS1_B/SMARTDMA_PIO1/PF_QSPI_CS1_DIS,
+  - {pin_num: B12, peripheral: FLEXSPI0, signal: FLEXSPI_A_SS1_B, pin_signal: P3_1/TRIG_IN1/LPI2C3_SCL/LPUART3_TXD/CT_INP17/FLEXIO0_D9/LPSPI3_PCS1/FLEXSPI0_B_DQS/FLEXSPI0_A_SS1_B/SMARTDMA_PIO1,
     slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: B13, peripheral: FLEXSPI0, signal: FLEXSPI_A_DQS, pin_signal: P3_6/CLKOUT/LPSPI1_PCS3/LPUART3_RTS_B/CT4_MAT2/FLEXIO0_D14/LPSPI3_PCS1/FLEXSPI0_B_SS1_B/FLEXSPI0_A_DQS/SMARTDMA_PIO6/PF_QSPI_CS_N,
+  - {pin_num: B13, peripheral: FLEXSPI0, signal: FLEXSPI_A_DQS, pin_signal: P3_6/CLKOUT/LPSPI1_PCS3/LPUART3_RTS_B/CT4_MAT2/FLEXIO0_D14/LPSPI3_PCS1/FLEXSPI0_B_SS1_B/FLEXSPI0_A_DQS/SMARTDMA_PIO6,
     slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: C12, peripheral: FLEXSPI0, signal: FLEXSPI_A_SCLK, pin_signal: P3_7/TRIG_IN2/LPSPI1_PCS2/LPUART3_CTS_B/CT4_MAT3/FLEXIO0_D15/LPSPI3_SCK/FLEXSPI0_A_SCLK/SMARTDMA_PIO7/PF_QSPI_SCKIN,
+  - {pin_num: C12, peripheral: FLEXSPI0, signal: FLEXSPI_A_SCLK, pin_signal: P3_7/TRIG_IN2/LPSPI1_PCS2/LPUART3_CTS_B/CT4_MAT3/FLEXIO0_D15/LPSPI3_SCK/FLEXSPI0_A_SCLK/SMARTDMA_PIO7,
     slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: C13, peripheral: FLEXSPI0, signal: FLEXSPI_A_DATA0, pin_signal: P3_8/WUU0_IN23/TRIG_IN3/LPSPI1_SDO/LPUART1_RXD/CT_INP4/FLEXIO0_D16/LPSPI3_SDO/LPUART5_CTS_B/FLEXSPI0_A_DATA0/SMARTDMA_PIO8/PF_QSPI_DATA0,
+  - {pin_num: C13, peripheral: FLEXSPI0, signal: FLEXSPI_A_DATA0, pin_signal: P3_8/WUU0_IN23/TRIG_IN3/LPSPI1_SDO/LPUART1_RXD/CT_INP4/FLEXIO0_D16/LPSPI3_SDO/LPUART5_CTS_B/FLEXSPI0_A_DATA0/SMARTDMA_PIO8,
     slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: D12, peripheral: FLEXSPI0, signal: FLEXSPI_A_DATA1, pin_signal: P3_9/TRIG_IN4/LPSPI1_SDI/LPUART1_TXD/CT_INP5/FLEXIO0_D17/LPSPI3_SDI/LPUART5_RTS_B/FLEXSPI0_A_DATA1/SMARTDMA_PIO9/PF_QSPI_DATA1,
+  - {pin_num: D12, peripheral: FLEXSPI0, signal: FLEXSPI_A_DATA1, pin_signal: P3_9/TRIG_IN4/LPSPI1_SDI/LPUART1_TXD/CT_INP5/FLEXIO0_D17/LPSPI3_SDI/LPUART5_RTS_B/FLEXSPI0_A_DATA1/SMARTDMA_PIO9,
     slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: D13, peripheral: FLEXSPI0, signal: FLEXSPI_A_DATA2, pin_signal: P3_10/TRIG_IN5/LPSPI1_SCK/LPUART1_RTS_B/CT1_MAT0/FLEXIO0_D18/LPSPI3_PCS2/LPUART5_TXD/FLEXSPI0_A_DATA2/SMARTDMA_PIO10/PF_QSPI_DATA2,
+  - {pin_num: D13, peripheral: FLEXSPI0, signal: FLEXSPI_A_DATA2, pin_signal: P3_10/TRIG_IN5/LPSPI1_SCK/LPUART1_RTS_B/CT1_MAT0/FLEXIO0_D18/LPSPI3_PCS2/LPUART5_TXD/FLEXSPI0_A_DATA2/SMARTDMA_PIO10,
     slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: E13, peripheral: FLEXSPI0, signal: FLEXSPI_A_DATA3, pin_signal: P3_11/WUU0_IN24/TRIG_IN6/LPSPI1_PCS0/LPUART1_CTS_B/CT1_MAT1/FLEXIO0_D19/LPSPI3_PCS3/LPUART5_RXD/FLEXSPI0_A_DATA3/SMARTDMA_PIO11/PF_QSPI_DATA3,
+  - {pin_num: E13, peripheral: FLEXSPI0, signal: FLEXSPI_A_DATA3, pin_signal: P3_11/WUU0_IN24/TRIG_IN6/LPSPI1_PCS0/LPUART1_CTS_B/CT1_MAT1/FLEXIO0_D19/LPSPI3_PCS3/LPUART5_RXD/FLEXSPI0_A_DATA3/SMARTDMA_PIO11,
     slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -2859,7 +2865,8 @@ void BOARD_InitFlexioCameraPins(void)
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitFlexioMculcdSmartdmaTrigger:
 - options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
-- pin_list: []
+- pin_list:
+  - {peripheral: SMARTDMA, signal: 'TRIG, 0', pin_signal: flexio0_irq}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -2872,6 +2879,12 @@ BOARD_InitFlexioMculcdSmartdmaTrigger:
  * END ****************************************************************************************************************/
 void BOARD_InitFlexioMculcdSmartdmaTrigger(void)
 {
+    /* INPUTMUX0: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GateINPUTMUX0);
+    /* INPUTMUX0 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kINPUTMUX0_RST_SHIFT_RSTn);
+    /*  Flexio0Irq connect to Smartdmatrig 0 */
+    INPUTMUX_AttachSignal(INPUTMUX0, 0U, kINPUTMUX_Flexio0irqToSmartdmatrig);
 }
 
 /* clang-format off */
@@ -2948,6 +2961,8 @@ void BOARD_InitSmartDmaKeyPadPins(void)
     RESET_ReleasePeripheralReset(kPORT4_RST_SHIFT_RSTn);
     /* INPUTMUX0 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kINPUTMUX0_RST_SHIFT_RSTn);
+    /* FLEXIO0 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kFLEXIO0_RST_SHIFT_RSTn);
 
     const port_pin_config_t port0_17_pinA8_config = {/* Internal pull-up/down resistor is disabled */
                                                      .pullSelect = kPORT_PullDisable,
@@ -3523,15 +3538,15 @@ BOARD_InitESPIPins:
   - {pin_num: K4, peripheral: ESPI0, signal: espi_csn, pin_signal: P4_11/LPUART0_CTS_B/LPI2C4_SDA/CT3_MAT1/FLEXIO0_D19/SMARTDMA_PIO31/LPSPI5_PCS0/ESPI0_CSN/TSI0_CH69,
     slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
   - {pin_num: K2, peripheral: ESPI0, signal: 'espi_data, 0', pin_signal: P4_9/LPUART0_TXD/LPI2C4_SCLS/CT_INP9/FLEXIO0_D17/SMARTDMA_PIO29/LPSPI5_SDO/ESPI0_DATA0/TSI0_CH67,
-    slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+    slew_rate: fast, open_drain: disable, drive_strength: high, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
   - {pin_num: J3, peripheral: ESPI0, signal: 'espi_data, 1', pin_signal: P4_8/LPUART0_RXD/LPI2C4_SDAS/CT_INP8/FLEXIO0_D16/SMARTDMA_PIO28/LPSPI5_SDI/ESPI0_DATA1/TSI0_CH66,
-    slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+    slew_rate: fast, open_drain: disable, drive_strength: high, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
   - {pin_num: H2, peripheral: ESPI0, signal: 'espi_data, 2', pin_signal: P4_13/LPI2C3_SDAS/LPI2C4_HREQ/CT3_MAT3/LPSPI5_PCS2/I3C3_PUR/ESPI0_DATA2, slew_rate: fast,
-    open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+    open_drain: disable, drive_strength: high, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
   - {pin_num: H3, peripheral: ESPI0, signal: 'espi_data, 3', pin_signal: P4_12/LPI2C3_SCLS/CT3_MAT2/LPSPI5_PCS3/I3C2_PUR/ESPI0_DATA3, slew_rate: fast, open_drain: disable,
-    drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+    drive_strength: high, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
   - {pin_num: J2, peripheral: ESPI0, signal: espi_notify, pin_signal: P4_7/TRIG_IN5/LPI2C3_HREQ/LPUART3_RTS_B/CT_INP7/FLEXIO0_D15/SMARTDMA_PIO27/LPSPI2_PCS3/I3C3_SDA/ESPI0_NOTIFY/TSI0_CH65,
-    slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, pull_value: low, input_buffer: enable, invert_input: normal}
+    slew_rate: fast, open_drain: enable, drive_strength: low, pull_select: down, pull_enable: disable, pull_value: low, input_buffer: enable, invert_input: normal}
   - {pin_num: K1, peripheral: ESPI0, signal: espi_rst, pin_signal: P4_6/TRIG_IN4/LPI2C2_HREQ/LPUART3_CTS_B/CT_INP6/FLEXIO0_D14/SMARTDMA_PIO26/LPSPI2_PCS2/I3C3_SCL/ESPI0_RST/TSI0_CH64,
     slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
@@ -3552,6 +3567,8 @@ void BOARD_InitESPIPins(void)
     RESET_ReleasePeripheralReset(kPORT4_RST_SHIFT_RSTn);
     /* GPIO4 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kGPIO4_RST_SHIFT_RSTn);
+    /* FLEXIO0 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kFLEXIO0_RST_SHIFT_RSTn);
 
     const port_pin_config_t port4_10_pinK3_config = {/* Internal pull-up/down resistor is disabled */
                                                      .pullSelect = kPORT_PullDisable,
@@ -3613,8 +3630,8 @@ void BOARD_InitESPIPins(void)
                                                      .passiveFilterEnable = kPORT_PassiveFilterDisable,
                                                      /* Open drain output is disabled */
                                                      .openDrainEnable = kPORT_OpenDrainDisable,
-                                                     /* Low drive strength is configured */
-                                                     .driveStrength = kPORT_LowDriveStrength,
+                                                     /* High drive strength is configured */
+                                                     .driveStrength = kPORT_HighDriveStrength,
                                                      /* Normal drive strength is configured */
                                                      .driveStrength1 = kPORT_NormalDriveStrength,
                                                      /* Pin is configured as ESPI0_DATA3 */
@@ -3638,8 +3655,8 @@ void BOARD_InitESPIPins(void)
                                                      .passiveFilterEnable = kPORT_PassiveFilterDisable,
                                                      /* Open drain output is disabled */
                                                      .openDrainEnable = kPORT_OpenDrainDisable,
-                                                     /* Low drive strength is configured */
-                                                     .driveStrength = kPORT_LowDriveStrength,
+                                                     /* High drive strength is configured */
+                                                     .driveStrength = kPORT_HighDriveStrength,
                                                      /* Normal drive strength is configured */
                                                      .driveStrength1 = kPORT_NormalDriveStrength,
                                                      /* Pin is configured as ESPI0_DATA2 */
@@ -3686,8 +3703,8 @@ void BOARD_InitESPIPins(void)
                                                     .slewRate = kPORT_FastSlewRate,
                                                     /* Passive input filter is disabled */
                                                     .passiveFilterEnable = kPORT_PassiveFilterDisable,
-                                                    /* Open drain output is disabled */
-                                                    .openDrainEnable = kPORT_OpenDrainDisable,
+                                                    /* Open drain output is enabled */
+                                                    .openDrainEnable = kPORT_OpenDrainEnable,
                                                     /* Low drive strength is configured */
                                                     .driveStrength = kPORT_LowDriveStrength,
                                                     /* Normal drive strength is configured */
@@ -3713,8 +3730,8 @@ void BOARD_InitESPIPins(void)
                                                     .passiveFilterEnable = kPORT_PassiveFilterDisable,
                                                     /* Open drain output is disabled */
                                                     .openDrainEnable = kPORT_OpenDrainDisable,
-                                                    /* Low drive strength is configured */
-                                                    .driveStrength = kPORT_LowDriveStrength,
+                                                    /* High drive strength is configured */
+                                                    .driveStrength = kPORT_HighDriveStrength,
                                                     /* Normal drive strength is configured */
                                                     .driveStrength1 = kPORT_NormalDriveStrength,
                                                     /* Pin is configured as ESPI0_DATA1 */
@@ -3738,8 +3755,8 @@ void BOARD_InitESPIPins(void)
                                                     .passiveFilterEnable = kPORT_PassiveFilterDisable,
                                                     /* Open drain output is disabled */
                                                     .openDrainEnable = kPORT_OpenDrainDisable,
-                                                    /* Low drive strength is configured */
-                                                    .driveStrength = kPORT_LowDriveStrength,
+                                                    /* High drive strength is configured */
+                                                    .driveStrength = kPORT_HighDriveStrength,
                                                     /* Normal drive strength is configured */
                                                     .driveStrength1 = kPORT_NormalDriveStrength,
                                                     /* Pin is configured as ESPI0_DATA0 */
