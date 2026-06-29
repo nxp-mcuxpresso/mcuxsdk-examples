@@ -1,9 +1,0 @@
-# coex application
-set(CONFIG_WIFI           1)
-
-target_compile_definitions(${MCUX_SDK_PROJECT_NAME}
-    PRIVATE
-    CONFIG_COEX_ENABLE_WIFI_MENU=${CONFIG_WIFI}
-    CONFIG_WIFI_BLE_COEX_APP=${CONFIG_WIFI}
-    CONFIG_COEX_ENABLE_MENU=1
-)
