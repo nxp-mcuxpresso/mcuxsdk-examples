@@ -53,8 +53,17 @@ if MCUX_PRJSEG_module.board.wireless.board
   config MCUX_PRJSEG_module.board.wireless.board.debug
       bool "Debug"
 
+  config MCUX_PRJSEG_module.board.wireless.board.debug_utils
+      bool "Shared debug utilities (Base64 encoder)"
+      help
+        Common board debug helpers shared by the debug backends (board_debug_utils),
+        currently the BOARD_DBG_Base64Encode encoder. This is an internal building
+        block selected by the features that need it (debug_nbu, debug_coredump);
+        it is not meant to be enabled directly.
+
   config MCUX_PRJSEG_module.board.wireless.board.debug_nbu
       bool "NBU Debug support"
+      select MCUX_PRJSEG_module.board.wireless.board.debug_utils
       select MCUX_COMPONENT_middleware.wireless.framework.dbg.nbu_debug_on_host
       select MCUX_COMPONENT_middleware.wireless.framework.workq
       depends on MCUX_COMPONENT_middleware.wireless.framework.platform.kw47_mcxw72 || \

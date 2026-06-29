@@ -15,6 +15,7 @@
 #include "fsl_debug_console.h"
 #include "fsl_device_registers.h"
 #include "fsl_os_abstraction.h"
+#include "board_debug_utils.h"
 #if defined(BOARD_NBUDBG_HCI_LOGGER)
 #include "board_debug_nbu_port.h"
 #if defined(BOARD_NBUDBG_HCI_LOG_ON_FAULT_ONLY) && (BOARD_NBUDBG_HCI_LOG_ON_FAULT_ONLY > 0)
@@ -108,7 +109,6 @@ static void BOARD_NBUDBG_PrintRawData(const char* label, const char* start_marke
 #if defined(BOARD_NBUDBG_HCI_LOGGER)
 static void BOARD_NBUDBG_HciLogCallback(uint8_t packet_type, const uint8_t *data, uint16_t len, bool is_rx);
 #if (BOARD_NBUDBG_HCI_LOG_BASE64 == 1U)
-static uint32_t BOARD_NBUDBG_Base64Encode(const uint8_t *src, uint32_t src_len, char *dst);
 static void BOARD_NBUDBG_HciLogEmitBase64(uint8_t packet_type, const uint8_t *data, uint16_t len, bool is_rx);
 #else
 static void BOARD_NBUDBG_HciLogEmitRaw(uint8_t packet_type, const uint8_t *data, uint16_t len, bool is_rx);
@@ -518,46 +518,6 @@ static void BOARD_NBUDBG_PrintRawData(const char* label, const char* start_marke
 #if defined(BOARD_NBUDBG_HCI_LOGGER)
 #if (BOARD_NBUDBG_HCI_LOG_BASE64 == 1U)
 /**
- * \brief Encode a byte buffer into standard Base64 (RFC 4648, with '=' padding)
- *
- * \param[in]  src     pointer to the input bytes
- * \param[in]  src_len number of input bytes
- * \param[out] dst     output buffer, must hold at least 4*ceil(src_len/3) chars
- *
- * \return number of Base64 characters written to dst
- */
-static uint32_t BOARD_NBUDBG_Base64Encode(const uint8_t *src, uint32_t src_len, char *dst)
-{
-    const char b64_table[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-    uint32_t in_idx  = 0U;
-    uint32_t out_idx = 0U;
-
-    while (in_idx < src_len)
-    {
-        uint32_t octet_a = (uint32_t)src[in_idx];
-        in_idx++;
-        uint32_t octet_b = (in_idx < src_len) ? (uint32_t)src[in_idx] : 0U;
-        bool     have_b  = (in_idx < src_len);
-        in_idx++;
-        uint32_t octet_c = (in_idx < src_len) ? (uint32_t)src[in_idx] : 0U;
-        bool     have_c  = (in_idx < src_len);
-        in_idx++;
-
-        uint32_t triple = (octet_a << 16) | (octet_b << 8) | octet_c;
-
-        dst[out_idx]     = b64_table[(triple >> 18) & 0x3FU];
-        dst[out_idx + 1U] = b64_table[(triple >> 12) & 0x3FU];
-        dst[out_idx + 2U] = (have_b != false) ? b64_table[(triple >> 6) & 0x3FU] : '=';
-        dst[out_idx + 3U] = (have_c != false) ? b64_table[triple & 0x3FU] : '=';
-        out_idx += 4U;
-    }
-
-    return out_idx;
-}
-#endif
-
-#if (BOARD_NBUDBG_HCI_LOG_BASE64 == 1U)
-/**
  * \brief Assemble a single Base64-framed HCI log line and emit it atomically
  *
  * The large work buffers live in this dedicated helper so that their stack
@@ -608,7 +568,7 @@ static void BOARD_NBUDBG_HciLogEmitBase64(uint8_t packet_type, const uint8_t *da
      * scheduler were disabled. */
     line_buf[line_len] = (char)BOARD_NBUDBG_HCI_LOG_BASE64_PREFIX;
     line_len++;
-    line_len += BOARD_NBUDBG_Base64Encode(raw_buf, raw_len, &line_buf[line_len]);
+    line_len += BOARD_DBG_Base64Encode(raw_buf, raw_len, &line_buf[line_len]);
     /* Terminate with CRLF */
     line_buf[line_len] = '\r';
     line_len++;
