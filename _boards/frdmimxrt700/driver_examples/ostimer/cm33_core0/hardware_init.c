@@ -10,6 +10,8 @@
 #include "board.h"
 #include "app.h"
 #include "fsl_power.h"
+#include "fsl_pca9422.h"
+#include "pmic_support.h"
 /*${header:end}*/
 
 /*${variable:start}*/
@@ -107,14 +109,59 @@ void EXAMPLE_EnterDeepSleep(void)
     BOARD_RestoreClockConfig();
 }
 
+/* Configure regulator output enable in Run mode. */
+void BOARD_ConfigPMICRegEnable(pca9422_handle_t *handle)
+{
+    pca9422_regulatoren_t cfg;
+
+    /* Configure Regulator Enable */
+    PCA9422_GetDefaultRegEnableConfig(&cfg);
+
+    PCA9422_WriteRegEnableConfig(handle, cfg);
+}
+
+void BOARD_ConfigPMICEnMode(pca9422_handle_t *handle)
+{
+    pca9422_enmodecfg_t cfg;
+    /* Configure ENMODE */
+    PCA9422_GetDefaultEnModeConfig(&cfg);
+
+    PCA9422_WriteEnModeConfig(handle, cfg);
+}
+
+void BOARD_PowerInitPMIC(void)
+{
+    pca9422_modecfg_t pca9422ModeCfg[12];
+    uint32_t i;
+
+    BOARD_InitPmic();
+    for (i = 0; i < ARRAY_SIZE(pca9422ModeCfg); i++)
+    {
+        PCA9422_GetDefaultPowerModeConfig(&pca9422ModeCfg[i]);
+    }
+    /* Use default PMIC configuration. */
+    for (i = 0; i < ARRAY_SIZE(pca9422ModeCfg); i++)
+    {
+        PCA9422_WritePowerModeConfigs(&pca9422Handle, (pca9422_power_mode_t)i, pca9422ModeCfg[i]);
+    }
+    BOARD_ConfigPMICRegEnable(&pca9422Handle);
+    BOARD_ConfigPMICEnMode(&pca9422Handle);
+
+    /* Switch to a new DVS mode before re-configuring the VDD1/VDD2 per CPU frequency. */
+    BOARD_SetPmicDVSPinStatus(0x1);
+}
+
 void BOARD_InitHardware(void)
 {
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
+    BOARD_InitPMICPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
     CLOCK_AttachClk(kLPOSC_to_OSTIMER);
     CLOCK_SetClkDiv(kCLOCK_DivOstimerClk, 1U);
+
+    BOARD_PowerInitPMIC();
 }
 /*${function:end}*/
