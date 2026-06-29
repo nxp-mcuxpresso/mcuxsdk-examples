@@ -78,13 +78,11 @@ void BOARD_InitLcdifClock(void)
      * The pixel clock is (height + VSW + VFP + VBP) * (width + HSW + HFP + HBP) * frame rate.
      * Here use the main pll (528MHz) as clock source.
      * Since MIPI DPHY clock use AUDIO pll pfd2 as aource, and its max allowed clock frequency is
-     * 532.48 x 18 / 16 = 599.04MHz. To avoid exceed this limit, for RK055AHD091 and RK055MHD091,
-     * the frame rate shall be 36.3fps and 37.72fps, which is 37.71MHz pixel clock. For RK055IQH091
-     * it's resolution is safe to use 60fps frame rate, which is 35.2mHz pixel clock.
-     * For RaspberryPi panel, the frame rate shall be 42fps, which is 19.56MHz pixel clock.
+     * 532.48 x 18 / 16 = 599.04MHz. For RaspberryPi panel, the frame rate shall be 38fps,
+     * which is 17.6MHz pixel clock.
      */
     CLOCK_AttachClk(kMAIN_PLL_PFD2_to_LCDIF);
-    CLOCK_SetClkDiv(kCLOCK_DivLcdifClk, 27);
+    CLOCK_SetClkDiv(kCLOCK_DivLcdifClk, 30);
 
     /* Get lcdif pixel clock frequency. */
     mipiDsiDpiClkFreq_Hz = CLOCK_GetLcdifClkFreq();
