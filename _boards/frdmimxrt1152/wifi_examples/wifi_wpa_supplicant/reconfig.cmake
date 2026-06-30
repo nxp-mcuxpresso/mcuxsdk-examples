@@ -6,31 +6,31 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/wifi_examples/common/host_sleep.c
-           examples/_boards/${board}/wifi_examples/common/host_sleep.h
-           examples/_boards/${board}/wifi_examples/common/pin_mux.c
-           examples/_boards/${board}/wifi_examples/common/pin_mux.h
-           examples/_boards/${board}/wifi_examples/wifi_wpa_supplicant/lwip_config/lwipopts.h
-           examples/_boards/${board}/wifi_examples/wifi_wpa_supplicant/lwip_config/lwippools.h
-           examples/_boards/${board}/wifi_examples/wifi_wpa_supplicant/lwip_config/lwiphooks.h
-           examples/_boards/${board}/wifi_examples/wifi_wpa_supplicant/freertos_config/FreeRTOSConfig.h
-           examples/_boards/${board}/wifi_examples/wifi_wpa_supplicant/wifi_config/wifi_config.h
-           examples/_boards/${board}/wifi_examples/common/hardware_init.c
-           examples/_boards/${board}/wifi_examples/common/app.h
-           examples/_boards/${board}/sdmmc_config.c
-           examples/_boards/${board}/sdmmc_config.h
-           examples/_boards/${board}/wifi_bt_config.c
-           examples/_boards/${board}/wifi_bt_config.h
-           examples/_boards/${board}/FreeRTOSConfigBoard.h
+    SOURCES ${board_root}/${board}/wifi_examples/common/host_sleep.c
+           ${board_root}/${board}/wifi_examples/common/host_sleep.h
+           ${board_root}/${board}/wifi_examples/common/pin_mux.c
+           ${board_root}/${board}/wifi_examples/common/pin_mux.h
+           ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/lwip_config/lwipopts.h
+           ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/lwip_config/lwippools.h
+           ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/lwip_config/lwiphooks.h
+           ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/freertos_config/FreeRTOSConfig.h
+           ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/wifi_config/wifi_config.h
+           ${board_root}/${board}/wifi_examples/common/hardware_init.c
+           ${board_root}/${board}/wifi_examples/common/app.h
+           ${board_root}/${board}/sdmmc_config.c
+           ${board_root}/${board}/sdmmc_config.h
+           ${board_root}/${board}/wifi_bt_config.c
+           ${board_root}/${board}/wifi_bt_config.h
+           ${board_root}/${board}/FreeRTOSConfigBoard.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/${board}/wifi_examples/common
-            examples/_boards/${board}/wifi_examples/wifi_wpa_supplicant
-            examples/_boards/${board}/wifi_examples/wifi_wpa_supplicant/wifi_config
-            examples/_boards/${board}/wifi_examples/wifi_wpa_supplicant/lwip_config
-            examples/_boards/${board}/wifi_examples/wifi_wpa_supplicant/freertos_config
+    INCLUDES ${board_root}/${board}/wifi_examples/common
+            ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant
+            ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/wifi_config
+            ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/lwip_config
+            ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/freertos_config
 )
 
 
@@ -78,34 +78,34 @@ mcux_remove_mdk_configuration(
 mcux_remove_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER devices/RT/RT1150/MIMXRT1152/gcc/MIMXRT1152xxxxx_flexspi_nor.ld
+    LINKER ${device_root}/RT/RT1150/MIMXRT1152/gcc/MIMXRT1152xxxxx_flexspi_nor.ld
 )
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER devices/RT/RT1150/MIMXRT1152/iar/MIMXRT1152xxxxx_flexspi_nor.icf
+    LINKER ${device_root}/RT/RT1150/MIMXRT1152/iar/MIMXRT1152xxxxx_flexspi_nor.icf
 )
 mcux_remove_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER devices/RT/RT1150/MIMXRT1152/arm/MIMXRT1152xxxxx_flexspi_nor.scf
+    LINKER ${device_root}/RT/RT1150/MIMXRT1152/arm/MIMXRT1152xxxxx_flexspi_nor.scf
 )
 
 # Add or remove Linker File Configurations
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER examples/_boards/${board}/wifi_examples/common/linker/MIMXRT1152xxxxx_flexspi_nor.ld
+    LINKER ${board_root}/${board}/wifi_examples/common/linker/MIMXRT1152xxxxx_flexspi_nor.ld
 )
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER examples/_boards/${board}/wifi_examples/common/linker/MIMXRT1152xxxxx_flexspi_nor.icf
+    LINKER ${board_root}/${board}/wifi_examples/common/linker/MIMXRT1152xxxxx_flexspi_nor.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER examples/_boards/${board}/wifi_examples/common/linker/MIMXRT1152xxxxx_flexspi_nor.scf
+    LINKER ${board_root}/${board}/wifi_examples/common/linker/MIMXRT1152xxxxx_flexspi_nor.scf
 )
 
 mcux_add_iar_configuration(

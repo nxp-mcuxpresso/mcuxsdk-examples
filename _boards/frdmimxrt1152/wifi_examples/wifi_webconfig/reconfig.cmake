@@ -7,18 +7,18 @@
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES
-        examples/_boards/${board}/wifi_bt_config.c
-        examples/_boards/${board}/wifi_bt_config.h
-        examples/_boards/${board}/sdmmc_config.c
-        examples/_boards/${board}/sdmmc_config.h
-        examples/_boards/${board}/wifi_examples/common/hardware_init.c
-        examples/_boards/${board}/wifi_examples/common/app.h
+        ${board_root}/${board}/wifi_bt_config.c
+        ${board_root}/${board}/wifi_bt_config.h
+        ${board_root}/${board}/sdmmc_config.c
+        ${board_root}/${board}/sdmmc_config.h
+        ${board_root}/${board}/wifi_examples/common/hardware_init.c
+        ${board_root}/${board}/wifi_examples/common/app.h
 )
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES
-        examples/_boards/${board}
-        examples/_boards/${board}/wifi_examples/common
+        ${board_root}/${board}
+        ${board_root}/${board}/wifi_examples/common
 )
 
 mcux_add_macro(
@@ -51,15 +51,15 @@ mcux_add_macro(
 mcux_remove_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER devices/RT/RT1150/MIMXRT1152/gcc/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flexspi_nor.ld
+    LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/gcc/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flexspi_nor.ld
 )
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER devices/RT/RT1150/MIMXRT1152/iar/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flexspi_nor.icf
+    LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/iar/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flexspi_nor.icf
 )
 mcux_remove_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER devices/RT/RT1150/MIMXRT1152/arm/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flexspi_nor.scf
+    LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/arm/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flexspi_nor.scf
 )
