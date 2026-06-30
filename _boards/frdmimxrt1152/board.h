@@ -60,19 +60,6 @@
 #define BOARD_DEBUG_UART_BAUDRATE (115200U)
 #endif /* BOARD_DEBUG_UART_BAUDRATE */
 
-/* Definitions for eRPC MU transport layer */
-#if defined(FSL_FEATURE_MU_SIDE_A)
-#define MU_BASE        MUA
-#define MU_IRQ         MUA_IRQn
-#define MU_IRQ_HANDLER MUA_IRQHandler
-#endif
-#if defined(FSL_FEATURE_MU_SIDE_B)
-#define MU_BASE        MUB
-#define MU_IRQ         MUB_IRQn
-#define MU_IRQ_HANDLER MUB_IRQHandler
-#endif
-#define MU_IRQ_PRIORITY (2)
-
 /*! @brief The USER_LED used for board */
 #define LOGIC_LED_ON  (1U)
 #define LOGIC_LED_OFF (0U)

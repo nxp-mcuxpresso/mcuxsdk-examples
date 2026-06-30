@@ -40,7 +40,6 @@ rdc:
     - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
-    frdmimxrt1152: []
     evkmimx8mm:
     - -armgcc@ddr_debug
     - -armgcc@ddr_release
