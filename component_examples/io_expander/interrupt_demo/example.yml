@@ -1,0 +1,13 @@
+io_expander_interrupt_demo:
+  section-type: application
+  contents:
+    meta_path: example/component_examples/io_expander/interrupt_demo
+    document:
+      name: io_expander_interrupt_demo${core_id_suffix_name}
+      category: component_examples
+      brief: Demonstrates handling an I/O expander interrupt with a per-pin callback.
+      example_readme:
+        - examples/component_examples/io_expander/interrupt_demo/readme.md
+        - examples/_boards/${board}/component_examples/io_expander/interrupt_demo/example_board_readme.md
+  boards:
+    frdmimxrt1152: []
