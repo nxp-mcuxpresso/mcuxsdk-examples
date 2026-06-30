@@ -27,7 +27,7 @@
 #include "model_pte.h"
 #include "timer.h"
 
-#define POOL_SIZE (512 * 1024)
+#define POOL_SIZE (768 * 1024)
 
 using executorch::aten::ScalarType;
 using executorch::aten::Tensor;
@@ -58,6 +58,9 @@ class NMemoryAllocator : public executorch::runtime::MemoryAllocator {
         void* allocate(size_t size, size_t alignment = kDefaultAlignment) override {
             void* ret = executorch::runtime::MemoryAllocator::allocate(size, alignment);
             if (ret != nullptr) {
+                if (size > POOL_SIZE) {
+                    return nullptr;
+                }
                 if ((size & (alignment - 1)) == 0) {
                     if (used_ > POOL_SIZE - size) {
                         return nullptr;
@@ -170,8 +173,8 @@ int main(void)
       Tensor tensor(&impl);
       Error status = method->set_input(tensor, 0);
       if (status != Error::Ok) {
-        PRINTF("Preparing inputs tensors for method %s failed with status 0x%...\r\n",
-               method_name, status);
+        PRINTF("Execution of method %s failed with status 0x%" PRIx32 "\r\n",
+               method_name, (uint32_t)status);
       }
       PRINTF("Input prepared. \r\n");
 
