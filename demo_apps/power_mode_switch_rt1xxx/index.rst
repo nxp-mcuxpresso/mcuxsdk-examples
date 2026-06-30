@@ -7,6 +7,7 @@ power_mode_switch_rt1xxx
    :maxdepth: 1
 
 
+   rt1150/index.rst
    rt1160/index.rst
    rt1170/index.rst
    rt1180/readme.md
