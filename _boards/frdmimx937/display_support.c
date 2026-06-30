@@ -44,6 +44,7 @@ extern void DPU_IRQHandler(void);
 
 #elif (DPU_EXAMPLE_DI == DPU_DI_LVDS)
 #if APP_DISPLAY_EXTERNAL_CONVERTOR
+static void IT6263_PullResetPin(bool pullUp);
 #endif
 #endif /* DPU_EXAMPLE_DI */
 
@@ -58,6 +59,7 @@ extern void DPU_IRQHandler(void);
 #if APP_DISPLAY_EXTERNAL_CONVERTOR
     static it6263_resource_t it6263Resource = {
         .i2cAddr        = 0x98,
+        .pullResetPin   = IT6263_PullResetPin,
         .i2cSendFunc    = BOARD_Display_I2C_Send,
         .i2cReceiveFunc = BOARD_Display_I2C_Receive,
     };
@@ -75,7 +77,17 @@ extern void DPU_IRQHandler(void);
 
 #elif (DPU_EXAMPLE_DI == DPU_DI_LVDS)
 #if APP_DISPLAY_EXTERNAL_CONVERTOR
-
+static void IT6263_PullResetPin(bool pullUp)
+{
+    if (pullUp)
+    {
+        //PCA6416A_SetPins(&pca6416ahandle, (1 << LVDS1_RST));
+    }
+    else
+    {
+        //PCA6416A_ClearPins(&pca6416ahandle, (1 << LVDS1_RST));
+    }
+}
 #endif
 #endif /* DPU_EXAMPLE_DI */
 
@@ -239,6 +251,7 @@ void BOARD_PrepareDisplay(void)
     CLOCK_EnableClock(ldbpllvcoCLKCfg.clkId);
     CLOCK_SetRate(&ldbpllCLKCfg);
     CLOCK_EnableClock(ldbpllCLKCfg.clkId);
+
 #endif
     BOARD_InitDpuInterrupt();
 }
@@ -381,6 +394,8 @@ void BOARD_InitDisplayInterface(void)
     BOARD_InitPCA6416A(&pca6416ahandle);
     PCA6416A_SetDirection(&pca6416ahandle, (1 << BOARD_PCA6416A_EXT_5V0_PWR_EN), kPCA6416A_Output);
     PCA6416A_SetPins(&pca6416ahandle, (1 << BOARD_PCA6416A_EXT_5V0_PWR_EN));
+    PCA6416A_SetDirection(&pca6416ahandle, (1 << BOARD_PCA6416A_CH_PWM_SEL), kPCA6416A_Output);
+    PCA6416A_ClearPins(&pca6416ahandle, (1 << BOARD_PCA6416A_CH_PWM_SEL));
     SDK_DelayAtLeastUs(1000U, SystemCoreClock);
 
     /* LVDS configuration */
@@ -398,14 +413,7 @@ void BOARD_InitDisplayInterface(void)
         .controlFlags  = 0,
     };
 
-    clk_t lpi2cClkCfg = {
-        .clkId = kCLOCK_lpi2c2,
-        .rate = 24000000UL, /* 24Mhz for lpi2c2 */
-        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
-    };
-    CLOCK_SetRate(&lpi2cClkCfg);
-    CLOCK_EnableClock(lpi2cClkCfg.clkId);
-
+    BOARD_InitPCA6416A(&pca6416ahandle);
     clk_t lpi2c4ClkCfg = {
         .clkId = kCLOCK_lpi2c4,
         .rate = 24000000UL, /* 24Mhz for lpi2c4 */
@@ -413,8 +421,8 @@ void BOARD_InitDisplayInterface(void)
     };
     CLOCK_SetRate(&lpi2c4ClkCfg);
     CLOCK_EnableClock(lpi2c4ClkCfg.clkId);
-
     BOARD_LPI2C_Init(LPI2C4, CLOCK_GetRate(kCLOCK_lpi2c4));
+
     if (kStatus_Success != IT6263_Init(&it6263Handle, &displayConfig))
     {
         PRINTF("Error: Failed to init the IT6263 convert card\r\n");
@@ -422,8 +430,9 @@ void BOARD_InitDisplayInterface(void)
 
     IT6263_Start(&it6263Handle);
 
-    /* IT623 default pixel map is JEIDA standard */
+    /* IT6263 default pixel map is JEIDA standard */
     LDB_Init(APP_LDB, APP_DPU_DISPLAY_INDEX, LDB_DUAL_PANEL, LVDS_JEIDA);
+
 #endif
 
 #if (0 == APP_DPU_DISPLAY_INDEX)
