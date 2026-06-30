@@ -79,9 +79,15 @@ void BOARD_InitHardware(void)
     CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
     CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
 
+#if defined(SDIO_ENABLED)
     /* attach FRO HF to USDHC */
     CLOCK_AttachClk(kFRO_HF_to_USDHC);
     CLOCK_SetClkDiv(kCLOCK_DivUSdhcClk, 1u);
+#elif defined(SDIO_SPI_ENABLED)
+    /* attach FRO 96M to FLEXCOMM1 */
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom1Clk, 1u);
+    CLOCK_AttachClk(kFRO_HF_DIV_to_FLEXCOMM1);
+#endif
 
     BOARD_InitBootPins();
     BOARD_InitBootClocks();

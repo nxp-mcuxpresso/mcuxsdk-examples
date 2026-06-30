@@ -28,12 +28,13 @@ extern "C" {
  */
 void BOARD_WIFI_BT_Config(void *card, sdio_int_t cardInt);
 
+#if defined(SDIO_ENABLED)
 /*!
  * @brief enable wifi/bt module.
  * @param enable true enable module, false disable module.
  */
 void BOARD_WIFI_BT_Enable(bool enable);
-
+#endif
 #if defined(__cplusplus)
 }
 #endif /* __cplusplus */

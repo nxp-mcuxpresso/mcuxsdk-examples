@@ -88,6 +88,8 @@ void BOARD_InitPins(void);
  */
 void BOARD_InitPinsWifi(void);
 
+void LPSPI1_InitPins(void);
+
 #if defined(__cplusplus)
 }
 #endif

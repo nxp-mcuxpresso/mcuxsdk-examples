@@ -20,16 +20,16 @@ void BOARD_SDCardPowerControl(bool enable);
  * Variables
  ******************************************************************************/
 /*!brief sdmmc dma buffer */
+#if defined(SDIO_ENABLED) || defined(SD_ENABLED)
 AT_NONCACHEABLE_SECTION_ALIGN(static uint32_t s_sdmmcHostDmaBuffer[BOARD_SDMMC_HOST_DMA_DESCRIPTOR_BUFFER_SIZE],
                               SDMMCHOST_DMA_DESCRIPTOR_BUFFER_ALIGN_SIZE);
-#if defined(SDIO_ENABLED) || defined(SD_ENABLED)
 static sd_detect_card_t s_cd;
 static sd_io_voltage_t s_ioVoltage = {
     .type = BOARD_SDMMC_SD_IO_VOLTAGE_CONTROL_TYPE,
     .func = NULL,
 };
-#endif
 static sdmmchost_t s_host;
+#endif
 
 #ifdef SDIO_ENABLED
 static sdio_card_int_t s_sdioInt;

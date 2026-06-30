@@ -16,7 +16,7 @@
 #ifdef MMC_ENABLED
 #include "fsl_mmc.h"
 #endif
-#ifdef SDIO_ENABLED
+#if defined(SDIO_ENABLED) || defined(SDIO_SPI_ENABLED)
 #include "fsl_sdio.h"
 #endif
 #include "clock_config.h"
