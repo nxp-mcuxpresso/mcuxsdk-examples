@@ -1,0 +1,27 @@
+coex_wifi_bms_open:
+  section-type: application
+  contents:
+    meta_path: examples/coex_examples/coex_wifi_bms_open
+    project-root-path: boards/${board}/coex_examples/coex_wifi_bms_open/${multicore_foldername}
+    document:
+      name: coex_wifi_bms_open${core_id_suffix_name}
+      category: coex_examples/
+      brief: Coex Wi-Fi with Broadcast Media Sender LE Audio application (Edgefast Open).
+      example_readme:
+      - examples/coex_examples/coex_wifi_bms_open/readme.md
+      - ${board_root}/${board}/coex_examples/coex_wifi_bms_open/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm7:
+      - -armgcc@debug
+      - -armgcc@release
+      - -armgcc@sdram_debug
+      - -armgcc@sdram_release
+      - -iar@debug
+      - -iar@release
+      - -iar@sdram_debug
+      - -iar@sdram_release
+      - -mdk@debug
+      - -mdk@release
+      - -mdk@sdram_debug
+      - -mdk@sdram_release
