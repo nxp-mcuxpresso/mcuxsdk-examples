@@ -10,6 +10,7 @@
 #include "clock_config.h"
 #include "fsl_power.h"
 #include "fsl_clock.h"
+#include "fsl_rgpio.h"
 #include "display_support.h"
 #include "fsl_debug_console.h"
 /*${header:end}*/
@@ -72,6 +73,20 @@ void BOARD_InitHardware(void)
     BOARD_InitLVDSPWMPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+
+#if (DEMO_PANEL == DEMO_PANEL_LCD_SPEC)
+    rgpio_pin_config_t led_config = {
+        kRGPIO_DigitalOutput,
+        0,
+    };
+    GPIO5->PCNS = 0x0;
+    RGPIO_PinInit(GPIO5, 18, &led_config);
+    RGPIO_PortToggle(GPIO5, 1u << 18);
+
+    GPIO2->PCNS = 0x0;
+    RGPIO_PinInit(GPIO2, 23, &led_config);
+    RGPIO_PortToggle(GPIO2, 1u << 23);
+#endif
 
     CLOCK_SetRate(&dispapbCLKCfg);
     CLOCK_EnableClock(dispapbCLKCfg.clkId);

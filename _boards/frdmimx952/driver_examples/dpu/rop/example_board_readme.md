@@ -10,8 +10,15 @@ Hardware requirements
 Board settings
 ==============
 For BOE EV121WXM-N12 (LCD SPEC) panel(1280*800), connect LVDS port J14 to panel.
-For LVDS2HDMI card(1920*1080), connect HDMI port J16 to monitor.
 Ensure the J15 jumper connect to 12V, J13 jumper connect to 3.3V
+The LCD_SPEC panel requires a 12V backlight supply.
+To ensure stable backlight operation, 20V input voltage must be negotiated via U-Boot.
+Boot Linux BSP to u-boot, and load M core image from SD card to run. (Put the image into SD card device before)
+1. Uboot command to disable lvds function in uboot "setenv video_off yes; saveenv" then reset the board.
+2. load mmc 1:1 0x90400000 dpu.bin; cp.b 0x90400000 0x203c0000 0x40000; bootaux 0x00000000 1;
+
+For LVDS2HDMI card(1920*1080), connect HDMI port J16 to monitor.
+
 For WAVESHARE_DSI2DPI panel(1024*600), connect MIPI DSI port J12 to panel
 Use Dupont wires to connect the following pins.
  ——————————————————————————————————
