@@ -42,8 +42,8 @@ toolOptions:
 #define SAU_REGION_0_END 0x281FFFFFU
 #define SAU_REGION_1_BASE 0x20100000U
 #define SAU_REGION_1_END 0x201FFFFFU
-#define SAU_REGION_2_BASE 0x280FFE00U
-#define SAU_REGION_2_END 0x280FFFFFU
+#define SAU_REGION_2_BASE 0x1000FC00U
+#define SAU_REGION_2_END 0x1000FFFFU
 
 /* clang-format off */
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
@@ -461,7 +461,7 @@ functional_group:
     - generate_code_for_disabled_regions: 'false'
     - core: 'cm33_core0'
     - regions: [{index: '0', enabled: 'true', security: ns, start: '0x28100000', size: '0x00100000'}, {index: '1', enabled: 'true', security: ns, start: '0x20100000',
-        size: '0x00100000'}, {index: '2', enabled: 'true', security: nsc, start: '0x280FFE00', size: '0x00000200'}, {index: '3', enabled: 'false', security: ns, start: '0x00000000',
+        size: '0x00108000'}, {index: '2', enabled: 'true', security: nsc, start: '0x1000FC00', size: '0x00000400'}, {index: '3', enabled: 'false', security: ns, start: '0x00000000',
         size: '0x00000020'}, {index: '4', enabled: 'false', security: ns, start: '0x00000000', size: '0x00000020'}, {index: '5', enabled: 'false', security: ns, start: '0x00000000',
         size: '0x00000020'}, {index: '6', enabled: 'false', security: ns, start: '0x00000000', size: '0x00000020'}, {index: '7', enabled: 'false', security: ns, start: '0x00000000',
         size: '0x00000020'}]

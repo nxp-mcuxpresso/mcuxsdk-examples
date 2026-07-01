@@ -19,6 +19,9 @@
  * Prototypes
  ******************************************************************************/
 /*${prototype:start}*/
+#ifdef BOARD_TZM_SG_IN_SRAM
+void BOARD_SystemInitHook(void);
+#endif /* BOARD_TZM_SG_IN_SRAM */
 void BOARD_InitHardware(void);
 /*${prototype:end}*/
 

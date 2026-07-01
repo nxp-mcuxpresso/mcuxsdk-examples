@@ -11,6 +11,10 @@ mcux_add_source(
             tzm_config.h
 )
 
+mcux_add_macro(
+    CC "-DBOARD_TZM_SG_IN_SRAM"
+)
+
 mcux_add_include(
     INCLUDES .
 )

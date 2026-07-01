@@ -52,10 +52,11 @@ HEAP_START   = DEFINED(__heap_noncacheable__) ? NCACHE_END + 1 : DATA_END + 1;
 /* Specify the memory areas */
 MEMORY
 {
-  m_flash_config        (RX)  : ORIGIN = 0x28000000, LENGTH = 0x00004000
-  m_interrupts          (RX)  : ORIGIN = 0x28004000, LENGTH = 0x00000300
-  m_text                (RX)  : ORIGIN = 0x28004300, LENGTH = 0x000FBB00
-  m_veneer_table        (RX)  : ORIGIN = 0x280FFE00, LENGTH = 0x00000200
+  m_flash_config        (RX)  : ORIGIN = 0x38000000, LENGTH = 0x00004000
+  m_interrupts          (RX)  : ORIGIN = 0x38004000, LENGTH = 0x00000300
+  m_text                (RX)  : ORIGIN = 0x38004300, LENGTH = 0x000FBB00
+  m_sg_ramfunc          (RX)  : ORIGIN = 0x1000F000, LENGTH = 0x00000C00
+  m_veneer_table        (RX)  : ORIGIN = 0x1000FC00, LENGTH = 0x000003FF
   m_data                (RW)  : ORIGIN = DATA_START, LENGTH = DATA_END - DATA_START + 1
   m_ncache              (RW)  : ORIGIN = NCACHE_START, LENGTH = NCACHE_SIZE
   m_heap                (RW)  : ORIGIN = HEAP_START, LENGTH = HEAP_SIZE
@@ -118,16 +119,6 @@ SECTIONS
     . = ALIGN(4);
   } > m_text
 
-  /* section for veneer table */
-  .gnu.sgstubs :
-  {
-     . = ALIGN(32);
-     _start_sg = .;
-    *(.gnu.sgstubs*)
-     . = ALIGN(32);
-     _end_sg = .;
-  } > m_veneer_table
-
   ASSERT((core1_image_end - core1_image_start) <= m_core1_image_maximum_size, "Core1 image size exceeds the limit")
   ASSERT((core1_ns_image_end - core1_ns_image_start) <= m_core1_ns_image_maximum_size, "Core1 NS image size exceeds the limit")
   ASSERT((ezhv_image_end - ezhv_image_start) <= m_ezhv_image_maximum_size, "EZHV image size exceeds the limit")
@@ -189,8 +180,69 @@ SECTIONS
     PROVIDE_HIDDEN (__fini_array_end = .);
   } > m_text
 
-  __etext = .;    /* define a global symbol at end of code */
-  __DATA_ROM = .; /* Symbol is used by startup for data initialization */
+/*
+   * End of normal secure flash readonly image.
+   */
+  __RO_END = .;
+
+  /*
+   * Secure entry function bodies.
+   *
+   * VMA/runtime address : secure SRAM 0x1000F000
+   * LMA/load address    : compactly stored after secure flash readonly image
+   *
+   * Functions marked with:
+   *   __attribute__((cmse_nonsecure_entry, section(".sg_ramfunc")))
+   * are placed here.
+   */
+  __SG_RAMFUNC_ROM = ALIGN(__RO_END, 4);
+
+  .sg_ramfunc : AT(__SG_RAMFUNC_ROM)
+  {
+    . = ALIGN(32);
+    __sg_ramfunc_start__ = .;
+
+    KEEP(*(.sg_ramfunc*))
+
+    . = ALIGN(32);
+    __sg_ramfunc_end__ = .;
+  } > m_sg_ramfunc
+
+  __sg_ramfunc_load_start__ = LOADADDR(.sg_ramfunc);
+  __sg_ramfunc_load_end__   = LOADADDR(.sg_ramfunc) + SIZEOF(.sg_ramfunc);
+  __sg_ramfunc_size__       = SIZEOF(.sg_ramfunc);
+
+  /*
+   * CMSE secure gateway stubs.
+   *
+   * VMA/runtime address : secure SRAM 0x1000FC00
+   * LMA/load address    : compactly stored after .sg_ramfunc load image
+   */
+  __SGSTUBS_ROM = ALIGN(__sg_ramfunc_load_end__, 4);
+
+  .gnu.sgstubs : AT(__SGSTUBS_ROM)
+  {
+    . = ALIGN(32);
+
+    KEEP(*(.gnu.sgstubs))
+    KEEP(*(.gnu.sgstubs.*))
+
+    . = ALIGN(32);
+  } > m_veneer_table
+
+  _start_sg = ADDR(.gnu.sgstubs);
+  _end_sg   = ADDR(.gnu.sgstubs) + SIZEOF(.gnu.sgstubs);
+
+  __sgstubs_ram_start__ = ADDR(.gnu.sgstubs);
+  __sgstubs_ram_end__   = ADDR(.gnu.sgstubs) + SIZEOF(.gnu.sgstubs);
+
+  __sgstubs_load_start__ = LOADADDR(.gnu.sgstubs);
+  __sgstubs_load_end__   = LOADADDR(.gnu.sgstubs) + SIZEOF(.gnu.sgstubs);
+  __sgstubs_size__       = SIZEOF(.gnu.sgstubs);
+
+  __etext = ALIGN(__sgstubs_load_end__, 4);
+  __DATA_ROM = __etext;
+
 
   .interrupts_ram :
   {
