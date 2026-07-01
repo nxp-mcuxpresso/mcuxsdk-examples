@@ -125,36 +125,40 @@ void InitADC(void)
 
     /* Phase current measurement */
     /* Sector 1,6 - measured currents Ib & Ic */
-    /* ADC1, channel Ib = M1_ADC1_PH_B (ADC_ETC trigger 0, chain 0) */
-    g_sM1Curr3phDcBus.sCurrSec16.ui16ChanNumPhaB = M1_ADC1_PH_B_CHNL;
-    g_sM1Curr3phDcBus.sCurrSec16.ui16ChanSidePhaB = M1_ADC1_PH_B_SIDE;
-    /* ADC2, channel Ic = M1_ADC2_PH_C (ADC_ETC trigger 4, chain 0) */
-    g_sM1Curr3phDcBus.sCurrSec16.ui16ChanNumPhaC = M1_ADC2_PH_C_CHNL;
-    g_sM1Curr3phDcBus.sCurrSec16.ui16ChanSidePhaC = M1_ADC2_PH_C_SIDE;
+    
+    /* ADC1, channel Ic = M1_ADC1_PH_C (ADC_ETC trigger 0, chain 0) */
+    g_sM1Curr3phDcBus.sCurrSec16.ui16ChanNumPhaC = M1_ADC1_PH_C_CHNL;     // C - CH0_A, ADC1 
+    g_sM1Curr3phDcBus.sCurrSec16.ui16ChanSidePhaC = M1_ADC1_PH_C_SIDE;
+    /* ADC2, channel Ib = M1_ADC2_PH_B (ADC_ETC trigger 4, chain 0) */
+    g_sM1Curr3phDcBus.sCurrSec16.ui16ChanNumPhaB = M1_ADC2_PH_B_CHNL;     // B - CH3_B, ADC2
+    g_sM1Curr3phDcBus.sCurrSec16.ui16ChanSidePhaB = M1_ADC2_PH_B_SIDE;
+
 
     /* Sector 2,3 - measured currents Ia & Ic*/
-    /* ADC1, channel Ia = M1_ADC1_PH_A (ADC_ETC trigger 0, chain 0) */
-    g_sM1Curr3phDcBus.sCurrSec23.ui16ChanNumPhaA = M1_ADC1_PH_A_CHNL;
-    g_sM1Curr3phDcBus.sCurrSec23.ui16ChanSidePhaA = M1_ADC1_PH_A_SIDE;
-    /* ADC2, channel Ic = M1_ADC2_PH_C (ADC_ETC trigger 4, chain 0) */
-    g_sM1Curr3phDcBus.sCurrSec23.ui16ChanNumPhaC = M1_ADC2_PH_C_CHNL;
-    g_sM1Curr3phDcBus.sCurrSec23.ui16ChanSidePhaC = M1_ADC2_PH_C_SIDE;
+    /* ADC1, channel Ic = M1_ADC1_PH_C (ADC_ETC trigger 0, chain 0) */
+    g_sM1Curr3phDcBus.sCurrSec23.ui16ChanNumPhaC = M1_ADC1_PH_C_CHNL;     // C - CH0_A, ADC1 
+    g_sM1Curr3phDcBus.sCurrSec23.ui16ChanSidePhaC = M1_ADC1_PH_C_SIDE;
+    /* ADC2, channel Ia = M1_ADC1_PH_A (ADC_ETC trigger 4, chain 0) */
+    g_sM1Curr3phDcBus.sCurrSec23.ui16ChanNumPhaA = M1_ADC2_PH_A_CHNL;     // A - CH3_A, ADC2
+    g_sM1Curr3phDcBus.sCurrSec23.ui16ChanSidePhaA = M1_ADC2_PH_A_SIDE;
 
+    
     /* Sector 4,5 - measured currents Ia & Ib */
     /* ADC1, channel Ia = M1_ADC1_PH_A (ADC_ETC trigger 0, chain 0) */
-    g_sM1Curr3phDcBus.sCurrSec45.ui16ChanNumPhaA = M1_ADC1_PH_A_CHNL;
+    g_sM1Curr3phDcBus.sCurrSec45.ui16ChanNumPhaA = M1_ADC1_PH_A_CHNL;     // A - CH3_A, ADC1
     g_sM1Curr3phDcBus.sCurrSec45.ui16ChanSidePhaA = M1_ADC1_PH_A_SIDE;
     /* ADC2, channel Ib = M1_ADC2_PH_B (ADC_ETC trigger 4, chain 0) */
-    g_sM1Curr3phDcBus.sCurrSec45.ui16ChanNumPhaB = M1_ADC2_PH_B_CHNL;
+    g_sM1Curr3phDcBus.sCurrSec45.ui16ChanNumPhaB = M1_ADC2_PH_B_CHNL;     // B - CH3_B, ADC2
     g_sM1Curr3phDcBus.sCurrSec45.ui16ChanSidePhaB = M1_ADC2_PH_B_SIDE;
 
+    
     /* UDCbus channel measurement */
     /* ADC1, channel Udcb = M1_ADC1_UDCB (ADC_ETC trigger 0, chain 1) */
     g_sM1Curr3phDcBus.ui16ChanNumVDcb  = M1_ADC1_UDCB_CHNL;
     g_sM1Curr3phDcBus.ui16ChanSideVDcb  = M1_ADC1_UDCB_SIDE;
     /* ADC2, channel AUX (ADC_ETC trigger 4, chain 1) */
-    g_sM1Curr3phDcBus.ui16ChanNumAux = 7U;
-    g_sM1Curr3phDcBus.ui16ChanSideAux = kLPADC_SampleChannelSingleEndSideB;
+    g_sM1Curr3phDcBus.ui16ChanNumAux = 2U;
+    g_sM1Curr3phDcBus.ui16ChanSideAux = kLPADC_SampleChannelSingleEndSideA;
 
     //Default channel assigment for Sector 2
 
@@ -164,10 +168,10 @@ void InitADC(void)
 
     /* Set conversion CMD configuration. */
     LPADC_GetDefaultConvCommandConfig(&lpadcCommandConfig);
-    lpadcCommandConfig.channelNumber = g_sM1Curr3phDcBus.sCurrSec23.ui16ChanNumPhaA;
+    lpadcCommandConfig.channelNumber = g_sM1Curr3phDcBus.sCurrSec23.ui16ChanNumPhaC;
     lpadcCommandConfig.sampleTimeMode = kLPADC_SampleTimeADCK3;
     lpadcCommandConfig.sampleScaleMode = kLPADC_SamplePartScale;
-    lpadcCommandConfig.sampleChannelMode = g_sM1Curr3phDcBus.sCurrSec23.ui16ChanSidePhaA;
+    lpadcCommandConfig.sampleChannelMode = g_sM1Curr3phDcBus.sCurrSec23.ui16ChanSidePhaC;
     LPADC_SetConvCommandConfig(LPADC1, 1U, &lpadcCommandConfig); // CMDL[number]
     /* Set trigger configuration. */
     LPADC_GetDefaultConvTriggerConfig(&lpadcTriggerConfig);
@@ -188,24 +192,23 @@ void InitADC(void)
     lpadcTriggerConfig.enableHardwareTrigger = true;
     LPADC_SetConvTriggerConfig(LPADC1, 1U, &lpadcTriggerConfig); // trigger from TCTRL[number]
 
+    
     /**************************************/
     /*             ADC2                   */
     /**************************************/
 
     /* Set conversion CMD configuration. */
     LPADC_GetDefaultConvCommandConfig(&lpadcCommandConfig);
-    lpadcCommandConfig.channelNumber = g_sM1Curr3phDcBus.sCurrSec23.ui16ChanNumPhaC;
+    lpadcCommandConfig.channelNumber = g_sM1Curr3phDcBus.sCurrSec23.ui16ChanNumPhaA;
     lpadcCommandConfig.sampleTimeMode = kLPADC_SampleTimeADCK3;
     lpadcCommandConfig.sampleScaleMode = kLPADC_SamplePartScale;
-    lpadcCommandConfig.sampleChannelMode = g_sM1Curr3phDcBus.sCurrSec23.ui16ChanSidePhaC;
+    lpadcCommandConfig.sampleChannelMode = g_sM1Curr3phDcBus.sCurrSec23.ui16ChanSidePhaA;
     LPADC_SetConvCommandConfig(LPADC2, 1U, &lpadcCommandConfig); // CMDL[number]
     /* Set trigger configuration. */
     LPADC_GetDefaultConvTriggerConfig(&lpadcTriggerConfig);
     lpadcTriggerConfig.targetCommandId = 1U; //CMDL
     lpadcTriggerConfig.enableHardwareTrigger = true;
     LPADC_SetConvTriggerConfig(LPADC2, 0U, &lpadcTriggerConfig); // trigger from TCTRL[number]
-
-    
     
     /* Set conversion CMD configuration. */
     LPADC_GetDefaultConvCommandConfig(&lpadcCommandConfig);
@@ -281,7 +284,7 @@ void InitTMR1(void)
 void M1_InitPWM(void)
 {
     /* PWM base pointer (affects the entire initialization) */
-    PWM_Type *PWMBase = (PWM_Type *)PWM1;
+    PWM_Type *PWMBase = (PWM_Type *)PWM4;
 
     /* Full and Half cycle reload */
     PWMBase->SM[0].CTRL |= PWM_CTRL_FULL_MASK|PWM_CTRL_HALF_MASK;
@@ -397,7 +400,7 @@ void InitXBARA(void)
     CLOCK_EnableClock(kCLOCK_Xbar1);
 
     /* Configure the XBARA signal connections. (set for sync mode in ADC_ETC) */
-    XBARA_SetSignalsConnection(XBARA1, kXBARA1_InputFlexpwm1Pwm0OutTrig0, kXBARA1_OutputAdcEtc0Coco0);
+    XBARA_SetSignalsConnection(XBARA1, kXBARA1_InputFlexpwm4Pwm0OutTrig01, kXBARA1_OutputAdcEtc0Coco0);
 
 }
 
@@ -543,26 +546,26 @@ void InitCMP(void)
     acmpConfigStruct.enableInvertOutput = false;
     acmpConfigStruct.enableHighSpeed = true;
 
-    ACMP_Init(CMP3, &acmpConfigStruct);
+    ACMP_Init(CMP2, &acmpConfigStruct);
 
     /* Configure negative inputs are coming from 3v domain. */
     ACMP_GetDefaultDiscreteModeConfig(&acmpDiscreteconfig);
     acmpDiscreteconfig.enablePositiveChannelDiscreteMode = true;
     acmpDiscreteconfig.enableResistorDivider = true;
 
-    ACMP_SetDiscreteModeConfig(CMP3, &acmpDiscreteconfig);
+    ACMP_SetDiscreteModeConfig(CMP2, &acmpDiscreteconfig);
 
     /* Configure channel. Select the positive port input from DAC and negative port input from minus mux input. */
-    channelConfigStruct.plusMuxInput  = 3U; // GPIO_AD_30
+    channelConfigStruct.plusMuxInput  = 4U; // GPIO_AD_27
     channelConfigStruct.minusMuxInput = 7U;
-    ACMP_SetChannelConfig(CMP3, &channelConfigStruct);
+    ACMP_SetChannelConfig(CMP2, &channelConfigStruct);
 
     /* Configure DAC. */
     dacConfigStruct.referenceVoltageSource = kACMP_VrefSourceVin2; // 3V PAD
     dacConfigStruct.DACValue = 166U; // range is 0-255U
     dacConfigStruct.workMode = kACMP_DACWorkHighSpeedMode;
 
-    ACMP_SetDACConfig(CMP3, &dacConfigStruct);
-    ACMP_Enable(CMP3, true);
+    ACMP_SetDACConfig(CMP2, &dacConfigStruct);
+    ACMP_Enable(CMP2, true);
 
 }

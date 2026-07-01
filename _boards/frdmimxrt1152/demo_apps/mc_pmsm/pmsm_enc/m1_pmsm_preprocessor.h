@@ -150,7 +150,6 @@
 /* SPEEDLOOP */
 #define SensorlessWmax 		     (2 * FLOAT_PI * ParametersPp * ParametersNmax / 60)
 
-
 #define M1_SPEED_RAMP_UP 		 (SpeedLoopIncUp * SpeedLoopSampleTime / (60 / (ParametersPp * 2 * FLOAT_PI)))
 #define M1_SPEED_RAMP_DOWN 		 (SpeedLoopIncDown * SpeedLoopSampleTime / (60 / (ParametersPp * 2 * FLOAT_PI)))
 #define M1_SPEED_LOOP_HIGH_LIMIT (SpeedLoopUpperLimit)

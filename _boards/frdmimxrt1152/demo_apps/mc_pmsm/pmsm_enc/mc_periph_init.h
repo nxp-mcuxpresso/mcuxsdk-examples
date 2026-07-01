@@ -9,7 +9,7 @@
 #ifndef _MC_PERIPH_INIT_H_
 #define _MC_PERIPH_INIT_H_
 
-#include "mcdrv_adcetc_imxrt11xx.h"
+#include "mcdrv_adcetc_imxrt1150.h"
 #include "mcdrv_pwm3ph_pwma.h"
 #include "mcdrv_enc_qd2.h"
 
@@ -61,44 +61,41 @@ typedef struct _clock_setup
  * ADC measurement definition for motor 1
  ******************************************************************************/
 /* Configuration table of ADC channels according to the input pin signals:
- * Valid for iMXRT1170 together with FRDM-MC-LVPMSM
- *
- * Motor 1
- * Quantity     | Module A (ADC1)       | Module B (ADC2)
+ * Valid for iMXRT1150 together with FRDM-MC-LVPMSM
  * --------------------------------------------------------------------------
- * M1_U_DCB -   GPIO_AD_08 - ADC1 CH1-A
- * M1_I_A -     GPIO_AD_11 - ADC1 CH2-B
- * M1_I_B -     GPIO_AD_12 - ADC1 CH1-A; ADC2 CH3-A
- * M1_I_C -     GPIO_AD_13 - ADC1 CH3-B; ADC2 CH3-B
+ * M1_U_DCB -   GPIO_AD_07
+ * M1_I_A -     GPIO_AD_12
+ * M1_I_B -     GPIO_AD_13
+ * M1_I_C -     GPIO_AD_06
  */
 
 /* Phase current A assigned to ADC1 and ADC2 */
-#define M1_ADC1_PH_A_CHNL (2U)
-#define M1_ADC1_PH_A_SIDE (kLPADC_SampleChannelSingleEndSideB)
+#define M1_ADC1_PH_A_CHNL (3U)
+#define M1_ADC1_PH_A_SIDE (kLPADC_SampleChannelSingleEndSideA)
 
-#define M1_ADC2_PH_A_CHNL (N/A) //not available
-#define M1_ADC2_PH_A_SIDE (N/A) //not available
+#define M1_ADC2_PH_A_CHNL (3U)
+#define M1_ADC2_PH_A_SIDE (kLPADC_SampleChannelSingleEndSideA)
 
 /* Phase current B assigned to ADC1 and ADC2 */
 #define M1_ADC1_PH_B_CHNL (3U)
-#define M1_ADC1_PH_B_SIDE (kLPADC_SampleChannelSingleEndSideA)
+#define M1_ADC1_PH_B_SIDE (kLPADC_SampleChannelSingleEndSideB)
 
 #define M1_ADC2_PH_B_CHNL (3U)
-#define M1_ADC2_PH_B_SIDE (kLPADC_SampleChannelSingleEndSideA)
+#define M1_ADC2_PH_B_SIDE (kLPADC_SampleChannelSingleEndSideB)
 
 /* Phase current C assigned to ADC1 and ADC2 */
-#define M1_ADC1_PH_C_CHNL (3U)
-#define M1_ADC1_PH_C_SIDE (kLPADC_SampleChannelSingleEndSideB)
+#define M1_ADC1_PH_C_CHNL (0U)
+#define M1_ADC1_PH_C_SIDE (kLPADC_SampleChannelSingleEndSideA)
 
-#define M1_ADC2_PH_C_CHNL (3U)
-#define M1_ADC2_PH_C_SIDE (kLPADC_SampleChannelSingleEndSideB)
+#define M1_ADC2_PH_C_CHNL (N/A)
+#define M1_ADC2_PH_C_SIDE (N/A)
 
 /* Phase voltage UDCB assigned to ADC1 and ADC2 */
-#define M1_ADC1_UDCB_CHNL (1U)
-#define M1_ADC1_UDCB_SIDE (kLPADC_SampleChannelSingleEndSideA)
+#define M1_ADC1_UDCB_CHNL (0U)
+#define M1_ADC1_UDCB_SIDE (kLPADC_SampleChannelSingleEndSideB)
 
-#define M1_ADC2_UDCB_CHNL (N/A) //not available
-#define M1_ADC2_UDCB_SIDE (N/A) //not available
+#define M1_ADC2_UDCB_CHNL (N/A)
+#define M1_ADC2_UDCB_SIDE (N/A)
 
 /* offset measurement filter window */
 #define ADC_OFFSET_WINDOW (3)
