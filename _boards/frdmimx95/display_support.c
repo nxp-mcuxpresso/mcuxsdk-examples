@@ -383,6 +383,11 @@ void BOARD_InitDisplayInterface(void)
     BOARD_InitPCAL6524(&pcalHandle);
     PCAL6524_SetDirection(&pcalHandle, (1 << BOARD_PCAL6524_EXT_5V0_PWR_EN), kPCAL6524_Output);
     PCAL6524_SetPins(&pcalHandle, (1 << BOARD_PCAL6524_EXT_5V0_PWR_EN));
+    PCAL6524_SetDirection(&pcalHandle, (1 << BOARD_PCAL6524_LCD2_BL_EN), kPCAL6524_Output);
+    PCAL6524_SetPins(&pcalHandle, (1 << BOARD_PCAL6524_LCD2_BL_EN));
+    PCAL6524_SetDirection(&pcalHandle, (1 << BOARD_PCAL6524_CH_PWM_SEL), kPCAL6524_Output);
+    PCAL6524_ClearPins(&pcalHandle, (1 << BOARD_PCAL6524_CH_PWM_SEL));
+
     /* LVDS configuration */
     LDB_Init(APP_LDB, APP_DPU_DISPLAY_INDEX, LDB_DUAL_PANEL, LVDS_SPWG);
 
@@ -427,7 +432,7 @@ void BOARD_InitDisplayInterface(void)
 
     IT6263_Start(&it6263Handle);
 
-    /* IT623 default pixel map is JEIDA standard */
+    /* IT6263 default pixel map is JEIDA standard */
     LDB_Init(APP_LDB, APP_DPU_DISPLAY_INDEX, LDB_DUAL_PANEL, LVDS_JEIDA);
 #endif
     /* Select LDBPLL/7 as Display 0 clock source */
