@@ -11,4 +11,4 @@ mcux_add_include(
     INCLUDES ${board_root}/${board}/driver_examples/isi/dwc_mipi_csi2/yuv422/cm7/
 )
 
-include(${SdkRootDirPath}/${board_root}/imx952evk/driver_examples/isi/dwc_mipi_csi2/reconfig.cmake)
+include(${SdkRootDirPath}/${board_root}/frdmimx937/driver_examples/isi/dwc_mipi_csi2/reconfig.cmake)

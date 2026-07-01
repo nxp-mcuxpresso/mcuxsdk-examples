@@ -66,6 +66,13 @@ void BOARD_InitHardware(void)
         //.enable_clk = true,
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
     };
+    clk_t lpi2c4ClkCfg = {
+        .clkId = kCLOCK_lpi2c4,
+        .pclkId = kCLOCK_osc24m,
+        .rate = 24000000UL, /* 24Mhz for lpi2c */
+        //.enable_clk = true,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
+    };
     /* provide CSI_CLK to connected sensor */
     clk_t ccmclk1ClkCfg = {
         .clkId = kCLOCK_ccmcko1,
@@ -139,12 +146,15 @@ void BOARD_InitHardware(void)
     CLOCK_EnableClock(dispocramCLKCfg.clkId);
     CLOCK_SetRate(&lpi2c2ClkCfg);
     CLOCK_EnableClock(lpi2c2ClkCfg.clkId);
+    CLOCK_SetRate(&lpi2c4ClkCfg);
+    CLOCK_EnableClock(lpi2c4ClkCfg.clkId);
 
     BOARD_BootClockRUN();
     BOARD_InitBootPins();
     BOARD_InitCLKOPins();
     BOARD_InitI2C2Pins();
     BOARD_InitI2C3Pins();
+    BOARD_InitI2C4Pins();
     BOARD_InitDebugConsole();
     APP_PrepareCamera();
     BOARD_PrepareDisplay();

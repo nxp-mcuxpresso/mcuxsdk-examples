@@ -1,18 +1,18 @@
 Hardware requirements
 =====================
 - Micro USB cable
-- IMX9372LPD5EVK-19 board
+- FRDMIMX937 board
 - J-Link Debug Probe
 - 12V~20V power supply
 - Personal Computer
-- DUAL LVDS panel
 - AP1302 sensor
+- HDMI cable
 
 Board settings
 ==============
 For DUAL LVDS panel(1920*1200), connect MINISAS ports J15 and J16 to panel.
-For AP1302 sensor with MINISAS connect to MIPI-CSI1 interface(J13)
-set SW9 JTAG_UART5_SEL to ON if use Jlink to load firmware.
+For AP1302 sensor connect into J9.
+For LVDS2HDMI card(1920*1080), connect HDMI port J16 to panel.
 Prepare the Demo
 ================
 1.  Connect 12V power supply and J-Link Debug Probe to the board, switch SW4 to power on the board.

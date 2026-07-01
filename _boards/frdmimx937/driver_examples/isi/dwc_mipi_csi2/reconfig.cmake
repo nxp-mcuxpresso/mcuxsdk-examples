@@ -1,6 +1,6 @@
 
 mcux_add_configuration(
-	CC "-DSDK_I2C_BASED_COMPONENT_USED=1 -DBOARD_USE_ADP5585=1 -DBOARD_USE_PCAL6408=1"
+	CC "-DSDK_I2C_BASED_COMPONENT_USED=1 -DBOARD_USE_ADP5585=1 -DBOARD_USE_PCA6416A=1"
 )
 
 # Camera firmware embedding control.
@@ -68,25 +68,25 @@ endif()
 mcux_remove_armgcc_linker_script(
         TARGETS debug release
         BASE_PATH ${SdkRootDirPath}
-        LINKER devices/i.MX/i.MX952/MIMX9529/gcc/MIMX9529_cm7_ram.ld
+        LINKER devices/i.MX/i.MX937/MIMX9375/gcc/MIMX9375_cm7_ram.ld
 )
 
 mcux_add_armgcc_linker_script(
         TARGETS debug release
         BASE_PATH ${SdkRootDirPath}
-        LINKER ${board_root}/imx952evk/driver_examples/isi/dwc_mipi_csi2/linker/MIMX95294_cm7_isi_ram.ld
+        LINKER ${board_root}/frdmimx937/driver_examples/isi/dwc_mipi_csi2/linker/MIMX9375_cm7_isi_ram.ld
 )
 
 mcux_remove_iar_linker_script(
         TARGETS debug release
         BASE_PATH ${SdkRootDirPath}
-        LINKER devices/i.MX/i.MX952/MIMX9529/iar/MIMX9529_cm7_ram.icf
+        LINKER devices/i.MX/i.MX937/MIMX9375/iar/MIMX9375_cm7_ram.icf
 )
 
 mcux_add_iar_linker_script(
         TARGETS debug release
         BASE_PATH ${SdkRootDirPath}
-        LINKER ${board_root}/imx952evk/driver_examples/isi/dwc_mipi_csi2/linker/MIMX95294_cm7_isi_ram.icf
+        LINKER ${board_root}/frdmimx937/driver_examples/isi/dwc_mipi_csi2/linker/MIMX9375_cm7_isi_ram.icf
 )
 
 # include ISI example file

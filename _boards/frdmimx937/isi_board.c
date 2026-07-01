@@ -12,6 +12,8 @@
 #include "fsl_ap1302.h"
 #include "fsl_lpi2c.h"
 #include "isi_config.h"
+#include "fsl_rgpio.h"
+#include "fsl_adp5585.h"
 
 /*******************************************************************************
  * Variables
@@ -19,9 +21,9 @@
 #define APP_ISI_IRQHandler           ISI_0_IRQHandler
 
 /* ADP5585 */
-#define APP_CAMERA_ADP5585_I2C            LPI2C3
+#define APP_CAMERA_ADP5585_I2C            LPI2C2
 #define APP_CAMERA_ADP5585_I2C_ADDR       (0x34U)
-#define APP_CAMERA_ADP5585_I2C_CLOCK_ROOT kCLOCK_lpi2c3
+#define APP_CAMERA_ADP5585_I2C_CLOCK_ROOT kCLOCK_lpi2c2
 #define APP_CAMERA_ADP5585_I2C_CLOCK_FREQ CLOCK_GetRate(APP_CAMERA_ADP5585_I2C_CLOCK_ROOT)
 
 #define ADP5585_DVDD_SEL        0
@@ -35,7 +37,6 @@
 #define ADP5585_PWREN4          11
 #define ADP5585_PWREN5          12
 
-pcal6408_handle_t pcal_handle;
 adp5585_handle_t handle;
 isi_private_data_t isiPrivateData;
 
@@ -49,7 +50,6 @@ isi_resource_t isiResource = {
  * Code
  ******************************************************************************/
 
-#if defined(BOARD_USE_ADP5585) && BOARD_USE_ADP5585
 void APP_CAMERA_ADP5585_I2C_Init(void)
 {
     BOARD_LPI2C_Init(APP_CAMERA_ADP5585_I2C, APP_CAMERA_ADP5585_I2C_CLOCK_FREQ);
@@ -88,8 +88,6 @@ void APP_CAMERA_InitADP5585(adp5585_handle_t *handle)
 
     ADP5585_Init(handle, &config);
 }
-
-#endif /* BOARD_USE_ADP5585. */
 
 status_t APP_LPI2C_Send(LPI2C_Type *base,
                           uint8_t deviceAddress,
@@ -217,30 +215,11 @@ void APP_Camera_I2C_PowerUp(bool powerup)
 
 void APP_PullCameraReset(bool reset)
 {
-    if (reset != false)
-    {
-        PCAL6408_SetDirection(&pcal_handle, (1 << BOARD_PCAL6408_CSI1_RST_B), kPCAL6408_Output);
-        PCAL6408_SetPins(&pcal_handle, (1 << BOARD_PCAL6408_CSI1_RST_B));
-    }
-    else
-    {
-        PCAL6408_SetDirection(&pcal_handle, (1 << BOARD_PCAL6408_CSI1_RST_B), kPCAL6408_Output);
-        PCAL6408_ClearPins(&pcal_handle, (1 << BOARD_PCAL6408_CSI1_RST_B));
-    }
+    RGPIO_PinWrite(GPIO5, 19U, reset ? 1U : 0U);
 }
 
 void APP_PullCameraPowerDown(bool powerdown)
 {
-    if (powerdown != false)
-    {
-        PCAL6408_SetDirection(&pcal_handle, (1 << BOARD_PCAL6408_CSI1_PWDN), kPCAL6408_Output);
-        PCAL6408_SetPins(&pcal_handle, (1 << BOARD_PCAL6408_CSI1_PWDN));
-    }
-    else
-    {
-        PCAL6408_SetDirection(&pcal_handle, (1 << BOARD_PCAL6408_CSI1_PWDN), kPCAL6408_Output);
-        PCAL6408_ClearPins(&pcal_handle, (1 << BOARD_PCAL6408_CSI1_PWDN));
-    }
 }
 
 void APP_PullCameraEnableIsp(bool isp_en)
@@ -328,15 +307,13 @@ void APP_ISI_IRQHandler(void)
 
 /*
  * Prepare for the camera:
- *
- * Initialize the MIPI CSI2, the input frames are sent to ISI.
- * Initialize the I2C to communicate with camera.
- * Enable the ISI interrupt.
  */
 void APP_PrepareCamera()
 {
-    /* Initialize the camera I2C. */
-    BOARD_InitPCAL6408_I2C3(&pcal_handle);
-    SDK_DelayAtLeastUs(100000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-}
+    rgpio_pin_config_t rstCfg = {
+        .pinDirection = kRGPIO_DigitalOutput,
+        .outputLogic  = 0U,
+    };
 
+    RGPIO_PinInit(GPIO5, 19U, &rstCfg);
+}

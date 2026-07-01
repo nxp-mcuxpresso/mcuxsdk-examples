@@ -24,25 +24,20 @@
 ** ###################################################################
 */
 
-/* Memory region from [0x80000000-0x80001FFF] is reserved for ROM header */
-/* Memory region from [0x20040000-0x2007FFFF] is reserved for A55 ATF */
 
 define symbol __ram_vector_table_size__ =  isdefinedsymbol(__ram_vector_table__) ? 0x00000800 : 0;
 define symbol __ram_vector_table_offset__ =  isdefinedsymbol(__ram_vector_table__) ? 0x000007FF : 0;
 
-define symbol m_interrupts_start       = 0x28132000;
-define symbol m_interrupts_end         = 0x281327FF;
+define symbol m_interrupts_start       = 0x00000000;
+define symbol m_interrupts_end         = 0x00000FFF;
 
-define symbol m_text_start             = 0x28132800;
-define symbol m_text_end               = 0X283FFFFF;
+define symbol m_text_start             = 0x00001000;
+define symbol m_text_end               = 0x0003FFFF;
 
-define symbol m_rsc_tbl_start          = 0x20000000;
-define symbol m_rsc_tbl_end            = 0x20000FFF;
+define symbol m_m33_suspend_ram_start  = 0x20000000;
+define symbol m_m33_suspend_ram_end    = 0x20001FFF;
 
-define symbol m_m33_suspend_ram_start  = 0x20001000;
-define symbol m_m33_suspend_ram_end    = 0x20002FFF;
-
-define symbol m_a55_suspend_ram_start  = 0x20003000;
+define symbol m_a55_suspend_ram_start  = 0x20002000;
 define symbol m_a55_suspend_ram_end    = 0x20003FFF;
 
 define symbol m_data_start             = 0x20004000;
@@ -51,8 +46,14 @@ define symbol m_data_end               = 0x2001DFFF;
 define symbol m_ncache_start           = 0x80000000;
 define symbol m_ncache_end             = 0x87FFFFFF;
 
-define symbol m_rom_reserved_start     = 0x2002E000;
-define symbol m_rom_reserved_end       = 0x2003FFFF;
+define symbol m_reserved_start         = 0x2002E000;
+define symbol m_reserved_end           = 0x2003BFFF;
+
+define symbol m_rsc_tbl_start          = 0x2003C000;
+define symbol m_rsc_tbl_end            = 0x2003FFFF;
+
+define symbol m_rsc_tbl_in_dram_start  = 0x88220000;
+define symbol m_rsc_tbl_in_dram_end    = 0x88223FFF;
 
 define exported symbol __NCACHE_REGION_START   = m_ncache_start;
 define exported symbol __NCACHE_REGION_SIZE    = m_ncache_end - m_ncache_start + 1;
@@ -72,6 +73,9 @@ if (isdefinedsymbol(__heap_size__)) {
 define exported symbol __VECTOR_TABLE  = m_interrupts_start;
 define exported symbol __RAM_VECTOR_TABLE_SIZE = __ram_vector_table_size__;
 
+define exported symbol __RscTblStart = m_rsc_tbl_start;
+define exported symbol __RscTblInDramStart = m_rsc_tbl_in_dram_start;
+
 define memory mem with size = 4G;
 define region TEXT_region = mem:[from m_interrupts_start to m_interrupts_end]
                           | mem:[from m_text_start to m_text_end];
@@ -87,10 +91,8 @@ define block HEAP      with alignment = 8, size = __size_heap__     { };
 define block RW        { readwrite };
 define block ZI        { zi };
 define block NCACHE_VAR    { section NonCacheable , section NonCacheable.init };
-define block QACCESS_CODE_VAR   with alignment = 32 { section CodeQuickAccess };
-define block QACCESS_DATA_VAR   with alignment = 32 { section DataQuickAccess };
 
-initialize by copy { readwrite, section .textrw, section DataQuickAccess, section CodeQuickAccess };
+initialize by copy { readwrite, section .textrw };
 do not initialize  { section .noinit, section M33SuspendRam, section A55SuspendRam };
 
 keep{section .resource_table};
@@ -98,8 +100,6 @@ keep{section .resource_table};
 place at address mem: m_interrupts_start    { readonly section .intvec };
 ".resource_table": place at address mem: m_text_start {section .resource_table};
 place in TEXT_region                        { readonly };
-place in DATA_region                        { block QACCESS_CODE_VAR };
-place in DATA_region                        { block QACCESS_DATA_VAR };
 place in DATA_region                        { block RW };
 place in DATA_region                        { block ZI };
 place in DATA_region                        { last block HEAP };
