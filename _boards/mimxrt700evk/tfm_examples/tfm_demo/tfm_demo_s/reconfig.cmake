@@ -1,5 +1,5 @@
 #
-# Copyright 2025 NXP
+# Copyright 2025-2026 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -10,6 +10,7 @@ mcux_add_macro(
      CC "-DPRINTF_ADVANCED_ENABLE=1\
        -DOCOTP_NV_COUNTERS_RAM_EMULATION=1\
        -DXIP_EXTERNAL_FLASH\
+       -DUSE_XSPI1\
        "
 )
 

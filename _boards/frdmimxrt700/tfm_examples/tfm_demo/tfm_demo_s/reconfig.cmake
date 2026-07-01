@@ -1,5 +1,5 @@
 #
-# Copyright 2025-2026 NXP
+# Copyright 2026 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -10,7 +10,7 @@ mcux_add_macro(
      CC "-DPRINTF_ADVANCED_ENABLE=1\
        -DOCOTP_NV_COUNTERS_RAM_EMULATION=1\
        -DXIP_EXTERNAL_FLASH\
-       -DUSE_XSPI1\
+       -DUSE_XSPI0\
        "
 )
 
@@ -37,9 +37,7 @@ mcux_add_macro(
     TARGETS debug
     CC "-DNDEBUG"
 )
-mcux_add_armgcc_configuration(
-    CC "-Wno-format"
-)
+
 
 #iar configurations
 mcux_remove_iar_configuration(

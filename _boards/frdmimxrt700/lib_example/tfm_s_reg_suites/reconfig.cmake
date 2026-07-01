@@ -1,31 +1,31 @@
 #
-# Copyright 2025-2026 NXP
+# Copyright 2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
 include(${SdkRootDirPath}/${board_root}/${board}/tfm_examples/reconfig.cmake OPTIONAL)
+include (${SdkRootDirPath}/drivers/gpio/CMakeLists.txt OPTIONAL)
 
-#add cc-defines
-mcux_add_macro(
-     CC "-DPRINTF_ADVANCED_ENABLE=1\
-       -DOCOTP_NV_COUNTERS_RAM_EMULATION=1\
-       -DXIP_EXTERNAL_FLASH\
-       -DUSE_XSPI1\
-       "
-)
+include (${SdkRootDirPath}/drivers/lpflexcomm/CMakeLists.txt OPTIONAL)
+include (${SdkRootDirPath}/drivers/lpflexcomm/lpuart/CMakeLists.txt OPTIONAL)
+include (${SdkRootDirPath}/drivers/glikey/CMakeLists.txt OPTIONAL)
+
+mcux_add_include(
+        INCLUDES examples/_boards/${board}/
+        BASE_PATH ${SdkRootDirPath}
+    )
 
 #mdk configurations:
 mcux_remove_mdk_configuration(
-    TARGETS debug
+    TARGETS debug release
     CC "-O1"
     CX "-O1"
 )
 mcux_add_mdk_configuration(
-    TARGETS debug
-    CC "-Oz"
-    CX "-Oz"
+    TARGETS debug release
+    CC "-O0"
+    CX "-O0"
 )
-
 #armgcc configurations
 mcux_remove_macro(
     TOOLCHAINS armgcc
@@ -37,8 +37,15 @@ mcux_add_macro(
     TARGETS debug
     CC "-DNDEBUG"
 )
+mcux_remove_armgcc_configuration(
+    TARGETS debug
+    CC "-O0"
+    CX "-O0"
+)
 mcux_add_armgcc_configuration(
-    CC "-Wno-format"
+    TARGETS debug
+    CC "-Os"
+    CX "-Os"
 )
 
 #iar configurations
@@ -49,11 +56,6 @@ mcux_remove_iar_configuration(
 )
 
 mcux_add_iar_configuration(
-    CX "--diag_suppress=Ta023,Ta022"
-    CC "--diag_suppress=Ta023,Ta022"
-)
-
-mcux_add_iar_configuration(
-    TARGETS debug
+    TARGETS debug release
     CC "-Oh"
 )
