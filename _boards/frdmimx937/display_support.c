@@ -173,7 +173,7 @@ void BOARD_PrepareDisplay(void)
     clk_t videopll1CLKCfg = {
         .clkId = kCLOCK_videopll1,
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
-        .rate = 500000000,
+        .rate = 300000000,
     };
 
     clk_t disp1pixlCLKCfg = {
@@ -193,14 +193,14 @@ void BOARD_PrepareDisplay(void)
         .clkId = kCLOCK_mipiPhyPllBypass,
         .pclkId = kCLOCK_videopll1,
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
-        .rate = 500000000,
+        .rate = 300000000,
     };
 
     clk_t mipitestbyteCLKCfg = {
         .clkId = kCLOCK_mipiTestByte,
         .pclkId = kCLOCK_videopll1,
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
-        .rate = 500000000,
+        .rate = 300000000,
     };
 
     CLOCK_SetRate(&videopll1vcoCLKCfg);
@@ -218,6 +218,7 @@ void BOARD_PrepareDisplay(void)
     CLOCK_SetRate(&mipiphypllbypassCLKCfg);
     CLOCK_SetParent(&mipitestbyteCLKCfg);
     CLOCK_SetRate(&mipitestbyteCLKCfg);
+
 #elif (DPU_EXAMPLE_DI == DPU_DI_LVDS)
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
 #if (DEMO_PANEL == DEMO_PANEL_LCD_SPEC)
@@ -282,7 +283,7 @@ void BOARD_InitLcdPanel(void)
     BOARD_InitPCA6416A(&pca6416ahandle);
     PCA6416A_SetDirection(&pca6416ahandle, (1 << BOARD_PCA6416A_EXT_5V0_PWR_EN), kPCA6416A_Output);
     PCA6416A_SetPins(&pca6416ahandle, (1 << BOARD_PCA6416A_EXT_5V0_PWR_EN));
-    SDK_DelayAtLeastUs(1000U, SystemCoreClock);
+    SDK_DelayAtLeastUs(10000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
     if (DPU_EXAMPLE_DI == DPU_DI_MIPI)
@@ -306,6 +307,7 @@ void BOARD_InitLcdPanel(void)
         waveshareResource.i2cAddr        = 0x45;
         waveshareResource.i2cSendFunc    = BOARD_Display_I2C_Send;
         waveshareResource.i2cReceiveFunc = BOARD_Display_I2C_Receive;
+
         WAVESHARE_DSI2DPI_Init(&wavesharehandle, &displayConfig);
     }
 #else
@@ -322,6 +324,8 @@ void BOARD_InitDisplayInterface(void)
 
     dsi_config_t dsiConfig;
     DSI_GetDefaultConfig(&dsiConfig);
+    dsiConfig.packageFlags = kDSI_EnableBta | kDSI_EnableEotpTxHs;
+    dsiConfig.videoMode = kDSI_IpiNonBurstWithSyncEvent;
     DSI_Init(DSI_MAIN, DSI_HOST, DSI_INT, &dsiConfig);
 
     /* IPI setting is based on video mode only */
@@ -343,31 +347,30 @@ void BOARD_InitDisplayInterface(void)
                                         .vsa                   = APP_VSW,
                                         .vactive               = APP_PANEL_HEIGHT,
     };
-    phyByteClkFreq_Hz = voutClkFreq_Hz * 2 / 8U;
+    phyByteClkFreq_Hz = mipiDsiDpiClkFreq_Hz * 24 / APP_MIPI_DSI_LANE_NUM / 8U;
     float ratio = (float)phyByteClkFreq_Hz / (float)mipiDsiDpiClkFreq_Hz;
     DSI_PHY->PHY_IPI_RATIO_MAN_CFG     = MIPI_ConvertFloat(ratio, 6, 16);
     DSI_PHY->PHY_SYS_RATIO_MAN_CFG     = MIPI_ConvertFloat(ratio, 6, 16);
     DSI_ConfigHorizontalParams(DSI_IPI, &ipiConfig, ratio);
     DSI_SetIpiConfig(DSI_IPI, &ipiConfig);
-    uint32_t dataRateFreq_Hz = voutClkFreq_Hz;
+    uint32_t dataRateFreq_Hz = phyByteClkFreq_Hz * 8U;
     uint32_t phyRefClkFreq_Hz = 24000000U;
-    uint32_t bndwidth_Hz = voutClkFreq_Hz * 2;
+    uint32_t bndwidth_Hz = phyByteClkFreq_Hz * 8U;
     uint32_t lpclk_hz = mipiDsiDpiClkFreq_Hz / 8;
     DSI_StartupTxStaticSetting(APP_DPU_DPHY);
     DSI_DphyTxDynamicSetting(APP_DPU_DPHY, bndwidth_Hz, lpclk_hz);
     DSI_ConfigDphy(DSI_CSR, phyRefClkFreq_Hz, dataRateFreq_Hz, &ipiConfig);
-
     /* Set MIPI DSI PHY config */
     dsi_phy_config_t phyConfig;
     phyConfig.phymode = kDSI_DPHY;
     phyConfig.enableNoncontinuousClk = false;
     phyConfig.ppiwidth = kDSI_PPI8BITS;
     phyConfig.numLanes = APP_MIPI_DSI_LANE_NUM -1U;
-    phyConfig.lp2hs_time = 0x10000U;
-    phyConfig.hs2lp_time = 0x10000U;
-    phyConfig.esccmd_time = 0x90000U;
-    phyConfig.escbyte_time = 0xe0000U;
-    phyConfig.lptx_clkdiv = 4U;
+    phyConfig.lp2hs_time = 0xFDFDFU;
+    phyConfig.hs2lp_time = 0xDFFCCU;
+    phyConfig.esccmd_time = 0x0U;
+    phyConfig.escbyte_time = 0x0U;
+    phyConfig.lptx_clkdiv = 2U;
     phyConfig.tolerance_time = 0U;
     phyConfig.cal_time = 0U;
     phyConfig.ulps_wakeuptime = 0U;
