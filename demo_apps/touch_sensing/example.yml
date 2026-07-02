@@ -20,6 +20,7 @@ touch_sensing:
     - -iar@debug
     frdmke17z: []
     frdmke17z512: []
+    frdmmcxa577: []
     frdmmcxn947@cm33_core0: []
     frdmmcxn947t@cm33_core0: []
     mcxn5xxevk@cm33_core0: []

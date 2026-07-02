@@ -19,6 +19,7 @@ Key benefits of the NXP Touch solution include:
 - [FRDM-KE16Z](../../_boards/frdmke16z/demo_apps/touch_sensing/example_board_readme.md)
 - [FRDM-KE17Z](../../_boards/frdmke17z/demo_apps/touch_sensing/example_board_readme.md)
 - [FRDM-KE17Z512](../../_boards/frdmke17z512/demo_apps/touch_sensing/example_board_readme.md)
+- [FRDM-MCXA577](../../_boards/frdmmcxa577/demo_apps/touch_sensing/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/demo_apps/touch_sensing/example_board_readme.md)
 - [FRDM-MCXN947T](../../_boards/frdmmcxn947t/demo_apps/touch_sensing/example_board_readme.md)
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/demo_apps/touch_sensing/example_board_readme.md)
