@@ -47,6 +47,7 @@ freertos_message_buffers_secondary_core:
       - ${board_root}/${board}/multicore_examples/freertos_message_buffers/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
+    mimxrt700evk@cm33_core1: []
     evkmimxrt1160@cm4:
     - +armgcc@debug
     - +armgcc@release

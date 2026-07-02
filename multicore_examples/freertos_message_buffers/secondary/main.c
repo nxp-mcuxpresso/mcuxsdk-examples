@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2020, 2025 NXP
+ * Copyright 2019-2020, 2025, 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -133,10 +133,15 @@ void vApplicationGetTimerTaskMemory(StaticTask_t **ppxTimerTaskTCBBuffer,
 }
 void vGenerateSecondaryToPrimaryInterrupt(void *xUpdatedMessageBuffer)
 {
+    /* Ensure writes to shared memory complete before signaling the other core. */
+    __DMB();
+    __DSB();
+    __ISB();
+
     /* Trigger the inter-core interrupt using the MCMGR component.
        Pass the APP_MESSAGE_BUFFER_EVENT_DATA as data that accompany
        the kMCMGR_FreeRtosMessageBuffersEvent event. */
-    (void)MCMGR_TriggerEventForce(kMCMGR_Core0, kMCMGR_FreeRtosMessageBuffersEvent, APP_MESSAGE_BUFFER_EVENT_DATA);
+    (void)MCMGR_TriggerEvent(kMCMGR_Core0, kMCMGR_FreeRtosMessageBuffersEvent, APP_MESSAGE_BUFFER_EVENT_DATA);
 }
 
 static void FreeRtosMessageBuffersEventHandler(mcmgr_core_t coreNum, uint16_t eventData, void *context)

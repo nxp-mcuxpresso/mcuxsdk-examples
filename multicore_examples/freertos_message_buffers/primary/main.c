@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2025 NXP
+ * Copyright 2019-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -41,9 +41,8 @@ extern unsigned char rpmsg_sh_mem_start[];
 extern unsigned char rpmsg_sh_mem_end[];
 #define APP_SH_MEM_BASE rpmsg_sh_mem_start
 #elif defined(__CC_ARM) || defined(__ARMCC_VERSION) /* Keil MDK */
-extern unsigned char Image$$RPMSG_SH_MEM$$Base;
-extern unsigned char Image$$RPMSG_SH_MEM$$Length;
-#define APP_SH_MEM_BASE &Image$$RPMSG_SH_MEM$$Base
+unsigned char rpmsg_sh_mem[SH_MEM_TOTAL_SIZE] __attribute__((section("rpmsg_sh_mem_section")));
+#define APP_SH_MEM_BASE (uint32_t) & rpmsg_sh_mem
 #elif defined(__GNUC__)                             /* GCC */
 unsigned char rpmsg_sh_mem[SH_MEM_TOTAL_SIZE] __attribute__((section(".noinit.$rpmsg_sh_mem")));
 #define APP_SH_MEM_BASE (uint32_t) & rpmsg_sh_mem
@@ -133,10 +132,15 @@ void vApplicationGetTimerTaskMemory(StaticTask_t **ppxTimerTaskTCBBuffer,
 }
 void vGeneratePrimaryToSecondaryInterrupt(void *xUpdatedMessageBuffer)
 {
+    /* Ensure writes to shared memory complete before signaling the other core. */
+    __DMB();
+    __DSB();
+    __ISB();
+
     /* Trigger the inter-core interrupt using the MCMGR component.
        Pass the APP_MESSAGE_BUFFER_EVENT_DATA as data that accompany
        the kMCMGR_FreeRtosMessageBuffersEvent event. */
-    (void)MCMGR_TriggerEventForce(kMCMGR_Core0, kMCMGR_FreeRtosMessageBuffersEvent, APP_MESSAGE_BUFFER_EVENT_DATA);
+    (void)MCMGR_TriggerEvent(kMCMGR_Core1, kMCMGR_FreeRtosMessageBuffersEvent, APP_MESSAGE_BUFFER_EVENT_DATA);
 }
 
 static void FreeRtosMessageBuffersEventHandler(mcmgr_core_t coreNum, uint16_t eventData, void *context)
@@ -174,7 +178,11 @@ static void app_task(void *param)
 {
     size_t xReceivedBytes;
 
+    /* Clear shared memory and ensure writes to shared memory completed before continuing. */
     (void)memset((void *)(char *)APP_SH_MEM_BASE, 0, SH_MEM_TOTAL_SIZE);
+    __DMB();
+    __DSB();
+    __ISB();
     /* Create the Primary-To-Secondary message buffer, statically allocated at a known location
        as both cores need to know where they are. */
     xPrimaryToSecondaryMessageBuffer = xMessageBufferCreateStatic(
@@ -211,6 +219,8 @@ static void app_task(void *param)
     (void)MCMGR_RegisterEvent(kMCMGR_RemoteApplicationEvent, RemoteAppReadyEventHandler,
                               (void *)&RemoteAppReadyEventData);
 
+    (void)MCMGR_RegisterEvent(kMCMGR_FreeRtosMessageBuffersEvent, FreeRtosMessageBuffersEventHandler, ((void *)0));
+
     /* Boot Secondary core application */
     (void)MCMGR_StartCore(kMCMGR_Core1, (void *)(char *)CORE1_BOOT_ADDRESS, 0, kMCMGR_Start_Synchronous);
 
@@ -218,8 +228,6 @@ static void app_task(void *param)
     while (APP_READY_EVENT_DATA != RemoteAppReadyEventData)
     {
     };
-
-    (void)MCMGR_RegisterEvent(kMCMGR_FreeRtosMessageBuffersEvent, FreeRtosMessageBuffersEventHandler, ((void *)0));
 
     /* Send the first message to the secondary core app. */
     msg.DATA = 0U;

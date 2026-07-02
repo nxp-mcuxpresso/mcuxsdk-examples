@@ -120,7 +120,7 @@ void vGenerateSecondaryToPrimaryInterrupt( void * xUpdatedMessageBuffer );
 #define INCLUDE_xTaskResumeFromISR              1
 
 /* Override the default implementation of sbSEND_COMPLETED so the macro creates
-an interrupt in the M4 core.  See the comments at the top of main.c. */
+an interrupt in the cm33_core1 (secondary) core.  See the comments at the top of main.c. */
 #define sbSEND_COMPLETED( pxStreamBuffer ) vGenerateSecondaryToPrimaryInterrupt( pxStreamBuffer )
 
 /****************** Macro definitions ***************/
