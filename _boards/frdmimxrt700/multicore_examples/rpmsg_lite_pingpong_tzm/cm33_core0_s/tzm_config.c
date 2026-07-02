@@ -37,12 +37,12 @@ toolOptions:
  **********************************************************************************************************************/
 
 /* SAU region boundaries */
-#define BOARD_INITTEE_SAU_REGION_0_BASE 0x08100000U
-#define BOARD_INITTEE_SAU_REGION_0_END 0x081FFFFFU
+#define BOARD_INITTEE_SAU_REGION_0_BASE 0x28100000U
+#define BOARD_INITTEE_SAU_REGION_0_END 0x281FFFFFU
 #define BOARD_INITTEE_SAU_REGION_1_BASE 0x20100000U
-#define BOARD_INITTEE_SAU_REGION_1_END 0x201FFFFFU
-#define BOARD_INITTEE_SAU_REGION_2_BASE 0x180FFE00U
-#define BOARD_INITTEE_SAU_REGION_2_END 0x180FFFFFU
+#define BOARD_INITTEE_SAU_REGION_1_END 0x20207FFFU
+#define BOARD_INITTEE_SAU_REGION_2_BASE 0x1000FC00U
+#define BOARD_INITTEE_SAU_REGION_2_END 0x1000FFFFU
 
 /* clang-format off */
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************

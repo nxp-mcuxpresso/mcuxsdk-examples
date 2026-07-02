@@ -5,23 +5,24 @@ Hardware requirements
 - Personal Computer
 
 Board settings
-==============
-Switch the JP45 jumper to the 2-3 configuration and the JP46 jumper to the 2-3 configuration to enable XSPI1 memory access.
-Switch the SW10 boot mode switch to the 11 XSPI1 flash configuration.
+============
+
+### XSPI0 Usage (Default Configuration)
+The FRDM-IMXRT700 board uses XSPI0 flash as the default boot device. The TrustZone examples are
+pre-configured for XSPI0. No additional hardware configuration is required.
 
 
 Prepare the Demo
-================
-1.  Connect the PC host and the board
+===============
+1.  Connect a USB cable between the PC host and the debug port on the board
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
     - No parity
     - One stop bit
     - No flow control
-3.  Download the program to the target board.
-4.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
-
+3.  Use secure project to download the program to target board. Please refer to "TrustZone application debugging" below for details.
+4.  Launch the debugger in your IDE to begin running the demo.
 
 Running the demo
 ================

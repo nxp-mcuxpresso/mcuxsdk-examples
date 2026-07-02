@@ -29,5 +29,5 @@ are incremented.
 - [EVK-MIMXRT685](../../_boards/evkmimxrt685/freertos_examples/freertos_mpu/freertos_mpu_s/example_board_readme.md)
 - [LPCXpresso55S69](../../_boards/lpcxpresso55s69/freertos_examples/freertos_mpu/freertos_mpu_s/example_board_readme.md)
 - [MIMXRT685-AUD-EVK](../../_boards/mimxrt685audevk/freertos_examples/freertos_mpu/freertos_mpu_s/example_board_readme.md)
-- FRDM-IMXRT700
-- MIMXRT700-EVK
+- [MIMXRT700-EVK](../../_boards/mimxrt700evk/freertos_examples/freertos_mpu/freertos_mpu_s/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/freertos_examples/freertos_mpu/freertos_mpu_s/example_board_readme.md)

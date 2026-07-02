@@ -58,7 +58,7 @@
 #define m_sg_ramfunc_size              0x00000C00
 
 #define m_veneer_table_start           0x1000FC00
-#define m_veneer_table_size            0x00000300
+#define m_veneer_table_size            0x00000400
 
 #define m_ram_code_start               0x1000FF00
 #define m_ram_code_size                0x00000100

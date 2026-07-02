@@ -74,7 +74,13 @@ void SystemInitHook(void)
      * SystemInitHook() weak function overloading is used for this purpose.
      */
     BOARD_InitTrustZone();
+
+    /* If Veneer is placed in SRAM, then provide board sys_inithook to do the copy function call*/
+#ifdef BOARD_TZM_SG_IN_SRAM
+    BOARD_SystemInitHook();
+#endif /*BOARD_TZM_SG_IN_SRAM*/
 }
+
 /*-----------------------------------------------------------*/
 
 void BootNonSecure(uint32_t ulNonSecureStartAddress)

@@ -13,7 +13,7 @@
 /*${macro:start}*/
 #define RPMSG_LITE_LINK_ID (RL_PLATFORM_IMXRT700_M33_0_M33_1_LINK_ID)
 
-#define NON_SECURE_START 0x08100000
+#define NON_SECURE_START 0x28100000
 
 /* Address of memory, from which the secondary core will boot */
 #define CORE1_BOOT_ADDRESS 0x30600000
@@ -49,6 +49,9 @@ extern uint32_t core1_ns_image_size;
  * Prototypes
  ******************************************************************************/
 /*${prototype:start}*/
+#ifdef BOARD_TZM_SG_IN_SRAM
+void BOARD_SystemInitHook(void);
+#endif /* BOARD_TZM_SG_IN_SRAM */
 void BOARD_InitHardware(void);
 
 #ifdef CORE1_IMAGE_COPY_TO_RAM

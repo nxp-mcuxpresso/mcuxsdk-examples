@@ -24,6 +24,10 @@ mcux_add_include(
         INCLUDES ../rpmsg_lite_pingpong_tzm_secondary_core_ns/${CONFIG_TOOLCHAIN}/
 )
 
+mcux_add_macro(
+    CC "-DBOARD_TZM_SG_IN_SRAM"
+)
+
 mcux_add_mdk_configuration(
         CC "-DCORE1_IMAGE_COPY_TO_RAM"
 )

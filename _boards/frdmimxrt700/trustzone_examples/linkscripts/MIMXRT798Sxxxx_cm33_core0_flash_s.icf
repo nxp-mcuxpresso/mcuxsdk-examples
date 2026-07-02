@@ -59,6 +59,8 @@ define symbol m_ram_code_end                       = 0x1000FFFF;
 
 initialize by copy {
         ro object *veneer_table*,
+        /* TrustZone: ensure NSC veneers (Veneer$$CMSE) are copied into RAM veneer region */
+        section Veneer$$CMSE,
     };
 
 define block ER_CODE_SRAM {
@@ -96,7 +98,7 @@ define exported symbol __RAM_VECTOR_TABLE_SIZE = __ram_vector_table_size__;
 
 /* 512B - memory for veneer table (NSC - secure, non-secure callable memory) */
 define symbol m_veneer_table_start             = 0x1000FC00;
-define symbol m_veneer_table_size              = 0x00000300;
+define symbol m_veneer_table_size              = 0x00000400;
 
 define memory mem with size = 4G;
 

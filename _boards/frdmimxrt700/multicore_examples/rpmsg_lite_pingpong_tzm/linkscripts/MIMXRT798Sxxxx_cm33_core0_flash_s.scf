@@ -48,14 +48,20 @@
   #define __ram_vector_table_size__    0x00000000
 #endif
 
-#define m_interrupts_start             0x28004000
+#define m_interrupts_start             0x38004000
 #define m_interrupts_size              0x00000300
 
-#define m_text_start                   0x28004300
+#define m_text_start                   0x38004300
 #define m_text_size                    0x000FBB00
 
-#define m_veneer_table_start           0x280FFE00
-#define m_veneer_table_size            0x00000200
+#define m_sg_ramfunc_start             0x1000F000
+#define m_sg_ramfunc_size              0x00000C00
+
+#define m_veneer_table_start           0x1000FC00
+#define m_veneer_table_size            0x00000400
+
+#define m_ram_code_start               0x1000FF00
+#define m_ram_code_size                0x00000100
 
 #define m_core1_image_maximum_size     0x00080000
 #define m_core1_ns_image_maximum_size  0x00020000
@@ -67,7 +73,7 @@
 #define m_data_start                   (m_interrupts_ram_start + m_interrupts_ram_size)
 #define m_data_size                    (0x00080000 - m_interrupts_ram_size)
 
-#define m_boot_flash_conf_start        0x28000000
+#define m_boot_flash_conf_start        0x38000000
 
 #if (defined(__use_shmem__))
   #define m_rpmsg_sh_mem_start         0x30200000
@@ -85,7 +91,7 @@ LR_m_flash_conf m_boot_flash_conf_start m_interrupts_start-m_boot_flash_conf_sta
   }
 }
 
-LR_m_interrupts m_interrupts_start m_interrupts_size+m_text_size+m_veneer_table_size {
+LR_m_interrupts m_interrupts_start m_interrupts_size+m_text_size+m_sg_ramfunc_size+m_veneer_table_size {
   VECTOR_ROM m_interrupts_start FIXED m_interrupts_size { ; load address = execution address
     * (.isr_vector,+FIRST)
   }
@@ -94,6 +100,7 @@ LR_m_interrupts m_interrupts_start m_interrupts_size+m_text_size+m_veneer_table_
     * (InRoot$$Sections)
     .ANY (+RO)
   }
+
   CORE1_REGION +0 ALIGN 16 m_core1_image_maximum_size {
     .ANY (.core1_code)
   }
@@ -103,6 +110,11 @@ LR_m_interrupts m_interrupts_start m_interrupts_size+m_text_size+m_veneer_table_
   EZHV_REGION +0 ALIGN 16 m_ezhv_image_maximum_size {
     .ANY (.ezhv_code)
   }
+
+  ER_m_sg_ramfunc m_sg_ramfunc_start m_sg_ramfunc_size { ; secure entry functions copied to SRAM by __main scatterload
+    * (.sg_ramfunc)
+  }
+
 #if (defined(__ram_vector_table__))
   VECTOR_RAM m_interrupts_ram_start EMPTY m_interrupts_ram_size {
   }
@@ -162,9 +174,10 @@ LR_m_interrupts m_interrupts_start m_interrupts_size+m_text_size+m_veneer_table_
   }
 #endif
 
-  ER_m_veneer_table m_veneer_table_start FIXED m_veneer_table_size {; veneer table
+  ER_m_veneer_table m_veneer_table_start m_veneer_table_size { ; CMSE veneer table copied to SRAM by __main scatterload
     *(Veneer$$CMSE)
   }
+
 
 #if (defined(__use_shmem__))
   RPMSG_SH_MEM m_rpmsg_sh_mem_start UNINIT m_rpmsg_sh_mem_size { ; Shared memory used by RPMSG

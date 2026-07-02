@@ -56,7 +56,7 @@ MEMORY
   m_interrupts          (RX)  : ORIGIN = 0x38004000, LENGTH = 0x00000300
   m_text                (RX)  : ORIGIN = 0x38004300, LENGTH = 0x000FBB00
   m_sg_ramfunc          (RX)  : ORIGIN = 0x1000F000, LENGTH = 0x00000C00
-  m_veneer_table        (RX)  : ORIGIN = 0x1000FC00, LENGTH = 0x000003FF
+  m_veneer_table        (RX)  : ORIGIN = 0x1000FC00, LENGTH = 0x00000400
   m_data                (RW)  : ORIGIN = DATA_START, LENGTH = DATA_END - DATA_START + 1
   m_ncache              (RW)  : ORIGIN = NCACHE_START, LENGTH = NCACHE_SIZE
   m_heap                (RW)  : ORIGIN = HEAP_START, LENGTH = HEAP_SIZE

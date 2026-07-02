@@ -3,12 +3,18 @@ Hardware requirements
 - Type-C USB cable
 - FRDM-IMXRT700 board
 - Personal Computer
+
 Board settings
 ============
 
+### XSPI0 Usage (Default Configuration)
+The FRDM-IMXRT700 board uses XSPI0 flash as the default boot device. The TrustZone examples are
+pre-configured for XSPI0. No additional hardware configuration is required.
+
+
 Prepare the Demo
 ===============
-1.  Connect a USB cable between the PC host and the CMSIS DAP USB port on the board
+1.  Connect a USB cable between the PC host and the debug port on the board
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
@@ -64,6 +70,24 @@ TrustZone application compilation
 -------------------------------
 Please compile secure project firstly since CMSE library is needed for compilation of non-secure project.
 After successful compilation of secure project, compile non-secure project.
+
+### ARMGCC note: NSC-callable bodies placed in SRAM when `BOARD_TZM_SG_IN_SRAM` is enabled
+When `BOARD_TZM_SG_IN_SRAM` is defined, this example places the SG veneer table (`.gnu.sgstubs`) in secure SRAM.
+To avoid out-of-range branch issues from the veneer table to the NSC-callable functions, the secure build
+force-includes a project-local header that overrides the FreeRTOS macro `secureportNON_SECURE_CALLABLE` so that
+NSC-callable function bodies are also placed into the `.sg_ramfunc` section.
+
+Implementation details (secure project, ARMGCC only):
+- `freertos_mpu_s/cm33_core0/secureport_override_armgcc.h` overrides `secureportNON_SECURE_CALLABLE` to place functions into `.sg_ramfunc`.
+- `freertos_mpu_s/cm33_core0/reconfig.cmake` adds the compiler option:
+  - `-include ${CMAKE_CURRENT_LIST_DIR}/secureport_override_armgcc.h`
+
+This is a project-local workaround and does not require patching the generic upstream FreeRTOS kernel headers.
+
+Verification:
+- After building the secure project with ARMGCC, confirm in the map file (for example `build_*/freertos_mpu_s/output.map`) that:
+  - `.sg_ramfunc` contains entries from `nsc_functions.c.obj` (and FreeRTOS secure port objects), and
+  - `.gnu.sgstubs` is located in secure SRAM near `.sg_ramfunc`.
 
 TrustZone application debugging
 -------------------------------
