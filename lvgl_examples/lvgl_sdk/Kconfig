@@ -52,7 +52,7 @@ if MCUX_COMPONENT_middleware.lvgl
         default y if MCUX_COMPONENT_middleware.vglite
 
     config LV_USE_PXP
-        default n if MCUX_COMPONENT_driver.pxp
+        default y if MCUX_COMPONENT_driver.pxp
 
     config LV_USE_DRAW_PXP
         default n if LV_USE_DRAW_VG_LITE
@@ -62,9 +62,6 @@ if MCUX_COMPONENT_middleware.lvgl
 
     config LV_DRAW_BUF_ALIGN
         default 32 if LV_USE_PXP
-
-    config LV_USE_DRAW_SW
-        default n
 
     osource "${SdkRootDirPath}/middleware/lvgl/Kconfig"
 
