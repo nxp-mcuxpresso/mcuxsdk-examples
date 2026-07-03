@@ -7,6 +7,7 @@ The example specific information can be found in *readme.md* or *example_board_r
 - Type-C USB cable
 - FRDM-IMXRT700 board
 - Personal Computer
+- 5V external power supply(When display or/and WiFi module are used)
 
 ## Prepare the Demo
 1.  Connect a USB cable between the PC host and the USB port on the board
@@ -42,6 +43,8 @@ may have special display settings, such as LVGL project. Please refer
 LVGL project lv_examples_readme.md for the steps.
 
 ## Board hardware settings
+
+> **NOTE**: An external 5V power supply is required when using the Raspberry panel. Connect the 5V supply to the board's external power input and connect J2 1-2.
 
 - Raspberry panel
   - Connect the panel to J8
