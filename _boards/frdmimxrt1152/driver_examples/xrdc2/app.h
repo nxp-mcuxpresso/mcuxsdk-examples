@@ -19,12 +19,11 @@
 
 /*
  * Memory
- * M4 LMEM region is used in this example. M7 accesses this region
- * through the address 0x20200000 ~ 0x2023ffff.
+ * M7 OCRAM region is used in this example.
  */
-#define DEMO_XRDC2_MEM            kXRDC2_Mem_M4LMEM_Region0
-#define DEMO_XRDC2_MEM_START_ADDR 0x20200000
-#define DEMO_XRDC2_MEM_END_ADDR   0x2023ffff
+#define DEMO_XRDC2_MEM            kXRDC2_Mem_M7OC_Region0
+#define DEMO_XRDC2_MEM_START_ADDR 0x20360000
+#define DEMO_XRDC2_MEM_END_ADDR   0x203fffff
 
 /* Peripheral */
 #define DEMO_XRDC2_PERIPH kXRDC2_Periph_GPIO1

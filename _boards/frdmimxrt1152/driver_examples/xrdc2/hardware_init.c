@@ -68,11 +68,6 @@ void DEMO_SetAllMemAccessible(void)
     memAccessConfig.endAddr   = 0x7FFFFFFFU;
     XRDC2_SetMemAccessConfig(DEMO_XRDC2, kXRDC2_Mem_FLEXSPI2_Region0, &memAccessConfig);
 
-    /* M4 LMEM */
-    memAccessConfig.startAddr = 0x20200000U;
-    memAccessConfig.endAddr   = 0x2023ffffU;
-    XRDC2_SetMemAccessConfig(DEMO_XRDC2, kXRDC2_Mem_M4LMEM_Region0, &memAccessConfig);
-
     /* M7 OCRAM */
     memAccessConfig.startAddr = 0x20360000U;
     memAccessConfig.endAddr   = 0x203fffffU;
