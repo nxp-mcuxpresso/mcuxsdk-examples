@@ -7,14 +7,15 @@ Hardware requirements
 
 Board settings
 ============
+- Remove R183.
 - J30, headphone connected
 - connect FLEXIO pins to the pad as follows:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Pin Name   Board Location     Pin Name    Board Location
-RX_DATA    J44-1              RX_DATA     J28-2
-TX_DATA    J44-3              TX_DATA     J27-2
-SYNC       J44-5              SYNC        J20-2
-BCLK       J44-7              BCLK        J21-2
+RX_DATA    J44-1              RX_DATA     J28-1
+TX_DATA    J44-3              TX_DATA     J27-1
+SYNC       J44-5              SYNC        J20-1
+BCLK       J44-7              BCLK        J21-1
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Prepare the Demo

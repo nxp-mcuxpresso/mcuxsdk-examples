@@ -30,10 +30,10 @@
 
 #define DEMO_FLEXIO_CLK_FREQ (CLOCK_GetRootClockFreq(kCLOCK_Root_Flexio1))
 
-#define BCLK_PIN                (13U)
-#define FRAME_SYNC_PIN          (12U)
-#define TX_DATA_PIN             (11U)
-#define RX_DATA_PIN             (10U)
+#define BCLK_PIN                (3U)
+#define FRAME_SYNC_PIN          (2U)
+#define TX_DATA_PIN             (1U)
+#define RX_DATA_PIN             (0U)
 #define FLEXIO_TX_SHIFTER_INDEX 0
 #define FLEXIO_RX_SHIFTER_INDEX 2
 
