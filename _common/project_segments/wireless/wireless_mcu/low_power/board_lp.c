@@ -41,7 +41,7 @@
 #endif
 
 #if defined(BOARD_NBUDBG_HCI_LOGGER)
-#include "board_debug_nbu_port.h"
+#include "board_dbg_logger_port.h"
 #endif
 
 /* -------------------------------------------------------------------------- */
@@ -248,7 +248,7 @@ static void BOARD_ExitPowerDownCb(void)
 #endif
 
 #if defined(BOARD_NBUDBG_HCI_LOGGER)
-    (void)BOARD_DbgNbuPortReinit();
+    (void)BOARD_DbgLoggerPortReinit();
 #endif
 
 #if defined(gAppUseSerialManager_c) && (gAppUseSerialManager_c > 0)

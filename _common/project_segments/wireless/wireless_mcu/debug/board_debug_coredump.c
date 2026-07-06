@@ -16,9 +16,7 @@
 
 #include "board_debug_utils.h"
 #include "board_debug_coredump.h"
-
-#include "fsl_component_serial_manager.h"
-#include "app.h"
+#include "board_dbg_logger.h"
 
 /*******************************************************************************
  * Definitions
@@ -59,13 +57,6 @@ static int  coredump_board_debug_backend_cmd(enum coredump_cmd_id cmd_id, void *
  * Variables
  ******************************************************************************/
 
-/* Dedicated Serial Manager write handle on the application console (gSerMgrIf).
- * The Serial Manager serializes writes across handles, so streaming the dump
- * here shares the same physical port as the application logs and the NBU HCI
- * logger without corrupting their output. */
-static SERIAL_MANAGER_WRITE_HANDLE_DEFINE(s_coredumpWriteHandle);
-static bool s_coredumpWriteHandleOpen = false;
-
 /* Streaming Base64 state. The raw dump arrives in arbitrary-length chunks; we
  * buffer up to BOARD_DBG_COREDUMP_RAW_PER_LINE raw bytes and emit one Base64
  * line at a time. Any 0..(RAW_PER_LINE-1) trailing bytes are carried in
@@ -82,17 +73,17 @@ static int s_coredumpError = 0;
  ******************************************************************************/
 
 /*
- * Write a NUL-terminated string to the application console using the Serial
- * Manager blocking write. The blocking mode is a polling loop (it pumps the TX
- * ISR or spins, it does not wait on a semaphore), so this is safe to call from
- * the fault handler with the RTOS scheduler frozen.
+ * Write a string to the shared debug log engine using the IMMEDIATE (synchronous)
+ * path. The dump runs in fault context with the scheduler frozen, so the engine
+ * writes inline over its selected port; the engine is brought up at boot by
+ * BOARD_DbgLoggerInit() so no port setup happens here. The engine is
+ * port-agnostic: the output goes to whatever port its Kconfig choice selects.
  */
 static void coredump_board_debug_write(const char *str, uint32_t len)
 {
-    if ((s_coredumpWriteHandleOpen != false) && (len != 0U))
+    if ((str != NULL) && (len != 0U))
     {
-        if (SerialManager_WriteBlocking((serial_write_handle_t)s_coredumpWriteHandle, (uint8_t *)str, len) !=
-            kStatus_SerialManager_Success)
+        if (BOARD_DbgLoggerLogImmediate((const uint8_t *)str, (uint16_t)len) < 0)
         {
             s_coredumpError = -EIO;
         }
@@ -137,22 +128,6 @@ static void coredump_board_debug_backend_start(void)
 {
     s_coredumpError = 0;
     s_rawAccumLen   = 0U;
-
-#if defined(gAppUseSerialManager_c) && (gAppUseSerialManager_c > 0)
-    if (s_coredumpWriteHandleOpen == false)
-    {
-        if (SerialManager_OpenWriteHandle((serial_handle_t)gSerMgrIf,
-                                          (serial_write_handle_t)s_coredumpWriteHandle) ==
-            kStatus_SerialManager_Success)
-        {
-            s_coredumpWriteHandleOpen = true;
-        }
-        else
-        {
-            s_coredumpError = -EIO;
-        }
-    }
-#endif
 
     /* Open the framed coredump block. */
     coredump_board_debug_write("\r\n" BOARD_DBG_COREDUMP_BEGIN_STR "\r\n",

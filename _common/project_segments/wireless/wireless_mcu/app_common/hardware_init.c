@@ -43,6 +43,10 @@
 #include "board_debug_nbu.h"
 #endif
 
+#if defined(BOARD_DBG_COREDUMP_ENABLE) && (BOARD_DBG_COREDUMP_ENABLE != 0)
+#include "board_dbg_logger.h"
+#endif
+
 /*${header:end}*/
 
 /* -------------------------------------------------------------------------- */
@@ -146,6 +150,14 @@ void BOARD_InitHardware(void)
 
 #if defined(BOARD_DBG_NBU_ENABLE) && (BOARD_DBG_NBU_ENABLE != 0)
     BOARD_DbgNbuInit();
+#endif
+
+#if defined(BOARD_DBG_COREDUMP_ENABLE) && (BOARD_DBG_COREDUMP_ENABLE != 0)
+    /* Bring up the debug log engine at boot so the coredump backend can stream
+     * over the selected port from fault context (no init in the fault handler). */
+    int dbgLoggerStatus = BOARD_DbgLoggerInit();
+    assert(dbgLoggerStatus == 0);
+    (void)dbgLoggerStatus;
 #endif
 
 #if defined(BOARD_DBG_SWO_CORE_FUNNEL) && (BOARD_DBG_SWO_CORE_FUNNEL != 0)

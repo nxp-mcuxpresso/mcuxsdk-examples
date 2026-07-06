@@ -1,9 +1,9 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#include "board_debug_nbu_port.h"
+#include "board_dbg_logger_port.h"
 #include "fsl_lpuart.h"
 #include "fsl_clock.h"
 #include "pin_mux.h"
@@ -31,7 +31,7 @@ static const lpuart_config_t uart_config = {
 * Public functions
 *************************************************************************************
 ************************************************************************************/
-int BOARD_DbgNbuPortInit(void)
+int BOARD_DbgLoggerPortInit(void)
 {
     int ret = 0;
 
@@ -48,7 +48,7 @@ int BOARD_DbgNbuPortInit(void)
     return ret;
 }
 
-int BOARD_DbgNbuPortWrite(const uint8_t *data, uint16_t len)
+int BOARD_DbgLoggerPortWrite(const uint8_t *data, uint16_t len)
 {
     int ret = 0;
 
@@ -60,7 +60,7 @@ int BOARD_DbgNbuPortWrite(const uint8_t *data, uint16_t len)
     return ret;
 }
 
-int BOARD_DbgNbuPortReinit(void)
+int BOARD_DbgLoggerPortReinit(void)
 {
-    return BOARD_DbgNbuPortInit();
+    return BOARD_DbgLoggerPortInit();
 }

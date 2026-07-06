@@ -32,7 +32,7 @@ Application Layer (Board Debug Layer)
 ├── board_debug_nbu_port.h         # HCI logger port interface
 ├── board_debug_nbu_lpuart_port.c  # LPUART implementation for HCI logging (dedicated second UART)
 ├── board_debug_nbu_serialmgr_port.c # Serial Manager implementation for HCI logging (main serial port)
-├── board_debug_coredump.h/.c      # App-core (Cortex-M33) Zephyr coredump "other" backend: streams the dump as '#CD:' framed Base64 over the application console
+├── board_debug_coredump.h/.c      # App-core (Cortex-M33) Zephyr coredump "other" backend: streams the dump as '#CD:' framed Base64 through the shared debug log engine (selected port)
 ├── hci_to_btsnoop.py              # Python tool to capture HCI logs to BTSNOOP format
 ├── debug_struct_parser.py         # Python tool to parse debug structures from BTSNOOP files
 ├── board_debug_coredump_decode.py # Python tool to decode the '#CD:' coredump block to a binary Zephyr coredump
@@ -297,6 +297,25 @@ The HCI logger captures raw BLE HCI packets from the NBU and outputs them to a d
 - **Debug Structure Events**: Complete debug information (fault/assert context, registers, BLE debug data)
 
 **Power Consideration:** HCI logging is **not power-friendly** as it continuously captures and transmits all HCI packets over the logging port in real-time. HCI logger should be used for development and debugging purposes only, and disabled in production or low-power deployments.
+
+### Limitations
+
+The HCI logger writes each packet synchronously (blocking) in the context of
+the capture callback. This imposes the following constraints:
+
+- **FreeRTOS (RTOS build): no logging from ISR or IDLE context.** A blocking
+  UART write may only run from a normal task. Packets whose callback runs in
+  interrupt context, or on the IDLE task, are dropped and counted
+  (`s_hciLogDropped`). Concurrent task-context producers are serialized with a
+  mutex.
+- **Bare-metal (no-RTOS build): use fault-only mode.** With no scheduler the
+  write holds the caller/ISR context for the full packet UART transmit time, so
+  continuous logging can stall interrupts. Enable
+  `BOARD_NBUDBG_HCI_LOG_ON_FAULT_ONLY` so only the post-fault coredump burst is
+  logged; a build-time `#warning` reminds you if continuous bare-metal logging
+  is left enabled.
+- **Fault-only mode logs the coredump direction (RX) only.** Once a fault opens
+  the logging gate, host-to-controller (TX) packets are dropped.
 
 ### Architecture
 

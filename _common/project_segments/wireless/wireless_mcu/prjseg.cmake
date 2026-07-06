@@ -88,6 +88,22 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_utils)
     )
 endif()
 
+if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_logger)
+    mcux_add_source(
+        TOOLCHAINS armgcc iar
+        BASE_PATH ${SdkRootDirPath}
+        SOURCES
+            examples/_common/project_segments/wireless/wireless_mcu/debug/board_dbg_logger.c
+            examples/_common/project_segments/wireless/wireless_mcu/debug/board_dbg_logger.h
+    )
+    mcux_add_include(
+        TOOLCHAINS armgcc iar
+        BASE_PATH ${SdkRootDirPath}
+        INCLUDES
+            examples/_common/project_segments/wireless/wireless_mcu/debug
+    )
+endif()
+
 if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu)
     mcux_add_source(
         TOOLCHAINS armgcc iar
@@ -125,13 +141,13 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu.enable_hci_log)
     )
 endif()
 
-if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu_hci_log_port_lpuart)
+if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_logger_port_lpuart)
     mcux_add_source(
         TOOLCHAINS armgcc iar
         BASE_PATH ${SdkRootDirPath}
         SOURCES
-            examples/_common/project_segments/wireless/wireless_mcu/debug/board_debug_nbu_lpuart_port.c
-            examples/_common/project_segments/wireless/wireless_mcu/debug/board_debug_nbu_port.h
+            examples/_common/project_segments/wireless/wireless_mcu/debug/board_dbg_logger_lpuart_port.c
+            examples/_common/project_segments/wireless/wireless_mcu/debug/board_dbg_logger_port.h
     )
     mcux_add_include(
         TOOLCHAINS armgcc iar
@@ -141,13 +157,13 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu_hci_log_port_lpuart)
     )
 endif()
 
-if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu_hci_log_port_serialmgr)
+if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_logger_port_serialmgr)
     mcux_add_source(
         TOOLCHAINS armgcc iar
         BASE_PATH ${SdkRootDirPath}
         SOURCES
-            examples/_common/project_segments/wireless/wireless_mcu/debug/board_debug_nbu_serialmgr_port.c
-            examples/_common/project_segments/wireless/wireless_mcu/debug/board_debug_nbu_port.h
+            examples/_common/project_segments/wireless/wireless_mcu/debug/board_dbg_logger_serialmgr_port.c
+            examples/_common/project_segments/wireless/wireless_mcu/debug/board_dbg_logger_port.h
     )
     mcux_add_include(
         TOOLCHAINS armgcc iar

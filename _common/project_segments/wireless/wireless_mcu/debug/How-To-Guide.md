@@ -267,33 +267,33 @@ The framework provides a default LPUART implementation for HCI packet logging, b
 
 ### Port Abstraction Layer
 
-The HCI logger uses three functions defined in `board_debug_nbu_port.h`:
+The log engine uses three functions defined in `board_dbg_logger_port.h`:
 
 ```c
 // Initialize the debug port hardware
-void BOARD_DbgNbuPortInit(void);
+int BOARD_DbgLoggerPortInit(void);
 
 // Write data to the debug port
-void BOARD_DbgNbuPortWrite(const uint8_t *data, uint32_t length);
+int BOARD_DbgLoggerPortWrite(const uint8_t *data, uint16_t len);
 
 // Reinitialize port - To be used after power down exit
-void BOARD_DbgNbuPortReinit(void);
+int BOARD_DbgLoggerPortReinit(void);
 ```
 
 ### Available Port Implementations
 
-The output port is selected via the `debug_nbu_hci_log_port_selection` choice:
+The output port is selected via the `debug_logger_port_selection` choice:
 
-- `CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu_hci_log_port_lpuart` (default)
-  Sends the HCI log over a dedicated second LPUART (`board_debug_nbu_lpuart_port.c`).
-- `CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu_hci_log_port_serialmgr`
-  Sends the HCI log over the main application serial port using the Serial Manager
-  (`board_debug_nbu_serialmgr_port.c`).
+- `CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_logger_port_lpuart` (default)
+  Sends the log over a dedicated second LPUART (`board_dbg_logger_lpuart_port.c`).
+- `CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_logger_port_serialmgr`
+  Sends the log over the main application serial port using the Serial Manager
+  (`board_dbg_logger_serialmgr_port.c`).
   the data is emitted on the same serial interface the application already uses.
   Note: mixing continuous binary HCI logging with human-readable console output on the
   same port is not recommended.
   This option is mainly intended together with the "log on fault only" and "base64" mode described below.
-- `CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu_hci_log_port_custom`
+- `CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_logger_port_custom`
   Use your own port implementation.
 
 ### Using a Different Port
@@ -301,9 +301,9 @@ The output port is selected via the `debug_nbu_hci_log_port_selection` choice:
 **Create Custom Port Implementation**
 
 To use a custom port, please select the following configuration:
-`CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu_hci_log_port_custom=y`.
+`CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_logger_port_custom=y`.
 
-Create your own port file (e.g., `board_debug_nbu_custom_port.c`), and reimplement
+Create your own port file (e.g., `board_dbg_logger_custom_port.c`), and reimplement
 the APIs.
 
 Then update your build system to add the custom port file to your project.
@@ -451,7 +451,7 @@ saw), then runs only the decoders for the streams that are actually present.
 - Consider using high baudrate or high-speed interfaces
 
 ⚠️ **Power Management:**
-- Implement proper reinitialization in `BOARD_DbgNbuPortReinit()`
+- Implement proper reinitialization in `BOARD_DbgLoggerPortReinit()`
 - Port must survive low power mode transitions
 
 ## Best Practices
@@ -498,8 +498,8 @@ saw), then runs only the decoders for the streams that are actually present.
 ### Custom Port Issues
 
 **Check:**
-1. Is `BOARD_DbgNbuPortInit()` being called by `BOARD_DbgNbuInit()`?
+1. Is `BOARD_DbgLoggerPortInit()` being called by `BOARD_DbgNbuInit()`?
 2. Are clock sources/pins configured correctly for your peripheral?
-3. Is `BOARD_DbgNbuPortReinit()` called after wake-up from low power (if re-init is needed)?
+3. Is `BOARD_DbgLoggerPortReinit()` called after wake-up from low power (if re-init is needed)?
 
 **NOTE** For complete API reference and advanced usage, see the detailed README files.

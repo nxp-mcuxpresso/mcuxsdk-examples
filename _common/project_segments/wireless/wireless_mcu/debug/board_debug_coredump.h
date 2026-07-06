@@ -19,10 +19,10 @@
 /*
  * This is the wireless Board Debug Layer implementation of the Zephyr coredump
  * "other" backend (struct coredump_backend_other). Instead of storing the dump
- * in flash, it streams the raw Zephyr coredump byte stream to the application
- * console (the Serial Manager interface gSerMgrIf, the same port that carries
- * the application logs and the NBU HCI logger output) as Base64-encoded text
- * lines, framed so a host tool can extract them from a mixed console capture:
+ * in flash, it streams the raw Zephyr coredump byte stream through the shared
+ * debug log engine (board_dbg_logger), over whatever output port the engine's
+ * Kconfig choice selects, as Base64-encoded text lines, framed so a host tool
+ * can extract them from a mixed console capture:
  *
  *   #CD:BEGIN#
  *   #CD:<base64 chars>
@@ -43,12 +43,10 @@
  *
  * This backend is invoked from the connectivity DBG fault handler, i.e. in
  * Cortex-M exception (HardFault) context with the RTOS scheduler frozen. It
- * therefore writes via the Serial Manager blocking write, whose blocking mode
- * is a polling loop (it pumps the TX ISR / spins, it does not wait on a
- * semaphore), so it is safe to call with the scheduler frozen. The backend uses
- * its own Serial Manager write handle opened on gSerMgrIf; the Serial Manager
- * serializes writes across handles, so this does not conflict with the app or
- * NBU logger handles on the same interface.
+ * therefore writes via the engine's IMMEDIATE (synchronous) path, which emits
+ * inline in the caller context without waiting on a semaphore, so it is safe to
+ * call with the scheduler frozen. The engine is brought up at boot by
+ * BOARD_DbgLoggerInit(), so no port is opened from fault context.
  */
 
 /*!

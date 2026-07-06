@@ -61,23 +61,46 @@ if MCUX_PRJSEG_module.board.wireless.board
         block selected by the features that need it (debug_nbu, debug_coredump);
         it is not meant to be enabled directly.
 
+  config MCUX_PRJSEG_module.board.wireless.board.debug_logger
+      bool "Debug log engine"
+      select MCUX_COMPONENT_middleware.wireless.framework.workq
+      help
+        Debug log engine. Can be used for HCI tracing, coredump logs, etc.
+
+  if MCUX_PRJSEG_module.board.wireless.board.debug_logger
+  choice MCUX_PRJSEG_module.board.wireless.board.debug_logger_port_selection
+      prompt "Debug log output port"
+      config MCUX_PRJSEG_module.board.wireless.board.debug_logger_port_serialmgr
+          bool "Log output to main serial port"
+          depends on !MCUX_COMPONENT_middleware.wireless.framework.fsci
+          select MCUX_COMPONENT_component.serial_manager
+      config MCUX_PRJSEG_module.board.wireless.board.debug_logger_port_lpuart
+          bool "Log output to second UART"
+          select MCUX_COMPONENT_driver.lpuart
+      config MCUX_PRJSEG_module.board.wireless.board.debug_logger_port_custom
+          bool "Custom port (user implemented)"
+  endchoice
+  endif
+
   config MCUX_PRJSEG_module.board.wireless.board.debug_nbu
       bool "NBU Debug support"
       select MCUX_PRJSEG_module.board.wireless.board.debug_utils
       select MCUX_COMPONENT_middleware.wireless.framework.dbg.nbu_debug_on_host
-      select MCUX_COMPONENT_middleware.wireless.framework.workq
+      imply MCUX_PRJSEG_module.board.wireless.board.debug_logger
       depends on MCUX_COMPONENT_middleware.wireless.framework.platform.kw47_mcxw72 || \
                  MCUX_COMPONENT_middleware.wireless.framework.platform.kw43_mcxw70
       help
         Allows to extract and analyze NBU state in case a fault is detected
 
   config MCUX_PRJSEG_module.board.wireless.board.debug_coredump
-      bool "Coredump over application console"
+      bool "Coredump over debug log engine"
       select MCUX_PRJSEG_module.board.wireless.board.debug_utils
       select MCUX_COMPONENT_component.zephyr_headers
       select MCUX_COMPONENT_component.debug_coredump
-      select MCUX_COMPONENT_component.serial_manager
       select DEBUG_COREDUMP
+      # Stream the dump through the shared debug log engine (port-agnostic); the
+      # port choice pulls in whatever driver it needs.
+      imply MCUX_PRJSEG_module.board.wireless.board.debug_logger
       # Pull in the framework app-core fault handler (host/fwk_fault_handlers.c),
       # which is the integration point that calls coredump() on a fault.
       imply MCUX_COMPONENT_middleware.wireless.framework.dbg.fault_handlers
@@ -89,10 +112,10 @@ if MCUX_PRJSEG_module.board.wireless.board
                  MCUX_COMPONENT_middleware.wireless.framework.platform.kw43_mcxw70
       help
         Streams the Zephyr coredump as framed Base64 lines ("#CD:BEGIN#" ...
-        "#CD:END#") over the application console (Serial Manager gSerMgrIf),
-        so the dump appears on the same interface as the application logs.
-        This provides the board_debug implementation of coredump_backend_other
-        (no external flash required), as an alternative to the mflash backend.
+        "#CD:END#") through the shared debug log engine, over whatever output
+        port the engine's Kconfig choice selects. This provides the board_debug
+        implementation of coredump_backend_other (no external flash required),
+        as an alternative to the mflash backend.
 
   config MCUX_PRJSEG_module.board.wireless.board.extflash
       bool "External flash"
@@ -134,36 +157,28 @@ config MCUX_PRJSEG_module.board.wireless.board.debug_nbu.enable_hci_log
     bool "HCI Packet Logger"
     default y if !MCUX_COMPONENT_middleware.wireless.framework.fsci
     depends on MCUX_PRJSEG_module.board.wireless.board.debug_nbu
+    depends on MCUX_PRJSEG_module.board.wireless.board.debug_logger
     help
       Enable HCI packet logger for BLE protocol debugging.
 
 if MCUX_PRJSEG_module.board.wireless.board.debug_nbu.enable_hci_log
 
-choice MCUX_PRJSEG_module.board.wireless.board.debug_nbu_hci_log_port_selection
-    prompt "Debug NBU output port"
-    config MCUX_PRJSEG_module.board.wireless.board.debug_nbu_hci_log_port_serialmgr
-        bool "Debug NBU output to main serial port"
-        depends on !MCUX_COMPONENT_middleware.wireless.framework.fsci
-        select MCUX_COMPONENT_component.serial_manager
-    config MCUX_PRJSEG_module.board.wireless.board.debug_nbu_hci_log_port_lpuart
-        bool "Debug NBU output to second UART"
-        select MCUX_COMPONENT_driver.lpuart
-    config MCUX_PRJSEG_module.board.wireless.board.debug_nbu_hci_log_port_custom
-        bool "Custom port (user implemented)"
-endchoice
-
 config MCUX_PRJSEG_module.board.wireless.board.debug_nbu.enable_hci_log_on_fault_only
     bool "Log HCI packets only on NBU fault"
-    default y if MCUX_PRJSEG_module.board.wireless.board.debug_nbu_hci_log_port_serialmgr
+    default y if MCUX_PRJSEG_module.board.wireless.board.debug_logger_port_serialmgr
     help
       Instead of continuously logging every HCI packet, only forward packets once an
       NBU fatal fault has been detected (checked directly via PLATFORM_IsNbuFaultSet()).
       This is useful to capture the automatically generated coredump HCI on fault while
       avoiding continuous logging overhead.
+      Strongly recommended on bare-metal builds (no RTOS): there the HCI packet is
+      emitted inline in the caller/ISR context, so continuous logging holds that context
+      for each packet's UART transmit time and can stall interrupts. Enabling fault-only
+      limits the inline emit to the coredump burst.
 
 config MCUX_PRJSEG_module.board.wireless.board.debug_nbu.enable_hci_log_base64
     bool "Base64-encode HCI log output"
-    default y if MCUX_PRJSEG_module.board.wireless.board.debug_nbu_hci_log_port_serialmgr
+    default y if MCUX_PRJSEG_module.board.wireless.board.debug_logger_port_serialmgr
     help
       Base64-encode each HCI packet before writing it to the log port and emit it as a
       single line "@<base64>\n". This keeps the output ASCII-safe so it can be safely

@@ -12,16 +12,16 @@
 #include <string.h>
 #include "fwk_workq.h"
 #include "fwk_nbu_dbg.h"
+#include "fwk_hal_macros.h"
 #include "fsl_debug_console.h"
 #include "fsl_device_registers.h"
 #include "fsl_os_abstraction.h"
 #include "board_debug_utils.h"
-#if defined(BOARD_NBUDBG_HCI_LOGGER)
-#include "board_debug_nbu_port.h"
-#if defined(BOARD_NBUDBG_HCI_LOG_ON_FAULT_ONLY) && (BOARD_NBUDBG_HCI_LOG_ON_FAULT_ONLY > 0)
+#if defined(BOARD_NBUDBG_HCI_LOGGER) && (BOARD_NBUDBG_HCI_LOGGER > 0)
+#include "board_dbg_logger.h"
 #include "fwk_platform_dbg.h"
 #endif
-#endif
+
 #if defined(BOARD_NBUDBG_APP_LOGGER) && (BOARD_NBUDBG_APP_LOGGER > 0) && \
     defined(gAppUseSerialManager_c) && (gAppUseSerialManager_c > 0)
 #include "fsl_component_serial_manager.h"
@@ -39,39 +39,80 @@
 /* Set to 1 to Base64-encode each HCI packet before writing it to the log port.
  * This is intended for ports that share the line with human-readable text (e.g.
  * the main serial port): Base64 keeps the stream ASCII-safe and each packet is
- * emitted as a single line "@<base64(...)>\r\n" so the host tool can extract it. */
+ * emitted as a single line "@H:<base64(...)>\r\n" so the host tool can extract it. */
 #ifndef BOARD_NBUDBG_HCI_LOG_BASE64
 #define BOARD_NBUDBG_HCI_LOG_BASE64 0U
 #endif
 
-#if defined(BOARD_NBUDBG_HCI_LOGGER)
-/* Maximum raw bytes assembled for a single packet:
- * optional direction marker(0 or 1, depending on
- * BOARD_NBUDBG_HCI_LOG_W_DIRECTION_MARKER) + packet_type(1) + maximum HCI
- * payload (258). The whole packet is assembled into this single buffer and
- * emitted with one port write so the bytes can never be split or interleaved
- * by another writer sharing the port. */
-#define BOARD_NBUDBG_HCI_LOG_MAX_RAW_SIZE (BOARD_NBUDBG_HCI_LOG_W_DIRECTION_MARKER + 259U)
+#if defined(BOARD_NBUDBG_HCI_LOGGER) && (BOARD_NBUDBG_HCI_LOGGER > 0)
 
-#if (BOARD_NBUDBG_HCI_LOG_BASE64 == 1U)
-/* Single-character line marker prefixing every Base64-encoded packet. It must
- * not belong to the Base64 alphabet (A-Z a-z 0-9 + / =) so the host can detect
- * packet lines unambiguously. */
-#define BOARD_NBUDBG_HCI_LOG_BASE64_PREFIX '@'
+#if !(defined(USE_RTOS) && (USE_RTOS > 0))
+#if !(defined(BOARD_NBUDBG_HCI_LOG_ON_FAULT_ONLY) && (BOARD_NBUDBG_HCI_LOG_ON_FAULT_ONLY > 0))
+#warning "HCI logger on bare-metal writes each packet inline and holds the \
+caller/ISR context for the packet UART transmit time. Enable \
+BOARD_NBUDBG_HCI_LOG_ON_FAULT_ONLY so only the coredump burst is logged; \
+continuous HCI logging on bare-metal can stall interrupts."
+#endif
+#endif
 
-/* Base64 expands 3 input bytes to 4 output chars (rounded up). */
-#define BOARD_NBUDBG_HCI_LOG_MAX_B64_SIZE (((BOARD_NBUDBG_HCI_LOG_MAX_RAW_SIZE + 2U) / 3U) * 4U)
+#if defined(BOARD_NBUDBG_HCI_LOG_BASE64) && (BOARD_NBUDBG_HCI_LOG_BASE64 > 0)
+/* HCI Base64 framing. Each packet is emitted as ONE line:
+ *
+ *   @H:<base64(direction, packet_type, payload...)>\r\n
+ *
+ * The leading '@H:' prefix stays outside the Base64 alphabet (A-Z a-z 0-9 + /
+ * =) and is distinct from the coredump '#CD:' prefix, so the host can separate
+ * HCI lines, coredump lines and plain console text. The producer serializes the
+ * whole line into a heap buffer and hands it to the log engine. */
 
-/* One framed line assembled in a single buffer: prefix(1) + base64 + newline(1).
- * The complete line is emitted with a single port write so the prefix, the
- * Base64 payload and the newline can never be split by another writer sharing
- * the serial port (which would break host-side line parsing). */
-/* prefix(1) + base64 + new line */
-#define BOARD_NBUDBG_HCI_LOG_MAX_LINE_SIZE (1U + BOARD_NBUDBG_HCI_LOG_MAX_B64_SIZE + 2U)
+/* Single line prefix carrying a whole packet. */
+#define BOARD_NBUDBG_HCI_LOG_LINE_PREFIX "@H:"
+
+/* Metadata header raw bytes prepended to the payload before Base64 encoding:
+ * direction(1) + packet_type(1). */
+#define BOARD_NBUDBG_HCI_LOG_HDR_RAW_SIZE 2U
+#endif
+
+/* Direction byte: 1 for RX (controller-to-host), 0 for TX. When the marker is
+ * disabled the direction is always reported as TX (0). */
+#if defined(BOARD_NBUDBG_HCI_LOG_W_DIRECTION_MARKER) && (BOARD_NBUDBG_HCI_LOG_W_DIRECTION_MARKER > 0)
+#define BOARD_NBUDBG_HCI_LOG_DIR(is_rx) ((uint8_t)(((is_rx) != false) ? 1U : 0U))
+#else
+#define BOARD_NBUDBG_HCI_LOG_DIR(is_rx) ((uint8_t)0U)
+#endif
+
+/* Max HCI payload the logger serializes into one buffer. A vendor-event
+ * fragment reaches 252 data + 5 header = 257 bytes; a larger packet is dropped
+ * and counted. */
+#ifndef BOARD_NBUDBG_HCI_LOG_MAX_PAYLOAD
+#define BOARD_NBUDBG_HCI_LOG_MAX_PAYLOAD 257U
+#endif
+
+/* Metadata bytes prepended to the payload in raw mode: optional direction(1) +
+ * packet_type(1). */
+#if defined(BOARD_NBUDBG_HCI_LOG_W_DIRECTION_MARKER) && (BOARD_NBUDBG_HCI_LOG_W_DIRECTION_MARKER > 0)
+#define BOARD_NBUDBG_HCI_LOG_RAW_HDR_SIZE 2U
+#else
+#define BOARD_NBUDBG_HCI_LOG_RAW_HDR_SIZE 1U
+#endif
+
+/* Worst-case serialized size of one log buffer. In Base64 mode this is the line
+ * prefix + Base64 of (header + max payload) + CRLF; in raw mode it is the raw
+ * header + max payload. */
+#if defined(BOARD_NBUDBG_HCI_LOG_BASE64) && (BOARD_NBUDBG_HCI_LOG_BASE64 > 0)
+#define BOARD_NBUDBG_HCI_LOG_BUF_SIZE                                                       \
+    ((uint32_t)(sizeof(BOARD_NBUDBG_HCI_LOG_LINE_PREFIX) - 1U) +                            \
+     BOARD_DBG_BASE64_ENCODED_SIZE((uint32_t)BOARD_NBUDBG_HCI_LOG_HDR_RAW_SIZE +            \
+                                   (uint32_t)BOARD_NBUDBG_HCI_LOG_MAX_PAYLOAD) +            \
+     2U)
+#else
+#define BOARD_NBUDBG_HCI_LOG_BUF_SIZE \
+    ((uint32_t)BOARD_NBUDBG_HCI_LOG_RAW_HDR_SIZE + (uint32_t)BOARD_NBUDBG_HCI_LOG_MAX_PAYLOAD)
 #endif
 #endif /* BOARD_NBUDBG_HCI_LOGGER */
 
-#if (defined(gDebugConsoleEnable_d) && (gDebugConsoleEnable_d == 1)) && defined(BOARD_NBUDBG_HCI_LOGGER)
+#if (defined(gDebugConsoleEnable_d) && (gDebugConsoleEnable_d > 0)) && \
+    (defined(BOARD_NBUDBG_HCI_LOGGER) && (BOARD_NBUDBG_HCI_LOGGER > 0))
 #warning "HCI Logger: Debug console is enabled. \
           Same UART instance will be shared between debug prints and HCI logging. \
           This will lead to conflict."
@@ -106,13 +147,12 @@ static void BOARD_NBUDBG_PrintBusFaults(uint32_t cfsr);
 static void BOARD_NBUDBG_PrintUsageFaults(uint32_t cfsr);
 static void BOARD_NBUDBG_PrintRawData(const char* label, const char* start_marker, const char* end_marker,
                              const uint8_t* data, size_t size);
-#if defined(BOARD_NBUDBG_HCI_LOGGER)
+#if defined(BOARD_NBUDBG_HCI_LOGGER) && (BOARD_NBUDBG_HCI_LOGGER > 0)
 static void BOARD_NBUDBG_HciLogCallback(uint8_t packet_type, const uint8_t *data, uint16_t len, bool is_rx);
-#if (BOARD_NBUDBG_HCI_LOG_BASE64 == 1U)
-static void BOARD_NBUDBG_HciLogEmitBase64(uint8_t packet_type, const uint8_t *data, uint16_t len, bool is_rx);
-#else
-static void BOARD_NBUDBG_HciLogEmitRaw(uint8_t packet_type, const uint8_t *data, uint16_t len, bool is_rx);
-#endif
+
+/* Count of HCI log packets dropped (oversized, or arriving from ISR/IDLE
+ * context where an immediate write is not allowed). Read for diagnostics. */
+static volatile uint32_t s_hciLogDropped;
 #endif
 
 /************************************************************************************
@@ -129,6 +169,18 @@ static fwk_work_t dbg_process_work = {
 };
 
 static OSA_MSGQ_HANDLE_DEFINE(dbgMsgQueue, BOARD_NBUDBG_EVENT_QUEUE_SIZE, sizeof(nbu_dbg_context_t));
+
+#if defined(BOARD_NBUDBG_HCI_LOGGER) && (BOARD_NBUDBG_HCI_LOGGER > 0)
+/* Single buffer used to serialize one packet before the immediate write. Filled
+ * and written under a lock so only one packet is in flight at a time; sized so
+ * the logger never allocates from the shared BLE heap. */
+static uint8_t s_hciLogBuf[BOARD_NBUDBG_HCI_LOG_BUF_SIZE];
+
+#if defined(USE_RTOS) && (USE_RTOS > 0)
+/* Serializes concurrent producers around the fill + write of s_hciLogBuf. */
+static OSA_MUTEX_HANDLE_DEFINE(s_hciLogMutex);
+#endif
+#endif
 
 /************************************************************************************
 *************************************************************************************
@@ -207,6 +259,9 @@ static void BOARD_NBUDBG_ProcessDebugStruct(fwk_work_t *work)
         if (dbg_nbu_event.nbu_is_halted != 0U)
         {
             BOARD_NBUDBG_PRINTF("ERROR: NBU is stuck - possible stall or deadlock detected\n");
+            /* Emit the stall HCI vendor event from the workqueue (task) context
+             * so the blocking HCI log write is not attempted on the IDLE task. */
+            (void)NBUDBG_SendStallEvent();
         }
 
         if (NBUDBG_StructDump(&debug_info) != 0)
@@ -515,143 +570,134 @@ static void BOARD_NBUDBG_PrintRawData(const char* label, const char* start_marke
     BOARD_NBUDBG_PRINTF("%s\n", end_marker);
 }
 
-#if defined(BOARD_NBUDBG_HCI_LOGGER)
-#if (BOARD_NBUDBG_HCI_LOG_BASE64 == 1U)
+#if defined(BOARD_NBUDBG_HCI_LOGGER) && (BOARD_NBUDBG_HCI_LOGGER > 0)
 /**
- * \brief Assemble a single Base64-framed HCI log line and emit it atomically
+ * \brief Serialize one packet into s_hciLogBuf and write it immediately
  *
- * The large work buffers live in this dedicated helper so that their stack
- * footprint is only reserved when a packet is actually logged. The callback
- * drops most packets (for example when fault-only logging is enabled), so
- * keeping the buffers out of the callback frame avoids paying that stack cost
- * on every dropped packet.
+ * Fills the shared buffer with the packet (raw wire format, or a Base64-framed
+ * line) and hands it to the log engine for a synchronous write. The shared
+ * buffer is protected here, by the function owning it: on an RTOS the fill +
+ * write run under s_hciLogMutex so concurrent producers cannot corrupt it.
  *
  * \param[in] packet_type HCI packet type byte
- * \param[in] data        pointer to the HCI payload (must not be NULL)
- * \param[in] len         number of payload bytes (must be greater than 0)
+ * \param[in] data        HCI payload
+ * \param[in] len         number of payload bytes
  * \param[in] is_rx       true when the packet is controller-to-host (RX)
  */
-static void BOARD_NBUDBG_HciLogEmitBase64(uint8_t packet_type, const uint8_t *data, uint16_t len, bool is_rx)
+static void BOARD_NBUDBG_HciLogEmit(uint8_t packet_type, const uint8_t *data, uint16_t len, bool is_rx)
 {
-    /* Assemble direction + type + payload, then emit a single line
-     * "@<base64>\r\n" so the host tool can extract one packet per line. */
-    uint8_t  raw_buf[BOARD_NBUDBG_HCI_LOG_MAX_RAW_SIZE];
-    char     line_buf[BOARD_NBUDBG_HCI_LOG_MAX_LINE_SIZE];
-    uint32_t raw_len  = 0U;
-    uint32_t line_len = 0U;
-    uint16_t copy_len = len;
-    uint32_t max_payload;
+    uint32_t off = 0U;
 
-#if (BOARD_NBUDBG_HCI_LOG_W_DIRECTION_MARKER == 1U)
-    raw_buf[raw_len] = (uint8_t)((is_rx != false) ? 1U : 0U);
-    raw_len++;
+#if defined(USE_RTOS) && (USE_RTOS > 0)
+    (void)OSA_MutexLock(s_hciLogMutex, osaWaitForever_c);
+#endif
+
+#if defined(BOARD_NBUDBG_HCI_LOG_BASE64) && (BOARD_NBUDBG_HCI_LOG_BASE64 > 0)
+    /* Frame the packet as the line "@H:<base64(dir, type, payload)>\r\n". The
+     * raw (dir, type, payload) bytes are staged at the tail of the buffer, then
+     * Base64-encoded forward into the front (after the prefix); the tail
+     * placement keeps the encoded output from overtaking the not-yet-read raw
+     * input. */
+    uint32_t raw_len    = (uint32_t)BOARD_NBUDBG_HCI_LOG_HDR_RAW_SIZE + (uint32_t)len;
+    uint32_t prefix_len = (uint32_t)(sizeof(BOARD_NBUDBG_HCI_LOG_LINE_PREFIX) - 1U);
+    uint32_t line_size  = prefix_len + BOARD_DBG_BASE64_ENCODED_SIZE(raw_len) + 2U;
+    uint8_t *raw        = &s_hciLogBuf[line_size - raw_len];
+
+    raw[0] = BOARD_NBUDBG_HCI_LOG_DIR(is_rx);
+    raw[1] = packet_type;
+    (void)memcpy(&raw[BOARD_NBUDBG_HCI_LOG_HDR_RAW_SIZE], data, (size_t)len);
+
+    (void)memcpy(&s_hciLogBuf[off], BOARD_NBUDBG_HCI_LOG_LINE_PREFIX, (size_t)prefix_len);
+    off += prefix_len;
+    off += BOARD_DBG_Base64Encode(raw, raw_len, (char *)&s_hciLogBuf[off]);
+    s_hciLogBuf[off] = '\r';
+    off++;
+    s_hciLogBuf[off] = '\n';
+    off++;
+#else
+    /* Assemble the whole raw packet (optional direction + type + payload). */
+#if defined(BOARD_NBUDBG_HCI_LOG_W_DIRECTION_MARKER) && (BOARD_NBUDBG_HCI_LOG_W_DIRECTION_MARKER > 0)
+    s_hciLogBuf[off] = BOARD_NBUDBG_HCI_LOG_DIR(is_rx);
+    off++;
 #else
     (void)is_rx;
 #endif
-    raw_buf[raw_len] = packet_type;
-    raw_len++;
+    s_hciLogBuf[off] = packet_type;
+    off++;
+    (void)memcpy(&s_hciLogBuf[off], data, (size_t)len);
+    off += len;
+#endif
 
-    /* Clamp the payload to the buffer capacity to avoid overflow */
-    max_payload = (uint32_t)BOARD_NBUDBG_HCI_LOG_MAX_RAW_SIZE - raw_len;
-    if ((uint32_t)copy_len > max_payload)
-    {
-        copy_len = (uint16_t)max_payload;
-    }
+    (void)BOARD_DbgLoggerLogImmediate(s_hciLogBuf, (uint16_t)off);
 
-    (void)memcpy(&raw_buf[raw_len], data, (size_t)copy_len);
-    raw_len += copy_len;
-
-    /* Build the full framed line prefix + base64 + newline in one buffer and
-     * emit it with a single port write. This keeps the whole line atomic from
-     * the host parser point of view. The scheduler must stay enabled here: the
-     * serialmgr port write blocks on OSA_Wait, which would deadlock if the
-     * scheduler were disabled. */
-    line_buf[line_len] = (char)BOARD_NBUDBG_HCI_LOG_BASE64_PREFIX;
-    line_len++;
-    line_len += BOARD_DBG_Base64Encode(raw_buf, raw_len, &line_buf[line_len]);
-    /* Terminate with CRLF */
-    line_buf[line_len] = '\r';
-    line_len++;
-    line_buf[line_len] = '\n';
-    line_len++;
-
-    (void)BOARD_DbgNbuPortWrite((const uint8_t *)line_buf, (uint16_t)line_len);
+#if defined(USE_RTOS) && (USE_RTOS > 0)
+    (void)OSA_MutexUnlock(s_hciLogMutex);
+#endif
 }
-#else
+
+
 /**
- * \brief Assemble a raw HCI log packet and emit it atomically
+ * \brief HCI log callback - serialize one packet and write it immediately
  *
- * As with the Base64 helper, the work buffer lives here so its stack footprint
- * is only reserved when a packet is actually logged.
+ * In fault-only mode only controller-to-host (RX) packets are forwarded; the
+ * coredump is RX and arrives in ISR context, where the port write self-pumps
+ * the UART and completes inline. On an RTOS the write blocks in the caller
+ * context, so it is done only from a thread; ISR/IDLE packets are dropped and
+ * counted. Concurrent thread producers are serialized inside HciLogEmit, which
+ * owns the shared buffer.
  *
  * \param[in] packet_type HCI packet type byte
- * \param[in] data        pointer to the HCI payload (must not be NULL)
- * \param[in] len         number of payload bytes (must be greater than 0)
+ * \param[in] data        pointer to the HCI payload (valid only during this call)
+ * \param[in] len         number of payload bytes
  * \param[in] is_rx       true when the packet is controller-to-host (RX)
  */
-static void BOARD_NBUDBG_HciLogEmitRaw(uint8_t packet_type, const uint8_t *data, uint16_t len, bool is_rx)
-{
-    /* Raw mode: assemble direction + type + payload into one buffer and emit
-     * it with a single port write. A single write keeps the bytes contiguous
-     * so another writer sharing the port cannot interleave them, and the
-     * scheduler stays enabled (the serialmgr port write blocks on OSA_Wait,
-     * which would deadlock if the scheduler were disabled). */
-    uint8_t  raw_buf[BOARD_NBUDBG_HCI_LOG_MAX_RAW_SIZE];
-    uint32_t raw_len  = 0U;
-    uint16_t copy_len = len;
-    uint32_t max_payload;
-
-#if (BOARD_NBUDBG_HCI_LOG_W_DIRECTION_MARKER == 1U)
-    raw_buf[raw_len] = (uint8_t)((is_rx != false) ? 1U : 0U);
-    raw_len++;
-#else
-    (void)is_rx;
-#endif
-    raw_buf[raw_len] = packet_type;
-    raw_len++;
-
-    /* Clamp the payload to the buffer capacity to avoid overflow */
-    max_payload = (uint32_t)BOARD_NBUDBG_HCI_LOG_MAX_RAW_SIZE - raw_len;
-    if ((uint32_t)copy_len > max_payload)
-    {
-        copy_len = (uint16_t)max_payload;
-    }
-    (void)memcpy(&raw_buf[raw_len], data, (size_t)copy_len);
-    raw_len += copy_len;
-
-    (void)BOARD_DbgNbuPortWrite(raw_buf, (uint16_t)raw_len);
-}
-#endif
-
 static void BOARD_NBUDBG_HciLogCallback(uint8_t packet_type, const uint8_t *data, uint16_t len, bool is_rx)
 {
-    bool log_allowed = true;
-
     do
     {
 #if defined(BOARD_NBUDBG_HCI_LOG_ON_FAULT_ONLY) && (BOARD_NBUDBG_HCI_LOG_ON_FAULT_ONLY > 0)
-        /* Only forward packets once an NBU fatal fault has been detected.
-         * PLATFORM_IsNbuFaultSet() reads the fault status register directly, so it is
-         * accurate and immediate (no dependency on the queued notification callback).
-         * Packets received before the fault are dropped; from the fault onward every
-         * packet (including the automatically generated coredump HCI) is logged. */
-        log_allowed = PLATFORM_IsNbuFaultSet();
+        /* Only forward packets once an NBU fatal fault has been detected. */
+        if (PLATFORM_IsNbuFaultSet() == false)
+        {
+            break;
+        }
+        /* Fault-only mode targets the controller-to-host coredump (RX). Drop
+         * host-to-controller (TX) packets: TX originates in thread context and
+         * a TX write racing the ISR-context RX coredump write would contend for
+         * the shared log port (example of BM). */
+        if (is_rx == false)
+        {
+            break;
+        }
 #endif
 
-        /* Drop early so the large assembly buffers (held in the emit helpers
-         * below) never cost stack on the dropped-packet path. */
-        if ((log_allowed == false) || (data == NULL) || (len == 0U))
+        if ((data == NULL) || (len == 0U))
         {
             break;
         }
 
-#if (BOARD_NBUDBG_HCI_LOG_BASE64 == 1U)
-        BOARD_NBUDBG_HciLogEmitBase64(packet_type, data, len, is_rx);
-#else
-        BOARD_NBUDBG_HciLogEmitRaw(packet_type, data, len, is_rx);
+        /* Drop packets larger than the buffer rather than overrunning it. */
+        if (len > BOARD_NBUDBG_HCI_LOG_MAX_PAYLOAD)
+        {
+            s_hciLogDropped++;
+            break;
+        }
+
+#if defined(USE_RTOS) && (USE_RTOS > 0)
+        /* Immediate write blocks in the caller context: only a thread may do it.
+         * Drop packets coming from an ISR or the IDLE task. */
+        if ((__get_IPSR() != 0U) || (OSA_TaskGetCurrentHandle() == NULL))
+        {
+            s_hciLogDropped++;
+            break;
+        }
 #endif
+
+        /* HciLogEmit owns s_hciLogBuf and serializes access to it internally. */
+        BOARD_NBUDBG_HciLogEmit(packet_type, data, len, is_rx);
     } while (false);
 }
+
 #endif /* BOARD_NBUDBG_HCI_LOGGER */
 
 /************************************************************************************
@@ -670,21 +716,36 @@ int BOARD_DbgNbuInit(void)
         NBUDBG_RegisterNbuDebugNotificationCb(BOARD_NBUDBG_NbuEventCallback);
         /* Configure to send debug structure via HCI vendor events */
         NBUDBG_ConfigureHciVendorEvent(NBUDBG_HCI_EVENT_DEBUG_STRUCT | NBUDBG_HCI_EVENT_STALL_EVENT);
-#if defined(BOARD_NBUDBG_HCI_LOGGER)
-        /* Register HCI logger callback */
-        NBUDBG_RegisterHciLogCallback(BOARD_NBUDBG_HciLogCallback);
-        /* Init HCI log port */
-        ret = BOARD_DbgNbuPortInit();
-        if (ret < 0)
+#if defined(BOARD_NBUDBG_HCI_LOGGER) && (BOARD_NBUDBG_HCI_LOGGER > 0)
+#if defined(USE_RTOS) && (USE_RTOS > 0)
+        /* Create the buffer lock before registering the callback. */
+        osa_status = OSA_MutexCreate(s_hciLogMutex);
+        if (osa_status != KOSA_StatusSuccess)
         {
+            ret = -1;
             break;
         }
 #endif
+
+        /* Register HCI logger callback */
+        NBUDBG_RegisterHciLogCallback(BOARD_NBUDBG_HciLogCallback);
+#endif
+
         ret = WORKQ_InitSysWorkQ();
         if (ret < 0)
         {
             break;
         }
+
+#if defined(BOARD_NBUDBG_HCI_LOGGER) && (BOARD_NBUDBG_HCI_LOGGER > 0)
+        /* Init the shared debug log engine after the system workqueue: it owns
+         * the output port and, on an RTOS, starts its dedicated drain thread. */
+        ret = BOARD_DbgLoggerInit();
+        if (ret < 0)
+        {
+            break;
+        }
+#endif
 
         osa_status = OSA_MsgQCreate(dbgMsgQueue, BOARD_NBUDBG_EVENT_QUEUE_SIZE, sizeof(nbu_dbg_context_t));
         if (osa_status != KOSA_StatusSuccess)
@@ -714,6 +775,9 @@ void BOARD_DbgNbuProcess(void)
 
 int fsl_assert_hook(const char *failedExpr, const char *file, int line)
 {
+    (void)failedExpr;
+    (void)file;
+    (void)line;
     BOARD_DbgNbuProcess();
     return 0;
 }

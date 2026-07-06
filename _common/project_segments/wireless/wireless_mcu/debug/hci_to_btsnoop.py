@@ -39,12 +39,16 @@ HCI_ISO = 0x05      # ISO Data (LE Audio)
 # Valid packet types for BLE
 VALID_BLE_PACKET_TYPES = [HCI_CMD, HCI_ACL, HCI_EVENT, HCI_ISO]
 
-# Base64 framing: each packet is emitted by the firmware as a single line
-#   <prefix><base64(direction || packet_type || payload)>\n
-# The prefix is a single ASCII char that is not part of the Base64 alphabet so
-# the line can be unambiguously detected amongst human-readable console text.
-BASE64_LINE_PREFIX = b'@'
-
+# Single-line Base64 framing.
+#
+# Each HCI packet is emitted by the firmware as ONE line carrying the whole
+# packet:
+#   @H:<base64(direction || packet_type || payload...)>\r\n
+# The '@H:' prefix stays outside the Base64 alphabet and is distinct from the
+# coredump '#CD:' prefix, so HCI lines, coredump lines and plain console text
+# can coexist on one shared port. The metadata header is direction(1) +
+# packet_type(1), followed by the raw HCI payload.
+HCI_FRAME_LINE_PREFIX = b'@H:'
 
 def parse_debug_structures(btsnoop_file):
     """Parse debug structures from BTSNOOP file using debug_struct_parser.py"""
@@ -212,81 +216,78 @@ class HCILogger:
 
         return (direction, packet_type, packet_data)
 
-    def decode_base64_line(self, line):
-        """Decode a single Base64-framed line into an HCI packet.
+    def feed_base64_line(self, line):
+        """Decode one console line carrying a whole Base64-framed HCI packet.
 
-        'line' is one text line as bytes (trailing CR/LF tolerated). The
-        expected format is "<prefix><base64>" where the decoded bytes are
-        [direction(1)][packet_type(1)][packet_data...]. Returns a tuple
-        (direction, packet_type, packet_data) or None when the line is not a
-        valid packet line. Non-packet lines (plain console text) are echoed so
-        the user still sees the device logs.
+        Each HCI packet is emitted by the firmware as a single line:
+            @H:<base64(direction, packet_type, payload...)>
+        The metadata header is direction(1) + packet_type(1),
+        followed by the raw HCI payload. This method decodes one such line and
+        returns the completed (direction, packet_type, packet_data) tuple. Any
+        line that is not an '@H:' packet line is treated as plain console text:
+        it is echoed and skipped (returns None).
         """
 
         line = line.strip(b'\r\n')
         if len(line) == 0:
             return None
 
-        # Non-packet lines are human-readable console output; show and skip them
-        if not line.startswith(BASE64_LINE_PREFIX):
+        # Not an HCI packet line: plain human-readable console output.
+        if not line.startswith(HCI_FRAME_LINE_PREFIX):
             try:
                 print(f"   [device] {line.decode('utf-8', errors='replace')}")
             except Exception:
                 pass
             return None
 
-        b64_data = line[len(BASE64_LINE_PREFIX):]
+        b64_data = line[len(HCI_FRAME_LINE_PREFIX):]
         try:
-            decoded = base64.b64decode(b64_data, validate=True)
+            raw = base64.b64decode(b64_data, validate=True)
         except Exception:
-            print(f"Warning: Failed to Base64-decode line, skipping...")
+            print("Warning: Failed to Base64-decode HCI line, skipping packet...")
             return None
 
-        # Need at least direction + packet_type
-        if len(decoded) < 2:
-            print(f"Warning: Decoded packet too short ({len(decoded)} bytes), skipping...")
+        if len(raw) < 2:
+            print(f"Warning: HCI header too short ({len(raw)} bytes), skipping packet...")
             return None
 
-        direction = decoded[0]
+        direction = raw[0]
         if direction not in [0x00, 0x01]:
-            print(f"Warning: Invalid direction 0x{direction:02X}, skipping...")
+            print(f"Warning: Invalid direction 0x{direction:02X}, skipping packet...")
             return None
 
-        packet_type = decoded[1]
+        packet_type = raw[1]
         if packet_type not in VALID_BLE_PACKET_TYPES:
-            print(f"Warning: Invalid BLE packet type 0x{packet_type:02X}, skipping...")
+            print(f"Warning: Invalid BLE packet type 0x{packet_type:02X}, skipping packet...")
             return None
 
-        packet_data = decoded[2:]
-        return (direction, packet_type, packet_data)
+        return (direction, packet_type, bytes(raw[2:]))
 
     def read_packet_base64(self):
-        """Read one HCI packet from a Base64-framed line on the serial port.
+        """Read the next complete HCI packet from the single-line serial stream.
 
-        Each packet is sent as a single line "<prefix><base64>\\r\\n" where the
-        decoded bytes are [direction(1)][packet_type(1)][packet_data...].
-        Lines that do not start with the prefix are treated as plain console
-        text and ignored (they are echoed so the user still sees device logs).
+        Reads one console line and feeds it to the decoder. When the line is a
+        whole-packet '@H:' line it returns the completed (direction,
+        packet_type, packet_data) tuple. Returns None if the port read times out
+        or the line is not an HCI packet line, so the caller can loop again.
         """
 
         line = self.ser.readline()
         if len(line) == 0:
             return None
 
-        return self.decode_base64_line(line)
+        return self.feed_base64_line(line)
 
     def process_file(self):
         """Convert a previously saved console log file to BTSNOOP.
 
         The input is a text file captured from the main serial port where each
-        HCI packet appears as a single Base64 line "<prefix><base64>". Plain
-        console text lines are echoed and skipped. This is the offline
-        counterpart to the live serial capture in run().
-
-        Each packet occupies exactly one line, so decoding is done line by
-        line. A line that fails to decode (or carries an invalid header) is a
-        genuinely corrupted capture - typically a UART glitch that dropped or
-        inserted a byte - and is reported with its line number, then skipped.
+        HCI packet is emitted as a single whole-packet line:
+            @H:<base64(direction, packet_type, payload...)>
+        Each line is fed to the same decoder used by the live capture
+        (feed_base64_line). Plain console text lines are echoed and skipped. A
+        completed packet is written to the BTSNOOP file for every '@H:' line.
+        This is the offline counterpart to the live serial capture in run().
         """
 
         try:
@@ -299,35 +300,19 @@ class HCILogger:
             # Write BTSNOOP header
             self.write_btsnoop_header()
 
-            print(f"Parsing Base64 line-framed packets from file...")
+            print(f"Parsing single-line Base64-framed packets from file...")
+
             print(f"{'Line':<8} {'Dir':<4} {'Type':<6} {'Length':<8} {'Info'}")
             print("-" * 70)
-
-            self.corrupt_count = 0
 
             with open(self.input_file, 'rb') as f_in:
 
                 for line_no, line in enumerate(f_in, start=1):
-                    stripped = line.strip(b'\r\n')
-                    if len(stripped) == 0:
-                        continue
-
-                    # Plain console text: echo and skip
-                    if not stripped.startswith(BASE64_LINE_PREFIX):
-                        try:
-                            print(f"   [device] {stripped.decode('utf-8', errors='replace')}")
-                        except Exception:
-                            pass
-                        continue
-
-                    packet = self.decode_base64_line(stripped)
+                    packet = self.feed_base64_line(line)
                     if packet is None:
-                        # decode_base64_line already printed the reason; record
-                        # the line number so the corrupt capture is traceable
-                        self.corrupt_count += 1
-                        print(f"         (corrupt packet at line {line_no}, skipped)")
+                        # Still assembling a packet, or a non-packet/console line
+                        # (feed_base64_line already echoed or warned as needed).
                         continue
-
 
                     direction, packet_type, packet_data = packet
 
@@ -379,13 +364,10 @@ class HCILogger:
 
             print(f"\nProcessing complete:")
             print(f"  Total packets: {self.packet_count}")
-            if 'corrupt_count' in dir() or True:
-                pass
             print(f"  Output file: {self.output_file}")
             print(f"\nYou can now open {self.output_file} in Wireshark")
 
     def run(self):
-
         """Main capture loop"""
 
         try:
@@ -414,7 +396,7 @@ class HCILogger:
             start_time = time.time()
 
             if self.base64_mode:
-                print("(Base64 line mode: reading '@<base64>' framed packets)")
+                print("(Base64 mode: decoding single-line '@H:' whole-packet frames)")
 
             # Capture loop
             while True:
@@ -424,7 +406,6 @@ class HCILogger:
                     packet = self.read_packet()
                 if packet is None:
                     continue
-
 
                 direction, packet_type, packet_data = packet
 
@@ -527,9 +508,10 @@ Examples:
                         help='Automatically parse debug structures after capture')
     parser.add_argument('--base64',
                         action='store_true',
-                        help="Decode Base64 line-framed packets ('@<base64>' per line). "
-                             "Use this when the firmware is built with BOARD_NBUDBG_HCI_LOG_BASE64=1 "
-                             "(typically when logging to the shared main serial port).")
+                        help="Decode single-line Base64-framed packets "
+                             "('@H:' whole-packet lines). Use this when the firmware is built "
+                             "with BOARD_NBUDBG_HCI_LOG_BASE64=1 (typically when logging to the "
+                             "shared main serial port).")
 
     args = parser.parse_args()
 
