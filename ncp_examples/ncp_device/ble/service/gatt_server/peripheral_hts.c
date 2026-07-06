@@ -10,7 +10,7 @@
 #include "fsl_debug_console.h"
 
 #include <porting.h>
-#include <bluetooth/gatt.h>
+#include <zephyr/bluetooth/gatt.h>
 
 #include "service.h"
 #include "ncp_glue_ble.h"
@@ -195,9 +195,9 @@ static void hts_adv_start(void)
 {
     int status;
 
-    // should use BT_LE_ADV_CONN instead of BT_LE_ADV_CONN_NAME when wanting adv data to contain name, otherwise start adv will fail
+    // should use BT_LE_ADV_CONN_FAST_2 instead of BT_LE_ADV_CONN_NAME when wanting adv data to contain name, otherwise start adv will fail
     // when use BT_LE_ADV_CONN_NAME setting, the adv name will fetch from bt_dev.name once enable CONFIG_BT_DEVICE_NAME_DYNAMIC macro
-    if(bt_le_adv_start(BT_LE_ADV_CONN, hts_ad, ARRAY_SIZE(hts_ad), NULL, 0) < 0) {
+    if(bt_le_adv_start(BT_LE_ADV_CONN_FAST_2, hts_ad, ARRAY_SIZE(hts_ad), NULL, 0) < 0) {
         status = NCP_CMD_RESULT_ERROR;
     }else {
         status = NCP_CMD_RESULT_OK;

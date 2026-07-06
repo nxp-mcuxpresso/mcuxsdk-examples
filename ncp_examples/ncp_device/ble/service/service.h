@@ -8,7 +8,7 @@
 #ifndef __NCP_BLE_SERVICE_H__
 #define __NCP_BLE_SERVICE_H__
 
-#include <bluetooth/conn.h>
+#include <zephyr/bluetooth/conn.h>
 
 #include "ncp_tlv_adapter.h"
 

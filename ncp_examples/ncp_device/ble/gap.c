@@ -11,13 +11,13 @@
 
 #include "ncp_ble.h"
 #include "ncp_glue_ble.h"
-#include <sys/atomic.h>
+#include <zephyr/sys/atomic.h>
 
-#include <bluetooth/bluetooth.h>
-#include <bluetooth/conn.h>
-#include <bluetooth/gatt.h>
-#include <bluetooth/hci.h>
-#include <bluetooth/att.h>
+#include <zephyr/bluetooth/bluetooth.h>
+#include <zephyr/bluetooth/conn.h>
+#include <zephyr/bluetooth/gatt.h>
+#include <zephyr/bluetooth/hci.h>
+#include <zephyr/bluetooth/att.h>
 #include "service.h"
 
 #include "ncp_adapter.h"
@@ -540,7 +540,7 @@ void start_advertising(void)
         adv_conn = atomic_test_bit(current_settings, GAP_SETTINGS_CONNECTABLE);
 
         /* NCP_BLE API don't allow to set empty scan response data. */
-        if (bt_le_adv_start(adv_conn ? BT_LE_ADV_CONN : BT_LE_ADV_NCONN,
+        if (bt_le_adv_start(adv_conn ? BT_LE_ADV_CONN_FAST_2 : BT_LE_ADV_NCONN,
                     ad, adv_data_num, ad, adv_data_num) < 0)
         {
             early_return = true;
@@ -1198,7 +1198,7 @@ static void le_connected(struct bt_conn *conn, uint8_t err)
             memcpy(ev.address, info.le.dst->a.val, sizeof(ev.address));
             ev.address_type = info.le.dst->type;
         }
-        ev.interval = sys_cpu_to_le16(info.le.interval);
+        ev.interval = sys_cpu_to_le16(info.le._interval);
         ev.latency = sys_cpu_to_le16(info.le.latency);
         ev.timeout = sys_cpu_to_le16(info.le.timeout);
         ev.conn_id = conn_idx;

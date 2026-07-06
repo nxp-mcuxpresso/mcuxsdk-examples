@@ -9,15 +9,15 @@
 #include <string.h>
 #include <stddef.h>
 #include <stdarg.h>
-#include <errno/errno.h>
-#include <toolchain.h>
+#include <errno.h>
+#include <zephyr/toolchain.h>
 #include <porting.h>
 #include <fsl_debug_console.h>
-#include <sys/byteorder.h>
+#include <zephyr/sys/byteorder.h>
 
-#include <bluetooth/bluetooth.h>
-#include <bluetooth/uuid.h>
-#include <bluetooth/gatt.h>
+#include <zephyr/bluetooth/bluetooth.h>
+#include <zephyr/bluetooth/uuid.h>
+#include <zephyr/bluetooth/gatt.h>
 #include "service.h"
 
 #include "ncp_glue_ble.h"

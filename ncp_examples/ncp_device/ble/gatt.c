@@ -12,19 +12,19 @@
 
 #include "ncp_ble.h"
 #include "ncp_glue_ble.h"
-#include <sys/atomic.h>
+#include <zephyr/sys/atomic.h>
 
-#include <bluetooth/att.h>
-#include <bluetooth/bluetooth.h>
-#include <bluetooth/conn.h>
-#include <bluetooth/gatt.h>
-#include <bluetooth/uuid.h>
-#include <bluetooth/hci.h>
-#include <bluetooth/att.h>
-#include <bluetooth/l2cap.h>
+#include <zephyr/bluetooth/att.h>
+#include <zephyr/bluetooth/bluetooth.h>
+#include <zephyr/bluetooth/conn.h>
+#include <zephyr/bluetooth/gatt.h>
+#include <zephyr/bluetooth/uuid.h>
+#include <zephyr/bluetooth/hci.h>
+#include <zephyr/bluetooth/att.h>
+#include <zephyr/bluetooth/l2cap.h>
 
-#include <net/buf.h>
-#include <bluetooth/buf.h>
+#include <zephyr/net_buf.h>
+#include <zephyr/bluetooth/buf.h>
 
 #include "fsl_component_log_config.h"
 #define LOG_MODULE_NAME bt_gatt
@@ -66,7 +66,7 @@ LOG_MODULE_DEFINE(LOG_MODULE_NAME, kLOG_LevelTrace);
 
 #define DATA_BUF_SIZE (sizeof(gatt_attr_value_changed_ev_t) + BT_ATT_MAX_ATTRIBUTE_LEN)
 
-NET_BUF_POOL_FIXED_DEFINE(data_pool, 1, DATA_BUF_SIZE, CONFIG_NET_BUF_USER_DATA_SIZE, NULL);
+NET_BUF_POOL_FIXED_DEFINE(data_pool, 1, DATA_BUF_SIZE, CONFIG_BT_CONN_TX_USER_DATA_SIZE, NULL);
 
 /*******************************************************************************
  * Types
@@ -1759,7 +1759,7 @@ static ssize_t write_value(struct bt_conn *conn,
 
 static void attr_value_changed_ev(uint16_t handle, const uint8_t *value, const uint16_t len)
 {
-    struct net_buf *buf = net_buf_alloc(&data_pool, osaWaitForever_c);
+    struct net_buf *buf = net_buf_alloc(&data_pool, K_FOREVER);
     if (buf)
     {
         gatt_attr_value_changed_ev_t *ev = (void *) buf->data;

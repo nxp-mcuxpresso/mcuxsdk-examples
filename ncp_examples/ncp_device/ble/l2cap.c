@@ -7,9 +7,9 @@
 #if CONFIG_NCP_BLE
 
 #include <porting.h>
-#include <bluetooth/l2cap.h>
-#include <net/buf.h>
-#include <sys/util.h>
+#include <zephyr/bluetooth/l2cap.h>
+#include <zephyr/net_buf.h>
+#include <zephyr/sys/util.h>
 
 #include "ncp_glue_ble.h"
 #include "fsl_component_log_config.h"
@@ -30,7 +30,7 @@ LOG_MODULE_DEFINE(LOG_MODULE_NAME, kLOG_LevelTrace);
 #define L2CAP_POLICY_ALLOWLIST		0x01
 #define L2CAP_POLICY_16BYTE_KEY		0x02
 NET_BUF_POOL_FIXED_DEFINE(data_tx_pool, 1, BT_L2CAP_SDU_BUF_SIZE(DATA_MTU), CONFIG_BT_CONN_TX_USER_DATA_SIZE, NULL);
-NET_BUF_POOL_FIXED_DEFINE(data_rx_pool, 1, BT_L2CAP_SDU_BUF_SIZE(DATA_MTU), CONFIG_NET_BUF_USER_DATA_SIZE, NULL);
+NET_BUF_POOL_FIXED_DEFINE(data_rx_pool, 1, BT_L2CAP_SDU_BUF_SIZE(DATA_MTU), CONFIG_BT_CONN_TX_USER_DATA_SIZE, NULL);
 
 
 #if 0
@@ -180,7 +180,7 @@ static void l2cap_recv_cb(struct k_work *work)
 	struct l2ch *c = L2CH_WORK(work);
 	struct net_buf *buf;
 
-	while ((buf = net_buf_get(&l2cap_recv_fifo, K_NO_WAIT))) {
+	while ((buf = k_fifo_get(&l2cap_recv_fifo, K_NO_WAIT))) {
 		ncp_d("Confirming reception\n");
 		bt_l2cap_chan_recv_complete(&c->ch.chan, buf);
 	}
@@ -237,7 +237,7 @@ static int l2cap_recv(struct bt_l2cap_chan *chan, struct net_buf *buf)
 		ncp_d("Delaying response in %u ms...\n",
 	                            l2cap_recv_delay_ms);
 	    }
-        net_buf_put(&l2cap_recv_fifo, buf);
+        k_fifo_put(&l2cap_recv_fifo, buf);
         k_work_schedule(&l2ch->recv_work, K_MSEC(l2cap_recv_delay_ms));
 
 	    return -EINPROGRESS;
@@ -282,7 +282,7 @@ static struct net_buf *l2cap_alloc_buf(struct bt_l2cap_chan *chan)
 		ncp_d("Channel %p requires buffer\n", chan);
 	}
 
-	return net_buf_alloc(&data_rx_pool, osaWaitForever_c);
+	return net_buf_alloc(&data_rx_pool, K_FOREVER);
 }
 static void l2cap_disconnected(struct bt_l2cap_chan *chan);
 
@@ -540,7 +540,7 @@ void ble_l2cap_send_data(uint8_t *data, uint16_t len)
 
 	while (count--) {
 		ncp_d("Rem %d\n", count);
-		buf = net_buf_alloc(&data_tx_pool, BT_SECONDS(2));
+		buf = net_buf_alloc(&data_tx_pool, K_SECONDS(2));
 		if (!buf) {
 			if (l2ch_chan.ch.state != BT_L2CAP_CONNECTED) {
 				ncp_e("Channel disconnected, stopping TX\n");

@@ -9,9 +9,9 @@
 #include "fsl_debug_console.h"
 
 #include <porting.h>
-#include <bluetooth/gatt.h>
-#include <bluetooth/l2cap.h>
-#include "bt_pal_hci_core.h"
+#include <host/hci_core.h>
+#include <zephyr/bluetooth/gatt.h>
+#include <zephyr/bluetooth/l2cap.h>
 
 #include "service.h"
 #include "ncp_glue_ble.h"

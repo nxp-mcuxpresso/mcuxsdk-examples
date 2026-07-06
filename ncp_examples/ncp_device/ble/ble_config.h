@@ -5,7 +5,7 @@
  *  SPDX-License-Identifier: BSD-3-Clause
  */
 
-#include "edgefast_bluetooth_config.h"
+#include "edgefast_open_config.h"
 
 /* Task priority */
 #if (CONFIG_NCP_BLE)

@@ -13,7 +13,7 @@
 #include "board.h"
 #include "fsl_debug_console.h"
 
-#include <bluetooth/hci.h>
+#include <zephyr/bluetooth/hci.h>
 
 #include "fsl_component_serial_manager.h"
 #include "fsl_os_abstraction.h"
@@ -152,7 +152,7 @@ static int hci_le_vendor_power_mode_cfg(uint8_t power_mode)
     ncp_ble_low_power_mode_cfg *cp;
     struct net_buf *buf;
 
-    buf = bt_hci_cmd_create(BT_HCI_VD_LOW_POWER_MODE, sizeof(*cp));
+    buf = bt_hci_cmd_alloc(K_FOREVER);
     if (!buf) {
         return -ENOBUFS;
     }
@@ -176,7 +176,7 @@ static int hci_le_vendor_set_bd_address(uint8_t bd_address[6])
     ncp_ble_set_bd_address_cfg *cp;
     struct net_buf *buf;
 
-    buf = bt_hci_cmd_create(BT_HCI_VD_SET_BD_ADDRESS, sizeof(*cp));
+    buf = bt_hci_cmd_alloc(K_FOREVER);
     if (!buf) {
         return -ENOBUFS;
     }

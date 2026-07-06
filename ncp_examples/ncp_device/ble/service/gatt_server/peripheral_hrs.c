@@ -9,7 +9,7 @@
 #include "fsl_debug_console.h"
 
 #include <porting.h>
-#include <bluetooth/gatt.h>
+#include <zephyr/bluetooth/gatt.h>
 
 #include "service.h"
 #include "ncp_glue_ble.h"
@@ -130,7 +130,7 @@ static void hrs_adv_start(void)
 {
     int status;
 
-    if(bt_le_adv_start(BT_LE_ADV_CONN, hrs_ad, ARRAY_SIZE(hrs_ad), NULL, 0) < 0) {
+    if(bt_le_adv_start(BT_LE_ADV_CONN_FAST_2, hrs_ad, ARRAY_SIZE(hrs_ad), NULL, 0) < 0) {
         status = NCP_CMD_RESULT_ERROR;
     }else {
         status = NCP_CMD_RESULT_OK;
