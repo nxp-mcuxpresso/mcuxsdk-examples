@@ -5,7 +5,7 @@ error_recording_sw:
     meta_path: examples/driver_examples/erm/error_recording_sw
     project-root-path: boards/${board}/driver_examples/erm/error_recording_sw/${multicore_foldername}
     document:
-      name: error_recording${core_id_suffix_name}
+      name: error_recording_sw${core_id_suffix_name}
       category: driver_examples/erm
       brief: The ERM Single Error project is a simple demonstration program of the
         SDK ERM driver. It shows how to show error events using the ERM driver.
