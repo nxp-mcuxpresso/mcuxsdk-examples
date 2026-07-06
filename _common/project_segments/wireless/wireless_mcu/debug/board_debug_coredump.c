@@ -89,15 +89,13 @@ static int s_coredumpError = 0;
  */
 static void coredump_board_debug_write(const char *str, uint32_t len)
 {
-    if ((s_coredumpWriteHandleOpen == false) || (len == 0U))
+    if ((s_coredumpWriteHandleOpen != false) && (len != 0U))
     {
-        return;
-    }
-
-    if (SerialManager_WriteBlocking((serial_write_handle_t)s_coredumpWriteHandle, (uint8_t *)str, len) !=
-        kStatus_SerialManager_Success)
-    {
-        s_coredumpError = -EIO;
+        if (SerialManager_WriteBlocking((serial_write_handle_t)s_coredumpWriteHandle, (uint8_t *)str, len) !=
+            kStatus_SerialManager_Success)
+        {
+            s_coredumpError = -EIO;
+        }
     }
 }
 
@@ -111,26 +109,24 @@ static void coredump_board_debug_emit_line(const uint8_t *raw, uint32_t raw_len)
     char     line_buf[BOARD_DBG_COREDUMP_LINE_BUF_SIZE];
     uint32_t line_len = 0U;
 
-    if (raw_len == 0U)
+    if (raw_len != 0U)
     {
-        return;
+        /* Prefix */
+        (void)memcpy(&line_buf[line_len], BOARD_DBG_COREDUMP_PREFIX_STR,
+                     sizeof(BOARD_DBG_COREDUMP_PREFIX_STR) - 1U);
+        line_len += (uint32_t)(sizeof(BOARD_DBG_COREDUMP_PREFIX_STR) - 1U);
+
+        /* Base64 payload */
+        line_len += BOARD_DBG_Base64Encode(raw, raw_len, &line_buf[line_len]);
+
+        /* CRLF terminator */
+        line_buf[line_len] = '\r';
+        line_len++;
+        line_buf[line_len] = '\n';
+        line_len++;
+
+        coredump_board_debug_write(line_buf, line_len);
     }
-
-    /* Prefix */
-    (void)memcpy(&line_buf[line_len], BOARD_DBG_COREDUMP_PREFIX_STR,
-                 sizeof(BOARD_DBG_COREDUMP_PREFIX_STR) - 1U);
-    line_len += (uint32_t)(sizeof(BOARD_DBG_COREDUMP_PREFIX_STR) - 1U);
-
-    /* Base64 payload */
-    line_len += BOARD_DBG_Base64Encode(raw, raw_len, &line_buf[line_len]);
-
-    /* CRLF terminator */
-    line_buf[line_len] = '\r';
-    line_len++;
-    line_buf[line_len] = '\n';
-    line_len++;
-
-    coredump_board_debug_write(line_buf, line_len);
 }
 
 /*******************************************************************************
@@ -184,43 +180,41 @@ static void coredump_board_debug_backend_buffer_output(uint8_t *buf, size_t bufl
     const uint8_t *ptr       = buf;
     size_t         remaining = buflen;
 
-    if ((buf == NULL) || (buflen == 0U))
+    if ((buf != NULL) && (buflen != 0U))
     {
-        return;
-    }
-
-    /* Top up the accumulator first so we always emit full RAW_PER_LINE groups
-     * (a multiple of 3) until the very end of the stream. */
-    if (s_rawAccumLen > 0U)
-    {
-        uint32_t space = BOARD_DBG_COREDUMP_RAW_PER_LINE - s_rawAccumLen;
-        uint32_t take  = (remaining < (size_t)space) ? (uint32_t)remaining : space;
-
-        (void)memcpy(&s_rawAccum[s_rawAccumLen], ptr, take);
-        s_rawAccumLen += take;
-        ptr += take;
-        remaining -= take;
-
-        if (s_rawAccumLen == BOARD_DBG_COREDUMP_RAW_PER_LINE)
+        /* Top up the accumulator first so we always emit full RAW_PER_LINE groups
+         * (a multiple of 3) until the very end of the stream. */
+        if (s_rawAccumLen > 0U)
         {
-            coredump_board_debug_emit_line(s_rawAccum, s_rawAccumLen);
-            s_rawAccumLen = 0U;
+            uint32_t space = BOARD_DBG_COREDUMP_RAW_PER_LINE - s_rawAccumLen;
+            uint32_t take  = (remaining < (size_t)space) ? (uint32_t)remaining : space;
+
+            (void)memcpy(&s_rawAccum[s_rawAccumLen], ptr, take);
+            s_rawAccumLen += take;
+            ptr += take;
+            remaining -= take;
+
+            if (s_rawAccumLen == BOARD_DBG_COREDUMP_RAW_PER_LINE)
+            {
+                coredump_board_debug_emit_line(s_rawAccum, s_rawAccumLen);
+                s_rawAccumLen = 0U;
+            }
         }
-    }
 
-    /* Emit as many full RAW_PER_LINE lines directly from the input as possible. */
-    while (remaining >= (size_t)BOARD_DBG_COREDUMP_RAW_PER_LINE)
-    {
-        coredump_board_debug_emit_line(ptr, BOARD_DBG_COREDUMP_RAW_PER_LINE);
-        ptr += BOARD_DBG_COREDUMP_RAW_PER_LINE;
-        remaining -= BOARD_DBG_COREDUMP_RAW_PER_LINE;
-    }
+        /* Emit as many full RAW_PER_LINE lines directly from the input as possible. */
+        while (remaining >= (size_t)BOARD_DBG_COREDUMP_RAW_PER_LINE)
+        {
+            coredump_board_debug_emit_line(ptr, BOARD_DBG_COREDUMP_RAW_PER_LINE);
+            ptr += BOARD_DBG_COREDUMP_RAW_PER_LINE;
+            remaining -= BOARD_DBG_COREDUMP_RAW_PER_LINE;
+        }
 
-    /* Carry the trailing 0..(RAW_PER_LINE-1) bytes to the next call / end(). */
-    if (remaining > 0U)
-    {
-        (void)memcpy(&s_rawAccum[0], ptr, remaining);
-        s_rawAccumLen = (uint32_t)remaining;
+        /* Carry the trailing 0..(RAW_PER_LINE-1) bytes to the next call / end(). */
+        if (remaining > 0U)
+        {
+            (void)memcpy(&s_rawAccum[0], ptr, remaining);
+            s_rawAccumLen = (uint32_t)remaining;
+        }
     }
 }
 
