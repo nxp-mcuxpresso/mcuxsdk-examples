@@ -41,7 +41,19 @@ semc_xecc_single_error:
     - -iar@release
     - -mdk@debug
     - -mdk@release
-    frdmimxrt1152: []
+    frdmimxrt1152:
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     evkmimxrt1160@cm4:
     - -armgcc@sdram_debug
     - -armgcc@sdram_release

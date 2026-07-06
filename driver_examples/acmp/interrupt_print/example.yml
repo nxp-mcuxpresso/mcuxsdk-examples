@@ -21,7 +21,19 @@ acmp_interrupt_print:
       - ${board_root}/${board}/driver_examples/acmp/interrupt/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    frdmimxrt1152: []
+    frdmimxrt1152:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
     evkmimxrt595@cm33:
     - -armgcc@debug
     - -armgcc@release

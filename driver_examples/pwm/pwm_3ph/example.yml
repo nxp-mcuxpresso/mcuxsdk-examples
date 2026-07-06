@@ -82,7 +82,19 @@ pwm:
     - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
-    frdmimxrt1152: []
+    frdmimxrt1152:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
     evkmimxrt1010:
     - -armgcc@debug
     - -armgcc@release

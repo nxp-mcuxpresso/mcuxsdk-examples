@@ -111,12 +111,16 @@ hello_world:
     - +iar@flexspi_nor_hyperram_release
     - +iar@hyperram_txt_debug
     - +iar@hyperram_txt_release
+    - +iar@ram_0x1400_debug
+    - +iar@ram_0x1400_release
     - +armgcc@flexspi_nor_hyperram_debug
     - +armgcc@flexspi_nor_hyperram_release
     - +armgcc@hyperram_txt_debug
     - +armgcc@hyperram_txt_release
     - +mdk@flexspi_nor_hyperram_debug
     - +mdk@flexspi_nor_hyperram_release
+    - +mdk@ram_0x1400_debug
+    - +mdk@ram_0x1400_release
     - +mdk@hyperram_txt_debug
     - +mdk@hyperram_txt_release
     evkmcimx7ulp: []
