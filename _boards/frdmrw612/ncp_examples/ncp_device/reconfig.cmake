@@ -24,6 +24,7 @@ mcux_add_armgcc_configuration(
 
 mcux_add_macro(
     CC "-DBT_PLATFORM\
+       -DCONFIG_ARM=1\
        -DLWIP_HOOK_FILENAME=\\\"lwip_default_hooks.h\\\"\
        -DCONFIG_WPA_SUPP_CRYPTO_MBEDTLS_PSA\
        -DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_config_client.h\\\"\
