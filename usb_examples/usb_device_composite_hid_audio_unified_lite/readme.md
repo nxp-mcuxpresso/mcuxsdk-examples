@@ -120,3 +120,4 @@ USB_DEVICE_WORKAROUND_AUDIO_20_WINDOWS when meets the following conditions:
 - RD-RW612-BGA
 - EVK-MIMXRT1015
 - FRDM-MCXN236
+- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/usb_examples/usb_device_composite_hid_audio_unified_lite/example_board_readme.md)
