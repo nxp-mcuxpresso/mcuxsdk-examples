@@ -555,13 +555,68 @@ def run_bus_tests(host, mcu, analyzer, io_mode='single', freq='20'):
                     detail = f'IRQ {irq_num} not found (expected idx=0x{exp_idx:02X} data=0x{exp_data:02X})'
         record('A04', 'VWire IRQ Push', ok, detail)
 
-    # --- A05: OOB Put ---
-    az_test('A05', 'OOB Put', ['mcux_oob_put'],
+    # --- A05: GPIO VWire (In: host->WIREIN_GPIO decode; Out: MCU WIREOUT_GPIO->host GET_VW) ---
+    if should_run('A05'):
+        host.send('reset')          # clear residual VW state from prior tests
+        time.sleep(1)
+        ok, detail = True, ''
+
+        # In: host drives a GPIO VW; MCU decodes it in the WireChange ISR
+        idx, valid, level = 0x80, 0xF, 0x5
+        data = (valid << 4) | level
+        analyzer.drain(host)
+        analyzer.start()
+        mcu.clear()
+        host.send(f'mcux_gpio_vw_put 0x{idx:02X} 0x{data:02X}')
+        time.sleep(0.4)
+        pkts = analyzer.read_packets()
+        analyzer.stop()
+        sl = mcu.read(wait=1.0)
+        if not check_crc(pkts, PUT_VW, CH_VW):
+            ok, detail = False, 'in: CRC error'
+        elif not find_pkt_by_payload(pkts, PUT_VW, CH_VW, [idx, data]):
+            got = find_pkt(pkts, PUT_VW, CH_VW)
+            ok, detail = False, f'in: PUT_VW mismatch: {extract_cmd_payload(got[1], got[2], PUT_VW) if got else None}'
+        elif f'eSPI VWire GPIO message: index={idx} valid=0x{valid:X} level=0x{level:X}' not in sl:
+            ok, detail = False, f'in: ISR decode not seen: {sl[:120]}'
+
+        # Out: MCU drives a GPIO VW; host reads it back via GET_VW
+        if ok:
+            idx, valid, level = 0x81, 0xF, 0xA
+            data = (valid << 4) | level
+            analyzer.drain(host)
+            host.send('raw_vw_config')
+            time.sleep(0.3)
+            analyzer.start()
+            mcu.clear()
+            mcu.send_raw(f'send_vw_gpio {idx} {valid} {level}', wait=0.8)
+            host.send('mcux_sts_get')
+            time.sleep(0.3)
+            host.send('raw_vw_get')
+            time.sleep(0.5)
+            pkts = analyzer.read_packets()
+            analyzer.stop()
+            p = find_pkt(pkts, GET_VW, CH_VW)
+            if not p:
+                ok, detail = False, f'out: no GET_VW (pkts={len(pkts)})'
+            elif p[0].status & CRC_ERR_ANY:
+                ok, detail = False, 'out: CRC error'
+            else:
+                rsp = p[2][p[1].cmd_length:]
+                acc = find_accept(rsp)
+                if acc < 0:
+                    ok, detail = False, f'out: no ACCEPT (rsp=0x{rsp[0] if rsp else 0:02X})'
+                elif not any(rsp[i] == idx and rsp[i + 1] == data for i in range(acc + 2, len(rsp) - 1, 2)):
+                    ok, detail = False, f'out: (0x{idx:02X},0x{data:02X}) not in GET_VW rsp'
+        record('A05', 'GPIO VWire', ok, detail)
+
+    # --- A06: OOB Put ---
+    az_test('A06', 'OOB Put', ['mcux_oob_put'],
             opcode=PUT_OOB, channel=CH_OOB,
             expected_payload=[(0x50<<1)|0, 0xA0, 128] + list(range(128)))
 
-    # --- A06: OOB Get (serial triggers OOB, verify payload) ---
-    if should_run('A06'):
+    # --- A07: OOB Get (serial triggers OOB, verify payload) ---
+    if should_run('A07'):
         oob_bytes = [0xAA, 0xBB, 0xCC, 0xDD]
         oob_hex = ' '.join(f'{b:02X}' for b in oob_bytes)
         analyzer.drain(host)
@@ -580,9 +635,9 @@ def run_bus_tests(host, mcu, analyzer, io_mode='single', freq='20'):
         analyzer.stop()
         p = find_pkt(pkts, GET_OOB, CH_OOB)
         if not p:
-            record('A06', 'OOB Get', False, f'no GET_OOB in {len(pkts)} pkts')
+            record('A07', 'OOB Get', False, f'no GET_OOB in {len(pkts)} pkts')
         elif p[0].status & CRC_ERR_ANY:
-            record('A06', 'OOB Get', False, 'CRC error')
+            record('A07', 'OOB Get', False, 'CRC error')
         else:
             cl = p[1].cmd_length
             rsp = p[2][cl:]
@@ -605,10 +660,10 @@ def run_bus_tests(host, mcu, analyzer, io_mode='single', freq='20'):
                     detail = f'payload mismatch: [{" ".join("%02X" % b for b in payload[:8])}]'
                 else:
                     ok = True
-            record('A06', 'OOB Get', ok, detail)
+            record('A07', 'OOB Get', ok, detail)
 
-    # --- A07: SAF Verify (Erase->Read(FF)->Write->Read(data)->Erase->Read(FF)) ---
-    if should_run('A07'):
+    # --- A08: SAF Verify (Erase->Read(FF)->Write->Read(data)->Erase->Read(FF)) ---
+    if should_run('A08'):
         detail = ''
         ok = True
         write_data = list(range(128))
@@ -648,14 +703,14 @@ def run_bus_tests(host, mcu, analyzer, io_mode='single', freq='20'):
             analyzer.capture(host, ['mcux_saf_erase'], wait=5)
         verify_read('re-erase->read', [0xFF] * 128)
 
-        record('A07', 'SAF Verify', ok, detail)
+        record('A08', 'SAF Verify', ok, detail)
 
-    # --- A08: Endpoint Port 80 ---
-    az_test('A08', 'Endpoint Port 80', ['mcux_ep_write_p80'],
+    # --- A09: Endpoint Port 80 ---
+    az_test('A09', 'Endpoint Port 80', ['mcux_ep_write_p80'],
             opcode=IOWR_S1, channel=CH_PERIF, expected_payload=[0x88])
 
-    # --- A09: Endpoint IO (Write Cmd + Write Data + Read back) ---
-    if should_run('A09'):
+    # --- A10: Endpoint IO (Write Cmd + Write Data + Read back) ---
+    if should_run('A10'):
         ok = True
         detail = ''
         pkts = analyzer.capture(host, ['mcux_ep_write_cmd', 'mcux_ep_write_data'])
@@ -683,13 +738,13 @@ def run_bus_tests(host, mcu, analyzer, io_mode='single', freq='20'):
                     rd = p[2][cl + 1]
                     if rd != 0x56:
                         ok, detail = False, f'read data=0x{rd:02X}, expected 0x56'
-        record('A09', 'Endpoint IO', ok, detail)
+        record('A10', 'Endpoint IO', ok, detail)
 
-    # --- A10: Index-Data Write ---
-    if should_run('A10'):
+    # --- A11: Index-Data Write ---
+    if should_run('A11'):
         pkts = analyzer.capture(host, ['mcux_idx_write_data', 'mcux_idx_write_cmd'])
         if not check_crc(pkts, IOWR_S1, CH_PERIF):
-            record('A10', 'Index-Data Write', False, 'CRC error')
+            record('A11', 'Index-Data Write', False, 'CRC error')
         else:
             all_payloads = []
             all_accept = True
@@ -702,14 +757,14 @@ def run_bus_tests(host, mcu, analyzer, io_mode='single', freq='20'):
                     if pkt.length > cl and not (data[cl] & RESP_ACCEPT_MASK):
                         all_accept = False
             if not all_accept:
-                record('A10', 'Index-Data Write', False, 'no ACCEPT')
+                record('A11', 'Index-Data Write', False, 'no ACCEPT')
             else:
                 ok = [0x58] in all_payloads and [0x59] in all_payloads
-                record('A10', 'Index-Data Write', ok,
+                record('A11', 'Index-Data Write', ok,
                        '' if ok else f'payloads: {all_payloads}')
 
-    # --- A11: Mailbox IO (Write×3 + Read + Write 256B) ---
-    if should_run('A11'):
+    # --- A12: Mailbox IO (Write×3 + Read + Write 256B) ---
+    if should_run('A12'):
         detail = ''
         ok = True
         # Write 8B ×3 (WRSTAT flow control)
@@ -771,7 +826,7 @@ def run_bus_tests(host, mcu, analyzer, io_mode='single', freq='20'):
                         rd = parse_completion_data(rsp[acc + 2:])
                         if rd != list(range(256)):
                             ok, detail = False, f'read-back 256B data mismatch (first 4: {[hex(b) for b in rd[:4]] if rd else None})'
-        record('A11', 'Mailbox IO', ok, detail)
+        record('A12', 'Mailbox IO', ok, detail)
 
 
 # ---------------------------------------------------------------------------

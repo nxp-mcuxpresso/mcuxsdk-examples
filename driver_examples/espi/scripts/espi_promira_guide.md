@@ -143,6 +143,7 @@ python espi_host.py <HOST_IP> <SIM_MODE> <COMMAND> [COMMAND...]
 | `mcux_vw_put_p1` | Write VWire batch 1/3: indices 0x02, 0x03, 0x07 |
 | `mcux_vw_put_p2` | Write VWire batch 2/3: indices 0x41, 0x42, 0x43 |
 | `mcux_vw_put_p3` | Write VWire batch 3/3: indices 0x44, 0x47 |
+| `mcux_gpio_vw_put <index> <data>` | Send one GPIO-expander VWire (index 128-255, data = {Valid[7:4], Level[3:0]}) |
 
 ### OOB
 | Command | Description |

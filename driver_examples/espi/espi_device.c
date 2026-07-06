@@ -545,6 +545,14 @@ static void ESPI_CommonCallback(ESPI_Type *base, uint32_t status, void *userData
             (void)PRINTF(" - P2E group set\r\n");
         if (vw & kESPI_VWireRd_HostC10N)
             (void)PRINTF(" - HOST_C10N\r\n");
+
+        espi_gpio_wire_t gpioWire;
+        ESPI_GetVWireGpio(base, &gpioWire);
+        if (gpioWire.valid != 0U)
+        {
+            (void)PRINTF("eSPI VWire GPIO message: index=%u valid=0x%X level=0x%X\r\n", (unsigned int)gpioWire.index,
+                         (unsigned int)gpioWire.valid, (unsigned int)gpioWire.level);
+        }
     }
 
     if (status & kESPI_IrqUpdateFlag)
@@ -712,6 +720,7 @@ void print_help(void)
     (void)PRINTF(" send_vw_mask <hexmask>    -- Apply VW by mask (32-bit hex)\r\n");
     (void)PRINTF(" send_vw_flag <name> <val> -- Set VW flag by name (val may be multi-bit)\r\n");
     (void)PRINTF(" vw_flags                  -- List available VW flag names\r\n");
+    (void)PRINTF(" send_vw_gpio <i> <v> <l>  -- Send VWire GPIO message(index, value, level)\r\n");
     (void)PRINTF(" send_oob <hexbytes>       -- Send OOB payload (hex, e.g. AA55 or 0xAA 0x55)\r\n");
     (void)PRINTF(" push_irq <num>            -- Push IRQ (0-255) to host\r\n");
     (void)PRINTF(" reset_p80                 -- Reset Port 80 counter\r\n");
@@ -878,6 +887,24 @@ int main(void)
         {
             ESPI_ResetPort80Counter(EXAMPLE_ESPI_BASE);
             (void)PRINTF("Port 80 counter reset.\r\n");
+            continue;
+        }
+        else if (strcmp(cmd, "send_vw_gpio") == 0)
+        {
+            unsigned int idx = 0U, valid = 0U, level = 0U;
+            if (!args || (sscanf(args, "%u %u %u", &idx, &valid, &level) != 3))
+            {
+                (void)PRINTF("Usage: send_vw_gpio <index 128-255> <valid 0-15> <level 0-15>\r\n");
+                continue;
+            }
+
+            espi_gpio_wire_t wire;
+            wire.index = (uint8_t)(idx & 0xFFU);
+            wire.valid = (uint8_t)(valid & 0xFU);
+            wire.level = (uint8_t)(level & 0xFU);
+            ESPI_SendVWireGpio(EXAMPLE_ESPI_BASE, &wire);
+            (void)PRINTF("VWire GPIO sent: index=%u valid=0x%X level=0x%X\r\n", (unsigned int)wire.index,
+                         (unsigned int)wire.valid, (unsigned int)wire.level);
             continue;
         }
         else

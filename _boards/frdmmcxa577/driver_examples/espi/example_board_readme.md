@@ -47,12 +47,15 @@ eSPI bus reset.
   Bus Master: Disabled
 
 Interactive commands:
+ show_config               -- Show eSPI configuration
  status                    -- Show eSPI status flags
  send_vw_mask <hexmask>    -- Apply VW by mask (32-bit hex)
  send_vw_flag <name> <val> -- Set VW flag by name (val may be multi-bit)
  vw_flags                  -- List available VW flag names
+ send_vw_gpio <i> <v> <l>  -- Send VWire GPIO message(index, value, level)
  send_oob <hexbytes>       -- Send OOB payload (hex, e.g. AA55 or 0xAA 0x55)
  push_irq <num>            -- Push IRQ (0-255) to host
+ reset_p80                 -- Reset Port 80 counter
  help                      -- Help
 
 >

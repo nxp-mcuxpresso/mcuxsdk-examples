@@ -355,6 +355,16 @@ def espi_mcux_vw_get(simulator):
     espi_raw_vw_config(simulator)
     espi_raw_vw_get(simulator)
 
+def espi_mcux_gpio_vw_put(simulator, index, data):
+    """Send one GPIO-expander virtual wire (index 128-255).
+
+    data byte = {Valid[7:4], Level[3:0]}; each Level bit is one virtual GPIO,
+    each Valid bit is the 1-to-1 mask for that Level bit.
+    """
+    idx = int(str(index), 0)
+    d = int(str(data), 0)
+    simulator.espi_vw_put(0, [idx, d], resp_code=RESP_ACCEPTED, status=STAT_NORMAL)
+
 def espi_raw_get_config_20h(simulator):
     # GET_CONFIGURATION for VWire channel (offset 0x20)
     # CMD: 21 00 20 crc
