@@ -71,6 +71,29 @@ if MCUX_PRJSEG_module.board.wireless.board
       help
         Allows to extract and analyze NBU state in case a fault is detected
 
+  config MCUX_PRJSEG_module.board.wireless.board.debug_coredump
+      bool "Coredump over application console"
+      select MCUX_PRJSEG_module.board.wireless.board.debug_utils
+      select MCUX_COMPONENT_component.zephyr_headers
+      select MCUX_COMPONENT_component.debug_coredump
+      select MCUX_COMPONENT_component.serial_manager
+      select DEBUG_COREDUMP
+      # Pull in the framework app-core fault handler (host/fwk_fault_handlers.c),
+      # which is the integration point that calls coredump() on a fault.
+      imply MCUX_COMPONENT_middleware.wireless.framework.dbg.fault_handlers
+      # NOTE: DEBUG_COREDUMP_BACKEND_OTHER is a Kconfig choice value and cannot be
+      # turned on with select (Kconfig ignores select on choice members). The
+      # consuming project must set CONFIG_DEBUG_COREDUMP_BACKEND_OTHER=y in its
+      # prj.conf to bind the board_debug implementation of coredump_backend_other.
+      depends on MCUX_COMPONENT_middleware.wireless.framework.platform.kw47_mcxw72 || \
+                 MCUX_COMPONENT_middleware.wireless.framework.platform.kw43_mcxw70
+      help
+        Streams the Zephyr coredump as framed Base64 lines ("#CD:BEGIN#" ...
+        "#CD:END#") over the application console (Serial Manager gSerMgrIf),
+        so the dump appears on the same interface as the application logs.
+        This provides the board_debug implementation of coredump_backend_other
+        (no external flash required), as an alternative to the mflash backend.
+
   config MCUX_PRJSEG_module.board.wireless.board.extflash
       bool "External flash"
       select MCUX_COMPONENT_component.flash_nor_lpspi
