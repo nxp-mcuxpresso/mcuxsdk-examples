@@ -195,6 +195,14 @@ __HEAP_end__    = m_data0_end;
 firmware_ram_lower_limit            = m_core0_ram_start;
 firmware_ram_upper_limit            = m_core0_ram_end;
 
+/* Zephyr coredump LINKER_RAM region (DEBUG_COREDUMP_MEMORY_DUMP_LINKER_RAM,
+ * the whole-RAM dump method). coredump_memory_regions.c brackets the RAM
+ * portion of the dump between _image_ram_start and _image_ram_end. The Zephyr
+ * build normally emits these; on the connectivity linker they are defined here
+ * over the whole core0 RAM bank so the entire application RAM is dumped. */
+_image_ram_start                    = m_core0_ram_start;
+_image_ram_end                      = m_core0_ram_end;
+
 /********************************************** Localization Compute Engine (CE) Memory **********************************************/
 mReserveCeRam_d                     = DEFINED(gReserveCeRam_d) ? gReserveCeRam_d : 0;
 /* The LCE code is placed in the core0 flash memory (13K)*/
