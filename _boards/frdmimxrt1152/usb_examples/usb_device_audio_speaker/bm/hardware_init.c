@@ -102,7 +102,7 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
 
     /*Clock setting for LPI2C*/
-    CLOCK_SetRootClockMux(kCLOCK_Root_Lpi2c5, 1);
+    CLOCK_SetRootClockMux(kCLOCK_Root_Lpi2c4, 1);
 
     /*Clock setting for SAI1*/
     CLOCK_SetRootClockMux(kCLOCK_Root_Sai1, 4);
