@@ -23,7 +23,7 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
   BASE_PATH ${SdkRootDirPath}
   SOURCES
-    middleware/edgefast_open/examples/unicast_media_sender/unicast_media_sender.c
+    examples/coex_examples/coex_wifi_ums_open/unicast_media_sender.c
     middleware/edgefast_open/examples/unicast_media_sender/unicast_media_sender.h
     middleware/edgefast_open/examples/unicast_media_sender/le_audio_common.c
     middleware/edgefast_open/examples/unicast_media_sender/le_audio_common.h
