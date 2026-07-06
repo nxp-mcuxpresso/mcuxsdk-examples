@@ -15,6 +15,19 @@ flexram_magic_address:
       - ${board_root}/${board}/driver_examples/flexram/magic_address/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
+    frdmimxrt1152:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
     evkbmimxrt1170@cm7:
     - -armgcc@debug
     - -armgcc@release

@@ -23,23 +23,23 @@
 ** ###################################################################
 */
 
-define symbol m_interrupts_start       = 0x80000000;
-define symbol m_interrupts_end         = 0x800003FF;
+define symbol m_interrupts_start       = 0x60000000;
+define symbol m_interrupts_end         = 0x600003FF;
 
-define symbol m_text_start             = 0x80000400;
-define symbol m_text_end               = 0x801FFFFF;
+define symbol m_text_start             = 0x60000400;
+define symbol m_text_end               = 0x601FFFFF;
 
-define symbol m_data_start             = 0x80200000;
-define symbol m_data_end               = 0x804FFFFF;
+define symbol m_data_start             = 0x60200000;
+define symbol m_data_end               = 0x604FFFFF;
 
-define symbol m_data2_start            = 0x80500000;
-define symbol m_data2_end              = 0x807FFFFF;
+define symbol m_data2_start            = 0x60500000;
+define symbol m_data2_end              = 0x607FFFFF;
 
-define symbol m_data3_start            = 0x80800000;
-define symbol m_data3_end              = 0x81DFFFFF;
+define symbol m_data3_start            = 0x60800000;
+define symbol m_data3_end              = 0x61DFFFFF;
 
-define symbol m_ncache_start           = 0x81E00000;
-define symbol m_ncache_end             = 0x81FFFFFF;
+define symbol m_ncache_start           = 0x61E00000;
+define symbol m_ncache_end             = 0x61FFFFFF;
 
 /* Sizes */
 if (isdefinedsymbol(__stack_size__)) {
