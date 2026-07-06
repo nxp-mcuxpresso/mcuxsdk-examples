@@ -18,6 +18,5 @@ isi_dwc_mipi_csi2_yuv422:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     imx95lpd5evk19@cm7: []
-    imx95lp4xevk15@cm7: []
     imx952evk@cm7: []
     frdmimx95@cm7: []

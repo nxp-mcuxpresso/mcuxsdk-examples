@@ -181,7 +181,6 @@ flexcan_ping_pong_buffer_transfer:
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
     imx95lpd5evk19@cm7: []
-    imx95lp4xevk15@cm7: []
     frdmimx95@cm7: []
     imx952evk@cm7: []
     mcimx93autoevk: []

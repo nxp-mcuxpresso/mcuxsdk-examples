@@ -21,7 +21,6 @@ brightness if user enter different values.
 - [FRDM-MCXC444](../../../_boards/frdmmcxc444/driver_examples/tpm/simple_pwm/example_board_readme.md)
 - [FRDM-MCXW71](../../../_boards/frdmmcxw71/driver_examples/tpm/simple_pwm/example_board_readme.md)
 - [MCX-W71-EVK](../../../_boards/mcxw71evk/driver_examples/tpm/simple_pwm/example_board_readme.md)
-- [IMX95LP4XEVK-15](../../../_boards/imx95lp4xevk15/driver_examples/tpm/simple_pwm/example_board_readme.md)
 - [IMX95LPD5EVK-19](../../../_boards/imx95lpd5evk19/driver_examples/tpm/simple_pwm/example_board_readme.md)
 - [FRDM-IMX95](../../../_boards/frdmimx95/driver_examples/tpm/simple_pwm/example_board_readme.md)
 - [FRDM-IMX952](../../../_boards/frdmimx952/driver_examples/tpm/simple_pwm/example_board_readme.md)

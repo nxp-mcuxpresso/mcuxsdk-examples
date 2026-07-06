@@ -21,7 +21,6 @@ i3c_master_read_sensor_p3t1755:
     mcxn9xxevk@cm33_core0: []
     mimxrt700evk@cm33_core1: []
     frdmimxrt700@cm33_core1: []
-    imx95lp4xevk15@cm7: []
     imx952evk@cm7: []
     frdmmcxa266: []
     frdmmcxa366: []

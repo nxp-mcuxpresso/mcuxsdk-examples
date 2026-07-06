@@ -274,7 +274,6 @@ lwip_dhcp_bm:
     lpcxpresso54s018: []
     lpcxpresso54s018m: []
     imx95lpd5evk19@cm7: []
-    imx95lp4xevk15@cm7: []
     frdmimx95@cm7: []
     frdmimx952@cm7: []
     frdmimx937@cm7: []

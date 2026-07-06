@@ -19,7 +19,6 @@ through internal loopback interconnect and print out the Message payload to term
 - [EVK-MIMXRT1064](../../../_boards/evkmimxrt1064/driver_examples/canfd/loopback_transfer/example_board_readme.md)
 - [MIMXRT1160-EVK](../../../_boards/evkmimxrt1160/driver_examples/canfd/loopback_transfer/example_board_readme.md)
 - [MIMXRT1180-EVK](../../../_boards/evkmimxrt1180/driver_examples/canfd/loopback_transfer/example_board_readme.md)
-- [IMX95LP4XEVK-15](../../../_boards/imx95lp4xevk15/driver_examples/canfd/loopback_transfer/example_board_readme.md)
 - [IMX95LPD5EVK-19](../../../_boards/imx95lpd5evk19/driver_examples/canfd/loopback_transfer/example_board_readme.md)
 - [FRDM-IMX95](../../../_boards/frdmimx95/driver_examples/canfd/loopback_transfer/example_board_readme.md)
 - [FRDM-IMX952](../../../_boards/frdmimx952/driver_examples/flexcan/canfd_loopback_transfer/example_board_readme.md)

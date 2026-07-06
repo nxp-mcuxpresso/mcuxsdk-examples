@@ -40,7 +40,6 @@ This example limits maximum number of CAN messages to be send each time to 256.
 - [FRDM-MCXA346](../../../_boards/frdmmcxa346/driver_examples/flexcan/ping_pong_buffer_transfer/example_board_readme.md)
 - [FRDM-MCXN236](../../../_boards/frdmmcxn236/driver_examples/flexcan/ping_pong_buffer_transfer/example_board_readme.md)
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/driver_examples/flexcan/ping_pong_buffer_transfer/example_board_readme.md)
-- [IMX95LP4XEVK-15](../../../_boards/imx95lp4xevk15/driver_examples/flexcan/ping_pong_buffer_transfer/example_board_readme.md)
 - [IMX95LPD5EVK-19](../../../_boards/imx95lpd5evk19/driver_examples/flexcan/ping_pong_buffer_transfer/example_board_readme.md)
 - [FRDM-IMX95](../../../_boards/frdmimx95/driver_examples/flexcan/ping_pong_buffer_transfer/example_board_readme.md)
 - [MCIMX93AUTO-EVK](../../../_boards/mcimx93autoevk/driver_examples/flexcan/ping_pong_buffer_transfer/example_board_readme.md)

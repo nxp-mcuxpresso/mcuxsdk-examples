@@ -256,7 +256,6 @@ lpuart_interrupt:
     frdmmcxw72@cm33_core0: []
     mcxw71evk: []
     imx95lpd5evk19@cm7: []
-    imx95lp4xevk15@cm7: []
     frdmimx95@cm7: []
     frdmimx952@cm7: []
     frdmimx937@cm7: []

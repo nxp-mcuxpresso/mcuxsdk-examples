@@ -25,7 +25,6 @@ In this example, one sai instance playbacks the audio data stored in flash/SRAM 
 - [MIMXRT1160-EVK](../../../_boards/evkmimxrt1160/driver_examples/sai/interrupt/example_board_readme.md)
 - [MIMXRT1180-EVK](../../../_boards/evkmimxrt1180/driver_examples/sai/interrupt/example_board_readme.md)
 - [FRDM-MCXN236](../../../_boards/frdmmcxn236/driver_examples/sai/interrupt/example_board_readme.md)
-- [IMX95LP4XEVK-15](../../../_boards/imx95lp4xevk15/driver_examples/sai/interrupt/example_board_readme.md)
 - [IMX95LPD5EVK-19](../../../_boards/imx95lpd5evk19/driver_examples/sai/interrupt/example_board_readme.md)
 - [MCIMX93-EVK](../../../_boards/mcimx93evk/driver_examples/sai/interrupt/example_board_readme.md)
 - [MCIMX93W-EVK](../../../_boards/mcimx93wevk/driver_examples/sai/interrupt/example_board_readme.md)

@@ -70,7 +70,6 @@ freertos_swtimer:
     mcxw71evk: []
     frdmrw612: []
     imx95lpd5evk19@cm7: []
-    imx95lp4xevk15@cm7: []
     frdmimx95@cm7: []
     frdmimx952@cm7: []
     frdmimx937@cm7: []

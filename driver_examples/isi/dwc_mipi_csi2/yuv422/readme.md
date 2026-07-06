@@ -18,7 +18,6 @@ If the camera and LCD panel resolutions are not the same, then only part of the
 camera frame will be shown.
 
 ## Supported Boards
-- [IMX95LP4XEVK-15](../../../../_boards/imx95lp4xevk15/driver_examples/isi/dwc_mipi_csi2/yuv422/example_board_readme.md)
 - [IMX952LPD5EVK-19](../../../../_boards/imx952evk/driver_examples/isi/dwc_mipi_csi2/yuv422/example_board_readme.md)
 - [IMX952LPD5EVK-15](../../../../_boards/imx952evk/driver_examples/isi/dwc_mipi_csi2/yuv422/example_board_readme.md)
 - [IMX95LPD5EVK-19](../../../../_boards/imx95lpd5evk19/driver_examples/isi/dwc_mipi_csi2/yuv422/example_board_readme.md)

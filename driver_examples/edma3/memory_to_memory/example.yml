@@ -48,7 +48,6 @@ edma3_memory_to_memory:
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
     imx95lpd5evk19@cm7: []
-    imx95lp4xevk15@cm7: []
     frdmimx95@cm7: []
     frdmimx952@cm7: []
     frdmimx937@cm7: []

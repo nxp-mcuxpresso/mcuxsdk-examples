@@ -20,5 +20,4 @@ sai_low_power_audio_rtos_imx95:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     imx95lpd5evk19@cm7: []
-    imx95lp4xevk15@cm7: []
     imx952evk@cm7: []

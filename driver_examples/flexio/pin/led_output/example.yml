@@ -42,7 +42,6 @@ flexio_pin_led_output:
     - -mdk@hyperram_release
     - -mdk@release
     imx95lpd5evk19@cm7: []
-    imx95lp4xevk15@cm7: []
     frdmimx95@cm7: []
     frdmimx952@cm7: []
     frdmimx937@cm7: []

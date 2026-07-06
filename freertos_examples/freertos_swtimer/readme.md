@@ -64,7 +64,6 @@ Tick.
 - [FRDM-MCXW71](../../_boards/frdmmcxw71/freertos_examples/freertos_swtimer/example_board_readme.md)
 - [MCX-W71-EVK](../../_boards/mcxw71evk/freertos_examples/freertos_swtimer/example_board_readme.md)
 - [FRDM-RW612](../../_boards/frdmrw612/freertos_examples/freertos_swtimer/example_board_readme.md)
-- [IMX95LP4XEVK-15](../../_boards/imx95lp4xevk15/freertos_examples/freertos_swtimer/example_board_readme.md)
 - [IMX95LPD5EVK-19](../../_boards/imx95lpd5evk19/freertos_examples/freertos_swtimer/example_board_readme.md)
 - [FRDM-IMX95](../../_boards/frdmimx95/freertos_examples/freertos_swtimer/example_board_readme.md)
 - [FRDM-IMX952](../../_boards/frdmimx952/freertos_examples/freertos_swtimer/example_board_readme.md)

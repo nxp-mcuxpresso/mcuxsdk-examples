@@ -7,7 +7,6 @@ The purpose of this example is to show how to use the EDMA and to provide a simp
 debugging and further development.
 
 ## Supported Boards
-- [IMX95LP4XEVK-15](../../../_boards/imx95lp4xevk15/driver_examples/edma5/memory_to_memory/example_board_readme.md)
 - [IMX952LPD5EVK-19](../../../_boards/imx952evk/driver_examples/edma5/memory_to_memory/example_board_readme.md)
 - [IMX952LPD5EVK-15](../../../_boards/imx952evk/driver_examples/edma5/memory_to_memory/example_board_readme.md)
 - [IMX95LPD5EVK-19](../../../_boards/imx95lpd5evk19/driver_examples/edma5/memory_to_memory/example_board_readme.md)

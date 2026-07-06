@@ -148,7 +148,6 @@ pdm_sai_interrupt_transfer:
     - -mdk@release
     frdmmcxn236: []
     imx95lpd5evk19@cm7: []
-    imx95lp4xevk15@cm7: []
     imx952evk@cm7: []
     mcxn5xxevk@cm33_core0: []
     mimxrt700evk@cm33_core0:
