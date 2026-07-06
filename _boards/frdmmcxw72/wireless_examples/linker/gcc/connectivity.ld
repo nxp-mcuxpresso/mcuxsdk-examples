@@ -16,7 +16,7 @@
 **     Abstract:
 **         Linker file for the GNU C Compiler
 **
-**     Copyright 2024-2025 NXP
+**     Copyright 2024-2026 NXP
 **
 **     SPDX-License-Identifier: BSD-3-Clause
 **
@@ -118,6 +118,15 @@ __HEAP_end__                        = m_data1_end;
 
 firmware_ram_lower_limit            = DEFINED(lp_ram_lower_limit) ? lp_ram_lower_limit : m_cstack_start;
 firmware_ram_upper_limit            = DEFINED(lp_ram_upper_limit) ? lp_ram_upper_limit : m_data1_end;
+
+/* Zephyr coredump LINKER_RAM region (DEBUG_COREDUMP_MEMORY_DUMP_LINKER_RAM,
+ * the whole-RAM dump method). coredump_memory_regions.c brackets the RAM
+ * portion of the dump between _image_ram_start and _image_ram_end. The Zephyr
+ * build normally emits these; on the connectivity linker they are defined here
+ * over the main SRAM bank (ram1) that holds the application .bss, heap and
+ * FreeRTOS task stacks so the runtime RAM state is captured in the dump. */
+_image_ram_start                    = m_ram1_start;
+_image_ram_end                      = m_ram1_end;
 
 /********************************************** NBU shared memory **********************************************
 

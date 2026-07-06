@@ -71,7 +71,7 @@ Default address values are indicated between brackets they can be overridden if 
                           |               |
                           |               |
                           |               |
-            (0x2002D000)  |               | m_upper_data1_start __HEAP_start__ 
+            (0x2002D000)  |               | m_upper_data1_start __HEAP_start__
                     - - - +---------------+ - - - - - - - -
             (0x2002CFFF)  |               | m_ce_heap_end
                           |               |
@@ -100,7 +100,7 @@ Default address values are indicated between brackets they can be overridden if 
             m_data1_end   |               |
                           |               |
                           |               |
-                          |...............| 
+                          |...............|
                           |               |
                           .     Data1     .
                           .               .
@@ -166,6 +166,15 @@ __EXT_HEAP_end__                    = m_data1_end;
 
 firmware_ram_lower_limit            = DEFINED(lp_ram_lower_limit) ? lp_ram_lower_limit : m_cstack_start;
 firmware_ram_upper_limit            = DEFINED(lp_ram_upper_limit) ? lp_ram_upper_limit : m_ram1_end;
+
+/* Zephyr coredump LINKER_RAM region (DEBUG_COREDUMP_MEMORY_DUMP_LINKER_RAM,
+ * the whole-RAM dump method). coredump_memory_regions.c brackets the RAM
+ * portion of the dump between _image_ram_start and _image_ram_end. The Zephyr
+ * build normally emits these; on the connectivity linker they are defined here
+ * over the main SRAM bank (ram1) that holds the application .bss, heap and
+ * FreeRTOS task stacks so the runtime RAM state is captured in the dump. */
+_image_ram_start                    = m_ram1_start;
+_image_ram_end                      = m_ram1_end;
 
 /********************************************** NBU shared memory **********************************************
 
@@ -291,7 +300,7 @@ m_upper_data1_start                 = m_ce_heap_end + 1;
 m_upper_data1_size                  = m_ram1_end - m_upper_data1_start + 1;
 m_upper_data1_end                   = m_ram1_end;
 
-/* There are three heap memory areas defined in the localization applications: 
+/* There are three heap memory areas defined in the localization applications:
      - the main heap is accommodated in the upper data1  (52K)
      - the heap used by LCE is accommodated in m_ce_heap (14.4K)
      - the extended heap memory is accommodated in data1 (24K) */
