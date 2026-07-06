@@ -26,13 +26,17 @@ This layer serves as a reference implementation to show the complete debug infor
 
 ```
 Application Layer (Board Debug Layer)
-Application Layer (Board Debug Layer)
-├── board_debug_nbu.h/.c           # High-level API with fault and warning analysis
+├── board_debug.h/.c               # Board init helpers (SWO, serial consoles)
+├── board_debug_utils.h/.c         # Shared helpers (Base64 encode, hex dump, console write)
+├── board_debug_nbu.h/.c           # High-level NBU API with fault and warning analysis
 ├── board_debug_nbu_port.h         # HCI logger port interface
 ├── board_debug_nbu_lpuart_port.c  # LPUART implementation for HCI logging (dedicated second UART)
 ├── board_debug_nbu_serialmgr_port.c # Serial Manager implementation for HCI logging (main serial port)
+├── board_debug_coredump.h/.c      # App-core (Cortex-M33) Zephyr coredump "other" backend: streams the dump as '#CD:' framed Base64 over the application console
 ├── hci_to_btsnoop.py              # Python tool to capture HCI logs to BTSNOOP format
-└── debug_struct_parser.py         # Python tool to parse debug structures from BTSNOOP files
+├── debug_struct_parser.py         # Python tool to parse debug structures from BTSNOOP files
+├── board_debug_coredump_decode.py # Python tool to decode the '#CD:' coredump block to a binary Zephyr coredump
+└── board_debug_parse.py           # Python tool: unified console parser (auto-routes NBU HCI, coredump, plain text)
 │
 Core NBU Debug Module Layer
 ├── framework/services/DBG/nbu_dbg/
@@ -51,8 +55,8 @@ Core NBU Debug Module Layer
 │ │  • HCI packet logging                   │ │   │ │                                              │ │
 │ └───────────────┬─────────────────────────┘ │   │ └───────────────┬──────────────────────────────┘ │
 └─────────────────┼───────────────────────────┘   └─────────────────┼────────────────────────────────┘
-                  │ uses                                            │ uses                            
-                  ▼                                                 ▼                                 
+                  │ uses                                            │ uses
+                  ▼                                                 ▼
 ┌─────────────────────────────────────────────┐   ┌──────────────────────────────────────────────────┐
 │             NBU Debug Module Layer          │   │              NBU Debug Module Layer              │
 │ ┌─────────────────────────────────────────┐ │   │ ┌──────────────────────────────────────────────┐ │
@@ -64,7 +68,7 @@ Core NBU Debug Module Layer
                   └─────────────────────────────────────────────────┘
                         Cross-core communication through shared memory
                         • Debug buffer in shared RAM
-                        • Fault status flags and health indicators 
+                        • Fault status flags and health indicators
 ```
 
 ## How the Components Work Together
@@ -95,13 +99,13 @@ Core NBU Debug Module Layer
 int main(void) {
     // Initialize hardware and system
     hardware_init();
-    
+
     // Initialize NBU debug framework
     BOARD_DbgNbuInit();  // Initialize NBU debug framework and register callback
-    
+
     // Continue with application initialization
     app_init();
-    
+
     return 0;
 }
 ```
@@ -207,7 +211,7 @@ The system differentiates between warnings and fatal errors:
 
 NBU Fault Detected
 Exception Information:
-  Exception ID: 0x00000003  
+  Exception ID: 0x00000003
   NBU SHA1    : 0x12345678
 ```
 
@@ -420,6 +424,67 @@ Notes:
 - `--input` and `--port` are mutually exclusive: choose either live capture or file
   processing.
 
+## Unified Console Parser (`board_debug_parse.py`)
+
+When everything is routed to the **main application console** (the `serialmgr`
+port with Base64 framing), a single capture can interleave three completely
+different data streams plus ordinary application logs:
+
+1. **NBU HCI logging** - lines prefixed with `@`
+   (`@<base64(direction||packet_type||payload)>`). The radio core (NBU) reports
+   its faults/asserts as HCI vendor events; these are turned into a BTSNOOP file
+   and then analysed by `debug_struct_parser.py`. The NBU never emits a Zephyr
+   coredump.
+2. **App-core (Cortex-M33) Zephyr coredump** - a block framed with `#CD:`
+   (`#CD:BEGIN#` / `#CD:<base64>` ... / `#CD:END#`). This is decoded to a binary
+   Zephyr coredump consumable by `coredump_parser/log_parser.py` and
+   `coredump_gdbserver.py`.
+3. **Plain application text** - banners, `PRINTF` output, shell prompts, etc.
+
+`board_debug_parse.py` is a single host entry point that ingests one full
+console capture (file) or a live serial port, auto-detects which streams are
+present, and dispatches every line to the correct decoder. It does not
+re-implement any logic: it reuses the existing sibling decoders
+(`debug_struct_parser.py`, `board_debug_coredump_decode.py`) and the vendored
+`coredump_parser/log_parser.py`, and embeds a small self-contained BTSNOOP
+writer so the offline path needs no pyserial. It is robust to arbitrarily
+interleaved application logs and to decoy lines such as `@ not-a-packet` or
+`garbage #CD:`.
+
+### Usage
+
+```bash
+# Offline: parse a previously captured full application log.
+python board_debug_parse.py -i capture.log
+
+# Offline with named outputs + NBU BLE extension + ELF symbol resolution.
+python board_debug_parse.py -i capture.log \
+    --btsnoop nbu.btsnoop --coredump coredump.bin \
+    --extension ble --elf build_vero/frdmkw43/lp_refdes_freertos/<app>.elf
+
+# Live: open the COM port, capture until Ctrl+C, then parse everything.
+python board_debug_parse.py -p /dev/ttyACM0 -b 115200 --save-log capture.log
+
+# After a coredump is produced, launch the offline GDB server (needs ELF).
+python board_debug_parse.py -i capture.log --coredump coredump.bin \
+    --elf <app>.elf --gdb
+```
+
+`-i/--input` and `-p/--port` are mutually exclusive and one is required. The
+script first prints a capture summary (how many NBU HCI, coredump, and plain
+lines it saw), then runs only the decoders for the streams actually present.
+Default outputs are `<base>.btsnoop` and `<base>.coredump.bin`; override with
+`--btsnoop` / `--coredump`.
+
+### When to use which tool
+
+- Use **`board_debug_parse.py`** for the everyday case: a full main-console
+  capture that may contain NBU HCI logging and/or an app-core coredump mixed
+  with application text. It is the recommended single entry point.
+- The individual scripts (`hci_to_btsnoop.py`, `debug_struct_parser.py`,
+  `board_debug_coredump_decode.py`) remain fully usable standalone - for
+  example when capturing the dedicated second `lpuart` HCI port (binary, no
+  Base64), or when you only need one specific output.
 
 ## Benefits
 
