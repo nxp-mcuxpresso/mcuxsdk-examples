@@ -368,6 +368,15 @@ define exported symbol __HEAP_end__                     = m_ram1_end;
 define exported symbol firmware_ram_upper_limit         = m_ram1_end;
 define exported symbol firmware_ram_lower_limit         = m_cstack_start;
 
+/* Zephyr coredump LINKER_RAM region (DEBUG_COREDUMP_MEMORY_DUMP_LINKER_RAM,
+ * the whole-RAM dump method). coredump_memory_regions.c brackets the RAM
+ * portion of the dump between _image_ram_start and _image_ram_end. The Zephyr
+ * build normally emits these; on the connectivity linker they are defined here
+ * over the main SRAM bank (ram1) that holds the application .bss, heap and
+ * FreeRTOS task stacks so the runtime RAM state is captured in the dump. */
+define exported symbol _image_ram_start                 = m_ram1_start;
+define exported symbol _image_ram_end                   = m_ram1_end;
+
 /* The layout of the RAM and the region of each section have been reorganized in order
  * to optimize the RAM banks in retention. The heap at the top, we do not need to retain
  * banks upper of the last address used by the heap. */
