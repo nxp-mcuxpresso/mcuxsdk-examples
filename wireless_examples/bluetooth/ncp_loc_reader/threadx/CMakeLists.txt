@@ -64,8 +64,6 @@ mcux_add_source(
             bluetooth/examples/ncp_loc_reader/ncp_app.h
             bluetooth/examples/ncp_loc_reader/ncp_app.c
             bluetooth/application/common/ble_port_fsci/core1/main.c
-            bluetooth/application/common/ble_port_fsci/core1/ble_port_fsci.c
-            bluetooth/application/common/ble_port_fsci/core1/ble_port_fsci.h
             bluetooth/examples/ncp_loc_reader/readme.md
             ../../examples/_boards/${board}/wireless_examples/bluetooth/ncp_loc_reader/example_board_readme.md
 )
@@ -75,6 +73,7 @@ mcux_add_include(
     INCLUDES
         bluetooth/examples/ncp_loc_reader
         bluetooth/application/common/
+        bluetooth/application/common/ble_port_fsci
         bluetooth/application/common/ble_port_fsci/core1
 )
 

@@ -23,8 +23,6 @@ mcux_add_source(
             bluetooth/application/common/ble_init.h
             bluetooth/application/common/ble_port_fsci/core0/main.c
             bluetooth/application/common/ble_port_fsci/core0/app_init.c
-            bluetooth/application/common/ble_port_fsci/core0/ble_port_fsci.c
-            bluetooth/application/common/ble_port_fsci/core0/ble_port_fsci.h
             bluetooth/examples/loc_reader_host/loc_reader_host.c
             bluetooth/examples/loc_reader_host/loc_reader_host.h
             bluetooth/examples/loc_reader_host/host_app.c

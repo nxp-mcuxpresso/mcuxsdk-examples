@@ -17,8 +17,6 @@ mcux_add_source(
     BASE_PATH ${SdkRootDirPath}/middleware/wireless/
     SOURCES bluetooth/application/common/ble_port_fsci/core0/main.c
             bluetooth/application/common/ble_port_fsci/core0/app_init.c
-            bluetooth/application/common/ble_port_fsci/core0/ble_port_fsci.c
-            bluetooth/application/common/ble_port_fsci/core0/ble_port_fsci.h
             bluetooth/application/common/app_conn.h
             bluetooth/application/common/ble_init.h
             bluetooth/examples/loc_reader_host/loc_reader_host.c
