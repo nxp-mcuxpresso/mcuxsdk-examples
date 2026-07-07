@@ -9,6 +9,7 @@
 #include "board.h"
 #include "fsl_gpio.h"
 #include "fsl_pcal6524.h"
+#include "fsl_debug_console.h"
 #include "fsl_adapter_gpio.h"
 #include "wifi_config.h"
 
@@ -44,41 +45,77 @@ static sdio_card_int_t s_sdioInt;
 
 void BOARD_WIFI_BT_Enable(bool enable)
 {
-    pcal6524_handle_t handle;
-    BOARD_InitPCAL6524(&handle);
+    pcal6524_handle_t *handle = BOARD_GetPCAL6524Handle();
 
     /* Configure WL_RST (P0_4), BT_RST (P0_5), PDn (P0_6) as outputs */
-    PCAL6524_SetDirection(&handle,
-                          (1UL << BOARD_PCAL6524_WL_RST) |
-                          (1UL << BOARD_PCAL6524_BT_RST) |
-                          (1UL << BOARD_PCAL6524_WL_DEV_WAKE) |
-                          (1UL << BOARD_PCAL6524_PDn),
-                          kPCAL6524_Output);
+    status_t status = PCAL6524_SetDirection(handle,
+                                            (1UL << BOARD_PCAL6524_WL_RST) | (1UL << BOARD_PCAL6524_BT_RST) |
+                                                (1UL << BOARD_PCAL6524_WL_DEV_WAKE) | (1UL << BOARD_PCAL6524_PDn),
+                                            kPCAL6524_Output);
+
+    if (status != kStatus_Success)
+    {
+        (void)PRINTF("PCAL6524_SetDirection failed\r\n");
+        return;
+    }
 
     if (enable)
     {
         /* Power up and release resets */
-        PCAL6524_SetPins(&handle, (1UL << BOARD_PCAL6524_PDn));
+        status = PCAL6524_SetPins(handle, (1UL << BOARD_PCAL6524_PDn));
+        if (status != kStatus_Success)
+        {
+            (void)PRINTF("PCAL6524_SetPins failed for Pdn\r\n");
+            return;
+        }
+
         vTaskDelay(pdMS_TO_TICKS(100));
 
         /* De-assert WL_RST# (set HIGH = release WiFi from reset) */
-        PCAL6524_SetPins(&handle, (1UL << BOARD_PCAL6524_WL_RST));
+        status = PCAL6524_SetPins(handle, (1UL << BOARD_PCAL6524_WL_RST));
+        if (status != kStatus_Success)
+        {
+            (void)PRINTF("PCAL6524_SetPins failed for WL_RST\r\n");
+            return;
+        }
+
         vTaskDelay(pdMS_TO_TICKS(100));
 
         /* De-assert BT_RST# (set HIGH = release BT from reset) */
-        PCAL6524_SetPins(&handle, (1UL << BOARD_PCAL6524_BT_RST));
+        status = PCAL6524_SetPins(handle, (1UL << BOARD_PCAL6524_BT_RST));
+        if (status != kStatus_Success)
+        {
+            (void)PRINTF("PCAL6524_SetPins failed for BT_RST\r\n");
+            return;
+        }
+
         vTaskDelay(pdMS_TO_TICKS(100));
     }
     else
     {
         /* Assert WL_RST# (set LOW = hold WiFi in reset) */
-        PCAL6524_ClearPins(&handle, (1UL << BOARD_PCAL6524_WL_RST));
+        status = PCAL6524_ClearPins(handle, (1UL << BOARD_PCAL6524_WL_RST));
+        if (status != kStatus_Success)
+        {
+            (void)PRINTF("PCAL6524_ClearPins failed for WL_RST\r\n");
+            return;
+        }
 
         /* Assert BT_RST# (set LOW = hold BT in reset) */
-        PCAL6524_ClearPins(&handle, (1UL << BOARD_PCAL6524_BT_RST));
+        status = PCAL6524_ClearPins(handle, (1UL << BOARD_PCAL6524_BT_RST));
+        if (status != kStatus_Success)
+        {
+            (void)PRINTF("PCAL6524_ClearPins failed for BT_RST\r\n");
+            return;
+        }
 
         /* Assert PDn (set LOW = power down module) */
-        PCAL6524_ClearPins(&handle, (1UL << BOARD_PCAL6524_PDn));
+        status = PCAL6524_ClearPins(handle, (1UL << BOARD_PCAL6524_PDn));
+        if (status != kStatus_Success)
+        {
+            (void)PRINTF("PCAL6524_ClearPins failed for PDn\r\n");
+            return;
+        }
 
         vTaskDelay(pdMS_TO_TICKS(100));
     }

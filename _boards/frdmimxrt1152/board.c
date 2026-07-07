@@ -219,6 +219,12 @@ status_t BOARD_I2C_DeviceReceive(void *base,
 }
 
 #if defined(BOARD_USE_PCAL6524) && BOARD_USE_PCAL6524
+/* Board-level singleton: drivers/examples that don't manage their own handle
+ * use BOARD_GetPCAL6524Handle(). ENET examples that pass their own handle to
+ * BOARD_InitPCAL6524(handle) bypass this singleton. */
+static pcal6524_handle_t s_pcal6524Handle;
+static bool s_pcal6524Initialized = false;
+
 void BOARD_PCAL6524_I2C_Init(void)
 {
     BOARD_LPI2C_Init(BOARD_PCAL6524_I2C, BOARD_PCAL6524_I2C_CLOCK_FREQ);
@@ -257,6 +263,16 @@ void BOARD_InitPCAL6524(pcal6524_handle_t *handle)
     };
 
     PCAL6524_Init(handle, &config);
+}
+
+pcal6524_handle_t *BOARD_GetPCAL6524Handle(void)
+{
+    if (!s_pcal6524Initialized)
+    {
+        BOARD_InitPCAL6524(&s_pcal6524Handle);
+        s_pcal6524Initialized = true;
+    }
+    return &s_pcal6524Handle;
 }
 
 #endif /* BOARD_USE_PCAL6524 */

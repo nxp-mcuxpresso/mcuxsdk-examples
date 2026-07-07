@@ -293,6 +293,18 @@ status_t BOARD_PCAL6524_I2C_Receive(uint8_t deviceAddress,
 
 void BOARD_InitPCAL6524(pcal6524_handle_t *handle);
 
+/* Lazy-initialized board-level singleton + ISR-ready helpers. The first call
+ * to BOARD_GetPCAL6524Handle() invokes BOARD_InitPCAL6524 on the singleton
+ * (lockFunc = generic IRQ-masking lock). Subsequent calls return the same
+ * pointer without re-initializing. Use these when the PCAL6524 INT line and
+ * board.c's MCU GPIO ISR are involved.
+ *
+ * The MCU GPIO ISR for the PCAL6524 INT line is BOARD_PCAL6524_INT_IRQ_HANDLER
+ * (HSP_GPIO0_CH0_IRQHandler), defined as a weak symbol in board.c so apps
+ * that want a different dispatch pattern can override it. The default fires
+ * PCAL6524_InterruptHandler on the singleton handle. */
+pcal6524_handle_t *BOARD_GetPCAL6524Handle(void);
+
 void BOARD_PullMIPIPanelTouchResetPin(bool pullUp);
 void BOARD_ConfigMIPIPanelTouchIntPin(uint8_t mode);
 void BOARD_PCAL6524_ProcessInterrupt(void);
