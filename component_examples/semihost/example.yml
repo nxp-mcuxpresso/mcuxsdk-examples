@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+semihost:
+  section-type: application
+  contents:
+    meta_path: examples/component_examples/semihost/.
+    project-root-path: boards/${board}/component_examples/semihost/${multicore_foldername}
+    document:
+      name: semihost${core_id_suffix_name}
+      category: component_examples
+      brief: The semihost demo exercises the semihost utility component - standard
+        printf routed to the debugger console (semihost_console) plus the direct
+        host file-I/O API (SEMIHOST_Open/Write/Read/Close). It prints a greeting,
+        then creates a file on the debugger host over ARM semihosting, writes a
+        payload, reads it back, and verifies the contents.
+      example_readme:
+      - examples/component_examples/semihost/readme.md
+      - ${board_root}/${board}/component_examples/semihost/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxw23: []
+    mimxrt700evk@cm33_core0: []
