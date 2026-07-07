@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, 2024 NXP
+ * Copyright 2022, 2024-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -10,7 +10,7 @@
 #include "app.h"
 #include "lvgl.h"
 #include "gui_guider.h"
-#include "events_init.h"
+#include "gg_utils.h"
 #include "custom.h"
 
 /*******************************************************************************
@@ -29,7 +29,7 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-lv_ui guider_ui;
+gg_ui_t guider_ui;
 static volatile uint32_t s_tick        = 0U;
 static volatile bool s_lvglTaskPending = false;
 /*******************************************************************************
@@ -70,7 +70,6 @@ int main(void)
     LV_LOG("lvgl guider_bm demo started\r\n");
 
     setup_ui(&guider_ui);
-    events_init(&guider_ui);
     custom_init(&guider_ui);
 
     for (;;)
@@ -104,4 +103,3 @@ void SysTick_Handler(void)
         s_lvglTaskPending = true;
     }
 }
-

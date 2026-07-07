@@ -13,7 +13,7 @@
 #include "app.h"
 #include "lvgl.h"
 #include "gui_guider.h"
-#include "events_init.h"
+#include "gg_utils.h"
 #include "custom.h"
 #include "lvgl_demo_utils.h"
 
@@ -25,7 +25,7 @@
  * Variables
  ******************************************************************************/
 static volatile bool s_lvgl_initialized = false;
-lv_ui guider_ui;
+gg_ui_t guider_ui;
 
 /*******************************************************************************
  * Prototypes
@@ -56,7 +56,6 @@ static void AppTask(void *param)
     s_lvgl_initialized = true;
 
     setup_ui(&guider_ui);
-    events_init(&guider_ui);
     custom_init(&guider_ui);
 
     for (;;)

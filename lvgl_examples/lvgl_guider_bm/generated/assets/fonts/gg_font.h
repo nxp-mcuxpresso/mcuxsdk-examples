@@ -1,18 +1,18 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#ifndef WIDGET_INIT_H
-#define WIDGET_INIT_H
-
+#ifndef GG_FONT_H
+#define GG_FONT_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+#include "lvgl.h"
+
 #ifdef __cplusplus
 }
 #endif
-
 #endif

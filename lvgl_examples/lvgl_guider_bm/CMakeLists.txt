@@ -10,19 +10,28 @@ mcux_add_include(
     INCLUDES ./..
              ./generated
              ./custom
-             ./generated/guider_customer_fonts
+             ./generated/assets/fonts
+             ./generated/assets/images
+             ./generated/events
+             ./generated/screens
 )
 
 mcux_add_source(
     SOURCES ./lvgl_guider_bm.c
-            ./generated/guider_customer_fonts/guider_customer_fonts.h
-            ./generated/gui_guider.c
+            ./generated/assets/fonts/gg_font.h
+            ./generated/assets/images/gg_image.h
+            ./generated/events/gg_event_layer_bottom.c
+            ./generated/events/gg_event_layer_sys.c
+            ./generated/events/gg_event_layer_top.c
+            ./generated/events/gg_event_screen.c
+            ./generated/events/gg_event.h
+            ./generated/screens/gg_layer_bottom.c
+            ./generated/screens/gg_layer_sys.c
+            ./generated/screens/gg_layer_top.c
+            ./generated/screens/gg_screen.c
+            ./generated/gg_utils.c
+            ./generated/gg_utils.h
             ./generated/gui_guider.h
-            ./generated/events_init.c
-            ./generated/events_init.h
-            ./generated/setup_scr_screen.c
-            ./generated/widgets_init.c
-            ./generated/widgets_init.h
             ./custom/custom.c
             ./custom/custom.h
             ./custom/lv_conf_ext.h

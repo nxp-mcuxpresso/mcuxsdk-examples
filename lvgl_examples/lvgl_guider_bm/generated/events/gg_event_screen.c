@@ -1,32 +1,13 @@
 /*
- * Copyright 2022, 2025 NXP
+ * Copyright 2024-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-/*********************
- *      INCLUDES
- *********************/
-#include <stdio.h>
-#include "lvgl.h"
-#include "events_init.h"
+#include "gg_event.h"
+#include "custom.h"
 
-/*********************
- *      DEFINES
- *********************/
-
-/**********************
- *      TYPEDEFS
- **********************/
-
-/**********************
- *  STATIC PROTOTYPES
- **********************/
-
-/**********************
- *  STATIC VARIABLES
- **********************/
-
+/* Handler for dragging the rect widget */
 static void rect_event_handler(lv_event_t * e)
 {
     lv_point_t point;
@@ -49,10 +30,10 @@ static void rect_event_handler(lv_event_t * e)
     lv_obj_set_pos(obj, x, y);
 }
 
-/* Create a lvgl periodic timer, to monitor the project is running. */
+/* Periodic timer to confirm the project is running */
 #define DEMO_LVGL_TIMER_PERIOD_MS 500
 
-static void timer_callback(lv_timer_t *timer)
+static void timer_callback(lv_timer_t * timer)
 {
     (void)timer;
     LV_LOG("Project timer callback");
@@ -63,8 +44,8 @@ static void setup_timer(void)
     lv_timer_create(timer_callback, DEMO_LVGL_TIMER_PERIOD_MS, NULL);
 }
 
-void events_init(lv_ui *ui)
+void gg_event_init_screen(gg_ui_t * ui)
 {
-    lv_obj_add_event_cb(ui->rect, rect_event_handler, LV_EVENT_PRESSING, NULL);
+    lv_obj_add_event_cb(ui->screen.rect, rect_event_handler, LV_EVENT_PRESSING, NULL);
     setup_timer();
 }
