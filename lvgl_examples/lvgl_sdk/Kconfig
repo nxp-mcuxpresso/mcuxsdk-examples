@@ -149,6 +149,9 @@ menu "LVGL application layers"
             imply MCUX_COMPONENT_middleware.lvgl
             imply MCUX_COMPONENT_middleware.lvgl.demo.common
 
+        config MCUX_COMPONENT_middleware.lvgl.src.libs.thorvg
+            bool "thorvg"
+            imply MCUX_COMPONENT_middleware.lvgl
     endmenu
 
 endmenu

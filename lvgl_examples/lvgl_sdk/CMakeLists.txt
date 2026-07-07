@@ -24,7 +24,6 @@ if (CONFIG_MCUX_COMPONENT_middleware.lvgl)
             -Wno-unused-function        \
             -Wno-unused-parameter       \
             -Wno-enum-conversion        \
-            -Wno-int-conversion         \
             -Wno-nonstandard-extension  \
             -Wno-sign-compare"
     )
@@ -199,6 +198,22 @@ if(CONFIG_MCUX_COMPONENT_middleware.lvgl.demo.music)
         BASE_PATH ${SdkRootDirPath}
             INCLUDES
             middleware/lvgl/demos/music
+    )
+endif()
+
+if(CONFIG_MCUX_COMPONENT_middleware.lvgl.src.libs.thorvg)
+
+    mcux_add_source(
+        BASE_PATH ${SdkRootDirPath}
+        SOURCES middleware/lvgl/src/libs/thorvg/*.c
+                middleware/lvgl/src/libs/thorvg/*.cpp
+                middleware/lvgl/src/libs/thorvg/*.h
+    )
+
+    mcux_add_include(
+        BASE_PATH ${SdkRootDirPath}
+            INCLUDES
+            middleware/lvgl/src/libs/thorvg
     )
 endif()
 
