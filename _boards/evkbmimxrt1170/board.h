@@ -218,8 +218,8 @@
 #define BOARD_MPU_REGION_SEMC            (9) /* SEMC */
 #define BOARD_MPU_REGION_NONCACHE        (10) /* Noncacheable space in application */
 #define BOARD_MPU_REGION_AIPS            (11) /* AIPS 1-4 */
-#define BOARD_MPU_REGION_SIM_M_DISP      (12) /* SIM_M/DISP configuration space */
-#define BOARD_MPU_REGION_SIM_M7          (13) /* SIM_M7 configuration space */
+#define BOARD_MPU_REGION_SIM             (12) /* SIM_M/DISP/M7 configuration space */
+#define BOARD_MPU_REGION_ROM             (13) /* ROM configuration space */
 #define BOARD_MPU_REGION_GPU2D_CDOG      (14) /* GPU2D/CDOG */
 #define BOARD_MPU_REGION_AIPS_M7         (15) /* AIPS M7 */
 #else /* CM4 */

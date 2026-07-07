@@ -301,9 +301,13 @@ static void BOARD_EarlyConfigMPU(void)
     MPU->RBAR = ARM_MPU_RBAR(1, 0x80000000U);
     MPU->RASR = ARM_MPU_RASR(1, ARM_MPU_AP_FULL, 2, 0, 0, 0, 0, ARM_MPU_REGION_SIZE_512MB);
 
-    /* Region 3 setting: Memory with Device type, not shareable, non-cacheable. */
-    MPU->RBAR = ARM_MPU_RBAR(3, 0x00000000U);
-    MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 2, 0, 0, 0, 0, ARM_MPU_REGION_SIZE_2GB);
+    /* Region 2 setting: Memory with Device type, not shareable, non-cacheable. */
+    MPU->RBAR = ARM_MPU_RBAR(2, 0x00000000U);
+    MPU->RASR = ARM_MPU_RASR(1, ARM_MPU_AP_FULL, 2, 0, 0, 0, 0, ARM_MPU_REGION_SIZE_2GB);
+
+    /* Region 3 setting: Memory with Normal type, not shareable, outer/inner write back. */ /*ROM*/
+    MPU->RBAR = ARM_MPU_RBAR(3, 0x00100000U);
+    MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_RO, 0, 0, 1, 1, 0, ARM_MPU_REGION_SIZE_256KB);
 
     /* Region 4 setting: Memory with Normal type, not shareable, outer/inner write back */ /*ITCM*/
     MPU->RBAR = ARM_MPU_RBAR(4, 0x00000000U);

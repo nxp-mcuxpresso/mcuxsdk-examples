@@ -189,6 +189,7 @@
 /* Board MPU region index definition. Higher index takes priority on memory overlap. */
 #define BOARD_MPU_REGION_FULL_BG      (0)  /* Whole 4G space background without access permission.
                                               Needed for Arm errata 1013783-B */
+#define BOARD_MPU_REGION_SEMC         (1)  /* SEMC */
 #define BOARD_MPU_REGION_FLEXSPI2_BG  (2)  /* FLEXSPI2 background (overlaid by HYPERRAM region) */
 #define BOARD_MPU_REGION_CODE_SRAM_BG (3)  /* Code/SRAM background space under 1GB */
 #define BOARD_MPU_REGION_ITCM         (4)  /* ITCM */
@@ -199,8 +200,8 @@
 #define BOARD_MPU_REGION_HYPERRAM     (9)  /* HyperRAM on FLEXSPI2 */
 #define BOARD_MPU_REGION_NONCACHE     (10) /* Noncacheable space in application */
 #define BOARD_MPU_REGION_AIPS         (11) /* AIPS 1-4 */
-#define BOARD_MPU_REGION_SIM_M_DISP   (12) /* SIM_M/DISP configuration space */
-#define BOARD_MPU_REGION_SIM_M7       (13) /* SIM_M7 configuration space */
+#define BOARD_MPU_REGION_SIM          (12) /* SIM_M/DISP/M7 configuration space */
+#define BOARD_MPU_REGION_ROM          (13) /* ROM configuration space */
 #define BOARD_MPU_REGION_GPU2D_CDOG   (14) /* GPU2D/CDOG */
 #define BOARD_MPU_REGION_AIPS_M7      (15) /* AIPS M7 */
 
