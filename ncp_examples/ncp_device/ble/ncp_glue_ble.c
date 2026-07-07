@@ -160,11 +160,10 @@ static int hci_le_vendor_power_mode_cfg(uint8_t power_mode)
     cp = (ncp_ble_low_power_mode_cfg *)net_buf_add(buf, sizeof(*cp));
 
     if(power_mode == 0)
-        cp->power_mode = 0x03; // Controller auto sleep enable
+        cp->power_mode = 0x03; // Controller auto sleep disable
     else
-        cp->power_mode = 0x02; // Controller auto sleep disable
+        cp->power_mode = 0x02; // Controller auto sleep enable
 
-    cp->power_mode = power_mode;
     cp->timeout = 0x0000;
 
     return bt_hci_cmd_send_sync(BT_HCI_VD_LOW_POWER_MODE, buf, NULL);

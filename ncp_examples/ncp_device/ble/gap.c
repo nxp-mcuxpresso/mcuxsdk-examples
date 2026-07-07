@@ -180,7 +180,6 @@ uint16_t appl_hci_le_find_free_adv_list_inst(uint8_t * free_index);
 uint16_t appl_hci_le_init_adv_list(void);
 #endif //#if (defined(CONFIG_BLE_ADV_REPORT_BUFFER_FILTER) && (CONFIG_BLE_ADV_REPORT_BUFFER_FILTER > 0U))
 
-extern bool bt_addr_le_is_bonded(uint8_t id, const bt_addr_le_t *addr);
 /*******************************************************************************
  * Variables
  ******************************************************************************/
@@ -1561,7 +1560,7 @@ enum bt_security_err auth_pairing_accept(struct bt_conn *conn,
     gap_bond_lost_ev_t ev = {0};
     const bt_addr_le_t *addr = bt_conn_get_dst(conn);
 
-    if ((addr != NULL) && (!bt_addr_le_is_bonded(BT_ID_DEFAULT, addr)))
+    if ((addr != NULL) && (!bt_le_bond_exists(BT_ID_DEFAULT, addr)))
     {
         return BT_SECURITY_ERR_SUCCESS;
     }
