@@ -21,15 +21,9 @@ mcux_add_source(
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    PREINCLUDE TRUE
-    SOURCES ${board_root}/${board}/coex_examples/coex_wifi_edgefast/app_config.h
-)
-
-mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/wireless/coex/src/configs/rw61x/edgefast/app_bluetooth_config.h
     CONFIG True
     PREINCLUDE TRUE
+    SOURCES ${board_root}/${board}/coex_examples/coex_wifi_edgefast/app_config.h
 )
 
 mcux_add_include(
@@ -62,7 +56,7 @@ mcux_add_macro(
        -DCONFIG_WPA_SUPP_CRYPTO_MBEDTLS_PSA\
        -DLWIP_HOOK_FILENAME=\\\"lwip_default_hooks.h\\\"\
        -DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_config_client.h\\\"\
-       -DMBEDTLS_WPA_SUPPLICANT_CONFIG_FILE=\\\"wpa_supp_els_pkc_mbedtls_config.h\\\"\       
+       -DMBEDTLS_WPA_SUPPLICANT_CONFIG_FILE=\\\"wpa_supp_els_pkc_mbedtls_config.h\\\"\
        -DGATT_CLIENT\
        -DGATT_DB\
        -DFSL_DRIVER_TRANSFER_DOUBLE_WEAK_IRQ=0\

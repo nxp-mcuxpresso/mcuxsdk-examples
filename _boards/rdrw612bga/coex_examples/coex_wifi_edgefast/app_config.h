@@ -14,12 +14,14 @@
 #include "app_mcuxpresso_config.h"
 #endif /* __MCUXPRESSO */
 
+#include "edgefast_open_app.h"
+
 #if defined(WIFI_BOARD_RW610)
 
 #ifndef RW612_SERIES
 #define RW612_SERIES
 #endif
-#define SHELL_BUFFER_SIZE 512
+
 #define SHELL_MAX_ARGS 48
 
 /* If OT or BLE is enabled, the vApplicationHook defined by the app should be used
@@ -83,8 +85,9 @@
 #endif /* gAppUseSerialManager_c */
 #endif /* CONFIG_OT_CLI */
 
-#define SERIAL_MANAGER_TASK_PRIORITY (PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-2)))
-#define SHELL_TASK_PRIORITY          (PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-2)))
+#define IMU_TASK_PRIORITY            (PRIORITY_RTOS_TO_OSA((CONFIG_NUM_PREEMPT_PRIORITIES - 3)))
+#define SERIAL_MANAGER_TASK_PRIORITY (PRIORITY_RTOS_TO_OSA((CONFIG_NUM_PREEMPT_PRIORITIES - 2)))
+// #define SHELL_TASK_PRIORITY          (PRIORITY_RTOS_TO_OSA((CONFIG_NUM_PREEMPT_PRIORITIES-2)))
 
 #include "wifi_config.h"
 
