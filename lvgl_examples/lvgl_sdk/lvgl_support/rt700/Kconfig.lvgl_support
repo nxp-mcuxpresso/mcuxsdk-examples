@@ -8,7 +8,7 @@ config MCUX_PRJSEG_module.board.lvgl
     select MCUX_COMPONENT_driver.ssd1963
     select MCUX_COMPONENT_driver.inputmux
     select MCUX_COMPONENT_driver.dbi_lcdif
-    select MCUX_COMPONENT_driver.edma4
+    select MCUX_COMPONENT_driver.edma_unified
     select MCUX_COMPONENT_driver.dc-fb-dbi
     select MCUX_COMPONENT_driver.dbi
     select MCUX_COMPONENT_driver.dbi_flexio_edma
