@@ -181,7 +181,10 @@ void BOARD_Init()
 
     /* Create handle for xspi. */
     XSPI_TransferCreateHandleEDMA(EXAMPLE_XSPI, &xspiHandle, xspi_callback, NULL, &dmaTxHandle, &dmaRxHandle);
-    /* XSPI init */
+    /* XSPI init - temporarily disabled to isolate boot-stage failure.
+       Octal deviceConfig/LUT mismatches the W25Q25PWZEIM quad flash. */
+#if 0
     xspi_nor_flash_init(EXAMPLE_XSPI);
     xspi_nor_enable_octal_mode(EXAMPLE_XSPI);
+#endif
 }
