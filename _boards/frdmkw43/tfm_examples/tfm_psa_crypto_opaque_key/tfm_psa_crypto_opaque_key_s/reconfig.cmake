@@ -16,6 +16,22 @@ mcux_add_macro(
        -DFIH_CFI_ALT\
        "
 )
+
+# The TF-M "profile_medium" crypto config (crypto_config_profile_medium.h)
+# leaves several symmetric algorithms disabled by default. The SGI opaque-key
+# example exercises AES cipher (ECB/CBC/CTR) and AEAD (CCM/GCM), so the
+# corresponding PSA_WANT_ALG_* symbols must be enabled. Without them the SGI
+# transparent cipher/AEAD drivers cannot resolve the mode and return
+# PSA_ERROR_NOT_SUPPORTED (-134) at runtime.
+# Note: CBC_NO_PADDING and CMAC are already enabled via
+# CONFIG_MCUX_COMPONENT_middleware.tfm.enable_crypto_cipher_module.
+mcux_add_macro(
+     CC "-DPSA_WANT_ALG_ECB_NO_PADDING=1\
+       -DPSA_WANT_ALG_CTR=1\
+       -DPSA_WANT_ALG_GCM=1\
+       "
+)
+
 #mdk configurations:
 mcux_remove_mdk_configuration(
     TARGETS debug
