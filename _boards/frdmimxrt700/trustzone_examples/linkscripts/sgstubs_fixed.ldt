@@ -1,0 +1,11 @@
+/* 
+  sgstubs_fixed.ldt - intentionally empty.
+
+  This file overrides the IDE's default sgstubs_fixed.ldt to suppress the
+  auto-generated ".gnu.sgstubs > SG_veneer_table" placement (no AT>, stubs
+  would land in flash with LMA == VMA, breaking the runtime copy).
+
+  The actual .gnu.sgstubs placement - with AT> ${CODE} so the load image is
+  in flash and the run-time address is in SG_veneer_table SRAM - is handled
+  by the project-level sgstubs.ldt included alongside this file.
+*/

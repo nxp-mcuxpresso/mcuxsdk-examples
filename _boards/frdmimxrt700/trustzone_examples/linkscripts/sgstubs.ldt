@@ -1,0 +1,45 @@
+    /*
+     * Secure entry function bodies (cmse_nonsecure_entry).
+     *
+     * VMA/runtime address : secure SRAM sg_ramfunc region (0x1000F000)
+     * LMA/load address    : flash, compactly after the read-only text image
+     *
+     * Startup copies this section from flash LMA to SRAM VMA before main().
+     */
+    .sg_ramfunc : ALIGN(32)
+    {
+        __sg_ramfunc_start__ = .;
+        KEEP(*(.sg_ramfunc*))
+        . = ALIGN(32);
+        __sg_ramfunc_end__ = .;
+    } > sg_ramfunc AT> ${CODE}
+
+    __sg_ramfunc_load_start__ = LOADADDR(.sg_ramfunc);
+    __sg_ramfunc_load_end__   = LOADADDR(.sg_ramfunc) + SIZEOF(.sg_ramfunc);
+    __sg_ramfunc_size__       = SIZEOF(.sg_ramfunc);
+
+    /*
+     * CMSE secure gateway stubs (SG veneer table).
+     *
+     * VMA/runtime address : SG_veneer_table NSC SRAM region (0x1000FC00)
+     * LMA/load address    : flash, compactly after .sg_ramfunc
+     *
+     * Startup copies this section from flash LMA to SRAM VMA before main().
+     * Symbols defined outside the section body so SIZEOF() captures the
+     * linker-generated .gnu.sgstubs.__stub entries appended after KEEP().
+     */
+    .gnu.sgstubs : ALIGN(32)
+    {
+        KEEP(*(.gnu.sgstubs))
+        KEEP(*(.gnu.sgstubs.*))
+        . = ALIGN(32);
+    } > SG_veneer_table AT> ${CODE}
+
+    _start_sg             = ADDR(.gnu.sgstubs);
+    _end_sg               = ADDR(.gnu.sgstubs) + SIZEOF(.gnu.sgstubs);
+
+    __sgstubs_ram_start__ = ADDR(.gnu.sgstubs);
+    __sgstubs_ram_end__   = ADDR(.gnu.sgstubs) + SIZEOF(.gnu.sgstubs);
+    __sgstubs_load_start__ = LOADADDR(.gnu.sgstubs);
+    __sgstubs_load_end__   = LOADADDR(.gnu.sgstubs) + SIZEOF(.gnu.sgstubs);
+    __sgstubs_size__       = SIZEOF(.gnu.sgstubs);
