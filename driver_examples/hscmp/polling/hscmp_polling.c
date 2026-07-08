@@ -1,6 +1,5 @@
 /*
- * Copyright 2021 NXP
- * All rights reserved.
+ * Copyright 2021, 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -49,18 +48,34 @@ int main(void)
      *   k_HscmpConfigStruct->powerMode           = kHSCMP_LowSpeedPowerMode;
      */
     HSCMP_GetDefaultConfig(&mHscmpConfigStruct);
+
+    mHscmpConfigStruct.enableComparator = false;
+#if (defined(FSL_FEATURE_HSCMP_HAS_FUNC_CLK_SEL) && FSL_FEATURE_HSCMP_HAS_FUNC_CLK_SEL)
+    mHscmpConfigStruct.funcClockSel = DEMO_HSCMP_FUNC_CLK_SEL;
+#endif
     /* Init the HSCMP module. */
     HSCMP_Init(DEMO_HSCMP_BASE, &mHscmpConfigStruct);
 
     /* Configure the internal DAC to output half of reference voltage. */
+#if (defined(FSL_FEATURE_HSCMP_HAS_DAC_PWR_MODE_SELECT) && FSL_FEATURE_HSCMP_HAS_DAC_PWR_MODE_SELECT)
     mHscmpDacConfigStruct.enableLowPowerMode     = false;
+#endif
+#if (defined(FSL_FEATURE_HSCMP_HAS_DAC_REF_VOL_SELECT) && FSL_FEATURE_HSCMP_HAS_DAC_REF_VOL_SELECT)
     mHscmpDacConfigStruct.referenceVoltageSource = kHSCMP_VrefSourceVin2;
+#endif
+#if (defined(FSL_FEATURE_HSCMP_HAS_DAC_STOP_EN) && FSL_FEATURE_HSCMP_HAS_DAC_STOP_EN)
+    mHscmpDacConfigStruct.enableDacStopMode = false;
+#endif
     mHscmpDacConfigStruct.DACValue =
         ((HSCMP_DCR_DAC_DATA_MASK >> HSCMP_DCR_DAC_DATA_SHIFT) >> 1U); /* Half of reference voltage. */
+    mHscmpDacConfigStruct.enableDacOutput = false;
     HSCMP_SetDACConfig(DEMO_HSCMP_BASE, &mHscmpDacConfigStruct);
 
     /* Configure HSCMP input channels. */
     HSCMP_SetInputChannels(DEMO_HSCMP_BASE, DEMO_HSCMP_USER_CHANNEL, DEMO_HSCMP_DAC_CHANNEL);
+
+    /* Enable HSCMP after all configuration is done. */
+    HSCMP_Enable(DEMO_HSCMP_BASE, true);
 
     /* Init the LED. */
     LED_INIT();
