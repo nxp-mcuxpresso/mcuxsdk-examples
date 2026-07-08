@@ -872,8 +872,10 @@ void ChipInitConfig(void)
     IOMUXC_SNVS_GPR->GPR37 |= IOMUXC_SNVS_GPR_GPR37_SNVS_TAMPER_PUE_MASK;
     /* CM7 SLEEPING is sent to GPC to start sleep sequence */
     IOMUXC_GPR->GPR16 |= IOMUXC_GPR_GPR16_M7_GPC_SLEEP_SEL_MASK;
+#ifndef SINGLE_CORE_M7
     /* CM4 SLEEPING is sent to GPC to start sleep sequence */
     IOMUXC_LPSR_GPR->GPR34 |= IOMUXC_LPSR_GPR_GPR34_M4_GPC_SLEEP_SEL_MASK;
+#endif
 }
 
 void PrintSystemStatus(void)

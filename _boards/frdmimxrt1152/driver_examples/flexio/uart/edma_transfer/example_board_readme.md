@@ -8,9 +8,9 @@ Hardware requirements
 Board settings
 ============
 Connect pin:
-- RX of USB2COM to J48-15
-- TX of USB2COM to J48-13
-- GND of USB2COM to J48-14
+- RX of USB2COM to J44-1
+- TX of USB2COM to J44-3
+- GND of USB2COM to J11-19
 
 Prepare the Demo
 ===============

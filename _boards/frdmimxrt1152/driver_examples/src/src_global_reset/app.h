@@ -13,7 +13,7 @@
 /*${macro:start}*/
 #define DEMO_WDOG_BASE         WDOG1
 #define DEMO_SRC_BASE          SRC
-#define DEMO_GLOBAL_RESET_FLAG kSRC_M4CoreWdogResetFlag
+#define DEMO_GLOBAL_RESET_FLAG kSRC_M7CoreWdogResetFlag
 #if defined(ROM_ECC_ENABLED)
 /* When ECC is enabled, SRC->SRSR need to be cleared since only correct SRSR value can trigger ROM ECC preload
  * procedure. In the start up stage the value of SRSR has been saved to SRC->GPR[10]. So that read SRC->GPR[10] to get
