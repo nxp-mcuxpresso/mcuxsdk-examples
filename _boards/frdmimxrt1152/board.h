@@ -167,12 +167,12 @@
 #define BOARD_WIFI_SD_DETECT_TYPE kSDMMCHOST_DetectCardByHostDATA3
 
 /* @Brief Board Bluetooth HCI UART configuration */
-#define BOARD_BT_UART_BASEADDR    LPUART7
-#define BOARD_BT_UART_INSTANCE    7
+#define BOARD_BT_UART_BASEADDR    LPUART8
+#define BOARD_BT_UART_INSTANCE    8
 #define BOARD_BT_UART_BAUDRATE    3000000
-#define BOARD_BT_UART_CLK_FREQ    CLOCK_GetRootClockFreq(kCLOCK_Root_Lpuart7);
-#define BOARD_BT_UART_IRQ         LPUART7_IRQn
-#define BOARD_BT_UART_IRQ_HANDLER LPUART7_IRQHandler
+#define BOARD_BT_UART_CLK_FREQ    CLOCK_GetRootClockFreq(kCLOCK_Root_Lpuart8);
+#define BOARD_BT_UART_IRQ         LPUART8_IRQn
+#define BOARD_BT_UART_IRQ_HANDLER LPUART8_IRQHandler
 
 /*! @brief The Ethernet port used by network examples, default use 1G port. */
 /* Below comment is for test script to easily define which port to be used, please don't delete. */
