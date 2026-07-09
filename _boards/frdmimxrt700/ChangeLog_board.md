@@ -1,15 +1,15 @@
 # Board Support Files
 
 ## board
-### [26.03.00]
+### [26.09.00-pvw2]
 - Initial version
 
 ## clock\_config
 
-### [26.03.00]
+### [26.09.00-pvw2]
 - Initial version
 
 ## pin\_mux
 
-### [26.03.00]
+### [26.09.00-pvw2]
 - Initial version
