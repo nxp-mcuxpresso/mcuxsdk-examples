@@ -17,9 +17,7 @@
  * Prototypes
  ******************************************************************************/
 extern uint32_t BOARD_USDHC1ClockConfiguration(void);
-#if __CORTEX_M == 7
 extern void BOARD_USDHC_Errata(void);
-#endif
 
 /*******************************************************************************
  * Variables
@@ -151,9 +149,7 @@ void BOARD_WIFI_BT_Config(void *card, sdio_int_t cardInt)
     }
 
     NVIC_SetPriority(BOARD_SDMMC_SDIO_HOST_IRQ, BOARD_SDMMC_SDIO_HOST_IRQ_PRIORITY);
-#if __CORTEX_M == 7
     BOARD_USDHC_Errata();
-#endif
 
 #if !defined(COEX_APP_SUPPORT) || (defined(COEX_APP_SUPPORT) && !defined(CONFIG_WIFI_IND_DNLD))
     BOARD_WIFI_BT_Enable(false);

@@ -7,7 +7,7 @@ Hardware requirements
 
 Board settings
 ============
-- Remove R183.
+- Remove R183, R131, R151, R177, R124.
 - J30, headphone connected
 - connect FLEXIO pins to the pad as follows:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

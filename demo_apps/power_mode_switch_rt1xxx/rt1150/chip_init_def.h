@@ -74,9 +74,7 @@
 {  kSRC_DisplaySlice   ,SP_CTRL    ,PD_DISP_SP_VAL }, /* DISPLAYMIX     1  */\
 {  kSRC_WakeUpSlice    ,SP_CTRL    ,PD_WKUP_SP_VAL }, /* WAKEUPMIX      2  */\
 {  kSRC_LpsrSlice      ,SP_CTRL    ,PD_LPSR_SP_VAL }, /* LPSRMIX        3  */\
-{  kSRC_M4CoreSlice    ,CM4_CTRL   ,NA             }, /* M4CORE         4  */\
 {  kSRC_M7CoreSlice    ,CM7_CTRL   ,NA             }, /* M7CORE         5  */\
-{  kSRC_M4DebugSlice   ,CM4_CTRL   ,NA             }, /* M4DBG          6  */\
 {  kSRC_M7DebugSlice   ,CM7_CTRL   ,NA             }, /* M7DBG          7  */\
 {  kSRC_Usbphy1Slice   ,SP_CTRL    ,PD_MEGA_SP_VAL }, /* USBPHY1        8  */\
 {  kSRC_Usbphy2Slice   ,SP_CTRL    ,PD_MEGA_SP_VAL }} /* USBPHY2        9  */

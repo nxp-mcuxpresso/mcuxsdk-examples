@@ -187,7 +187,6 @@
 #endif
 
 /* Board MPU region index definition. Higher index takes priority on memory overlap. */
-#if __CORTEX_M == 7
 #define BOARD_MPU_REGION_FULL_BG      (0)  /* Whole 4G space background without access permission.
                                               Needed for Arm errata 1013783-B */
 #define BOARD_MPU_REGION_FLEXSPI2_BG  (2)  /* FLEXSPI2 background (overlaid by HYPERRAM region) */
@@ -204,7 +203,6 @@
 #define BOARD_MPU_REGION_SIM_M7       (13) /* SIM_M7 configuration space */
 #define BOARD_MPU_REGION_GPU2D_CDOG   (14) /* GPU2D/CDOG */
 #define BOARD_MPU_REGION_AIPS_M7      (15) /* AIPS M7 */
-#endif
 
 #if defined(__cplusplus)
 extern "C" {
@@ -217,9 +215,7 @@ uint32_t BOARD_DebugConsoleSrcFreq(void);
 
 void BOARD_InitDebugConsole(void);
 
-#if __CORTEX_M == 7
 void BOARD_ResetMPU(void);
-#endif
 void BOARD_ConfigMPU(void);
 #if defined(SDK_I2C_BASED_COMPONENT_USED) && SDK_I2C_BASED_COMPONENT_USED
 void BOARD_LPI2C_Init(LPI2C_Type *base, uint32_t clkSrc_Hz);

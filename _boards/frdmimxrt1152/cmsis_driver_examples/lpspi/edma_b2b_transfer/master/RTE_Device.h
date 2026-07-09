@@ -27,21 +27,11 @@ extern void BOARD_InitSPIPins_deinit();
 #define RTE_SPI1_PIN_DEINIT             BOARD_InitSPIPins_deinit
 #define RTE_SPI1_DMA_TX_CH              0
 #define RTE_SPI1_DMA_TX_PERI_SEL        (uint8_t) kDmaRequestMuxLPSPI1Tx
-#if __CORTEX_M == 7
 #define RTE_SPI1_DMA_TX_DMAMUX_BASE DMAMUX0
 #define RTE_SPI1_DMA_TX_DMA_BASE    DMA0
-#else
-#define RTE_SPI1_DMA_TX_DMAMUX_BASE DMAMUX1
-#define RTE_SPI1_DMA_TX_DMA_BASE    DMA1
-#endif
 #define RTE_SPI1_DMA_RX_CH       1
 #define RTE_SPI1_DMA_RX_PERI_SEL (uint8_t) kDmaRequestMuxLPSPI1Rx
-#if __CORTEX_M == 7
 #define RTE_SPI1_DMA_RX_DMAMUX_BASE DMAMUX0
 #define RTE_SPI1_DMA_RX_DMA_BASE    DMA0
-#else
-#define RTE_SPI1_DMA_RX_DMAMUX_BASE DMAMUX1
-#define RTE_SPI1_DMA_RX_DMA_BASE    DMA1
-#endif
 
 #endif /* _RTE_DEVICE_H */

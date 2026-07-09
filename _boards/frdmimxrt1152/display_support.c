@@ -228,11 +228,7 @@ static const dc_fb_lcdifv2_config_t s_dcFbLcdifv2Config = {
     .polarityFlags = DEMO_LCDIF_POL_FLAGS,
     .lineOrder     = kLCDIFV2_LineOrderRGB,
 /* CM4 is domain 1, CM7 is domain 0. */
-#if (__CORTEX_M <= 4)
-    .domain = 1,
-#else
     .domain = 0,
-#endif
 };
 
 const dc_fb_t g_dc = {

@@ -395,7 +395,6 @@ void SRC_InitConfig()
 
     SRC_ClearGlobalSystemResetStatus(SRC, 0xffffffff);
     SRC_SetGlobalSystemResetMode(SRC, kSRC_Wdog3Reset, kSRC_DoNotResetSystem);
-    SRC_SetGlobalSystemResetMode(SRC, kSRC_Wdog4Reset, kSRC_DoNotResetSystem);
 
     for (i = 0; i < SRC_SLICE_NUM; i++)
     {

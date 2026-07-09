@@ -22,21 +22,11 @@ extern void BOARD_InitDEBUG_UARTPins_deinit();
 #define RTE_USART1_PIN_DEINIT      BOARD_InitDEBUG_UARTPins_deinit
 #define RTE_USART1_DMA_TX_CH       0
 #define RTE_USART1_DMA_TX_PERI_SEL (uint8_t) kDmaRequestMuxLPUART1Tx
-#if __CORTEX_M == 7
 #define RTE_USART1_DMA_TX_DMAMUX_BASE DMAMUX0
 #define RTE_USART1_DMA_TX_DMA_BASE    DMA0
-#else
-#define RTE_USART1_DMA_TX_DMAMUX_BASE DMAMUX1
-#define RTE_USART1_DMA_TX_DMA_BASE    DMA1
-#endif
 #define RTE_USART1_DMA_RX_CH       1
 #define RTE_USART1_DMA_RX_PERI_SEL (uint8_t) kDmaRequestMuxLPUART1Rx
-#if __CORTEX_M == 7
 #define RTE_USART1_DMA_RX_DMAMUX_BASE DMAMUX0
 #define RTE_USART1_DMA_RX_DMA_BASE    DMA0
-#else
-#define RTE_USART1_DMA_RX_DMAMUX_BASE DMAMUX1
-#define RTE_USART1_DMA_RX_DMA_BASE    DMA1
-#endif
 
 #endif /* _RTE_DEVICE_H */

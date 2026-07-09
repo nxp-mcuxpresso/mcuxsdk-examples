@@ -63,7 +63,6 @@ uint32_t BOARD_USDHC1ClockConfiguration(void)
     return CLOCK_GetRootClockFreq(kCLOCK_Root_Usdhc1);
 }
 
-#if __CORTEX_M == 7
 void BOARD_USDHC_Errata(void)
 {
     /* ERR050396
@@ -76,7 +75,6 @@ void BOARD_USDHC_Errata(void)
      */
     IOMUXC_GPR->GPR28 &= (~IOMUXC_GPR_GPR28_AWCACHE_USDHC_MASK);
 }
-#endif
 
 #if defined(SDIO_ENABLED) || defined(SD_ENABLED)
 bool BOARD_SDCardGetDetectStatus(void)
@@ -220,9 +218,7 @@ void BOARD_SD_Config(void *card, sd_cd_t cd, uint32_t hostIRQPriority, void *use
 
     NVIC_SetPriority(BOARD_SDMMC_SD_HOST_IRQ, hostIRQPriority);
 
-#if __CORTEX_M == 7
     BOARD_USDHC_Errata();
-#endif
 }
 #endif
 
@@ -261,9 +257,7 @@ void BOARD_SDIO_Config(void *card, sd_cd_t cd, uint32_t hostIRQPriority, sdio_in
 
     NVIC_SetPriority(BOARD_SDMMC_SDIO_HOST_IRQ, hostIRQPriority);
 
-#if __CORTEX_M == 7
     BOARD_USDHC_Errata();
-#endif
 }
 #endif
 
@@ -296,8 +290,6 @@ void BOARD_MMC_Config(void *card, uint32_t hostIRQPriority)
 
     NVIC_SetPriority(BOARD_SDMMC_MMC_HOST_IRQ, hostIRQPriority);
 
-#if __CORTEX_M == 7
     BOARD_USDHC_Errata();
-#endif
 }
 #endif
