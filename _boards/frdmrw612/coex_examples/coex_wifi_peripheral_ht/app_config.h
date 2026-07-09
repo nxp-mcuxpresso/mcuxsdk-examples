@@ -14,6 +14,8 @@
 #include "app_mcuxpresso_config.h"
 #endif
 
+#include "edgefast_open_app.h"
+
 #if defined(WIFI_BOARD_FRDM_RW61X)
 
 #ifndef RW612_SERIES
@@ -37,6 +39,8 @@
 #define CONFIG_SOC_SERIES_RW6XX_REVISION_A2 1
 #define gPlatformMonolithicApp_d            1
 #endif
+
+#define IMU_TASK_PRIORITY (PRIORITY_RTOS_TO_OSA((CONFIG_NUM_PREEMPT_PRIORITIES - 3)))
 
 #define WIFI_BT_TX_PWR_LIMITS "wlan_txpwrlimit_cfg_WW_rw610.h"
 #else

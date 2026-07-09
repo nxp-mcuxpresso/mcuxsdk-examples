@@ -2,10 +2,10 @@ mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/_boards/${board}/coex_examples/coex_wifi_central_ht/pin_mux.c
             examples/_boards/${board}/coex_examples/coex_wifi_central_ht/pin_mux.h
-            examples/_boards/${board}/coex_examples/coex_wifi_central_ht/hardware_init.c
             examples/_boards/${board}/coex_examples/coex_wifi_central_ht/FreeRTOSConfig.h
             examples/_boards/${board}/coex_examples/coex_wifi_central_ht/app_config.h
             examples/coex_examples/coex_wifi_central_ht/app_config.cmake
+            middleware/wireless/coex/build/${board}/common/hardware_init.c
             middleware/wireless/coex/src/configs/rw61x/wifi/wifi_config.h
             middleware/wireless/coex/src/configs/rw61x/lwip/lwipopts.h
             middleware/wireless/coex/src/configs/rw61x/lwip/lwiphooks.h
@@ -28,14 +28,19 @@ mcux_add_include(
 )
 
 mcux_add_macro(
-  CC "-DBT_PLATFORM\
+  CC "-DAPPL_USE_STANDARD_IO\
+      -DBT_PLATFORM\
       -DCONFIG_ARM=1\
       -DEDGEFAST_BT_LITTLEFS_MFLASH\
       -DFSL_DRIVER_TRANSFER_DOUBLE_WEAK_IRQ=0\
       -DFSL_FEATURE_FLASH_PAGE_SIZE_BYTES=4096\
+      -DFSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1\
       -DGATT_CLIENT\
       -DGATT_DB\
       -DHAL_AUDIO_DMA_INIT_ENABLE=0\
+      -DHAL_UART_ADAPTER_FIFO=1\
+      -DIOT_WIFI_ENABLE_SAVE_NETWORK=1\
+      -DCONTROLLER_ID=kUSB_ControllerEhci0\
       -DLFS_NO_ERROR=1\
       -DLFS_NO_INTRINSICS=1\
       -DgMemManagerLight=0\
@@ -44,6 +49,7 @@ mcux_add_macro(
       -DCONFIG_WPA_SUPP_CRYPTO_MBEDTLS_PSA\
       -DLWIP_HOOK_FILENAME=\\\"lwip_default_hooks.h\\\"\
       -DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_config_client.h\\\"\
+      -DMBEDTLS_WPA_SUPPLICANT_CONFIG_FILE=\\\"wpa_supp_els_pkc_mbedtls_config.h\\\"\
       -DCONFIG_HOSTAPD=0"
 )
 

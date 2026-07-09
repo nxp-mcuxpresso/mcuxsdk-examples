@@ -27,10 +27,6 @@
 #include "fsl_common.h"
 #include "fsl_device_registers.h"
 
-#include "BT_common.h"
-#include "BT_version.h"
-#include "BT_hci_api.h"
-
 #include "fsl_gpio.h"
 #if !defined(RW612_SERIES)
 #include "fsl_iomuxc.h"

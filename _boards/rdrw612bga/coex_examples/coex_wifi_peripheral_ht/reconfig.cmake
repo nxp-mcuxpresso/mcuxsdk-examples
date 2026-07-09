@@ -2,10 +2,10 @@ mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/_boards/${board}/coex_examples/coex_wifi_peripheral_ht/pin_mux.c
             examples/_boards/${board}/coex_examples/coex_wifi_peripheral_ht/pin_mux.h
-            examples/_boards/${board}/coex_examples/coex_wifi_peripheral_ht/hardware_init.c
             examples/_boards/${board}/coex_examples/coex_wifi_peripheral_ht/FreeRTOSConfig.h
             examples/_boards/${board}/coex_examples/coex_wifi_peripheral_ht/app_config.h
             examples/coex_examples/coex_wifi_peripheral_ht/app_config.cmake
+            middleware/wireless/coex/build/${board}/common/hardware_init.c
             middleware/wireless/coex/src/configs/rw61x/wifi/wifi_config.h
             middleware/wireless/coex/src/configs/rw61x/lwip/lwipopts.h
             middleware/wireless/coex/src/configs/rw61x/lwip/lwiphooks.h
@@ -46,6 +46,7 @@ mcux_add_macro(
       -DLFS_NO_ERROR=1\
       -DLFS_NO_INTRINSICS=1\
       -DgMemManagerLight=0\
+      -DCONTROLLER_ID=kUSB_ControllerEhci0\
       -DDEBUG_CONSOLE_ENABLE_ECHO_FUNCTION\
       -DMCUX_ENABLE_TRNG_AS_ENTROPY_SEED\
       -DCONFIG_WPA_SUPP_CRYPTO_MBEDTLS_PSA\
