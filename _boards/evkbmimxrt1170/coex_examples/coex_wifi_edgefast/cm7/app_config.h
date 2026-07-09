@@ -14,7 +14,7 @@
 #define CONFIG_COEX_APP                 0
 #endif
 
-#include "app_bluetooth_config.h"
+#include "edgefast_open_config.h"
 #include "wifi_bt_module_config.h"
 #include "wifi_config.h"
 

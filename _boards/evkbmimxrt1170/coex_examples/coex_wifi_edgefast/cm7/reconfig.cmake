@@ -22,11 +22,10 @@ mcux_add_source(
     middleware/wireless/coex/src/configs/mimxrt1176/lwip/lwiphooks.h
     middleware/wireless/coex/src/configs/mimxrt1176/lwip/lwipopts.h
     middleware/wireless/coex/src/common/controller_coex_nxp.c
+    middleware/wireless/coex/src/common/coex_nb_uart_fw_download.c
     middleware/wireless/coex/src/edgefast/coex_shell.c
     middleware/wireless/coex/src/edgefast/coex_shell.h
     examples/coex_examples/coex_wifi_edgefast/app_config.cmake
-    #middleware/wireless/coex/build/${board}/common/app.h
-    middleware/wireless/coex/src/configs/mimxrt1176/edgefast/app_bluetooth_config.h
 )
 
 mcux_add_source(
@@ -48,14 +47,13 @@ mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES ${board_root}/${board}
              ${board_root}/${board}/coex_examples/coex_wifi_edgefast/cm7
-             middleware/wireless/coex/src/configs/mimxrt1176/edgefast
              middleware/wireless/coex/src/configs/mimxrt1176/wifi
              middleware/wireless/coex/src/configs/mimxrt1176/lwip
              middleware/wireless/coex/src/configs/mimxrt1176/mbedtls
+             middleware/edgefast_open/examples/_boards/${board}/configs/mbedtls
              middleware/wireless/coex/src/edgefast
              middleware/wireless/coex/src/common
              middleware/wireless/coex/build/${board}/common
-            #  middleware/wireless/coex/third_party
              examples/coex_examples/coex_wifi_edgefast
              components/wifi_bt_module/incl
             
@@ -93,7 +91,7 @@ mcux_add_macro(
       -DCONFIG_BLE_SLIM=0\
       -DUSB_HOST_CONFIG_BUFFER_PROPERTY_CACHEABLE=1\
       -DgMemManagerLight=0\
-      -DCONTROLLER_INIT_ESCAPE=1"
+"
 )
 
 mcux_add_macro(
@@ -106,50 +104,6 @@ mcux_add_macro(
   AS "-D__STARTUP_INITIALIZE_RAMFUNCTION"
   TOOLCHAINS armgcc
 )
-
-# mcux_add_macro(
-#   CC "-DFILE=void"
-#   TOOLCHAINS iar
-# )
-
-# mcux_add_macro(
-#   CC "-DLFS_NO_ASSERT"
-#   TARGETS flexspi_nor_release
-#   TOOLCHAINS iar
-# )
-#mcux_add_mdk_configuration(
-#    LD "--keep=*(._bt_*)\
-#       --keep=*(._net_buf_pool*)\
-#       --keep=*(._settings_handler_static*)\
-#       --keep=mflash_drv.o(*)\
-#       --diag_suppress=6329\
-#       --diag_suppress=6319\
-#       --diag_suppress=6675\
-#       --diag_suppress=6775\
-#       --legacyalign\
-#       --diag_suppress=3912"
-#)
-
-# mcux_add_iar_configuration(
-#   CC "--dlib_config full\
-#       --no_inline"
-#   CX "--no_clustering"
-#   LD "--semihosting"
-# )
-
-# mcux_add_mdk_configuration(
-#     LD "--library_type=microlib"
-# )
-
-# mcux_remove_mdk_configuration(
-#     TARGETS flexspi_nor_release
-#     CC "-Oz"
-# )
-
-# mcux_add_mdk_configuration(
-#     TARGETS flexspi_nor_release
-#     CC "-Os"
-# )
 
 mcux_remove_iar_linker_script(
   BASE_PATH ${SdkRootDirPath}
@@ -180,21 +134,6 @@ mcux_add_armgcc_linker_script(
     flexspi_nor_debug
     flexspi_nor_release
 )
-
-#mcux_add_iar_linker_script(
-#  BASE_PATH ${SdkRootDirPath}
-#  LINKER middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/shell/linker/arm/MIMXRT1176xxxxx_cm7_flexspi_nor.icf
-#  TARGETS
-#    flexspi_nor_debug
-#    flexspi_nor_release
-#)
-#mcux_add_mdk_linker_script(
-#  BASE_PATH ${SdkRootDirPath}
-#  LINKER middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/shell/linker/arm/MIMXRT1176xxxxx_cm7_flexspi_nor.scf
-#  TARGETS
-#    flexspi_nor_debug
-#    flexspi_nor_release
-#)
 
 mcux_add_armgcc_configuration(
     LD "-Xlinker --defsym=__stack_size__=0x400\
