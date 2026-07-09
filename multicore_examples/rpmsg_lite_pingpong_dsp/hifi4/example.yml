@@ -22,6 +22,6 @@ rpmsg_lite_pingpong_dsp_hifi4_core:
     mimxrt700evk@hifi4:
     - +xtensa@debug
     - +xtensa@release
-    # frdmimxrt700@c@hifi4:
-    # - +xtensa@debug
-    # - +xtensa@release
+    frdmimxrt700@hifi4:
+    - +xtensa@debug
+    - +xtensa@release
