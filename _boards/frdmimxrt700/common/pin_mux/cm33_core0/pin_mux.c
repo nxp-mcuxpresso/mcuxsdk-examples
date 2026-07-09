@@ -20,10 +20,10 @@ mcu_data: ksdk2_0
 processor_version: 0.2606.60
 board: FRDM-IMXRT700
 pin_labels:
-- {pin_num: T24, pin_signal: PIO0_2/LP_FLEXCOMM8_P4/SCT0_GPIN2/SCT0_OUT2/CTIMER0_MAT1/SAI0_RX_DATA/LP_FLEXCOMM9_P0, label: 'U82E[D24]/U29[D2]', identifier: 'SAI0_RXD[0];SAI0_RXD0'}
-- {pin_num: V25, pin_signal: PIO0_4/LP_FLEXCOMM4_P1/SCT0_GPIN4/SCT0_OUT4/CTIMER0_MAT3/SAI0_TX_DATA, label: 'U82E[V25]/U29[D1]', identifier: 'SAI0_TXD[0];SAI0_TXD0'}
+- {pin_num: T24, pin_signal: PIO0_2/LP_FLEXCOMM8_P4/SCT0_GPIN2/SCT0_OUT2/CTIMER0_MAT1/SAI0_RX_DATA/LP_FLEXCOMM9_P0, label: 'U82E[D24]/U29[D2]', identifier: SAI0_RXD0}
+- {pin_num: V25, pin_signal: PIO0_4/LP_FLEXCOMM4_P1/SCT0_GPIN4/SCT0_OUT4/CTIMER0_MAT3/SAI0_TX_DATA, label: 'U82E[V25]/U29[D1]', identifier: SAI0_TXD0}
 - {pin_num: V23, pin_signal: PIO0_10/LP_FLEXCOMM5_P0/SCT0_GPIN4/SCT0_OUT4/CTIMER1_MAT0/CTIMER_C_INP0/SAI2_RX_DATA, label: SW5, identifier: SW5}
-- {pin_num: V24, pin_signal: PIO0_14/LP_FLEXCOMM5_P4/SCT0_GPIN0/SCT0_OUT8/CTIMER_C_INP2/SAI2_RX_DATA/CLKOUT_VDD2, label: 'U82E[V24]/U68A[59]', identifier: 'SAI2_RXD[0];SAI2_RXD0'}
+- {pin_num: V24, pin_signal: PIO0_14/LP_FLEXCOMM5_P4/SCT0_GPIN0/SCT0_OUT8/CTIMER_C_INP2/SAI2_RX_DATA/CLKOUT_VDD2, label: 'U82E[V24]/U68A[59]', identifier: SAI2_RXD0}
 - {pin_num: AB24, pin_signal: PIO0_19/LP_FLEXCOMM6_P2/SCT0_GPIN2/SCT0_OUT2/CTIMER2_MAT2/SAI1_RX_SYNC, label: LED_BLU, identifier: LED_BLU}
 - {pin_num: AB25, pin_signal: PIO0_21/LP_FLEXCOMM6_P0/SCT0_GPIN6/SCT0_OUT6/CTIMER_C_INP4/SAI1_TX_DATA/CLKCTL0_MCLK, label: MCLK, identifier: MCLK}
 - {pin_num: AC22, pin_signal: PIO1_9/LP_FLEXCOMM1_P2/SCT0_GPIN7/SCT0_OUT3/CTIMER_C_INP15/CLKCTL0_CLKIN/CLKOUT_VDD1, label: LED_BLUE, identifier: LED_BLUE}
@@ -459,10 +459,9 @@ BOARD_InitI2SPins:
 - pin_list:
   - {pin_num: R24, peripheral: SAI0, signal: RX_BCLK, pin_signal: PIO0_0/LP_FLEXCOMM8_P2/SCT0_GPIN0/SCT0_OUT0/CTIMER_C_INP9/SAI0_RX_BCLK/SAI1_TX_BCLK, input_buffer: enable}
   - {pin_num: P24, peripheral: SAI0, signal: RX_SYNC, pin_signal: PIO0_1/LP_FLEXCOMM8_P3/SCT0_GPIN1/SCT0_OUT1/CTIMER0_MAT0/SAI0_RX_SYNC/SAI1_RX_DATA, input_buffer: enable}
-  - {pin_num: T24, peripheral: SAI0, signal: RXD0, pin_signal: PIO0_2/LP_FLEXCOMM8_P4/SCT0_GPIN2/SCT0_OUT2/CTIMER0_MAT1/SAI0_RX_DATA/LP_FLEXCOMM9_P0, identifier: SAI0_RXD0,
-    input_buffer: enable}
+  - {pin_num: T24, peripheral: SAI0, signal: RXD0, pin_signal: PIO0_2/LP_FLEXCOMM8_P4/SCT0_GPIN2/SCT0_OUT2/CTIMER0_MAT1/SAI0_RX_DATA/LP_FLEXCOMM9_P0, input_buffer: enable}
   - {pin_num: T25, peripheral: SAI0, signal: TX_BCLK, pin_signal: PIO0_3/LP_FLEXCOMM4_P0/SCT0_GPIN3/SCT0_OUT3/CTIMER0_MAT2/SAI0_TX_BCLK, input_buffer: enable}
-  - {pin_num: V25, peripheral: SAI0, signal: TXD0, pin_signal: PIO0_4/LP_FLEXCOMM4_P1/SCT0_GPIN4/SCT0_OUT4/CTIMER0_MAT3/SAI0_TX_DATA, identifier: SAI0_TXD0, input_buffer: enable}
+  - {pin_num: V25, peripheral: SAI0, signal: TXD0, pin_signal: PIO0_4/LP_FLEXCOMM4_P1/SCT0_GPIN4/SCT0_OUT4/CTIMER0_MAT3/SAI0_TX_DATA, input_buffer: enable}
   - {pin_num: T23, peripheral: SAI0, signal: TX_SYNC, pin_signal: PIO0_5/LP_FLEXCOMM4_P4/SCT0_GPIN5/SCT0_OUT5/CTIMER2_MAT0/SAI0_TX_SYNC/CLKCTL0_MCLK/LP_FLEXCOMM9_P1,
     input_buffer: enable}
   - {pin_num: AB25, peripheral: CLKCTL0, signal: MCLK, pin_signal: PIO0_21/LP_FLEXCOMM6_P0/SCT0_GPIN6/SCT0_OUT6/CTIMER_C_INP4/SAI1_TX_DATA/CLKCTL0_MCLK, direction: OUTPUT,
@@ -1788,8 +1787,7 @@ void BOARD_InitCMPPins(void)
 BOARD_InitVDD2_CLKOUTPins:
 - options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: V24, peripheral: CLKCTL0, signal: 'CLKOUT_VDD, 2', pin_signal: PIO0_14/LP_FLEXCOMM5_P4/SCT0_GPIN0/SCT0_OUT8/CTIMER_C_INP2/SAI2_RX_DATA/CLKOUT_VDD2,
-    identifier: SAI2_RXD0}
+  - {pin_num: V24, peripheral: CLKCTL0, signal: 'CLKOUT_VDD, 2', pin_signal: PIO0_14/LP_FLEXCOMM5_P4/SCT0_GPIN0/SCT0_OUT8/CTIMER_C_INP2/SAI2_RX_DATA/CLKOUT_VDD2}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
