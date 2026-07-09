@@ -6,7 +6,7 @@ Hardware requirements
 
 Board settings
 ==============
-Connect J23-8 to a voltage source.
+Connect J24-3 (PTA5 ADC0_A3) to a voltage source.
 
 Prepare the Demo
 ================

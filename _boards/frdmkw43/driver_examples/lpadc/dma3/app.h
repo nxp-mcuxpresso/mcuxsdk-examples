@@ -11,7 +11,7 @@
  * Definitions
  ******************************************************************************/
 #define DEMO_LPADC_BASE                         HSADC_0
-#define DEMO_LPADC_USER_CHANNEL                 15U
+#define DEMO_LPADC_USER_CHANNEL                 3U
 #define DEMO_LPADC_USER_CMDID                   1U
 #define DEMO_LPADC_SAMPLE_COUNT                 16U
 #define DEMO_LPADC_RESFIFO_REG_ADDR             (&DEMO_LPADC_BASE->RESFIFO)
