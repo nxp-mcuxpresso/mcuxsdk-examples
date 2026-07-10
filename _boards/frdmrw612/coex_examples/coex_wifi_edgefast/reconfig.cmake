@@ -43,7 +43,7 @@ mcux_add_include(
 mcux_add_armgcc_configuration(
     TARGETS flash_release
     AS "-g"
-    CC "-g"
+    CC "-g -Wno-array-bounds"
     CX "-g"
 )
 # Suppress GCC 14 false-positive array-bounds warning in secure_storage aead.c
@@ -105,7 +105,6 @@ mcux_add_macro(
 mcux_remove_macro(
     MBEDTLS_MCUX_ELS_PKC_API
 )
-
 mcux_remove_macro(
     TOOLCHAINS armgcc
     TARGETS flash_release
