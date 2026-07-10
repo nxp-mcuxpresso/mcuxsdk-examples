@@ -1,4 +1,8 @@
-/* Copyright 2026 NXP */
+/*
+ * Copyright 2026 NXP
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
 
 #ifndef GG_UTILS_H
 #define GG_UTILS_H

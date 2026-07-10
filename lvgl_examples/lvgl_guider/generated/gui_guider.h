@@ -1,4 +1,8 @@
-/* Copyright 2026 NXP */
+/*
+ * Copyright 2026 NXP
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
 
 #ifndef GUI_GUIDER_H
 #define GUI_GUIDER_H
