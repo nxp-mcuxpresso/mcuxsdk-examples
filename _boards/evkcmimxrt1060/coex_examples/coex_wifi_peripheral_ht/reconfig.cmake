@@ -9,6 +9,7 @@ mcux_add_source(
             examples/_boards/${board}/coex_examples/coex_wifi_peripheral_ht/pin_mux.c
             examples/_boards/${board}/coex_examples/coex_wifi_peripheral_ht/pin_mux.h
             middleware/wireless/coex/build/${board}/common/hardware_init.c
+            middleware/wireless/coex/src/common/coex_nb_uart_fw_download.c
             examples/_boards/${board}/coex_examples/coex_wifi_peripheral_ht/app_config.h
             examples/coex_examples/coex_wifi_peripheral_ht/app_config.cmake
             middleware/wireless/coex/src/configs/mimxrt1062/mbedtls/mbedtls_config_client.h
@@ -25,6 +26,7 @@ mcux_add_include(
              middleware/wireless/coex/src/configs/mimxrt1062/wifi
              middleware/wireless/coex/src/configs/mimxrt1062/lwip
              middleware/wireless/coex/src/configs/mimxrt1062/mbedtls
+             middleware/edgefast_open/examples/_boards/evkcmimxrt1060/configs/mbedtls
              examples/_boards/${board}/coex_examples/coex_wifi_peripheral_ht
              examples/coex_examples/coex_wifi_peripheral_ht
              components/wifi_bt_module/incl
@@ -41,6 +43,7 @@ mcux_add_macro(
 
 mcux_add_macro(
   CC "-DCONFIG_ARM=1\
+      -DCONFIG_COEX_APP=1\
       -DCOEX_APP_SUPPORT=1\
       -DXIP_EXTERNAL_FLASH=1\
       -DEDGEFAST_BT_LITTLEFS_MFLASH\
@@ -54,7 +57,8 @@ mcux_add_macro(
       -DLFS_NO_INTRINSICS=1\
       -DSDIO_ENABLED=1\
       -DDEBUG_CONSOLE_ENABLE_ECHO_FUNCTION\
-      -DUSB_HOST_CONFIG_BUFFER_PROPERTY_CACHEABLE=1"
+      -DUSB_HOST_CONFIG_BUFFER_PROPERTY_CACHEABLE=1\
+	  -DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_user_config.h\\\""
 )
 
 # wifi
@@ -75,22 +79,6 @@ mcux_add_macro(
 mcux_add_macro(
   AS "-D__STARTUP_INITIALIZE_RAMFUNCTION"
   TOOLCHAINS armgcc
-)
-
-mcux_remove_iar_linker_script(
-  BASE_PATH ${SdkRootDirPath}
-  LINKER ${device_root}/RT/RT1060/MIMXRT1062/iar/MIMXRT1062xxxxx_flexspi_nor.icf
-  TARGETS
-    flexspi_nor_debug
-    flexspi_nor_release
-)
-
-mcux_remove_mdk_linker_script(
-  BASE_PATH ${SdkRootDirPath}
-  LINKER ${device_root}/RT/RT1060/MIMXRT1062/arm/MIMXRT1062xxxxx_flexspi_nor.scf
-  TARGETS
-    flexspi_nor_debug
-    flexspi_nor_release
 )
 
 mcux_remove_armgcc_linker_script(

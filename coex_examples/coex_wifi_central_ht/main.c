@@ -38,8 +38,6 @@
 //#include "appl_utils.h"
 
 #include "fsl_adapter_uart.h"
-#include "usb_host_config.h"
-#include "usb_host.h"
 
 #include "netif/ethernet.h"
 //#include "ethernetif.h"
@@ -103,7 +101,7 @@
  * Definitions
  ******************************************************************************/
 
-const int TASK_MAIN_PRIO       = (configMAX_PRIORITIES-5);
+const int TASK_MAIN_PRIO       = (configMAX_PRIORITIES-7);
 const int TASK_MAIN_STACK_SIZE = (2 * 1024);
 TaskHandle_t task_main_handle;
 
