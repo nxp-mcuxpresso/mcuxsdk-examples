@@ -23,6 +23,7 @@ mcux_add_source(
     middleware/wireless/coex/src/configs/mimxrt1176/lwip/lwipopts.h
     middleware/wireless/coex/src/common/controller_coex_nxp.c
     middleware/wireless/coex/src/common/coex_nb_uart_fw_download.c
+    middleware/wireless/coex/src/common/coex_nb_uart_fw_download.h
     middleware/wireless/coex/src/edgefast/coex_shell.c
     middleware/wireless/coex/src/edgefast/coex_shell.h
     examples/coex_examples/coex_wifi_edgefast/app_config.cmake
@@ -84,7 +85,6 @@ mcux_add_macro(
       -DHAL_AUDIO_DMA_INIT_ENABLE=0\
       -DHAL_UART_ADAPTER_FIFO=1\
       -DHAL_UART_DMA_ENABLE=1\
-      -DIOT_WIFI_ENABLE_SAVE_NETWORK=1\
       -DLFS_NO_ERROR=1\
       -DLFS_NO_INTRINSICS=1\
       -DSDIO_ENABLED=1\

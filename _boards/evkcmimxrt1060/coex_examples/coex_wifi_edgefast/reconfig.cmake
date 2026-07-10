@@ -12,8 +12,6 @@ mcux_add_source(
             ${board_root}/${board}/wifi_bt_config.c
             ${board_root}/${board}/wifi_bt_config.h
             middleware/wireless/coex/build/${board}/common/hardware_init.c
-            #middleware/wireless/coex/build/${board}/common/peripherals.c
-            #middleware/wireless/coex/build/${board}/common/peripherals.h
             middleware/wireless/coex/build/${board}/common/app.h
             ${board_root}/${board}/coex_examples/coex_wifi_edgefast/pin_mux.c
             ${board_root}/${board}/coex_examples/coex_wifi_edgefast/pin_mux.h
@@ -23,24 +21,13 @@ mcux_add_source(
             middleware/wireless/coex/src/configs/mimxrt1062/lwip/lwiphooks.h
             middleware/wireless/coex/src/configs/mimxrt1062/lwip/lwipopts.h
             middleware/wireless/coex/src/common/controller_coex_nxp.c
+            middleware/wireless/coex/src/common/coex_nb_uart_fw_download.c
+            middleware/wireless/coex/src/common/coex_nb_uart_fw_download.h
             middleware/wireless/coex/src/edgefast/coex_shell.c
             middleware/wireless/coex/src/edgefast/coex_shell.h
-            # middleware/wireless/coex/third_party/third_party.cmake
             middleware/wireless/coex/third_party/platform/rt1060/ot_config.cmake
             examples/coex_examples/coex_wifi_edgefast/app_config.cmake
-            # examples/_boards/${board}/coex_examples/coex_wifi_edgefast/FreeRTOSConfig.h
-            middleware/wireless/coex/src/configs/mimxrt1062/edgefast/app_bluetooth_config.h
 )
-
-# mcux_add_source(
-#     BASE_PATH ${SdkRootDirPath}
-#     SOURCES ${board_root}/${board}/wifi_examples/common/specific.c
-#             ${board_root}/${board}/wifi_examples/common/specific.h
-#             ${board_root}/${board}/wifi_examples/common/host_sleep.c
-#             ${board_root}/${board}/wifi_examples/common/host_sleep.h
-#             ${board_root}/${board}/wifi_examples/common/lpm.c
-#             ${board_root}/${board}/wifi_examples/common/lpm.h
-# )
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
@@ -58,13 +45,12 @@ mcux_add_include(
              middleware/wireless/coex/src/configs/mimxrt1062/wifi
              middleware/wireless/coex/src/configs/mimxrt1062/lwip
              middleware/wireless/coex/src/configs/mimxrt1062/mbedtls
+             middleware/edgefast_open/examples/_boards/${board}/configs/mbedtls
              middleware/wireless/coex/src/edgefast
              middleware/wireless/coex/src/common
              middleware/wireless/coex/build/${board}/common
-            #  middleware/wireless/coex/third_party
              examples/coex_examples/coex_wifi_edgefast
              components/wifi_bt_module/incl
-            
 )
 
 # edgefast
@@ -78,23 +64,24 @@ mcux_add_macro(
 )
 
 mcux_add_macro(
-  CC "-DCONFIG_ARM=1\
+  CC "-DAPPL_USE_STANDARD_IO\
       -DCOEX_APP_SUPPORT=1\
-      -DXIP_EXTERNAL_FLASH=1\
+      -DCONFIG_ARM=1\
       -DEDGEFAST_BT_LITTLEFS_MFLASH\
+      -DXIP_EXTERNAL_FLASH=1\
       -DFSL_DRIVER_TRANSFER_DOUBLE_WEAK_IRQ=0\
       -DFSL_FEATURE_FLASH_PAGE_SIZE_BYTES=4096\
       -DFSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1\
-      -DGATT_DB\
       -DSHELL_ADVANCE=1\
+      -DGATT_DB\
+      -DRAM_DISK_ENABLE=1\
       -DHAL_AUDIO_DMA_INIT_ENABLE=0\
       -DHAL_UART_DMA_ENABLE=1\
       -DLFS_NO_ERROR=1\
       -DLFS_NO_INTRINSICS=1\
       -DSDIO_ENABLED=1\
       -DCONFIG_BLE_SLIM=0\
-      -DUSB_HOST_CONFIG_BUFFER_PROPERTY_CACHEABLE=1\
-      -DCONTROLLER_INIT_ESCAPE=1"
+      -DgMemManagerLight=0"
 )
 
 # wifi
@@ -117,65 +104,17 @@ mcux_add_macro(
   TOOLCHAINS armgcc
 )
 
-# mcux_add_macro(
-#   CC "-DFILE=void"
-#   TOOLCHAINS iar
-# )
 
-# mcux_add_macro(
-#   CC "-DLFS_NO_ASSERT"
-#   TARGETS flexspi_nor_release
-#   TOOLCHAINS iar
-# )
-
-# mcux_add_mdk_configuration(
-#     LD "--keep=*(._bt_*)\
-#        --keep=*(._net_buf_pool*)\
-#        --keep=*(._settings_handler_static*)\
-#        --keep=mflash_drv.o(*)\
-#        --diag_suppress=6329\
-#        --diag_suppress=6319\
-#        --diag_suppress=6675\
-#        --diag_suppress=6775\
-#        --legacyalign\
-#        --diag_suppress=3912"
-# )
-
-# mcux_add_iar_configuration(
-#   CC "--dlib_config full\
-#       --no_inline"
-#   CX "--no_clustering"
-#   LD "--semihosting"
-# )
-
-# mcux_add_mdk_configuration(
-#     LD "--library_type=microlib"
-# )
-
-# mcux_remove_mdk_configuration(
-#     TARGETS flexspi_nor_release
-#     CC "-Oz"
-# )
-
-# mcux_add_mdk_configuration(
-#     TARGETS flexspi_nor_release
-#     CC "-Os"
-# )
-
-mcux_remove_iar_linker_script(
-  BASE_PATH ${SdkRootDirPath}
-  LINKER ${device_root}/RT/RT1060/MIMXRT1062/iar/MIMXRT1062xxxxx_flexspi_nor.icf
-  TARGETS
-    flexspi_nor_debug
-    flexspi_nor_release
+mcux_add_armgcc_configuration(
+    LD "-Xlinker --defsym=__stack_size__=0x400\
+        -Xlinker --defsym=__heap_size__=0x1000"
 )
 
-mcux_remove_mdk_linker_script(
-  BASE_PATH ${SdkRootDirPath}
-  LINKER ${device_root}/RT/RT1060/MIMXRT1062/arm/MIMXRT1062xxxxx_flexspi_nor.scf
-  TARGETS
-    flexspi_nor_debug
-    flexspi_nor_release
+mcux_add_armgcc_configuration(
+    TARGETS flexspi_nor_release
+    AS "-g"
+    CC "-g -Wno-array-bounds"
+    CX "-g"
 )
 
 mcux_remove_armgcc_linker_script(
@@ -192,16 +131,4 @@ mcux_add_armgcc_linker_script(
   TARGETS
     flexspi_nor_debug
     flexspi_nor_release
-)
-
-mcux_add_armgcc_configuration(
-    LD "-Xlinker --defsym=__stack_size__=0x400\
-        -Xlinker --defsym=__heap_size__=0x1000"
-)
-
-mcux_add_armgcc_configuration(
-    TARGETS flexspi_nor_release
-    AS "-g"
-    CC "-g"
-    CX "-g"
 )

@@ -14,8 +14,5 @@
 #define CONFIG_COEX_APP                 0
 #endif
 
-#define SERIAL_MANAGER_TASK_PRIORITY (PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-2)))
-#define SHELL_TASK_PRIORITY          (PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-2)))
-
-#include "app_bluetooth_config.h"
+#include "edgefast_open_config.h"
 #include "wifi_config.h"
