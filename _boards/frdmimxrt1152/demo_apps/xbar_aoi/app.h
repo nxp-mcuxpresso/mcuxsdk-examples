@@ -22,8 +22,8 @@
 
 #define DEMO_CMP_USE_ALT_VREF true
 
-#define DEMO_CMP_MINUS_CHANNEL 1U
-#define DEMO_CMP_PLUS_CHANNEL  7U
+#define DEMO_CMP_MINUS_CHANNEL 7U 
+#define DEMO_CMP_PLUS_CHANNEL  1U 
 #define DEMO_PIT_CHANNEL       kPIT_Chnl_0
 
 #define BUS_CLK_FREQ CLOCK_GetRootClockFreq(kCLOCK_Root_Bus)

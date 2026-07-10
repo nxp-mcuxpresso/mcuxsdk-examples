@@ -46,10 +46,10 @@
 #define DEMO_SAI_CLK_FREQ CLOCK_GetRootClockFreq(kCLOCK_Root_Sai1)
 
 /* I2C instance and clock */
-#define DEMO_I2C LPI2C5
+#define DEMO_I2C LPI2C4
 
 /* Get frequency of lpi2c clock */
-#define DEMO_I2C_CLK_FREQ CLOCK_GetRootClockFreq(kCLOCK_Root_Lpi2c5)
+#define DEMO_I2C_CLK_FREQ CLOCK_GetRootClockFreq(kCLOCK_Root_Lpi2c4)
 
 #define BOARD_MASTER_CLOCK_CONFIG()
 /*${macro:end}*/

@@ -8,6 +8,7 @@ Hardware requirements
 
 Board settings
 ============
+Remove R183, R131, R151, R177, R124.
 
 Prepare the Demo
 ===============
