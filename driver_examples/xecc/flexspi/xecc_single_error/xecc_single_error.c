@@ -55,6 +55,46 @@ void EXAMPLE_XECC_IRQ_HANDLER(void)
     SDK_ISR_EXIT_BARRIER;
 }
 
+static void disable_cache(void)
+{
+#if (defined __CORTEX_M) && (__CORTEX_M == 7U)
+
+#if defined(__ICACHE_PRESENT) && (__ICACHE_PRESENT == 1U)
+    if (SCB_CCR_IC_Msk == (SCB_CCR_IC_Msk & SCB->CCR))
+    {
+        SCB_DisableICache();
+    }
+#endif /* __ICACHE_PRESENT */
+#if defined(__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U)
+    if (SCB_CCR_DC_Msk == (SCB_CCR_DC_Msk & SCB->CCR))
+    {
+        SCB_DisableDCache();
+    }
+#endif /* __DCACHE_PRESENT */
+
+#elif (defined __CORTEX_M) && (__CORTEX_M == 4U)
+    L1CACHE_DisableCodeCache();
+    L1CACHE_DisableSystemCache();
+#endif
+}
+
+static void enable_cache(void)
+{
+#if (defined __CORTEX_M) && (__CORTEX_M == 7U)
+
+#if defined(__ICACHE_PRESENT) && (__ICACHE_PRESENT == 1U)
+    SCB_EnableICache();
+#endif /* __ICACHE_PRESENT */
+#if defined(__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U)
+    SCB_EnableDCache();
+#endif /* __DCACHE_PRESENT */
+
+#elif (defined __CORTEX_M) && (__CORTEX_M == 4U)
+    L1CACHE_EnableCodeCache();
+    L1CACHE_EnableSystemCache();
+#endif
+}
+
 /*!
  * @brief Main function
  */
@@ -103,35 +143,10 @@ int main(void)
 #endif /* defined(DEMO_ERASE_WHOLE_CHIP) */
 #endif
 
-#if (defined __CORTEX_M) && (__CORTEX_M == 7U)
-#if defined(__ICACHE_PRESENT) && (__ICACHE_PRESENT == 1U)
-    volatile bool ICacheEnableFlag = false;
-    /* Disable I cache. */
-    if (SCB_CCR_IC_Msk == (SCB_CCR_IC_Msk & SCB->CCR))
-    {
-        SCB_DisableICache();
-        ICacheEnableFlag = true;
-    }
-#endif /* __ICACHE_PRESENT */
-#elif (defined __CORTEX_M) && (__CORTEX_M == 4U)
-    L1CACHE_DisableCodeCache();
-    L1CACHE_DisableSystemCache();
-#endif
+    disable_cache();
     /* Enter quad mode. */
     status = flexspi_nor_enable_quad_mode(EXAMPLE_FLEXSPI);
-#if (defined __CORTEX_M) && (__CORTEX_M == 7U)
-#if defined(__ICACHE_PRESENT) && (__ICACHE_PRESENT == 1U)
-    if (ICacheEnableFlag)
-    {
-        /* Enable I cache. */
-        SCB_EnableICache();
-    }
-#endif /* __ICACHE_PRESENT */
-#elif (defined __CORTEX_M) && (__CORTEX_M == 4U)
-    L1CACHE_EnableCodeCache();
-    L1CACHE_EnableSystemCache();
-#endif
-
+    enable_cache();
     if (status != kStatus_Success)
     {
         return status;
@@ -139,32 +154,9 @@ int main(void)
 
     /* Erase sectors. */
     PRINTF("Erasing Serial NOR FLASH over FlexSPI...\r\n");
-#if (defined __CORTEX_M) && (__CORTEX_M == 7U)
-#if defined(__ICACHE_PRESENT) && (__ICACHE_PRESENT == 1U)
-    /* Disable I cache. */
-    if (SCB_CCR_IC_Msk == (SCB_CCR_IC_Msk & SCB->CCR))
-    {
-        SCB_DisableICache();
-        ICacheEnableFlag = true;
-    }
-#endif /* __ICACHE_PRESENT */
-#elif (defined __CORTEX_M) && (__CORTEX_M == 4U)
-    L1CACHE_DisableCodeCache();
-    L1CACHE_DisableSystemCache();
-#endif
+    disable_cache();
     status = flexspi_nor_flash_erase_sector(EXAMPLE_FLEXSPI, EXAMPLE_SECTOR * SECTOR_SIZE);
-#if (defined __CORTEX_M) && (__CORTEX_M == 7U)
-#if defined(__ICACHE_PRESENT) && (__ICACHE_PRESENT == 1U)
-    if (ICacheEnableFlag)
-    {
-        /* Enable I cache. */
-        SCB_EnableICache();
-    }
-#endif /* __ICACHE_PRESENT */
-#elif (defined __CORTEX_M) && (__CORTEX_M == 4U)
-    L1CACHE_EnableCodeCache();
-    L1CACHE_EnableSystemCache();
-#endif
+    enable_cache();
     if (status != kStatus_Success)
     {
         PRINTF("Erase sector failure !\r\n");
@@ -220,34 +212,11 @@ int main(void)
 
     spiAddress = EXAMPLE_FLEXSPI_AMBA_BASE + (EXAMPLE_SECTOR + 0U) * SECTOR_SIZE;
 
-#if (defined __CORTEX_M) && (__CORTEX_M == 7U)
-#if defined(__ICACHE_PRESENT) && (__ICACHE_PRESENT == 1U)
-    /* Disable I cache. */
-    if (SCB_CCR_IC_Msk == (SCB_CCR_IC_Msk & SCB->CCR))
-    {
-        SCB_DisableICache();
-        ICacheEnableFlag = true;
-    }
-#endif /* __ICACHE_PRESENT */
-#elif (defined __CORTEX_M) && (__CORTEX_M == 4U)
-    L1CACHE_DisableCodeCache();
-    L1CACHE_DisableSystemCache();
-#endif
+    /*
+     * Disable the cache, make sure the data change is applied to flash to trigger the fault.
+     */
+    disable_cache();
     flexspi_nor_AHB_write_4bytes(EXAMPLE_FLEXSPI, spiAddress, s_nor_program_buffer);
-#if (defined __CORTEX_M) && (__CORTEX_M == 7U)
-#if defined(__ICACHE_PRESENT) && (__ICACHE_PRESENT == 1U)
-    if (ICacheEnableFlag)
-    {
-        /* Enable I cache. */
-        SCB_EnableICache();
-    }
-#endif /* __ICACHE_PRESENT */
-#elif (defined __CORTEX_M) && (__CORTEX_M == 4U)
-    L1CACHE_EnableCodeCache();
-    L1CACHE_EnableSystemCache();
-#endif
-
-    DCACHE_CleanInvalidateByRange(EXAMPLE_FLEXSPI_AMBA_BASE + EXAMPLE_SECTOR * SECTOR_SIZE, FLASH_PAGE_SIZE);
 
     (void)flexspi_nor_flash_read(EXAMPLE_FLEXSPI, EXAMPLE_SECTOR * SECTOR_SIZE, (void *)s_nor_read_buffer,
                                  sizeof(s_nor_read_buffer));
@@ -256,10 +225,10 @@ int main(void)
     uncorrectedData = (uint32_t)s_nor_read_buffer[0] << 0 | (uint32_t)s_nor_read_buffer[1] << 8 |
                       (uint32_t)s_nor_read_buffer[2] << 16 | (uint32_t)s_nor_read_buffer[3] << 24;
 
-    DCACHE_CleanInvalidateByRange(EXAMPLE_FLEXSPI_AMBA_BASE + EXAMPLE_SECTOR * SECTOR_SIZE, FLASH_PAGE_SIZE);
-
     /* Corrected data by XECC through AHB access */
     flexspi_nor_AHB_read_4bytes(EXAMPLE_FLEXSPI, spiAddress, &correctedData);
+    __DSB();
+    enable_cache();
 
     /* Waiting for single error interrupt */
     while (!s_xecc_single_error)
@@ -287,6 +256,8 @@ int main(void)
     {
         errorFlag++;
     }
+
+    XECC_Deinit(EXAMPLE_XECC);
 
     if (errorFlag != 0x00U)
     {
