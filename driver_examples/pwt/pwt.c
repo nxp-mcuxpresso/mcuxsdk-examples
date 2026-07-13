@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2017, 2022 NXP
+ * Copyright 2016-2017, 2022, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -14,6 +14,9 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+#ifndef EXAMPLE_PWT_BASE
+#define EXAMPLE_PWT_BASE PWT
+#endif
 
 /*******************************************************************************
  * Prototypes
@@ -37,20 +40,22 @@ volatile bool overflowFlag;
  */
 void PWT_EXAMPLE_HANDLER(void)
 {
-    if (PWT_GetStatusFlags(PWT) & kPWT_PulseWidthValidFlag)
+    uint32_t status = PWT_GetStatusFlags(EXAMPLE_PWT_BASE);
+
+    if (status & kPWT_PulseWidthValidFlag)
     {
         /*
          * Disable PWT pulse ready interrupt, ;
          * we do not want to clear the PWTRDY status bit before reading the data
          */
-        PWT_DisableInterrupts(PWT, kPWT_PulseWidthReadyInterruptEnable);
+        PWT_DisableInterrupts(EXAMPLE_PWT_BASE, kPWT_PulseWidthReadyInterruptEnable);
         busyWait = false;
     }
 
-    if (PWT_GetStatusFlags(PWT) & kPWT_CounterOverflowFlag)
+    if (status & kPWT_CounterOverflowFlag)
     {
         /* Clear overflow flag */
-        PWT_ClearStatusFlags(PWT, kPWT_CounterOverflowFlag);
+        PWT_ClearStatusFlags(EXAMPLE_PWT_BASE, kPWT_CounterOverflowFlag);
         overflowFlag = true;
     }
     SDK_ISR_EXIT_BARRIER;
@@ -63,7 +68,6 @@ int main(void)
 {
     pwt_config_t pwtConfig;
     uint16_t pulseWidth = 0;
-    uint8_t reg;
 
     /* Board pin, clock, debug console init */
     BOARD_InitHardware();
@@ -73,7 +77,7 @@ int main(void)
     /* Init PWT */
     PWT_GetDefaultConfig(&pwtConfig);
     pwtConfig.inputSelect = kPWT_InputPort_1;
-    PWT_Init(PWT, &pwtConfig);
+    PWT_Init(EXAMPLE_PWT_BASE, &pwtConfig);
 
     PRINTF("\r\nPWT example: input signal whose pulse width needs to be measured\r\n");
 
@@ -81,7 +85,7 @@ int main(void)
     EnableIRQ(PWT_INTERRUPT_NUMBER);
 
     /* Start the PWT counter */
-    PWT_StartTimer(PWT);
+    PWT_StartTimer(EXAMPLE_PWT_BASE);
 
     /* This loop will set the print the pulse width */
     while (1)
@@ -90,7 +94,7 @@ int main(void)
         overflowFlag = false;
 
         /* Enable PWT pulse ready interrupt */
-        PWT_EnableInterrupts(PWT, kPWT_PulseWidthReadyInterruptEnable);
+        PWT_EnableInterrupts(EXAMPLE_PWT_BASE, kPWT_PulseWidthReadyInterruptEnable);
 
         /* Wait till ready interrupt occurs */
         while (busyWait)
@@ -99,35 +103,46 @@ int main(void)
 
         if (overflowFlag)
         {
-            reg = ((PWT->CR) & (PWT_CR_LVL_MASK | PWT_CR_TGL_MASK)) >> PWT_CR_LVL_SHIFT;
+            uint8_t level     = PWT_GetInputLevel(EXAMPLE_PWT_BASE);
+            bool toggled      = (PWT_GetStatusFlags(EXAMPLE_PWT_BASE) & kPWT_InputToggleFlag) != 0U;
 
-            switch (reg)
+            if (toggled)
             {
-                case 0:
-                    PRINTF("\r\nLow overflow (0 duty ratio), signal stayed low\r\n");
-                    break;
-                case 1:
-                    PRINTF("\r\nHigh overflow (100% duty ratio), signal stayed high\r\n");
-                    break;
-                case 2:
+                /* Clear the toggle flag */
+                PWT_ClearStatusFlags(EXAMPLE_PWT_BASE, kPWT_InputToggleFlag);
+
+                if (toggled && (level == 0U))
+                {
                     PRINTF("\r\nToggled Low overflow\r\n");
-                    break;
-                default:
+                }
+                else
+                {
                     PRINTF("\r\nToggled High overflow\r\n");
-                    break;
+                }
+            }
+            else
+            {
+                if (level == 0U)
+                {
+                    PRINTF("\r\nLow overflow (0 duty ratio), signal stayed low\r\n");
+                }
+                else
+                {
+                    PRINTF("\r\nHigh overflow (100%% duty ratio), signal stayed high\r\n");
+                }
             }
         }
         else
         {
-            pulseWidth = PWT_ReadPositivePulseWidth(PWT);
+            pulseWidth = PWT_ReadPositivePulseWidth(EXAMPLE_PWT_BASE);
             pulseWidth = COUNT_TO_USEC(pulseWidth, PWT_SOURCE_CLOCK);
             PRINTF("\r\nPositive pulse width=%d usec\r\n", pulseWidth);
 
-            pulseWidth = PWT_ReadNegativePulseWidth(PWT);
+            pulseWidth = PWT_ReadNegativePulseWidth(EXAMPLE_PWT_BASE);
             pulseWidth = COUNT_TO_USEC(pulseWidth, PWT_SOURCE_CLOCK);
             PRINTF("\r\nNegative pulse width=%d usec\r\n", pulseWidth);
         }
         /* Clear pulse ready flag */
-        PWT_ClearStatusFlags(PWT, kPWT_PulseWidthValidFlag);
+        PWT_ClearStatusFlags(EXAMPLE_PWT_BASE, kPWT_PulseWidthValidFlag);
     }
 }
