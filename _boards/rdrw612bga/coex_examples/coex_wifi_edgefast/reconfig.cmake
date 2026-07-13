@@ -46,6 +46,16 @@ mcux_add_armgcc_configuration(
     CC "-g"
     CX "-g"
 )
+# Suppress GCC 14 false-positive array-bounds warning in secure_storage aead.c
+if(${CONFIG_TOOLCHAIN} STREQUAL "armgcc")
+if(EXISTS "${SdkRootDirPath}/middleware/secure_storage/zephyr/subsys/secure_storage/src/its/transform/aead.c")
+set_source_files_properties(
+    ${SdkRootDirPath}/middleware/secure_storage/zephyr/subsys/secure_storage/src/its/transform/aead.c
+    PROPERTIES
+    COMPILE_FLAGS "-Wno-array-bounds"
+)
+endif()
+endif()
 
 mcux_add_macro(
       "-DUSE_RTOS=1\
