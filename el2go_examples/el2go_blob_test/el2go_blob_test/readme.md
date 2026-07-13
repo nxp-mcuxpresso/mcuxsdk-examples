@@ -132,3 +132,9 @@ Test suite GENERIC (EL2GO_BLOB_TEST_GENERIC_XXXX) - PASSED (264 ms)
 Test suite GENERIC (EL2GO_BLOB_TEST_GENERIC_XXXX) - PASSED (264 ms)
 
 #### EL2GO blob tests finished ####
+## Supported Boards
+- MCX-W71-EVK
+- KW47-EVK
+- FRDM-MCXW72
+- FRDM-MCXW71
+- KW45B41Z-EVK

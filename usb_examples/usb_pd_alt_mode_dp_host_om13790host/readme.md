@@ -79,3 +79,4 @@ It recognize attached video adapters (like "Type-C to DisplayPort" or "Type-C to
 - EVKB-IMXRT1050
 - EVK-MIMXRT1015
 - FRDM-MCXN236
+- FRDM-IMXRT1152

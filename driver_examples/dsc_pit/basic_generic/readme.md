@@ -14,5 +14,3 @@ variants, no `INTC_SetFastIRQVectorHandler`), so customers on any platform that
 reuses this driver see code that is directly relevant to their target.
 
 ## Supported Boards
-
-- [FRDM-MCXC353](../../../../examples_int/_boards/frdmmcxc353/driver_examples/pit/basic_generic/example_board_readme.md)

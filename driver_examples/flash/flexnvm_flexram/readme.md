@@ -40,3 +40,4 @@ When the example runs successfully, you can see the similar information from the
 
 ## Supported Boards
 - [FRDM-KE15Z](../../../_boards/frdmke15z/driver_examples/flash/flexnvm_flexram/example_board_readme.md)
+- [FRDM-MCXE247](../../../_boards/frdmmcxe247/driver_examples/flash/flexnvm_flexram/example_board_readme.md)

@@ -29,3 +29,4 @@ Relative magnetic field strength: 39 G
 - [FRDM-MCXE247](../../_boards/frdmmcxe247/demo_apps/magnetic_switch/example_board_readme.md)
 - [FRDM-MCXE31B](../../_boards/frdmmcxe31b/demo_apps/magnetic_switch/example_board_readme.md)
 - [FRDM-MCXE32B](../../_boards/frdmmcxe32b/demo_apps/magnetic_switch/example_board_readme.md)
+- [FRDM-MCXL255](../../_boards/frdmmcxl255/demo_apps/magnetic_switch/example_board_readme.md)

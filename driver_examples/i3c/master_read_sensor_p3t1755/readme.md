@@ -20,3 +20,4 @@ and print it in while loop.
 - [FRDM-MCXA366](../../../_boards/frdmmcxa366/driver_examples/i3c/master_read_sensor_p3t1755/example_board_readme.md)
 - [FRDM-MCXA577](../../../_boards/frdmmcxa577/driver_examples/i3c/master_read_sensor_p3t1755/example_board_readme.md)
 - [FRDM-MCXA287](../../../_boards/frdmmcxa287/driver_examples/i3c/master_read_sensor_p3t1755/example_board_readme.md)
+- [IMX943-EVK](../../../_boards/imx943evk/driver_examples/i3c/master_read_sensor_p3t1755/example_board_readme.md)

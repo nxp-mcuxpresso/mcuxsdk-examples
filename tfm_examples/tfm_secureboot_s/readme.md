@@ -17,3 +17,9 @@ Workspace structure:
 ## Supported Boards
 - [FRDM-RW612](../../_boards/frdmrw612/tfm_examples/tfm_secureboot/tfm_secureboot_s/example_board_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/tfm_examples/tfm_secureboot/tfm_secureboot_s/example_board_readme.md)
+- [MCX-W72-EVK](../../_boards/mcxw72evk/tfm_examples/tfm_secureboot/tfm_secureboot_s/example_board_readme.md)
+- [MCX-W71-EVK](../../_boards/mcxw71evk/tfm_examples/tfm_secureboot/tfm_secureboot_s/example_board_readme.md)
+- [KW47-EVK](../../_boards/kw47evk/tfm_examples/tfm_secureboot/tfm_secureboot_s/example_board_readme.md)
+- [FRDM-MCXW72](../../_boards/frdmmcxw72/tfm_examples/tfm_secureboot/tfm_secureboot_s/example_board_readme.md)
+- [FRDM-MCXW71](../../_boards/frdmmcxw71/tfm_examples/tfm_secureboot/tfm_secureboot_s/example_board_readme.md)
+- [KW45B41Z-EVK](../../_boards/kw45b41zevk/tfm_examples/tfm_secureboot/tfm_secureboot_s/example_board_readme.md)

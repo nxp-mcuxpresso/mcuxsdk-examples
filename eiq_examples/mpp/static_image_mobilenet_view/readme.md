@@ -125,3 +125,6 @@ tflite::MicroOpResolver &MODEL_GetOpsResolver()
 
 If this example uses TensorFLow Lite Micro, it implements its own function MODEL_GetOpsResolver dedicated to Mobilenet.
 User may provide its own implementation of MODEL_GetOpsResolver when using a different model.
+
+## Supported Boards
+- MIMXRT700-EVK

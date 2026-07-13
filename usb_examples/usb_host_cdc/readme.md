@@ -95,3 +95,8 @@ It enumerates a COM port and echoes back the data from the UART as follows:
 - EVK-MIMXRT1015
 - FRDM-MCXN236
 - FRDM-RW612
+- FRDM-MCXA266
+- FRDM-IMXRT1186
+- FRDM-MCXA577
+- FRDM-MCXA366
+- FRDM-MCXA287

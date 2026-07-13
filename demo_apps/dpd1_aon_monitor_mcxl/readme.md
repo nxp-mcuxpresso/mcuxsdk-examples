@@ -72,3 +72,4 @@ The workaround demonstrated by CM0+:
 ```
 
 ## Supported Boards
+- FRDM-MCXL255

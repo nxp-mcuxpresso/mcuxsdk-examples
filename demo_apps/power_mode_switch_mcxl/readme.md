@@ -323,3 +323,4 @@ signals CM33 via MSB_BCKP1.
 ```
 
 ## Supported Boards
+- FRDM-MCXL255

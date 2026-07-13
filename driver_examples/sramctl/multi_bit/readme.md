@@ -9,3 +9,4 @@ Multi-bit ECC errors are **uncorrectable**. Depending on SoC integration, the CP
 The purpose of this example is to show how to configure SRAMCTL initialization and multi-bit error injection, and how to observe the uncorrectable ECC indication.
 
 ## Supported Boards
+- MIMXRT2660-EVK

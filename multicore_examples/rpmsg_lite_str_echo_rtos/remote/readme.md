@@ -42,3 +42,5 @@ to the application.
 - [MCIMX93-EVK](../../../_boards/mcimx93evk/multicore_examples/rpmsg_lite_str_echo_rtos/remote/example_board_readme.md)
 - [MCIMX93W-EVK](../../../_boards/mcimx93wevk/multicore_examples/rpmsg_lite_str_echo_rtos/remote/example_board_readme.md)
 - [MCIMX93-QSB](../../../_boards/mcimx93qsb/multicore_examples/rpmsg_lite_str_echo_rtos/remote/example_board_readme.md)
+- [IMX943-ORANGEBOX](../../../_boards/imx943_orangebox/multicore_examples/rpmsg_lite_str_echo_rtos/remote/example_board_readme.md)
+- [IMX943-EVK](../../../_boards/imx943evk/multicore_examples/rpmsg_lite_str_echo_rtos/remote/example_board_readme.md)

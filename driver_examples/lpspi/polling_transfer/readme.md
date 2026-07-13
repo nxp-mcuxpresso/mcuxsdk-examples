@@ -27,3 +27,7 @@ It's a successful transfer.
 LPSPI transfer all data matched!
 
 End of example.
+
+## Supported Boards
+- [IMX943-EVK](../../../_boards/imx943evk/driver_examples/lpspi/polling_transfer/example_board_readme.md)
+- [FRDM-MCXE247](../../../_boards/frdmmcxe247/driver_examples/lpspi/polling_transfer/example_board_readme.md)

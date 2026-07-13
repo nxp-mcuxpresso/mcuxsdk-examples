@@ -7,7 +7,6 @@ asscess policy using RDC and RDC_SEMA42
 
 ## Supported Boards
 - [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/driver_examples/rdc/example_board_readme.md)
-- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/driver_examples/rdc/example_board_readme.md)
 - [EVK-MIMX8MM](../../_boards/evkmimx8mm/driver_examples/rdc/example_board_readme.md)
 - [EVK-MIMX8MN](../../_boards/evkmimx8mn/driver_examples/rdc/example_board_readme.md)
 - [EVK-MIMX8MNDDR3L](../../_boards/evkmimx8mnddr3l/driver_examples/rdc/example_board_readme.md)

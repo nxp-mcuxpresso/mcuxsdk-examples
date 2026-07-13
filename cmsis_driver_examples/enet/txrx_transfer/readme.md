@@ -23,3 +23,4 @@ In this example, the ENET transmits 20 number broadcast frames and will print th
 - [EVK-MIMXRT1064](../../../_boards/evkmimxrt1064/cmsis_driver_examples/enet/txrx_transfer/example_board_readme.md)
 - [MIMXRT1160-EVK](../../../_boards/evkmimxrt1160/cmsis_driver_examples/enet/txrx_transfer/example_board_readme.md)
 - [FRDM-MCXE247](../../../_boards/frdmmcxe247/cmsis_driver_examples/enet/txrx_transfer/example_board_readme.md)
+- [FRDM-MCXA577](../../../_boards/frdmmcxa577/cmsis_driver_examples/enet/txrx_transfer/example_board_readme.md)

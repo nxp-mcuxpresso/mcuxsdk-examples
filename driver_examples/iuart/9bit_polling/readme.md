@@ -7,4 +7,3 @@ In this example, one uart instance connect to PC through uart, the board will se
 send to the board.
 
 ## Supported Boards
-- [EVK-MIMX8MM](../../../_boards/evkmimx8mm/driver_examples/uart/9bit_polling/example_board_readme.md)

@@ -89,3 +89,4 @@ Slave example is running...
 - [FRDM-KW43](../../../../_boards/frdmkw43/cmsis_driver_examples/lpspi/int_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXW70](../../../../_boards/frdmmcxw70/cmsis_driver_examples/lpspi/int_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXA287](../../../../_boards/frdmmcxa287/cmsis_driver_examples/lpspi/int_b2b_transfer/slave/example_board_readme.md)
+- [FRDM-IMX937](../../../../_boards/frdmimx937/cmsis_driver_examples/lpspi/int_b2b_transfer/slave/example_board_readme.md)

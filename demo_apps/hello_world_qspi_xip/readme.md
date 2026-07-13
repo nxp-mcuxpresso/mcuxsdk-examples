@@ -15,3 +15,5 @@ just define DEBUG_CONSOLE_TRANSFER_NON_BLOCKING in your project to use the advan
 - [LPCXpresso55S36](../../_boards/lpcxpresso55s36/demo_apps/hello_world_qspi_xip/example_board_readme.md)
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/demo_apps/hello_world_qspi_xip/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/demo_apps/hello_world_qspi_xip/example_board_readme.md)
+- [FRDM-MCXA577](../../_boards/frdmmcxa577/demo_apps/hello_world_qspi_xip/example_board_readme.md)
+- [FRDM-MCXA287](../../_boards/frdmmcxa287/demo_apps/hello_world_qspi_xip/example_board_readme.md)

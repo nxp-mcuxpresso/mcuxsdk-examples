@@ -4,3 +4,4 @@ to wake up the chip from different sources (e.g. RTC timer, OS timer, Wake up bu
 
 ## Supported Boards
 - [MCXW23-EVK](../../_boards/mcxw23evk/demo_apps/power_mode_switch/example_board_readme.md)
+- [FRDM-MCXW23](../../_boards/frdmmcxw23/demo_apps/power_mode_switch/example_board_readme.md)

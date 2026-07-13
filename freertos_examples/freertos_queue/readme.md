@@ -122,3 +122,4 @@ Log 9: Task2 Message 4
 - [FRDM-KW43](../../_boards/frdmkw43/freertos_examples/freertos_queue/example_board_readme.md)
 - [FRDM-MCXW70](../../_boards/frdmmcxw70/freertos_examples/freertos_queue/example_board_readme.md)
 - [FRDM-MCXA287](../../_boards/frdmmcxa287/freertos_examples/freertos_queue/example_board_readme.md)
+- IMX943-EVK

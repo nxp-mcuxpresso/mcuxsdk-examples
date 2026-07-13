@@ -128,3 +128,6 @@ tflite::MicroOpResolver &MODEL_GetOpsResolver()
 
 This example implements its own function MODEL_GetOpsResolver dedicated to persondetect.
 User may provide its own implementation of MODEL_GetOpsResolver when using a different model.
+
+## Supported Boards
+- MIMXRT700-EVK

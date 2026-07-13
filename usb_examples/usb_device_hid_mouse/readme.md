@@ -51,7 +51,6 @@ It is enumerated as a mouse. Users can see the mouse arrow moving on the PC scre
 
 
 ## Supported Boards
-- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/usb_examples/usb_device_hid_mouse/example_board_readme.md)
 - [LPCXpresso55S16](../../_boards/lpcxpresso55s16/usb_examples/usb_device_hid_mouse/example_board_readme.md)
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/usb_examples/usb_device_hid_mouse/example_board_readme.md)
 - FRDM-K22F
@@ -69,5 +68,5 @@ It is enumerated as a mouse. Users can see the mouse arrow moving on the PC scre
 - FRDM-MCXN236
 - LPCXpresso54628
 - LPCXpresso55S36
-- MIMXRT700-EVK
-- FRDM-IMXRT700
+- FRDM-MCXA266
+- FRDM-MCXA366

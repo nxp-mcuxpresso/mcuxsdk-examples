@@ -9,3 +9,7 @@ Workspace structure:
 
 Details on building and running the application can be found in the
 [el2go_agent_ns](../el2go_agent_ns/readme.md) project.
+
+## Supported Boards
+- RD-RW612-BGA
+- FRDM-RW612

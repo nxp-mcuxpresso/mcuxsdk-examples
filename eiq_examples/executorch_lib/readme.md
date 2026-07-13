@@ -47,5 +47,5 @@ To learn more about the ExecuTorch workflow, refer to the
 [workflow documentation](https://docs.pytorch.org/executorch/stable/intro-how-it-works).
 
 ## Supported Boards
-
 - MIMXRT700-EVK
+- FRDM-IMXRT700

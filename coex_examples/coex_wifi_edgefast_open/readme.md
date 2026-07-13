@@ -13,6 +13,7 @@ accessible via the `wifi` prefix on the BT shell prompt.
 ## Supported Boards
 - EVK-BMIMXRT1170 (CM7)
 - FRDM-IMXRT700 (CM33 core0)
+- MIMXRT1170-EVKB
 
 ## Supported Modules
 - IW612 (Murata 2EL M2) — default

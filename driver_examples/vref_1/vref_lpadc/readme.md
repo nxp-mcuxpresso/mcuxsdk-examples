@@ -11,3 +11,4 @@ default output voltage, then use the LPADC to measure the VREF output again,
 the measured voltage value should close to the theoretical voltage.
 ## Supported Boards
 - [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/driver_examples/vref/vref_lpadc/example_board_readme.md)
+- [MIMXRT1180-EVK](../../../_boards/evkmimxrt1180/driver_examples/vref/vref_lpadc/example_board_readme.md)

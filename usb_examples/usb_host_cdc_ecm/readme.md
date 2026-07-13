@@ -59,3 +59,4 @@ For detailed instructions, see the appropriate board User's Guide.
 - FRDM-MCXN947
 - RD-RW612-BGA
 - FRDM-RW612
+- FRDM-MCXA577

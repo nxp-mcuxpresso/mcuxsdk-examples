@@ -42,3 +42,8 @@ EXPECTED OUTPUTS:
 The expected outputs of the example are:
 - The images captured by the camera should be displayed on the screen
 
+
+## Supported Boards
+- MIMXRT700-EVK
+- MIMXRT1170-EVKB
+- FRDM-MCXN947

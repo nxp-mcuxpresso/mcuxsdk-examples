@@ -54,3 +54,7 @@ Temperature indication received @2s: 22
 #### Supported boards:
 - FRDM-MCXW23
 - MCXW23-EVK
+
+## Supported Boards
+- [MCXW23-EVK](../../../_boards/mcxw23evk/wireless_examples/reference_design/health_care_iot_central/example_board_readme.md)
+- [FRDM-MCXW23](../../../_boards/frdmmcxw23/wireless_examples/reference_design/health_care_iot_central/example_board_readme.md)

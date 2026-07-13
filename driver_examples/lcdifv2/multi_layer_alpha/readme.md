@@ -70,3 +70,4 @@ the panel looks like:
 ## Supported Boards
 - [MIMXRT1170-EVKB](../../../_boards/evkbmimxrt1170/driver_examples/lcdifv2/lcdifv2_examples_readme.md)
 - [MIMXRT1160-EVK](../../../_boards/evkmimxrt1160/driver_examples/lcdifv2/lcdifv2_examples_readme.md)
+- [FRDM-IMXRT1152](../../../_boards/frdmimxrt1152/driver_examples/lcdifv2/lcdifv2_examples_readme.md)

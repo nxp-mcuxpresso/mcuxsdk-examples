@@ -36,3 +36,6 @@ Flash vendor ID: 0xEF
 XSPI QPI SDR (4-4-4) polling example finished.
 Flash reset to default SPI mode.
 ```
+
+## Supported Boards
+- [FRDM-IMXRT700](../../../../_boards/frdmimxrt700/driver_examples/xspi/quad/polling_transfer/example_board_readme.md)

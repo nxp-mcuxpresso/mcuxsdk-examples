@@ -258,5 +258,4 @@ The suppprted command details are as follows :
 
 
 ## Supported Boards
-- [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/edgefast_bluetooth_examples/shell/example_board_readme.md)
 

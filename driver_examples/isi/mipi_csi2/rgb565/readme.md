@@ -15,3 +15,6 @@ happen when exiting debug.
 
 If the camera and LCD panel resolutions are not the same, then only part of the
 camera frame will be shown.
+
+## Supported Boards
+- MIMXRT2660-EVK

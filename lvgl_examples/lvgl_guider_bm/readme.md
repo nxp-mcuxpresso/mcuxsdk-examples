@@ -44,3 +44,5 @@ rectangle in the panel, drag it, then it will move in the screen.
 - [FRDM-MCXA366](../../_boards/frdmmcxa366/lvgl_examples/lvgl_examples_readme.md)
 - [FRDM-MCXA287](../../_boards/frdmmcxa287/lvgl_examples/lvgl_examples_readme.md)
 - [FRDM-MCXA577](../../_boards/frdmmcxa577/lvgl_examples/lvgl_examples_readme.md)
+- [FRDM-MCXE31B](../../_boards/frdmmcxe31b/lvgl_examples/lvgl_examples_readme.md)
+- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/lvgl_examples/lvgl_examples_readme.md)

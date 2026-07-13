@@ -32,3 +32,6 @@ show how to use the swo, and to provide a simple project for debugging and furth
 - [MCXW72-LOC](../../_boards/mcxw72loc/demo_apps/hello_world_swo/example_board_readme.md)
 - [FRDM-MCXW70](../../_boards/frdmmcxw70/demo_apps/hello_world_swo/example_board_readme.md)
 - [FRDM-KW43](../../_boards/frdmkw43/demo_apps/hello_world_swo/example_board_readme.md)
+- [MCXW23-EVK](../../_boards/mcxw23evk/demo_apps/hello_world_swo/example_board_readme.md)
+- [FRDM-MCXW23](../../_boards/frdmmcxw23/demo_apps/hello_world_swo/example_board_readme.md)
+- [FRDM-MCXW72](../../_boards/frdmmcxw72/demo_apps/hello_world_swo/example_board_readme.md)

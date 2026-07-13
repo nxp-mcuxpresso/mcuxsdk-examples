@@ -91,3 +91,8 @@ The application executes UFI commands to test the attached device.
 - EVK-MIMXRT1015
 - FRDM-MCXN236
 - FRDM-RW612
+- FRDM-MCXA266
+- FRDM-IMXRT1186
+- FRDM-MCXA577
+- FRDM-MCXA366
+- FRDM-MCXA287

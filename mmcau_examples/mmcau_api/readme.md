@@ -121,7 +121,6 @@ Computed MD5 at speed 0.190410 MB/s:
 
 ## Supported Boards
 - [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/mmcau_examples/mmcau_api/example_board_readme.md)
-- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/mmcau_examples/mmcau_api/example_board_readme.md)
 - [EVK-MCIMX7ULP](../../_boards/evkmcimx7ulp/mmcau_examples/mmcau_api/example_board_readme.md)
 - [MIMXRT1160-EVK](../../_boards/evkmimxrt1160/mmcau_examples/mmcau_api/example_board_readme.md)
 - [FRDM-K32L2A4S](../../_boards/frdmk32l2a4s/mmcau_examples/mmcau_api/example_board_readme.md)

@@ -29,6 +29,14 @@ This `ota_mcuboot_basic` example demonstrates a basic application that uses MCUB
 - [FRDM-MCXA346](../../_boards/frdmmcxa346/ota_examples/ota_mcuboot_basic/example_board_readme.md)
 - [FRDM-MCXA266](../../_boards/frdmmcxa266/ota_examples/ota_mcuboot_basic/example_board_readme.md)
 - [FRDM-MCXA366](../../_boards/frdmmcxa366/ota_examples/ota_mcuboot_basic/example_board_readme.md)
+- [FRDM-MCXE31B](../../_boards/frdmmcxe31b/ota_examples/ota_mcuboot_basic/example_board_readme.md)
+- [KW47-EVK](../../_boards/kw47evk/ota_examples/ota_mcuboot_basic/example_board_readme.md)
+- [FRDM-IMXRT1186](../../_boards/frdmimxrt1186/ota_examples/ota_mcuboot_basic/example_board_readme.md)
+- [MCX-W72-EVK](../../_boards/mcxw72evk/ota_examples/ota_mcuboot_basic/example_board_readme.md)
+- [FRDM-MCXE247](../../_boards/frdmmcxe247/ota_examples/ota_mcuboot_basic/example_board_readme.md)
+- [FRDM-MCXC162](../../_boards/frdmmcxc162/ota_examples/ota_mcuboot_basic/example_board_readme.md)
+- [FRDM-MCXN236](../../_boards/frdmmcxn236/ota_examples/ota_mcuboot_basic/example_board_readme.md)
+- [FRDM-MCXL255](../../_boards/frdmmcxl255/ota_examples/ota_mcuboot_basic/example_board_readme.md)
 
 ## Prepare the Demo
 1. The demo requires MCUBoot booloader to be present in the FLASH memory to function properly.

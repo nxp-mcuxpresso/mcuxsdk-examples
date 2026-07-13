@@ -36,3 +36,9 @@ Prepare the Demo
 5.  Press [ENTER] in the console to display the main menu, or any other key to display the logo.
 6.  Follow onscreen instructions to configure and run any available test.
 7.  Repeat the steps above to prepare a second board for tests that require more than one.
+## Supported Boards
+- MCX-W72-EVK
+- KW45B41Z-EVK-NBU
+- KW47-EVK
+- FRDM-MCXW72
+- kw43evk_nbu

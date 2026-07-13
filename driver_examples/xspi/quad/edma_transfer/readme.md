@@ -29,3 +29,6 @@ Page program done.
 XSPI QPI SDR (4-4-4) EDMA example finished.
 Flash reset to default SPI mode.
 ```
+
+## Supported Boards
+- [FRDM-IMXRT700](../../../../_boards/frdmimxrt700/driver_examples/xspi/quad/edma_transfer/example_board_readme.md)

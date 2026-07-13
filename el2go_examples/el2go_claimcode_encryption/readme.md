@@ -98,3 +98,7 @@ claimcode (*): *** dynamic data ***
 claimcode (*): *** dynamic data ***
 claimcode information written to flash at address 0x 84a0000
 ```
+
+## Supported Boards
+- RD-RW612-BGA
+- FRDM-RW612

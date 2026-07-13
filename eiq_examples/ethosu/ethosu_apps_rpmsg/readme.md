@@ -10,3 +10,8 @@ to Cortex-A core. The inference engine is TensorFlow Lite or TensorFlow Lite Mic
 
 - IAR Embedded Workbench for ARM
 - ArmGCC - GNU Tools ARM Embedded
+
+## Supported Boards
+- [MCIMX93W-EVK](../../../_boards/mcimx93wevk/eiq_examples/ethosu/ethosu_apps_rpmsg/example_board_readme.md)
+- [MCIMX93-QSB](../../../_boards/mcimx93qsb/eiq_examples/ethosu/ethosu_apps_rpmsg/example_board_readme.md)
+- [MCIMX93-EVK](../../../_boards/mcimx93evk/eiq_examples/ethosu/ethosu_apps_rpmsg/example_board_readme.md)

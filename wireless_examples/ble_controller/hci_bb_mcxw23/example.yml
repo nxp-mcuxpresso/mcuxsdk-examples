@@ -9,7 +9,7 @@ hci_bb_mcxw23:
       category: wireless_examples/ble_controller/hci_bb
       brief: 'The application demonstrates how to use the BLE HCI commands to communicate with the MCXW23 chip.'
       example_readme:
-      - examples/wireless_examples/ble_controller/hci_bb_mcxw23/hci_bb/readme.md
+      - examples/wireless_examples/ble_controller/hci_bb_mcxw23/readme.md
       - ${board_root}/${board}/wireless_examples/ble_controller/hci_bb/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:

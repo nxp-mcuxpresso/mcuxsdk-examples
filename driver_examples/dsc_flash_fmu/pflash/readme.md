@@ -59,4 +59,4 @@ When the example runs successfully, you can see the similar information from the
 
 
 ## Supported Boards
-- [MC56F85000-EVK](../../../_boards/mc56f80000evk/driver_examples/flash/pflash/example_board_readme.md)
+- mc56f85xxxevk

@@ -17,8 +17,17 @@ ModelRunner is a benchmarking tool for running TensorFlow Lite models on NXP mic
 - MIMXRT595-EVK
 - MIMXRT685-EVK
 - MIMXRT1060-EVK
-- MIMXRT1170-EVK
 - FRDM-IMXRT1152
+- EVKB-IMXRT1050
+- [MIMXRT685-AUD-EVK](../../_boards/mimxrt685audevk/eiq_examples/tflm_modelrunner/example_board_readme.md)
+- [EVK-MIMXRT595](../../_boards/evkmimxrt595/eiq_examples/tflm_modelrunner/example_board_readme.md)
+- MIMXRT1040-EVK
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/eiq_examples/tflm_modelrunner/example_board_readme.md)
+- MIMXRT1060-EVKC
+- MIMXRT1060-EVKB
+- [EVK-MIMXRT685](../../_boards/evkmimxrt685/eiq_examples/tflm_modelrunner/example_board_readme.md)
+- MIMXRT1170-EVKB
+- EVK-MIMXRT1064
 
 ##  Running the Demo
 

@@ -33,3 +33,4 @@ End of LPI2C example.
 
 ## Supported Boards
 - [FRDM-MCXE247](../../../_boards/frdmmcxe247/driver_examples/lpi2c/read_fxls897x_accel_value_transfer/example_board_readme.md)
+- [FRDM-MCXL255](../../../_boards/frdmmcxl255/driver_examples/lpi2c/read_fxls897x_accel_value_transfer/example_board_readme.md)

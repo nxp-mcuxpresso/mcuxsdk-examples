@@ -39,3 +39,4 @@ Once wakeup from DPD2, the interrupt which causes wakeup should always be handle
 the CM0+ (secondary) project, otherwise the system may not work as expected.
 
 ## Supported Boards
+- [FRDM-MCXL255](../../_boards/frdmmcxl255/demo_apps/aon_lpuart_wakeup/example_board_readme.md)

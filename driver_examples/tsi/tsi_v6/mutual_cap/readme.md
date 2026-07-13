@@ -28,3 +28,4 @@ After running, touch pad KEY3 each time, you will see LED toggles.
 ## Supported Boards
 - [MCX-N5XX-EVK](../../../../_boards/mcxn5xxevk/driver_examples/tsi_v6/mutual_cap/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../../_boards/mcxn9xxevk/driver_examples/tsi_v6/mutual_cap/example_board_readme.md)
+- [FRDM-MCXA577](../../../../_boards/frdmmcxa577/driver_examples/tsi_v6/mutual_cap/example_board_readme.md)

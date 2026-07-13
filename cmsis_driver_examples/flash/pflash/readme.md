@@ -20,3 +20,6 @@ When the example runs successfully, you can see the similar information from the
 
 
  End of PFLASH CMSIS example
+
+## Supported Boards
+- [FRDM-MCXA577](../../../_boards/frdmmcxa577/cmsis_driver_examples/flash/pflash/example_board_readme.md)

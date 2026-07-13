@@ -14,3 +14,6 @@ by setting compare value to 0xFFFF, the compare interrupt has the same timing ef
 in this way. So we add a new demo scene like that, when setting the compare value to 0xFFFF, Timer compare 
 interrupt occurs every 65.5 seconds.
 
+
+## Supported Boards
+- IMX943-EVK

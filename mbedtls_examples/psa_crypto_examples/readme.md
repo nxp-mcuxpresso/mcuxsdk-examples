@@ -29,6 +29,22 @@ PSA Crypto example to demonstrate cipher operation.
 - [FRDM-MCXE32B](../../_boards/frdmmcxe32b/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
 - [FRDM-KW43](../../_boards/frdmkw43/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
 - [FRDM-MCXW70](../../_boards/frdmmcxw70/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
+- FRDM-IMXRT700
+- [FRDM-MCXA266](../../_boards/frdmmcxa266/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
+- FRDM-MCXL255
+- RD-RW612-BGA
+- [MIMXRT1160-EVK](../../_boards/evkmimxrt1160/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
+- [FRDM-IMXRT1186](../../_boards/frdmimxrt1186/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
+- MIMXRT700-EVK
+- [FRDM-MCXA577](../../_boards/frdmmcxa577/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
+- [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
+- MCX-N9XX-EVK
+- FRDM-RW612
+- [FRDM-MCXA287](../../_boards/frdmmcxa287/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
+- FRDM-MCXN947
+- [MIMXRT1180-EVK](../../_boards/evkmimxrt1180/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
+- FRDM-MCXN236
+- MCX-N5XX-EVK
 
 ## Running the demo
 The log below shows the output of the PSA crypto examples in the terminal window:

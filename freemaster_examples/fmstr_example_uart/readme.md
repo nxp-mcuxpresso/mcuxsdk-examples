@@ -80,3 +80,4 @@ Example application demonstrates a plain serial transmission, typically connecti
 - [FRDM-MCXA366](../../_boards/frdmmcxa366/freemaster_examples/fmstr_uart/example_board_readme.md)
 - [FRDM-MCXW72](../../_boards/frdmmcxw72/freemaster_examples/fmstr_uart/example_board_readme.md)
 - [FRDM-MCXA287](../../_boards/frdmmcxa287/freemaster_examples/fmstr_uart/example_board_readme.md)
+- [IMX943-EVK](../../_boards/imx943evk/freemaster_examples/fmstr_uart/example_board_readme.md)

@@ -95,3 +95,4 @@ The IDs and addresses will/may be different on every run.
 
 ## Supported Boards
 - [MIMXRT1180-EVK](../../_boards/evkmimxrt1180/ele_crypto/ele_crypto_nvm_generic/example_board_readme.md)
+- [FRDM-IMXRT1186](../../_boards/frdmimxrt1186/ele_crypto/ele_crypto_nvm_generic/example_board_readme.md)

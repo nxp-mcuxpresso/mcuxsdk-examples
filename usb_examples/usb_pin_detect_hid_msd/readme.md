@@ -79,3 +79,5 @@ The following figures show a pin detect msd information for the pin detect hid m
 - [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/usb_examples/usb_pin_detect_hid_msd/example_board_readme.md)
 - [FRDM-MCXN236](../../_boards/frdmmcxn236/usb_examples/usb_pin_detect_hid_msd/example_board_readme.md)
 - MIMXRT1060-EVKB
+- [FRDM-MCXA577](../../_boards/frdmmcxa577/usb_examples/usb_pin_detect_hid_msd/example_board_readme.md)
+- [FRDM-MCXA287](../../_boards/frdmmcxa287/usb_examples/usb_pin_detect_hid_msd/example_board_readme.md)

@@ -13,3 +13,4 @@ DHCP server, address information is printed.
 - [MCIMX93-EVK](../../../_boards/mcimx93evk/lwip_examples/lwip_dhcp_enet_qos/freertos/example_board_readme.md)
 - [MCIMX93W-EVK](../../../_boards/mcimx93wevk/lwip_examples/lwip_dhcp_enet_qos/freertos/example_board_readme.md)
 - [MCIMX93-QSB](../../../_boards/mcimx93qsb/lwip_examples/lwip_dhcp_enet_qos/freertos/example_board_readme.md)
+- [FRDM-MCXE31B](../../../_boards/frdmmcxe31b/lwip_examples/lwip_dhcp_enet_qos/freertos/example_board_readme.md)

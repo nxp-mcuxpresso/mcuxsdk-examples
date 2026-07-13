@@ -207,3 +207,11 @@ Test suite GENERIC (EL2GO_BLOB_TEST_GENERIC_XXXX) - FAILED (926 ms)
 
 #### EL2GO blob tests finished ####
 ```
+
+## Supported Boards
+- FRDM-MCXN236
+- FRDM-RW612
+- MCX-N5XX-EVK
+- RD-RW612-BGA
+- FRDM-MCXN947
+- MCX-N9XX-EVK

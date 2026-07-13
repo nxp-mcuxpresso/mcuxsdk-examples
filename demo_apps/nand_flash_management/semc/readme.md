@@ -18,8 +18,4 @@ free - check the free cluster of current file system
 There are two tasks in the demo, shell task is used to receive and process user command, another task is garbage collection task. The gc task priority is bigger than shell task to reduce the write amplification.
 
 ## Supported Boards
-- [EVKB-IMXRT1050](../../../_boards/evkbimxrt1050/demo_apps/nand_flash_management/semc/example_board_readme.md)
-- [MIMXRT1060-EVKB](../../../_boards/evkbmimxrt1060/demo_apps/nand_flash_management/semc/example_board_readme.md)
 - [MIMXRT1170-EVKB](../../../_boards/evkbmimxrt1170/demo_apps/nand_flash_management/semc/example_board_readme.md)
-- [MIMXRT1060-EVKC](../../../_boards/evkcmimxrt1060/demo_apps/nand_flash_management/semc/example_board_readme.md)
-- [EVK-MIMXRT1064](../../../_boards/evkmimxrt1064/demo_apps/nand_flash_management/semc/example_board_readme.md)

@@ -204,3 +204,9 @@ For example, data "12 34 56 78 90 ab cd ef" is sent to the device. The message "
 - EVK-MIMXRT1015
 - FRDM-MCXN236
 - FRDM-RW612
+- FRDM-MCXA266
+- FRDM-IMXRT1152
+- FRDM-IMXRT1186
+- FRDM-MCXA577
+- FRDM-MCXA366
+- FRDM-MCXA287

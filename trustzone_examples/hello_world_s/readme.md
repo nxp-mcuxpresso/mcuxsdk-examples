@@ -56,3 +56,8 @@ so it demonstrates following techniques for TrustZone applications development:
 - [MCXW23-EVK](../../_boards/mcxw23evk/trustzone_examples/hello_world/hello_world_s/example_board_readme.md)
 - [FRDM-KW43](../../_boards/frdmkw43/trustzone_examples/hello_world/hello_world_s/example_board_readme.md)
 - [FRDM-MCXW70](../../_boards/frdmmcxw70/trustzone_examples/hello_world/hello_world_s/example_board_readme.md)
+- FRDM-MCXL255
+- MIMXRT700-EVK
+- [FRDM-MCXA577](../../_boards/frdmmcxa577/trustzone_examples/hello_world/hello_world_s/example_board_readme.md)
+- IMX943-EVK
+- [FRDM-MCXA287](../../_boards/frdmmcxa287/trustzone_examples/hello_world/hello_world_s/example_board_readme.md)

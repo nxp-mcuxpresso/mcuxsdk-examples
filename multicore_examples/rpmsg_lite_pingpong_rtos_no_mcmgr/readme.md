@@ -32,5 +32,5 @@ west build examples/multicore_examples/rpmsg_lite_pingpong_rtos_no_mcmgr/remote 
 ```
 
 ## Supported Boards
-
 - [IMX943-EVK](../../_boards/imx943evk/multicore_examples/rpmsg_lite_pingpong_rtos_no_mcmgr/example_board_readme.md)
+- [IMX943-ORANGEBOX](../../_boards/imx943_orangebox/multicore_examples/rpmsg_lite_pingpong_rtos_no_mcmgr/example_board_readme.md)

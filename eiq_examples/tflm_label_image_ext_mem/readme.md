@@ -148,3 +148,5 @@ If an additional 1 MB is needed for SRAM scratch memory:
 
 ## Supported Boards
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/eiq_examples/tflm_label_image_ext_mem/example_board_readme.md)
+- MIMXRT2660-EVK
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/eiq_examples/tflm_label_image_ext_mem/example_board_readme.md)

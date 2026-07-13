@@ -24,4 +24,3 @@ This demo demonstrates 2 wake-up sources:
 - [FRDM-MCXA344](../../../_boards/frdmmcxa344/demo_apps/power_mode_switch/low_level/example_board_readme.md)
 - [FRDM-MCXA266](../../../_boards/frdmmcxa266/demo_apps/power_mode_switch/low_level/example_board_readme.md)
 - [FRDM-MCXA366](../../../_boards/frdmmcxa366/demo_apps/power_mode_switch/low_level/example_board_readme.md)
-- [FRDM-MCXC162](../../../_boards/frdmmcxc162/demo_apps/power_mode_switch/low_level/example_board_readme.md)

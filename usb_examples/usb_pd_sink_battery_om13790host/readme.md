@@ -78,3 +78,4 @@ The PD sink battery example is a simple demonstration based on the MCUXpresso SD
 - EVKB-IMXRT1050
 - EVK-MIMXRT1015
 - FRDM-MCXN236
+- FRDM-IMXRT1152

@@ -7,4 +7,5 @@ The purpose of this example is to show how to use the EDMA and to provide a simp
 debugging and further development.
 
 ## Supported Boards
+- IMX943-EVK
 [IMX943-EVK](../../../_boards/imx943evk/driver_examples/edma4/memory_to_memory_trigger/example_board_readme.md)

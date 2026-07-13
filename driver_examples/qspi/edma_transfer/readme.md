@@ -11,3 +11,4 @@ Example will first erase the sector and programe a page into the flash, at last 
 - [EVK-MCIMX7ULP](../../../_boards/evkmcimx7ulp/driver_examples/qspi/edma_transfer/example_board_readme.md)
 - [FRDM-MCXE31B](../../../_boards/frdmmcxe31b/driver_examples/qspi/edma_transfer/example_board_readme.md)
 - [FRDM-MCXE32B](../../../_boards/frdmmcxe32b/driver_examples/qspi/edma_transfer/example_board_readme.md)
+- [FRDM-MCXE247](../../../_boards/frdmmcxe247/driver_examples/qspi/edma_transfer/example_board_readme.md)

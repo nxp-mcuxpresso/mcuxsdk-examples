@@ -103,3 +103,4 @@ This PD example is a simple demonstration based on the MCUXpresso SDK PD stack.
 - EVKB-IMXRT1050
 - EVK-MIMXRT1015
 - FRDM-MCXN236
+- FRDM-IMXRT1152

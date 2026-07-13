@@ -9,3 +9,4 @@ wifi_cert
 - [MIMXRT1060-EVKC](../../_boards/evkcmimxrt1060/wifi_examples/common/wifi_examples_readme.md)
 - [FRDM-RW612](../../_boards/frdmrw612/wifi_examples/common/wifi_examples_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/wifi_examples/common/wifi_examples_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/wifi_examples/common/wifi_examples_readme.md)

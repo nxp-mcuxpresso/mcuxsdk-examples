@@ -28,3 +28,6 @@ It's a successful transfer.
 LPSPI transfer all data matched!
 
 End of example.
+
+## Supported Boards
+- [IMX943-EVK](../../../_boards/imx943evk/driver_examples/lpspi/interrupt_transfer/example_board_readme.md)

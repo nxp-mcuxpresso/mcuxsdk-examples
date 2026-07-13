@@ -159,3 +159,6 @@ For RTOS applications, DEFAULT_THREAD_PRIO and TCPIP_THREAD_PRIO values can have
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/lwip_examples/lwip_iperf/bm/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/lwip_examples/lwip_iperf/bm/example_board_readme.md)
 - [RD-RW612-BGA](../../../_boards/rdrw612bga/lwip_examples/lwip_iperf/bm/example_board_readme.md)
+- [IMX943-ORANGEBOX](../../../_boards/imx943_orangebox/lwip_examples/lwip_iperf/bm/example_board_readme.md)
+- [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/lwip_examples/lwip_iperf/bm/example_board_readme.md)
+- [IMX943-EVK](../../../_boards/imx943evk/lwip_examples/lwip_iperf/bm/example_board_readme.md)

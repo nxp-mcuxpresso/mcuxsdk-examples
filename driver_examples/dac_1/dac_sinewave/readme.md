@@ -12,3 +12,7 @@ Note: If the device does not have an FPU, then running the example directly
 may get bad performance, and the user can add an array, the elements of the
 array are the input values corresponding to the DAC output voltage values 
 for one sinewave cycle.
+
+## Supported Boards
+- LPCXpresso55S36
+- FRDM-MCXN947

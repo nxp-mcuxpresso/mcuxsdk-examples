@@ -393,6 +393,19 @@ Static data processing:
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/eiq_examples/tflm_cifar10/example_board_readme.md)
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/eiq_examples/tflm_cifar10/example_board_readme.md)
 - [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/eiq_examples/tflm_cifar10/example_board_readme.md)
+- MIMXRT1180-EVK
+- EVKB-IMXRT1050
+- [EVK-MIMXRT595](../../_boards/evkmimxrt595/eiq_examples/tflm_kws/example_board_readme.md)
+- [MIMXRT685-AUD-EVK](../../_boards/mimxrt685audevk/eiq_examples/tflm_kws/example_board_readme.md)
+- MIMXRT1040-EVK
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/eiq_examples/tflm_kws/example_board_readme.md)
+- FRDM-IMXRT1186
+- MIMXRT1060-EVKC
+- MIMXRT1060-EVKB
+- [EVK-MIMXRT685](../../_boards/evkmimxrt685/eiq_examples/tflm_kws/example_board_readme.md)
+- MIMXRT1170-EVKB
+- EVK-MIMXRT1064
+- MIMXRT1160-EVK
 
 ## Supported Boards with CPU Only
 - MIMXRT1040-EVK

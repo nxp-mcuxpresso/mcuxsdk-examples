@@ -114,7 +114,6 @@ At this point the bootloader is in place, resident in the FLASH memory. You may 
 [OTA update by using SB3 file](../_doc/sb3_common_readme.md)
 
 ## Supported Boards
-
 - [LPCXpresso55S69](../../_boards/lpcxpresso55s69/ota_examples/mcuboot_opensource/example_board_readme.md)
 - [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/ota_examples/mcuboot_opensource/example_board_readme.md)
 - [EVK-MIMXRT1020](../../_boards/evkmimxrt1020/ota_examples/mcuboot_opensource/example_board_readme.md)
@@ -142,3 +141,9 @@ At this point the bootloader is in place, resident in the FLASH memory. You may 
 - [FRDM-MCXA366](../../_boards/frdmmcxa366/ota_examples/mcuboot_opensource/example_board_readme.md)
 - [KW47-EVK](../../_boards/kw47evk/ota_examples/mcuboot_opensource/example_board_readme.md)
 - [MCX-W72-EVK](../../_boards/mcxw72evk/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [FRDM-MCXE31B](../../_boards/frdmmcxe31b/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [FRDM-IMXRT1186](../../_boards/frdmimxrt1186/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [FRDM-MCXE247](../../_boards/frdmmcxe247/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [FRDM-MCXC162](../../_boards/frdmmcxc162/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [FRDM-MCXN236](../../_boards/frdmmcxn236/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [FRDM-MCXL255](../../_boards/frdmmcxl255/ota_examples/mcuboot_opensource/example_board_readme.md)

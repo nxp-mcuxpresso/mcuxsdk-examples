@@ -11,7 +11,7 @@ a-format_PWM_trigger:
         through RS-485, the board will send requests triggered by the PWM to and receive
         responses from the encoder.
       example_readme:
-      - examples/digital_encoder_examples/a-format/PWM_triggerer/readme.md
+      - examples/digital_encoder_examples/a-format/PWM_trigger/readme.md
       - ${board_root}/${board}/digital_encoder_examples/a-format/PWM_trigger/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:

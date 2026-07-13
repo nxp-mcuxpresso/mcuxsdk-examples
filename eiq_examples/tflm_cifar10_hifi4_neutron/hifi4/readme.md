@@ -77,3 +77,4 @@ Static data processing:
 
 ## Supported Boards
 - [MIMXRT700-EVK]
+- FRDM-IMXRT700

@@ -23,3 +23,4 @@ wifi_cli
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/wifi_examples/common/wifi_examples_readme.md)
 - [FRDM-IMXRT700](../../_boards/frdmimxrt700/wifi_examples/common/wifi_examples_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/wifi_examples/common/wifi_examples_readme.md)
+- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/wifi_examples/common/wifi_examples_readme.md)

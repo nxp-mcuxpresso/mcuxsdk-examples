@@ -22,10 +22,10 @@ Destination Buffer:
 
 ## Supported Boards
 - [FRDM-MCXA156](../../../_boards/frdmmcxa156/driver_examples/ctimer/dma_trigger/example_board_readme.md)
-- [FRDM-MCXL255](../../../_boards/frdmmcxa346/driver_examples/ctimer/simple_pwm_interrupt/example_board_readme.md)
 - [FRDM-RW612](../../../_boards/frdmrw612/driver_examples/ctimer/dma_trigger/example_board_readme.md)
 - [FRDM-MCXA266](../../../_boards/frdmmcxa266/driver_examples/ctimer/dma_trigger/example_board_readme.md)
 - [FRDM-MCXA366](../../../_boards/frdmmcxa366/driver_examples/ctimer/dma_trigger/example_board_readme.md)
 - [FRDM-MCXC162](../../../_boards/frdmmcxc162/driver_examples/ctimer/dma_trigger/example_board_readme.md)
 - [FRDM-MCXA577](../../../_boards/frdmmcxa577/driver_examples/ctimer/dma_trigger/example_board_readme.md)
 - [FRDM-MCXA287](../../../_boards/frdmmcxa287/driver_examples/ctimer/dma_trigger/example_board_readme.md)
+- [FRDM-MCXL255](../../../_boards/frdmmcxl255/driver_examples/ctimer/dma_trigger/example_board_readme.md)

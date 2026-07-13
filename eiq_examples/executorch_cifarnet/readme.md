@@ -46,5 +46,5 @@ To learn more about the ExecuTorch workflow, refer to the
 [workflow documentation](https://docs.pytorch.org/executorch/stable/intro-how-it-works).
 
 ## Supported Boards
-
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/eiq_examples/executorch_cifarnet/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/eiq_examples/executorch_cifarnet/example_board_readme.md)

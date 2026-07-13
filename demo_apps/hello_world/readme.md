@@ -115,3 +115,5 @@ debug_console supports this, debug_console_lite doesn't support).
 - [FRDM-KW43](../../_boards/frdmkw43/demo_apps/hello_world/example_board_readme.md)
 - [FRDM-MCXW70](../../_boards/frdmmcxw70/demo_apps/hello_world/example_board_readme.md)
 - [FRDM-MCXA287](../../_boards/frdmmcxa287/demo_apps/hello_world/example_board_readme.md)
+- [FRDM-MCXL255](../../_boards/frdmmcxl255/demo_apps/hello_world/example_board_readme.md)
+- [IMX943-ORANGEBOX](../../_boards/imx943_orangebox/demo_apps/hello_world/example_board_readme.md)

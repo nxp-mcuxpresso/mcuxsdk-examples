@@ -254,3 +254,7 @@ Echo successfully published
 [INFO] Disconnected from the broker.
 [INFO] (Network connection b2688) TLS close-notify sent.
 ```
+
+## Supported Boards
+- RD-RW612-BGA
+- FRDM-RW612

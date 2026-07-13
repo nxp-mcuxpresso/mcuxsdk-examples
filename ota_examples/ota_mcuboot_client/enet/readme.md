@@ -17,6 +17,7 @@ The client connects to a HTTPS server and requests an OTA binary for download an
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/ota_examples/ota_mcuboot_client/enet/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/ota_examples/ota_mcuboot_client/enet/example_board_readme.md)
 - [RD-RW612-BGA](../../../_boards/rdrw612bga/ota_examples/ota_mcuboot_client/enet/example_board_readme.md)
+- MIMXRT1040-EVK
 
 ## Prepare the Demo
 1. The demo requires MCUBoot bootloader to be present in the FLASH memory to function properly.

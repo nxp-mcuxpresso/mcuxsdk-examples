@@ -20,10 +20,10 @@ it must be loaded prior to loading the DSP application.
 This example cannot be imported into Config Tools because the xtensa toolchain is not supported.
 
 ## Supported Boards
-- [EVK9-MIMX8ULP](../../_boards/evk9mimx8ulp/dsp_examples/hello_world_usart/example_board_readme.md)
-- [EVK-MIMX8ULP](../../_boards/evkmimx8ulp/dsp_examples/hello_world_usart/example_board_readme.md)
-- [EVK-MIMXRT595](../../_boards/evkmimxrt595/dsp_examples/hello_world_usart/example_board_readme.md)
-- [EVK-MIMXRT685](../../_boards/evkmimxrt685/dsp_examples/hello_world_usart/example_board_readme.md)
-- [MIMXRT685-AUD-EVK](../../_boards/mimxrt685audevk/dsp_examples/hello_world_usart/example_board_readme.md)
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/dsp_examples/hello_world_usart/example_board_readme.md)
 - [FRDM-IMXRT700](../../_boards/frdmimxrt700/dsp_examples/hello_world_usart/example_board_readme.md)
+- [EVK-MIMXRT685](../../_boards/evkmimxrt685/dsp_examples/hello_world_usart/example_board_readme.md)
+- [MIMXRT685-AUD-EVK](../../_boards/mimxrt685audevk/dsp_examples/hello_world_usart/example_board_readme.md)
+- [EVK-MIMXRT595](../../_boards/evkmimxrt595/dsp_examples/hello_world_usart/example_board_readme.md)
+- [EVK-MIMX8ULP](../../_boards/evkmimx8ulp/dsp_examples/hello_world_usart/example_board_readme.md)
+- [EVK9-MIMX8ULP](../../_boards/evk9mimx8ulp/dsp_examples/hello_world_usart/example_board_readme.md)

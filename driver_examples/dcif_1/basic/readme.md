@@ -6,3 +6,4 @@ format, RGB565 or YUV422 or indexed format frame buffer. When the example runs,
 a rectangle is moving in the screen, and its color changes when touching the border.
 
 ## Supported Boards
+- MIMXRT2660-EVK

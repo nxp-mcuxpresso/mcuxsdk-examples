@@ -24,3 +24,5 @@ indicated memory. Then the major loop waits for the transfer to be done. The res
 - [FRDM-MCXA577](../../../_boards/frdmmcxa577/driver_examples/lpadc/edma/example_board_readme.md)
 - [FRDM-MCXC162](../../../_boards/frdmmcxc162/driver_examples/lpadc/edma/example_board_readme.md)
 - [FRDM-MCXA287](../../../_boards/frdmmcxa287/driver_examples/lpadc/edma/example_board_readme.md)
+- [FRDM-MCXN236](../../../_boards/frdmmcxn236/driver_examples/lpadc/edma/example_board_readme.md)
+- [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/driver_examples/lpadc/edma/example_board_readme.md)

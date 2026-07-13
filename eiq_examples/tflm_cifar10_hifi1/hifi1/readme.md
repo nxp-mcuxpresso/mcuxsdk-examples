@@ -95,3 +95,4 @@ Data for inference are ready
 - [MIMXRT700-EVK]
 - [EVK-MIMXRT685]
 - [MIMXRT685-AUD-EVK]
+- FRDM-IMXRT700

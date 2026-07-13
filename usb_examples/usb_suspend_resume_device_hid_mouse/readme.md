@@ -110,8 +110,13 @@ Or the device can remote wake-up the host by delivering the resume signal when t
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/usb_examples/usb_suspend_resume_device_hid_mouse/example_board_readme.md)
 - EVKB-IMXRT1050
 - [RD-RW612-BGA](../../_boards/rdrw612bga/usb_examples/usb_suspend_resume_device_hid_mouse/example_board_readme.md)
-- FRDM-K32L3A6
 - EVK-MIMXRT1015
 - FRDM-MCXN236
 - [FRDM-RW612](../../_boards/frdmrw612/usb_examples/usb_suspend_resume_device_hid_mouse/example_board_readme.md)
 - [FRDM-IMXRT700](../../_boards/frdmimxrt700/usb_examples/usb_suspend_resume_device_hid_mouse/example_board_readme.md)
+- FRDM-MCXA266
+- [FRDM-IMXRT1186](../../_boards/frdmimxrt1186/usb_examples/usb_suspend_resume_device_hid_mouse/example_board_readme.md)
+- [FRDM-MCXA577](../../_boards/frdmmcxa577/usb_examples/usb_suspend_resume_device_hid_mouse/example_board_readme.md)
+- FRDM-MCXA366
+- [FRDM-MCXA287](../../_boards/frdmmcxa287/usb_examples/usb_suspend_resume_device_hid_mouse/example_board_readme.md)
+- FRDM-K32L3A6

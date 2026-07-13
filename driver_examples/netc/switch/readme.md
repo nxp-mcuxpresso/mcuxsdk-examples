@@ -8,3 +8,4 @@ In this demo, NETC acts as network switch.
 - [MIMXRT1180-EVK](../../../_boards/evkmimxrt1180/driver_examples/netc/switch/example_board_readme.md)
 - [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/driver_examples/netc/switch/example_board_readme.md)
 - [IMX943EVK](../../../_boards/imx943evk/driver_examples/netc/switch/example_board_readme.md)
+- [IMX943-ORANGEBOX](../../../_boards/imx943_orangebox/driver_examples/netc/switch/example_board_readme.md)

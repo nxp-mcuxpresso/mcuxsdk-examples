@@ -191,3 +191,8 @@ install_path:\\msys64\\home\\~your user name\\build\\bin
 - RD-RW612-BGA
 - FRDM-MCXN236
 - FRDM-RW612
+- FRDM-MCXA266
+- FRDM-IMXRT1186
+- FRDM-MCXA577
+- FRDM-MCXA366
+- FRDM-MCXA287

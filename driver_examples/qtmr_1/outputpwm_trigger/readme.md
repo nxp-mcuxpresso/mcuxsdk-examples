@@ -10,3 +10,6 @@ The example also sets up one QTMR channel to output pwm. The user should probe a
 
 # Supported Boards
 - [IMX943-EVK](../../../_boards/imx943evk/driver_examples/qtmr/outputpwm_trigger/example_board_readme.md)
+
+## Supported Boards
+- [IMX943-EVK](../../../_boards/imx943evk/driver_examples/qtmr/outputpwm_trigger/example_board_readme.md)

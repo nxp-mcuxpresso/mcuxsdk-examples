@@ -77,3 +77,4 @@ In the example, you can send characters to the console back and they will be pri
 - [FRDM-KW43](../../../_boards/frdmkw43/driver_examples/lpuart/interrupt_transfer/example_board_readme.md)
 - [FRDM-MCXW70](../../../_boards/frdmmcxw70/driver_examples/lpuart/interrupt_transfer/example_board_readme.md)
 - [FRDM-MCXA287](../../../_boards/frdmmcxa287/driver_examples/lpuart/interrupt_transfer/example_board_readme.md)
+- [IMX943-ORANGEBOX](../../../_boards/imx943_orangebox/driver_examples/lpuart/interrupt_transfer/example_board_readme.md)

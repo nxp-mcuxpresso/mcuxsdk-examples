@@ -6,3 +6,4 @@ The dsc_mbc example shows how to control the memory block checker(MBC) access po
 In this example, a MBC memory block are set to inaccessible, then the hardfault occurs.
 
 ## Supported Boards
+- MC56F85000-EVK

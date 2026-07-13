@@ -37,3 +37,5 @@ TEST 5: Invalid data access from normal world, example 2
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/trustzone_examples/secure_faults/secure_faults_s/example_board_readme.md)
 - [MIMXRT685-AUD-EVK](../../_boards/mimxrt685audevk/trustzone_examples/secure_faults/secure_faults_s/example_board_readme.md)
 - [FRDM-IMXRT700](../../_boards/frdmimxrt700/trustzone_examples/secure_faults/secure_faults_s/example_board_readme.md)
+- MIMXRT700-EVK
+- FRDM-MCXL255

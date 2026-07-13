@@ -92,3 +92,10 @@ There are multiple options how to achieve that, however in principle the are two
 		IMAGE 1:
 			<IMG_VERSION 0x1 LENGTH 34356 EXEC_ADDR 0x8001000>
 			*ACTIVE*
+## Supported Boards
+- [FRDM-MCXN236](../../_boards/frdmmcxn236/ota_examples/ota_rom_basic/example_board_readme.md)
+- [MIMXRT700-EVK](../../_boards/mimxrt700evk/ota_examples/ota_rom_basic/example_board_readme.md)
+- [FRDM-RW612](../../_boards/frdmrw612/ota_examples/ota_rom_basic/example_board_readme.md)
+- [RD-RW612-BGA](../../_boards/rdrw612bga/ota_examples/ota_rom_basic/example_board_readme.md)
+- [FRDM-MCXN947](../../_boards/frdmmcxn947/ota_examples/ota_rom_basic/example_board_readme.md)
+- [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/ota_examples/ota_rom_basic/example_board_readme.md)

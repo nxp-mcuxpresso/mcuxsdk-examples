@@ -72,3 +72,6 @@ You can modify the example to:
 ## Limitations
 - The example assumes that audio data is being provided to the SAI interfaces
 - Both TDM streams must have the same audio sample rate and number of channels for mixing to work properly
+
+## Supported Boards
+- [IMX952-EVK](../../../_boards/imx952evk/driver_examples/audmix/sai_codec/example_board_readme.md)

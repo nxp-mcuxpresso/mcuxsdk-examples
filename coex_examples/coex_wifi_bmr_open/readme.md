@@ -14,6 +14,7 @@ WM8962 audio codec while simultaneously providing Wi-Fi connectivity.
 
 ## Supported Boards
 - evkbmimxrt1170 (CM7) with IW612 (Murata 2EL M2)
+- [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/coex_examples/coex_wifi_bmr_open/example_board_readme.md)
 
 ## Shell Commands
 After boot, the BT shell prompt appears. Both BT and Wi-Fi commands are available:

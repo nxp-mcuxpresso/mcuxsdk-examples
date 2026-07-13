@@ -41,6 +41,3 @@ Note: Modify GPT timer frequncy >= 200MHz to get more accurate timer.
 Note: Detailed SOEM performance please refter to EtherCAT Benchamrk. 
 
 ## Supported Boards
-- [MIMXRT1180-EVK](../../../_boards/evkmimxrt1180/soem_examples/soem_servo_motor_rt1180/bm/example_board_readme.md)
-- [FRDM-MIMXRT1186](../../../_boards/frdmimxrt1186/soem_examples/soem_gpio_pulse/bm/example_board_readme.md)
-- [IMX943-EVK](../../../_boards/imx943evk/soem_examples/soem_servo_motor_rt1180/bm/example_board_readme.md)

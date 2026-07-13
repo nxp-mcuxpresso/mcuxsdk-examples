@@ -43,7 +43,6 @@ Set the hardware jumpers (Tower system/base module) to default settings.
 2. The PC enumerates the USB device normally and accesses the network via DHCP or manual configuration.
 
 ## Supported Boards
-
 - MIMXRT1170-EVKB
 - FRDM-MCXN947
 - FRDM-RW612
@@ -51,4 +50,5 @@ Set the hardware jumpers (Tower system/base module) to default settings.
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/usb_examples/usb_device_cdc_ecm_nic/example_board_readme.md)
 - [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/usb_examples/usb_device_cdc_ecm_nic/example_board_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/usb_examples/usb_device_cdc_ecm_nic/example_board_readme.md)
+- FRDM-MCXA577
 

@@ -11,3 +11,5 @@ The SGI PKC application provides examples which demonstrate usage of most availa
 - [FRDM-MCXA577](../../_boards/frdmmcxa577/sgi_pkc_examples/sgi_pkc_asymmetric/example_board_readme.md)
 - [FRDM-MCXA287](../../_boards/frdmmcxa287/sgi_pkc_examples/sgi_pkc_asymmetric/example_board_readme.md)
 - [FRDM-KW43](../../_boards/frdmkw43/sgi_pkc_examples/sgi_pkc_asymmetric/example_board_readme.md)
+- [FRDM-MCXA266](../../_boards/frdmmcxa266/sgi_pkc_examples/sgi_pkc_asymmetric/example_board_readme.md)
+- [FRDM-MCXA366](../../_boards/frdmmcxa366/sgi_pkc_examples/sgi_pkc_asymmetric/example_board_readme.md)

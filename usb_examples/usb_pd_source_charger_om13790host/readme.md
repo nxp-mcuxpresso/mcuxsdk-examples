@@ -76,3 +76,4 @@ The PD charger example is a simple demonstration based on the MCUXpresso SDK PD 
 - EVKB-IMXRT1050
 - EVK-MIMXRT1015
 - FRDM-MCXN236
+- FRDM-IMXRT1152

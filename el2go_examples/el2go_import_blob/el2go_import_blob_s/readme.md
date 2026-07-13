@@ -9,3 +9,10 @@ Workspace structure:
 
 Details on building and running the application can be found in the
 [el2go_import_blob_ns](../el2go_import_blob_ns/readme.md) project.
+
+## Supported Boards
+- FRDM-RW612
+- MCX-N5XX-EVK
+- RD-RW612-BGA
+- FRDM-MCXN947
+- MCX-N9XX-EVK

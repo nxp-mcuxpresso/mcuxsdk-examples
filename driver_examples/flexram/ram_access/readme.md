@@ -15,3 +15,4 @@ The FLEXRAM project is a simple demonstration program of the SDK FLEXRAM driver.
 - [MIMXRT1040-EVK](../../../_boards/evkmimxrt1040/driver_examples/flexram/ram_access/example_board_readme.md)
 - [EVK-MIMXRT1064](../../../_boards/evkmimxrt1064/driver_examples/flexram/ram_access/example_board_readme.md)
 - [MIMXRT1160-EVK](../../../_boards/evkmimxrt1160/driver_examples/flexram/ram_access/example_board_readme.md)
+- [FRDM-IMXRT1152](../../../_boards/frdmimxrt1152/driver_examples/flexram/ram_access/example_board_readme.md)

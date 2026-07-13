@@ -22,3 +22,4 @@ example take turns to shine the LED.
 - [MCIMX93-QSB](../../../_boards/mcimx93qsb/driver_examples/rgpio/led_output/example_board_readme.md)
 - [IMX943-EVK](../../../_boards/imx943evk/driver_examples/rgpio/led_output/example_board_readme.md)
 - [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/driver_examples/rgpio/led_output/example_board_readme.md)
+- [IMX943-ORANGEBOX](../../../_boards/imx943_orangebox/driver_examples/rgpio/led_output/example_board_readme.md)

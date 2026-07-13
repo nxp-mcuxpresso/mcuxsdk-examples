@@ -28,3 +28,4 @@ Example will first erase the sector and program a page into the flash, at last c
 - [MIMXRT685-AUD-EVK](../../../../_boards/mimxrt685audevk/driver_examples/flexspi/nor/polling_transfer/example_board_readme.md)
 - [RD-RW612-BGA](../../../../_boards/rdrw612bga/driver_examples/flexspi/nor/polling_transfer/example_board_readme.md)
 - [FRDM-IMXRT1186](../../../../_boards/frdmimxrt1186/driver_examples/flexspi/nor/polling_transfer/example_board_readme.md)
+- [EVK-MIMX8MN](../../../../_boards/evkmimx8mn/driver_examples/flexspi/nor/polling_transfer/example_board_readme.md)

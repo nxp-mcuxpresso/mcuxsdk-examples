@@ -96,3 +96,9 @@ The following figure is an example to attach one mouse device.
 - EVK-MIMXRT1015
 - FRDM-MCXN236
 - FRDM-RW612
+- FRDM-MCXA266
+- FRDM-IMXRT1186
+- FRDM-MCXA577
+- FRDM-MCXA366
+- [IMX952-EVK](../../_boards/imx952evk/usb_examples/usb_host_hid_mouse/example_board_readme.md)
+- FRDM-MCXA287

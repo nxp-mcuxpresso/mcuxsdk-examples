@@ -7,3 +7,4 @@ controls when and which pulse width register(s) will be updated. Once the input 
 this example will print overflow flag status, positive pulse width and negative pulse width.
 
 ## Supported Boards
+- frdmmcxc353

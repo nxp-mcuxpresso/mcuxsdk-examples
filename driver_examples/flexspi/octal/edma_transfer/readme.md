@@ -9,4 +9,3 @@ Example will first erase the sector and program a page into the flash, at last c
 
 ## Supported Boards
 - [MIMXRT1180-EVK](../../../../_boards/evkmimxrt1180/driver_examples/flexspi/octal/edma_transfer/example_board_readme.md)
-- [FRDM-MCXA577](../../../../_boards/frdmmcxa577/driver_examples/flexspi/octal/edma_transfer/example_board_readme.md)

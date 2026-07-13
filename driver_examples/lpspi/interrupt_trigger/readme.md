@@ -26,3 +26,6 @@ LPSPI transfer all data matched!
 
 End of example.
 
+
+## Supported Boards
+- IMX943-EVK
