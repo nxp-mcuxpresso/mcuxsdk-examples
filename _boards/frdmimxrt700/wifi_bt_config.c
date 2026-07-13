@@ -47,20 +47,20 @@ void BOARD_WIFI_BT_Enable(bool enable)
         /* Enable module */
         /* Enable power supply */
         GPIO_PortSet(BOARD_INITWIFIPINS_PDN_PERIPHERAL, BOARD_INITWIFIPINS_PDN_GPIO_PIN_MASK);
+        vTaskDelay(pdMS_TO_TICKS(100));
 
         /* Set WL_RST to 1 */
         GPIO_PortSet(BOARD_INITWIFIPINS_WL_RST_PERIPHERAL, BOARD_INITWIFIPINS_WL_RST_GPIO_PIN_MASK);
         vTaskDelay(pdMS_TO_TICKS(100));
-
     }
     else
     {
-        /* Disable module */
-        GPIO_PortClear(BOARD_INITWIFIPINS_PDN_PERIPHERAL, BOARD_INITWIFIPINS_PDN_GPIO_PIN_MASK);
-
         /* Set WL_RST to 0 */
         GPIO_PortClear(BOARD_INITWIFIPINS_WL_RST_PERIPHERAL, BOARD_INITWIFIPINS_WL_RST_GPIO_PIN_MASK);
+        vTaskDelay(pdMS_TO_TICKS(100));
 
+        /* Disable module */
+        GPIO_PortClear(BOARD_INITWIFIPINS_PDN_PERIPHERAL, BOARD_INITWIFIPINS_PDN_GPIO_PIN_MASK);
         vTaskDelay(pdMS_TO_TICKS(100));
     }
 }
