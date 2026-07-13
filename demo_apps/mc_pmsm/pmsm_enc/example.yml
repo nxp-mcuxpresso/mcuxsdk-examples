@@ -15,7 +15,7 @@ mc_pmsm_enc:
   boards:
     # evkmimxrt1180@cm7: []
     # evkbmimxrt1170@cm7: []
-    # frdmimxrt1152@cm7: []
+    frdmimxrt1152@cm7: []
     # frdmimxrt1186@cm7:
     # - +armgcc@flexspi_nor_hyperram_debug
     # - +armgcc@flexspi_nor_hyperram_release
