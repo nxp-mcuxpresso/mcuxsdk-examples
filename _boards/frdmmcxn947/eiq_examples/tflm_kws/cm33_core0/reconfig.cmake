@@ -44,8 +44,7 @@ mcux_add_armgcc_linker_script(
 
 
 mcux_add_iar_configuration(
-  # CC "--use_cmsis_dsp\
-  "--diag_suppress=Pe167\
+  CC "--diag_suppress=Pe167\
   --diag_suppress=Pe260,Pe1031"
   )
 mcux_remove_iar_configuration(
