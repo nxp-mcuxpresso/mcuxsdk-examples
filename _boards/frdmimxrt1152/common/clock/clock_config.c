@@ -46,29 +46,6 @@ void BOARD_InitBootClocks(void)
     BOARD_BootClockRUN();
 }
 
-#if defined(XIP_BOOT_HEADER_ENABLE) && (XIP_BOOT_HEADER_ENABLE == 1)
-#if defined(XIP_BOOT_HEADER_DCD_ENABLE) && (XIP_BOOT_HEADER_DCD_ENABLE == 1)
-/* This function should not run from SDRAM since it will change SEMC configuration. */
-AT_QUICKACCESS_SECTION_CODE(void UpdateSemcClock(void));
-void UpdateSemcClock(void)
-{
-    /* Enable self-refresh mode and update semc clock root to 200MHz. */
-    SEMC->IPCMD = 0xA55A000D;
-    while ((SEMC->INTR & 0x3) == 0)
-        ;
-    SEMC->INTR                                = 0x3;
-    SEMC->DCCR                                = 0x0B;
-    /*
-    * Currently we are using SEMC parameter which fit both 166MHz and 200MHz, only
-    * need to change the SEMC clock root here. If customer is using their own DCD and
-    * want to switch from 166MHz to 200MHz, extra SEMC configuration might need to be
-    * adjusted here to fine tune the SDRAM performance
-    */
-    CCM->CLOCK_ROOT[kCLOCK_Root_Semc].CONTROL = 0x602;
-}
-#endif
-#endif
-
 /*******************************************************************************
  ********************** Configuration BOARD_BootClockRUN ***********************
  ******************************************************************************/
@@ -422,12 +399,6 @@ void BOARD_BootClockRUN(void)
     rootCfg.mux = kCLOCK_SEMC_ClockRoot_MuxSysPll2Pfd1;
     rootCfg.div = 3;
     CLOCK_SetRootClock(kCLOCK_Root_Semc, &rootCfg);
-#endif
-
-#if defined(XIP_BOOT_HEADER_ENABLE) && (XIP_BOOT_HEADER_ENABLE == 1)
-#if defined(XIP_BOOT_HEADER_DCD_ENABLE) && (XIP_BOOT_HEADER_DCD_ENABLE == 1)
-    UpdateSemcClock();
-#endif
 #endif
 
     /* Configure CSSYS using OSC_RC_48M_DIV2 */
@@ -1139,12 +1110,6 @@ void BOARD_BootClockRUN_600M(void)
     rootCfg.mux = kCLOCK_SEMC_ClockRoot_MuxSysPll2Pfd1;
     rootCfg.div = 3;
     CLOCK_SetRootClock(kCLOCK_Root_Semc, &rootCfg);
-#endif
-
-#if defined(XIP_BOOT_HEADER_ENABLE) && (XIP_BOOT_HEADER_ENABLE == 1)
-#if defined(XIP_BOOT_HEADER_DCD_ENABLE) && (XIP_BOOT_HEADER_DCD_ENABLE == 1)
-    UpdateSemcClock();
-#endif
 #endif
 
     /* Configure CSSYS using OSC_RC_48M_DIV2 */
