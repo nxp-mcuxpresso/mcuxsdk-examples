@@ -961,7 +961,7 @@ edma3_memory_to_memory:
   dependency:
   - utility.debug_console_lite
   - utility.assert_lite
-  - driver.edma4
+  - driver.edma_unified
   __remove__:
     dependency:
     - utility.debug_console
@@ -984,7 +984,7 @@ edma3_memory_to_memory_sm:
   dependency:
   - utility.debug_console_lite
   - utility.assert_lite
-  - driver.edma4
+  - driver.edma_unified
   __remove__:
     dependency:
     - utility.debug_console
@@ -1003,7 +1003,7 @@ edma5_memory_to_memory:
   dependency:
   - utility.debug_console_lite
   - utility.assert_lite
-  - driver.edma4
+  - driver.edma_unified
   __remove__:
     dependency:
     - utility.debug_console
@@ -1033,7 +1033,7 @@ edma5_memory_to_memory_sm:
   dependency:
   - utility.debug_console_lite
   - utility.assert_lite
-  - driver.edma4
+  - driver.edma_unified
   __remove__:
     dependency:
     - utility.debug_console
@@ -1344,7 +1344,7 @@ lpuart_edma_transfer_sm:
   merge_segment:
   - config_sm
   dependency:
-  - driver.edma4
+  - driver.edma_unified
   - utility.debug_console_lite
   - utility.assert_lite
   __remove__:
@@ -1854,7 +1854,7 @@ lpspi_edma_b2b_transfer_master_sm:
   dependency:
   - utility.debug_console_lite
   - utility.assert_lite
-  - driver.edma4
+  - driver.edma_unified
   - driver.lpi2c
   __remove__:
     dependency:
@@ -1888,7 +1888,7 @@ lpspi_edma_b2b_transfer_slave_sm:
   dependency:
   - utility.debug_console_lite
   - utility.assert_lite
-  - driver.edma4
+  - driver.edma_unified
   - driver.lpi2c
   __remove__:
     dependency:
@@ -2318,7 +2318,7 @@ flexcan_loopback_edma_transfer_sm:
   merge_segment:
   - config_sm
   dependency:
-  - driver.edma4
+  - driver.edma_unified
   - utility.debug_console_lite
   - utility.assert_lite
   - driver.lpi2c
@@ -2430,7 +2430,7 @@ flexcan_efifo_edma_transfer:
   - utility.debug_console_lite
   - utility.assert_lite
   - driver.lpi2c
-  - driver.edma4
+  - driver.edma_unified
   __remove__:
     dependency:
     - utility.debug_console
@@ -3024,7 +3024,7 @@ pdm_edma_transfer_sm:
   - driver.codec
   - component.lpi2c_adapter
   - component.codec_i2c
-  - driver.edma4
+  - driver.edma_unified
   __remove__:
     dependency:
     - utility.debug_console
