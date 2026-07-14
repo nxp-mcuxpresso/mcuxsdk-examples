@@ -4,6 +4,9 @@ All notable changes to MCUboot fork in MCUXpresso SDK and related ota examples w
 
 ## [26.09.0] - 09/2026 
 
+### Added
+- Added basic support for FRDM-IMXRT1152
+
 ### Changed
 - Changed partition layouts on FRDM-MCXN266 and FRDM-MCXA336
 

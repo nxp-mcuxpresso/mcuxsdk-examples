@@ -1,12 +1,16 @@
 /*
 ** ###################################################################
-**     Processors:          MIMXRT1152XHM8B
+**     Processors:          MIMXRT1152AHM6B
+**                          MIMXRT1152AVM6B
+**                          MIMXRT1152DHM8B
+**                          MIMXRT1152DVM8B
+**                          MIMXRT1152XHM8B
 **                          MIMXRT1152XVM8B
 **
 **     Compiler:            IAR ANSI C/C++ Compiler for ARM
 **     Reference manual:    IMXRT1150RM, Rev 1, 01/2026
 **     Version:             rev. 0.1, 2026-01-09
-**     Build:               b260226
+**     Build:               b260622
 **
 **     Abstract:
 **         Linker file for the IAR ANSI C/C++ Compiler for ARM
@@ -21,6 +25,14 @@
 ** ###################################################################
 */
 
+/*
+  MCUBoot partition layout:
+
+  MCUBoot region            0x30000000 - 0x3003FFFF : 256kB  (0x040000 bytes)
+  Primary slot              0x30040000 - 0x3023FFFF : 2048kB (0x200000 bytes)
+  Secondary slot            0x30240000 - 0x3043FFFF : 2048kB (0x200000 bytes)
+*/
+
 define symbol __ram_vector_table_size__        =  isdefinedsymbol(__ram_vector_table__) ? 0x00000400 : 0;
 define symbol __ram_vector_table_offset__      =  isdefinedsymbol(__ram_vector_table__) ? 0x000003FF : 0;
 
@@ -28,11 +40,7 @@ define symbol m_interrupts_start       = 0x30002000;
 define symbol m_interrupts_end         = 0x300023FF;
 
 define symbol m_text_start             = 0x30002400;
-if (isdefinedsymbol(__use_flash64MB__)) {
-  define symbol m_text_end               = 0x33FBFFFF;
-} else{
-  define symbol m_text_end               = 0x30FBFFFF;
-}
+define symbol m_text_end               = 0x3003FFFF; 
 
 define symbol m_interrupts_ram_start   = 0x20000000;
 define symbol m_interrupts_ram_end     = 0x20000000 + __ram_vector_table_offset__;
@@ -113,7 +121,7 @@ define block CORE1_IMAGE_BLOCK          { section  __core1_image };
 
 initialize by copy {
   object mflash_drv.o,
-  object fsl_flexspi.o,
+  object fsl_flexspi.o
 };
 
 initialize by copy { readwrite, section .textrw, section CodeQuickAccess, section DataQuickAccess };

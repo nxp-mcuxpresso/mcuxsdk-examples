@@ -1,12 +1,16 @@
 /*
 ** ###################################################################
-**     Processors:          MIMXRT1152XHM8B
+**     Processors:          MIMXRT1152AHM6B
+**                          MIMXRT1152AVM6B
+**                          MIMXRT1152DHM8B
+**                          MIMXRT1152DVM8B
+**                          MIMXRT1152XHM8B
 **                          MIMXRT1152XVM8B
 **
 **     Compiler:            GNU C Compiler
 **     Reference manual:    IMXRT1150RM, Rev 1, 01/2026
 **     Version:             rev. 0.1, 2026-01-09
-**     Build:               b260226
+**     Build:               b260622
 **
 **     Abstract:
 **         Linker file for the GNU C Compiler
@@ -28,8 +32,15 @@ HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x0400;
 STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x0400;
 RPMSG_SHMEM_SIZE = DEFINED(__use_shmem__) ? 0x2000 : 0;
 VECTOR_RAM_SIZE = DEFINED(__ram_vector_table__) ? 0x00000400 : 0;
-TEXT_SIZE = DEFINED(__use_flash64MB__) ? 0x03FBDC00 : 0x00FBDC00;
 CORE1IMAGE_START = DEFINED(__use_flash64MB__) ? 0x33FC0000 : 0x30FC0000;
+
+/*
+  MCUBoot partition layout:
+
+  MCUBoot region            0x30000000 - 0x3003FFFF : 256kB  (0x040000 bytes)
+  Primary slot              0x30040000 - 0x3023FFFF : 2048kB (0x200000 bytes)
+  Secondary slot            0x30240000 - 0x3043FFFF : 2048kB (0x200000 bytes)
+*/
 
 /* Specify the memory areas */
 MEMORY
@@ -37,7 +48,7 @@ MEMORY
   m_flash_config        (RX)  : ORIGIN = 0x30000400, LENGTH = 0x00000C00
   m_ivt                 (RX)  : ORIGIN = 0x30001000, LENGTH = 0x00001000
   m_interrupts          (RX)  : ORIGIN = 0x30002000, LENGTH = 0x00000400
-  m_text                (RX)  : ORIGIN = 0x30002400, LENGTH = TEXT_SIZE
+  m_text                (RX)  : ORIGIN = 0x30002400, LENGTH = 0x0003DC00
   m_qacode              (RX)  : ORIGIN = 0x00000000, LENGTH = 0x00040000
   m_data                (RW)  : ORIGIN = 0x20000000, LENGTH = 0x00040000
   m_data2               (RW)  : ORIGIN = 0x202C0000 + RPMSG_SHMEM_SIZE, LENGTH = 0x00080000 - RPMSG_SHMEM_SIZE
