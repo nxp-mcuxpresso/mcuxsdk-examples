@@ -49,3 +49,12 @@ ota_rom_basic:
     - -mdk@release
     - -mdk@flash_debug
     - -mdk@flash_release
+    frdmimxrt700@cm33_core0:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@flash_debug
+    - -mdk@flash_release

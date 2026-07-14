@@ -37,3 +37,5 @@ For more information, please read ['Flash remapping functionality'](flash_remap_
 - [FRDM-RW612](../../_boards/frdmrw612/ota_examples/mcuboot_opensource/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/ota_examples/mcuboot_opensource/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [MIMXRT700-EVK](../../_boards/mimxrt700evk/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/ota_examples/mcuboot_opensource/example_board_readme.md)
