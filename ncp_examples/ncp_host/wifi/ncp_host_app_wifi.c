@@ -17,15 +17,15 @@ void ping_sock_task(void *param);
 void ncp_iperf_tx_task(void *param);
 void ncp_iperf_rx_task(void *param);
 
-#define PING_SOCK_TASK_PRIO   PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 3))
+#define PING_SOCK_TASK_PRIO   PRIORITY_RTOS_TO_OSA((CONFIG_NUM_PREEMPT_PRIORITIES - 3))
 static OSA_TASK_HANDLE_DEFINE(ping_sock_thread);
 static OSA_TASK_DEFINE(ping_sock_task, PING_SOCK_TASK_PRIO, 1, 2048, 0);
 
-#define NCP_IPERF_TX_TASK_PRIO   PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 3))
+#define NCP_IPERF_TX_TASK_PRIO   PRIORITY_RTOS_TO_OSA((CONFIG_NUM_PREEMPT_PRIORITIES - 3))
 static OSA_TASK_HANDLE_DEFINE(ncp_iperf_tx_thread);
 static OSA_TASK_DEFINE(ncp_iperf_tx_task, NCP_IPERF_TX_TASK_PRIO, 1, 5120, 0);
 
-#define NCP_IPERF_RX_TASK_PRIO   PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 3))
+#define NCP_IPERF_RX_TASK_PRIO   PRIORITY_RTOS_TO_OSA((CONFIG_NUM_PREEMPT_PRIORITIES - 3))
 static OSA_TASK_HANDLE_DEFINE(ncp_iperf_rx_thread);
 static OSA_TASK_DEFINE(ncp_iperf_rx_task, NCP_IPERF_RX_TASK_PRIO, 1, 5120, 0);
 
@@ -38,7 +38,7 @@ extern ping_msg_t ping_msg;
 ping_res_t ping_res;
 
 #define WIFI_NCP_STACK_SIZE   4096
-#define WIFI_NCP_TASK_PRIO   PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 3))
+#define WIFI_NCP_TASK_PRIO   PRIORITY_RTOS_TO_OSA((CONFIG_NUM_PREEMPT_PRIORITIES - 3))
 static OSA_TASK_HANDLE_DEFINE(wifi_ncp_task_handle);
 void wifi_ncp_task(void *pvParameters);
 static OSA_TASK_DEFINE(wifi_ncp_task, WIFI_NCP_TASK_PRIO, 1, WIFI_NCP_STACK_SIZE, 0);

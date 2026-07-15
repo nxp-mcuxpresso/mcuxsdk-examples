@@ -62,6 +62,9 @@
 #define CONFIG_NCP_BLE                    0
 #define CONFIG_NCP_OT                     0
 
+#define CONFIG_NUM_PREEMPT_PRIORITIES 10
+#define CONFIG_WIFI_TASK_PRIORITY_OFFSET 2
+
 /* NCP BLE mode options */
 #if (CONFIG_NCP_BLE)
 #define CONFIG_NCP_BLE_PROFILE_MODE       1

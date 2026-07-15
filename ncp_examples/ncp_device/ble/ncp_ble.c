@@ -47,7 +47,7 @@ atomic_t ncp_ble_state[1];
 
 //os_thread_t ble_ncp_thread;                         /* ncp task */
 //static os_thread_stack_define(ble_ncp_stack, 4096); /* ncp task stack*/
-#define BLE_TASK_PRIO        (PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-3)))
+#define BLE_TASK_PRIO        (PRIORITY_RTOS_TO_OSA((CONFIG_NUM_PREEMPT_PRIORITIES-3)))
 #define BLE_NCP_STACK_SIZE   4096
 
 static OSA_TASK_HANDLE_DEFINE(ble_ncp_handle);

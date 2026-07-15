@@ -31,7 +31,7 @@ AT_NONCACHEABLE_SECTION_INIT(lpspi_master_edma_handle_t masterHandle) = {0};
 edma_handle_t masterTxHandle;
 edma_handle_t masterRxHandle;
 
-#define NCP_SPI_TASK_PRIORITY     PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 2))
+#define NCP_SPI_TASK_PRIORITY     PRIORITY_RTOS_TO_OSA((CONFIG_NUM_PREEMPT_PRIORITIES - 2))
 #define NCP_SPI_TASK_STACK_SIZE   4096
 static void ncp_spi_intf_task(void *argv);
 static OSA_TASK_HANDLE_DEFINE(ncp_spiTaskHandle);

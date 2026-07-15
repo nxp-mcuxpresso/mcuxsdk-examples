@@ -33,7 +33,7 @@ extern uint8_t cmd_buf[NCP_INBUF_SIZE];
 extern uint8_t sys_res_buf[NCP_SYS_INBUF_SIZE];
 extern struct cmd_t system_error_ack_cmd;
 
-#define SYSTEM_TASK_PRIO        (PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-3)))
+#define SYSTEM_TASK_PRIO        (PRIORITY_RTOS_TO_OSA((CONFIG_NUM_PREEMPT_PRIORITIES-3)))
 #if CONFIG_NCP_USE_ENCRYPT
 #define SYSTEM_NCP_STACK_SIZE   4096
 #else

@@ -55,7 +55,7 @@ OSA_MSGQ_HANDLE_DEFINE(ncp_tlv_ctrl_msgq_handle, NCP_TLV_CTRL_QUEUE_LENGTH,  siz
 
 /* NCP adapter tx task */
 OSA_TASK_HANDLE_DEFINE(ncp_tlv_thread);
-OSA_TASK_DEFINE(ncp_tlv_process, PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 3)), 1, NCP_TLV_TX_TASK_STACK_SIZE, 0);
+OSA_TASK_DEFINE(ncp_tlv_process, PRIORITY_RTOS_TO_OSA((CONFIG_NUM_PREEMPT_PRIORITIES - 3)), 1, NCP_TLV_TX_TASK_STACK_SIZE, 0);
 
 #define NCP_RESET_CONTEXT_AON_ADDR (0x4015C100)
 static ncp_reset_callback_t ncp_dev_reset_cb = NULL;

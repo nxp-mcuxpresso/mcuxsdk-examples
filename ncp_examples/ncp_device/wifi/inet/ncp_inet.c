@@ -637,7 +637,7 @@ uint8_t *ncp_inet_prepare_socket_recv_resp(uint8_t *receive_res)
 }
 
 static OSA_TASK_HANDLE_DEFINE(ncp_inet_recv_thread);
-static OSA_TASK_DEFINE(socket_recv_task, PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-3)), 1, 5000, 0);
+static OSA_TASK_DEFINE(socket_recv_task, PRIORITY_RTOS_TO_OSA((CONFIG_NUM_PREEMPT_PRIORITIES-3)), 1, 5000, 0);
 static int ncp_inet_recv_create_task(void)
 {
     ncp_d("NCP: run %s!\r\n", __func__);

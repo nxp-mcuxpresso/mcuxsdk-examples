@@ -45,7 +45,7 @@ static void ncp_pm_sm_task(void *param);
  * Variables
  ******************************************************************************/
 
-OSA_TASK_DEFINE(ncp_pm_sm_task, PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 1)), 1, NCP_PM_SM_TASK_STACK_SIZE, 0);
+OSA_TASK_DEFINE(ncp_pm_sm_task, PRIORITY_RTOS_TO_OSA((CONFIG_NUM_PREEMPT_PRIORITIES - 1)), 1, NCP_PM_SM_TASK_STACK_SIZE, 0);
 
 static ncp_pm_sm_ctx_t s_psm_ctx;
 static uint16_t s_psm_msg_seqnum = 0;

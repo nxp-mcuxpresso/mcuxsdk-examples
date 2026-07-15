@@ -79,7 +79,7 @@ OSA_SEMAPHORE_HANDLE_DEFINE(ncp_wifi_resp_buf_lock);
 
 static void wifi_ncp_task(void *pvParameters);
 static OSA_TASK_HANDLE_DEFINE(wifi_ncp_thread);                         /* ncp  task */
-static OSA_TASK_DEFINE(wifi_ncp_task, PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 3)), 1, 1024*10, 0); /* ncp task stack*/
+static OSA_TASK_DEFINE(wifi_ncp_task, PRIORITY_RTOS_TO_OSA((CONFIG_NUM_PREEMPT_PRIORITIES - 3)), 1, 1024*10, 0); /* ncp task stack*/
 
 static struct wlan_network sta_network;
 static struct wlan_network uap_network;
