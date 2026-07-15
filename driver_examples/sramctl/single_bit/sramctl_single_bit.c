@@ -42,6 +42,10 @@ static bool SRAMCTL_RunSingleBitCorrectionTest(void)
 
     *ramAddr = SRAMCTL_MAGIC_NUMBER;
 
+#if defined(__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U)
+    SCB_CleanDCache_by_Addr((uint32_t *)(uintptr_t)ramAddr, (int32_t)sizeof(uint32_t));
+#endif
+
     s_sramctlEventHappened = false;
     s_sramctlLatchedRamsr  = 0U;
 
@@ -67,6 +71,10 @@ static bool SRAMCTL_RunSingleBitCorrectionTest(void)
     PRINTF("\r\nSRAMCTL single-bit injection test\r\n");
     PRINTF("Target address : 0x%08X\r\n", (uint32_t)(uintptr_t)ramAddr);
     PRINTF("Inject mask    : 0x%08X (flip 1 data bit)\r\n", (unsigned int)SRAMCTL_INJECT_SINGLE_DATABIT_MASK);
+
+#if defined(__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U)
+    SCB_InvalidateDCache_by_Addr((uint32_t *)(uintptr_t)ramAddr, (int32_t)sizeof(uint32_t));
+#endif
 
     /* Trigger a read to hit the injection address. */
     readValue = *ramAddr;

@@ -30,6 +30,39 @@ void SRAMCTL_IRQ_HANDLER(void)
 
     SDK_ISR_EXIT_BARRIER;
 }
+
+#else
+__attribute__((naked)) void BusFault_Handler(void)
+{
+    __asm volatile(
+        /* Determine which stack pointer was used before the fault.
+         * LR bit 2 = 0 → MSP was active, 1 → PSP was active. */
+        "tst   lr, #4          \n"
+        "ite   eq               \n"
+        "mrseq r0, msp          \n"
+        "mrsne r0, psp          \n"
+
+        /* r0 now points to the exception frame. PC is at offset 24. */
+        "ldr   r1, [r0, #24]    \n"   /* stacked PC */
+        "adds  r1, r1, #4       \n"   /* skip the 32-bit faulting LDR */
+        "str   r1, [r0, #24]    \n"   /* write back patched PC */
+
+        /* Branch to the C helper that captures RAMSR and sets the flag. */
+        "b     SRAMCTL_BusFaultHelper \n"
+        ::: "r0", "r1"
+    );
+}
+
+__attribute__((used, noinline)) void SRAMCTL_BusFaultHelper(void)
+{
+    /* Capture SRAMCTL status before clearing. */
+    uint32_t status = SRAMCTL_GetStatusFlags(SRAMCTL_BASE);
+    s_sramctlLatchedRamsr  = status;
+    s_sramctlEventHappened = true;
+
+    /* Clear W1C flags to allow a subsequent ECC event to be reported. */
+    (void)SRAMCTL_ClearStatusFlags(SRAMCTL_BASE, status & (uint32_t)kSRAMCTL_AllW1CFlags);
+}
 #endif
 
 
@@ -40,6 +73,10 @@ static bool SRAMCTL_RunMultiBitUncorrectableTest(void)
     uint32_t *const ramAddr = (uint32_t *)(uintptr_t)APP_SRAMCTL_TEST_ADDR;
 
     *ramAddr = SRAMCTL_MAGIC_NUMBER;
+
+#if defined(__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U)
+    SCB_CleanDCache_by_Addr((uint32_t *)(uintptr_t)ramAddr, (int32_t)sizeof(uint32_t));
+#endif
 
     s_sramctlEventHappened = false;
     s_sramctlLatchedRamsr  = 0U;
@@ -67,6 +104,10 @@ static bool SRAMCTL_RunMultiBitUncorrectableTest(void)
     PRINTF("Target address : 0x%08X\r\n", (uint32_t)(uintptr_t)ramAddr);
     PRINTF("Inject mask    : 0x%08X (flip 2 data bits)\r\n", (unsigned int)SRAMCTL_INJECT_MULTI_DATABIT_MASK);
     PRINTF("NOTE: multi-bit ECC is uncorrectable; some targets may reset/halt here.\r\n");
+
+#if defined(__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U)
+    SCB_InvalidateDCache_by_Addr((uint32_t *)(uintptr_t)ramAddr, (int32_t)sizeof(uint32_t));
+#endif
 
     /* Trigger read: may set MLTERR or may escalate to fault/reset depending on SoC integration. */
     volatile uint32_t readValue = *ramAddr;
