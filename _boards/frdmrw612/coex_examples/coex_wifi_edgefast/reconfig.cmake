@@ -10,6 +10,7 @@ mcux_add_source(
             middleware/wireless/coex/src/configs/rw61x/wifi/wifi_config.h
             middleware/wireless/coex/src/configs/rw61x/lwip/lwipopts.h
             middleware/wireless/coex/src/configs/rw61x/mbedtls/mbedtls_config_client.h
+            middleware/wireless/coex/src/configs/rw61x/edgefast/edgefast_open_app.h
             middleware/wireless/coex/src/edgefast/coex_shell.c
             middleware/wireless/coex/src/edgefast/coex_shell.h
             middleware/wireless/coex/src/common/controller_coex_nxp.c
