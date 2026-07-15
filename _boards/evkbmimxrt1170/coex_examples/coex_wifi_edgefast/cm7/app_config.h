@@ -5,6 +5,13 @@
  *  SPDX-License-Identifier: BSD-3-Clause
  */
 
+#ifndef APP_CONFIG_H
+#define APP_CONFIG_H
+
+#if defined(__MCUXPRESSO)
+#include "app_mcuxpresso_config.h"
+#endif
+
 /* If OT or BLE is enabled, the vApplicationHook defined by the app should be used
  * instead of the private definition of WIFI, use CONFIG_COEX_APP macro to select.
  */
@@ -23,3 +30,4 @@
 #include "wifi_bt_module_config.h"
 #include "wifi_config.h"
 
+#endif /* APP_CONFIG_H */

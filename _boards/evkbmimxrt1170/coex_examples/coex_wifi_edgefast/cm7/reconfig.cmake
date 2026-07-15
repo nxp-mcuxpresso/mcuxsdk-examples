@@ -27,6 +27,7 @@ mcux_add_source(
     middleware/wireless/coex/src/edgefast/coex_shell.c
     middleware/wireless/coex/src/edgefast/coex_shell.h
     examples/coex_examples/coex_wifi_edgefast/app_config.cmake
+    middleware/edgefast_open/examples/_boards/${board}/configs/mbedtls/mbedtls_user_config.h
 )
 
 mcux_add_source(
@@ -90,8 +91,7 @@ mcux_add_macro(
       -DSDIO_ENABLED=1\
       -DCONFIG_BLE_SLIM=0\
       -DUSB_HOST_CONFIG_BUFFER_PROPERTY_CACHEABLE=1\
-      -DgMemManagerLight=0\
-"
+      -DgMemManagerLight=0"
 )
 
 mcux_add_macro(
@@ -105,20 +105,6 @@ mcux_add_macro(
   TOOLCHAINS armgcc
 )
 
-mcux_remove_iar_linker_script(
-  BASE_PATH ${SdkRootDirPath}
-  LINKER ${device_root}/RT/RT1170/MIMXRT1176/iar/MIMXRT1176xxxxx_cm7_flexspi_nor.icf
-  TARGETS
-    flexspi_nor_debug
-    flexspi_nor_release
-)
-mcux_remove_mdk_linker_script(
-  BASE_PATH ${SdkRootDirPath}
-  LINKER ${device_root}/RT/RT1170/MIMXRT1176/arm/MIMXRT1176xxxxx_cm7_flexspi_nor.scf
-  TARGETS
-    flexspi_nor_debug
-    flexspi_nor_release
-)
 mcux_remove_armgcc_linker_script(
   BASE_PATH ${SdkRootDirPath}
   LINKER ${device_root}/RT/RT1170/MIMXRT1176/gcc/MIMXRT1176xxxxx_cm7_flexspi_nor.ld
