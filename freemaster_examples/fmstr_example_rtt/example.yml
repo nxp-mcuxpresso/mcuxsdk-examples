@@ -40,6 +40,8 @@ fmstr_example_rtt:
     evkmimxrt1064: []
     evkmimxrt1180@cm33: []
     frdmimxrt1186@cm33: []
+    frdmimxrt700@cm33_core0: []
+    frdmimxrt700@cm33_core1: []
     frdmke17z512: []
     frdmmcxa153: []
     frdmmcxa156: []

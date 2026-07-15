@@ -210,6 +210,8 @@ fmstr_example_uart:
     - +iar@flexspi_nor_hyperram_release
     - +mdk@flexspi_nor_hyperram_debug
     - +mdk@flexspi_nor_hyperram_release
+    frdmimxrt700@cm33_core0: []
+    frdmimxrt700@cm33_core1: []
     frdmk22f: []
     frdmk32l2a4s: []
     frdmk32l2b: []

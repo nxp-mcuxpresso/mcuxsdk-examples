@@ -32,6 +32,8 @@ fmstr_example_pdbdm:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []
     frdmimxrt1186@cm33: []
+    frdmimxrt700@cm33_core0: []
+    frdmimxrt700@cm33_core1: []
     frdmk22f: []
     frdmk32l2a4s: []
     frdmk32l2b: []

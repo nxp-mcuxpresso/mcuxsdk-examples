@@ -1,5 +1,5 @@
 /*
- *  Copyright 2023 NXP
+ *  Copyright 2023, 2026 NXP
  *  All rights reserved.
  *
  *  SPDX-License-Identifier: BSD-3-Clause
@@ -76,6 +76,22 @@
 #define FRDMRW610
 #define WIFI_BT_USE_IMU_INTERFACE
 #define CONFIG_SOC_SERIES_RW6XX_REVISION_A2 1
+
+/* 2EL Firecrest module with M2 interface */
+#elif defined(WIFI_IW612_BOARD_MURATA_2EL_M2)
+// #define WIFI_BT_TX_PWR_LIMITS "wlan_txpwrlimit_cfg_murata_2EL_CA_RU_Tx_power.h"
+// #define WIFI_BT_TX_PWR_LIMITS "wlan_txpwrlimit_cfg_murata_2EL_EU_RU_Tx_power.h"
+// #define WIFI_BT_TX_PWR_LIMITS "wlan_txpwrlimit_cfg_murata_2EL_JP_RU_Tx_power.h"
+// #define WIFI_BT_TX_PWR_LIMITS "wlan_txpwrlimit_cfg_murata_2EL_US_RU_Tx_power.h"
+#define WIFI_BT_TX_PWR_LIMITS "wlan_txpwrlimit_cfg_murata_2EL_WW.h"
+#define SD9177
+#define SDMMCHOST_OPERATION_VOLTAGE_1V8
+#define SD_TIMING_MAX kSD_TimingDDR50Mode
+#define WIFI_BT_USE_M2_INTERFACE
+#define WLAN_ED_MAC_CTRL                                                               \
+    {                                                                                  \
+        .ed_ctrl_2g = 0x1, .ed_offset_2g = 0xA, .ed_ctrl_5g = 0x1, .ed_offset_5g = 0xA \
+    }
 
 #else
 #error "Please define macro related to wifi board"
