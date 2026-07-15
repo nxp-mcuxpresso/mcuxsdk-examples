@@ -102,7 +102,7 @@ static bool SRAMCTL_RunMultiBitUncorrectableTest(void)
 
     PRINTF("\r\nSRAMCTL multi-bit injection test\r\n");
     PRINTF("Target address : 0x%08X\r\n", (uint32_t)(uintptr_t)ramAddr);
-    PRINTF("Inject mask    : 0x%08X (flip 2 data bits)\r\n", (unsigned int)SRAMCTL_INJECT_MULTI_DATABIT_MASK);
+    PRINTF("Inject mask    : 0x%X (flip 2 data bits)\r\n", (unsigned int)SRAMCTL_INJECT_MULTI_DATABIT_MASK);
     PRINTF("NOTE: multi-bit ECC is uncorrectable; some targets may reset/halt here.\r\n");
 
 #if defined(__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U)
@@ -147,7 +147,7 @@ static bool SRAMCTL_RunMultiBitUncorrectableTest(void)
         PRINTF("FAIL: timeout waiting for SRAMCTL event\r\n");
     }
 
-    PRINTF("SRAMCTL status: 0x%08X | SYND=0x%02X EINFO=0x%02X ECCNT=%u\r\n", (unsigned int)ramsr,
+    PRINTF("SRAMCTL status: 0x%X | SYND=0x%02X EINFO=0x%02X ECCNT=%u\r\n", (unsigned int)ramsr,
            info.eccSyndromeValue, info.ramStatusEventInfo, info.ramCorrectableErrorCount);
 
     if ((ramsr & (uint32_t)kSRAMCTL_EccMultiBitError) != 0U)
@@ -179,7 +179,7 @@ int main(void)
     PRINTF("SRAMCTL base address: 0x%08X\r\n", (uint32_t)SRAMCTL_BASE);
 
     sramctl_config_t config;
-    config.addressType              = (uint8_t)kSRAMCTL_AddressTypeSystem;
+    config.addressType              = kSRAMCTL_AddressTypeSystem;
     config.initializationWaitStates = kSRAMCTL_ZeroWaitCycle;
     config.addressStart             = APP_SRAMCTL_INIT_ADDR_START;
     config.addressEnd               = APP_SRAMCTL_INIT_ADDR_END;
