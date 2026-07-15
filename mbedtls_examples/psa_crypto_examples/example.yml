@@ -149,6 +149,32 @@ psa_crypto_examples:
     - -mdk@sdram_debug
     - -mdk@release
     - -mdk@sdram_release
+    frdmimxrt1152@cm4:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    frdmimxrt1152@cm7:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
     evkmimxrt1160@cm4:
     - -iar@debug
     - -iar@release
