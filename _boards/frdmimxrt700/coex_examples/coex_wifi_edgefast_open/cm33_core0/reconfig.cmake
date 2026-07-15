@@ -11,7 +11,7 @@ mcux_add_source(
     ${board_root}/${board}/coex_examples/coex_wifi_edgefast_open/${core_id}/hardware_init.c
     ${board_root}/${board}/coex_examples/coex_wifi_edgefast_open/${core_id}/pin_mux.c
     ${board_root}/${board}/coex_examples/coex_wifi_edgefast_open/${core_id}/pin_mux.h
-    middleware/edgefast_open/examples/_boards/${board}/configs/mbedtls/mbedtls_config_client.h
+    middleware/edgefast_open/source/bluetooth/hci/configs/mbedtls/mbedtls_config_client.h
     middleware/edgefast_open/examples/_boards/${board}/configs/mbedtls/mbedtls_user_config.h
     middleware/wifi_nxp/example/wifi_cli/lwip_config/lwiphooks.h
     middleware/wifi_nxp/example/wifi_cli/lwip_config/lwipopts.h

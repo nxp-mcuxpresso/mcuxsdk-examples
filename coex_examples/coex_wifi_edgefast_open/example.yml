@@ -18,6 +18,8 @@ coex_wifi_edgefast_open:
     - -armgcc@release
     - -armgcc@sdram_debug
     - -armgcc@sdram_release
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
     - -iar@debug
     - -iar@release
     - -iar@sdram_debug
@@ -35,11 +37,17 @@ coex_wifi_edgefast_open:
     - -armgcc@release
     - -armgcc@flash_debug
     - -armgcc@flash_release
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
     - -iar@debug
     - -iar@release
     - -iar@flash_debug
     - -iar@flash_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
     - -mdk@debug
     - -mdk@release
     - -mdk@flash_debug
     - -mdk@flash_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
