@@ -88,11 +88,13 @@ void task_main(void *param)
 {
     int32_t result = 0;
 
-    printSeparator();
     result = ncp_adapter_init(0);
     assert(NCP_SUCCESS == result);
 
     printSeparator();
+    PRINTF("NCP device demo\r\n");
+    printSeparator();
+
     PRINTF("Initialize NCP config littlefs CLIs\r\n");
     result = system_ncp_init();
     assert(NCP_SUCCESS == result);
@@ -136,9 +138,6 @@ int main(void)
 
     RTC_Init(RTC);
 
-    printSeparator();
-    PRINTF("NCP device demo\r\n");
-    printSeparator();
 #if defined(MBEDTLS_THREADING_C) && defined(MBEDTLS_THREADING_ALT)
     config_mbedtls_threading_alt();
 #endif

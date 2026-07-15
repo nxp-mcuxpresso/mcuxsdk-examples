@@ -410,7 +410,7 @@ static int ncp_spi_init(void *argv)
     {
         ncp_adap_e("Failed to create task", ret);
     }
-     ncp_adap_e("spi init finish");
+    //ncp_adap_e("spi init finish");
     return ret;
 }
 
@@ -614,7 +614,7 @@ static void ncp_spi_hs_intf_task(void *argv)
 {
     int ret = 0;
     spi_transfer_t slaveXfer;
-    PRINTF("Start the spi handshake task\r\n");
+    //PRINTF("Start the spi handshake task\r\n");
     while (1)
     {
         OSA_SemaphoreWait(spi_hs_mutex, osaWaitForever_c);
