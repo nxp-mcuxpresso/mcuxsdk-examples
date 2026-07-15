@@ -14,5 +14,10 @@
 #define CONFIG_COEX_APP                 0
 #endif
 
+/* OSA task: requires PRIORITY_RTOS_TO_OSA conversion */
+#define SERIAL_MANAGER_TASK_PRIORITY (PRIORITY_RTOS_TO_OSA((CONFIG_NUM_PREEMPT_PRIORITIES - 3)))
+/* edgefast_open k_thread_create task: uses FreeRTOS priority directly via K_PRIO_COOP(), no OSA conversion */
+#define SHELL_TASK_PRIORITY          (CONFIG_NUM_PREEMPT_PRIORITIES - 3)
+
 #include "edgefast_open_config.h"
 #include "wifi_config.h"
