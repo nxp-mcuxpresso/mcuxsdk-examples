@@ -1,5 +1,6 @@
 /*
- * Copyright 2026 NXP
+ * Copyright 2024 NXP
+ * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -15,11 +16,9 @@
 !!GlobalInfo
 product: Pins v15.0
 processor: MIMXRT798S
-package_id: MIMXRT798SGVKB
+package_id: MIMXRT798SGFOB
 mcu_data: ksdk2_0
 processor_version: 0.0.0
-pin_labels:
-- {pin_num: T13, pin_signal: PIO8_6, label: PWM_RED_LED, identifier: LED_RED}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -45,7 +44,8 @@ void BOARD_InitBootPins(void)
 BOARD_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: T13, peripheral: GPIO8, signal: 'GPIO, 6', pin_signal: PIO8_6}
+  - {pin_num: N4, peripheral: LP_FLEXCOMM0, signal: P0, pin_signal: PIO0_31, input_buffer: enable}
+  - {pin_num: N5, peripheral: LP_FLEXCOMM0, signal: P1, pin_signal: PIO1_0}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -56,32 +56,94 @@ BOARD_InitPins:
  * Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
-/* Function assigned for the Cortex-M33 (Core #0) */
+/* Function assigned for the Cortex-M33 */
 void BOARD_InitPins(void)
 {
-    /* Reset IOPCTL1 module */
     RESET_ClearPeripheralReset(kIOPCTL1_RST_SHIFT_RSTn);
 
-    const uint32_t LED_RED = (/* Pin is configured as GPIO8_IO6 */
-                              IOPCTL_PIO_FUNC0 |
-                              /* Disable pull-up / pull-down function */
-                              IOPCTL_PIO_PUPD_DI |
-                              /* Enable pull-down function */
-                              IOPCTL_PIO_PULLDOWN_EN |
-                              /* Disable input buffer function */
-                              IOPCTL_PIO_INBUF_DI |
-                              /* Normal mode */
-                              IOPCTL_PIO_SLEW_RATE_NORMAL |
-                              /* Normal drive */
-                              IOPCTL_PIO_FULLDRIVE_DI |
-                              /* Analog mux is disabled */
-                              IOPCTL_PIO_ANAMUX_DI |
-                              /* Pseudo Output Drain is disabled */
-                              IOPCTL_PIO_PSEDRAIN_DI |
-                              /* Input function is not inverted */
-                              IOPCTL_PIO_INV_DI);
-    /* PORT8 PIN6 (coords: T13) is configured as GPIO8_IO6 */
-    IOPCTL_PinMuxSet(BOARD_INITPINS_LED_RED_PORT, BOARD_INITPINS_LED_RED_PIN, LED_RED);
+    const uint32_t port8_pin7_config = (/* Pin is configured as LP_FLEXCOMM18_P0 */
+	                                        IOPCTL_PIO_FUNC1 |
+	                                        /* Disable pull-up / pull-down function */
+	                                        IOPCTL_PIO_PUPD_DI |
+	                                        /* Enable pull-down function */
+	                                        IOPCTL_PIO_PULLDOWN_EN |
+	                                        /* Enables input buffer function */
+	                                        IOPCTL_PIO_INBUF_EN |
+	                                        /* Normal mode */
+	                                        IOPCTL_PIO_SLEW_RATE_NORMAL |
+	                                        /* Normal drive */
+	                                        IOPCTL_PIO_FULLDRIVE_DI |
+	                                        /* Analog mux is disabled */
+	                                        IOPCTL_PIO_ANAMUX_DI |
+	                                        /* Pseudo Output Drain is disabled */
+	                                        IOPCTL_PIO_PSEDRAIN_DI |
+	                                        /* Input function is not inverted */
+	                                        IOPCTL_PIO_INV_DI);
+	    /* PORT8 PIN7 (coords: M16) is configured as LP_FLEXCOMM18_P0 */
+    IOPCTL_PinMuxSet(8U, 7U, port8_pin7_config);
+
+    const uint32_t port8_pin8_config = (/* Pin is configured as LP_FLEXCOMM18_P1 */
+	                                        IOPCTL_PIO_FUNC1 |
+	                                        /* Disable pull-up / pull-down function */
+	                                        IOPCTL_PIO_PUPD_DI |
+	                                        /* Enable pull-down function */
+	                                        IOPCTL_PIO_PULLDOWN_EN |
+	                                        /* Disable input buffer function */
+	                                        IOPCTL_PIO_INBUF_DI |
+	                                        /* Normal mode */
+	                                        IOPCTL_PIO_SLEW_RATE_NORMAL |
+	                                        /* Normal drive */
+	                                        IOPCTL_PIO_FULLDRIVE_DI |
+	                                        /* Analog mux is disabled */
+	                                        IOPCTL_PIO_ANAMUX_DI |
+	                                        /* Pseudo Output Drain is disabled */
+	                                        IOPCTL_PIO_PSEDRAIN_DI |
+	                                        /* Input function is not inverted */
+	                                        IOPCTL_PIO_INV_DI);
+	    /* PORT8 PIN8 (coords: T11) is configured as LP_FLEXCOMM18_P1 */
+   IOPCTL_PinMuxSet(8U, 8U, port8_pin8_config);
+
+   const uint32_t port8_pin14_config = (/* Pin is configured as LP_FLEXCOMM19_P0 */
+	                                         IOPCTL_PIO_FUNC1 |
+	                                         /* Disable pull-up / pull-down function */
+	                                         IOPCTL_PIO_PUPD_DI |
+	                                         /* Enable pull-down function */
+	                                         IOPCTL_PIO_PULLDOWN_EN |
+	                                         /* Enables input buffer function */
+	                                         IOPCTL_PIO_INBUF_EN |
+	                                         /* Normal mode */
+	                                         IOPCTL_PIO_SLEW_RATE_NORMAL |
+	                                         /* Normal drive */
+	                                         IOPCTL_PIO_FULLDRIVE_DI |
+	                                         /* Analog mux is disabled */
+	                                         IOPCTL_PIO_ANAMUX_DI |
+	                                         /* Pseudo Output Drain is disabled */
+	                                         IOPCTL_PIO_PSEDRAIN_DI |
+	                                         /* Input function is not inverted */
+	                                         IOPCTL_PIO_INV_DI);
+	    /* PORT8 PIN14 (coords: R10) is configured as LP_FLEXCOMM19_P0 */
+    IOPCTL_PinMuxSet(8U, 14U, port8_pin14_config);
+
+    const uint32_t port8_pin15_config = (/* Pin is configured as LP_FLEXCOMM19_P1 */
+	                                         IOPCTL_PIO_FUNC1 |
+	                                         /* Disable pull-up / pull-down function */
+	                                         IOPCTL_PIO_PUPD_DI |
+	                                         /* Enable pull-down function */
+	                                         IOPCTL_PIO_PULLDOWN_EN |
+	                                         /* Disable input buffer function */
+	                                         IOPCTL_PIO_INBUF_DI |
+	                                         /* Normal mode */
+	                                         IOPCTL_PIO_SLEW_RATE_NORMAL |
+	                                         /* Normal drive */
+	                                         IOPCTL_PIO_FULLDRIVE_DI |
+	                                         /* Analog mux is disabled */
+	                                         IOPCTL_PIO_ANAMUX_DI |
+	                                         /* Pseudo Output Drain is disabled */
+	                                         IOPCTL_PIO_PSEDRAIN_DI |
+	                                         /* Input function is not inverted */
+	                                         IOPCTL_PIO_INV_DI);
+	    /* PORT8 PIN15 (coords: T10) is configured as LP_FLEXCOMM19_P1 */
+    IOPCTL_PinMuxSet(8U, 15U, port8_pin15_config);
 }
 /***********************************************************************************************************************
  * EOF
