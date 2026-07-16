@@ -22,7 +22,7 @@ mcux_add_source(
     middleware/edgefast_open/examples/_boards/${board}/configs/freertos/FreeRTOSConfig.h
     middleware/edgefast_open/examples/_boards/${board}/broadcast_media_receiver/${core_id}/pin_mux.c
     middleware/edgefast_open/examples/_boards/${board}/broadcast_media_receiver/${core_id}/pin_mux.h
-    middleware/edgefast_open/examples/_boards/${board}/configs/mbedtls/mbedtls_config_client.h
+    middleware/edgefast_open/source/bluetooth/hci/configs/mbedtls/mbedtls_config_client.h
     middleware/edgefast_open/examples/_boards/${board}/configs/mbedtls/mbedtls_user_config.h
 )
 
