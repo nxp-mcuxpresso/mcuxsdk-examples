@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2025 NXP
+ * Copyright 2018-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -29,6 +29,9 @@
 #define LOCAL_EPT_ADDR                (40U)
 #define APP_RPMSG_READY_EVENT_DATA    (1U)
 #define APP_RPMSG_EP_READY_EVENT_DATA (2U)
+#if !defined(APP_SECONDARY_CORE)
+#define APP_SECONDARY_CORE kMCMGR_Core1
+#endif /* !defined(APP_SECONDARY_CORE) */
 
 typedef struct the_message
 {
@@ -135,7 +138,7 @@ int main(void)
                               (void *)&RPMsgRemoteReadyEventData);
 
     /* Boot Secondary core application */
-    (void)MCMGR_StartCore(kMCMGR_Core1, (void *)(char *)CORE1_BOOT_ADDRESS, (uint32_t)rpmsg_lite_base,
+    (void)MCMGR_StartCore(APP_SECONDARY_CORE, (void *)(char *)CORE1_BOOT_ADDRESS, (uint32_t)rpmsg_lite_base,
                           kMCMGR_Start_Synchronous);
 
     /* Print the initial banner */

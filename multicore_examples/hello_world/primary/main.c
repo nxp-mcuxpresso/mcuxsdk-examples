@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016-2024 NXP
+ * Copyright 2016-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -13,6 +13,9 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+#if !defined(APP_SECONDARY_CORE)
+#define APP_SECONDARY_CORE kMCMGR_Core1
+#endif /* !defined(APP_SECONDARY_CORE) */
 
 /*******************************************************************************
  * Prototypes
@@ -57,7 +60,7 @@ int main(void)
 
     /* Boot Secondary core application */
     (void)PRINTF("Starting Secondary core.\r\n");
-    (void)MCMGR_StartCore(kMCMGR_Core1, (void *)(char *)CORE1_BOOT_ADDRESS, 2, kMCMGR_Start_Synchronous);
+    (void)MCMGR_StartCore(APP_SECONDARY_CORE, (void *)(char *)CORE1_BOOT_ADDRESS, 2, kMCMGR_Start_Synchronous);
     (void)PRINTF("The secondary core application has been started.\r\n");
 
     for (;;)

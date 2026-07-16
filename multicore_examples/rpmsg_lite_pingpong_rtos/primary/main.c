@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2025 NXP
+ * Copyright 2016-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -23,6 +23,9 @@
 #define APP_TASK_STACK_SIZE        (256U)
 #define LOCAL_EPT_ADDR             (40U)
 #define APP_RPMSG_READY_EVENT_DATA (1U)
+#if !defined(APP_SECONDARY_CORE)
+#define APP_SECONDARY_CORE kMCMGR_Core1
+#endif /* !defined(APP_SECONDARY_CORE) */
 
 typedef struct the_message
 {
@@ -110,7 +113,7 @@ static void app_task(void *param)
                               (void *)&RPMsgRemoteReadyEventData);
 
     /* Boot Secondary core application */
-    (void)MCMGR_StartCore(kMCMGR_Core1, (void *)(char *)CORE1_BOOT_ADDRESS, (uint32_t)rpmsg_lite_base,
+    (void)MCMGR_StartCore(APP_SECONDARY_CORE, (void *)(char *)CORE1_BOOT_ADDRESS, (uint32_t)rpmsg_lite_base,
                           kMCMGR_Start_Synchronous);
 
     /* Wait until the secondary core application signals the rpmsg remote has been initialized and is ready to

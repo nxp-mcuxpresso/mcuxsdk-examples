@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016-2025 NXP
+ * Copyright 2016-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -14,6 +14,9 @@
  * Definitions
  ******************************************************************************/
 #define APP_READY_EVENT_DATA (1U)
+#if !defined(APP_SECONDARY_CORE)
+#define APP_SECONDARY_CORE kMCMGR_Core1
+#endif /* !defined(APP_SECONDARY_CORE) */
 
 /*******************************************************************************
  * Prototypes
@@ -90,7 +93,7 @@ int main(void)
 
     /* Boot Secondary core application */
     (void)PRINTF("Starting Secondary core.\r\n");
-    (void)MCMGR_StartCore(kMCMGR_Core1, (void *)(char *)CORE1_BOOT_ADDRESS, 2, kMCMGR_Start_Synchronous);
+    (void)MCMGR_StartCore(APP_SECONDARY_CORE, (void *)(char *)CORE1_BOOT_ADDRESS, 2, kMCMGR_Start_Synchronous);
 #ifdef APP_ONE_BUTTON_ONLY
     secondary_core_started = 1U;
 #endif
@@ -117,7 +120,7 @@ int main(void)
         /* Stop secondary core execution. */
         if (IS_BUTTON_1_PRESSED())
         {
-            const mcmgr_status_t status = MCMGR_StopCore(kMCMGR_Core1);
+            const mcmgr_status_t status = MCMGR_StopCore(APP_SECONDARY_CORE);
 
             if (kStatus_MCMGR_Success == status)
             {
@@ -140,7 +143,7 @@ int main(void)
         if (IS_BUTTON_2_PRESSED())
         {
             if (kStatus_MCMGR_Success ==
-                MCMGR_StartCore(kMCMGR_Core1, (void *)(char *)CORE1_BOOT_ADDRESS, 2, kMCMGR_Start_Synchronous))
+                MCMGR_StartCore(APP_SECONDARY_CORE, (void *)(char *)CORE1_BOOT_ADDRESS, 2, kMCMGR_Start_Synchronous))
             {
 #ifdef APP_ONE_BUTTON_ONLY
                 secondary_core_started = 1U;

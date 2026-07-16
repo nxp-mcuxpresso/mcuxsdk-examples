@@ -28,6 +28,10 @@
 #define APP_SH_MEM_PRIMARY_TO_SECONDARY_BUF_STORAGE_OFFSET (0x100u)
 #define APP_SH_MEM_SECONDARY_TO_PRIMARY_BUF_STORAGE_OFFSET (0x200u)
 
+#if !defined(APP_SECONDARY_CORE)
+#define APP_SECONDARY_CORE kMCMGR_Core1
+#endif /* !defined(APP_SECONDARY_CORE) */
+
 typedef struct the_message
 {
     uint32_t DATA;
@@ -140,7 +144,7 @@ void vGeneratePrimaryToSecondaryInterrupt(void *xUpdatedMessageBuffer)
     /* Trigger the inter-core interrupt using the MCMGR component.
        Pass the APP_MESSAGE_BUFFER_EVENT_DATA as data that accompany
        the kMCMGR_FreeRtosMessageBuffersEvent event. */
-    (void)MCMGR_TriggerEvent(kMCMGR_Core1, kMCMGR_FreeRtosMessageBuffersEvent, APP_MESSAGE_BUFFER_EVENT_DATA);
+    (void)MCMGR_TriggerEvent(APP_SECONDARY_CORE, kMCMGR_FreeRtosMessageBuffersEvent, APP_MESSAGE_BUFFER_EVENT_DATA);
 }
 
 static void FreeRtosMessageBuffersEventHandler(mcmgr_core_t coreNum, uint16_t eventData, void *context)
@@ -222,7 +226,7 @@ static void app_task(void *param)
     (void)MCMGR_RegisterEvent(kMCMGR_FreeRtosMessageBuffersEvent, FreeRtosMessageBuffersEventHandler, ((void *)0));
 
     /* Boot Secondary core application */
-    (void)MCMGR_StartCore(kMCMGR_Core1, (void *)(char *)CORE1_BOOT_ADDRESS, 0, kMCMGR_Start_Synchronous);
+    (void)MCMGR_StartCore(APP_SECONDARY_CORE, (void *)(char *)CORE1_BOOT_ADDRESS, 0, kMCMGR_Start_Synchronous);
 
     /* Wait until the secondary core application signals it is ready to communicate. */
     while (APP_READY_EVENT_DATA != RemoteAppReadyEventData)
