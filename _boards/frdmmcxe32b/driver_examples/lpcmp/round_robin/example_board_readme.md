@@ -14,10 +14,10 @@ PTA2            J2-9                channel 2                    0              
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This example uses LPCMP1 instance, the fixed port is plusMuxPort, the fixed channel is internal DAC
-module, and the checker channels are channel 0(CMP1_IN0, PTA0, J9-3), channel 4(CMP1_IN1, PTA1, J9-5)
-and channel 5(CMP1_IN2, PTA2, J2-9) in miusMuxPort.
+module, and the checker channels are channel 0(CMP1_IN0, PTA0, J9-3), channel 1(CMP1_IN1, PTA1, J9-5)
+and channel 2(CMP1_IN2, PTA2, J2-9) in miusMuxPort.
 
-Set the input voltage of channel 0, channel 4 and channel 5 to be less than, greater than
+Set the input voltage of channel 0, channel 1 and channel 2 to be less than, greater than
 and less than the output voltage of the DAC respectively. The comparison results of the
 three channels are different from the pre-set value. So the interrupt occurred and the terminal
 will print corresponding channel changed information.
