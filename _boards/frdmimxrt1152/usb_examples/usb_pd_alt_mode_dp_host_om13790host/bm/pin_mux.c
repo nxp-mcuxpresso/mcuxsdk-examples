@@ -41,7 +41,7 @@ void BOARD_InitBootPins(void) {
 BOARD_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: T20, peripheral: GPIO9, signal: 'gpio_io, 10', pin_signal: GPIO_AD_11, software_input_on: Disable, pull_up_down_config: Pull_Down, pull_keeper_select: Pull,
+  - {pin_num: T20, peripheral: GPIO3, signal: 'gpio_mux_io, 10', pin_signal: GPIO_AD_11, software_input_on: Disable, pull_up_down_config: Pull_Down, pull_keeper_select: Pull,
     open_drain: Disable, drive_strength: High, slew_rate: Fast}
   - {pin_num: AA25, peripheral: GPIO9, signal: 'gpio_io, 00', pin_signal: GPIO_AD_01, software_input_on: Disable, pull_up_down_config: Pull_Down, pull_keeper_select: Pull,
     open_drain: Disable, drive_strength: High, slew_rate: Fast}
@@ -84,8 +84,12 @@ void BOARD_InitPins(void) {
       IOMUXC_GPIO_AD_10_GPIO9_IO09,           /* GPIO_AD_10 is configured as GPIO9_IO09 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AD_11_GPIO9_IO10,           /* GPIO_AD_11 is configured as GPIO9_IO10 */
+      IOMUXC_GPIO_AD_11_GPIO_MUX3_IO10,       /* GPIO_AD_11 is configured as GPIO_MUX3_IO10 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_GPR->GPR42 = ((IOMUXC_GPR->GPR42 &
+    (~(BOARD_INITPINS_IOMUXC_GPR_GPR42_GPIO_MUX3_GPIO_SEL_LOW_MASK))) /* Mask bits to zero which are setting */
+      | IOMUXC_GPR_GPR42_GPIO_MUX3_GPIO_SEL_LOW(0x00U) /* GPIO3 and CM7_GPIO3 share same IO MUX function, GPIO_MUX3 selects one GPIO function: 0x00U */
+    );
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_LPSR_12_GPIO12_IO12,        /* GPIO_LPSR_12 is configured as GPIO12_IO12 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
@@ -135,7 +139,7 @@ void BOARD_InitPins(void) {
                                                  Domain write protection: Both cores are allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_AD_11_GPIO9_IO10,           /* GPIO_AD_11 PAD functional properties : */
+      IOMUXC_GPIO_AD_11_GPIO_MUX3_IO10,       /* GPIO_AD_11 PAD functional properties : */
       0x06U);                                 /* Slew Rate Field: Fast Slew Rate
                                                  Drive Strength Field: high drive strength
                                                  Pull / Keep Select Field: Pull Enable

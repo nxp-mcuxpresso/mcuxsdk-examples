@@ -32,6 +32,8 @@ extern "C" {
  */
 void BOARD_InitBootPins(void);
 
+#define BOARD_INITPINS_IOMUXC_GPR_GPR42_GPIO_MUX3_GPIO_SEL_LOW_MASK 0x0400U /*!< GPIO3 and CM7_GPIO3 share same IO MUX function, GPIO_MUX3 selects one GPIO function: affected bits mask */
+
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
  *

@@ -71,7 +71,7 @@ void HW_I2CReleaseBus(void)
     uint8_t i = 0;
 
     /* Config pin mux as gpio */
-    CLOCK_EnableClock(kCLOCK_Iomuxc_Lpsr);
+    CLOCK_EnableClock(kCLOCK_Iomuxc);
 
     IOMUXC_SetPinMux(IOMUXC_GPIO_LPSR_10_GPIO12_IO10, 0U);
     IOMUXC_SetPinMux(IOMUXC_GPIO_LPSR_11_GPIO12_IO11, 0U);
