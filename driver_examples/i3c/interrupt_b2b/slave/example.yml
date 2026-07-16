@@ -16,5 +16,4 @@ i3c_interrupt_b2b_slave:
       - examples/driver_examples/i3c/interrupt_b2b/slave/readme.md
       - ${board_root}/${board}/driver_examples/i3c/interrupt_b2b/slave/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
-  boards:
-    lpcxpresso860max: []
+  boards: {}
