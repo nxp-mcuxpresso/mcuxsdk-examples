@@ -105,8 +105,10 @@ static uint32_t progbuf[1024/sizeof(uint32_t)];
 
 static hashctx_t sha256_xmodem_ctx;
 
+#if defined(CONFIG_BOOT_MODE_ENCRYPTED_XIP_REMAP)
 static struct flash_area *fa_update;
 static struct flash_area *fa_meta;
+#endif
 
 /*******************************************************************************
  * Code
