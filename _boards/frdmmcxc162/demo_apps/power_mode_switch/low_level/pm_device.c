@@ -279,6 +279,7 @@ static void SetVoltagePeripheralPowerStatus(resc_status_t resc_status, resc_name
             break;
             
         case kResc_GlitchDetector_Act:
+#if !(defined(FSL_FEATURE_MCX_SPC_HAS_NO_GLITCH_DETECT) && FSL_FEATURE_MCX_SPC_HAS_NO_GLITCH_DETECT)
             if (resc_status == kResc_Status_Off)
             {
                 SPC_DisableActiveModeVddCoreGlitchDetect(APP_SPC, true);
@@ -287,9 +288,11 @@ static void SetVoltagePeripheralPowerStatus(resc_status_t resc_status, resc_name
             {
                 SPC_DisableActiveModeVddCoreGlitchDetect(APP_SPC, false);
             }
+#endif /* FSL_FEATURE_MCX_SPC_HAS_NO_GLITCH_DETECT */
             break;
-            
+
         case kResc_GlitchDetector_Lp:
+#if !(defined(FSL_FEATURE_MCX_SPC_HAS_NO_GLITCH_DETECT) && FSL_FEATURE_MCX_SPC_HAS_NO_GLITCH_DETECT)
             if (resc_status == kResc_Status_Off)
             {
                 SPC_DisableLowPowerModeVddCoreGlitchDetect(APP_SPC, true);
@@ -298,6 +301,7 @@ static void SetVoltagePeripheralPowerStatus(resc_status_t resc_status, resc_name
             {
                 SPC_DisableLowPowerModeVddCoreGlitchDetect(APP_SPC, false);
             }
+#endif /* FSL_FEATURE_MCX_SPC_HAS_NO_GLITCH_DETECT */
             break;
             
         default:
