@@ -23,7 +23,7 @@ extern uint16_t mcu_last_seqno_rcvd, mcu_last_seqno_sent;
 #define BLE_NCP_STACK_SIZE   4096
 static OSA_TASK_HANDLE_DEFINE(ble_ncp_task_handle);
 
-#define BLE_NCP_TASK_PRIO   PRIORITY_RTOS_TO_OSA((CONFIG_NUM_PREEMPT_PRIORITIES - 2))
+#define BLE_NCP_TASK_PRIO   PRIORITY_RTOS_TO_OSA(((configMAX_PRIORITIES - CONFIG_NCP_PRIORITY_OFFSET) - 2))
 void ble_ncp_task(void *pvParameters);
 static OSA_TASK_DEFINE(ble_ncp_task, BLE_NCP_TASK_PRIO, 1, BLE_NCP_STACK_SIZE, 0);
 

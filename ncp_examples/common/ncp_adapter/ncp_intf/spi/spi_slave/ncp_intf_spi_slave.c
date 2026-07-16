@@ -52,13 +52,13 @@ OSA_EVENT_HANDLE_DEFINE(spi_slave_event);
 #define NCP_SPI_TASK_STACK_SIZE  4096
 static void ncp_spi_intf_task(void *argv);
 static OSA_TASK_HANDLE_DEFINE(ncp_spiTaskHandle);
-static OSA_TASK_DEFINE(ncp_spi_intf_task, PRIORITY_RTOS_TO_OSA((CONFIG_NUM_PREEMPT_PRIORITIES-2)), 1, NCP_SPI_TASK_STACK_SIZE, 0);
+static OSA_TASK_DEFINE(ncp_spi_intf_task, PRIORITY_RTOS_TO_OSA(((configMAX_PRIORITIES - CONFIG_NCP_PRIORITY_OFFSET)-2)), 1, NCP_SPI_TASK_STACK_SIZE, 0);
 
 #define NCP_SPI_HS_TASK_PRIORITY 11
 #define NCP_SPI_HS_TASK_STACK_SIZE  1024
 static void ncp_spi_hs_intf_task(void *argv);
 static OSA_TASK_HANDLE_DEFINE(ncp_spihsTaskHandle);
-static OSA_TASK_DEFINE(ncp_spi_hs_intf_task, PRIORITY_RTOS_TO_OSA((CONFIG_NUM_PREEMPT_PRIORITIES-2)), 1, NCP_SPI_HS_TASK_STACK_SIZE, 0);
+static OSA_TASK_DEFINE(ncp_spi_hs_intf_task, PRIORITY_RTOS_TO_OSA(((configMAX_PRIORITIES - CONFIG_NCP_PRIORITY_OFFSET)-2)), 1, NCP_SPI_HS_TASK_STACK_SIZE, 0);
 
 #if (CONFIG_NCP_DEBUG) && (CONFIG_NCP_SPI)
 #define NCP_SPI_STATS_INC(x) NCP_STATS_INC(intf.x)

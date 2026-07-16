@@ -60,17 +60,17 @@ void usb_host_task(void *hostHandle);
 void app_task(void *param);
 
 /* NCP usb host task */
-#define USB_HOST_TASK_PRIO   PRIORITY_RTOS_TO_OSA((CONFIG_NUM_PREEMPT_PRIORITIES - 3))
+#define USB_HOST_TASK_PRIO   PRIORITY_RTOS_TO_OSA(((configMAX_PRIORITIES - CONFIG_NCP_PRIORITY_OFFSET) - 3))
 static OSA_TASK_HANDLE_DEFINE(usb_host_thread);
 static OSA_TASK_DEFINE(usb_host_task, USB_HOST_TASK_PRIO, 1, 2048, 0);
 
-#define APP_TASK_PRIO   PRIORITY_RTOS_TO_OSA((CONFIG_NUM_PREEMPT_PRIORITIES - 3))
+#define APP_TASK_PRIO   PRIORITY_RTOS_TO_OSA(((configMAX_PRIORITIES - CONFIG_NCP_PRIORITY_OFFSET) - 3))
 static OSA_TASK_HANDLE_DEFINE(app_task_thread);
 static OSA_TASK_DEFINE(app_task, APP_TASK_PRIO, 1, 1024, 0);
 
 #if CONFIG_NCP_USB
 extern void usb_recv_task(void *param);
-#define USB_RECV_TASK_PRIO   PRIORITY_RTOS_TO_OSA((CONFIG_NUM_PREEMPT_PRIORITIES - 3))
+#define USB_RECV_TASK_PRIO   PRIORITY_RTOS_TO_OSA(((configMAX_PRIORITIES - CONFIG_NCP_PRIORITY_OFFSET) - 3))
 static OSA_TASK_HANDLE_DEFINE(usb_recv_thread);
 static OSA_TASK_DEFINE(usb_recv_task, USB_RECV_TASK_PRIO, 1, 1024, 0);
 
@@ -78,7 +78,7 @@ static OSA_TASK_DEFINE(usb_recv_task, USB_RECV_TASK_PRIO, 1, 1024, 0);
 void usb_pm_task(void *param);
 /* NCP usb host pm task */
 static OSA_TASK_HANDLE_DEFINE(usb_pm_task_thread);
-static OSA_TASK_DEFINE(usb_pm_task, PRIORITY_RTOS_TO_OSA((CONFIG_NUM_PREEMPT_PRIORITIES - 3)), 1, 1024, 0);
+static OSA_TASK_DEFINE(usb_pm_task, PRIORITY_RTOS_TO_OSA(((configMAX_PRIORITIES - CONFIG_NCP_PRIORITY_OFFSET) - 3)), 1, 1024, 0);
 #endif
 #endif
 

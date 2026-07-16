@@ -50,7 +50,7 @@ static OSA_MSGQ_HANDLE_DEFINE(app_notify_event_queue, APP_NOTIFY_MAX_EVENTS, siz
 
 static void app_notify_event_handler(void *argv);
 static OSA_TASK_HANDLE_DEFINE(app_notify_event_thread);                                  /* app notify event processing task */
-static OSA_TASK_DEFINE(app_notify_event_handler, PRIORITY_RTOS_TO_OSA((CONFIG_NUM_PREEMPT_PRIORITIES-3)), 1, 3072, 0); /* app notify event processing task stack*/
+static OSA_TASK_DEFINE(app_notify_event_handler, PRIORITY_RTOS_TO_OSA(((configMAX_PRIORITIES - CONFIG_NCP_PRIORITY_OFFSET) - 3)), 1, 3072, 0); /* app notify event processing task stack*/
 extern uint32_t current_cmd;
 extern OSA_SEMAPHORE_HANDLE_DEFINE(wifi_ncp_lock);
 
