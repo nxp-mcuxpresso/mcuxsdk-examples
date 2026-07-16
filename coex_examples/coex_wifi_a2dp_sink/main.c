@@ -1,50 +1,67 @@
-/** @file main.c
- *
- *  @brief main file
- *
- *  Copyright 2008-2025 NXP
+/*
+ * Copyright 2024-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
- * The BSD-3-Clause license can be found at https://spdx.org/licenses/BSD-3-Clause.html
+ * The BSD-3-Clause license can be found at https://spdx.org/licenses/BSD-3-Clause.html.
+ */
+
+/*
+ * Coex Wi-Fi + BT A2DP Sink Application (Edgefast Open) - Clean Model B
+ *
+ * Architecture:
+ *   - Wi-Fi and BT/NB firmware use INDEPENDENT download: the coex middleware
+ *     (coex_controller_init) downloads the NB(BT) firmware over UART first, then
+ *     brings up WLAN over SDIO. The coex middleware is retained ONLY for this
+ *     independent-download orchestration + board init + linker + config headers.
+ *   - The shell is app-owned (fsl_shell / edgefast_open PORT_SHELL). The single
+ *     shell instance is created by app_shell_init() (app_shell.c). Unlike
+ *     a2dp_source (whose stock middleware example ships app_shell.c/.h and calls
+ *     app_shell_init() from bt_ready()), the stock a2dp_sink example has no shell
+ *     hook and we must not modify any middleware file, so main.c (task_main)
+ *     calls app_shell_init() directly. app_shell.c registers BOTH the "bt"
+ *     (A2DP-sink control) and "wifi" (WLAN CLI dispatch) commands,
+ *     giving one prompt (@Coex>). WLAN CLIs (wlan-scan, ping, iperf, ...) are
+ *     registered by the coex middleware's wlan_event_callback on
+ *     WLAN_REASON_INITIALIZED and are reached via "wifi <wlan-command>".
+ *   - main.c only orchestrates startup: coex_controller_init() (independent NB FW
+ *     download + WLAN init) then launches the a2dp_sink task.
  */
 
 ///////////////////////////////////////////////////////////////////////////////
 //  Includes
 ///////////////////////////////////////////////////////////////////////////////
 
-// SDK Included Files
+#include <string.h>
+#include "fsl_os_abstraction.h"
+#include "fsl_debug_console.h"
 #include "pin_mux.h"
 #include "clock_config.h"
 #include "board.h"
-#include "fsl_os_abstraction.h"
-#include "fsl_debug_console.h"
+#include "task.h"
+
+#include "fsl_common.h"
+#include "fsl_gpio.h"
+#include "fsl_adapter_uart.h"
+
+#include "FreeRTOS.h"
 
 #if !defined(RW612_SERIES)
 #include "wifi.h"
 #include "fsl_sdmmc_host.h"
-#endif /* RW612_SERIES */
-
-#include "fsl_common.h"
+#include "app.h"
 #include "fsl_device_registers.h"
-
-#include "BT_common.h"
-#include "BT_version.h"
-#include "BT_hci_api.h"
-
-#include "fsl_gpio.h"
-#if !defined(RW612_SERIES)
 #include "fsl_iomuxc.h"
 #include "fsl_gpc.h"
 #include "fsl_lpuart_edma.h"
 #include "fsl_dmamux.h"
 #endif /* RW612_SERIES */
 
-#include "fsl_adapter_uart.h"
-#include "usb_host_config.h"
-#include "usb_host.h"
-
-#include "netif/ethernet.h"
-#include "app_config.h"
+/* NOTE: do NOT include "app_a2dp_sink.h" here. It pulls in the edgefast_open
+ * zephyr toolchain headers (zephyr/toolchain/gcc.h) which redefine __maybe_unused
+ * and clash with the wpa_supplicant common.h definition included via wifi.h.
+ * Only the task entry prototype is needed in main.c. */
+extern void app_a2dp_sink_task(void *param);
+#include "app_shell.h"
 
 #if defined(MBEDTLS_USER_CONFIG_FILE)
 #include MBEDTLS_USER_CONFIG_FILE
@@ -53,34 +70,22 @@
 #include "threading_alt.h"
 #endif
 
-#ifndef CONFIG_WIFI_BLE_COEX_APP
-#define CONFIG_WIFI_BLE_COEX_APP 1 // needs to define CONFIG_WIFI_BLE_COEX_APP with value, 0 for disable Wi-Fi, 1 for enable Wi-Fi
-#endif
-
-#ifndef CONFIG_OT_CLI
-#define CONFIG_OT_CLI 0 // needs to define CONFIG_OT_CLI with value, 0 for disable OT, 1 for enable OT
-#endif
-
-struct bt_conn; // Forward declaration
-
-#include "app_a2dp_sink.h"
-#include "coex_cli.h"
-/*******************************************************************************
- * Definitions
- ******************************************************************************/
-
-const int TASK_MAIN_PRIO       = (configMAX_PRIORITIES-5);
-const int TASK_MAIN_STACK_SIZE = (2 * 1024);
-TaskHandle_t task_main_handle;
-
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
 
 extern void BOARD_InitHardware(void);
-extern void coex_controller_init();
+extern void coex_controller_init(void);
 extern void otSysRunIdleTask(void);
-//extern void APP_InitServices(void);
+
+/*******************************************************************************
+ * Variables
+ ******************************************************************************/
+
+const int TASK_MAIN_PRIO       = (CONFIG_NUM_PREEMPT_PRIORITIES - 5);
+const int TASK_MAIN_STACK_SIZE = (2 * 1024);
+TaskHandle_t task_main_handle;
+
 /*******************************************************************************
  * Code
  ******************************************************************************/
@@ -94,83 +99,63 @@ void task_main(void *param)
 {
     printSeparator();
 #if defined(WIFI_IW612_BOARD_MURATA_2EL_M2)
-    PRINTF("     Initialize Firecrest-2EL (IW612) M2 Module\r\n");
+    PRINTF("     Initialize Firecrest-2EL (IW612) Direct-M2 Module\r\n");
 #elif defined(WIFI_IW416_BOARD_MURATA_1XK_M2)
-    PRINTF("     Initialize RB3P 1XK Direct-M2 Module\n");
+    PRINTF("     Initialize RB3P 1XK Direct-M2 Module\r\n");
 #elif defined(WIFI_88W8987_BOARD_MURATA_1ZM_M2)
     PRINTF("     Initialize CA2 1ZM Direct-M2 Module\r\n");
 #endif
     printSeparator();
 
-#if CONFIG_COEX_ENABLE_MENU
-    coex_cli_init();
-#endif
+    /* Independent NB(BT) FW download over UART, then WLAN init over SDIO.
+     * WLAN CLIs are registered by the coex middleware wlan_event_callback. */
     coex_controller_init();
+    PRINTF("host init done\r\n");
 
-    if (xTaskCreate(app_a2dp_sink_task, "app_a2dp_sink_task", configMINIMAL_STACK_SIZE * 8, NULL, tskIDLE_PRIORITY + 1, NULL) != pdPASS)
+    /* Wait for the WLAN interface to come up before starting BT/A2DP */
+    vTaskDelay(3000);
+
+    if (xTaskCreate(app_a2dp_sink_task, "app_a2dp_sink_task", configMINIMAL_STACK_SIZE * 8, NULL,
+                    tskIDLE_PRIORITY + 1, NULL) != pdPASS)
     {
-        PRINTF("a2dp sink task creation failed!\r\n");
+        PRINTF("a2dp task creation failed!\r\n");
         while (1)
             ;
     }
 
-#if CONFIG_COEX_ENABLE_MENU
-    coex_menuPrint();
-    while (1)
-    {
-        int ch = pollChar();
-        if (ch != -1)
-        {
-            coex_menuAction(ch);
-        }
-    }
-#endif
+    /*
+     * Create the single app-owned fsl_shell and register BOTH the "bt" and
+     * "wifi" commands. The stock edgefast_open a2dp_sink example (in the
+     * middleware) has no shell hook, so - unlike a2dp_source - we cannot call
+     * app_shell_init() from bt_ready(). We must NOT modify any middleware file,
+     * so the coex app drives shell init here. app_shell_init() only needs the
+     * debug-console serial handle (set up by BOARD_InitHardware) and the
+     * compile-time "bt"/"wifi" command definitions; it does not depend on the
+     * BT stack being ready, so this deterministic point is safe.
+     */
+    app_shell_init();
+
+    /* Initialization job is complete, destroy the task */
+    vTaskDelete(NULL);
 }
-
-#if defined (APP_CONFIG_ENABLE_STACK_OVERFLOW_FREERTOS_HOOK) \
-        && (APP_CONFIG_ENABLE_STACK_OVERFLOW_FREERTOS_HOOK == 1U)
-void stackOverflowHookHandler(void* task_name)
-{
-    printf("stack-overflow exception from task: %s\r\n",(char*)task_name);
-}
-#endif /* #if defined (APP_CONFIG_ENABLE_STACK_OVERFLOW_FREERTOS_HOOK) && (APP_CONFIG_ENABLE_STACK_OVERFLOW_FREERTOS_HOOK == 1U) */
-
-
-/*******************************************************************************
- * Prototypes
- ******************************************************************************/
 
 int main(void)
 {
-    BaseType_t result = 0;
-    (void)result;
-
-    extern void BOARD_InitHardware(void);    /*fix build warning: function declared implicitly.*/
     BOARD_InitHardware();
-  
+
 #if defined(MBEDTLS_THREADING_C) && defined(MBEDTLS_THREADING_ALT)
     config_mbedtls_threading_alt();
 #endif
 
-#ifdef RW612_SERIES
-#ifdef OOB_WAKEUP
-    Configure_H2C_gpio();
-    C2H_sleep_gpio_cfg();
-#endif
-#endif /* RW612_SERIES */
-
     printSeparator();
-    PRINTF("        Coex APP\r\n");
+    PRINTF("        Coex A2DP Sink APP\r\n");
     printSeparator();
 
-    result =
+    BaseType_t result =
         xTaskCreate(task_main, "main", TASK_MAIN_STACK_SIZE, NULL, TASK_MAIN_PRIO, &task_main_handle);
-    assert(pdPASS == result);    
-#if defined (APP_CONFIG_ENABLE_STACK_OVERFLOW_FREERTOS_HOOK) \
-        && (APP_CONFIG_ENABLE_STACK_OVERFLOW_FREERTOS_HOOK == 1U)
-    EM_register_sof_handler(stackOverflowHookHandler);
-#endif /* #if defined (APP_CONFIG_ENABLE_STACK_OVERFLOW_FREERTOS_HOOK) && (APP_CONFIG_ENABLE_STACK_OVERFLOW_FREERTOS_HOOK == 1U) */
+    assert(pdPASS == result);
 
+    (void)result;
     vTaskStartScheduler();
     for (;;)
     {
@@ -181,40 +166,25 @@ int main(void)
 #if CONFIG_COEX_APP
 void vApplicationIdleHook(void)
 {
-#if(CONFIG_OT_CLI)
+#if (CONFIG_OT_CLI)
     otSysRunIdleTask();
 #endif
 }
-#endif /* CONFIG_COEX_APP*/
+#endif
 
-#ifndef APP_CONFIG_ENABLE_STACK_OVERFLOW_FREERTOS_HOOK
-/**
- * @brief Loop forever if stack overflow is detected.
- *
- * If configCHECK_FOR_STACK_OVERFLOW is set to 1,
- * this hook provides a location for applications to
- * define a response to a stack overflow.
- *
- * Use this hook to help identify that a stack overflow
- * has occurred.
- *
- */
-void vApplicationStackOverflowHook(TaskHandle_t xTask, char * pcTaskName)
+void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName)
 {
     PRINTF("ERROR: stack overflow on task %s.\r\n", pcTaskName);
 
     portDISABLE_INTERRUPTS();
 
-    /* Unused Parameters */
     (void)xTask;
     (void)pcTaskName;
 
-    /* Loop forever */
     for (;;)
     {
     }
 }
-#endif
 
 #ifndef __GNUC__
 void __assert_func(const char *file, int line, const char *func, const char *failedExpr)

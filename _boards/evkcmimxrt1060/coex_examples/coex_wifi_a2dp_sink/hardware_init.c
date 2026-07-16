@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2023-2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -17,45 +17,32 @@
 #include "fsl_codec_adapter.h"
 #include "fsl_debug_console.h"
 #include "fsl_adapter_uart.h"
-#include "controller_hci_uart.h"
-#include "usb_host_config.h"
-#include "usb_phy.h"
-#include "usb_host.h"
+#include <zephyr/drivers/bluetooth.h>
 
-#if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-#include "psa/crypto.h"
-#endif /* CONFIG_BT_SMP */
 /*${header:end}*/
 
 /*${macro:start}*/
-#if defined(__GIC_PRIO_BITS)
-#define USB_HOST_INTERRUPT_PRIORITY (25U)
-#elif defined(__NVIC_PRIO_BITS) && (__NVIC_PRIO_BITS >= 3)
-#define USB_HOST_INTERRUPT_PRIORITY (6U)
-#else
-#define USB_HOST_INTERRUPT_PRIORITY (3U)
-#endif
 /*${macro:end}*/
 
 /*${variable:start}*/
 /* Select Audio/Video PLL (786.48 MHz) as sai1 clock source */
-#define DEMO_SAI1_CLOCK_SOURCE_SELECT      (2U)
+#define DEMO_SAI1_CLOCK_SOURCE_SELECT (2U)
 /* Clock pre divider for sai1 clock source */
 #define DEMO_SAI1_CLOCK_SOURCE_PRE_DIVIDER (3U)
 /* Clock divider for sai1 clock source */
-#define DEMO_SAI1_CLOCK_SOURCE_DIVIDER     (15U)
+#define DEMO_SAI1_CLOCK_SOURCE_DIVIDER (15U)
 /* Get frequency of sai1 clock */
 #define DEMO_SAI_CLK_FREQ                                                        \
     (CLOCK_GetFreq(kCLOCK_AudioPllClk) / (DEMO_SAI1_CLOCK_SOURCE_DIVIDER + 1U) / \
      (DEMO_SAI1_CLOCK_SOURCE_PRE_DIVIDER + 1U))
 
 /* Select USB1 PLL (480 MHz) as master lpi2c clock source */
-#define DEMO_LPI2C_CLOCK_SOURCE_SELECT  (0U)
+#define DEMO_LPI2C_CLOCK_SOURCE_SELECT (0U)
 /* Clock divider for master lpi2c clock source */
 #define DEMO_LPI2C_CLOCK_SOURCE_DIVIDER (5U)
 
-#define DEMO_SAI                SAI1
-#define DEMO_AUDIO_INSTANCE     (1U)
+#define DEMO_SAI            SAI1
+#define DEMO_AUDIO_INSTANCE (1U)
 
 /* DMA */
 #define EXAMPLE_DMAMUX_INSTANCE (0U)
@@ -69,19 +56,6 @@
 #define DEMO_AUDIO_BIT_WIDTH (kHAL_AudioWordWidth16bits)
 /* demo audio sample frequency */
 #define DEMO_AUDIO_SAMPLING_RATE (kHAL_AudioSampleRate44100Hz)
-
-#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
-void bt_psa_crypto_init(void)
-{
-    psa_status_t status;
-
-    status = psa_crypto_init();
-    if (status != PSA_SUCCESS) {
-        PRINTF("Failed to initialize PSA crypto");
-    }
-    assert(status == PSA_SUCCESS);
-}
-#endif /* CONFIG_BT_SMP */
 
 wm8962_config_t wm8962Config = {
     .i2cConfig = {.codecI2CInstance = BOARD_CODEC_I2C_INSTANCE, .codecI2CSourceClock = BOARD_CODEC_I2C_CLOCK_FREQ},
@@ -100,8 +74,8 @@ wm8962_config_t wm8962Config = {
     .slaveAddress = WM8962_I2C_ADDR,
     .bus          = kWM8962_BusI2S,
     .format       = {.mclk_HZ    = 11289750U,
-               .sampleRate = kWM8962_AudioSampleRate16KHz,
-               .bitWidth   = kWM8962_AudioBitWidth16bit},
+                     .sampleRate = kWM8962_AudioSampleRate16KHz,
+                     .bitWidth   = kWM8962_AudioBitWidth16bit},
     .masterSlave  = false,
 };
 codec_config_t boardCodecConfig = {.codecDevType = kCODEC_WM8962, .codecDevConfig = &wm8962Config};
@@ -157,7 +131,7 @@ hal_audio_config_t audioTxConfig = {
     .ipConfig          = (void *)&audioTxIpConfig,
     .srcClock_Hz       = 11289750U,
     .sampleRate_Hz     = (uint32_t)DEMO_AUDIO_SAMPLING_RATE,
-    .fifoWatermark     = FSL_FEATURE_SAI_FIFO_COUNTn(DEMO_SAI) / 2U,
+    .fifoWatermark     = FSL_FEATURE_SAI_FIFO_COUNTn(DEMO_SAI) - 1,
     .masterSlave       = kHAL_AudioMaster,
     .bclkPolarity      = kHAL_AudioSampleOnRisingEdge,
     .frameSyncWidth    = kHAL_AudioFrameSyncWidthHalfFrame,
@@ -215,13 +189,13 @@ uint32_t BOARD_SwitchAudioFreq(uint32_t sampleRate)
         CLOCK_SetMux(kCLOCK_Sai1Mux, DEMO_SAI1_CLOCK_SOURCE_SELECT);
         CLOCK_SetDiv(kCLOCK_Sai1PreDiv, DEMO_SAI1_CLOCK_SOURCE_PRE_DIVIDER);
         CLOCK_SetDiv(kCLOCK_Sai1Div, DEMO_SAI1_CLOCK_SOURCE_DIVIDER);
-        
+
         /* Enable MCLK output */
         BOARD_EnableSaiMclkOutput(true);
     }
-    
-    wm8962Config.format.sampleRate             = sampleRate;
-    wm8962Config.format.mclk_HZ                = DEMO_SAI_CLK_FREQ;
+
+    wm8962Config.format.sampleRate = sampleRate;
+    wm8962Config.format.mclk_HZ    = DEMO_SAI_CLK_FREQ;
 
     return DEMO_SAI_CLK_FREQ;
 }
@@ -271,40 +245,4 @@ int controller_hci_uart_get_configuration(controller_hci_uart_config_t *config)
 }
 #endif
 
-void USB_HostClockInit(void)
-{
-    usb_phy_config_struct_t phyConfig = {
-        BOARD_USB_PHY_D_CAL,
-        BOARD_USB_PHY_TXCAL45DP,
-        BOARD_USB_PHY_TXCAL45DM,
-    };
-
-    if (CONTROLLER_ID == kUSB_ControllerEhci0)
-    {
-        CLOCK_EnableUsbhs0PhyPllClock(kCLOCK_Usbphy480M, 480000000U);
-        CLOCK_EnableUsbhs0Clock(kCLOCK_Usb480M, 480000000U);
-    }
-    else
-    {
-        CLOCK_EnableUsbhs1PhyPllClock(kCLOCK_Usbphy480M, 480000000U);
-        CLOCK_EnableUsbhs1Clock(kCLOCK_Usb480M, 480000000U);
-    }
-    USB_EhciPhyInit(CONTROLLER_ID, BOARD_XTAL0_CLK_HZ, &phyConfig);
-}
-
-void USB_HostIsrEnable(void)
-{
-    uint8_t irqNumber;
-
-    uint8_t usbHOSTEhciIrq[] = USBHS_IRQS;
-    irqNumber                = usbHOSTEhciIrq[CONTROLLER_ID - kUSB_ControllerEhci0];
-
-/* Install isr, set priority, and enable IRQ. */
-#if defined(__GIC_PRIO_BITS)
-    GIC_SetPriority((IRQn_Type)irqNumber, USB_HOST_INTERRUPT_PRIORITY);
-#else
-    NVIC_SetPriority((IRQn_Type)irqNumber, USB_HOST_INTERRUPT_PRIORITY);
-#endif
-    EnableIRQ((IRQn_Type)irqNumber);
-}
 /*${function:end}*/

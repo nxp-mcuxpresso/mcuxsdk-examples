@@ -1,2 +1,25 @@
-source "middleware/edgefast_bluetooth/Kconfig"
+source "middleware/edgefast_open/Kconfig"
 source "Kconfig.mcuxpresso"
+
+config A2DP_SBC_PCM_BUFFER_PLAY_COUNT
+	int "The buffer count that every size is 480*2*2 bytes"
+	default 50
+
+config A2DP_BOARD_CODEC_PLAY_COUNT
+	int "The play count of the board codec interface (i2s)"
+	default 4
+
+config A2DP_BOARD_CODEC_PLAY_THRESHOLD
+	int "The threshold of pcm buffer when playing data to codec (n%)"
+	default 20
+
+# Enable the edgefast_open shell porting layer (fsl_shell). PORT_SHELL is a
+# hidden symbol normally selected by BT_SHELL; this app uses the plain fsl_shell
+# API directly (app_shell.c) and registers its own "bt"/"wifi" commands, so we
+# enable PORT_SHELL here WITHOUT BT_SHELL. BT_SHELL is intentionally left off to
+# avoid the full edgefast_open bt shell registering a conflicting top-level "bt"
+# command in bt.c.
+config COEX_A2DP_ENABLE_PORT_SHELL
+	bool
+	default y
+	select PORT_SHELL

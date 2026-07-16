@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
 coex_wifi_a2dp_sink:
   section-type: application
   contents:
@@ -6,26 +7,26 @@ coex_wifi_a2dp_sink:
     document:
       name: coex_wifi_a2dp_sink${core_id_suffix_name}
       category: coex_examples
-      brief: coex_wifi_a2dp_sink
+      brief: The edgefast_open Bluetooth A2DP sink with Wi-Fi coexistence.
       example_readme:
       - examples/coex_examples/coex_wifi_a2dp_sink/readme.md
       - ${board_root}/${board}/coex_examples/coex_wifi_a2dp_sink/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-   #evkcmimxrt1060:
-   #- -armgcc@debug
-   #- -armgcc@release
-   #- -armgcc@sdram_debug
-   #- -armgcc@sdram_release
-   #- -iar@debug
-   #- -iar@release
-   #- -iar@sdram_debug
-   #- -iar@sdram_release
-   #- -iar@flexspi_nor_debug
-   #- -iar@flexspi_nor_release
-   #- -mdk@debug
-   #- -mdk@release
-   #- -mdk@sdram_debug
-   #- -mdk@sdram_release
-   #- -mdk@flexspi_nor_debug
-   #- -mdk@flexspi_nor_release
+    evkcmimxrt1060:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
