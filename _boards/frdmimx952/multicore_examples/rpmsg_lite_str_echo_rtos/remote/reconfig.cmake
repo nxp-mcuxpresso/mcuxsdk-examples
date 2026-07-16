@@ -32,7 +32,5 @@ mcux_add_iar_configuration(
 
 mcux_add_configuration(
         CC "-DSCMI_LMM_POWER_CHANGE_PROCESSED=1\
-	    -DI2C_RETRY_TIMES=40000\
-	    -DSRTM_IO_SERVICE_USED=1\
-	    -DSRTM_I2C_SERVICE_USED=1"
+	    -DI2C_RETRY_TIMES=40000"
 )
