@@ -88,7 +88,7 @@ static void init_freemaster_lpuart(void)
     config.enableTx = false;
     config.enableRx = false;
 
-    LPUART_Init((LPUART_Type*)EXAMPLE_UART_BASE, &config, BOARD_DEBUG_UART_CLK_FREQ);
+    LPUART_Init((LPUART_Type*)EXAMPLE_UART_BASE, &config, EXAMPLE_UART_CLOCK_FREQUENCY);
 
     /* Register communication module used by FreeMASTER driver. */
     FMSTR_SerialSetBaseAddress((LPUART_Type*)EXAMPLE_UART_BASE);

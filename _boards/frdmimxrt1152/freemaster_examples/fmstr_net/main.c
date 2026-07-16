@@ -25,13 +25,16 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /* Stack size of the temporary lwIP initialization thread. */
-#define EXAMPLE_THREAD_STACKSIZE 1024
+#define EXAMPLE_THREAD_STACKSIZE        1024
 
 /* Priority of the temporary lwIP initialization thread. */
-#define EXAMPLE_FMSTR_THREAD_PRIO 3
+#define EXAMPLE_FMSTR_THREAD_PRIO       3
 
 /* Priority of the temporary lwIP initialization thread. */
-#define EXAMPLE_APP_THREAD_PRIO 2
+#define EXAMPLE_APP_THREAD_PRIO         2
+
+/* Clock frequency */
+#define EXAMPLE_NETWORK_CLOCK_FREQ      CLOCK_GetRootClockFreq(kCLOCK_Root_Bus)
 
 ////////////////////////////////////////////////////////////////////////////////
 // Variables
@@ -61,6 +64,7 @@ int main(void)
     /* Board initialization */
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
+    BOARD_Init6524Pins();
     BOARD_InitENET_1GPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
@@ -150,7 +154,7 @@ static void example_task(void *arg)
 static void fmstr_task(void *arg)
 {
     /* Network interface initialization */
-    Network_Init(CLOCK_GetCoreSysClkFreq());
+    Network_Init(EXAMPLE_NETWORK_CLOCK_FREQ);
 
     /* FreeMASTER driver initialization */
     FMSTR_Init();

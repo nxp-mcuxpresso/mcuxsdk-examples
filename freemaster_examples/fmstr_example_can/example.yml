@@ -30,6 +30,7 @@ fmstr_example_can:
     evkmimxrt1160@cm7: []
     evkmimxrt1180@cm33: []
     evkmimxrt1180@cm7: []
+    frdmimxrt1152: []
     frdmimxrt1186@cm33: []
     frdmimxrt1186@cm7: []
     frdmke16z: []

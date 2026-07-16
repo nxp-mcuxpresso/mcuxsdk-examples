@@ -190,6 +190,7 @@ fmstr_example_uart:
     - +mdk@flexspi_nor_hyperram_release
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []
+    frdmimxrt1152: []
     frdmimxrt1186@cm33:
     - +armgcc@flexspi_nor_hyperram_debug
     - +armgcc@flexspi_nor_hyperram_release

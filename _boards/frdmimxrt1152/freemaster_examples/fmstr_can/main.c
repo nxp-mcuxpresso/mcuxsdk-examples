@@ -53,7 +53,9 @@ int main(void)
 {
     /* Board initialization */
     BOARD_ConfigMPU();
-    BOARD_InitPins();
+    BOARD_InitBootPins();
+    BOARD_InitCANPins();
+    BOARD_Init6524Pins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
@@ -62,6 +64,11 @@ int main(void)
     rootCfg.mux                 = 1U;
     rootCfg.div                 = 1U;
     CLOCK_SetRootClock(kCLOCK_Root_Can2, &rootCfg);
+
+    pcal6524_handle_t handle;
+    BOARD_InitPCAL6524(&handle);
+    PCAL6524_SetDirection(&handle, (1 << BOARD_PCAL6524_CAN2_STBY), kPCAL6524_Output);
+    PCAL6524_ClearPins(&handle, (1 << BOARD_PCAL6524_CAN2_STBY));
 
     /* FreeMASTER communication layer initialization */
     init_freemaster_can();

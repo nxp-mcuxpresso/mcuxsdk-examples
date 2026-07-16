@@ -51,6 +51,7 @@ fmstr_example_usb_cdc:
     evkmimxrt1180@cm7: []
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []
+    frdmimxrt1152: []
     frdmimxrt1186@cm33: []
     frdmimxrt1186@cm7: []
     frdmimxrt700@cm33_core0: []
