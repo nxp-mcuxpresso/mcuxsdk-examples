@@ -432,7 +432,8 @@ void BOARD_InitDisplayInterface(void)
     uint32_t bndwidth_Hz = voutClkFreq_Hz * 2;
     uint32_t lpclk_hz = mipiDsiDpiClkFreq_Hz / 8;
     DSI_StartupTxStaticSetting(APP_DPU_DPHY);
-    DSI_DphyTxDynamicSetting(APP_DPU_DPHY, bndwidth_Hz, lpclk_hz);
+    //DSI_DphyTxDynamicSetting(APP_DPU_DPHY, bndwidth_Hz, lpclk_hz);
+    DSI_DphyTxDynamicSettingWithMult(APP_DPU_DPHY, bndwidth_Hz, lpclk_hz, APP_DPHY_TIMING_MULT);
     DSI_ConfigDphy(DSI_CSR, phyRefClkFreq_Hz, dataRateFreq_Hz, &ipiConfig);
 
     /* Set MIPI DSI PHY config */

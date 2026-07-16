@@ -100,6 +100,7 @@ Interrupt Enable register 0.
 #define APP_VFP            10
 #define APP_VBP            10
 #define APP_PIXEL_CLOCK_HZ 50000000
+#define APP_DPHY_TIMING_MULT 5.0
 #endif
 
 #if (DEMO_PANEL == DEMO_PANEL_LCD_SPEC)

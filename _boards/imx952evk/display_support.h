@@ -101,6 +101,7 @@ Interrupt Enable register 0.
 #define APP_VSW          4
 #define APP_VFP          10
 #define APP_VBP          10
+#define APP_DPHY_TIMING_MULT 5.5
 #endif
 #if (DEMO_PANEL == DEMO_PANEL_LCD_SPEC)
 /*
@@ -166,6 +167,7 @@ Interrupt Enable register 0.
 #define APP_VFP            4
 #define APP_VBP            36
 #define APP_VSW            5
+#define APP_DPHY_TIMING_MULT 5.5
 #endif
 #if (DEMO_PANEL == DEMO_PANEL_LVDS2HDMI)
 /*
