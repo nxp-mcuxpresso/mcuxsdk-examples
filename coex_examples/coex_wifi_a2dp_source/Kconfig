@@ -1,2 +1,40 @@
-source "middleware/edgefast_bluetooth/Kconfig"
+source "middleware/edgefast_open/Kconfig"
 source "Kconfig.mcuxpresso"
+
+config BT_A2DP_SOURCE_DISCOVER_RESULT_COUNT
+	int "Maximum result count per device discovery"
+	default 20
+
+config BT_A2DP_SOURCE_EPS_DISCOVER_COUNT
+	int "Maximum result count per a2dp endpoint discovery"
+	default 5
+
+config BT_A2DP_SOURCE_SBC_BIT_RATE_DEFAULT
+	int "default sbc bit rate"
+	default 229
+
+config BT_A2DP_SOURCE_DATA_SEND_INTERVAL
+	int "data send interval (ms)"
+	default 10
+
+config BT_A2DP_SOURCE_DATA_BUF_SIZE
+	int "data buffer size (bytes)"
+	default 1000
+
+config BT_A2DP_SOURCE_DATA_BUF_COUNT
+	int "data buffer count"
+	default 5
+
+config BT_A2DP_SOURCE_DUAL
+	bool "enable dual a2dp source function"
+
+# Enable the edgefast_open shell porting layer (fsl_shell). PORT_SHELL is a
+# hidden symbol normally selected by BT_SHELL; this app uses the plain fsl_shell
+# API directly (app_shell.c) and registers its own "bt"/"wifi" commands, so we
+# enable PORT_SHELL here WITHOUT BT_SHELL. BT_SHELL is intentionally left off to
+# avoid the full edgefast_open bt shell registering a conflicting top-level "bt"
+# command in bt.c.
+config COEX_A2DP_ENABLE_PORT_SHELL
+	bool
+	default y
+	select PORT_SHELL
