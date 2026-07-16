@@ -1,0 +1,19 @@
+#
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+el2go_csr_ns:
+  use_sysbuild: true
+  section-type: application
+  contents:
+    meta_path: examples/el2go_examples/el2go_csr/el2go_csr_ns
+    project-root-path: boards/${board}/el2go_examples/el2go_csr/el2go_csr_ns
+    document:
+      name: el2go_csr_ns${core_id_suffix_name}
+      category: el2go_examples
+      brief: This sample application demonstrates how to generate Certificate Signing Requests (CSR) 
+        and verify X.509 certificates on an MCU device using PSA Crypto APIs.
+      example_readme:
+      - examples/el2go_examples/el2go_csr/el2go_csr_ns/readme.md
+  boards:
+    frdmmcxl255@cm33: []
