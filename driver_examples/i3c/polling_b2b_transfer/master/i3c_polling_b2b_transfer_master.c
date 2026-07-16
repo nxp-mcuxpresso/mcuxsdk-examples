@@ -16,7 +16,7 @@
  * Definitions
  ******************************************************************************/
 #define I3C_MASTER_SLAVE_ADDR_7BIT 0x1EU
-#define I3C_DATA_LENGTH 33U
+#define I3C_DATA_LENGTH            33U
 
 #define CCC_RSTDAA  0x06U
 #define CCC_SETDASA 0x87U
@@ -54,7 +54,7 @@ int main(void)
 
     PRINTF("\r\nI3C board2board polling example -- Master transfer.\r\n");
 
-    /* I3C mode: Set up i3c master to work in I3C mode, send data to slave*/
+    /* I2C mode: Set up i3c master to work in I2C mode, send data to slave*/
     /* First data in txBuff is data length of the transmitting data. */
     g_master_txBuff[0] = I3C_DATA_LENGTH - 1U;
     for (uint32_t i = 1U; i < I3C_DATA_LENGTH; i++)
@@ -154,7 +154,7 @@ int main(void)
     masterXfer.busType        = kI3C_TypeI3CSdr;
     masterXfer.flags          = kI3C_TransferDefaultFlag;
     masterXfer.ibiResponse    = kI3C_IbiRespAckMandatory;
-    result = I3C_MasterTransferBlocking(EXAMPLE_MASTER, &masterXfer);
+    result                    = I3C_MasterTransferBlocking(EXAMPLE_MASTER, &masterXfer);
 
     if (kStatus_Success != result)
     {
@@ -195,7 +195,7 @@ int main(void)
     }
 #else
     uint8_t addressList[8] = {0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37};
-    result                 = I3C_MasterProcessDAA(EXAMPLE_MASTER, addressList, 8);
+    result                 = I3C_MasterProcessDAA(EXAMPLE_MASTER, addressList, sizeof(addressList));
     if (result != kStatus_Success)
     {
         return -1;
@@ -270,16 +270,16 @@ int main(void)
 
     PRINTF("\r\nStart to do I3C master transfer in I3C HDR mode.\r\n");
     memset(&masterXfer, 0, sizeof(masterXfer));
-    masterXfer.slaveAddress = slaveAddr;
+    masterXfer.slaveAddress   = slaveAddr;
     masterXfer.subaddress     = 0x0U; /* HDR-DDR command */
     masterXfer.subaddressSize = 1U;
-    masterXfer.data         = g_master_txBuff;
-    masterXfer.dataSize     = I3C_DATA_LENGTH + 1U;
-    masterXfer.direction    = kI3C_Write;
-    masterXfer.busType      = kI3C_TypeI3CDdr;
-    masterXfer.flags        = kI3C_TransferDefaultFlag;
-    masterXfer.ibiResponse  = kI3C_IbiRespAckMandatory;
-    result                  = I3C_MasterTransferBlocking(EXAMPLE_MASTER, &masterXfer);
+    masterXfer.data           = g_master_txBuff;
+    masterXfer.dataSize       = I3C_DATA_LENGTH + 1U;
+    masterXfer.direction      = kI3C_Write;
+    masterXfer.busType        = kI3C_TypeI3CDdr;
+    masterXfer.flags          = kI3C_TransferDefaultFlag;
+    masterXfer.ibiResponse    = kI3C_IbiRespAckMandatory;
+    result                    = I3C_MasterTransferBlocking(EXAMPLE_MASTER, &masterXfer);
     if (result != kStatus_Success)
     {
         return -1;
@@ -289,16 +289,16 @@ int main(void)
     SDK_DelayAtLeastUs(WAIT_TIME_US, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 
     memset(g_master_rxBuff, 0, I3C_DATA_LENGTH);
-    masterXfer.slaveAddress = slaveAddr;
+    masterXfer.slaveAddress   = slaveAddr;
     masterXfer.subaddress     = 0x80U; /* HDR-DDR command */
     masterXfer.subaddressSize = 1U;
-    masterXfer.data         = g_master_rxBuff;
-    masterXfer.dataSize     = I3C_DATA_LENGTH - 1U;
-    masterXfer.direction    = kI3C_Read;
-    masterXfer.busType      = kI3C_TypeI3CDdr;
-    masterXfer.flags        = kI3C_TransferDefaultFlag;
-    masterXfer.ibiResponse  = kI3C_IbiRespAckMandatory;
-    result                  = I3C_MasterTransferBlocking(EXAMPLE_MASTER, &masterXfer);
+    masterXfer.data           = g_master_rxBuff;
+    masterXfer.dataSize       = I3C_DATA_LENGTH - 1U;
+    masterXfer.direction      = kI3C_Read;
+    masterXfer.busType        = kI3C_TypeI3CDdr;
+    masterXfer.flags          = kI3C_TransferDefaultFlag;
+    masterXfer.ibiResponse    = kI3C_IbiRespAckMandatory;
+    result                    = I3C_MasterTransferBlocking(EXAMPLE_MASTER, &masterXfer);
     if (result != kStatus_Success)
     {
         return -1;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022, 2024-2025 NXP
+ * Copyright 2021-2022, 2024-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -18,7 +18,7 @@
 #define I3C_MASTER_SLAVE_ADDR_7BIT 0x1E
 #define I3C_DATA_LENGTH            32U
 
-#define I3C_PACKET_LENGTH          (I3C_DATA_LENGTH + 2U)
+#define I3C_PACKET_LENGTH (I3C_DATA_LENGTH + 2U)
 
 /*******************************************************************************
  * Prototypes
@@ -29,8 +29,8 @@
  ******************************************************************************/
 static uint8_t g_slave_txBuff[I3C_PACKET_LENGTH] = {0};
 static uint8_t g_slave_rxBuff[I3C_PACKET_LENGTH] = {0};
-static volatile bool g_slaveCompletionFlag     = false;
-static volatile bool g_slaveRequestSentFlag    = false;
+static volatile bool g_slaveCompletionFlag       = false;
+static volatile bool g_slaveRequestSentFlag      = false;
 static i3c_slave_dma_handle_t g_i3c_s_handle;
 static dma_handle_t g_tx_dma_handle;
 static dma_handle_t g_rx_dma_handle;
@@ -62,6 +62,7 @@ static void i3c_slave_callback(I3C_Type *base, i3c_slave_dma_transfer_t *xfer, v
 int main(void)
 {
     i3c_slave_dma_transfer_t slaveXfer = {0};
+    status_t result                    = kStatus_Success;
     i3c_slave_config_t slaveConfig;
     uint8_t ibiData;
 
@@ -92,7 +93,12 @@ int main(void)
     memset(g_slave_rxBuff, 0, I3C_PACKET_LENGTH);
     slaveXfer.rxData     = g_slave_rxBuff;
     slaveXfer.rxDataSize = I3C_PACKET_LENGTH;
-    I3C_SlaveTransferDMA(EXAMPLE_SLAVE, &g_i3c_s_handle, &slaveXfer, kI3C_SlaveCompletionEvent);
+
+    result = I3C_SlaveTransferDMA(EXAMPLE_SLAVE, &g_i3c_s_handle, &slaveXfer, kI3C_SlaveCompletionEvent);
+    if (result != kStatus_Success)
+    {
+        return result;
+    }
 
     PRINTF("\r\nWait I3C master I3C SDR transfer.\r\n");
     /* Wait for master transmit completed. */
@@ -100,6 +106,8 @@ int main(void)
     {
     }
     g_slaveCompletionFlag = false;
+
+    assert(g_slave_rxBuff[0] <= I3C_DATA_LENGTH);
 
     PRINTF("Slave received data:\r\n");
     for (uint32_t i = 0U; i < g_slave_rxBuff[0]; i++)
@@ -116,8 +124,13 @@ int main(void)
     memset(&slaveXfer, 0, sizeof(slaveXfer));
     slaveXfer.txData     = (uint8_t *)g_slave_txBuff;
     slaveXfer.txDataSize = g_slave_rxBuff[0];
-    I3C_SlaveTransferDMA(EXAMPLE_SLAVE, &g_i3c_s_handle, &slaveXfer,
-                         (kI3C_SlaveCompletionEvent | kI3C_SlaveRequestSentEvent));
+
+    result = I3C_SlaveTransferDMA(EXAMPLE_SLAVE, &g_i3c_s_handle, &slaveXfer,
+                                  (kI3C_SlaveCompletionEvent | kI3C_SlaveRequestSentEvent));
+    if (result != kStatus_Success)
+    {
+        return result;
+    }
 
     /* Notify master that slave Tx data is prepared, ibi data is the data size slave want to transmit. */
     ibiData = g_slave_rxBuff[0];
@@ -127,9 +140,9 @@ int main(void)
     {
     }
     g_slaveRequestSentFlag = false;
-    PRINTF("I3C slave request IBI event sent.\r\n", ibiData);
+    PRINTF("I3C slave request IBI event sent.\r\n");
 
-    PRINTF("\r\nI3C slave sends received data back.\r\n", ibiData);
+    PRINTF("\r\nI3C slave sends received data back.\r\n");
     /* Wait for slave transmit completed. */
     while (!g_slaveCompletionFlag)
     {
@@ -144,8 +157,13 @@ int main(void)
     memset(&slaveXfer, 0, sizeof(slaveXfer));
     slaveXfer.rxData     = g_slave_rxBuff;
     slaveXfer.rxDataSize = I3C_PACKET_LENGTH;
-    I3C_SlaveTransferDMA(EXAMPLE_SLAVE, &g_i3c_s_handle, &slaveXfer,
-                         (kI3C_SlaveCompletionEvent | kI3C_SlaveRequestSentEvent));
+
+    result = I3C_SlaveTransferDMA(EXAMPLE_SLAVE, &g_i3c_s_handle, &slaveXfer,
+                                  (kI3C_SlaveCompletionEvent | kI3C_SlaveRequestSentEvent));
+    if (result != kStatus_Success)
+    {
+        return result;
+    }
 
     I3C_SlaveRequestIBIWithData(EXAMPLE_SLAVE, &ibiData, 1);
     while (!g_slaveRequestSentFlag)
@@ -158,13 +176,20 @@ int main(void)
     }
     g_slaveCompletionFlag = false;
 
+    assert(g_slave_rxBuff[1] <= I3C_DATA_LENGTH);
+
     /* The first byte of Rx buffer is HDR command, the second is data size, the following bytes are data content. */
     memcpy(&g_slave_txBuff[0], &g_slave_rxBuff[2], I3C_DATA_LENGTH);
     memset(&slaveXfer, 0, sizeof(slaveXfer));
     slaveXfer.txData     = &g_slave_txBuff[0];
     slaveXfer.txDataSize = g_slave_rxBuff[1];
-    I3C_SlaveTransferDMA(EXAMPLE_SLAVE, &g_i3c_s_handle, &slaveXfer,
-                         (kI3C_SlaveCompletionEvent | kI3C_SlaveRequestSentEvent));
+
+    result = I3C_SlaveTransferDMA(EXAMPLE_SLAVE, &g_i3c_s_handle, &slaveXfer,
+                                  (kI3C_SlaveCompletionEvent | kI3C_SlaveRequestSentEvent));
+    if (result != kStatus_Success)
+    {
+        return result;
+    }
 
     PRINTF("Slave received data :\r\n");
     for (uint32_t i = 0U; i < g_slave_rxBuff[1]; i++)

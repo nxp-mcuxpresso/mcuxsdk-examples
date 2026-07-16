@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023, 2025 NXP
+ * Copyright 2022-2023, 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -19,7 +19,7 @@
 #define CCC_SETDASA 0x87U
 
 #define I3C_MASTER_SLAVE_ADDR_7BIT 0x1EU
-#define I3C_DATA_LENGTH 32U
+#define I3C_DATA_LENGTH            32U
 
 /* Takes one-byte header which indicating data length. */
 #define I3C_PACKET_LENGTH (I3C_DATA_LENGTH + 1U)
@@ -95,7 +95,7 @@ static void i3c_master_dma_callback(I3C_Type *base, i3c_master_edma_handle_t *ha
 
 int main(void)
 {
-    status_t result  = kStatus_Success;
+    status_t result = kStatus_Success;
     i3c_master_config_t masterConfig;
     i3c_master_transfer_t masterXfer;
     uint8_t slaveAddr = 0;
@@ -139,8 +139,8 @@ int main(void)
     EDMA_Init(EXAMPLE_DMA, &config);
     EDMA_CreateHandle(&g_tx_edma_handle, EXAMPLE_DMA, EXAMPLE_I3C_TX_DMA_CHANNEL);
     EDMA_CreateHandle(&g_rx_edma_handle, EXAMPLE_DMA, EXAMPLE_I3C_RX_DMA_CHANNEL);
-    EDMA_SetChannelMux(EXAMPLE_DMA, 0, EXAMPLE_I3C_TX_DMA_CHANNEL_MUX);
-    EDMA_SetChannelMux(EXAMPLE_DMA, 1, EXAMPLE_I3C_RX_DMA_CHANNEL_MUX);
+    EDMA_SetChannelMux(EXAMPLE_DMA, EXAMPLE_I3C_TX_DMA_CHANNEL, EXAMPLE_I3C_TX_DMA_CHANNEL_MUX);
+    EDMA_SetChannelMux(EXAMPLE_DMA, EXAMPLE_I3C_RX_DMA_CHANNEL, EXAMPLE_I3C_RX_DMA_CHANNEL_MUX);
 
     /* Create I3C handle. */
     I3C_MasterTransferCreateHandleEDMA(EXAMPLE_MASTER, &g_i3c_m_handle, &masterCallback, NULL, &g_rx_edma_handle,
@@ -210,7 +210,7 @@ int main(void)
     }
     g_masterCompletionFlag = false;
 
-    slaveAddr = 0x30;;
+    slaveAddr = 0x30;
     memset(&masterXfer, 0, sizeof(masterXfer));
     masterXfer.slaveAddress   = I3C_MASTER_SLAVE_ADDR_7BIT;
     masterXfer.subaddress     = slaveAddr << 1U;
@@ -240,8 +240,8 @@ int main(void)
     }
     g_masterCompletionFlag = false;
 #else
-    uint8_t addressList[8] = {0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37};
-    result                 = I3C_MasterProcessDAA(EXAMPLE_MASTER, addressList, 8);
+    uint8_t addressList[8] = {0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38};
+    result                 = I3C_MasterProcessDAA(EXAMPLE_MASTER, addressList, sizeof(addressList));
     if (result != kStatus_Success)
     {
         PRINTF("\r\nENTDAA with error %u.", result);
@@ -360,19 +360,19 @@ int main(void)
     while (!g_ibiWonFlag)
     {
     }
-    g_ibiWonFlag = false;
+    g_ibiWonFlag       = false;
     g_completionStatus = kStatus_Success;
 
     memset(&masterXfer, 0, sizeof(masterXfer));
-    masterXfer.slaveAddress = slaveAddr;
+    masterXfer.slaveAddress   = slaveAddr;
     masterXfer.subaddress     = 0x0U; /* HDR-DDR command */
     masterXfer.subaddressSize = 1U;
-    masterXfer.data         = g_master_txBuff;
-    masterXfer.dataSize     = I3C_PACKET_LENGTH;
-    masterXfer.direction    = kI3C_Write;
-    masterXfer.busType      = kI3C_TypeI3CDdr;
-    masterXfer.flags        = kI3C_TransferDefaultFlag;
-    masterXfer.ibiResponse  = kI3C_IbiRespAckMandatory;
+    masterXfer.data           = g_master_txBuff;
+    masterXfer.dataSize       = I3C_PACKET_LENGTH;
+    masterXfer.direction      = kI3C_Write;
+    masterXfer.busType        = kI3C_TypeI3CDdr;
+    masterXfer.flags          = kI3C_TransferDefaultFlag;
+    masterXfer.ibiResponse    = kI3C_IbiRespAckMandatory;
 
     result = I3C_MasterTransferEDMA(EXAMPLE_MASTER, &g_i3c_m_handle, &masterXfer);
     if (kStatus_Success != result)
@@ -397,20 +397,20 @@ int main(void)
     g_completionStatus = kStatus_Success;
 
     memset(g_master_rxBuff, 0, sizeof(g_master_rxBuff));
-    masterXfer.slaveAddress = slaveAddr;
+    masterXfer.slaveAddress   = slaveAddr;
     masterXfer.subaddress     = 0x80U; /* HDR-DDR command */
     masterXfer.subaddressSize = 1U;
-    masterXfer.data         = g_master_rxBuff;
-    masterXfer.dataSize     = I3C_DATA_LENGTH;
-    masterXfer.direction    = kI3C_Read;
-    masterXfer.busType      = kI3C_TypeI3CDdr;
-    masterXfer.flags        = kI3C_TransferDefaultFlag;
-    masterXfer.ibiResponse  = kI3C_IbiRespAckMandatory;
+    masterXfer.data           = g_master_rxBuff;
+    masterXfer.dataSize       = I3C_DATA_LENGTH;
+    masterXfer.direction      = kI3C_Read;
+    masterXfer.busType        = kI3C_TypeI3CDdr;
+    masterXfer.flags          = kI3C_TransferDefaultFlag;
+    masterXfer.ibiResponse    = kI3C_IbiRespAckMandatory;
 
     result = I3C_MasterTransferEDMA(EXAMPLE_MASTER, &g_i3c_m_handle, &masterXfer);
     if (kStatus_Success != result)
     {
-        PRINTF("HDR-DDR receive starts with error %u!\r\n", g_completionStatus);
+        PRINTF("HDR-DDR receive starts with error %u!\r\n", result);
         return result;
     }
     while ((!g_masterCompletionFlag) && (g_completionStatus == kStatus_Success))

@@ -36,7 +36,7 @@ When the example runs successfully, you can see the similar information from the
 
 ~~~~~~~~~~~~~~~~~~~~~
 LPI2C example -- Read Accelerometer Value
-Found an LSDM6DSO on board , the device address is 0x6A.
+Found an LSM6DSO on board , the device address is 0x6A.
 The accel values:
 status_reg = 0x5 , x = 17156 , y = 22528 , z = -17600
 status_reg = 0x5 , x = 16132 , y = 21760 , z = -17344

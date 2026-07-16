@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2025 NXP
+ * Copyright 2022-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -16,8 +16,8 @@
  * Definitions
  ******************************************************************************/
 #define I3C_MASTER_SLAVE_ADDR_7BIT 0x1EU
-#define I3C_DATA_LENGTH 32U
-#define I3C_PACKET_LENGTH (I3C_DATA_LENGTH + 2U)
+#define I3C_DATA_LENGTH            32U
+#define I3C_PACKET_LENGTH          (I3C_DATA_LENGTH + 2U)
 
 /*******************************************************************************
  * Prototypes
@@ -32,6 +32,7 @@ edma_handle_t g_rx_dma_handle;
 AT_NONCACHEABLE_SECTION(uint8_t g_slave_rxBuff[I3C_PACKET_LENGTH]);
 volatile bool g_slaveCompletionFlag  = false;
 volatile bool g_slaveRequestSentFlag = false;
+volatile status_t g_completionStatus = kStatus_Success;
 
 /*******************************************************************************
  * Code
@@ -43,6 +44,7 @@ static void i3c_slave_callback(I3C_Type *base, i3c_slave_edma_transfer_t *xfer, 
     {
         /*  Transfer done */
         case kI3C_SlaveCompletionEvent:
+            g_completionStatus = xfer->completionStatus;
             if (xfer->completionStatus == kStatus_Success)
             {
                 g_slaveCompletionFlag = true;
@@ -113,7 +115,7 @@ int main(void)
     memset(g_slave_rxBuff, 0, sizeof(g_slave_rxBuff));
     slaveXfer.rxData     = g_slave_rxBuff;
     slaveXfer.rxDataSize = I3C_DATA_LENGTH + 1;
-    result = I3C_SlaveTransferEDMA(EXAMPLE_SLAVE, &g_i3c_s_handle, &slaveXfer, eventMask);
+    result               = I3C_SlaveTransferEDMA(EXAMPLE_SLAVE, &g_i3c_s_handle, &slaveXfer, eventMask);
     if (result != kStatus_Success)
     {
         return result;
@@ -140,8 +142,8 @@ int main(void)
     memset(&slaveXfer, 0, sizeof(slaveXfer));
     slaveXfer.txData     = (uint8_t *)&g_slave_rxBuff[1];
     slaveXfer.txDataSize = g_slave_rxBuff[0];
-    result = I3C_SlaveTransferEDMA(EXAMPLE_SLAVE, &g_i3c_s_handle, &slaveXfer,
-                                   (eventMask | kI3C_SlaveRequestSentEvent));
+    result =
+        I3C_SlaveTransferEDMA(EXAMPLE_SLAVE, &g_i3c_s_handle, &slaveXfer, (eventMask | kI3C_SlaveRequestSentEvent));
     if (result != kStatus_Success)
     {
         return result;
@@ -157,7 +159,7 @@ int main(void)
     }
     g_slaveRequestSentFlag = false;
 
-    PRINTF("\r\nI3C slave request IBI event sent.\r\n", ibiData);
+    PRINTF("\r\nI3C slave request IBI event sent.\r\n");
 
     /* Wait for slave transmit completed. */
     while (!g_slaveCompletionFlag)
@@ -174,8 +176,12 @@ int main(void)
     memset(&slaveXfer, 0, sizeof(slaveXfer));
     slaveXfer.rxData     = g_slave_rxBuff;
     slaveXfer.rxDataSize = I3C_DATA_LENGTH + 2;
-    I3C_SlaveTransferEDMA(EXAMPLE_SLAVE, &g_i3c_s_handle, &slaveXfer,
-                         (eventMask | kI3C_SlaveRequestSentEvent));
+    result =
+        I3C_SlaveTransferEDMA(EXAMPLE_SLAVE, &g_i3c_s_handle, &slaveXfer, (eventMask | kI3C_SlaveRequestSentEvent));
+    if (result != kStatus_Success)
+    {
+        return result;
+    }
 
     I3C_SlaveRequestIBIWithData(EXAMPLE_SLAVE, &ibiData, 1);
     while (!g_slaveRequestSentFlag)
@@ -192,8 +198,12 @@ int main(void)
     memset(&slaveXfer, 0, sizeof(slaveXfer));
     slaveXfer.txData     = &g_slave_rxBuff[2];
     slaveXfer.txDataSize = g_slave_rxBuff[1];
-    I3C_SlaveTransferEDMA(EXAMPLE_SLAVE, &g_i3c_s_handle, &slaveXfer,
-                         (eventMask | kI3C_SlaveRequestSentEvent));
+    result =
+        I3C_SlaveTransferEDMA(EXAMPLE_SLAVE, &g_i3c_s_handle, &slaveXfer, (eventMask | kI3C_SlaveRequestSentEvent));
+    if (result != kStatus_Success)
+    {
+        return result;
+    }
 
     PRINTF("Slave received data :\r\n");
     for (uint32_t i = 0U; i < g_slave_rxBuff[1]; i++)

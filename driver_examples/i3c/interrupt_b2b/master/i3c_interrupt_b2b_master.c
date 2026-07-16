@@ -149,7 +149,7 @@ void I3C0_IRQHandler(void)
 
 static status_t i3c_master_transferBuff(uint8_t *buff, size_t buffSize, i3c_direction_t dir)
 {
-    status_t result = kStatus_Success;
+    status_t result           = kStatus_Success;
     volatile uint32_t timeout = 0U;
 
     g_masterCompletionFlag = false;
@@ -207,7 +207,7 @@ static status_t i3c_master_pollIBIEvent(void)
 {
     /* Wait for IBI event. */
     volatile uint32_t timeout = 0U;
-    status_t result  = kStatus_Success;
+    status_t result           = kStatus_Success;
 
     while ((!g_ibiWonFlag) && (++timeout < I3C_TIME_OUT_INDEX) && (g_completionStatus == kStatus_Success))
     {
@@ -292,7 +292,7 @@ int main(void)
     I3C_MasterStop(EXAMPLE_MASTER);
 
     uint8_t addressList[8] = {0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37};
-    result                 = I3C_MasterProcessDAA(EXAMPLE_MASTER, addressList, 8);
+    result                 = I3C_MasterProcessDAA(EXAMPLE_MASTER, addressList, sizeof(addressList));
     if (result != kStatus_Success)
     {
         return -1;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, 2025 NXP
+ * Copyright 2022, 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -17,10 +17,11 @@
  * Definitions
  ******************************************************************************/
 #define I3C_TIME_OUT_INDEX 100000000U
+#define I3C_BROADCAST_ADDR 0x7EU
 
 #define SENSOR_ADDR 0x08U
 #define CCC_RSTDAA  0x06U
-#define CCC_SETDASA 0x87
+#define CCC_SETDASA 0x87U
 
 /*******************************************************************************
  * Prototypes
@@ -82,11 +83,11 @@ status_t I3C_WriteSensor(uint8_t deviceAddress, uint32_t regAddress, uint8_t *re
         }
     }
 
-    if (timeout == I3C_TIME_OUT_INDEX)
+    result = g_completionStatus;
+    if (timeout > I3C_TIME_OUT_INDEX)
     {
         result = kStatus_Timeout;
     }
-    result = g_completionStatus;
 
     return result;
 }
@@ -123,11 +124,11 @@ status_t I3C_ReadSensor(uint8_t deviceAddress, uint32_t regAddress, uint8_t *reg
         }
     }
 
-    if (timeout == I3C_TIME_OUT_INDEX)
+    result = g_completionStatus;
+    if (timeout > I3C_TIME_OUT_INDEX)
     {
         result = kStatus_Timeout;
     }
-    result = g_completionStatus;
 
     return result;
 }
@@ -136,12 +137,12 @@ status_t p3t1755_set_dynamic_address(void)
 {
     status_t result                  = kStatus_Success;
     i3c_master_transfer_t masterXfer = {0};
-    uint8_t g_master_txBuff[1];
+    uint8_t txBuff[1];
 
     /* Reset dynamic address. */
-    g_master_txBuff[0]      = CCC_RSTDAA;
-    masterXfer.slaveAddress = 0x7E;
-    masterXfer.data         = g_master_txBuff;
+    txBuff[0]               = CCC_RSTDAA;
+    masterXfer.slaveAddress = I3C_BROADCAST_ADDR;
+    masterXfer.data         = txBuff;
     masterXfer.dataSize     = 1;
     masterXfer.direction    = kI3C_Write;
     masterXfer.busType      = kI3C_TypeI3CSdr;
@@ -154,9 +155,9 @@ status_t p3t1755_set_dynamic_address(void)
 
     /* Assign dynmic address. */
     memset(&masterXfer, 0, sizeof(masterXfer));
-    g_master_txBuff[0]      = CCC_SETDASA;
-    masterXfer.slaveAddress = 0x7E;
-    masterXfer.data         = g_master_txBuff;
+    txBuff[0]               = CCC_SETDASA;
+    masterXfer.slaveAddress = I3C_BROADCAST_ADDR;
+    masterXfer.data         = txBuff;
     masterXfer.dataSize     = 1;
     masterXfer.direction    = kI3C_Write;
     masterXfer.busType      = kI3C_TypeI3CSdr;
@@ -168,9 +169,9 @@ status_t p3t1755_set_dynamic_address(void)
     }
 
     memset(&masterXfer, 0, sizeof(masterXfer));
-    g_master_txBuff[0]      = SENSOR_ADDR << 1;
+    txBuff[0]               = SENSOR_ADDR << 1;
     masterXfer.slaveAddress = SENSOR_SLAVE_ADDR;
-    masterXfer.data         = g_master_txBuff;
+    masterXfer.data         = txBuff;
     masterXfer.dataSize     = 1;
     masterXfer.direction    = kI3C_Write;
     masterXfer.busType      = kI3C_TypeI3CSdr;
@@ -201,14 +202,13 @@ int main(void)
     masterConfig.enableOpenDrainStop          = false;
     masterConfig.disableTimeout               = true;
     I3C_MasterInit(EXAMPLE_MASTER, &masterConfig, I3C_MASTER_CLOCK_FREQUENCY);
-
-    /* Create I3C handle. */
     I3C_MasterTransferCreateHandle(EXAMPLE_MASTER, &g_i3c_m_handle, &masterCallback, NULL);
 
     result = p3t1755_set_dynamic_address();
     if (result != kStatus_Success)
     {
         PRINTF("\r\nP3T1755 set dynamic address failed.\r\n");
+        return -1;
     }
 
     p3t1755Config.writeTransfer = I3C_WriteSensor;

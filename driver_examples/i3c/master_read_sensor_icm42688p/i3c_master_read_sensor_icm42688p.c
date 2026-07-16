@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023, 2025 NXP
+ * Copyright 2021-2023, 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -16,7 +16,7 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define SENSOR_MIPI_VENDOR_ID      0x235U
+#define SENSOR_MIPI_VENDOR_ID 0x235U
 
 /*******************************************************************************
  * Prototypes
@@ -36,7 +36,7 @@ static uint8_t g_ibiUserBuffUsed            = 0;
 static volatile bool g_masterCompletionFlag = false;
 static volatile bool g_ibiWonFlag           = false;
 static volatile status_t g_completionStatus = kStatus_Success;
-icm42688p_handle_t icmp42688p_handle;
+icm42688p_handle_t icm42688p_handle;
 /*******************************************************************************
  * Code
  ******************************************************************************/
@@ -107,6 +107,10 @@ status_t I3C_ReadSensor(uint8_t deviceAddress, uint8_t regAddress, uint8_t *regD
     masterXfer.flags          = kI3C_TransferDefaultFlag;
 
     result = I3C_MasterTransferNonBlocking(EXAMPLE_MASTER, &g_i3c_m_handle, &masterXfer);
+    if (kStatus_Success != result)
+    {
+        return result;
+    }
 
     uint32_t timeout = 0U;
     /* Wait for transfer completed. */
@@ -142,6 +146,7 @@ static void i3c_master_ibi_callback(I3C_Type *base,
             }
             else
             {
+                assert(handle->ibiPayloadSize <= sizeof(g_ibiUserBuff));
                 memcpy(g_ibiUserBuff, (void *)handle->ibiBuff, handle->ibiPayloadSize);
                 g_ibiUserBuffUsed = handle->ibiPayloadSize;
             }
@@ -177,9 +182,9 @@ static const i3c_master_transfer_callback_t masterCallback = {
  */
 int main(void)
 {
-    status_t result = kStatus_Success;
+    status_t result        = kStatus_Success;
     uint8_t addressList[3] = {0x08, 0x09, 0x0A};
-    uint8_t slaveAddr = 0;
+    uint8_t slaveAddr      = 0;
     i3c_master_config_t masterConfig;
     i3c_device_info_t *devList;
     uint8_t devCount;
@@ -237,7 +242,7 @@ int main(void)
     sensorConfig.sensorAddress        = slaveAddr;
     sensorConfig.isReset              = true;
 
-    result = ICM42688P_Init(&icmp42688p_handle, &sensorConfig);
+    result = ICM42688P_Init(&icm42688p_handle, &sensorConfig);
     if (result != kStatus_Success)
     {
         PRINTF("\r\nSensor reset failed.\r\n");
@@ -259,7 +264,7 @@ int main(void)
         return -1;
     }
 
-    devList = I3C_MasterGetDeviceListAfterDAA(EXAMPLE_MASTER, &devCount);
+    devList   = I3C_MasterGetDeviceListAfterDAA(EXAMPLE_MASTER, &devCount);
     slaveAddr = 0;
     for (uint8_t devIndex = 0; devIndex < devCount; devIndex++)
     {
@@ -280,14 +285,14 @@ int main(void)
     i3c_register_ibi_addr_t ibiRecord = {.address = {slaveAddr}, .ibiHasPayload = true};
     I3C_MasterRegisterIBI(EXAMPLE_MASTER, &ibiRecord);
 
-    result = ICM42688P_EnableSensors(&icmp42688p_handle);
+    result = ICM42688P_EnableSensors(&icm42688p_handle);
     if (result != kStatus_Success)
     {
         PRINTF("\r\nSensor enable failed.\r\n");
         return -1;
     }
 
-    result = ICM42688P_ConfigureTapDetectIBI(&icmp42688p_handle);
+    result = ICM42688P_ConfigureTapDetectIBI(&icm42688p_handle);
     if (result != kStatus_Success)
     {
         PRINTF("\r\nEnable TAP detect IBI failed.\r\n");
@@ -296,7 +301,7 @@ int main(void)
 
     uint8_t bankSel = 0;
     /* Select bank 0 to read sensor data.*/
-    result = ICM42688P_WriteReg(&icmp42688p_handle, BANK_SEL, &bankSel, 1);
+    result = ICM42688P_WriteReg(&icm42688p_handle, BANK_SEL, &bankSel, 1);
     if (result != kStatus_Success)
     {
         PRINTF("\r\nSelect sensor bank 0 failure.\r\n");
@@ -309,7 +314,7 @@ int main(void)
     icm42688p_sensor_data_t sensorData = {0};
     while (!g_ibiWonFlag)
     {
-        result = ICM42688P_ReadSensorData(&icmp42688p_handle, &sensorData);
+        result = ICM42688P_ReadSensorData(&icm42688p_handle, &sensorData);
         if (result != kStatus_Success)
         {
             if (result == kStatus_NoData)

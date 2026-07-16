@@ -38,7 +38,7 @@ When the example runs successfully, you can see the similar information from the
 
 ~~~~~~~~~~~~~~~~~~~~~
 FlexIO I2C example read accelerometer value
-Found a LSDM6DSO on board, the device address is 0x6A.
+Found a LSM6DSO on board, the device address is 0x6A.
 The accel values:
 status_reg = 0x5 , x = -28924 , y =  5127 , z = 24640
 status_reg = 0x5 , x = 31748 , y =  9991 , z = 27456

@@ -34,5 +34,5 @@ I3C master read sensor data example.
 
 Start to do I3C master transfer in SDR mode.
 
-Success to read WHO_AM_I register value from LSDM6DSO on board in I3C SDR mode, the value is 0x6C.
+Success to read WHO_AM_I register value from LSM6DSO on board in I3C SDR mode, the value is 0x6C.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~

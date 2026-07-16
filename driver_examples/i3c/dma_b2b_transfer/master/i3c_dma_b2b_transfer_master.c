@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022, 2024-2025 NXP
+ * Copyright 2021-2022, 2024-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -162,7 +162,7 @@ int main(void)
     }
     g_masterCompletionFlag = false;
 
-    uint8_t addressList[6] = {0x31, 0x32, 0x33, 0x34, 0x35, 0x36};
+    uint8_t addressList[8] = {0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37};
     result                 = I3C_MasterProcessDAA(EXAMPLE_MASTER, addressList, sizeof(addressList));
     if (result != kStatus_Success)
     {
@@ -268,19 +268,19 @@ int main(void)
     while (!g_ibiWonFlag)
     {
     }
-    g_ibiWonFlag = false;
+    g_ibiWonFlag       = false;
     g_completionStatus = kStatus_Success;
 
     memset(&masterXfer, 0, sizeof(masterXfer));
-    masterXfer.slaveAddress = slaveAddr;
+    masterXfer.slaveAddress   = slaveAddr;
     masterXfer.subaddress     = 0x0U; /* HDR-DDR command */
     masterXfer.subaddressSize = 1U;
-    masterXfer.data         = g_master_txBuff;
-    masterXfer.dataSize     = I3C_PACKET_LENGTH;
-    masterXfer.direction    = kI3C_Write;
-    masterXfer.busType      = kI3C_TypeI3CDdr;
-    masterXfer.flags        = kI3C_TransferDefaultFlag;
-    masterXfer.ibiResponse  = kI3C_IbiRespAckMandatory;
+    masterXfer.data           = g_master_txBuff;
+    masterXfer.dataSize       = I3C_PACKET_LENGTH;
+    masterXfer.direction      = kI3C_Write;
+    masterXfer.busType        = kI3C_TypeI3CDdr;
+    masterXfer.flags          = kI3C_TransferDefaultFlag;
+    masterXfer.ibiResponse    = kI3C_IbiRespAckMandatory;
 
     result = I3C_MasterTransferDMA(EXAMPLE_MASTER, &g_i3c_m_handle, &masterXfer);
     if (kStatus_Success != result)
@@ -305,15 +305,15 @@ int main(void)
     g_completionStatus = kStatus_Success;
 
     memset(g_master_rxBuff, 0, sizeof(g_master_rxBuff));
-    masterXfer.slaveAddress = slaveAddr;
+    masterXfer.slaveAddress   = slaveAddr;
     masterXfer.subaddress     = 0x80U; /* HDR-DDR command */
     masterXfer.subaddressSize = 1U;
-    masterXfer.data         = g_master_rxBuff;
-    masterXfer.dataSize     = I3C_DATA_LENGTH;
-    masterXfer.direction    = kI3C_Read;
-    masterXfer.busType      = kI3C_TypeI3CDdr;
-    masterXfer.flags        = kI3C_TransferDefaultFlag;
-    masterXfer.ibiResponse  = kI3C_IbiRespAckMandatory;
+    masterXfer.data           = g_master_rxBuff;
+    masterXfer.dataSize       = I3C_DATA_LENGTH;
+    masterXfer.direction      = kI3C_Read;
+    masterXfer.busType        = kI3C_TypeI3CDdr;
+    masterXfer.flags          = kI3C_TransferDefaultFlag;
+    masterXfer.ibiResponse    = kI3C_IbiRespAckMandatory;
 
     result = I3C_MasterTransferDMA(EXAMPLE_MASTER, &g_i3c_m_handle, &masterXfer);
     if (kStatus_Success != result)

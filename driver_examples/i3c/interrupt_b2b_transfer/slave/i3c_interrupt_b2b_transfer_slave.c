@@ -19,7 +19,7 @@
 #define EXAMPLE_I3C_IBI_SUPPORT
 #endif
 #define I3C_MASTER_SLAVE_ADDR_7BIT 0x1EU
-#define I3C_DATA_LENGTH 34U
+#define I3C_DATA_LENGTH            34U
 
 #define I3C_VENDOR_ID   0x11BU
 #define I3C_PART_NUMBER 0x0U
@@ -34,12 +34,12 @@
 uint8_t g_slave_txBuff[I3C_DATA_LENGTH + 1] = {0};
 uint8_t g_slave_rxBuff[I3C_DATA_LENGTH + 1] = {0};
 volatile bool g_slaveCompletionFlag         = false;
-uint8_t *g_txBuff                = NULL;
-uint32_t g_txSize                = I3C_DATA_LENGTH;
-volatile uint8_t g_deviceAddress = 0U;
-uint8_t *g_deviceBuff            = NULL;
-uint8_t g_deviceBuffSize         = I3C_DATA_LENGTH;
-volatile bool g_slaveRequestSentFlag = false;
+uint8_t *g_txBuff                           = NULL;
+uint32_t g_txSize                           = I3C_DATA_LENGTH;
+volatile uint8_t g_deviceAddress            = 0U;
+uint8_t *g_deviceBuff                       = NULL;
+uint8_t g_deviceBuffSize                    = I3C_DATA_LENGTH;
+volatile bool g_slaveRequestSentFlag        = false;
 static i3c_slave_handle_t g_i3c_s_handle;
 
 /*******************************************************************************
@@ -129,6 +129,7 @@ int main(void)
     eventMask |= kI3C_SlaveAddressMatchEvent;
 #endif
     i3c_slave_config_t slaveConfig;
+    status_t result = kStatus_Success;
 
     BOARD_InitHardware();
 
@@ -148,7 +149,11 @@ int main(void)
     memset(g_slave_rxBuff, 0, I3C_DATA_LENGTH);
 
     /* Start slave non-blocking transfer. */
-    I3C_SlaveTransferNonBlocking(EXAMPLE_SLAVE, &g_i3c_s_handle, eventMask);
+    result = I3C_SlaveTransferNonBlocking(EXAMPLE_SLAVE, &g_i3c_s_handle, eventMask);
+    if (result != kStatus_Success)
+    {
+        return result;
+    }
 
     PRINTF("\r\nCheck I3C master I2C transfer.\r\n");
 
@@ -238,7 +243,6 @@ int main(void)
     PRINTF("\r\nCheck I3C master I3C HDR transfer.\r\n");
     /* For I3C SDR transfer check, master board will not send subaddress(device address). The first transfer is a
     I3C SDR write transfer, master will send one byte transmit size + several bytes transmit buffer content. */
-    /* Wait for master transmit completed. */
     memset(g_slave_rxBuff, 0, I3C_DATA_LENGTH);
 
     I3C_SlaveRequestIBIWithData(EXAMPLE_SLAVE, &ibiData, 1);
@@ -247,6 +251,7 @@ int main(void)
     }
     g_slaveRequestSentFlag = false;
 
+    /* Wait for master transmit completed. */
     while (!g_slaveCompletionFlag)
     {
     }

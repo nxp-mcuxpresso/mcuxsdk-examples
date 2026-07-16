@@ -16,7 +16,7 @@
  * Definitions
  ******************************************************************************/
 #define LSM6DSO_WHOAMI_REG_ADDR 0x0FU
-#define LSM6DSO_WHOAMI_VALUE 0x6CU
+#define LSM6DSO_WHOAMI_VALUE    0x6CU
 
 /*******************************************************************************
  * Prototypes
@@ -69,16 +69,16 @@ int main(void)
     result                    = I3C_MasterTransferBlocking(EXAMPLE_MASTER, &masterXfer);
     if (kStatus_Success != result)
     {
-        return result;
+        return -1;
     }
 
     uint8_t addressList[8] = {0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37};
     /* Lsm6dso sensor RM: Address assignment (DAA or ENTDA) must be performed with I2C Fast Mode Plus Timing. When the
        slave is addressed, the I2C slave is disabled and the timing is compatible with I3C specifications. */
     daaBaudRate.sourceClock_Hz   = I3C_MASTER_CLOCK_FREQUENCY;
-    daaBaudRate.i3cOpenDrainBaud = 500000;
-    daaBaudRate.i3cPushPullBaud  = 1000000;
-    result                       = I3C_MasterProcessDAASpecifiedBaudrate(EXAMPLE_MASTER, addressList, 8, &daaBaudRate);
+    daaBaudRate.i3cOpenDrainBaud = 500000U;
+    daaBaudRate.i3cPushPullBaud  = 1000000U;
+    result = I3C_MasterProcessDAASpecifiedBaudrate(EXAMPLE_MASTER, addressList, sizeof(addressList), &daaBaudRate);
     if (result != kStatus_Success)
     {
         return -1;
@@ -87,14 +87,14 @@ int main(void)
     memset(&masterXfer, 0, sizeof(masterXfer));
     masterXfer.subaddress     = LSM6DSO_WHOAMI_REG_ADDR;
     masterXfer.subaddressSize = 1;
-    masterXfer.slaveAddress = 0x30;
-    masterXfer.data         = &who_am_i_i3c;
-    masterXfer.dataSize     = I3C_DATA_LENGTH;
-    masterXfer.direction    = kI3C_Read;
-    masterXfer.busType      = kI3C_TypeI3CSdr;
-    masterXfer.flags        = kI3C_TransferDefaultFlag;
-    masterXfer.ibiResponse  = kI3C_IbiRespAckMandatory;
-    result                  = I3C_MasterTransferBlocking(EXAMPLE_MASTER, &masterXfer);
+    masterXfer.slaveAddress   = addressList[0];
+    masterXfer.data           = &who_am_i_i3c;
+    masterXfer.dataSize       = I3C_DATA_LENGTH;
+    masterXfer.direction      = kI3C_Read;
+    masterXfer.busType        = kI3C_TypeI3CSdr;
+    masterXfer.flags          = kI3C_TransferDefaultFlag;
+    masterXfer.ibiResponse    = kI3C_IbiRespAckMandatory;
+    result                    = I3C_MasterTransferBlocking(EXAMPLE_MASTER, &masterXfer);
     if (result != kStatus_Success)
     {
         return -1;
@@ -103,9 +103,15 @@ int main(void)
     if (who_am_i_i3c == LSM6DSO_WHOAMI_VALUE)
     {
         PRINTF(
-            "\r\nSuccess to read WHO_AM_I register value from LSDM6DSO on board in I3C SDR mode, the value is 0x%02X. "
+            "\r\nSuccess to read WHO_AM_I register value from LSM6DSO on board in I3C SDR mode, the value is 0x%02X. "
             "\r\n",
             who_am_i_i3c);
+    }
+    else
+    {
+        PRINTF("\r\nFailed to read correct WHO_AM_I from LSM6DSO, expected 0x%02X, got 0x%02X.\r\n",
+               LSM6DSO_WHOAMI_VALUE, who_am_i_i3c);
+        return -1;
     }
 
     while (1)
