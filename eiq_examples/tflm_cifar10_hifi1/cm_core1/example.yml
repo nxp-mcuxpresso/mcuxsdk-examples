@@ -6,7 +6,7 @@ tflm_cifar10_hifi1:
     document:
       name: tflm_cifar10_hifi1${core_id_suffix_name}
       category: eiq_examples
-      brief: The dsp_hello_world_usart demo application demonstrates starting DSP
+      brief: The tflm_cifar10_hifi1 demo application demonstrates starting DSP
         core with DSP image.
       example_readme:
       - examples/eiq_examples/tflm_cifar10_hifi1/readme.md
