@@ -29,3 +29,4 @@ Text in file.
 - [FRDM-MCXA366](../../_boards/frdmmcxa366/fatfs_examples/fatfs_ramdisk/example_board_readme.md)
 - [FRDM-MCXA577](../../_boards/frdmmcxa577/fatfs_examples/fatfs_ramdisk/example_board_readme.md)
 - [FRDM-MCXA287](../../_boards/frdmmcxa287/fatfs_examples/fatfs_ramdisk/example_board_readme.md)
+- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/fatfs_examples/fatfs_ramdisk/example_board_readme.md)

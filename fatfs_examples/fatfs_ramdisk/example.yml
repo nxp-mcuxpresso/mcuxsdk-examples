@@ -24,3 +24,21 @@ fatfs_ramdisk:
     frdmmcxa366: []
     frdmmcxa577: []
     frdmmcxa287: []
+    frdmimxrt1152:
+    - -armgcc@debug
+    - -armgcc@hyperram_release
+    - -armgcc@hyperram_debug
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -iar@debug
+    - -iar@release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
