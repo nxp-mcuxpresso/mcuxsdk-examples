@@ -121,12 +121,12 @@ BLE shell initialization
 
 1. WiFi Test
 
-> NOTE: All wifi commands require adding `wifi.` prefix.
+> NOTE: All wifi commands require adding `wifi ` prefix.
 
 - Get the Wi-Fi driver and firmware version:
 
 ```bash
-@Coex> wifi.wlan-version
+@Coex> wifi wlan-version
 WLAN Driver Version   : v1.3.r48.p36
 @Coex> WLAN Firmware Version : w9177o-V1, SDIO, FP99, 18.99.3.p23.11, PVE_FIX 1
 Command wlan-version
@@ -135,7 +135,7 @@ Command wlan-version
 - Get MAC Address:
 
 ```bash
-@Coex> wifi.wlan-mac
+@Coex> wifi wlan-mac
 MAC address
 @Coex> STA MAC Address: 50:26:EF:A2:E5:A6
 uAP MAC Address: 52:26:EF:A2:E6:A6
@@ -145,7 +145,7 @@ Command wlan-mac
 - Scan the network:
 
 ```bash
-@Coex> wifi.wlan-scan
+@Coex> wifi wlan-scan
 Scan scheduled...
 @Coex> Command wlan-scan
 2 networks found:
@@ -176,11 +176,11 @@ Scan scheduled...
 > NOTE: Please use the command "help" to view the specific commands supported by the example.
 
 ```bash
-@Coex> bt.init
+@Coex> bt init
 @Coex> Bluetooth initialized
 Settings Loaded
 
-@Coex> bt.scan on
+@Coex> bt scan on
 Bluetooth active scan enabled
 @Coex> [DEVICE]: 57:00:66:0A:D8:AC (random), AD evt type 3, RSSI -92  C:0 S:0 D:0 SR:0 E:0 Prim: LE 1M, Secn: No packets, Interval: 0x0000 (0 us), SID: 0xff
 [DEVICE]: 7B:54:6F:C2:E3:F9 (random), AD evt type 0, RSSI -78  C:1 S:1 D:0 SR:0 E:0 Prim: LE 1M, Secn: No packets, Interval: 0x0000 (0 us), SID: 0xff
@@ -200,103 +200,7 @@ Bluetooth active scan enabled
 [DEVICE]: 7B:54:6F:C2:E3:F9 (random), AD evt type 4, RSSI -79  C:0 S:1 D:0 SR:1 E:0 Prim: LE 1M, Secn: No packets, Interval: 0x0000 (0 us), SID: 0xff
 [DEVICE]: 74:4D:42:DA:B1:FB (random), AD evt type 3, RSSI -81  C:0 S:0 D:0 SR:0 E:0 Prim: LE 1M, Secn: No packets, Interval: 0x0000 (0 us), SID: 0xff
 [DEVICE]: 59:EE:1D:3A:2D:9C (random), AD evt type 3, RSSI -90  C:0 S:0 D:0 SR:0 E:0 Prim: LE 1M, Secn: No packets, Interval: 0x0000 (0 us), SID: 0xff
-@Coex> bt.scan off
+@Coex> bt scan off
 Scan successfully stopped
-@Coex>
-```
-
-- Running a2dp:
-
-The commands are as follow:
-
-```bash
-+---"a2dp": a2dp Bluetooth A2DP shell commands
-    +---"register_sink_ep": register_sink_ep <select codec.
-         1:SBC
-         2:MPEG-1,2
-         3:MPEG-2,4
-         4:vendor
-         5:sbc with delay report and content protection services
-         6:sbc with all other services(don't support data transfer yet)>
-    +---"register_source_ep": register_source_ep <select codec.
-         1:SBC
-         2:MPEG-1,2
-         3:MPEG-2,4
-         4:vendor
-         5:sbc with delay report and content protection services
-         6:sbc with all other services(don't support data transfer yet)>
-    +---"connect": connect [none]
-    +---"disconnect": disconnect [none]
-    +---"configure": configure [none]
-    +---"discover_peer_eps": discover_peer_eps [none]
-    +---"get_registered_eps": get_registered_eps [none]
-    +---"set_default_ep": set_default_ep <select endpoint>
-    +---"configure_ep": configure_ep "configure the default selected ep"
-    +---"deconfigure": deconfigure "de-configure the default selected ep"
-    +---"start": start "start the default selected ep"
-    +---"stop": stop "stop the default selected ep"
-    +---"send_media": send_media <second> "send media data to the default selected ep"
- ```
-Test flow:
-1. Create ACL connection between two devices (A and B).
-2. In device B, input "a2dp.register_sink_ep x" to initialize sink endpoint.
-3. In device A, input "a2dp.register_source_ep x" to initialize source endpoint.
-4. In device A, input "a2dp.connect" to create a2dp connection with the default ACL connection.
-5. In device A, input "a2dp.configure" to configure the a2dp connection.
-6. In device A, input "a2dp.start" to start the a2dp media.
-7. In device A, input "a2dp.send_media x" to send media data for x seconds.
-8. For other commands:
-   1. "a2dp.disconnect" is used to disconnect the a2dp.
-   2. "a2dp.discover_peer_eps" is used to discover peer device's endpoints.
-   3. "a2dp.get_registered_eps" is used to get the local registered endpoints.
-   4. "a2dp.set_default_ep" is used to set the default selected endpoint.
-   5. "a2dp.deconfigure" de-configure the endpoint, then it can be configured again.
-   6. "a2dp.stop" stops media.
-   7. "a2dp.send_delay_report" send delay report.
-
-br discovery:
-```bash
-@Coex> br.discovery on
-Discovery started
-@Coex> BR/EDR discovery complete
-[DEVICE]: BC:7E:8B:E6:53:E1, RSSI -73 [TV] Samsung BET Series (55)
-[DEVICE]: 04:21:44:03:57:9F, RSSI -24 SRS-XB12
-[DEVICE]: 48:74:12:3F:9E:04, RSSI -81 OnePlus Nord CE 2
-[DEVICE]: C0:95:DA:00:D1:3D, RSSI -75 edgefast_hfp
-```
-
-To connect:
-```bash
-Coex> br.connect 04:21:44:03:57:9F
-Connection pending
-@Coex> BR Connected: 04:21:44:03:57:9F
-```
-
-To initialize source endpoint:
-```bash
-@Coex> a2dp.register_source_ep 1
-SBC source endpoint is registered
-```
-To create a2dp connection with the default ACL connection:
-```bash
-@Coex> a2dp.connect
-@Coex> Security changed: 04:21:44:03:57:9F level 2
-a2dp connected
-```
-To configure the a2dp connection:
-```bash
-@Coex> a2dp.configure
-@Coex> configure success
-
-the default ep is set as the configured ep
-```
-To start the a2dp media:
-```bash
-@Coex> a2dp.start
-@Coex> a2dp start playing
-```
-To send media data for 20 seconds:
-```bash
-@Coex> a2dp.send_media 20
 @Coex>
 ```

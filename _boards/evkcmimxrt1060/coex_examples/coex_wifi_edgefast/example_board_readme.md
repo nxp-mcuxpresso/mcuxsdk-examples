@@ -154,7 +154,7 @@ BLE shell initialization
 - Get the Wi-Fi driver and firmware version:
 
 ```bash
-@Coex> wifi.wlan-version
+@Coex> wifi wlan-version
 WLAN Driver Version   : v1.3.r48.p32
 @Coex> WLAN Firmware Version : iw610w-V0, SDIO, FP99, 18.99.5.p51, PVE_FIX 1
 Command wlan-version
@@ -163,7 +163,7 @@ Command wlan-version
 - Get MAC Address:
 
 ```bash
-@Coex> wifi.wlan-mac
+@Coex> wifi wlan-mac
 MAC address
 @Coex> STA MAC Address: 00:50:43:02:98:23
 uAP MAC Address: 00:50:43:02:99:23
@@ -173,7 +173,7 @@ Command wlan-mac
 - Scan the network:
 
 ```bash
-@Coex> wifi.wlan-scan
+@Coex> wifi wlan-scan
 Scan scheduled...
 @Coex> Command wlan-scan
 2 networks found:
@@ -206,11 +206,11 @@ Scan scheduled...
 - BLE scan devices (the BLE host must initialized before):
 
 ```bash
-@Coex> bt.init
+@Coex> bt init
 @Coex> Bluetooth initialized
 Settings Loaded
 
-@Coex> bt.scan on
+@Coex> bt scan on
 Bluetooth active scan enabled
 @Coex> [DEVICE]: 44:6D:F5:85:DC:5F (random), AD evt type 0, RSSI -64  C:1 S:1 D:0 SR:0 E:0 Prim: LE 1M, Secn: No packets, Interval: 0x0000 (0 ms), SID: 0xff
 [DEVICE]: 44:6D:F5:85:DC:5F (random), AD evt type 4, RSSI -63  C:0 S:1 D:0 SR:1 E:0 Prim: LE 1M, Secn: No packets, Interval: 0x0000 (0 ms), SID: 0xff
@@ -225,7 +225,7 @@ Bluetooth active scan enabled
 [DEVICE]: 5A:54:C8:99:13:4A (random), AD evt type 0, RSSI -76  C:1 S:1 D:0 SR:0 E:0 Prim: LE 1M, Secn: No packets, Interval: 0x0000 (0 ms), SID: 0xff
 [DEVICE]: 3B:95:00:4D:F3:EB (random), AD evt type 3, RSSI -82  C:0 S:0 D:0 SR:0 E:0 Prim: LE 1M, Secn: No packets, Interval: 0x0000 (0 ms), SID: 0xff
 [DEVICE]: 47:9D:D0:CB:5F:0D (random), AD evt type 0, RSSI -86  C:1 S:1 D:0 SR:0 E:0 Prim: LE 1M, Secn: No packets, Interval: 0x0000 (0 ms), SID: 0xff
-@Coex> bt.scan off
+@Coex> bt scan off
 Scan successfully stopped
 @Coex>
 ```
@@ -233,20 +233,20 @@ Scan successfully stopped
 - BLE advertise (the BLE host must initialized before):
 
 ```bash
-@Coex> bt.init
+@Coex> bt init
 @Coex> Bluetooth initialized
-@Coex> bt.advertise on
+@Coex> bt advertise on
 Advertising started
-@Coex> bt.advertise off
+@Coex> bt advertise off
 Advertising stopped
 ```
 
 - BLE connect (the BLE host must initialized before):
 
 ```bash
-@Coex> bt.init
+@Coex> bt init
 @Coex> Bluetooth initialized
-@Coex> bt.connect C0:95:63:23:55:87 random
+@Coex> bt connect C0:95:63:23:55:87 random
 Connection pending
 Connected: 7D:FD:FD:4D:FD:90 (random)
 ```
@@ -255,44 +255,44 @@ Connected: 7D:FD:FD:4D:FD:90 (random)
 
 ```bash
 GATT peripheral role side,
-1. Initialize the Host, press "bt.init",
-2. Advertising, press "bt.advertise on",
+1. Initialize the Host, press "bt init",
+2. Advertising, press "bt advertise on",
 3. After the connection is established, perform the pairing sequence,
-   it could be started from peripheral side by pressing "bt.security <level>", such as "bt.security 2".
-4. If the bondable is unsupported by peripheral role, press "bt.bondable off". Then start step 3.
+   it could be started from peripheral side by pressing "bt security <level>", such as "bt security 2".
+4. If the bondable is unsupported by peripheral role, press "bt bondable off". Then start step 3.
 
 GATT central role side,
-1. Initialize the Host, press "bt.init",
-2. Scaning advertising packets, press "bt.scan on",
-3. A few seconds later, stop the scanning, press "bt.scan off"
+1. Initialize the Host, press "bt init",
+2. Scaning advertising packets, press "bt scan on",
+3. A few seconds later, stop the scanning, press "bt scan off"
 4. Select the target board and create a new connection. If the taregt is not listed, repeat steps 2 and 3.
-   Then press "bt.connect <address: XX:XX:XX:XX:XX:XX> <type: (public|random)>"
+   Then press "bt connect <address: XX:XX:XX:XX:XX:XX> <type: (public|random)>"
 5. After the connection is established, perform the pairing sequence,
-   it could be started from central side by pressing "bt.security <level>", such as "bt.security 2".
-6. If the bondable is unsupported by central role, press "bt.bondable off". Then start step 5.
+   it could be started from central side by pressing "bt security <level>", such as "bt security 2".
+6. If the bondable is unsupported by central role, press "bt bondable off". Then start step 5.
 ```
 
 - BLE 1M/2M/Coded PHY update:
 
 ```bash
 GATT peripheral role side,
-1. Initialize the Host, press "bt.init",
-2. Advertising, press "bt.advertise on",
+1. Initialize the Host, press "bt init",
+2. Advertising, press "bt advertise on",
 3. After the connection is established.
-4. Send phy update command, press "bt.phy-update <tx_phy> [rx_phy] [s2] [s8]", tx_phy/rx_phy could be 1(1M) or 2(2M) or 4(Coded).
-   such as "bt.phy-update 2 2".
+4. Send phy update command, press "bt phy-update <tx_phy> [rx_phy] [s2] [s8]", tx_phy/rx_phy could be 1(1M) or 2(2M) or 4(Coded).
+   such as "bt phy-update 2 2".
 5. The message "LE PHY updated: TX PHY LE 2M, RX PHY LE 2M" would be printed if the phy is updated. note, if peer do not support phy update, then this message will not be printed.
 
 GATT central role side,
-1. Initialize the Host, press "bt.init",
-2. start scan, press "bt.scan on", Bluetooth device around your current bluetooth will be list, for example,
+1. Initialize the Host, press "bt init",
+2. start scan, press "bt scan on", Bluetooth device around your current bluetooth will be list, for example,
 [DEVICE]: 72:78:C1:B5:0F:DA (random), AD evt type 4, RSSI -32 BLE Peripheral C:0 S:1 D:0 SR:1 E:0 Prim: LE 1M, Secn: No packets, Interval: 0x0000 (0 ms), SID: 0xff
 [DEVICE]: C4:0D:02:55:5E:AD (random), AD evt type 0, RSSI -83  C:1 S:1 D:0 SR:0 E:0 Prim: LE 1M, Secn: No packets, Interval: 0x0000 (0 ms), SID: 0xff
 [DEVICE]: 66:8F:26:27:1F:52 (random), AD evt type 0, RSSI -82  C:1 S:1 D:0 SR:0 E:0 Prim: LE 1M, Secn: No packets, Interval: 0x0000 (0 ms), SID: 0xff
-3. stop scan, press "bt.scan off",
-4. connect target device, press "bt.connect <address: XX:XX:XX:XX:XX:XX> <type: (public|random)>", such as bt.connect 72:78:C1:B5:0F:DA random
-5. Send phy update command, press "bt.phy-update <tx_phy> [rx_phy] [s2] [s8]", tx_phy/rx_phy could be 1(1M) or 2(2M) or 4(Coded).
-   such as "bt.phy-update 2 2".
+3. stop scan, press "bt scan off",
+4. connect target device, press "bt connect <address: XX:XX:XX:XX:XX:XX> <type: (public|random)>", such as bt connect 72:78:C1:B5:0F:DA random
+5. Send phy update command, press "bt phy-update <tx_phy> [rx_phy] [s2] [s8]", tx_phy/rx_phy could be 1(1M) or 2(2M) or 4(Coded).
+   such as "bt phy-update 2 2".
 6. The message "LE PHY updated: TX PHY LE 2M, RX PHY LE 2M" would be printed if the phy is updated. note, if peer do not support phy update, then this message will not be printed.
 ```
 
@@ -300,10 +300,10 @@ GATT central role side,
 
 ```bash
 GATT peripheral role side,
-1. Initialize the Host, press "bt.init".
-2. Advertising, press "bt.advertise on".
+1. Initialize the Host, press "bt init".
+2. Advertising, press "bt advertise on".
 3. After the connection is established.
-4. Check current LE RX/TX maximum data length and time, press "bt.info", as blow, default RX/TX maximum data length is 27 and default RX/TX maxumum time is 328.
+4. Check current LE RX/TX maximum data length and time, press "bt info", as blow, default RX/TX maximum data length is 27 and default RX/TX maxumum time is 328.
 Type: LE, Role: slave, Id: 0
 59:8F:3C:20:93:86 (random)
 Remote address: 59:8F:3C:20:93:86 (random) (resolvable)
@@ -317,19 +317,19 @@ LE PHY: TX PHY LE 1M, RX PHY LE 1M
 LE data len: TX (len: 27 time: 328) RX (len: 27 time: 328)
 5. When LE data len is updated by the peer device, below information will be printed.
 LE data len updated: TX (len: 27 time: 328) RX (len: 50 time: 512)
-6. Update maximum tx data length, press "bt.data-len-update <tx_max_len> [tx_max_time]", such as bt.data-len-update 65, below information will be printed.
+6. Update maximum tx data length, press "bt data-len-update <tx_max_len> [tx_max_time]", such as bt data-len-update 65, below information will be printed.
 Calculated tx time: 632
 59:8F:3C:20:93:86 (random)
 data len update initiated.
 LE data len updated: TX (len: 65 time: 632) RX (len: 50 time: 512)
 
 GATT central role side,
-1. Initialize the Host, press "bt.init".
-2. Start scan, press "bt.scan on", Bluetooth device around your current bluetooth will be list, for example, 
+1. Initialize the Host, press "bt init".
+2. Start scan, press "bt scan on", Bluetooth device around your current bluetooth will be list, for example, 
 [DEVICE]: 7C:59:48:2E:A4:51 (random), AD evt type 4, RSSI -44 BLE Peripheral C:0 S:1 D:0 SR:1 E:0 Prim: LE 1M, Secn: No packets, Interval: 0x0000 (0 ms), SID: 0xff
-3. Stop scan, press "bt.scan off",
-4. Connect target device, press "bt.connect <address: XX:XX:XX:XX:XX:XX> <type: (public|random)>", such as bt.connect 7C:59:48:2E:A4:51 random
-5. Check current LE RX/TX maximum data length and time, press "bt.info", as blow, default RX/TX maximum data length is 27 and default RX/TX maxumum time is 328.
+3. Stop scan, press "bt scan off",
+4. Connect target device, press "bt connect <address: XX:XX:XX:XX:XX:XX> <type: (public|random)>", such as bt connect 7C:59:48:2E:A4:51 random
+5. Check current LE RX/TX maximum data length and time, press "bt info", as blow, default RX/TX maximum data length is 27 and default RX/TX maxumum time is 328.
 Type: LE, Role: master, Id: 0
 7C:59:48:2E:A4:51 (random)
 Remote address: 7C:59:48:2E:A4:51 (random) (resolvable)
@@ -341,7 +341,7 @@ Latency: 0x0000 (0 ms)
 Supervision timeout: 0x0190 (4000 ms)
 LE PHY: TX PHY LE 1M, RX PHY LE 1M
 LE data len: TX (len: 27 time: 328) RX (len: 27 time: 328)
-6. Update maximum tx data length, press "bt.data-len-update <tx_max_len> [tx_max_time]", such as bt.data-len-update 50, below information will be printed.
+6. Update maximum tx data length, press "bt data-len-update <tx_max_len> [tx_max_time]", such as bt data-len-update 50, below information will be printed.
 Calculated tx time: 512
 7C:59:48:2E:A4:51 (random)
 data len update initiated.
@@ -354,141 +354,46 @@ LE data len updated: TX (len: 50 time: 512) RX (len: 65 time: 632)
 
 ```bash
 GATT peripheral role side,
-1. Initialize the Host, press "bt.init",
-2. Advertising, press "bt.advertise on",
+1. Initialize the Host, press "bt init",
+2. Advertising, press "bt advertise on",
 3. After the connection is established, perform the pairing sequence,
-   it could be started from peripheral side by pressing "bt.security <level>", such as "bt.security 2",
+   it could be started from peripheral side by pressing "bt security <level>", such as "bt security 2",
 4. After the authentication is successfully, disconnect the connection,
-   it could be started from peripheral side by pressing "bt.disconnect",
+   it could be started from peripheral side by pressing "bt disconnect",
 5. Waiting for new connection. After the connection is established (LL enceyption should be disabled),
-   add new serivce "gatt.register".
+   add new serivce "gatt register".
 
 GATT central role side,
-1. Initialize the Host, press "bt.init",
-2. Scaning advertising packets, press "bt.scan on",
-3. A few seconds later, stop the scanning, press "bt.scan off"
+1. Initialize the Host, press "bt init",
+2. Scaning advertising packets, press "bt scan on",
+3. A few seconds later, stop the scanning, press "bt scan off"
 4. Select the target board and create a new connection. If the taregt is not listed, repeat steps 2 and 3.
-   Then press "bt.connect <address: XX:XX:XX:XX:XX:XX> <type: (public|random)>"
+   Then press "bt connect <address: XX:XX:XX:XX:XX:XX> <type: (public|random)>"
 5. After the connection is established, perform the pairing sequence,
-   it could be started from central side by pressing "bt.security <level>", such as "bt.security 2",
+   it could be started from central side by pressing "bt security <level>", such as "bt security 2",
 6. After the authentication is successfully, disconnect the connection,
-   it could be started from central side by pressing "bt.disconnect",
+   it could be started from central side by pressing "bt disconnect",
 7. Repeat the steps 2 and 3. After the connection is established (LL enceyption should be disabled),
-   perform the GATT data signing sequence, press "gatt.signed-write <handle> <data> [length] [repeat]",
-   such as "gatt.signed-write 22 AA 1"
+   perform the GATT data signing sequence, press "gatt signed-write <handle> <data> [length] [repeat]",
+   such as "gatt signed-write 22 AA 1"
 ```
 
 - BLE GATT Service Changed Indication:
 
 ```bash
 GATT peripheral role side,
-1. Initialize the Host, press "bt.init",
-2. Advertising, press "bt.advertise on",
+1. Initialize the Host, press "bt init",
+2. Advertising, press "bt advertise on",
 3. After the connection is established. and waiting for the service changed indication is subsribed,
-4. Add new serivce, press "gatt.register",
-5. Remove the added serivce, press "gatt.unregister".
+4. Add new serivce, press "gatt register",
+5. Remove the added serivce, press "gatt unregister".
 
 GATT central role side,
-1. Initialize the Host, press "bt.init",
-2. Scaning advertising packets, press "bt.scan on",
-3. A few seconds later, stop the scanning, press "bt.scan off"
+1. Initialize the Host, press "bt init",
+2. Scaning advertising packets, press "bt scan on",
+3. A few seconds later, stop the scanning, press "bt scan off"
 4. Select the target board and create a new connection. If the taregt is not listed, repeat steps 2 and 3.
-   Then press "bt.connect <address: XX:XX:XX:XX:XX:XX> <type: (public|random)>"
-5. After the connection is established, subscribe the GATT service changed indicator. press "bt.subscribe <CCC handle> <value handle> [ind]",
-   such as "gatt.subscribe f e ind".
-```
-- Running a2dp:
-
-The commands are as follow:
-
-```bash
-+---"a2dp": a2dp Bluetooth A2DP shell commands
-    +---"register_sink_ep": register_sink_ep <select codec.
-         1:SBC
-         2:MPEG-1,2
-         3:MPEG-2,4
-         4:vendor
-         5:sbc with delay report and content protection services
-         6:sbc with all other services(don't support data transfer yet)>
-    +---"register_source_ep": register_source_ep <select codec.
-         1:SBC
-         2:MPEG-1,2
-         3:MPEG-2,4
-         4:vendor
-         5:sbc with delay report and content protection services
-         6:sbc with all other services(don't support data transfer yet)>
-    +---"connect": connect [none]
-    +---"disconnect": disconnect [none]
-    +---"configure": configure [none]
-    +---"discover_peer_eps": discover_peer_eps [none]
-    +---"get_registered_eps": get_registered_eps [none]
-    +---"set_default_ep": set_default_ep <select endpoint>
-    +---"configure_ep": configure_ep "configure the default selected ep"
-    +---"deconfigure": deconfigure "de-configure the default selected ep"
-    +---"start": start "start the default selected ep"
-    +---"stop": stop "stop the default selected ep"
-    +---"send_media": send_media <second> "send media data to the default selected ep"
- ```
-Test flow:
-1. Create ACL connection between two devices (A and B).
-2. In device B, input "a2dp.register_sink_ep x" to initialize sink endpoint.
-3. In device A, input "a2dp.register_source_ep x" to initialize source endpoint.
-4. In device A, input "a2dp.connect" to create a2dp connection with the default ACL connection.
-5. In device A, input "a2dp.configure" to configure the a2dp connection.
-6. In device A, input "a2dp.start" to start the a2dp media.
-7. In device A, input "a2dp.send_media x" to send media data for x seconds.
-8. For other commands:
-   1. "a2dp.disconnect" is used to disconnect the a2dp.
-   2. "a2dp.discover_peer_eps" is used to discover peer device's endpoints.
-   3. "a2dp.get_registered_eps" is used to get the local registered endpoints.
-   4. "a2dp.set_default_ep" is used to set the default selected endpoint.
-   5. "a2dp.deconfigure" de-configure the endpoint, then it can be configured again.
-   6. "a2dp.stop" stops media.
-   7. "a2dp.send_delay_report" send delay report.
-
-br discovery:
-```bash
-@Coex> br.discovery on
-Discovery started
-@Coex> BR/EDR discovery complete
-[DEVICE]: BC:7E:8B:E6:53:E1, RSSI -73 [TV] Samsung BET Series (55)
-[DEVICE]: 04:21:44:03:57:9F, RSSI -24 SRS-XB12
-[DEVICE]: 48:74:12:3F:9E:04, RSSI -81 OnePlus Nord CE 2
-[DEVICE]: C0:95:DA:00:D1:3D, RSSI -75 edgefast_hfp
-```
-
-To connect:
-```bash
-Coex> br.connect 04:21:44:03:57:9F
-Connection pending
-@Coex> BR Connected: 04:21:44:03:57:9F
-```
-
-To initialize source endpoint:
-```bash
-@Coex> a2dp.register_source_ep 1
-SBC source endpoint is registered
-```
-To create a2dp connection with the default ACL connection:
-```bash
-@Coex> a2dp.connect
-@Coex> Security changed: 04:21:44:03:57:9F level 2
-a2dp connected
-```
-To configure the a2dp connection:
-```bash
-@Coex> a2dp.configure
-@Coex> configure success
-
-the default ep is set as the configured ep
-```
-To start the a2dp media:
-```bash
-@Coex> a2dp.start
-@Coex> a2dp start playing
-```
-To send media data for 20 seconds:
-```bash
-@Coex> a2dp.send_media 20
-@Coex>
+   Then press "bt connect <address: XX:XX:XX:XX:XX:XX> <type: (public|random)>"
+5. After the connection is established, subscribe the GATT service changed indicator. press "bt subscribe <CCC handle> <value handle> [ind]",
+   such as "gatt subscribe f e ind".
 ```
