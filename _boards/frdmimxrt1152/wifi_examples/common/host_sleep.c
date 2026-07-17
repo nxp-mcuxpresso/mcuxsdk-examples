@@ -16,7 +16,7 @@
  * Includes
  ******************************************************************************/
 #include "fsl_common.h"
-#include "fsl_mu.h"
+#include "fsl_pmu.h"
 #include "fsl_soc_src.h"
 #include "fsl_gpc.h"
 #include "board.h"
@@ -26,6 +26,7 @@
 #include <osa.h>
 
 GPIO_HANDLE_DEFINE(s_WakeupGpioHandle);
+GPIO_HANDLE_DEFINE(s_WifiWakeupGpioHandle);
 
 static void (*wlan_host_sleep_pre_cfg)(void);
 static void (*wlan_host_sleep_post_cfg)(void);
@@ -65,6 +66,19 @@ void APP_WAKEUP_Callback(void *param)
     SDK_ISR_EXIT_BARRIER;
 }
 
+/* ISR callback for PCAL6524 INT# (GPIO3_26) */
+static void APP_WIFI_WAKEUP_Callback(void *param)
+{
+    if ((1U << APP_WIFI_WAKEUP_GPIO_PIN) & GPIO_GetPinsInterruptFlags(APP_WIFI_WAKEUP_GPIO))
+    {
+        /* Disable interrupt. */
+        GPIO_DisableInterrupts(APP_WIFI_WAKEUP_GPIO, 1U << APP_WIFI_WAKEUP_GPIO_PIN);
+        GPIO_ClearPinsInterruptFlags(APP_WIFI_WAKEUP_GPIO, 1U << APP_WIFI_WAKEUP_GPIO_PIN);
+        GPC_DisableWakeupSource(APP_WIFI_WAKEUP_IRQ);
+    }
+    SDK_ISR_EXIT_BARRIER;
+}
+
 void GPC_DisableAllWakeupSource(GPC_CPU_MODE_CTRL_Type *base)
 {
     uint8_t i;
@@ -77,6 +91,9 @@ void GPC_DisableAllWakeupSource(GPC_CPU_MODE_CTRL_Type *base)
 
 void APP_SetWakeupConfig(void)
 {
+    pcal6524_handle_t *handle = BOARD_GetPCAL6524Handle();
+    PCAL6524_SetPinInterruptConfig(handle, BOARD_PCAL6524_WIFI_WAKE_B, kPCAL6524_IntEdgeFalling);
+
     hal_gpio_pin_config_t sw_config = {
         kHAL_GpioDirectionIn,
         0,
@@ -93,10 +110,29 @@ void APP_SetWakeupConfig(void)
     GPIO_EnableInterrupts(APP_WAKEUP_GPIO, 1U << APP_WAKEUP_GPIO_PIN);
     /* Enable the Interrupt */
     EnableIRQ(APP_WAKEUP_IRQ);
+
+    /* WiFi Wake via PCAL6524 INT# (GPIO3_26) */
+    hal_gpio_pin_config_t wifi_wake_config = {
+        kHAL_GpioDirectionIn,
+        0,
+        APP_WIFI_WAKEUP_GPIO_PORT,
+        APP_WIFI_WAKEUP_GPIO_PIN,
+    };
+
+    HAL_GpioInit(s_WifiWakeupGpioHandle, &wifi_wake_config);
+    HAL_GpioSetTriggerMode(s_WifiWakeupGpioHandle, kHAL_GpioInterruptFallingEdge);
+    HAL_GpioInstallCallback(s_WifiWakeupGpioHandle, APP_WIFI_WAKEUP_Callback, NULL);
+
+    GPIO_ClearPinsInterruptFlags(APP_WIFI_WAKEUP_GPIO, 1U << APP_WIFI_WAKEUP_GPIO_PIN);
+    GPIO_EnableInterrupts(APP_WIFI_WAKEUP_GPIO, 1U << APP_WIFI_WAKEUP_GPIO_PIN);
+    EnableIRQ(APP_WIFI_WAKEUP_IRQ);
+
     /* Mask all interrupt first */
     GPC_DisableAllWakeupSource(GPC_CPU_MODE_CTRL_0);
     /* Enable GPC interrupt */
     GPC_EnableWakeupSource(APP_WAKEUP_IRQ);
+    /* PCAL6524 INT# */
+    GPC_EnableWakeupSource(APP_WIFI_WAKEUP_IRQ);
 }
 
 AT_QUICKACCESS_SECTION_CODE(void SystemEnterSleepMode(gpc_cpu_mode_t cpuMode));

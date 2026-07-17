@@ -17,11 +17,19 @@
  * Definitions
  ******************************************************************************/
 
-#define APP_WAKEUP_GPIO           GPIO3
-#define APP_WAKEUP_GPIO_PORT      3
-#define APP_WAKEUP_GPIO_PIN       28
-#define APP_WAKEUP_IRQ            GPIO3_Combined_16_31_IRQn
+#define APP_WAKEUP_GPIO           GPIO13
+#define APP_WAKEUP_GPIO_PORT      13
+#define APP_WAKEUP_GPIO_PIN       0U
+#define APP_WAKEUP_IRQ            GPIO13_Combined_0_31_IRQn
 #define APP_WAKEUP_INTTERUPT_TYPE kHAL_GpioInterruptFallingEdge
+
+
+/* WiFi Wake (via PCAL6524 IO Expander) */
+#define APP_WIFI_WAKEUP_GPIO           GPIO3
+#define APP_WIFI_WAKEUP_GPIO_PORT      3
+#define APP_WIFI_WAKEUP_GPIO_PIN       26U
+#define APP_WIFI_WAKEUP_IRQ            GPIO3_Combined_16_31_IRQn
+#define APP_WIFI_WAKEUP_INTTERUPT_TYPE kHAL_GpioInterruptFallingEdge
 
 /*******************************************************************************
  * Variables
