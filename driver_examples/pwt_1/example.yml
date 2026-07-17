@@ -17,4 +17,3 @@ pwt_1_example:
       - ${board_root}/${board}/driver_examples/pwt_1/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    frdmmcxc353: []
