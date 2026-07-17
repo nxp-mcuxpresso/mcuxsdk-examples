@@ -20,7 +20,7 @@ void BOARD_InitHardware(void)
     BOARD_ConfigMPU();
     BOARD_InitAHBSC();
     BOARD_InitBootPins();
-    BOARD_InitPsRamPins_Xspi2();
+    BOARD_InitXSPI2Pins();
 
     /* Disable LDO */
     POWER_SetVddnSupplySrc(kVddSrc_PMIC);
@@ -28,7 +28,7 @@ void BOARD_InitHardware(void)
     POWER_SetVdd2SupplySrc(kVddSrc_PMIC);
     POWER_ApplyPD();
 
-    BOARD_InitPmicPins();
+    BOARD_InitPMICPins();
     BOARD_InitPmic();
     BOARD_SetPmicVdd2Voltage(1100000U); /* 1.1v for 325MHz clock. */
 
@@ -37,7 +37,7 @@ void BOARD_InitHardware(void)
     BOARD_Init16bitsPsRam(XSPI2);
 
 #if (DEMO_PANEL_RASPI_7INCH == DEMO_PANEL)
-    BOARD_InitI2cPins();
+    BOARD_InitI2CPins();
 #endif
 }
 /*${function:end}*/
