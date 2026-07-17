@@ -16,3 +16,4 @@ This demo aims to show how the various power mode can switch to each other. In a
 ## Supported Boards
 
 - [FRDM-MCXE31B](../../../_boards/frdmmcxe31b/demo_apps/power_mode_switch/low_level/example_board_readme.md)
+- [FRDM-MCXE32B](../../../_boards/frdmmcxe32b/demo_apps/power_mode_switch/low_level/example_board_readme.md)

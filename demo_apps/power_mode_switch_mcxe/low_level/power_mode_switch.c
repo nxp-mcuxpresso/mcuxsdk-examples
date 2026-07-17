@@ -228,7 +228,11 @@ int main(void)
      * before IO configurations are done in standby entry sequence. */
     APP_ClearStandbyIoConfiguration();
     APP_DisableUnusedPeripheralClock();
+#if defined(FSL_FEATURE_MC_ME_HAS_CORE_SELECTION) && (FSL_FEATURE_MC_ME_HAS_CORE_SELECTION != 0U)
+    POWER_EnterStandbyMode(APP_MC_ME_CORE_INDEX);
+#else	
     POWER_EnterStandbyMode();
+#endif /* FSL_FEATURE_MC_ME_HAS_CORE_SELECTION */
     for (;;)
     {
         __ASM("nop");

@@ -54,6 +54,8 @@
 #define APP_LPCMP_ROUND_ROBIN_CHANNELS_CHECKER_MASK   0x1U
 #define APP_LPCMP_ROUND_ROBIN_CHANNELS_PRE_STATE_MASK 0x0U
 
+#define APP_MC_ME_CORE_INDEX 0U
+
 /*
  * (LPCMPx_RRCR0[RR_NSAM] / roundrobin clock period) should bigger than CMP propagation delay,
  * roundrobin clock comes from RTC_CLK (32.768KHz), the propagation delay specified in reference manual is 5us.
