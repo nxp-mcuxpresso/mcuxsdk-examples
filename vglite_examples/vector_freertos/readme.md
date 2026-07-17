@@ -11,3 +11,4 @@ polygon vector graphic with high render quality on blue buffer.
 - [EVK-MIMXRT595](../../_boards/evkmimxrt595/vglite_examples/vector_freertos/example_board_readme.md)
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/vglite_examples/vector_freertos/example_board_readme.md)
 - [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/vglite_examples/vector_freertos/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/vglite_examples/vector_freertos/example_board_readme.md)

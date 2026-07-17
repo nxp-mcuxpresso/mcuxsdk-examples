@@ -7,3 +7,4 @@ decompressed ETC2 texture on the screen.
 
 ## Supported Boards
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/vglite_examples/decompress_etc2_freertos/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/vglite_examples/decompress_etc2_freertos/example_board_readme.md)
