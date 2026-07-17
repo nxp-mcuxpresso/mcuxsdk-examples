@@ -13,24 +13,11 @@ include(${SdkRootDirPath}/${board_root}/${board}/freemaster_examples/fmstr_wifi/
 include(../common/CMakeLists.txt)
 include(../common/example/common/CMakeLists.txt)
 
-# Add board config file
-mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}
-    SOURCES
-        ${project_board_port_path}/wifi_board.h
-)
-
 # Add FreeRTOS config file
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES
         ${board_root}/${board}/FreeRTOSConfigBoard.h
-)
-
-# Preinclude app config
-mcux_add_source(
-    SOURCES ../common/network/config_wifi/app_config.h
-    PREINCLUDE TRUE
 )
 
 # Add wifi example source files

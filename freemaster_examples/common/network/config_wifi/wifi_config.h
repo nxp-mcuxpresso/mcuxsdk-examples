@@ -8,6 +8,10 @@
 #ifndef _WIFI_CONFIG_H_
 #define _WIFI_CONFIG_H_
 
+#ifndef RW610
+#include "wifi_bt_module_config.h"
+#endif
+
 #define CONFIG_WIFI_MAX_PRIO (configMAX_PRIORITIES - 1)
 
 #ifndef RW610
@@ -66,7 +70,7 @@
 #define WIFI_ADD_ON                  1
 #endif
 
-#define CONFIG_IPV6                  1
+#define CONFIG_IPV6                  0
 #define CONFIG_MAX_IPV6_ADDRESSES    3
 
 /* Logs */
