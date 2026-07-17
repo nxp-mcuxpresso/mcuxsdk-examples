@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+dual_adc_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dual_adc/interrupt
+    project-root-path: boards/${board}/driver_examples/dual_adc/interrupt/${multicore_foldername}
+    document:
+      name: dual_adc_interrupt${core_id_suffix_name}
+      category: driver_examples/dual_adc
+      brief: The dual_adc_interrupt example shows how to use interrupt with DualADC driver.
+      example_readme:
+      - examples/driver_examples/dual_adc/interrupt/readme.md
+      - ${board_root}/${board}/driver_examples/dual_adc/interrupt/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+
