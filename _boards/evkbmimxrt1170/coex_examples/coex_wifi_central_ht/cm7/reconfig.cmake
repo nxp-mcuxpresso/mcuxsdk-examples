@@ -106,7 +106,7 @@ mcux_add_armgcc_linker_script(
 mcux_add_source(
     PREINCLUDE TRUE
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/coex_examples/coex_wifi_peripheral_ht/cm7/app_config.h
+    SOURCES examples/_boards/${board}/coex_examples/coex_wifi_central_ht/cm7/app_config.h
 )
 
 mcux_add_armgcc_configuration(
