@@ -52,6 +52,19 @@ openvg_tiger_freertos:
     - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    frdmimxrt700@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@flash_debug
+    - +iar@flash_release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@flash_debug
+    - -mdk@flash_release
+    - -mdk@release
     mimxrt700evk@cm33_core0:
     - +armgcc@debug
     - +armgcc@release
