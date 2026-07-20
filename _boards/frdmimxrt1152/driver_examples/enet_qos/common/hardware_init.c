@@ -63,6 +63,7 @@ void BOARD_InitHardware(void)
     /* Hardware Initialization. */
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
+    BOARD_Init6524Pins();
     BOARD_InitENET_QOSPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
