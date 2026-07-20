@@ -115,7 +115,12 @@ void BOARD_DSP_Init(void)
     CLOCK_AttachClk(kMAIN_PLL_PFD0_to_DSP);
     CLOCK_SetClkDiv(kCLOCK_DivDspClk, 2U);
 #else
+#if defined(EIQ_EXAMPLE_HSRUN_CLOCK)
+    CLOCK_AttachClk(kFRO2_DIV1_to_SENSE_DSP);
+    CLOCK_SetClkDiv(kCLOCK_DivSenseDspClk, 1U);
+#else
     CLOCK_AttachClk(kSENSE_BASE_to_SENSE_DSP);
+#endif
     CLOCK_EnableClock(kCLOCK_SenseAccessRamArbiter0);
     CLOCK_EnableClock(kCLOCK_Syscon1);
     CLOCK_EnableClock(kCLOCK_Sleepcon1);

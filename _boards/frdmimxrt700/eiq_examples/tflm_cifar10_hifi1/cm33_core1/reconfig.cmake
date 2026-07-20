@@ -6,6 +6,10 @@ mcux_add_source(
             dsp_data_release.bin
 )
 
+mcux_add_macro(
+    CC "-DEIQ_EXAMPLE_HSRUN_CLOCK"
+)
+
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/eiq_examples/tflm_cifar10_hifi1/hifi1/binary/
     INCLUDES ./
