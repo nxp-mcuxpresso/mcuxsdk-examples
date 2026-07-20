@@ -36,7 +36,8 @@ mcux_remove_macro(
 mcux_add_macro(
   CC "-DEXAMPLE_PHY_INTERFACE_RGMII\
       -DBOARD_USE_PCAL6524=1\
-      -DSDK_I2C_BASED_COMPONENT_USED=1"
+      -DSDK_I2C_BASED_COMPONENT_USED=1\
+      -DAPP_CDC_VNIC_ENET_DEFAULT_ADDR=1"
 )
 
 mcux_add_macro(

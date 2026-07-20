@@ -275,7 +275,12 @@ enet_err_t ENETIF_Init(void)
 
 #endif
 
+#if APP_CDC_VNIC_ENET_DEFAULT_ADDR
+    phyConfig.phyAddr  = BOARD_ENET1_PHY_ADDRESS;
+#else
     phyConfig.phyAddr  = BOARD_ENET0_PHY_ADDRESS;
+#endif
+
     phyConfig.ops      = BOARD_PHY_OPS;
     phyConfig.resource = BOARD_PHY_RESOURCE;
     phyConfig.autoNeg  = true;
