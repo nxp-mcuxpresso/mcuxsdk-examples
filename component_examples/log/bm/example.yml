@@ -279,4 +279,5 @@ log_bm:
     - -mdk@hyperram_release
     - -mdk@release
     frdmkw43: []
+    kw43loc: []
     frdmmcxw70: []

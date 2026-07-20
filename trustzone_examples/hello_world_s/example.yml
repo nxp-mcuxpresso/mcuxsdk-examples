@@ -96,6 +96,7 @@ hello_world_s:
     frdmkw43:
     - -mdk@debug
     - -mdk@release
+    kw43loc: []
     frdmmcxw70:
     - -mdk@debug
     - -mdk@release

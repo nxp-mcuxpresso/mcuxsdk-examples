@@ -20,3 +20,4 @@ lpadc_dma3:
   boards:
     frdmmcxw70: []
     frdmkw43: []
+    kw43loc: []

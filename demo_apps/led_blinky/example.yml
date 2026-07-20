@@ -48,4 +48,5 @@ led_blinky:
     frdmmcxe31b: []
     frdmmcxe32b@core0: []
     frdmkw43: []
+    kw43loc: []
     frdmmcxw70: []

@@ -30,4 +30,5 @@ ltc_aes:
     - +armgcc@debug
     - +armgcc@release
     frdmkw43: []
+    kw43loc: []
     frdmmcxw70: []

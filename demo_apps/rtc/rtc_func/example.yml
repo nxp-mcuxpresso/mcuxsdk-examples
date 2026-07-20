@@ -40,4 +40,5 @@ rtc_func:
     - +armgcc@debug
     - +armgcc@release
     frdmkw43: []
+    kw43loc: []
     frdmmcxw70: []

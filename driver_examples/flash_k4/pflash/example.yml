@@ -26,4 +26,5 @@ flash_k4:
     - +armgcc@release
     frdmmcxc162: []
     frdmkw43: []
+    kw43loc: []
     frdmmcxw70: []

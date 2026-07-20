@@ -82,4 +82,5 @@ tpm_simple_pwm:
     - +iar@release
     - +iar@debug
     frdmkw43: []
+    kw43loc: []
     frdmmcxw70: []

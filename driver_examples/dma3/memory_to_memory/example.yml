@@ -46,4 +46,5 @@ dma3_memory_to_memory:
     - +armgcc@debug
     - +armgcc@release
     frdmkw43: []
+    kw43loc: []
     frdmmcxw70: []

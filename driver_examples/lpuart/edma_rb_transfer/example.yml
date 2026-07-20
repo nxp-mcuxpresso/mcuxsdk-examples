@@ -145,4 +145,5 @@ lpuart_edma_rb_transfer:
     mimxrt700evk@cm33_core1: []
     frdmimxrt700@cm33_core1: []
     frdmkw43: []
+    kw43loc: []
     frdmmcxw70: []

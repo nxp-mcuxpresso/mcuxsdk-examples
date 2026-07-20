@@ -46,4 +46,5 @@ dma3_scatter_gather:
     - +armgcc@debug
     - +armgcc@release
     frdmkw43: []
+    kw43loc: []
     frdmmcxw70: []

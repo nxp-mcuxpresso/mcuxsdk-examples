@@ -91,5 +91,6 @@ lpadc_temperature_measurement:
     frdmmcxa287: []
     frdmmcxc162: []
     frdmkw43: []
+    kw43loc: []
     frdmmcxw70: []
     mimxrt2660evk: []

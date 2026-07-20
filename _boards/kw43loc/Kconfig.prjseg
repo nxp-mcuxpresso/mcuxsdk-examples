@@ -1,0 +1,8 @@
+# Copyright 2026 NXP
+# SPDX-License-Identifier: BSD-3-Clause
+
+rsource "../../../examples/_common/project_segments/wireless/Kconfig.prjseg"
+rsource "../../../examples/_common/project_segments/wireless/wireless_mcu/Kconfig.prjseg"
+rsource "../../../middleware/wireless/bluetooth/application/common/Kconfig"
+rsource "../../../examples/_common/project_segments/ce_lite/Kconfig.prjseg"
+rsource "../../../examples/_common/project_segments/freertos/examples/tickless/Kconfig.prjseg"
