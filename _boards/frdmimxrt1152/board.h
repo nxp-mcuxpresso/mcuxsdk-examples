@@ -98,7 +98,7 @@
 #define BOARD_ENET0_PHY_ADDRESS (0x02U)
 
 /*! @brief PHY1 (YT8531) address; this 1G RGMII PHY is connected to ENET_1G. */
-#define BOARD_ENET1_PHY_ADDRESS (0x05U)
+#define BOARD_ENET1_PHY_ADDRESS (0x01U)
 
 /* USB PHY condfiguration */
 #define BOARD_USB_PHY_D_CAL     (0x07U)
