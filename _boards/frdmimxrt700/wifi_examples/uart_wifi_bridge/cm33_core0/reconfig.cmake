@@ -5,14 +5,12 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/wifi_nxp/example/uart_wifi_bridge/freertos_config/FreeRTOSConfig.h
-            middleware/wifi_nxp/example/uart_wifi_bridge/lwip_config/lwipopts.h
-            middleware/wifi_nxp/example/uart_wifi_bridge/lwip_config/lwippools.h
+    SOURCES ${board_root}/${board}/wifi_examples/uart_wifi_bridge/freertos_config/FreeRTOSConfig.h
+            ${board_root}/${board}/wifi_examples/uart_wifi_bridge/lwip_config/lwipopts.h
+            ${board_root}/${board}/wifi_examples/uart_wifi_bridge/lwip_config/lwippools.h
+            ${board_root}/${board}/wifi_examples/uart_wifi_bridge/wifi_config/wifi_config.h
             middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware/mfg_wlan_bt_fw.h
-            middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware/sduart8987_mfg_wlan_bt.h
-            middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware/sduartIW416_mfg_wlan_bt.h
             middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware/sduart_nw61x_mfg_se.h
-            middleware/wifi_nxp/example/uart_wifi_bridge/wifi_config/wifi_config.h
             ${board_root}/${board}/wifi_examples/common/cm33_core0/hardware_init.c
             ${board_root}/${board}/wifi_examples/common/cm33_core0/app.h
             ${board_root}/${board}/sdmmc_config.c
@@ -26,9 +24,10 @@ mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES ${board_root}/${board}/wifi_examples/common
              ${board_root}/${board}/wifi_examples/common/cm33_core0
-             middleware/wifi_nxp/example/uart_wifi_bridge/wifi_config
-             middleware/wifi_nxp/example/uart_wifi_bridge/freertos_config
-             middleware/wifi_nxp/example/uart_wifi_bridge/lwip_config
+             ${board_root}/${board}/wifi_examples/uart_wifi_bridge
+             ${board_root}/${board}/wifi_examples/uart_wifi_bridge/wifi_config
+             ${board_root}/${board}/wifi_examples/uart_wifi_bridge/freertos_config
+             ${board_root}/${board}/wifi_examples/uart_wifi_bridge/lwip_config
              middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware
 )
 
