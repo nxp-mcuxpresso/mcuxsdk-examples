@@ -6,12 +6,12 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/wifi_nxp/example/wifi_wpa_supplicant/lwip_config/lwippools.h
-            middleware/wifi_nxp/example/wifi_wpa_supplicant/lwip_config/lwiphooks.h
-            middleware/wifi_nxp/example/wifi_wpa_supplicant/freertos_config/FreeRTOSConfig.h
-            middleware/wifi_nxp/example/wifi_wpa_supplicant/lwip_config/lwipopts.h
-            middleware/wifi_nxp/example/wifi_wpa_supplicant/wifi_config/wifi_config.h
-            ${board_root}/${board}/wifi_examples/common/cm33_core0/hardware_init.c
+    SOURCES ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/lwip_config/lwipopts.h
+            ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/lwip_config/lwippools.h
+            ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/lwip_config/lwiphooks.h
+            ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/freertos_config/FreeRTOSConfig.h
+            ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/wifi_config/wifi_config.h
+            ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/cm33_core0/hardware_init.c
             ${board_root}/${board}/wifi_examples/common/cm33_core0/app.h
             ${board_root}/${board}/sdmmc_config.c
             ${board_root}/${board}/sdmmc_config.h
@@ -24,9 +24,10 @@ mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES ${board_root}/${board}/wifi_examples/common
              ${board_root}/${board}/wifi_examples/common/cm33_core0
-             middleware/wifi_nxp/example/wifi_wpa_supplicant/wifi_config
-             middleware/wifi_nxp/example/wifi_wpa_supplicant/lwip_config
-             middleware/wifi_nxp/example/wifi_wpa_supplicant/freertos_config
+             ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant
+             ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/wifi_config
+             ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/lwip_config
+             ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/freertos_config
 )
 
 mcux_add_iar_configuration(
@@ -55,3 +56,4 @@ mcux_add_mdk_configuration(
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/wifi_examples/common/cm33_core0/reconfig.cmake)
+

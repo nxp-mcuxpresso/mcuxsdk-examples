@@ -24,6 +24,6 @@ void BOARD_InitHardware(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
-    BOARD_InitAHBSC();  
+    BOARD_InitAHBSC();
 }
 /*${function:end}*/
