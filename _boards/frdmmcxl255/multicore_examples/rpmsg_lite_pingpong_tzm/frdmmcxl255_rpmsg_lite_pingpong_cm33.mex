@@ -2,7 +2,7 @@
 <configuration name="MCXL255" xsi:schemaLocation="http://mcuxpresso.nxp.com/XSD/mex_configuration_19 http://mcuxpresso.nxp.com/XSD/mex_configuration_19.xsd" uuid="80ea8640-9ccf-4053-9f6a-04f6985a62a1" version="19" xmlns="http://mcuxpresso.nxp.com/XSD/mex_configuration_19" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
    <common>
       <processor>MCXL255</processor>
-      <package>MCXL255VLL</package>
+      <package>MCXL255VDF</package>
       <mcu_data>ksdk2_0</mcu_data>
       <cores selected="cm33">
          <core name="Cortex-M0P" id="cm0plus" description=""/>
@@ -15,8 +15,7 @@
       <generate_code_modified_registers_only>false</generate_code_modified_registers_only>
       <custom_copyright>
          <text>/*
- * Copyright 2025 NXP
- * All rights reserved.
+ * Copyright 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -93,8 +92,10 @@
                   <peripheral id="ADC0" security="ns_user"/>
                   <peripheral id="AOI0" security="ns_user"/>
                   <peripheral id="AON__ACMP0" security="ns_user"/>
+                  <peripheral id="AON__ADVC2" security="s_priv"/>
                   <peripheral id="AON__CGU" security="s_priv"/>
                   <peripheral id="AON__GPIO0" security="ns_user"/>
+                  <peripheral id="AON__GP_GPR" security="s_priv"/>
                   <peripheral id="AON__INPUTMUX1" security="ns_user"/>
                   <peripheral id="AON__KPP0" security="ns_user"/>
                   <peripheral id="AON__LPACMP" security="ns_user"/>
@@ -146,7 +147,6 @@
                   <peripheral id="SGI0" security="ns_user"/>
                   <peripheral id="SYSCON" security="s_priv"/>
                   <peripheral id="TRNG0" security="ns_user"/>
-                  <peripheral id="UDF0" security="ns_user"/>
                   <peripheral id="UTICK0" security="ns_user"/>
                   <peripheral id="WUU0" security="ns_user"/>
                   <peripheral id="WWDT0" security="ns_user"/>
@@ -221,6 +221,7 @@
                      <interrupt id="RTC_XTAL_IRQn" secure="Secure"/>
                      <interrupt id="SCG0_IRQn" secure="Secure"/>
                      <interrupt id="SGI_IRQn" secure="Secure"/>
+                     <interrupt id="SGLCD_FFAULT_AON_IRQn" secure="Secure"/>
                      <interrupt id="SGLCD_FRAME_AON_IRQn" secure="Secure"/>
                      <interrupt id="TMR0_AON_IRQn" secure="Secure"/>
                      <interrupt id="TMR1_AON_IRQn" secure="Secure"/>
@@ -230,52 +231,198 @@
                      <interrupt id="WWDT0_IRQn" secure="Secure"/>
                   </security>
                </interrupts>
+               <ports>
+                  <port id="GPIO0">
+                     <pin_security id="0" security="s_priv"/>
+                     <pin_security id="1" security="s_priv"/>
+                     <pin_security id="10" security="s_priv"/>
+                     <pin_security id="11" security="s_priv"/>
+                     <pin_security id="12" security="s_priv"/>
+                     <pin_security id="13" security="s_priv"/>
+                     <pin_security id="14" security="s_priv"/>
+                     <pin_security id="15" security="s_priv"/>
+                     <pin_security id="16" security="s_priv"/>
+                     <pin_security id="17" security="s_priv"/>
+                     <pin_security id="18" security="s_priv"/>
+                     <pin_security id="19" security="s_priv"/>
+                     <pin_security id="2" security="s_priv"/>
+                     <pin_security id="20" security="s_priv"/>
+                     <pin_security id="21" security="s_priv"/>
+                     <pin_security id="22" security="s_priv"/>
+                     <pin_security id="23" security="s_priv"/>
+                     <pin_security id="24" security="s_priv"/>
+                     <pin_security id="25" security="s_priv"/>
+                     <pin_security id="26" security="s_priv"/>
+                     <pin_security id="27" security="s_priv"/>
+                     <pin_security id="28" security="s_priv"/>
+                     <pin_security id="29" security="s_priv"/>
+                     <pin_security id="3" security="s_priv"/>
+                     <pin_security id="30" security="s_priv"/>
+                     <pin_security id="31" security="s_priv"/>
+                     <pin_security id="4" security="s_priv"/>
+                     <pin_security id="5" security="s_priv"/>
+                     <pin_security id="6" security="s_priv"/>
+                     <pin_security id="7" security="s_priv"/>
+                     <pin_security id="8" security="s_priv"/>
+                     <pin_security id="9" security="s_priv"/>
+                     <pin_interrupt_security id="0" security="s_priv"/>
+                     <pin_interrupt_security id="1" security="s_priv"/>
+                  </port>
+                  <port id="GPIO1">
+                     <pin_security id="0" security="s_priv"/>
+                     <pin_security id="1" security="s_priv"/>
+                     <pin_security id="10" security="s_priv"/>
+                     <pin_security id="11" security="s_priv"/>
+                     <pin_security id="12" security="s_priv"/>
+                     <pin_security id="13" security="s_priv"/>
+                     <pin_security id="14" security="s_priv"/>
+                     <pin_security id="15" security="s_priv"/>
+                     <pin_security id="16" security="s_priv"/>
+                     <pin_security id="17" security="s_priv"/>
+                     <pin_security id="18" security="s_priv"/>
+                     <pin_security id="19" security="s_priv"/>
+                     <pin_security id="2" security="s_priv"/>
+                     <pin_security id="20" security="s_priv"/>
+                     <pin_security id="21" security="s_priv"/>
+                     <pin_security id="22" security="s_priv"/>
+                     <pin_security id="23" security="s_priv"/>
+                     <pin_security id="24" security="s_priv"/>
+                     <pin_security id="25" security="s_priv"/>
+                     <pin_security id="26" security="s_priv"/>
+                     <pin_security id="27" security="s_priv"/>
+                     <pin_security id="28" security="s_priv"/>
+                     <pin_security id="29" security="s_priv"/>
+                     <pin_security id="3" security="s_priv"/>
+                     <pin_security id="30" security="s_priv"/>
+                     <pin_security id="31" security="s_priv"/>
+                     <pin_security id="4" security="s_priv"/>
+                     <pin_security id="5" security="s_priv"/>
+                     <pin_security id="6" security="s_priv"/>
+                     <pin_security id="7" security="s_priv"/>
+                     <pin_security id="8" security="s_priv"/>
+                     <pin_security id="9" security="s_priv"/>
+                     <pin_interrupt_security id="0" security="s_priv"/>
+                     <pin_interrupt_security id="1" security="s_priv"/>
+                  </port>
+                  <port id="GPIO2">
+                     <pin_security id="0" security="s_priv"/>
+                     <pin_security id="1" security="s_priv"/>
+                     <pin_security id="10" security="s_priv"/>
+                     <pin_security id="11" security="s_priv"/>
+                     <pin_security id="12" security="s_priv"/>
+                     <pin_security id="13" security="s_priv"/>
+                     <pin_security id="14" security="s_priv"/>
+                     <pin_security id="15" security="s_priv"/>
+                     <pin_security id="16" security="s_priv"/>
+                     <pin_security id="17" security="s_priv"/>
+                     <pin_security id="18" security="s_priv"/>
+                     <pin_security id="19" security="s_priv"/>
+                     <pin_security id="2" security="s_priv"/>
+                     <pin_security id="20" security="s_priv"/>
+                     <pin_security id="21" security="s_priv"/>
+                     <pin_security id="22" security="s_priv"/>
+                     <pin_security id="23" security="s_priv"/>
+                     <pin_security id="24" security="s_priv"/>
+                     <pin_security id="25" security="s_priv"/>
+                     <pin_security id="26" security="s_priv"/>
+                     <pin_security id="27" security="s_priv"/>
+                     <pin_security id="28" security="s_priv"/>
+                     <pin_security id="29" security="s_priv"/>
+                     <pin_security id="3" security="s_priv"/>
+                     <pin_security id="30" security="s_priv"/>
+                     <pin_security id="31" security="s_priv"/>
+                     <pin_security id="4" security="s_priv"/>
+                     <pin_security id="5" security="s_priv"/>
+                     <pin_security id="6" security="s_priv"/>
+                     <pin_security id="7" security="s_priv"/>
+                     <pin_security id="8" security="s_priv"/>
+                     <pin_security id="9" security="s_priv"/>
+                     <pin_interrupt_security id="0" security="s_priv"/>
+                     <pin_interrupt_security id="1" security="s_priv"/>
+                  </port>
+                  <port id="GPIO3">
+                     <pin_security id="0" security="s_priv"/>
+                     <pin_security id="1" security="s_priv"/>
+                     <pin_security id="10" security="s_priv"/>
+                     <pin_security id="11" security="s_priv"/>
+                     <pin_security id="12" security="s_priv"/>
+                     <pin_security id="13" security="s_priv"/>
+                     <pin_security id="14" security="s_priv"/>
+                     <pin_security id="15" security="s_priv"/>
+                     <pin_security id="16" security="s_priv"/>
+                     <pin_security id="17" security="s_priv"/>
+                     <pin_security id="18" security="s_priv"/>
+                     <pin_security id="19" security="s_priv"/>
+                     <pin_security id="2" security="s_priv"/>
+                     <pin_security id="20" security="s_priv"/>
+                     <pin_security id="21" security="s_priv"/>
+                     <pin_security id="22" security="s_priv"/>
+                     <pin_security id="23" security="s_priv"/>
+                     <pin_security id="24" security="s_priv"/>
+                     <pin_security id="25" security="s_priv"/>
+                     <pin_security id="26" security="s_priv"/>
+                     <pin_security id="27" security="s_priv"/>
+                     <pin_security id="28" security="s_priv"/>
+                     <pin_security id="29" security="s_priv"/>
+                     <pin_security id="3" security="s_priv"/>
+                     <pin_security id="30" security="s_priv"/>
+                     <pin_security id="31" security="s_priv"/>
+                     <pin_security id="4" security="s_priv"/>
+                     <pin_security id="5" security="s_priv"/>
+                     <pin_security id="6" security="s_priv"/>
+                     <pin_security id="7" security="s_priv"/>
+                     <pin_security id="8" security="s_priv"/>
+                     <pin_security id="9" security="s_priv"/>
+                     <pin_interrupt_security id="0" security="s_priv"/>
+                     <pin_interrupt_security id="1" security="s_priv"/>
+                  </port>
+               </ports>
                <mbcs>
                   <mbc checker_id="MBC0" using_global_templates="false">
                      <access_templates>
-                        <template id="Template_1" locked="false">
-                           <access read="ALLOW" write="BLOCK" execute="ALLOW" security_level="ns_user"/>
-                           <access read="ALLOW" write="BLOCK" execute="ALLOW" security_level="ns_priv"/>
+                        <template id="Template_1">
+                           <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_user"/>
+                           <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_priv"/>
+                           <access read="ALLOW" write="ALLOW" execute="BLOCK" security_level="s_user"/>
+                           <access read="ALLOW" write="ALLOW" execute="BLOCK" security_level="s_priv"/>
+                        </template>
+                        <template id="Template_2" locked="true">
+                           <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_user"/>
+                           <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_priv"/>
+                           <access read="ALLOW" write="ALLOW" execute="BLOCK" security_level="s_user"/>
+                           <access read="ALLOW" write="ALLOW" execute="BLOCK" security_level="s_priv"/>
+                        </template>
+                        <template id="Template_3" locked="true">
+                           <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_user"/>
+                           <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_priv"/>
                            <access read="ALLOW" write="BLOCK" execute="ALLOW" security_level="s_user"/>
                            <access read="ALLOW" write="BLOCK" execute="ALLOW" security_level="s_priv"/>
                         </template>
-                        <template id="Template_2" locked="false">
+                        <template id="Template_4" locked="true">
                            <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_user"/>
                            <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_priv"/>
-                           <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="s_user"/>
-                           <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="s_priv"/>
-                        </template>
-                        <template id="Template_3" locked="false">
-                           <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_user"/>
-                           <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_priv"/>
-                           <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="s_user"/>
-                           <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="s_priv"/>
-                        </template>
-                        <template id="Template_4" locked="false">
-                           <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_user"/>
-                           <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_priv"/>
-                           <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="s_user"/>
-                           <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="s_priv"/>
+                           <access read="ALLOW" write="BLOCK" execute="BLOCK" security_level="s_user"/>
+                           <access read="ALLOW" write="BLOCK" execute="BLOCK" security_level="s_priv"/>
                         </template>
                         <template id="Template_5" locked="false">
                            <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_user"/>
                            <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_priv"/>
-                           <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="s_user"/>
-                           <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="s_priv"/>
+                           <access read="ALLOW" write="BLOCK" execute="ALLOW" security_level="s_user"/>
+                           <access read="ALLOW" write="BLOCK" execute="ALLOW" security_level="s_priv"/>
                         </template>
                         <template id="Template_6" locked="false">
                            <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_user"/>
                            <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_priv"/>
-                           <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="s_user"/>
-                           <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="s_priv"/>
+                           <access read="BLOCK" write="BLOCK" execute="ALLOW" security_level="s_user"/>
+                           <access read="BLOCK" write="BLOCK" execute="ALLOW" security_level="s_priv"/>
                         </template>
-                        <template id="Template_7" locked="false">
+                        <template id="Template_7" locked="true">
                            <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_user"/>
                            <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_priv"/>
-                           <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="s_user"/>
-                           <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="s_priv"/>
+                           <access read="BLOCK" write="BLOCK" execute="ALLOW" security_level="s_user"/>
+                           <access read="BLOCK" write="BLOCK" execute="ALLOW" security_level="s_priv"/>
                         </template>
-                        <template id="Template_8" locked="false">
+                        <template id="Template_8" locked="true">
                            <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_user"/>
                            <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_priv"/>
                            <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="s_user"/>

@@ -92,7 +92,7 @@ The all TrustZone files related to TrustZone are located in trustzone virtual di
 
 File tzm_config.c, tzm_config.h
 ===============================
-This file is used by secure project only. It contains one function BOARD_InitTrustZone(), which configures complete TrustZone
+This file is used by secure project only. It contains one function BOARD_InitBootTEE(), which configures complete TrustZone
 environment. It includes SAU, MPU's, AHB secure controller and some TrustZone related registers from System Control Block.
 This function is called from SystemInitHook() function, it means during system initialization.
 

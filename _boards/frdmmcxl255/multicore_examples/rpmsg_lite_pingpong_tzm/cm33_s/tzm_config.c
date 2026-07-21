@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -13,9 +13,9 @@
 /* clang-format off */
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: TEE v10.0
+product: TEE v12.0
 processor: MCXL255
-package_id: MCXL255VLL
+package_id: MCXL255VDF
 mcu_data: ksdk2_0
 processor_version: 0.0.0
 toolOptions:
@@ -57,7 +57,49 @@ functional_group:
           FREQME0_IRQn, GLIKEY0_IRQn, GPIO00_AON_IRQn, GPIO01_AON_IRQn, GPIO10_IRQn, GPIO11_IRQn, GPIO20_IRQn, GPIO21_IRQn, GPIO30_IRQn, GPIO31_IRQn, HYPERVISOR_IRQn,
           KPP_IRQn, LCSENSE_IRQn, LPADC_AON_IRQn, LPCMP_IRQn, LPI2C0_AON_IRQn, LPI2C0_IRQn, LPI2C1_IRQn, LPSPI0_IRQn, LPSPI1_IRQn, LPTMR_AON_IRQn, LPUART0_AON_IRQn,
           LPUART0_IRQn, LPUART1_IRQn, MBC0_IRQn, MU_A_INT_IRQn, MU_A_RX_IRQn, MU_A_TX_IRQn, OS_EVENT_IRQn, PKC_IRQn, RTC_ALARM0_IRQn, RTC_ALARM1_IRQn, RTC_ALARM2_IRQn,
-          RTC_WDT_IRQn, RTC_XTAL_IRQn, SCG0_IRQn, SGI_IRQn, SGLCD_FRAME_AON_IRQn, TMR0_AON_IRQn, TMR1_AON_IRQn, TRNG_IRQn, UTICK0_IRQn, WUU0_IRQn, WWDT0_IRQn]}}
+          RTC_WDT_IRQn, RTC_XTAL_IRQn, SCG0_IRQn, SGI_IRQn, SGLCD_FFAULT_AON_IRQn, SGLCD_FRAME_AON_IRQn, TMR0_AON_IRQn, TMR1_AON_IRQn, TRNG_IRQn, UTICK0_IRQn, WUU0_IRQn,
+          WWDT0_IRQn]}}
+  - ports:
+    - GPIO0: {pin_security: {id: '0', security: s_priv}, pin_security: {id: '1', security: s_priv}, pin_security: {id: '10', security: s_priv}, pin_security: {
+        id: '11', security: s_priv}, pin_security: {id: '12', security: s_priv}, pin_security: {id: '13', security: s_priv}, pin_security: {id: '14', security: s_priv},
+      pin_security: {id: '15', security: s_priv}, pin_security: {id: '16', security: s_priv}, pin_security: {id: '17', security: s_priv}, pin_security: {id: '18',
+        security: s_priv}, pin_security: {id: '19', security: s_priv}, pin_security: {id: '2', security: s_priv}, pin_security: {id: '20', security: s_priv}, pin_security: {
+        id: '21', security: s_priv}, pin_security: {id: '22', security: s_priv}, pin_security: {id: '23', security: s_priv}, pin_security: {id: '24', security: s_priv},
+      pin_security: {id: '25', security: s_priv}, pin_security: {id: '26', security: s_priv}, pin_security: {id: '27', security: s_priv}, pin_security: {id: '28',
+        security: s_priv}, pin_security: {id: '29', security: s_priv}, pin_security: {id: '3', security: s_priv}, pin_security: {id: '30', security: s_priv}, pin_security: {
+        id: '31', security: s_priv}, pin_security: {id: '4', security: s_priv}, pin_security: {id: '5', security: s_priv}, pin_security: {id: '6', security: s_priv},
+      pin_security: {id: '7', security: s_priv}, pin_security: {id: '8', security: s_priv}, pin_security: {id: '9', security: s_priv}, pin_interrupt_security: {id: '0',
+        security: s_priv}, pin_interrupt_security: {id: '1', security: s_priv}}
+    - GPIO1: {pin_security: {id: '0', security: s_priv}, pin_security: {id: '1', security: s_priv}, pin_security: {id: '10', security: s_priv}, pin_security: {
+        id: '11', security: s_priv}, pin_security: {id: '12', security: s_priv}, pin_security: {id: '13', security: s_priv}, pin_security: {id: '14', security: s_priv},
+      pin_security: {id: '15', security: s_priv}, pin_security: {id: '16', security: s_priv}, pin_security: {id: '17', security: s_priv}, pin_security: {id: '18',
+        security: s_priv}, pin_security: {id: '19', security: s_priv}, pin_security: {id: '2', security: s_priv}, pin_security: {id: '20', security: s_priv}, pin_security: {
+        id: '21', security: s_priv}, pin_security: {id: '22', security: s_priv}, pin_security: {id: '23', security: s_priv}, pin_security: {id: '24', security: s_priv},
+      pin_security: {id: '25', security: s_priv}, pin_security: {id: '26', security: s_priv}, pin_security: {id: '27', security: s_priv}, pin_security: {id: '28',
+        security: s_priv}, pin_security: {id: '29', security: s_priv}, pin_security: {id: '3', security: s_priv}, pin_security: {id: '30', security: s_priv}, pin_security: {
+        id: '31', security: s_priv}, pin_security: {id: '4', security: s_priv}, pin_security: {id: '5', security: s_priv}, pin_security: {id: '6', security: s_priv},
+      pin_security: {id: '7', security: s_priv}, pin_security: {id: '8', security: s_priv}, pin_security: {id: '9', security: s_priv}, pin_interrupt_security: {id: '0',
+        security: s_priv}, pin_interrupt_security: {id: '1', security: s_priv}}
+    - GPIO2: {pin_security: {id: '0', security: s_priv}, pin_security: {id: '1', security: s_priv}, pin_security: {id: '10', security: s_priv}, pin_security: {
+        id: '11', security: s_priv}, pin_security: {id: '12', security: s_priv}, pin_security: {id: '13', security: s_priv}, pin_security: {id: '14', security: s_priv},
+      pin_security: {id: '15', security: s_priv}, pin_security: {id: '16', security: s_priv}, pin_security: {id: '17', security: s_priv}, pin_security: {id: '18',
+        security: s_priv}, pin_security: {id: '19', security: s_priv}, pin_security: {id: '2', security: s_priv}, pin_security: {id: '20', security: s_priv}, pin_security: {
+        id: '21', security: s_priv}, pin_security: {id: '22', security: s_priv}, pin_security: {id: '23', security: s_priv}, pin_security: {id: '24', security: s_priv},
+      pin_security: {id: '25', security: s_priv}, pin_security: {id: '26', security: s_priv}, pin_security: {id: '27', security: s_priv}, pin_security: {id: '28',
+        security: s_priv}, pin_security: {id: '29', security: s_priv}, pin_security: {id: '3', security: s_priv}, pin_security: {id: '30', security: s_priv}, pin_security: {
+        id: '31', security: s_priv}, pin_security: {id: '4', security: s_priv}, pin_security: {id: '5', security: s_priv}, pin_security: {id: '6', security: s_priv},
+      pin_security: {id: '7', security: s_priv}, pin_security: {id: '8', security: s_priv}, pin_security: {id: '9', security: s_priv}, pin_interrupt_security: {id: '0',
+        security: s_priv}, pin_interrupt_security: {id: '1', security: s_priv}}
+    - GPIO3: {pin_security: {id: '0', security: s_priv}, pin_security: {id: '1', security: s_priv}, pin_security: {id: '10', security: s_priv}, pin_security: {
+        id: '11', security: s_priv}, pin_security: {id: '12', security: s_priv}, pin_security: {id: '13', security: s_priv}, pin_security: {id: '14', security: s_priv},
+      pin_security: {id: '15', security: s_priv}, pin_security: {id: '16', security: s_priv}, pin_security: {id: '17', security: s_priv}, pin_security: {id: '18',
+        security: s_priv}, pin_security: {id: '19', security: s_priv}, pin_security: {id: '2', security: s_priv}, pin_security: {id: '20', security: s_priv}, pin_security: {
+        id: '21', security: s_priv}, pin_security: {id: '22', security: s_priv}, pin_security: {id: '23', security: s_priv}, pin_security: {id: '24', security: s_priv},
+      pin_security: {id: '25', security: s_priv}, pin_security: {id: '26', security: s_priv}, pin_security: {id: '27', security: s_priv}, pin_security: {id: '28',
+        security: s_priv}, pin_security: {id: '29', security: s_priv}, pin_security: {id: '3', security: s_priv}, pin_security: {id: '30', security: s_priv}, pin_security: {
+        id: '31', security: s_priv}, pin_security: {id: '4', security: s_priv}, pin_security: {id: '5', security: s_priv}, pin_security: {id: '6', security: s_priv},
+      pin_security: {id: '7', security: s_priv}, pin_security: {id: '8', security: s_priv}, pin_security: {id: '9', security: s_priv}, pin_interrupt_security: {id: '0',
+        security: s_priv}, pin_interrupt_security: {id: '1', security: s_priv}}
   - regions: [{memory: PROGRAM_FLASH, security: s_priv, start: '0x00000000', size: '0x00020000'}, {memory: PROGRAM_FLASH, security: ns_user, start: '0x00020000',
       size: '0x00060000'}, {memory: FlashBank_IFR0, security: ns_user, start: '0x00000000', size: '0x00008000'}, {memory: FlashBank_IFR1, security: ns_user, start: '0x00000000',
       size: '0x00002000'}, {memory: BootROM, security: ns_user, start: '0x00000000', size: '0x00008000'}, {memory: SRAMX0, security: ns_user, start: '0x00000000',
@@ -67,8 +109,8 @@ functional_group:
   - peripherals: {ns_user: {id: [ACMP0, ADC0, AOI0, AON__ACMP0, AON__GPIO0, AON__INPUTMUX1, AON__KPP0, AON__LPACMP, AON__LPADC0, AON__LPI2C0, AON__LPTMR0, AON__LPUART0,
         AON__PMU, AON__PORT0, AON__SGLCD0_AON, AON__SMM, AON__TMR0, AON__TMR1, CDOG0, CDOG1, CMC, CRC, CTIMER0, CTIMER1, CTIMER2, DBGMAILBOX, ERM0, FMC0, FMU0, FREQME0,
         GPIO1, GPIO2, GPIO3, INPUTMUX0, LPI2C0, LPI2C1, LPSPI0, LPSPI1, LPUART0, LPUART1, MBC0, MUB, OSTIMER0, PKC0, PORT1, PORT2, PORT3, RULE0, RULE1, RULE2, RULE3,
-        SCG0, SGI0, TRNG0, UDF0, UTICK0, WUU0, WWDT0, eDMA_0_MP, eDMA_0_TCD0, eDMA_0_TCD1, eDMA_0_TCD2, eDMA_0_TCD3, eDMA_1_MP, eDMA_1_TCD0, eDMA_1_TCD1, eDMA_1_TCD2,
-        eDMA_1_TCD3]}, s_priv: {id: [AON__CGU, MUA, SYSCON]}}
+        SCG0, SGI0, TRNG0, UTICK0, WUU0, WWDT0, eDMA_0_MP, eDMA_0_TCD0, eDMA_0_TCD1, eDMA_0_TCD2, eDMA_0_TCD3, eDMA_1_MP, eDMA_1_TCD0, eDMA_1_TCD1, eDMA_1_TCD2, eDMA_1_TCD3]},
+    s_priv: {id: [AON__ADVC2, AON__CGU, AON__GP_GPR, MUA, SYSCON]}}
   - mbcs:
     - mbc:
       - checker_id: 'MBC0'
@@ -79,35 +121,34 @@ functional_group:
       - access_templates:
         - template:
           - id: 'Template_1'
-          - locked: 'false'
-          - accesses: {ns_user: '101', ns_priv: '101', s_user: '101', s_priv: '101'}
+          - accesses: {ns_user: '000', ns_priv: '000', s_user: '110', s_priv: '110'}
         - template:
           - id: 'Template_2'
-          - locked: 'false'
-          - accesses: {ns_user: '000', ns_priv: '000', s_user: '000', s_priv: '000'}
+          - locked: 'true'
+          - accesses: {ns_user: '000', ns_priv: '000', s_user: '110', s_priv: '110'}
         - template:
           - id: 'Template_3'
-          - locked: 'false'
-          - accesses: {ns_user: '000', ns_priv: '000', s_user: '000', s_priv: '000'}
+          - locked: 'true'
+          - accesses: {ns_user: '000', ns_priv: '000', s_user: '101', s_priv: '101'}
         - template:
           - id: 'Template_4'
-          - locked: 'false'
-          - accesses: {ns_user: '000', ns_priv: '000', s_user: '000', s_priv: '000'}
+          - locked: 'true'
+          - accesses: {ns_user: '000', ns_priv: '000', s_user: '100', s_priv: '100'}
         - template:
           - id: 'Template_5'
           - locked: 'false'
-          - accesses: {ns_user: '000', ns_priv: '000', s_user: '000', s_priv: '000'}
+          - accesses: {ns_user: '000', ns_priv: '000', s_user: '101', s_priv: '101'}
         - template:
           - id: 'Template_6'
           - locked: 'false'
-          - accesses: {ns_user: '000', ns_priv: '000', s_user: '000', s_priv: '000'}
+          - accesses: {ns_user: '000', ns_priv: '000', s_user: '001', s_priv: '001'}
         - template:
           - id: 'Template_7'
-          - locked: 'false'
-          - accesses: {ns_user: '000', ns_priv: '000', s_user: '000', s_priv: '000'}
+          - locked: 'true'
+          - accesses: {ns_user: '000', ns_priv: '000', s_user: '001', s_priv: '001'}
         - template:
           - id: 'Template_8'
-          - locked: 'false'
+          - locked: 'true'
           - accesses: {ns_user: '000', ns_priv: '000', s_user: '000', s_priv: '000'}
 - saus:
   - sau:
@@ -266,22 +307,22 @@ void BOARD_INITTEE_BOARD_InitTrustZone()
     AHBSC__AHBSC0->AON_DOMAIN_SRAM_MEM_RULE[0] = 0x33333333U;
 
     /* Security level configuration of PPC checker */
-    AHBSC__AHBSC0->AHB_PERIPHERAL_SLAVE_PORT_P5_SLAVE_RULE0 = 0x00033333U;
-    AHBSC__AHBSC0->AHB_PERIPHERAL_SLAVE_PORT_P5_SLAVE_RULE1 = 0x00003000U;
     AHBSC__AHBSC0->APB_PERIPHERAL_GROUP0_MEM_RULE0 = 0x30003303U;
     AHBSC__AHBSC0->APB_PERIPHERAL_GROUP0_MEM_RULE1 = 0x33300303U;
-    AHBSC__AHBSC0->AIPS_BRIDGE_GROUP3_MEM_RULE0 = 0x33333333U;
-    AHBSC__AHBSC0->AIPS_BRIDGE_GROUP3_MEM_RULE2 = 0x03330000U;
-    AHBSC__AHBSC0->AIPS_BRIDGE_GROUP3_MEM_RULE3 = 0x33330000U;
-    AHBSC__AHBSC0->AHB_SECURE_CTRL_PERIPHERAL_RULE0 = 0;
-    AHBSC__AHBSC0->AIPS_BRIDGE_GROUP0_MEM_RULE1 = 0x00030003U;
     AHBSC__AHBSC0->AIPS_BRIDGE_GROUP0_MEM_RULE0 = 0x33300000U;
+    AHBSC__AHBSC0->AIPS_BRIDGE_GROUP0_MEM_RULE1 = 0x00030003U;
     AHBSC__AHBSC0->AIPS_BRIDGE_GROUP0_MEM_RULE2 = 0x33003033U;
     AHBSC__AHBSC0->AIPS_BRIDGE_GROUP0_MEM_RULE3 = 0x03000033U;
     AHBSC__AHBSC0->AIPS_BRIDGE_GROUP2_MEM_RULE0 = 0x33333330U;
     AHBSC__AHBSC0->AIPS_BRIDGE_GROUP2_MEM_RULE1 = 0x03033333U;
     AHBSC__AHBSC0->AIPS_BRIDGE_GROUP2_MEM_RULE2 = 0x33333303U;
     AHBSC__AHBSC0->AIPS_BRIDGE_GROUP2_MEM_RULE3 = 0x30003333U;
+    AHBSC__AHBSC0->AIPS_BRIDGE_GROUP3_MEM_RULE0 = 0x33333333U;
+    AHBSC__AHBSC0->AIPS_BRIDGE_GROUP3_MEM_RULE2 = 0x03333000U;
+    AHBSC__AHBSC0->AIPS_BRIDGE_GROUP3_MEM_RULE3 = 0x33330000U;
+    AHBSC__AHBSC0->AHB_PERIPHERAL_SLAVE_PORT_P5_SLAVE_RULE0 = 0x00033333U;
+    AHBSC__AHBSC0->AHB_PERIPHERAL_SLAVE_PORT_P5_SLAVE_RULE1 = 0x00003000U;
+    AHBSC__AHBSC0->AHB_SECURE_CTRL_PERIPHERAL_RULE0 = 0;
     AHBSC__AHBSC0->AON_DOMAIN_PERIPHERAL_MEM_RULE0 = 0x30003030U;
     AHBSC__AHBSC0->AON_DOMAIN_PERIPHERAL_MEM_RULE1 = 0x00333330U;
     AHBSC__AHBSC0->AON_DOMAIN_PERIPHERAL_MEM_RULE2 = 0x33003003U;
