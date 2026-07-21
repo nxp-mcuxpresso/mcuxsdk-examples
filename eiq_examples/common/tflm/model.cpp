@@ -82,7 +82,7 @@ status_t MODEL_Init(void)
     s_tensorArenaSizeUsed = s_interpreter->arena_used_bytes();
 #if (defined(CPU_MIMXRT798SGAWAR_hifi4) || defined(CPU_MIMXRT798SGFOA_hifi4) || defined(CPU_MIMXRT798SGAWBR_hifi4) || defined(CPU_MIMXRT798SGFOB_hifi4))
     PRINTF("Hifi4 DSP Frequency: %d MHz\r\n", CLOCK_GetFreq(kCLOCK_Hifi4CpuClk)/1000000);
-#elif  (defined(CPU_MIMXRT798SGAWAR_hifi1) || defined(CPU_MIMXRT798SGFOA_hifi1) || defined(CPU_MIMXRT798SGAWBR_hifi1) || defined(CPU_MIMXRT798SGFOB_hifi1))
+#elif  (defined(CPU_MIMXRT798SGAWAR_hifi1) || defined(CPU_MIMXRT798SGFOA_hifi1) || defined(CPU_MIMXRT798SGAWBR_hifi1) || defined(CPU_MIMXRT798SGFOB_hifi1) || defined(CPU_MIMXRT798SGVKB_hifi1))
     PRINTF("Hifi1 DSP Frequency: %d MHz\r\n", CLOCK_GetFreq(kCLOCK_Hifi1CpuClk)/1000000);
 #elif (defined(CPU_MIMXRT685SFAWBR_dsp) || defined(CPU_MIMXRT685SFFOB_dsp) || defined(CPU_MIMXRT685SFVKB_dsp) || defined(CPU_MIMXRT685SVFVKB_dsp) ||(defined(CPU_MIMXRT595SFAWC_dsp) || defined(CPU_MIMXRT595SFFOC_dsp)))
 
