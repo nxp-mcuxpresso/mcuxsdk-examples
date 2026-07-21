@@ -73,7 +73,6 @@ uart_wifi_bridge:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     frdmmcxn947@cm33_core0: []
-    frdmmcxn947t@cm33_core0: []
     frdmrw612:
     - -armgcc@debug
     - -armgcc@release

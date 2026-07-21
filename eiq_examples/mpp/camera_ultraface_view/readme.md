@@ -15,7 +15,6 @@ Refer to build instructions:
 ## Hardware requirements
 Refer to board.readme for hardware setup requirements.
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/eiq_examples/mpp/board_readme.md)
-- [FRDM-MCXN947T](../../../_boards/frdmmcxn947t/eiq_examples/mpp/board_readme.md)
 - [MIMXRT1170-EVKB](../../../_boards/evkbmimxrt1170/eiq_examples/mpp/board_readme.md)
 - [MIMXRT700-EVK](../../../_boards/mimxrt700evk/eiq_examples/mpp/board_readme.md)
 
@@ -132,4 +131,3 @@ User may provide its own implementation of MODEL_GetOpsResolver when using a dif
 - MIMXRT700-EVK
 - MIMXRT1170-EVKB
 - FRDM-MCXN947
-- FRDM-MCXN947T

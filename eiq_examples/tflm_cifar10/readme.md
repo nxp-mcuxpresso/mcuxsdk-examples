@@ -209,7 +209,6 @@ Neutron Converter Target Platforms:
 | Target | Description | Boards |
 |--------|-------------|--------|
 | `mcxn94x` | MCXN94x series | frdmmcxn947, mcxn5xxevk, mcxn9xxevk |
-| `mcxn94x` | MCXN94x series | frdmmcxn947t, mcxn5xxevk, mcxn9xxevk |
 | `imxrt700` | i.MX RT700 series | mimxrt700evk |
 
 
@@ -345,7 +344,6 @@ Static data processing:
 
 ## Supported Boards with NPU
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/eiq_examples/tflm_cifar10/example_board_readme.md)
-- [FRDM-MCXN947T](../../_boards/frdmmcxn947t/eiq_examples/tflm_cifar10/example_board_readme.md)
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/eiq_examples/tflm_cifar10/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/eiq_examples/tflm_cifar10/example_board_readme.md)
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/eiq_examples/tflm_cifar10/example_board_readme.md)

@@ -16,7 +16,6 @@ The project provides Debug and Release configuration, Release configuration will
 - EVK-MIMXRT595
 - EVK-MIMXRT685
 - FRDM-MCXN947
-- FRDM-MCXN947T
 - MCX-N5XX-EVK
 - MCX-N9XX-EVK
 - MIMXRT700-EVK

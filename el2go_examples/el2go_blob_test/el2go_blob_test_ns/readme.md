@@ -28,9 +28,7 @@ Additional information about EdgeLock 2GO Provisioning for MCUs can be found in 
 ## Hardware requirements
 
 - FRDM-RW612, RD-RW612-BGA, MCX-N5XX-EVK, MCX-N9XX-EVK or FRDM-MCXN947 or FRDM-MCXN236 board
-- FRDM-RW612, RD-RW612-BGA, MCX-N5XX-EVK, MCX-N9XX-EVK or FRDM-MCXN947T or FRDM-MCXN236 board
 - USB-C (FRDM-RW612, FRDM-MCXN947, FRDM-MCXN236) or Micro-USB (RD-RW612-BGA, MCX-N5XX-EVK or MCX-N9XX-EVK) cable
-- USB-C (FRDM-RW612, FRDM-MCXN947T, FRDM-MCXN236) or Micro-USB (RD-RW612-BGA, MCX-N5XX-EVK or MCX-N9XX-EVK) cable
 - Personal Computer
 
 ## Board settings
@@ -123,7 +121,6 @@ Additional information about EdgeLock 2GO Provisioning for MCUs can be found in 
     - **[ZIP]** First compile the *el2go_blob_test_s* project and then the *el2go_blob_test_ns* project.
 
 6.  Connect the USB-C (FRDM-RW612, FRDM-MCXN947, FRDM-MCXN236) or Micro-USB (RD-RW612-BGA, MCX-N5XX-EVK or MCX-N9XX-EVK) cable to the PC host and the MCU-Link USB port (J10 [FRDM-RW612], J7 [RD-RW612-BGA], J5 [MCX-N5XX-EVK or MCX-N9XX-EVK] or J17 [FRDM-MCXN947]) on the board.
-6.  Connect the USB-C (FRDM-RW612, FRDM-MCXN947T, FRDM-MCXN236) or Micro-USB (RD-RW612-BGA, MCX-N5XX-EVK or MCX-N9XX-EVK) cable to the PC host and the MCU-Link USB port (J10 [FRDM-RW612], J7 [RD-RW612-BGA], J5 [MCX-N5XX-EVK or MCX-N9XX-EVK] or J17 [FRDM-MCXN947T]) on the board.
 
 7.  Open a serial terminal with the following settings:
 
@@ -217,5 +214,4 @@ Test suite GENERIC (EL2GO_BLOB_TEST_GENERIC_XXXX) - FAILED (926 ms)
 - MCX-N5XX-EVK
 - RD-RW612-BGA
 - FRDM-MCXN947
-- FRDM-MCXN947T
 - MCX-N9XX-EVK

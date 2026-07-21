@@ -34,7 +34,6 @@ camera_mobilenet_view:
     - -mdk@flash_debug
     - -mdk@flash_release
     frdmmcxn947@cm33_core0:
-    frdmmcxn947t@cm33_core0:
     - +armgcc@debug
     - +armgcc@release
     - -iar@debug

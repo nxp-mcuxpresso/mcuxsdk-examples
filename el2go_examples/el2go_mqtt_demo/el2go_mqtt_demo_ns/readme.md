@@ -28,11 +28,8 @@ Additional information about EdgeLock 2GO Provisioning for MCUs can be found in 
 ## Hardware requirements
 
 - FRDM-RW612, RD-RW612-BGA, MCX-N5XX-EVK, MCX-N9XX-EVK or FRDM-MCXN947 board
-- FRDM-RW612, RD-RW612-BGA, MCX-N5XX-EVK, MCX-N9XX-EVK or FRDM-MCXN947T board
 - USB-C (FRDM-RW612, FRDM-MCXN947) or Micro-USB (RD-RW612-BGA, MCX-N5XX-EVK or MCX-N9XX-EVK) cable
-- USB-C (FRDM-RW612, FRDM-MCXN947T) or Micro-USB (RD-RW612-BGA, MCX-N5XX-EVK or MCX-N9XX-EVK) cable
 - Ethernet cable (FRDM-MCXN947, MCX-N5XX-EVK or MCX-N9XX-EVK)
-- Ethernet cable (FRDM-MCXN947T, MCX-N5XX-EVK or MCX-N9XX-EVK)
 - Personal Computer
 
 ## Board settings
@@ -94,7 +91,6 @@ No special settings are required.
     - **[ZIP]** First compile the *el2go_mqtt_demo_s* project and then the *el2go_mqtt_demo_ns* project.
 
 5.  Connect the USB-C (FRDM-RW612, FRDM-MCXN947) or Micro-USB (RD-RW612-BGA, MCX-N5XX-EVK or MCX-N9XX-EVK) cable to the PC host and the MCU-Link USB port (J10 [FRDM-RW612], J7 [RD-RW612-BGA], J5 [MCX-N5XX-EVK or MCX-N9XX-EVK] or J17 [FRDM-MCXN947]) on the board.
-5.  Connect the USB-C (FRDM-RW612, FRDM-MCXN947T) or Micro-USB (RD-RW612-BGA, MCX-N5XX-EVK or MCX-N9XX-EVK) cable to the PC host and the MCU-Link USB port (J10 [FRDM-RW612], J7 [RD-RW612-BGA], J5 [MCX-N5XX-EVK or MCX-N9XX-EVK] or J17 [FRDM-MCXN947T]) on the board.
 
 6.  Open a serial terminal with the following settings:
 
