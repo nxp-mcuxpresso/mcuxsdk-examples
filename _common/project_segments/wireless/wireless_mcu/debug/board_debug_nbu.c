@@ -588,53 +588,61 @@ static void BOARD_NBUDBG_HciLogEmit(uint8_t packet_type, const uint8_t *data, ui
 {
     uint32_t off = 0U;
 
+    do
+    {
 #if defined(USE_RTOS) && (USE_RTOS > 0)
-    (void)OSA_MutexLock(s_hciLogMutex, osaWaitForever_c);
+        /* Fill and write the shared buffer only when the lock is held; a failed
+         * lock drops the packet so the buffer is never touched unprotected. */
+        if (OSA_MutexLock(s_hciLogMutex, osaWaitForever_c) != KOSA_StatusSuccess)
+        {
+            s_hciLogDropped++;
+            break;
+        }
 #endif
 
 #if defined(BOARD_NBUDBG_HCI_LOG_BASE64) && (BOARD_NBUDBG_HCI_LOG_BASE64 > 0)
-    /* Frame the packet as the line "@H:<base64(dir, type, payload)>\r\n". The
-     * raw (dir, type, payload) bytes are staged at the tail of the buffer, then
-     * Base64-encoded forward into the front (after the prefix); the tail
-     * placement keeps the encoded output from overtaking the not-yet-read raw
-     * input. */
-    uint32_t raw_len    = (uint32_t)BOARD_NBUDBG_HCI_LOG_HDR_RAW_SIZE + (uint32_t)len;
-    uint32_t prefix_len = (uint32_t)(sizeof(BOARD_NBUDBG_HCI_LOG_LINE_PREFIX) - 1U);
-    uint32_t line_size  = prefix_len + BOARD_DBG_BASE64_ENCODED_SIZE(raw_len) + 2U;
-    uint8_t *raw        = &s_hciLogBuf[line_size - raw_len];
+        /* Frame the packet as the line "@H:<base64(dir, type, payload)>\r\n". The
+         * raw (dir, type, payload) bytes are staged at the tail of the buffer, then
+         * Base64-encoded forward into the front (after the prefix); the tail
+         * placement keeps the encoded output from overtaking the not-yet-read raw
+         * input. */
+        uint32_t raw_len    = (uint32_t)BOARD_NBUDBG_HCI_LOG_HDR_RAW_SIZE + (uint32_t)len;
+        uint32_t prefix_len = (uint32_t)(sizeof(BOARD_NBUDBG_HCI_LOG_LINE_PREFIX) - 1U);
+        uint32_t line_size  = prefix_len + BOARD_DBG_BASE64_ENCODED_SIZE(raw_len) + 2U;
+        uint8_t *raw        = &s_hciLogBuf[line_size - raw_len];
 
-    raw[0] = BOARD_NBUDBG_HCI_LOG_DIR(is_rx);
-    raw[1] = packet_type;
-    (void)memcpy(&raw[BOARD_NBUDBG_HCI_LOG_HDR_RAW_SIZE], data, (size_t)len);
+        raw[0] = BOARD_NBUDBG_HCI_LOG_DIR(is_rx);
+        raw[1] = packet_type;
+        (void)memcpy(&raw[BOARD_NBUDBG_HCI_LOG_HDR_RAW_SIZE], data, (size_t)len);
 
-    (void)memcpy(&s_hciLogBuf[off], BOARD_NBUDBG_HCI_LOG_LINE_PREFIX, (size_t)prefix_len);
-    off += prefix_len;
-    off += BOARD_DBG_Base64Encode(raw, raw_len, (char *)&s_hciLogBuf[off]);
-    s_hciLogBuf[off] = '\r';
-    off++;
-    s_hciLogBuf[off] = '\n';
-    off++;
+        (void)memcpy(&s_hciLogBuf[off], BOARD_NBUDBG_HCI_LOG_LINE_PREFIX, (size_t)prefix_len);
+        off += prefix_len;
+        off += BOARD_DBG_Base64Encode(raw, raw_len, (char *)&s_hciLogBuf[off]);
+        s_hciLogBuf[off] = '\r';
+        off++;
+        s_hciLogBuf[off] = '\n';
+        off++;
 #else
-    /* Assemble the whole raw packet (optional direction + type + payload). */
+        /* Assemble the whole raw packet (optional direction + type + payload). */
 #if defined(BOARD_NBUDBG_HCI_LOG_W_DIRECTION_MARKER) && (BOARD_NBUDBG_HCI_LOG_W_DIRECTION_MARKER > 0)
-    s_hciLogBuf[off] = BOARD_NBUDBG_HCI_LOG_DIR(is_rx);
-    off++;
+        s_hciLogBuf[off] = BOARD_NBUDBG_HCI_LOG_DIR(is_rx);
+        off++;
 #else
-    (void)is_rx;
+        (void)is_rx;
 #endif
-    s_hciLogBuf[off] = packet_type;
-    off++;
-    (void)memcpy(&s_hciLogBuf[off], data, (size_t)len);
-    off += len;
+        s_hciLogBuf[off] = packet_type;
+        off++;
+        (void)memcpy(&s_hciLogBuf[off], data, (size_t)len);
+        off += len;
 #endif
 
-    (void)BOARD_DbgLoggerLogImmediate(s_hciLogBuf, (uint16_t)off);
+        (void)BOARD_DbgLoggerLogImmediate(s_hciLogBuf, (uint16_t)off);
 
 #if defined(USE_RTOS) && (USE_RTOS > 0)
-    (void)OSA_MutexUnlock(s_hciLogMutex);
+        (void)OSA_MutexUnlock(s_hciLogMutex);
 #endif
+    } while (false);
 }
-
 
 /**
  * \brief HCI log callback - serialize one packet and write it immediately
