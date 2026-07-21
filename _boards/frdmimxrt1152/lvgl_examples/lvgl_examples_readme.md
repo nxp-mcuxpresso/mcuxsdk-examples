@@ -25,15 +25,15 @@ Prepare the Demo
 
 Steps to configure the panels
 ===============
-The project uses RK055MHD091A0-CTG panel by default, to use other panels:
+The project uses RaspberryPi panel by default, to use other panels:
 
 If Kconfig is used, select the panel in Kconfig "Panel Selection".
 
 If package is used, modify the mcux_config.h:
 change DEMO_PANEL to 0 to use RK055AHD091-CTG.
 change DEMO_PANEL to 1 to use RK055IQH091-CTG.
-change DEMO_PANEL to 2 to use RK055MHD091A0-CTG(default).
-change DEMO_PANEL to 5 to use RaspberryPi panel.
+change DEMO_PANEL to 2 to use RK055MHD091A0-CTG.
+change DEMO_PANEL to 5 to use RaspberryPi panel(default).
 
 
 Steps to configure the pixel format
