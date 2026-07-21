@@ -40,8 +40,6 @@ coex_wifi_central_ht:
     - -armgcc@release
     - -armgcc@sdram_debug
     - -armgcc@sdram_release
-    - -armgcc@flexspi_nor_debug
-    - -armgcc@flexspi_nor_release
     - -iar@debug
     - -iar@release
     - -iar@sdram_debug
@@ -59,8 +57,6 @@ coex_wifi_central_ht:
     - -armgcc@release
     - -armgcc@sdram_debug
     - -armgcc@sdram_release
-    - -armgcc@flexspi_nor_debug
-    - -armgcc@flexspi_nor_release
     - -iar@debug
     - -iar@release
     - -iar@sdram_debug
