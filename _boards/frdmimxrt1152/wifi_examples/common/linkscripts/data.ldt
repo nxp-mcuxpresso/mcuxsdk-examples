@@ -17,7 +17,7 @@
         *fsl_usdhc.o(.text*)
         *port.o(.text*)
         *wifi-sdio.o(.text*)
-        *startup_mimxrt1176_cm7.o(.text*)
+        *startup_mimxrt1152.o(.text*)
         *fsl_sdio.o(.text*)
         *pbuf.o(.text*)
         *tcp.o(.text*)

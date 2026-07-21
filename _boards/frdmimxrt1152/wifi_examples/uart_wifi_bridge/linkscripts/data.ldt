@@ -11,7 +11,7 @@
         *fsl_usdhc.o(.text*)
         *port.o(.text*)
         *wifi-sdio.o(.text*)
-        *startup_mimxrt1062.o(.text*)
+        *startup_mimxrt1152.o(.text*)
         *fsl_sdio.o(.text*)
         *pbuf.o(.text*)
         *tasks.o(.text*)

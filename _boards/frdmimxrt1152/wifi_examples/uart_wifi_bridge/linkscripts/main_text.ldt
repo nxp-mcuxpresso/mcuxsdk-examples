@@ -6,7 +6,7 @@
             *fsl_usdhc.o
             *port.o
             *wifi-sdio.o
-            *startup_mimxrt1062.o
+            *startup_mimxrt1152.o
             *fsl_sdio.o
             *pbuf.o
             *tasks.o
