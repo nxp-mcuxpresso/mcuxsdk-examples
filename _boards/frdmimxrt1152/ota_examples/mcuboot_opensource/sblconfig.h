@@ -9,7 +9,7 @@
 #define SBL_CONFIG_H__
 
 /* Board specific register for flash remap functionality */
-#define FLASH_REMAP_OFFSET_REG 0x400CC428 /* RT1170 flash remap offset register */
+#define FLASH_REMAP_OFFSET_REG 0x400CC428 /* RT1150 flash remap offset register */
 
 /*******************************************************************/
 /* Use default configuration if setup from Kconfig is not provided */

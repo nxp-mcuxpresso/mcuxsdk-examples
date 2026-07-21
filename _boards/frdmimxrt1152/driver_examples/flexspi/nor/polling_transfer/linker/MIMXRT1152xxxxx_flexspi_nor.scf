@@ -1,9 +1,12 @@
 #!armclang --target=arm-arm-none-eabi -mcpu=cortex-m7 -E -x c
 /*
 ** ###################################################################
-**     Processors:          MIMXRT1176AVM8A_cm7
-**                          MIMXRT1176CVM8A_cm7
-**                          MIMXRT1176DVMAA_cm7
+**     Processors:          MIMXRT1152AHM6B
+**                          MIMXRT1152AVM6B
+**                          MIMXRT1152DHM8B
+**                          MIMXRT1152DVM8B
+**                          MIMXRT1152XHM8B
+**                          MIMXRT1152XVM8B
 **
 **     Compiler:            Keil ARM C/C++ Compiler
 **     Reference manual:    IMXRT1150RM, Rev E, 12/2019

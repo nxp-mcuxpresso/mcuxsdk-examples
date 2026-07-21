@@ -33,7 +33,7 @@ The secondary core application has been started.
 CPU wakeup source 0x10001...
 
 ***********************************************************
-	Power Mode Switch Demo for iMXRT1176
+	Power Mode Switch Demo for iMXRT1152
 ***********************************************************
 
 Core0 send message to core1.
