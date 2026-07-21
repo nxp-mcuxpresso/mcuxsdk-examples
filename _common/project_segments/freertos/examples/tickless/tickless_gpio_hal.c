@@ -64,18 +64,29 @@ static void gpio_init(void)
         kGPIO_IntRisingEdge,
 #endif
     };
+
 #if defined(FSL_FEATURE_SOC_PORT_COUNT) && (FSL_FEATURE_SOC_PORT_COUNT > 0)
 #if (defined(FSL_FEATURE_PORT_HAS_NO_INTERRUPT) && FSL_FEATURE_PORT_HAS_NO_INTERRUPT)
     GPIO_SetPinInterruptConfig(BOARD_SW_GPIO, BOARD_SW_GPIO_PIN, kGPIO_InterruptFallingEdge);
 #else
     PORT_SetPinInterruptConfig(BOARD_SW_PORT, BOARD_SW_GPIO_PIN, kPORT_InterruptFallingEdge);
 #endif
+#elif !defined(FSL_FEATURE_SOC_IGPIO_COUNT)
+    /* No PORT peripheral and not IGPIO family : the plain 'gpio' driver
+       owns per-pin interrupt config directly. This one call both selects the trigger
+       and enables the interrupt. */
+    GPIO_SetPinInterruptConfig(BOARD_SW_GPIO, BOARD_SW_GPIO_PIN, kGPIO_InterruptFallingEdge);
 #endif
 
     GPIO_PinInit(BOARD_SW_GPIO, BOARD_SW_GPIO_PIN, &sw_config);
-#if defined(FSL_FEATURE_SOC_IGPIO_COUNT) && (FSL_FEATURE_SOC_IGPIO_COUNT > 0)
+#if (defined(FSL_FEATURE_SOC_IGPIO_COUNT) && (FSL_FEATURE_SOC_IGPIO_COUNT > 0)) || \
+    (!defined(FSL_FEATURE_SOC_IGPIO_COUNT) && !defined(FSL_FEATURE_SOC_PORT_COUNT))
     GPIO_PortClearInterruptFlags(BOARD_SW_GPIO, 1U << BOARD_SW_GPIO_PIN);
+#if defined(FSL_FEATURE_SOC_IGPIO_COUNT) && (FSL_FEATURE_SOC_IGPIO_COUNT > 0)
+    /* IGPIO needs the separate enable call; plain-gpio was already enabled
+       by GPIO_SetPinInterruptConfig above. */
     GPIO_PortEnableInterrupts(BOARD_SW_GPIO, 1U << BOARD_SW_GPIO_PIN);
+#endif
 #endif
 #endif
 }
