@@ -173,12 +173,12 @@ if MCUX_DEMO_PANEL_MX9_LVDS_LD_SUPPORT
             No prefix in generated macro
 endif
 
-if MCUX_DEMO_PANEL_RK050HR01_SUPPORT
-    config DEMO_PANEL_RK050HR01
+if MCUX_DEMO_PANEL_LCM_RGB_5INCH_SUPPORT
+    config DEMO_PANEL_LCM_RGB_5INCH
         int
         default 19
         help
-            Driver selection for panel RK050HR01-CT
+            Driver selection for panel LCM_RGB_5INCH-CT
             No prefix in generated macro
 endif
 
@@ -251,7 +251,7 @@ config MCUX_DEMO_PANEL_CAP_TOUCH_DSI_SUPPORT
 config MCUX_DEMO_PANEL_MX9_LVDS_LD_SUPPORT
     bool
 
-config MCUX_DEMO_PANEL_RK050HR01_SUPPORT
+config MCUX_DEMO_PANEL_LCM_RGB_5INCH_SUPPORT
     bool
 
 config MCUX_DEMO_PANEL_WAVESHARE_DSI2DPI_SUPPORT
@@ -280,7 +280,7 @@ config DEMO_PANEL
     default 16 if CAP_TOUCH_LVDS
     default 17 if CAP_TOUCH_DSI
     default 18 if MX9_LVDS_LD
-    default 19 if RK050HR01
+    default 19 if LCM_RGB_5INCH
     default 20 if WAVESHARE_DSI2DPI
     help
         Panel selection for display support
@@ -346,8 +346,8 @@ choice DISPLAY_SUPPORT_PANEL
     config MX9_LVDS_LD
         bool "MX9_LVDS_LD panel" if MCUX_DEMO_PANEL_MX9_LVDS_LD_SUPPORT
 
-    config RK050HR01
-        bool "RK050HR01-CT" if MCUX_DEMO_PANEL_RK050HR01_SUPPORT
+    config LCM_RGB_5INCH
+        bool "LCM_RGB_5INCH-CT" if MCUX_DEMO_PANEL_LCM_RGB_5INCH_SUPPORT
 
     config WAVESHARE_DSI2DPI
          bool "WAVESHARE_DSI2DPI" if MCUX_DEMO_PANEL_WAVESHARE_DSI2DPI_SUPPORT
