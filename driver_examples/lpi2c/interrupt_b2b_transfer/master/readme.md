@@ -39,6 +39,7 @@ slave is correct.
 - [FRDM-MCXE247](../../../../_boards/frdmmcxe247/driver_examples/lpi2c/interrupt_b2b_transfer/master/example_board_readme.md)
 - [FRDM-MCXN236](../../../../_boards/frdmmcxn236/driver_examples/lpi2c/interrupt_b2b_transfer/master/example_board_readme.md)
 - [FRDM-MCXN947](../../../../_boards/frdmmcxn947/driver_examples/lpi2c/interrupt_b2b_transfer/master/example_board_readme.md)
+- [FRDM-MCXN947T](../../../../_boards/frdmmcxn947t/driver_examples/lpi2c/interrupt_b2b_transfer/master/example_board_readme.md)
 - [FRDM-MCXW71](../../../../_boards/frdmmcxw71/driver_examples/lpi2c/interrupt_b2b_transfer/master/example_board_readme.md)
 - [MCX-W71-EVK](../../../../_boards/mcxw71evk/driver_examples/lpi2c/interrupt_b2b_transfer/master/example_board_readme.md)
 - [FRDM-MCXW72](../../../../_boards/frdmmcxw72/driver_examples/lpi2c/interrupt_b2b_transfer/master/example_board_readme.md)

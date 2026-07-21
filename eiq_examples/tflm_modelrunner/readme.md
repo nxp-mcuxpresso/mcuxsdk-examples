@@ -11,6 +11,7 @@ ModelRunner is a benchmarking tool for running TensorFlow Lite models on NXP mic
 
 ##  Supported Boards
 - FRDM-MCXN947
+- FRDM-MCXN947T
 - MCX-N5XX-EVK
 - MCX-N9XX-EVK
 - MIMXRT700-EVK

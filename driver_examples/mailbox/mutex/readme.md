@@ -10,6 +10,7 @@ and sets mutex, to allow access other core to shared variable.
 
 ## Supported Boards
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/driver_examples/mailbox/mutex/example_board_readme.md)
+- [FRDM-MCXN947T](../../../_boards/frdmmcxn947t/driver_examples/mailbox/mutex/example_board_readme.md)
 - [LPCXpresso55S69](../../../_boards/lpcxpresso55s69/driver_examples/mailbox/mutex/example_board_readme.md)
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/driver_examples/mailbox/mutex/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/driver_examples/mailbox/mutex/example_board_readme.md)

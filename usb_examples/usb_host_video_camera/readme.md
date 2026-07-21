@@ -93,6 +93,7 @@ as the following image.
 - [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/usb_examples/usb_host_video_camera/example_board_readme.md)
 - [MIMXRT1040-EVK](../../_boards/evkmimxrt1040/usb_examples/usb_host_video_camera/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/usb_examples/usb_host_video_camera/example_board_readme.md)
+- [FRDM-MCXN947T](../../_boards/frdmmcxn947t/usb_examples/usb_host_video_camera/example_board_readme.md)
 - MIMXRT1024-EVK
 - LPCXpresso55S28
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/usb_examples/usb_host_video_camera/example_board_readme.md)

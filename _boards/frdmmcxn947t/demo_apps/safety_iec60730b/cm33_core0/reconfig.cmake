@@ -1,0 +1,235 @@
+
+#----------------------------------------------
+# Source files and includes for all toolchains
+#----------------------------------------------
+
+mcux_add_include(
+    BASE_PATH ${SdkRootDirPath}
+    INCLUDES examples/demo_apps/safety_iec60730b/common/cm33
+)
+
+
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}
+    SOURCES examples/demo_apps/safety_iec60730b/common/cm33/safety_cm33_mcx.c
+			examples/demo_apps/safety_iec60730b/common/cm33/safety_cm33_mcx.h
+			examples/demo_apps/safety_iec60730b/common/cm33/main.c
+			${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/freemaster/safety_flash.pmp
+			${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/clock_config.c
+			${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/clock_config.h
+)
+
+#----------------------------------------------
+# Project settings for all toolchains
+#----------------------------------------------
+
+mcux_add_configuration(
+    CC "--debug"
+    CX "--debug"
+)
+
+mcux_add_macro(
+    CC "-DSKIP_SYSCLK_INIT"#\
+       #-DXIP_EXTERNAL_FLASH=1\
+       #-DXIP_BOOT_HEADER_ENABLE=1"
+)
+
+#----------------------------------------------
+# Project settings for IAR toolchain
+#----------------------------------------------
+
+mcux_remove_iar_configuration(
+    AS "--cpu=cortex-m33.no_se"
+    CC "--cpu=cortex-m33.no_se"
+    CX "--cpu=cortex-m33.no_se"
+)
+
+mcux_add_iar_configuration(
+    AS "--cpu=cortex-m33"
+    CC "--cpu=cortex-m33"
+    CX "--cpu=cortex-m33"
+)
+
+mcux_add_iar_configuration(
+    CC "--cmse"
+	CX "--cmse"
+)
+
+if(${CONFIG_TOOLCHAIN} STREQUAL "iar")
+if(DEFINED GENERATE_GUI_PROJECT OR GENERATE_STANDALONE_PROJECT)
+
+else()
+	# AS --cmse flag needs to be added when command line build is used
+	mcux_add_iar_configuration(
+		AS "--cmse"
+	)
+endif()
+endif()
+
+# optimization default setting needs to be removed first
+mcux_remove_iar_configuration(
+	TARGETS debug
+	CC "-On"
+)
+
+mcux_add_iar_configuration(
+	CC "-Ol"
+	CX "-Ol"
+)
+
+#----------------------------------------------
+# Project settings for MDK toolchain
+#----------------------------------------------
+
+# optimization default setting needs to be removed
+mcux_remove_mdk_configuration(
+    CC "-O1"
+    CX "-O1"
+)
+
+mcux_add_mdk_configuration(
+    CC "-O0"
+    CX "-O0"
+)
+
+mcux_add_configuration(
+    TOOLCHAINS mdk
+    CC "-gdwarf-3 -mcmse -g"
+	LD "--diag_suppress L6848E"
+)
+
+# Project settings for ARMGCC toolchain
+#----------------------------------------------
+
+# enable TrustZone
+mcux_add_armgcc_configuration(CC "-mcmse")
+
+
+#----------------------------------------------
+# Linker configurations for all toolchains
+#----------------------------------------------
+
+# remove default IAR linker
+mcux_remove_iar_linker_script(
+        BASE_PATH ${SdkRootDirPath}
+        LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/iar/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.icf
+)
+
+# add custom IAR linker
+mcux_add_iar_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    LINKER ${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/linker/iar/${board}_safety_flash.icf
+)
+
+# remove default MDK linker
+mcux_remove_mdk_linker_script(
+        BASE_PATH ${SdkRootDirPath}
+        LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/arm/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.scf
+)
+
+# add custom MDK linker
+mcux_add_mdk_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    LINKER ${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/linker/mdk/${board}_safety_flash.sct
+)
+
+# replace entry symbol for IAR
+mcux_remove_iar_configuration(LD "--entry Reset_Handler")
+mcux_add_iar_configuration(LD "--entry=__iar_program_start")
+
+# replace entry symbol for MDK, uncheck 'Report might fail...' in Linker setting
+mcux_remove_configuration(
+    TOOLCHAINS mdk
+	LD "--entry=Reset_Handler --strict"
+)
+
+# remove default armgcc linker
+mcux_remove_armgcc_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    LINKER devices/${soc_portfolio}/${soc_series}/${device}/gcc/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.ld
+)
+
+# add custom armgcc linker
+mcux_add_armgcc_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    LINKER ${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/linker/armgcc/${board}_safety_flash.ld
+)
+
+
+#----------------------------------------------
+# Post-build configurations for all toolchains
+#----------------------------------------------
+
+# IAR post-build command
+if(${CONFIG_TOOLCHAIN} STREQUAL "iar" AND ${SAFETY_IEC60730B_IAR_POSTBUILD} STREQUAL "true")
+add_custom_command(
+	TARGET ${MCUX_SDK_PROJECT_NAME}
+    POST_BUILD
+    COMMAND ${TOOLCHAIN_ROOT}/${TARGET_TRIPLET}/ielftool --fill \"0xFF\;c_checksumStart-c_checksumEnd+3\" --checksum \"__checksum:2,crc16,0x0\;c_checksumStart-c_checksumEnd+3\"  --verbose ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf
+)
+endif()
+
+## Prepare relative paths used in post-build commands - crc_hex.bat works with the relative paths
+
+# Get absolute path to CRC tool
+set(SAFETY_CRC_PATH_A "${SdkRootDirPath}/middleware/safety_iec60730b/tools/crc")
+
+# Get absolute path to SRECORD tool
+set(SAFETY_SRECORD_PATH_A "${SdkRootDirPath}/middleware/safety_iec60730b/tools/srecord")
+
+# Get relative path from project location to CRC tool - used when MDK GUI build
+file(RELATIVE_PATH SAFETY_CRC_TOOL_GUI_R ${APPLICATION_BINARY_DIR}/mdk ${SAFETY_CRC_PATH_A})
+
+# Get relative path from project location to CRC tool - used when MDK command line build
+file(RELATIVE_PATH SAFETY_CRC_TOOL_CMD_R ${APPLICATION_BINARY_DIR} ${SAFETY_CRC_PATH_A})
+
+# Relative path from CRC tool location to .hex file generated by MDK - used when GUI build
+file(RELATIVE_PATH SAFETY_HEX_PATH_GUI_R ${SAFETY_CRC_PATH_A} ${APPLICATION_BINARY_DIR}/mdk)
+
+# Relative path from CRC tool to SRECORD tool
+file(RELATIVE_PATH SAFETY_SRECORD_TOOL_R ${SAFETY_CRC_PATH_A} ${SAFETY_SRECORD_PATH_A})
+
+# Relative path from CRC tool location to .hex file generated by MDK - used when command line build
+file(RELATIVE_PATH SAFETY_HEX_PATH_CMD_R ${SAFETY_CRC_PATH_A} ${APPLICATION_BINARY_DIR})
+
+# armgcc and MDK post-build command available only if 'SAFETY_IEC60730B_ARMGCC_MDK_POSTBUILD' set to 'true'
+if(${SAFETY_IEC60730B_ARMGCC_MDK_POSTBUILD} STREQUAL "true")
+
+# MDK post-build commands
+if(${CONFIG_TOOLCHAIN} STREQUAL "mdk")
+if(DEFINED GENERATE_GUI_PROJECT OR GENERATE_STANDALONE_PROJECT)
+	# Safety application post-build command (build from GUI)
+	mcux_add_custom_command(
+		TOOLCHAINS mdk
+		BUILD_EVENT  POST_BUILD
+		BUILD_COMMAND ${SAFETY_CRC_TOOL_GUI_R}/crc_hex.bat -${SAFETY_HEX_PATH_GUI_R}/${MCUX_SDK_PROJECT_NAME}.hex -${SAFETY_HEX_PATH_GUI_R}/${MCUX_SDK_PROJECT_NAME}_crc.hex -${SAFETY_SRECORD_TOOL_R}/srec_cat.exe
+	)
+else()
+	# Post-build generation .hex file - required for command line build option
+    add_custom_command(
+		TARGET ${MCUX_SDK_PROJECT_NAME}
+        POST_BUILD
+        COMMAND ${TOOLCHAIN_ROOT}/${TARGET_TRIPLET}/fromelf --i32combined --output=${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.hex ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf
+    )
+	
+	# Safety application post-build command (build from command line)
+	mcux_add_custom_command(
+		TOOLCHAINS mdk
+		BUILD_EVENT  POST_BUILD
+		BUILD_COMMAND ${SAFETY_CRC_TOOL_CMD_R}/crc_hex.bat -${SAFETY_HEX_PATH_CMD_R}/${MCUX_SDK_PROJECT_NAME}.hex -${SAFETY_HEX_PATH_CMD_R}/${MCUX_SDK_PROJECT_NAME}_crc.hex -${SAFETY_SRECORD_TOOL_R}/srec_cat.exe
+	)
+endif()
+endif()
+
+# armgcc post-build commands
+mcux_add_custom_command(
+	TOOLCHAINS armgcc
+	BUILD_EVENT  POST_BUILD
+	BUILD_COMMAND arm-none-eabi-objcopy -O ihex ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.hex && 
+				  ${SAFETY_CRC_PATH_A}/crc_hex.bat 
+				  -${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.hex 
+				  -${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}_crc.hex 
+				  -../srecord/srec_cat.exe
+)
+
+endif() # armgcc and MDK post-build command

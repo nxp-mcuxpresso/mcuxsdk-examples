@@ -11,6 +11,7 @@ the response of the key interrupt, and confirm the interrupt timeout by the flag
 ## Supported Boards
 - [FRDM-MCXN236](../../_boards/frdmmcxn236/driver_examples/intm/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/driver_examples/intm/example_board_readme.md)
+- [FRDM-MCXN947T](../../_boards/frdmmcxn947t/driver_examples/intm/example_board_readme.md)
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/driver_examples/intm/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/driver_examples/intm/example_board_readme.md)
 - [FRDM-MCXE31B](../../_boards/frdmmcxe31b/driver_examples/intm/example_board_readme.md)

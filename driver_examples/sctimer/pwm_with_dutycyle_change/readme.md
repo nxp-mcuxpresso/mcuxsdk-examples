@@ -8,6 +8,7 @@ and periodically updates the PWM signals dutycycle.
 - [EVK-MIMXRT595](../../../_boards/evkmimxrt595/driver_examples/sctimer/pwm_with_dutycyle_change/example_board_readme.md)
 - [EVK-MIMXRT685](../../../_boards/evkmimxrt685/driver_examples/sctimer/pwm_with_dutycyle_change/example_board_readme.md)
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/driver_examples/sctimer/pwm_with_dutycyle_change/example_board_readme.md)
+- [FRDM-MCXN947T](../../../_boards/frdmmcxn947t/driver_examples/sctimer/pwm_with_dutycyle_change/example_board_readme.md)
 - [FRDM-MCXW23](../../../_boards/frdmmcxw23/driver_examples/sctimer/pwm_with_dutycyle_change/example_board_readme.md)
 - [FRDM-RW612](../../../_boards/frdmrw612/driver_examples/sctimer/pwm_with_dutycyle_change/example_board_readme.md)
 - [LPC845BREAKOUT](../../../_boards/lpc845breakout/driver_examples/sctimer/pwm_with_dutycyle_change/example_board_readme.md)

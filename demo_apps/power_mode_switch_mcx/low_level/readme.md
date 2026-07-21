@@ -19,5 +19,6 @@ This demo demonstrates 2 wake-up sources:
 ## Supported Boards
 - [FRDM-MCXN236](../../../_boards/frdmmcxn236/demo_apps/power_mode_switch/low_level/example_board_readme.md)
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/demo_apps/power_mode_switch/low_level/example_board_readme.md)
+- [FRDM-MCXN947T](../../../_boards/frdmmcxn947t/demo_apps/power_mode_switch/low_level/example_board_readme.md)
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/demo_apps/power_mode_switch/low_level/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/demo_apps/power_mode_switch/low_level/example_board_readme.md)

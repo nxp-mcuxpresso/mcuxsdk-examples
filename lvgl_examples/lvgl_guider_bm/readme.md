@@ -25,6 +25,7 @@ rectangle in the panel, drag it, then it will move in the screen.
 - [FRDM-MCXA156](../../_boards/frdmmcxa156/lvgl_examples/lvgl_examples_readme.md)
 - [FRDM-MCXN236](../../_boards/frdmmcxn236/lvgl_examples/lvgl_examples_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/lvgl_examples/lvgl_examples_readme.md)
+- [FRDM-MCXN947T](../../_boards/frdmmcxn947t/lvgl_examples/lvgl_examples_readme.md)
 - [FRDM-RW612](../../_boards/frdmrw612/lvgl_examples/lvgl_examples_readme.md)
 - [LPCXpresso51U68](../../_boards/lpcxpresso51u68/lvgl_examples/lvgl_examples_readme.md)
 - [LPCXpresso54628](../../_boards/lpcxpresso54628/lvgl_examples/lvgl_examples_readme.md)

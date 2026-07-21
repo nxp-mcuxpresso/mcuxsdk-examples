@@ -51,6 +51,7 @@ dev_suspend_resume_hid_mouse_bm:
     frdmmcxc444: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []
     frdmrw612: []
     lpcxpresso54628: []
     lpcxpresso54s018: []

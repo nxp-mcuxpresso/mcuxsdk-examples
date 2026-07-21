@@ -134,6 +134,7 @@ lwip_iperf_bm:
     frdmmcxa577: [-armgcc@debug, -armgcc@release]
     frdmmcxe247: []
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []
     frdmrw612: []
     imx95lpd5evk19@cm7: []
     imx952evk@cm7: []

@@ -38,6 +38,7 @@ west build --sysbuild examples/multicore_examples/rpmsg_lite_pingpong/primary --
 - [MIMXRT1180-EVK](../../_boards/evkmimxrt1180/multicore_examples/rpmsg_lite_pingpong/example_board_readme.md)
 - [FRDM-K32L3A6](../../_boards/frdmk32l3a6/multicore_examples/rpmsg_lite_pingpong/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/multicore_examples/rpmsg_lite_pingpong/example_board_readme.md)
+- [FRDM-MCXN947T](../../_boards/frdmmcxn947t/multicore_examples/rpmsg_lite_pingpong/example_board_readme.md)
 - [FRDM-MCXW72](../../_boards/frdmmcxw72/multicore_examples/rpmsg_lite_pingpong/example_board_readme.md)
 - [KW47-EVK](../../_boards/kw47evk/multicore_examples/rpmsg_lite_pingpong/example_board_readme.md)
 - [KW47-LOC](../../_boards/kw47loc/multicore_examples/rpmsg_lite_pingpong/example_board_readme.md)

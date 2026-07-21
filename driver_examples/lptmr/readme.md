@@ -29,6 +29,7 @@ a message is printed on the UART terminal and an LED is toggled on the board.
 - [FRDM-MCXE247](../../_boards/frdmmcxe247/driver_examples/lptmr/example_board_readme.md)
 - [FRDM-MCXN236](../../_boards/frdmmcxn236/driver_examples/lptmr/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/driver_examples/lptmr/example_board_readme.md)
+- [FRDM-MCXN947T](../../_boards/frdmmcxn947t/driver_examples/lptmr/example_board_readme.md)
 - [FRDM-MCXW71](../../_boards/frdmmcxw71/driver_examples/lptmr/example_board_readme.md)
 - [MCX-W71-EVK](../../_boards/mcxw71evk/driver_examples/lptmr/example_board_readme.md)
 - [IMX95LPD5EVK-19](../../_boards/imx95lpd5evk19/driver_examples/lptmr/example_board_readme.md)

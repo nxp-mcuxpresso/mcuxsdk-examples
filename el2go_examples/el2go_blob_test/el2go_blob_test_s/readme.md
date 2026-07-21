@@ -16,4 +16,5 @@ Details on building and running the application can be found in the
 - MCX-N5XX-EVK
 - RD-RW612-BGA
 - FRDM-MCXN947
+- FRDM-MCXN947T
 - MCX-N9XX-EVK

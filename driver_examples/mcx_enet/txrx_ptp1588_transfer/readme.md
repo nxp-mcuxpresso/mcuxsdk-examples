@@ -16,5 +16,6 @@ The time stamp of the received timestamp will be print when the PTP message fram
 ## Supported Boards
 - [FRDM-MCXA577](../../../_boards/frdmmcxa577/driver_examples/enet/txrx_ptp1588_transfer/example_board_readme.md)
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/driver_examples/enet/txrx_ptp1588_transfer/example_board_readme.md)
+- [FRDM-MCXN947T](../../../_boards/frdmmcxn947t/driver_examples/enet/txrx_ptp1588_transfer/example_board_readme.md)
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/driver_examples/enet/txrx_ptp1588_transfer/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/driver_examples/enet/txrx_ptp1588_transfer/example_board_readme.md)

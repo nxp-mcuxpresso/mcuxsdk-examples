@@ -48,6 +48,7 @@ host_msd_command_freertos:
     frdmk32l2a4s: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []
     frdmrw612: []
     lpcxpresso54628: []
     lpcxpresso54s018: []

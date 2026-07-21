@@ -36,6 +36,7 @@ of each window one by one. The behavior is:
 - [FRDM-MCXA156](../../../../_boards/frdmmcxa156/driver_examples/flexio/mculcd/edma_transfer/example_board_readme.md)
 - [FRDM-MCXN236](../../../../_boards/frdmmcxn236/driver_examples/flexio/mculcd/edma_transfer/example_board_readme.md)
 - [FRDM-MCXN947](../../../../_boards/frdmmcxn947/driver_examples/flexio/mculcd/edma_transfer/example_board_readme.md)
+- [FRDM-MCXN947T](../../../../_boards/frdmmcxn947t/driver_examples/flexio/mculcd/edma_transfer/example_board_readme.md)
 - [MCX-N5XX-EVK](../../../../_boards/mcxn5xxevk/driver_examples/flexio/mculcd/edma_transfer/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../../_boards/mcxn9xxevk/driver_examples/flexio/mculcd/edma_transfer/example_board_readme.md)
 - [FRDM-MCXE31B](../../../../_boards/frdmmcxe31b/driver_examples/flexio/mculcd/edma_transfer/example_board_readme.md)

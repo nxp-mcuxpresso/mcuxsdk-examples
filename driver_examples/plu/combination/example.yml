@@ -18,6 +18,7 @@ plu_combination:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []
     frdmmcxw23: []
     lpcxpresso55s69@cm33_core0: []
     lpcxpresso804: []

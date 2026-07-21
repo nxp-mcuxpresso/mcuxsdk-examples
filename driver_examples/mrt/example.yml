@@ -50,6 +50,7 @@ mrt_example:
     - -mdk@release
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []
     frdmmcxw23: []
     mcxw23evk: []
     frdmrw612:

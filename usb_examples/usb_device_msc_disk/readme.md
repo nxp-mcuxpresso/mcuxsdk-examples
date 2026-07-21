@@ -99,6 +99,7 @@ note<br>
 - [MIMXRT1060-EVKB](../../_boards/evkbmimxrt1060/usb_examples/usb_device_msc_disk/example_board_readme.md)
 - MIMXRT1040-EVK
 - FRDM-MCXN947
+- FRDM-MCXN947T
 - MIMXRT1024-EVK
 - LPCXpresso55S28
 - LPCXpresso54628

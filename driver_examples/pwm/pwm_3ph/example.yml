@@ -218,6 +218,7 @@ pwm:
     frdmmcxa346: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []
     lpcxpresso55s36: []
     mcxn9xxevk@cm33_core0: []
     imx943evk@cm7_core1:

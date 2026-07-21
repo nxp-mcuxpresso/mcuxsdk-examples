@@ -146,6 +146,7 @@ wifi_ipv4_ipv6_echo:
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []
     rdrw612bga:
     - -armgcc@debug
     - -armgcc@release

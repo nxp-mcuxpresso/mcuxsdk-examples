@@ -98,4 +98,5 @@ There are multiple options how to achieve that, however in principle the are two
 - [FRDM-RW612](../../_boards/frdmrw612/ota_examples/ota_rom_basic/example_board_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/ota_examples/ota_rom_basic/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/ota_examples/ota_rom_basic/example_board_readme.md)
+- [FRDM-MCXN947T](../../_boards/frdmmcxn947t/ota_examples/ota_rom_basic/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/ota_examples/ota_rom_basic/example_board_readme.md)

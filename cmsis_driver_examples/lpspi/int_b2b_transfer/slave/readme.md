@@ -65,6 +65,7 @@ Slave example is running...
 - [FRDM-MCXL255](../../../../_boards/frdmmcxl255/cmsis_driver_examples/lpspi/int_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXN236](../../../../_boards/frdmmcxn236/cmsis_driver_examples/lpspi/int_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXN947](../../../../_boards/frdmmcxn947/cmsis_driver_examples/lpspi/int_b2b_transfer/slave/example_board_readme.md)
+- [FRDM-MCXN947T](../../../../_boards/frdmmcxn947t/cmsis_driver_examples/lpspi/int_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXW71](../../../../_boards/frdmmcxw71/cmsis_driver_examples/lpspi/int_b2b_transfer/slave/example_board_readme.md)
 - [MCX-W71-EVK](../../../../_boards/mcxw71evk/cmsis_driver_examples/lpspi/int_b2b_transfer/slave/example_board_readme.md)
 - [KW45B41Z-EVK](../../../../_boards/kw45b41zevk/cmsis_driver_examples/lpspi/int_b2b_transfer/slave/example_board_readme.md)

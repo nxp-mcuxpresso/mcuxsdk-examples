@@ -9,6 +9,7 @@ performed.
 
 ## Supported Boards
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/driver_examples/wwdt/example_board_readme.md)
+- [FRDM-MCXN947T](../../../_boards/frdmmcxn947t/driver_examples/wwdt/example_board_readme.md)
 - [LPCXpresso55S06](../../../_boards/lpcxpresso55s06/driver_examples/wwdt/example_board_readme.md)
 - [LPCXpresso55S16](../../../_boards/lpcxpresso55s16/driver_examples/wwdt/example_board_readme.md)
 - [LPCXpresso55S28](../../../_boards/lpcxpresso55s28/driver_examples/wwdt/example_board_readme.md)

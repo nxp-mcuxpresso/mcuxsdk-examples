@@ -82,6 +82,7 @@ Receive message counter: 14.
 - [FRDM-MCXC444](../../_boards/frdmmcxc444/freertos_examples/freertos_generic/example_board_readme.md)
 - [FRDM-MCXN236](../../_boards/frdmmcxn236/freertos_examples/freertos_generic/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/freertos_examples/freertos_generic/example_board_readme.md)
+- [FRDM-MCXN947T](../../_boards/frdmmcxn947t/freertos_examples/freertos_generic/example_board_readme.md)
 - [FRDM-MCXW23](../../_boards/frdmmcxw23/freertos_examples/freertos_generic/example_board_readme.md)
 - [FRDM-MCXW71](../../_boards/frdmmcxw71/freertos_examples/freertos_generic/example_board_readme.md)
 - [MCX-W71-EVK](../../_boards/mcxw71evk/freertos_examples/freertos_generic/example_board_readme.md)

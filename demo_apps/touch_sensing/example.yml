@@ -21,5 +21,6 @@ touch_sensing:
     frdmke17z: []
     frdmke17z512: []
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []

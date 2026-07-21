@@ -11,6 +11,7 @@ it increments and writes it to the mailbox register for the secondary core again
 
 ## Supported Boards
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/driver_examples/mailbox/interrupt/example_board_readme.md)
+- [FRDM-MCXN947T](../../../_boards/frdmmcxn947t/driver_examples/mailbox/interrupt/example_board_readme.md)
 - [LPCXpresso55S69](../../../_boards/lpcxpresso55s69/driver_examples/mailbox/interrupt/example_board_readme.md)
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/driver_examples/mailbox/interrupt/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/driver_examples/mailbox/interrupt/example_board_readme.md)

@@ -76,6 +76,7 @@ The application executes some FatFs APIs to test the attached device.
 - EVK-MIMXRT1010
 - MIMXRT1040-EVK
 - FRDM-MCXN947
+- FRDM-MCXN947T
 - MIMXRT1024-EVK
 - [LPCXpresso55S28](../../_boards/lpcxpresso55s28/usb_examples/usb_host_msd_fatfs/example_board_readme.md)
 - [LPCXpresso54628](../../_boards/lpcxpresso54628/usb_examples/usb_host_msd_fatfs/example_board_readme.md)

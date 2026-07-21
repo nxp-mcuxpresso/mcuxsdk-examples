@@ -88,6 +88,7 @@ count, sampwidth is byte width, framerate is sample rate. In the current test ca
 - [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/usb_examples/usb_host_audio_recorder/example_board_readme.md)
 - [MIMXRT1040-EVK](../../_boards/evkmimxrt1040/usb_examples/usb_host_audio_recorder/example_board_readme.md)
 - FRDM-MCXN947
+- FRDM-MCXN947T
 - MIMXRT1024-EVK
 - LPCXpresso55S28
 - LPCXpresso54628

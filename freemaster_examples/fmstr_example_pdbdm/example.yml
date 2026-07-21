@@ -60,6 +60,7 @@ fmstr_example_pdbdm:
     frdmmcxl255@cm33: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []
     frdmmcxw71: []
     frdmrw612: []
     mcxw71evk: []

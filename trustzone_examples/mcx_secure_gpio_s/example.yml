@@ -17,6 +17,7 @@ mcx_secure_gpio_s:
   boards:
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
     mimxrt700evk@cm33_core0:

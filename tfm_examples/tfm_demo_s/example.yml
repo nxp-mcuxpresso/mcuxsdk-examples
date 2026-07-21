@@ -33,6 +33,7 @@ tfm_demo_s:
     mcxn9xxevk@cm33_core0: []
     mcxn5xxevk@cm33_core0: []
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []
     frdmmcxn236: []
     kw45b41zevk:
     - +armgcc@debug

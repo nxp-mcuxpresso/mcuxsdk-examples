@@ -53,6 +53,7 @@ dev_cdc_vcom_bm:
     frdmmcxc444: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []
     frdmrw612: []
     lpcxpresso51u68: []
     lpcxpresso54628: []

@@ -37,6 +37,7 @@ tflm_cifar10:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     frdmmcxn947@cm33_core0:
+    frdmmcxn947t@cm33_core0:
     - -armgcc@debug
     - -armgcc@release
     - -iar@debug

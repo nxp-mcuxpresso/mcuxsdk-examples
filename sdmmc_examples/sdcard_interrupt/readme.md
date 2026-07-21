@@ -28,6 +28,7 @@ card through host or gpio, make sure the pinmux configuration is correct.
 - [EVK-MIMXRT685](../../_boards/evkmimxrt685/sdmmc_examples/sdcard_interrupt/example_board_readme.md)
 - [FRDM-K32L3A6](../../_boards/frdmk32l3a6/sdmmc_examples/sdcard_interrupt/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/sdmmc_examples/sdcard_interrupt/example_board_readme.md)
+- [FRDM-MCXN947T](../../_boards/frdmmcxn947t/sdmmc_examples/sdcard_interrupt/example_board_readme.md)
 - [LPCXpresso54628](../../_boards/lpcxpresso54628/sdmmc_examples/sdcard_interrupt/example_board_readme.md)
 - [LPCXpresso54S018](../../_boards/lpcxpresso54s018/sdmmc_examples/sdcard_interrupt/example_board_readme.md)
 - [LPCXpresso54S018M](../../_boards/lpcxpresso54s018m/sdmmc_examples/sdcard_interrupt/example_board_readme.md)

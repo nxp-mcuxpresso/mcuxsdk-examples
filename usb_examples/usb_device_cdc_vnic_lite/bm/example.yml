@@ -40,6 +40,7 @@ dev_cdc_vnic_lite_bm:
     evkmimxrt1180@cm33: []
     frdmimxrt1186@cm33: []
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []
     frdmrw612: []
     lpcxpresso54628: []
     lpcxpresso54s018: []

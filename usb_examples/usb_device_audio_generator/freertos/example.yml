@@ -51,6 +51,7 @@ dev_audio_generator_freertos:
     frdmmcxa156: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []
     frdmrw612: []
     lpcxpresso54628: []
     lpcxpresso54s018: []

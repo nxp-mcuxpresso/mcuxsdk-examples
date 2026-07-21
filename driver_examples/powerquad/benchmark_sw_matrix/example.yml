@@ -48,6 +48,7 @@ powerquad_benchmark_sw_matrix:
     - -mdk@debug
     - -mdk@release
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []
     frdmrw612:
     - -armgcc@debug
     - -armgcc@release

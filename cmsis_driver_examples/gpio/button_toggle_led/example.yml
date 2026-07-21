@@ -21,6 +21,7 @@ cmsis_button_toggle_led:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []
     frdmmcxn236: []
     frdmmcxa153: []
     frdmmcxa156: []

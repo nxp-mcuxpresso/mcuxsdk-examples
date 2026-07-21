@@ -16,3 +16,4 @@ for one sinewave cycle.
 ## Supported Boards
 - LPCXpresso55S36
 - FRDM-MCXN947
+- FRDM-MCXN947T

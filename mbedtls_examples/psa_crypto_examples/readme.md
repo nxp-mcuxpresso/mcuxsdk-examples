@@ -42,6 +42,7 @@ PSA Crypto example to demonstrate cipher operation.
 - FRDM-RW612
 - [FRDM-MCXA287](../../_boards/frdmmcxa287/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
 - FRDM-MCXN947
+- FRDM-MCXN947T
 - [MIMXRT1180-EVK](../../_boards/evkmimxrt1180/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
 - FRDM-MCXN236
 - MCX-N5XX-EVK

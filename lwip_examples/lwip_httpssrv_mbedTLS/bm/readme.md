@@ -97,3 +97,4 @@ The assigned unique local or global unique addresses could be typed into the web
 - [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/lwip_examples/lwip_httpssrv_mbedTLS/bm/example_board_readme.md)
 - [FRDM-MCXA577](../../../_boards/frdmmcxa577/lwip_examples/lwip_httpssrv_mbedTLS/bm/example_board_readme.md)
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/lwip_examples/lwip_httpssrv_mbedTLS/bm/example_board_readme.md)
+- [FRDM-MCXN947T](../../../_boards/frdmmcxn947t/lwip_examples/lwip_httpssrv_mbedTLS/bm/example_board_readme.md)

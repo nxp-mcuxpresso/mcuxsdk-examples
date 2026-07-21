@@ -247,3 +247,4 @@ lwip_httpssrv_mbedTLS_bm:
       - -mdk@release
     frdmmcxa577: []
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []

@@ -1,0 +1,35 @@
+/*
+ * Copyright 2022-2025 NXP
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+/*${header:start}*/
+#include "pin_mux.h"
+#include "clock_config.h"
+#include "board.h"
+#include "fsl_clock.h"
+#include "FreeRTOSConfig.h"
+/*${header:end}*/
+
+/*${variable:start}*/
+
+/*${variable:end}*/
+/*${function:start}*/
+void BOARD_InitHardware(void)
+{
+    /* attach FRO 12M to FLEXCOMM4 (debug console) */
+    CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
+
+    /* Enables the clk_16k[1] */
+    CLOCK_SetupClk16KClocking(kCLOCK_Clk16KToVsys);
+
+    /* enable clock for GPIO*/
+    CLOCK_EnableClock(kCLOCK_Gpio0);
+
+    BOARD_InitPins();
+    BOARD_InitBootClocks();
+    BOARD_InitDebugConsole();
+}
+/*${function:end}*/

@@ -67,6 +67,7 @@ It is enumerated as a mouse. Users can see the mouse arrow moving on the PC scre
 - EVK-MIMXRT1010
 - MIMXRT1040-EVK
 - FRDM-MCXN947
+- FRDM-MCXN947T
 - MIMXRT1024-EVK
 - LPCXpresso55S28
 - LPCXpresso54628

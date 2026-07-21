@@ -57,6 +57,7 @@ For detailed instructions, see the appropriate board User's Guide.
 - MCX-N5XX-EVK
 - MCX-N9XX-EVK
 - FRDM-MCXN947
+- FRDM-MCXN947T
 - RD-RW612-BGA
 - FRDM-RW612
 - FRDM-MCXA577

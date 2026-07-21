@@ -182,4 +182,5 @@ The output of mbedTLS debug messages to the console can be enabled by the follow
 - [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/lwip_examples/lwip_https_client/freertos/example_board_readme.md)
 - [FRDM-MCXA577](../../../_boards/frdmmcxa577/lwip_examples/lwip_https_client/freertos/example_board_readme.md)
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/lwip_examples/lwip_https_client/freertos/example_board_readme.md)
+- [FRDM-MCXN947T](../../../_boards/frdmmcxn947t/lwip_examples/lwip_https_client/freertos/example_board_readme.md)
 - [FRDM-MCXE247](../../../_boards/frdmmcxe247/lwip_examples/lwip_https_client/freertos/example_board_readme.md)

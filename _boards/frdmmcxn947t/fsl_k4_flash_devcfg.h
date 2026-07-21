@@ -1,0 +1,22 @@
+/*
+ * Copyright 2025 NXP
+ * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+#ifndef FSL_K4_FLASH_DEVCFG_H
+#define FSL_K4_FLASH_DEVCFG_H
+
+#define FSL_FEATURE_FLASH_PFLASH_START_ADDRESS    (0)
+#define FSL_FEATURE_FLASH_PFLASH_BLOCK_COUNT      (2)
+#define FSL_FEATURE_FLASH_PFLASH_BLOCK_SIZE       (1024 * 1024) /* 1MB flash block */
+#define FSL_FEATURE_FLASH_IFR0_START_ADDRESS      (0x1000000)
+#define FSL_FEATURE_FLASH_IFR0_SIZE               (32 * 1024)
+
+
+#define FSL_FEATURE_FLASH_PFLASH_SECTOR_SIZE    (8192)
+#define FSL_FEATURE_FLASH_PFLASH_PHRASE_SIZE    (16)
+#define FSL_FEATURE_FLASH_PFLASH_PAGE_SIZE      (128)
+
+#endif /* FSL_K4_FLASH_DEVCFG_H */

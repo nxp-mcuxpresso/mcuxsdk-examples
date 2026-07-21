@@ -40,6 +40,7 @@ usb_pd_alt_mode_dp_host_freertos_om13790host:
     frdmk32l2a4s: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []
     lpcxpresso55s16: []
     lpcxpresso55s28: []
     lpcxpresso55s36: []

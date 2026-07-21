@@ -52,6 +52,7 @@ pin_detect_hid_msd_bm:
     evkmimxrt1180@cm33: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []
     frdmrw612: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []

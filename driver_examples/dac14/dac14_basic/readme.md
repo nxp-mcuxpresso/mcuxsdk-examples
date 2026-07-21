@@ -8,4 +8,5 @@ written into DAC data register will be directly pushed to analog conversion.
 
 ## Supported Boards
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/driver_examples/dac14/dac14_basic/example_board_readme.md)
+- [FRDM-MCXN947T](../../../_boards/frdmmcxn947t/driver_examples/dac14/dac14_basic/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/driver_examples/dac14/dac14_basic/example_board_readme.md)

@@ -90,6 +90,7 @@ When the demo runs, the log would be seen on the terminal like:
 - [FRDM-MCXA577](../../../_boards/frdmmcxa577/lwip_examples/lwip_mqtt/freertos/example_board_readme.md)
 - [FRDM-MCXE247](../../../_boards/frdmmcxe247/lwip_examples/lwip_mqtt/freertos/example_board_readme.md)
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/lwip_examples/lwip_mqtt/freertos/example_board_readme.md)
+- [FRDM-MCXN947T](../../../_boards/frdmmcxn947t/lwip_examples/lwip_mqtt/freertos/example_board_readme.md)
 - [FRDM-RW612](../../../_boards/frdmrw612/lwip_examples/lwip_mqtt/freertos/example_board_readme.md)
 - [LPCXpresso54628](../../../_boards/lpcxpresso54628/lwip_examples/lwip_mqtt/freertos/example_board_readme.md)
 - [LPCXpresso54S018](../../../_boards/lpcxpresso54s018/lwip_examples/lwip_mqtt/freertos/example_board_readme.md)

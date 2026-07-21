@@ -17,6 +17,7 @@ after it received the flag.
 - [MIMXRT1180-EVK](../../../_boards/evkmimxrt1180/driver_examples/sema42/dual_core/example_board_readme.md)
 - [FRDM-K32L3A6](../../../_boards/frdmk32l3a6/driver_examples/sema42/dual_core/example_board_readme.md)
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/driver_examples/sema42/dual_core/example_board_readme.md)
+- [FRDM-MCXN947T](../../../_boards/frdmmcxn947t/driver_examples/sema42/dual_core/example_board_readme.md)
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/driver_examples/sema42/dual_core/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/driver_examples/sema42/dual_core/example_board_readme.md)
 - [MIMXRT700-EVK](../../../_boards/mimxrt700evk/driver_examples/sema42/dual_core/example_board_readme.md)

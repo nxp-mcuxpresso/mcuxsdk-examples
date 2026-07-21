@@ -57,6 +57,7 @@ It is enumerated as a mouse. Users can see the mouse arrow moving on the PC scre
 - LPCXpresso55S69
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/usb_examples/usb_device_hid_mouse/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/usb_examples/usb_device_hid_mouse/example_board_readme.md)
+- [FRDM-MCXN947T](../../_boards/frdmmcxn947t/usb_examples/usb_device_hid_mouse/example_board_readme.md)
 - LPCXpresso55S28
 - FRDM-MCXA153
 - [FRDM-K32L2A4S](../../_boards/frdmk32l2a4s/usb_examples/usb_device_hid_mouse/example_board_readme.md)

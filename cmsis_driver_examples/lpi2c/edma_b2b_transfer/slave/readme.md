@@ -46,6 +46,7 @@ slave is correct.
 - [FRDM-MCXL255](../../../../_boards/frdmmcxl255/cmsis_driver_examples/lpi2c/edma_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXN236](../../../../_boards/frdmmcxn236/cmsis_driver_examples/lpi2c/edma_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXN947](../../../../_boards/frdmmcxn947/cmsis_driver_examples/lpi2c/edma_b2b_transfer/slave/example_board_readme.md)
+- [FRDM-MCXN947T](../../../../_boards/frdmmcxn947t/cmsis_driver_examples/lpi2c/edma_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXW71](../../../../_boards/frdmmcxw71/cmsis_driver_examples/lpi2c/edma_b2b_transfer/slave/example_board_readme.md)
 - [MCX-W71-EVK](../../../../_boards/mcxw71evk/cmsis_driver_examples/lpi2c/edma_b2b_transfer/slave/example_board_readme.md)
 - [IMX95LPD5EVK-19](../../../../_boards/imx95lpd5evk19/cmsis_driver_examples/lpi2c/edma_b2b_transfer/slave/example_board_readme.md)

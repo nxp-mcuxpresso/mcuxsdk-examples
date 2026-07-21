@@ -175,6 +175,7 @@ install_path:\\msys64\\home\\~your user name\\build\\bin
 - MIMXRT1060-EVKB
 - MIMXRT1040-EVK
 - FRDM-MCXN947
+- FRDM-MCXN947T
 - MIMXRT1024-EVK
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/usb_examples/usb_device_dfu/example_board_readme.md)
 - MIMXRT1060-EVKC

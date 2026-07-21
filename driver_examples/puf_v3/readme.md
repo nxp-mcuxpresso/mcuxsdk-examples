@@ -24,6 +24,7 @@ Usual use consists of these steps:
 ## Supported Boards
 - [FRDM-MCXN236](../../_boards/frdmmcxn236/driver_examples/puf_v3/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/driver_examples/puf_v3/example_board_readme.md)
+- [FRDM-MCXN947T](../../_boards/frdmmcxn947t/driver_examples/puf_v3/example_board_readme.md)
 - [LPCXpresso55S36](../../_boards/lpcxpresso55s36/driver_examples/puf_v3/example_board_readme.md)
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/driver_examples/puf_v3/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/driver_examples/puf_v3/example_board_readme.md)

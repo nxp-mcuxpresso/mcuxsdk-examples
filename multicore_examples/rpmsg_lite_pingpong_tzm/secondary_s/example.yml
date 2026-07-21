@@ -43,6 +43,7 @@ rpmsg_lite_pingpong_tzm_secondary_core_s:
   boards:
     mimxrt700evk@cm33_core1: []
     frdmmcxn947@cm33_core1: []
+    frdmmcxn947t@cm33_core1: []
     lpcxpresso55s69@cm33_core1: []
     mcxn5xxevk@cm33_core1: []
     mcxn9xxevk@cm33_core1: []

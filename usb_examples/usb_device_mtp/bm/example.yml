@@ -121,6 +121,7 @@ dev_mtp_bm:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []
     lpcxpresso54s018: []
     lpcxpresso54s018m: []
     lpcxpresso55s28: []

@@ -30,6 +30,7 @@ sctimer_pwm_with_dutycyle_change:
     - -mdk@debug
     - -mdk@release
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []
     frdmmcxw23: []
     mcxw23evk: []
     frdmrw612:

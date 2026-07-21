@@ -1,0 +1,3 @@
+mcux_add_macro(
+    CC "-DCONFIG_WIFI_IND_DNLD=1 -DSD_SPI_BUSY_RETRIES_NOCHECK=1"
+)

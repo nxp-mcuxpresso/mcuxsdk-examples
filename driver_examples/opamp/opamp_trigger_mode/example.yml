@@ -16,4 +16,5 @@ mcx_opamp_trigger_mode:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []
     mcxn9xxevk@cm33_core0: []

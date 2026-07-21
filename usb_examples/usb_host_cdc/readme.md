@@ -75,6 +75,7 @@ It enumerates a COM port and echoes back the data from the UART as follows:
 - EVK-MIMXRT1010
 - MIMXRT1040-EVK
 - FRDM-MCXN947
+- FRDM-MCXN947T
 - MIMXRT1024-EVK
 - [LPCXpresso55S28](../../_boards/lpcxpresso55s28/usb_examples/usb_host_cdc/example_board_readme.md)
 - [LPCXpresso54628](../../_boards/lpcxpresso54628/usb_examples/usb_host_cdc/example_board_readme.md)

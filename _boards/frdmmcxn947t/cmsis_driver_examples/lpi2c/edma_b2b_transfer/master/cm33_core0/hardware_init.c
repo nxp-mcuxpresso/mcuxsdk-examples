@@ -1,0 +1,41 @@
+/*
+ * Copyright 2022 NXP
+ * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+/*${header:start}*/
+#include "pin_mux.h"
+#include "clock_config.h"
+#include "board.h"
+#include "app.h"
+/*${header:end}*/
+
+/*${variable:start}*/
+
+/*${variable:end}*/
+/*${function:start}*/
+void BOARD_InitHardware(void)
+{
+    /* attach FRO 12M to FLEXCOMM4 (debug console) */
+    CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
+
+    /* attach FRO 12M to FLEXCOMM2 */
+    CLOCK_AttachClk(kFRO12M_to_FLEXCOMM2);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom2Clk, 1u);
+
+    /* Enable DMA clock. */
+    CLOCK_EnableClock(EXAMPLE_LPI2C_DMA_CLOCK);
+
+    BOARD_InitBootPins();
+    BOARD_InitBootClocks();
+    BOARD_InitDebugConsole();
+}
+
+uint32_t LPI2C2_GetFreq(void)
+{
+    return LPI2C_CLOCK_FREQUENCY;
+}
+/* ${function:end} */

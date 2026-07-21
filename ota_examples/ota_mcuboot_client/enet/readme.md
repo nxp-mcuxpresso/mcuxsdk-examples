@@ -13,6 +13,7 @@ The client connects to a HTTPS server and requests an OTA binary for download an
 - [MIMXRT1160-EVK](../../../_boards/evkmimxrt1160/ota_examples/ota_mcuboot_client/enet/example_board_readme.md)
 - [MIMXRT1180-EVK](../../../_boards/evkmimxrt1180/ota_examples/ota_mcuboot_client/enet/example_board_readme.md)
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/ota_examples/ota_mcuboot_client/enet/example_board_readme.md)
+- [FRDM-MCXN947T](../../../_boards/frdmmcxn947t/ota_examples/ota_mcuboot_client/enet/example_board_readme.md)
 - [FRDM-RW612](../../../_boards/frdmrw612/ota_examples/ota_mcuboot_client/enet/example_board_readme.md)
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/ota_examples/ota_mcuboot_client/enet/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/ota_examples/ota_mcuboot_client/enet/example_board_readme.md)

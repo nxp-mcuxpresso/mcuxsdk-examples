@@ -27,6 +27,7 @@ dac_1_buffer_interrupt:
     frdmmcxa156: []
     frdmmcxa346: []
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []
     lpcxpresso55s36: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []

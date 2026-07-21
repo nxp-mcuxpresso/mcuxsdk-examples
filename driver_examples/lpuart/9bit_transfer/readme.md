@@ -8,5 +8,6 @@ The data with 9bit can be received by itself. The each data in TX and RX data re
 
 ## Supported Boards
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/driver_examples/lpuart/9bit_transfer/example_board_readme.md)
+- [FRDM-MCXN947T](../../../_boards/frdmmcxn947t/driver_examples/lpuart/9bit_transfer/example_board_readme.md)
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/driver_examples/lpuart/9bit_transfer/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/driver_examples/lpuart/9bit_transfer/example_board_readme.md)

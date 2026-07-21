@@ -12,6 +12,7 @@ indicated memory. Then the major loop waits for the transfer to be done. The res
 
 ## Supported Boards
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/driver_examples/lpadc/edma/example_board_readme.md)
+- [FRDM-MCXN947T](../../../_boards/frdmmcxn947t/driver_examples/lpadc/edma/example_board_readme.md)
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/driver_examples/lpadc/edma/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/driver_examples/lpadc/edma/example_board_readme.md)
 - [FRDM-MCXA153](../../../_boards/frdmmcxa153/driver_examples/lpadc/edma/example_board_readme.md)

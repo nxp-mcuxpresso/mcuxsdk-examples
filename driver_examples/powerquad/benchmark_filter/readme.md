@@ -10,6 +10,7 @@ It could be compared with the project powerquad_benckmark_sw_filter to show the 
 - [EVK-MIMXRT595](../../../_boards/evkmimxrt595/driver_examples/powerquad/benchmark_filter/example_board_readme.md)
 - [EVK-MIMXRT685](../../../_boards/evkmimxrt685/driver_examples/powerquad/benchmark_filter/example_board_readme.md)
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/driver_examples/powerquad/benchmark_filter/example_board_readme.md)
+- [FRDM-MCXN947T](../../../_boards/frdmmcxn947t/driver_examples/powerquad/benchmark_filter/example_board_readme.md)
 - [FRDM-RW612](../../../_boards/frdmrw612/driver_examples/powerquad/benchmark_filter/example_board_readme.md)
 - [LPCXpresso55S36](../../../_boards/lpcxpresso55s36/driver_examples/powerquad/benchmark_filter/example_board_readme.md)
 - [LPCXpresso55S69](../../../_boards/lpcxpresso55s69/driver_examples/powerquad/benchmark_filter/example_board_readme.md)

@@ -26,6 +26,7 @@ be printed when the execution return to the main function.
 - [FRDM-MCXL255](../../../_boards/frdmmcxl255/driver_examples/lpadc/interrupt/example_board_readme.md)
 - [FRDM-MCXN236](../../../_boards/frdmmcxn236/driver_examples/lpadc/interrupt/example_board_readme.md)
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/driver_examples/lpadc/interrupt/example_board_readme.md)
+- [FRDM-MCXN947T](../../../_boards/frdmmcxn947t/driver_examples/lpadc/interrupt/example_board_readme.md)
 - [FRDM-MCXW71](../../../_boards/frdmmcxw71/driver_examples/lpadc/interrupt/example_board_readme.md)
 - [MCX-W71-EVK](../../../_boards/mcxw71evk/driver_examples/lpadc/interrupt/example_board_readme.md)
 - [KW45B41Z-EVK](../../../_boards/kw45b41zevk/driver_examples/lpadc/interrupt/example_board_readme.md)

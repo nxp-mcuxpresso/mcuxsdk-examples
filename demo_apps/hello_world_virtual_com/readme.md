@@ -28,6 +28,7 @@ The purpose of this demo is to demonstrate how to use virtual com and provide a 
 - [FRDM-MCXC242](../../_boards/frdmmcxc242/demo_apps/hello_world_virtual_com/example_board_readme.md)
 - [FRDM-MCXC444](../../_boards/frdmmcxc444/demo_apps/hello_world_virtual_com/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/demo_apps/hello_world_virtual_com/example_board_readme.md)
+- [FRDM-MCXN947T](../../_boards/frdmmcxn947t/demo_apps/hello_world_virtual_com/example_board_readme.md)
 - [FRDM-RW612](../../_boards/frdmrw612/demo_apps/hello_world_virtual_com/example_board_readme.md)
 - [LPCXpresso54628](../../_boards/lpcxpresso54628/demo_apps/hello_world_virtual_com/example_board_readme.md)
 - [LPCXpresso54S018](../../_boards/lpcxpresso54s018/demo_apps/hello_world_virtual_com/example_board_readme.md)

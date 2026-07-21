@@ -83,6 +83,7 @@ terminal.
 - EVK-MIMXRT1010
 - MIMXRT1040-EVK
 - FRDM-MCXN947
+- FRDM-MCXN947T
 - MIMXRT1024-EVK
 - [LPCXpresso55S28](../../_boards/lpcxpresso55s28/usb_examples/usb_host_printer_plain_text/example_board_readme.md)
 - LPCXpresso54628

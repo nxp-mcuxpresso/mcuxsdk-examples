@@ -20,6 +20,7 @@ End of example
 ## Supported Boards
 - [FRDM-MCXN236](../../_boards/frdmmcxn236/driver_examples/tdet/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/driver_examples/tdet/example_board_readme.md)
+- [FRDM-MCXN947T](../../_boards/frdmmcxn947t/driver_examples/tdet/example_board_readme.md)
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/driver_examples/tdet/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/driver_examples/tdet/example_board_readme.md)
 - [FRDM-MCXA266](../../_boards/frdmmcxa266/driver_examples/tdet/example_board_readme.md)

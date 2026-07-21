@@ -16,6 +16,7 @@ niobe4_series_wwdt_example:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []
     lpcxpresso55s06: []
     lpcxpresso55s16: []
     lpcxpresso55s28: []

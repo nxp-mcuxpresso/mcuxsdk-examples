@@ -161,6 +161,7 @@ ota_mcuboot_client_enet:
     - -mdk@debug
     - -mdk@release
     frdmmcxn947@cm33_core0:
+    frdmmcxn947t@cm33_core0:
     - -mdk@debug
     - -mdk@release
 ota_mcuboot_client_enet@mcxn_encrypted_xip:
@@ -177,6 +178,7 @@ ota_mcuboot_client_enet@mcxn_encrypted_xip:
     - -mdk@release
     - -mdk@debug
     frdmmcxn947@cm33_core0:
+    frdmmcxn947t@cm33_core0:
     - -mdk@release
     - -mdk@debug
 ota_mcuboot_client_enet@rw61x_encrypted_xip:

@@ -42,6 +42,7 @@ usb_pd_charger_battery_bm_om13790host:
     frdmk32l2a4s: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []
     lpcxpresso55s16: []
     lpcxpresso55s28: []
     lpcxpresso55s36: []

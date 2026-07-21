@@ -1,0 +1,86 @@
+
+#
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}
+    SOURCES
+        ${board_root}/${board}/wifi_bt_config.c
+        ${board_root}/${board}/wifi_bt_config.h
+        ${board_root}/${board}/sdmmc_config.c
+        ${board_root}/${board}/sdmmc_config.h
+        ${board_root}/${board}/wifi_examples/common/cm33_core0/hardware_init.c
+        ${board_root}/${board}/wifi_examples/common/cm33_core0/app.h
+)
+mcux_add_include(
+    BASE_PATH ${SdkRootDirPath}
+    INCLUDES
+        ${board_root}/${board}
+        ${board_root}/${board}/wifi_examples/common/cm33_core0
+)
+
+mcux_add_armgcc_configuration(
+    TARGETS debug
+    CC "-O1"
+)
+
+mcux_remove_armgcc_configuration(
+    TARGETS debug
+    CC "-O0"
+)
+
+mcux_add_macro(
+    "-DMFLASH_FILE_BASEADDR=2064384"
+)
+
+mcux_add_armgcc_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER ${board_root}/${board}/wifi_examples/common/linker/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_wifi.ld
+)
+mcux_add_iar_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER ${board_root}/${board}/wifi_examples/common/linker/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_wifi.icf
+)
+mcux_add_mdk_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER ${board_root}/${board}/wifi_examples/common/linker/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_wifi.scf
+)
+
+mcux_remove_armgcc_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release flexspi_nor_debug flexspi_nor_release flash_debug flash_release
+    LINKER ${board_root}/${board}/wifi_examples/wifi_webconfig/linker/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_webconfig.ld
+)
+
+mcux_remove_iar_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release flexspi_nor_debug flexspi_nor_release flash_debug flash_release
+    LINKER ${board_root}/${board}/wifi_examples/wifi_webconfig/linker/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_webconfig.icf
+)
+mcux_remove_mdk_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release flexspi_nor_debug flexspi_nor_release flash_debug flash_release
+    LINKER ${board_root}/${board}/wifi_examples/wifi_webconfig/linker/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_webconfig.scf
+)
+
+# Remove all default linker files
+mcux_remove_armgcc_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/gcc/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.ld
+)
+mcux_remove_iar_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/iar/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.icf
+)
+mcux_remove_mdk_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/arm/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.scf
+)

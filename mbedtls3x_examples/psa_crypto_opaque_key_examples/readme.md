@@ -28,6 +28,7 @@ may be demonstrated if MBEDTLS_PSA_CRYPTO_STORAGE_C is enabled in the config fil
 - [MIMXRT1180-EVK](../../_boards/evkmimxrt1180/mbedtls3x_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
 - [FRDM-MCXN236](../../_boards/frdmmcxn236/mbedtls3x_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/mbedtls3x_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
+- [FRDM-MCXN947T](../../_boards/frdmmcxn947t/mbedtls3x_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
 - [FRDM-RW612](../../_boards/frdmrw612/mbedtls3x_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/mbedtls3x_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/mbedtls3x_examples/psa_crypto_opaque_key_examples/example_board_readme.md)

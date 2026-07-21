@@ -12,6 +12,7 @@ Demonstrates littlefs functionality by commands executed from shell.
 - [FRDM-MCXL255](../../_boards/frdmmcxl255/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md)
 - [FRDM-MCXN236](../../_boards/frdmmcxn236/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md)
+- [FRDM-MCXN947T](../../_boards/frdmmcxn947t/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md)
 - [FRDM-MCXW23](../../_boards/frdmmcxw23/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md)
 - [FRDM-MCXW71](../../_boards/frdmmcxw71/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md)
 - [KW45B41Z-EVK](../../_boards/kw45b41zevk/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md)

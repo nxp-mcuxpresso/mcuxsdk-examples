@@ -132,6 +132,7 @@ Step 7. Now the RNDIS driver should be installed successfully.
 - [FRDM-IMXRT1186](../../_boards/frdmimxrt1186/usb_examples/usb_device_cdc_vnic_lite/example_board_readme.md)
 - [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/usb_examples/usb_device_cdc_vnic_lite/example_board_readme.md)
 - FRDM-MCXN947
+- FRDM-MCXN947T
 - FRDM-RW612
 - MIMXRT1160-EVK
 - MIMXRT1180-EVK

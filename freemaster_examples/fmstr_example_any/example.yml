@@ -128,6 +128,7 @@ fmstr_example_any:
     frdmke16z: []
     frdmke17z: []
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []
     lpc845breakout: []
     lpcxpresso51u68: []
     lpcxpresso54628: []

@@ -45,6 +45,7 @@ ota_mcuboot_basic_psa:
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
     frdmmcxn947@cm33_core0:
+    frdmmcxn947t@cm33_core0:
     - -mdk@debug
     - -mdk@release
     mcxn5xxevk@cm33_core0:
@@ -67,5 +68,6 @@ ota_mcuboot_basic_psa@mcxn_encrypted_xip:
     - -mdk@release
     - -mdk@debug
     frdmmcxn947@cm33_core0:
+    frdmmcxn947t@cm33_core0:
     - -mdk@release
     - -mdk@debug

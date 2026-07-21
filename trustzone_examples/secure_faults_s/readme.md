@@ -29,6 +29,7 @@ TEST 5: Invalid data access from normal world, example 2
 - [EVK-MIMXRT685](../../_boards/evkmimxrt685/trustzone_examples/secure_faults/secure_faults_s/example_board_readme.md)
 - [FRDM-MCXN236](../../_boards/frdmmcxn236/trustzone_examples/secure_faults/secure_faults_s/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/trustzone_examples/secure_faults/secure_faults_s/example_board_readme.md)
+- [FRDM-MCXN947T](../../_boards/frdmmcxn947t/trustzone_examples/secure_faults/secure_faults_s/example_board_readme.md)
 - [LPCXpresso55S06](../../_boards/lpcxpresso55s06/trustzone_examples/secure_faults/secure_faults_s/example_board_readme.md)
 - [LPCXpresso55S16](../../_boards/lpcxpresso55s16/trustzone_examples/secure_faults/secure_faults_s/example_board_readme.md)
 - [LPCXpresso55S36](../../_boards/lpcxpresso55s36/trustzone_examples/secure_faults/secure_faults_s/example_board_readme.md)

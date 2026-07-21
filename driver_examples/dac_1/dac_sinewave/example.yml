@@ -22,3 +22,4 @@ dac_sinewave:
   boards:
     lpcxpresso55s36: []
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []

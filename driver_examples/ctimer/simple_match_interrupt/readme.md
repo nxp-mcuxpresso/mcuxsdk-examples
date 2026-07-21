@@ -17,6 +17,7 @@ With an interrupt callback the match value is changed frequently in such a way t
 - [FRDM-MCXL255](../../../_boards/frdmmcxa346/driver_examples/ctimer/simple_pwm_interrupt/example_board_readme.md)
 - [FRDM-MCXN236](../../../_boards/frdmmcxn236/driver_examples/ctimer/simple_match_interrupt/example_board_readme.md)
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/driver_examples/ctimer/simple_match_interrupt/example_board_readme.md)
+- [FRDM-MCXN947T](../../../_boards/frdmmcxn947t/driver_examples/ctimer/simple_match_interrupt/example_board_readme.md)
 - [FRDM-MCXW23](../../../_boards/frdmmcxw23/driver_examples/ctimer/simple_match_interrupt/example_board_readme.md)
 - [FRDM-RW612](../../../_boards/frdmrw612/driver_examples/ctimer/simple_match_interrupt/example_board_readme.md)
 - [LPC845BREAKOUT](../../../_boards/lpc845breakout/driver_examples/ctimer/simple_match_interrupt/example_board_readme.md)

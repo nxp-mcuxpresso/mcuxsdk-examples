@@ -205,6 +205,7 @@ lpuart_9bit_interrupt_transfer:
     frdmmcxc242: []
     frdmmcxe247: []
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []
     frdmmcxw71: []
     frdmmcxw72@cm33_core0: []
     mcxw71evk: []

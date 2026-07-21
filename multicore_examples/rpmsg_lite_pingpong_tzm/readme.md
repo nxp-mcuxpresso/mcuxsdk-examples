@@ -43,12 +43,14 @@ The shared memory assignment to the secure domain is done in the BOARD_InitTrust
 ## Building the application
 
 This shows example how to build application for `frdmmcxn947` board with `cm33_core0` core_id.
+This shows example how to build application for `frdmmcxn947t` board with `cm33_core0` core_id.
 Change the `-b <board>` parameter based on board you want to build.
 Change the `-Dcore_id=<core_id>` parameter based on board core you want to build.
 For these parameters please see attribute `boards:` in `primary_ns/example.yml`.
 
 ```
 west build --sysbuild examples/multicore_examples/rpmsg_lite_pingpong_tzm/primary_ns --toolchain armgcc --config debug -b frdmmcxn947 -Dcore_id=cm33_core0
+west build --sysbuild examples/multicore_examples/rpmsg_lite_pingpong_tzm/primary_ns --toolchain armgcc --config debug -b frdmmcxn947t -Dcore_id=cm33_core0
 ```
 
 ## Supported Boards
@@ -58,4 +60,5 @@ west build --sysbuild examples/multicore_examples/rpmsg_lite_pingpong_tzm/primar
 - [FRDM-MCXL255](../../_boards/frdmmcxl255/multicore_examples/rpmsg_lite_pingpong_tzm/example_board_readme.md)
 - [LPCXpresso55S69](../../_boards/lpcxpresso55s69/multicore_examples/rpmsg_lite_pingpong_tzm/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/multicore_examples/rpmsg_lite_pingpong_tzm/example_board_readme.md)
+- [FRDM-MCXN947T](../../_boards/frdmmcxn947t/multicore_examples/rpmsg_lite_pingpong_tzm/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/multicore_examples/rpmsg_lite_pingpong_tzm/example_board_readme.md)

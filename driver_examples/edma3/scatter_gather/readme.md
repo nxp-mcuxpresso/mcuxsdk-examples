@@ -12,6 +12,7 @@ debugging and further development.
 - [FRDM-MCXA346](../../../_boards/frdmmcxa346/driver_examples/edma3/scatter_gather/example_board_readme.md)
 - [FRDM-MCXN236](../../../_boards/frdmmcxn236/driver_examples/edma3/scatter_gather/example_board_readme.md)
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/driver_examples/edma3/scatter_gather/example_board_readme.md)
+- [FRDM-MCXN947T](../../../_boards/frdmmcxn947t/driver_examples/edma3/scatter_gather/example_board_readme.md)
 - [MCIMX93AUTO-EVK](../../../_boards/mcimx93autoevk/driver_examples/edma3/scatter_gather/example_board_readme.md)
 - [MCIMX93-EVK](../../../_boards/mcimx93evk/driver_examples/edma3/scatter_gather/example_board_readme.md)
 - [MCIMX93W-EVK](../../../_boards/mcimx93wevk/driver_examples/edma3/scatter_gather/example_board_readme.md)

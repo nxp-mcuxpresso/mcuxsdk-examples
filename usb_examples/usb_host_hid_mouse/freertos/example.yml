@@ -52,6 +52,7 @@ host_hid_mouse_freertos:
     frdmk32l2a4s: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []
     frdmrw612: []
     imx95lpd5evk19@cm7:
     - -armgcc@flash_debug

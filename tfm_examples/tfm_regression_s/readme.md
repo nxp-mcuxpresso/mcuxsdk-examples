@@ -21,6 +21,7 @@ Workspace structure:
 ## Supported Boards
 - [FRDM-MCXN236](../../_boards/frdmmcxn236/tfm_examples/tfm_regression/tfm_regression_s/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/tfm_examples/tfm_regression/tfm_regression_s/example_board_readme.md)
+- [FRDM-MCXN947T](../../_boards/frdmmcxn947t/tfm_examples/tfm_regression/tfm_regression_s/example_board_readme.md)
 - [FRDM-RW612](../../_boards/frdmrw612/tfm_examples/tfm_regression/tfm_regression_s/example_board_readme.md)
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/tfm_examples/tfm_regression/tfm_regression_s/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/tfm_examples/tfm_regression/tfm_regression_s/example_board_readme.md)

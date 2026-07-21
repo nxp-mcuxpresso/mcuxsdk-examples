@@ -7,6 +7,7 @@ This `ota_mcuboot_basic_psa` example demonstrates a basic application that uses 
 - [MIMXRT1060-EVKB](../../_boards/evkbmimxrt1060/ota_examples/ota_mcuboot_basic_psa/example_board_readme.md)
 - [MIMXRT1060-EVKC](../../_boards/evkcmimxrt1060/ota_examples/ota_mcuboot_basic_psa/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/ota_examples/ota_mcuboot_basic_psa/example_board_readme.md)
+- [FRDM-MCXN947T](../../_boards/frdmmcxn947t/ota_examples/ota_mcuboot_basic_psa/example_board_readme.md)
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/ota_examples/ota_mcuboot_basic_psa/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/ota_examples/ota_mcuboot_basic_psa/example_board_readme.md)
 

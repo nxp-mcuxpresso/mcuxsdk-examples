@@ -231,6 +231,7 @@ psa_crypto_examples:
     mcxn9xxevk@cm33_core0: []
     mcxn5xxevk@cm33_core0: []
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []
     frdmrw612: []
     rdrw612bga: []
     frdmimxrt700@cm33_core0: []

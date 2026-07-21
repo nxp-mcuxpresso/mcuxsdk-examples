@@ -15,6 +15,7 @@ to trigger the interrupt while the timer count tick reach the match value about 
 - [FRDM-MCXL255](../../_boards/frdmmcxl255/driver_examples/ostimer/example_board_readme.md)
 - [FRDM-MCXN236](../../_boards/frdmmcxn236/driver_examples/ostimer/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/driver_examples/ostimer/example_board_readme.md)
+- [FRDM-MCXN947T](../../_boards/frdmmcxn947t/driver_examples/ostimer/example_board_readme.md)
 - [FRDM-MCXW23](../../_boards/frdmmcxw23/driver_examples/ostimer/example_board_readme.md)
 - [FRDM-RW612](../../_boards/frdmrw612/driver_examples/ostimer/example_board_readme.md)
 - [LPCXpresso55S06](../../_boards/lpcxpresso55s06/driver_examples/ostimer/example_board_readme.md)

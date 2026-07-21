@@ -44,6 +44,7 @@ sdcard_freertos:
     frdmk32l3a6@cm0plus: []
     frdmk32l3a6@cm4: []
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []
     lpcxpresso54628: []
     lpcxpresso54s018: []
     mcxn5xxevk@cm33_core0: []

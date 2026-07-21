@@ -20,6 +20,7 @@ secure_faults_ns:
     frdmmcxl255@cm33: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []
     lpcxpresso55s06: []
     lpcxpresso55s16: []
     lpcxpresso55s36: []

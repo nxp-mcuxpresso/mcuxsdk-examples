@@ -182,5 +182,6 @@ It is necessary to have installed tools capable of sending and receiving data ov
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/wifi_examples/common/wifi_examples_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/wifi_examples/common/wifi_examples_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/wifi_examples/common/wifi_examples_readme.md)
+- [FRDM-MCXN947T](../../_boards/frdmmcxn947t/wifi_examples/common/wifi_examples_readme.md)
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/wifi_examples/common/wifi_examples_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/wifi_examples/common/wifi_examples_readme.md)

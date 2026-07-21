@@ -39,6 +39,7 @@ work with semihosting.
 - [FRDM-MCXE247](../../_boards/frdmmcxe247/demo_apps/shell/example_board_readme.md)
 - [FRDM-MCXN236](../../_boards/frdmmcxn236/demo_apps/shell/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/demo_apps/shell/example_board_readme.md)
+- [FRDM-MCXN947T](../../_boards/frdmmcxn947t/demo_apps/shell/example_board_readme.md)
 - [FRDM-MCXW23](../../_boards/frdmmcxw23/demo_apps/shell/example_board_readme.md)
 - [FRDM-MCXW71](../../_boards/frdmmcxw71/demo_apps/shell/example_board_readme.md)
 - [MCX-W71-EVK](../../_boards/mcxw71evk/demo_apps/shell/example_board_readme.md)

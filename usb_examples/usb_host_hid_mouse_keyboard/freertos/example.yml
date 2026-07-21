@@ -53,6 +53,7 @@ host_hid_mouse_keyboard_freertos:
     frdmmcxa287: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []
     frdmrw612: []
     lpcxpresso54628: []
     lpcxpresso54s018: []

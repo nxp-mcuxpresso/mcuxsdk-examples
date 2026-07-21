@@ -9,5 +9,6 @@ When the input voltage changes, the OPAMP output changes accordingly.
 ## Supported Boards
 - [FRDM-MCXA156](../../../_boards/frdmmcxa156/driver_examples/opamp/opamp_basic/example_board_readme.md)
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/driver_examples/opamp/opamp_basic/example_board_readme.md)
+- [FRDM-MCXN947T](../../../_boards/frdmmcxn947t/driver_examples/opamp/opamp_basic/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/driver_examples/opamp/opamp_basic/example_board_readme.md)
 - [FRDM-MCXC162](../../../_boards/frdmmcxc162/driver_examples/opamp/opamp_basic/example_board_readme.md)

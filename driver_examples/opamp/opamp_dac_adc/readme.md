@@ -13,4 +13,5 @@ reference voltage is 0 to VDDA-0.8V.
 
 ## Supported Boards
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/driver_examples/opamp/opamp_dac_adc/example_board_readme.md)
+- [FRDM-MCXN947T](../../../_boards/frdmmcxn947t/driver_examples/opamp/opamp_dac_adc/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/driver_examples/opamp/opamp_dac_adc/example_board_readme.md)

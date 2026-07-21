@@ -49,6 +49,7 @@ After running, touch pad E1 each time, you will see LED toggles.
 
 ## Supported Boards
 - [FRDM-MCXN947](../../../../_boards/frdmmcxn947/driver_examples/tsi_v6/self_cap/example_board_readme.md)
+- [FRDM-MCXN947T](../../../../_boards/frdmmcxn947t/driver_examples/tsi_v6/self_cap/example_board_readme.md)
 - [MCX-N5XX-EVK](../../../../_boards/mcxn5xxevk/driver_examples/tsi_v6/self_cap/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../../_boards/mcxn9xxevk/driver_examples/tsi_v6/self_cap/example_board_readme.md)
 - [FRDM-MCXA577](../../../../_boards/frdmmcxa577/driver_examples/tsi_v6/self_cap/example_board_readme.md)

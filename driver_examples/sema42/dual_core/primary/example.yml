@@ -27,6 +27,7 @@ sema42_dualcore_primary_core:
   boards:
     frdmk32l3a6@cm4: []
     frdmmcxn947@cm33_core0: []
+    frdmmcxn947t@cm33_core0: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
     mimxrt700evk@cm33_core0:

@@ -101,6 +101,7 @@ hello_world_secondary_core:
     - -mdk@hyperram_release
     frdmk32l3a6@cm0plus: []
     frdmmcxn947@cm33_core1: []
+    frdmmcxn947t@cm33_core1: []
     lpcxpresso55s69@cm33_core1: []
     mcxn5xxevk@cm33_core1: []
     mcxn9xxevk@cm33_core1: []

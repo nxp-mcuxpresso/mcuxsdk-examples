@@ -17,6 +17,7 @@ Special example application which demonstrates how the [NXP MCUXpresso ConfigToo
 - [FRDM-KE16Z](../../_boards/frdmke16z/freemaster_examples/fmstr_any/example_board_readme.md)
 - [FRDM-KE17Z](../../_boards/frdmke17z/freemaster_examples/fmstr_any/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/freemaster_examples/fmstr_any/example_board_readme.md)
+- [FRDM-MCXN947T](../../_boards/frdmmcxn947t/freemaster_examples/fmstr_any/example_board_readme.md)
 - [LPC845BREAKOUT](../../_boards/lpc845breakout/freemaster_examples/fmstr_any/example_board_readme.md)
 - [LPCXpresso51U68](../../_boards/lpcxpresso51u68/freemaster_examples/fmstr_any/example_board_readme.md)
 - [LPCXpresso54628](../../_boards/lpcxpresso54628/freemaster_examples/fmstr_any/example_board_readme.md)
