@@ -1,6 +1,6 @@
 Hardware requirements
 ===================
-- Mini/micro USB cable
+- Type-C USB cable
 - Network cable RJ45 standard
 - FRDM-RT1186 board
 - Personal Computer

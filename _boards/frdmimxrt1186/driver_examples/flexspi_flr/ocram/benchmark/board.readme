@@ -1,6 +1,6 @@
 Hardware requirements
 =====================
-- Mini/micro USB cable
+- Type-C USB cable
 - Two FRDM-IMXRT1186 boards
 - Personal Computer
 

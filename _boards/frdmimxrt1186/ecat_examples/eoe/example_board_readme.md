@@ -2,7 +2,7 @@ Hardware requirements
 =====================
 - FRDM-IMXRT1186 A2
 - RJ45 Network cable
-- Mini/micro USB cable
+- Type-C USB cable
 - Personal Computer on which the TwinCat3 has been installed(Windows 10 is recommended)
 
 Board settings

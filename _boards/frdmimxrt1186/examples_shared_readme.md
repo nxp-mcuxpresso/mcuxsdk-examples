@@ -5,7 +5,7 @@ General Example Settings
 ========================
 Hardware requirements
 ---------------------
-- Mini/micro USB cable
+- Type-C USB cable
 - FRDM-IMXRT1186 board
 - Personal Computer
 

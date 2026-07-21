@@ -5,7 +5,7 @@ Hardware requirements
 - Power supply 24V
 - Teknic2311P Motor
 - RJ45 Network cable
-- Mini/micro USB cable
+- Type-C USB cable
 - Personal Computer on which the TwinCat3 has been installed
 
 Board settings

@@ -1,6 +1,6 @@
 Hardware requirements
 ===================
-- Mini/micro USB cable
+- Type-C USB cable
 - Network cable RJ45 standard
 - FRDM-IMXRT1186 board
 - BECKHOFF EK1100 EtherCAT Coupler *1
