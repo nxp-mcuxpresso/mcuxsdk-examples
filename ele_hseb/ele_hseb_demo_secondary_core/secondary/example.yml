@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+ele_hseb_secondary_core:
+  skip_build: true
+  section-type: application
+  contents:
+    meta_path: examples/ele_hseb/ele_hseb_demo_secondary_core/secondary
+    project-root-path: boards/${board}/ele_hseb/ele_hseb_demo_secondary_core/${multicore_foldername}/
+    document:
+      name: ele_hseb_secondary_core
+      category: multicore_examples
+      brief: Standalone application for showcasing the ele_hseb_demo application from the secondary core.
+      example_readme:
+      - examples/ele_hseb/ele_hseb_demo_secondary_core/readme.md
+      - ${board_root}/${board}/ele_hseb/ele_hseb_demo_secondary_core/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxe32b@core1: []

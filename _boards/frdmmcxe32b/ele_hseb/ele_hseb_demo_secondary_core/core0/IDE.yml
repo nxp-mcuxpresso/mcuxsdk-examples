@@ -1,0 +1,28 @@
+#
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# Board-specific IDE.yml override for frdmmcxe32b.
+# MCXE32B core_id values are "core0"/"core1" (MCXE31x family parity), but the
+# project/file suffix is "_cm7_core0"/"_cm7_core1".  The shared template uses
+# ${SB_CONFIG_secondary_core_id} which resolves to "core1", producing a broken
+# reference.  This override is merged last (overwrite_arrays: true) and fixes
+# all IAR and MDK secondary-project paths for this example on this board only.
+
+iar:
+  shared-workspace: ele_hseb
+  sharing-workspace:
+  - ../../ele_hseb_secondary_core/iar/ele_hseb_secondary_core_cm7_core1
+  config:
+    __common__:
+      asym-multicore-debugger:
+        enable: true
+        slave-workspace: "../../ele_hseb_secondary_core/iar/ele_hseb_secondary_core_cm7_core1.eww"
+        slave-project: ele_hseb_secondary_core_cm7_core1
+        attach-partner: true
+
+mdk:
+  shared-workspace: ele_hseb
+  sharing-workspace:
+  - ../../ele_hseb_secondary_core/mdk/ele_hseb_secondary_core_cm7_core1

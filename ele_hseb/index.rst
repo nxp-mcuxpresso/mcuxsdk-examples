@@ -8,3 +8,4 @@ ele_hseb
 
 
    ele_hseb_demo/readme.md
+   ele_hseb_demo_secondary_core/readme.md
