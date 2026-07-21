@@ -11,7 +11,7 @@ Hardware requirements
 Board settings
 ============
 - Use the Gigabit Ethernet RJ45 port (J54).
-- Set J25 to position 1-2 for the shared `ENET_MDIO` / `ETH0_RDATA3` routing.
+- Set JP2 to position 1-2.
 
 Prepare the Demo
 ================
