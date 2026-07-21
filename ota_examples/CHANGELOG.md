@@ -12,6 +12,7 @@ All notable changes to MCUboot fork in MCUXpresso SDK and related ota examples w
 
 ### Fixed
 - (Encrypted XIP)(IPED) Fixed the reset issue during wifi initialization when IPED encryption is active
+- (MCXA266/MCXA366) Added flash access and MBC configuration to mcuboot startup to fix issues with flash operations during OTA if CMPA is present
 
 ## [26.06.0] - 06/2026 
 
