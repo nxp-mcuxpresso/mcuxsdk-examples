@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -12,10 +12,13 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define DEMO_IMG_HEIGHT         DEMO_PANEL_HEIGHT / 2U
-#define DEMO_IMG_WIDTH          DEMO_PANEL_WIDTH / 2U
+#define DEMO_ALIGN_STRIDE(bytes) (((bytes) + (DCIF_FB_ALIGN - 1U)) & ~((uint32_t)DCIF_FB_ALIGN - 1U))
+
+#define DEMO_IMG_HEIGHT DEMO_PANEL_HEIGHT
+#define DEMO_IMG_WIDTH  DEMO_PANEL_WIDTH
+
 /* Use ARGB8888 format, 4 bytes per pixel. */
-#define DEMO_IMG_BYTES_PER_LINE (DEMO_IMG_WIDTH * 4U)
+#define DEMO_IMG_BYTES_PER_LINE DEMO_ALIGN_STRIDE(DEMO_IMG_WIDTH * 4U)
 
 #if DEMO_INTERFACE_TYPE == DEMO_INTERFACE_DPI
 #define DEMO_INTERFACE_FRAME_DONE_INTERRUPT kDCIF_InterruptVsync
@@ -32,6 +35,8 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
+AT_NONCACHEABLE_SECTION_ALIGN(static uint8_t s_frameBuffer[DEMO_IMG_HEIGHT][DEMO_IMG_BYTES_PER_LINE],
+    DCIF_FB_ALIGN);
 AT_NONCACHEABLE_SECTION_INIT(static uint32_t gammaTable[FSL_FEATURE_DCIF_GAMMA_INDEX_MAX]) = {0};
 AT_NONCACHEABLE_SECTION_INIT(static volatile bool s_frameDone)                 = false;
 
@@ -54,7 +59,7 @@ void DEMO_DCIF_IRQHandler(void)
 
 void DEMO_FillFrameBuffer(void)
 {
-    uint8_t(*frameBuffer)[DEMO_IMG_BYTES_PER_LINE] = (void *)DEMO_FB0_ADDR;
+    uint8_t(*frameBuffer)[DEMO_IMG_BYTES_PER_LINE] = s_frameBuffer;
     uint8_t element;
 
     /* Fill the buffer with gradual changed gray bars. */
@@ -95,7 +100,10 @@ void DEMO_DCIF_Init(void)
     /* Background black. */
     DCIF_SetBackGroundLayerColor(DEMO_DCIF, 0x0U);
 
-    /* Enable DCIF. */
+    NVIC_EnableIRQ(DEMO_DCIF_IRQn);
+
+    /* Need to enable DCIF output before initializing the DBI panel.
+     * For MIPI panel the DPI interface shall be enabled later. */
     DCIF_EnableOutput(DEMO_DCIF, true);
 
     /* Initialize panel. */
@@ -107,13 +115,11 @@ void DEMO_DCIF_Init(void)
         {
         }
     }
-
-    NVIC_EnableIRQ(DEMO_DCIF_IRQn);
 }
 
 void DEMO_DCIF_Gamma(void)
 {
-    bool enableGamma = true;
+    bool enableGamma = false;
     dcif_layer_config_t config;
 
     DEMO_FillFrameBuffer();
@@ -130,59 +136,28 @@ void DEMO_DCIF_Gamma(void)
     config.width            = DEMO_IMG_WIDTH;
     config.height           = DEMO_IMG_HEIGHT;
     config.background       = 0U;
-    config.panic.enable     = false;
+    /* Enable FIFO panic so the DCIF raises its AXI fetch priority when the layer
+     * FIFO runs low, reducing underrun (which the inverting gamma shows as a
+     * bright/white panel) when the PSRAM framebuffer read is briefly starved.
+     * Layer 0 FIFO is 512 words deep: assert panic below ~1/3, clear above ~2/3. */
+    config.panic.enable     = true;
+    config.panic.lowLevel   = 170U;
+    config.panic.highLevel  = 340U;
     config.globalAlpha      = 0xFFU;
-    config.alphaBlendMode   = kDCIF_AlphaBlendEmbedded;
+    /* The ARGB8888 gradient carries a zero alpha, so override the pixel alpha
+     * with the opaque global alpha instead of blending it away. */
+    config.alphaBlendMode   = kDCIF_AlphaBlendOverride;
 
-    DCIF_SetLayerAddr(DEMO_DCIF, 0, DEMO_FB0_ADDR);
+    DCIF_SetLayerAddr(DEMO_DCIF, 0, (uint32_t)s_frameBuffer);
 
     DCIF_SetLayerStride(DEMO_DCIF, 0, DEMO_IMG_BYTES_PER_LINE);
 
     DCIF_SetLayerConfig(DEMO_DCIF, 0U, &config);
 
-#if DEMO_INTERFACE_TYPE == DEMO_INTERFACE_DPI
-    /* Only DPI needs trigger shadow load. */
     DCIF_TriggerLayerShadowLoad(DEMO_DCIF, 0);
-#elif DEMO_INTERFACE_TYPE == DEMO_INTERFACE_DBI
-    /* For DBI interface, need to send the frame update area command first. */
-    uint8_t cmdParam[4];
 
-    /* Select the panel region used. */
-    cmdParam[0] = (uint8_t)((DEMO_BUFFER_START_X >> 8U) & 0xFFU);
-    cmdParam[1] = (uint8_t)(DEMO_BUFFER_START_X & 0xFFU);
-    cmdParam[2] = (uint8_t)((DEMO_BUFFER_END_X >> 8U) & 0xFFU);
-    cmdParam[3] = (uint8_t)(DEMO_BUFFER_END_X & 0xFFU);
-    DCIF_DbiWriteCommand(DEMO_DCIF, DBI_CMD_SET_COLUMN_ADDRESS);
-
-    while ((DEMO_DCIF->DBI_CTRL & DCIF_DBI_CTRL_DBI_CMD_TRIG_MASK) != 0U)
-    {
-        /* Wait for the command to be completed. */
-    }
-
-    DCIF_DbiWriteParam(DEMO_DCIF, cmdParam, 4U);
-
-    while ((DEMO_DCIF->DBI_CTRL & DCIF_DBI_CTRL_DBI_CMD_TRIG_MASK) != 0U)
-    {
-        /* Wait for the command to be completed. */
-    }
-
-    cmdParam[0] = (uint8_t)((DEMO_BUFFER_START_Y >> 8U) & 0xFFU);
-    cmdParam[1] = (uint8_t)(DEMO_BUFFER_START_Y & 0xFFU);
-    cmdParam[2] = (uint8_t)((DEMO_BUFFER_END_Y >> 8U) & 0xFFU);
-    cmdParam[3] = (uint8_t)(DEMO_BUFFER_END_Y & 0xFFU);
-    DCIF_DbiWriteCommand(DEMO_DCIF, DBI_CMD_SET_PAGE_ADDRESS);
-
-    while ((DEMO_DCIF->DBI_CTRL & DCIF_DBI_CTRL_DBI_CMD_TRIG_MASK) != 0U)
-    {
-        /* Wait for the command to be completed. */
-    }
-
-    DCIF_DbiWriteParam(DEMO_DCIF, cmdParam, 4U);
-
-    while ((DEMO_DCIF->DBI_CTRL & DCIF_DBI_CTRL_DBI_CMD_TRIG_MASK) != 0U)
-    {
-        /* Wait for the command to be completed. */
-    }
+#if DEMO_INTERFACE_TYPE == DEMO_INTERFACE_DBI
+    DEMO_DbiSelectUpdateArea(0U, 0U, DEMO_PANEL_WIDTH - 1U, DEMO_PANEL_HEIGHT - 1U);
 #endif
 
     /* Frame done interrupt. */
@@ -200,10 +175,17 @@ void DEMO_DCIF_Gamma(void)
         }
 
         s_frameDone = false;
-        DCIF_EnableGamma(DEMO_DCIF, !enableGamma);
+
+        /* Toggle gamma correction each frame to alternate between the original
+         * picture and the gamma-inverted picture. */
+        enableGamma = !enableGamma;
+        DCIF_EnableGamma(DEMO_DCIF, enableGamma);
+
+        /* Let the picture be displayed for 2s then change. */
+        SDK_DelayAtLeastUs(1000000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 
         /* Update frame according to the interface type. */
-        DEMO_UpdateFrame(DEMO_FB0_ADDR);
+        DEMO_UpdateFrame((uint32_t)s_frameBuffer);
     }
 }
 

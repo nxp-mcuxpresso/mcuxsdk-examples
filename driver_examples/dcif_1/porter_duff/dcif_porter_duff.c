@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -12,10 +12,12 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define DEMO_IMG_HEIGHT         DEMO_PANEL_HEIGHT / 2U
-#define DEMO_IMG_WIDTH          DEMO_PANEL_WIDTH / 2U
+#define DEMO_ALIGN_STRIDE(bytes) (((bytes) + (DCIF_FB_ALIGN - 1U)) & ~((uint32_t)DCIF_FB_ALIGN - 1U))
+
+#define DEMO_IMG_HEIGHT DEMO_PANEL_HEIGHT
+#define DEMO_IMG_WIDTH  DEMO_PANEL_WIDTH
 /* Use ARGB8888 format, 4 bytes per pixel. */
-#define DEMO_IMG_BYTES_PER_LINE (DEMO_IMG_WIDTH * 4U)
+#define DEMO_IMG_BYTES_PER_LINE DEMO_ALIGN_STRIDE(DEMO_IMG_WIDTH * 4U)
 
 #define DEMO_MAKE_COLOR(a, r, g, b) (((a) << 24U) | ((r) << 16U) | ((g) << 8U) | ((b) << 0U))
 #define DEMO_COLOR_RED              DEMO_MAKE_COLOR(0xFF, 0xFF, 0, 0)
@@ -36,8 +38,12 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-static uint32_t s_srcFrameBufferAddr = DEMO_FB0_ADDR;
-static uint32_t s_dstFrameBufferAddr = DEMO_FB1_ADDR;
+AT_NONCACHEABLE_SECTION_ALIGN(static uint8_t s_srcFrameBuffer[DEMO_IMG_HEIGHT][DEMO_IMG_BYTES_PER_LINE],
+    DCIF_FB_ALIGN);
+AT_NONCACHEABLE_SECTION_ALIGN(static uint8_t s_dstFrameBuffer[DEMO_IMG_HEIGHT][DEMO_IMG_BYTES_PER_LINE],
+    DCIF_FB_ALIGN);
+static uint32_t s_srcFrameBufferAddr = (uint32_t)s_srcFrameBuffer;
+static uint32_t s_dstFrameBufferAddr = (uint32_t)s_dstFrameBuffer;
 static uint32_t s_bufferWidth        = DEMO_IMG_WIDTH / 4U * 3U;
 static uint32_t s_bufferHeight       = DEMO_IMG_HEIGHT / 4U * 3U;
 static volatile bool s_frameDone     = false;
@@ -130,7 +136,10 @@ void DEMO_DCIF_Init(void)
     /* Background black. */
     DCIF_SetBackGroundLayerColor(DEMO_DCIF, 0x0U);
 
-    /* Enable DCIF. */
+    NVIC_EnableIRQ(DEMO_DCIF_IRQn);
+
+    /* Need to enable DCIF output before initializing the DBI panel.
+     * For MIPI panel the DPI interface shall be enabled later. */
     DCIF_EnableOutput(DEMO_DCIF, true);
 
     /* Initialize panel. */
@@ -142,8 +151,6 @@ void DEMO_DCIF_Init(void)
         {
         }
     }
-
-    NVIC_EnableIRQ(DEMO_DCIF_IRQn);
 }
 
 void DEMO_DCIF_Porterduff(void)
@@ -166,7 +173,8 @@ void DEMO_DCIF_Porterduff(void)
     dstLayerConfig.background       = 0U;
     dstLayerConfig.panic.enable     = false;
     dstLayerConfig.globalAlpha      = 0xFFU;
-    dstLayerConfig.alphaBlendMode   = kDCIF_AlphaBlendEmbedded;//TODO
+    dstLayerConfig.alphaBlendMode   = kDCIF_AlphaBlendPorterDuff;
+    DCIF_GetPorterDuffConfig(kDCIF_PorterDuffSrc, &(dstLayerConfig.alphaBlendConfig));
 
     DCIF_SetLayerAddr(DEMO_DCIF, 0, (uint32_t)s_dstFrameBufferAddr);
     DCIF_SetLayerStride(DEMO_DCIF, 0, DEMO_IMG_BYTES_PER_LINE);
@@ -192,49 +200,14 @@ void DEMO_DCIF_Porterduff(void)
 
     PRINTF("Currently show %s mode\r\n\r\n", porterDuffNameArray[loops % ARRAY_SIZE(porterDuffNameArray)]);
 
-#if DEMO_INTERFACE_TYPE == DEMO_INTERFACE_DPI
-    /* Only DPI needs trigger shadow load. */
+    /* Two layers are configured (destination on layer 0, source overlay on
+     * layer 1); shadow-load both so their initial configuration takes effect. */
     DCIF_TriggerLayerShadowLoad(DEMO_DCIF, 0);
-#elif DEMO_INTERFACE_TYPE == DEMO_INTERFACE_DBI
-    /* For DBI interface, need to send the frame update area command first. */
-    uint8_t cmdParam[4];
+    DCIF_TriggerLayerShadowLoad(DEMO_DCIF, 1);
 
-    /* Select the panel region used. */
-    cmdParam[0] = (uint8_t)((DEMO_BUFFER_START_X >> 8U) & 0xFFU);
-    cmdParam[1] = (uint8_t)(DEMO_BUFFER_START_X & 0xFFU);
-    cmdParam[2] = (uint8_t)((DEMO_BUFFER_END_X >> 8U) & 0xFFU);
-    cmdParam[3] = (uint8_t)(DEMO_BUFFER_END_X & 0xFFU);
-    DCIF_DbiWriteCommand(DEMO_DCIF, DBI_CMD_SET_COLUMN_ADDRESS);
-
-    while ((DEMO_DCIF->DBI_CTRL & DCIF_DBI_CTRL_DBI_CMD_TRIG_MASK) != 0U)
-    {
-        /* Wait for the command to be completed. */
-    }
-
-    DCIF_DbiWriteParam(DEMO_DCIF, cmdParam, 4U);
-
-    while ((DEMO_DCIF->DBI_CTRL & DCIF_DBI_CTRL_DBI_CMD_TRIG_MASK) != 0U)
-    {
-        /* Wait for the command to be completed. */
-    }
-
-    cmdParam[0] = (uint8_t)((DEMO_BUFFER_START_Y >> 8U) & 0xFFU);
-    cmdParam[1] = (uint8_t)(DEMO_BUFFER_START_Y & 0xFFU);
-    cmdParam[2] = (uint8_t)((DEMO_BUFFER_END_Y >> 8U) & 0xFFU);
-    cmdParam[3] = (uint8_t)(DEMO_BUFFER_END_Y & 0xFFU);
-    DCIF_DbiWriteCommand(DEMO_DCIF, DBI_CMD_SET_PAGE_ADDRESS);
-
-    while ((DEMO_DCIF->DBI_CTRL & DCIF_DBI_CTRL_DBI_CMD_TRIG_MASK) != 0U)
-    {
-        /* Wait for the command to be completed. */
-    }
-
-    DCIF_DbiWriteParam(DEMO_DCIF, cmdParam, 4U);
-
-    while ((DEMO_DCIF->DBI_CTRL & DCIF_DBI_CTRL_DBI_CMD_TRIG_MASK) != 0U)
-    {
-        /* Wait for the command to be completed. */
-    }
+#if DEMO_INTERFACE_TYPE == DEMO_INTERFACE_DBI
+    DEMO_DbiSelectUpdateArea(0U, 0U, DEMO_IMG_WIDTH - 1U, DEMO_IMG_HEIGHT - 1U);
+    DEMO_UpdateFrame(0U);
 #endif
 
     /* Frame done interrupt. */
@@ -250,14 +223,19 @@ void DEMO_DCIF_Porterduff(void)
 
         s_frameDone = false;
 
+        /* Let the picture be displayed for 2s then change. */
+        SDK_DelayAtLeastUs(1000000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+
         PRINTF("Currently show %s mode\r\n\r\n", porterDuffNameArray[loops % ARRAY_SIZE(porterDuffNameArray)]);
 
         DCIF_GetPorterDuffConfig(porterDuffModeArray[loops % ARRAY_SIZE(porterDuffModeArray)], &(srcLayerConfig.alphaBlendConfig));
 
         DCIF_SetLayerConfig(DEMO_DCIF, 1, &srcLayerConfig);
 
-        /* Let the picture be displayed for 2s then change. */
-        SDK_DelayAtLeastUs(1000000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+        /* The Porter-Duff mode changed on the source layer; shadow-load layer 1
+         * so the new blend configuration is latched on the next VSYNC.
+         * DEMO_UpdateFrame() only reloads layer 0. */
+        DCIF_TriggerLayerShadowLoad(DEMO_DCIF, 1);
 
         /* Update frame according to the interface type. */
         DEMO_UpdateFrame(0U);

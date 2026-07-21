@@ -15,4 +15,3 @@ dcif_basic:
       - ${board_root}/${board}/driver_examples/dcif/dcif_examples_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    mimxrt2660evk: []
