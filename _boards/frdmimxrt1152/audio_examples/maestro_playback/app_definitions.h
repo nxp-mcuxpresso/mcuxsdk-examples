@@ -44,7 +44,7 @@
 /* Clock pre divider for sai1 clock source */
 #define DEMO_SAI1_CLOCK_SOURCE_PRE_DIVIDER (0U)
 /* Clock divider for sai1 clock source */
-#define DEMO_SAI1_CLOCK_SOURCE_DIVIDER (63U)
+#define DEMO_SAI1_CLOCK_SOURCE_DIVIDER (31U)
 /* Get frequency of sai1 clock */
 #define DEMO_SAI_CLK_FREQ CLOCK_GetRootClockFreq(kCLOCK_Root_Sai1)
 

@@ -81,6 +81,8 @@ void BOARD_InitHardware(void)
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
     BOARD_InitSAIPins();
+    BOARD_InitCODEC_I2CPins();
+    BOARD_InitSDHCPins();
     BOARD_BootClockRUN();
     CLOCK_InitAudioPll(&audioPllConfig);
     BOARD_InitDebugConsole();

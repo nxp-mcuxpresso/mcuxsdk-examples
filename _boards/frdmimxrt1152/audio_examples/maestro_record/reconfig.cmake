@@ -1,13 +1,17 @@
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}
+    SOURCES examples/audio_examples/maestro_record/RT/*.c
+            examples/audio_examples/maestro_record/RT/*.h
+)
+
 mcux_add_include(
-    BASE_PATH ${CMAKE_CURRENT_LIST_DIR}
-    INCLUDES .
+    BASE_PATH ${SdkRootDirPath}
+    INCLUDES examples/audio_examples/maestro_record/RT
 )
 
 mcux_add_source(
     BASE_PATH ${CMAKE_CURRENT_LIST_DIR}
-    SOURCES streamer_pcm.c
-            streamer_pcm.h
-            app_definitions.h
+    SOURCES app_definitions.h
 )
 
 mcux_add_source(

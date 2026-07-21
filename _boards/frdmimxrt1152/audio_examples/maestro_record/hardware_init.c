@@ -13,7 +13,7 @@
 #include "fsl_wm8962.h"
 #include "fsl_codec_adapter.h"
 #include "fsl_dmamux.h"
-#include "fsl_pdm.h"
+
 /*${header:end}*/
 
 /*${variable:start}*/
@@ -36,7 +36,7 @@ wm8962_config_t wm8962Config = {
     .bus          = kWM8962_BusI2S,
     .format       = {.mclk_HZ    = 24576000U,
                      .sampleRate = kWM8962_AudioSampleRate16KHz,
-                     .bitWidth   = kWM8962_AudioBitWidth32bit},
+                     .bitWidth   = kWM8962_AudioBitWidth16bit},
     .masterSlave  = false,
 };
 codec_config_t boardCodecConfig = {.codecDevType = kCODEC_WM8962, .codecDevConfig = &wm8962Config};
@@ -84,6 +84,8 @@ void BOARD_InitHardware(void)
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
     BOARD_InitSAIPins();
+    BOARD_InitCODEC_I2CPins();
+    BOARD_InitSDHCPins();
     BOARD_BootClockRUN();
     CLOCK_InitAudioPll(&audioPllConfig);
     BOARD_InitDebugConsole();
@@ -94,8 +96,8 @@ void BOARD_InitHardware(void)
     CLOCK_SetRootClockDiv(kCLOCK_Root_Sai1, 16);
     /* 0SC400M */
     /* 24.576m mic root clock */
-    CLOCK_SetRootClockMux(kCLOCK_Root_Mic, 6);
-    CLOCK_SetRootClockDiv(kCLOCK_Root_Mic, 16);
+    //CLOCK_SetRootClockMux(kCLOCK_Root_Mic, 6);
+    //CLOCK_SetRootClockDiv(kCLOCK_Root_Mic, 16);
 
     /*Enable MCLK clock*/
     BOARD_EnableSaiMclkOutput(true);

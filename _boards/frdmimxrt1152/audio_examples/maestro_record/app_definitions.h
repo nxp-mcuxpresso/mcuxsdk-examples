@@ -16,43 +16,45 @@
 /*${macro:start}*/
 /* SAI instance and clock */
 #define DEMO_CODEC_WM8962             1
-#define DEMO_PDM                      PDM
 #define DEMO_SAI                      SAI1
+#define DEMO_SAI_CHANNEL              (0)
+#define DEMO_SAI_BITWIDTH             (kSAI_WordWidth16bits)
+#define DEMO_SAI_IRQ                  SAI1_IRQn
+#define SAI_UserIRQHandler            SAI1_IRQHandler
+#define DEMO_SAI_TX_SYNC_MODE         kSAI_ModeAsync
+#define DEMO_SAI_RX_SYNC_MODE         kSAI_ModeSync
 #define DEMO_SAI_MASTER_SLAVE         kSAI_Master
-#define DEMO_SAI_CLK_FREQ             24576000
-#define DEMO_SAI_CLOCK_SOURCE         (kSAI_BclkSourceMclkDiv)
-#define DEMO_PDM_CLK_FREQ             24576000
-#define DEMO_PDM_FIFO_WATERMARK       (4)
-#define DEMO_PDM_QUALITY_MODE         kPDM_QualityModeHigh
-#define DEMO_PDM_CIC_OVERSAMPLE_RATE  (0U)
-#define DEMO_PDM_ENABLE_CHANNEL_LEFT  (0U)
-#define DEMO_PDM_ENABLE_CHANNEL_RIGHT (1U)
-#define DEMO_PDM_SAMPLE_CLOCK_RATE    (6144000U) /* 6.144MHZ */
 
 #define DEMO_AUDIO_DATA_CHANNEL (2U)
-#define DEMO_AUDIO_BIT_WIDTH    kSAI_WordWidth32bits
+#define DEMO_AUDIO_BIT_WIDTH    kSAI_WordWidth16bits
 #define DEMO_AUDIO_SAMPLE_RATE  (kSAI_SampleRate16KHz)
 #define DEMO_AUDIO_MASTER_CLOCK DEMO_SAI_CLK_FREQ
 
+/* IRQ */
+#define DEMO_I2C_IRQ    LPI2C1_IRQn
+#define DEMO_DMA_TX_IRQ DMA0_DMA16_IRQn
+#define DEMO_DMA_RX_IRQ DMA1_DMA17_IRQn
+
 /* DMA */
-#define DEMO_EDMA          DMA0
+#define DEMO_DMA           DMA0
 #define DEMO_DMAMUX        DMAMUX0
-#define DEMO_RX_CHANNEL    (0)
-#define DEMO_TX_CHANNEL    (1)
+#define DEMO_RX_CHANNEL    (0U)
+#define DEMO_TX_CHANNEL    (1U)
 #define DEMO_SAI_TX_SOURCE kDmaRequestMuxSai1Tx
-#define DEMO_SAI_RX_SOURCE kDmaRequestMuxPdm
+#define DEMO_SAI_RX_SOURCE kDmaRequestMuxSai1Rx
 
 /* Select Audio/Video PLL (786.48 MHz) as sai1 clock source */
 #define DEMO_SAI1_CLOCK_SOURCE_SELECT (2U)
 /* Clock pre divider for sai1 clock source */
 #define DEMO_SAI1_CLOCK_SOURCE_PRE_DIVIDER (0U)
 /* Clock divider for sai1 clock source */
-#define DEMO_SAI1_CLOCK_SOURCE_DIVIDER (63U)
+#define DEMO_SAI1_CLOCK_SOURCE_DIVIDER (31U)
+/* Get frequency of sai1 clock */
+#define DEMO_SAI_CLK_FREQ 24576000U
 
-#define DEMO_MIC_CHANNEL_NUM 2
-#define DEMO_MIC_SAMPLE_SIZE 32
-#define DEMO_MIC_SAMPLE_RATE 16000
-#define DEMO_MIC_FRAME_SIZE  30
+#define DEMO_MIC_CHANNEL_NUM           1
+#define DEMO_CHANNEL_NUM               2
+#define DEMO_MIC_FRAME_SIZE            30
 #define DEMO_CODEC_CHANNEL   kCODEC_PlayChannelHeadphoneLeft | kCODEC_PlayChannelHeadphoneRight
 
 #define DEMO_VOLUME (60)
