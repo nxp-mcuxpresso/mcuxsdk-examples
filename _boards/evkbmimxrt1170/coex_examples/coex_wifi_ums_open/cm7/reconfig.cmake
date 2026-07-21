@@ -24,7 +24,6 @@ mcux_add_source(
     middleware/edgefast_open/examples/_boards/${board}/unicast_media_sender/${core_id}/pin_mux.h
     middleware/edgefast_open/source/bluetooth/hci/configs/mbedtls/mbedtls_config_client.h
     middleware/edgefast_open/examples/_boards/${board}/configs/mbedtls/mbedtls_user_config.h
-    middleware/wireless/framework/zephyr/lib/crc/crc8_sw.c
 )
 
 mcux_add_source(
@@ -51,7 +50,6 @@ mcux_add_include(
              middleware/edgefast_open/examples/_boards/${board}/configs/freertos
              middleware/edgefast_open/examples/_boards/${board}/unicast_media_sender/${core_id}
              middleware/edgefast_open/examples/_boards/${board}/configs/mbedtls
-             middleware/wireless/framework/zephyr/lib/crc
              middleware/edgefast_open/include
              middleware/wireless/ethermind/port/pal/mcux/bluetooth/controller
 )
