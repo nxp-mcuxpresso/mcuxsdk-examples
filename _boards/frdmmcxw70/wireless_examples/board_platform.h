@@ -8,7 +8,6 @@
 #define _BOARD_PLATFORM_H_
 
 #include "fsl_common.h"
-#include "fsl_glikey.h"
 
 /*******************************************************************************
  * Definitions
@@ -97,33 +96,6 @@
 #define BOARD_APP_UART_CLK_FREQ   32000000U // Fro192M runs at 32M on the FPGA
 #define BOARD_DEBUG_UART_CLK_FREQ 32000000U
 #endif
-
-/*!
- * @brief Enable write for the Glikey protected registers.
- *
- * @param base GLIKEY peripheral base pointer
- * @param idx target index.
- */
-static inline void GlikeyWriteEnable(GLIKEY_Type *base, uint8_t idx)
-{
-    (void)GLIKEY_SyncReset(base);
-
-    (void)GLIKEY_StartEnable(base, idx);
-    (void)GLIKEY_ContinueEnable(base, GLIKEY_CODEWORD_STEP1);
-    (void)GLIKEY_ContinueEnable(base, GLIKEY_CODEWORD_STEP2);
-    (void)GLIKEY_ContinueEnable(base, GLIKEY_CODEWORD_STEP3);
-    (void)GLIKEY_ContinueEnable(base, GLIKEY_CODEWORD_STEP_EN);
-}
-
-/*!
- * @brief Reset the Glikey to init status.
- *
- * @param base GLIKEY peripheral base pointer
- */
-static inline void GlikeyClearConfig(GLIKEY_Type *base)
-{
-    (void)GLIKEY_SyncReset(base);
-}
 
 /*******************************************************************************
  * Definition checks
