@@ -34,7 +34,7 @@
  * __core1_image placement). APP_BootCore1() releases M7_1 by writing this base
  * to MC_ME PRTN0_CORE1_ADDR; hardware fetches the initial SP/PC from here. No
  * copy to RAM and no TCM backdoor are involved. */
-#define CORE1_BOOT_ADDRESS  0x00600000
+#define CORE1_BOOT_ADDRESS  0x005C0000
 
 
 #define LED_INIT()          //LED is toggled by the secondary core in this example

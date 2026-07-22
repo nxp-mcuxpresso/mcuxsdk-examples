@@ -41,6 +41,6 @@ RPMsg demo ends
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Note:
 The secondary core (M7_1) image is embedded into the primary core (M7_0) image
-and programmed to flash at address 0x00600000. The primary core releases the
+and programmed to flash at address 0x005C0000. The primary core releases the
 secondary core through the MC_ME interface and the secondary core runs in place
 directly from flash. No copy-to-RAM step is performed.

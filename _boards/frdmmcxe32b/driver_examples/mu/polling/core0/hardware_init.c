@@ -39,7 +39,7 @@ void APP_EnableMu2Clock(void)
  * Release the secondary core (M7_1) so it boots and runs in place from flash.
  *
  * The secondary image is embedded in the primary flash image and linked to
- * CORE1_BOOT_ADDRESS (0x00600000). M7_1 boots directly from flash; there is no
+ * CORE1_BOOT_ADDRESS (0x005C0000). M7_1 boots directly from flash; there is no
  * copy to RAM and no TCM backdoor. MC_ME start sequence:
  *   1. Write the secondary core reset-vector base to PRTN0_CORE1_ADDR. Hardware
  *      fetches the initial SP/PC from this flash address.
