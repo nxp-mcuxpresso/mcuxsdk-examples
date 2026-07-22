@@ -227,6 +227,8 @@ ota_mcuboot_basic:
     - -mdk@debug
     - -mdk@release
     frdmmcxn947@cm33_core0:
+    - -mdk@debug
+    - -mdk@release
     frdmmcxn947t@cm33_core0:
     - -mdk@debug
     - -mdk@release
@@ -304,6 +306,8 @@ ota_mcuboot_basic@mcxn_encrypted_xip:
     - -mdk@release
     - -mdk@debug
     frdmmcxn947@cm33_core0:
+    - -mdk@release
+    - -mdk@debug
     frdmmcxn947t@cm33_core0:
     - -mdk@release
     - -mdk@debug

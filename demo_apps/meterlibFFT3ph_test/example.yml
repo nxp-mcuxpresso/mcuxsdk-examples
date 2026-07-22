@@ -23,6 +23,10 @@ meterlibFFT3ph_test:
     - -mdk@debug
     - -mdk@release
     frdmmcxn947@cm33_core0:
+    - -mdk@debug
+    - -mdk@release
+    - -armgcc@debug
+    - -armgcc@release
     frdmmcxn947t@cm33_core0:
     - -mdk@debug
     - -mdk@release

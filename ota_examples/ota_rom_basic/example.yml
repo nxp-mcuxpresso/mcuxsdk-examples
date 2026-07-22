@@ -38,6 +38,8 @@ ota_rom_basic:
     - -mdk@debug
     - -mdk@release
     frdmmcxn947@cm33_core0:
+    - -mdk@debug
+    - -mdk@release
     frdmmcxn947t@cm33_core0:
     - -mdk@debug
     - -mdk@release
