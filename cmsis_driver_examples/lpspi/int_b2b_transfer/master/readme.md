@@ -79,6 +79,7 @@ Press any key to run again.
 - [FRDM-MCXA344](../../../../_boards/frdmmcxa344/cmsis_driver_examples/lpspi/int_b2b_transfer/master/example_board_readme.md)
 - [FRDM-MCXA346](../../../../_boards/frdmmcxa346/cmsis_driver_examples/lpspi/int_b2b_transfer/master/example_board_readme.md)
 - [FRDM-MCXE247](../../../../_boards/frdmmcxe247/cmsis_driver_examples/lpspi/int_b2b_transfer/master/example_board_readme.md)
+- [FRDM-MCXE32B](../../../../_boards/frdmmcxe32b/cmsis_driver_examples/lpspi/int_b2b_transfer/master/example_board_readme.md)
 - [FRDM-MCXL255](../../../../_boards/frdmmcxl255/cmsis_driver_examples/lpspi/int_b2b_transfer/master/example_board_readme.md)
 - [FRDM-MCXN236](../../../../_boards/frdmmcxn236/cmsis_driver_examples/lpspi/int_b2b_transfer/master/example_board_readme.md)
 - [FRDM-MCXN947](../../../../_boards/frdmmcxn947/cmsis_driver_examples/lpspi/int_b2b_transfer/master/example_board_readme.md)
