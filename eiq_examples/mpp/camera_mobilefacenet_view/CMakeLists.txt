@@ -18,7 +18,7 @@ mcux_add_include(
 # board files
 include(${SdkRootDirPath}/${board_root}/${board}/eiq_examples/mpp/board.cmake)
 # model and post-processing
-include(${SdkRootDirPath}/middleware/eiq/mpp/internal/models/mobilefacenet/model.cmake)
+include(${SdkRootDirPath}/middleware/eiq/mpp/models/mobilefacenet/model.cmake)
 
 # top level
 include(${SdkRootDirPath}/CMakeLists.txt)

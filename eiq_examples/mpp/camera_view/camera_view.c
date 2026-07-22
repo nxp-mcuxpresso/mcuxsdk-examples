@@ -149,6 +149,9 @@ static void app_task(void *params) {
     cam_params.format = args->src_format;
     cam_params.fps    = 30;
     cam_params.stripe = stripe_mode;
+#ifdef USE_USB_CAMERA
+    cam_params.in_advance_enqueue = true;
+#endif
     ret = mpp_camera_add(mp, args->camera_name, &cam_params, NULL);
     if (ret) {
         PRINTF("Failed to add camera %s\n", args->camera_name);

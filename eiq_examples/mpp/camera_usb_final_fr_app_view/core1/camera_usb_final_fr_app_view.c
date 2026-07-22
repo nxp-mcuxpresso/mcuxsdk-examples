@@ -17,8 +17,17 @@
 
 #include "hal_camera_shared.h"
 
-#include "images/kaggle_img_rgb_320_yuyv_jpg.h"
-#include "images/kaggle_img_ir_640_yuyv_jpg.h"
+#ifndef USE_INTERNAL_STATIC_IMAGES
+#define USE_INTERNAL_STATIC_IMAGES 0
+#endif
+
+#if USE_INTERNAL_STATIC_IMAGES
+#include "kaggle_img_rgb_320_yuyv_jpg.h"
+#include "kaggle_img_ir_640_yuyv_jpg.h"
+#else
+#include "couple_COCO_rgb_320_yuyv_jpg.h"
+#include "couple_COCO_gray_640_yuyv_jpg.h"
+#endif
 
 /*******************************************************************************
  * Definitions
@@ -37,10 +46,17 @@ static char helloMsg[13];
 #endif /* RPMSG_LITE_MASTER_IS_LINUX */
 
 /* Static image parameters */
+#if USE_INTERNAL_STATIC_IMAGES
 const uint8_t *rgb_image_data = &kaggle_img_rgb_data[0];
 uint32_t rgb_image_size = sizeof(kaggle_img_rgb_data);
 const uint8_t *ir_image_data = &kaggle_img_ir_data[0];
 uint32_t ir_image_size = sizeof(kaggle_img_ir_data);
+#else
+const uint8_t *rgb_image_data = &couple_coco_rgb_data[0];
+uint32_t rgb_image_size = sizeof(couple_coco_rgb_data);
+const uint8_t *ir_image_data = &couple_coco_gray_data[0];
+uint32_t ir_image_size = sizeof(couple_coco_gray_data);
+#endif
 
 const uint8_t *crt_rgb_image_data;
 uint32_t crt_rgb_image_size;

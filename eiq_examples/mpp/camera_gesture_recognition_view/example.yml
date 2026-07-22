@@ -1,0 +1,35 @@
+camera_gesture_recognition_view:
+  section-type: application
+  contents:
+    meta_path: examples/eiq_examples/mpp/camera_gesture_recognition_view
+    project-root-path: boards/${board}/eiq_examples/mpp/camera_gesture_recognition_view
+    document:
+      name: camera_gesture_recognition_view
+      category: eiq_examples
+      brief: Vision Pipeline example for model BlazeDetector
+      example_readme:
+      - examples/eiq_examples/mpp/camera_gesture_recognition_view/readme.md
+      - middleware/eiq/mpp/${board}/board_readme.md
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                HAL_LOG_LEVEL: 0 
+              cx-define:
+                HAL_LOG_LEVEL: 0 
+  boards:
+    mimxrt700evk@cm33_core0:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    - +armgcc@flash_debug
+    - +armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -mdk@flash_debug
+    - -mdk@flash_release

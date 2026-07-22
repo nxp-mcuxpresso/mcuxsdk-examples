@@ -12,6 +12,14 @@
 #include "mcmgr.h"
 #endif /* MCMGR_USED */
 
+#ifdef ENABLE_ETHERNET_PHY
+#if BOARD_NETWORK_USE_100M_ENET_PORT
+#include "fsl_phyrtl8201.h"
+#else
+#include "fsl_phyrtl8211f.h"
+#endif
+#endif /* ENABLE_ETHERNET_PHY */
+
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
@@ -48,6 +56,34 @@ extern int core1_image_size;
 #ifdef CORE1_IMAGE_COPY_TO_RAM
 uint32_t get_core1_image_size(void);
 #endif /* CORE1_IMAGE_COPY_TO_RAM */
+
+#ifdef ENABLE_ETHERNET_PHY
+#if BOARD_NETWORK_USE_100M_ENET_PORT
+extern phy_rtl8201_resource_t g_phy_resource;
+#define EXAMPLE_ENET ENET
+/* Address of PHY interface. */
+#define EXAMPLE_PHY_ADDRESS BOARD_ENET0_PHY_ADDRESS
+/* PHY operations. */
+#define EXAMPLE_PHY_OPS &phyrtl8201_ops
+/* ENET instance select. */
+#define EXAMPLE_NETIF_INIT_FN ethernetif0_init
+#else
+extern phy_rtl8211f_resource_t g_phy_resource;
+#define EXAMPLE_ENET          ENET_1G
+/* Address of PHY interface. */
+#define EXAMPLE_PHY_ADDRESS   BOARD_ENET1_PHY_ADDRESS
+/* PHY operations. */
+#define EXAMPLE_PHY_OPS       &phyrtl8211f_ops
+/* ENET instance select. */
+#define EXAMPLE_NETIF_INIT_FN ethernetif1_init
+#endif
+
+/* PHY resource. */
+#define EXAMPLE_PHY_RESOURCE &g_phy_resource
+
+/* ENET clock frequency. */
+#define EXAMPLE_CLOCK_FREQ CLOCK_GetRootClockFreq(kCLOCK_Root_Bus)
+#endif /* ENABLE_ETHERNET_PHY */
 
 void BOARD_Init();
 

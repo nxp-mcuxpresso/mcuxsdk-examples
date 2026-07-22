@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024,2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -8,6 +8,7 @@
 #define CAMERA_CONFIG_H_
 
 #include "fsl_common.h"
+#include "mpp_config.h"
 
 /*******************************************************************************
  * Definitions
@@ -44,8 +45,8 @@
 #define CAMERA_BPP            (2U)
 #define CAMERA_FRAME_RATE     (30U)
 #define CAMERA_FRAMEBUF_NUM   (2U)
-#define CAMERA_WIDTH          (640U)
-#define CAMERA_HEIGHT         (480U)
+#define CAMERA_WIDTH          (APP_CAMERA_WIDTH)
+#define CAMERA_HEIGHT         (APP_CAMERA_HEIGHT)
 #define CAMERA_STRIDE    (CAMERA_WIDTH *CAMERA_BPP)
 #define CAMERA_CTRL_FLAG (kCAMERA_HrefActiveHigh|kCAMERA_DataLatchOnRisingEdge)
 

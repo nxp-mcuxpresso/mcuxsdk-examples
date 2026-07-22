@@ -35,6 +35,9 @@
 /* enable ExecuTorch */
 #define HAL_ENABLE_INFERENCE_EXECUTORCH        1
 
+/* Use Neutron backend for ExecuTorch inference */
+#define HAL_EXECUTORCH_BACKEND_NEUTRON 1
+
 /* Memory arena sizes for ExecuTorch runtime (in KB) */
 #define HAL_EXECUTORCH_METHOD_ARENA_SIZE_KB     256
 #define HAL_EXECUTORCH_TEMP_ARENA_SIZE_KB       256

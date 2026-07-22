@@ -49,7 +49,7 @@ void *image_data = (void *)image_90_160_rgb565le_data;
 #define SRC_IMAGE_WIDTH SRC_IMAGE_STOPWATCH168_208_VUYX_WIDTH
 void *image_data = (void *)stopwatch168_208_vuyx_data;
 #define IMAGE_NAME "stopwatch168_208_vuyx"
-#define EXPECTED_CHECKSUM 0x7fe16ed5
+#define EXPECTED_CHECKSUM 0x0c973d61
 #elif (APP_CONFIG==2)
 #include "images/dogs_COCO_320_320_bgra.h"
 #define SRC_IMAGE_FORMAT SRC_IMAGE_DOGS_COCO_320_320_BGRA_FORMAT
@@ -58,7 +58,7 @@ void *image_data = (void *)stopwatch168_208_vuyx_data;
 #define SRC_IMAGE_WIDTH SRC_IMAGE_DOGS_COCO_320_320_BGRA_WIDTH
 void *image_data = (void *)dogs_COCO_320_320_bgra_data;
 #define IMAGE_NAME "dogs_COCO_320_320_bgra.h"
-#define EXPECTED_CHECKSUM 0xb5d1fd3d
+#define EXPECTED_CHECKSUM 0x7de45e3e
 #elif (APP_CONFIG==3)
 #include "images/stopwatch128_128_rgb.h"
 #define SRC_IMAGE_FORMAT SRC_IMAGE_STOPWATCH128_128_RGB_FORMAT

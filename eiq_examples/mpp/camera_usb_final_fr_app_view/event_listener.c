@@ -46,6 +46,7 @@ int mpp_event_listener(mpp_t mpp, mpp_evt_t evt, void *evt_data, void *user_data
     recognition_result result;
     antispoofing_result liveness;
 #ifdef DEBUG_PREVIEW_RECOGNITION
+    const mpp_inference_inp_cb_params *inf_input;
     int imgsize = 0;
     int model_width = 0;
     int model_height = 0;
@@ -58,6 +59,7 @@ int mpp_event_listener(mpp_t mpp, mpp_evt_t evt, void *evt_data, void *user_data
     switch(evt) {
     case MPP_EVENT_INFERENCE_INPUT_READY:
 #ifdef DEBUG_PREVIEW_RECOGNITION
+        inf_input = (const mpp_inference_inp_cb_params *) evt_data;
         /* copy inference input view data */
         if (app_priv->cur_model == MODEL_MOBILEFACENET)
         {
@@ -78,7 +80,7 @@ int mpp_event_listener(mpp_t mpp, mpp_evt_t evt, void *evt_data, void *user_data
         imgsize = model_width * model_height * 3;  /* RGB888 */
         if (app_priv->inference_view)
         {
-            memcpy(app_priv->inference_view, (uint8_t *)evt_data, imgsize);
+            memcpy(app_priv->inference_view, (uint8_t *)(inf_input->in_tensors[0]->data), imgsize);
         }
         /* show detected face preview */
         app_priv->p_params_compose->compose.image_list[COMPOSE_INFPVW_INDEX].width = model_width;

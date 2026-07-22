@@ -1,0 +1,62 @@
+/*
+ * Copyright 2025-2026 NXP
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+#ifndef _TEST_CONFIG_H
+#define _TEST_CONFIG_H
+
+/*
+ * This is the test configuration for evkbmimxrt1170
+ */
+
+/*******************************************************************************
+ * TEST configuration
+ ******************************************************************************/
+#ifndef APP_CONFIG
+#define APP_CONFIG 0
+#endif
+
+/* checksum used for this test is PISANO */
+#define CHECKSUM_TYPE_EXPECTED_PISANO   1
+
+#if (APP_CONFIG==0)
+#include "images/couple_COCO_160_120_rgb565.h"
+#include "images/skigirl_COCO_160_120_rgb565.h"
+#define SRC1_IMAGE_NAME "couple_COCO_160_120_rgb565"
+#define SRC2_IMAGE_NAME "skigirl_COCO_160_120_rgb565"
+#define SRC1_IMAGE_FORMAT SRC_IMAGE_COUPLE_COCO_160_120_RGB565_FORMAT
+#define SRC1_IMAGE_CHANNELS_NUMBER SRC_IMAGE_COUPLE_COCO_160_120_RGB565_CHANNELS_NUMBER
+#define SRC1_IMAGE_HEIGHT SRC_IMAGE_COUPLE_COCO_160_120_RGB565_HEIGHT
+#define SRC1_IMAGE_WIDTH SRC_IMAGE_COUPLE_COCO_160_120_RGB565_WIDTH
+#define SRC2_IMAGE_FORMAT SRC_IMAGE_SKIGIRL_COCO_160_120_RGB565_FORMAT
+#define SRC2_IMAGE_CHANNELS_NUMBER SRC_IMAGE_SKIGIRL_COCO_160_120_RGB565_CHANNELS_NUMBER
+#define SRC2_IMAGE_HEIGHT SRC_IMAGE_SKIGIRL_COCO_160_120_RGB565_HEIGHT
+#define SRC2_IMAGE_WIDTH SRC_IMAGE_SKIGIRL_COCO_160_120_RGB565_WIDTH
+void *image1_data = (void *)couple_COCO_160_120_rgb565_data;
+void *image2_data = (void *)skigirl_COCO_160_120_rgb565_data;
+#define SRC1_EXPECTED_CHECKSUM 0x0
+#define SRC2_EXPECTED_CHECKSUM 0x0
+#elif (APP_CONFIG==1)
+#include "images/skigirl_COCO_320_256_rgb565.h"
+#include "images/stopwatch320_240_rgb565le.h"
+#define SRC1_IMAGE_NAME "skigirl_COCO_320_256_rgb565"
+#define SRC2_IMAGE_NAME "stopwatch320_240_rgb565le"
+#define SRC1_IMAGE_FORMAT SRC_IMAGE_SKIGIRL_COCO_320_256_RGB565_FORMAT
+#define SRC1_IMAGE_CHANNELS_NUMBER SRC_IMAGE_SKIGIRL_COCO_320_256_RGB565_CHANNELS_NUMBER
+#define SRC1_IMAGE_HEIGHT SRC_IMAGE_SKIGIRL_COCO_320_256_RGB565_HEIGHT
+#define SRC1_IMAGE_WIDTH SRC_IMAGE_SKIGIRL_COCO_320_256_RGB565_WIDTH
+#define SRC2_IMAGE_FORMAT SRC_IMAGE_STOPWATCH320_240_RGB565LE_FORMAT
+#define SRC2_IMAGE_CHANNELS_NUMBER SRC_IMAGE_STOPWATCH320_240_RGB565LE_CHANNELS_NUMBER
+#define SRC2_IMAGE_HEIGHT SRC_IMAGE_STOPWATCH320_240_RGB565LE_HEIGHT
+#define SRC2_IMAGE_WIDTH SRC_IMAGE_STOPWATCH320_240_RGB565LE_WIDTH
+void *image1_data = (void *)skigirl_COCO_320_256_rgb565_data;
+void *image2_data = (void *)stopwatch320_240_rgb565le_data;
+#define SRC1_EXPECTED_CHECKSUM 0x0
+#define SRC2_EXPECTED_CHECKSUM 0x0
+#else
+#pragma message "configuration APP_CONFIG value is not supported by test"
+#endif
+
+#endif /* _TEST_CONFIG_H */

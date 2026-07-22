@@ -28,13 +28,13 @@
 #define USB_VIDEO_STREAM_BUFFER_COUNT \
     (6U) /*!< the prime count, the value shouldn't be more than 6 because of USB dedicated ram limination */
 #define USB_MJPEG_COMPRESSION_RATIO \
-    (50U) /*!< the approximate mjpeg picture compression radio of device camera, 50 means 50% */
+    (100U) /*!< the approximate mjpeg picture compression radio of device camera, 50 means 50% */
 
-#define CAMERA_USB_MAX_WIDTH  1280 /* maximum supported width */
-#define CAMERA_USB_MAX_HEIGHT 720  /* maximum supported height */
+#define CAMERA_USB_MAX_WIDTH  640 /* maximum supported width */
+#define CAMERA_USB_MAX_HEIGHT 480 /* maximum supported height */
 #define CAMERA_USB_MAX_BPP 2 /* YUYV */
 #define CAMERA_DEV_BUFFER_ALIGN 64      /* alignment requirement TODO */
-#define CAMERA_USB_RAW_BUFF_SIZE CAMERA_USB_MAX_WIDTH * CAMERA_USB_MAX_HEIGHT * CAMERA_USB_MAX_BPP
+#define CAMERA_USB_RAW_BUFF_SIZE (CAMERA_USB_MAX_WIDTH * CAMERA_USB_MAX_HEIGHT * CAMERA_USB_MAX_BPP)
 #define CAMERA_USB_JPEG_BUFF_SIZE (CAMERA_USB_RAW_BUFF_SIZE * USB_MJPEG_COMPRESSION_RATIO) / 100
 
 /* Add the max ISO packet size */

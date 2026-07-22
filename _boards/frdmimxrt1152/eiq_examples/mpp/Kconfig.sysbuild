@@ -1,0 +1,4 @@
+config secondary_config
+    string
+    default "debug" if $(config) = "flexspi_nor_sdram_debug"
+    default "release" if $(config) = "flexspi_nor_sdram_release"
