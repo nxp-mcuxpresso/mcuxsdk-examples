@@ -111,7 +111,7 @@ mcux_remove_armgcc_linker_script(
 
 mcux_add_armgcc_linker_script(
   BASE_PATH ${SdkRootDirPath}
-  LINKER middleware/wireless/coex/build/${board}/linker/gcc/MIMXRT1062xxxxx_flexspi_nor.ld
+  LINKER middleware/wireless/coex/build/${board}/linker/MIMXRT1062xxxxx_flexspi_nor.ld
   TARGETS
     flexspi_nor_debug
     flexspi_nor_release

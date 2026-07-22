@@ -12,6 +12,8 @@ mcux_add_source(
             ${board_root}/${board}/wifi_bt_config.c
             ${board_root}/${board}/wifi_bt_config.h
             middleware/wireless/coex/build/${board}/common/hardware_init.c
+            middleware/wireless/coex/build/${board}/common/peripherals.c
+            middleware/wireless/coex/build/${board}/common/peripherals.h
             middleware/wireless/coex/build/${board}/common/app.h
             ${board_root}/${board}/coex_examples/coex_wifi_edgefast/pin_mux.c
             ${board_root}/${board}/coex_examples/coex_wifi_edgefast/pin_mux.h
@@ -27,6 +29,7 @@ mcux_add_source(
             middleware/wireless/coex/src/edgefast/coex_shell.h
             middleware/wireless/coex/third_party/platform/rt1060/ot_config.cmake
             examples/coex_examples/coex_wifi_edgefast/app_config.cmake
+            middleware/edgefast_open/examples/_boards/${board}/configs/mbedtls/mbedtls_user_config.h
 )
 
 mcux_add_source(
@@ -127,7 +130,7 @@ mcux_remove_armgcc_linker_script(
 
 mcux_add_armgcc_linker_script(
   BASE_PATH ${SdkRootDirPath}
-  LINKER middleware/wireless/coex/build/${board}/linker/gcc/MIMXRT1062xxxxx_flexspi_nor.ld
+  LINKER middleware/wireless/coex/build/${board}/linker/MIMXRT1062xxxxx_flexspi_nor.ld
   TARGETS
     flexspi_nor_debug
     flexspi_nor_release
