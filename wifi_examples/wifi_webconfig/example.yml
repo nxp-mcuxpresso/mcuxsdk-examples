@@ -185,15 +185,9 @@ wifi_webconfig:
     - -mdk@debug
     - -mdk@release
     frdmimxrt700@cm33_core0:
-    - +armgcc@debug
-    - +armgcc@release
     - +armgcc@flash_debug
     - +armgcc@flash_release
-    - +iar@debug
-    - +iar@release
     - +iar@flash_debug
     - +iar@flash_release
-    - +mdk@debug
-    - +mdk@release
     - +mdk@flash_debug
     - +mdk@flash_release
