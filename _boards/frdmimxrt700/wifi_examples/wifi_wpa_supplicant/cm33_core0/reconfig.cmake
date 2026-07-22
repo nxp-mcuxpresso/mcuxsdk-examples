@@ -6,7 +6,9 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/lwip_config/lwipopts.h
+    SOURCES ${board_root}/${board}/wifi_examples/common/cm33_core0/host_sleep.c
+            ${board_root}/${board}/wifi_examples/common/cm33_core0/host_sleep.h
+            ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/lwip_config/lwipopts.h
             ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/lwip_config/lwippools.h
             ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/lwip_config/lwiphooks.h
             ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/freertos_config/FreeRTOSConfig.h
