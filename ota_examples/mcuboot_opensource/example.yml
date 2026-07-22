@@ -226,6 +226,9 @@ mcuboot_opensource:
     frdmmcxn947@cm33_core0:
     - -mdk@release
     - -mdk@debug
+    frdmmcxn947t@cm33_core0:
+    - -mdk@release
+    - -mdk@debug
     frdmmcxn236:
     - -mdk@release
     - -mdk@debug
