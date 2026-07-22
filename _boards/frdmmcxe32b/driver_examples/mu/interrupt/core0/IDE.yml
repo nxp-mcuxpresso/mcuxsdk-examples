@@ -1,0 +1,25 @@
+#
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# Board-specific IDE.yml override for frdmmcxe32b.
+# Fixes secondary-project path: shared template uses ${SB_CONFIG_secondary_core_id}
+# which resolves to "core1", but the real suffix is "_cm7_core1" on MCXE32B.
+
+iar:
+  shared-workspace: mu_interrupt
+  sharing-workspace:
+  - ../../mu_interrupt_secondary_core/iar/mu_interrupt_secondary_core_cm7_core1
+  config:
+    __common__:
+      asym-multicore-debugger:
+        enable: true
+        slave-workspace: "../../mu_interrupt_secondary_core/iar/mu_interrupt_secondary_core_cm7_core1.eww"
+        slave-project: mu_interrupt_secondary_core_cm7_core1
+        attach-partner: true
+
+mdk:
+  shared-workspace: mu_interrupt
+  sharing-workspace:
+  - ../../mu_interrupt_secondary_core/mdk/mu_interrupt_secondary_core_cm7_core1
