@@ -121,7 +121,10 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu)
             examples/_common/project_segments/wireless/wireless_mcu/debug
     )
 
+    # Sources are built into both debug and release; the enabling macro is
+    # defined only for debug so the feature code compiles inert in release.
     mcux_add_macro(
+        TARGETS debug
         TOOLCHAINS armgcc iar
         CC "-DBOARD_DBG_NBU_ENABLE=1"
     )
@@ -129,6 +132,7 @@ endif()
 
 if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu.enable_app_log)
     mcux_add_macro(
+        TARGETS debug
         TOOLCHAINS armgcc iar
         CC "-DBOARD_NBUDBG_APP_LOGGER=1"
     )
@@ -136,6 +140,7 @@ endif()
 
 if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu.enable_hci_log)
     mcux_add_macro(
+        TARGETS debug
         TOOLCHAINS armgcc iar
         CC "-DBOARD_NBUDBG_HCI_LOGGER=1"
     )
@@ -175,6 +180,7 @@ endif()
 
 if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu.enable_hci_log_on_fault_only)
     mcux_add_macro(
+        TARGETS debug
         TOOLCHAINS armgcc iar
         CC "-DBOARD_NBUDBG_HCI_LOG_ON_FAULT_ONLY=1"
     )
@@ -182,6 +188,7 @@ endif()
 
 if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu.enable_hci_log_base64)
     mcux_add_macro(
+        TARGETS debug
         TOOLCHAINS armgcc iar
         CC "-DBOARD_NBUDBG_HCI_LOG_BASE64=1"
     )
