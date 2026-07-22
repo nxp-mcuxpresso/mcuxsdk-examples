@@ -4,9 +4,12 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 /*${header:start}*/
+#include "PERI_ENET_QOS.h"
 #include "fsl_enet.h"
 #include "fsl_enet_qos.h"
 #include "fsl_phy.h"
+#include "fsl_iomuxc.h"
+#include "fsl_phyjl1111.h"
 #include "pin_mux.h"
 #include "board.h"
 #include "app.h"
@@ -14,6 +17,7 @@
 
 /*${variable:start}*/
 phy_jl1111_resource_t g_phy_resource;
+phy_operations_t g_board_phy_ops;
 /*${variable:end}*/
 
 /*${function:start}*/
@@ -58,6 +62,25 @@ static status_t MDIO_Read(uint8_t phyAddr, uint8_t regAddr, uint16_t *pData)
     return ENET_MDIORead(ENET_1G, phyAddr, regAddr, pData);
 }
 
+static status_t BOARD_PHY_EnableLoopback(phy_handle_t *handle, phy_loop_t mode, phy_speed_t speed, bool enable)
+{
+    if (speed > kPHY_Speed100M)
+    {
+        speed = kPHY_Speed100M;
+    }
+    return PHY_JL1111_EnableLoopback(handle, mode, speed, enable);
+}
+
+#if defined(EXAMPLE_PHY_LOOPBACK_ENABLE)
+/* GetLinkStatus override that enables ENET_QOS MAC internal loopback.
+ * Must be set after ENET_QOS_Init, because that clears any LM bit set beforehand. */
+static status_t BOARD_PHY_GetLinkStatus(phy_handle_t *handle, bool *status)
+{
+    ENET_QOS->MAC_CONFIGURATION |= ENET_QOS_MAC_CONFIGURATION_LM_MASK;
+    return PHY_JL1111_GetLinkStatus(handle, status);
+}
+#endif
+
 void BOARD_InitHardware(void)
 {
     /* Hardware Initialization. */
@@ -70,6 +93,9 @@ void BOARD_InitHardware(void)
     BOARD_InitModuleClock();
 
     IOMUXC_GPR->GPR6 &= ~IOMUXC_GPR_GPR6_ENET_QOS_RGMII_EN_MASK; /* Use RMII connection to the 100M PHY. */
+    IOMUXC_GPR->GPR6 |= IOMUXC_GPR_GPR6_ENET_QOS_REF_CLK_DIR_MASK; /* REF_CLK = output */
+
+    IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_B2_20_ENET_QOS_REF_CLK, 1U);
 
     /* JL1111BI datasheet minimum reset timing:
      * - assert reset low for at least 200 ns
@@ -87,5 +113,10 @@ void BOARD_InitHardware(void)
     MDIO_Init();
     g_phy_resource.read  = MDIO_Read;
     g_phy_resource.write = MDIO_Write;
+    g_board_phy_ops = phyjl1111_ops;
+#if defined(EXAMPLE_PHY_LOOPBACK_ENABLE)
+    g_board_phy_ops.enableLoopback = BOARD_PHY_EnableLoopback;
+    g_board_phy_ops.getLinkStatus = BOARD_PHY_GetLinkStatus;
+#endif
 }
 /*${function:end}*/
