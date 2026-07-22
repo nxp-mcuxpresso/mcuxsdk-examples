@@ -7,9 +7,8 @@ Hardware requirements
 
 Board settings
 ============
-- Use the 10/100 Ethernet RJ45 port (J112).
-- Set J134 to position 1-2 for the shared `ENET_MDIO` routing.
-- Set J136 to position 1-2 for the `ENET_QOS_REF_CLK1` routing.
+- Use the 10/100 Ethernet RJ45 port (J55).
+- Set JP2 to position 1-2.
 
 Prepare the Demo
 ===============
@@ -20,7 +19,7 @@ Prepare the Demo
     - No parity
     - One stop bit
     - No flow control
-3.  Insert loopback network cable to the 10/100 Ethernet RJ45 port (J112).
+3.  Insert loopback network cable to the 10/100 Ethernet RJ45 port (J55).
 4.  Download the program to the target board.
 5.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
 
