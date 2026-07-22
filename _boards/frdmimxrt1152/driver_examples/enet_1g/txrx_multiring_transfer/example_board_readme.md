@@ -7,8 +7,8 @@ Hardware requirements
 
 Board settings
 ============
-- Use the Gigabit Ethernet RJ45 port (J130).
-- Set J134 to position 1-2 for the shared `ENET_MDIO` / `ETH0_RDATA3` routing.
+- Use the Gigabit Ethernet RJ45 port (J54).
+- Set JP2 to position 1-2.
 
 Prepare the Demo
 ===============
@@ -19,7 +19,7 @@ Prepare the Demo
     - No parity
     - One stop bit
     - No flow control
-3.  Insert loopback network cable to the Gigabit Ethernet RJ45 port (J130).
+3.  Insert loopback network cable to the Gigabit Ethernet RJ45 port (J54).
 4.  Download the program to the target board.
 5.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
 
