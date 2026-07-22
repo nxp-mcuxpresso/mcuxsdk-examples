@@ -94,10 +94,6 @@ void BOARD_InitHardware(void)
     /* audio pll  */
     CLOCK_SetRootClockMux(kCLOCK_Root_Sai1, 4);
     CLOCK_SetRootClockDiv(kCLOCK_Root_Sai1, 16);
-    /* 0SC400M */
-    /* 24.576m mic root clock */
-    //CLOCK_SetRootClockMux(kCLOCK_Root_Mic, 6);
-    //CLOCK_SetRootClockDiv(kCLOCK_Root_Mic, 16);
 
     /*Enable MCLK clock*/
     BOARD_EnableSaiMclkOutput(true);

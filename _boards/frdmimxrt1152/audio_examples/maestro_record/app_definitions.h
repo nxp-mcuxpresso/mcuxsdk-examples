@@ -57,7 +57,7 @@
 #define DEMO_MIC_FRAME_SIZE            30
 #define DEMO_CODEC_CHANNEL   kCODEC_PlayChannelHeadphoneLeft | kCODEC_PlayChannelHeadphoneRight
 
-#define DEMO_VOLUME (60)
+#define DEMO_VOLUME (90)
 /*${macro:end}*/
 
 #endif /* _APP_DEFINITIONS_H_ */
