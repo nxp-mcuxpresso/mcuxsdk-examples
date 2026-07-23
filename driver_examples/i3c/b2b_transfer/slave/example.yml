@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+i3c_b2b_transfer_slave:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/i3c/b2b_transfer/slave
+    project-root-path: boards/${board}/driver_examples/i3c/b2b_transfer/slave/${multicore_foldername}
+    document:
+      name: i3c_b2b_transfer_slave${core_id_suffix_name}
+      category: driver_examples/i3c
+      brief: The i3c_b2b_transfer_slave example is the slave side of the I3C message
+        mode board to board transfer example. The slave uses the standard i3c slave
+        driver and copies each buffer received from the master into its transmit
+        buffer, so the master can read back the echo of its DMA message mode
+        transfers.
+      example_readme:
+      - examples/driver_examples/i3c/b2b_transfer/slave/readme.md
+      - ${board_root}/${board}/driver_examples/i3c/b2b_transfer/slave/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []

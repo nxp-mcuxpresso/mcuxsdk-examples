@@ -7,6 +7,7 @@ i3c
    :maxdepth: 1
 
 
+   b2b_transfer/index.rst
    dma_b2b_transfer/index.rst
    edma_b2b_transfer/index.rst
    interrupt_b2b/index.rst

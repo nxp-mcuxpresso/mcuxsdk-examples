@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+i3c_b2b_transfer_master:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/i3c/b2b_transfer/master
+    project-root-path: boards/${board}/driver_examples/i3c/b2b_transfer/master/${multicore_foldername}
+    document:
+      name: i3c_b2b_transfer_master${core_id_suffix_name}
+      category: driver_examples/i3c
+      brief: The i3c_b2b_transfer_master example demonstrates the I3C DMA message
+        mode driver to do board to board transfer. Message mode frames each SDR
+        message in hardware from one register write, so no per-byte or per-phase
+        CPU state handling is needed; DMA moves the payload. The master runs
+        single-message and chained message-mode DMA transfers, sends data to the
+        slave, reads it back and checks the data consistency.
+      example_readme:
+      - examples/driver_examples/i3c/b2b_transfer/master/readme.md
+      - ${board_root}/${board}/driver_examples/i3c/b2b_transfer/master/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
