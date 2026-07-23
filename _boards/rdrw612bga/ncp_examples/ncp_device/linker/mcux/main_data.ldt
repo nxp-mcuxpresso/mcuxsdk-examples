@@ -36,3 +36,8 @@
         _net_buf_pool_list_start = .;
         KEEP(*(SORT(._net_buf_pool*)))
         _net_buf_pool_list_end = .;
+        . = ALIGN(4);
+        __shell_command_list_start = .;
+        KEEP(*(SORT(.__shell_command*)))
+        __shell_command_list_end = .;
+        . = ALIGN(4);

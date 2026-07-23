@@ -1,4 +1,14 @@
 
+  .z_init :
+  {
+    __init_start = .;
+    __init_EARLY_start = .; KEEP(*(SORT(.z_init_EARLY_P_?_*))); KEEP(*(SORT(.z_init_EARLY_P_??_*))); KEEP(*(SORT(.z_init_EARLY_P_???_*)));
+    __init_PRE_KERNEL_1_start = .; KEEP(*(SORT(.z_init_PRE_KERNEL_1_P_?_*))); KEEP(*(SORT(.z_init_PRE_KERNEL_1_P_??_*))); KEEP(*(SORT(.z_init_PRE_KERNEL_1_P_???_*)));
+    __init_PRE_KERNEL_2_start = .; KEEP(*(SORT(.z_init_PRE_KERNEL_2_P_?_*))); KEEP(*(SORT(.z_init_PRE_KERNEL_2_P_??_*))); KEEP(*(SORT(.z_init_PRE_KERNEL_2_P_???_*)));
+    __init_POST_KERNEL_start = .; KEEP(*(SORT(.z_init_POST_KERNEL_P_?_*))); KEEP(*(SORT(.z_init_POST_KERNEL_P_??_*))); KEEP(*(SORT(.z_init_POST_KERNEL_P_???_*)));
+    __init_APPLICATION_start = .; KEEP(*(SORT(.z_init_APPLICATION_P_?_*))); KEEP(*(SORT(.z_init_APPLICATION_P_??_*))); KEEP(*(SORT(.z_init_APPLICATION_P_???_*)));
+    __init_end = .;
+  } > QSPI_FLASH
 
   ._bt_settings_area :
   {
@@ -24,6 +34,24 @@
     _bt_conn_cb_list_start = .;
     KEEP(*(SORT(._bt_conn_cb.static.*)))
     _bt_conn_cb_list_end = .;
+    . = ALIGN(4);
+  } > QSPI_FLASH
+
+  ._bt_sco_conn_cb :
+  {
+    . = ALIGN(4);
+    _bt_sco_conn_cb_list_start = .;
+    KEEP(*(SORT(._bt_sco_conn_cb*)))
+    _bt_sco_conn_cb_list_end = .;
+    . = ALIGN(4);
+  } > QSPI_FLASH
+
+  ._bt_sco_hci_cb :
+  {
+    . = ALIGN(4);
+    _bt_sco_hci_cb_list_start = .;
+    KEEP(*(SORT(._bt_sco_hci_cb*)))
+    _bt_sco_hci_cb_list_end = .;
     . = ALIGN(4);
   } > QSPI_FLASH
 
