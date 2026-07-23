@@ -17,6 +17,21 @@
  ******************************************************************************/
 /*! @brief The board name */
 #define BOARD_NAME "FRDM-IMXRT1186"
+
+#if __CORTEX_M == 7
+/*! @brief Runtime check used inside BOARD_EarlyConfigMPU().
+ *
+ * Standard assert() pulls in a shared debug/log .rodata cluster that IAR
+ * ILINK's reachability analyzer then classifies as needed-for-init, which
+ * excludes fsl_edma (and similar drivers' fragments) from the RAM init-copy
+ * set (Lp011). This bare-metal check stays outside that cluster and keeps
+ * the init call graph small. */
+#define BOARD_EARLY_ASSERT(c)       \
+    if (!(c)) {                     \
+        while (1) { __BKPT(0); }    \
+    }
+#endif /* __CORTEX_M == 7 */
+
 #ifndef DEBUG_CONSOLE_UART_INDEX
 #define DEBUG_CONSOLE_UART_INDEX 1
 #endif

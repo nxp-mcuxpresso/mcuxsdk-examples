@@ -372,9 +372,9 @@ static void BOARD_EarlyConfigMPU(void)
     if (i != 0)
     {
         /* The MPU region size should be 2^N, 5<=N<=32, region base should be multiples of size. */
-        assert(!(nonCacheStart % nonCacheSize));
-        assert(nonCacheSize == (uint32_t)(1 << i));
-        assert(i >= 5);
+        BOARD_EARLY_ASSERT(!(nonCacheStart % nonCacheSize));
+        BOARD_EARLY_ASSERT(nonCacheSize == (uint32_t)(1 << i));
+        BOARD_EARLY_ASSERT(i >= 5);
 
         /* Region 11 setting: Memory with Normal type, not shareable, non-cacheable */
         MPU->RBAR = ARM_MPU_RBAR(11, nonCacheStart);
@@ -391,9 +391,9 @@ static void BOARD_EarlyConfigMPU(void)
     if (i != 0)
     {
         /* The MPU region size should be 2^N, 5<=N<=32, region base should be multiples of size. */
-        assert(!(rpmsgShmemStart % rpmsgShmemSize));
-        assert(rpmsgShmemSize == (uint32_t)(1 << i));
-        assert(i >= 5);
+        BOARD_EARLY_ASSERT(!(rpmsgShmemStart % rpmsgShmemSize));
+        BOARD_EARLY_ASSERT(rpmsgShmemSize == (uint32_t)(1 << i));
+        BOARD_EARLY_ASSERT(i >= 5);
 
         /* Region 12 setting: Memory with Normal type, not shareable, non-cacheable */
         MPU->RBAR = ARM_MPU_RBAR(12, rpmsgShmemStart);
