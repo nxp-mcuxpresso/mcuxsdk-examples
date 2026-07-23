@@ -9,7 +9,10 @@ Hardware requirements
 
 Board settings
 ==============
-Insert FRDM-LVPMSM-FA board into Arduino interface of motor control 2.
+Insert FRDM-LVPMSM-FA board into Arduino interface of motor control 1.  
+Modify the macro BISS_MUX to MOTOR_CTRL2 when connected to motor control 2.  
+- #define BISS_MUX                MOTOR_CTRL2
+
 Connect BiSS sensor and power supply to FRDM-LVPMSM-FA
 
 BiSS point-to-point connection:
@@ -89,7 +92,7 @@ Select the encoder command from following:
 3: Enable instruction trigger
 4: Enable AGS repetition trigger
 5: Enable timeout trigger
-6: GETSENS pin trigger
+6: GETSENS pin trigger. Press "7" to cancel
 7: Reset BiSS-C
 8: Re-scan BiSS bus
 9: Dump slave information

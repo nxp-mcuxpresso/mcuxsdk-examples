@@ -9,7 +9,6 @@
 #include "pin_mux.h"
 #include "fsl_biss.h"
 #include "fsl_xbar.h"
-
 #include "fsl_debug_console.h"
 
 /*******************************************************************************
@@ -25,8 +24,6 @@
  ******************************************************************************/
 
 biss_master_t *master;
-
-BLK_CTRL_WAKEUPMIX_Type *blk_ctrl = BLK_CTRL_WAKEUPMIX;
 
 /* MB4 register values */
 unsigned char MB4_REG[20] = {
@@ -51,7 +48,6 @@ bool performance_enable;
 /*******************************************************************************
  * Code
  ******************************************************************************/
-
 static void SYSTICK_StartCount()
 {
     SysTick->VAL = SysTick->LOAD;
@@ -197,31 +193,10 @@ static void BISS_SLVDumpPosition(biss_master_t *master, uint8_t slvID)
             (uint32_t)BISSSLV_GetStVal(position));
 }
 
-static void BISS_EnableXbarPinTrigger(void)
-{
-    XBAR_Init(kXBAR_DSC1);
-    XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux1Trigger0, kXBAR1_OutputBissGetsens);
-}
-
-void BISS_SOT_IRQHandler(void)
-{
-    /* clear SOT interrupt */
-    blk_ctrl->BISS1_EOT_CTL =
-        BLK_CTRL_WAKEUPMIX_BISS1_EOT_CTL_biss_eot_fall_clr_int_b(1) | 3;
-
-    PRINTF("BISS_SOT_IRQHandler %x\r\n", blk_ctrl->BISS1_EOT_STATUS);
-
-    SDK_ISR_EXIT_BARRIER;
-}
-
-void BISS_EOT_IRQHandler(void)
+void BISS_IRQHandler(void)
 {
     uint32_t count;
     uint64_t time;
-
-    /* clear EOT interrupt */
-    blk_ctrl->BISS1_EOT_CTL =
-        BLK_CTRL_WAKEUPMIX_BISS1_EOT_CTL_biss_eot_rise_clr_int_b(1) | 3;
 
     if (performance_enable)
     {
@@ -229,27 +204,24 @@ void BISS_EOT_IRQHandler(void)
         time = (uint64_t) count * 1000000 / SystemCoreClock;
         PRINTF("A frame take count:%u time:%dus\r\n", count, (uint32_t) time);
     }
-    PRINTF("BISS_EOT_IRQHandler status 0x%08x\r\n", BISS_GetStatus(master));
+    PRINTF("BISS_IRQHandler status 0x%08x\r\n", BISS_GetStatus(master));
 
     BISS_SLVDumpPosition(master, 0);
 
-    blk_ctrl->BISS1_EOT_CTL = 3;
+    BISS_IRQ_Clear();
 
     SDK_ISR_EXIT_BARRIER;
 }
 
 static void BISS_DisableInterrupt(void)
 {
-    DisableIRQ(BISS_EOT_IRQn);
-    DisableIRQ(BISS_SOT_IRQn);
-    blk_ctrl->BISS1_EOT_CTL = 0;
+    DisableIRQ(BISS_IRQn);
+    BISS_IRQ_Clear();
 }
 
 static void BISS_EnableInterrupt(void)
 {
-    EnableIRQ(BISS_EOT_IRQn);
-
-    blk_ctrl->BISS1_EOT_CTL = 0x3;
+    EnableIRQ(BISS_IRQn);
 }
 
 void BISS_performance(int loop)
@@ -395,7 +367,7 @@ int main(void)
         PRINTF("3: Enable instruction trigger\r\n");
         PRINTF("4: Enable AGS repetition trigger\r\n");
         PRINTF("5: Enable timeout trigger\r\n");
-        PRINTF("6: GETSENS pin trigger\r\n");
+        PRINTF("6: Enable GETSENS pin trigger. Press \"7\" to cancel\r\n");
         PRINTF("7: Reset BiSS-C\r\n");
         PRINTF("8: Re-scan BiSS bus\r\n");
         PRINTF("9: Dump slave information\r\n");
@@ -418,18 +390,24 @@ int main(void)
         {
             BISS_ChangeTriggerMode(master, BISS_INSTR_TRIGGER);
             BISS_InstrSend(master, BISS_INSTR_CDM_0, BISS_AGS_DISABLE);
+            /* Wait for the response to be received */
+            SDK_DelayAtLeastUs(1000U, SystemCoreClock);
             BISS_SLVDumpPosition(master, 0);
         }
         else if ('4' == inputChar)
         {
             BISS_ChangeTriggerMode(master, BISS_AGS_TRIGGER);
             BISS_InstrSend(master, BISS_INSTR_CDM_0, BISS_AGS_ENABLE);
+            /* Wait for the response to be received */
+            SDK_DelayAtLeastUs(1000U, SystemCoreClock);
             BISS_SLVDumpPosition(master, 0);
         }
         else if ('5' == inputChar)
         {
             BISS_ChangeTriggerMode(master, BISS_TIMEOUT_TRIGGER);
             BISS_InstrSend(master, BISS_INSTR_CDM_0, BISS_AGS_ENABLE);
+            /* Wait for the response to be received */
+            SDK_DelayAtLeastUs(1000U, SystemCoreClock);
             BISS_SLVDumpPosition(master, 0);
         }
         else if ('6' == inputChar)
@@ -438,8 +416,6 @@ int main(void)
 
             /* Initialize FlexPWM to generate the trigger signalis. */
             PWM_Trigger_Init(BOARD_PWM_BASEADDR);
-
-            BISS_EnableXbarPinTrigger();
 
             BISS_EnableInterrupt();
         }
@@ -450,8 +426,10 @@ int main(void)
         }
         else if ('8' == inputChar)
         {
+            BISS_ChangeTriggerMode(master, BISS_TIMEOUT_TRIGGER);
             BISS_SLVScan(master);
             PRINTF("Find %d BiSS Slave devices\r\n", master->slvCnt);
+            BISS_ChangeTriggerMode(master, BISS_INSTR_TRIGGER);
         }
         else if ('9' == inputChar)
         {

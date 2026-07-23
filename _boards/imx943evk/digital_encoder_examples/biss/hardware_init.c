@@ -8,12 +8,8 @@
 #include "app.h"
 #include "board.h"
 #include "pin_mux.h"
+#include "fsl_xbar.h"
 /*${header:end}*/
-
-#define DIG_ENCODER_MUX_HIPERFACE_DSL   0x0
-#define DIG_ENCODER_MUX_ENDAT2P2        0x1
-#define DIG_ENCODER_MUX_ENDAT3          0x2
-#define DIG_ENCODER_NUX_BISS            0x3
 
 /*${function:start}*/
 void PWM_Trigger_Init(PWM_Type *PWMBase)
@@ -31,8 +27,7 @@ void PWM_Trigger_Init(PWM_Type *PWMBase)
     PWMBase->SM[0].INIT = (uint16_t)(-(ui16M1PwmModulo / 2));
     PWMBase->SM[0].VAL0 = PWM_VAL0_VAL0((uint16_t)(0));
 
-    PWMBase->SM[1].VAL1 = ((ui16M1PwmModulo / 2) - 1);
-
+    PWMBase->SM[0].VAL1 = ((ui16M1PwmModulo / 2) - 1);
 
     /* Trigger for Encoder synchronization */
     PWMBase->SM[0].VAL5 = -(ui16M1PwmModulo / 2) + 10;
@@ -53,8 +48,19 @@ void PWM_Trigger_Init(PWM_Type *PWMBase)
     PWMBase->MCTRL = (PWMBase->MCTRL & ~PWM_MCTRL_RUN_MASK) | PWM_MCTRL_RUN(0x1);
 }
 
+/* Clear the BISS IRQ Flag */
+void BISS_IRQ_Clear(void)
+{
+	XBAR_ClearOutputStatusFlag(DEMO_XBARA_IRQ_OUTPIT_SIGNAL);
+}
+
 void BOARD_InitHardware(void)
 {
+    xbar_control_config_t xbaraConfig;
+    int32_t SCMI_status = 0;
+    uint32_t blk_ctrl_size = 0;
+    uint32_t blk_ctrl_value = 0;
+
     /* BiSS 20MHz */
     clk_t bissClk = {
         .clkId = BISS_SYS_CLK_ROOT,
@@ -63,38 +69,63 @@ void BOARD_InitHardware(void)
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
     };
 
-    BLK_CTRL_WAKEUPMIX_Type *blk_ctrl = BLK_CTRL_WAKEUPMIX;
-
     SystemPlatformInit();
     BOARD_InitDebugConsolePins();
-    BOARD_InitEncoder1Pins();
 
+#if (BISS_MUX == MOTOR_CTRL1)
     BOARD_InitEncoder2Pins();
-
-    BOARD_InitI2C6Pins();
-
+#elif (BISS_MUX == MOTOR_CTRL2)
+    BOARD_InitEncoder1Pins();
+#endif
     BOARD_InitPWM1Pins();
+    BOARD_InitI2C6Pins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
     BOARD_ConfigMPU();
+
+    /* DIAG_ENCODER_MUX_SEL will be updated */
+    SCMI_status = SCMI_MiscControlGet(SCMI_A2P, DEV_SM_CTRL_ENC_DIAG_MUX_SEL, &blk_ctrl_size, &blk_ctrl_value);
+    if (SCMI_status != SCMI_ERR_SUCCESS) {
+        /* Encoder mux select configuration failed */
+        return;
+    }
+
+#if (BISS_MUX == MOTOR_CTRL1)
+    /* Select biss for encoder2 */
+    blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc2_sel(DIG_ENCODER_MUX_BISS);
+#elif (BISS_MUX == MOTOR_CTRL2)
+    /* Select biss for encoder1 */
+    blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc1_sel(DIG_ENCODER_MUX_BISS);
+#endif
+
+    /* Update DIAG_ENCODER_MUX_SEL */
+    SCMI_status = SCMI_MiscControlSet(SCMI_A2P, DEV_SM_CTRL_ENC_DIAG_MUX_SEL, blk_ctrl_size, &blk_ctrl_value);
+    if (SCMI_status != SCMI_ERR_SUCCESS) {
+        /* Failed to set DIAG_ENCODER_MUX_SEL register  */
+        return;
+    }
 
     CLOCK_SetParent(&bissClk);
     CLOCK_SetRate(&bissClk);
     CLOCK_EnableClock(bissClk.clkId);
 
-    // encoder 1 select BiSS
-    blk_ctrl->DIAG_ENCODER_MUX_SEL =
-        BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc1_sel(DIG_ENCODER_NUX_BISS);
+    XBAR_Init(DEMO_XBARA_BASEADDR);
+    xbaraConfig.activeEdge                   = kXBAR_EdgeRising;
+    xbaraConfig.requestType                  = kXBAR_RequestInterruptEnable;
+    XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux1Trigger0, kXBAR1_OutputBissGetsens);
+    XBAR_SetSignalsConnection(kXBAR1_InputBissEot, DEMO_XBARA_IRQ_OUTPIT_SIGNAL);
+    XBAR_SetOutputSignalConfig(DEMO_XBARA_IRQ_OUTPIT_SIGNAL, &xbaraConfig);
 
-/*
-    blk_ctrl->BISS1_GETSENS_PULSE_STRETCHER_CTL =
-        BLK_CTRL_WAKEUPMIX_BISS1_GETSENS_PULSE_STRETCHER_CTL_value(3) |
-        BLK_CTRL_WAKEUPMIX_BISS1_GETSENS_PULSE_STRETCHER_CTL_stretcher_en(1);
-*/
-
+#if (BISS_MUX == MOTOR_CTRL1)
     /* Select Motor controller 1 */
+    BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);
+    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);
+#elif (BISS_MUX == MOTOR_CTRL2)
+    /* Select Motor controller 2 */
     BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);
     BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);
+#endif
+
     SDK_DelayAtLeastUs(100U, SystemCoreClock);
 }
 /*${function:end}*/
