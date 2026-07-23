@@ -129,7 +129,9 @@ static void DEMO_CheckChipRevision(void)
     defined(MCXN946_cm33_core0_SERIES) ||  \
     defined(MCXN946_cm33_core1_SERIES) ||  \
     defined(MCXN947_cm33_core0_SERIES) ||  \
-    defined(MCXN947_cm33_core1_SERIES)
+    defined(MCXN947_cm33_core1_SERIES) ||  \
+    defined(MCXN947T_cm33_core0_SERIES) || \
+    defined(MCXN947T_cm33_core1_SERIES)
 
     uint32_t rev = Chip_GetVersion();
 
