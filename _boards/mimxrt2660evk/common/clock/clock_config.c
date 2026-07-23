@@ -259,117 +259,218 @@ static void ConfigCGUDig_AUDIO(void);
 static void ConfigCGUDig_COMM(void);
 static void ConfigCGUDig_WAKE(void);
 
-/* XSPI0 boot flash runs XIP, so the CPU is fetching instructions over XSPI0 while
- * BOARD_BootClock*RUN reprograms the whole clock tree. Out of boot ROM, XSPI0 (MAIN
- * CCM CLOCK_ROOT[1], mux0) is sourced from:
- *     XSPI0 <- MAIN_PERI0_DIV2 <- PERI_ROOTCLK0 <- Main PLL DIVOUT0
- * Reprogramming that branch (PERI_ROOTCLK0 in ConfigCGUDig_SYSCON_common, or the
- * Main PLL) tears down the flash clock and crashes XIP. To avoid that, we first hop
- * XSPI0 onto the already-locked Sys PLL (mux2 = SYSPLLDIV4_ROOTCLK = SysPLL DIV4,
- * 500 MHz) divided down to 100 MHz. After the hop XSPI0 no longer depends on the
- * Main PLL / PERI0 branch, so the rest of the tree can be programmed from flash.
- *
- * This helper MUST be RAM-resident: while the root mux switches, the CPU keeps
- * fetching from XSPI0 flash, so the code performing the switch cannot itself live in
- * that flash. AT_QUICKACCESS_SECTION_CODE places it in the (SRAM) quickaccess
- * section, copied by startup.
- *
- * Frequency note: this LOWERS XSPI0 from its ROM operating point (~120-133 MHz) to
- * 100 MHz. A frequency decrease with unchanged controller/LUT/sampling needs no DLL
- * retrain -- the read data eye only widens and loopback-from-DQS sampling is
- * source-synchronous. If you later RAISE the XSPI0 frequency or move to DDR, you MUST
- * relocate fsl_xspi.o into RAM and call XSPI_SoftwareReset()/XSPI_UpdateDllValue()
- * here after the mux switch, otherwise reads at the new frequency will corrupt. */
-AT_QUICKACCESS_SECTION_CODE(static void BOARD_MoveXspi0ToSysPllDiv4(void))
+/* XSPI clock-switch step for the two per-controller window helpers below. Each helper is
+ * called twice by BOARD_SwitchCmsPllRefToSxoscFromRam -- once to park the controller before
+ * the PLL work, once to move it onto the re-locked Sys PLL afterwards. */
+typedef enum _board_xspi_clock_step
 {
-    uint32_t v   = MAIN__CCM->CLOCK_ROOT[1].SLICE_CONTROL;
+    kBOARD_XspiParkOnFro192m = 0U, /*!< Quiesce + disable the XSPI, park its clock on FRO192M
+                                        (window entry, before any PLL is touched). */
+    kBOARD_XspiRunOnSysPllDiv4,    /*!< Move the XSPI clock to SysPLL DIV4 and re-enable it
+                                        (window exit, after the SYS PLL has re-locked). */
+} board_xspi_clock_step_t;
 
-    /* Glitchless CCM root mux hop: both the old source (Main PLL/PERI0) and the new
-     * source (SysPLL DIV4 = 500 MHz) are running at this point, so the switch is clean.
-     * Set MUX + DIV + SND_DIV together (all -1 encoded): the XSPI0 slice has two
-     * dividers (DIV -> 2x internal, SND_DIV -> SCK); leaving SND_DIV at the ROM value
-     * while changing DIV breaks their ratio. mux2 = SYSPLLDIV4, div=5 -> 100 MHz,
-     * sndDiv=1 (intended XSPI0 NOR SDR config). */
-    v &= ~(CCM_SLICE_CONTROL_MUX_MASK | CCM_SLICE_CONTROL_DIV_MASK | CCM_SLICE_CONTROL_SND_DIV_MASK);
-    v |= CCM_SLICE_CONTROL_MUX(2U) | CCM_SLICE_CONTROL_DIV(5U - 1U) | CCM_SLICE_CONTROL_SND_DIV(1U - 1U);
-    MAIN__CCM->CLOCK_ROOT[1].SLICE_CONTROL = v;
-
-    __DSB();
-    __ISB();
-    (void)MAIN__CCM->CLOCK_ROOT[1].SLICE_CONTROL; /* CM85 posted-write read-back flush */
-}
-
-/* XSPI1 PSRAM protection -- mirror of BOARD_MoveXspi0ToSysPllDiv4, for the DDR PSRAM.
+/* XSPI0 (NOR XIP boot flash) window handling -- one ITCM-resident helper with two steps,
+ * called twice by BOARD_SwitchCmsPllRefToSxoscFromRam:
  *
- * Out of boot ROM the PSRAM (XSPI1, MAIN CCM CLOCK_ROOT[2]) is memory-mapped/active and
- * clocked from Main PLL (mux0 = MAIN_PERI1_DIV2 <- PERI_ROOTCLK1 <- MAINPLL_DIVOUT1) --
- * the same PLL XSPI0 rides. Re-initialising Main PLL (CLOCK_InitMainPll) would glitch
- * MAINPLL_DIVOUT1 -> PERI1 -> XSPI1, corrupting the live DDR PSRAM (and instantly killing
- * psram_txt, which executes from it). So, exactly like XSPI0, hop XSPI1 onto SYSPLLDIV4
- * (SysPLL DIV4 = 500 MHz -- a stable clock, independent of Main PLL) BEFORE Main PLL is
- * re-initialised. We copy ROM's dividers exactly (DIV÷1 -> 2x launch = 500 MHz, SND_DIV÷2
- * -> SCK = 250 MHz), which matches ROM because SYSPLLDIV4 (500) == ROM's MAIN_PERI1_DIV2
- * (500) -- so the PSRAM frequency is unchanged. Both the old (Main PLL) and new (Sys PLL
- * DIV4) sources are running at hop time, so the CCM root-mux switch itself is glitchless.
+ *   kBOARD_XspiParkOnFro192m (window step 2): make XSPI0 safe for the reference-switch
+ *     window. Ensure the MAIN-CCM gate is on, QUIESCE the controller (block new AHB
+ *     read-prefetch via SPTRCLR.PREFETCH_DIS, abort any in-flight prefetch/sequence via
+ *     SPTRCLR.ABRT_CLR, then bounded-wait until SR reports fully idle -- MDIS'ing
+ *     mid-access wedges XIP: the NOR drops continuous-read and never recovers), DISABLE it
+ *     (MDIS), then park its clock on FRO192M: PERI_ROOTCLK0 -> BASE (forced to FRO_192M by
+ *     the window's step 1) and the xspi0_fclk slice on mux0 (MAIN_PERI0_DIV2 <-
+ *     PERI_ROOTCLK0). Both the old (PLL) and new (FRO192M) sources are live at the hop, so
+ *     the CCM root-mux switch is glitchless. Only the MUX field is touched in this step --
+ *     DIV/SND_DIV keep their ROM values (frequency is irrelevant: the controller is
+ *     disabled and the core runs from ITCM, so no XIP fetch happens while parked).
  *
- * The clock SOURCE changes (Main PLL -> Sys PLL), so even at the same 125 MHz SCK the DDR
- * read strobe the ROM DLL locked to is no longer aligned (single-beat / non-cacheable
- * reads fail). We therefore RE-LOCK the controller DLL for the new clock immediately after
- * the mux switch -- controller DLL only, NO Global Reset / device re-init, so the PSRAM
- * contents (incl. psram_txt code) are preserved.
+ *   kBOARD_XspiRunOnSysPllDiv4 (window step 9): leave the window on the freshly-locked
+ *     Sys PLL. Switch the final fclock to SYSPLLDIV4 (500 MHz), setting MUX + DIV + SND_DIV
+ *     together (all -1 encoded): the slice has two dividers (DIV -> 2x internal
+ *     ipg_clk_2xsfif, SND_DIV -> SCK), and the 2x clock MUST be twice SCK for the read
+ *     datapath / DQS-pad-loopback sampling (SND_DIV=1, 2x==SCK, corrupts reads). div=2 ->
+ *     2x=250 MHz, sndDiv=2 -> SCK=125 MHz (2:1, close to ROM's ~120 MHz operating point).
+ *     Then restore normal prefetch (clear PREFETCH_DIS while still disabled) and perform
+ *     the window's single re-ENABLE -- XIP resumes on the new clock with its final
+ *     prefetch config already in place.
  *
- * MUST be RAM-resident: for psram_txt (code executes from PSRAM) the CPU is fetching over
- * XSPI1 while the mux switches AND while the DLL re-locks (module briefly MDIS'd), so this
- * whole routine cannot live in that PSRAM. */
-AT_QUICKACCESS_SECTION_CODE(static void BOARD_MoveXspi1ToSysPllDiv4(void))
+ * XSPI0 stays MDIS'd between the two steps: exactly ONE disable (park step, after the
+ * quiesce) and ONE enable (run step). MDIS retains all controller config (LUT/ARDCR/
+ * SMPR/DLL). MUST be RAM-resident: the CPU cannot fetch from the flash whose clock is
+ * being cut over; AT_QUICKACCESS_SECTION_CODE places it in the quickaccess section,
+ * copied by startup. */
+AT_QUICKACCESS_SECTION_CODE(static void BOARD_SwitchXspi0ClockFromRam(board_xspi_clock_step_t step))
 {
-    uint32_t   v    = MAIN__CCM->CLOCK_ROOT[2].SLICE_CONTROL;
-    uint32_t   i;
+    uint32_t v;
+    uint32_t i;
 
-    /* Match ROM's XSPI1 dividers EXACTLY so the PSRAM frequency (and thus the ROM DLL
-     * calibration) is preserved. ROM: source MAIN_PERI1_DIV2 = 500 MHz, DIV(/1) -> 2x =
-     * 500 MHz, SND_DIV(/2) -> SCK = 250 MHz (ROM SLICE_CONTROL = 0x00010000). Our source
-     * SYSPLLDIV4 is also 500 MHz, so we copy DIV(/1)/SND_DIV(/2) and only change the mux
-     * to 2 (SYSPLLDIV4). DIV/SND_DIV are (value-1) encoded. (An earlier version used
-     * DIV/2, which HALVED the clock to 2x=250/SCK=125 and de-tuned the DDR DLL.) */
-    v &= ~(CCM_SLICE_CONTROL_MUX_MASK | CCM_SLICE_CONTROL_DIV_MASK | CCM_SLICE_CONTROL_SND_DIV_MASK);
-    v |=  CCM_SLICE_CONTROL_MUX(2U) | CCM_SLICE_CONTROL_DIV(1U - 1U) | CCM_SLICE_CONTROL_SND_DIV(2U - 1U);
-    MAIN__CCM->CLOCK_ROOT[2].SLICE_CONTROL = v;
-
-    __DSB();
-    __ISB();
-    (void)MAIN__CCM->CLOCK_ROOT[2].SLICE_CONTROL; /* CM85 posted-write read-back flush */
-
-    /* Re-lock the DDR read DLL for the new clock -- ONLY if XSPI1 actually holds a live
-     * DDR PSRAM that ROM already brought up (MCR.X16_EN set). Runtime gate, not a build
-     * macro: in a build with no live PSRAM X16_EN is clear and we skip (a DDR DLL re-lock
-     * on a non-DDR XSPI1 would be wrong). Enable the XSPI1 LPCG first so the MCR read
-     * cannot bus-fault when the module clock happens to be off.
-     *
-     * Values are the validated ones from BOARD_ConfigXspiForPsram (DLLCR[0]=0xC260001C =
-     * DLLEN|FREQEN|REFCNTR2|RES6|CDL8|AUTO_UPD|SLV_EN, SMPR=0x04000000). The SDK
-     * XSPI_UpdateDllValue is deliberately NOT used: at 125 MHz (< 130 MHz auto-update
-     * threshold) it drops FREQEN and never sets CDL8, producing a different DLLCR than the
-     * working state. MDIS brackets the DLL reprogram; DLLCR is zeroed first to force a
-     * fresh lock at the new clock. No Global Reset -> device data preserved. Bounded wait
-     * so a dead board cannot hang boot. */
-    CLOCK_EnableClock(kCLOCK_MAIN_xspi1);
-    if ((MAIN__XSPI_1->MCR & XSPI_MCR_X16_EN_MASK) != 0U)
+    if (step == kBOARD_XspiParkOnFro192m)
     {
-        MAIN__XSPI_1->MCR |= XSPI_MCR_MDIS_MASK;
-        MAIN__XSPI_1->DLLCR[0] = 0U;                     /* drop the stale (Main-PLL-clock) lock */
-        MAIN__XSPI_1->DLLCR[0] = 0xC260001CU;            /* re-arm auto-DLL for the Sys-PLL clock */
-        for (i = 0U; ((MAIN__XSPI_1->DLLSR & XSPI_DLLSR_SLVA_LOCK_MASK) == 0U) && (i < 100000U); i++)
+        /* Ensure the XSPI0 clock gate is ON (CGC_ROOT) before its clock roots are touched. */
+        MAIN__CCM->CGC_ROOT[(uint32_t)kCLOCK_MAIN_xspi0 - (uint32_t)kCLOCK_MAIN_START].SLICE_CONTROL |=
+            CCM_SLICE_CONTROL_LPCG_CFG_MASK;
+        __DSB();
+        __ISB();
+
+        /* Quiesce: block new AHB read-prefetch, abort in-flight, bounded wait for idle. */
+        MAIN__XSPI_0->SPTRCLR |= XSPI_SPTRCLR_PREFETCH_DIS_MASK;
+        MAIN__XSPI_0->SPTRCLR |= XSPI_SPTRCLR_ABRT_CLR_MASK;
+        __DSB();
+        __ISB();
+        for (i = 0U;
+             ((MAIN__XSPI_0->SR & (XSPI_SR_BUSY_MASK | XSPI_SR_AHB_ACC_MASK | XSPI_SR_IP_ACC_MASK)) != 0U) &&
+                 (i < 1000000U);
+             i++)
         {
         }
-        MAIN__XSPI_1->SMPR  = 0x04000000U;               /* DLLFSMPFA tap = 4 (working-state value) */
-        MAIN__XSPI_1->MCR  &= ~XSPI_MCR_MDIS_MASK;
-        MAIN__XSPI_1->MCR  |= XSPI_MCR_SWRSTSD_MASK;     /* serial soft-reset pulse (working-state) */
-        MAIN__XSPI_1->MCR  &= ~XSPI_MCR_SWRSTSD_MASK;
-    }
 
-    __DSB();
-    __ISB();
+        /* Now safe to disable; stays disabled until the kBOARD_XspiRunOnSysPllDiv4 step. */
+        MAIN__XSPI_0->MCR |= XSPI_MCR_MDIS_MASK;
+        __DSB();
+        __ISB();
+
+        /* Park the clock path on FRO192M: PERI_ROOTCLK0 -> BASE, xspi0_fclk -> mux0. */
+        v  = SYSCON__CCM->CLOCK_ROOT[kCLOCK_Root_CGU_PERI_ROOTCLK0].SLICE_CONTROL;
+        v &= ~CCM_SLICE_CONTROL_MUX_MASK;
+        v |= CCM_SLICE_CONTROL_MUX((uint32_t)kCLOCK_PERI0_ClockRoot_BASE);
+        SYSCON__CCM->CLOCK_ROOT[kCLOCK_Root_CGU_PERI_ROOTCLK0].SLICE_CONTROL = v;
+
+        v  = MAIN__CCM->CLOCK_ROOT[1].SLICE_CONTROL; /* xspi0_fclk */
+        v &= ~CCM_SLICE_CONTROL_MUX_MASK;
+        v |= CCM_SLICE_CONTROL_MUX((uint32_t)kCLOCK_XSPI0_ClockRoot_MAIN_PERI0_DIV2);
+        MAIN__CCM->CLOCK_ROOT[1].SLICE_CONTROL = v;
+        __DSB();
+        __ISB();
+        (void)MAIN__CCM->CLOCK_ROOT[1].SLICE_CONTROL; /* CM85 posted-write read-back flush */
+    }
+    else
+    {
+        /* Final fclock: SYSPLLDIV4 (500 MHz), div=2 -> 2x=250 MHz, sndDiv=2 -> SCK=125 MHz. */
+        v  = MAIN__CCM->CLOCK_ROOT[1].SLICE_CONTROL;
+        v &= ~(CCM_SLICE_CONTROL_MUX_MASK | CCM_SLICE_CONTROL_DIV_MASK | CCM_SLICE_CONTROL_SND_DIV_MASK);
+        v |= CCM_SLICE_CONTROL_MUX(2U) | CCM_SLICE_CONTROL_DIV(2U - 1U) | CCM_SLICE_CONTROL_SND_DIV(2U - 1U);
+        MAIN__CCM->CLOCK_ROOT[1].SLICE_CONTROL = v;
+        __DSB();
+        __ISB();
+        (void)MAIN__CCM->CLOCK_ROOT[1].SLICE_CONTROL; /* CM85 posted-write read-back flush */
+
+        /* Restore normal prefetch FIRST (still disabled), THEN the window's single re-enable. */
+        MAIN__XSPI_0->SPTRCLR &= ~XSPI_SPTRCLR_PREFETCH_DIS_MASK;
+        MAIN__XSPI_0->MCR &= ~XSPI_MCR_MDIS_MASK;
+        __DSB();
+        __ISB();
+    }
+}
+
+/* XSPI1 (DDR PSRAM) window handling -- mirror of BOARD_SwitchXspi0ClockFromRam, two steps:
+ *
+ *   kBOARD_XspiParkOnFro192m (window step 2): gate on (esp. the xspi_nor build, where XSPI1
+ *     is gated by default), quiesce, MDIS, then park PERI_ROOTCLK1 -> BASE and the
+ *     xspi1_fclk slice on mux0 (MAIN_PERI1_DIV2 <- PERI_ROOTCLK1). MCR config (incl.
+ *     X16_EN) is retained across MDIS.
+ *
+ *   kBOARD_XspiRunOnSysPllDiv4 (window step 9): switch the final fclock to SYSPLLDIV4, copying
+ *     ROM's dividers EXACTLY so the PSRAM frequency (and thus the ROM DLL calibration
+ *     point) is preserved: SYSPLLDIV4 (500 MHz) == ROM's MAIN_PERI1_DIV2 (500 MHz),
+ *     DIV(/1) -> 2x = 500 MHz, SND_DIV(/2) -> SCK = 250 MHz. DIV/SND_DIV are (value-1)
+ *     encoded. The clock SOURCE still changes (Main PLL -> Sys PLL), so even at the same
+ *     SCK the DDR read strobe the ROM DLL locked to is no longer aligned (single-beat /
+ *     non-cacheable reads fail) -- therefore RE-LOCK the controller DLL, ONLY if XSPI1
+ *     holds a live DDR PSRAM that ROM already brought up (runtime gate on MCR.X16_EN, not
+ *     a build macro: a DDR DLL re-lock on a non-DDR XSPI1 would be wrong). DLLCR[0] is
+ *     zeroed to drop the stale lock then re-armed to the validated working-state auto-DLL
+ *     value (0xC260001C = DLLEN|FREQEN|REFCNTR2|RES6|CDL8|AUTO_UPD|SLV_EN); SMPR tap = 4.
+ *     The SDK XSPI_UpdateDllValue is deliberately NOT used (below its auto-update
+ *     threshold it drops FREQEN and never sets CDL8, giving a different DLLCR). No Global
+ *     Reset / device re-init, so PSRAM contents (incl. psram_txt code) are preserved;
+ *     bounded lock wait so a dead board cannot hang boot. Then restore prefetch, perform
+ *     the single re-enable, and (live PSRAM only) pulse a serial soft-reset to settle the
+ *     interface on the new clock.
+ *
+ * MUST be RAM-resident: for psram_txt (code executes from PSRAM) the CPU would otherwise
+ * fetch over XSPI1 while its clock is cut over and while the DLL re-locks. */
+AT_QUICKACCESS_SECTION_CODE(static void BOARD_SwitchXspi1ClockFromRam(board_xspi_clock_step_t step))
+{
+    uint32_t v;
+    uint32_t i;
+    bool     livePsram;
+
+    if (step == kBOARD_XspiParkOnFro192m)
+    {
+        /* Ensure the XSPI1 clock gate is ON (CGC_ROOT) before its clock roots are touched. */
+        MAIN__CCM->CGC_ROOT[(uint32_t)kCLOCK_MAIN_xspi1 - (uint32_t)kCLOCK_MAIN_START].SLICE_CONTROL |=
+            CCM_SLICE_CONTROL_LPCG_CFG_MASK;
+        __DSB();
+        __ISB();
+
+        /* Quiesce: block new AHB read-prefetch, abort in-flight, bounded wait for idle. */
+        MAIN__XSPI_1->SPTRCLR |= XSPI_SPTRCLR_PREFETCH_DIS_MASK;
+        MAIN__XSPI_1->SPTRCLR |= XSPI_SPTRCLR_ABRT_CLR_MASK;
+        __DSB();
+        __ISB();
+        for (i = 0U;
+             ((MAIN__XSPI_1->SR & (XSPI_SR_BUSY_MASK | XSPI_SR_AHB_ACC_MASK | XSPI_SR_IP_ACC_MASK)) != 0U) &&
+                 (i < 1000000U);
+             i++)
+        {
+        }
+
+        /* Now safe to disable; stays disabled until the kBOARD_XspiRunOnSysPllDiv4 step. */
+        MAIN__XSPI_1->MCR |= XSPI_MCR_MDIS_MASK;
+        __DSB();
+        __ISB();
+
+        /* Park the clock path on FRO192M: PERI_ROOTCLK1 -> BASE, xspi1_fclk -> mux0. */
+        v  = SYSCON__CCM->CLOCK_ROOT[kCLOCK_Root_CGU_PERI_ROOTCLK1].SLICE_CONTROL;
+        v &= ~CCM_SLICE_CONTROL_MUX_MASK;
+        v |= CCM_SLICE_CONTROL_MUX((uint32_t)kCLOCK_PERI1_ClockRoot_BASE);
+        SYSCON__CCM->CLOCK_ROOT[kCLOCK_Root_CGU_PERI_ROOTCLK1].SLICE_CONTROL = v;
+
+        v  = MAIN__CCM->CLOCK_ROOT[2].SLICE_CONTROL; /* xspi1_fclk */
+        v &= ~CCM_SLICE_CONTROL_MUX_MASK;
+        v |= CCM_SLICE_CONTROL_MUX((uint32_t)kCLOCK_XSPI1_ClockRoot_MAIN_PERI1_DIV2);
+        MAIN__CCM->CLOCK_ROOT[2].SLICE_CONTROL = v;
+        __DSB();
+        __ISB();
+        (void)MAIN__CCM->CLOCK_ROOT[2].SLICE_CONTROL; /* CM85 posted-write read-back flush */
+    }
+    else
+    {
+        livePsram = ((MAIN__XSPI_1->MCR & XSPI_MCR_X16_EN_MASK) != 0U); /* ROM brought up DDR PSRAM? */
+
+        /* Final fclock: SYSPLLDIV4 (500 MHz), DIV(/1) -> 2x = 500 MHz, SND_DIV(/2) -> SCK = 250 MHz. */
+        v  = MAIN__CCM->CLOCK_ROOT[2].SLICE_CONTROL;
+        v &= ~(CCM_SLICE_CONTROL_MUX_MASK | CCM_SLICE_CONTROL_DIV_MASK | CCM_SLICE_CONTROL_SND_DIV_MASK);
+        v |= CCM_SLICE_CONTROL_MUX(2U) | CCM_SLICE_CONTROL_DIV(1U - 1U) | CCM_SLICE_CONTROL_SND_DIV(2U - 1U);
+        MAIN__CCM->CLOCK_ROOT[2].SLICE_CONTROL = v;
+        __DSB();
+        __ISB();
+        (void)MAIN__CCM->CLOCK_ROOT[2].SLICE_CONTROL; /* CM85 posted-write read-back flush */
+
+        /* Still MDIS'd: re-lock the DDR read DLL for the new clock SOURCE (live PSRAM only). */
+        if (livePsram)
+        {
+            MAIN__XSPI_1->DLLCR[0] = 0U;          /* drop the stale (Main-PLL-clock) lock */
+            MAIN__XSPI_1->DLLCR[0] = 0xC260001CU; /* re-arm auto-DLL for the Sys-PLL clock */
+            for (i = 0U; ((MAIN__XSPI_1->DLLSR & XSPI_DLLSR_SLVA_LOCK_MASK) == 0U) && (i < 100000U); i++)
+            {
+            }
+            MAIN__XSPI_1->SMPR = 0x04000000U;     /* DLLFSMPFA tap = 4 (working-state value) */
+        }
+
+        /* Restore normal prefetch FIRST (still disabled), THEN the window's single re-enable.
+         * For live PSRAM, a serial soft-reset pulse settles the interface on the new clock. */
+        MAIN__XSPI_1->SPTRCLR &= ~XSPI_SPTRCLR_PREFETCH_DIS_MASK;
+        MAIN__XSPI_1->MCR &= ~XSPI_MCR_MDIS_MASK;
+        if (livePsram)
+        {
+            MAIN__XSPI_1->MCR |= XSPI_MCR_SWRSTSD_MASK;
+            MAIN__XSPI_1->MCR &= ~XSPI_MCR_SWRSTSD_MASK;
+        }
+        __DSB();
+        __ISB();
+    }
 }
 
 /* Select SXOSC as the OSC_24M (L0) source (MODCON CLK24M_SEL.SEL: 0 = FRO24M reset
@@ -391,105 +492,354 @@ AT_QUICKACCESS_SECTION_CODE(static void BOARD_SetOsc24mSxoscFromRam(void))
     (void)MAIN__MODCON->IP[getModConOffset((uint32_t)kModCon_MAIN_CLK24M_SEL)].CFG[0];
 }
 
-/* Park the CM85 core on FRO192M, then switch OSC_24M to SXOSC -- both from RAM.
- *
- * Switching the CMS PLL reference (MODCON CLK24M_SEL: FRO24M -> SXOSC) glitches the PLL
- * outputs during the transition. Out of boot ROM the CM85 core (CGU MAIN_ROOTCLK,
- * slice 30) rides Main PLL, so that glitch can crash the core. FRO192M is a free-running
- * on-chip oscillator, independent of the OSC24M/SXOSC reference and of every PLL, so
- * parking the core on it (MAIN mux0 = BASE = FRO_192M) makes the core immune both to the
- * reference switch here AND to the later Main PLL re-init (CLOCK_InitMainPll). The core
- * stays on FRO192M until ConfigCGUDig_SYSCON_*RUN moves it to its final PLL_PFDX source,
- * which runs after Main PLL has re-locked (CLOCK_InitMainPll blocks until lock via the
- * CGUANA FSM RDY wait).
- *
- * Idempotent: if MAIN_ROOTCLK is already on BASE the park is skipped. Only the MUX field
- * is changed (div/sndDiv left as ROM set them). FRO192M runs out of ROM (it feeds the
- * FRO24M default OSC_24M source), and BASE_CLK is forced to FRO_192M just below, so both
- * the old (Main PLL) and new (FRO192M) sources are live -> the root-mux hop is glitchless.
- *
- * RAM-resident + direct register writes (no CLOCK_SetRootClock, whose lookup tables live
- * in XSPI0 flash) so the CPU is not fetching from flash across the transient. */
-AT_QUICKACCESS_SECTION_CODE(static void BOARD_ParkCoreAndSwitchOsc24m(void))
+/* Precompute the four SYSPLL control-register images from the SYSPLL config while flash
+ * is still accessible, so BOARD_SwitchCmsPllRefToSxoscFromRam (which runs with XSPI0
+ * flash torn down) needs no .rodata read. Mirrors CGUANA_ConfigFracPllRegs; SYSPLL and
+ * MAINPLL share the PLLn register layout, so the MAINPLL field macros apply to both.
+ * Flash-resident (plain static, no AT_QUICKACCESS) -- called before the RAM window. */
+static void BOARD_ComputeSysPllRegs(const clock_cguana_frac_pll_config_t *cfg,
+                                    uint32_t *pll1, uint32_t *pll2,
+                                    uint32_t *pll3, uint32_t *pll4)
 {
-    uint32_t v;
+    *pll1 =
+        CGUANA_CGUA_MAINPLL_PLL1_REG_MAINPLL_PLL_STARTING_MODE((uint32_t)cfg->startMode) |
+        (cfg->div5En  ? CGUANA_CGUA_MAINPLL_PLL1_REG_MAINPLL_DIV5_EN_MASK  : 0U) |
+        (cfg->div8En  ? CGUANA_CGUA_MAINPLL_PLL1_REG_MAINPLL_DIV8_EN_MASK  : 0U) |
+        (cfg->div10En ? CGUANA_CGUA_MAINPLL_PLL1_REG_MAINPLL_DIV10_EN_MASK : 0U) |
+        (cfg->div20En ? CGUANA_CGUA_MAINPLL_PLL1_REG_MAINPLL_DIV20_EN_MASK : 0U);
 
-    /* Guarantee the park target is live: force BASE_CLK -> FRO_192M (mux only). BASE_CLK
-     * feeds nothing the running core/flash depend on here, so this write is safe. */
+    *pll2 =
+        (cfg->fracDiv[0].en    ? CGUANA_CGUA_MAINPLL_PLL2_REG_MAINPLL_DIVFRAC0_EN_MASK    : 0U) |
+        (cfg->fracDiv[0].range ? CGUANA_CGUA_MAINPLL_PLL2_REG_MAINPLL_DIVFRAC0_RANGE_MASK : 0U) |
+        CGUANA_CGUA_MAINPLL_PLL2_REG_MAINPLL_DIVFRAC0_SEL(cfg->fracDiv[0].sel) |
+        (cfg->fracDiv[1].en    ? CGUANA_CGUA_MAINPLL_PLL2_REG_MAINPLL_DIVFRAC1_EN_MASK    : 0U) |
+        (cfg->fracDiv[1].range ? CGUANA_CGUA_MAINPLL_PLL2_REG_MAINPLL_DIVFRAC1_RANGE_MASK : 0U) |
+        CGUANA_CGUA_MAINPLL_PLL2_REG_MAINPLL_DIVFRAC1_SEL(cfg->fracDiv[1].sel) |
+        (cfg->fracDiv[2].en    ? CGUANA_CGUA_MAINPLL_PLL2_REG_MAINPLL_DIVFRAC2_EN_MASK    : 0U) |
+        (cfg->fracDiv[2].range ? CGUANA_CGUA_MAINPLL_PLL2_REG_MAINPLL_DIVFRAC2_RANGE_MASK : 0U) |
+        CGUANA_CGUA_MAINPLL_PLL2_REG_MAINPLL_DIVFRAC2_SEL(cfg->fracDiv[2].sel);
+
+    *pll3 =
+        CGUANA_CGUA_MAINPLL_PLL3_REG_MAINPLL_FREF_SET((uint32_t)cfg->refFreq) |
+        CGUANA_CGUA_MAINPLL_PLL3_REG_MAINPLL_LOWFREQ(cfg->lowFreq);
+
+    /* s_sysPllConfig.sscgEn is false -> PLL4 = 0. (SSCG path intentionally omitted; the
+     * RAM window must not depend on the flash-resident sscg sub-struct.) */
+    *pll4 = 0U;
+}
+
+/* Glitchless crystal hand-over for the Core/Main/Sys (CMS) PLLs -- the whole hazardous
+ * window, RAM-resident, direct register writes only (no SDK driver calls, whose code and
+ * lookup tables live in XSPI0 flash that is torn down mid-window).
+ *
+ * Root cause this addresses: the CMS PLL reference is CGUA_CTRL_REG.CMS_PLL_CKIN_SEL,
+ * NOT the OSC_24M / MODCON CLK24M_SEL mux. Flipping that reference while the ROM Main
+ * PLL is still running (and feeding XSPI0 XIP flash + XSPI1 PSRAM) glitches the PLL and
+ * can make it fail to re-lock. The clean fix is to power every CMS PLL DOWN first, then
+ * switch the reference (glitchless by construction -- no running loop to lose lock),
+ * then bring the PLLs back up locking fresh onto the crystal.
+ *
+ * *** KEY ORDERING INSIGHT (do not reorder) ***
+ * The two XSPI controllers' clock roots MUST be parked on FRO192M *first* -- before the
+ * core is parked, before the other CGU bus roots are detached, and before any PLL is
+ * powered down. XSPI0 (NOR XIP boot flash) and XSPI1 (PSRAM) can only be sourced from a
+ * Main/Sys-PLL-derived root, so if their clock is torn down (or perturbed) during the
+ * reference switch the external memory device drops out of its read state and XIP returns
+ * garbage on the return to flash (observed as a hang with the PC wandering in unprogrammed
+ * flash). Parking the XSPI roots on FRO192M (an on-chip oscillator, independent of every
+ * CMS PLL and of the reference switch) while the rest of the system is still fully clocked
+ * and stable gives the flash interface a clean, glitch-free transition, so both memories
+ * stay alive through the entire window. Doing this *after* the core/bus move corrupts XIP.
+ *
+ * Sequence (SXOSC + FRO192M must already be up and stable, brought up from flash before
+ * entry; callers invoking this with interrupts enabled must mask them around the call --
+ * both XSPI are disabled inside the window, so a flash/PSRAM-resident vector or handler
+ * fetch mid-window would wedge XIP):
+ *   [0] Disable the L1 D/I caches (remembering which were on) and turn the LLC off.
+ *   [1] Force BASE_CLK -> FRO192M -- the common park source for every BASE mux below.
+ *   [2] Quiesce + disable (MDIS) both XSPI and park their clock roots on FRO192M
+ *       (BOARD_SwitchXspi0/1ClockFromRam, kBOARD_XspiParkOnFro192m). Both stay disabled through
+ *       step 9 -- one disable here, one enable there; nothing touches XIP/PSRAM in
+ *       between (the core runs from ITCM).
+ *   [3] Park the CM85 core on FRO192M (MAIN_ROOTCLK -> BASE) -- this is also the XSPI
+ *       bus/host clock -- then detach the remaining CGU bus roots
+ *       (NPU/MEDIABUS/AUDIOBUS/COMMBUS/WAKEBUS, plus SYSCON_PDMAIN_CLK whose SYSPLL
+ *       source would otherwise take the SYSCON register bus down on re-entry) to FROs.
+ *   [5] Power down MAIN + CORE + SYS PLL (CGUANA FSM SW_OFF_REQ); wait for RDY to clear.
+ *   [6] Switch CMS + AV PLL reference to SXOSC (CGUA_CTRL) and OSC_24M to SXOSC.
+ *   [7] Re-program + power up SYS PLL on the crystal reference; wait for FSM RDY.
+ *   [8] Bring up SYSPLLDIV4_ROOTCLK (500 MHz) -- the shared XSPI hop target.
+ *   [9] Hop BOTH (still-disabled) XSPI fclocks onto SysPLL DIV4 and re-enable each once
+ *       (BOARD_SwitchXspi0/1ClockFromRam, kBOARD_XspiRunOnSysPllDiv4) -- so both become independent of
+ *       PERI_ROOTCLK0/1 before the flash-resident post-window code reprograms those PERI
+ *       roots. On return XSPI0 XIP flash + XSPI1 PSRAM are alive.
+ *   [10] Restore the LLC policy and re-enable the L1 caches saved in step 0.
+ * Core PLL and Main PLL are deliberately left DOWN here; the flash-resident caller
+ * re-inits them (and the AV PLLs) after the window, once XSPI rides Sys PLL. */
+AT_QUICKACCESS_SECTION_CODE(static void BOARD_SwitchCmsPllRefToSxoscFromRam(
+    uint32_t sysPll1, uint32_t sysPll2, uint32_t sysPll3, uint32_t sysPll4))
+{
+    /* cmsFsm = the CGUANA FSM bit-set for the three Core/Main/Sys PLLs, powered down as one
+     * group for the reference switch so NONE of them can pass the reference-switch glitch to
+     * a consumer. XSPI0/XSPI1 do NOT ride a PLL during the switch -- they keep running on
+     * FRO192M (parked in step 2), which is why XIP/PSRAM survive the window. */
+    const uint32_t cmsFsm = CLOCK_CGUANA_FSM_MAINPLL | CLOCK_CGUANA_FSM_COREPLL |
+                            CLOCK_CGUANA_FSM_SYSPLL;
+    uint32_t v;
+    uint32_t i;
+    uint32_t llcCtcr;
+    bool     dCacheOn;
+    bool     iCacheOn;
+
+    /* [Step 0] Disable the L1 D/I caches around the window (only the ones currently on,
+     *    preserving boot's cache policy -- SCB_Disable*Cache are CMSIS forced-inline, so
+     *    this code stays ITCM-resident), then turn the LLC (last-level cache) off. The LLC
+     *    caches the PSRAM aperture; a fill mid-clock-change could cache corrupt data. The
+     *    LLC write MUST run from ITCM (this function), NOT from the flash/PSRAM-resident
+     *    caller: in the psram_txt build the caller executes from the very PSRAM path the
+     *    write turns off, and the next fetch after LOOKUPEN|FILLEN clear bus-faults
+     *    (HW-confirmed release-build bootloop). From ITCM no LLC-path fetch happens while
+     *    it is off. Prior policy is restored in step 10. */
+    dCacheOn = ((SCB->CCR & SCB_CCR_DC_Msk) != 0U);
+    iCacheOn = ((SCB->CCR & SCB_CCR_IC_Msk) != 0U);
+    if (dCacheOn)
+    {
+        SCB_DisableDCache(); /* clean + invalidate + disable L1 D-cache */
+    }
+    if (iCacheOn)
+    {
+        SCB_DisableICache();
+    }
+    llcCtcr = CMPT__LLC->CCUCTCR;
+    CMPT__LLC->CCUCTCR = llcCtcr & ~(LLC_CCUCTCR_LOOKUPEN_MASK | LLC_CCUCTCR_FILLEN_MASK);
+    __DSB();
+    __ISB();
+
+    /* [Step 1] Force BASE_CLK -> FRO_192M first. BASE_CLK is the shared "BASE" mux input for
+     *    every root parked below (the XSPI PERI roots in step 2, the core + bus roots in
+     *    step 3), so it must point at the free-running FRO192M before any of them select
+     *    BASE. Read-back + DSB/ISB order the posted write before the dependent writes. */
     v  = SYSCON__CCM->CLOCK_ROOT[kCLOCK_Root_CGU_BASE_CLK].SLICE_CONTROL;
     v &= ~CCM_SLICE_CONTROL_MUX_MASK;
-    v |=  CCM_SLICE_CONTROL_MUX((uint32_t)kCLOCK_BASE_ClockRoot_FRO_192M);
+    v |= CCM_SLICE_CONTROL_MUX((uint32_t)kCLOCK_BASE_ClockRoot_FRO_192M);
     SYSCON__CCM->CLOCK_ROOT[kCLOCK_Root_CGU_BASE_CLK].SLICE_CONTROL = v;
     __DSB();
     __ISB();
     (void)SYSCON__CCM->CLOCK_ROOT[kCLOCK_Root_CGU_BASE_CLK].SLICE_CONTROL;
 
-    v = SYSCON__CCM->CLOCK_ROOT[kCLOCK_Root_CGU_MAIN_ROOTCLK].SLICE_CONTROL;
+    /* [Step 2] *** THE CRITICAL STEP *** Park BOTH flash controllers on FRO192M NOW --
+     *    before the core/bus roots (step 3) and before any PLL/reference perturbation
+     *    (steps 5-7) -- while the whole system is still fully clocked and stable, so XSPI0
+     *    (NOR/XIP) and XSPI1 (PSRAM) slide onto a non-PLL clock with no interface glitch
+     *    and stay alive for the entire window. Each helper quiesces (MDIS'ing mid-access
+     *    wedges XIP), disables, and parks its controller; both stay MDIS'd until step 9. */
+    BOARD_SwitchXspi0ClockFromRam(kBOARD_XspiParkOnFro192m);
+    BOARD_SwitchXspi1ClockFromRam(kBOARD_XspiParkOnFro192m);
 
-    if ((v & CCM_SLICE_CONTROL_MUX_MASK) !=
-        CCM_SLICE_CONTROL_MUX((uint32_t)kCLOCK_CGU_MAIN_ClockRoot_BASE))
+    /* [Step 3a] NOW park the CM85 core on FRO192M: MAIN_ROOTCLK (CGU root 30) mux -> BASE.
+     *    The core is currently clocked from the ROM Main PLL via MAIN_ROOTCLK; moving it to
+     *    the free-running FRO192M makes the CPU immune to the PLL power-down (step 5) and the
+     *    reference switch (step 6). Glitchless live mux (both sources running). This runs
+     *    from ITCM, so the CPU keeps executing across the hop. */
+    v  = SYSCON__CCM->CLOCK_ROOT[kCLOCK_Root_CGU_MAIN_ROOTCLK].SLICE_CONTROL;
+    v &= ~CCM_SLICE_CONTROL_MUX_MASK;
+    v |= CCM_SLICE_CONTROL_MUX((uint32_t)kCLOCK_CGU_MAIN_ClockRoot_BASE);
+    SYSCON__CCM->CLOCK_ROOT[kCLOCK_Root_CGU_MAIN_ROOTCLK].SLICE_CONTROL = v;
+    __DSB();
+    __ISB();
+    (void)SYSCON__CCM->CLOCK_ROOT[kCLOCK_Root_CGU_MAIN_ROOTCLK].SLICE_CONTROL;
+
+    /* [Step 3b] Detach the remaining CMS-PLL-fed CGU bus roots onto FRO192M so nothing still
+     *     rides MAIN/CORE/SYS PLL when they are powered down in step 5. MAIN_ROOTCLK is
+     *     already on BASE (step 3a). NPU / MEDIABUS / AUDIOBUS / COMMBUS take mux=BASE
+     *     (BASE_CLK was forced to FRO192M in step 1); WAKEBUS has no BASE mux option so takes
+     *     its direct FRO_192M mux instead. MUX field only -- div/sndDiv are left as ROM set
+     *     them; each root's final PLL source is re-applied post-window by ConfigCGUDig_*. */
+    v  = SYSCON__CCM->CLOCK_ROOT[kCLOCK_Root_CGU_NPU_ROOTCLK].SLICE_CONTROL;
+    v &= ~CCM_SLICE_CONTROL_MUX_MASK;
+    v |= CCM_SLICE_CONTROL_MUX((uint32_t)kCLOCK_NPU_ClockRoot_BASE);
+    SYSCON__CCM->CLOCK_ROOT[kCLOCK_Root_CGU_NPU_ROOTCLK].SLICE_CONTROL = v;
+
+    v  = SYSCON__CCM->CLOCK_ROOT[kCLOCK_Root_CGU_MEDIABUS_ROOTCLK].SLICE_CONTROL;
+    v &= ~CCM_SLICE_CONTROL_MUX_MASK;
+    v |= CCM_SLICE_CONTROL_MUX((uint32_t)kCLOCK_MEDIABUS_ClockRoot_BASE);
+    SYSCON__CCM->CLOCK_ROOT[kCLOCK_Root_CGU_MEDIABUS_ROOTCLK].SLICE_CONTROL = v;
+
+    v  = SYSCON__CCM->CLOCK_ROOT[kCLOCK_Root_CGU_AUDIOBUS_ROOTCLK].SLICE_CONTROL;
+    v &= ~CCM_SLICE_CONTROL_MUX_MASK;
+    v |= CCM_SLICE_CONTROL_MUX((uint32_t)kCLOCK_AUDIOBUS_ClockRoot_BASE);
+    SYSCON__CCM->CLOCK_ROOT[kCLOCK_Root_CGU_AUDIOBUS_ROOTCLK].SLICE_CONTROL = v;
+
+    v  = SYSCON__CCM->CLOCK_ROOT[kCLOCK_Root_CGU_COMMBUS_ROOTCLK].SLICE_CONTROL;
+    v &= ~CCM_SLICE_CONTROL_MUX_MASK;
+    v |= CCM_SLICE_CONTROL_MUX((uint32_t)kCLOCK_COMMBUS_ClockRoot_BASE);
+    SYSCON__CCM->CLOCK_ROOT[kCLOCK_Root_CGU_COMMBUS_ROOTCLK].SLICE_CONTROL = v;
+
+    v  = SYSCON__CCM->CLOCK_ROOT[kCLOCK_Root_CGU_WAKEBUS_ROOTCLK].SLICE_CONTROL;
+    v &= ~CCM_SLICE_CONTROL_MUX_MASK;
+    v |= CCM_SLICE_CONTROL_MUX((uint32_t)kCLOCK_WAKEBUS_ClockRoot_FRO_192M);
+    SYSCON__CCM->CLOCK_ROOT[kCLOCK_Root_CGU_WAKEBUS_ROOTCLK].SLICE_CONTROL = v;
+
+    /* SYSCON_PDMAIN_CLK (the SYSCON power-domain bus clock -- the very bus these
+     * SYSCON__CCM / SYSCON__CGUANA register writes ride) sits at its ROM default on the
+     * FIRST entry, but the post-window CGUDig tree moves it onto SYSPLL_DIV10. On any
+     * LATER entry (runtime power-mode switch, stress re-run) powering the SYS PLL down
+     * with this root still on it kills the SYSCON register bus mid-window and the chip
+     * resets. Park it on the free-running FRO_48M (no BASE mux option on this slice);
+     * ConfigCGUDig_SYSCON_common() moves it back to SYSPLL_DIV10 after the window. */
+    v  = SYSCON__CCM->CLOCK_ROOT[kCLOCK_Root_CGU_SYSCON_PDMAIN_CLK].SLICE_CONTROL;
+    v &= ~CCM_SLICE_CONTROL_MUX_MASK;
+    v |= CCM_SLICE_CONTROL_MUX((uint32_t)kCLOCK_SYSCON_PDMAIN_ClockRoot_FRO_48M);
+    SYSCON__CCM->CLOCK_ROOT[kCLOCK_Root_CGU_SYSCON_PDMAIN_CLK].SLICE_CONTROL = v;
+    __DSB();
+    __ISB();
+    (void)SYSCON__CCM->CLOCK_ROOT[kCLOCK_Root_CGU_SYSCON_PDMAIN_CLK].SLICE_CONTROL;
+
+    /* [Step 5] Power down MAIN + CORE + SYS PLL together (CGUANA FSM SW_OFF_REQ), then wait
+     *    (bounded loop) for their RDY bits to clear so the SYS PLL re-enable in step 7 is
+     *    race-free -- asserting SW_ON while a SW_OFF is still in flight can wedge the FSM.
+     *    With all three CMS PLLs off, the reference switch (step 6) has no running PLL loop
+     *    to glitch. The bounded wait means a stuck FSM cannot hang boot forever. */
+    v  = SYSCON__CGUANA->CGUAD_CTRL_REG;
+    v &= ~CGUANA_CGUAD_CTRL_REG_CGUAD_FSM_SW_ON_REQ(cmsFsm);
+    v |= CGUANA_CGUAD_CTRL_REG_CGUAD_FSM_SW_OFF_REQ(cmsFsm);
+    SYSCON__CGUANA->CGUAD_CTRL_REG = v;
+    __DSB();
+    __ISB();
+    for (i = 0U;
+         ((SYSCON__CGUANA->CGUAD_CTRL_STS & (cmsFsm & CGUANA_CGUAD_CTRL_STS_CGUAD_FSM_RDY_MASK)) != 0U) &&
+         (i < 1000000U);
+         i++)
     {
-        v &= ~CCM_SLICE_CONTROL_MUX_MASK;
-        v |=  CCM_SLICE_CONTROL_MUX((uint32_t)kCLOCK_CGU_MAIN_ClockRoot_BASE);
-        SYSCON__CCM->CLOCK_ROOT[kCLOCK_Root_CGU_MAIN_ROOTCLK].SLICE_CONTROL = v;
-
-        __DSB();
-        __ISB();
-        (void)SYSCON__CCM->CLOCK_ROOT[kCLOCK_Root_CGU_MAIN_ROOTCLK].SLICE_CONTROL;
     }
 
-    /* Core now on FRO192M -- safe to re-reference the CMS PLLs onto the crystal. */
-    BOARD_SetOsc24mSxoscFromRam();
+    /* [Step 6] Switch the reference of the CMS PLLs and the AV (Audio/Video) PLLs from the
+     *    FRO192M-derived 24M (CGUA_CTRL_REG.CMS_PLL_CKIN_SEL = 0, the reset default -- an RC
+     *    clock that can run several % off, scaling EVERY PLL output with it) to the SXOSC
+     *    crystal, via CGUA_CTRL_REG.{CMS,AV}_PLL_CKIN_SEL. This is glitchless because every
+     *    CMS PLL is already off (step 5) -- there is no running PLL to lose lock. Also point
+     *    OSC_24M at SXOSC (MODCON CLK24M_SEL) from RAM.
+     *    CRITICAL: the SXOSC-side reference path into the PLLs is the CLKGEN "PLLCKIN" output,
+     *    which has its own enable, CGUA_CLKGEN_PLL_CKIN_EN (0 out of reset). Selecting SXOSC
+     *    (CKIN_SEL=1) without enabling PLLCKIN leaves the PLLs with NO reference -- the SYS
+     *    PLL FSM then never reaches RDY in step 7 and boot dies. Set EN together with the
+     *    SELs. */
+    v  = SYSCON__CGUANA->CGUA_CTRL_REG;
+    v |= CGUANA_CGUA_CTRL_REG_CGUA_CLKGEN_PLL_CKIN_EN(1U);
+    v |= CGUANA_CGUA_CTRL_REG_CGUA_CLKGEN_CMS_PLL_CKIN_SEL(1U);
+    v |= CGUANA_CGUA_CTRL_REG_CGUA_CLKGEN_AV_PLL_CKIN_SEL(1U);
+    SYSCON__CGUANA->CGUA_CTRL_REG = v;
+    __DSB();
+    __ISB();
+    BOARD_SetOsc24mSxoscFromRam(); /* MODCON CLK24M_SEL -> SXOSC */
+
+    /* [Step 7] Re-program the SYS PLL registers (images precomputed from flash before the
+     *    window, passed in as sysPll1..4) and power it back up on the new SXOSC reference,
+     *    then wait (bounded) for its FSM RDY. Only SYS PLL is brought back here -- it is the
+     *    XSPI hop target (step 8/9). Core PLL and Main PLL stay OFF; the flash-resident
+     *    caller re-inits them after the window once XSPI no longer needs them. */
+    SYSCON__CGUANA->CGUA_SYSPLL_PLL1_REG = sysPll1;
+    SYSCON__CGUANA->CGUA_SYSPLL_PLL2_REG = sysPll2;
+    SYSCON__CGUANA->CGUA_SYSPLL_PLL3_REG = sysPll3;
+    SYSCON__CGUANA->CGUA_SYSPLL_PLL4_REG = sysPll4;
+    v  = SYSCON__CGUANA->CGUAD_CTRL_REG;
+    v &= ~CGUANA_CGUAD_CTRL_REG_CGUAD_FSM_SW_OFF_REQ(CLOCK_CGUANA_FSM_SYSPLL);
+    v |= CGUANA_CGUAD_CTRL_REG_CGUAD_FSM_SW_ON_REQ(CLOCK_CGUANA_FSM_SYSPLL);
+    SYSCON__CGUANA->CGUAD_CTRL_REG = v;
+    for (i = 0U;
+         ((SYSCON__CGUANA->CGUAD_CTRL_STS &
+           (CLOCK_CGUANA_FSM_SYSPLL & CGUANA_CGUAD_CTRL_STS_CGUAD_FSM_RDY_MASK)) == 0U) &&
+         (i < 1000000U);
+         i++)
+    {
+    }
+
+    /* [Step 8] Bring up SYSPLLDIV4_ROOTCLK -> SysPLL DIV4 (500 MHz), div=1. BOTH XSPI0 and
+     *    XSPI1 hop onto this in step 9: XSPI1 at 250 MHz (matches ROM PSRAM), XSPI0 at
+     *    125 MHz. */
+    v  = SYSCON__CCM->CLOCK_ROOT[kCLOCK_Root_CGU_SYSPLLDIV4_ROOTCLK].SLICE_CONTROL;
+    v &= ~(CCM_SLICE_CONTROL_MUX_MASK | CCM_SLICE_CONTROL_DIV_MASK);
+    v |= CCM_SLICE_CONTROL_MUX((uint32_t)kCLOCK_SYSPLLDIV4_ClockRoot_SYSPLL_DIV4) |
+         CCM_SLICE_CONTROL_DIV(1U - 1U);
+    SYSCON__CCM->CLOCK_ROOT[kCLOCK_Root_CGU_SYSPLLDIV4_ROOTCLK].SLICE_CONTROL = v;
+    __DSB();
+    __ISB();
+
+    /* [Step 9] Hop both (still-disabled since step 2) XSPI fclocks onto the freshly-locked
+     *    SYS PLL, so they become independent of PERI_ROOTCLK0/1 before the flash-resident
+     *    post-window code reprograms those PERI roots. Each helper switches the final fclock
+     *    and then performs the window's single re-ENABLE (switch -> [DLL re-lock] -> enable
+     *    -> restore prefetch). On return, XSPI0 XIP and XSPI1 PSRAM are both alive. */
+    BOARD_SwitchXspi0ClockFromRam(kBOARD_XspiRunOnSysPllDiv4);
+    BOARD_SwitchXspi1ClockFromRam(kBOARD_XspiRunOnSysPllDiv4);
+
+    /* [Step 10] Restore the LLC policy saved in step 0 -- still from ITCM, and only now that
+     *    XIP + PSRAM are alive on their final Sys-PLL clocks, so post-window fetches re-fill
+     *    the LLC fresh. PSRAM contents did not change while the LLC was off (both XSPI were
+     *    MDIS'd and the core ran from ITCM), so no invalidate is needed. Then re-enable the
+     *    L1 caches that were on; they re-fill fresh from the memories at their final clocks. */
+    CMPT__LLC->CCUCTCR = llcCtcr;
+    __DSB();
+    __ISB();
+    if (iCacheOn)
+    {
+        SCB_EnableICache();
+    }
+    if (dCacheOn)
+    {
+        SCB_EnableDCache();
+    }
 }
 
 #if !(defined(RT2660_PRESILICON_DEVELOPMENT) && (RT2660_PRESILICON_DEVELOPMENT == 1))
-/* Shared, mode-invariant prologue for HP/NP/LP boot-clock setup -- steps 1..4 of the
- * hazard-ordered flow. Takes NO parameters: everything it touches is identical across
- * the three run modes, so it references the file-scope s_*Config globals directly.
+/* Shared, mode-invariant prologue for HP/NP/LP boot-clock setup -- the hazard-ordered
+ * flow around the RAM window. Takes NO parameters: everything it touches is identical
+ * across the three run modes, so it references the file-scope s_*Config globals directly.
  *
  * The per-mode tail (Core PLL, Main PLL, then the CGUDig tree) is done by each
  * BOARD_BootClock*RUN entry AFTER this returns -- those steps use the per-mode config
  * globals by name, so nothing has to be threaded through this helper.
  *
- *   1) Park the CM85 core on FRO192M + switch OSC_24M -> SXOSC (RAM-resident). The
- *      reference switch glitches every CMS PLL; the core rides Main PLL out of boot ROM,
- *      so it must be off ALL PLLs before the switch. It stays on FRO192M until the
- *      per-mode CGUDig tail moves it to its final source (after Main PLL has re-locked).
- *   2) Bring up the mode-invariant analog blocks (ConfigCGUAna): FROs, SXOSC, Sys/Audio/
- *      Video PLL. Core PLL and Main PLL are DEFERRED -- XSPI0 XIP flash / XSPI1 PSRAM
- *      still ride Main PLL out of ROM, and both PLLs only need to be locked just before
- *      the CGUDig tree, which the per-mode tail owns.
- *   3) Bring up SYSPLLDIV4_ROOTCLK (SysPLL DIV4 = 500 MHz) and hop XSPI0 onto it
- *      (RAM-resident, 100 MHz). div MUST match ConfigCGUDig_SYSCON_common()'s
- *      SYSPLLDIV4_ROOTCLK setting (div=1 -> 500 MHz): common() re-programs this root
- *      AFTER the hop, while XSPI0 is riding it; a different div here would re-divide
- *      XSPI0's clock live (from flash) and corrupt XIP.
- *   4) Hop XSPI1 (DDR PSRAM) onto SYSPLLDIV4 too, incl. controller DLL re-lock. */
+ *   1) PRE-WINDOW (flash): bring up the FROs + SXOSC only (ConfigCGUAna). FRO192M is the
+ *      park clock and SXOSC is the new CMS PLL reference, so both must be up and stable
+ *      before the RAM window switches onto them. The CMS/AV PLL reference is NOT touched
+ *      here -- flipping it on the live ROM Main PLL (which feeds XSPI0 XIP flash + XSPI1
+ *      PSRAM) is the original loss-of-lock glitch; it is deferred into the RAM window and
+ *      done with all CMS PLLs powered down. The SYSPLL register images are precomputed
+ *      here too (the window is flash-free).
+ *   2) RAM WINDOW: BOARD_SwitchCmsPllRefToSxoscFromRam performs the glitchless crystal
+ *      hand-over -- L1/LLC caches off, park XSPI0/1 + core + bus roots on FRO192M, power
+ *      down MAIN/CORE/SYS PLL, switch the reference to SXOSC, re-lock SYS PLL, hop
+ *      XSPI0/XSPI1 onto SysPLL DIV4, caches back on. On return XSPI0 flash + XSPI1 PSRAM
+ *      are alive and independent of Main/Core PLL. NOTE: no interrupt masking here --
+ *      callers invoking this with interrupts enabled must mask them around the call
+ *      (both XSPI are disabled inside the window, so a flash/PSRAM-resident vector or
+ *      handler fetch mid-window would wedge XIP).
+ *   3) POST-WINDOW (flash): re-init the AV (Audio/Video) PLLs -- their reference was
+ *      switched to SXOSC inside the window, so they lock fresh on the crystal here.
+ *      Core PLL and Main PLL stay DEFERRED -- the per-mode entry inits them next, and
+ *      XSPI now rides Sys PLL so nothing is disturbed by that. */
 static void BOARD_BootClockPrepare(void)
 {
     clock_root_config_t config = {.mux = kCLOCK_LPUART0_ClockRoot_SXOSC, .div = 1,};
+    uint32_t sysPll1, sysPll2, sysPll3, sysPll4;
+
     CLOCK_SetRootClock(kCLOCK_Root_MAIN_lpuart0_fclk, &config);
 
-    /* Step 1: park core on FRO192M + OSC_24M -> SXOSC, both from RAM. */
-    BOARD_ParkCoreAndSwitchOsc24m();
-
-    /* Step 2: mode-invariant analog bring-up (FROs, SXOSC, Sys/Audio/Video PLL).
-     * Core PLL + Main PLL stay DEFERRED -- the per-mode entry inits them next. */
+    /* Step 1 (pre-window, flash): FROs + SXOSC. CLOCK_InitSxosc's FSM RDY wait ensures
+     * the crystal is stable before the window references it. This does not disturb the
+     * running ROM Main PLL that XSPI0/XSPI1 ride. */
     ConfigCGUAna();
 
-    /* Step 3: XSPI0 (boot flash, XIP) -> SysPLL DIV4. */
-    
-    clock_root_config_t sysPllDiv4Cfg = {
-        .mux    = kCLOCK_SYSPLLDIV4_ClockRoot_SYSPLL_DIV4,
-        .div    = 1U,
-        .sndDiv = 1U,
-    };
-    CLOCK_SetRootClock(kCLOCK_Root_CGU_SYSPLLDIV4_ROOTCLK, &sysPllDiv4Cfg);
+    /* Compute the SYSPLL register images while flash is up (the window is flash-free). */
+    BOARD_ComputeSysPllRegs(&s_sysPllConfig, &sysPll1, &sysPll2, &sysPll3, &sysPll4);
 
-    BOARD_MoveXspi0ToSysPllDiv4();
+    /* Step 2 (RAM window): glitchless crystal hand-over. */
+    BOARD_SwitchCmsPllRefToSxoscFromRam(sysPll1, sysPll2, sysPll3, sysPll4);
 
-    /* Step 4: XSPI1 (DDR PSRAM) -> SysPLL DIV4 (+ DLL re-lock). */
-    BOARD_MoveXspi1ToSysPllDiv4();
+    /* Step 3 (post-window, flash): AV PLLs lock fresh on the SXOSC reference. */
+    CLOCK_InitAudioPll(&s_audioPllConfig);
+    CLOCK_InitVideoPll(&s_videoPllConfig);
 }
 #endif /* !RT2660_PRESILICON_DEVELOPMENT */
 
@@ -578,49 +928,34 @@ void BOARD_BootClockRUN(void)
  * Static helpers
  ******************************************************************************/
 
-/* Bring up all mode-invariant CGUAna analog blocks: FRO12M, FRO192M, SXOSC, and the
- * Sys / Audio / Video PLLs. These are IDENTICAL across HPRUN / NPRUN / LPRUN, so this
- * function takes no parameters and reads the file-scope s_*Config globals directly.
+/* Bring up the mode-invariant PRE-WINDOW analog blocks: FRO12M, FRO192M and SXOSC.
+ * These are IDENTICAL across HPRUN / NPRUN / LPRUN, so this function takes no
+ * parameters and reads the file-scope s_*Config globals directly.
  *
- * The two per-mode PLLs are NOT initialised here -- each BOARD_BootClock*RUN entry does
- * that itself, referencing its own config globals by name:
- *   - Core PLL differs per mode (792 MHz HP/NP, 600 MHz LP), so CLOCK_InitCorePll is
- *     called by the per-mode entry after BOARD_BootClockPrepare() returns.
- *   - Main PLL is deferred: XSPI0 XIP flash still rides it out of boot ROM, so it is
- *     initialised by the per-mode entry only after XSPI0/XSPI1 are hopped onto Sys PLL. */
+ * Everything else moved out of here relative to the original bring-up:
+ *   - The CMS/AV PLL reference switch (formerly CLOCK_SetCmsPllRefSource /
+ *     CLOCK_SetAvPllRefSource here, on the live ROM Main PLL) is done inside the RAM
+ *     window with all CMS PLLs powered down -- see BOARD_SwitchCmsPllRefToSxoscFromRam.
+ *   - Sys PLL is re-programmed and re-locked inside the RAM window (it must lock on the
+ *     new SXOSC reference before the XSPI hop).
+ *   - Audio/Video PLLs are initialised post-window by BOARD_BootClockPrepare (their
+ *     reference is switched inside the window, so they must lock after it).
+ *   - Core PLL / Main PLL differ per mode and are initialised by each
+ *     BOARD_BootClock*RUN entry after BOARD_BootClockPrepare() returns. */
 static void ConfigCGUAna(void)
 {
     // TODO, LPOSC_12M, LPOSC_1M and LPOSC_32K
-
-    /* PLL reference clock source selection (MCUX-88628). Must be programmed before
-     * the PLLs are initialized. This board routes both the Core/Main/Sys (CMS)
-     * PLLs and the Audio/Video (AV) PLLs from the SXOSC 24 MHz crystal -- matches
-     * the OSC_24M MODCON routing applied in ConfigCGUDig_SYSCON_common. */
-    CLOCK_SetCmsPllRefSource(kCLOCK_PllRefSrc_SXOSC);
-    CLOCK_SetAvPllRefSource(kCLOCK_PllRefSrc_SXOSC);
 
     /* FRO 12 MHz -- early safe fallback; brought up first so the rest of the analog
      * bring-up always has a known-good clock available. */
     CLOCK_InitFro12M(&s_fro12mConfig);
 
-    /* FRO 192 MHz -- makes FRO-based root clocks available immediately. */
+    /* FRO 192 MHz -- the core/bus/XSPI park clock for the RAM window. */
     CLOCK_InitFro192M(&s_fro192mConfig);
 
-    /* SXOSC 24 MHz crystal -- used as PLL reference. */
+    /* SXOSC 24 MHz crystal -- the new PLL reference; the FSM RDY wait inside
+     * CLOCK_InitSxosc ensures it is stable before the RAM window references it. */
     CLOCK_InitSxosc(&s_sxoscConfig);
-
-    /* Sys PLL -> 2 GHz VCO; secondary fixed and fractional outputs.
-     * Re-initialised in all builds: PSRAM (XSPI1) rides Main PLL out of ROM (mux0 =
-     * MAIN_PERI1_DIV2 <- PERI_ROOTCLK1 <- MAINPLL_DIVOUT1), NOT Sys PLL, so re-locking
-     * Sys PLL here does not disturb the live PSRAM. A freshly-locked Sys PLL (DIV4 = 500)
-     * is the deterministic hop target for both XSPI0 and XSPI1. */
-    CLOCK_InitSysPll(&s_sysPllConfig);
-
-    /* Audio PLL -> 49.152 MHz (feeds AUDIOPLL_ROOTCLK; consumed by audio peripherals). */
-    CLOCK_InitAudioPll(&s_audioPllConfig);
-
-    /* Video PLL -> 70.64 MHz (feeds VIDEOPLL_ROOTCLK; consumed by the display path). */
-    CLOCK_InitVideoPll(&s_videoPllConfig);
 }
 
 /* Program all CGUDig clock-root mux/divider slices, grouped by domain. One mutable
@@ -716,8 +1051,8 @@ static void ConfigCGUDig_SYSCON_common(void)
      * The six Mx (L2) /2 selects feed XSPI0/XSPI1 (MAIN) and USDHC0/USDHC1
      * (COMM). Default them all to pass-through so consumers see the full
      * PERI/PFD root frequencies tabulated above. */
-    /* OSC_24M is now switched to SXOSC earlier (from RAM, with the core parked on
-     * FRO192M) by BOARD_ParkCoreAndSwitchOsc24m() in every BOARD_BootClock*RUN entry,
+    /* OSC_24M is now switched to SXOSC inside the RAM window (step 6 of
+     * BOARD_SwitchCmsPllRefToSxoscFromRam, with the core parked on FRO192M),
      * so the flash-resident switch here is redundant (CLK24M_SEL already = SXOSC). */
     /* CLOCK_SetOsc24mSource(kCLOCK_Osc24mSrc_SXOSC); */
 
