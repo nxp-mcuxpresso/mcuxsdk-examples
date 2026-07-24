@@ -8,4 +8,4 @@ drives the output pin and the on-board user LED to track the input level —
 both go active while the input is asserted, inactive when it is released.
 
 ## Supported Boards
-- [FRDM-IMXRT1152](../../../_boards/frdmimxrt1152/component_examples/io_expander/interrupt_demo/example_board_readme.md)
+- FRDM-IMXRT1152

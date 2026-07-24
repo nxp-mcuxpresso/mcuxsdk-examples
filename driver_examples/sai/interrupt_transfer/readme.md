@@ -39,3 +39,4 @@ In this example, one sai instance playbacks the audio data stored in flash/SRAM 
 - [MIMXRT700-EVK](../../../_boards/mimxrt700evk/driver_examples/sai/interrupt_transfer/example_board_readme.md)
 - [FRDM-IMXRT700](../../_boards/frdmimxrt700/driver_examples/sai/interrupt_transfer/example_board_readme.md)
 - [MIMXRT2660-EVK](../../../_boards/mimxrt2660evk/driver_examples/sai/interrupt_transfer/example_board_readme.md)
+- [FRDM-IMXRT700](../../../_boards/frdmimxrt700/driver_examples/sai/interrupt_transfer/example_board_readme.md)

@@ -14,7 +14,6 @@ work with semihosting.
 - [MIMXRT1060-EVKB](../../_boards/evkbmimxrt1060/demo_apps/shell/example_board_readme.md)
 - [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/demo_apps/shell/example_board_readme.md)
 - [MIMXRT1060-EVKC](../../_boards/evkcmimxrt1060/demo_apps/shell/example_board_readme.md)
-- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/demo_apps/shell/example_board_readme.md)
 - [EVK-MIMXRT1010](../../_boards/evkmimxrt1010/demo_apps/shell/example_board_readme.md)
 - [EVK-MIMXRT1015](../../_boards/evkmimxrt1015/demo_apps/shell/example_board_readme.md)
 - [EVK-MIMXRT1020](../../_boards/evkmimxrt1020/demo_apps/shell/example_board_readme.md)
@@ -74,3 +73,4 @@ work with semihosting.
 - [FRDM-KW43](../../_boards/frdmkw43/demo_apps/shell/example_board_readme.md)
 - [FRDM-MCXW70](../../_boards/frdmmcxw70/demo_apps/shell/example_board_readme.md)
 - [MIMXRT2660-EVK](../../_boards/mimxrt2660evk/demo_apps/shell/example_board_readme.md)
+- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/demo_apps/shell/example_board_readme.md)

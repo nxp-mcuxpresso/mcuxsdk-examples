@@ -104,7 +104,7 @@ Press any key to run again.
 - [FRDM-KW43](../../../../_boards/frdmkw43/driver_examples/lpspi/interrupt_b2b/master/example_board_readme.md)
 - [FRDM-MCXW70](../../../../_boards/frdmmcxw70/driver_examples/lpspi/interrupt_b2b/master/example_board_readme.md)
 - [FRDM-MCXA287](../../../../_boards/frdmmcxa287/driver_examples/lpspi/interrupt_b2b/master/example_board_readme.md)
-- [FRDM-IMX937](../../../../../_boards/frdmimx937/driver_examples/lpspi/interrupt_b2b/master/example_board_readme.md)
 - [frdmimx952](../../../../_boards/frdmimx952/driver_examples/lpspi/interrupt_b2b/master/example_board_readme.md)
 - [FRDM-IMX95](../../../../_boards/frdmimx95/driver_examples/lpspi/interrupt_b2b/master/example_board_readme.md)
 - [MIMXRT2660-EVK](../../../../_boards/mimxrt2660evk/driver_examples/lpspi/interrupt_b2b/master/example_board_readme.md)
+- [FRDM-IMX937](../../../../_boards/frdmimx937/driver_examples/lpspi/interrupt_b2b/master/example_board_readme.md)

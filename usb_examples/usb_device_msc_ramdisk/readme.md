@@ -91,7 +91,6 @@ Otherwise, Mac OS shows "not enough space for allocate" and can't format the dis
 - MIMXRT685-AUD-EVK
 - LPCXpresso51U68
 - LPCXpresso54S018
-- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/usb_examples/usb_device_msc_ramdisk/example_board_readme.md)
 - [LPCXpresso55S16](../../_boards/lpcxpresso55s16/usb_examples/usb_device_msc_ramdisk/example_board_readme.md)
 - LPCXpresso54S018M
 - MIMXRT1060-EVKB
@@ -127,3 +126,4 @@ Otherwise, Mac OS shows "not enough space for allocate" and can't format the dis
 - FRDM-MCXA577
 - FRDM-MCXA366
 - FRDM-MCXA287
+- FRDM-IMXRT1152

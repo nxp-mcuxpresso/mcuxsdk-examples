@@ -18,9 +18,9 @@ OTA examples for MCXN9 use the default partition layout with MCUboot placed in t
 
 Instructions how to generate project with custom configuration is in `example_board_readme.md` for target board:
 
-- [FRDM-MCXN947](../../_boards/frdmmcxn947/ota_examples/mcuboot_opensource/example_board_readme.md)
-- [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/ota_examples/mcuboot_opensource/example_board_readme.md)
-- [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/ota_examples/mcuboot_opensource/example_board_readme.md)
+- FRDM-MCXN947
+- MCX-N5XX-EVK
+- MCX-N9XX-EVK
 
 Note: Following instructions are for FRDM-MCXN947 as a reference. 
 

@@ -11,6 +11,7 @@ Due to the license issue, the MCUXpresso SDK does not include the EtherCAT SSC. 
 
         **Note:** To proceed with the download, you must provide your account credentials, if you are not already logged in.
 
+        (selssc)=
         ![](../images/digital_io/image6.png "Search and select EtherCAT SSC")
 
     4.  Install the downloaded SSC tool(version 5.13).
@@ -31,6 +32,7 @@ Due to the license issue, the MCUXpresso SDK does not include the EtherCAT SSC. 
 
     6.  Click the **Open** button. See, [Figure 3](#selectxml).
 
+        (selectxml)=
         ![](../images/digital_io/image8.png "Select the digital_io.xml file")
 
         The configuration is imported.

@@ -21,5 +21,5 @@ Current state of the device is <PreOperational>!
 ~~~~~~~~~~~~~~~~~~~~~
 
 ## Supported Boards
-- [MIMXRT1180-EVK](../../../_boards/evkmimxrt1180/canopennode_examples/manager/bm/example_board_readme.md)
-- [IMX943-EVK](../../../_boards/imx943evk/canopennode_examples/manager/bm/example_board_readme.md)
+- [MIMXRT1180-EVK](../../../_boards/evkmimxrt1180/canopennode_examples/device/bm/example_board_readme.md)
+- [IMX943-EVK](../../../_boards/imx943evk/canopennode_examples/device/bm/example_board_readme.md)

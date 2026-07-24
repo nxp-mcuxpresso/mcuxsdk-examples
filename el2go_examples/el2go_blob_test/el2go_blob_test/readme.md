@@ -25,7 +25,7 @@ Additional information about EdgeLock 2GO Provisioning for MCUs can be found in 
 - EdgeLock 2GO secure object blobs stored in the devices flash memory
 - ** [SPSDK](https://www.nxp.com/design/design-center/software/development-software/secure-provisioning-sdk-spsdk:SPSDK) or standalone Provisioning Firmware
 
-*NOTE: The Python scripts referred to in this example can be found in the [scripts](../../../../middleware/nxp_iot_agent/tst/el2go_blob_test/scripts) folder in the example directory.*
+*NOTE: The Python scripts referred to in this example can be found in the `scripts` folder in the example directory.*
 
 ## Hardware requirements
 
@@ -66,9 +66,9 @@ Additional information about EdgeLock 2GO Provisioning for MCUs can be found in 
 
     Details on how to execute these steps can be found in the following documents:
     - **[KW45]** Application note [AN14109 "Secure Boot Using the SEC Tool"](https://www.nxp.com/products/KW45) ("Documentation->Public Files" section).
-    - **[MCX W71]**, Application note [AN14371 "Secure Boot Using the SEC Tool"](https://www.nxp.com/products/MCX-W71X) ("Documentation->Public Files" section).
+    - **[MCX W71]**, Application note [AN14371 "Secure Boot Using the SEC Tool"](https://www.nxp.com/products/MCX-W71) ("Documentation->Public Files" section).
     - **[KW47]**, Application note [AN14371 "Secure Boot Using the SEC Tool"](https://www.nxp.com/products/KW47) ("Documentation->Public Files" section).
-    - **[MCX W72]**, Application note [AN14613 Secure Boot using the SEC Tool"](https://www.nxp.com/products/MCX-W72X) ("Documentation->Public Files" section).
+    - **[MCX W72]**, Application note [AN14613 Secure Boot using the SEC Tool"](https://www.nxp.com/products/MCX-W72) ("Documentation->Public Files" section).
 
 4.  Build the application:
 

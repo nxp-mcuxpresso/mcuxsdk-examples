@@ -42,3 +42,4 @@ refer to MCUXpresso SDK USB RNDIS & LWIP User Guide
 - [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/lwip_examples/lwip_dhcp_usb/freertos/example_board_readme.md)
 - [FRDM-MCXA577](../../../_boards/frdmmcxa577/lwip_examples/lwip_dhcp_usb/freertos/example_board_readme.md)
 - [MIMXRT2660-EVK](../../../_boards/mimxrt2660evk/lwip_examples/lwip_dhcp_usb/freertos/example_board_readme.md)
+- [FRDM-IMXRT1152](../../../_boards/frdmimxrt1152/lwip_examples/lwip_dhcp_usb/freertos/example_board_readme.md)

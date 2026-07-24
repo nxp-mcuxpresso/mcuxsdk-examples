@@ -235,7 +235,7 @@ driver_examples
    prince_rom/readme.md
    puf/readme.md
    puf_v3/readme.md
-   pwm/readme.md
+   pwm/index.rst
    pwt/readme.md
    pwt_1/readme.md
    pxp/index.rst

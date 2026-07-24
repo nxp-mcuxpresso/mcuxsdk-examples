@@ -11,6 +11,7 @@ Due to the license issue, the MCUXpresso SDK does not include the EtherCAT Subde
 
         **Note:** To proceed with the download, you must provide your account credentials, if you are not already logged in.
 
+        (fig_hfcjggxtxfx)=
         ![](../images/eoe/image7.png "Search
                                         and select EtherCAT SSC")
 
@@ -30,6 +31,7 @@ Due to the license issue, the MCUXpresso SDK does not include the EtherCAT Subde
     5.  Select the *eoe.xml* file.
     6.  Click the **Open** button. See, [Figure 3](#fig_jejwbfjwevf).
 
+        (fig_jejwbfjwevf)=
         ![](../images/eoe/image9.png "Select
                                         the eoe.xml file")
 

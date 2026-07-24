@@ -11,7 +11,6 @@ Example application demonstrates a plain serial transmission, typically connecti
 - [EVK-MIMXRT595](../../_boards/evkmimxrt595/freemaster_examples/fmstr_uart/example_board_readme.md)
 - [EVK-MIMXRT685](../../_boards/evkmimxrt685/freemaster_examples/fmstr_uart/example_board_readme.md)
 - [EVKB-IMXRT1050](../../_boards/evkbimxrt1050/freemaster_examples/fmstr_uart/example_board_readme.md)
-- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/freemaster_examples/fmstr_uart/example_board_readme.md)
 - [FRDM-IMXRT1186](../../_boards/frdmimxrt1186/freemaster_examples/fmstr_uart/example_board_readme.md)
 - [FRDM-IMXRT700](../../_boards/frdmimxrt700/freemaster_examples/fmstr_uart/example_board_readme.md)
 - [FRDM-K22F](../../_boards/frdmk22f/freemaster_examples/fmstr_uart/example_board_readme.md)
@@ -84,3 +83,4 @@ Example application demonstrates a plain serial transmission, typically connecti
 - [FRDM-MCXW72](../../_boards/frdmmcxw72/freemaster_examples/fmstr_uart/example_board_readme.md)
 - [FRDM-MCXA287](../../_boards/frdmmcxa287/freemaster_examples/fmstr_uart/example_board_readme.md)
 - [IMX943-EVK](../../_boards/imx943evk/freemaster_examples/fmstr_uart/example_board_readme.md)
+- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/freemaster_examples/fmstr_uart/example_board_readme.md)

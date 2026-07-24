@@ -112,17 +112,17 @@ Installation process using VS Code
 ### Dependency Installation
 In addition to the extension itself, some extra tools and software components are required for the full development flow within VS Code.
 
-Please refer to [Dependency Installation · nxp-mcuxpresso/vscode-for-mcux Wiki · GitHub](https://github.com/nxp-mcuxpresso/vscode-for-mcux/wiki/Dependency-Installation).
+Please refer to [Dependency Installation · nxp-mcuxpresso/vscode-for-mcux Wiki · GitHub](https://docs.mcuxpresso.nxp.com/mcux-vscode/latest/html/MCUXpresso-Installer-Integration.html#dependency-installation).
 
 ### Building ncp_device example using VS Code
-Please refer to [Working with MCUXpresso SDK](https://github.com/nxp-mcuxpresso/vscode-for-mcux/wiki/Working-with-MCUXpresso-SDK)
+Please refer to [Working with MCUXpresso SDK](https://docs.mcuxpresso.nxp.com/mcux-vscode/latest/html/Working-with-MCUXpresso-SDK.html)
 
 To build ncp_device example:
 
 1. Import the SDK into your workspace. Click **Import Repository** from the **QUICKSTART PANEL**.
 ![import_sdk](../images/import_sdk.png)
 
-    Note: You can import the SDK in several ways. Refer to [MCUXpresso for VS Code Wiki](https://github.com/nxp-mcuxpresso/vscode-for-mcux/wiki/Working-with-MCUXpresso-SDK) for details
+    Note: You can import the SDK in several ways. Refer to [MCUXpresso for VS Code Wiki](https://docs.mcuxpresso.nxp.com/mcux-vscode/latest/html/Working-with-MCUXpresso-SDK.html) for details
 
     **a. Import remote Git repository**
 
@@ -153,7 +153,7 @@ To build ncp_device example:
 
     **d. Import standalone MCUXpresso SDK zip archive**
 
-    Another possibility is to install an MCUXpresso SDK from a zip archive (Downloaded from [MCUXpresso.NXP.com](https://mcuxpresso.nxp.com/en)).
+    Another possibility is to install an MCUXpresso SDK from a zip archive (Downloaded from [MCUXpresso.NXP.com](https://mcuxpresso.nxp.com/)).
 
     ![import_sdk_zip_pkg](../images/import_sdk_zip_pkg.png)
 
@@ -187,7 +187,7 @@ To build ncp_device example:
     **NOTE: For MCU SDK version 25.03.00, you need to add the following fix:**
 
     **Fix 1:**
-    ```C
+    ```diff
     diff --git a/ncp_examples/ncp_device/ot/third_party/ot_config.cmake b/ncp_examples/ncp_device/ot/third_party/ot_config.cmake
     index afc90dd3b3..3e2f5f2874 100644
     --- a/ncp_examples/ncp_device/ot/third_party/ot_config.cmake
@@ -236,7 +236,7 @@ To build ncp_device example:
     ```
 
     **Fix 2:**
-    ``` C
+    ```diff
     diff --git a/ncp_examples/common/mbedtls/mbedtls_common.c b/ncp_examples/common/mbedtls/mbedtls_common.c
     index 0b63d2db71..432434981b 100644
     --- a/ncp_examples/common/mbedtls/mbedtls_common.c

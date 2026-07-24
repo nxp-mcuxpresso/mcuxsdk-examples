@@ -38,6 +38,7 @@ This `ota_mcuboot_basic` example demonstrates a basic application that uses MCUB
 - [FRDM-MCXC162](../../_boards/frdmmcxc162/ota_examples/ota_mcuboot_basic/example_board_readme.md)
 - [FRDM-MCXN236](../../_boards/frdmmcxn236/ota_examples/ota_mcuboot_basic/example_board_readme.md)
 - [FRDM-MCXL255](../../_boards/frdmmcxl255/ota_examples/ota_mcuboot_basic/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/ota_examples/ota_mcuboot_basic/example_board_readme.md)
 
 ## Prepare the Demo
 1. The demo requires MCUBoot booloader to be present in the FLASH memory to function properly.

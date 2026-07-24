@@ -144,3 +144,4 @@ Step 7. Now the RNDIS driver should be installed successfully.
 - LPCXpresso54628
 - MIMXRT1060-EVKB
 - FRDM-MCXA577
+- FRDM-IMXRT1152

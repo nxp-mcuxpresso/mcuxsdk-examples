@@ -1,6 +1,6 @@
 # MCXN - OTA update by using SB3 file
 
-- [MCXN - OTA update by using SB3 file](#mcxn-ota-update-by-using-sb3-file)
+- [MCXN - OTA update by using SB3 file](#mcxn---ota-update-by-using-sb3-file)
    * [1. Provision the device](#1-provision-the-device)
    * [2. Prepare OTA images](#2-prepare-ota-images)
       + [2.1 ROM bootloader only use case](#21-rom-bootloader-only-use-case)
@@ -69,7 +69,7 @@ MCXN uses flash remapping based on swap mechanism so SB3 OTA file always target 
 ### 2.2 MCUboot bootloader use case
 
 1. Build `ota_mcuboot_basic` and sign image by `imgtool` as usual by following steps in specific `example_board_readme.md` for your board. Copy the signed binary to your $sec_tool_workspace/source_images
-2. Look into [ota_examples/\_common/sb3_templates](../_common/sb3_templates) directory and copy SB3 configuration templates for your device to your $sec_tool_workspace/configs
+2. Look into `ota_examples/\_common/sb3_templates` directory and copy SB3 configuration templates for your device to your $sec_tool_workspace/configs
     * MCXN: `mcxn_sb3_cfg_primary_slot.yaml`
 
 3. In SEC tool open __Tools/SB Editor__ and click __Import__ to `sb3_config_mcxn_secondary_slot.yaml`
@@ -260,6 +260,6 @@ $
 
 ## Supported Boards
 
-- [FRDM-MCXN236](../../_boards/frdmmcxn236/ota_examples/mcuboot_opensource/example_board_readme.md)
-- [FRDM-MCXN947](../../_boards/frdmmcxn947/ota_examples/mcuboot_opensource/example_board_readme.md)
-- [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/ota_examples/mcuboot_opensource/example_board_readme.md)
+- FRDM-MCXN236
+- FRDM-MCXN947
+- MCX-N9XX-EVK

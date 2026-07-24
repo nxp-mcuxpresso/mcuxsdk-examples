@@ -14,7 +14,6 @@ Example application demonstrates the communication over SEGGER J-Link RTT interf
 - [MIMXRT1040-EVK](../../_boards/evkmimxrt1040/freemaster_examples/fmstr_rtt/example_board_readme.md)
 - [EVK-MIMXRT1064](../../_boards/evkmimxrt1064/freemaster_examples/fmstr_rtt/example_board_readme.md)
 - [MIMXRT1180-EVK](../../_boards/evkmimxrt1180/freemaster_examples/fmstr_rtt/example_board_readme.md)
-- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/freemaster_examples/fmstr_rtt/example_board_readme.md)
 - [FRDM-IMXRT1186](../../_boards/frdmimxrt1186/freemaster_examples/fmstr_rtt/example_board_readme.md)
 - [FRDM-IMXRT700](../../_boards/frdmimxrt700/freemaster_examples/fmstr_rtt/example_board_readme.md)
 - [FRDM-KE17Z512](../../_boards/frdmke17z512/freemaster_examples/fmstr_rtt/example_board_readme.md)
@@ -52,3 +51,4 @@ Example application demonstrates the communication over SEGGER J-Link RTT interf
 - [FRDM-MCXA366](../../_boards/frdmmcxa366/freemaster_examples/fmstr_rtt/example_board_readme.md)
 - [FRDM-MCXW72](../../_boards/frdmmcxw72/freemaster_examples/fmstr_rtt/example_board_readme.md)
 - [FRDM-MCXA287](../../_boards/frdmmcxa287/freemaster_examples/fmstr_rtt/example_board_readme.md)
+- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/freemaster_examples/fmstr_rtt/example_board_readme.md)

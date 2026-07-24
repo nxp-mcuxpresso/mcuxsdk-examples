@@ -71,7 +71,6 @@ terminal.
 
 ## Supported Boards
 - MIMXRT1170-EVKB
-- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/usb_examples/usb_host_printer_plain_text/example_board_readme.md)
 - [FRDM-K22F](../../_boards/frdmk22f/usb_examples/usb_host_printer_plain_text/example_board_readme.md)
 - [LPCXpresso55S69](../../_boards/lpcxpresso55s69/usb_examples/usb_host_printer_plain_text/example_board_readme.md)
 - EVK-MIMXRT1064
@@ -110,3 +109,4 @@ terminal.
 - FRDM-MCXA577
 - FRDM-MCXA366
 - FRDM-MCXA287
+- FRDM-IMXRT1152

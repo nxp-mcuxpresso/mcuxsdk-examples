@@ -23,7 +23,7 @@ Additional information about EdgeLock 2GO Provisioning for MCUs can be found in 
 - Python >= 3.9 with packages from [requirements.txt](../../../../middleware/nxp_iot_agent/tst/el2go_blob_test/scripts/requirements.txt)
 - **[MCXN]** [SPSDK](https://www.nxp.com/design/design-center/software/development-software/secure-provisioning-sdk-spsdk:SPSDK) or standalone Provisioning Firmware
 
-*NOTE: The Python scripts refered to in this example can be found in the [scripts](../../../../middleware/nxp_iot_agent/tst/el2go_blob_test/scripts) folder in the example directory.*
+*NOTE: The Python scripts refered to in this example can be found in the `scripts` folder in the example directory.*
 
 ## Hardware requirements
 
@@ -85,7 +85,7 @@ Additional information about EdgeLock 2GO Provisioning for MCUs can be found in 
 
     Details on how to execute these steps can be found in the following documents:
     - **[RW61X]** Application note [AN13813 "Secure boot on RW61x"](https://www.nxp.com/products/wireless-connectivity/wi-fi-plus-bluetooth-plus-802-15-4/wireless-mcu-with-integrated-tri-radio-1x1-wi-fi-6-plus-bluetooth-low-energy-5-3-802-15-4:RW612) ("Documentation->Secure Files" section).
-    - **[MCXN]** Application note [AN14148 "Enabling Secure boot and Trust Provisioning on MCX N series"](https://www.nxp.com/products/processors-and-microcontrollers/arm-microcontrollers/general-purpose-mcus/mcx-arm-cortex-m/mcx-n-series-microcontrollers/mcx-n94x-54x-highly-integrated-multicore-mcus-with-on-chip-accelerators-intelligent-peripherals-and-advanced-security:MCX-N94X-N54X) ("Documentation->Secure Files" section).
+    - **[MCXN]** Application note [AN14148 "Enabling Secure boot and Trust Provisioning on MCX N series"](https://www.nxp.com/products/MCX-N94-N54-N53-N52-N24) ("Documentation->Secure Files" section).
 
 4.  **[OPTIONAL]** Enable support for large blobs:
 

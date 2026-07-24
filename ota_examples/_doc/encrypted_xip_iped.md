@@ -79,7 +79,7 @@ Note: The device must be provisioned with __RKTH__ and __CUST_MK_SK__. For provi
 To simplify the workflow, the MCUXpresso Secure Provisioning Tool (SEC tool) is used.
 
 1. Build `ota_mcuboot_basic` and sign image by `imgtool` as usual.
-2. Look into [ota_examples/\_common/sb3_templates](../_common/sb3_templates) and [ota_examples/\_common/binaries](../_common/binaries) directories and copy the template and additional binaries to your `$sec_tool_workspace`
+2. Look into `ota_examples/\_common/sb3_templates` and `ota_examples/\_common/binaries` directories and copy the template and additional binaries to your `$sec_tool_workspace`
     * `rw61x_IPED_initial_image.yaml` for the initial image
     * `rw61x_IPED_ota_slot0_image.yaml` or `rw61x_IPED_ota_slot1_image.yaml` for OTA image
     * `iped_conf_magic_page.bin` magic (confirmation) for configuration structure

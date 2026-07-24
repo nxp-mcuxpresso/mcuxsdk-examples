@@ -25,3 +25,4 @@ In this example, one sai instance record the audio data from input and playbacks
 - [MIMXRT700-EVK](../../../_boards/mimxrt700evk/driver_examples/sai/interrupt_record_playback/example_board_readme.md)
 - [FRDM-IMXRT700](../../_boards/frdmimxrt700/driver_examples/sai/interrupt_record_playback/example_board_readme.md)
 - [MIMXRT2660-EVK](../../../_boards/mimxrt2660evk/driver_examples/sai/interrupt_record_playback/example_board_readme.md)
+- [FRDM-IMXRT700](../../../_boards/frdmimxrt700/driver_examples/sai/interrupt_record_playback/example_board_readme.md)

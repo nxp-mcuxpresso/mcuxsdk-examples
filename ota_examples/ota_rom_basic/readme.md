@@ -100,3 +100,4 @@ There are multiple options how to achieve that, however in principle the are two
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/ota_examples/ota_rom_basic/example_board_readme.md)
 - [FRDM-MCXN947T](../../_boards/frdmmcxn947t/ota_examples/ota_rom_basic/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/ota_examples/ota_rom_basic/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/ota_examples/ota_rom_basic/example_board_readme.md)

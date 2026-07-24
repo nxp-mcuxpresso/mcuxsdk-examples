@@ -23,4 +23,4 @@ and how to configure a wakeup source and wakeup the MCU from low power modes.
  - Debug pins(e.g SWD_DIO) would consume additional power, had better to disable related pins or disconnect them.
 
 ## Supported Boards
-- [FRDM-IMXRT152](../../../../_boards/frdmimxrt1152/demo_apps/power_mode_switch/bm_dcdc/example_board_readme.md)
+- [FRDM-IMXRT1152](../../../../_boards/frdmimxrt1152/demo_apps/power_mode_switch/bm_dcdc/example_board_readme.md)

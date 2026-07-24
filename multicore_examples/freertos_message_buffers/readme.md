@@ -30,7 +30,6 @@ The shared memory start address is then exported from the linker to the applicat
 FreeRTOS Message Buffers at a fixed location that is then known for both cores.
 
 ## Supported Boards
-
 - [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/multicore_examples/freertos_message_buffers/example_board_readme.md)
 - [MIMXRT1160-EVK](../../_boards/evkmimxrt1160/multicore_examples/freertos_message_buffers/example_board_readme.md)
 - [MIMXRT1180-EVK](../../_boards/evkmimxrt1180/multicore_examples/freertos_message_buffers/example_board_readme.md)
@@ -41,5 +40,5 @@ FreeRTOS Message Buffers at a fixed location that is then known for both cores.
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/multicore_examples/freertos_message_buffers/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/multicore_examples/freertos_message_buffers/example_board_readme.md)
 - [FRDM-IMXRT1186](../../_boards/frdmimxrt1186/multicore_examples/freertos_message_buffers/example_board_readme.md)
-- [FRDM-IMXRT700](../../_boards/frdmimxrt700/multicore_examples/freertos_message_buffers/example_board_readme.md)
-- [MIMXRT700-EVK](../../_boards/mimxrt700evk/multicore_examples/freertos_message_buffers/example_board_readme.md)
+- FRDM-IMXRT700
+- MIMXRT700-EVK

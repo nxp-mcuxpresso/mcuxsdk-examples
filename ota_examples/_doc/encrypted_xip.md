@@ -176,23 +176,23 @@ Before jumping to the booting process, the on-the-fly decryption is initialized 
 
 BEE:
 
-- [EVK-MIMXRT1020](../../_boards/evkmimxrt1020/ota_examples/mcuboot_opensource/example_board_readme.md)
-- [MIMXRT1040-EVK](../../_boards/evkmimxrt1040/ota_examples/mcuboot_opensource/example_board_readme.md)
-- [EVKB-IMXRT1050](../../_boards/evkbimxrt1050/ota_examples/mcuboot_opensource/example_board_readme.md)
-- [MIMXRT1060-EVKB](../../_boards/evkbmimxrt1060/ota_examples/mcuboot_opensource/example_board_readme.md)
-- [MIMXRT1060-EVKC](../../_boards/evkcmimxrt1060/ota_examples/mcuboot_opensource/example_board_readme.md)
-- [EVK-MIMXRT1064](../../_boards/evkmimxrt1064/ota_examples/mcuboot_opensource/example_board_readme.md)
+- EVK-MIMXRT1020
+- MIMXRT1040-EVK
+- EVKB-IMXRT1050
+- MIMXRT1060-EVKB
+- MIMXRT1060-EVKC
+- EVK-MIMXRT1064
 
 IPED:
 
-- [RD-RW612-BGA](../../_boards/rdrw612bga/ota_examples/mcuboot_opensource/example_board_readme.md)
-- [FRDM-RW612](../../_boards/frdmrw612/ota_examples/mcuboot_opensource/example_board_readme.md)
+- RD-RW612-BGA
+- FRDM-RW612
 
 NPX:
 
-- [FRDM-MCXN947](../../_boards/frdmmcxn947/ota_examples/mcuboot_opensource/example_board_readme.md)
-- [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/ota_examples/mcuboot_opensource/example_board_readme.md)
-- [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/ota_examples/mcuboot_opensource/example_board_readme.md)
+- FRDM-MCXN947
+- MCX-N5XX-EVK
+- MCX-N9XX-EVK
 
 <!-- TOC --><a name="5-ota-examples-instructions"></a>
 ## 5. OTA examples instructions

@@ -7,7 +7,6 @@ Example application demonstrates CAN bus communication. This requires a suitable
 - [EVK-MIMXRT1020](../../_boards/evkmimxrt1020/freemaster_examples/fmstr_can/example_board_readme.md)
 - [EVK-MIMXRT1064](../../_boards/evkmimxrt1064/freemaster_examples/fmstr_can/example_board_readme.md)
 - [EVKB-IMXRT1050](../../_boards/evkbimxrt1050/freemaster_examples/fmstr_can/example_board_readme.md)
-- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/freemaster_examples/fmstr_can/example_board_readme.md)
 - [FRDM-IMXRT1186](../../_boards/frdmimxrt1186/freemaster_examples/fmstr_can/example_board_readme.md)
 - [FRDM-KE16Z](../../_boards/frdmke16z/freemaster_examples/fmstr_can/example_board_readme.md)
 - [FRDM-MCXA156](../../_boards/frdmmcxa156/freemaster_examples/fmstr_can/example_board_readme.md)
@@ -45,3 +44,4 @@ Example application demonstrates CAN bus communication. This requires a suitable
 - [FRDM-MCXA366](../../_boards/frdmmcxa366/freemaster_examples/fmstr_can/example_board_readme.md)
 - [FRDM-MCXW72](../../_boards/frdmmcxw72/freemaster_examples/fmstr_can/example_board_readme.md)
 - [FRDM-MCXA287](../../_boards/frdmmcxa287/freemaster_examples/fmstr_can/example_board_readme.md)
+- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/freemaster_examples/fmstr_can/example_board_readme.md)

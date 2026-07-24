@@ -90,7 +90,6 @@ as the following image.
 - LPCXpresso54S018
 - LPCXpresso54S018M
 - MIMXRT1060-EVKB
-- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/usb_examples/usb_host_video_camera/example_board_readme.md)
 - [MIMXRT1040-EVK](../../_boards/evkmimxrt1040/usb_examples/usb_host_video_camera/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/usb_examples/usb_host_video_camera/example_board_readme.md)
 - [FRDM-MCXN947T](../../_boards/frdmmcxn947t/usb_examples/usb_host_video_camera/example_board_readme.md)
@@ -108,3 +107,4 @@ as the following image.
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/usb_examples/usb_host_video_camera/example_board_readme.md)
 - [MIMXRT2660-EVK](../../_boards/mimxrt2660evk/usb_examples/usb_host_video_camera/example_board_readme.md)
 - EVKB-IMXRT1050
+- FRDM-IMXRT1152

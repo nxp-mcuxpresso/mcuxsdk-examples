@@ -132,7 +132,6 @@ Step 7. Now the CDC driver should be installed successfully.
 - MIMXRT685-AUD-EVK
 - LPCXpresso51U68
 - LPCXpresso54S018
-- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/usb_examples/usb_device_composite_cdc_msc/example_board_readme.md)
 - [LPCXpresso55S16](../../_boards/lpcxpresso55s16/usb_examples/usb_device_composite_cdc_msc/example_board_readme.md)
 - LPCXpresso54S018M
 - MIMXRT1060-EVKB
@@ -168,3 +167,4 @@ Step 7. Now the CDC driver should be installed successfully.
 - FRDM-MCXA577
 - FRDM-MCXA366
 - FRDM-MCXA287
+- FRDM-IMXRT1152

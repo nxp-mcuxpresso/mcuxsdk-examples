@@ -47,7 +47,7 @@ The application flow consists of the following steps:
 
    Adjust the logging verbosity by modifying the log level in the application configuration in:
    
-   [middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/pal/inc/el2go_csr_console.h](../../../../middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/pal/inc/el2go_csr_console.h)
+   [middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/pal/el2go_csr_console.h](../../../../middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/pal/el2go_csr_console.h)
    
    ```c
    #ifndef CSR_LOG_LEVEL
@@ -199,7 +199,7 @@ The configuration block integrity is verified using the algorithm specified in t
 
 
 ## Supported Boards
-- [FRDM-MCXE31B](../../_boards/frdmmcxe31b/el2go_examples/el2go_csr/el2go_csr/example_board_readme.md)
+- [FRDM-MCXE31B](../../../_boards/frdmmcxe31b/el2go_examples/el2go_csr/el2go_csr/example_board_readme.md)
 
 ## Troubleshooting
 

@@ -1,9 +1,9 @@
 # RT7xx - OTA update by using SB3 file
 
-- [RT7xx - OTA update by using SB3 file](#RT7xx-ota-update-by-using-sb3-file)
-   * [1. Provision the device](#1-provision-the-device)
+- [RT7xx - OTA update by using SB3 file](#rt7xx---ota-update-by-using-sb3-file)
+   * [1. Provision the device](#1-provisioning-of-the-device---initial-setup)
    * [2. Prepare OTA images](#2-prepare-ota-images)
-      + [2.1 ROM bootloader only use case](#21-rom-bootloader-only-use-case)
+      + [2.1 ROM bootloader only use case](#21-rom-only-use-case)
       + [2.2 MCUboot bootloader use case](#22-mcuboot-bootloader-use-case)
    * [3. Firmware update](#3-firmware-update)
       + [3.1 ROM bootloader only use case](#31-rom-bootloader-only-use-case)
@@ -317,3 +317,4 @@ $
 ## Supported Boards
 
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/ota_examples/mcuboot_opensource/example_board_readme.md)

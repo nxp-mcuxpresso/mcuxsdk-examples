@@ -1,6 +1,6 @@
 # RW61x - OTA update by using SB3 file
 
-- [RW61x - OTA update by using SB3 file](#rw61x-ota-update-by-using-sb3-file)
+- [RW61x - OTA update by using SB3 file](#rw61x---ota-update-by-using-sb3-file)
    * [1. Provision the device](#1-provision-the-device)
    * [2. Prepare OTA images](#2-prepare-ota-images)
       + [2.1 ROM bootloader only use case](#21-rom-bootloader-only-use-case)
@@ -102,7 +102,7 @@ Note: __Do not write the image using Write image tab! This will also fuse the BO
 ### 2.2 MCUboot bootloader use case
 
 1. Build `ota_mcuboot_basic` and sign image by `imgtool` as usual by following steps in specific `example_board_readme.md` for your board. Copy the signed binary to your $sec_tool_workspace/source_images
-2. Look into [ota_examples/\_common/sb3_templates](../_common/sb3_templates) directory and copy SB3 configuration templates for your device to your $sec_tool_workspace/configs
+2. Look into `ota_examples/\_common/sb3_templates` directory and copy SB3 configuration templates for your device to your $sec_tool_workspace/configs
     * `rw612_sb3_cfg_primary_slot.yaml` for primary slot
     * `rw612_sb3_cfg_secondary_slot.yaml` for secondary slot
 3. In SEC tool open __Tools/SB Editor__ and click __Import__ to import `sb3_config_rw612_secondary_slot.yaml`
@@ -318,5 +318,5 @@ $
 
 ## Supported Boards
 
-- [RD-RW612-BGA](../../_boards/rdrw612bga/ota_examples/mcuboot_opensource/example_board_readme.md)
-- [FRDM-RW612](../../_boards/frdmrw612/ota_examples/mcuboot_opensource/example_board_readme.md)
+- RD-RW612-BGA
+- FRDM-RW612

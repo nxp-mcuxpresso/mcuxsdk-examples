@@ -88,6 +88,7 @@
     END_IF; 
     ```
 
+    (codeedit)=
     ![](../images/digital_io/image29.png "Copy and paste the code")
 
 10. Build the PLC code.
@@ -98,6 +99,7 @@
 11. Map the PLC variables to the subdevice IO channel.
     1.  Right-click on **MAIN.LedIn**, select **Change Link**. See, [Figure 13](#mapvar).
 
+        (mapvar)=
         ![](../images/digital_io/image31.png "Map the PLC variables")
 
         The **Attach Variable MAIN.LedIn \(Input\)** dialog box appears.
@@ -105,6 +107,7 @@
     2.  Select **LED**. See, [Figure 14](#attachvari).
     3.  Click **OK**. See, [Figure 14](#attachvari).
 
+        (attachvari)=
         ![](../images/digital_io/image32.png "Attach variable MAIN.LedIn (Input)")
 
     4.  In the **Solution Explorer**, under **PlcTask Outputs**, right-click on **MAIN.LedOut** and select **Change Link**.
@@ -116,6 +119,7 @@
     5.  Select **LED**. See, [Figure 16](#fig_g4x_3hj_nyb).
     6.  Click **OK**. See, [Figure 16](#fig_g4x_3hj_nyb).
 
+        (fig_g4x_3hj_nyb)=
         ![](../images/digital_io/image34.png "Attach variable MAIN.LedOut (Output)")
 
 12. Run the PLC code.

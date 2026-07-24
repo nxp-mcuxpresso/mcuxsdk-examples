@@ -47,7 +47,6 @@ debug_console supports this, debug_console_lite doesn't support).
 - [FRDM-MCXA153](../../_boards/frdmmcxa153/demo_apps/hello_world/example_board_readme.md)
 - [FRDM-MCXA156](../../_boards/frdmmcxa156/demo_apps/hello_world/example_board_readme.md)
 - [FRDM-MCXA346](../../_boards/frdmmcxa346/demo_apps/hello_world/example_board_readme.md)
-- [HVP-MCXA346](../../_boards/hvpmcxa346/demo_apps/hello_world/example_board_readme.md)
 - [FRDM-MCXC041](../../_boards/frdmmcxc041/demo_apps/hello_world/example_board_readme.md)
 - [FRDM-MCXC242](../../_boards/frdmmcxc242/demo_apps/hello_world/example_board_readme.md)
 - [FRDM-MCXC444](../../_boards/frdmmcxc444/demo_apps/hello_world/example_board_readme.md)
@@ -120,3 +119,4 @@ debug_console supports this, debug_console_lite doesn't support).
 - [FRDM-MCXL255](../../_boards/frdmmcxl255/demo_apps/hello_world/example_board_readme.md)
 - [IMX943-ORANGEBOX](../../_boards/imx943_orangebox/demo_apps/hello_world/example_board_readme.md)
 - [MIMXRT2660-EVK](../../_boards/mimxrt2660evk/demo_apps/hello_world/example_board_readme.md)
+- [hvpmcxa346](../../_boards/hvpmcxa346/demo_apps/hello_world/example_board_readme.md)

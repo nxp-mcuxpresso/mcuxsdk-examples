@@ -11,7 +11,6 @@ The purpose of this demo is to demonstrate how to use virtual com and provide a 
 - [MIMXRT1060-EVKB](../../_boards/evkbmimxrt1060/demo_apps/hello_world_virtual_com/example_board_readme.md)
 - [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/demo_apps/hello_world_virtual_com/example_board_readme.md)
 - [MIMXRT1060-EVKC](../../_boards/evkcmimxrt1060/demo_apps/hello_world_virtual_com/example_board_readme.md)
-- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/demo_apps/hello_world_virtual_com/example_board_readme.md)
 - [EVK-MIMXRT1010](../../_boards/evkmimxrt1010/demo_apps/hello_world_virtual_com/example_board_readme.md)
 - [EVK-MIMXRT1015](../../_boards/evkmimxrt1015/demo_apps/hello_world_virtual_com/example_board_readme.md)
 - [EVK-MIMXRT1020](../../_boards/evkmimxrt1020/demo_apps/hello_world_virtual_com/example_board_readme.md)
@@ -47,3 +46,4 @@ The purpose of this demo is to demonstrate how to use virtual com and provide a 
 - [FRDM-IMXRT700](../../_boards/frdmimxrt700/demo_apps/hello_world_virtual_com/example_board_readme.md)
 - [FRDM-MCXA577](../../_boards/frdmmcxa577/demo_apps/hello_world_virtual_com/example_board_readme.md)
 - [MIMXRT2660-EVK](../../_boards/mimxrt2660evk/demo_apps/hello_world_virtual_com/example_board_readme.md)
+- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/demo_apps/hello_world_virtual_com/example_board_readme.md)

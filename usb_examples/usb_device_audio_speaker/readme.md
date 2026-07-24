@@ -92,7 +92,6 @@ USB_DEVICE_WORKAROUND_AUDIO_20_WINDOWS when meets the following conditions:
 - LPCXpresso55S69
 - EVK-MIMXRT1064
 - MIMXRT685-AUD-EVK
-- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/usb_examples/usb_device_audio_speaker/example_board_readme.md)
 - [LPCXpresso55S16](../../_boards/lpcxpresso55s16/usb_examples/usb_device_audio_speaker/example_board_readme.md)
 - MIMXRT1060-EVKB
 - EVK-MIMXRT1010
@@ -109,8 +108,8 @@ USB_DEVICE_WORKAROUND_AUDIO_20_WINDOWS when meets the following conditions:
 - FRDM-IMXRT700
 - [EVK-MIMXRT595](../../_boards/evkmimxrt595/usb_examples/usb_device_audio_speaker/example_board_readme.md)
 - [EVK-MIMXRT685](../../_boards/evkmimxrt685/usb_examples/usb_device_audio_speaker/example_board_readme.md)
-- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/usb_examples/usb_device_audio_speaker/example_board_readme.md)
 - EVKB-IMXRT1050
 - [RD-RW612-BGA](../../_boards/rdrw612bga/usb_examples/usb_device_audio_speaker/example_board_readme.md)
 - EVK-MIMXRT1015
 - FRDM-MCXN236
+- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/usb_examples/usb_device_audio_speaker/example_board_readme.md)
