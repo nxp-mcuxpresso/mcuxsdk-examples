@@ -687,5 +687,11 @@ int main(int argc, char *argv[])
 
 exit:
     mbedtls_psa_crypto_free();
+    
+    while(1)
+    {
+        GETCHAR();
+    }
+
     return 0;
 }

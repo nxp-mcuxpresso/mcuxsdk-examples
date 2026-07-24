@@ -33,3 +33,7 @@ may be demonstrated if MBEDTLS_PSA_CRYPTO_STORAGE_C is enabled in the config fil
 - [MCX-W72-LOC](../../_boards/mcxw72loc/mbedtls_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
 - [KW47-EVK](../../_boards/kw47evk/mbedtls_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
 - [KW47-LOC](../../_boards/kw47loc/mbedtls_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
+- [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/mbedtls_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
+- [MIMXRT1160-EVK](../../_boards/evkmimxrt1160/mbedtls_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
+- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/mbedtls_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
+
