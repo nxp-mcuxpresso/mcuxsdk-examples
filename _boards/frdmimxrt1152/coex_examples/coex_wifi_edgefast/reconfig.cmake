@@ -5,13 +5,26 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES ${board_root}/${board}/sdmmc_config.c
+    SOURCES components/wifi_bt_module/incl/wifi_bt_module_config.h
+            ${board_root}/${board}/FreeRTOSConfigBoard.h
+            ${board_root}/${board}/sdmmc_config.c
+            ${board_root}/${board}/sdmmc_config.h
             ${board_root}/${board}/wifi_bt_config.c
+            ${board_root}/${board}/wifi_bt_config.h
             middleware/wireless/coex/build/${board}/common/hardware_init.c
+            middleware/wireless/coex/build/${board}/common/app.h
             ${board_root}/${board}/coex_examples/coex_wifi_edgefast/pin_mux.c
+            ${board_root}/${board}/coex_examples/coex_wifi_edgefast/pin_mux.h
+            middleware/wireless/coex/src/configs/mimxrt1152/mbedtls/mbedtls_config_client.h
+            middleware/wireless/coex/src/configs/mimxrt1152/wifi/wifi_config.h
+            middleware/wireless/coex/src/configs/mimxrt1152/lwip/lwippools.h
+            middleware/wireless/coex/src/configs/mimxrt1152/lwip/lwiphooks.h
+            middleware/wireless/coex/src/configs/mimxrt1152/lwip/lwipopts.h
             middleware/wireless/coex/src/common/controller_coex_nxp.c
             middleware/wireless/coex/src/common/coex_nb_uart_fw_download.c
+            middleware/wireless/coex/src/common/coex_nb_uart_fw_download.h
             middleware/wireless/coex/src/edgefast/coex_shell.c
+            middleware/wireless/coex/src/edgefast/coex_shell.h
             examples/coex_examples/coex_wifi_edgefast/app_config.cmake
 )
 
