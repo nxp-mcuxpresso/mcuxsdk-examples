@@ -14,35 +14,7 @@
 #endif
 
 static sdio_card_int_t s_sdioInt;
-#if defined(SDIO_ENABLED)
-/*******************************************************************************
- * Definitions
- ******************************************************************************/
-#ifdef WIFI_BT_USE_USD_INTERFACE
-#warning "uSD interface is not supported"
-#endif
 
-/*******************************************************************************
- * Prototypes
- ******************************************************************************/
-extern uint32_t BOARD_USDHC1ClockConfiguration(void);
-
-/*******************************************************************************
- * Variables
- ******************************************************************************/
-/*!brief sdmmc dma buffer */
-AT_NONCACHEABLE_SECTION_ALIGN(static uint32_t s_sdmmcHostDmaBuffer[BOARD_SDMMC_HOST_DMA_DESCRIPTOR_BUFFER_SIZE],
-                              SDMMCHOST_DMA_DESCRIPTOR_BUFFER_ALIGN_SIZE);
-
-static sd_io_voltage_t s_ioVoltage = {
-    .type = BOARD_SDMMC_SD_IO_VOLTAGE_CONTROL_TYPE,
-    .func = NULL,
-};
-static sdmmchost_t s_host;
-
-/*******************************************************************************
- * Code
- ******************************************************************************/
 void BOARD_WIFI_BT_Enable(bool enable)
 {
     if (enable)
@@ -70,6 +42,33 @@ void BOARD_WIFI_BT_Enable(bool enable)
         vTaskDelay(pdMS_TO_TICKS(100));
     }
 }
+
+#if defined(SDIO_ENABLED)
+/*******************************************************************************
+ * Definitions
+ ******************************************************************************/
+#ifdef WIFI_BT_USE_USD_INTERFACE
+#warning "uSD interface is not supported"
+#endif
+
+/*******************************************************************************
+ * Prototypes
+ ******************************************************************************/
+extern uint32_t BOARD_USDHC1ClockConfiguration(void);
+
+/*******************************************************************************
+ * Variables
+ ******************************************************************************/
+/*!brief sdmmc dma buffer */
+AT_NONCACHEABLE_SECTION_ALIGN(static uint32_t s_sdmmcHostDmaBuffer[BOARD_SDMMC_HOST_DMA_DESCRIPTOR_BUFFER_SIZE],
+                              SDMMCHOST_DMA_DESCRIPTOR_BUFFER_ALIGN_SIZE);
+
+static sd_io_voltage_t s_ioVoltage = {
+    .type = BOARD_SDMMC_SD_IO_VOLTAGE_CONTROL_TYPE,
+    .func = NULL,
+};
+static sdmmchost_t s_host;
+
 #elif defined(SDIO_SPI_ENABLED)
 #define EXAMPLE_LPSPI_MASTER_BASEADDR         (LPSPI1)
 #define EXAMPLE_LPSPI_MASTER_PCS_FOR_INIT     (kLPSPI_Pcs0)
@@ -119,11 +118,11 @@ static status_t BOARD_SdioSpiTransfer(sdmmchost_spi_transfer_t *xfer)
     /* Assert CS */
     if ((xfer->flags & SD_SPI_FLAG_CS_ACTIVE_HIGH) != 0U)
     {
-        GPIO_PortSet(GPIO0, 1U << 28U);
+        GPIO_PortSet(GPIO4, 1U << 0U);
     }
     else
     {
-        GPIO_PortClear(GPIO0, 1U << 28U);
+        GPIO_PortClear(GPIO4, 1U << 0U);
     }
 
     LPSPI_MasterTransferBlocking(EXAMPLE_LPSPI_MASTER_BASEADDR, &masterXfer);
@@ -139,11 +138,11 @@ release:
     /* De-assert CS */
     if ((xfer->flags & SD_SPI_FLAG_CS_ACTIVE_HIGH) != 0U)
     {
-        GPIO_PortClear(GPIO0, 1U << 28U);
+        GPIO_PortClear(GPIO4, 1U << 0U);
     }
     else
     {
-        GPIO_PortSet(GPIO0, 1U << 28U);
+        GPIO_PortSet(GPIO4, 1U << 0U);
     }
 
     return kStatus_Success;
@@ -228,7 +227,6 @@ void BOARD_WIFI_BT_Config(void *card, sdio_int_t cardInt)
     }
 
     NVIC_SetPriority(BOARD_SDMMC_SDIO_HOST_IRQ, BOARD_SDMMC_SDIO_HOST_IRQ_PRIORITY);
-    BOARD_WIFI_BT_Enable(false);
 #elif defined(SDIO_SPI_ENABLED)
     ((sdio_card_t *)card)->host = &s_host;
     ((sdio_card_t *)card)->usrParam.cd = &s_cd;
@@ -243,4 +241,5 @@ void BOARD_WIFI_BT_Config(void *card, sdio_int_t cardInt)
         ((sdio_card_t *)card)->host->interruptInit = BOARD_SdioCardInterruptInit;
     }
 #endif
+    BOARD_WIFI_BT_Enable(false);
 }

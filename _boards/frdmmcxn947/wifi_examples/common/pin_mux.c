@@ -41,11 +41,7 @@ pin_labels:
 void BOARD_InitBootPins(void)
 {
     BOARD_InitPins();
-#if defined(SDIO_SPI_ENABLED)
-    LPSPI1_InitPins();
-#elif defined(SDIO_ENABLED)
     BOARD_InitPinsWifi();
-#endif
 }
 
 /* FUNCTION ************************************************************************************************************
@@ -78,13 +74,19 @@ void LPSPI1_InitPins(void)
     /* Enables the clock for GPIO0: Enables clock */
     CLOCK_EnableClock(kCLOCK_Gpio0);
 
+    /* Enables the clock for PORT4 controller: Enables clock */
+    CLOCK_EnableClock(kCLOCK_Port4);
+
+    /* Enables the clock for GPIO4: Enables clock */
+    CLOCK_EnableClock(kCLOCK_Gpio4);
+
     /* Initialize GPIO functionality on pin PIO0_28  */
-    gpio_pin_config_t gpio0_28_config = {
+    gpio_pin_config_t gpio4_0_config = {
         .pinDirection = kGPIO_DigitalOutput,
         .outputLogic = 0U
     };
 
-    GPIO_PinInit(GPIO0, 28U, &gpio0_28_config);
+    GPIO_PinInit(GPIO4, 0U, &gpio4_0_config);
 
     const port_pin_config_t port0_24_pinB6_config = {/* Internal pull-up resistor is enabled */
                                                      kPORT_PullUp,
@@ -178,7 +180,7 @@ void LPSPI1_InitPins(void)
     /* PORT0_27 (pin E10) is configured as FC1_P3 */
     PORT_SetPinConfig(PORT0, 27U, &port0_27_pinE10_config);
 
-    const port_pin_config_t port0_28_config = {/* Internal pull-up resistor is enabled */
+    const port_pin_config_t port4_0_config = {/* Internal pull-up resistor is enabled */
                                                       kPORT_PullUp,
                                                       /* Low internal pull resistor value is selected. */
                                                       kPORT_LowPullResistor,
@@ -190,7 +192,7 @@ void LPSPI1_InitPins(void)
                                                       kPORT_OpenDrainDisable,
                                                       /* High drive strength is configured */
                                                       kPORT_HighDriveStrength,
-                                                      /* Pin is configured as PIO0_28 */
+                                                      /* Pin is configured as PIO4_0 */
                                                       kPORT_MuxAlt0,
                                                       /* Digital input enabled */
                                                       kPORT_InputBufferEnable,
@@ -198,7 +200,7 @@ void LPSPI1_InitPins(void)
                                                       kPORT_InputNormal,
                                                       /* Pin Control Register fields [15:0] are not locked */
                                                       kPORT_UnlockRegister};
-    PORT_SetPinConfig(PORT0, 28U, &port0_28_config);
+    PORT_SetPinConfig(PORT4, 0U, &port4_0_config);
 
     const port_pin_config_t port0_10_pinB12_config = {/* Internal pull-up/down resistor is disabled */
                                                       kPORT_PullDisable,
@@ -348,7 +350,8 @@ void BOARD_InitPinsWifi(void)
               
     /* PORT1_22 (pin L4) is configured as PIO1_22 */
     PORT_SetPinMux(BOARD_INITPINSWIFI_SDIO_RST_PORT, BOARD_INITPINSWIFI_SDIO_RST_PIN, kPORT_MuxAlt0);
-                
+
+#if defined(SDIO_ENABLED)
     PORT1->PCR[22] = ((PORT1->PCR[22] &
                       /* Mask bits to zero which are setting */
                       (~(PORT_PCR_IBE_MASK)))
@@ -415,6 +418,9 @@ void BOARD_InitPinsWifi(void)
 
                      /* Input Buffer Enable: Enables. */
                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+#elif defined(SDIO_SPI_ENABLED)
+    LPSPI1_InitPins();
+#endif
 }
 /***********************************************************************************************************************
  * EOF
