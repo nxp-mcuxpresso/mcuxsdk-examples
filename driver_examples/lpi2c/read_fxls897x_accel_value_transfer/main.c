@@ -113,7 +113,7 @@ static bool LPI2C_ReadAccelWhoAmI(void)
     uint8_t accel_addr_array_size = 0x00;
     bool result                   = false;
     uint8_t i                     = 0U;
-    status_t reVal                = kStatus_Fail;
+    status_t reVal;
 
     lpi2c_master_transfer_t masterXfer;
     memset(&masterXfer, 0, sizeof(masterXfer));
@@ -181,7 +181,7 @@ static bool LPI2C_ReadAccelWhoAmI(void)
 static bool LPI2C_WriteAccelReg(LPI2C_Type *base, uint8_t device_addr, uint8_t reg_addr, uint8_t value)
 {
     lpi2c_master_transfer_t masterXfer;
-    status_t reVal = kStatus_Fail;
+    status_t reVal;
 
     memset(&masterXfer, 0, sizeof(masterXfer));
 
@@ -223,7 +223,7 @@ static bool LPI2C_WriteAccelReg(LPI2C_Type *base, uint8_t device_addr, uint8_t r
 static bool LPI2C_ReadAccelRegs(LPI2C_Type *base, uint8_t device_addr, uint8_t reg_addr, uint8_t *rxBuff, uint32_t rxSize)
 {
     lpi2c_master_transfer_t masterXfer;
-    status_t reVal = kStatus_Fail;
+    status_t reVal;
 
     memset(&masterXfer, 0, sizeof(masterXfer));
     masterXfer.slaveAddress   = device_addr;
@@ -353,6 +353,7 @@ int main(void)
     }
 
     PRINTF("\r\nEnd of LPI2C example.\r\n");
+    /* Intentional infinite loop. */
     while (1)
     {
     }
