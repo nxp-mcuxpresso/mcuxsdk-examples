@@ -42,3 +42,4 @@ the hardfault occurs.
 - [FRDM-MCXW70](../../../_boards/frdmmcxw70/driver_examples/trdc/basic/example_board_readme.md)
 - MIMXRT2660-EVK
 - [FRDM-MCXN236](../../../_boards/frdmmcxn236/driver_examples/trdc/basic/example_board_readme.md)
+- [MIMXRT2660-EVK](../../../_boards/mimxrt2660evk/driver_examples/trdc/basic/example_board_readme.md)

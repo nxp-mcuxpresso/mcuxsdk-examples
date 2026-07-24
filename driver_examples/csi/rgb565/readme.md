@@ -11,3 +11,4 @@ panel, so part of the LCD panel might be blank.
 - [MIMXRT1060-EVKB](../../../_boards/evkbmimxrt1060/driver_examples/csi/rgb565/example_board_readme.md)
 - [MIMXRT1060-EVKC](../../../_boards/evkcmimxrt1060/driver_examples/csi/rgb565/example_board_readme.md)
 - [EVK-MIMXRT1064](../../../_boards/evkmimxrt1064/driver_examples/csi/rgb565/example_board_readme.md)
+- [MIMXRT2660-EVK](../../../_boards/mimxrt2660evk/driver_examples/csi/rgb565/example_board_readme.md)

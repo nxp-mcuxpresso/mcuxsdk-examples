@@ -196,3 +196,4 @@ acmp_polling_print:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     - -mdk@release
+    mimxrt2660evk: []

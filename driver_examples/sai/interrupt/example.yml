@@ -255,3 +255,4 @@ sai_interrupt:
     - +armgcc@release
     - +iar@release
     - +iar@debug
+    mimxrt2660evk: []

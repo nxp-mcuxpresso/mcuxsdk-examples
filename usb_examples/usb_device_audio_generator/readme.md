@@ -102,6 +102,7 @@ note<br>
 - MIMXRT700-EVK
 - FRDM-MCXA156
 - [EVK-MIMXRT595](../../_boards/evkmimxrt595/usb_examples/usb_device_audio_generator/example_board_readme.md)
+- [MIMXRT2660-EVK](../../_boards/mimxrt2660evk/usb_examples/usb_device_audio_generator/example_board_readme.md)
 - EVK-MIMXRT685
 - MCX-N9XX-EVK
 - EVKB-IMXRT1050

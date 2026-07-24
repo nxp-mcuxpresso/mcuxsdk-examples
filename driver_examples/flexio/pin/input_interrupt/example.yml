@@ -67,3 +67,4 @@ flexio_pin_input_interrupt:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     - -mdk@release
+    mimxrt2660evk: []

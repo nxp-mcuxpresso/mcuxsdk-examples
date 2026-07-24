@@ -84,6 +84,7 @@ The following figure is an example for attaching one USB weight scale device.
 - EVK-MIMXRT595
 - EVK-MIMXRT685
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/usb_examples/usb_host_phdc_manager/example_board_readme.md)
+- [MIMXRT2660-EVK](../../_boards/mimxrt2660evk/usb_examples/usb_host_phdc_manager/example_board_readme.md)
 - EVKB-IMXRT1050
 - RD-RW612-BGA
 - EVK-MIMXRT1015

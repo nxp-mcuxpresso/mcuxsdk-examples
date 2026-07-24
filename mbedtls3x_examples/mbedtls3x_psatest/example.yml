@@ -166,3 +166,12 @@ mbedtls3x_psatest:
     frdmmcxa287: []
     frdmkw43: []
     frdmmcxw70: []
+    mimxrt2660evk:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@psram_debug
+    - -armgcc@psram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@psram_debug
+    - -iar@psram_release

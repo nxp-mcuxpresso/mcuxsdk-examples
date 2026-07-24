@@ -39,3 +39,4 @@ When the TPM interrupt is triggered 1000 times, a message is printed on the UART
 - [FRDM-MCXW72](../../../_boards/frdmmcxw72/driver_examples/tpm/timer/example_board_readme.md)
 - [FRDM-KW43](../../../_boards/frdmkw43/driver_examples/tpm/timer/example_board_readme.md)
 - [FRDM-MCXW70](../../../_boards/frdmmcxw70/driver_examples/tpm/timer/example_board_readme.md)
+- [MIMXRT2660-EVK](../../../_boards/mimxrt2660evk/driver_examples/tpm/timer/example_board_readme.md)

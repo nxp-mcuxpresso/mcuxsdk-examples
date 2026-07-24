@@ -21,3 +21,4 @@ after master finishes the transfer and re-asserts the CS signal, interrupt is tr
 - [MIMXRT1160-EVK](../../../../../_boards/evkmimxrt1160/driver_examples/flexio/spi/edma_lpspi_transfer/slave_dynamic/example_board_readme.md)
 - [MIMXRT1180-EVK](../../../../../_boards/evkmimxrt1180/driver_examples/flexio/spi/edma_lpspi_transfer/slave_dynamic/example_board_readme.md)
 - [FRDM-IMXRT1186](../../../../../_boards/frdmimxrt1186/driver_examples/flexio/spi/edma_lpspi_transfer/slave_dynamic/example_board_readme.md)
+- [MIMXRT2660-EVK](../../../../../_boards/mimxrt2660evk/driver_examples/flexio/spi/edma_lpspi_transfer/slave_dynamic/example_board_readme.md)

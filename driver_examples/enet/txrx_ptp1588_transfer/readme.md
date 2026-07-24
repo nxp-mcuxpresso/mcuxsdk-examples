@@ -35,3 +35,4 @@ in TWR-SERIAL board for the external PHY.
 - [MCIMX93-EVK](../../../_boards/mcimx93evk/driver_examples/enet/txrx_ptp1588_transfer/example_board_readme.md)
 - [MCIMX93W-EVK](../../../_boards/mcimx93wevk/driver_examples/enet/txrx_ptp1588_transfer/example_board_readme.md)
 - [FRDM-MCXE247](../../../_boards/frdmmcxe247/driver_examples/enet/txrx_ptp1588_transfer/example_board_readme.md)
+- [MIMXRT2660-EVK](../../../_boards/mimxrt2660evk/driver_examples/enet/txrx_ptp1588_transfer/example_board_readme.md)

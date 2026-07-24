@@ -61,3 +61,4 @@ CRC-32 POSIX: 0x765e7680
 - [FRDM-KW43](../../_boards/frdmkw43/driver_examples/crc/example_board_readme.md)
 - [FRDM-MCXW70](../../_boards/frdmmcxw70/driver_examples/crc/example_board_readme.md)
 - [FRDM-MCXA287](../../_boards/frdmmcxa287/driver_examples/crc/example_board_readme.md)
+- [MIMXRT2660-EVK](../../_boards/mimxrt2660evk/driver_examples/crc/example_board_readme.md)

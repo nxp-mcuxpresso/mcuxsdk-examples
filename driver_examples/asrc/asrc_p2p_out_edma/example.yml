@@ -80,3 +80,4 @@ asrc_p2p_out_edma:
     - -mdk@hyperram_release
     - -mdk@release
     imx952evk@cm7: []
+    mimxrt2660evk: []

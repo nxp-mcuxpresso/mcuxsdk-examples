@@ -1,0 +1,54 @@
+Hardware requirements
+=====================
+- Type-C USB cable
+- MIMXRT2660-EVK board
+- Personal Computer
+
+Board settings
+==============
+SPI one board:
+Transfer data from one board instance to another board's instance.
+LPSPI1 pins are connected with LPSPI1 pins of another board
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+INSTANCE(LPSPI1)     CONNECTS TO    INSTANCE(LPSPI1)
+Pin Name   Board Location      Pin Name   Board Location
+SOUT       J94-28 (PIO3_15)    SIN        J94-9  (PIO3_16)
+SIN        J94-9  (PIO3_16)    SOUT       J94-28 (PIO3_15)
+SCK        J94-27 (PIO3_14)    SCK        J94-27 (PIO3_14)
+PCS0       J94-26 (PIO3_13)    PCS0       J94-26 (PIO3_13)
+GND                             GND
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Prepare the Demo
+================
+1.  Connect a USB cable between the PC host and the OpenSDA USB port on the board.
+2.  Open a serial terminal on PC for OpenSDA serial device with these settings:
+    - 115200 baud rate
+    - 8 data bits
+    - No parity
+    - One stop bit
+    - No flow control
+3.  Download the program to the target board.
+4.  Reset the SoC and run the project.
+
+Running the demo
+================
+When the demo runs successfully, the log would be seen on the OpenSDA terminal like:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+LPSPI board to board edma example.
+
+ Slave example is running...
+This is LPSPI slave edma transfer completed callback.
+
+This is LPSPI slave edma transfer completed callback.
+
+
+ Slave receive:
+      1  2  3  4  5  6  7  8  9  A  B  C  D  E  F 10
+     11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20
+     21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30
+     31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40
+
+ Slave example is running...
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

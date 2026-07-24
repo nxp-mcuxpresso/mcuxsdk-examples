@@ -83,3 +83,4 @@ lwip_httpsrv_enet_qos_bm:
     mcimx93wevk: []
     mcimx93qsb: []
     frdmmcxe31b: []
+    mimxrt2660evk: []

@@ -319,3 +319,4 @@ flexio_spi_int_lpspi_transfer_master:
     frdmmcxa366: []
     frdmmcxa577: []
     frdmmcxa287: []
+    mimxrt2660evk: []

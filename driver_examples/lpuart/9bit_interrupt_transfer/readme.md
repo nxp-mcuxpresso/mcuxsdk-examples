@@ -48,3 +48,4 @@ sent after the address can be received by itself.
 - [FRDM-MCXW72](../../../_boards/frdmmcxw72/driver_examples/lpuart/9bit_interrupt_transfer/example_board_readme.md)
 - [FRDM-KW43](../../../_boards/frdmkw43/driver_examples/lpuart/9bit_interrupt_transfer/example_board_readme.md)
 - [FRDM-MCXW70](../../../_boards/frdmmcxw70/driver_examples/lpuart/9bit_interrupt_transfer/example_board_readme.md)
+- [MIMXRT2660-EVK](../../../_boards/mimxrt2660evk/driver_examples/lpuart/9bit_interrupt_transfer/example_board_readme.md)

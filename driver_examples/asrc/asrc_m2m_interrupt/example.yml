@@ -67,3 +67,8 @@ asrc_m2m_interrupt:
     - -mdk@hyperram_release
     - -mdk@release
     imx952evk@cm7: []
+    mimxrt2660evk:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release

@@ -35,3 +35,4 @@ dac_1_buffer_interrupt:
     frdmmcxa366: []
     frdmmcxa577: []
     frdmmcxa287: []
+    mimxrt2660evk: []

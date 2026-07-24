@@ -1,0 +1,179 @@
+/*
+** ###################################################################
+**     Processors:          MIMXRT2663CVJ5A
+**                          MIMXRT2663CVJ5B
+**                          MIMXRT2663CVL5A
+**                          MIMXRT2663CVL5B
+**                          MIMXRT2663DVJ6A
+**                          MIMXRT2663DVJ6B
+**                          MIMXRT2663DVL6A
+**                          MIMXRT2663DVL6B
+**                          MIMXRT2663DVN6B
+**                          MIMXRT2663XVN5B
+**
+**     Compiler:            IAR ANSI C/C++ Compiler for ARM
+**     Reference manual:    IMXRT1060RM Rev.3, 07/2021 | IMXRT106XSRM Rev.0
+**     Version:             rev. 0.2, 2022-03-25
+**     Build:               b241024
+**
+**     Abstract:
+**         Linker file for the IAR ANSI C/C++ Compiler for ARM
+**
+**     Copyright 2016 Freescale Semiconductor, Inc.
+**     Copyright 2026 NXP
+**     SPDX-License-Identifier: BSD-3-Clause
+**
+**     http:                 www.nxp.com
+**     mail:                 support@nxp.com
+**
+** ###################################################################
+*/
+
+/*
+ * +------------------------------------------------------------------------------------------------------------------------------------------------+
+ * | CTCM (QACODE_region) | DTCM (DATA2_region + CSTACK_region) | OCRAM (DATA) | PSRAM (TEXT_region) | PSRAM (DATA3_region) | PSRAM (NCACHE_region) |
+ * +------------------------------------------------------------------------------------------------------------------------------------------------+
+ *                                                                                                   ^                      ^
+ *                                                                                                   |                      |
+ *                                                                                                TEXT_SPLIT          CACHE_SPLIT
+ *                                  
+ */
+
+/* PSRAM Cacheable*/
+define symbol m_interrupts_start       = 0x88000000;
+define symbol m_interrupts_end         = 0x880007FF;
+
+define symbol m_text_start             = 0x88000800;
+define symbol m_text_end               = 0x887FFFFF;
+
+/* OCRAM */
+define symbol m_data_start             = 0x22000000;
+define symbol m_data_end               = 0x2207FFFF;
+
+/* STCM */
+define symbol m_data2_start            = 0x20000000;
+define symbol m_data2_end              = 0x2001FFFF;
+
+/* PSRAM Cacheable*/
+define symbol m_data3_start            = 0x88800000;
+define symbol m_data3_end              = 0x897FFFFF;
+
+/* Option 1, NCACHE in PSRAM*/
+/* define symbol m_ncache_start           = 0x89800000;*/
+/* define symbol m_ncache_end             = 0x89FFFFFF;*/
+
+/* Option 2, NCACHE in OCRAM*/
+define symbol m_ncache_start           = 0x22080000;
+define symbol m_ncache_end             = 0x220BFFFF;
+
+/* CTCM */
+define symbol m_qacode_start           = 0x00000000;
+define symbol m_qacode_end             = 0x0001FFFF;
+
+/* Sizes */
+if (isdefinedsymbol(__stack_size__)) {
+  define symbol __size_cstack__        = __stack_size__;
+} else {
+  define symbol __size_cstack__        = 0x0400;
+}
+
+/* STACK */
+define symbol m_stack_start            = m_data_end + 1 - __size_cstack__;  /*Can be put in DATA (OCRAM) DATA2 (STCM) or DATA3 (PSRAM)*/
+
+if (isdefinedsymbol(__heap_size__)) {
+  define symbol __size_heap__          = __heap_size__;
+} else {
+  define symbol __size_heap__          = 0x0400;
+}
+
+define exported symbol __NCACHE_REGION_START   = m_ncache_start;
+define exported symbol __NCACHE_REGION_SIZE    = m_ncache_end - m_ncache_start + 1;
+
+define exported symbol __VECTOR_TABLE          = m_interrupts_start;
+define exported symbol __VECTOR_RAM            = m_interrupts_start;
+define exported symbol __RAM_VECTOR_TABLE_SIZE = 0x0;
+
+define memory mem with size = 4G;
+
+/*
+ * region definition
+ */
+define region TEXT_region   = mem:[from m_interrupts_start to m_interrupts_end] | mem:[from m_text_start to m_text_end];    /*PSRAM*/
+define region QACODE_region = mem:[from m_qacode_start to m_qacode_end];                                                    /*CTCM*/
+define region DATA_region   = mem:[from m_data_start to m_data_end];                                                        /*OCRAM*/
+define region DATA2_region  = mem:[from m_data2_start to m_data2_end];                                                      /*STCM*/
+define region DATA3_region  = mem:[from m_data3_start to m_data3_end];                                                      /*PSRAM*/
+define region NCACHE_region = mem:[from m_ncache_start to m_ncache_end];                                                    /*PSRAM*/
+
+/*
+ * block definition
+ */
+define block CSTACK with alignment = 8, size = __size_cstack__ { };
+define block HEAP   with alignment = 8, size = __size_heap__   { };
+define block RW                                                { readwrite };
+define block ZI                                                { zi };
+define block NCACHE_VAR                                        { section NonCacheable , section NonCacheable.init };
+define block QACCESS_CODE                                      { section CodeQuickAccess };
+define block QACCESS_DATA                                      { section DataQuickAccess };
+define block WLAN_DATA                                         { section .wlan_data };
+
+/* cache line size = 32 bytes */
+define block CACHE_LINE_DATA_ZI with alignment = 32, end alignment = 32 { section CacheLineData };
+define block CACHE_LINE_DATA_RW with alignment = 32, end alignment = 32 { section CacheLineData.init };
+
+initialize by copy {
+  readwrite,
+  section .textrw,
+  section CodeQuickAccess,
+  section DataQuickAccess,
+  object mflash_drv.o,
+  object fsl_flexspi.o,
+  object portasm.o,
+  object queue.o,
+  object mlan_sdio.o,
+  object mlan_11n.o,
+  object mlan_11n_aggr.o,
+  object mlan_11n_rxreorder.o,
+  object inet_chksum.o,
+  object timers.o,
+  object ABImemcpy.o,
+  object port.o,
+  object tasks.o,
+  object tcp_in.o,
+  object ip4.o,
+  object fsl_os_abstraction_free_rtos.o,
+  object wifi-sdio.o,
+  object fsl_usdhc.o,
+  object fsl_sdio.o,
+  object sys_arch.o,
+  object tcp_out.o,
+  object tcp.o,
+  object tcpip.o,
+  object udp.o,
+  object wifi.o,
+  object sockets.o,
+  object fsl_memcpy.o,
+  object fsl_cache.o,
+  object wifi_netif.o
+};
+do not initialize  { section .noinit };
+
+/*
+ * region placement
+ */
+place at address mem: m_interrupts_start    { readonly section .intvec };
+
+place in TEXT_region                        { readonly };
+place in DATA_region                        { block RW, block CACHE_LINE_DATA_RW };
+place in DATA_region                        { block ZI, block CACHE_LINE_DATA_ZI };
+if (isdefinedsymbol(__heap_noncacheable__)) {
+  place in NCACHE_region                    { last block HEAP };
+} else                                      {
+  place in DATA_region                      { last block HEAP };
+}
+place in NCACHE_region                      { block NCACHE_VAR };
+place in QACODE_region                      { block QACCESS_CODE };
+place in DATA2_region                       { block QACCESS_DATA };
+place in DATA3_region                       { block WLAN_DATA };
+
+place at address mem: m_stack_start         { block CSTACK };

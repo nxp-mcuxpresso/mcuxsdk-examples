@@ -48,3 +48,4 @@ enet_txrx_multiring_transfer:
     mcimx93autoevk: []
     mcimx93evk: []
     mcimx93wevk: []
+    mimxrt2660evk: []

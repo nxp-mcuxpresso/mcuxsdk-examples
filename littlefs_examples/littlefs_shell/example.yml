@@ -150,3 +150,4 @@ littlefs_shell:
     - -mdk@flexspi_nor_release
     - -armgcc@hyperram_release
     - -armgcc@hyperram_debug
+    mimxrt2660evk: []

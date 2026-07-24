@@ -185,3 +185,4 @@ sai_edma_ping_pong_buffer:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     - -mdk@release
+    mimxrt2660evk: []

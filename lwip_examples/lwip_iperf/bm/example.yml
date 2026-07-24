@@ -180,3 +180,4 @@ lwip_iperf_bm:
       - +armgcc@release
       - +iar@release
       - +iar@debug
+    mimxrt2660evk: []

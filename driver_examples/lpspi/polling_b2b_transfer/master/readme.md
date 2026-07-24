@@ -106,3 +106,4 @@ Press any key to run again.
 - [FRDM-IMX937](../../../../../_boards/frdmimx937/driver_examples/lpspi/polling_b2b_transfer/master/example_board_readme.md)
 - [frdmimx952](../../../../_boards/frdmimx952/driver_examples/lpspi/polling_b2b_transfer/master/example_board_readme.md)
 - [FRDM-IMX95](../../../../_boards/frdmimx95/driver_examples/lpspi/polling_b2b_transfer/master/example_board_readme.md)
+- [MIMXRT2660-EVK](../../../../_boards/mimxrt2660evk/driver_examples/lpspi/polling_b2b_transfer/master/example_board_readme.md)

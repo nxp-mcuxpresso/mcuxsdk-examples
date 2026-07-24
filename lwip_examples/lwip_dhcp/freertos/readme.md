@@ -70,3 +70,4 @@ When the demo runs, the log would be seen on the terminal like:
 - [IMX943-ORANGEBOX](../../../_boards/imx943_orangebox/lwip_examples/lwip_dhcp/freertos/example_board_readme.md)
 - [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/lwip_examples/lwip_dhcp/freertos/example_board_readme.md)
 - [IMX943-EVK](../../../_boards/imx943evk/lwip_examples/lwip_dhcp/freertos/example_board_readme.md)
+- [MIMXRT2660-EVK](../../../_boards/mimxrt2660evk/lwip_examples/lwip_dhcp/freertos/example_board_readme.md)

@@ -51,3 +51,4 @@ usb_pd_source_charger_freertos_om13790host:
     mimxrt685audevk@cm33: []
     frdmimxrt700@cm33_core0: []
     mimxrt700evk@cm33_core0: []
+    mimxrt2660evk: []

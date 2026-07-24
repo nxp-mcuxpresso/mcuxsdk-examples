@@ -1,0 +1,198 @@
+/*
+ * RT2660 IAR linker script -- ISI xspi_nor (private override)
+ *
+ * Difference vs public MIMXRT2663xxxxx_xspi_nor.icf:
+ *   NCACHE_region enlarged to 764 KB for camera framebuffer.
+ *     - HEAP  : SRAM0 head 4 KB slot  (m_sram0_start .. m_sram0_start+0x1000-1)
+ *     - NCACHE: SRAM0[+4K] + SRAM1 + SRAM2  (0x22001000..0x220BFFFF)
+ *   DATAEXT_region collapsed to 0 (all OCRAM consumed by heap + NCACHE).
+ *   MPU config in board.c is dynamic on __NCACHE_REGION_START/SIZE, so no
+ *   board.c change is needed.
+ */
+
+/* ========================== Hardware addresses ========================== */
+/* ======================================================================== */
+define symbol m_flash_start       = 0x68000000;
+define symbol m_flash_size        = 0x04000000;
+define symbol m_itcm_start        = 0x00000000;
+define symbol m_itcm_size         = 0x00040000;
+define symbol m_dtcm_start        = 0x20000000;
+define symbol m_dtcm_size         = 0x00040000;
+define symbol m_sram0_start       = 0x22000000;
+define symbol m_sram0_size        = 0x00040000;
+define symbol m_sram1_start       = 0x22040000;
+define symbol m_sram1_size        = 0x00040000;
+define symbol m_sram2_start       = 0x22080000;
+define symbol m_sram2_size        = 0x00040000;
+define symbol m_psram_start       = 0x88000000;
+define symbol m_psram_size        = 0x02000000;
+
+/* ========================== Offsets and sizes =========================== */
+/* ======================================================================== */
+define symbol m_fcb_offset        = 0x400;
+define symbol m_fcb_size          = 0x300;
+define symbol m_xmcd_offset       = 0xA00;
+define symbol m_xmcd_size         = 0x300;
+define symbol m_container_offset  = 0x1000;
+define symbol m_container_size    = 0x9000;
+define symbol m_vector_table_size = 0x600;
+define symbol m_app_image_offset  = 0xC000;
+define symbol m_ncache_size       = 0xBF000;   /* ISI: 764 KB (SRAM0+SRAM1+SRAM2 - 4 KB heap slot) */
+
+/* ====================== Region start/end addresses ====================== */
+/* ======================================================================== */
+define symbol m_fcb_start         = m_flash_start + m_fcb_offset;
+define symbol m_fcb_end           = m_fcb_start + m_fcb_size - 1;
+define symbol m_xmcd_start        = m_flash_start + m_xmcd_offset;
+define symbol m_xmcd_end          = m_xmcd_start + m_xmcd_size - 1;
+define symbol m_container_start   = m_flash_start + m_container_offset;
+define symbol m_container_end     = m_container_start + m_container_size - 1;
+define symbol m_text_start        = m_flash_start + m_app_image_offset;
+define symbol m_text_end          = m_flash_start + m_flash_size - 1;
+define symbol m_ncache_start      = m_sram0_start + 0x1000;   /* ISI: after 4 KB heap slot */
+define symbol m_ncache_end        = m_ncache_start + m_ncache_size - 1;
+define symbol m_heap_start        = m_sram0_start;
+define symbol m_heap_end          = m_sram0_start + 0x1000 - 1;
+define symbol m_dataext_start     = m_sram0_start;
+define symbol m_dataext_end       = m_sram0_start;            /* ISI: DATAEXT empty */
+
+if (isdefinedsymbol(__ram_vector_table__)) {
+  define symbol m_ramvector_start = m_itcm_start;
+  define symbol m_ramvector_end   = m_itcm_start + m_vector_table_size - 1;
+}
+
+if (isdefinedsymbol(__stack_size__)) {
+  define symbol __size_cstack__ = __stack_size__;
+} else {
+  define symbol __size_cstack__ = 0x1000;
+}
+
+if (isdefinedsymbol(__heap_size__)) {
+  define symbol __size_heap__ = __heap_size__;
+} else {
+  define symbol __size_heap__ = 0x1000;
+}
+
+define symbol m_rvt_offset        = isdefinedsymbol(__ram_vector_table__) ? m_vector_table_size : 0;
+
+define symbol m_qacode_start      = m_itcm_start + m_rvt_offset;
+define symbol m_qacode_end        = m_itcm_start + m_itcm_size - 1;
+define symbol m_qadata_start      = m_dtcm_start;
+define symbol m_qadata_end        = m_dtcm_start + m_dtcm_size - __size_cstack__ - 1;
+define symbol m_cstack_start      = m_dtcm_start + m_dtcm_size - __size_cstack__;
+define symbol m_cstack_end        = m_dtcm_start + m_dtcm_size - 1;
+
+/* ================ Target specific CODE / DATA addresses ================= */
+/* ======================================================================== */
+define symbol m_code_start        = m_text_start;
+define symbol m_code_end          = m_text_end;
+define symbol m_data_start        = m_dtcm_start;
+define symbol m_data_end          = m_dtcm_start + m_dtcm_size - __size_cstack__ - 1;
+
+/* ============================ Memory regions ============================ */
+/* ======================================================================== */
+define memory mem with size = 4G;
+define region FCB_region       = mem:[from m_fcb_start       to m_fcb_end];
+define region XMCD_region      = mem:[from m_xmcd_start      to m_xmcd_end];
+define region CONTAINER_region = mem:[from m_container_start to m_container_end];
+define region FLASH_region     = mem:[from m_text_start      to m_text_end];
+define region CODE_region      = mem:[from m_code_start      to m_code_end];
+define region DATA_region      = mem:[from m_data_start      to m_data_end];
+define region CSTACK_region    = mem:[from m_cstack_start    to m_cstack_end];
+define region QACODE_region    = mem:[from m_qacode_start    to m_qacode_end];
+/* QADATA_region == DATA_region here (both DTCM). ILINK accepts overlapping
+ * regions; do NOT add `place in QADATA_region {}` -- data placed via
+ * `place in DATA_region {}` already occupies the range. */
+define region QADATA_region    = mem:[from m_qadata_start    to m_qadata_end];
+define region NCACHE_region    = mem:[from m_ncache_start    to m_ncache_end];
+define region HEAP_region      = mem:[from m_heap_start      to m_heap_end];
+define region DATAEXT_region   = mem:[from m_dataext_start   to m_dataext_end];
+
+if (isdefinedsymbol(__ram_vector_table__)) {
+  define region RAMVECTOR_region = mem:[from m_ramvector_start to m_ramvector_end];
+}
+
+/* ========================== Block definitions =========================== */
+/* ======================================================================== */
+define block RO                  with fixed order { readonly section .intvec, readonly };
+define block RW_CODE             { section .textrw };
+define block RW_DATA             { rw data };
+define block ZI                  { zi };
+define block QACCESS_CODE        { section CodeQuickAccess };
+define block QACCESS_DATA        { section DataQuickAccess };
+define block NCACHE_VAR          { section NonCacheable, section NonCacheable.init };
+define block CACHE_LINE_DATA_RW  with alignment = 32, end alignment = 32 { section CacheLineData.init };
+define block CACHE_LINE_DATA_ZI  with alignment = 32, end alignment = 32 { section CacheLineData };
+define block CSTACK              with alignment = 8, size = __size_cstack__ { };
+define block HEAP                with alignment = 8, size = __size_heap__   { };
+
+if (isdefinedsymbol(__ram_vector_table__)) {
+  define block RAM_VECTOR with size = m_vector_table_size { };
+  keep { block RAM_VECTOR };
+}
+
+define block APP_QACCESS_CODE {
+  /* section ro object hello_world.o */
+};
+
+/* ====================== Initialization directives ======================= */
+/* ======================================================================== */
+initialize by copy {
+  readwrite,
+  section .textrw,
+  section CacheLineData.init,
+  section DataQuickAccess,
+  section CodeQuickAccess
+  /* , section ro object hello_world.o */
+};
+
+/* Readonly (code + .rodata) executes from Flash at its load address;
+ * no readonly-init copy directive is needed. */
+
+do not initialize { section .noinit };
+keep { section .boot_hdr.fcb, section .boot_hdr.xmcd_data, section .boot_hdr.container };
+
+/* ========================= Placement directives ========================= */
+/* ======================================================================== */
+place in FCB_region       { section .boot_hdr.fcb };
+place in XMCD_region      { section .boot_hdr.xmcd_data };
+place in CONTAINER_region { section .boot_hdr.container };
+place in FLASH_region     { first block RO };
+
+if (isdefinedsymbol(__ram_vector_table__)) {
+  place in RAMVECTOR_region    { first block RAM_VECTOR };
+}
+
+place in QACODE_region    { block RW_CODE };
+place in QACODE_region    { block QACCESS_CODE };
+place in QACODE_region    { block APP_QACCESS_CODE };
+
+place in DATA_region      { block QACCESS_DATA };
+place in DATA_region      { block RW_DATA };
+place in DATA_region      { block ZI };
+place in DATA_region      { block CACHE_LINE_DATA_RW, block CACHE_LINE_DATA_ZI };
+
+place in CSTACK_region    { block CSTACK };
+place in NCACHE_region    { block NCACHE_VAR };
+place in DATAEXT_region   { };
+
+if (isdefinedsymbol(__heap_noncacheable__)) {
+  place at end of NCACHE_region { block HEAP };
+} else {
+  place at end of HEAP_region   { block HEAP };
+}
+
+/* =========================== Exported symbols =========================== */
+/* ======================================================================== */
+define exported symbol __VECTOR_TABLE             = m_text_start;
+if (isdefinedsymbol(__ram_vector_table__)) {
+  define exported symbol __VECTOR_RAM             = m_ramvector_start;
+} else {
+  define exported symbol __VECTOR_RAM             = m_text_start;
+}
+define exported symbol __RAM_VECTOR_TABLE_SIZE    = m_rvt_offset;
+define exported symbol __NCACHE_REGION_START      = m_ncache_start;
+define exported symbol __NCACHE_REGION_SIZE       = m_ncache_end - m_ncache_start + 1;
+define exported symbol __CONTAINER_IMG_OFFSET     = m_app_image_offset - m_container_offset;
+define exported symbol __CONTAINER_IMG_LOAD_ADDR  = m_text_start;
+define exported symbol __CONTAINER_IMG_ENTRY_ADDR = m_text_start;

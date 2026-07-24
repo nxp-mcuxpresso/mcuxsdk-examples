@@ -43,3 +43,4 @@ irtc:
     frdmimxrt700@cm33_core1: []
     frdmmcxa577: []
     frdmmcxa287: []
+    mimxrt2660evk: []

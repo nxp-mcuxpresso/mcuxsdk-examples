@@ -13,3 +13,4 @@ For ADCin between -maximum input voltage and +maximum input voltage, the SINC re
 
 ## Supported Boards
 - [MIMXRT1180-EVK](../../../_boards/evkmimxrt1180/driver_examples/sinc/adc/example_board_readme.md)
+- [MIMXRT2660-EVK](../../../_boards/mimxrt2660evk/driver_examples/sinc/adc/example_board_readme.md)

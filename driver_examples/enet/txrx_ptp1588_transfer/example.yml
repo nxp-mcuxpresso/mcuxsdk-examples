@@ -190,3 +190,4 @@ enet_txrx_ptp1588_transfer:
     mcimx93autoevk: []
     mcimx93evk: []
     mcimx93wevk: []
+    mimxrt2660evk: []

@@ -188,6 +188,7 @@ install_path:\\msys64\\home\\~your user name\\build\\bin
 - [FRDM-MCXA156](../../_boards/frdmmcxa156/usb_examples/usb_device_dfu/example_board_readme.md)
 - EVK-MIMXRT685
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/usb_examples/usb_device_dfu/example_board_readme.md)
+- [MIMXRT2660-EVK](../../_boards/mimxrt2660evk/usb_examples/usb_device_dfu/example_board_readme.md)
 - EVKB-IMXRT1050
 - RD-RW612-BGA
 - FRDM-MCXN236

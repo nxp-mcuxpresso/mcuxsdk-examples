@@ -227,3 +227,4 @@ sai_edma_record_playback:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    mimxrt2660evk: []

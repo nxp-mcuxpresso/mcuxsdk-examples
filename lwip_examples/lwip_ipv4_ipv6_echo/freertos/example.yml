@@ -305,3 +305,4 @@ lwip_ipv4_ipv6_echo_freertos:
       - -iar@release
       - -mdk@debug
       - -mdk@release
+    mimxrt2660evk: []

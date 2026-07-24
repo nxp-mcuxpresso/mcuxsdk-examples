@@ -66,3 +66,4 @@ and dynamic duty from 99 to 1 to one of the FLEXIO pins.
 - [FRDM-MCXW72](../../../_boards/frdmmcxw72/driver_examples/flexio/pwm/example_board_readme.md)
 - [FRDM-MCXA577](../../../_boards/frdmmcxa577/driver_examples/flexio/pwm/example_board_readme.md)
 - [FRDM-MCXA287](../../../_boards/frdmmcxa287/driver_examples/flexio/pwm/example_board_readme.md)
+- [MIMXRT2660-EVK](../../../_boards/mimxrt2660evk/driver_examples/flexio/pwm/example_board_readme.md)

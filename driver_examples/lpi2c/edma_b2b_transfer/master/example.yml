@@ -326,3 +326,4 @@ lpi2c_edma_b2b_transfer_master:
     frdmmcxc162: []
     frdmkw43: []
     frdmmcxw70: []
+    mimxrt2660evk: []

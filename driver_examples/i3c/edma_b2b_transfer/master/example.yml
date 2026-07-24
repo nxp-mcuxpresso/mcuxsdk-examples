@@ -55,3 +55,4 @@ i3c_edma_b2b_transfer_master:
     frdmmcxa366: []
     frdmmcxa577: []
     frdmmcxa287: []
+    mimxrt2660evk: []

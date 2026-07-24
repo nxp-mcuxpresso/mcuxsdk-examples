@@ -1,0 +1,22 @@
+/*
+ * Copyright 2026 NXP
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+/*${header:start}*/
+#include "pin_mux.h"
+#include "board.h"
+/*${header:end}*/
+
+/*${function:start}*/
+void BOARD_InitHardware(void)
+{
+    /* Board common setting: MPU, Power and Clock Tree, TRDC, and Debug Console init. */
+    BOARD_CommonSetting();
+}
+
+void API_SysTick_Start(void)
+{
+    SysTick_Config(CLOCK_GetRootClockFreq(kCLOCK_Root_CMPT_cpu_clk) / 1000U);
+}
+/*${function:end}*/

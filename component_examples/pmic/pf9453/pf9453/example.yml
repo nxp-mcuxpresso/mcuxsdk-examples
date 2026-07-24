@@ -1,0 +1,23 @@
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+pf9453:
+  section-type: application
+  contents:
+    meta_path: examples/component_examples/pmic/pf9453/pf9453
+    project-root-path: boards/${board}/component_examples/pf9453/${multicore_foldername}
+    document:
+      name: pf9453${core_id_suffix_name}
+      category: component_examples
+      brief: The pf9453 driver example demonstrates the usage of the PF9453 PMIC SDK
+        component driver. The example shows how to 1. Read the device ID; 2. Set the
+        BUCK2 (VDD_CORE) run voltage via the DVS hot path; 3. Configure BUCK2 fully
+        (run/standby voltage and enable mode); 4. Dump the BUCK2 register block. The
+        PF9453 on the MIMXRT2660-EVK supplies VDD_CORE from BUCK2; take care when
+        changing the output voltage so the value set will not damage the hardware.
+      example_readme:
+      - examples/component_examples/pmic/pf9453/pf9453/readme.md
+      - ${board_root}/${board}/component_examples/pf9453/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    mimxrt2660evk: []

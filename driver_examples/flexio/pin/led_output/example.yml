@@ -91,3 +91,4 @@ flexio_pin_led_output:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     - -mdk@release
+    mimxrt2660evk: []

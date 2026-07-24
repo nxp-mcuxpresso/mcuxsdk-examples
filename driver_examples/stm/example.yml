@@ -16,3 +16,4 @@ stm_match_interrupt:
   boards:
     frdmmcxe31b: []
     frdmmcxe32b@core0: []
+    mimxrt2660evk: []

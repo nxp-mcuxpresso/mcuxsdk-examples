@@ -358,6 +358,7 @@ Static data processing:
 - MIMXRT1170-EVKB
 - EVK-MIMXRT1064
 - [MIMXRT685-AUD-EVK](../../_boards/mimxrt685audevk/eiq_examples/tflm_cifar10/example_board_readme.md)
+- [MIMXRT2660-EVK](../../_boards/mimxrt2660evk/eiq_examples/tflm_cifar10/example_board_readme.md)
 - MIMXRT1040-EVK
 - MIMXRT1180-EVK
 - MIMXRT1060-EVKC

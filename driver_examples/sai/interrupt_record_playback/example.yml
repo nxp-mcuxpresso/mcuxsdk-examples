@@ -236,3 +236,4 @@ sai_interrupt_record_playback:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    mimxrt2660evk: []

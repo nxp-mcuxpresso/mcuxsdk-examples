@@ -1,0 +1,7 @@
+# Copyright 2024 NXP
+# SPDX-License-Identifier: BSD-3-Clause
+
+rsource "${SdkRootDirPath}/examples/_common/project_segments/display_support/Kconfig.prjseg"
+rsource "${SdkRootDirPath}/examples/_common/project_segments/lvgl/Kconfig.prjseg"
+rsource "${SdkRootDirPath}/examples/lvgl_examples/lvgl_sdk/lvgl_support/rt2xxx/Kconfig.lvgl_support"
+rsource "../../../examples/_common/project_segments/freertos/examples/tickless/Kconfig.prjseg"

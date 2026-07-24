@@ -248,3 +248,4 @@ lpuart_9bit_interrupt_transfer:
     - -mdk@release
     frdmkw43: []
     frdmmcxw70: []
+    mimxrt2660evk: []

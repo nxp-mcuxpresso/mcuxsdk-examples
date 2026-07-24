@@ -18,3 +18,4 @@ In this example, one sai instance playbacks the audio data received from externa
 - [MIMXRT1040-EVK](../../../_boards/evkmimxrt1040/driver_examples/sai/edma_ping_pong_buffer/example_board_readme.md)
 - [EVK-MIMXRT1064](../../../_boards/evkmimxrt1064/driver_examples/sai/edma_ping_pong_buffer/example_board_readme.md)
 - [MIMXRT1180-EVK](../../../_boards/evkmimxrt1180/driver_examples/sai/edma_ping_pong_buffer/example_board_readme.md)
+- [MIMXRT2660-EVK](../../../_boards/mimxrt2660evk/driver_examples/sai/edma_ping_pong_buffer/example_board_readme.md)

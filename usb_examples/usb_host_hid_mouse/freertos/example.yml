@@ -77,3 +77,4 @@ host_hid_mouse_freertos:
     frdmmcxa366: []
     frdmmcxa577: []
     frdmmcxa287: []
+    mimxrt2660evk: []

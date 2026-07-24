@@ -22,3 +22,4 @@ The time stamp of the received timestamp will be print when the PTP message fram
 - [MCIMX93-QSB](../../../_boards/mcimx93qsb/driver_examples/enet_qos/txrx_ptp1588_transfer/example_board_readme.md)
 - [FRDM-MCXE31B](../../../_boards/frdmmcxe31b/driver_examples/enet_qos/txrx_ptp1588_transfer/example_board_readme.md)
 - [FRDM-MCXE32B](../../../_boards/frdmmcxe32b/driver_examples/enet_qos/txrx_ptp1588_transfer/example_board_readme.md)
+- [MIMXRT2660-EVK](../../../_boards/mimxrt2660evk/driver_examples/enet_qos/txrx_ptp1588_transfer/example_board_readme.md)

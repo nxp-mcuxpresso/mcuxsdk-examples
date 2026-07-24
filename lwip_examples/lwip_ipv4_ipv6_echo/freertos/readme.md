@@ -136,3 +136,4 @@ In such case, you will be able to connect another PC:
 - [LPCXpresso54S018M](../../../_boards/lpcxpresso54s018m/lwip_examples/lwip_ipv4_ipv6_echo/freertos/example_board_readme.md)
 - [RD-RW612-BGA](../../../_boards/rdrw612bga/lwip_examples/lwip_ipv4_ipv6_echo/freertos/example_board_readme.md)
 - [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/lwip_examples/lwip_ipv4_ipv6_echo/freertos/example_board_readme.md)
+- [MIMXRT2660-EVK](../../../_boards/mimxrt2660evk/lwip_examples/lwip_ipv4_ipv6_echo/freertos/example_board_readme.md)

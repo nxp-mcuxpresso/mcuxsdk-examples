@@ -13,3 +13,4 @@ The purpose of this demonstration is to show how to use the EVTG driver in the S
 - [FRDM-MCXN947T](../../_boards/frdmmcxn947t/driver_examples/evtg/example_board_readme.md)
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/driver_examples/evtg/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/driver_examples/evtg/example_board_readme.md)
+- [MIMXRT2660-EVK](../../_boards/mimxrt2660evk/driver_examples/evtg/example_board_readme.md)

@@ -17,3 +17,4 @@ In this example, one sai instance playbacks the audio data stored in flash/SRAM 
 - [EVK-MIMXRT1064](../../../_boards/evkmimxrt1064/driver_examples/sai/edma_ping_pong_buffer_half_interrupt/example_board_readme.md)
 - [MIMXRT1160-EVK](../../../_boards/evkmimxrt1160/driver_examples/sai/edma_ping_pong_buffer_half_interrupt/example_board_readme.md)
 - [MIMXRT1180-EVK](../../../_boards/evkmimxrt1180/driver_examples/sai/edma_ping_pong_buffer_half_interrupt/example_board_readme.md)
+- [MIMXRT2660-EVK](../../../_boards/mimxrt2660evk/driver_examples/sai/edma_ping_pong_buffer_half_interrupt/example_board_readme.md)

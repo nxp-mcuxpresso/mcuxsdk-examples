@@ -310,3 +310,4 @@ sai_interrupt_transfer:
     - +armgcc@release
     - +iar@release
     - +iar@debug
+    mimxrt2660evk: []

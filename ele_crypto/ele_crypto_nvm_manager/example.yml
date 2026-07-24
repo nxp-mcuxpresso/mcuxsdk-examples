@@ -17,3 +17,4 @@ ele_crypto_nvm_manager:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1180@cm33: []
+    mimxrt2660evk: []

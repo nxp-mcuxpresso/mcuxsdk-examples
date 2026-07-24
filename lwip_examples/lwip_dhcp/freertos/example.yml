@@ -282,3 +282,4 @@ lwip_dhcp_freertos:
       - +armgcc@release
       - +iar@release
       - +iar@debug
+    mimxrt2660evk: []

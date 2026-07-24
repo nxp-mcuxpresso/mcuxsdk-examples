@@ -116,3 +116,4 @@ csi_rgb565:
     - -iar@sdram_release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    mimxrt2660evk: []

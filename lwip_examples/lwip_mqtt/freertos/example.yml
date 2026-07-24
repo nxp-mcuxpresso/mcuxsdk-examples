@@ -311,3 +311,4 @@ lwip_mqtt_freertos:
       - -iar@release
       - -mdk@debug
       - -mdk@release
+    mimxrt2660evk: []

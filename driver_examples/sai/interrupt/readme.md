@@ -31,3 +31,4 @@ In this example, one sai instance playbacks the audio data stored in flash/SRAM 
 - [MCIMX93-QSB](../../../_boards/mcimx93qsb/driver_examples/sai/interrupt/example_board_readme.md)
 - [IMX943-EVK](../../../_boards/imx943evk/driver_examples/sai/interrupt/example_board_readme.md)
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/driver_examples/sai/interrupt/example_board_readme.md)
+- [MIMXRT2660-EVK](../../../_boards/mimxrt2660evk/driver_examples/sai/interrupt/example_board_readme.md)

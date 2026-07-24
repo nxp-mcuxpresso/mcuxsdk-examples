@@ -77,6 +77,7 @@ note<br>
 - MIMXRT1060-EVKC
 - [MIMXRT1160-EVK](../../_boards/evkmimxrt1160/usb_examples/usb_device_mtp/example_board_readme.md)
 - [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/usb_examples/usb_device_mtp/example_board_readme.md)
+- [MIMXRT2660-EVK](../../_boards/mimxrt2660evk/usb_examples/usb_device_mtp/example_board_readme.md)
 - MIMXRT1180-EVK
 - EVK-MIMXRT1020
 - MIMXRT700-EVK

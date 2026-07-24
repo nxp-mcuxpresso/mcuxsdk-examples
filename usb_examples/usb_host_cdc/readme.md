@@ -91,6 +91,7 @@ It enumerates a COM port and echoes back the data from the UART as follows:
 - EVK-MIMXRT595
 - EVK-MIMXRT685
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/usb_examples/usb_host_cdc/example_board_readme.md)
+- [MIMXRT2660-EVK](../../_boards/mimxrt2660evk/usb_examples/usb_host_cdc/example_board_readme.md)
 - EVKB-IMXRT1050
 - RD-RW612-BGA
 - EVK-MIMXRT1015

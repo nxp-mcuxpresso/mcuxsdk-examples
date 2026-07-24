@@ -1,0 +1,39 @@
+# Copyright 2025 NXP
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+#
+
+config MCUX_PRJSEG_module.board.display_support
+    select MCUX_COMPONENT_driver.display-hx8394
+    select MCUX_COMPONENT_driver.st7796s
+    select MCUX_COMPONENT_driver.display-adv7535
+    select MCUX_COMPONENT_driver.dc-fb-dcif_1
+    select MCUX_COMPONENT_driver.dc-fb-dbi
+    select MCUX_COMPONENT_driver.dbi_dcif
+    select MCUX_COMPONENT_driver.lpi2c
+    select MCUX_COMPONENT_driver.gpio
+    select MCUX_ABSTRACT_COMPONENT_component_expander
+    select MCUX_COMPONENT_driver.pcal6524
+    select MCUX_COMPONENT_driver.pca9555
+
+# Which panels the board supports
+config MCUX_DEMO_PANEL_RK055MHD091A0_SUPPORT
+    default y
+
+config MCUX_DEMO_PANEL_LCD_PAR_S035_SUPPORT
+    default y
+
+config MCUX_DEMO_PANEL_LCM_RGB_5INCH_SUPPORT
+    default y
+
+config MCUX_DEMO_PANEL_MIPI2HDMI_SUPPORT
+    default n
+
+if MCUX_PRJSEG_module.board.display_support
+
+    choice DISPLAY_SUPPORT_PANEL
+        default LCM_RGB_5INCH
+    endchoice
+
+endif

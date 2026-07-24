@@ -334,3 +334,4 @@ flexio_uart_polling_transfer:
     frdmmcxa366: []
     frdmmcxa577: []
     frdmmcxa287: []
+    mimxrt2660evk: []

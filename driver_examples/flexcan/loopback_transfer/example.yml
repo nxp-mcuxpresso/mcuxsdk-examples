@@ -310,3 +310,4 @@ flexcan_loopback_transfer:
     frdmmcxa287: []
     frdmkw43: []
     frdmmcxw70: []
+    mimxrt2660evk: []

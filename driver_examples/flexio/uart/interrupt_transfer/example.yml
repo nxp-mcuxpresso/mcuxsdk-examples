@@ -335,3 +335,4 @@ flexio_uart_interrupt_transfer:
     frdmmcxa366: []
     frdmmcxa577: []
     frdmmcxa287: []
+    mimxrt2660evk: []

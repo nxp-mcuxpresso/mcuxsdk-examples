@@ -19,3 +19,4 @@ ele_crypto_generic_rsa:
     evkmimxrt1180@cm7: []
     frdmimxrt1186@cm33: []
     frdmimxrt1186@cm7: []
+    mimxrt2660evk: []

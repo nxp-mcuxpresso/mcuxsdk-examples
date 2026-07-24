@@ -130,3 +130,4 @@ Consumer 2 accepted item.
 - [FRDM-KW43](../../_boards/frdmkw43/freertos_examples/freertos_sem_static/example_board_readme.md)
 - [FRDM-MCXW70](../../_boards/frdmmcxw70/freertos_examples/freertos_sem_static/example_board_readme.md)
 - [FRDM-MCXA287](../../_boards/frdmmcxa287/freertos_examples/freertos_sem_static/example_board_readme.md)
+- [MIMXRT2660-EVK](../../_boards/mimxrt2660evk/freertos_examples/freertos_sem_static/example_board_readme.md)

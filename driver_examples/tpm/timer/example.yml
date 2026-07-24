@@ -134,3 +134,4 @@ tpm_timer:
     - -mdk@release
     frdmkw43: []
     frdmmcxw70: []
+    mimxrt2660evk: []

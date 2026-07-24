@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+power_mode_switch_rt2660:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/power_mode_switch_rt2660
+    project-root-path: boards/${board}/demo_apps/power_mode_switch/${multicore_foldername}
+    document:
+      name: power_mode_switch_rt2660${core_id_suffix_name}
+      category: demo_apps
+      brief: 'The Power Mode Switch demo for RT2660 demonstrates all 10 supported
+        power modes: 3 active run modes (Over Drive Run FBB, Normal Drive Run FBB,
+        Normal Drive Run ZBB) and 7 standby modes (Sleep, Deep Sleep 1/2/3, Power
+        Down, Deep Power Down 1/2). A menu-driven console interface allows selection
+        of the target mode and wakeup source. Sleep wakeup uses NVIC directly (no
+        POWERCON mask required). Deep Sleep and Power Down wakeup use POWER_EnableWakeupSource()
+        to program the POWERCON IRQ/DMA mask before entry. Deep Power Down wakeup is
+        driven from the always-on VBAT domain (no POWERCON mask): the demo arms the VBAT LPTMR
+        before entry so the device auto-wakes after the programmed interval; the on/off button also wakes DPD.
+        Power Down and Deep Power Down cause a full PoR on wakeup; boot origin
+        detection is application-specific (e.g., via POWERCON WARM_GPR registers).'
+      example_readme:
+      - examples/demo_apps/power_mode_switch_rt2660/readme.md
+      - examples/_boards/${board}/demo_apps/power_mode_switch/example_board_readme.md
+  boards:
+    mimxrt2660evk:

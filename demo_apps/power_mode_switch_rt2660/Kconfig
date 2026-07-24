@@ -1,0 +1,34 @@
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+mainmenu "power_mode_switch_rt2660"
+
+# When the PMIC path is enabled, bound the LPI2C blocking waits so a stuck/NAKing bus returns
+# kStatus_LPI2C_Timeout (reached before __WFI) instead of hanging. Declared BEFORE the main source so
+# this conditional default is evaluated ahead of the lpi2c driver's unconditional "default 0" (first
+# matching default wins). Only takes effect with lpi2c selected (PMIC on); the default DCDC build
+# keeps 0 (= wait forever, driver default). Loop-iteration ceiling, not wall-clock; tune on HW.
+config I2C_RETRY_TIMES
+    default 100000 if MCUX_EXAMPLE_POWER_USE_PF9453_PMIC
+
+# Need to refer the root Kconfig.mcuxpresso to get all Kconfig data
+source "${SdkRootDirPath}/Kconfig.mcuxpresso"
+
+# Board example specific Kconfig can be linked in this way if needed
+osource "${SdkRootDirPath}/${project_board_port_path}/Kconfig"
+
+config MCUX_EXAMPLE_power_mode_switch_rt2660
+    bool "power_mode_switch_rt2660 example"
+    default y
+
+config MCUX_EXAMPLE_POWER_USE_PF9453_PMIC
+    bool "Supply VDD_CORE from the external PF9453 PMIC instead of the on-chip DCDC"
+    default n
+    select MCUX_COMPONENT_driver.power
+    select MCUX_POWER_PF9453_SUPPLY
+    select MCUX_COMPONENT_driver.lpi2c
+    help
+      When set, the demo initialises LPI2C1 and hands its transport to POWER_Init so that
+      fsl_power drives the PF9453 BUCK2 regulator for VDD_CORE (per-mode DVS + low-power
+      standby) instead of the on-chip DCDC. Default n keeps the on-chip DCDC path.

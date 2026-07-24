@@ -239,3 +239,4 @@ flexio_spi_edma_lpspi_transfer_slave_dynamic:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     - -mdk@release
+    mimxrt2660evk: []

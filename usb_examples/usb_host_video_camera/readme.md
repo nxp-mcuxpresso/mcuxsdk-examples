@@ -106,4 +106,5 @@ as the following image.
 - [EVK-MIMXRT595](../../_boards/evkmimxrt595/usb_examples/usb_host_video_camera/example_board_readme.md)
 - EVK-MIMXRT685
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/usb_examples/usb_host_video_camera/example_board_readme.md)
+- [MIMXRT2660-EVK](../../_boards/mimxrt2660evk/usb_examples/usb_host_video_camera/example_board_readme.md)
 - EVKB-IMXRT1050

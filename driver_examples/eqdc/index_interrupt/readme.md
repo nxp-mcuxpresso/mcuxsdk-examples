@@ -49,3 +49,4 @@ g_EqdcIndexCounter: 2
 - [FRDM-MCXA266](../../../_boards/frdmmcxa266/driver_examples/eqdc/index_interrupt/example_board_readme.md)
 - [FRDM-MCXA366](../../../_boards/frdmmcxa366/driver_examples/eqdc/index_interrupt/example_board_readme.md)
 - [IMX943-EVK](../../../_boards/imx943evk/driver_examples/eqdc/index_interrupt/example_board_readme.md)
+- [MIMXRT2660-EVK](../../../_boards/mimxrt2660evk/driver_examples/eqdc/index_interrupt/example_board_readme.md)

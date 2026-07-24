@@ -51,5 +51,6 @@ Set the hardware jumpers (Tower system/base module) to default settings.
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/usb_examples/usb_device_cdc_ecm_nic_lite/example_board_readme.md)
 - [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/usb_examples/usb_device_cdc_ecm_nic_lite/example_board_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/usb_examples/usb_device_cdc_ecm_nic_lite/example_board_readme.md)
+- [MIMXRT2660-EVK](../../_boards/mimxrt2660evk/usb_examples/usb_device_cdc_ecm_nic_lite/example_board_readme.md)
 - FRDM-MCXA577
 

@@ -301,3 +301,4 @@ flexio_uart_edma_transfer:
     frdmmcxa366: []
     frdmmcxa577: []
     frdmmcxa287: []
+    mimxrt2660evk: []

@@ -81,3 +81,4 @@ because the LPUART uses simple polling way for receiving.
 - [FRDM-MCXW70](../../../_boards/frdmmcxw70/driver_examples/lpuart/polling/example_board_readme.md)
 - [FRDM-MCXA287](../../../_boards/frdmmcxa287/driver_examples/lpuart/polling/example_board_readme.md)
 - [IMX943-ORANGEBOX](../../../_boards/imx943_orangebox/driver_examples/lpuart/polling/example_board_readme.md)
+- [MIMXRT2660-EVK](../../../_boards/mimxrt2660evk/driver_examples/lpuart/polling/example_board_readme.md)

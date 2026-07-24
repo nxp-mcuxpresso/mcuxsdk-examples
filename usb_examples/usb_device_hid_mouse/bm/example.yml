@@ -71,3 +71,4 @@ dev_hid_mouse_bm:
     rdrw612bga: []
     frdmmcxa577: []
     frdmmcxa287: []
+    mimxrt2660evk: []

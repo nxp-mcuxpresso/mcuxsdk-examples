@@ -108,3 +108,4 @@ edma3_memory_to_memory:
     frdmmcxa577: []
     frdmmcxa287: []
     frdmmcxc162: []
+    mimxrt2660evk: []

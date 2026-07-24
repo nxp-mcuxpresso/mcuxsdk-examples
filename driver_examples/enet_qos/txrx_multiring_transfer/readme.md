@@ -24,3 +24,4 @@ The example transmits 20 number frames. For simple demo, we create frames with s
 - [MCIMX93-QSB](../../../_boards/mcimx93qsb/driver_examples/enet_qos/txrx_multiring_transfer/example_board_readme.md)
 - [FRDM-MCXE31B](../../../_boards/frdmmcxe31b/driver_examples/enet_qos/txrx_multiring_transfer/example_board_readme.md)
 - [FRDM-MCXE32B](../../../_boards/frdmmcxe32b/driver_examples/enet_qos/txrx_multiring_transfer/example_board_readme.md)
+- [MIMXRT2660-EVK](../../../_boards/mimxrt2660evk/driver_examples/enet_qos/txrx_multiring_transfer/example_board_readme.md)

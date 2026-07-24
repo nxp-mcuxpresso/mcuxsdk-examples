@@ -31,3 +31,4 @@ mmu_xspi:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    mimxrt2660evk: []

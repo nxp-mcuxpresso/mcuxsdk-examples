@@ -200,3 +200,4 @@ enet_txrx_transfer:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    mimxrt2660evk: []

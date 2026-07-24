@@ -84,6 +84,7 @@ device to simulate the personal weight scale data, such as body mass and body ma
 - MIMXRT1160-EVK
 - MIMXRT1180-EVK
 - [FRDM-K32L2A4S](../../_boards/frdmk32l2a4s/usb_examples/usb_device_phdc_weighscale/example_board_readme.md)
+- [MIMXRT2660-EVK](../../_boards/mimxrt2660evk/usb_examples/usb_device_phdc_weighscale/example_board_readme.md)
 - EVK-MIMXRT1020
 - MIMXRT700-EVK
 - FRDM-IMXRT700

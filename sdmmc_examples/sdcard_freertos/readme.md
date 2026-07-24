@@ -36,3 +36,4 @@ configuration is correct.
 - [MIMXRT685-AUD-EVK](../../_boards/mimxrt685audevk/sdmmc_examples/sdcard_freertos/example_board_readme.md)
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/sdmmc_examples/sdcard_freertos/example_board_readme.md)
 - [FRDM-IMXRT700](../../_boards/frdmimxrt700/sdmmc_examples/sdcard_freertos/example_board_readme.md)
+- [MIMXRT2660-EVK](../../_boards/mimxrt2660evk/sdmmc_examples/sdcard_freertos/example_board_readme.md)

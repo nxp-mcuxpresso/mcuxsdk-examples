@@ -62,3 +62,4 @@ dev_composite_hid_mouse_hid_keyboard_freertos:
     frdmmcxa366: []
     frdmmcxa577: []
     frdmmcxa287: []
+    mimxrt2660evk: []

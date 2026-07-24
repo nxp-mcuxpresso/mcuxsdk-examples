@@ -54,3 +54,4 @@ usb_pd_source_charger_bm_om13790host:
     mc56f83000evk:
     - -codewarrior@flash_sdm_lpm_debug
     - -codewarrior@flash_sdm_lpm_release
+    mimxrt2660evk: []

@@ -84,3 +84,4 @@ lwip_ping_enet_qos_freertos:
     mcimx93wevk: []
     mcimx93qsb: []
     frdmmcxe31b: []
+    mimxrt2660evk: []

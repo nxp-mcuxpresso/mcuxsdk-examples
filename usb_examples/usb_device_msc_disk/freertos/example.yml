@@ -53,3 +53,4 @@ dev_msc_disk_freertos:
     mimxrt685audevk@cm33: []
     frdmimxrt700@cm33_core0: []
     mimxrt700evk@cm33_core0: []
+    mimxrt2660evk: []

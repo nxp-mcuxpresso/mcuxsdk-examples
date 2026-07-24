@@ -98,3 +98,4 @@ enet_qos_txrx_ptp1588_transfer:
     mcimx93evk: []
     mcimx93wevk: []
     mcimx93qsb: []
+    mimxrt2660evk: []

@@ -321,3 +321,4 @@ lwip_dhcp_bm:
       - +armgcc@release
       - +iar@release
       - +iar@debug
+    mimxrt2660evk: []
