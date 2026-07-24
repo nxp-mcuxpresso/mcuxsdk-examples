@@ -47,7 +47,7 @@ The application flow consists of the following steps:
 
    Adjust the logging verbosity by modifying the log level in the application configuration in:
    
-   [middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/pal/el2go_csr_console.h](../../../../middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/pal/el2go_csr_console.h)
+   [middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/pal/inc/el2go_csr_console.h](../../../../middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr/pal/inc/el2go_csr_console.h)
    
    ```c
    #ifndef CSR_LOG_LEVEL
