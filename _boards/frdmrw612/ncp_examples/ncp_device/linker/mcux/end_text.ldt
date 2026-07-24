@@ -37,6 +37,15 @@
     . = ALIGN(4);
   } > QSPI_FLASH
 
+  ._bt_hci_driver_api :
+  {
+    . = ALIGN(4);
+    _bt_hci_driver_api_list_start = .;
+    KEEP(*(SORT(._bt_hci_driver_api.static.*)))
+    _bt_hci_driver_api_list_end = .;
+    . = ALIGN(4);
+  } > QSPI_FLASH
+
   ._bt_sco_conn_cb :
   {
     . = ALIGN(4);
