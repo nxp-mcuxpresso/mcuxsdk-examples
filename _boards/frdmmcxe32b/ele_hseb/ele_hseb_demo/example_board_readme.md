@@ -13,7 +13,7 @@ Before using **ELE HSEB**, you must first install the **ELE HSEB Firmware** to
 your device.
 
 For detailed instructions on firmware installation, please refer to the firmware
-[README](../../../../../firmware/edgelock/ELE_HSEB/README.md) file.
+[README](/firmware/edgelock/ELE_HSEB/README.md) file.
 The relative path points to the edgelock firmware release repository that should
 be available in your SDK at `<sdk-root>/firmware/edgelock/`.
 

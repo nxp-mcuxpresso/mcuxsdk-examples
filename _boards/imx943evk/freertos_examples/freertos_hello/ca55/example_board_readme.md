@@ -41,4 +41,4 @@ Run the Demo
     'Hello world.'
 
 #### Note ####
-Refer to [Real-Time Edge Software](https://www.nxp.com/rtedge) for getting the Real-Time Edge software.
+Refer to [Real-Time Edge Software](https://www.nxp.com/design/design-center/software/development-software/real-time-edge-software:REALTIME-EDGE-SOFTWARE?tid=vanrtedge) for getting the Real-Time Edge software.
