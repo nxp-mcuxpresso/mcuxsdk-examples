@@ -17,4 +17,6 @@ coremark_eembc:
       - ${board_root}/${board}/demo_apps/coremark_eembc/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    mimxrt2660evk: []
+    mimxrt2660evk:
+    - -armgcc@release
+    - -armgcc@psram_release

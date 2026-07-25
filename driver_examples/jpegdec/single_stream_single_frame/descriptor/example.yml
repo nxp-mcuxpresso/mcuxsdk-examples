@@ -39,3 +39,9 @@ jpegdec_single_stream_single_frame_descriptor:
     - -iar@release
     - -iar@xspi_nor_debug
     - -iar@xspi_nor_release
+    - -iar@psram_debug
+    - -iar@psram_release
+    - -iar@psram_txt_debug
+    - -iar@psram_txt_release
+    - -iar@xspi_nor_psram_debug
+    - -iar@xspi_nor_psram_release

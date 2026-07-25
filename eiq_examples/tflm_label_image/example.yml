@@ -120,6 +120,10 @@ tflm_label_image:
     - -iar@psram_txt_release
     - -mdk@psram_txt_debug
     - -mdk@psram_txt_release
+    - -armgcc@xspi_nor_debug
+    - -armgcc@xspi_nor_release
+    - -armgcc@xspi_nor_psram_debug
+    - -armgcc@xspi_nor_psram_release
     evkbmimxrt1170@cm7:
     - +armgcc@flexspi_nor_sdram_debug
     - +armgcc@flexspi_nor_sdram_release
