@@ -32,11 +32,6 @@ board.toolchains:
 
 
 # Temperory Workaround to fix issues in migration
-coremark_eembc:
-  toolchains:
-  - -armgcc@release
-  - -armgcc@psram_release
-
 csi_rgb565:
   toolchains:
   - -armgcc@debug
@@ -160,49 +155,4 @@ lvgl_guider_bm:
   - -iar@psram_txt_debug
   - -iar@psram_txt_release
 
-tflm_cifar10:
-  toolchains:
-  - -armgcc@xspi_nor_debug
-  - -armgcc@xspi_nor_release
-  - -armgcc@xspi_nor_psram_debug
-  - -armgcc@xspi_nor_psram_release
-
-tflm_label_image:
-  toolchains:
-  - -armgcc@xspi_nor_debug
-  - -armgcc@xspi_nor_release
-  - -armgcc@xspi_nor_psram_debug
-  - -armgcc@xspi_nor_psram_release
-
-tflm_label_image_ext_mem:
-  toolchains:
-  - -armgcc@xspi_nor_debug
-  - -armgcc@xspi_nor_release
-  - -armgcc@xspi_nor_psram_debug
-  - -armgcc@xspi_nor_psram_release
-  - -iar@xspi_nor_debug
-  - -iar@xspi_nor_release
-
-tflm_lib:
-  toolchains:
-  - -armgcc@debug
-  - -armgcc@release
-  - -armgcc@xspi_nor_debug
-  - -armgcc@xspi_nor_release
-  - -armgcc@xspi_nor_psram_debug
-  - -armgcc@xspi_nor_psram_release
-  - -armgcc@psram_debug
-  - -armgcc@psram_release
-  - -armgcc@psram_txt_debug
-  - -armgcc@psram_txt_release
-  - -iar@debug
-  - -iar@release
-  - -iar@xspi_nor_debug
-  - -iar@xspi_nor_release
-  - -iar@xspi_nor_psram_debug
-  - -iar@xspi_nor_psram_release
-  - -iar@psram_debug
-  - -iar@psram_release
-  - -iar@psram_txt_debug
-  - -iar@psram_txt_release
-  # End of Workaround
+# End of Workaround
