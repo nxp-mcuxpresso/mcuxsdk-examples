@@ -11,6 +11,7 @@
 #include "pin_mux.h"
 #include "board.h"
 #include "app.h"
+#include "fsl_adapter_uart.h"
 #if !BOARD_NETWORK_USE_TENBASET_PHY
 #include "fsl_pcal6524.h"
 #endif
@@ -57,6 +58,8 @@ void BOARD_InitHardware(void)
 {
     /* Board common setting: MPU, Power and Clock Tree, TRDC, and Debug Console init. */
     BOARD_CommonSetting();
+
+    NVIC_SetPriority(HSP_LPUART0_IRQn, HAL_UART_ISR_PRIORITY);
 #if BOARD_NETWORK_USE_TENBASET_PHY
     BOARD_InitTenBaseT1S1Pins();
 #else

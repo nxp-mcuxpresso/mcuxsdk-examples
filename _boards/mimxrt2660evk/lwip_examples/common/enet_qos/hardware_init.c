@@ -10,6 +10,7 @@
 #include "board.h"
 #include "app.h"
 #include "fsl_debug_console.h"
+#include "fsl_adapter_uart.h"
 #include "fsl_modcon.h"
 #include "fsl_trdc_soc.h"
 #if !BOARD_NETWORK_USE_TENBASET_PHY
@@ -91,6 +92,8 @@ void BOARD_InitHardware(void)
 {
     /* Board common setting: MPU, Power and Clock Tree, TRDC, and Debug Console init. */
     BOARD_CommonSetting();
+
+    NVIC_SetPriority(HSP_LPUART0_IRQn, HAL_UART_ISR_PRIORITY);
 #if BOARD_NETWORK_USE_TENBASET_PHY
     BOARD_InitTenBaseT1S0Pins();
 #else
