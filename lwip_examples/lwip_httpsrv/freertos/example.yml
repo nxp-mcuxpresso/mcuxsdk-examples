@@ -337,12 +337,4 @@ lwip_httpsrv_freertos:
       - +armgcc@release
       - +iar@release
       - +iar@debug
-    mimxrt2660evk:
-    - -armgcc@debug
-    - -armgcc@release
-    - -armgcc@psram_debug
-    - -armgcc@psram_release
-    - -iar@debug
-    - -iar@release
-    - -iar@psram_debug
-    - -iar@psram_release
+    mimxrt2660evk: []

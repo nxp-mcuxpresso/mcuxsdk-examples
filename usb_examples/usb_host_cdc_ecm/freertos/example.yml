@@ -23,6 +23,4 @@ host_cdc_ecm_freertos:
     mcxn9xxevk@cm33_core0: []
     rdrw612bga: []
     frdmmcxa577: []
-    mimxrt2660evk:
-    - -armgcc@debug
-    - -armgcc@psram_debug
+    mimxrt2660evk: []

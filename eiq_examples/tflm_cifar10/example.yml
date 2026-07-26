@@ -102,20 +102,12 @@ tflm_cifar10:
     - +mdk@flash_debug
     - +mdk@flash_release
     mimxrt2660evk:
-    - -mdk@debug
-    - -mdk@release
-    - -armgcc@psram_debug
-    - -armgcc@psram_release
-    - -iar@psram_debug
-    - -iar@psram_release
-    - -mdk@psram_debug
-    - -mdk@psram_release
-    - -mdk@psram_txt_debug
-    - -mdk@psram_txt_release
     - -armgcc@xspi_nor_debug
     - -armgcc@xspi_nor_release
-    - -armgcc@xspi_nor_psram_debug
-    - -armgcc@xspi_nor_psram_release
+    - -iar@xspi_nor_debug
+    - -iar@xspi_nor_release
+    - +iar@xspi_nor_psram_debug
+    - +iar@xspi_nor_psram_release
     evkbmimxrt1170@cm7:
     - +armgcc@flexspi_nor_sdram_debug
     - +armgcc@flexspi_nor_sdram_release

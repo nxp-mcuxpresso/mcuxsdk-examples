@@ -80,12 +80,4 @@ lwip_httpsrv_enet_qos_freertos:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     frdmmcxe31b: []
-    mimxrt2660evk:
-    - -armgcc@debug
-    - -armgcc@release
-    - -armgcc@psram_debug
-    - -armgcc@psram_release
-    - -iar@debug
-    - -iar@release
-    - -iar@psram_debug
-    - -iar@psram_release
+    mimxrt2660evk: []

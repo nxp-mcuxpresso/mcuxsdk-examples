@@ -400,4 +400,20 @@ hello_world:
     frdmmcxa577: []
     frdmmcxa287: []
     frdmmcxc162: []
-    mimxrt2660evk: []
+    mimxrt2660evk:
+    - +armgcc@debug
+    - +armgcc@release
+    - +armgcc@psram_debug
+    - +armgcc@psram_release
+    - +armgcc@psram_txt_debug
+    - +armgcc@psram_txt_release
+    - +armgcc@xspi_nor_psram_debug
+    - +armgcc@xspi_nor_psram_release
+    - +iar@debug
+    - +iar@release
+    - +iar@psram_debug
+    - +iar@psram_release
+    - +iar@psram_txt_debug
+    - +iar@psram_txt_release
+    - +iar@xspi_nor_psram_debug
+    - +iar@xspi_nor_psram_release

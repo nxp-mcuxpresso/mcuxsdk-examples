@@ -124,6 +124,4 @@ host_video_camera_freertos:
     mimxrt685audevk@cm33: []
     frdmimxrt700@cm33_core0: []
     mimxrt700evk@cm33_core0: []
-    mimxrt2660evk:
-    - -armgcc@debug
-    - -armgcc@psram_debug
+    mimxrt2660evk: []
