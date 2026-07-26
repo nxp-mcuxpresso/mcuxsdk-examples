@@ -14,3 +14,7 @@ mcux_add_include(BASE_PATH ${SdkRootDirPath} INCLUDES
                  ${board_root}/${board}/lwip_examples/common/enet_qos)
 
 mcux_add_armgcc_configuration(CC "-fno-branch-count-reg")
+
+if(CONFIG_TOOLCHAIN STREQUAL "iar")
+  set_source_files_properties(${SdkRootDirPath}/examples/_boards/${board}/common/clock/clock_config.c PROPERTIES COMPILE_OPTIONS "-On")
+endif()

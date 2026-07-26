@@ -62,3 +62,7 @@ target_include_directories(${MCUX_SDK_PROJECT_NAME} BEFORE PRIVATE
   ${SdkRootDirPath}/examples/_boards/${board}/lwip_examples/lwip_dhcp_usb/freertos/freertos_config)
 
 mcux_add_armgcc_configuration(CC "-fno-branch-count-reg")
+
+if(CONFIG_TOOLCHAIN STREQUAL "iar")
+  set_source_files_properties(${SdkRootDirPath}/examples/_boards/${board}/common/clock/clock_config.c PROPERTIES COMPILE_OPTIONS "-On")
+endif()
