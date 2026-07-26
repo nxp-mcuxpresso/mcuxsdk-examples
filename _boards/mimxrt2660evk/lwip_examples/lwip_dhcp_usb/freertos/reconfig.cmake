@@ -60,3 +60,5 @@ mcux_add_source(
 # include path; the kernel must resolve to this board's copy.
 target_include_directories(${MCUX_SDK_PROJECT_NAME} BEFORE PRIVATE
   ${SdkRootDirPath}/examples/_boards/${board}/lwip_examples/lwip_dhcp_usb/freertos/freertos_config)
+
+mcux_add_armgcc_configuration(CC "-fno-branch-count-reg")

@@ -13,3 +13,5 @@ mcux_add_source(
 
 mcux_add_include(BASE_PATH ${SdkRootDirPath} INCLUDES
                  ${board_root}/${board}/lwip_examples/common/enet)
+
+mcux_add_armgcc_configuration(CC "-fno-branch-count-reg")
