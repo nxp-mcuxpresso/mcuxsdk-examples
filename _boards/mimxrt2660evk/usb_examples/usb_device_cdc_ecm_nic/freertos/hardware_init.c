@@ -91,8 +91,6 @@ void BOARD_InitHardware(void)
     MDIO_Init();
     g_phy_resource.read  = MDIO_Read;
     g_phy_resource.write = MDIO_Write;
-
-    SysTick_Config(SystemCoreClock / 1000U);
 }
 
 #if defined(USB_DEVICE_CONFIG_EHCI) && (USB_DEVICE_CONFIG_EHCI > 0U)
