@@ -1,16 +1,18 @@
 Hardware requirements
 =====================
-- Mini/micro USB cable
+- Type-C USB cable
 - MIMXRT2660-EVK board
 - Personal Computer
-- Headphone
+- Headphone (OMTP standard)
 
 Board settings
-============
+==============
+Set jumper J60 to position 2-3 to connect the SAI signals to the on-board
+WM8962 audio codec.
 
 Prepare the Demo
-===============
-1.  Connect a USB cable between the host PC and the OpenSDA USB port on the target board.
+================
+1.  Connect a USB Type-C cable between the host PC and the MCU-Link USB port on the target board.
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
@@ -18,12 +20,13 @@ Prepare the Demo
     - One stop bit
     - No flow control
 3.  Download the program to the target board.
-4.  Insert the headphones into the headphone jack on MIMXRT2660-EVK board.
+4.  Insert the headphones into the headphone jack on MIMXRT2660-EVK board (J85).
 5.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
 
 Running the demo
 ================
-When the demo runs successfully, you can hear the sound and the log would be seen on the OpenSDA terminal like:
+When the demo runs successfully, you can hear the sound and the log would be seen on the terminal like:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 PDM SAI interrupt transfer example started!
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+

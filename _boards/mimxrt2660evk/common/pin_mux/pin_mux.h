@@ -384,6 +384,12 @@ void BOARD_InitOM13790HOST_I2CPins(void);     /* Function assigned for the Corte
  */
 void BOARD_InitDcifDbiPins(void);            /* Function assigned for the Cortex-M85 */
 
+/*!
+@brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitPDMPins(void);                 /* Function assigned for the Cortex-M85 */
+
 #if defined(__cplusplus)
 }
 #endif

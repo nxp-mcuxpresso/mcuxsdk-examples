@@ -1726,6 +1726,55 @@ void BOARD_InitDcifDbiPins(void) {
       0x00U);                                 /* pad configuration */
 }
 
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitPDMPins:
+- options: {callFromInitBoot: 'false', coreID: cm85, enableClock: 'false'}
+- pin_list:
+  - {pin_num: P16, peripheral: AUDIO__SAI_0, signal: 'TXD0, 0', pin_signal: PIO2_0, ibena: Enables}
+  - {pin_num: N16, peripheral: AUDIO__SAI_0, signal: TX_BCLK, pin_signal: PIO2_2, ibena: Enables}
+  - {pin_num: M15, peripheral: AUDIO__SAI_0, signal: TX_SYNC, pin_signal: PIO2_3, ibena: Enables}
+  - {pin_num: N17, peripheral: AUDIO__SAI_0, signal: MCLK, pin_signal: PIO2_4, ibena: Enables}
+  - {pin_num: G17, peripheral: HSP__LPI2C_1, signal: SDA, pin_signal: PIO2_24, ibena: Enables, odena: Enables}
+  - {pin_num: G16, peripheral: HSP__LPI2C_1, signal: SCL, pin_signal: PIO2_25, ibena: Enables}
+  - {pin_num: K16, peripheral: AUDIO__MICFIL, signal: CLK, pin_signal: PIO2_14, ibena: Enables}
+  - {pin_num: J16, peripheral: AUDIO__MICFIL, signal: 'BITSTREAM, 0_1', pin_signal: PIO2_17, ibena: Enables}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitPDMPins, assigned for the Cortex-M85 core.
+Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitPDMPins(void) {
+  IOMUXC_SetPin_Mux_Config(
+      IOMUXC_PIO2_0_AUDIO_SAI0_TX_DATA0,      /* PIO2_0 is configured as AUDIO_SAI0_TX_DATA0 */
+      0x80U);                                 /* Input Buffer Enable: Enables */
+  IOMUXC_SetPin_Mux_Config(
+      IOMUXC_PIO2_14_AUDIO_MICFIL_PDM_CLK,    /* PIO2_14 is configured as AUDIO_MICFIL_PDM_CLK */
+      0x80U);                                 /* Input Buffer Enable: Enables */
+  IOMUXC_SetPin_Mux_Config(
+      IOMUXC_PIO2_17_AUDIO_MICFIL_PDM_DATA01,  /* PIO2_17 is configured as AUDIO_MICFIL_PDM_DATA01 */
+      0x80U);                                 /* Input Buffer Enable: Enables */
+  IOMUXC_SetPin_Mux_Config(
+      IOMUXC_PIO2_2_AUDIO_SAI0_TX_BCLK,       /* PIO2_2 is configured as AUDIO_SAI0_TX_BCLK */
+      0x80U);                                 /* Input Buffer Enable: Enables */
+  IOMUXC_SetPin_Mux_Config(
+      IOMUXC_PIO2_24_HSP_LPI2C1_SDA,          /* PIO2_24 is configured as HSP_LPI2C1_SDA */
+      0x0480U);                               /* Input Buffer Enable: Enables
+                                                 Open-drain Enable: Enables */
+  IOMUXC_SetPin_Mux_Config(
+      IOMUXC_PIO2_25_HSP_LPI2C1_SCL,          /* PIO2_25 is configured as HSP_LPI2C1_SCL */
+      0x80U);                                 /* Input Buffer Enable: Enables */
+  IOMUXC_SetPin_Mux_Config(
+      IOMUXC_PIO2_3_AUDIO_SAI0_TX_SYNC,       /* PIO2_3 is configured as AUDIO_SAI0_TX_SYNC */
+      0x80U);                                 /* Input Buffer Enable: Enables */
+  IOMUXC_SetPin_Mux_Config(
+      IOMUXC_PIO2_4_AUDIO_SAI0_MCLK,          /* PIO2_4 is configured as AUDIO_SAI0_MCLK */
+      0x80U);                                 /* Input Buffer Enable: Enables */
+}
 
 /***********************************************************************************************************************
  * EOF
