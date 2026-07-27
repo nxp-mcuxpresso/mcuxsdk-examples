@@ -129,6 +129,7 @@ rpmsg_lite_pingpong_rtos_primary_core:
     lpcxpresso55s69@cm33_core0: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
+    frdmmcxe32b@core0: []
     kw47evk@cm33_core0: []
     mcxw72evk@cm33_core0: []
     kw47loc@cm33_core0: []
