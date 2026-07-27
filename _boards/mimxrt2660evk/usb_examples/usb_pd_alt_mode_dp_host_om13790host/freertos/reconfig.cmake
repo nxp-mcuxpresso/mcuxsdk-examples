@@ -34,8 +34,8 @@ mcux_add_include(
 
 mcux_add_macro(
     CC "-DSDK_OS_FREE_RTOS\
-       -DDEBUG_CONSOLE_ASSERT_DISABLE=1\
-       -DI2C_RETRY_TIMES=40000"
+        -DDEBUG_CONSOLE_ASSERT_DISABLE=1\
+        -DI2C_RETRY_TIMES=40000"
 )
 
 mcux_add_armgcc_configuration(

@@ -26,7 +26,7 @@ mcux_add_include(
 
 mcux_add_macro(
     CC "-DDEBUG_CONSOLE_ASSERT_DISABLE=1\
-       -DI2C_RETRY_TIMES=40000"
+        -DI2C_RETRY_TIMES=40000"
 )
 
 mcux_add_armgcc_configuration(
