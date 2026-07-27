@@ -1318,9 +1318,9 @@ void BOARD_InitADCPin(void) {
 BOARD_InitEQDCPins:
 - options: {callFromInitBoot: 'false', coreID: cm85, enableClock: 'false'}
 - pin_list:
-  - {pin_num: R2, peripheral: HSP__GPIO_1, signal: 'GPIO, 0', pin_signal: PIO3_0, identifier: ''}
-  - {pin_num: R1, peripheral: HSP__GPIO_1, signal: 'GPIO, 1', pin_signal: PIO3_1, identifier: ''}
-  - {pin_num: R5, peripheral: HSP__GPIO_1, signal: 'GPIO, 2', pin_signal: PIO3_2, identifier: ''}
+  - {pin_num: R2, peripheral: HSP__GPIO_1, signal: 'GPIO, 0', pin_signal: PIO3_0, identifier: '', ibena: Enables}
+  - {pin_num: R1, peripheral: HSP__GPIO_1, signal: 'GPIO, 1', pin_signal: PIO3_1, identifier: '', ibena: Enables}
+  - {pin_num: L15, peripheral: HSP__GPIO_0, signal: 'GPIO, 8', pin_signal: PIO2_8, ibena: Enables}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1332,14 +1332,14 @@ Description   : Configures pin routing and optionally pin electrical features.
  * END ****************************************************************************************************************/
 void BOARD_InitEQDCPins(void) {
   IOMUXC_SetPin_Mux_Config(
+      IOMUXC_PIO2_8_HSP_GPIO0_GPIO8,          /* PIO2_8 is configured as HSP_GPIO0_GPIO8 */
+      0x80U);                                 /* Input Buffer Enable: Enables */
+  IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_0_HSP_GPIO1_GPIO0,          /* PIO3_0 is configured as HSP_GPIO1_GPIO0 */
-      0x00U);                                 /* pad configuration */
+      0x80U);                                 /* Input Buffer Enable: Enables */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_1_HSP_GPIO1_GPIO1,          /* PIO3_1 is configured as HSP_GPIO1_GPIO1 */
-      0x00U);                                 /* pad configuration */
-  IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO3_2_HSP_GPIO1_GPIO2,          /* PIO3_2 is configured as HSP_GPIO1_GPIO2 */
-      0x00U);                                 /* pad configuration */
+      0x80U);                                 /* Input Buffer Enable: Enables */
 }
 
 
