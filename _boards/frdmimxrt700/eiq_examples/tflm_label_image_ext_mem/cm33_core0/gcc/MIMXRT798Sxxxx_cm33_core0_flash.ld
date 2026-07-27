@@ -68,7 +68,7 @@ SECTIONS
   {
     . = ALIGN(4);
     EXCLUDE_FILE (
-        *xspi_octal_flash_edma_ops.c.obj
+        *xspi_quad_flash_edma_ops.c.obj
         *fsl_xspi.c.obj
         *fsl_xspi_edma.c.obj
         *fsl_reset.c obj
@@ -190,7 +190,7 @@ SECTIONS
     *fsl_memcpy.S.obj(.text .text* .rodata .rodata*)
     *libc_a-memcpy-stub.o(.text .text* .rodata .rodata*)
     *libc_a-memset.o(.text .text* .rodata .rodata*)
-    *xspi_octal_flash_edma_ops.c.obj(.text .text* .rodata .rodata*)
+    *xspi_quad_flash_edma_ops.c.obj(.text .text* .rodata .rodata*)
     *fsl_edma.c.obj(.text .text* .rodata .rodata*)
     *(.data)                 /* .data sections */
     *(.data*)                /* .data* sections */

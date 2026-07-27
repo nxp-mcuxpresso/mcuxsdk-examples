@@ -85,7 +85,7 @@ define block NCACHE_VAR    { section NonCacheable , section NonCacheable.init };
 define block MODEL_VAR     { section .modeldata };
 
 initialize by copy { readwrite, readonly object fsl_xspi.o,
-  readonly object xspi_octal_flash_edma_ops.o,
+  readonly object xspi_quad_flash_edma_ops.o,
   readonly object fsl_xspi_edma.o,
   readonly object fsl_edma.o,
   readonly object fsl_edma_soc.o,
