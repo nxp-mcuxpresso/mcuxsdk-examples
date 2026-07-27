@@ -65,6 +65,7 @@ mcux_add_macro(
       -DSHELL_TASK_STACK_SIZE=2048\
       -DSHELL_USE_COMMON_TASK=0\
       -DLE_AUDIO_SYNC_ENABLE=1\
+      -DSHELL_MAX_ARGS=48\
       -DUSE_RTOS=1"
 )
 

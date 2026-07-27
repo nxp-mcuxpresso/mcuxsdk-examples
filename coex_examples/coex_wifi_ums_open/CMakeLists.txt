@@ -66,6 +66,7 @@ mcux_add_macro(
       -DCONFIG_BT_HOST_USB_ENABLE=1\
       -DCONFIG_BT_HOST_USB_IRQ_ENABLE=1\
       -DLE_CONN_COUNT=2\
+      -DSHELL_MAX_ARGS=48\
       -DUSE_RTOS=1"
 )
 
