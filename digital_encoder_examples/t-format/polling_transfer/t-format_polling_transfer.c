@@ -116,13 +116,13 @@ int main(void)
 
 	status = T_Format_Readout_ABS_ABM(&encoder, &enc_abs);
         SDK_DelayAtLeastUs(10000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-        if (status == kStatus_FLEXIO_T_FORMAT_FrameErr)
+        if ((status == kStatus_FLEXIO_T_FORMAT_FrameErr) || (status == kStatus_FLEXIO_T_FORMAT_Timeout))
         {
             PRINTF("[%.2fs] The frame of getting ABS and ABM is error!\r\n", time/10.0);
         }
 
         T_Format_Get_Temperature(&encoder, &temp);
-        if ((abs(enc_abs.singleTurn - abs_save.singleTurn) > 500) || (abs(temp - temp_save) > 1))
+        if ((abs(enc_abs.singleTurn - abs_save.singleTurn) > 500) || (abs(temp - temp_save) > 1) || (time % 10 == 0))
         {
             PRINTF("[%.2fs] Encoder ID: 0x%X\n\r\t Multi-turn data: %d, single-turn data: %d\r\n\t Temperature: %d\r\n",
                    time/10.0, enc_id, enc_abs.multiTurn, enc_abs.singleTurn, temp);

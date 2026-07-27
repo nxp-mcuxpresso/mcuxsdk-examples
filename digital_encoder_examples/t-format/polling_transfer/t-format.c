@@ -139,11 +139,22 @@ status_t T_Format_Readout_ABS_ABM_Parse(encoder_t_format_t *enc, t_format_res_al
 
 status_t T_Format_Readout_ABS_ABM(encoder_t_format_t *enc, t_format_all_info_t *all_info)
 {
+    status_t status;
+
     cf = T_FORMAT_CF_GET_ALL;
 
     FLEXIO_T_Format_Config_DR_length(enc->controller, 1);
-    FLEXIO_T_Format_WriteBlocking(enc->controller, &cf, 1);
-    FLEXIO_T_Format_ReadBlocking(enc->controller, (uint8_t *)&resAll_g, T_FORMAT_ALL_INFO_BYTE);
+    status = FLEXIO_T_Format_WriteBlocking(enc->controller, &cf, 1);
+    if (status != kStatus_Success)
+    {
+        return status;
+    }
+
+    status = FLEXIO_T_Format_ReadBlocking(enc->controller, (uint8_t *)&resAll_g, T_FORMAT_ALL_INFO_BYTE);
+    if (status != kStatus_Success)
+    {
+        return status;
+    }
 
     return T_Format_Readout_ABS_ABM_Parse(enc, &resAll_g, all_info);
 }
