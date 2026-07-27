@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 NXP
+ * Copyright 2022-2023, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -29,91 +29,94 @@
 void DEMO_SINC_IRQ_HANDLER(void)
 {
     uint32_t fifoData;
-    if ((SINC_GetInterruptStatus(DEMO_SINC) & kSINC_CH3ConvCompleteIntStatus) != 0UL)
+    if ((SINC_GetInterruptStatus(DEMO_SINC) & DEMO_SINC_CONV_COMPLETE_INT_STATUS) != 0UL)
     {
-        while (!SINC_CheckChannelResultDataReady(DEMO_SINC, kSINC_Channel3))
-            ;
-        SINC_LatchChannelDebugProceduce(DEMO_SINC, kSINC_Channel3);
-        while (!SINC_CheckChannelDebugDataValid(DEMO_SINC, kSINC_Channel3))
-            ;
-        fifoData = SINC_ReadChannelResultData(DEMO_SINC, kSINC_Channel3);
+        while (!SINC_CheckChannelResultDataReady(DEMO_SINC, DEMO_SINC_CHANNEL_ID))
+        {
+        }
+        SINC_LatchChannelDebugProceduce(DEMO_SINC, DEMO_SINC_CHANNEL_ID);
+        while (!SINC_CheckChannelDebugDataValid(DEMO_SINC, DEMO_SINC_CHANNEL_ID))
+        {
+        }
+        fifoData = SINC_ReadChannelResultData(DEMO_SINC, DEMO_SINC_CHANNEL_ID);
         PRINTF("\r\nAdc Result: %d\r\n", fifoData);
-        SINC_ClearInterruptStatus(DEMO_SINC, kSINC_CH3ConvCompleteIntStatus);
+        SINC_ClearInterruptStatus(DEMO_SINC, DEMO_SINC_CONV_COMPLETE_INT_STATUS);
     }
 }
 
 int main(void)
 {
     sinc_config_t sincConfig;
-    sinc_channel_config_t sincChannel3Config;
-    sinc_channel_input_option_t sincChannel3InputOption;
-    sinc_channel_conv_option_t sincChannel3ConvOption;
-    sinc_channel_protection_option_t sincChannel3ProtectionOption;
+    sinc_channel_config_t sincChannelConfig;
+    sinc_channel_input_option_t sincChannelInputOption;
+    sinc_channel_conv_option_t sincChannelConvOption;
+    sinc_channel_protection_option_t sincChannelProtectionOption;
 
     BOARD_InitHardware();
 
     PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     PRINTF("\r\nSINC ADC Example.\r\n");
 
-    sincChannel3InputOption.inputBitFormat = kSINC_InputBit_FormatExternalBitstream;
-    sincChannel3InputOption.inputBitDelay  = kSINC_InputBit_DelayDisabled;
-    sincChannel3InputOption.inputBitSource = kSINC_InputBit_SourceExternalBitstream;
-    sincChannel3InputOption.inputClkEdge   = kSINC_InputClk_EdgePositive;
-    sincChannel3InputOption.inputClkSource = kSINC_InputClk_SourceExternalModulatorClk;
+    sincChannelInputOption.inputBitFormat = kSINC_InputBit_FormatExternalBitstream;
+    sincChannelInputOption.inputBitDelay  = kSINC_InputBit_DelayDisabled;
+    sincChannelInputOption.inputBitSource = kSINC_InputBit_SourceExternalBitstream;
+    sincChannelInputOption.inputClkEdge   = kSINC_InputClk_EdgePositive;
+    sincChannelInputOption.inputClkSource = DEMO_SINC_INPUT_CLK_SOURCE;
 
-    sincChannel3ConvOption.convMode              = kSINC_ConvMode_Single;
-    sincChannel3ConvOption.convTriggerSource     = kSINC_ConvTrig_SoftPosEdge;
-    sincChannel3ConvOption.enableChPrimaryFilter = true;
-    sincChannel3ConvOption.pfBiasSign            = kSINC_PF_BiasPositive;
-    sincChannel3ConvOption.pfHpfAlphaCoeff       = kSINC_PF_HPFAlphaCoeff0;
-    sincChannel3ConvOption.pfOrder               = kSINC_PF_ThirdOrder;
-    sincChannel3ConvOption.pfShiftDirection      = kSINC_PF_ShiftRight;
-    sincChannel3ConvOption.u16pfOverSampleRatio  = 127U; // The OSR for equation is 128.
-    sincChannel3ConvOption.u32pfBiasValue        = 0U;
-    sincChannel3ConvOption.u8pfShiftBitsNum      = 0U;
+    sincChannelConvOption.convMode              = kSINC_ConvMode_Single;
+    sincChannelConvOption.convTriggerSource     = kSINC_ConvTrig_SoftPosEdge;
+    sincChannelConvOption.enableChPrimaryFilter = true;
+    sincChannelConvOption.pfBiasSign            = kSINC_PF_BiasPositive;
+    sincChannelConvOption.pfHpfAlphaCoeff       = kSINC_PF_HPFAlphaCoeff0;
+    sincChannelConvOption.pfOrder               = kSINC_PF_ThirdOrder;
+    sincChannelConvOption.pfShiftDirection      = kSINC_PF_ShiftRight;
+    sincChannelConvOption.u16pfOverSampleRatio  = 127U; // The OSR for equation is 128.
+    sincChannelConvOption.u32pfBiasValue        = 0U;
+    sincChannelConvOption.u8pfShiftBitsNum      = 0U;
 
-    sincChannel3ProtectionOption.bEnableCadBreakSignal = false;
-    sincChannel3ProtectionOption.bEnableLmtBreakSignal = false;
-    sincChannel3ProtectionOption.bEnableScdBreakSignal = false;
-    sincChannel3ProtectionOption.cadLimitThreshold     = kSINC_Cad_Disabled;
-    sincChannel3ProtectionOption.limitDetectorMode     = kSINC_Lmt_Disabled;
-    sincChannel3ProtectionOption.scdOperateMode        = kSINC_Scd_OperateDisabled;
-    sincChannel3ProtectionOption.scdOption             = kSINC_Scd_DetectRepeating0And1;
-    sincChannel3ProtectionOption.u32HighLimitThreshold = 0XFFFFFFUL;
-    sincChannel3ProtectionOption.u32LowLimitThreshold  = 0x0UL;
-    sincChannel3ProtectionOption.u8ScdLimitThreshold   = 2U;
-    sincChannel3ProtectionOption.zcdOperateMode        = kSINC_ZCD_Disabled;
+    sincChannelProtectionOption.bEnableCadBreakSignal = false;
+    sincChannelProtectionOption.bEnableLmtBreakSignal = false;
+    sincChannelProtectionOption.bEnableScdBreakSignal = false;
+    sincChannelProtectionOption.cadLimitThreshold     = kSINC_Cad_Disabled;
+    sincChannelProtectionOption.limitDetectorMode     = kSINC_Lmt_Disabled;
+    sincChannelProtectionOption.scdOperateMode        = kSINC_Scd_OperateDisabled;
+    sincChannelProtectionOption.scdOption             = kSINC_Scd_DetectRepeating0And1;
+    sincChannelProtectionOption.u32HighLimitThreshold = 0XFFFFFFUL;
+    sincChannelProtectionOption.u32LowLimitThreshold  = 0x0UL;
+    sincChannelProtectionOption.u8ScdLimitThreshold   = 2U;
+    sincChannelProtectionOption.zcdOperateMode        = kSINC_ZCD_Disabled;
 
-    sincChannel3Config.bEnableChannel     = true;
-    sincChannel3Config.bEnableFifo        = false;
-    sincChannel3Config.bEnablePrimaryDma  = false;
-    sincChannel3Config.chConvOption       = &sincChannel3ConvOption;
-    sincChannel3Config.chInputOption      = &sincChannel3InputOption;
-    sincChannel3Config.chProtectionOption = &sincChannel3ProtectionOption;
-    sincChannel3Config.dataFormat         = kSINC_LeftJustifiedSigned;
-    sincChannel3Config.u8FifoWaterMark    = 1U;
+    sincChannelConfig.bEnableChannel     = true;
+    sincChannelConfig.bEnableFifo        = false;
+    sincChannelConfig.bEnablePrimaryDma  = false;
+    sincChannelConfig.chConvOption       = &sincChannelConvOption;
+    sincChannelConfig.chInputOption      = &sincChannelInputOption;
+    sincChannelConfig.chProtectionOption = &sincChannelProtectionOption;
+    sincChannelConfig.dataFormat         = kSINC_LeftJustifiedSigned;
+    sincChannelConfig.u8FifoWaterMark    = 1U;
 
     SINC_GetDefaultConfig(&sincConfig);
 
-    sincConfig.modClkDivider          = 8UL; // MCLK0 is 16.5 MHz
-    sincConfig.clockPreDivider        = kSINC_ClkPrescale1;
-    sincConfig.channelsConfigArray[3] = &sincChannel3Config;
-    sincConfig.enableMaster           = true;
-    sincConfig.disableDozeMode        = false;
-    sincConfig.disableModClk1Output   = true;
-    sincConfig.disableModClk2Output   = true;
-    sincConfig.disableModClk0Output   = false;
+    sincConfig.modClkDivider                          = 8UL; // MCLK0 is 16.5 MHz
+    sincConfig.clockPreDivider                        = kSINC_ClkPrescale1;
+    sincConfig.channelsConfigArray[DEMO_SINC_CHANNEL] = &sincChannelConfig;
+    sincConfig.enableMaster                           = true;
+    sincConfig.disableDozeMode                        = false;
+    sincConfig.disableModClk0Output                   = DEMO_SINC_DISABLE_MOD_CLK0_OUTPUT;
+    sincConfig.disableModClk1Output                   = DEMO_SINC_DISABLE_MOD_CLK1_OUTPUT;
+    sincConfig.disableModClk2Output                   = DEMO_SINC_DISABLE_MOD_CLK2_OUTPUT;
     SINC_Init(DEMO_SINC, &sincConfig);
-    while (!SINC_CheckChannelReadyForConv(DEMO_SINC, kSINC_Channel3))
-        ;
+    while (!SINC_CheckChannelReadyForConv(DEMO_SINC, DEMO_SINC_CHANNEL_ID))
+    {
+    }
 
-    SINC_EnableInterrupts(DEMO_SINC, kSINC_CH3ConvCompleteIntEnable);
+    SINC_EnableInterrupts(DEMO_SINC, DEMO_SINC_CONV_COMPLETE_INT_ENABLE);
     EnableIRQ(DEMO_SINC_IRQn);
-    SINC_SetChannelDebugOutput(DEMO_SINC, kSINC_Channel3, kSINC_Debug_CicRawData);
+    SINC_SetChannelDebugOutput(DEMO_SINC, DEMO_SINC_CHANNEL_ID, kSINC_Debug_CicRawData);
     while (1)
     {
         PRINTF("\r\nPress any key to trigger conversion!\r\n");
         GETCHAR();
-        SINC_AffirmChannelSoftwareTrigger(DEMO_SINC, (1UL << (uint32_t)kSINC_Channel3));
+        SINC_AffirmChannelSoftwareTrigger(DEMO_SINC, (1UL << (uint32_t)DEMO_SINC_CHANNEL_ID));
     }
 }
