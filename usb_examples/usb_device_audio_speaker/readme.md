@@ -113,3 +113,4 @@ USB_DEVICE_WORKAROUND_AUDIO_20_WINDOWS when meets the following conditions:
 - EVK-MIMXRT1015
 - FRDM-MCXN236
 - [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/usb_examples/usb_device_audio_speaker/example_board_readme.md)
+- [MIMXRT2660-EVK](../../_boards/mimxrt2660evk/usb_examples/usb_device_audio_speaker/example_board_readme.md)
