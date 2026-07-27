@@ -438,6 +438,7 @@ void BOARD_LPI2C_Init(LPI2C_Type *base, uint32_t clkSrc_Hz)
      * lpi2cConfig.sclGlitchFilterWidth_ns = 0;
      */
     LPI2C_MasterGetDefaultConfig(&lpi2cConfig);
+    lpi2cConfig.debugEnable = true;
     LPI2C_MasterInit(base, &lpi2cConfig, clkSrc_Hz);
 }
 
@@ -554,25 +555,27 @@ status_t BOARD_Camera_I2C_ReceiveSCCB(
                                    rxBuffSize);
 }
 
+#if defined(BOARD_TOUCH_I2C_BASEADDR)
 void BOARD_PanelTouch_I2C_Init(void)
 {
-    CLOCK_EnableClock(kCLOCK_WAKE_lpi2c1);
+    CLOCK_EnableClock(BOARD_TOUCH_I2C_CLOCK);
     BOARD_LPI2C_Init(BOARD_TOUCH_I2C_BASEADDR, BOARD_TOUCH_I2C_CLOCK_FREQ);
 }
 
 status_t BOARD_PanelTouch_I2C_Send(
     uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, const uint8_t *txBuff, uint8_t txBuffSize)
 {
-    return BOARD_LPI2C_SendSCCB(BOARD_TOUCH_I2C_BASEADDR, deviceAddress, subAddress, subAddressSize,
+    return BOARD_LPI2C_Send(BOARD_TOUCH_I2C_BASEADDR, deviceAddress, subAddress, subAddressSize,
                           (uint8_t *)txBuff, txBuffSize);
 }
 
 status_t BOARD_PanelTouch_I2C_Receive(
     uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, uint8_t *rxBuff, uint8_t rxBuffSize)
 {
-    return BOARD_LPI2C_ReceiveSCCB(BOARD_TOUCH_I2C_BASEADDR, deviceAddress, subAddress, subAddressSize, rxBuff,
+    return BOARD_LPI2C_Receive(BOARD_TOUCH_I2C_BASEADDR, deviceAddress, subAddress, subAddressSize, rxBuff,
                              rxBuffSize);
 }
+#endif /* BOARD_TOUCH_I2C_BASEADDR */
 
 status_t BOARD_I2C_DeviceSend(void *base,
                                uint8_t deviceAddress,

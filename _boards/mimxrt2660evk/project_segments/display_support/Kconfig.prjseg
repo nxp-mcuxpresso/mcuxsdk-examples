@@ -32,6 +32,16 @@ config MCUX_DEMO_PANEL_MIPI2HDMI_SUPPORT
 
 if MCUX_PRJSEG_module.board.display_support
 
+    config DEMO_FRAME_RATE
+        int "Display frame rate (Hz)"
+        default 50
+        help
+            Display refresh rate in Hz used by display_support. Lowering it reduces
+            the DCIF / MIPI-DSI scan-out bandwidth from PSRAM, which avoids glitching
+            on the large 720x1280 panel; set it lower (e.g. 20) for heavy
+            software-rendered LVGL use cases.
+            No prefix in generated macro
+
     choice DISPLAY_SUPPORT_PANEL
         default LCM_RGB_5INCH
     endchoice

@@ -14,7 +14,7 @@
  ******************************************************************************/
 #define DEMO_PANEL_LCM_RGB_5INCH 19 /* NXP LCM_RGB_5INCH-CT DPI Display */
 #define DEMO_PANEL_LCD_PAR_S035  8  /* LCD_PAR_S035 panel */
-#define DEMO_PANEL_RK055MHD091   2  /* 720 * 1280, RK055MHD091A0-CTG(RK055HDMIPI4MA0) */
+#define DEMO_PANEL_RK055MHD091A0 2  /* 720 * 1280, RK055MHD091A0-CTG(RK055HDMIPI4MA0) */
 
 /* @TEST_ANCHOR */
 /* Configure this macro in Kconfig or directly in the generated mcux_config.h. */
@@ -22,7 +22,9 @@
 #define DEMO_PANEL DEMO_PANEL_LCM_RGB_5INCH
 #endif
 
+#ifndef DEMO_FRAME_RATE
 #define DEMO_FRAME_RATE 50U
+#endif
 #define FRAME_BUFFER_ALIGN 16
 
 /* Pixel format macro mapping. */
@@ -69,7 +71,7 @@
 #define DEMO_BUFFER_START_X 0U
 #define DEMO_BUFFER_START_Y 0U
 
-#elif (DEMO_PANEL == DEMO_PANEL_RK055MHD091)
+#elif (DEMO_PANEL == DEMO_PANEL_RK055MHD091A0)
 
 #define DEMO_BUFFER_COUNT 2   /* 2 is enough for DPI interface display. */
 

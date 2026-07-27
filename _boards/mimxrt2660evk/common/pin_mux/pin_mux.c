@@ -761,25 +761,27 @@ void BOARD_InitCSIPins(void) {
 BOARD_InitTouchPins:
 - options: {callFromInitBoot: 'false', coreID: cm85, enableClock: 'false'}
 - pin_list:
-  - {pin_num: K14, peripheral: HSP__LPI2C_0, signal: SDA, pin_signal: PIO2_12, iiena: Disables, odena: Enables}
-  - {pin_num: K15, peripheral: HSP__LPI2C_0, signal: SCL, pin_signal: PIO2_13, odena: Enables}
+  - {pin_num: G17, peripheral: HSP__LPI2C_1, signal: SDA, pin_signal: PIO2_24, ibena: Enables, odena: Enables}
+  - {pin_num: G16, peripheral: HSP__LPI2C_1, signal: SCL, pin_signal: PIO2_25, ibena: Enables, odena: Enables}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
 /* FUNCTION ************************************************************************************************************
  *
  * Function Name : BOARD_InitTouchPins, assigned for the Cortex-M85 core.
- * Description   : Routes the HSP_LPI2C0 SDA/SCL pair used to talk to the touch controller on the
- *                 display add-on.
+ * Description   : Routes the HSP_LPI2C1 SDA/SCL pair used by the touch controller on the RGB
+ *                 (LCM_RGB_5INCH) and DBI (LCD_PAR_S035) panels. The MIPI panel touch is on
+ *                 HSP_LPI2C0 and is muxed by BOARD_InitMIPIPanelPins(). Must agree with
+ *                 BOARD_TOUCH_I2C_BASEADDR selected in board.h.
  *
  * END ****************************************************************************************************************/
 void BOARD_InitTouchPins(void) {
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO2_12_HSP_LPI2C0_SDA,          /* PIO2_12 is configured as HSP_LPI2C0_SDA */
-      0x0400U);                               /* Open-drain Enable: Enables */
+      IOMUXC_PIO2_24_HSP_LPI2C1_SDA,          /* PIO2_24 is configured as HSP_LPI2C1_SDA */
+      0x0480U);                               /* Input Buffer + Open-drain Enable */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO2_13_HSP_LPI2C0_SCL,          /* PIO2_13 is configured as HSP_LPI2C0_SCL */
-      0x0400U);                               /* Open-drain Enable: Enables */
+      IOMUXC_PIO2_25_HSP_LPI2C1_SCL,          /* PIO2_25 is configured as HSP_LPI2C1_SCL */
+      0x0480U);                               /* Input Buffer + Open-drain Enable */
 }
 
 

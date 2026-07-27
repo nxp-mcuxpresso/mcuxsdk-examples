@@ -25,9 +25,11 @@ void BOARD_InitDcifPowerClockReset(void)
     uint32_t pixClkPerFrame = (DEMO_PANEL_WIDTH + DEMO_HSW + DEMO_HFP + DEMO_HBP) *
         (DEMO_PANEL_HEIGHT + DEMO_VSW + DEMO_VFP + DEMO_VBP);
 
+    /* TODO Use fixed value for now since CLOCK_GetRootClockFreq(kCLOCK_SRC_PERI5)
+     * should return 400 MHz but actually returns 200m. */
     clock_root_config_t rootCfg = {
         .mux = kCLOCK_DCPIXEL_ClockRoot_PERI5,
-        .div = CLOCK_GetRootClockFreq(kCLOCK_SRC_PERI5) / pixClkPerFrame / DEMO_FRAME_RATE,
+        .div = 400000000U / pixClkPerFrame / DEMO_FRAME_RATE,
     };
 
     CLOCK_SetRootClock(kCLOCK_Root_MEDIA_dcpixel_fclk, &rootCfg);

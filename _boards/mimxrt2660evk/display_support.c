@@ -9,13 +9,12 @@
 #include "fsl_power.h"
 #include "pin_mux.h"
 #include "board.h"
-#include "fsl_debug_console.h"
 #include "fsl_reset.h"
 #if (DEMO_PANEL == DEMO_PANEL_LCD_PAR_S035)
 #include "fsl_st7796s.h"
 #include "fsl_dc_fb_dbi.h"
 #include "fsl_dbi_dcif.h"
-#elif (DEMO_PANEL == DEMO_PANEL_RK055MHD091)
+#elif (DEMO_PANEL == DEMO_PANEL_RK055MHD091A0)
 #include "fsl_hx8394.h"
 #include "fsl_dc_fb_dcif.h"
 #include "fsl_mipi_dsi.h"
@@ -187,7 +186,7 @@ void MEDIA_DCIF_CH0_IRQHandler(void)
     DBI_DCIF_IRQHandler(&(s_dcDbiHandle.dbiIface));
 }
 
-#elif (DEMO_PANEL == DEMO_PANEL_RK055MHD091)
+#elif (DEMO_PANEL == DEMO_PANEL_RK055MHD091A0)
 
 /*******************************************************************************
  * Definitions
@@ -331,15 +330,12 @@ static void BOARD_InitDcifPowerClockReset(void)
                                 (DEMO_PANEL_HEIGHT + DEMO_VSW + DEMO_VFP + DEMO_VBP);
 
     rootCfg.mux    = kCLOCK_DCPIXEL_ClockRoot_PERI5;
-    rootCfg.div    = 400000000 / pixClkPerFrame / DEMO_FRAME_RATE;
+    rootCfg.div    = 400000000U / pixClkPerFrame / DEMO_FRAME_RATE;
     rootCfg.sndDiv = 1U;
     CLOCK_SetRootClock(kCLOCK_Root_MEDIA_dcpixel_fclk, &rootCfg);
     CLOCK_PowerOnRootClock(kCLOCK_Root_MEDIA_dcpixel_fclk);
 
     mipiDsiDpiClkFreq_Hz = CLOCK_GetRootClockFreq(kCLOCK_Root_MEDIA_dcpixel_fclk);
-
-    PRINTF("DCIF Pixel clock =%u(Hz)\r\n", mipiDsiDpiClkFreq_Hz);
-    PRINTF("Media pll =%u(Hz)\r\n", CLOCK_GetRootClockFreq(kCLOCK_Root_MEDIA_mediapll_clk));
 
     /* DPHY high speed clock should be >= (pix_clk * bits_per_pixel / lane_num)
      * Enlarge the value to be sure. */
@@ -358,15 +354,10 @@ static void BOARD_InitDcifPowerClockReset(void)
     mipiDsiRxEscClkFreq_Hz = CLOCK_GetRootClockFreq(kCLOCK_Root_MEDIA_mipidsi_escclk_divided) * rootCfg.sndDiv;
     mipiDsiTxEscClkFreq_Hz = CLOCK_GetRootClockFreq(kCLOCK_Root_MEDIA_mipidsi_escclk_divided);
 
-    PRINTF("MIPI-DSI RxClkEsc clock =%u(Hz)\r\n", mipiDsiRxEscClkFreq_Hz);
-    PRINTF("MIPI-DSI TxClkEsc clock =%u(Hz)\r\n", mipiDsiTxEscClkFreq_Hz);
-
     /* MIPI-DSI reference clock fixed to be 24MHz, use for DPHY generation. */
     CLOCK_PowerOnRootClock(kCLOCK_Root_MEDIA_mipidsi_refclk);
 
     mipiDsiDphyRefClkFreq_Hz = CLOCK_GetRootClockFreq(kCLOCK_Root_MEDIA_mipidsi_refclk);
-
-    PRINTF("MIPI-DSI DPHY reference clock =%u(Hz)\r\n", mipiDsiDphyRefClkFreq_Hz);
 }
 
 static status_t BOARD_InitLcdPanel(void)
@@ -523,9 +514,11 @@ static void BOARD_InitDcifPowerClockReset(void)
     uint32_t pixClkPerFrame = (DEMO_PANEL_WIDTH + DEMO_HSW + DEMO_HFP + DEMO_HBP) *
         (DEMO_PANEL_HEIGHT + DEMO_VSW + DEMO_VFP + DEMO_VBP);
 
+    /* TODO Use fixed value for now since CLOCK_GetRootClockFreq(kCLOCK_SRC_PERI5)
+     * should return 400 MHz but actually returns 200m. */
     clock_root_config_t rootCfg = {
         .mux = kCLOCK_DCPIXEL_ClockRoot_PERI5,
-        .div = CLOCK_GetRootClockFreq(kCLOCK_SRC_PERI5) / pixClkPerFrame / DEMO_FRAME_RATE,
+        .div = 400000000U / pixClkPerFrame / DEMO_FRAME_RATE,
     };
 
     CLOCK_SetRootClock(kCLOCK_Root_MEDIA_dcpixel_fclk, &rootCfg);

@@ -28,7 +28,7 @@ void BOARD_InitHardware(void)
     BOARD_InitDcifDpiPins();
 #elif (DEMO_PANEL == DEMO_PANEL_LCD_PAR_S035)
     BOARD_InitDcifDbiPins();
-#elif (DEMO_PANEL == DEMO_PANEL_RK055MHD091)
+#elif (DEMO_PANEL == DEMO_PANEL_RK055MHD091A0)
     BOARD_InitMIPIPanelPins();
 #endif
 

@@ -135,7 +135,6 @@
 /* @brief Display panel control signals */
 #define BOARD_MIPI_PANEL_BL_GPIO            HSP__GPIO_1
 #define BOARD_MIPI_PANEL_BL_PIN             28U
-#define BOARD_MIPI_PANEL_TOUCH_I2C_BASEADDR HSP__LPI2C_0
 
 #define BOARD_DBI_PANEL_LCD_RST_GPIO       HSP__GPIO_1
 #define BOARD_DBI_PANEL_LCD_RST_PIN        23U
@@ -145,25 +144,19 @@
 #define BOARD_DBI_PANEL_BLK_PIN            21U
 #define BOARD_DBI_PANEL_INT_GPIO           HSP__GPIO_1
 #define BOARD_DBI_PANEL_INT_PIN            22U
-#define BOARD_DBI_PANEL_TOUCH_I2C_BASEADDR HSP__LPI2C_1
 
-#define BOARD_RGB_PANEL_TOUCH_I2C_BASEADDR HSP__LPI2C_1
-
-/* Generic touch I²C selector resolved at preprocess time from the active
- * panel choice (the Kconfig-generated DEMO_PANEL value is force-included
- * via mcux_config.h). Used by board.c BOARD_PanelTouch_I2C_* helpers so
- * they don't have to know the per-panel macro name. */
-#define BOARD_TOUCH_I2C_CLOCK_FREQ 24000000U //todo
-#if (CONFIG_DEMO_PANEL == DEMO_PANEL_RK055MHD091A0)
-#define BOARD_TOUCH_I2C_BASEADDR   BOARD_MIPI_PANEL_TOUCH_I2C_BASEADDR
-#elif (CONFIG_DEMO_PANEL == DEMO_PANEL_LCD_PAR_S035)
-#define BOARD_TOUCH_I2C_BASEADDR   BOARD_DBI_PANEL_TOUCH_I2C_BASEADDR
-#elif (CONFIG_DEMO_PANEL == DEMO_PANEL_LCM_RGB_5INCH)
-#define BOARD_TOUCH_I2C_BASEADDR   BOARD_RGB_PANEL_TOUCH_I2C_BASEADDR
-#else
-/* MIPI2HDMI and other no-touch panels: default to the RGB panel I²C bus so
- * board.c references resolve; the touch helpers are unused on these paths. */
-#define BOARD_TOUCH_I2C_BASEADDR   BOARD_RGB_PANEL_TOUCH_I2C_BASEADDR
+#if (DEMO_PANEL == DEMO_PANEL_RK055MHD091A0)
+#define BOARD_TOUCH_I2C_BASEADDR   HSP__LPI2C_0
+#define BOARD_TOUCH_I2C_CLOCK_FREQ CLOCK_GetRootClockFreq(kCLOCK_Root_MAIN_lpi2c0_fclk)
+#define BOARD_TOUCH_I2C_CLOCK kCLOCK_MAIN_hsp_lpi2c0
+#elif (DEMO_PANEL == DEMO_PANEL_LCD_PAR_S035)
+#define BOARD_TOUCH_I2C_BASEADDR   HSP__LPI2C_1
+#define BOARD_TOUCH_I2C_CLOCK_FREQ CLOCK_GetRootClockFreq(kCLOCK_Root_MAIN_lpi2c1_fclk)
+#define BOARD_TOUCH_I2C_CLOCK kCLOCK_MAIN_hsp_lpi2c1
+#elif (DEMO_PANEL == DEMO_PANEL_LCM_RGB_5INCH)
+#define BOARD_TOUCH_I2C_BASEADDR   HSP__LPI2C_1
+#define BOARD_TOUCH_I2C_CLOCK_FREQ CLOCK_GetRootClockFreq(kCLOCK_Root_MAIN_lpi2c1_fclk)
+#define BOARD_TOUCH_I2C_CLOCK kCLOCK_MAIN_hsp_lpi2c1
 #endif
 
 #define BOARD_BT_UART_INSTANCE    3
@@ -398,11 +391,13 @@ status_t BOARD_Camera_I2C_SendSCCB(
     uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, const uint8_t *txBuff, uint8_t txBuffSize);
 status_t BOARD_Camera_I2C_ReceiveSCCB(
     uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, uint8_t *rxBuff, uint8_t rxBuffSize);
+#if defined(BOARD_TOUCH_I2C_BASEADDR)
 void BOARD_PanelTouch_I2C_Init(void);
 status_t BOARD_PanelTouch_I2C_Send(
     uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, const uint8_t *txBuff, uint8_t txBuffSize);
 status_t BOARD_PanelTouch_I2C_Receive(
     uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, uint8_t *rxBuff, uint8_t rxBuffSize);
+#endif /* BOARD_TOUCH_I2C_BASEADDR */
 #endif /* SDK_I2C_BASED_COMPONENT_USED */
 
 void BOARD_SD_Pin_Config(uint32_t speed, uint32_t strength);
