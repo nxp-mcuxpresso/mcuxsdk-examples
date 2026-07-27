@@ -26,3 +26,4 @@ This demo demonstrates 2 wake-up sources:
 
 ## Supported Boards
 - [FRDM-MCXC162](../../../_boards/frdmmcxc162/demo_apps/power_mode_switch/low_level/example_board_readme.md)
+- frdmmcxc353

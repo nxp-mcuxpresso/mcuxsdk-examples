@@ -11,10 +11,13 @@
 #include "fsl_wuu.h"
 #include "fsl_gpio.h"
 #include "fsl_clock.h"
-#include "fsl_lptmr.h"
 #include "fsl_lpuart.h"
 #include "fsl_debug_console.h"
 #include "power_mode_switch.h"
+
+#if APP_SUPPORT_WAKEUP_TIMER
+#include "fsl_lptmr.h"
+#endif
 
 /*******************************************************************************
  * Definitions
@@ -115,7 +118,9 @@ static app_wakeup_source_t APP_SelectWakeupSource(void)
     char ch;
 
     PRINTF("Please select wakeup source:\r\n");
+#if APP_SUPPORT_WAKEUP_TIMER
     PRINTF("\tPress %c to select TIMER as wakeup source;\r\n", kAPP_WakeupSourceTimer);
+#endif
     PRINTF("\tPress %c to select WAKE-UP-BUTTON as wakeup source;\r\n", kAPP_WakeupSourceButton);
 
     PRINTF("Waiting for wakeup source select...\r\n");
@@ -129,6 +134,7 @@ static app_wakeup_source_t APP_SelectWakeupSource(void)
     return (app_wakeup_source_t)ch;
 }
 
+#if APP_SUPPORT_WAKEUP_TIMER
 /*! @brief  Get input from user about wakeup timeout */
 static uint8_t APP_GetWakeupTimeout(void)
 {
@@ -169,6 +175,7 @@ static void APP_WakeUpTimerConfig(uint8_t timeOutValue)
 
     LPTMR_StartTimer(APP_WUU_WAKEUP_TIMER);
 }
+#endif /* APP_SUPPORT_WAKEUP_TIMER */
 
 /*! @brief Set Non-Maskable Interrupt source. */
 static inline void SystemNonMaskableInterruptSourceSet(IRQn_Type id)
@@ -182,12 +189,15 @@ static inline void SystemNonMaskableInterruptSourceSet(IRQn_Type id)
 static void APP_GetWakeupConfig(app_power_mode_t targetMode)
 {
     app_wakeup_source_t wakeupSource;
+#if APP_SUPPORT_WAKEUP_TIMER
     uint8_t timeOutValue;
+#endif
     char *isoDomains = NULL;
     wakeupSource = APP_SelectWakeupSource();
 
     switch (wakeupSource)
     {
+#if APP_SUPPORT_WAKEUP_TIMER
         case kAPP_WakeupSourceTimer:
         {
             PRINTF("Timer Selected As Wakeup Source!\r\n");
@@ -210,6 +220,7 @@ static void APP_GetWakeupConfig(app_power_mode_t targetMode)
             }
             break;
         }
+#endif /* APP_SUPPORT_WAKEUP_TIMER */
 
         case kAPP_WakeupSourceButton:
         {
@@ -244,6 +255,7 @@ static void APP_GetWakeupConfig(app_power_mode_t targetMode)
     }
 }
 
+#if APP_SUPPORT_WAKEUP_TIMER
 /*! @brief Clear wakeup timer configuration. */
 static void APP_ClearWakeupTimerConfig(void)
 {
@@ -256,6 +268,7 @@ static void APP_ClearWakeupTimerConfig(void)
     WUU_ClearInternalWakeUpModulesConfig(APP_WUU, APP_WUU_WAKEUP_TIMER_IDX, kWUU_InternalModuleInterrupt);
     IRQ_ClearPendingIRQ(APP_WUU_WAKEUP_TIMER_IRQN);
 }
+#endif /* APP_SUPPORT_WAKEUP_TIMER */
 
 /*! @brief Clear wakeup button configuration. */
 static void APP_ClearWakeupButtonConfig(void)
@@ -279,11 +292,14 @@ static inline void SystemNonMaskableInterruptSourceClear(void)
 /*! @brief Clear all wakeup configurations. */
 static void APP_ClearAllWakeupConfig(void)
 {
+#if APP_SUPPORT_WAKEUP_TIMER
     APP_ClearWakeupTimerConfig();
+#endif
     APP_ClearWakeupButtonConfig();
     SystemNonMaskableInterruptSourceClear();
 }
 
+#if APP_SUPPORT_WAKEUP_TIMER
 /*! @brief WakeUp Timer interrupt handler. */
 void APP_WUU_WAKEUP_TIMER_IRQ_HANDLER(void)
 {
@@ -294,6 +310,7 @@ void APP_WUU_WAKEUP_TIMER_IRQ_HANDLER(void)
         LPTMR_StopTimer(APP_WUU_WAKEUP_TIMER);
     }
 }
+#endif /* APP_SUPPORT_WAKEUP_TIMER */
 
 /*! @brief WakeUp Button interrupt handler. */
 void APP_WUU_IRQ_HANDLER(void)
@@ -314,11 +331,13 @@ void NMI_Handler(void)
 
     switch (nmiSource)
     {
+#if APP_SUPPORT_WAKEUP_TIMER
         case APP_WUU_WAKEUP_TIMER_IRQN:
             APP_WUU_WAKEUP_TIMER_IRQ_HANDLER();
             WUU_ClearInternalWakeUpModulesConfig(APP_WUU, APP_WUU_WAKEUP_TIMER_IDX, kWUU_InternalModuleInterrupt);
             IRQ_ClearPendingIRQ(APP_WUU_WAKEUP_TIMER_IRQN);
             break;
+#endif /* APP_SUPPORT_WAKEUP_TIMER */
 
         case APP_WUU_IRQN:
             APP_WUU_IRQ_HANDLER();

@@ -13,6 +13,13 @@
  * Definitions
  ******************************************************************************/
 
+/*! Set to 0 in board app.h when the SoC has no low-power timer routed to a WUU
+ *  internal module input (e.g. no LPTMR/RTC); only the wakeup button is offered then.
+ */
+#ifndef APP_SUPPORT_WAKEUP_TIMER
+#define APP_SUPPORT_WAKEUP_TIMER 1
+#endif
+
 typedef enum _app_power_mode
 {
     kAPP_PowerModeMin = 'A' - 1,
