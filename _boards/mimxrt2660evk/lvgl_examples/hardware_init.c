@@ -23,6 +23,9 @@ void BOARD_InitHardware(void)
     BOARD_InitTouchPins();
 #elif (DEMO_PANEL == DEMO_PANEL_LCD_PAR_S035)
     BOARD_InitDcifDbiPins();
+    BOARD_InitTouchPins();
+#elif (DEMO_PANEL == DEMO_PANEL_RK055MHD091A0)
+    BOARD_InitMIPIPanelPins();
 #endif
 }
 /*${function:end}*/

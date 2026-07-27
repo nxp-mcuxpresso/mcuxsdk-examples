@@ -365,6 +365,10 @@ lvgl_guider_bm:
     frdmmcxa287: []
     frdmmcxa577: []
     mimxrt2660evk:
+    - +armgcc@xspi_nor_psram_debug
+    - +armgcc@xspi_nor_psram_release
+    - +iar@xspi_nor_psram_debug
+    - +iar@xspi_nor_psram_release
     - -armgcc@xspi_nor_debug
     - -armgcc@xspi_nor_release
     - -iar@xspi_nor_debug

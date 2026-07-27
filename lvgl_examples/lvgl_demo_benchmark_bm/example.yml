@@ -301,3 +301,12 @@ lvgl_demo_benchmark_bm:
     frdmmcxa366: []
     frdmmcxa287: []
     frdmmcxa577: []
+    mimxrt2660evk:
+    - +armgcc@xspi_nor_psram_debug
+    - +armgcc@xspi_nor_psram_release
+    - +iar@xspi_nor_psram_debug
+    - +iar@xspi_nor_psram_release
+    - -armgcc@xspi_nor_debug
+    - -armgcc@xspi_nor_release
+    - -iar@xspi_nor_debug
+    - -iar@xspi_nor_release
