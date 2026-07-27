@@ -274,6 +274,9 @@ mcuboot_opensource:
     frdmmcxe31b:
     - -mdk@release
     - -mdk@debug
+    frdmmcxe32b@core0:
+    - -mdk@release
+    - -mdk@debug
     frdmmcxa266:
     - -mdk@release
     - -mdk@debug

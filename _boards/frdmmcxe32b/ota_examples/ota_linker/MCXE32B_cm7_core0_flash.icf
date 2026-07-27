@@ -1,0 +1,135 @@
+/*
+** ###################################################################
+**     Processor:           MCXE32BMPB_cm7_core0
+**     Compiler:            IAR ANSI C/C++ Compiler for ARM
+**     Reference manual:    MCXE31 RM Rev2
+**     Version:             rev. 1.1, 2025-11-07
+**     Build:               b260609
+**
+**     Abstract:
+**         Linker file for the IAR ANSI C/C++ Compiler for ARM
+**
+**     Copyright 2016 Freescale Semiconductor, Inc.
+**     Copyright 2016-2026 NXP
+**     SPDX-License-Identifier: BSD-3-Clause
+**
+**     http:                 www.nxp.com
+**     mail:                 support@nxp.com
+**
+** ###################################################################
+*/
+
+define symbol m_itcm_start             = 0x00000000;
+define symbol m_itcm_end               = 0x00007FFF;
+
+define symbol m_dtcm_start             = 0x20000000;
+define symbol m_dtcm_end               = 0x2000FFFF;
+
+define symbol m_stdby_ram_start        = 0x20400000;
+define symbol m_stdby_ram_end          = 0x20407FFF;
+
+if (isdefinedsymbol(__use_shmem__)) {
+  define symbol rpmsg_sh_mem_size      = 0x1800;
+} else {
+  define symbol rpmsg_sh_mem_size      = 0;
+}
+define symbol rpmsg_sh_mem_start       = m_stdby_ram_start;
+define symbol rpmsg_sh_mem_end         = rpmsg_sh_mem_start + rpmsg_sh_mem_size - 1;
+
+
+define symbol m_boot_header_start      = 0x00500000;
+define symbol m_boot_header_end        = 0x005003FF;
+
+define symbol m_interrupts_start       = 0x00500400;
+define symbol m_interrupts_end         = 0x005007FF;
+
+define symbol m_text_start             = 0x00500800;
+define symbol m_text_end               = 0x005BBFFF;
+
+/* Flash region holding the embedded secondary core (M7_1) image. The secondary
+ * is linked to run in place from this address and is programmed together with
+ * the primary. The secondary core is released by the application at runtime. */
+define symbol m_core1_image_start      = 0x005C0000;
+define symbol m_core1_image_end        = 0x005FFFFF;
+
+/* Shared SRAM is split into two disjoint halves so the primary (M7_0) and the
+ * secondary (M7_1) never use the same RAM. core0 owns the lower 144 KB; core1
+ * owns the upper 144 KB (see MCXE32B_cm7_core1_flash.icf). The whole window is
+ * 0x20408000..0x2044FFFF (288 KB). */
+define symbol m_data_start             = 0x20408000;
+define symbol m_data_end               = 0x2042BFFF;
+
+define symbol m_ncache_size            = 0x00004000;
+
+define symbol m_itcm1_backdoor_start   = 0x11400000;
+define symbol m_itcm1_backdoor_end     = 0x11407FFF;
+
+define symbol m_dtcm1_backdoor_start   = 0x21400000;
+define symbol m_dtcm1_backdoor_end     = 0x2140FFFF;
+
+/* Sizes */
+if (isdefinedsymbol(__stack_size__)) {
+  define symbol __size_cstack__        = __stack_size__;
+} else {
+  define symbol __size_cstack__        = 0x0400;
+}
+
+if (isdefinedsymbol(__heap_size__)) {
+  define symbol __size_heap__          = __heap_size__;
+} else {
+  define symbol __size_heap__          = 0x0400;
+}
+
+define symbol m_ncache_start           = m_dtcm_start;
+define symbol m_ncache_end             = m_ncache_start + m_ncache_size - 1;
+define symbol m_qacode_start           = m_itcm_start;
+define symbol m_qacode_end             = m_itcm_end;
+define symbol m_qadata_start           = m_ncache_end + 1;
+define symbol m_qadata_end             = m_dtcm_end;
+
+define exported symbol __NCACHE_REGION_START   = m_ncache_start;
+define exported symbol __NCACHE_REGION_SIZE    = m_ncache_size;
+
+define memory mem with size = 4G;
+define region m_boot_header_region = mem:[from m_boot_header_start to m_boot_header_end];
+define region CORE1_IMAGE_region = mem:[from m_core1_image_start to m_core1_image_end];
+define region TEXT_region = mem:[from m_interrupts_start to m_interrupts_end]
+                          | mem:[from m_text_start to m_text_end];
+define region DATA_region = mem:[from m_data_start to m_data_end-__size_cstack__];
+define region CSTACK_region = mem:[from m_data_end-__size_cstack__+1 to m_data_end];
+define region QACODE_region = mem:[from m_qacode_start to m_qacode_end];
+define region QADATA_region = mem:[from m_qadata_start to m_qadata_end];
+define region rpmsg_sh_mem_region = mem:[from rpmsg_sh_mem_start to rpmsg_sh_mem_end];
+define region NCACHE_region = mem:[from m_ncache_start to m_ncache_end];
+
+define region ITCM1_BACKDOOR_region = mem:[from m_itcm1_backdoor_start to m_itcm1_backdoor_end];
+define region DTCM1_BACKDOOR_region = mem:[from m_dtcm1_backdoor_start to m_dtcm1_backdoor_end];
+
+define block CSTACK    with alignment = 8, size = __size_cstack__   { };
+define block HEAP      with alignment = 8, size = __size_heap__     { };
+define block RW        with alignment = 8, end alignment = 8  { readwrite };
+define block ZI        { zi };
+define block NCACHE_VAR    { section NonCacheable , section NonCacheable.init };
+define block QACCESS_CODE  { section CodeQuickAccess };
+define block QACCESS_DATA  { section DataQuickAccess };
+
+initialize by copy { readwrite, section .textrw, section CodeQuickAccess, section DataQuickAccess };
+do not initialize  { section .noinit };
+do not initialize  { section rpmsg_sh_mem_section };
+
+
+place at address mem: m_interrupts_start    { readonly section .intvec };
+place in m_boot_header_region               { section .boot_header };
+/* Embedded secondary core (M7_1) image, placed at a fixed flash address so it
+ * is programmed together with the primary and runs in place from flash. */
+place at address mem: m_core1_image_start   { section __core1_image };
+place in TEXT_region                        { readonly };
+place in DATA_region                        { block RW };
+place in DATA_region                        { block ZI };
+place in DATA_region                        { last block HEAP };
+place in CSTACK_region                      { block CSTACK };
+place in NCACHE_region                      { block NCACHE_VAR };
+place in QACODE_region                      { block QACCESS_CODE };
+place in QADATA_region                      { block QACCESS_DATA };
+/* rpmsg-lite shared memory (only consumes RAM when __use_shmem__ is defined). */
+place in rpmsg_sh_mem_region                { section rpmsg_sh_mem_section };

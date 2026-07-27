@@ -277,6 +277,9 @@ ota_mcuboot_basic:
     frdmmcxe31b:
     - -mdk@debug
     - -mdk@release
+    frdmmcxe32b@core0:
+    - -mdk@debug
+    - -mdk@release
     frdmmcxa266:
     - -mdk@release
     - -mdk@debug
