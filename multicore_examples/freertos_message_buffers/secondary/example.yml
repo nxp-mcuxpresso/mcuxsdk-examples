@@ -130,4 +130,5 @@ freertos_message_buffers_secondary_core:
     lpcxpresso55s69@cm33_core1: []
     mcxn5xxevk@cm33_core1: []
     mcxn9xxevk@cm33_core1: []
+    frdmmcxe32b@core1: []
     frdmimxrt700@cm33_core1: []

@@ -142,6 +142,7 @@ freertos_message_buffers_primary_core:
     lpcxpresso55s69@cm33_core0: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
+    frdmmcxe32b@core0: []
     frdmimxrt700@cm33_core0:
     - -armgcc@debug
     - +armgcc@flash_debug
