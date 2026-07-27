@@ -14,10 +14,6 @@
 #define DEMO_ACMP_MINUS_INPUT  DEMO_ACMP_USER_CHANNEL
 #define DEMO_ACMP_PLUS_INPUT   7U /* Internal 8bit DAC output. */
 #define DEMO_CMP_USE_VIN1      false
-
-#define LED_INIT() USER_LED_INIT(LOGIC_LED_OFF)
-#define LED_ON()   USER_LED_ON()
-#define LED_OFF()  USER_LED_OFF()
 /*${macro:end}*/
 
 /*******************************************************************************
