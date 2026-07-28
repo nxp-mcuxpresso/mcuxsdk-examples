@@ -62,31 +62,26 @@ void CSI_IRQHandler(void)
     __DSB();
 }
 
-/* On mimxrt2660evk the OV5640 camera reset (CSI_RST_B) and power control
- * (CSI_PWR_CTL) are routed through the PCAL6524 I/O expander, not MCU GPIO. */
+/* Parallel CSI camera module (connector J95, schematic SPF-96037 sheet 17):
+ * its reset pin is not connected on the board, and its power-down (PWDN, via
+ * net CSI_PWDN) is driven by the PCA9555 I/O expander P1_0 -- not the PCAL6524
+ * (which carries the MIPI-CSI camera's CSI_RST_B / CSI_PWR_CTL, see isi_board.c). */
 static void BOARD_PullCameraResetPin(bool pullUp)
 {
-    pcal6524_handle_t *h = BOARD_GetPCAL6524Handle();
-    if (pullUp)
-    {
-        (void)PCAL6524_SetPins(h, 1UL << BOARD_PCAL6524_CSI_RST_B);
-    }
-    else
-    {
-        (void)PCAL6524_ClearPins(h, 1UL << BOARD_PCAL6524_CSI_RST_B);
-    }
+    /* J95 RESET is left unconnected on this board (camera uses power-on reset). */
+    (void)pullUp;
 }
 
 static void BOARD_PullCameraPowerDownPin(bool pullUp)
 {
-    pcal6524_handle_t *h = BOARD_GetPCAL6524Handle();
+    pca9555_handle_t *h = BOARD_GetPCA9555Handle();
     if (pullUp)
     {
-        (void)PCAL6524_SetPins(h, 1UL << BOARD_PCAL6524_CSI_PWR_CTL);
+        (void)PCA9555_SetPins(h, 1UL << BOARD_PCA9555_CSI_PWDN);
     }
     else
     {
-        (void)PCAL6524_ClearPins(h, 1UL << BOARD_PCAL6524_CSI_PWR_CTL);
+        (void)PCA9555_ClearPins(h, 1UL << BOARD_PCA9555_CSI_PWDN);
     }
 }
 
@@ -98,9 +93,8 @@ void BOARD_InitCameraResource(void)//todo
 {
     BOARD_Camera_I2C_Init();
 
-    /* CSI camera reset and power control are on the PCAL6524 I/O expander;
-     * configure both as outputs before the OV5640 adapter drives them. */
-    pcal6524_handle_t *h = BOARD_GetPCAL6524Handle();
-    (void)PCAL6524_SetDirection(h, (1UL << BOARD_PCAL6524_CSI_RST_B) | (1UL << BOARD_PCAL6524_CSI_PWR_CTL),
-                                kPCAL6524_Output);
+    /* Parallel CSI power-down (CSI_PWDN) is on PCA9555 P1_0; configure it as an
+     * output before the camera adapter drives it. */
+    pca9555_handle_t *h = BOARD_GetPCA9555Handle();
+    (void)PCA9555_SetDirection(h, 1UL << BOARD_PCA9555_CSI_PWDN, kPCA9555_Output);
 }

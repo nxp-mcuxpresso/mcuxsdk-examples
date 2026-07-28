@@ -272,6 +272,7 @@
 #define BOARD_PCA9555_INT_IRQ         HSP_GPIO1_CH0_IRQn
 #define BOARD_PCA9555_INT_IRQ_HANDLER HSP_GPIO1_CH0_IRQHandler
 
+#define BOARD_PCA9555_CSI_PWDN     (8U + 0U) /* Parallel CSI camera (J95) power-down */
 #define BOARD_PCA9555_BL_EN_RGB    (8U + 1U) /* RGB panel backlight enable */
 #define BOARD_PCA9555_LCM_PWR_EN2  (8U + 2U) /* MIPI-DSI panel power enable */
 
