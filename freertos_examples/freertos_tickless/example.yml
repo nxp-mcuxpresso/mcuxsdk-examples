@@ -116,6 +116,7 @@ freertos_tickless:
     frdmimxrt1186@cm33: []
     frdmimxrt1186@cm7: []
     frdmmcxe31b: []
+    frdmmcxe32b@core0: []
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []
     frdmmcxw23: []

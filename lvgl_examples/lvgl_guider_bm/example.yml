@@ -314,6 +314,7 @@ lvgl_guider_bm:
     frdmk22f: []
     frdmmcxa156: []
     frdmmcxe31b: []
+    frdmmcxe32b@core0: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
     frdmmcxn947t@cm33_core0: []

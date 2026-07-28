@@ -132,6 +132,7 @@ freertos_mutex:
     - +iar@release
     - +iar@debug
     frdmmcxe31b: []
+    frdmmcxe32b@core0: []
     frdmmcxl255@cm33: []
     frdmmcxl255@cm0plus: []
     frdmimxrt1186@cm33: []

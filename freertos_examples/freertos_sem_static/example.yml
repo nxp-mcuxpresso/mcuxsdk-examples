@@ -104,6 +104,7 @@ freertos_sem_static:
     rdrw612bga: []
     twrkm34z75m: []
     frdmmcxe31b: []
+    frdmmcxe32b@core0: []
     frdmmcxl255@cm33: []
     frdmmcxl255@cm0plus: []
     frdmimxrt1186@cm33: []
