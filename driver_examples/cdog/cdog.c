@@ -26,6 +26,10 @@
  * Variables
  ******************************************************************************/
 volatile uint32_t s_start = 0x00U;
+/* Set by the CDOG IRQ handler when a timeout fault occurs. Used instead of the */
+/* CDOG->STATUS NUMTOF counter because NUMTOF is only cleared by POR, so after a */
+/* warm reset it is already non-zero and cannot indicate a fresh timeout.       */
+volatile uint32_t s_timeoutTriggered = 0x00U;
 
 /*******************************************************************************
  * Prototypes
@@ -44,6 +48,7 @@ void CDOG_AppIRQHandler(void)
     if ((CDOG->FLAGS & CDOG_FLAGS_TO_FLAG_MASK) != 0u)
     {
         PRINTF("* Timeout fault occured *\r\n\r\n");
+        s_timeoutTriggered = 1U;
     }
     if ((CDOG->FLAGS & CDOG_FLAGS_MISCOM_FLAG_MASK) != 0u)
     {
@@ -151,11 +156,13 @@ int main(void)
 
     SecureCounterExample();
 
-    /* Test if timeout fault already occured */
-    /* Note only POR reset clears these bits */
-    while ((CDOG->STATUS & CDOG_STATUS_NUMTOF_MASK) <= 0x0U)
+    /* Wait until a timeout fault is signaled by the CDOG IRQ handler.           */
+    /* Do not poll CDOG->STATUS NUMTOF here: that counter is only cleared by POR, */
+    /* so after a warm reset it is already non-zero and this section would be    */
+    /* skipped, leaving the timeout fault path untested.                         */
+    while (s_timeoutTriggered == 0x0U)
     {
-        PRINTF("intruction timer:%08x\r\n", CDOG->INSTRUCTION_TIMER);
+        PRINTF("instruction timer:%08x\r\n", CDOG->INSTRUCTION_TIMER);
     }
 
     CDOG_Stop(CDOG, s_start);

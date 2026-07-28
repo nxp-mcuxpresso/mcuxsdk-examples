@@ -30,11 +30,11 @@ CDOG Peripheral Driver Example
 CDOG IRQ Reached
 * Miscompare fault occured *
 
-intruction timer:   fffc5
-intruction timer:   c615e
-intruction timer:   8c34e
-intruction timer:   5251a
-intruction timer:   18703
+instruction timer:   fffc5
+instruction timer:   c615e
+instruction timer:   8c34e
+instruction timer:   5251a
+instruction timer:   18703
 ......
 CDOG IRQ Reached
 * Timeout fault occured *

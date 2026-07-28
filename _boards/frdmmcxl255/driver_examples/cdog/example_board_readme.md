@@ -33,16 +33,16 @@ CDOG IRQ Reached
 CDOG IRQ Reached
 * Sequence fault occured *
 
-intruction timer:  ffffd9
-intruction timer:  fc382c
-intruction timer:  f86fc3
-intruction timer:  f4a75e
+instruction timer:  ffffd9
+instruction timer:  fc382c
+instruction timer:  f86fc3
+instruction timer:  f4a75e
 ...
-intruction timer:  11afd1
-intruction timer:   de76c
-intruction timer:   a1f0a
-intruction timer:   6569c
-intruction timer:   28e3e
+instruction timer:  11afd1
+instruction timer:   de76c
+instruction timer:   a1f0a
+instruction timer:   6569c
+instruction timer:   28e3e
 * Timeout fault occured *
 
 CDOG IRQ Reached
