@@ -25,24 +25,6 @@
 
 biss_master_t *master;
 
-/* MB4 register values */
-unsigned char MB4_REG[20] = {
-    /*
-     * RESO_ST 0x01 bits 4:6 4 -> 12bits - singleturn
-     * RESO_MT 0x01 bits 0:2 3 -> 12bits - multiturn
-     * EBL_MTI 0x02 bits 4:6 1 -> 1 Error bit
-     * CFG_IOP 0x03 bit 7  0 0-> biss C serial mode
-     * MT12 0x03 bit 2 0 ->defined by RESO_MT
-     */
-    0x48, 0x43, 0x00, 0x1D, /* 0x0 - 0x3 */
-    /* DISBISS 0x7 - bit 5 0 ->BiSS Enable */
-    0x00, 0x00, 0x00, 0x00, /* 0x4 - 0x7 */
-    /* 0x0b - 0 -> allow biss reset */
-    0x00, 0x80, 0x00, 0x00, /* 0x8 - 0xB */
-    0x00, 0x00, 0x00, 0x00, /* 0xC - 0xF */
-    0x00, 0x00, 0x00, 0x00  /* 0x10 - 0x13 */
-};
-
 bool performance_enable;
 
 /*******************************************************************************
@@ -69,70 +51,6 @@ static void BOARD_InitSysTick(void)
 
     /*Start Sys Timer*/
     SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
-}
-
-/* MB4 evaluation board driver */
-void MB4_UpdateCRC()
-{
-    unsigned short iCRCPoly = 0x11D; /* CRC-Polynomial 100011101 */
-    unsigned char ucDataStream = 0;
-    unsigned char ucCRC;
-    int iReg = 0;
-
-    /* Calculate Config-CRC */
-    ucCRC = 2; /* start value */
-
-    for (iReg = 0 ; iReg < 12; iReg ++) {
-        ucDataStream = MB4_REG[iReg];
-        for (int i =0; i <= 7; i ++) {
-            if ( (ucCRC & 0x80) != (ucDataStream & 0x80))
-                ucCRC = (ucCRC << 1 ) ^ iCRCPoly ;
-            else
-                ucCRC = (ucCRC << 1 ) ;
-            ucDataStream = ucDataStream << 1 ;
-        }
-    }
-
-    MB4_REG[12] = ucCRC;
-
-    /* Calculate Offset-CRC */
-    ucCRC = 2; /* start value */
-    for (int iReg = 13 ; iReg < 19; iReg ++) {
-        ucDataStream = MB4_REG[iReg];
-        for (int i =0; i <=7; i ++) {
-            if ( (ucCRC & 0x80) != (ucDataStream & 0x80))
-                ucCRC = (ucCRC << 1 ) ^ iCRCPoly ;
-            else
-                ucCRC = (ucCRC << 1 ) ;
-            ucDataStream = ucDataStream << 1 ;
-        }
-    }
-
-    MB4_REG[19] = ucCRC;
-}
-
-void MB4_ConfigureSlave(biss_master_t *master, uint8_t slvID)
-{
-    for(int i = 0; i < 20; i++) {
-        BISS_SLVWriteRegister(master, slvID, i, 1, &MB4_REG[i]);
-    }
-}
-
-void MB4_Init(biss_master_t *master)
-{
-    uint8_t data = 0;
-
-    MB4_UpdateCRC();
-
-    MB4_ConfigureSlave(master, 0);
-    PRINTF("reset biss slave 1 \r\n");
-    data = 0x1;
-    BISS_SLVWriteRegister(master, 0, 0x74, 1, &data);
-
-    MB4_ConfigureSlave(master, 1);
-    PRINTF("reset biss slave 2 \r\n");
-    data = 0x1;
-    BISS_SLVWriteRegister(master, 1, 0x74, 1, &data);
 }
 
 static void BISS_DumpRegs(biss_master_t *master)
@@ -330,9 +248,6 @@ int main(void)
     BISS_CMDProcess(master, BISS_CMD_IDS_BOARDCAST,
                     BISS_CMD_BOARDCAST_CTRL_ACTIVATED);
     SDK_DelayAtLeastUs(400U, SystemCoreClock);
-
-    /* If use MB4 Evaluation board, please all this function to init */
-    /* MB4_Init(master); */
 
     status = BISS_SLVScan(master);
     if (status != kStatus_Success)
