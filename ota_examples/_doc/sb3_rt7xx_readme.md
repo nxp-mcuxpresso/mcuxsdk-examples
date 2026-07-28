@@ -317,4 +317,3 @@ $
 ## Supported Boards
 
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/ota_examples/mcuboot_opensource/example_board_readme.md)
-- [FRDM-IMXRT700](../../_boards/frdmimxrt700/ota_examples/mcuboot_opensource/example_board_readme.md)
