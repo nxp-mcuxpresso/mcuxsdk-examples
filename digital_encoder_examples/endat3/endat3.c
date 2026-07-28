@@ -15,6 +15,7 @@
  * Definitions
  ******************************************************************************/
 #define SYSTICK_START_COUNT() (SysTick->VAL = SysTick->LOAD)
+#define MAX_INPUT_LEN     17
 
 #define getHexAndEcho() getValueAndEcho(1)
 #define getIntAndEcho() getValueAndEcho(0)
@@ -63,13 +64,13 @@ static uint32_t SYSTICK_GET_COUNT()
 
 int getValueAndEcho(int isHex)
 {
-	char str[17] = {0};
+	char str[MAX_INPUT_LEN] = {0};
 	int index = 0;
 	int v32 = 0;
 	char ch;
 	int ret = 0;
 
-	while (index < 15) {
+	while (index < MAX_INPUT_LEN - 2) {
 		ch = getChar();
 		PRINTF("%c", ch);
 		if(ch == '\r' || ch == '\n')
@@ -172,11 +173,13 @@ static int PrintMemorySel(void)
 
 static int PrintLPFMemorySel(void)
 {
+	int v32;
 	PRINTF("\tPlease select the LPF memory:\r\n");
 	PRINTF("\t1: LPFSET\r\n");
 	PRINTF("\t2: LPFLIVE\r\n");
 	PRINTF("Please input: ");
-	int v32 = getIntAndEcho();
+
+	v32 = getIntAndEcho();
 	if (v32 > 0 && v32 < 3) {
 		return v32 - 1;
 	} else {
@@ -334,7 +337,6 @@ void ENDAT3_FIDMEM_Dump(struct FID *fid_res)
 	v64 = ENDAT3_FIDMEM_GetData(fid_res);
     PRINTF("\tFID_MEM: LPF_DATA = 0x%x%x\r\n", (uint32_t)(v64 >> 32), (uint32_t)(v64 & 0xFFFFFFFF));
 }
-
 
 void Endat3_DeviceInfoDump(endat3_mem_cache_t *mem_cache)
 {
@@ -869,16 +871,16 @@ void ENDAT3_SAFETY_MEM_Dump(ENDAT3_Type *base, uint8_t bus_addr, uint8_t packet,
 }
 
 /* Triggered by the second PWM trigger signal via XBAR */
-void DEMO_XBARA_IRQHandler(void)
-{
-	if (nodes_num > 0) {
-		dump_bus_postion();
-	} else {
-		dump_postion();
-	}
-	XBAR_ClearOutputStatusFlag(kXBAR1_OutputEdma4IpdReq76);
-	SDK_ISR_EXIT_BARRIER;
-}
+// void DEMO_XBARA_IRQHandler(void)
+// {
+// 	if (nodes_num > 0) {
+// 		dump_bus_postion();
+// 	} else {
+// 		dump_postion();
+// 	}
+// 	XBAR_ClearOutputStatusFlag(kXBAR1_OutputEdma4IpdReq76);
+// 	SDK_ISR_EXIT_BARRIER;
+// }
 
 /* FG_IRQ0_IRQHandler */
 void FG_IRQ0_IRQHandler(void)
@@ -935,11 +937,15 @@ void ENDAT3_DumpPostionInSync(ENDAT3_Type *base, uint8_t data_req)
 	/* Initialize FlexPWM to generate the trigger signalis. */
 	PWM_Trigger_Init(BOARD_PWM_BASEADDR);
 	// Enable Interrupt
-	EnableIRQ(DEMO_XBARA_IRQn);
+	EnableIRQ(DEMO_ENDAT3_FG_IRQn);
+	/* Enable the FG_IRQ0 when HPF received */
+	ENDAT3_FG_IRQ_Enable_With_FIxM_Frame_Count(base, 0, 1);
+
 	ENDAT3_HW_Strobe_Enable(base);
 
 	getChar();
-	DisableIRQ(DEMO_XBARA_IRQn);
+	ENDAT3_FG_IRQ_Disable(base, 0, FIxM_FRAME_CNT_EN);
+	DisableIRQ(DEMO_ENDAT3_FG_IRQn);
 	ENDAT3_HW_Strobe_Disable(base);
 }
 
@@ -950,14 +956,18 @@ void ENDAT3_Bus_DumpPostionInSync(ENDAT3_Type *base, uint8_t data_req)
 	}
 
 	ENDAT3_FG_Bus_BC_Req(base);
+	/* Enable the FG_IRQ0 when HPF received */
+	ENDAT3_FG_IRQ_Enable_With_FIxM_Bus_Address_Count(base, 0, nodes_num);
+
 	/* Initialize FlexPWM to generate the trigger signalis. */
 	PWM_Trigger_Init(BOARD_PWM_BASEADDR);
 	// Enable Interrupt
-	EnableIRQ(DEMO_XBARA_IRQn);
+	EnableIRQ(DEMO_ENDAT3_FG_IRQn);
 	ENDAT3_HW_Strobe_Enable(base);
 
 	getChar();
-	DisableIRQ(DEMO_XBARA_IRQn);
+	ENDAT3_FG_IRQ_Disable(base, 0, FIxM_ADDR_CNT_EN);
+	DisableIRQ(DEMO_ENDAT3_FG_IRQn);
 	ENDAT3_HW_Strobe_Disable(base);
 }
 
@@ -1053,9 +1063,9 @@ uint16_t PrintFgReqDataRate(void)
 int PrintFgReqSel(uint8_t *req_code, uint16_t *req_data)
 {
 	uint8_t	 fgReqCodestr[17][22] = {"DATA0     ", "DATA1     ", "DATA2     ", "DATA3      ", "DATA4        ",
-									"DATA5     ", "DATA6     ", "DATA7     ", "DATA       ", "DATANOP      ",
-									"RESET     ", "CLEAR     ", "ECHO      ", "RATE       ", "HELLO        ",
-									"BUSINIT   ", "FORCE     "};
+									 "DATA5     ", "DATA6     ", "DATA7     ", "DATA       ", "DATANOP      ",
+									 "RESET     ", "CLEAR     ", "ECHO      ", "RATE       ", "HELLO        ",
+									 "BUSINIT   ", "FORCE     "};
 	uint8_t fgReqCode[17] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0B, 0x0C, 0x0E, 0x10, 0x22, 0x82, 0x90};
 	int index;
 	while (1) {

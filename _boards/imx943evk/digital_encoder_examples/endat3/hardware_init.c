@@ -38,7 +38,7 @@ void PWM_Trigger_Init(PWM_Type *PWMBase)
     /* Trigger for Encoder synchronization */
     PWMBase->SM[0].VAL5 = -(ui16M1PwmModulo / 2) + 10;
 
-    /* Trigger for interrupt synchronization */
+  //  /* Trigger for interrupt synchronization */
     PWMBase->SM[0].VAL4 = ((ui16M1PwmModulo / 2 - 1) - ui16EnociderTransactionTime );
 
     /* PWM0 ~ PWM3 module 0 trigger on VAL4 enabled for ADC synchronization */
@@ -56,6 +56,10 @@ void PWM_Trigger_Init(PWM_Type *PWMBase)
 
 void BOARD_InitHardware(void)
 {
+    int32_t SCMI_status = 0;
+    uint32_t blk_ctrl_size = 0;
+    uint32_t blk_ctrl_value = 0;
+
     /* EnDat3.0 200MHz */
     clk_t endat3Clk_rxtx = {
         .clkId = kCLOCK_Endat31fast,
@@ -71,12 +75,15 @@ void BOARD_InitHardware(void)
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
     };
 
-    BLK_CTRL_WAKEUPMIX_Type *blk_base = BLK_CTRL_WAKEUPMIX;
-
     SystemPlatformInit();
     BOARD_InitDebugConsolePins();
+
+#if (ENDAT3_MUX == MOTOR_CTRL1)
     BOARD_InitEncoder2Pins();
+#elif (ENDAT3_MUX == MOTOR_CTRL2)
     BOARD_InitEncoder1Pins();
+#endif
+    BOARD_InitPWM1Pins();
     BOARD_InitI2C6Pins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
@@ -90,49 +97,84 @@ void BOARD_InitHardware(void)
     CLOCK_SetRate(&endat3Clk_sys);
     CLOCK_EnableClock(endat3Clk_sys.clkId);
 
-    blk_base->DIAG_ENCODER_MUX_SEL =
-        BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc1_sel(DIG_ENCODER_MUX_ENDAT3);
-#ifdef ENDAT3_SLE_ENC2
-	blk_base->DIAG_ENCODER_MUX_SEL =
-		BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc2_sel(DIG_ENCODER_MUX_ENDAT3);
+    /* DIAG_ENCODER_MUX_SEL will be updated */
+    SCMI_status = SCMI_MiscControlGet(SCMI_A2P, DEV_SM_CTRL_ENC_DIAG_MUX_SEL, &blk_ctrl_size, &blk_ctrl_value);
+    if (SCMI_status != SCMI_ERR_SUCCESS) {
+        /* Encoder mux select configuration failed */
+        return;
+    }
+
+#if (ENDAT3_MUX == MOTOR_CTRL1)
+    /* Select Endat3 for encoder2 */
+    blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc2_sel(DIG_ENCODER_MUX_ENDAT3);
+#elif (ENDAT3_MUX == MOTOR_CTRL2)
+    /* Select Endat3 for encoder1 */
+    blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc1_sel(DIG_ENCODER_MUX_ENDAT3);
 #endif
+
+    /* Update DIAG_ENCODER_MUX_SEL */
+    SCMI_status = SCMI_MiscControlSet(SCMI_A2P, DEV_SM_CTRL_ENC_DIAG_MUX_SEL, blk_ctrl_size,
+                                      &blk_ctrl_value);
+    if (SCMI_status != SCMI_ERR_SUCCESS) {
+        /* Failed to set DIAG_ENCODER_MUX_SEL register  */
+        return;
+    }
+
+#if (ENDAT3_MUX == MOTOR_CTRL1)
     /* Select Motor controller 1 */
     BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);
     BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);
-
+#elif (ENDAT3_MUX == MOTOR_CTRL2)
     /* Select Motor controller 2 */
     BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);
     BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);
+#endif
+
     SDK_DelayAtLeastUs(100U, SystemCoreClock);
 
-    XBAR_Init(kXBAR_DSC1);
-    xbar_control_config_t xbaraConfig;
-    xbaraConfig.activeEdge                   = kXBAR_EdgeRising;
-    xbaraConfig.requestType                  = kXBAR_RequestInterruptEnable;
+    XBAR_Init(DEMO_XBARA_BASEADDR);
     XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux1Trigger0, kXBAR1_OutputEndat3HwStrobe);
-    XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux0Trigger0, kXBAR1_OutputEdma4IpdReq76);
-    XBAR_SetOutputSignalConfig(kXBAR1_OutputEdma4IpdReq76, &xbaraConfig);
+
+    /* _ENDAT_STRETCH_CTRL will be updated */
+    SCMI_status = SCMI_MiscControlGet(SCMI_A2P, DEV_SM_CTRL_ENDAT_STRETCH_CTRL, &blk_ctrl_size, &blk_ctrl_value);
+    if (SCMI_status != SCMI_ERR_SUCCESS) {
+        /* Encoder mux select configuration failed */
+        return;
+    }
 
 #ifdef ENDAT3_STRETCHER_CTRL_HW_STROBE_COUNTER 
-    blk_base->ENDAT_STRETCHER_CTRL &= ~(BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_hw_strobe_value_MASK << BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_hw_strobe_value_SHIFT);
-    blk_base->ENDAT_STRETCHER_CTRL |= BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_hw_strobe_value(ENDAT3_STRETCHER_CTRL_HW_STROBE_COUNTER);
-    blk_base->ENDAT_STRETCHER_CTRL |= BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_hw_strobe_ctrl(1);
+    blk_ctrl_value &= ~(BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_hw_strobe_value_MASK
+                      << BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_hw_strobe_value_SHIFT);
+    blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_hw_strobe_value(
+                       ENDAT3_STRETCHER_CTRL_HW_STROBE_COUNTER);
+    blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_hw_strobe_ctrl(1);
 #else
-    blk_base->ENDAT_STRETCHER_CTRL &= ~(BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_hw_strobe_ctrl_MASK <<　BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_hw_strobe_ctrl_SHIFT);
+    blk_ctrl_value &= ~(BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_hw_strobe_ctrl_MASK
+                     << BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_hw_strobe_ctrl_SHIFT);
 #endif
 
 #ifdef ENDAT3_STRETCHER_CTRL_ASYNC_EN
-    blk_base->ENDAT_STRETCHER_CTRL |= BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_async_en(1);
+    blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_async_en(1);
 #else
-    blk_base->ENDAT_STRETCHER_CTRL &= ~(BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_async_en_MASK <<　BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_async_en_SHIFT);
+    blk_ctrl_value &= ~(BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_async_en_MASK
+                      << BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_async_en_SHIFT);
 #endif
 
 #ifdef ENDAT3_STRETCHER_CTRL_POL_SEL
 #if (ENDAT3_STRETCHER_CTRL_POL_SEL == 1)
-    blk_base->ENDAT_STRETCHER_CTRL |= BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_pol_sel(1);
+    blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_pol_sel(1);
 #else
-    blk_base->ENDAT_STRETCHER_CTRL &= ~(BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_pol_sel_MASK << BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_pol_sel_SHIFT);
+    blk_ctrl_value &= ~(BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_pol_sel_MASK
+                      << BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_pol_sel_SHIFT);
 #endif
 #endif
+
+    /* Update ENDAT_STRETCH_CTR */
+    SCMI_status = SCMI_MiscControlSet(SCMI_A2P, DEV_SM_CTRL_ENDAT_STRETCH_CTRL,
+                                      blk_ctrl_size, &blk_ctrl_value);
+    if (SCMI_status != SCMI_ERR_SUCCESS) {
+        /* Failed to set ENDAT_STRETCH_CTR register  */
+        return;
+    }
 }
 /*${function:end}*/

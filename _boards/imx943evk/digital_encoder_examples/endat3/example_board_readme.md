@@ -9,12 +9,15 @@ Hardware requirements
 
 Board settings
 ==============
-Insert FRDM-LVPMSM-FA board into Arduino interface of motor control 2.
+Insert FRDM-LVPMSM-FA board into Arduino interface of motor control 1.
+Modify the macro ENDAT3_MUX to MOTOR_CTRL2 when connected to motor control 2.  
+- #define ENDAT3_MUX                MOTOR_CTRL2
+
 Connect EnDat3 sensor and power supply to FRDM-LVPMSM-FA
 
 EnDat3 connection:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-INSTANCE(FRDM-LVPMSM-FA)  CONNECTS TO  INSTANCE(EnDat2.2 sensor)
+INSTANCE(FRDM-LVPMSM-FA)  CONNECTS TO  INSTANCE(EnDat3 sensor)
 Pin Name        Board Location              Signal Name
 ENC_DATA_IO_P      J70-4                     DATA_P
 ENC_DATA_IO_N      J70-9                     DATA_N
