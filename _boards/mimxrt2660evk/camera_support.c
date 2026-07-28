@@ -62,14 +62,32 @@ void CSI_IRQHandler(void)
     __DSB();
 }
 
+/* On mimxrt2660evk the OV5640 camera reset (CSI_RST_B) and power control
+ * (CSI_PWR_CTL) are routed through the PCAL6524 I/O expander, not MCU GPIO. */
 static void BOARD_PullCameraResetPin(bool pullUp)
 {
-    GPIO_PinWrite(BOARD_CAMERA_RST_GPIO, BOARD_CAMERA_RST_PIN, pullUp ? 1U : 0U);
+    pcal6524_handle_t *h = BOARD_GetPCAL6524Handle();
+    if (pullUp)
+    {
+        (void)PCAL6524_SetPins(h, 1UL << BOARD_PCAL6524_CSI_RST_B);
+    }
+    else
+    {
+        (void)PCAL6524_ClearPins(h, 1UL << BOARD_PCAL6524_CSI_RST_B);
+    }
 }
 
 static void BOARD_PullCameraPowerDownPin(bool pullUp)
 {
-    GPIO_PinWrite(BOARD_CAMERA_PWDN_GPIO, BOARD_CAMERA_PWDN_PIN, pullUp ? 1U : 0U);
+    pcal6524_handle_t *h = BOARD_GetPCAL6524Handle();
+    if (pullUp)
+    {
+        (void)PCAL6524_SetPins(h, 1UL << BOARD_PCAL6524_CSI_PWR_CTL);
+    }
+    else
+    {
+        (void)PCAL6524_ClearPins(h, 1UL << BOARD_PCAL6524_CSI_PWR_CTL);
+    }
 }
 
 void BOARD_EarlyPrepareCamera(void)
@@ -80,14 +98,9 @@ void BOARD_InitCameraResource(void)//todo
 {
     BOARD_Camera_I2C_Init();
 
-    /* Fixed clock source in simulation environment. */
-
-    /* Set the pins for CSI reset and power down. */
-    // gpio_pin_config_t pinConfig = {
-    //     kGPIO_DigitalOutput,
-    //     1,
-    //     kGPIO_NoIntmode,
-    // };
-
-    // GPIO_PinInit(BOARD_CAMERA_PWDN_GPIO, BOARD_CAMERA_PWDN_PIN, &pinConfig);
+    /* CSI camera reset and power control are on the PCAL6524 I/O expander;
+     * configure both as outputs before the OV5640 adapter drives them. */
+    pcal6524_handle_t *h = BOARD_GetPCAL6524Handle();
+    (void)PCAL6524_SetDirection(h, (1UL << BOARD_PCAL6524_CSI_RST_B) | (1UL << BOARD_PCAL6524_CSI_PWR_CTL),
+                                kPCAL6524_Output);
 }

@@ -18,6 +18,10 @@ isi_mipi_csi2_rgb565:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mimxrt2660evk:
+    - +armgcc@xspi_nor_psram_debug
+    - +armgcc@xspi_nor_psram_release
+    - +iar@xspi_nor_psram_debug
+    - +iar@xspi_nor_psram_release
     - -armgcc@xspi_nor_debug
     - -armgcc@xspi_nor_release
     - -iar@xspi_nor_debug

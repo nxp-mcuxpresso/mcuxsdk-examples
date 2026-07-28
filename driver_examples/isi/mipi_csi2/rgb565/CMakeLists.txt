@@ -4,7 +4,7 @@ include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
 project(isi_mipi_csi2_rgb565
     LANGUAGES C CXX ASM
-    PROJECT_BOARD_PORT_PATH examples_int/_boards/${board}/driver_examples/isi/mipi_csi2/rgb565
+    PROJECT_BOARD_PORT_PATH ${board_root}/${board}/driver_examples/isi/mipi_csi2/rgb565
 )
 
 mcux_add_include(
@@ -17,6 +17,6 @@ mcux_add_source(
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 
-include(${SdkRootDirPath}/examples_int/_boards/${board}/driver_examples/isi/mipi_csi2/rgb565/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/driver_examples/isi/mipi_csi2/rgb565/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
