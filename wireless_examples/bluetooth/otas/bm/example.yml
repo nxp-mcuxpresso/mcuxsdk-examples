@@ -25,9 +25,6 @@ otap_server_bm:
     mcxw23evk:
     - -mdk@debug
     - -mdk@release
-    kw43evk:
-    - -armgcc@debug
-    - -armgcc@release
     frdmmcxw70:
     - -armgcc@debug
     - -armgcc@release
