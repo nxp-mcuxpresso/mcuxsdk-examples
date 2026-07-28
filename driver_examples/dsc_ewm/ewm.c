@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 NXP
+ * Copyright 2020, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -41,12 +41,21 @@ volatile bool bEwmIsrFlag = false;
  */
 static void gpio_configure(void)
 {
+#if defined(EXAMPLE_GPIO_IS_RGPIO) && EXAMPLE_GPIO_IS_RGPIO
+    /* Board uses the RGPIO driver: pull and interrupt are configured via PORT in pin_mux. */
+    gpio_pin_config_t sSwConfig = {
+        .pinDirection = kGPIO_DigitalInput,
+        .outputLogic  = 0U,
+    };
+    (void)GPIO_PinInit(SW_GPIO, SW_GPIO_PIN, &sSwConfig);
+#else
     gpio_config_t sSwConfig = {
         .eDirection     = kGPIO_DigitalInput,
         .ePull          = kGPIO_PullDisable,
         .eInterruptMode = kGPIO_InterruptFallingEdge,
     };
     GPIO_PinInit(SW_GPIO, SW_GPIO_PIN, &sSwConfig);
+#endif
 }
 
 /*!
