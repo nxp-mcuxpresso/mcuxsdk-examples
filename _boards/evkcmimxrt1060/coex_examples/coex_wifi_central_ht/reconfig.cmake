@@ -9,14 +9,15 @@ mcux_add_source(
             examples/_boards/${board}/coex_examples/coex_wifi_central_ht/pin_mux.c
             examples/_boards/${board}/coex_examples/coex_wifi_central_ht/pin_mux.h
             middleware/wireless/coex/build/${board}/common/hardware_init.c
+            middleware/wireless/coex/src/common/coex_nb_uart_fw_download.h
             middleware/wireless/coex/src/common/coex_nb_uart_fw_download.c
-            examples/_boards/${board}/coex_examples/coex_wifi_central_ht/app_config.h
             examples/coex_examples/coex_wifi_central_ht/app_config.cmake
             middleware/wireless/coex/src/configs/mimxrt1062/mbedtls/mbedtls_config_client.h
             middleware/wireless/coex/src/configs/mimxrt1062/wifi/wifi_config.h
             middleware/wireless/coex/src/configs/mimxrt1062/lwip/lwippools.h
             middleware/wireless/coex/src/configs/mimxrt1062/lwip/lwiphooks.h
             middleware/wireless/coex/src/configs/mimxrt1062/lwip/lwipopts.h
+            middleware/edgefast_open/examples/_boards/${board}/configs/mbedtls/mbedtls_user_config.h
 )
 
 mcux_add_include(
@@ -95,6 +96,13 @@ mcux_add_armgcc_linker_script(
   TARGETS
     flexspi_nor_debug
     flexspi_nor_release
+)
+
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}
+    CONFIG True
+    PREINCLUDE TRUE
+    SOURCES examples/_boards/${board}/coex_examples/coex_wifi_central_ht/app_config.h
 )
 
 mcux_add_armgcc_configuration(

@@ -1,9 +1,16 @@
 /*
- *  Copyright 2021-2025 NXP
+ *  Copyright 2021-2026 NXP
  *  All rights reserved.
  *
  *  SPDX-License-Identifier: BSD-3-Clause
  */
+
+#ifndef APP_CONFIG_H
+#define APP_CONFIG_H
+
+#ifdef __MCUXPRESSO
+#include "app_mcuxpresso_config.h"
+#endif /* __MCUXPRESSO */
 
 /* If OT or BLE is enabled, the vApplicationHook defined by the app should be used
  * instead of the private definition of WIFI, use CONFIG_COEX_APP macro to select.
@@ -27,3 +34,5 @@
 #endif
 
 #define CONFIG_COEX_ENABLE_PM_MENU          0
+
+#endif /* APP_CONFIG_H */
