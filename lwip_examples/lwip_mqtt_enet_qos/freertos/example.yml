@@ -84,3 +84,5 @@ lwip_mqtt_enet_qos_freertos:
     - -mdk@hyperram_release
     frdmmcxe31b: []
     mimxrt2660evk: []
+    frdmmcxe31b: []
+    frdmmcxe32b: []

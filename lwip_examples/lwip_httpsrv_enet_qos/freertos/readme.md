@@ -12,3 +12,4 @@ back to the PC.
 - [FRDM-IMXRT1152](../../../_boards/frdmimxrt1152/lwip_examples/lwip_httpsrv_enet_qos/freertos/example_board_readme.md)
 - [FRDM-MCXE31B](../../../_boards/frdmmcxe31b/lwip_examples/lwip_httpsrv_enet_qos/freertos/example_board_readme.md)
 - [MIMXRT2660-EVK](../../../_boards/mimxrt2660evk/lwip_examples/lwip_httpsrv_enet_qos/freertos/example_board_readme.md)
+- [FRDM-MCXE32B](../../../_boards/frdmmcxe32b/lwip_examples/lwip_httpsrv_enet_qos/freertos/example_board_readme.md)

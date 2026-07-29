@@ -82,3 +82,5 @@ lwip_ipv4_ipv6_echo_enet_qos_freertos:
     - -mdk@hyperram_release
     frdmmcxe31b: []
     mimxrt2660evk: []
+    frdmmcxe31b: []
+    frdmmcxe32b: []

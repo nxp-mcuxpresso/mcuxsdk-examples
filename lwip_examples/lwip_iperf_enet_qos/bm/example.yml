@@ -57,3 +57,4 @@ lwip_iperf_enet_qos_bm:
     mcimx93qsb: []
     frdmmcxe31b: []
     mimxrt2660evk: []
+    frdmmcxe32b: []
