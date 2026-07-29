@@ -22,6 +22,9 @@
 #include "freemaster_usb.h"
 #include "freemaster_example.h"
 
+#include "usb.h"
+#include "usb_phy.h"
+
 ////////////////////////////////////////////////////////////////////////////////
 // Variables
 ////////////////////////////////////////////////////////////////////////////////
@@ -40,10 +43,22 @@
 int main(void)
 {
     /* Board initialization */
-    BOARD_ConfigMPU();
     BOARD_InitPins();
+    BOARD_InitDEBUG_UARTPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+
+    uint32_t usbClockFreq;
+    usb_phy_config_struct_t phyConfig = {
+        BOARD_USB_PHY_D_CAL,
+        BOARD_USB_PHY_TXCAL45DP,
+        BOARD_USB_PHY_TXCAL45DM,
+    };
+
+    usbClockFreq = 24000000;
+    CLOCK_EnableUsbhs0PhyPllClock(kCLOCK_Usbphy480M, usbClockFreq);
+    CLOCK_EnableUsbhs0Clock(kCLOCK_Usb480M, usbClockFreq);
+    USB_EhciPhyInit(CONTROLLER_ID, BOARD_XTAL0_CLK_HZ, &phyConfig);
 
     /* FreeMASTER communication layer initialization */
     FMSTR_ExampleUsbInit();

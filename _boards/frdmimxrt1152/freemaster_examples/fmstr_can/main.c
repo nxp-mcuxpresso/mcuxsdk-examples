@@ -52,8 +52,8 @@ static void init_freemaster_can(void);
 int main(void)
 {
     /* Board initialization */
-    BOARD_ConfigMPU();
-    BOARD_InitBootPins();
+    BOARD_InitPins();
+    BOARD_InitDEBUG_UARTPins();
     BOARD_InitCANPins();
     BOARD_Init6524Pins();
     BOARD_BootClockRUN();

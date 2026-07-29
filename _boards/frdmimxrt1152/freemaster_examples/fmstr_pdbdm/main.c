@@ -37,8 +37,8 @@
 int main(void)
 {
     /* Board initialization */
-    BOARD_ConfigMPU();
     BOARD_InitPins();
+    BOARD_InitDEBUG_UARTPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 

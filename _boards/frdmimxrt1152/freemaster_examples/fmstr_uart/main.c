@@ -49,8 +49,8 @@ static void init_freemaster_lpuart(void);
 int main(void)
 {
     /* Board initialization */
-    BOARD_ConfigMPU();
     BOARD_InitPins();
+    BOARD_InitDEBUG_UARTPins();
     BOARD_BootClockRUN();
 
     /* FreeMASTER communication layer initialization */

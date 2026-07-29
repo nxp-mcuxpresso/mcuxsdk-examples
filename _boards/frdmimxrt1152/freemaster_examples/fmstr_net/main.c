@@ -62,8 +62,8 @@ int main(void)
     memset(&caps, 0, sizeof(caps));
 
     /* Board initialization */
-    BOARD_ConfigMPU();
-    BOARD_InitBootPins();
+    BOARD_InitPins();
+    BOARD_InitDEBUG_UARTPins();
     BOARD_Init6524Pins();
     BOARD_InitENET_1GPins();
     BOARD_BootClockRUN();
