@@ -117,7 +117,8 @@ __HEAP_start__                      = m_data1_end - HEAP_SIZE;
 __HEAP_end__                        = m_data1_end;
 
 firmware_ram_lower_limit            = DEFINED(lp_ram_lower_limit) ? lp_ram_lower_limit : m_cstack_start;
-firmware_ram_upper_limit            = DEFINED(lp_ram_upper_limit) ? lp_ram_upper_limit : m_data1_end;
+firmware_ram_upper_limit            = DEFINED(lp_ram_upper_limit) ? lp_ram_upper_limit : __heap_top__;
+
 
 /* Zephyr coredump LINKER_RAM region (DEBUG_COREDUMP_MEMORY_DUMP_LINKER_RAM,
  * the whole-RAM dump method). coredump_memory_regions.c brackets the RAM
@@ -533,10 +534,11 @@ SECTIONS
     . += HEAP_SIZE;
     PROVIDE(__HeapLimit = .);
     *(.heap)
+    . = ALIGN(8);
+    __heap_top__ = .;
   } > m_data1
 
   .ARM.attributes 0 : { *(.ARM.attributes) }
 
   /* ASSERT(__StackLimit >= __HeapLimit, "region m_data1 overflowed with stack and heap") */
 }
-
