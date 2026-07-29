@@ -16,9 +16,9 @@
 !!GlobalInfo
 product: Pins v17.0
 processor: MIMXRT798S
-package_id: MIMXRT798SGFOB
+package_id: MIMXRT798SGVKB
 mcu_data: ksdk2_0
-processor_version: 25.12.10
+processor_version: 26.06.10
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -44,14 +44,14 @@ void BOARD_InitBootPins(void)
 BOARD_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: N4, peripheral: LP_FLEXCOMM0, signal: P0, pin_signal: PIO0_31/LP_FLEXCOMM0_P0/UTICK0_CAP2/SCT0_OUT8/CTIMER4_MAT0, input_buffer: enable}
-  - {pin_num: N5, peripheral: LP_FLEXCOMM0, signal: P1, pin_signal: PIO1_0/LP_FLEXCOMM0_P1/SCT0_OUT9/CTIMER4_MAT1}
-  - {pin_num: P14, peripheral: GPIO7, signal: 'GPIO, 14', pin_signal: PIO7_14/SDHC1_DATA5/LP_FLEXCOMM7_P0}
-  - {pin_num: M14, peripheral: GPIO7, signal: 'GPIO, 15', pin_signal: PIO7_15/SDHC1_DATA6/LP_FLEXCOMM7_P1}
-  - {pin_num: M15, peripheral: GPIO7, signal: 'GPIO, 16', pin_signal: PIO7_16/SDHC1_DATA7/LP_FLEXCOMM7_P2}
-  - {pin_num: U8, peripheral: LPI2C15, signal: SCL, pin_signal: PMIC_I2C_SCL, open_drain: enable, slew_rate: standard, input_buffer: enable}
-  - {pin_num: U7, peripheral: LPI2C15, signal: SDA, pin_signal: PMIC_I2C_SDA, open_drain: enable, slew_rate: standard, input_buffer: enable}
-  - {pin_num: M8, peripheral: GPIO0, signal: 'GPIO, 19', pin_signal: PIO0_19/LP_FLEXCOMM6_P2/SCT0_GPIN2/SCT0_OUT2/CTIMER2_MAT2/SAI1_RX_SYNC}
+  - {pin_num: V21, peripheral: LP_FLEXCOMM0, signal: P0, pin_signal: PIO0_31/LP_FLEXCOMM0_P0/UTICK0_CAP2/SCT0_OUT8/CTIMER4_MAT0, input_buffer: enable}
+  - {pin_num: AD25, peripheral: LP_FLEXCOMM0, signal: P1, pin_signal: PIO1_0/LP_FLEXCOMM0_P1/SCT0_OUT9/CTIMER4_MAT1}
+  - {pin_num: V2, peripheral: GPIO7, signal: 'GPIO, 14', pin_signal: PIO7_14/SDHC1_DATA5/LP_FLEXCOMM7_P0}
+  - {pin_num: V1, peripheral: GPIO7, signal: 'GPIO, 15', pin_signal: PIO7_15/SDHC1_DATA6/LP_FLEXCOMM7_P1}
+  - {pin_num: T1, peripheral: GPIO7, signal: 'GPIO, 16', pin_signal: PIO7_16/SDHC1_DATA7/LP_FLEXCOMM7_P2}
+  - {pin_num: AA14, peripheral: LPI2C15, signal: SCL, pin_signal: PMIC_I2C_SCL, open_drain: enable, slew_rate: standard, input_buffer: enable}
+  - {pin_num: Y14, peripheral: LPI2C15, signal: SDA, pin_signal: PMIC_I2C_SDA, open_drain: enable, slew_rate: standard, input_buffer: enable}
+  - {pin_num: AB24, peripheral: GPIO0, signal: 'GPIO, 19', pin_signal: PIO0_19/LP_FLEXCOMM6_P2/SCT0_GPIN2/SCT0_OUT2/CTIMER2_MAT2/SAI1_RX_SYNC}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -86,7 +86,7 @@ void BOARD_InitPins(void)
                                          IOPCTL_PIO_INV_DI |
                                          /* Selects transmitter current drive 100ohm */
                                          IOPCTL_PIO_DRIVE_100OHM);
-    /* PORT0 PIN19 (coords: M8) is configured as PIO0_19 */
+    /* PORT0 PIN19 (coords: AB24) is configured as PIO0_19 */
     IOPCTL_PinMuxSet(0U, 19U, port0_pin19_config);
 
     const uint32_t port0_pin31_config = (/* Pin is configured as LP_FLEXCOMM0_P0 */
@@ -103,7 +103,7 @@ void BOARD_InitPins(void)
                                          IOPCTL_PIO_INV_DI |
                                          /* Selects transmitter current drive 100ohm */
                                          IOPCTL_PIO_DRIVE_100OHM);
-    /* PORT0 PIN31 (coords: N4) is configured as LP_FLEXCOMM0_P0 */
+    /* PORT0 PIN31 (coords: V21) is configured as LP_FLEXCOMM0_P0 */
     IOPCTL_PinMuxSet(0U, 31U, port0_pin31_config);
 
     const uint32_t port1_pin0_config = (/* Pin is configured as LP_FLEXCOMM0_P1 */
@@ -120,7 +120,7 @@ void BOARD_InitPins(void)
                                         IOPCTL_PIO_INV_DI |
                                         /* Selects transmitter current drive 100ohm */
                                         IOPCTL_PIO_DRIVE_100OHM);
-    /* PORT1 PIN0 (coords: N5) is configured as LP_FLEXCOMM0_P1 */
+    /* PORT1 PIN0 (coords: AD25) is configured as LP_FLEXCOMM0_P1 */
     IOPCTL_PinMuxSet(1U, 0U, port1_pin0_config);
 
     IOPCTL1->PMIC_I2C_SCL =
@@ -165,7 +165,7 @@ void BOARD_InitPins(void)
                                          IOPCTL_PIO_INV_DI |
                                          /* Selects transmitter current drive 100ohm */
                                          IOPCTL_PIO_DRIVE_100OHM);
-    /* PORT7 PIN14 (coords: P14) is configured as PIO7_14 */
+    /* PORT7 PIN14 (coords: V2) is configured as PIO7_14 */
     IOPCTL_PinMuxSet(7U, 14U, port7_pin14_config);
 
     const uint32_t port7_pin15_config = (/* Pin is configured as PIO7_15 */
@@ -182,7 +182,7 @@ void BOARD_InitPins(void)
                                          IOPCTL_PIO_INV_DI |
                                          /* Selects transmitter current drive 100ohm */
                                          IOPCTL_PIO_DRIVE_100OHM);
-    /* PORT7 PIN15 (coords: M14) is configured as PIO7_15 */
+    /* PORT7 PIN15 (coords: V1) is configured as PIO7_15 */
     IOPCTL_PinMuxSet(7U, 15U, port7_pin15_config);
 
     const uint32_t port7_pin16_config = (/* Pin is configured as PIO7_16 */
@@ -199,7 +199,7 @@ void BOARD_InitPins(void)
                                          IOPCTL_PIO_INV_DI |
                                          /* Selects transmitter current drive 100ohm */
                                          IOPCTL_PIO_DRIVE_100OHM);
-    /* PORT7 PIN16 (coords: M15) is configured as PIO7_16 */
+    /* PORT7 PIN16 (coords: T1) is configured as PIO7_16 */
     IOPCTL_PinMuxSet(7U, 16U, port7_pin16_config);
 }
 /***********************************************************************************************************************
