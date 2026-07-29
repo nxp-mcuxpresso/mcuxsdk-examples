@@ -47,7 +47,7 @@ void EXAMPLE_LPSPI_SLAVE_IRQHandler(void)
          */
         while (LPSPI_GetRxFifoCount(EXAMPLE_LPSPI_SLAVE_BASEADDR))
         {
-            slaveRxData[slaveRxCount] = LPSPI_ReadData(EXAMPLE_LPSPI_SLAVE_BASEADDR);
+            slaveRxData[slaveRxCount] = (uint8_t)LPSPI_ReadData(EXAMPLE_LPSPI_SLAVE_BASEADDR);
             slaveRxCount++;
 
             if (slaveRxCount == TRANSFER_SIZE)

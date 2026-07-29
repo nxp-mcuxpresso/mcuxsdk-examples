@@ -51,7 +51,7 @@ void EXAMPLE_LPSPI_MASTER_IRQHandler(void)
         while (LPSPI_GetRxFifoCount(EXAMPLE_LPSPI_MASTER_BASEADDR))
         {
             /* Read out the data. */
-            masterRxData[masterRxCount] = LPSPI_ReadData(EXAMPLE_LPSPI_MASTER_BASEADDR);
+            masterRxData[masterRxCount] = (uint8_t)LPSPI_ReadData(EXAMPLE_LPSPI_MASTER_BASEADDR);
             masterRxCount++;
 
             if (masterRxCount == TRANSFER_SIZE)
@@ -161,7 +161,7 @@ int main(void)
         /* Set up the transfer data. */
         for (i = 0; i < TRANSFER_SIZE; i++)
         {
-            masterTxData[i] = (i + loopCount) % 256U;
+            masterTxData[i] = (uint8_t)((i + loopCount) % 256U);
             masterRxData[i] = 0;
         }
 
