@@ -30,12 +30,12 @@
 #define DEMO_AUDIO_SAMPLE_RATE  (kSAI_SampleRate16KHz)
 #define DEMO_AUDIO_MASTER_CLOCK DEMO_SAI_CLK_FREQ
 
-/* Fixed 12.288 MHz for 16 kHz sample rate (matches RT1180 reference).
- * Runtime SAI clock landing on this value depends on the audio PLL setup
- * in hardware_init.c. */
-#define DEMO_SAI_CLK_FREQ       12288000U
+/* SAI0 MCLK0 root = AUDIOPLL / 2 = 24.576 MHz (set in hardware_init.c). Read it
+ * back at runtime so the SAI bit-clock divider and the MCR master-clock config
+ * match the real hardware clock. */
+#define DEMO_SAI_CLK_FREQ       CLOCK_GetRootClockFreq(kCLOCK_Root_AUDIO_sai0_mclk0)
 
-#define BOARD_MASTER_CLOCK_CONFIG()
+#define BOARD_MASTER_CLOCK_CONFIG() BOARD_MasterClockConfig()
 #define BOARD_SAI_RXCONFIG(config, mode)
 /*${macro:end}*/
 
@@ -44,6 +44,7 @@
  ******************************************************************************/
 /*${prototype:start}*/
 void BOARD_InitHardware(void);
+void BOARD_MasterClockConfig(void);
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */

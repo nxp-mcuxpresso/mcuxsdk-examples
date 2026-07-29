@@ -33,7 +33,7 @@
 #define DEMO_AUDIO_MASTER_CLOCK DEMO_SAI_CLK_FREQ
 
 #define DEMO_SAI_CLK_FREQ       CLOCK_GetRootClockFreq(kCLOCK_Root_AUDIO_sai0_mclk0)
-#define BOARD_MASTER_CLOCK_CONFIG()
+#define BOARD_MASTER_CLOCK_CONFIG() BOARD_MasterClockConfig()
 
 #define BOARD_SAI_RXCONFIG(config, mode)
 /*${macro:end}*/
@@ -43,6 +43,7 @@
  ******************************************************************************/
 /*${prototype:start}*/
 void BOARD_InitHardware(void);
+void BOARD_MasterClockConfig(void);
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */

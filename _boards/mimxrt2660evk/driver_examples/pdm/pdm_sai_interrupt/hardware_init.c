@@ -37,7 +37,7 @@ wm8962_config_t wm8962Config = {
         {
             .mclk_HZ    = 24576000U,
             .sampleRate = kWM8962_AudioSampleRate16KHz,
-            .bitWidth   = kWM8962_AudioBitWidth32bit,
+            .bitWidth   = kWM8962_AudioBitWidth16bit,
         },
     .masterSlave = false,
 };

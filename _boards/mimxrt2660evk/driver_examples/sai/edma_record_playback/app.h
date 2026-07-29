@@ -32,7 +32,7 @@
 #define DEMO_AUDIO_SAMPLE_RATE         (kSAI_SampleRate16KHz)
 #define DEMO_AUDIO_MASTER_CLOCK        DEMO_SAI_CLK_FREQ
 
-#define DEMO_SAI_CLK_FREQ              12288000U
+#define DEMO_SAI_CLK_FREQ              CLOCK_GetRootClockFreq(kCLOCK_Root_AUDIO_sai0_mclk0)
 
 /* DMA — SAI0 TX/RX via AUDIO__EDMA3 channels 0/1 with mux2 request sources. */
 #define DEMO_DMA                       AUDIO__EDMA3
@@ -41,7 +41,7 @@
 #define DEMO_SAI_TX_EDMA_CHANNEL       kDmaRequestMux2AudioSAI0Tx
 #define DEMO_SAI_RX_EDMA_CHANNEL       kDmaRequestMux2AudioSAI0Rx
 
-#define BOARD_MASTER_CLOCK_CONFIG()
+#define BOARD_MASTER_CLOCK_CONFIG() BOARD_MasterClockConfig()
 #define BOARD_SAI_RXCONFIG(config, mode)
 /*${macro:end}*/
 
@@ -50,6 +50,7 @@
  ******************************************************************************/
 /*${prototype:start}*/
 void BOARD_InitHardware(void);
+void BOARD_MasterClockConfig(void);
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */

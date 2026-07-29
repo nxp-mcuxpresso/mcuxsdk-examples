@@ -9,6 +9,7 @@ Board settings
 ==============
 Set jumper J60 to position 2-3 to connect the SAI signals to the on-board
 WM8962 audio codec.
+Set jumper J82 to position 1-2 to enable the DMIC (MICFIL) CLK and DATA signals.
 
 Prepare the Demo
 ================
