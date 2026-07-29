@@ -63,7 +63,6 @@ mcux_add_macro(
       -DCONTROLLER_ID=kUSB_ControllerEhci0\
       -DCONFIG_BT_HOST_USB_ENABLE=1\
       -DCONFIG_BT_HOST_USB_IRQ_ENABLE=1\
-      -DSHELL_MAX_ARGS=48\
       -DUSE_RTOS=1"
 )
 
