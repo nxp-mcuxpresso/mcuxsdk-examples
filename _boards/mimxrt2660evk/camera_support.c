@@ -11,6 +11,10 @@
 #include "fsl_ov5640.h"
 #include "fsl_iomuxc.h"
 #include "board.h"
+#include "fsl_pca9555.h"
+#include "fsl_debug_console.h"
+#include "fsl_reset.h"
+#include "clock_config.h"
 
 /*******************************************************************************
  * Definitions
@@ -62,13 +66,10 @@ void CSI_IRQHandler(void)
     __DSB();
 }
 
-/* Parallel CSI camera module (connector J95, schematic SPF-96037 sheet 17):
- * its reset pin is not connected on the board, and its power-down (PWDN, via
- * net CSI_PWDN) is driven by the PCA9555 I/O expander P1_0 -- not the PCAL6524
- * (which carries the MIPI-CSI camera's CSI_RST_B / CSI_PWR_CTL, see isi_board.c). */
 static void BOARD_PullCameraResetPin(bool pullUp)
 {
-    /* J95 RESET is left unconnected on this board (camera uses power-on reset). */
+    /* The reset pin is directly connected to a certain level and will remain in a high state continuously.
+     * not need to set in there. */
     (void)pullUp;
 }
 
@@ -85,11 +86,7 @@ static void BOARD_PullCameraPowerDownPin(bool pullUp)
     }
 }
 
-void BOARD_EarlyPrepareCamera(void)
-{
-}
-
-void BOARD_InitCameraResource(void)//todo
+void BOARD_InitCameraResource(void)
 {
     BOARD_Camera_I2C_Init();
 
@@ -97,4 +94,27 @@ void BOARD_InitCameraResource(void)//todo
      * output before the camera adapter drives it. */
     pca9555_handle_t *h = BOARD_GetPCA9555Handle();
     (void)PCA9555_SetDirection(h, 1UL << BOARD_PCA9555_CSI_PWDN, kPCA9555_Output);
+
+    RESET_PeripheralReset(kModCon_MEDIA_CSI);
+
+    {
+        clock_root_config_t mclkCfg = {0};
+        mclkCfg.sndDiv = 1U;
+        mclkCfg.mux    = kCLOCK_CSI_MCLKOUT_ClockRoot_SXOSC;
+        mclkCfg.div    = 1U;
+        CLOCK_SetRootClock(kCLOCK_Root_MEDIA_csi_mclkout, &mclkCfg);
+        CLOCK_PowerOnRootClock(kCLOCK_Root_MEDIA_csi_mclkout);
+    }
+
+    CLOCK_EnableClock(kCLOCK_MEDIA_csi);
+    CLOCK_EnableClock(kCLOCK_MEDIA_mipi_csi);
+
+    {
+        clock_root_config_t lpi2cCfg = {0};
+        lpi2cCfg.sndDiv = 1U;
+        lpi2cCfg.mux    = kCLOCK_LPI2C0_ClockRoot_SXOSC;
+        lpi2cCfg.div    = 2U;
+        CLOCK_SetRootClock(kCLOCK_Root_MAIN_lpi2c0_fclk, &lpi2cCfg);
+        CLOCK_PowerOnRootClock(kCLOCK_Root_MAIN_lpi2c0_fclk);
+    }
 }
