@@ -7,14 +7,12 @@
 #define _ISI_CONFIG_H_
 
 /*${macro:start}*/
-/* Camera interface: MIPI CSI-2. */
-#ifndef ISI_EXAMPLE_CI
-#define ISI_EXAMPLE_CI ISI_MIPI_CSI2
-#endif
+#define APP_CAMERA_WIDTH		1920U
+#define APP_CAMERA_HEIGHT		1080U
+#define APP_CAMERA_FRAME_RATE		30U
 
-#define APP_CAMERA_WIDTH    320U
-#define APP_CAMERA_HEIGHT   240U
-#define APP_CAMERA_FRAME_RATE 30U
+#define APP_CAMERA_OUTPUT_WIDTH		720
+#define APP_CAMERA_OUTPUT_HEIGHT	1080
 
 /*${macro:end}*/
 

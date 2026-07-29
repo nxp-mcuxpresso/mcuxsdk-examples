@@ -32,6 +32,13 @@ bool APP_IsDisplayFramePending(void);
  */
 void APP_SetDisplayFrameBuffer(uint32_t frameBuffer);
 
+/*!
+ * @brief Submit the first frame buffer and enable the display layer.
+ *        Must be called after the first camera frame is ready.
+ * @param firstFrameBuffer  First frame buffer address to display next.
+ */
+void APP_StartDisplay(uint32_t firstFrameBuffer);
+
 #if defined(__cplusplus)
 }
 #endif

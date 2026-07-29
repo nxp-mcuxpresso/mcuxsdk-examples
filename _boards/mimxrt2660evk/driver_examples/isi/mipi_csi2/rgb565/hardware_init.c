@@ -16,8 +16,8 @@ void BOARD_InitHardware(void)
 {
     /* Board common setting: MPU, Power and Clock Tree, TRDC, and Debug Console init. */
     BOARD_CommonSetting();
-    BOARD_InitDcifDpiPins();
-    BOARD_InitCSIPins();
+    BOARD_Init6524Pins();
+    BOARD_InitMIPIPanelPins();
     BOARD_PrepareCamera();
 }
 /*${function:end}*/

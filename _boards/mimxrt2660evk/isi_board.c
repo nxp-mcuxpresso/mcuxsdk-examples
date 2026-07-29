@@ -16,6 +16,10 @@
 #include "fsl_clock.h"
 #include "fsl_gpio.h"
 #include "fsl_reset.h"
+#include "fsl_reformatter.h"
+#include "fsl_pcal6524.h"
+#include "fsl_reformatter.h"
+#include "fsl_debug_console.h"
 
 typedef struct
 {
@@ -25,14 +29,14 @@ typedef struct
 } ov5640_settle_t;
 
 static const ov5640_settle_t s_ov5640Settle[] = {
-    { FSL_VIDEO_RESOLUTION(320,  240),  30U, 8U },  /* QVGA 30fps  ~184 Mbit/s */
-    { FSL_VIDEO_RESOLUTION(320,  240),  15U, 8U },  /* QVGA 15fps  ~92  Mbit/s */
-    { FSL_VIDEO_RESOLUTION(640,  480),  30U, 8U },  /* VGA  30fps  ~737 Mbit/s */
-    { FSL_VIDEO_RESOLUTION(640,  480),  15U, 8U },  /* VGA  15fps  ~368 Mbit/s */
-    { FSL_VIDEO_RESOLUTION(1280, 720),  30U, 9U },  /* 720P 30fps ~1382 Mbit/s */
-    { FSL_VIDEO_RESOLUTION(1280, 720),  15U, 9U },  /* 720P 15fps  ~691 Mbit/s */
-    { FSL_VIDEO_RESOLUTION(1920, 1080), 30U, 9U },  /* 1080P 30fps ~3110 Mbit/s */
-    { FSL_VIDEO_RESOLUTION(1920, 1080), 15U, 9U },  /* 1080P 15fps ~1555 Mbit/s */
+    { FSL_VIDEO_RESOLUTION(320,  240),  30U, 0x24 },
+    { FSL_VIDEO_RESOLUTION(320,  240),  15U, 0x24 },
+    { FSL_VIDEO_RESOLUTION(640,  480),  30U, 0x1F },
+    { FSL_VIDEO_RESOLUTION(640,  480),  15U, 0x1F },
+    { FSL_VIDEO_RESOLUTION(1280, 720),  30U, 0x11 },
+    { FSL_VIDEO_RESOLUTION(1280, 720),  15U, 0x17 },
+    { FSL_VIDEO_RESOLUTION(1920, 1080), 30U, 0x6 },
+    { FSL_VIDEO_RESOLUTION(1920, 1080), 15U, 0x8 },
 };
 
 static void BOARD_PullCameraResetPin(bool pullUp);
@@ -107,40 +111,58 @@ void BOARD_PrepareCamera(void)
     {
         clock_root_config_t mclkCfg = {0};
         mclkCfg.sndDiv = 1U;
-        mclkCfg.mux    = kCLOCK_CSI_MCLKOUT_ClockRoot_SXOSC; /* SXOSC = 24 MHz */
-        mclkCfg.div    = 1U;                                   /* 24 MHz / 1 = 24 MHz */
+        mclkCfg.mux    = kCLOCK_CSI_MCLKOUT_ClockRoot_SXOSC;
+        mclkCfg.div    = 1U;
         CLOCK_SetRootClock(kCLOCK_Root_MEDIA_csi_mclkout, &mclkCfg);
         CLOCK_PowerOnRootClock(kCLOCK_Root_MEDIA_csi_mclkout);
     }
+
+    CLOCK_EnableClock(kCLOCK_MEDIA_isi);
+    EnableIRQ(APP_ISI_IRQn);
 }
 
 void BOARD_InitCameraInterface(void)
 {
     csi2rx_config_t csiConfig;
     uint8_t dataSettle = APP_MIPI_CSI_DATA_SETTLE; /* default */
+    reformatter_config_t refConfig;
+
+    {
+        clock_root_config_t lpi2cCfg = {0};
+        lpi2cCfg.sndDiv = 1U;
+        lpi2cCfg.mux    = kCLOCK_LPI2C0_ClockRoot_SXOSC;
+        lpi2cCfg.div    = 2U;
+        CLOCK_SetRootClock(kCLOCK_Root_MAIN_lpi2c0_fclk, &lpi2cCfg);
+        CLOCK_PowerOnRootClock(kCLOCK_Root_MAIN_lpi2c0_fclk);
+    }
 
     RESET_PeripheralReset(kModCon_MEDIA_MIPI_CSI);
 
+    /* Set ESC clock to 54MHZ, and CSI core clock to 1080MHZ to adapter all resolution up to 1080p 30fps */
     {
         clock_root_config_t escCfg = {0};
         escCfg.sndDiv = 1U;
-        escCfg.mux    = kCLOCK_MIPICSI_ESCCLK_ClockRoot_PERI5;
-        escCfg.div    = 7U; /* 666.67 / 7 = 95.2 MHz */
+        escCfg.mux    = kCLOCK_MIPICSI_ESCCLK_ClockRoot_MEDIAPLL;
+        escCfg.div    = 2;
         CLOCK_SetRootClock(kCLOCK_Root_MEDIA_mipicsi_escclk, &escCfg);
         CLOCK_PowerOnRootClock(kCLOCK_Root_MEDIA_mipicsi_escclk);
     }
+
     {
         clock_root_config_t csiClkCfg = {0};
         csiClkCfg.sndDiv = 1U;
-        csiClkCfg.mux    = kCLOCK_MIPICSI_ClockRoot_PERI5;
-        csiClkCfg.div    = 2U; /* 666.67 / 2 = 333 MHz */
+        csiClkCfg.mux    = kCLOCK_MIPICSI_ClockRoot_MEDIAPLL;
+        csiClkCfg.div    = 1U;
         CLOCK_SetRootClock(kCLOCK_Root_MEDIA_mipicsi_clk, &csiClkCfg);
         CLOCK_PowerOnRootClock(kCLOCK_Root_MEDIA_mipicsi_clk);
     }
-    CLOCK_EnableClock(kCLOCK_MEDIA_mipi_csi);
 
+    PRINTF("kCLOCK_Root_MEDIA_mipicsi_escclk: %d\r\n", CLOCK_GetRootClockFreq(kCLOCK_Root_MEDIA_mipicsi_escclk));
+    PRINTF("kCLOCK_Root_MEDIA_mipicsi_clk: %d\r\n", CLOCK_GetRootClockFreq(kCLOCK_Root_MEDIA_mipicsi_clk));
+    CLOCK_EnableClock(kCLOCK_MEDIA_mipi_csi);
     CLOCK_EnableClock(kCLOCK_MEDIA_isi);
 
+    /* Settle timer lookup */
     for (uint32_t i = 0U; i < ARRAY_SIZE(s_ov5640Settle); i++)
     {
         if ((s_ov5640Settle[i].resolution ==
@@ -153,14 +175,19 @@ void BOARD_InitCameraInterface(void)
     }
 
     CSI2RX_GetDefaultConfig(&csiConfig);
-    csiConfig.laneNum        = APP_MIPI_CSI_LANES;
-    csiConfig.tHsSettle_EscClk = dataSettle;
-    csiConfig.tClkSettle_EscClk  = APP_MIPI_CSI_CLK_SETTLE;
-    csiConfig.flushCount     = APP_MIPI_CSI_FLUSH_COUNT;
+    csiConfig.laneNum           = APP_MIPI_CSI_LANES;
+    csiConfig.tHsSettle_EscClk  = dataSettle;
+    csiConfig.tClkSettle_EscClk = APP_MIPI_CSI_CLK_SETTLE;
+    csiConfig.flushCount        = APP_MIPI_CSI_FLUSH_COUNT;
 
-    (void)CSI2RX_Init(APP_MIPI_CSI, &csiConfig);
+    status_t ret = CSI2RX_Init(APP_MIPI_CSI, &csiConfig);
+    PRINTF("CSI2RX_Init: %s\r\n", ret == kStatus_Success ? "OK" : "TIMEOUT");
 
-    MEDIA__REFORMATTER->PLM_CTRL.SET = REFORMATTER_PLM_CTRL_ENABLE_MASK;
+    REFORMATTER_GetDefaultConfig(&refConfig);
+    refConfig.signalConfig.enable         = true;
+    refConfig.signalConfig.validForceHigh = true;
+    refConfig.enableConversion            = false;
+    REFORMATTER_Init(MEDIA__REFORMATTER, &refConfig);
 
     /* Enable error interrupts for diagnostics. */
     CSI2RX_EnableInterrupts(APP_MIPI_CSI,
@@ -168,4 +195,9 @@ void BOARD_InitCameraInterface(void)
                               kCSI2RX_InterruptEcc2BitError  |
                               kCSI2RX_InterruptLaneError     |
                               kCSI2RX_InterruptInternalError);
+}
+
+void APP_ISI_IRQHandler(void)
+{
+    ISI_ADAPTER_IRQHandler(&cameraReceiver);
 }

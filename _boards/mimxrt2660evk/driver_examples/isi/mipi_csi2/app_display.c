@@ -70,22 +70,27 @@ void APP_InitDisplay(uint32_t frameBuffer, app_display_callback_t callback)
 
     g_dc.ops->getLayerDefaultConfig(&g_dc, APP_DC_LAYER, &s_fbInfo);
     s_fbInfo.pixelFormat = kVIDEO_PixelFormatRGB565;
-    s_fbInfo.width       = APP_CAMERA_WIDTH;
-    s_fbInfo.height      = APP_CAMERA_HEIGHT;
+    s_fbInfo.width       = APP_CAMERA_OUTPUT_WIDTH;
+    s_fbInfo.height      = APP_CAMERA_OUTPUT_HEIGHT;
     s_fbInfo.startX      = 0U;
     s_fbInfo.startY      = 0U;
-    s_fbInfo.strideBytes = APP_CAMERA_WIDTH * 2U;
+    s_fbInfo.strideBytes = APP_CAMERA_OUTPUT_WIDTH * 2U;
     (void)g_dc.ops->setLayerConfig(&g_dc, APP_DC_LAYER, &s_fbInfo);
 
     g_dc.ops->setCallback(&g_dc, APP_DC_LAYER, APP_DcSwitchOffCallback, NULL);
 
     s_display.activeFb       = frameBuffer;
-    s_display.isFramePending = true;
-    g_dc.ops->setFrameBuffer(&g_dc, APP_DC_LAYER, (void *)(uintptr_t)frameBuffer);
+}
+
+void APP_StartDisplay(uint32_t firstFrameBuffer)
+{
+
+    s_display.isFramePending = false;
+    g_dc.ops->setFrameBuffer(&g_dc, APP_DC_LAYER, (void *)firstFrameBuffer);
 
     if (0U == (g_dc.ops->getProperty(&g_dc) & (uint32_t)kDC_FB_ReserveFrameBuffer))
     {
-        while (s_display.isFramePending)
+        while (!s_display.isFramePending)
         {
         }
     }
