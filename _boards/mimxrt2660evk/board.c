@@ -192,7 +192,7 @@ void BOARD_ConfigTRDC(void)
         COMM__TRDC->MDA_DFMT1[i].MDA_W_DFMT1[0] =
             TRDC_MDA_W_DFMT1_DID(0) | TRDC_MDA_W_DFMT1_VLD_MASK;
     }
-    for (uint32_t i = 0U; i <= (uint32_t)kTRDC_MEDIA_MasterGPU_CCD; i++)
+    for (uint32_t i = 0U; i <= (uint32_t)kTRDC_MEDIA_MasterJPEG; i++)
     {
         MEDIA__TRDC->MDA_DFMT1[i].MDA_W_DFMT1[0] =
             TRDC_MDA_W_DFMT1_DID(0) | TRDC_MDA_W_DFMT1_VLD_MASK;
