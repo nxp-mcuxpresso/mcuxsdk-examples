@@ -124,7 +124,7 @@ int main(void)
         /* Set up the transfer data */
         for (i = 0; i < TRANSFER_SIZE; i++)
         {
-            slaveTxData[i] = (i + loopCount) % 256U;
+            slaveTxData[i] = (uint8_t)((i + loopCount) % 256U);
             slaveRxData[i] = 0;
         }
 
