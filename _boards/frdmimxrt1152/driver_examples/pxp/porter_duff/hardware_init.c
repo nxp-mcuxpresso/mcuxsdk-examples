@@ -8,6 +8,7 @@
 #include "fsl_soc_src.h"
 #include "board.h"
 #include "app.h"
+#include "display_support.h"
 /*${header:end}*/
 
 /*${function:start}*/
@@ -31,6 +32,10 @@ void BOARD_InitHardware(void)
     BOARD_ResetDisplayMix();
     BOARD_InitBootPins();
     BOARD_Init6524Pins();
+#if (DEMO_PANEL == DEMO_PANEL_RASPI_7INCH)
+    BOARD_MIPIPanelTouch_I2C_Init();
+    BOARD_InitI2CPins();
+#endif
     BOARD_InitDebugConsole();
 }
 /*${function:end}*/
