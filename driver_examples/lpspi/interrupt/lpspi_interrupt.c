@@ -367,6 +367,7 @@ int main(void)
 
     PRINTF("End of example. \r\n");
 
+    /* Intentional infinite loop. */
     while (1)
     {
     }
