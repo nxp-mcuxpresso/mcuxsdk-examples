@@ -12,6 +12,7 @@
 #include "app_display.h"
 #include "isi_config.h"
 #include "isi_example.h"
+#include "fsl_isi_camera_adapter.h"
 #include "fsl_debug_console.h"
 
 #include "board.h"
@@ -68,7 +69,7 @@ int main(void)
         .pixelFormat                = kVIDEO_PixelFormatRGB565,
         .bytesPerPixel              = APP_BPP,
         .resolution                 = FSL_VIDEO_RESOLUTION(APP_CAMERA_WIDTH, APP_CAMERA_HEIGHT),
-        .frameBufferLinePitch_Bytes = APP_CAMERA_WIDTH * APP_BPP,
+        .frameBufferLinePitch_Bytes = APP_CAMERA_OUTPUT_WIDTH * APP_BPP,
         .interface                  = kCAMERA_InterfaceMIPI,
         .controlFlags               = APP_CAMERA_CONTROL_FLAGS,
         .framePerSec                = APP_CAMERA_FRAME_RATE,
@@ -79,6 +80,13 @@ int main(void)
     BOARD_InitHardware();
 
     PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
+    isi_ext_config_t isiExtConfig = {
+        .outputBytesPerPixel   = APP_BPP,
+        .outputPixelFormat     = kVIDEO_PixelFormatRGB565,
+        .outputFrameResolution = FSL_VIDEO_RESOLUTION(APP_CAMERA_OUTPUT_WIDTH, APP_CAMERA_OUTPUT_HEIGHT),
+        .flags                 = 0,
+    };
 
     memset(s_frameBuffer, 0, sizeof(s_frameBuffer));
 
@@ -94,7 +102,7 @@ int main(void)
      * Configure the camera.
      * First enable ISI, the enable MIPI_CSI, at last enable the sensor.
      */
-    status = CAMERA_RECEIVER_Init(&cameraReceiver, &cameraConfig, NULL, NULL);
+    status = CAMERA_RECEIVER_InitExt(&cameraReceiver, &cameraConfig, &isiExtConfig, NULL, NULL);
 
     if (kStatus_Success != status)
     {
@@ -125,6 +133,15 @@ int main(void)
 
     CAMERA_DEVICE_Start(&cameraDevice);
 
+    /* Wait for the first camera frame before enabling display.
+     * For the DBI interface display, application must wait for the first
+     * frame buffer sent to the panel */
+    while (kStatus_Success != CAMERA_RECEIVER_GetFullBuffer(&cameraReceiver, &fullCameraBufferAddr))
+    {
+    }
+
+    /* Submit first frame and enable display layer. */
+    APP_StartDisplay(fullCameraBufferAddr);
     while (1)
     {
         /* Wait to get the full frame buffer to show. */
