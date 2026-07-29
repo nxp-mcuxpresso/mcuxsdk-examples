@@ -80,6 +80,7 @@ fmstr_example_pdbdm:
     lpcxpresso860max: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
+    mimxrt2660evk: []
     mimxrt685audevk@cm33: []
     mimxrt700evk@cm33_core0: []
     mimxrt700evk@cm33_core1: []

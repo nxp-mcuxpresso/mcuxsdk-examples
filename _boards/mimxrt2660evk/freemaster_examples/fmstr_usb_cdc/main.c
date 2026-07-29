@@ -44,8 +44,6 @@ int main(void)
 {
     /* Board initialization */
     BOARD_CommonSetting();
-    BOARD_InitDEBUG_UARTPins();
-    BOARD_InitDebugConsole();
 
 #if defined(USB_DEVICE_CONFIG_EHCI) && (USB_DEVICE_CONFIG_EHCI > 0U)
     uint32_t usbClockFreq = 24000000;

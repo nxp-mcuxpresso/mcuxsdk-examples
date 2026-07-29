@@ -38,8 +38,6 @@ int main(void)
 {
     /* Board initialization */
     BOARD_CommonSetting();
-    BOARD_InitDEBUG_UARTPins();
-    BOARD_InitDebugConsole();
 
     /* This example uses shared code from FreeMASTER generic example application */
     FMSTR_Example_Init();

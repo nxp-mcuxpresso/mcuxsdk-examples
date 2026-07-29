@@ -31,6 +31,19 @@ fmstr_example_wifi:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    mimxrt2660evk:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@psram_debug
+    - -armgcc@psram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@psram_debug
+    - -iar@psram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@psram_debug
+    - -mdk@psram_release
     rdrw612bga:
     - -armgcc@debug
     - -armgcc@release

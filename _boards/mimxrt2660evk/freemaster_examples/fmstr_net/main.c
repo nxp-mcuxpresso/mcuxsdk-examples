@@ -63,7 +63,6 @@ int main(void)
 
     /* Board initialization */
     BOARD_CommonSetting();
-    BOARD_InitDEBUG_UARTPins();
     BOARD_InitENETPins();
     BOARD_Init6524Pins();
 
@@ -73,7 +72,6 @@ int main(void)
     /* Refresh SystemCoreClock from the configured clock tree; otherwise it stays at the static
      * DEFAULT_SYSTEM_CLOCK and SysTick-based timing (e.g. iperf throughput) reads at the wrong rate. */
     SystemCoreClockUpdate();
-    BOARD_InitDebugConsole();
 
     /* The shared clock tree leaves ETH1_TRXCLK at 250MHz; the ENET1G RGMII RX delay-line reference
      * must be 125MHz (RM), so re-divide it here rather than in the board-wide clock config. */

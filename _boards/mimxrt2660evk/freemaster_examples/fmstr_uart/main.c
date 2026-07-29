@@ -23,10 +23,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Defines
 ////////////////////////////////////////////////////////////////////////////////
-#define EXAMPLE_UART_BASE                     HSP__LPUART_1
-#define EXAMPLE_UART_INTERRUPT                HSP_LPUART1_IRQn
-#define EXAMPLE_UART_INTERRUPT_HANDLER        HSP_LPUART1_IRQHandler
-#define EXAMPLE_UART_CLOCK_FREQUENCY          BOARD_DEBUG_UART_CLK_FREQ
+#define EXAMPLE_UART_BASE                     HSP__LPUART_0
+#define EXAMPLE_UART_INTERRUPT                HSP_LPUART0_IRQn
+#define EXAMPLE_UART_INTERRUPT_HANDLER        HSP_LPUART0_IRQHandler
+#define EXAMPLE_UART_CLOCK_FREQUENCY          CLOCK_GetRootClockFreq(kCLOCK_Root_MAIN_lpuart0_fclk)
 #define EXAMPLE_UART_BAUD_RATE                115200U
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -49,7 +49,9 @@ static void init_freemaster_lpuart(void);
 int main(void)
 {
     /* Board initialization */
-    BOARD_CommonSetting();
+    BOARD_ConfigMPU();
+    BOARD_InitBootClocks();
+    BOARD_ConfigTRDC();
     BOARD_InitDEBUG_UARTPins();
 
     /* FreeMASTER communication layer initialization */

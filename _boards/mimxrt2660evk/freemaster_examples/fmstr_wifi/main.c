@@ -61,11 +61,9 @@ int main(void)
 
     /* Board initialization */
     BOARD_CommonSetting();
-    BOARD_InitDEBUG_UARTPins();
     BOARD_InitUSDHC0Pins();
     BOARD_Init6524Pins();
     BOARD_InitPCA9555Pins();
-    BOARD_InitDebugConsole();
 
     /* FreeMaster task */
     if (xTaskCreate(fmstr_task, "fmstr_task", EXAMPLE_FMSTR_THREAD_STACKSIZE, NULL, EXAMPLE_FMSTR_THREAD_PRIO, NULL) ==

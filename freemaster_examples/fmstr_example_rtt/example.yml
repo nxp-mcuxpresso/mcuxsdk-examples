@@ -74,6 +74,7 @@ fmstr_example_rtt:
     lpcxpresso55s69@cm33_core0: []
     mcxw72evk@cm33_core0: []
     mcxw72loc@cm33_core0: []
+    mimxrt2660evk: []
     mimxrt700evk@cm33_core0: []
     mimxrt700evk@cm33_core1: []
     rdrw612bga: []

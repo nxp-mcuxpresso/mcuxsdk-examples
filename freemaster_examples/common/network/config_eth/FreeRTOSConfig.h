@@ -61,6 +61,11 @@
 #define configNUM_THREAD_LOCAL_STORAGE_POINTERS 5
 #define configUSE_APPLICATION_TASK_TAG          0
 
+#define configENABLE_MVE                        0
+#define configENABLE_FPU                        0
+#define configENABLE_TRUSTZONE                  0
+#define configENABLE_MPU                        0
+
 /* Used memory allocation (heap_x.c) */
 #define configFRTOS_MEMORY_SCHEME               3
 /* Tasks.c additions (e.g. Thread Aware Debug capability) */

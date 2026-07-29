@@ -271,6 +271,7 @@ fmstr_example_uart:
     mcxn9xxevk@cm33_core0: []
     mcxw72evk@cm33_core0: []
     mcxw72loc@cm33_core0: []
+    mimxrt2660evk: []
     mimxrt685audevk@cm33: []
     mimxrt700evk@cm33_core0: []
     mimxrt700evk@cm33_core1: []
