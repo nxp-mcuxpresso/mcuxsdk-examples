@@ -72,7 +72,7 @@ mcux_add_macro(
 )
 mcux_add_macro(
     TOOLCHAINS armgcc
-    TARGETS xspi_nor_psram_release xspi_nor_psram_debug
+    TARGETS xspi_nor_release xspi_nor_debug
     AS "-D__STARTUP_INITIALIZE_RAMFUNCTION"
 )
 
@@ -84,24 +84,24 @@ mcux_remove_mdk_configuration(
 # Add or remove Linker File Configurations
 mcux_remove_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
-    TARGETS xspi_nor_psram_release xspi_nor_psram_debug
-    LINKER devices/RT/RT2660/MIMXRT2663/gcc/MIMXRT2663xxxxx_xspi_nor_psram.ld
+    TARGETS xspi_nor_release xspi_nor_debug
+    LINKER devices/RT/RT2660/MIMXRT2663/gcc/MIMXRT2663xxxxx_xspi_nor.ld
 )
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
-    TARGETS xspi_nor_psram_release xspi_nor_psram_debug
-    LINKER devices/RT/RT2660/MIMXRT2663/iar/MIMXRT2663xxxxx_xspi_nor_psram.icf
+    TARGETS xspi_nor_release xspi_nor_debug
+    LINKER devices/RT/RT2660/MIMXRT2663/iar/MIMXRT2663xxxxx_xspi_nor.icf
 )
 # Add or remove Linker File Configurations
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
-    TARGETS xspi_nor_psram_release xspi_nor_psram_debug
-    LINKER examples/_boards/${board}/wifi_examples/common/linker/MIMXRT2663xxxxx_xspi_nor_psram.ld
+    TARGETS xspi_nor_release xspi_nor_debug
+    LINKER examples/_boards/${board}/wifi_examples/common/linker/MIMXRT2663xxxxx_xspi_nor.ld
 )
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
-    TARGETS xspi_nor_psram_release xspi_nor_psram_debug
-    LINKER examples/_boards/${board}/wifi_examples/common/linker/MIMXRT2663xxxxx_xspi_nor_psram.icf
+    TARGETS xspi_nor_release xspi_nor_debug
+    LINKER examples/_boards/${board}/wifi_examples/common/linker/MIMXRT2663xxxxx_xspi_nor.icf
 )
 
 mcux_add_iar_configuration(
