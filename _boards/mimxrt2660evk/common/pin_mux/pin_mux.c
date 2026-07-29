@@ -730,28 +730,28 @@ void BOARD_InitCSIPins(void) {
       IOMUXC_PIO3_20_MEDIA_CSI_FIELD,         /* PIO3_20 is configured as MEDIA_CSI_FIELD */
       0x80U);                                 /* Input Buffer Enable: Enables */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO4_14_MEDIA_CSI_DATA09,        /* PIO4_14 is configured as MEDIA_CSI_DATA09 */
+      IOMUXC_PIO3_9_MEDIA_CSI_DATA09,         /* PIO3_9 is configured as MEDIA_CSI_DATA09 */
       0x80U);                                 /* Input Buffer Enable: Enables */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO4_15_MEDIA_CSI_DATA08,        /* PIO4_15 is configured as MEDIA_CSI_DATA08 */
+      IOMUXC_PIO3_8_MEDIA_CSI_DATA08,         /* PIO3_8 is configured as MEDIA_CSI_DATA08 */
       0x80U);                                 /* Input Buffer Enable: Enables */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO4_16_MEDIA_CSI_DATA07,        /* PIO4_16 is configured as MEDIA_CSI_DATA07 */
+      IOMUXC_PIO3_7_MEDIA_CSI_DATA07,         /* PIO3_7 is configured as MEDIA_CSI_DATA07 */
       0x80U);                                 /* Input Buffer Enable: Enables */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO4_17_MEDIA_CSI_DATA06,        /* PIO4_17 is configured as MEDIA_CSI_DATA06 */
+      IOMUXC_PIO3_6_MEDIA_CSI_DATA06,         /* PIO3_6 is configured as MEDIA_CSI_DATA06 */
       0x80U);                                 /* Input Buffer Enable: Enables */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO4_18_MEDIA_CSI_DATA05,        /* PIO4_18 is configured as MEDIA_CSI_DATA05 */
+      IOMUXC_PIO3_5_MEDIA_CSI_DATA05,         /* PIO3_5 is configured as MEDIA_CSI_DATA05 */
       0x80U);                                 /* Input Buffer Enable: Enables */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO4_19_MEDIA_CSI_DATA04,        /* PIO4_19 is configured as MEDIA_CSI_DATA04 */
+      IOMUXC_PIO3_4_MEDIA_CSI_DATA04,         /* PIO3_4 is configured as MEDIA_CSI_DATA04 */
       0x80U);                                 /* Input Buffer Enable: Enables */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO4_20_MEDIA_CSI_DATA03,        /* PIO4_20 is configured as MEDIA_CSI_DATA03 */
+      IOMUXC_PIO3_3_MEDIA_CSI_DATA03,         /* PIO3_3 is configured as MEDIA_CSI_DATA03 */
       0x80U);                                 /* Input Buffer Enable: Enables */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO4_21_MEDIA_CSI_DATA02,        /* PIO4_21 is configured as MEDIA_CSI_DATA02 */
+      IOMUXC_PIO3_2_MEDIA_CSI_DATA02,         /* PIO3_2 is configured as MEDIA_CSI_DATA02 */
       0x80U);                                 /* Input Buffer Enable: Enables */
 }
 
