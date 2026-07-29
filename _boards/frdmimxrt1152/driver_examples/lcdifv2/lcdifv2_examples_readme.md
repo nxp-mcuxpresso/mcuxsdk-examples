@@ -3,11 +3,11 @@ Hardware requirements
 - Type-C USB cable
 - FRDM-IMXRT1152 board
 - Personal Computer
-- RK055MHD091 panel or RK055AHD091 panel or RK055IQH091 panel or RaspberryPi panel
+- RK055MHD091 panel or RK055AHD091 panel or RK055IQH091 panel or Raspberry Pi 7 inch panel
 
 Board settings
 ============
-Connect the panel to J62. For RaspberryPi panel, connect the panel to J58,
+Connect the panel to J62. For Raspberry Pi 7 inch panel, connect the panel to J58,
 then connect the panel's 5V pin to J56-1, GND pin to J56-2.
 
 Prepare the Demo
@@ -19,9 +19,9 @@ Prepare the Demo
     - No parity
     - One stop bit
     - No flow control
-3.  Build the project, the project uses RASPI by default, to use other panels,
+3.  Build the project, the project uses Raspberry Pi 7 inch panel by default, to use other panels,
     change
-    #define USE_MIPI_PANEL DEMO_PANEL_RASPI_7INCH
+    #define USE_MIPI_PANEL MIPI_PANEL_RASPI_7INCH
     to
     #define USE_MIPI_PANEL MIPI_PANEL_RK055IQH091
     or
