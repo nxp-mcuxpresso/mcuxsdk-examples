@@ -1,3 +1,7 @@
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 mcux_add_armgcc_configuration(
   LD "-Xlinker --defsym=__heap_size__=0x1000"
 )

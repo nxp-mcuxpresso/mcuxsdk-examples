@@ -1,3 +1,7 @@
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 mcux_add_macro(
     TOOLCHAINS armgcc iar mdk mcux
     TARGETS debug release psram_debug psram_release psram_txt_debug psram_txt_release xspi_nor_debug xspi_nor_release xspi_nor_psram_debug xspi_nor_psram_release

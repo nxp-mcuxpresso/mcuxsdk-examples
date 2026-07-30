@@ -1,3 +1,6 @@
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
 
 # Heap configuration
 mcux_add_linker_symbol(

@@ -1,3 +1,7 @@
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
   INCLUDES  ${board_root}/${board}/eiq_examples/tflm_label_image_ext_mem/npu

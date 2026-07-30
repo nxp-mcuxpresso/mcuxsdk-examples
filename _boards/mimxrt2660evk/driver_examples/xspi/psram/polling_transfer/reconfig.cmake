@@ -1,3 +1,7 @@
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 mcux_project_remove_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/driver_examples/xspi/psram/polling_transfer/xspi_psram_ops.c

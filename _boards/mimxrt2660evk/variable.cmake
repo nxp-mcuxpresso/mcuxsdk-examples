@@ -1,3 +1,7 @@
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 mcux_set_variable(board mimxrt2660evk)
 mcux_set_variable(board_root examples/_boards)
 

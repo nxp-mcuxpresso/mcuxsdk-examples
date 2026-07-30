@@ -1,3 +1,7 @@
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 # CHECKSUM_GEN_IP=1: RT2660 ENET_QOS has no HW TX checksum offload, so lwIP computes checksums.
 mcux_add_macro(CC "-DBOARD_USE_PCAL6524=1 -DSDK_I2C_BASED_COMPONENT_USED=1 -DCHECKSUM_GEN_IP=1")
 

@@ -1,3 +1,7 @@
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 # Add set(CONFIG_USE_utility_jlinkscript true) in config.cmake to use this component
 
 include_guard(GLOBAL)

@@ -1,26 +1,23 @@
 /*
 ** ###################################################################
-**     Processors:          MIMXRT2663CVJ5A
-**                          MIMXRT2663CVJ5B
-**                          MIMXRT2663CVL5A
-**                          MIMXRT2663CVL5B
-**                          MIMXRT2663DVJ6A
-**                          MIMXRT2663DVJ6B
-**                          MIMXRT2663DVL6A
-**                          MIMXRT2663DVL6B
-**                          MIMXRT2663DVN6B
-**                          MIMXRT2663XVN5B
+**     Processors:          MIMXRT2663AHP8A
+**                          MIMXRT2663CHPAA
+**                          MIMXRT2663CVVAA
+**                          MIMXRT2663DHPAA
+**                          MIMXRT2663DVVAA
+**                          MIMXRT2663XHP8A
+**                          MIMXRT2663XVV8A
 **
 **     Compiler:            GNU C Compiler
-**     Reference manual:    IMXRT2660RM Rev.3, 07/2021 | IMXRT266XSRM Rev.0
-**     Version:             rev. 0.2, 2022-03-25
-**     Build:               b241024
+**     Reference manual:    iMXRT2660RM Rev.2 DraftA, 05/2024
+**     Version:             rev. 1.0, 2024-11-05
+**     Build:               b260603
 **
 **     Abstract:
 **         Linker file for the GNU C Compiler
 **
-**     Copyright 2016 Freescale Semiconductor, Inc.
-**     Copyright 2026 NXP
+**     Copyright 1997-2016 Freescale Semiconductor, Inc.
+**     Copyright 2016-2026 NXP
 **     SPDX-License-Identifier: BSD-3-Clause
 **
 **     http:                 www.nxp.com
@@ -29,7 +26,6 @@
 ** ###################################################################
 */
 
-/* Entry Point */
 ENTRY(Reset_Handler)
 
 /*

@@ -1,3 +1,7 @@
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 mcux_remove_armgcc_linker_script(
         TARGETS debug release
         BASE_PATH ${SdkRootDirPath}

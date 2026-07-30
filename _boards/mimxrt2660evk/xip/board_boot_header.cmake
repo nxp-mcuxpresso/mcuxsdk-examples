@@ -1,3 +1,7 @@
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 # Add set(CONFIG_USE_board_boot_header true) in config.cmake to use this component
 
 include_guard(GLOBAL)

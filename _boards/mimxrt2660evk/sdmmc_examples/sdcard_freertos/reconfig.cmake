@@ -1,3 +1,7 @@
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES ${board_root}/${board}/sdmmc_config.c
