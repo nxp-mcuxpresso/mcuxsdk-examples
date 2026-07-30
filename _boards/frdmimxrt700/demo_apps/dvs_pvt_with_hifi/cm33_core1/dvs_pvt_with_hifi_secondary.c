@@ -260,6 +260,7 @@ static bool adjust_vdd1(void)
     {
         /* PVT interrupt fired, so we increase VDD1 */
         cur_voltage = cur_voltage + DEMO_PMIC_ADJUST_STEP;
+        cur_voltage = (cur_voltage > MAX_VDD1) ? MAX_VDD1 : cur_voltage;
         BOARD_SetPmicVdd1Voltage(cur_voltage);
         pvt_wait_timer_start(CPU1_PMIC_SETTLING_TIME_MS, pvt_wait_timer_callback);
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);

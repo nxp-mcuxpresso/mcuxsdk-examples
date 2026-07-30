@@ -303,6 +303,7 @@ static bool adjust_vddcore(void)
     {
         /* PVT interrupt fired, so we increase VDDCORE */
         cur_voltage = cur_voltage + DEMO_PMIC_ADJUST_STEP;
+        cur_voltage = (cur_voltage > MAX_VDDCORE) ? MAX_VDDCORE : cur_voltage;
         BOARD_SetPmicVdd2Voltage(cur_voltage);
         pvt_wait_timer_start(PMIC_SETTLING_TIME_MS, pvt_wait_timer_callback);
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
