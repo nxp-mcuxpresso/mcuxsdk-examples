@@ -180,6 +180,7 @@ LR_m_text   m_text_start   m_text_size
     fsl_clock.o (+RO)
     memseta.o (+RO)
     fsl_memcpy.o (+RO +RW +ZI)
+    fsl_memset.o (+RO +RW +ZI)
     uldiv.o (+RO +RW +ZI)
     llshl.o (+RO +RW +ZI)
     llushr.o (+RO +RW +ZI)

@@ -90,6 +90,10 @@ SECTIONS
         */nor_flash_ops.c.obj
         */fsl_flexspi.c.obj
         */fsl_clock.c.obj
+        */fsl_memcpy.S.obj
+        */fsl_memset.S.obj
+        */lib_a-memcmp.obj
+        */lib_a-memset.o.obj
     ) .text)                 /* .text sections (code) */
     *(EXCLUDE_FILE(
         /* Exclude flash and frequently executed functions from XIP */
@@ -97,6 +101,10 @@ SECTIONS
         */nor_flash_ops.c.obj
         */fsl_flexspi.c.obj
         */fsl_clock.c.obj
+        */fsl_memcpy.S.obj
+        */fsl_memset.S.obj
+        */lib_a-memcmp.obj
+        */lib_a-memset.o.obj
     ) .text*)                /* .text* sections (code) */
     *(EXCLUDE_FILE(
         /* Exclude flash and frequently executed functions from XIP */
@@ -104,6 +112,10 @@ SECTIONS
         */nor_flash_ops.c.obj
         */fsl_flexspi.c.obj
         */fsl_clock.c.obj
+        */fsl_memcpy.S.obj
+        */fsl_memset.S.obj
+        */lib_a-memcmp.obj
+        */lib_a-memset.o.obj
     ) .rodata)               /* .rodata sections (constants, strings, etc.) */
     *(EXCLUDE_FILE(
         /* Exclude flash and frequently executed functions from XIP */
@@ -111,6 +123,10 @@ SECTIONS
         */nor_flash_ops.c.obj
         */fsl_flexspi.c.obj
         */fsl_clock.c.obj
+        */fsl_memcpy.S.obj
+        */fsl_memset.S.obj
+        */lib_a-memcmp.obj
+        */lib_a-memset.o.obj
     ) .rodata*)              /* .rodata* sections (constants, strings, etc.) */
     *(.glue_7)               /* glue arm to thumb code */
     *(.glue_7t)              /* glue thumb to arm code */
@@ -204,6 +220,10 @@ SECTIONS
     */nor_flash_ops.c.obj(.text .text* .rodata .rodata*)
     */fsl_flexspi.c.obj(.text .text* .rodata .rodata*)
     */fsl_clock.c.obj(.text .text* .rodata .rodata*)
+    */fsl_memcpy.S.obj(.text .text* .rodata .rodata*)
+    */fsl_memset.S.obj(.text .text* .rodata .rodata*)
+    */lib_a-memcmp.obj(.text .text* .rodata .rodata*)
+    */lib_a-memset.o.obj(.text .text* .rodata .rodata*)
     *(.data)                 /* .data sections */
     *(.data*)                /* .data* sections */
     KEEP(*(.jcr*))

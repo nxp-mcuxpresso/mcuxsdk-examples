@@ -91,6 +91,7 @@ SECTIONS
         */fsl_flexspi.c.obj
         */fsl_clock.c.obj
         */fsl_memcpy.S.obj
+        */fsl_memset.S.obj
         */lib_a-memcmp.obj
         */lib_a-memset.o.obj
     ) .text)                 /* .text sections (code) */
@@ -101,6 +102,7 @@ SECTIONS
         */fsl_flexspi.c.obj
         */fsl_clock.c.obj
         */fsl_memcpy.S.obj
+        */fsl_memset.S.obj
         */lib_a-memcmp.obj
         */lib_a-memset.o.obj
     ) .text*)                /* .text* sections (code) */
@@ -111,6 +113,7 @@ SECTIONS
         */fsl_flexspi.c.obj
         */fsl_clock.c.obj
         */fsl_memcpy.S.obj
+        */fsl_memset.S.obj
         */lib_a-memcmp.obj
         */lib_a-memset.o.obj
     ) .rodata)               /* .rodata sections (constants, strings, etc.) */
@@ -121,6 +124,7 @@ SECTIONS
         */fsl_flexspi.c.obj
         */fsl_clock.c.obj
         */fsl_memcpy.S.obj
+        */fsl_memset.S.obj
         */lib_a-memcmp.obj
         */lib_a-memset.o.obj
     ) .rodata*)              /* .rodata* sections (constants, strings, etc.) */
@@ -217,6 +221,7 @@ SECTIONS
     */fsl_flexspi.c.obj(.text .text* .rodata .rodata*)
     */fsl_clock.c.obj(.text .text* .rodata .rodata*)
     */fsl_memcpy.S.obj(.text .text* .rodata .rodata*)
+    */fsl_memset.S.obj(.text .text* .rodata .rodata*)
     */lib_a-memcmp.obj(.text .text* .rodata .rodata*)
     */lib_a-memset.o.obj(.text .text* .rodata .rodata*)
     *(.data)                 /* .data sections */

@@ -169,7 +169,9 @@ SECTIONS
         *fsl_flexspi_nor_flash.c.obj
         *fsl_flexspi.c.obj
         *nor_flash_ops.c.obj
-        *fsl_clock.c.obj)
+        *fsl_clock.c.obj
+        *fsl_memcpy.S.obj
+        *fsl_memset.S.obj)
       *(.text .rodata .text* .rodata*)
     *(.glue_7)               /* glue arm to thumb code */
     *(.glue_7t)              /* glue thumb to arm code */
@@ -282,6 +284,8 @@ SECTIONS
     *fsl_flexspi.c.obj(.text .text* .rodata .rodata*)
     *nor_flash_ops.c.obj(.text .text* .rodata .rodata*)
     *fsl_clock.c.obj(.text .text* .rodata .rodata*)
+    *fsl_memcpy.S.obj(.text .text* .rodata .rodata*)
+    *fsl_memset.S.obj(.text .text* .rodata .rodata*)
     . = ALIGN(128);
     __ram_function_end__ = .;
   } > m_qacode
