@@ -8,11 +8,9 @@ import base64
 import collections
 import json
 import os
+import time
 
 from modelrunner import Dut
-
-import os
-import time
 
 BasePath = os.path.dirname(os.path.realpath(__file__))
 if(not os.path.isdir("%s/logs" %BasePath)):
@@ -79,20 +77,35 @@ def v1_put(serialId):
 
 @app.route("/serial/<serialId>/v1", methods = ["POST"])
 def v1_post(serialId):
-    outputs = request.args.getlist("output")
-    run = request.args.get("run")
-    tensor = None
+    # Index-based input tensor loading via field name prefix "input_idx_<N>":
+    #   -F "input_idx_0=@a.bin"              -> tensor_loadb input_idx_0
+    #   -F "input_idx_1=@b.bin"              -> tensor_loadb input_idx_1
+    # Name-based (original) when field name does NOT start with "input_idx_":
+    #   -F "input_name=@a.bin"               -> tensor_loadb input_name
+    #
+    # Multiple outputs via repeated URL param:
+    #   ?run=1&output_idx=0&output_idx=1
     dut = Dut(serialId)
-    for filename in request.files.keys():
-        buf = request.files[filename].stream.read()
-        with open('%s/tmp.input' %BasePath, 'wb+') as fd:
+    for i, fieldname in enumerate(request.files.keys()):
+        buf = request.files[fieldname].stream.read()
+        tmp_path = "%s/tmp_%d.input" % (BasePath, i)
+        with open(tmp_path, 'wb+') as fd:
             fd.write(buf)
-        tensor = "%s/tmp.input" %BasePath
-        dut.send_file("tensor_loadb %s" %filename, tensor)
-    param = request.full_path.split("?")[1].replace("&", " ")
-    results = dut.send_cmd("run %s"%param)
+        if fieldname.startswith("input_idx_"):
+            # extract tensor index from field name, e.g. "input_idx_0" -> 0
+            tensor_idx = fieldname[len("input_idx_"):]
+            ret, err_msg = dut.send_file("tensor_loadb input_idx_%s" % tensor_idx, tmp_path)
+        else:
+            # name-based fallback (original behavior)
+            ret, err_msg = dut.send_file("tensor_loadb %s" % fieldname, tmp_path)
+        if ret != 0:
+            del(dut)
+            return {"error": err_msg}
+    # forward the full query string as run params (output_idx repeats are preserved)
+    param = request.full_path.split("?")[1]
+    param = param.replace("&", " ")
+    results = dut.send_cmd("run %s" % param)
     r = json.loads(results)
-
     del(dut)
     return r
 

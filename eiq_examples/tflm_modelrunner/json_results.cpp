@@ -31,7 +31,7 @@ int write_chunk(int sock, const char* data, size_t len) {
     if (write(sock, data, len) < 0) return -1;
     if (write(sock, "\r\n", 2) < 0) return -1;
 #else
-        PRINTF(data);
+        PRINTF("%s", data);
 #endif
     return 0;
 }
@@ -90,7 +90,16 @@ int inference_results(int sock, NNServer* server, int outputs_idx[], int n_outpu
                 if (data_len < 0 || data_len >= sizeof(data)) return -1;
                 if (write_chunk(sock, data, data_len) < 0) return -1;
 
-                data_len = snprintf(data, sizeof(data), "\"name\":\"%s\",", server->output.name[outputs_idx[i]]);
+                /* find the logical output index (position in outputs list) */
+                int out_logical_idx = -1;
+                for (int k = 0; k < server->output.outputs_size; k++) {
+                    if (server->output.index[k] == outputs_idx[i]) {
+                        out_logical_idx = k;
+                        break;
+                    }
+                }
+                data_len = snprintf(data, sizeof(data), "\"idx\":%d,\"name\":\"%s\",",
+                                    out_logical_idx, server->output.name[outputs_idx[i]]);
                 if (data_len < 0 || data_len >= sizeof(data)) return -1;
                 if (write_chunk(sock, data, data_len) < 0) return -1;
 
@@ -187,7 +196,7 @@ int model_info(int sock, NNServer* server){
         if (data_len < 0 || data_len >= sizeof(data)) return -1;
         if (write_chunk(sock, data, data_len) < 0) return -1;
 
-        data_len = snprintf(data, sizeof(data), "\"name\": \"%s\"",server->input.name[i]);
+        data_len = snprintf(data, sizeof(data), "\"idx\": %d,\"name\": \"%s\"", i, server->input.name[i]);
         if (data_len < 0 || data_len >= sizeof(data)) return -1;
         if (write_chunk(sock, data, data_len) < 0) return -1;
 
@@ -243,7 +252,7 @@ int model_info(int sock, NNServer* server){
 
 	int idx = server->output.index[i];
 
-        data_len = snprintf(data,sizeof(data), "\"name\": \"%s\"",server->output.name[idx]);
+        data_len = snprintf(data, sizeof(data), "\"idx\": %d,\"name\": \"%s\"", i, server->output.name[idx]);
         if (data_len < 0 || data_len >= sizeof(data)) return -1;
         if (write_chunk(sock, data, data_len) < 0) return -1;
 
@@ -309,7 +318,9 @@ int model_info(int sock, NNServer* server){
         if (data_len < 0 || data_len >= sizeof(data)) return -1;
         if (write_chunk(sock, data, data_len) < 0) return -1;
 
-        data_len = snprintf(data, sizeof(data), ",\"timing\": %lld", server->layers.timing[i]/server->inference_count);
+        int64_t layer_timing = (server->inference_count > 0) ?
+            server->layers.timing[i] / server->inference_count : 0;
+        data_len = snprintf(data, sizeof(data), ",\"timing\": %lld", layer_timing);
         if (data_len < 0 || data_len >= sizeof(data)) return -1;
         if (write_chunk(sock, data, data_len) < 0) return -1;
 

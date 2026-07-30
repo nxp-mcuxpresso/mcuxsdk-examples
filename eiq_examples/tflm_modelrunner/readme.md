@@ -136,7 +136,24 @@ ModelRunner is a benchmarking tool for running TensorFlow Lite models on NXP mic
 4. **Benchmark**
    Users can provide dataset according to model's input and prepare benchmark test code for further interpretation.
 
-  4.1. **Upload Model**
+  4.1. **Check Connection**
+   ```bash
+   curl http://<IP>:<port>/serial/<serial-id>/v1
+   ```
+   Verify the board is reachable and get engine info:
+   ```json
+   {
+     "engine": "TensorFlow Lite",
+     "model_limits": {
+       "block_size": 104857600,
+       "max_input_size": 607500,
+       "max_layers": 512,
+       "max_model_size": 20971520
+     }
+   }
+   ```
+
+  4.2. **Upload Model**
    ```bash
    curl -X PUT http://<IP>:<port>/serial/<serial-id>/v1 -d "block_count=1"
    
@@ -160,7 +177,7 @@ model_loadb 53936936
 ######### 53936 bytes received #########
    ```
 
-  4.2. **Run Latency Benchmark**
+  4.3. **Run Latency Benchmark**
    ```bash
    curl -X POST http://<IP>:<port>/serial/<serial-id>/v1?run=1
    ```
@@ -171,7 +188,7 @@ model_loadb 53936936
    }
    ```
 
-  4.3. **Get Model Info**
+  4.4. **Get Model Info**
    ```bash
    curl http://<IP>:<port>/serial/<serial-id>/v1/model
    ```
@@ -181,6 +198,7 @@ model_loadb 53936936
   "inputs": [
     {
       "data_type": "INT8",
+      "idx": 0,
       "name": "input_1",
       "scale": 0.584703,
       "shape": [
@@ -211,6 +229,7 @@ model_loadb 53936936
   "outputs": [
     {
       "data_type": "INT8",
+      "idx": 0,
       "name": "Identity",
       "scale": 0.003906,
       "shape": [
@@ -224,7 +243,7 @@ model_loadb 53936936
 }
    ```
 
-  4.4. **Upload Input Tensor & Get Output Data**
+  4.5. **Upload Input Tensor & Get Output Data**
    ```bash
    curl -X POST "http://<IP>:<port>/serial/<serial-id>/v1?run=1&output=${output_tensor_name}" \
      -F 'file=@<path_to_input_tensor>.bin;filename="input_tensor;name=${input_tensor_name}"'
@@ -257,3 +276,67 @@ python cli.py com20
 => tensor_loadb input_1 tmp.input
 => run output=Identity
 ```
+
+##  Tensor Index Access
+
+ModelRunner supports two ways to identify input/output tensors: by **name** or by **index**.
+Index-based access is useful when tensor names are unavailable or differ across model formats (e.g., ONNX vs TFLite).
+
+### Step 1: Get Tensor Indices from Model Info
+
+Run the `model` command (UART) or `GET /v1/model` (HTTP) to list tensors with their indices:
+
+```json
+"inputs": [{"idx": 0, "name": "input_1", ...}],
+"outputs": [{"idx": 0, "name": "Identity", ...}]
+```
+
+### Step 2: Load Input Tensor by Index
+
+Use `input_idx_<N>` instead of the tensor name:
+
+```bash
+# Name-based (original)
+=> tensor_loadb input_1 tmp.input
+
+# Index-based (new)
+=> tensor_loadb input_idx_0 tmp.input
+```
+
+Via HTTP agent:
+```bash
+# Name-based (original)
+curl -X POST "http://<IP>:<port>/serial/<serial-id>/v1?run=1&output=Identity" \
+  -F "input_1=@input.bin"
+
+# Index-based (new)
+curl -X POST "http://<IP>:<port>/serial/<serial-id>/v1?run=1&output_idx=0" \
+  -F "input_idx_0=@input.bin"
+```
+
+### Step 3: Run Inference and Get Output by Index
+
+Use `output_idx=<N>` instead of `output=<name>`:
+
+```bash
+# Name-based (original)
+=> run output=Identity
+
+# Index-based (new)
+=> run output_idx=0
+```
+
+### When to Use Index vs Name
+
+| Scenario | Recommended |
+|---|---|
+| Tensor names are known and stable | `output=<name>` / `tensor_loadb <name>` |
+| Model has no tensor names (e.g., raw ONNX export) | `output_idx=<N>` / `tensor_loadb input_idx_<N>` |
+| Tensor names differ across model versions | `output_idx=<N>` / `tensor_loadb input_idx_<N>` |
+| Scripted/automated pipelines | `output_idx=<N>` (more robust) |
+
+### Error Handling
+
+- If the index is out of range, a clear error is returned:
+  - UART: `Input tensor index N out of range (valid: 0 ~ M)`
+  - HTTP: `{"error": "Output tensor index out of range"}`

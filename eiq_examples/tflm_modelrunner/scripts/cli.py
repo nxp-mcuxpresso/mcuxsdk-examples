@@ -15,11 +15,15 @@ def handler(sig, fram):
 
 def usage():
     u = '''
- model_loadb <model path> # Download TFLite Model
- tensor_loadb <input tensor name> <tensor path> # Download Input tensor
- run output=<output tensor name> # Model RunInference
- model # Print layer timings.
- exit # exit cli
+ model_loadb <model path>                        # Download TFLite model
+ tensor_loadb <tensor name> <tensor path>        # Download input tensor by name
+ tensor_loadb input_idx_<N> <tensor path>        # Download input tensor by index
+ run output=<tensor name>                        # Run inference, get output by name
+ run output_idx=<N>                              # Run inference, get output by index
+ run output_idx=<N> output_idx=<M>               # Run inference, get multiple outputs
+ model                                           # Print model info (inputs/outputs/layers)
+ reset                                           # Reset the board
+ exit                                            # Exit CLI
 '''
     print(u)
 

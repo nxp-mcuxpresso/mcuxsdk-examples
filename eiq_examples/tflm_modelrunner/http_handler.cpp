@@ -154,16 +154,25 @@ int http_parse_mime(NNServer* server, int sock, char* boundary,
 
 
     if (!data_buf){
-        for (int i=0; i<server->input.inputs_size; i++){
-            if (strcmp (name, server->input.name [i] ) == 0){
-                //for(int j=0; j<server->input.shape_size[i]; j++){
-                //    size *= server->input.shape_data[i][j];
-                //}
-                //size *= server->input.bytes[i];
-                data_buf = server->input.input_data [i];
-		server->input_tensor_load = 1;
-	    }
-	}
+        /* Index-based access: field name "input_idx_<N>" selects tensor by index */
+        if (strncmp(name, "input_idx_", 10) == 0) {
+            int idx = atoi(name + 10);
+            if (idx >= 0 && idx < server->input.inputs_size) {
+                data_buf = server->input.input_data[idx];
+                server->input_tensor_load = 1;
+            } else {
+                PRINTF("Input tensor index %d out of range (valid: 0 ~ %d)\r\n",
+                       idx, server->input.inputs_size - 1);
+            }
+        } else {
+            /* Name-based access (original behavior) */
+            for (int i=0; i<server->input.inputs_size; i++){
+                if (strcmp (name, server->input.name [i] ) == 0){
+                    data_buf = server->input.input_data [i];
+                    server->input_tensor_load = 1;
+                }
+            }
+        }
     }
 
     while(len>1 && *content_length >0){
@@ -430,6 +439,16 @@ int v1_handler_post(int                sock,
 
         if (strcmp("run", key) == 0){
             server->inference_count = atoi(val);
+        } else if(strcmp("output_idx", key) == 0) {
+            /* Index-based output selection: ?output_idx=<N> */
+            int oidx = atoi(val);
+            if (oidx >= 0 && oidx < server->output.outputs_size) {
+                outputs_idx[n_outputs] = server->output.index[oidx];
+                n_outputs++;
+            } else {
+                PRINTF("Output tensor index %d out of range\r\n", oidx);
+                return 1;
+            }
         } else if(strcmp("output", key) == 0) {
             char out_tensor_name[512];
             size_t outind = 0;

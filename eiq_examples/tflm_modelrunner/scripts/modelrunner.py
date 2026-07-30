@@ -17,8 +17,8 @@ else:
 
 class Dut(object):
     def __init__(self, id):
-        if not os.path.exists(os.path.dirname("logs/")):
-            os.makedirs(os.path.dirname("logs/"))
+        if not os.path.exists("logs/"):
+            os.makedirs("logs/")
         log = open("logs/tty-%s.log" %id, 'ab')
         self.serial_id = id
         self.find_serial_path()
@@ -75,10 +75,8 @@ class Dut(object):
         if idx == 1:
             return json.dumps({"error": "timeout"})
         self.cli.write("%s\r" %cmd)
-        idx = self.cli.expect(["Results:(.*)=> ",  pexpect.TIMEOUT], timeout=300)
+        idx = self.cli.expect(["Results:(.*)=> ", pexpect.TIMEOUT], timeout=300)
         if idx == 1:
-            return json.dumps({"outputs": self.cli.match.group(1).strip().decode()})
-        elif idx == 2:
             return json.dumps({"error": "timeout"})
         results = self.cli.match.group(1).strip().decode()
         ret = results.replace(",\b","")
@@ -88,9 +86,18 @@ class Dut(object):
         filename = os.path.expanduser(filename)
         fs = os.stat(filename)
         self.cli.write("%s %d\r" %(cmd, fs.st_size))
-        idx = self.cli.expect(["Ready for.* (.+)\r\n", "=> ", pexpect.TIMEOUT])
-        if idx == 1 or idx == 2:
-            return 1
+        idx = self.cli.expect(["Ready for.* (.+)\r\n", "TENSOR ERROR: (.*)\r\n", "=> ", pexpect.TIMEOUT])
+        if idx == 1:
+            # Firmware reported a structured tensor error; capture the message,
+            # drain the trailing "=> " prompt, and return it to the caller.
+            try:
+                error_msg = self.cli.match.group(1).decode().strip()
+            except Exception:
+                error_msg = "tensor load failed"
+            self.cli.expect(["=> ", pexpect.TIMEOUT], timeout=5)
+            return (1, error_msg)
+        if idx == 2 or idx == 3:
+            return (1, "tensor load failed (no ready signal)")
         try:
             mem = self.cli.match.group(1).decode()
         except:
@@ -108,11 +115,11 @@ class Dut(object):
                 if a == 16384 and mem == "Flash":
                     idx = self.cli.expect(["==", pexpect.TIMEOUT], timeout=130)
                     if idx == 1:
-                        return 1
+                        return (1, "flash write timeout")
                     a = 0
                     #time.sleep(0.4)
                 a+=1
             self.ser.write(b'%%%%%%%')
         self.cli.expect(["=> ", pexpect.TIMEOUT], timeout=300)
-        return 0
+        return (0, "")
 

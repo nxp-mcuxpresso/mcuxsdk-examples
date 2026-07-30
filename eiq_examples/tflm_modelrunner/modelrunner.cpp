@@ -96,13 +96,20 @@ void parse_cmd(void* arg){
 }
 
 int modelrunner(){
-    NNServer* server =(NNServer *)malloc(sizeof(NNServer));
-    if (!server )
+    NNServer* server = (NNServer *)malloc(sizeof(NNServer));
+    if (!server)
     {
-	    PRINTF("nnserver malloc failed \r\n");
+        PRINTF("nnserver malloc failed \r\n");
+        return -1;
     }
-    FlashConfig* config =(FlashConfig *)malloc(sizeof(FlashConfig));
-    memset(server,0,sizeof(NNServer));
+    FlashConfig* config = (FlashConfig *)malloc(sizeof(FlashConfig));
+    if (!config)
+    {
+        PRINTF("flashconfig malloc failed \r\n");
+        free(server);
+        return -1;
+    }
+    memset(server, 0, sizeof(NNServer));
     memset(config,0,sizeof(FlashConfig));
     FlashInit(config);
     server->flash_config = config;
@@ -173,26 +180,49 @@ static int do_cmd_model_addr_set(NNServer* server){
 static int do_cmd_tensor_loadb(NNServer* server){
     char* name;
     int size = 1;
-    name =  strtok(server->params , " ");
-    
+    name = strtok(server->params , " ");
+
+    /* Support index-based access: tensor_loadb input_idx_<N> */
+    if (strncmp(name, "input_idx_", 10) == 0) {
+        int idx = atoi(name + 10);
+        if (idx < 0 || idx >= server->input.inputs_size) {
+            PRINTF("TENSOR ERROR: Input tensor index %d out of range (valid: 0 ~ %d)\r\n",
+                   idx, server->input.inputs_size - 1);
+            return 1;
+        }
+        for (int j = 0; j < server->input.shape_size[idx]; j++) {
+            size *= server->input.shape_data[idx][j];
+        }
+        size *= server->input.bytes[idx];
+        if (!server->input.input_data[idx]) {
+            PRINTF("tensor arena not allocated\r\n");
+            return 1;
+        }
+        PRINTF("\r\n######### Ready for input_idx_%d tensor download ", idx);
+        s_recv(server->input.input_data[idx], size, server);
+        server->input_tensor_load = 1;
+        return 0;
+    }
+
+    /* Name-based access (original behavior) */
     for (int i=0; i<server->input.inputs_size; i++){
         if (strcmp (name, server->input.name [i] ) == 0){
             for(int j=0; j<server->input.shape_size[i]; j++){
                 size *= server->input.shape_data[i][j];
             }
-	    size *= server->input.bytes[i];
+            size *= server->input.bytes[i];
             if(!server->input.input_data [i]){
-		    PRINTF("tensor arena not \r\n");
-		    return 1;
+                PRINTF("tensor arena not allocated\r\n");
+                return 1;
             }
             PRINTF("\r\n######### Ready for %s tensor download ", server->input.name[i]);
             s_recv(server->input.input_data[i], size, server);
-	    server->input_tensor_load = 1;
+            server->input_tensor_load = 1;
             return 0;
         }
     }
 
-    PRINTF("No such input tensor\r\n");
+    PRINTF("TENSOR ERROR: No such input tensor '%s'\r\n", name);
     return 1;
 }
 
@@ -249,6 +279,15 @@ static int do_cmd_model_run(NNServer* server){
 
         if (strcmp("run", key) == 0){
             server->inference_count = atoi(val);
+        } else if(strcmp("output_idx", key) == 0) {
+            /* Index-based output selection: run output_idx=<N> */
+            int oidx = atoi(val);
+            if (oidx < 0 || oidx >= server->output.outputs_size) {
+                print_results("{\"error\": \"Output tensor index out of range\"}");
+                return 1;
+            }
+            outputs_idx[n_outputs] = server->output.index[oidx];
+            n_outputs++;
         } else if(strcmp("output", key) == 0) {
             char out_tensor_name[512];
             size_t outind = 0;
