@@ -1,7 +1,7 @@
 
 # Compiler options for all toolchains
 mcux_add_configuration(
-    CC "       -DHAL_UART_ADAPTER_FIFO=1"
+    CC "       -DHAL_UART_ADAPTER_FIFO=1 -DgPlatformIcsDeferDHKeyToHost_d=1"
 )
 
 # Linker symbols
