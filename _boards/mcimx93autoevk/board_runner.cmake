@@ -1,8 +1,7 @@
-# Copyright 2024 NXP
-# All rights reserved.
+# Copyright 2024, 2026 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
-board_runner_args(jlink "--device=MIMX9352")
+board_runner_args(jlink "--device=MIMX9352_M33")
 board_runner_args(linkserver  "--device=MIMX9352:MCIMX93AUTO-EVK")
 board_runner_args(pyocd "--target=mimx9352")
 
