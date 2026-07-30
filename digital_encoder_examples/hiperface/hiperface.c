@@ -47,22 +47,8 @@ void BOARD_InitSysTick(void)
 	SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
 }
 
-void DEMO_XBARA_Sync_Pos_IRQHandler(void)
-{
-	uint64_t pos = DSL_GetFastPosition(BOARD_HIPERFACE_BASEADDR, &enc);
-	if (!DSL_GetEventEstimatorThresholdErr(BOARD_HIPERFACE_BASEADDR)) {
-		/*Only output low 32bits position data due to PRINTF.*/
-		PRINTF("Pos_sync: %c%ld\r\n", (pos >> 63) == 1 ? '-' : ' ',  (uint32_t)(pos & 0xFFFFFFFF));
-	} else {
-		PRINTF("Estimator Deviation Threshold Error\r\n");
-		DSL_ClrEventEstimatorThresholdErr(BOARD_HIPERFACE_BASEADDR);
-	}
-}
-
 void DEMO_HIPERFACE_POS_RCVD_IRQHandler(void)
 {
-	uint32_t counter = SYSTICK_GET_COUNT();
-	PRINTF("The minimal communication cycle test: %d\r\n", counter);
 	uint64_t pos = DSL_GetFastPosition(BOARD_HIPERFACE_BASEADDR, &enc);
 	if (!DSL_GetEventEstimatorThresholdErr(BOARD_HIPERFACE_BASEADDR)) {
 		/*Only output low 32bits position data due to PRINTF.*/
@@ -72,7 +58,6 @@ void DEMO_HIPERFACE_POS_RCVD_IRQHandler(void)
 		DSL_ClrEventEstimatorThresholdErr(BOARD_HIPERFACE_BASEADDR);
 	}
 	hiperface_clear_fast_pos_irq_status();
-	hiperface_fast_pos_irq_disable();
 }
 
 void DEMO_HIPERFACE_S_IRQHandler(void)
@@ -310,6 +295,7 @@ int main(void)
 	EnableIRQ(DEMO_HIPERFACE_POS_RCVD_IRQn);
 	SDK_DelayAtLeastUs(2000000, SystemCoreClock);
 	DisableIRQ(DEMO_HIPERFACE_POS_RCVD_IRQn);
+	hiperface_fast_pos_irq_disable();
 
 	/*Sync mode test*/
 	config.es = DSL_getMaxES(APP_DEFAULT_PWM_FREQUENCE);
@@ -322,6 +308,6 @@ int main(void)
 	/* Initialize FlexPWM to generate the trigger signal to trigge transmitting */
 	PWM_Trigger_Init(BOARD_PWM_BASEADDR);
 	// Enable Interrupt
-	EnableIRQ(DEMO_XBARA_Sync_Pos_IRQn);
+	EnableIRQ(DEMO_HIPERFACE_POS_RCVD_IRQn);
 	while (1);
 }

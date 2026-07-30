@@ -51,10 +51,19 @@ void PWM_Trigger_Init(PWM_Type *PWMBase)
 	PWMBase->MCTRL = (PWMBase->MCTRL & ~PWM_MCTRL_CLDOK_MASK) | PWM_MCTRL_CLDOK(0x1);
 	PWMBase->MCTRL = (PWMBase->MCTRL & ~PWM_MCTRL_LDOK_MASK) | PWM_MCTRL_LDOK(0x1);
 	PWMBase->MCTRL = (PWMBase->MCTRL & ~PWM_MCTRL_RUN_MASK) | PWM_MCTRL_RUN(0x1);
+
+#if (HIPERFACE_MUX == MOTOR_CTRL1)
+	XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux1Trigger0, kXBAR1_OutputHiperface2SyncXbar);
+#elif (HIPERFACE_MUX == MOTOR_CTRL2)
+	XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux1Trigger0, kXBAR1_OutputHiperface1SyncXbar);
+#endif
 }
 
 void BOARD_InitHardware(void)
 {
+	int32_t SCMI_status = 0;
+    uint32_t blk_ctrl_size = 0;
+    uint32_t blk_ctrl_value = 0;
 	/* Hiperface 75MHz */
 	clk_t encoderplldfs0ctl = {
 		.clkId = kCLOCK_Encoderplldfs0ctl,
@@ -74,7 +83,6 @@ void BOARD_InitHardware(void)
 		.rate = 75000000UL,
 		.clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
 	};
-	BLK_CTRL_WAKEUPMIX_Type *blk_base = BLK_CTRL_WAKEUPMIX;
 
 	SystemPlatformInit();
 	BOARD_InitDebugConsolePins();
@@ -95,60 +103,137 @@ void BOARD_InitHardware(void)
 	CLOCK_SetRate(&hiperfaceClk);
 	CLOCK_EnableClock(hiperfaceClk.clkId);
 
-	blk_base->DIAG_ENCODER_MUX_SEL =
-		BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc1_sel(DIG_ENCODER_MUX_HIPERFACE_DSL) |
-		BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc2_sel(DIG_ENCODER_MUX_HIPERFACE_DSL);
+	/* DIAG_ENCODER_MUX_SEL will be updated */
+    SCMI_status = SCMI_MiscControlGet(SCMI_A2P, DEV_SM_CTRL_ENC_DIAG_MUX_SEL, &blk_ctrl_size, &blk_ctrl_value);
+    if (SCMI_status != SCMI_ERR_SUCCESS) {
+        /* Encoder mux select configuration failed */
+        return;
+    }
 
+#if (HIPERFACE_MUX == MOTOR_CTRL1)
+    /* Select Hiperface2 for encoder2 */
+    blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc2_sel(DIG_ENCODER_MUX_HIPERFACE_DSL);
+#elif (HIPERFACE_MUX == MOTOR_CTRL2)
+    /* Select Hiperface1 for encoder1 */
+    blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc1_sel(DIG_ENCODER_MUX_HIPERFACE_DSL);
+#endif
+
+    /* Update DIAG_ENCODER_MUX_SEL */
+    SCMI_status = SCMI_MiscControlSet(SCMI_A2P, DEV_SM_CTRL_ENC_DIAG_MUX_SEL, blk_ctrl_size,
+                                      &blk_ctrl_value);
+    if (SCMI_status != SCMI_ERR_SUCCESS) {
+        /* Failed to set DIAG_ENCODER_MUX_SEL register  */
+        return;
+    }
+
+#if (HIPERFACE_MUX == MOTOR_CTRL1)
 	/* Select Motor controller 1 */
 	BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);
 	BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);
-
+#elif (HIPERFACE_MUX == MOTOR_CTRL2)
 	/* Select Motor controller 2 */
 	BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);
 	BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);
+#endif
+
 	SDK_DelayAtLeastUs(100U, SystemCoreClock);
 
-	XBAR_Init(kXBAR_DSC1);
+	XBAR_Init(DEMO_XBARA_BASEADDR);
+
+	blk_ctrl_value = 134; // Minimum sync signal high/active duration: 1us.
+#if (HIPERFACE_MUX == MOTOR_CTRL1)
+    /* Update HIPERFACE2_SYNC_CTL2 */
+    SCMI_status = SCMI_MiscControlSet(SCMI_A2P, DEV_SM_CTRL_HPF2_SYNC_SRC_CFG2, blk_ctrl_size,
+                                      &blk_ctrl_value);
+#elif (HIPERFACE_MUX == MOTOR_CTRL2)
+    /* Update HIPERFACE1_SYNC_CTL2 */
+    SCMI_status = SCMI_MiscControlSet(SCMI_A2P, DEV_SM_CTRL_HPF1_SYNC_SRC_CFG2, blk_ctrl_size,
+                                      &blk_ctrl_value);
+#endif
+    if (SCMI_status != SCMI_ERR_SUCCESS) {
+        /* Failed to set HIPERFACE1/2_SYNC_CTL2 register  */
+        return;
+    }
+
+	blk_ctrl_value = BLK_CTRL_WAKEUPMIX_HIPERFACE1_SYNC_CTL1_clk_source_sel(0x00);
+	blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_HIPERFACE1_SYNC_CTL1_sync_clk_enable_MASK;
+	blk_ctrl_value &= ~BLK_CTRL_WAKEUPMIX_HIPERFACE1_SYNC_CTL1_sync_source_sel_MASK;
+	blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_HIPERFACE1_SYNC_CTL1_sync_source_sel(0);
+	blk_ctrl_value &= ~BLK_CTRL_WAKEUPMIX_HIPERFACE1_SYNC_CTL1_stretch_bypass_MASK;
+	blk_ctrl_value &= ~BLK_CTRL_WAKEUPMIX_HIPERFACE1_SYNC_CTL1_sync_div_enable_MASK;
+	blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_HIPERFACE1_SYNC_CTL1_sync_enable_MASK;
+#if (HIPERFACE_MUX == MOTOR_CTRL1)
+    /* Update HIPERFACE1_SYNC_CTL1 */
+    SCMI_status = SCMI_MiscControlSet(SCMI_A2P, DEV_SM_CTRL_HPF2_SYNC_SRC_CFG1, blk_ctrl_size,
+                                      &blk_ctrl_value);
+#elif (HIPERFACE_MUX == MOTOR_CTRL2)
+    /* Update HIPERFACE1_SYNC_CTL1 */
+    SCMI_status = SCMI_MiscControlSet(SCMI_A2P, DEV_SM_CTRL_HPF1_SYNC_SRC_CFG1, blk_ctrl_size,
+                                      &blk_ctrl_value);
+#endif
+    if (SCMI_status != SCMI_ERR_SUCCESS) {
+        /* Failed to set HIPERFACE1/2_SYNC_CTL1 register  */
+        return;
+    }
+}
+
+ void hiperface_fast_pos_irq_enable()
+{
+#ifdef DEMO_HIPERFACE_POS_RCVD_VIA_XBAR
 	xbar_control_config_t xbaraConfig;
 	xbaraConfig.activeEdge                   = kXBAR_EdgeRising;
 	xbaraConfig.requestType                  = kXBAR_RequestInterruptEnable;
-	XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux1Trigger0, kXBAR1_OutputHiperface1SyncXbar);
-	XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux0Trigger0, kXBAR1_OutputEdma4IpdReq76);
-	/*output the tripgger signal to verify the synchronization on Sync Mode and Stetcher/Divider */
-	XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux1Trigger0, kXBAR1_OutputIomuxXbarOut07);
-	XBAR_SetOutputSignalConfig(kXBAR1_OutputEdma4IpdReq76, &xbaraConfig);
+	XBAR_SetOutputSignalConfig(DEMO_XBARA_IRQ_OUTPIT_SIGNAL, &xbaraConfig);
+#endif
 
-	blk_base->HIPERFACE_EXT_SYNC_OUT_CTL = 0x3;
-
-	blk_base->HIPERFACE1_SYNC_CTL1 = BLK_CTRL_WAKEUPMIX_HIPERFACE1_SYNC_CTL1_clk_source_sel(0x00);
-	blk_base->HIPERFACE1_SYNC_CTL1 |= BLK_CTRL_WAKEUPMIX_HIPERFACE1_SYNC_CTL1_sync_clk_enable_MASK;
-
-	blk_base->HIPERFACE1_SYNC_CTL1 &= ~BLK_CTRL_WAKEUPMIX_HIPERFACE1_SYNC_CTL1_sync_source_sel_MASK; 
-	blk_base->HIPERFACE1_SYNC_CTL1 |= BLK_CTRL_WAKEUPMIX_HIPERFACE1_SYNC_CTL1_sync_source_sel(0);
-	blk_base->HIPERFACE1_SYNC_CTL2 = 134; // Minimum sync signal high/active duration: 1us.
-	blk_base->HIPERFACE1_SYNC_CTL1 &= ~BLK_CTRL_WAKEUPMIX_HIPERFACE1_SYNC_CTL1_stretch_bypass_MASK;
-
-	blk_base->HIPERFACE1_SYNC_CTL1 &= ~BLK_CTRL_WAKEUPMIX_HIPERFACE1_SYNC_CTL1_sync_div_enable_MASK;
-
-	blk_base->HIPERFACE1_SYNC_CTL1 |= BLK_CTRL_WAKEUPMIX_HIPERFACE1_SYNC_CTL1_sync_enable_MASK;
-}
-
-void hiperface_fast_pos_irq_enable()
-{
+#if (HIPERFACE_MUX == MOTOR_CTRL1)
+#ifdef DEMO_HIPERFACE_POS_RCVD_VIA_XBAR
+	XBAR_SetSignalsConnection( kXBAR1_InputHiperface2FastPosRcvdEvt, DEMO_XBARA_IRQ_OUTPIT_SIGNAL);
+#else
+	BLK_CTRL_WAKEUPMIX_Type *blk_base = BLK_CTRL_WAKEUPMIX;
+	blk_base->HIPERFACE2_INT_CTL |= (1 << 5);
+#endif
+#elif (HIPERFACE_MUX == MOTOR_CTRL2)
+#ifdef DEMO_HIPERFACE_POS_RCVD_VIA_XBAR
+	XBAR_SetSignalsConnection( kXBAR1_InputHiperface1FastPosRcvdEvt, DEMO_XBARA_IRQ_OUTPIT_SIGNAL);
+#else
 	BLK_CTRL_WAKEUPMIX_Type *blk_base = BLK_CTRL_WAKEUPMIX;
 	blk_base->HIPERFACE1_INT_CTL |= (1 << 5);
+#endif
+#endif
 }
 
 void hiperface_fast_pos_irq_disable()
 {
-	BLK_CTRL_WAKEUPMIX_Type *blk_base = BLK_CTRL_WAKEUPMIX;
-	blk_base->HIPERFACE1_INT_CTL &= ~(1 << 5);
+#ifdef DEMO_HIPERFACE_POS_RCVD_VIA_XBAR
+    xbar_control_config_t xbaraConfig;
+    xbaraConfig.activeEdge                   = kXBAR_EdgeRising;
+    xbaraConfig.requestType                  = kXBAR_RequestInterruptEnable;
+    XBAR_SetOutputSignalConfig(DEMO_XBARA_IRQ_OUTPIT_SIGNAL, &xbaraConfig);
+#else
+#if (HIPERFACE_MUX == MOTOR_CTRL1)
+    BLK_CTRL_WAKEUPMIX_Type *blk_base = BLK_CTRL_WAKEUPMIX;
+    blk_base->HIPERFACE2_INT_CTL &= ~(1 << 5);
+#elif (HIPERFACE_MUX == MOTOR_CTRL2)
+    BLK_CTRL_WAKEUPMIX_Type *blk_base = BLK_CTRL_WAKEUPMIX;
+    blk_base->HIPERFACE1_INT_CTL &= ~(1 << 5);
+#endif
+#endif
 }
 
 void hiperface_clear_fast_pos_irq_status()
 {
-	BLK_CTRL_WAKEUPMIX_Type *blk_base = BLK_CTRL_WAKEUPMIX;
-	blk_base->HIPERFACE1_INT_CTL |= (1 << 1);
+#ifdef DEMO_HIPERFACE_POS_RCVD_VIA_XBAR
+   XBAR_ClearOutputStatusFlag(DEMO_XBARA_IRQ_OUTPIT_SIGNAL);
+#else
+#if (HIPERFACE_MUX == MOTOR_CTRL1)
+    BLK_CTRL_WAKEUPMIX_Type *blk_base = BLK_CTRL_WAKEUPMIX;
+    blk_base->HIPERFACE2_INT_CTL |= (1 << 1);
+#elif (HIPERFACE_MUX == MOTOR_CTRL2)
+    BLK_CTRL_WAKEUPMIX_Type *blk_base = BLK_CTRL_WAKEUPMIX;
+    blk_base->HIPERFACE1_INT_CTL |= (1 << 1);
+#endif
+#endif
 }
 
 /*${function:end}*/
