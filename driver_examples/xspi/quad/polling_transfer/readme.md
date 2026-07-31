@@ -42,3 +42,4 @@ Flash reset to default SPI mode.
 
 ## Supported Boards
 - [FRDM-IMXRT700](../../../../_boards/frdmimxrt700/driver_examples/xspi/quad/polling_transfer/example_board_readme.md)
+- [MIMXRT2660EVK](../../../../_boards/mimxrt2660evk/driver_examples/xspi/quad/polling_transfer/example_board_readme.md)
