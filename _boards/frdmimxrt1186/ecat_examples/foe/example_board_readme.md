@@ -95,7 +95,7 @@ Prepare the Demo
 	- mcuboot_opensource example path: 'boards\frdmimxrt1186\ota_examples\mcuboot_opensource\cm33'
 	- FoE example path: 'boards\frdmimxrt1186\ecat_examples\foe\cm33'
 
-6. Download mcuboot_opensource and signed FoE image to the target board using 'MCUXpresso Secure Provisioning Tool'
+6. Download mcuboot_opensource and signed FoE image to the target board using 'MCUXpresso Secure Provisioning Tool(SPT)'
 	- Download 'MCUXpresso Secure Provisioning Tool' from NXP official website
 	- Change J60(from left to right)[1,2,3] to '100' to open Serial Download mode, reset board
 	- Open 'SPT' and create a new workspace for the selected processor
@@ -105,7 +105,15 @@ Prepare the Demo
 	- Open 'main menu' > 'Tools' > 'MCUboot' > 'Sign Image' and configure the following
 		- 'ecat_foe.bin' image to be signed
 		- The signing key; it is located in the same folder that the prebuilt application or in MCUXpresso SDK, in folder 'middleware\mcuboot_opensource\boot\nxp_mcux_sdk\keys\sign-ecdsa-p256-priv.pem'
-		- The imgtool arguments by default should match the SDK example. It is not needed to change them
+		- Set 'imgtool arguments'
+			- 'version': '1.0'
+			- 'align': '4'
+			- 'header-size': '0x400'
+			- 'pad-header': ''
+			- 'slot-size': '0x200000'
+			- 'max-sectors': '800'
+			- 'pad': ''
+			- 'confirm': ''
 		- Click the 'Sign' button to sign the application; fix problems, if any
 		- Set target address: '0x04040000'
 		- Close the dialog by clicking the 'Save & Close' button
@@ -157,10 +165,24 @@ Prepare the Demo
 	- Click 'TwinCAT' -> 'Restart TwinCAT(Config Mode)' to activate configuration
 
 11. FoE image upgrade
-	- Generate new version FoE example signed image
-		'imgtool sign --key sign-ecdsa-p256-priv.pem --align 4 --header-size 0x400 --pad-header --slot-size 0x200000 --max-sectors 800 --version "2.4.0" ecat_foe_cm33.bin ecat_foe_2-4-0_SIGNED.bin'
+	- Compile new FoE image
+	- Open 'MCUXpresso Secure Provisioning Tool' -> 'New Workspace' 
+	- Click 'Tools' -> 'MCUboot' -> 'Sign Image'
+	- Add FoE image into 'Input Image'
+	- The signing key; it is located in the same folder that the prebuilt application or in MCUXpresso SDK, in folder 'middleware\mcuboot_opensource\boot\nxp_mcux_sdk\keys\sign-ecdsa-p256-priv.pem'
+	- Set 'imgtool arguments'
+		- 'version': '1.1'
+		- 'align': '4'
+		- 'header-size': '0x400'
+		- 'pad-header': ''
+		- 'slot-size': '0x200000'
+		- 'max-sectors': '800'
+		- Delete 'pad'
+		- Delete 'confirm'
+	- Click the 'Sign' button to sign the application;
+	- Open Twincat3 project
 	- Click 'Device' -> 'Box1' -> 'Online' -> 'Bootstrap'
-	- Click 'Download' -> 'ecat_foe_2-4-0_SIGNED.bin' -> 'Password: 12369874' -> 'Ok' to upgrade image
+	- Click 'Download' -> 'ecat_foe_cm33_signed.bin' -> 'Password: 12369874' -> 'Ok' to upgrade image
 	- The serial port will output:
 
 			Firmware upgrade in progress...
@@ -180,7 +202,7 @@ Prepare the Demo
 	- After download, click 'Init' to restart board
 
 12. FoE image download
-	- Click 'Upload' -> 'ecat_foe_2-4-0_SIGNED.bin' -> 'Ok' to download upgraded image
+	- Click 'Upload' -> 'ecat_foe_cm33_signed.bin' -> 'Ok' to download upgraded image
 
 Note: 
 
