@@ -157,5 +157,18 @@ void APP_TouchMemory(void)
 {
     /* Touch the memory. */
     (*(volatile uint32_t *)TEST_MEM_REGION_START) = (*(volatile uint32_t *)TEST_MEM_REGION_START);
+    
+    /*  The following errata impacts the memory access if the burst sequence is used:
+        ERR051040: ITCM/DTCM: On the TCM backdoor accesses, burst termination (via MRC)
+        due to entering protected region within the burst leads to an erroneous update of the
+        protected region accessed by the burst.    
+        
+        Workaround:
+        There are two possible workarounds:
+        1. The application should align the start and end addresses of the burst transfer within a region (protected or
+        unprotected).
+        2. Disable the burst optimization (with impact to performance) by configuring
+        IAHBCFGREG[TCM_DIS_WR_OPT] as 1 to avoid this issue.
+    */
 }
 /*${function:end}*/
