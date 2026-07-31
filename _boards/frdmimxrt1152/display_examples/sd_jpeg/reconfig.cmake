@@ -20,3 +20,8 @@ mcux_add_macro(
        -DFSL_SDK_DRIVER_QUICK_ACCESS_ENABLE=1"
     AS "-D__STARTUP_INITIALIZE_RAMFUNCTION"
 )
+mcux_add_macro(
+    TOOLCHAINS mcux
+    CC "-DUSE_HYPERRAM=1\
+       -DDATA_SECTION_IS_CACHEABLE=1"
+)
