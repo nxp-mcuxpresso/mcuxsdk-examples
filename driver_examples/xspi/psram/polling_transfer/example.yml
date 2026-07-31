@@ -16,6 +16,23 @@ xspi_psram_polling_transfer:
       - ${board_root}/${board}/driver_examples/xspi/psram/polling_transfer/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
+    mimxrt2660evk:
+    - +armgcc@debug
+    - +armgcc@release
+    - +armgcc@psram_debug
+    - +armgcc@psram_release
+    - +armgcc@psram_txt_debug
+    - +armgcc@psram_txt_release
+    - +armgcc@xspi_nor_psram_debug
+    - +armgcc@xspi_nor_psram_release
+    - +iar@debug
+    - +iar@release
+    - +iar@psram_debug
+    - +iar@psram_release
+    - +iar@psram_txt_debug
+    - +iar@psram_txt_release
+    - +iar@xspi_nor_psram_debug
+    - +iar@xspi_nor_psram_release
     mimxrt700evk@cm33_core0:
     - -armgcc@debug
     - -armgcc@release
