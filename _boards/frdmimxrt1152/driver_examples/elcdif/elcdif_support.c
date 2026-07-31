@@ -166,9 +166,8 @@ void BOARD_InitLcdifClock(void)
      *
      * Use PLL_528 as clock source.
      *
-     * For 60Hz frame rate, the RK055IQH091 pixel clock should be 36MHz.
-     * the RK055AHD091 pixel clock should be 62MHz,
-     * and the RaspberryPi ixel clock should be 28MHz.
+     * Set the pixel clock for RK055AHD091/RK055MHD091, RaspberryPi and RK055IQH091 pixel clock
+     * to 59MHz, 25MHz and 35Mhz.
      */
     const clock_root_config_t lcdifClockConfig = {
         .clockOff = false,
@@ -176,7 +175,7 @@ void BOARD_InitLcdifClock(void)
 #if (USE_MIPI_PANEL == MIPI_PANEL_RK055AHD091) || (USE_MIPI_PANEL == MIPI_PANEL_RK055MHD091)
         .div = 9,
 #elif (USE_MIPI_PANEL == MIPI_PANEL_RASPI_7INCH)
-        .div = 19,
+        .div = 21,
 #else
         .div = 15,
 #endif

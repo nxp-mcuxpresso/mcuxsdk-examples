@@ -169,12 +169,12 @@ void BOARD_InitLcdifClock(void)
      *
      * Use PLL_528 as clock source.
      *
-     * Set div to 19 for 28MHz pixel clock.
+     * Set div to 21 for 25MHz pixel clock.
      */
     const clock_root_config_t lcdifv2ClockConfig = {
         .clockOff = false,
         .mux      = 4, /*!< PLL_528. */
-        .div = 19,
+        .div = 21,
     };
 
     CLOCK_SetRootClock(kCLOCK_Root_Lcdifv2, &lcdifv2ClockConfig);
