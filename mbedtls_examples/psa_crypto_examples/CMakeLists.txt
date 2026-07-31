@@ -29,3 +29,9 @@ mcux_add_macro(
     CC "-DSDK_DEBUGCONSOLE_UART"
     CX "-DSDK_DEBUGCONSOLE_UART"
 )
+
+mcux_add_macro(
+    TOOLCHAINS mdk
+    CC "-DSDK_DEBUGCONSOLE_UART"
+    CX "-DSDK_DEBUGCONSOLE_UART"
+)
