@@ -50,3 +50,5 @@ tflm_label_image_ext_mem:
     - -iar@xspi_nor_release
     - +iar@xspi_nor_psram_debug
     - +iar@xspi_nor_psram_release
+    - +armgcc@xspi_nor_psram_debug
+    - +armgcc@xspi_nor_psram_release

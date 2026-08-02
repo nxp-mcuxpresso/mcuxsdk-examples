@@ -108,6 +108,8 @@ tflm_label_image:
     - -iar@xspi_nor_release
     - +iar@xspi_nor_psram_debug
     - +iar@xspi_nor_psram_release
+    - +armgcc@xspi_nor_psram_debug
+    - +armgcc@xspi_nor_psram_release
     evkbmimxrt1170@cm7:
     - +armgcc@flexspi_nor_sdram_debug
     - +armgcc@flexspi_nor_sdram_release

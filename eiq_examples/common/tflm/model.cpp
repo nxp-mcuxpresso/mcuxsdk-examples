@@ -88,7 +88,8 @@ status_t MODEL_Init(void)
 
     PRINTF("DSP Frequency: %d MHz\r\n", CLOCK_GetFreq(kCLOCK_DspCpuClk)/1000000);
 #elif (defined(CPU_MIMXRT2663AHP8A) || defined(CPU_MIMXRT2663CHPAA) || defined(CPU_MIMXRT2663CVVAA) || defined(CPU_MIMXRT2663DHPAA) || defined(CPU_MIMXRT2663DVVAA) || defined(CPU_MIMXRT2663XHP8A) || defined(CPU_MIMXRT2663XVV8A))
-    PRINTF("Core/NPU Frequency: %d MHz\r\n", 12000000/1000000);
+    PRINTF("CPU Frequency: %d MHz\r\n", CLOCK_GetRootClockFreq(kCLOCK_Root_CMPT_cpu_clk)/1000000);
+    PRINTF("NPU Frequency: %d MHz\r\n", CLOCK_GetRootClockFreq(kCLOCK_Root_CMPT_npu_clk)/1000000);
 #else 
     PRINTF("Core/NPU Frequency: %d MHz\r\n", CLOCK_GetFreq(kCLOCK_CoreSysClk)/1000000);
 #endif

@@ -12,7 +12,7 @@
 
 _binary_NeutronFirmware_elf_start:
 #if (defined(CPU_MIMXRT2663AHP8A) || defined(CPU_MIMXRT2663CHPAA) || defined(CPU_MIMXRT2663CVVAA) || defined(CPU_MIMXRT2663DHPAA) || defined(CPU_MIMXRT2663DVVAA) || defined(CPU_MIMXRT2663XHP8A) || defined(CPU_MIMXRT2663XVV8A))
-        .incbin "../../../middleware/eiq_int/neutron/rt2660/NeutronFirmware.elf"
+        .incbin "../../../middleware/eiq/neutron/rt2660/NeutronFirmware.elf"
 #endif
 _binary_NeutronFirmware_elf_end:
 #endif

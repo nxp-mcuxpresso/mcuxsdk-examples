@@ -40,6 +40,29 @@ mcux_add_iar_linker_script(
   LINKER examples/_boards/mimxrt2660evk/eiq_examples/tflm_label_image/iar/MIMXRT2663xxxxx_psram_txt.icf
 )
 
+mcux_remove_iar_linker_script(
+  TARGETS xspi_nor_psram_debug xspi_nor_psram_release
+  BASE_PATH ${SdkRootDirPath}
+  LINKER devices/RT/RT2660/MIMXRT2663/iar/MIMXRT2663xxxxx_xspi_nor_psram.icf
+)
+mcux_add_iar_linker_script(
+  TARGETS xspi_nor_psram_debug xspi_nor_psram_release
+  BASE_PATH ${SdkRootDirPath}
+  LINKER examples/_boards/mimxrt2660evk/eiq_examples/tflm_label_image/iar/MIMXRT2663xxxxx_xspi_nor_psram.icf
+)
+
+mcux_remove_armgcc_linker_script(
+  TARGETS xspi_nor_psram_debug xspi_nor_psram_release
+  BASE_PATH ${SdkRootDirPath}
+  LINKER devices/RT/RT2660/MIMXRT2663/gcc/MIMXRT2663xxxxx_xspi_nor_psram.ld
+)
+mcux_add_armgcc_linker_script(
+  TARGETS xspi_nor_psram_debug xspi_nor_psram_release
+  BASE_PATH ${SdkRootDirPath}
+  LINKER examples/_boards/mimxrt2660evk/eiq_examples/tflm_label_image/gcc/MIMXRT2663xxxxx_xspi_nor_psram.ld
+)
+
+
 mcux_add_iar_configuration(
   CC "--diag_suppress=Pe167\
   --diag_suppress=Pe260,Pe1031"
