@@ -83,7 +83,7 @@ int main(void)
     /* Set up the transfer data */
     for (i = 0U; i < TRANSFER_SIZE; i++)
     {
-        transferTxData[i] = i % 256U;
+        transferTxData[i] = (uint8_t)(i % 256U);
         transferRxData[i] = 0U;
     }
 
