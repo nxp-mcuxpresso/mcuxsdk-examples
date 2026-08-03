@@ -49,6 +49,11 @@ PSA Crypto example to demonstrate cipher operation.
 - FRDM-MCXN236
 - MCX-N5XX-EVK
 - [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
+- [LPCXpresso55S06](../../_boards/lpcxpresso55s06/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
+- [LPCXpresso55S16](../../_boards/lpcxpresso55s16/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
+- [LPCXpresso55S28](../../_boards/lpcxpresso55s28/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
+- [LPCXpresso55S69](../../_boards/lpcxpresso55s69/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
+- [LPCXpresso55S36](../../_boards/lpcxpresso55s36/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
 
 ## Running the demo
 The log below shows the output of the PSA crypto examples in the terminal window:
