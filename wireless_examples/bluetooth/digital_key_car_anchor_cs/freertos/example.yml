@@ -14,3 +14,39 @@ digital_key_car_anchor_cs_freertos:
     kw47evk@cm33_core0: []
     kw47loc@cm33_core0: []
     frdmkw43: []
+
+digital_key_car_anchor_cs_freertos@rade1:
+  section-type: custom_application
+  contents:
+    meta_path: examples/wireless_examples/bluetooth/digital_key_car_anchor_cs/freertos
+    document:
+      extra_build_args:
+      - -DCONF_FILE=examples/wireless_examples/bluetooth/config/channel_sounding_rade1.conf
+  boards:
+    kw47evk@cm33_core0: []
+    kw47loc@cm33_core0: []
+    frdmkw43: []
+
+digital_key_car_anchor_cs_freertos@radex1:
+  section-type: custom_application
+  contents:
+    meta_path: examples/wireless_examples/bluetooth/digital_key_car_anchor_cs/freertos
+    document:
+      extra_build_args:
+      - -DCONF_FILE=examples/wireless_examples/bluetooth/config/channel_sounding_radex1.conf
+  boards:
+    kw47evk@cm33_core0: []
+    kw47loc@cm33_core0: []
+    frdmkw43: []
+
+digital_key_car_anchor_cs_freertos@radex2:
+  section-type: custom_application
+  contents:
+    meta_path: examples/wireless_examples/bluetooth/digital_key_car_anchor_cs/freertos
+    document:
+      extra_build_args:
+      - -DCONF_FILE=examples/wireless_examples/bluetooth/config/channel_sounding_radex2.conf
+  boards:
+    kw47evk@cm33_core0: []
+    kw47loc@cm33_core0: []
+    frdmkw43: []

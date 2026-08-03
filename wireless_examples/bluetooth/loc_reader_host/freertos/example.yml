@@ -16,3 +16,36 @@ loc_reader_host_freertos:
   boards:
     mcxw72evk@cm33_core0: []
     frdmmcxw72@cm33_core0: []
+
+loc_reader_host_freertos@rade1:
+  section-type: custom_application
+  contents:
+    meta_path: examples/wireless_examples/bluetooth/loc_reader_host/freertos
+    document:
+      extra_build_args:
+      - -DCONF_FILE=examples/wireless_examples/bluetooth/config/channel_sounding_rade1.conf
+  boards:
+    mcxw72evk@cm33_core0: []
+    frdmmcxw72@cm33_core0: []
+
+loc_reader_host_freertos@radex1:
+  section-type: custom_application
+  contents:
+    meta_path: examples/wireless_examples/bluetooth/loc_reader_host/freertos
+    document:
+      extra_build_args:
+      - -DCONF_FILE=examples/wireless_examples/bluetooth/config/channel_sounding_radex1.conf
+  boards:
+    mcxw72evk@cm33_core0: []
+    frdmmcxw72@cm33_core0: []
+
+loc_reader_host_freertos@radex2:
+  section-type: custom_application
+  contents:
+    meta_path: examples/wireless_examples/bluetooth/loc_reader_host/freertos
+    document:
+      extra_build_args:
+      - -DCONF_FILE=examples/wireless_examples/bluetooth/config/channel_sounding_radex2.conf
+  boards:
+    mcxw72evk@cm33_core0: []
+    frdmmcxw72@cm33_core0: []
