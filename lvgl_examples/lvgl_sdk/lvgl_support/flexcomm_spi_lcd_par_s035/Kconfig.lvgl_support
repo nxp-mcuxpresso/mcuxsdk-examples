@@ -1,0 +1,18 @@
+if MCUX_PRJSEG_module.board.lvgl
+
+    config LVGL_SUPPORT_VDB_COUNT
+        int "LVGL virtual buffer count"
+        default 2
+        range 1 2
+
+endif
+
+config MCUX_PRJSEG_module.board.lvgl
+    select MCUX_COMPONENT_driver.dbi_lpc_spi_dma
+    select MCUX_COMPONENT_driver.flexcomm_i2c
+    select MCUX_COMPONENT_driver.gt911
+    select MCUX_COMPONENT_driver.inputmux
+    select MCUX_COMPONENT_driver.inputmux_connections
+    select MCUX_COMPONENT_driver.lpc_dma
+    select MCUX_COMPONENT_driver.pint
+    select MCUX_COMPONENT_driver.st7796s
