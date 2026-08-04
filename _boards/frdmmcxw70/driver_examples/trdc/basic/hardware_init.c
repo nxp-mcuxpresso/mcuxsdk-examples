@@ -120,7 +120,7 @@ void APP_SetTrdcGlobalConfig()
     TRDC_SetMrcGlobalValid(TRDC);
 #endif /* FSL_FEATURE_TRDC_HAS_MRC */
 
-    /* 4. Enable MBC global valid. MCXW70 MBC block config registers reset to 0 (select GLBAC[0]),
+    /* 4. Enable MBC global valid. MBC block config registers reset to 0 (select GLBAC[0]),
      *    so a full block sweep is not required — the GLBAC[0] all-access policy set above applies
      *    to all blocks by default. Individual blocks are configured as needed by the demo. */
     TRDC_SetMbcGlobalValid(TRDC);

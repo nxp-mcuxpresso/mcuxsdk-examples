@@ -19,8 +19,8 @@ void BOARD_InitHardware(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
+    CLOCK_EnableClock(kCLOCK_Fro_hf_div);
     CLOCK_SetIpSrc(kCLOCK_Lpi2c1, kCLOCK_IpSrcFro192M);
     CLOCK_SetIpSrcDiv(kCLOCK_Lpi2c1, 1U);
-    CLOCK_EnableClock(kCLOCK_Fro_hf_div);
 }
 /*${function:end}*/

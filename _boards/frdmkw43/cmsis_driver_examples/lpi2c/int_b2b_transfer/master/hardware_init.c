@@ -18,9 +18,9 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
 
     /* Clock setting for LPI2C */
+    CLOCK_EnableClock(kCLOCK_Fro_hf_div);
     CLOCK_SetIpSrc(LPI2C_MASTER_CLOCK, kCLOCK_IpSrcFro192M);
     CLOCK_SetIpSrcDiv(LPI2C_MASTER_CLOCK, kSCG_SysClkDivBy1);
-    CLOCK_EnableClock(kCLOCK_Fro_hf_div);
 }
 
 uint32_t LPI2C1_GetFreq(void)

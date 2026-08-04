@@ -20,6 +20,7 @@ void BOARD_InitHardware(void)
     BOARD_InitButtonsPins();
     BOARD_InitLINPins();
     /* Set LIN LPUART clock */
+    CLOCK_EnableClock(kCLOCK_Fro_hf_div);
     CLOCK_SetIpSrc(kCLOCK_Lpuart0, kCLOCK_IpSrcFro192M);
     CLOCK_SetIpSrcDiv(kCLOCK_Lpuart0, 15U);
 #if defined(TIMER_TPM) && TIMER_TPM
@@ -27,7 +28,6 @@ void BOARD_InitHardware(void)
     CLOCK_SetIpSrc(DEMO_TPM_CLOCK, kCLOCK_IpSrcFro192M);
     CLOCK_SetIpSrcDiv(DEMO_TPM_CLOCK, 15U);
 #endif
-    CLOCK_EnableClock(kCLOCK_Fro_hf_div);
 
     BOARD_InitDebugConsole();
 }

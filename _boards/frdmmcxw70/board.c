@@ -24,8 +24,8 @@ void BOARD_InitDebugConsole(void)
     uint32_t uartClkSrcFreq = 0U;
 
     CLOCK_SetIpSrc(kCLOCK_Lpuart1, kCLOCK_IpSrcFro192M);
-    CLOCK_SetIpSrcDiv(kCLOCK_Lpuart1, 1U);
     CLOCK_EnableClock(kCLOCK_Fro_hf_div);
+    CLOCK_SetIpSrcDiv(kCLOCK_Lpuart1, 1U);
 
     uartClkSrcFreq = CLOCK_GetIpFreq(kCLOCK_Lpuart1);
 

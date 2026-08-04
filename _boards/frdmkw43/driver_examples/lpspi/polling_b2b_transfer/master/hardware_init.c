@@ -20,7 +20,7 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
 
     CLOCK_SetIpSrc(EXAMPLE_LPSPI_MASTER_CLOCK_NAME, EXAMPLE_LPSPI_MASTER_CLOCK_SOURCE);
-    CLOCK_SetIpSrcDiv(EXAMPLE_LPSPI_MASTER_CLOCK_NAME, 1U);
     CLOCK_EnableClock(kCLOCK_Fro_hf_div);
+    CLOCK_SetIpSrcDiv(EXAMPLE_LPSPI_MASTER_CLOCK_NAME, 1U);
 }
 /*${function:end}*/

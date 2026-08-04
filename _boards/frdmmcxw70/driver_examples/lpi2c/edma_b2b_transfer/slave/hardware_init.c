@@ -20,7 +20,7 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
 
     CLOCK_SetIpSrc(LPI2C_SLAVE_CLOCK, kCLOCK_IpSrcFro192M);
-    CLOCK_SetIpSrcDiv(LPI2C_SLAVE_CLOCK, 1U);
     CLOCK_EnableClock(kCLOCK_Fro_hf_div);
+    CLOCK_SetIpSrcDiv(LPI2C_SLAVE_CLOCK, 1U);
 }
 /*${function:end}*/

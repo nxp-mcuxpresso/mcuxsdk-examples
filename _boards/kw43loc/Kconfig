@@ -14,7 +14,6 @@ config MCUX_HW_BOARD_kw43loc
     imply MCUX_COMPONENT_driver.port
     imply MCUX_COMPONENT_driver.gpio
     imply MCUX_COMPONENT_driver.ccm32k
-    imply MCUX_COMPONENT_driver.glikey
     imply MCUX_COMPONENT_driver.spc
 
 config MCUX_COMPONENT_device.utility

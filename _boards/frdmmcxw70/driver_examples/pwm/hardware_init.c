@@ -33,7 +33,7 @@ void BOARD_InitHardware(void)
      * FLEXPWM0 fault inputs so that an external high/low level can trigger the
      * PWM fault protection.
      *
-     * Signal path (per MCXW70 RM Ch.43 TRGMUX and Ch.54 FlexPWM):
+     * Signal path (per RM Ch.43 TRGMUX and Ch.54 FlexPWM):
      *   external pin -> TRGMUX0_INx (package pin, muxed in pin_mux.c)
      *                -> TRGMUX FLEXPWM0 device SELx output
      *                -> FLEXPWM0 FAULTx input

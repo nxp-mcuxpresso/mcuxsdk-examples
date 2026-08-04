@@ -12,10 +12,10 @@
 
 void BOARD_InitHardware(void)
 {
-	BOARD_InitBootPins();
-	BOARD_InitLIGHT_SENSORPins();
-	BOARD_BootClockRUN();
-	BOARD_InitDebugConsole();
+    BOARD_InitBootPins();
+    BOARD_InitLIGHT_SENSORPins();
+    BOARD_BootClockRUN();
+    BOARD_InitDebugConsole();
 
     CLOCK_SetIpSrc(kCLOCK_Lpadc0, kCLOCK_IpSrcFro192M);
     CLOCK_SetIpSrcDiv(kCLOCK_Lpadc0, 2U);

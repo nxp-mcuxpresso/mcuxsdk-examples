@@ -20,8 +20,8 @@ void BOARD_InitHardware(void)
 
     /* Set clock source for LPSPI slave and get the clock source */
     CLOCK_SetIpSrc(EXAMPLE_LPSPI_SLAVE_CLOCK_NAME, EXAMPLE_LPSPI_SLAVE_CLOCK_SOURCE);
-    CLOCK_SetIpSrcDiv(EXAMPLE_LPSPI_SLAVE_CLOCK_NAME, kSCG_SysClkDivBy1);
     CLOCK_EnableClock(kCLOCK_Fro_hf_div);
+    CLOCK_SetIpSrcDiv(EXAMPLE_LPSPI_SLAVE_CLOCK_NAME, kSCG_SysClkDivBy1);
 }
 
 uint32_t LPSPI1_GetFreq(void)

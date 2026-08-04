@@ -18,9 +18,9 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
 
     /* Set the source for the TPM 0 module */
+    CLOCK_EnableClock(kCLOCK_Fro_hf_div);
     CLOCK_SetIpSrc(kCLOCK_Tpm0, kCLOCK_IpSrcFro192M);
     CLOCK_SetIpSrcDiv(kCLOCK_Tpm0, 3U);
-    CLOCK_EnableClock(kCLOCK_Fro_hf_div);
     CLOCK_EnableClock(kCLOCK_Tpm0);
 }
 /*${function:end}*/

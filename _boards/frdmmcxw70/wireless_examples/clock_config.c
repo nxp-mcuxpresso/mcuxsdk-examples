@@ -243,7 +243,7 @@ static const scg_firc_trim_config_t FircTrimConfig_BOARD_BootClockHSRUN =
 };
 const scg_sys_clk_config_t g_sysClkConfig_BOARD_BootClockHSRUN =
 {
-    .divPlat = (uint32_t)kSCG_SysClkDivBy2,       /* Platform Clock Divider: divided by 2 */
+    .divCore1 = (uint32_t)kSCG_SysClkDivBy2,       /* Platform Clock Divider: divided by 2 */
     .divSlow = (uint32_t)kSCG_SysClkDivBy4,       /* Slow Clock Divider: divided by 4 */
     .divBus = (uint32_t)kSCG_SysClkDivBy1,        /* Bus Clock Divider: divided by 1 */
     .divCore = (uint32_t)kSCG_SysClkDivBy1,       /* Core Clock Divider: divided by 1 */
