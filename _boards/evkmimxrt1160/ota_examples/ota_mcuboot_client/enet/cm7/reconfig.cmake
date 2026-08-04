@@ -12,9 +12,7 @@ mcux_add_macro(
     CC "-DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_user_config.h\\\"\
         -DFSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE\
         -DLWIP_ENET_FLEXIBLE_CONFIGURATION\
-        -DFSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1\
-        -DUSE_SDRAM\
-        -DDATA_SECTION_IS_CACHEABLE=1"
+        -DFSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1"
 )
 
 mcux_remove_armgcc_configuration(

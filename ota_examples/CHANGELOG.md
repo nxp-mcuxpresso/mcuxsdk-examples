@@ -10,6 +10,7 @@ All notable changes to MCUboot fork in MCUXpresso SDK and related ota examples w
 
 ### Changed
 - Changed partition layouts on FRDM-MCXN266 and FRDM-MCXA336
+- [RT1160] Removed external SDRAM usage
 
 ### Fixed
 - (Encrypted XIP)(IPED) Fixed the reset issue during wifi initialization when IPED encryption is active
