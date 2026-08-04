@@ -15,7 +15,6 @@
 
 #include "tensorflow/lite/micro/micro_mutable_op_resolver.h"
 #include "tensorflow/lite/micro/micro_interpreter.h"
-#include "tensorflow/lite/micro/micro_mutable_op_resolver.h"
 #include "tensorflow/lite/schema/schema_generated.h"
 #include "tensorflow/lite/micro/micro_profiler.h"
 
@@ -131,7 +130,6 @@ int Model_Setup(NNServer* server) {
                 strcpy(server->output.data_type [server->output.num_outputs], "NoType");
                 break;
             }
-	    server->layers.output_size[i]++;
 	    server->output.num_outputs++;
         }
     }
@@ -140,11 +138,13 @@ int Model_Setup(NNServer* server) {
     for (int i = 0; i < server->output.outputs_size; i++)
     {
         int idx = (int)(*subgraph->outputs())[i];
-        auto tensor = (*tensors)[idx];
-        char* name = (char*) tensor->name ()->c_str();
-        for (int j = server->output.num_outputs-1; j >= 0; j--){
-            if ( strcmp (server->output.name[j], name) == 0){
+        /* Match by tensor index (unique integer) instead of name to avoid
+         * false matches when multiple tensors share the same name or when
+         * an intermediate tensor has the same name as a model output. */
+        for (int j = server->output.num_outputs - 1; j >= 0; j--){
+            if (server->output.tensor_idx[j] == idx){
                 server->output.index[i] = j;
+                break;
             }
         }
     }
@@ -190,8 +190,8 @@ int Model_Setup(NNServer* server) {
     kTensorArenaSize = 4;
     server->inference_count = 1;
     if (server->interpreter){
-        free(server->interpreter);
-	server->interpreter = nullptr;
+        delete (tflite::MicroInterpreter*)server->interpreter;
+        server->interpreter = nullptr;
     }
     int ret = Model_RunInference (server);
     return ret;
@@ -341,13 +341,12 @@ int Model_RunInference(NNServer* server) {
 
         server->m_tensor_arena = (char*)malloc(kTensorArenaSize);
         while(!server->m_tensor_arena){
-            server->m_tensor_arena = (char*)malloc(kTensorArenaSize);
             kTensorArenaSize -= 1024;
             if (kTensorArenaSize < 0){
-        	    PRINTF("tensor_arena alloc failed.");
+                PRINTF("tensor_arena alloc failed.");
                 return kStatus_Fail;
             }
-
+            server->m_tensor_arena = (char*)malloc(kTensorArenaSize);
         }
 	server->m_tensor_arena_size = kTensorArenaSize;
     }
@@ -379,14 +378,14 @@ int Model_RunInference(NNServer* server) {
     }
 
     for (size_t i = 0; i<interpreter->inputs_size(); i++){
-        if ( !server-> input_tensor_load){
-                memset ( interpreter->input(i)->data.raw, 0, interpreter->input(i)->bytes);
-        }else{
-            server-> input_tensor_load = 0;
+        if (!server->input_tensor_load[i]){
+            memset(interpreter->input(i)->data.raw, 0, interpreter->input(i)->bytes);
+        } else {
+            server->input_tensor_load[i] = false;  /* consume flag after use */
         }
         server->input.input_data[i] = interpreter->input(i)->data.raw;
     }
-    server->input_dims_data = input->dims->data;
+    server->input_dims_data = interpreter->input(0)->dims->data;
 
 
     // Obtain pointers to the model's input and output tensors.

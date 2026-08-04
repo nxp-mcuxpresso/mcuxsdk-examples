@@ -200,7 +200,7 @@ static int do_cmd_tensor_loadb(NNServer* server){
         }
         PRINTF("\r\n######### Ready for input_idx_%d tensor download ", idx);
         s_recv(server->input.input_data[idx], size, server);
-        server->input_tensor_load = 1;
+        server->input_tensor_load[idx] = true;
         return 0;
     }
 
@@ -217,7 +217,7 @@ static int do_cmd_tensor_loadb(NNServer* server){
             }
             PRINTF("\r\n######### Ready for %s tensor download ", server->input.name[i]);
             s_recv(server->input.input_data[i], size, server);
-            server->input_tensor_load = 1;
+            server->input_tensor_load[i] = true;
             return 0;
         }
     }
@@ -241,6 +241,10 @@ static int do_cmd_model_loadb(char* model_buf, NNServer* server){
     server->model_size = size;
     if (size <= MODEL_SIZE){
         model_buf = (char*)malloc(size+8);
+        if (!model_buf) {
+            PRINTF("model malloc failed\r\n");
+            return -1;
+        }
         server->model_upload = model_buf;
         server->model_flash_load = false;
     } else {
@@ -284,6 +288,10 @@ static int do_cmd_model_run(NNServer* server){
             int oidx = atoi(val);
             if (oidx < 0 || oidx >= server->output.outputs_size) {
                 print_results("{\"error\": \"Output tensor index out of range\"}");
+                return 1;
+            }
+            if (n_outputs >= 16) {
+                print_results("{\"error\": \"Too many output_idx parameters (max 16)\"}");
                 return 1;
             }
             outputs_idx[n_outputs] = server->output.index[oidx];

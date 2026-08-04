@@ -69,7 +69,7 @@ struct nn_server {
     char* model_upload;
     int inference_count;
     bool model_flash_load;
-    bool input_tensor_load;
+    bool input_tensor_load[16]; /* per-tensor upload flags, indexed by input tensor index */
 
     FlashConfig* flash_config;
     char* m_tensor_arena;

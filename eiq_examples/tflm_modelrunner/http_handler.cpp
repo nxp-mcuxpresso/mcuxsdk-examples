@@ -159,7 +159,7 @@ int http_parse_mime(NNServer* server, int sock, char* boundary,
             int idx = atoi(name + 10);
             if (idx >= 0 && idx < server->input.inputs_size) {
                 data_buf = server->input.input_data[idx];
-                server->input_tensor_load = 1;
+                server->input_tensor_load[idx] = true;
             } else {
                 PRINTF("Input tensor index %d out of range (valid: 0 ~ %d)\r\n",
                        idx, server->input.inputs_size - 1);
@@ -169,7 +169,8 @@ int http_parse_mime(NNServer* server, int sock, char* boundary,
             for (int i=0; i<server->input.inputs_size; i++){
                 if (strcmp (name, server->input.name [i] ) == 0){
                     data_buf = server->input.input_data [i];
-                    server->input_tensor_load = 1;
+                    server->input_tensor_load[i] = true;
+                    break;  /* stop on first match; name should be unique */
                 }
             }
         }
@@ -442,13 +443,16 @@ int v1_handler_post(int                sock,
         } else if(strcmp("output_idx", key) == 0) {
             /* Index-based output selection: ?output_idx=<N> */
             int oidx = atoi(val);
-            if (oidx >= 0 && oidx < server->output.outputs_size) {
-                outputs_idx[n_outputs] = server->output.index[oidx];
-                n_outputs++;
-            } else {
+            if (oidx < 0 || oidx >= server->output.outputs_size) {
                 PRINTF("Output tensor index %d out of range\r\n", oidx);
                 return 1;
             }
+            if (n_outputs >= 16) {
+                PRINTF("Too many output_idx parameters (max 16)\r\n");
+                return 1;
+            }
+            outputs_idx[n_outputs] = server->output.index[oidx];
+            n_outputs++;
         } else if(strcmp("output", key) == 0) {
             char out_tensor_name[512];
             size_t outind = 0;
