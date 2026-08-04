@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+dsc_rgpio_led_output:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_rgpio/led_output
+    project-root-path: boards/${board}/driver_examples/dsc_rgpio/led_output/${multicore_foldername}
+    document:
+      name: dsc_rgpio_led_output${core_id_suffix_name}
+      category: driver_examples/dsc_rgpio
+      brief: The DSC RGPIO LED Output example shows how to use the dsc_rgpio driver
+        to control GPIO output. The example blinks an LED by periodically toggling
+        the GPIO pin.
+      example_readme:
+      - examples/driver_examples/dsc_rgpio/led_output/readme.md
+      - ${board_root}/${board}/driver_examples/dsc_rgpio/led_output/${core_id}/example_board_readme.md
+  boards:
+    mc56f85000evk@dsp56800ef_core0: []
+    mc56f85000evk@dsp56800ef_core1: []
