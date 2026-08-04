@@ -1755,7 +1755,7 @@ static void ConfigCGUDig_COMM(void)
     rootCfg.div = 1U;
     CLOCK_SetRootClock(kCLOCK_Root_COMM_usb0_fro48m, &rootCfg);
 
-    rootCfg.mux = kCLOCK_USB1_ClockRoot_USB1;
+    rootCfg.mux = kCLOCK_USB1_ClockRoot_USBPLL_48M;
     rootCfg.div = 1U;
     CLOCK_SetRootClock(kCLOCK_Root_COMM_usb1_fclk, &rootCfg);
 
