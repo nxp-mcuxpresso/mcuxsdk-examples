@@ -66,18 +66,18 @@
  ******************************************************************************/
 
 /* Wakeup source control (per-source configure fns + framework, arm flag) */
-static void APP_SetWakeupSource(uint8_t src, bool arm);
-static void APP_SetWakeup(uint8_t src, bool arm);
+static void APP_SetWakeupSource(uint8_t src, bool enable);
+static void APP_SetWakeup(uint8_t src, bool enable);
 
 /* Run mode helpers */
 static void           APP_SwitchRunMode(power_run_mode_t target);
 static void           APP_WaitTxDone(void);
 
-/* Low Power Run helpers (Deep Sleep entry/exit only) */
+/* Low Power Run helper (Deep Sleep entry only; demo stays in LP Run after wake) */
 static void APP_EnterLowPowerRun(void);
-static void APP_ExitLowPowerRun(void);
 
 /* Flat top-level menu + wakeup-source sub-menu */
+static void           APP_PrintMeasuredClocks(void);
 static void           APP_PrintTopMenu(void);
 static uint8_t        APP_ReadMenuSelection(void);
 static void           APP_PrintModeResources(uint8_t lpType, uint8_t wakeupSrc);
@@ -253,7 +253,7 @@ static void APP_HandleWakeupAfterReset(void)
 static volatile uint32_t *const s_vbatSram = (volatile uint32_t *)APP_VBAT_SRAM_BASE;
 
 /*! @brief Arm the VBAT_SRAM marker + pattern before a DPD entry (variant 1 or 2). */
-static void APP_VbatSramArm(uint8_t dpdVariant)
+static void APP_EnableVbatSram(uint8_t dpdVariant)
 {
     s_vbatSram[0] = APP_VBAT_TEST_MAGIC;
     s_vbatSram[1] = (uint32_t)dpdVariant;
@@ -584,7 +584,7 @@ static void APP_CfgDmaSw5(bool on)
 }
 
 /*!
- * @brief Arm (arm=true) or disarm a wakeup source from its descriptor.
+ * @brief Enable or disable a wakeup source from its descriptor.
  *
  * Runs the source's configure() for the peripheral-specific bits, then the
  * generic EnableIRQ(irq) + POWER_EnableWakeupSource(powerSrc) (reverse order on
@@ -596,11 +596,11 @@ static void APP_CfgDmaSw5(bool on)
  * Down (armed alongside the VBATCON latch).  This is intentionally broader than
  * REQ-006's VBATCON-only DPD wakeup; see the task log.
  */
-static void APP_SetWakeupSource(uint8_t src, bool arm)
+static void APP_SetWakeupSource(uint8_t src, bool enable)
 {
     const app_wakeup_source_t *ws = &APP_WAKEUP_SOURCES[src];
 
-    if (arm)
+    if (enable)
     {
         if (ws->configure != NULL) { ws->configure(true); }
         EnableIRQ(ws->irq);
@@ -626,9 +626,9 @@ static void APP_SetWakeupSource(uint8_t src, bool arm)
  * APP_SetWakeupSource() with a clean-slate clear on either side.  Used at every
  * low-power entry (Sleep / Deep Sleep / Power Down / Deep Power Down).
  */
-static void APP_SetWakeup(uint8_t src, bool arm)
+static void APP_SetWakeup(uint8_t src, bool enable)
 {
-    if (arm)
+    if (enable)
     {
         POWER_ClearAllWakeupSources();
         APP_SetWakeupSource(src, true);
@@ -650,53 +650,34 @@ static void APP_SetWakeup(uint8_t src, bool arm)
  * CorePLL frequency around Deep Sleep.
  ******************************************************************************/
 
-/*!
- * @brief Reinitialize COREPLL with the given integer loop-division factor.
- *
- * Used by APP_ExitLowPowerRun() to restore the CorePLL frequency
- * (loopDivNint=25 -> 24 MHz x 25 = 600 MHz) after Deep Sleep.  Safe to call
- * while the CPU is parked on a non-CorePLL source.
- *
- * TODO: add CLOCK_SetRootClockMux() mux steps when that API is available:
- *   CLOCK_SetRootClockMux(kCLOCK_Root_CGU_MAIN_ROOTCLK, kCLOCK_CGU_MAIN_ClockRoot_BASE);
- *   ... (COREPLL reinit below) ...
- *   CLOCK_SetRootClockMux(kCLOCK_Root_CGU_MAIN_ROOTCLK, kCLOCK_CGU_MAIN_ClockRoot_COREPLL_OUT);
- */
-static void APP_ReconfigureCorePll(uint32_t loopDivNint)
-{
-    const clock_cguana_core_pll_config_t cfg = {
-        .startMode   = kCLOCK_CguanaPllStartFull,
-        .vcoSelHf    = false,   /* LF VCO: 600-1258 MHz */
-        .refFreq     = kCLOCK_CguanaRefFreq24M,
-        .loopDivNint = loopDivNint,
-        .postDivBy2  = false,
-    };
-    CLOCK_DeinitCorePll();
-    CLOCK_InitCorePll(&cfg);
-}
-
 /*******************************************************************************
- * Low Power Run helpers
+ * Low Power Run helper
  *
- * APP_EnterLowPowerRun() / APP_ExitLowPowerRun() bracket POWER_EnterDeepSleep()
- * in the DS case body.  They are NOT tracked run modes and are NOT routed
- * through APP_SwitchRunMode().
+ * APP_EnterLowPowerRun() is the demo's Low Power Run entry helper.  It is called
+ * before POWER_EnterDeepSleep() in the DS case body.  It is NOT a tracked run
+ * mode and is NOT routed through APP_SwitchRunMode().
  *
  * Motivation: POWERCON's MainPLL/SysPLL CGUANA enable is a combined PLL+DIV4
  * bit.  POWERCON restores PLL+DIV4 as a unit on wake.  The other CGU root
  * clocks (DIV5/8/10/20, SYSPLLDIV5/X) are separate SW-managed gates that are
- * not touched by POWERCON and must be explicitly gated before deep sleep entry
- * and ungated after wake.
+ * not touched by POWERCON.  In Low Power Run the CPU and buses run from
+ * FRO192M / DIV4, so those non-DIV4 DIV outputs are unused power and are gated
+ * here in software.
+ *
+ * There is no APP_ExitLowPowerRun() counterpart: after a Deep Sleep wakeup the
+ * demo stays in Low Power Run (the non-DIV4 DIVs stay gated).  The user leaves
+ * LP Run explicitly via the Run Mode Switch menu, whose APP_EnterNormalRun /
+ * APP_EnterHpRun path reconfigures the clock tree (re-enabling the DIVs) for the
+ * target mode.  See spec sections 3.3 / 10.4.
  ******************************************************************************/
 
 /*!
- * @brief Gate non-DIV4 PLL root clocks and switch buses to FRO192 before
- * deep sleep entry.
+ * @brief Enter Low Power Run: switch buses to FRO192 / LP2M and gate every
+ * MAINPLL/SYSPLL DIV output except DIV4.
  *
- * Called immediately before POWER_EnterDeepSleep().  On entry the system is
- * already in LP run mode (CorePLL at 600 MHz, buses on LP PLL sources).
- * SYSPLLDIV4_ROOTCLK is intentionally left ON because XSPI Flash uses
- * SYSPLL_DIV4/2 = 250 MHz.
+ * On entry the system is already in LP run mode (CorePLL at 600 MHz, buses on
+ * LP PLL sources).  SYSPLLDIV4_ROOTCLK is intentionally left ON because XSPI
+ * Flash uses SYSPLL_DIV4/2 = 250 MHz.
  */
 static void APP_EnterLowPowerRun(void)
 {
@@ -709,9 +690,9 @@ static void APP_EnterLowPowerRun(void)
     CLOCK_SetRootClockMux(kCLOCK_Root_CGU_WAKEBUS_ROOTCLK,  kCLOCK_WAKEBUS_ClockRoot_LOW);
     /* Gate CorePLL CPU and buses no longer need it. */
     CLOCK_DeinitCorePll();
-    /* Gate non-DIV4 PLL root clocks.  POWERCON restores the PLLs and their
-     * DIV4 outputs on wake via the combined CGUANA enable; the roots below
-     * are separately SW-managed and must be re-enabled by APP_ExitLowPowerRun. */
+    /* Gate every non-DIV4 MAINPLL/SYSPLL DIV root clock in software.  These are
+     * separately SW-managed (POWERCON only restores the combined PLL+DIV4 on
+     * wake) and are unused in LP Run.  SYSPLLDIV4 is left ON (XSPI Flash). */
     CLOCK_PowerOffRootClock(kCLOCK_Root_CGU_MAINPLLDIVX_ROOTCLK);
     CLOCK_PowerOffRootClock(kCLOCK_Root_CGU_MAINPLLDIV8_ROOTCLK);
     CLOCK_PowerOffRootClock(kCLOCK_Root_CGU_MAINPLLDIV10_ROOTCLK);
@@ -719,37 +700,6 @@ static void APP_EnterLowPowerRun(void)
     CLOCK_PowerOffRootClock(kCLOCK_Root_CGU_SYSPLLDIV5_ROOTCLK);
     CLOCK_PowerOffRootClock(kCLOCK_Root_CGU_SYSPLLDIVX_ROOTCLK);
     /* SYSPLLDIV4_ROOTCLK stays ON XSPI Flash: SYSPLL_DIV4/2 = 250 MHz. */
-}
-
-/*!
- * @brief Restore non-DIV4 PLL root clocks and bus muxes to LP state after
- * POWER_EnterDeepSleep() returns.
- *
- * POWERCON has already re-enabled MAINPLL+DIV4 and SYSPLL+DIV4 via their
- * combined CGUANA bits.  This function re-enables the separately-gated roots,
- * restores CorePLL to the LP frequency (600 MHz), and switches buses back to
- * their LP PLL sources so that POWER_GetCurrentRunMode() reports LP.
- * The subsequent s_lpRunCfg post-wake call to APP_SwitchRunMode(kPOWER_RunModeNormal)
- * then only needs to bump CorePLL to 792 MHz.
- */
-static void APP_ExitLowPowerRun(void)
-{
-    /* Re-enable non-DIV4 PLL root clocks (POWERCON restored PLL+DIV4). */
-    CLOCK_PowerOnRootClock(kCLOCK_Root_CGU_MAINPLLDIVX_ROOTCLK);
-    CLOCK_PowerOnRootClock(kCLOCK_Root_CGU_MAINPLLDIV8_ROOTCLK);
-    CLOCK_PowerOnRootClock(kCLOCK_Root_CGU_MAINPLLDIV10_ROOTCLK);
-    CLOCK_PowerOnRootClock(kCLOCK_Root_CGU_MAINPLLDIV20_ROOTCLK);
-    CLOCK_PowerOnRootClock(kCLOCK_Root_CGU_SYSPLLDIV5_ROOTCLK);
-    CLOCK_PowerOnRootClock(kCLOCK_Root_CGU_SYSPLLDIVX_ROOTCLK);
-    /* Restore CorePLL to LP frequency (run mode is LP). */
-    APP_ReconfigureCorePll(25U); /* 24 * 25 = 600 MHz */
-    /* Restore bus mux from FRO192 back to LP PLL sources. */
-    CLOCK_SetRootClockMux(kCLOCK_Root_CGU_MAIN_ROOTCLK,      kCLOCK_CGU_MAIN_ClockRoot_COREPLL_OUT);
-    CLOCK_SetRootClockMux(kCLOCK_Root_CGU_NPU_ROOTCLK,      kCLOCK_NPU_ClockRoot_MAINPLL_DIVOUT1);
-    CLOCK_SetRootClockMux(kCLOCK_Root_CGU_MEDIABUS_ROOTCLK, kCLOCK_MEDIABUS_ClockRoot_SYSPLL_DIVOUT2);
-    CLOCK_SetRootClockMux(kCLOCK_Root_CGU_AUDIOBUS_ROOTCLK, kCLOCK_AUDIOBUS_ClockRoot_MAINPLL_DIVX);
-    CLOCK_SetRootClockMux(kCLOCK_Root_CGU_COMMBUS_ROOTCLK,  kCLOCK_COMMBUS_ClockRoot_MAINPLL_DIVX);
-    CLOCK_SetRootClockMux(kCLOCK_Root_CGU_WAKEBUS_ROOTCLK,  kCLOCK_WAKEBUS_ClockRoot_MAINPLL_DIVX);
 }
 
 /*******************************************************************************
@@ -902,10 +852,10 @@ typedef struct
 #define _SF(field, ft) { (uint16_t)offsetof(power_sleep_config_t, field), (uint8_t)(ft) }
 
 static const app_slp_field_t s_slpFieldMap[kPOWER_Resource_COUNT] = {
-    [kPOWER_Resource_CpuDomainEvent]   = _SF(setCpuDomainEvent,   kFT_U32),
-    [kPOWER_Resource_NpuDomainEvent]   = _SF(setNpuDomainEvent,   kFT_U32),
-    [kPOWER_Resource_CommDomainEvent]  = _SF(setCommDomainEvent,  kFT_U32),
-    [kPOWER_Resource_MediaDomainEvent] = _SF(setMediaDomainEvent, kFT_U32),
+    [kPOWER_Resource_CpuDomain]        = _SF(setCpuDomainEvent,   kFT_U32),
+    [kPOWER_Resource_NpuDomain]        = _SF(setNpuDomainEvent,   kFT_U32),
+    [kPOWER_Resource_CommDomain]       = _SF(setCommDomainEvent,  kFT_U32),
+    [kPOWER_Resource_MediaDomain]      = _SF(setMediaDomainEvent, kFT_U32),
     [kPOWER_Resource_PmuMode]          = _SF(setPmuMode,          kFT_U8),
     [kPOWER_Resource_DcdcMode]         = _SF(setDcdcMode,         kFT_U32),
     [kPOWER_Resource_CoreLvl]          = _SF(setCoreLevel,          kFT_U8),
@@ -1172,13 +1122,13 @@ typedef struct
 /* Indexed by APP_LP_* code.  Index 0 is unused (APP_LP_* values start at 1). */
 static const app_lp_run_cfg_t s_lpRunCfg[] = {
     /* [0] reserved */    {false, kPOWER_RunModeNormal, false, kPOWER_RunModeNormal},
-    /* [APP_LP_SLEEP]  */ {false, kPOWER_RunModeNormal, true,  kPOWER_RunModeNormal},
-    /* [APP_LP_DS1]    */ {true,  kPOWER_RunModeLp,     true,  kPOWER_RunModeNormal},
-    /* [APP_LP_DS2]    */ {true,  kPOWER_RunModeLp,     true,  kPOWER_RunModeNormal},
-    /* [APP_LP_DS3]    */ {true,  kPOWER_RunModeLp,     true,  kPOWER_RunModeNormal},
-    /* [APP_LP_PD]     */ {true,  kPOWER_RunModeLp,     false, kPOWER_RunModeNormal},
-    /* [APP_LP_DPD1]   */ {true,  kPOWER_RunModeLp,     false, kPOWER_RunModeNormal},
-    /* [APP_LP_DPD2]   */ {true,  kPOWER_RunModeLp,     false, kPOWER_RunModeNormal},
+    /* [APP_LP_SLEEP]  */ {false, kPOWER_RunModeNormal, false,  kPOWER_RunModeNormal},
+    /* [APP_LP_DS1]    */ {true,  kPOWER_RunModeLp,     false, kPOWER_RunModeLp},
+    /* [APP_LP_DS2]    */ {true,  kPOWER_RunModeLp,     false, kPOWER_RunModeLp},
+    /* [APP_LP_DS3]    */ {true,  kPOWER_RunModeLp,     false, kPOWER_RunModeLp},
+    /* [APP_LP_PD]     */ {false,  kPOWER_RunModeLp,     false, kPOWER_RunModeNormal},
+    /* [APP_LP_DPD1]   */ {false,  kPOWER_RunModeLp,     false, kPOWER_RunModeNormal},
+    /* [APP_LP_DPD2]   */ {false,  kPOWER_RunModeLp,     false, kPOWER_RunModeNormal},
 };
 
 /*!
@@ -1255,9 +1205,9 @@ static void APP_EnterConfig(uint8_t lpType, app_lp_cfg_t *cfg)
             break;
         case APP_LP_DPD1:
         case APP_LP_DPD2:
-            /* Arm the VBAT_SRAM retention marker just before entry; the next boot
+            /* Enable the VBAT_SRAM retention marker just before entry; the next boot
              * reports whether it survived (RETAINED after DPD1, lost after DPD2). */
-            APP_VbatSramArm((lpType == APP_LP_DPD2) ? 2U : 1U);
+            APP_EnableVbatSram((lpType == APP_LP_DPD2) ? 2U : 1U);
             POWER_EnterDeepPowerDown(&cfg->deepPowerDown); /* does not return */
             break;
         default:
@@ -1340,10 +1290,10 @@ static void APP_EnterLowPower(const app_target_t *t)
     {
         BOARD_InitDebugConsole();
     }
-    if (seq->lpRunBracket)
-    {
-        APP_ExitLowPowerRun();
-    }
+    /* Deep Sleep (lpRunBracket) intentionally stays in Low Power Run after wakeup: the
+     * non-DIV4 PLL DIV roots gated by APP_EnterLowPowerRun() are left gated, and the run
+     * mode is NOT switched back to Normal here.  The user leaves LP Run explicitly via the
+     * Run Mode Switch menu (see spec sections 3.3 / 10.4).  There is no APP_ExitLowPowerRun(). */
     APP_SetWakeup(wakeupSrc, false);
     APP_LogWakeEvent(APP_WAKEUP_SOURCES[wakeupSrc].name);
     APP_LogStep(lpName, APP_RUN_MODE_NAMES[POWER_GetCurrentRunMode()], seq->wakeNote);
@@ -1353,12 +1303,69 @@ static void APP_EnterLowPower(const app_target_t *t)
         APP_SwitchRunMode(s_lpRunCfg[lpType].postMode);
     }
 
+    /* Deep Sleep wake leaves the demo in Low Power Run (no auto switch back to Normal).
+     * Tell the user explicitly and how to leave it. */
+    if (seq->lpRunBracket)
+    {
+        PRINTF("\r\nNow in Low Power Run (%s) after Deep Sleep wakeup.\r\n",
+               APP_RUN_MODE_NAMES[POWER_GetCurrentRunMode()]);
+        PRINTF("Use 'Run Mode Switch' from the menu to return to a higher run mode.\r\n");
+    }
+
     PRINTF("\r\nCurrent mode: %s\r\n", APP_RUN_MODE_NAMES[POWER_GetCurrentRunMode()]);
 }
 
 /*******************************************************************************
  * Flat top-level menu
  ******************************************************************************/
+
+
+/*!
+ * @brief Print the FREQMEAS-measured frequency (MHz) of every clock root and
+ * every clock source using CLOCK_MeasureRootClockFreq()/CLOCK_MeasureClockSrcFreq().
+ *
+ * Each line shows the clock name and its measured frequency as MMMM.fff MHz —
+ * the actual measured hardware value, not a computed one.  An entry that measures
+ * 0 Hz (no FREQMEAS tap, or the clock is gated off) prints "(gated / no tap)".
+ */
+static void APP_PrintMeasuredClocks(void)
+{
+    uint32_t i;
+    uint32_t freq;
+
+    PRINTF("\r\n---- Measured clock frequencies (FREQMEAS) --------------------\r\n");
+
+    PRINTF("  Clock roots:\r\n");
+    for (i = 0U; i < ARRAY_SIZE(APP_MEAS_ROOTS); i++)
+    {
+        freq = CLOCK_MeasureRootClockFreq((clock_root_t)APP_MEAS_ROOTS[i].id);
+        if (freq != 0U)
+        {
+            PRINTF("    %-30s %4u.%03u MHz\r\n", APP_MEAS_ROOTS[i].name,
+                   (uint32_t)(freq / 1000000U), (uint32_t)((freq % 1000000U) / 1000U));
+        }
+        else
+        {
+            PRINTF("    %-30s (gated / no tap)\r\n", APP_MEAS_ROOTS[i].name);
+        }
+    }
+
+    PRINTF("  Clock sources:\r\n");
+    for (i = 0U; i < ARRAY_SIZE(APP_MEAS_SRCS); i++)
+    {
+        freq = CLOCK_MeasureClockSrcFreq((clock_name_t)APP_MEAS_SRCS[i].id);
+        if (freq != 0U)
+        {
+            PRINTF("    %-30s %4u.%03u MHz\r\n", APP_MEAS_SRCS[i].name,
+                   (uint32_t)(freq / 1000000U), (uint32_t)((freq % 1000000U) / 1000U));
+        }
+        else
+        {
+            PRINTF("    %-30s (gated / no tap)\r\n", APP_MEAS_SRCS[i].name);
+        }
+    }
+    PRINTF("--------------------------------------------------------------\r\n");
+}
 
 /*!
  * @brief Print the flat top-level menu - one entry per supported mode.
@@ -1370,6 +1377,7 @@ static void APP_PrintTopMenu(void)
     PRINTF("==============================================\r\n");
     PRINTF("   RT2660 Power Mode Switch Demo\r\n");
     PRINTF("   Current mode: %s\r\n", APP_RUN_MODE_NAMES[POWER_GetCurrentRunMode()]);
+    APP_PrintMeasuredClocks();
     PRINTF("==============================================\r\n");
     for (i = 0U; i < APP_TARGET_COUNT; i++)
     {

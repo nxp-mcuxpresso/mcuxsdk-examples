@@ -90,12 +90,259 @@ typedef struct
 /*! Entry-sequence descriptors, indexed by APP_LP_* code (index 0 unused). */
 static const app_lp_seq_t APP_LP_SEQ[] = {
     [APP_LP_SLEEP] = { false, false, "WFI entered", "wake; run mode preserved" },
-    [APP_LP_DS1]   = { true,  true,  "WFI entered", "PMU restored; LP clock tree back" },
-    [APP_LP_DS2]   = { true,  true,  "WFI entered", "PMU restored; LP clock tree back" },
-    [APP_LP_DS3]   = { true,  true,  "WFI entered", "PMU restored; LP clock tree back" },
+    [APP_LP_DS1]   = { true,  true,  "WFI entered", "PMU restored; staying in LP Run" },
+    [APP_LP_DS2]   = { true,  true,  "WFI entered", "PMU restored; staying in LP Run" },
+    [APP_LP_DS3]   = { true,  true,  "WFI entered", "PMU restored; staying in LP Run" },
     [APP_LP_PD]    = { false, true,  "WFI entered; system resets on wakeup", NULL },
     [APP_LP_DPD1]  = { false, true,  "VBAT SRAM retained; VBAT-domain wakeup; no return", NULL },
     [APP_LP_DPD2]  = { false, true,  "VBAT SRAM lost; VBAT-domain wakeup; no return",     NULL },
+};
+
+/*!
+ * @brief One contiguous clock-root subsystem index range for the measured dump.
+ *
+ * The RT2660 clock_root_t enum groups roots by subsystem, each in a contiguous
+ * [start, end] index block (CGU / CMPT / MAIN / WAKE / COMM / AUDIO / MEDIA).
+ * We iterate every index in every block so the dump is complete; a root with no
+ * FREQMEAS tap simply measures 0 and prints "(gated / no tap)".
+ */
+typedef struct
+{
+    const char *tag;   /*!< Subsystem label. */
+    uint32_t    start; /*!< First clock_root_t index (inclusive). */
+    uint32_t    end;   /*!< Last  clock_root_t index (inclusive). */
+} app_root_range_t;
+
+static const app_root_range_t APP_ROOT_RANGES[] = {
+    { "CGU",   (uint32_t)kCLOCK_Root_CGU_START,   (uint32_t)kCLOCK_Root_CGU_END   },
+    { "CMPT",  (uint32_t)kCLOCK_Root_CMPT_START,  (uint32_t)kCLOCK_Root_CMPT_END  },
+    { "MAIN",  (uint32_t)kCLOCK_Root_MAIN_START,  (uint32_t)kCLOCK_Root_MAIN_END  },
+    { "WAKE",  (uint32_t)kCLOCK_Root_WAKE_START,  (uint32_t)kCLOCK_Root_WAKE_END  },
+    { "COMM",  (uint32_t)kCLOCK_Root_COMM_START,  (uint32_t)kCLOCK_Root_COMM_END  },
+    { "AUDIO", (uint32_t)kCLOCK_Root_AUDIO_START, (uint32_t)kCLOCK_Root_AUDIO_END },
+    { "MEDIA", (uint32_t)kCLOCK_Root_MEDIA_START, (uint32_t)kCLOCK_Root_MEDIA_END },
+};
+
+
+/*!
+ * @brief One clock root / clock source entry (enum value + display name) for the
+ * measured-frequency dump.  The display name is the enum identifier minus its
+ * "kCLOCK_Root_" / "kCLOCK_SRC_" prefix.
+ */
+typedef struct
+{
+    uint32_t    id;   /*!< clock_root_t (roots table) or clock_name_t (sources table). */
+    const char *name; /*!< Display name. */
+} app_clk_meas_t;
+
+/*! Every clock_root_t across all subsystems (CGU/CMPT/MAIN/WAKE/COMM/AUDIO/MEDIA). */
+static const app_clk_meas_t APP_MEAS_ROOTS[] = {
+    { kCLOCK_Root_CGU_SXOSC_ROOTCLK, "CGU_SXOSC_ROOTCLK" },
+    { kCLOCK_Root_CGU_BASE_CLK, "CGU_BASE_CLK" },
+    { kCLOCK_Root_CGU_LOW_CLK, "CGU_LOW_CLK" },
+    { kCLOCK_Root_CGU_MAINPLL_DIVX, "CGU_MAINPLL_DIVX" },
+    { kCLOCK_Root_CGU_SYSPLL_DIVX, "CGU_SYSPLL_DIVX" },
+    { kCLOCK_Root_CGU_PLL_PFDX, "CGU_PLL_PFDX" },
+    { kCLOCK_Root_CGU_MEDIA_PFDX, "CGU_MEDIA_PFDX" },
+    { kCLOCK_Root_CGU_MAINPFDX_ROOTCLK, "CGU_MAINPFDX_ROOTCLK" },
+    { kCLOCK_Root_CGU_COMMPFDX_ROOTCLK, "CGU_COMMPFDX_ROOTCLK" },
+    { kCLOCK_Root_CGU_MAINDIVX_ROOTCLK, "CGU_MAINDIVX_ROOTCLK" },
+    { kCLOCK_Root_CGU_SAIMCLK_ROOTCLK, "CGU_SAIMCLK_ROOTCLK" },
+    { kCLOCK_Root_CGU_SAIMCLK0_ROOTCLK, "CGU_SAIMCLK0_ROOTCLK" },
+    { kCLOCK_Root_CGU_SAIMCLK1_ROOTCLK, "CGU_SAIMCLK1_ROOTCLK" },
+    { kCLOCK_Root_CGU_SAIMCLK2_ROOTCLK, "CGU_SAIMCLK2_ROOTCLK" },
+    { kCLOCK_Root_CGU_LP12M_CORE_ROOTCLK, "CGU_LP12M_CORE_ROOTCLK" },
+    { kCLOCK_Root_CGU_LP1M_CORE_ROOTCLK, "CGU_LP1M_CORE_ROOTCLK" },
+    { kCLOCK_Root_CGU_ULP32K_ROOTCLK, "CGU_ULP32K_ROOTCLK" },
+    { kCLOCK_Root_CGU_FRO192M_ROOTCLK, "CGU_FRO192M_ROOTCLK" },
+    { kCLOCK_Root_CGU_FRO96M_ROOTCLK, "CGU_FRO96M_ROOTCLK" },
+    { kCLOCK_Root_CGU_FRO48M_ROOTCLK, "CGU_FRO48M_ROOTCLK" },
+    { kCLOCK_Root_CGU_FRO24M_ROOTCLK, "CGU_FRO24M_ROOTCLK" },
+    { kCLOCK_Root_CGU_SYSPLLDIV4_ROOTCLK, "CGU_SYSPLLDIV4_ROOTCLK" },
+    { kCLOCK_Root_CGU_SYSPLLDIV5_ROOTCLK, "CGU_SYSPLLDIV5_ROOTCLK" },
+    { kCLOCK_Root_CGU_SYSPLLDIVX_ROOTCLK, "CGU_SYSPLLDIVX_ROOTCLK" },
+    { kCLOCK_Root_CGU_MAINPLLDIVX_ROOTCLK, "CGU_MAINPLLDIVX_ROOTCLK" },
+    { kCLOCK_Root_CGU_MAINPLLDIV8_ROOTCLK, "CGU_MAINPLLDIV8_ROOTCLK" },
+    { kCLOCK_Root_CGU_MAINPLLDIV10_ROOTCLK, "CGU_MAINPLLDIV10_ROOTCLK" },
+    { kCLOCK_Root_CGU_MAINPLLDIV20_ROOTCLK, "CGU_MAINPLLDIV20_ROOTCLK" },
+    { kCLOCK_Root_CGU_AUDIOPLL_ROOTCLK, "CGU_AUDIOPLL_ROOTCLK" },
+    { kCLOCK_Root_CGU_VIDEOPLL_ROOTCLK, "CGU_VIDEOPLL_ROOTCLK" },
+    { kCLOCK_Root_CGU_MAIN_ROOTCLK, "CGU_MAIN_ROOTCLK" },
+    { kCLOCK_Root_CGU_NPU_ROOTCLK, "CGU_NPU_ROOTCLK" },
+    { kCLOCK_Root_CGU_MEDIABUS_ROOTCLK, "CGU_MEDIABUS_ROOTCLK" },
+    { kCLOCK_Root_CGU_AUDIOBUS_ROOTCLK, "CGU_AUDIOBUS_ROOTCLK" },
+    { kCLOCK_Root_CGU_COMMBUS_ROOTCLK, "CGU_COMMBUS_ROOTCLK" },
+    { kCLOCK_Root_CGU_WAKEBUS_ROOTCLK, "CGU_WAKEBUS_ROOTCLK" },
+    { kCLOCK_Root_CGU_SYSCON_PDMAIN_CLK, "CGU_SYSCON_PDMAIN_CLK" },
+    { kCLOCK_Root_CGU_PERI_ROOTCLK0, "CGU_PERI_ROOTCLK0" },
+    { kCLOCK_Root_CGU_PERI_ROOTCLK1, "CGU_PERI_ROOTCLK1" },
+    { kCLOCK_Root_CGU_PERI_ROOTCLK2, "CGU_PERI_ROOTCLK2" },
+    { kCLOCK_Root_CGU_PERI_ROOTCLK3, "CGU_PERI_ROOTCLK3" },
+    { kCLOCK_Root_CGU_PERI_ROOTCLK4, "CGU_PERI_ROOTCLK4" },
+    { kCLOCK_Root_CGU_PERI_ROOTCLK5, "CGU_PERI_ROOTCLK5" },
+    { kCLOCK_Root_CGU_PERI_ROOTCLK6, "CGU_PERI_ROOTCLK6" },
+    { kCLOCK_Root_CGU_PERI_ROOTCLK7, "CGU_PERI_ROOTCLK7" },
+    { kCLOCK_Root_CGU_AUDIO_ROOTCLK, "CGU_AUDIO_ROOTCLK" },
+    { kCLOCK_Root_CGU_VIDEO_ROOTCLK, "CGU_VIDEO_ROOTCLK" },
+    { kCLOCK_Root_CGU_USB1_ROOTCLK, "CGU_USB1_ROOTCLK" },
+    { kCLOCK_Root_CGU_ETH_ROOTCLK, "CGU_ETH_ROOTCLK" },
+    { kCLOCK_Root_CMPT_cmpt_clk, "CMPT_cmpt_clk" },
+    { kCLOCK_Root_CMPT_cpu_clk, "CMPT_cpu_clk" },
+    { kCLOCK_Root_CMPT_npu_clk, "CMPT_npu_clk" },
+    { kCLOCK_Root_CMPT_systick_clk0, "CMPT_systick_clk0" },
+    { kCLOCK_Root_CMPT_systick_clk1, "CMPT_systick_clk1" },
+    { kCLOCK_Root_MAIN_main_clk_divided, "MAIN_main_clk_divided" },
+    { kCLOCK_Root_MAIN_xspi0_fclk_divided, "MAIN_xspi0_fclk_divided" },
+    { kCLOCK_Root_MAIN_xspi1_fclk_divided, "MAIN_xspi1_fclk_divided" },
+    { kCLOCK_Root_MAIN_i3c0_fclk, "MAIN_i3c0_fclk" },
+    { kCLOCK_Root_MAIN_lpi2c0_fclk, "MAIN_lpi2c0_fclk" },
+    { kCLOCK_Root_MAIN_lpi2c1_fclk, "MAIN_lpi2c1_fclk" },
+    { kCLOCK_Root_MAIN_lpspi0_fclk, "MAIN_lpspi0_fclk" },
+    { kCLOCK_Root_MAIN_lpspi1_fclk, "MAIN_lpspi1_fclk" },
+    { kCLOCK_Root_MAIN_lpspi2_fclk, "MAIN_lpspi2_fclk" },
+    { kCLOCK_Root_MAIN_lpspi3_fclk, "MAIN_lpspi3_fclk" },
+    { kCLOCK_Root_MAIN_lpspi4_fclk, "MAIN_lpspi4_fclk" },
+    { kCLOCK_Root_MAIN_lpuart0_fclk, "MAIN_lpuart0_fclk" },
+    { kCLOCK_Root_MAIN_lpuart1_fclk, "MAIN_lpuart1_fclk" },
+    { kCLOCK_Root_MAIN_lpuart2_fclk, "MAIN_lpuart2_fclk" },
+    { kCLOCK_Root_MAIN_lpuart3_fclk, "MAIN_lpuart3_fclk" },
+    { kCLOCK_Root_MAIN_lpuart4_fclk, "MAIN_lpuart4_fclk" },
+    { kCLOCK_Root_MAIN_lpuart5_fclk, "MAIN_lpuart5_fclk" },
+    { kCLOCK_Root_MAIN_flexcan0_fclk, "MAIN_flexcan0_fclk" },
+    { kCLOCK_Root_MAIN_flexcan1_fclk, "MAIN_flexcan1_fclk" },
+    { kCLOCK_Root_MAIN_flexcan2_fclk, "MAIN_flexcan2_fclk" },
+    { kCLOCK_Root_MAIN_flexcan_gfclk, "MAIN_flexcan_gfclk" },
+    { kCLOCK_Root_MAIN_qtpm0_fclk, "MAIN_qtpm0_fclk" },
+    { kCLOCK_Root_MAIN_lpit0_fclk, "MAIN_lpit0_fclk" },
+    { kCLOCK_Root_MAIN_lpit1_fclk, "MAIN_lpit1_fclk" },
+    { kCLOCK_Root_MAIN_adc0_fclk, "MAIN_adc0_fclk" },
+    { kCLOCK_Root_MAIN_adc1_fclk, "MAIN_adc1_fclk" },
+    { kCLOCK_Root_MAIN_sinc0_fclk, "MAIN_sinc0_fclk" },
+    { kCLOCK_Root_MAIN_sinc1_fclk, "MAIN_sinc1_fclk" },
+    { kCLOCK_Root_MAIN_flexio0_fclk, "MAIN_flexio0_fclk" },
+    { kCLOCK_Root_MAIN_flexio1_fclk, "MAIN_flexio1_fclk" },
+    { kCLOCK_Root_MAIN_flexio2_fclk, "MAIN_flexio2_fclk" },
+    { kCLOCK_Root_MAIN_tpiu_clk, "MAIN_tpiu_clk" },
+    { kCLOCK_Root_MAIN_cssi_refclk, "MAIN_cssi_refclk" },
+    { kCLOCK_Root_MAIN_otp_clk, "MAIN_otp_clk" },
+    { kCLOCK_Root_MAIN_ulp32k, "MAIN_ulp32k" },
+    { kCLOCK_Root_WAKE_wake_clk, "WAKE_wake_clk" },
+    { kCLOCK_Root_WAKE_wake_sxosc, "WAKE_wake_sxosc" },
+    { kCLOCK_Root_WAKE_wake_lp1m, "WAKE_wake_lp1m" },
+    { kCLOCK_Root_WAKE_wake_lp12m, "WAKE_wake_lp12m" },
+    { kCLOCK_Root_WAKE_wake_ulp32k, "WAKE_wake_ulp32k" },
+    { kCLOCK_Root_WAKE_wake_lpclk, "WAKE_wake_lpclk" },
+    { kCLOCK_Root_WAKE_i3c0_fclk, "WAKE_i3c0_fclk" },
+    { kCLOCK_Root_WAKE_lpi2c0_fclk, "WAKE_lpi2c0_fclk" },
+    { kCLOCK_Root_WAKE_lpi2c1_fclk, "WAKE_lpi2c1_fclk" },
+    { kCLOCK_Root_WAKE_lpspi0_fclk, "WAKE_lpspi0_fclk" },
+    { kCLOCK_Root_WAKE_lpuart0_fclk, "WAKE_lpuart0_fclk" },
+    { kCLOCK_Root_WAKE_lpuart1_fclk, "WAKE_lpuart1_fclk" },
+    { kCLOCK_Root_WAKE_dmic1_appclk, "WAKE_dmic1_appclk" },
+    { kCLOCK_Root_WAKE_qtpm0_fclk, "WAKE_qtpm0_fclk" },
+    { kCLOCK_Root_WAKE_lptmr0_fclk, "WAKE_lptmr0_fclk" },
+    { kCLOCK_Root_WAKE_lptmr1_fclk, "WAKE_lptmr1_fclk" },
+    { kCLOCK_Root_WAKE_swt0_fclk, "WAKE_swt0_fclk" },
+    { kCLOCK_Root_WAKE_swt1_fclk, "WAKE_swt1_fclk" },
+    { kCLOCK_Root_WAKE_ewm_fclk, "WAKE_ewm_fclk" },
+    { kCLOCK_Root_WAKE_acmp0_fclk, "WAKE_acmp0_fclk" },
+    { kCLOCK_Root_WAKE_acmp1_fclk, "WAKE_acmp1_fclk" },
+    { kCLOCK_Root_WAKE_acmp2_fclk, "WAKE_acmp2_fclk" },
+    { kCLOCK_Root_WAKE_acmp3_fclk, "WAKE_acmp3_fclk" },
+    { kCLOCK_Root_WAKE_acmp0_rrclk, "WAKE_acmp0_rrclk" },
+    { kCLOCK_Root_WAKE_acmp1_rrclk, "WAKE_acmp1_rrclk" },
+    { kCLOCK_Root_WAKE_acmp2_rrclk, "WAKE_acmp2_rrclk" },
+    { kCLOCK_Root_WAKE_acmp3_rrclk, "WAKE_acmp3_rrclk" },
+    { kCLOCK_Root_COMM_comm_clk, "COMM_comm_clk" },
+    { kCLOCK_Root_COMM_comm_ulp32k, "COMM_comm_ulp32k" },
+    { kCLOCK_Root_COMM_usdhc0_fclk, "COMM_usdhc0_fclk" },
+    { kCLOCK_Root_COMM_usdhc1_fclk, "COMM_usdhc1_fclk" },
+    { kCLOCK_Root_COMM_xspir_rootclk, "COMM_xspir_rootclk" },
+    { kCLOCK_Root_COMM_usb0_phyclk, "COMM_usb0_phyclk" },
+    { kCLOCK_Root_COMM_usb0_fro48m, "COMM_usb0_fro48m" },
+    { kCLOCK_Root_COMM_usb1_fclk, "COMM_usb1_fclk" },
+    { kCLOCK_Root_COMM_usb0_wakeclk, "COMM_usb0_wakeclk" },
+    { kCLOCK_Root_COMM_eth0_trxclk, "COMM_eth0_trxclk" },
+    { kCLOCK_Root_COMM_eth0_timerclk, "COMM_eth0_timerclk" },
+    { kCLOCK_Root_COMM_eth1_trxclk, "COMM_eth1_trxclk" },
+    { kCLOCK_Root_COMM_eth1_timerclk, "COMM_eth1_timerclk" },
+    { kCLOCK_Root_COMM_eth_refclk, "COMM_eth_refclk" },
+    { kCLOCK_Root_COMM_xeno0_liwclk, "COMM_xeno0_liwclk" },
+    { kCLOCK_Root_COMM_xeno1_liwclk, "COMM_xeno1_liwclk" },
+    { kCLOCK_Root_COMM_dll_refclk, "COMM_dll_refclk" },
+    { kCLOCK_Root_AUDIO_audio_clk, "AUDIO_audio_clk" },
+    { kCLOCK_Root_AUDIO_dmic0_appclk, "AUDIO_dmic0_appclk" },
+    { kCLOCK_Root_AUDIO_sai0_mclk0, "AUDIO_sai0_mclk0" },
+    { kCLOCK_Root_AUDIO_sai0_mclk1, "AUDIO_sai0_mclk1" },
+    { kCLOCK_Root_AUDIO_sai1_mclk0, "AUDIO_sai1_mclk0" },
+    { kCLOCK_Root_AUDIO_sai1_mclk1, "AUDIO_sai1_mclk1" },
+    { kCLOCK_Root_AUDIO_sai2_mclk0, "AUDIO_sai2_mclk0" },
+    { kCLOCK_Root_AUDIO_sai2_mclk1, "AUDIO_sai2_mclk1" },
+    { kCLOCK_Root_AUDIO_spdif_txclk, "AUDIO_spdif_txclk" },
+    { kCLOCK_Root_AUDIO_spdif_cdrclk, "AUDIO_spdif_cdrclk" },
+    { kCLOCK_Root_AUDIO_asrc_clk, "AUDIO_asrc_clk" },
+    { kCLOCK_Root_MEDIA_media_clk, "MEDIA_media_clk" },
+    { kCLOCK_Root_MEDIA_mediapll_clk, "MEDIA_mediapll_clk" },
+    { kCLOCK_Root_MEDIA_mipicsi_escclk, "MEDIA_mipicsi_escclk" },
+    { kCLOCK_Root_MEDIA_mipicsi_clk, "MEDIA_mipicsi_clk" },
+    { kCLOCK_Root_MEDIA_mipidsi_escclk_divided, "MEDIA_mipidsi_escclk_divided" },
+    { kCLOCK_Root_MEDIA_mipidsi_refclk, "MEDIA_mipidsi_refclk" },
+    { kCLOCK_Root_MEDIA_mipidsi_clk, "MEDIA_mipidsi_clk" },
+    { kCLOCK_Root_MEDIA_reformat_fclk, "MEDIA_reformat_fclk" },
+    { kCLOCK_Root_MEDIA_dcpixel_fclk, "MEDIA_dcpixel_fclk" },
+    { kCLOCK_Root_MEDIA_csi_mclkout, "MEDIA_csi_mclkout" },
+};
+
+/*! Every clock_name_t clock source below kCLOCK_SRC_BOUNDARY. */
+static const app_clk_meas_t APP_MEAS_SRCS[] = {
+    { kCLOCK_SRC_BASE, "BASE" },
+    { kCLOCK_SRC_LOW, "LOW" },
+    { kCLOCK_SRC_MAINPLL_DIVX, "MAINPLL_DIVX" },
+    { kCLOCK_SRC_SYSPLL_DIVX, "SYSPLL_DIVX" },
+    { kCLOCK_SRC_PLL_PFDX, "PLL_PFDX" },
+    { kCLOCK_SRC_MEDIA_PFDX, "MEDIA_PFDX" },
+    { kCLOCK_SRC_MAINDIVX, "MAINDIVX" },
+    { kCLOCK_SRC_SAIMCLK, "SAIMCLK" },
+    { kCLOCK_SRC_SAIMCLK0, "SAIMCLK0" },
+    { kCLOCK_SRC_SAIMCLK1, "SAIMCLK1" },
+    { kCLOCK_SRC_SAIMCLK2, "SAIMCLK2" },
+    { kCLOCK_SRC_ULP32K, "ULP32K" },
+    { kCLOCK_SRC_FRO192M, "FRO192M" },
+    { kCLOCK_SRC_FRO96M, "FRO96M" },
+    { kCLOCK_SRC_FRO48M, "FRO48M" },
+    { kCLOCK_SRC_FRO24M, "FRO24M" },
+    { kCLOCK_SRC_SYSPLLDIV4, "SYSPLLDIV4" },
+    { kCLOCK_SRC_SYSPLLDIV5, "SYSPLLDIV5" },
+    { kCLOCK_SRC_MAINPLLDIV8, "MAINPLLDIV8" },
+    { kCLOCK_SRC_MAINPLLDIV10, "MAINPLLDIV10" },
+    { kCLOCK_SRC_AUDIOPLL, "AUDIOPLL" },
+    { kCLOCK_SRC_VIDEOPLL, "VIDEOPLL" },
+    { kCLOCK_SRC_CPU, "CPU" },
+    { kCLOCK_SRC_NPU, "NPU" },
+    { kCLOCK_SRC_MEDIABUS, "MEDIABUS" },
+    { kCLOCK_SRC_AUDIOBUS, "AUDIOBUS" },
+    { kCLOCK_SRC_COMMBUS, "COMMBUS" },
+    { kCLOCK_SRC_WAKEBUS, "WAKEBUS" },
+    { kCLOCK_SRC_PERI0, "PERI0" },
+    { kCLOCK_SRC_PERI1, "PERI1" },
+    { kCLOCK_SRC_PERI2, "PERI2" },
+    { kCLOCK_SRC_PERI3, "PERI3" },
+    { kCLOCK_SRC_PERI4, "PERI4" },
+    { kCLOCK_SRC_PERI5, "PERI5" },
+    { kCLOCK_SRC_PERI6, "PERI6" },
+    { kCLOCK_SRC_PERI7, "PERI7" },
+    { kCLOCK_SRC_AUDIO, "AUDIO" },
+    { kCLOCK_SRC_VIDEO, "VIDEO" },
+    { kCLOCK_SRC_USB1, "USB1" },
+    { kCLOCK_SRC_ETH, "ETH" },
+    { kCLOCK_SRC_MAIN, "MAIN" },
+    { kCLOCK_SRC_WAKE_LPCLK, "WAKE_LPCLK" },
+    { kCLOCK_SRC_MAIN_PERI0_DIV2, "MAIN_PERI0_DIV2" },
+    { kCLOCK_SRC_MAIN_PERI1_DIV2, "MAIN_PERI1_DIV2" },
+    { kCLOCK_SRC_MAINPFDX_DIV2, "MAINPFDX_DIV2" },
+    { kCLOCK_SRC_COMM_PERI1_DIV2, "COMM_PERI1_DIV2" },
+    { kCLOCK_SRC_COMM_PERI2_DIV2, "COMM_PERI2_DIV2" },
+    { kCLOCK_SRC_COMMPFDX_DIV2, "COMMPFDX_DIV2" },
 };
 
 /*******************************************************************************
@@ -106,7 +353,8 @@ static const app_lp_seq_t APP_LP_SEQ[] = {
  * here: it is selected internally by the low-power mode (Sleep = synchronous;
  * Deep Sleep / Power Down = async / clock-less) - see spec section 4.2.
  */
-#define APP_WAKEUP_UART             0U    /*!< HSP LPUART0 RX (Sleep: RX-full; DS: RX active edge). */
+#define APP_WAKEUP_UART             0U    /*!< HSP LPUART0 RX (Sleep only: RX-full interrupt; the DS
+                                               RX-active-edge wake path produces no wakeup on silicon). */
 #define APP_WAKEUP_WAKE_GPIO        1U    /*!< WAKE GPIO / SW6 (PIO1_0); Sleep, DS 1/2/3, PD.       */
 #define APP_WAKEUP_AON_GPIO         2U    /*!< AON GPIO / SW5 (PIO0_4); Sleep, DS 1/2/3, PD, DPD.   */
 #define APP_WAKEUP_LPTMR            3U    /*!< VBAT LPTMR; Sleep, DS 1/2/3, PD, DPD.                */
@@ -156,7 +404,7 @@ static void APP_CfgDmaSw5(bool on);
  */
 static const app_wakeup_source_t APP_WAKEUP_SOURCES[] = {
     [APP_WAKEUP_UART]      = { "UART RX",         APP_UART_IRQ,       kPOWER_WakeupIrq_HspLpuart0,  APP_CfgUart,
-                              APP_M(APP_LP_SLEEP) | APP_M_DS },
+                              APP_M(APP_LP_SLEEP) },
     [APP_WAKEUP_WAKE_GPIO] = { "WAKE GPIO / SW6", APP_WAKE_GPIO_IRQ,  kPOWER_WakeupIrq_WakeGpioCh0, APP_CfgWakeGpio,
                               APP_M(APP_LP_SLEEP) | APP_M_DS | APP_M(APP_LP_PD) },
     [APP_WAKEUP_AON_GPIO]  = { "AON GPIO / SW5",  APP_AON_GPIO_IRQ,   kPOWER_WakeupIrq_VbatGpioCh0, APP_CfgAonGpio,
@@ -652,10 +900,10 @@ typedef enum _app_standby_mode_idx
 typedef enum _power_standby_resource
 {
     /* Power domain events - PDCON.PDSLPCFG */
-    kPOWER_Resource_CpuDomainEvent    = 0U,
-    kPOWER_Resource_NpuDomainEvent    = 1U,
-    kPOWER_Resource_CommDomainEvent   = 2U,
-    kPOWER_Resource_MediaDomainEvent  = 3U,
+    kPOWER_Resource_CpuDomain    = 0U,
+    kPOWER_Resource_NpuDomain    = 1U,
+    kPOWER_Resource_CommDomain   = 2U,
+    kPOWER_Resource_MediaDomain  = 3U,
 
     /* [EXPERIMENTAL] PMU analog state - POWERCON_SOC_CTRL.PMUCFG_STBY */
     kPOWER_Resource_PmuMode           = 4U,
@@ -730,15 +978,39 @@ typedef struct
 #define _CT(v,h)  { true, (uint32_t)(v), (uint8_t)(h) } /*!< Configurable with explicit CMC routing via APP_HSKSEL(cmc0,cmc1,cmc2). */
                                                          /*!< Use _CT for all kPOWER_Resource_Clk* and kPOWER_Resource_Rcg* rows    */
                                                          /*!< so per-resource CMC routing is visible in the table.                  */
-#define _KEEP_(CMC0, CMC1, CMC2) _CT(true,  APP_HSKSEL(CMC0, CMC1, CMC2)) /*!< Clock/root-clock: keep ENABLED in standby, routed to CMC(CMC0,CMC1,CMC2). */
-#define _GATE_(CMC0, CMC1, CMC2) _CT(false, APP_HSKSEL(CMC0, CMC1, CMC2)) /*!< Clock/root-clock: gate OFF  in standby, routed to CMC(CMC0,CMC1,CMC2). */
+
+/*
+ * ON / OFF - unified on/off cell macros for every resource with on/off semantics.
+ *
+ *   ON()             / OFF()             -> domain-event rows (no CMC routing):
+ *                                           enabled = domain stays On (active) / powered Off.
+ *   ON(c0,c1,c2)     / OFF(c0,c1,c2)     -> clock / root-clock rows (CSRCCFG/RCGCFG):
+ *                                           keep the resource ENABLED / gate it OFF in standby,
+ *                                           routed to the given CMC(s) via APP_HSKSEL(c0,c1,c2).
+ *
+ * Both spellings dispatch on argument count: the 0-arg form builds a plain _C() cell
+ * carrying the PDCON domain event; the 3-arg form builds a _CT() cell carrying the
+ * standby keep/gate value plus the per-cell CMC handshake routing.
+ */
+#define _APP_ARG4(_0, _1, _2, _3, N, ...) N
+#define _APP_NARG3(...) _APP_ARG4(__VA_ARGS__, 3, 2, 1, 0)
+#define _APP_CAT(a, b)  _APP_CAT_(a, b)
+#define _APP_CAT_(a, b) a##b
+
+#define ON(...)  _APP_CAT(_ON_,  _APP_NARG3(dummy, ##__VA_ARGS__))(__VA_ARGS__)
+#define OFF(...) _APP_CAT(_OFF_, _APP_NARG3(dummy, ##__VA_ARGS__))(__VA_ARGS__)
+
+#define _ON_0()             _C(kPDCON_EventNoneOrActive)              /*!< Domain: stays On (active). */
+#define _ON_3(c0, c1, c2)   _CT(true,  APP_HSKSEL(c0, c1, c2))        /*!< Clock/root-clock: keep ENABLED in standby, routed to CMC(c0,c1,c2). */
+#define _OFF_0()            _C(kPDCON_EventPowerOff)                  /*!< Domain: powered off. */
+#define _OFF_3(c0, c1, c2)  _CT(false, APP_HSKSEL(c0, c1, c2))       /*!< Clock/root-clock: gate OFF in standby, routed to CMC(c0,c1,c2). */
+
+/*
+ * RT2660 has no PDCON domain retention (omitted for die size), so domains are
+ * only ever On (ON()) or Off (OFF()).
+ */
 
 /* Short value aliases - keeps table cells narrow. */
-#define EVT_ACT   kPDCON_EventNoneOrActive   /*!< Domain: stays On (active).         */
-                                             /*!< RT2660 has no PDCON domain         */
-                                             /*!< retention (omitted for die size),  */
-                                             /*!< so domains are only ever On or Off.*/
-#define EVT_OFF   kPDCON_EventPowerOff       /*!< Domain: powered off.               */
 #define DCDC_PWM  kPMU_DcdcModePWM           /*!< DCDC: PWM (higher power, lower noise). */
 #define DCDC_PFM  kPMU_DcdcModePFM           /*!< DCDC: PFM (lower power).           */
 #define LDO_HP    kPMU_LdoModeHP             /*!< LDO: high-performance mode.        */
@@ -747,12 +1019,20 @@ typedef struct
 #define MEM_RET   kMEMCON_PowerModeRetention /*!< SRAM: data retained, power reduced. */
 #define MEM_PD    kMEMCON_PowerModePowerDown /*!< SRAM: powered down, data lost.     */
 
+/* PMU mode (PMUCFG.PMU_MODE bitfield) aliases for the kPOWER_Resource_PmuMode row.
+ * These mirror the RT2660 PMU mode encoding used by the power driver
+ * (fsl_power.c POWER_PMU_MODE_*): 0 = HP, 2 = LP, 3 = RET, 4 = Body Bias. */
+#define PMU_HP  0U   /*!< PMU mode: High Performance (HP/Normal run, FBB). */
+#define PMU_LP  2U   /*!< PMU mode: Low Power (ZBB, 0.8 V DCDC).           */
+#define PMU_RET 3U   /*!< PMU mode: Retention (DCDC off).                  */
+#define PMU_BB  4U   /*!< PMU mode: Body Bias (Deep Power Down).           */
+
 /*! Human-readable resource row names (indexed by power_standby_resource_t). */
 static const char *const g_powerResourceNames[kPOWER_Resource_COUNT] = {
-    [kPOWER_Resource_CpuDomainEvent]    = "CPU domain event",
-    [kPOWER_Resource_NpuDomainEvent]    = "NPU domain event",
-    [kPOWER_Resource_CommDomainEvent]   = "COMM domain event",
-    [kPOWER_Resource_MediaDomainEvent]  = "MEDIA domain event",
+    [kPOWER_Resource_CpuDomain]    = "CPU domain event",
+    [kPOWER_Resource_NpuDomain]    = "NPU domain event",
+    [kPOWER_Resource_CommDomain]   = "COMM domain event",
+    [kPOWER_Resource_MediaDomain]  = "MEDIA domain event",
     [kPOWER_Resource_PmuMode]           = "[EXP] PMU mode",
     [kPOWER_Resource_DcdcMode]          = "[EXP] DCDC mode",
     [kPOWER_Resource_CoreLvl]           = "[EXP] Core voltage level",
@@ -802,10 +1082,11 @@ static const char *const g_standbyModeNames[kAPP_StandbyModeIdx_COUNT] = {
  * Cell macros (defined above, #undef'd after the table):
  *   _NC_    = NOT_CONFIGURABLE in this mode; builder skips the field.
  *   _C(v)   = configurable; v is the API enum/value written to the struct field.
- *   _KEEP_(c0,c1,c2) = CSRCCFG/RCGCFG resource: keep ENABLED in standby; CMC routing APP_HSKSEL(c0,c1,c2).
- *   _GATE_(c0,c1,c2) = CSRCCFG/RCGCFG resource: gate OFF in standby; CMC routing APP_HSKSEL(c0,c1,c2).
+ *   ON()  / OFF()            = domain-event rows: domain stays On (active) / powered Off.
+ *   ON(c0,c1,c2) / OFF(c0,c1,c2) = CSRCCFG/RCGCFG resource: keep ENABLED / gate OFF in
+ *                                  standby; CMC routing APP_HSKSEL(c0,c1,c2).
  *
- * Column index (X-axis) — Sleep + Deep Sleep variants only:
+ * Column index (X-axis): Sleep + Deep Sleep variants only:
  *   [0] Sleep | [1] DS1 | [2] DS2 | [3] DS3
  *
  * Power Down / Deep Power Down are NOT columns here: their retention config is inlined
@@ -819,37 +1100,37 @@ static const power_mode_cell_t
 {
     /*  resource                      [0]Sleep      [1]DS1       [2]DS2       [3]DS3       */
     /* ---- Domain events (PDCON.PDSLPCFG) ------------------------------------------------------------------------------------------------ */
-    [kPOWER_Resource_CpuDomainEvent]   = { _C(EVT_ACT), _C(EVT_ACT), _C(EVT_ACT), _C(EVT_OFF) },
-    [kPOWER_Resource_NpuDomainEvent]   = { _C(EVT_ACT), _C(EVT_ACT), _C(EVT_OFF), _C(EVT_OFF) },
-    [kPOWER_Resource_CommDomainEvent]  = { _C(EVT_ACT), _C(EVT_ACT), _C(EVT_OFF), _C(EVT_OFF) },
-    [kPOWER_Resource_MediaDomainEvent] = { _C(EVT_ACT), _C(EVT_ACT), _C(EVT_OFF), _C(EVT_OFF) },
+    [kPOWER_Resource_CpuDomain]   = { ON(),  ON(),  ON(),  OFF() },
+    [kPOWER_Resource_NpuDomain]   = { ON(),  ON(),  OFF(), OFF() },
+    [kPOWER_Resource_CommDomain]  = { ON(),  ON(),  OFF(), OFF() },
+    [kPOWER_Resource_MediaDomain] = { ON(),  ON(),  OFF(), OFF() },
     /* ---- PMU analog (PMUCFG_STBY) [EXPERIMENTAL] --------------------------------------------------------------------------------------- */
     /* Sleep: SSC NOT triggered; values written but no analog transition.                                                                      */
     /* DeepSleep: SSC IS triggered; values drive actual hardware transitions.                                                                  */
     /* TODO(V0.9, pending silicon): Deep Sleep targets are PmuMode=LP, CoreLvl=0.65V, Ldo1V8/LdoVdda1V8=LP (spec section 2.3).                  */
     /*   Kept at active-mode/HP placeholders below until silicon characterization confirms the codes; flip the DS columns then.               */
-    [kPOWER_Resource_PmuMode]          = { _C(0U),       _C(2U),       _C(2U),       _C(2U) }, /* 0=HP (TODO V0.9: DS=LP) */
+    [kPOWER_Resource_PmuMode]          = { _C(PMU_HP),   _C(PMU_LP),   _C(PMU_LP),   _C(PMU_LP) }, /* HP in Sleep (TODO V0.9: DS=LP) */
     [kPOWER_Resource_DcdcMode]         = { _C(DCDC_PWM), _C(DCDC_PWM), _C(DCDC_PFM), _C(DCDC_PFM) },
     [kPOWER_Resource_CoreLvl]          = { _C(0U),       _C(0x11U),    _C(0x11U),    _C(0x11U) }, /* 0=use active-mode level */
     [kPOWER_Resource_Ldo0V8Mode]       = { _C(LDO_HP),   _C(LDO_HP),   _C(LDO_LP),   _C(LDO_LP) },
     [kPOWER_Resource_Ldo1V8Mode]       = { _C(LDO_HP),   _C(LDO_HP),   _C(LDO_LP),   _C(LDO_LP) },
-    [kPOWER_Resource_LdoVdda1V8Mode]   = { _C(1U),       _C(1U),       _C(2U),       _C(2U) }, /* 1=HP */
+    [kPOWER_Resource_LdoVdda1V8Mode]   = { _C(LDO_HP),   _C(LDO_HP),   _C(LDO_LP),   _C(LDO_LP) },
     [kPOWER_Resource_Hqref]            = { _C(true),     _C(true),     _C(true),     _C(true) }, /* V0.9: HQREF ON in Sleep/DeepSleep; off only in PMU-RET (Power Down) */
     [kPOWER_Resource_Sensors]          = { _C(0U),       _C(0U),       _C(0U),       _C(0U) }, /* all sensors off */
     /* ---- Clock source gating (CSRCCFG_STBY + CSRCCFG_HSK_SEL) [EXPERIMENTAL] ---------------------------------- */
-    /* _KEEP_(c0,c1,c2)=retain enabled; _GATE_(c0,c1,c2)=cut off.  Set per-cell CMC routing directly: (1,0,0)=CMC0  */
-    /* only (this example); e.g. _KEEP_(1,0,0) would route a resource to all three CMCs.                            */
+    /* ON(c0,c1,c2)=retain enabled; OFF(c0,c1,c2)=cut off.  Set per-cell CMC routing directly: (1,0,0)=CMC0  */
+    /* only (this example); e.g. ON(1,1,1) would route a resource to all three CMCs.                          */
     /* DMA wakeup keeps its historical clock-source differences through runtime overrides. */
     /*                               [0]Slp          [1]DS1        [2]DS2        [3]DS3 */
-    [kPOWER_Resource_ClkLdoa0V8]  = { _KEEP_(1,0,0), _KEEP_(1,0,0), _GATE_(1,0,0), _GATE_(1,0,0) },
-    [kPOWER_Resource_ClkFro192M]  = { _KEEP_(1,0,0), _KEEP_(1,0,0), _GATE_(1,0,0), _GATE_(1,0,0) },
-    [kPOWER_Resource_ClkFro12M]   = { _KEEP_(1,0,0), _KEEP_(1,0,0), _GATE_(1,0,0), _GATE_(1,0,0) },
-    [kPOWER_Resource_ClkMainPll]  = { _KEEP_(1,0,0), _GATE_(1,0,0), _GATE_(1,0,0), _GATE_(1,0,0) }, /* DIV4 auto-restored on wakeup */
-    [kPOWER_Resource_ClkCorePll]  = { _KEEP_(1,0,0), _GATE_(1,0,0), _GATE_(1,0,0), _GATE_(1,0,0) },
-    [kPOWER_Resource_ClkSysPll]   = { _KEEP_(1,0,0), _GATE_(1,0,0), _GATE_(1,0,0), _GATE_(1,0,0) },
-    [kPOWER_Resource_ClkLdoq0V8]  = { _KEEP_(1,0,0), _GATE_(1,0,0), _GATE_(1,0,0), _GATE_(1,0,0) },
-    [kPOWER_Resource_ClkSxosc]    = { _KEEP_(1,0,0), _GATE_(1,0,0), _GATE_(1,0,0), _GATE_(1,0,0) },
-    [kPOWER_Resource_ClkFro12MLp] = { _KEEP_(1,0,0), _KEEP_(1,0,0), _GATE_(1,0,0), _GATE_(1,0,0) },
+    [kPOWER_Resource_ClkLdoa0V8]  = { ON(1,0,0), ON(1,0,0),  OFF(1,0,0), OFF(1,0,0) },
+    [kPOWER_Resource_ClkFro192M]  = { ON(1,0,0), ON(1,0,0),  OFF(1,0,0), OFF(1,0,0) },
+    [kPOWER_Resource_ClkFro12M]   = { ON(1,0,0), ON(1,0,0),  OFF(1,0,0), OFF(1,0,0) },
+    [kPOWER_Resource_ClkMainPll]  = { ON(1,0,0), OFF(1,0,0), OFF(1,0,0), OFF(1,0,0) }, /* DIV4 auto-restored on wakeup */
+    [kPOWER_Resource_ClkCorePll]  = { ON(1,0,0), OFF(1,0,0), OFF(1,0,0), OFF(1,0,0) },
+    [kPOWER_Resource_ClkSysPll]   = { ON(1,0,0), OFF(1,0,0), OFF(1,0,0), OFF(1,0,0) },
+    [kPOWER_Resource_ClkLdoq0V8]  = { ON(1,0,0), OFF(1,0,0), OFF(1,0,0), OFF(1,0,0) },
+    [kPOWER_Resource_ClkSxosc]    = { ON(1,0,0), OFF(1,0,0), OFF(1,0,0), OFF(1,0,0) },
+    [kPOWER_Resource_ClkFro12MLp] = { ON(1,0,0), ON(1,0,0),  OFF(1,0,0), OFF(1,0,0) },
     /* ---- Memory slice modes (MEMCON_SLICE.MEM_SLPCFG) [EXPERIMENTAL] -------------------------------------------------------------------- */
     /* Sleep: Active.  DeepSleep: Retention, EXCEPT a domain's memory is PowerDown (MEM_PD) once its power domain is gated off              */
     /* (NPU/COMM/MEDIA TCM from DS2; M85 TCM in DS3) -- an unpowered domain cannot retain.  Always-on OCRAM-slice memory                     */
@@ -861,27 +1142,33 @@ static const power_mode_cell_t
     [kPOWER_Resource_M85Tcm]           = { _C(MEM_ACT), _C(MEM_RET), _C(MEM_RET), _C(MEM_PD) }, /* CPU off in DS3 -> PowerDown */
     [kPOWER_Resource_NpuTcm]           = { _C(MEM_ACT), _C(MEM_RET), _C(MEM_PD),  _C(MEM_PD) }, /* NPU off from DS2 -> PowerDown */
     /* ---- Root clock standby enable (RCGCFG_STBY + RCGCFG_HSK_SEL) [EXPERIMENTAL] ----------------------------------------- */
-    /* Active-high register: _KEEP_(c0,c1,c2)=bit=1 (enabled); _GATE_(c0,c1,c2)=bit=0 (gated).  Opposite polarity to CSRCCFG_STBY. */
+    /* Active-high register: ON(c0,c1,c2)=bit=1 (enabled); OFF(c0,c1,c2)=bit=0 (gated).  Opposite polarity to CSRCCFG_STBY. */
     /* DeepSleep: gate all root clocks except WAKE_1M/2M. */
     /*                               [0]Slp          [1]DS1        [2]DS2        [3]DS3 */
-    [kPOWER_Resource_RcgCompute]  = { _KEEP_(1,0,0), _GATE_(1,0,0), _GATE_(1,0,0), _GATE_(1,0,0) },
-    [kPOWER_Resource_RcgMain]     = { _KEEP_(1,0,0), _GATE_(1,0,0), _GATE_(1,0,0), _GATE_(1,0,0) },
-    [kPOWER_Resource_RcgWake]     = { _KEEP_(1,0,0), _KEEP_(1,0,0), _KEEP_(1,0,0), _KEEP_(1,0,0) }, /* WAKE_SS stays on */
-    [kPOWER_Resource_RcgComm]     = { _KEEP_(1,0,0), _GATE_(1,0,0), _GATE_(1,0,0), _GATE_(1,0,0) },
-    [kPOWER_Resource_RcgMedia]    = { _KEEP_(1,0,0), _GATE_(1,0,0), _GATE_(1,0,0), _GATE_(1,0,0) },
-    [kPOWER_Resource_RcgAudio]    = { _KEEP_(1,0,0), _GATE_(1,0,0), _GATE_(1,0,0), _GATE_(1,0,0) },
-    [kPOWER_Resource_RcgWake1M]   = { _KEEP_(1,0,0), _KEEP_(1,0,0), _KEEP_(1,0,0), _KEEP_(1,0,0) }, /* always on: WAKE 1M timer */
-    [kPOWER_Resource_RcgWake2M]   = { _KEEP_(1,0,0), _KEEP_(1,0,0), _KEEP_(1,0,0), _KEEP_(1,0,0) }, /* always on: WAKE 2M timer */
+    [kPOWER_Resource_RcgCompute]  = { ON(1,0,0), OFF(1,0,0), OFF(1,0,0), OFF(1,0,0) },
+    [kPOWER_Resource_RcgMain]     = { ON(1,0,0), OFF(1,0,0), OFF(1,0,0), OFF(1,0,0) },
+    [kPOWER_Resource_RcgWake]     = { ON(1,0,0), ON(1,0,0),  ON(1,0,0),  ON(1,0,0) }, /* WAKE_SS stays on */
+    [kPOWER_Resource_RcgComm]     = { ON(1,0,0), OFF(1,0,0), OFF(1,0,0), OFF(1,0,0) },
+    [kPOWER_Resource_RcgMedia]    = { ON(1,0,0), OFF(1,0,0), OFF(1,0,0), OFF(1,0,0) },
+    [kPOWER_Resource_RcgAudio]    = { ON(1,0,0), OFF(1,0,0), OFF(1,0,0), OFF(1,0,0) },
+    [kPOWER_Resource_RcgWake1M]   = { ON(1,0,0), ON(1,0,0),  ON(1,0,0),  ON(1,0,0) }, /* always on: WAKE 1M timer */
+    [kPOWER_Resource_RcgWake2M]   = { ON(1,0,0), ON(1,0,0),  ON(1,0,0),  ON(1,0,0) }, /* always on: WAKE 2M timer */
 };
 
 /* Remove table-local macros from the preprocessor namespace. */
 #undef _NC_
 #undef _C
 #undef _CT
-#undef _KEEP_
-#undef _GATE_
-#undef EVT_ACT
-#undef EVT_OFF
+#undef _APP_ARG4
+#undef _APP_NARG3
+#undef _APP_CAT
+#undef _APP_CAT_
+#undef ON
+#undef OFF
+#undef _ON_0
+#undef _ON_3
+#undef _OFF_0
+#undef _OFF_3
 #undef DCDC_PWM
 #undef DCDC_PFM
 #undef LDO_HP
