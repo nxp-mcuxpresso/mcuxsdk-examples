@@ -1964,4 +1964,6 @@ static void ConfigCGUDig_WAKE(void)
     rootCfg.mux = kCLOCK_ACMP3_RRCLK_ClockRoot_FRO24M;
     rootCfg.div = 1U;
     CLOCK_SetRootClock(kCLOCK_Root_WAKE_acmp3_rrclk, &rootCfg);
+
+    SystemCoreClockUpdate();
 }
