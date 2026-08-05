@@ -46,4 +46,4 @@ Program a buffer to a sector of flash:
 
 Successfully Programmed and Verified Location 0x%x -> 0x%x
 ~~~~~~~~~~~~~~~~~~~~~~~
-And you will find the flash hase been programed.
+And you will find the flash has been programed.

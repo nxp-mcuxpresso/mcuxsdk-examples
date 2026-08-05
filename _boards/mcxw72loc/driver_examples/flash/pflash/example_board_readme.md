@@ -44,4 +44,4 @@ Successfully Programmed and Verified Location 0x1fe000 -> 0x1fe010
 End of PFlash Example
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-And you will find the flash hase been programed.
+And you will find the flash has been programed.

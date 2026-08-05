@@ -43,4 +43,4 @@ PFlash Example Start
 
  End of PFlash Example
 ~~~~~~~~~~~~~~~~~~~~~~~
-And you will find the flash hase been programed.
+And you will find the flash has been programed.
