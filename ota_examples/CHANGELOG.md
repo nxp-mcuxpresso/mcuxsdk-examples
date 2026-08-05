@@ -7,6 +7,7 @@ All notable changes to MCUboot fork in MCUXpresso SDK and related ota examples w
 ### Added
 - MCUboot updated to v2.4.0
 - Added basic support for FRDM-IMXRT1152 and FRDM-IMXRT700 boards
+- (Encrypted XIP) Added OTFAD support for MIMXRT1160-EVK, MIMXRT1170-EVKB, FRDM-IMXRT1152
 
 ### Changed
 - Changed partition layouts on FRDM-MCXN266 and FRDM-MCXA336

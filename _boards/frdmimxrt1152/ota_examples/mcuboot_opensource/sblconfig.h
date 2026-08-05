@@ -17,8 +17,7 @@
 #ifndef CONFIG_BOOT_CUSTOM_DEVICE_SETUP
 
 /* MCUBoot Flash Config */
-
-#include "flash_partitioning.h"
+#define CONFIG_MCUBOOT_MAX_IMG_SECTORS 512u
 
 /*
  * MCUBoot upgrade mode (default)

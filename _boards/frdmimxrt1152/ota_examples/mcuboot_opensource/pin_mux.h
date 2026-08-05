@@ -54,12 +54,12 @@ void BOARD_InitDEBUG_UARTPins(void);          /* Function assigned for the Corte
  */
 void BOARD_InitDEBUG_UARTPins_deinit(void);   /* Function assigned for the Cortex-M7F */
 
-/* GPIO_DISP_B2_09 (coord C13), ENET_QOS_RXER */
+/* GPIO_DISP_B2_09 (coord C15), ENET_QOS_RXER */
 /* Routed pin properties */
 #define BOARD_INITSAIPINS_ENET_QOS_RXER_PERIPHERAL                          SAI1   /*!< Peripheral name */
 #define BOARD_INITSAIPINS_ENET_QOS_RXER_SIGNAL                       sai_tx_sync   /*!< Signal name */
 
-/* GPIO_DISP_B2_06 (coord A9), ENET_QOS_RXD0 */
+/* GPIO_DISP_B2_06 (coord A11), ENET_QOS_RXD0 */
 /* Routed pin properties */
 #define BOARD_INITSAIPINS_ENET_QOS_RXD0_PERIPHERAL                          SAI1   /*!< Peripheral name */
 #define BOARD_INITSAIPINS_ENET_QOS_RXD0_SIGNAL                     sai_rx_data00   /*!< Signal name */
@@ -82,35 +82,35 @@ void BOARD_InitCANPins(void);                 /* Function assigned for the Corte
  */
 void BOARD_InitENCPins(void);                 /* Function assigned for the Cortex-M7F */
 
-/* GPIO_SD_B2_00 (coord K24), ETH0_RX_EN */
+/* GPIO_SD_B2_00 (coord L19), ETH0_RX_EN */
 /* Routed pin properties */
 #define BOARD_INITENET_1GPINS_ETH0_RX_EN_PERIPHERAL                      ENET_1G   /*!< Peripheral name */
 #define BOARD_INITENET_1GPINS_ETH0_RX_EN_SIGNAL                       enet_rx_en   /*!< Signal name */
 
-/* GPIO_SD_B2_01 (coord J23), ETH0_RX_CLK */
+/* GPIO_SD_B2_01 (coord J25), ETH0_RX_CLK */
 /* Routed pin properties */
 #define BOARD_INITENET_1GPINS_ETH0_RX_CLK_PERIPHERAL                     ENET_1G   /*!< Peripheral name */
 #define BOARD_INITENET_1GPINS_ETH0_RX_CLK_SIGNAL                     enet_rx_clk   /*!< Signal name */
 
-/* GPIO_SD_B2_02 (coord L20), ETH0_RDATA0 */
+/* GPIO_SD_B2_02 (coord M24), ETH0_RDATA0 */
 /* Routed pin properties */
 #define BOARD_INITENET_1GPINS_ETH0_RDATA0_PERIPHERAL                     ENET_1G   /*!< Peripheral name */
 #define BOARD_INITENET_1GPINS_ETH0_RDATA0_SIGNAL                      enet_rdata   /*!< Signal name */
 #define BOARD_INITENET_1GPINS_ETH0_RDATA0_CHANNEL                             0U   /*!< Signal channel */
 
-/* GPIO_SD_B2_03 (coord F24), ETH0_RDATA1 */
+/* GPIO_SD_B2_03 (coord J18), ETH0_RDATA1 */
 /* Routed pin properties */
 #define BOARD_INITENET_1GPINS_ETH0_RDATA1_PERIPHERAL                     ENET_1G   /*!< Peripheral name */
 #define BOARD_INITENET_1GPINS_ETH0_RDATA1_SIGNAL                      enet_rdata   /*!< Signal name */
 #define BOARD_INITENET_1GPINS_ETH0_RDATA1_CHANNEL                             1U   /*!< Signal channel */
 
-/* GPIO_SD_B2_04 (coord G25), ETH0_RDATA2 */
+/* GPIO_SD_B2_04 (coord L23), ETH0_RDATA2 */
 /* Routed pin properties */
 #define BOARD_INITENET_1GPINS_ETH0_RDATA2_PERIPHERAL                     ENET_1G   /*!< Peripheral name */
 #define BOARD_INITENET_1GPINS_ETH0_RDATA2_SIGNAL                      enet_rdata   /*!< Signal name */
 #define BOARD_INITENET_1GPINS_ETH0_RDATA2_CHANNEL                             2U   /*!< Signal channel */
 
-/* GPIO_EMC_B2_07 (number AD4), ETH0_RDATA3 */
+/* GPIO_EMC_B2_07 (coord W6), ETH0_RDATA3 */
 /* Routed pin properties */
 #define BOARD_INITENET_1GPINS_ETH0_RDATA3_PERIPHERAL                     ENET_1G   /*!< Peripheral name */
 #define BOARD_INITENET_1GPINS_ETH0_RDATA3_SIGNAL                      enet_rdata   /*!< Signal name */
@@ -122,25 +122,25 @@ void BOARD_InitENCPins(void);                 /* Function assigned for the Corte
 #define BOARD_INITENET_1GPINS_ETH0_TDATA3_SIGNAL                      enet_tdata   /*!< Signal name */
 #define BOARD_INITENET_1GPINS_ETH0_TDATA3_CHANNEL                             3U   /*!< Signal channel */
 
-/* GPIO_DISP_B1_07 (coord B20), ETH0_TDATA2 */
+/* GPIO_DISP_B1_07 (coord H16), ETH0_TDATA2 */
 /* Routed pin properties */
 #define BOARD_INITENET_1GPINS_ETH0_TDATA2_PERIPHERAL                     ENET_1G   /*!< Peripheral name */
 #define BOARD_INITENET_1GPINS_ETH0_TDATA2_SIGNAL                      enet_tdata   /*!< Signal name */
 #define BOARD_INITENET_1GPINS_ETH0_TDATA2_CHANNEL                             2U   /*!< Signal channel */
 
-/* GPIO_DISP_B1_08 (coord A21), ETH0_TDATA1 */
+/* GPIO_DISP_B1_08 (coord B22), ETH0_TDATA1 */
 /* Routed pin properties */
 #define BOARD_INITENET_1GPINS_ETH0_TDATA1_PERIPHERAL                     ENET_1G   /*!< Peripheral name */
 #define BOARD_INITENET_1GPINS_ETH0_TDATA1_SIGNAL                      enet_tdata   /*!< Signal name */
 #define BOARD_INITENET_1GPINS_ETH0_TDATA1_CHANNEL                             1U   /*!< Signal channel */
 
-/* GPIO_DISP_B1_09 (coord C19), ETH0_TDATA0 */
+/* GPIO_DISP_B1_09 (coord C21), ETH0_TDATA0 */
 /* Routed pin properties */
 #define BOARD_INITENET_1GPINS_ETH0_TDATA0_PERIPHERAL                     ENET_1G   /*!< Peripheral name */
 #define BOARD_INITENET_1GPINS_ETH0_TDATA0_SIGNAL                      enet_tdata   /*!< Signal name */
 #define BOARD_INITENET_1GPINS_ETH0_TDATA0_CHANNEL                             0U   /*!< Signal channel */
 
-/* GPIO_DISP_B1_10 (coord H16), ETH0_TX_EN */
+/* GPIO_DISP_B1_10 (coord A23), ETH0_TX_EN */
 /* Routed pin properties */
 #define BOARD_INITENET_1GPINS_ETH0_TX_EN_PERIPHERAL                      ENET_1G   /*!< Peripheral name */
 #define BOARD_INITENET_1GPINS_ETH0_TX_EN_SIGNAL                       enet_tx_en   /*!< Signal name */
@@ -150,17 +150,17 @@ void BOARD_InitENCPins(void);                 /* Function assigned for the Corte
 #define BOARD_INITENET_1GPINS_ETH0_TX_CLK_PERIPHERAL                     ENET_1G   /*!< Peripheral name */
 #define BOARD_INITENET_1GPINS_ETH0_TX_CLK_SIGNAL                  enet_tx_clk_io   /*!< Signal name */
 
-/* GPIO_EMC_B1_41 (coord U3), ENET_MDIO */
+/* GPIO_EMC_B1_41 (coord R3), ENET_MDIO */
 /* Routed pin properties */
 #define BOARD_INITENET_1GPINS_ENET_MDIO_PERIPHERAL                       ENET_1G   /*!< Peripheral name */
 #define BOARD_INITENET_1GPINS_ENET_MDIO_SIGNAL                         enet_mdio   /*!< Signal name */
 
-/* GPIO_EMC_B1_40 (coord V2), ENET_MDC */
+/* GPIO_EMC_B1_40 (coord R1), ENET_MDC */
 /* Routed pin properties */
 #define BOARD_INITENET_1GPINS_ENET_MDC_PERIPHERAL                        ENET_1G   /*!< Peripheral name */
 #define BOARD_INITENET_1GPINS_ENET_MDC_SIGNAL                           enet_mdc   /*!< Signal name */
 
-/* GPIO_AD_14 (coord R25), ETH0_INT_B */
+/* GPIO_AD_14 (coord T20), ETH0_INT_B */
 /* Routed pin properties */
 #define BOARD_INITENET_1GPINS_ETH0_INT_B_PERIPHERAL                        GPIO9   /*!< Peripheral name */
 #define BOARD_INITENET_1GPINS_ETH0_INT_B_SIGNAL                          gpio_io   /*!< Signal name */
@@ -177,61 +177,61 @@ void BOARD_InitENCPins(void);                 /* Function assigned for the Corte
  */
 void BOARD_InitENET_1GPins(void);             /* Function assigned for the Cortex-M7F */
 
-/* GPIO_EMC_B1_41 (coord U3), ENET_MDIO */
+/* GPIO_EMC_B1_41 (coord R3), ENET_MDIO */
 /* Routed pin properties */
 #define BOARD_INITENET_QOSPINS_ENET_MDIO_PERIPHERAL                      ENET_1G   /*!< Peripheral name */
 #define BOARD_INITENET_QOSPINS_ENET_MDIO_SIGNAL                        enet_mdio   /*!< Signal name */
 
-/* GPIO_EMC_B1_40 (coord V2), ENET_MDC */
+/* GPIO_EMC_B1_40 (coord R1), ENET_MDC */
 /* Routed pin properties */
 #define BOARD_INITENET_QOSPINS_ENET_MDC_PERIPHERAL                       ENET_1G   /*!< Peripheral name */
 #define BOARD_INITENET_QOSPINS_ENET_MDC_SIGNAL                          enet_mdc   /*!< Signal name */
 
-/* GPIO_DISP_B2_04 (coord A11), ENET_QOS_TXEN */
+/* GPIO_DISP_B2_04 (coord G11), ENET_QOS_TXEN */
 /* Routed pin properties */
 #define BOARD_INITENET_QOSPINS_ENET_QOS_TXEN_PERIPHERAL                 ENET_QOS   /*!< Peripheral name */
 #define BOARD_INITENET_QOSPINS_ENET_QOS_TXEN_SIGNAL                   enet_tx_en   /*!< Signal name */
 
-/* GPIO_EMC_B2_20 (number AE7), ENET_QOS_REF_CLK1 */
+/* GPIO_EMC_B2_20 (number AE5), ENET_QOS_REF_CLK1 */
 /* Routed pin properties */
 #define BOARD_INITENET_QOSPINS_ENET_QOS_REF_CLK1_PERIPHERAL             ENET_QOS   /*!< Peripheral name */
 #define BOARD_INITENET_QOSPINS_ENET_QOS_REF_CLK1_SIGNAL             enet_ref_clk   /*!< Signal name */
 
-/* GPIO_DISP_B2_02 (coord C15), ENET_QOS_TXD0 */
+/* GPIO_DISP_B2_02 (coord B14), ENET_QOS_TXD0 */
 /* Routed pin properties */
 #define BOARD_INITENET_QOSPINS_ENET_QOS_TXD0_PERIPHERAL                 ENET_QOS   /*!< Peripheral name */
 #define BOARD_INITENET_QOSPINS_ENET_QOS_TXD0_SIGNAL                   enet_tdata   /*!< Signal name */
 #define BOARD_INITENET_QOSPINS_ENET_QOS_TXD0_CHANNEL                          0U   /*!< Signal channel */
 
-/* GPIO_DISP_B2_03 (coord F11), ENET_QOS_TXD1 */
+/* GPIO_DISP_B2_03 (coord H11), ENET_QOS_TXD1 */
 /* Routed pin properties */
 #define BOARD_INITENET_QOSPINS_ENET_QOS_TXD1_PERIPHERAL                 ENET_QOS   /*!< Peripheral name */
 #define BOARD_INITENET_QOSPINS_ENET_QOS_TXD1_SIGNAL                   enet_tdata   /*!< Signal name */
 #define BOARD_INITENET_QOSPINS_ENET_QOS_TXD1_CHANNEL                          1U   /*!< Signal channel */
 
-/* GPIO_DISP_B2_08 (coord C9), ENET_QOS_CRS_DV */
+/* GPIO_DISP_B2_08 (coord C11), ENET_QOS_CRS_DV */
 /* Routed pin properties */
 #define BOARD_INITENET_QOSPINS_ENET_QOS_CRS_DV_PERIPHERAL               ENET_QOS   /*!< Peripheral name */
 #define BOARD_INITENET_QOSPINS_ENET_QOS_CRS_DV_SIGNAL                 enet_rx_en   /*!< Signal name */
 
-/* GPIO_DISP_B2_06 (coord A9), ENET_QOS_RXD0 */
+/* GPIO_DISP_B2_06 (coord A11), ENET_QOS_RXD0 */
 /* Routed pin properties */
 #define BOARD_INITENET_QOSPINS_ENET_QOS_RXD0_PERIPHERAL                 ENET_QOS   /*!< Peripheral name */
 #define BOARD_INITENET_QOSPINS_ENET_QOS_RXD0_SIGNAL                   enet_rdata   /*!< Signal name */
 #define BOARD_INITENET_QOSPINS_ENET_QOS_RXD0_CHANNEL                          0U   /*!< Signal channel */
 
-/* GPIO_DISP_B2_07 (coord B8), ENET_QOS_RXD1 */
+/* GPIO_DISP_B2_07 (coord C9), ENET_QOS_RXD1 */
 /* Routed pin properties */
 #define BOARD_INITENET_QOSPINS_ENET_QOS_RXD1_PERIPHERAL                 ENET_QOS   /*!< Peripheral name */
 #define BOARD_INITENET_QOSPINS_ENET_QOS_RXD1_SIGNAL                   enet_rdata   /*!< Signal name */
 #define BOARD_INITENET_QOSPINS_ENET_QOS_RXD1_CHANNEL                          1U   /*!< Signal channel */
 
-/* GPIO_DISP_B2_09 (coord C13), ENET_QOS_RXER */
+/* GPIO_DISP_B2_09 (coord C15), ENET_QOS_RXER */
 /* Routed pin properties */
 #define BOARD_INITENET_QOSPINS_ENET_QOS_RXER_PERIPHERAL                 ENET_QOS   /*!< Peripheral name */
 #define BOARD_INITENET_QOSPINS_ENET_QOS_RXER_SIGNAL                   enet_rx_er   /*!< Signal name */
 
-/* GPIO_DISP_B2_11 (coord G11), ENET_QOS_INT_B */
+/* GPIO_DISP_B2_11 (coord C13), ENET_QOS_INT_B */
 /* Routed pin properties */
 #define BOARD_INITENET_QOSPINS_ENET_QOS_INT_B_PERIPHERAL                  GPIO11   /*!< Peripheral name */
 #define BOARD_INITENET_QOSPINS_ENET_QOS_INT_B_SIGNAL                     gpio_io   /*!< Signal name */
@@ -328,6 +328,11 @@ void BOARD_InitI2CPins(void);                 /* Function assigned for the Corte
  */
 void BOARD_InitI2CPins_deinit(void);          /* Function assigned for the Cortex-M7F */
 
+/* GPIO_SD_B2_05 (coord L20), DQS */
+/* Routed pin properties */
+#define BOARD_INITFLASHPINS_DQS_PERIPHERAL                              FLEXSPI1   /*!< Peripheral name */
+#define BOARD_INITFLASHPINS_DQS_SIGNAL                             FLEXSPI_A_DQS   /*!< Signal name */
+
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
  *
@@ -352,7 +357,7 @@ void BOARD_InitPWMPins(void);                 /* Function assigned for the Corte
  */
 void BOARD_InitQTMRPins(void);                /* Function assigned for the Cortex-M7F */
 
-/* GPIO_EMC_B1_39 (coord T2), LED */
+/* GPIO_EMC_B1_39 (coord N3), LED */
 /* Routed pin properties */
 #define BOARD_INITLEDSPINS_LED_PERIPHERAL                                  GPIO8   /*!< Peripheral name */
 #define BOARD_INITLEDSPINS_LED_SIGNAL                                    gpio_io   /*!< Signal name */

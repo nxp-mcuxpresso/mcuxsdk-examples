@@ -167,7 +167,7 @@ Before jumping to the booting process, the on-the-fly decryption is initialized 
 | **Encryption module** | State of support                 | Upgrade modes                | Additional documentation                      |
 |-----------------------|----------------------------------|------------------------------|-----------------------------------------------|
 | **BEE**               | Supported                        | OVERWRITE_ONLY               | [BEE documentation](encrypted_xip_bee.md)     |
-| **OTFAD**             | Planned                          |       X                      | [OTFAD documentation](encrypted_xip_otfad.md) |
+| **OTFAD**             | Supported                        | OVERWRITE_ONLY               | [OTFAD documentation](encrypted_xip_otfad.md) |
 | **NPX**               | Partially supported              | OVERWRITE_ONLY               | [NPX documentation](encrypted_xip_npx.md)     |
 | **IPED**              | Supported only for RW61x devices | OVERWRITE_ONLY / FLASH_REMAP | [IPED documentation](encrypted_xip_iped.md)   |
 
@@ -176,23 +176,29 @@ Before jumping to the booting process, the on-the-fly decryption is initialized 
 
 BEE:
 
-- EVK-MIMXRT1020
-- MIMXRT1040-EVK
-- EVKB-IMXRT1050
-- MIMXRT1060-EVKB
-- MIMXRT1060-EVKC
-- EVK-MIMXRT1064
+- [EVK-MIMXRT1020](../../_boards/evkmimxrt1020/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [MIMXRT1040-EVK](../../_boards/evkmimxrt1040/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [EVKB-IMXRT1050](../../_boards/evkbimxrt1050/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [MIMXRT1060-EVKB](../../_boards/evkbmimxrt1060/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [MIMXRT1060-EVKC](../../_boards/evkcmimxrt1060/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [EVK-MIMXRT1064](../../_boards/evkmimxrt1064/ota_examples/mcuboot_opensource/example_board_readme.md)
+
+OTFAD:
+
+- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [MIMXRT1160-EVK](../../_boards/evkmimxrt1160/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/ota_examples/mcuboot_opensource/example_board_readme.md)
 
 IPED:
 
-- RD-RW612-BGA
-- FRDM-RW612
+- [RD-RW612-BGA](../../_boards/rdrw612bga/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [FRDM-RW612](../../_boards/frdmrw612/ota_examples/mcuboot_opensource/example_board_readme.md)
 
 NPX:
 
-- FRDM-MCXN947
-- MCX-N5XX-EVK
-- MCX-N9XX-EVK
+- [FRDM-MCXN947](../../_boards/frdmmcxn947/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/ota_examples/mcuboot_opensource/example_board_readme.md)
 
 <!-- TOC --><a name="5-ota-examples-instructions"></a>
 ## 5. OTA examples instructions
@@ -221,10 +227,11 @@ There are several ways how to enable Encrypted XIP mode.
 __OVERWRITE_ONLY:__
 
 1. Manually modify content of `sblconfig.h`
-    * Disable default upragde mode (e.g. `CONFIG_BOOT_MODE_FLASH_REMAP`) and `CONFIG_BOOT_CUSTOM_DEVICE_SETUP`
+    * Disable default upgrade mode (e.g. `CONFIG_BOOT_MODE_FLASH_REMAP`) and `CONFIG_BOOT_CUSTOM_DEVICE_SETUP`
     * Enable `CONFIG_BOOT_MODE_ENCRYPTED_XIP_OVERWRITE`
+    * Note: currently not supported for OTFAD targets
 2. Manually customize Kconfig configuration and generate the project - see [Kconfig and customization of OTA examples](kconfig_customization.md)
-3. Use pre-defined customized builds - see particular chapter in your board readme (see Supported boards)
+3. Use pre-defined customized builds - see particular chapter in your board readme (see [Supported boards](#41-supported-boards))
 
 __FLASH_REMAP:__
 

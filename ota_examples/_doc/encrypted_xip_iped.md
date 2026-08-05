@@ -2,16 +2,11 @@
 
 This document extends the documentation of [MCUBoot and encrypted XIP in OTA examples](encrypted_xip.md) and provides an additional information related to the IPED module.
 
+Note: __The extension currently supports only IPED module based on GCM algorithm in RW61x devices.__
+
 ## 1. Introduction
 
 IPED (Inline Prince Encryption/Decryption for off-chip flash) is encryption unit for external flash specific for NXP RW61x, RT700 and MCXN MCUs. 
-
-Note: __The extension currently supports only IPED module based on GCM algorithm in RW61x devices.__
-
-Following image shows configuration of metadata structure used for devices with IPED.
-
-![Image](encrypted_xip_pics/iped_metadata.jpg)
-
 
 The IPED engine generates an 8-byte authentication tag for each 32-byte block of encrypted data. When storing this encrypted data in Flash memory, the FlexSPI controller organizes it in a specific pattern:
 
@@ -35,6 +30,64 @@ There are several points to be aware when utilizing IPED in an OTA process
 The whole IPED initialization, metadata handling and image re-encryption are resolved in `encrypted_xip_platform_iped.c`, `bootutil_hooks.c` and flash backend porting layer.
 
 Additional information for IPED in RW61x can be found in its reference manual.
+
+### 1.1 Metadata structure
+
+The structure follows ROM code but the IPED configuration is handled manually from mcuboot context.
+
+```
+Metadata Flash Sector (IPED)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ 0                    ┌─────────────────────────────────────────────────────┐
+                      │  tag           [4 bytes]                            │
+                      │  params        [252 bytes]                          │
+                      │    configId    [4 bytes]                            │
+                      │    princeRnds  [4 bytes]                            │
+                      │    regionOff   [4 bytes]                            │
+                      │    ipedConfig  [60 bytes]  × 4 = 240 bytes          │
+                      │      start     [4 bytes]                            │
+                      │      end       [4 bytes]                            │
+                      │      flags     [1 byte]                             │
+                      │      padding   [3 bytes]                            │
+                      │      encIv     [48 bytes]                           │
+                      │        iv      [16 bytes]                           │
+                      │        cipher  [16 bytes]                           │
+                      │        tag     [16 bytes]                           │
+ +256                 ├╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┤
+                      │                                                     │
+                      │              (erased 0xFF)                          │
+                      │                                                     │
+ SECTOR_SIZE/2        ╠═════════════════════════════════════════════════════╣
+                      │                                                     │
+                      │              (erased 0xFF)                          │
+                      │                                                     │
+ SECTOR_SIZE-32       ├─────────────────────────────────────────────────────┤
+                      │  enc_confirm_t [32 bytes]                           │
+ SECTOR_SIZE          └─────────────────────────────────────────────────────┘
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+```
+flexspi_nor_mem_image_iped_config_t (256 bytes, 16-byte aligned):
+  [  0..  3]  tag                        (4 bytes)   "IPCB" (0x42435049) validity marker
+  [  4..  7]    configId                 (4 bytes)   engine selector: kNBOOT_MemCryptIped (0x95959595)
+  [  8.. 11]    ipedPrinceRounds         (4 bytes)   number of PRINCE rounds: 12 or 22
+  [ 12.. 15]    regionOffset             (4 bytes)   lowest IPED context register index
+  [ 16..255]    ipedConfig[4]          (240 bytes)   4 × nboot_iped_region_config_t (60 bytes each):
+  [ +0.. +3]      startAddress           (4 bytes)   IPEDx_START register value
+  [ +4.. +7]      endAddress             (4 bytes)   IPEDx_END register value
+  [ +8.. +8]      regionFlags            (1 byte)    bit0=enabled, bit1=locked
+  [ +9..+11]      padding                (3 bytes)   explicit alignment padding
+  [+12..+59]      encryptedIv           (48 bytes)   AES-GCM protected IV blob:
+  [+12..+27]        iv                  (16 bytes)   AES-GCM nonce used to encrypt the IV
+  [+28..+43]        ciphertext          (16 bytes)   encrypted IPED region IV
+  [+44..+59]        tag                 (16 bytes)   AES-GCM authentication tag
+
+enc_confirm_t (32 bytes):
+  [  0.. 31]  magic                  (32 bytes)   written last in a separate flash page — confirms config block
+                                                  was fully persisted; absence signals incomplete OTA update
+```
 
 ## 2. Encryption of MCUboot (OVERWRITE_ONLY only)
 

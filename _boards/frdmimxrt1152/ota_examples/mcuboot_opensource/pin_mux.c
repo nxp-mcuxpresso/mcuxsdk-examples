@@ -19,31 +19,32 @@ package_id: MIMXRT1152XHM8B
 mcu_data: ksdk2_0
 processor_version: 0.0.0
 pin_labels:
-- {pin_num: T2, pin_signal: GPIO_EMC_B1_39, label: LED, identifier: LED_config;LED}
+- {pin_num: N3, pin_signal: GPIO_EMC_B1_39, label: LED, identifier: LED_config;LED}
 - {pin_num: F16, pin_signal: GPIO_DISP_B1_06, label: ETH0_TDATA3, identifier: ETH0_TDATA3}
-- {pin_num: B20, pin_signal: GPIO_DISP_B1_07, label: ETH0_TDATA2, identifier: ETH0_TDATA2}
-- {pin_num: A21, pin_signal: GPIO_DISP_B1_08, label: ETH0_TDATA1, identifier: ETH0_TDATA1}
-- {pin_num: C19, pin_signal: GPIO_DISP_B1_09, label: ETH0_TDATA0, identifier: ETH0_TDATA0}
-- {pin_num: H16, pin_signal: GPIO_DISP_B1_10, label: ETH0_TX_EN, identifier: ETH0_TX_EN}
+- {pin_num: H16, pin_signal: GPIO_DISP_B1_07, label: ETH0_TDATA2, identifier: ETH0_TDATA2}
+- {pin_num: B22, pin_signal: GPIO_DISP_B1_08, label: ETH0_TDATA1, identifier: ETH0_TDATA1}
+- {pin_num: C21, pin_signal: GPIO_DISP_B1_09, label: ETH0_TDATA0, identifier: ETH0_TDATA0}
+- {pin_num: A23, pin_signal: GPIO_DISP_B1_10, label: ETH0_TX_EN, identifier: ETH0_TX_EN}
 - {pin_num: G16, pin_signal: GPIO_DISP_B1_11, label: ETH0_TX_CLK, identifier: ETH0_TX_CLK}
-- {pin_num: V2, pin_signal: GPIO_EMC_B1_40, label: ENET_MDC, identifier: ENET_MDC}
-- {pin_num: U3, pin_signal: GPIO_EMC_B1_41, label: ENET_MDIO, identifier: ENET_MDIO}
-- {pin_num: AD4, pin_signal: GPIO_EMC_B2_07, label: ETH0_RDATA3, identifier: ETH0_RDATA3}
-- {pin_num: G25, pin_signal: GPIO_SD_B2_04, label: ETH0_RDATA2, identifier: ETH0_RDATA2}
-- {pin_num: F24, pin_signal: GPIO_SD_B2_03, label: ETH0_RDATA1, identifier: ETH0_RDATA1}
-- {pin_num: L20, pin_signal: GPIO_SD_B2_02, label: ETH0_RDATA0, identifier: ETH0_RDATA0}
-- {pin_num: K24, pin_signal: GPIO_SD_B2_00, label: ETH0_RX_EN, identifier: ETH0_RX_EN}
-- {pin_num: J23, pin_signal: GPIO_SD_B2_01, label: ETH0_RX_CLK, identifier: ETH0_RX_CLK}
-- {pin_num: R25, pin_signal: GPIO_AD_14, label: ETH0_INT_B, identifier: ETH0_INT_B}
-- {pin_num: G11, pin_signal: GPIO_DISP_B2_11, label: ENET_QOS_INT_B, identifier: ENET_QOS_INT_B}
-- {pin_num: A11, pin_signal: GPIO_DISP_B2_04, label: ENET_QOS_TXEN, identifier: ENET_QOS_TXEN}
-- {pin_num: AE7, pin_signal: GPIO_EMC_B2_20, label: ENET_QOS_REF_CLK1, identifier: ENET_QOS_REF_CLK1}
-- {pin_num: C15, pin_signal: GPIO_DISP_B2_02, label: ENET_QOS_TXD0, identifier: ENET_QOS_TXD0}
-- {pin_num: F11, pin_signal: GPIO_DISP_B2_03, label: ENET_QOS_TXD1, identifier: ENET_QOS_TXD1}
-- {pin_num: C9, pin_signal: GPIO_DISP_B2_08, label: ENET_QOS_CRS_DV, identifier: ENET_QOS_CRS_DV}
-- {pin_num: A9, pin_signal: GPIO_DISP_B2_06, label: ENET_QOS_RXD0, identifier: ENET_QOS_RXD0}
-- {pin_num: B8, pin_signal: GPIO_DISP_B2_07, label: ENET_QOS_RXD1, identifier: ENET_QOS_RXD1}
-- {pin_num: C13, pin_signal: GPIO_DISP_B2_09, label: ENET_QOS_RXER, identifier: ENET_QOS_RXER}
+- {pin_num: R1, pin_signal: GPIO_EMC_B1_40, label: ENET_MDC, identifier: ENET_MDC}
+- {pin_num: R3, pin_signal: GPIO_EMC_B1_41, label: ENET_MDIO, identifier: ENET_MDIO}
+- {pin_num: W6, pin_signal: GPIO_EMC_B2_07, label: ETH0_RDATA3, identifier: ETH0_RDATA3}
+- {pin_num: L23, pin_signal: GPIO_SD_B2_04, label: ETH0_RDATA2, identifier: ETH0_RDATA2}
+- {pin_num: J18, pin_signal: GPIO_SD_B2_03, label: ETH0_RDATA1, identifier: ETH0_RDATA1}
+- {pin_num: M24, pin_signal: GPIO_SD_B2_02, label: ETH0_RDATA0, identifier: ETH0_RDATA0}
+- {pin_num: L19, pin_signal: GPIO_SD_B2_00, label: ETH0_RX_EN, identifier: ETH0_RX_EN}
+- {pin_num: J25, pin_signal: GPIO_SD_B2_01, label: ETH0_RX_CLK, identifier: ETH0_RX_CLK}
+- {pin_num: T20, pin_signal: GPIO_AD_14, label: ETH0_INT_B, identifier: ETH0_INT_B}
+- {pin_num: C13, pin_signal: GPIO_DISP_B2_11, label: ENET_QOS_INT_B, identifier: ENET_QOS_INT_B}
+- {pin_num: G11, pin_signal: GPIO_DISP_B2_04, label: ENET_QOS_TXEN, identifier: ENET_QOS_TXEN}
+- {pin_num: AE5, pin_signal: GPIO_EMC_B2_20, label: ENET_QOS_REF_CLK1, identifier: ENET_QOS_REF_CLK1}
+- {pin_num: B14, pin_signal: GPIO_DISP_B2_02, label: ENET_QOS_TXD0, identifier: ENET_QOS_TXD0}
+- {pin_num: H11, pin_signal: GPIO_DISP_B2_03, label: ENET_QOS_TXD1, identifier: ENET_QOS_TXD1}
+- {pin_num: C11, pin_signal: GPIO_DISP_B2_08, label: ENET_QOS_CRS_DV, identifier: ENET_QOS_CRS_DV}
+- {pin_num: A11, pin_signal: GPIO_DISP_B2_06, label: ENET_QOS_RXD0, identifier: ENET_QOS_RXD0}
+- {pin_num: C9, pin_signal: GPIO_DISP_B2_07, label: ENET_QOS_RXD1, identifier: ENET_QOS_RXD1}
+- {pin_num: C15, pin_signal: GPIO_DISP_B2_09, label: ENET_QOS_RXER, identifier: ENET_QOS_RXER}
+- {pin_num: L20, pin_signal: GPIO_SD_B2_05, label: DQS, identifier: DQS}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -68,8 +69,8 @@ void BOARD_InitBootPins(void) {
 BOARD_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: AD14, peripheral: ARM, signal: arm_trace_swo, pin_signal: GPIO_LPSR_11, software_input_on: Disable, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper,
-    open_drain: Disable, drive_strength: High, slew_rate: Slow}
+  - {pin_num: AE11, peripheral: ARM, signal: arm_trace_swo, pin_signal: GPIO_LPSR_11, software_input_on: Disable, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper,
+    open_drain: Disable, drive_strength: High, slew_rate: Fast}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -87,12 +88,12 @@ void BOARD_InitPins(void) {
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_LPSR_11_ARM_TRACE_SWO,      /* GPIO_LPSR_11 PAD functional properties : */
-      0x02U);                                 /* Slew Rate Field: Slow Slew Rate
+      0x02U);                                 /* Slew Rate Field: Fast Slew Rate
                                                  Drive Strength Field: high driver
-                                                 Pull / Keep Select Field: Pull Disable
+                                                 Pull Select Field: Pull Disable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain LPSR Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
 }
 
@@ -130,7 +131,7 @@ void BOARD_InitDEBUG_UARTPins(void) {
                                                  Pull / Keep Select Field: Pull Disable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AD_25_LPUART1_RXD,          /* GPIO_AD_25 PAD functional properties : */
@@ -139,7 +140,7 @@ void BOARD_InitDEBUG_UARTPins(void) {
                                                  Pull / Keep Select Field: Pull Disable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
 }
 
@@ -189,7 +190,7 @@ void BOARD_InitDEBUG_UARTPins_deinit(void) {
                                                  Pull / Keep Select Field: Pull Enable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AD_25_GPIO_MUX3_IO24,       /* GPIO_AD_25 PAD functional properties : */
@@ -198,7 +199,7 @@ void BOARD_InitDEBUG_UARTPins_deinit(void) {
                                                  Pull / Keep Select Field: Pull Enable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
 }
 
@@ -207,14 +208,14 @@ void BOARD_InitDEBUG_UARTPins_deinit(void) {
 BOARD_InitSAIPins:
 - options: {callFromInitBoot: 'false', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: F11, peripheral: SAI1, signal: sai_mclk, pin_signal: GPIO_DISP_B2_03, identifier: '', software_input_on: Enable, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper,
+  - {pin_num: H11, peripheral: SAI1, signal: sai_mclk, pin_signal: GPIO_DISP_B2_03, identifier: '', software_input_on: Enable, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper,
     open_drain: Disable, drive_strength: High, slew_rate: Fast}
-  - {pin_num: C9, peripheral: SAI1, signal: sai_tx_bclk, pin_signal: GPIO_DISP_B2_08, identifier: '', software_input_on: Enable, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper,
-    open_drain: Disable, drive_strength: High, slew_rate: Fast}
-  - {pin_num: B8, peripheral: SAI1, signal: sai_tx_data00, pin_signal: GPIO_DISP_B2_07, identifier: '', software_input_on: Disable, pull_up_down_config: Pull_Down,
+  - {pin_num: C11, peripheral: SAI1, signal: sai_tx_bclk, pin_signal: GPIO_DISP_B2_08, identifier: '', software_input_on: Enable, pull_up_down_config: Pull_Down,
     pull_keeper_select: Keeper, open_drain: Disable, drive_strength: High, slew_rate: Fast}
-  - {pin_num: C13, peripheral: SAI1, signal: sai_tx_sync, pin_signal: GPIO_DISP_B2_09, software_input_on: Enable, pull_keeper_select: Keeper}
-  - {pin_num: A9, peripheral: SAI1, signal: sai_rx_data00, pin_signal: GPIO_DISP_B2_06, pull_keeper_select: Keeper}
+  - {pin_num: C9, peripheral: SAI1, signal: sai_tx_data00, pin_signal: GPIO_DISP_B2_07, identifier: '', software_input_on: Disable, pull_up_down_config: Pull_Down,
+    pull_keeper_select: Keeper, open_drain: Disable, drive_strength: High, slew_rate: Fast}
+  - {pin_num: C15, peripheral: SAI1, signal: sai_tx_sync, pin_signal: GPIO_DISP_B2_09, software_input_on: Enable, pull_keeper_select: Keeper}
+  - {pin_num: A11, peripheral: SAI1, signal: sai_rx_data00, pin_signal: GPIO_DISP_B2_06, pull_keeper_select: Keeper}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -253,7 +254,7 @@ void BOARD_InitSAIPins(void) {
                                                  Pull / Keep Select Field: Pull Disable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B2_06_SAI1_RX_DATA00,  /* GPIO_DISP_B2_06 PAD functional properties : */
@@ -262,7 +263,7 @@ void BOARD_InitSAIPins(void) {
                                                  Pull / Keep Select Field: Pull Disable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B2_07_SAI1_TX_DATA00,  /* GPIO_DISP_B2_07 PAD functional properties : */
@@ -271,7 +272,7 @@ void BOARD_InitSAIPins(void) {
                                                  Pull / Keep Select Field: Pull Disable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B2_08_SAI1_TX_BCLK,    /* GPIO_DISP_B2_08 PAD functional properties : */
@@ -280,7 +281,7 @@ void BOARD_InitSAIPins(void) {
                                                  Pull / Keep Select Field: Pull Disable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B2_09_SAI1_TX_SYNC,    /* GPIO_DISP_B2_09 PAD functional properties : */
@@ -289,7 +290,7 @@ void BOARD_InitSAIPins(void) {
                                                  Pull / Keep Select Field: Pull Disable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
 }
 
@@ -298,8 +299,8 @@ void BOARD_InitSAIPins(void) {
 BOARD_InitCANPins:
 - options: {callFromInitBoot: 'false', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: AA23, peripheral: CAN2, signal: TX, pin_signal: GPIO_AD_00}
-  - {pin_num: AA25, peripheral: CAN2, signal: RX, pin_signal: GPIO_AD_01}
+  - {pin_num: V17, peripheral: CAN2, signal: TX, pin_signal: GPIO_AD_00}
+  - {pin_num: AA23, peripheral: CAN2, signal: RX, pin_signal: GPIO_AD_01}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -325,9 +326,9 @@ void BOARD_InitCANPins(void) {
 BOARD_InitENCPins:
 - options: {callFromInitBoot: 'false', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: B4, peripheral: XBARA1, signal: 'IN, 04', pin_signal: GPIO_EMC_B1_12, software_input_on: Enable}
-  - {pin_num: C1, peripheral: XBARA1, signal: 'IN, 05', pin_signal: GPIO_EMC_B1_13, software_input_on: Enable}
-  - {pin_num: A3, peripheral: XBARA1, signal: 'IN, 06', pin_signal: GPIO_EMC_B1_14, software_input_on: Enable}
+  - {pin_num: B6, peripheral: XBARA1, signal: 'IN, 04', pin_signal: GPIO_EMC_B1_12, software_input_on: Enable}
+  - {pin_num: C3, peripheral: XBARA1, signal: 'IN, 05', pin_signal: GPIO_EMC_B1_13, software_input_on: Enable}
+  - {pin_num: A5, peripheral: XBARA1, signal: 'IN, 06', pin_signal: GPIO_EMC_B1_14, software_input_on: Enable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -362,35 +363,35 @@ void BOARD_InitENCPins(void) {
 BOARD_InitENET_1GPins:
 - options: {callFromInitBoot: 'false', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: K24, peripheral: ENET_1G, signal: enet_rx_en, pin_signal: GPIO_SD_B2_00, software_input_on: Disable, pull_down_pull_up_config: No_Pull, pdrv_config: High_Driver,
+  - {pin_num: L19, peripheral: ENET_1G, signal: enet_rx_en, pin_signal: GPIO_SD_B2_00, software_input_on: Disable, pull_down_pull_up_config: No_Pull, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: J23, peripheral: ENET_1G, signal: enet_rx_clk, pin_signal: GPIO_SD_B2_01, software_input_on: Disable, pull_down_pull_up_config: No_Pull, pdrv_config: High_Driver,
+  - {pin_num: J25, peripheral: ENET_1G, signal: enet_rx_clk, pin_signal: GPIO_SD_B2_01, software_input_on: Disable, pull_down_pull_up_config: No_Pull, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: L20, peripheral: ENET_1G, signal: 'enet_rdata, 00', pin_signal: GPIO_SD_B2_02, software_input_on: Disable, pull_down_pull_up_config: No_Pull, pdrv_config: High_Driver,
+  - {pin_num: M24, peripheral: ENET_1G, signal: 'enet_rdata, 00', pin_signal: GPIO_SD_B2_02, software_input_on: Disable, pull_down_pull_up_config: No_Pull, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: F24, peripheral: ENET_1G, signal: 'enet_rdata, 01', pin_signal: GPIO_SD_B2_03, software_input_on: Disable, pull_down_pull_up_config: No_Pull, pdrv_config: High_Driver,
+  - {pin_num: J18, peripheral: ENET_1G, signal: 'enet_rdata, 01', pin_signal: GPIO_SD_B2_03, software_input_on: Disable, pull_down_pull_up_config: No_Pull, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: G25, peripheral: ENET_1G, signal: 'enet_rdata, 02', pin_signal: GPIO_SD_B2_04, software_input_on: Disable, pull_down_pull_up_config: No_Pull, pdrv_config: High_Driver,
+  - {pin_num: L23, peripheral: ENET_1G, signal: 'enet_rdata, 02', pin_signal: GPIO_SD_B2_04, software_input_on: Disable, pull_down_pull_up_config: No_Pull, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: AD4, peripheral: ENET_1G, signal: 'enet_rdata, 03', pin_signal: GPIO_EMC_B2_07, software_input_on: Disable, pull_down_pull_up_config: No_Pull, pdrv_config: High_Driver,
+  - {pin_num: W6, peripheral: ENET_1G, signal: 'enet_rdata, 03', pin_signal: GPIO_EMC_B2_07, software_input_on: Disable, pull_down_pull_up_config: No_Pull, pdrv_config: High_Driver,
     open_drain: Disable}
   - {pin_num: F16, peripheral: ENET_1G, signal: 'enet_tdata, 03', pin_signal: GPIO_DISP_B1_06, software_input_on: Disable, pull_down_pull_up_config: No_Pull, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: B20, peripheral: ENET_1G, signal: 'enet_tdata, 02', pin_signal: GPIO_DISP_B1_07, software_input_on: Disable, pull_down_pull_up_config: No_Pull, pdrv_config: High_Driver,
+  - {pin_num: H16, peripheral: ENET_1G, signal: 'enet_tdata, 02', pin_signal: GPIO_DISP_B1_07, software_input_on: Disable, pull_down_pull_up_config: No_Pull, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: A21, peripheral: ENET_1G, signal: 'enet_tdata, 01', pin_signal: GPIO_DISP_B1_08, software_input_on: Disable, pull_down_pull_up_config: No_Pull, pdrv_config: High_Driver,
+  - {pin_num: B22, peripheral: ENET_1G, signal: 'enet_tdata, 01', pin_signal: GPIO_DISP_B1_08, software_input_on: Disable, pull_down_pull_up_config: No_Pull, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: C19, peripheral: ENET_1G, signal: 'enet_tdata, 00', pin_signal: GPIO_DISP_B1_09, software_input_on: Disable, pull_down_pull_up_config: No_Pull, pdrv_config: High_Driver,
+  - {pin_num: C21, peripheral: ENET_1G, signal: 'enet_tdata, 00', pin_signal: GPIO_DISP_B1_09, software_input_on: Disable, pull_down_pull_up_config: No_Pull, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: H16, peripheral: ENET_1G, signal: enet_tx_en, pin_signal: GPIO_DISP_B1_10, software_input_on: Disable, pull_down_pull_up_config: No_Pull, pdrv_config: High_Driver,
+  - {pin_num: A23, peripheral: ENET_1G, signal: enet_tx_en, pin_signal: GPIO_DISP_B1_10, software_input_on: Disable, pull_down_pull_up_config: No_Pull, pdrv_config: High_Driver,
     open_drain: Disable}
   - {pin_num: G16, peripheral: ENET_1G, signal: enet_tx_clk_io, pin_signal: GPIO_DISP_B1_11, direction: OUTPUT, software_input_on: Disable, pull_down_pull_up_config: No_Pull,
     pdrv_config: High_Driver, open_drain: Disable}
-  - {pin_num: U3, peripheral: ENET_1G, signal: enet_mdio, pin_signal: GPIO_EMC_B1_41, software_input_on: Disable, pull_down_pull_up_config: No_Pull, pdrv_config: High_Driver,
+  - {pin_num: R3, peripheral: ENET_1G, signal: enet_mdio, pin_signal: GPIO_EMC_B1_41, software_input_on: Disable, pull_down_pull_up_config: No_Pull, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: V2, peripheral: ENET_1G, signal: enet_mdc, pin_signal: GPIO_EMC_B1_40, software_input_on: Disable, pull_down_pull_up_config: No_Pull, pdrv_config: High_Driver,
+  - {pin_num: R1, peripheral: ENET_1G, signal: enet_mdc, pin_signal: GPIO_EMC_B1_40, software_input_on: Disable, pull_down_pull_up_config: No_Pull, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: R25, peripheral: GPIO9, signal: 'gpio_io, 13', pin_signal: GPIO_AD_14, direction: INPUT}
+  - {pin_num: T20, peripheral: GPIO9, signal: 'gpio_io, 13', pin_signal: GPIO_AD_14, direction: INPUT}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -403,13 +404,13 @@ BOARD_InitENET_1GPins:
 void BOARD_InitENET_1GPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc);           /* LPCG on: LPCG is ON. */
 
-  /* GPIO configuration of ETH0_INT_B on GPIO_AD_14 (pin R25) */
+  /* GPIO configuration of ETH0_INT_B on GPIO_AD_14 (pin T20) */
   gpio_pin_config_t ETH0_INT_B_config = {
       .direction = kGPIO_DigitalInput,
       .outputLogic = 0U,
       .interruptMode = kGPIO_NoIntmode
   };
-  /* Initialize GPIO functionality on GPIO_AD_14 (pin R25) */
+  /* Initialize GPIO functionality on GPIO_AD_14 (pin T20) */
   GPIO_PinInit(GPIO9, 13U, &ETH0_INT_B_config);
 
   IOMUXC_SetPinMux(
@@ -462,98 +463,98 @@ void BOARD_InitENET_1GPins(void) {
       0x0CU);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: No Pull
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B1_07_ENET_1G_TX_DATA02,  /* GPIO_DISP_B1_07 PAD functional properties : */
       0x0CU);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: No Pull
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B1_08_ENET_1G_TX_DATA01,  /* GPIO_DISP_B1_08 PAD functional properties : */
       0x0CU);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: No Pull
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B1_09_ENET_1G_TX_DATA00,  /* GPIO_DISP_B1_09 PAD functional properties : */
       0x0CU);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: No Pull
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B1_10_ENET_1G_TX_EN,   /* GPIO_DISP_B1_10 PAD functional properties : */
       0x0CU);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: No Pull
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B1_11_ENET_1G_TX_CLK_IO,  /* GPIO_DISP_B1_11 PAD functional properties : */
       0x0CU);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: No Pull
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_40_ENET_1G_MDC,      /* GPIO_EMC_B1_40 PAD functional properties : */
       0x0CU);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: No Pull
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_41_ENET_1G_MDIO,     /* GPIO_EMC_B1_41 PAD functional properties : */
       0x0CU);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: No Pull
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B2_07_ENET_1G_RX_DATA03,  /* GPIO_EMC_B2_07 PAD functional properties : */
       0x0CU);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: No Pull
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_SD_B2_00_ENET_1G_RX_EN,     /* GPIO_SD_B2_00 PAD functional properties : */
       0x0CU);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: No Pull
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_SD_B2_01_ENET_1G_RX_CLK,    /* GPIO_SD_B2_01 PAD functional properties : */
       0x0CU);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: No Pull
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_SD_B2_02_ENET_1G_RX_DATA00,  /* GPIO_SD_B2_02 PAD functional properties : */
       0x0CU);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: No Pull
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_SD_B2_03_ENET_1G_RX_DATA01,  /* GPIO_SD_B2_03 PAD functional properties : */
       0x0CU);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: No Pull
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_SD_B2_04_ENET_1G_RX_DATA02,  /* GPIO_SD_B2_04 PAD functional properties : */
       0x0CU);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: No Pull
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
 }
 
@@ -562,17 +563,17 @@ void BOARD_InitENET_1GPins(void) {
 BOARD_InitENET_QOSPins:
 - options: {callFromInitBoot: 'false', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: U3, peripheral: ENET_1G, signal: enet_mdio, pin_signal: GPIO_EMC_B1_41, pull_down_pull_up_config: No_Pull}
-  - {pin_num: V2, peripheral: ENET_1G, signal: enet_mdc, pin_signal: GPIO_EMC_B1_40, pull_down_pull_up_config: No_Pull}
-  - {pin_num: A11, peripheral: ENET_QOS, signal: enet_tx_en, pin_signal: GPIO_DISP_B2_04}
-  - {pin_num: AE7, peripheral: ENET_QOS, signal: enet_ref_clk, pin_signal: GPIO_EMC_B2_20, direction: OUTPUT}
-  - {pin_num: C15, peripheral: ENET_QOS, signal: 'enet_tdata, 00', pin_signal: GPIO_DISP_B2_02}
-  - {pin_num: F11, peripheral: ENET_QOS, signal: 'enet_tdata, 01', pin_signal: GPIO_DISP_B2_03}
-  - {pin_num: C9, peripheral: ENET_QOS, signal: enet_rx_en, pin_signal: GPIO_DISP_B2_08}
-  - {pin_num: A9, peripheral: ENET_QOS, signal: 'enet_rdata, 00', pin_signal: GPIO_DISP_B2_06}
-  - {pin_num: B8, peripheral: ENET_QOS, signal: 'enet_rdata, 01', pin_signal: GPIO_DISP_B2_07}
-  - {pin_num: C13, peripheral: ENET_QOS, signal: enet_rx_er, pin_signal: GPIO_DISP_B2_09}
-  - {pin_num: G11, peripheral: GPIO11, signal: 'gpio_io, 12', pin_signal: GPIO_DISP_B2_11, direction: INPUT}
+  - {pin_num: R3, peripheral: ENET_1G, signal: enet_mdio, pin_signal: GPIO_EMC_B1_41, pull_down_pull_up_config: No_Pull}
+  - {pin_num: R1, peripheral: ENET_1G, signal: enet_mdc, pin_signal: GPIO_EMC_B1_40, pull_down_pull_up_config: No_Pull}
+  - {pin_num: G11, peripheral: ENET_QOS, signal: enet_tx_en, pin_signal: GPIO_DISP_B2_04}
+  - {pin_num: AE5, peripheral: ENET_QOS, signal: enet_ref_clk, pin_signal: GPIO_EMC_B2_20, direction: OUTPUT}
+  - {pin_num: B14, peripheral: ENET_QOS, signal: 'enet_tdata, 00', pin_signal: GPIO_DISP_B2_02}
+  - {pin_num: H11, peripheral: ENET_QOS, signal: 'enet_tdata, 01', pin_signal: GPIO_DISP_B2_03}
+  - {pin_num: C11, peripheral: ENET_QOS, signal: enet_rx_en, pin_signal: GPIO_DISP_B2_08}
+  - {pin_num: A11, peripheral: ENET_QOS, signal: 'enet_rdata, 00', pin_signal: GPIO_DISP_B2_06}
+  - {pin_num: C9, peripheral: ENET_QOS, signal: 'enet_rdata, 01', pin_signal: GPIO_DISP_B2_07}
+  - {pin_num: C15, peripheral: ENET_QOS, signal: enet_rx_er, pin_signal: GPIO_DISP_B2_09}
+  - {pin_num: C13, peripheral: GPIO11, signal: 'gpio_io, 12', pin_signal: GPIO_DISP_B2_11, direction: INPUT}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -585,13 +586,13 @@ BOARD_InitENET_QOSPins:
 void BOARD_InitENET_QOSPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc);           /* LPCG on: LPCG is ON. */
 
-  /* GPIO configuration of ENET_QOS_INT_B on GPIO_DISP_B2_11 (pin G11) */
+  /* GPIO configuration of ENET_QOS_INT_B on GPIO_DISP_B2_11 (pin C13) */
   gpio_pin_config_t ENET_QOS_INT_B_config = {
       .direction = kGPIO_DigitalInput,
       .outputLogic = 0U,
       .interruptMode = kGPIO_NoIntmode
   };
-  /* Initialize GPIO functionality on GPIO_DISP_B2_11 (pin G11) */
+  /* Initialize GPIO functionality on GPIO_DISP_B2_11 (pin C13) */
   GPIO_PinInit(GPIO11, 12U, &ENET_QOS_INT_B_config);
 
   IOMUXC_SetPinMux(
@@ -636,14 +637,14 @@ void BOARD_InitENET_QOSPins(void) {
       0x0CU);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: No Pull
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_41_ENET_1G_MDIO,     /* GPIO_EMC_B1_41 PAD functional properties : */
       0x0CU);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: No Pull
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
 }
 
@@ -652,9 +653,9 @@ void BOARD_InitENET_QOSPins(void) {
 BOARD_InitFLEXIO_I2CPins:
 - options: {callFromInitBoot: 'false', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: G1, peripheral: FLEXIO1, signal: 'IO, 00', pin_signal: GPIO_EMC_B1_00, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+  - {pin_num: E1, peripheral: FLEXIO1, signal: 'IO, 00', pin_signal: GPIO_EMC_B1_00, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: H2, peripheral: FLEXIO1, signal: 'IO, 01', pin_signal: GPIO_EMC_B1_01, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+  - {pin_num: F2, peripheral: FLEXIO1, signal: 'IO, 01', pin_signal: GPIO_EMC_B1_01, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -679,14 +680,14 @@ void BOARD_InitFLEXIO_I2CPins(void) {
       0x08U);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: Internal pulldown resistor enabled
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_01_FLEXIO1_D01,      /* GPIO_EMC_B1_01 PAD functional properties : */
       0x08U);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: Internal pulldown resistor enabled
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
 }
 
@@ -695,15 +696,15 @@ void BOARD_InitFLEXIO_I2CPins(void) {
 BOARD_InitFLEXIO_I2SPins:
 - options: {callFromInitBoot: 'false', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: H2, peripheral: FLEXIO1, signal: 'IO, 01', pin_signal: GPIO_EMC_B1_01, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+  - {pin_num: F2, peripheral: FLEXIO1, signal: 'IO, 01', pin_signal: GPIO_EMC_B1_01, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: G1, peripheral: FLEXIO1, signal: 'IO, 00', pin_signal: GPIO_EMC_B1_00, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+  - {pin_num: E1, peripheral: FLEXIO1, signal: 'IO, 00', pin_signal: GPIO_EMC_B1_00, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
   - {pin_num: K7, peripheral: FLEXIO1, signal: 'IO, 02', pin_signal: GPIO_EMC_B1_02, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: E3, peripheral: FLEXIO1, signal: 'IO, 03', pin_signal: GPIO_EMC_B1_03, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+  - {pin_num: A3, peripheral: FLEXIO1, signal: 'IO, 03', pin_signal: GPIO_EMC_B1_03, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: F11, peripheral: SAI1, signal: sai_mclk, pin_signal: GPIO_DISP_B2_03, identifier: '', software_input_on: Disable, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper,
+  - {pin_num: H11, peripheral: SAI1, signal: sai_mclk, pin_signal: GPIO_DISP_B2_03, identifier: '', software_input_on: Disable, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper,
     open_drain: Disable, drive_strength: High, slew_rate: Fast}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -743,35 +744,35 @@ void BOARD_InitFLEXIO_I2SPins(void) {
                                                  Pull / Keep Select Field: Pull Disable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_00_FLEXIO1_D00,      /* GPIO_EMC_B1_00 PAD functional properties : */
       0x08U);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: Internal pulldown resistor enabled
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_01_FLEXIO1_D01,      /* GPIO_EMC_B1_01 PAD functional properties : */
       0x08U);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: Internal pulldown resistor enabled
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_02_FLEXIO1_D02,      /* GPIO_EMC_B1_02 PAD functional properties : */
       0x08U);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: Internal pulldown resistor enabled
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_03_FLEXIO1_D03,      /* GPIO_EMC_B1_03 PAD functional properties : */
       0x08U);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: Internal pulldown resistor enabled
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
 }
 
@@ -780,7 +781,7 @@ void BOARD_InitFLEXIO_I2SPins(void) {
 BOARD_InitFLEXIO_PWMPins:
 - options: {callFromInitBoot: 'false', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: G1, peripheral: FLEXIO1, signal: 'IO, 00', pin_signal: GPIO_EMC_B1_00, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+  - {pin_num: E1, peripheral: FLEXIO1, signal: 'IO, 00', pin_signal: GPIO_EMC_B1_00, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -802,7 +803,7 @@ void BOARD_InitFLEXIO_PWMPins(void) {
       0x08U);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: Internal pulldown resistor enabled
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
 }
 
@@ -811,13 +812,13 @@ void BOARD_InitFLEXIO_PWMPins(void) {
 BOARD_InitFLEXIO_SPIPins:
 - options: {callFromInitBoot: 'false', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: G1, peripheral: FLEXIO1, signal: 'IO, 00', pin_signal: GPIO_EMC_B1_00, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+  - {pin_num: E1, peripheral: FLEXIO1, signal: 'IO, 00', pin_signal: GPIO_EMC_B1_00, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: H2, peripheral: FLEXIO1, signal: 'IO, 01', pin_signal: GPIO_EMC_B1_01, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+  - {pin_num: F2, peripheral: FLEXIO1, signal: 'IO, 01', pin_signal: GPIO_EMC_B1_01, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
   - {pin_num: K7, peripheral: FLEXIO1, signal: 'IO, 02', pin_signal: GPIO_EMC_B1_02, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: E3, peripheral: FLEXIO1, signal: 'IO, 03', pin_signal: GPIO_EMC_B1_03, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+  - {pin_num: A3, peripheral: FLEXIO1, signal: 'IO, 03', pin_signal: GPIO_EMC_B1_03, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -848,28 +849,28 @@ void BOARD_InitFLEXIO_SPIPins(void) {
       0x08U);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: Internal pulldown resistor enabled
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_01_FLEXIO1_D01,      /* GPIO_EMC_B1_01 PAD functional properties : */
       0x08U);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: Internal pulldown resistor enabled
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_02_FLEXIO1_D02,      /* GPIO_EMC_B1_02 PAD functional properties : */
       0x08U);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: Internal pulldown resistor enabled
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_03_FLEXIO1_D03,      /* GPIO_EMC_B1_03 PAD functional properties : */
       0x08U);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: Internal pulldown resistor enabled
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
 }
 
@@ -878,9 +879,9 @@ void BOARD_InitFLEXIO_SPIPins(void) {
 BOARD_InitFLEXIO_UARTPins:
 - options: {callFromInitBoot: 'false', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: G1, peripheral: FLEXIO1, signal: 'IO, 00', pin_signal: GPIO_EMC_B1_00, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+  - {pin_num: E1, peripheral: FLEXIO1, signal: 'IO, 00', pin_signal: GPIO_EMC_B1_00, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: H2, peripheral: FLEXIO1, signal: 'IO, 01', pin_signal: GPIO_EMC_B1_01, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+  - {pin_num: F2, peripheral: FLEXIO1, signal: 'IO, 01', pin_signal: GPIO_EMC_B1_01, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -905,14 +906,14 @@ void BOARD_InitFLEXIO_UARTPins(void) {
       0x08U);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: Internal pulldown resistor enabled
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_01_FLEXIO1_D01,      /* GPIO_EMC_B1_01 PAD functional properties : */
       0x08U);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: Internal pulldown resistor enabled
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
 }
 
@@ -921,13 +922,13 @@ void BOARD_InitFLEXIO_UARTPins(void) {
 BOARD_InitSPIPins:
 - options: {createDeInit: 'true', callFromInitBoot: 'false', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: P24, peripheral: LPSPI1, signal: SCK, pin_signal: GPIO_AD_28, software_input_on: Disable, pull_up_down_config: Pull_Down, pull_keeper_select: Pull,
+  - {pin_num: T24, peripheral: LPSPI1, signal: SCK, pin_signal: GPIO_AD_28, software_input_on: Disable, pull_up_down_config: Pull_Down, pull_keeper_select: Pull,
     open_drain: Disable, drive_strength: High, slew_rate: Fast}
-  - {pin_num: N25, peripheral: LPSPI1, signal: PCS0, pin_signal: GPIO_AD_29, software_input_on: Disable, pull_up_down_config: Pull_Down, pull_keeper_select: Pull,
+  - {pin_num: R25, peripheral: LPSPI1, signal: PCS0, pin_signal: GPIO_AD_29, software_input_on: Disable, pull_up_down_config: Pull_Down, pull_keeper_select: Pull,
     open_drain: Disable, drive_strength: High, slew_rate: Fast}
-  - {pin_num: N23, peripheral: LPSPI1, signal: SOUT, pin_signal: GPIO_AD_30, software_input_on: Disable, pull_up_down_config: Pull_Down, pull_keeper_select: Pull,
+  - {pin_num: R23, peripheral: LPSPI1, signal: SOUT, pin_signal: GPIO_AD_30, software_input_on: Disable, pull_up_down_config: Pull_Down, pull_keeper_select: Pull,
     open_drain: Disable, drive_strength: High, slew_rate: Fast}
-  - {pin_num: M24, peripheral: LPSPI1, signal: SIN, pin_signal: GPIO_AD_31, software_input_on: Disable, pull_up_down_config: Pull_Down, pull_keeper_select: Pull,
+  - {pin_num: P24, peripheral: LPSPI1, signal: SIN, pin_signal: GPIO_AD_31, software_input_on: Disable, pull_up_down_config: Pull_Down, pull_keeper_select: Pull,
     open_drain: Disable, drive_strength: High, slew_rate: Fast}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -960,7 +961,7 @@ void BOARD_InitSPIPins(void) {
                                                  Pull / Keep Select Field: Pull Enable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AD_29_LPSPI1_PCS0,          /* GPIO_AD_29 PAD functional properties : */
@@ -969,7 +970,7 @@ void BOARD_InitSPIPins(void) {
                                                  Pull / Keep Select Field: Pull Enable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AD_30_LPSPI1_SOUT,          /* GPIO_AD_30 PAD functional properties : */
@@ -978,7 +979,7 @@ void BOARD_InitSPIPins(void) {
                                                  Pull / Keep Select Field: Pull Enable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AD_31_LPSPI1_SIN,           /* GPIO_AD_31 PAD functional properties : */
@@ -987,7 +988,7 @@ void BOARD_InitSPIPins(void) {
                                                  Pull / Keep Select Field: Pull Enable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
 }
 
@@ -1002,41 +1003,41 @@ void BOARD_InitSPIPins(void) {
 void BOARD_InitSPIPins_deinit(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc);           /* LPCG on: LPCG is ON. */
 
-  /* GPIO configuration on GPIO_AD_28 (pin P24) */
+  /* GPIO configuration on GPIO_AD_28 (pin T24) */
+  gpio_pin_config_t gpio3_pinT24_config = {
+      .direction = kGPIO_DigitalInput,
+      .outputLogic = 0U,
+      .interruptMode = kGPIO_NoIntmode
+  };
+  /* Initialize GPIO functionality on GPIO_AD_28 (pin T24) */
+  GPIO_PinInit(GPIO3, 27U, &gpio3_pinT24_config);
+
+  /* GPIO configuration on GPIO_AD_29 (pin R25) */
+  gpio_pin_config_t gpio3_pinR25_config = {
+      .direction = kGPIO_DigitalInput,
+      .outputLogic = 0U,
+      .interruptMode = kGPIO_NoIntmode
+  };
+  /* Initialize GPIO functionality on GPIO_AD_29 (pin R25) */
+  GPIO_PinInit(GPIO3, 28U, &gpio3_pinR25_config);
+
+  /* GPIO configuration on GPIO_AD_30 (pin R23) */
+  gpio_pin_config_t gpio3_pinR23_config = {
+      .direction = kGPIO_DigitalInput,
+      .outputLogic = 0U,
+      .interruptMode = kGPIO_NoIntmode
+  };
+  /* Initialize GPIO functionality on GPIO_AD_30 (pin R23) */
+  GPIO_PinInit(GPIO3, 29U, &gpio3_pinR23_config);
+
+  /* GPIO configuration on GPIO_AD_31 (pin P24) */
   gpio_pin_config_t gpio3_pinP24_config = {
       .direction = kGPIO_DigitalInput,
       .outputLogic = 0U,
       .interruptMode = kGPIO_NoIntmode
   };
-  /* Initialize GPIO functionality on GPIO_AD_28 (pin P24) */
-  GPIO_PinInit(GPIO3, 27U, &gpio3_pinP24_config);
-
-  /* GPIO configuration on GPIO_AD_29 (pin N25) */
-  gpio_pin_config_t gpio3_pinN25_config = {
-      .direction = kGPIO_DigitalInput,
-      .outputLogic = 0U,
-      .interruptMode = kGPIO_NoIntmode
-  };
-  /* Initialize GPIO functionality on GPIO_AD_29 (pin N25) */
-  GPIO_PinInit(GPIO3, 28U, &gpio3_pinN25_config);
-
-  /* GPIO configuration on GPIO_AD_30 (pin N23) */
-  gpio_pin_config_t gpio3_pinN23_config = {
-      .direction = kGPIO_DigitalInput,
-      .outputLogic = 0U,
-      .interruptMode = kGPIO_NoIntmode
-  };
-  /* Initialize GPIO functionality on GPIO_AD_30 (pin N23) */
-  GPIO_PinInit(GPIO3, 29U, &gpio3_pinN23_config);
-
-  /* GPIO configuration on GPIO_AD_31 (pin M24) */
-  gpio_pin_config_t gpio3_pinM24_config = {
-      .direction = kGPIO_DigitalInput,
-      .outputLogic = 0U,
-      .interruptMode = kGPIO_NoIntmode
-  };
-  /* Initialize GPIO functionality on GPIO_AD_31 (pin M24) */
-  GPIO_PinInit(GPIO3, 30U, &gpio3_pinM24_config);
+  /* Initialize GPIO functionality on GPIO_AD_31 (pin P24) */
+  GPIO_PinInit(GPIO3, 30U, &gpio3_pinP24_config);
 
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AD_28_GPIO_MUX3_IO27,       /* GPIO_AD_28 is configured as GPIO_MUX3_IO27 */
@@ -1061,7 +1062,7 @@ void BOARD_InitSPIPins_deinit(void) {
                                                  Pull / Keep Select Field: Pull Enable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AD_29_GPIO_MUX3_IO28,       /* GPIO_AD_29 PAD functional properties : */
@@ -1070,7 +1071,7 @@ void BOARD_InitSPIPins_deinit(void) {
                                                  Pull / Keep Select Field: Pull Enable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AD_30_GPIO_MUX3_IO29,       /* GPIO_AD_30 PAD functional properties : */
@@ -1079,7 +1080,7 @@ void BOARD_InitSPIPins_deinit(void) {
                                                  Pull / Keep Select Field: Pull Enable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AD_31_GPIO_MUX3_IO30,       /* GPIO_AD_31 PAD functional properties : */
@@ -1088,7 +1089,7 @@ void BOARD_InitSPIPins_deinit(void) {
                                                  Pull / Keep Select Field: Pull Enable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
 }
 
@@ -1097,7 +1098,7 @@ void BOARD_InitSPIPins_deinit(void) {
 BOARD_InitGPTPins:
 - options: {callFromInitBoot: 'false', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: B2, peripheral: GPT5, signal: 'gpt_compare, 1', pin_signal: GPIO_EMC_B1_11}
+  - {pin_num: B4, peripheral: GPT5, signal: 'gpt_compare, 1', pin_signal: GPIO_EMC_B1_11}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1120,13 +1121,13 @@ void BOARD_InitGPTPins(void) {
 BOARD_InitKPPPins:
 - options: {callFromInitBoot: 'false', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: P24, peripheral: KPP, signal: 'kpp_row, 03', pin_signal: GPIO_AD_28, software_input_on: Disable, pull_up_down_config: Pull_Up, pull_keeper_select: Pull,
+  - {pin_num: T24, peripheral: KPP, signal: 'kpp_row, 03', pin_signal: GPIO_AD_28, software_input_on: Disable, pull_up_down_config: Pull_Up, pull_keeper_select: Pull,
     open_drain: Disable, drive_strength: High, slew_rate: Fast}
-  - {pin_num: N25, peripheral: KPP, signal: 'kpp_col, 03', pin_signal: GPIO_AD_29, software_input_on: Disable, pull_up_down_config: Pull_Up, pull_keeper_select: Pull,
+  - {pin_num: R25, peripheral: KPP, signal: 'kpp_col, 03', pin_signal: GPIO_AD_29, software_input_on: Disable, pull_up_down_config: Pull_Up, pull_keeper_select: Pull,
     open_drain: Disable, drive_strength: High, slew_rate: Fast}
-  - {pin_num: N23, peripheral: KPP, signal: 'kpp_row, 02', pin_signal: GPIO_AD_30, software_input_on: Disable, pull_up_down_config: Pull_Up, pull_keeper_select: Pull,
+  - {pin_num: R23, peripheral: KPP, signal: 'kpp_row, 02', pin_signal: GPIO_AD_30, software_input_on: Disable, pull_up_down_config: Pull_Up, pull_keeper_select: Pull,
     open_drain: Disable, drive_strength: High, slew_rate: Fast}
-  - {pin_num: M24, peripheral: KPP, signal: 'kpp_col, 02', pin_signal: GPIO_AD_31, software_input_on: Disable, pull_up_down_config: Pull_Up, pull_keeper_select: Pull,
+  - {pin_num: P24, peripheral: KPP, signal: 'kpp_col, 02', pin_signal: GPIO_AD_31, software_input_on: Disable, pull_up_down_config: Pull_Up, pull_keeper_select: Pull,
     open_drain: Disable, drive_strength: High, slew_rate: Fast}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -1159,7 +1160,7 @@ void BOARD_InitKPPPins(void) {
                                                  Pull / Keep Select Field: Pull Enable
                                                  Pull Up / Down Config. Field: Weak pull up
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AD_29_KPP_COL03,            /* GPIO_AD_29 PAD functional properties : */
@@ -1168,7 +1169,7 @@ void BOARD_InitKPPPins(void) {
                                                  Pull / Keep Select Field: Pull Enable
                                                  Pull Up / Down Config. Field: Weak pull up
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AD_30_KPP_ROW02,            /* GPIO_AD_30 PAD functional properties : */
@@ -1177,7 +1178,7 @@ void BOARD_InitKPPPins(void) {
                                                  Pull / Keep Select Field: Pull Enable
                                                  Pull Up / Down Config. Field: Weak pull up
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AD_31_KPP_COL02,            /* GPIO_AD_31 PAD functional properties : */
@@ -1186,7 +1187,7 @@ void BOARD_InitKPPPins(void) {
                                                  Pull / Keep Select Field: Pull Enable
                                                  Pull Up / Down Config. Field: Weak pull up
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
 }
 
@@ -1195,8 +1196,8 @@ void BOARD_InitKPPPins(void) {
 BOARD_InitADCPins:
 - options: {callFromInitBoot: 'false', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: Y24, peripheral: LPADC1, signal: 'A, 1_0', pin_signal: GPIO_AD_06, pull_keeper_select: Keeper}
-  - {pin_num: T24, peripheral: LPADC1, signal: 'A, 1_3', pin_signal: GPIO_AD_12, pull_keeper_select: Keeper}
+  - {pin_num: V19, peripheral: LPADC1, signal: 'A, 1_0', pin_signal: GPIO_AD_06, pull_keeper_select: Keeper}
+  - {pin_num: V24, peripheral: LPADC1, signal: 'A, 1_3', pin_signal: GPIO_AD_12, pull_keeper_select: Keeper}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1222,7 +1223,7 @@ void BOARD_InitADCPins(void) {
                                                  Pull / Keep Select Field: Pull Disable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AD_12_GPIO_MUX3_IO11,       /* GPIO_AD_12 PAD functional properties : */
@@ -1231,7 +1232,7 @@ void BOARD_InitADCPins(void) {
                                                  Pull / Keep Select Field: Pull Disable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
 }
 
@@ -1240,9 +1241,9 @@ void BOARD_InitADCPins(void) {
 BOARD_InitI2CPins:
 - options: {createDeInit: 'true', callFromInitBoot: 'false', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: V17, peripheral: LPI2C1, signal: SCL, pin_signal: GPIO_AD_08, software_input_on: Enable, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper,
+  - {pin_num: AD24, peripheral: LPI2C1, signal: SCL, pin_signal: GPIO_AD_08, software_input_on: Enable, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper,
     open_drain: Enable, drive_strength: Normal, slew_rate: Fast}
-  - {pin_num: V18, peripheral: LPI2C1, signal: SDA, pin_signal: GPIO_AD_09, software_input_on: Enable, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper,
+  - {pin_num: AC25, peripheral: LPI2C1, signal: SDA, pin_signal: GPIO_AD_09, software_input_on: Enable, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper,
     open_drain: Enable, drive_strength: Normal, slew_rate: Fast}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -1269,7 +1270,7 @@ void BOARD_InitI2CPins(void) {
                                                  Pull / Keep Select Field: Pull Disable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Enabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AD_09_LPI2C1_SDA,           /* GPIO_AD_09 PAD functional properties : */
@@ -1278,7 +1279,7 @@ void BOARD_InitI2CPins(void) {
                                                  Pull / Keep Select Field: Pull Disable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Enabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
 }
 
@@ -1293,23 +1294,23 @@ void BOARD_InitI2CPins(void) {
 void BOARD_InitI2CPins_deinit(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc);           /* LPCG on: LPCG is ON. */
 
-  /* GPIO configuration on GPIO_AD_08 (pin V17) */
-  gpio_pin_config_t gpio3_pinV17_config = {
+  /* GPIO configuration on GPIO_AD_08 (pin AD24) */
+  gpio_pin_config_t gpio3_pinAD24_config = {
       .direction = kGPIO_DigitalInput,
       .outputLogic = 0U,
       .interruptMode = kGPIO_NoIntmode
   };
-  /* Initialize GPIO functionality on GPIO_AD_08 (pin V17) */
-  GPIO_PinInit(GPIO3, 7U, &gpio3_pinV17_config);
+  /* Initialize GPIO functionality on GPIO_AD_08 (pin AD24) */
+  GPIO_PinInit(GPIO3, 7U, &gpio3_pinAD24_config);
 
-  /* GPIO configuration on GPIO_AD_09 (pin V18) */
-  gpio_pin_config_t gpio3_pinV18_config = {
+  /* GPIO configuration on GPIO_AD_09 (pin AC25) */
+  gpio_pin_config_t gpio3_pinAC25_config = {
       .direction = kGPIO_DigitalInput,
       .outputLogic = 0U,
       .interruptMode = kGPIO_NoIntmode
   };
-  /* Initialize GPIO functionality on GPIO_AD_09 (pin V18) */
-  GPIO_PinInit(GPIO3, 8U, &gpio3_pinV18_config);
+  /* Initialize GPIO functionality on GPIO_AD_09 (pin AC25) */
+  GPIO_PinInit(GPIO3, 8U, &gpio3_pinAC25_config);
 
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AD_08_GPIO_MUX3_IO07,       /* GPIO_AD_08 is configured as GPIO_MUX3_IO07 */
@@ -1328,7 +1329,7 @@ void BOARD_InitI2CPins_deinit(void) {
                                                  Pull / Keep Select Field: Pull Enable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AD_09_GPIO_MUX3_IO08,       /* GPIO_AD_09 PAD functional properties : */
@@ -1337,7 +1338,7 @@ void BOARD_InitI2CPins_deinit(void) {
                                                  Pull / Keep Select Field: Pull Enable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
 }
 
@@ -1346,19 +1347,19 @@ void BOARD_InitI2CPins_deinit(void) {
 BOARD_InitFLASHPins:
 - options: {callFromInitBoot: 'false', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: L19, peripheral: FLEXSPI1, signal: FLEXSPI_A_SS0_B, pin_signal: GPIO_SD_B2_06, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: Normal_Driver,
+  - {pin_num: J23, peripheral: FLEXSPI1, signal: FLEXSPI_A_SS0_B, pin_signal: GPIO_SD_B2_06, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: Normal_Driver,
     open_drain: Disable}
-  - {pin_num: J19, peripheral: FLEXSPI1, signal: FLEXSPI_A_SCLK, pin_signal: GPIO_SD_B2_07, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: Normal_Driver,
+  - {pin_num: G23, peripheral: FLEXSPI1, signal: FLEXSPI_A_SCLK, pin_signal: GPIO_SD_B2_07, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: Normal_Driver,
     open_drain: Disable}
-  - {pin_num: J18, peripheral: FLEXSPI1, signal: FLEXSPI_A_DATA0, pin_signal: GPIO_SD_B2_08, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: Normal_Driver,
+  - {pin_num: J19, peripheral: FLEXSPI1, signal: FLEXSPI_A_DATA0, pin_signal: GPIO_SD_B2_08, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: Normal_Driver,
     open_drain: Disable}
-  - {pin_num: H24, peripheral: FLEXSPI1, signal: FLEXSPI_A_DATA1, pin_signal: GPIO_SD_B2_09, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: Normal_Driver,
+  - {pin_num: K24, peripheral: FLEXSPI1, signal: FLEXSPI_A_DATA1, pin_signal: GPIO_SD_B2_09, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: Normal_Driver,
     open_drain: Disable}
-  - {pin_num: E23, peripheral: FLEXSPI1, signal: FLEXSPI_A_DATA3, pin_signal: GPIO_SD_B2_11, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: Normal_Driver,
+  - {pin_num: H24, peripheral: FLEXSPI1, signal: FLEXSPI_A_DATA3, pin_signal: GPIO_SD_B2_11, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: Normal_Driver,
     open_drain: Disable}
-  - {pin_num: J25, peripheral: FLEXSPI1, signal: FLEXSPI_A_DATA2, pin_signal: GPIO_SD_B2_10, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: Normal_Driver,
+  - {pin_num: L25, peripheral: FLEXSPI1, signal: FLEXSPI_A_DATA2, pin_signal: GPIO_SD_B2_10, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: Normal_Driver,
     open_drain: Disable}
-  - {pin_num: G23, peripheral: FLEXSPI1, signal: FLEXSPI_A_DQS, pin_signal: GPIO_SD_B2_05, software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: Normal_Driver,
+  - {pin_num: L20, peripheral: FLEXSPI1, signal: FLEXSPI_A_DQS, pin_signal: GPIO_SD_B2_05, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: Normal_Driver,
     open_drain: Disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -1374,7 +1375,7 @@ void BOARD_InitFLASHPins(void) {
 
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_SD_B2_05_FLEXSPI1_A_DQS,    /* GPIO_SD_B2_05 is configured as FLEXSPI1_A_DQS */
-      1U);                                    /* Software Input On Field: Input Path is determined by functionality */
+      1U);                                    /* Software Input On Field: Force input path of pad GPIO_SD_B2_05 */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_SD_B2_06_FLEXSPI1_A_SS0_B,  /* GPIO_SD_B2_06 is configured as FLEXSPI1_A_SS0_B */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
@@ -1398,49 +1399,49 @@ void BOARD_InitFLASHPins(void) {
       0x0AU);                                 /* PDRV Field: normal drive strength
                                                  Pull Down Pull Up Field: Internal pulldown resistor enabled
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_SD_B2_06_FLEXSPI1_A_SS0_B,  /* GPIO_SD_B2_06 PAD functional properties : */
       0x0AU);                                 /* PDRV Field: normal drive strength
                                                  Pull Down Pull Up Field: Internal pulldown resistor enabled
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_SD_B2_07_FLEXSPI1_A_SCLK,   /* GPIO_SD_B2_07 PAD functional properties : */
       0x0AU);                                 /* PDRV Field: normal drive strength
                                                  Pull Down Pull Up Field: Internal pulldown resistor enabled
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_SD_B2_08_FLEXSPI1_A_DATA00,  /* GPIO_SD_B2_08 PAD functional properties : */
       0x0AU);                                 /* PDRV Field: normal drive strength
                                                  Pull Down Pull Up Field: Internal pulldown resistor enabled
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_SD_B2_09_FLEXSPI1_A_DATA01,  /* GPIO_SD_B2_09 PAD functional properties : */
       0x0AU);                                 /* PDRV Field: normal drive strength
                                                  Pull Down Pull Up Field: Internal pulldown resistor enabled
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_SD_B2_10_FLEXSPI1_A_DATA02,  /* GPIO_SD_B2_10 PAD functional properties : */
       0x0AU);                                 /* PDRV Field: normal drive strength
                                                  Pull Down Pull Up Field: Internal pulldown resistor enabled
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_SD_B2_11_FLEXSPI1_A_DATA03,  /* GPIO_SD_B2_11 PAD functional properties : */
       0x0AU);                                 /* PDRV Field: normal drive strength
                                                  Pull Down Pull Up Field: Internal pulldown resistor enabled
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
 }
 
@@ -1449,8 +1450,8 @@ void BOARD_InitFLASHPins(void) {
 BOARD_InitALT_UARTPins:
 - options: {callFromInitBoot: 'false', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: N23, peripheral: LPUART3, signal: TXD, pin_signal: GPIO_AD_30}
-  - {pin_num: M24, peripheral: LPUART3, signal: RXD, pin_signal: GPIO_AD_31}
+  - {pin_num: R23, peripheral: LPUART3, signal: TXD, pin_signal: GPIO_AD_30}
+  - {pin_num: P24, peripheral: LPUART3, signal: RXD, pin_signal: GPIO_AD_31}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1476,10 +1477,10 @@ void BOARD_InitALT_UARTPins(void) {
 BOARD_InitPWMPins:
 - options: {callFromInitBoot: 'false', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: G1, peripheral: PWM4, signal: 'A, 0', pin_signal: GPIO_EMC_B1_00}
-  - {pin_num: H2, peripheral: PWM4, signal: 'B, 0', pin_signal: GPIO_EMC_B1_01}
+  - {pin_num: E1, peripheral: PWM4, signal: 'A, 0', pin_signal: GPIO_EMC_B1_00}
+  - {pin_num: F2, peripheral: PWM4, signal: 'B, 0', pin_signal: GPIO_EMC_B1_01}
   - {pin_num: K7, peripheral: PWM4, signal: 'A, 1', pin_signal: GPIO_EMC_B1_02}
-  - {pin_num: L3, peripheral: PWM4, signal: 'A, 2', pin_signal: GPIO_EMC_B1_04}
+  - {pin_num: J3, peripheral: PWM4, signal: 'A, 2', pin_signal: GPIO_EMC_B1_04}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1511,9 +1512,9 @@ void BOARD_InitPWMPins(void) {
 BOARD_InitQTMRPins:
 - options: {callFromInitBoot: 'false', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: U23, peripheral: TMR4, signal: 'TIMER, 0', pin_signal: GPIO_AD_04, software_input_on: Disable, pull_up_down_config: Pull_Down, pull_keeper_select: Pull,
+  - {pin_num: Y24, peripheral: TMR4, signal: 'TIMER, 0', pin_signal: GPIO_AD_04, software_input_on: Disable, pull_up_down_config: Pull_Down, pull_keeper_select: Pull,
     open_drain: Disable, drive_strength: High, slew_rate: Fast}
-  - {pin_num: V19, peripheral: TMR4, signal: 'TIMER, 1', pin_signal: GPIO_AD_05, software_input_on: Disable, pull_up_down_config: Pull_Down, pull_keeper_select: Pull,
+  - {pin_num: AB24, peripheral: TMR4, signal: 'TIMER, 1', pin_signal: GPIO_AD_05, software_input_on: Disable, pull_up_down_config: Pull_Down, pull_keeper_select: Pull,
     open_drain: Disable, drive_strength: High, slew_rate: Fast}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -1545,7 +1546,7 @@ void BOARD_InitQTMRPins(void) {
                                                  Pull / Keep Select Field: Pull Enable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AD_05_TMR4_TIMER1,          /* GPIO_AD_05 PAD functional properties : */
@@ -1554,7 +1555,7 @@ void BOARD_InitQTMRPins(void) {
                                                  Pull / Keep Select Field: Pull Enable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
 }
 
@@ -1563,7 +1564,7 @@ void BOARD_InitQTMRPins(void) {
 BOARD_InitLEDsPins:
 - options: {callFromInitBoot: 'false', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: T2, peripheral: GPIO8, signal: 'gpio_io, 07', pin_signal: GPIO_EMC_B1_39, identifier: LED, direction: OUTPUT, gpio_init_state: 'false', software_input_on: Disable,
+  - {pin_num: N3, peripheral: GPIO8, signal: 'gpio_io, 07', pin_signal: GPIO_EMC_B1_39, identifier: LED, direction: OUTPUT, gpio_init_state: 'false', software_input_on: Disable,
     pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver, open_drain: Disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -1577,13 +1578,13 @@ BOARD_InitLEDsPins:
 void BOARD_InitLEDsPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc);           /* LPCG on: LPCG is ON. */
 
-  /* GPIO configuration of LED on GPIO_EMC_B1_39 (pin T2) */
+  /* GPIO configuration of LED on GPIO_EMC_B1_39 (pin N3) */
   gpio_pin_config_t LED_config = {
       .direction = kGPIO_DigitalOutput,
       .outputLogic = 0U,
       .interruptMode = kGPIO_NoIntmode
   };
-  /* Initialize GPIO functionality on GPIO_EMC_B1_39 (pin T2) */
+  /* Initialize GPIO functionality on GPIO_EMC_B1_39 (pin N3) */
   GPIO_PinInit(GPIO8, 7U, &LED_config);
 
   IOMUXC_SetPinMux(
@@ -1594,7 +1595,7 @@ void BOARD_InitLEDsPins(void) {
       0x08U);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: Internal pulldown resistor enabled
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
 }
 
@@ -1603,7 +1604,7 @@ void BOARD_InitLEDsPins(void) {
 BOARD_InitBUTTONsPins:
 - options: {callFromInitBoot: 'false', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: AE21, peripheral: GPIO13, signal: 'gpio_io, 00', pin_signal: WAKEUP, software_input_on: Disable, pull_up_down_config: Pull_Up, pull_keeper_select: Pull,
+  - {pin_num: AD16, peripheral: GPIO13, signal: 'gpio_io, 00', pin_signal: WAKEUP, software_input_on: Disable, pull_up_down_config: Pull_Up, pull_keeper_select: Pull,
     open_drain: Disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -1623,7 +1624,7 @@ void BOARD_InitBUTTONsPins(void) {
       0x0EU);                                 /* Pull Enable: Pull Enable
                                                  Pull Select: Weak pull up
                                                  Open Drain SNVS Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
 }
 
@@ -1632,9 +1633,9 @@ void BOARD_InitBUTTONsPins(void) {
 BOARD_InitCLOCKOUTPins:
 - options: {callFromInitBoot: 'false', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: V2, peripheral: CCM, signal: CLKO1, pin_signal: GPIO_EMC_B1_40, identifier: '', software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+  - {pin_num: R1, peripheral: CCM, signal: CLKO1, pin_signal: GPIO_EMC_B1_40, identifier: '', software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: U3, peripheral: CCM, signal: CLKO2, pin_signal: GPIO_EMC_B1_41, identifier: '', software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+  - {pin_num: R3, peripheral: CCM, signal: CLKO2, pin_signal: GPIO_EMC_B1_41, identifier: '', software_input_on: Disable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -1659,14 +1660,14 @@ void BOARD_InitCLOCKOUTPins(void) {
       0x08U);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: Internal pulldown resistor enabled
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_41_CCM_CLKO2,        /* GPIO_EMC_B1_41 PAD functional properties : */
       0x08U);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: Internal pulldown resistor enabled
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
 }
 
@@ -1677,13 +1678,13 @@ BOARD_InitSDHCPins:
 - pin_list:
   - {pin_num: G18, peripheral: USDHC1, signal: 'usdhc_data, 3', pin_signal: GPIO_SD_B1_05, software_input_on: Enable, pull_down_pull_up_config: Pull_Up}
   - {pin_num: H18, peripheral: USDHC1, signal: usdhc_cmd, pin_signal: GPIO_SD_B1_00, software_input_on: Enable, pull_down_pull_up_config: Pull_Up}
-  - {pin_num: B22, peripheral: USDHC1, signal: usdhc_clk, pin_signal: GPIO_SD_B1_01, software_input_on: Enable, pull_down_pull_up_config: No_Pull}
-  - {pin_num: A23, peripheral: USDHC1, signal: 'usdhc_data, 0', pin_signal: GPIO_SD_B1_02, software_input_on: Enable, pull_down_pull_up_config: Pull_Up}
+  - {pin_num: D24, peripheral: USDHC1, signal: usdhc_clk, pin_signal: GPIO_SD_B1_01, software_input_on: Enable, pull_down_pull_up_config: No_Pull}
+  - {pin_num: C25, peripheral: USDHC1, signal: 'usdhc_data, 0', pin_signal: GPIO_SD_B1_02, software_input_on: Enable, pull_down_pull_up_config: Pull_Up}
   - {pin_num: C23, peripheral: USDHC1, signal: 'usdhc_data, 1', pin_signal: GPIO_SD_B1_03, software_input_on: Enable, pull_down_pull_up_config: Pull_Up}
-  - {pin_num: C21, peripheral: USDHC1, signal: 'usdhc_data, 2', pin_signal: GPIO_SD_B1_04, software_input_on: Enable, pull_down_pull_up_config: Pull_Up}
-  - {pin_num: L23, peripheral: USDHC1, signal: usdhc_vselect, pin_signal: GPIO_AD_34}
+  - {pin_num: B24, peripheral: USDHC1, signal: 'usdhc_data, 2', pin_signal: GPIO_SD_B1_04, software_input_on: Enable, pull_down_pull_up_config: Pull_Up}
+  - {pin_num: N23, peripheral: USDHC1, signal: usdhc_vselect, pin_signal: GPIO_AD_34}
   - {pin_num: L18, peripheral: GPIO10, signal: 'gpio_io, 02', pin_signal: GPIO_AD_35}
-  - {pin_num: L25, peripheral: GPIO4, signal: 'gpio_mux_io, 00', pin_signal: GPIO_AD_33}
+  - {pin_num: N25, peripheral: GPIO4, signal: 'gpio_mux_io, 00', pin_signal: GPIO_AD_33}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1728,42 +1729,42 @@ void BOARD_InitSDHCPins(void) {
       0x04U);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: Internal pullup resistor enabled
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_SD_B1_01_USDHC1_CLK,        /* GPIO_SD_B1_01 PAD functional properties : */
       0x0CU);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: No Pull
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_SD_B1_02_USDHC1_DATA0,      /* GPIO_SD_B1_02 PAD functional properties : */
       0x04U);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: Internal pullup resistor enabled
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_SD_B1_03_USDHC1_DATA1,      /* GPIO_SD_B1_03 PAD functional properties : */
       0x04U);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: Internal pullup resistor enabled
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_SD_B1_04_USDHC1_DATA2,      /* GPIO_SD_B1_04 PAD functional properties : */
       0x04U);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: Internal pullup resistor enabled
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_SD_B1_05_USDHC1_DATA3,      /* GPIO_SD_B1_05 PAD functional properties : */
       0x04U);                                 /* PDRV Field: high drive strength
                                                  Pull Down Pull Up Field: Internal pullup resistor enabled
                                                  Open Drain Field: Disabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
 }
 
@@ -1772,7 +1773,7 @@ void BOARD_InitSDHCPins(void) {
 BOARD_InitDCICPins:
 - options: {callFromInitBoot: 'false', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: P24, peripheral: VIDEO_MUX, signal: 'ext_dcic, 1', pin_signal: GPIO_AD_28}
+  - {pin_num: T24, peripheral: VIDEO_MUX, signal: 'ext_dcic, 1', pin_signal: GPIO_AD_28}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1795,8 +1796,8 @@ void BOARD_InitDCICPins(void) {
 BOARD_InitFAST_GPIOPins:
 - options: {callFromInitBoot: 'false', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: U23, peripheral: GPIO3, signal: 'gpio_mux_io, 03', pin_signal: GPIO_AD_04}
-  - {pin_num: V19, peripheral: GPIO3, signal: 'gpio_mux_io, 04', pin_signal: GPIO_AD_05}
+  - {pin_num: Y24, peripheral: GPIO3, signal: 'gpio_mux_io, 03', pin_signal: GPIO_AD_04}
+  - {pin_num: AB24, peripheral: GPIO3, signal: 'gpio_mux_io, 04', pin_signal: GPIO_AD_05}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1826,9 +1827,9 @@ void BOARD_InitFAST_GPIOPins(void) {
 BOARD_Init6524Pins:
 - options: {callFromInitBoot: 'false', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: R23, peripheral: GPIO3, signal: 'gpio_mux_io, 26', pin_signal: GPIO_AD_27}
-  - {pin_num: C11, peripheral: LPI2C4, signal: SCL, pin_signal: GPIO_DISP_B2_12, software_input_on: Enable, pull_keeper_select: Keeper, open_drain: Enable, drive_strength: Normal}
-  - {pin_num: B10, peripheral: LPI2C4, signal: SDA, pin_signal: GPIO_DISP_B2_13, software_input_on: Enable, pull_keeper_select: Keeper, open_drain: Enable, drive_strength: Normal}
+  - {pin_num: U25, peripheral: GPIO3, signal: 'gpio_mux_io, 26', pin_signal: GPIO_AD_27}
+  - {pin_num: B12, peripheral: LPI2C4, signal: SCL, pin_signal: GPIO_DISP_B2_12, software_input_on: Enable, pull_keeper_select: Keeper, open_drain: Enable, drive_strength: Normal}
+  - {pin_num: F11, peripheral: LPI2C4, signal: SDA, pin_signal: GPIO_DISP_B2_13, software_input_on: Enable, pull_keeper_select: Keeper, open_drain: Enable, drive_strength: Normal}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1861,7 +1862,7 @@ void BOARD_Init6524Pins(void) {
                                                  Pull / Keep Select Field: Pull Disable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Enabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B2_13_LPI2C4_SDA,      /* GPIO_DISP_B2_13 PAD functional properties : */
@@ -1870,7 +1871,7 @@ void BOARD_Init6524Pins(void) {
                                                  Pull / Keep Select Field: Pull Disable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Enabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
 }
 
@@ -1879,8 +1880,8 @@ void BOARD_Init6524Pins(void) {
 BOARD_InitCODEC_I2CPins:
 - options: {callFromInitBoot: 'false', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: C11, peripheral: LPI2C4, signal: SCL, pin_signal: GPIO_DISP_B2_12, software_input_on: Enable, pull_keeper_select: Keeper, open_drain: Enable, drive_strength: Normal}
-  - {pin_num: B10, peripheral: LPI2C4, signal: SDA, pin_signal: GPIO_DISP_B2_13, software_input_on: Enable, pull_keeper_select: Keeper, open_drain: Enable, drive_strength: Normal}
+  - {pin_num: B12, peripheral: LPI2C4, signal: SCL, pin_signal: GPIO_DISP_B2_12, software_input_on: Enable, pull_keeper_select: Keeper, open_drain: Enable, drive_strength: Normal}
+  - {pin_num: F11, peripheral: LPI2C4, signal: SDA, pin_signal: GPIO_DISP_B2_13, software_input_on: Enable, pull_keeper_select: Keeper, open_drain: Enable, drive_strength: Normal}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1906,7 +1907,7 @@ void BOARD_InitCODEC_I2CPins(void) {
                                                  Pull / Keep Select Field: Pull Disable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Enabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B2_13_LPI2C4_SDA,      /* GPIO_DISP_B2_13 PAD functional properties : */
@@ -1915,7 +1916,7 @@ void BOARD_InitCODEC_I2CPins(void) {
                                                  Pull / Keep Select Field: Pull Disable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Enabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
 }
 
@@ -1924,8 +1925,8 @@ void BOARD_InitCODEC_I2CPins(void) {
 BOARD_InitALT_I2CPins:
 - options: {callFromInitBoot: 'false', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: AE13, peripheral: LPI2C6, signal: SDA, pin_signal: GPIO_LPSR_10, software_input_on: Enable, pull_keeper_select: Keeper, open_drain: Enable, drive_strength: High}
-  - {pin_num: AD14, peripheral: LPI2C6, signal: SCL, pin_signal: GPIO_LPSR_11, software_input_on: Enable, pull_keeper_select: Keeper, open_drain: Enable}
+  - {pin_num: AC11, peripheral: LPI2C6, signal: SDA, pin_signal: GPIO_LPSR_10, software_input_on: Enable, pull_keeper_select: Keeper, open_drain: Enable, drive_strength: High}
+  - {pin_num: AE11, peripheral: LPI2C6, signal: SCL, pin_signal: GPIO_LPSR_11, software_input_on: Enable, pull_keeper_select: Keeper, open_drain: Enable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1951,7 +1952,7 @@ void BOARD_InitALT_I2CPins(void) {
                                                  Pull Select Field: Pull Disable
                                                  Pull Up / Down Config. Field: Weak pull up
                                                  Open Drain LPSR Field: Enabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_LPSR_11_LPI2C6_SCL,         /* GPIO_LPSR_11 PAD functional properties : */
@@ -1960,7 +1961,7 @@ void BOARD_InitALT_I2CPins(void) {
                                                  Pull Select Field: Pull Disable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain LPSR Field: Enabled
-                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection: CM7 is allowed
                                                  Domain write protection lock: Neither of DWP bits is locked */
 }
 /***********************************************************************************************************************

@@ -3,7 +3,8 @@
 
 # Add additional configuration
 mcux_add_macro(
-    CC "-DFSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1"
+    CC "-DFSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1\
+        -DENCRYPTED_XIP_OTFAD"
 )
 mcux_add_mdk_configuration(
     LD "--diag_suppress=L6329W"

@@ -299,3 +299,40 @@ ota_mcuboot_client_enet@rt10xx_encrypted_xip:
     - -mdk@sdram_release
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
+ota_mcuboot_client@rt11xx_caam_encrypted_xip:
+  section-type: custom_application
+  contents:
+    document:
+      extra_build_args:
+      - -DCONF_FILE=examples/ota_examples/_custom_cfg/rt11xx_caam/ota_mcuboot_client_enet.conf
+  boards:
+    evkmimxrt1160@cm7:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    evkbmimxrt1170@cm7:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release

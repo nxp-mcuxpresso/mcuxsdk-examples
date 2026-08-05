@@ -1,15 +1,9 @@
-
 # Add additional configuration
 mcux_add_macro(
-    CC "-DXIP_BOOT_HEADER_DCD_ENABLE=1"
+    CC "-DXIP_BOOT_HEADER_DCD_ENABLE=1\
+        -DENCRYPTED_XIP_OTFAD"
 )
-mcux_add_mdk_configuration(
-    TARGETS flexspi_nor_release
-    CC "-Os"
-)
-mcux_add_mdk_configuration(
-    LD "--diag_suppress=L6329W"
-)
+
 mcux_add_macro(
     TOOLCHAINS armgcc
     AS "-D__STARTUP_INITIALIZE_RAMFUNCTION"
@@ -19,18 +13,11 @@ mcux_add_armgcc_configuration(
     CC "-Og"
 )
 
-
-
 # Remove additional configuration
-mcux_remove_mdk_configuration(
-    TARGETS flexspi_nor_release
-    CC "-Oz"
-)
 mcux_remove_armgcc_configuration(
     TARGETS flexspi_nor_debug
     CC "-O0"
 )
-
 
 # Add or remove Linker File Configurations
 mcux_remove_iar_linker_script(

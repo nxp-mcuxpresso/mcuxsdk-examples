@@ -1,9 +1,8 @@
-
-
-
 # Add additional configuration
 mcux_add_macro(
-    CC "-DFSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1"
+    CC "-DFSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1\
+        -DXIP_BOOT_HEADER_DCD_ENABLE=1\
+        -DENCRYPTED_XIP_OTFAD"
 )
 mcux_add_mdk_configuration(
     LD "--diag_suppress=L6329W"
@@ -12,8 +11,6 @@ mcux_add_armgcc_configuration(
     TARGETS flexspi_nor_debug
     CC "-Og"
 )
-
-
 
 # Remove additional configuration
 mcux_remove_armgcc_configuration(
