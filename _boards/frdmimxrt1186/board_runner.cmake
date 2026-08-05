@@ -1,4 +1,8 @@
-board_runner_args(jlink "--device=${CONFIG_MCUX_TOOLCHAIN_JLINK_CPU_IDENTIFIER}")
+if(${core_id} STREQUAL cm33)
+board_runner_args(jlink "--device=${CONFIG_MCUX_TOOLCHAIN_JLINK_CPU_IDENTIFIER}" "--tool-opt=-jlinkscriptfile ${CMAKE_CURRENT_LIST_DIR}/jlinkscript/frdmimxrt1186_cm33.jlinkscript")
+elseif(${core_id} STREQUAL cm7)
+board_runner_args(jlink "--device=${CONFIG_MCUX_TOOLCHAIN_JLINK_CPU_IDENTIFIER}" "--tool-opt=-jlinkscriptfile ${CMAKE_CURRENT_LIST_DIR}/jlinkscript/frdmimxrt1186_cm7.jlinkscript")
+endif()
 board_runner_args(linkserver "--device=${CONFIG_MCUX_HW_DEVICE_ID}:FRDM-IMXRT1186")
 board_runner_args(linkserver "--core=${core_id}")
 
