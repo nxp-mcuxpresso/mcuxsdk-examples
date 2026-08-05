@@ -104,6 +104,12 @@ int main(void)
 
     /* Configure the ADC. */
     ADC_GetDefaultConfig(&adcConfig);
+#if defined(DEMO_ADC_CONV_CLOCK_FREQ)
+    adcConfig.clockFrequency = DEMO_ADC_CONV_CLOCK_FREQ;
+#endif /* DEMO_ADC_CONV_CLOCK_FREQ */
+#if defined(DEMO_ADC_CONV_DELAY)
+    adcConfig.convDelay = DEMO_ADC_CONV_DELAY;
+#endif /* DEMO_ADC_CONV_DELAY */
     adcConfig.extTrig = kADC_ExtTrigFallingEdge;
     ADC_Init(DEMO_ADC_BASE, &adcConfig);
 

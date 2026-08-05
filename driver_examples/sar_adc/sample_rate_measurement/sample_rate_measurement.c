@@ -95,6 +95,9 @@ static void DEMO_AdcConfig(void)
     ADC_GetDefaultConfig(&adcConfig);
     adcConfig.enableOverWrite           = false;
     adcConfig.clockFrequency            = DEMO_ADC_CLOCK_FREQ;
+#if defined(DEMO_ADC_CONV_DELAY)
+    adcConfig.convDelay                 = DEMO_ADC_CONV_DELAY;
+#endif /* DEMO_ADC_CONV_DELAY */
     adcConfig.dmaRequestClearSrc        = kADC_DMARequestClearByAck;
     adcConfig.samplePhaseDuration[0U]   = 0x16U;
     ADC_Init(DEMO_ADC_BASE, &adcConfig);

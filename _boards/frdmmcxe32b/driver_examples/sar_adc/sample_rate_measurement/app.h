@@ -13,7 +13,9 @@
 #define DEMO_ADC_BASE                   ADC_0
 #define DEMO_ADC_USED_CHANNELS          1U
 #define DEMO_ADC_CHANNEL                48U
-#define DEMO_ADC_CLOCK_FREQ             kADC_ModuleClockFreq;
+/* Because of ERR053026, use ADC clock divide by 2 and ADC MUX delay 15. */
+#define DEMO_ADC_CLOCK_FREQ             kADC_ModuleClockFreqDivide2
+#define DEMO_ADC_CONV_DELAY             15U
 #define DEMO_ADC_RES_ARRAY_SIZE         2500
 
 #define DEMO_PIT_BASE                   PIT_0
