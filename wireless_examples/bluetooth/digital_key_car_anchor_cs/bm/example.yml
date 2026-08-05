@@ -14,6 +14,7 @@ digital_key_car_anchor_cs_bm:
     kw47evk@cm33_core0: []
     kw47loc@cm33_core0: []
     frdmkw43: []
+    kw43loc: []
 
 digital_key_car_anchor_cs_bm@rade1:
   section-type: custom_application
@@ -26,6 +27,7 @@ digital_key_car_anchor_cs_bm@rade1:
     kw47evk@cm33_core0: []
     kw47loc@cm33_core0: []
     frdmkw43: []
+    kw43loc: []
 
 digital_key_car_anchor_cs_bm@radex1:
   section-type: custom_application
@@ -38,6 +40,7 @@ digital_key_car_anchor_cs_bm@radex1:
     kw47evk@cm33_core0: []
     kw47loc@cm33_core0: []
     frdmkw43: []
+    kw43loc: []
 
 digital_key_car_anchor_cs_bm@radex2:
   section-type: custom_application
@@ -50,3 +53,4 @@ digital_key_car_anchor_cs_bm@radex2:
     kw47evk@cm33_core0: []
     kw47loc@cm33_core0: []
     frdmkw43: []
+    kw43loc: []

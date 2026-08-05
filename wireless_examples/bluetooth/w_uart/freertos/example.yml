@@ -22,6 +22,7 @@ wireless_uart_freertos:
     frdmmcxw72@cm33_core0: []
     mcxw72loc@cm33_core0: []
     frdmkw43: []
+    kw43loc: []
     frdmmcxw23:
     - -mdk@debug
     - -mdk@release
