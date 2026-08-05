@@ -10,11 +10,6 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define TEMP_CONSTRIANTS                                                                                           \
-    11U, PM_RESC_BUS_SYS_CLK_ON, PM_RESC_CTCM0_ACTIVE, PM_RESC_CTCM1_ACTIVE, PM_RESC_STCM0_ACTIVE,                 \
-        PM_RESC_STCM1_ACTIVE, PM_RESC_STCM2_ACTIVE, PM_RESC_STCM3_ACTIVE, PM_RESC_FRO_192M_ON, PM_RESC_FRO_6M_ON,  \
-        PM_RESC_MAIN_PD_PERI_OPERATIONAL, PM_RESC_WAKE_PD_PERI_ACTIVE
-
 #define APP_POWER_NAME       {"Sleep", "Deep Sleep", "Power Down", "Deep Power Down"}
 #define APP_TARGET_POWER_NUM (4U)
 
