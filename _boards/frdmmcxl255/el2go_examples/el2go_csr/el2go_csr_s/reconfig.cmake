@@ -32,7 +32,6 @@ mcux_add_mdk_configuration(
     CX "-Oz"
 )
 
-#armgcc configurations
 mcux_remove_macro(
     TOOLCHAINS armgcc iar mdk
     TARGETS debug
@@ -43,6 +42,8 @@ mcux_add_macro(
     TARGETS debug
     CC "-DNDEBUG"
 )
+
+#armgcc configurations
 mcux_remove_armgcc_configuration(
     TARGETS debug
     CC "-O0"

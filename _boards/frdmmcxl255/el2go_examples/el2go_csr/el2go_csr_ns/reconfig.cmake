@@ -15,13 +15,6 @@ mcux_add_armgcc_configuration(
     CC "-Os"
     CX "-Os"
 )
-mcux_add_armgcc_configuration(
-    CC "-Wno-unused-function"
-)
-
-mcux_add_armgcc_configuration(
-    CC "-Wunused-variable"
-)
 
 #mdk configurations:
 mcux_remove_mdk_configuration(
