@@ -14,7 +14,7 @@
 #define DEMO_LPADC_IRQn                    HSP_ADC0_IRQn
 #define DEMO_LPADC_IRQ_HANDLER_FUNC        HSP_ADC0_IRQHandler
 #define DEMO_LPADC_TEMP_SENS_CHANNEL       9U /* CH9 is connected to the internal temperature sensor. */
-#define DEMO_LPADC_USER_CMDID              1U  /* CMD1 */
+#define DEMO_LPADC_USER_CMDID              1U /* CMD1 */
 #define DEMO_LPADC_SAMPLE_CHANNEL_MODE     kLPADC_SampleChannelDiffBothSide
 #define DEMO_LPADC_VREF_SOURCE             kLPADC_ReferenceVoltageAlt1
 #define DEMO_LPADC_USE_HIGH_RESOLUTION     true
@@ -27,10 +27,27 @@
  * Parameter values follow RT700/RT1180 (same sensor IP); to be
  * re-confirmed against RT2660 datasheet ADC Electricals
  */
-#define DEMO_LPADC_TEMP_PARAMETER_A        (789.2)
-#define DEMO_LPADC_TEMP_PARAMETER_B        (319.2)
-#define DEMO_LPADC_TEMP_PARAMETER_ALPHA    (11.2)
+#ifndef FSL_FEATURE_LPADC_TEMP_PARAMETER_SLOP
+#define DEMO_LPADC_TEMP_PARAMETER_A (8585.66)
+#else
+#define DEMO_LPADC_TEMP_PARAMETER_A (FSL_FEATURE_LPADC_TEMP_PARAMETER_SLOP)
+#endif
+
+#ifndef FSL_FEATURE_LPADC_TEMP_PARAMETER_OFFSET
+#define DEMO_LPADC_TEMP_PARAMETER_B (308.64)
+#else
+#define DEMO_LPADC_TEMP_PARAMETER_B FSL_FEATURE_LPADC_TEMP_PARAMETER_OFFSET
+#endif
+
+#ifndef FSL_FEATURE_LPADC_TEMP_PARAMETER_ALPHA
+#define DEMO_LPADC_TEMP_PARAMETER_ALPHA (11.2)
+#else
+#define DEMO_LPADC_TEMP_PARAMETER_ALPHA FSL_FEATURE_LPADC_TEMP_PARAMETER_ALPHA
+#endif
+
+#ifndef FSL_FEATURE_LPADC_TEMP_SENS_BUFFER_SIZE
 #define FSL_FEATURE_LPADC_TEMP_SENS_BUFFER_SIZE (2)
+#endif
 /*${macro:end}*/
 
 /*******************************************************************************

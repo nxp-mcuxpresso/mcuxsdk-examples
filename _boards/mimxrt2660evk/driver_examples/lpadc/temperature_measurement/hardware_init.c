@@ -19,7 +19,7 @@
  *
  * If the actual calculation equation is similar to the following equation, please take
  * the DEMO_MeasureTemperature function in this file as a reference.
- *          Temp = A * [alpha * (Vbe8 - Vbe1) / (Vbe8 + alpha * (Vbe8 - Vbe1))] - B.
+ *          Temp = A * [(Vbe8 - Vbe1) / (Vbe8 + alpha * (Vbe8 - Vbe1))] - B.
  * In the above equation:
  *          A    --  Temperature sensor slope.
  *          B    --  Temperature sensor offset.
@@ -46,8 +46,8 @@ float DEMO_MeasureTemperature(ADC_Type *base, uint32_t commandId, uint32_t index
         if (true == LPADC_GetConvResult(base, &convResultStruct, (uint8_t)index))
         {
             Vbe8 = convResultStruct.convValue >> convResultShift;
-            /* Final temperature = A*[alpha*(Vbe8-Vbe1)/(Vbe8 + alpha*(Vbe8-Vbe1))] - B. */
-            temperature = parameterSlope * (parameterAlpha * ((float)Vbe8 - (float)Vbe1) /
+            /* Final temperature = A*[(Vbe8-Vbe1)/(Vbe8 + alpha*(Vbe8-Vbe1))] - B. */
+            temperature = parameterSlope * (((float)Vbe8 - (float)Vbe1) /
                                             ((float)Vbe8 + parameterAlpha * ((float)Vbe8 - (float)Vbe1))) -
                           parameterOffset;
         }
