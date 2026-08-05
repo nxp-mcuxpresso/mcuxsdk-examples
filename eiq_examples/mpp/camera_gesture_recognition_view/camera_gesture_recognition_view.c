@@ -113,10 +113,39 @@
  * SWAP_DIMS = 1 if source/display dims are reversed
  * SWAP_DIMS = 0 if source/display have the same orientation
  */
+/* Derive APP_DISPLAY_LANDSCAPE_ROTATE enum from the integer set in mpp_config.h */
+#if   (APP_DISPLAY_LANDSCAPE_ROTATE_NUM == 90)
+#define APP_DISPLAY_LANDSCAPE_ROTATE  ROTATE_90
+#elif (APP_DISPLAY_LANDSCAPE_ROTATE_NUM == 180)
+#define APP_DISPLAY_LANDSCAPE_ROTATE  ROTATE_180
+#elif (APP_DISPLAY_LANDSCAPE_ROTATE_NUM == 270)
+#define APP_DISPLAY_LANDSCAPE_ROTATE  ROTATE_270
+#else
+#define APP_DISPLAY_LANDSCAPE_ROTATE  ROTATE_0
+#endif
+
+/* APP_COMPOSE_ROTATE_SWAPS_DIMS = 1 when 90/270 rotation swaps width and height */
+#if ((APP_DISPLAY_LANDSCAPE_ROTATE_NUM == 90) || (APP_DISPLAY_LANDSCAPE_ROTATE_NUM == 270))
+#define APP_COMPOSE_ROTATE_SWAPS_DIMS 1
+#else
+#define APP_COMPOSE_ROTATE_SWAPS_DIMS 0
+#endif
+
+/* Compile-time check: ROTATE_0/180 needs a landscape panel; ROTATE_90/270 needs a portrait panel. */
+#if ((APP_DISPLAY_LANDSCAPE_ROTATE_NUM == 0) || (APP_DISPLAY_LANDSCAPE_ROTATE_NUM == 180))
+#  if (APP_DISPLAY_HEIGHT > APP_DISPLAY_WIDTH)
+#    error "APP_DISPLAY_LANDSCAPE_ROTATE_NUM 0/180 requires a landscape display (WIDTH >= HEIGHT)."
+#  endif
+#elif ((APP_DISPLAY_LANDSCAPE_ROTATE_NUM == 90) || (APP_DISPLAY_LANDSCAPE_ROTATE_NUM == 270))
+#  if (APP_DISPLAY_WIDTH >= APP_DISPLAY_HEIGHT)
+#    error "APP_DISPLAY_LANDSCAPE_ROTATE_NUM 90/270 requires a portrait display (HEIGHT > WIDTH)."
+#  endif
+#endif
+
 #ifdef APP_SKIP_CONVERT_FOR_DISPLAY
 #define SWAP_DIMS 0
 #else
-#define SWAP_DIMS (((APP_DISPLAY_LANDSCAPE_ROTATE == ROTATE_90) || (APP_DISPLAY_LANDSCAPE_ROTATE == ROTATE_270)) ? 1 : 0)
+#define SWAP_DIMS APP_COMPOSE_ROTATE_SWAPS_DIMS
 #endif
 
 /* display small and large dims */
@@ -197,18 +226,157 @@ static const char s_camera_name[] =  APP_CAMERA_NAME;
 /* label rect line width */
 #define RECT_LINE_WIDTH 2
 
-/* Text area dimensions and positioning */
-#define TEXT_WIDTH          (320)
-#define TEXT_HEIGHT         (720)
-#define TEXT_BPP            (2)
-#define TEXT_LEFT_POS_90    (0)
-#define TEXT_TOP_POS_90     (960)
-#define TEXT_RIGHT_POS_90   (TEXT_LEFT_POS_90 + TEXT_HEIGHT - 1)
-#define TEXT_BOTTOM_POS_90  (TEXT_TOP_POS_90 + TEXT_WIDTH - 1)
-#define TEXT_LEFT_POS_270   (0)
-#define TEXT_TOP_POS_270    (0)
-#define TEXT_RIGHT_POS_270  (TEXT_LEFT_POS_270 + TEXT_HEIGHT - 1)
-#define TEXT_BOTTOM_POS_270 (TEXT_TOP_POS_270 + TEXT_WIDTH - 1)
+/* Landscape output text panel dimensions derived from display/view geometry */
+#define PANEL_DIM  (DISPLAY_LARGE_DIM - DISPLAY_SMALL_DIM * VIEW_LARGE_DIM / VIEW_SMALL_DIM)
+
+/* Text buffer dimensions: PANEL_DIM wide, DISPLAY_SMALL_DIM tall (same for all rotations) */
+#define TEXT_WIDTH  PANEL_DIM
+#define TEXT_HEIGHT DISPLAY_SMALL_DIM
+#define TEXT_BPP    (2)
+
+/* Inference preview buffer dimensions (Blaze hand detector input size) */
+#define INFPVW_WIDTH  BLAZE_DETECTOR_WIDTH
+#define INFPVW_HEIGHT BLAZE_DETECTOR_HEIGHT
+#define INFPVW_BPP    (3)
+
+/*
+ * Canvas-space dest_area positions for the text and inference-preview images.
+ * The landscape output always shows: camera on the left, text panel on the right.
+ * Text fills the top portion of the text panel.
+ * When DEBUG_PREVIEW_RECOGNITION is defined, INFPVW is placed in the bottom-right
+ * corner of the text panel (landscape output coordinates) and the text area is
+ * reduced to avoid overlap.  When not defined, text fills the full panel height.
+ * All coordinates are mapped back to pre-rotation canvas space.
+ *
+ * Rotation mapping conventions (CCW positive):
+ *   ROTATE_0:   canvas == output (identity)
+ *   ROTATE_90:  output(ox,oy) = (canvas_y,  SMALL-1-canvas_x)
+ *   ROTATE_180: output(ox,oy) = (LARGE-1-canvas_x, SMALL-1-canvas_y)
+ *   ROTATE_270: output(ox,oy) = (LARGE-1-canvas_y, canvas_x)
+ */
+#if (APP_DISPLAY_LANDSCAPE_ROTATE_NUM == 0)
+
+/* ROTATE_0: canvas == output
+ * Landscape text panel: ox=[LARGE-PANEL_DIM..LARGE-1], oy=[0..SMALL-1]
+ * INFPVW bottom-right corner: ox=[LARGE-INFPVW_W..LARGE-1], oy=[SMALL-INFPVW_H..SMALL-1] */
+#ifdef DEBUG_PREVIEW_RECOGNITION
+#define INFPVW_LEFT_POS   (DISPLAY_LARGE_DIM - INFPVW_WIDTH)
+#define INFPVW_TOP_POS    (DISPLAY_SMALL_DIM - INFPVW_HEIGHT)
+#define INFPVW_RIGHT_POS  (DISPLAY_LARGE_DIM - 1)
+#define INFPVW_BOTTOM_POS (DISPLAY_SMALL_DIM - 1)
+#define TEXT_LEFT_POS     (DISPLAY_LARGE_DIM - PANEL_DIM)
+#define TEXT_TOP_POS      (0)
+#define TEXT_RIGHT_POS    (DISPLAY_LARGE_DIM - 1)
+#define TEXT_BOTTOM_POS   (DISPLAY_SMALL_DIM - INFPVW_HEIGHT - 1)
+#else
+#define INFPVW_LEFT_POS   (DISPLAY_LARGE_DIM - INFPVW_WIDTH)
+#define INFPVW_TOP_POS    (DISPLAY_SMALL_DIM - INFPVW_HEIGHT)
+#define INFPVW_RIGHT_POS  (DISPLAY_LARGE_DIM - 1)
+#define INFPVW_BOTTOM_POS (DISPLAY_SMALL_DIM - 1)
+#define TEXT_LEFT_POS     (DISPLAY_LARGE_DIM - PANEL_DIM)
+#define TEXT_TOP_POS      (0)
+#define TEXT_RIGHT_POS    (DISPLAY_LARGE_DIM - 1)
+#define TEXT_BOTTOM_POS   (DISPLAY_SMALL_DIM - 1)
+#endif
+#define COMPOSE_INPUT_AREA_LEFT   (0)
+#define COMPOSE_INPUT_AREA_TOP    (0)
+#define COMPOSE_INPUT_AREA_RIGHT  (DISPLAY_LARGE_DIM - PANEL_DIM - 1)
+#define COMPOSE_INPUT_AREA_BOTTOM (DISPLAY_SMALL_DIM - 1)
+
+#elif (APP_DISPLAY_LANDSCAPE_ROTATE_NUM == 180)
+
+/* ROTATE_180: output(ox,oy) = (LARGE-1-cx, SMALL-1-cy)  =>  cx=LARGE-1-ox, cy=SMALL-1-oy
+ * Landscape text panel: ox=[LARGE-PANEL_DIM..LARGE-1], oy=[0..SMALL-1]
+ *   canvas: cx=[0..PANEL_DIM-1], cy=[0..SMALL-1]
+ * INFPVW bottom-right corner in output: ox=[LARGE-INFPVW_W..LARGE-1], oy=[SMALL-INFPVW_H..SMALL-1]
+ *   canvas: cx=[0..INFPVW_W-1], cy=[0..INFPVW_H-1] */
+#ifdef DEBUG_PREVIEW_RECOGNITION
+#define INFPVW_LEFT_POS   (0)
+#define INFPVW_TOP_POS    (0)
+#define INFPVW_RIGHT_POS  (INFPVW_WIDTH - 1)
+#define INFPVW_BOTTOM_POS (INFPVW_HEIGHT - 1)
+#define TEXT_LEFT_POS     (0)
+#define TEXT_TOP_POS      (INFPVW_HEIGHT)
+#define TEXT_RIGHT_POS    (PANEL_DIM - 1)
+#define TEXT_BOTTOM_POS   (DISPLAY_SMALL_DIM - 1)
+#else
+#define INFPVW_LEFT_POS   (0)
+#define INFPVW_TOP_POS    (0)
+#define INFPVW_RIGHT_POS  (INFPVW_WIDTH - 1)
+#define INFPVW_BOTTOM_POS (INFPVW_HEIGHT - 1)
+#define TEXT_LEFT_POS     (0)
+#define TEXT_TOP_POS      (0)
+#define TEXT_RIGHT_POS    (PANEL_DIM - 1)
+#define TEXT_BOTTOM_POS   (DISPLAY_SMALL_DIM - 1)
+#endif
+#define COMPOSE_INPUT_AREA_LEFT   (PANEL_DIM)
+#define COMPOSE_INPUT_AREA_TOP    (0)
+#define COMPOSE_INPUT_AREA_RIGHT  (DISPLAY_LARGE_DIM - 1)
+#define COMPOSE_INPUT_AREA_BOTTOM (DISPLAY_SMALL_DIM - 1)
+
+#elif (APP_DISPLAY_LANDSCAPE_ROTATE_NUM == 90)
+
+/* ROTATE_90: output(ox,oy) = (cy, SMALL-1-cx)  =>  cx=SMALL-1-oy, cy=ox
+ * Landscape text panel: ox=[LARGE-PANEL_DIM..LARGE-1], oy=[0..SMALL-1]
+ *   canvas: cy=[LARGE-PANEL_DIM..LARGE-1], cx=[0..SMALL-1]
+ * INFPVW bottom-right corner in output: ox=[LARGE-INFPVW_W..LARGE-1], oy=[SMALL-INFPVW_H..SMALL-1]
+ *   canvas: cy=[LARGE-INFPVW_W..LARGE-1], cx=[0..INFPVW_H-1] */
+#ifdef DEBUG_PREVIEW_RECOGNITION
+#define INFPVW_LEFT_POS   (0)
+#define INFPVW_TOP_POS    (DISPLAY_LARGE_DIM - INFPVW_WIDTH)
+#define INFPVW_RIGHT_POS  (INFPVW_HEIGHT - 1)
+#define INFPVW_BOTTOM_POS (DISPLAY_LARGE_DIM - 1)
+#define TEXT_LEFT_POS     (INFPVW_HEIGHT)
+#define TEXT_TOP_POS      (DISPLAY_LARGE_DIM - PANEL_DIM)
+#define TEXT_RIGHT_POS    (DISPLAY_SMALL_DIM - 1)
+#define TEXT_BOTTOM_POS   (DISPLAY_LARGE_DIM - 1)
+#else
+#define INFPVW_LEFT_POS   (0)
+#define INFPVW_TOP_POS    (DISPLAY_LARGE_DIM - INFPVW_WIDTH)
+#define INFPVW_RIGHT_POS  (INFPVW_HEIGHT - 1)
+#define INFPVW_BOTTOM_POS (DISPLAY_LARGE_DIM - 1)
+#define TEXT_LEFT_POS     (0)
+#define TEXT_TOP_POS      (DISPLAY_LARGE_DIM - PANEL_DIM)
+#define TEXT_RIGHT_POS    (DISPLAY_SMALL_DIM - 1)
+#define TEXT_BOTTOM_POS   (DISPLAY_LARGE_DIM - 1)
+#endif
+#define COMPOSE_INPUT_AREA_LEFT   (0)
+#define COMPOSE_INPUT_AREA_TOP    (0)
+#define COMPOSE_INPUT_AREA_RIGHT  (DISPLAY_SMALL_DIM - 1)
+#define COMPOSE_INPUT_AREA_BOTTOM (DISPLAY_LARGE_DIM - PANEL_DIM - 1)
+
+#else /* ROTATE_270 */
+
+/* ROTATE_270: output(ox,oy) = (LARGE-1-cy, cx)  =>  cx=oy, cy=LARGE-1-ox
+ * Landscape text panel: ox=[LARGE-PANEL_DIM..LARGE-1], oy=[0..SMALL-1]
+ *   canvas: cx=[0..SMALL-1], cy=[0..PANEL_DIM-1]
+ * INFPVW bottom-right corner in output: ox=[LARGE-INFPVW_W..LARGE-1], oy=[SMALL-INFPVW_H..SMALL-1]
+ *   canvas: cx=[SMALL-INFPVW_H..SMALL-1], cy=[0..INFPVW_W-1] */
+#ifdef DEBUG_PREVIEW_RECOGNITION
+#define INFPVW_LEFT_POS   (DISPLAY_SMALL_DIM - INFPVW_HEIGHT)
+#define INFPVW_TOP_POS    (0)
+#define INFPVW_RIGHT_POS  (DISPLAY_SMALL_DIM - 1)
+#define INFPVW_BOTTOM_POS (INFPVW_WIDTH - 1)
+#define TEXT_LEFT_POS     (0)
+#define TEXT_TOP_POS      (0)
+#define TEXT_RIGHT_POS    (DISPLAY_SMALL_DIM - INFPVW_HEIGHT - 1)
+#define TEXT_BOTTOM_POS   (PANEL_DIM - 1)
+#else
+#define INFPVW_LEFT_POS   (DISPLAY_SMALL_DIM - INFPVW_HEIGHT)
+#define INFPVW_TOP_POS    (0)
+#define INFPVW_RIGHT_POS  (DISPLAY_SMALL_DIM - 1)
+#define INFPVW_BOTTOM_POS (INFPVW_WIDTH - 1)
+#define TEXT_LEFT_POS     (0)
+#define TEXT_TOP_POS      (0)
+#define TEXT_RIGHT_POS    (DISPLAY_SMALL_DIM - 1)
+#define TEXT_BOTTOM_POS   (PANEL_DIM - 1)
+#endif
+#define COMPOSE_INPUT_AREA_LEFT   (0)
+#define COMPOSE_INPUT_AREA_TOP    (PANEL_DIM)
+#define COMPOSE_INPUT_AREA_RIGHT  (DISPLAY_SMALL_DIM - 1)
+#define COMPOSE_INPUT_AREA_BOTTOM (DISPLAY_LARGE_DIM - 1)
+
+#endif /* APP_DISPLAY_LANDSCAPE_ROTATE_NUM */
 
 typedef struct _convert_params_t {
     uint32_t left;
@@ -274,6 +442,10 @@ typedef struct _user_data_t {
     uint32_t blaze_detector_frame_id;
     uint32_t hand_ldmk_convert_frame_id;
     uint32_t hand_ldmk_frame_id;
+#ifdef DEBUG_PREVIEW_RECOGNITION
+    uint8_t *inference_view;            /* pointer to inference preview pixel buffer */
+    mpp_element_params_t *p_params_compose; /* pointer to compose element params for live update */
+#endif
 } user_data_t;
 
 /* New structure for statistics pointers */
@@ -332,7 +504,8 @@ typedef struct {
 
 /* Define image indices for the composition array */
 typedef enum {
-    COMPOSE_TEXT_INDEX = 1,
+    COMPOSE_INFPVW_INDEX = 0, /* inference preview (index 0 = camera slot override) */
+    COMPOSE_TEXT_INDEX   = 1,
     COMPOSE_MAX_IMAGES
 } compose_image_index_t;
 
@@ -342,6 +515,9 @@ typedef enum {
 text_position_t text_position = {0};
 text_context_t  text_ctx = {0};
 uint8_t g_text_img[TEXT_WIDTH*TEXT_HEIGHT*TEXT_BPP] __attribute__((aligned(64)));
+#ifdef DEBUG_PREVIEW_RECOGNITION
+uint8_t g_inf_img[INFPVW_WIDTH*INFPVW_HEIGHT*INFPVW_BPP] __attribute__((aligned(64)));
+#endif
 
 /*******************************************************************************
   * Prototypes
@@ -1206,6 +1382,26 @@ int mpp_event_listener(mpp_t mpp, mpp_evt_t evt, void *evt_data, void *user_data
         handle_inference_output_ready(app_priv, (const mpp_inference_cb_param_t *) evt_data);
         break;
 
+#ifdef DEBUG_PREVIEW_RECOGNITION
+    case MPP_EVENT_INFERENCE_INPUT_READY:
+    {
+        const mpp_inference_inp_cb_params *inf_input = (const mpp_inference_inp_cb_params *) evt_data;
+        /* only preview the Blaze detector input (the hand crop fed to the model) */
+        if (inf_input->model_id == BLAZE_DETECTOR_MODEL_ID)
+        {
+            int imgsize = INFPVW_WIDTH * INFPVW_HEIGHT * INFPVW_BPP;
+            if (app_priv->inference_view)
+                memcpy(app_priv->inference_view, (const uint8_t *)(inf_input->in_tensors[0]->data), imgsize);
+            app_priv->p_params_compose->compose.image_list[COMPOSE_INFPVW_INDEX].width  = INFPVW_WIDTH;
+            app_priv->p_params_compose->compose.image_list[COMPOSE_INFPVW_INDEX].height = INFPVW_HEIGHT;
+            app_priv->p_params_compose->compose.image_list[COMPOSE_INFPVW_INDEX].format = MPP_PIXEL_RGB;
+            app_priv->p_params_compose->compose.image_list[COMPOSE_INFPVW_INDEX].buffer = app_priv->inference_view;
+            mpp_element_update(app_priv->mp, app_priv->compose_elem, app_priv->p_params_compose, true);
+        }
+        break;
+    }
+#endif /* DEBUG_PREVIEW_RECOGNITION */
+
     case MPP_EVENT_INVALID:
     default:
         /* nothing to do */
@@ -1557,58 +1753,36 @@ static int add_compose_element(mpp_t mp, user_data_t *user_data, text_info_t *tx
     memset(compose_images, 0, sizeof(compose_images));
     elem_params_compose.compose.image_list = compose_images;
 
-    /* Input area - full frame */
-    if (APP_DISPLAY_LANDSCAPE_ROTATE == ROTATE_90) 
-    {
-        /* Configure text image */
-        elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].width = TEXT_WIDTH;
-        elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].height = TEXT_HEIGHT;
-        elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].format = MPP_PIXEL_RGB565;
-        elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].buffer = g_text_img;
-        elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].dest_area.left = TEXT_LEFT_POS_90;
-        elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].dest_area.top = TEXT_TOP_POS_90;
-        elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].dest_area.right = TEXT_RIGHT_POS_90;
-        elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].dest_area.bottom = TEXT_BOTTOM_POS_90;
+    /* Configure text image using rotation-derived macros */
+    elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].width = TEXT_WIDTH;
+    elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].height = TEXT_HEIGHT;
+    elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].format = MPP_PIXEL_RGB565;
+    elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].buffer = g_text_img;
+    elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].dest_area.left   = TEXT_LEFT_POS;
+    elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].dest_area.top    = TEXT_TOP_POS;
+    elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].dest_area.right  = TEXT_RIGHT_POS;
+    elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].dest_area.bottom = TEXT_BOTTOM_POS;
 
-        /* Configure video input area */
-        elem_params_compose.compose.input_area.left = 0;
-        elem_params_compose.compose.input_area.top = 0;
-#ifdef SCALED_VIEW
-        elem_params_compose.compose.input_area.bottom = SCALED_VIEW_HEIGHT;
-        elem_params_compose.compose.input_area.right = SCALED_VIEW_WIDTH - 1;
-#else
-        elem_params_compose.compose.input_area.bottom = (int)(APP_DISPLAY_WIDTH * ((float)APP_CAMERA_WIDTH/APP_CAMERA_HEIGHT));
-        elem_params_compose.compose.input_area.right = APP_DISPLAY_WIDTH - 1;
+#ifdef DEBUG_PREVIEW_RECOGNITION
+    /* Configure inference preview image slot */
+    elem_params_compose.compose.image_list[COMPOSE_INFPVW_INDEX].width  = INFPVW_WIDTH;
+    elem_params_compose.compose.image_list[COMPOSE_INFPVW_INDEX].height = INFPVW_HEIGHT;
+    elem_params_compose.compose.image_list[COMPOSE_INFPVW_INDEX].format = MPP_PIXEL_RGB;
+    elem_params_compose.compose.image_list[COMPOSE_INFPVW_INDEX].buffer = g_inf_img;
+    elem_params_compose.compose.image_list[COMPOSE_INFPVW_INDEX].dest_area.left   = INFPVW_LEFT_POS;
+    elem_params_compose.compose.image_list[COMPOSE_INFPVW_INDEX].dest_area.top    = INFPVW_TOP_POS;
+    elem_params_compose.compose.image_list[COMPOSE_INFPVW_INDEX].dest_area.right  = INFPVW_RIGHT_POS;
+    elem_params_compose.compose.image_list[COMPOSE_INFPVW_INDEX].dest_area.bottom = INFPVW_BOTTOM_POS;
+    /* Store pointers so the event listener can update the INFPVW slot at runtime */
+    user_data->inference_view    = g_inf_img;
+    user_data->p_params_compose  = &elem_params_compose;
 #endif
-    }
-    else if (APP_DISPLAY_LANDSCAPE_ROTATE == ROTATE_270)
-    {
-        /* Configure text image */
-        elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].width = TEXT_WIDTH;
-        elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].height = TEXT_HEIGHT;
-        elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].format = MPP_PIXEL_RGB565;
-        elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].buffer = g_text_img;
-        elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].dest_area.left = TEXT_LEFT_POS_270;
-        elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].dest_area.top = TEXT_TOP_POS_270;
-        elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].dest_area.right = TEXT_RIGHT_POS_270;
-        elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].dest_area.bottom = TEXT_BOTTOM_POS_270;
 
-        /* Configure video input area */
-        elem_params_compose.compose.input_area.left = 0;
-        elem_params_compose.compose.input_area.bottom = APP_DISPLAY_HEIGHT - 1;
-#ifdef SCALED_VIEW
-        elem_params_compose.compose.input_area.top = APP_DISPLAY_HEIGHT - SCALED_VIEW_HEIGHT;
-        elem_params_compose.compose.input_area.right = SCALED_VIEW_WIDTH - 1;
-#else
-        elem_params_compose.compose.input_area.top = APP_DISPLAY_HEIGHT - (int)(APP_DISPLAY_WIDTH * ((float)APP_CAMERA_WIDTH/APP_CAMERA_HEIGHT));
-        elem_params_compose.compose.input_area.right = APP_DISPLAY_WIDTH - 1;
-#endif
-    }
-    else
-    {
-        PRINTF("Unsupported rotation angle for compose element\r\n");
-        return 1;
-    }
+    /* Video input area in canvas coordinates */
+    elem_params_compose.compose.input_area.left   = COMPOSE_INPUT_AREA_LEFT;
+    elem_params_compose.compose.input_area.top    = COMPOSE_INPUT_AREA_TOP;
+    elem_params_compose.compose.input_area.right  = COMPOSE_INPUT_AREA_RIGHT;
+    elem_params_compose.compose.input_area.bottom = COMPOSE_INPUT_AREA_BOTTOM;
 
     int ret = mpp_element_add(mp, MPP_ELEMENT_IMG_COMPOSE, &elem_params_compose, &user_data->compose_elem);
     if (ret) {

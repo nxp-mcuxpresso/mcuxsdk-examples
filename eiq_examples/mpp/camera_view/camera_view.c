@@ -49,6 +49,11 @@
 #define APP_DECODE_BACKEND_NAME NULL
 #endif
 
+/* Default decode output format when APP_DECODE_OUT_FORMAT is not set by mpp_config.h */
+#ifndef APP_DECODE_OUT_FORMAT
+#define APP_DECODE_OUT_FORMAT MPP_PIXEL_YUYV
+#endif
+
 /** Default priority for application tasks
    Tasks created by the application have a lower priority than pipeline tasks by default.
    Pipeline_task_max_prio in mpp_api_params_t structure should be adjusted with other application tasks.*/
@@ -167,7 +172,9 @@ static void app_task(void *params) {
     	elem_params_decoder.decode.width = APP_CAMERA_WIDTH;
     	elem_params_decoder.decode.height = APP_CAMERA_HEIGHT;
 
-    	elem_params_decoder.decode.out_format = MPP_PIXEL_YUYV;
+    	/* out_format is set per board config; default is MPP_PIXEL_YUYV,
+    	 * but libjpeg CPU decoder outputs BGR888 (APP_DECODE_OUT_FORMAT = MPP_PIXEL_BGR) */
+    	elem_params_decoder.decode.out_format = APP_DECODE_OUT_FORMAT;
 
     	ret = mpp_element_add(mp, MPP_ELEMENT_IMG_DECODE, &elem_params_decoder, NULL);
     	if (ret)
@@ -181,10 +188,48 @@ static void app_task(void *params) {
     }
 
 #ifndef APP_SKIP_CONVERT_FOR_DISPLAY
-    /* add convert element for color conversion and rotation
-       as required by the display */
     mpp_element_params_t elem_params;
     memset(&elem_params, 0, sizeof(elem_params));
+
+#ifdef APP_COLOR_BACKEND_NAME
+    /* Step 1: CPU color conversion only (e.g. YUYV -> RGB565), no rotate/scale */
+    elem_params.convert.dev_name = APP_COLOR_BACKEND_NAME;
+    elem_params.convert.out_buf.width  = APP_CAMERA_WIDTH;
+    elem_params.convert.out_buf.height = APP_CAMERA_HEIGHT;
+    elem_params.convert.angle = ROTATE_0;
+    elem_params.convert.flip  = FLIP_NONE;
+    elem_params.convert.pixel_format = args->display_format;
+    elem_params.convert.ops = MPP_CONVERT_COLOR;
+    ret = mpp_element_add(mp, MPP_ELEMENT_CONVERT, &elem_params, NULL);
+    if (ret) {
+        PRINTF("Failed to add element CONVERT - op COLOR (CPU)\n");
+        goto err;
+    }
+
+    /* Step 2: GPU rotate + scale to display resolution */
+    memset(&elem_params, 0, sizeof(elem_params));
+    elem_params.convert.dev_name = APP_GFX_BACKEND_NAME;
+    elem_params.convert.out_buf.width  = APP_DISPLAY_WIDTH;
+    elem_params.convert.out_buf.height = APP_DISPLAY_HEIGHT;
+    elem_params.convert.angle = APP_DISPLAY_LANDSCAPE_ROTATE;
+    elem_params.convert.flip  = APP_SRC_DISPLAY_FLIP;
+    elem_params.convert.pixel_format = args->display_format;
+#ifdef SCALED_VIEW
+    elem_params.convert.scale.width  = SCALED_VIEW_WIDTH;
+    elem_params.convert.scale.height = SCALED_VIEW_HEIGHT;
+    elem_params.convert.ops = MPP_CONVERT_ROTATE | MPP_CONVERT_SCALE;
+#else
+    elem_params.convert.ops = MPP_CONVERT_ROTATE;
+#endif
+    ret = mpp_element_add(mp, MPP_ELEMENT_CONVERT, &elem_params, NULL);
+    if (ret) {
+        PRINTF("Failed to add element CONVERT - op ROTATE|SCALE (GPU)\n");
+        goto err;
+    }
+
+#else /* single-element path */
+    /* add convert element for color conversion and rotation
+       as required by the display */
     /* pick default device from the first listed and supported by Hw */
     elem_params.convert.dev_name = APP_GFX_BACKEND_NAME;
     /* set output buffer dims */
@@ -206,6 +251,7 @@ static void app_task(void *params) {
         PRINTF("Failed to add element CONVERT - op COLOR|ROTATE\n");
         goto err;
     }
+#endif /* APP_COLOR_BACKEND_NAME */
 #endif /* SKIP_CONVERT */
 
     /* add display */

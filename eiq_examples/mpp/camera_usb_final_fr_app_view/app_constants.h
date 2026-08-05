@@ -21,42 +21,289 @@
 #define INF_SRC_WIDTH   IR_CAMERA_WIDTH
 #define INF_SRC_HEIGHT  IR_CAMERA_HEIGHT
 
-#define LOGO_WIDTH     (320)
-#define LOGO_HEIGHT    (150)
-#define LOGO_BPP       (3)
-#define LOGO_LEFT_POS  (0)
-#define LOGO_TOP_POS   (0)
-#define LOGO_RIGHT_POS (LOGO_HEIGHT - 1)
-#define LOGO_BOTTOM_POS (LOGO_WIDTH - 1)
-
-#define TEXT_WIDTH     (320)
-#define TEXT_HEIGHT    (570)
-#define TEXT_BPP       (2)
-#define TEXT_LEFT_POS  (LOGO_HEIGHT)
-#define TEXT_TOP_POS   (0)
-#define TEXT_RIGHT_POS (TEXT_LEFT_POS + TEXT_HEIGHT - 1)
-#define TEXT_BOTTOM_POS (TEXT_TOP_POS + TEXT_WIDTH - 1)
-
-#define MAX_STRING_SIZE 64
-#define MAX_WORD_SIZE 32
-
-/* inference preview area positioning */
-#define INFPVW_WIDTH  MAX(MOBILEFACENET_WIDTH, ANTISPOOFING_WIDTH)
-#define INFPVW_HEIGHT MAX(MOBILEFACENET_HEIGHT, ANTISPOOFING_HEIGHT)
-#define INFPVW_BPP    3  /* RGB888 */
-#define INFPVW_LEFT_POS  (0)
-#define INFPVW_TOP_POS   (0)
-#define INFPVW_RIGHT_POS (INFPVW_HEIGHT - 1)
-#define INFPVW_BOTTOM_POS (INFPVW_WIDTH - 1)
+/*
+ * APP_DISPLAY_LANDSCAPE_ROTATE: derived from APP_DISPLAY_LANDSCAPE_ROTATE_NUM.
+ * Supported values: 0, 90, 180, 270.
+ */
+#if   (APP_DISPLAY_LANDSCAPE_ROTATE_NUM == 90)
+#define APP_DISPLAY_LANDSCAPE_ROTATE ROTATE_90
+#elif (APP_DISPLAY_LANDSCAPE_ROTATE_NUM == 180)
+#define APP_DISPLAY_LANDSCAPE_ROTATE ROTATE_180
+#elif (APP_DISPLAY_LANDSCAPE_ROTATE_NUM == 270)
+#define APP_DISPLAY_LANDSCAPE_ROTATE ROTATE_270
+#else
+#define APP_DISPLAY_LANDSCAPE_ROTATE ROTATE_0
+#endif
 
 /*
- * Configure the view resolution (before any rotation & scaling for display):
+ * APP_COMPOSE_ROTATE_SWAPS_DIMS:
+ * 1 when the rotation swaps width and height (90 or 270 degrees).
+ * In those cases the canvas is in portrait orientation and the compose element
+ * rotates it to landscape; 0 otherwise (canvas already landscape).
  */
+#if ((APP_DISPLAY_LANDSCAPE_ROTATE_NUM == 90) || (APP_DISPLAY_LANDSCAPE_ROTATE_NUM == 270))
+#define APP_COMPOSE_ROTATE_SWAPS_DIMS 1
+#else
+#define APP_COMPOSE_ROTATE_SWAPS_DIMS 0
+#endif
+
+/* Validate that the rotation is compatible with the physical display orientation.
+ * ROTATE_0/180 require a landscape panel (WIDTH >= HEIGHT).
+ * ROTATE_90/270 require a portrait panel (HEIGHT > WIDTH). */
+#if ((APP_DISPLAY_LANDSCAPE_ROTATE_NUM == 0) || (APP_DISPLAY_LANDSCAPE_ROTATE_NUM == 180))
+#  if (APP_DISPLAY_HEIGHT > APP_DISPLAY_WIDTH)
+#    error "APP_DISPLAY_LANDSCAPE_ROTATE_NUM 0/180 requires a landscape display (WIDTH >= HEIGHT). Use 90 or 270 for a portrait panel."
+#  endif
+#elif ((APP_DISPLAY_LANDSCAPE_ROTATE_NUM == 90) || (APP_DISPLAY_LANDSCAPE_ROTATE_NUM == 270))
+#  if (APP_DISPLAY_WIDTH >= APP_DISPLAY_HEIGHT)
+#    error "APP_DISPLAY_LANDSCAPE_ROTATE_NUM 90/270 requires a portrait display (HEIGHT > WIDTH). Use 0 or 180 for a landscape panel."
+#  endif
+#endif
+
+/* display small & large dims (landscape output) */
+#define DISPLAY_SMALL_DIM MIN(APP_DISPLAY_WIDTH, APP_DISPLAY_HEIGHT)
+#define DISPLAY_LARGE_DIM MAX(APP_DISPLAY_WIDTH, APP_DISPLAY_HEIGHT)
+
+/* camera view dims derived from source */
 #define VIEW_HEIGHT VIEW_SRC_HEIGHT
 #define VIEW_WIDTH  VIEW_SRC_WIDTH
 #define VIEW_SMALL_DIM MIN(VIEW_WIDTH, VIEW_HEIGHT)
 #define VIEW_LARGE_DIM MAX(VIEW_WIDTH, VIEW_HEIGHT)
 
+/*
+ * PANEL_DIM: size (in landscape pixels) of the logo+text sidebar.
+ * The camera view is fitted to DISPLAY_SMALL_DIM height and occupies
+ * DISPLAY_SMALL_DIM * VIEW_LARGE_DIM / VIEW_SMALL_DIM pixels along the
+ * landscape width, so the panel takes the remainder.
+ */
+#define PANEL_DIM (DISPLAY_LARGE_DIM - DISPLAY_SMALL_DIM * VIEW_LARGE_DIM / VIEW_SMALL_DIM)
+
+/*
+ * Native logo image dimensions - must match NXP_Logo_RGB888_Colour_320_map.
+ */
+#define LOGO_NATIVE_W (320)
+#define LOGO_NATIVE_H (150)
+
+/*
+ * LOGO_SCREEN_H: scaled logo height on the landscape screen.
+ * The logo fills the full PANEL_DIM width so its height scales proportionally.
+ */
+#define LOGO_SCREEN_H (PANEL_DIM * LOGO_NATIVE_H / LOGO_NATIVE_W)
+
+/*
+ * Logo/text source buffer sizes (always allocated in panel space).
+ */
+#define LOGO_WIDTH  LOGO_NATIVE_W
+#define LOGO_HEIGHT LOGO_NATIVE_H
+#define LOGO_BPP    (3)
+
+#define TEXT_WIDTH  PANEL_DIM
+#define TEXT_HEIGHT (DISPLAY_SMALL_DIM - LOGO_SCREEN_H)
+#define TEXT_BPP    (2)
+
+/* inference preview buffer size (model output dimensions) */
+#define INFPVW_WIDTH  MAX(MOBILEFACENET_WIDTH, ANTISPOOFING_WIDTH)
+#define INFPVW_HEIGHT MAX(MOBILEFACENET_HEIGHT, ANTISPOOFING_HEIGHT)
+#define INFPVW_BPP    3  /* RGB888 */
+
+/*
+ * Canvas coordinates for logo, text and camera in the compose element.
+ *
+ * After rotation the desired landscape layout is always:
+ *   - Camera view : left portion, full landscape height (DISPLAY_SMALL_DIM).
+ *   - Logo        : top-right corner of landscape output.
+ *   - Text        : below the logo, filling the rest of the right panel.
+ *
+ * The canvas space is the buffer that the compose element writes into
+ * BEFORE the rotation is applied:
+ *
+ *  ROTATE_0   - canvas is landscape (W=DISPLAY_LARGE_DIM, H=DISPLAY_SMALL_DIM).
+ *               Panel strip = left side  (x=0..PANEL_DIM-1).
+ *               Logo at canvas top-left of panel, text below.
+ *               Camera to the right of panel.
+ *               After ROTATE_0: logo appears top-right, text below, camera left.
+ *               Wait - ROTATE_0 is identity. So canvas left = output left.
+ *               To get logo/text on the RIGHT of the landscape output, put them
+ *               on the right side of the canvas (x=DISPLAY_LARGE_DIM-PANEL_DIM..).
+ *
+ *  ROTATE_90  - canvas is portrait (W=DISPLAY_HEIGHT, H=DISPLAY_WIDTH).
+ *               Canvas x maps to output y (bottom->top), canvas y maps to output x.
+ *               Panel strip = top of canvas (y=0..PANEL_DIM-1).
+ *               Logo at canvas (x=0..LOGO_SCREEN_H-1, y=0..PANEL_DIM-1),
+ *               Text at canvas (x=LOGO_SCREEN_H..DISPLAY_SMALL_DIM-1, y=0..PANEL_DIM-1).
+ *               Camera below panel (y=PANEL_DIM..DISPLAY_LARGE_DIM-1).
+ *
+ *  ROTATE_180 - canvas is landscape, image is flipped 180 degrees.
+ *               Canvas (x,y) -> output (W-1-x, H-1-y).
+ *               Put logo/text on LEFT side of canvas so they appear on RIGHT after flip.
+ *               Put logo at canvas BOTTOM so it appears at TOP after flip.
+ *               Camera on the right of canvas (x=PANEL_DIM..).
+ *
+ *  ROTATE_270 - canvas is portrait (W=DISPLAY_HEIGHT, H=DISPLAY_WIDTH).
+ *               Canvas x maps to output y (top->bottom), canvas y maps to output x (right->left).
+ *               Panel strip = top of canvas (y=0..PANEL_DIM-1).
+ *               Logo at canvas (x=DISPLAY_SMALL_DIM-LOGO_SCREEN_H..DISPLAY_SMALL_DIM-1),
+ *               Text at canvas (x=0..DISPLAY_SMALL_DIM-LOGO_SCREEN_H-1).
+ *               Camera below panel.
+ */
+
+/* When DEBUG_PREVIEW_RECOGNITION is defined, the logo region (PANEL_DIM wide x
+ * LOGO_SCREEN_H tall in landscape output) is split in half:
+ *   - left  half (PANEL_DIM/2): inference preview image
+ *   - right half (PANEL_DIM/2): logo
+ * The canvas coordinates below are derived from the same rotation mapping
+ * used for the logo/text positions above.
+ * When DEBUG_PREVIEW_RECOGNITION is NOT defined, the logo occupies the full
+ * PANEL_DIM width and the INFPVW position defines are set to zero (the
+ * compose element buffer pointer will be NULL so they are never drawn). */
+
+#if (APP_DISPLAY_LANDSCAPE_ROTATE_NUM == 0)
+/* ROTATE_0: canvas = landscape (DISPLAY_LARGE_DIM x DISPLAY_SMALL_DIM).
+ * Logo/text on the RIGHT side of canvas (they appear on the right of the output).
+ * Logo at top, text below. Camera on the left. */
+#ifdef DEBUG_PREVIEW_RECOGNITION
+/* Logo occupies right half of panel strip top; INFPVW the left half. */
+#define LOGO_LEFT_POS   (DISPLAY_LARGE_DIM - PANEL_DIM/2)
+#define LOGO_RIGHT_POS  (DISPLAY_LARGE_DIM - 1)
+#define INFPVW_LEFT_POS   (DISPLAY_LARGE_DIM - PANEL_DIM)
+#define INFPVW_TOP_POS    (0)
+#define INFPVW_RIGHT_POS  (DISPLAY_LARGE_DIM - PANEL_DIM/2 - 1)
+#define INFPVW_BOTTOM_POS (LOGO_SCREEN_H - 1)
+#else
+#define LOGO_LEFT_POS   (DISPLAY_LARGE_DIM - PANEL_DIM)
+#define LOGO_RIGHT_POS  (DISPLAY_LARGE_DIM - 1)
+#define INFPVW_LEFT_POS   (0)
+#define INFPVW_TOP_POS    (0)
+#define INFPVW_RIGHT_POS  (INFPVW_WIDTH - 1)
+#define INFPVW_BOTTOM_POS (INFPVW_HEIGHT - 1)
+#endif
+#define LOGO_TOP_POS    (0)
+#define LOGO_BOTTOM_POS (LOGO_SCREEN_H - 1)
+#define TEXT_LEFT_POS   (DISPLAY_LARGE_DIM - PANEL_DIM)
+#define TEXT_TOP_POS    (LOGO_SCREEN_H)
+#define TEXT_RIGHT_POS  (DISPLAY_LARGE_DIM - 1)
+#define TEXT_BOTTOM_POS (DISPLAY_SMALL_DIM - 1)
+#define COMPOSE_INPUT_AREA_LEFT   (0)
+#define COMPOSE_INPUT_AREA_TOP    (0)
+#define COMPOSE_INPUT_AREA_RIGHT  (DISPLAY_LARGE_DIM - PANEL_DIM - 1)
+#define COMPOSE_INPUT_AREA_BOTTOM (DISPLAY_SMALL_DIM - 1)
+
+#elif (APP_DISPLAY_LANDSCAPE_ROTATE_NUM == 90)
+/* ROTATE_90: canvas = portrait (DISPLAY_SMALL_DIM x DISPLAY_LARGE_DIM).
+ * Panel strip at BOTTOM of canvas (y=LARGE-PANEL..LARGE-1).
+ * ROTATE_90 CCW maps canvas (x,y) -> output (y, SMALL-1-x).
+ * Logo at canvas-RIGHT (large x) -> small output-y -> top of landscape output.
+ * Text at canvas-LEFT of panel strip.
+ * INFPVW shares the logo x-band but occupies the inner (closer to center) half of the
+ * panel y-strip; logo uses the outer (far) half. */
+#ifdef DEBUG_PREVIEW_RECOGNITION
+/* Logo: right half of panel strip in the y direction. */
+#define LOGO_LEFT_POS   (DISPLAY_SMALL_DIM - LOGO_SCREEN_H)
+#define LOGO_TOP_POS    (DISPLAY_LARGE_DIM - PANEL_DIM/2)
+#define LOGO_RIGHT_POS  (DISPLAY_SMALL_DIM - 1)
+#define LOGO_BOTTOM_POS (DISPLAY_LARGE_DIM - 1)
+/* INFPVW: same x-band as logo, inner half of panel strip (y closer to camera). */
+#define INFPVW_LEFT_POS   (DISPLAY_SMALL_DIM - LOGO_SCREEN_H)
+#define INFPVW_TOP_POS    (DISPLAY_LARGE_DIM - PANEL_DIM)
+#define INFPVW_RIGHT_POS  (DISPLAY_SMALL_DIM - 1)
+#define INFPVW_BOTTOM_POS (DISPLAY_LARGE_DIM - PANEL_DIM/2 - 1)
+#else
+#define LOGO_LEFT_POS   (DISPLAY_SMALL_DIM - LOGO_SCREEN_H)
+#define LOGO_TOP_POS    (DISPLAY_LARGE_DIM - PANEL_DIM)
+#define LOGO_RIGHT_POS  (DISPLAY_SMALL_DIM - 1)
+#define LOGO_BOTTOM_POS (DISPLAY_LARGE_DIM - 1)
+#define INFPVW_LEFT_POS   (0)
+#define INFPVW_TOP_POS    (0)
+#define INFPVW_RIGHT_POS  (INFPVW_WIDTH - 1)
+#define INFPVW_BOTTOM_POS (INFPVW_HEIGHT - 1)
+#endif
+#define TEXT_LEFT_POS   (0)
+#define TEXT_TOP_POS    (DISPLAY_LARGE_DIM - PANEL_DIM)
+#define TEXT_RIGHT_POS  (DISPLAY_SMALL_DIM - LOGO_SCREEN_H - 1)
+#define TEXT_BOTTOM_POS (DISPLAY_LARGE_DIM - 1)
+#define COMPOSE_INPUT_AREA_LEFT   (0)
+#define COMPOSE_INPUT_AREA_TOP    (0)
+#define COMPOSE_INPUT_AREA_RIGHT  (DISPLAY_SMALL_DIM - 1)
+#define COMPOSE_INPUT_AREA_BOTTOM (DISPLAY_LARGE_DIM - PANEL_DIM - 1)
+
+#elif (APP_DISPLAY_LANDSCAPE_ROTATE_NUM == 180)
+/* ROTATE_180: canvas = landscape (DISPLAY_LARGE_DIM x DISPLAY_SMALL_DIM).
+ * Canvas (x,y) -> output (W-1-x, H-1-y).
+ * Logo at canvas-left/bottom, text at canvas-left/top, camera on the right.
+ * INFPVW shares logo y-band; logo occupies right half of panel x-strip (x=0..PANEL/2-1 maps
+ * to output right half), INFPVW the left half. */
+#ifdef DEBUG_PREVIEW_RECOGNITION
+/* Logo: left quarter of canvas x (maps to right half of panel after 180-flip). */
+#define LOGO_LEFT_POS   (0)
+#define LOGO_RIGHT_POS  (PANEL_DIM/2 - 1)
+/* INFPVW: next quarter of canvas x (maps to left half of panel after flip). */
+#define INFPVW_LEFT_POS   (PANEL_DIM/2)
+#define INFPVW_TOP_POS    (DISPLAY_SMALL_DIM - LOGO_SCREEN_H)
+#define INFPVW_RIGHT_POS  (PANEL_DIM - 1)
+#define INFPVW_BOTTOM_POS (DISPLAY_SMALL_DIM - 1)
+#else
+#define LOGO_LEFT_POS   (0)
+#define LOGO_RIGHT_POS  (PANEL_DIM - 1)
+#define INFPVW_LEFT_POS   (0)
+#define INFPVW_TOP_POS    (0)
+#define INFPVW_RIGHT_POS  (INFPVW_WIDTH - 1)
+#define INFPVW_BOTTOM_POS (INFPVW_HEIGHT - 1)
+#endif
+#define LOGO_TOP_POS    (DISPLAY_SMALL_DIM - LOGO_SCREEN_H)
+#define LOGO_BOTTOM_POS (DISPLAY_SMALL_DIM - 1)
+#define TEXT_LEFT_POS   (0)
+#define TEXT_TOP_POS    (0)
+#define TEXT_RIGHT_POS  (PANEL_DIM - 1)
+#define TEXT_BOTTOM_POS (DISPLAY_SMALL_DIM - LOGO_SCREEN_H - 1)
+#define COMPOSE_INPUT_AREA_LEFT   (PANEL_DIM)
+#define COMPOSE_INPUT_AREA_TOP    (0)
+#define COMPOSE_INPUT_AREA_RIGHT  (DISPLAY_LARGE_DIM - 1)
+#define COMPOSE_INPUT_AREA_BOTTOM (DISPLAY_SMALL_DIM - 1)
+
+#elif (APP_DISPLAY_LANDSCAPE_ROTATE_NUM == 270)
+/* ROTATE_270: canvas = portrait (DISPLAY_SMALL_DIM x DISPLAY_LARGE_DIM).
+ * Canvas (x,y) -> output (LARGE-1-y, x).
+ * Panel strip at TOP of canvas (y=0..PANEL-1). Logo at canvas-LEFT (small x -> small output-y -> top).
+ * INFPVW shares the logo x-band; logo uses the left half of panel y-strip (y=0..PANEL/2-1),
+ * INFPVW uses the right half (y=PANEL/2..PANEL-1). */
+#ifdef DEBUG_PREVIEW_RECOGNITION
+/* Logo: left half of panel y-strip (maps to output top after ROTATE_270). */
+#define LOGO_LEFT_POS   (0)
+#define LOGO_TOP_POS    (0)
+#define LOGO_RIGHT_POS  (LOGO_SCREEN_H - 1)
+#define LOGO_BOTTOM_POS (PANEL_DIM/2 - 1)
+/* INFPVW: right half of panel y-strip (maps to output below logo). */
+#define INFPVW_LEFT_POS   (0)
+#define INFPVW_TOP_POS    (PANEL_DIM/2)
+#define INFPVW_RIGHT_POS  (LOGO_SCREEN_H - 1)
+#define INFPVW_BOTTOM_POS (PANEL_DIM - 1)
+#else
+#define LOGO_LEFT_POS   (0)
+#define LOGO_TOP_POS    (0)
+#define LOGO_RIGHT_POS  (LOGO_SCREEN_H - 1)
+#define LOGO_BOTTOM_POS (PANEL_DIM - 1)
+#define INFPVW_LEFT_POS   (0)
+#define INFPVW_TOP_POS    (0)
+#define INFPVW_RIGHT_POS  (INFPVW_WIDTH - 1)
+#define INFPVW_BOTTOM_POS (INFPVW_HEIGHT - 1)
+#endif
+#define TEXT_LEFT_POS   (LOGO_SCREEN_H)
+#define TEXT_TOP_POS    (0)
+#define TEXT_RIGHT_POS  (DISPLAY_SMALL_DIM - 1)
+#define TEXT_BOTTOM_POS (PANEL_DIM - 1)
+#define COMPOSE_INPUT_AREA_LEFT   (0)
+#define COMPOSE_INPUT_AREA_TOP    (PANEL_DIM)
+#define COMPOSE_INPUT_AREA_RIGHT  (DISPLAY_SMALL_DIM - 1)
+#define COMPOSE_INPUT_AREA_BOTTOM (DISPLAY_LARGE_DIM - 1)
+
+#endif  /* APP_DISPLAY_LANDSCAPE_ROTATE_NUM */
+
+#define MAX_STRING_SIZE 64
+#define MAX_WORD_SIZE 32
+
+/*
+ * Configure the view resolution (before any rotation & scaling for display):
+ */
 #define INF_SMALL_DIM MIN(INF_SRC_WIDTH, INF_SRC_HEIGHT)
 #define INF_LARGE_DIM MAX(INF_SRC_WIDTH, INF_SRC_HEIGHT)
 
@@ -71,10 +318,6 @@
  * SRC_DISPLAY_FLIP = FLIP_HORIZONTAL if a camera is used as source
  */
 #define SRC_DISPLAY_FLIP FLIP_HORIZONTAL
-
-/* display small & large dims */
-#define DISPLAY_SMALL_DIM MIN(APP_DISPLAY_WIDTH, APP_DISPLAY_HEIGHT)
-#define DISPLAY_LARGE_DIM MAX(APP_DISPLAY_WIDTH, APP_DISPLAY_HEIGHT)
 
 #define RECT_LINE_WIDTH 2
 

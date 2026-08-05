@@ -331,8 +331,8 @@ static void CAMERA_FlexioInit(void)
 		.flexioBase = FLEXIO,
 		.timerIdx = DEMO_FLEXIO_PCLK_TIMER,
 		.datPinStartIdx = DEMO_FLEXIO_DATA0_IDX,
-		.hrefPinIdx =DEMO_FELXIO_HREF_IDX,
-		.pclkPinIdx = DEMO_FELXIO_PCLK_IDX,
+		.hrefPinIdx =DEMO_FLEXIO_HREF_IDX,
+		.pclkPinIdx = DEMO_FLEXIO_PCLK_IDX,
 		.shifterStartIdx = DEMO_FLEXIO_SHIFTER0_IDX,
 		.shifterCount = DEMO_FLEXIO_SHIFTER_NUM,
     };

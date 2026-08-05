@@ -432,8 +432,12 @@ static void app_task(void *params)
     mpp_element_params_t elem_params;
     memset(&elem_params, 0, sizeof(elem_params));
     static mpp_stats_t convert_stats = {0};
+#ifdef APP_GFX_BACKEND_NAME
+    elem_params.convert.dev_name = APP_GFX_BACKEND_NAME;
+#else
     /* pick default device from the first listed and supported by Hw */
     elem_params.convert.dev_name = NULL;
+#endif
     /* set output buffer dims */
     elem_params.convert.out_buf.width = ULTRAFACE_WIDTH;
     elem_params.convert.out_buf.height = ULTRAFACE_HEIGHT;
@@ -510,8 +514,12 @@ static void app_task(void *params)
     /* First do color-convert + flip */
     memset(&elem_params, 0, sizeof(elem_params));
     static mpp_stats_t convert_display_stats = {0};
+#ifdef APP_GFX_BACKEND_NAME
+    elem_params.convert.dev_name = APP_GFX_BACKEND_NAME;
+#else
     /* pick default device from the first listed and supported by Hw */
     elem_params.convert.dev_name = NULL;
+#endif
     /* set output buffer dims */
     elem_params.convert.out_buf.width = APP_CAMERA_WIDTH;
     elem_params.convert.out_buf.height = APP_CAMERA_HEIGHT;
@@ -583,6 +591,9 @@ static void app_task(void *params)
         elem_params.convert.ops |= MPP_CONVERT_SCALE;
 #endif
         elem_params.stats = &rotate_stats;
+#ifdef APP_GFX_ROTATE_BACKEND_NAME
+        elem_params.convert.dev_name = APP_GFX_ROTATE_BACKEND_NAME;
+#endif
         ret = mpp_element_add(mp_split, MPP_ELEMENT_CONVERT, &elem_params, NULL);
 
         if (ret) {

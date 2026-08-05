@@ -1,6 +1,6 @@
 # list core specific files for SDK
 
-# Exclude SDK's display_support.c — MPP provides its own for the Waveshare 5inch DSI panel
+# Exclude SDK's display_support.c — MPP provides its own for the RPi 7inch DSI panel
 set_source_files_properties(
     ${SdkRootDirPath}/${board_root}/${board}/display_support.c
     PROPERTIES HEADER_FILE_ONLY TRUE
@@ -21,7 +21,7 @@ mcux_add_source(
             ${board_root}/${board}/eiq_examples/mpp/inc/${core_id}/utick_config.h
             ${board_root}/${board}/eiq_examples/mpp/inc/${core_id}/ostimer_config.h
             ${board_root}/${board}/eiq_examples/mpp/inc/display_support.h
-            middleware/eiq/mpp/hal/hal_display_lcdif_waveshare5inch.c
+            middleware/eiq/mpp/hal/hal_display_lcdif_rpi7inch.c
 )
 
 mcux_add_macro(

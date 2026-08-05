@@ -38,15 +38,15 @@ RAM_START = 0x20000000;
 TOTAL_DATA_MEMORY = 0x00060000;
 
 /* Total memory size allocated for core1 (secondary core) */
-DEFAULT_CORE1_TOTAL_MEMORY = 0x0001A000;
+DEFAULT_CORE1_TOTAL_MEMORY = 0x00030000;
 TOTAL_CORE1_MEMORY = DEFINED(__core1_total_mem__) ? __core1_total_mem__ : DEFAULT_CORE1_TOTAL_MEMORY;
 
 /* Memory layout calculation for core1 text section:
  * TEXT_START: Starting address of core1 code section, calculated from end of total RAM minus core1 allocation
- * TEXT_SIZE: Size of text section (code and read-only data) - 52KB (0xD000 bytes)
+ * TEXT_SIZE: Size of text section (code and read-only data) - 150KB (0x25800 bytes)
  */
 TEXT_START = RAM_START + TOTAL_DATA_MEMORY - TOTAL_CORE1_MEMORY;
-TEXT_SIZE = 0x24000;
+TEXT_SIZE = 0x25800;
 
 /* Memory layout calculation for core1 data section:
  * DATA_START: Starting address of core1 data section, follows immediately after text section

@@ -22,7 +22,7 @@
  */
 
 #define HAL_ENABLE_DISPLAY
-#define HAL_ENABLE_DISPLAY_DEV_LcdifWaveshare5Inch   0
+#define HAL_ENABLE_DISPLAY_DEV_LcdifRpi7Inch 1
 #define HAL_ENABLE_2D_IMGPROC
 #define HAL_ENABLE_GFX_DEV_Pxp                0
 #define HAL_ENABLE_GFX_DEV_Cpu                0

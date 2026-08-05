@@ -85,7 +85,7 @@
  */
 
 /* The display max byte per pixel */
-#define HAL_DISPLAY_MAX_BPP                   4
+#define HAL_DISPLAY_MAX_BPP                   2
 
 /* Log level configuration
  * ERR:   0
@@ -139,9 +139,23 @@
 #ifndef USE_ANTISPOOFING
 #define USE_ANTISPOOFING 0
 #endif
+
 /* other parameters */
-/* rotation is needed to display in landscape because display RK055 is portrait */
-#define APP_DISPLAY_LANDSCAPE_ROTATE ROTATE_270
+/*
+ * Rotation applied by the compose element to display camera stream in landscape.
+ * mimxrt700evk: 720x1280 portrait display - rotate 270 degrees to landscape.
+ * APP_DISPLAY_LANDSCAPE_ROTATE and the layout constants are derived automatically
+ * from APP_DISPLAY_LANDSCAPE_ROTATE_NUM in app_constants.h.
+ */
+#ifndef APP_DISPLAY_LANDSCAPE_ROTATE_NUM
+#define APP_DISPLAY_LANDSCAPE_ROTATE_NUM 270
+#endif
+
+/*
+ * Font header used by draw_text.c.
+ * Use the larger Poppins_40 font on mimxrt700evk (larger panel).
+ */
+#define APP_FONT_HEADER "Poppins_40_rgb565.h"
 
 #define APP_PIPELINE_TASK_MAX_PRIO            5
 #define APP_RC_TASK_MAX_PRIO                  4

@@ -422,7 +422,11 @@ static void app_task(void *params)
 	memset(&elem_params, 0, sizeof(elem_params));
 	static mpp_stats_t convert_stats = {0};
 	/* pick default device from the first listed and supported by Hw */
+#ifdef APP_GFX_BACKEND_NAME
+	elem_params.convert.dev_name = APP_GFX_BACKEND_NAME;
+#else
 	elem_params.convert.dev_name = NULL;
+#endif
 	/* set output buffer dims */
 	elem_params.convert.out_buf.width = PERSONDETECT_WIDTH;
 	elem_params.convert.out_buf.height = PERSONDETECT_HEIGHT;
@@ -502,7 +506,11 @@ static void app_task(void *params)
 	memset(&elem_params, 0, sizeof(elem_params));
 	static mpp_stats_t convert_display_stats = {0};
 	/* pick default device from the first listed and supported by Hw */
+#ifdef APP_GFX_BACKEND_NAME
+	elem_params.convert.dev_name = APP_GFX_BACKEND_NAME;
+#else
 	elem_params.convert.dev_name = NULL;
+#endif
 	/* set output buffer dims */
 	elem_params.convert.out_buf.width = APP_CAMERA_WIDTH;
 	elem_params.convert.out_buf.height = APP_CAMERA_HEIGHT;
@@ -559,6 +567,9 @@ static void app_task(void *params)
 	static mpp_stats_t rotate_stats = {0};
 	if (APP_DISPLAY_LANDSCAPE_ROTATE != ROTATE_0) {
 		memset(&elem_params, 0, sizeof(elem_params));
+#ifdef APP_GFX_ROTATE_BACKEND_NAME
+		elem_params.convert.dev_name = APP_GFX_ROTATE_BACKEND_NAME;
+#endif
 		/* set output buffer dims */
 		elem_params.convert.out_buf.width = APP_DISPLAY_WIDTH;
 		elem_params.convert.out_buf.height = APP_DISPLAY_HEIGHT;

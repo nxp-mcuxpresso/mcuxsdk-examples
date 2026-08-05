@@ -122,7 +122,7 @@ void invalidate_cache_for_core1_image_memory(uint32_t address, uint32_t size_byt
 #endif /* APP_INVALIDATE_CACHE_FOR_SECONDARY_CORE_IMAGE_MEMORY */
 #endif /* MCMGR_USED */
 
-#if (DEMO_PANEL_RM67162 == DEMO_PANEL)
+#if (DEMO_PANEL_CO5300 == DEMO_PANEL)
 void BOARD_MIPI_TE_GPIO_IRQ_Handler(void)
 {
     uint32_t intStat;
@@ -140,23 +140,24 @@ void BOARD_MIPI_TE_GPIO_IRQ_Handler(void)
 void BOARD_Init(void)
 {
     BOARD_ConfigMPU();
-    BOARD_InitAHBSC();
     BOARD_InitBootPins();
-    BOARD_InitPsRamPins_Xspi2();
+    BOARD_InitFLEXIO_CAMERAPins();
+    BOARD_InitXSPI2Pins();
+    BOARD_InitI2CPins();
+    BOARD_BootClockRUN();
+    BOARD_InitDebugConsole();
 
-    /* Disable LDO, use PMIC */
-    POWER_SetVddnSupplySrc(kVddSrc_PMIC);
-    POWER_SetVdd1SupplySrc(kVddSrc_PMIC);
-    POWER_SetVdd2SupplySrc(kVddSrc_PMIC);
-    POWER_ApplyPD();
+    /* AHBSC setting */
+    BOARD_InitAHBSC();
 
-    BOARD_InitPmicPins();
+    BOARD_Init16bitsPsRam(XSPI2);
+    // BOARD_InitPsRamPins_Xspi2();
+
+    BOARD_InitPMICPins();
     BOARD_InitPmic();
     BOARD_SetPmicVdd2Voltage(1100000U); /* 1.1V for 325 MHz */
 
     BOARD_BootClockHSRUN();
-    BOARD_InitDebugConsole();
-    BOARD_Init16bitsPsRam(XSPI2);
 
 #if (defined(HAL_ENABLE_INFERENCE_TFLITE) && (HAL_ENABLE_INFERENCE_TFLITE == 1) && defined(APP_USE_NEUTRON64_MODEL))
     POWER_DisablePD(kPDRUNCFG_APD_NPU);
@@ -164,15 +165,16 @@ void BOARD_Init(void)
     POWER_ApplyPD();
 #endif
 
-    /* Waveshare 5inch DSI and RM67162 both use MIPI panel pins */
-    BOARD_InitMipiPanelPins();
-    CLOCK_EnableClock(kCLOCK_Gpio1);
-    RESET_PeripheralReset(kGPIO1_RST_SHIFT_RSTn);
+    // BOARD_InitMipiPanelPins();
+    // BOARD_InitCameraPins();
 
-    CLOCK_EnableClock(kCLOCK_Gpio2);
-    RESET_PeripheralReset(kGPIO2_RST_SHIFT_RSTn);
-    CLOCK_EnableClock(kCLOCK_Gpio3);
-    RESET_PeripheralReset(kGPIO3_RST_SHIFT_RSTn);
+    // CLOCK_EnableClock(kCLOCK_Gpio1);
+    // RESET_PeripheralReset(kGPIO1_RST_SHIFT_RSTn);
+
+    // CLOCK_EnableClock(kCLOCK_Gpio2);
+    // RESET_PeripheralReset(kGPIO2_RST_SHIFT_RSTn);
+    // CLOCK_EnableClock(kCLOCK_Gpio3);
+    // RESET_PeripheralReset(kGPIO3_RST_SHIFT_RSTn);
 
 #if (defined(HAL_ENABLE_JPEG_HW) && (HAL_ENABLE_JPEG_HW == 1))
     /* Disable JPEG decoder power down */

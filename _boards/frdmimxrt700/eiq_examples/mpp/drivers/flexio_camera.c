@@ -23,16 +23,11 @@
 #include "ezhv_para.h"
 #include "ezhv_support.h"
 #include "fsl_flexio_camera.h"
-#if defined(SDK_I2C_BASED_COMPONENT_USED) && SDK_I2C_BASED_COMPONENT_USED
-#include "fsl_lpi2c.h"
-#endif /* SDK_I2C_BASED_COMPONENT_USED */
 
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
 #define VSYNC_IRQ_HANDLER GPIO20_IRQHandler
-#define SCCB_CLOCK_FREQ    CLOCK_GetLPFlexCommClkFreq(8U)
-#define SCCB_BASE          ((LPI2C_Type *)LPI2C8_BASE)
 #define DEMO_FLEXIO_CLOCK_FREQ CLOCK_GetFlexioClkFreq()
 #define FLEXIO_MAX_FREQ (DEMO_FLEXIO_CLOCK_FREQ / 2U)
 #define FLEXIO_MIN_FREQ (DEMO_FLEXIO_CLOCK_FREQ / 512U)
@@ -40,16 +35,6 @@
  * Prototypes
  ******************************************************************************/
 static void CAMERA_I2CInit(void);
-static status_t CAMERA_I2CSend(uint8_t deviceAddress,
-                         uint32_t subAddress,
-                         uint8_t subAddressSize,
-                         const uint8_t *txBuff,
-                         uint8_t txBuffSize);
-static status_t CAMERA_I2CReceive(uint8_t deviceAddress,
-                            uint32_t subAddress,
-                            uint8_t subAddressSize,
-                            uint8_t *rxBuff,
-                            uint8_t rxBuffSize);
 static void CAMERA_XclkInit(uint32_t freq_Hz);
 static void CAMERA_FlexioInit(void);
 static void CAMERA_InterruptsInit(void);
@@ -57,12 +42,6 @@ static void CAMERA_ResetPinInit(void);
 /*******************************************************************************
  * Variables
  *******************************************************************************/
-/* variable of transfer handle. */
-static lpi2c_master_handle_t s_handle;
-/* flag of I2C transfer completion. */
-static volatile bool g_MasterCompletionFlag = false;
-/* flag of I2C transfer with no ack. */
-static volatile bool g_MasterNackFlag       = false;
 /* camera buffers */
 uint8_t s_buf[CAMERA_HEIGHT*CAMERA_STRIDE] __attribute__((section(".ezhv_camera"))) __attribute__((aligned(128)));
 uint8_t s_buf1[CAMERA_HEIGHT*CAMERA_STRIDE] __attribute__((section(".ezhv_camera"))) __attribute__((aligned(128)));
@@ -85,8 +64,8 @@ volatile CameraDvpTransfer g_dvpTransfer = {
 volatile CameraBuffer_t *g_stCamBuf = NULL;
 
 static ov7670_resource_t ov7670Resource = {
-    .i2cSendFunc    = CAMERA_I2CSend,
-    .i2cReceiveFunc = CAMERA_I2CReceive,
+    .i2cSendFunc    = BOARD_CAMERA_I2C_Send,
+    .i2cReceiveFunc = BOARD_CAMERA_I2C_Receive,
     .xclock         = kOV7670_InputClock12MHZ,
 };
 
@@ -121,195 +100,36 @@ void CAMERA_Init(void)
     RESET_PeripheralReset(kFLEXIO0_RST_SHIFT_RSTn);
 
     CAMERA_ResetPinInit();
-    /* Init the I2C to configure ov7670 */
     CAMERA_I2CInit();
-    /* Init Flexio to receive data from ov7670 */
     CAMERA_FlexioInit();
-    /* Init Interrupts */
     CAMERA_InterruptsInit();
-    /* Configure the camera sensor OV7670 */
-    status_t ov7670_status = kStatus_Success;
-    do
-    {
-       ov7670_status = CAMERA_DEVICE_Init(&cameraDevice, &cameraConfig);
-    } while(ov7670_status != kStatus_Success);
+    CAMERA_DEVICE_Init(&cameraDevice, &cameraConfig);
 
     return;
 }
 
 /*!
- * brief callback function for lpi2c.
+ * brief Initialize Camera SCCB interface using board blocking I2C.
+ * LPI2C8 is shared with the display TC358762 bridge (RPi 7inch panel).
  *
- */
-static void lpi2c_camera_callback(LPI2C_Type *base,
-                     lpi2c_master_handle_t *handle,
-                                   status_t status,
-                                    void *userData)
-{
-    if (status == kStatus_LPI2C_Nak)
-    {
-        g_MasterNackFlag = true;
-    }
-    else
-    {
-        g_MasterCompletionFlag = true;
-        /* Display failure information when status is not success. */
-        if (status != kStatus_Success)
-        {
-            //PRINTF("Error occured during transfer!");
-        }
-    }
-}
-
-/*!
- * brief Initialize Camera SCCB interface.
+ * Both display_support.c::BOARD_InitLcdPanel() and this function call
+ * BOARD_CAMERA_I2C_Init() which internally calls LPI2C_MasterInit().
+ * A second LPI2C_MasterInit() resets the peripheral and causes
+ * LPI2C_MasterTransferBlocking() to hang forever.
  *
+ * The static bool ensures LPI2C8 is initialized exactly once:
+ *   - Camera + Display: display calls BOARD_CAMERA_I2C_Init() first,
+ *     sets the flag; camera path skips re-init.
+ *   - Display only:     display initializes, flag set, camera never runs.
+ *   - Camera only:      camera initializes, flag set.
  */
 static void CAMERA_I2CInit(void)
 {
-    /* i2c master init */
-    lpi2c_master_config_t masterConfig;
-
-    CLOCK_AttachClk(kOSC_CLK_to_FCCLK0);
-    CLOCK_AttachClk(kFCCLK0_to_FLEXCOMM8);
-
-    /* Create the LPI2C handle for the non-blocking transfer */
-    LPI2C_MasterTransferCreateHandle(SCCB_BASE, &s_handle,
-                                lpi2c_camera_callback, NULL);
-
-    /*
-     * masterConfig.debugEnable = false;
-     * masterConfig.ignoreAck = false;
-     * masterConfig.pinConfig = kLPI2C_2PinOpenDrain;
-     * masterConfig.baudRate_Hz = 100000U;
-     * masterConfig.busIdleTimeout_ns = 0;
-     * masterConfig.pinLowTimeout_ns = 0;
-     * masterConfig.sdaGlitchFilterWidth_ns = 0;
-     * masterConfig.sclGlitchFilterWidth_ns = 0;
-     */
-    LPI2C_MasterGetDefaultConfig(&masterConfig);
-    /* Initialize the LPI2C master peripheral */
-    LPI2C_MasterInit(SCCB_BASE, &masterConfig, SCCB_CLOCK_FREQ);
-}
-
-/*!
- * brief Camera SCCB Send.
- *
- */
-static status_t CAMERA_I2CSend(uint8_t deviceAddress,
-                         uint32_t subAddress,
-                         uint8_t subAddressSize,
-                         const uint8_t *txBuff,
-                         uint8_t txBuffSize)
-{
-    status_t reVal = kStatus_Success;
-    lpi2c_master_transfer_t masterXfer;
-	memset(&masterXfer, 0, sizeof(masterXfer));
-
-    /* Prepare transfer structure. */
-    masterXfer.slaveAddress   = deviceAddress;
-    masterXfer.direction      = kLPI2C_Write;
-    masterXfer.subaddress     = subAddress;
-    masterXfer.subaddressSize = subAddressSize;
-    masterXfer.data           = (void *)txBuff;
-    masterXfer.dataSize       = txBuffSize;
-    masterXfer.flags          = kLPI2C_TransferDefaultFlag;
-
-    reVal = LPI2C_MasterTransferNonBlocking(SCCB_BASE, &s_handle, &masterXfer);
-    if (reVal != kStatus_Success)
+    static bool s_i2cInitialized = false;
+    if (!s_i2cInitialized)
     {
-        return -1;
-    }
-	
-    /*  wait for transfer completed. */
-    while ((!g_MasterNackFlag) && (!g_MasterCompletionFlag))
-    {
-    }
-
-    g_MasterNackFlag = false;
-
-    if (g_MasterCompletionFlag == true)
-    {
-        g_MasterCompletionFlag = false;
-        return kStatus_Success;
-    }
-    else
-    {
-        return kStatus_Fail;
-    }
-
-}
-
-/*!
- * brief Camera SCCB Receive.
- *
- */
-static status_t CAMERA_I2CReceive(uint8_t deviceAddress,
-                            uint32_t subAddress,
-                            uint8_t subAddressSize,
-                            uint8_t *rxBuff,
-                            uint8_t rxBuffSize)
-{
-    status_t reVal = kStatus_Success;
-    lpi2c_master_transfer_t masterXfer;
-	memset(&masterXfer, 0, sizeof(masterXfer));
-    /* Prepare transfer structure. */
-    masterXfer.slaveAddress   = deviceAddress;
-    masterXfer.subaddress     = subAddress;
-    masterXfer.subaddressSize = 1;
-    masterXfer.data           = NULL;
-    masterXfer.dataSize       = 0;
-    masterXfer.direction      = kLPI2C_Write;
-    masterXfer.flags          = kLPI2C_TransferDefaultFlag;
-
-    reVal = LPI2C_MasterTransferNonBlocking(SCCB_BASE, &s_handle, &masterXfer);
-    if (reVal != kStatus_Success)
-    {
-        return -1;
-    }
-    /*  wait for transfer completed. */
-    while ((!g_MasterNackFlag) && (!g_MasterCompletionFlag))
-    {
-    }
-
-    g_MasterNackFlag = false;
-    if (g_MasterCompletionFlag == true)
-    {
-        g_MasterCompletionFlag = false;
-    }
-    else
-    {
-        return kStatus_Fail;
-    }
-
-    /* Prepare transfer structure. */
-    masterXfer.slaveAddress   = deviceAddress;
-    masterXfer.subaddress     = 0x0;
-    masterXfer.subaddressSize = 0;
-    masterXfer.data           = rxBuff;
-    masterXfer.dataSize       = rxBuffSize;
-    masterXfer.direction      = kLPI2C_Read;
-    masterXfer.flags          = kLPI2C_TransferDefaultFlag;
-
-    reVal = LPI2C_MasterTransferNonBlocking(SCCB_BASE, &s_handle, &masterXfer);
-    if (reVal != kStatus_Success)
-    {
-        return -1;
-    }
-    /*  wait for transfer completed. */
-    while ((!g_MasterNackFlag) && (!g_MasterCompletionFlag))
-    {
-    }
-
-    g_MasterNackFlag = false;
-    if (g_MasterCompletionFlag == true)
-    {
-        g_MasterCompletionFlag = false;
-        return kStatus_Success;
-    }
-    else
-    {
-        return kStatus_Fail;
+        BOARD_CAMERA_I2C_Init();
+        s_i2cInitialized = true;
     }
 }
 
@@ -331,8 +151,8 @@ static void CAMERA_FlexioInit(void)
 		.flexioBase = FLEXIO,
 		.timerIdx = DEMO_FLEXIO_PCLK_TIMER,
 		.datPinStartIdx = DEMO_FLEXIO_DATA0_IDX,
-		.hrefPinIdx =DEMO_FELXIO_HREF_IDX,
-		.pclkPinIdx = DEMO_FELXIO_PCLK_IDX,
+		.hrefPinIdx =DEMO_FLEXIO_HREF_IDX,
+		.pclkPinIdx = DEMO_FLEXIO_PCLK_IDX,
 		.shifterStartIdx = DEMO_FLEXIO_SHIFTER0_IDX,
 		.shifterCount = DEMO_FLEXIO_SHIFTER_NUM,
     };

@@ -20,7 +20,7 @@
  */
 
 #define HAL_ENABLE_DISPLAY
-#define HAL_ENABLE_DISPLAY_DEV_LcdifWaveshare5Inch   1
+#define HAL_ENABLE_DISPLAY_DEV_LcdifRpi7Inch 1
 #define HAL_ENABLE_2D_IMGPROC
 
 /* use GPU backend */
@@ -99,7 +99,7 @@
 /* Set here all the static configuration of the Application */
 
 /* display parameters */
-#define APP_DISPLAY_NAME                      "LcdifWaveshare5Inch"
+#define APP_DISPLAY_NAME                      "LcdifRpi7Inch"
 #define APP_DISPLAY_WIDTH                     800
 #define APP_DISPLAY_HEIGHT                    480
 #define APP_DISPLAY_FORMAT                    MPP_PIXEL_RGB565
@@ -108,7 +108,6 @@
 #define IMG_DECODE_DEV_NAME "jpeg_HW"
 
 /* other parameters */
-/* Waveshare 5inch DSI panel is natively landscape (800x480), no rotation needed */
 #define APP_DISPLAY_LANDSCAPE_ROTATE          ROTATE_0
 
 #endif /* _MPP_CONFIG_H */

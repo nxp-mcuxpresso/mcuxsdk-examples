@@ -1,141 +1,66 @@
-// /*
-//  * Copyright 2020, 2025-2026 NXP
-//  * All rights reserved.
-//  *
-//  * SPDX-License-Identifier: BSD-3-Clause
-//  */
-
-// #include "app.h"
-// #include "pin_mux.h"
-// #include "fsl_debug_console.h"
-// #include "display_support.h"
-// #include "camera_support.h"
-// #include "board.h"
-// #include "fsl_soc_src.h"
-
-// #ifdef MCMGR_USED
-// #include "mcmgr.h"
-// #endif /* MCMGR_USED */
-
-// void BOARD_Init()
-// {
-//     BOARD_ConfigMPU();
-// #ifdef RPMSG_USED
-// #if defined(__USE_SHMEM)
-//     extern uint32_t __RPMSG_SH_MEM_START[];
-//     extern uint32_t __RPMSG_SH_MEM_SIZE[];
-//     uint32_t rpmsgShmemStart = (uint32_t)__RPMSG_SH_MEM_START;
-//     uint32_t rpmsgShmemSize  = (uint32_t)__RPMSG_SH_MEM_SIZE;
-// #endif
-
-//     /* Disable MPU */
-//     ARM_MPU_Disable();
-
-// #ifdef USE_SDRAM
-// #if defined(CACHE_MODE_WRITE_THROUGH) && CACHE_MODE_WRITE_THROUGH
-//     /* Region 9 setting: Memory with Normal type, not shareable, write trough */
-//     MPU->RBAR = ARM_MPU_RBAR(1, 0x80000000U);
-//     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 0, 0, 1, 0, 0, ARM_MPU_REGION_SIZE_64MB);
-// #else
-//     /* Region 9 setting: Memory with Normal type, not shareable, outer/inner write back */
-//     MPU->RBAR = ARM_MPU_RBAR(1, 0x80000000U);
-//     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 0, 0, 1, 1, 0, ARM_MPU_REGION_SIZE_64MB);
-// #endif
-// #endif
-
-// #if defined(__USE_SHMEM)
-//     int i = 0;
-	
-//     while ((rpmsgShmemSize >> i) > 0x1U)
-//     {
-//         i++;
-//     }
-	
-//     if (i != 0)
-//     {
-//         /* The MPU region size should be 2^N, 5<=N<=32, region base should be multiples of size. */
-//         assert(!(rpmsgShmemStart % rpmsgShmemSize));
-//         assert(rpmsgShmemSize == (uint32_t)(1 << i));
-//         assert(i >= 5);
-	
-//         /* Region 4 setting: Memory with Normal type, not shareable, non-cacheable */
-//         MPU->RBAR = ARM_MPU_RBAR(9, rpmsgShmemStart);
-//         MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 1, 0, 0, 0, 0, i - 1);
-//     }
-// #endif
-
-//     /* Enable MPU */
-//     ARM_MPU_Enable(MPU_CTRL_PRIVDEFENA_Msk | MPU_CTRL_HFNMIENA_Msk);
-// #endif
-
-//     BOARD_InitBootPins();
-//     BOARD_InitLpuartPins();
-//     BOARD_BootClockRUN();
-// #ifndef DISABLE_CORE0_CONSOLE
-//     BOARD_InitDebugConsole();
-// #endif
-//     BOARD_InitMipiCameraPins();
-// #ifdef OPENH264
-//     BOARD_InitSDCARD();
-// #endif /* OPENH264 */
-//     /*
-//      * Reset the displaymix, otherwise during debugging, the
-//      * debugger may not reset the display, then the behavior
-//      * is not right.
-//      */
-//     SRC_AssertSliceSoftwareReset(SRC, kSRC_DisplaySlice);
-//     BOARD_InitMipiPanelPins();
-//     BOARD_MIPIPanelTouch_I2C_Init();
-// }
-
-// #ifdef MCMGR_USED
-// #ifdef CORE1_IMAGE_COPY_TO_RAM
-// uint32_t get_core1_image_size(void)
-// {
-//     uint32_t image_size;
-// #if defined(__CC_ARM) || defined(__ARMCC_VERSION)
-//     image_size = (uint32_t)&Image$$CORE1_REGION$$Length;
-// #elif defined(__ICCARM__)
-// #pragma section = "__core1_image"
-//     image_size = (uint32_t)__section_end("__core1_image") - (uint32_t)&core1_image_start;
-// #elif defined(__GNUC__)
-//     image_size = (uint32_t)core1_image_size;
-// #endif
-//     return image_size;
-// }
-// #endif /* CORE1_IMAGE_COPY_TO_RAM */
-
-// /*!
-//  * @brief Application-specific implementation of the SystemInitHook() weak function.
-//  */
-// void SystemInitHook(void)
-// {
-//     /* Initialize MCMGR - low level multicore management library. Call this
-//        function as close to the reset entry as possible to allow CoreUp event
-//        triggering. The SystemInitHook() weak function overloading is used in this
-//        application. */
-//     (void)MCMGR_EarlyInit();
-// }
-// /*${function:end}*/
-// #endif /* MCMGR_USED */
-
 /*
- * Copyright 2018 NXP
- * All rights reserved.
- *
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
-/*${header:start}*/
+
+ /*${header:start}*/
 #include "pin_mux.h"
 #include "clock_config.h"
 #include "board.h"
 #include "fsl_debug_console.h"
 #include "display_support.h"
-#include "camera_support.h"
 #include "board.h"
 #include "fsl_soc_src.h"
 /*${header:end}*/
+
+#ifdef USE_USB_CAMERA
+#include "usb_host_config.h"
+#include "usb_host.h"
+#include "app.h"
+#include "usb_phy.h"
+#include "board.h"
+
+extern usb_host_handle g_HostHandle;
+
+void USB_OTG1_IRQHandler(void)
+{
+    USB_HostEhciIsrFunction(g_HostHandle);
+}
+
+void USB_HostClockInit(void)
+{
+    uint32_t usbClockFreq;
+    usb_phy_config_struct_t phyConfig = {
+        BOARD_USB_PHY_D_CAL,
+        BOARD_USB_PHY_TXCAL45DP,
+        BOARD_USB_PHY_TXCAL45DM,
+    };
+
+    usbClockFreq = 24000000;
+    CLOCK_EnableUsbhs0PhyPllClock(kCLOCK_Usbphy480M, usbClockFreq);
+    CLOCK_EnableUsbhs0Clock(kCLOCK_Usb480M, usbClockFreq);
+    USB_EhciPhyInit(CONTROLLER_ID, BOARD_XTAL0_CLK_HZ, &phyConfig);
+}
+
+void USB_HostIsrEnable(void)
+{
+    uint8_t irqNumber;
+    uint8_t usbHOSTEhciIrq[] = USBHS_IRQS;
+    irqNumber = usbHOSTEhciIrq[CONTROLLER_ID - kUSB_ControllerEhci0];
+#if defined(__GIC_PRIO_BITS)
+    GIC_SetPriority((IRQn_Type)irqNumber, USB_HOST_INTERRUPT_PRIORITY);
+#else
+    NVIC_SetPriority((IRQn_Type)irqNumber, USB_HOST_INTERRUPT_PRIORITY);
+#endif
+    EnableIRQ((IRQn_Type)irqNumber);
+}
+
+void USB_HostTaskFn(void *param)
+{
+    USB_HostEhciTaskFunction(param);
+}
+#endif /* USE_USB_CAMERA */
 
 /*!
  * @brief Resets display controller.
@@ -157,33 +82,28 @@ static void BOARD_ResetDisplayMix(void)
 void BOARD_Init(void)
 {
     BOARD_ConfigMPU();
+    BOARD_BootClockRUN();
+
+    /* Reset display mix before pin/clock init, matching the validated
+     * clock_freertos init sequence for frdmimxrt1152. */
+    BOARD_ResetDisplayMix();
 
     BOARD_InitBootPins();
-    BOARD_BootClockRUN();
+    BOARD_InitDEBUG_UARTPins();
+
+    /* Mux GPIO_DISP_B2_12/13 to LPI2C4 (SCL/SDA) and configure GPIO_AD_27 as
+     * the PCAL6524 interrupt input. The LPI2C4 peripheral is initialised lazily
+     * inside BOARD_EnsurePCAL6524Init() -> BOARD_InitPCAL6524(), so only the
+     * pin mux is needed here.
+     *
+     * NOTE: BOARD_PrepareDisplayController() is NOT called here because it
+     * internally calls VIDEO_DelayMs() which maps to vTaskDelay() in FreeRTOS
+     * builds. Calling vTaskDelay() before vTaskStartScheduler() hangs forever.
+     * The MPP display HAL (hal_display_lcdifv2_rk055.c) calls
+     * BOARD_PrepareDisplayController() from task context when the display
+     * element is opened, which is safe. */
+    BOARD_Init6524Pins();
+
     BOARD_InitDebugConsole();
-
-    /*
-     * Emit a boot marker as soon as the debug console (LPUART1 on the MCU-Link
-     * VCOM) is up. The display controller bring-up below (BOARD_PrepareDisplayController)
-     * uses no-timeout blocking MIPI-DSI / LPI2C transfers to the panel and the
-     * PCAL6524 IO-expander. If the selected panel (DEMO_PANEL) is not present or
-     * does not ACK, those calls hang forever inside BOARD_Init(), before the
-     * application's first PRINTF -> the console appears "dead" even though the
-     * UART is correctly configured. Printing here guarantees at least this line
-     * reaches the terminal and pinpoints the hang to the display init.
-     */
-    PRINTF("\r\n[BOARD_Init] console up (LPUART1). Starting display init...\r\n");
-
-    //incorrect - BOARD_InitMipiCameraPins();
-#ifndef SKIP_DISPLAY_INIT
-    BOARD_ResetDisplayMix();
-    if (BOARD_PrepareDisplayController() != kStatus_Success)
-    {
-        /* Do not spin here: keep the console/app alive so the failure is visible. */
-        PRINTF("[BOARD_Init] WARNING: display controller init failed; continuing.\r\n");
-    }
-#else
-    PRINTF("[BOARD_Init] display init skipped (SKIP_DISPLAY_INIT).\r\n");
-#endif
 }
 /*${function:end}*/

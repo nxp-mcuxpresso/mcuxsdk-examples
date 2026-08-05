@@ -38,7 +38,7 @@ RAM_START = 0x20000000;
 TOTAL_DATA_MEMORY = 0x00060000;
 
 /* Total memory size allocated for core1 (secondary core) */
-DEFAULT_CORE1_TOTAL_MEMORY = 0x0001A000;
+DEFAULT_CORE1_TOTAL_MEMORY = 0x00030000;
 TOTAL_CORE1_MEMORY = DEFINED(__core1_total_mem__) ? __core1_total_mem__ : DEFAULT_CORE1_TOTAL_MEMORY;
 
 /* Calculate data memory size based on multicore configuration.

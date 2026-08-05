@@ -159,12 +159,18 @@
 /* other parameters */
 /* rotation is needed to display in landscape because display RK055 is portrait */
 #ifdef USE_USB_CAMERA
-#define APP_DISPLAY_LANDSCAPE_ROTATE ROTATE_270
-#define APP_SRC_DISPLAY_FLIP         FLIP_HORIZONTAL
-#else /* OV7670 */
-#define APP_DISPLAY_LANDSCAPE_ROTATE ROTATE_90
-#define APP_SRC_DISPLAY_FLIP         FLIP_NONE
+#ifndef APP_DISPLAY_LANDSCAPE_ROTATE_NUM
+#define APP_DISPLAY_LANDSCAPE_ROTATE_NUM 270
 #endif
+#define APP_SRC_DISPLAY_FLIP             FLIP_HORIZONTAL
+#else /* OV7670 */
+#ifndef APP_DISPLAY_LANDSCAPE_ROTATE_NUM
+#define APP_DISPLAY_LANDSCAPE_ROTATE_NUM 90
+#endif
+#define APP_SRC_DISPLAY_FLIP             FLIP_NONE
+#endif
+
+#define APP_FONT_HEADER "Poppins_40_rgb565.h"
 
 /* detection boxes params */
 /* maximum number of boxes stored in RAM by APP (1box ~= 16B) */

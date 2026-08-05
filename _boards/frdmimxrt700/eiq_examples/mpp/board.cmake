@@ -28,7 +28,9 @@ mcux_add_macro(
         -DUSB_STACK_FREERTOS \
         -DUSE_RTOS=1 \
         -DPROCESS_IMAGE=1 \
-        -DARM_MATH_CM33"
+        -DARM_MATH_CM33 \
+        -DEZHV_DVP_EN=1 \
+        -DEZHV_MIP_EN=1"
     CX "-DARM_MATH_CM33 \
         -DUSB_STACK_FREERTOS \
         -DUSE_RTOS=1 \

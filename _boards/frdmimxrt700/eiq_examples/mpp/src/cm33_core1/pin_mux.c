@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2026 NXP
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -13,11 +13,31 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v14.0
+product: Pins v17.0
 processor: MIMXRT798S
 package_id: MIMXRT798SGVKB
 mcu_data: ksdk2_0
-processor_version: 0.0.0
+processor_version: 0.2606.50
+board: FRDM-IMXRT700
+pin_labels:
+- {pin_num: T24, pin_signal: PIO0_2/LP_FLEXCOMM8_P4/SCT0_GPIN2/SCT0_OUT2/CTIMER0_MAT1/SAI0_RX_DATA/LP_FLEXCOMM9_P0, label: 'U82E[D24]/U29[D2]', identifier: SAI0_RXD0}
+- {pin_num: V25, pin_signal: PIO0_4/LP_FLEXCOMM4_P1/SCT0_GPIN4/SCT0_OUT4/CTIMER0_MAT3/SAI0_TX_DATA, label: 'U82E[V25]/U29[D1]', identifier: SAI0_TXD0}
+- {pin_num: V23, pin_signal: PIO0_10/LP_FLEXCOMM5_P0/SCT0_GPIN4/SCT0_OUT4/CTIMER1_MAT0/CTIMER_C_INP0/SAI2_RX_DATA, label: SW5, identifier: SW5}
+- {pin_num: V24, pin_signal: PIO0_14/LP_FLEXCOMM5_P4/SCT0_GPIN0/SCT0_OUT8/CTIMER_C_INP2/SAI2_RX_DATA/CLKOUT_VDD2, label: 'U82E[V24]/U68A[59]', identifier: SAI2_RXD0}
+- {pin_num: AB24, pin_signal: PIO0_19/LP_FLEXCOMM6_P2/SCT0_GPIN2/SCT0_OUT2/CTIMER2_MAT2/SAI1_RX_SYNC, label: LED_BLU, identifier: LED_BLU}
+- {pin_num: AB25, pin_signal: PIO0_21/LP_FLEXCOMM6_P0/SCT0_GPIN6/SCT0_OUT6/CTIMER_C_INP4/SAI1_TX_DATA/CLKCTL0_MCLK, label: MCLK, identifier: MCLK}
+- {pin_num: AC22, pin_signal: PIO1_9/LP_FLEXCOMM1_P2/SCT0_GPIN7/SCT0_OUT3/CTIMER_C_INP15/CLKCTL0_CLKIN/CLKOUT_VDD1, label: LED_BLUE, identifier: LED_BLUE}
+- {pin_num: AD22, pin_signal: PIO1_11/LP_FLEXCOMM2_P0/CTIMER2_MAT2/SWD_TRACEDATA0, label: BT_UART_RXD, identifier: BT_UART_RXD}
+- {pin_num: AE22, pin_signal: PIO1_12/LP_FLEXCOMM2_P1/SCT0_GPIN3/SCT0_OUT9/CTIMER1_MAT1/SWD_TRACEDATA1, label: BT_UART_TXD, identifier: BT_UART_TXD}
+- {pin_num: AD23, pin_signal: PIO1_13/LP_FLEXCOMM2_P4/UTICK0_CAP1/CTIMER2_MAT3/SWD_TRACEDATA2/32KHZ_CLKOUT, label: LED_GRN, identifier: LED_GRN}
+- {pin_num: AE24, pin_signal: PIO1_14/LP_FLEXCOMM2_P2/CTIMER3_MAT0/SWD_TRACEDATA3, label: BT_UART_RTS, identifier: BT_UART_RTS}
+- {pin_num: Y21, pin_signal: PIO1_15/LP_FLEXCOMM2_P3/CTIMER3_MAT1/CLKCTL0_CLKIN, label: BT_UART_CTS, identifier: BT_UART_CTS}
+- {pin_num: B14, pin_signal: PIO4_11/XSPI2_SCLK0_N/LP_FLEXCOMM9_P4/XSPI2_SS1_N, label: PDN, identifier: PDN}
+- {pin_num: C21, pin_signal: PIO7_3/SDHC0_DATA5/LP_FLEXCOMM12_P1, label: SD_VSELECT, identifier: SD_VSELECT}
+- {pin_num: A24, pin_signal: PIO7_10/SDHC0_WR_PRT/LP_FLEXCOMM1_P0/SDHC0_DS, label: SD_PWREN_B, identifier: SD_;SD_PWR_EN_B;SD_PWREN_B}
+- {pin_num: F18, pin_signal: PIO7_11/SDHC0_CARD_DET_N/LP_FLEXCOMM1_P1, label: SD_CARD_DET_N, identifier: SDHC0_CARD_DET_N;SDH_CARD_DET_N;SD_CARD_DET_N}
+- {pin_num: A2, pin_signal: PIO6_9/XSPI0_DATA5/LP_FLEXCOMM13_P1/LP_FLEXCOMM11_P3, label: WL_RST, identifier: WL_RST}
+- {pin_num: AA8, pin_signal: PIO8_6/LP_FLEXCOMM17_P1/CTIMER6_MATCH0/CMP0_OUT, label: PWM_RED, identifier: PWM_RED}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -34,41 +54,240 @@ processor_version: 0.0.0
  * END ****************************************************************************************************************/
 void BOARD_InitBootPins(void)
 {
-    BOARD_InitPins();
+    BOARD_InitDEBUG_UARTPins_Sense();
 }
+
+/* clang-format off */
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitDEBUG_UARTPins_Sense:
+- options: {callFromInitBoot: 'true', coreID: cm33_core1, enableClock: 'true'}
+- pin_list:
+  - {pin_num: AE12, peripheral: LP_FLEXCOMM19, signal: P0, pin_signal: PIO8_14/LP_FLEXCOMM19_P0/CTIMER7_MAT2/SAI3_TX_SYNC/I3C2_SDA, input_buffer: enable}
+  - {pin_num: Y12, peripheral: LP_FLEXCOMM19, signal: P1, pin_signal: PIO8_15/LP_FLEXCOMM19_P1/CTIMER7_MAT3/SAI3_TX_BCLK/I3C2_SCL}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+/* clang-format on */
 
 /* FUNCTION ************************************************************************************************************
  *
- * Function Name : BOARD_InitPins
- * Description   : Configures UART debug console pins for CM33 core1 (LP_FLEXCOMM19).
- *                 PIO8_14 = FC19_RXD, PIO8_15 = FC19_TXD
+ * Function Name : BOARD_InitDEBUG_UARTPins_Sense
+ * Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
-void BOARD_InitPins(void)
+/* Function assigned for the Cortex-M33 (Core #1) */
+void BOARD_InitDEBUG_UARTPins_Sense(void)
 {
+    /* Reset IOPCTL1 module */
     RESET_ClearPeripheralReset(kIOPCTL1_RST_SHIFT_RSTn);
 
-    /* PIO8_14: FC19_RXD_SDA_MOSI_DATA */
-    const uint32_t port8_pin14_config = (IOPCTL_PIO_FUNC1 |
-                                         IOPCTL_PIO_PUPD_DI |
-                                         IOPCTL_PIO_PULLDOWN_EN |
-                                         IOPCTL_PIO_INBUF_EN |
-                                         IOPCTL_PIO_SLEW_RATE_NORMAL |
-                                         IOPCTL_PIO_DRIVE_100OHM |
-                                         IOPCTL_PIO_ANAMUX_DI |
-                                         IOPCTL_PIO_PSEDRAIN_DI |
-                                         IOPCTL_PIO_INV_DI);
-    IOPCTL_PinMuxSet(IOPCTL1, 8U, 14U, port8_pin14_config);
+    const uint32_t RT_P8_14_FC19_RXD = (/* Pin is configured as LP_FLEXCOMM19_P0 */
+                                        IOPCTL_PIO_FUNC1 |
+                                        /* Disable pull-up / pull-down function */
+                                        IOPCTL_PIO_PUPD_DI |
+                                        /* Enable pull-down function */
+                                        IOPCTL_PIO_PULLDOWN_EN |
+                                        /* Enables input buffer function */
+                                        IOPCTL_PIO_INBUF_EN |
+                                        /* Normal mode */
+                                        IOPCTL_PIO_SLEW_RATE_NORMAL |
+                                        /* Analog mux is disabled */
+                                        IOPCTL_PIO_ANAMUX_DI |
+                                        /* Pseudo Output Drain is disabled */
+                                        IOPCTL_PIO_PSEDRAIN_DI |
+                                        /* Input function is not inverted */
+                                        IOPCTL_PIO_INV_DI);
+    /* PORT8 PIN14 (coords: AE12) is configured as LP_FLEXCOMM19_P0 */
+    IOPCTL_PinMuxSet(BOARD_INITDEBUG_UARTPINS_SENSE_RT_P8_14_FC19_RXD_PORT, BOARD_INITDEBUG_UARTPINS_SENSE_RT_P8_14_FC19_RXD_PIN, RT_P8_14_FC19_RXD);
 
-    /* PIO8_15: FC19_TXD_SCL_MISO_WS */
-    const uint32_t port8_pin15_config = (IOPCTL_PIO_FUNC1 |
-                                         IOPCTL_PIO_PUPD_DI |
-                                         IOPCTL_PIO_PULLDOWN_EN |
-                                         IOPCTL_PIO_INBUF_DI |
-                                         IOPCTL_PIO_SLEW_RATE_NORMAL |
-                                         IOPCTL_PIO_DRIVE_100OHM |
-                                         IOPCTL_PIO_ANAMUX_DI |
-                                         IOPCTL_PIO_PSEDRAIN_DI |
-                                         IOPCTL_PIO_INV_DI);
-    IOPCTL_PinMuxSet(IOPCTL1, 8U, 15U, port8_pin15_config);
+    const uint32_t RT_P8_15_FC19_TXD = (/* Pin is configured as LP_FLEXCOMM19_P1 */
+                                        IOPCTL_PIO_FUNC1 |
+                                        /* Disable pull-up / pull-down function */
+                                        IOPCTL_PIO_PUPD_DI |
+                                        /* Enable pull-down function */
+                                        IOPCTL_PIO_PULLDOWN_EN |
+                                        /* Disable input buffer function */
+                                        IOPCTL_PIO_INBUF_DI |
+                                        /* Normal mode */
+                                        IOPCTL_PIO_SLEW_RATE_NORMAL |
+                                        /* Analog mux is disabled */
+                                        IOPCTL_PIO_ANAMUX_DI |
+                                        /* Pseudo Output Drain is disabled */
+                                        IOPCTL_PIO_PSEDRAIN_DI |
+                                        /* Input function is not inverted */
+                                        IOPCTL_PIO_INV_DI);
+    /* PORT8 PIN15 (coords: Y12) is configured as LP_FLEXCOMM19_P1 */
+    IOPCTL_PinMuxSet(BOARD_INITDEBUG_UARTPINS_SENSE_RT_P8_15_FC19_TXD_PORT, BOARD_INITDEBUG_UARTPINS_SENSE_RT_P8_15_FC19_TXD_PIN, RT_P8_15_FC19_TXD);
 }
+
+/* clang-format off */
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitI3CPins_Sense:
+- options: {callFromInitBoot: 'false', coreID: cm33_core1, enableClock: 'true'}
+- pin_list:
+  - {pin_num: AC12, peripheral: I3C3, signal: PUR, pin_signal: PIO8_20/LP_FLEXCOMM19_P6/CTIMER_S_INP7/UTICK1_CAP2/I3C3_PUR, input_buffer: enable}
+  - {pin_num: AA12, peripheral: I3C3, signal: SCL, pin_signal: PIO8_22/LP_FLEXCOMM20_P4/CTIMER5_MAT1/LP_FLEXCOMM3_P1/I3C3_SCL, input_buffer: enable}
+  - {pin_num: AD12, peripheral: I3C3, signal: SDA, pin_signal: PIO8_21/LP_FLEXCOMM20_P3/CTIMER5_MAT0/LP_FLEXCOMM3_P0/I3C3_SDA, input_buffer: enable}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+/* clang-format on */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitI3CPins_Sense
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+/* Function assigned for the Cortex-M33 (Core #1) */
+void BOARD_InitI3CPins_Sense(void)
+{
+    /* Reset IOPCTL1 module */
+    RESET_ClearPeripheralReset(kIOPCTL1_RST_SHIFT_RSTn);
+
+    const uint32_t I3C3_PUR = (/* Pin is configured as I3C3_PUR */
+                               IOPCTL_PIO_FUNC4 |
+                               /* Disable pull-up / pull-down function */
+                               IOPCTL_PIO_PUPD_DI |
+                               /* Enable pull-down function */
+                               IOPCTL_PIO_PULLDOWN_EN |
+                               /* Enables input buffer function */
+                               IOPCTL_PIO_INBUF_EN |
+                               /* Normal mode */
+                               IOPCTL_PIO_SLEW_RATE_NORMAL |
+                               /* Analog mux is disabled */
+                               IOPCTL_PIO_ANAMUX_DI |
+                               /* Pseudo Output Drain is disabled */
+                               IOPCTL_PIO_PSEDRAIN_DI |
+                               /* Input function is not inverted */
+                               IOPCTL_PIO_INV_DI);
+    /* PORT8 PIN20 (coords: AC12) is configured as I3C3_PUR */
+    IOPCTL_PinMuxSet(BOARD_INITI3CPINS_SENSE_I3C3_PUR_PORT, BOARD_INITI3CPINS_SENSE_I3C3_PUR_PIN, I3C3_PUR);
+
+    const uint32_t I3C3_SDA = (/* Pin is configured as I3C3_SDA */
+                               IOPCTL_PIO_FUNC4 |
+                               /* Disable pull-up / pull-down function */
+                               IOPCTL_PIO_PUPD_DI |
+                               /* Enable pull-down function */
+                               IOPCTL_PIO_PULLDOWN_EN |
+                               /* Enables input buffer function */
+                               IOPCTL_PIO_INBUF_EN |
+                               /* Normal mode */
+                               IOPCTL_PIO_SLEW_RATE_NORMAL |
+                               /* Analog mux is disabled */
+                               IOPCTL_PIO_ANAMUX_DI |
+                               /* Pseudo Output Drain is disabled */
+                               IOPCTL_PIO_PSEDRAIN_DI |
+                               /* Input function is not inverted */
+                               IOPCTL_PIO_INV_DI);
+    /* PORT8 PIN21 (coords: AD12) is configured as I3C3_SDA */
+    IOPCTL_PinMuxSet(BOARD_INITI3CPINS_SENSE_I3C3_SDA_PORT, BOARD_INITI3CPINS_SENSE_I3C3_SDA_PIN, I3C3_SDA);
+
+    const uint32_t I3C3_SCL = (/* Pin is configured as I3C3_SCL */
+                               IOPCTL_PIO_FUNC4 |
+                               /* Disable pull-up / pull-down function */
+                               IOPCTL_PIO_PUPD_DI |
+                               /* Enable pull-down function */
+                               IOPCTL_PIO_PULLDOWN_EN |
+                               /* Enables input buffer function */
+                               IOPCTL_PIO_INBUF_EN |
+                               /* Normal mode */
+                               IOPCTL_PIO_SLEW_RATE_NORMAL |
+                               /* Analog mux is disabled */
+                               IOPCTL_PIO_ANAMUX_DI |
+                               /* Pseudo Output Drain is disabled */
+                               IOPCTL_PIO_PSEDRAIN_DI |
+                               /* Input function is not inverted */
+                               IOPCTL_PIO_INV_DI);
+    /* PORT8 PIN22 (coords: AA12) is configured as I3C3_SCL */
+    IOPCTL_PinMuxSet(BOARD_INITI3CPINS_SENSE_I3C3_SCL_PORT, BOARD_INITI3CPINS_SENSE_I3C3_SCL_PIN, I3C3_SCL);
+}
+
+/* clang-format off */
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitBUTTONsPins_Sense:
+- options: {callFromInitBoot: 'false', coreID: cm33_core1, enableClock: 'true'}
+- pin_list:
+  - {pin_num: AD8, peripheral: GPIO8, signal: 'GPIO, 5', pin_signal: PIO8_5/LP_FLEXCOMM17_P0/CTIMER5_MAT3/CTIMER_S_INP0, input_buffer: enable}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+/* clang-format on */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitBUTTONsPins_Sense
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+/* Function assigned for the Cortex-M33 (Core #1) */
+void BOARD_InitBUTTONsPins_Sense(void)
+{
+    /* Reset IOPCTL1 module */
+    RESET_ClearPeripheralReset(kIOPCTL1_RST_SHIFT_RSTn);
+
+    const uint32_t USER_Button3 = (/* Pin is configured as PIO8_5 */
+                                   IOPCTL_PIO_FUNC0 |
+                                   /* Disable pull-up / pull-down function */
+                                   IOPCTL_PIO_PUPD_DI |
+                                   /* Enable pull-down function */
+                                   IOPCTL_PIO_PULLDOWN_EN |
+                                   /* Enables input buffer function */
+                                   IOPCTL_PIO_INBUF_EN |
+                                   /* Normal mode */
+                                   IOPCTL_PIO_SLEW_RATE_NORMAL |
+                                   /* Analog mux is disabled */
+                                   IOPCTL_PIO_ANAMUX_DI |
+                                   /* Pseudo Output Drain is disabled */
+                                   IOPCTL_PIO_PSEDRAIN_DI |
+                                   /* Input function is not inverted */
+                                   IOPCTL_PIO_INV_DI);
+    /* PORT8 PIN5 (coords: AD8) is configured as PIO8_5 */
+    IOPCTL_PinMuxSet(BOARD_INITBUTTONSPINS_SENSE_USER_Button3_PORT, BOARD_INITBUTTONSPINS_SENSE_USER_Button3_PIN, USER_Button3);
+}
+
+/* clang-format off */
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitLEDsPins_Sense:
+- options: {callFromInitBoot: 'false', coreID: cm33_core1, enableClock: 'true'}
+- pin_list:
+  - {pin_num: AA8, peripheral: GPIO8, signal: 'GPIO, 6', pin_signal: PIO8_6/LP_FLEXCOMM17_P1/CTIMER6_MATCH0/CMP0_OUT}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+/* clang-format on */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitLEDsPins_Sense
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+/* Function assigned for the Cortex-M33 (Core #1) */
+void BOARD_InitLEDsPins_Sense(void)
+{
+    /* Reset IOPCTL1 module */
+    RESET_ClearPeripheralReset(kIOPCTL1_RST_SHIFT_RSTn);
+
+    const uint32_t PWM_RED = (/* Pin is configured as PIO8_6 */
+                              IOPCTL_PIO_FUNC0 |
+                              /* Disable pull-up / pull-down function */
+                              IOPCTL_PIO_PUPD_DI |
+                              /* Enable pull-down function */
+                              IOPCTL_PIO_PULLDOWN_EN |
+                              /* Disable input buffer function */
+                              IOPCTL_PIO_INBUF_DI |
+                              /* Normal mode */
+                              IOPCTL_PIO_SLEW_RATE_NORMAL |
+                              /* Analog mux is disabled */
+                              IOPCTL_PIO_ANAMUX_DI |
+                              /* Pseudo Output Drain is disabled */
+                              IOPCTL_PIO_PSEDRAIN_DI |
+                              /* Input function is not inverted */
+                              IOPCTL_PIO_INV_DI);
+    /* PORT8 PIN6 (coords: AA8) is configured as PIO8_6 */
+    IOPCTL_PinMuxSet(BOARD_INITLEDSPINS_SENSE_PWM_RED_PORT, BOARD_INITLEDSPINS_SENSE_PWM_RED_PIN, PWM_RED);
+}
+/***********************************************************************************************************************
+ * EOF
+ **********************************************************************************************************************/

@@ -36,8 +36,8 @@
 #define SRC2_IMAGE_WIDTH SRC_IMAGE_SKIGIRL_COCO_160_120_RGB565_WIDTH
 void *image1_data = (void *)couple_COCO_160_120_rgb565_data;
 void *image2_data = (void *)skigirl_COCO_160_120_rgb565_data;
-#define SRC1_EXPECTED_CHECKSUM 0x0
-#define SRC2_EXPECTED_CHECKSUM 0x0
+#define SRC1_EXPECTED_CHECKSUM 0xbd0758e9
+#define SRC2_EXPECTED_CHECKSUM 0xe57c84c2
 #elif (APP_CONFIG==1)
 #include "images/skigirl_COCO_320_256_rgb565.h"
 #include "images/stopwatch320_240_rgb565le.h"
@@ -53,8 +53,8 @@ void *image2_data = (void *)skigirl_COCO_160_120_rgb565_data;
 #define SRC2_IMAGE_WIDTH SRC_IMAGE_STOPWATCH320_240_RGB565LE_WIDTH
 void *image1_data = (void *)skigirl_COCO_320_256_rgb565_data;
 void *image2_data = (void *)stopwatch320_240_rgb565le_data;
-#define SRC1_EXPECTED_CHECKSUM 0x0
-#define SRC2_EXPECTED_CHECKSUM 0x0
+#define SRC1_EXPECTED_CHECKSUM 0xf70eea78
+#define SRC2_EXPECTED_CHECKSUM 0x3f7318c6
 #else
 #pragma message "configuration APP_CONFIG value is not supported by test"
 #endif

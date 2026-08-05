@@ -700,7 +700,7 @@ static int add_compose_element(mpp_t mp, user_data_t *user_data, text_info_t *tx
     init_text_area(g_text_img, sizeof(g_text_img), txt_info);
 
     /* Output params */
-    elem_params_compose.compose.out_angle = ROTATE_270;
+    elem_params_compose.compose.out_angle = APP_DISPLAY_LANDSCAPE_ROTATE;
     elem_params_compose.compose.out_flip = FLIP_NONE;
     elem_params_compose.compose.out_format = APP_DISPLAY_FORMAT;
     elem_params_compose.compose.out_width = APP_DISPLAY_WIDTH;
@@ -719,9 +719,9 @@ static int add_compose_element(mpp_t mp, user_data_t *user_data, text_info_t *tx
     elem_params_compose.compose.image_list[COMPOSE_LOGO_INDEX].height = LOGO_HEIGHT;
     elem_params_compose.compose.image_list[COMPOSE_LOGO_INDEX].format = MPP_PIXEL_RGB;
     elem_params_compose.compose.image_list[COMPOSE_LOGO_INDEX].buffer = (void *) NXP_Logo_RGB888_Colour_320_map;
-    elem_params_compose.compose.image_list[COMPOSE_LOGO_INDEX].dest_area.left = LOGO_LEFT_POS;
-    elem_params_compose.compose.image_list[COMPOSE_LOGO_INDEX].dest_area.top = LOGO_TOP_POS;
-    elem_params_compose.compose.image_list[COMPOSE_LOGO_INDEX].dest_area.right = LOGO_RIGHT_POS;
+    elem_params_compose.compose.image_list[COMPOSE_LOGO_INDEX].dest_area.left   = LOGO_LEFT_POS;
+    elem_params_compose.compose.image_list[COMPOSE_LOGO_INDEX].dest_area.top    = LOGO_TOP_POS;
+    elem_params_compose.compose.image_list[COMPOSE_LOGO_INDEX].dest_area.right  = LOGO_RIGHT_POS;
     elem_params_compose.compose.image_list[COMPOSE_LOGO_INDEX].dest_area.bottom = LOGO_BOTTOM_POS;
 
     /* Configure text image */
@@ -729,9 +729,9 @@ static int add_compose_element(mpp_t mp, user_data_t *user_data, text_info_t *tx
     elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].height = TEXT_HEIGHT;
     elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].format = MPP_PIXEL_RGB565;
     elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].buffer = g_text_img;
-    elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].dest_area.left = TEXT_LEFT_POS;
-    elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].dest_area.top = TEXT_TOP_POS;
-    elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].dest_area.right = TEXT_RIGHT_POS;
+    elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].dest_area.left   = TEXT_LEFT_POS;
+    elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].dest_area.top    = TEXT_TOP_POS;
+    elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].dest_area.right  = TEXT_RIGHT_POS;
     elem_params_compose.compose.image_list[COMPOSE_TEXT_INDEX].dest_area.bottom = TEXT_BOTTOM_POS;
 
     /* Configure Inference preview image */
@@ -745,11 +745,11 @@ static int add_compose_element(mpp_t mp, user_data_t *user_data, text_info_t *tx
     elem_params_compose.compose.image_list[COMPOSE_INFPVW_INDEX].dest_area.bottom = INFPVW_BOTTOM_POS;
     user_data->p_params_compose = &elem_params_compose;
 
-    /* Input area - full frame */
-    elem_params_compose.compose.input_area.left = 0;
-    elem_params_compose.compose.input_area.top = APP_DISPLAY_HEIGHT - (int)(APP_DISPLAY_WIDTH * FRAME_ASP_RATIO);
-    elem_params_compose.compose.input_area.bottom = APP_DISPLAY_HEIGHT - 1;
-    elem_params_compose.compose.input_area.right = APP_DISPLAY_WIDTH - 1;
+    /* Camera input area within the canvas (excludes the logo+text panel) */
+    elem_params_compose.compose.input_area.left   = COMPOSE_INPUT_AREA_LEFT;
+    elem_params_compose.compose.input_area.top    = COMPOSE_INPUT_AREA_TOP;
+    elem_params_compose.compose.input_area.right  = COMPOSE_INPUT_AREA_RIGHT;
+    elem_params_compose.compose.input_area.bottom = COMPOSE_INPUT_AREA_BOTTOM;
 
     int ret = mpp_element_add(mp, MPP_ELEMENT_IMG_COMPOSE, &elem_params_compose, &user_data->compose_elem);
     if (ret) {
@@ -767,7 +767,7 @@ static int add_display_element(mpp_t mp, args_t *args)
     disp_params.width  = APP_DISPLAY_WIDTH;
     disp_params.height = APP_DISPLAY_HEIGHT;
     disp_params.stripe = false;
-    
+
     int ret = mpp_display_add(mp, args->display_name, &disp_params);
     if (ret) {
         PRINTF("Failed to add display %s\n", args->display_name);

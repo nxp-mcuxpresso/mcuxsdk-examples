@@ -27,10 +27,10 @@
 
 /*! @brief  Select FXIO2_D1 as XCLK */
 #define DEMO_FLEXIO_XCLK_IDX                (1U)
-#define DEMO_FELXIO_HREF_IDX                (2U)
+#define DEMO_FLEXIO_HREF_IDX                (2U)
 #define DEMO_FLEXIO_DATA0_IDX               (6U)
 #define DEMO_FLEXIO_DATA_WIDTH              (8U)
-#define DEMO_FELXIO_PCLK_IDX                (15U)
+#define DEMO_FLEXIO_PCLK_IDX                (15U)
 #define DEMO_FLEXIO_SHIFTER0_IDX            (0U)
 #define DEMO_FLEXIO_SHIFTER_NUM             (8U)
 

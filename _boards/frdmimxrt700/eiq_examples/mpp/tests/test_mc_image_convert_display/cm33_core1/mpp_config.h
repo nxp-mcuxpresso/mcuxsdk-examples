@@ -20,7 +20,6 @@
  */
 
 // #define HAL_ENABLE_DISPLAY
-#define HAL_ENABLE_DISPLAY_DEV_LcdifWaveshare5Inch   0
 #define HAL_ENABLE_2D_IMGPROC
 #define HAL_ENABLE_GFX_DEV_Pxp                0
 #define HAL_ENABLE_GFX_DEV_Cpu                0
@@ -48,7 +47,7 @@
  */
 
 /* The display max byte per pixel */
-#define HAL_DISPLAY_MAX_BPP                   4
+#define HAL_DISPLAY_MAX_BPP                   2
 
 
 /* Log level configuration
@@ -74,13 +73,12 @@
 /* Set here all the static configuration of the Application */
 
 /* display parameters */
-#define APP_DISPLAY_NAME                      "LcdifWaveshare5Inch"
+#define APP_DISPLAY_NAME                      "LcdifRpi7Inch"
 #define APP_DISPLAY_WIDTH                     800
 #define APP_DISPLAY_HEIGHT                    480
 #define APP_DISPLAY_FORMAT                    MPP_PIXEL_RGB565
 
 /* other parameters */
-/* Waveshare 5inch DSI panel is natively landscape (800x480), no rotation needed */
 #define APP_DISPLAY_LANDSCAPE_ROTATE          ROTATE_0
 
 #define ENABLE_PISANO_CHECKSUM          1

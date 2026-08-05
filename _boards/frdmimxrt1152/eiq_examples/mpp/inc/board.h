@@ -18,6 +18,22 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+
+/* USB PHY calibration values for frdmimxrt1152 */
+#ifndef BOARD_USB_PHY_D_CAL
+#define BOARD_USB_PHY_D_CAL     (0x07U)
+#endif
+#ifndef BOARD_USB_PHY_TXCAL45DP
+#define BOARD_USB_PHY_TXCAL45DP (0x06U)
+#endif
+#ifndef BOARD_USB_PHY_TXCAL45DM
+#define BOARD_USB_PHY_TXCAL45DM (0x06U)
+#endif
+/* Crystal oscillator frequency (24 MHz) */
+#ifndef BOARD_XTAL0_CLK_HZ
+#define BOARD_XTAL0_CLK_HZ      24000000U
+#endif
+
 /*! @brief The board name */
 #define BOARD_NAME "FRDM-IMXRT1152"
 #ifndef DEBUG_CONSOLE_UART_INDEX
@@ -123,6 +139,17 @@
 #define BOARD_MIPI_PANEL_TOUCH_I2C_CLOCK_SOURCE  (1U)  /* OSC24M. */
 #define BOARD_MIPI_PANEL_TOUCH_I2C_CLOCK_DIVIDER (12U) /* Divider = 12, LPI2C clock frequency 2M. */
 #define BOARD_MIPI_PANEL_TOUCH_I2C_CLOCK_FREQ    CLOCK_GetRootClockFreq(BOARD_MIPI_PANEL_TOUCH_I2C_CLOCK_ROOT)
+
+/* Camera OV5640 on MIPI CSI */
+#define BOARD_CAMERA_I2C_BASEADDR      LPI2C4
+#define BOARD_CAMERA_I2C_CLOCK_ROOT    kCLOCK_Root_Lpi2c4
+#define BOARD_CAMERA_I2C_CLOCK_SOURCE  (0U)  /* OSC24M. */
+#define BOARD_CAMERA_I2C_CLOCK_DIVIDER (12U) /* Divider = 12, LPI2C clock frequency 2M. */
+/* Camera RST and PWDN GPIOs. Update pin numbers to match actual board routing. */
+#define BOARD_CAMERA_RST_GPIO  GPIO9
+#define BOARD_CAMERA_RST_PIN   10U
+#define BOARD_CAMERA_PWDN_GPIO GPIO9
+#define BOARD_CAMERA_PWDN_PIN  11U
 
 /* PCAL6524 I/O Expander */
 #define BOARD_PCAL6524_I2C            LPI2C4
@@ -259,6 +286,18 @@ status_t BOARD_MIPIPanelTouch_I2C_Send(
     uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, const uint8_t *txBuff, uint8_t txBuffSize);
 status_t BOARD_MIPIPanelTouch_I2C_Receive(
     uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, uint8_t *rxBuff, uint8_t rxBuffSize);
+
+void BOARD_Camera_I2C_Init(void);
+status_t BOARD_Camera_I2C_SendSCCB(uint8_t deviceAddress,
+                                    uint32_t subAddress,
+                                    uint8_t subAddressSize,
+                                    const uint8_t *txBuff,
+                                    uint8_t txBuffSize);
+status_t BOARD_Camera_I2C_ReceiveSCCB(uint8_t deviceAddress,
+                                       uint32_t subAddress,
+                                       uint8_t subAddressSize,
+                                       uint8_t *rxBuff,
+                                       uint8_t rxBuffSize);
 
 /* Generic I2C device wrapper functions for components */
 status_t BOARD_I2C_DeviceSend(void *base,

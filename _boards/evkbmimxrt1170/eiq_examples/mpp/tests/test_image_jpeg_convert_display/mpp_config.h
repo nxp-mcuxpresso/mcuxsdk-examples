@@ -53,7 +53,7 @@
  */
 
 /* The display max byte per pixel */
-#define HAL_DISPLAY_MAX_BPP                   3
+#define HAL_DISPLAY_MAX_BPP                   2
 
 /**
  * VGLite heap size for MIMXRT1170 CM7.
@@ -90,7 +90,7 @@
 #define APP_DISPLAY_NAME                      "Lcdifv2Rk055"
 #define APP_DISPLAY_WIDTH                     720
 #define APP_DISPLAY_HEIGHT                    1280
-#define APP_DISPLAY_FORMAT                    MPP_PIXEL_RGB
+#define APP_DISPLAY_FORMAT                    MPP_PIXEL_RGB565
 
 /* other parameters */
 /* rotation is needed to display in landscape because display RK055 is portrait */

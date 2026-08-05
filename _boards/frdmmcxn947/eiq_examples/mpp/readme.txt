@@ -20,7 +20,7 @@ Files origin from mcx-n10 sdk v2.14.0:
 │   │      configMAX_PRIORITIESto 6 */
 │   └── pin_mux.h
 │   |    /* boards/frdmmcxn947/eiq_examples/tflm_label_image/cm33_core0/pin_mux.h modified for camera pins and to add flexio LCD pins config from  
-|   |       boards/mcxn9xxbrk/driver_examples/flexio/mculcd/edma_transfer/cm33_core0/pin_mux.h */
+|   |       boards/frdmmcxn947/driver_examples/flexio/mculcd/edma_transfer/cm33_core0/pin_mux.h */
 ├─ src
 │   ├── board.c
 │   │   /* boards/frdmmcxn947/eiq_examples/tflm_label_image/cm33_core0/board.c modified to fix I2C SCCB for camera */

@@ -15,27 +15,31 @@
 
 /* @TEST_ANCHOR */
 
-/* Panel selection */
-#define DEMO_PANEL_WAVESHARE_5INCH_DSI 0 /* Waveshare 5inch DSI LCD, 800x480, ILI6122 */
-#define DEMO_PANEL_RM67162             1 /* RM67162 circular smart panel */
+/* Panel selection: use the same macro names and values as the SDK display_support.h */
+#define DEMO_PANEL_RASPI_7INCH 5 /* Raspberry Pi 7-inch DSI LCD, 800x480, TC358762 */
 
-/* Override any SDK Kconfig-generated DEMO_PANEL value — MPP uses its own panel IDs */
-#ifdef DEMO_PANEL
-#undef DEMO_PANEL
+/* Set default panel if not already defined (e.g. by Kconfig or build system) */
+#ifndef DEMO_PANEL
+#define DEMO_PANEL DEMO_PANEL_RASPI_7INCH
 #endif
-#define DEMO_PANEL DEMO_PANEL_WAVESHARE_5INCH_DSI
 
 /* Panel dimensions */
-#if (DEMO_PANEL_WAVESHARE_5INCH_DSI == DEMO_PANEL)
+#if (DEMO_PANEL_RASPI_7INCH == DEMO_PANEL)
 #define DEMO_PANEL_WIDTH  (800)
 #define DEMO_PANEL_HEIGHT (480)
-#elif (DEMO_PANEL_RM67162 == DEMO_PANEL)
-#define DEMO_PANEL_WIDTH  (400)
-#define DEMO_PANEL_HEIGHT (400)
 #endif
 
-/* Frame buffer */
-#define DEMO_BUFFER_COUNT 1
+/* Address alignment helper (matches SDK display_support.h) */
+#define DEMO_ALIGN_ADDR(addr, align) \
+    ((((addr) / (align) * (align)) == (addr)) ? (addr) : ((addr) / (align) * (align) + (align)))
+
+/* Frame buffer: use fixed PSRAM addresses so fbdev does not consume ncache SRAM */
+#define DEMO_BUFFER_FIXED_ADDRESS 1
+#define DEMO_BUFFER_COUNT         2
+/* Frame buffers placed in PSRAM starting at 0x60000000 */
+#define FRAME_BUFFER_ALIGN        64U
+#define DEMO_BUFFER0_ADDR         DEMO_ALIGN_ADDR(0x60000000U, FRAME_BUFFER_ALIGN)
+#define DEMO_BUFFER1_ADDR         DEMO_ALIGN_ADDR(0x60200000U, FRAME_BUFFER_ALIGN)
 
 #ifndef DEMO_USE_XRGB8888
 #define DEMO_USE_XRGB8888 0
@@ -57,11 +61,6 @@
 #define DEMO_BUFFER_START_Y 0U
 
 #define DEMO_BUFFER_STRIDE_BYTE (DEMO_BUFFER_WIDTH * DEMO_BUFFER_BYTE_PER_PIXEL)
-
-/* Frame buffer alignment: 64-byte for cache line */
-#define FRAME_BUFFER_ALIGN 64
-
-#define DEMO_BUFFER_FIXED_ADDRESS 0
 
 /*
  * MIPI DSI board pins — these are defined in the SDK board.h.
@@ -110,7 +109,7 @@ extern const dc_fb_t g_dc;
 extern "C" {
 #endif
 
-void BOARD_PrepareDisplayController(void);
+status_t BOARD_PrepareDisplayController(void);
 void BOARD_DisplayTEPinHandler(void);
 
 #if defined(__cplusplus)

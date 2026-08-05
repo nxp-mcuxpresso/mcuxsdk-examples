@@ -3,7 +3,7 @@
 # Memory configuration
 # Set core1 one total memory (including text and data)
 # must be 512 bytes aligned
-set(CORE1_TOTAL_MEM 0x2FC00)
+set(CORE1_TOTAL_MEM 0x30000)
 
 # Calculate CORE1_BOOT_ADDRESS by subtracting __core1_total_mem__ from 0x20060000 (end of RAM)
 math(EXPR CORE1_BOOT_ADDRESS "0x20060000 - ${CORE1_TOTAL_MEM}" OUTPUT_FORMAT HEXADECIMAL)

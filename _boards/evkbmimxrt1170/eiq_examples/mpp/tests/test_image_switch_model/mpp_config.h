@@ -17,7 +17,7 @@
 /* Set here all the static configuration of the Media Processing Pipeline HAL */
 
 /**
- * This is the evkmimxrt1170 board configuration
+ * This is the evkbmimxrt1170 board configuration
  * Disabling HAL of unused/missing devices saves memory
  */
 #define HAL_ENABLE_2D_IMGPROC

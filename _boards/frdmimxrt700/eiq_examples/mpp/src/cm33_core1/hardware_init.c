@@ -12,9 +12,9 @@
 /*${header:end}*/
 
 /*${function:start}*/
-void BOARD_Init(void)
+void BOARD_InitHardware(void)
 {
-    BOARD_InitPins();
+    BOARD_InitBootPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 

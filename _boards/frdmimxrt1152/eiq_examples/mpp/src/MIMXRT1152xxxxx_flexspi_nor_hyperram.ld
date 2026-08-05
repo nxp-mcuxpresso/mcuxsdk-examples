@@ -1,12 +1,16 @@
 /*
 ** ###################################################################
-**     Processors:          MIMXRT1152XHM8B
+**     Processors:          MIMXRT1152AHM6B
+**                          MIMXRT1152AVM6B
+**                          MIMXRT1152DHM8B
+**                          MIMXRT1152DVM8B
+**                          MIMXRT1152XHM8B
 **                          MIMXRT1152XVM8B
 **
 **     Compiler:            GNU C Compiler
 **     Reference manual:    IMXRT1150RM, Rev 1, 01/2026
 **     Version:             rev. 0.1, 2026-01-09
-**     Build:               b260226
+**     Build:               b260622
 **
 **     Abstract:
 **         Linker file for the GNU C Compiler
@@ -27,22 +31,26 @@ ENTRY(Reset_Handler)
 
 HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x0400;
 STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x0400;
-TEXT_SIZE = DEFINED(__use_flash64MB__) ? 0x03FFDC00 : 0x00FFDC00;
-NCACHE_HEAP_START = DEFINED(__heap_noncacheable__) ? 0x62000000 - HEAP_SIZE : 0x61C00000 - HEAP_SIZE;
+VECTOR_RAM_SIZE = DEFINED(__ram_vector_table__) ? 0x00000400 : 0;
+NCACHE_HEAP_START = DEFINED(__heap_noncacheable__) ? 0x62000000 - HEAP_SIZE : 0x61000000 - HEAP_SIZE;
 NCACHE_HEAP_SIZE  = DEFINED(__heap_noncacheable__) ? HEAP_SIZE : 0x0000;
+TEXT_SIZE = DEFINED(__use_flash64MB__) ? 0x03FBDC00 : 0x00FBDC00;
 
 /* Specify the memory areas */
 MEMORY
 {
   m_flash_config        (RX)  : ORIGIN = 0x30000400, LENGTH = 0x00000C00
-  m_ivt                 (RX)  : ORIGIN = 0x30001000, LENGTH = 0x00001000
+  m_ivt                 (RX)  : ORIGIN = 0x30001000, LENGTH = 0x00000020
+  m_boot_data           (RX)  : ORIGIN = 0x30001020, LENGTH = 0x00000010
+  m_dcd_data            (RX)  : ORIGIN = 0x30001030, LENGTH = 0x000006E8
+  m_xmcd_data           (RX)  : ORIGIN = 0x30001040, LENGTH = 0x00000204
   m_interrupts          (RX)  : ORIGIN = 0x30002000, LENGTH = 0x00000400
   m_text                (RX)  : ORIGIN = 0x30002400, LENGTH = TEXT_SIZE
-  m_itcm                (RW)  : ORIGIN = 0x00000000, LENGTH = 0x00040000
-  m_dtcm                (RW)  : ORIGIN = 0x20000000, LENGTH = 0x00040000
-  m_ocram               (RW)  : ORIGIN = 0x202C0000, LENGTH = 0x00080000
-  m_data                (RW)  : ORIGIN = 0x60000000, LENGTH = DEFINED(__heap_noncacheable__) ? 0x01C00000 : 0x01C00000 - HEAP_SIZE
-  m_ncache              (RW)  : ORIGIN = 0x61C00000, LENGTH = DEFINED(__heap_noncacheable__) ? 0x00400000 - HEAP_SIZE : 0x00400000
+  m_qacode              (RX)  : ORIGIN = 0x00000000, LENGTH = 0x00040000
+  m_data                (RW)  : ORIGIN = 0x60000000, LENGTH = DEFINED(__heap_noncacheable__) ? 0x01000000 : 0x01000000 - HEAP_SIZE
+  m_data2               (RW)  : ORIGIN = 0x20000000, LENGTH = 0x00040000
+  m_data3               (RW)  : ORIGIN = 0x202C0000, LENGTH = 0x00080000
+  m_ncache              (RW)  : ORIGIN = 0x61000000, LENGTH = DEFINED(__heap_noncacheable__) ? 0x01000000 - HEAP_SIZE : 0x01000000
   m_heap                (RW)  : ORIGIN = NCACHE_HEAP_START, LENGTH = HEAP_SIZE
 }
 
@@ -60,16 +68,33 @@ SECTIONS
     . = ALIGN(4);
   } > m_flash_config
 
-  ivt_begin = ORIGIN(m_flash_config) + LENGTH(m_flash_config);
-
-  .ivt : AT(ivt_begin)
+  .ivt :
   {
     . = ALIGN(4);
 	KEEP(* (.boot_hdr.ivt))           /* ivt section */
-	KEEP(* (.boot_hdr.boot_data))     /* boot section */
-	KEEP(* (.boot_hdr.dcd_data))      /* dcd section */
     . = ALIGN(4);
   } > m_ivt
+
+  .boot_data :
+  {
+    . = ALIGN(4);
+    KEEP(* (.boot_hdr.boot_data))     /* boot_data section */
+    . = ALIGN(4);
+  } > m_boot_data
+
+  .dcd_data :
+  {
+    . = ALIGN(4);
+    KEEP(* (.boot_hdr.dcd_data))     /* dcd_data section */
+    . = ALIGN(4);
+  } > m_dcd_data
+
+  .xmcd_data :
+  {
+    . = ALIGN(4);
+    KEEP(* (.boot_hdr.xmcd_data))    /* xmcd_data section */
+    . = ALIGN(4);
+  } > m_xmcd_data
 
   /* The startup code goes first into internal RAM */
   .interrupts :
@@ -107,29 +132,10 @@ SECTIONS
       */common_tables.cpp.obj
     ) .text )
 
-    *(EXCLUDE_FILE(
-      */decoder.cpp.obj
-      */decoder_core.cpp.obj
-      */deblocking.cpp.obj
-      */deblocking_common.cpp.obj
-      */memory_align.cpp.obj
-      */welsDecoderExt.cpp.obj
-      */cabac_decoder.cpp.obj
-      */mc.cpp.obj
-      */mv_pred.cpp.obj
-      */bit_stream.cpp.obj
-      */copy_mb.cpp.obj
-      */utils.cpp.obj
-      */decode_slice.cpp.obj
-      */get_intra_predictor.cpp.obj
-      */cpu.cpp.obj
-      */decode_mb_aux.cpp.obj
-      */decoder_data_tables.cpp.obj
-      */common_tables.cpp.obj
-    ) .text* )
-
-    *(.rodata)
-    *(.rodata*)
+    *(.text)                 /* .text sections (code) */
+    *(.text*)                /* .text* sections (code) */
+    *(.rodata)               /* .rodata sections (constants, strings, etc.) */
+    *(.rodata*)              /* .rodata* sections (constants, strings, etc.) */
     *(.glue_7)               /* glue arm to thumb code */
     *(.glue_7t)              /* glue thumb to arm code */
     *(.eh_frame)
@@ -211,11 +217,26 @@ SECTIONS
   __etext = .;    /* define a global symbol at end of code */
   __DATA_ROM = .; /* Symbol is used by startup for data initialization */
 
+  .interrupts_ram :
+  {
+    . = ALIGN(4);
+    __VECTOR_RAM__ = .;
+    __interrupts_ram_start__ = .; /* Create a global symbol at data start */
+    *(.m_interrupts_ram)     /* This is a user defined section */
+    . += VECTOR_RAM_SIZE;
+    . = ALIGN(4);
+    __interrupts_ram_end__ = .; /* Define a global symbol at data end */
+  } > m_data
+
+  __VECTOR_RAM = DEFINED(__ram_vector_table__) ? __VECTOR_RAM__ : ORIGIN(m_interrupts);
+  __RAM_VECTOR_TABLE_SIZE_BYTES = DEFINED(__ram_vector_table__) ? (__interrupts_ram_end__ - __interrupts_ram_start__) : 0x0;
   .data : AT(__DATA_ROM)
   {
     . = ALIGN(4);
     __DATA_RAM = .;
     __data_start__ = .;      /* create a global symbol at data start */
+    *(CacheLineData.init)
+    . = ALIGN(32);           /* cache line size = 32 bytes */
     *(m_usb_dma_init_data)
     *(.data)                 /* .data sections */
     *(.data*)                /* .data* sections */
@@ -251,7 +272,7 @@ SECTIONS
     */common_tables.cpp.obj(.text .text*)
     . = ALIGN(128);
     __ram_function_end__ = .;
-  } > m_itcm
+  } > m_qacode
 
   __NDATA_ROM = __ram_function_flash_start + (__ram_function_end__ - __ram_function_start__);
 
@@ -274,6 +295,14 @@ SECTIONS
   text_end = ORIGIN(m_text) + LENGTH(m_text);
   ASSERT(__DATA_END <= text_end, "region m_text overflowed with text and data")
 
+  .qadata :
+  {
+    . = ALIGN(4);
+    *(DataQuickAccess)       /* quick access data section */
+    *(decode_buf)
+    . = ALIGN(4);
+  } > m_data2
+
   /* Uninitialized data section */
   .bss :
   {
@@ -281,6 +310,8 @@ SECTIONS
     . = ALIGN(4);
     __START_BSS = .;
     __bss_start__ = .;
+    *(CacheLineData)
+    . = ALIGN(32);           /* cache line size = 32 bytes */
     *(m_usb_dma_noninit_data)
     *(.bss)
     *(.bss*)
@@ -290,12 +321,6 @@ SECTIONS
     __END_BSS = .;
   } > m_data
 
-  .decode_buf :
-  {
-    . = ALIGN(4);
-    *(decode_buf)
-  } > m_dtcm
-
   .heap :
   {
     . = ALIGN(8);
@@ -304,7 +329,6 @@ SECTIONS
     __HeapBase = .;
     . += HEAP_SIZE;
     __HeapLimit = .;
-    PROVIDE(__HeapLimit = .);
     __heap_limit = .; /* Add for _sbrk */
   } > m_heap
 

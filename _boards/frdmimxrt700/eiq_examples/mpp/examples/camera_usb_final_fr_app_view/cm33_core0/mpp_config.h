@@ -27,7 +27,7 @@
 #define HAL_ENABLE_VIRTUAL_CAMERA             1
 
 #define HAL_ENABLE_DISPLAY
-#define HAL_ENABLE_DISPLAY_DEV_LcdifWaveshare5Inch   1
+#define HAL_ENABLE_DISPLAY_DEV_LcdifRpi7Inch  1
 #define HAL_ENABLE_DISPLAY_DEV_Fbdev          0
 #define HAL_ENABLE_2D_IMGPROC
 
@@ -85,7 +85,7 @@
  */
 
 /* The display max byte per pixel */
-#define HAL_DISPLAY_MAX_BPP                   4
+#define HAL_DISPLAY_MAX_BPP                   2
 
 /* Log level configuration
  * ERR:   0
@@ -117,7 +117,7 @@
 #define APP_CAMERA_FORMAT  MPP_PIXEL_JPEG
 
 /* display parameters */
-#define APP_DISPLAY_NAME   "LcdifWaveshare5Inch" /* alternative: FBdev*/
+#define APP_DISPLAY_NAME   "LcdifRpi7Inch" /* alternative: FBdev*/
 #define APP_DISPLAY_WIDTH                     800
 #define APP_DISPLAY_HEIGHT                    480
 #define APP_DISPLAY_FORMAT MPP_PIXEL_RGB565
@@ -139,9 +139,23 @@
 #ifndef USE_ANTISPOOFING
 #define USE_ANTISPOOFING 0
 #endif
+
 /* other parameters */
-/* Waveshare 5inch DSI is natively landscape (800x480), no rotation needed */
-#define APP_DISPLAY_LANDSCAPE_ROTATE ROTATE_270
+/*
+ * Rotation applied by the compose element to display camera stream in landscape.
+ * frdmimxrt700: 800x480 landscape display - no rotation needed.
+ * APP_DISPLAY_LANDSCAPE_ROTATE and the layout constants are derived automatically
+ * from APP_DISPLAY_LANDSCAPE_ROTATE_NUM in app_constants.h.
+ */
+#ifndef APP_DISPLAY_LANDSCAPE_ROTATE_NUM
+#define APP_DISPLAY_LANDSCAPE_ROTATE_NUM 180
+#endif
+
+/*
+ * Font header used by draw_text.c.
+ * Use the smaller Poppins_20 font on frdmimxrt700 (smaller panel).
+ */
+#define APP_FONT_HEADER "Poppins_20_rgb565.h"
 
 #define APP_PIPELINE_TASK_MAX_PRIO            5
 #define APP_RC_TASK_MAX_PRIO                  4

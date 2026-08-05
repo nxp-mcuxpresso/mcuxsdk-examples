@@ -35,7 +35,8 @@ void vConfigureTimerForRunTimeStats(void) {
 unsigned long vGetTimerForRunTimeStats()
 {
 	uint64_t us = OSTIMER_GetCurrentTimerValue(BOARD_OSTIMER);
-	return us;
+	/* FreeRTOS requires only 32 bit value of the timer */
+	return us & 0xFFFFFFFFU;
 }
 
 #endif /* ((configGENERATE_RUN_TIME_STATS == 1) && defined(HAL_TIMER_PRECISION_1_US)) */

@@ -6,9 +6,15 @@ mcux_add_include(
             }
 )
 
+mcux_add_include(
+    BASE_PATH ${SdkRootDirPath}
+    INCLUDES components/expander/pcal6524
+)
+
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES ${board_root}/${board}/eiq_examples/mpp/inc/FreeRTOSConfig.h
+    SOURCES components/expander/pcal6524/fsl_pcal6524.c
+            ${board_root}/${board}/eiq_examples/mpp/inc/FreeRTOSConfig.h
             ${board_root}/${board}/eiq_examples/mpp/inc/fsl_debug_console_conf.h
             ${board_root}/${board}/board.h
             ${board_root}/${board}/board.c
@@ -21,7 +27,9 @@ mcux_add_macro(
     CC "-DGCID_REV_CID=gc355/0x0_1216 \
         -DCUSTOM_VGLITE_MEMORY_CONFIG=1 \
         -DBOARD_USE_PCAL6524=1 \
-        -DSDK_I2C_BASED_COMPONENT_USED=1"
+        -DSDK_I2C_BASED_COMPONENT_USED=1 \
+        -DUSE_RTOS=1"
+    CX "-DUSE_RTOS=1"
 )
 
 # core specific cmake
