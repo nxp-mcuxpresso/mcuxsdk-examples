@@ -6,6 +6,7 @@ mcux_add_include(
 
 mcux_add_macro(
     CC "-DFSL_PM_SUPPORT_ALWAYS_ON_SECTION=1"
+    CC "-DBYPASS_ECC_RAM_INIT=1"
 )
 
 # Remove Linker File Configurations
