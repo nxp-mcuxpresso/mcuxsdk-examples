@@ -41,6 +41,7 @@ power_manager_test_bm:
     mcxw71evk: []
     frdmrw612: []
     frdmkw43: []
+    frdmmcxw70: []
     kw45b41zevk:
     - +armgcc@debug
     - +armgcc@release
