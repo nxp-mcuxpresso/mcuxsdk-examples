@@ -340,3 +340,75 @@ Use `output_idx=<N>` instead of `output=<name>`:
 - If the index is out of range, a clear error is returned:
   - UART: `Input tensor index N out of range (valid: 0 ~ M)`
   - HTTP: `{"error": "Output tensor index out of range"}`
+
+## Multi-Input / Multi-Output Models (Index-Based)
+
+For models with more than one input or output tensor, use index-based access exclusively.
+Index-based access is always recommended for multi-tensor models because it is not affected
+by duplicate tensor names.
+
+### Step 1: Get Tensor Indices
+
+Run the `model` command (UART) or `GET /v1/model` (HTTP) to identify tensor positions:
+
+```json
+"inputs": [
+  {"idx": 0, "name": "input_a", ...},
+  {"idx": 1, "name": "input_b", ...}
+],
+"outputs": [
+  {"idx": 0, "name": "output_a", ...},
+  {"idx": 1, "name": "output_b", ...}
+]
+```
+
+### Step 2: Upload Each Input Tensor Separately
+
+**UART CLI:**
+```bash
+=> tensor_loadb input_idx_0 input_a.bin
+=> tensor_loadb input_idx_1 input_b.bin
+```
+
+**HTTP Agent (curl):**
+```bash
+# Each input tensor is a separate multipart field named input_idx_<N>
+curl -X POST "http://<IP>:<port>/serial/<serial-id>/v1?run=1&output_idx=0&output_idx=1" \
+  -F "input_idx_0=@input_a.bin" \
+  -F "input_idx_1=@input_b.bin"
+```
+
+### Step 3: Run Inference and Get Multiple Outputs
+
+**UART CLI:**
+```bash
+# Request both output tensors in one run command
+=> run output_idx=0 output_idx=1
+```
+
+**HTTP Agent (curl):**
+```bash
+# Repeat output_idx= for each desired output tensor
+curl -X POST "http://<IP>:<port>/serial/<serial-id>/v1?run=1&output_idx=0&output_idx=1" \
+  -F "input_idx_0=@input_a.bin" \
+  -F "input_idx_1=@input_b.bin"
+```
+
+Response contains an `outputs` array with one entry per requested output:
+```json
+{
+  "outputs": [
+    {"idx": 0, "name": "output_a", "datatype": "INT8", "shape": [1, 12], "data": "<base64>"},
+    {"idx": 1, "name": "output_b", "datatype": "FLOAT32", "shape": [1, 4], "data": "<base64>"}
+  ],
+  "timing": 1024
+}
+```
+
+### Notes
+
+- Input tensors not uploaded before `run` are automatically zero-filled.
+- Each `tensor_loadb input_idx_<N>` call independently marks tensor N as ready;
+  uploading tensor 0 does not affect tensor 1.
+- Up to 16 input tensors and 16 output tensors are supported.
+
