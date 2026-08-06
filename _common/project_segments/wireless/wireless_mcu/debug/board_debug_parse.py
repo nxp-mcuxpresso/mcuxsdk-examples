@@ -10,8 +10,8 @@
 # logs; this script auto-detects and dispatches each line to the correct
 # decoder, so the developer never has to pre-split the log:
 #
-#   1. NBU HCI logging          lines prefixed with '@'
-#        '@<base64(direction(1) || packet_type(1) || payload)>'
+#   1. NBU HCI logging          lines prefixed with '@H:'
+#        '@H:<base64(direction(1) || packet_type(1) || payload)>'
 #      The radio core (NBU) reports faults/asserts as HCI vendor events. These
 #      lines are converted to a BTSNOOP file and then analysed by
 #      debug_struct_parser.py (the NBU never emits a Zephyr coredump).
@@ -56,9 +56,11 @@ import time
 
 _SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# Line routing prefixes. Both are single ASCII tokens outside the Base64
-# alphabet so they can never be confused with payload or with each other.
-NBU_LINE_PREFIX = "@"
+# Line routing prefixes. Both are short ASCII tokens ending outside the Base64
+# alphabet so they can never be confused with payload or with each other. The
+# NBU prefix MUST match the firmware's BOARD_NBUDBG_HCI_LOG_LINE_PREFIX ("@H:")
+# and the standalone hci_to_btsnoop.py HCI_FRAME_LINE_PREFIX (b"@H:").
+NBU_LINE_PREFIX = "@H:"
 COREDUMP_PREFIX_STR = "#CD:"
 
 # BTSNOOP constants (kept in sync with hci_to_btsnoop.py / debug_struct_parser.py).
