@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2018, 2025 NXP
+ * Copyright 2016-2018, 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -40,36 +40,33 @@
 /*******************************************************************************
  * Variables
  *****************************************************************************/
-extern uint32_t lut[FSL_FEATURE_QSPI_LUT_DEPTH];
-extern qspi_dqs_config_t dqsConfig;
-extern qspi_flash_config_t single_config;
 
 /*******************************************************************************
  * Code
  ******************************************************************************/
 /* Check if serial flash erase or program finished. */
-void check_if_finished(void)
+static void check_if_finished(void)
 {
     uint32_t val = 0;
     /* Check WIP bit */
     do
     {
-        while (QSPI_GetStatusFlags(EXAMPLE_QSPI) & kQSPI_Busy)
+        while ((QSPI_GetStatusFlags(EXAMPLE_QSPI) & (uint32_t)kQSPI_Busy) != 0U)
         {
         }
-        QSPI_ClearFifo(EXAMPLE_QSPI, kQSPI_RxFifo);
+        QSPI_ClearFifo(EXAMPLE_QSPI, (uint32_t)kQSPI_RxFifo);
         QSPI_ExecuteIPCommand(EXAMPLE_QSPI, QSPI_CMD_SEQ_READ_STATUS_REG);
-        while (QSPI_GetStatusFlags(EXAMPLE_QSPI) & kQSPI_Busy)
+        while ((QSPI_GetStatusFlags(EXAMPLE_QSPI) & (uint32_t)kQSPI_Busy) != 0U)
         {
         }
         val = EXAMPLE_QSPI->RBDR[0];
         /* Clear ARDB area */
-        QSPI_ClearErrorFlag(EXAMPLE_QSPI, kQSPI_RxBufferDrain);
-    } while (val & 0x1);
+        QSPI_ClearErrorFlag(EXAMPLE_QSPI, (uint32_t)kQSPI_RxBufferDrain);
+    } while ((val & 1UL) != 0UL);
 }
 
 /* Write enable command */
-void cmd_write_enable(void)
+static void cmd_write_enable(void)
 {
 #if defined(QSPI_CMD_REUSE_LUT) && QSPI_CMD_REUSE_LUT
     BOARD_QspiUpdateLUT(QSPI_CMD_SEQ_WRITE_ENABLE, QSPI_CMD_TYPE_WRITE_ENABLE);
@@ -83,13 +80,13 @@ void enable_quad_mode(void)
 {
     uint32_t val[4] = {FLASH_ENABLE_QUAD_CMD, 0, 0, 0};
 
-    while (QSPI_GetStatusFlags(EXAMPLE_QSPI) & kQSPI_Busy)
+    while ((QSPI_GetStatusFlags(EXAMPLE_QSPI) & (uint32_t)kQSPI_Busy) != 0U)
     {
     }
     QSPI_SetIPCommandAddress(EXAMPLE_QSPI, FSL_FEATURE_QSPI_AMBA_BASE);
 
     /* Clear Tx FIFO */
-    QSPI_ClearFifo(EXAMPLE_QSPI, kQSPI_TxFifo);
+    QSPI_ClearFifo(EXAMPLE_QSPI, (uint32_t)kQSPI_TxFifo);
 
     cmd_write_enable();
 
@@ -117,13 +114,13 @@ void enable_octal_mode(void)
 {
     uint32_t val[4] = {FLASH_ENABLE_OCTAL_CMD, 0, 0, 0};
 
-    while (QSPI_GetStatusFlags(EXAMPLE_QSPI) & kQSPI_Busy)
+    while ((QSPI_GetStatusFlags(EXAMPLE_QSPI) & (uint32_t)kQSPI_Busy) != 0U)
     {
     }
     QSPI_SetIPCommandAddress(EXAMPLE_QSPI, FSL_FEATURE_QSPI_AMBA_BASE);
 
     /* Clear Tx FIFO */
-    QSPI_ClearFifo(EXAMPLE_QSPI, kQSPI_TxFifo);
+    QSPI_ClearFifo(EXAMPLE_QSPI, (uint32_t)kQSPI_TxFifo);
 
     /* Write enable */
     QSPI_ExecuteIPCommand(EXAMPLE_QSPI, 32U);
@@ -142,10 +139,10 @@ void enable_octal_mode(void)
 /* Erase sector */
 void erase_sector(uint32_t addr)
 {
-    while (QSPI_GetStatusFlags(EXAMPLE_QSPI) & kQSPI_Busy)
+    while ((QSPI_GetStatusFlags(EXAMPLE_QSPI) & (uint32_t)kQSPI_Busy) != 0U)
     {
     }
-    QSPI_ClearFifo(EXAMPLE_QSPI, kQSPI_TxFifo);
+    QSPI_ClearFifo(EXAMPLE_QSPI, (uint32_t)kQSPI_TxFifo);
     QSPI_SetIPCommandAddress(EXAMPLE_QSPI, addr);
 
     cmd_write_enable();
@@ -165,7 +162,7 @@ void erase_sector(uint32_t addr)
 /* Erase all command */
 void erase_all(void)
 {
-    while (QSPI_GetStatusFlags(EXAMPLE_QSPI) & kQSPI_Busy)
+    while ((QSPI_GetStatusFlags(EXAMPLE_QSPI) & (uint32_t)kQSPI_Busy) != 0U)
     {
     }
     QSPI_SetIPCommandAddress(EXAMPLE_QSPI, FSL_FEATURE_QSPI_AMBA_BASE);
@@ -182,35 +179,35 @@ void program_page(uint32_t dest_addr, uint32_t *src_addr)
 {
     uint32_t leftLongWords = 0;
 
-    while (QSPI_GetStatusFlags(EXAMPLE_QSPI) & kQSPI_Busy)
+    while ((QSPI_GetStatusFlags(EXAMPLE_QSPI) & (uint32_t)kQSPI_Busy) != 0U)
     {
     }
-    QSPI_ClearFifo(EXAMPLE_QSPI, kQSPI_TxFifo);
+    QSPI_ClearFifo(EXAMPLE_QSPI, (uint32_t)kQSPI_TxFifo);
 
     QSPI_SetIPCommandAddress(EXAMPLE_QSPI, dest_addr);
     cmd_write_enable();
-    while (QSPI_GetStatusFlags(EXAMPLE_QSPI) & kQSPI_Busy)
+    while ((QSPI_GetStatusFlags(EXAMPLE_QSPI) & (uint32_t)kQSPI_Busy) != 0U)
     {
     }
 
     /* First write some data into TXFIFO to prevent from underrun */
-    QSPI_WriteBlocking(EXAMPLE_QSPI, src_addr, FSL_FEATURE_QSPI_TXFIFO_DEPTH * sizeof(uint32_t));
+    QSPI_WriteBlocking(EXAMPLE_QSPI, src_addr, ((uint32_t)FSL_FEATURE_QSPI_TXFIFO_DEPTH * sizeof(uint32_t)));
     src_addr += FSL_FEATURE_QSPI_TXFIFO_DEPTH;
 
     /* Start the program */
     QSPI_SetIPCommandSize(EXAMPLE_QSPI, FLASH_PAGE_SIZE);
     QSPI_ExecuteIPCommand(EXAMPLE_QSPI, QSPI_CMD_SEQ_PROGRAM_PAGE);
 
-    leftLongWords = FLASH_PAGE_SIZE - (FSL_FEATURE_QSPI_TXFIFO_DEPTH * sizeof(uint32_t));
+    leftLongWords = FLASH_PAGE_SIZE - ((uint32_t)FSL_FEATURE_QSPI_TXFIFO_DEPTH * sizeof(uint32_t));
     QSPI_WriteBlocking(EXAMPLE_QSPI, src_addr, leftLongWords);
 
     /* Wait until flash finished program */
-    while (QSPI_GetStatusFlags(EXAMPLE_QSPI) & kQSPI_Busy)
+    while ((QSPI_GetStatusFlags(EXAMPLE_QSPI) & (uint32_t)kQSPI_Busy) != 0U)
     {
     }
     QSPI_SetIPCommandSize(EXAMPLE_QSPI, 0);
     check_if_finished();
-    while (QSPI_GetStatusFlags(EXAMPLE_QSPI) & (kQSPI_Busy | kQSPI_IPAccess))
+    while ((QSPI_GetStatusFlags(EXAMPLE_QSPI) & ((uint32_t)kQSPI_Busy | (uint32_t)kQSPI_IPAccess)) != 0U)
     {
     }
 
@@ -222,23 +219,29 @@ void program_page(uint32_t dest_addr, uint32_t *src_addr)
 /* Use IP read to read flash data. */
 void ip_read_flash(uint32_t addr, uint32_t *buffer, uint32_t size)
 {
-    uint32_t leftSize = size;
-    uint32_t rxFifoSize = 4U * FSL_FEATURE_QSPI_RXFIFO_DEPTH;
+    uint32_t rxFifoSize = 4U * (uint32_t)FSL_FEATURE_QSPI_RXFIFO_DEPTH;
+    uint32_t leftSize   = size;
+    uint32_t curAddr    = addr;
+    uint32_t *curBuff   = buffer;
     uint32_t transSize;
 
-    for(uint32_t i = 0U; leftSize != 0U; i++)
+    while (leftSize != 0U)
     {
         transSize = (leftSize > rxFifoSize) ? rxFifoSize : leftSize;
 
-        QSPI_ClearFifo(EXAMPLE_QSPI, kQSPI_RxFifo);
-        QSPI_SetIPCommandAddress(EXAMPLE_QSPI, addr + rxFifoSize * i);
+        QSPI_ClearFifo(EXAMPLE_QSPI, (uint32_t)kQSPI_RxFifo);
+        QSPI_SetIPCommandAddress(EXAMPLE_QSPI, curAddr);
         QSPI_SetIPCommandSize(EXAMPLE_QSPI, transSize);
         QSPI_ExecuteIPCommand(EXAMPLE_QSPI, QSPI_CMD_SEQ_READ);
-        while (QSPI_GetStatusFlags(EXAMPLE_QSPI) & kQSPI_Busy)
+        while ((QSPI_GetStatusFlags(EXAMPLE_QSPI) & (uint32_t)kQSPI_Busy) != 0U)
         {
         }
-        QSPI_ReadBlocking(EXAMPLE_QSPI, buffer + i * FSL_FEATURE_QSPI_RXFIFO_DEPTH, transSize);
+        QSPI_ReadBlocking(EXAMPLE_QSPI, curBuff, transSize);
 
+        assert(curAddr <= (UINT32_MAX - transSize));
+        assert((transSize % sizeof(*curBuff)) == 0U);
+        curAddr += transSize;
+        curBuff += ((size_t)transSize / sizeof(*curBuff));
         leftSize -= transSize;
     }
 }
@@ -252,14 +255,11 @@ void qspi_nor_flash_init(QuadSPI_Type *base)
     QSPI_GetDefaultQspiConfig(&config);
 
     /* Set AHB buffer size for reading data through AHB bus */
-    if (FLASH_PAGE_SIZE <= FSL_FEATURE_QSPI_AHB_BUFFER_SIZE)
-    {
-        config.AHBbufferSize[3] = FLASH_PAGE_SIZE;
-    }
-    else
-    {
-        config.AHBbufferSize[3] = FSL_FEATURE_QSPI_AHB_BUFFER_SIZE;
-    }
+#if (FLASH_PAGE_SIZE <= FSL_FEATURE_QSPI_AHB_BUFFER_SIZE)
+    config.AHBbufferSize[3] = FLASH_PAGE_SIZE;
+#else
+    config.AHBbufferSize[3] = FSL_FEATURE_QSPI_AHB_BUFFER_SIZE;
+#endif
     clockSourceFreq = QSPI_CLK_FREQ;
 
     QSPI_Init(base, &config, clockSourceFreq);

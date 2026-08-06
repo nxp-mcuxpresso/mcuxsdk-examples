@@ -52,6 +52,7 @@ void BOARD_QspiSocConfigure(QuadSPI_Type *base);
 #if defined(QSPI_CMD_REUSE_LUT) && QSPI_CMD_REUSE_LUT
 void BOARD_QspiUpdateLUT(uint8_t seqID, uint8_t cmdType);
 #endif
+void erase_all(void);
 
 /*${prototype:end}*/
 

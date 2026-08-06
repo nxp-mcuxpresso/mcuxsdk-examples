@@ -48,7 +48,7 @@ static void callback(QuadSPI_Type *base, qspi_edma_handle_t *handle, status_t st
  ******************************************************************************/
 static qspi_edma_handle_t qspiHandle = {0};
 static edma_handle_t dmaHandle       = {0};
-volatile bool isFinished             = false;
+static volatile bool isFinished      = false;
 
 AT_NONCACHEABLE_SECTION_ALIGN(static uint32_t buff[64], 4); /* Test data */
 #if defined(EXAMPLE_DIV_NEED_RESTORE) && EXAMPLE_DIV_NEED_RESTORE
@@ -63,51 +63,51 @@ static void callback(QuadSPI_Type *base, qspi_edma_handle_t *handle, status_t st
 }
 
 /* Check if serial flash erase or program finished. */
-void check_if_finished(void)
+static void check_if_finished(void)
 {
     uint32_t val = 0;
     /* Check WIP bit */
     do
     {
-        while (QSPI_GetStatusFlags(EXAMPLE_QSPI) & kQSPI_Busy)
+        while ((QSPI_GetStatusFlags(EXAMPLE_QSPI) & (uint32_t)kQSPI_Busy) != 0U)
         {
         }
-        QSPI_ClearFifo(EXAMPLE_QSPI, kQSPI_RxFifo);
+        QSPI_ClearFifo(EXAMPLE_QSPI, (uint32_t)kQSPI_RxFifo);
         QSPI_ExecuteIPCommand(EXAMPLE_QSPI, QSPI_CMD_SEQ_READ_STATUS_REG);
-        while (QSPI_GetStatusFlags(EXAMPLE_QSPI) & kQSPI_Busy)
+        while ((QSPI_GetStatusFlags(EXAMPLE_QSPI) & (uint32_t)kQSPI_Busy) != 0U)
         {
         }
         val = *(volatile uint32_t *)(FSL_FEATURE_QSPI_ARDB_BASE);
         /* Clear ARDB area */
-        QSPI_ClearErrorFlag(EXAMPLE_QSPI, kQSPI_RxBufferDrain);
-    } while (val & 0x1);
+        QSPI_ClearErrorFlag(EXAMPLE_QSPI, (uint32_t)kQSPI_RxBufferDrain);
+    } while ((val & 1UL) != 0UL);
 }
 
 /* Write enable command */
-void cmd_write_enable(void)
+static void cmd_write_enable(void)
 {
 #if defined(QSPI_CMD_REUSE_LUT) && QSPI_CMD_REUSE_LUT
     BOARD_QspiUpdateLUT(QSPI_CMD_SEQ_WRITE_ENABLE, QSPI_CMD_TYPE_WRITE_ENABLE);
 #endif
     QSPI_ExecuteIPCommand(EXAMPLE_QSPI, QSPI_CMD_SEQ_WRITE_ENABLE);
-    while (QSPI_GetStatusFlags(EXAMPLE_QSPI) & kQSPI_Busy)
+    while ((QSPI_GetStatusFlags(EXAMPLE_QSPI) & (uint32_t)kQSPI_Busy) != 0U)
     {
     }
 }
 
 #if defined(FLASH_ENABLE_QUAD_CMD)
 /* Enable Quad mode */
-void enable_quad_mode(void)
+static void enable_quad_mode(void)
 {
     uint32_t val[4] = {FLASH_ENABLE_QUAD_CMD, 0, 0, 0};
 
-    while (QSPI_GetStatusFlags(EXAMPLE_QSPI) & kQSPI_Busy)
+    while ((QSPI_GetStatusFlags(EXAMPLE_QSPI) & (uint32_t)kQSPI_Busy) != 0U)
     {
     }
     QSPI_SetIPCommandAddress(EXAMPLE_QSPI, FSL_FEATURE_QSPI_AMBA_BASE);
 
     /* Clear Tx FIFO */
-    QSPI_ClearFifo(EXAMPLE_QSPI, kQSPI_TxFifo);
+    QSPI_ClearFifo(EXAMPLE_QSPI, (uint32_t)kQSPI_TxFifo);
 
     /* Write enable */
     cmd_write_enable();
@@ -124,12 +124,12 @@ void enable_quad_mode(void)
 #endif
 
 /* Erase sector */
-void erase_sector(uint32_t addr)
+static void erase_sector(uint32_t addr)
 {
-    while (QSPI_GetStatusFlags(EXAMPLE_QSPI) & kQSPI_Busy)
+    while ((QSPI_GetStatusFlags(EXAMPLE_QSPI) & (uint32_t)kQSPI_Busy) != 0U)
     {
     }
-    QSPI_ClearFifo(EXAMPLE_QSPI, kQSPI_TxFifo);
+    QSPI_ClearFifo(EXAMPLE_QSPI, (uint32_t)kQSPI_TxFifo);
     QSPI_SetIPCommandAddress(EXAMPLE_QSPI, addr);
     cmd_write_enable();
 #if defined(QSPI_CMD_REUSE_LUT) && QSPI_CMD_REUSE_LUT
@@ -142,7 +142,7 @@ void erase_sector(uint32_t addr)
 /* Erase all command */
 void erase_all(void)
 {
-    while (QSPI_GetStatusFlags(EXAMPLE_QSPI) & kQSPI_Busy)
+    while ((QSPI_GetStatusFlags(EXAMPLE_QSPI) & (uint32_t)kQSPI_Busy) != 0U)
     {
     }
     QSPI_SetIPCommandAddress(EXAMPLE_QSPI, FSL_FEATURE_QSPI_AMBA_BASE);
@@ -153,26 +153,26 @@ void erase_all(void)
 }
 
 /* Program page into serial flash using QSPI EDMA transfer. */
-void program_page(uint32_t dest_addr, uint32_t *src_addr)
+static void program_page(uint32_t dest_addr, uint32_t *src_addr)
 {
     qspi_transfer_t xfer = {0};
 
     xfer.data     = (uint32_t *)src_addr;
     xfer.dataSize = FLASH_PAGE_SIZE;
-    while (QSPI_GetStatusFlags(EXAMPLE_QSPI) & kQSPI_Busy)
+    while ((QSPI_GetStatusFlags(EXAMPLE_QSPI) & (uint32_t)kQSPI_Busy) != 0U)
     {
     }
-    QSPI_ClearFifo(EXAMPLE_QSPI, kQSPI_TxFifo);
+    QSPI_ClearFifo(EXAMPLE_QSPI, (uint32_t)kQSPI_TxFifo);
     QSPI_SetIPCommandAddress(EXAMPLE_QSPI, dest_addr);
     QSPI_SetIPCommandSize(EXAMPLE_QSPI, FLASH_PAGE_SIZE);
     cmd_write_enable();
-    while (QSPI_GetStatusFlags(EXAMPLE_QSPI) & kQSPI_Busy)
+    while ((QSPI_GetStatusFlags(EXAMPLE_QSPI) & (uint32_t)kQSPI_Busy) != 0U)
     {
     }
 
     /* Use EDMA transfer. */
     isFinished = false;
-    QSPI_TransferSendEDMA(EXAMPLE_QSPI, &qspiHandle, &xfer);
+    (void)QSPI_TransferSendEDMA(EXAMPLE_QSPI, &qspiHandle, &xfer);
 
     /* Execute the program page command. */
     QSPI_ExecuteIPCommand(EXAMPLE_QSPI, QSPI_CMD_SEQ_PROGRAM_PAGE);
@@ -184,17 +184,17 @@ void program_page(uint32_t dest_addr, uint32_t *src_addr)
 
     /* Wait until flash finished program */
     check_if_finished();
-    while (QSPI_GetStatusFlags(EXAMPLE_QSPI) & (kQSPI_Busy | kQSPI_IPAccess))
+    while ((QSPI_GetStatusFlags(EXAMPLE_QSPI) & ((uint32_t)kQSPI_Busy | (uint32_t)kQSPI_IPAccess)) != 0U)
     {
     }
     QSPI_SoftwareReset(EXAMPLE_QSPI);
-    while (QSPI_GetStatusFlags(EXAMPLE_QSPI) & (kQSPI_Busy | kQSPI_IPAccess))
+    while ((QSPI_GetStatusFlags(EXAMPLE_QSPI) & ((uint32_t)kQSPI_Busy | (uint32_t)kQSPI_IPAccess)) != 0U)
     {
     }
 }
 
 /* Use QSPI EDMA way to program serial flash */
-void qspi_edma(void)
+static void qspi_edma(void)
 {
     uint32_t i    = 0;
     uint32_t err  = 0;
@@ -205,7 +205,7 @@ void qspi_edma(void)
     addr = FSL_FEATURE_QSPI_AMBA_BASE + QSPI_ERASE_ADDR_OFFSET;
 #endif
     erase_sector(addr);
-    PRINTF("Erase finished!\r\n");
+    (void)PRINTF("Erase finished!\r\n");
 
 #if defined(EXAMPLE_DIV_NEED_RESTORE) && EXAMPLE_DIV_NEED_RESTORE
     /* Reduce frequency while clock divder is less than 2 */
@@ -222,11 +222,11 @@ void qspi_edma(void)
 #endif
 
     /* Program pages in a sector */
-    for (i = 0; i < FLASH_SECTORE_SIZE / FLASH_PAGE_SIZE; i++)
+    for (i = 0U; i < (FLASH_SECTORE_SIZE / FLASH_PAGE_SIZE); i++)
     {
         program_page(addr + i * FLASH_PAGE_SIZE, buff);
     }
-    PRINTF("Program data finished!\r\n");
+    (void)PRINTF("Program data finished!\r\n");
 
 #if defined(EXAMPLE_DIV_NEED_RESTORE) && EXAMPLE_DIV_NEED_RESTORE
     /* Restore the frequency if needed */
@@ -239,18 +239,21 @@ void qspi_edma(void)
     }
 #endif
 
-    for (i = 0; i < FLASH_SECTORE_SIZE / 4; i++)
+    for (i = 0U; i < (FLASH_SECTORE_SIZE / 4U); i++)
     {
-        if (((uint32_t *)addr)[i] != buff[i % 64])
+        if (((uint32_t *)addr)[i] != buff[i % 64U])
         {
-            PRINTF("The data in %d is wrong!!\r\n", i);
-            PRINTF("The flash value in %d is %d\r\n", i, ((uint32_t *)addr)[i]);
-            err++;
+            (void)PRINTF("The data in %d is wrong!!\r\n", i);
+            (void)PRINTF("The flash value in %d is %d\r\n", i, ((uint32_t *)addr)[i]);
+            if (err < UINT32_MAX)
+            {
+                err++;
+            }
         }
     }
-    if (err == 0)
+    if (err == 0U)
     {
-        PRINTF("Program through QSPI EDMA succeed!\r\n");
+        (void)PRINTF("Program through QSPI EDMA succeed!\r\n");
     }
 }
 
@@ -263,19 +266,19 @@ int main(void)
 
     BOARD_InitHardware();
 
-    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+    (void)PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
 
     /*Enable QSPI clock */
-    PRINTF("QSPI example started!\r\n");
+    (void)PRINTF("QSPI example started!\r\n");
 
 #if defined(EXAMPLE_DMAMUX_CHANNEL)
     /* Init DMAMUX */
     DMAMUX_Init(EXAMPLE_DMAMUX);
-    DMAMUX_SetSource(EXAMPLE_DMAMUX, EXAMPLE_DMAMUX_CHANNEL, EXAMPLE_DMA_SOURCE);
+    DMAMUX_SetSource(EXAMPLE_DMAMUX, EXAMPLE_DMAMUX_CHANNEL, (int32_t)EXAMPLE_DMA_SOURCE);
     DMAMUX_EnableChannel(EXAMPLE_DMAMUX, EXAMPLE_DMAMUX_CHANNEL);
 #else
     DMAMUX_Init(EXAMPLE_DMAMUX);
-    DMAMUX_SetSource(EXAMPLE_DMAMUX, EXAMPLE_CHANNEL, EXAMPLE_DMA_SOURCE);
+    DMAMUX_SetSource(EXAMPLE_DMAMUX, EXAMPLE_CHANNEL, (int32_t)EXAMPLE_DMA_SOURCE);
     DMAMUX_EnableChannel(EXAMPLE_DMAMUX, EXAMPLE_CHANNEL);
 #endif
 
@@ -288,7 +291,7 @@ int main(void)
      */
     EDMA_GetDefaultConfig(&edmaConfig);
     EDMA_Init(EXAMPLE_DMA, &edmaConfig);
-    EDMA_CreateHandle(&dmaHandle, EXAMPLE_DMA, EXAMPLE_CHANNEL);
+    (void)EDMA_CreateHandle(&dmaHandle, EXAMPLE_DMA, EXAMPLE_CHANNEL);
 
     /*Get QSPI default settings and configure the qspi */
     QSPI_GetDefaultQspiConfig(&config);
@@ -303,14 +306,14 @@ int main(void)
 #endif
 
     /* Copy the LUT table */
-    memcpy(single_config.lookuptable, lut, sizeof(uint32_t) * FSL_FEATURE_QSPI_LUT_DEPTH);
+    (void)memcpy(single_config.lookuptable, lut, sizeof(lut));
 
     /*According to serial flash feature to configure flash settings */
     QSPI_SetFlashConfig(EXAMPLE_QSPI, &single_config);
-    QSPI_TransferTxCreateHandleEDMA(EXAMPLE_QSPI, &qspiHandle, callback, NULL, &dmaHandle);
+    QSPI_TransferTxCreateHandleEDMA(EXAMPLE_QSPI, &qspiHandle, &callback, NULL, &dmaHandle);
 
     /*Initialize data buffer */
-    for (i = 0; i < 64; i++)
+    for (i = 0U; i < 64U; i++)
     {
         buff[i] = i;
     }

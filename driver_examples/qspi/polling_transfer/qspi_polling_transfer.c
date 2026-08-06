@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016-2017, 2025 NXP
+ * Copyright 2016-2017, 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -16,18 +16,29 @@
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
-extern void qspi_nor_flash_init(QuadSPI_Type *base);
-#if defined(FLASH_ENABLE_QUAD_CMD)
-extern void enable_quad_mode(void);
-#endif
-#if defined(FLASH_ENABLE_OCTAL_CMD)
-extern void enable_octal_mode(void);
+#if defined(FSL_SDK_DRIVER_QUICK_ACCESS_ENABLE)
+extern void BOARD_SetQspiClock(QuadSPI_Type *qspi, uint32_t qspiClockSrc, uint32_t divider);
 #endif
 extern void erase_sector(uint32_t addr);
 extern void erase_all(void);
 extern void program_page(uint32_t dest_addr, uint32_t *src_addr);
+extern void qspi_nor_flash_init(QuadSPI_Type *base);
+
+#if defined(EXAMPLE_USE_IP_READ_FLASH) && EXAMPLE_USE_IP_READ_FLASH
 extern void ip_read_flash(uint32_t addr, uint32_t *buffer, uint32_t size);
-extern void BOARD_SetQspiClock(QuadSPI_Type *qspi, uint32_t qspiClockSrc, uint32_t divider);
+#endif
+
+#if defined(FLASH_ENABLE_QUAD_CMD)
+extern void enable_quad_mode(void);
+#endif
+
+#if defined(FSL_FEATURE_QSPI_HAS_DDR) && FSL_FEATURE_QSPI_HAS_DDR
+extern void enable_ddr_mode(void);
+#endif
+
+#if defined(FLASH_ENABLE_OCTAL_CMD)
+extern void enable_octal_mode(void);
+#endif
 
 /*******************************************************************************
  * Variables
@@ -44,7 +55,7 @@ static bool isDivNeedRestore = false;
  * Code
  ******************************************************************************/
 /* Use QSPI polling way to program serial flash */
-void qspi_polling(void)
+static void qspi_polling(void)
 {
     uint32_t i    = 0;
     uint32_t err  = 0;
@@ -56,11 +67,11 @@ void qspi_polling(void)
     addr = FSL_FEATURE_QSPI_AMBA_BASE + QSPI_ERASE_ADDR_OFFSET;
 #endif
     erase_sector(addr);
-    PRINTF("Erase finished!\r\n");
+    (void)PRINTF("Erase finished!\r\n");
 
 #if !defined(FSL_FEATURE_QSPI_CLOCK_CONTROL_EXTERNAL) || (!FSL_FEATURE_QSPI_CLOCK_CONTROL_EXTERNAL)
     /* Reduce frequency while clock divder is less than 2 */
-    uint8_t qspiClockDiv = ((EXAMPLE_QSPI->MCR & QuadSPI_MCR_SCLKCFG_MASK) >> QuadSPI_MCR_SCLKCFG_SHIFT) + 1U;
+    uint32_t qspiClockDiv = ((EXAMPLE_QSPI->MCR & QuadSPI_MCR_SCLKCFG_MASK) >> QuadSPI_MCR_SCLKCFG_SHIFT) + 1U;
     if (qspiClockDiv == 1U)
     {
         /* Reduce the frequency */
@@ -81,7 +92,7 @@ void qspi_polling(void)
     {
         program_page(addr + i * FLASH_PAGE_SIZE, buff);
     }
-    PRINTF("Program data finished!\r\n");
+    (void)PRINTF("Program data finished!\r\n");
 
 #if !defined(FSL_FEATURE_QSPI_CLOCK_CONTROL_EXTERNAL) || (!FSL_FEATURE_QSPI_CLOCK_CONTROL_EXTERNAL)
     /* Restore the frequency if needed */
@@ -109,32 +120,39 @@ void qspi_polling(void)
         memset(&ipRxBuff[0], 0, sizeof(ipRxBuff));
         ip_read_flash(addr, &ipRxBuff[0], sizeof(ipRxBuff));
 
-        for(uint32_t j = 0U; j < 64U; j++)
+        for (uint32_t j = 0U; j < 64U; j++)
         {
             if (ipRxBuff[j] != buff[j])
             {
                 PRINTF("The data in %d is wrong!!\r\n", j);
                 PRINTF("The flash value in %d is %d\r\n", j, ipRxBuff[j]);
+                if (err < UINT32_MAX)
+                {
+                    err++;
+                }
+            }
+        }
+    }
+    if (err == 0U)
+    {
+        (void)PRINTF("Program through QSPI polling succeed!\r\n");
+    }
+#else
+    for (i = 0U; i < (FLASH_SECTORE_SIZE / 4U); i++)
+    {
+        if (((uint32_t *)addr)[i] != buff[i % 64U])
+        {
+            (void)PRINTF("The flash data in word %u is 0x%X. Should be 0x%X\r\n", i, ((uint32_t *)addr)[i],
+                         buff[i % 64U]);
+            if (err < UINT32_MAX)
+            {
                 err++;
             }
         }
     }
     if (err == 0U)
     {
-        PRINTF("Program through QSPI polling succeed!\r\n");
-    }
-#else
-    for (i = 0; i < FLASH_SECTORE_SIZE / 4; i++)
-    {
-        if (((uint32_t *)addr)[i] != buff[i % 64])
-        {
-            PRINTF("The flash data in word %u is 0x%X. Should be 0x%X\r\n", i, ((uint32_t *)addr)[i], buff[i % 64]);
-            err++;
-        }
-    }
-    if (err == 0)
-    {
-        PRINTF("Program through QSPI polling succeed!\r\n");
+        (void)PRINTF("Program through QSPI polling succeed!\r\n");
     }
 #endif
 }
@@ -145,13 +163,13 @@ int main(void)
 
     BOARD_InitHardware();
 
-    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+    (void)PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
 
     /* Enable QSPI clock */
-    PRINTF("QSPI example started!\r\n");
+    (void)PRINTF("QSPI example started!\r\n");
 
     /* Copy the LUT table */
-    memcpy(single_config.lookuptable, lut, sizeof(lut));
+    (void)memcpy(single_config.lookuptable, lut, sizeof(lut));
 
     qspi_nor_flash_init(EXAMPLE_QSPI);
 
