@@ -48,7 +48,7 @@ int main(void)
 
     BOARD_InitHardware();
 
-    PRINTF("\r\nXSPI QPI SDR (4-4-4) EDMA example started!\r\n");
+    PRINTF("\r\nXSPI EDMA example started!\r\n");
 
     /* EDMA init */
     EDMA_GetDefaultConfig(&userConfig);
@@ -78,8 +78,6 @@ int main(void)
         }
     }
 
-    PRINTF("4-byte address mode entered.\r\n");
-    PRINTF("QPI (4-4-4) mode enabled.\r\n");
     PRINTF("Flash vendor ID: 0x%02X\r\n", vendorID);
 
     /* Erase sector */
@@ -163,7 +161,7 @@ int main(void)
     /* Print final messages while XIP still works, then reset flash and halt.
      * xspi_quad_reset_and_halt runs from RAM and never returns — after it resets
      * the flash to SPI mode, XIP is permanently broken. */
-    PRINTF("XSPI QPI SDR (4-4-4) EDMA example finished.\r\n");
+    PRINTF("XSPI EDMA example finished.\r\n");
     PRINTF("Flash reset to default SPI mode.\r\n");
     xspi_quad_reset_and_halt(EXAMPLE_XSPI);
 
