@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Type-C USB cable
-- FRDM-MCXW70 Board
+- KW43-LOC Board
 - Personal Computer
 
 Board settings
@@ -25,15 +25,11 @@ This example using TAMPER0 pin as passive tamper.
 
 | TAMPER pin | Function   | PIN NAME | Arduino header |
 |------------|------------|----------|----------------|
-| 0          | Passive    | PTD2     | J23 pin 7      |
-
-The following signals are also available on the Arduino headers:
-- GND is available on J19 pin 7
-- 3V3 MCU is available on J19 pin 8
+| 0          | Passive    | P5_2     | A5             |
 
 Without connecting tamper pin it should trigger tamper event and output log should look like log below
 
-When Tamper 0 (PTD2, J23 pin 7) is connected to 3V3 MCU (J19 pin 8), in output log the line Tampering detected on PIN0 should change to No tampering detected on PIN0
+When Tamper 0 is connected to 3V3, In output log line Line Tampering detected on PIN0 should change to No tampering detected on PIN0
 
 The log below shows the output of the tdet driver demo in the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -42,7 +38,7 @@ TDET Peripheral Driver Example
 Tampering detected Tamper Detect Flag is set
 
 Passive tamper example
-Tampering detected on Passive TAMPER
+No tampering detected on Passive TAMPER
 
 End of example
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
