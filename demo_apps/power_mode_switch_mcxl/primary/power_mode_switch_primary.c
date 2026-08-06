@@ -205,7 +205,30 @@ int main(void)
     PRINTF("Loading ADVC table...\r\n");
     ADVC_Init();
 #endif /* APP_ENABLE_ADVC */
-    if (powerHandle.previousPowerMode == kPower_DeepPowerDown1)
+    if ((CMC_GetSystemResetStatus(CMC) & (uint32_t)kCMC_WarmReset) != 0UL)
+    {
+        /* Warm reset (RESET_B pin, software reset, watchdog, etc.) only resets
+         * the MAIN domain, the AON domain keeps running: CM0+ is not reset and
+         * powerHandle/SMM backup registers hold stale low power state. As the
+         * master core, hold CM0+ in reset and clear the retained state so both
+         * cores restart from a clean state. */
+        PRINTF("Warm reset detected - restart secondary core\r\n");
+        /* Hold CM0+ in reset so the image copy below is safe and the
+         * following APP_BootCore1() restarts CM0+ from its reset vector. */
+        AON__CGU->RST_SUB_BLK &= ~CGU_RST_SUB_BLK_CM0P_RST_REL_MASK;
+        for (uint8_t i = 0U; i < 100; i++)
+        {
+            __NOP();
+        }
+        AON__SMM->LSB_BCKP1 = 0UL;
+        AON__SMM->MSB_BCKP1 = 0UL;
+        AON__SMM->LSB_BCKP2 = 0UL;
+        AON__SMM->MSB_BCKP2 = 0UL;
+        powerHandle.previousPowerMode = kPower_Active;
+        APP_CopyCore1Image();
+        APP_BootCore1();
+    }
+    else if (powerHandle.previousPowerMode == kPower_DeepPowerDown1)
     {
         /* DPD1 wakeup: CM0+ is still running in AON domain.
          * Skip image copy to avoid overwriting CM0+ runtime data
