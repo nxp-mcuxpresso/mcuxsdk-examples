@@ -1,0 +1,13 @@
+source "middleware/edgefast_open/Kconfig"
+source "Kconfig.mcuxpresso"
+
+# Enable the edgefast_open shell porting layer (fsl_shell). PORT_SHELL is a
+# hidden symbol normally selected by BT_SHELL; this app uses the plain fsl_shell
+# API directly (app_shell.c) and registers its own "bt"/"wifi" commands, so we
+# enable PORT_SHELL here WITHOUT BT_SHELL. BT_SHELL is intentionally left off to
+# avoid the full edgefast_open bt shell registering a conflicting top-level "bt"
+# command in bt.c.
+config COEX_HANDSFREE_AG_ENABLE_PORT_SHELL
+	bool
+	default y
+	select PORT_SHELL
