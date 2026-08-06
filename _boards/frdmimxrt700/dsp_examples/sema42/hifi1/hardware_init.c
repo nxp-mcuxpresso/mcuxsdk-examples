@@ -17,6 +17,9 @@ void BOARD_InitHardware(void)
     CLOCK_SetXtalFreq(BOARD_XTAL_SYS_CLK_HZ); /* Note: need tell clock driver the frequency of OSC. */
 
     BOARD_InitBootPins();
+    /* DSP must enable GPIO8 in its own domain view or its LED writes are dropped. */
+    RESET_ClearPeripheralReset(kGPIO8_RST_SHIFT_RSTn);
+    CLOCK_EnableClock(kCLOCK_Gpio8);
 }
 uint8_t APP_GetDSPCoreDomainID(void)
 {
