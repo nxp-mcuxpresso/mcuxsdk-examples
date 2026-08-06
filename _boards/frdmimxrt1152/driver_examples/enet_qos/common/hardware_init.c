@@ -62,14 +62,6 @@ static status_t MDIO_Read(uint8_t phyAddr, uint8_t regAddr, uint16_t *pData)
     return ENET_MDIORead(ENET_1G, phyAddr, regAddr, pData);
 }
 
-static status_t BOARD_PHY_EnableLoopback(phy_handle_t *handle, phy_loop_t mode, phy_speed_t speed, bool enable)
-{
-    if (speed > kPHY_Speed100M)
-    {
-        speed = kPHY_Speed100M;
-    }
-    return PHY_JL1111_EnableLoopback(handle, mode, speed, enable);
-}
 
 #if defined(EXAMPLE_PHY_LOOPBACK_ENABLE)
 /* GetLinkStatus override that enables ENET_QOS MAC internal loopback.
@@ -78,6 +70,15 @@ static status_t BOARD_PHY_GetLinkStatus(phy_handle_t *handle, bool *status)
 {
     ENET_QOS->MAC_CONFIGURATION |= ENET_QOS_MAC_CONFIGURATION_LM_MASK;
     return PHY_JL1111_GetLinkStatus(handle, status);
+}
+
+static status_t BOARD_PHY_EnableLoopback(phy_handle_t *handle, phy_loop_t mode, phy_speed_t speed, bool enable)
+{
+    if (speed > kPHY_Speed100M)
+    {
+        speed = kPHY_Speed100M;
+    }
+    return PHY_JL1111_EnableLoopback(handle, mode, speed, enable);
 }
 #endif
 
