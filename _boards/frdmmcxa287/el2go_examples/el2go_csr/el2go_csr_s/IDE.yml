@@ -1,0 +1,37 @@
+#
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+mdk:
+  shared-workspace: el2go_csr
+  sharing-workspace:
+  - ../../el2go_csr_ns/mdk/el2go_csr_ns
+  - ../../tfm_s_crypto_clients/mdk/tfm_s_crypto_clients
+flash_programming_file:
+  files:
+  - source: ${board_root}/${board}/el2go_examples/el2go_csr/el2go_csr_s/el2go_csr_flashdownload.ini
+    attribute: flash_programming_file
+    toolchains: mdk
+    targets: debug release
+initialization_file:
+  files:
+  - source: ${board_root}/${board}/el2go_examples/el2go_csr/el2go_csr_s/el2go_csr_flashdebug.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: debug release
+iar:
+  shared-workspace: el2go_csr
+  sharing-workspace:
+  - ../../el2go_csr_ns/iar/el2go_csr_ns
+  - ../../tfm_s_crypto_clients/iar/tfm_s_crypto_clients
+  config:
+    __common__:
+      download-extra-image:
+      - path: "../../el2go_csr_ns/iar/el2go_csr_ns.out"
+        item: 1
+        offset: 0
+        debug_info_only: false
+  project-templates:
+  - scripts/guigenerator/templates/iar/app_jlinkswd/generic.ewd
+  - scripts/guigenerator/templates/iar/app_cmsisdap_m33/generic.ewp
+  - scripts/guigenerator/templates/iar/general.eww
