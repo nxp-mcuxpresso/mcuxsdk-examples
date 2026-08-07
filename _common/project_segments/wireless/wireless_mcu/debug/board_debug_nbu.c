@@ -20,6 +20,9 @@
 #if defined(BOARD_NBUDBG_HCI_LOGGER) && (BOARD_NBUDBG_HCI_LOGGER > 0)
 #include "board_dbg_logger.h"
 #include "fwk_platform_dbg.h"
+#if defined(BOARD_NBUDBG_HCI_LOG_ON_FAULT_ONLY) && (BOARD_NBUDBG_HCI_LOG_ON_FAULT_ONLY > 0)
+#include "fsl_component_mem_manager.h"
+#endif
 #endif
 
 #if defined(BOARD_NBUDBG_APP_LOGGER) && (BOARD_NBUDBG_APP_LOGGER > 0) && \
@@ -172,9 +175,23 @@ static OSA_MSGQ_HANDLE_DEFINE(dbgMsgQueue, BOARD_NBUDBG_EVENT_QUEUE_SIZE, sizeof
 
 #if defined(BOARD_NBUDBG_HCI_LOGGER) && (BOARD_NBUDBG_HCI_LOGGER > 0)
 /* Single buffer used to serialize one packet before the immediate write. Filled
- * and written under a lock so only one packet is in flight at a time; sized so
- * the logger never allocates from the shared BLE heap. */
+ * and written under a lock so only one packet is in flight at a time.
+ *
+ * In fault-only mode the buffer is only ever needed after an NBU fatal fault,
+ * to serialize the coredump RX burst. Rather than reserving it statically for
+ * the whole application lifetime, it is lazily allocated once from the heap on
+ * the first fault-gated packet and then kept for the whole duration of the
+ * coredump. A single allocation (never freed, never reallocated) avoids heap
+ * fragmentation and saves the static RAM during normal operation.
+ *
+ * In continuous mode the buffer is touched on every packet, so a permanent
+ * static array (sized so the logger never allocates from the shared BLE heap)
+ * remains the right choice. */
+#if defined(BOARD_NBUDBG_HCI_LOG_ON_FAULT_ONLY) && (BOARD_NBUDBG_HCI_LOG_ON_FAULT_ONLY > 0)
+static uint8_t *s_hciLogBuf; /* lazily allocated once on first fault-gated packet */
+#else
 static uint8_t s_hciLogBuf[BOARD_NBUDBG_HCI_LOG_BUF_SIZE];
+#endif
 
 #if defined(USE_RTOS) && (USE_RTOS > 0)
 /* Serializes concurrent producers around the fill + write of s_hciLogBuf. */
@@ -596,6 +613,33 @@ static void BOARD_NBUDBG_HciLogEmit(uint8_t packet_type, const uint8_t *data, ui
         if (OSA_MutexLock(s_hciLogMutex, osaWaitForever_c) != KOSA_StatusSuccess)
         {
             s_hciLogDropped++;
+            break;
+        }
+#endif
+
+#if defined(BOARD_NBUDBG_HCI_LOG_ON_FAULT_ONLY) && (BOARD_NBUDBG_HCI_LOG_ON_FAULT_ONLY > 0)
+        /* The check-then-set (read of s_hciLogBuf plus its one-shot assignment) must
+         * be atomic against concurrent producers. On an RTOS it runs with
+         * s_hciLogMutex already held; on bare-metal it runs inside a short interrupt-
+         * disabled section, so the read cannot race with the alloc. A NULL buffer
+         * (never allocated, or the one-shot alloc failed) drops the packet. */
+#if !(defined(USE_RTOS) && (USE_RTOS > 0))
+        uint32_t regPrimask = DisableGlobalIRQ();
+#endif
+        if (s_hciLogBuf == NULL)
+        {
+            s_hciLogBuf = (uint8_t *)MEM_BufferAlloc(BOARD_NBUDBG_HCI_LOG_BUF_SIZE);
+        }
+#if !(defined(USE_RTOS) && (USE_RTOS > 0))
+        EnableGlobalIRQ(regPrimask);
+#endif
+
+        if (s_hciLogBuf == NULL)
+        {
+            s_hciLogDropped++;
+#if defined(USE_RTOS) && (USE_RTOS > 0)
+            (void)OSA_MutexUnlock(s_hciLogMutex);
+#endif
             break;
         }
 #endif
