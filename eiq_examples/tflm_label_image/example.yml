@@ -62,6 +62,19 @@ tflm_label_image:
     - +iar@flash_release
     - +mdk@flash_debug
     - +mdk@flash_release
+    frdmmcxn947t@cm33_core0:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    - +armgcc@flash_debug
+    - +armgcc@flash_release
+    - +iar@flash_debug
+    - +iar@flash_release
+    - +mdk@flash_debug
+    - +mdk@flash_release
     mcxn5xxevk@cm33_core0:
     - -armgcc@debug
     - -armgcc@release

@@ -1,18 +1,17 @@
 /*
 ** ###################################################################
 **     Processors:          MCXN947TVDF_cm33_core0
-**                          MCXN947TVNL_cm33_core0
 **
 **     Compiler:            GNU C Compiler
-**     Reference manual:    MCX N1xNxxx Reference Manual
-**     Version:             rev. 1.0, 2021-08-03
-**     Build:               b230112
+**     Reference manual:    MCXNx4x Reference Manual
+**     Version:             rev. 1.1, 2025-11-07
+**     Build:               b260716
 **
 **     Abstract:
 **         Linker file for the GNU C Compiler
 **
 **     Copyright 2016 Freescale Semiconductor, Inc.
-**     Copyright 2016-2023 NXP
+**     Copyright 2016-2026 NXP
 **     All rights reserved.
 **
 **     SPDX-License-Identifier: BSD-3-Clause

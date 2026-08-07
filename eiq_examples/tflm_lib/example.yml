@@ -67,6 +67,13 @@ tflm_lib:
     - +iar@release
     - +mdk@debug
     - +mdk@release
+    frdmmcxn947t@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release
+    - +mdk@debug
+    - +mdk@release
     mcxn5xxevk@cm33_core0:
     - +armgcc@debug
     - +armgcc@release
