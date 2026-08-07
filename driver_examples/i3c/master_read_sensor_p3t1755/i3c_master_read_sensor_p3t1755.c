@@ -27,16 +27,19 @@
  * Prototypes
  ******************************************************************************/
 static void i3c_master_callback(I3C_Type *base, i3c_master_handle_t *handle, status_t status, void *userData);
+static status_t I3C_WriteSensor(uint8_t deviceAddress, uint32_t regAddress, uint8_t *regData, size_t dataSize);
+static status_t I3C_ReadSensor(uint8_t deviceAddress, uint32_t regAddress, uint8_t *regData, size_t dataSize);
+static status_t p3t1755_set_dynamic_address(void);
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-volatile status_t g_completionStatus;
-volatile bool g_masterCompletionFlag;
-i3c_master_handle_t g_i3c_m_handle;
-p3t1755_handle_t p3t1755Handle;
+static volatile status_t g_completionStatus;
+static volatile bool g_masterCompletionFlag;
+static i3c_master_handle_t g_i3c_m_handle;
+static p3t1755_handle_t p3t1755Handle;
 
-const i3c_master_transfer_callback_t masterCallback = {
-    .slave2Master = NULL, .ibiCallback = NULL, .transferComplete = i3c_master_callback};
+static const i3c_master_transfer_callback_t masterCallback = {
+    .slave2Master = NULL, .ibiCallback = NULL, .transferComplete = &i3c_master_callback};
 
 /*******************************************************************************
  * Code
@@ -51,7 +54,7 @@ static void i3c_master_callback(I3C_Type *base, i3c_master_handle_t *handle, sta
     g_completionStatus = status;
 }
 
-status_t I3C_WriteSensor(uint8_t deviceAddress, uint32_t regAddress, uint8_t *regData, size_t dataSize)
+static status_t I3C_WriteSensor(uint8_t deviceAddress, uint32_t regAddress, uint8_t *regData, size_t dataSize)
 {
     status_t result                  = kStatus_Success;
     i3c_master_transfer_t masterXfer = {0};
@@ -64,7 +67,7 @@ status_t I3C_WriteSensor(uint8_t deviceAddress, uint32_t regAddress, uint8_t *re
     masterXfer.subaddressSize = 1;
     masterXfer.data           = regData;
     masterXfer.dataSize       = dataSize;
-    masterXfer.flags          = kI3C_TransferDefaultFlag;
+    masterXfer.flags          = (uint32_t)kI3C_TransferDefaultFlag;
 
     g_masterCompletionFlag = false;
     g_completionStatus     = kStatus_Success;
@@ -92,7 +95,7 @@ status_t I3C_WriteSensor(uint8_t deviceAddress, uint32_t regAddress, uint8_t *re
     return result;
 }
 
-status_t I3C_ReadSensor(uint8_t deviceAddress, uint32_t regAddress, uint8_t *regData, size_t dataSize)
+static status_t I3C_ReadSensor(uint8_t deviceAddress, uint32_t regAddress, uint8_t *regData, size_t dataSize)
 {
     status_t result                  = kStatus_Success;
     i3c_master_transfer_t masterXfer = {0};
@@ -105,7 +108,7 @@ status_t I3C_ReadSensor(uint8_t deviceAddress, uint32_t regAddress, uint8_t *reg
     masterXfer.subaddressSize = 1;
     masterXfer.data           = regData;
     masterXfer.dataSize       = dataSize;
-    masterXfer.flags          = kI3C_TransferDefaultFlag;
+    masterXfer.flags          = (uint32_t)kI3C_TransferDefaultFlag;
 
     g_masterCompletionFlag = false;
     g_completionStatus     = kStatus_Success;
@@ -133,7 +136,7 @@ status_t I3C_ReadSensor(uint8_t deviceAddress, uint32_t regAddress, uint8_t *reg
     return result;
 }
 
-status_t p3t1755_set_dynamic_address(void)
+static status_t p3t1755_set_dynamic_address(void)
 {
     status_t result                  = kStatus_Success;
     i3c_master_transfer_t masterXfer = {0};
@@ -146,7 +149,7 @@ status_t p3t1755_set_dynamic_address(void)
     masterXfer.dataSize     = 1;
     masterXfer.direction    = kI3C_Write;
     masterXfer.busType      = kI3C_TypeI3CSdr;
-    masterXfer.flags        = kI3C_TransferDefaultFlag;
+    masterXfer.flags        = (uint32_t)kI3C_TransferDefaultFlag;
     result                  = I3C_MasterTransferBlocking(EXAMPLE_MASTER, &masterXfer);
     if (result != kStatus_Success)
     {
@@ -154,28 +157,28 @@ status_t p3t1755_set_dynamic_address(void)
     }
 
     /* Assign dynmic address. */
-    memset(&masterXfer, 0, sizeof(masterXfer));
+    (void)memset(&masterXfer, 0, sizeof(masterXfer));
     txBuff[0]               = CCC_SETDASA;
     masterXfer.slaveAddress = I3C_BROADCAST_ADDR;
     masterXfer.data         = txBuff;
     masterXfer.dataSize     = 1;
     masterXfer.direction    = kI3C_Write;
     masterXfer.busType      = kI3C_TypeI3CSdr;
-    masterXfer.flags        = kI3C_TransferNoStopFlag;
+    masterXfer.flags        = (uint32_t)kI3C_TransferNoStopFlag;
     result                  = I3C_MasterTransferBlocking(EXAMPLE_MASTER, &masterXfer);
     if (result != kStatus_Success)
     {
         return result;
     }
 
-    memset(&masterXfer, 0, sizeof(masterXfer));
+    (void)memset(&masterXfer, 0, sizeof(masterXfer));
     txBuff[0]               = SENSOR_ADDR << 1;
     masterXfer.slaveAddress = SENSOR_SLAVE_ADDR;
     masterXfer.data         = txBuff;
     masterXfer.dataSize     = 1;
     masterXfer.direction    = kI3C_Write;
     masterXfer.busType      = kI3C_TypeI3CSdr;
-    masterXfer.flags        = kI3C_TransferDefaultFlag;
+    masterXfer.flags        = (uint32_t)kI3C_TransferDefaultFlag;
     return I3C_MasterTransferBlocking(EXAMPLE_MASTER, &masterXfer);
 }
 
@@ -191,9 +194,9 @@ int main(void)
 
     BOARD_InitHardware();
 
-    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+    (void)PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
 
-    PRINTF("\r\nI3C master read sensor data example.\r\n");
+    (void)PRINTF("\r\nI3C master read sensor data example.\r\n");
 
     I3C_MasterGetDefaultConfig(&masterConfig);
     masterConfig.baudRate_Hz.i2cBaud          = EXAMPLE_I2C_BAUDRATE;
@@ -207,7 +210,7 @@ int main(void)
     result = p3t1755_set_dynamic_address();
     if (result != kStatus_Success)
     {
-        PRINTF("\r\nP3T1755 set dynamic address failed.\r\n");
+        (void)PRINTF("\r\nP3T1755 set dynamic address failed.\r\n");
         return -1;
     }
 
@@ -215,18 +218,23 @@ int main(void)
     p3t1755Config.readTransfer  = I3C_ReadSensor;
     p3t1755Config.sensorAddress = SENSOR_ADDR;
     p3t1755Config.oneshotMode   = false;
-    P3T1755_Init(&p3t1755Handle, &p3t1755Config);
+    result                      = P3T1755_Init(&p3t1755Handle, &p3t1755Config);
+    if (result != kStatus_Success)
+    {
+        (void)PRINTF("\r\nP3T1755 init failed.\r\n");
+        return -1;
+    }
 
     while (1)
     {
         result = P3T1755_ReadTemperature(&p3t1755Handle, &temperature);
         if (result != kStatus_Success)
         {
-            PRINTF("\r\nP3T1755 read temperature failed.\r\n");
+            (void)PRINTF("\r\nP3T1755 read temperature failed.\r\n");
         }
         else
         {
-            PRINTF("\r\nTemperature:%f \r\n", temperature);
+            (void)PRINTF("\r\nTemperature:%f \r\n", temperature);
         }
         SDK_DelayAtLeastUs(1000000, CLOCK_GetCoreSysClkFreq());
     }
