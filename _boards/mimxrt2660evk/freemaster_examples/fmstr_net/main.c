@@ -69,10 +69,6 @@ int main(void)
     pcal6524_handle_t* pcal6524Handle = BOARD_GetPCAL6524Handle();
     BOARD_InitPCAL6524(pcal6524Handle);
 
-    /* Refresh SystemCoreClock from the configured clock tree; otherwise it stays at the static
-     * DEFAULT_SYSTEM_CLOCK and SysTick-based timing (e.g. iperf throughput) reads at the wrong rate. */
-    SystemCoreClockUpdate();
-
     /* The shared clock tree leaves ETH1_TRXCLK at 250MHz; the ENET1G RGMII RX delay-line reference
      * must be 125MHz (RM), so re-divide it here rather than in the board-wide clock config. */
     {

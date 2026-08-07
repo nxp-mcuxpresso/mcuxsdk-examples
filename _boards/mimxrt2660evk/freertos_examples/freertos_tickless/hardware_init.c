@@ -18,7 +18,6 @@ void BOARD_InitHardware(void)
     /* Board common setting: MPU, Power and Clock Tree, TRDC, and Debug Console init. */
     BOARD_CommonSetting();
     BOARD_InitBUTTONsPins();
-    SystemCoreClockUpdate();
 
 #if 0
     POWER_EnableWakeupSource(kPOWER_WakeupIrq_VbatLptmr);

@@ -17,7 +17,6 @@ void BOARD_InitHardware(void)
     BOARD_CommonSetting();
     BOARD_InitI3CPins();
 
-    SystemCoreClockUpdate();
 
     CLOCK_SetRootClockDiv(kCLOCK_Root_MAIN_i3c0_fclk, 15U);
 }

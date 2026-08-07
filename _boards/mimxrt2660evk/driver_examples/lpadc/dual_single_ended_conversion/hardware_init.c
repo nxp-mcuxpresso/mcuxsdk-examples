@@ -16,6 +16,5 @@ void BOARD_InitHardware(void)
     BOARD_InitADCPin();
 
     CLOCK_SetRootClockDiv(kCLOCK_Root_MAIN_adc0_fclk, 50u);
-    SystemCoreClockUpdate();
 }
 /*${function:end}*/

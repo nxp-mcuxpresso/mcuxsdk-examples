@@ -101,9 +101,6 @@ void BOARD_InitHardware(void)
     BOARD_Init6524Pins();
     BOARD_InitPCAL6524(&s_pcal6524Handle);
 #endif
-    /* Refresh SystemCoreClock from the configured clock tree; otherwise it stays at the static
-     * DEFAULT_SYSTEM_CLOCK and SysTick-based timing (e.g. iperf throughput) reads at the wrong rate. */
-    SystemCoreClockUpdate();
 
     /* The shared clock tree leaves ETH0_TRXCLK at 250MHz; the ENET_QOS RGMII TX clock generator
      * needs a 125MHz reference, so re-divide it here rather than in the board-wide clock config. */

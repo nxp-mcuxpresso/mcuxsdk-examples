@@ -29,7 +29,5 @@ void BOARD_InitHardware(void)
     BOARD_RequestTRDC();
 
     TRDC_EDMA_ResetPermissions();
-
-    SystemCoreClockUpdate();
 }
 /*${function:end}*/

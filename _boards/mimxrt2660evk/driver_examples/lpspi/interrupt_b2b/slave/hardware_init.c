@@ -19,7 +19,5 @@ void BOARD_InitHardware(void)
     /* Board common setting: MPU, Power and Clock Tree, TRDC, and Debug Console init. */
     BOARD_CommonSetting();
     BOARD_InitSPIPins();
-
-    SystemCoreClockUpdate();
 }
 /*${function:end}*/

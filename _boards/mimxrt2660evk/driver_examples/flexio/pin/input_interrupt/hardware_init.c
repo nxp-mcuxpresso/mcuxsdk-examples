@@ -48,6 +48,5 @@ void BOARD_InitHardware(void)
     GPIO_PinInit(BOARD_GPIO_OUTPUT_PORT, BOARD_GPIO_OUTPUT_PORT_PIN, &led_config);
 
     CLOCK_EnableClock(kCLOCK_MAIN_hsp_flexio0);
-    SystemCoreClockUpdate();
 }
 /*${function:end}*/

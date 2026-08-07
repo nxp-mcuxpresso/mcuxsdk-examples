@@ -20,7 +20,6 @@ void BOARD_InitHardware(void)
     BOARD_CommonSetting();
     BOARD_InitFLEXIO_PINOUTPUTPins();
     CLOCK_EnableClock(kCLOCK_MAIN_hsp_flexio1);
-    SystemCoreClockUpdate();
 
     CLOCK_SetRootClockDiv(kCLOCK_Root_MAIN_flexio0_fclk, 20U);
 }
