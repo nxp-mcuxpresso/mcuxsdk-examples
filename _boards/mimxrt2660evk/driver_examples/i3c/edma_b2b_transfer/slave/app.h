@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, 2024-2025 NXP
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -11,8 +11,8 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define EXAMPLE_SLAVE                  HSP__I3C
-#define I3C_SLAVE_CLOCK_FREQUENCY      CLOCK_GetRootClockFreq(kCLOCK_Root_MAIN_i3c0_fclk)
+#define EXAMPLE_SLAVE             HSP__I3C
+#define I3C_SLAVE_CLOCK_FREQUENCY CLOCK_GetRootClockFreq(kCLOCK_Root_MAIN_i3c0_fclk)
 
 #define EXAMPLE_DMA                    MAIN__EDMA3
 #define EXAMPLE_I3C_TX_DMA_CHANNEL     (0U)
@@ -20,12 +20,10 @@
 #define EXAMPLE_I3C_TX_DMA_CHANNEL_MUX (kDmaRequestMux1HspI3CToBus)
 #define EXAMPLE_I3C_RX_DMA_CHANNEL_MUX (kDmaRequestMux1HspI3CFromBus)
 
-#if 0
-#define I3C_ASYNC_WAKE_UP_INTR_CLEAR                    \
-    {                                                   \
-        BLK_CTRL_WAKEUPMIX->I3C2_ASYNC_WAKEUP_CTRL = 1; \
+#define I3C_ASYNC_WAKE_UP_INTR_CLEAR                                  \
+    {                                                                 \
+        MODCON_SetCFG(kModCon_MAIN_I3C, 0U, MODCON_CFG_IRQ_DETECT_CLR_MASK); \
     }
-#endif
 
 /*${macro:end}*/
 

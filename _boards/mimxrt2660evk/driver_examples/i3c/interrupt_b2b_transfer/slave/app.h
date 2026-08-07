@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, 2024 NXP
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -11,14 +11,12 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define EXAMPLE_SLAVE              HSP__I3C
-#define I3C_SLAVE_CLOCK_FREQUENCY  CLOCK_GetRootClockFreq(kCLOCK_Root_MAIN_i3c0_fclk)
-#if 0
-#define I3C_ASYNC_WAKE_UP_INTR_CLEAR                    \
-    {                                                   \
-        BLK_CTRL_WAKEUPMIX->I3C2_ASYNC_WAKEUP_CTRL = 1; \
+#define EXAMPLE_SLAVE             HSP__I3C
+#define I3C_SLAVE_CLOCK_FREQUENCY CLOCK_GetRootClockFreq(kCLOCK_Root_MAIN_i3c0_fclk)
+#define I3C_ASYNC_WAKE_UP_INTR_CLEAR                                  \
+    {                                                                 \
+        MODCON_SetCFG(kModCon_MAIN_I3C, 0U, MODCON_CFG_IRQ_DETECT_CLR_MASK); \
     }
-#endif
 /*${macro:end}*/
 
 /*******************************************************************************
