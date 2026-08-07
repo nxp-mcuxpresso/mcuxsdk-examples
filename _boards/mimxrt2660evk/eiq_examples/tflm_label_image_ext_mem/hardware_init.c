@@ -16,14 +16,6 @@
 #pragma section = ".modeldata_init"
 #endif
 
-void modelInit(){
-#if defined(__ICCARM__)
-    char *_model_run_begin  = __section_begin(".modeldata");
-    char *_model_load_begin = __section_begin(".modeldata_init");
-    memcpy(_model_run_begin, _model_load_begin, __section_size(".modeldata"));
-#endif
-}
-
 void cleanCache_by_Addr(uint32_t addr, uint32_t size)
 {
     if (SCB->CCR & SCB_CCR_DC_Msk) {
@@ -32,6 +24,15 @@ void cleanCache_by_Addr(uint32_t addr, uint32_t size)
     /* Do memory barrier */
     __DSB();
     __ISB();
+}
+
+void modelInit(){
+#if defined(__ICCARM__)
+    char *_model_run_begin  = __section_begin(".modeldata");
+    char *_model_load_begin = __section_begin(".modeldata_init");
+    memcpy(_model_run_begin, _model_load_begin, __section_size(".modeldata"));
+    cleanCache_by_Addr((uint32_t)_model_run_begin, __section_size(".modeldata"));
+#endif
 }
 
 void BOARD_Init()

@@ -144,6 +144,6 @@ mcux_add_source(
 )
 
 mcux_add_iar_configuration(
-  LD "--image_input=${SdkRootDirPath}/middleware/eiq_int/neutron/rt2660/NeutronFirmware.elf,_binary_NeutronFirmware_elf_start,.elfdata,16\
+  LD "--image_input=${SdkRootDirPath}/middleware/eiq/neutron/rt2660/NeutronFirmware.elf,_binary_NeutronFirmware_elf_start,.elfdata,16\
       --keep=_binary_NeutronFirmware_elf_start"
 )
