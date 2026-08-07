@@ -1,12 +1,13 @@
 iar:
   project-templates:
-  - scripts/guigenerator/templates/iar/app_cmsisdap/generic.ewp
-  - scripts/guigenerator/templates/iar/app_cmsisdap/generic.ewd
+  - scripts/guigenerator/templates/iar/app_cmsisdap_m55_jlink_swd/generic.ewp
+  - scripts/guigenerator/templates/iar/app_cmsisdap_m55_jlink_swd/generic.ewd
   - scripts/guigenerator/templates/iar/general.eww
   config:
     __common__:
       debugger_setting:
         cmsisdap_resetlist: system
+        restore_breakpoint: _call_main
 
 mdk:
   project-templates:

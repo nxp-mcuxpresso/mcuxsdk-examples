@@ -30,6 +30,7 @@ if (CONFIG_MCUX_PRJSEG_module.board.suite)
                 psram_debug     psram_release
                 psram_txt_debug psram_txt_release
         CC "-DENABLE_RAM_VECTOR_TABLE=1"
+        CX "-DENABLE_RAM_VECTOR_TABLE=1"
     )
     mcux_add_iar_configuration(
         TARGETS debug           release
@@ -53,6 +54,21 @@ if (CONFIG_MCUX_PRJSEG_module.board.suite)
     mcux_add_configuration(
         CC "-DPRINTF_ADVANCED_ENABLE=1\
             -DPRINTF_FLOAT_ENABLE=1"
+        CX "-DPRINTF_ADVANCED_ENABLE=1\
+            -DPRINTF_FLOAT_ENABLE=1"
+    )
+
+    mcux_add_iar_configuration(
+        CC "--cmse"
+        CX "--cmse"
+    )
+    mcux_add_armgcc_configuration(
+        CC "-mcmse"
+        CX "-mcmse"
+    )
+    mcux_add_mdk_configuration(
+        CC "-mcmse"
+        CX "-mcmse"
     )
 
 endif()
