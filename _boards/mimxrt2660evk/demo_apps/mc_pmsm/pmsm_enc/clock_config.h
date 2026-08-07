@@ -1,0 +1,23 @@
+/*
+ * Copyright 2025 NXP
+ * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+#ifndef _CLOCK_CONFIG_H_
+#define _CLOCK_CONFIG_H_
+
+#include "fsl_common.h"
+
+#if defined(__cplusplus)
+extern "C" {
+#endif /* __cplusplus */
+
+void BOARD_InitBootClocks(void);
+
+#if defined(__cplusplus)
+}
+#endif
+
+#endif /* _CLOCK_CONFIG_H_ */

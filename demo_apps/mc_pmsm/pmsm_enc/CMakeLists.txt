@@ -13,10 +13,6 @@ mcux_add_source(
         ${board_root}/${board}/demo_apps/mc_pmsm/pmsm_enc/${multicore_foldername}/m1_pmsm_appconfig.h
         ${board_root}/${board}/demo_apps/mc_pmsm/pmsm_enc/${multicore_foldername}/m2_pmsm_appconfig.h
 		${board_root}/${board}/demo_apps/mc_pmsm/pmsm_enc/${multicore_foldername}/m1_pmsm_preprocessor.h
-        ${board_root}/${board}/demo_apps/mc_pmsm/pmsm_enc/${multicore_foldername}/pin_mux.c
-        ${board_root}/${board}/demo_apps/mc_pmsm/pmsm_enc/${multicore_foldername}/pin_mux.h
-        ${board_root}/${board}/demo_apps/mc_pmsm/pmsm_enc/${multicore_foldername}/clock_config.c
-        ${board_root}/${board}/demo_apps/mc_pmsm/pmsm_enc/${multicore_foldername}/clock_config.h
         ${board_root}/${board}/demo_apps/mc_pmsm/pmsm_enc/${multicore_foldername}/peripherals.c
         ${board_root}/${board}/demo_apps/mc_pmsm/pmsm_enc/${multicore_foldername}/peripherals.h
         ${board_root}/${board}/demo_apps/mc_pmsm/pmsm_enc/${multicore_foldername}/freemaster_cfg.h
@@ -30,7 +26,7 @@ mcux_add_include(
 )
 
 mcux_add_iar_configuration(
-    CC "--diag_suppress Pa082,Pa050,Ta021,Ta022,Ta023"
+    CC "--diag_suppress Pa082,Pa050,Ta021,Ta022,Ta023,Pe177,Pe136,Pa183"
 )
 
 mcux_add_armgcc_configuration(
