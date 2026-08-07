@@ -13,7 +13,19 @@
 #include "fsl_common.h"
 #include "fsl_iomuxc.h"
 #include "fsl_xbar.h"
+#include "board.h"
 #include "pin_mux.h"
+
+/*
+ * SCMI MISC protocol control IDs (System Manager).
+ * Access to BLK_CTRL_WAKEUPMIX registers must go through the SCMI MISC API so
+ * that the code works with different System Manager configurations (e.g. the
+ * Safety System Manager, where M7_0 does not have direct access to the
+ * BLK_CTRL resource).
+ */
+#define MC_SM_CTRL_XBAR_DIR_CTRL        9U   /*!< XBAR IO direction (XBAR_DIR_CTRL1) */
+#define MC_SM_CTRL_XBAR_DIR_CTRL_2      26U  /*!< XBAR IO direction (XBAR_DIR_CTRL2) */
+
 
 /*******************************************************************************
  * I2C Pin Configuration
@@ -386,26 +398,37 @@ void BOARD_Init_M1_PWM(void)
 
 void BOARD_Init_M1_FAULTS(void)
 {
+  /*
+   * Access to BLK_CTRL_WAKEUPMIX XBAR_DIR_CTRL1 must go through the SCMI MISC
+   * API so that the code works with different System Manager configurations
+   * (e.g. the Safety System Manager, where M7_0 does not have direct access to
+   * the BLK_CTRL resource).
+   */
+  int32_t  SCMI_status    = 0;
+  uint32_t blk_ctrl_size  = 0;
+  uint32_t blk_ctrl_value = 0;
+  (void)SCMI_status;
+
+  /* Get current XBAR_DIR_CTRL1 value */
+  SCMI_status = SCMI_MiscControlGet(SCMI_A2P, MC_SM_CTRL_XBAR_DIR_CTRL, &blk_ctrl_size, &blk_ctrl_value);
+
+  /* Over-currrent protection: set XBAR_INOUT21 as input */
+  blk_ctrl_value &= ~(BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL1_IOMUXC_XBAR_DIR_SEL_21_MASK);
+  blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL1_IOMUXC_XBAR_DIR_SEL_21(0x00U); /* XBAR_INOUT21 as input */
+
+  /* Over-votlage protection: set XBAR_INOUT20 as input */
+  blk_ctrl_value &= ~(BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL1_IOMUXC_XBAR_DIR_SEL_20_MASK);
+  blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL1_IOMUXC_XBAR_DIR_SEL_20(0x00U); /* XBAR_INOUT20 as input */
+
+  /* Update XBAR_DIR_CTRL1 */
+  SCMI_status = SCMI_MiscControlSet(SCMI_A2P, MC_SM_CTRL_XBAR_DIR_CTRL, blk_ctrl_size, &blk_ctrl_value);
+
   /* Over-currrent protection */
-  BLK_CTRL_WAKEUPMIX->IOMUX_GPIO_CTRL_0 = ((BLK_CTRL_WAKEUPMIX->IOMUX_GPIO_CTRL_0 &
-    (~(BLK_CTRL_WAKEUPMIX_IOMUX_GPIO_CTRL_0_sel5_MASK | BLK_CTRL_WAKEUPMIX_IOMUX_GPIO_CTRL_0_ovr5_MASK))) /* Mask bits to zero which are setting */
-      | BLK_CTRL_WAKEUPMIX_IOMUX_GPIO_CTRL_0_sel5(0x01U)        /* MUX8 selected */ 
-      | BLK_CTRL_WAKEUPMIX_IOMUX_GPIO_CTRL_0_ovr5(0x00U)        /* input direction */
-  );   
-
-  IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO57__GPIO3_IO25, 0U);
-
+  IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO57__XBAR1_XBAR_INOUT21, 0U);
   XBAR_SetSignalsConnection(kXBAR1_InputIomuxXbarIn21, kXBAR1_OutputFlexpwm2IppIndFault0);
-  
+
   /* Over-votlage protection */
-  /* Set XBAR_INOUT20 as input*/
-  BLK_CTRL_WAKEUPMIX->XBAR_DIR_CTRL1 = ((BLK_CTRL_WAKEUPMIX->XBAR_DIR_CTRL1 &
-    (~(BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL1_IOMUXC_XBAR_DIR_SEL_20_MASK))) /* Mask bits to zero which are setting */
-      | BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL1_IOMUXC_XBAR_DIR_SEL_20(0x00U) /* IOMUXC XBAR_INOUT20 function direction select: XBAR_INOUT as input */ 
-  );
-  
   IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO56__XBAR1_XBAR_INOUT20, 0U);
-  
   XBAR_SetSignalsConnection(kXBAR1_InputIomuxXbarIn20, kXBAR1_OutputFlexpwm2IppIndFault1);
 }
 
@@ -444,27 +467,37 @@ void BOARD_Init_M2_PWM(void)
 
 void BOARD_Init_M2_FAULTS(void)
 {
+  /*
+   * Access to BLK_CTRL_WAKEUPMIX XBAR_DIR_CTRL1 must go through the SCMI MISC
+   * API so that the code works with different System Manager configurations
+   * (e.g. the Safety System Manager, where M7_0 does not have direct access to
+   * the BLK_CTRL resource).
+   */
+  int32_t  SCMI_status    = 0;
+  uint32_t blk_ctrl_size  = 0;
+  uint32_t blk_ctrl_value = 0;
+  (void)SCMI_status;
+
+  /* Get current XBAR_DIR_CTRL1 value */
+  SCMI_status = SCMI_MiscControlGet(SCMI_A2P, MC_SM_CTRL_XBAR_DIR_CTRL, &blk_ctrl_size, &blk_ctrl_value);
+
+  /* Over-currrent protection: set XBAR_INOUT9 as input */
+  blk_ctrl_value &= ~(BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL1_IOMUXC_XBAR_DIR_SEL_9_MASK);
+  blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL1_IOMUXC_XBAR_DIR_SEL_9(0x00U); /* XBAR_INOUT9 as input */
+
+  /* Over-votlage protection: set XBAR_INOUT8 as input */
+  blk_ctrl_value &= ~(BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL1_IOMUXC_XBAR_DIR_SEL_8_MASK);
+  blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL1_IOMUXC_XBAR_DIR_SEL_8(0x00U); /* XBAR_INOUT8 as input */
+
+  /* Update XBAR_DIR_CTRL1 */
+  SCMI_status = SCMI_MiscControlSet(SCMI_A2P, MC_SM_CTRL_XBAR_DIR_CTRL, blk_ctrl_size, &blk_ctrl_value);
+
   /* Over-currrent protection */
-  /* Set XBAR_INOUT9 as input*/
-  BLK_CTRL_WAKEUPMIX->XBAR_DIR_CTRL1 = ((BLK_CTRL_WAKEUPMIX->XBAR_DIR_CTRL1 &
-    (~(BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL1_IOMUXC_XBAR_DIR_SEL_9_MASK))) /* Mask bits to zero which are setting */
-      | BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL1_IOMUXC_XBAR_DIR_SEL_9(0x00U) /* IOMUXC XBAR_INOUT9 function direction select: XBAR_INOUT as input */ 
-  );
-  
-  IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO33__XBAR1_XBAR_INOUT9, 0U); 
-  
+  IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO33__XBAR1_XBAR_INOUT9, 0U);
   XBAR_SetSignalsConnection(kXBAR1_InputIomuxXbarIn09, kXBAR1_OutputFlexpwm1IppIndFault0);
 
-  
   /* Over-votlage protection */
-  /* Set XBAR_INOUT8 as input*/
-  BLK_CTRL_WAKEUPMIX->XBAR_DIR_CTRL1 = ((BLK_CTRL_WAKEUPMIX->XBAR_DIR_CTRL1 &
-    (~(BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL1_IOMUXC_XBAR_DIR_SEL_8_MASK))) /* Mask bits to zero which are setting */
-      | BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL1_IOMUXC_XBAR_DIR_SEL_8(0x00U) /* IOMUXC XBAR_INOUT8 function direction select: XBAR_INOUT as input */ 
-  );
-  
-  IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO32__XBAR1_XBAR_INOUT8, 0U); 
-  
+  IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO32__XBAR1_XBAR_INOUT8, 0U);
   XBAR_SetSignalsConnection(kXBAR1_InputIomuxXbarIn08, kXBAR1_OutputFlexpwm1IppIndFault1);
 }
 
@@ -777,12 +810,34 @@ void BOARD_InitTpm2Pins(void)
 
 void BOARD_InitEqdcPins(void)
 {
-    BLK_CTRL_WAKEUPMIX->XBAR_DIR_CTRL2 = ((BLK_CTRL_WAKEUPMIX->XBAR_DIR_CTRL2 &
-      (~(BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_45_MASK | BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_46_MASK | BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_48_MASK)))
-        | BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_45(0x00U)
-        | BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_46(0x00U)
-        | BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_48(0x00U)
-    );
+    /*
+     * Access to BLK_CTRL_WAKEUPMIX XBAR_DIR_CTRL2 must go through the SCMI MISC
+     * API so that the code works with different System Manager configurations
+     * (e.g. the Safety System Manager, where M7_0 does not have direct access
+     * to the BLK_CTRL resource).
+     */
+    int32_t  SCMI_status    = 0;
+    uint32_t blk_ctrl_size  = 0;
+    uint32_t blk_ctrl_value = 0;
+    (void)SCMI_status;
+
+    /* Get current XBAR_DIR_CTRL2 value */
+    SCMI_status = SCMI_MiscControlGet(SCMI_A2P, MC_SM_CTRL_XBAR_DIR_CTRL_2, &blk_ctrl_size, &blk_ctrl_value);
+
+    /* Set XBAR_INOUT45 as input */
+    blk_ctrl_value &= ~(BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_45_MASK);
+    blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_45(0x00U);
+
+    /* Set XBAR_INOUT46 as input */
+    blk_ctrl_value &= ~(BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_46_MASK);
+    blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_46(0x00U);
+
+    /* Set XBAR_INOUT48 as input */
+    blk_ctrl_value &= ~(BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_48_MASK);
+    blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_48(0x00U);
+
+    /* Update XBAR_DIR_CTRL2 */
+    SCMI_status = SCMI_MiscControlSet(SCMI_A2P, MC_SM_CTRL_XBAR_DIR_CTRL_2, blk_ctrl_size, &blk_ctrl_value);
 
     IOMUXC_SetPinMux(IOMUXC_PAD_ETH3_RXD0__XBAR1_XBAR_INOUT45, 1U);
     IOMUXC_SetPinMux(IOMUXC_PAD_ETH3_RXD1__XBAR1_XBAR_INOUT46, 1U);
@@ -796,10 +851,27 @@ void BOARD_InitEqdcPins(void)
 
 void BOARD_InitLpitPwmPins(void)
 {
-    BLK_CTRL_WAKEUPMIX->XBAR_DIR_CTRL2 = ((BLK_CTRL_WAKEUPMIX->XBAR_DIR_CTRL2 &
-      (~(BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_40_MASK)))
-        | BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_40(0x01U)
-    );
+    /*
+     * Access to BLK_CTRL_WAKEUPMIX XBAR_DIR_CTRL2 must go through the SCMI MISC
+     * API so that the code works with different System Manager configurations
+     * (e.g. the Safety System Manager, where M7_0 does not have direct access
+     * to the BLK_CTRL resource).
+     */
+    int32_t  SCMI_status    = 0;
+    uint32_t blk_ctrl_size  = 0;
+    uint32_t blk_ctrl_value = 0;
+    (void)SCMI_status;
+
+    /* Get current XBAR_DIR_CTRL2 value */
+    SCMI_status = SCMI_MiscControlGet(SCMI_A2P, MC_SM_CTRL_XBAR_DIR_CTRL_2, &blk_ctrl_size, &blk_ctrl_value);
+
+    /* Set XBAR_INOUT40 as output */
+    blk_ctrl_value &= ~(BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_40_MASK);
+    blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_40(0x01U);
+
+    /* Update XBAR_DIR_CTRL2 */
+    SCMI_status = SCMI_MiscControlSet(SCMI_A2P, MC_SM_CTRL_XBAR_DIR_CTRL_2, blk_ctrl_size, &blk_ctrl_value);
+
     IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO01__XBAR1_XBAR_INOUT40, 0U);
 }
 
