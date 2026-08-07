@@ -12,7 +12,7 @@
 
 void BOARD_Init()
 {
-    BOARD_InitPins();
+    BOARD_InitBootPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 
@@ -26,7 +26,7 @@ void BOARD_Init()
     POWER_SetVdd1SupplySrc(kVddSrc_PMIC);
     POWER_SetVdd2SupplySrc(kVddSrc_PMIC);
     POWER_ApplyPD();
-    BOARD_InitPmicPins();
+    BOARD_InitPMICPins();
     BOARD_InitPmic();
     BOARD_SetPmicVdd2Voltage(1100000U); /* 1.1v for 325MHz clock. */
 

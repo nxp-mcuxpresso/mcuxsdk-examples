@@ -32,7 +32,7 @@ void SystemInitHook(){
 
 void BOARD_Init()
 {
-    BOARD_InitPins();
+    BOARD_InitBootPins();
 
     BOARD_InitAHBSC();
     BOARD_ConfigMPU();

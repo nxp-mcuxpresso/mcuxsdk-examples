@@ -12,7 +12,7 @@
 
 void BOARD_Init()
 {
-    BOARD_InitPins();
+    BOARD_InitBootPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 
