@@ -1,0 +1,49 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+coex_wifi_spp:
+  section-type: application
+  contents:
+    meta_path: examples/coex_examples/coex_wifi_spp
+    project-root-path: boards/${board}/coex_examples/coex_wifi_spp/${multicore_foldername}
+    document:
+      name: coex_wifi_spp${core_id_suffix_name}
+      category: coex_examples
+      brief: The edgefast_open Bluetooth SPP (Serial Port Profile) with Wi-Fi coexistence.
+      example_readme:
+      - examples/coex_examples/coex_wifi_spp/readme.md
+      - ${board_root}/${board}/coex_examples/coex_wifi_spp/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    evkcmimxrt1060:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
