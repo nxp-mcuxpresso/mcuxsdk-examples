@@ -18,8 +18,17 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define APP_FB_BPP    2
+#ifndef APP_FB_USE_NV12
+#define APP_FB_USE_NV12 0
+#endif
+
+#if APP_FB_USE_NV12
+#define APP_FB_FORMAT kVIDEO_PixelFormatNV12
+#define APP_FB_BPP    1
+#else
 #define APP_FB_FORMAT kVIDEO_PixelFormatRGB565
+#define APP_FB_BPP    2
+#endif
 
 /*******************************************************************************
  * Prototypes
@@ -32,12 +41,15 @@ static void DEMO_BufferSwitchOffCallback(void *param, void *switchOffBuffer);
 static dc_fb_info_t fbInfo;
 static volatile bool s_newFrameShown = false;
 static uint32_t s_decodedAddr[2]     = {DEMO_BUFFER0_ADDR, DEMO_BUFFER1_ADDR};
+#if !APP_FB_USE_NV12
 static uint32_t s_frameBufferAddr    = DEMO_FB_ADDR;
+#endif
 AT_NONCACHEABLE_SECTION(static jpegdec_descpt_t s_decoderDespt);
 
 /*******************************************************************************
  * Code
  ******************************************************************************/
+#if !APP_FB_USE_NV12
 static uint8_t BYTECLIP(int val)
 {
     if (val < 0)
@@ -80,6 +92,7 @@ void Convert_yuv420_to_rgb565(uint16_t width, uint16_t height, uint32_t yAddr, u
         }
     }
 }
+#endif
 
 void DEMO_Decode_JPEG(void)
 {
@@ -103,6 +116,13 @@ void DEMO_Decode_JPEG(void)
 
     /* Step 4: Parse header. */
     JPEGDEC_ParseHeader(&s_decoderDespt.config);
+
+#if APP_FB_USE_NV12
+    /* Place the Y and UV planes contiguously so the display controller can fetch
+     * the NV12 output directly (hardware CSC). */
+    s_decodedAddr[1] = s_decodedAddr[0] + ((uint32_t)s_decoderDespt.config.width * (uint32_t)s_decoderDespt.config.height);
+    JPEGDEC_SetOutputBuffer(&s_decoderDespt.config, (uint8_t *)s_decodedAddr[0], (uint8_t *)s_decodedAddr[1]);
+#endif
 
     /* Step 5: Set output pitch, auto start decode when descriptor is loaded. */
     JPEGDEC_SetDecodeOption(&s_decoderDespt.config, s_decoderDespt.config.width, false, true);
@@ -128,9 +148,11 @@ void DEMO_Decode_JPEG(void)
         assert(false);
     }
 
+#if !APP_FB_USE_NV12
     /* Step 9: Convert the YUV420 format pixel to RGB565 to display. */
     Convert_yuv420_to_rgb565(s_decoderDespt.config.width, s_decoderDespt.config.height, s_decodedAddr[0],
                              s_decodedAddr[1], s_frameBufferAddr);
+#endif
 
     /* Step 10: Configure display layer configuration. */
     fbInfo.pixelFormat = APP_FB_FORMAT;
@@ -145,7 +167,12 @@ void DEMO_Decode_JPEG(void)
         assert(false);
     }
 
+#if APP_FB_USE_NV12
+    /* Hand the JPEG decoder NV12 output directly to the display controller. */
+    g_dc.ops->setFrameBuffer(&g_dc, 0, (void *)s_decodedAddr[0]);
+#else
     g_dc.ops->setFrameBuffer(&g_dc, 0, (void *)s_frameBufferAddr);
+#endif
 
     if ((g_dc.ops->getProperty(&g_dc) & kDC_FB_ReserveFrameBuffer) == 0)
     {
@@ -166,7 +193,9 @@ void DEMO_InitDisplay(void)
 
     BOARD_PrepareDisplayController();
 
+#if !APP_FB_USE_NV12
     memset((void *)s_frameBufferAddr, 0, DEMO_PANEL_HEIGHT * DEMO_PANEL_WIDTH * APP_FB_BPP);
+#endif
 
     status = g_dc.ops->init(&g_dc);
     if (kStatus_Success != status)

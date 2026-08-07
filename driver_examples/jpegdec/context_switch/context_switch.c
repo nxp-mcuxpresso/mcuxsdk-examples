@@ -22,8 +22,17 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define APP_FB_BPP    2
+#ifndef APP_FB_USE_NV12
+#define APP_FB_USE_NV12 0
+#endif
+
+#if APP_FB_USE_NV12
+#define APP_FB_FORMAT kVIDEO_PixelFormatNV12
+#define APP_FB_BPP    1
+#else
 #define APP_FB_FORMAT kVIDEO_PixelFormatRGB565
+#define APP_FB_BPP    2
+#endif
 
 /*******************************************************************************
  * Prototypes
@@ -48,8 +57,10 @@ AT_NONCACHEABLE_SECTION(static FATFS g_fileSystem);
 AT_NONCACHEABLE_SECTION(static FIL jpgFil);
 /* Frame buffer for decoded data. */
 static uint32_t s_decodedImgAddr[4] = {DEMO_BUFFER0_ADDR, DEMO_BUFFER1_ADDR, DEMO_BUFFER2_ADDR, DEMO_BUFFER3_ADDR};
+#if !APP_FB_USE_NV12
 /* Frame buffer for converted data. */
 static uint32_t s_frameAddr[2] = {DEMO_FB0_ADDR, DEMO_FB1_ADDR};
+#endif
 /* Flag for frame done. */
 static volatile bool s_newFrameDone = false;
 /* Total displayed frame count. */
@@ -76,6 +87,7 @@ AT_NONCACHEABLE_SECTION_INIT(static jpegdec_descpt_t g_decoderDespt[2]) = {
 /*******************************************************************************
  * Code
  ******************************************************************************/
+#if !APP_FB_USE_NV12
 static uint8_t BYTECLIP(int val)
 {
     if (val < 0)
@@ -118,6 +130,7 @@ void Convert_yuv420_to_rgb565(uint16_t width, uint16_t height, uint32_t yAddr, u
         }
     }
 }
+#endif
 
 static int MOUNT_SDCard(void)
 {
@@ -190,9 +203,15 @@ void APP_InitDisplay(void)
 
     g_dc.ops->setCallback(&g_dc, 0, DEMO_FrameCompleteCallback, NULL);
 
+#if APP_FB_USE_NV12
+    (void)memset((void *)s_decodedImgAddr[0], 0, APP_FB_WIDTH * APP_FB_HEIGHT * APP_FB_BPP);
+
+    g_dc.ops->setFrameBuffer(&g_dc, 0, (void *)s_decodedImgAddr[0]);
+#else
     (void)memset((void *)s_frameAddr[0], 0, APP_FB_WIDTH * APP_FB_HEIGHT * APP_FB_BPP);
 
     g_dc.ops->setFrameBuffer(&g_dc, 0, (void *)s_frameAddr[0]);
+#endif
 
     /* For the DBI interface display, application must wait for the first
      * frame buffer sent to the panel.
@@ -294,6 +313,15 @@ int main(void)
     g_decoderDespt[1].config.pixelDepth  = g_decoderDespt[0].config.pixelDepth;
     g_decoderDespt[1].config.pixelFormat = g_decoderDespt[0].config.pixelFormat;
 
+#if APP_FB_USE_NV12
+    /* Place each frame's Y and UV planes contiguously so the display controller can
+     * fetch the NV12 output directly (hardware CSC). */
+    s_decodedImgAddr[1] = s_decodedImgAddr[0] + ((uint32_t)g_decoderDespt[0].config.width * (uint32_t)g_decoderDespt[0].config.height);
+    s_decodedImgAddr[3] = s_decodedImgAddr[2] + ((uint32_t)g_decoderDespt[1].config.width * (uint32_t)g_decoderDespt[1].config.height);
+    JPEGDEC_SetOutputBuffer(&g_decoderDespt[0].config, (uint8_t *)s_decodedImgAddr[0], (uint8_t *)s_decodedImgAddr[1]);
+    JPEGDEC_SetOutputBuffer(&g_decoderDespt[1].config, (uint8_t *)s_decodedImgAddr[2], (uint8_t *)s_decodedImgAddr[3]);
+#endif
+
     /* Set output pitch, clear stream buffer and auto start decode when descriptor is loaded. */
     JPEGDEC_SetDecodeOption(&g_decoderDespt[0].config, g_decoderDespt[0].config.width, true, true);
     JPEGDEC_SetDecodeOption(&g_decoderDespt[1].config, g_decoderDespt[1].config.width, true, true);
@@ -318,11 +346,13 @@ int main(void)
         }
         s_newFrameDone = false;
 
+#if !APP_FB_USE_NV12
         /* Convert the decoded YUV format into RGB565 to display. */
         Convert_yuv420_to_rgb565(g_decoderDespt[g_totalFrameCount % 2U].config.width,
                                  g_decoderDespt[g_totalFrameCount % 2U].config.height,
                                  s_decodedImgAddr[g_totalFrameCount % 2U * 2],
                                  s_decodedImgAddr[g_totalFrameCount % 2U * 2 + 1], s_frameAddr[g_totalFrameCount % 2U]);
+#endif
 
         /* Wait in case the last frame is not done, normally it shall already been shown. */
         while (s_newFrameShown == false)
@@ -331,7 +361,11 @@ int main(void)
         s_newFrameShown = false;
 
         /* Now new frame is ready, pass it to controller to display. */
+#if APP_FB_USE_NV12
+        g_dc.ops->setFrameBuffer(&g_dc, 0, (void *)s_decodedImgAddr[g_totalFrameCount % 2U * 2]);
+#else
         g_dc.ops->setFrameBuffer(&g_dc, 0, (void *)s_frameAddr[g_totalFrameCount % 2U]);
+#endif
 
         /* Increase the frame count and read next frame of JPEG picture. */
         g_totalFrameCount++;

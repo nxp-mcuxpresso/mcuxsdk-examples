@@ -21,8 +21,18 @@
 #if APP_MJPEG
 #define APP_MJPEG_FRAME_COUNT 3
 #endif
-#define APP_FB_BPP    2
+
+#ifndef APP_FB_USE_NV12
+#define APP_FB_USE_NV12 0
+#endif
+
+#if APP_FB_USE_NV12
+#define APP_FB_FORMAT kVIDEO_PixelFormatNV12
+#define APP_FB_BPP    1
+#else
 #define APP_FB_FORMAT kVIDEO_PixelFormatRGB565
+#define APP_FB_BPP    2
+#endif
 
 /*******************************************************************************
  * Prototypes
@@ -35,12 +45,15 @@ static void DEMO_InitDisplay(void);
 static dc_fb_info_t fbInfo;
 static volatile bool s_newFrameShown = false;
 static uint32_t s_decodedAddr[2]     = {DEMO_BUFFER0_ADDR, DEMO_BUFFER1_ADDR};
+#if !APP_FB_USE_NV12
 static uint32_t s_frameBufferAddr    = DEMO_FB_ADDR;
+#endif
 static jpegdec_decoder_config_t decConfig;
 
 /*******************************************************************************
  * Code
  ******************************************************************************/
+#if !APP_FB_USE_NV12
 static uint8_t BYTECLIP(int val)
 {
     if (val < 0)
@@ -83,6 +96,7 @@ void Convert_yuv420_to_rgb565(uint16_t width, uint16_t height, uint32_t yAddr, u
         }
     }
 }
+#endif
 
 void DEMO_Decode_JPEG(void)
 {
@@ -99,11 +113,17 @@ void DEMO_Decode_JPEG(void)
     /* Step 2: Set source buffer, buffer size. */
     JPEGDEC_SetJpegBuffer(&decConfig, (uint8_t *)jpegImg, jpegImgLen);
 
-    /* Step 3: Set buffer of generated image for JPEG decoder. */
-    JPEGDEC_SetOutputBuffer(&decConfig, (uint8_t *)s_decodedAddr[0], (uint8_t *)s_decodedAddr[1]);
-
-    /* Step 4: Parse header. */
+    /* Step 3: Parse header. */
     JPEGDEC_ParseHeader(&decConfig);
+
+#if APP_FB_USE_NV12
+    /* Step 4: Set the decoder output to a contiguous NV12 buffer so the display
+
+     * controller can fetch the Y and UV planes directly (hardware CSC).
+     */
+    s_decodedAddr[1] = s_decodedAddr[0] + ((uint32_t)decConfig.width * (uint32_t)decConfig.height);
+#endif
+    JPEGDEC_SetOutputBuffer(&decConfig, (uint8_t *)s_decodedAddr[0], (uint8_t *)s_decodedAddr[1]);
 
     /* Step 5: Set decoder option. */
     JPEGDEC_SetDecodeOption(&decConfig, decConfig.width, false, false);
@@ -135,11 +155,18 @@ void DEMO_Decode_JPEG(void)
             assert(false);
         }
 
+#if APP_FB_USE_NV12
+        /* Step 10: Hand the JPEG decoder NV12 output directly to the display controller. */
+        g_dc.ops->setFrameBuffer(&g_dc, 0, (void *)(s_decodedAddr[0]));
+#else
         /* Step 10: Convert the YUV420 format pixel to RGB565 to display. */
-        Convert_yuv420_to_rgb565(decConfig.width, decConfig.height, s_decodedAddr[0], s_decodedAddr[1], s_frameBufferAddr);
 
-        /* Now new frame is ready, pass it to LCDIF. */
+        Convert_yuv420_to_rgb565(decConfig.width, decConfig.height, s_decodedAddr[0], s_decodedAddr[1],
+                                 s_frameBufferAddr);
+
+        /* Now new frame is ready, pass it to the display controller. */
         g_dc.ops->setFrameBuffer(&g_dc, 0, (void *)(s_frameBufferAddr));
+#endif
         while (s_newFrameShown == false)
         {
         }
@@ -159,7 +186,9 @@ static void DEMO_InitDisplay(void)
 
     BOARD_PrepareDisplayController();
 
+#if !APP_FB_USE_NV12
     memset((void *)s_frameBufferAddr, 0, DEMO_PANEL_HEIGHT * DEMO_PANEL_WIDTH * APP_FB_BPP);
+#endif
 
     status = g_dc.ops->init(&g_dc);
     if (kStatus_Success != status)
@@ -171,12 +200,13 @@ static void DEMO_InitDisplay(void)
     g_dc.ops->getLayerDefaultConfig(&g_dc, 0, &fbInfo);
 
     /* Configure display layer configuration. */
-    fbInfo.pixelFormat = APP_FB_FORMAT;
-    fbInfo.width       = decConfig.width;
-    fbInfo.height      = decConfig.height;
-    fbInfo.startX      = 0;
-    fbInfo.startY      = 0;
-    fbInfo.strideBytes = decConfig.width * APP_FB_BPP;
+    fbInfo.pixelFormat    = APP_FB_FORMAT;
+    fbInfo.width          = decConfig.width;
+    fbInfo.height         = decConfig.height;
+    fbInfo.startX         = 0;
+    fbInfo.startY         = 0;
+    fbInfo.strideBytes    = decConfig.width * APP_FB_BPP;
+    fbInfo.strideBytes_2p = decConfig.width * APP_FB_BPP;
     if (kStatus_Success != g_dc.ops->setLayerConfig(&g_dc, 0, &fbInfo))
     {
         PRINTF("Error: Could not configure the display controller\r\n");
@@ -185,7 +215,11 @@ static void DEMO_InitDisplay(void)
 
     g_dc.ops->setCallback(&g_dc, 0, DEMO_BufferSwitchOffCallback, NULL);
 
+#if APP_FB_USE_NV12
+    g_dc.ops->setFrameBuffer(&g_dc, 0, (void *)s_decodedAddr[0]);
+#else
     g_dc.ops->setFrameBuffer(&g_dc, 0, (void *)s_frameBufferAddr);
+#endif
 
     if ((g_dc.ops->getProperty(&g_dc) & kDC_FB_ReserveFrameBuffer) == 0)
     {

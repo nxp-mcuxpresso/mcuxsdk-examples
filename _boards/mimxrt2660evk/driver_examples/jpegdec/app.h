@@ -24,6 +24,7 @@ extern JPEG_DECODER_Type g_appJpegDec;
 #define DEMO_BUFFER1_ADDR 0x89410000U
 #endif
 #define DEMO_FB_ADDR 0x89210000U
+#define APP_FB_USE_NV12 1
 
 /*${macro:end}*/
 
