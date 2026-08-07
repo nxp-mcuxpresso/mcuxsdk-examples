@@ -21,13 +21,8 @@
 #undef SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY
 #endif
 
-#if !(defined(RT2660_PRESILICON_DEVELOPMENT) && (RT2660_PRESILICON_DEVELOPMENT == 1))
 #define PWM_SRC_CLK_FREQ                       CLOCK_GetRootClockFreq(kCLOCK_Root_CGU_MAIN_ROOTCLK)
 #define SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY CLOCK_GetRootClockFreq(kCLOCK_Root_CMPT_cpu_clk)
-#else
-#define PWM_SRC_CLK_FREQ                       CLOCK_GetRootClockFreq(kCLOCK_Root_MAIN_main_clk_divided)
-#define SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY CLOCK_GetRootClockFreq(kCLOCK_Root_MAIN_main_clk_divided)
-#endif
 /*${macro:end}*/
 
 /*******************************************************************************

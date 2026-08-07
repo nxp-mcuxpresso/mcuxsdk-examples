@@ -25,7 +25,6 @@ void BOARD_InitHardware(void)
 
     CLOCK_EnableClock(kCLOCK_MAIN_hsp_flexio1);
 
-#if !(defined(RT2660_PRESILICON_DEVELOPMENT) && (RT2660_PRESILICON_DEVELOPMENT == 1))
     /* GPIO configuration on HSP__GPIO_1 pin 1 */
     gpio_pin_config_t gpio_hsp_gpio_1_pin1_config = {
         .pinDirection = kGPIO_DigitalOutput,
@@ -40,7 +39,6 @@ void BOARD_InitHardware(void)
     IOMUXC_SetPin_Mux_Config(IOMUXC_PIO3_1_HSP_GPIO1_GPIO1, 0x80U);
 
     CLOCK_SetRootClockDiv(kCLOCK_Root_MAIN_flexio1_fclk, 10U);
-#endif
 
     gpio_pin_config_t led_config = {
         kGPIO_DigitalOutput,

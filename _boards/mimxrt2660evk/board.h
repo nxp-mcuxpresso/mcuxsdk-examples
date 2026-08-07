@@ -52,17 +52,6 @@
 #endif
 
 /*! @brief Define the port interrupt number for the board switches */
-#if defined(RT2660_PRESILICON_DEVELOPMENT) && (RT2660_PRESILICON_DEVELOPMENT == 1)
-#ifndef BOARD_USER_BUTTON_GPIO
-#define BOARD_USER_BUTTON_GPIO HSP__GPIO_1
-#endif
-#ifndef BOARD_USER_BUTTON_GPIO_PIN
-#define BOARD_USER_BUTTON_GPIO_PIN (4U)
-#endif
-#define BOARD_USER_BUTTON_IRQ         HSP_GPIO1_CH0_IRQn
-#define BOARD_USER_BUTTON_IRQ_HANDLER HSP_GPIO1_CH0_IRQHandler
-#define BOARD_USER_BUTTON_NAME        "SW5"
-#else
 #ifndef BOARD_USER_BUTTON_GPIO
 #define BOARD_USER_BUTTON_GPIO VBAT__GPIO
 #endif
@@ -82,7 +71,7 @@
 #define BOARD_USER_BUTTON_6_IRQ         WAKE_GPIO_CH0_IRQn
 #define BOARD_USER_BUTTON_6_IRQ_HANDLER WAKE_GPIO_CH0_IRQHandler
 #define BOARD_USER_BUTTON_6_NAME        "SW6"
-#endif
+
 
 /*! @brief The board flash size */
 #define BOARD_FLASH_SIZE (0x800000U)
@@ -175,12 +164,9 @@
 #define BOARD_USER_LED_GPIO HSP__GPIO_0
 #endif
 #ifndef BOARD_USER_LED_GPIO_PIN
-#if defined(RT2660_PRESILICON_DEVELOPMENT) && (RT2660_PRESILICON_DEVELOPMENT == 1)
-#define BOARD_USER_LED_GPIO_PIN 8U
-#else
 #define BOARD_USER_LED_GPIO_PIN 26U
 #endif
-#endif
+
 
 #define USER_LED_INIT(output)                                            \
     GPIO_PinWrite(BOARD_USER_LED_GPIO, BOARD_USER_LED_GPIO_PIN, output); \

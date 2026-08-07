@@ -16,8 +16,6 @@ void BOARD_InitHardware(void)
     BOARD_CommonSetting();
     BOARD_InitI3CPins();
 
-#if !(defined(RT2660_PRESILICON_DEVELOPMENT) && (RT2660_PRESILICON_DEVELOPMENT == 1))
     CLOCK_SetRootClockDiv(kCLOCK_Root_MAIN_i3c0_fclk, 15U);
-#endif
 }
 /*${function:end}*/

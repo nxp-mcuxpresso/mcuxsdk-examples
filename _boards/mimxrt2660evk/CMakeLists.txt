@@ -1,7 +1,6 @@
 #
 # Adding pin_mux_fpga, which is selected by prj.conf
 #
-include(${CMAKE_CURRENT_LIST_DIR}/common/pin_mux/pin_mux_prjseg.cmake)
 
 include(${SdkRootDirPath}/arch/arm/target/ram.cmake)
 include(${SdkRootDirPath}/arch/arm/target/xspi_nor.cmake)
@@ -15,16 +14,8 @@ include(${SdkRootDirPath}/examples/_common/project_segments/lvgl/prjseg.cmake)
 include(${SdkRootDirPath}/examples/lvgl_examples/lvgl_sdk/lvgl_support/rt2xxx/lvgl_support.cmake)
 include(${SdkRootDirPath}/examples/_common/project_segments/freertos/examples/tickless/prjseg.cmake)
 
-#
-# The project level macro is selected via prj.conf as well
-#
-if (CONFIG_MCUX_PRJSEG_module.board.pinmux_customize_folder)
-    mcux_add_configuration(
-        CC "-DRT2660_PRESILICON_DEVELOPMENT=1"
-    )
-endif()
-
 if (CONFIG_MCUX_PRJSEG_module.board.suite)
+
     mcux_add_configuration(
         TARGETS debug           release
                 psram_debug     psram_release

@@ -791,7 +791,6 @@ AT_QUICKACCESS_SECTION_CODE(static void BOARD_SwitchCmsPllRefToSxoscFromRam(
     }
 }
 
-#if !(defined(RT2660_PRESILICON_DEVELOPMENT) && (RT2660_PRESILICON_DEVELOPMENT == 1))
 /* Shared, mode-invariant prologue for HP/NP/LP boot-clock setup -- the hazard-ordered
  * flow around the RAM window. Takes NO parameters: everything it touches is identical
  * across the three run modes, so it references the file-scope s_*Config globals directly.
@@ -841,26 +840,11 @@ static void BOARD_BootClockPrepare(void)
     CLOCK_InitAudioPll(&s_audioPllConfig);
     CLOCK_InitVideoPll(&s_videoPllConfig);
 }
-#endif /* !RT2660_PRESILICON_DEVELOPMENT */
 
 /* Over Drive Run FBB (HpRun): CM85=1000 (via PLL_PFDX), NPU=792 (from COREPLL_OUT).
  * CorePLL @ 792 MHz, MainPLL DIVOUT1 @ 1000 MHz -- the default analog config. */
 void BOARD_BootClockHPRUN(void)
 {
-#if defined(RT2660_PRESILICON_DEVELOPMENT) && (RT2660_PRESILICON_DEVELOPMENT == 1)
-    /* Pre-silicon (default): the HAPS / RTL environment does NOT support the
-     * CCM/CGUDig path; running the helpers would derail validation. The (void)
-     * casts keep the helpers and per-mode PLL configs code-reviewed and
-     * referenced (so -Wunused-function / -Wunused-const-variable stay quiet),
-     * without emitting any code at runtime. */
-    (void)ConfigCGUAna;
-    (void)ConfigCGUDig_SYSCON_common;
-    (void)ConfigCGUDig_SYSCON_HPRUN;
-    (void)ConfigCGUDig_SS;
-
-    (void)&s_corePllConfig;
-    (void)&s_mainPllConfig;
-#else
     BOARD_BootClockPrepare();
     /* Per-mode tail -- config globals used directly. Both PLLs must be locked before
      * ConfigCGUDig_SYSCON_common() (it sources PLL_PFDX <- MAINPLL_DIVOUT1 and
@@ -870,7 +854,6 @@ void BOARD_BootClockHPRUN(void)
     ConfigCGUDig_SYSCON_common();                  /* CGU slices identical across modes */
     ConfigCGUDig_SYSCON_HPRUN();                   /* CGU slices 30/31/32 for HpRun */
     ConfigCGUDig_SS();                      /* CMPT / MAIN / MEDIA / AUDIO / COMM / WAKE */
-#endif
 }
 
 /* Normal Drive Run FBB (NpRun): CM85=792 (from COREPLL_OUT), NPU=666 (from MAINPLL_DIVOUT1).
@@ -878,21 +861,12 @@ void BOARD_BootClockHPRUN(void)
  * CGU slices 30/31/32 are re-programmed after the shared CGUDig defaults. */
 void BOARD_BootClockNPRUN(void)
 {
-#if defined(RT2660_PRESILICON_DEVELOPMENT) && (RT2660_PRESILICON_DEVELOPMENT == 1)
-    (void)ConfigCGUAna;
-    (void)ConfigCGUDig_SYSCON_common;
-    (void)ConfigCGUDig_SYSCON_NPRUN;
-    (void)ConfigCGUDig_SS;
-    (void)&s_corePllConfig;
-    (void)&s_mainPllConfig_np;
-#else
     BOARD_BootClockPrepare();
     CLOCK_InitCorePll(&s_corePllConfig);           /* 792 MHz (shared with HpRun) */
     CLOCK_InitMainPll(&s_mainPllConfig_np);        /* DIVOUT1 = 666.67 MHz */
     ConfigCGUDig_SYSCON_common();                  /* CGU slices identical across modes */
     ConfigCGUDig_SYSCON_NPRUN();                   /* CGU slices 30/31/32 for NpRun */
     ConfigCGUDig_SS();                      /* CMPT / MAIN / MEDIA / AUDIO / COMM / WAKE */
-#endif
 }
 
 /* Normal Drive Run ZBB (LpRun): CM85=600 (from COREPLL_OUT), NPU=400 (from MAINPLL_DIVOUT1).
@@ -900,21 +874,12 @@ void BOARD_BootClockNPRUN(void)
  * Caller must have DCDC=0.8V and FBB disabled before invoking (not enforced here). */
 void BOARD_BootClockLPRUN(void)
 {
-#if defined(RT2660_PRESILICON_DEVELOPMENT) && (RT2660_PRESILICON_DEVELOPMENT == 1)
-    (void)ConfigCGUAna;
-    (void)ConfigCGUDig_SYSCON_common;
-    (void)ConfigCGUDig_SYSCON_LPRUN;
-    (void)ConfigCGUDig_SS;
-    (void)&s_corePllConfig_lp;
-    (void)&s_mainPllConfig_lp;
-#else
     BOARD_BootClockPrepare();
     CLOCK_InitCorePll(&s_corePllConfig_lp);        /* 600 MHz */
     CLOCK_InitMainPll(&s_mainPllConfig_lp);        /* DIVOUT1 = 400 MHz */
     ConfigCGUDig_SYSCON_common();                  /* CGU slices identical across modes */
     ConfigCGUDig_SYSCON_LPRUN();                   /* CGU slices 30/31/32 for LpRun */
     ConfigCGUDig_SS();                      /* CMPT / MAIN / MEDIA / AUDIO / COMM / WAKE */
-#endif
 }
 
 /* Deprecated alias for BOARD_BootClockHPRUN -- kept for source-compat with any

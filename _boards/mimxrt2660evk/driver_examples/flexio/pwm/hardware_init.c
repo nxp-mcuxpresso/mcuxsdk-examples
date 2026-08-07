@@ -22,8 +22,6 @@ void BOARD_InitHardware(void)
     /* Enable FlexIO clock gate - clock is already configured by BOARD_InitBootClocks() */
     CLOCK_EnableClock(kCLOCK_MAIN_hsp_flexio1);
 
-#if !(defined(RT2660_PRESILICON_DEVELOPMENT) && (RT2660_PRESILICON_DEVELOPMENT == 1))
     CLOCK_SetRootClockDiv(kCLOCK_Root_MAIN_flexio0_fclk, 20U);
-#endif
 }
 /*${function:end}*/

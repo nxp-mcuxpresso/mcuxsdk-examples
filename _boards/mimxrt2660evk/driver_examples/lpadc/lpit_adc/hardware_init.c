@@ -22,8 +22,6 @@ void BOARD_InitHardware(void)
     XBAR_Init(kXBAR_HSP_XBAR0);
     XBAR_SetSignalsConnection(kHSP_XBAR_0_InputHspXbar2Out0, kHSP_XBAR_0_OutputHspAdc01Ch01TrigIn0);
 
-#if !(defined(RT2660_PRESILICON_DEVELOPMENT) && (RT2660_PRESILICON_DEVELOPMENT == 1))
     CLOCK_SetRootClockDiv(kCLOCK_Root_MAIN_adc0_fclk, 50u);
-#endif
 }
 /*${function:end}*/

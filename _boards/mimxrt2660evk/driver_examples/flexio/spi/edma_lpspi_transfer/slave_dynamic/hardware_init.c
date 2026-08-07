@@ -19,8 +19,6 @@ void BOARD_InitHardware(void)
     BOARD_CommonSetting();
     BOARD_InitFLEXIO_SPIPins();
 
-#if !(defined(RT2660_PRESILICON_DEVELOPMENT) && (RT2660_PRESILICON_DEVELOPMENT == 1))
     CLOCK_SetRootClockDiv(kCLOCK_Root_MAIN_flexio1_fclk, 10U);
     CLOCK_SetRootClockDiv(kCLOCK_Root_MAIN_lpspi1_fclk, 10U);
-#endif
 }

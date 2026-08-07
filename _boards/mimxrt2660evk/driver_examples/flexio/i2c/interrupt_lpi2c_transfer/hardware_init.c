@@ -20,9 +20,7 @@ void BOARD_InitHardware(void)
     BOARD_InitFLEXIO_I2CPins();
     CLOCK_EnableClock(kCLOCK_MAIN_hsp_flexio1);
 
-#if !(defined(RT2660_PRESILICON_DEVELOPMENT) && (RT2660_PRESILICON_DEVELOPMENT == 1))
     CLOCK_SetRootClockDiv(kCLOCK_Root_MAIN_flexio1_fclk, 10U);
     CLOCK_SetRootClockDiv(kCLOCK_Root_MAIN_lpi2c1_fclk, 2U);
-#endif
 }
 /*${function:end}*/

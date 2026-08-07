@@ -12,15 +12,6 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#if defined(RT2660_PRESILICON_DEVELOPMENT) && (RT2660_PRESILICON_DEVELOPMENT == 1)
-#define BOARD_LED_GPIO       BOARD_LED_BLUE_GPIO
-#define BOARD_LED_GPIO_PIN   BOARD_LED_BLUE_GPIO_PIN
-#define BOARD_SW_GPIO        BOARD_USER_BUTTON_GPIO
-#define BOARD_SW_GPIO_PIN    BOARD_USER_BUTTON_GPIO_PIN
-#define BOARD_SW_IRQ         BOARD_USER_BUTTON_IRQ
-#define BOARD_SW_IRQ_HANDLER BOARD_USER_BUTTON_IRQ_HANDLER
-#define BOARD_SW_NAME        BOARD_USER_BUTTON_NAME
-#else
 #if 0
 #define BOARD_LED_GPIO       BOARD_USER_LED_GPIO
 #define BOARD_LED_GPIO_PIN   BOARD_USER_LED_GPIO_PIN
@@ -37,7 +28,6 @@
 #define BOARD_SW_IRQ         BOARD_USER_BUTTON_IRQ
 #define BOARD_SW_IRQ_HANDLER BOARD_USER_BUTTON_IRQ_HANDLER
 #define BOARD_SW_NAME        BOARD_USER_BUTTON_NAME
-#endif
 #endif
 /*${macro:end}*/
 

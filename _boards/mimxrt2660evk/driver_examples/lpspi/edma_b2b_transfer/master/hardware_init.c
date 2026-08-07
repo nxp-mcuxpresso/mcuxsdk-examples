@@ -30,8 +30,6 @@ void BOARD_InitHardware(void)
 
     TRDC_EDMA_ResetPermissions();
 
-#if !(defined(RT2660_PRESILICON_DEVELOPMENT) && (RT2660_PRESILICON_DEVELOPMENT == 1))
     SystemCoreClockUpdate();
-#endif
 }
 /*${function:end}*/

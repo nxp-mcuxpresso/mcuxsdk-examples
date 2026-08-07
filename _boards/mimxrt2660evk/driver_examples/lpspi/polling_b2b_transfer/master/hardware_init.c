@@ -20,8 +20,6 @@ void BOARD_InitHardware(void)
     BOARD_CommonSetting();
     BOARD_InitSPIPins();
 
-#if !(defined(RT2660_PRESILICON_DEVELOPMENT) && (RT2660_PRESILICON_DEVELOPMENT == 1))
     SystemCoreClockUpdate();
-#endif
 }
 /*${function:end}*/

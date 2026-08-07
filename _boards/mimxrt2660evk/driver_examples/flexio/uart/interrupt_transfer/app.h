@@ -15,13 +15,8 @@
 #define BOARD_FLEXIO_BASE      HSP__FLEXIO_1
 #define FLEXIO_CLOCK_FREQUENCY (CLOCK_GetRootClockFreq(kCLOCK_Root_MAIN_flexio1_fclk))
 
-#if defined(RT2660_PRESILICON_DEVELOPMENT) && (RT2660_PRESILICON_DEVELOPMENT == 1)
-#define FLEXIO_UART_TX_PIN 0U
-#define FLEXIO_UART_RX_PIN 1U
-#else
 #define FLEXIO_UART_TX_PIN 20U
 #define FLEXIO_UART_RX_PIN 21U
-#endif
 
 /*${macro:end}*/
 
