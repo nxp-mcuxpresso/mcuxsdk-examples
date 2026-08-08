@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../../../scripts/data_schema/example_description_schema.json
+llc:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/llc
+    project-root-path: boards/${board}/driver_examples/llc/${multicore_foldername}
+    document:
+      name: llc${core_id_suffix_name}
+      category: driver_examples/cache
+      brief: >-
+        The llc example shows how to use the Last Level Cache (LLC) driver.
+        The common example is memory-type agnostic. It reads and prints the LLC
+        version, capabilities and geometry, ensures the LLC is enabled, generates
+        cacheable traffic on a board-provided memory region, demonstrates
+        clean/invalidate range maintenance, runs the LLC performance monitor and
+        prints the collected counters, then prints a final PASS/FAIL. All
+        platform-specific facts (LLC instance, cacheable test region, memory
+        attributes, device-specific init) are supplied by the board port, so a
+        new board can support the example without modifying the common source.
+
+      example_readme:
+      - examples/driver_examples/llc/readme.md
+      - ${board_root}/${board}/driver_examples/llc/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    mimxrt2660evk:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release
