@@ -19,4 +19,5 @@ tflite::MicroOpResolver &MODEL_GetOpsResolver()
     s_microOpResolver.AddCustom(tflite::GetString_NEUTRON_GRAPH(), tflite::Register_NEUTRON_GRAPH());
 
     return s_microOpResolver;
+
 }
