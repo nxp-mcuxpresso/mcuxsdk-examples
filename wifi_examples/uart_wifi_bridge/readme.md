@@ -11,4 +11,5 @@ uart_wifi_bridge
 - [FRDM-RW612](../../_boards/frdmrw612/wifi_examples/common/wifi_examples_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/wifi_examples/common/wifi_examples_readme.md)
 - [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/wifi_examples/common/wifi_examples_readme.md)
-- FRDM-MCXN947
+- [FRDM-MCXN947](../../_boards/frdmmcxn947/wifi_examples/common/wifi_examples_readme.md)
+- [FRDM-MCXN947T](../../_boards/frdmmcxn947t/wifi_examples/common/wifi_examples_readme.md)
