@@ -57,6 +57,12 @@ void PWM_Trigger_Init(PWM_Type *PWMBase)
 #elif (HIPERFACE_MUX == MOTOR_CTRL2)
 	XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux1Trigger0, kXBAR1_OutputHiperface1SyncXbar);
 #endif
+
+	xbar_control_config_t xbaraConfig;
+	xbaraConfig.activeEdge                   = kXBAR_EdgeRising;
+	xbaraConfig.requestType                  = kXBAR_RequestInterruptEnable;
+	XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux0Trigger0, DEMO_XBARA_SYNC_POS_RCVD_IRQ_SIGNAL);
+	XBAR_SetOutputSignalConfig(DEMO_XBARA_SYNC_POS_RCVD_IRQ_SIGNAL, &xbaraConfig);
 }
 
 void BOARD_InitHardware(void)
@@ -179,38 +185,17 @@ void BOARD_InitHardware(void)
 
  void hiperface_fast_pos_irq_enable()
 {
-#ifdef DEMO_HIPERFACE_POS_RCVD_VIA_XBAR
-	xbar_control_config_t xbaraConfig;
-	xbaraConfig.activeEdge                   = kXBAR_EdgeRising;
-	xbaraConfig.requestType                  = kXBAR_RequestInterruptEnable;
-	XBAR_SetOutputSignalConfig(DEMO_XBARA_IRQ_OUTPIT_SIGNAL, &xbaraConfig);
-#endif
-
 #if (HIPERFACE_MUX == MOTOR_CTRL1)
-#ifdef DEMO_HIPERFACE_POS_RCVD_VIA_XBAR
-	XBAR_SetSignalsConnection( kXBAR1_InputHiperface2FastPosRcvdEvt, DEMO_XBARA_IRQ_OUTPIT_SIGNAL);
-#else
 	BLK_CTRL_WAKEUPMIX_Type *blk_base = BLK_CTRL_WAKEUPMIX;
 	blk_base->HIPERFACE2_INT_CTL |= (1 << 5);
-#endif
 #elif (HIPERFACE_MUX == MOTOR_CTRL2)
-#ifdef DEMO_HIPERFACE_POS_RCVD_VIA_XBAR
-	XBAR_SetSignalsConnection( kXBAR1_InputHiperface1FastPosRcvdEvt, DEMO_XBARA_IRQ_OUTPIT_SIGNAL);
-#else
 	BLK_CTRL_WAKEUPMIX_Type *blk_base = BLK_CTRL_WAKEUPMIX;
 	blk_base->HIPERFACE1_INT_CTL |= (1 << 5);
-#endif
 #endif
 }
 
 void hiperface_fast_pos_irq_disable()
 {
-#ifdef DEMO_HIPERFACE_POS_RCVD_VIA_XBAR
-    xbar_control_config_t xbaraConfig;
-    xbaraConfig.activeEdge                   = kXBAR_EdgeRising;
-    xbaraConfig.requestType                  = kXBAR_RequestInterruptEnable;
-    XBAR_SetOutputSignalConfig(DEMO_XBARA_IRQ_OUTPIT_SIGNAL, &xbaraConfig);
-#else
 #if (HIPERFACE_MUX == MOTOR_CTRL1)
     BLK_CTRL_WAKEUPMIX_Type *blk_base = BLK_CTRL_WAKEUPMIX;
     blk_base->HIPERFACE2_INT_CTL &= ~(1 << 5);
@@ -218,14 +203,10 @@ void hiperface_fast_pos_irq_disable()
     BLK_CTRL_WAKEUPMIX_Type *blk_base = BLK_CTRL_WAKEUPMIX;
     blk_base->HIPERFACE1_INT_CTL &= ~(1 << 5);
 #endif
-#endif
 }
 
 void hiperface_clear_fast_pos_irq_status()
 {
-#ifdef DEMO_HIPERFACE_POS_RCVD_VIA_XBAR
-   XBAR_ClearOutputStatusFlag(DEMO_XBARA_IRQ_OUTPIT_SIGNAL);
-#else
 #if (HIPERFACE_MUX == MOTOR_CTRL1)
     BLK_CTRL_WAKEUPMIX_Type *blk_base = BLK_CTRL_WAKEUPMIX;
     blk_base->HIPERFACE2_INT_CTL |= (1 << 1);
@@ -233,7 +214,11 @@ void hiperface_clear_fast_pos_irq_status()
     BLK_CTRL_WAKEUPMIX_Type *blk_base = BLK_CTRL_WAKEUPMIX;
     blk_base->HIPERFACE1_INT_CTL |= (1 << 1);
 #endif
-#endif
+}
+
+void hiperface_clear_xbara_sync_pos_recv_irq_status()
+{
+    XBAR_ClearOutputStatusFlag(DEMO_XBARA_SYNC_POS_RCVD_IRQ_SIGNAL);
 }
 
 /*${function:end}*/

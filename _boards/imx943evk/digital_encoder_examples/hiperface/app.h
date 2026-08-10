@@ -68,21 +68,16 @@
 #define ENCODER_ACCESS_FREQ_VS_PWM_FRE0        1
 
 #define DEMO_XBARA_BASEADDR                     kXBAR_DSC1
-#define DEMO_XBARA_IRQ_OUTPIT_SIGNAL            kXBAR1_OutputEdma4IpdReq76
-#define DEMO_XBARA_IRQn                         XBAR1_CH0_CH1_IRQn
-#define DEMO_XBARA_IRQHandler                   XBAR1_CH0_CH1_IRQHandler
+#define DEMO_XBARA_SYNC_POS_RCVD_IRQ_SIGNAL     kXBAR1_OutputEdma4IpdReq76
+#define DEMO_XBARA_SYNC_POS_RCVD_IRQn           XBAR1_CH0_CH1_IRQn
+#define DEMO_XBARA_SYNC_POS_RCVD_IRQHandler     XBAR1_CH0_CH1_IRQHandler
 
-#ifdef DEMO_HIPERFACE_POS_RCVD_VIA_XBAR
-#define DEMO_HIPERFACE_POS_RCVD_IRQn            DEMO_XBARA_IRQn
-#define DEMO_HIPERFACE_POS_RCVD_IRQHandler      DEMO_XBARA_IRQHandler
-#else
 #if (HIPERFACE_MUX == MOTOR_CTRL1)
 #define DEMO_HIPERFACE_POS_RCVD_IRQn            Reserved227_IRQn
 #define DEMO_HIPERFACE_POS_RCVD_IRQHandler      Reserved227_IRQHandler
 #elif (HIPERFACE_MUX == MOTOR_CTRL2)
 #define DEMO_HIPERFACE_POS_RCVD_IRQn            Reserved226_IRQn
 #define DEMO_HIPERFACE_POS_RCVD_IRQHandler      Reserved226_IRQHandler
-#endif
 #endif
 
 #if (HIPERFACE_MUX == MOTOR_CTRL1)
@@ -114,7 +109,7 @@ void PWM_Trigger_Init(PWM_Type *PWMBase);
 void hiperface_fast_pos_irq_enable();
 void hiperface_fast_pos_irq_disable();
 void hiperface_clear_fast_pos_irq_status();
-
+void hiperface_clear_xbara_sync_pos_recv_irq_status();
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */
