@@ -18,6 +18,10 @@
 #define EXAMPLE_PWT_BASE PWT
 #endif
 
+#ifndef EXAMPLE_PWT_INPUT_PORT
+#define EXAMPLE_PWT_INPUT_PORT kPWT_InputPort_1
+#endif
+
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -76,7 +80,7 @@ int main(void)
 
     /* Init PWT */
     PWT_GetDefaultConfig(&pwtConfig);
-    pwtConfig.inputSelect = kPWT_InputPort_1;
+    pwtConfig.inputSelect = EXAMPLE_PWT_INPUT_PORT;
     PWT_Init(EXAMPLE_PWT_BASE, &pwtConfig);
 
     PRINTF("\r\nPWT example: input signal whose pulse width needs to be measured\r\n");
