@@ -8,9 +8,9 @@ Hardware requirements
 
 Board settings
 ============
-Connect J9-5 to J2-3
+Connect 0.9V to TP18(ADC_IN4), and 0.6V to TP19(ADC_IN5), and GND(J18-6)
 
-**Please note this application can't support running with Linux BSP!**
+#### Please note this application can't support running with Linux BSP! ####
 
 Prepare the Demo
 ===============
@@ -32,7 +32,7 @@ When the example runs successfully, you will see similar information from the te
 ~~~~~~~~~~~~~~~~~~~~~
  ADC polling example.
  Please press any key to get the conversion result.
- The channel 0 ADC conversion data is 4063.
- The channel 2 ADC conversion data is 1379.
- The channel 3 ADC conversion data is 682.
+ The channel 34 ADC conversion data is 4084.
+ The channel 4 ADC conversion data is 2047.
+ The channel 5 ADC conversion data is 1365.
 ~~~~~~~~~~~~~~~~~~~~~

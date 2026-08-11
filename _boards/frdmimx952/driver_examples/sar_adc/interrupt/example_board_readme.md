@@ -8,7 +8,7 @@ Hardware requirements
 
 Board settings
 ============
-Populate a 100k resistor at R213, and a 200k resistor at R215
+Connect 0.9V to TP18(ADC_IN4), and 0.6V to TP19(ADC_IN5), and GND(J18-6)
 
 #### Please note this application can't support running with Linux BSP! ####
 
@@ -33,6 +33,6 @@ When the example runs successfully, you will see similar information from the te
  ADC interrupt example.
  Please press any key to get the conversion result.
  The channel 34 ADC conversion data is 4084.
- The channel 2 ADC conversion data is 2047.
- The channel 3 ADC conversion data is 1365.
+ The channel 4 ADC conversion data is 2047.
+ The channel 5 ADC conversion data is 1365.
 ~~~~~~~~~~~~~~~~~~~~~
