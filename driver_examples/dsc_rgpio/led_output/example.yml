@@ -18,6 +18,7 @@ dsc_rgpio_led_output:
       example_readme:
       - examples/driver_examples/dsc_rgpio/led_output/readme.md
       - ${board_root}/${board}/driver_examples/gpio/led_output/${core_id}/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mc56f85000evk@dsp56800ef_core0: []
     mc56f85000evk@dsp56800ef_core1: []

@@ -17,11 +17,11 @@ periodically toggles it to blink an LED.
 
 ## Board Settings
 
-No special hardware setup required. The example uses the on-board yellow LED (GPIO0 pin 0).
+No special hardware setup required.
 
 ## Running the Demo
 
-After building and flashing the example, the yellow LED on the board blinks periodically.
+After building and flashing the example, the LED on the board blinks periodically.
 The following message is printed to the debug console:
 
 ```

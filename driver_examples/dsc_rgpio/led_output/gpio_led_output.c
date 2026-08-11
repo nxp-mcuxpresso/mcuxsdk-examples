@@ -16,19 +16,10 @@
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
-void delay(void);
 
 /*******************************************************************************
  * Code
  ******************************************************************************/
-void delay(void)
-{
-    volatile uint32_t i = 0;
-    for (i = 0; i < 800000U; ++i)
-    {
-        (void)i;
-    }
-}
 
 /*!
  * @brief Main function
@@ -53,7 +44,7 @@ int main(void)
 
     while (1)
     {
-        delay();
+        SDK_DelayAtLeastUs(200000U, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
         GPIO_PortToggle(DEMO_LED_GPIO, 1U << DEMO_LED_GPIO_PIN);
     }
 }
