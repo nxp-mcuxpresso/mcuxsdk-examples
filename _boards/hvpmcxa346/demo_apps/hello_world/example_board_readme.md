@@ -1,6 +1,6 @@
 Hardware requirements
 =====================
-- Mini/micro USB cable
+- Type-C USB cable
 - HVP-MCXA346 board
 - Personal Computer
 
@@ -10,7 +10,7 @@ No special settings are required.
 
 Prepare the demo
 ================
-1.  Connect a USB cable between the host PC and the MCU-Link USB port on the target board.
+1.  Connect a USB Type-C cable between the host PC and the MCU-Link USB port on the target board.
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
