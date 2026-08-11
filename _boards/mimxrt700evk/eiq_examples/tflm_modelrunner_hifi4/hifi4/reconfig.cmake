@@ -24,6 +24,8 @@ mcux_add_xtensa_configuration(
     LD "-mlsp=${SdkRootDirPath}/${board_root}/${board}/eiq_examples/tflm_modelrunner_hifi4/hifi4/linker/min-rt"
 )
 
+include(${SdkRootDirPath}/drivers/inputmux/CMakeLists.txt)
+
 mcux_add_xtensa_configuration(
     TARGETS debug
     LD "-mlsp=${SdkRootDirPath}/${board_root}/${board}/eiq_examples/tflm_modelrunner_hifi4/hifi4/linker/gdbio"
