@@ -12,5 +12,7 @@ dsc_mbc:
         violation error occurs and is resolved.
       example_readme:
       - examples/driver_examples/dsc_mbc/readme.md
+      - ${board_root}/${board}/driver_examples/mbc/${multicore_foldername}/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mc56f85000evk@dsp56800ef_core0: []
