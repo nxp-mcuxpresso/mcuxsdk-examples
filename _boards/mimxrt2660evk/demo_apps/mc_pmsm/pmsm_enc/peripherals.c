@@ -19,8 +19,8 @@ void BOARD_InitBootPeripherals(void)
 }
 
 /* UART clock frequency for FreeMASTER serial transport.
- * Returns the functional clock of LPUART1 (MAIN HSP bus). */
+ * Returns the functional clock of LPUART0 (MAIN HSP bus). */
 uint32_t BOARD_DebugConsoleSrcFreq(void)
 {
-    return CLOCK_GetRootClockFreq(kCLOCK_Root_MAIN_lpuart1_fclk);
+    return CLOCK_GetRootClockFreq(kCLOCK_Root_MAIN_lpuart0_fclk);
 }

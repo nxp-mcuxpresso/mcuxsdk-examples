@@ -1,6 +1,6 @@
 /*
  * Copyright 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2021, 2025 NXP
+ * Copyright 2016-2021, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -40,7 +40,7 @@
                      FEATURE_S_RAMP << (2))
 
 /*! @brief The UART to use for FreeMASTER communication */
-#define BOARD_FMSTR_UART_PORT     HSP__LPUART_1
+#define BOARD_FMSTR_UART_PORT     HSP__LPUART_0
 #define BOARD_FMSTR_UART_BAUDRATE 115200U
 
 #define BOARD_USER_BUTTON_PRIORITY 4
@@ -63,10 +63,10 @@
 static void BOARD_Init(void);
 /* ADC COCO interrupt */
 RAM_FUNC_LIB
-void HSP_ADC0_IRQHandler(void);
+void HSP_ADC1_IRQHandler(void);
 /* TMR1 reload ISR called with 1ms period */
 RAM_FUNC_LIB
-void TMR1_IRQHandler(void);
+void HSP_QTMR1_IRQHandler(void);
 /* SW5 Button interrupt handler */
 RAM_FUNC_LIB
 void BOARD_USER_BUTTON_IRQ_HANDLER(void);
@@ -79,10 +79,8 @@ static void DemoPositionStimulator(void);
 
 static void BOARD_InitUART(uint32_t u32BaudRate);
 static void BOARD_InitSysTick(void);
-static void BOARD_InitGPIO(void);
 static void Application_Control_BL(void);
 
-lpadc_conv_result_t g_LpadcResultConfigStruct;
 
 /*******************************************************************************
  * Variables
@@ -201,7 +199,7 @@ int main(void)
  * @return  none
  */
 RAM_FUNC_LIB
-void HSP_ADC0_IRQHandler(void)
+void HSP_ADC1_IRQHandler(void)
 {
     /* Start CPU tick number counting */
     SYSTICK_START_COUNT();
@@ -253,7 +251,7 @@ void HSP_ADC0_IRQHandler(void)
  * @return  none
  */
 RAM_FUNC_LIB
-void TMR1_IRQHandler(void)
+void HSP_QTMR1_IRQHandler(void)
 {
     static int16_t ui16i = 0;
 
@@ -530,41 +528,18 @@ static void Application_Control_BL(void)
  */
 static void BOARD_Init(void)
 {
-    /* Init board hardware. */
-    BOARD_InitBootPins();
-    /* Initialize clock configuration */
-    BOARD_InitBootClocks();
-    /* Init peripherals set in peripherals file */
-    BOARD_InitBootPeripherals();
-    /* Init GPIO pins */
-    BOARD_InitGPIO();
+  /* Init MPU + cache configuration */
+  BOARD_ConfigMPU();
+  /* Initialize clock configuration */
+  BOARD_InitBootClocks();
+  /* Init TRDC */
+  BOARD_ConfigTRDC();
+  /* Init board hardware. */
+  BOARD_InitBootPins();
+  /* Init peripherals set in peripherals file */
+  BOARD_InitBootPeripherals();
 }
 
-/*!
- * @brief   static void BOARD_InitGPIO(void)
- *           - Initialization of the GPIO peripherals
- *
- * @param   void
- *
- * @return  none
- */
-static void BOARD_InitGPIO(void)
-{
-    /* Define the init structure for the input switch pin */
-    gpio_pin_config_t sw_config = {
-        kGPIO_DigitalInput,
-        0,
-    };
-
-    /* Init input switch GPIO */
-    GPIO_SetPinInterruptConfig(BOARD_USER_BUTTON_GPIO, BOARD_USER_BUTTON_GPIO_PIN,
-                               kGPIO_InterruptFallingEdge);
-    GPIO_PinInit(BOARD_USER_BUTTON_GPIO, BOARD_USER_BUTTON_GPIO_PIN, &sw_config);
-
-    /* Enable GPIO pin interrupt for SW5 button */
-    EnableIRQ(BOARD_USER_BUTTON_IRQ);
-    NVIC_SetPriority(BOARD_USER_BUTTON_IRQ, BOARD_USER_BUTTON_PRIORITY);
-}
 
 /*!
  *@brief      Initialization of the UART module

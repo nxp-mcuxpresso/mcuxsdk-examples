@@ -98,7 +98,7 @@ void InitClock(void)
  */
 void InitADC(void)
 {
-#if FSL_LPADC_DRIVER_VERSION != (MAKE_VERSION(2, 9, 5))
+#if FSL_LPADC_DRIVER_VERSION != (MAKE_VERSION(2, 11, 0))
 #warning Used a different fsl_lpadc driver version! An example may not work correctly!
 #endif
 
@@ -115,7 +115,7 @@ void InitADC(void)
     mLpadcConfigStruct.enableAnalogPreliminary = true;
     mLpadcConfigStruct.referenceVoltageSource  = kLPADC_ReferenceVoltageAlt2; /* VDDA_ADC_1P8, connect J11 (1-2) */
     mLpadcConfigStruct.conversionAverageMode   = kLPADC_ConversionAverage1024; /* max HW average during calibration */
-    mLpadcConfigStruct.FIFO1Watermark          = 1U;
+    mLpadcConfigStruct.FIFO1Watermark          = 2U;
 
     LPADC_Init(HSP__ADC_0, &mLpadcConfigStruct);
     LPADC_Init(HSP__ADC_1, &mLpadcConfigStruct);
@@ -130,15 +130,17 @@ void InitADC(void)
     LPADC_DoOffsetCalibration(HSP__ADC_1);
     LPADC_DoAutoCalibration(HSP__ADC_1);
 
+    
     /* *********************************************************************************
      *  HSP__ADC_0                                                                     *
      *                  FIFO0                            FIFO1                         *
-     *  Conversion 1    I_A   - ADC0_A5  GPIO_AD_06      I_B    - ADC0_B5  GPIO_AD_07  *
-     *  Conversion 2    -                                UDCBus - ADC0_B4  GPIO_AD_09  *
+     *  Conversion 1    I_A   - ADC0_A3  PIO_3_6_H       -                             *
      *                                                                                 *
      *  HSP__ADC_1                                                                     *
      *                  FIFO0                            FIFO1                         *
-     *  Conversion 1    I_C   - ADC1_A2  GPIO_AD_22      -                             *
+     *  Conversion 1    -                                I_B   - ADC1_B2  PIO_3_21_H   *
+     *  Conversion 2    I_C   - ADC1_A3  PIO_3_22_H      -                             *
+     *  Conversion 3    -                                UDCBus - ADC1_B1  PIO_3_19_H  *
      *                                                                                 *
      **********************************************************************************/
 
@@ -149,25 +151,33 @@ void InitADC(void)
     mLpadcCommandConfigStruct.enableWaitTrigger   = FALSE;
 
     /* HSP__ADC_0 */
-    /* Set conversion CMD1 configuration: ADC0_A5 (CUR_A) and ADC0_B5 (CUR_B) */
-    mLpadcCommandConfigStruct.channelNumber            = M1_ADC1_PH_A;
-    mLpadcCommandConfigStruct.chainedNextCommandNumber = 2U; /* next CMD is CMD2 */
-    mLpadcCommandConfigStruct.sampleChannelMode        = kLPADC_SampleChannelDualSingleEndBothSide;
+    /* Set conversion CMD1 configuration: ADC0_A3 (CUR_A) */
+    mLpadcCommandConfigStruct.channelNumber            = M1_ADC0_PH_A;
+    mLpadcCommandConfigStruct.chainedNextCommandNumber = 0U;    /* this is the last command */
+    mLpadcCommandConfigStruct.sampleChannelMode        = kLPADC_SampleChannelSingleEndSideA;
     LPADC_SetConvCommandConfig(HSP__ADC_0, 1U, &mLpadcCommandConfigStruct);
 
-    /* Set conversion CMD2 configuration: ADC0_B4 (UDCBus) */
-    mLpadcCommandConfigStruct.channelNumber            = M1_ADC1_UDCB;
-    mLpadcCommandConfigStruct.chainedNextCommandNumber = 0U;
-    mLpadcCommandConfigStruct.sampleChannelMode        = kLPADC_SampleChannelDualSingleEndBothSide;
-    LPADC_SetConvCommandConfig(HSP__ADC_0, 2U, &mLpadcCommandConfigStruct);
 
     /* HSP__ADC_1 */
-    /* Set conversion CMD1 configuration: ADC1_A2 (CUR_C) */
-    mLpadcCommandConfigStruct.channelNumber            = M1_ADC2_PH_C;
-    mLpadcCommandConfigStruct.chainedNextCommandNumber = 0U;
-    mLpadcCommandConfigStruct.sampleChannelMode        = kLPADC_SampleChannelDualSingleEndBothSide;
+    /* Set conversion CMD1 configuration: ADC1_B2 (CUR_B) */
+    mLpadcCommandConfigStruct.channelNumber            = M1_ADC1_PH_B;
+    mLpadcCommandConfigStruct.chainedNextCommandNumber = 1U;
+    mLpadcCommandConfigStruct.sampleChannelMode        = kLPADC_SampleChannelSingleEndSideB;
     LPADC_SetConvCommandConfig(HSP__ADC_1, 1U, &mLpadcCommandConfigStruct);
 
+    /* Set conversion CMD2 configuration: ADC1_A3 (CUR_C) */
+    mLpadcCommandConfigStruct.channelNumber            = M1_ADC1_PH_C;
+    mLpadcCommandConfigStruct.chainedNextCommandNumber = 2U;
+    mLpadcCommandConfigStruct.sampleChannelMode        = kLPADC_SampleChannelSingleEndSideA;
+    LPADC_SetConvCommandConfig(HSP__ADC_1, 2U, &mLpadcCommandConfigStruct);
+    
+    /* Set conversion CMD3 configuration: ADC1_B1 (UDCBus) */
+    mLpadcCommandConfigStruct.channelNumber            = M1_ADC1_UDCB;
+    mLpadcCommandConfigStruct.chainedNextCommandNumber = 0U;    /* this is the last command */
+    mLpadcCommandConfigStruct.sampleChannelMode        = kLPADC_SampleChannelSingleEndSideB;
+    LPADC_SetConvCommandConfig(HSP__ADC_1, 3U, &mLpadcCommandConfigStruct);
+    
+    
     /* Set trigger configuration */
     LPADC_GetDefaultConvTriggerConfig(&mLpadcTriggerConfigStruct);
     mLpadcTriggerConfigStruct.targetCommandId       = 1U;  /* CMD1 executed */
@@ -183,13 +193,13 @@ void InitADC(void)
     g_sM1Curr3phDcBus.ui16OffsetFiltWindow = ADC_OFFSET_WINDOW;
 
     /* Enable the watermark interrupt */
-    LPADC_EnableInterrupts(HSP__ADC_0, kLPADC_FIFO1WatermarkInterruptEnable);
-    EnableIRQ(HSP_ADC0_IRQn);
-    NVIC_SetPriority(HSP_ADC0_IRQn, 1U);
+    LPADC_EnableInterrupts(HSP__ADC_1, kLPADC_FIFO1WatermarkInterruptEnable);
+    EnableIRQ(HSP_ADC1_IRQn);
+    NVIC_SetPriority(HSP_ADC1_IRQn, 1U);
 }
 
 /*!
- * @brief   void InitTMR1(void)
+ * @brief   void InitQTMR1(void)
  *           - Initialization of the TMR1 peripheral
  *           - Performs slow control loop counter
  *
@@ -197,7 +207,7 @@ void InitADC(void)
  *
  * @return  none
  */
-void InitTMR1(void)
+void InitQTMR1(void)
 {
     uint16_t ui16SpeedLoopFreq       = g_sClockSetup.ui16M1SpeedLoopFreq;
     uint32_t ui32FastPeripheralClock = g_sClockSetup.ui32FastPeripheralClock;
@@ -205,7 +215,7 @@ void InitTMR1(void)
 
     CLOCK_EnableClock(kCLOCK_MAIN_hsp_qtimer1);
 
-    /* TMR0_CTRL: CM=0,PCS=0,SCS=0,ONCE=0,LENGTH=1,DIR=0,COINIT=0,OUTMODE=0 */
+    /* QTMR1_CTRL: CM=0,PCS=0,SCS=0,ONCE=0,LENGTH=1,DIR=0,COINIT=0,OUTMODE=0 */
     /* Stop all functions of the timer */
     HSP__QTMR_1->CHANNEL[0].CTRL = 0x20;
 
@@ -418,17 +428,17 @@ void M1_InitQD(void)
 void InitCMP(void)
 {
     /* Enable CMP clock */
-    CLOCK_EnableClock(kCLOCK_WAKE_acmp3);
+    CLOCK_EnableClock(kCLOCK_WAKE_acmp2);
 
     /* Enable high speed */
-    WAKE__ACMP_3->C0 |= CMP_C0_PMODE_MASK;
+    WAKE__ACMP_2->C0 |= CMP_C0_PMODE_MASK;
 
     /* Configure channel: positive port input (3U) from DAC, negative port input (7U) from minus mux */
-    WAKE__ACMP_3->C1 |= CMP_C1_PSEL(3U) | CMP_C1_MSEL(7U);
+    WAKE__ACMP_2->C1 |= CMP_C1_PSEL(3U) | CMP_C1_MSEL(7U);
 
     /* Voltage reference 3V PAD, DAC value 150, High speed mode */
-    WAKE__ACMP_3->C1 |= (CMP_C1_VRSEL(1U) | CMP_C1_VOSEL(150U) | CMP_C1_DACEN_MASK | CMP_C1_DMODE_MASK);
+    WAKE__ACMP_2->C1 |= (CMP_C1_VRSEL(1U) | CMP_C1_VOSEL(150U) | CMP_C1_DACEN_MASK | CMP_C1_DMODE_MASK);
 
     /* Enable CMP */
-    WAKE__ACMP_3->C0 |= CMP_C0_EN_MASK;
+    WAKE__ACMP_2->C0 |= CMP_C0_EN_MASK;
 }

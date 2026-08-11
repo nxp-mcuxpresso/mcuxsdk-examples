@@ -78,28 +78,24 @@ typedef struct _clock_setup
  * Valid for iMXRT2660 EVK together with FRDM-MC-LVPMSM
  *
  * Motor 1
- * Quantity     | ADC1                 | ADC2
+ * Quantity     | ADC0                 | ADC1
  *              | A         | B        | A        | B
  * -----------------------------------------------------------------------
- * M1_I_A       | ADC1_A5   |          |          |
- * M1_I_B       |           | ADC1_B5  |          |
- * M1_I_C       |           |          | ADC2_A2  |
- * M1_U_DCB     |           | ADC1_B4  |          |
+ * M1_I_A       | ADC0_A3   |          |          |
+ * M1_I_B       |           |          |          | ADC1_B2
+ * M1_I_C       |           |          | ADC1_A3  |
+ * M1_U_DCB     |           |          |          | ADC1_B1
  *
  */
 
-/* Phase current A assigned to ADC1 */
-#define M1_ADC1_PH_A (5)
-#define M1_ADC2_PH_A (0)
+/* Phase current A assigned to ADC0 */
+#define M1_ADC0_PH_A (3)
 /* Phase current B assigned to ADC1 */
-#define M1_ADC1_PH_B (5)
-#define M1_ADC2_PH_B (0)
-/* Phase current C assigned to ADC2 */
-#define M1_ADC1_PH_C (0)
-#define M1_ADC2_PH_C (2)
+#define M1_ADC1_PH_B (2)
+/* Phase current C assigned to ADC1 */
+#define M1_ADC1_PH_C (3)
 /* DC bus voltage assigned to ADC1 */
-#define M1_ADC1_UDCB (4)
-#define M1_ADC2_UDCB (0)
+#define M1_ADC1_UDCB (1)
 
 /* offset measurement filter window */
 #define ADC_OFFSET_WINDOW (3)
@@ -118,7 +114,7 @@ typedef struct _clock_setup
 /******************************************************************************
  * Define motor 1 slow control loop timer
  ******************************************************************************/
-#define M1_MCDRV_TMR_SLOWLOOP_INIT() InitTMR1()
+#define M1_MCDRV_TMR_SLOWLOOP_INIT() InitQTMR1()
 
 /******************************************************************************
  * Define 3-ph PWM control functions for motor 1
@@ -172,7 +168,7 @@ extern "C" {
 void MCDRV_Init_M1(void);
 void InitClock(void);
 void InitADC(void);
-void InitTMR1(void);
+void InitQTMR1(void);
 void M1_InitPWM(void);
 void M1_InitQD(void);
 void InitCMP(void);
