@@ -7,4 +7,4 @@ The purpose of this example is to show how to use the eDMA3 and to provide a sim
 debugging and further development.
 
 ## Supported Boards
-- [MC56F85000-EVK](../../../_boards/mc56f85000evk/driver_examples/dsc_edma3/memory_to_memory/example_board_readme.md)
+- [MC56F85000-EVK](../../../_boards/mc56f85000evk/driver_examples/edma3/memory_to_memory/example_board_readme.md)
