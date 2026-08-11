@@ -177,6 +177,20 @@ void MU1_B_DriverIRQHandler(void)
     HSE_GeneralPurposeInterruptHandler(1);
 }
 
+#ifdef HSE_SPT_INTERNAL_FLASH_DEV
+#include "hse_host.h"
+
+hseSrvResponse_t HSE_DemoCleanUp(void)
+{
+    uint8_t muIf                    = 0U;
+    uint8_t muChannelIdx            = 1U;
+    hseSrvDescriptor_t* pHseSrvDesc = &gHseSrvDesc[muIf][muChannelIdx];
+    pHseSrvDesc->srvId              = HSE_SRV_ID_ERASE_HSE_NVM_DATA;
+    hseSrvResponse_t response       = HSE_Send(muIf, muChannelIdx, gSyncTxOption, pHseSrvDesc);
+    return response;
+}
+#endif /* HSE_SPT_INTERNAL_FLASH_DEV */
+
 int main()
 {
     testStatus = NO_TEST_EXECUTED;
@@ -238,6 +252,13 @@ int main()
     {
         PRINTF("FAIL!!\r\n");
     }
+
+#ifdef HSE_SPT_INTERNAL_FLASH_DEV
+    /* We erase the NVM, so we have a clean state.
+     * Only on HSE-B and in CUST_DEL lifecycle.
+     */
+    HSE_DemoCleanUp();
+#endif
 
     PRINTF("Demo end\r\n");
 
