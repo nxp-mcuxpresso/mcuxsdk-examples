@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, 2024-2025 NXP
+ * Copyright 2022, 2024-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -11,8 +11,9 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define EXAMPLE_MASTER                 HSP__I3C
-#define I3C_MASTER_CLOCK_FREQUENCY     CLOCK_GetRootClockFreq(kCLOCK_Root_MAIN_i3c0_fclk)
+#define EXAMPLE_MASTER                  HSP__I3C
+#define I3C_MASTER_CLOCK_FREQUENCY      CLOCK_GetRootClockFreq(kCLOCK_Root_MAIN_i3c0_fclk)
+#define EXAMPLE_USE_SETDASA_ASSIGN_ADDR 1
 
 #define EXAMPLE_DMA                    MAIN__EDMA3
 #define EXAMPLE_I3C_TX_DMA_CHANNEL     (0U)

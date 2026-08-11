@@ -15,7 +15,5 @@ void BOARD_InitHardware(void)
     /* Board common setting: MPU, Power and Clock Tree, TRDC, and Debug Console init. */
     BOARD_CommonSetting();
     BOARD_InitI3CPins();
-
-    CLOCK_SetRootClockDiv(kCLOCK_Root_MAIN_i3c0_fclk, 15U);
 }
 /*${function:end}*/
