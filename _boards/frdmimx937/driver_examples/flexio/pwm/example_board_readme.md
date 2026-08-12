@@ -8,7 +8,7 @@ Hardware requirements
 
 Board settings
 ============
-Connect J18-3 (GPIO_IO02, FLEXIO1_FLEXIO[2]) and J18-4 (GND) to oscilloscope
+Connect J18-3 (GPIO_IO02, FLEXIO1_FLEXIO[2]) and J18-6 (GND) to oscilloscope
 
 #### Please note this application can't support running with Linux BSP! ####
 
