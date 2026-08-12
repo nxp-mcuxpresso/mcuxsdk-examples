@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+v2x_fce_aes_gcm:
+  section-type: application
+  contents:
+    meta_path: examples/v2x_fce_examples/v2x_fce_aes_gcm
+    project-root-path: boards/${board}/v2x_fce_examples/v2x_fce_aes_gcm/${multicore_foldername}
+    document:
+      name: v2x_fce_aes_gcm${core_id_suffix_name}
+      category: v2x_fce_examples
+      brief: EdgeLock V2X/FCE AES-GCM authenticated encrypt/decrypt demo against a NIST KAT vector.
+      example_readme:
+      - examples/v2x_fce_examples/v2x_fce_aes_gcm/readme.md
+      - ${board_root}/${board}/v2x_fce_examples/v2x_fce_aes_gcm/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    imx943evk@cm33_core1: []
+    imx943evk@cm7_core0: []
+    imx943evk@cm7_core1: []
