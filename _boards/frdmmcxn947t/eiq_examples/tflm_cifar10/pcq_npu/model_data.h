@@ -23,7 +23,7 @@ s_microOpResolver.AddCustom(tflite::GetString_NEUTRON_GRAPH(), tflite::Register_
 #endif
 
 
-#if defined(MCXN947_cm33_core0_SERIES)
+#if defined(MCXN947T_cm33_core0_SERIES)
 #define __PLACEMENT __attribute__((section(".model")))
 #else
 #define __PLACEMENT
