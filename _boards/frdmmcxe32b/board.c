@@ -187,6 +187,12 @@ void BOARD_ConfigMPU(void)
     MPU->RBAR = ARM_MPU_RBAR(14, 0x1B000000U);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 0, 0, 1, 1, 0, ARM_MPU_REGION_SIZE_8KB);
 
+#if defined(__USE_SHMEM)
+    /* Region 15 setting: RPMsg shared SRAM, Normal type, not shareable, non-cacheable. */
+    MPU->RBAR = ARM_MPU_RBAR(15, 0x20400000U);
+    MPU->RASR = ARM_MPU_RASR(1, ARM_MPU_AP_FULL, 1, 0, 0, 0, 0, ARM_MPU_REGION_SIZE_8KB);
+#endif
+
     /* Enable MPU */
     ARM_MPU_Enable(MPU_CTRL_PRIVDEFENA_Msk | MPU_CTRL_HFNMIENA_Msk);
 
