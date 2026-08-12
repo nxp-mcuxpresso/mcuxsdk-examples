@@ -54,7 +54,6 @@
 
 static void BOARD_Init(void);
 static void BOARD_InitSysTick(void);
-static void BOARD_InitGPIO(void);
 static void DemoSpeedStimulator(void);
 static void DemoPositionStimulator(void);
 static void Application_Control_BL(void);
@@ -78,9 +77,9 @@ static uint32_t ui32PositionStimulatorCnt = 0U;
 
 /* Structure used in FM to get required ID's */
 app_ver_t g_sAppIdFM = {
-    "../../../examples/_boards/frdmmcxa346/demo_apps/mc_pmsm/pmsm_enc",                       /* User Path 1- the highest priority */
-    "../../../boards/frdmmcxa346/demo_apps/mc_pmsm/pmsm_enc",       /* User Path 2 */
-    "frdmmcxa346",    /* board id */
+		"../../../examples/_boards/hvpmcxa346/demo_apps/mc_pmsm/pmsm_enc", /* User Path 1- the highest priority */
+		"../../../boards/hvpmcxa346/demo_apps/mc_pmsm/pmsm_enc", /* User Path 2 */
+		"hvp-mcxa346", /* board id */
     "pmsm_enc", /* example id */
     MCRSP_VER,      /* sw version */
     FEATURE_SET,    /* example's feature-set */
@@ -130,8 +129,8 @@ int main(void)
     /* FreeMASTER initialization */
     FMSTR_Init();
 	
-	/* RTCESL MAU initialization */
-	RTCESL_MAU_Init();
+    /* RTCESL MAU initialization */
+    RTCESL_MAU_Init();
 
     /* Initialize peripheral motor control driver for motor M1 */
     MCDRV_Init_M1();   
@@ -147,7 +146,7 @@ int main(void)
 
     if(g_sSpinMidSwitch.eAppState == kAppStateMID)
     {
-      MID_Init_AR();
+        MID_Init_AR();
     }
 
     /* Spin state machine is default */
@@ -229,38 +228,6 @@ void CTIMER0_IRQHandler(void)
 
     /* M1 Slow StateMachine call */
     SM_StateMachineSlow(&g_sM1Ctrl);
-
-    /* If in STOP state turn on RED */
-    if (M1_GetAppState() == 2)
-    {
-        /* Red LED on */
-        GPIO_PinWrite(BOARD_INITPINS_LED_RED_GPIO, BOARD_INITPINS_LED_RED_GPIO_PIN, 0U);
-        /* Green LED off */
-        GPIO_PinWrite(BOARD_INITPINS_LED_GREEN_GPIO, BOARD_INITPINS_LED_GREEN_GPIO_PIN, 1U);
-    }
-
-    /* If in FAULT state RED blinking*/
-    else if (M1_GetAppState() == 0)
-    {
-        if (ui16i-- < 0)
-        {
-            GPIO_PortToggle(BOARD_INITPINS_LED_RED_GPIO, 1U << BOARD_INITPINS_LED_RED_GPIO_PIN);
-            bDemoModeSpeed = FALSE;
-            bDemoModePosition = FALSE;
-            ui16i = 125;
-        }
-        /* Green LED off */
-        GPIO_PinWrite(BOARD_INITPINS_LED_GREEN_GPIO, BOARD_INITPINS_LED_GREEN_GPIO_PIN, 1U);
-    }
-
-    /* If in RUN or INIT state turn on green */
-    else
-    {
-        /* Red LED off */
-        GPIO_PinWrite(BOARD_INITPINS_LED_RED_GPIO, BOARD_INITPINS_LED_RED_GPIO_PIN, 1U);
-        /* Green LED on */
-        GPIO_PinWrite(BOARD_INITPINS_LED_GREEN_GPIO, BOARD_INITPINS_LED_GREEN_GPIO_PIN, 0U);
-    }
 
     /* Demo speed stimulator */
     DemoSpeedStimulator();
@@ -377,78 +344,6 @@ static void DemoPositionStimulator(void)
             	break;
         }
     }
-}
-
-
-/*!
- * @brief   Port interrupt handler
- *
- * @param   void
- *
- * @return  none
- */
-void GPIO1_IRQHandler(void) {
-  
-    /* Speed demo */
-    if (bDemoModeSpeed)
-    {
-        /* Stop application */
-        M1_SetSpeed(0);
-        M1_SetAppSwitch(0);
-        bDemoModeSpeed = FALSE;
-    }
-    else
-    {
-        /* Start application */
-        M1_SetAppSwitch(1);
-        bDemoModeSpeed         = TRUE;
-        ui32SpeedStimulatorCnt = 0;
-    }
-
-    /* Clear external interrupt flag. */
-    GPIO_GpioClearInterruptFlags(BOARD_INITPINS_SW2_GPIO, 1U << BOARD_INITPINS_SW2_PIN);
-    
-    /* Add empty instructions for correct interrupt flag clearing */
-    M1_END_OF_ISR;
-  
-}
-
-
-/*!
- *@brief      Initialization of the GPIO pins
- *
- *@param      none
- *
- *@return     none
- */
-static void BOARD_InitGPIO(void)
-{
-    /* Define the init structure for the input switch pin */
-    gpio_pin_config_t sw_config = {
-        kGPIO_DigitalInput,
-        0,
-    };
-    
-    /* Init RED LED */
-    GPIO_PinWrite(BOARD_INITPINS_LED_RED_GPIO, BOARD_INITPINS_LED_RED_GPIO_PIN, 0U); \
-    BOARD_INITPINS_LED_RED_GPIO->PDDR |= (1U << BOARD_INITPINS_LED_RED_GPIO_PIN);
-    /* Init BLUE LED */
-    GPIO_PinWrite(BOARD_INITPINS_LED_BLUE_GPIO, BOARD_INITPINS_LED_BLUE_GPIO_PIN, 0U); \
-    BOARD_INITPINS_LED_BLUE_GPIO->PDDR |= (1U << BOARD_INITPINS_LED_BLUE_GPIO_PIN);
-    /* Init GREEN LED */
-    GPIO_PinWrite(BOARD_INITPINS_LED_GREEN_GPIO, BOARD_INITPINS_LED_GREEN_GPIO_PIN, 0U); \
-    BOARD_INITPINS_LED_GREEN_GPIO->PDDR |= (1U << BOARD_INITPINS_LED_GREEN_GPIO_PIN);    
-    
-    /* Switch off all LEDs */
-    GPIO_PinWrite(BOARD_INITPINS_LED_RED_GPIO, BOARD_INITPINS_LED_RED_GPIO_PIN, 1U);
-    GPIO_PinWrite(BOARD_INITPINS_LED_BLUE_GPIO, BOARD_INITPINS_LED_BLUE_GPIO_PIN, 1U);
-    GPIO_PinWrite(BOARD_INITPINS_LED_GREEN_GPIO, BOARD_INITPINS_LED_GREEN_GPIO_PIN, 1U);
-
-    /* Init input switch GPIO. */
-    GPIO_SetPinInterruptConfig(BOARD_INITPINS_SW2_GPIO, BOARD_INITPINS_SW2_GPIO_PIN, kGPIO_InterruptRisingEdge);
-    GPIO_PinInit(BOARD_INITPINS_SW2_GPIO, BOARD_INITPINS_SW2_GPIO_PIN, &sw_config);
-    EnableIRQ(GPIO1_IRQn);
-  
 }
 
 
@@ -583,9 +478,6 @@ static void BOARD_Init(void)
     
     /* Init peripherals set in peripherals file */
     BOARD_InitBootPeripherals();
-            
-    /* Init GPIO pins */
-    BOARD_InitGPIO();
     
     /* Release peripheral reset */
     RESET_ReleasePeripheralReset(kADC0_RST_SHIFT_RSTn);

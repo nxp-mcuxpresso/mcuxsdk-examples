@@ -27,6 +27,10 @@ static void InitQD(void);
     static void InitCMP(void);
 #endif /* M1_FAULT_ENABLE */
 
+#if M1_INRUSH_RELAY_ENABLE
+    static void InitInrushRelay(void);
+#endif /* M1_INRUSH_RELAY_ENABLE */
+
 
 /*******************************************************************************
  * Constants
@@ -64,6 +68,11 @@ clock_setup_t g_sClockSetup;
  */
 void MCDRV_Init_M1(void)
 {
+
+#if M1_INRUSH_RELAY_ENABLE
+	InitInrushRelay();
+#endif /* M1_INRUSH_RELAY_ENABLE */
+
     /* Init application clock dependent variables */
     InitClock();
   
@@ -82,12 +91,10 @@ void MCDRV_Init_M1(void)
     /* Qudrature decoder peripheral init */
     InitQD();
     
-
 #if M1_FAULT_ENABLE    
-   /* Comparator CMP */
-   InitCMP();   
+    /* Comparator CMP */
+    InitCMP();   
 #endif /* M1_FAULT_ENABLE */
-
     
 }
 
@@ -212,8 +219,8 @@ static void InitPWM(void)
     PWMBase->SM[1].CTRL2 = (PWMBase->SM[1].CTRL2 & ~PWM_CTRL2_INIT_SEL_MASK) | PWM_CTRL2_INIT_SEL(0x2);
     PWMBase->SM[2].CTRL2 = (PWMBase->SM[2].CTRL2 & ~PWM_CTRL2_INIT_SEL_MASK) | PWM_CTRL2_INIT_SEL(0x2);
 
-    /* Fault 0 active in logic level one, automatic clearing */
-    PWMBase->FCTRL = (PWMBase->FCTRL & ~PWM_FCTRL_FLVL_MASK) | PWM_FCTRL_FLVL(0x1);
+    /* Fault 0 active in logic level 0, automatic clearing */
+    PWMBase->FCTRL = (PWMBase->FCTRL & ~PWM_FCTRL_FLVL_MASK) | PWM_FCTRL_FLVL(0x0);
     PWMBase->FCTRL = (PWMBase->FCTRL & ~PWM_FCTRL_FAUTO_MASK) | PWM_FCTRL_FAUTO(0x1);
 
     /* Clear fault flags */
@@ -262,74 +269,76 @@ static void InitADC(void)
     lpadc_conv_trigger_config_t lpadcTriggerConfig;
     lpadc_conv_command_config_t lpadcCommandConfig;
     lpadc_config_t lpadcConfig;
-    
+
     /* Init the lpadcConfig struct */
     LPADC_GetDefaultConfig(&lpadcConfig);
     lpadcConfig.enableAnalogPreliminary = true;
     lpadcConfig.referenceVoltageSource = kLPADC_ReferenceVoltageAlt3;
-    lpadcConfig.conversionAverageMode = kLPADC_ConversionAverage256;
-    lpadcConfig.powerLevelMode = kLPADC_PowerLevelAlt2;
-    
-    /* Release peripheral reset */
-    RESET_ReleasePeripheralReset(kADC0_RST_SHIFT_RSTn);
-    RESET_ReleasePeripheralReset(kADC1_RST_SHIFT_RSTn);
+    lpadcConfig.conversionAverageMode = kLPADC_ConversionAverage1;
 
-    LPADC_Init(ADC0, &lpadcConfig);
-    LPADC_DoOffsetCalibration(ADC0);
-    LPADC_DoAutoCalibration(ADC0);
-    
+    /* Release peripheral reset */
+    RESET_ReleasePeripheralReset(kADC1_RST_SHIFT_RSTn);
+    RESET_ReleasePeripheralReset(kADC2_RST_SHIFT_RSTn);
+
+    /* Attach peripheral clock */
+    CLOCK_SetClockDiv(kCLOCK_DivADC, 1u);
+    CLOCK_AttachClk(kFRO_LF_DIV_to_ADC);
+
     LPADC_Init(ADC1, &lpadcConfig);
     LPADC_DoOffsetCalibration(ADC1);
     LPADC_DoAutoCalibration(ADC1);
-        
+
+    LPADC_Init(ADC2, &lpadcConfig);
+    LPADC_DoOffsetCalibration(ADC2);
+    LPADC_DoAutoCalibration(ADC2);
+
     LPADC_GetDefaultConvCommandConfig(&lpadcCommandConfig);
     lpadcCommandConfig.sampleChannelMode = kLPADC_SampleChannelSingleEndSideA;
     lpadcCommandConfig.conversionResolutionMode = kLPADC_ConversionResolutionStandard;
     lpadcCommandConfig.sampleTimeMode = kLPADC_SampleTimeADCK3;
-    
-    /* SET VOLT_DCB_CHANNEL_NUMBER (ADC0) */
-    lpadcCommandConfig.channelNumber = VOLT_DCB_CHANNEL_NUMBER;
-    lpadcCommandConfig.chainedNextCommandNumber = 0U;
-    LPADC_SetConvCommandConfig( ADC0, 1U, &lpadcCommandConfig );
-    
-    /* Init triggers (use trigger 0). */
-    LPADC_GetDefaultConvTriggerConfig(&lpadcTriggerConfig);
-    lpadcTriggerConfig.targetCommandId = 1U;
-    lpadcTriggerConfig.enableHardwareTrigger = true;
-    LPADC_SetConvTriggerConfig(ADC0, 0U, &lpadcTriggerConfig);
-   
-    
-    /* SET CURRENTS CHANNELS (ADC1) */
+
+    /* SET CUR_A, CUR_B and VOLT_DCB CHANNELS (ADC1) */
     lpadcCommandConfig.channelNumber = CUR_A_CHANNEL_NUMBER;
     lpadcCommandConfig.chainedNextCommandNumber = 2U;
-    LPADC_SetConvCommandConfig( ADC1, 1U, &lpadcCommandConfig );
+    LPADC_SetConvCommandConfig(ADC1, 1U, &lpadcCommandConfig);
 
     lpadcCommandConfig.channelNumber = CUR_B_CHANNEL_NUMBER;
     lpadcCommandConfig.chainedNextCommandNumber = 3U;
-    LPADC_SetConvCommandConfig( ADC1, 2U, &lpadcCommandConfig );        
-                
-    lpadcCommandConfig.channelNumber = CUR_C_CHANNEL_NUMBER;
+    LPADC_SetConvCommandConfig(ADC1, 2U, &lpadcCommandConfig);
+
+    lpadcCommandConfig.channelNumber = VOLT_DCB_CHANNEL_NUMBER;
     lpadcCommandConfig.chainedNextCommandNumber = 0U;
-    LPADC_SetConvCommandConfig( ADC1, 3U, &lpadcCommandConfig ); 
-    
+    LPADC_SetConvCommandConfig(ADC1, 3U, &lpadcCommandConfig);
+
     /* Init triggers (use trigger 0). */
     LPADC_GetDefaultConvTriggerConfig(&lpadcTriggerConfig);
     lpadcTriggerConfig.targetCommandId = 1U;
     lpadcTriggerConfig.enableHardwareTrigger = true;
     LPADC_SetConvTriggerConfig(ADC1, 0U, &lpadcTriggerConfig);
-    
+
+    /* SET CUR_C CHANNEL (ADC2) */
+    lpadcCommandConfig.channelNumber = CUR_C_CHANNEL_NUMBER;
+    lpadcCommandConfig.chainedNextCommandNumber = 0U;
+    LPADC_SetConvCommandConfig(ADC2, 1U, &lpadcCommandConfig);
+
+    /* Init triggers (use trigger 0). */
+    LPADC_GetDefaultConvTriggerConfig(&lpadcTriggerConfig);
+    lpadcTriggerConfig.targetCommandId = 1U;
+    lpadcTriggerConfig.enableHardwareTrigger = true;
+    LPADC_SetConvTriggerConfig(ADC2, 0U, &lpadcTriggerConfig);
+
     /* Set watermark level selection */
     ADC1->FCTRL |= ADC_FCTRL_FWMARK(2);
-    
+
     /* Enable the watermark interrupt. */
     LPADC_EnableInterrupts(ADC1, kLPADC_FIFO0WatermarkInterruptEnable);
     NVIC_SetPriority(ADC1_IRQn, 0U);
-    NVIC_EnableIRQ(ADC1_IRQn);  
-       
-    /* ADC0 base address */
-    g_sM1Curr3phDcBus.pToAdcBase = ADC0;
+    NVIC_EnableIRQ(ADC1_IRQn);
 
+    /* Main triggered measurement base address */
+    g_sM1Curr3phDcBus.pToAdcBase = ADC1;
 }
+
 
 
 /*!
@@ -341,12 +350,17 @@ static void InitADC(void)
  */
 static void InitINPUTMUX(void)
 {
-    /* Write to INPUTMUX0: Peripheral clock is enabled */
+    /* Enable clock to ADC trigger */
     CLOCK_EnableClock(kCLOCK_GateINPUTMUX0);
-    
-    /* PWM0_SM0_OUT_TRIG0 is selected as trigger input for ADC0/ADC1 channel 0 */
-    INPUTMUX0->ADC0_TRIG[0] = 0x12;     /* Pwm0Sm0OutTrig0ToAdc0Trigger */
-    INPUTMUX0->ADC1_TRIG[0] = 0x12;     /* Pwm0Sm0OutTrig0ToAdc1Trigger */
+
+//    /* PWM0_SM0_OUT_TRIG0 is selected as trigger input for ADC0 channel 0 */
+//    INPUTMUX_AttachSignal(INPUTMUX0, 0U, kINPUTMUX_Pwm0Sm0OutTrig0ToAdc0Trigger);
+//
+//    /* PWM0_SM0_OUT_TRIG0 is selected as trigger input for ADC1 channel 0 */
+//    INPUTMUX_AttachSignal(INPUTMUX0, 0U, kINPUTMUX_Pwm0Sm0OutTrig0ToAdc1Trigger);
+
+    INPUTMUX0->ADC1_TRIG[0] = 0x12;
+    INPUTMUX0->ADC2_TRIG[0] = 0x12;
 }
 
 
@@ -427,7 +441,7 @@ static void InitQD(void)
     
 	/* Position gain */
     g_sM1Enc.i32Q10Cnt2PosGain = ((0xffffffffU/(4*g_sM1Enc.ui16PulseNumber))*0x400U);
-    /* Speed conversion constant: (2Ï€ Â· QD_timer_freq) / (4 Â· encoder_pulses Â· max_speed) scaled by 2^27 for frac32 format */    
+    /* Speed conversion constant: (2p · QD_timer_freq) / (4 · encoder_pulses · max_speed) scaled by 2^27 for frac32 format */    
     g_sM1Enc.f32SpeedCalConst = (frac32_t)((2*FLOAT_PI*g_sM1Enc.ui32QDTimerFrequency/(4*g_sM1Enc.ui16PulseNumber*M1_N_MAX))*0x8000000U);
 	/* Coefficient converting fractional speed into mechanical angular speed */
     g_sM1Enc.fltSpeedFracToAngularCoeff = (float_t)(M1_N_MAX);
@@ -453,6 +467,7 @@ static void InitQD(void)
 #if M1_FAULT_ENABLE
 static void InitCMP(void)
 {
+    
     /* Attach peripheral clock */
     CLOCK_AttachClk(kFRO_LF_DIV_to_CMP2);
     CLOCK_SetClockDiv(kCLOCK_DivCMP2_FUNC, 1U);
@@ -481,3 +496,35 @@ static void InitCMP(void)
 }
 #endif /* M1_FAULT_ENABLE */
 
+
+/*!
+ *@brief      Set Inrush relay on HVP
+ *
+ *@param      none
+ *
+ *@return     none
+ */
+#if M1_INRUSH_RELAY_ENABLE
+static void InitInrushRelay(void)
+{
+    volatile register uint32_t ui32DelayMs = 0;
+
+    /* Setup SysTick */
+    SysTick->LOAD = 0xFFFFFF;
+    SysTick->VAL  = SysTick->LOAD;
+    SysTick->CTRL |= SysTick_CTRL_CLKSOURCE_Msk;
+    SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
+
+    /* Wait M1_INRUSH_DELAY milliseconds to turn on the relay */
+    while (ui32DelayMs++ < M1_INRUSH_RELAY_DELAY)
+    {
+        while (((SysTick->LOAD - SysTick->VAL) * 1000) < SystemCoreClock)
+        {
+        };
+        SysTick->VAL = SysTick->LOAD;
+    }
+
+    /* Turn on relay */
+    M1_INRUSH_RELAY_SET();
+}
+#endif /* M1_INRUSH_RELAY_ENABLE */

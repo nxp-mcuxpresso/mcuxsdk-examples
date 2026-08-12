@@ -69,32 +69,40 @@ typedef struct _clock_setup
   ******************************************************************************/
 
 /* Over-current Fault enable */
-#define M1_FAULT_ENABLE         (0U)
+#define M1_FAULT_ENABLE         (1U)
 /* Over-current Fault detection number */
 #define M1_FAULT_NUM            (0U)
 /* Over-current CMP input channel */   
-#define CMP_INPUT_CHANNEL       (0U)
+#define CMP_INPUT_CHANNEL       (3U)
 /* CMP DAC input channel */ 
 #define CMP_DAC_CHANNEL         (7U)
 /* CMP Overcurrent threshold */
 #define CMP_THRESHOLD           (250U)
 
 /* DC bus braking resistor control */
-#define M1_BRAKE_SET()          
-#define M1_BRAKE_CLEAR()        
+#define M1_BRAKE_SET()				GPIO3->PSOR |= GPIO_PSOR_PTSO27(1U);
+#define M1_BRAKE_CLEAR()			GPIO3->PCOR |= GPIO_PCOR_PTCO27(1U);
 /* DC bus braking threshold hysteresis */
 #define M1_U_DCB_HYSTERESIS             (0.05F)
 #define M1_U_DCB_UPPER_THRESHOLD        (frac16_t)((M1_U_DCB_TRIP) * (1.0F + (M1_U_DCB_HYSTERESIS)))
 #define M1_U_DCB_LOWER_THRESHOLD        (frac16_t)((M1_U_DCB_TRIP) * (1.0F - (M1_U_DCB_HYSTERESIS)))
 
+/* Inrush relay enable */
+#define M1_INRUSH_RELAY_ENABLE      (1U)
+/* Inrush relay delay */
+#define M1_INRUSH_RELAY_DELAY       (1000U)
+/* Inrush relay pin */
+#define M1_INRUSH_RELAY_SET()       GPIO3->PSOR |= GPIO_PSOR_PTSO12(1U);
+#define M1_INRUSH_RELAY_CLEAR()     GPIO3->PCOR |= GPIO_PCOR_PTCO12(1U);
+
 /******************************************************************************
  * ADC measurement definition
  ******************************************************************************/
 /* Configuration of ADC channels according to the input pin signal */
-#define CUR_A_CHANNEL_NUMBER    (7U)  //ADC1
-#define CUR_B_CHANNEL_NUMBER    (8U)  //ADC1
-#define CUR_C_CHANNEL_NUMBER    (21U) //ADC1
-#define VOLT_DCB_CHANNEL_NUMBER (20U) //ADC0  
+#define CUR_A_CHANNEL_NUMBER    	(12U) //ADC1
+#define CUR_B_CHANNEL_NUMBER    	(13U) //ADC1
+#define CUR_C_CHANNEL_NUMBER    	(23U) //ADC2
+#define VOLT_DCB_CHANNEL_NUMBER 	(1U)  //ADC1
 
 /******************************************************************************
  * Define motor ADC control functions
