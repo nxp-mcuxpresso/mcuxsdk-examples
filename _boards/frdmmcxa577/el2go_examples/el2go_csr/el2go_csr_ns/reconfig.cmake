@@ -68,9 +68,9 @@ mcux_add_iar_configuration(
 # TF-M linker file preprocessing
 mcux_add_macro(
      CC "-DNS_HEAP_SIZE=0x00004000\
-         -DNS_STACK_SIZE=0x00008000"
+         -DNS_STACK_SIZE=0x00004000"
 )
 
 mcux_set_list(
-    TFM_LINKER_DEFINES_IMPORT "-DNS_HEAP_SIZE=0x00004000 -DNS_STACK_SIZE=0x00008000"
+    TFM_LINKER_DEFINES_IMPORT "-DNS_HEAP_SIZE=0x00004000 -DNS_STACK_SIZE=0x00004000"
 )
