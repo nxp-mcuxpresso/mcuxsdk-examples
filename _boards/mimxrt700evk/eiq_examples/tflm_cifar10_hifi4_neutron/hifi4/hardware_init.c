@@ -18,17 +18,17 @@
 
 extern void xthal_dcache_region_invalidate(void *addr, size_t size);
 extern void xthal_dcache_region_writeback(void *addr, size_t size);
-extern void xthal_dcache_region_writeback_inv(void *addr, size_t size);
 
-void cleanCache(void)
+// Provide strong definitions to override the Neutron firmware library's weak
+// default cache hooks, so cache maintenance is done by exact address range.
+void cleanCacheByRange(uint32_t address, uint32_t size_byte)
 {
-    //xthal_dcache_region_writeback((void *)0x204e0000, 0xaf00);
-    xthal_dcache_region_writeback_inv((void *)0x204e0000, 0xaf00);
+    xthal_dcache_region_writeback((void *)address, size_byte);
 }
 
-void invalidateCache(void)
+void invalidateCacheByRange(uint32_t address, uint32_t size_byte)
 {
-    xthal_dcache_region_invalidate((void *)0x204e0000, 0xaf00);
+    xthal_dcache_region_invalidate((void *)address, size_byte);
 }
 
 void BOARD_Init(void)
