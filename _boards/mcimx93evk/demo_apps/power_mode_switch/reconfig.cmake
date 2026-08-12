@@ -11,6 +11,7 @@ mcux_add_source(
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES examples/demo_apps/power_mode_switch_imx93
+             ${board_root}/${board}/demo_apps/power_mode_switch
 )
 
 mcux_add_macro(

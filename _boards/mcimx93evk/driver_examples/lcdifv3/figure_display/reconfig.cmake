@@ -1,8 +1,13 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES ${board_root}/${board}/driver_examples/lcdifv3/pin_mux.c
-            ${board_root}/${board}/driver_examples/lcdifv3/pin_mux.h
+    SOURCES ${board_root}/${board}/driver_examples/lcdifv3/${multicore_foldername}/pin_mux.c
+            ${board_root}/${board}/driver_examples/lcdifv3/${multicore_foldername}/pin_mux.h
+)
+
+mcux_add_include(
+    BASE_PATH ${SdkRootDirPath}
+    INCLUDES ${board_root}/${board}/driver_examples/lcdifv3/${multicore_foldername}
 )
 
 mcux_add_macro(

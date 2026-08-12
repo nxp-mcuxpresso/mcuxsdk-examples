@@ -11,6 +11,7 @@ mcux_add_source(
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES middleware/multicore/remoteproc
+             ${board_root}/${board}/eiq_examples/ethosu/ethosu_apps_rpmsg
 )
 mcux_add_armgcc_configuration(
     CC "-fno-strict-aliasing\

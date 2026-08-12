@@ -17,6 +17,7 @@ mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES examples/demo_apps/sai_low_power_audio_imx93
              middleware/multicore/remoteproc
+             ${board_root}/${board}/demo_apps/sai_low_power_audio
 )
 
 mcux_add_macro(

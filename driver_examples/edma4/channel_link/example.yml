@@ -47,7 +47,7 @@ edma4_channel_link:
     - -mdk@hyperram_release
     - -mdk@release
     mcimx93autoevk: []
-    mcimx93evk: []
+    mcimx93evk@cm33: []
     mcimx93wevk: []
     mcimx93qsb: []
     mimxrt700evk@cm33_core0:

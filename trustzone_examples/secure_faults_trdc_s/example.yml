@@ -28,6 +28,6 @@ secure_faults_trdc_s:
     - -iar@debug
     - -iar@release
     mcimx93autoevk: []
-    mcimx93evk: []
+    mcimx93evk@cm33: []
     mcimx93wevk: []
     mcimx93qsb: []

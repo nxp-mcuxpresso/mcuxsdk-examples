@@ -191,7 +191,7 @@ enet_txrx_transfer:
     - -mdk@debug
     - -mdk@release
     mcimx93autoevk: []
-    mcimx93evk: []
+    mcimx93evk@cm33: []
     mcimx93wevk: []
     rdrw612bga:
     - -armgcc@debug

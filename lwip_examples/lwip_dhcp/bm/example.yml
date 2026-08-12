@@ -280,7 +280,7 @@ lwip_dhcp_bm:
     frdmimx937@cm7: []
     imx952evk@cm7: []
     mcimx93autoevk: []
-    mcimx93evk: []
+    mcimx93evk@cm33: []
     mcimx93wevk: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []

@@ -79,7 +79,7 @@ lwip_dhcp_enet_qos_bm:
     - -mdk@release
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
-    mcimx93evk: []
+    mcimx93evk@cm33: []
     mcimx93wevk: []
     mcimx93qsb: []
     frdmmcxe31b: []

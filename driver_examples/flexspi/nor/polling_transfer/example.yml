@@ -223,7 +223,7 @@ flexspi_nor_polling_transfer:
     - -mdk@debug
     - -mdk@release
     mcimx93autoevk: []
-    mcimx93evk: []
+    mcimx93evk@cm33: []
     mcimx93qsb: []
     mimxrt685audevk@cm33:
     - -armgcc@debug

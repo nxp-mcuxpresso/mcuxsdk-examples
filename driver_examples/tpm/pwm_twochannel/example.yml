@@ -63,7 +63,7 @@ tpm_pwm_twochannel:
     - +armgcc@debug
     - +armgcc@release
     mcimx93autoevk: []
-    mcimx93evk: []
+    mcimx93evk@cm33: []
     mcimx93wevk: []
     mcimx93qsb: []
     frdmkw43: []

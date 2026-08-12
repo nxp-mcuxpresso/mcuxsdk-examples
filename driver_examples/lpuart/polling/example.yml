@@ -273,7 +273,7 @@ lpuart_polling:
     - +armgcc@debug
     - +armgcc@release
     mcimx93autoevk: []
-    mcimx93evk: []
+    mcimx93evk@cm33: []
     mcimx93wevk: []
     mcimx93qsb: []
     mcxn5xxevk@cm33_core0: []
