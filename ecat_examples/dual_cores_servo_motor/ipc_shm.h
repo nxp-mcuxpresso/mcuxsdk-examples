@@ -54,6 +54,7 @@ struct ipc_shm_t
 	void *data_base;
 	void *data_top;
 	void *data_heap;
+	void *pri_data;
 	uint32_t size;
 	uint32_t channel_index;
 	struct channel_metadata metadata[MAX_CHANNEL_NUM];
@@ -68,6 +69,17 @@ struct duplex_channel
 	int start_tick;
 	char name[MAX_CHANNEL_NAME];
 };
+
+static inline void ipc_shm_set_private_data(void *base, void *data)
+{
+	struct ipc_shm_t *ipc_shm = base;
+	ipc_shm->pri_data = data;
+}
+
+static inline void* ipc_shm_get_private_data()
+{
+	return ipc_shm->pri_data;
+}
 
 void *ipc_shm_mailbox_write_start(int handler);
 int ipc_shm_mailbox_write_end(int handler, uint32_t len);

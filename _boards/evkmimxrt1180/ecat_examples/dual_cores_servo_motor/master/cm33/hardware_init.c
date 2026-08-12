@@ -46,10 +46,13 @@ volatile uint32_t g_systickCounter;
 
 #if defined(__ICCARM__) /* IAR Workbench */
 #pragma location = "rpmsg_sh_mem_section"
+volatile uint32_t ecatAccessLock;
 static char ipc_shm_section[IPC_SHM_SIZE];
 #elif defined(__CC_ARM) || defined(__ARMCC_VERSION) /* Keil MDK */
+volatile uint32_t ecatAccessLock __attribute__((section("rpmsg_sh_mem_section")));
 static char ipc_shm_section[IPC_SHM_SIZE] __attribute__((section("rpmsg_sh_mem_section")));
 #elif defined(__GNUC__)
+volatile uint32_t ecatAccessLock __attribute__((section(".noinit.$rpmsg_sh_mem")));
 static char ipc_shm_section[IPC_SHM_SIZE] __attribute__((section(".noinit.$rpmsg_sh_mem")));
 #else
 #error "RPMsg: Please provide your definition of rpmsg_lite_base[]!"
@@ -165,7 +168,7 @@ UINT16 HW_Init(void)
 	BOARD_InitHardware();
 
     PRINTF("Start the SSC dual_cores_servo motor example...\r\n");
-
+    ipc_shm_set_private_data((void *)ipc_shm_section, (void *)&ecatAccessLock);
 	MU_ipc_shm_init((uint32_t)ipc_shm_section, IPC_SHM_SIZE);
 	APP_CopyCore1Image();
 	MU_Init(IPC_SHM_MU);

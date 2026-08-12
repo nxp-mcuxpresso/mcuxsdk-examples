@@ -44,6 +44,8 @@
 
 #define BOARD_USER_BUTTON_PRIORITY 4
 
+#define ECAT_BUS_OCCUPANCY_GUARD_TIME (1U * SystemCoreClock / 1000000U)  /*(1 us) */
+
 /* CPU load measurement SysTick START / STOP macros */
 #define SYSTICK_START_COUNT() (SysTick->VAL = SysTick->LOAD)
 #define SYSTICK_STOP_COUNT(par1)   \
@@ -74,7 +76,7 @@ lpadc_conv_result_t g_LpadcResultConfigStruct;
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-
+volatile uint32_t *g_EcatAccessLock;
 
 run_substate_t g_eM1StateRun_old = 0;
 /* CPU load measurement using Systick */
@@ -115,6 +117,9 @@ ctrl_m1_mid_t g_sSpinMidSwitch;           /* Control Spin/MID switching */
  ******************************************************************************/
 int32_t GetPositionActualValue(void);
 acc32_t GetPositionCmdValue(int32_t targetPos);
+void Ecat_AccessLockInit(void);
+void Ecat_AccessLock(void);
+void Ecat_AccessUnock(void);
 /*******************************************************************************
  * Code
  ******************************************************************************/
@@ -209,7 +214,7 @@ int main(void)
 
 	/* Waiting until MU_ipc_shm_master_init() is completed on CM33 core */
     MU_ipc_shm_client_init();
-
+    Ecat_AccessLockInit();
     /* SysTick initialization for CPU load measurement */
     BOARD_InitSysTick();
 
@@ -254,6 +259,23 @@ int main(void)
     }
 }
 
+void Ecat_AccessLockInit(void)
+{
+    g_EcatAccessLock = ipc_shm_get_private_data();
+}
+
+void Ecat_AccessLock()
+{
+   *g_EcatAccessLock++;
+   __DMB();
+}
+
+void Ecat_AccessUnlock()
+{
+    __DMB();
+    *g_EcatAccessLock--;
+}
+
 int32_t GetPositionActualValue(void)
 {
     return g_sM1Enc.pui32QdBase->LPOS + (int16_t)(g_sM1Enc.pui32QdBase->REV) * (M1_POSPE_ENC_PULSES * 4);
@@ -274,6 +296,28 @@ acc32_t GetPositionCmdValue(int32_t targetPos)
 RAM_FUNC_LIB
 void ADC1_IRQHandler(void)
 {
+    uint32_t ui32Temp;
+    /*
+     * FlexPWM, ADC and ESC share the same bus. Because the ESC register accesses are relatively slow
+     * (~600ns per access), they can hold the bus for a considerable time, adversely affecting the
+     * FlexPWM and the ADC register access. As a result, the execution latency of ADC1_IRQHandler
+     * increases and becomes non-deterministic. To mitigate this, Ecat_AccessLock() is used to signal
+     * the EtherCAT stack core to pause ESC register accesses during critical motor control processing.
+     */
+    Ecat_AccessLock();
+
+    /*
+     * If EtherCAT stack has already strated an ESC register access before Ecat_AccessLock() is called,
+     * in this case, ADC1_IRQHandler may incur up to approximately 600 ns of additional latency.
+     * To eliminate this timing uncertainty, a guard time (ECAT_BUS_OCCUPANCY_GUARD_TIME) is applied to
+     * ensure that the execution time of ADC1_IRQHandler remains consistent and deterministic.
+     */
+    SYSTICK_START_COUNT();
+    do
+    {
+        SYSTICK_STOP_COUNT(ui32Temp);
+    } while (ui32Temp < ECAT_BUS_OCCUPANCY_GUARD_TIME);
+
     /* Start CPU tick number couting */
     SYSTICK_START_COUNT();
     switch(g_sSpinMidSwitch.eAppState)
@@ -305,6 +349,11 @@ void ADC1_IRQHandler(void)
     }
 
 #endif
+
+    /*
+     * Resume ESC register access on the EtherCAT stack side.
+     */
+    Ecat_AccessUnlock();
 
     /* Add empty instructions for correct interrupt flag clearing */
     M1_END_OF_ISR;

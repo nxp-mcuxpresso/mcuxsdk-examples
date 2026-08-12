@@ -15,10 +15,17 @@ mcux_add_macro(
        -DCORE1_IMAGE_COPY_TO_RAM"
 )
 
+mcux_project_remove_source(
+    BASE_PATH ${SdkRootDirPath}
+    SOURCES ecat_examples/dual_cores_servo_motor/primary/ecat_hw.h
+)
+
 mcux_add_source(
 	BASE_PATH ${SdkRootDirPath}
 	SOURCES ${board_root}/${board}/ecat_examples/dual_cores_servo_motor/master/${core_id}/clock_config.c
 	SOURCES ${board_root}/${board}/ecat_examples/dual_cores_servo_motor/master/${core_id}/clock_config.h
+    SOURCES ${board_root}/${board}/ecat_examples/dual_cores_servo_motor/master/${core_id}/ecat_hw.c
+    SOURCES ${board_root}/${board}/ecat_examples/dual_cores_servo_motor/master/${core_id}/ecat_hw.h
 )
 
 mcux_add_armgcc_configuration(
