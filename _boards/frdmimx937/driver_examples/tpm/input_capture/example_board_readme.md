@@ -1,14 +1,14 @@
 Hardware requirements
 =====================
 - Micro USB cable
-- FRDM-IMX937  board
+- FRDM-IMX937 board
 - J-Link Debug Probe
 - 12V~20V power supply
 - Personal Computer
 
 Board settings
 ==============
-- CM7: Connect input signal to J19-32 and (GND).
+- CM7: Connect input signal to GPIO_IO13(J18-33) and (GND).
 
 Prepare the Demo
 ===============

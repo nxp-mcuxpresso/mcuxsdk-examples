@@ -9,8 +9,8 @@ Hardware requirements
 
 Board settings
 ==============
-- CM7: connect J19-32(TPM3_CHN2), (GND) to Oscilloscope
-- CM7: connect J19-18(TPM3_CHN3), (GND) to Oscilloscope
+- CM7: connect GPIO_IO13(J18-33, TPM4_CH2), (GND) to Oscilloscope
+- CM7: connect GPIO_IO25(J18-22, TPM4_CH3), (GND) to Oscilloscope
 
 Prepare the Demo
 ===============

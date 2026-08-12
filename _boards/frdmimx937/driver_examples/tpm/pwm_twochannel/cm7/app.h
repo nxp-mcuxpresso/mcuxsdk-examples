@@ -13,12 +13,12 @@
 /*${macro:start}*/
 
 /* define instance */
-#define BOARD_TPM_BASEADDR       TPM3
+#define BOARD_TPM_BASEADDR       TPM4
 #define BOARD_FIRST_TPM_CHANNEL  kTPM_Chnl_2
 #define BOARD_SECOND_TPM_CHANNEL kTPM_Chnl_3
 
 /* Get source clock for TPM driver */
-#define LPTPM_CLOCK_ROOT kCLOCK_buswakeup
+#define LPTPM_CLOCK_ROOT kCLOCK_tpm4
 #define TPM_SOURCE_CLOCK CLOCK_GetRate(LPTPM_CLOCK_ROOT)
 /*${macro:end}*/
 

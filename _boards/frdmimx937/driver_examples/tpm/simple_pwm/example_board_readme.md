@@ -9,7 +9,7 @@ Hardware requirements
 
 Board settings
 ==============
-- Connect resistor J19-32 and (GND) to Oscilloscope
+- Connect GPIO_IO13(J18-33) and (GND) to Oscilloscope
 
 Prepare the Demo
 ===============
