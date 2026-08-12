@@ -36,5 +36,5 @@ ECC EdDSA Ed25519:pass
 
 ============================
 RESULT: All 7 test PASS!!
-ELS example END
+SGI PKC example END
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
