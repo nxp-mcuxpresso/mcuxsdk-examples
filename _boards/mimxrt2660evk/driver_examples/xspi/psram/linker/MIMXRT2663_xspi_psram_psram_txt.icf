@@ -1,12 +1,40 @@
 /*
- * RT2660 IAR linker script -- target: psram_txt
- * Example-private copy for xspi_psram_polling_transfer (see reconfig.cmake):
+** ###################################################################
+**     Processors:          MIMXRT2663AHP8A
+**                          MIMXRT2663CHPAA
+**                          MIMXRT2663CVVAA
+**                          MIMXRT2663DHPAA
+**                          MIMXRT2663DVVAA
+**                          MIMXRT2663XHP8A
+**                          MIMXRT2663XVV8A
+**
+**     Compiler:            IAR ANSI C/C++ Compiler for ARM
+**     Reference manual:    iMXRT2660RM Rev.2 DraftA, 05/2024
+**     Version:             rev. 1.0, 2024-11-05
+**     Build:               b260603
+**
+**     Abstract:
+**         Linker file for the IAR ANSI C/C++ Compiler for ARM
+**
+**     Copyright 1997-2016 Freescale Semiconductor, Inc.
+**     Copyright 2016-2026 NXP
+**     SPDX-License-Identifier: BSD-3-Clause
+**
+**     http:                 www.nxp.com
+**     mail:                 support@nxp.com
+**
+** ###################################################################
+*/
+
+/*
+ * Example-private copy for xspi_psram_polling_transfer (target: psram_txt, see
+ * reconfig.cmake). Based on
+ * devices/RT/RT2660/MIMXRT2663/iar/MIMXRT2663xxxxx_psram_txt.icf:
  *  - carves a 32 KB linker-untouched test window (__PSRAM_TEST_START__) out
  *    of the NCACHE tail;
  *  - pins the XSPI/LLC drivers, the board ops and hardware_init into
  *    ITCM/DTCM so the XSPI1 controller can be re-programmed while the
  *    image lives behind it.
- * Based on devices/RT/RT2660/MIMXRT2663/iar/MIMXRT2663xxxxx_psram_txt.icf
  */
 
 /* ========================== Hardware addresses ========================== */

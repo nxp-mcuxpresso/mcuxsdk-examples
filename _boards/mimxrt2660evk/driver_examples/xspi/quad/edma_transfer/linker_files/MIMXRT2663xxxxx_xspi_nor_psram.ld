@@ -1,3 +1,31 @@
+/*
+** ###################################################################
+**     Processors:          MIMXRT2663AHP8A
+**                          MIMXRT2663CHPAA
+**                          MIMXRT2663CVVAA
+**                          MIMXRT2663DHPAA
+**                          MIMXRT2663DVVAA
+**                          MIMXRT2663XHP8A
+**                          MIMXRT2663XVV8A
+**
+**     Compiler:            GNU C Compiler
+**     Reference manual:    iMXRT2660RM Rev.2 DraftA, 05/2024
+**     Version:             rev. 1.0, 2024-11-05
+**     Build:               b260603
+**
+**     Abstract:
+**         Linker file for the GNU C Compiler
+**
+**     Copyright 1997-2016 Freescale Semiconductor, Inc.
+**     Copyright 2016-2026 NXP
+**     SPDX-License-Identifier: BSD-3-Clause
+**
+**     http:                 www.nxp.com
+**     mail:                 support@nxp.com
+**
+** ###################################################################
+*/
+
 ENTRY(Reset_Handler)
 
 /* ========================== Hardware addresses ========================== */
@@ -380,7 +408,8 @@ __VECTOR_TABLE                = ORIGIN(m_interrupts);
 __VECTOR_RAM                  = DEFINED(__ram_vector_table__) ? ORIGIN(m_rvt) : ORIGIN(m_interrupts);
 __RAM_VECTOR_TABLE_SIZE_BYTES = LENGTH(m_rvt);
 __NCACHE_REGION_START         = ORIGIN(m_ncache);
-__NCACHE_REGION_SIZE          = LENGTH(m_ncache);
+__NCACHE_REGION_SIZE          = m_ncache_alloc_size;
+
 __CONTAINER_IMG_OFFSET        = m_app_image_offset - m_container_offset;
 __CONTAINER_IMG_LOAD_ADDR     = ORIGIN(m_interrupts);
 __CONTAINER_IMG_ENTRY_ADDR    = ORIGIN(m_interrupts);
