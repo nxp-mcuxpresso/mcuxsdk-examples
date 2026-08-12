@@ -11,9 +11,9 @@
  * Demonstrates the ROM CGU-clobber workaround for DPD1 mode:
  *   1. CM0+ stays active during DPD1, printing periodic heartbeat via AON UART.
  *   2. On AON UART RX (any character), CM0+ manually triggers CM33 wakeup
- *      while protecting its own clock tree from ROM's System Init.
- *   3. The workaround: save CGU → SMM_WakeupMainDomain → wait for CM33 ready
- *      token → restore CGU.
+ *      while protecting its own AON registers from ROM's System Init.
+ *   3. The workaround: save AON state → SMM_WakeupMainDomain → wait for CM33
+ *      ready token → restore AON state.
  */
 
 #include "app.h"
@@ -30,14 +30,22 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-/* Snapshot of AON CGU registers preserved across CM33 ROM boot. */
+/* Snapshot of AON registers clobbered by Boot ROM System Init, preserved across CM33 ROM boot. */
 typedef struct
 {
     uint32_t clkConfig;
     uint32_t clockDiv;
     uint32_t perClkConfig;
     uint32_t perClkEn;
-} app_cgu_snapshot_t;
+    uint32_t ulpircConfig;
+    uint32_t cguInt;
+    uint32_t vddCoreAonConfig;
+    uint32_t vddCoreMainConfig;
+    uint32_t froCtrl;
+    uint32_t bgrLvhvDetectCtrl;
+    uint32_t pmuTrim4;
+    uint32_t smmCnfg;
+} app_aon_snapshot_t;
 
 /*******************************************************************************
  * Prototypes
@@ -45,8 +53,8 @@ typedef struct
 static bool APP_SecondaryCoreCallback(power_low_power_mode_t targetPowerMode, void *ptrPowerConfig, void *userData);
 static void APP_ActiveOps(void);
 static void APP_DeepPowerDown1Ops(void);
-static void APP_SaveCguState(app_cgu_snapshot_t *snapshot);
-static void APP_RestoreCguState(const app_cgu_snapshot_t *snapshot);
+static void APP_SaveAonState(app_aon_snapshot_t *snapshot);
+static void APP_RestoreAonState(const app_aon_snapshot_t *snapshot);
 static void APP_WakeupMainDomainSafely(void);
 
 /*******************************************************************************
@@ -127,17 +135,25 @@ void APP_AON_LPUART_IRQHandler(void)
     SDK_ISR_EXIT_BARRIER;
 }
 
-/* ---- CGU save / restore ------------------------------------------------- */
+/* ---- AON register save / restore ----------------------------------------- */
 
-static void APP_SaveCguState(app_cgu_snapshot_t *snapshot)
+static void APP_SaveAonState(app_aon_snapshot_t *snapshot)
 {
-    snapshot->clkConfig    = AON__CGU->CLK_CONFIG;
-    snapshot->clockDiv     = AON__CGU->CLOCK_DIV;
-    snapshot->perClkConfig = AON__CGU->PER_CLK_CONFIG;
-    snapshot->perClkEn     = AON__CGU->PER_CLK_EN;
+    snapshot->clkConfig         = AON__CGU->CLK_CONFIG;
+    snapshot->clockDiv          = AON__CGU->CLOCK_DIV;
+    snapshot->perClkConfig      = AON__CGU->PER_CLK_CONFIG;
+    snapshot->perClkEn          = AON__CGU->PER_CLK_EN;
+    snapshot->ulpircConfig      = AON__CGU->ULPIRC_CONFIG;
+    snapshot->cguInt            = AON__CGU->INT;
+    snapshot->vddCoreAonConfig  = AON__PMU->VDD_CORE_AON_CONFIG;
+    snapshot->vddCoreMainConfig = AON__PMU->VDD_CORE_MAIN_CONFIG;
+    snapshot->froCtrl           = AON__PMU->FRO_CTRL;
+    snapshot->bgrLvhvDetectCtrl = AON__PMU->BGR_LVHV_DETECT_CTRL;
+    snapshot->pmuTrim4          = AON__PMU->PMU_TRIM4;
+    snapshot->smmCnfg           = AON__SMM->CNFG;
 }
 
-static void APP_RestoreCguState(const app_cgu_snapshot_t *snapshot)
+static void APP_RestoreAonState(const app_aon_snapshot_t *snapshot)
 {
     /* Re-enable FROs first (ROM may have disabled them). */
     AON__CGU->CLK_CONFIG = snapshot->clkConfig;
@@ -148,8 +164,16 @@ static void APP_RestoreCguState(const app_cgu_snapshot_t *snapshot)
     CLOCK_SetupFROAonClocking(3000000U);
     SystemCoreClock = 3000000U;
 
-    AON__CGU->PER_CLK_CONFIG = snapshot->perClkConfig;
-    AON__CGU->PER_CLK_EN     = snapshot->perClkEn;
+    AON__CGU->PER_CLK_CONFIG       = snapshot->perClkConfig;
+    AON__CGU->PER_CLK_EN           = snapshot->perClkEn;
+    AON__CGU->ULPIRC_CONFIG        = snapshot->ulpircConfig;
+    AON__CGU->INT                  = snapshot->cguInt;
+    AON__PMU->VDD_CORE_AON_CONFIG  = snapshot->vddCoreAonConfig;
+    AON__PMU->VDD_CORE_MAIN_CONFIG = snapshot->vddCoreMainConfig;
+    AON__PMU->FRO_CTRL             = snapshot->froCtrl;
+    AON__PMU->BGR_LVHV_DETECT_CTRL = snapshot->bgrLvhvDetectCtrl;
+    AON__PMU->PMU_TRIM4            = snapshot->pmuTrim4;
+    AON__SMM->CNFG                 = snapshot->smmCnfg;
 }
 
 /*
@@ -165,10 +189,10 @@ static void APP_RestoreCguState(const app_cgu_snapshot_t *snapshot)
  */
 static void APP_WakeupMainDomainSafely(void)
 {
-    app_cgu_snapshot_t cguSnapshot;
+    app_aon_snapshot_t aonSnapshot;
 
-    /* Step 1: save CGU state before ROM can touch it. */
-    APP_SaveCguState(&cguSnapshot);
+    /* Step 1: save AON state before ROM can touch it. */
+    APP_SaveAonState(&aonSnapshot);
 
     /* Step 2: trigger Main domain power-up. */
     PRINTF("Triggering CM33 wakeup...\r\n");
@@ -180,10 +204,10 @@ static void APP_WakeupMainDomainSafely(void)
      * then sets dualCoreSynced to let CM33 proceed. */
     Power_NotifyCM33ToRun();
 
-    /* Step 4: restore CGU — UART output resumes correctly. */
-    APP_RestoreCguState(&cguSnapshot);
+    /* Step 4: restore AON state — UART output resumes correctly. */
+    APP_RestoreAonState(&aonSnapshot);
 
-    PRINTF("CGU restored — CM33 is ready\r\n");
+    PRINTF("AON state restored — CM33 is ready\r\n");
 }
 
 /* ---- Main ---------------------------------------------------------------- */
@@ -288,9 +312,9 @@ static void APP_DeepPowerDown1Ops(void)
 
         if (g_UartRxReceived)
         {
-            PRINTF("\r\n[DPD1] UART RX detected — waking CM33 (with CGU workaround)\r\n");
+            PRINTF("\r\n[DPD1] UART RX detected — waking CM33 (with AON state workaround)\r\n");
 
-            /* === ROM CGU-clobber workaround === */
+            /* === ROM AON-clobber workaround === */
             APP_WakeupMainDomainSafely();
 
             PRINTF("[DPD1] CM33 wakeup complete — returning to Active mode\r\n");

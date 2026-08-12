@@ -11,7 +11,7 @@
  * Enters DPD1 with context saving enabled.  CM0+ remains active,
  * printing periodic heartbeat logs via AON UART.  When the user
  * sends any character on the AON UART, CM0+ triggers CM33 wakeup
- * using the ROM CGU-clobber workaround (save/restore CGU around
+ * using the ROM AON-clobber workaround (save/restore AON registers around
  * SMM_WakeupMainDomain).
  */
 
