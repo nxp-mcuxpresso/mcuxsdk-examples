@@ -22,6 +22,7 @@ mcux_add_source(
         middleware/edgefast_open/examples/a2dp_sink/codec_play.h
         examples/coex_examples/coex_wifi_a2dp_sink/app_shell.c
         examples/coex_examples/coex_wifi_a2dp_sink/main.c
+        middleware/wireless/coex/src/common/coex_lfs_defines.h
 )
 
 mcux_add_include(
@@ -29,6 +30,11 @@ mcux_add_include(
     INCLUDES
         examples/coex_examples/coex_wifi_a2dp_sink
         middleware/edgefast_open/examples/a2dp_sink
+        middleware/wireless/coex/src/common
+)
+
+mcux_add_macro(
+    "-DLFS_DEFINES=coex_lfs_defines.h"
 )
 
 # Add MCUXPRESSO IDE support
