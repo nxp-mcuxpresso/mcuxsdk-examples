@@ -31,6 +31,18 @@ mcux_add_include(
   INCLUDES "${board_root}/${board}/usb_examples/usb_host_hid_generic/bm"
 )
 
+mcux_add_armgcc_configuration(
+  LD "-Xlinker --defsym=__heap_noncacheable__=1"
+)
+
+mcux_add_iar_configuration(
+  LD "--config_def=__heap_noncacheable__=1"
+)
+
+mcux_add_mdk_configuration(
+  LD "--predefine=\"-D__heap_noncacheable__=1\""
+)
+
 mcux_add_macro(
   CC "-DUSB_HOST_CONFIG_BUFFER_PROPERTY_CACHEABLE=1"
   TARGETS

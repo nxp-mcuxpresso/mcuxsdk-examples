@@ -26,6 +26,18 @@ mcux_add_mdk_configuration(
   LD "--predefine=\"-D__stack_size__=0x1000\""
 )
 
+mcux_add_armgcc_configuration(
+  LD "-Xlinker --defsym=__heap_noncacheable__=1"
+)
+
+mcux_add_iar_configuration(
+  LD "--config_def=__heap_noncacheable__=1"
+)
+
+mcux_add_mdk_configuration(
+  LD "--predefine=\"-D__heap_noncacheable__=1\""
+)
+
 mcux_add_macro(
   CC "-DUSB_HOST_CONFIG_BUFFER_PROPERTY_CACHEABLE=1"
   TARGETS
