@@ -121,6 +121,8 @@ status_t A_Format_ABS_Readout_Multi(encoder_a_format_t *enc, uint8_t enc_addr,
 /* Reading the status of the encoder */
 status_t A_Format_Readout_Encoder_status(encoder_a_format_t *enc, uint8_t enc_addr,
                                          a_format_status_t *statusData);
+/* Clear the encoder status flags and reset the multi-turn counter (CDF 10). */
+status_t A_Format_Clear_Stat_Multi(encoder_a_format_t *enc, uint8_t enc_addr);
 /* Setting the encoder address */
 status_t A_Format_Set_Encoder_Address_1to1(encoder_a_format_t *enc, uint8_t enc_addr);
 status_t A_Format_Memory_Read(encoder_a_format_t *enc, uint8_t enc_addr, a_format_eeprom_t *eeprom);

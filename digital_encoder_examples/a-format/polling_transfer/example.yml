@@ -65,3 +65,5 @@ a-format_polling_transfer:
     - -mdk@hyperram_debug
     - -mdk@flexspi_nor_hyperram_debug
     - -mdk@flexspi_nor_hyperram_release
+    frdmmcxa266: []
+    frdmmcxa366: []

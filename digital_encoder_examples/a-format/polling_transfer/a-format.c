@@ -490,17 +490,100 @@ status_t A_Format_Readout_Encoder_status_Parse(encoder_a_format_t *enc, a_format
 status_t A_Format_Readout_Encoder_status(encoder_a_format_t *enc, uint8_t enc_addr,
                                          a_format_status_t *statusData)
 {
+    status_t result;
+
     if (A_Format_Readout_Encoder_status_CMD(enc_addr) == kStatus_FLEXIO_A_FORMAT_OutOfIDRange)
     {
         return kStatus_FLEXIO_A_FORMAT_OutOfIDRange;
     }
 
     FLEXIO_A_Format_Config_DR_length(enc->controller, 1);
-    FLEXIO_A_Format_WriteBlocking(enc->controller, &cdf, 1);
-    FLEXIO_A_Format_ReadBlocking(enc->controller, (uint16_t *)res2,
-                                 HALFWORD_NUM(a_format_res2_t) * nEncoder);
+    result = FLEXIO_A_Format_WriteBlocking(enc->controller, &cdf, 1);
+    if (result != kStatus_Success)
+    {
+        return result;
+    }
+
+    result = FLEXIO_A_Format_ReadBlocking(enc->controller, (uint16_t *)res2,
+                                          HALFWORD_NUM(a_format_res2_t) * nEncoder);
+    if (result != kStatus_Success)
+    {
+        return result;
+    }
 
     return A_Format_Readout_Encoder_status_Parse(enc, res2, statusData);
+}
+
+/*
+ * Clear the encoder status flags and reset the multi-turn counter
+ * (A-format command CDF(10) = A_FORMAT_REQ_IT_CLEAR_STAT_MULTI).
+ *
+ * A multi-turn absolute encoder that lost its backup battery powers up with
+ * ES = battery-error | multi-turn-error (e.g. ES=0x0B). Every position/status
+ * read then fails because the parser rejects any frame with ES != 0. This
+ * command clears those flags so single-turn reads return kStatus_Success.
+ *
+ * Per the A-format spec the CLEAR commands must be sent repeatedly (>=9 times)
+ * to guard against a spurious single frame triggering a reset, so the CDF is
+ * transmitted several times before the encoder's acknowledge frame is read.
+ */
+status_t A_Format_Clear_Stat_Multi(encoder_a_format_t *enc, uint8_t enc_addr)
+{
+    status_t result;
+    uint8_t i;
+
+    if (ENCODER_ADDRESS(enc_addr) >= A_FORMAT_ENCODER_MAX_NUM)
+    {
+        return kStatus_FLEXIO_A_FORMAT_OutOfIDRange;
+    }
+
+    enc_addr &= 0x7;
+
+    cmd      = A_FORMAT_REQ_IT_CLEAR_STAT_MULTI;
+    cdf      = A_FORMAT_PACK_CDF(enc_addr, A_FORMAT_REQ_IT_CLEAR_STAT_MULTI, 0);
+    crc_data = A_FORMAT_GET_CRC_DATA_CDF(cdf);
+    crc      = CRC_Calc(&crc3_para);
+    cdf      = (uint16_t)A_FORMAT_SET_CRC_CODE_CDF(cdf, crc);
+
+    nEncoder = 1;
+    memset(res2, 0, sizeof(a_format_res2_t));
+
+    FLEXIO_A_Format_Config_DR_length(enc->controller, 1);
+
+    /* Send the CLEAR command repeatedly (A-format requires >=9 consecutive
+     * frames). Ignore the echo for all but the final frame. */
+    for (i = 0; i < 10U; i++)
+    {
+        result = FLEXIO_A_Format_WriteBlocking(enc->controller, &cdf, 1);
+        if (result != kStatus_Success)
+        {
+            return result;
+        }
+        SDK_DelayAtLeastUs(100, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+        FLEXIO_A_Format_FlushShifters(enc->controller);
+    }
+
+    /* Read the encoder's acknowledge frame once and validate command code + CRC8. */
+    memset(res2, 0, sizeof(a_format_res2_t));
+    result = FLEXIO_A_Format_WriteBlocking(enc->controller, &cdf, 1);
+    if (result != kStatus_Success)
+    {
+        return result;
+    }
+    result = FLEXIO_A_Format_ReadBlocking(enc->controller, (uint16_t *)res2, HALFWORD_NUM(a_format_res2_t));
+    if (result != kStatus_Success)
+    {
+        return result;
+    }
+
+    crc8_para.message_len = 6;
+    crc8_para.message     = (uint8_t const *)res2;
+    if ((A_FORMAT_GET_CMD_CODE_IF(res2[0].IF) != cmd) || (CRC_Calc(&crc8_para) != 0))
+    {
+        return kStatus_FLEXIO_A_FORMAT_FrameErr;
+    }
+
+    return kStatus_Success;
 }
 
 status_t A_Format_Get_Temperature_CMD(uint8_t enc_addr)
@@ -538,14 +621,25 @@ status_t A_Format_Get_Temperature_Parse(encoder_a_format_t *enc, a_format_res2_t
 
 status_t A_Format_Get_Temperature(encoder_a_format_t *enc, uint8_t enc_addr, float *temp)
 {
+    status_t result;
+
     if (A_Format_Get_Temperature_CMD(enc_addr) == kStatus_FLEXIO_A_FORMAT_OutOfIDRange)
     {
         return kStatus_FLEXIO_A_FORMAT_OutOfIDRange;
     }
     FLEXIO_A_Format_Config_DR_length(enc->controller, 1);
 
-    FLEXIO_A_Format_WriteBlocking(enc->controller, &cdf, 1);
-    FLEXIO_A_Format_ReadBlocking(enc->controller, (uint16_t *)res2, HALFWORD_NUM(a_format_res2_t));
+    result = FLEXIO_A_Format_WriteBlocking(enc->controller, &cdf, 1);
+    if (result != kStatus_Success)
+    {
+        return result;
+    }
+
+    result = FLEXIO_A_Format_ReadBlocking(enc->controller, (uint16_t *)res2, HALFWORD_NUM(a_format_res2_t));
+    if (result != kStatus_Success)
+    {
+        return result;
+    }
 
     return A_Format_Get_Temperature_Parse(enc, res2, temp);
 }
@@ -842,15 +936,26 @@ status_t A_Format_ABS_Readout_Multi_Single_CMD(uint8_t enc_addr)
 status_t A_Format_ABS_Readout_Multi_Single(encoder_a_format_t *enc, uint8_t enc_addr,
                                            a_format_abs_multi_single_t *abs_data)
 {
+    status_t result;
+
     if (A_Format_ABS_Readout_Multi_Single_CMD(enc_addr) == kStatus_FLEXIO_A_FORMAT_OutOfIDRange)
     {
         return kStatus_FLEXIO_A_FORMAT_OutOfIDRange;
     }
 
     FLEXIO_A_Format_Config_DR_length(enc->controller, 1);
-    FLEXIO_A_Format_WriteBlocking(enc->controller, &cdf, 1);
-    FLEXIO_A_Format_ReadBlocking(enc->controller, (uint16_t *)res3,
-                                 HALFWORD_NUM(a_format_res3_t) * nEncoder);
+    result = FLEXIO_A_Format_WriteBlocking(enc->controller, &cdf, 1);
+    if (result != kStatus_Success)
+    {
+        return result;
+    }
+
+    result = FLEXIO_A_Format_ReadBlocking(enc->controller, (uint16_t *)res3,
+                                          HALFWORD_NUM(a_format_res3_t) * nEncoder);
+    if (result != kStatus_Success)
+    {
+        return result;
+    }
 
     return A_Format_ABS_Readout_Multi_Single_Parse(enc, res3, abs_data);
 }
