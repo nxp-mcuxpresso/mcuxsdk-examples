@@ -186,6 +186,14 @@ static void APP_SetSPCConfiguration(void)
     while (SPC_GetBusyStatusFlag(APP_SPC))
         ;
 
+    /* Enable LVDs and HVDs in active mode. */
+    SPC_EnableActiveModeCoreHighVoltageDetect(APP_SPC, true);
+    SPC_EnableActiveModeCoreLowVoltageDetect(APP_SPC, true);
+    SPC_EnableActiveModeSystemHighVoltageDetect(APP_SPC, true);
+    SPC_EnableActiveModeSystemLowVoltageDetect(APP_SPC, true);
+    SPC_EnableActiveModeIOHighVoltageDetect(APP_SPC, true);
+    SPC_EnableActiveModeIOLowVoltageDetect(APP_SPC, true);
+
     SPC_DisableLowPowerModeAnalogModules(APP_SPC, kSPC_controlAllModules);
     SPC_SetLowPowerWakeUpDelay(APP_SPC, 0xFF);
     spc_lowpower_mode_regulators_config_t lowPowerRegulatorOption;

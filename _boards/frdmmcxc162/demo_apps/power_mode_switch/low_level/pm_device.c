@@ -16,9 +16,9 @@ const resc_status_t g_resc_ctrl_table[kResc_Max_Num][APP_LOW_POWER_MODE_COUNT] =
     /*! Power domain modules */
     [kResc_LdoCore]             = {kResc_Status_On,     kResc_Status_On,        kResc_Status_On,        kResc_Status_On},
     [kResc_RamRetentionLdo]     = {kResc_Status_On,     kResc_Status_On,        kResc_Status_On,        kResc_Status_On},
-    [kResc_Core_Vdd_Lvd_Act]    = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
-    [kResc_Sys_Vdd_Lvd_Act]     = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
-    [kResc_Sys_Vdd_Hvd_Act]     = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
+    [kResc_Core_Vdd_Lvd_Act]    = {kResc_Status_On,     kResc_Status_On,        kResc_Status_On,        kResc_Status_On},
+    [kResc_Sys_Vdd_Lvd_Act]     = {kResc_Status_On,     kResc_Status_On,        kResc_Status_On,        kResc_Status_On},
+    [kResc_Sys_Vdd_Hvd_Act]     = {kResc_Status_On,     kResc_Status_On,        kResc_Status_On,        kResc_Status_On},
     [kResc_Core_Vdd_Lvd_Lp]     = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_Sys_Vdd_Lvd_Lp]      = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_Sys_Vdd_Hvd_Lp]      = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
