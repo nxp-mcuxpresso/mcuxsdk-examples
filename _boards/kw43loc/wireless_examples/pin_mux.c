@@ -796,6 +796,79 @@ void BOARD_UnInitPinLPUART0_CTS(void)
 {
 }
 
+#if defined(BOARD_LOCALIZATION_REVISION_SUPPORT) && (BOARD_LOCALIZATION_REVISION_SUPPORT > 0)
+/* clang-format off */
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitRFSwitchControlPins:
+- options: {callFromInitBoot: 'false', prefix: BOARD_INITRFSWITCHCONTROLPINS_, coreID: cm33_core0, enableClock: 'true'}
+- pin_list:
+  - {pin_num: '17', peripheral: GPIOA, signal: 'GPIO, 20', pin_signal: PTA20/ADC0_A6/CMP0_IN3/LPSPI0_PCS2/LPUART0_TX/EWM0_IN/RF_GPO_2/PWM0_A2/TP_LOAD_EN/LPUART0_RTS_B/WUU0_P23, identifier: RF_GPO_2,
+    direction: OUTPUT, gpio_init_state: 'false', pull_select: down, pull_enable: enable, pull_value: low, slew_rate: fast, passive_filter: disable, open_drain: disable,
+    drive_strength: high, drive_strength_1: normal}
+  - {pin_num: '18', peripheral: GPIOA, signal: 'GPIO, 21', pin_signal: PTA21/ADC0_A7/CMP0_IN2/LPSPI0_PCS3/LPUART0_RX/EWM0_OUT_B/RF_GPO_3/RF_GPO_7/RF_GPO_10/PWM0_B2/TP_HWRITE/LPUART0_CTS_B/WUU0_P5, identifier: RF_GPO_3,
+    direction: OUTPUT, gpio_init_state: 'true', pull_select: down, pull_enable: enable, pull_value: low, slew_rate: fast, passive_filter: disable, open_drain: disable,
+    drive_strength: high, drive_strength_1: normal}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+/* clang-format on */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitRFSwitchControlPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitRFSwitchControlPins(void)
+{
+    /* This API is the basic setting for the KW43-LOC device.
+     * Later on different features LOC/COEX/FEM may be independently activated then RF_GPO and pin mux setting could be changed.
+     * Please refer to mcux-sdk-middleware-connectivity-framework module, file framework\platform\wireless_mcu\fwk_platform_lcl.h.
+     * APIs PLATFORM_InitLcl(), PLATFORM_InitCOEX(), PLATFORM_InitFEM().
+     */
+    gpio_pin_config_t RF_SW_CTL_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 1U
+    };
+
+    CLOCK_EnableClock(kCLOCK_PortA);
+
+    /* Initialize GPIO functionality on pin PTA21 (pin 18) VDD=1 */
+    GPIO_PinInit(BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_3_GPIO, BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_3_PIN, &RF_SW_CTL_config);
+
+    /* Initialize GPIO functionality on pin PTD20 (pin 17) VCTL=0 */
+    RF_SW_CTL_config.outputLogic = 0U;
+    GPIO_PinInit(BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_2_GPIO, BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_2_PIN, &RF_SW_CTL_config);
+
+    port_pin_config_t RF_SW_CTL = {/* Internal pull-up resistor is enabled */
+                                           (uint16_t)kPORT_PullDown,
+                                           /* Low internal pull resistor value is selected. */
+                                           (uint16_t)kPORT_LowPullResistor,
+                                           /* Fast slew rate is configured */
+                                           (uint16_t)kPORT_FastSlewRate,
+                                           /* Passive input filter is disabled */
+                                           (uint16_t)kPORT_PassiveFilterDisable,
+                                           /* Open drain output is disabled */
+                                           (uint16_t)kPORT_OpenDrainDisable,
+                                           /* High drive strength is configured */
+                                           (uint16_t)kPORT_HighDriveStrength,
+#if defined(FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1) && FSL_FEATURE_PORT_HAS_DRIVE_STRENGTH1
+                                           (uint16_t)kPORT_NormalDriveStrength,
+#else
+                                           1U,
+#endif
+                                           /* Pin is configured as GPIO */
+                                           (uint16_t)kPORT_MuxAsGpio,
+                                           /* Pin Control Register fields [15:0] are not locked */
+                                           (uint16_t)kPORT_UnlockRegister};
+    
+    /* PORTA21 (pin 18) is configured as RF_GPO_3 VDD */
+    PORT_SetPinConfig(BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_3_PORT, BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_3_PIN, &RF_SW_CTL);
+    /* PORTA20 (pin 17) is configured as RF_GPO_2 VCTL */
+    PORT_SetPinConfig(BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_2_PORT, BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_2_PIN, &RF_SW_CTL);
+}
+#endif /* defined(BOARD_LOCALIZATION_REVISION_SUPPORT) && (BOARD_LOCALIZATION_REVISION_SUPPORT > 0) */
+
 /* FUNCTION ************************************************************************************************************
  *
  * Function Name : BOARD_InitPins

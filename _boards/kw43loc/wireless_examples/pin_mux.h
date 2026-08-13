@@ -443,6 +443,40 @@ void BOARD_UnInitPinLPUART0_CTS(void);
  */
 void BOARD_InitPins(void);
 
+#if defined(BOARD_LOCALIZATION_REVISION_SUPPORT) && (BOARD_LOCALIZATION_REVISION_SUPPORT > 0)
+/*! @name PORTA21 (number 17), BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_3_GPIO
+  @{ */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_3_GPIO GPIOA                /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_3_GPIO_PIN_MASK (1U << 21U) /*!<@brief GPIO pin mask */
+
+/* Symbols to be used with PORT driver */
+#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_3_PORT PORTA                /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_3_PIN 21U                   /*!<@brief PORT pin number */
+#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_3_PIN_MASK (1U << 21U)      /*!<@brief PORT pin mask */
+                                                                         /* @} */
+
+/*! @name PORTA20 (number 18), BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_2_GPIO
+  @{ */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_2_GPIO GPIOA                /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_2_GPIO_PIN_MASK (1U << 20U)  /*!<@brief GPIO pin mask */
+
+/* Symbols to be used with PORT driver */
+#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_2_PORT PORTA                /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_2_PIN 20U                   /*!<@brief PORT pin number */
+#define BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_2_PIN_MASK (1U << 20U)      /*!<@brief PORT pin mask */
+                                                                         /* @} */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitRFSwitchControlPins(void);
+#endif /* defined(BOARD_LOCALIZATION_REVISION_SUPPORT) && (BOARD_LOCALIZATION_REVISION_SUPPORT > 0) */
+
 #if defined(__cplusplus)
 }
 #endif
