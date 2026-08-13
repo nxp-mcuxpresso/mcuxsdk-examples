@@ -70,7 +70,6 @@ void BOARD_InitHardware(void)
     /* Board common setting: MPU, Power and Clock Tree, TRDC, and Debug Console init. */
     BOARD_CommonSetting();
     BOARD_InitSAIPins();
-    BOARD_InitI2CPins();
 
     /* Audio PLL is already brought up (F_OUT = 49.152 MHz, 48 kHz family) by
      * ConfigCGUAna() inside BOARD_InitBootClocks(). Here we just point the SAI0
@@ -81,6 +80,12 @@ void BOARD_InitHardware(void)
         .div = 2,
     };
     CLOCK_SetRootClock(kCLOCK_Root_AUDIO_sai0_mclk0, &saiRootCfg);
+
+    clock_root_config_t lpi2c1RootCfg = {
+        .mux = kCLOCK_LPI2C1_ClockRoot_PERI3,
+        .div = 40,
+    };
+    CLOCK_SetRootClock(kCLOCK_Root_MAIN_lpi2c1_fclk, &lpi2c1RootCfg);
 
     BOARD_EnableSaiMclkOutput(true);
 }

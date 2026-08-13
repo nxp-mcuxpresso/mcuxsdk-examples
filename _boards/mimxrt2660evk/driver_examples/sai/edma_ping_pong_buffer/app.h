@@ -52,9 +52,9 @@
 #define DEMO_SAI_RX_SYNC_MODE          kSAI_ModeSync
 #define DEMO_WM8962_I2C_INSTANCE       BOARD_CODEC_I2C_INSTANCE
 
-#define DEMO_SAI_CLK_FREQ  (CLOCK_GetRootClockFreq(kCLOCK_Root_AUDIO_sai0_mclk0) / 2U)
+#define DEMO_SAI_CLK_FREQ  CLOCK_GetRootClockFreq(kCLOCK_Root_AUDIO_sai0_mclk0)
 
-#define BOARD_MASTER_CLOCK_CONFIG()
+#define BOARD_MASTER_CLOCK_CONFIG() BOARD_MasterClockConfig()
 #define BOARD_SAI_RXCONFIG(config, mode)
 /*${macro:end}*/
 
@@ -63,6 +63,7 @@
  ******************************************************************************/
 /*${prototype:start}*/
 void BOARD_InitHardware(void);
+void BOARD_MasterClockConfig(void);
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */

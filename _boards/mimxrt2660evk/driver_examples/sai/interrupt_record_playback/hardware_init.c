@@ -81,6 +81,12 @@ void BOARD_InitHardware(void)
     };
     CLOCK_SetRootClock(kCLOCK_Root_AUDIO_sai0_mclk0, &saiRootCfg);
 
+    clock_root_config_t lpi2c1RootCfg = {
+        .mux = kCLOCK_LPI2C1_ClockRoot_PERI3,
+        .div = 40,
+    };
+    CLOCK_SetRootClock(kCLOCK_Root_MAIN_lpi2c1_fclk, &lpi2c1RootCfg);
+
     BOARD_EnableSaiMclkOutput(true);
 }
 

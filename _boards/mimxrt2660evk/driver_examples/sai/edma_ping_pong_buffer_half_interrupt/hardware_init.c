@@ -8,6 +8,7 @@
 #include "clock_config.h"
 #include "board.h"
 #include "app.h"
+#include "fsl_sai.h"
 #include "fsl_codec_common.h"
 #include "fsl_wm8962.h"
 #include "fsl_codec_adapter.h"
@@ -80,6 +81,27 @@ void BOARD_InitHardware(void)
     };
     CLOCK_SetRootClock(kCLOCK_Root_AUDIO_sai0_mclk0, &saiRootCfg);
 
+    clock_root_config_t lpi2c1RootCfg = {
+        .mux = kCLOCK_LPI2C1_ClockRoot_PERI3,
+        .div = 40,
+    };
+    CLOCK_SetRootClock(kCLOCK_Root_MAIN_lpi2c1_fclk, &lpi2c1RootCfg);
+
     BOARD_EnableSaiMclkOutput(true);
+}
+
+/* Enable SAI0 MCLK output to the on-board WM8962 codec by asserting I2S_MCR[MOE].
+ * Wired through BOARD_MASTER_CLOCK_CONFIG(), called from main() after SAI_Init()
+ * (SAI_Init releases the peripheral reset and would otherwise clear MCR). Since
+ * mclkHz == mclkSourceClkHz the MCR post-divider is bypassed (MCLK = 24.576 MHz). */
+void BOARD_MasterClockConfig(void)
+{
+    sai_master_clock_t mclkConfig = {0};
+
+    mclkConfig.mclkOutputEnable = true;
+    mclkConfig.mclkHz           = DEMO_AUDIO_MASTER_CLOCK;
+    mclkConfig.mclkSourceClkHz  = DEMO_SAI_CLK_FREQ;
+
+    SAI_SetMasterClockConfig(DEMO_SAI, &mclkConfig);
 }
 /*${function:end}*/
