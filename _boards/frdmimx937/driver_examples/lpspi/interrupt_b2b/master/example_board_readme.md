@@ -14,8 +14,8 @@ MASTER(LPSPI7)                connect to        SLAVE(LPSPI7)
 Pin Name    Board Location                      Pin Name    Board Location
 PCS0        J18 pin 7                           PCS0        J18 pin 7
 SCK         J18 pin 26                          SCK         J18 pin 26
-SOUT        J18 pin 31                          SIN         J18 pin 9
-SIN         J18 pin 9                           SOUT        J18 pin 31
+SOUT        J18 pin 31                          SIN         J18 pin 29
+SIN         J18 pin 29                          SOUT        J18 pin 31
 GND         J18 pin 6                           GND         J18 pin 6
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -25,7 +25,7 @@ Note: J18 is the 40-PIN GPIO HDR expansion connector.
       - J18-Pin7:  LPSPI7_PCS0 (GPIO_IO04) - Chip Select
       - J18-Pin26: LPSPI7_SCK  (GPIO_IO07) - Clock
       - J18-Pin31: LPSPI7_SOUT (GPIO_IO06) - MOSI (connects to slave SIN)
-      - J18-Pin9:  LPSPI7_SIN  (GPIO_IO05) - MISO (connects to slave SOUT)
+      - J18-Pin29:  LPSPI7_SIN  (GPIO_IO05) - MISO (connects to slave SOUT)
       - J18-Pin6:  Common Ground (any GND pin on J18 can be used)
       - Each board must be powered independently
       - No IO expander configuration required for this example
