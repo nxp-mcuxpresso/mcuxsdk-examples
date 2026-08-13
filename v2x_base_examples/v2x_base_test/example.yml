@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+v2x_base_test:
+  section-type: application
+  contents:
+    meta_path: examples/v2x_base_examples/v2x_base_test
+    project-root-path: boards/${board}/v2x_base_examples/v2x_base_test/${multicore_foldername}
+    document:
+      name: v2x_base_test${core_id_suffix_name}
+      category: v2x_base_examples
+      brief: EdgeLock V2X base (debug) demo exercising get_fw_version, start_rng, pwr_state and debug_dump over the V2X message unit.
+      example_readme:
+      - examples/v2x_base_examples/v2x_base_test/readme.md
+      - ${board_root}/${board}/v2x_base_examples/v2x_base_test/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    imx943evk@cm33_core1: []
+    imx943evk@cm7_core0: []
+    imx943evk@cm7_core1: []
