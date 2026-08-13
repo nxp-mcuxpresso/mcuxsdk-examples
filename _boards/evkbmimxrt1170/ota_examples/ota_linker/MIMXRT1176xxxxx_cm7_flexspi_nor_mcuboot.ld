@@ -1,21 +1,22 @@
 /*
 ** ###################################################################
 **     Processors:          MIMXRT1176AVM8A_cm7
+**                          MIMXRT1176AVM8B_cm7
 **                          MIMXRT1176CVM8A_cm7
+**                          MIMXRT1176CVM8B_cm7
 **                          MIMXRT1176DVMAA_cm7
+**                          MIMXRT1176DVMAB_cm7
 **
 **     Compiler:            GNU C Compiler
-**     Reference manual:    IMXRT1170RM, Rev E, 12/2019
-**     Version:             rev. 0.1, 2018-03-05
-**     Build:               b200723
+**     Reference manual:    IMXRT1170RM, Rev 5, 12/2025
+**     Version:             rev. 1.2, 2025-11-07
+**     Build:               b260106
 **
 **     Abstract:
 **         Linker file for the GNU C Compiler
 **
 **     Copyright 2016 Freescale Semiconductor, Inc.
-**     Copyright 2016-2020 NXP
-**     All rights reserved.
-**
+**     Copyright 2016-2026 NXP
 **     SPDX-License-Identifier: BSD-3-Clause
 **
 **     http:                 www.nxp.com
@@ -24,36 +25,46 @@
 ** ###################################################################
 */
 
+/*
+  MCUBoot region            0x30000000 - 0x3003FFFF : 256kB  (0x40000 bytes)
+  Primary slot              0x30040000 - 0x3023FFFF : 2048kB (0x200000 bytes)
+  Secondary slot            0x30240000 - 0x3043FFFF : 2048kB (0x200000 bytes)
+
+  Note: RAM sections placed in OCRAMx, DTCM can't be used (see ERR050396)
+  RT117x:
+  OCRAM1 0x20240000 - 0x202BFFFF (512kB)
+  OCRAM2 0x202C0000 - 0x2033FFFF (512kB)
+*/
+
 /* Entry Point */
 ENTRY(Reset_Handler)
 
 HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x0400;
 STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x0400;
 RPMSG_SHMEM_SIZE = DEFINED(__use_shmem__) ? 0x2000 : 0;
+DATA3_START = DEFINED(__use_shmem__) ? 0x202C4000 : 0x202C2000;
+DATA3_SIZE = DEFINED(__use_shmem__) ? 0x7C000 : 0x7E000;
 VECTOR_RAM_SIZE = DEFINED(__ram_vector_table__) ? 0x00000400 : 0;
-TEXT_SIZE = DEFINED(__use_flash64MB__) ? 0x03D8DC00 : 0x00D8DC00;
 CORE1IMAGE_START = DEFINED(__use_flash64MB__) ? 0x33FC0000 : 0x30FC0000;
 
 /* Specify the memory areas */
 MEMORY
 {
   m_interrupts          (RX)  : ORIGIN = 0x30040400, LENGTH = 0x00000400
-  m_text                (RX)  : ORIGIN = 0x30040800, LENGTH = TEXT_SIZE
+  m_text                (RX)  : ORIGIN = 0x30040800, LENGTH = 0x001FE800 /* Reserved 4096 bytes for slot trailer */
   m_qacode              (RX)  : ORIGIN = 0x00000000, LENGTH = 0x00040000
-  m_data                (RW)  : ORIGIN = 0x20000000, LENGTH = 0x00040000
-  m_ncache              (RW)  : ORIGIN = 0x202C0000, LENGTH = 0x00002000
-  m_data2               (RW)  : ORIGIN = 0x202C2000 + RPMSG_SHMEM_SIZE, LENGTH = 0x0007E000 - RPMSG_SHMEM_SIZE
-  rpmsg_sh_mem          (RW)  : ORIGIN = 0x202C2000, LENGTH = RPMSG_SHMEM_SIZE
+  m_data                (RW)  : ORIGIN = 0x20240000, LENGTH = 0x00080000
+  rpmsg_sh_mem          (RW)  : ORIGIN = 0x202C0000, LENGTH = RPMSG_SHMEM_SIZE
+  m_data2               (RW)  : ORIGIN = 0x202C0000 + RPMSG_SHMEM_SIZE, LENGTH = 0x00002000
+  m_data3               (RW)  : ORIGIN = DATA3_START, LENGTH = DATA3_SIZE
   m_core1_image         (RX)  : ORIGIN = CORE1IMAGE_START, LENGTH = 0x00040000
 }
-
-/* NOTE: The last 0x230000 bytes in flash is reserved for  data */
 
 /* Define output sections */
 SECTIONS
 {
-  __NCACHE_REGION_START = ORIGIN(m_ncache);
-  __NCACHE_REGION_SIZE  = LENGTH(m_ncache);
+  __NCACHE_REGION_START = ORIGIN(rpmsg_sh_mem);
+  __NCACHE_REGION_SIZE  = LENGTH(rpmsg_sh_mem) + LENGTH(m_data2);
 
   /* section for storing the secondary core image */
   .core1_code :
@@ -199,18 +210,16 @@ SECTIONS
     . = ALIGN(4);
     __DATA_RAM = .;
     __data_start__ = .;      /* create a global symbol at data start */
-    *(m_usb_dma_init_data)
     /* Explicit placement of flash and frequently executed functions in RAM */
     */mflash_drv.c.obj(.text .text* .rodata .rodata*)
     */fsl_flexspi.c.obj(.text .text* .rodata .rodata*)
     *(.data)                 /* .data sections */
     *(.data*)                /* .data* sections */
     *(DataQuickAccess)       /* quick access data section */
-    *(.wlan_data .wlan_data.*)
     KEEP(*(.jcr*))
     . = ALIGN(4);
     __data_end__ = .;        /* define a global symbol at data end */
-  } > m_data2
+  } > m_data
 
   __ram_function_flash_start = __DATA_ROM + (__data_end__ - __data_start__); /* Symbol is used by startup for TCM data initialization */
 
@@ -230,14 +239,14 @@ SECTIONS
     *(NonCacheable.init)
     . = ALIGN(4);
     __noncachedata_init_end__ = .;   /* create a global symbol at initialized ncache data end */
-  } > m_ncache
+  } > m_data2
   . = __noncachedata_init_end__;
   .ncache :
   {
     *(NonCacheable)
     . = ALIGN(4);
     __noncachedata_end__ = .;     /* define a global symbol at ncache data end */
-  } > m_ncache
+  } > m_data2
 
   __DATA_END = __NDATA_ROM + (__noncachedata_init_end__ - __noncachedata_start__);
   text_end = ORIGIN(m_text) + LENGTH(m_text);
@@ -250,14 +259,13 @@ SECTIONS
     . = ALIGN(4);
     __START_BSS = .;
     __bss_start__ = .;
-    *(m_usb_dma_noninit_data)
     *(.bss)
     *(.bss*)
     *(COMMON)
     . = ALIGN(4);
     __bss_end__ = .;
     __END_BSS = .;
-  } > m_data2
+  } > m_data
 
   .heap :
   {
@@ -268,21 +276,20 @@ SECTIONS
     . += HEAP_SIZE;
     __HeapLimit = .;
     __heap_limit = .; /* Add for _sbrk */
-  } > m_data2
+  } > m_data3
 
   .stack :
   {
     . = ALIGN(8);
     . += STACK_SIZE;
-  } > m_data2
+  } > m_data3
 
   /* Initializes stack on the end of block */
-  __StackTop   = ORIGIN(m_data2) + LENGTH(m_data2);
+  __StackTop   = ORIGIN(m_data3) + LENGTH(m_data3);
   __StackLimit = __StackTop - STACK_SIZE;
   PROVIDE(__stack = __StackTop);
 
   .ARM.attributes 0 : { *(.ARM.attributes) }
 
-  ASSERT(__StackLimit >= __HeapLimit, "region m_data2 overflowed with stack and heap")
+  ASSERT(__StackLimit >= __HeapLimit, "region m_data overflowed with stack and heap")
 }
-

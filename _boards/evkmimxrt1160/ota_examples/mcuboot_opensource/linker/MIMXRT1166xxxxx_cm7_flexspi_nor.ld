@@ -22,13 +22,27 @@
 ** ###################################################################
 */
 
+/*
+  MCUBoot region            0x30000000 - 0x3003FFFF : 256kB  (0x40000 bytes)
+  Primary slot              0x30040000 - 0x3023FFFF : 2048kB (0x200000 bytes)
+  Secondary slot            0x30240000 - 0x3043FFFF : 2048kB (0x200000 bytes)
+
+  Note: RAM sections placed in OCRAMx, DTCM can't be used (see ERR050396)
+  RT116x:
+  OCRAM1 0x20240000 - 0x2024FFFF (64kB)
+  OCRAM2 0x202C0000 - 0x202CFFFF (64kB) - rpmsg (0/8kB), ncache_var, heap, stack
+*/
+
 /* Entry Point */
 ENTRY(Reset_Handler)
 
-HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x4000;
-STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x1000;
+HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x0400;
+STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x0400;
 RPMSG_SHMEM_SIZE = DEFINED(__use_shmem__) ? 0x2000 : 0;
+DATA3_START = DEFINED(__use_shmem__) ? 0x202C4000 : 0x202C2000;
+DATA3_SIZE = DEFINED(__use_shmem__) ? 0xC000 : 0xE000;
 VECTOR_RAM_SIZE = DEFINED(__ram_vector_table__) ? 0x00000400 : 0;
+CORE1IMAGE_START = 0x30FC0000;
 
 /* Specify the memory areas */
 MEMORY
@@ -36,19 +50,20 @@ MEMORY
   m_flash_config        (RX)  : ORIGIN = 0x30000400, LENGTH = 0x00000C00
   m_ivt                 (RX)  : ORIGIN = 0x30001000, LENGTH = 0x00001000
   m_interrupts          (RX)  : ORIGIN = 0x30002000, LENGTH = 0x00000400
-  m_text                (RX)  : ORIGIN = 0x30002400, LENGTH = 0x00FBDC00
+  m_text                (RX)  : ORIGIN = 0x30002400, LENGTH = 0x0003DC00
   m_qacode              (RX)  : ORIGIN = 0x00000000, LENGTH = 0x00040000
-  m_data                (RW)  : ORIGIN = 0x20000000, LENGTH = 0x00040000
-  m_data2               (RW)  : ORIGIN = 0x202C0000 + RPMSG_SHMEM_SIZE, LENGTH = 0x00010000 - RPMSG_SHMEM_SIZE
+  m_data                (RW)  : ORIGIN = 0x20240000, LENGTH = 0x00010000
   rpmsg_sh_mem          (RW)  : ORIGIN = 0x202C0000, LENGTH = RPMSG_SHMEM_SIZE
-  m_core1_image         (RX)  : ORIGIN = 0x30FC0000, LENGTH = 0x00040000
+  m_data2               (RW)  : ORIGIN = 0x202C0000 + RPMSG_SHMEM_SIZE, LENGTH = 0x00002000
+  m_data3               (RW)  : ORIGIN = DATA3_START, LENGTH = DATA3_SIZE
+  m_core1_image         (RX)  : ORIGIN = CORE1IMAGE_START, LENGTH = 0x00040000
 }
 
 /* Define output sections */
 SECTIONS
 {
   __NCACHE_REGION_START = ORIGIN(rpmsg_sh_mem);
-  __NCACHE_REGION_SIZE  = LENGTH(rpmsg_sh_mem);
+  __NCACHE_REGION_SIZE  = LENGTH(rpmsg_sh_mem) + LENGTH(m_data2);
 
   .flash_config :
   {
@@ -213,7 +228,6 @@ SECTIONS
     . = ALIGN(4);
     __DATA_RAM = .;
     __data_start__ = .;      /* create a global symbol at data start */
-    *(m_usb_dma_init_data)
     /* Explicit placement of flash and frequently executed functions in RAM */
     */mflash_drv.c.obj(.text .text* .rodata .rodata*)
     */fsl_flexspi.c.obj(.text .text* .rodata .rodata*)
@@ -243,14 +257,14 @@ SECTIONS
     *(NonCacheable.init)
     . = ALIGN(4);
     __noncachedata_init_end__ = .;   /* create a global symbol at initialized ncache data end */
-  } > m_data
+  } > m_data2
   . = __noncachedata_init_end__;
   .ncache :
   {
     *(NonCacheable)
     . = ALIGN(4);
     __noncachedata_end__ = .;     /* define a global symbol at ncache data end */
-  } > m_data
+  } > m_data2
 
   __DATA_END = __NDATA_ROM + (__noncachedata_init_end__ - __noncachedata_start__);
   text_end = ORIGIN(m_text) + LENGTH(m_text);
@@ -263,7 +277,6 @@ SECTIONS
     . = ALIGN(4);
     __START_BSS = .;
     __bss_start__ = .;
-    *(m_usb_dma_noninit_data)
     *(.bss)
     *(.bss*)
     *(COMMON)
@@ -281,16 +294,16 @@ SECTIONS
     . += HEAP_SIZE;
     __HeapLimit = .;
     __heap_limit = .; /* Add for _sbrk */
-  } > m_data
+  } > m_data3
 
   .stack :
   {
     . = ALIGN(8);
     . += STACK_SIZE;
-  } > m_data
+  } > m_data3
 
   /* Initializes stack on the end of block */
-  __StackTop   = ORIGIN(m_data) + LENGTH(m_data);
+  __StackTop   = ORIGIN(m_data3) + LENGTH(m_data3);
   __StackLimit = __StackTop - STACK_SIZE;
   PROVIDE(__stack = __StackTop);
 

@@ -22,13 +22,26 @@
 ** ###################################################################
 */
 
+/*
+  MCUBoot region            0x30000000 - 0x3003FFFF : 256kB  (0x40000 bytes)
+  Primary slot              0x30040000 - 0x3023FFFF : 2048kB (0x200000 bytes)
+  Secondary slot            0x30240000 - 0x3043FFFF : 2048kB (0x200000 bytes)
+
+  Note: RAM sections placed in SDRAM, DTCM can't be used (see ERR050396)
+  RT116x:
+  OCRAM1 0x20240000 - 0x2024FFFF (64kB)
+  OCRAM2 0x202C0000 - 0x202CFFFF (64kB)
+  SDRAM  0x80000000 - 0x83FFFFFF (64MB)
+*/
+
 /* Entry Point */
 ENTRY(Reset_Handler)
 
 HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x0400;
 STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x0400;
-RPMSG_SHMEM_SIZE = DEFINED(__use_shmem__) ? 0x2000 : 0;
 VECTOR_RAM_SIZE = DEFINED(__ram_vector_table__) ? 0x00000400 : 0;
+NCACHE_HEAP_START = DEFINED(__heap_noncacheable__) ? 0x84000000 - HEAP_SIZE : 0x83000000 - HEAP_SIZE;
+NCACHE_HEAP_SIZE  = DEFINED(__heap_noncacheable__) ? HEAP_SIZE : 0x0000;
 
 /* Specify the memory areas */
 MEMORY
@@ -36,35 +49,18 @@ MEMORY
   m_interrupts          (RX)  : ORIGIN = 0x30040400, LENGTH = 0x00000400
   m_text                (RX)  : ORIGIN = 0x30040800, LENGTH = 0x00D8DC00
   m_qacode              (RX)  : ORIGIN = 0x00000000, LENGTH = 0x00040000
-  m_data                (RW)  : ORIGIN = 0x20000000, LENGTH = 0x00040000
-  m_data2               (RW)  : ORIGIN = 0x202C0000 + RPMSG_SHMEM_SIZE, LENGTH = 0x00010000 - RPMSG_SHMEM_SIZE
-  rpmsg_sh_mem          (RW)  : ORIGIN = 0x202C0000, LENGTH = RPMSG_SHMEM_SIZE
-  m_core1_image         (RX)  : ORIGIN = CORE1IMAGE_START, LENGTH = 0x00040000
+  m_data                (RW)  : ORIGIN = 0x80000000, LENGTH = DEFINED(__heap_noncacheable__) ? 0x03000000 : 0x03000000 - HEAP_SIZE
+  m_data2               (RW)  : ORIGIN = 0x20240000, LENGTH = 0x00010000
+  m_data3               (RW)  : ORIGIN = 0x202C0000, LENGTH = 0x00010000
+  m_ncache              (RW)  : ORIGIN = 0x83000000, LENGTH = DEFINED(__heap_noncacheable__) ? 0x01000000 - HEAP_SIZE : 0x01000000
+  m_heap                (RW)  : ORIGIN = NCACHE_HEAP_START, LENGTH = HEAP_SIZE
 }
 
 /* Define output sections */
 SECTIONS
 {
-  __NCACHE_REGION_START = ORIGIN(rpmsg_sh_mem);
-  __NCACHE_REGION_SIZE  = LENGTH(rpmsg_sh_mem);
-
-  /* section for storing the secondary core image */
-  .core1_code :
-  {
-     . = ALIGN(4) ;
-    KEEP (*(.core1_code))
-     *(.core1_code*)
-     . = ALIGN(4) ;
-  } > m_core1_image
-
-  /* NOINIT section for rpmsg_sh_mem */
-  .noinit_rpmsg_sh_mem (NOLOAD) : ALIGN(4)
-  {
-     __RPMSG_SH_MEM_START__ = .;
-     *(.noinit.$rpmsg_sh_mem*)
-     . = ALIGN(4) ;
-     __RPMSG_SH_MEM_END__ = .;
-  } > rpmsg_sh_mem
+  __NCACHE_REGION_START = ORIGIN(m_ncache);
+  __NCACHE_REGION_SIZE  = LENGTH(m_ncache) + NCACHE_HEAP_SIZE;
 
   /* The startup code goes first into internal RAM */
   .interrupts :
@@ -192,12 +188,13 @@ SECTIONS
     . = ALIGN(4);
     __DATA_RAM = .;
     __data_start__ = .;      /* create a global symbol at data start */
+    *(CacheLineData.init)
+    . = ALIGN(32);           /* cache line size = 32 bytes */
     /* Explicit placement of flash and frequently executed functions in RAM */
     */mflash_drv.c.obj(.text .text* .rodata .rodata*)
     */fsl_flexspi.c.obj(.text .text* .rodata .rodata*)
     *(.data)                 /* .data sections */
     *(.data*)                /* .data* sections */
-    *(DataQuickAccess)       /* quick access data section */
     KEEP(*(.jcr*))
     . = ALIGN(4);
     __data_end__ = .;        /* define a global symbol at data end */
@@ -221,18 +218,25 @@ SECTIONS
     *(NonCacheable.init)
     . = ALIGN(4);
     __noncachedata_init_end__ = .;   /* create a global symbol at initialized ncache data end */
-  } > m_data
+  } > m_ncache
   . = __noncachedata_init_end__;
   .ncache :
   {
     *(NonCacheable)
     . = ALIGN(4);
     __noncachedata_end__ = .;     /* define a global symbol at ncache data end */
-  } > m_data
+  } > m_ncache
 
   __DATA_END = __NDATA_ROM + (__noncachedata_init_end__ - __noncachedata_start__);
   text_end = ORIGIN(m_text) + LENGTH(m_text);
   ASSERT(__DATA_END <= text_end, "region m_text overflowed with text and data")
+
+  .qadata :
+  {
+    . = ALIGN(4);
+    *(DataQuickAccess)       /* quick access data section */
+    . = ALIGN(4);
+  } > m_data2
 
   /* Uninitialized data section */
   .bss :
@@ -241,6 +245,8 @@ SECTIONS
     . = ALIGN(4);
     __START_BSS = .;
     __bss_start__ = .;
+    *(CacheLineData)
+    . = ALIGN(32);           /* cache line size = 32 bytes */
     *(.bss)
     *(.bss*)
     *(COMMON)
@@ -258,7 +264,7 @@ SECTIONS
     . += HEAP_SIZE;
     __HeapLimit = .;
     __heap_limit = .; /* Add for _sbrk */
-  } > m_data
+  } > m_heap
 
   .stack :
   {
@@ -272,6 +278,4 @@ SECTIONS
   PROVIDE(__stack = __StackTop);
 
   .ARM.attributes 0 : { *(.ARM.attributes) }
-
-  ASSERT(__StackLimit >= __HeapLimit, "region m_data overflowed with stack and heap")
 }

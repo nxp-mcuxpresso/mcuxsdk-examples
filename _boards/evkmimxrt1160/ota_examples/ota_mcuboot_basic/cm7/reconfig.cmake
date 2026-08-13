@@ -1,6 +1,9 @@
 # Add additional configuration
 mcux_add_macro(
-    CC "-DFSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1"
+    CC "-DFSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1\
+        -DDATA_SECTION_IS_CACHEABLE=1\
+        -DUSE_SDRAM"
+    AS "-D__STARTUP_INITIALIZE_RAMFUNCTION"
 )
 
 # Add or remove Linker File Configurations

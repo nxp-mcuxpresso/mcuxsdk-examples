@@ -80,7 +80,6 @@ void BOARD_InitHardware(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
     BOARD_InitModuleClock();
-
     SCB_DisableDCache();
 
     IOMUXC_SelectENETClock();

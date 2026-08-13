@@ -67,8 +67,13 @@ int main(void)
     BOARD_InitFLASHPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
-
     SCB_DisableDCache();
+
+    /*Clock setting for flexspi1*/
+#ifndef MCUXPRESSO_SDK
+    CLOCK_SetRootClockDiv(kCLOCK_Root_Flexspi1, 2);
+    CLOCK_SetRootClockMux(kCLOCK_Root_Flexspi1, 0);
+#endif
 
     PRINTF("hello sbl.\r\n");
 

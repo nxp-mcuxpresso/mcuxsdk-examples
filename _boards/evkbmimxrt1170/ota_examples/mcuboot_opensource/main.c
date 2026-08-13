@@ -66,7 +66,6 @@ int main(void)
     BOARD_InitPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
-
     SCB_DisableDCache();
 
     PRINTF("hello sbl.\r\n");

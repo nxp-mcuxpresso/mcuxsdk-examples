@@ -1,21 +1,22 @@
 /*
 ** ###################################################################
 **     Processors:          MIMXRT1176AVM8A_cm7
+**                          MIMXRT1176AVM8B_cm7
 **                          MIMXRT1176CVM8A_cm7
+**                          MIMXRT1176CVM8B_cm7
 **                          MIMXRT1176DVMAA_cm7
+**                          MIMXRT1176DVMAB_cm7
 **
 **     Compiler:            GNU C Compiler
-**     Reference manual:    IMXRT1170RM, Rev 1, 02/2021
-**     Version:             rev. 1.0, 2020-12-29
-**     Build:               b210709
+**     Reference manual:    IMXRT1170RM, Rev 5, 12/2025
+**     Version:             rev. 1.2, 2025-11-07
+**     Build:               b260106
 **
 **     Abstract:
 **         Linker file for the GNU C Compiler
 **
 **     Copyright 2016 Freescale Semiconductor, Inc.
-**     Copyright 2016-2021 NXP
-**     All rights reserved.
-**
+**     Copyright 2016-2026 NXP
 **     SPDX-License-Identifier: BSD-3-Clause
 **
 **     http:                 www.nxp.com
@@ -24,14 +25,26 @@
 ** ###################################################################
 */
 
+/*
+  MCUBoot region            0x30000000 - 0x3003FFFF : 256kB  (0x40000 bytes)
+  Primary slot              0x30040000 - 0x3023FFFF : 2048kB (0x200000 bytes)
+  Secondary slot            0x30240000 - 0x3043FFFF : 2048kB (0x200000 bytes)
+
+  Note: RAM sections placed in OCRAMx, DTCM can't be used (see ERR050396)
+  RT117x:
+  OCRAM1 0x20240000 - 0x202BFFFF (512kB)
+  OCRAM2 0x202C0000 - 0x2033FFFF (512kB)
+*/
+
 /* Entry Point */
 ENTRY(Reset_Handler)
 
 HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x0400;
 STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x0400;
 RPMSG_SHMEM_SIZE = DEFINED(__use_shmem__) ? 0x2000 : 0;
+DATA3_START = DEFINED(__use_shmem__) ? 0x202C4000 : 0x202C2000;
+DATA3_SIZE = DEFINED(__use_shmem__) ? 0x7C000 : 0x7E000;
 VECTOR_RAM_SIZE = DEFINED(__ram_vector_table__) ? 0x00000400 : 0;
-TEXT_SIZE = DEFINED(__use_flash64MB__) ? 0x03FBDC00 : 0x00FBDC00;
 CORE1IMAGE_START = DEFINED(__use_flash64MB__) ? 0x33FC0000 : 0x30FC0000;
 
 /* Specify the memory areas */
@@ -40,11 +53,12 @@ MEMORY
   m_flash_config        (RX)  : ORIGIN = 0x30000400, LENGTH = 0x00000C00
   m_ivt                 (RX)  : ORIGIN = 0x30001000, LENGTH = 0x00001000
   m_interrupts          (RX)  : ORIGIN = 0x30002000, LENGTH = 0x00000400
-  m_text                (RX)  : ORIGIN = 0x30002400, LENGTH = TEXT_SIZE
+  m_text                (RX)  : ORIGIN = 0x30002400, LENGTH = 0x0003DC00
   m_qacode              (RX)  : ORIGIN = 0x00000000, LENGTH = 0x00040000
-  m_data                (RW)  : ORIGIN = 0x20240000, LENGTH = 0x00040000
-  m_data2               (RW)  : ORIGIN = 0x202C0000 + RPMSG_SHMEM_SIZE, LENGTH = 0x00080000 - RPMSG_SHMEM_SIZE
+  m_data                (RW)  : ORIGIN = 0x20240000, LENGTH = 0x00080000
   rpmsg_sh_mem          (RW)  : ORIGIN = 0x202C0000, LENGTH = RPMSG_SHMEM_SIZE
+  m_data2               (RW)  : ORIGIN = 0x202C0000 + RPMSG_SHMEM_SIZE, LENGTH = 0x00002000
+  m_data3               (RW)  : ORIGIN = DATA3_START, LENGTH = DATA3_SIZE
   m_core1_image         (RX)  : ORIGIN = CORE1IMAGE_START, LENGTH = 0x00040000
 }
 
@@ -52,7 +66,7 @@ MEMORY
 SECTIONS
 {
   __NCACHE_REGION_START = ORIGIN(rpmsg_sh_mem);
-  __NCACHE_REGION_SIZE  = LENGTH(rpmsg_sh_mem) + 0x2000;
+  __NCACHE_REGION_SIZE  = LENGTH(rpmsg_sh_mem) + LENGTH(m_data2);
 
   .flash_config :
   {
@@ -217,7 +231,6 @@ SECTIONS
     . = ALIGN(4);
     __DATA_RAM = .;
     __data_start__ = .;      /* create a global symbol at data start */
-    *(m_usb_dma_init_data)
     /* Explicit placement of flash and frequently executed functions in RAM */
     */mflash_drv.c.obj(.text .text* .rodata .rodata*)
     */fsl_flexspi.c.obj(.text .text* .rodata .rodata*)
@@ -267,7 +280,6 @@ SECTIONS
     . = ALIGN(4);
     __START_BSS = .;
     __bss_start__ = .;
-    *(m_usb_dma_noninit_data)
     *(.bss)
     *(.bss*)
     *(COMMON)
@@ -285,16 +297,16 @@ SECTIONS
     . += HEAP_SIZE;
     __HeapLimit = .;
     __heap_limit = .; /* Add for _sbrk */
-  } > m_data
+  } > m_data3
 
   .stack :
   {
     . = ALIGN(8);
     . += STACK_SIZE;
-  } > m_data
+  } > m_data3
 
   /* Initializes stack on the end of block */
-  __StackTop   = ORIGIN(m_data) + LENGTH(m_data);
+  __StackTop   = ORIGIN(m_data3) + LENGTH(m_data3);
   __StackLimit = __StackTop - STACK_SIZE;
   PROVIDE(__stack = __StackTop);
 
