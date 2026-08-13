@@ -13,7 +13,7 @@ coex_wifi_handsfree_ag:
       - ${board_root}/${board}/coex_examples/coex_wifi_handsfree_ag/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkbmimxrt1170:
+    evkbmimxrt1170@cm7:
     - -armgcc@debug
     - -armgcc@release
     - -armgcc@sdram_debug
