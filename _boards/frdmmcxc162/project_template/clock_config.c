@@ -25,7 +25,7 @@
 /* clang-format off */
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Clocks v19.0
+product: Clocks v20.0
 processor: MCXC162
 package_id: MCXC162VFT
 mcu_data: ksdk2_0
@@ -173,8 +173,8 @@ void BOARD_BootClockFRO12M(void)
 
     /* The flow of increasing voltage and frequency */
     if (coreFreq <= BOARD_BOOTCLOCKFRO12M_CORE_CLOCK) {
-        /* Configure Flash to support different voltage level and frequency */
-        FMU0->FCTRL = (FMU0->FCTRL & ~((uint32_t)FMU_FCTRL_RWSC_MASK)) | (FMU_FCTRL_RWSC(0x0U));
+        /* Configure Flash wait-states for the target system clock and run mode */
+        CLOCK_SetFLASHAccessCyclesForFreq(BOARD_BOOTCLOCKFRO12M_CORE_CLOCK, kSD_Mode);
     }
     BOARD_BootClockFRO12M_InitClockModule(kClockModule_SIRC);
     BOARD_BootClockFRO12M_InitClockModule(kClockModule_FIRC);
@@ -182,8 +182,8 @@ void BOARD_BootClockFRO12M(void)
 
     /* The flow of decreasing voltage and frequency */
     if (coreFreq > BOARD_BOOTCLOCKFRO12M_CORE_CLOCK) {
-        /* Configure Flash to support different voltage level and frequency */
-        FMU0->FCTRL = (FMU0->FCTRL & ~((uint32_t)FMU_FCTRL_RWSC_MASK)) | (FMU_FCTRL_RWSC(0x0U));
+        /* Configure Flash wait-states for the target system clock and run mode */
+        CLOCK_SetFLASHAccessCyclesForFreq(BOARD_BOOTCLOCKFRO12M_CORE_CLOCK, kSD_Mode);
     }
 
     BOARD_BootClockFRO12M_InitClockModule(kClockModule_ADCClk);
@@ -323,8 +323,8 @@ void BOARD_BootClockFROHF36M(void)
 
     /* The flow of increasing voltage and frequency */
     if (coreFreq <= BOARD_BOOTCLOCKFROHF36M_CORE_CLOCK) {
-        /* Configure Flash to support different voltage level and frequency */
-        FMU0->FCTRL = (FMU0->FCTRL & ~((uint32_t)FMU_FCTRL_RWSC_MASK)) | (FMU_FCTRL_RWSC(0x0U));
+        /* Configure Flash wait-states for the target system clock and run mode */
+        CLOCK_SetFLASHAccessCyclesForFreq(BOARD_BOOTCLOCKFROHF36M_CORE_CLOCK, kSD_Mode);
     }
     BOARD_BootClockFROHF36M_InitClockModule(kClockModule_SIRC);
     BOARD_BootClockFROHF36M_InitClockModule(kClockModule_FIRC);
@@ -332,8 +332,8 @@ void BOARD_BootClockFROHF36M(void)
 
     /* The flow of decreasing voltage and frequency */
     if (coreFreq > BOARD_BOOTCLOCKFROHF36M_CORE_CLOCK) {
-        /* Configure Flash to support different voltage level and frequency */
-        FMU0->FCTRL = (FMU0->FCTRL & ~((uint32_t)FMU_FCTRL_RWSC_MASK)) | (FMU_FCTRL_RWSC(0x0U));
+        /* Configure Flash wait-states for the target system clock and run mode */
+        CLOCK_SetFLASHAccessCyclesForFreq(BOARD_BOOTCLOCKFROHF36M_CORE_CLOCK, kSD_Mode);
     }
 
     BOARD_BootClockFROHF36M_InitClockModule(kClockModule_ADCClk);
@@ -356,7 +356,6 @@ void BOARD_BootClockFROHF36M(void)
     /* Set SystemCoreClock variable */
     SystemCoreClock = BOARD_BOOTCLOCKFROHF36M_CORE_CLOCK;
 }
-
 /*******************************************************************************
  ******************* Configuration BOARD_BootClockFROHF72M *********************
  ******************************************************************************/
@@ -475,8 +474,8 @@ void BOARD_BootClockFROHF72M(void)
 
     /* The flow of increasing voltage and frequency */
     if (coreFreq <= BOARD_BOOTCLOCKFROHF72M_CORE_CLOCK) {
-        /* Configure Flash to support different voltage level and frequency */
-        FMU0->FCTRL = (FMU0->FCTRL & ~((uint32_t)FMU_FCTRL_RWSC_MASK)) | (FMU_FCTRL_RWSC(0x1U));
+        /* Configure Flash wait-states for the target system clock and run mode */
+        CLOCK_SetFLASHAccessCyclesForFreq(BOARD_BOOTCLOCKFROHF72M_CORE_CLOCK, kSD_Mode);
     }
     BOARD_BootClockFROHF72M_InitClockModule(kClockModule_SIRC);
     BOARD_BootClockFROHF72M_InitClockModule(kClockModule_FIRC);
@@ -484,8 +483,8 @@ void BOARD_BootClockFROHF72M(void)
 
     /* The flow of decreasing voltage and frequency */
     if (coreFreq > BOARD_BOOTCLOCKFROHF72M_CORE_CLOCK) {
-        /* Configure Flash to support different voltage level and frequency */
-        FMU0->FCTRL = (FMU0->FCTRL & ~((uint32_t)FMU_FCTRL_RWSC_MASK)) | (FMU_FCTRL_RWSC(0x1U));
+        /* Configure Flash wait-states for the target system clock and run mode */
+        CLOCK_SetFLASHAccessCyclesForFreq(BOARD_BOOTCLOCKFROHF72M_CORE_CLOCK, kSD_Mode);
     }
 
     BOARD_BootClockFROHF72M_InitClockModule(kClockModule_ADCClk);
