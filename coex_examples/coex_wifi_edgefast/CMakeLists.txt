@@ -10,11 +10,17 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES middleware/wireless/coex/examples/coex_app/main.c
+            middleware/wireless/coex/src/common/coex_lfs_defines.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES middleware/wireless/coex/examples/coex_app
+             middleware/wireless/coex/src/common
+)
+
+mcux_add_macro(
+    "-DLFS_DEFINES=coex_lfs_defines.h"
 )
 
 # Add MCUXPRESSO IDE support
