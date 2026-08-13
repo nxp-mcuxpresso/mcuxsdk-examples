@@ -54,7 +54,7 @@ mc_pmsm_enc:
     # twrmc56f8400: []
     # frdmmcxa174: []
     # frdmmcxa346: []
-    # hvpmcxa346: []
+    hvpmcxa346: []
     # frdmmcxe31b: []
     frdmmcxe32b@core0: []
     # frdmmcxc162: []
