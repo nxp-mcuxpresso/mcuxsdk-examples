@@ -65,7 +65,9 @@ int main(void)
         CMC_ClearStickySystemResetStatus(APP_CMC, (uint32_t)CMC_SRS_WAKEUP_MASK);
     }
 
+#if !(defined(APP_ENABLE_NMI_WAKEUP) && (APP_ENABLE_NMI_WAKEUP==0U))
     EnableIRQ(NonMaskableInt_IRQn);
+#endif
 
     PRINTF("\r\nNormal Boot.\r\n");
 
@@ -177,6 +179,7 @@ static void APP_WakeUpTimerConfig(uint8_t timeOutValue)
 }
 #endif /* APP_SUPPORT_WAKEUP_TIMER */
 
+#if !(defined(APP_ENABLE_NMI_WAKEUP) && (APP_ENABLE_NMI_WAKEUP==0U))
 /*! @brief Set Non-Maskable Interrupt source. */
 static inline void SystemNonMaskableInterruptSourceSet(IRQn_Type id)
 {
@@ -184,6 +187,7 @@ static inline void SystemNonMaskableInterruptSourceSet(IRQn_Type id)
                       (SYSCON_NMISRC_IRQCPU0((uint32_t)id) | SYSCON_NMISRC_NMIENCPU0_MASK));
     CMC_EnableNonMaskablePinInterrupt(APP_CMC, true);
 }
+#endif
 
 /*! @brief Get wakeup timeout and wakeup source. */
 static void APP_GetWakeupConfig(app_power_mode_t targetMode)
@@ -234,9 +238,9 @@ static void APP_GetWakeupConfig(app_power_mode_t targetMode)
             IRQ_ClearPendingIRQ(APP_WUU_IRQN);
             WUU_SetExternalWakeUpPinsConfig(APP_WUU, APP_WUU_WAKEUP_BUTTON_IDX, &wakeupButtonConfig);
             EnableIRQ(APP_WUU_IRQN);
-
+#if !(defined(APP_ENABLE_NMI_WAKEUP) && (APP_ENABLE_NMI_WAKEUP==0U))
             SystemNonMaskableInterruptSourceSet(APP_WUU_IRQN);
-
+#endif
             PRINTF("Please press %s to wakeup.\r\n", APP_WUU_WAKEUP_BUTTON_NAME);
 
             if (targetMode > kAPP_PowerModeSleep)
@@ -282,12 +286,14 @@ static void APP_ClearWakeupButtonConfig(void)
     IRQ_ClearPendingIRQ(APP_WUU_IRQN);
 }
 
+#if !(defined(APP_ENABLE_NMI_WAKEUP) && (APP_ENABLE_NMI_WAKEUP==0U))
 /*! @brief Clear Non-Maskable Interrupt source. */
 static inline void SystemNonMaskableInterruptSourceClear(void)
 {
     SYSCON->NMISRC &= ~(SYSCON_NMISRC_IRQCPU0_MASK | SYSCON_NMISRC_NMIENCPU0_MASK);
     CMC_EnableNonMaskablePinInterrupt(APP_CMC, false);
 }
+#endif
 
 /*! @brief Clear all wakeup configurations. */
 static void APP_ClearAllWakeupConfig(void)
@@ -296,7 +302,9 @@ static void APP_ClearAllWakeupConfig(void)
     APP_ClearWakeupTimerConfig();
 #endif
     APP_ClearWakeupButtonConfig();
+#if !(defined(APP_ENABLE_NMI_WAKEUP) && (APP_ENABLE_NMI_WAKEUP==0U))
     SystemNonMaskableInterruptSourceClear();
+#endif
 }
 
 #if APP_SUPPORT_WAKEUP_TIMER
@@ -324,6 +332,7 @@ void APP_WUU_IRQ_HANDLER(void)
     }
 }
 
+#if !(defined(APP_ENABLE_NMI_WAKEUP) && (APP_ENABLE_NMI_WAKEUP==0U))
 /*! @brief Non-Maskable Interrupt handler. */
 void NMI_Handler(void)
 {
@@ -351,6 +360,7 @@ void NMI_Handler(void)
 
     SystemNonMaskableInterruptSourceClear();
 }
+#endif
 /************************** Wakeup Configuration *******************************/
 
 /*************************** Power Mode Switch ********************************/
@@ -384,7 +394,8 @@ static app_power_mode_t APP_GetTargetPowerMode(void)
         {
             PRINTF("Wrong Input!");
         }
-    } while (inputPowerMode > kAPP_PowerModeDeepPowerDown);
+        /* Re-loop on any out-of-range key; otherwise a key below 'A' would index g_modeDescArray out of bounds. */
+    } while ((inputPowerMode > kAPP_PowerModeDeepPowerDown) || (inputPowerMode < kAPP_PowerModeActive));
 
     PRINTF("\t%s\r\n", g_modeDescArray[(uint8_t)(inputPowerMode - kAPP_PowerModeActive)]);
 
