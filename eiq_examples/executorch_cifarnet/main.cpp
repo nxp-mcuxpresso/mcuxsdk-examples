@@ -18,6 +18,10 @@
 #include <executorch/runtime/platform/log.h>
 #include <executorch/runtime/platform/platform.h>
 #include <executorch/runtime/platform/runtime.h>
+#include <executorch/runtime/core/event_tracer.h>
+#ifdef ET_EVENT_TRACER_ENABLED
+#include <executorch/devtools/etdump/etdump_flatcc.h>
+#endif
 
 #include "board_init.h"
 #include "demo_config.h"
@@ -158,7 +162,15 @@ int main(void)
     MemoryManager memory_manager(&method_allocator, &planned_memory, &temp_allocator);
 
     {
-      Result<Method> method = program->load_method(method_name, &memory_manager);
+#ifdef ET_EVENT_TRACER_ENABLED
+      // Profiling: capture per-op/instruction events into an etdump. Requires
+      // the runtime library built with build_executorch_runtime.sh --profile.
+      executorch::etdump::ETDumpGen etdump_gen;
+      executorch::runtime::EventTracer* event_tracer = &etdump_gen;
+#else
+      executorch::runtime::EventTracer* event_tracer = nullptr;
+#endif
+      Result<Method> method = program->load_method(method_name, &memory_manager, event_tracer);
       if (!method.ok()) {
         PRINTF("Loading of method %s failed with status 0x%\r\n" PRIx32,
                method_name, method.error());
@@ -189,6 +201,27 @@ int main(void)
       } else {
         PRINTF("Model executed successfully.\r\n");
       }
+
+#ifdef ET_EVENT_TRACER_ENABLED
+      {
+        // Drain the captured events into an etdump buffer and report its size
+        // and block count as proof the tracer ran. The buffer itself can be
+        // post-processed on the host with model-explorer for full analysis.
+        executorch::etdump::ETDumpResult etdump_result = etdump_gen.get_etdump_data();
+        PRINTF("ETDump: %u bytes, %d event blocks captured\r\n",
+               (unsigned int)etdump_result.size, (int)etdump_gen.get_num_blocks());
+
+        // Hex-dump the raw etdump over UART (between markers) so it can be
+        // reassembled into a .etdump file on the host and decoded by the
+        // executorch Inspector. Format: "<BDUMP>" + ascii-hex + "<EDUMP>".
+        const uint8_t* p = (const uint8_t*)etdump_result.buf;
+        PRINTF("<BDUMP>\r\n");
+        for (size_t i = 0; i < etdump_result.size; ++i) {
+          PRINTF("%02x", p[i]);
+        }
+        PRINTF("\r\n<EDUMP>\r\n");
+      }
+#endif
 
       PRINTF("Core/NPU Frequency: %d MHz\r\n", CLOCK_GetFreq(kCLOCK_CoreSysClk)/1000000);
       PRINTF("method_allocator Addr: 0x%x - 0x%x\r\n", method_allocator_pool, method_allocator_pool + method_allocator.size());

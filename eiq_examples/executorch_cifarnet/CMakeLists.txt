@@ -9,6 +9,17 @@ include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
 project(executorch_cifarnet LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/eiq_examples/executorch_cifarnet)
 
+# Optional ExecuTorch event-tracer profiling. When ON, the example is compiled
+# with -DET_EVENT_TRACER_ENABLED and wires an ETDumpGen into the runtime, so the
+# inference emits an etdump. It requires the runtime library to have been built
+# in profiling mode (build_executorch_runtime.sh --profile); a release/debug .a
+# does NOT contain the etdump/flatccrt symbols and will fail to link if this is ON.
+option(ETEXAMPLE_ENABLE_PROFILING "Enable ExecuTorch event-tracer profiling (needs profile-mode libexecutorch.a)" OFF)
+if(ETEXAMPLE_ENABLE_PROFILING)
+  message(STATUS "executorch_cifarnet: profiling ENABLED (-DET_EVENT_TRACER_ENABLED)")
+  mcux_add_macro(CC "-DET_EVENT_TRACER_ENABLED" CX "-DET_EVENT_TRACER_ENABLED")
+endif()
+
 mcux_add_include(
   INCLUDES .
   ../common
