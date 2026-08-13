@@ -25,7 +25,8 @@ dev_audio_speaker_lite_bm:
     evkbmimxrt1060: []
     evkbmimxrt1170@cm7: []
     evkcmimxrt1060: []
-    frdmimxrt1152: []
+    frdmimxrt1152:
+    - -armgcc@flexspi_nor_debug
     evkmimxrt1010:
     - -armgcc@debug
     - -iar@debug
