@@ -1,0 +1,15 @@
+ethosu_tflm_label_image_ext_mem:
+  section-type: application
+  contents:
+    meta_path: examples/eiq_examples/ethosu/ethosu_tflm_label_image_ext_mem/.
+    project-root-path: boards/${board}/eiq_examples/ethosu/ethosu_tflm_label_image_ext_mem/${multicore_foldername}
+    document:
+      name: ethosu_tflm_label_image_ext_mem${core_id_suffix_name}
+      category: eiq_examples
+      brief: Ethos-U Label image external memory example for TensorFlow Lite Micro
+      example_readme:
+      - examples/eiq_examples/ethosu/ethosu_tflm_label_image_ext_mem/readme.md
+      - ${board_root}/${board}/eiq_examples/ethosu/ethosu_tflm_label_image_ext_mem/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    fpga_imxrtl3750: []
