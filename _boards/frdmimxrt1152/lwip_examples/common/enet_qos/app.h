@@ -73,6 +73,10 @@ extern phy_jl1111_resource_t g_phy_resource;
 #define EXAMPLE_PHY_INT_PORT BOARD_INITENET_QOSPINS_ENET_QOS_INT_B_GPIO
 #define EXAMPLE_PHY_INT_PIN  BOARD_INITENET_QOSPINS_ENET_QOS_INT_B_GPIO_PIN
 
+#ifndef ENET_PRIORITY
+#define ENET_PRIORITY (6U)
+#endif
+
 /*${macro:end}*/
 
 /*******************************************************************************
