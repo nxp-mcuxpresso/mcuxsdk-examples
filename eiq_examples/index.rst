@@ -14,7 +14,6 @@ eiq_examples
    tflm_lib/readme.md
    tflm_modelrunner/readme.md
    executorch_cifarnet/readme.md
-   executorch_lib/readme.md
    ethosu/ethosu_apps/readme.md
    ethosu/ethosu_apps_rpmsg/readme.md
    mpp/index.rst
