@@ -14,20 +14,34 @@
 
 #if defined(XIP_BOOT_HEADER_ENABLE) && (XIP_BOOT_HEADER_ENABLE == 1)
 
-#if defined(USE_PSRAM)
-
 #if defined(__ARMCC_VERSION) || defined(__GNUC__)
 __attribute__((section(".boot_hdr.xmcd_data"), used))
 #elif defined(__ICCARM__)
 #pragma location = ".boot_hdr.xmcd_data"
 #endif
+
+#if defined(USE_PSRAM)
+
+#if defined(USE_PSRAM_W958D) && (USE_PSRAM_W958D == 1)
+/* XMCD for W958D6 */
 const uint32_t xmcd_data[] = {
     0xC0010008,
-    0xC0100900,
-    0x00000000
+    0xC0001A00
 };
-
+#else
+/* XMCD for APS256XXN */
+const uint32_t xmcd_data[] = {
+    0xC0010008,
+    0xC0100900
+};
 #endif
+
+#else
+const uint32_t xmcd_data[] = {
+    0xFFFFFFFF,
+    0xFFFFFFFF
+};
+#endif /* USE_PSRAM_W958D == 1 */
 
 #if defined(__ARMCC_VERSION) || defined(__GNUC__)
 __attribute__((section(".boot_hdr.fcb"), used))

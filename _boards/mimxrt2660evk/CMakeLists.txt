@@ -62,6 +62,11 @@ if (CONFIG_MCUX_PRJSEG_module.board.suite)
         CX "-mcmse"
     )
 
+    mcux_add_configuration(
+        CC "-DUSE_PSRAM_W958D=0"
+        CX "-DUSE_PSRAM_W958D=0"
+    )
+
 endif()
 
 if (CONFIG_MCUX_COMPONENT_driver.pcal6524)
