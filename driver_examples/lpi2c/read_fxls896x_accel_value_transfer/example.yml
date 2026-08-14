@@ -27,3 +27,4 @@ lpi2c_read_fxls896x_accel_value_transfer:
     - +armgcc@release
     frdmkw43: []
     frdmmcxw70: []
+    kw43loc: []

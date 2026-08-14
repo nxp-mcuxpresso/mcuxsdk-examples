@@ -136,3 +136,4 @@ lpuart_hardware_flow_control:
     - -mdk@release
     frdmkw43: []
     frdmmcxw70: []
+    kw43loc: []

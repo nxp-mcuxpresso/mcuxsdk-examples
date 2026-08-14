@@ -42,3 +42,4 @@ cmsis_button_toggle_led:
     frdmmcxc162: []
     frdmkw43: []
     frdmmcxw70: []
+    kw43loc: []

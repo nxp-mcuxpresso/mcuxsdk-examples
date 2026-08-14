@@ -53,3 +53,4 @@ flash_component_nor_lpspi:
     - -mdk@release
     frdmkw43: []
     frdmmcxw70: []
+    kw43loc: []

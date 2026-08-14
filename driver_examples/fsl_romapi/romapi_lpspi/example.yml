@@ -27,3 +27,4 @@ k4w1_romapi_lpspi:
     - +armgcc@release
     frdmkw43: []
     frdmmcxw70: []
+    kw43loc: []

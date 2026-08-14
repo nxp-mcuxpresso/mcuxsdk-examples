@@ -327,3 +327,4 @@ cmsis_lpi2c_int_b2b_transfer_master:
     frdmmcxc162: []
     frdmkw43: []
     frdmmcxw70: []
+    kw43loc: []

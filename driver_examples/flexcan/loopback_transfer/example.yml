@@ -311,3 +311,4 @@ flexcan_loopback_transfer:
     frdmkw43: []
     frdmmcxw70: []
     mimxrt2660evk: []
+    kw43loc: []

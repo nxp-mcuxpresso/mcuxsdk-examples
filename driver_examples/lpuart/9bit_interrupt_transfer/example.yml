@@ -249,3 +249,4 @@ lpuart_9bit_interrupt_transfer:
     frdmkw43: []
     frdmmcxw70: []
     mimxrt2660evk: []
+    kw43loc: []

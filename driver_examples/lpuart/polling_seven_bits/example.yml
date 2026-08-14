@@ -289,3 +289,4 @@ lpuart_polling_seven_bits:
     frdmkw43: []
     frdmmcxw70: []
     mimxrt2660evk: []
+    kw43loc: []
