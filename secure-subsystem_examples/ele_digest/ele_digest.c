@@ -896,7 +896,7 @@ int main(void)
             break;
         }
         /* open session to specific security subsystem */
-        status = sss_sscp_open_session(&sssSession, 0u, ELE_SUBSYSTEM, &sscpContext);
+        status = sss_sscp_open_session(&sssSession, CONFIG_MCUX_SECURE_SUBSYSTEM_SESSION_ID, ELE_SUBSYSTEM, &sscpContext);
         if (status != kStatus_SSS_Success)
         {
             return status;

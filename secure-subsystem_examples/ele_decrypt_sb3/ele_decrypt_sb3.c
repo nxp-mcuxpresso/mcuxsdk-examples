@@ -146,7 +146,7 @@ status_t read_fuse(ELEMU_Type *mu, uint32_t fuse, uint32_t *fuseData, size_t fus
             break;
         }
         /* OPEN SESSION */
-        if (sss_sscp_open_session(&sssSession, 0u, kType_SSS_Ele200, &sscpContext) != kStatus_SSS_Success)
+        if (sss_sscp_open_session(&sssSession, CONFIG_MCUX_SECURE_SUBSYSTEM_SESSION_ID, kType_SSS_Ele200, &sscpContext) != kStatus_SSS_Success)
         {
             break;
         }
@@ -194,7 +194,7 @@ status_t load_and_decrypt(ELEMU_Type *mu, uint32_t image[])
             break;
         }
         /* OPEN SESSION */
-        if (sss_sscp_open_session(&sssSession, 0u, kType_SSS_Ele200, &sscpContext) != kStatus_SSS_Success)
+        if (sss_sscp_open_session(&sssSession, CONFIG_MCUX_SECURE_SUBSYSTEM_SESSION_ID, kType_SSS_Ele200, &sscpContext) != kStatus_SSS_Success)
         {
             break;
         }

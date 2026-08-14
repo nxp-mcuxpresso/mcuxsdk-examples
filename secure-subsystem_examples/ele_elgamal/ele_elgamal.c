@@ -80,7 +80,7 @@ status_t get_ele_fw_version(ELEMU_Type *mu, uint8_t *ele_fw_version)
             break;
         }
 
-        if (sss_sscp_open_session(&sssSession, 0u, kType_SSS_Ele200, &sscpContext) != kStatus_SSS_Success)
+        if (sss_sscp_open_session(&sssSession, CONFIG_MCUX_SECURE_SUBSYSTEM_SESSION_ID, kType_SSS_Ele200, &sscpContext) != kStatus_SSS_Success)
         {
             break;
         }
@@ -156,7 +156,7 @@ int main(void)
         }
         PRINTF(OK_STRING);
 
-        status = sss_sscp_open_session(&sssSession, 0u, ELE_SUBSYSTEM, &sscpContext);
+        status = sss_sscp_open_session(&sssSession, CONFIG_MCUX_SECURE_SUBSYSTEM_SESSION_ID, ELE_SUBSYSTEM, &sscpContext);
         if (status != kStatus_SSS_Success)
         {
             break;
