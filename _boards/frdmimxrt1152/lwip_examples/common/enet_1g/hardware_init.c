@@ -47,12 +47,15 @@ void BOARD_InitHardware(void)
     /* Hardware Initialization. */
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
+    BOARD_Init6524Pins();
     BOARD_InitENET_1GPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
     BOARD_InitModuleClock();
 
     IOMUXC_GPR->GPR5 |= IOMUXC_GPR_GPR5_ENET1G_RGMII_EN_MASK; /* Enable RGMII TX clock output on TX_CLK pad. */
+    IOMUXC_GPR->GPR28 &= (~IOMUXC_GPR_GPR28_CACHE_ENET1G_MASK);
+
 
     pcal6524_handle_t handle;
 
