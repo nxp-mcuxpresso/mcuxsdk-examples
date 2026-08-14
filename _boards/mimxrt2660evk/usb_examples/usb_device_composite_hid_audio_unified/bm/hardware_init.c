@@ -324,7 +324,7 @@ void BOARD_InitHardware(void)
     /* Audio PLL is already brought up (F_OUT = 49.152 MHz, 48 kHz family) by
      * ConfigCGUAna() inside BOARD_InitBootClocks(). Here we just point the SAI0
      * MCLK0 root at that AUDIOPLL source and divide by 2 to land at
-     * 24.576 MHz â€” the WM8962 MCLK target for 48 kHz / 16-bit stereo. */
+     * 24.576 MHz — the WM8962 MCLK target for 48 kHz / 16-bit stereo. */
     clock_root_config_t saiRootCfg = {
         .mux = kCLOCK_SAI0_MCLK0_ClockRoot_AUDIOPLL,
         .div = 2,
@@ -366,19 +366,19 @@ void USBFS_IRQHandler(void)
 void USB_DeviceClockInit(void)
 {
 #if defined(USB_DEVICE_CONFIG_EHCI) && (USB_DEVICE_CONFIG_EHCI > 0U)
-    uint32_t usbClockFreq             = 24000000;
     usb_phy_config_struct_t phyConfig = {
         BOARD_USB_PHY_D_CAL,
         BOARD_USB_PHY_TXCAL45DP,
         BOARD_USB_PHY_TXCAL45DM,
     };
 
-    CLOCK_EnableUsbhsPhyPllClock(kCLOCK_Usbphy480M, usbClockFreq);
-    CLOCK_EnableUsbhsClock(kCLOCK_UsbSrcUnused, usbClockFreq);
-    USB_EhciPhyInit(CONTROLLER_ID, usbClockFreq, &phyConfig);
+    CLOCK_EnableUsbHsClock();
+    USB_EhciPhyInit(CONTROLLER_ID, CLOCK_GetRootClockFreq(kCLOCK_Root_COMM_usb0_phyclk), &phyConfig);
 #endif
 #if defined(USB_DEVICE_CONFIG_KHCI) && (USB_DEVICE_CONFIG_KHCI > 0U)
-    CLOCK_EnableUsbfsClock();
+    CLOCK_EnableUsbFsClock(kCLOCK_UsbFsSrcUsb1Root);
+    /* Crystal-less: trim the FRO against the USB FS (KHCI) frame timing. */
+    CLOCK_TrimUsbFroClock(kCLOCK_UsbFroTrimFs);
 #endif
 }
 

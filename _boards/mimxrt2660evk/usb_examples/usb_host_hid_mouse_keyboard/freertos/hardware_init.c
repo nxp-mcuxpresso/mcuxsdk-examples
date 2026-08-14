@@ -39,19 +39,17 @@ void USBFS_IRQHandler(void)
 void USB_HostClockInit(void)
 {
 #if defined(USB_HOST_CONFIG_EHCI) && (USB_HOST_CONFIG_EHCI > 0U)
-    uint32_t usbClockFreq = 24000000;
     usb_phy_config_struct_t phyConfig = {
         BOARD_USB_PHY_D_CAL,
         BOARD_USB_PHY_TXCAL45DP,
         BOARD_USB_PHY_TXCAL45DM,
     };
 
-    CLOCK_EnableUsbhsPhyPllClock(kCLOCK_Usbphy480M, usbClockFreq);
-    CLOCK_EnableUsbhsClock(kCLOCK_UsbSrcUnused, usbClockFreq);
-    USB_EhciPhyInit(CONTROLLER_ID, usbClockFreq, &phyConfig);
+    CLOCK_EnableUsbHsClock();
+    USB_EhciPhyInit(CONTROLLER_ID, CLOCK_GetRootClockFreq(kCLOCK_Root_COMM_usb0_phyclk), &phyConfig);
 #endif
 #if defined(USB_HOST_CONFIG_KHCI) && (USB_HOST_CONFIG_KHCI > 0U)
-    CLOCK_EnableUsbfsClock();
+    CLOCK_EnableUsbFsClock(kCLOCK_UsbFsSrcUsbPll48M);
 #endif
 }
 

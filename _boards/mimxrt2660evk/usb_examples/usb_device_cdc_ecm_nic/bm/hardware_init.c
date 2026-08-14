@@ -40,11 +40,11 @@ static pcal6524_handle_t s_pcal6524Handle;
 extern volatile uint32_t appEvent;
 extern volatile uint32_t BOARD_SystickCount;
 
-ENET_Type *BOARD_Enet = COMM__ENET;
+ENET_Type *BOARD_Enet                = COMM__ENET;
 const phy_operations_t *BOARD_PhyOps = &phyyt8521_ops;
 uint32_t BOARD_PhySysClock;
 uint8_t BOARD_PhyAddress = EXAMPLE_PHY_ADDRESS;
-void *BOARD_PhySource = &g_phy_resource;
+void *BOARD_PhySource    = &g_phy_resource;
 
 /*******************************************************************************
  * Code
@@ -111,19 +111,19 @@ void USBFS_IRQHandler(void)
 void USB_DeviceClockInit(void)
 {
 #if defined(USB_DEVICE_CONFIG_EHCI) && (USB_DEVICE_CONFIG_EHCI > 0U)
-    uint32_t usbClockFreq = 24000000;
     usb_phy_config_struct_t phyConfig = {
         BOARD_USB_PHY_D_CAL,
         BOARD_USB_PHY_TXCAL45DP,
         BOARD_USB_PHY_TXCAL45DM,
     };
 
-    CLOCK_EnableUsbhsPhyPllClock(kCLOCK_Usbphy480M, usbClockFreq);
-    CLOCK_EnableUsbhsClock(kCLOCK_UsbSrcUnused, usbClockFreq);
-    USB_EhciPhyInit(CONTROLLER_ID, usbClockFreq, &phyConfig);
+    CLOCK_EnableUsbHsClock();
+    USB_EhciPhyInit(CONTROLLER_ID, CLOCK_GetRootClockFreq(kCLOCK_Root_COMM_usb0_phyclk), &phyConfig);
 #endif
 #if defined(USB_DEVICE_CONFIG_KHCI) && (USB_DEVICE_CONFIG_KHCI > 0U)
-    CLOCK_EnableUsbfsClock();
+    CLOCK_EnableUsbFsClock(kCLOCK_UsbFsSrcUsb1Root);
+    /* Crystal-less: trim the FRO against the USB FS (KHCI) frame timing. */
+    CLOCK_TrimUsbFroClock(kCLOCK_UsbFroTrimFs);
 #endif
 }
 
