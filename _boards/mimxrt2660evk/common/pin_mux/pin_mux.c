@@ -111,7 +111,8 @@ Description   : Configures pin routing and optionally pin electrical features.
 void BOARD_InitBUTTONsPins(void) {
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO0_4_VBAT_GPIO0_GPIO4,         /* PIO0_4 is configured as VBAT_GPIO0_GPIO4 */
-      0xC0U);                                 /* Pullup/Pulldown Disable: Disable pulldown
+      0xD0U);                                 /* Pullup/Pulldown Enable: Enables pulldown
+                                                 Pull Resister Value: 250 kohm
                                                  Input Buffer Enable: Enables */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO1_0_WAKE_GPIO0_GPIO0,         /* PIO1_0 is configured as WAKE_GPIO0_GPIO0 */

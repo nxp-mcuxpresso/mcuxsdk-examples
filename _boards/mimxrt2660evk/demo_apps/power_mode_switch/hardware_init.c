@@ -8,7 +8,8 @@
 #include "board.h"
 #include "fsl_gpio.h"
 #include "fsl_iomuxc.h"
-#include "app.h" /* extern s_powerInitCfg / s_topologyCfg + BOARD_InitHardware proto. */
+#include "fsl_vbatcon.h"
+#include "app.h"
 #if MCUX_POWER_PF9453_SUPPLY
 #include "fsl_lpi2c.h" /* LPI2C1 transport for the PF9453 VDD_CORE supply (board glue below). */
 #endif
@@ -33,7 +34,7 @@
  * bits (CTRL[26:16]) are left clear so the mode stays changeable.
  * [hw-defer] pending silicon confirmation of the VBAT SRAM power sequence.
  */
-static void BOARD_InitVbatSram(void)
+void BOARD_InitVbatSram(void)
 {
     uint32_t ctrl;
     VBAT__SRAM->CTRL |= 0x3U; /* RAM_RD_EN (bit 0) | RAM_WR_EN (bit 1) */
@@ -41,6 +42,39 @@ static void BOARD_InitVbatSram(void)
     VBAT__SRAM->CTRL = ctrl;
     VBAT__SRAM->CTRL = ctrl | SRAM_CTRL_PWR_MODE(4U); /* SHUTDOWN_POWER_UP (SD PU) */
     VBAT__SRAM->CTRL = ctrl | SRAM_CTRL_PWR_MODE(6U); /* ACTIVE (ACT)              */
+}
+
+/*
+ * VBATCON GPR[0] / GPR[1] boot-context markers (see app.h). VBATCON_GPR_COUNT
+ * on this device is 2, so both markers fit in the array; VBATCON_Init/Deinit
+ * never touch GPRs, and the VBAT domain is always powered, so both survive
+ * every Power Down / Deep Power Down PoR.
+ */
+#define BOARD_VBAT_GPR_DPD_VARIANT   0U
+#define BOARD_VBAT_GPR_ENABLED_WAKEUP 1U
+
+void BOARD_SetDpdVariantMarker(uint32_t variant)
+{
+    VBATCON_WriteGPR(VBAT__VBATCON, BOARD_VBAT_GPR_DPD_VARIANT, variant);
+}
+
+uint32_t BOARD_GetAndClearDpdVariantMarker(void)
+{
+    uint32_t variant = VBATCON_ReadGPR(VBAT__VBATCON, BOARD_VBAT_GPR_DPD_VARIANT);
+    VBATCON_WriteGPR(VBAT__VBATCON, BOARD_VBAT_GPR_DPD_VARIANT, BOARD_DPD_VARIANT_DPD2);
+    return variant;
+}
+
+void BOARD_SetEnabledWakeupMarker(uint8_t wakeupSrc)
+{
+    VBATCON_WriteGPR(VBAT__VBATCON, BOARD_VBAT_GPR_ENABLED_WAKEUP, (uint32_t)wakeupSrc);
+}
+
+uint8_t BOARD_GetAndClearEnabledWakeupMarker(void)
+{
+    uint32_t wakeupSrc = VBATCON_ReadGPR(VBAT__VBATCON, BOARD_VBAT_GPR_ENABLED_WAKEUP);
+    VBATCON_WriteGPR(VBAT__VBATCON, BOARD_VBAT_GPR_ENABLED_WAKEUP, 0xFFU);
+    return (uint8_t)wakeupSrc;
 }
 
 #if MCUX_POWER_PF9453_SUPPLY
@@ -121,21 +155,11 @@ void BOARD_InitHardware(void)
      * Debug Console init. */
     BOARD_CommonSetting();
     BOARD_ResetMPU();
-    /*
-     * Mux the two wakeup-button pads to their GPIO functions with input buffers
-     * enabled: PIO0_4 -> VBAT_GPIO (SW5, 250k pulldown) and PIO1_0 -> WAKE_GPIO
-     * (SW6).  Without this the GPIO peripheral never sees the button edge, so no
-     * wakeup interrupt fires in any mode.
-     */
-    BOARD_InitBUTTONsPins();
-    /*
-     * SW6 (PIO1_0 = WAKE_SS_BTN) is active-low: per the board schematic SW6 is
-     * SPST-NO and shorts the pad to GND on press, and its external pull-up R49
-     * (100K) is DNP (unpopulated).  An MCU internal pull-up is therefore
-     * mandatory.  The pin tool leaves this pad with no pull (0x80), so override
-     * it with a pullup (0xA0): idle 1, press 0 -> falling edge, caught by the
-     * either-edge arm.  (SW5 = PIO0_4 is the opposite: active-high, 0xD0 pulldown.)
-     */
+    
+    IOMUXC_SetPin_Mux_Config(
+     IOMUXC_PIO0_4_VBAT_GPIO0_GPIO4,
+      0xD0U);
+
     IOMUXC_SetPin_Mux_Config(IOMUXC_PIO1_0_WAKE_GPIO0_GPIO0, 0xA0U);
 
     /* Configure both wakeup buttons as GPIO inputs (SW5 = VBAT pin 4,
@@ -147,22 +171,9 @@ void BOARD_InitHardware(void)
     GPIO_PinInit(BOARD_USER_BUTTON_GPIO, BOARD_USER_BUTTON_GPIO_PIN, &btnConfig);
     GPIO_PinInit(BOARD_USER_BUTTON_6_GPIO, BOARD_USER_BUTTON_6_GPIO_PIN, &btnConfig);
 
-    /* Power up the VBAT retention SRAM to ACTIVE (usable + retained across DPD1). */
-    BOARD_InitVbatSram();
-
-    /* TODO: 0x50008810 is in the MAIN MODCON region (base 0x50000000); its exact
-     * function is unidentified.  Left as-is from earlier bring-up - confirm
-     * against the RM and remove/replace with a named register if not required. */
-    *(volatile uint32_t *)0x50008810u = 0x1;
-
-    /*
-     * Initialise the power driver from the shared-example config literals (s_powerInitCfg /
-     * s_topologyCfg, defined in power_mode_switch.h). Done as the final board bring-up step so the
-     * clock tree, pins, and (when enabled) the PMIC transport are all up first. (The PMIC handle
-     * itself was already created by POWER_InitExtSupply above; POWER_Init does the POWERCON/PDCON/
-     * topology setup.) To customise for a non-reference board, edit those literals in
-     * power_mode_switch.h.
-     */
-    POWER_Init(&s_powerInitCfg);
+    power_init_config_t boardPowerInitCfg;
+    POWER_GetDefaultInitConfig(&boardPowerInitCfg);
+    boardPowerInitCfg.handshakeRouting = &s_handshakeRoutingCfg;
+    POWER_Init(&boardPowerInitCfg);
 }
 /*${function:end}*/

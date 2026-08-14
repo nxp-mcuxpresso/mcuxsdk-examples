@@ -75,7 +75,7 @@ typedef union
  *
  * APP_EnterLowPower() runs one common flow for every mode; this descriptor
  * supplies only the flags and log notes that differ.  The config build and the
- * matching POWER_Enter*() are handled by APP_BuildConfig() / APP_EnterConfig()
+ * matching POWER_Enter*() are handled by APP_BuildConfig() / APP_EnterLowPowerWithCfg()
  * (switch on lpType) in power_mode_switch.c - the config struct type varies per
  * mode, so that per-type code lives in those two helpers rather than the table.
  */
@@ -535,7 +535,7 @@ typedef enum _app_lpcg_mode
  *   (used in power_mode_cell_t.hskSel for CSRCCFG / RCGCFG resources).
  *
  * Each CMC arg: 1 = include this CMC in the handshake, 0 = exclude.
- * RT2660 reference topology: CMC0 = COMPUTE/MAIN, CMC1 = WAKE, CMC2 = COMM.
+ * RT2660 reference handshake routing: CMC0 = COMPUTE/MAIN, CMC1 = WAKE, CMC2 = COMM.
  * Default reference value: APP_HSKSEL(1,1,1) = 0x7U (all three CMCs).
  */
 #define APP_HSKSEL(cmc0, cmc1, cmc2) \
@@ -550,7 +550,7 @@ typedef struct
                                       *   Built with APP_HSKSEL(cmc0,cmc1,cmc2).
                                       *   Selects which CMC instance(s) drive the clock-gate
                                       *   handshake for this LPCG during low-power transitions.
-                                      *   Must match the routing in power_topology_config_t. */
+                                      *   Must match the routing in power_handshake_routing_config_t. */
     bool            bypassHandshake; /*!< If true, sets CCM_SLICE_CONTROL_HSK_BYPASS (bit 8) to bypass
                                       *   the CMC clock-gate handshake for this LPCG.
                                       *   Set to true ONLY for early bring-up when the downstream CMC
@@ -570,9 +570,9 @@ typedef struct
  *
  * hskSel (third field): CCM_SLICE_CONTROL HSK_SEL value (bits[18:16]),
  * built with APP_HSKSEL(cmc0,cmc1,cmc2).  Must match the CMC routing
- * configured in power_topology_config_t.  All entries below use
- * APP_HSKSEL(1,1,1) (= 0x7, all three CMCs - reference topology).
- * Update individual entries when using a non-default topology.
+ * configured in power_handshake_routing_config_t.  All entries below use
+ * APP_HSKSEL(1,1,1) (= 0x7, all three CMCs - reference handshake routing).
+ * Update individual entries when using non-default handshake routing.
  *
  * bypassHandshake (fourth field): set to true to also write
  * CCM_SLICE_CONTROL_HSK_BYPASS (bit 8), bypassing the clock-gate handshake.
@@ -762,16 +762,16 @@ static const app_lpcg_config_t APP_LPCG_TABLE[] = {
  * @defgroup app_power_init Power init configuration
  * @{
  *
- * Module-scope power init and topology config instances.
+ * Module-scope power init and handshake routing config instances.
  *
  * Both are defined here as literal designated initializers - the values
- * mirror POWER_GetDefaultInitConfig() / POWER_GetDefaultTopologyConfig()
+ * mirror POWER_GetDefaultInitConfig() / POWER_GetDefaultHandshakeRoutingConfig()
  * (POR-default behavior) but are exposed in one editable location so that
  * a board / use case can tune fields directly without overriding at run
  * time inside main().
  *
- * To customise topology for a non-reference board design, edit the
- * matching field of @ref s_topologyCfg below.  Remember to update the
+ * To customise handshake routing for a non-reference board design, edit the
+ * matching field of @ref s_handshakeRoutingCfg below.  Remember to update the
  * hskSel field of every affected APP_LPCG_TABLE entry so that
  * CCM SLICE_CONTROL.HSK_SEL stays in sync.
  *
@@ -780,31 +780,13 @@ static const app_lpcg_config_t APP_LPCG_TABLE[] = {
  * Count-mode timing instead of Handshake.
  */
 
-/*! POR-default per-step config used by every CMC and SSC step below. */
-#define APP_POWER_STEP_DEFAULT                       \
-    {                                                \
-        .sleepMode  = kPOWER_StepModeHandshake,      \
-        .wakeupMode = kPOWER_StepModeHandshake,      \
-        .countValue = 0U,                            \
-    }
-
-/*! POR-default 5-step config used by every CMC instance below. */
-#define APP_POWER_CMC_STEP_DEFAULT                   \
-    {                                                \
-        .busMasterLpcg = APP_POWER_STEP_DEFAULT,     \
-        .busSlaveLpcg  = APP_POWER_STEP_DEFAULT,     \
-        .rootClockGate = APP_POWER_STEP_DEFAULT,     \
-        .clockSource   = APP_POWER_STEP_DEFAULT,     \
-        .powerDomain   = APP_POWER_STEP_DEFAULT,     \
-    }
-
 /*!
- * @brief SoC topology - HSK_SEL routing and PDCON per-domain handshake mask.
+ * @brief SoC handshake routing - HSK_SEL routing and PDCON per-domain handshake mask.
  *
  * rcgcfgHskSel / csrccfgHskSel / csrccfgHskSel1 = 0x11111111 / 0x11111111 /
  * 0x1 routes every root clock and clock source to CMC0 only (this example).
  * Use 0x77777777 / 0x77777777 / 0x7 to route to all three CMCs (CMC0 CPU,
- * CMC1 MAIN, CMC2 WAKE) - the RT2660 reference topology.
+ * CMC1 MAIN, CMC2 WAKE) - the RT2660 reference handshake routing.
  *
  * domainHsk[] = kPDCON_HandshakeAll for all 6 domains means every PDCON
  * domain transition handshakes with all units.
@@ -815,7 +797,7 @@ static const app_lpcg_config_t APP_LPCG_TABLE[] = {
  * single TU that includes it (power_mode_switch.c); BOARD_InitHardware() references it via the
  * `extern` declaration in the board app.h to run POWER_Init().
  */
-power_topology_config_t s_topologyCfg = {
+power_handshake_routing_config_t s_handshakeRoutingCfg = {
     .rcgcfgHskSel   = 0x11111111UL, /*!< Root clock -> CMC routing (all roots -> CMC0 only)        */
     .csrccfgHskSel  = 0x11111111UL, /*!< Clock source -> CMC routing word 0 (all sources -> CMC0)  */
     .csrccfgHskSel1 = 0x1UL,        /*!< Clock source -> CMC routing word 1 (FRO12M_LP -> CMC0)    */
@@ -829,28 +811,6 @@ power_topology_config_t s_topologyCfg = {
     },
 };
 
-/*!
- * @brief Power init config passed to POWER_Init().
- *
- * cmcCpu / cmcMain / cmcWake use the all-Handshake default for the 5
- * CMC steps.  sscPmu / sscPmic likewise use Handshake for both the
- * sleep and wakeup directions.  Override individual step fields if a
- * build needs Count-mode timing on a specific CMC step.
- *
- * topology points at @ref s_topologyCfg above; replace with NULL to fall
- * back to driver-internal POR defaults (skipping any field edits above).
- *
- * External linkage (see s_topologyCfg note): defined here, instantiated in power_mode_switch.c,
- * consumed by BOARD_InitHardware() through the board app.h `extern` declaration.
- */
-power_init_config_t s_powerInitCfg = {
-    .cmcCpu   = APP_POWER_CMC_STEP_DEFAULT, /*!< CMC0 - CPU / M85 core (COMPUTE_SS)             */
-    .cmcMain  = APP_POWER_CMC_STEP_DEFAULT, /*!< CMC1 - MAIN domain (eDMA3 + eDMA5 DMA wakeup)  */
-    .cmcWake  = APP_POWER_CMC_STEP_DEFAULT, /*!< CMC2 - WAKE domain (eDMA3 DMA wakeup)          */
-    .sscPmu   = APP_POWER_STEP_DEFAULT,     /*!< SSC STEP1 - PMU standby/exit via P-Channel     */
-    .sscPmic  = APP_POWER_STEP_DEFAULT,     /*!< SSC STEP2 - PMIC standby/exit                  */
-    .topology = &s_topologyCfg,             /*!< Apply topology literal above (NULL = POR HW)  */
-};
 /*! @} */
 
 /*******************************************************************************
@@ -968,13 +928,13 @@ typedef struct
                        *   Built with APP_HSKSEL(cmc0,cmc1,cmc2).  Only meaningful for
                        *   kPOWER_Resource_Clk* (CSRCCFG) and kPOWER_Resource_Rcg*
                        *   (RCGCFG) rows; ignored for all other resource types.
-                       *   Used by APP_ApplyTopologyForMode() to call POWER_SetTopology()
+                       *   Used by APP_ApplyHandshakeRoutingForMode() to call POWER_SetHandshakeRouting()
                        *   with the correct per-mode CMC routing before mode entry. */
 } power_mode_cell_t;
 
 /* Cell constructor macros - used only inside the table below; undefined after. */
 #define _NC_      { false, 0U, 0U }               /*!< NOT_CONFIGURABLE. */
-#define _C(v)     { true, (uint32_t)(v), 0U }     /*!< Configurable; no topology role (hskSel=0 = not a CSRCCFG/RCGCFG resource). */
+#define _C(v)     { true, (uint32_t)(v), 0U }     /*!< Configurable; no handshake-routing role (hskSel=0 = not a CSRCCFG/RCGCFG resource). */
 #define _CT(v,h)  { true, (uint32_t)(v), (uint8_t)(h) } /*!< Configurable with explicit CMC routing via APP_HSKSEL(cmc0,cmc1,cmc2). */
                                                          /*!< Use _CT for all kPOWER_Resource_Clk* and kPOWER_Resource_Rcg* rows    */
                                                          /*!< so per-resource CMC routing is visible in the table.                  */

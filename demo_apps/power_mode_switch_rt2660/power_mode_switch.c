@@ -77,7 +77,9 @@ static void           APP_WaitTxDone(void);
 static void APP_EnterLowPowerRun(void);
 
 /* Flat top-level menu + wakeup-source sub-menu */
+#if APP_PRINT_MEASURED_CLOCKS
 static void           APP_PrintMeasuredClocks(void);
+#endif
 static void           APP_PrintTopMenu(void);
 static uint8_t        APP_ReadMenuSelection(void);
 static void           APP_PrintModeResources(uint8_t lpType, uint8_t wakeupSrc);
@@ -98,8 +100,8 @@ static void APP_BuildDeepSleepConfig(app_standby_mode_idx_t modeIdx, power_deep_
 static void APP_BuildPowerDownConfig(power_down_config_t *cfg);
 static void APP_BuildDeepPowerDownConfig(uint8_t lpType, power_deep_power_down_config_t *cfg);
 
-/* Topology builder - extracts hskSel from g_powerModeTable and calls POWER_SetTopology */
-static void APP_ApplyTopologyForMode(app_standby_mode_idx_t modeIdx);
+/* Handshake-routing builder - extracts hskSel from g_powerModeTable and calls POWER_SetHandshakeRouting */
+static void APP_ApplyHandshakeRoutingForMode(app_standby_mode_idx_t modeIdx);
 
 /*******************************************************************************
  * IRQ Handlers
@@ -191,8 +193,13 @@ void APP_WAKE_EDMA_IRQ_HANDLER(void)
  * out of DPD when the VBAT LPTMR / RTC source was reused. Doing it once at boot,
  * keyed off the reset cause, is cleaner than clearing defensively in each source's
  * arm path.
+ *
+ * @return true if this boot was a Deep Power Down wake (DPD1 or DPD2 - the reset
+ *         source does not distinguish the two); false otherwise (Power Down wake or
+ *         a cold / non-low-power reset). Callers use this to gate DPD1-only recovery
+ *         steps such as the VBAT_SRAM retention check below.
  ******************************************************************************/
-static void APP_HandleWakeupAfterReset(void)
+static bool APP_HandleWakeupAfterReset(void)
 {
     uint32_t rst     = RESETCON_GetResetStatus(SYSCON__RESETCON);
     bool     fromDpd = (rst & (uint32_t)kRESETCON_SrcWuVbat) != 0U;
@@ -200,18 +207,29 @@ static void APP_HandleWakeupAfterReset(void)
 
     if (!fromDpd && !fromPd)
     {
-        return; /* Cold / non-low-power reset: nothing latched to acknowledge. */
+        return false; /* Cold / non-low-power reset: nothing latched to acknowledge. */
     }
 
     PRINTF("Boot from %s wakeup (RSTSTAT=0x%08X)\r\n",
            fromDpd ? "Deep Power Down" : "Power Down", (unsigned int)rst);
+
+    /* Which source was actually enabled for this entry (recorded in a VBATCON GPR
+     * just before POWER_Enter*() - see APP_SetWakeup()). Needed because the LPTMR
+     * and RTC status flags below are independent latches: if the OTHER source's
+     * flag was left set from an earlier returning-mode test (Sleep/DS do not
+     * reboot, so this function never ran to clear it), both would otherwise be
+     * reported as "the" wakeup reason even though only one actually fired. */
+    uint8_t enabledSrc = BOARD_GetAndClearEnabledWakeupMarker();
 
     /* VBAT LPTMR compare flag. Ungate its clock first so the register read is safe
      * even if this wake was not the LPTMR (VBATCON is retained, so this is cheap). */
     VBATCON_EnableLPTMRClockGate(VBAT__VBATCON, false);
     if ((LPTMR_GetStatusFlags(APP_VBAT_LPTMR_BASE) & (uint32_t)kLPTMR_TimerCompareFlag) != 0U)
     {
-        PRINTF("  wakeup reason: VBAT LPTMR\r\n");
+        if (enabledSrc == APP_WAKEUP_LPTMR)
+        {
+            PRINTF("  wakeup reason: VBAT LPTMR\r\n");
+        }
         LPTMR_ClearStatusFlags(APP_VBAT_LPTMR_BASE, kLPTMR_TimerCompareFlag);
         LPTMR_StopTimer(APP_VBAT_LPTMR_BASE);
     }
@@ -220,7 +238,10 @@ static void APP_HandleWakeupAfterReset(void)
     uint32_t rtcFlags = IRTC_GetStatusFlags(APP_RTC_BASE);
     if (rtcFlags != 0U)
     {
-        PRINTF("  wakeup reason: RTC alarm\r\n");
+        if (enabledSrc == APP_WAKEUP_RTC)
+        {
+            PRINTF("  wakeup reason: RTC alarm\r\n");
+        }
         IRTC_SetWriteProtection(APP_RTC_BASE, false);
         IRTC_ClearStatusFlags(APP_RTC_BASE, rtcFlags);
     }
@@ -233,15 +254,18 @@ static void APP_HandleWakeupAfterReset(void)
     PRINTF("  VBATCON EVENTS=0x%08X\r\n", (unsigned int)VBAT__VBATCON->EVENTS);
     VBATCON_ClearEventFlags(VBAT__VBATCON, (uint32_t)kVBATCON_EventAll);
     RESETCON_ClearStickyResetStatus(SYSCON__RESETCON, (uint32_t)kRESETCON_SrcAll);
+    return fromDpd;
 }
 
 /*******************************************************************************
- * VBAT_SRAM retention self-check (DPD1 retains, DPD2 does not)
+ * VBAT_SRAM retention self-check (DPD1 only)
  *
- * DPD wake is a PoR, so retention is verified across the reset: arm a marker +
- * pattern in VBAT_SRAM (0x4630_0000..0x4630_FFFF) just before entering DPD, then
- * report on the next boot. DPD1 keeps VDD_PMU so the marker survives; DPD2 removes
- * VDD_PMU (and POWER_ShutdownVbatSram() powers the SRAM down), so it is lost.
+ * DPD1 wake is a PoR, so retention is verified across the reset: arm a marker +
+ * pattern in VBAT_SRAM (0x4630_0000..0x4630_FFFF) just before entering DPD1, then
+ * report on the next boot. DPD1 keeps VDD_PMU so the marker survives. DPD2 removes
+ * VDD_PMU (POWER_ShutdownVbatSram() powers the SRAM down) so it is never armed or
+ * checked for that mode - Sleep/DS/PD do not reset the CPU so main() (and this
+ * check) never re-runs after them.
  *
  * Accessed via the absolute address (not a linker section). This assumes the
  * linker maps NO section into VBAT_SRAM; otherwise C startup (.bss zeroing) would
@@ -252,28 +276,27 @@ static void APP_HandleWakeupAfterReset(void)
 
 static volatile uint32_t *const s_vbatSram = (volatile uint32_t *)APP_VBAT_SRAM_BASE;
 
-/*! @brief Arm the VBAT_SRAM marker + pattern before a DPD entry (variant 1 or 2). */
-static void APP_EnableVbatSram(uint8_t dpdVariant)
+/*! @brief Arm the VBAT_SRAM marker + pattern before a DPD1 entry. */
+static void APP_EnableVbatSram(void)
 {
     s_vbatSram[0] = APP_VBAT_TEST_MAGIC;
-    s_vbatSram[1] = (uint32_t)dpdVariant;
-    for (uint32_t i = 2U; i < 32U; i++)
+    for (uint32_t i = 1U; i < 32U; i++)
     {
         s_vbatSram[i] = 0xC0DE0000UL + i;
     }
 }
 
-/*! @brief On boot, report whether the VBAT_SRAM marker + pattern survived. */
+/*! @brief On boot after a DPD1 wake, report whether the VBAT_SRAM marker + pattern survived. */
 static void APP_VbatSramReport(void)
 {
     if (s_vbatSram[0] != APP_VBAT_TEST_MAGIC)
     {
-        PRINTF("VBAT_SRAM check: no valid marker -> cold boot or NOT retained (expected after DPD2)\r\n");
+        PRINTF("VBAT_SRAM check: no valid marker -> NOT retained\r\n");
         return;
     }
 
     bool ok = true;
-    for (uint32_t i = 2U; i < 32U; i++)
+    for (uint32_t i = 1U; i < 32U; i++)
     {
         if (s_vbatSram[i] != (0xC0DE0000UL + i))
         {
@@ -281,8 +304,7 @@ static void APP_VbatSramReport(void)
             break;
         }
     }
-    PRINTF("VBAT_SRAM check: marker found (armed before DPD%u) -> %s\r\n",
-           (unsigned int)s_vbatSram[1], ok ? "RETAINED (expected after DPD1)" : "CORRUPTED");
+    PRINTF("VBAT_SRAM check: marker found -> %s\r\n", ok ? "RETAINED" : "CORRUPTED");
     /* Consume the marker so a later cold boot is not misreported as retained. */
     s_vbatSram[0] = 0U;
 }
@@ -296,11 +318,11 @@ int main(void)
 
     /*
      * BOARD_InitHardware() brings up the board and, as its final step, runs POWER_Init() on the
-     * shared-example config literals (s_powerInitCfg / s_topologyCfg in power_mode_switch.h). When
+     * shared-example config literals (s_powerInitCfg / s_handshakeRoutingCfg in power_mode_switch.h). When
      * the PF9453 PMIC supply is enabled it also initialises the LPI2C1 transport and fills
      * s_powerInitCfg.extSupply before POWER_Init(). To customise for a non-reference board, edit
      * those literals in power_mode_switch.h; also keep the hskSel field of every affected
-     * APP_LPCG_TABLE entry in sync with s_topologyCfg so CCM SLICE_CONTROL.HSK_SEL matches.
+     * APP_LPCG_TABLE entry in sync with s_handshakeRoutingCfg so CCM SLICE_CONTROL.HSK_SEL matches.
      */
     BOARD_InitHardware();
 
@@ -315,11 +337,19 @@ int main(void)
     /* If this boot is a Power Down / Deep Power Down wake (a PoR), acknowledge and clear
      * the latched VBAT wakeup source so a stale flag does not immediately re-trigger the
      * next low-power entry. */
-    APP_HandleWakeupAfterReset();
+    bool wokeFromDpd = APP_HandleWakeupAfterReset();
 
-    /* VBAT_SRAM retention self-check: report the result of the marker armed before
-     * the previous DPD entry (RETAINED after DPD1, lost after DPD2). */
-    APP_VbatSramReport();
+    /* VBAT_SRAM retention self-check: only meaningful after a DPD1 wake - only DPD1
+     * arms the marker before entry (see APP_EnterLowPowerWithCfg). DPD2 shuts
+     * VBAT__SRAM down before entry and nothing re-powers it before this point, so
+     * touching it here for a DPD2 wake reads a powered-down SRAM array. RESETCON
+     * cannot tell DPD1 apart from DPD2, so consult the VBATCON GPR marker written
+     * just before entry instead. Skipped entirely after Sleep/DS/PD wake or a cold
+     * boot (wokeFromDpd covers both). */
+    if (wokeFromDpd && (BOARD_GetAndClearDpdVariantMarker() == BOARD_DPD_VARIANT_DPD1))
+    {
+        APP_VbatSramReport();
+    }
 
     /* Enable all peripheral LPCGs per the load-test table (REQ-008).
      * In production, replace kAPP_LpcgModeOn with the desired gating policy
@@ -632,6 +662,11 @@ static void APP_SetWakeup(uint8_t src, bool enable)
     {
         POWER_ClearAllWakeupSources();
         APP_SetWakeupSource(src, true);
+        /* Record which source was enabled in a VBATCON GPR (survives PD/DPD PoR).
+         * APP_HandleWakeupAfterReset() uses this on the next boot to report the
+         * actual cause instead of whichever of LPTMR/RTC happens to have a
+         * latched status flag - which may be stale from an earlier test. */
+        BOARD_SetEnabledWakeupMarker(src);
     }
     else
     {
@@ -688,18 +723,6 @@ static void APP_EnterLowPowerRun(void)
     CLOCK_SetRootClockMux(kCLOCK_Root_CGU_AUDIOBUS_ROOTCLK, kCLOCK_AUDIOBUS_ClockRoot_BASE);
     CLOCK_SetRootClockMux(kCLOCK_Root_CGU_COMMBUS_ROOTCLK,  kCLOCK_COMMBUS_ClockRoot_BASE);
     CLOCK_SetRootClockMux(kCLOCK_Root_CGU_WAKEBUS_ROOTCLK,  kCLOCK_WAKEBUS_ClockRoot_LOW);
-    /* Gate CorePLL CPU and buses no longer need it. */
-    CLOCK_DeinitCorePll();
-    /* Gate every non-DIV4 MAINPLL/SYSPLL DIV root clock in software.  These are
-     * separately SW-managed (POWERCON only restores the combined PLL+DIV4 on
-     * wake) and are unused in LP Run.  SYSPLLDIV4 is left ON (XSPI Flash). */
-    CLOCK_PowerOffRootClock(kCLOCK_Root_CGU_MAINPLLDIVX_ROOTCLK);
-    CLOCK_PowerOffRootClock(kCLOCK_Root_CGU_MAINPLLDIV8_ROOTCLK);
-    CLOCK_PowerOffRootClock(kCLOCK_Root_CGU_MAINPLLDIV10_ROOTCLK);
-    CLOCK_PowerOffRootClock(kCLOCK_Root_CGU_MAINPLLDIV20_ROOTCLK);
-    CLOCK_PowerOffRootClock(kCLOCK_Root_CGU_SYSPLLDIV5_ROOTCLK);
-    CLOCK_PowerOffRootClock(kCLOCK_Root_CGU_SYSPLLDIVX_ROOTCLK);
-    /* SYSPLLDIV4_ROOTCLK stays ON XSPI Flash: SYSPLL_DIV4/2 = 250 MHz. */
 }
 
 /*******************************************************************************
@@ -994,16 +1017,16 @@ static void APP_ApplyDmaDeepSleepOverrides(uint8_t lpType, power_deep_sleep_conf
  *          2 = csrccfgHskSel1
  * shift:   nibble-aligned bit offset of the 3-bit HSK_SEL field (0,4,8,...28).
  *
- * Non-topology resources have {0,0} (zero-initialized); they are never
+ * Non-handshake-routing resources have {0,0} (zero-initialized); they are never
  * accessed because their power_mode_cell_t.hskSel is always 0.
  */
 typedef struct
 {
     uint8_t regIdx; /*!< POWERCON HSK_SEL register index: 0=rcgcfg, 1=csrccfg, 2=csrccfg1 */
     uint8_t shift;  /*!< Nibble-aligned bit offset of the 3-bit HSK_SEL field (0,4,...28). */
-} app_topo_field_t;
+} app_hsk_field_t;
 
-static const app_topo_field_t s_topoFieldMap[kPOWER_Resource_COUNT] = {
+static const app_hsk_field_t s_hskFieldMap[kPOWER_Resource_COUNT] = {
     /* CSRCCFG_HSK_SEL (regIdx=1) */
     [kPOWER_Resource_ClkLdoa0V8]  = { 1U,  0U },
     [kPOWER_Resource_ClkFro192M]  = { 1U,  4U },
@@ -1027,50 +1050,50 @@ static const app_topo_field_t s_topoFieldMap[kPOWER_Resource_COUNT] = {
 };
 
 /*!
- * @brief Build a power_topology_config_t from the hskSel fields of g_powerModeTable.
+ * @brief Build a power_handshake_routing_config_t from the hskSel fields of g_powerModeTable.
  *
  * @param modeIdx  Column index in g_powerModeTable (Sleep, DS1_Irq, DS1_Dma, ..., PD, DPD).
- * @param topo     Output topology config struct.  Must not be NULL.
+ * @param routing  Output handshake routing config struct.  Must not be NULL.
  */
-static void APP_BuildTopologyConfig(app_standby_mode_idx_t modeIdx,
-                                    power_topology_config_t *topo)
+static void APP_BuildHandshakeRoutingConfig(app_standby_mode_idx_t modeIdx,
+                                    power_handshake_routing_config_t *routing)
 {
     uint32_t r;
     uint32_t *regs[3];
-    assert(topo != NULL);
-    POWER_GetDefaultTopologyConfig(topo);
+    assert(routing != NULL);
+    POWER_GetDefaultHandshakeRoutingConfig(routing);
 
-    regs[0] = &topo->rcgcfgHskSel;
-    regs[1] = &topo->csrccfgHskSel;
-    regs[2] = &topo->csrccfgHskSel1;
+    regs[0] = &routing->rcgcfgHskSel;
+    regs[1] = &routing->csrccfgHskSel;
+    regs[2] = &routing->csrccfgHskSel1;
 
     for (r = 0U; r < (uint32_t)kPOWER_Resource_COUNT; r++)
     {
         const power_mode_cell_t *cell = &g_powerModeTable[r][(uint32_t)modeIdx];
         if (!cell->valid || (cell->hskSel == 0U))
         {
-            continue; /* not a topology resource or not configured for this mode */
+            continue; /* not a handshake-routing resource or not configured for this mode */
         }
-        const app_topo_field_t *f = &s_topoFieldMap[r];
+        const app_hsk_field_t *f = &s_hskFieldMap[r];
         *regs[f->regIdx] = (*regs[f->regIdx] & ~(0x7UL << f->shift))
                          | ((uint32_t)cell->hskSel << f->shift);
     }
 }
 
 /*!
- * @brief Apply POWERCON topology for the given mode before calling POWER_Enter*().
+ * @brief Apply POWERCON handshake routing for the given mode before calling POWER_Enter*().
  *
- * Builds a power_topology_config_t from the hskSel fields of g_powerModeTable
- * for @p modeIdx and writes it to hardware via POWER_SetTopology().  Must be
+ * Builds a power_handshake_routing_config_t from the hskSel fields of g_powerModeTable
+ * for @p modeIdx and writes it to hardware via POWER_SetHandshakeRouting().  Must be
  * called after APP_Build*Config() and before POWER_Enter*().
  *
  * @param modeIdx  Standby mode column (kAPP_StandbyModeIdx_Sleep, etc.).
  */
-static void APP_ApplyTopologyForMode(app_standby_mode_idx_t modeIdx)
+static void APP_ApplyHandshakeRoutingForMode(app_standby_mode_idx_t modeIdx)
 {
-    power_topology_config_t topo;
-    APP_BuildTopologyConfig(modeIdx, &topo);
-    POWER_SetTopology(&topo);
+    power_handshake_routing_config_t routing;
+    APP_BuildHandshakeRoutingConfig(modeIdx, &routing);
+    POWER_SetHandshakeRouting(&routing);
 }
 
 /*!
@@ -1132,7 +1155,7 @@ static const app_lp_run_cfg_t s_lpRunCfg[] = {
 };
 
 /*!
- * @brief Resolve the g_powerModeTable / topology column for (lpType, wakeupSrc).
+ * @brief Resolve the g_powerModeTable / handshake-routing column for (lpType, wakeupSrc).
  *
  * Only Sleep and the Deep Sleep variants are table columns. Power Down / Deep Power
  * Down are not columns and must not be resolved through this helper.
@@ -1188,7 +1211,7 @@ static void APP_BuildConfig(uint8_t lpType, uint8_t wakeupSrc, app_lp_cfg_t *cfg
  * Enter the low power mode for lpType (the matching POWER_Enter*() only, on the
  * pre-built config).  Power Down and Deep Power Down do not return.
  */
-static void APP_EnterConfig(uint8_t lpType, app_lp_cfg_t *cfg)
+static void APP_EnterLowPowerWithCfg(uint8_t lpType, app_lp_cfg_t *cfg)
 {
     switch (lpType)
     {
@@ -1204,10 +1227,16 @@ static void APP_EnterConfig(uint8_t lpType, app_lp_cfg_t *cfg)
             POWER_EnterPowerDown(&cfg->powerDown); /* does not return */
             break;
         case APP_LP_DPD1:
+            /* VBAT_SRAM retention test is DPD1-only: DPD2 removes VDD_PMU and the SRAM
+             * is powered down by POWER_EnterDeepPowerDown() (retainVbatSram == false), so
+             * there is nothing to arm or later check for DPD2. */
+            BOARD_InitVbatSram();
+            APP_EnableVbatSram();
+            BOARD_SetDpdVariantMarker(BOARD_DPD_VARIANT_DPD1);
+            POWER_EnterDeepPowerDown(&cfg->deepPowerDown); /* does not return */
+            break;
         case APP_LP_DPD2:
-            /* Enable the VBAT_SRAM retention marker just before entry; the next boot
-             * reports whether it survived (RETAINED after DPD1, lost after DPD2). */
-            APP_EnableVbatSram((lpType == APP_LP_DPD2) ? 2U : 1U);
+            BOARD_SetDpdVariantMarker(BOARD_DPD_VARIANT_DPD2);
             POWER_EnterDeepPowerDown(&cfg->deepPowerDown); /* does not return */
             break;
         default:
@@ -1219,9 +1248,9 @@ static void APP_EnterConfig(uint8_t lpType, app_lp_cfg_t *cfg)
  * @brief Low-power target handler (Sleep / DS / PD / DPD).
  *
  * The whole low-power path in one linear function: preview the mode's resources,
- * pick a wakeup source, then the common entry flow - apply topology (setup) ->
- * log -> APP_BuildConfig(&cfg) -> arm wakeup (last) -> APP_EnterConfig(&cfg) -> on
- * wake, tear down and restore.  APP_BuildConfig() fills the config; APP_EnterConfig()
+ * pick a wakeup source, then the common entry flow - apply handshake routing (setup) ->
+ * log -> APP_BuildConfig(&cfg) -> arm wakeup (last) -> APP_EnterLowPowerWithCfg(&cfg) -> ona
+ * wake, tear down and restore.  APP_BuildConfig() fills the config; APP_EnterLowPowerWithCfg()
  * does ONLY POWER_Enter*(); the arm sits between them (build before arm, arm
  * immediately before entry).  Per-mode flags/notes come from APP_LP_SEQ[lpType];
  * run mode switches from s_lpRunCfg[].  Power Down / Deep Power Down do not return,
@@ -1251,17 +1280,17 @@ static void APP_EnterLowPower(const app_target_t *t)
         APP_SwitchRunMode(s_lpRunCfg[lpType].preMode);
     }
 
-    /* Topology: Sleep / Deep Sleep derive routing from their g_powerModeTable column;
-     * Power Down / Deep Power Down have no standby routing, so apply the default topology. */
+    /* Handshake routing: Sleep / Deep Sleep derive routing from their g_powerModeTable column;
+     * Power Down / Deep Power Down have no standby routing, so apply the default routing. */
     if ((lpType == APP_LP_PD) || (lpType == APP_LP_DPD1) || (lpType == APP_LP_DPD2))
     {
-        power_topology_config_t topo;
-        POWER_GetDefaultTopologyConfig(&topo);
-        POWER_SetTopology(&topo);
+        power_handshake_routing_config_t routing;
+        POWER_GetDefaultHandshakeRoutingConfig(&routing);
+        POWER_SetHandshakeRouting(&routing);
     }
     else
     {
-        APP_ApplyTopologyForMode((app_standby_mode_idx_t)APP_StandbyIdx(lpType, wakeupSrc));
+        APP_ApplyHandshakeRoutingForMode((app_standby_mode_idx_t)APP_StandbyIdx(lpType, wakeupSrc));
     }
     /* Build the entry config now (fills cfg from g_powerModeTable + inlined PD/DPD
      * retention), then preview the ACTUAL resolved resource state while the console is
@@ -1283,7 +1312,7 @@ static void APP_EnterLowPower(const app_target_t *t)
     }
     /* Arm the wakeup source last, immediately before entry. */
     APP_SetWakeup(wakeupSrc, true);
-    APP_EnterConfig(lpType, &cfg); /* Power Down / Deep Power Down do NOT return */
+    APP_EnterLowPowerWithCfg(lpType, &cfg); /* Power Down / Deep Power Down do NOT return */
 
     /* --- Returning modes (Sleep / Deep Sleep) resume here. --- */
     if (seq->deinitConsole)
@@ -1319,7 +1348,7 @@ static void APP_EnterLowPower(const app_target_t *t)
  * Flat top-level menu
  ******************************************************************************/
 
-
+#if APP_PRINT_MEASURED_CLOCKS
 /*!
  * @brief Print the FREQMEAS-measured frequency (MHz) of every clock root and
  * every clock source using CLOCK_MeasureRootClockFreq()/CLOCK_MeasureClockSrcFreq().
@@ -1366,6 +1395,7 @@ static void APP_PrintMeasuredClocks(void)
     }
     PRINTF("--------------------------------------------------------------\r\n");
 }
+#endif
 
 /*!
  * @brief Print the flat top-level menu - one entry per supported mode.
@@ -1377,7 +1407,9 @@ static void APP_PrintTopMenu(void)
     PRINTF("==============================================\r\n");
     PRINTF("   RT2660 Power Mode Switch Demo\r\n");
     PRINTF("   Current mode: %s\r\n", APP_RUN_MODE_NAMES[POWER_GetCurrentRunMode()]);
+#if APP_PRINT_MEASURED_CLOCKS
     APP_PrintMeasuredClocks();
+#endif
     PRINTF("==============================================\r\n");
     for (i = 0U; i < APP_TARGET_COUNT; i++)
     {

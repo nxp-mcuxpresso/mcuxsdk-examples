@@ -121,14 +121,38 @@
 /* OCRAM0 retention size for Power Down (kilobytes, 0-64). */
 #define APP_PD_OCRAM0_KB        64U
 
+#define APP_PRINT_MEASURED_CLOCKS 0
+
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
 void BOARD_InitHardware(void);
 
+/* Brings VBAT__SRAM to ACTIVE (RAM_RD/WR_EN + SD -> SD_PU -> ACT). Defined in
+ * hardware_init.c; called from the DPD1 entry path in power_mode_switch.c just
+ * before arming the retention marker. */
+void BOARD_InitVbatSram(void);
+
+/*
+ * Persistent boot-context markers stored in VBATCON GPRs. VBATCON is in the
+ * always-on VBAT domain, so its GPRs survive every Power Down / Deep Power Down
+ * PoR - including DPD2, where VBAT__SRAM itself is powered down and unsafe to
+ * touch. RESETCON's reset-status bits cannot tell DPD1 apart from DPD2, or which
+ * wakeup source was actually enabled for a given entry; these markers close that
+ * gap. Written just before a non-returning POWER_Enter*() call in
+ * power_mode_switch.c and consumed (read-and-cleared) on the next boot by
+ * APP_HandleWakeupAfterReset() / main(). Defined in hardware_init.c.
+ */
+#define BOARD_DPD_VARIANT_DPD2 0U
+#define BOARD_DPD_VARIANT_DPD1 1U
+
+void     BOARD_SetDpdVariantMarker(uint32_t variant);
+uint32_t BOARD_GetAndClearDpdVariantMarker(void);
+void     BOARD_SetEnabledWakeupMarker(uint8_t wakeupSrc);
+uint8_t  BOARD_GetAndClearEnabledWakeupMarker(void);
+
 /* Power init config defined in the shared example (power_mode_switch.h/.c). BOARD_InitHardware()
  * runs POWER_Init() on this instance as the last bring-up step. */
-extern power_topology_config_t s_topologyCfg;
-extern power_init_config_t s_powerInitCfg;
+extern power_handshake_routing_config_t s_handshakeRoutingCfg;
 
 #endif /* _APP_H_ */
