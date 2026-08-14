@@ -224,8 +224,6 @@ void ADC1_IRQHandler(void)
  */
 void CTIMER0_IRQHandler(void)
 {
-    static int16_t ui16i = 0;
-
     /* M1 Slow StateMachine call */
     SM_StateMachineSlow(&g_sM1Ctrl);
 
