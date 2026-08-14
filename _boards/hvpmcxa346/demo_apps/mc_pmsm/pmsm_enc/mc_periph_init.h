@@ -21,7 +21,7 @@
 #include "fsl_eqdc.h"
 #include "fsl_device_registers.h"
 #include "mcdrv_pwm3ph_epwm.h"
-#include "mcdrv_adc_mcxa20.h"
+#include "mcdrv_adc_mcxa20_hvp.h"
 #include "mcdrv_enc_eqd2.h"
 #include "fsl_clock.h"
 #include "fsl_lpcmp.h"
