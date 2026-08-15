@@ -7,6 +7,10 @@
 #ifndef _APP_H_
 #define _APP_H_
 
+#if defined(__cplusplus)
+extern "C" {
+#endif /* __cplusplus */
+
 #if defined(gAppUseSerialManager_c) && (gAppUseSerialManager_c >= 1)
 #include "fsl_component_serial_manager.h"
 #endif
@@ -139,5 +143,9 @@ void LedStartFlashingAllLeds(void);
 void LedStopFlashingAllLeds(void);
 #endif /*gAppLedCnt_c > 0*/
 /*${prototype:end}*/
+
+#if defined(__cplusplus)
+}
+#endif /* __cplusplus */
 
 #endif /* _APP_H_ */
