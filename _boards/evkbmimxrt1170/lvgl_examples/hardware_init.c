@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 NXP
+ * Copyright 2020, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -14,6 +14,19 @@
 void BOARD_InitHardware(void)
 {
     BOARD_ConfigMPU();
+
+    /*
+     * To improve performance, some LVGL code is copied to cacheable RAM region,
+     * like OCRAM. So clean DCache then invalidate ICache.
+     * M4 doesn't need it, because BOARD_ConfigMPU has done it.
+     */
+#if (__CORTEX_M == 7)
+    SCB_CleanDCache();
+    SCB_InvalidateICache();
+    __DSB();
+    __ISB();
+#endif
+
     BOARD_BootClockRUN();
 
     /*

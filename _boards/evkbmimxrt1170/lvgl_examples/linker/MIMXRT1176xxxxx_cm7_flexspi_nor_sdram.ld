@@ -8,15 +8,15 @@
 **                          MIMXRT1176DVMAB_cm7
 **
 **     Compiler:            GNU C Compiler
-**     Reference manual:    IMXRT1170RM, Rev 1, 02/2021
-**     Version:             rev. 1.1, 2022-04-02
-**     Build:               b250703
+**     Reference manual:    IMXRT1170RM, Rev 5, 12/2025
+**     Version:             rev. 1.2, 2025-11-07
+**     Build:               b260106
 **
 **     Abstract:
 **         Linker file for the GNU C Compiler
 **
 **     Copyright 2016 Freescale Semiconductor, Inc.
-**     Copyright 2016-2025 NXP
+**     Copyright 2016-2026 NXP
 **     SPDX-License-Identifier: BSD-3-Clause
 **
 **     http:                 www.nxp.com
@@ -47,7 +47,7 @@ MEMORY
   m_text                (RX)  : ORIGIN = 0x30002400, LENGTH = TEXT_SIZE
   m_qacode              (RX)  : ORIGIN = 0x00000000, LENGTH = 0x00040000
   m_data                (RW)  : ORIGIN = 0x80000000, LENGTH = DEFINED(__heap_noncacheable__) ? 0x03000000 : 0x03000000 - HEAP_SIZE
-  m_data2               (RW)  : ORIGIN = 0x20000000, LENGTH = 0x002C0000
+  m_data2               (RW)  : ORIGIN = 0x20000000, LENGTH = 0x00040000
   m_data3               (RW)  : ORIGIN = 0x202C0000, LENGTH = 0x00080000
   m_ncache              (RW)  : ORIGIN = 0x83000000, LENGTH = DEFINED(__heap_noncacheable__) ? 0x01000000 - HEAP_SIZE : 0x01000000
   m_heap                (RW)  : ORIGIN = NCACHE_HEAP_START, LENGTH = HEAP_SIZE
@@ -109,8 +109,14 @@ SECTIONS
   .text :
   {
     . = ALIGN(4);
-    *(.text)                 /* .text sections (code) */
-    *(.text*)                /* .text* sections (code) */
+    *(EXCLUDE_FILE(
+      */lv_*.c.obj
+    ) .text )
+
+    *(EXCLUDE_FILE(
+      */lv_*.c.obj
+    ) .text* )
+
     *(.rodata)               /* .rodata sections (constants, strings, etc.) */
     *(.rodata*)              /* .rodata* sections (constants, strings, etc.) */
     *(.glue_7)               /* glue arm to thumb code */
@@ -228,10 +234,11 @@ SECTIONS
   {
     . = ALIGN(32);
     __ram_function_start__ = .;
+    */lv_*.c.obj(.text .text*)
     *(CodeQuickAccess)
     . = ALIGN(128);
     __ram_function_end__ = .;
-  } > m_qacode
+  } > m_data3
 
   __NDATA_ROM = __ram_function_flash_start + (__ram_function_end__ - __ram_function_start__);
   .ncache.init : AT(__NDATA_ROM)

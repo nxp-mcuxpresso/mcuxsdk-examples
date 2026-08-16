@@ -64,11 +64,8 @@ lvgl_demo_benchmark:
     - -mdk@sdram_debug
     - -mdk@sdram_release
     evkbmimxrt1170@cm4:
-    - +armgcc@flexspi_nor_sdram_debug
     - +armgcc@flexspi_nor_sdram_release
-    - +iar@flexspi_nor_sdram_debug
     - +iar@flexspi_nor_sdram_release
-    - +mdk@flexspi_nor_sdram_debug
     - +mdk@flexspi_nor_sdram_release
     - -armgcc@debug
     - -armgcc@flexspi_nor_debug
@@ -89,11 +86,8 @@ lvgl_demo_benchmark:
     - -mdk@sdram_debug
     - -mdk@sdram_release
     evkbmimxrt1170@cm7:
-    - +armgcc@flexspi_nor_sdram_debug
     - +armgcc@flexspi_nor_sdram_release
-    - +iar@flexspi_nor_sdram_debug
     - +iar@flexspi_nor_sdram_release
-    - +mdk@flexspi_nor_sdram_debug
     - +mdk@flexspi_nor_sdram_release
     - -armgcc@debug
     - -armgcc@flexspi_nor_debug
@@ -214,11 +208,8 @@ lvgl_demo_benchmark:
     - -mdk@sdram_debug
     - -mdk@sdram_release
     evkmimxrt1160@cm4:
-    - +armgcc@flexspi_nor_sdram_debug
     - +armgcc@flexspi_nor_sdram_release
-    - +iar@flexspi_nor_sdram_debug
     - +iar@flexspi_nor_sdram_release
-    - +mdk@flexspi_nor_sdram_debug
     - +mdk@flexspi_nor_sdram_release
     - -armgcc@debug
     - -armgcc@flexspi_nor_debug
@@ -239,11 +230,8 @@ lvgl_demo_benchmark:
     - -mdk@sdram_debug
     - -mdk@sdram_release
     evkmimxrt1160@cm7:
-    - +armgcc@flexspi_nor_sdram_debug
     - +armgcc@flexspi_nor_sdram_release
-    - +iar@flexspi_nor_sdram_debug
     - +iar@flexspi_nor_sdram_release
-    - +mdk@flexspi_nor_sdram_debug
     - +mdk@flexspi_nor_sdram_release
     - -armgcc@debug
     - -armgcc@flexspi_nor_debug

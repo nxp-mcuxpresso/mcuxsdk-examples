@@ -9,15 +9,15 @@
 **                          MIMXRT1176DVMAB_cm7
 **
 **     Compiler:            Keil ARM C/C++ Compiler
-**     Reference manual:    IMXRT1170RM, Rev 1, 02/2021
-**     Version:             rev. 1.1, 2022-04-02
-**     Build:               b250703
+**     Reference manual:    IMXRT1170RM, Rev 5, 12/2025
+**     Version:             rev. 1.2, 2025-11-07
+**     Build:               b260106
 **
 **     Abstract:
 **         Linker file for the Keil ARM C/C++ Compiler
 **
 **     Copyright 2016 Freescale Semiconductor, Inc.
-**     Copyright 2016-2025 NXP
+**     Copyright 2016-2026 NXP
 **     SPDX-License-Identifier: BSD-3-Clause
 **
 **     http:                 www.nxp.com
@@ -67,7 +67,7 @@
 #define  m_data_size                   (0x03000000 - m_interrupts_ram_size)
 
 #define m_data2_start                  0x20000000
-#define m_data2_size                   0x002C0000
+#define m_data2_size                   0x00040000
 
 #define m_data3_start                  0x202C0000
 #define m_data3_size                   0x00080000
@@ -129,7 +129,7 @@ LR_m_text m_interrupts_start m_text_start+m_text_size-m_interrupts_start {   ; l
   }
 #endif
   RW_m_data2 m_data2_start m_data2_size {
-    * (RamFunction)
+    * (.ramfunc)
     * (DataQuickAccess)
   }
 #if (defined(__heap_noncacheable__))
@@ -162,8 +162,9 @@ LR_m_text m_interrupts_start m_text_start+m_text_size-m_interrupts_start {   ; l
 #endif
   ARM_LIB_STACK m_data_start+m_data_size EMPTY -Stack_Size { ; Stack region growing down
   }
-  RW_m_ram_text m_qacode_start m_qacode_size { ;
+  RW_m_ram_text m_data3_start m_data3_size { ;
     * (CodeQuickAccess)
+    lv_*.o (+RO-CODE)
   }
 #if (defined(__heap_noncacheable__))
   RW_m_ncache m_ncache_start m_ncache_size - Heap_Size { ; ncache data
