@@ -9,6 +9,7 @@
 #include "fsl_debug_console.h"
 #include "board.h"
 #include "pmic_support.h"
+#include "NeutronDriver.h"
 
 #if defined(__CC_ARM) || defined(__ARMCC_VERSION)
 #elif defined(__ICCARM__)
@@ -53,4 +54,10 @@ void BOARD_Init()
     POWER_DisablePD(kPDRUNCFG_APD_NPU);
     POWER_DisablePD(kPDRUNCFG_PPD_NPU);
     POWER_ApplyPD();
+
+    /* Print Neutron driver version once the NPU is powered up */
+    NeutronSdkVersion sdkVersion = neutronGetSdkVersion();
+    PRINTF("Neutron Software version: %u.%u.%u-%s\r\n",
+           (unsigned int)sdkVersion.major, (unsigned int)sdkVersion.minor, (unsigned int)sdkVersion.patch,
+           sdkVersion.hashString);
 }

@@ -9,6 +9,7 @@
 #include "pin_mux.h"
 #include "fsl_debug_console.h"
 #include "board.h"
+#include "NeutronDriver.h"
 
 void BOARD_Init()
 {
@@ -19,4 +20,10 @@ void BOARD_Init()
     /* Enable caching of flash memory */
     SYSCON->LPCAC_CTRL = SYSCON->LPCAC_CTRL & ~SYSCON_LPCAC_CTRL_DIS_LPCAC_MASK;
     SYSCON->NVM_CTRL = SYSCON->NVM_CTRL & ~SYSCON_NVM_CTRL_DIS_FLASH_DATA_MASK;
+
+    /* Print Neutron driver version */
+    NeutronSdkVersion sdkVersion = neutronGetSdkVersion();
+    PRINTF("Neutron Software version: %u.%u.%u-%s\r\n",
+           (unsigned int)sdkVersion.major, (unsigned int)sdkVersion.minor, (unsigned int)sdkVersion.patch,
+           sdkVersion.hashString);
 }
