@@ -8,5 +8,5 @@ Hardware requirements
 Board settings
 ==============
 - Connect the USB Type-C cable to the FRDM-IMXRT1152 USB debug connector.
-- Use the Gigabit Ethernet RJ45 port (J130).
-- Set J134 to position 1-2 for the shared `ENET_MDIO` / `ETH0_RDATA3` routing.
+- Use the Gigabit Ethernet RJ45 port (J45).
+- Set JP2 to position 1-2.
