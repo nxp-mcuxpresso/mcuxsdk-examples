@@ -256,7 +256,9 @@ void xspi_hyper_ram_init(XSPI_Type *base)
     /* Get XSPI default settings and configure the xspi. */
     XSPI_GetDefaultConfig(&config);
 
+#if (defined(FSL_FEATURE_XSPI_HAS_END_CFG) && FSL_FEATURE_XSPI_HAS_END_CFG)
     config.byteOrder                                       = kXSPI_64BitLE;
+#endif
     config.ptrAhbAccessConfig->ahbErrorPayload.highPayload = 0x5A5A5A5AUL;
     config.ptrAhbAccessConfig->ahbErrorPayload.lowPayload  = 0x5A5A5A5AUL;
     config.ptrAhbAccessConfig->ARDSeqIndex                 = HYPERRAM_CMD_LUT_SEQ_IDX_BURST_READ;
