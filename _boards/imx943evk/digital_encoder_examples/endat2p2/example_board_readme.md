@@ -9,7 +9,9 @@ Hardware requirements
 
 Board settings
 ==============
-Insert FRDM-LVPMSM-FA board into Arduino interface of motor control 2.
+Insert FRDM-LVPMSM-FA board into Arduino interface of motor control 1.
+Modify the macro ENDAT2_MUX to MOTOR_CTRL2 when connected to motor control 2. 
+
 Connect EnDat2.2 sensor and power supply to FRDM-LVPMSM-FA
 
 EnDat2.2 connection:

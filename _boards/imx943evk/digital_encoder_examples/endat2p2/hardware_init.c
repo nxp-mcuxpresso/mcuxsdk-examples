@@ -55,6 +55,9 @@ void PWM_Trigger_Init(PWM_Type *PWMBase)
 
 void BOARD_InitHardware(void)
 {
+    int32_t SCMI_status = 0;
+    uint32_t blk_ctrl_size = 0;
+    uint32_t blk_ctrl_value = 0;
     /* EnDat2.2 100MHz */
     clk_t endat2p2Clk = {
         .clkId = ENDAT2P2_SYS_CLK_ROOT,
@@ -63,14 +66,13 @@ void BOARD_InitHardware(void)
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
     };
 
-    BLK_CTRL_WAKEUPMIX_Type *blk_ctrl = BLK_CTRL_WAKEUPMIX;
-
     SystemPlatformInit();
     BOARD_InitDebugConsolePins();
-    BOARD_InitEncoder1Pins();
-
+#if (ENDAT2_MUX == MOTOR_CTRL1)
     BOARD_InitEncoder2Pins();
-
+#else
+    BOARD_InitEncoder1Pins();
+#endif
     BOARD_InitI2C6Pins();
 
     BOARD_InitPWM1Pins();
@@ -82,30 +84,75 @@ void BOARD_InitHardware(void)
     CLOCK_SetRate(&endat2p2Clk);
     CLOCK_EnableClock(endat2p2Clk.clkId);
 
-#ifdef ENDAT2P2_USE_ENCODER_1
-    blk_ctrl->DIAG_ENCODER_MUX_SEL = blk_ctrl->DIAG_ENCODER_MUX_SEL |
-        BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc1_sel(DIG_ENCODER_MUX_ENDAT2P2);
 
-    blk_ctrl->ENDAT_STRETCHER_CTRL = blk_ctrl->ENDAT_STRETCHER_CTRL |
-        BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat2p1_nstr_value(3) |
-        BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat2p1_nstr_ctrl(1);
+    /* DIAG_ENCODER_MUX_SEL will be updated */
+    SCMI_status = SCMI_MiscControlGet(SCMI_A2P, DEV_SM_CTRL_ENC_DIAG_MUX_SEL, &blk_ctrl_size, &blk_ctrl_value);
+    if (SCMI_status != SCMI_ERR_SUCCESS) {
+        /* Encoder mux select configuration failed */
+        return;
+    }
 
+#if (ENDAT2_MUX == MOTOR_CTRL1)
+    /* Select Endat2 for encoder2 */
+    blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc2_sel(DIG_ENCODER_MUX_ENDAT2P2);
+#elif (ENDAT3_MUX == MOTOR_CTRL2)
+    /* Select Endat2 for encoder1 */
+    blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc1_sel(DIG_ENCODER_MUX_ENDAT2P2);
+#endif
+
+    /* Update DIAG_ENCODER_MUX_SEL */
+    SCMI_status = SCMI_MiscControlSet(SCMI_A2P, DEV_SM_CTRL_ENC_DIAG_MUX_SEL, blk_ctrl_size,
+                                      &blk_ctrl_value);
+    if (SCMI_status != SCMI_ERR_SUCCESS) {
+        /* Failed to set DIAG_ENCODER_MUX_SEL register  */
+        return;
+    }
+
+    /* ENDAT_STRETCHER_CTRL will be updated */
+    SCMI_status = SCMI_MiscControlGet(SCMI_A2P, DEV_SM_CTRL_ENDAT_STRETCH_CTRL, &blk_ctrl_size, &blk_ctrl_value);
+    if (SCMI_status != SCMI_ERR_SUCCESS) {
+        /* Encoder mux select configuration failed */
+        return;
+    }
+
+#if (ENDAT2_MUX == MOTOR_CTRL1)
+    /* Select Endat22 for encoder2 */
+    blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat2p2_nstr_value(3) |
+                      BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat2p2_nstr_ctrl(1);
+#elif (ENDAT3_MUX == MOTOR_CTRL2)
+    /* Select Endat21 for encoder1 */
+    blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat2p1_nstr_value(3) |
+                      BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat2p1_nstr_ctrl(1);
+#endif
+
+    /* Update ENDAT_STRETCH_CTRL */
+    SCMI_status = SCMI_MiscControlSet(SCMI_A2P, DEV_SM_CTRL_ENDAT_STRETCH_CTRL, blk_ctrl_size,
+                                      &blk_ctrl_value);
+    if (SCMI_status != SCMI_ERR_SUCCESS) {
+        /* Failed to set DIAG_ENCODER_MUX_SEL register  */
+        return;
+    }
+
+#if (ENDAT2_MUX == MOTOR_CTRL1)
     /* Select Motor controller 1 */
-    BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);
-    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);
-    SDK_DelayAtLeastUs(100U, SystemCoreClock);
-#else
-    blk_ctrl->DIAG_ENCODER_MUX_SEL = blk_ctrl->DIAG_ENCODER_MUX_SEL |
-        BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc2_sel(DIG_ENCODER_MUX_ENDAT3);
-
-    blk_ctrl->ENDAT_STRETCHER_CTRL =
-        BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat2p2nstr_value(3) |
-        BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat2p2_nstr_ctrl(1);
-
-    /* Select Motor controller 2 */
     BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);
     BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);
+#else
+    /* Select Motor controller 2 */
+    BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);
+    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);
+#endif
+
     SDK_DelayAtLeastUs(100U, SystemCoreClock);
+}
+
+void ENDAT2P2_EnableXbarPinTrigger(void)
+{
+    XBAR_Init(kXBAR_DSC1);
+#if (ENDAT2_MUX == MOTOR_CTRL1)
+    XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux1Trigger0, kXBAR1_OutputEndat22StrN);
+#else
+    XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux0Trigger0, kXBAR1_OutputEndat21StrN);
 #endif
 }
 /*${function:end}*/

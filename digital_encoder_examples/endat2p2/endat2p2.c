@@ -596,9 +596,6 @@ static int ENDATDEV_PositionLoop(endat2p2_dev_t *dev)
 
     ENDATDEV_InputLoopTime(&loop_time);
 
-    /* BOARD_SystickStart(&tick); */
-    /* BOARD_SystickElapsedTime_us(&tick); */
-
     /* reset additional info's if present */
     ENDAT2P2_EncoderRest(dev);
 
@@ -607,7 +604,6 @@ static int ENDATDEV_PositionLoop(endat2p2_dev_t *dev)
     ENDAT2P2_CleanStatus(dev);
     for (i = 1; i <= loop; i++)
     {
-        /* BOARD_SystickStart(&tick); */
         ENDAT2P2_CMDSend(dev);
         if(loop_time)
         {
@@ -615,9 +611,6 @@ static int ENDATDEV_PositionLoop(endat2p2_dev_t *dev)
         }
         ENDAT2P2_CMDWait(dev);
         ENDAT2P2_RecvData(dev, cmd, &data);
-        /* us = BOARD_SystickElapsedTime_us(&tick); */
-
-        /* PRINTF("Loop%d: interval time:%dus\r\n", i, us); */
         ENDATDEV_DumpRecvData(dev, cmd, &data);
     }
 
@@ -671,10 +664,7 @@ void ENDATDEV_GetPerformance(int loop)
     {
         SYSTICK_StartCount();
         ENDAT2P2_CMDSend(dev);
-        while(!ENDAT2P2_CheckRecv(dev))
-        {
-            ;
-        }
+        while(!ENDAT2P2_CheckRecv(dev));
         count1 = SYSTICK_GetCount();
         ENDAT2P2_CMDWait(dev);
         count2 = SYSTICK_GetCount();
@@ -724,20 +714,11 @@ static int ENDATDEV_TimerLoop(endat2p2_dev_t *dev)
         SDK_DelayAtLeastUs(loop_time, SystemCoreClock);
         ENDAT2P2_CMDWait(dev);
         ENDAT2P2_RecvData(dev, cmd, &data);
-        /* us = BOARD_SystickElapsedTime_us(&tick); */
-
-       /*  PRINTF("Loop%d: interval time:%dus\r\n", i, us); */
         ENDATDEV_DumpRecvData(dev, cmd, &data);
     }
 
     ENDAT2P2_SetSamplingRate(dev, 0);
     return 0;
-}
-
-static void ENDAT2P2_EnableXbarPinTrigger(void)
-{
-    XBAR_Init(kXBAR_DSC1);
-    XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux1Trigger0, kXBAR1_OutputEndat21StrN);
 }
 
 static int ENDATDEV_HardwareStrobeLoop(endat2p2_dev_t *dev)

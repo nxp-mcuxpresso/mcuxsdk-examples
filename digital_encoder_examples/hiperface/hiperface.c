@@ -529,8 +529,8 @@ static void RDB_ResourceAccess(HIPERFACE_Type *base, dsl_encoder_t *enc)
 					PRINTF("    Technology Specific: %u\r\n", errlog.technologySpecific);
 					PRINTF("    Internal Supply Voltage: %umV\r\n", errlog.internalSupplyVoltage);
 					PRINTF("    Rotation Speed: %u\r\n", errlog.rotationSpeed);
-					PRINTF("    Additional Error Conde: %u\r\n", errlog.additionalErrorConde);
-					PRINTF("    Error Conde: %u\r\n", errlog.errorConde);
+					PRINTF("    Additional Error Code: %u\r\n", errlog.additionalErrorCode);
+					PRINTF("    Error Code: %u\r\n", errlog.errorCode);
 				}
 				break;
 			case RDB_CMD_GET_ERROR_LOG_FILTER:
@@ -635,9 +635,11 @@ static void RDB_ResourceAccess(HIPERFACE_Type *base, dsl_encoder_t *enc)
 				PRINTF("    Unknow cmd.\r\n");
 				break;
 		}
+		if (status != kStatus_Success) {
+		    PRINTF("    Failed with status: 0x%x\r\n", status);
+		}
 	}
 	DSL_RDB_FreeAllNodeDefiningValue(BOARD_HIPERFACE_BASEADDR, enc);
-
 }
 
 void DumpEncoderStatus(void)
@@ -699,6 +701,7 @@ void SlavePing_Test(void)
 
 void RemoteSlaveRegisterAccess(void)
 {
+	int mail_value;
 	while (1) {
 		PRINTF("|-----------------------------------------|\r\n");
 		PRINTF("|  1, Read the Encoder status.            |\r\n");
@@ -723,7 +726,7 @@ void RemoteSlaveRegisterAccess(void)
 				DumpSlave_SRSSI(); break;
 			case 4:
 				PRINTF("Please input mail value(uint8_t): ");
-				int mail_value = getValueAndEcho();
+				mail_value = getValueAndEcho();
 				SlaveMail_Send((uint8_t)mail_value);
 				break;
 			case 5:
