@@ -2,6 +2,7 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
+if (CONFIG_MCUX_PRJSEG_module.board.suite)
 mcux_add_source(
     SOURCES
     FreeRTOSConfig.h
@@ -17,3 +18,5 @@ mcux_add_include(
     INCLUDES
     .
 )
+endif()
+
