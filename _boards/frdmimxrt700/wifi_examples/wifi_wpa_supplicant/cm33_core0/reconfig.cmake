@@ -42,10 +42,7 @@ mcux_add_macro(
        -DUSE_RTOS=1\
        -DCONFIG_WPA_SUPP_CRYPTO_MBEDTLS_PSA\
        -DMBEDTLS_USER_CONFIG_FILE=\\\"wpa_supp_mbedtls_config.h\\\"\
-       -DPRINTF_ADVANCED_ENABLE=1\
-       -DSDMMCHOST_ENABLE_CACHE_LINE_ALIGN_TRANSFER=1\
-       -DFSL_USDHC_ENABLE_SCATTER_GATHER_TRANSFER=1\
-       -DCONFIG_TX_RX_ZERO_COPY=1"
+       -DPRINTF_ADVANCED_ENABLE=1"
 )
 
 mcux_add_iar_configuration(
