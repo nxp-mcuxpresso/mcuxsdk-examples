@@ -1,0 +1,39 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+auxiliary:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/auxiliary
+    project-root-path: boards/${board}/demo_apps/auxiliary/${multicore_foldername}
+    document:
+      name: auxiliary${core_id_suffix_name}
+      category: demo_apps
+      brief: The auxiliary demo is a lightweight skeleton for board-specific helper
+        functionality, such as core0 kicking off core1, or initializing external
+        memory (PSRAM/flash) after reset. The concrete behavior is implemented in
+        each board's own BOARD_InitHardware.
+      example_readme:
+      - examples/demo_apps/auxiliary/readme.md
+      - ${board_root}/${board}/demo_apps/auxiliary/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    mimxrt2660evk:
+    - +armgcc@xspi_nor_debug
+    - +armgcc@xspi_nor_release
+    - +armgcc@xspi_nor_psram_debug
+    - +armgcc@xspi_nor_psram_release
+    - +armgcc@psram_only_debug
+    - +armgcc@psram_only_release
+    - +armgcc@ram_only_debug
+    - +armgcc@ram_only_release
+    - +iar@xspi_nor_debug
+    - +iar@xspi_nor_release
+    - +iar@xspi_nor_psram_debug
+    - +iar@xspi_nor_psram_release
+    - +iar@psram_only_debug
+    - +iar@psram_only_release
+    - +iar@ram_only_debug
+    - +iar@ram_only_release

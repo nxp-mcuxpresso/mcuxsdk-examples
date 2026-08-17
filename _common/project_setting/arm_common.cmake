@@ -27,6 +27,8 @@ if (CONFIG_MCUX_PRJSEG_config.arm.shared)
                 psram_txt_debug
                 xspi_nor_debug
                 xspi_nor_psram_debug
+                ram_only_debug
+                psram_only_debug
         CC "-DDEBUG"
         CX "-DDEBUG"
         TOOLCHAINS iar mdk armgcc
@@ -47,6 +49,8 @@ if (CONFIG_MCUX_PRJSEG_config.arm.shared)
                 psram_txt_release
                 xspi_nor_release
                 xspi_nor_psram_release
+                ram_only_release
+                psram_only_release
         CC "-DNDEBUG"
         CX "-DNDEBUG"
         TOOLCHAINS iar mdk armgcc

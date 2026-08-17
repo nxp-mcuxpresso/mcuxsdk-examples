@@ -7,6 +7,8 @@ include(${SdkRootDirPath}/arch/arm/target/xspi_nor.cmake)
 include(${SdkRootDirPath}/arch/arm/target/xspi_nor_psram.cmake)
 include(${SdkRootDirPath}/arch/arm/target/psram.cmake)
 include(${SdkRootDirPath}/arch/arm/target/psram_txt.cmake)
+include(${SdkRootDirPath}/arch/arm/target/RT2xxx/ram_only.cmake)
+include(${SdkRootDirPath}/arch/arm/target/RT2xxx/psram_only.cmake)
 mcux_add_cmakelists(${CMAKE_CURRENT_LIST_DIR}/xip)
 include(${SdkRootDirPath}/examples/_common/project_setting/RT2xxx.cmake)
 include(${SdkRootDirPath}/examples/_common/project_segments/display_support/prjseg.cmake)
@@ -17,28 +19,32 @@ include(${SdkRootDirPath}/examples/_common/project_segments/freertos/examples/ti
 if (CONFIG_MCUX_PRJSEG_module.board.suite)
 
     mcux_add_configuration(
-        TARGETS debug           release
-                psram_debug     psram_release
-                psram_txt_debug psram_txt_release
-        CC "-DENABLE_RAM_VECTOR_TABLE=1"
-        CX "-DENABLE_RAM_VECTOR_TABLE=1"
+        TARGETS debug            release
+                psram_debug      psram_release
+                psram_txt_debug  psram_txt_release
+                psram_only_debug psram_only_release
+        CC "-DENABLE_RAM_VECTOR_TABLE"
+        CX "-DENABLE_RAM_VECTOR_TABLE"
     )
     mcux_add_iar_configuration(
-        TARGETS debug           release
-                psram_debug     psram_release
-                psram_txt_debug psram_txt_release
+        TARGETS debug            release
+                psram_debug      psram_release
+                psram_txt_debug  psram_txt_release
+                psram_only_debug psram_only_release
         LD "--config_def=__ram_vector_table__=1"
     )
     mcux_add_mdk_configuration(
-        TARGETS debug           release
-                psram_debug     psram_release
-                psram_txt_debug psram_txt_release
+        TARGETS debug            release
+                psram_debug      psram_release
+                psram_txt_debug  psram_txt_release
+                psram_only_debug psram_only_release
         LD "--predefine=\"-D__ram_vector_table__=1\""
     )
     mcux_add_armgcc_configuration(
-        TARGETS debug           release
-                psram_debug     psram_release
-                psram_txt_debug psram_txt_release
+        TARGETS debug            release
+                psram_debug      psram_release
+                psram_txt_debug  psram_txt_release
+                psram_only_debug psram_only_release
         LD "-Xlinker --defsym=__ram_vector_table__=1"
     )
 
@@ -63,8 +69,8 @@ if (CONFIG_MCUX_PRJSEG_module.board.suite)
     )
 
     mcux_add_configuration(
-        CC "-DUSE_PSRAM_W958D6=0"
-        CX "-DUSE_PSRAM_W958D6=0"
+        CC "-DUSE_PSRAM_W958D6=1"
+        CX "-DUSE_PSRAM_W958D6=1"
     )
 
 endif()

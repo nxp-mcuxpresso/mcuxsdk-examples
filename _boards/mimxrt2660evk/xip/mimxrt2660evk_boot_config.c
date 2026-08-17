@@ -5,43 +5,38 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#include "mimxrt2660evk_xspi_nor_config.h"
-
 /* Component ID definition, used by tools. */
 #ifndef FSL_COMPONENT_ID
 #define FSL_COMPONENT_ID "platform.drivers.xip_board"
 #endif
 
+/*
+ * XMCD (external memory configuration data) payload.
+ *
+ * When no PSRAM is used, the payload is set to all 0xFFFFFFFF (an invalid XMCD).
+ * This is intentional: it overwrites the XMCD region so that any stale, valid
+ * XMCD left in flash from a previous image is wiped out and does not take effect.
+ */
+#if defined(USE_PSRAM)
+#if defined(USE_PSRAM_W958D6) && (USE_PSRAM_W958D6 == 1)
+#define BOARD_XMCD_PAYLOAD_INIT { 0xC0010008UL, 0xC0001A00UL }  /* XMCD for W958D6 */
+#else
+#define BOARD_XMCD_PAYLOAD_INIT { 0xC0010008UL, 0xC0100900UL }  /* XMCD for APS256XXN */
+#endif
+#else
+#define BOARD_XMCD_PAYLOAD_INIT { 0xFFFFFFFFUL, 0xFFFFFFFFUL }  /* Invalid XMCD */
+#endif /* USE_PSRAM */
+
 #if defined(XIP_BOOT_HEADER_ENABLE) && (XIP_BOOT_HEADER_ENABLE == 1)
+
+#include "mimxrt2660evk_xspi_nor_config.h"
 
 #if defined(__ARMCC_VERSION) || defined(__GNUC__)
 __attribute__((section(".boot_hdr.xmcd_data"), used))
 #elif defined(__ICCARM__)
 #pragma location = ".boot_hdr.xmcd_data"
 #endif
-
-#if defined(USE_PSRAM)
-
-#if defined(USE_PSRAM_W958D6) && (USE_PSRAM_W958D6 == 1)
-/* XMCD for W958D6 */
-const uint32_t xmcd_data[] = {
-    0xC0010008,
-    0xC0001A00
-};
-#else
-/* XMCD for APS256XXN */
-const uint32_t xmcd_data[] = {
-    0xC0010008,
-    0xC0100900
-};
-#endif
-
-#else
-const uint32_t xmcd_data[] = {
-    0xFFFFFFFF,
-    0xFFFFFFFF
-};
-#endif /* USE_PSRAM_W958D6 == 1 */
+const uint32_t xmcd_data[] = BOARD_XMCD_PAYLOAD_INIT;
 
 #if defined(__ARMCC_VERSION) || defined(__GNUC__)
 __attribute__((section(".boot_hdr.fcb"), used))
@@ -110,4 +105,23 @@ const xspi_nor_config_t qspiflash_config = {
 };
 /* clang-format on */
 
+#endif /* XIP_BOOT_HEADER_ENABLE */
+
+#if defined(USDHC_BOOT_HEADER_ENABLE) && (USDHC_BOOT_HEADER_ENABLE == 1)
+
+#include "mimxrt2660evk_usdhc_config.h"
+
+#if defined(__ARMCC_VERSION) || defined(__GNUC__)
+__attribute__((section(".boot_hdr.xmcd_data"), used))
+#elif defined(__ICCARM__)
+#pragma location = ".boot_hdr.xmcd_data"
 #endif
+const usdhc_boot_mcb_t g_usdhc_boot_mcb = {
+    .pad0                = { 0 },
+    .secondary_img_table = { 0 },
+    .pad1                = { 0 },
+    .xmcd_data           = BOARD_XMCD_PAYLOAD_INIT,
+    .pad2                = { 0 },
+};
+
+#endif /* USDHC_BOOT_HEADER_ENABLE */

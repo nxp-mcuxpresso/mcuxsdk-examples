@@ -3,6 +3,11 @@ include(${SdkRootDirPath}/examples/_common/project_setting/arm_common.cmake)
 if (CONFIG_MCUX_PRJSEG_module.board.suite)
 
     mcux_add_configuration(
+        TARGETS debug                        release
+                xspi_nor_debug               xspi_nor_release
+                psram_debug                  psram_release
+                psram_txt_debug              psram_txt_release
+                xspi_nor_psram_debug         xspi_nor_psram_release
         CC "-DXIP_EXTERNAL_FLASH=1"
         CX "-DXIP_EXTERNAL_FLASH=1"
     )
@@ -11,6 +16,7 @@ if (CONFIG_MCUX_PRJSEG_module.board.suite)
         TARGETS psram_debug                  psram_release
                 psram_txt_debug              psram_txt_release
                 xspi_nor_psram_debug         xspi_nor_psram_release
+                psram_only_debug             psram_only_release
         CC "-DUSE_PSRAM=1"
         CX "-DUSE_PSRAM=1"
     )

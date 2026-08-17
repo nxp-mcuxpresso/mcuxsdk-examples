@@ -411,6 +411,10 @@ hello_world:
     - +armgcc@psram_txt_release
     - +armgcc@xspi_nor_psram_debug
     - +armgcc@xspi_nor_psram_release
+    - +armgcc@ram_only_debug
+    - +armgcc@ram_only_release
+    - +armgcc@psram_only_debug
+    - +armgcc@psram_only_release
     - +iar@debug
     - +iar@release
     - +iar@psram_debug
@@ -419,4 +423,8 @@ hello_world:
     - +iar@psram_txt_release
     - +iar@xspi_nor_psram_debug
     - +iar@xspi_nor_psram_release
+    - +iar@ram_only_debug
+    - +iar@ram_only_release
+    - +iar@psram_only_debug
+    - +iar@psram_only_release
     frdmmcxc353: []

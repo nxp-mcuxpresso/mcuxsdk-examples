@@ -19,7 +19,7 @@ mcux_add_source(
 # use a RAM vector table), so they use the stock device linker.
 mcux_add_configuration(
     TARGETS xspi_nor_debug xspi_nor_release xspi_nor_psram_debug xspi_nor_psram_release
-    CC "-DENABLE_RAM_VECTOR_TABLE=1"
+    CC "-DENABLE_RAM_VECTOR_TABLE"
 )
 mcux_add_iar_configuration(
     TARGETS xspi_nor_debug xspi_nor_release xspi_nor_psram_debug xspi_nor_psram_release
