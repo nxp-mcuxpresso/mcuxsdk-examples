@@ -28,7 +28,7 @@ mcux_add_iar_configuration(
 )
 
 mcux_add_iar_configuration(
-    TARGETS hyperram_debug hyperram_release
+    TARGETS hyperram_debug hyperram_release flexspi_nor_hyperram_debug flexspi_nor_hyperram_release
     LD "--semihosting\
        --redirect __iar_sh_stdout=__iar_sh_stdout_swo"
 )
