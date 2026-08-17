@@ -12,9 +12,9 @@ Connection as below:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 MASTER(LPI2C6)                connect to        SLAVE(LPI2C6)
 Pin Name    Board Location                      Pin Name    Board Location
-SCL         J19 pin 3                         SCL         J19 pin 3
-SDA         J19 pin 5                         SDA         J19 pin 5
-GND         J19 pin 9                         GND         J19 pin 9
+SCL         J18 pin 3                         SCL         J18 pin 3
+SDA         J18 pin 5                         SDA         J18 pin 5
+GND         J18 pin 9                         GND         J18 pin 9
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **Please note this application can't support running with Linux BSP!**
