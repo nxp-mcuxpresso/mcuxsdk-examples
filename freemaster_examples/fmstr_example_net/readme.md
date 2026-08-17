@@ -20,4 +20,5 @@ Example application demonstrates the Network communication over UDP or TCP proto
 - [MIMXRT1040-EVK](../../_boards/evkmimxrt1040/freemaster_examples/fmstr_net/example_board_readme.md)
 - [MIMXRT1160-EVK](../../_boards/evkmimxrt1160/freemaster_examples/fmstr_net/example_board_readme.md)
 - [MIMXRT1180-EVK](../../_boards/evkmimxrt1180/freemaster_examples/fmstr_net/example_board_readme.md)
+- [MIMXRT2660-EVK](../../_boards/mimxrt2660evk/freemaster_examples/fmstr_net/example_board_readme.md)
 - [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/freemaster_examples/fmstr_net/example_board_readme.md)

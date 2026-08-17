@@ -63,6 +63,7 @@ Example application uses JTAG or BDM debugging interface to access the target RA
 - [LPCXpresso860MAX](../../_boards/lpcxpresso860max/freemaster_examples/fmstr_pdbdm/example_board_readme.md)
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/freemaster_examples/fmstr_pdbdm/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/freemaster_examples/fmstr_pdbdm/example_board_readme.md)
+- [MIMXRT2660-EVK](../../_boards/mimxrt2660evk/freemaster_examples/fmstr_pdbdm/example_board_readme.md)
 - [MIMXRT685-AUD-EVK](../../_boards/mimxrt685audevk/freemaster_examples/fmstr_pdbdm/example_board_readme.md)
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/freemaster_examples/fmstr_pdbdm/example_board_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/freemaster_examples/fmstr_pdbdm/example_board_readme.md)

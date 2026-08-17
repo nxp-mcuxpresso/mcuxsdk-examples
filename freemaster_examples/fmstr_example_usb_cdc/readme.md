@@ -44,6 +44,7 @@ Example application uses an on-chip USB controller to implement a CDC communicat
 - [MIMXRT1160-EVK](../../_boards/evkmimxrt1160/freemaster_examples/fmstr_usb_cdc/example_board_readme.md)
 - [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/freemaster_examples/fmstr_usb_cdc/example_board_readme.md)
 - [MIMXRT1180-EVK](../../_boards/evkmimxrt1180/freemaster_examples/fmstr_usb_cdc/example_board_readme.md)
+- [MIMXRT2660-EVK](../../_boards/mimxrt2660evk/freemaster_examples/fmstr_usb_cdc/example_board_readme.md)
 - [MIMXRT685-AUD-EVK](../../_boards/mimxrt685audevk/freemaster_examples/fmstr_usb_cdc/example_board_readme.md)
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/freemaster_examples/fmstr_usb_cdc/example_board_readme.md)
 - [FRDM-MCXA266](../../_boards/frdmmcxa266/freemaster_examples/fmstr_usb_cdc/example_board_readme.md)
