@@ -15,11 +15,16 @@
 
 #include "ele_crypto.h" /* ELE Crypto SW */
 #include "fsl_s3mu.h"   /* Messaging unit driver */
-#include "ele_fw.h"     /* ELE FW, to be placed in bootable container in real world app */
 
-/*******************************************************************************
- * Definitions
- ******************************************************************************/
+
+/* I this example we are getting the ELE FW header file from command-line */
+/* In order to work in GUI and CLI environment, we must convert the name  */
+/* into header file string using these macros. In real application it can */
+/* be hardcoded */
+#define ELE_NAME_TO_STR(x)  #x
+#define ELE_FW_HEADER_STRING(x)  ELE_NAME_TO_STR(x)
+/* Use the resolved header file name as include */ 
+#include ELE_FW_HEADER_STRING(ele_fw_header) /* ELE runtime FW */
 
 /*******************************************************************************
  * Prototypes
@@ -603,7 +608,7 @@ int main(void)
         {
             PRINTF("Key deleted successfully. Key Pair ID: 0x%x\r\n\r\n", NISTkeyPairID);
         }
-
+#if 0u
         /****************** Key Generate (ECC Brainpool) *********************/
         PRINTF("****************** Key Generate (ECC Brainpool) ***********\r\n");
         /* Output buffer for public key */
@@ -868,7 +873,8 @@ int main(void)
                 PRINTF("RSA Signature verified successfully!\r\n\r\n");
             }
         }
-
+#endif
+				(void)RSAkeyPairID; (void)brainpoolKeyPairID;
         /****************** Cleanup ********************************************/
 
         /****************** Close Verify service *******************************/

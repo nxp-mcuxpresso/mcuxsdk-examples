@@ -14,11 +14,6 @@ mcux_add_include(
     INCLUDES .
 )
 
-# Add source for the loadable ELE FW
-mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/ele_crypto/ele_crypto_generic_aes/ele_fw.h
-)
 
 # Modify stack and heap sizes for all IDEs
 mcux_add_linker_symbol(

@@ -14,7 +14,15 @@
 #include "app.h"
 
 #include "ele_crypto.h" /* ELE Crypto SW */
-#include "ele_fw.h"     /* ELE FW, to be placed in bootable container in real world app */
+
+/* In this example we are getting the ELE FW header file from command-line */
+/* In order to work in GUI and CLI environment, we must convert the name  */
+/* into header file string using these macros. In real application it can */
+/* be hardcoded */
+#define ELE_NAME_TO_STR(x)  #x
+#define ELE_FW_HEADER_STRING(x)  ELE_NAME_TO_STR(x)
+/* Use the resolved header file name as include */
+#include ELE_FW_HEADER_STRING(ele_fw_header) /* ELE runtime FW */
 
 /*******************************************************************************
  * Definitions
@@ -77,7 +85,7 @@ int main(void)
         /* Message to be hashed */
 
         /* Output for HASH */
-        AT_NONCACHEABLE_SECTION_INIT(SDK_ALIGN(static uint8_t output[32], 8u));
+        AT_NONCACHEABLE_SECTION_INIT(SDK_ALIGN(static uint8_t output[128], 8u));
         /* Expected SHA-256 for the message. */
         static const uint8_t sha256[] = {0x63, 0x76, 0xea, 0xcc, 0xc9, 0xa2, 0xc0, 0x43, 0xf4, 0xfb, 0x01,
                                          0x34, 0x69, 0xb3, 0x0c, 0xf5, 0x28, 0x63, 0x5c, 0xfa, 0xa5, 0x65,
@@ -224,7 +232,7 @@ int main(void)
             result = kStatus_Fail;
             break;
         }
-
+#if 0
         /****************** ONESHOT Fast HMAC **********************************/
         PRINTF("****************** Compute ONESHOT Fast HMAC **************\r\n");
         SDK_ALIGN(uint8_t fastMACkeys[64], 8u) = {0u};
@@ -388,7 +396,7 @@ int main(void)
             result = kStatus_Fail;
             break;
         }
-
+#endif
         /****************** END of Example *************************************/
 
         result = kStatus_Success;

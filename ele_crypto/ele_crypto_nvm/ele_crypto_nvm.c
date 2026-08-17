@@ -15,7 +15,15 @@
 
 #include "ele_crypto.h" /* ELE Crypto SW */
 #include "fsl_s3mu.h"   /* Messaging unit driver */
-#include "ele_fw.h"     /* ELE FW, to be placed in bootable container in real world app */
+
+/* In this example we are getting the ELE FW header file from command-line */
+/* In order to work in GUI and CLI environment, we must convert the name  */
+/* into header file string using these macros. In real application it can */
+/* be hardcoded */
+#define ELE_NAME_TO_STR(x)  #x
+#define ELE_FW_HEADER_STRING(x)  ELE_NAME_TO_STR(x)
+/* Use the resolved header file name as include */
+#include ELE_FW_HEADER_STRING(ele_fw_header) /* ELE runtime FW */
 
 /*******************************************************************************
  * Definitions
@@ -60,6 +68,7 @@ status_t ELE_APP_Cleanup(uint32_t dataStorageID,
                          uint32_t nvmStorageID,
                          uint32_t sessionID)
 {
+#if 0
     /****************** Close Data storage session *************************/
     if (dataStorageID != 0u)
     {
@@ -72,7 +81,8 @@ status_t ELE_APP_Cleanup(uint32_t dataStorageID,
             PRINTF("Close data storage session successfully.\r\n\r\n");
         }
     }
-
+#endif
+		(void)dataStorageID;
     /****************** Close cipher service ***********************/
     PRINTF("****************** Close cipher service ***********************\r\n");
     if (ELE_CloseCipherService(S3MU, cipherHandleID) != kStatus_Success)
@@ -460,7 +470,7 @@ int main(void)
         {
             PRINTF("Signature generated successfully.\r\n\r\n");
         }
-
+#if 0
         /****************** Open Data Storage service **************************/
         PRINTF("****************** Open Storage service *******************\r\n");
         if (ELE_OpenDataStorage(S3MU, keyStoreHandleID, &dataStorageID) != kStatus_Success)
@@ -534,7 +544,8 @@ int main(void)
                 break;
             }
         }
-
+#endif
+				dataStorageID = 0u;
         /****************** Cleanup *******************************************/
 
         /****************** Key Delete (ECC NIST P256) *************************/

@@ -15,13 +15,10 @@ mcux_add_include(
     INCLUDES .
 )
 
-# Add sources / includes for the loadable ELE FW and sdmmc related files
+
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/ele_crypto/ele_crypto_nvm_manager/ele_fw.h
-            ${board_root}/${board}/ele_crypto/ele_crypto_nvm_manager/ffconf.h
-            ${board_root}/${board}/sdmmc_config.c
-            ${board_root}/${board}/sdmmc_config.h
+    SOURCES ${board_root}/${board}/ele_crypto/ele_crypto_nvm_manager/ffconf.h
 )
 
 mcux_add_include(

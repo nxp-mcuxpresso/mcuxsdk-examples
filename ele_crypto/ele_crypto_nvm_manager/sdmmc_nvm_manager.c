@@ -225,7 +225,8 @@ int sd_fs_initialize(void)
 {
     const TCHAR driverNumberBuffer[3U] = {SDDISK + '0', ':', '/'};
     FRESULT error;
-
+    BYTE work[FF_MAX_SS];
+    
     if (sdcardWaitCardInsert() != kStatus_Success)
     {
         return -1;
@@ -246,6 +247,15 @@ int sd_fs_initialize(void)
     }
 #endif
 
+#if FF_USE_MKFS
+    PRINTF("\r\nMake file system......The time may be long if the card capacity is big.\r\n");
+    if (f_mkfs(driverNumberBuffer, 0, work, sizeof work))
+    {
+        PRINTF("Make file system failed.\r\n");
+        return -1;
+    }
+#endif /* FF_USE_MKFS */
+    
     PRINTF("\r\nCreate directory......\r\n");
     error = f_mkdir(_T("/nvm_demo"));
     if (error)

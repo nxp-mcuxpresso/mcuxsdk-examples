@@ -13,5 +13,6 @@ void BOARD_InitHardware(void)
 {
     /* Board common setting: MPU, Power and Clock Tree, TRDC, and Debug Console init. */
     BOARD_CommonSetting();
+    SCB_DisableDCache();
 }
 /*${function:end}*/
