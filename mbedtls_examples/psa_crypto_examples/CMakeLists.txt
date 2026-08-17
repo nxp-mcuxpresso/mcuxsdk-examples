@@ -13,7 +13,11 @@ mcux_add_source(
 
 mcux_add_linker_symbol(
     SYMBOLS
-        "__heap_size__=0x8000"
+        "__heap_size__=0x7000"
+)
+
+mcux_add_linker_symbol(
+    SYMBOLS
         "__stack_size__=0x4000"
 )
 

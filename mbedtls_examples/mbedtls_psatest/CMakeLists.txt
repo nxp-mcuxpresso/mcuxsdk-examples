@@ -18,8 +18,13 @@ include(${SdkRootDirPath}/${board_root}/${board}/mbedtls_examples/mbedtls_psates
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
 
 mcux_add_linker_symbol(
-    SYMBOLS "__stack_size__=0x4000\
-             __heap_size__=0x8000"
+    SYMBOLS
+        "__heap_size__=0x8000"
+)
+
+mcux_add_linker_symbol(
+    SYMBOLS
+        "__stack_size__=0x4000"
 )
 
 mcux_add_mdk_configuration(
