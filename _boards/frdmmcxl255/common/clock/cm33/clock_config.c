@@ -1,6 +1,5 @@
 /*
  * Copyright 2026 NXP
- * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -117,7 +116,7 @@ outputs:
 settings:
 - {id: AON_SYSTICK_CLK_INIT_Config, value: custom}
 - {id: FREQMEAS_INIT_Config, value: custom}
-- {id: VDD_CORE_MAIN, value: voltage_1v1}
+- {id: VDD_CORE_MAIN_NORMAL, value: voltage_1v1}
 - {id: ADC0CLKDIV_HALT, value: Enable}
 - {id: CGU.ACMP0_CLK_SEL.sel, value: N/A}
 - {id: CGU.COM_GRP_SEL.sel, value: N/A}
@@ -164,8 +163,6 @@ sources:
 /*******************************************************************************
  * Variables for BOARD_BootClockFRO96M configuration
  ******************************************************************************/
-/* Main domain core voltage structure for loading IFR trim values. */
-static vdd_core_main_config_t vddCoreMainConfig;
 static xtal_drive_param_t xtalDriveParamsConfig_BOARD_BootClockFRO96M[1] =
 {
     {.dly_cap_sox = 0, .amp = 0, .gm = 0},
@@ -189,16 +186,33 @@ void BOARD_BootClockFRO96M_InitClockModule(clock_module_t module)
 {
     bool switchBackToFIRC = false;
 
+    uint8_t lpModeTrim = 0;
+
     switch(module) {
         case kClockModule_MainCoreSupplyMode:
-            /* Get VDD_CORE_MAIN config from IFR1 for the 1.1V (Standard Drive). */
-            CLOCK_GetVDDCoreMainConfig(kCLOCK_StandardDrive, &vddCoreMainConfig);
-            /* Set the Vdd Core voltage of the Main domain. */
-            PMU_UpdateVDDCore1P1InActiveMode(AON__PMU, vddCoreMainConfig.vddCoreMainAconfig);
-            /* Set the low voltage detect trim control value for the PMU. */
-            PMU_UpdateLvdLvTrim(AON__PMU, vddCoreMainConfig.lvdLvTrim);
-            /* Set the high voltage detect trim control value for the PMU. */
-            PMU_UpdateHvdLvTrim(AON__PMU, vddCoreMainConfig.hvdLvTrim);
+            /* Set VDD_CORE_MAIN normal mode to 1.1V using IFR1 trim value */
+            PMU_UpdateVDDCore1P1InActiveMode(AON__PMU, CLOCK_GetVDDCore1P1InActiveModeTrim());
+            /* Set normal drive mode of the DCDC */
+            PMU_UpdateDCDCMainMode(AON__PMU, kPMU_DcdcMain_NormalPowerMode);
+            /* Wait 20us for DCDC stabilization */
+            SDK_DelayAtLeastUs(20U, SystemCoreClock);
+            /* Set the low voltage detect trim control value for the PMU from IFR1 */
+            PMU_UpdateLvdLvTrim(AON__PMU, CLOCK_GetLvdLvTrim1P1());
+            /* Set the high voltage detect trim control value for the PMU from IFR1 */
+            PMU_UpdateHvdLvTrim(AON__PMU, CLOCK_GetHvdLvTrim1P1());
+            /* Set VDD_CORE_MAIN low drive mode to 1.0V using IFR1 trim value */
+            /* The low drive mode is used in low power modes */
+            lpModeTrim = CLOCK_GetVDDCore1P0InLpModeTrim();
+            /* Update VDD_CORE_MAIN to 1.0V for low drive mode only if trim value is valid */
+            if (lpModeTrim != 0U)
+            {
+                PMU_UpdateVDDCore1P1InLpMode(AON__PMU, lpModeTrim);
+            }
+            else
+            {
+                /* Trim value not available, use default value */
+                PMU_UpdateVDDCore1P1InLpMode(AON__PMU, 8U);
+            }
             break;
         case kClockModule_AONCoreSupplyMode:
             /* Set the Vdd Core voltage of the AON domain to 0.785V to allow the AON Core operate at 10 MHz. */
@@ -442,3 +456,684 @@ void BOARD_BootClockFRO96M(void)
     SystemCoreClock = BOARD_BOOTCLOCKFRO96M_CORE_CLOCK;
 }
 
+/*******************************************************************************
+ ******************* Configuration BOARD_SetFRO96MLowDrive *********************
+ ******************************************************************************/
+/* clang-format off */
+/* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+!!Configuration
+name: BOARD_SetFRO96MLowDrive
+outputs:
+- {id: ADC0_CLK.outFreq, value: 48 MHz, locked: true, accuracy: '0.001'}
+- {id: AON_ACMP0_CLK0.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
+- {id: AON_ACMP0_CLK1.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
+- {id: AON_APB_CLK.outFreq, value: 10 MHz}
+- {id: AON_AUX_CLK.outFreq, value: 24 MHz}
+- {id: AON_BUS_CLK.outFreq, value: 10 MHz}
+- {id: AON_CPU_CLK.outFreq, value: 10 MHz}
+- {id: AON_I2C_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
+- {id: AON_KPP_CLK.outFreq, value: 16.384 kHz, locked: true, accuracy: '0.001'}
+- {id: AON_LCD_CLK.outFreq, value: 16.384 kHz, locked: true, accuracy: '0.001'}
+- {id: AON_LPADC_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
+- {id: AON_LPTMR_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
+- {id: AON_QTMR0_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
+- {id: AON_QTMR1_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
+- {id: AON_SYSTEM_CLK.outFreq, value: 10 MHz}
+- {id: AON_SYSTICK_CLK.outFreq, value: 10 MHz}
+- {id: AON_UART_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
+- {id: CGU.LPIRC_TRIMCLK_OUT.outFreq, value: 32.768 kHz}
+- {id: CGU.ULPIRC_TRIMCLK_OUT.outFreq, value: 32.768 kHz}
+- {id: CLKOUT.outFreq, value: 24 MHz, locked: true, accuracy: '0.001'}
+- {id: CLK_16K.outFreq, value: 16.384 kHz, locked: true, accuracy: '0.001'}
+- {id: CLK_16K_LS.outFreq, value: 16.384 kHz}
+- {id: CLK_1M.outFreq, value: 1 MHz}
+- {id: CMP0_FUNC_CLK.outFreq, value: 12 MHz, locked: true, accuracy: '0.001'}
+- {id: CPU_CLK.outFreq, value: 96 MHz, locked: true, accuracy: '0.001'}
+- {id: CTIMER_GRP0_CLK.outFreq, value: 96 MHz, locked: true, accuracy: '0.001'}
+- {id: CTIMER_GRP1_CLK.outFreq, value: 48 MHz, locked: true, accuracy: '0.001'}
+- {id: DBG_TRACE_CLK.outFreq, value: 16.384 kHz, locked: true, accuracy: '0.001'}
+- {id: FLASH_CLK.outFreq, value: 12 MHz}
+- {id: FREQMEAS_REF.outFreq, value: 12 MHz}
+- {id: FREQMEAS_TAR.outFreq, value: 12 MHz}
+- {id: FRO12M_FLASH.outFreq, value: 12 MHz}
+- {id: FRO12M_PERIPH.outFreq, value: 12 MHz}
+- {id: FRO_16K.outFreq, value: 16.384 kHz, locked: true, accuracy: '0.001'}
+- {id: FRO_HF.outFreq, value: 96 MHz, locked: true, accuracy: '0.001'}
+- {id: FRO_HF_DIV.outFreq, value: 96 MHz, locked: true, accuracy: '0.001'}
+- {id: FRO_HF_GATED.outFreq, value: 96 MHz}
+- {id: LPIRC_CLK.outFreq, value: 10 MHz, locked: true, accuracy: '0.001'}
+- {id: MAIN_CLK.outFreq, value: 96 MHz}
+- {id: OSTIMER0_CLK.outFreq, value: 16.384 kHz, locked: true, accuracy: '0.001'}
+- {id: PERIPH_GROUP_0_CLK.outFreq, value: 12 MHz, locked: true, accuracy: '0.001'}
+- {id: PERIPH_GROUP_1_CLK.outFreq, value: 12 MHz, locked: true, accuracy: '0.001'}
+- {id: SLOW_CLK.outFreq, value: 24 MHz, locked: true, accuracy: '0.001'}
+- {id: SYSTEM_CLK.outFreq, value: 96 MHz}
+- {id: SYSTICK_CLK.outFreq, value: 96 MHz, locked: true, accuracy: '0.001'}
+- {id: UTICK0_CLK.outFreq, value: 1 MHz, locked: true, accuracy: '0.001'}
+- {id: WUU_CLK.outFreq, value: 16.384 kHz}
+- {id: WWDT0_CLK.outFreq, value: 1 MHz, locked: true, accuracy: '0.001'}
+- {id: XTAL32K.outFreq, value: 32.768 kHz, locked: true, accuracy: '0.001'}
+settings:
+- {id: ACMP_CLK_INIT_Config, value: custom}
+- {id: ADC0_CLK_INIT_Config, value: custom}
+- {id: AONCoreSupplyMode_INIT_Config, value: custom}
+- {id: AON_ACMP0_CLK_INIT_Config, value: custom}
+- {id: AON_COM_CLK_INIT_Config, value: custom}
+- {id: AON_CPU_ROOT_CLK_INIT_Config, value: custom}
+- {id: AON_KPP_CLK_INIT_Config, value: custom}
+- {id: AON_LCD_CLK_INIT_Config, value: custom}
+- {id: AON_LPADC_CLK_INIT_Config, value: custom}
+- {id: AON_LPTMR_CLK_INIT_Config, value: custom}
+- {id: AON_SYSTICK_CLK_INIT_Config, value: custom}
+- {id: AON_TMR_GRP_CLK_INIT_Config, value: custom}
+- {id: AonAuxClkDiv_INIT_Config, value: custom}
+- {id: CLKOUT_INIT_Config, value: custom}
+- {id: CTIMER_GRP0_CLK_INIT_Config, value: custom}
+- {id: CTIMER_GRP1_CLK_INIT_Config, value: custom}
+- {id: DBG_TRACE_CLK_INIT_Config, value: custom}
+- {id: DCDC_MAIN_MODE, value: mode_low_power}
+- {id: FLASH_CLK_INIT_Config, value: custom}
+- {id: FREQMEAS_INIT_Config, value: custom}
+- {id: FRO16K_INIT_Config, value: custom}
+- {id: FRO_HF_DIV_INIT_Config, value: custom}
+- {id: FRO_INIT_Config, value: custom}
+- {id: MRCC_FRO16K_SEL_INIT_Config, value: custom}
+- {id: OSTIMER0_CLK_INIT_Config, value: custom}
+- {id: PERIPH_GROUP_0_CLK_INIT_Config, value: custom}
+- {id: PERIPH_GROUP_1_CLK_INIT_Config, value: custom}
+- {id: ROOT_AUX_CLK_SEL_INIT_Config, value: custom}
+- {id: ROSC_INIT_Config, value: custom}
+- {id: SIRC_INIT_Config, value: custom}
+- {id: SYSTICK_CLK_INIT_Config, value: custom}
+- {id: SystemClkDiv_INIT_Config, value: custom}
+- {id: UTICK0_CLK_INIT_Config, value: custom}
+- {id: VDD_CORE_MAIN_LPWR, value: voltage_1v1}
+- {id: VDD_CORE_MAIN_NORMAL, value: voltage_1v1}
+- {id: WUU_CLK_INIT_Config, value: custom}
+- {id: WWDT0_CLK_INIT_Config, value: custom}
+- {id: ADC0CLKDIV_HALT, value: Enable}
+- {id: CGU.ACMP0_CLK_SEL.sel, value: N/A}
+- {id: CGU.COM_GRP_SEL.sel, value: N/A}
+- {id: CGU.KPP_CLK_SEL.sel, value: PMU.FRO_16K}
+- {id: CGU.LPADC_CLK_SEL.sel, value: N/A}
+- {id: CGU.SLCD_CLK_SEL.sel, value: PMU.FRO_16K}
+- {id: CGU.TMR_GRP_SEL.sel, value: N/A}
+- {id: CGU_ROOT_AUX_CLK_EN_CFG, value: Disabled}
+- {id: CLKOUTCLKDIV_HALT, value: Enable}
+- {id: CMP0FUNCCLKDIV_HALT, value: Enable}
+- {id: CTIMER_GRP0_CLKDIV_HALT, value: Enable}
+- {id: CTIMER_GRP1_CLKDIV_HALT, value: Enable}
+- {id: DBGTRACECLKDIV_HALT, value: Enable}
+- {id: GLB_CC0_PGRP0_CFG, value: 'Yes'}
+- {id: GLB_CC0_PGRP1_CFG, value: 'Yes'}
+- {id: GROUP0CLKDIV_HALT, value: Enable}
+- {id: GROUP1CLKDIV_HALT, value: Enable}
+- {id: MRCC.ADC0CLKDIV.scale, value: '2', locked: true}
+- {id: MRCC.CLKOUTCLKDIV.scale, value: '1', locked: true}
+- {id: MRCC.CLKOUTCLKSEL.sel, value: SYSCON.SLOW_CLK}
+- {id: MRCC.CMP0FUNCCLKDIV.scale, value: '1', locked: true}
+- {id: MRCC.CMP0RRCLKDIV.scale, value: '1', locked: true}
+- {id: MRCC.CMP0RRCLKSEL.sel, value: SCG.sirc_12mhz_periph}
+- {id: MRCC.CTIMERGRP1CLKDIV.scale, value: '2', locked: true}
+- {id: MRCC.FROHFDIV.scale, value: '1', locked: true}
+- {id: MRCC.OSTIMER0CLKSEL.sel, value: PMU.FRO_16K}
+- {id: MRCC.PGRP0CLKSEL.sel, value: SCG.sirc_12mhz_periph}
+- {id: MRCC.PGRP1CLKSEL.sel, value: SCG.sirc_12mhz_periph}
+- {id: MRCC.SYSTICKCLKSEL.sel, value: SYSCON.CPU_CLK}
+- {id: MRCC.UTICK0CLKSEL.sel, value: SCG.clk_1m}
+- {id: SYSCON.AHBCLKDIV.scale, value: '1', locked: true}
+- {id: SYSCON.AONAUXCLKDIV.scale, value: '4', locked: true}
+- {id: SYSTICKCLKDIV_HALT, value: Enable}
+- {id: WWDT0CLKDIV_HALT, value: Enable}
+- {id: detectionDelayConfig, value: '50'}
+- {id: detectionDelaySwitchedModeConfig, value: '50'}
+- {id: detectionTimeoutSwitchedModeConfig, value: '50'}
+sources:
+- {id: RTC_AON.ROSC.outFreq, value: 32.768 kHz, enabled: true}
+- {id: SCG.FIRC.outFreq, value: 96 MHz}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
+/* clang-format on */
+
+/*******************************************************************************
+ * Variables for BOARD_SetFRO96MLowDrive configuration
+ ******************************************************************************/
+/*******************************************************************************
+ * Code for BOARD_SetFRO96MLowDrive configuration
+ ******************************************************************************/
+void BOARD_SetFRO96MLowDrive_InitClockModule(clock_module_t module)
+{
+    bool switchBackToFIRC = false;
+
+    uint8_t lpModeTrim = 0;
+
+    switch(module) {
+        case kClockModule_MainCoreSupplyMode:
+            if (PMU_GetDCDCMainMode(AON__PMU) != kPMU_DcdcMain_LowPowerMode)
+            {
+                /* Workaround for Errata on PMU: ERR053099 */
+                if (CLOCK_GetCoreSysClkFreq() > 48000000U) {
+                    /* Reconfigure FROHF to 48 MHz */
+                    (void)CLOCK_SetupFROHFClocking(48000000U, 0U);
+                    /* Set flash wait states for the new target frequency */
+                    CLOCK_SetFlashWaitStateBasedOnFreq(48000000U);
+                    /* Refresh SystemCoreClock global variable */
+                    SystemCoreClockUpdate();
+                }
+                /* Set VDD_CORE_MAIN normal mode to 1.1V using IFR1 trim value */
+                PMU_UpdateVDDCore1P1InActiveMode(AON__PMU, CLOCK_GetVDDCore1P1InActiveModeTrim());
+                /* Wait 20us for DCDC stabilization */
+                SDK_DelayAtLeastUs(20U, SystemCoreClock);
+                /* Set VDD_CORE_MAIN low drive mode to 1.0V using IFR1 trim value */
+                lpModeTrim = CLOCK_GetVDDCore1P0InLpModeTrim();
+                /* Update VDD_CORE_MAIN to 1.0V for low drive mode only if trim value is valid */
+                if (lpModeTrim != 0U)
+                {
+                    PMU_UpdateVDDCore1P1InLpMode(AON__PMU, lpModeTrim);
+                }
+                else
+                {
+                    /* Trim value not available, use default value */
+                    PMU_UpdateVDDCore1P1InLpMode(AON__PMU, 8U);
+                }
+
+                /* Set low drive mode of the DCDC */
+                PMU_UpdateDCDCMainMode(AON__PMU, kPMU_DcdcMain_LowPowerMode);
+                /* Wait 20us for DCDC stabilization */
+                SDK_DelayAtLeastUs(20U, SystemCoreClock);
+            }
+            /* Set VDD_CORE_MAIN low drive to 1.1V using IFR1 trim value */
+            lpModeTrim = CLOCK_GetVDDCore1P1InLpModeTrim();
+            /* Update VDD_CORE_MAIN to 1.1V for low drive mode only if trim value is valid */
+            if (lpModeTrim != 0U)
+            {
+                PMU_UpdateVDDCore1P1InLpMode(AON__PMU, lpModeTrim);
+            }
+            else
+            {
+                /* Trim value not available, use default value */
+                PMU_UpdateVDDCore1P1InLpMode(AON__PMU, 10U);
+            }
+            /* Wait 20us for DCDC stabilization */
+            SDK_DelayAtLeastUs(20U, SystemCoreClock);
+            /* Set the low voltage detect trim control value for the PMU from IFR1 */
+            PMU_UpdateLvdLvTrim(AON__PMU, CLOCK_GetLvdLvTrim1P1());
+            /* Set the high voltage detect trim control value for the PMU from IFR1 */
+            PMU_UpdateHvdLvTrim(AON__PMU, CLOCK_GetHvdLvTrim1P1());
+            break;
+        case kClockModule_FIRC:
+            /* if FIRC is selected as the SCS clock source switch to the alternate SIRC clock source. */
+            if (((SCG0->CSR & SCG_CSR_SCS_MASK) >> SCG_CSR_SCS_SHIFT) == CLK_ATTACH_CLK_SEL(kFIRC_to_MAIN_CLK)) {
+                switchBackToFIRC = true;
+                CLOCK_AttachClk(kSIRC_to_MAIN_CLK);             /* Switch MAIN_CLK to SIRC to allow FIRC reconfiguration. */
+            }
+            CLOCK_SetupFROHFClocking(96000000U, 0U);            /* Setup FIRC and FRO HF clock */
+            SCG0->FIRCCSR &= ~SCG_FIRCCSR_LK_MASK;              /* Unlock FIRCCSR register */
+            SCG0->FIRCCSR &= ~SCG_FIRCCSR_FIRCSTEN_MASK;        /* FIRC is disabled in Deep Sleep mode */
+            SCG0->FIRCCSR |= SCG_FIRCCSR_LK_MASK;               /* Lock FIRCCSR register */
+            if (switchBackToFIRC) {
+                CLOCK_SetFlashWaitStateBasedOnFreq(96000000UL); /* Set the Flash wait states for 96000000 Hz */
+                CLOCK_AttachClk(kFIRC_to_MAIN_CLK);             /* Switch MAIN_CLK back to FIRC. */
+            }
+            break;
+        case kClockModule_SystemClkSrc:
+            /* !< Set the Flash wait states for 96000000 Hz. */
+            CLOCK_SetFlashWaitStateBasedOnFreq(96000000UL);
+            /* !< Switch MAIN_CLK to FIRC */
+            CLOCK_AttachClk(kFIRC_to_MAIN_CLK);
+            break;
+        default:
+            assert(false);
+            break;
+    }
+}
+
+void BOARD_SetFRO96MLowDrive(void)
+{
+    /* Enable APB clock gate for access to AON. */
+    CLOCK_EnableClock(kCLOCK_GateAonAPB);
+    BOARD_SetFRO96MLowDrive_InitClockModule(kClockModule_MainCoreSupplyMode);
+    BOARD_SetFRO96MLowDrive_InitClockModule(kClockModule_FIRC);
+    BOARD_SetFRO96MLowDrive_InitClockModule(kClockModule_SystemClkSrc);
+
+    /* Set SystemCoreClock variable */
+    SystemCoreClock = BOARD_SETFRO96MLOWDRIVE_CORE_CLOCK;
+}
+
+/*******************************************************************************
+ ******************* Configuration BOARD_SetFRO48MLowDrive *********************
+ ******************************************************************************/
+/* clang-format off */
+/* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+!!Configuration
+name: BOARD_SetFRO48MLowDrive
+outputs:
+- {id: ADC0_CLK.outFreq, value: 24 MHz}
+- {id: AON_ACMP0_CLK0.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
+- {id: AON_ACMP0_CLK1.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
+- {id: AON_APB_CLK.outFreq, value: 10 MHz}
+- {id: AON_AUX_CLK.outFreq, value: 12 MHz}
+- {id: AON_BUS_CLK.outFreq, value: 10 MHz}
+- {id: AON_CPU_CLK.outFreq, value: 10 MHz}
+- {id: AON_I2C_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
+- {id: AON_KPP_CLK.outFreq, value: 16.384 kHz, locked: true, accuracy: '0.001'}
+- {id: AON_LCD_CLK.outFreq, value: 16.384 kHz, locked: true, accuracy: '0.001'}
+- {id: AON_LPADC_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
+- {id: AON_LPTMR_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
+- {id: AON_QTMR0_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
+- {id: AON_QTMR1_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
+- {id: AON_SYSTEM_CLK.outFreq, value: 10 MHz}
+- {id: AON_SYSTICK_CLK.outFreq, value: 10 MHz}
+- {id: AON_UART_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
+- {id: CGU.LPIRC_TRIMCLK_OUT.outFreq, value: 32.768 kHz}
+- {id: CGU.ULPIRC_TRIMCLK_OUT.outFreq, value: 32.768 kHz}
+- {id: CLKOUT.outFreq, value: 12 MHz}
+- {id: CLK_16K.outFreq, value: 16.384 kHz, locked: true, accuracy: '0.001'}
+- {id: CLK_16K_LS.outFreq, value: 16.384 kHz}
+- {id: CLK_1M.outFreq, value: 1 MHz}
+- {id: CMP0_FUNC_CLK.outFreq, value: 12 MHz, locked: true, accuracy: '0.001'}
+- {id: CPU_CLK.outFreq, value: 48 MHz}
+- {id: CTIMER_GRP0_CLK.outFreq, value: 48 MHz}
+- {id: CTIMER_GRP1_CLK.outFreq, value: 24 MHz}
+- {id: DBG_TRACE_CLK.outFreq, value: 16.384 kHz, locked: true, accuracy: '0.001'}
+- {id: FLASH_CLK.outFreq, value: 12 MHz}
+- {id: FREQMEAS_REF.outFreq, value: 12 MHz}
+- {id: FREQMEAS_TAR.outFreq, value: 12 MHz}
+- {id: FRO12M_FLASH.outFreq, value: 12 MHz}
+- {id: FRO12M_PERIPH.outFreq, value: 12 MHz}
+- {id: FRO_16K.outFreq, value: 16.384 kHz, locked: true, accuracy: '0.001'}
+- {id: FRO_HF.outFreq, value: 48 MHz}
+- {id: FRO_HF_DIV.outFreq, value: 48 MHz}
+- {id: FRO_HF_GATED.outFreq, value: 48 MHz}
+- {id: LPIRC_CLK.outFreq, value: 10 MHz, locked: true, accuracy: '0.001'}
+- {id: MAIN_CLK.outFreq, value: 48 MHz}
+- {id: OSTIMER0_CLK.outFreq, value: 16.384 kHz, locked: true, accuracy: '0.001'}
+- {id: PERIPH_GROUP_0_CLK.outFreq, value: 12 MHz, locked: true, accuracy: '0.001'}
+- {id: PERIPH_GROUP_1_CLK.outFreq, value: 12 MHz, locked: true, accuracy: '0.001'}
+- {id: SLOW_CLK.outFreq, value: 12 MHz}
+- {id: SYSTEM_CLK.outFreq, value: 48 MHz}
+- {id: SYSTICK_CLK.outFreq, value: 48 MHz}
+- {id: UTICK0_CLK.outFreq, value: 1 MHz, locked: true, accuracy: '0.001'}
+- {id: WUU_CLK.outFreq, value: 16.384 kHz}
+- {id: WWDT0_CLK.outFreq, value: 1 MHz, locked: true, accuracy: '0.001'}
+- {id: XTAL32K.outFreq, value: 32.768 kHz, locked: true, accuracy: '0.001'}
+settings:
+- {id: ACMP_CLK_INIT_Config, value: custom}
+- {id: ADC0_CLK_INIT_Config, value: custom}
+- {id: AONCoreSupplyMode_INIT_Config, value: custom}
+- {id: AON_ACMP0_CLK_INIT_Config, value: custom}
+- {id: AON_COM_CLK_INIT_Config, value: custom}
+- {id: AON_CPU_ROOT_CLK_INIT_Config, value: custom}
+- {id: AON_KPP_CLK_INIT_Config, value: custom}
+- {id: AON_LCD_CLK_INIT_Config, value: custom}
+- {id: AON_LPADC_CLK_INIT_Config, value: custom}
+- {id: AON_LPTMR_CLK_INIT_Config, value: custom}
+- {id: AON_SYSTICK_CLK_INIT_Config, value: custom}
+- {id: AON_TMR_GRP_CLK_INIT_Config, value: custom}
+- {id: AonAuxClkDiv_INIT_Config, value: custom}
+- {id: CLKOUT_INIT_Config, value: custom}
+- {id: CTIMER_GRP0_CLK_INIT_Config, value: custom}
+- {id: CTIMER_GRP1_CLK_INIT_Config, value: custom}
+- {id: DBG_TRACE_CLK_INIT_Config, value: custom}
+- {id: DCDC_MAIN_MODE, value: mode_low_power}
+- {id: FLASH_CLK_INIT_Config, value: custom}
+- {id: FREQMEAS_INIT_Config, value: custom}
+- {id: FRO16K_INIT_Config, value: custom}
+- {id: FRO_HF_DIV_INIT_Config, value: custom}
+- {id: FRO_INIT_Config, value: custom}
+- {id: MRCC_FRO16K_SEL_INIT_Config, value: custom}
+- {id: OSTIMER0_CLK_INIT_Config, value: custom}
+- {id: PERIPH_GROUP_0_CLK_INIT_Config, value: custom}
+- {id: PERIPH_GROUP_1_CLK_INIT_Config, value: custom}
+- {id: ROOT_AUX_CLK_SEL_INIT_Config, value: custom}
+- {id: ROSC_INIT_Config, value: custom}
+- {id: SIRC_INIT_Config, value: custom}
+- {id: SYSTICK_CLK_INIT_Config, value: custom}
+- {id: SystemClkDiv_INIT_Config, value: custom}
+- {id: UTICK0_CLK_INIT_Config, value: custom}
+- {id: WUU_CLK_INIT_Config, value: custom}
+- {id: WWDT0_CLK_INIT_Config, value: custom}
+- {id: ADC0CLKDIV_HALT, value: Enable}
+- {id: CGU.ACMP0_CLK_SEL.sel, value: N/A}
+- {id: CGU.COM_GRP_SEL.sel, value: N/A}
+- {id: CGU.KPP_CLK_SEL.sel, value: PMU.FRO_16K}
+- {id: CGU.LPADC_CLK_SEL.sel, value: N/A}
+- {id: CGU.SLCD_CLK_SEL.sel, value: PMU.FRO_16K}
+- {id: CGU.TMR_GRP_SEL.sel, value: N/A}
+- {id: CGU_ROOT_AUX_CLK_EN_CFG, value: Disabled}
+- {id: CLKOUTCLKDIV_HALT, value: Enable}
+- {id: CMP0FUNCCLKDIV_HALT, value: Enable}
+- {id: CTIMER_GRP0_CLKDIV_HALT, value: Enable}
+- {id: CTIMER_GRP1_CLKDIV_HALT, value: Enable}
+- {id: DBGTRACECLKDIV_HALT, value: Enable}
+- {id: GLB_CC0_PGRP0_CFG, value: 'Yes'}
+- {id: GLB_CC0_PGRP1_CFG, value: 'Yes'}
+- {id: GROUP0CLKDIV_HALT, value: Enable}
+- {id: GROUP1CLKDIV_HALT, value: Enable}
+- {id: MRCC.ADC0CLKDIV.scale, value: '2', locked: true}
+- {id: MRCC.CLKOUTCLKDIV.scale, value: '1', locked: true}
+- {id: MRCC.CLKOUTCLKSEL.sel, value: SYSCON.SLOW_CLK}
+- {id: MRCC.CMP0FUNCCLKDIV.scale, value: '1', locked: true}
+- {id: MRCC.CMP0RRCLKDIV.scale, value: '1', locked: true}
+- {id: MRCC.CMP0RRCLKSEL.sel, value: SCG.sirc_12mhz_periph}
+- {id: MRCC.CTIMERGRP1CLKDIV.scale, value: '2', locked: true}
+- {id: MRCC.FROHFDIV.scale, value: '1', locked: true}
+- {id: MRCC.OSTIMER0CLKSEL.sel, value: PMU.FRO_16K}
+- {id: MRCC.PGRP0CLKSEL.sel, value: SCG.sirc_12mhz_periph}
+- {id: MRCC.PGRP1CLKSEL.sel, value: SCG.sirc_12mhz_periph}
+- {id: MRCC.SYSTICKCLKSEL.sel, value: SYSCON.CPU_CLK}
+- {id: MRCC.UTICK0CLKSEL.sel, value: SCG.clk_1m}
+- {id: SYSCON.AONAUXCLKDIV.scale, value: '4', locked: true}
+- {id: SYSTICKCLKDIV_HALT, value: Enable}
+- {id: WWDT0CLKDIV_HALT, value: Enable}
+- {id: detectionDelayConfig, value: '50'}
+- {id: detectionDelaySwitchedModeConfig, value: '50'}
+- {id: detectionTimeoutSwitchedModeConfig, value: '50'}
+sources:
+- {id: RTC_AON.ROSC.outFreq, value: 32.768 kHz, enabled: true}
+- {id: SCG.FIRC.outFreq, value: 48 MHz}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
+/* clang-format on */
+
+/*******************************************************************************
+ * Variables for BOARD_SetFRO48MLowDrive configuration
+ ******************************************************************************/
+/*******************************************************************************
+ * Code for BOARD_SetFRO48MLowDrive configuration
+ ******************************************************************************/
+void BOARD_SetFRO48MLowDrive_InitClockModule(clock_module_t module)
+{
+    bool switchBackToFIRC = false;
+
+    uint8_t lpModeTrim = 0;
+
+    switch(module) {
+        case kClockModule_MainCoreSupplyMode:
+            if (CLOCK_GetCoreSysClkFreq() > 48000000U) {
+                /* Reconfigure FROHF to 48 MHz */
+                (void)CLOCK_SetupFROHFClocking(48000000U, 0U);
+                /* Set flash wait states for the new target frequency */
+                CLOCK_SetFlashWaitStateBasedOnFreq(48000000U);
+                /* Refresh SystemCoreClock global variable */
+                SystemCoreClockUpdate();
+            }
+
+            /* Workaround for Errata on PMU: ERR053099 */
+            if (PMU_GetDCDCMainMode(AON__PMU) != kPMU_DcdcMain_LowPowerMode)
+            {
+                /* Set VDD_CORE_MAIN normal mode to 1.1V using IFR1 trim value */
+                PMU_UpdateVDDCore1P1InActiveMode(AON__PMU, CLOCK_GetVDDCore1P1InActiveModeTrim());
+                /* Wait 20us for DCDC stabilization */
+                SDK_DelayAtLeastUs(20U, SystemCoreClock);
+            }
+
+            /* Set VDD_CORE_MAIN low drive mode to 1.0V using IFR1 trim value */
+            lpModeTrim = CLOCK_GetVDDCore1P0InLpModeTrim();
+            /* Update VDD_CORE_MAIN to 1.0V for low drive mode only if trim value is valid */
+            if (lpModeTrim != 0U)
+            {
+                PMU_UpdateVDDCore1P1InLpMode(AON__PMU, lpModeTrim);
+            }
+            else
+            {
+                /* Trim value not available, use default value */
+                PMU_UpdateVDDCore1P1InLpMode(AON__PMU, 8U);
+            }
+            PMU_UpdateDCDCMainMode(AON__PMU, kPMU_DcdcMain_LowPowerMode);
+            /* Wait 20us for DCDC stabilization */
+            SDK_DelayAtLeastUs(20U, SystemCoreClock);
+            /* Set the low voltage detect trim control value for the PMU from IFR1 */
+            PMU_UpdateLvdLvTrim(AON__PMU, CLOCK_GetLvdLvTrim1P0());
+            /* Set the high voltage detect trim control value for the PMU from IFR1 */
+            PMU_UpdateHvdLvTrim(AON__PMU, CLOCK_GetHvdLvTrim1P0());
+            break;
+        case kClockModule_FIRC:
+            /* if FIRC is selected as the SCS clock source switch to the alternate SIRC clock source. */
+            if (((SCG0->CSR & SCG_CSR_SCS_MASK) >> SCG_CSR_SCS_SHIFT) == CLK_ATTACH_CLK_SEL(kFIRC_to_MAIN_CLK)) {
+                switchBackToFIRC = true;
+                CLOCK_AttachClk(kSIRC_to_MAIN_CLK);             /* Switch MAIN_CLK to SIRC to allow FIRC reconfiguration. */
+            }
+            CLOCK_SetupFROHFClocking(48000000U, 0U);            /* Setup FIRC and FRO HF clock */
+            SCG0->FIRCCSR &= ~SCG_FIRCCSR_LK_MASK;              /* Unlock FIRCCSR register */
+            SCG0->FIRCCSR &= ~SCG_FIRCCSR_FIRCSTEN_MASK;        /* FIRC is disabled in Deep Sleep mode */
+            SCG0->FIRCCSR |= SCG_FIRCCSR_LK_MASK;               /* Lock FIRCCSR register */
+            if (switchBackToFIRC) {
+                CLOCK_AttachClk(kFIRC_to_MAIN_CLK);             /* Switch MAIN_CLK back to FIRC. */
+            }
+            break;
+        case kClockModule_SystemClkSrc:
+            /* !< Switch MAIN_CLK to FIRC */
+            CLOCK_AttachClk(kFIRC_to_MAIN_CLK);
+            break;
+        default:
+            assert(false);
+            break;
+    }
+}
+
+void BOARD_SetFRO48MLowDrive(void)
+{
+    /* Enable APB clock gate for access to AON. */
+    CLOCK_EnableClock(kCLOCK_GateAonAPB);
+    BOARD_SetFRO48MLowDrive_InitClockModule(kClockModule_MainCoreSupplyMode);
+    BOARD_SetFRO48MLowDrive_InitClockModule(kClockModule_FIRC);
+    BOARD_SetFRO48MLowDrive_InitClockModule(kClockModule_SystemClkSrc);
+
+    /* Set SystemCoreClock variable */
+    SystemCoreClock = BOARD_SETFRO48MLOWDRIVE_CORE_CLOCK;
+}
+
+/*******************************************************************************
+ ****************** Configuration BOARD_SetFRO48MNormalDrive *******************
+ ******************************************************************************/
+/* clang-format off */
+/* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+!!Configuration
+name: BOARD_SetFRO48MNormalDrive
+outputs:
+- {id: ADC0_CLK.outFreq, value: 24 MHz}
+- {id: AON_ACMP0_CLK0.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
+- {id: AON_ACMP0_CLK1.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
+- {id: AON_APB_CLK.outFreq, value: 10 MHz}
+- {id: AON_AUX_CLK.outFreq, value: 12 MHz}
+- {id: AON_BUS_CLK.outFreq, value: 10 MHz}
+- {id: AON_CPU_CLK.outFreq, value: 10 MHz}
+- {id: AON_I2C_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
+- {id: AON_KPP_CLK.outFreq, value: 16.384 kHz, locked: true, accuracy: '0.001'}
+- {id: AON_LCD_CLK.outFreq, value: 16.384 kHz, locked: true, accuracy: '0.001'}
+- {id: AON_LPADC_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
+- {id: AON_LPTMR_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
+- {id: AON_QTMR0_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
+- {id: AON_QTMR1_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
+- {id: AON_SYSTEM_CLK.outFreq, value: 10 MHz}
+- {id: AON_SYSTICK_CLK.outFreq, value: 10 MHz}
+- {id: AON_UART_CLK.outFreq, value: 2.5 MHz, locked: true, accuracy: '0.001'}
+- {id: CGU.LPIRC_TRIMCLK_OUT.outFreq, value: 32.768 kHz}
+- {id: CGU.ULPIRC_TRIMCLK_OUT.outFreq, value: 32.768 kHz}
+- {id: CLKOUT.outFreq, value: 12 MHz}
+- {id: CLK_16K.outFreq, value: 16.384 kHz, locked: true, accuracy: '0.001'}
+- {id: CLK_16K_LS.outFreq, value: 16.384 kHz}
+- {id: CLK_1M.outFreq, value: 1 MHz}
+- {id: CMP0_FUNC_CLK.outFreq, value: 12 MHz, locked: true, accuracy: '0.001'}
+- {id: CPU_CLK.outFreq, value: 48 MHz}
+- {id: CTIMER_GRP0_CLK.outFreq, value: 48 MHz}
+- {id: CTIMER_GRP1_CLK.outFreq, value: 24 MHz}
+- {id: DBG_TRACE_CLK.outFreq, value: 16.384 kHz, locked: true, accuracy: '0.001'}
+- {id: FLASH_CLK.outFreq, value: 12 MHz}
+- {id: FREQMEAS_REF.outFreq, value: 12 MHz}
+- {id: FREQMEAS_TAR.outFreq, value: 12 MHz}
+- {id: FRO12M_FLASH.outFreq, value: 12 MHz}
+- {id: FRO12M_PERIPH.outFreq, value: 12 MHz}
+- {id: FRO_16K.outFreq, value: 16.384 kHz, locked: true, accuracy: '0.001'}
+- {id: FRO_HF.outFreq, value: 48 MHz}
+- {id: FRO_HF_DIV.outFreq, value: 48 MHz}
+- {id: FRO_HF_GATED.outFreq, value: 48 MHz}
+- {id: LPIRC_CLK.outFreq, value: 10 MHz, locked: true, accuracy: '0.001'}
+- {id: MAIN_CLK.outFreq, value: 48 MHz}
+- {id: OSTIMER0_CLK.outFreq, value: 16.384 kHz, locked: true, accuracy: '0.001'}
+- {id: PERIPH_GROUP_0_CLK.outFreq, value: 12 MHz, locked: true, accuracy: '0.001'}
+- {id: PERIPH_GROUP_1_CLK.outFreq, value: 12 MHz, locked: true, accuracy: '0.001'}
+- {id: SLOW_CLK.outFreq, value: 12 MHz}
+- {id: SYSTEM_CLK.outFreq, value: 48 MHz}
+- {id: SYSTICK_CLK.outFreq, value: 48 MHz}
+- {id: UTICK0_CLK.outFreq, value: 1 MHz, locked: true, accuracy: '0.001'}
+- {id: WUU_CLK.outFreq, value: 16.384 kHz}
+- {id: WWDT0_CLK.outFreq, value: 1 MHz, locked: true, accuracy: '0.001'}
+- {id: XTAL32K.outFreq, value: 32.768 kHz, locked: true, accuracy: '0.001'}
+settings:
+- {id: ACMP_CLK_INIT_Config, value: custom}
+- {id: ADC0_CLK_INIT_Config, value: custom}
+- {id: AONCoreSupplyMode_INIT_Config, value: custom}
+- {id: AON_ACMP0_CLK_INIT_Config, value: custom}
+- {id: AON_COM_CLK_INIT_Config, value: custom}
+- {id: AON_CPU_ROOT_CLK_INIT_Config, value: custom}
+- {id: AON_KPP_CLK_INIT_Config, value: custom}
+- {id: AON_LCD_CLK_INIT_Config, value: custom}
+- {id: AON_LPADC_CLK_INIT_Config, value: custom}
+- {id: AON_LPTMR_CLK_INIT_Config, value: custom}
+- {id: AON_SYSTICK_CLK_INIT_Config, value: custom}
+- {id: AON_TMR_GRP_CLK_INIT_Config, value: custom}
+- {id: AonAuxClkDiv_INIT_Config, value: custom}
+- {id: CLKOUT_INIT_Config, value: custom}
+- {id: CTIMER_GRP0_CLK_INIT_Config, value: custom}
+- {id: CTIMER_GRP1_CLK_INIT_Config, value: custom}
+- {id: DBG_TRACE_CLK_INIT_Config, value: custom}
+- {id: FLASH_CLK_INIT_Config, value: custom}
+- {id: FREQMEAS_INIT_Config, value: custom}
+- {id: FRO16K_INIT_Config, value: custom}
+- {id: FRO_HF_DIV_INIT_Config, value: custom}
+- {id: FRO_INIT_Config, value: custom}
+- {id: MRCC_FRO16K_SEL_INIT_Config, value: custom}
+- {id: OSTIMER0_CLK_INIT_Config, value: custom}
+- {id: PERIPH_GROUP_0_CLK_INIT_Config, value: custom}
+- {id: PERIPH_GROUP_1_CLK_INIT_Config, value: custom}
+- {id: ROOT_AUX_CLK_SEL_INIT_Config, value: custom}
+- {id: ROSC_INIT_Config, value: custom}
+- {id: SIRC_INIT_Config, value: custom}
+- {id: SYSTICK_CLK_INIT_Config, value: custom}
+- {id: SystemClkDiv_INIT_Config, value: custom}
+- {id: UTICK0_CLK_INIT_Config, value: custom}
+- {id: WUU_CLK_INIT_Config, value: custom}
+- {id: WWDT0_CLK_INIT_Config, value: custom}
+- {id: ADC0CLKDIV_HALT, value: Enable}
+- {id: CGU.ACMP0_CLK_SEL.sel, value: N/A}
+- {id: CGU.COM_GRP_SEL.sel, value: N/A}
+- {id: CGU.KPP_CLK_SEL.sel, value: PMU.FRO_16K}
+- {id: CGU.LPADC_CLK_SEL.sel, value: N/A}
+- {id: CGU.SLCD_CLK_SEL.sel, value: PMU.FRO_16K}
+- {id: CGU.TMR_GRP_SEL.sel, value: N/A}
+- {id: CGU_ROOT_AUX_CLK_EN_CFG, value: Disabled}
+- {id: CLKOUTCLKDIV_HALT, value: Enable}
+- {id: CMP0FUNCCLKDIV_HALT, value: Enable}
+- {id: CTIMER_GRP0_CLKDIV_HALT, value: Enable}
+- {id: CTIMER_GRP1_CLKDIV_HALT, value: Enable}
+- {id: DBGTRACECLKDIV_HALT, value: Enable}
+- {id: GLB_CC0_PGRP0_CFG, value: 'Yes'}
+- {id: GLB_CC0_PGRP1_CFG, value: 'Yes'}
+- {id: GROUP0CLKDIV_HALT, value: Enable}
+- {id: GROUP1CLKDIV_HALT, value: Enable}
+- {id: MRCC.ADC0CLKDIV.scale, value: '2', locked: true}
+- {id: MRCC.CLKOUTCLKDIV.scale, value: '1', locked: true}
+- {id: MRCC.CLKOUTCLKSEL.sel, value: SYSCON.SLOW_CLK}
+- {id: MRCC.CMP0FUNCCLKDIV.scale, value: '1', locked: true}
+- {id: MRCC.CMP0RRCLKDIV.scale, value: '1', locked: true}
+- {id: MRCC.CMP0RRCLKSEL.sel, value: SCG.sirc_12mhz_periph}
+- {id: MRCC.CTIMERGRP1CLKDIV.scale, value: '2', locked: true}
+- {id: MRCC.FROHFDIV.scale, value: '1', locked: true}
+- {id: MRCC.OSTIMER0CLKSEL.sel, value: PMU.FRO_16K}
+- {id: MRCC.PGRP0CLKSEL.sel, value: SCG.sirc_12mhz_periph}
+- {id: MRCC.PGRP1CLKSEL.sel, value: SCG.sirc_12mhz_periph}
+- {id: MRCC.SYSTICKCLKSEL.sel, value: SYSCON.CPU_CLK}
+- {id: MRCC.UTICK0CLKSEL.sel, value: SCG.clk_1m}
+- {id: SYSCON.AONAUXCLKDIV.scale, value: '4', locked: true}
+- {id: SYSTICKCLKDIV_HALT, value: Enable}
+- {id: WWDT0CLKDIV_HALT, value: Enable}
+- {id: detectionDelayConfig, value: '50'}
+- {id: detectionDelaySwitchedModeConfig, value: '50'}
+- {id: detectionTimeoutSwitchedModeConfig, value: '50'}
+sources:
+- {id: RTC_AON.ROSC.outFreq, value: 32.768 kHz, enabled: true}
+- {id: SCG.FIRC.outFreq, value: 48 MHz}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
+/* clang-format on */
+
+/*******************************************************************************
+ * Variables for BOARD_SetFRO48MNormalDrive configuration
+ ******************************************************************************/
+/*******************************************************************************
+ * Code for BOARD_SetFRO48MNormalDrive configuration
+ ******************************************************************************/
+void BOARD_SetFRO48MNormalDrive_InitClockModule(clock_module_t module)
+{
+    bool switchBackToFIRC = false;
+
+    uint8_t lpModeTrim = 0;
+
+    switch(module) {
+        case kClockModule_MainCoreSupplyMode:
+            if (CLOCK_GetCoreSysClkFreq() > 48000000U) {
+                /* Reconfigure FROHF to 48 MHz */
+                (void)CLOCK_SetupFROHFClocking(48000000U, 0U);
+                /* Set flash wait states for the new target frequency */
+                CLOCK_SetFlashWaitStateBasedOnFreq(48000000U);
+                /* Refresh SystemCoreClock global variable */
+                SystemCoreClockUpdate();
+            }
+            /* Set VDD_CORE_MAIN to 1.0V using IFR1 trim value for DCDC normal drive mode */
+            PMU_UpdateVDDCore1P1InActiveMode(AON__PMU, CLOCK_GetVDDCore1P0InActiveModeTrim());
+            /* Set normal drive mode of the DCDC */
+            PMU_UpdateDCDCMainMode(AON__PMU, kPMU_DcdcMain_NormalPowerMode);
+            /* Wait 20us for DCDC stabilization */
+            SDK_DelayAtLeastUs(20U, SystemCoreClock);
+            /* Set the low voltage detect trim control value for the PMU from IFR1 */
+            PMU_UpdateLvdLvTrim(AON__PMU, CLOCK_GetLvdLvTrim1P0());
+            /* Set the high voltage detect trim control value for the PMU from IFR1 */
+            PMU_UpdateHvdLvTrim(AON__PMU, CLOCK_GetHvdLvTrim1P0());
+            /* Set VDD_CORE_MAIN low drive mode to 1.0V using IFR1 trim value */
+            /* The low drive mode is used in low power modes */
+            lpModeTrim = CLOCK_GetVDDCore1P0InLpModeTrim();
+            /* Update VDD_CORE_MAIN to 1.0V for low drive mode only if trim value is valid */
+            if (lpModeTrim != 0U)
+            {
+                PMU_UpdateVDDCore1P1InLpMode(AON__PMU, lpModeTrim);
+            }
+            else
+            {
+                /* Trim value not available, use default value */
+                PMU_UpdateVDDCore1P1InLpMode(AON__PMU, 8U);
+            }
+            break;
+        case kClockModule_FIRC:
+            /* if FIRC is selected as the SCS clock source switch to the alternate SIRC clock source. */
+            if (((SCG0->CSR & SCG_CSR_SCS_MASK) >> SCG_CSR_SCS_SHIFT) == CLK_ATTACH_CLK_SEL(kFIRC_to_MAIN_CLK)) {
+                switchBackToFIRC = true;
+                CLOCK_AttachClk(kSIRC_to_MAIN_CLK);             /* Switch MAIN_CLK to SIRC to allow FIRC reconfiguration. */
+            }
+            CLOCK_SetupFROHFClocking(48000000U, 0U);            /* Setup FIRC and FRO HF clock */
+            SCG0->FIRCCSR &= ~SCG_FIRCCSR_LK_MASK;              /* Unlock FIRCCSR register */
+            SCG0->FIRCCSR &= ~SCG_FIRCCSR_FIRCSTEN_MASK;        /* FIRC is disabled in Deep Sleep mode */
+            SCG0->FIRCCSR |= SCG_FIRCCSR_LK_MASK;               /* Lock FIRCCSR register */
+            if (switchBackToFIRC) {
+                CLOCK_AttachClk(kFIRC_to_MAIN_CLK);             /* Switch MAIN_CLK back to FIRC. */
+            }
+            break;
+        case kClockModule_SystemClkSrc:
+            /* !< Switch MAIN_CLK to FIRC */
+            CLOCK_AttachClk(kFIRC_to_MAIN_CLK);
+            break;
+        default:
+            assert(false);
+            break;
+    }
+}
+
+void BOARD_SetFRO48MNormalDrive(void)
+{
+    /* Enable APB clock gate for access to AON. */
+    CLOCK_EnableClock(kCLOCK_GateAonAPB);
+    BOARD_SetFRO48MNormalDrive_InitClockModule(kClockModule_MainCoreSupplyMode);
+    BOARD_SetFRO48MNormalDrive_InitClockModule(kClockModule_FIRC);
+    BOARD_SetFRO48MNormalDrive_InitClockModule(kClockModule_SystemClkSrc);
+
+    /* Set SystemCoreClock variable */
+    SystemCoreClock = BOARD_SETFRO48MNORMALDRIVE_CORE_CLOCK;
+}
