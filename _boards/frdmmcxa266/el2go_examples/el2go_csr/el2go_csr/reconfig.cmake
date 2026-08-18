@@ -3,6 +3,9 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
+# Select Mbed TLS 4.x compat shim for this board.
+set(EL2GO_CSR_MBEDTLS_VERSION "4")
+
 mcux_add_macro(
     TOOLCHAINS armgcc iar mdk
     TARGETS release

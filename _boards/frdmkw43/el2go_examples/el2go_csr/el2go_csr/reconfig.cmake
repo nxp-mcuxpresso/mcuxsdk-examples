@@ -1,11 +1,3 @@
-#
-# Copyright 2026 NXP
-#
-# SPDX-License-Identifier: BSD-3-Clause
-
-# Select Mbed TLS 4.x compat shim for this board.
-set(EL2GO_CSR_MBEDTLS_VERSION "4")
-
 mcux_add_macro(
     TOOLCHAINS armgcc iar mdk
     TARGETS release
@@ -22,7 +14,7 @@ mcux_add_macro(
 )
 
 # -------- adjust heap and stack size -----------
-# min 8kB needed, for swapping flash sector 
+# min 8kB needed, for swapping flash sector on pflash 
 # with read-modify-write pattern
 mcux_add_iar_configuration(
   LD "--config_def=__heap_size__=0x4000"
@@ -53,3 +45,5 @@ mcux_add_armgcc_configuration(
 mcux_add_mdk_configuration(
     CC "-Wno-typedef-redefinition"
 )
+
+

@@ -17,7 +17,6 @@ el2go_csr_s:
       - examples/el2go_examples/el2go_csr/el2go_csr_s/readme.md
   boards:
     frdmmcxl255@cm33: []
-    frdmkw43: []
     frdmmcxa577: []
     frdmmcxa287: []
 

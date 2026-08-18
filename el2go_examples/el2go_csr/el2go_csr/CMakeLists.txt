@@ -13,11 +13,26 @@ include(${SdkRootDirPath}/${board_root}/${board}/el2go_examples/el2go_csr/el2go_
 # ------- Define base path variable -------
 set(EL2GO_CSR_BASE middleware/nxp_iot_agent/ex/src/apps/psa_examples/el2go_csr)
 
+# ------- Select mbedtls compat shim (default: v3, boards targeting 4.x set this in reconfig.cmake) -------
+if(NOT DEFINED EL2GO_CSR_MBEDTLS_VERSION)
+    set(EL2GO_CSR_MBEDTLS_VERSION "3")
+endif()
+
+if(EL2GO_CSR_MBEDTLS_VERSION STREQUAL "4")
+    set(_csr_compat_src ${EL2GO_CSR_BASE}/lib/mbedtls_compat/src/csr_mbedtls_compat_v4.c)
+    message(STATUS "csr_mbedtls_compat: using Mbed TLS v4 implementation")
+else()
+    set(_csr_compat_src ${EL2GO_CSR_BASE}/lib/mbedtls_compat/src/csr_mbedtls_compat_v3.c)
+    message(STATUS "csr_mbedtls_compat: using Mbed TLS v3 implementation")
+endif()
+
 #-------- add mbedtls configs -----------
-mcux_remove_macro("-DMBEDTLS_CONFIG_FILE=\\\"mcux_mbedtls_psa_crypto_config.h\\\"")
-mcux_add_macro(
-    "-DMBEDTLS_CONFIG_FILE=\\\"mcux_mbedtls_config.h\\\""
-)
+if(EL2GO_CSR_MBEDTLS_VERSION STREQUAL "3")
+    mcux_remove_macro("-DMBEDTLS_CONFIG_FILE=\\\"mcux_mbedtls_psa_crypto_config.h\\\"")
+    mcux_add_macro(
+        "-DMBEDTLS_CONFIG_FILE=\\\"mcux_mbedtls_config.h\\\""
+    )
+endif()
 
 # ------- littlefs related configs --------
 mcux_add_configuration(
@@ -54,8 +69,10 @@ mcux_add_source(
 
             ${EL2GO_CSR_BASE}/app/inc/*.h
             ${EL2GO_CSR_BASE}/app/src/el2go_csr_tlv_parser.c
-            ${EL2GO_CSR_BASE}/app/src/el2go_csr.c 
-            
+            ${EL2GO_CSR_BASE}/app/src/el2go_csr.c
+
+            ${EL2GO_CSR_BASE}/lib/mbedtls_compat/inc/*.h
+            ${_csr_compat_src}
 )
 
 mcux_add_include(
@@ -70,13 +87,21 @@ mcux_add_include(
 
              ${EL2GO_CSR_BASE}/common/inc
              ${EL2GO_CSR_BASE}/app/inc
-             
+
+             ${EL2GO_CSR_BASE}/lib/mbedtls_compat/inc
 )
 
 mcux_add_macro(
     CC "PRINTF_ADVANCED_ENABLE=1\
         MBEDTLS_USER_CONFIG_FILE=\\\"el2go_csr_mbedtls_user_config.h\\\""
 )
+
+if(EL2GO_CSR_MBEDTLS_VERSION STREQUAL "4")
+    mcux_add_macro(
+        CC "PRINTF_ADVANCED_ENABLE=1\
+            TF_PSA_CRYPTO_USER_CONFIG_FILE=\\\"el2go_csr_mbedtls_user_config.h\\\""
+    )
+endif()
 
 # -------- add executable target -----------
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
