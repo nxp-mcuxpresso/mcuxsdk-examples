@@ -8,7 +8,11 @@ Hardware requirements
 
 Board settings
 ==============
-Connect J19-5(GPIO_IO03 pad, I2C6_SCL_3V3) and J19-9(GND) to oscilloscope
+Connect J18 pin 5 (GPIO_IO03) and J18 pin 6 (GND) to oscilloscope.
+
+Note: J18 is the 40-PIN GPIO HDR expansion connector.
+      - J18-Pin5: GPIO_IO03 (RGPIO2_IO03) - GPIO output signal
+      - J18-Pin6: Common Ground
 
 **Please note this application can't support running with Linux BSP!**
 
