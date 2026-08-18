@@ -1,0 +1,7 @@
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+config MCUX_HW_BOARD_mcimx93evk_ca55
+    bool
+    default y
