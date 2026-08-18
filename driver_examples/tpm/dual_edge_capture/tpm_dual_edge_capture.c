@@ -143,6 +143,7 @@ int main(void)
      */
     tpm_source_clock_ms = TPM_SOURCE_CLOCK / 1000000;
     assert(0 != tpm_source_clock_ms);
+    assert(g_secondChannelOverflowCount >= g_firstChannelOverflowCount);
     pulseWidth = (((g_secondChannelOverflowCount - g_firstChannelOverflowCount) *
                        (TPM_MAX_COUNTER_VALUE(DEMO_TPM_BASEADDR) + 1U) +
                    capture2Val - capture1Val) +
