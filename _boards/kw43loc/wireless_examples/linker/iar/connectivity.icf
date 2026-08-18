@@ -246,11 +246,12 @@ define exported symbol INT_STORAGE_SECTOR_SIZE          = m_sector_size;
  * This way, we are able to limit the size of the application code to the available space.
  */
 define symbol m_reserved_size           = NV_STORAGE_END_ADDRESS - INT_STORAGE_START + 1;
-define exported symbol m_image_length   = m_flw_size - m_flash_radio_size - m_reserved_size;
+define symbol m_max_image_length        = m_flw_size - m_flash_radio_size - m_reserved_size;
 
-/* code is placed within FLW range */
+/* code is placed within FLW range - the TEXT region is sized to the maximum available space.
+ * The actual image length (m_image_length) is computed after linking, see below. */
 define exported symbol m_text_start                     = m_flw_start;
-define exported symbol m_text_end                       = m_flw_start + m_image_length - 1;
+define exported symbol m_text_end                       = m_flw_start + m_max_image_length - 1;
 define exported symbol __VECTOR_TABLE                   = m_text_start;
 
 /*************************** RAM LAYOUT ************************************/
@@ -417,6 +418,10 @@ define block SETTINGS_HANDLERS with fixed order { readonly section ._settings_ha
 define image symbol _settings_handler_static_list_start = ADDR(SETTINGS_HANDLERS);
 define image symbol _settings_handler_static_list_end   = END(SETTINGS_HANDLERS);
 
+/* Enclosing block gathering all the readonly application content so that the actual
+ * image length can be computed after linking (see m_image_length below). */
+define block APPLICATION with fixed order { block TEXT, block SETTINGS_HANDLERS };
+
 /********************************************** PLACEMENT **********************************************/
 
 /* shared memory placements */
@@ -424,10 +429,13 @@ place in rpmsg_sh_mem_region                    { section rpmsg_sh_mem_section }
 place in m_shared_data_region                   { section .m_shared_data };
 
 /* core0 memory placements */
-place in TEXT_region                            { block TEXT };
-place in TEXT_region                            { block SETTINGS_HANDLERS };
+place in TEXT_region                            { block APPLICATION };
 place in DATA0_region                           { block DATA0 };
 place in CSTACK_region                          { block CSTACK };
+
+/* m_image_length is the actual size of the image once all code is linked. It is
+ * consumed by the vector table (startup file) as the boot ROM image length field. */
+define image symbol m_image_length              = END(APPLICATION) - m_text_start + 1;
 
 if (gUseNVMLink_d) {
     define symbol NV_VIRTUAL_PAGE_BOUND = NV_STORAGE_END_ADDRESS - (NV_STORAGE_MAX_SECTORS/2 * NV_STORAGE_SECTOR_SIZE);

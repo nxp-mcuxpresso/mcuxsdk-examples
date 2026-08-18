@@ -171,11 +171,12 @@ __MATTER_FACTORY_DATA_START         = __MATTER_FACTORY_DATA_END - __MATTER_FACTO
  * This way, we are able to limit the size of the application code to the available space.
  */
 m_reserved_size = m_fsl_prodInfo_end - __MATTER_FACTORY_DATA_START + 1;
-m_image_length = m_flw_size - m_flash_radio_size - m_reserved_size;
+m_max_image_length = m_flw_size - m_flash_radio_size - m_reserved_size;
 
-/* code is placed within FLW range */
+/* code is placed within FLW range - the m_text region is sized to the maximum available
+ * space. The actual image length (m_image_length) is computed after linking, see below. */
 m_text_start                        = m_interrupts_end + 1;
-m_text_end                          = m_flw_start + m_image_length - 1;
+m_text_end                          = m_flw_start + m_max_image_length - 1;
 m_text_size                         = m_text_end - m_text_start + 1;
 
 /********************************************** RAM **********************************************/
@@ -467,6 +468,12 @@ SECTIONS
   } > m_data0
 
   __DATA_END = __DATA_ROM + (__data_end__ - __data_start__);
+
+  /* m_image_length is the actual size of the image once all code is linked. It is
+   * consumed by the vector table (startup file) as the boot ROM image length field.
+   * __DATA_END is the LMA end of the flash-loaded image; m_flw_start is the start of
+   * the flashed image (vector table) so the whole image is accounted for. */
+  m_image_length = __DATA_END - m_flw_start;
 
   text_end = ORIGIN(m_text) + LENGTH(m_text);
   ASSERT(__DATA_END <= text_end, "region m_text overflowed with text and data")
