@@ -44,28 +44,3 @@ mcux_add_macro(
         -DSDK_I2C_BASED_COMPONENT_USED=1"
 )
 
-# Remove default linker scripts. The app requires a custom set of linker scripts
-mcux_remove_armgcc_linker_script(
-    BASE_PATH ${SdkRootDirPath}
-    TARGETS debug release
-    LINKER ${device_root}/RT/RT1150/MIMXRT1152/gcc/MIMXRT1152xxxxx_sdram.ld
-)
-
-mcux_remove_iar_linker_script(
-    BASE_PATH ${SdkRootDirPath}
-    TARGETS debug release
-    LINKER ${device_root}/RT/RT1150/MIMXRT1152/iar/MIMXRT1152xxxxx_sdram.icf
-)
-
-# Add custom linker scripts
-mcux_add_armgcc_linker_script(
-    BASE_PATH ${SdkRootDirPath}
-    TARGETS debug release
-    LINKER middleware/vglite/vglite_sdk/linker/MIMXRT1152xxxxx_sdram_cube.ld
-)
-
-mcux_add_iar_linker_script(
-    BASE_PATH ${SdkRootDirPath}
-    TARGETS debug release
-    LINKER middleware/vglite/vglite_sdk/linker/MIMXRT1152xxxxx_sdram_cube.icf
-)
