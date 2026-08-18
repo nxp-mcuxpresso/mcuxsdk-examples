@@ -33,18 +33,10 @@ void BOARD_InitHardware(void)
         //.enable_clk = true,
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
     };
-    clk_t lpi2c6clk = {
-        .clkId = kCLOCK_lpi2c6,
-        .pclkId = kCLOCK_osc24m,
-        .rate = 24000000UL,
-        //.enable_clk = true,
-        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
-    };
 
     /* clang-format on */
     SystemPlatformInit();
     BOARD_InitBootPins();
-    BOARD_InitI2C6Pins();
     BOARD_InitPDMPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
@@ -55,9 +47,6 @@ void BOARD_InitHardware(void)
     CLOCK_EnableClock(audiopll1CLKCfg.clkId);
     CLOCK_SetRate(&pdmClkCfg);
     CLOCK_EnableClock(pdmClkCfg.clkId);
-    CLOCK_SetRate(&lpi2c6clk);
-    CLOCK_EnableClock(lpi2c6clk.clkId);
-
 
 }
 /*${function:end}*/

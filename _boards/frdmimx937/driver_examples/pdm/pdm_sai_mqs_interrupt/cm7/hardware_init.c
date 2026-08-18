@@ -50,10 +50,19 @@ void BOARD_InitHardware(void)
     sai_master_clock_t saiMasterCfg = {
         .mclkOutputEnable = true,
     };
+    clk_t lpi2cclk = {
+        .clkId = kCLOCK_lpi2c2,
+        .pclkId = kCLOCK_osc24m,
+        .rate = 24000000UL,
+        //.enable_clk = true,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
+    };
     /* clang-format on */
+    pca6416a_handle_t handle;
 
     SystemPlatformInit();
     BOARD_InitBootPins();
+    BOARD_InitI2C2Pins();
     BOARD_InitPDMPins();
     BOARD_InitMQSPins();
     BOARD_BootClockRUN();
@@ -75,5 +84,11 @@ void BOARD_InitHardware(void)
     saiMasterCfg.mclkSourceClkHz = DEMO_SAI_CLK_FREQ;
     saiMasterCfg.mclkHz          = saiMasterCfg.mclkSourceClkHz;
     SAI_SetMasterClockConfig(DEMO_SAI, &saiMasterCfg);
+    CLOCK_SetRate(&lpi2cclk);
+    CLOCK_EnableClock(lpi2cclk.clkId);
+
+    BOARD_InitPCA6416A(&handle);
+    PCA6416A_SetDirection(&handle, (1 << BOARD_PCA6416A_EXT_5V0_PWR_EN), kPCA6416A_Output);
+    PCA6416A_SetPins(&handle, (1 << BOARD_PCA6416A_EXT_5V0_PWR_EN));
 }
 /*${function:end}*/
