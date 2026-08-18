@@ -32,17 +32,17 @@ void IO_Config(void)
 
     /* XBAR2: GPIO1_TrigOut0 → XBAR2_OUT0, GPIO1_TrigOut1 → XBAR2_OUT1 */
     XBAR_Init(kXBAR_HSP_XBAR2);
-    XBAR_SetSignalsConnection(kHSP_XBAR_2_InputHspGpio1TrigOut0, kHSP_XBAR_2_OutputHspXbar2Out0);
-    XBAR_SetSignalsConnection(kHSP_XBAR_2_InputHspGpio1TrigOut1, kHSP_XBAR_2_OutputHspXbar2Out1);
+    XBAR_SetSignalsConnection(kHSP__XBAR_2_InputHspGpio1TrigOut0, kHSP__XBAR_2_OutputHspXbar0Xbar1In2);
+    XBAR_SetSignalsConnection(kHSP__XBAR_2_InputHspGpio1TrigOut1, kHSP__XBAR_2_OutputHspXbar0Xbar1In3);
 
     /* XBAR1: XBAR2_OUT0 → EVTG0_INA0, XBAR2_OUT1 → EVTG0_INB0 */
     XBAR_Init(kXBAR_HSP_XBAR1);
-    XBAR_SetSignalsConnection(kHSP_XBAR_1_InputHspXbar2Out0, kHSP_XBAR_1_OutputHspEvtg0Ina0);
-    XBAR_SetSignalsConnection(kHSP_XBAR_1_InputHspXbar2Out1, kHSP_XBAR_1_OutputHspEvtg0Inb0);
+    XBAR_SetSignalsConnection(kHSP__XBAR_1_InputHspXbar2Out0, kHSP__XBAR_1_OutputHspEvtg0Ina0);
+    XBAR_SetSignalsConnection(kHSP__XBAR_1_InputHspXbar2Out1, kHSP__XBAR_1_OutputHspEvtg0Inb0);
 
     /* XBAR0: EVTG0_OUTA0 → XBAR0_INOUT26 (PIO2_26, mux=A, LED) */
     XBAR_Init(kXBAR_HSP_XBAR0);
-    XBAR_SetSignalsConnection(kHSP_XBAR_0_InputHspEvtg0Outa0, kHSP_XBAR_0_OutputHspXbar1Out26);
+    XBAR_SetSignalsConnection(kHSP__XBAR_0_InputHspEvtg0Outa0, kHSP__XBAR_0_OutputHspXbar0Out26);
 }
 
 void BOARD_InitHardware(void)

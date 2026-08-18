@@ -34,13 +34,13 @@ void BOARD_InitHardware(void)
     GPIO_SetPinInterruptConfig(HSP__GPIO_0, 8U, kGPIO_ActiveHighTriggerOutputEnable);
 
     XBAR_Init(kXBAR_HSP_XBAR2);
-    XBAR_SetSignalsConnection(kHSP_XBAR_2_InputHspGpio1TrigOut0, kHSP_XBAR_2_OutputHspXbar2Out0);
-    XBAR_SetSignalsConnection(kHSP_XBAR_2_InputHspGpio1TrigOut1, kHSP_XBAR_2_OutputHspXbar2Out1);
-    XBAR_SetSignalsConnection(kHSP_XBAR_2_InputHspGpio0TrigOut0, kHSP_XBAR_2_OutputHspXbar2Out2);
+    XBAR_SetSignalsConnection(kHSP__XBAR_2_InputHspGpio1TrigOut0, kHSP__XBAR_2_OutputHspXbar0Xbar1In2);
+    XBAR_SetSignalsConnection(kHSP__XBAR_2_InputHspGpio1TrigOut1, kHSP__XBAR_2_OutputHspXbar0Xbar1In3);
+    XBAR_SetSignalsConnection(kHSP__XBAR_2_InputHspGpio0TrigOut0, kHSP__XBAR_2_OutputHspXbar0Xbar1In4);
 
     XBAR_Init(kXBAR_HSP_XBAR0);
-    XBAR_SetSignalsConnection(kHSP_XBAR_0_InputHspXbar2Out0, kHSP_XBAR_0_OutputHspEqdc0PhaseAIn);
-    XBAR_SetSignalsConnection(kHSP_XBAR_0_InputHspXbar2Out1, kHSP_XBAR_0_OutputHspEqdc0PhaseBIn);
-    XBAR_SetSignalsConnection(kHSP_XBAR_0_InputHspXbar2Out2, kHSP_XBAR_0_OutputHspEqdc0IndexIn);
+    XBAR_SetSignalsConnection(kHSP__XBAR_0_InputHspXbar2Out0, kHSP__XBAR_0_OutputHspEqdc0PhaseAIn);
+    XBAR_SetSignalsConnection(kHSP__XBAR_0_InputHspXbar2Out1, kHSP__XBAR_0_OutputHspEqdc0PhaseBIn);
+    XBAR_SetSignalsConnection(kHSP__XBAR_0_InputHspXbar2Out2, kHSP__XBAR_0_OutputHspEqdc0IndexIn);
 }
 /*${function:end}*/

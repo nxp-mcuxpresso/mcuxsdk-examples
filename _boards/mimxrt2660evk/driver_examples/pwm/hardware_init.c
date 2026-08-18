@@ -19,10 +19,10 @@ void BOARD_InitHardware(void)
 
     /* Set the PWM Fault inputs to a low value */
     XBAR_Init(kXBAR_HSP_XBAR0);
-    XBAR_SetSignalsConnection(kHSP_XBAR_0_InputLogicLow, kHSP_XBAR_0_OutputHspFlexpwm1FaultIn0);
-    XBAR_SetSignalsConnection(kHSP_XBAR_0_InputLogicLow, kHSP_XBAR_0_OutputHspFlexpwm1FaultIn1);
-    XBAR_SetSignalsConnection(kHSP_XBAR_0_InputLogicLow, kHSP_XBAR_0_OutputHspFlexpwm1FaultIn2);
-    XBAR_SetSignalsConnection(kHSP_XBAR_0_InputLogicLow, kHSP_XBAR_0_OutputHspFlexpwm1FaultIn3);
+    XBAR_SetSignalsConnection(kHSP__XBAR_0_InputLogicLow, kHSP__XBAR_0_OutputHspFlexpwm1FaultIn0);
+    XBAR_SetSignalsConnection(kHSP__XBAR_0_InputLogicLow, kHSP__XBAR_0_OutputHspFlexpwm1FaultIn1);
+    XBAR_SetSignalsConnection(kHSP__XBAR_0_InputLogicLow, kHSP__XBAR_0_OutputHspFlexpwm1FaultIn2);
+    XBAR_SetSignalsConnection(kHSP__XBAR_0_InputLogicLow, kHSP__XBAR_0_OutputHspFlexpwm1FaultIn3);
 
     XBAR_SetSignalsConnection(kHSP_XBAR_0_InputLogicLow, kHSP_XBAR_0_OutputHspFlexpwm0123FaultIn4);
     XBAR_SetSignalsConnection(kHSP_XBAR_0_InputLogicLow, kHSP_XBAR_0_OutputHspFlexpwm0123FaultIn5);

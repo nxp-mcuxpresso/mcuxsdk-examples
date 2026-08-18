@@ -173,13 +173,13 @@ void BOARD_InitPWMPins(void) {
 
   /* HSP_FLEXPWM1_SM0_TRIG_OUT0 -> XBAR2_IN44 -> XBAR2_OUT0 -> XBAR0_IN2 -> XBAR0_OUT10 -> HSP_ADC0_1_CH0_1_TRIG_IN0 */
   /* FLEXPWM1_SM0_TRIG_OUT0 -> ADC0_TRIG_IN0 */
-  XBAR_SetSignalsConnection(kHSP_XBAR_2_InputHspFlexpwm1Sm0TrigOut0, kHSP_XBAR_2_OutputHspXbar2Out0);
-  XBAR_SetSignalsConnection(kHSP_XBAR_0_InputHspXbar2Out0, kHSP_XBAR_0_OutputHspAdc01Ch01TrigIn0);
+  XBAR_SetSignalsConnection(kHSP__XBAR_2_InputHspFlexpwm1Sm0TrigOut0, kHSP__XBAR_2_OutputHspXbar0Xbar1In2);
+  XBAR_SetSignalsConnection(kHSP__XBAR_0_InputHspXbar2Out0, kHSP__XBAR_0_OutputHspAdc01Ch01TrigIn0);
   
   /* HSP_FLEXPWM1_SM0_TRIG_OUT0 -> XBAR2_IN44 -> XBAR2_OUT0 -> XBAR0_IN2 -> XBAR0_OUT10 -> HSP_ADC1_0_CH0_1_TRIG_IN4 */
   /* FLEXPWM1_SM0_TRIG_OUT0 -> ADC1_TRIG_IN4 */
-  XBAR_SetSignalsConnection(kHSP_XBAR_2_InputHspFlexpwm1Sm0TrigOut0, kHSP_XBAR_2_OutputHspXbar2Out0);
-  XBAR_SetSignalsConnection(kHSP_XBAR_0_InputHspXbar2Out0, kHSP_XBAR_0_OutputHspAdc10Ch01TrigIn4);
+  XBAR_SetSignalsConnection(kHSP__XBAR_2_InputHspFlexpwm1Sm0TrigOut0, kHSP__XBAR_2_OutputHspXbar0Xbar1In2);
+  XBAR_SetSignalsConnection(kHSP__XBAR_0_InputHspXbar2Out0, kHSP__XBAR_0_OutputHspAdc10Ch01TrigIn4);
 
 }
 
@@ -210,8 +210,8 @@ void BOARD_InitACMPPins(void) {
   XBAR_Init(kXBAR_WAKE);                        /* Initialize WAKE XBAR module */
   
   /* ACMP2_OUT -> FLEXPWM1_FAULT0 */
-  XBAR_SetSignalsConnection(kWAKE_XBAR_InputWakeAcmp2Cout, kWAKE_XBAR_OutputWakeXbarOut21);
-  XBAR_SetSignalsConnection(kHSP_XBAR_1_InputWakeXbarOut21, kHSP_XBAR_0_OutputHspFlexpwm1FaultIn0);
+  XBAR_SetSignalsConnection(kWAKE__XBAR_InputWakeAcmp2Cout, kWAKE__XBAR_OutputHspXbar0In78Xbar1In46);
+  XBAR_SetSignalsConnection(kHSP__XBAR_1_InputWakeXbarOut21, kHSP__XBAR_0_OutputHspFlexpwm1FaultIn0);
 }
 
 
@@ -271,8 +271,8 @@ void BOARD_InitEQDCPins(void) {
   CLOCK_EnableClock(kCLOCK_MAIN_iomuxc);          /* Enable MAIN IOMUXC clock gate */
   
   CLOCK_EnableClock(kCLOCK_MAIN_hsp_xbar0);            /* Enable HSP XBAR0 clock gate */
-  XBAR_SetSignalsConnection(kHSP_XBAR_0_InputHspXbar1In12, kHSP_XBAR_0_OutputHspEqdc1PhaseAIn); /* HSP_XBAR1_IN12 output assigned to HSP_XBAR_0_IN98 input is connected to HSP_XBAR_0_OUT131 output assigned to HSP_EQDC1_PHASE_A_IN */
-  XBAR_SetSignalsConnection(kHSP_XBAR_0_InputHspXbar1In13, kHSP_XBAR_0_OutputHspEqdc1PhaseBIn); /* HSP_XBAR1_IN13 output assigned to HSP_XBAR_0_IN99 input is connected to HSP_XBAR_0_OUT132 output assigned to HSP_EQDC1_PHASE_B_IN */
+  XBAR_SetSignalsConnection(kHSP__XBAR_0_InputHspXbar0In12, kHSP__XBAR_0_OutputHspEqdc1PhaseAIn); /* HSP_XBAR1_IN12 output assigned to HSP_XBAR_0_IN98 input is connected to HSP_XBAR_0_OUT131 output assigned to HSP_EQDC1_PHASE_A_IN */
+  XBAR_SetSignalsConnection(kHSP__XBAR_0_InputHspXbar0In13, kHSP__XBAR_0_OutputHspEqdc1PhaseBIn); /* HSP_XBAR1_IN13 output assigned to HSP_XBAR_0_IN99 input is connected to HSP_XBAR_0_OUT132 output assigned to HSP_EQDC1_PHASE_B_IN */
 }
 
 
