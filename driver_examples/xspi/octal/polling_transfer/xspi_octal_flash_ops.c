@@ -68,7 +68,16 @@ status_t xspi_nor_wait_bus_busy(XSPI_Type *base, bool enableOctal)
     status_t status;
     xspi_transfer_t flashXfer;
 
+#if defined(FLASH_INFINEON_SEMPER) && FLASH_INFINEON_SEMPER
+    /*
+     * Register-status reads use a fixed literal "00 00 00 00" address per the transaction
+     * definition (e.g. Infineon S28HS512T Table 82 RDSR1_4_0), not the flash's AHB base
+     * address.
+     */
+    flashXfer.deviceAddress = 0U;
+#else
     flashXfer.deviceAddress = EXAMPLE_XSPI_AMBA_BASE;
+#endif
     flashXfer.cmdType       = kXSPI_Read;
     flashXfer.data          = &readValue;
     flashXfer.targetGroup   = kXSPI_TargetGroup0;
@@ -136,7 +145,45 @@ status_t xspi_nor_enable_octal_mode(XSPI_Type *base)
     memcpy(TempOctalReadDDRLUTCommandSeq, OctalReadDDRLUTCommandSeq, sizeof(OctalReadDDRLUTCommandSeq));
 #endif
 
-#if defined(FLASH_ADESTO) && FLASH_ADESTO
+#if defined(FLASH_INFINEON_SEMPER) && FLASH_INFINEON_SEMPER
+    /*
+     * Infineon SEMPER(TM) (e.g. S28HS512T/S28HS01GT): unlike MXIC/Adesto, octal mode is
+     * entered by writing Configuration Register 5 (CFR5V) via a "Write Any Register" (0x71)
+     * SPI transaction, not a fixed-address single-byte config write. FLASH_CFR5V_ADDR /
+     * FLASH_ENABLE_OCTAL_CMD are supplied by the board's app.h.
+     */
+    status = xspi_nor_write_enable(base, 0, false);
+    if (status != kStatus_Success)
+    {
+        return status;
+    }
+
+    uint32_t cfr5Value = FLASH_ENABLE_OCTAL_CMD;
+
+    /*
+     * The VDK MultiVendorSPIFlash model requires deviceAddress (loaded into SFAR) to fall
+     * within the flash's configured AHB window (EXAMPLE_XSPI_AMBA_BASE..+deviceSize) -- an
+     * out-of-range SFAR (e.g. the raw Table 14 register address alone) makes the model log
+     * "address does not lie in any of the flashes" and crash in its fallback path. So the
+     * AMBA base must stay added here, even though Table 14's addresses are documented as
+     * absolute protocol-level register addresses.
+     */
+    flashXfer.deviceAddress   = EXAMPLE_XSPI_AMBA_BASE + FLASH_CFR5V_ADDR;
+    flashXfer.cmdType         = kXSPI_Write;
+    flashXfer.seqIndex        = NOR_CMD_LUT_SEQ_IDX_ENTER_OPI;
+    flashXfer.targetGroup     = kXSPI_TargetGroup0;
+    flashXfer.data            = &cfr5Value;
+    flashXfer.dataSize        = 1;
+    flashXfer.lockArbitration = false;
+
+    status = XSPI_TransferBlocking(base, &flashXfer);
+    if (status != kStatus_Success)
+    {
+        return status;
+    }
+
+    status = xspi_nor_wait_bus_busy(base, true);
+#elif defined(FLASH_ADESTO) && FLASH_ADESTO
     uint32_t tempLUT[4] = {0};
     uint32_t readValue;
 
@@ -475,7 +522,12 @@ status_t xspi_nor_get_vendor_id(XSPI_Type *base, uint8_t *vendorId)
 {
     uint32_t temp;
     xspi_transfer_t flashXfer;
+#if defined(FLASH_INFINEON_SEMPER) && FLASH_INFINEON_SEMPER
+    /* RDIDN_4_0 (Octal) / RDID (SPI) use a fixed zero address field, not the AHB base. */
+    flashXfer.deviceAddress = 0U;
+#else
     flashXfer.deviceAddress = EXAMPLE_XSPI_AMBA_BASE;
+#endif
     flashXfer.cmdType       = kXSPI_Read;
     flashXfer.targetGroup   = kXSPI_TargetGroup0;
 #if defined(FLASH_ADESTO) && FLASH_ADESTO

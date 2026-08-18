@@ -9,7 +9,9 @@
 #include "fsl_xspi.h"
 #include "app.h"
 #include "fsl_debug_console.h"
+#if (defined CACHE_MAINTAIN) && (CACHE_MAINTAIN == 1)
 #include "fsl_cache.h"
+#endif
 /*******************************************************************************
  * Definitions
  ******************************************************************************/

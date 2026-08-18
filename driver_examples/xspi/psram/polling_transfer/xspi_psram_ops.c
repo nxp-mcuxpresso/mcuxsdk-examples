@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 NXP
+ * Copyright 2023-2024, 2026 NXP
  * All rights reserved.
  *
  *
@@ -15,6 +15,16 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+#if defined(PSRAM_APMEM_XCCELA) && (PSRAM_APMEM_XCCELA)
+/* APS256XXN Mode Register 8 (MR8) device address and bitfields, used to switch
+ * the device from its default X8 mode into X16 mode and to enable RBX (Row
+ * Boundary Crossing). Both bits are accessed through the normal X8-framed
+ * mode-register LUT sequence -- MR access is always X8 regardless of the
+ * XSPI controller's HyperBus X16 setting. */
+#define PSRAM_MR8_ADDR   0x08U /*!< MR8 device address. */
+#define PSRAM_MR8_X16_EN 0x40U /*!< MR8[6]: 1 = X16 mode. */
+#define PSRAM_MR8_RBX_EN 0x08U /*!< MR8[3]: 1 = RBX (Row Boundary Crossing) enable. */
+#endif /* PSRAM_APMEM_XCCELA */
 
 /*******************************************************************************
  * Prototypes
@@ -105,6 +115,37 @@ static status_t xspi_hyper_ram_get_mcr(XSPI_Type *base, uint32_t regAddr, uint8_
 
     return status;
 }
+
+#if defined(PSRAM_APMEM_XCCELA) && (PSRAM_APMEM_XCCELA)
+status_t xspi_hyperram_enable_x16_and_rbx(XSPI_Type *base)
+{
+    status_t status;
+    uint8_t mr8Val[4] = {0};
+
+    /* Read-modify-write MR8 first, while the device is still addressed in X8 --
+     * mode-register access is X8-framed regardless of X16 state. */
+    status = xspi_hyper_ram_get_mcr(base, PSRAM_MR8_ADDR, mr8Val);
+    if (status != kStatus_Success)
+    {
+        return status;
+    }
+
+    mr8Val[0] |= (PSRAM_MR8_X16_EN | PSRAM_MR8_RBX_EN);
+
+    status = xspi_hyper_ram_write_mcr(base, PSRAM_MR8_ADDR, mr8Val);
+    if (status != kStatus_Success)
+    {
+        return status;
+    }
+
+    /* Only switch the controller side to X16 after the device has accepted
+     * MR8[6]=1 -- flipping this earlier leaves controller and device
+     * disagreeing about data bus width. */
+    XSPI_SetHyperBusX16Mode(base, kXSPI_x16ModeEnabledOnlyData);
+
+    return kStatus_Success;
+}
+#endif /* PSRAM_APMEM_XCCELA */
 
 void xspi_hyper_ram_ahbcommand_write_data(XSPI_Type *base, uint32_t address, uint32_t *buffer, uint32_t length)
 {
@@ -252,4 +293,8 @@ void xspi_hyper_ram_init(XSPI_Type *base)
     {}
     XSPI_UpdateDeviceAddrMode(base, kXSPI_Device4ByteAddressable);
 #endif
+
+#if defined(PSRAM_APMEM_XCCELA) && (PSRAM_APMEM_XCCELA)
+    xspi_hyperram_enable_x16_and_rbx(base);
+#endif /* PSRAM_APMEM_XCCELA */
 }
