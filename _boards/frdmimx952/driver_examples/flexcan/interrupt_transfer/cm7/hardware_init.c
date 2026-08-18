@@ -14,10 +14,9 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    pca6416a_handle_t handle;
     /* clang-format off */
     clk_t flexcanclk = {
-        .clkId = kCLOCK_can1,
+        .clkId = kCLOCK_can3,
         .pclkId = kCLOCK_osc24m,
         .rate = 24000000UL,
         //.enable_clk = true,
@@ -31,16 +30,18 @@ void BOARD_InitHardware(void)
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
     };
     /* clang-format on */
+    pca6416a_handle_t handle;
     SystemPlatformInit();
     BOARD_InitBootPins();
-    BOARD_InitCANPins();
     BOARD_InitI2C2Pins();
+    BOARD_InitCANPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
     BOARD_ConfigMPU();
 
     CLOCK_SetRate(&flexcanclk);
     CLOCK_EnableClock(flexcanclk.clkId);
+
     CLOCK_SetRate(&lpi2cclk);
     CLOCK_EnableClock(lpi2cclk.clkId);
 

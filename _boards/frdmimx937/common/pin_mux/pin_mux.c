@@ -300,16 +300,16 @@ BOARD_InitCANPins:
  *
  * END ****************************************************************************************************************/
 void BOARD_InitCANPins(void) {                             /*!< Function assigned for the core: Cortex-M7F[cm7] */
-    IOMUXC_SetPinMux(IOMUXC_PAD_SAI1_TXC__CAN1_RX, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_SAI1_TXC__CAN1_RX, 
+    IOMUXC_SetPinMux(IOMUXC_PAD_CCM_CLKO4__CAN3_RX, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_CCM_CLKO4__CAN3_RX, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_PD_MASK);
-    IOMUXC_SetPinMux(IOMUXC_PAD_SAI1_TXD0__CAN1_TX, 0U);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_SAI1_TXD0__CAN1_TX, 
+                        IOMUXC_PAD_PU_MASK);
+    IOMUXC_SetPinMux(IOMUXC_PAD_CCM_CLKO3__CAN3_TX, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_CCM_CLKO3__CAN3_TX, 
                         IOMUXC_PAD_DSE(15U) |
                         IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_PD_MASK);
+                        IOMUXC_PAD_PU_MASK);
 }
 
 
