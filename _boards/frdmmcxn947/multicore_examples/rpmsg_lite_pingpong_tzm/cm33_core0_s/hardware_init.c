@@ -17,12 +17,12 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    /* attach FRO 12M to FLEXCOMM4 (debug console) */
-    CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
 
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
+    /* attach FRO 12M to FLEXCOMM4 (debug console) */
+    CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
     BOARD_InitDebugConsole();
 
     CLOCK_EnableClock(kCLOCK_Gpio3);

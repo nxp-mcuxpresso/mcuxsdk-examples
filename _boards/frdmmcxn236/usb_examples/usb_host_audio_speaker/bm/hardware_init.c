@@ -24,13 +24,13 @@ extern usb_host_handle g_hostHandle;
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    /* attach FRO 12M to FLEXCOMM4 (debug console) */
-    CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
 
     BOARD_InitPins();
     BOARD_PowerMode_OD();
     BOARD_InitBootClocks();
+    /* attach FRO 12M to FLEXCOMM4 (debug console) */
+    CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
     BOARD_InitDebugConsole();
 }
 #if defined(USB_HOST_CONFIG_EHCI) && (USB_HOST_CONFIG_EHCI > 0U)

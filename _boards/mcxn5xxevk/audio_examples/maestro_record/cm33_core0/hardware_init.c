@@ -54,9 +54,6 @@ int BOARD_CODEC_Init(void)
 
 void BOARD_InitHardware(void)
 {
-    /* attach FRO 12M to FLEXCOMM4 (debug console) */
-    CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
 
     /* attach FRO 12M to LPFLEXCOMM2 */
     CLOCK_AttachClk(kFRO12M_to_FLEXCOMM2);
@@ -77,6 +74,9 @@ void BOARD_InitHardware(void)
 
     BOARD_InitPins();
     BOARD_InitBootClocks();
+    /* attach FRO 12M to FLEXCOMM4 (debug console) */
+    CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
     BOARD_InitDebugConsole();
 
     CLOCK_SetupExtClocking(24000000U);

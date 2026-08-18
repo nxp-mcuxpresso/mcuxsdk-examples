@@ -68,12 +68,11 @@ void BOARD_InitHardware(void)
 {
     CLOCK_EnableClock(kCLOCK_InputMux);
 
-    /* attach 12 MHz clock to FLEXCOMM0 (debug console) */
-    CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
-
     BOARD_InitBootPins();
     BOARD_PowerMode_OD();
     BOARD_InitBootClocks();
+    /* attach 12 MHz clock to FLEXCOMM0 (debug console) */
+    CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
     BOARD_InitDebugConsole();
     CLOCK_SetupExtClocking(BOARD_XTAL0_CLK_HZ);
 

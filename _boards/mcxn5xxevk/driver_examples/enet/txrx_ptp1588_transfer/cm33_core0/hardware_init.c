@@ -34,11 +34,11 @@ static status_t MDIO_Read(uint8_t phyAddr, uint8_t regAddr, uint16_t *pData)
 void BOARD_InitHardware(void)
 {
     CLOCK_EnableClock(kCLOCK_InputMux);
-    /* attach 12 MHz clock to FLEXCOMM0 (debug console) */
-    CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
 
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
+    /* attach 12 MHz clock to FLEXCOMM0 (debug console) */
+    CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
     BOARD_InitDebugConsole();
 
     /* Use external reference clock. */

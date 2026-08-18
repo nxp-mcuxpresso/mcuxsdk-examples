@@ -16,9 +16,6 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    /* attach FRO 12M to FLEXCOMM4 (debug console) */
-    CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
 
     /* attach FRO HF to FLEXCAN0 */
     CLOCK_AttachClk(kFRO_HF_to_FLEXCAN0);
@@ -26,6 +23,9 @@ void BOARD_InitHardware(void)
 
     BOARD_InitPins();
     BOARD_BootClockFROHF48M();
+    /* attach FRO 12M to FLEXCOMM4 (debug console) */
+    CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
     BOARD_InitDebugConsole();
 }
 void APP_SetLowerPowerConfig(void)

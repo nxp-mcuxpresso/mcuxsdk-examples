@@ -15,14 +15,14 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
 
     /* enable analog module */
     SPC0->ACTIVE_CFG1 |= 0x100;
 
     BOARD_InitPins();
     BOARD_InitBootClocks();
+    CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
     BOARD_InitDebugConsole();
 }
 /*${function:end}*/

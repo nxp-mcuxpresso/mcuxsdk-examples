@@ -20,9 +20,6 @@ i3c_device_control_info_t i3cMasterCtlInfo        = {
 
 void BOARD_InitHardware(void)
 {
-    /* Attach FRO 12M to FLEXCOMM4 (debug console) */
-    CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1U);
 
     /* Attach PLL0 clock to I3C, 150MHz / 12 = 12.5MHz. */
     CLOCK_AttachClk(kPLL0_to_I3C1FCLK);
@@ -30,6 +27,9 @@ void BOARD_InitHardware(void)
 
     BOARD_InitPins();
     BOARD_InitBootClocks();
+    /* Attach FRO 12M to FLEXCOMM4 (debug console) */
+    CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1U);
     BOARD_InitDebugConsole();
 	
     demo_masterResource.clockInHz = I3C_MASTER_CLOCK_FREQUENCY;

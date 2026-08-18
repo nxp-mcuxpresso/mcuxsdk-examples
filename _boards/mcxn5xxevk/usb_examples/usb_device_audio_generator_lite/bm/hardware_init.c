@@ -23,13 +23,13 @@ extern usb_audio_generator_struct_t s_audioGenerator;
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    /* attach FRO 12M to FLEXCOMM4 (debug console) */
-    CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
 
     BOARD_InitBootPins();
     BOARD_PowerMode_OD();
     BOARD_InitBootClocks();
+    /* attach FRO 12M to FLEXCOMM4 (debug console) */
+    CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
     BOARD_InitDebugConsole();
     CLOCK_SetupExtClocking(BOARD_XTAL0_CLK_HZ);
 

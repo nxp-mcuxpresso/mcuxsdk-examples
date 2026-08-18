@@ -16,8 +16,6 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
 
     /* attach FRO HF to DAC0 */
     CLOCK_AttachClk(kFRO_HF_to_DAC0);
@@ -32,6 +30,8 @@ void BOARD_InitHardware(void)
 
     BOARD_InitPins();
     BOARD_InitBootClocks();
+    CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
     BOARD_InitDebugConsole();
 }
 /*${function:end}*/

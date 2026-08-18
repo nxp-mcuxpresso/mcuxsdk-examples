@@ -143,14 +143,13 @@ void BOARD_InitHardware(void)
 {
     BOARD_InitBootPins();
     BOARD_BootClockFROHF144M();
+    /* attach FRO 12M to LPFLEXCOMM4 (debug console) */
+    CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
     BOARD_InitDebugConsole();
 
     CLOCK_EnableClock(kCLOCK_Gpio0);
     CLOCK_EnableClock(kCLOCK_InputMux);
-
-    /* attach FRO 12M to LPFLEXCOMM4 (debug console) */
-    CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
 
     /* attach FRO 12M to LPFLEXCOMM2 */
     CLOCK_AttachClk(kFRO12M_to_FLEXCOMM2);

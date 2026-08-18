@@ -14,10 +14,6 @@ void BOARD_InitHardware(void)
 {
     RESET_PeripheralReset(kDMA0_RST_SHIFT_RSTn);
 
-    /* attach FRO 12M to FLEXCOMM4 (debug console) */
-    CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
-
     /* Attach PLL0 clock to I3C, 150MHz / 6 = 25MHz. */
     CLOCK_AttachClk(kPLL0_to_I3C1FCLK);
     CLOCK_AttachClk(kCLK_1M_to_I3C1FCLKS);
@@ -31,6 +27,9 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
     BOARD_InitI3CPins();
     BOARD_InitBootClocks();
+    /* attach FRO 12M to FLEXCOMM4 (debug console) */
+    CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
     BOARD_InitDebugConsole();
 }
 /*${function:end}*/

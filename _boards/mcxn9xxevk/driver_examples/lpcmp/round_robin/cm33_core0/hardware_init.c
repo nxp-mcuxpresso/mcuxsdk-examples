@@ -19,10 +19,6 @@ void BOARD_InitHardware(void)
 {
     vref_config_t vrefConfig;
 
-    /* attach FRO 12M to FLEXCOMM4 (debug console) */
-    CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
-    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1U);
-
     /* attach FRO 12M to CMP0 */
     CLOCK_AttachClk(kFRO12M_to_CMP0RR);
     CLOCK_SetClkDiv(kCLOCK_DivCmp0rrClk, 0x0FU);
@@ -38,6 +34,9 @@ void BOARD_InitHardware(void)
 
     BOARD_InitPins();
     BOARD_InitBootClocks();
+    /* attach FRO 12M to FLEXCOMM4 (debug console) */
+    CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1U);
     BOARD_InitDebugConsole();
 }
 /*${function:end}*/
