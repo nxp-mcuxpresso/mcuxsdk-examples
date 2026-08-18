@@ -1,0 +1,6 @@
+# mcimx93autoevk shares the MIMX9352 device, which declares a ca55 core, so the
+# multicore layout requires a per-core example.yml here. Per-core board.toolchains
+# items must start with '+'. Declare the same armgcc DDR targets as mcimx93evk.
+board.toolchains:
+- +armgcc@ddr_debug
+- +armgcc@ddr_release
