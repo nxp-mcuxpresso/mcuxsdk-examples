@@ -1,6 +1,6 @@
 /*
  * Copyright 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2021, 2024-2025 NXP
+ * Copyright 2016-2021, 2024-2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -80,9 +80,9 @@ typedef struct _clock_setup
 
 /* Keep these macros to avoid project build error. */               
 #define M1_MCDRV_CURR_3PH_CHAN_ASSIGN(par)      
-#define M1_MCDRV_CURR_3PH_CALIB_INIT(par) 
-#define M1_MCDRV_CURR_3PH_CALIB(par)
-#define M1_MCDRV_CURR_3PH_CALIB_SET(par)
+#define M1_MCDRV_CURR_3PH_CALIB_INIT(par)       (MCDRV_SincCurr3PhCalibInit(par))
+#define M1_MCDRV_CURR_3PH_CALIB(par)            (MCDRV_SincCurr3PhCalib(par))
+#define M1_MCDRV_CURR_3PH_CALIB_SET(par)        (MCDRV_SincCurr3PhCalibSet(par))
 
 /******************************************************************************
  * Define slow control loop timer - common for motor 1 and motor 2

@@ -745,7 +745,7 @@ void M1_InitPWM(void)
     PWMBase->SM[1].VAL5 = PWM_VAL5_VAL5((uint16_t)(0));
     PWMBase->SM[2].VAL5 = PWM_VAL5_VAL5((uint16_t)(0));
 
-    /* PWM sub-module 0 trigger0 on VAL0 and VAL4 enabled for trigger SINC. SINC is in continuous mode. */
+    /* PWM sub-module 0 trigger0 on VAL0 and VAL4 enabled for trigger SINC. SINC is in fixed mode. */
     PWMBase->SM[0].TCTRL |= PWM_TCTRL_OUT_TRIG_EN(1 << 0) | PWM_TCTRL_OUT_TRIG_EN(1 << 4);
     
     /* PWM2 submodule 0 trigger1 on VAL5 enabled for PWM1 synchronization */
@@ -868,7 +868,7 @@ void M2_InitPWM(void)
     PWMBase->SM[1].VAL5 = PWM_VAL5_VAL5((uint16_t)(0));
     PWMBase->SM[2].VAL5 = PWM_VAL5_VAL5((uint16_t)(0));
 
-    /* PWM sub-module 0 trigger0 on VAL0 and VAL4 enabled for trigger SINC. SINC is in continuous mode. */
+    /* PWM sub-module 0 trigger0 on VAL0 and VAL4 enabled for trigger SINC. SINC is in fixed mode. */
     PWMBase->SM[0].TCTRL |= PWM_TCTRL_OUT_TRIG_EN(1 << 0) | PWM_TCTRL_OUT_TRIG_EN(1 << 4);
     
     /* PWM sub-module 1 trigger0 on VAL0 and VAL4 enabled for trigger EnDat2.2. */
@@ -951,11 +951,11 @@ void Sinc1_Init(void)
     /* Disable MCLKOUT 1 & 2 */
     SINCBase->MCR |= SINC_MCR_MCLK1DIS(1U) | SINC_MCR_MCLK2DIS(1U); 
 
-    /* Continuous conversion mode, set filter order, set oversampling ratio */
-    SINCBase->CHANNEL[0].CDR =  SINC_CDR_PFCM(1U) | SINC_CDR_PFORD(SINC1_ORD) |	SINC_CDR_PFOSR(SINC1_OSR);
-    SINCBase->CHANNEL[1].CDR =  SINC_CDR_PFCM(1U) | SINC_CDR_PFORD(SINC1_ORD) |	SINC_CDR_PFOSR(SINC1_OSR);
-    SINCBase->CHANNEL[2].CDR =  SINC_CDR_PFCM(1U) | SINC_CDR_PFORD(SINC1_ORD) |	SINC_CDR_PFOSR(SINC1_OSR);
-    SINCBase->CHANNEL[3].CDR =  SINC_CDR_PFCM(1U) | SINC_CDR_PFORD(SINC1_ORD) |	SINC_CDR_PFOSR(SINC1_OSR);
+    /* Fixed conversion mode, set filter order, set oversampling ratio */
+    SINCBase->CHANNEL[0].CDR =  SINC_CDR_PFCM(3U) | SINC_CDR_PFORD(SINC1_ORD) |	SINC_CDR_PFOSR(SINC1_OSR);
+    SINCBase->CHANNEL[1].CDR =  SINC_CDR_PFCM(3U) | SINC_CDR_PFORD(SINC1_ORD) |	SINC_CDR_PFOSR(SINC1_OSR);
+    SINCBase->CHANNEL[2].CDR =  SINC_CDR_PFCM(3U) | SINC_CDR_PFORD(SINC1_ORD) |	SINC_CDR_PFOSR(SINC1_OSR);
+    SINCBase->CHANNEL[3].CDR =  SINC_CDR_PFCM(3U) | SINC_CDR_PFORD(SINC1_ORD) |	SINC_CDR_PFOSR(SINC1_OSR);
 
     /* Edge triggering, external bitstream from the MBIT[n], sample on clock negative edge, 
         set FIFO watermark, left justified, signed, left shift of 4 bits */     
@@ -1011,11 +1011,11 @@ void Sinc2_Init(void)
     /* Disable MCLKOUT 2 */
     SINCBase->MCR |= SINC_MCR_MCLK2DIS(1U); 
 
-    /* Continuous conversion mode, set filter order, set oversampling ratio */
-    SINCBase->CHANNEL[0].CDR =  SINC_CDR_PFCM(1U) | SINC_CDR_PFORD(SINC2_ORD) |	SINC_CDR_PFOSR(SINC2_OSR);
-    SINCBase->CHANNEL[1].CDR =  SINC_CDR_PFCM(1U) | SINC_CDR_PFORD(SINC2_ORD) |	SINC_CDR_PFOSR(SINC2_OSR);
-    SINCBase->CHANNEL[2].CDR =  SINC_CDR_PFCM(1U) | SINC_CDR_PFORD(SINC2_ORD) |	SINC_CDR_PFOSR(SINC2_OSR);
-    SINCBase->CHANNEL[3].CDR =  SINC_CDR_PFCM(1U) | SINC_CDR_PFORD(SINC2_ORD) |	SINC_CDR_PFOSR(SINC2_OSR);
+    /* Fixed conversion mode, set filter order, set oversampling ratio */
+    SINCBase->CHANNEL[0].CDR =  SINC_CDR_PFCM(3U) | SINC_CDR_PFORD(SINC2_ORD) |	SINC_CDR_PFOSR(SINC2_OSR);
+    SINCBase->CHANNEL[1].CDR =  SINC_CDR_PFCM(3U) | SINC_CDR_PFORD(SINC2_ORD) |	SINC_CDR_PFOSR(SINC2_OSR);
+    SINCBase->CHANNEL[2].CDR =  SINC_CDR_PFCM(3U) | SINC_CDR_PFORD(SINC2_ORD) |	SINC_CDR_PFOSR(SINC2_OSR);
+    SINCBase->CHANNEL[3].CDR =  SINC_CDR_PFCM(3U) | SINC_CDR_PFORD(SINC2_ORD) |	SINC_CDR_PFOSR(SINC2_OSR);
 
     /* Edge triggering, external bitstream from the MBIT[n], sample on clock negative edge, 
         set FIFO watermark, left justified, signed, left shift of 4 bits */     

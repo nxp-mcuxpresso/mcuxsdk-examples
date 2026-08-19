@@ -1,6 +1,6 @@
 /*
  * Copyright 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2021, 2024-2025 NXP
+ * Copyright 2016-2021, 2024-2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -94,9 +94,9 @@ typedef struct _clock_setup
 #define M1_MCDRV_CURR_3PH_VOLT_DCB_GET(par)    /* Need to be empty - SINC data are read and processed in SINC IRQ. */
 
 #define M1_MCDRV_CURR_3PH_CHAN_ASSIGN(par)      /* Keep this macro to avoid project build error (macro is used in MID). */
-#define M1_MCDRV_CURR_3PH_CALIB_INIT(par) 
-#define M1_MCDRV_CURR_3PH_CALIB(par)
-#define M1_MCDRV_CURR_3PH_CALIB_SET(par)
+#define M1_MCDRV_CURR_3PH_CALIB_INIT(par)       (MCDRV_SincCurr3PhCalibInit(par))
+#define M1_MCDRV_CURR_3PH_CALIB(par)            (MCDRV_SincCurr3PhCalib(par))
+#define M1_MCDRV_CURR_3PH_CALIB_SET(par)        (MCDRV_SincCurr3PhCalibSet(par))
 
 /******************************************************************************
  * Define motor 1 slow control loop timer

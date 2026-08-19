@@ -25,3 +25,6 @@ Running the demo
 ================
 Follow chapter "User interface" in Application User's guide.
 
+Notice
+======
+This example has not been tested on the target hardware. Only build testing was completed.
