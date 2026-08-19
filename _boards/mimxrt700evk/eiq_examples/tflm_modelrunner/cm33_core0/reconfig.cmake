@@ -57,7 +57,7 @@ mcux_add_macro(
        -DARM_MATH_CM33\
        -DUSE_NPU=1\
        -DEXTERNAL_MEM=1\
-       -DSCRATCH_WEIGHTS_SRAM_SIZE=0x1cf000 \
+       -DSCRATCH_WEIGHTS_SRAM_SIZE=0x200000 \
        -DMODEL_SIZE=1024*1024\
        -DPRINTF_ADVANCED_ENABLE=1\
        -DPRINTF_FLOAT_ENABLE=1\
@@ -164,7 +164,7 @@ mcux_add_iar_configuration(
         --config_def=__heap_size__=0x150000"
 )
 mcux_add_armgcc_configuration(
-    LD "-Xlinker --defsym=__heap_size__=0x320000\
+    LD "-Xlinker --defsym=__heap_size__=0x2C0000\
 	-Xlinker --defsym=__heap_noncacheable__=1\
         -Xlinker --defsym=__stack_size__=0x9000"
 )
