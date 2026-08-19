@@ -16,21 +16,11 @@
 
 #ifdef EXTERNAL_MEM
 #include <string.h>
-#include "fsl_edma.h"
 #include "fsl_debug_console.h"
+#endif
 
 /*******************************************************************************
  * Definitions
- ******************************************************************************/
-
-/*******************************************************************************
- * NPU weight-prefetch copy()/wait() overrides (memory-to-memory via DMA0 ch4).
- * Firmware calls copy() to start a non-blocking fetch of the next layer's
- * weights from XSPI2 flash into SRAM scratch, then wait() before the kernel.
- * copy() programs the TCD (Prepare/Submit/Start); the CH4 completion IRQ sets
- * g_Transfer_Done. The eDMA controller/channel/IRQ bring-up lives in
- * hardware_init.c (BOARD_InitHardware); g_DMA_NPU_Handle and g_Transfer_Done
- * are defined there and referenced here via extern "C".
  ******************************************************************************/
 
 /*******************************************************************************
@@ -41,22 +31,19 @@
  * Variables
  ******************************************************************************/
 
-/* Defined in hardware_init.c (C linkage) and shared with the eDMA init/IRQ. */
-extern "C" edma_handle_t g_DMA_NPU_Handle;
+#ifdef EXTERNAL_MEM
+/* Defined in hardware_init.c (C linkage): the eDMA completion flag and the
+ * prefetch-start helper that programs and kicks off one transfer. */
 extern "C" volatile bool g_Transfer_Done;
+extern "C" void NPU_PrefetchDmaStart(void *dst, void *src, uint32_t size);
 
 namespace tflite {
 
 extern uint8_t scratchWeightsBuffer[];
 
-edma_transfer_config_t transferConfig;
-
 /* Below this size the eDMA setup + IRQ (~1.6 us CPU) costs more than a CPU
  * memcpy, so small fetches are copied synchronously. */
 #define NPU_PREFETCH_DMA_MIN_BYTES 128U
-
-/* Widest eDMA transfer element (SSIZE/DSIZE). */
-#define NPU_PREFETCH_DMA_MAX_WIDTH 64U
 
 /* Strong override of the weak copy() in neutron.cpp. */
 void copy(void *dst, void *src, uint32_t size, uint32_t channel) {
@@ -78,23 +65,9 @@ void copy(void *dst, void *src, uint32_t size, uint32_t channel) {
         return;
     }
 
-    /* Pick the widest element that keeps src, dst and size aligned; step down
-     * 64->32->...->4 until it fits (eDMA requires alignment to the beat). */
-    uint32_t width = NPU_PREFETCH_DMA_MAX_WIDTH;
-    while (width > sizeof(uint32_t) &&
-           (((uintptr_t)src | (uintptr_t)dst | (uintptr_t)size) & (width - 1U)) != 0U)
-    {
-        width >>= 1;
-    }
-
+    /* Non-blocking eDMA prefetch; the CH4 completion IRQ sets g_Transfer_Done. */
     g_Transfer_Done = false;
-    EDMA_PrepareTransfer(&transferConfig,
-                         src, width,
-                         dst, width,
-                         size, size,
-                         kEDMA_MemoryToMemory);
-    EDMA_SubmitTransfer(&g_DMA_NPU_Handle, &transferConfig);
-    EDMA_StartTransfer(&g_DMA_NPU_Handle);
+    NPU_PrefetchDmaStart(dst, src, size);
 }
 
 /* Strong override of the weak wait() in neutron.cpp. Spins until the EDMA

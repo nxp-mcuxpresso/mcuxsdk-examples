@@ -14,7 +14,9 @@
 #include "pmic_support.h"
 #ifdef EXTERNAL_MEM
 #include <stdbool.h>
+#include <stdint.h>
 #include "fsl_edma.h"
+
 
 /*
  * NPU weight-prefetch eDMA controller bring-up (memory-to-memory, DMA0 ch4).
@@ -26,9 +28,16 @@
 #define NPU_PREFETCH_DMA     DMA0
 #define NPU_PREFETCH_DMA_CH  4
 
+/* Widest eDMA transfer element (SSIZE/DSIZE). */
+#define NPU_PREFETCH_DMA_MAX_WIDTH 64U
+
 /* Shared with copy()/wait() in main.cpp (referenced there via extern "C"). */
 edma_handle_t g_DMA_NPU_Handle;
 volatile bool g_Transfer_Done = false;
+
+/* Reused by every prefetch; only copy() (single producer) programs it. */
+static edma_transfer_config_t s_transferConfig;
+
 
 /* Callback invoked by the EDMA driver ISR. */
 static void EDMA_Callback(edma_handle_t *handle, void *param, bool transferDone, uint32_t tcds)
@@ -48,7 +57,33 @@ void EDMA0_CH4_DriverIRQHandler(void)
     EDMA_HandleIRQ(&g_DMA_NPU_Handle);
     SDK_ISR_EXIT_BARRIER;
 }
+
+/*
+ * Program and kick off one memory-to-memory prefetch on the NPU channel.
+ * copy() in main.cpp calls this after clearing g_Transfer_Done; the CH4
+ * completion IRQ sets it back. Picks the widest transfer element that keeps
+ * src, dst and size aligned, stepping 64->32->...->4 (eDMA needs the operands
+ * aligned to the beat).
+ */
+void NPU_PrefetchDmaStart(void *dst, void *src, uint32_t size)
+{
+    uint32_t width = NPU_PREFETCH_DMA_MAX_WIDTH;
+    while (width > sizeof(uint32_t) &&
+           (((uintptr_t)src | (uintptr_t)dst | (uintptr_t)size) & (width - 1U)) != 0U)
+    {
+        width >>= 1;
+    }
+
+    EDMA_PrepareTransfer(&s_transferConfig,
+                         src, width,
+                         dst, width,
+                         size, size,
+                         kEDMA_MemoryToMemory);
+    EDMA_SubmitTransfer(&g_DMA_NPU_Handle, &s_transferConfig);
+    EDMA_StartTransfer(&g_DMA_NPU_Handle);
+}
 #endif
+
 
 /*${function:start}*/
 int64_t os_clock_now(){
