@@ -77,13 +77,13 @@ void BOARD_InitHardware(void)
      * 24.576 MHz — the WM8962 MCLK target for 48 kHz / 16-bit stereo. */
     clock_root_config_t saiRootCfg = {
         .mux = kCLOCK_SAI0_MCLK0_ClockRoot_AUDIOPLL,
-        .div = 2,
+        .div = 2U,
     };
     CLOCK_SetRootClock(kCLOCK_Root_AUDIO_sai0_mclk0, &saiRootCfg);
 
     clock_root_config_t lpi2c1RootCfg = {
         .mux = kCLOCK_LPI2C1_ClockRoot_PERI3,
-        .div = 40,
+        .div = 40U,
     };
     CLOCK_SetRootClock(kCLOCK_Root_MAIN_lpi2c1_fclk, &lpi2c1RootCfg);
 
@@ -96,7 +96,7 @@ void BOARD_InitHardware(void)
  * mclkHz == mclkSourceClkHz the MCR post-divider is bypassed (MCLK = 24.576 MHz). */
 void BOARD_MasterClockConfig(void)
 {
-    sai_master_clock_t mclkConfig = {0};
+    sai_master_clock_t mclkConfig = {0U};
 
     mclkConfig.mclkOutputEnable = true;
     mclkConfig.mclkHz           = DEMO_AUDIO_MASTER_CLOCK;
