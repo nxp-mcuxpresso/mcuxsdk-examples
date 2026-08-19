@@ -24,18 +24,14 @@
  ******************************************************************************/
 
 /*******************************************************************************
- * NPU weight-prefetch eDMA (memory-to-memory, DMA0 channel 4).
+ * NPU weight-prefetch copy()/wait() overrides (memory-to-memory via DMA0 ch4).
  * Firmware calls copy() to start a non-blocking fetch of the next layer's
  * weights from XSPI2 flash into SRAM scratch, then wait() before the kernel.
  * copy() programs the TCD (Prepare/Submit/Start); the CH4 completion IRQ sets
- * g_Transfer_Done via EDMA_Callback; wait() spins on it.
- * Bringup: call EDMA_Init() once (not RESET_ClearPeripheralReset, which breaks
- * XSPI); CH_MUX must be 0 so the channel takes no hardware request source.
+ * g_Transfer_Done. The eDMA controller/channel/IRQ bring-up lives in
+ * hardware_init.c (BOARD_InitHardware); g_DMA_NPU_Handle and g_Transfer_Done
+ * are defined there and referenced here via extern "C".
  ******************************************************************************/
-
-/* DMA0 = the eDMA4 instance in the COMPUTE domain owned by this CM33 core0. */
-#define NPU_PREFETCH_DMA     DMA0
-#define NPU_PREFETCH_DMA_CH  4
 
 /*******************************************************************************
  * Prototypes
@@ -45,32 +41,15 @@
  * Variables
  ******************************************************************************/
 
+/* Defined in hardware_init.c (C linkage) and shared with the eDMA init/IRQ. */
+extern "C" edma_handle_t g_DMA_NPU_Handle;
+extern "C" volatile bool g_Transfer_Done;
+
 namespace tflite {
 
 extern uint8_t scratchWeightsBuffer[];
 
-edma_handle_t g_DMA_NPU_Handle;
 edma_transfer_config_t transferConfig;
-volatile bool g_Transfer_Done = false;
-
-/* Callback invoked by the EDMA driver ISR. */
-static void EDMA_Callback(edma_handle_t *handle, void *param, bool transferDone, uint32_t tcds)
-{
-    (void)handle;
-    (void)param;
-    (void)tcds;
-    if (transferDone)
-    {
-        g_Transfer_Done = true;
-    }
-}
-
-/* CH4 completion IRQ. Dispatch to EDMA_HandleIRQ, which runs EDMA_Callback. */
-extern "C" void EDMA0_CH4_DriverIRQHandler(void)
-{
-    EDMA_HandleIRQ(&g_DMA_NPU_Handle);
-    SDK_ISR_EXIT_BARRIER;
-}
 
 /* Below this size the eDMA setup + IRQ (~1.6 us CPU) costs more than a CPU
  * memcpy, so small fetches are copied synchronously. */
@@ -139,18 +118,6 @@ void wait(uint32_t channel) {
 int main(void)
 {
     BOARD_InitHardware();
-
-#ifdef EXTERNAL_MEM
-    /* Init the eDMA controller (writes MP_CSR). */
-    {
-        edma_config_t dmaConfig;
-        EDMA_GetDefaultConfig(&dmaConfig);
-        EDMA_Init(NPU_PREFETCH_DMA, &dmaConfig);
-    }
-    EDMA_SetChannelMux(NPU_PREFETCH_DMA, NPU_PREFETCH_DMA_CH, 0U);
-    EDMA_CreateHandle(&tflite::g_DMA_NPU_Handle, NPU_PREFETCH_DMA, NPU_PREFETCH_DMA_CH);
-    EDMA_SetCallback(&tflite::g_DMA_NPU_Handle, tflite::EDMA_Callback, NULL);
-#endif
 
     PRINTF("\r\n*************************************************");
     PRINTF("\r\n               TFLite Modelrunner");
