@@ -6,17 +6,17 @@
 /*${header:start}*/
 #include "pin_mux.h"
 #include "board.h"
+#include "app.h"
+#include "fsl_sai.h"
 #include "fsl_codec_common.h"
 #include "fsl_wm8962.h"
 #include "fsl_codec_adapter.h"
 #include "fsl_edma.h"
-#include "app.h"
 /*${header:end}*/
 
 /*${variable:start}*/
 edma_channel_config_t channelConfig = {
     .enableMasterIDReplication = true,
-    // .securityLevel             = kEDMA_ChannelSecurityLevelSecure,
     .protectionLevel           = kEDMA_ChannelProtectionLevelPrivileged,
 };
 
@@ -47,35 +47,65 @@ codec_config_t boardCodecConfig = {.codecDevType = kCODEC_WM8962, .codecDevConfi
 /*${function:start}*/
 void BOARD_EnableSaiMclkOutput(bool enable)
 {
-    /* RT2660 does not need a separate BLK_CTRL MCLK-direction toggle — SAI0
-     * MCLK direction is fixed by the IOMUX/SAI configuration. Kept as a no-op
-     * so shared upstream code that calls this helper continues to link. */
-    (void)enable;
+    /* On RT2660 the SAI0 MCLK output to the pad is dynamically clock-gated by
+     * default (MODCON SAI0 CFG[OVERRIDE_IPG_MCLK_EN] resets to 0). An external
+     * audio codec needs a free-running MCLK, so disable the dynamic gate to
+     * keep MCLK toggling continuously. Without this the WM8962 gets no SYSCLK
+     * and CODEC_Init's power-up register writes are silently dropped (control
+     * interface needs SYSCLK when SYSCLK_ENA=1), leaving the DAC and headphone
+     * path powered down -> no audio. */
+    uint32_t cfg = MODCON_GetCFG(kModCon_AUDIO_SAI0, 0U);
+
+    if (enable)
+    {
+        cfg |= MODCON_CFG_OVERRIDE_IPG_MCLK_EN_MASK;
+    }
+    else
+    {
+        cfg &= ~MODCON_CFG_OVERRIDE_IPG_MCLK_EN_MASK;
+    }
+
+    MODCON_SetCFG(kModCon_AUDIO_SAI0, 0U, cfg);
 }
 
 void BOARD_InitHardware(void)
 {
     /* Board common setting: MPU, Power and Clock Tree, TRDC, and Debug Console init. */
     BOARD_CommonSetting();
-    BOARD_InitI2CPins();
     BOARD_InitSAIPins();
 
     /* Audio PLL is already brought up (F_OUT = 49.152 MHz, 48 kHz family) by
      * ConfigCGUAna() inside BOARD_InitBootClocks(). Here we just point the SAI0
      * MCLK0 root at that AUDIOPLL source and divide by 2 to land at
-     * 24.576 MHz — the WM8962 MCLK target for 48 kHz / 16-bit stereo. */
+     * 24.576 MHz -- the WM8962 MCLK target for 48 kHz / 16-bit stereo. */
     clock_root_config_t saiRootCfg = {
         .mux = kCLOCK_SAI0_MCLK0_ClockRoot_AUDIOPLL,
-        .div = 2,
+        .div = 2U,
     };
     CLOCK_SetRootClock(kCLOCK_Root_AUDIO_sai0_mclk0, &saiRootCfg);
 
+    clock_root_config_t lpi2c1RootCfg = {
+        .mux = kCLOCK_LPI2C1_ClockRoot_PERI3,
+        .div = 40U,
+    };
+    CLOCK_SetRootClock(kCLOCK_Root_MAIN_lpi2c1_fclk, &lpi2c1RootCfg);
+
     BOARD_EnableSaiMclkOutput(true);
 }
-void Board_SaiEdmaConfig(edma_config_t *config)
+
+/* Enable SAI0 MCLK output to the on-board WM8962 codec by asserting I2S_MCR[MOE].
+ * Wired through BOARD_MASTER_CLOCK_CONFIG(), called from main() after SAI_Init()
+ * (SAI_Init releases the peripheral reset and would otherwise clear MCR). Since
+ * mclkHz == mclkSourceClkHz the MCR post-divider is bypassed (MCLK = 24.576 MHz). */
+void BOARD_MasterClockConfig(void)
 {
-    config->enableMasterIdReplication       = true;
-    config->channelConfig[DEMO_SAI_CHANNEL] = &channelConfig;
+    sai_master_clock_t mclkConfig = {0U};
+
+    mclkConfig.mclkOutputEnable = true;
+    mclkConfig.mclkHz           = DEMO_AUDIO_MASTER_CLOCK;
+    mclkConfig.mclkSourceClkHz  = DEMO_SAI_CLK_FREQ;
+
+    SAI_SetMasterClockConfig(DEMO_SAI, &mclkConfig);
 }
 
 void Board_AsrcEdmaConfig(edma_config_t *config)
