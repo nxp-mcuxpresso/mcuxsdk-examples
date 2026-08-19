@@ -33,6 +33,10 @@ int BOARD_DbgLoggerPortInit(void)
     {
         ret = 0;
     }
+#else
+    /* No serial manager in this variant (e.g. withoutserialconsole): there is no
+     * port to open, so report success rather than a failure. */
+    ret = 0;
 #endif
 
     return ret;
