@@ -268,7 +268,7 @@ lpi2c_edma_b2b_transfer_master:
     kw45b41zevk:
     - +armgcc@debug
     - +armgcc@release
-    mcimx93autoevk: []
+    mcimx93autoevk@cm33: []
     mcimx93evk@cm33: []
     mcimx93wevk: []
     mcimx93qsb: []

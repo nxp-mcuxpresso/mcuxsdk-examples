@@ -45,7 +45,7 @@ enet_txrx_multiring_transfer:
     - -iar@ddr_release
     - -iar@flash_debug
     - -iar@flash_release
-    mcimx93autoevk: []
+    mcimx93autoevk@cm33: []
     mcimx93evk@cm33: []
     mcimx93wevk: []
     mimxrt2660evk: []

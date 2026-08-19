@@ -144,7 +144,7 @@ lwip_iperf_bm:
     lpcxpresso54628: [-armgcc@debug, -armgcc@release]
     lpcxpresso54s018: [-armgcc@debug, -armgcc@release]
     lpcxpresso54s018m: [-armgcc@debug, -armgcc@release]
-    mcimx93autoevk: []
+    mcimx93autoevk@cm33: []
     mcimx93evk@cm33: []
     mcimx93wevk: []
     mcxn5xxevk@cm33_core0: []

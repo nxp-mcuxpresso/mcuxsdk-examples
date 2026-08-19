@@ -43,7 +43,7 @@ lpit_chained_channel:
     frdmkw43: []
     kw43loc: []
     frdmmcxw70: []
-    mcimx93autoevk: []
+    mcimx93autoevk@cm33: []
     mcimx93evk@cm33: []
     mcimx93wevk: []
     mcimx93qsb: []

@@ -280,7 +280,7 @@ lwip_ping_bm:
     lpcxpresso54628: []
     lpcxpresso54s018: []
     lpcxpresso54s018m: []
-    mcimx93autoevk: []
+    mcimx93autoevk@cm33: []
     mcimx93evk@cm33: []
     mcimx93wevk: []
     mcxn5xxevk@cm33_core0: []
