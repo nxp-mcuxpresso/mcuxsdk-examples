@@ -8,6 +8,7 @@ Board settings
 ==============
 The example requires 2 sets of boards, each of them are mounted with the base board. Using a male to male CAN
 cable to connect the CAN1 instance (J74) between the 2 base boards.
+Make sure jumper J82 is set to position 2-3 to route the CAN signals to the on-board CAN transceiver.
 
 Prepare the Demo
 ================
