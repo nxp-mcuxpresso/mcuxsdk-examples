@@ -317,11 +317,13 @@ int main(void)
     uint8_t idx;
 
     /*
-     * BOARD_InitHardware() brings up the board and, as its final step, runs POWER_Init() on the
-     * shared-example config literals (s_powerInitCfg / s_handshakeRoutingCfg in power_mode_switch.h). When
-     * the PF9453 PMIC supply is enabled it also initialises the LPI2C1 transport and fills
-     * s_powerInitCfg.extSupply before POWER_Init(). To customise for a non-reference board, edit
-     * those literals in power_mode_switch.h; also keep the hskSel field of every affected
+     * BOARD_InitHardware() brings up the board: BOARD_CommonSetting() ramps the boot clocks then
+     * calls POWER_SetPolicy() with POR-default handshake routing (applies to every example on this
+     * board), and as its final step this demo overrides that routing with the shared-example config
+     * literal (s_handshakeRoutingCfg in power_mode_switch.h) via POWER_SetHandshakeRouting(). When
+     * the PF9453 PMIC supply is enabled it also initialises the LPI2C1 transport and calls
+     * POWER_InitExtSupply() before the boot-clock ramp. To customise for a non-reference board, edit
+     * s_handshakeRoutingCfg in power_mode_switch.h; also keep the hskSel field of every affected
      * APP_LPCG_TABLE entry in sync with s_handshakeRoutingCfg so CCM SLICE_CONTROL.HSK_SEL matches.
      */
     BOARD_InitHardware();
@@ -817,7 +819,7 @@ static void APP_WaitTxDone(void)
  * CLOCK_SetClockGateMode() for each entry until the sentinel
  * { kCLOCK_IpInvalid, kAPP_LpcgModeOff } is reached.
  *
- * Call once after POWER_Init() and the initial run-mode selection so that
+ * Call once after POWER_SetPolicy() and the initial run-mode selection so that
  * all peripheral clocks are gated according to the table before the first
  * menu iteration.  For active-mode load characterisation, the default table
  * sets every LPCG to kAPP_LpcgModeOn (mode 3).

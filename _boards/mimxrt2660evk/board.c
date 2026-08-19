@@ -9,6 +9,7 @@
 #include "fsl_debug_console.h"
 #include "board.h"
 #include "pin_mux.h"
+#include "fsl_power.h"
 #if defined(SDK_I2C_BASED_COMPONENT_USED) && SDK_I2C_BASED_COMPONENT_USED
 #include "fsl_lpi2c.h"
 #endif /* SDK_I2C_BASED_COMPONENT_USED */
@@ -405,9 +406,10 @@ void BOARD_ConfigMPU(void)
     SCB_EnableDCache();
 }
 
-/* Common board settings: install the MPU map, bring up the boot clocks,
- * release TRDC ownership from ELE and assign non-CPU masters to domain 0, then
- * mux the debug UART pins and bring up the debug console.
+/* Common board settings: install the MPU map, apply the default power policy
+ * (domain/active-clock-source baseline; low-power gating baseline), bring up the
+ * boot clocks, release TRDC ownership from ELE and assign non-CPU masters to
+ * domain 0, then mux the debug UART pins and bring up the debug console.
  * Called from BOARD_InitHardware() before user code. Examples that own the
  * debug UART peripheral (LPUART driver examples) or use a non-UART debug
  * console (hello_world_virtual_com over USB CDC) must not call this and
@@ -416,6 +418,10 @@ void BOARD_ConfigMPU(void)
 void BOARD_CommonSetting(void)
 {
     BOARD_ConfigMPU();
+    power_policy_config_t powerPolicyCfg;
+    POWER_GetDefaultPolicyConfig(&powerPolicyCfg);
+    powerPolicyCfg.handshakeRouting = NULL;
+    POWER_SetPolicy(&powerPolicyCfg);
     BOARD_InitBootClocks();
     BOARD_ConfigTRDC();
     BOARD_InitDEBUG_UARTPins();

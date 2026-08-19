@@ -151,8 +151,9 @@ uint32_t BOARD_GetAndClearDpdVariantMarker(void);
 void     BOARD_SetEnabledWakeupMarker(uint8_t wakeupSrc);
 uint8_t  BOARD_GetAndClearEnabledWakeupMarker(void);
 
-/* Power init config defined in the shared example (power_mode_switch.h/.c). BOARD_InitHardware()
- * runs POWER_Init() on this instance as the last bring-up step. */
+/* Handshake routing config defined in the shared example (power_mode_switch.h/.c).
+ * BOARD_InitHardware() applies this via POWER_SetHandshakeRouting() as the last bring-up step
+ * (after BOARD_CommonSetting() already applied POWER_SetPolicy() with POR-default routing). */
 extern power_handshake_routing_config_t s_handshakeRoutingCfg;
 
 #endif /* _APP_H_ */

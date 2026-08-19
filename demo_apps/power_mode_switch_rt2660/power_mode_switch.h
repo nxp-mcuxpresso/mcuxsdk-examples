@@ -765,7 +765,7 @@ static const app_lpcg_config_t APP_LPCG_TABLE[] = {
  * Module-scope power init and handshake routing config instances.
  *
  * Both are defined here as literal designated initializers - the values
- * mirror POWER_GetDefaultInitConfig() / POWER_GetDefaultHandshakeRoutingConfig()
+ * mirror POWER_GetDefaultPolicyConfig() / POWER_GetDefaultHandshakeRoutingConfig()
  * (POR-default behavior) but are exposed in one editable location so that
  * a board / use case can tune fields directly without overriding at run
  * time inside main().
@@ -795,7 +795,7 @@ static const app_lpcg_config_t APP_LPCG_TABLE[] = {
  *
  * External linkage (not static): the definition lives in this header but is instantiated in the
  * single TU that includes it (power_mode_switch.c); BOARD_InitHardware() references it via the
- * `extern` declaration in the board app.h to run POWER_Init().
+ * `extern` declaration in the board app.h to run POWER_SetHandshakeRouting().
  */
 power_handshake_routing_config_t s_handshakeRoutingCfg = {
     .rcgcfgHskSel   = 0x11111111UL, /*!< Root clock -> CMC routing (all roots -> CMC0 only)        */

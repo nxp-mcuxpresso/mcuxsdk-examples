@@ -29,6 +29,6 @@ config MCUX_EXAMPLE_POWER_USE_PF9453_PMIC
     select MCUX_POWER_PF9453_SUPPLY
     select MCUX_COMPONENT_driver.lpi2c
     help
-      When set, the demo initialises LPI2C1 and hands its transport to POWER_Init so that
+      When set, the demo initialises LPI2C1 and hands its transport to POWER_InitExtSupply so that
       fsl_power drives the PF9453 BUCK2 regulator for VDD_CORE (per-mode DVS + low-power
       standby) instead of the on-chip DCDC. Default n keeps the on-chip DCDC path.

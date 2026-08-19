@@ -171,9 +171,9 @@ void BOARD_InitHardware(void)
     GPIO_PinInit(BOARD_USER_BUTTON_GPIO, BOARD_USER_BUTTON_GPIO_PIN, &btnConfig);
     GPIO_PinInit(BOARD_USER_BUTTON_6_GPIO, BOARD_USER_BUTTON_6_GPIO_PIN, &btnConfig);
 
-    power_init_config_t boardPowerInitCfg;
-    POWER_GetDefaultInitConfig(&boardPowerInitCfg);
-    boardPowerInitCfg.handshakeRouting = &s_handshakeRoutingCfg;
-    POWER_Init(&boardPowerInitCfg);
+    /* BOARD_CommonSetting() already called POWER_SetPolicy() with POR-default handshake
+     * routing (NULL). Override with this demo's custom routing -- a standalone
+     * POWER_SetHandshakeRouting() call is enough; no need to re-run POWER_SetPolicy(). */
+    POWER_SetHandshakeRouting(&s_handshakeRoutingCfg);
 }
 /*${function:end}*/

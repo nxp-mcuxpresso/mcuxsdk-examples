@@ -37,8 +37,8 @@ fsl_power (coordinator — this example)
 
 | API | Purpose |
 |-----|---------|
-| `POWER_GetDefaultInitConfig()` | Fill `power_init_config_t` with reset defaults |
-| `POWER_Init()` | One-time power subsystem initialisation |
+| `POWER_GetDefaultPolicyConfig()` | Fill `power_policy_config_t` with reset defaults |
+| `POWER_SetPolicy()` | Apply the power policy (domain/active-clock-source baseline); safe to call more than once |
 | `POWER_EnterHpRun()` | Switch to Over Drive Run (0.9 V, FBB) |
 | `POWER_EnterNormalRun()` | Switch to Normal Drive Run (0.8 V, FBB) |
 | `POWER_EnterLpRun()` | Switch to Low Power Run (0.8 V, ZBB) |
