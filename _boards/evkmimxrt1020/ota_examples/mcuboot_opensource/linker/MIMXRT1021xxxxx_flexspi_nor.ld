@@ -1,22 +1,24 @@
 /*
 ** ###################################################################
 **     Processors:          MIMXRT1021CAF4A
+**                          MIMXRT1021CAF4B
 **                          MIMXRT1021CAG4A
+**                          MIMXRT1021CAG4B
 **                          MIMXRT1021DAF5A
+**                          MIMXRT1021DAF5B
 **                          MIMXRT1021DAG5A
+**                          MIMXRT1021DAG5B
 **
 **     Compiler:            GNU C Compiler
-**     Reference manual:    IMXRT1020RM Rev.1, 12/2018 | IMXRT1020SRM Rev.3
-**     Version:             rev. 0.1, 2017-06-06
-**     Build:               b210709
+**     Reference manual:    IMXRT1020RM Rev.2, 01/2021 | IMXRT102XSRM Rev.0
+**     Version:             rev. 0.2, 2025-11-07
+**     Build:               b260509
 **
 **     Abstract:
 **         Linker file for the GNU C Compiler
 **
 **     Copyright 2016 Freescale Semiconductor, Inc.
-**     Copyright 2016-2021 NXP
-**     All rights reserved.
-**
+**     Copyright 2016-2026 NXP
 **     SPDX-License-Identifier: BSD-3-Clause
 **
 **     http:                 www.nxp.com
@@ -195,7 +197,6 @@ SECTIONS
     . = ALIGN(4);
     __DATA_RAM = .;
     __data_start__ = .;      /* create a global symbol at data start */
-    *(m_usb_dma_init_data)
     /* Explicit placement of flash and frequently executed functions in RAM */
     */mflash_drv.c.obj(.text .text* .rodata .rodata*)
     */fsl_flexspi.c.obj(.text .text* .rodata .rodata*)
@@ -245,14 +246,13 @@ SECTIONS
     . = ALIGN(4);
     __START_BSS = .;
     __bss_start__ = .;
-    *(m_usb_dma_noninit_data)
     *(.bss)
     *(.bss*)
     *(COMMON)
     . = ALIGN(4);
     __bss_end__ = .;
     __END_BSS = .;
-  } > m_data2
+  } > m_data
 
   .heap :
   {
