@@ -464,7 +464,7 @@ static void RDB_ResourceAccess(HIPERFACE_Type *base, dsl_encoder_t *enc)
 					PRINTF("    Serial Number : %s\r\n", buff);
 				break;
 			case RDB_CMD_GET_DEVICE_VERSION:
-				if ((status = DSL_RDB_GetBaseiceVersion(BOARD_HIPERFACE_BASEADDR, buff, 17, &buff[17], 5)) == kStatus_Success)
+				if ((status = DSL_RDB_GetBasicVersion(BOARD_HIPERFACE_BASEADDR, buff, 17, &buff[17], 5)) == kStatus_Success)
 					PRINTF("    Firmware version : %s\r\n    Hardware version : %s\r\n", buff, &buff[17]);
 				break;
 			case RDB_CMD_GET_FIRMWARE_DATE:
@@ -811,5 +811,4 @@ int main(void)
 			default:
 				PRINTF("Invalid choice\r\n"); break;
 		}
-	}
-}
+	}}
