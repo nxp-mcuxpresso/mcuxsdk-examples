@@ -165,6 +165,13 @@ int main(void)
     PWM_SetupFaults(BOARD_PWM_BASEADDR, kPWM_Fault_2, &faultConfig);
     PWM_SetupFaults(BOARD_PWM_BASEADDR, kPWM_Fault_3, &faultConfig);
 
+#if defined(FSL_FEATURE_PWM_FAULT_CH_COUNT) && (FSL_FEATURE_PWM_FAULT_CH_COUNT > 1)
+    PWM_SetupFaultsExt(BOARD_PWM_BASEADDR, kPWM_faultchannel_1, kPWM_Fault_0, &faultConfig);
+    PWM_SetupFaultsExt(BOARD_PWM_BASEADDR, kPWM_faultchannel_1, kPWM_Fault_1, &faultConfig);
+    PWM_SetupFaultsExt(BOARD_PWM_BASEADDR, kPWM_faultchannel_1, kPWM_Fault_2, &faultConfig);
+    PWM_SetupFaultsExt(BOARD_PWM_BASEADDR, kPWM_faultchannel_1, kPWM_Fault_3, &faultConfig);
+#endif
+
     /* Set PWM fault disable mapping for submodule 0/1/2 */
     PWM_SetupFaultDisableMap(BOARD_PWM_BASEADDR, kPWM_Module_0, kPWM_PwmA, kPWM_faultchannel_0,
                              DEMO_PWM_DISABLE_MAP_OP(kPWM_FaultDisable_0 | kPWM_FaultDisable_1 | kPWM_FaultDisable_2 | kPWM_FaultDisable_3));

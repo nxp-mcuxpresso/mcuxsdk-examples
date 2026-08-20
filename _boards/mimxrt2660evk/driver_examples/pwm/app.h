@@ -13,7 +13,7 @@
 /*${macro:start}*/
 /* The PWM base address */
 #define BOARD_PWM_BASEADDR        HSP__FLEXPWM_1
-#define DEMO_PWM_CLOCK_DEVIDER    kFLEXPWM_Prescale_Divide_1
+#define DEMO_PWM_CLOCK_DEVIDER    kPWM_Prescale_Divide_1
 #define APP_DEFAULT_PWM_FREQUENCY (2000U)
 #define DEMO_PWM_FAULT_LEVEL      true
 

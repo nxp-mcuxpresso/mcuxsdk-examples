@@ -24,6 +24,11 @@ void BOARD_InitHardware(void)
     XBAR_SetSignalsConnection(kHSP_XBAR_0_InputLogicLow, kHSP_XBAR_0_OutputHspFlexpwm1FaultIn2);
     XBAR_SetSignalsConnection(kHSP_XBAR_0_InputLogicLow, kHSP_XBAR_0_OutputHspFlexpwm1FaultIn3);
 
+    XBAR_SetSignalsConnection(kHSP_XBAR_0_InputLogicLow, kHSP_XBAR_0_OutputHspFlexpwm0123FaultIn4);
+    XBAR_SetSignalsConnection(kHSP_XBAR_0_InputLogicLow, kHSP_XBAR_0_OutputHspFlexpwm0123FaultIn5);
+    XBAR_SetSignalsConnection(kHSP_XBAR_0_InputLogicLow, kHSP_XBAR_0_OutputHspFlexpwm0123FaultIn6);
+    XBAR_SetSignalsConnection(kHSP_XBAR_0_InputLogicLow, kHSP_XBAR_0_OutputHspFlexpwm0123FaultIn7);
+
     CLOCK_SetRootClockDiv(kCLOCK_Root_CGU_MAIN_ROOTCLK, 10u);
 }
 /*${function:end}*/
