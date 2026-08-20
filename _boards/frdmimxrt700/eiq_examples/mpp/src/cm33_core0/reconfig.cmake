@@ -46,6 +46,6 @@ mcux_remove_armgcc_linker_script(
 
 mcux_add_armgcc_linker_script(
     TARGETS flash_debug flash_release
-    BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/eiq_examples/mpp/src/${core_id}
+    BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/eiq_examples/mpp/linker_files
     LINKER MIMXRT798Sxxxx_cm33_core0_flash.ld
 )

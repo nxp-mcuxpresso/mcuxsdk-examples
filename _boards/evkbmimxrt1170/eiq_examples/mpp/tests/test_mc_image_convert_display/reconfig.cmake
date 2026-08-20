@@ -13,6 +13,7 @@ mcux_add_macro(
 
 mcux_add_armgcc_configuration(
     CC "-DBOOT_SECONDARY_CORE \
+        -DMCMGR_USED \
         -DRPMSG_USED \
         -DCORE1_BOOT_ADDRESS=${CORE1_BOOT_ADDRESS}"
 )
@@ -23,6 +24,7 @@ mcux_add_configuration(
 
 mcux_add_linker_symbol(
     SYMBOLS "__use_shmem__=1 \
+             __shmem_user_data_size__=0x1000 \
              __multicore__=1 \
              __core1_data_mem__=${CORE1_DATA_MEM} \
             "

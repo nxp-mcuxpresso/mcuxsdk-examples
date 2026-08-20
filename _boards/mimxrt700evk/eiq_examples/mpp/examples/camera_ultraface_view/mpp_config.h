@@ -121,6 +121,7 @@
 /* camera parameters */
 #ifdef USE_USB_CAMERA
 #define APP_CAMERA_NAME    "USB_cam"
+#define APP_CAMERA_FPS     15
 #if (MATCH_FORMAT == MATCH_FORMAT_UNCOMPRESSED)
 #define APP_CAMERA_WIDTH   320   //320 //1280 //640 //352
 #define APP_CAMERA_HEIGHT  240   //240 // 720 //480 //288

@@ -1,22 +1,21 @@
 /*
 ** ###################################################################
-**     Processors:          MIMXRT1176AVM8A_cm4
-**                          MIMXRT1176AVM8B_cm4
-**                          MIMXRT1176CVM8A_cm4
-**                          MIMXRT1176CVM8B_cm4
-**                          MIMXRT1176DVMAA_cm4
-**                          MIMXRT1176DVMAB_cm4
+**     Processors:          MIMXRT1176AVM8A_cm7
+**                          MIMXRT1176CVM8A_cm7
+**                          MIMXRT1176DVMAA_cm7
 **
 **     Compiler:            GNU C Compiler
-**     Reference manual:    IMXRT1170RM, Rev 5, 12/2025
-**     Version:             rev. 1.2, 2025-11-07
-**     Build:               b260106
+**     Reference manual:    IMXRT1170RM, Rev 1, 02/2021
+**     Version:             rev. 1.1, 2022-04-02
+**     Build:               b221022
 **
 **     Abstract:
 **         Linker file for the GNU C Compiler
 **
 **     Copyright 2016 Freescale Semiconductor, Inc.
 **     Copyright 2016-2026 NXP
+**     All rights reserved.
+**
 **     SPDX-License-Identifier: BSD-3-Clause
 **
 **     http:                 www.nxp.com
@@ -29,32 +28,51 @@
 ENTRY(Reset_Handler)
 
 /* Define memory sizes */
-HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x0400;
-STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x0400;
+HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x80000;
+STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x10000;
 RPMSG_SHMEM_SIZE = DEFINED(__use_shmem__) ? 0x2000 : 0;
+SHARED_USER_DATA_SIZE = DEFINED(__shmem_user_data_size__) ? __shmem_user_data_size__ : 0;
+VECTOR_RAM_SIZE = DEFINED(__ram_vector_table__) ? 0x00000400 : 0;
+TEXT_SIZE = DEFINED(__use_flash64MB__) ? 0x03FBDC00 : 0x00FBDC00;
 TOTAL_SDRAM_SIZE = 0x04000000;
-DEFAULT_DATA_SIZE = DEFINED(__use_shmem__) ? 0x01000000 : 0x0;
-DATA_SIZE = DEFINED(__core1_data_mem__) ? __core1_data_mem__ : DEFAULT_DATA_SIZE;
+DATA_SIZE = DEFINED(__use_shmem__) ? 0x02000000 : 0x03000000;
+DEFAULT_CORE1_DATA_SIZE = DEFINED(__use_shmem__) ? 0x01000000 : 0x0;
+CORE1_DATA_SIZE = DEFINED(__core1_data_mem__) ? __core1_data_mem__ : DEFAULT_CORE1_DATA_SIZE;
+NCACHE_DATA_SIZE = TOTAL_SDRAM_SIZE - DATA_SIZE - CORE1_DATA_SIZE;
 NCACHE_HEAP_SIZE  = DEFINED(__heap_noncacheable__) ? HEAP_SIZE : 0x0000;
+M_DATA3_SIZE = 0x00080000 - RPMSG_SHMEM_SIZE - SHARED_USER_DATA_SIZE;
 
 /* Define memory addresses */
 SDRAM_START = 0x80000000;
-DATA_START = SDRAM_START + TOTAL_SDRAM_SIZE - DATA_SIZE;
+DATA_START = SDRAM_START;
 DATA_END = DATA_START + DATA_SIZE;
-NCACHE_HEAP_START = DEFINED(__heap_noncacheable__) ? 0x202C0000 - HEAP_SIZE : DATA_END - HEAP_SIZE;
-
+NCACHE_DATA_START = DATA_END;
+NCACHE_DATA_END = NCACHE_DATA_START + NCACHE_DATA_SIZE;
+NCACHE_HEAP_START = DEFINED(__heap_noncacheable__) ? NCACHE_DATA_END - HEAP_SIZE : DATA_END - HEAP_SIZE;
+CORE1IMAGE_START = DEFINED(__use_flash64MB__) ? 0x33FC0000 : 0x30FC0000;
+RPMSG_SHMEM_START = 0x202C0000;
+SHARED_USER_DATA_START = RPMSG_SHMEM_START + RPMSG_SHMEM_SIZE;
+M_DATA3_START = SHARED_USER_DATA_START + SHARED_USER_DATA_SIZE;
 
 /* Specify the memory areas */
 MEMORY
 {
-  m_interrupts          (RX)  : ORIGIN = 0x1FFE0000, LENGTH = 0x00000400
-  m_text                (RX)  : ORIGIN = 0x1FFE0400, LENGTH = 0x0001FC00
+  m_flash_config        (RX)  : ORIGIN = 0x30000400, LENGTH = 0x00000C00
+  m_ivt                 (RX)  : ORIGIN = 0x30001000, LENGTH = 0x00000020
+  m_boot_data           (RX)  : ORIGIN = 0x30001020, LENGTH = 0x00000010
+  m_dcd_data            (RX)  : ORIGIN = 0x30001030, LENGTH = 0x000006E8
+  m_xmcd_data           (RX)  : ORIGIN = 0x30001040, LENGTH = 0x00000204
+  m_interrupts          (RX)  : ORIGIN = 0x30002000, LENGTH = 0x00000400
+  m_text                (RX)  : ORIGIN = 0x30002400, LENGTH = TEXT_SIZE
+  m_qacode              (RX)  : ORIGIN = 0x00000000, LENGTH = 0x00040000
   m_data                (RW)  : ORIGIN = DATA_START, LENGTH = DEFINED(__heap_noncacheable__) ? DATA_SIZE : DATA_SIZE - HEAP_SIZE
-  m_data2               (RW)  : ORIGIN = 0x20000000, LENGTH = 0x00020000
-  m_ncache              (RW)  : ORIGIN = 0x20280000, LENGTH = DEFINED(__heap_noncacheable__) ? 0x00040000 - HEAP_SIZE : 0x00040000
-  m_data3               (RW)  : ORIGIN = 0x20240000, LENGTH = 0x00040000
+  m_data2               (RW)  : ORIGIN = 0x20000000, LENGTH = 0x00040000
+  m_data3               (RW)  : ORIGIN = M_DATA3_START, LENGTH = M_DATA3_SIZE
+  m_ncache              (RW)  : ORIGIN = NCACHE_DATA_START, LENGTH = DEFINED(__heap_noncacheable__) ? NCACHE_DATA_SIZE - HEAP_SIZE : NCACHE_DATA_SIZE
+  rpmsg_sh_mem          (RW)  : ORIGIN = RPMSG_SHMEM_START, LENGTH = RPMSG_SHMEM_SIZE
+  shared_user_data      (RW)  : ORIGIN = SHARED_USER_DATA_START, LENGTH = SHARED_USER_DATA_SIZE
   m_heap                (RW)  : ORIGIN = NCACHE_HEAP_START, LENGTH = HEAP_SIZE
-  rpmsg_sh_mem          (RW)  : ORIGIN = 0x202C0000, LENGTH = RPMSG_SHMEM_SIZE
+  m_core1_image         (RX)  : ORIGIN = CORE1IMAGE_START, LENGTH = 0x00040000
 }
 
 /* Define output sections */
@@ -66,6 +84,52 @@ SECTIONS
   __RPMSG_SH_MEM_START = ORIGIN(rpmsg_sh_mem);
   __RPMSG_SH_MEM_SIZE  = LENGTH(rpmsg_sh_mem);
 
+
+  .flash_config :
+  {
+    . = ALIGN(4);
+    __FLASH_BASE = .;
+    KEEP(* (.boot_hdr.conf))     /* flash config section */
+    . = ALIGN(4);
+  } > m_flash_config
+
+  .ivt :
+  {
+    . = ALIGN(4);
+    KEEP(* (.boot_hdr.ivt))           /* ivt section */
+    . = ALIGN(4);
+  } > m_ivt
+
+  .boot_data :
+  {
+    . = ALIGN(4);
+    KEEP(* (.boot_hdr.boot_data))     /* boot_data section */
+    . = ALIGN(4);
+  } > m_boot_data
+
+  .dcd_data :
+  {
+    . = ALIGN(4);
+    KEEP(* (.boot_hdr.dcd_data))     /* dcd_data section */
+    . = ALIGN(4);
+  } > m_dcd_data
+
+  .xmcd_data :
+  {
+    . = ALIGN(4);
+    KEEP(* (.boot_hdr.xmcd_data))    /* xmcd_data section */
+    . = ALIGN(4);
+  } > m_xmcd_data
+
+  /* section for storing the secondary core image */
+  .core1_code :
+  {
+     . = ALIGN(4) ;
+    KEEP (*(.core1_code))
+     *(.core1_code*)
+     . = ALIGN(4) ;
+  } > m_core1_image
+
   /* NOINIT section for rpmsg_sh_mem */
   .noinit_rpmsg_sh_mem (NOLOAD) : ALIGN(4)
   {
@@ -74,6 +138,14 @@ SECTIONS
      . = ALIGN(4) ;
      __RPMSG_SH_MEM_END__ = .;
   } > rpmsg_sh_mem
+
+  .noinit_shared_user_data (NOLOAD) : ALIGN(4)
+  {
+     __SHARED_USER_DATA_MEM_START__ = .;
+     *(.noinit.$shared_user_data*)
+     . = ALIGN(4) ;
+     __SHARED_USER_DATA_MEM_END__ = .;
+  } > shared_user_data
 
   /* The startup code goes first into internal RAM */
   .interrupts :
@@ -93,7 +165,6 @@ SECTIONS
     *(.text*)                /* .text* sections (code) */
     *(.rodata)               /* .rodata sections (constants, strings, etc.) */
     *(.rodata*)              /* .rodata* sections (constants, strings, etc.) */
-    *(CodeQuickAccess)       /* quick access code section */
     *(.glue_7)               /* glue arm to thumb code */
     *(.glue_7t)              /* glue thumb to arm code */
     *(.eh_frame)
@@ -175,23 +246,46 @@ SECTIONS
   __etext = .;    /* define a global symbol at end of code */
   __DATA_ROM = .; /* Symbol is used by startup for data initialization */
 
-  __VECTOR_RAM = ORIGIN(m_interrupts);
-  __RAM_VECTOR_TABLE_SIZE_BYTES = 0x0;
+  .interrupts_ram :
+  {
+    . = ALIGN(4);
+    __VECTOR_RAM__ = .;
+    __interrupts_ram_start__ = .; /* Create a global symbol at data start */
+    *(.m_interrupts_ram)     /* This is a user defined section */
+    . += VECTOR_RAM_SIZE;
+    . = ALIGN(4);
+    __interrupts_ram_end__ = .; /* Define a global symbol at data end */
+  } > m_data
+
+  __VECTOR_RAM = DEFINED(__ram_vector_table__) ? __VECTOR_RAM__ : ORIGIN(m_interrupts);
+  __RAM_VECTOR_TABLE_SIZE_BYTES = DEFINED(__ram_vector_table__) ? (__interrupts_ram_end__ - __interrupts_ram_start__) : 0x0;
 
   .data : AT(__DATA_ROM)
   {
     . = ALIGN(4);
     __DATA_RAM = .;
     __data_start__ = .;      /* create a global symbol at data start */
+    *(m_usb_dma_init_data)
     *(.data)                 /* .data sections */
     *(.data*)                /* .data* sections */
-    *(DataQuickAccess)       /* quick access data section */
+    *(.got*)                /* .got* sections */
     KEEP(*(.jcr*))
     . = ALIGN(4);
     __data_end__ = .;        /* define a global symbol at data end */
   } > m_data
 
-  __NDATA_ROM = __DATA_ROM + (__data_end__ - __data_start__);
+  __ram_function_flash_start = __DATA_ROM + (__data_end__ - __data_start__); /* Symbol is used by startup for TCM data initialization */
+
+  .ram_function : AT(__ram_function_flash_start)
+  {
+    . = ALIGN(32);
+    __ram_function_start__ = .;
+    *(CodeQuickAccess)
+    . = ALIGN(128);
+    __ram_function_end__ = .;
+  } > m_qacode
+
+  __NDATA_ROM = __ram_function_flash_start + (__ram_function_end__ - __ram_function_start__);
   .ncache.init : AT(__NDATA_ROM)
   {
     __noncachedata_start__ = .;   /* create a global symbol at ncache data start */
@@ -211,6 +305,13 @@ SECTIONS
   text_end = ORIGIN(m_text) + LENGTH(m_text);
   ASSERT(__DATA_END <= text_end, "region m_text overflowed with text and data")
 
+  .qadata :
+  {
+    . = ALIGN(4);
+    *(DataQuickAccess)       /* quick access data section */
+    . = ALIGN(4);
+  } > m_data2
+
   /* Uninitialized data section */
   .bss :
   {
@@ -218,6 +319,7 @@ SECTIONS
     . = ALIGN(4);
     __START_BSS = .;
     __bss_start__ = .;
+    *(m_usb_dma_noninit_data)
     *(.bss)
     *(.bss*)
     *(COMMON)
@@ -241,7 +343,6 @@ SECTIONS
   {
     . = ALIGN(8);
     . += STACK_SIZE;
-    __StackEnd = .;
   } > m_data
 
   /* Initializes stack on the end of block */
@@ -250,6 +351,4 @@ SECTIONS
   PROVIDE(__stack = __StackTop);
 
   .ARM.attributes 0 : { *(.ARM.attributes) }
-
-  ASSERT(__StackLimit >= __StackEnd, "region m_data overflowed with stack and heap")
 }

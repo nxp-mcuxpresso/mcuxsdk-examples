@@ -13,7 +13,6 @@ mcux_add_source(
             examples/eiq_examples/mpp/camera_usb_final_fr_app_view/*.h
             examples/eiq_examples/mpp/camera_usb_final_fr_app_view/mpp_app_task_notify.c
             examples/eiq_examples/mpp/camera_usb_final_fr_app_view/mpp_app_task_notify.h
-            middleware/eiq/mpp/common/draw_text.c
 )
 
 mcux_add_include(
@@ -38,7 +37,6 @@ mcux_add_include(
                 models/mobilefacenet
                 models/antispoofing
                 models/scrfd_kps_500m_full_integer_quant
-                common
                 images
 )
 
@@ -58,6 +56,7 @@ mcux_add_source(
             models/antispoofing/*.h
             models/scrfd_kps_500m_full_integer_quant/scrfd_kps_output_postproc.c
             models/scrfd_kps_500m_full_integer_quant/*.h
+            images/NXP_Logo_RGB_Colour_320.h
 )
 
 # top level

@@ -73,13 +73,7 @@ typedef struct usb_camera_msg_{
 	uint32_t size;
 }usb_camera_msg_t;
 
-#define MATCH_RESOLUTION_FIXED 1
 #define NUM_FRAMES_TO_PROCESS -1 // -1 all frames, >0 process as many frames as requested
-
-#define USB_FRAME_INTERVAL_OVERRIDE 1
-//#define USB_FRAME_INTERVAL_VALUE 666666; /* 15FPS */
-#define USB_FRAME_INTERVAL_VALUE 1000000; /* 10FPS */
-//#define USB_FRAME_INTERVAL_VALUE 2000000; /* 5FPS */
 
 #ifdef USE_PSRAM_JPG_BUFFERS
 #define JPEG_BUFF0_ADDR 0x60400000U

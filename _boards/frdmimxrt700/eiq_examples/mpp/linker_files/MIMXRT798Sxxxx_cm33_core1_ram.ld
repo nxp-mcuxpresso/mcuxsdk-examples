@@ -45,11 +45,13 @@ TOTAL_CORE1_SRAM = DEFINED(__core1_total_mem__) ? __core1_total_mem__ : DEFAULT_
 /* Size needed by RPMSG */
 RPMSG_SHMEM_SIZE = DEFINED(__use_shmem__) ? 0x2000 : 0;
 
+SHARED_USER_DATA_SIZE = DEFINED(__shmem_user_data_size__) ? __shmem_user_data_size__ : 0;
+
 /* Size needed for shared camera buffers when running USB camera on core 1 */
 CAMERA_BUFFERS_SHMEM_SIZE = DEFINED(__camera_buffers_shmem_size__) ? __camera_buffers_shmem_size__ : 0;
 
 /* Total SRAM allocated to core 0 after subtracting core 1 memory, RPMSG shared memory, and camera buffers */
-TOTAL_CORE0_SRAM = TOTAL_USABLE_SRAM - TOTAL_CORE1_SRAM - RPMSG_SHMEM_SIZE - CAMERA_BUFFERS_SHMEM_SIZE;
+TOTAL_CORE0_SRAM = TOTAL_USABLE_SRAM - TOTAL_CORE1_SRAM - RPMSG_SHMEM_SIZE - CAMERA_BUFFERS_SHMEM_SIZE - SHARED_USER_DATA_SIZE;
 
 /* Size of the text (code) section for core1 */
 TEXT_SIZE = (SRAM_START_ADDRESS + TOTAL_CORE0_SRAM + TOTAL_CORE1_SRAM - TEXT_START);
@@ -76,8 +78,11 @@ ASSERT(DATA_END < TEXT_START, "text memory overlaps with data memory")
 /* RPMSG shared memory start address in SRAM */
 RPMSG_SHMEM_START = SRAM_START_ADDRESS + TOTAL_CORE0_SRAM + TOTAL_CORE1_SRAM;
 
+/* Calculate the start address of the user shared memory region */
+SHARED_USER_DATA_START = RPMSG_SHMEM_START + RPMSG_SHMEM_SIZE;
+
 /* Shared camera buffers start address in SRAM */
-CAMERA_BUFFERS_SHMEM_START = RPMSG_SHMEM_START + RPMSG_SHMEM_SIZE;
+CAMERA_BUFFERS_SHMEM_START = SHARED_USER_DATA_START + SHARED_USER_DATA_SIZE;
 
 /* Verify that the text (code) section does not overlap with RPMSG shared memory region */
 ASSERT(TEXT_END < RPMSG_SHMEM_START, "text memory overlaps with RPMSG shared memory")
@@ -89,6 +94,7 @@ MEMORY
   m_data                (RW)  : ORIGIN = DATA_START, LENGTH = DATA_SIZE
   m_core0_mem           (RW)  : ORIGIN = SRAM_START_ADDRESS, LENGTH = TOTAL_CORE0_SRAM
   rpmsg_sh_mem          (RW)  : ORIGIN = RPMSG_SHMEM_START, LENGTH = RPMSG_SHMEM_SIZE
+  shared_user_data      (RW)  : ORIGIN = SHARED_USER_DATA_START, LENGTH = SHARED_USER_DATA_SIZE
   cam_buff_sh_mem       (RW)  : ORIGIN = CAMERA_BUFFERS_SHMEM_START, LENGTH = CAMERA_BUFFERS_SHMEM_SIZE
 }
 
@@ -227,6 +233,15 @@ SECTIONS
      . = ALIGN(4) ;
      __RPMSG_SH_MEM_END__ = .;
   } > rpmsg_sh_mem
+  
+  /* section for shared_user_data */
+  .noinit_shared_user_data (NOLOAD) : ALIGN(4)
+  {
+     __SHARED_USER_DATA_MEM_START__ = .;
+     *(.noinit.$shared_user_data*)
+     . = ALIGN(4) ;
+     __SHARED_USER_DATA_MEM_END__ = .;
+  } > shared_user_data
 
   .bss :
   {

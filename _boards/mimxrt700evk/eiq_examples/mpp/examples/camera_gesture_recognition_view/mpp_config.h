@@ -32,6 +32,9 @@
 #ifdef USE_USB_CAMERA
 #define HAL_ENABLE_CAMERA_DEV_EzhV_Ov7670     0
 #define HAL_ENABLE_CAMERA_DEV_USB             1
+#elif defined(USE_STATIC_IMAGE)
+#define HAL_ENABLE_CAMERA_DEV_EzhV_Ov7670     0
+#define HAL_ENABLE_CAMERA_DEV_USB             0
 #else /* Use Flexio camera */
 #define HAL_ENABLE_CAMERA_DEV_EzhV_Ov7670     1
 #define HAL_ENABLE_CAMERA_DEV_USB             0
@@ -46,6 +49,11 @@
 
 /* enable JPEG SW decoder */
 #if (MATCH_FORMAT != MATCH_FORMAT_UNCOMPRESSED)
+#define HAL_ENABLE_JPEG_CPU                   0
+#define HAL_ENABLE_JPEG_HW                    1
+#endif
+
+#ifdef USE_STATIC_IMAGE
 #define HAL_ENABLE_JPEG_CPU                   0
 #define HAL_ENABLE_JPEG_HW                    1
 #endif
@@ -120,6 +128,7 @@
 /* camera parameters */
 #ifdef USE_USB_CAMERA
 #define APP_CAMERA_NAME    "USB_cam"
+#define APP_CAMERA_FPS     15
 #if (MATCH_FORMAT == MATCH_FORMAT_UNCOMPRESSED)
 #define APP_CAMERA_WIDTH   320   //320 //1280 //640 //352
 #define APP_CAMERA_HEIGHT  240   //240 // 720 //480 //288
@@ -129,6 +138,11 @@
 #define APP_CAMERA_HEIGHT  480   //240 // 720 //480 //288
 #define APP_CAMERA_FORMAT  MPP_PIXEL_JPEG
 #endif
+#elif defined(USE_STATIC_IMAGE)
+#define APP_CAMERA_NAME    "static_image"
+#define APP_CAMERA_WIDTH   640
+#define APP_CAMERA_HEIGHT  480
+#define APP_CAMERA_FORMAT  MPP_PIXEL_JPEG
 #else /* Flexio camera parameters */
 #define APP_CAMERA_NAME    "EzhV_Ov7670"
 #define APP_CAMERA_WIDTH   320
@@ -163,6 +177,11 @@
 #define APP_DISPLAY_LANDSCAPE_ROTATE_NUM 270
 #endif
 #define APP_SRC_DISPLAY_FLIP             FLIP_HORIZONTAL
+#elif defined(USE_STATIC_IMAGE)
+#ifndef APP_DISPLAY_LANDSCAPE_ROTATE_NUM
+#define APP_DISPLAY_LANDSCAPE_ROTATE_NUM 270
+#endif
+#define APP_SRC_DISPLAY_FLIP             FLIP_HORIZONTAL
 #else /* OV7670 */
 #ifndef APP_DISPLAY_LANDSCAPE_ROTATE_NUM
 #define APP_DISPLAY_LANDSCAPE_ROTATE_NUM 90
@@ -185,10 +204,10 @@
 
 /* Tensorflow lite Model data */
 #ifdef APP_USE_NEUTRON64_MODEL
-#define APP_TFLITE_BLAZE_DETECTOR_PTQ_DATA  "blaze_detector_ptq_int8_npu64_tflite.h"
+#define APP_TFLITE_BLAZE_DETECTOR_PTQ_DATA  "palm_detection_lite_int8_npu64_tflite.h"
 #define APP_TFLITE_HAND_LANDMARK_DATA       "hand_landmark_quant_int8_npu64_tflite.h"
 #else
-#define APP_TFLITE_BLAZE_DETECTOR_PTQ_DATA  "blaze_detector_ptq_int8_tflite.h"
+#define APP_TFLITE_BLAZE_DETECTOR_PTQ_DATA  "palm_detection_lite_int8_tflite.h"
 #define APP_TFLITE_HAND_LANDMARK_DATA       "hand_landmark_quant_int8_tflite.h"
 #endif
 #define APP_TFLITE_GESTURE_EMBEDDER_DATA    "gesture_embedder1_i8_opt_tflite.h"
@@ -214,5 +233,7 @@
 #define HANDLANDMARK_MODEL_ID           2
 #define GESTURE_EMBEDDER_MODEL_ID       3
 #define GESTURE_CLASSIFIER_MODEL_ID     4
+
+#define APP_STATIC_IMAGE_NAME "internal/images/hand_640_480_jpg.h"
 
 #endif /* _MPP_CONFIG_H */

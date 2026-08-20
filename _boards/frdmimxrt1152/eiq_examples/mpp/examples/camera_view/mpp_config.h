@@ -82,6 +82,7 @@
 
 /* camera parameters */
 #define APP_CAMERA_NAME    "USB_cam"
+#define APP_CAMERA_FPS     5
 #define APP_CAMERA_WIDTH   160
 #define APP_CAMERA_HEIGHT  120
 #define APP_CAMERA_FORMAT  MPP_PIXEL_YUYV

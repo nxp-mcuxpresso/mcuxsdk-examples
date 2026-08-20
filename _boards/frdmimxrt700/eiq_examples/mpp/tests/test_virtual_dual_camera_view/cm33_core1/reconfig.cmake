@@ -6,7 +6,8 @@ mcux_add_source(
     )
 
 mcux_add_configuration(
-    CC "-D__USE_SHMEM"
+    CC "-D__USE_SHMEM \
+        -DMCMGR_USED"
 )
 
 mcux_add_linker_symbol(

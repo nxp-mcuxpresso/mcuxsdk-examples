@@ -36,7 +36,7 @@
 
 /* The size of Tensor Arena buffer for TensorFlowLite-Micro */
 /* minimum required arena size for persondetect model converted for NPU */
-#define HAL_TFLM_TENSOR_ARENA_SIZE_KB 247
+#define HAL_TFLM_TENSOR_ARENA_SIZE_KB 249
 
 /**
  * This is HAL debug configuration

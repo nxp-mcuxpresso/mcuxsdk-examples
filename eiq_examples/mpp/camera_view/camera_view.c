@@ -152,9 +152,18 @@ static void app_task(void *params) {
     cam_params.height = APP_CAMERA_HEIGHT;
     cam_params.width  = APP_CAMERA_WIDTH;
     cam_params.format = args->src_format;
-    cam_params.fps    = 30;
     cam_params.stripe = stripe_mode;
+#ifndef USE_USB_CAMERA
+    cam_params.fps    = 30;
+#endif
 #ifdef USE_USB_CAMERA
+    cam_params.n_streams = 1;
+    cam_params.stream[0].active = true;
+#ifdef USB_CAMERA_INDEX
+    cam_params.stream[0].usb_camera_index = USB_CAMERA_INDEX;
+#else
+    cam_params.stream[0].usb_camera_index = -1;
+#endif
     cam_params.in_advance_enqueue = true;
 #endif
     ret = mpp_camera_add(mp, args->camera_name, &cam_params, NULL);

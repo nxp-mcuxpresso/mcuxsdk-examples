@@ -8,13 +8,11 @@ mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/eiq_examples/mpp/camera_gesture_recognition_view/camera_gesture_recognition_view.c
             ${board_root}/${board}/eiq_examples/mpp/examples/camera_gesture_recognition_view/mpp_config.h
-            middleware/eiq/mpp/common/draw_text.c
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES ${board_root}/${board}/eiq_examples/mpp/examples/camera_gesture_recognition_view/
-             middleware/eiq/mpp/common/
 )
 
 # board files

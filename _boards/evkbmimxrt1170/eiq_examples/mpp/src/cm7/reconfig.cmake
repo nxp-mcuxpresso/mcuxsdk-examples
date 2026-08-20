@@ -24,6 +24,6 @@ mcux_remove_armgcc_linker_script(
 
 mcux_add_armgcc_linker_script(
     TARGETS flexspi_nor_sdram_debug flexspi_nor_sdram_release flexspi_nor_debug flexspi_nor_release
-    BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/eiq_examples/mpp/src/${core_id}
+    BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/eiq_examples/mpp/linker_files
     LINKER MIMXRT1176xxxxx_cm7_flexspi_nor_sdram.ld
 )

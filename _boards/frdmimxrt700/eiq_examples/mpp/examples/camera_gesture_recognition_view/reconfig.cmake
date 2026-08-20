@@ -2,14 +2,17 @@
 
 mcux_add_source(
         BASE_PATH ${SdkRootDirPath}
-        SOURCES ${board_root}/${board}/eiq_examples/mpp/src/host_video.c
-                ${board_root}/${board}/eiq_examples/mpp/src/image_process.c
-                ${board_root}/${board}/eiq_examples/mpp/inc/host_video.h
-                ${board_root}/${board}/eiq_examples/mpp/inc/image_process.h
+        SOURCES middleware/eiq/mpp/hal/camera_usb/host_video.c
+                middleware/eiq/mpp/hal/camera_usb/host_video.h
+)
+
+mcux_add_include(
+    BASE_PATH ${SdkRootDirPath}
+    INCLUDES middleware/eiq/mpp/hal/camera_usb
 )
 
 mcux_add_macro(
-    CC "-DRTOS_HEAP_SIZE=1500 \
+    CC "-DRTOS_HEAP_SIZE=1275 \
     -DHAL_TIMER_PRECISION_1_US \
     -DconfigGENERATE_RUN_TIME_STATS=1 \
     -DUSE_UNCACHED_JPG_BUFFERS \
@@ -22,5 +25,5 @@ mcux_add_macro(
 
 #increase __ncache_size__ also increases the size of npu_ncache section accessible to NPU
 mcux_add_armgcc_configuration(
-  LD "-Xlinker --defsym=__ncache_size__=0x00380000"
+  LD "-Xlinker --defsym=__ncache_size__=0x0035C000"
 )

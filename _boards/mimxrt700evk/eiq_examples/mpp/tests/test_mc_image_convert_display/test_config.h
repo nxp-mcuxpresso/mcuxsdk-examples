@@ -159,15 +159,6 @@ void *image_data = (void *)stopwatch128_128_rgb_data;
 #define IMAGE_NAME "stopwatch128_128_rgb"
 #define EXPECTED_CHECKSUM 0xe1475c0
 #elif (APP_CONFIG==14)
-#include "images/dogs_COCO_320_320_bgra.h"
-#define SRC_IMAGE_FORMAT SRC_IMAGE_DOGS_COCO_320_320_BGRA_FORMAT
-#define SRC_IMAGE_CHANNELS_NUMBER SRC_IMAGE_DOGS_COCO_320_320_BGRA_CHANNELS_NUMBER
-#define SRC_IMAGE_HEIGHT SRC_IMAGE_DOGS_COCO_320_320_BGRA_HEIGHT
-#define SRC_IMAGE_WIDTH SRC_IMAGE_DOGS_COCO_320_320_BGRA_WIDTH
-void *image_data = (void *)dogs_COCO_320_320_bgra_data;
-#define IMAGE_NAME "dogs_COCO_320_320_bgra"
-#define EXPECTED_CHECKSUM 0x1d21dbb6
-#elif (APP_CONFIG==15)
 #include "images/couple_COCO_320_240_rgba.h"
 #define SRC_IMAGE_FORMAT SRC_IMAGE_COUPLE_COCO_320_240_RGBA_FORMAT
 #define SRC_IMAGE_CHANNELS_NUMBER SRC_IMAGE_COUPLE_COCO_320_240_RGBA_CHANNELS_NUMBER
@@ -176,7 +167,7 @@ void *image_data = (void *)dogs_COCO_320_320_bgra_data;
 void *image_data = (void *)couple_COCO_320_240_rgba_data;
 #define IMAGE_NAME "couple_COCO_320_240_rgba"
 #define EXPECTED_CHECKSUM 0x6ede06df
-#elif (APP_CONFIG==16)
+#elif (APP_CONFIG==15)
 #include "images/stopwatch168_208_rgb565.h"
 #define SRC_IMAGE_FORMAT SRC_IMAGE_STOPWATCH168_208_RGB565_FORMAT
 #define SRC_IMAGE_CHANNELS_NUMBER SRC_IMAGE_STOPWATCH168_208_RGB565_CHANNELS_NUMBER
@@ -185,7 +176,7 @@ void *image_data = (void *)couple_COCO_320_240_rgba_data;
 void *image_data = (void *)stopwatch168_208_rgb565_data;
 #define IMAGE_NAME "stopwatch168_208_rgb565"
 #define EXPECTED_CHECKSUM 0xbf1ada7a
-#elif (APP_CONFIG==17)
+#elif (APP_CONFIG==16)
 #include "images/skigirl_COCO_320_320_yuyv.h"
 #define SRC_IMAGE_FORMAT SRC_IMAGE_SKIGIRL_COCO_320_320_YUYV_FORMAT
 #define SRC_IMAGE_CHANNELS_NUMBER SRC_IMAGE_SKIGIRL_COCO_320_320_YUYV_CHANNELS_NUMBER

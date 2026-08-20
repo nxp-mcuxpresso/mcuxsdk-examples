@@ -106,6 +106,18 @@
 #include "hand_landmark_quant_output_postproc.h"
 #include "canned_gesture_classifier_output_postproc.h"
 
+#ifdef USE_STATIC_IMAGE
+#include APP_STATIC_IMAGE_NAME
+#define SRC_IMAGE_WIDTH  SRC_IMAGE_HAND_640_480_WIDTH
+#define SRC_IMAGE_HEIGHT SRC_IMAGE_HAND_640_480_HEIGHT
+#define SRC_IMAGE_FORMAT SRC_IMAGE_HAND_640_480_FORMAT
+void *image_data = (void *)hand_640_480_data;
+uint32_t image_size = sizeof(hand_640_480_data);
+_Static_assert(SRC_IMAGE_WIDTH == APP_CAMERA_WIDTH, "SRC_IMAGE_WIDTH must be same as APP_CAMERA_WIDTH for static image");
+_Static_assert(SRC_IMAGE_HEIGHT == APP_CAMERA_HEIGHT, "SRC_IMAGE_HEIGHT must be same as APP_CAMERA_HEIGHT for static image");
+_Static_assert(SRC_IMAGE_FORMAT == APP_CAMERA_FORMAT, "SRC_IMAGE_FORMAT must be same as APP_CAMERA_FORMAT for static image");
+#endif
+
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -1417,6 +1429,20 @@ int mpp_event_listener(mpp_t mpp, mpp_evt_t evt, void *evt_data, void *user_data
 
 static int add_camera_element(mpp_t mp, bool stripe_mode, mpp_elem_handle_t *cam_elem)
 {
+#ifdef USE_STATIC_IMAGE
+    mpp_img_params_t img_params;
+    memset(&img_params, 0, sizeof (mpp_img_params_t));
+    img_params.format = SRC_IMAGE_FORMAT;
+    img_params.width = SRC_IMAGE_WIDTH;
+    img_params.height = SRC_IMAGE_HEIGHT;
+    img_params.compressed_size = image_size;
+    int ret = mpp_static_img_add(mp, &img_params, (void *)image_data, NULL);
+
+    if (ret) {
+        PRINTF("Failed to add static image element\r\n");
+        return ret;
+    }
+#else
     mpp_camera_params_t cam_params;
     memset(&cam_params, 0 , sizeof(cam_params));
     cam_params.height = APP_CAMERA_HEIGHT;
@@ -1424,12 +1450,17 @@ static int add_camera_element(mpp_t mp, bool stripe_mode, mpp_elem_handle_t *cam
     cam_params.format = APP_CAMERA_FORMAT;
     cam_params.fps    = 30;
     cam_params.stripe = stripe_mode;
+#ifdef USE_USB_CAMERA
+    cam_params.in_advance_enqueue = true;
+#endif
 
     int ret = mpp_camera_add(mp, s_camera_name, &cam_params, cam_elem);
+
     if (ret) {
         PRINTF("Failed to add camera %s\r\n", s_camera_name);
         return ret;
     }
+#endif
     return 0;
 }
 
@@ -2076,6 +2107,7 @@ static void print_inference_results(user_data_t *user_data, text_info_t *text_in
         PRINTF("Detected gesture: %s (%d%%)\r\n", user_data->gesture_data.gesture,
                (uint32_t)(user_data->gesture_data.score * 100.0f));
         strcpy(text_info->gesture, user_data->gesture_data.gesture);
+        text_info->left_hand = user_data->hand_data.left_hand;
         text_info->confidence = user_data->gesture_data.score * 100.0f;
         text_info->hand_confidence = user_data->hand_data.score * 100.0f;
 #if DEBUG_VGLITE_MATRIX

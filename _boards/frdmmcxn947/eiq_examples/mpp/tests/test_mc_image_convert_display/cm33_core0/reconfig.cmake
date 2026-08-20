@@ -6,8 +6,7 @@ mcux_add_macro(
 
 # needed to boot core 1
 mcux_add_armgcc_configuration(
-    CC "-DCORE1_IMAGE_COPY_TO_RAM \
-        -DMCMGR_USED"
+    CC "-DCORE1_IMAGE_COPY_TO_RAM"
 )
 
 mcux_add_linker_symbol(

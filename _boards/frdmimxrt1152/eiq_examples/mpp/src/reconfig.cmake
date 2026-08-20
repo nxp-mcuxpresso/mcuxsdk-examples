@@ -52,6 +52,6 @@ mcux_remove_armgcc_linker_script(
 
 mcux_add_armgcc_linker_script(
     TARGETS flexspi_nor_hyperram_debug flexspi_nor_hyperram_release flexspi_nor_debug flexspi_nor_release
-    BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/eiq_examples/mpp/src/
+    BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/eiq_examples/mpp/linker_files
     LINKER MIMXRT1152xxxxx_flexspi_nor_hyperram.ld
 )

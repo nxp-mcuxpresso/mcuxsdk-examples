@@ -9,7 +9,9 @@
 #define _APP_H_
 
 /*${header:start}*/
+#ifdef MCMGR_USED
 #include "mcmgr.h"
+#endif /* MCMGR_USED */
 /*${header:end}*/
 
 /*******************************************************************************
@@ -18,7 +20,6 @@
 /*${macro:start}*/
 #define RPMSG_LITE_LINK_ID            (RL_PLATFORM_IMXRT1170_M7_M4_LINK_ID)
 #define RPMSG_LITE_NS_ANNOUNCE_STRING "rpmsg-openamp-demo-channel"
-#define MCMGR_USED
 #ifndef CORE1_BOOT_ADDRESS
 #define CORE1_BOOT_ADDRESS 0x20200000
 #endif

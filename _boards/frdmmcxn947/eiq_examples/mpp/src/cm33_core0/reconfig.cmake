@@ -40,6 +40,6 @@ mcux_add_armgcc_configuration(
 
 mcux_add_armgcc_linker_script(
     TARGETS debug release
-    BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/eiq_examples/mpp/src/${core_id}
+    BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/eiq_examples/mpp/linker_files
     LINKER MCXN947_cm33_core0_flash.ld
 )

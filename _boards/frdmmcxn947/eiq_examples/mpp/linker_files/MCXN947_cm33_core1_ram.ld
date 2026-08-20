@@ -1,20 +1,21 @@
 /*
 ** ###################################################################
-**     Processors:          MCXN947VDF_cm33_core0
-**                          MCXN947VNL_cm33_core0
+**     Processors:          MCXN947VAB_cm33_core1
+**                          MCXN947VDF_cm33_core1
+**                          MCXN947VKL_cm33_core1
+**                          MCXN947VNL_cm33_core1
+**                          MCXN947VPB_cm33_core1
 **
 **     Compiler:            GNU C Compiler
-**     Reference manual:    MCX N1xNxxx Reference Manual
-**     Version:             rev. 1.0, 2021-08-03
-**     Build:               b230112
+**     Reference manual:    MCXNx4x Reference Manual
+**     Version:             rev. 1.1, 2025-11-07
+**     Build:               b251107
 **
 **     Abstract:
 **         Linker file for the GNU C Compiler
 **
 **     Copyright 2016 Freescale Semiconductor, Inc.
-**     Copyright 2016-2023 NXP
-**     All rights reserved.
-**
+**     Copyright 2016-2026 NXP
 **     SPDX-License-Identifier: BSD-3-Clause
 **
 **     http:                 www.nxp.com
@@ -28,10 +29,10 @@
 /* Entry Point */
 ENTRY(Reset_Handler)
 
-HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x400;
-STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x800;
-
+HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x0400;
+STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x0800;
 RPMSG_SHMEM_SIZE = DEFINED(__use_shmem__) ? 0x2000 : 0;
+SHARED_USER_DATA_SIZE = DEFINED(__shmem_user_data_size__) ? __shmem_user_data_size__ : 0;
 
 /* Total data memory size (RAM) available for the core */
 RAM_START = 0x20000000;
@@ -41,43 +42,40 @@ TOTAL_DATA_MEMORY = 0x00060000;
 DEFAULT_CORE1_TOTAL_MEMORY = 0x00030000;
 TOTAL_CORE1_MEMORY = DEFINED(__core1_total_mem__) ? __core1_total_mem__ : DEFAULT_CORE1_TOTAL_MEMORY;
 
-/* Calculate data memory size based on multicore configuration.
- * If multicore is enabled, subtract core1 memory from total data memory.
- * Otherwise, use the full total data memory. */
-DATA_SIZE = DEFINED(__multicore__) ? (TOTAL_DATA_MEMORY - TOTAL_CORE1_MEMORY) : TOTAL_DATA_MEMORY;
+/* Memory layout calculation for core1 text section:
+ * TEXT_START: Starting address of core1 code section, calculated from end of total RAM minus core1 allocation
+ * TEXT_SIZE: Size of text section (code and read-only data) - 150KB (0x25800 bytes)
+ */
+TEXT_START = RAM_START + TOTAL_DATA_MEMORY - TOTAL_CORE1_MEMORY;
+TEXT_SIZE = 0x25800;
+
+/* Memory layout calculation for core1 data section:
+ * DATA_START: Starting address of core1 data section, follows immediately after text section
+ * DATA_SIZE: Size of data section (RAM for variables, heap, stack) - remaining core1 memory after text
+ */
+DATA_START = TEXT_START + TEXT_SIZE;
+DATA_SIZE = TOTAL_CORE1_MEMORY - TEXT_SIZE;
 
 /* Calculate the start address of the RPMSG shared memory region */
-RPMSG_SHMEM_START = (RAM_START + DATA_SIZE) - RPMSG_SHMEM_SIZE;
+RPMSG_SHMEM_START = TEXT_START - RPMSG_SHMEM_SIZE - SHARED_USER_DATA_SIZE;
 
-TEXT_START = DEFINED(__qspi_xip__)  ? 0x80001000 : 0x00000000; /* flexspi boot image start with 0x80000000 */
-TEXT_SIZE = DEFINED(__qspi_xip__)  ? 0x0FFFF000 : 0x000C0000; /* flexspi boot image offset at 0x80001000 */
+/* Calculate the start address of the user shared memory region */
+SHARED_USER_DATA_START = RPMSG_SHMEM_START + RPMSG_SHMEM_SIZE;
 
 /* Specify the memory areas */
 MEMORY
 {
   m_interrupts          (RX)  : ORIGIN = TEXT_START, LENGTH = 0x00000400
   m_text                (RX)  : ORIGIN = TEXT_START + 0x00000400, LENGTH = TEXT_SIZE - 0x00000400
-  m_core1_image         (RX)  : ORIGIN = 0x000C0000, LENGTH = 0x00040000
-  m_data                (RW)  : ORIGIN = RAM_START, LENGTH = DATA_SIZE - RPMSG_SHMEM_SIZE
+  m_data                (RW)  : ORIGIN = DATA_START, LENGTH = DATA_SIZE
   rpmsg_sh_mem          (RW)  : ORIGIN = RPMSG_SHMEM_START, LENGTH = RPMSG_SHMEM_SIZE
-  m_flash1              (RX)  : ORIGIN = 0x00100000, LENGTH = 0x00100000
-  m_sramx               (RW)  : ORIGIN = 0x04000000, LENGTH = 0x00018000
-  m_flash_config        (RX)  : ORIGIN = 0x80000400, LENGTH = 0x00000200
+  shared_user_data      (RW)  : ORIGIN = SHARED_USER_DATA_START, LENGTH = SHARED_USER_DATA_SIZE
   m_usb_sram            (RW)  : ORIGIN = 0x400BA000, LENGTH = 0x00001000
 }
 
 /* Define output sections */
 SECTIONS
 {
-  /* section for storing the secondary core image */
-  .core1_code :
-  {
-     . = ALIGN(4) ;
-    KEEP (*(.core1_code))
-     *(.core1_code*)
-     . = ALIGN(4) ;
-  } > m_core1_image
-
   /* NOINIT section for rpmsg_sh_mem */
   .noinit_rpmsg_sh_mem (NOLOAD) : ALIGN(4)
   {
@@ -87,13 +85,14 @@ SECTIONS
      __RPMSG_SH_MEM_END__ = .;
   } > rpmsg_sh_mem
 
-  .flash_config :
+  /* section for shared_user_data */
+  .noinit_shared_user_data (NOLOAD) : ALIGN(4)
   {
-    . = ALIGN(4);
-    __FLASH_BASE = .;
-    KEEP(* (.flexspi_fcb))     /* FCB section */
-    . = ALIGN(4);
-  } > m_flash_config
+     __SHARED_USER_DATA_MEM_START__ = .;
+     *(.noinit.$shared_user_data*)
+     . = ALIGN(4) ;
+     __SHARED_USER_DATA_MEM_END__ = .;
+  } > shared_user_data
 
   /* The startup code goes first into internal flash */
   .interrupts :
@@ -264,11 +263,5 @@ SECTIONS
   .ARM.attributes 0 : { *(.ARM.attributes) }
 
   ASSERT(__StackLimit >= __HeapLimit, "region m_data overflowed with stack and heap")
-  
-    .model :
-  {
-    *(.model)
-  } > m_flash1
-  
 }
 

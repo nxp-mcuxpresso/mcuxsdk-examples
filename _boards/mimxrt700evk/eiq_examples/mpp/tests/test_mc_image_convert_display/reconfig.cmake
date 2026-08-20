@@ -3,7 +3,8 @@
 # Memory configuration
 # Set core1 total memory (it includes both text and data sections)
 # Increasing this while keeping CORE1_BOOT_ADDRESS fixed will increase data memory for core 1
-set(CORE1_TOTAL_MEM 0x1C8000)
+# Make sure that after changing this parameters, the DATA_START for core 1 is alligned to a SRAM partition start
+set(CORE1_TOTAL_MEM 0x1C7000)
 # Set custom CORE1_BOOT_ADDRESS
 set(CORE1_BOOT_ADDRESS 0x20680000)
 
@@ -22,6 +23,7 @@ mcux_add_macro(
 # needed to boot core 1
 mcux_add_armgcc_configuration(
     CC "-DBOOT_SECONDARY_CORE \
+        -DMCMGR_USED \
         -DRPMSG_USED \
         -DCORE1_BOOT_ADDRESS=${CORE1_BOOT_ADDRESS}"
 )
@@ -32,6 +34,7 @@ mcux_add_configuration(
 
 mcux_add_linker_symbol(
     SYMBOLS "__use_shmem__=1 \
+             __shmem_user_data_size__=0x1000 \
              __multicore__=1 \
              __core1_total_mem__=${CORE1_TOTAL_MEM} \
              __core1_text_start__=${CORE1_BOOT_ADDRESS} \
