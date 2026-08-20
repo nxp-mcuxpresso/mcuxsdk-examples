@@ -265,7 +265,6 @@ void app_disconnect_devices_and_delete_all()
 	/*First need to read the paired device*/
 	if (!app_read_paired_devices())
 	{
-		uint8_t addr[6];
 		PRINTF("Number of paired device count is %d\n", g_pairedDeviceCount);
 		for(int i = 0;i < g_pairedDeviceCount; i++)
 		{
@@ -275,10 +274,7 @@ void app_disconnect_devices_and_delete_all()
 					paired_devices[i].addr[3], paired_devices[i].addr[4], paired_devices[i].addr[5],
 					paired_devices[i].name, paired_devices[i].device_type);
 
-			if (memcmp(paired_devices[i].addr, addr, 6) == 0)
-			{
-				bt_unpair(BT_ID_DEFAULT,(bt_addr_le_t *)addr);
-			}
+			bt_unpair(BT_ID_DEFAULT,(bt_addr_le_t *)&paired_devices[i]);
 		}
 
 		PRINTF("clear_paired_devices_from_lfs.\n\n");
