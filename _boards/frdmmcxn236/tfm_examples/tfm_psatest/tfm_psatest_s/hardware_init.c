@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -60,5 +60,10 @@ void SystemInit(void)
     ITRC0->OUT_SEL[4][1] = (ITRC0->OUT_SEL[4][1] & ~ ITRC_OUT_SEL_IN0_SELn_MASK) | (ITRC_OUT_SEL_IN0_SELn(0x2));
     GDET0->GDET_ENABLE1 = 0;
     GDET1->GDET_ENABLE1 = 0;
+
+#if defined(MCXN235_SERIES)
+    /* Disable ECC check for all RAMs for additional ram banks*/
+    SYSCON->ECC_ENABLE_CTRL = 0;
+#endif  /* MCXN235_SERIES */
 }
 /*${function:end}*/
