@@ -284,7 +284,6 @@ static void DEMO_InitTouch(void)
     if (kStatus_Success != status)
     {
         PRINTF("Touch IC initialization failed\r\n");
-        assert(false);
     }
 
     GT911_GetResolution(&s_touchHandle, &s_touchResolutionX, &s_touchResolutionY);
