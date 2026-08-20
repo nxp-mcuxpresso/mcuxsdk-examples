@@ -350,7 +350,8 @@ void stp_link_status_changed(unsigned int port_index,
                              unsigned int speed_mbps,
                              bool full_duplex)
 {
-    stp_event_t event = {0};
+    stp_event_t event;
+    (void)memset(&event, 0, sizeof(event));
 
     if (link_up)
     {

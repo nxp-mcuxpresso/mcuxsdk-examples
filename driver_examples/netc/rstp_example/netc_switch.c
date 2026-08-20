@@ -418,20 +418,21 @@ void netc_sw_trap_bpdu(bool enable)
 #if defined(FSL_FEATURE_NETC_HAS_SWITCH_TAG) && FSL_FEATURE_NETC_HAS_SWITCH_TAG
 static int frame_add_switch_tag(uint8_t *txFrame, uint8_t *data, uint8_t portid)
 {
-    netc_swt_tag_port_no_ts_t *tag;
+    netc_swt_tag_port_no_ts_t tmp = {
+        .comTag = {
+            .tpid    = NETC_SWITCH_DEFAULT_ETHER_TYPE,
+            .subType = kNETC_TagToPortNoTs,
+            .type    = kNETC_TagToPort,
+            .qv      = 1,
+            .ipv     = 0,
+            .dr      = 0,
+            .swtId   = 1,
+            .port    = portid
+        }
+    };
 
     memmove(txFrame, data, 12);
-
-    tag = (netc_swt_tag_port_no_ts_t *)(txFrame + 12);
-    memset(tag, 0, sizeof(netc_swt_tag_port_no_ts_t));
-    tag->comTag.tpid    = NETC_SWITCH_DEFAULT_ETHER_TYPE;
-    tag->comTag.subType = kNETC_TagToPortNoTs;
-    tag->comTag.type    = kNETC_TagToPort;
-    tag->comTag.qv      = 1;
-    tag->comTag.ipv     = 0;
-    tag->comTag.dr      = 0;
-    tag->comTag.swtId   = 1;
-    tag->comTag.port    = portid;
+    memcpy(txFrame + 12, &tmp, sizeof(tmp));
 
     return 0;
 }
@@ -604,7 +605,7 @@ void netc_sw_stp_port_learning(uint8_t portIdx, bool enable)
         state = kNETC_DiscardFrame;
     }
 
-    SWT_SetPortSTGState(&g_swt_handle, portIdx, 0U, state);
+    SWT_SetPortSTGState(&g_swt_handle, (netc_hw_port_idx_t)portIdx, 0U, state);
 }
 
 void netc_sw_stp_port_forwarding(uint8_t portIdx, bool enable)
@@ -620,7 +621,7 @@ void netc_sw_stp_port_forwarding(uint8_t portIdx, bool enable)
         state = kNETC_DiscardFrame;
     }
 
-    SWT_SetPortSTGState(&g_swt_handle, portIdx, 0U, state);
+    SWT_SetPortSTGState(&g_swt_handle, (netc_hw_port_idx_t)portIdx, 0U, state);
 }
 
 void netc_sw_port_fdb_flush(uint8_t portIdx)
@@ -669,8 +670,8 @@ void netc_rx_task_create(void)
 static void phy_poll_status(uint8_t port_index)
 {
     netc_hw_mii_mode_t phyMode;
-    netc_hw_mii_speed_t phySpeed   = 0;
-    netc_hw_mii_duplex_t phyDuplex = 0;
+    netc_hw_mii_speed_t phySpeed   = kNETC_MiiSpeed10M;
+    netc_hw_mii_duplex_t phyDuplex = kNETC_MiiHalfDuplex;
     uint32_t speed_mbps            = 0;
     bool full_duplex               = false;
     bool link                      = false;
