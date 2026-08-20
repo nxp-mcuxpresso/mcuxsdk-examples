@@ -179,6 +179,12 @@ SECTIONS
     *(.rodata)               /* .rodata sections (constants, strings, etc.) */
     *(.rodata*)              /* .rodata* sections (constants, strings, etc.) */
     KEEP(*(.jcr*))
+    *(.glue_7)
+    *(.glue_7t)
+    *(.got)                  /* pull GOT into .data so __MDATA_ROM (model LMA) accounts for it */
+    *(.got.plt)              /* otherwise the orphan .got overlaps .model.init in flash (LMA clash */
+                             /* seen when profiling pulls in the C++ runtime / devtools). */
+    *(.got*)
     . = ALIGN(4);
     __data_end__ = .;        /* define a global symbol at data end */
   } > m_data
