@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2017, 2022, 2026 NXP
+ * Copyright 2016-2017, 2022 NXP
+ * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -8,7 +9,7 @@
 #include "fsl_debug_console.h"
 #include "board.h"
 #include "app.h"
-#include "fsl_flexpwm.h"
+#include "fsl_pwm.h"
 #include "fsl_cmp.h"
 
 /*******************************************************************************
@@ -38,120 +39,67 @@ static void PWM_SetupFaultPwm(void);
 
 static void PWM_InitPhasePwm(void)
 {
-    flexpwm_submodule_config_t submoduleConfig;
-    flexpwm_pwm_config_t pwmConfig;
+    /* Structure of setup PWM */
+    pwm_signal_param_t pwmSignal;
     uint16_t deadTimeVal;
     uint32_t pwmSourceClockInHz, pwmFrequencyInHz;
-    uint16_t modValue;
 
     pwmSourceClockInHz = PWM_SRC_CLK_FREQ;
     pwmFrequencyInHz = APP_DEFAULT_PWM_FREQUENCY;
 
-    /* Calculate modulo value */
-    modValue = (uint16_t)(pwmSourceClockInHz / pwmFrequencyInHz);
-
-    /* Get default submodule configuration */
-    FLEXPWM_GetDefaultSubmoduleConfig(&submoduleConfig);
-
-    submoduleConfig.prescaler = kFLEXPWM_Prescale_Divide_1;
-    submoduleConfig.clockSource = kFLEXPWM_ClockSource_IPBusClock;
-    submoduleConfig.enableDebugMode = true;
-
-    submoduleConfig.counterConfig.initValue = 0U;
-    submoduleConfig.counterConfig.modValue = modValue - 1U;
-    submoduleConfig.counterConfig.initSource = kFLEXPWM_InitSource_LocalSync;
-
-    submoduleConfig.reloadConfig.loadMode = kFLEXPWM_LoadMode_Opportunity;
-    submoduleConfig.reloadConfig.enableFullCycleReload = true;
-    submoduleConfig.reloadConfig.enableHalfCycleReload = false;
-    submoduleConfig.reloadConfig.loadFrequency = 0U;
-    submoduleConfig.reloadConfig.reloadSource = kFLEXPWM_ReloadSource_LocalReload;
-
-    FLEXPWM_ConfigSubmodule(DEMO_PWM_BASEADDR, DEMO_PWM_SUBMODULE, &submoduleConfig);
-
-    /* Configure PWM signal */
-    pwmConfig.complementary = false;
-    pwmConfig.ipolSource = kFLEXPWM_IPOL_PWM23;
-
-    /* Set 50% duty cycle for PWMA */
-    pwmConfig.pwma.compareValue_ON = 0;
-    pwmConfig.pwma.compareValue_OFF = modValue / 2U;
-    pwmConfig.pwma.polarity = kFLEXPWM_Polarity_ActiveHigh;
-
-    /* PWMB not used */
-    pwmConfig.pwmb.compareValue_ON = 0;
-    pwmConfig.pwmb.compareValue_OFF = 0;
-    pwmConfig.pwmb.polarity = kFLEXPWM_Polarity_ActiveHigh;
-
-    FLEXPWM_ConfigPWM(DEMO_PWM_BASEADDR, DEMO_PWM_SUBMODULE, &pwmConfig);
-
     /* Set deadtime count */
-    deadTimeVal = (uint16_t)((((uint64_t)pwmSourceClockInHz * DEMO_DEADTIME_VAL) / 1000000000UL) & 0xFFFFU);
-    FLEXPWM_SetDTCNT0(DEMO_PWM_BASEADDR, DEMO_PWM_SUBMODULE, deadTimeVal);
-    FLEXPWM_SetDTCNT1(DEMO_PWM_BASEADDR, DEMO_PWM_SUBMODULE, deadTimeVal);
+    deadTimeVal                = ((uint64_t)pwmSourceClockInHz * DEMO_DEADTIME_VAL) / 1000000000U;
+    pwmSignal.pwmChannel       = DEMO_PWM_CHANNEL;
+    pwmSignal.level            = kPWM_HighTrue;
+    pwmSignal.dutyCyclePercent = 50U; /* 50 percent dutycycle */
+    pwmSignal.deadtimeValue    = deadTimeVal;
+    pwmSignal.faultState       = kPWM_PwmFaultState0;
+    pwmSignal.pwmchannelenable = true;
+
+    PWM_SetupPwm(DEMO_PWM_BASEADDR, DEMO_PWM_SUBMODULE, &pwmSignal, 1U, kPWM_SignedCenterAligned, pwmFrequencyInHz,
+                 pwmSourceClockInHz);
 
     /* Set the load okay bit for all submodules to load registers from their buffer */
-    FLEXPWM_SetLoadOkay(DEMO_PWM_BASEADDR, DEMO_PWM_SUBMODULE_MASK);
+    PWM_SetPwmLdok(DEMO_PWM_BASEADDR, DEMO_PWM_CONTROL_SUBMODULE, true);
 }
 
 static void PWM_SetupFaultPwm(void)
 {
-    flexpwm_fault_config_t faultConfig;
-    flexpwm_fault_submodule_config_t faultSubmoduleConfig;
+    /* Structure of the parameters to configure a PWM fault  */
+    pwm_fault_param_t pwmFaultParam;
 
-    /* Get default fault configuration */
-    FLEXPWM_GetDefaultFaultConfig(&faultConfig);
+    /* Setup Fault config */
+    /* No combination path is available */
+    pwmFaultParam.enableCombinationalPath = false;
 
     /* Logic 1 on the fault input pin indicates fault */
-    faultConfig.faultInputActiveLevel = true;
+    pwmFaultParam.faultLevel = true;
     /*
      * Automatic fault clearing
      * If use Manual fault clearing mode, then the user must clear fault flags
      */
-    faultConfig.faultClearingMode = kFLEXPWM_FaultClearingMode_Automatic;
-    faultConfig.enableSafetyMode = false;
-    faultConfig.enableFullCycleRecovery = true;
-    faultConfig.enableHalfCycleRecovery = false;
-    faultConfig.enableCombinatorialPath = false;
+    pwmFaultParam.faultClearingMode = kPWM_Automatic;
+    pwmFaultParam.recoverMode       = kPWM_RecoverFullCycle;
 
-    /* Configure fault protection for the fault input */
-    FLEXPWM_ConfigFaultProtection(DEMO_PWM_BASEADDR, 0U, &faultConfig, DEMO_PWM_FAULT_INPUT_PIN_MASK);
+    PWM_SetupFaults(DEMO_PWM_BASEADDR, DEMO_PWM_FAULT_INPUT_PIN, &pwmFaultParam);
 
-#if defined(FSL_FEATURE_PWM_FAULT_CH_COUNT) && (FSL_FEATURE_PWM_FAULT_CH_COUNT > 1)
-    FLEXPWM_ConfigFaultProtection(DEMO_PWM_BASEADDR, 1U, &faultConfig, DEMO_PWM_FAULT_INPUT_PIN_MASK);
-#endif
-
-    /* Get default fault submodule configuration */
-    FLEXPWM_GetDefaultFaultSubmoduleConfig(&faultSubmoduleConfig);
-
-    /* Configure PWMA to be disabled by fault input */
-    faultSubmoduleConfig.pwma.disableMask_ch0 = DEMO_PWM_FAULT_INPUT_PIN_MASK;
-    faultSubmoduleConfig.pwma.outputBehavior = kFLEXPWM_FaultOutput_Force0;
-
-    faultSubmoduleConfig.pwmb.disableMask_ch0 = 0U;
-    faultSubmoduleConfig.pwmx.disableMask_ch0 = 0U;
-
-#if defined(FSL_FEATURE_PWM_FAULT_CH_COUNT) && (FSL_FEATURE_PWM_FAULT_CH_COUNT > 1)
-    faultSubmoduleConfig.pwma.disableMask_ch1 = 0U;
-    faultSubmoduleConfig.pwmb.disableMask_ch1 = 0U;
-    faultSubmoduleConfig.pwmx.disableMask_ch1 = 0U;
-#endif
-
-    FLEXPWM_ConfigFaultSubmodule(DEMO_PWM_BASEADDR, DEMO_PWM_SUBMODULE, &faultSubmoduleConfig);
+    DEMO_PWM_BASEADDR->SM[DEMO_PWM_SUBMODULE].DISMAP[DEMO_PWM_SUBMODULE] = 0x00;
+    DEMO_PWM_BASEADDR->SM[DEMO_PWM_SUBMODULE].DISMAP[DEMO_PWM_SUBMODULE] |= PWM_DISMAP_DIS0A(1);
 }
 
 int main(void)
 {
-    flexpwm_fault_filter_config_t faultFilterConfig;
+    /* Structure of initialize PWM */
+    pwm_config_t pwmConfig;
+    pwm_fault_input_filter_param_t pwmFaultInputFilterParam;
+
     cmp_config_t mCmpConfigStruct;
     cmp_dac_config_t mCmpDacConfigStruct;
-    uint32_t pwmVal = 0U;
-    uint16_t modValue;
+
+    uint8_t ret     = 0U;
+    uint32_t pwmVal = 4U;
 
     BOARD_InitHardware();
-
-    /* Calculate modulo value for duty cycle updates */
-    modValue = (uint16_t)(PWM_SRC_CLK_FREQ / APP_DEFAULT_PWM_FREQUENCY);
 
     /*
      * mCmpConfigStruct.enableCmp = true;
@@ -172,22 +120,41 @@ int main(void)
     CMP_SetDACConfig(DEMO_CMP_BASE, &mCmpDacConfigStruct);
     CMP_SetInputChannels(DEMO_CMP_BASE, DEMO_CMP_USER_CHANNEL, DEMO_CMP_DAC_CHANNEL);
 
-    /* Initialize FlexPWM */
-    (void)FLEXPWM_Init(DEMO_PWM_BASEADDR);
+    /*
+     * pwmConfig.enableDebugMode = false;
+     * pwmConfig.enableWait = false;
+     * pwmConfig.reloadSelect = kPWM_LocalReload;
+     * pwmConfig.clockSource = kPWM_BusClock;
+     * pwmConfig.prescale = kPWM_Prescale_Divide_1;
+     * pwmConfig.initializationControl = kPWM_Initialize_LocalSync;
+     * pwmConfig.forceTrigger = kPWM_Force_Local;
+     * pwmConfig.reloadFrequency = kPWM_LoadEveryOportunity;
+     * pwmConfig.reloadLogic = kPWM_ReloadImmediate;
+     * pwmConfig.pairOperation = kPWM_Independent;
+     */
+    PWM_GetDefaultConfig(&pwmConfig);
+    pwmConfig.prescale = kPWM_Prescale_Divide_1;
+    /* Use full cycle reload */
+    pwmConfig.reloadLogic = kPWM_ReloadPwmFullCycle;
+    /* PWM A & PWM B operate as 2 independent channels */
+    pwmConfig.pairOperation   = kPWM_Independent;
+    pwmConfig.enableDebugMode = true;
 
-    /* Configure fault filter */
-    FLEXPWM_GetDefaultFaultFilterConfig(&faultFilterConfig);
+    /* Initialize submodule 0 */
+    ret = PWM_Init(DEMO_PWM_BASEADDR, DEMO_PWM_SUBMODULE, &pwmConfig);
+    if (ret != kStatus_Success)
+    {
+        PRINTF("\r\nPWM INIT FAILED");
+        return 1;
+    }
+
     /* Fault filter count */
-    faultFilterConfig.filterCount = 0x07U;
+    pwmFaultInputFilterParam.faultFilterCount = 0x07U;
     /* Fault filter period; value of 0 will bypass the filter */
-    faultFilterConfig.filterPeriod = 0x14U;
+    pwmFaultInputFilterParam.faultFilterPeriod = 0x14U;
     /* Disable fault glitch stretch */
-    faultFilterConfig.enableGlitchStretch = false;
-    FLEXPWM_ConfigFaultFilter(DEMO_PWM_BASEADDR, 0U, &faultFilterConfig);
-
-#if defined(FSL_FEATURE_PWM_FAULT_CH_COUNT) && (FSL_FEATURE_PWM_FAULT_CH_COUNT > 1)
-    FLEXPWM_ConfigFaultFilter(DEMO_PWM_BASEADDR, 1U, &faultFilterConfig);
-#endif
+    pwmFaultInputFilterParam.faultGlitchStretch = false;
+    PWM_SetupFaultInputFilter(DEMO_PWM_BASEADDR, &pwmFaultInputFilterParam);
 
     PWM_InitPhasePwm();
 
@@ -197,11 +164,7 @@ int main(void)
     PRINTF("\r\nUse oscilloscope to see PWM signal at probe pin: %s", DEMO_PWM_CHANNEL_LOCATION_ON_BOARD);
     PRINTF("\r\nConnect pin %s to high level and ground to see change.", DEMO_CMP_INPUT_PIN_LOCATION_ON_BOARD);
 
-    /* Enable PWM output */
-    FLEXPWM_EnablePWMOutput(DEMO_PWM_BASEADDR, DEMO_PWM_SUBMODULE_MASK, 0U, 0U);
-
-    /* Start the PWM counter */
-    FLEXPWM_EnableSubmoduleCounter(DEMO_PWM_BASEADDR, DEMO_PWM_SUBMODULE_MASK);
+    PWM_StartTimer(DEMO_PWM_BASEADDR, DEMO_PWM_CONTROL_SUBMODULE);
     CMP_Enable(DEMO_CMP_BASE, true);
 
     while (1)
@@ -214,31 +177,13 @@ int main(void)
         /* Reset the duty cycle percentage */
         if (pwmVal > 100)
         {
-            pwmVal = 0;
+            pwmVal = 4;
         }
 
-        /* 
-         * Update duty cycles for PWM signals
-         * For edge-aligned mode, calculate VAL3 value for the duty cycle
-         * 
-         * Special case for 100% duty cycle:
-         * VAL3 = modValue (counter end point + 1, never matches)
-         * This ensures the output stays high for the entire period
-         */
-        uint16_t dutyValue;
-
-        if (pwmVal == 100U)
-        {
-            dutyValue = modValue;  /* Never matches, always high */
-        }
-        else
-        {
-            dutyValue = (uint16_t)((modValue * pwmVal) / 100U);
-        }
-        
-        FLEXPWM_SetVAL3(DEMO_PWM_BASEADDR, DEMO_PWM_SUBMODULE, dutyValue);
-
+        /* Update duty cycles for PWM signals */
+        PWM_UpdatePwmDutycycle(DEMO_PWM_BASEADDR, DEMO_PWM_SUBMODULE, DEMO_PWM_CHANNEL, kPWM_SignedCenterAligned,
+                               pwmVal);
         /* Set the load okay bit for all submodules to load registers from their buffer */
-        FLEXPWM_SetLoadOkay(DEMO_PWM_BASEADDR, DEMO_PWM_SUBMODULE_MASK);
+        PWM_SetPwmLdok(DEMO_PWM_BASEADDR, DEMO_PWM_CONTROL_SUBMODULE, true);
     }
 }
