@@ -89,7 +89,6 @@ static void LLC_ExamplePrintInfo(const llc_example_platform_t *plat, uint16_t li
     PRINTF("Ways               : %d\r\n", ways);
     PRINTF("Sets               : %d\r\n", sets);
     PRINTF("Total capacity     : %d bytes\r\n", capacity);
-    PRINTF("Free-run capable   : %s\r\n", cap.freeRun ? "yes" : "no");
     PRINTF("Perf counter width : %d bits\r\n", cap.counterWidth);
     PRINTF("Test region base   : 0x%08X\r\n", plat->regionBase);
     PRINTF("Test region size   : %d bytes\r\n", plat->regionSize);
