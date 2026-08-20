@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
  * Copyright 2016-2022 NXP
- * Copyright 2025-2026 NXP
+ * Copyright 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -11,9 +11,8 @@
 #include "board.h"
 #include "app.h"
 #include "fsl_pwm.h"
-#include "fsl_tpm.h"
 #include "fsl_xbar.h"
-
+#include "fsl_lpit.h"
 
 /*******************************************************************************
  * Definitions
@@ -22,9 +21,6 @@
 #ifndef APP_DEFAULT_PWM_FREQUENCY
 #define APP_DEFAULT_PWM_FREQUENCY (1000UL)
 #endif
-
-#define DEMO_PWM_FREQUENCY (800U)
-
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -32,10 +28,54 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
+volatile bool lpitIsrFlag = false;
 
 /*******************************************************************************
  * Code
  ******************************************************************************/
+void DEMO_LPIT_IRQHandler(void)
+{
+    /* Clear interrupt flag.*/
+    LPIT_ClearStatusFlags(DEMO_LPIT_BASE, kLPIT_Channel0TimerFlag);
+    lpitIsrFlag = true;
+    SDK_ISR_EXIT_BARRIER;
+}
+
+static void lpit_init(void)
+{
+    /* Structure of initialize LPIT */
+    lpit_config_t lpitConfig;
+    lpit_chnl_params_t lpitChannelConfig;
+
+    LPIT_GetDefaultConfig(&lpitConfig);
+    LPIT_Init(DEMO_LPIT_BASE, &lpitConfig);
+
+    lpitChannelConfig.chainChannel          = false;
+    lpitChannelConfig.enableReloadOnTrigger = false;
+    lpitChannelConfig.enableStartOnTrigger  = true;
+    lpitChannelConfig.enableStopOnTimeout   = true;
+    lpitChannelConfig.timerMode             = kLPIT_PeriodicCounter;
+    /* Set default values for the trigger source */
+    lpitChannelConfig.triggerSelect = kLPIT_Trigger_TimerChn0;
+    lpitChannelConfig.triggerSource = kLPIT_TriggerSource_External;
+
+    /* Init lpit channel 0 */
+    LPIT_SetupChannel(DEMO_LPIT_BASE, kLPIT_Chnl_0, &lpitChannelConfig);
+
+    /* Set timer period for channel 0 */
+    LPIT_SetTimerPeriod(DEMO_LPIT_BASE, kLPIT_Chnl_0, USEC_TO_COUNT(1000000U, LPIT_SOURCECLOCK));
+
+    /* Enable timer interrupts for channel 0 */
+    LPIT_EnableInterrupts(DEMO_LPIT_BASE, kLPIT_Channel0TimerInterruptEnable);
+
+    /* Enable at the NVIC */
+    EnableIRQ(DEMO_LPIT_IRQn);
+
+    /* Start channel 0 */
+    PRINTF("\r\nStarting channel No.0 ...");
+    LPIT_StartTimer(DEMO_LPIT_BASE, kLPIT_Chnl_0);
+}
+
 static void PWM_DRV_Init3PhPwm(void)
 {
     uint16_t deadTimeVal;
@@ -86,29 +126,6 @@ static void PWM_DRV_Init3PhPwm(void)
 #endif
 }
 
-void tpm_init(void)
-{
-    tpm_config_t tpmInfo;
-    tpm_chnl_pwm_signal_param_t tpmParam;
-    int updatedDutycycle = 5;
-    uint8_t control;
-
-    TPM_GetDefaultConfig(&tpmInfo);
-    tpmInfo.prescale = TPM_CalculateCounterClkDiv(BOARD_TPM_BASEADDR, DEMO_PWM_FREQUENCY, TPM_SOURCE_CLOCK);
-    TPM_Init(BOARD_TPM_BASEADDR, &tpmInfo);
-    tpmParam.chnlNumber = (tpm_chnl_t)BOARD_TPM_CHANNEL;
-    tpmParam.level            = kTPM_HighTrue;
-    tpmParam.dutyCyclePercent = updatedDutycycle;
-    if (kStatus_Success != TPM_SetupPwm(BOARD_TPM_BASEADDR, &tpmParam, 1U, kTPM_CenterAlignedPwm, DEMO_PWM_FREQUENCY, TPM_SOURCE_CLOCK)) {
-	    PRINTF("\r\nSetup PWM fail!\r\n");
-	    return;
-    }
-    TPM_StartTimer(BOARD_TPM_BASEADDR, kTPM_SystemClock);
-    control = TPM_GetChannelControlBits(BOARD_TPM_BASEADDR, (tpm_chnl_t)BOARD_TPM_CHANNEL);
-    TPM_EnableChannel(BOARD_TPM_BASEADDR, (tpm_chnl_t)BOARD_TPM_CHANNEL, control);
-    TPM_EnableInterrupts(BOARD_TPM_BASEADDR, kTPM_TimeOverflowInterruptEnable);
-}
-
 /*!
  * @brief Main function
  */
@@ -117,20 +134,18 @@ int main(void)
     /* Structure of initialize PWM */
     pwm_config_t pwmConfig;
     pwm_fault_param_t faultConfig;
-    uint32_t pwmVal = 4;
 
     /* Board pin, clock, debug console init */
     BOARD_InitHardware();
 
     PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
 
-    PRINTF("FlexPWM driver example\n");
-
     XBAR_Init(kXBAR_DSC1);
-    XBAR_SetSignalsConnection(kXBAR1_InputTpm6LptpmChTrigger0, kXBAR1_OutputFlexpwm1ExtSync0);
+    BLK_CTRL_WAKEUPMIX->LPIT_TRIG_SEL |= BLK_CTRL_WAKEUPMIX_LPIT_TRIG_SEL_LPIT1_TRIG0_INPUT_SEL(1);
+    XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux0Trigger0, kXBAR1_OutputLpit1LpitExtTrigIn0);
     PRINTF("\r\nIPSYNC trigger signal connected! \r\n");
 
-    tpm_init();
+    PRINTF("FlexPWM driver example\n");
 
     /*
      * pwmConfig.enableDebugMode = false;
@@ -156,9 +171,6 @@ int main(void)
     pwmConfig.pairOperation   = kPWM_ComplementaryPwmA;
     pwmConfig.enableDebugMode = true;
 
-    pwmConfig.initializationControl = kPWM_Initialize_ExtSync;
-//    pwmConfig.forceTrigger          = kPWM_Force_ExternalSync;
-
     /* Initialize submodule 0 */
     if (PWM_Init(BOARD_PWM_BASEADDR, kPWM_Module_0, &pwmConfig) == kStatus_Fail)
     {
@@ -169,7 +181,6 @@ int main(void)
     /* Initialize submodule 1, make it use same counter clock as submodule 0. */
     pwmConfig.clockSource           = kPWM_Submodule0Clock;
     pwmConfig.prescale              = kPWM_Prescale_Divide_1;
-    pwmConfig.forceTrigger          = kPWM_Force_Local;
     pwmConfig.initializationControl = kPWM_Initialize_MasterSync;
     if (PWM_Init(BOARD_PWM_BASEADDR, kPWM_Module_1, &pwmConfig) == kStatus_Fail)
     {
@@ -202,7 +213,6 @@ int main(void)
     PWM_SetupFaults(BOARD_PWM_BASEADDR, kPWM_Fault_2, &faultConfig);
     PWM_SetupFaults(BOARD_PWM_BASEADDR, kPWM_Fault_3, &faultConfig);
 
-#if 0
     /* Set PWM fault disable mapping for submodule 0/1/2 */
     PWM_SetupFaultDisableMap(BOARD_PWM_BASEADDR, kPWM_Module_0, kPWM_PwmA, kPWM_faultchannel_0,
                              kPWM_FaultDisable_0 | kPWM_FaultDisable_1 | kPWM_FaultDisable_2 | kPWM_FaultDisable_3);
@@ -210,14 +220,10 @@ int main(void)
                              kPWM_FaultDisable_0 | kPWM_FaultDisable_1 | kPWM_FaultDisable_2 | kPWM_FaultDisable_3);
     PWM_SetupFaultDisableMap(BOARD_PWM_BASEADDR, kPWM_Module_2, kPWM_PwmA, kPWM_faultchannel_0,
                              kPWM_FaultDisable_0 | kPWM_FaultDisable_1 | kPWM_FaultDisable_2 | kPWM_FaultDisable_3);
-#else
-    PWM_SetupFaultDisableMap(BOARD_PWM_BASEADDR, kPWM_Module_0, kPWM_PwmA, kPWM_faultchannel_0,
-                             ~(kPWM_FaultDisable_0 | kPWM_FaultDisable_1 | kPWM_FaultDisable_2 | kPWM_FaultDisable_3));
-    PWM_SetupFaultDisableMap(BOARD_PWM_BASEADDR, kPWM_Module_1, kPWM_PwmA, kPWM_faultchannel_0,
-                             ~(kPWM_FaultDisable_0 | kPWM_FaultDisable_1 | kPWM_FaultDisable_2 | kPWM_FaultDisable_3));
-    PWM_SetupFaultDisableMap(BOARD_PWM_BASEADDR, kPWM_Module_2, kPWM_PwmA, kPWM_faultchannel_0,
-                             ~(kPWM_FaultDisable_0 | kPWM_FaultDisable_1 | kPWM_FaultDisable_2 | kPWM_FaultDisable_3));
-#endif
+
+
+    PWM_ActivateOutputTrigger(BOARD_PWM_BASEADDR, kPWM_Module_0, 0x10);//
+    PWM_SetVALxValue(BOARD_PWM_BASEADDR, kPWM_Module_0, kPWM_ValueRegister_4, 0xff20);
 
     /* 
      * Call the init function with demo configuration.
@@ -232,25 +238,17 @@ int main(void)
     /* Start the PWM generation from Submodules 0, 1 and 2 */
     PWM_StartTimer(BOARD_PWM_BASEADDR, kPWM_Control_Module_0 | kPWM_Control_Module_1 | kPWM_Control_Module_2);
 
-    while (1U)
+    PRINTF("LPIT init\n");
+    lpit_init();
+
+    while (true)
     {
-        /* Delay at least 100 PWM periods. */
-        SDK_DelayAtLeastUs((1000000U / APP_DEFAULT_PWM_FREQUENCY) * 100, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-
-        pwmVal = pwmVal + 4;
-
-        /* Reset the duty cycle percentage */
-        if (pwmVal > 100)
+        /* Check whether occur interupt and toggle LED */
+        if (true == lpitIsrFlag)
         {
-            pwmVal = 4;
+            PRINTF("\r\n Channel No.0 interrupt is occurred !");
+            LED_TOGGLE();
+            lpitIsrFlag = false;
         }
-
-        /* Update duty cycles for all 3 PWM signals */
-        PWM_UpdatePwmDutycycle(BOARD_PWM_BASEADDR, kPWM_Module_0, kPWM_PwmA, kPWM_SignedCenterAligned, pwmVal);
-        PWM_UpdatePwmDutycycle(BOARD_PWM_BASEADDR, kPWM_Module_1, kPWM_PwmA, kPWM_SignedCenterAligned, (pwmVal >> 1));
-        PWM_UpdatePwmDutycycle(BOARD_PWM_BASEADDR, kPWM_Module_2, kPWM_PwmA, kPWM_SignedCenterAligned, (pwmVal >> 2));
-
-        /* Set the load okay bit for all submodules to load registers from their buffer */
-        PWM_SetPwmLdok(BOARD_PWM_BASEADDR, kPWM_Control_Module_0 | kPWM_Control_Module_1 | kPWM_Control_Module_2, true);
     }
 }
