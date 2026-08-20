@@ -10,6 +10,9 @@
 #include "board.h"
 #include "app.h"
 #include "fsl_soc_src.h"
+#if (defined(BOARD_USE_EXT_PMIC) && BOARD_USE_EXT_PMIC)
+#include "fsl_pf5020.h"
+#endif
 /*${header:end}*/
 
 /*${function:start}*/
@@ -47,6 +50,15 @@ uint32_t get_core1_image_size(void)
     image_size = (uint32_t)core1_image_size;
 #endif
     return image_size;
+}
+#endif
+
+#if (defined(BOARD_USE_EXT_PMIC) && BOARD_USE_EXT_PMIC)
+void BOARD_InitPMIC(pf5020_handle_t *handle)
+{
+    /* RT1170 requires PWRUP_CTRL[1:0] = 0b00 to meet the power-down sequence.
+     * The PF5020 default register value may be non-zero, so clear bit[1:0] here. */
+    (void)PF5020_ModifyReg(handle, PF5020_PWRUP_CTRL, 0x3U, 0x0U);
 }
 #endif
 

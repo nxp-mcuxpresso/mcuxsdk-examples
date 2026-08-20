@@ -165,6 +165,8 @@ static void APP_InitPMIC(void)
     pmicConfig.I2C_ReceiveFunc = I2C_ReceiveFunc;
 
     PF5020_CreateHandle(&g_pf5020Handle, &pmicConfig);
+    /* Apply board-specific PMIC initialization (e.g. power-down sequence settings). */
+    BOARD_InitPMIC(&g_pf5020Handle);
 
     uint8_t preSp;
     uint8_t currentSp;

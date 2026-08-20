@@ -84,6 +84,8 @@ int main(void)
     pmicConfig.I2C_ReceiveFunc = I2C_ReceiveFunc;
 
     PF5020_CreateHandle(&g_pf5020Handle, &pmicConfig);
+    /* Apply board-specific PMIC initialization (e.g. power-down sequence settings). */
+    BOARD_InitPMIC(&g_pf5020Handle);
 
     while (1)
     {

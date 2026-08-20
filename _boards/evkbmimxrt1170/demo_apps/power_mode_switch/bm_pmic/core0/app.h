@@ -70,6 +70,10 @@ void APP_BootCore1(void);
 #ifdef CORE1_IMAGE_COPY_TO_RAM
 uint32_t get_core1_image_size(void);
 #endif
+#if (defined(BOARD_USE_EXT_PMIC) && BOARD_USE_EXT_PMIC)
+#include "fsl_pf5020.h"
+void BOARD_InitPMIC(pf5020_handle_t *handle);
+#endif
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */
