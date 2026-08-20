@@ -329,8 +329,9 @@ static void BOARD_InitDcifPowerClockReset(void)
     uint32_t pixClkPerFrame = (DEMO_PANEL_WIDTH + DEMO_HSW + DEMO_HFP + DEMO_HBP) *
                                 (DEMO_PANEL_HEIGHT + DEMO_VSW + DEMO_VFP + DEMO_VBP);
 
-    rootCfg.mux    = kCLOCK_DCPIXEL_ClockRoot_PERI5;
-    rootCfg.div    = 400000000U / pixClkPerFrame / DEMO_FRAME_RATE;
+    rootCfg.mux = kCLOCK_DCPIXEL_ClockRoot_PERI5;
+    rootCfg.div = (CLOCK_GetClockSrcFreq(kCLOCK_SRC_PERI5) + (pixClkPerFrame * DEMO_FRAME_RATE) / 2U) /
+        (pixClkPerFrame * DEMO_FRAME_RATE);
     rootCfg.sndDiv = 1U;
     CLOCK_SetRootClock(kCLOCK_Root_MEDIA_dcpixel_fclk, &rootCfg);
     CLOCK_PowerOnRootClock(kCLOCK_Root_MEDIA_dcpixel_fclk);
@@ -415,9 +416,9 @@ static void BOARD_DsiVideoModeConfig(void)
         .overrideTiming    = false, /* Use auto timing detection, no need to set the sync params. */
         .pixelPerPacket    = DEMO_PANEL_WIDTH,
         .panelHeight       = DEMO_PANEL_HEIGHT,
-        .hsw               = 40,
-        .hfp               = 40,
-        .hbp               = 50,
+        .hsw               = DEMO_HSW,
+        .hfp               = DEMO_HFP,
+        .hbp               = DEMO_HBP,
         .vbp               = DEMO_VBP,
         .vfp               = DEMO_VFP,
     };
@@ -514,11 +515,9 @@ static void BOARD_InitDcifPowerClockReset(void)
     uint32_t pixClkPerFrame = (DEMO_PANEL_WIDTH + DEMO_HSW + DEMO_HFP + DEMO_HBP) *
         (DEMO_PANEL_HEIGHT + DEMO_VSW + DEMO_VFP + DEMO_VBP);
 
-    /* TODO Use fixed value for now since CLOCK_GetRootClockFreq(kCLOCK_SRC_PERI5)
-     * should return 400 MHz but actually returns 200m. */
     clock_root_config_t rootCfg = {
         .mux = kCLOCK_DCPIXEL_ClockRoot_PERI5,
-        .div = 400000000U / pixClkPerFrame / DEMO_FRAME_RATE,
+        .div = CLOCK_GetClockSrcFreq(kCLOCK_SRC_PERI5) / pixClkPerFrame / DEMO_FRAME_RATE,
     };
 
     CLOCK_SetRootClock(kCLOCK_Root_MEDIA_dcpixel_fclk, &rootCfg);
