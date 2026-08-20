@@ -272,20 +272,20 @@ void BOARD_InitTenBaseT1SPins(void);
 
 #define PCR_IBE_ibe1 0x01u /*!<@brief Input Buffer Enable: Enables */
 
-/*! @name PORT1_10 (coord C2), EPHY_RSTB
+/*! @name PORT4_1 (coord G4), EPHY_RSTB
   @{ */
 
 /* Symbols to be used with GPIO driver */
-#define BOARD_INITENETPINS_EPHY_RSTB_GPIO GPIO1                /*!<@brief GPIO peripheral base pointer */
-#define BOARD_INITENETPINS_EPHY_RSTB_INIT_GPIO_VALUE 1U        /*!<@brief GPIO output initial state */
-#define BOARD_INITENETPINS_EPHY_RSTB_GPIO_PIN 10U              /*!<@brief GPIO pin number */
-#define BOARD_INITENETPINS_EPHY_RSTB_GPIO_PIN_MASK (1U << 10U) /*!<@brief GPIO pin mask */
+#define BOARD_INITENETPINS_EPHY_RSTB_GPIO GPIO4               /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITENETPINS_EPHY_RSTB_INIT_GPIO_VALUE 1U       /*!<@brief GPIO output initial state */
+#define BOARD_INITENETPINS_EPHY_RSTB_GPIO_PIN 1U              /*!<@brief GPIO pin number */
+#define BOARD_INITENETPINS_EPHY_RSTB_GPIO_PIN_MASK (1U << 1U) /*!<@brief GPIO pin mask */
 
 /* Symbols to be used with PORT driver */
-#define BOARD_INITENETPINS_EPHY_RSTB_PORT PORT1                /*!<@brief PORT peripheral base pointer */
-#define BOARD_INITENETPINS_EPHY_RSTB_PIN 10U                   /*!<@brief PORT pin number */
-#define BOARD_INITENETPINS_EPHY_RSTB_PIN_MASK (1U << 10U)      /*!<@brief PORT pin mask */
-                                                               /* @} */
+#define BOARD_INITENETPINS_EPHY_RSTB_PORT PORT4               /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITENETPINS_EPHY_RSTB_PIN 1U                   /*!<@brief PORT pin number */
+#define BOARD_INITENETPINS_EPHY_RSTB_PIN_MASK (1U << 1U)      /*!<@brief PORT pin mask */
+                                                              /* @} */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.

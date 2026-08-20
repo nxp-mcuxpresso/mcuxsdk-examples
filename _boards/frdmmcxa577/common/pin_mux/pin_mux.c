@@ -25,7 +25,7 @@ pin_labels:
 - {pin_num: K9, pin_signal: P2_22/CT2_MAT2/FLEXIO0_D30, label: LED_GREEN, identifier: LED_GREEN}
 - {pin_num: N9, pin_signal: P2_23/TRIG_OUT5/CT2_MAT3/FLEXIO0_D31/CMP0_INP5, label: LED_BLUE, identifier: LED_BLUE}
 - {pin_num: G10, pin_signal: P3_17/WUU0_IN26/LPUART4_CTS_B/CT_INP9/ESPI0_CSN/FLEXIO0_D25/LPSPI3_PCS0/FLEXSPI0_B_SS0_B/SMARTDMA_PIO17, label: SW2, identifier: SW2}
-- {pin_num: C2, pin_signal: P1_10/LPUART1_RTS_B/LPI2C2_SDAS/CT2_MAT0/FLEXIO0_D18/SMARTDMA_PIO6/LPUART5_TXD/CAN0_TXD/TSI0_CH20/ADC1_A8, label: EPHY_RSTB, identifier: EPHY_RSTB}
+- {pin_num: G4, pin_signal: P4_1/LPI2C3_SCL/CT_INP5/FLEXIO0_D9/SMARTDMA_PIO21/LPSPI5_PCS1/I3C3_PUR/TSI0_CH59, label: EPHY_RSTB, identifier: EPHY_RSTB}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -72,6 +72,8 @@ void BOARD_InitDEBUG_UARTPins(void)
 {
     /* PORT1: Peripheral clock is enabled */
     CLOCK_EnableClock(kCLOCK_GatePORT1);
+    /* ENET0 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kENET0_RST_SHIFT_RSTn);
     /* LPUART1 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kLPUART1_RST_SHIFT_RSTn);
     /* PORT1 peripheral is released from reset */
@@ -626,6 +628,8 @@ void BOARD_InitCANPins(void)
     CLOCK_EnableClock(kCLOCK_GatePORT1);
     /* FREQME peripheral is released from reset */
     RESET_ReleasePeripheralReset(kFREQME_RST_SHIFT_RSTn);
+    /* ENET0 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kENET0_RST_SHIFT_RSTn);
     /* FLEXCAN0 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kFLEXCAN0_RST_SHIFT_RSTn);
     /* PORT1 peripheral is released from reset */
@@ -2601,6 +2605,8 @@ void BOARD_InitFREQMEPins(void)
     CLOCK_EnableClock(kCLOCK_GatePORT1);
     /* FREQME peripheral is released from reset */
     RESET_ReleasePeripheralReset(kFREQME_RST_SHIFT_RSTn);
+    /* ENET0 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kENET0_RST_SHIFT_RSTn);
     /* FLEXCAN0 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kFLEXCAN0_RST_SHIFT_RSTn);
     /* PORT1 peripheral is released from reset */
@@ -3390,8 +3396,16 @@ BOARD_InitENETPins:
   - {pin_num: D1, peripheral: ENET0, signal: enet_rx_dv, pin_signal: P1_13/TRIG_IN3/LPI2C1_SCL/LPUART2_TXD/CT2_MAT3/LPSPI5_SCK/FLEXIO0_D21/SMARTDMA_PIO9/LPUART5_RTS_B/ENET0_RXDV/TENBASET1S_TX/CAN1_TXD/TSI0_CH23/ADC1_A11}
   - {pin_num: B3, peripheral: ENET0, signal: enet_tx_en, pin_signal: P1_5/FREQME_CLK_IN1/LPSPI0_PCS2/LPUART2_TXD/CT1_MAT3/FLEXIO0_D13/SMARTDMA_PIO1/LPI2C4_SCLS/ENET0_TXEN/I3C1_SDA3/TSI0_CH17/ADC0_A21/CMP0_IN3}
   - {pin_num: A3, peripheral: ENET0, signal: enet_tx_clk, pin_signal: P1_4/WUU0_IN8/FREQME_CLK_IN0/LPSPI0_PCS3/LPUART2_RXD/CT1_MAT2/FLEXIO0_D12/SMARTDMA_PIO0/LPI2C4_SDAS/ENET0_TX_CLK/TSI0_CH16/ADC0_A20/CMP0_IN2}
-  - {pin_num: C2, peripheral: GPIO1, signal: 'GPIO, 10', pin_signal: P1_10/LPUART1_RTS_B/LPI2C2_SDAS/CT2_MAT0/FLEXIO0_D18/SMARTDMA_PIO6/LPUART5_TXD/CAN0_TXD/TSI0_CH20/ADC1_A8,
-    direction: OUTPUT, gpio_init_state: 'true'}
+  - {pin_num: B2, peripheral: ENET0, signal: 'enet_tdata, 2', pin_signal: P1_8/WUU0_IN10/FREQME_CLK_IN0/LPUART1_RXD/LPI2C2_SDA/CT_INP8/CT0_MAT2/FLEXIO0_D16/SMARTDMA_PIO4/ENET0_TXD2/I3C1_SDA}
+  - {pin_num: B1, peripheral: ENET0, signal: 'enet_tdata, 3', pin_signal: P1_9/FREQME_CLK_IN1/LPUART1_TXD/LPI2C2_SCL/CT_INP9/CT0_MAT3/FLEXIO0_D17/SMARTDMA_PIO5/ENET0_TXD3/I3C1_SCL}
+  - {pin_num: E4, peripheral: ENET0, signal: enet_rx_clk, pin_signal: P1_14/LPI2C1_SCLS/LPUART2_RTS_B/CT_INP10/CT3_MAT0/FLEXIO0_D22/SMARTDMA_PIO10/LPSPI5_SDI/ENET0_RX_CLK/I3C1_SDA1/TSI0_CH24/ADC1_A12}
+  - {pin_num: E1, peripheral: ENET0, signal: enet_rx_er, pin_signal: P1_15/WUU0_IN13/LPI2C1_SDAS/LPUART2_CTS_B/CT_INP11/CT3_MAT1/FLEXIO0_D23/SMARTDMA_PIO11/LPSPI5_PCS0/ENET0_RXER/I3C1_PUR/TSI0_CH25/ADC1_A13}
+  - {pin_num: E2, peripheral: ENET0, signal: 'enet_rdata, 2', pin_signal: P1_16/WUU0_IN14/LPI2C4_SDAS/CT_INP12/LPSPI5_PCS3/FLEXIO0_D24/SMARTDMA_PIO12/LPUART5_RXD/ENET0_RXD2/I3C1_SDA/CAN1_RXD/TSI0_CH26/ADC1_A14}
+  - {pin_num: E3, peripheral: ENET0, signal: 'enet_rdata, 3', pin_signal: P1_17/LPI2C4_SCLS/CT_INP13/LPSPI5_PCS2/FLEXIO0_D25/SMARTDMA_PIO13/LPUART5_TXD/ENET0_RXD3/I3C1_SCL/CAN1_TXD/TSI0_CH27/ADC1_A15}
+  - {pin_num: F4, peripheral: ENET0, signal: enet_col, pin_signal: P1_18/FREQME_CLK_IN0/LPI2C4_SCL/CT3_MAT0/LPSPI5_PCS1/FLEXIO0_D26/SMARTDMA_PIO14/LPUART5_RTS_B/ENET0_COL/I3C1_SDA3/CAN0_TXD/TSI0_CH28/ADC1_A16}
+  - {pin_num: F3, peripheral: ENET0, signal: enet_crs, pin_signal: P1_19/WUU0_IN15/FREQME_CLK_IN1/LPI2C4_SDA/CT3_MAT1/FLEXIO0_D27/SMARTDMA_PIO15/LPUART5_CTS_B/ENET0_CRS/I3C1_SDA2/CAN0_RXD/TSI0_CH29/ADC1_A17}
+  - {pin_num: G4, peripheral: GPIO4, signal: 'GPIO, 1', pin_signal: P4_1/LPI2C3_SCL/CT_INP5/FLEXIO0_D9/SMARTDMA_PIO21/LPSPI5_PCS1/I3C3_PUR/TSI0_CH59, direction: OUTPUT,
+    gpio_init_state: 'true'}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -3406,28 +3420,28 @@ void BOARD_InitENETPins(void)
 {
     /* PORT1: Peripheral clock is enabled */
     CLOCK_EnableClock(kCLOCK_GatePORT1);
-    /* GPIO1: Peripheral clock is enabled */
-    CLOCK_EnableClock(kCLOCK_GateGPIO1);
-    /* GPIO1 peripheral is released from reset */
-    RESET_ReleasePeripheralReset(kGPIO1_RST_SHIFT_RSTn);
-    /* PORT1 peripheral is released from reset */
-    RESET_ReleasePeripheralReset(kPORT1_RST_SHIFT_RSTn);
+    /* PORT4: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GatePORT4);
+    /* GPIO4: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GateGPIO4);
     /* ENET0 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kENET0_RST_SHIFT_RSTn);
+    /* PORT1 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kPORT1_RST_SHIFT_RSTn);
+    /* FREQME peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kFREQME_RST_SHIFT_RSTn);
+    /* FLEXCAN0 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kFLEXCAN0_RST_SHIFT_RSTn);
     /* T1S0 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kT1S0_RST_SHIFT_RSTn);
     /* ADC0 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kADC0_RST_SHIFT_RSTn);
-
-    /* PORT1_10 (pin C2) is configured as P1_10 */
-    PORT_SetPinMux(BOARD_INITENETPINS_EPHY_RSTB_PORT, BOARD_INITENETPINS_EPHY_RSTB_PIN, kPORT_MuxAlt0);
-
-    PORT1->PCR[10] = ((PORT1->PCR[10] &
-                       /* Mask bits to zero which are setting */
-                       (~(PORT_PCR_IBE_MASK)))
-
-                      /* Input Buffer Enable: Enables. */
-                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+    /* LPUART1 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kLPUART1_RST_SHIFT_RSTn);
+    /* GPIO4 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kGPIO4_RST_SHIFT_RSTn);
+    /* PORT4 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kPORT4_RST_SHIFT_RSTn);
 
     /* PORT1_11 (pin C1) is configured as ENET0_RXD0 */
     PORT_SetPinMux(PORT1, 11U, kPORT_MuxAlt9);
@@ -3453,6 +3467,66 @@ void BOARD_InitENETPins(void)
     PORT_SetPinMux(PORT1, 13U, kPORT_MuxAlt9);
 
     PORT1->PCR[13] = ((PORT1->PCR[13] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT1_14 (pin E4) is configured as ENET0_RX_CLK */
+    PORT_SetPinMux(PORT1, 14U, kPORT_MuxAlt9);
+
+    PORT1->PCR[14] = ((PORT1->PCR[14] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT1_15 (pin E1) is configured as ENET0_RXER */
+    PORT_SetPinMux(PORT1, 15U, kPORT_MuxAlt9);
+
+    PORT1->PCR[15] = ((PORT1->PCR[15] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT1_16 (pin E2) is configured as ENET0_RXD2 */
+    PORT_SetPinMux(PORT1, 16U, kPORT_MuxAlt9);
+
+    PORT1->PCR[16] = ((PORT1->PCR[16] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT1_17 (pin E3) is configured as ENET0_RXD3 */
+    PORT_SetPinMux(PORT1, 17U, kPORT_MuxAlt9);
+
+    PORT1->PCR[17] = ((PORT1->PCR[17] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT1_18 (pin F4) is configured as ENET0_COL */
+    PORT_SetPinMux(PORT1, 18U, kPORT_MuxAlt9);
+
+    PORT1->PCR[18] = ((PORT1->PCR[18] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT1_19 (pin F3) is configured as ENET0_CRS */
+    PORT_SetPinMux(PORT1, 19U, kPORT_MuxAlt9);
+
+    PORT1->PCR[19] = ((PORT1->PCR[19] &
                        /* Mask bits to zero which are setting */
                        (~(PORT_PCR_IBE_MASK)))
 
@@ -3519,11 +3593,41 @@ void BOARD_InitENETPins(void)
                      /* Input Buffer Enable: Enables. */
                      | PORT_PCR_IBE(PCR_IBE_ibe1));
 
+    /* PORT1_8 (pin B2) is configured as ENET0_TXD2 */
+    PORT_SetPinMux(PORT1, 8U, kPORT_MuxAlt9);
+
+    PORT1->PCR[8] = ((PORT1->PCR[8] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_IBE_MASK)))
+
+                     /* Input Buffer Enable: Enables. */
+                     | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT1_9 (pin B1) is configured as ENET0_TXD3 */
+    PORT_SetPinMux(PORT1, 9U, kPORT_MuxAlt9);
+
+    PORT1->PCR[9] = ((PORT1->PCR[9] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_IBE_MASK)))
+
+                     /* Input Buffer Enable: Enables. */
+                     | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT4_1 (pin G4) is configured as P4_1 */
+    PORT_SetPinMux(BOARD_INITENETPINS_EPHY_RSTB_PORT, BOARD_INITENETPINS_EPHY_RSTB_PIN, kPORT_MuxAlt0);
+
+    PORT4->PCR[1] = ((PORT4->PCR[1] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_IBE_MASK)))
+
+                     /* Input Buffer Enable: Enables. */
+                     | PORT_PCR_IBE(PCR_IBE_ibe1));
+
     gpio_pin_config_t EPHY_RSTB_config = {
         .pinDirection = kGPIO_DigitalOutput,
         .outputLogic = 1U
     };
-    /* Initialize GPIO functionality on pin PIO1_10 (pin C2)  */
+    /* Initialize GPIO functionality on pin PIO4_1 (pin G4)  */
     GPIO_PinInit(BOARD_INITENETPINS_EPHY_RSTB_GPIO, BOARD_INITENETPINS_EPHY_RSTB_PIN, &EPHY_RSTB_config);
 }
 
