@@ -30,8 +30,13 @@
 #define EXAMPLE_TRDC_MBC_ACCESS_CONTROL_POLICY_ALL_INDEX  0
 #define EXAMPLE_TRDC_MBC_ACCESS_CONTROL_POLICY_NONE_INDEX 1
 
+#define EXAMPLE_TRDC_DAC_INSTANCE     ((TRDC_Type *)CMPT__TRDC)
+#define EXAMPLE_TRDC_DAC_MASTER_AXIM  kTRDC_CMPT_MasterCPU0_AXIM
+#define EXAMPLE_TRDC_DAC_MASTER_AHBP  kTRDC_CMPT_MasterCPU0_AHBP
+
 #define FSL_FEATURE_TRDC_HAS_MBC (1)
 #define FSL_FEATURE_TRDC_HAS_MRC (1)
+#define FSL_FEATURE_TRDC_HAS_DAC (1)
 /*${macro:end}*/
 
 /*******************************************************************************
@@ -40,6 +45,8 @@
 /*${prototype:start}*/
 void BOARD_InitHardware(void);
 void APP_SetTrdcGlobalConfig(void);
+void APP_SetTrdcMasterDomainAssignment(void);
+uint8_t APP_GetMasterDomainId(void);
 void APP_SetMrcUnaccessible(void);
 void APP_SetMbcUnaccessible(void);
 void APP_TouchMrcMemory(void);

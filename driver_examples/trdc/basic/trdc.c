@@ -76,6 +76,13 @@ int main(void)
     PRINTF("TRDC example start\r\n");
 
     APP_SetTrdcGlobalConfig();
+
+#if defined(FSL_FEATURE_TRDC_HAS_DAC) && FSL_FEATURE_TRDC_HAS_DAC
+    PRINTF("Assign the CPU core to a domain using the MDAC\r\n");
+    APP_SetTrdcMasterDomainAssignment();
+    PRINTF("The CPU core domain assigned by the MDAC is %d\r\n", APP_GetMasterDomainId());
+#endif
+
 #if defined(FSL_FEATURE_TRDC_HAS_MRC) && FSL_FEATURE_TRDC_HAS_MRC
 #if defined(KW45B41Z83_SERIES) || defined(KW45B41Z82_SERIES) || defined(KW45B41Z53_SERIES) || defined(KW45B41Z52_SERIES) || \
     defined(K32W1480_SERIES) || defined(MCXW716A_SERIES) || defined(MCXW716C_SERIES)

@@ -7,6 +7,9 @@ policy using TRDC.
 In this example, a MRC memory region and a MBC memory block are set to unaccessible, then
 the hardfault occurs.
 
+On boards whose SoC exposes the processor core through the Master Domain Assignment Controller (MDAC/DAC),
+the example additionally programs the core's master domain assignment and prints the resulting domain ID.
+
 ## Supported Boards
 - [EVK9-MIMX8ULP](../../../_boards/evk9mimx8ulp/driver_examples/trdc/basic/example_board_readme.md)
 - [EVK-MIMX8ULP](../../../_boards/evkmimx8ulp/driver_examples/trdc/basic/example_board_readme.md)

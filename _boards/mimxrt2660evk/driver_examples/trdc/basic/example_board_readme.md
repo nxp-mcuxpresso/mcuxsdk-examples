@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Type-C USB cable
-- TBD board
+- MIMXRT2660-EVK board
 - Personal Computer
 
 Board settings
@@ -22,9 +22,11 @@ Prepare the Demo
 
 Running the demo
 ================
-The log below shows the output of the hello world demo in the terminal window:
+The log below shows the output of the trdc demo in the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 TRDC example start
+Assign the CPU core to a domain using the MDAC
+The CPU core domain assigned by the MDAC is 1
 Set the MRC selected memory region not accessible
 Violent access at address:  0x25000000
 The MRC selected region is accessible now
