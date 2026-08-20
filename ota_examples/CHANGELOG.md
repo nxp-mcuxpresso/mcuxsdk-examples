@@ -6,12 +6,11 @@ All notable changes to MCUboot fork in MCUXpresso SDK and related ota examples w
 
 ### Added
 - MCUboot updated to v2.4.0
-- Added basic support for FRDM-IMXRT1152 and FRDM-IMXRT700 boards
+- Added basic support for FRDM-IMXRT1152, FRDM-IMXRT700 and MIMXRT2660-EVK boards
 - (Encrypted XIP) Added OTFAD support for MIMXRT1160-EVK, MIMXRT1170-EVKB, FRDM-IMXRT1152
 
 ### Changed
 - Changed partition layouts on FRDM-MCXN266 and FRDM-MCXA336
-- [RT1160] Removed external SDRAM usage
 
 ### Fixed
 - (Encrypted XIP)(IPED) Fixed the reset issue during wifi initialization when IPED encryption is active
