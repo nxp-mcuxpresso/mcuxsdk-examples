@@ -84,8 +84,12 @@
 #define BOARD_SDMMC_SD_HOST_IRQ_PRIORITY   (5U)
 #define BOARD_SDMMC_MMC_HOST_IRQ_PRIORITY  (5U)
 #define BOARD_SDMMC_SDIO_HOST_IRQ_PRIORITY (5U)
-/*!@brief dma descriptor buffer size */
-#define BOARD_SDMMC_HOST_DMA_DESCRIPTOR_BUFFER_SIZE (32U)
+/*!@brief dma descriptor buffer size
+ * As DTCM is on AHB bus, there is 1KB boundary access limitation.
+ * To avoid DMA access across 1KB boundary, use 64 bytes alignment
+ * which is same with USDHC DMA burst length used.
+ */
+#define BOARD_SDMMC_HOST_DMA_DESCRIPTOR_BUFFER_SIZE (64U)
 /*! @brief cache maintain function enabled for RW buffer */
 #define BOARD_SDMMC_HOST_CACHE_CONTROL kSDMMCHOST_CacheControlRWBuffer
 
