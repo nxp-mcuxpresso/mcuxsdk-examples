@@ -43,6 +43,7 @@ void BOARD_InitHardware(void)
     };
     /* clang-format on */
     pca6416a_handle_t handle;
+    SystemPlatformInit();
     BOARD_InitBootPins();
     BOARD_InitI2C2Pins();
     BOARD_InitPDMPins();
