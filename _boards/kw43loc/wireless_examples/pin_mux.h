@@ -25,21 +25,21 @@ extern "C" {
 #endif
 
 
-/*! @name PTA0 (number 5), SW4
+/*! @name PTC1 (number 38), SW1
   @{ */
 
 /* Symbols to be used with GPIO driver */
-#define BOARD_INITBUTTONSPINS_SW4_GPIO GPIO_A              /*!<@brief GPIO peripheral base pointer */
-#define BOARD_INITBUTTONSPINS_SW4_GPIO_PIN_MASK (1U << 0U) /*!<@brief GPIO pin mask */
+#define BOARD_INITBUTTONSPINS_SW1_GPIO GPIO_C              /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITBUTTONSPINS_SW1_GPIO_PIN_MASK (1U << 1U) /*!<@brief GPIO pin mask */
 
 /* Symbols to be used with PORT driver */
-#define BOARD_INITPINBUTTON0_SW4_PORT PORTA                /*!<@brief PORT peripheral base pointer */
-#define BOARD_INITPINBUTTON0_SW4_PIN  0U                   /*!<@brief PORT pin number */
-#define BOARD_INITPINBUTTON0_SW4_PIN_MASK (1U << 0U)       /*!<@brief PORT pin mask */
+#define BOARD_INITPINBUTTON0_SW1_PORT PORTC                /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITPINBUTTON0_SW1_PIN  1U                   /*!<@brief PORT pin number */
+#define BOARD_INITPINBUTTON0_SW1_PIN_MASK (1U << 1U)       /*!<@brief PORT pin mask */
                                                            /* @} */
 /* Symbols to be used in board_comp.h initialization(s) */
-#define BOARD_INITPINBUTTON0_PORT BOARD_INITPINBUTTON0_SW4_PORT
-#define BOARD_INITPINBUTTON0_PIN  BOARD_INITPINBUTTON0_SW4_PIN
+#define BOARD_INITPINBUTTON0_PORT BOARD_INITPINBUTTON0_SW1_PORT
+#define BOARD_INITPINBUTTON0_PIN  BOARD_INITPINBUTTON0_SW1_PIN
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
@@ -47,21 +47,21 @@ extern "C" {
  */
 void BOARD_InitPinButton0(void);
 
-/*! @name PTD1 (number 24), SW3
+/*! @name PTC7 (number 44), SW2
   @{ */
 
 /* Symbols to be used with GPIO driver */
-#define BOARD_INITBUTTONSPINS_SW3_GPIO GPIO_D              /*!<@brief GPIO peripheral base pointer */
-#define BOARD_INITBUTTONSPINS_SW3_GPIO_PIN_MASK (1U << 1U) /*!<@brief GPIO pin mask */
+#define BOARD_INITBUTTONSPINS_SW2_GPIO GPIO_C              /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITBUTTONSPINS_SW2_GPIO_PIN_MASK (1U << 7U) /*!<@brief GPIO pin mask */
 
 /* Symbols to be used with PORT driver */
-#define BOARD_INITPINBUTTON1_SW3_PORT PORTD                /*!<@brief PORT peripheral base pointer */
-#define BOARD_INITPINBUTTON1_SW3_PIN  1U                   /*!<@brief PORT pin number */
-#define BOARD_INITPINBUTTON1_SW3_PIN_MASK (1U << 1U)       /*!<@brief PORT pin mask */
+#define BOARD_INITPINBUTTON1_SW2_PORT PORTC                /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITPINBUTTON1_SW2_PIN  7U                   /*!<@brief PORT pin number */
+#define BOARD_INITPINBUTTON1_SW2_PIN_MASK (1U << 7U)       /*!<@brief PORT pin mask */
                                                            /* @} */
 /* Symbols to be used in board_comp.h initialization(s) */
-#define BOARD_INITPINBUTTON1_PORT BOARD_INITPINBUTTON1_SW3_PORT
-#define BOARD_INITPINBUTTON1_PIN BOARD_INITPINBUTTON1_SW3_PIN
+#define BOARD_INITPINBUTTON1_PORT BOARD_INITPINBUTTON1_SW2_PORT
+#define BOARD_INITPINBUTTON1_PIN BOARD_INITPINBUTTON1_SW2_PIN
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.

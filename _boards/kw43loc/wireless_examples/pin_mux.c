@@ -44,7 +44,7 @@ pin_labels:
 BOARD_InitPinButton0:
 - options: {callFromInitBoot: 'false', prefix: BOARD_INITPINBUTTON0_, coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: '24', peripheral: GPIOD, signal: 'GPIO, 1', pin_signal: ADC0_B5/PTD1/SPC0_LPREQ/NMI_b/RF_GPO_4, identifier: SW2, pull_select: up, pull_enable: enable,
+  - {pin_num: '38', peripheral: GPIOC, signal: 'GPIO, 1', pin_signal: PTC1/LPSPI1_PCS3/CAN0_RX/I3C0_SCL/TPM1_CH1/SEC_TX/LPI2C1_SDA/RF_DTEST_2P4GHZ_1/FLEXIO0_D17/RF_UART_RTS_b/EZH_PIO9/WUU0_P8, identifier: SW1, pull_select: up, pull_enable: enable,
     pull_value: high, passive_filter: disable, open_drain: enable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -59,10 +59,10 @@ BOARD_InitPinButton0:
 void BOARD_InitPinButton0(void)
 {
     /* Clock Config: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_GpioA);
+    CLOCK_EnableClock(kCLOCK_GpioC);
     /* Clock Config: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_PortA);
-    const port_pin_config_t SW4 = {/* Internal pull-up resistor is enabled */
+    CLOCK_EnableClock(kCLOCK_PortC);
+    const port_pin_config_t SW1 = {/* Internal pull-up resistor is enabled */
                                    .pullSelect = (uint16_t)kPORT_PullUp,
                                    /* Low internal pull resistor value is selected. */
                                    .pullValueSelect = (uint16_t)kPORT_LowPullResistor,
@@ -74,14 +74,14 @@ void BOARD_InitPinButton0(void)
                                    .openDrainEnable = (uint16_t)kPORT_OpenDrainDisable,
                                    /* Low drive strength is configured */
                                    .driveStrength = (uint16_t)kPORT_LowDriveStrength,
-                                   /* Pin is configured as PTA0 */
+                                   /* Pin is configured as PTC1 */
                                    .mux = (uint16_t)kPORT_MuxAsGpio,
                                    /* Digital input is not inverted */
                                    .invertInput = (uint16_t)kPORT_InputNormal,
                                    /* Pin Control Register fields [15:0] are not locked */
                                    .lockRegister = (uint16_t)kPORT_UnlockRegister};
-    /* PORT_A5 (pin 10) is configured as PTA5 */
-    PORT_SetPinConfig(BOARD_INITPINBUTTON0_SW4_PORT, BOARD_INITPINBUTTON0_SW4_PIN, &SW4);
+    /* PORT_C1 (pin 38) is configured as PTC1 */
+    PORT_SetPinConfig(BOARD_INITPINBUTTON0_SW1_PORT, BOARD_INITPINBUTTON0_SW1_PIN, &SW1);
 }
 
 /* clang-format off */
@@ -90,7 +90,7 @@ void BOARD_InitPinButton0(void)
 BOARD_InitPinButton1:
 - options: {callFromInitBoot: 'false', prefix: BOARD_INITPINBUTTON1_, coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: '44', peripheral: GPIOC, signal: 'GPIO, 6', pin_signal: ADC0_A8/PTC6/WUU0_P11/LPSPI1_PCS1/TPM1_CH5/FLEXIO0_D22, identifier: SW3, pull_select: up, pull_enable: enable,
+  - {pin_num: '44', peripheral: GPIOC, signal: 'GPIO, 7', pin_signal: ADC0_A8/PTC7/WUU0_P11/LPSPI1_PCS1/TPM1_CH5/FLEXIO0_D22, identifier: SW2, pull_select: up, pull_enable: enable,
     slew_rate: slow, open_drain: enable, drive_strength: low}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -104,7 +104,7 @@ BOARD_InitPinButton1:
  * END ****************************************************************************************************************/
 void BOARD_InitPinButton1(void)
 {
-    const port_pin_config_t SW3 = {/* Internal pull-up resistor is enabled */
+    const port_pin_config_t SW2 = {/* Internal pull-up resistor is enabled */
                                    .pullSelect = (uint16_t)kPORT_PullUp,
                                    /* Low internal pull resistor value is selected. */
                                    .pullValueSelect = (uint16_t)kPORT_LowPullResistor,
@@ -116,14 +116,14 @@ void BOARD_InitPinButton1(void)
                                    .openDrainEnable = (uint16_t)kPORT_OpenDrainDisable,
                                    /* Low drive strength is configured */
                                    .driveStrength = (uint16_t)kPORT_LowDriveStrength,
-                                   /* Pin is configured as PTD1 */
+                                   /* Pin is configured as PTC7 */
                                    .mux = (uint16_t)kPORT_MuxAsGpio,
                                    /* Digital input is not inverted */
                                    .invertInput = (uint16_t)kPORT_InputNormal,
                                    /* Pin Control Register fields [15:0] are not locked */
                                    .lockRegister = (uint16_t)kPORT_UnlockRegister};
-    /* PORT_D1 (pin 24) is configured as PTD1 */
-    PORT_SetPinConfig(BOARD_INITPINBUTTON1_SW3_PORT, BOARD_INITPINBUTTON1_SW3_PIN, &SW3);
+    /* PORT_C7 (pin 44) is configured as PTC7 */
+    PORT_SetPinConfig(BOARD_INITPINBUTTON1_SW2_PORT, BOARD_INITPINBUTTON1_SW2_PIN, &SW2);
 }
 
 /* clang-format off */
