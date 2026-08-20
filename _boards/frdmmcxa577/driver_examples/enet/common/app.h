@@ -27,7 +27,9 @@ extern const phy_operations_t phy_ops;
 extern phy_lan8741_resource_t g_phy_resource;
 #define EXAMPLE_PHY_OPS     &phylan8741_ops
 #define EXAMPLE_PHY_ADDRESS 0x00U
-#define EXAMPLE_MII_MODE    kENET_RmiiMode
+/* ERR053383: A0 silicon has an ENET RMII RX issue on FRDM-MCXA577, so the
+ * external LAN8741 PHY is driven over MII instead of RMII. */
+#define EXAMPLE_MII_MODE    kENET_MiiMode
 #endif
 #define EXAMPLE_PHY_RESOURCE &g_phy_resource
 #define EXAMPLE_ENET_BASE    ENET0

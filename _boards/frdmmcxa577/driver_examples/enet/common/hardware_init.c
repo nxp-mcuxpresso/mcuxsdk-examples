@@ -64,8 +64,6 @@ void BOARD_InitHardware(void)
 
     RESET_PeripheralReset(kENET0_RST_SHIFT_RSTn);
 
-    /* Use external RMII clock. */
-    CLOCK_AttachClk(kNONE_to_ENETRMII);
     CLOCK_EnableClock(s_enetClock[ENET_GetInstance(EXAMPLE_ENET_BASE)]);
 
 #if BOARD_NETWORK_USE_TENBASET_PHY
@@ -99,8 +97,8 @@ void BOARD_InitHardware(void)
     /* Initialize MDIO */
     MDIO_Init();
 
-    /* Connect ENET to external PHY over RMII */
-    SYSCON->ENET_CTRL = SYSCON_ENET_CTRL_PHY_SEL(0) | SYSCON_ENET_CTRL_PHY_INTF(1);
+    /* Connect ENET to external PHY over MII (ERR053383: A0 RMII RX issue) */
+    SYSCON->ENET_CTRL = SYSCON_ENET_CTRL_PHY_SEL(0) | SYSCON_ENET_CTRL_PHY_INTF(0);
 #endif /* BOARD_NETWORK_USE_TENBASET_PHY */
 }
 

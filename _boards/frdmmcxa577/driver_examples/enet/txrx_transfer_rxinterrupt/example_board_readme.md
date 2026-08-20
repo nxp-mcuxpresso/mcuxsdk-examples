@@ -22,7 +22,7 @@ Prepare the Demo
 4.  Download the program to the target board.
 5.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
 
-The example uses external PHY over RMII by default. If you want to use the internal 10BASE-T1S digital PHY,
+The example uses external PHY over MII by default (ERR053383: A0 silicon has an ENET RMII RX issue). If you want to use the internal 10BASE-T1S digital PHY,
 redefine BOARD_NETWORK_USE_TENBASET_PHY from board.h to 1 and rebuild. Loopback cable is not needed in that case.
 
 Make loopback network cable:
