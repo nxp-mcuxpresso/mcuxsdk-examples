@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 NXP
+ * Copyright 2023, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -225,7 +225,9 @@ static void DEMO_InitSinc(void)
     sincConfig.clockPreDivider        = kSINC_ClkPrescale1;
     sincConfig.channelsConfigArray[0] = &sincChannel0Config;
     sincConfig.enableMaster           = true;
+#if !(defined(FSL_FEATURE_SINC_MCR_HAS_DOZEN) && (FSL_FEATURE_SINC_MCR_HAS_DOZEN == 0U))
     sincConfig.disableDozeMode        = false;
+#endif /* FSL_FEATURE_SINC_MCR_HAS_DOZEN */
     sincConfig.disableModClk1Output   = true;
     sincConfig.disableModClk2Output   = true;
     sincConfig.disableModClk0Output   = false;

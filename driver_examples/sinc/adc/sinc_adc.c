@@ -101,7 +101,9 @@ int main(void)
     sincConfig.clockPreDivider                        = kSINC_ClkPrescale1;
     sincConfig.channelsConfigArray[DEMO_SINC_CHANNEL] = &sincChannelConfig;
     sincConfig.enableMaster                           = true;
+#if !(defined(FSL_FEATURE_SINC_MCR_HAS_DOZEN) && (FSL_FEATURE_SINC_MCR_HAS_DOZEN == 0U))
     sincConfig.disableDozeMode                        = false;
+#endif /* FSL_FEATURE_SINC_MCR_HAS_DOZEN */
     sincConfig.disableModClk0Output                   = DEMO_SINC_DISABLE_MOD_CLK0_OUTPUT;
     sincConfig.disableModClk1Output                   = DEMO_SINC_DISABLE_MOD_CLK1_OUTPUT;
     sincConfig.disableModClk2Output                   = DEMO_SINC_DISABLE_MOD_CLK2_OUTPUT;
