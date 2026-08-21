@@ -1,11 +1,7 @@
 #
-# Copyright 2025 NXP
+# Copyright 2025-2026 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
-
-mcux_add_mdk_configuration(
-        CC "-DCORE1_IMAGE_COPY_TO_RAM"
-)
 
 # Add additional configuration
 mcux_add_macro(
@@ -43,9 +39,8 @@ mcux_add_iar_configuration(
 
 mcux_add_mdk_configuration(
     TARGETS debug release flexspi_nor_debug flexspi_nor_release flexspi_nor_hyperram_debug flexspi_nor_hyperram_relese
-    LD "--predefine=\"-D__stack_size__=0x4000\" --predefine=\"-D__heap_size__=0x10000\""
     CC "-DCORE1_IMAGE_COPY_TO_RAM"
-    LD "--keep=*(*core1_code)"
+    LD "--predefine=\"-D__stack_size__=0x4000\" --predefine=\"-D__heap_size__=0x10000\" --keep=*(*core1_code)"
 )
 
 mcux_add_include(
