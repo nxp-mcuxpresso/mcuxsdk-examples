@@ -1,4 +1,3 @@
-source "middleware/edgefast_open/Kconfig"
 source "Kconfig.mcuxpresso"
 
 config BT_A2DP_SOURCE_DISCOVER_RESULT_COUNT

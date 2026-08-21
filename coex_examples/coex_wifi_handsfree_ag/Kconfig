@@ -1,4 +1,3 @@
-source "middleware/edgefast_open/Kconfig"
 source "Kconfig.mcuxpresso"
 
 # Enable the edgefast_open shell porting layer (fsl_shell). PORT_SHELL is a
