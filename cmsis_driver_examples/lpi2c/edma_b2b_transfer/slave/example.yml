@@ -327,3 +327,4 @@ cmsis_lpi2c_edma_b2b_transfer_slave:
     frdmkw43: []
     frdmmcxw70: []
     kw43loc: []
+    mcxw70loc: []

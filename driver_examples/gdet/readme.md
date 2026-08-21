@@ -28,3 +28,4 @@ End of example
 - [FRDM-MCXW70](../../_boards/frdmmcxw70/driver_examples/gdet/example_board_readme.md)
 - [FRDM-MCXA287](../../_boards/frdmmcxa287/driver_examples/gdet/example_board_readme.md)
 - [FRDM-MCXA577](../../_boards/frdmmcxa577/driver_examples/gdet/example_board_readme.md)
+- [MCXW70-LOC](../../_boards/mcxw70loc/driver_examples/gdet/example_board_readme.md)

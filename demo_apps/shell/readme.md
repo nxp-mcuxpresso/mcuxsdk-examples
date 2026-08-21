@@ -74,3 +74,4 @@ work with semihosting.
 - [FRDM-MCXW70](../../_boards/frdmmcxw70/demo_apps/shell/example_board_readme.md)
 - [MIMXRT2660-EVK](../../_boards/mimxrt2660evk/demo_apps/shell/example_board_readme.md)
 - [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/demo_apps/shell/example_board_readme.md)
+- [MCXW70-LOC](../../_boards/mcxw70loc/demo_apps/shell/example_board_readme.md)

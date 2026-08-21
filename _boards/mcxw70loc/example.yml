@@ -1,0 +1,5 @@
+board.toolchains:
+- +armgcc@debug
+- +armgcc@release
+- +iar@debug
+- +iar@release

@@ -84,3 +84,4 @@ Note: The example echo every 8 characters, so input 8 characters every time.
 - [FRDM-MCXA287](../../../_boards/frdmmcxa287/cmsis_driver_examples/lpuart/interrupt_transfer/example_board_readme.md)
 - [IMX943-ORANGEBOX](../../../_boards/imx943_orangebox/cmsis_driver_examples/lpuart/interrupt_transfer/example_board_readme.md)
 - IMX943-EVK
+- [MCXW70-LOC](../../../_boards/mcxw70loc/cmsis_driver_examples/lpuart/interrupt_transfer/example_board_readme.md)

@@ -330,3 +330,4 @@ lpi2c_interrupt_b2b_transfer_master:
     frdmmcxw70: []
     mimxrt2660evk: []
     kw43loc: []
+    mcxw70loc: []

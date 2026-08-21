@@ -27,3 +27,4 @@ data. So, please connect RTS to CTS pin directly.
 - [FRDM-MCXW72](../../../_boards/frdmmcxw72/driver_examples/lpuart/hardware_flow_control/example_board_readme.md)
 - [FRDM-KW43](../../../_boards/frdmkw43/driver_examples/lpuart/hardware_flow_control/example_board_readme.md)
 - [FRDM-MCXW70](../../../_boards/frdmmcxw70/driver_examples/lpuart/hardware_flow_control/example_board_readme.md)
+- [MCXW70-LOC](../../../_boards/mcxw70loc/driver_examples/lpuart/hardware_flow_control/example_board_readme.md)

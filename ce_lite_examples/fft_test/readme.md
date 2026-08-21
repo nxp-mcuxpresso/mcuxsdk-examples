@@ -16,3 +16,4 @@ This test is based on memory polling from both sides (CM33 and ZV)
 ## Supported Boards
 - [FRDM-KW43](../../_boards/frdmkw43/ce_lite_examples/fft_test/example_board_readme.md)
 - [FRDM-MCXW70](../../_boards/frdmmcxw70/ce_lite_examples/fft_test/example_board_readme.md)
+- [MCXW70-LOC](../../_boards/mcxw70loc/ce_lite_examples/fft_test/example_board_readme.md)

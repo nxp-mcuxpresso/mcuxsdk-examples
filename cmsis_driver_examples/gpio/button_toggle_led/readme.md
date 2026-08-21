@@ -29,4 +29,5 @@ print to the console to indicate a button press event is detected.
 - [FRDM-MCXA174](../../../_boards/frdmmcxa174/cmsis_driver_examples/gpio/button_toggle_led/example_board_readme.md)
 - [FRDM-MCXA346](../../../_boards/frdmmcxa346/cmsis_driver_examples/gpio/button_toggle_led/example_board_readme.md)
 - [FRDM-MCXL255](../../../_boards/frdmmcxl255/cmsis_driver_examples/gpio/button_toggle_led/example_board_readme.md)
+- [MCXW70-LOC](../../../_boards/mcxw70loc/cmsis_driver_examples/gpio/button_toggle_led/example_board_readme.md)
 

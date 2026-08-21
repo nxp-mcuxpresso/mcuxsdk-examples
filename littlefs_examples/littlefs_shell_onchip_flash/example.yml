@@ -79,3 +79,4 @@ littlefs_shell_onchip_flash:
     frdmkw43: []
     frdmmcxw70: []
     kw43loc: []
+    mcxw70loc: []

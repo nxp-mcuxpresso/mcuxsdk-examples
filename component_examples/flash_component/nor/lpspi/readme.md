@@ -18,3 +18,4 @@ an external nor flash device.
 - [FRDM-KW43](../../../../_boards/frdmkw43/component_examples/flash_component/lpspi_nor/example_board_readme.md)
 - [FRDM-MCXW70](../../../../_boards/frdmmcxw70/component_examples/flash_component/lpspi_nor/example_board_readme.md)
 - [FRDM-MCXL255](../../../../_boards/frdmmcxl255/component_examples/flash_component/lpspi_nor/example_board_readme.md)
+- [MCXW70-LOC](../../../../_boards/mcxw70loc/component_examples/flash_component/lpspi_nor/example_board_readme.md)

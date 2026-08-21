@@ -42,6 +42,7 @@ lpit_chained_channel:
     - +armgcc@release
     frdmkw43: []
     kw43loc: []
+    mcxw70loc: []
     frdmmcxw70: []
     mcimx93autoevk@cm33: []
     mcimx93evk@cm33: []

@@ -126,3 +126,4 @@ Log 9: Task2 Message 4
 - [MIMXRT2660-EVK](../../_boards/mimxrt2660evk/freertos_examples/freertos_queue/example_board_readme.md)
 - IMX943-EVK
 - [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/freertos_examples/freertos_queue/example_board_readme.md)
+- [MCXW70-LOC](../../_boards/mcxw70loc/freertos_examples/freertos_queue/example_board_readme.md)

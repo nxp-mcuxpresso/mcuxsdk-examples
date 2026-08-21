@@ -34,3 +34,4 @@ and time.
 - [FRDM-MCXC162](../../_boards/frdmmcxc162/driver_examples/rtc/example_board_readme.md)
 - [FRDM-KW43](../../_boards/frdmkw43/driver_examples/rtc/example_board_readme.md)
 - [FRDM-MCXW70](../../_boards/frdmmcxw70/driver_examples/rtc/example_board_readme.md)
+- [MCXW70-LOC](../../_boards/mcxw70loc/driver_examples/rtc/example_board_readme.md)

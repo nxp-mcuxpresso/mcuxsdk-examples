@@ -30,4 +30,5 @@ ce_lite_nonblockingmode_test_bm:
   boards:
     frdmkw43: []
     kw43loc: []
+    mcxw70loc: []
     frdmmcxw70: []

@@ -12,4 +12,5 @@ prints the sampled conversion value.
 ## Supported Boards
 - [FRDM-KW43](../../../_boards/frdmkw43/driver_examples/lpadc/dma3/example_board_readme.md)
 - [FRDM-MCXW70](../../../_boards/frdmmcxw70/driver_examples/lpadc/dma3/example_board_readme.md)
+- [MCXW70-LOC](../../../_boards/mcxw70loc/driver_examples/lpadc/dma3/example_board_readme.md)
 

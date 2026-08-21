@@ -53,3 +53,4 @@ example take turns to shine the LED.
 - [FRDM-MCXA287](../../../_boards/frdmmcxa287/driver_examples/gpio/led_output/example_board_readme.md)
 - [MIMXRT2660-EVK](../../../_boards/mimxrt2660evk/driver_examples/gpio/led_output/example_board_readme.md)
 - MIMXRT2660-EVK
+- [MCXW70-LOC](../../../_boards/mcxw70loc/driver_examples/gpio/led_output/example_board_readme.md)

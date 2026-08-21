@@ -137,3 +137,4 @@ lpuart_hardware_flow_control:
     frdmkw43: []
     frdmmcxw70: []
     kw43loc: []
+    mcxw70loc: []

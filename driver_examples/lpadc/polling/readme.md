@@ -58,3 +58,4 @@ the configuration structure's setting in application to fit the special requirem
 - [FRDM-MCXW70](../../../_boards/frdmmcxw70/driver_examples/lpadc/polling/example_board_readme.md)
 - [FRDM-MCXA287](../../../_boards/frdmmcxa287/driver_examples/lpadc/polling/example_board_readme.md)
 - [MIMXRT2660-EVK](../../../_boards/mimxrt2660evk/driver_examples/lpadc/polling/example_board_readme.md)
+- [MCXW70-LOC](../../../_boards/mcxw70loc/driver_examples/lpadc/polling/example_board_readme.md)

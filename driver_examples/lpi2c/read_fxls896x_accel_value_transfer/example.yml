@@ -28,3 +28,4 @@ lpi2c_read_fxls896x_accel_value_transfer:
     frdmkw43: []
     frdmmcxw70: []
     kw43loc: []
+    mcxw70loc: []

@@ -330,3 +330,4 @@ lpi2c_polling_b2b_master:
     frdmmcxw70: []
     mimxrt2660evk: []
     kw43loc: []
+    mcxw70loc: []

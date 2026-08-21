@@ -1,0 +1,35 @@
+Hardware requirements
+=====================
+- Type-C USB cable
+- MCXW70-LOC Board
+- Personal Computer
+
+Board settings
+==============
+No special settings are required.
+
+Prepare the Demo
+================
+1. Connect a USB cable between the host PC and the LOC board J7.
+2. Open a serial terminal on PC for the serial device with these settings:
+    - 115200 baud rate
+    - 8 data bits
+    - No parity
+    - One stop bit
+    - No flow control
+3. Download the program to the target board.
+4. Either press the reset button on your board or launch the debugger in your IDE to begin running
+   the demo.
+5. The J9 Pin 1 (ADC0_A0) on LOC board is used to monitor the voltage.
+   The VDD_ANA is used as the ADC reference.
+
+Running the demo
+================
+The following lines are printed to the serial terminal when the demo program is executed.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+LPADC Interrupt Example
+ADC Full Range: XXXX
+Please press any key to get user channel's ADC value.
+ADC value: 2714
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+

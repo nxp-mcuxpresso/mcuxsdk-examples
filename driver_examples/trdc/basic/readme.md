@@ -46,3 +46,4 @@ the example additionally programs the core's master domain assignment and prints
 - [FRDM-MCXN236](../../../_boards/frdmmcxn236/driver_examples/trdc/basic/example_board_readme.md)
 - [MIMXRT2660-EVK](../../../_boards/mimxrt2660evk/driver_examples/trdc/basic/example_board_readme.md)
 - [FRDM-MCXA287](../../../_boards/frdmmcxa287/driver_examples/trdc/basic/example_board_readme.md)
+- [MCXW70-LOC](../../../_boards/mcxw70loc/driver_examples/trdc/basic/example_board_readme.md)

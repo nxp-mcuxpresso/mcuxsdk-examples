@@ -41,4 +41,5 @@ ce_lite_fft_test:
   boards:
     frdmkw43: []
     kw43loc: []
+    mcxw70loc: []
     frdmmcxw70: []

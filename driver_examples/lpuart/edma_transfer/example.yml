@@ -349,5 +349,6 @@ lpuart_edma_transfer:
     frdmmcxc162: []
     frdmkw43: []
     kw43loc: []
+    mcxw70loc: []
     frdmmcxw70: []
     mimxrt2660evk: []

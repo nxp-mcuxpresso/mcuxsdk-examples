@@ -16,3 +16,4 @@ computed output and the reference output, and reports pass/fail over the serial 
 ## Supported Boards
 - [FRDM-KW43](../../../_boards/frdmkw43/ce_lite_examples/nonblockingmode_test/bm/example_board_readme.md)
 - [FRDM-MCXW70](../../../_boards/frdmmcxw70/ce_lite_examples/nonblockingmode_test/bm/example_board_readme.md)
+- [MCXW70-LOC](../../../_boards/mcxw70loc/ce_lite_examples/nonblockingmode_test/bm/example_board_readme.md)

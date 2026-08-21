@@ -284,3 +284,4 @@ lpuart_interrupt_transfer_seven_bits:
     frdmmcxw70: []
     mimxrt2660evk: []
     kw43loc: []
+    mcxw70loc: []
