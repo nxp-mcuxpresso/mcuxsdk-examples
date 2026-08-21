@@ -23,7 +23,7 @@ Prepare the Demo
 Note:
     1. This demo targets to run with CM7 standalone demos(with same/similar linkage as hello_world_cm7 demo) in this SDK out of box.
     2. This demo plays role as a trigger to boot CM7 image after POR.
-    3. Refer to "Getting Started..." document for more detail on how to use Secure Provisioning Tool on this demo.
+    3. Refer to the Getting Started document (https://docs.mcuxpresso.nxp.com/mcuxsdk/latest/html/boards/RT/evkmimxrt1180/gettingStarted/gsindex.html) for more detail on how to use Secure Provisioning Tool on this demo.
 
 Running the demo
 ================
@@ -33,9 +33,10 @@ Multicore trigger demo!
 Core0 get core1 image info sucessfully!
   Core1 image reside addr = 0xxxxxxxxx
   Core1 image dest addr   = 0xxxxxxxxx
-  Core1 image size        = 0xxxxxxxxx
+  Core1 image size        = xxxxxxxxx(~xxxxxK) bytes
   Core1 image boot addr   = 0xxxxxxxxx
 Core0 is starting core1...
 
-Core1 demo output log...
+Core1 application has been started.
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
