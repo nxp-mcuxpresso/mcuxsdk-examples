@@ -1,5 +1,5 @@
 /*
- * Copyright 2019, 2021-2025 NXP
+ * Copyright 2019, 2021-2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -31,6 +31,81 @@
 #define APP_CLEAR_POWER_DOMAIN3_REQUEST 0
 #endif
 
+/*
+ * External voltage domain low-power isolation (SPC EVD_CFG[EVDLPISO]) policy.
+ *
+ * Isolating an external voltage domain reduces low-power current, but it also
+ * resets the I/O pads and analog components in that domain. So a domain must
+ * not be isolated when it contains the selected wake-up source, or an interface
+ * that an external device keeps driving (typically the debug console). Whether
+ * that is the case depends on the target power mode, the wake-up source, and the
+ * board's supply-rail and pin topology - one static mask cannot express it.
+ *
+ * A board therefore declares two kinds of fact in app.h:
+ *
+ *   APP_LP_ISO_DOMAINS_<class>       which domains this board may isolate, per
+ *                                    mode class (shallow / power down / deep
+ *                                    power down). Deeper modes may allow more,
+ *                                    because fewer interfaces must stay alive.
+ *
+ *   APP_<source>_WAKEUP_ISO_DOMAINS  which domain each wake-up source depends
+ *                                    on. The selected source's domain is always
+ *                                    removed from the class mask.
+ *
+ * Boards that only define the older mode-independent APP_*_LOW_POWER_ISO_DOMAINS
+ * macros keep their previous behavior exactly: the fallbacks below reduce the
+ * policy to the legacy per-source constant for every mode. The wake-up-source
+ * fallbacks recover the domain each source depends on from the difference the
+ * legacy pair already encoded, which assumes a source's mask is a subset of the
+ * LPTMR mask. That assumption is checked at build time below rather than left
+ * as a convention, so a board that violates it fails to compile instead of
+ * silently changing behavior.
+ */
+#if !defined(APP_LP_ISO_DOMAINS_SHALLOW) && !defined(APP_LPTMR_LOW_POWER_ISO_DOMAINS)
+#error "app.h must define APP_LP_ISO_DOMAINS_SHALLOW (preferred) or the legacy APP_LPTMR_LOW_POWER_ISO_DOMAINS"
+#endif
+
+#ifndef APP_LP_ISO_DOMAINS_SHALLOW
+#define APP_LP_ISO_DOMAINS_SHALLOW APP_LPTMR_LOW_POWER_ISO_DOMAINS
+#endif
+#ifndef APP_LP_ISO_DOMAINS_POWER_DOWN
+#define APP_LP_ISO_DOMAINS_POWER_DOWN APP_LP_ISO_DOMAINS_SHALLOW
+#endif
+#ifndef APP_LP_ISO_DOMAINS_DEEP_POWER_DOWN
+#define APP_LP_ISO_DOMAINS_DEEP_POWER_DOWN APP_LP_ISO_DOMAINS_POWER_DOWN
+#endif
+
+#ifndef APP_LPTMR_WAKEUP_ISO_DOMAINS
+#define APP_LPTMR_WAKEUP_ISO_DOMAINS (0x0U)
+#endif
+
+#ifndef APP_WAKEUP_BUTTON_WAKEUP_ISO_DOMAINS
+#if !defined(APP_WAKEUP_BUTTON_LOW_POWER_ISO_DOMAINS)
+#error "app.h must define APP_WAKEUP_BUTTON_WAKEUP_ISO_DOMAINS (preferred) or the legacy APP_WAKEUP_BUTTON_LOW_POWER_ISO_DOMAINS"
+#endif
+/* The fallback only reproduces the legacy value when the button's isolatable
+ * domains are a subset of the LPTMR ones. Declare the domains explicitly in
+ * app.h if this board is different. */
+#if ((APP_WAKEUP_BUTTON_LOW_POWER_ISO_DOMAINS & (~APP_LPTMR_LOW_POWER_ISO_DOMAINS)) != 0)
+#error "APP_WAKEUP_BUTTON_LOW_POWER_ISO_DOMAINS is not a subset of APP_LPTMR_LOW_POWER_ISO_DOMAINS; declare APP_WAKEUP_BUTTON_WAKEUP_ISO_DOMAINS in app.h"
+#endif
+#define APP_WAKEUP_BUTTON_WAKEUP_ISO_DOMAINS \
+    ((uint8_t)(APP_LPTMR_LOW_POWER_ISO_DOMAINS & (~APP_WAKEUP_BUTTON_LOW_POWER_ISO_DOMAINS)))
+#endif
+
+#if (defined(FSL_FEATURE_SOC_VBAT_COUNT) && (FSL_FEATURE_SOC_VBAT_COUNT > 0))
+#ifndef APP_VBAT_WAKEUP_ISO_DOMAINS
+#if !defined(APP_VBAT_LOW_POWER_ISO_DOMAINS)
+#error "app.h must define APP_VBAT_WAKEUP_ISO_DOMAINS (preferred) or the legacy APP_VBAT_LOW_POWER_ISO_DOMAINS"
+#endif
+#if ((APP_VBAT_LOW_POWER_ISO_DOMAINS & (~APP_LPTMR_LOW_POWER_ISO_DOMAINS)) != 0)
+#error "APP_VBAT_LOW_POWER_ISO_DOMAINS is not a subset of APP_LPTMR_LOW_POWER_ISO_DOMAINS; declare APP_VBAT_WAKEUP_ISO_DOMAINS in app.h"
+#endif
+#define APP_VBAT_WAKEUP_ISO_DOMAINS \
+    ((uint8_t)(APP_LPTMR_LOW_POWER_ISO_DOMAINS & (~APP_VBAT_LOW_POWER_ISO_DOMAINS)))
+#endif
+#endif
+
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -41,6 +116,7 @@ static void APP_WaitForSPCReady(void);
 
 static uint8_t APP_GetWakeupTimeout(void);
 static app_wakeup_source_t APP_SelectWakeupSource(app_power_mode_t targetMode);
+static uint8_t APP_GetLowPowerIsoDomains(app_power_mode_t targetMode, app_wakeup_source_t wakeupSource);
 static void APP_GetWakeupConfig(app_power_mode_t targetMode);
 
 static void APP_PowerPreSwitchHook(void);
@@ -438,10 +514,75 @@ static app_wakeup_source_t APP_SelectWakeupSource(app_power_mode_t targetMode)
     }
 }
 
+/*
+ * Select the external voltage domains to isolate during low power.
+ *
+ * Pure function of the board's declared masks and the two arguments: it reads no
+ * hardware and keeps no state, and it is only ever called from the menu path,
+ * never from an ISR.
+ */
+static uint8_t APP_GetLowPowerIsoDomains(app_power_mode_t targetMode, app_wakeup_source_t wakeupSource)
+{
+    uint8_t classMask;
+    uint8_t sourceMask;
+
+    /*
+     * Deeper modes may isolate more domains, because fewer interfaces have to stay
+     * alive. On KW43 the reference manual additionally permits VDD_IO_ABC in
+     * EVDLPISO only when moving to Deep Power Down.
+     */
+#if !(defined(DEMO_PD_MODE_NOT_OK) && DEMO_PD_MODE_NOT_OK)
+    if (targetMode >= kAPP_PowerModeDeepPowerDown1)
+    {
+        classMask = (uint8_t)APP_LP_ISO_DOMAINS_DEEP_POWER_DOWN;
+    }
+    else if (targetMode >= kAPP_PowerModePowerDown1)
+    {
+        classMask = (uint8_t)APP_LP_ISO_DOMAINS_POWER_DOWN;
+    }
+    else
+#endif
+    {
+        classMask = (uint8_t)APP_LP_ISO_DOMAINS_SHALLOW;
+    }
+
+    switch (wakeupSource)
+    {
+        case kAPP_WakeupSourceWakeupButton:
+            sourceMask = (uint8_t)APP_WAKEUP_BUTTON_WAKEUP_ISO_DOMAINS;
+            break;
+#if (defined(FSL_FEATURE_SOC_VBAT_COUNT) && (FSL_FEATURE_SOC_VBAT_COUNT > 0))
+        case kAPP_WakeupSourceVbat:
+            sourceMask = (uint8_t)APP_VBAT_WAKEUP_ISO_DOMAINS;
+            break;
+#endif
+        case kAPP_WakeupSourceLptmr:
+        default:
+            sourceMask = (uint8_t)APP_LPTMR_WAKEUP_ISO_DOMAINS;
+            break;
+    }
+
+    /* Never isolate the domain that hosts the active wake-up source. */
+    return (uint8_t)(classMask & (uint8_t)(~sourceMask));
+}
+
 /* Get wakeup timeout and wakeup source. */
 static void APP_GetWakeupConfig(app_power_mode_t targetMode)
 {
+    uint8_t isoDomains;
+
     g_selectedWakeupSource = APP_SelectWakeupSource(targetMode);
+
+    /*
+     * Isolate some external power domain to save power. The mask depends on the
+     * target mode and the selected wakeup source, so it is resolved once here.
+     *
+     * Deliberately not reported on the console: the test team matches against
+     * this example's output, so the console text is a stable contract. Read
+     * SPC0->EVD_CFG[EVDLPISO] with a debugger to observe the applied mask.
+     */
+    isoDomains = APP_GetLowPowerIsoDomains(targetMode, g_selectedWakeupSource);
+    SPC_SetExternalVoltageDomainsConfig(APP_SPC, isoDomains, 0x0U);
 
     switch (g_selectedWakeupSource)
     {
@@ -450,8 +591,6 @@ static void APP_GetWakeupConfig(app_power_mode_t targetMode)
             /* Wakeup source is LPTMR, user should input wakeup timeout value. */
             s_wakeupTimeout = APP_GetWakeupTimeout();
             PRINTF("Will wakeup in %d seconds.\r\n", s_wakeupTimeout);
-            /* Isolate some external power domain to save power. */
-            SPC_SetExternalVoltageDomainsConfig(APP_SPC, APP_LPTMR_LOW_POWER_ISO_DOMAINS, 0x0U);
             WUU_SetInternalWakeUpModulesConfig(APP_WUU, WUU_WAKEUP_LPTMR_IDX, kWUU_InternalModuleInterrupt);
             LPTMR_SetTimerPeriod(APP_LPTMR, (32000U * s_wakeupTimeout) - 1U);
             LPTMR_EnableInterrupts(APP_LPTMR, kLPTMR_TimerInterruptEnable);
@@ -466,8 +605,6 @@ static void APP_GetWakeupConfig(app_power_mode_t targetMode)
                 "Use wakeup button will increase current consumption due to VDD_IO_ABC power domain can not be "
                 "isolated.\r\n");
             PRINTF("Please press %s to wakeup device.\r\n", WUU_WAKEUP_BUTTON_NAME);
-            /* Isolate some external power domain to save power. */
-            SPC_SetExternalVoltageDomainsConfig(APP_SPC, APP_WAKEUP_BUTTON_LOW_POWER_ISO_DOMAINS, 0x0U);
             wuu_external_wakeup_pin_config_t wakeupButtonConfig;
             wakeupButtonConfig.edge  = kWUU_ExternalPinRisingEdge;
             wakeupButtonConfig.event = kWUU_ExternalPinInterrupt;
@@ -485,8 +622,6 @@ static void APP_GetWakeupConfig(app_power_mode_t targetMode)
 #else
             PRINTF("Waiting for WAKEUP pin's falling edge input.\r\n");
 #endif
-            /* Isolate some external power domain to save power. */
-            SPC_SetExternalVoltageDomainsConfig(APP_SPC, APP_VBAT_LOW_POWER_ISO_DOMAINS, 0x0U);
             /* Clear all status flags. */
             VBAT_ClearStatusFlags(APP_VBAT, kVBAT_StatusFlagPORDetect | kVBAT_StatusFlagWakeupPin |
                                                 kVBAT_StatusFlagBandgapTimer0 | kVBAT_StatusFlagBandgapTimer1);

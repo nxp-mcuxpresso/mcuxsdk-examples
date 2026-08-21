@@ -40,8 +40,32 @@
 
 #define APP_LPTMR_IRQ_HANDLER DEMO_LPTMR_IRQHANDLER
 
-#define APP_LPTMR_LOW_POWER_ISO_DOMAINS         (0x0U)
-#define APP_WAKEUP_BUTTON_LOW_POWER_ISO_DOMAINS (0x0U)
+/*
+ * External voltage domains (KW43RM Table 323, EVD_CFG):
+ *   Bit 0: VDD_IO_ABC
+ *   Bit 1: VDD_IO_D
+ *   Bit 2: VDD_ANA
+ *
+ * VDD_IO_ABC (bit 0) hosts both the wakeup button SW4 (PTA0) and the debug
+ * console (PTC2/PTC3, driven by MCU-Link through a 74AVC4TD245BQ voltage
+ * translation buffer). The reference manual also states that VDD_IO_ABC should
+ * only be set in EVD_CFG[EVDLPISO] when moving to Deep Power Down, so it is
+ * isolated in that mode class only - and even there not when SW4 is the
+ * selected wakeup source.
+ *
+ * VDD_IO_D (bit 1) is never isolated on FRDM-KW43: the board has no separate
+ * VDD_IO_D net, so the rail is not independently controllable, and PORTD
+ * carries RESET_B (PTD0) and NMI_B (PTD1) on a reset-critical path.
+ *
+ * VDD_ANA (bit 2) is separately supplied through JP21 and no pin in it is
+ * externally driven by this example, so it is isolated in every low-power mode.
+ */
+#define APP_LP_ISO_DOMAINS_SHALLOW         (0x4U) /* Sleep1, DeepSleep1..4:  VDD_ANA.               */
+#define APP_LP_ISO_DOMAINS_POWER_DOWN      (0x4U) /* PowerDown1..4:          VDD_ANA.               */
+#define APP_LP_ISO_DOMAINS_DEEP_POWER_DOWN (0x5U) /* DeepPowerDown1..2:      VDD_ANA + VDD_IO_ABC.  */
+
+#define APP_LPTMR_WAKEUP_ISO_DOMAINS         (0x0U) /* LPTMR is internal, no external domain.  */
+#define APP_WAKEUP_BUTTON_WAKEUP_ISO_DOMAINS (0x1U) /* SW4 is PTA0, so VDD_IO_ABC.             */
 
 /* KW43 hardware does not provide VBAT or Smart Power Switch. */
 #define DEMO_NOT_SUPPORT_WAKEUP_BOOT           1
