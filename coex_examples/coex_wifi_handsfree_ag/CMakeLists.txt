@@ -26,6 +26,7 @@ mcux_add_source(
         examples/coex_examples/coex_wifi_handsfree_ag/app_shell.c
         examples/coex_examples/coex_wifi_handsfree_ag/app_shell.h
         examples/coex_examples/coex_wifi_handsfree_ag/main.c
+        middleware/wireless/coex/src/common/coex_lfs_defines.h
 )
 
 # The coex app dir MUST come before the stock handsfree_ag dir so that the
@@ -35,6 +36,22 @@ mcux_add_include(
     INCLUDES
         examples/coex_examples/coex_wifi_handsfree_ag
         middleware/edgefast_open/examples/handsfree_ag
+        middleware/wireless/coex/src/common
+)
+
+mcux_add_macro(
+    "-DLFS_DEFINES=coex_lfs_defines.h"
+)
+
+# Add MCUXPRESSO IDE support
+mcux_add_include(
+    BASE_PATH ${SdkRootDirPath}
+    INCLUDES examples/coex_examples/coex_wifi_handsfree_ag/mcuxpresso_config
+)
+
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}
+    SOURCES examples/coex_examples/coex_wifi_handsfree_ag/mcuxpresso_config/app_mcuxpresso_config.h
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/coex_examples/coex_wifi_handsfree_ag/${multicore_foldername}/reconfig.cmake OPTIONAL)
