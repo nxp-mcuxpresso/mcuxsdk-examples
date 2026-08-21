@@ -517,7 +517,6 @@ static void BOARD_ComputeSysPllRegs(const clock_cguana_frac_pll_config_t *cfg,
                                     uint32_t *pll3, uint32_t *pll4)
 {
     *pll1 =
-        CGUANA_CGUA_MAINPLL_PLL1_REG_MAINPLL_PLL_STARTING_MODE((uint32_t)cfg->startMode) |
         (cfg->div5En  ? CGUANA_CGUA_MAINPLL_PLL1_REG_MAINPLL_DIV5_EN_MASK  : 0U) |
         (cfg->div8En  ? CGUANA_CGUA_MAINPLL_PLL1_REG_MAINPLL_DIV8_EN_MASK  : 0U) |
         (cfg->div10En ? CGUANA_CGUA_MAINPLL_PLL1_REG_MAINPLL_DIV10_EN_MASK : 0U) |

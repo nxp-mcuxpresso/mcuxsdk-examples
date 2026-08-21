@@ -14,8 +14,8 @@
 /* define instance */
 #define BOARD_TPM HSP__TPM_0
 /* Interrupt number and interrupt handler for the TPM instance used */
-#define BOARD_TPM_IRQ_NUM HSP_QTPM0_CH0_IRQn
-#define BOARD_TPM_HANDLER HSP_QTPM0_CH0_IRQHandler
+#define BOARD_TPM_IRQ_NUM HSP_QTPM0_IRQn
+#define BOARD_TPM_HANDLER HSP_QTPM0_IRQHandler
 /* Get source clock for TPM driver */
 #define TPM_SOURCE_CLOCK CLOCK_GetRootClockFreq(kCLOCK_Root_MAIN_qtpm0_fclk)
 
