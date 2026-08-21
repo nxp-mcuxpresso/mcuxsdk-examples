@@ -9,9 +9,7 @@
 /*${header:start}*/
 #include "fsl_netc_endpoint.h"
 #include "fsl_netc_mdio.h"
-#include "fsl_netc_phy_wrapper.h"
-#include "fsl_phyrtl8211f.h"
-#include "fsl_phygpy215.h"
+#include "fsl_phyyt8521.h"
 #include "fsl_msgintr.h"
 /*${header:end}*/
 
@@ -21,29 +19,19 @@
 /*${macro:start}*/
 
 /* Ethernet port identifier. */
-#define EXAMPLE_EP_NUM        1U
+#define EXAMPLE_EP_NUM        2U
 #define EXAMPLE_EP0_PORT      0U
 #define EXAMPLE_EP1_PORT      1U
 
-#if (EXAMPLE_EP_NUM == 1)
-#define EXAMPLE_EP_SI    \
-    {                    \
-        kNETC_ENETC0PSI0 \
-    }
-#define EXAMPLE_EP_PHY_ADDR \
-    {                       \
-        0x1U                \
-    }
-#else
 #define EXAMPLE_EP_SI                      \
     {                                      \
         kNETC_ENETC0PSI0, kNETC_ENETC1PSI0 \
     }
 #define EXAMPLE_EP_PHY_ADDR \
     {                       \
-        0x1U, 0xfU          \
+        0x1U, 0x2U          \
     }
-#endif
+
 #define EXAMPLE_MSGINTR       MSGINTR2
 
 /* Buffer desciptor configuration. */

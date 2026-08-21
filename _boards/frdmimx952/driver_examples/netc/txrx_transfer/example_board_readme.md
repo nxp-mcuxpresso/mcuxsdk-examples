@@ -1,14 +1,12 @@
 Hardware requirements
 =====================
 - Mini/micro USB cable
-- IMX952-EVK board
+- IMX952-FRDM board
 - Personal Computer
 
 Board settings
 ==============
-In default, the example uses only ENETC0 (EP0).
-To enable ENETC1 (EP1), install M.2 2.5G ETH card and change EXAMPLE_EP_NUM to 2U in app.h.
-ENETC1 supports up to 1G speed.
+No special settings are required.
 
 Prepare the Demo
 ===============
@@ -24,7 +22,6 @@ Prepare the Demo
 Running the demo
 ===============
 When the demo runs successfully, the log would be seen on the terminal like below.
-(No EP1 log if it's not enabled.)
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 NETC EP0 frame loopback example start.

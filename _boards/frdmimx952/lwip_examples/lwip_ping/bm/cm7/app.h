@@ -8,8 +8,7 @@
 
 /*${header:start}*/
 #include "fsl_clock.h"
-#include "fsl_phygpy215.h"
-#include "fsl_phyrtl8211f.h"
+#include "fsl_phyyt8521.h"
 #include "lwip_netc_port.h"
 /*${header:end}*/
 
@@ -69,19 +68,15 @@
         0x00, 0x00, 0xfa, 0xfa, 0xdd, 0x05 \
     }
 #endif
-#define EXAMPLE_PHY_ADDRESS  ((NETC_PSI == kNETC_ENETC0PSI0) ? 0x1U : 0xfU)
-#define EXAMPLE_PHY_OPS      ((NETC_PSI == kNETC_ENETC0PSI0) ? \
-        &g_app_phy_rtl8211f_ops : &g_app_phy_gpy215_ops)
-#define EXAMPLE_PHY_RESOURCE ((NETC_PSI == kNETC_ENETC0PSI0) ? \
-        (void *)&g_phy_rtl8211f_resource : (void *)&g_phy_gpy215_resource)
+#define EXAMPLE_PHY_ADDRESS  ((NETC_PSI == kNETC_ENETC0PSI0) ? 0x1U : 0x2U)
+#define EXAMPLE_PHY_OPS      (&g_app_phy_yt8521_ops)
+#define EXAMPLE_PHY_RESOURCE ((void *)&g_phy_yt8521_resource)
 #define EXAMPLE_CLOCK_FREQ   CLOCK_GetRate(kCLOCK_enet)
 
 /*${macro:end}*/
 
-extern phy_gpy215_resource_t g_phy_gpy215_resource;
-extern const phy_operations_t g_app_phy_gpy215_ops;
-extern phy_rtl8211f_resource_t g_phy_rtl8211f_resource;
-extern const phy_operations_t g_app_phy_rtl8211f_ops;
+extern phy_yt8521_resource_t g_phy_yt8521_resource;
+extern const phy_operations_t g_app_phy_yt8521_ops;
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/

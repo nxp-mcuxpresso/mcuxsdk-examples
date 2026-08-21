@@ -1,7 +1,7 @@
 Hardware requirements
 ===================
 - Micro USB cable
-- IMX952-EVK board
+- IMX952-FRDM board
 - J-Link Debug Probe
 - 12V~20V power supply
 - Personal Computer
