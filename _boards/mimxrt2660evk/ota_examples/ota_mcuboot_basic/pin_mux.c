@@ -981,7 +981,7 @@ void BOARD_InitENETQOSPins(void) {
       IOMUXC_PIO4_26_COMM_ENET_QOS_RX_DATA3,  /* PIO4_26 is configured as COMM_ENET_QOS_RX_DATA3 */
       0x80U);                                 /* Input Buffer Enable: Enables */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO4_27_COMM_ENET_QOS_RX_EN,     /* PIO4_27 is configured as COMM_ENET_QOS_RX_EN */
+      IOMUXC_PIO4_27_COMM_ENET_QOS_RXEN,     /* PIO4_27 is configured as COMM_ENET_QOS_RX_EN */
       0x80U);                                 /* Input Buffer Enable: Enables */
 }
 
@@ -1677,7 +1677,7 @@ void BOARD_InitDcifDbiPins(void) {
       IOMUXC_PIO3_15_MEDIA_DCIF_DBI_AB_DATA15,  /* PIO3_15 is configured as MEDIA_DCIF_DBI_AB_DATA15 */
       0x00U);                                 /* pad configuration */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO3_16_MEDIA_DCIF_DBI_AB_CSX,   /* PIO3_16 is configured as MEDIA_DCIF_DBI_AB_CSX */
+      IOMUXC_PIO3_16_MEDIA_DCIF_DBI_CSX_AB,   /* PIO3_16 is configured as MEDIA_DCIF_DBI_AB_CSX */
       0x00U);                                 /* pad configuration */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_17_MEDIA_DCIF_DBI_AB_DCS,   /* PIO3_17 is configured as MEDIA_DCIF_DBI_AB_DCS */
