@@ -80,25 +80,21 @@ static status_t ENETC_PHY_Init(phy_handle_t *phy_handle, const phy_config_t *con
 void BOARD_InitHardware(void)
 {
     /* clang-format off */
-    /* enetClk 666.66MHz */
-    clk_t enetclk = {
-        .clkId = kCLOCK_enet,
-        .pclkId = kCLOCK_syspll1dfs2,
-        //.enable_clk = true,
-        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
-    };
+
+    /* enetClk initialized in SM */
+
     /* enetRefClk 250MHz */
     clk_t enetrefclk = {
         .clkId = kCLOCK_enetref,
         .pclkId = kCLOCK_syspll1dfs0,
-        //.enable_clk = true,
+        .rate = 250000000,
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
     };
     /* enetTimer1Clk 100MHz */
     clk_t enettimer1clk = {
         .clkId = kCLOCK_enettimer1,
         .pclkId = kCLOCK_syspll1dfs0div2,
-        //.enable_clk = true,
+        .rate = 100000000,
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
     };
     /* NETCMIX power up */
@@ -120,9 +116,6 @@ void BOARD_InitHardware(void)
     BOARD_InitNETPins();
     BOARD_BootClockRUN();
 
-    CLOCK_SetParent(&enetclk);
-    CLOCK_SetRate(&enetclk);
-    CLOCK_EnableClock(enetclk.clkId);
     CLOCK_SetParent(&enetrefclk);
     CLOCK_SetRate(&enetrefclk);
     CLOCK_EnableClock(enetrefclk.clkId);
@@ -135,8 +128,7 @@ void BOARD_InitHardware(void)
     BOARD_ConfigMPU();
 
     /* Protocol configure */
-    BLK_CTRL_NETCMIX->CFG_LINK_MII_PROT = 0x00000522;
-    BLK_CTRL_NETCMIX->CFG_LINK_PCS_PROT_1 = 0x00000040;
+    BLK_CTRL_NETCMIX->CFG_LINK_MII_PROT = 0x00000022;
 
     /* Unlock the IERB. It will warm reset whole NETC. */
     NETC_PRIV->NETCRR &= ~NETC_PRIV_NETCRR_LOCK_MASK;
