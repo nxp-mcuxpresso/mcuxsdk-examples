@@ -373,7 +373,7 @@ AT_QUICKACCESS_SECTION_CODE(static void BOARD_SwitchXspi0ClockFromRam(board_xspi
  *     X16_EN) is retained across MDIS.
  *
  *   kBOARD_XspiRunOnSysPll (window step 9): switch the final fclock onto the Sys PLL.
- *     W958D6 (USE_PSRAM_W958D == 1) copies ROM's dividers EXACTLY so the PSRAM frequency
+ *     W958D6 (USE_PSRAM_W958D6 == 1) copies ROM's dividers EXACTLY so the PSRAM frequency
  *     (and thus the ROM DLL calibration point) is preserved: SYSPLLDIV4 (500 MHz) ==
  *     ROM's MAIN_PERI1_DIV2 (500 MHz), DIV(/1) -> 2x = 500 MHz, SND_DIV(/2) -> SCK = 250 MHz.
  *     APS256XXN (the other board PSRAM option) cannot run its DDR read datapath at
@@ -444,7 +444,7 @@ AT_QUICKACCESS_SECTION_CODE(static void BOARD_SwitchXspi1ClockFromRam(board_xspi
     {
         livePsram = ((MAIN__XSPI_1->MCR & XSPI_MCR_X16_EN_MASK) != 0U); /* ROM brought up DDR PSRAM? */
 
-#if defined(USE_PSRAM_W958D) && (USE_PSRAM_W958D == 1)
+#if defined(USE_PSRAM_W958D6) && (USE_PSRAM_W958D6 == 1)
         /* W958D6: final fclock SYSPLLDIV4 (500 MHz), DIV(/1) -> 2x = 500 MHz, SND_DIV(/2) -> SCK = 250 MHz. */
         v  = MAIN__CCM->CLOCK_ROOT[2].SLICE_CONTROL;
         v &= ~(CCM_SLICE_CONTROL_MUX_MASK | CCM_SLICE_CONTROL_DIV_MASK | CCM_SLICE_CONTROL_SND_DIV_MASK);
@@ -458,7 +458,7 @@ AT_QUICKACCESS_SECTION_CODE(static void BOARD_SwitchXspi1ClockFromRam(board_xspi
         v |= CCM_SLICE_CONTROL_MUX((uint32_t)kCLOCK_XSPI1_ClockRoot_SYSPLLDIV5) | CCM_SLICE_CONTROL_DIV(1U - 1U) |
              CCM_SLICE_CONTROL_SND_DIV(2U - 1U);
         MAIN__CCM->CLOCK_ROOT[2].SLICE_CONTROL = v;
-#endif /* USE_PSRAM_W958D == 1 */
+#endif /* USE_PSRAM_W958D6 == 1 */
         __DSB();
         __ISB();
         (void)MAIN__CCM->CLOCK_ROOT[2].SLICE_CONTROL; /* CM85 posted-write read-back flush */
@@ -584,7 +584,7 @@ static void BOARD_ComputeSysPllRegs(const clock_cguana_frac_pll_config_t *cfg,
  *   [6] Switch CMS + AV PLL reference to SXOSC (CGUA_CTRL) and OSC_24M to SXOSC.
  *   [7] Re-program + power up SYS PLL on the crystal reference; wait for FSM RDY.
  *   [8] Bring up SYSPLLDIV4_ROOTCLK (500 MHz) -- the XSPI0 hop target, and also XSPI1's
- *       target when USE_PSRAM_W958D == 1. Otherwise (APS256XXN) also bring up
+ *       target when USE_PSRAM_W958D6 == 1. Otherwise (APS256XXN) also bring up
  *       SYSPLLDIV5_ROOTCLK (400 MHz) -- XSPI1's hop target instead.
  *   [9] Hop BOTH (still-disabled) XSPI fclocks onto their SysPLL DIV root and re-enable each
  *       once (BOARD_SwitchXspi0/1ClockFromRam, kBOARD_XspiRunOnSysPll) -- so both become
@@ -772,7 +772,7 @@ AT_QUICKACCESS_SECTION_CODE(static void BOARD_SwitchCmsPllRefToSxoscFromRam(
     }
 
     /* [Step 8] Bring up SYSPLLDIV4_ROOTCLK -> SysPLL DIV4 (500 MHz), div=1. XSPI0 hops onto
-     *    this in step 9 (125 MHz), as does XSPI1 when USE_PSRAM_W958D == 1 (250 MHz, matches
+     *    this in step 9 (125 MHz), as does XSPI1 when USE_PSRAM_W958D6 == 1 (250 MHz, matches
      *    ROM PSRAM). */
     v  = SYSCON__CCM->CLOCK_ROOT[kCLOCK_Root_CGU_SYSPLLDIV4_ROOTCLK].SLICE_CONTROL;
     v &= ~(CCM_SLICE_CONTROL_MUX_MASK | CCM_SLICE_CONTROL_DIV_MASK);
@@ -782,7 +782,7 @@ AT_QUICKACCESS_SECTION_CODE(static void BOARD_SwitchCmsPllRefToSxoscFromRam(
     __DSB();
     __ISB();
 
-#if !(defined(USE_PSRAM_W958D) && (USE_PSRAM_W958D == 1))
+#if !(defined(USE_PSRAM_W958D6) && (USE_PSRAM_W958D6 == 1))
     /* [Step 8b] APS256XXN needs XSPI1 on SysPLL DIV5 (400 MHz) instead -- bring that root up
      *    too, before step 9 hops xspi1_fclk onto it (a hop onto a still-disabled root would
      *    leave XSPI1/PSRAM clockless, and psram_txt code runs from there). */
@@ -793,7 +793,7 @@ AT_QUICKACCESS_SECTION_CODE(static void BOARD_SwitchCmsPllRefToSxoscFromRam(
     SYSCON__CCM->CLOCK_ROOT[kCLOCK_Root_CGU_SYSPLLDIV5_ROOTCLK].SLICE_CONTROL = v;
     __DSB();
     __ISB();
-#endif /* !(USE_PSRAM_W958D == 1) */
+#endif /* !(USE_PSRAM_W958D6 == 1) */
 
     /* [Step 9] Hop both (still-disabled since step 2) XSPI fclocks onto the freshly-locked
      *    SYS PLL, so they become independent of PERI_ROOTCLK0/1 before the flash-resident

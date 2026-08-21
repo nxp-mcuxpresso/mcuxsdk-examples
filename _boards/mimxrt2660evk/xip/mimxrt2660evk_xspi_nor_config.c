@@ -22,7 +22,7 @@ __attribute__((section(".boot_hdr.xmcd_data"), used))
 
 #if defined(USE_PSRAM)
 
-#if defined(USE_PSRAM_W958D) && (USE_PSRAM_W958D == 1)
+#if defined(USE_PSRAM_W958D6) && (USE_PSRAM_W958D6 == 1)
 /* XMCD for W958D6 */
 const uint32_t xmcd_data[] = {
     0xC0010008,
@@ -41,7 +41,7 @@ const uint32_t xmcd_data[] = {
     0xFFFFFFFF,
     0xFFFFFFFF
 };
-#endif /* USE_PSRAM_W958D == 1 */
+#endif /* USE_PSRAM_W958D6 == 1 */
 
 #if defined(__ARMCC_VERSION) || defined(__GNUC__)
 __attribute__((section(".boot_hdr.fcb"), used))
