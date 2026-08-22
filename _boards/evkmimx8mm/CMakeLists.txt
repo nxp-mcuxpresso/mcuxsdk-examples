@@ -13,3 +13,9 @@ if (CONFIG_MCUX_PRJSEG_module.board.suite)
         AS "-D__STARTUP_INITIALIZE_NONCACHEDATA"
     )
 endif()
+
+# Cortex-A53 uses the per-core board folder layout.
+if (core_id STREQUAL "ca53")
+    include(${SdkRootDirPath}/examples/_boards/evkmimx8mm/${core_id}/setting.cmake)
+endif()
+
