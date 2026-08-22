@@ -34,7 +34,7 @@ freertos_generic:
     evkcmimxrt1060: []
     frdmimxrt1152: []
     evkmcimx7ulp: []
-    evkmimx8mm: []
+    evkmimx8mm@cm4: []
     evkmimx8mn: []
     evkmimx8mnddr3l: []
     evkmimx8mp: []

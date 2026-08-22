@@ -17,7 +17,7 @@ sdma_memory_to_memory:
       - ${board_root}/${board}/driver_examples/sdma/memory_to_memory/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkmimx8mm:
+    evkmimx8mm@cm4:
     - -armgcc@ddr_debug
     - -armgcc@ddr_release
     - -armgcc@flash_debug

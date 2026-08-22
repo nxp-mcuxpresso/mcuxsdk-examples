@@ -18,7 +18,7 @@ ecspi_loopback:
       - ${board_root}/${board}/driver_examples/ecspi/ecspi_loopback/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkmimx8mm:
+    evkmimx8mm@cm4:
     - -armgcc@ddr_debug
     - -armgcc@ddr_release
     - -armgcc@flash_debug

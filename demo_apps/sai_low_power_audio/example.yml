@@ -24,7 +24,7 @@ sai_low_power_audio:
     - -armgcc@flash_release
     - -iar@flash_debug
     - -iar@flash_release
-    evkmimx8mm:
+    evkmimx8mm@cm4:
     - -armgcc@ddr_debug
     - -armgcc@ddr_release
     - -armgcc@flash_debug

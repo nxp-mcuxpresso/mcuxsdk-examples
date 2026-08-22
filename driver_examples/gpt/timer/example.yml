@@ -93,7 +93,7 @@ gpt_timer:
     - -mdk@release
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
-    evkmimx8mm:
+    evkmimx8mm@cm4:
     - -armgcc@ddr_debug
     - -armgcc@ddr_release
     - -armgcc@flash_debug

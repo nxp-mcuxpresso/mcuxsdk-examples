@@ -15,7 +15,7 @@ tmu_1_monitor_threshold:
       - ${board_root}/${board}/driver_examples/tmu/monitor_threshold/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkmimx8mm:
+    evkmimx8mm@cm4:
     - -armgcc@ddr_debug
     - -armgcc@ddr_release
     - -armgcc@flash_debug

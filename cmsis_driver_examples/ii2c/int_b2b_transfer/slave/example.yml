@@ -22,7 +22,7 @@ cmsis_ii2c_int_b2b_transfer_slave:
       - ${board_root}/${board}/cmsis_driver_examples/i2c/int_b2b_transfer/slave/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkmimx8mm:
+    evkmimx8mm@cm4:
     - -armgcc@ddr_debug
     - -armgcc@ddr_release
     - -armgcc@flash_debug

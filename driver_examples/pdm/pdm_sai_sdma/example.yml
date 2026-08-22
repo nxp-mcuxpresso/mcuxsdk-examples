@@ -14,7 +14,7 @@ pdm_sai_sdma:
       - ${board_root}/${board}/driver_examples/pdm/pdm_sai_sdma/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkmimx8mm:
+    evkmimx8mm@cm4:
     - -armgcc@flash_debug
     - -armgcc@flash_release
     - -iar@flash_debug

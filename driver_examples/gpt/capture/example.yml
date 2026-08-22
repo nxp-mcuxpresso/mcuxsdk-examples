@@ -42,7 +42,7 @@ gpt_capture:
     - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
-    evkmimx8mm:
+    evkmimx8mm@cm4:
     - -armgcc@ddr_debug
     - -armgcc@ddr_release
     - -armgcc@flash_debug

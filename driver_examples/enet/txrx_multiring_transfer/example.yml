@@ -27,7 +27,7 @@ enet_txrx_multiring_transfer:
       - ${board_root}/${board}/driver_examples/enet/txrx_multiring_transfer/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkmimx8mm:
+    evkmimx8mm@cm4:
     - -armgcc@ddr_debug
     - -armgcc@ddr_release
     - -armgcc@flash_debug

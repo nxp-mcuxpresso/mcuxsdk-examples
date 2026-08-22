@@ -124,7 +124,7 @@ hello_world:
     - +mdk@hyperram_txt_debug
     - +mdk@hyperram_txt_release
     evkmcimx7ulp: []
-    evkmimx8mm: []
+    evkmimx8mm@cm4: []
     evkmimx8mn: []
     evkmimx8mnddr3l: []
     imx95lpd5evk19@cm7:

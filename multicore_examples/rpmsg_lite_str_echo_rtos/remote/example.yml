@@ -35,7 +35,7 @@ rpmsg_lite_str_echo_rtos_remote:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmcimx7ulp: []
-    evkmimx8mm: []
+    evkmimx8mm@cm4: []
     evkmimx8mn: []
     evkmimx8mnddr3l: []
     evkmimx8mp: []
