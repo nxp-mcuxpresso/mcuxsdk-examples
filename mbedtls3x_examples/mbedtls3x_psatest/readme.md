@@ -50,3 +50,5 @@ API behaviours are implemented correctly.
 - [LPCXpresso55S28](../../_boards/lpcxpresso55s28/mbedtls3x_examples/mbedtls3x_psatest/example_board_readme.md)
 - [MIMXRT1060-EVKB](../../_boards/evkbmimxrt1060/mbedtls3x_examples/mbedtls3x_psatest/example_board_readme.md)
 - [MIMXRT2660-EVK](../../_boards/mimxrt2660evk/mbedtls3x_examples/mbedtls3x_psatest/example_board_readme.md)
+- [KW43-LOC](../../_boards/kw43loc/mbedtls3x_examples/mbedtls3x_psatest/example_board_readme.md)
+- [MCXW70-LOC](../../_boards/mcxw70loc/mbedtls3x_examples/mbedtls3x_psatest/example_board_readme.md)

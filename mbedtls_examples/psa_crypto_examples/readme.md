@@ -54,6 +54,8 @@ PSA Crypto example to demonstrate cipher operation.
 - [LPCXpresso55S28](../../_boards/lpcxpresso55s28/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
 - [LPCXpresso55S69](../../_boards/lpcxpresso55s69/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
 - [LPCXpresso55S36](../../_boards/lpcxpresso55s36/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
+- [KW43-LOC](../../_boards/kw43loc/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
+- [MCXW70-LOC](../../_boards/mcxw70loc/mbedtls_examples/psa_crypto_examples/example_board_readme.md)
 
 ## Running the demo
 The log below shows the output of the PSA crypto examples in the terminal window:

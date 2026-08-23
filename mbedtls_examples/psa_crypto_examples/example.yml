@@ -228,6 +228,8 @@ psa_crypto_examples:
     frdmmcxe32b@core0: []
     frdmkw43: []
     frdmmcxw70: []
+    kw43loc: []
+    mcxw70loc: []
     lpcxpresso55s06: []
     lpcxpresso55s16: []
     lpcxpresso55s28: []
