@@ -20,3 +20,4 @@ fatfs_ramdisk_freertos:
   boards:
     evkbimxrt1050: []
     lpcxpresso54s018m: []
+    mimxrt2660evk: []

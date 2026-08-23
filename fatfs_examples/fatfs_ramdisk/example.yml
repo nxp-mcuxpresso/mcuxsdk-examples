@@ -24,6 +24,7 @@ fatfs_ramdisk:
     frdmmcxa366: []
     frdmmcxa577: []
     frdmmcxa287: []
+    mimxrt2660evk: []
     frdmimxrt1152:
     - -armgcc@debug
     - -armgcc@hyperram_release
