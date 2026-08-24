@@ -65,6 +65,24 @@
 
 #define PSA_ASSERT(status)      ASSERT_STATUS(status, PSA_SUCCESS)
 
+/*
+ * When a crypto operation reports that the requested curve/hash/algorithm is
+ * not implemented by the underlying provider (software or hardware accelerator)
+ * it returns PSA_ERROR_NOT_SUPPORTED. In that case the test case is not a real
+ * failure: report it as "NOT SUPPORTED" (ok == 2) the same way an unsupported
+ * key generation (e.g. the RSA cases) is already reported, instead of tripping
+ * an assertion and printing "FAILED".
+ */
+#define NOT_SUPPORTED_RESULT    (2)
+#define RETURN_IF_NOT_SUPPORTED(status)                                       \
+    do                                                                        \
+    {                                                                         \
+        if ((psa_status_t)(status) == PSA_ERROR_NOT_SUPPORTED)                \
+        {                                                                     \
+            return NOT_SUPPORTED_RESULT;                                      \
+        }                                                                     \
+    } while (0)
+
 #define PRINT_STATUS(ok)                                                      \
     do                                                                        \
     {                                                                         \
@@ -339,6 +357,7 @@ int exercise_signature(mbedtls_svc_key_id_t key,
                                    payload, payload_length,
                                    signature, sizeof(signature),
                                    &signature_length);
+            RETURN_IF_NOT_SUPPORTED(status);
             ASSERT_STATUS(status, PSA_SUCCESS);
         }
 
@@ -351,6 +370,7 @@ int exercise_signature(mbedtls_svc_key_id_t key,
                                      payload, payload_length,
                                      signature, signature_length);
 
+            RETURN_IF_NOT_SUPPORTED(status);
             ASSERT_STATUS(status, verify_status);
         }
     }
@@ -366,6 +386,7 @@ int exercise_signature(mbedtls_svc_key_id_t key,
                                       message, message_length,
                                       signature, sizeof(signature),
                                       &signature_length);
+            RETURN_IF_NOT_SUPPORTED(status);
             ASSERT_STATUS(status, PSA_SUCCESS);
 
         }
@@ -378,6 +399,7 @@ int exercise_signature(mbedtls_svc_key_id_t key,
             status = psa_verify_message(key, alg,
                                         message, message_length,
                                         signature, signature_length);
+            RETURN_IF_NOT_SUPPORTED(status);
             ASSERT_STATUS(status, verify_status);
         }
     }
@@ -528,12 +550,15 @@ int generate_and_test_key(uint16_t key_type_arg, size_t bits_arg,
             ok = exercise_aead(key_id, usage, alg);
         } else if (PSA_ALG_IS_SIGN(alg)) {
             ok = exercise_signature(key_id, usage, alg);
-            if (ok) {
+            /* ok == NOT_SUPPORTED_RESULT means the curve/hash is not
+             * implemented; keep that result and do not clobber it with the
+             * export step (which would report PASSED/FAILED instead). */
+            if (ok == 1) {
                 ok = exercise_export_public_key(key_id);
             }
         } else if (PSA_ALG_IS_ASYMMETRIC_ENCRYPTION(alg)) {
             ok = exercise_asymmetric_encryption(key_id, usage, alg);
-            if (ok) {
+            if (ok == 1) {
                 ok = exercise_export_public_key(key_id);
             }
         }
