@@ -1,0 +1,18 @@
+flexio_bissc_hm16_interrupt_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/digital_encoder_examples/flexio_bissc/hm16_interrupt_transfer
+    project-root-path: boards/${board}/digital_encoder_examples/flexio_bissc/hm16_interrupt_transfer/${multicore_foldername}
+    document:
+      name: flexio_bissc_hm16_interrupt_transfer${core_id_suffix_name}
+      category: digital_encoder_examples
+      brief: The flexio_bissc_hm16_interrupt_transfer example shows how to use FlexIO
+        as a BiSS-C master to communicate with an HM16 absolute encoder using
+        interrupt-driven receive.
+      example_readme:
+      - examples/digital_encoder_examples/flexio_bissc/hm16_interrupt_transfer/readme.md
+      - ${board_root}/${board}/digital_encoder_examples/flexio_bissc/hm16_interrupt_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxa266: []
+    frdmmcxa366: []

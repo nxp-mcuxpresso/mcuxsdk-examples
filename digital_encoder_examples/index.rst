@@ -15,3 +15,4 @@ digital_encoder_examples
    t-format/index.rst
    a-format/index.rst
    flexio_biss/index.rst
+   flexio_bissc/index.rst
