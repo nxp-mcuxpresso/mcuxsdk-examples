@@ -76,6 +76,7 @@ int main(void)
 
     (void)SEMIHOST_Exit(0);
 
+    /* coverity[infinite_loop:SUPPRESS] */
     while (1)
     {
     }
