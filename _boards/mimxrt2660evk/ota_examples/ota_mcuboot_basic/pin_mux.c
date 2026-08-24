@@ -541,7 +541,7 @@ void BOARD_InitFLEXIO_SPIPins(void) {
 
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
- BOARD_InitDcifDpiPins:
+BOARD_InitDcifDpiPins:
 - options: {callFromInitBoot: 'false', coreID: cm85, enableClock: 'false'}
 - pin_list:
   - {pin_num: R2, peripheral: MEDIA__DCIF, signal: 'DATA, 0', pin_signal: PIO3_0}
@@ -682,14 +682,14 @@ void BOARD_InitDcifDpiPins(void) {
 BOARD_InitCSIPins:
 - options: {callFromInitBoot: 'false', coreID: cm85, enableClock: 'false'}
 - pin_list:
-  - {pin_num: A16, peripheral: MEDIA__CSI, signal: 'DATA, 9', pin_signal: PIO4_14, ibena: Enables}
-  - {pin_num: B16, peripheral: MEDIA__CSI, signal: 'DATA, 8', pin_signal: PIO4_15, ibena: Enables}
-  - {pin_num: E14, peripheral: MEDIA__CSI, signal: 'DATA, 7', pin_signal: PIO4_16, ibena: Enables}
-  - {pin_num: C15, peripheral: MEDIA__CSI, signal: 'DATA, 6', pin_signal: PIO4_17, ibena: Enables}
-  - {pin_num: E13, peripheral: MEDIA__CSI, signal: 'DATA, 5', pin_signal: PIO4_18, ibena: Enables}
-  - {pin_num: B15, peripheral: MEDIA__CSI, signal: 'DATA, 4', pin_signal: PIO4_19, ibena: Enables}
-  - {pin_num: C16, peripheral: MEDIA__CSI, signal: 'DATA, 3', pin_signal: PIO4_20, ibena: Enables}
-  - {pin_num: B14, peripheral: MEDIA__CSI, signal: 'DATA, 2', pin_signal: PIO4_21, ibena: Enables}
+  - {pin_num: T5, peripheral: MEDIA__CSI, signal: 'DATA, 9', pin_signal: PIO3_9, ibena: Enables}
+  - {pin_num: U4, peripheral: MEDIA__CSI, signal: 'DATA, 8', pin_signal: PIO3_8, ibena: Enables}
+  - {pin_num: T2, peripheral: MEDIA__CSI, signal: 'DATA, 7', pin_signal: PIO3_7, ibena: Enables}
+  - {pin_num: T1, peripheral: MEDIA__CSI, signal: 'DATA, 6', pin_signal: PIO3_6, ibena: Enables}
+  - {pin_num: L1, peripheral: MEDIA__CSI, signal: 'DATA, 5', pin_signal: PIO3_5, ibena: Enables}
+  - {pin_num: L2, peripheral: MEDIA__CSI, signal: 'DATA, 4', pin_signal: PIO3_4, ibena: Enables}
+  - {pin_num: R4, peripheral: MEDIA__CSI, signal: 'DATA, 3', pin_signal: PIO3_3, ibena: Enables}
+  - {pin_num: R5, peripheral: MEDIA__CSI, signal: 'DATA, 2', pin_signal: PIO3_2, ibena: Enables}
   - {pin_num: N4, peripheral: MEDIA__CSI, signal: MCLK, pin_signal: PIO3_16, ibena: Enables}
   - {pin_num: N3, peripheral: MEDIA__CSI, signal: HSYNC, pin_signal: PIO3_17, ibena: Enables}
   - {pin_num: T3, peripheral: MEDIA__CSI, signal: VSYNC, pin_signal: PIO3_18, ibena: Enables}
@@ -981,7 +981,7 @@ void BOARD_InitENETQOSPins(void) {
       IOMUXC_PIO4_26_COMM_ENET_QOS_RX_DATA3,  /* PIO4_26 is configured as COMM_ENET_QOS_RX_DATA3 */
       0x80U);                                 /* Input Buffer Enable: Enables */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO4_27_COMM_ENET_QOS_RXEN,     /* PIO4_27 is configured as COMM_ENET_QOS_RX_EN */
+      IOMUXC_PIO4_27_COMM_ENET_QOS_RXEN,      /* PIO4_27 is configured as COMM_ENET_QOS_RXEN */
       0x80U);                                 /* Input Buffer Enable: Enables */
 }
 
@@ -1037,26 +1037,26 @@ void BOARD_InitXSPIPins(void) {
 BOARD_InitXSPI1PsRamPins:
 - options: {callFromInitBoot: 'false', coreID: cm85, enableClock: 'false'}
 - pin_list:
-  - {pin_num: K5, peripheral: MAIN__XSPI_1, signal: SS0_N, pin_signal: PIO5_0, drive: Ohm33, pullena: DisablesPullupPulldown}
-  - {pin_num: H1, peripheral: MAIN__XSPI_1, signal: SCLK0, pin_signal: PIO5_5, drive: Ohm33}
-  - {pin_num: J3, peripheral: MAIN__XSPI_1, signal: DQS0, pin_signal: PIO5_10, drive: Ohm33, ibena: Enables}
-  - {pin_num: G3, peripheral: MAIN__XSPI_1, signal: DQS1, pin_signal: PIO5_16, drive: Ohm33, ibena: Enables}
-  - {pin_num: K3, peripheral: MAIN__XSPI_1, signal: 'DATA, 0', pin_signal: PIO5_1, drive: Ohm33, ibena: Enables}
-  - {pin_num: K4, peripheral: MAIN__XSPI_1, signal: 'DATA, 1', pin_signal: PIO5_2, drive: Ohm33, ibena: Enables}
-  - {pin_num: J1, peripheral: MAIN__XSPI_1, signal: 'DATA, 2', pin_signal: PIO5_3, drive: Ohm33, ibena: Enables}
-  - {pin_num: J2, peripheral: MAIN__XSPI_1, signal: 'DATA, 3', pin_signal: PIO5_4, drive: Ohm33, ibena: Enables}
-  - {pin_num: G1, peripheral: MAIN__XSPI_1, signal: 'DATA, 4', pin_signal: PIO5_6, drive: Ohm33, ibena: Enables}
-  - {pin_num: G2, peripheral: MAIN__XSPI_1, signal: 'DATA, 5', pin_signal: PIO5_7, drive: Ohm33, ibena: Enables}
-  - {pin_num: J5, peripheral: MAIN__XSPI_1, signal: 'DATA, 6', pin_signal: PIO5_8, drive: Ohm33, ibena: Enables}
-  - {pin_num: H3, peripheral: MAIN__XSPI_1, signal: 'DATA, 7', pin_signal: PIO5_9, drive: Ohm33, ibena: Enables}
-  - {pin_num: H5, peripheral: MAIN__XSPI_1, signal: 'DATA, 8', pin_signal: PIO5_12, drive: Ohm33, ibena: Enables}
-  - {pin_num: H4, peripheral: MAIN__XSPI_1, signal: 'DATA, 9', pin_signal: PIO5_13, drive: Ohm33, ibena: Enables}
-  - {pin_num: F1, peripheral: MAIN__XSPI_1, signal: 'DATA, 10', pin_signal: PIO5_14, drive: Ohm33, ibena: Enables}
-  - {pin_num: F2, peripheral: MAIN__XSPI_1, signal: 'DATA, 11', pin_signal: PIO5_15, drive: Ohm33, ibena: Enables}
-  - {pin_num: F3, peripheral: MAIN__XSPI_1, signal: 'DATA, 12', pin_signal: PIO5_17, drive: Ohm33, ibena: Enables}
-  - {pin_num: F5, peripheral: MAIN__XSPI_1, signal: 'DATA, 13', pin_signal: PIO5_18, drive: Ohm33, ibena: Enables}
-  - {pin_num: G5, peripheral: MAIN__XSPI_1, signal: 'DATA, 14', pin_signal: PIO5_19, drive: Ohm33, ibena: Enables}
-  - {pin_num: G4, peripheral: MAIN__XSPI_1, signal: 'DATA, 15', pin_signal: PIO5_20, drive: Ohm33, ibena: Enables}
+  - {pin_num: K5, peripheral: MAIN__XSPI_1, signal: SS0_N, pin_signal: PIO5_0, drive: Ohm50, ibena: Enables, pullena: DisablesPullupPulldown, slewrate: HighSpeedMode}
+  - {pin_num: H1, peripheral: MAIN__XSPI_1, signal: SCLK0, pin_signal: PIO5_5, drive: Ohm50, ibena: Enables, slewrate: HighSpeedMode}
+  - {pin_num: J3, peripheral: MAIN__XSPI_1, signal: DQS0, pin_signal: PIO5_10, drive: Ohm50, ibena: Enables, pullena: EnablesPulldown, slewrate: HighSpeedMode}
+  - {pin_num: G3, peripheral: MAIN__XSPI_1, signal: DQS1, pin_signal: PIO5_16, drive: Ohm50, ibena: Enables, pullena: EnablesPulldown, slewrate: HighSpeedMode}
+  - {pin_num: K3, peripheral: MAIN__XSPI_1, signal: 'DATA, 0', pin_signal: PIO5_1, drive: Ohm50, ibena: Enables, slewrate: HighSpeedMode}
+  - {pin_num: K4, peripheral: MAIN__XSPI_1, signal: 'DATA, 1', pin_signal: PIO5_2, drive: Ohm50, ibena: Enables, slewrate: HighSpeedMode}
+  - {pin_num: J1, peripheral: MAIN__XSPI_1, signal: 'DATA, 2', pin_signal: PIO5_3, drive: Ohm50, ibena: Enables, slewrate: HighSpeedMode}
+  - {pin_num: J2, peripheral: MAIN__XSPI_1, signal: 'DATA, 3', pin_signal: PIO5_4, drive: Ohm50, ibena: Enables, slewrate: HighSpeedMode}
+  - {pin_num: G1, peripheral: MAIN__XSPI_1, signal: 'DATA, 4', pin_signal: PIO5_6, drive: Ohm50, ibena: Enables, slewrate: HighSpeedMode}
+  - {pin_num: G2, peripheral: MAIN__XSPI_1, signal: 'DATA, 5', pin_signal: PIO5_7, drive: Ohm50, ibena: Enables, slewrate: HighSpeedMode}
+  - {pin_num: J5, peripheral: MAIN__XSPI_1, signal: 'DATA, 6', pin_signal: PIO5_8, drive: Ohm50, ibena: Enables, slewrate: HighSpeedMode}
+  - {pin_num: H3, peripheral: MAIN__XSPI_1, signal: 'DATA, 7', pin_signal: PIO5_9, drive: Ohm50, ibena: Enables, slewrate: HighSpeedMode}
+  - {pin_num: H5, peripheral: MAIN__XSPI_1, signal: 'DATA, 8', pin_signal: PIO5_12, drive: Ohm50, ibena: Enables, slewrate: HighSpeedMode}
+  - {pin_num: H4, peripheral: MAIN__XSPI_1, signal: 'DATA, 9', pin_signal: PIO5_13, drive: Ohm50, ibena: Enables, slewrate: HighSpeedMode}
+  - {pin_num: F1, peripheral: MAIN__XSPI_1, signal: 'DATA, 10', pin_signal: PIO5_14, drive: Ohm50, ibena: Enables, slewrate: HighSpeedMode}
+  - {pin_num: F2, peripheral: MAIN__XSPI_1, signal: 'DATA, 11', pin_signal: PIO5_15, drive: Ohm50, ibena: Enables, slewrate: HighSpeedMode}
+  - {pin_num: F3, peripheral: MAIN__XSPI_1, signal: 'DATA, 12', pin_signal: PIO5_17, drive: Ohm50, ibena: Enables, slewrate: HighSpeedMode}
+  - {pin_num: F5, peripheral: MAIN__XSPI_1, signal: 'DATA, 13', pin_signal: PIO5_18, drive: Ohm50, ibena: Enables, slewrate: HighSpeedMode}
+  - {pin_num: G5, peripheral: MAIN__XSPI_1, signal: 'DATA, 14', pin_signal: PIO5_19, drive: Ohm50, ibena: Enables, slewrate: HighSpeedMode}
+  - {pin_num: G4, peripheral: MAIN__XSPI_1, signal: 'DATA, 15', pin_signal: PIO5_20, drive: Ohm50, ibena: Enables, slewrate: HighSpeedMode}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1164,11 +1164,6 @@ void BOARD_InitALT_UARTPins(void) {
 
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
- */
-
-/* FUNCTION ************************************************************************************************************
- *
 BOARD_InitSAIPins:
 - options: {callFromInitBoot: 'false', coreID: cm85, enableClock: 'false'}
 - pin_list:
@@ -1228,15 +1223,15 @@ void BOARD_InitSAIPins(void) {
 
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitCMPPins:
+- options: {callFromInitBoot: 'false', coreID: cm85, enableClock: 'false'}
+- pin_list:
+  - {pin_num: L2, peripheral: WAKE__ACMP_0, signal: 'IN, 0', pin_signal: PIO3_4}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
 /* FUNCTION ************************************************************************************************************
  *
-BOARD_InitCMPPins:
-- options: {callFromInitBoot: 'false', coreID: cm85, enableClock: 'false'}
-- pin_list:
-  - {pin_num: L2, peripheral: WAKE__ACMP_0, signal: 'IN, 0', pin_signal: PIO3_4}
  * Function Name : BOARD_InitCMPPins, assigned for the Cortex-M85 core.
 Description   : Configures pin routing and optionally pin electrical features.
  *
@@ -1249,17 +1244,17 @@ void BOARD_InitCMPPins(void) {
 
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
- */
-
-/* FUNCTION ************************************************************************************************************
- *
 BOARD_InitMIPIPanelPins:
 - options: {callFromInitBoot: 'false', coreID: cm85, enableClock: 'true'}
 - pin_list:
   - {pin_num: E16, peripheral: HSP__GPIO_2, signal: 'GPIO, 0', pin_signal: PIO4_0, direction: OUTPUT, ibena: Enables, pullena: EnablesPullup, gpio_init_state: 'true'}
   - {pin_num: K14, peripheral: HSP__LPI2C_0, signal: SDA, pin_signal: PIO2_12, ibena: Enables, odena: Enables}
   - {pin_num: K15, peripheral: HSP__LPI2C_0, signal: SCL, pin_signal: PIO2_13, ibena: Enables, odena: Enables}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
  * Function Name : BOARD_InitMIPIPanelPins, assigned for the Cortex-M85 core.
 Description   : Configures pin routing and optionally pin electrical features.
  *
@@ -1289,16 +1284,16 @@ void BOARD_InitMIPIPanelPins(void) {
 
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitADCPin:
+- options: {callFromInitBoot: 'false', coreID: cm85, enableClock: 'false'}
+- pin_list:
+  - {pin_num: R2, peripheral: HSP__ADC_0, signal: 'A, 0A', pin_signal: PIO3_0}
+  - {pin_num: R4, peripheral: HSP__ADC_0, signal: 'A, 1B', pin_signal: PIO3_3}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
 /* FUNCTION ************************************************************************************************************
  *
-BOARD_InitADCPin:
-- options: {callFromInitBoot: 'false', coreID: cm85, enableClock: 'false'}
-- pin_list:
-  - {pin_num: R2, peripheral: HSP__ADC_0, signal: 'A, 0A', pin_signal: PIO3_0}
-  - {pin_num: R1, peripheral: HSP__ADC_0, signal: 'A, 0B', pin_signal: PIO3_1}
  * Function Name : BOARD_InitADCPin, assigned for the Cortex-M85 core.
 Description   : Configures pin routing and optionally pin electrical features.
  *
@@ -1584,12 +1579,7 @@ void BOARD_InitOM13790HOST_I2CPins(void) {
 
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
- */
-
- /* FUNCTION ************************************************************************************************************
- *
- BOARD_InitDcifDbiPins:
+BOARD_InitDcifDbiPins:
 - options: {callFromInitBoot: 'false', coreID: cm85, enableClock: 'true'}
 - pin_list:
   - {pin_num: R2, peripheral: MEDIA__DCIF, signal: 'DBI_AB_DATA, 0', pin_signal: PIO3_0}
@@ -1616,6 +1606,11 @@ void BOARD_InitOM13790HOST_I2CPins(void) {
   - {pin_num: M1, peripheral: HSP__GPIO_1, signal: 'GPIO, 21', pin_signal: PIO3_21, direction: OUTPUT}
   - {pin_num: U3, peripheral: HSP__GPIO_1, signal: 'GPIO, 22', pin_signal: PIO3_22, direction: INPUT}
   - {pin_num: T4, peripheral: HSP__GPIO_1, signal: 'GPIO, 23', pin_signal: PIO3_23, direction: OUTPUT}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
  * Function Name : BOARD_InitDcifDbiPins, assigned for the Cortex-M85 core.
 Description   : Configures pin routing and optionally pin electrical features.
  *
@@ -1677,7 +1672,7 @@ void BOARD_InitDcifDbiPins(void) {
       IOMUXC_PIO3_15_MEDIA_DCIF_DBI_AB_DATA15,  /* PIO3_15 is configured as MEDIA_DCIF_DBI_AB_DATA15 */
       0x00U);                                 /* pad configuration */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO3_16_MEDIA_DCIF_DBI_CSX_AB,   /* PIO3_16 is configured as MEDIA_DCIF_DBI_AB_CSX */
+      IOMUXC_PIO3_16_MEDIA_DCIF_DBI_CSX_AB,   /* PIO3_16 is configured as MEDIA_DCIF_DBI_CSX_AB */
       0x00U);                                 /* pad configuration */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_17_MEDIA_DCIF_DBI_AB_DCS,   /* PIO3_17 is configured as MEDIA_DCIF_DBI_AB_DCS */

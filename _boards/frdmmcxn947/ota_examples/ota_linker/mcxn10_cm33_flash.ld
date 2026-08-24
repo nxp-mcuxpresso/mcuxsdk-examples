@@ -44,20 +44,24 @@ RPMSG_SHMEM_SIZE = DEFINED(__use_shmem__) ? 0x2000 : 0;
       of size of one flash sector (8 kB)
 */
 
-SLOT_START    = 0x00000000; /* Internal flasht */
-SLOT_SIZE     = 0x00100000;
-APP_SIZE      = 0x000C8000;
+SLOT_START    = 0x00000000;  /* Internal flash */
+SLOT_SIZE     = 0x00100000;    /* 1024kB */
 
-IVEC_SIZE = 0x400;
-MCUBOOT_HEADER_SIZE = 0x400;
-MCUBOOT_TRAILER_SIZE = 0x2000;
+MCUBOOT_HEADER_SIZE = 0x400;   /* 1kB */
+IVEC_SIZE = 0x400;             /* 1kB */
+MCUBOOT_TRAILER_SIZE = 0x2000; /* 8kB = sector size */
+
+APP_SIZE      = 0x000CD800;    /* 822kB */
+CORE1_SIZE    = 0x00030000;    /* 192kB */
+
+ASSERT(MCUBOOT_HEADER_SIZE+IVEC_SIZE+APP_SIZE+CORE1_SIZE+MCUBOOT_TRAILER_SIZE == SLOT_SIZE, "Flash memory areas doesn't fit slot size")
 
 /* Specify the memory areas */
 MEMORY
 {
   m_interrupts          (RX)  : ORIGIN = SLOT_START + MCUBOOT_HEADER_SIZE, LENGTH = IVEC_SIZE
-  m_text                (RX)  : ORIGIN = SLOT_START + MCUBOOT_HEADER_SIZE + IVEC_SIZE, LENGTH = APP_SIZE - MCUBOOT_HEADER_SIZE - IVEC_SIZE
-  m_core1_image         (RX)  : ORIGIN = 0x000C8000, LENGTH = 0x00038000 - MCUBOOT_TRAILER_SIZE
+  m_text                (RX)  : ORIGIN = SLOT_START + MCUBOOT_HEADER_SIZE + IVEC_SIZE, LENGTH = APP_SIZE
+  m_core1_image         (RX)  : ORIGIN = SLOT_START + MCUBOOT_HEADER_SIZE + IVEC_SIZE + APP_SIZE, LENGTH = CORE1_SIZE
   m_data                (RW)  : ORIGIN = 0x20000000, LENGTH = 0x0004E000 - RPMSG_SHMEM_SIZE
   rpmsg_sh_mem          (RW)  : ORIGIN = 0x2004E000 - RPMSG_SHMEM_SIZE, LENGTH = RPMSG_SHMEM_SIZE
   m_flash1              (RX)  : ORIGIN = 0x00100000, LENGTH = 0x00100000
