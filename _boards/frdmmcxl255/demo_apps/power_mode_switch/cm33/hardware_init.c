@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025,2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -212,6 +212,29 @@ void APP_InitROSC(void)
 
 void BOARD_Init96MClocksBoot(void)
 {
+    /* Set VDD_CORE_MAIN normal mode to 1.1V using IFR1 trim value */
+    PMU_UpdateVDDCore1P1InActiveMode(AON__PMU, CLOCK_GetVDDCore1P1InActiveModeTrim());
+    /* Set normal drive mode of the DCDC */
+    PMU_UpdateDCDCMainMode(AON__PMU, kPMU_DcdcMain_NormalPowerMode);
+    /* Wait 20us for DCDC stabilization */
+    SDK_DelayAtLeastUs(20U, SystemCoreClock);
+    /* Set the low voltage detect trim control value for the PMU from IFR1 */
+    PMU_UpdateLvdLvTrim(AON__PMU, CLOCK_GetLvdLvTrim1P1());
+    /* Set the high voltage detect trim control value for the PMU from IFR1 */
+    PMU_UpdateHvdLvTrim(AON__PMU, CLOCK_GetHvdLvTrim1P1());
+    /* Set VDD_CORE_MAIN low drive mode to 1.0V using IFR1 trim value */
+    /* The low drive mode is used in low power modes */
+    uint32_t lpModeTrim = CLOCK_GetVDDCore1P0InLpModeTrim();
+    /* Update VDD_CORE_MAIN to 1.0V for low drive mode only if trim value is valid */
+    if (lpModeTrim != 0U)
+    {
+        PMU_UpdateVDDCore1P1InLpMode(AON__PMU, lpModeTrim);
+    }
+    else
+    {
+        /* Trim value not available, use default value */
+        PMU_UpdateVDDCore1P1InLpMode(AON__PMU, 8U);
+    }
     /* Config 32k Crystal Oscillator */
     /* Monitor is disabled */
     CLOCK_SetRoscMonitorMode(kSCG_RoscMonitorDisable);
