@@ -1,0 +1,17 @@
+flexio_endat2_polling_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/digital_encoder_examples/flexio_endat2/polling_transfer
+    project-root-path: boards/${board}/digital_encoder_examples/flexio_endat2/polling_transfer/${multicore_foldername}
+    document:
+      name: flexio_endat2_polling_transfer${core_id_suffix_name}
+      category: digital_encoder_examples
+      brief: The flexio_endat2_polling_transfer example shows how to use FlexIO
+        as an EnDat2 master in polling mode.
+      example_readme:
+      - examples/digital_encoder_examples/flexio_endat2/polling_transfer/readme.md
+      - ${board_root}/${board}/digital_encoder_examples/flexio_endat2/polling_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxa266: []
+    frdmmcxa366: []

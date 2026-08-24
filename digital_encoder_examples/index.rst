@@ -16,3 +16,4 @@ digital_encoder_examples
    a-format/index.rst
    flexio_biss/index.rst
    flexio_bissc/index.rst
+   flexio_endat2/index.rst
