@@ -77,7 +77,9 @@ static void check_if_finished(void)
         while ((QSPI_GetStatusFlags(EXAMPLE_QSPI) & (uint32_t)kQSPI_Busy) != 0U)
         {
         }
-        val = *(volatile uint32_t *)(FSL_FEATURE_QSPI_ARDB_BASE);
+        /* Read one word of RX data through driver API so the correct read area
+           (ARDB or RBDR) is selected per device. Do not access ARDB directly. */
+        val = QSPI_ReadData(EXAMPLE_QSPI);
         /* Clear ARDB area */
         QSPI_ClearErrorFlag(EXAMPLE_QSPI, (uint32_t)kQSPI_RxBufferDrain);
     } while ((val & 1UL) != 0UL);
