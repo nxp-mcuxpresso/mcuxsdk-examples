@@ -320,7 +320,7 @@ Default address values are indicated between brackets they can be overridden if 
 
 if (!isdefinedsymbol(__stack_size__))
 {
-    define symbol __stack_size__    = 0x0A00;
+    define symbol __stack_size__    = 0x0D20;
 }
 
 if (!isdefinedsymbol(__heap_size__))
