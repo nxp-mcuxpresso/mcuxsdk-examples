@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NXP
+ * Copyright 2021, 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -18,6 +18,16 @@
  * Definitions
  ******************************************************************************/
 #define MAX_STRING_LENGTH 0x400
+/* Enforce minimum GCC version for CMSE security checks.
+ * GCC 10.0-10.2 has a known bug where cmse_check_address_range() and
+ * cmse_check_pointed_object() always return NULL (GCC Bugzilla #99157).
+ * Security checks in this file depend on these functions being correct.
+ * Solved in GCC 10.3. */
+#if defined(__GNUC__) && (__GNUC__ == 10) && (__GNUC_MINOR__ < 3)
+#error "GCC 10.0-10.2 is not supported for this file due to GCC Bugzilla #99157 \
+(cmse_check_address_range() always fails). Please upgrade to GCC 10.3 or later."
+#endif
+
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -46,30 +56,45 @@ size_t strnlen(const char *s, size_t maxLength)
 }
 #endif
 
-TZM_IS_NOSECURE_ENTRY void DbgConsole_Printf_NSE(char const *s)
+TZM_IS_NOSECURE_ENTRY void DbgConsole_Printf_NSE(char const *s, size_t length)
 {
-    size_t string_length;
-    /* Access to non-secure memory from secure world has to be properly validated */
-    /* Check whether string is properly terminated */
-    string_length = strnlen(s, MAX_STRING_LENGTH);
-    if ((string_length == MAX_STRING_LENGTH) && (s[string_length] != '\0'))
+    char secure_buf[MAX_STRING_LENGTH + 1] = {'\0'};
+    size_t verified_length = 0U;
+
+    /* Validate length before any pointer dereference */
+    if (length == 0U || length > MAX_STRING_LENGTH)
     {
-        PRINTF("String too long or invalid string termination!\r\n");
-        while (1)
-            ;
+        PRINTF("Input data error: Invalid string length!\r\n");
+        while (1);
     }
 
-    /* Check whether string is located in non-secure memory */
-    /* Due to the bug in GCC 10 cmse_check_address_range() always fail, do not call it, see GCC Bugzilla - Bug 99157 */
-#if (__GNUC__ != 10)
-    if (cmse_check_address_range((void *)s, string_length, CMSE_NONSECURE | CMSE_MPU_READ) == NULL)
+    /* Verify that the entire string, including the null terminator, is readable
+     * Non-Secure memory. */
+    if (cmse_check_address_range((void *)s, length + 1U, CMSE_NONSECURE | CMSE_MPU_READ) == NULL)
     {
-        PRINTF("String is not located in normal world!\r\n");
-        while (1)
-            ;
+        PRINTF("Input data error: String is not located in normal world!\r\n");
+        while (1);
     }
-#endif
-    PRINTF(s);
+
+    /* Copy into secure buffer IMMEDIATELY after cmse_check.
+     * NS world cannot tamper with content after this point.
+     * All subsequent ops use only secure_buf. */
+    memcpy(secure_buf, s, length);
+    secure_buf[length] = '\0';
+ 
+    /* Verify the secure copy is properly null-terminated
+     * and length matches what caller claimed. */
+    verified_length = strnlen(secure_buf, length);
+    if (verified_length != length)
+    {
+        /* Caller-supplied length does not match actual string length.
+         * Could indicate truncated string or malicious length value. */
+        PRINTF("Input data error: String too long or invalid string termination!\r\n");
+        while (1);
+    }
+
+    /* Safe to print — secure copy only, no format-string risk */
+    PRINTF("%s", secure_buf);
 }
 
 TZM_IS_NOSECURE_ENTRY void DbgConsole_Putchar_NSE(int c)

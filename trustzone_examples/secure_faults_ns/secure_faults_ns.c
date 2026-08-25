@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 NXP
+ * Copyright 2018, 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -12,8 +12,15 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-typedef void (*funcptr_t)(char const *s);
-#define PRINTF_NSE DbgConsole_Printf_NSE
+typedef void (*funcptr_t)(char const *s, size_t length);
+
+/*******************************************************************************
+ * MACROs
+ ******************************************************************************/
+#define PRINTF_NSE(s)      \
+    DbgConsole_Printf_NSE((s), sizeof(s) - 1U)
+#define STRCMP_NSE(s1, s2) \
+    StringCompare_NSE((s1), sizeof(s1) - 1U, (s2), sizeof(s2) - 1U)
 
 /*******************************************************************************
  * Prototypes
@@ -72,7 +79,11 @@ int main(void)
      **************************************************************************/
     if (testCaseNumber == FAULT_INV_INPUT_PARAMS)
     {
-        PRINTF_NSE((char *)(DEMO_SEC_ADDRESS));
+        /* Cannot use PRINTF_NSE macro here — not a string literal.
+         * sizeof(char*) = 4, not the string length.
+         * Call directly with explicit length — cmse_check will catch
+         * the secure address and trigger the expected fault. */
+        DbgConsole_Printf_NSE((char *)(DEMO_SEC_ADDRESS), 16U);
     }
     /* END OF TEST EXAMPLE 4 */
 
@@ -87,8 +98,8 @@ int main(void)
      **************************************************************************/
     if (testCaseNumber == FAULT_INV_S_ENTRY)
     {
-        func_ptr = (funcptr_t)((uint32_t)&PRINTF_NSE + 4);
-        func_ptr("Invalid Test Case\r\n");
+        func_ptr = (funcptr_t)((uint32_t)&DbgConsole_Printf_NSE + 4);
+        func_ptr("Invalid Test Case\r\n", sizeof("Invalid Test Case\r\n") - 1U);
     }
     /* END OF TEST EXAMPLE 2 */
 
@@ -109,7 +120,7 @@ int main(void)
     }
     PRINTF_NSE("This is a text printed from normal world!\r\n");
 
-    if (StringCompare_NSE(&strcmp, "Test1\r\n", "Test2\r\n") == 0u)
+    if (STRCMP_NSE("Test1\r\n", "Test2\r\n") == 0u)
     {
         PRINTF_NSE("Both strings are equal!\r\n");
     }
