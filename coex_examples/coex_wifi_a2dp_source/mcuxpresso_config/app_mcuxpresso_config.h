@@ -28,9 +28,12 @@
 #endif
 
 #ifndef CONFIG_BLE
-#define CONFIG_BLE      1
+#define CONFIG_BLE      0
 #endif
 
+#ifndef CONFIG_OT
+#define CONFIG_OT       0
+#endif
 
 /* --------------------------------------------------------------------------
  * WPA Supplicant configuration
@@ -49,6 +52,7 @@
  * -------------------------------------------------------------------------- */
 #define CONFIG_WIFI_BLE_COEX_APP    CONFIG_WIFI
 #define CONFIG_DISABLE_BLE          (!CONFIG_BLE)
+#define CONFIG_OT_CLI               CONFIG_OT
 #define CONFIG_WPA_SUPP_MBEDTLS     CONFIG_WPA_SUPPLICANT
 
 #endif /* __MCUXPRESSO */

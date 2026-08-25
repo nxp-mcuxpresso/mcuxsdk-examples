@@ -23,9 +23,6 @@ mcux_add_source(
             middleware/wireless/coex/src/common/controller_coex_nxp.c
             middleware/wireless/coex/src/common/coex_nb_uart_fw_download.c
             middleware/wireless/coex/src/common/coex_nb_uart_fw_download.h
-            middleware/edgefast_open/examples/_boards/${board}/configs/mbedtls/mbedtls_user_config.h
-            examples/coex_examples/coex_wifi_a2dp_source/app_shell.h
-            examples/coex_examples/coex_wifi_a2dp_source/mcuxpresso_config/app_mcuxpresso_config.h
             examples/coex_examples/coex_wifi_a2dp_source/app_config.cmake
 )
 
@@ -33,7 +30,7 @@ mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     CONFIG True
     PREINCLUDE TRUE
-    SOURCES examples/_boards/${board}/coex_examples/coex_wifi_a2dp_source/app_config.h
+    SOURCES ${board_root}/${board}/coex_examples/coex_wifi_a2dp_source/app_config.h
 )
 
 mcux_add_include(
@@ -49,7 +46,6 @@ mcux_add_include(
              middleware/wireless/coex/src/common
              middleware/wireless/coex/build/${board}/common
              examples/coex_examples/coex_wifi_a2dp_source
-             examples/coex_examples/coex_wifi_a2dp_source/mcuxpresso_config
              components/wifi_bt_module/incl
 )
 
