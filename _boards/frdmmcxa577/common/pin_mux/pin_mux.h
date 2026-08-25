@@ -305,6 +305,16 @@ void BOARD_InitESPIPins(void);
  */
 void BOARD_InitTSIPins(void);
 
+#define PCR_IBE_ibe1 0x01u          /*!<@brief Input Buffer Enable: Enables */
+#define PORT2_PCR10_MUX_mux11 0x03u /*!<@brief Pin Multiplex Control: Alternative 3 (chip-specific) */
+#define PORT2_PCR11_MUX_mux11 0x03u /*!<@brief Pin Multiplex Control: Alternative 3 (chip-specific) */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitENET_DEBUG_UARTPins(void);
+
 #if defined(__cplusplus)
 }
 #endif

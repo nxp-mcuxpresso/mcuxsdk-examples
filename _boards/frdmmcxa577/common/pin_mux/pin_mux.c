@@ -4037,6 +4037,54 @@ void BOARD_InitTSIPins(void)
     /* PORT5_6 (pin K10) is configured as TSI0_CH3 */
     PORT_SetPinConfig(PORT5, 6U, &port5_6_pinK10_config);
 }
+
+/* clang-format off */
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitENET_DEBUG_UARTPins:
+- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
+- pin_list:
+  - {pin_num: K6, peripheral: LPUART2, signal: TX, pin_signal: P2_10/TRIG_OUT5/LPUART2_TXD/CT3_MAT2/FLEXIO0_D18/SMARTDMA_PIO14}
+  - {pin_num: L5, peripheral: LPUART2, signal: RX, pin_signal: P2_11/TRIG_IN4/LPUART2_RXD/CT3_MAT3/FLEXIO0_D19/SMARTDMA_PIO15}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+/* clang-format on */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitENET_DEBUG_UARTPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitENET_DEBUG_UARTPins(void)
+{
+    /* PORT2: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GatePORT2);
+    /* LPUART2 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kLPUART2_RST_SHIFT_RSTn);
+    /* PORT2 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kPORT2_RST_SHIFT_RSTn);
+
+    PORT2->PCR[10] = ((PORT2->PCR[10] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_MUX_MASK | PORT_PCR_IBE_MASK)))
+
+                      /* Pin Multiplex Control: PORT2_10 (pin K6) is configured as LPUART2_TXD. */
+                      | PORT_PCR_MUX(PORT2_PCR10_MUX_mux11)
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    PORT2->PCR[11] = ((PORT2->PCR[11] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_MUX_MASK | PORT_PCR_IBE_MASK)))
+
+                      /* Pin Multiplex Control: PORT2_11 (pin L5) is configured as LPUART2_RXD. */
+                      | PORT_PCR_MUX(PORT2_PCR11_MUX_mux11)
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+}
 /***********************************************************************************************************************
  * EOF
  **********************************************************************************************************************/
