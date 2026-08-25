@@ -85,9 +85,10 @@ static void BOARD_ConfigJL1111Rmii(void)
 }
 
 /* Board fix-up of the ENET_QOS config, called by the shared lwIP QoS port when
- * LWIP_ENET_FLEXIBLE_CONFIGURATION is set. The default config is RGMII 1000M,
+ * LWIP_ENET_QOS_FLEXIBLE_CONFIGURATION is set. The default config is RGMII 1000M,
  * which is invalid and hangs ENET_QOS_Init() */
-void BOARD_ENETFlexibleConfigure(enet_qos_config_t *config)
+void BOARD_ENETQOSFlexibleConfigure(enet_qos_config_t *config)
+
 {
     config->miiMode = kENET_QOS_RmiiMode;
     config->miiSpeed = kENET_QOS_MiiSpeed100M;
