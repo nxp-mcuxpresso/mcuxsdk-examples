@@ -1,5 +1,5 @@
 #
-# Copyright 2024 NXP
+# Copyright 2024, 2026 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -66,6 +66,10 @@ mcux_add_mdk_configuration(
     CC "-mcmse"
     CX "-mcmse"
     LD "--import-cmse-lib-out=\"${APPLICATION_BINARY_DIR}/../secure_faults_trdc_s_CMSE_lib.o\""
+)
+
+mcux_add_linker_symbol(
+    SYMBOLS "__stack_size__=0x1000"
 )
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

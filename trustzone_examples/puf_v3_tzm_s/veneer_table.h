@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NXP
+ * Copyright 2021, 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -33,10 +33,12 @@ void NSC_PUF_ClaimLock(puf_sec_level_t securityLevel);
  * This function provides interface between secure and normal worlds
  * This function is called from normal world only
  *
- * @param s     String to be printed
+ * @param s      String to be printed
+ * @param length Length of the string in bytes, excluding null terminator.
+ *               Must be less than MAX_STRING_LENGTH.
  *
  */
-void DbgConsole_Printf_NSE(char const *s);
+void DbgConsole_Printf_NSE(char const *s, size_t length);
 
 /*!
  * @brief Entry function for debug PUTCHAR (DbgConsole_Putchar)

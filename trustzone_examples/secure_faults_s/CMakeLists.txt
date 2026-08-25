@@ -1,5 +1,5 @@
 #
-# Copyright 2024 NXP
+# Copyright 2024, 2026 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -68,6 +68,10 @@ mcux_add_mdk_configuration(
     CC "-mcmse"
     CX "-mcmse"
     LD "--import-cmse-lib-out=\"${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}/secure_faults_s${core_id_suffix_name}_CMSE_lib.o\""
+)
+
+mcux_add_linker_symbol(
+    SYMBOLS "__stack_size__=0x1000"
 )
 
 # Create output directory to put library in.
