@@ -19,3 +19,5 @@ isp_ccl:
     imx95lpd5evk19@cm7:
     - +armgcc@debug
     - +armgcc@release
+    - -iar@debug
+    - -iar@release
