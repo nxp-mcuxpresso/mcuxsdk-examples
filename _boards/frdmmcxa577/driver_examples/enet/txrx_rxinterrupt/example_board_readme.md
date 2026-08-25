@@ -25,6 +25,12 @@ Prepare the Demo
 The example uses external PHY over MII by default (ERR053383: A0 silicon has an ENET RMII RX issue). If you want to use the internal 10BASE-T1S digital PHY,
 redefine BOARD_NETWORK_USE_TENBASET_PHY from board.h to 1 and rebuild. Loopback cable is not needed in that case.
 
+Note: In the default MII configuration the ENET TX bus uses P1_8/P1_9, which are the same pins as the MCU-Link VCOM debug console (LPUART1).
+Therefore this example routes its debug console to LPUART2 on the Arduino header (D1/TX = P2_10, D0/RX = P2_11) instead of the VCOM port.
+Connect an external USB-to-UART module to those Arduino-header pins (module RX to D1/P2_10, module TX to D0/P2_11, GND to GND) and open the serial
+terminal on that module's COM port. When using the internal 10BASE-T1S PHY (BOARD_NETWORK_USE_TENBASET_PHY = 1), the console stays on the MCU-Link VCOM port.
+
+
 Make loopback network cable:
 
 | Pin | 568B standard | Unknown standard |

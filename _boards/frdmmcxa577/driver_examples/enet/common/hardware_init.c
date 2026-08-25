@@ -5,9 +5,11 @@
  */
 /*${header:start}*/
 #include "fsl_enet.h"
+#include "fsl_debug_console.h"
 #include "pin_mux.h"
 #include "board.h"
 #include "app.h"
+
 /*${header:end}*/
 
 /*${variable:start}*/
@@ -56,13 +58,25 @@ void BOARD_InitHardware(void)
 #if BOARD_NETWORK_USE_TENBASET_PHY
     BOARD_InitTenBaseT1SPins();
     BOARD_BootClockPLL200M();
+    BOARD_InitDebugConsole();
 #else
     BOARD_InitENETPins();
     BOARD_InitBootClocks();
+    /*
+     * ERR053383 workaround uses MII, which needs P1_8/P1_9 (ENET0_TXD2/TXD3).
+     * Those balls are shared with the MCU-Link VCOM console (LPUART1), so the
+     * debug console is moved to LPUART2 on the Arduino header (D1/TX = P2_10,
+     * D0/RX = P2_11). Connect an external USB-to-UART module to view the log.
+     */
+    BOARD_InitENET_DEBUG_UARTPins();
+    CLOCK_AttachClk(kFRO_LF_DIV_to_LPUART2);
+    CLOCK_SetClockDiv(kCLOCK_DivLPUART2, 1U);
+    RESET_PeripheralReset(kLPUART2_RST_SHIFT_RSTn);
+    DbgConsole_Init(2U, 115200U, kSerialPort_Uart, 12000000U);
 #endif /* BOARD_NETWORK_USE_TENBASET_PHY */
-    BOARD_InitDebugConsole();
 
     RESET_PeripheralReset(kENET0_RST_SHIFT_RSTn);
+
 
     CLOCK_EnableClock(s_enetClock[ENET_GetInstance(EXAMPLE_ENET_BASE)]);
 
