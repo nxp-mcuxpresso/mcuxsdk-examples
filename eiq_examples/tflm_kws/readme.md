@@ -13,7 +13,7 @@ In this example, static audio samples ("off", "right") are evaluated for classif
 - **Output**: Classification into 12 classes (silence, unknown, yes, no, up, down, left, right, on, off, stop, go)
 - **Detection Threshold**: 95%
 - **Audio Preprocessing**: 40 ms sliding window with 20 ms stride, FFT-based MFCC feature extraction (10 coefficients)
-- **Neutron Software Version**: MCU SDK 26.09.00 comes with a default Neutron Software Version of 3.2.1
+- **Neutron Software Version**: MCU SDK 26.09.00 comes with a default Neutron Software Version of 3.2.2
 
 ### Input Data Preprocessing
 
