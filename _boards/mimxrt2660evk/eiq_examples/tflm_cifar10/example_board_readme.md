@@ -18,3 +18,8 @@ Prepare the Demo
    - No flow control
 3. Download the program to the target board.
 4. Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
+
+Note
+====
+IAR EWARM cannot debug the RT2660 directly. Use SEGGER Ozone to download and
+debug the IAR-built image instead.

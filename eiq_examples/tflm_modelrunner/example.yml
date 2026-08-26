@@ -285,3 +285,18 @@ tflm_modelrunner:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    mimxrt2660evk:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@xspi_nor_debug
+    - -armgcc@xspi_nor_release
+    - -iar@debug
+    - -iar@release
+    - -iar@xspi_nor_debug
+    - -iar@xspi_nor_release
+    - -mdk@debug
+    - -mdk@release
+    - +armgcc@xspi_nor_psram_debug
+    - +armgcc@xspi_nor_psram_release
+    - -iar@xspi_nor_psram_debug
+    - -iar@xspi_nor_psram_release
