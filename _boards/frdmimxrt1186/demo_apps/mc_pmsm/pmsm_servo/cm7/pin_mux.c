@@ -185,22 +185,22 @@ void BOARD_InitPWM(void) {
       IOMUXC_GPIO_EMC_B1_05_XBAR1_XBAR_INOUT09,  /* GPIO_EMC_B1_05 is configured as XBAR1_XBAR_INOUT09 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_12_FLEXPWM4_PWMA00,  /* GPIO_EMC_B1_12 is configured as FLEXPWM4_PWMA00 */
+      IOMUXC_GPIO_EMC_B1_12_FLEXPWM4_PWM0_A,  /* GPIO_EMC_B1_12 is configured as FLEXPWM4_PWM0_A */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_13_FLEXPWM4_PWMB00,  /* GPIO_EMC_B1_13 is configured as FLEXPWM4_PWMB00 */
+      IOMUXC_GPIO_EMC_B1_13_FLEXPWM4_PWM0_B,  /* GPIO_EMC_B1_13 is configured as FLEXPWM4_PWM0_B */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_14_FLEXPWM4_PWMA01,  /* GPIO_EMC_B1_14 is configured as FLEXPWM4_PWMA01 */
+      IOMUXC_GPIO_EMC_B1_14_FLEXPWM4_PWM1_A,  /* GPIO_EMC_B1_14 is configured as FLEXPWM4_PWM1_A */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_15_FLEXPWM4_PWMB01,  /* GPIO_EMC_B1_15 is configured as FLEXPWM4_PWMB01 */
+      IOMUXC_GPIO_EMC_B1_15_FLEXPWM4_PWM1_B,  /* GPIO_EMC_B1_15 is configured as FLEXPWM4_PWM1_B */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_16_FLEXPWM4_PWMB02,  /* GPIO_EMC_B1_16 is configured as FLEXPWM4_PWMB02 */
+      IOMUXC_GPIO_EMC_B1_16_FLEXPWM4_PWM2_B,  /* GPIO_EMC_B1_16 is configured as FLEXPWM4_PWM2_B */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_17_FLEXPWM4_PWMA02,  /* GPIO_EMC_B1_17 is configured as FLEXPWM4_PWMA02 */
+      IOMUXC_GPIO_EMC_B1_17_FLEXPWM4_PWM2_A,  /* GPIO_EMC_B1_17 is configured as FLEXPWM4_PWM2_A */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_EMC_B1_39_XBAR1_XBAR_INOUT15,  /* GPIO_EMC_B1_39 is configured as XBAR1_XBAR_INOUT15 */
@@ -244,10 +244,10 @@ void BOARD_InitLPUART(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc2);          /* Turn on LPCG: LPCG is ON. */
 
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AON_08_LPUART1_TX,          /* GPIO_AON_08 is configured as LPUART1_TX */
+      IOMUXC_GPIO_AON_08_LPUART1_TXD,         /* GPIO_AON_08 is configured as LPUART1_TXD */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AON_09_LPUART1_RX,          /* GPIO_AON_09 is configured as LPUART1_RX */
+      IOMUXC_GPIO_AON_09_LPUART1_RXD,         /* GPIO_AON_09 is configured as LPUART1_RXD */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
 }
 
@@ -277,16 +277,16 @@ void BOARD_InitENC(void) {
   CLOCK_EnableClock(kCLOCK_Xbar1);            /* Turn on LPCG: LPCG is ON. */
 
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_00_FLEXIO1_FLEXIO00,  /* GPIO_EMC_B1_00 is configured as FLEXIO1_FLEXIO00 */
+      IOMUXC_GPIO_EMC_B1_00_FLEXIO1_D00,      /* GPIO_EMC_B1_00 is configured as FLEXIO1_D00 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_01_FLEXIO1_FLEXIO01,  /* GPIO_EMC_B1_01 is configured as FLEXIO1_FLEXIO01 */
+      IOMUXC_GPIO_EMC_B1_01_FLEXIO1_D01,      /* GPIO_EMC_B1_01 is configured as FLEXIO1_D01 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_02_FLEXIO1_FLEXIO02,  /* GPIO_EMC_B1_02 is configured as FLEXIO1_FLEXIO02 */
+      IOMUXC_GPIO_EMC_B1_02_FLEXIO1_D02,      /* GPIO_EMC_B1_02 is configured as FLEXIO1_D02 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_03_FLEXIO1_FLEXIO03,  /* GPIO_EMC_B1_03 is configured as FLEXIO1_FLEXIO03 */
+      IOMUXC_GPIO_EMC_B1_03_FLEXIO1_D03,      /* GPIO_EMC_B1_03 is configured as FLEXIO1_D03 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm4Pwm0OutTrig01, kXBAR1_OutputTriggerSyncIn0); /* FLEXPWM4_PWM0_OUT_TRIG0_1 output assigned to XBAR1_IN90 input is connected to XBAR1_OUT30 output assigned to TRIGGER_SYNC_IN0 */
   XBAR_SetSignalsConnection(kXBAR1_InputTriggerSyncOut0, kXBAR1_OutputFlexio1TrigIn0); /* TRIGGER_SYNC_OUT0 output assigned to XBAR1_IN106 input is connected to XBAR1_OUT152 output assigned to FLEXIO1_TRIG_IN0 */
@@ -329,16 +329,16 @@ void BOARD_InitSINC(void) {
       IOMUXC_GPIO_B2_06_SINC3_MOD_CLK2,       /* GPIO_B2_06 is configured as SINC3_MOD_CLK2 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_04_SINC3_EMBIT00,    /* GPIO_EMC_B1_04 is configured as SINC3_EMBIT00 */
+      IOMUXC_GPIO_EMC_B1_04_SINC3_EMBIT0,     /* GPIO_EMC_B1_04 is configured as SINC3_EMBIT0 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_06_SINC3_EMBIT01,    /* GPIO_EMC_B1_06 is configured as SINC3_EMBIT01 */
+      IOMUXC_GPIO_EMC_B1_06_SINC3_EMBIT1,     /* GPIO_EMC_B1_06 is configured as SINC3_EMBIT1 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_08_SINC3_EMBIT02,    /* GPIO_EMC_B1_08 is configured as SINC3_EMBIT02 */
+      IOMUXC_GPIO_EMC_B1_08_SINC3_EMBIT2,     /* GPIO_EMC_B1_08 is configured as SINC3_EMBIT2 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_10_SINC3_EMBIT03,    /* GPIO_EMC_B1_10 is configured as SINC3_EMBIT03 */
+      IOMUXC_GPIO_EMC_B1_10_SINC3_EMBIT3,     /* GPIO_EMC_B1_10 is configured as SINC3_EMBIT3 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm4Pwm0OutTrig01, kXBAR1_OutputSinc123ExtTrig0); /* FLEXPWM4_PWM0_OUT_TRIG0_1 output assigned to XBAR1_IN90 input is connected to XBAR1_OUT148 output assigned to SINC1_2_3_EXT_TRIG0 */
 }

@@ -59,16 +59,16 @@ void BOARD_InitPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc2);          /* Turn on LPCG: LPCG is ON. */
 
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AD_02_FLEXIO2_FLEXIO02,     /* GPIO_AD_02 is configured as FLEXIO2_FLEXIO02 */
+      IOMUXC_GPIO_AD_02_FLEXIO2_D02,          /* GPIO_AD_02 is configured as FLEXIO2_D02 */
       1U);                                    /* Software Input On Field: Force input path of pad GPIO_AD_02 */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AD_03_FLEXIO2_FLEXIO03,     /* GPIO_AD_03 is configured as FLEXIO2_FLEXIO03 */
+      IOMUXC_GPIO_AD_03_FLEXIO2_D03,          /* GPIO_AD_03 is configured as FLEXIO2_D03 */
       1U);                                    /* Software Input On Field: Force input path of pad GPIO_AD_03 */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AON_08_LPUART1_TX,          /* GPIO_AON_08 is configured as LPUART1_TX */
+      IOMUXC_GPIO_AON_08_LPUART1_TXD,         /* GPIO_AON_08 is configured as LPUART1_TXD */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AON_09_LPUART1_RX,          /* GPIO_AON_09 is configured as LPUART1_RX */
+      IOMUXC_GPIO_AON_09_LPUART1_RXD,         /* GPIO_AON_09 is configured as LPUART1_RXD */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AON_15_LPI2C2_SDA,          /* GPIO_AON_15 is configured as LPI2C2_SDA */
@@ -77,7 +77,7 @@ void BOARD_InitPins(void) {
       IOMUXC_GPIO_AON_16_LPI2C2_SCL,          /* GPIO_AON_16 is configured as LPI2C2_SCL */
       1U);                                    /* Software Input On Field: Force input path of pad GPIO_AON_16 */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_AD_02_FLEXIO2_FLEXIO02,     /* GPIO_AD_02 PAD functional properties : */
+      IOMUXC_GPIO_AD_02_FLEXIO2_D02,          /* GPIO_AD_02 PAD functional properties : */
       0x0EU);                                 /* Slew Rate Field: Fast Slew Rate
                                                  Drive Strength Field: high driver
                                                  Pull / Keep Select Field: Pull Enable
@@ -85,7 +85,7 @@ void BOARD_InitPins(void) {
                                                  Open Drain Field: Disabled
                                                  Force ibe off Field: Disabled */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_AD_03_FLEXIO2_FLEXIO03,     /* GPIO_AD_03 PAD functional properties : */
+      IOMUXC_GPIO_AD_03_FLEXIO2_D03,          /* GPIO_AD_03 PAD functional properties : */
       0x0EU);                                 /* Slew Rate Field: Fast Slew Rate
                                                  Drive Strength Field: high driver
                                                  Pull / Keep Select Field: Pull Enable

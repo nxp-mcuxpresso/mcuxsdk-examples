@@ -53,20 +53,20 @@ void BOARD_InitDEBUG_UARTPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc2);          /* Turn on LPCG: LPCG is ON. */
 
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AON_08_LPUART1_TX,          /* GPIO_AON_08 is configured as LPUART1_TX */
+      IOMUXC_GPIO_AON_08_LPUART1_TXD,         /* GPIO_AON_08 is configured as LPUART1_TXD */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AON_09_LPUART1_RX,          /* GPIO_AON_09 is configured as LPUART1_RX */
+      IOMUXC_GPIO_AON_09_LPUART1_RXD,         /* GPIO_AON_09 is configured as LPUART1_RXD */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_AON_08_LPUART1_TX,          /* GPIO_AON_08 PAD functional properties : */
+      IOMUXC_GPIO_AON_08_LPUART1_TXD,         /* GPIO_AON_08 PAD functional properties : */
       0x02U);                                 /* Slew Rate Field: Fast Slew Rate
                                                  Drive Strength Field: high driver
                                                  Pull / Keep Select Field: Pull Disable, Highz
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_AON_09_LPUART1_RX,          /* GPIO_AON_09 PAD functional properties : */
+      IOMUXC_GPIO_AON_09_LPUART1_RXD,         /* GPIO_AON_09 PAD functional properties : */
       0x02U);                                 /* Slew Rate Field: Fast Slew Rate
                                                  Drive Strength Field: high driver
                                                  Pull / Keep Select Field: Pull Disable, Highz
@@ -106,34 +106,34 @@ BOARD_InitFLEXIO_TFORMATPins:
   CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
 
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_00_FLEXIO1_FLEXIO00,  /* GPIO_EMC_B1_00 is configured as FLEXIO1_FLEXIO00 */
+      IOMUXC_GPIO_EMC_B1_00_FLEXIO1_D00,      /* GPIO_EMC_B1_00 is configured as FLEXIO1_D00 */
       1U);                                    /* Software Input On Field: Force input path of pad GPIO_EMC_B1_00 */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_01_FLEXIO1_FLEXIO01,  /* GPIO_EMC_B1_01 is configured as FLEXIO1_FLEXIO01 */
+      IOMUXC_GPIO_EMC_B1_01_FLEXIO1_D01,      /* GPIO_EMC_B1_01 is configured as FLEXIO1_D01 */
       1U);                                    /* Software Input On Field: Force input path of pad GPIO_EMC_B1_01 */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_02_FLEXIO1_FLEXIO02,  /* GPIO_EMC_B1_01 is configured as FLEXIO1_FLEXIO01 */
+      IOMUXC_GPIO_EMC_B1_02_FLEXIO1_D02,      /* GPIO_EMC_B1_01 is configured as FLEXIO1_FLEXIO01 */
       1U);                                    /* Software Input On Field: Force input path of pad GPIO_EMC_B1_01 */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_03_FLEXIO1_FLEXIO03,  /* GPIO_EMC_B1_03 is configured as FLEXIO1_FLEXIO03 */
+      IOMUXC_GPIO_EMC_B1_03_FLEXIO1_D03,      /* GPIO_EMC_B1_03 is configured as FLEXIO1_D03 */
       1U);
 
       /* Software Input On Field: Force input path of pad GPIO_EMC_B1_03 */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_EMC_B1_00_FLEXIO1_FLEXIO00,  /* GPIO_EMC_B1_00 PAD functional properties : */
+      IOMUXC_GPIO_EMC_B1_00_FLEXIO1_D00,      /* GPIO_EMC_B1_00 PAD functional properties : */
       0x08U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_EMC_B1_02_FLEXIO1_FLEXIO02,  /* GPIO_EMC_B1_00 PAD functional properties : */
+      IOMUXC_GPIO_EMC_B1_02_FLEXIO1_D02,      /* GPIO_EMC_B1_00 PAD functional properties : */
       0x08U);                                 /* PDRV Field: high driver */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_EMC_B1_01_FLEXIO1_FLEXIO01,  /* GPIO_EMC_B1_01 PAD functional properties : */
+      IOMUXC_GPIO_EMC_B1_01_FLEXIO1_D01,      /* GPIO_EMC_B1_01 PAD functional properties : */
       0x08U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_EMC_B1_03_FLEXIO1_FLEXIO03,  /* GPIO_EMC_B1_03 PAD functional properties : */
+      IOMUXC_GPIO_EMC_B1_03_FLEXIO1_D03,      /* GPIO_EMC_B1_03 PAD functional properties : */
       0x08U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */

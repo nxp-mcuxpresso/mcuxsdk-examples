@@ -65,32 +65,32 @@ void BOARD_InitPins(void) {
       IOMUXC_GPIO_AD_00_MIC_CLK,              /* GPIO_AD_00 is configured as MIC_CLK */
       1U);                                    /* Software Input On Field: Force input path of pad GPIO_AD_00 */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AD_01_MIC_BITSTREAM00,      /* GPIO_AD_01 is configured as MIC_BITSTREAM00 */
+      IOMUXC_GPIO_AD_01_MIC_BITSTREAM0,       /* GPIO_AD_01 is configured as MIC_BITSTREAM0 */
       1U);                                    /* Software Input On Field: Force input path of pad GPIO_AD_01 */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AD_02_MIC_BITSTREAM01,      /* GPIO_AD_02 is configured as MIC_BITSTREAM01 */
+      IOMUXC_GPIO_AD_02_MIC_BITSTREAM1,       /* GPIO_AD_02 is configured as MIC_BITSTREAM1 */
       1U);                                    /* Software Input On Field: Force input path of pad GPIO_AD_02 */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AD_03_MIC_BITSTREAM02,      /* GPIO_AD_03 is configured as MIC_BITSTREAM02 */
+      IOMUXC_GPIO_AD_03_MIC_BITSTREAM2,       /* GPIO_AD_03 is configured as MIC_BITSTREAM2 */
       1U);                                    /* Software Input On Field: Force input path of pad GPIO_AD_03 */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AD_04_MIC_BITSTREAM03,      /* GPIO_AD_04 is configured as MIC_BITSTREAM03 */
+      IOMUXC_GPIO_AD_04_MIC_BITSTREAM3,       /* GPIO_AD_04 is configured as MIC_BITSTREAM3 */
       1U);                                    /* Software Input On Field: Force input path of pad GPIO_AD_04 */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AON_08_LPUART1_TX,          /* GPIO_AON_08 is configured as LPUART1_TX */
+      IOMUXC_GPIO_AON_08_LPUART1_TXD,         /* GPIO_AON_08 is configured as LPUART1_TXD */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AON_09_LPUART1_RX,          /* GPIO_AON_09 is configured as LPUART1_RX */
+      IOMUXC_GPIO_AON_09_LPUART1_RXD,         /* GPIO_AON_09 is configured as LPUART1_RXD */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_AON_08_LPUART1_TX,          /* GPIO_AON_08 PAD functional properties : */
+      IOMUXC_GPIO_AON_08_LPUART1_TXD,         /* GPIO_AON_08 PAD functional properties : */
       0x02U);                                 /* Slew Rate Field: Fast Slew Rate
                                                  Drive Strength Field: high driver
                                                  Pull / Keep Select Field: Pull Disable, Highz
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_AON_09_LPUART1_RX,          /* GPIO_AON_09 PAD functional properties : */
+      IOMUXC_GPIO_AON_09_LPUART1_RXD,         /* GPIO_AON_09 PAD functional properties : */
       0x02U);                                 /* Slew Rate Field: Fast Slew Rate
                                                  Drive Strength Field: high driver
                                                  Pull / Keep Select Field: Pull Disable, Highz

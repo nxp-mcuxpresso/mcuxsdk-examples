@@ -57,20 +57,20 @@ void BOARD_InitPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc2);          /* Turn on LPCG: LPCG is ON. */
 
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AON_15_LPUART12_TX,         /* GPIO_AON_15 is configured as LPUART12_TX */
+      IOMUXC_GPIO_AON_15_LPUART12_TXD,        /* GPIO_AON_15 is configured as LPUART12_TXD */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AON_16_LPUART12_RX,         /* GPIO_AON_16 is configured as LPUART12_RX */
+      IOMUXC_GPIO_AON_16_LPUART12_RXD,        /* GPIO_AON_16 is configured as LPUART12_RXD */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_AON_15_LPUART12_TX,         /* GPIO_AON_15 PAD functional properties : */
+      IOMUXC_GPIO_AON_15_LPUART12_TXD,        /* GPIO_AON_15 PAD functional properties : */
       0x02U);                                 /* Slew Rate Field: Fast Slew Rate
                                                  Drive Strength Field: high driver
                                                  Pull / Keep Select Field: Pull Disable, Highz
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_AON_16_LPUART12_RX,         /* GPIO_AON_16 PAD functional properties : */
+      IOMUXC_GPIO_AON_16_LPUART12_RXD,        /* GPIO_AON_16 PAD functional properties : */
       0x02U);                                 /* Slew Rate Field: Fast Slew Rate
                                                  Drive Strength Field: high driver
                                                  Pull / Keep Select Field: Pull Disable, Highz

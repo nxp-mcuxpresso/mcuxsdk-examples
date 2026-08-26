@@ -66,16 +66,16 @@ void BOARD_InitPins(void) {
   RGPIO_PinInit(RGPIO4, 1U, &gpio4_pinR14_config);
 
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AD_00_FLEXIO2_FLEXIO00,     /* GPIO_AD_00 is configured as FLEXIO2_FLEXIO00 */
+      IOMUXC_GPIO_AD_00_FLEXIO2_D00,          /* GPIO_AD_00 is configured as FLEXIO2_D00 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AD_01_GPIO4_IO01,           /* GPIO_AD_01 is configured as GPIO4_IO01 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AON_08_LPUART1_TX,          /* GPIO_AON_08 is configured as LPUART1_TX */
+      IOMUXC_GPIO_AON_08_LPUART1_TXD,         /* GPIO_AON_08 is configured as LPUART1_TXD */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AON_09_LPUART1_RX,          /* GPIO_AON_09 is configured as LPUART1_RX */
+      IOMUXC_GPIO_AON_09_LPUART1_RXD,         /* GPIO_AON_09 is configured as LPUART1_RXD */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
 }
 

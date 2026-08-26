@@ -75,16 +75,16 @@ void BOARD_InitPins(void) {
       IOMUXC_GPIO_AON_05_GPIO1_IO05,          /* GPIO_AON_05 is configured as GPIO1_IO05 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AON_06_LPSPI1_SDO,          /* GPIO_AON_06 is configured as LPSPI1_SDO */
+      IOMUXC_GPIO_AON_06_LPSPI1_SOUT,         /* GPIO_AON_06 is configured as LPSPI1_SOUT */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AON_07_LPSPI1_SDI,          /* GPIO_AON_07 is configured as LPSPI1_SDI */
+      IOMUXC_GPIO_AON_07_LPSPI1_SIN,          /* GPIO_AON_07 is configured as LPSPI1_SIN */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AON_08_LPUART1_TX,          /* GPIO_AON_08 is configured as LPUART1_TX */
+      IOMUXC_GPIO_AON_08_LPUART1_TXD,         /* GPIO_AON_08 is configured as LPUART1_TXD */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AON_09_LPUART1_RX,          /* GPIO_AON_09 is configured as LPUART1_RX */
+      IOMUXC_GPIO_AON_09_LPUART1_RXD,         /* GPIO_AON_09 is configured as LPUART1_RXD */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AON_04_LPSPI1_SCK,          /* GPIO_AON_04 PAD functional properties : */
@@ -101,14 +101,14 @@ void BOARD_InitPins(void) {
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_AON_06_LPSPI1_SDO,          /* GPIO_AON_06 PAD functional properties : */
+      IOMUXC_GPIO_AON_06_LPSPI1_SOUT,         /* GPIO_AON_06 PAD functional properties : */
       0x06U);                                 /* Slew Rate Field: Fast Slew Rate
                                                  Drive Strength Field: high driver
                                                  Pull / Keep Select Field: Pull Enable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_AON_07_LPSPI1_SDI,          /* GPIO_AON_07 PAD functional properties : */
+      IOMUXC_GPIO_AON_07_LPSPI1_SIN,          /* GPIO_AON_07 PAD functional properties : */
       0x06U);                                 /* Slew Rate Field: Fast Slew Rate
                                                  Drive Strength Field: high driver
                                                  Pull / Keep Select Field: Pull Enable

@@ -59,32 +59,32 @@ void BOARD_InitPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc2);          /* Turn on LPCG: LPCG is ON. */
 
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AD_00_FLEXPWM1_PWMA00,      /* GPIO_AD_00 is configured as FLEXPWM1_PWMA00 */
+      IOMUXC_GPIO_AD_00_FLEXPWM1_PWM0_A,      /* GPIO_AD_00 is configured as FLEXPWM1_PWM0_A */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AD_01_FLEXPWM1_PWMB00,      /* GPIO_AD_01 is configured as FLEXPWM1_PWMB00 */
+      IOMUXC_GPIO_AD_01_FLEXPWM1_PWM0_B,      /* GPIO_AD_01 is configured as FLEXPWM1_PWM0_B */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AD_02_FLEXPWM1_PWMA01,      /* GPIO_AD_02 is configured as FLEXPWM1_PWMA01 */
+      IOMUXC_GPIO_AD_02_FLEXPWM1_PWM1_A,      /* GPIO_AD_02 is configured as FLEXPWM1_PWM1_A */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AD_05_FLEXPWM1_PWMA02,      /* GPIO_AD_05 is configured as FLEXPWM1_PWMA02 */
+      IOMUXC_GPIO_AD_05_FLEXPWM1_PWM2_A,      /* GPIO_AD_05 is configured as FLEXPWM1_PWM2_A */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AON_08_LPUART1_TX,          /* GPIO_AON_08 is configured as LPUART1_TX */
+      IOMUXC_GPIO_AON_08_LPUART1_TXD,         /* GPIO_AON_08 is configured as LPUART1_TXD */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AON_09_LPUART1_RX,          /* GPIO_AON_09 is configured as LPUART1_RX */
+      IOMUXC_GPIO_AON_09_LPUART1_RXD,         /* GPIO_AON_09 is configured as LPUART1_RXD */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_AON_08_LPUART1_TX,          /* GPIO_AON_08 PAD functional properties : */
+      IOMUXC_GPIO_AON_08_LPUART1_TXD,         /* GPIO_AON_08 PAD functional properties : */
       0x02U);                                 /* Slew Rate Field: Fast Slew Rate
                                                  Drive Strength Field: high driver
                                                  Pull / Keep Select Field: Pull Disable, Highz
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_AON_09_LPUART1_RX,          /* GPIO_AON_09 PAD functional properties : */
+      IOMUXC_GPIO_AON_09_LPUART1_RXD,         /* GPIO_AON_09 PAD functional properties : */
       0x02U);                                 /* Slew Rate Field: Fast Slew Rate
                                                  Drive Strength Field: high driver
                                                  Pull / Keep Select Field: Pull Disable, Highz

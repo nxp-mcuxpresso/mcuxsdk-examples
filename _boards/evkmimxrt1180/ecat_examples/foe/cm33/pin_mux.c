@@ -80,20 +80,20 @@ void BOARD_InitPins(void) {
       IOMUXC_GPIO_AD_34_XBAR1_XBAR_INOUT18,   /* GPIO_AD_34 is configured as XBAR1_XBAR_INOUT18 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AON_08_LPUART1_TX,          /* GPIO_AON_08 is configured as LPUART1_TX */
+      IOMUXC_GPIO_AON_08_LPUART1_TXD,         /* GPIO_AON_08 is configured as LPUART1_TXD */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AON_09_LPUART1_RX,          /* GPIO_AON_09 is configured as LPUART1_RX */
+      IOMUXC_GPIO_AON_09_LPUART1_RXD,         /* GPIO_AON_09 is configured as LPUART1_RXD */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_AON_08_LPUART1_TX,          /* GPIO_AON_08 PAD functional properties : */
+      IOMUXC_GPIO_AON_08_LPUART1_TXD,         /* GPIO_AON_08 PAD functional properties : */
       0x02U);                                 /* Slew Rate Field: Fast Slew Rate
                                                  Drive Strength Field: high driver
                                                  Pull / Keep Select Field: Pull Disable, Highz
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_AON_09_LPUART1_RX,          /* GPIO_AON_09 PAD functional properties : */
+      IOMUXC_GPIO_AON_09_LPUART1_RXD,         /* GPIO_AON_09 PAD functional properties : */
       0x02U);                                 /* Slew Rate Field: Fast Slew Rate
                                                  Drive Strength Field: high driver
                                                  Pull / Keep Select Field: Pull Disable, Highz
@@ -142,13 +142,13 @@ void BOARD_ECAT_MDIO_InitPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
 
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AD_30_ECAT_MCLK,            /* GPIO_AD_30 is configured as ECAT_MCLK */
+      IOMUXC_GPIO_AD_30_ECAT_MDC,             /* GPIO_AD_30 is configured as ECAT_MDC */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AD_31_ECAT_MDIO,            /* GPIO_AD_31 is configured as ECAT_MDIO */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_AD_30_ECAT_MCLK,            /* GPIO_AD_30 PAD functional properties : */
+      IOMUXC_GPIO_AD_30_ECAT_MDC,             /* GPIO_AD_30 PAD functional properties : */
       0x0EU);                                 /* Slew Rate Field: Fast Slew Rate
                                                  Drive Strength Field: high driver
                                                  Pull / Keep Select Field: Pull Enable
@@ -196,25 +196,25 @@ void BOARD_Port0_RMII_InitPins(void) {
       IOMUXC_GPIO_AD_16_ECAT_LINK_0,          /* GPIO_AD_16 is configured as ECAT_LINK_0 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B2_05_ECAT_TX_DATA0_0,  /* GPIO_EMC_B2_05 is configured as ECAT_TX_DATA0_0 */
+      IOMUXC_GPIO_EMC_B2_05_ECAT_PT0_TXD0,    /* GPIO_EMC_B2_05 is configured as ECAT_PT0_TXD0 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B2_06_ECAT_TX_DATA1_0,  /* GPIO_EMC_B2_06 is configured as ECAT_TX_DATA1_0 */
+      IOMUXC_GPIO_EMC_B2_06_ECAT_PT0_TXD1,    /* GPIO_EMC_B2_06 is configured as ECAT_PT0_TXD1 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B2_07_ECAT_TX_EN_0,     /* GPIO_EMC_B2_07 is configured as ECAT_TX_EN_0 */
+      IOMUXC_GPIO_EMC_B2_07_ECAT_PT0_TX_EN,   /* GPIO_EMC_B2_07 is configured as ECAT_PT0_TX_EN */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B2_08_ECAT_TX_CLK_0,    /* GPIO_EMC_B2_08 is configured as ECAT_TX_CLK_0 */
+      IOMUXC_GPIO_EMC_B2_08_ECAT_PT0_TX_CLK,  /* GPIO_EMC_B2_08 is configured as ECAT_PT0_TX_CLK */
       1U);                                    /* Software Input On Field: Force input path of pad GPIO_EMC_B2_08 */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B2_09_ECAT_RX_DATA0_0,  /* GPIO_EMC_B2_09 is configured as ECAT_RX_DATA0_0 */
+      IOMUXC_GPIO_EMC_B2_09_ECAT_PT0_RXD0,    /* GPIO_EMC_B2_09 is configured as ECAT_PT0_RXD0 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B2_10_ECAT_RX_DATA1_0,  /* GPIO_EMC_B2_10 is configured as ECAT_RX_DATA1_0 */
+      IOMUXC_GPIO_EMC_B2_10_ECAT_PT0_RXD1,    /* GPIO_EMC_B2_10 is configured as ECAT_PT0_RXD1 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B2_11_ECAT_RX_DV_0,     /* GPIO_EMC_B2_11 is configured as ECAT_RX_DV_0 */
+      IOMUXC_GPIO_EMC_B2_11_ECAT_PT0_RX_DV,   /* GPIO_EMC_B2_11 is configured as ECAT_PT0_RX_DV */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_EMC_B2_12_ECAT_PT0_RX_ER,   /* GPIO_EMC_B2_12 is configured as ECAT_PT0_RX_ER */
@@ -260,28 +260,28 @@ void BOARD_Port1_RMII_InitPins(void) {
       IOMUXC_GPIO_AD_17_ECAT_LINK_1,          /* GPIO_AD_17 is configured as ECAT_LINK_1 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B2_13_ECAT_TX_DATA0_1,  /* GPIO_EMC_B2_13 is configured as ECAT_TX_DATA0_1 */
+      IOMUXC_GPIO_EMC_B2_13_ECAT_PT1_TXD0,    /* GPIO_EMC_B2_13 is configured as ECAT_PT1_TXD0 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B2_14_ECAT_TX_DATA1_1,  /* GPIO_EMC_B2_14 is configured as ECAT_TX_DATA1_1 */
+      IOMUXC_GPIO_EMC_B2_14_ECAT_PT1_TXD1,    /* GPIO_EMC_B2_14 is configured as ECAT_PT1_TXD1 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B2_15_ECAT_TX_EN_1,     /* GPIO_EMC_B2_15 is configured as ECAT_TX_EN_1 */
+      IOMUXC_GPIO_EMC_B2_15_EECAT_PT1_TX_EN,  /* GPIO_EMC_B2_15 is configured as EECAT_PT1_TX_EN */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B2_16_ECAT_TX_CLK_1,    /* GPIO_EMC_B2_16 is configured as ECAT_TX_CLK_1 */
+      IOMUXC_GPIO_EMC_B2_16_ECAT_PT1_TX_CLK,  /* GPIO_EMC_B2_16 is configured as ECAT_PT1_TX_CLK */
       1U);                                    /* Software Input On Field: Force input path of pad GPIO_EMC_B2_16 */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B2_17_ECAT_RX_DATA0_1,  /* GPIO_EMC_B2_17 is configured as ECAT_RX_DATA0_1 */
+      IOMUXC_GPIO_EMC_B2_17_ECAT_PT1_RXD0,    /* GPIO_EMC_B2_17 is configured as ECAT_PT1_RXD0 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B2_18_ECAT_RX_DATA1_1,  /* GPIO_EMC_B2_18 is configured as ECAT_RX_DATA1_1 */
+      IOMUXC_GPIO_EMC_B2_18_ECAT_PT1_RXD1,    /* GPIO_EMC_B2_18 is configured as ECAT_PT1_RXD1 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B2_19_ECAT_RX_DV_1,     /* GPIO_EMC_B2_19 is configured as ECAT_RX_DV_1 */
+      IOMUXC_GPIO_EMC_B2_19_ECAT_PT1_RX_DV,   /* GPIO_EMC_B2_19 is configured as ECAT_PT1_RX_DV */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B2_20_ECAT_RX_ER_1,     /* GPIO_EMC_B2_20 is configured as ECAT_RX_ER_1 */
+      IOMUXC_GPIO_EMC_B2_20_ECAT_PT1_RX_ER,   /* GPIO_EMC_B2_20 is configured as ECAT_PT1_RX_ER */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AD_17_ECAT_LINK_1,          /* GPIO_AD_17 PAD functional properties : */
@@ -314,13 +314,13 @@ void BOARD_ECAT_I2C_InitPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
 
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AD_18_ECAT_PROM_CLK,        /* GPIO_AD_18 is configured as ECAT_PROM_CLK */
+      IOMUXC_GPIO_AD_18_ECAT_SCL,             /* GPIO_AD_18 is configured as ECAT_SCL */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AD_19_ECAT_PROM_DATA,       /* GPIO_AD_19 is configured as ECAT_PROM_DATA */
+      IOMUXC_GPIO_AD_19_ECAT_SDA,             /* GPIO_AD_19 is configured as ECAT_SDA */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_AD_18_ECAT_PROM_CLK,        /* GPIO_AD_18 PAD functional properties : */
+      IOMUXC_GPIO_AD_18_ECAT_SCL,             /* GPIO_AD_18 PAD functional properties : */
       0x1EU);                                 /* Slew Rate Field: Fast Slew Rate
                                                  Drive Strength Field: high driver
                                                  Pull / Keep Select Field: Pull Enable
@@ -328,7 +328,7 @@ void BOARD_ECAT_I2C_InitPins(void) {
                                                  Open Drain Field: Enabled
                                                  Force ibe off Field: Disabled */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_AD_19_ECAT_PROM_DATA,       /* GPIO_AD_19 PAD functional properties : */
+      IOMUXC_GPIO_AD_19_ECAT_SDA,             /* GPIO_AD_19 PAD functional properties : */
       0x1EU);                                 /* Slew Rate Field: Fast Slew Rate
                                                  Drive Strength Field: high driver
                                                  Pull / Keep Select Field: Pull Enable

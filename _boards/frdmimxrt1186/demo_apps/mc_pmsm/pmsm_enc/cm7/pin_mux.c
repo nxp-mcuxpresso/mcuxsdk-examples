@@ -155,22 +155,22 @@ void BOARD_InitPWM(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
 
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_12_FLEXPWM4_PWMA00,  /* GPIO_EMC_B1_12 is configured as FLEXPWM4_PWMA00 */
+      IOMUXC_GPIO_EMC_B1_12_FLEXPWM4_PWM0_A,  /* GPIO_EMC_B1_12 is configured as FLEXPWM4_PWM0_A */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_13_FLEXPWM4_PWMB00,  /* GPIO_EMC_B1_13 is configured as FLEXPWM4_PWMB00 */
+      IOMUXC_GPIO_EMC_B1_13_FLEXPWM4_PWM0_B,  /* GPIO_EMC_B1_13 is configured as FLEXPWM4_PWM0_B */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_14_FLEXPWM4_PWMA01,  /* GPIO_EMC_B1_14 is configured as FLEXPWM4_PWMA01 */
+      IOMUXC_GPIO_EMC_B1_14_FLEXPWM4_PWM1_A,  /* GPIO_EMC_B1_14 is configured as FLEXPWM4_PWM1_A */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_15_FLEXPWM4_PWMB01,  /* GPIO_EMC_B1_15 is configured as FLEXPWM4_PWMB01 */
+      IOMUXC_GPIO_EMC_B1_15_FLEXPWM4_PWM1_B,  /* GPIO_EMC_B1_15 is configured as FLEXPWM4_PWM1_B */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_16_FLEXPWM4_PWMB02,  /* GPIO_EMC_B1_16 is configured as FLEXPWM4_PWMB02 */
+      IOMUXC_GPIO_EMC_B1_16_FLEXPWM4_PWM2_B,  /* GPIO_EMC_B1_16 is configured as FLEXPWM4_PWM2_B */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_17_FLEXPWM4_PWMA02,  /* GPIO_EMC_B1_17 is configured as FLEXPWM4_PWMA02 */
+      IOMUXC_GPIO_EMC_B1_17_FLEXPWM4_PWM2_A,  /* GPIO_EMC_B1_17 is configured as FLEXPWM4_PWM2_A */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
 }
 
@@ -195,10 +195,10 @@ void BOARD_InitLPUART(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc2);          /* Turn on LPCG: LPCG is ON. */
 
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AON_08_LPUART1_TX,          /* GPIO_AON_08 is configured as LPUART1_TX */
+      IOMUXC_GPIO_AON_08_LPUART1_TXD,         /* GPIO_AON_08 is configured as LPUART1_TXD */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AON_09_LPUART1_RX,          /* GPIO_AON_09 is configured as LPUART1_RX */
+      IOMUXC_GPIO_AON_09_LPUART1_RXD,         /* GPIO_AON_09 is configured as LPUART1_RXD */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
 }
 

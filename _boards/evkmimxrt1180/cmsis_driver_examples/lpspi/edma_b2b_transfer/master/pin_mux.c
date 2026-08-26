@@ -56,20 +56,20 @@ void BOARD_InitPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc2);          /* Turn on LPCG: LPCG is ON. */
 
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AON_08_LPUART1_TX,          /* GPIO_AON_08 is configured as LPUART1_TX */
+      IOMUXC_GPIO_AON_08_LPUART1_TXD,         /* GPIO_AON_08 is configured as LPUART1_TXD */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AON_09_LPUART1_RX,          /* GPIO_AON_09 is configured as LPUART1_RX */
+      IOMUXC_GPIO_AON_09_LPUART1_RXD,         /* GPIO_AON_09 is configured as LPUART1_RXD */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_AON_08_LPUART1_TX,          /* GPIO_AON_08 PAD functional properties : */
+      IOMUXC_GPIO_AON_08_LPUART1_TXD,         /* GPIO_AON_08 PAD functional properties : */
       0x06U);                                 /* Slew Rate Field: Fast Slew Rate
                                                  Drive Strength Field: high driver
                                                  Pull / Keep Select Field: Pull Enable
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_AON_09_LPUART1_RX,          /* GPIO_AON_09 PAD functional properties : */
+      IOMUXC_GPIO_AON_09_LPUART1_RXD,         /* GPIO_AON_09 PAD functional properties : */
       0x06U);                                 /* Slew Rate Field: Fast Slew Rate
                                                  Drive Strength Field: high driver
                                                  Pull / Keep Select Field: Pull Enable
@@ -106,10 +106,10 @@ void LPSPI3_InitPins(void) {
       IOMUXC_GPIO_SD_B1_01_LPSPI3_SCK,        /* GPIO_SD_B1_01 is configured as LPSPI3_SCK */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_SD_B1_02_LPSPI3_SDO,        /* GPIO_SD_B1_02 is configured as LPSPI3_SDO */
+      IOMUXC_GPIO_SD_B1_02_LPSPI3_SOUT,       /* GPIO_SD_B1_02 is configured as LPSPI3_SOUT */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_SD_B1_03_LPSPI3_SDI,        /* GPIO_SD_B1_03 is configured as LPSPI3_SDI */
+      IOMUXC_GPIO_SD_B1_03_LPSPI3_SIN,        /* GPIO_SD_B1_03 is configured as LPSPI3_SIN */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_SD_B1_00_LPSPI3_PCS0,       /* GPIO_SD_B1_00 PAD functional properties : */
@@ -122,12 +122,12 @@ void LPSPI3_InitPins(void) {
                                                  Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_SD_B1_02_LPSPI3_SDO,        /* GPIO_SD_B1_02 PAD functional properties : */
+      IOMUXC_GPIO_SD_B1_02_LPSPI3_SOUT,       /* GPIO_SD_B1_02 PAD functional properties : */
       0x04U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PU
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_SD_B1_03_LPSPI3_SDI,        /* GPIO_SD_B1_03 PAD functional properties : */
+      IOMUXC_GPIO_SD_B1_03_LPSPI3_SIN,        /* GPIO_SD_B1_03 PAD functional properties : */
       0x04U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PU
                                                  Open Drain Field: Disabled */

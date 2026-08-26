@@ -45,14 +45,14 @@ _FLEXSPI1_ClockInit()
 
 _FLEXSPI1_SetPinForQuadMode() {
     // Set 4 Pin Mode for JLink
-    __writeMemory32(0x17, 0x42A1023C, "Memory");  // IOMUXC_GPIO_B2_07_FLEXSPI1_BUS2BIT_A_DQS
+    __writeMemory32(0x17, 0x42A1023C, "Memory");  // IOMUXC_GPIO_B2_07_FLEXSPI1_A_DQS
     __writeMemory32(0x1,  0x42A10544, "Memory");
-    __writeMemory32(0x17, 0x42A10240, "Memory");  // IOMUXC_GPIO_B2_08_FLEXSPI1_BUS2BIT_A_SCLK
-    __writeMemory32(0x17, 0x42A10244, "Memory");  // IOMUXC_GPIO_B2_09_FLEXSPI1_BUS2BIT_A_SS0_B
-    __writeMemory32(0x17, 0x42A10248, "Memory");  // IOMUXC_GPIO_B2_10_FLEXSPI1_BUS2BIT_A_DATA00
-    __writeMemory32(0x17, 0x42A1024C, "Memory");  // IOMUXC_GPIO_B2_11_FLEXSPI1_BUS2BIT_A_DATA01
-    __writeMemory32(0x17, 0x42A10250, "Memory");  // IOMUXC_GPIO_B2_12_FLEXSPI1_BUS2BIT_A_DATA02
-    __writeMemory32(0x17, 0x42A10254, "Memory");  // IOMUXC_GPIO_B2_13_FLEXSPI1_BUS2BIT_A_DATA03
+    __writeMemory32(0x17, 0x42A10240, "Memory");  // IOMUXC_GPIO_B2_08_FLEXSPI1_A_SCLK
+    __writeMemory32(0x17, 0x42A10244, "Memory");  // IOMUXC_GPIO_B2_09_FLEXSPI1_A_SS0_B
+    __writeMemory32(0x17, 0x42A10248, "Memory");  // IOMUXC_GPIO_B2_10_FLEXSPI1_A_DATA0
+    __writeMemory32(0x17, 0x42A1024C, "Memory");  // IOMUXC_GPIO_B2_11_FLEXSPI1_A_DATA1
+    __writeMemory32(0x17, 0x42A10250, "Memory");  // IOMUXC_GPIO_B2_12_FLEXSPI1_A_DATA2
+    __writeMemory32(0x17, 0x42A10254, "Memory");  // IOMUXC_GPIO_B2_13_FLEXSPI1_A_DATA3
 }
 
 _FLEXSPI1_ModuleInit() {
