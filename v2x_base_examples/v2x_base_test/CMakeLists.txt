@@ -12,7 +12,6 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(SOURCES v2x_base_test.c)
 mcux_add_include(INCLUDES .)
 
-mcux_add_linker_symbol(SYMBOLS "__stack_size__=0x800\ __heap_size__=0x600")
 
 include(${SdkRootDirPath}/${board_root}/${board}/v2x_base_examples/v2x_base_test/reconfig.cmake OPTIONAL)
 
