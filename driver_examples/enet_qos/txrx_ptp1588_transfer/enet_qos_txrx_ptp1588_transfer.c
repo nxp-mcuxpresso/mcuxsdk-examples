@@ -82,6 +82,12 @@ uint8_t g_txCosumIdx = 0;
 uint32_t g_testIdx   = 0;
 static phy_handle_t phyHandle;
 
+/* Set from the driver callback when a DMA fatal bus error (kENET_QOS_DmaBusErrEvent)
+   is reported. The MAC cannot recover a bus error on its own, so the application must
+   software reset and reinitialize the ENET_QOS. On MCXE32B (errata ERR050707) this is
+   the only recovery path. The reinit is done in the main loop, not inside the ISR. */
+static volatile bool g_busErr = false;
+
 #if (defined(APP_PHY_LINK_INTR_SUPPORT) && (APP_PHY_LINK_INTR_SUPPORT))
 static bool linkChange = false;
 #endif
@@ -124,6 +130,11 @@ void ENET_QOS_IntCallback(
             /* Free tx buffers. */
             free(g_txbuff[g_txCosumIdx]);
             g_txCosumIdx = (g_txCosumIdx + 1) % ENET_QOS_TXBD_NUM;
+            break;
+        case kENET_QOS_DmaBusErrEvent:
+            /* DMA fatal bus error: the MAC cannot recover it. Only flag it here and let the
+               main loop software reset and reinitialize the ENET_QOS. Do not reinit in the ISR. */
+            g_busErr = true;
             break;
         default:
             break;
@@ -344,6 +355,7 @@ int main(void)
         if (linkChange)
         {
             linkChange = false;
+
             PHY_ClearInterrupt(&phyHandle);
             PHY_GetLinkStatus(&phyHandle, &link);
             GPIO_EnableLinkIntr();
@@ -355,6 +367,26 @@ int main(void)
         {
             PRINTF("PHY link changed, link status = %u\r\n", link);
             tempLink = link;
+        }
+
+        /* MCXE32B errata ERR050707: the DMA cannot handle a bus error gracefully. The driver reports
+           it through the callback (kENET_QOS_DmaBusErrEvent), which set g_busErr. The workaround is
+           that the application must software reset the GMAC/EMAC and reconfigure it, so handle that
+           here alongside the other transfer status before touching the rx/tx path. ENET_QOS_Deinit
+           performs the soft reset (DMA_MODE[SWR]); the following calls reconfigure as at startup. */
+        if (g_busErr)
+        {
+            g_busErr = false;
+            PRINTF("\r\nDMA fatal bus error detected. Applying software reset and reconfiguring...\r\n");
+            ENET_QOS_Deinit(EXAMPLE_ENET_QOS_BASE);
+            ENET_QOS_Init(EXAMPLE_ENET_QOS_BASE, &config, &g_macAddr[0], 1, refClock);
+            ENET_QOS_DescriptorInit(EXAMPLE_ENET_QOS_BASE, &config, buffConfigArray);
+            ENET_QOS_CreateHandler(EXAMPLE_ENET_QOS_BASE, &g_handle, &config, buffConfigArray, ENET_QOS_IntCallback,
+                                   NULL);
+            ENET_QOS_AddMulticastGroup(EXAMPLE_ENET_QOS_BASE, &g_multicastAddr[0]);
+            ENET_QOS_StartRxTx(EXAMPLE_ENET_QOS_BASE, 1, 1);
+            PRINTF("ENET_QOS recovered.\r\n");
+            continue;
         }
 
         /* Get the Frame size */
