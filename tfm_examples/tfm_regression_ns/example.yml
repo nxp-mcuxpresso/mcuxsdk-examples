@@ -38,8 +38,10 @@ tfm_regression_ns:
     frdmmcxw72@cm33_core0: []
     kw47evk@cm33_core0: []
     mcxw72evk@cm33_core0: []
-    frdmmcxw23: []
-    mcxw23evk: []
+    frdmmcxw23:
+    - -mdk@debug
+    mcxw23evk:
+    - -mdk@debug
     frdmmcxl255@cm33: []
     mimxrt700evk@cm33_core0:
     - -armgcc@flash_debug
