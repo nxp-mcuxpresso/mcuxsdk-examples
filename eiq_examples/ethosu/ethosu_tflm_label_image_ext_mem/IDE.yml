@@ -1,0 +1,6 @@
+armgcc:
+  project_language: cpp
+mdk:
+  project_language: cpp
+iar:
+  project_language: auto
