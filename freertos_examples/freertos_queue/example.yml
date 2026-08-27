@@ -35,7 +35,7 @@ freertos_queue:
     evkmimx8mm@cm4: []
     evkmimx8mn: []
     evkmimx8mnddr3l: []
-    evkmimx8mp: []
+    evkmimx8mp@cm7: []
     evkmimx8mq: []
     evkmimx8ulp@cm33: []
     evkmimxrt1010: []

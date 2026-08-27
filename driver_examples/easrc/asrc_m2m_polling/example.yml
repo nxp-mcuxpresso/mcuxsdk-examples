@@ -33,7 +33,7 @@ easrc_m2m_polling:
     - -iar@flash_debug
     - -iar@flash_release
     - -iar@release
-    evkmimx8mp:
+    evkmimx8mp@cm7:
     - -armgcc@debug
     - -armgcc@release
     - -iar@debug

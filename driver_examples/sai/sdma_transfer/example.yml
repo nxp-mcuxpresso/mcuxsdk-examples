@@ -42,7 +42,7 @@ sai_sdma_transfer:
     - -armgcc@ddr_release
     - -iar@ddr_debug
     - -iar@ddr_release
-    evkmimx8mp:
+    evkmimx8mp@cm7:
     - -armgcc@ddr_debug
     - -armgcc@ddr_release
     - -armgcc@flash_debug

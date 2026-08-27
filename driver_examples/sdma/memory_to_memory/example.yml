@@ -44,7 +44,7 @@ sdma_memory_to_memory:
     - -iar@ddr_release
     - -iar@flash_debug
     - -iar@flash_release
-    evkmimx8mp:
+    evkmimx8mp@cm7:
     - -armgcc@ddr_debug
     - -armgcc@ddr_release
     - -armgcc@flash_debug

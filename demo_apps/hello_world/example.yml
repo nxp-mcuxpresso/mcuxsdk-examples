@@ -148,7 +148,7 @@ hello_world:
     - +iar@release
     - +iar@ddr_debug
     - +iar@ddr_release
-    evkmimx8mp: []
+    evkmimx8mp@cm7: []
     evkmimx8mq: []
     evkmimx8ulp@cm33: []
     evkmimxrt1010:

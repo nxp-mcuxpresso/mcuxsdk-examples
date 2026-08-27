@@ -16,7 +16,7 @@ tmu_2_temperature_polling:
       - ${board_root}/${board}/driver_examples/tmu/temperature_polling/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkmimx8mp:
+    evkmimx8mp@cm7:
     - -armgcc@ddr_debug
     - -armgcc@ddr_release
     - -armgcc@flash_debug

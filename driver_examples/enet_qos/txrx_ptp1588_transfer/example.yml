@@ -84,7 +84,7 @@ enet_qos_txrx_ptp1588_transfer:
     - -iar@hyperram_release
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
-    evkmimx8mp:
+    evkmimx8mp@cm7:
     - -armgcc@ddr_debug
     - -armgcc@ddr_release
     - -armgcc@flash_debug

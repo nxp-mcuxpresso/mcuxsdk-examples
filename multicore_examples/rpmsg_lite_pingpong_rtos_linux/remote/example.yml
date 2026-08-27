@@ -38,7 +38,7 @@ rpmsg_lite_pingpong_rtos_linux_remote:
     evkmimx8mm@cm4: []
     evkmimx8mn: []
     evkmimx8mnddr3l: []
-    evkmimx8mp: []
+    evkmimx8mp@cm7: []
     evkmimx8mq: []
     mcimx93evk@cm33: []
     mcimx93wevk: []

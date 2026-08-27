@@ -44,7 +44,7 @@ iuart_idle_detect_sdma_transfer:
     - -armgcc@ddr_release
     - -iar@ddr_debug
     - -iar@ddr_release
-    evkmimx8mp:
+    evkmimx8mp@cm7:
     - -armgcc@flash_debug
     - -armgcc@flash_release
     - -iar@flash_debug
