@@ -58,7 +58,7 @@ int main(void)
 #if defined(USB_DEVICE_CONFIG_KHCI) && (USB_DEVICE_CONFIG_KHCI > 0U)
     CLOCK_EnableUsbFsClock(kCLOCK_UsbFsSrcUsb1Root);
     /* Crystal-less: trim the FRO against the USB FS (KHCI) frame timing. */
-    CLOCK_TrimUsbFroClock(kCLOCK_UsbFroTrimFs);
+    CLOCK_EnableFroTuner(kCLOCK_FroTuner192M, kCLOCK_FroTunerRefUsbFsSof1kHz, 0x02U);
 #endif
 
     /* FreeMASTER communication layer initialization */
