@@ -186,6 +186,7 @@ Both configuration blocks share the following fields:
 | Mode | Field | Tag | Description |
 |------|-------|-----|-------------|
 | CSR Generation | Destination Address | `CSR_GEN_TAG_CSR_DEST_ADDR` | Memory address where the generated CSR will be written |
+| CSR Generation | Encoding | `CSR_GEN_TAG_ENCODING` | *(Optional)* Output encoding of the generated CSR: `0x01` = PEM, `0x02` = DER. If this field is omitted, the application defaults to PEM encoding. |
 | Certificate Storage | Source Address | `CERT_STORAGE_TAG_CERT_SRC_ADDR` | Memory address where the X.509 certificate is located |
 | Certificate Storage | Source Size | `CERT_STORAGE_TAG_CERT_SRC_ADDR_SIZE` | Size of the X.509 certificate in bytes |
 
@@ -200,6 +201,9 @@ The configuration block integrity is verified using the algorithm specified in t
 
 ## Supported Boards
 - [FRDM-MCXE31B](../../../_boards/frdmmcxe31b/el2go_examples/el2go_csr/el2go_csr/example_board_readme.md)
+- [FRDM-KW43](../../../_boards/frdmkw43/el2go_examples/el2go_csr/el2go_csr/example_board_readme.md)
+- [FRDM-MCXA266](../../../_boards/frdmmcxa266/el2go_examples/el2go_csr/el2go_csr/example_board_readme.md)
+- [FRDM-MCXA366](../../../_boards/frdmmcxa366/el2go_examples/el2go_csr/el2go_csr/example_board_readme.md)
 
 ## Troubleshooting
 
