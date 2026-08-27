@@ -1,6 +1,11 @@
 # Copyright 2026 NXP
 # SPDX-License-Identifier: BSD-3-Clause
 
+#add cc-defines
+mcux_add_macro(
+     CC "-DBYPASS_ECC_RAM_INIT=1\
+       "
+)
 
 mcux_add_armgcc_linker_script(
     TARGETS debug release
