@@ -152,25 +152,17 @@ static void APP_SetSPCConfiguration(void)
     /* Disable all modules that controlled by SPC in active mode. */
     SPC_DisableActiveModeAnalogModules(APP_SPC, kSPC_controlAllModules);
 
-    /* Disable LVDs and HVDs */
-    SPC_EnableActiveModeCoreHighVoltageDetect(APP_SPC, false);
-    SPC_EnableActiveModeCoreLowVoltageDetect(APP_SPC, false);
-    SPC_EnableActiveModeSystemHighVoltageDetect(APP_SPC, false);
-    SPC_EnableActiveModeSystemLowVoltageDetect(APP_SPC, false);
-    SPC_EnableActiveModeIOHighVoltageDetect(APP_SPC, false);
-    SPC_EnableActiveModeIOLowVoltageDetect(APP_SPC, false);
-
     while(SPC_GetBusyStatusFlag(APP_SPC))
         ;
 
     activeModeRegulatorOption.bandgapMode = kSPC_BandgapEnabledBufferDisabled;
     activeModeRegulatorOption.lpBuff      = false;
     /* DCDC output voltage is 1.1V in active mode. */
-    activeModeRegulatorOption.DCDCOption.DCDCVoltage           = kSPC_DCDC_NormalVoltage;
+    activeModeRegulatorOption.DCDCOption.DCDCVoltage           = kSPC_DCDC_MidVoltage;
     activeModeRegulatorOption.DCDCOption.DCDCDriveStrength     = kSPC_DCDC_NormalDriveStrength;
     activeModeRegulatorOption.SysLDOOption.SysLDOVoltage       = kSPC_SysLDO_NormalVoltage;
-    activeModeRegulatorOption.SysLDOOption.SysLDODriveStrength = kSPC_SysLDO_LowDriveStrength;
-    activeModeRegulatorOption.CoreLDOOption.CoreLDOVoltage     = kSPC_CoreLDO_NormalVoltage;
+    activeModeRegulatorOption.SysLDOOption.SysLDODriveStrength = kSPC_SysLDO_NormalDriveStrength;
+    activeModeRegulatorOption.CoreLDOOption.CoreLDOVoltage     = kSPC_CoreLDO_MidDriveVoltage;
 #if defined(FSL_FEATURE_SPC_HAS_CORELDO_VDD_DS) && FSL_FEATURE_SPC_HAS_CORELDO_VDD_DS
     activeModeRegulatorOption.CoreLDOOption.CoreLDODriveStrength = kSPC_CoreLDO_NormalDriveStrength;
 #endif /* FSL_FEATURE_SPC_HAS_CORELDO_VDD_DS */
@@ -185,14 +177,6 @@ static void APP_SetSPCConfiguration(void)
     }
     while (SPC_GetBusyStatusFlag(APP_SPC))
         ;
-
-    /* Enable LVDs and HVDs in active mode. */
-    SPC_EnableActiveModeCoreHighVoltageDetect(APP_SPC, true);
-    SPC_EnableActiveModeCoreLowVoltageDetect(APP_SPC, true);
-    SPC_EnableActiveModeSystemHighVoltageDetect(APP_SPC, true);
-    SPC_EnableActiveModeSystemLowVoltageDetect(APP_SPC, true);
-    SPC_EnableActiveModeIOHighVoltageDetect(APP_SPC, true);
-    SPC_EnableActiveModeIOLowVoltageDetect(APP_SPC, true);
 
     SPC_DisableLowPowerModeAnalogModules(APP_SPC, kSPC_controlAllModules);
     SPC_SetLowPowerWakeUpDelay(APP_SPC, 0xFF);
