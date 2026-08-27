@@ -19,6 +19,19 @@ mcux_add_include(
     INCLUDES .
 )
 
+#iar configurations
+mcux_remove_iar_configuration(
+    TARGETS flash_debug
+    CX "-On"
+    CC "-On"
+)
+
+mcux_add_iar_configuration(
+    TARGETS flash_debug
+    CX "-Ohz"
+    CC "-Ohz"
+)
+
 mcux_add_armgcc_linker_script(
     TARGETS flash_debug flash_release
     BASE_PATH ${SdkRootDirPath}
