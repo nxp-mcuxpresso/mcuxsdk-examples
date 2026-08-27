@@ -8,39 +8,32 @@
 #include "board.h"
 #include "app.h"
 #include "fsl_xbar.h"
-#include "fsl_gpio.h"
+#include "fsl_modcon.h"
 /*${header:end}*/
 
 /*${function:start}*/
 void IO_Config(void)
 {
-    /* Pin → EVTG path: PIO3_0/3_1 (GPIO1 input) → GPIO1_TrigOut0/1 → XBAR2 → XBAR1 → EVTG0_INA0/INB0
-     * EVTG0_OUTA0 → XBAR0 → XBAR0_INOUT26 (mux=A) → PIO2_26 (LED) */
+    /* Pin routing (configured by BOARD_InitEVTGPins):
+     *   PIO3_0 -> XBAR1_INOUT00 (IBENA=1, input from external signal)
+     *   PIO3_1 -> XBAR1_INOUT01 (IBENA=1, input from external signal)
+     *   PIO2_26 -> XBAR0_INOUT26 (IBENA=1, output driven by XBAR0)
+     *
+     * Signal path:
+     *   PIO3_0/PIO3_1 -> XBAR1 -> EVTG0 (INA0/INB0) -> EVTG0_OUTA0 -> XBAR0 -> PIO2_26
+     */
 
-    /* GPIO1: enable clock, configure PIO3_0/3_1 as inputs */
-    GPIO_PortInit(HSP__GPIO_1);
-    gpio_pin_config_t inputConfig = {kGPIO_DigitalInput, 0U};
-    GPIO_PinInit(HSP__GPIO_1, 0U, &inputConfig);
-    GPIO_PinInit(HSP__GPIO_1, 1U, &inputConfig);
+    /* Configure MODCON: set XBAR1 INOUT0, INOUT1 direction to Input (CFG[1] controls XBAR1). */
+    /* XBAR0 INOUT26 defaults to Output direction (CFG[0] bit26=0), no change needed. */
+    uint32_t modconCfg = MODCON_GetCFG((uint32_t)kModCon_MAIN_IOMUX, 1U);
+    MODCON_SetCFG((uint32_t)kModCon_MAIN_IOMUX, 1U, MODCON_CFG_DIR(modconCfg | (1U << 0U) | (1U << 1U)));
 
-    /* PIO3_0 → TrigOut0 (channel 0, active-high level) */
-    GPIO_SetPinInterruptConfig(HSP__GPIO_1, 0U, kGPIO_ActiveHighTriggerOutputEnable);
-
-    /* PIO3_1 → TrigOut1 (channel 1, active-high level) */
-    GPIO_SetPinInterruptConfig(HSP__GPIO_1, 1U, kGPIO_ActiveHighTriggerOutputEnable);
-    GPIO_SetPinInterruptChannel(HSP__GPIO_1, 1U, kGPIO_InterruptOutput1);
-
-    /* XBAR2: GPIO1_TrigOut0 → XBAR2_OUT0, GPIO1_TrigOut1 → XBAR2_OUT1 */
-    XBAR_Init(kXBAR_HSP_XBAR2);
-    XBAR_SetSignalsConnection(kHSP__XBAR_2_InputHspGpio1TrigOut0, kHSP__XBAR_2_OutputHspXbar0Xbar1In2);
-    XBAR_SetSignalsConnection(kHSP__XBAR_2_InputHspGpio1TrigOut1, kHSP__XBAR_2_OutputHspXbar0Xbar1In3);
-
-    /* XBAR1: XBAR2_OUT0 → EVTG0_INA0, XBAR2_OUT1 → EVTG0_INB0 */
+    /* XBAR1: route XBAR1_IN0/IN1 to EVTG0 INA0/INB0. */
     XBAR_Init(kXBAR_HSP_XBAR1);
-    XBAR_SetSignalsConnection(kHSP__XBAR_1_InputHspXbar2Out0, kHSP__XBAR_1_OutputHspEvtg0Ina0);
-    XBAR_SetSignalsConnection(kHSP__XBAR_1_InputHspXbar2Out1, kHSP__XBAR_1_OutputHspEvtg0Inb0);
+    XBAR_SetSignalsConnection(kHSP__XBAR_1_InputHspXbar1In0, kHSP__XBAR_1_OutputHspEvtg0Ina0);
+    XBAR_SetSignalsConnection(kHSP__XBAR_1_InputHspXbar1In1, kHSP__XBAR_1_OutputHspEvtg0Inb0);
 
-    /* XBAR0: EVTG0_OUTA0 → XBAR0_INOUT26 (PIO2_26, mux=A, LED) */
+    /* XBAR0: route EVTG0_OUTA0 to XBAR0_OUT26 (drives PIO2_26 via XBAR0 INOUT26). */
     XBAR_Init(kXBAR_HSP_XBAR0);
     XBAR_SetSignalsConnection(kHSP__XBAR_0_InputHspEvtg0Outa0, kHSP__XBAR_0_OutputHspXbar0Out26);
 }

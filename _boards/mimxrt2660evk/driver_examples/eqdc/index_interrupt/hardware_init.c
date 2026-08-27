@@ -7,7 +7,7 @@
 #include "pin_mux.h"
 #include "board.h"
 #include "fsl_xbar.h"
-#include "fsl_gpio.h"
+#include "fsl_modcon.h"
 /*${header:end}*/
 
 /*${function:start}*/
@@ -17,30 +17,18 @@ void BOARD_InitHardware(void)
     BOARD_CommonSetting();
     BOARD_InitEQDCPins();
 
-    /* PHASE_A: PIO3_0 (GPIO1_GPIO0,  J94-13) -> GPIO1_TrigOut0 -> XBAR2_OUT0 -> XBAR0 -> EQDC0_PHASE_A
-     * PHASE_B: PIO3_1 (GPIO1_GPIO1,  J94-14) -> GPIO1_TrigOut1 -> XBAR2_OUT1 -> XBAR0 -> EQDC0_PHASE_B
-     * INDEX:   PIO2_8 (GPIO0_GPIO8,  J33-4)  -> GPIO0_TrigOut0 -> XBAR2_OUT2 -> XBAR0 -> EQDC0_INDEX */
+    /* PHASE_A: PIO3_0 (XBAR0_INOUT00, J94-13) -> XBAR0 -> EQDC0_PHASE_A
+     * PHASE_B: PIO3_1 (XBAR0_INOUT01, J94-14) -> XBAR0 -> EQDC0_PHASE_B
+     * INDEX:   PIO3_2 (XBAR0_INOUT02, J94-15) -> XBAR0 -> EQDC0_INDEX */
 
-    GPIO_PortInit(HSP__GPIO_1);
-    gpio_pin_config_t inputConfig = {kGPIO_DigitalInput, 0U};
-    GPIO_PinInit(HSP__GPIO_1, 0U, &inputConfig);
-    GPIO_PinInit(HSP__GPIO_1, 1U, &inputConfig);
-    GPIO_SetPinInterruptConfig(HSP__GPIO_1, 0U, kGPIO_ActiveHighTriggerOutputEnable);
-    GPIO_SetPinInterruptConfig(HSP__GPIO_1, 1U, kGPIO_ActiveHighTriggerOutputEnable);
-    GPIO_SetPinInterruptChannel(HSP__GPIO_1, 1U, kGPIO_InterruptOutput1);
+    /* Configure MODCON: set XBAR0 INOUT0, INOUT1, INOUT2 direction to Input. */
+    uint32_t modconCfg = MODCON_GetCFG((uint32_t)kModCon_MAIN_IOMUX, 0U);
+    MODCON_SetCFG((uint32_t)kModCon_MAIN_IOMUX, 0U, MODCON_CFG_DIR(modconCfg | (1U << 0U) | (1U << 1U) | (1U << 2U)));
 
-    GPIO_PortInit(HSP__GPIO_0);
-    GPIO_PinInit(HSP__GPIO_0, 8U, &inputConfig);
-    GPIO_SetPinInterruptConfig(HSP__GPIO_0, 8U, kGPIO_ActiveHighTriggerOutputEnable);
-
-    XBAR_Init(kXBAR_HSP_XBAR2);
-    XBAR_SetSignalsConnection(kHSP__XBAR_2_InputHspGpio1TrigOut0, kHSP__XBAR_2_OutputHspXbar0Xbar1In2);
-    XBAR_SetSignalsConnection(kHSP__XBAR_2_InputHspGpio1TrigOut1, kHSP__XBAR_2_OutputHspXbar0Xbar1In3);
-    XBAR_SetSignalsConnection(kHSP__XBAR_2_InputHspGpio0TrigOut0, kHSP__XBAR_2_OutputHspXbar0Xbar1In4);
-
+    /* Configure XBAR0: connect pad inputs directly to EQDC signals. */
     XBAR_Init(kXBAR_HSP_XBAR0);
-    XBAR_SetSignalsConnection(kHSP__XBAR_0_InputHspXbar2Out0, kHSP__XBAR_0_OutputHspEqdc0PhaseAIn);
-    XBAR_SetSignalsConnection(kHSP__XBAR_0_InputHspXbar2Out1, kHSP__XBAR_0_OutputHspEqdc0PhaseBIn);
-    XBAR_SetSignalsConnection(kHSP__XBAR_0_InputHspXbar2Out2, kHSP__XBAR_0_OutputHspEqdc0IndexIn);
+    XBAR_SetSignalsConnection(kHSP__XBAR_0_InputHspXbar0In0, kHSP__XBAR_0_OutputHspEqdc0PhaseAIn);
+    XBAR_SetSignalsConnection(kHSP__XBAR_0_InputHspXbar0In1, kHSP__XBAR_0_OutputHspEqdc0PhaseBIn);
+    XBAR_SetSignalsConnection(kHSP__XBAR_0_InputHspXbar0In2, kHSP__XBAR_0_OutputHspEqdc0IndexIn);
 }
 /*${function:end}*/

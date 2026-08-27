@@ -8,14 +8,14 @@ Hardware requirements
 Board settings
 ==============
 1. Input capture: connect PWM signal (0-1.8V, 1 kHz) to J94-13 (PIO3_0).
-   Signal path: PIO3_0 (GPIO1_GPIO0) -> GPIO1_TrigOut0 -> XBAR2 -> XBAR0 -> QTMR0_IN0.
+   Signal path: PIO3_0 (XBAR0_INOUT00) -> XBAR0 -> QTMR0_IN0.
 
 2. Output PWM: use oscilloscope to monitor J94-14 (PIO3_1).
-   Signal path: QTMR0_OUT1 -> XBAR2 -> XBAR0 -> PIO3_1 (XBAR0_INOUT01, mux=A).
+   Signal path: QTMR0_OUT1 -> XBAR2 -> XBAR0 -> PIO3_1 (XBAR0_INOUT01).
 
 Prepare the Demo
-===============
-1.  Connect a USB cable between the host PC and the OpenSDA USB port on the target board.
+================
+1.  Connect a USB Type-C cable between the host PC and the MCU-Link USB port on the target board.
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits

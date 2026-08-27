@@ -1313,9 +1313,9 @@ void BOARD_InitADCPin(void) {
 BOARD_InitEQDCPins:
 - options: {callFromInitBoot: 'false', coreID: cm85, enableClock: 'false'}
 - pin_list:
-  - {pin_num: R2, peripheral: HSP__GPIO_1, signal: 'GPIO, 0', pin_signal: PIO3_0, identifier: '', ibena: Enables}
-  - {pin_num: R1, peripheral: HSP__GPIO_1, signal: 'GPIO, 1', pin_signal: PIO3_1, identifier: '', ibena: Enables}
-  - {pin_num: L15, peripheral: HSP__GPIO_0, signal: 'GPIO, 8', pin_signal: PIO2_8, ibena: Enables}
+  - {pin_num: R2, peripheral: HSP__XBAR_0, signal: 'IN, 0', pin_signal: PIO3_0, identifier: '', ibena: Enables}
+  - {pin_num: R1, peripheral: HSP__XBAR_0, signal: 'IN, 1', pin_signal: PIO3_1, identifier: '', ibena: Enables}
+  - {pin_num: R5, peripheral: HSP__XBAR_0, signal: 'IN, 2', pin_signal: PIO3_2, identifier: '', ibena: Enables}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1327,13 +1327,13 @@ Description   : Configures pin routing and optionally pin electrical features.
  * END ****************************************************************************************************************/
 void BOARD_InitEQDCPins(void) {
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO2_8_HSP_GPIO0_GPIO8,          /* PIO2_8 is configured as HSP_GPIO0_GPIO8 */
+      IOMUXC_PIO3_0_HSP_XBAR0_INOUT00,        /* PIO3_0 is configured as HSP_XBAR0_INOUT00 */
       0x80U);                                 /* Input Buffer Enable: Enables */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO3_0_HSP_GPIO1_GPIO0,          /* PIO3_0 is configured as HSP_GPIO1_GPIO0 */
+      IOMUXC_PIO3_1_HSP_XBAR0_INOUT01,        /* PIO3_1 is configured as HSP_XBAR0_INOUT01 */
       0x80U);                                 /* Input Buffer Enable: Enables */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO3_1_HSP_GPIO1_GPIO1,          /* PIO3_1 is configured as HSP_GPIO1_GPIO1 */
+      IOMUXC_PIO3_2_HSP_XBAR0_INOUT02,        /* PIO3_2 is configured as HSP_XBAR0_INOUT02 */
       0x80U);                                 /* Input Buffer Enable: Enables */
 }
 
@@ -1343,9 +1343,9 @@ void BOARD_InitEQDCPins(void) {
 BOARD_InitEVTGPins:
 - options: {callFromInitBoot: 'false', coreID: cm85, enableClock: 'false'}
 - pin_list:
-  - {pin_num: R2, peripheral: HSP__GPIO_1, signal: 'GPIO, 0', pin_signal: PIO3_0, identifier: '', ibena: Enables}
-  - {pin_num: R1, peripheral: HSP__GPIO_1, signal: 'GPIO, 1', pin_signal: PIO3_1, identifier: '', ibena: Enables}
-  - {pin_num: H13, peripheral: HSP__XBAR_0, signal: 'OUT, 26', pin_signal: PIO2_26}
+  - {pin_num: H13, peripheral: HSP__XBAR_0, signal: 'OUT, 26', pin_signal: PIO2_26, ibena: Enables}
+  - {pin_num: R2, peripheral: HSP__XBAR_1, signal: 'IN, 0', pin_signal: PIO3_0, identifier: '', ibena: Enables}
+  - {pin_num: R1, peripheral: HSP__XBAR_1, signal: 'IN, 1', pin_signal: PIO3_1, identifier: '', ibena: Enables}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1358,12 +1358,12 @@ Description   : Configures pin routing and optionally pin electrical features.
 void BOARD_InitEVTGPins(void) {
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO2_26_HSP_XBAR0_INOUT26,       /* PIO2_26 is configured as HSP_XBAR0_INOUT26 */
-      0x00U);                                 /* pad configuration */
-  IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO3_0_HSP_GPIO1_GPIO0,          /* PIO3_0 is configured as HSP_GPIO1_GPIO0 */
       0x80U);                                 /* Input Buffer Enable: Enables */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO3_1_HSP_GPIO1_GPIO1,          /* PIO3_1 is configured as HSP_GPIO1_GPIO1 */
+      IOMUXC_PIO3_0_HSP_XBAR1_INOUT00,        /* PIO3_0 is configured as HSP_XBAR1_INOUT00 */
+      0x80U);                                 /* Input Buffer Enable: Enables */
+  IOMUXC_SetPin_Mux_Config(
+      IOMUXC_PIO3_1_HSP_XBAR1_INOUT01,        /* PIO3_1 is configured as HSP_XBAR1_INOUT01 */
       0x80U);                                 /* Input Buffer Enable: Enables */
 }
 
@@ -1373,8 +1373,8 @@ void BOARD_InitEVTGPins(void) {
 BOARD_InitQTMRPins:
 - options: {callFromInitBoot: 'false', coreID: cm85, enableClock: 'false'}
 - pin_list:
-  - {pin_num: R2, peripheral: HSP__GPIO_1, signal: 'GPIO, 0', pin_signal: PIO3_0, identifier: '', ibena: Enables}
-  - {pin_num: R1, peripheral: HSP__XBAR_0, signal: 'OUT, 1', pin_signal: PIO3_1, identifier: ''}
+  - {pin_num: R2, peripheral: HSP__XBAR_0, signal: 'IN, 0', pin_signal: PIO3_0, identifier: '', ibena: Enables}
+  - {pin_num: R1, peripheral: HSP__XBAR_0, signal: 'OUT, 1', pin_signal: PIO3_1, identifier: '', ibena: Enables}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1386,11 +1386,11 @@ Description   : Configures pin routing and optionally pin electrical features.
  * END ****************************************************************************************************************/
 void BOARD_InitQTMRPins(void) {
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO3_0_HSP_GPIO1_GPIO0,          /* PIO3_0 is configured as HSP_GPIO1_GPIO0 */
+      IOMUXC_PIO3_0_HSP_XBAR0_INOUT00,        /* PIO3_0 is configured as HSP_XBAR0_INOUT00 */
       0x80U);                                 /* Input Buffer Enable: Enables */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_1_HSP_XBAR0_INOUT01,        /* PIO3_1 is configured as HSP_XBAR0_INOUT01 */
-      0x00U);                                 /* pad configuration */
+      0x80U);                                 /* Input Buffer Enable: Enables */
 }
 
 

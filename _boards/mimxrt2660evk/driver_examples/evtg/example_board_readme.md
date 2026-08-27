@@ -6,9 +6,9 @@ Hardware requirements
 
 Board settings
 ==============
-- Input A: J94-13 (PIO3_0, XBAR0_INOUT00) -> XBAR1 -> EVTG0_INA0
-- Input B: J94-14 (PIO3_1, XBAR0_INOUT01) -> XBAR1 -> EVTG0_INB0
-- Output:  EVTG0_OUTA0 -> XBAR0 -> PIO2_26 (XBAR1_INOUT26) -> LED
+- Input A: J94-13 (PIO3_0, XBAR1_INOUT00) -> XBAR1 -> EVTG0_INA0
+- Input B: J94-14 (PIO3_1, XBAR1_INOUT01) -> XBAR1 -> EVTG0_INB0
+- Output:  EVTG0_OUTA0 -> XBAR0 -> PIO2_26 (XBAR0_INOUT26) -> LED
 
 EVTG logic: LED = INA AND INB
 
