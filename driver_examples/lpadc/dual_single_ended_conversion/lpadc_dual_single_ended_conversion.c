@@ -113,6 +113,12 @@ int main(void)
 #endif /* DEMO_LPADC_USE_HIGH_RESOLUTION */
     mLpadcCommandConfigStruct.channelBNumber = DEMO_LPADC_USER_CHANNELB;
     mLpadcCommandConfigStruct.enableChannelB = true;
+#if defined(DEMO_LPADC_HARDWARE_AVERAGE)
+    mLpadcCommandConfigStruct.hardwareAverageMode = DEMO_LPADC_HARDWARE_AVERAGE;
+#endif /* DEMO_LPADC_HARDWARE_AVERAGE */
+#if defined(DEMO_LPADC_SAMPLE_TIME)
+    mLpadcCommandConfigStruct.sampleTimeMode = DEMO_LPADC_SAMPLE_TIME;
+#endif /* DEMO_LPADC_SAMPLE_TIME */
     LPADC_SetConvCommandConfig(DEMO_LPADC_BASE, DEMO_LPADC_USER_CMDID, &mLpadcCommandConfigStruct);
 
     /* Set trigger configuration. */

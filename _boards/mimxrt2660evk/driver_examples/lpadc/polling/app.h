@@ -18,6 +18,8 @@
 #define DEMO_LPADC_USE_HIGH_RESOLUTION     true
 #define DEMO_LPADC_OFFSET_CALIBRATION_MODE kLPADC_OffsetCalibration16bitMode
 #define DEMO_LPADC_DO_OFFSET_CALIBRATION   true
+#define DEMO_LPADC_HARDWARE_AVERAGE        kLPADC_HardwareAverageCount128
+#define DEMO_LPADC_SAMPLE_TIME             kLPADC_SampleTimeADCK131
 /*${macro:end}*/
 
 /*******************************************************************************

@@ -22,7 +22,9 @@
 #define DEMO_LPADC_IRQ_HANDLER_FUNC HSP_ADC0_IRQHandler
 #define DEMO_LPADC_USER_CHANNEL     0U  /* CH0A: PIO3_0 (J94-13) */
 #define DEMO_LPADC_USER_CMDID       1U
-#define DEMO_LPADC_VREF_SOURCE kLPADC_ReferenceVoltageAlt1
+#define DEMO_LPADC_VREF_SOURCE      kLPADC_ReferenceVoltageAlt1
+#define DEMO_LPADC_HARDWARE_AVERAGE kLPADC_HardwareAverageCount128
+#define DEMO_LPADC_SAMPLE_TIME      kLPADC_SampleTimeADCK131
 /*${macro:end}*/
 
 /*******************************************************************************

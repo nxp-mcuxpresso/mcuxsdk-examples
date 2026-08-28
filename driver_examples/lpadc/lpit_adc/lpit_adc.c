@@ -128,6 +128,12 @@ void DEMO_InitLPADC(void)
     /* Set conversion CMD configuration. */
     LPADC_GetDefaultConvCommandConfig(&mLpadcCommandConfigStruct);
     mLpadcCommandConfigStruct.channelNumber = DEMO_LPADC_USER_CHANNEL;
+#if defined(DEMO_LPADC_HARDWARE_AVERAGE)
+    mLpadcCommandConfigStruct.hardwareAverageMode = DEMO_LPADC_HARDWARE_AVERAGE;
+#endif /* DEMO_LPADC_HARDWARE_AVERAGE */
+#if defined(DEMO_LPADC_SAMPLE_TIME)
+    mLpadcCommandConfigStruct.sampleTimeMode = DEMO_LPADC_SAMPLE_TIME;
+#endif /* DEMO_LPADC_SAMPLE_TIME */
     LPADC_SetConvCommandConfig(DEMO_LPADC_BASE, DEMO_LPADC_USER_CMDID, &mLpadcCommandConfigStruct);
 
     /* Set trigger configuration. */

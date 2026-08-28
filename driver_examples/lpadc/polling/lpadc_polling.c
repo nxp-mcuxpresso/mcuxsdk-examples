@@ -111,6 +111,12 @@ int main(void)
 #if defined(DEMO_LPADC_USE_HIGH_RESOLUTION) && DEMO_LPADC_USE_HIGH_RESOLUTION
     mLpadcCommandConfigStruct.conversionResolutionMode = kLPADC_ConversionResolutionHigh;
 #endif /* DEMO_LPADC_USE_HIGH_RESOLUTION */
+#if defined(DEMO_LPADC_HARDWARE_AVERAGE)
+    mLpadcCommandConfigStruct.hardwareAverageMode = DEMO_LPADC_HARDWARE_AVERAGE;
+#endif /* DEMO_LPADC_HARDWARE_AVERAGE */
+#if defined(DEMO_LPADC_SAMPLE_TIME)
+    mLpadcCommandConfigStruct.sampleTimeMode = DEMO_LPADC_SAMPLE_TIME;
+#endif /* DEMO_LPADC_SAMPLE_TIME */
     LPADC_SetConvCommandConfig(DEMO_LPADC_BASE, DEMO_LPADC_USER_CMDID, &mLpadcCommandConfigStruct);
 
     /* Set trigger configuration. */
