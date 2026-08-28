@@ -7,7 +7,7 @@ mcux_set_variable(board_root examples/_boards)
 mcux_set_variable(bluetooth_root bluetooth)
 
 if (NOT DEFINED device)
-    mcux_set_variable(device KW43B43ZC7)
+    mcux_set_variable(device MCXW70AC)
 endif()
 
-include(${SdkRootDirPath}/devices/Wireless/KW/${device}/variable.cmake)
+include(${SdkRootDirPath}/devices/MCX/MCXW/${device}/variable.cmake)
