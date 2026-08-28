@@ -21,6 +21,7 @@ mcux_add_source(
         middleware/edgefast_open/examples/a2dp_source/app_discover.h
         examples/coex_examples/coex_wifi_a2dp_source/app_shell.c
         examples/coex_examples/coex_wifi_a2dp_source/main.c
+        middleware/wireless/coex/src/common/coex_lfs_defines.h
 )
 
 mcux_add_include(
@@ -28,14 +29,17 @@ mcux_add_include(
     INCLUDES
         examples/coex_examples/coex_wifi_a2dp_source
         middleware/edgefast_open/examples/a2dp_source
+        middleware/wireless/coex/src/common
+)
+
+mcux_add_macro(
+    "-DLFS_DEFINES=coex_lfs_defines.h"
 )
 
 # Add MCUXPRESSO IDE support
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES examples/coex_examples/coex_wifi_a2dp_source/mcuxpresso_config
-             middleware/wireless/coex/third_party/mcuxpresso_support
-             middleware/wireless/coex/third_party/mcuxpresso_support/lib
 )
 
 mcux_add_source(
