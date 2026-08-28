@@ -10,18 +10,35 @@
 
 #ifdef __MCUXPRESSO
 
-/* Feature flags for coex_wifi_handsfree_ag */
-#define CONFIG_WIFI           1
-#define CONFIG_BLE            1
-#define CONFIG_OT_CLI         0
+/* --------------------------------------------------------------------------
+ * Radio feature selection
+ * Multiple selections are allowed. Set to 1 to enable, 0 to disable.
+ * -------------------------------------------------------------------------- */
 
-#if CONFIG_WIFI
-#define CONFIG_WPA_SUPPLICANT 1
-#else
-#define CONFIG_WPA_SUPPLICANT 0
+#ifndef CONFIG_WIFI
+#define CONFIG_WIFI     1
 #endif
 
-/* Derived macros consumed by app_config.h */
+#ifndef CONFIG_BLE
+#define CONFIG_BLE      1
+#endif
+
+
+/* --------------------------------------------------------------------------
+ * WPA Supplicant configuration
+ * Enabled only if Wi-Fi is enabled.
+ * -------------------------------------------------------------------------- */
+
+#if CONFIG_WIFI
+#ifndef CONFIG_WPA_SUPPLICANT
+#define CONFIG_WPA_SUPPLICANT 1
+#endif
+#endif /* CONFIG_WIFI */
+
+/* --------------------------------------------------------------------------
+ * Derived configuration macros
+ * These depend on the above feature selections.
+ * -------------------------------------------------------------------------- */
 #define CONFIG_WIFI_BLE_COEX_APP  CONFIG_WIFI
 #define CONFIG_DISABLE_BLE        (!CONFIG_BLE)
 #define CONFIG_WPA_SUPP_MBEDTLS   CONFIG_WPA_SUPPLICANT
