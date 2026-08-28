@@ -18,12 +18,12 @@ mcux_add_source(
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES ${board_root}/frdmimx95
+    INCLUDES ${board_root}/frdmimx937
              middleware/multicore/remoteproc
-	     ${board_root}/frdmimx95/cm7
-             ${board_root}/frdmimx95/multicore_examples/rpmsg_lite_pingpong_rtos_linux
-             ${board_root}/frdmimx95/multicore_examples/rpmsg_lite_pingpong_rtos_linux/remote
-	     ${board_root}/frdmimx95/multicore_examples/rpmsg_lite_pingpong_rtos_linux/remote/cm7
+	     ${board_root}/frdmimx937/cm7
+             ${board_root}/frdmimx937/multicore_examples/rpmsg_lite_pingpong_rtos_linux
+             ${board_root}/frdmimx937/multicore_examples/rpmsg_lite_pingpong_rtos_linux/remote
+	     ${board_root}/frdmimx937/multicore_examples/rpmsg_lite_pingpong_rtos_linux/remote/cm7
 )
 
 mcux_add_iar_configuration(
