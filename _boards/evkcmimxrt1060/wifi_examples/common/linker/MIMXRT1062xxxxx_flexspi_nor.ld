@@ -102,8 +102,8 @@ SECTIONS
         *wifi-sdio.c.obj
         *fsl_sdio.c.obj
         *pbuf.c.obj
-        *tcp.c.obj
-        *udp.c.obj
+        */lwip/src/core/tcp.c.obj
+        */lwip/src/core/udp.c.obj
         *tcpip.c.obj
         *tasks.c.obj
         *lib_a-memset.o
@@ -249,8 +249,8 @@ SECTIONS
     *wifi-sdio.c.obj(.text*)
     *fsl_sdio.c.obj(.text*)
     *pbuf.c.obj(.text*)
-    *tcp.c.obj(.text*)
-    *udp.c.obj(.text*)
+    */lwip/src/core/tcp.c.obj(.text*)
+    */lwip/src/core/udp.c.obj(.text*)
     *tcpip.c.obj(.text*)
     *tasks.c.obj(.text*)  
     *lib_a-memset.o(.text*)
