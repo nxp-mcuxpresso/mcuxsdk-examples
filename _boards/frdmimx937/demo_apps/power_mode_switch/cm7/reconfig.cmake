@@ -12,9 +12,9 @@ mcux_add_source(
             ${board_root}/${board}/rsc_table.h
             middleware/multicore/remoteproc/remoteproc.h
             ${board_root}/${board}/srtm_config.h
-            examples/demo_apps/power_mode_switch_imx95/power_mode_switch.h
-            examples/demo_apps/power_mode_switch_imx95/lpm.c
-            examples/demo_apps/power_mode_switch_imx95/lpm.h
+            examples/demo_apps/power_mode_switch_imx952/power_mode_switch.h
+            examples/demo_apps/power_mode_switch_imx952/lpm.c
+            examples/demo_apps/power_mode_switch_imx952/lpm.h
             ${board_root}/${board}/demo_apps/power_mode_switch/FreeRTOSConfig.h
             ${board_root}/${board}/FreeRTOSConfigBoard.h
             middleware/multicore/remoteproc/empty_rsc_table.c
@@ -25,7 +25,7 @@ mcux_add_source(
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES middleware/multicore/remoteproc
-             examples/demo_apps/power_mode_switch_imx95
+             examples/demo_apps/power_mode_switch_imx952
              ${board_root}/${board}/cm7
              ${board_root}/${board}/demo_apps/power_mode_switch
 )
