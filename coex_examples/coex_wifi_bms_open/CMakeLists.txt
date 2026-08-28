@@ -38,6 +38,7 @@ mcux_add_source(
     middleware/wireless/coex/src/common/controller_coex_nxp.c
     middleware/wireless/coex/src/cli/coex_cli.c
     middleware/wireless/coex/src/cli/coex_cli.h
+    middleware/wireless/coex/src/common/coex_lfs_defines.h
 )
 
 mcux_add_include(
@@ -48,6 +49,10 @@ mcux_add_include(
     examples/coex_examples/coex_wifi_bms_open
     middleware/wireless/coex/src/common
     middleware/wireless/coex/src/cli
+)
+
+mcux_add_macro(
+    "-DLFS_DEFINES=coex_lfs_defines.h"
 )
 
 mcux_add_macro(
@@ -72,6 +77,17 @@ mcux_add_iar_configuration(
 
 mcux_add_mdk_configuration(
     LD "--library_type=microlib"
+)
+
+# Add MCUXPRESSO IDE support
+mcux_add_include(
+    BASE_PATH ${SdkRootDirPath}
+    INCLUDES examples/coex_examples/coex_wifi_bms_open/mcuxpresso_config
+)
+
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}
+    SOURCES examples/coex_examples/coex_wifi_bms_open/mcuxpresso_config/app_mcuxpresso_config.h
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/coex_examples/coex_wifi_bms_open/${multicore_foldername}/reconfig.cmake OPTIONAL)

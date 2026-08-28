@@ -24,6 +24,8 @@ mcux_add_source(
     middleware/edgefast_open/examples/_boards/${board}/broadcast_media_sender/${core_id}/pin_mux.h
     middleware/edgefast_open/source/bluetooth/hci/configs/mbedtls/mbedtls_config_client.h
     middleware/edgefast_open/examples/_boards/${board}/configs/mbedtls/mbedtls_user_config.h
+    middleware/wireless/coex/src/common/coex_nb_uart_fw_download.h
+    middleware/wireless/coex/src/common/coex_nb_uart_fw_download.c
     # FatFS config
     middleware/edgefast_open/examples/broadcast_media_sender/modules/ffconf.h
 )
