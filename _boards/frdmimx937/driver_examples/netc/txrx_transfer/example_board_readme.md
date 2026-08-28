@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Mini/micro USB cable
-- frdmimx95 board
+- frdmimx937 board
 - Personal Computer
 
 Board settings
