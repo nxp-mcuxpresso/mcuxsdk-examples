@@ -18,8 +18,8 @@ void BOARD_InitHardware(void)
     BOARD_BootClockRUN();
 
     CLOCK_SetIpSrc(kCLOCK_Lpuart1, kCLOCK_IpSrcFro192M);
-    CLOCK_SetIpSrcDiv(kCLOCK_Lpuart1, 1U);
     CLOCK_EnableClock(kCLOCK_Fro_hf_div);
+    CLOCK_SetIpSrcDiv(kCLOCK_Lpuart1, 1U);
     /* Enable DMA0 clock */
     CLOCK_EnableClock(kCLOCK_Dma0);
 

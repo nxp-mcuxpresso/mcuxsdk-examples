@@ -28,8 +28,8 @@
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
 product: Clocks v11.0
-processor: KW43B43ZC7xxx
-package_id: KW43B43ZC7MFT
+processor: MCXW70ACxxx
+package_id: MCXW70ACMFT
 mcu_data: ksdk2_0
 processor_version: 14.0.0
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
