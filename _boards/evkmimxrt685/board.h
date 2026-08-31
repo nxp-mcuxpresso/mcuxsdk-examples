@@ -228,6 +228,17 @@
 #define BOARD_BT_UART_IRQ         FLEXCOMM4_IRQn
 #define BOARD_BT_UART_IRQ_HANDLER FLEXCOMM4_IRQHandler
 #define BOARD_BT_UART_CLKSRC      kCLOCK_Flexcomm4
+/* BT low power wakeup GPIO pins:
+ * H2C (host-to-controller): PIO1_9, GPIO OUTPUT
+ * C2H (controller-to-host): PIO1_8, GPIO INPUT
+ */
+#define BOARD_BT_UART_C2H_IRQ     GPIO_INTA_IRQn
+#define BOARD_BT_UART_C2H_GPIO    GPIO
+#define BOARD_BT_UART_C2H_PORT    (1U)
+#define BOARD_BT_UART_C2H_PIN     (8U)
+#define BOARD_BT_UART_H2C_GPIO    GPIO
+#define BOARD_BT_UART_H2C_PORT    (1U)
+#define BOARD_BT_UART_H2C_PIN     (9U)
 
 /* ERPC SPI configuration */
 #define ERPC_BOARD_SPI_SLAVE_READY_USE_GPIO (1)
