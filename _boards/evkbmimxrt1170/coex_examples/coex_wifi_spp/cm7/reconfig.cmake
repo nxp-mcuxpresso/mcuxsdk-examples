@@ -24,8 +24,9 @@ mcux_add_source(
     middleware/wireless/coex/src/common/controller_coex_nxp.c
     middleware/wireless/coex/src/common/coex_nb_uart_fw_download.c
     middleware/wireless/coex/src/common/coex_nb_uart_fw_download.h
-    examples/coex_examples/coex_wifi_spp/app_config.cmake
     middleware/edgefast_open/examples/_boards/${board}/configs/mbedtls/mbedtls_user_config.h
+    examples/coex_examples/coex_wifi_spp/app_shell.h
+    examples/coex_examples/coex_wifi_spp/app_config.cmake
 )
 
 mcux_add_source(

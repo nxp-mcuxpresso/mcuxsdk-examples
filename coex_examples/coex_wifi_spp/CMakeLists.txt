@@ -23,6 +23,7 @@ mcux_add_source(
         examples/coex_examples/coex_wifi_spp/app_shell.c
         examples/coex_examples/coex_wifi_spp/app_shell.h
         examples/coex_examples/coex_wifi_spp/main.c
+        middleware/wireless/coex/src/common/coex_lfs_defines.h
 )
 
 # The coex app dir MUST come before the stock spp dir so that the app-local
@@ -32,6 +33,22 @@ mcux_add_include(
     INCLUDES
         examples/coex_examples/coex_wifi_spp
         middleware/edgefast_open/examples/spp
+        middleware/wireless/coex/src/common
+)
+
+mcux_add_macro(
+    "-DLFS_DEFINES=coex_lfs_defines.h"
+)
+
+# Add MCUXPRESSO IDE support
+mcux_add_include(
+    BASE_PATH ${SdkRootDirPath}
+    INCLUDES examples/coex_examples/coex_wifi_spp/mcuxpresso_config
+)
+
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}
+    SOURCES examples/coex_examples/coex_wifi_spp/mcuxpresso_config/app_mcuxpresso_config.h
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/coex_examples/coex_wifi_spp/${multicore_foldername}/reconfig.cmake OPTIONAL)
