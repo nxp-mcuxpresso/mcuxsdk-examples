@@ -68,6 +68,7 @@ This is a ncp host demo. Need to use with ncp_device application.
 
 ## Supported Boards
 - [MIMXRT1060-EVKB](../../_boards/evkbmimxrt1060/ncp_examples/ncp_host/example_board_readme.md)
+- [MIMXRT1060-EVKC](../../_boards/evkcmimxrt1060/ncp_examples/ncp_host/example_board_readme.md)
 
 ## NCP API reference doc
 - [NCP API doc](./NCP_API_reference.md)
