@@ -35,8 +35,13 @@ Hello from secure world!
 Entering normal world.
 Welcome in normal world!
 This is a text printed from normal world!
-Comparing two string as a callback to normal world
+Comparing two strings in secure world
 String 1: Test1
 String 2: Test2
 Both strings are not equal!
+Testing NS callback with scalar argument...
+Input string: 'Hello TrustZone!'
+String length calculated in Secure world: 16
+NS callback received scalar result from Secure world: 16
+GetStringLength_NSE return value: 16
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

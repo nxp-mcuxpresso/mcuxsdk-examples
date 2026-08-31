@@ -1,0 +1,65 @@
+
+flash_programming_file:
+  files:
+  - source: ${board_root}/${board}/trustzone_examples/secure_faults_trdc/secure_faults_trdc_s/secure_faults_trdc_download_ram_debug.ini
+    attribute: flash_programming_file
+    toolchains: mdk
+    targets: debug
+  - source: ${board_root}/${board}/trustzone_examples/secure_faults_trdc/secure_faults_trdc_s/secure_faults_trdc_download_ram_release.ini
+    attribute: flash_programming_file
+    toolchains: mdk
+    targets: release
+
+initialization_file:
+  files:
+  - source: ${board_root}/${board}/trustzone_examples/secure_faults_trdc/secure_faults_trdc_s/secure_faults_trdc_debug_ram_debug.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: debug
+    package_path: boards/${board}/trustzone_examples/secure_faults_trdc/./secure_faults_trdc_s/mdk
+    project_path: _boards/${board}/trustzone_examples/secure_faults_trdc/secure_faults_trdc_s
+  - source: ${board_root}/${board}/trustzone_examples/secure_faults_trdc/secure_faults_trdc_s/secure_faults_trdc_debug_ram_release.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: release
+    package_path: boards/${board}/trustzone_examples/secure_faults_trdc/./secure_faults_trdc_s/mdk
+    project_path: _boards/${board}/trustzone_examples/secure_faults_trdc/secure_faults_trdc_s
+
+mdk:
+  shared-workspace: secure_faults_trdc
+  sharing-workspace:
+  - ../../secure_faults_trdc_ns/mdk/secure_faults_trdc_ns${core_id_suffix_name}
+
+iar:
+  project-templates:
+  - scripts/guigenerator/templates/iar/app_cmsisdap_m33/generic.ewd
+  - scripts/guigenerator/templates/iar/app_cmsisdap_m33/generic.ewp
+  - scripts/guigenerator/templates/iar/general.eww
+  shared-workspace: secure_faults_trdc
+  sharing-workspace:
+  - ../../secure_faults_trdc_ns/iar/secure_faults_trdc_ns${core_id_suffix_name}
+  config:
+    debug:
+      download-extra-image:
+      - path: "../../secure_faults_trdc_ns/iar/secure_faults_trdc_ns${core_id_suffix_name}.out"
+        item: 1
+        offset: 0
+        debug_info_only: false
+    release:
+      download-extra-image:
+      - path: "../../secure_faults_trdc_ns/iar/secure_faults_trdc_ns${core_id_suffix_name}.out"
+        item: 1
+        offset: 0
+        debug_info_only: false
+    flexspi_nor_debug:
+      download-extra-image:
+      - path: "../../secure_faults_trdc_ns/iar/secure_faults_trdc_ns${core_id_suffix_name}.out"
+        item: 1
+        offset: 0
+        debug_info_only: false
+    flexspi_nor_release:
+      download-extra-image:
+      - path: "../../secure_faults_trdc_ns/iar/secure_faults_trdc_ns${core_id_suffix_name}.out"
+        item: 1
+        offset: 0
+        debug_info_only: false

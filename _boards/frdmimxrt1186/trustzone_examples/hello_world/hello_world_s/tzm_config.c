@@ -36,18 +36,18 @@ toolOptions:
  **********************************************************************************************************************/
 
 /* SAU region boundaries */
-#if (DEMO_CODE_START_NS == 0x2880B000U) || (DEMO_CODE_START_NS == 0x28800000U)
+#if (DEMO_CODE_START_NS == 0x0440B000U) || (DEMO_CODE_START_NS == 0x04400000U)
 /* Flash XiP */
-#define SAU_REGION_0_BASE 0x28800000U
-#define SAU_REGION_0_END 0x28FFFFFFU
+#define SAU_REGION_0_BASE 0x04400000U
+#define SAU_REGION_0_END  0x047FFFFFU
 #define SAU_REGION_1_BASE 0x20010000U
-#define SAU_REGION_1_END 0x2001FFFFU
-#define SAU_REGION_2_BASE 0x387FFC00U
-#define SAU_REGION_2_END 0x387FFFFFU
+#define SAU_REGION_1_END  0x2001FFFFU
+#define SAU_REGION_2_BASE 0x143FFC00U
+#define SAU_REGION_2_END  0x143FFFFFU
 #define SAU_REGION_3_BASE 0x204C0000U
-#define SAU_REGION_3_END 0x204FFFFFU
+#define SAU_REGION_3_END  0x204FFFFFU
 #define SAU_REGION_4_BASE 0x0FFF0000U
-#define SAU_REGION_4_END 0x0FFFFFFFU
+#define SAU_REGION_4_END  0x0FFFFFFFU
 #else
 /* TCM */
 #define SAU_REGION_0_BASE 0x0FFF0000U
@@ -3739,7 +3739,6 @@ void BOARD_InitTRDC()
     TRDC3->TRDC_IDAU_CR &= 0xFFFFE0FEU;
     
 }
-
 
 /***********************************************************************************************************************
  * BOARD_InitTrustZone function

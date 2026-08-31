@@ -27,6 +27,7 @@ so it demonstrates following techniques for TrustZone applications development:
 - [EVK9-MIMX8ULP](../../_boards/evk9mimx8ulp/trustzone_examples/hello_world/hello_world_s/example_board_readme.md)
 - [EVK-MIMX8ULP](../../_boards/evkmimx8ulp/trustzone_examples/hello_world/hello_world_s/example_board_readme.md)
 - [MIMXRT1180-EVK](../../_boards/evkmimxrt1180/trustzone_examples/hello_world/hello_world_s/example_board_readme.md)
+- [FRDM-MIMXRT1186](../../_boards/frdmmimxrt1186/trustzone_examples/hello_world/hello_world_s/example_board_readme.md)
 - [EVK-MIMXRT595](../../_boards/evkmimxrt595/trustzone_examples/hello_world/hello_world_s/example_board_readme.md)
 - [EVK-MIMXRT685](../../_boards/evkmimxrt685/trustzone_examples/hello_world/hello_world_s/example_board_readme.md)
 - [FRDM-MCXN236](../../_boards/frdmmcxn236/trustzone_examples/hello_world/hello_world_s/example_board_readme.md)

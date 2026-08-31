@@ -19,3 +19,5 @@ TEST 5: Invalid data access from normal world, example 2
 - [MCIMX93-EVK](../../_boards/mcimx93evk/trustzone_examples/secure_faults_trdc/secure_faults_trdc_s/example_board_readme.md)
 - [MCIMX93W-EVK](../../_boards/mcimx93wevk/trustzone_examples/secure_faults_trdc/secure_faults_trdc_s/example_board_readme.md)
 - [MCIMX93-QSB](../../_boards/mcimx93qsb/trustzone_examples/secure_faults_trdc/secure_faults_trdc_s/example_board_readme.md)
+- [MIMXRT1180-EVK](../../_boards/evkmimxrt1180/trustzone_examples/secure_faults_trdc/secure_faults_trdc_s/example_board_readme.md)
+- [FRDM-MIMXRT1186](../../_boards/frdmmimxrt1186/trustzone_examples/secure_faults_trdc/secure_faults_trdc_s/example_board_readme.md)

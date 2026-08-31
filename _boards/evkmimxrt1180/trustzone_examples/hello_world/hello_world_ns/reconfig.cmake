@@ -48,3 +48,18 @@ mcux_add_mdk_configuration(
         CX "-mfpu=none -mfloat-abi=soft"
         LD "--fpu=softvfp --load_addr_map_info --library_type=microlib"
 )
+
+mcux_add_iar_configuration(
+    TARGETS flexspi_nor_debug flexspi_nor_release debug release
+    LD "--config_def=__stack_size__=0x1000"
+)
+
+mcux_add_armgcc_configuration(
+    TARGETS flexspi_nor_debug flexspi_nor_release debug release
+    LD "-Xlinker --defsym=__stack_size__=0x1000"
+)
+
+mcux_add_mdk_configuration(
+    TARGETS flexspi_nor_debug flexspi_nor_release debug release
+    LD "--predefine=\"-D__stack_size__=0x1000\""
+)

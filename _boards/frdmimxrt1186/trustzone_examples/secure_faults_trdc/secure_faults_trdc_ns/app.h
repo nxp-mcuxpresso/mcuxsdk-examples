@@ -10,8 +10,8 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define DEMO_SEC_ADDRESS    0x30003000
-#define DEMO_NONSEC_ADDRESS 0x20040000
+#define DEMO_SEC_ADDRESS    0x30000000U
+#define DEMO_NONSEC_ADDRESS 0x20504000U
 /*${macro:end}*/
 
 /*******************************************************************************

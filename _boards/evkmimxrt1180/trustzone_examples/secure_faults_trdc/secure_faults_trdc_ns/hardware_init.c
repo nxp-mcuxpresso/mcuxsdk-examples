@@ -18,4 +18,7 @@ void BOARD_InitHardware(void)
 {
 }
 
+void SystemInit(void)
+{
+}
 /*${function:end}*/

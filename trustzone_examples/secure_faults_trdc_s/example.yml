@@ -4,7 +4,7 @@ secure_faults_trdc_s:
   section-type: application
   contents:
     meta_path: examples/trustzone_examples/secure_faults_trdc_s
-    project-root-path: boards/${board}/trustzone_examples/secure_faults_trdc/secure_faults_trdc_s/${multicore_foldername}
+    project-root-path: boards/${board}/trustzone_examples/secure_faults_trdc/secure_faults_trdc_s
     document:
       name: secure_faults_trdc_s${core_id_suffix_name}
       category: trustzone_examples
@@ -31,3 +31,29 @@ secure_faults_trdc_s:
     mcimx93evk@cm33: []
     mcimx93wevk: []
     mcimx93qsb: []
+    frdmimxrt1186@cm33:
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -iar@debug
+    - -iar@release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release    
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt1180@cm33:
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -iar@debug
+    - -iar@release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    - -mdk@debug
+    - -mdk@release
