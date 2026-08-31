@@ -143,6 +143,17 @@ void BOARD_InitLcdDBIPanelPins(void); /* Function assigned for the Cortex-M33 (C
 void BOARD_InitMipiTouchPanelPins(void); /* Function assigned for the Cortex-M33 (Core #0) */
 void BOARD_InitI2c8(void);
 void BOARD_InitPsRamPins_Xspi2(void);
+
+/*! @brief Input Buffer Enable: Enables */
+#define PMIC_I2C_SCL_IBENA_IBENA_1 0x01u
+/*! @brief Open-drain Mode Enable: Enables for simulated open-drain output (high drive disabled) */
+#define PMIC_I2C_SCL_ODENA_ODENA_1 0x01u
+/*! @brief Input Buffer Enable: Enables */
+#define PMIC_I2C_SDA_IBENA_IBENA_1 0x01u
+/*! @brief Open-drain Mode Enable: Enables for simulated open-drain output (high drive disabled) */
+#define PMIC_I2C_SDA_ODENA_ODENA_1 0x01u
+
+void BOARD_InitPmicPins(void); /* Function assigned for the Cortex-M33 (Core #0) */
 #if defined(__cplusplus)
 }
 #endif

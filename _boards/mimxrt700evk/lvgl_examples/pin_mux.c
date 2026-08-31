@@ -1458,6 +1458,52 @@ void BOARD_InitI2c8(void)
     /* PORT0 PIN7 (coords: K5) is configured as LP_FLEXCOMM8_P1 */
     IOPCTL_PinMuxSet(0U, 7U, port0_pin7_config);
 }
+
+
+/* clang-format off */
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitPmicPins:
+- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
+- pin_list:
+  - {pin_num: U8, peripheral: LPI2C15, signal: SCL, pin_signal: PMIC_I2C_SCL, open_drain: enable, input_buffer: enable}
+  - {pin_num: U7, peripheral: LPI2C15, signal: SDA, pin_signal: PMIC_I2C_SDA, open_drain: enable, input_buffer: enable}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+/* clang-format on */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitPmicPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+/* Function assigned for the Cortex-M33 (Core #0) */
+void BOARD_InitPmicPins(void)
+{
+    /* Reset IOPCTL1 module */
+    RESET_ClearPeripheralReset(kIOPCTL1_RST_SHIFT_RSTn);
+
+    IOPCTL1->PMIC_I2C_SCL = ((IOPCTL1->PMIC_I2C_SCL &
+                              /* Mask bits to zero which are setting */
+                              (~(IOPCTL1_PMIC_I2C_SCL_IBENA_MASK | IOPCTL1_PMIC_I2C_SCL_ODENA_MASK)))
+
+                             /* Input Buffer Enable: Enables */
+                             | IOPCTL1_PMIC_I2C_SCL_IBENA(PMIC_I2C_SCL_IBENA_IBENA_1)
+
+                             /* Open-drain Mode Enable: Enables for simulated open-drain output (high drive disabled) */
+                             | IOPCTL1_PMIC_I2C_SCL_ODENA(PMIC_I2C_SCL_ODENA_ODENA_1));
+
+    IOPCTL1->PMIC_I2C_SDA = ((IOPCTL1->PMIC_I2C_SDA &
+                              /* Mask bits to zero which are setting */
+                              (~(IOPCTL1_PMIC_I2C_SDA_IBENA_MASK | IOPCTL1_PMIC_I2C_SDA_ODENA_MASK)))
+
+                             /* Input Buffer Enable: Enables */
+                             | IOPCTL1_PMIC_I2C_SDA_IBENA(PMIC_I2C_SDA_IBENA_IBENA_1)
+
+                             /* Open-drain Mode Enable: Enables for simulated open-drain output (high drive disabled) */
+                             | IOPCTL1_PMIC_I2C_SDA_ODENA(PMIC_I2C_SDA_ODENA_ODENA_1));
+}
 /***********************************************************************************************************************
  * EOF
  **********************************************************************************************************************/
