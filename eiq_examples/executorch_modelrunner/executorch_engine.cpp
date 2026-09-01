@@ -52,24 +52,35 @@ using executorch::runtime::TensorInfo;
 // ---------------------------------------------------------------------------
 // Work pools and RAM model buffer, all in the NonCacheable region so the
 // NPU's DMA view of any buffer is coherent without cache maintenance.
-// Total .ncache footprint: 1216K + 96K + 384K + 256K = 1952K of the 2M region.
-// Sizing (adjust when supporting larger models):
-//   method_pool 1216K: planned buffers (largest supported model needs ~1133K
-//                    + method metadata.
-//   temp_pool 96K: kernel scratch. Keep >= 96K: smaller pools silently
-//                 corrupt Neutron NPU output.
-//   pte_buffer 384K: uploaded .pte bytes (largest supported model ~365K).
+// Total .ncache footprint: 1216K + 3136K + 384K + 256K = 4992K of the 5056K
+// region. Sizing:
+//   method_pool 1216K: planned buffers (largest seen ~1133K) + method
+//                    metadata. Load-time allocations only.
+//   temp_pool 3136K: BackendExecutionContext::allocate() serves delegate
+//                    execute()-time allocations from THIS pool (reset after
+//                    every delegate call): the NeutronBackend NPU scratch
+//                    (activations) plus the fetch2sram weight staging
+//                    buffer. MobileNetV2 NPU int8 fetch2sram needs
+//                    scratch 1435K + staging 1519K; a pool too small makes
+//                    those pointers NULL and the NPU copies weights to
+//                    absolute address 0+offset, BusFaulting the core.
+//                    Portable-kernel scratch needs only ~5K of it.
+//   pte_buffer 384K: uploaded .pte bytes of SRAM-routed models (largest
+//                    small model ~365K — cifarnet CPU float32 and mlperf
+//                    vww CPU stay on-chip at full speed); anything larger
+//                    streams to PSRAM (PTE_SRAM_THRESHOLD).
 //   input_buffer 256K: input tensor bytes (largest supported input ~251K).
 // ---------------------------------------------------------------------------
 constexpr size_t kPoolSize = 1216 * 1024;
 static uint8_t method_pool[kPoolSize] __attribute__((aligned(16))) __attribute__((section("NonCacheable")));
-constexpr size_t kTempPoolSize = 96 * 1024;
+constexpr size_t kTempPoolSize = 3136 * 1024;
 static uint8_t temp_pool[kTempPoolSize] __attribute__((aligned(16))) __attribute__((section("NonCacheable")));
 
 // .pte bytes uploaded at runtime live here. NonCacheable so the NPU's DMA view
 // of the model weights is coherent without cache maintenance: with the NS3.2.1
 // delegate, a cacheable pte buffer (even with explicit DCCMVAC writeback)
-// produced input-insensitive garbage outputs.
+// produced input-insensitive garbage outputs. Models larger than this buffer
+// are streamed to PSRAM instead (see protocol.h).
 constexpr size_t kPteBufSize = 384 * 1024;
 static uint8_t pte_buffer[kPteBufSize] __attribute__((aligned(32)))
     __attribute__((section("NonCacheable")));
@@ -204,8 +215,22 @@ void Engine::Reset() {
 }
 
 uint8_t Engine::LoadModel(const uint8_t *pte_bytes, size_t len) {
-    if (len > kPteBufSize) {
-        return kErrModelTooBig;
+    // Route the model bytes. Large models arrive already streamed into PSRAM
+    // by recv_frame (see protocol.h): parse in place — the CPU reads the .pte
+    // through the XSPI2 AHB window, no copy into pte_buffer. Such NPU models
+    // must be converted with --fetch_constants_to_sram; the NeutronBackend
+    // EXTERNAL_MEM path copies weight segments into SRAM during execute().
+    // Small models are copied into the on-chip NonCacheable pte_buffer so the
+    // NPU's DMA view of the weights is coherent without cache maintenance.
+    const bool psram_resident =
+        ((uintptr_t)pte_bytes >= kPsramBase) &&
+        ((uintptr_t)pte_bytes < kPsramBase + kPsramModelMax);
+    if (!psram_resident) {
+        if (len > kPteBufSize) {
+            return kErrModelTooBig;
+        }
+        std::memcpy(pte_buffer, pte_bytes, len);
+        pte_bytes = pte_buffer;
     }
 
     // Destroy any existing state first. This drops the old Method (which
@@ -221,11 +246,7 @@ uint8_t Engine::LoadModel(const uint8_t *pte_bytes, size_t len) {
     std::memset(method_pool, 0, sizeof(method_pool));
     std::memset(temp_pool, 0, sizeof(temp_pool));
 
-    std::memcpy(pte_buffer, pte_bytes, len);
-    // pte_buffer is NonCacheable: the NPU's DMA view of the model weights is
-    // coherent without any cache maintenance.
-
-    BufferDataLoader loader(pte_buffer, len);
+    BufferDataLoader loader(pte_bytes, len);
     Result<Program> program = Program::load(&loader);
     if (!program.ok()) {
         return kErrDbgProgramLoad;
@@ -364,17 +385,21 @@ size_t Engine::Run(uint8_t *out, size_t out_max, uint8_t *err) {
     }
     EngineState &st = *state_;
 
-    // Time execute with the DWT cycle counter: it is a free-running CPU cycle
-    // counter unaffected by interrupt masking or SysTick wrap-around, so it
-    // stays exact for sub-millisecond executes.
-    uint32_t cycles_per_us = SystemCoreClock / 1000000u;
-    uint32_t cyc0 = DWT->CYCCNT;
+    // Time execute with the TIMER (SysTick-derived) microsecond time base.
+    // The DWT cycle counter was previously used, but the Neutron firmware
+    // library perturbs it during long NPU executions (MobileNetV2 fetch2sram
+    // runs returned 0 us) - this timer is immune to that.
+    uint32_t t0 = (uint32_t)TIMER_GetTimeInUS();
     Error status = st.method->execute();
-    uint32_t cyc1 = DWT->CYCCNT;
-    uint64_t inference_us = (uint64_t)(cyc1 - cyc0) / cycles_per_us;
+    uint32_t t1 = (uint32_t)TIMER_GetTimeInUS();
+    uint64_t inference_us = (uint64_t)(t1 - t0);
 
     if (status != Error::Ok) {
         *err = kErrExecute;
+        // Surface the runtime error code (Error enum value) in the message:
+        // the ET logger has no output sink in this build (nosys stubs).
+        extern void engine_report_run_code(int code);
+        engine_report_run_code(static_cast<int>(status));
         return 0;
     }
 

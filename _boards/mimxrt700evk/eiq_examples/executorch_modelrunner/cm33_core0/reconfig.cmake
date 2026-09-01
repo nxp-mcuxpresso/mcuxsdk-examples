@@ -60,7 +60,33 @@ mcux_add_macro(
       -DARM_MATH_CM33\
       -D__FPU_PRESENT=1\
       -DPRINTF_ADVANCED_ENABLE=1\
-      -DPRINTF_FLOAT_ENABLE=1"
+      -DPRINTF_FLOAT_ENABLE=1\
+      -DEXTERNAL_MEM=1"
+)
+
+# PSRAM support for models that exceed the on-chip SRAM pte buffer.
+# flash_opts.c/h live at the board-port top level (core independent, shared
+# by future multi-core ports like tflm_modelrunner does): they are verified
+# copies from tflm_modelrunner - see the file headers. The package generator
+# has no path mapping for files referenced across example directories, so
+# they must live inside this example's board folder. flash_opts.c provides
+# FlashInit() (called once at boot); its FlashProgram/FlashErase helpers are
+# not used by this example. Both include "app.h" from the core directory
+# (PSRAM macros + xspi_clock_init) via the include path.
+mcux_add_source(
+  SOURCES ../flash_opts.c
+          ../flash_opts.h
+)
+mcux_add_include(INCLUDES ..)
+
+# Follow the upstream XSPI PSRAM driver ops by reference (same pattern as
+# tflm_modelrunner): a single source of truth, so updates to the driver
+# example propagate to this example. xspi_psram_ops.c includes "app.h" - in
+# the SDK tree it resolves to the demo's own app.h, and inside generated SDK
+# packages it lands next to this core's app.h (same macros either way).
+mcux_add_source(
+  BASE_PATH ${SdkRootDirPath}
+  SOURCES examples/driver_examples/xspi/psram/polling_transfer/xspi_psram_ops.c
 )
 
 mcux_remove_armgcc_configuration(
@@ -70,12 +96,12 @@ mcux_remove_armgcc_configuration(
 )
 
 mcux_add_armgcc_configuration(
-  LD "-Xlinker --defsym=__heap_size__=0x10000\
-      -Xlinker --defsym=__stack_size__=0x10000"
+  LD "-Xlinker --defsym=__heap_size__=0x8000\
+      -Xlinker --defsym=__stack_size__=0x8000"
 )
 mcux_add_mcux_configuration(
-  LD "-Xlinker --defsym=__heap_size__=0x10000\
-      -Xlinker --defsym=__stack_size__=0x10000"
+  LD "-Xlinker --defsym=__heap_size__=0x8000\
+      -Xlinker --defsym=__stack_size__=0x8000"
 )
 
 # IMPORTANT: Remove __STARTUP_INITIALIZE_NONCACHEDATA flag for CMSIS-DAP debugger compatibility

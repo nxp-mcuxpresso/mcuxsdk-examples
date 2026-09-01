@@ -17,11 +17,12 @@
 
 extern "C" void BOARD_Init(void);
 
-// Single receive buffer for ALL commands. 1 MB so LOAD_MODEL (.pte, up to ~1 MB)
-// fits. NOTE: engine keeps its OWN copy (pte_buffer) because a later LOAD_INPUT
-// will overwrite this payload_buffer — the model bytes must survive across
-// commands.
-static uint8_t payload_buffer[1024 * 1024] __attribute__((aligned(32)));
+// All command payloads (LOAD_INPUT etc.) are received into the 1 MB PSRAM
+// window at kPsramPayloadBase — keeping this buffer off-chip freed SRAM for
+// the enlarged NonCacheable work pools (see protocol.h). Large LOAD_MODEL
+// frames above PTE_SRAM_THRESHOLD bypass this area entirely and stream
+// straight to kPsramBase. The engine copies bytes it must keep (pte_buffer /
+// input_buffer), so overwriting the receive window on later commands is fine.
 
 int main(void) {
     BOARD_Init();
@@ -42,14 +43,15 @@ int main(void) {
     PRINTF("\r\nExecuTorch Modelrunner Ready\r\n");
     executorch::runtime::runtime_init();
     Engine engine;
+    uint8_t *payload = reinterpret_cast<uint8_t *>(kPsramPayloadBase);
     for (;;) {
         uint8_t cmd = 0, err = kErrOk;
         size_t plen = 0;
-        if (recv_frame(&cmd, payload_buffer, &plen, sizeof(payload_buffer), &err)) {
-            handle_command(cmd, payload_buffer, plen, engine);
-        } else if (err == kErrCrc) {
-            uint8_t code = kErrCrc;
-            send_frame(kStError, &code, 1);
+        uint8_t *p = payload;
+        if (recv_frame(&cmd, &p, &plen, kPsramPayloadSize, &err)) {
+            handle_command(cmd, p, plen, engine);
+        } else if (err == kErrCrc || err == kErrModelTooBig) {
+            send_frame(kStError, &err, 1);
         }
     }
     return 0;

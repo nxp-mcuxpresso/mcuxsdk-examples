@@ -24,11 +24,13 @@
 // Response buffer caps. INFO serializes input/output tensor specs (small);
 // RESULT carries timing + output tensor bytes. The mlperf anomaly_detection
 // model reconstructs its full [98,640] float32 input (250,880 B + 23 B of
-// framing), so the RESULT buffer must hold ~251 KB. It is a file-scope static
-// in .bss (NOT on the stack): 260 KB would overflow any M33 stack.
+// framing), so the RESULT buffer must hold ~251 KB. The buffer is pure CPU
+// traffic (serialize outputs, then the UART driver reads it back), so it
+// lives in the PSRAM window behind the payload receive area - keeping it
+// off-chip frees on-chip SRAM for a larger pte_buffer (see protocol.h).
 constexpr size_t kInfoBufMax   = 256;
 constexpr size_t kResultBufMax = 260 * 1024;
-static uint8_t g_result_buf[kResultBufMax];
+static uint8_t *g_result_buf = reinterpret_cast<uint8_t *>(kPsramResultBase);
 
 // Board-side state machine.
 enum class State : uint8_t {
@@ -53,6 +55,17 @@ static void send_err(uint8_t code, const char *msg) {
         memcpy(buf + 1, msg, msg_len);
     }
     send_frame(kStError, buf, 1 + msg_len);
+}
+
+// Debug hook called by Engine::Run on execute failure: re-emits the last
+// error frame with the runtime Error enum value in the message, so the PC
+// side prints e.g. "run code=35".
+static int g_last_run_code = 0;
+void engine_report_run_code(int code) {
+    g_last_run_code = code;
+}
+int engine_last_run_code() {
+    return g_last_run_code;
 }
 
 void handle_command(uint8_t cmd, const uint8_t *payload, size_t len, Engine &engine) {
@@ -98,14 +111,28 @@ void handle_command(uint8_t cmd, const uint8_t *payload, size_t len, Engine &eng
                 break;
             }
             uint8_t err = kErrOk;
-            size_t n = engine.Run(g_result_buf, sizeof(g_result_buf), &err);
+            // NOTE: g_result_buf is a pointer (PSRAM) — its sizeof() is 4;
+            // the capacity is kResultBufMax.
+            size_t n = engine.Run(g_result_buf, kResultBufMax, &err);
             if (err == kErrOk) {
                 send_frame(kStResult, g_result_buf, n);
                 // After a successful run the input is consumed; back to
                 // MODEL_LOADED so the host can LOAD_INPUT + RUN again.
                 g_state = State::kModelLoaded;
             } else {
-                send_err(err, "run");
+                // "run code=N" with the runtime Error enum value (decimal).
+                char msg[24];
+                int code = engine_last_run_code();
+                size_t p = 0;
+                const char *prefix = "run code=";
+                while (*prefix) msg[p++] = *prefix++;
+                if (code < 0) { msg[p++] = '-'; code = -code; }
+                char digits[8];
+                int nd = 0;
+                do { digits[nd++] = '0' + (code % 10); code /= 10; } while (code);
+                while (nd--) msg[p++] = digits[nd];
+                msg[p] = '\0';
+                send_err(err, msg);
             }
             break;
         }

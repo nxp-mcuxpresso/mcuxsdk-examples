@@ -13,7 +13,13 @@ size_t serial_read_blocking(uint8_t *buf, size_t len);   // blocks until len byt
 // Frame-level helpers. send_frame computes CRC, emits SYNC+CMD+LEN+PAYLOAD+CRC.
 // recv_frame reads one frame; on CRC mismatch returns false and sets *err=kErrCrc.
 // On protocol/framing error returns false and sets *err=kErrProtocol.
-bool recv_frame(uint8_t *cmd, uint8_t *payload, size_t *payload_len,
+//
+// Payload routing: LOAD_MODEL frames larger than PTE_SRAM_THRESHOLD are
+// streamed chunk-by-chunk into the PSRAM at kPsramBase (no single RAM buffer
+// can hold them); on success *payload is set to the PSRAM address. Every other
+// payload is read into the caller-provided buffer (max_payload bounds it) and
+// *payload keeps pointing at that buffer.
+bool recv_frame(uint8_t *cmd, uint8_t **payload, size_t *payload_len,
                 size_t max_payload, uint8_t *err);
 void send_frame(uint8_t status, const uint8_t *payload, size_t payload_len);
 

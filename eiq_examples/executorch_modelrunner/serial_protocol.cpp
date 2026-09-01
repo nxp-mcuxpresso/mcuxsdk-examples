@@ -1,5 +1,6 @@
 #include "serial_protocol.h"
 #include "fsl_lpuart.h"
+#include <cstring>
 
 // The protocol reuses the SAME LPUART the debug console uses. The LPUART
 // hardware itself is binary-transparent; the \r\n translation is added by the
@@ -65,7 +66,26 @@ static uint8_t read1(void) {
     return b;
 }
 
-bool recv_frame(uint8_t *cmd, uint8_t *payload, size_t *payload_len,
+// Incremental CRC-16/CCITT-FALSE update: fold `len` bytes into the running
+// crc. Used for payload chunks as they arrive (the PSRAM path cannot
+// re-scan the payload after the fact).
+static uint16_t crc16_update(uint16_t crc, const uint8_t *data, size_t len) {
+    for (size_t i = 0; i < len; ++i) {
+        crc ^= (uint16_t)data[i] << 8;
+        for (int b = 0; b < 8; ++b) {
+            crc = (crc & 0x8000) ? (crc << 1) ^ 0x1021 : (crc << 1);
+        }
+    }
+    return crc;
+}
+
+// Drain buffer for frames that are oversized even for PSRAM: the payload is
+// read and discarded so the byte stream stays frame-aligned. Static: too
+// large for the M33 stack.
+constexpr size_t kBounceSize = 4 * 1024;
+static uint8_t g_bounce[kBounceSize];
+
+bool recv_frame(uint8_t *cmd, uint8_t **payload, size_t *payload_len,
                 size_t max_payload, uint8_t *err) {
     // 1) Hunt for SYNC: read bytes until kSync0,kSync1 in sequence.
     //    Any non-SYNC byte is discarded (re-sync).
@@ -99,15 +119,54 @@ bool recv_frame(uint8_t *cmd, uint8_t *payload, size_t *payload_len,
         | ((uint32_t)len_bytes[2] << 16)
         | ((uint32_t)len_bytes[3] << 24);
 
-    if (len > max_payload) {
+    // Route the payload: LOAD_MODEL frames above PTE_SRAM_THRESHOLD stream
+    // into PSRAM; everything else must fit the caller's buffer.
+    const bool to_psram =
+        (local_cmd == kCmdLoadModel) && (len > (uint32_t)PTE_SRAM_THRESHOLD);
+    if (!to_psram && len > max_payload) {
         // Frame too large for caller's buffer: framing/protocol error.
         *err = kErrProtocol;
         return false;
     }
+    // Oversized even for PSRAM: drain the frame (to keep byte alignment) but
+    // reject it once the CRC check completes.
+    const bool psram_overflow = to_psram && (len > kPsramModelMax);
 
-    // 3) Read PAYLOAD (LEN bytes).
-    if (len) {
-        serial_read_blocking(payload, len);
+    // 3) Read PAYLOAD (LEN bytes), then fold it into the running CRC.
+    uint8_t crc_input[1 + 4] = {local_cmd, len_bytes[0], len_bytes[1],
+                                len_bytes[2], len_bytes[3]};
+    uint16_t calc_crc = crc16_ccitt(crc_input, sizeof(crc_input));
+    uint8_t *dest = *payload;
+    if (to_psram && !psram_overflow) {
+        // Stream the payload DIRECTLY into PSRAM. serial_read_blocking polls
+        // the UART byte-by-byte, so there is no window in which incoming
+        // bytes could overflow the small UART FIFO — bouncing through an
+        // SRAM buffer and memcpy-ing to PSRAM would open exactly such a
+        // window (a 16K copy takes ~0.5 ms > 4-byte FIFO depth at 115200).
+        // CPU stores to the cacheable PSRAM window are coherent with the CPU
+        // reads below (no DMA involved).
+        dest = reinterpret_cast<uint8_t *>(kPsramBase);
+        if (len) {
+            serial_read_blocking(dest, len);
+            calc_crc = crc16_update(calc_crc, dest, len);
+        }
+    } else if (to_psram) {
+        // Oversized: read and discard to stay frame-aligned.
+        size_t off = 0;
+        while (off < len) {
+            size_t chunk = len - off;
+            if (chunk > kBounceSize) {
+                chunk = kBounceSize;
+            }
+            serial_read_blocking(g_bounce, chunk);
+            calc_crc = crc16_update(calc_crc, g_bounce, chunk);
+            off += chunk;
+        }
+    } else {
+        if (len) {
+            serial_read_blocking(dest, len);
+        }
+        calc_crc = crc16_update(calc_crc, dest, len);
     }
 
     // 4) Read CRC (2B LE) and verify over CMD+LEN+PAYLOAD.
@@ -115,29 +174,18 @@ bool recv_frame(uint8_t *cmd, uint8_t *payload, size_t *payload_len,
     uint8_t crc_hi = read1();
     uint16_t recv_crc = (uint16_t)crc_lo | ((uint16_t)crc_hi << 8);
 
-    // Recompute CRC over {CMD, LEN[0..3], PAYLOAD} in a single pass.
-    // crc16_ccitt is stateless, so build a small prefix buffer and chain the
-    // payload via the running algorithm by calling crc16_ccitt on the prefix
-    // then continuing over the payload bytes manually with the same polynomial.
-    uint8_t crc_input[1 + 4] = {local_cmd, len_bytes[0], len_bytes[1],
-                                len_bytes[2], len_bytes[3]};
-    uint16_t calc_crc = crc16_ccitt(crc_input, sizeof(crc_input));
-    // Continue the CRC over the payload bytes (same init-free continuation:
-    // feed each payload byte into the running crc).
-    for (size_t i = 0; i < len; ++i) {
-        calc_crc ^= (uint16_t)payload[i] << 8;
-        for (int b = 0; b < 8; ++b) {
-            calc_crc = (calc_crc & 0x8000) ? (calc_crc << 1) ^ 0x1021 : (calc_crc << 1);
-        }
-    }
-
     if (recv_crc != calc_crc) {
         *err = kErrCrc;
+        return false;
+    }
+    if (psram_overflow) {
+        *err = kErrModelTooBig;
         return false;
     }
 
     // 5) Success.
     *cmd = local_cmd;
+    *payload = dest;
     *payload_len = len;
     return true;
 }

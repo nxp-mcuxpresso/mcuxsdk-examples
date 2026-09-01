@@ -71,6 +71,7 @@ void BOARD_InitPins(void); /* Function assigned for the Cortex-M33 */
  *   *
  *    */
 void BOARD_InitPmicPins(void); /* Function assigned for the Cortex-M33 (Core #0) */
+void BOARD_InitPsRamPins_Xspi2(void); /* XSPI2 HyperRAM pins (21 pins on PORT4) */
 #if defined(__cplusplus)
 }
 #endif

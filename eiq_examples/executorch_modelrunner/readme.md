@@ -94,6 +94,29 @@ quantization — the board copies the bytes straight into the input tensor with
 no preprocessing. For quantized models the quantization parameters can be
 read from the GET_INFO spec.
 
+Model placement: SRAM vs PSRAM
+--------
+
+Models up to 384 KB are received into an on-chip NonCacheable SRAM buffer and
+run entirely from SRAM — the fastest path, since the Neutron NPU reads the
+weights directly. Larger models are streamed into the board's XSPI2 HyperRAM
+(PSRAM, 16 MB model window at `0x60000000`) and parsed in place; only weight
+segments are copied into SRAM while the model runs.
+
+NPU models that live in PSRAM MUST be converted with the Neutron compiler
+option `--fetch_constants_to_sram`: the Neutron NPU cannot read PSRAM
+directly, so the compiler emits microcode that prefetches each layer's
+weights from PSRAM into an SRAM scratch buffer while the previous layer is
+computing. A PSRAM-resident NPU model converted without this option still
+loads, but the NPU cannot reach its weights and inference produces garbage.
+CPU-only (portable-kernel) models have no such requirement — the CPU reads
+PSRAM through the XSPI2 AHB window like ordinary memory.
+
+The SRAM/PSRAM switchover threshold (384 KB by default) can be overridden at
+build time by adding `-DPTE_SRAM_THRESHOLD=65536` to the compiler flags in the
+board reconfig (`_boards/<board>/eiq_examples/executorch_modelrunner/cm33_core0/reconfig.cmake`),
+e.g. to force the PSRAM path for a small model while testing.
+
 Kernel registry
 --------
 

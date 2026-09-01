@@ -32,14 +32,18 @@ M_VECTOR_RAM_SIZE = DEFINED(__ram_vector_table__) ? 0x00000300 : 0;
 
 /* Specify the memory areas */
 /* The SRAM region [0x0-0x7FFFF] is reserved for Non-cached shared memory between M33 and DSP. */
+/* m_ncache is enlarged to 5056K: method_pool 1216K (planned buffers) +
+   temp_pool 3136K (delegate execute-time allocations: NPU scratch +
+   fetch2sram weight staging — BackendExecutionContext::allocate() serves
+   from the temp pool) + pte 384K + input 256K. The RESULT response buffer
+   (260K, CPU-only) moved to PSRAM to make room. */
 MEMORY
 {
   m_flash_config        (RX)  : ORIGIN = 0x28000000, LENGTH = 0x00004000
   m_interrupts          (RX)  : ORIGIN = 0x28004000, LENGTH = 0x00000300
   m_text                (RX)  : ORIGIN = 0x28004300, LENGTH = 0x001FBD00
-  m_data                (RW)  : ORIGIN = 0x20200000, LENGTH = 0x00230000
-  m_ncache              (RW)  : ORIGIN = 0x20000000, LENGTH = 0x00200000
-  m_model               (RW)  : ORIGIN = 0x20430000, LENGTH = 0x00100000
+  m_data                (RW)  : ORIGIN = 0x204E8000, LENGTH = 0x00048000
+  m_ncache              (RW)  : ORIGIN = 0x20000000, LENGTH = 0x004E8000
 }
 
 /* Define output sections */
@@ -207,25 +211,26 @@ SECTIONS
       __noncachedata_end__ = .;
   } > m_ncache
 
-  __MDATA_REGION_START = ORIGIN(m_model);
-  __MDATA_REGION_SIZE  = LENGTH(m_model);
-  __MDATA_ROM = __NDATA_ROM + (__noncachedata_init_end__ - __noncachedata_start__); /* Symbol is used by startup for model data initialization */
-  .model.init : AT(__MDATA_ROM)
+  __MDATA_REGION_START = ORIGIN(m_ncache);
+  /* This example uploads models at runtime and never embeds .modeldata, so
+     the (always empty) model sections fold into m_ncache instead of a
+     dedicated m_model region. */
+  .model.init : AT(__NDATA_ROM + (__noncachedata_init_end__ - __noncachedata_start__))
   {
     __modeldata_start__ = .;   /* create a global symbol at model data start */
     *(.modeldata)
     *(.modeldata*)
     . = ALIGN(4);
     __modeldata_init_end__ = .;   /* create a global symbol at initialized model data end */
-  } > m_model
+  } > m_ncache
   . = __modeldata_init_end__;
   .model :
   {
     . = ALIGN(4);
     __modeldata_end__ = .;
-  } > m_model
+  } > m_ncache
 
-  __DATA_END = __MDATA_ROM + (__modeldata_init_end__ - __modeldata_start__);
+  __DATA_END = __NDATA_ROM + (__noncachedata_init_end__ - __noncachedata_start__) + (__modeldata_init_end__ - __modeldata_start__);
 
   text_end = ORIGIN(m_text) + LENGTH(m_text);
   ASSERT(__DATA_END <= text_end, "region m_text overflowed with text and data")
