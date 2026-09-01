@@ -850,10 +850,14 @@ typedef enum _app_standby_mode_idx
     kAPP_StandbyModeIdx_DS1       = 1U, /*!< Deep Sleep 1 - all domains retained. */
     kAPP_StandbyModeIdx_DS2       = 2U, /*!< Deep Sleep 2 - CPU retained, NPU/COMM/MEDIA off. */
     kAPP_StandbyModeIdx_DS3       = 3U, /*!< Deep Sleep 3 - all domains off. */
-    /* Power Down / Deep Power Down are NOT table columns: their retention config is a
-     * handful of scalars, inlined directly in APP_BuildPowerDownConfig() /
-     * APP_BuildDeepPowerDownConfig() rather than driven by g_powerModeTable. */
-    kAPP_StandbyModeIdx_COUNT     = 4U
+    kAPP_StandbyModeIdx_PD        = 4U, /*!< Power Down - advisory column: only the WakeSram and
+                                         *   ComputeSram01 rows are meaningful here (they are the
+                                         *   only two blocks written in PD).  All other rows are
+                                         *   _NC_.  Cells are display-only; the driver hardcodes
+                                         *   both memories to Retention in POWER_EnterPowerDown(). */
+    /* Deep Power Down is NOT a table column: its retention config is a single scalar
+     * (retainVbatSram) inlined directly in APP_BuildDeepPowerDownConfig(). */
+    kAPP_StandbyModeIdx_COUNT     = 5U
 } app_standby_mode_idx_t;
 
 /*! Configurable resource row identifiers - Y-axis of g_powerModeTable. */
@@ -886,29 +890,47 @@ typedef enum _power_standby_resource
     kPOWER_Resource_ClkSxosc          = 19U,
     kPOWER_Resource_ClkFro12MLp       = 20U,
 
-    /* [EXPERIMENTAL] Memory slice standby modes - MEMCON_SLICE.MEM_SLPCFG */
-    kPOWER_Resource_WakeSram          = 21U,
-    kPOWER_Resource_Ocram             = 22U,
-    kPOWER_Resource_LlcCache          = 23U,
-    kPOWER_Resource_Audio8Kb          = 24U,
-    kPOWER_Resource_M85Tcm            = 25U,
-    kPOWER_Resource_NpuTcm            = 26U,
+    /* [EXPERIMENTAL] Memory slice standby modes - MEMCON_SLICE.MEM_SLPCFG.
+     * All fsl_power-managed memcon blocks are configurable here. Two blocks have
+     * hardware retention paths that give them a wider valid range than the rest:
+     *   - kPOWER_Resource_WakeSram (S0 B0):     WAKE_SS is always-on across
+     *     Sleep/DS/PD, so Active is safe in DS and is the default. PD supports
+     *     {Retention, PowerDown} (Active is semantically null in PD).
+     *   - kPOWER_Resource_ComputeSram01 (S2 B0): first-class always-retained
+     *     slot; Retention default. WARNING: PowerDown in DS is a foot-gun (block
+     *     holds the first 64 KB of OCRAM0, commonly stack/heap) — the driver
+     *     does not police the value.
+     * The other 7 SRAMCTL memory blocks (S2 B1-B7) accept {Retention, PowerDown}
+     * only (Active is not valid on those blocks in DS). */
+    kPOWER_Resource_WakeSram          = 21U, /*!< WAKE_SS SRAM 8KB (S0 B0)  */
+    kPOWER_Resource_ComputeSram01     = 22U, /*!< OCRAM0 Memory 0/1 (S2 B0) */
+    kPOWER_Resource_Ocram0M23         = 23U, /*!< OCRAM0 Memory 2/3 (S2 B1) */
+    kPOWER_Resource_Ocram0M4          = 24U, /*!< OCRAM0 Memory 4   (S2 B2) */
+    kPOWER_Resource_Ocram0M5          = 25U, /*!< OCRAM0 Memory 5   (S2 B3) */
+    kPOWER_Resource_Ocram1M0          = 26U, /*!< OCRAM1 Memory 0   (S2 B4) */
+    kPOWER_Resource_Ocram1M1          = 27U, /*!< OCRAM1 Memory 1   (S2 B5) */
+    kPOWER_Resource_Ocram2M0          = 28U, /*!< OCRAM2 Memory 0   (S2 B6) */
+    kPOWER_Resource_Ocram2M1          = 29U, /*!< OCRAM2 Memory 1   (S2 B7) */
+    kPOWER_Resource_LlcCache          = 30U,
+    kPOWER_Resource_Audio8Kb          = 31U,
+    kPOWER_Resource_M85Tcm            = 32U,
+    kPOWER_Resource_NpuTcm            = 33U,
 
     /* Power Down / Deep Power Down retention are NOT table resources: those scalars
-     * (retainOcram0KB / retainPkcMem / retainVbatSram) are inlined in the PD/DPD builders. */
+     * (retainOcram0M01 / retainVbatSram) are inlined in the PD/DPD builders. */
 
     /* [EXPERIMENTAL] Root clock standby enable - POWERCON_SOC_CTRL.RCGCFG_STBY */
     /* bit=1 means clock ENABLED in standby (active-high, opposite of CSRCCFG_STBY). */
-    kPOWER_Resource_RcgCompute        = 27U, /*!< COMPUTE_SS root clock (bit 0) */
-    kPOWER_Resource_RcgMain           = 28U, /*!< MAIN_SS root clock (bit 1) */
-    kPOWER_Resource_RcgWake           = 29U, /*!< WAKE_SS root clock (bit 2) */
-    kPOWER_Resource_RcgComm           = 30U, /*!< COMM_SS root clock (bit 3) */
-    kPOWER_Resource_RcgMedia          = 31U, /*!< MEDIA_SS root clock (bit 4) */
-    kPOWER_Resource_RcgAudio          = 32U, /*!< AUDIO_SS root clock (bit 5) */
-    kPOWER_Resource_RcgWake1M         = 33U, /*!< WAKE_1M root clock (bit 6) */
-    kPOWER_Resource_RcgWake2M         = 34U, /*!< WAKE_2M root clock (bit 7) */
+    kPOWER_Resource_RcgCompute        = 34U, /*!< COMPUTE_SS root clock (bit 0) */
+    kPOWER_Resource_RcgMain           = 35U, /*!< MAIN_SS root clock (bit 1) */
+    kPOWER_Resource_RcgWake           = 36U, /*!< WAKE_SS root clock (bit 2) */
+    kPOWER_Resource_RcgComm           = 37U, /*!< COMM_SS root clock (bit 3) */
+    kPOWER_Resource_RcgMedia          = 38U, /*!< MEDIA_SS root clock (bit 4) */
+    kPOWER_Resource_RcgAudio          = 39U, /*!< AUDIO_SS root clock (bit 5) */
+    kPOWER_Resource_RcgWake1M         = 40U, /*!< WAKE_1M root clock (bit 6) */
+    kPOWER_Resource_RcgWake2M         = 41U, /*!< WAKE_2M root clock (bit 7) */
 
-    kPOWER_Resource_COUNT             = 35U
+    kPOWER_Resource_COUNT             = 42U
 } power_standby_resource_t;
 
 /*!
@@ -1010,8 +1032,15 @@ static const char *const g_powerResourceNames[kPOWER_Resource_COUNT] = {
     [kPOWER_Resource_ClkLdoq0V8]        = "[EXP] LDOQ_0V8 keep-on",
     [kPOWER_Resource_ClkSxosc]          = "[EXP] SXOSC keep-on",
     [kPOWER_Resource_ClkFro12MLp]       = "[EXP] FRO_12M_LP keep-on",
-    [kPOWER_Resource_WakeSram]          = "[EXP] WAKE SRAM mode",
-    [kPOWER_Resource_Ocram]             = "[EXP] OCRAM mode",
+    [kPOWER_Resource_WakeSram]          = "[EXP] Wake SRAM mode",
+    [kPOWER_Resource_ComputeSram01]     = "[EXP] OCRAM0 M0/1 mode",
+    [kPOWER_Resource_Ocram0M23]         = "[EXP] OCRAM0 M2/3 mode",
+    [kPOWER_Resource_Ocram0M4]          = "[EXP] OCRAM0 M4 mode",
+    [kPOWER_Resource_Ocram0M5]          = "[EXP] OCRAM0 M5 mode",
+    [kPOWER_Resource_Ocram1M0]          = "[EXP] OCRAM1 M0 mode",
+    [kPOWER_Resource_Ocram1M1]          = "[EXP] OCRAM1 M1 mode",
+    [kPOWER_Resource_Ocram2M0]          = "[EXP] OCRAM2 M0 mode",
+    [kPOWER_Resource_Ocram2M1]          = "[EXP] OCRAM2 M1 mode",
     [kPOWER_Resource_LlcCache]          = "[EXP] LLC cache mode",
     [kPOWER_Resource_Audio8Kb]          = "[EXP] Audio 8KB mode",
     [kPOWER_Resource_M85Tcm]            = "[EXP] M85 TCM mode",
@@ -1032,6 +1061,7 @@ static const char *const g_standbyModeNames[kAPP_StandbyModeIdx_COUNT] = {
     [kAPP_StandbyModeIdx_DS1]   = "DS1",
     [kAPP_StandbyModeIdx_DS2]   = "DS2",
     [kAPP_StandbyModeIdx_DS3]   = "DS3",
+    [kAPP_StandbyModeIdx_PD]    = "PD",
 };
 
 /*!
@@ -1046,11 +1076,19 @@ static const char *const g_standbyModeNames[kAPP_StandbyModeIdx_COUNT] = {
  *   ON(c0,c1,c2) / OFF(c0,c1,c2) = CSRCCFG/RCGCFG resource: keep ENABLED / gate OFF in
  *                                  standby; CMC routing APP_HSKSEL(c0,c1,c2).
  *
- * Column index (X-axis): Sleep + Deep Sleep variants only:
- *   [0] Sleep | [1] DS1 | [2] DS2 | [3] DS3
+ * Column index (X-axis): Sleep + Deep Sleep variants + Power Down:
+ *   [0] Sleep | [1] DS1 | [2] DS2 | [3] DS3 | [4] PD
  *
- * Power Down / Deep Power Down are NOT columns here: their retention config is inlined
- * in APP_BuildPowerDownConfig() / APP_BuildDeepPowerDownConfig().
+ * The PD column is advisory: only the WakeSram and ComputeSram01 rows carry
+ * meaningful values there (they are the only two memory blocks written by
+ * POWER_EnterPowerDown()).  All other rows are _NC_ in the PD column, and the
+ * two memory rows have no s_slpFieldMap[] entry, so the builder does not
+ * consume the PD column — the driver hardcodes both memories to Retention.
+ * The column exists so the intended Power Down memory configuration is visible
+ * alongside the Deep Sleep configuration.
+ *
+ * Deep Power Down is NOT a column: its retention config is a single scalar
+ * (retainVbatSram) inlined in APP_BuildDeepPowerDownConfig().
  *
  * DMA wakeup reuses the DS1/DS2/DS3 base columns and applies the historical DMA-only
  * clock-source overrides in code after the table-driven build.
@@ -1058,61 +1096,78 @@ static const char *const g_standbyModeNames[kAPP_StandbyModeIdx_COUNT] = {
 static const power_mode_cell_t
     g_powerModeTable[kPOWER_Resource_COUNT][kAPP_StandbyModeIdx_COUNT] =
 {
-    /*  resource                      [0]Sleep      [1]DS1       [2]DS2       [3]DS3       */
+    /*  resource                      [0]Sleep      [1]DS1       [2]DS2       [3]DS3       [4]PD */
     /* ---- Domain events (PDCON.PDSLPCFG) ------------------------------------------------------------------------------------------------ */
-    [kPOWER_Resource_CpuDomain]   = { ON(),  ON(),  ON(),  OFF() },
-    [kPOWER_Resource_NpuDomain]   = { ON(),  ON(),  OFF(), OFF() },
-    [kPOWER_Resource_CommDomain]  = { ON(),  ON(),  OFF(), OFF() },
-    [kPOWER_Resource_MediaDomain] = { ON(),  ON(),  OFF(), OFF() },
+    [kPOWER_Resource_CpuDomain]   = { ON(),  ON(),  ON(),  OFF(), _NC_ },
+    [kPOWER_Resource_NpuDomain]   = { ON(),  ON(),  OFF(), OFF(), _NC_ },
+    [kPOWER_Resource_CommDomain]  = { ON(),  ON(),  OFF(), OFF(), _NC_ },
+    [kPOWER_Resource_MediaDomain] = { ON(),  ON(),  OFF(), OFF(), _NC_ },
     /* ---- PMU analog (PMUCFG_STBY) [EXPERIMENTAL] --------------------------------------------------------------------------------------- */
     /* Sleep: SSC NOT triggered; values written but no analog transition.                                                                      */
     /* DeepSleep: SSC IS triggered; values drive actual hardware transitions.                                                                  */
+    /* PD column: _NC_ (Power Down PMU/DCDC/LDO state is not driven by g_powerModeTable — it is inlined by the driver in POWER_EnterPowerDown). */
     /* TODO(V0.9, pending silicon): Deep Sleep targets are PmuMode=LP, CoreLvl=0.65V, Ldo1V8/LdoVdda1V8=LP (spec section 2.3).                  */
     /*   Kept at active-mode/HP placeholders below until silicon characterization confirms the codes; flip the DS columns then.               */
-    [kPOWER_Resource_PmuMode]          = { _C(PMU_HP),   _C(PMU_LP),   _C(PMU_LP),   _C(PMU_LP) }, /* HP in Sleep (TODO V0.9: DS=LP) */
-    [kPOWER_Resource_DcdcMode]         = { _C(DCDC_PWM), _C(DCDC_PWM), _C(DCDC_PFM), _C(DCDC_PFM) },
-    [kPOWER_Resource_CoreLvl]          = { _C(0U),       _C(0x11U),    _C(0x11U),    _C(0x11U) }, /* 0=use active-mode level */
-    [kPOWER_Resource_Ldo0V8Mode]       = { _C(LDO_HP),   _C(LDO_HP),   _C(LDO_LP),   _C(LDO_LP) },
-    [kPOWER_Resource_Ldo1V8Mode]       = { _C(LDO_HP),   _C(LDO_HP),   _C(LDO_LP),   _C(LDO_LP) },
-    [kPOWER_Resource_LdoVdda1V8Mode]   = { _C(LDO_HP),   _C(LDO_HP),   _C(LDO_LP),   _C(LDO_LP) },
-    [kPOWER_Resource_Hqref]            = { _C(true),     _C(true),     _C(true),     _C(true) }, /* V0.9: HQREF ON in Sleep/DeepSleep; off only in PMU-RET (Power Down) */
-    [kPOWER_Resource_Sensors]          = { _C(0U),       _C(0U),       _C(0U),       _C(0U) }, /* all sensors off */
+    [kPOWER_Resource_PmuMode]          = { _C(PMU_HP),   _C(PMU_LP),   _C(PMU_LP),   _C(PMU_LP),   _NC_ }, /* HP in Sleep (TODO V0.9: DS=LP) */
+    [kPOWER_Resource_DcdcMode]         = { _C(DCDC_PWM), _C(DCDC_PWM), _C(DCDC_PFM), _C(DCDC_PFM), _NC_ },
+    [kPOWER_Resource_CoreLvl]          = { _C(0U),       _C(0x11U),    _C(0x11U),    _C(0x11U),    _NC_ }, /* 0=use active-mode level */
+    [kPOWER_Resource_Ldo0V8Mode]       = { _C(LDO_HP),   _C(LDO_HP),   _C(LDO_LP),   _C(LDO_LP),   _NC_ },
+    [kPOWER_Resource_Ldo1V8Mode]       = { _C(LDO_HP),   _C(LDO_HP),   _C(LDO_LP),   _C(LDO_LP),   _NC_ },
+    [kPOWER_Resource_LdoVdda1V8Mode]   = { _C(LDO_HP),   _C(LDO_HP),   _C(LDO_LP),   _C(LDO_LP),   _NC_ },
+    [kPOWER_Resource_Hqref]            = { _C(true),     _C(true),     _C(true),     _C(true),     _NC_ }, /* V0.9: HQREF ON in Sleep/DeepSleep; off only in PMU-RET (Power Down) */
+    [kPOWER_Resource_Sensors]          = { _C(0U),       _C(0U),       _C(0U),       _C(0U),       _NC_ }, /* all sensors off */
     /* ---- Clock source gating (CSRCCFG_STBY + CSRCCFG_HSK_SEL) [EXPERIMENTAL] ---------------------------------- */
     /* ON(c0,c1,c2)=retain enabled; OFF(c0,c1,c2)=cut off.  Set per-cell CMC routing directly: (1,0,0)=CMC0  */
     /* only (this example); e.g. ON(1,1,1) would route a resource to all three CMCs.                          */
     /* DMA wakeup keeps its historical clock-source differences through runtime overrides. */
-    /*                               [0]Slp          [1]DS1        [2]DS2        [3]DS3 */
-    [kPOWER_Resource_ClkLdoa0V8]  = { ON(1,0,0), ON(1,0,0),  OFF(1,0,0), OFF(1,0,0) },
-    [kPOWER_Resource_ClkFro192M]  = { ON(1,0,0), ON(1,0,0),  OFF(1,0,0), OFF(1,0,0) },
-    [kPOWER_Resource_ClkFro12M]   = { ON(1,0,0), ON(1,0,0),  OFF(1,0,0), OFF(1,0,0) },
-    [kPOWER_Resource_ClkMainPll]  = { ON(1,0,0), OFF(1,0,0), OFF(1,0,0), OFF(1,0,0) }, /* DIV4 auto-restored on wakeup */
-    [kPOWER_Resource_ClkCorePll]  = { ON(1,0,0), OFF(1,0,0), OFF(1,0,0), OFF(1,0,0) },
-    [kPOWER_Resource_ClkSysPll]   = { ON(1,0,0), OFF(1,0,0), OFF(1,0,0), OFF(1,0,0) },
-    [kPOWER_Resource_ClkLdoq0V8]  = { ON(1,0,0), OFF(1,0,0), OFF(1,0,0), OFF(1,0,0) },
-    [kPOWER_Resource_ClkSxosc]    = { ON(1,0,0), OFF(1,0,0), OFF(1,0,0), OFF(1,0,0) },
-    [kPOWER_Resource_ClkFro12MLp] = { ON(1,0,0), ON(1,0,0),  OFF(1,0,0), OFF(1,0,0) },
+    /* PD column: _NC_ — clock-source standby state in Power Down is inlined by the driver. */
+    /*                               [0]Slp          [1]DS1        [2]DS2        [3]DS3         [4]PD */
+    [kPOWER_Resource_ClkLdoa0V8]  = { ON(1,0,0), ON(1,0,0),  OFF(1,0,0), OFF(1,0,0), _NC_ },
+    [kPOWER_Resource_ClkFro192M]  = { ON(1,0,0), ON(1,0,0),  OFF(1,0,0), OFF(1,0,0), _NC_ },
+    [kPOWER_Resource_ClkFro12M]   = { ON(1,0,0), ON(1,0,0),  OFF(1,0,0), OFF(1,0,0), _NC_ },
+    [kPOWER_Resource_ClkMainPll]  = { ON(1,0,0), OFF(1,0,0), OFF(1,0,0), OFF(1,0,0), _NC_ }, /* DIV4 auto-restored on wakeup */
+    [kPOWER_Resource_ClkCorePll]  = { ON(1,0,0), OFF(1,0,0), OFF(1,0,0), OFF(1,0,0), _NC_ },
+    [kPOWER_Resource_ClkSysPll]   = { ON(1,0,0), OFF(1,0,0), OFF(1,0,0), OFF(1,0,0), _NC_ },
+    [kPOWER_Resource_ClkLdoq0V8]  = { ON(1,0,0), OFF(1,0,0), OFF(1,0,0), OFF(1,0,0), _NC_ },
+    [kPOWER_Resource_ClkSxosc]    = { ON(1,0,0), OFF(1,0,0), OFF(1,0,0), OFF(1,0,0), _NC_ },
+    [kPOWER_Resource_ClkFro12MLp] = { ON(1,0,0), ON(1,0,0),  OFF(1,0,0), OFF(1,0,0), _NC_ },
     /* ---- Memory slice modes (MEMCON_SLICE.MEM_SLPCFG) [EXPERIMENTAL] -------------------------------------------------------------------- */
-    /* Sleep: Active.  DeepSleep: Retention, EXCEPT a domain's memory is PowerDown (MEM_PD) once its power domain is gated off              */
-    /* (NPU/COMM/MEDIA TCM from DS2; M85 TCM in DS3) -- an unpowered domain cannot retain.  Always-on OCRAM-slice memory                     */
-    /* (Ocram/Audio8Kb/LlcCache) and WAKE SRAM stay Retention across all DS variants.                                                        */
-    [kPOWER_Resource_WakeSram]         = { _C(MEM_ACT), _C(MEM_RET), _C(MEM_RET), _C(MEM_RET) },
-    [kPOWER_Resource_Ocram]            = { _C(MEM_ACT), _C(MEM_RET), _C(MEM_RET), _C(MEM_RET) },
-    [kPOWER_Resource_LlcCache]         = { _C(MEM_ACT), _C(MEM_RET), _C(MEM_RET), _C(MEM_RET) },
-    [kPOWER_Resource_Audio8Kb]         = { _C(MEM_ACT), _C(MEM_RET), _C(MEM_RET), _C(MEM_RET) },
-    [kPOWER_Resource_M85Tcm]           = { _C(MEM_ACT), _C(MEM_RET), _C(MEM_RET), _C(MEM_PD) }, /* CPU off in DS3 -> PowerDown */
-    [kPOWER_Resource_NpuTcm]           = { _C(MEM_ACT), _C(MEM_RET), _C(MEM_PD),  _C(MEM_PD) }, /* NPU off from DS2 -> PowerDown */
+    /* Sleep does NOT configure MEMCON (memories stay on with their controllers running because no supply is removed) -> Sleep column NC.  */
+    /* DeepSleep: Retention, EXCEPT a domain's memory is PowerDown (MEM_PD) once its power domain is gated off                              */
+    /* (NPU/COMM/MEDIA TCM from DS2; M85 TCM in DS3) -- an unpowered domain cannot retain.                                                  */
+    /* Other 7 SRAMCTL memory blocks (S2 B1-B7) retain in DS1 but power down from DS2 onward (Compute domain is deep-standby by DS2+).      */
+    /* PD column: _NC_ for every non-retaining memory row — those blocks lose their supply in PD regardless of MEM_SLPCFG.                    */
+    /*                                                                                                                                       */
+    /* WakeSram / ComputeSram01: driver reads config->setWakeSramMode / setComputeSram01Mode in both POWER_EnterDeepSleep() and                */
+    /* POWER_EnterPowerDown(). Defaults per spec:                                                                                            */
+    /*   WakeSram        - DS: Active (always-on WAKE_SS makes it safe), PD: Retention (Active not offered in PD; VDD_CORE off).             */
+    /*   ComputeSram01   - DS: Retention (foot-gun to PowerDown when block holds stack/heap), PD: Retention.                                 */
+    [kPOWER_Resource_WakeSram]         = { _NC_,        _C(MEM_ACT), _C(MEM_ACT), _C(MEM_ACT), _C(MEM_RET) },
+    [kPOWER_Resource_ComputeSram01]    = { _NC_,        _C(MEM_RET), _C(MEM_RET), _C(MEM_RET), _C(MEM_RET) },
+    [kPOWER_Resource_Ocram0M23]        = { _NC_,        _C(MEM_RET), _C(MEM_PD),  _C(MEM_PD),  _NC_ },
+    [kPOWER_Resource_Ocram0M4]         = { _NC_,        _C(MEM_RET), _C(MEM_PD),  _C(MEM_PD),  _NC_ },
+    [kPOWER_Resource_Ocram0M5]         = { _NC_,        _C(MEM_RET), _C(MEM_PD),  _C(MEM_PD),  _NC_ },
+    [kPOWER_Resource_Ocram1M0]         = { _NC_,        _C(MEM_RET), _C(MEM_PD),  _C(MEM_PD),  _NC_ },
+    [kPOWER_Resource_Ocram1M1]         = { _NC_,        _C(MEM_RET), _C(MEM_PD),  _C(MEM_PD),  _NC_ },
+    [kPOWER_Resource_Ocram2M0]         = { _NC_,        _C(MEM_RET), _C(MEM_PD),  _C(MEM_PD),  _NC_ },
+    [kPOWER_Resource_Ocram2M1]         = { _NC_,        _C(MEM_RET), _C(MEM_PD),  _C(MEM_PD),  _NC_ },
+    [kPOWER_Resource_LlcCache]         = { _NC_,        _C(MEM_RET), _C(MEM_RET), _C(MEM_RET), _NC_ },
+    [kPOWER_Resource_Audio8Kb]         = { _NC_,        _C(MEM_RET), _C(MEM_RET), _C(MEM_RET), _NC_ },
+    [kPOWER_Resource_M85Tcm]           = { _NC_,        _C(MEM_RET), _C(MEM_RET), _C(MEM_PD),  _NC_ }, /* CPU off in DS3 -> PowerDown */
+    [kPOWER_Resource_NpuTcm]           = { _NC_,        _C(MEM_RET), _C(MEM_PD),  _C(MEM_PD),  _NC_ }, /* NPU off from DS2 -> PowerDown */
     /* ---- Root clock standby enable (RCGCFG_STBY + RCGCFG_HSK_SEL) [EXPERIMENTAL] ----------------------------------------- */
     /* Active-high register: ON(c0,c1,c2)=bit=1 (enabled); OFF(c0,c1,c2)=bit=0 (gated).  Opposite polarity to CSRCCFG_STBY. */
-    /* DeepSleep: gate all root clocks except WAKE_1M/2M. */
-    /*                               [0]Slp          [1]DS1        [2]DS2        [3]DS3 */
-    [kPOWER_Resource_RcgCompute]  = { ON(1,0,0), OFF(1,0,0), OFF(1,0,0), OFF(1,0,0) },
-    [kPOWER_Resource_RcgMain]     = { ON(1,0,0), OFF(1,0,0), OFF(1,0,0), OFF(1,0,0) },
-    [kPOWER_Resource_RcgWake]     = { ON(1,0,0), ON(1,0,0),  ON(1,0,0),  ON(1,0,0) }, /* WAKE_SS stays on */
-    [kPOWER_Resource_RcgComm]     = { ON(1,0,0), OFF(1,0,0), OFF(1,0,0), OFF(1,0,0) },
-    [kPOWER_Resource_RcgMedia]    = { ON(1,0,0), OFF(1,0,0), OFF(1,0,0), OFF(1,0,0) },
-    [kPOWER_Resource_RcgAudio]    = { ON(1,0,0), OFF(1,0,0), OFF(1,0,0), OFF(1,0,0) },
-    [kPOWER_Resource_RcgWake1M]   = { ON(1,0,0), ON(1,0,0),  ON(1,0,0),  ON(1,0,0) }, /* always on: WAKE 1M timer */
-    [kPOWER_Resource_RcgWake2M]   = { ON(1,0,0), ON(1,0,0),  ON(1,0,0),  ON(1,0,0) }, /* always on: WAKE 2M timer */
+    /* DeepSleep: gate all root clocks except WAKE_1M/2M.                                                                    */
+    /* PD column: _NC_ — root-clock standby state in Power Down is inlined by the driver.                                     */
+    /*                               [0]Slp          [1]DS1        [2]DS2        [3]DS3         [4]PD */
+    [kPOWER_Resource_RcgCompute]  = { ON(1,0,0), OFF(1,0,0), OFF(1,0,0), OFF(1,0,0), _NC_ },
+    [kPOWER_Resource_RcgMain]     = { ON(1,0,0), OFF(1,0,0), OFF(1,0,0), OFF(1,0,0), _NC_ },
+    [kPOWER_Resource_RcgWake]     = { ON(1,0,0), ON(1,0,0),  ON(1,0,0),  ON(1,0,0),  _NC_ }, /* WAKE_SS stays on */
+    [kPOWER_Resource_RcgComm]     = { ON(1,0,0), OFF(1,0,0), OFF(1,0,0), OFF(1,0,0), _NC_ },
+    [kPOWER_Resource_RcgMedia]    = { ON(1,0,0), OFF(1,0,0), OFF(1,0,0), OFF(1,0,0), _NC_ },
+    [kPOWER_Resource_RcgAudio]    = { ON(1,0,0), OFF(1,0,0), OFF(1,0,0), OFF(1,0,0), _NC_ },
+    [kPOWER_Resource_RcgWake1M]   = { ON(1,0,0), ON(1,0,0),  ON(1,0,0),  ON(1,0,0),  _NC_ }, /* always on: WAKE 1M timer */
+    [kPOWER_Resource_RcgWake2M]   = { ON(1,0,0), ON(1,0,0),  ON(1,0,0),  ON(1,0,0),  _NC_ }, /* always on: WAKE 2M timer */
 };
 
 /* Remove table-local macros from the preprocessor namespace. */

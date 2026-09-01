@@ -118,8 +118,6 @@
 #define APP_AON_GPIO_IRQ_HANDLER VBAT_GPIO_CH0_IRQHandler
 #define APP_AON_GPIO_NAME       "SW5"
 
-/* OCRAM0 retention size for Power Down (kilobytes, 0-64). */
-#define APP_PD_OCRAM0_KB        64U
 
 #define APP_PRINT_MEASURED_CLOCKS 0
 

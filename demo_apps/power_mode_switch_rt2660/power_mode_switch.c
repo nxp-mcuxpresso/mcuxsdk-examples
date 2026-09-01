@@ -852,9 +852,15 @@ static void APP_ApplyLpcgTable(const app_lpcg_config_t *table)
 /*
  * Data-driven Sleep / Deep Sleep field applicator.
  *
- * power_sleep_config_t and power_deep_sleep_config_t carry the same field
- * names with the same types and the same layout.  A single offsetof-based
- * lookup table (s_slpFieldMap) therefore serves both structs.
+ * power_sleep_config_t and power_deep_sleep_config_t share the leading fields (domain
+ * events, PMU analog, clock-source enables, root-clock enables) with the same names
+ * and the same layout up to the point where Sleep ends. Deep Sleep then adds 8 memcon
+ * `set*Mode` fields that Sleep does not have (Sleep never programs MEMCON).
+ *
+ * The offsetof-based lookup table below therefore uses `power_deep_sleep_config_t`
+ * as the reference struct. For Sleep, `g_powerModeTable[memory_row][kAPP_StandbyModeIdx_Sleep]`
+ * is set to `_NC_` (valid=false) so the consumer loop never dereferences a memcon
+ * field on the shorter Sleep buffer.
  *
  * Resources that have no field in these structs (PD/DPD-only rows) have
  * type kFT_Skip.  Their cells are always _NC_ (valid=false) so the outer
@@ -874,7 +880,7 @@ typedef struct
     uint8_t  type;   /*!< app_field_type_t tag. */
 } app_slp_field_t;
 
-#define _SF(field, ft) { (uint16_t)offsetof(power_sleep_config_t, field), (uint8_t)(ft) }
+#define _SF(field, ft) { (uint16_t)offsetof(power_deep_sleep_config_t, field), (uint8_t)(ft) }
 
 static const app_slp_field_t s_slpFieldMap[kPOWER_Resource_COUNT] = {
     [kPOWER_Resource_CpuDomain]        = _SF(setCpuDomainEvent,   kFT_U32),
@@ -899,7 +905,14 @@ static const app_slp_field_t s_slpFieldMap[kPOWER_Resource_COUNT] = {
     [kPOWER_Resource_ClkSxosc]         = _SF(enableSxoscClockSource,            kFT_Bool),
     [kPOWER_Resource_ClkFro12MLp]      = _SF(enableFro12MLpClockSource,         kFT_Bool),
     [kPOWER_Resource_WakeSram]         = _SF(setWakeSramMode,      kFT_U32),
-    [kPOWER_Resource_Ocram]            = _SF(setOcramMode,         kFT_U32),
+    [kPOWER_Resource_ComputeSram01]    = _SF(setComputeSram01Mode, kFT_U32),
+    [kPOWER_Resource_Ocram0M23]        = _SF(setOcram0M23Mode,     kFT_U32),
+    [kPOWER_Resource_Ocram0M4]         = _SF(setOcram0M4Mode,      kFT_U32),
+    [kPOWER_Resource_Ocram0M5]         = _SF(setOcram0M5Mode,      kFT_U32),
+    [kPOWER_Resource_Ocram1M0]         = _SF(setOcram1M0Mode,     kFT_U32),
+    [kPOWER_Resource_Ocram1M1]         = _SF(setOcram1M1Mode,     kFT_U32),
+    [kPOWER_Resource_Ocram2M0]         = _SF(setOcram2M0Mode,     kFT_U32),
+    [kPOWER_Resource_Ocram2M1]         = _SF(setOcram2M1Mode,     kFT_U32),
     [kPOWER_Resource_LlcCache]         = _SF(setLlcCacheMode,      kFT_U32),
     [kPOWER_Resource_Audio8Kb]         = _SF(setAudio8KbMode,      kFT_U32),
     [kPOWER_Resource_M85Tcm]           = _SF(setM85TcmMode,        kFT_U32),
@@ -1099,18 +1112,70 @@ static void APP_ApplyHandshakeRoutingForMode(app_standby_mode_idx_t modeIdx)
 }
 
 /*!
+ * @brief PD field map — offsets into power_down_config_t for the two Power-Down-
+ * configurable resources. All other resources have {0, kFT_Skip} (default zero-init),
+ * so APP_ApplyPowerDownFields() silently ignores their PD-column cells.
+ *
+ * Kept separate from s_slpFieldMap because power_down_config_t and
+ * power_deep_sleep_config_t do NOT share a field layout — the memcon fields sit
+ * at completely different offsets. A shared map would need per-struct offsets,
+ * which is more machinery than two entries justify.
+ */
+#define _PDF(field, ft) { (uint16_t)offsetof(power_down_config_t, field), (uint8_t)(ft) }
+static const app_slp_field_t s_pdFieldMap[kPOWER_Resource_COUNT] = {
+    [kPOWER_Resource_WakeSram]      = _PDF(setWakeSramMode,      kFT_U32),
+    [kPOWER_Resource_ComputeSram01] = _PDF(setComputeSram01Mode, kFT_U32),
+};
+#undef _PDF
+
+/*!
+ * @brief Apply the PD column of g_powerModeTable to a power_down_config_t.
+ *
+ * Structural parallel to APP_ApplySleepFields() but writes power_down_config_t
+ * fields via s_pdFieldMap[]. Only the two resources with a non-Skip s_pdFieldMap
+ * entry (WakeSram, ComputeSram01) are consumed; every other row is silently
+ * ignored via the kFT_Skip default.
+ *
+ * @param base  Pointer to the first byte of a zero-initialised power_down_config_t.
+ */
+static void APP_ApplyPowerDownFields(uint8_t *base)
+{
+    uint32_t r;
+    assert(base != NULL);
+    for (r = 0U; r < (uint32_t)kPOWER_Resource_COUNT; r++)
+    {
+        const power_mode_cell_t *cell = &g_powerModeTable[r][(uint32_t)kAPP_StandbyModeIdx_PD];
+        if (!cell->valid)
+        {
+            continue;
+        }
+        const app_slp_field_t *f = &s_pdFieldMap[r];
+        if (f->type == (uint8_t)kFT_Skip)
+        {
+            continue;
+        }
+        switch ((app_field_type_t)f->type)
+        {
+            case kFT_Bool: *(bool     *)(base + f->offset) = (cell->value != 0U); break;
+            case kFT_U8:   *(uint8_t  *)(base + f->offset) = (uint8_t)cell->value; break;
+            case kFT_U32:  *(uint32_t *)(base + f->offset) = cell->value;          break;
+            default:       break;
+        }
+    }
+}
+
+/*!
  * @brief Build a power_down_config_t from the PD column of g_powerModeTable.
+ *
+ * Consumes the two configurable rows (WakeSram, ComputeSram01) via
+ * APP_ApplyPowerDownFields(). See design.md Memory Regions - Power Down for the
+ * valid-values discussion.
  */
 static void APP_BuildPowerDownConfig(power_down_config_t *cfg)
 {
     assert(cfg != NULL);
     (void)memset(cfg, 0, sizeof(*cfg));
-    /* Power Down retention (fixed for this demo; previously the PD column of
-     * g_powerModeTable). memset already cleared the false/0 fields. */
-    cfg->retainOcram0KB = APP_PD_OCRAM0_KB; /* OCRAM0 KB to retain */
-    cfg->retainPkcMem   = false;
-    cfg->retainLlcCache = false;            /* [EXP] */
-    cfg->retainAudio8Kb = false;            /* [EXP] */
+    APP_ApplyPowerDownFields((uint8_t *)cfg);
 }
 
 /*!
@@ -1494,8 +1559,8 @@ static void APP_PrintModeResources(uint8_t lpType, uint8_t wakeupSrc)
     if (lpType == APP_LP_PD)
     {
         PRINTF("\r\n  Configured resources for %s:\r\n", APP_LP_MODE_NAMES[lpType]);
-        PRINTF("    %-26s | %u KB\r\n", "PD OCRAM0 retain", (unsigned int)APP_PD_OCRAM0_KB);
-        PRINTF("    %-26s | %s\r\n",    "PD PKC RAM retain", "no");
+        PRINTF("    %-26s | %s\r\n", "PD OCRAM0 M0/1 retain", "yes (64 KB usable, hardware-fixed)");
+        PRINTF("    %-26s | %s\r\n", "PD WAKE SRAM retain",   "yes (WAKE_SS always-on)");
         return;
     }
     if ((lpType == APP_LP_DPD1) || (lpType == APP_LP_DPD2))
