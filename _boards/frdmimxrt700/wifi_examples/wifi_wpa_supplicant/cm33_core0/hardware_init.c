@@ -14,9 +14,54 @@
 #include "fsl_gpio.h"
 #include "fsl_cache.h"
 #include "app.h"
+#if CONFIG_HOST_SLEEP
+#include "fsl_pca9422.h"
+#include "pmic_support.h"
+#endif
 /*${header:end}*/
 
 /*${function:start}*/
+#if CONFIG_HOST_SLEEP
+/* Configure regulator output enable in Run mode (PMIC defaults). */
+static void BOARD_ConfigPMICRegEnable(pca9422_handle_t *handle)
+{
+    pca9422_regulatoren_t cfg;
+
+    PCA9422_GetDefaultRegEnableConfig(&cfg);
+    PCA9422_WriteRegEnableConfig(handle, cfg);
+}
+
+static void BOARD_ConfigPMICEnMode(pca9422_handle_t *handle)
+{
+    pca9422_enmodecfg_t cfg;
+
+    PCA9422_GetDefaultEnModeConfig(&cfg);
+    PCA9422_WriteEnModeConfig(handle, cfg);
+}
+
+/* Minimal PMIC init for Deep Sleep, mirroring the verified single-core
+ * usb_lpm_device_hid_mouse example on FRDM-IMXRT700. */
+static void BOARD_PowerInitPMIC(void)
+{
+    pca9422_modecfg_t pca9422ModeCfg[12];
+    uint32_t i;
+
+    BOARD_InitPmic();
+    for (i = 0; i < ARRAY_SIZE(pca9422ModeCfg); i++)
+    {
+        PCA9422_GetDefaultPowerModeConfig(&pca9422ModeCfg[i]);
+    }
+    for (i = 0; i < ARRAY_SIZE(pca9422ModeCfg); i++)
+    {
+        PCA9422_WritePowerModeConfigs(&pca9422Handle, (pca9422_power_mode_t)i, pca9422ModeCfg[i]);
+    }
+    BOARD_ConfigPMICRegEnable(&pca9422Handle);
+    BOARD_ConfigPMICEnMode(&pca9422Handle);
+
+    BOARD_SetPmicDVSPinStatus(0x1);
+}
+#endif /* CONFIG_HOST_SLEEP */
+
 void BOARD_InitHardware(void)
 {
     BOARD_ConfigMPU();
@@ -39,5 +84,11 @@ void BOARD_InitHardware(void)
 
     __DSB();
     __ISB();
+
+#if CONFIG_HOST_SLEEP
+    /* Mux the SW5 button pad and initialize the PMIC for Wi-Fi host-sleep Deep Sleep. */
+    BOARD_InitBUTTONsPins();
+    BOARD_PowerInitPMIC();
+#endif
 }
 /*${function:end}*/
