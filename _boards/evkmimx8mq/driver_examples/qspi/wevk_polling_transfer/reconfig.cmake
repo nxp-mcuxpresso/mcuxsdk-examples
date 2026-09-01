@@ -1,14 +1,14 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES ${board_root}/${board}/driver_examples/qspi/polling_transfer/./app.h
-            ${board_root}/${board}/driver_examples/qspi/polling_transfer/hardware_init.c
+    SOURCES ${board_root}/${board}/driver_examples/qspi/wevk_polling_transfer/app.h
+            ${board_root}/${board}/driver_examples/qspi/wevk_polling_transfer/hardware_init.c
             middleware/multicore/remoteproc/empty_rsc_table.c
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES ${board_root}/${board}/driver_examples/qspi/polling_transfer/.
+    INCLUDES ${board_root}/${board}/driver_examples/qspi/wevk_polling_transfer/.
 )
 
 mcux_add_macro(

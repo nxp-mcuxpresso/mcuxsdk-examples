@@ -281,4 +281,8 @@ void qspi_nor_flash_init(QuadSPI_Type *base)
 #if defined(FSL_FEATURE_QSPI_SOCCR_HAS_CLR_LPCAC) && (FSL_FEATURE_QSPI_SOCCR_HAS_CLR_LPCAC)
     QSPI_ClearCache(base);
 #endif
+
+#if !defined(FSL_FEATURE_QSPI_HAS_NO_RXBRD) || (!(FSL_FEATURE_QSPI_HAS_NO_RXBRD))
+    QSPI_SetReadDataArea(base, kQSPI_ReadIP);
+#endif
 }
