@@ -155,4 +155,8 @@
 #define BOARD_EXTFLASH_RST_GPIO BOARD_INITEXTFLASHPINS_LPSPI1_PCS3_GPIO
 #define BOARD_EXTFLASH_RST_PIN BOARD_INITEXTFLASHPINS_LPSPI1_PCS3_PIN
 
+/* On KW43/MCXW70, LPUART1 is not retained in deep sleep and must be
+ * reinitialized on every low power exit, not only after power down. */
+#define BOARD_LP_REINIT_STAGE_LPUART1 BOARD_LP_REINIT_STAGE_DEEPSLEEP
+
 #endif /* _BOARD_PLATFORM_H_ */

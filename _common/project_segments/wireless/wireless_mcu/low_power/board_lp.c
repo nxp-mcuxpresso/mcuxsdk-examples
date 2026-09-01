@@ -215,6 +215,21 @@ static void BOARD_ExitLowPowerCb(void)
     }
 #endif
 #endif
+
+#if defined(gAppUseSerialManager_c) && (gAppUseSerialManager_c > 0) && (BOARD_APP_UART_INSTANCE == 1U)
+#if (BOARD_LP_REINIT_STAGE_LPUART1 == BOARD_LP_REINIT_STAGE_DEEPSLEEP)
+    /* LPUART1 is not retained during deep sleep on this platform (e.g. KW43/MCXW70),
+     * so it must be reinitialized on every low power exit. */
+    BOARD_ReinitSerialManager((serial_handle_t)gSerMgrIf);
+#endif
+#endif
+
+#if defined(gDebugConsoleEnable_d) && (gDebugConsoleEnable_d == 1)
+#if (BOARD_DEBUG_UART_INSTANCE == 1U) && (BOARD_LP_REINIT_STAGE_LPUART1 == BOARD_LP_REINIT_STAGE_DEEPSLEEP)
+    BOARD_ReinitDebugConsole();
+#endif
+#endif
+
     return;
 }
 
@@ -244,25 +259,27 @@ static void BOARD_ExitPowerDownCb(void)
 #endif
 
 #if defined(gDebugConsoleEnable_d) && (gDebugConsoleEnable_d == 1)
+#if ((BOARD_DEBUG_UART_INSTANCE == 1U) && (BOARD_LP_REINIT_STAGE_LPUART1 == BOARD_LP_REINIT_STAGE_POWERDOWN)) || \
+     (BOARD_DEBUG_UART_INSTANCE == 0U)
     BOARD_ReinitDebugConsole();
+#endif
 #endif
 
 #if defined(BOARD_NBUDBG_HCI_LOGGER)
     (void)BOARD_DbgLoggerPortReinit();
 #endif
 
-#if defined(gAppUseSerialManager_c) && (gAppUseSerialManager_c > 0)
-#if (BOARD_APP_UART_INSTANCE == 1U)
-    /* Re enable properly UART1, this peripheral exits low power */
+#if defined(gAppUseSerialManager_c) && (gAppUseSerialManager_c > 0) &&                                          \
+    (((BOARD_APP_UART_INSTANCE == 1U) && (BOARD_LP_REINIT_STAGE_LPUART1 == BOARD_LP_REINIT_STAGE_POWERDOWN)) || \
+     ((BOARD_APP_UART_INSTANCE == 0U) &&                                                                        \
+      (!defined(gAppLpuart0WakeUpSourceEnable_d) || (gAppLpuart0WakeUpSourceEnable_d == 0))))
+    /* Reinitialize the application UART on low power exit:
+     * - LPUART1: its reinit stage is platform dependent (some platforms retain it in deep sleep, some don't),
+     *   so it only needs a reinit here when its reinit stage is power down.
+     * - LPUART0: it is retained when configured as a wakeup source, so it only needs a reinit when it is
+     *   not configured as a wakeup source. */
     BOARD_ReinitSerialManager((serial_handle_t)gSerMgrIf);
-#else
-
-    /* UART 0 is located in wakeup domain and remains initialized in low power mode to allow wakeup */
-#if !defined(gAppLpuart0WakeUpSourceEnable_d) || (gAppLpuart0WakeUpSourceEnable_d == 0)
-    BOARD_ReinitSerialManager((serial_handle_t)gSerMgrIf);
-#endif /* defined(gAppUseSerialManager_c) && (gAppUseSerialManager_c > 0) */
-#endif /* (BOARD_APP_UART_INSTANCE==1) */
-#endif /* !defined(gAppLpuart0WakeUpSourceEnable_d) || (gAppLpuart0WakeUpSourceEnable_d==0) */
+#endif
 
 #if defined(gAppUseSerialManager_c) && (gAppUseSerialManager_c > 1)
 #if !defined(gAppLpuart0WakeUpSourceEnable_d) || (gAppLpuart0WakeUpSourceEnable_d == 0) || (BOARD_APP_UART_INSTANCE == 0)

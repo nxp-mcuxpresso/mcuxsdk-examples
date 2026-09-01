@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2024,2025 NXP
+ * Copyright 2019-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -171,6 +171,32 @@
 #define BOARD_OtaExtStoragePartitionKbSize_c 1024u
 #endif
 #define BOARD_OtaExtStoragePartitionOffset_c 0U
+
+/* -------------------------------------------------------------------------- */
+/*                     Low power peripheral reinit stages                     */
+/* -------------------------------------------------------------------------- */
+/* A peripheral loses its state below a certain low power depth and must be
+ * reinitialized on wake-up. The "reinit stage" tells in which exit callback
+ * that reinitialization must happen, so it is done once and only once:
+ *
+ *   Stage                          Reinitialized in        Runs on wake-up from
+ *   BOARD_LP_REINIT_STAGE_NONE     (never)                 -
+ *   BOARD_LP_REINIT_STAGE_POWERDOWN  BOARD_ExitPowerDownCb power down only
+ *   BOARD_LP_REINIT_STAGE_DEEPSLEEP  BOARD_ExitLowPowerCb  deep sleep and deeper
+ *
+ * Assign the shallowest mode after which the peripheral loses its state.
+ * Defaults target KW45/MCXW71 and KW47/MCXW72; a board whose hardware differs
+ * (e.g. KW43/MCXW70) overrides the value from its board_platform.h. */
+#define BOARD_LP_REINIT_STAGE_NONE      (0U)
+#define BOARD_LP_REINIT_STAGE_POWERDOWN (1U)
+#define BOARD_LP_REINIT_STAGE_DEEPSLEEP (2U)
+
+/* LPUART1 is retained in deep sleep on KW45/MCXW71 and KW47/MCXW72, and is
+ * lost only in power down. KW43/MCXW70 loses it already in deep sleep and
+ * overrides this to BOARD_LP_REINIT_STAGE_DEEPSLEEP in its board_platform.h. */
+#ifndef BOARD_LP_REINIT_STAGE_LPUART1
+#define BOARD_LP_REINIT_STAGE_LPUART1 BOARD_LP_REINIT_STAGE_POWERDOWN
+#endif
 
 #if defined(__cplusplus)
 extern "C" {
