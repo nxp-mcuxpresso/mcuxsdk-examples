@@ -22,8 +22,10 @@ extern int ping_sock_handle;
 
 static int mdns_result_num;
 
+#if 0
 static bool socket_receive_res  = false;
 static bool socket_recvfrom_res = false;
+#endif
 
 #if CONFIG_NCP_SPI
 extern AT_NONCACHEABLE_SECTION_INIT(uint8_t mcu_tlv_command_buff[NCP_HOST_COMMAND_LEN]);
@@ -156,6 +158,7 @@ int IP_to_hex(char *IPstr, uint8_t *hex)
 
 extern ping_res_t ping_res;
 
+#if 0
 /* Handle the ICMP echo response and extract required parameters */
 static void ping_recv(NCP_CMD_SOCKET_RECVFROM_CFG *recv)
 {
@@ -195,6 +198,7 @@ static void ping_recv(NCP_CMD_SOCKET_RECVFROM_CFG *recv)
         ping_res.size      = ping_msg.size;
     }
 }
+#endif
 
 /**
  * @brief This function prepares ncp iperf command
@@ -4275,6 +4279,7 @@ int wlan_process_wlan_socket_open_response(uint8_t *res)
     return WM_SUCCESS;
 }
 
+#if 0
 /*WLAN SOCKET commamd*/
 /**
  * @brief  This function prepares wlan socket open command
@@ -5027,6 +5032,7 @@ int wlan_socket_recvfrom_command(int argc, char **argv)
 
     return WM_SUCCESS;
 }
+#endif
 
 int wlan_process_multi_mef_response(uint8_t *res)
 {
@@ -8948,6 +8954,7 @@ int wlan_process_response(uint8_t *res)
         case NCP_RSP_WLAN_WEBSOCKET_RECV:
             ret = wlan_process_wlan_websocket_recv_response(res);
             break;
+#if 0
         case NCP_RSP_WLAN_SOCKET_OPEN:
             ret = wlan_process_wlan_socket_open_response(res);
             break;
@@ -8982,6 +8989,7 @@ int wlan_process_response(uint8_t *res)
             ret                 = wlan_process_wlan_socket_recvfrom_response(res);
             iperf_msg.status[1] = ret;
             break;
+#endif
         case NCP_RSP_11AX_CFG:
             ret = wlan_process_11axcfg_response(res);
             break;
@@ -9602,16 +9610,6 @@ static struct ncp_host_cli_command ncp_host_app_cli_commands[] = {
     {"wlan-stat", NULL, wlan_stat_command},
     {"wlan-reset", NULL, wlan_reset_command},
     {"wlan-roaming", NULL, wlan_roaming_command},
-    {"wlan-socket-open", NULL, wlan_socket_open_command},
-    {"wlan-socket-connect", NULL, wlan_socket_con_command},
-    {"wlan-socket-bind", NULL, wlan_socket_bind_command},
-    {"wlan-socket-close", NULL, wlan_socket_close_command},
-    {"wlan-socket-listen", NULL, wlan_socket_listen_command},
-    {"wlan-socket-accept", NULL, wlan_socket_accept_command},
-    {"wlan-socket-send", NULL, wlan_socket_send_command},
-    {"wlan-socket-sendto", NULL, wlan_socket_sendto_command},
-    {"wlan-socket-receive", NULL, wlan_socket_receive_command},
-    {"wlan-socket-recvfrom", NULL, wlan_socket_recvfrom_command},
 #if 0
     {"wlan-ncp-inet-test", NULL, ncp_inet_test_command},
 #endif
