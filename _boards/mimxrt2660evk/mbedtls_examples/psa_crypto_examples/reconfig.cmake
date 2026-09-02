@@ -1,12 +1,3 @@
-#
-# Copyright 2026 NXP
-#
-# SPDX-License-Identifier: BSD-3-Clause
-#
-
-mcux_add_source(
-    SOURCES hardware_poll.c
-)
 
 mcux_add_iar_configuration(
     LD "--config_def=__stack_size__=0x4000\

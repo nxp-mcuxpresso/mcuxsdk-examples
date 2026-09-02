@@ -235,3 +235,4 @@ psa_crypto_examples:
     lpcxpresso55s28: []
     lpcxpresso55s69@cm33_core0: []
     lpcxpresso55s36: []
+    mimxrt2660evk: []
