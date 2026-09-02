@@ -13,7 +13,7 @@
 #define DEMO_PDM                      AUDIO__MICFIL
 #define DEMO_SAI                      AUDIO__SAI_0
 #define DEMO_SAI_CLK_FREQ             CLOCK_GetRootClockFreq(kCLOCK_Root_AUDIO_sai0_mclk0)
-#define DEMO_SAI_CHANNEL              0
+#define DEMO_SAI_CHANNEL              (0U)
 #define DEMO_SAI_MASTER_SLAVE         kSAI_Master
 #define DEMO_SAI_CLOCK_SOURCE         (kSAI_BclkSourceMclkDiv)
 #define DEMO_PDM_CLK_FREQ             24576000
