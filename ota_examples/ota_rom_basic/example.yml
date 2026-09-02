@@ -40,9 +40,6 @@ ota_rom_basic:
     frdmmcxn947@cm33_core0:
     - -mdk@debug
     - -mdk@release
-    frdmmcxn947t@cm33_core0:
-    - -mdk@debug
-    - -mdk@release
     mimxrt700evk@cm33_core0:
     - -armgcc@debug
     - -armgcc@release
