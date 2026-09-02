@@ -296,7 +296,7 @@ ota_mcuboot_client_enet@rt10xx_encrypted_xip:
     - -mdk@sdram_release
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
-ota_mcuboot_client@rt11xx_caam_encrypted_xip:
+ota_mcuboot_client_enet@rt11xx_caam_encrypted_xip:
   section-type: custom_application
   contents:
     document:
