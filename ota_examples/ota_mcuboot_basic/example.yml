@@ -321,9 +321,6 @@ ota_mcuboot_basic@mcxn_encrypted_xip:
     frdmmcxn947@cm33_core0:
     - -mdk@release
     - -mdk@debug
-    frdmmcxn947t@cm33_core0:
-    - -mdk@release
-    - -mdk@debug
 ota_mcuboot_basic@rw61x_encrypted_xip:
   section-type: custom_application
   contents:
