@@ -481,27 +481,19 @@ static void APP_CfgUart(bool on)
         /* Clear any stale RX active-edge flag before arming. */
         LPUART_ClearStatusFlags((LPUART_Type *)APP_UART_BASEADDR, kLPUART_RxActiveEdgeFlag);
         LPUART_EnableInterrupts((LPUART_Type *)APP_UART_BASEADDR,
-                                kLPUART_RxDataRegFullInterruptEnable |
-                                kLPUART_RxActiveEdgeInterruptEnable);
+                        kLPUART_RxActiveEdgeInterruptEnable);
     }
     else
     {
-        LPUART_DisableInterrupts((LPUART_Type *)APP_UART_BASEADDR,
-                                 kLPUART_RxDataRegFullInterruptEnable |
+      LPUART_DisableInterrupts((LPUART_Type *)APP_UART_BASEADDR,
                                  kLPUART_RxActiveEdgeInterruptEnable);
-        /* The wake trigger is the RX start edge, so the triggering byte is
-         * usually still shifting in when we get here; spin long enough (>> one
-         * 115200-baud character time) for it to finish, draining the RX register
-         * on each pass.  Then clear the RX active-edge / overrun flags. */
-        for (volatile uint32_t i = 0U; i < 2000000U; i++)
-        {
-            if ((LPUART_GetStatusFlags((LPUART_Type *)APP_UART_BASEADDR) &
-                 (uint32_t)kLPUART_RxDataRegFullFlag) != 0U)
-            {
-                (void)LPUART_ReadByte((LPUART_Type *)APP_UART_BASEADDR);
-            }
-        }
-        LPUART_ClearStatusFlags((LPUART_Type *)APP_UART_BASEADDR,
+      
+      if ((LPUART_GetStatusFlags((LPUART_Type *)APP_UART_BASEADDR) &
+           (uint32_t)kLPUART_RxDataRegFullFlag) != 0U)
+      {
+          (void)LPUART_ReadByte((LPUART_Type *)APP_UART_BASEADDR);
+      }
+      LPUART_ClearStatusFlags((LPUART_Type *)APP_UART_BASEADDR,
                                 kLPUART_RxActiveEdgeFlag | kLPUART_RxOverrunFlag);
     }
 }
