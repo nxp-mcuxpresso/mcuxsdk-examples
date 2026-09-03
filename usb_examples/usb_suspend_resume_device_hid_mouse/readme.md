@@ -114,6 +114,7 @@ Or the device can remote wake-up the host by delivering the resume signal when t
 - FRDM-MCXN236
 - [FRDM-RW612](../../_boards/frdmrw612/usb_examples/usb_suspend_resume_device_hid_mouse/example_board_readme.md)
 - [FRDM-IMXRT700](../../_boards/frdmimxrt700/usb_examples/usb_suspend_resume_device_hid_mouse/example_board_readme.md)
+- MIMXRT2660-EVK
 - FRDM-MCXA266
 - [FRDM-IMXRT1186](../../_boards/frdmimxrt1186/usb_examples/usb_suspend_resume_device_hid_mouse/example_board_readme.md)
 - [FRDM-MCXA577](../../_boards/frdmmcxa577/usb_examples/usb_suspend_resume_device_hid_mouse/example_board_readme.md)

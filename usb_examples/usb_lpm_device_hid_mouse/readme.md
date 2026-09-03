@@ -75,6 +75,7 @@ Or the device can remote wake-up the host by delivering the resume signal when t
 ## Supported Boards
 - EVK-MIMXRT685
 - MIMXRT700-EVK
+- MIMXRT2660-EVK
 - MIMXRT685-AUD-EVK
 - [LPCXpresso54S018](../../_boards/lpcxpresso54s018/usb_examples/usb_lpm_device_hid_mouse/example_board_readme.md)
 - EVK-MIMXRT595

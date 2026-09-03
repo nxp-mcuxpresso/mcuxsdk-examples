@@ -107,6 +107,7 @@ Or the device can remote wake-up the host by delivering the resume signal when t
 - FRDM-K32L2A4S
 - EVK-MIMXRT1020
 - MIMXRT700-EVK
+- MIMXRT2660-EVK
 - FRDM-MCXA156
 - EVK-MIMXRT595
 - EVK-MIMXRT685

@@ -143,6 +143,7 @@ The host will wake up the device by delivering the resume signal if it is waked 
 - FRDM-K32L2A4S
 - EVK-MIMXRT1020
 - MIMXRT700-EVK
+- MIMXRT2660-EVK
 - FRDM-IMXRT700
 - EVK-MIMXRT595
 - EVK-MIMXRT685
