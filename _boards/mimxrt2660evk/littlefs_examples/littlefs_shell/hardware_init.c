@@ -19,7 +19,10 @@ void BOARD_InitHardware(void)
 {
     /* Board common setting: MPU, Power and Clock Tree, TRDC, and Debug Console init. */
     BOARD_CommonSetting();
-    BOARD_InitXSPIPins();
+    /* The XSPI0 flash pins are muxed by the boot ROM and (on the xspi_nor*
+     * targets) the code executes XIP from that flash, so the pins must NOT be
+     * re-muxed here: re-applying the mux on the live XIP interface disturbs
+     * the running flash for no benefit. */
 }
 
 /*${function:end}*/
