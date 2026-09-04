@@ -244,7 +244,7 @@ void DEMO_DCIF_RUN(void)
     config.background       = 0U;
     config.panic.enable     = false;
     config.globalAlpha      = 0xFFU;
-    config.alphaBlendMode   = kDCIF_AlphaBlendOverride;//kDCIF_AlphaBlendEmbedded;
+    config.alphaBlendMode   = kDCIF_AlphaBlendOverride;
 
     DCIF_SetLayerAddr(DEMO_DCIF, 0, (uint32_t)s_frameBufferAddr[frameBufferIndex]);
 
