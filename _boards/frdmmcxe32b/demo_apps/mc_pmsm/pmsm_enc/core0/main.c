@@ -78,7 +78,7 @@ static uint32_t ui32PositionStimulatorCnt = 0U;
 /* Structure used in FM to get required ID's */
 app_ver_t g_sAppIdFM = {
     "../../../examples/_boards/frdmmcxe32b/demo_apps/mc_pmsm/pmsm_enc/core0",         /* User Path 1- the highest priority */
-    "",       /* User Path 2 */
+    "../../../boards/frdmmcxe32b/demo_apps/mc_pmsm/pmsm_enc/core0",       /* User Path 2 */
     "frdmmcxe32b",    /* board id */
     "pmsm_enc", /* example id */
     MCRSP_VER,      /* sw version */
@@ -273,9 +273,6 @@ void PIT0_IRQHandler(void)
 
     /* Demo position stimulator */
     DemoPositionStimulator();
-
-    /* Call FreeMASTER recorder */
-    FMSTR_Recorder(0);
 
     /* Clear interrupt flag.*/
     PIT_ClearStatusFlags(PIT_0, kPIT_Chnl_0, kPIT_TimerFlag);

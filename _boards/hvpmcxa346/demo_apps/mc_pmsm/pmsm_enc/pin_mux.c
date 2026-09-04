@@ -198,8 +198,6 @@ BOARD_InitPWM:
   - {pin_num: '67', peripheral: FlexPWM0, signal: 'A, 2', pin_signal: P3_10/TRIG_IN5/LPSPI1_SCK/LPUART1_RTS_B/CT1_MAT0/PWM0_A2/LPUART5_TXD/SmartDMA_PIO10, direction: OUTPUT}
   - {pin_num: '66', peripheral: FlexPWM0, signal: 'B, 2', pin_signal: P3_11/WUU0_IN24/TRIG_IN6/LPSPI1_PCS0/LPUART1_CTS_B/CT1_MAT1/PWM0_B2/LPUART5_RXD/SmartDMA_PIO11,
     direction: OUTPUT}
-  - {pin_num: '91', peripheral: FlexPWM0, signal: 'PWM_FAULT_TRG_CH, 0', pin_signal: P1_0/WUU0_IN6/LPTMR0_ALT3/TRIG_IN0/LPSPI0_SDO/LPI2C1_SDA/CT_INP4/CT0_MAT2/ADC0_A16/CMP0_IN3}
-  - {pin_num: '91', peripheral: INPUTMUX0, signal: 'TRIG_IN, 0', pin_signal: P1_0/WUU0_IN6/LPTMR0_ALT3/TRIG_IN0/LPSPI0_SDO/LPI2C1_SDA/CT_INP4/CT0_MAT2/ADC0_A16/CMP0_IN3}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -227,10 +225,7 @@ void BOARD_InitPWM(void)
     /* PORT3 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kPORT3_RST_SHIFT_RSTn);
     /*  TrigIn0 connect to FlexPwm0Fault 0 */
-    INPUTMUX_AttachSignal(INPUTMUX0, 0U, kINPUTMUX_TrigIn0ToFlexPwm0Fault);
-
-    /* PORT1_0 (pin 91) is configured as TRIG_IN0 */
-    PORT_SetPinMux(PORT1, 0U, kPORT_MuxAlt1);
+    INPUTMUX_AttachSignal(INPUTMUX0, 0U, kINPUTMUX_Cmp2OutToFlexPwm0Fault);
 
     PORT1->PCR[0] = ((PORT1->PCR[0] &
                       /* Mask bits to zero which are setting */
