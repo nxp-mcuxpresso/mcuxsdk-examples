@@ -21,6 +21,15 @@
 #include "fsl_reformatter.h"
 #include "fsl_debug_console.h"
 
+/* When APP_ENABLE_PDI is set, the ISI pixel-link output is converted by the
+ * REFORMATTER (PL_TO_PDI) and fed directly to the DCIF PDI input, enabling the
+ * low latency camera-to-display path. It is defined in isi_config.h of the PDI
+ * example. When not defined, the REFORMATTER conversion is left disabled and the
+ * memory based display path is used. */
+#ifndef APP_ENABLE_PDI
+#define APP_ENABLE_PDI 0
+#endif
+
 typedef struct
 {
     uint32_t resolution;
@@ -186,7 +195,10 @@ void BOARD_InitCameraInterface(void)
     REFORMATTER_GetDefaultConfig(&refConfig);
     refConfig.signalConfig.enable         = true;
     refConfig.signalConfig.validForceHigh = true;
-    refConfig.enableConversion            = false;
+    /* For the PDI (parallel data interface) low latency path the REFORMATTER
+     * must convert the ISI pixel-link stream and feed it to the DCIF PDI input.
+     * For the memory based path the conversion stays disabled. */
+    refConfig.enableConversion            = (APP_ENABLE_PDI != 0);
     REFORMATTER_Init(MEDIA__REFORMATTER, &refConfig);
 
     /* Enable error interrupts for diagnostics. */

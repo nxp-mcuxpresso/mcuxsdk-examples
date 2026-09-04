@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+dcif_pdi:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dcif_1/pdi
+    project-root-path: boards/${board}/driver_examples/dcif/pdi/${multicore_foldername}
+    document:
+      name: dcif_pdi${core_id_suffix_name}
+      category: driver_examples/dcif_1
+      brief: This example demonstrates the DCIF PDI (parallel data interface) low
+        latency camera preview path. The OV5640 camera output is received by the
+        ISI through MIPI CSI2, converted by the REFORMATTER (PL_TO_PDI) and fed
+        directly to the DCIF PDI input for display, bypassing the memory based
+        frame buffer path.
+      example_readme:
+      - examples/driver_examples/dcif_1/pdi/readme.md
+      - ${board_root}/${board}/driver_examples/dcif/pdi/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    mimxrt2660evk:
