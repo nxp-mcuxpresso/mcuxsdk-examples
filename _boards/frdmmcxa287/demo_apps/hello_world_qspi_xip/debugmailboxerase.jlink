@@ -1,0 +1,27 @@
+// Copyright 2026 NXP
+//
+// SPDX-License-Identifier: BSD-3-Clause
+
+usb
+connect
+writeDP 1 0x50000000
+sleep 100
+writeDP 2 0x01000000
+sleep 100
+readAP 3
+sleep 100
+readDP 1
+sleep 100
+writeAP 0 0x21
+sleep 100
+writeAP 1 0x03
+sleep 100
+readAP 2
+sleep 100
+writeAP 1 0x04
+sleep 100
+readAP 2
+usb
+connect
+mem8 0x11002200 1
+q
