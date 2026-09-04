@@ -41,6 +41,8 @@
 
 #define BOARD_USER_BUTTON_PRIORITY 4
 
+#define ECAT_BUS_OCCUPANCY_GUARD_TIME (1U * SystemCoreClock / 1000000U)  /*(1 us) */
+
 /* CPU load measurement SysTick START / STOP macros */
 #define SYSTICK_START_COUNT() (SysTick->VAL = SysTick->LOAD)
 #define SYSTICK_STOP_COUNT(par1)   \
@@ -69,6 +71,7 @@ static int32_t i32InitializedM1 = 0;
 static int32_t i32InitializedM2 = 0;
 extern struct param_t *g_param;
 uint64_t ui64EndatData;
+volatile uint32_t *g_EcatAccessLock;
 
 /* Structure used in FM to get required ID's */
 app_ver_t g_sAppIdFM = {
@@ -93,10 +96,30 @@ RAM_FUNC_LIB
 void M1_FLEXIO_IRQHandler(void);
 
 static void BOARD_InitSysTick(void);
+void Ecat_AccessLockInit(void);
+void Ecat_AccessLock(void);
+void Ecat_AccessUnlock(void);
 
 /*******************************************************************************
  * Code
  ******************************************************************************/
+
+void Ecat_AccessLockInit(void)
+{
+    g_EcatAccessLock = ipc_shm_get_private_data();
+}
+
+void Ecat_AccessLock(void)
+{
+    (*g_EcatAccessLock)++;
+    __DMB();
+}
+
+void Ecat_AccessUnlock(void)
+{
+    __DMB();
+    (*g_EcatAccessLock)--;
+}
 
 int32_t GetM1PositionActualValue(void)
 {
@@ -256,7 +279,7 @@ int main(void)
     PRINTF("cm7_Core running\r\n");
 	/* Waiting until MU_ipc_shm_master_init() is completed on CM33 core */
     MU_ipc_shm_client_init();
-    
+    Ecat_AccessLockInit();
     /* SysTick initialization for CPU load measurement */
     BOARD_InitSysTick();
     /* Init peripheral motor control driver for motors M1 and M2 */
@@ -297,6 +320,29 @@ RAM_FUNC_LIB
 void M1_FLEXIO_IRQHandler(void)
 {
     int32_t detal = 0;
+    uint32_t ui32Temp;
+    /*
+     * FlexPWM, ADC and ESC share the same bus. Because the ESC register accesses are relatively slow
+     * (~600ns per access), they can hold the bus for a considerable time, adversely affecting the
+     * FlexPWM and the ADC register access. As a result, the execution latency of the motor control
+     * ISR increases and becomes non-deterministic. To mitigate this, Ecat_AccessLock() is used to
+     * signal the EtherCAT stack core to pause ESC register accesses during critical motor control
+     * processing.
+     */
+    Ecat_AccessLock();
+
+    /*
+     * If EtherCAT stack has already started an ESC register access before Ecat_AccessLock() is called,
+     * in this case, the motor control ISR may incur up to approximately 600 ns of additional latency.
+     * To eliminate this timing uncertainty, a guard time (ECAT_BUS_OCCUPANCY_GUARD_TIME) is applied to
+     * ensure that the execution time of the motor control ISR remains consistent and deterministic.
+     */
+    SYSTICK_START_COUNT();
+    do
+    {
+        SYSTICK_STOP_COUNT(ui32Temp);
+    } while (ui32Temp < ECAT_BUS_OCCUPANCY_GUARD_TIME);
+
     M1_MCDRV_SINC_GET(&g_sM1Curr3phDcBus);
     /* get position from EnDat2.2 */
     M1_MCDRV_FLEXIO_ENDAT2P2_GET(&g_sM1Enc);
@@ -316,6 +362,11 @@ void M1_FLEXIO_IRQHandler(void)
     /* M2 State machine */
     SM_StateMachineFast(&g_sM1Ctrl);
 
+    /*
+     * Resume ESC register access on the EtherCAT stack side.
+     */
+    Ecat_AccessUnlock();
+
     SDK_ISR_EXIT_BARRIER;
 }
 
@@ -323,7 +374,31 @@ RAM_FUNC_LIB
 void M2_FLEXIO_IRQHandler(void)
 {
     int32_t detal = 0;
+    uint32_t ui32Temp;
+    /*
+     * FlexPWM, ADC and ESC share the same bus. Because the ESC register accesses are relatively slow
+     * (~600ns per access), they can hold the bus for a considerable time, adversely affecting the
+     * FlexPWM and the ADC register access. As a result, the execution latency of the motor control
+     * ISR increases and becomes non-deterministic. To mitigate this, Ecat_AccessLock() is used to
+     * signal the EtherCAT stack core to pause ESC register accesses during critical motor control
+     * processing.
+     */
+    Ecat_AccessLock();
+
+    /*
+     * If EtherCAT stack has already started an ESC register access before Ecat_AccessLock() is called,
+     * in this case, the motor control ISR may incur up to approximately 600 ns of additional latency.
+     * To eliminate this timing uncertainty, a guard time (ECAT_BUS_OCCUPANCY_GUARD_TIME) is applied to
+     * ensure that the execution time of the motor control ISR remains consistent and deterministic.
+     */
+    SYSTICK_START_COUNT();
+    do
+    {
+        SYSTICK_STOP_COUNT(ui32Temp);
+    } while (ui32Temp < ECAT_BUS_OCCUPANCY_GUARD_TIME);
+
     M2_MCDRV_SINC_GET(&g_sM2Curr3phDcBus);
+
     /* get position from EnDat2.2 */
     M2_MCDRV_FLEXIO_ENDAT2P2_GET(&g_sM2Enc);
     FLEXIO_ENDAT2_ClearRxStatusFlags(&g_sM2Enc.endat2Master);
@@ -342,8 +417,14 @@ void M2_FLEXIO_IRQHandler(void)
     /* M2 State machine */
     SM_StateMachineFast(&g_sM2Ctrl);
 
+    /*
+     * Resume ESC register access on the EtherCAT stack side.
+     */
+    Ecat_AccessUnlock();
+
     SDK_ISR_EXIT_BARRIER;
 }
+
 
 /*!
  * @brief   motor_slow_task called with EtherCAT DC period and processes following functions:

@@ -15,6 +15,17 @@ mcux_add_macro(
        -DCORE1_IMAGE_COPY_TO_RAM"
 )
 
+mcux_project_remove_source(
+    BASE_PATH ${SdkRootDirPath}
+    SOURCES ecat_examples/dual_cores_servo_motor/primary/ecat_hw.h
+)
+
+mcux_add_source(
+	BASE_PATH ${SdkRootDirPath}
+    SOURCES ${board_root}/${board}/ecat_examples/dual_cores_servo_motor/master/${core_id}/ecat_hw.c
+    SOURCES ${board_root}/${board}/ecat_examples/dual_cores_servo_motor/master/${core_id}/ecat_hw.h
+)
+
 mcux_add_armgcc_configuration(
     TARGETS debug release flexspi_nor_debug flexspi_nor_release flexspi_nor_hyperram_debug flexspi_nor_hyperram_relese
     LD "-Xlinker --defsym=__stack_size__=0x4000 -Xlinker --defsym=__heap_size__=0x10000"
