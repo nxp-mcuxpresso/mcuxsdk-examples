@@ -31,6 +31,7 @@ if (CONFIG_MCUX_COMPONENT_middleware.lvgl)
     mcux_add_mdk_configuration(
         CC "-fms-extensions" "--diag_suppress=1296,257,39,188,89,191,111,93,177,546,236,205,136,84" "-Wno-tautological-constant-out-of-range-compare"
         CX "-fms-extensions" "--diag_suppress=1296,257,39,188,89,191,111,93,177,546,236,205,136,84" "-Wno-tautological-constant-out-of-range-compare"
+        LD "--library_type=microlib"
     )
 
     mcux_add_include(
