@@ -2,7 +2,7 @@
 # All rights reserved.
 #
 # SPDX-License-Identifier: BSD-3-Clause
-board_runner_args(jlink "--device=MIMX8MN6")
+board_runner_args(jlink "--device=MIMX8MN6_M7")
 board_runner_args(linkserver  "--device=MIMX8MN6:EVK-MIMX8MNDDR3L")
 board_runner_args(pyocd "--target=mimx8mn6")
 
