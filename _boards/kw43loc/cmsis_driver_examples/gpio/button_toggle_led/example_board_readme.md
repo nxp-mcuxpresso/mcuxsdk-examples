@@ -24,7 +24,7 @@ Prepare the Demo
 Running the demo
 ================
 The following lines are printed to the serial terminal when the demo program is executed.
-If you press the SW3, then 'BUTTON Pressed' is shown on the terminal window.
+If you press the SW1, then 'BUTTON Pressed' is shown on the terminal window.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 CMSIS GPIO Example! 
 Use Button to toggle LED! 
