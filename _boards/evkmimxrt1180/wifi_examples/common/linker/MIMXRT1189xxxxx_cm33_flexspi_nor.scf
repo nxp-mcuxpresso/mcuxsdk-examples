@@ -99,10 +99,10 @@
 #define m_ncache_size                  0x20000         /* m_ncache_size must be 2^N */
 #define m_ocram1_size_for_cm7          0x40000
 #else
-#define m_ncache_size                  0x40000         /* m_ncache_size must be 2^N */
+#define m_ncache_size                  0x60000         /* m_ncache_size enlarged 0x40000->0x60000 (384KB) */
 #define m_ocram1_size_for_cm7          0
 #endif
-#define m_shmem_size                   m_ocram2_size   /* m_shmem_size must be 2^N */
+#define m_shmem_size                   m_ocram2_size   /* cm33 needn't keep m_shmem_size must be 2^N */
 
 #define m_fcb_start                    m_flash_start + m_fcb_offset
 #define m_xmcd_start                   m_flash_start + m_xmcd_offset
