@@ -20,3 +20,17 @@ config MCUX_HW_BOARD_mimxrt2660evk
     imply MCUX_COMPONENT_driver.xspi
     select MCUX_COMPONENT_component.lpuart_adapter  if MCUX_COMPONENT_component.serial_manager_uart
     select MCUX_COMPONENT_component.lpuart_adapter  if MCUX_COMPONENT_utility.debug_console_lite
+
+config MCUX_BOARD_USE_PF9453
+    bool "Supply VDD_CORE (and other rails) from the on-board PF9453 PMIC instead of the on-chip regulators"
+    depends on MCUX_HW_BOARD_mimxrt2660evk
+    default n
+    select MCUX_COMPONENT_driver.pf9453
+    help
+      Board-level selection of the on-board PF9453 PMIC as the VDD_CORE/BUCK3/LDO1 supply,
+      instead of the RT2660's on-chip DCDC/LDOs. The board registers external-regulator hooks
+      with fsl_power (POWER_SetExtRegulatorHooks) so POWER_EnterHpRun/NormalRun/LpRun and the
+      low-power entry points drive the PF9453 over I2C instead of the on-chip regulators. This
+      is board-specific knowledge, not device-specific — fsl_power itself has no PF9453
+      awareness. Unset (default): VDD_CORE/BUCK3/LDO1 behavior is unchanged (on-chip DCDC/LDOs,
+      no fsl_pf9453 dependency).

@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -13,6 +13,9 @@
 #if defined(SDK_I2C_BASED_COMPONENT_USED) && SDK_I2C_BASED_COMPONENT_USED
 #include "fsl_lpi2c.h"
 #endif /* SDK_I2C_BASED_COMPONENT_USED */
+#if defined(BOARD_USE_PF9453) && BOARD_USE_PF9453
+#include "fsl_pf9453.h"
+#endif /* BOARD_USE_PF9453 */
 #include "fsl_iomuxc.h"
 #include "pin_mux.h"
 
@@ -417,6 +420,11 @@ void BOARD_ConfigMPU(void)
  * plus their own console setup. */
 void BOARD_CommonSetting(void)
 {
+#if defined(BOARD_USE_PF9453) && BOARD_USE_PF9453
+    /* MUST run before POWER_SetPolicy()/BOARD_InitBootClocks() ramps the core to HP - VDD_CORE
+     * must already be at its HP set point when that ramp happens. */
+    BOARD_InitPmicSupply();
+#endif
     BOARD_ConfigMPU();
     power_policy_config_t powerPolicyCfg;
     POWER_GetDefaultPolicyConfig(&powerPolicyCfg);
@@ -828,3 +836,162 @@ __attribute__((weak)) void BOARD_PCA9555_INT_IRQ_HANDLER(void)
     SDK_ISR_EXIT_BARRIER;
 }
 #endif /* BOARD_USE_PCA9555 */
+
+#if defined(BOARD_USE_PF9453) && BOARD_USE_PF9453
+/* Board-level singleton, populated by BOARD_InitPmicSupply(). */
+static pf9453_handle_t s_pf9453Handle;
+
+/* PF9453 I2C transport wrappers. pf9453_handle_t's callback contract has no `base` parameter
+ * (unlike PCAL6524/PCA9555's), so the generic BOARD_I2C_DeviceSend/Receive(void *base, ...)
+ * wrappers above don't fit; these thin adapters close over BOARD_PF9453_LPI2C and forward to
+ * the existing generic BOARD_LPI2C_Send/Receive(LPI2C_Type *base, ...). */
+static status_t BOARD_Pf9453I2cSend(
+    uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, uint8_t *txBuff, uint8_t txBuffSize)
+{
+    return BOARD_LPI2C_Send(BOARD_PF9453_LPI2C, deviceAddress, subAddress, subAddressSize, txBuff, txBuffSize);
+}
+
+static status_t BOARD_Pf9453I2cReceive(
+    uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, uint8_t *rxBuff, uint8_t rxBuffSize)
+{
+    return BOARD_LPI2C_Receive(BOARD_PF9453_LPI2C, deviceAddress, subAddress, subAddressSize, rxBuff, rxBuffSize);
+}
+
+status_t BOARD_PmicSetCoreVoltage(uint8_t voutAdjCode)
+{
+    /* voutAdjCode is the RT2660 on-chip DCDC VOUT_ADJ code fsl_power would otherwise write
+     * (POWER_PMUCFG_CORELEVEL_090V/_080V), not a millivolt value - PF9453_SetBuck2RunVoltage
+     * cannot be assigned to power_ext_regulator_hooks_t::setCoreVoltage directly. */
+    uint16_t millivolt = (voutAdjCode == POWER_PMUCFG_CORELEVEL_090V) ? 900U : 800U;
+    return PF9453_SetBuck2RunVoltage(&s_pf9453Handle, millivolt);
+}
+
+/* power_ext_regulator_hooks_t::setStandbyTarget. Deep Sleep and Power Down both select the
+ * PF9453 STANDBY profile (PF9453_SetStandbyTarget) - they are told apart by dynamically
+ * rewriting BUCK2/BUCK3's enableMode via I2C, not by the profile. LDO1's ENMODE is also
+ * explicitly re-written here (ON at ACTIVE/STANDBY for both modes) as a safety net against
+ * the init-time PF9453_ConfigLdo1 failing silently (its return value is discarded). `*pmicModeCode`
+ * is fixed at 1 ("standby request asserted", the only documented PMICCFG_STBY.PMIC_MODE value) */
+static status_t BOARD_PmicSetStandbyTarget(power_low_power_mode_t mode, uint8_t *pmicModeCode)
+{
+    status_t status;
+
+    switch (mode)
+    {
+        case kPOWER_DeepSleep:
+            status = PF9453_SetStandbyTarget(&s_pf9453Handle, kPF9453_StandbySbyt);
+            if (status == kStatus_Success)
+            {
+                status = PF9453_ModifyReg(&s_pf9453Handle, PF9453_BUCK2CTRL, PF9453_ENMODE_MASK,
+                                          (uint8_t)kPF9453_EnableOnActiveStandby);
+            }
+            if (status == kStatus_Success)
+            {
+                status = PF9453_ModifyReg(&s_pf9453Handle, PF9453_BUCK3CTRL, PF9453_ENMODE_MASK,
+                                          (uint8_t)kPF9453_EnableOnActiveStandby);
+            }
+            if (status == kStatus_Success)
+            {
+                /* L1_ENMODE = 10: ON at ACTIVE/STANDBY, OFF at DPSTANDBY.
+                 * Written explicitly here because the init-time PF9453_ConfigLdo1 call may fail
+                 * silently (return value discarded), leaving L1_ENMODE at its reset default of
+                 * 01 (ON at RUN only) which would incorrectly disable LDO1 in STANDBY. */
+                status = PF9453_ModifyReg(&s_pf9453Handle, PF9453_LDO1_CFG, PF9453_ENMODE_MASK,
+                                          (uint8_t)kPF9453_EnableOnActiveStandby);
+            }
+            break;
+
+        case kPOWER_PowerDown:
+            /* Same PF9453 profile as Deep Sleep - BUCK2/BUCK3 are told apart from Deep Sleep by
+             * the enableMode rewrite below, not by the profile selection. */
+            status = PF9453_SetStandbyTarget(&s_pf9453Handle, kPF9453_StandbySbyt);
+            if (status == kStatus_Success)
+            {
+                status = PF9453_ModifyReg(&s_pf9453Handle, PF9453_BUCK2CTRL, PF9453_ENMODE_MASK,
+                                          (uint8_t)kPF9453_EnableOnActive);
+            }
+            if (status == kStatus_Success)
+            {
+                status = PF9453_ModifyReg(&s_pf9453Handle, PF9453_BUCK3CTRL, PF9453_ENMODE_MASK,
+                                          (uint8_t)kPF9453_EnableOnActiveStandby);
+            }
+            if (status == kStatus_Success)
+            {
+                /* LDO1 stays ON in STANDBY mode - same setting as Deep Sleep. Written explicitly
+                 * here as a safety net in case the init-time write was missed. */
+                status = PF9453_ModifyReg(&s_pf9453Handle, PF9453_LDO1_CFG, PF9453_ENMODE_MASK,
+                                          (uint8_t)kPF9453_EnableOnActiveStandby);
+            }    
+            break;
+
+        case kPOWER_DeepPowerDown:
+            /* DPSTANDBY turns BUCK2/BUCK3/LDO1 off regardless of their current enableMode, so no
+             * enableMode rewrite is needed here. */
+            status = PF9453_SetStandbyTarget(&s_pf9453Handle, kPF9453_StandbyDeepStby);
+            break;
+
+        default:
+            status = kStatus_InvalidArgument;
+            break;
+    }
+
+    if (status == kStatus_Success)
+    {
+        *pmicModeCode = 1U;
+    }
+
+    return status;
+}
+
+static const power_ext_regulator_hooks_t s_pf9453Hooks = {
+    .setCoreVoltage    = BOARD_PmicSetCoreVoltage,
+    .setStandbyTarget  = BOARD_PmicSetStandbyTarget,
+};
+
+void BOARD_InitPmicSupply(void)
+{
+    /* The LPI2C1 clock root must already be configured (BOARD_CommonSetting() calls this before
+     * BOARD_InitBootClocks()). BOARD_LPI2C_Init asserts non-zero clock source internally. */
+    BOARD_InitI2CPins();
+    BOARD_LPI2C_Init(BOARD_PF9453_LPI2C, BOARD_PF9453_LPI2C_CLK_FREQ);
+
+    pf9453_config_t pmicConfig;
+    pmicConfig.I2C_SendFunc    = BOARD_Pf9453I2cSend;
+    pmicConfig.I2C_ReceiveFunc = BOARD_Pf9453I2cReceive;
+    pmicConfig.slaveAddress    = BOARD_PF9453_I2C_ADDR;
+    PF9453_CreateHandle(&s_pf9453Handle, &pmicConfig);
+
+    /* BUCK2 (VDD_CORE): one-shot bring-up matching the HP run set point so the boot-clock ramp
+     * to HP has adequate VDD_CORE; enableMode is baseline here and gets rewritten by
+     * BOARD_PmicSetStandbyTarget() at the first Deep Sleep or Power Down entry. */
+    pf9453_buck2_config_t buck2Config;
+    buck2Config.runMillivolt     = 900U;
+    buck2Config.standbyMillivolt = 650U;
+    buck2Config.enableMode       = kPF9453_EnableOnActiveStandby;
+    buck2Config.forcePwm         = false;
+    buck2Config.activeDischarge  = false;
+    buck2Config.dvsRamp          = kPF9453_Buck2Ramp_25mVPer2us; /* reset default. */
+    (void)PF9453_ConfigBuck2(&s_pf9453Handle, &buck2Config);
+
+    /* BUCK3 (1.8V group: VDD_PMU/VDD_DCDC/VDD_1V8/VDDA_1V8/...): baseline enableMode is
+     * overwritten at the first Deep Sleep or Power Down entry the same way BUCK2's is. */
+    pf9453_buck_config_t buck3Config;
+    buck3Config.millivolt       = 1800U;
+    buck3Config.enableMode      = kPF9453_EnableOnActiveStandby;
+    buck3Config.forcePwm        = false;
+    buck3Config.activeDischarge = false;
+    (void)PF9453_ConfigBuck3(&s_pf9453Handle, &buck3Config);
+
+    /* LDO1 (VDD_0V8): baseline enableMode. BOARD_PmicSetStandbyTarget() explicitly re-writes
+     * L1_ENMODE before each Deep Sleep / Power Down entry as a safety net - if this init
+     * write fails silently (return value discarded), the hook write keeps LDO1 correctly on
+     * in STANDBY mode. ON at ACTIVE/STANDBY; OFF at DPSTANDBY (per L1_ENMODE=10b). */
+    pf9453_ldo_config_t ldo1Config;
+    ldo1Config.millivolt       = 800U;
+    ldo1Config.enableMode      = kPF9453_EnableOnActiveStandby;
+    ldo1Config.activeDischarge = true;
+    (void)PF9453_ConfigLdo1(&s_pf9453Handle, &ldo1Config);
+
+    POWER_SetExtRegulatorHooks(&s_pf9453Hooks);
+}
+#endif /* BOARD_USE_PF9453 */

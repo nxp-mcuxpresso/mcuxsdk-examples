@@ -313,6 +313,27 @@ void BOARD_EnablePCA9555Interrupt(void);
 
 #endif /* BOARD_USE_PCA9555 */
 
+#if defined(BOARD_USE_PF9453) && BOARD_USE_PF9453
+/* PF9453 PMIC on HSP LPI2C1 (SDA = PIO2_24, SCL = PIO2_25), 7-bit slave address 0x32 (default
+ * OTP). The board owns only the I2C transport and PF9453 bring-up; fsl_power has no PF9453
+ * awareness (it calls generic external-regulator hooks the board registers). */
+#define BOARD_PF9453_LPI2C          HSP__LPI2C_1
+#define BOARD_PF9453_LPI2C_CLK_FREQ (CLOCK_GetRootClockFreq(kCLOCK_Root_MAIN_lpi2c1_fclk))
+#define BOARD_PF9453_LPI2C_BAUDRATE (100000U)
+#define BOARD_PF9453_I2C_ADDR       (0x32U)
+
+/* Brings up the PF9453 (I2C transport, BUCK2/BUCK3/LDO1) and registers fsl_power's
+ * external-regulator hooks. MUST be called before the boot-clock ramp to HP run, which needs
+ * VDD_CORE already at its HP set point - called from BOARD_CommonSetting() as its first action. */
+void BOARD_InitPmicSupply(void);
+
+/* Translation layer assigned to power_ext_regulator_hooks_t::setCoreVoltage. Maps the RT2660
+ * on-chip DCDC VOUT_ADJ code (POWER_PMUCFG_CORELEVEL_090V/_080V) to the millivolt value the
+ * PF9453 driver's PF9453_SetBuck2RunVoltage() expects - the two APIs use different parameter
+ * types/units, so this function, not PF9453_SetBuck2RunVoltage itself, is the hook. */
+status_t BOARD_PmicSetCoreVoltage(uint8_t voutAdjCode);
+#endif /* BOARD_USE_PF9453 */
+
 /* ELE API related macros */
 #define RELEASE_RDC                                                        (0x17C40206u)
 #define RELEASE_RDC_SIZE                                                   (0x2u)
