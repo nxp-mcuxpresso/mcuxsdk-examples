@@ -50,15 +50,25 @@ void BOARD_DSP_IPC_Init()
 {
     dsp_ipc.my_rpmsg =
         rpmsg_lite_master_init((void *)RPMSG_LITE_SHMEM_BASE, RPMSG_LITE_SHMEM_SIZE, RPMSG_LITE_LINK_ID, RL_NO_FLAGS);
-    dsp_ipc.my_queue    = rpmsg_queue_create(dsp_ipc.my_rpmsg);
-    dsp_ipc.my_ept      = rpmsg_lite_create_ept(dsp_ipc.my_rpmsg, MCU_EPT_ADDR, rpmsg_queue_rx_cb, dsp_ipc.my_queue);
+    /* rpmsg_lite_master_init may return NULL; guard before it is used further. */
+    assert(dsp_ipc.my_rpmsg != NULL);
+
+    dsp_ipc.my_queue = rpmsg_queue_create(dsp_ipc.my_rpmsg);
+    assert(dsp_ipc.my_queue != NULL);
+
+    dsp_ipc.my_ept = rpmsg_lite_create_ept(dsp_ipc.my_rpmsg, MCU_EPT_ADDR, rpmsg_queue_rx_cb, dsp_ipc.my_queue);
+    assert(dsp_ipc.my_ept != NULL);
+
     dsp_ipc.remote_addr = DSP_EPT_ADDR;
 }
 
 void BOARD_DSP_IPCAsync_Init(int max_length)
 {
+    /* Queue length must be positive before conversion to the unsigned UBaseType_t. */
+    assert(max_length > 0);
+
     dsp_ipc.mutex = xSemaphoreCreateMutex();
-    dsp_ipc.queue = xQueueCreate(max_length, sizeof(srtm_message_async));
+    dsp_ipc.queue = xQueueCreate((UBaseType_t)max_length, sizeof(srtm_message_async));
     vQueueAddToRegistry(dsp_ipc.queue, "dsp_ipc.queue");
 }
 
