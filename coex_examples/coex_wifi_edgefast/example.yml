@@ -72,6 +72,8 @@ coex_wifi_edgefast:
     frdmimxrt1152:
     - -armgcc@debug
     - -armgcc@release
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
     - -armgcc@sdram_debug
     - -armgcc@sdram_release
     - -armgcc@hyperram_debug
