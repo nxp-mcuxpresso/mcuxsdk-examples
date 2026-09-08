@@ -4,12 +4,14 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+#include "board.h"
 #include "display_support.h"
 #include "fsl_gpio.h"
-#include "fsl_power.h"
+#include "fsl_llc.h"
 #include "pin_mux.h"
-#include "board.h"
+#include "fsl_power.h"
 #include "fsl_reset.h"
+#include "fsl_xspi.h"
 #if (DEMO_PANEL == DEMO_PANEL_LCD_PAR_S035)
 #include "fsl_st7796s.h"
 #include "fsl_dc_fb_dbi.h"
@@ -42,6 +44,81 @@
 /*******************************************************************************
  * Code
  ******************************************************************************/
+ /*
+ * With the default configuration, when frame buffer is placed in PSRAM,
+ * LCDIF might underflow if some other masters are writing to PSRAM.
+ * This function improve the LCDIF bandwidth to make sure it doesn't underflow.
+ */
+void BOARD_ImproveLcdifBandwidth(void)
+{
+/* Allocate 2K AHB buffer for LCDIF. */
+#define XSPI_LCDIF_AHB_BUF_SIZE (2 * 1024)
+
+    uint32_t primask;
+
+    primask = DisableGlobalIRQ();
+    SCB_CleanDCache();
+    SCB_DisableDCache();
+
+    xspi_ahbBuffer_config_t lcdifBufferConfig = {
+        .bufferSize            = XSPI_LCDIF_AHB_BUF_SIZE / 8,
+        .enaPri.enablePriority = false, /* Must use false for A0 chip. No limitaion for B0 chip. */
+        .masterId              = 0x20U, /* LCDIF */
+        .ptrSubBuffer0Config   = NULL,
+        .ptrSubBuffer1Config   = NULL,
+        .ptrSubBuffer2Config   = NULL,
+        .ptrSubBuffer3Config   = NULL,
+    };
+    xspi_ahbBuffer_config_t buffer1Config = {
+        .bufferSize            = XSPI_LCDIF_AHB_BUF_SIZE / 16,
+        .enaPri.enablePriority = false,
+        .masterId              = 0x1EU, /* GPU Bus. */
+        .ptrSubBuffer0Config   = NULL,
+        .ptrSubBuffer1Config   = NULL,
+        .ptrSubBuffer2Config   = NULL,
+        .ptrSubBuffer3Config   = NULL,
+    };
+    xspi_ahbBuffer_config_t buffer2Config = {
+        .bufferSize            = 0,
+        .enaPri.enablePriority = false,
+        .masterId              = 0xFFU, /* Not used. */
+        .ptrSubBuffer0Config   = NULL,
+        .ptrSubBuffer1Config   = NULL,
+        .ptrSubBuffer2Config   = NULL,
+        .ptrSubBuffer3Config   = NULL,
+    };
+    xspi_ahbBuffer_config_t buffer3Config = {
+        .bufferSize = XSPI_LCDIF_AHB_BUF_SIZE / 16, /* Totally 4K, Left part shared by other masters */
+        .enaPri.enableAllMaster = true,
+        .masterId               = 0x0U,
+        .ptrSubBuffer0Config    = NULL,
+        .ptrSubBuffer1Config    = NULL,
+        .ptrSubBuffer2Config    = NULL,
+        .ptrSubBuffer3Config    = NULL,
+    };
+
+    if (XSPI_SetAhbBufferConfig(MAIN__XSPI_1, &lcdifBufferConfig, &buffer1Config, &buffer2Config, &buffer3Config) !=
+        kStatus_Success)
+    {
+        while (1)
+        {
+        }
+    }
+
+    LLC_CleanInvalidateCache(CMPT__LLC);
+
+    /* Let LCDIF read has higher priority from MEDIA AXI_SWITCH */
+    MEDIA__NIC->ASIB[3].READ_QOS = NIC_READ_QOS_READ_QOS(7);
+
+    *(uint32_t*)0x4c001a18 = 0x40ffa0ff;
+
+    __DSB();
+    __ISB();
+
+
+    SCB_EnableDCache();
+    EnableGlobalIRQ(primask);
+}
 
 #if (DEMO_PANEL == DEMO_PANEL_LCD_PAR_S035)
 
@@ -177,6 +254,9 @@ status_t BOARD_PrepareDisplayController(void)
 
     /* 7. Turn the display on (sends DISPON). */
     status = ST7796S_EnableDisplay(&lcdHandle, true);
+
+    /* 8. Improve lcdif bandwidth. */
+    BOARD_ImproveLcdifBandwidth();
 
     return status;
 }
@@ -448,6 +528,9 @@ status_t BOARD_PrepareDisplayController(void)
         EnableIRQ(MEDIA_DCIF_CH0_IRQn);
     }
 
+    /* 5. Improve lcdif bandwidth. */
+    BOARD_ImproveLcdifBandwidth();
+
     return kStatus_Success;
 }
 
@@ -545,6 +628,8 @@ status_t BOARD_PrepareDisplayController(void)
     BOARD_InitDcifPowerClockReset();
 
     BOARD_InitDisplayInterface();
+
+    BOARD_ImproveLcdifBandwidth();
 
     NVIC_SetPriority(MEDIA_DCIF_CH0_IRQn, 3);
     EnableIRQ(MEDIA_DCIF_CH0_IRQn);
