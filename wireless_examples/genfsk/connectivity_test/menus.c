@@ -442,7 +442,25 @@ void PrintPerRxInfo(uint16_t u16PacketsIndex,
     }
     Serial_PrintDec(port, (uint32_t)i32TempRssiValue);
     Serial_Print(port, ". Timestamp: ", gAllowToBlock_d);
-    Serial_PrintDec(port, (uint32_t)pIndicationInfo->timestamp);
+
+    if( pIndicationInfo->timestamp <= 0xFFFFFFFFULL )
+    {
+        Serial_PrintDec(port, (uint32_t)pIndicationInfo->timestamp);
+    }
+    else
+    {
+        /* 24 bytes are enough to hold 64-bit value */
+        char buffer[25];
+        uint32_t i = sizeof(buffer) - 1U;
+        uint64_t t = pIndicationInfo->timestamp;
+        buffer[i] = 0;
+        do
+        {
+            buffer[--i] = '0' + (t % 10U);
+            t /= 10U;
+        } while( t != 0U && i > 0U );
+        Serial_Print(port, &buffer[i], gAllowToBlock_d);
+    }
     Serial_Print(port, "\r\n", gAllowToBlock_d);
 }
 
