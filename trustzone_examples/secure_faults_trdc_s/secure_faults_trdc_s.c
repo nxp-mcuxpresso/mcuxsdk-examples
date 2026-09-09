@@ -184,7 +184,7 @@ int main(void)
 
     PRINTF("Hello from secure world!\r\n");
 
-    testCaseNumber = FAULT_INV_INPUT_PARAMS;
+    testCaseNumber = TESTCASE_MODE;
 
     /* SET YOUR YOUR BREAK POINT TO THE NEXT CODE LINE */
 
