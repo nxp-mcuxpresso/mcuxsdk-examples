@@ -88,6 +88,25 @@ static void APP_ApplyRadioLowPowerMode(uint8_t powerState)
     RFMC->RF2P4GHZ_CTRL |= RFMC_RF2P4GHZ_CTRL_LP_ENTER_MASK;
 }
 
+/*
+ * Release the radio 2.4 GHz low-power request this example asserted on entry.
+ * LP_ENTER is the S/W low-power entry request and stays asserted until it is
+ * deasserted, so a request left standing means the next, deeper entry rewrites
+ * LP_MODE without producing a fresh entry request and the radio never leaves
+ * the low-power state it is already in. The host then enters its own low-power
+ * mode against a radio domain in the wrong state and wakes through a reset.
+ *
+ * The power manager device layer deliberately no longer does this: cpu0 must
+ * not clear RFMC registers at wake up while NBU firmware manages its own low
+ * power. This example holds Core1 in reset and runs no NBU firmware, so it
+ * owns both halves of the request - assert on entry, release on exit.
+ */
+static void APP_ReleaseRadioLowPowerMode(void)
+{
+    RFMC->RF2P4GHZ_CTRL &= ~RFMC_RF2P4GHZ_CTRL_LP_ENTER_MASK;
+    RFMC->RF2P4GHZ_CTRL &= ~RFMC_RF2P4GHZ_CTRL_LP_MODE_MASK;
+}
+
 void BOARD_InitHardware(void)
 {
     BOARD_HoldCore1InReset();
@@ -134,6 +153,10 @@ status_t APP_UartControlCallback(pm_event_type_t eventType, uint8_t powerState, 
     }
     else
     {
+        /* The application drives the NBU/radio low-power release after CMC
+         * low-power exit, mirroring the entry above. */
+        APP_ReleaseRadioLowPowerMode();
+
         /* Re-init uart. */
         BOARD_InitBootPins();
         BOARD_BootClockRUN();
