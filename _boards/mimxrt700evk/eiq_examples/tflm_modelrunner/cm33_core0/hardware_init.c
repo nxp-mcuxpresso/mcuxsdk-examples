@@ -18,15 +18,6 @@
 #include "fsl_edma.h"
 
 
-/*
- * NPU weight-prefetch eDMA controller bring-up (memory-to-memory, DMA0 ch4).
- * copy()/wait() in main.cpp drive the transfers; this file owns the eDMA init.
- * Use EDMA_Init() (not RESET_ClearPeripheralReset, which breaks XSPI); CH_MUX
- * must be 0 so the channel takes no hardware request. The CH4 IRQ is serviced
- * by the SDK's EDMA0_CH4_DriverIRQHandler in fsl_edma_soc.c, which dispatches
- * to the handle registered by EDMA_CreateHandle below and runs EDMA_Callback;
- * do NOT define EDMA0_CH4_DriverIRQHandler here (it would be a duplicate).
- */
 /* DMA0 = the eDMA4 instance in the COMPUTE domain owned by this CM33 core0. */
 #define NPU_PREFETCH_DMA     DMA0
 #define NPU_PREFETCH_DMA_CH  4
