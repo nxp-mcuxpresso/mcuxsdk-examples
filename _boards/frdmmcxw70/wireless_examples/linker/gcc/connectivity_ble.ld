@@ -253,7 +253,10 @@ SECTIONS
      __RPMSG_SH_MEM_END__ = .;
   } > rpmsg_sh_mem
 
-  .m_shared_data : ALIGN(4)
+  /* NOLOAD: RAM-only shared data with no init values. Keeps this section out of
+   * the loadable image so objcopy does not pad the raw binary from flash up to
+   * this section's RAM load address. */
+  .m_shared_data (NOLOAD) : ALIGN(4)
   {
     *(.m_shared_data)
     . = ALIGN(4);
