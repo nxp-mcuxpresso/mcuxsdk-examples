@@ -8,6 +8,7 @@ debugging and further development.
 The example demostrates the interleave transfer by features:
 1. edma minor loop offset.
 
+```
               +---------------------+                          +------------------+
               |  transfer complete  | -----------------------> | example complete |
               +---------------------+                          +------------------+
@@ -25,9 +26,13 @@ The example demostrates the interleave transfer by features:
 +-------+     +---------------------+                          +------------------+     +---------------------+
                 ^                     dest/source address offset                          |
                 +-------------------------------------------------------------------------+
+```
+
 
 2. edma source/destination address offset.
 
+
+```
               +---------------------+                          +------------------+
               |  transfer complete  | -----------------------> | example complete |
               +---------------------+                          +------------------+
@@ -45,6 +50,7 @@ The example demostrates the interleave transfer by features:
 +-------+     +---------------------+                          +------------------+                               +---------------------+
                 ^                                                                                                   |
                 +---------------------------------------------------------------------------------------------------+
+```
 
 
 Please reference user manual for the detail of the feature.

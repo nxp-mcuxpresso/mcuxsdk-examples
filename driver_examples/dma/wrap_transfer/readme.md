@@ -5,6 +5,7 @@ The DMA wrap transfer example is a simple demonstration program that uses the SD
 It excuates wrap transfer from source buffer to destination buffer using the SDK EDMA drivers.
 The purpose of this example is to show how to use the wrap feature of EDMA and to provide a simple example for
 debugging and further development.
+```
                 +--------------------------------------------------------------+
                 v                                                              |
 +-------+     +--------------------+  source address reach modulo boundary   +---------------------+
@@ -16,6 +17,7 @@ debugging and further development.
               +--------------------+
               |  example complete  |
               +--------------------+
+```
 
 ## Supported Boards
 - [FRDM-K32L2B](../../../_boards/frdmk32l2b/driver_examples/dma/wrap_transfer/example_board_readme.md)

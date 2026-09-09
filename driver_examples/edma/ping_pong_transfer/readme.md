@@ -8,6 +8,7 @@ debugging and further development.
 The example demostrate the ping pong transfer by the EDMA scatter gather feature.
 Please reference user manual for the detail of the feature.
                                                                                                                                                                      minor loop finished
+```
                                                                                                                                  +--------------------------------------------------------------+
                                                                                                                                  v                                                              |
 +-------+     +---------------------------------------------------------------+     +---------------------------+  load tcd1   +-----------------------------------+  major loop not finish   +------------------+
@@ -31,6 +32,7 @@ Please reference user manual for the detail of the feature.
                                                                                                                                +-----------------------------------+
                                                                                                                                |         example complete          |
                                                                                                                                +-----------------------------------+
+```
 
 ## Supported Boards
 - [EVKB-IMXRT1050](../../../_boards/evkbimxrt1050/driver_examples/edma/ping_pong_transfer/example_board_readme.md)

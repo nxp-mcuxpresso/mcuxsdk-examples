@@ -11,6 +11,7 @@ moves in the screen. The overlay region shows the blend color.
 
 The initial screen is like this.
 
+```
 +------------------------------------+
 |               |                    |
 |  BLUE         |                    |
@@ -28,6 +29,7 @@ The initial screen is like this.
 |                                    |
 |                                    |
 +------------------------------------+
+```
 
 ## Supported Boards
 - [MIMXRT1170-EVKB](../../../_boards/evkbmimxrt1170/driver_examples/lcdifv2/lcdifv2_examples_readme.md)

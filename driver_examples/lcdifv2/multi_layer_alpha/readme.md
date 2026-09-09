@@ -8,6 +8,7 @@ In this example, 7 layers are enabled. Layer 0 is full screen blue color backgro
 layer 1-7 are alpha layers, they are all green with size (PANEL_WITDH / 2) x (PANEL_HEIGHT / 4).
 The posision of each layer is:
 
+```
 +-----------------+-------------------+
 |                 |                   |
 |                 |                   |
@@ -33,6 +34,7 @@ The posision of each layer is:
 |                 |                   |
 |                 |                   |
 +-----------------+-------------------+
+```
 
 The alpha layers share the same frame buffer, and the desired blended alpha are all 31.
 LCDIFv2 API is called to calculate the global alpha for each layer to get the desired
@@ -41,6 +43,7 @@ blended alpha.
 Because the blended alpha for each alpha layer is the same, so all alpha layers result are the same,
 the panel looks like:
 
+```
 +-------------------------------------+
 |                                     |
 |                                     |
@@ -66,6 +69,7 @@ the panel looks like:
 |                 |    blue           |
 |                 |                   |
 +-----------------+-------------------+
+```
 
 ## Supported Boards
 - [MIMXRT1170-EVKB](../../../_boards/evkbmimxrt1170/driver_examples/lcdifv2/lcdifv2_examples_readme.md)

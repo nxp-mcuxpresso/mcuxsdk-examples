@@ -16,6 +16,7 @@ of each window one by one. The behavior is:
 5. Fill window one by one as white, and delay 0.5s after fill each window.
 6. Go to step 2.
 
+```
 +---------------------------+---------------------------+
 |                           |                           |
 |                           |                           |
@@ -31,6 +32,7 @@ of each window one by one. The behavior is:
 |                           |                           |
 |                           |                           |
 +---------------------------+---------------------------+
+```
 
 ## Supported Boards
 - [FRDM-MCXN236](../../../../_boards/frdmmcxn236/driver_examples/flexio/mculcd/smartdma_transfer/example_board_readme.md)

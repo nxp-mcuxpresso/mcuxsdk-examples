@@ -6,6 +6,7 @@ example, two layers are enabled. For each layer, a global alpha value 50% (128)
 is used. When the example runs, two rectangles are shown, one blue and one red,
 in the overlay region, the color is purple.
 
+```
 +-------------------------------------------+
 |                    |                      |
 |      RED           |                      |
@@ -19,6 +20,7 @@ in the overlay region, the color is purple.
 |                                           |
 |                                           |
 +-------------------------------------------+
+```
 
 Note: The global alpha value shall only apply to the area that 2 layers overlaps, however
 due to IP limitation, the blend happens on non-ovelapped area too. So if the global alpha

@@ -5,12 +5,14 @@ The DMA channel link example is a simple demonstration program that uses the SDK
 It executes channel link transfer using the SDK DMA drivers.
 The purpose of this example is to show how to use the DMA and to provide a simple example for
 debugging and further development.
+```
                   not finished                                   not finished
                 +----------------+                             +----------------+
                 v                |                             v                |
 +-------+     +--------------------+  each request trigger   +--------------------+  finished   +------------------+
 | start | --> | channel 0 transfer | ----------------------> | channel 1 transfer | ----------> | example complete |
 +-------+     +--------------------+                         +--------------------+             +------------------+
+```
 
 ## Supported Boards
 - [FRDM-K32L2B](../../../_boards/frdmk32l2b/driver_examples/dma/channel_link/example_board_readme.md)

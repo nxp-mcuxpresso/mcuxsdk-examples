@@ -11,6 +11,7 @@ The minor loop channel linking occurs at the completion of the minor loop 4 byte
 The major loop channel linking is occurs at the major loop exhausted.
 The example demostrate the channel link transfer by the feature of edma:
 1. minor loop channel link
+```
                                                                                                                    +-----------------------------+                          +----------------------+
                                                                                                                    | channel 1 transfer complete | -----------------------> |   example complete   |
                                                                                                                    +-----------------------------+                          +----------------------+
@@ -32,9 +33,11 @@ The example demostrate the channel link transfer by the feature of edma:
                         +-----------------------------+
                         | channel 0 transfer complete |
                         +-----------------------------+
+```
 
 2. major loop channel link
 
+```
                          channel 1 minor loop finished
   +---------------------------------------------------------+
   |                                                         v
@@ -55,6 +58,7 @@ The example demostrate the channel link transfer by the feature of edma:
 +----------------------+                                  +-------------------------------+                          +-----------------------------+     +-------------------------------+
                                                             ^                                                                                              |
                                                             +----------------------------------------------------------------------------------------------+
+```
 
 
 Please reference user manual for the detail of the feature.

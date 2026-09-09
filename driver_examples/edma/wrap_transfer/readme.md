@@ -7,6 +7,7 @@ The purpose of this example is to show how to use the wrap feature of EDMA and t
 debugging and further development.
 The example demostrate the wrap transfer by the feature of EDMA:
 1. edma modulo feature
+```
                                        minor loop finished
                 +-------------------------------------------------+
                 v                                                 |
@@ -20,8 +21,10 @@ The example demostrate the wrap transfer by the feature of EDMA:
               |  example complete    |                          |          source address wrap           |
               +----------------------+                          +----------------------------------------+
 
+```
 2. edma major loop offet feature.
 
+```
               +----------------------+                          +--------------------------------------------------------------+  trigger again   +------------------+
               |  transfer complete   | -----------------------> | source/destination address wrap(SLAST/DLAST) to origin value | ---------------> | example complete |
               +----------------------+                          +--------------------------------------------------------------+                  +------------------+
@@ -33,6 +36,7 @@ The example demostrate the wrap transfer by the feature of EDMA:
 +-------+     +----------------------+                          +--------------------------------------------------------------+
                 ^                      minor loop finished        |
                 +-------------------------------------------------+
+```
 
 
 Please reference user manual for the detail of the feature.

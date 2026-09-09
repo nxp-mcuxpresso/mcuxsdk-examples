@@ -6,6 +6,7 @@ There are two channels involved in this demo:
 1. channel 0 is used for handling the ring buffer transfer
 2. channel 1 is used for restart channel 0.
 
+```
 +-------+     +-----------------------------+
 | start | --> |     channel 0 transfer      | <+
 +-------+     +-----------------------------+  |
@@ -15,6 +16,7 @@ There are two channels involved in this demo:
               +-----------------------------+  |
               | channel 1 restart channel 0 | -+
               +-----------------------------+
+```
 
 ## Supported Boards
 - [FRDM-K32L2B](../../../_boards/frdmk32l2b/driver_examples/dma/ring_buffer/example_board_readme.md)

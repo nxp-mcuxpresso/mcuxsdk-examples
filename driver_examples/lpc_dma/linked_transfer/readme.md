@@ -6,10 +6,12 @@ It executes linked transfer(ping pong case) from the source buffer to destinatio
 
 Two descriptors are used,  A is linked to B, B is linked to A.
 
+```
 A------>B------->
 ^               |
 |               |
 ---------<-------
+```
 
 The purpose of this example is to show how to use the DMA and to provide a simple example for
 debugging and further development.

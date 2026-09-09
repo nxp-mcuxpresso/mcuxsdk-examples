@@ -7,6 +7,7 @@ is used for alpha blend.
 
 The PS frame buffer is like this:
 
+```
 +---------------------------------+-----------------------------------+
 |                                 |                                   |
 |                                 |                                   |
@@ -26,9 +27,11 @@ The PS frame buffer is like this:
 |                                 |                                   |
 |                                 |                                   |
 +---------------------------------+-----------------------------------+
+```
 
 The AS frame buffer is square like this:
 
+```
                +---------------------------------+
                |                                 |
                |                                 |
@@ -47,12 +50,14 @@ The AS frame buffer is square like this:
                |                                 |
                |                                 |
                +---------------------------------+
+```
 
 The AS is placed in the center of the screen. The AS color key is set to yellow
 color, the blend alpha value is set to 128. So in the output frame buffer, the
 originally yellow region shows PS color, the green region is blend with PS color.
 The screen shows the output frame like this:
 
+```
 +-------------+-------------------+-------------------+---------------+
 |             |                   |                   |               |
 |             |   HALF CYAN       |    HALF YELLOW    |               |
@@ -72,6 +77,7 @@ The screen shows the output frame like this:
 |             |                   |                   |               |
 |             |                   |                   |               |
 +-------------+-------------------+-------------------+---------------+
+```
 
 ## Supported Boards
 - [EVK9-MIMX8ULP](../../../_boards/evk9mimx8ulp/driver_examples/pxp/color_key/example_board_readme.md)

@@ -5,6 +5,7 @@ The EDMA memory to memory example is a simple demonstration program that uses th
 It excuates one shot transfer from source buffer to destination buffer using the SDK EDMA drivers.
 The purpose of this example is to show how to use the EDMA and to provide a simple example for
 debugging and further development.
+```
                                                                      +---------------------------+                          +------------------+
                                                                      | tcd 1 major loop finished | -----------------------> | example complete |
                                                                      +---------------------------+                          +------------------+
@@ -22,6 +23,7 @@ debugging and further development.
 +-------+     +---------------------------+                          +---------------------------+
                 ^                           minor loop finished        |
                 +------------------------------------------------------+
+```
 
 ## Supported Boards
 - [EVKB-IMXRT1050](../../../_boards/evkbimxrt1050/driver_examples/edma/scatter_gather/example_board_readme.md)

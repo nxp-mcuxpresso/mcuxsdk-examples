@@ -11,6 +11,7 @@ The LCDIV v2 converts the color internally and sends out RGB color to the panel.
 
 When the example runs, the panel shows four color blocks:
 
+```
 +-------------------------------+
 |            RED                |
 +-------------------------------+
@@ -20,6 +21,7 @@ When the example runs, the panel shows four color blocks:
 +-------------------------------+
 |            WHITE              |
 +-------------------------------+
+```
 
 ## Supported Boards
 - [MIMXRT1170-EVKB](../../../_boards/evkbmimxrt1170/driver_examples/lcdifv2/lcdifv2_examples_readme.md)
