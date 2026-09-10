@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015 - 2016, Freescale Semiconductor, Inc.
- * Copyright 2016, 2018 NXP
+ * Copyright 2016, 2018, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -77,7 +77,10 @@ volatile uint8_t ufiIng;
 /* command callback status */
 volatile usb_status_t ufiStatus;
 
-USB_DMA_NONINIT_DATA_ALIGN(USB_DATA_ALIGN_SIZE) static uint8_t s_TestUfiBuffer[512]; /*!< test buffer */
+/*! @brief size of the UFI test buffer, also the largest block length this test can transfer */
+#define USB_HOST_MSD_TEST_UFI_BUFFER_SIZE (512U)
+USB_DMA_NONINIT_DATA_ALIGN(USB_DATA_ALIGN_SIZE) static uint8_t
+    s_TestUfiBuffer[USB_HOST_MSD_TEST_UFI_BUFFER_SIZE]; /*!< test buffer */
 
 #if MSD_THROUGHPUT_TEST_ENABLE
 USB_DMA_NONINIT_DATA_ALIGN(USB_DATA_ALIGN_SIZE)
@@ -290,9 +293,14 @@ static void USB_HostMsdCommandTest(usb_host_msd_command_instance_t *msdCommandIn
         msd_command_test_done(msdCommandInstance);
         return;
     }
-    if (blockSize == 0)
+    /* blockSize is the device-reported logical block length and is used below as the transfer length
+       into testUfiBuffer, and as the source length for WRITE(10) out of it. That buffer is
+       sizeof(s_TestUfiBuffer) bytes, so a device reporting a larger block length would overflow it on
+       read and disclose memory past it on write. Fall back to the buffer size when the reported value
+       is unusable, which is what the rest of this test assumed all along. */
+    if ((blockSize == 0) || (blockSize > USB_HOST_MSD_TEST_UFI_BUFFER_SIZE))
     {
-        blockSize = 512;
+        blockSize = USB_HOST_MSD_TEST_UFI_BUFFER_SIZE;
     }
     usb_echo("read(10)...");
     ufiIng = 1;
