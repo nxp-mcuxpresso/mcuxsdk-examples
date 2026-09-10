@@ -14,3 +14,4 @@ dual_adc_interrupt:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
 
+    frdmmcxc353: []

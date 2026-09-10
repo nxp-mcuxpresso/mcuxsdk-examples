@@ -82,3 +82,4 @@ gpio_led_output:
     kw43loc: []
     mcxw70loc: []
     frdmmcxw70: []
+    frdmmcxc353: []

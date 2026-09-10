@@ -28,3 +28,4 @@ debugging and further development.
 - [FRDM-MCXA577](../../../_boards/frdmmcxa577/driver_examples/edma3/scatter_gather/example_board_readme.md)
 - [FRDM-MCXC162](../../../_boards/frdmmcxc162/driver_examples/edma3/scatter_gather/example_board_readme.md)
 - [FRDM-MCXA287](../../../_boards/frdmmcxa287/driver_examples/edma3/scatter_gather/example_board_readme.md)
+- [FRDM-MCXC353](../../../_boards/frdmmcxc353/driver_examples/edma3/scatter_gather/example_board_readme.md)

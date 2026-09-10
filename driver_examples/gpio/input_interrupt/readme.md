@@ -54,3 +54,4 @@ example uses the software button to control/toggle the LED.
 - [MIMXRT2660-EVK](../../../_boards/mimxrt2660evk/driver_examples/gpio/input_interrupt/example_board_readme.md)
 - MIMXRT2660-EVK
 - [MCXW70-LOC](../../../_boards/mcxw70loc/driver_examples/gpio/input_interrupt/example_board_readme.md)
+- [FRDM-MCXC353](../../../_boards/frdmmcxc353/driver_examples/gpio/input_interrupt/example_board_readme.md)

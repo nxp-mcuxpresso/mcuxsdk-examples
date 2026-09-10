@@ -17,3 +17,4 @@ The user should probe the FTM output with a oscilloscope to see the PWM.
 - [FRDM-KE17Z512](../../../_boards/frdmke17z512/driver_examples/ftm/pwm_twochannel/example_board_readme.md)
 - [FRDM-MCXE247](../../../_boards/frdmmcxe247/driver_examples/ftm/pwm_twochannel/example_board_readme.md)
 - [LPCXpresso860MAX](../../../_boards/lpcxpresso860max/driver_examples/ftm/pwm_twochannel/example_board_readme.md)
+- [FRDM-MCXC353](../../../_boards/frdmmcxc353/driver_examples/ftm/pwm_twochannel/example_board_readme.md)

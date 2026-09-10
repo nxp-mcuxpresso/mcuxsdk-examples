@@ -89,3 +89,4 @@ Slave example is running...
 - [FRDM-IMX95](../../../../_boards/frdmimx95/driver_examples/lpspi/edma_b2b_transfer/slave/example_board_readme.md)
 - [MIMXRT2660-EVK](../../../../_boards/mimxrt2660evk/driver_examples/lpspi/edma_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-IMX937](../../../../_boards/frdmimx937/driver_examples/lpspi/edma_b2b_transfer/slave/example_board_readme.md)
+- [FRDM-MCXC353](../../../../_boards/frdmmcxc353/driver_examples/lpspi/edma_b2b_transfer/slave/example_board_readme.md)

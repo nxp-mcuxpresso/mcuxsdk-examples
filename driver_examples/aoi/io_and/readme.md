@@ -28,3 +28,4 @@ aoi_io_and project.
 - [FRDM-MCXA287](../../../_boards/frdmmcxa287/driver_examples/aoi/io_and/example_board_readme.md)
 - [FRDM-KW43](../../../_boards/frdmkw43/driver_examples/aoi/io_and/example_board_readme.md)
 - [FRDM-MCXW70](../../../_boards/frdmmcxw70/driver_examples/aoi/io_and/example_board_readme.md)
+- [FRDM-MCXC353](../../../_boards/frdmmcxc353/driver_examples/aoi/io_and/example_board_readme.md)

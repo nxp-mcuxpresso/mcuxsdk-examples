@@ -11,3 +11,4 @@ this example will print overflow flag status, positive pulse width and negative 
 - [FRDM-KE16Z](../../_boards/frdmke16z/driver_examples/pwt/example_board_readme.md)
 - [FRDM-KE17Z](../../_boards/frdmke17z/driver_examples/pwt/example_board_readme.md)
 - [FRDM-KE17Z512](../../_boards/frdmke17z512/driver_examples/pwt/example_board_readme.md)
+- [FRDM-MCXC353](../../_boards/frdmmcxc353/driver_examples/pwt/example_board_readme.md)

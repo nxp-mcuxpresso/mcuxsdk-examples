@@ -368,3 +368,4 @@ lpuart_polling:
     mcxw70loc: []
     frdmmcxw70: []
     mimxrt2660evk: []
+    frdmmcxc353: []

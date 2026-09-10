@@ -16,3 +16,4 @@ detecting the output's falling edge.
 
 ## Supported Boards
 - [LPCXpresso55S36](../../../_boards/lpcxpresso55s36/driver_examples/hscmp/interrupt/example_board_readme.md)
+- [FRDM-MCXC353](../../../_boards/frdmmcxc353/driver_examples/hscmp/interrupt/example_board_readme.md)

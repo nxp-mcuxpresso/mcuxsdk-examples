@@ -15,3 +15,4 @@ error_recording_sw:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxl255@cm33: []
+    frdmmcxc353: []

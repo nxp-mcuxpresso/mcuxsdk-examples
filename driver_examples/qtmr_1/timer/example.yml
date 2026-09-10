@@ -237,3 +237,4 @@ qtmr_timer:
     - -mdk@hyperram_release
     - -mdk@release
     mimxrt2660evk: []
+    frdmmcxc353: []

@@ -14,3 +14,4 @@ power_mode_switch_mcxc:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxc162: []
+    frdmmcxc353: []

@@ -5,3 +5,4 @@ The ERM project is a simple demonstration program of the SDK ERM driver. It show
 
 ## Supported Boards
 - [FRDM-MCXL255](../../../_boards/frdmmcxl255/driver_examples/erm/error_recording_sw/example_board_readme.md)
+- [FRDM-MCXC353](../../../_boards/frdmmcxc353/driver_examples/erm/error_recording_sw/example_board_readme.md)

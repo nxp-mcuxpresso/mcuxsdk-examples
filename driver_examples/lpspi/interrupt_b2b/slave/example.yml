@@ -315,3 +315,4 @@ lpspi_interrupt_b2b_slave:
     frdmkw43: []
     frdmmcxw70: []
     mimxrt2660evk: []
+    frdmmcxc353: []

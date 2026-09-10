@@ -14,3 +14,4 @@ opamp_dual_adc:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
 
+    frdmmcxc353: []

@@ -16,3 +16,4 @@ pit_basic_generic:
       - ${board_root}/${board}/driver_examples/pit/basic_generic/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
+    frdmmcxc353: []

@@ -148,3 +148,4 @@ lpuart_edma_rb_transfer:
     kw43loc: []
     mcxw70loc: []
     frdmmcxw70: []
+    frdmmcxc353: []

@@ -236,3 +236,4 @@ qtmr_inputcapture_outputpwm:
     - -mdk@hyperram_release
     - -mdk@release
     mimxrt2660evk: []
+    frdmmcxc353: []

@@ -95,3 +95,4 @@ Press any key to run again.
 - [frdmimx952](../../../../_boards/frdmimx952/driver_examples/lpspi/interrupt_b2b_transfer/master/example_board_readme.md)
 - [FRDM-IMX95](../../../../_boards/frdmimx95/driver_examples/lpspi/interrupt_b2b_transfer/master/example_board_readme.md)
 - [FRDM-IMX937](../../../../_boards/frdmimx937/driver_examples/lpspi/interrupt_b2b_transfer/master/example_board_readme.md)
+- [FRDM-MCXC353](../../../../_boards/frdmmcxc353/driver_examples/lpspi/interrupt_b2b_transfer/master/example_board_readme.md)

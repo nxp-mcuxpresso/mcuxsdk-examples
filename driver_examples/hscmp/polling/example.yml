@@ -24,3 +24,4 @@ hscmp_polling:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso55s36: []
+    frdmmcxc353: []

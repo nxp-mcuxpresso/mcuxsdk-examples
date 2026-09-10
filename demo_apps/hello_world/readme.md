@@ -121,3 +121,4 @@ debug_console supports this, debug_console_lite doesn't support).
 - [MIMXRT2660-EVK](../../_boards/mimxrt2660evk/demo_apps/hello_world/example_board_readme.md)
 - [hvpmcxa346](../../_boards/hvpmcxa346/demo_apps/hello_world/example_board_readme.md)
 - [MCXW70-LOC](../../_boards/mcxw70loc/demo_apps/hello_world/example_board_readme.md)
+- [FRDM-MCXC353](../../_boards/frdmmcxc353/demo_apps/hello_world/example_board_readme.md)

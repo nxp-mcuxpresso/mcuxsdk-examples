@@ -362,3 +362,4 @@ lpuart_interrupt:
     mcxw70loc: []
     frdmmcxw70: []
     mimxrt2660evk: []
+    frdmmcxc353: []

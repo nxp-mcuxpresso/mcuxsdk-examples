@@ -75,3 +75,4 @@ slave is correct.
 - [FRDM-MCXA287](../../../../_boards/frdmmcxa287/driver_examples/lpi2c/polling_b2b/slave/example_board_readme.md)
 - [MIMXRT2660-EVK](../../../../_boards/mimxrt2660evk/driver_examples/lpi2c/polling_b2b/slave/example_board_readme.md)
 - [MCXW70-LOC](../../../../_boards/mcxw70loc/driver_examples/lpi2c/polling_b2b/slave/example_board_readme.md)
+- [FRDM-MCXC353](../../../../_boards/frdmmcxc353/driver_examples/lpi2c/polling_b2b/slave/example_board_readme.md)

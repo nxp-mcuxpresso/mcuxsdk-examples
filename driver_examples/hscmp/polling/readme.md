@@ -15,3 +15,4 @@ output is logic one, or turned off when zero.
 
 ## Supported Boards
 - [LPCXpresso55S36](../../../_boards/lpcxpresso55s36/driver_examples/hscmp/polling/example_board_readme.md)
+- [FRDM-MCXC353](../../../_boards/frdmmcxc353/driver_examples/hscmp/polling/example_board_readme.md)

@@ -329,3 +329,4 @@ lpi2c_edma_b2b_transfer_slave:
     mimxrt2660evk: []
     kw43loc: []
     mcxw70loc: []
+    frdmmcxc353: []

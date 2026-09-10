@@ -22,3 +22,4 @@ LPSPI loopback example start
 LPSPI loopback test pass!!!
 
 ## Supported Boards
+- [FRDM-MCXC353](../../../_boards/frdmmcxc353/driver_examples/lpspi/loopback/example_board_readme.md)

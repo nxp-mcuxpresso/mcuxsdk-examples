@@ -70,3 +70,4 @@ The log below shows example output of the PWM driver demo in the oscilloscope :
 - [MIMXRT2660-EVK](../../../_boards/mimxrt2660evk/driver_examples/pwm/example_board_readme.md)
 - [FRDM-KW43](../../../_boards/frdmkw43/driver_examples/pwm/example_board_readme.md)
 - [FRDM-MCXW70](../../../_boards/frdmmcxw70/driver_examples/pwm/example_board_readme.md)
+- [FRDM-MCXC353](../../../_boards/frdmmcxc353/driver_examples/pwm/example_board_readme.md)

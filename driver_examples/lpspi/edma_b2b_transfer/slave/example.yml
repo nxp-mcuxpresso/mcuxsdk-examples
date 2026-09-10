@@ -322,3 +322,4 @@ lpspi_edma_b2b_transfer_slave:
     frdmkw43: []
     frdmmcxw70: []
     mimxrt2660evk: []
+    frdmmcxc353: []

@@ -315,3 +315,4 @@ lpspi_interrupt_b2b_master:
     frdmkw43: []
     frdmmcxw70: []
     mimxrt2660evk: []
+    frdmmcxc353: []
