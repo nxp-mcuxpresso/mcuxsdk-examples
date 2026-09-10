@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016, 2018 NXP
+ * Copyright 2016, 2018, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -302,8 +302,17 @@ void USB_HostHidMouseTask(void *param)
             endPosition   = (uint32_t)descriptor +
                           ((usb_host_interface_t *)mouseInstance->interfaceHandle)->interfaceExtensionLength;
 
-            while ((uint32_t)descriptor < endPosition)
+            /* Every field below comes from the attached device. Bound the walk so a truncated or mis-declared
+               class-specific descriptor cannot be read past the end of interfaceExtension: the two bytes of the
+               common header must be present before they are read, a bLength of 0 must stop the walk rather than
+               leave it spinning on the same descriptor forever, and the whole declared bLength must fit before
+               the descriptor is accepted. */
+            while (((uint32_t)descriptor + 2U) <= endPosition)
             {
+                if ((*descriptor == 0U) || (((uint32_t)descriptor + (uint32_t)(*descriptor)) > endPosition))
+                {
+                    break;
+                }
                 if (*(descriptor + 1) == USB_DESCRIPTOR_TYPE_HID) /* descriptor type */
                 {
                     hidDescriptor = (usb_host_hid_descriptor_t *)descriptor;
@@ -318,14 +327,32 @@ void USB_HostHidMouseTask(void *param)
             if (hidDescriptor != NULL)
             {
                 usb_host_hid_class_descriptor_t *Hid_classDesPtr;
+                uint32_t classDescriptorCount;
                 Hid_classDesPtr = (usb_host_hid_class_descriptor_t *)&(hidDescriptor->bHidDescriptorType);
-                for (uint8_t index = 0; index < hidDescriptor->bNumDescriptors; ++index)
+                /* The class descriptor array starts at bHidDescriptorType and each entry is
+                   sizeof(usb_host_hid_class_descriptor_t) bytes, so the descriptor's own bLength bounds how many of
+                   the bNumDescriptors entries are actually present. bNumDescriptors is device-supplied and was
+                   trusted on its own, which read past both the descriptor and interfaceExtension. */
+                classDescriptorCount = 0U;
+                if (hidDescriptor->bLength >= sizeof(usb_host_hid_descriptor_t))
                 {
-                    Hid_classDesPtr += index;
-                    if (Hid_classDesPtr->bHidDescriptorType == USB_DESCRIPTOR_TYPE_HID_REPORT)
+                    classDescriptorCount = ((uint32_t)hidDescriptor->bLength -
+                                            ((uint32_t)sizeof(usb_host_hid_descriptor_t) -
+                                             (uint32_t)sizeof(usb_host_hid_class_descriptor_t))) /
+                                           (uint32_t)sizeof(usb_host_hid_class_descriptor_t);
+                    if (classDescriptorCount > (uint32_t)hidDescriptor->bNumDescriptors)
+                    {
+                        classDescriptorCount = (uint32_t)hidDescriptor->bNumDescriptors;
+                    }
+                }
+                for (uint32_t index = 0U; index < classDescriptorCount; ++index)
+                {
+                    /* index the array; the previous cumulative "+= index" advanced by 0, 1, 3, 6 ... entries, so it
+                       both skipped entries and ran past the end faster than bNumDescriptors suggests. */
+                    if (Hid_classDesPtr[index].bHidDescriptorType == USB_DESCRIPTOR_TYPE_HID_REPORT)
                     {
                         mouseReportLength =
-                            (uint16_t)USB_SHORT_FROM_LITTLE_ENDIAN_ADDRESS(Hid_classDesPtr->wDescriptorLength);
+                            (uint16_t)USB_SHORT_FROM_LITTLE_ENDIAN_ADDRESS(Hid_classDesPtr[index].wDescriptorLength);
                         break;
                     }
                 }
