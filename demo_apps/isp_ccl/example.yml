@@ -11,7 +11,7 @@ isp_ccl:
     document:
       name: isp_ccl${core_id_suffix_name}
       category: demo_apps
-      brief: This demo app uses externally connected 4x ox3c cameras on CSI0 to capture images and process them using ISP coprocessor and display them via LVDS0 interface. Cameras are controlled by NXP algorithms to adjust to local light conditions.
+      brief: This demo app uses externally connected 4x ox3c cameras on CSI0 to capture images and process them using ISP coprocessor and display them via LVDS1 interface. Cameras are controlled by NXP algorithms to adjust to local light conditions.
       example_readme:
       - examples/demo_apps/isp_ccl/readme.md
       - ${board_root}/${board}/demo_apps/isp_ccl/example_board_readme.md
