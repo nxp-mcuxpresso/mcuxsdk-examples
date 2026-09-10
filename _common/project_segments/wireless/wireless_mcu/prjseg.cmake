@@ -211,6 +211,14 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_coredump)
     )
 endif()
 
+if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_fault_sink)
+    mcux_add_macro(
+        TARGETS debug
+        TOOLCHAINS armgcc iar
+        CC "-DBOARD_DBG_FAULT_SINK_ENABLE=1"
+    )
+endif()
+
 if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.extflash)
     mcux_add_source(
         BASE_PATH ${SdkRootDirPath}

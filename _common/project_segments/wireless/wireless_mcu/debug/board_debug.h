@@ -40,6 +40,21 @@ void BOARD_InitSWO(void);
  */
 void BOARD_DeInitSWO(void);
 
+#if defined(BOARD_DBG_FAULT_SINK_ENABLE) && (BOARD_DBG_FAULT_SINK_ENABLE != 0)
+/*!
+ * \brief Route the framework fault-handler diagnostic text to the debug log engine.
+ *
+ * \details Registers an output sink with the framework fault handler so its
+ * human-readable register/fault dump is written through the shared debug log
+ * engine, over the same port the engine uses. This is independent of the
+ * coredump feature: it works whether or not the coredump backend is enabled.
+ * Call once at boot, after BOARD_DbgLoggerInit(). A fault that fires before
+ * this call produces no fault-report text.
+ *
+ */
+void BOARD_DbgFaultSinkInit(void);
+#endif
+
 /*!
  * @}  end of FWK_Board addtogroup
  */

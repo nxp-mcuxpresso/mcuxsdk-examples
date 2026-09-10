@@ -92,6 +92,18 @@ if MCUX_PRJSEG_module.board.wireless.board
       help
         Allows to extract and analyze NBU state in case a fault is detected
 
+  config MCUX_PRJSEG_module.board.wireless.board.debug_fault_sink
+      bool "Fault handler output over debug log engine"
+      depends on MCUX_PRJSEG_module.board.wireless.board.debug_logger
+      select MCUX_PRJSEG_module.board.wireless.board.debug
+      imply MCUX_COMPONENT_middleware.wireless.framework.dbg.fault_handlers
+      help
+        Route the framework app-core fault handler's human-readable register/fault
+        dump through the shared debug log engine, over whatever output port the
+        engine's Kconfig choice selects. This puts the fault report on the same
+        port the coredump backend uses. It is independent of the coredump feature:
+        it works whether or not debug_coredump is enabled.
+
   config MCUX_PRJSEG_module.board.wireless.board.debug_coredump
       bool "Coredump over debug log engine"
       select MCUX_PRJSEG_module.board.wireless.board.debug_utils

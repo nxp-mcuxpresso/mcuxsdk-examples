@@ -43,8 +43,13 @@
 #include "board_debug_nbu.h"
 #endif
 
-#if defined(BOARD_DBG_COREDUMP_ENABLE) && (BOARD_DBG_COREDUMP_ENABLE != 0)
+#if (defined(BOARD_DBG_COREDUMP_ENABLE) && (BOARD_DBG_COREDUMP_ENABLE != 0)) || \
+    (defined(BOARD_DBG_FAULT_SINK_ENABLE) && (BOARD_DBG_FAULT_SINK_ENABLE != 0))
 #include "board_dbg_logger.h"
+#endif
+
+#if defined(BOARD_DBG_FAULT_SINK_ENABLE) && (BOARD_DBG_FAULT_SINK_ENABLE != 0)
+#include "board_debug.h"
 #endif
 
 /*${header:end}*/
@@ -152,12 +157,21 @@ void BOARD_InitHardware(void)
     BOARD_DbgNbuInit();
 #endif
 
-#if defined(BOARD_DBG_COREDUMP_ENABLE) && (BOARD_DBG_COREDUMP_ENABLE != 0)
-    /* Bring up the debug log engine at boot so the coredump backend can stream
-     * over the selected port from fault context (no init in the fault handler). */
+#if (defined(BOARD_DBG_COREDUMP_ENABLE) && (BOARD_DBG_COREDUMP_ENABLE != 0)) || \
+    (defined(BOARD_DBG_FAULT_SINK_ENABLE) && (BOARD_DBG_FAULT_SINK_ENABLE != 0))
+    /* Bring up the debug log engine at boot so the coredump backend and/or the
+     * fault-handler output sink can stream over the selected port from fault
+     * context (no init in the fault handler). */
     int dbgLoggerStatus = BOARD_DbgLoggerInit();
     assert(dbgLoggerStatus == 0);
     (void)dbgLoggerStatus;
+#endif
+
+#if defined(BOARD_DBG_FAULT_SINK_ENABLE) && (BOARD_DBG_FAULT_SINK_ENABLE != 0)
+    /* Route the app-core fault-handler diagnostic text through the debug log
+     * engine so it lands on the same port the coredump uses. Independent of
+     * whether the coredump backend is enabled. */
+    BOARD_DbgFaultSinkInit();
 #endif
 
 #if defined(BOARD_DBG_SWO_CORE_FUNNEL) && (BOARD_DBG_SWO_CORE_FUNNEL != 0)
