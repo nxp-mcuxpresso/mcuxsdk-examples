@@ -374,6 +374,14 @@
 
 #define LWIP_DNS_SECURE 0
 
+#if LWIP_IPV6
+#define MEMP_NUM_ND6_QUEUE     ((PBUF_POOL_SIZE) / 2)
+
+#if (MEMP_NUM_ND6_QUEUE < 1)
+#error "MEMP_NUM_ND6_QUEUE must be >= 1: PBUF_POOL_SIZE too small"
+#endif
+#endif /* LWIP_IPV6 */
+
 /*
    ------------------------------------
    ---------- Socket options ----------
