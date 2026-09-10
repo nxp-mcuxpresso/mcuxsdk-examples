@@ -1,4 +1,4 @@
-# Copyright 2025 NXP
+# Copyright 2025-2026 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -6,21 +6,21 @@ menu "Project Settings"
 
 config EXAMPLE_I2C_BAUDRATE
     int "I2C mode baud rate"
-    default 400000
+    default 100000
     help
         No prefix in generated macro
         type unsigned
 
 config EXAMPLE_I3C_OD_BAUDRATE
     int "I3C open-drain mode baud rate"
-    default 1500000
+    default 500000
     help
         No prefix in generated macro
         type unsigned
 
 config EXAMPLE_I3C_PP_BAUDRATE
     int "I3C push-pull mode baud rate"
-    default 4000000
+    default 1000000
     help
         No prefix in generated macro
         type unsigned
