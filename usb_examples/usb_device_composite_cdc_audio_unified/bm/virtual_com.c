@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016 NXP
+ * Copyright 2016, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -156,6 +156,10 @@ usb_status_t USB_DeviceCdcVcomCallback(class_handle_t handle, uint32_t event, vo
                 if (1 == acmReqParam->isSetup)
                 {
                     *(acmReqParam->buffer) = s_countryCode;
+                    /* The length must be set to the buffer size; it arrives holding the host's
+                       wLength, so leaving it would prime the OUT stage to receive wLength bytes
+                       into this 2-byte buffer. */
+                    *(acmReqParam->length) = sizeof(s_countryCode);
                 }
                 else
                 {

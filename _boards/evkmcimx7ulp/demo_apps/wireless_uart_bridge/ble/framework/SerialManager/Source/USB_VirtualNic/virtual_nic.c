@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016, Freescale Semiconductor, Inc.
- * Copyright 2016 - 2017 , NXP
+ * Copyright 2016 - 2017, 2026 NXP
  * All rights reserved.
  *
  *
@@ -599,6 +599,11 @@ usb_status_t USB_DeviceCdcVnicCallback(class_handle_t handle, uint32_t event, vo
             if (1 == acmReqParam->isSetup)
             {
                 *(acmReqParam->buffer) = (g_cdcVnic.rndisHandle)->rndisCommand;
+                /* The length must be set to the receive buffer size. It arrives holding the host's
+                   wLength, so leaving it would prime the OUT stage to receive wLength bytes into the
+                   RNDIS_MAX_EXPECTED_COMMAND_SIZE-byte s_rndisCommand buffer. The length check in
+                   USB_DeviceCdcRndisMessageSet() runs in the data phase, after that write. */
+                *(acmReqParam->length) = RNDIS_MAX_EXPECTED_COMMAND_SIZE;
             }
             else
             {
