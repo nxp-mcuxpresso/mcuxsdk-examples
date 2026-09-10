@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016, Freescale Semiconductor, Inc.
- * Copyright 2016 - 2019 NXP
+ * Copyright 2016 - 2019, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -576,13 +576,34 @@ usb_status_t USB_DeviceVnicReceive(void)
                 USB_DeviceVnicReceiveSetState(RX_IDLE);
                 break;
             }
+            /* The RNDIS packet header is RNDIS_USB_OVERHEAD_SIZE bytes; a shorter transfer cannot
+               carry one, so do not read messageLen out of it. */
+            if (len < RNDIS_USB_OVERHEAD_SIZE)
+            {
+                usb_echo("wrong message length\n");
+                USB_DeviceVnicReceiveSetState(RX_IDLE);
+                break;
+            }
             messageLen = USB_LONG_TO_LITTLE_ENDIAN(*((uint32_t *)(buffer) + 1));
-            ;
 
             if (!(messageLen % s_usbBulkMaxPacketSize))
             {
                 /* RNDIS Protocol defines 1 byte call of 0x00, if transfer size is multiple of endpoint packet size */
                 messageLen++;
+            }
+            /* messageLen is declared by the host, so validate it before it drives the second receive
+               below. It must cover the RNDIS header and the bytes already received, and because the
+               remainder is primed into s_usbRxRndisPacketBuffer at + s_usbBulkMaxPacketSize, that
+               whole span must fit the buffer. Without this a host declaring a large messageLen makes
+               the controller write past the buffer, and messageLen < len underflows
+               frameRemainingLen. */
+            if ((messageLen < RNDIS_USB_OVERHEAD_SIZE) || (messageLen < len) ||
+                (messageLen > sizeof(s_usbRxRndisPacketBuffer)) ||
+                ((s_usbBulkMaxPacketSize + (messageLen - len)) > sizeof(s_usbRxRndisPacketBuffer)))
+            {
+                usb_echo("wrong message length\n");
+                USB_DeviceVnicReceiveSetState(RX_IDLE);
+                break;
             }
             rndisPktMsgData = s_usbRxRndisPacketBuffer;
             memcpy(rndisPktMsgData, buffer, len);
@@ -644,7 +665,10 @@ usb_status_t USB_DeviceVnicReceive(void)
 
             /* Send the ethernet packet */
             USB_DeviceVnicReceiveSetState(RX_USB2ENET_PROCESS);
-            if (messageLen < RNDIS_USB_OVERHEAD_SIZE)
+            /* messageLen is host-declared; bound it to the buffer and to the bytes actually received
+               across both parts before it becomes the VNIC_EnetSend length. */
+            if ((messageLen < RNDIS_USB_OVERHEAD_SIZE) || (messageLen > sizeof(s_usbRxRndisPacketBuffer)) ||
+                (messageLen > (s_usbBulkMaxPacketSize + len)))
             {
                 usb_echo("wrong message length\n");
                 break;
