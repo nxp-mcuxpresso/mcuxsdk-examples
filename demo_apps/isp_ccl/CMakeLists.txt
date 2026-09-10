@@ -19,6 +19,8 @@ mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES
     examples/demo_apps/isp_ccl/isp_ccl.c
+    examples/demo_apps/isp_ccl/FreeRTOSAdditions.h
+    examples/demo_apps/isp_ccl/FreeRTOSConfig_frag.h
 )
 
 mcux_add_include(INCLUDES

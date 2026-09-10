@@ -50,9 +50,10 @@ mcux_add_iar_linker_script(
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES
-    ${board_root}/${board}/display_support.h
-    ${board_root}/${board}/display_support.c
     ${board_root}/${board}/demo_apps/isp_ccl/cm7/board_isp.c
+    ${board_root}/${board}/demo_apps/isp_ccl/cm7/board_isp.h
+    ${board_root}/${board}/demo_apps/isp_ccl/cm7/clock_config.h
+    ${board_root}/${board}/demo_apps/isp_ccl/cm7/preinclude.h
 )
 
 if(CONFIG_MCUX_COMPONENT_middleware.ispsdk.usb_cdc_acm)
