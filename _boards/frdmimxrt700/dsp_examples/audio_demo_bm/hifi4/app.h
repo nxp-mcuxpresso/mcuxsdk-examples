@@ -22,8 +22,8 @@
 #define DEMO_PDM_QUALITY_MODE         kPDM_QualityModeHigh
 #define DEMO_PDM_CHANNEL_GAIN         (kPDM_DfOutputGain5)
 #define DEMO_PDM_CIC_OVERSAMPLE_RATE  (16U)
-#define DEMO_PDM_ENABLE_CHANNEL_LEFT  (0U)
-#define DEMO_PDM_ENABLE_CHANNEL_RIGHT (1U)
+#define DEMO_PDM_ENABLE_CHANNEL_LEFT  (1U)
+#define DEMO_PDM_ENABLE_CHANNEL_RIGHT (0U)
 
 /* SAI instance and clock */
 #define DEMO_SAI                SAI0
