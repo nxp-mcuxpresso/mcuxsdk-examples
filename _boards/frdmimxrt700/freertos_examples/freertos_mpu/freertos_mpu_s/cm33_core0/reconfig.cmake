@@ -25,8 +25,8 @@ mcux_add_macro(
 # Apply for both CLI ARMGCC builds (CONFIG_TOOLCHAIN=armgcc) and MCUXpresso IDE
 # project generation/builds (CONFIG_TOOLCHAIN=mcux).
 mcux_add_armgcc_mcux_configuration(
-    CC "-include secureport_override_armgcc.h"
-    CX "-include secureport_override_armgcc.h"
+    CC "-include ${CMAKE_CURRENT_LIST_DIR}/secureport_override_armgcc.h"
+    CX "-include ${CMAKE_CURRENT_LIST_DIR}/secureport_override_armgcc.h"
 )
 
 # Remove no_se from IAR FLags
