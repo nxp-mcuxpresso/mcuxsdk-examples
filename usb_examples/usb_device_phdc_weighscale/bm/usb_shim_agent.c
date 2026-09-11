@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016 NXP
+ * Copyright 2016, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -89,6 +89,12 @@ usb_status_t USB_ShimAgentRecvComplete(void *handle, void *param)
             uint8_t preambleSignatureChecking = 1U;
             /* The received packet is meta-data message preamble */
             usb_shim_metadata_preamble_t *metaDataMsgPreamble = (usb_shim_metadata_preamble_t *)message->buffer;
+            /* A transfer shorter than the signature plus the three QoS bytes read below cannot be a
+               valid preamble; stall rather than reading past what the host actually sent. */
+            if (message->length < (METADATA_PREAMBLE_SIGNATURE + 3U))
+            {
+                return kStatus_USB_InvalidRequest;
+            }
             /* Meta-data message preamble signature checking */
             for (uint8_t i = 0U; i < METADATA_PREAMBLE_SIGNATURE; i++)
             {
@@ -134,6 +140,11 @@ usb_status_t USB_ShimAgentRecvComplete(void *handle, void *param)
 #endif
     if (NULL == g_shimAgent.bulkOutData.recvData.buffer)
     {
+        /* The APDU length field sits at byte offset 2; a shorter first block cannot supply it. */
+        if (message->length < 4U)
+        {
+            return kStatus_USB_InvalidRequest;
+        }
         /* Save the length of the first received data block */
         g_shimAgent.bulkOutData.transferCount = message->length;
         g_shimAgent.bulkOutData.recvData.transferSize =
