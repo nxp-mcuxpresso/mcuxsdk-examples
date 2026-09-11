@@ -12,4 +12,12 @@ config EXAMPLE_I3C_HDR_SUPPORT
 
 endmenu
 
+config MCUX_COMPONENT_driver.i3c
+    default y
+    depends on MCUX_HAS_COMPONENT_driver.i3c
+
+config MCUX_COMPONENT_driver.dsc_i3c
+    default y
+    depends on MCUX_HAS_COMPONENT_driver.dsc_i3c
+
 source "${SdkRootDirPath}/Kconfig.mcuxpresso"
