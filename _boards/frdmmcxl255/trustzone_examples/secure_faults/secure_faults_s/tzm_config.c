@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2025-2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -29,7 +29,7 @@ toolOptions:
  **********************************************************************************************************************/
 #include "fsl_common.h"
 #include "tzm_config.h"
-
+#include "fsl_glikey.h"
 /***********************************************************************************************************************
  * Definitions
  **********************************************************************************************************************/
@@ -185,6 +185,35 @@ functional_group:
  * END ****************************************************************************************************************/
 
 /***********************************************************************************************************************
+ * app_set_glikey_accessible function
+ **********************************************************************************************************************/
+static void app_set_glikey_accessible(uint32_t idx)
+{
+    /* Use Glikey to enable modifications of MBC registers: */
+    status_t status = GLIKEY_IsLocked(GLIKEY0);
+    assert(kStatus_GLIKEY_NotLocked == status);
+
+    status = GLIKEY_SyncReset(GLIKEY0);
+    assert(kStatus_Success == status);
+
+    status = GLIKEY_StartEnable(GLIKEY0, idx);
+    assert(kStatus_Success == status);
+
+    status = GLIKEY_ContinueEnable(GLIKEY0, GLIKEY_CODEWORD_STEP1);
+    assert(kStatus_Success == status);
+
+    status = GLIKEY_ContinueEnable(GLIKEY0, GLIKEY_CODEWORD_STEP2);
+    assert(kStatus_Success == status);
+
+    status = GLIKEY_ContinueEnable(GLIKEY0, GLIKEY_CODEWORD_STEP3);
+    assert(kStatus_Success == status);
+
+    status = GLIKEY_ContinueEnable(GLIKEY0, GLIKEY_CODEWORD_STEP_EN);
+    assert(kStatus_Success == status);
+
+    (void)status; /* In case of release build there is not assert. */
+}
+/***********************************************************************************************************************
  * BOARD_INITTEE_BOARD_InitTrustZone function
  **********************************************************************************************************************/
 void BOARD_InitTrustZone()
@@ -226,6 +255,11 @@ void BOARD_InitTrustZone()
     /* Flush and refill pipeline with updated permissions */
     __ISB();
     
+    /* Need to configure MISC_CTRL_REG before enablement of SAU, otherwise, we are not able to update the register*/
+    app_set_glikey_accessible(10U);
+    AHBSC__AHBSC0->MISC_CTRL_REG = 0x000086AAU;
+    AHBSC__AHBSC0->MISC_CTRL_DP_REG = 0x000086AAU;
+
     /* Set SAU Control register: Enable SAU and All Secure (applied only if disabled) */
     SAU->CTRL = ((0U << SAU_CTRL_ALLNS_Pos) & SAU_CTRL_ALLNS_Msk)
         | ((1U << SAU_CTRL_ENABLE_Pos) & SAU_CTRL_ENABLE_Msk);
@@ -324,8 +358,9 @@ void BOARD_InitTrustZone()
     SCB->CPACR = 0x00F00000U;
     SCB->NSACR = 0x00000C03U;
     SCnSCB->CPPWR = 0;
-    AHBSC__AHBSC0->MISC_CTRL_REG = 0x000086A6U;
-    AHBSC__AHBSC0->MISC_CTRL_DP_REG = 0x000086A6U;
+
+    /* CPU0_LOCK_REG - lock security config, bit 31 locks this register */
+    AHBSC__AHBSC0->CPU0_LOCK_REG = 0x800002AAU;
 }
 
 /***********************************************************************************************************************
