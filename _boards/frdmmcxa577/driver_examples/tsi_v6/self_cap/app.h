@@ -15,7 +15,7 @@
 /*${macro:start}*/
 
 /* Available PAD names on board */
-#define PAD_TSI_ELECTRODE_1_NAME "E2"
+#define PAD_TSI_ELECTRODE_1_NAME "E1"
 
 /* IRQ related redefinitions for specific SOC */
 #define TSI0_IRQHandler TSI_END_OF_SCAN_IRQHandler
