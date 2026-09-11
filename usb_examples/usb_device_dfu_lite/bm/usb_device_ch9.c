@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015 - 2016, Freescale Semiconductor, Inc.
- * Copyright 2016, 2019 NXP
+ * Copyright 2016, 2019, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -914,6 +914,16 @@ usb_status_t USB_DeviceControlCallback(usb_device_handle handle,
                     if (length > deviceSetup->wLength)
                     {
                         length = deviceSetup->wLength;
+                    }
+                    /* Buffer that is equal to NULL means the class driver did not prepare a buffer
+                       for the data; stall instead of handing NULL to the controller driver. The
+                       shared check further down is not reached on this path because of the return
+                       below, and it tests "buffer" rather than the setupOutBuffer used here. */
+                    if ((0U != length) && (NULL == setupOutBuffer))
+                    {
+                        error = USB_DeviceControlCallbackFeedback(handle, deviceSetup, kStatus_USB_InvalidRequest,
+                                                                  kUSB_DeviceControlPipeSetupStage, &buffer, &length);
+                        return error;
                     }
                     error = USB_DeviceRecvRequest(handle, USB_CONTROL_ENDPOINT, setupOutBuffer, length);
                     return error;
