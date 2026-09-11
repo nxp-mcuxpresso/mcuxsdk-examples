@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 NXP
+ * Copyright 2019, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -297,7 +297,20 @@ static void USB_HostVideoStreamDataInCallback(void *param, uint8_t *data, uint32
         /* the standard header is 12 bytes */
         if (dataLen > 11)
         {
-            dataSize = dataLen - headLength;
+            /* bHeaderLength is reported by the camera. A header longer than the transfer would
+               underflow the subtraction below and offset the payload pointer past the bytes that
+               actually arrived, so treat such a transfer as carrying no payload. Falls through to
+               the re-prime at the end of this function, like the other discard paths here. */
+            if (headLength > dataLen)
+            {
+                s_savePicture                                                   = 0;
+                s_pictureBufferDataLength[videoAppInstance->pictureBufferIndex] = 0U;
+                dataSize                                                        = 0U;
+            }
+            else
+            {
+                dataSize = dataLen - headLength;
+            }
             /* there is payload for this transfer */
             if (dataSize)
             {
