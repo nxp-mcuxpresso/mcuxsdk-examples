@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 NXP
+ * Copyright 2022, 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -12,7 +12,7 @@
  ******************************************************************************/
 /*${macro:start}*/
 #define DEMO_SEC_ADDRESS    0x10000000
-#define DEMO_NONSEC_ADDRESS 0x28008000
+#define DEMO_NONSEC_ADDRESS 0x2802A000
 /*${macro:end}*/
 
 /*******************************************************************************
