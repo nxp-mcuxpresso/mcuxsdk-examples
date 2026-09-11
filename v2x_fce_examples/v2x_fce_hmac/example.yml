@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+v2x_fce_hmac:
+  section-type: application
+  contents:
+    meta_path: examples/v2x_fce_examples/v2x_fce_hmac
+    project-root-path: boards/${board}/v2x_fce_examples/v2x_fce_hmac/${multicore_foldername}
+    document:
+      name: v2x_fce_hmac${core_id_suffix_name}
+      category: v2x_fce_examples
+      brief: EdgeLock V2X/FCE HMAC-SHA-256 generate/verify demo against an RFC 4231 KAT vector.
+      example_readme:
+      - examples/v2x_fce_examples/v2x_fce_hmac/readme.md
+      - ${board_root}/${board}/v2x_fce_examples/v2x_fce_hmac/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    imx943evk@cm33_core1: []
+    imx943evk@cm7_core0: []
+    imx943evk@cm7_core1: []
