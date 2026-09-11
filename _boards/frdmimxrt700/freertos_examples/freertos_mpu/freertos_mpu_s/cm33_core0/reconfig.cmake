@@ -8,7 +8,6 @@ mcux_add_source(
             ../nsc_functions.h
             tzm_config.c
             tzm_config.h
-            secureport_override_armgcc.h
 )
 
 mcux_add_include(
@@ -24,9 +23,11 @@ mcux_add_macro(
 # when BOARD_TZM_SG_IN_SRAM is enabled.
 # Apply for both CLI ARMGCC builds (CONFIG_TOOLCHAIN=armgcc) and MCUXpresso IDE
 # project generation/builds (CONFIG_TOOLCHAIN=mcux).
-mcux_add_armgcc_mcux_configuration(
-    CC "-include ${CMAKE_CURRENT_LIST_DIR}/secureport_override_armgcc.h"
-    CX "-include ${CMAKE_CURRENT_LIST_DIR}/secureport_override_armgcc.h"
+mcux_add_source(
+    SOURCES secureport_override_armgcc.h
+    TOOLCHAINS armgcc mcux
+    PREINCLUDE true
+    PREINCLUDE_TYPE c_include cpp_include
 )
 
 # Remove no_se from IAR FLags
