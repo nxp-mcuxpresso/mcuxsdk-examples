@@ -37,9 +37,6 @@ define symbol rpmsg_sh_mem_start       = m_stdby_ram_start;
 define symbol rpmsg_sh_mem_end         = rpmsg_sh_mem_start + rpmsg_sh_mem_size - 1;
 
 
-define symbol m_boot_header_start      = 0x00500000;
-define symbol m_boot_header_end        = 0x005003FF;
-
 define symbol m_interrupts_start       = 0x00500400;
 define symbol m_interrupts_end         = 0x005007FF;
 
@@ -91,7 +88,6 @@ define exported symbol __NCACHE_REGION_START   = m_ncache_start;
 define exported symbol __NCACHE_REGION_SIZE    = m_ncache_size;
 
 define memory mem with size = 4G;
-define region m_boot_header_region = mem:[from m_boot_header_start to m_boot_header_end];
 define region CORE1_IMAGE_region = mem:[from m_core1_image_start to m_core1_image_end];
 define region TEXT_region = mem:[from m_interrupts_start to m_interrupts_end]
                           | mem:[from m_text_start to m_text_end];
@@ -119,7 +115,6 @@ do not initialize  { section rpmsg_sh_mem_section };
 
 
 place at address mem: m_interrupts_start    { readonly section .intvec };
-place in m_boot_header_region               { section .boot_header };
 /* Embedded secondary core (M7_1) image, placed at a fixed flash address so it
  * is programmed together with the primary and runs in place from flash. */
 place at address mem: m_core1_image_start   { section __core1_image };
