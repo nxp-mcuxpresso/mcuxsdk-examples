@@ -10,7 +10,14 @@ Hardware requirements
 
 Board settings
 ============
-No special settings are required.
+use of DDR
+- This example is using initialized data in DDR memory. If deployed via SD card or UUU, final binary image needs to be build with spsdk tools. Example templates and scripts are provided in `middleware/neo_isp/isp_sdk/scripts` folder (`build_sd_image.v2.sh`).
+  
+use of DMA
+- This app uses DMA for efficient data transfers. Please make sure that your SM (System manager - m33_image.bin) makes DMA5.2 available for M7 Core.
+- Note that you are using precompiled images from imx-boot-tools, they may not allow M7 Core to control DMA 5.2 (Hard Fault!). In such cases, build your own SM or disable MCUX_MISC_middleware.ispsdk.dma_copy_enable option. If option not available in project, replace all utils_EdmaTransfer() calls with memcpy(). Be aware this will SIGNIFICANTLY impact system performance.
+
+For additional information see board user guide and ISP SDK documentation (middleware/neo_isp/isp_sdk/docs/IMX95_ISPSDK_UG_MCUX.md).
 
 Prepare the Demo
 ===============
@@ -27,4 +34,4 @@ Prepare the Demo
 Running the demo
 ================
 You should see camera output displayed on the LVDS connected display.
-You should see hw statistics every second on the debug.
+You should see hw statistics every second on the debug terminal.
