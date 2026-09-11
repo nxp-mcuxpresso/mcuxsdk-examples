@@ -121,6 +121,7 @@ static void APP_GetWakeupConfig(app_power_mode_t targetMode);
 
 static void APP_PowerPreSwitchHook(void);
 static void APP_PowerPostSwitchHook(void);
+static void APP_ReleaseRadioLowPowerRequest(void);
 
 static void APP_ShowPowerMode(cmc_low_power_mode_t powerMode);
 static void APP_EnterSleep1Mode(void);
@@ -695,8 +696,41 @@ static void APP_PowerPreSwitchHook(void)
     }
 }
 
+/*
+ * Release the radio 2.4 GHz low-power request the entry path asserted.
+ *
+ * LP_ENTER is the S/W low-power entry request and stays asserted until it is
+ * deasserted, so a request left standing means the next entry rewrites LP_MODE
+ * without producing a fresh entry request: the radio never leaves the low-power
+ * state it already holds, the host enters its own low-power mode against a radio
+ * domain in the wrong state, and the wakeup arrives as a reset instead of a
+ * resume. Every APP_Enter*Mode() below asserts LP_ENTER, so exactly one release
+ * per exit is what keeps the request balanced (MCUX-90765 fixed the same defect
+ * in power_manager_test).
+ *
+ * Unconditional on purpose. The earlier version did this inside the
+ * kSPC_PowerDomain2 request check, but that flag lives in SPC and LP_ENTER lives
+ * in RFMC: the flag reports the SPC handshake, not the request this application
+ * made, and it does not survive the modes whose wakeup is a reset. A request the
+ * application asserted itself needs no confirmation from hardware before being
+ * withdrawn.
+ *
+ * The power manager device layer deliberately no longer does this: cpu0 must not
+ * clear RFMC registers at wake up while NBU firmware manages its own low power.
+ * This demo runs no NBU firmware on any of its boards - Core1 comes up held in
+ * reset everywhere except KW43/MCXW70, where BOARD_HoldCore1InReset() asserts
+ * CPU_RST - so it owns both halves of the request.
+ */
+static void APP_ReleaseRadioLowPowerRequest(void)
+{
+    RFMC->RF2P4GHZ_CTRL &= ~RFMC_RF2P4GHZ_CTRL_LP_ENTER_MASK;
+    RFMC->RF2P4GHZ_CTRL &= ~RFMC_RF2P4GHZ_CTRL_LP_MODE_MASK;
+}
+
 static void APP_PowerPostSwitchHook(void)
 {
+    APP_ReleaseRadioLowPowerRequest();
+
     if (SPC_CheckPowerDomainLowPowerRequest(APP_SPC, kSPC_PowerDomain0))
     {
         SPC_ClearPowerDomainLowPowerRequestFlag(APP_SPC, kSPC_PowerDomain0);
@@ -707,8 +741,6 @@ static void APP_PowerPostSwitchHook(void)
     }
     if (SPC_CheckPowerDomainLowPowerRequest(APP_SPC, kSPC_PowerDomain2))
     {
-        RFMC->RF2P4GHZ_CTRL = (RFMC->RF2P4GHZ_CTRL & (~RFMC_RF2P4GHZ_CTRL_LP_MODE_MASK));
-        RFMC->RF2P4GHZ_CTRL &= ~RFMC_RF2P4GHZ_CTRL_LP_ENTER_MASK;
         SPC_ClearPowerDomainLowPowerRequestFlag(APP_SPC, kSPC_PowerDomain2);
     }
 #if APP_CLEAR_POWER_DOMAIN3_REQUEST

@@ -21,10 +21,24 @@
  * releases Core1.  An un-programmed or unexpected Core1 image causes
  * extra current draw.  Assert CPU_RST to hold Core1 in reset until its
  * image is intentionally loaded and started.
+ *
+ * The radio low-power request is withdrawn here for the same reason: this
+ * application owns Core1, so it owns both halves of that request. LP_ENTER is
+ * the S/W low-power entry request and stays asserted until deasserted, and the
+ * Power Down and Deep Power Down modes wake through a reset, so the release the
+ * shared demo does on exit never runs for them - the wakeup is a fresh boot
+ * through here instead. Left standing, the request makes the next entry rewrite
+ * LP_MODE without producing a fresh entry request, and that wakeup arrives as an
+ * unexpected warm reset. Doing it unconditionally is deliberate: the SPC power
+ * domain request flag reports the SPC handshake, not the request this
+ * application made, and it does not survive a wakeup reset (MCUX-90765 fixed the
+ * same defect in power_manager_test).
  */
 static inline void BOARD_HoldCore1InReset(void)
 {
     RFMC->RF2P4GHZ_CTRL |= RFMC_RF2P4GHZ_CTRL_CPU_RST_MASK;
+    RFMC->RF2P4GHZ_CTRL &= ~RFMC_RF2P4GHZ_CTRL_LP_ENTER_MASK;
+    RFMC->RF2P4GHZ_CTRL &= ~RFMC_RF2P4GHZ_CTRL_LP_MODE_MASK;
 }
 
 void APP_InitDebugConsole(void)
@@ -109,8 +123,6 @@ void BOARD_InitHardware(void)
         }
         if (SPC_CheckPowerDomainLowPowerRequest(APP_SPC, kSPC_PowerDomain2))
         {
-            RFMC->RF2P4GHZ_CTRL = (RFMC->RF2P4GHZ_CTRL & (~RFMC_RF2P4GHZ_CTRL_LP_MODE_MASK));
-            RFMC->RF2P4GHZ_CTRL &= ~RFMC_RF2P4GHZ_CTRL_LP_ENTER_MASK;
             SPC_ClearPowerDomainLowPowerRequestFlag(APP_SPC, kSPC_PowerDomain2);
         }
         if (SPC_CheckPowerDomainLowPowerRequest(APP_SPC, kSPC_PowerDomain3))
