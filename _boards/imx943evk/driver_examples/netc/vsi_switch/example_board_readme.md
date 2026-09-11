@@ -23,12 +23,125 @@ ownership of the VSI resources and shared access to the NETC IERB, ENETC3, and E
 The following changes must be applied to the SM configuration file (mx94evk.cfg or
 equivalent) before building the flash.bin:
 
-Under the M33S EENV (LM1), add ACCESS permissions for VSI so M33S can configure
-them on behalf of M7_0:
+Move from other domains to M33S EENV (LM1):
 
+
+    BLK_CTRL_NETCMIX    OWNER
+	LPI2C3              OWNER
+	LPI2C6              OWNER
+	MSGINTR2            OWNER
     NETC_VSI0           ACCESS
     NETC_VSI1           ACCESS
-    NETC_VSI2           ACCESS
+    NETC_VSI2           ACCESS    
+	NETC                OWNER
+	NETC0               OWNER
+	NETC1               OWNER
+	NETC2               OWNER
+	NETC3               OWNER
+	NETC_ECAM           OWNER
+	NETC_EMDIO0         OWNER
+	NETC_IERB           OWNER
+	NETC_LDID0          OWNER, sid=0x20
+	NETC_LDID1          OWNER, sid=0x21
+	NETC_LDID2          OWNER, sid=0x22
+	NETC_LDID3          OWNER, sid=0x23
+	NETC_LDID4          OWNER, sid=0x24
+	NETC_LDID5          OWNER, sid=0x25
+	NETC_LDID6          OWNER, sid=0x26
+	NETC_LDID7          OWNER, sid=0x27
+	NETC_LDID8          OWNER, sid=0x28
+	NETC_SWITCH0        OWNER
+	NETC_TIMER0         OWNER
+	NETC_TIMER1         OWNER
+	NETC_VSI0           ACCESS
+	NETC_VSI1           ACCESS
+	NETC_VSI2           ACCESS
+	NETC_TIMER2         OWNER
+	PCIE1_OUT           OWNER
+	PCIE1_ROOT          OWNER
+	PCIE2_OUT           OWNER
+	PCIE2_ROOT          OWNER
+
+    # Pins
+
+	PIN_ETH0_COL         OWNER
+	PIN_ETH0_CRS         OWNER
+	PIN_ETH0_RXD0        OWNER
+	PIN_ETH0_RXD1        OWNER
+	PIN_ETH0_RXD2        OWNER
+	PIN_ETH0_RXD3        OWNER
+	PIN_ETH0_RX_CLK      OWNER
+	PIN_ETH0_RX_DV       OWNER
+	PIN_ETH0_RX_ER       OWNER
+	PIN_ETH0_TXD0        OWNER
+	PIN_ETH0_TXD1        OWNER
+	PIN_ETH0_TXD2        OWNER
+	PIN_ETH0_TXD3        OWNER
+	PIN_ETH0_TX_CLK      OWNER
+	PIN_ETH0_TX_EN       OWNER
+	PIN_ETH0_TX_ER       OWNER
+	PIN_ETH1_COL         OWNER
+	PIN_ETH1_CRS         OWNER
+	PIN_ETH1_RXD0        OWNER
+	PIN_ETH1_RXD1        OWNER
+	PIN_ETH1_RXD2        OWNER
+	PIN_ETH1_RXD3        OWNER
+	PIN_ETH1_RX_CLK      OWNER
+	PIN_ETH1_RX_DV       OWNER
+	PIN_ETH1_RX_ER       OWNER
+	PIN_ETH1_TXD0        OWNER
+	PIN_ETH1_TXD1        OWNER
+	PIN_ETH1_TXD2        OWNER
+	PIN_ETH1_TXD3        OWNER
+	PIN_ETH1_TX_CLK      OWNER
+	PIN_ETH1_TX_EN       OWNER
+	PIN_ETH1_TX_ER       OWNER
+	PIN_ETH2_MDC_GPIO1   OWNER
+	PIN_ETH2_MDIO_GPIO2  OWNER
+	PIN_ETH2_RXD0        OWNER
+	PIN_ETH2_RXD1        OWNER
+	PIN_ETH2_RXD2        OWNER
+	PIN_ETH2_RXD3        OWNER
+	PIN_ETH2_RX_CLK      OWNER
+	PIN_ETH2_RX_CTL      OWNER
+	PIN_ETH2_TXD0        OWNER
+	PIN_ETH2_TXD1        OWNER
+	PIN_ETH2_TXD2        OWNER
+	PIN_ETH2_TXD3        OWNER
+	PIN_ETH2_TX_CLK      OWNER
+	PIN_ETH2_TX_CTL      OWNER
+	PIN_ETH3_MDC_GPIO1   OWNER
+	PIN_ETH3_MDIO_GPIO2  OWNER
+	PIN_ETH3_RXD0        OWNER
+	PIN_ETH3_RXD1        OWNER
+	PIN_ETH3_RXD2        OWNER
+	PIN_ETH3_RXD3        OWNER
+	PIN_ETH3_RX_CLK      OWNER
+	PIN_ETH3_RX_CTL      OWNER
+	PIN_ETH3_TXD0        OWNER
+	PIN_ETH3_TXD1        OWNER
+	PIN_ETH3_TXD2        OWNER
+	PIN_ETH3_TXD3        OWNER
+	PIN_ETH3_TX_CLK      OWNER
+	PIN_ETH3_TX_CTL      OWNER
+	PIN_ETH4_MDC_GPIO1   OWNER
+	PIN_ETH4_MDIO_GPIO2  OWNER
+	PIN_ETH4_RXD0        OWNER
+	PIN_ETH4_RXD1        OWNER
+	PIN_ETH4_RXD2        OWNER
+	PIN_ETH4_RXD3        OWNER
+	PIN_ETH4_RX_CLK      OWNER
+	PIN_ETH4_RX_CTL      OWNER
+	PIN_ETH4_TXD0        OWNER
+	PIN_ETH4_TXD1        OWNER
+	PIN_ETH4_TXD2        OWNER
+	PIN_ETH4_TXD3        OWNER
+	PIN_ETH4_TX_CLK      OWNER
+	PIN_ETH4_TX_CTL      OWNER
+	PIN_GPIO_IO16        OWNER
+	PIN_GPIO_IO17        OWNER
+	PIN_GPIO_IO28        OWNER
+	PIN_GPIO_IO29        OWNER
 
 Under the M7_0 EENV (LM2), add OWNER of VSI and ACCESS to shared NETC resources:
 
@@ -41,10 +154,11 @@ Under the M7_0 EENV (LM2), add OWNER of VSI and ACCESS to shared NETC resources:
     NETC_VSI0           OWNER
     NETC_VSI1           OWNER
     NETC_VSI2           OWNER
+	PCIE1_OUT           ACCESS
+	PCIE1_ROOT          ACCESS
+	PCIE2_OUT           ACCESS
+	PCIE2_ROOT          ACCESS
 
-Note: In the default mx94evknetc.cfg, NETC_VSI0/1/2 and NETC_LDID9/10/11 are
-assigned to the A55 non-secure domain. The above reassignment moves VSI ownership
-to M7_0 and gives M33S the ACCESS needed to initialize them during switch setup.
 
 Prepare the Demo
 ================
