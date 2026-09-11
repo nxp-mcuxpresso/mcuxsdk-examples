@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 - 2017 NXP
+ * Copyright 2016 - 2017, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -766,7 +766,20 @@ pd_status_t PD_DpmGetInfoResultCallback(
             {
                 pd_manufac_info_data_block_t *partnerManufacturerInfo =
                     (pd_manufac_info_data_block_t *)(successData->dataBuffer);
-                partnerManufacturerInfo->manufacturerString[successData->dataLength - 4] = 0;
+                /* dataLength is supplied by the port partner (up to 260). Anything below the
+                   4-byte vid/pid header underflows the subtraction, and anything above the
+                   struct's own string field indexes past it, so bound the terminator offset
+                   to manufacturerString before writing it. */
+                uint32_t manufacStringLength = 0U;
+                if (successData->dataLength > 4U)
+                {
+                    manufacStringLength = successData->dataLength - 4U;
+                    if (manufacStringLength >= sizeof(partnerManufacturerInfo->manufacturerString))
+                    {
+                        manufacStringLength = sizeof(partnerManufacturerInfo->manufacturerString) - 1U;
+                    }
+                }
+                partnerManufacturerInfo->manufacturerString[manufacStringLength] = 0;
                 PRINTF("manufacturer string:%s\r\n", partnerManufacturerInfo->manufacturerString);
                 break;
             }
