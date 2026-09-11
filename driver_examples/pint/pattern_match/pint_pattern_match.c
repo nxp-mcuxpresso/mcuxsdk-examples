@@ -76,30 +76,32 @@ int main(void)
     PINT_EnableCallbackByIndex(EXAMPLE_PINT_BASE, kPINT_PinInt0);
 
     /* configure kPINT_PatternMatchBSlice1 and kPINT_PatternMatchBSlice2 to show the combined inputsrc */
-#if (FSL_FEATURE_PINT_NUMBER_OF_CONNECTED_OUTPUTS > 1U)
-    /* Setup Pattern Match Bit Slice 1 */
-    pmcfg.bs_src    = DEMO_PINT_BSLICE1_SRC;
-    pmcfg.bs_cfg    = kPINT_PatternMatchStickyRise;
+    if (FSL_FEATURE_PINT_NUMBER_OF_CONNECTED_OUTPUTSn(EXAMPLE_PINT_BASE) > 1U)
+    {
+        /* Setup Pattern Match Bit Slice 1 */
+        pmcfg.bs_src    = DEMO_PINT_BSLICE1_SRC;
+        pmcfg.bs_cfg    = kPINT_PatternMatchStickyRise;
 #if (defined(PINT_USE_LEGACY_CALLBACK) && PINT_USE_LEGACY_CALLBACK)
-    pmcfg.callback  = pint_intr_callback;
+        pmcfg.callback  = pint_intr_callback;
 #endif
-    pmcfg.end_point = false;
-    PINT_PatternMatchConfig(EXAMPLE_PINT_BASE, kPINT_PatternMatchBSlice1, &pmcfg);
-#endif
+        pmcfg.end_point = false;
+        PINT_PatternMatchConfig(EXAMPLE_PINT_BASE, kPINT_PatternMatchBSlice1, &pmcfg);
+    }
 
-#if (FSL_FEATURE_PINT_NUMBER_OF_CONNECTED_OUTPUTS > 2U)
-    /* Setup Pattern Match Bit Slice 2 for falling edge detection */
-    pmcfg.bs_src    = DEMO_PINT_BSLICE2_SRC;
-    pmcfg.bs_cfg    = kPINT_PatternMatchStickyRise;
+    if (FSL_FEATURE_PINT_NUMBER_OF_CONNECTED_OUTPUTSn(EXAMPLE_PINT_BASE) > 2U)
+    {
+        /* Setup Pattern Match Bit Slice 2 for falling edge detection */
+        pmcfg.bs_src    = DEMO_PINT_BSLICE2_SRC;
+        pmcfg.bs_cfg    = kPINT_PatternMatchStickyRise;
 #if (defined(PINT_USE_LEGACY_CALLBACK) && PINT_USE_LEGACY_CALLBACK)
-    pmcfg.callback  = pint_intr_callback;
+        pmcfg.callback  = pint_intr_callback;
 #endif
-    pmcfg.end_point = true;
-    PINT_PatternMatchConfig(EXAMPLE_PINT_BASE, kPINT_PatternMatchBSlice2, &pmcfg);
+        pmcfg.end_point = true;
+        PINT_PatternMatchConfig(EXAMPLE_PINT_BASE, kPINT_PatternMatchBSlice2, &pmcfg);
 
-    /* Enable callbacks for PINT2 by Index */
-    PINT_EnableCallbackByIndex(EXAMPLE_PINT_BASE, kPINT_PinInt2);
-#endif
+        /* Enable callbacks for PINT2 by Index */
+        PINT_EnableCallbackByIndex(EXAMPLE_PINT_BASE, kPINT_PinInt2);
+    }
 
     /* Enable PatternMatch */
     PINT_PatternMatchEnable(EXAMPLE_PINT_BASE);
