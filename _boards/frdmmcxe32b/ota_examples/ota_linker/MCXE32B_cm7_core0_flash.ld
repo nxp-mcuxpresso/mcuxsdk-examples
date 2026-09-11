@@ -35,9 +35,6 @@ m_dtcm_end               = 0x2000FFFF;
 m_stdby_ram_start        = 0x20400000;
 m_stdby_ram_end          = 0x20407FFF;
 
-m_boot_header_start      = 0x00500000;
-m_boot_header_end        = 0x005003FF;
-
 m_interrupts_start       = 0x00500400;
 m_interrupts_end         = 0x005007FF;
 
@@ -70,7 +67,6 @@ m_qadata_end             = m_dtcm_end;
 /* The flash memory region [0x007D4000-0x7FFFFF] is reserved for security. */
 MEMORY
 {
-  m_boot_header         (RX)  : ORIGIN = m_boot_header_start, LENGTH = m_boot_header_end - m_boot_header_start + 1
   m_interrupts          (RX)  : ORIGIN = m_interrupts_start,  LENGTH = m_interrupts_end - m_interrupts_start + 1
   m_text                (RX)  : ORIGIN = m_text_start,        LENGTH = m_text_end - m_text_start + 1
   m_core1_image         (RX)  : ORIGIN = m_core1_image_start, LENGTH = m_core1_image_end - m_core1_image_start + 1
@@ -87,13 +83,6 @@ MEMORY
 /* Define output sections */
 SECTIONS
 {
-  .boot_header :
-  {
-    . = ALIGN(4);
-    KEEP(*(.boot_header))    /* IVT */
-    . = ALIGN(4);
-  } > m_boot_header
-
   /* Embedded secondary core (M7_1) image, placed at a fixed flash address so it
    * is programmed together with the primary and runs in place from flash. */
   .core1_code :
