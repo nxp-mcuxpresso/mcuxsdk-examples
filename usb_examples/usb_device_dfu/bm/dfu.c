@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2017, 2019 NXP
+ * Copyright 2017, 2019, 2026 NXP
  * All rights reserved.
  *
  *
@@ -1148,6 +1148,17 @@ static void USB_DeviceDfuDnload(void)
         if (s_UsbDeviceDfuDemo.dfuFirmwareBlockLength > 0U)
         {
             s_UsbDeviceDfuDemo.dfuFirmwareBlockStatus = USB_DFU_BLOCK_TRANSFER_UNDEFINED;
+
+            /* The host decides how many DNLOAD blocks to send; refuse a block that would program
+               past the end of the application region instead of walking firmwareAddress out of it. */
+            if ((s_UsbDeviceDfuDemo.dfuFirmwareSize >= (uint32_t)USB_DFU_APP_SIZE) ||
+                (s_UsbDeviceDfuDemo.dfuFirmwareBlockLength >
+                 ((uint32_t)USB_DFU_APP_SIZE - s_UsbDeviceDfuDemo.dfuFirmwareSize)))
+            {
+                USB_DeviceDfuSetStatus(USB_DFU_STATUS_ERR_ADDRESS);
+                return;
+            }
+
             /* Update the firmware size */
             s_UsbDeviceDfuDemo.dfuFirmwareSize += s_UsbDeviceDfuDemo.dfuFirmwareBlockLength;
             /* firmware memmorying */
