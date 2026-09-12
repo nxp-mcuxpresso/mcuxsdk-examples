@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016 - 2017 , NXP
+ * Copyright 2016 - 2017, 2026 NXP
  * All rights reserved.
  *
  *
@@ -194,6 +194,10 @@ usb_status_t USB_DeviceCdcVcomCallback(class_handle_t handle, uint32_t event, vo
                 if (1 == acmReqParam->isSetup)
                 {
                     *(acmReqParam->buffer) = s_abstractState;
+                    /* The length must be set to the buffer size; it arrives holding the host's
+                       wLength, so leaving it would prime the OUT stage to receive wLength bytes
+                       into this COMM_FEATURE_DATA_SIZE-byte buffer. */
+                    *(acmReqParam->length) = sizeof(s_abstractState);
                 }
                 else
                 {
@@ -205,6 +209,10 @@ usb_status_t USB_DeviceCdcVcomCallback(class_handle_t handle, uint32_t event, vo
                 if (1 == acmReqParam->isSetup)
                 {
                     *(acmReqParam->buffer) = s_countryCode;
+                    /* The length must be set to the buffer size; it arrives holding the host's
+                       wLength, so leaving it would prime the OUT stage to receive wLength bytes
+                       into this COMM_FEATURE_DATA_SIZE-byte buffer. */
+                    *(acmReqParam->length) = sizeof(s_countryCode);
                 }
                 else
                 {
@@ -244,6 +252,10 @@ usb_status_t USB_DeviceCdcVcomCallback(class_handle_t handle, uint32_t event, vo
             if (1 == acmReqParam->isSetup)
             {
                 *(acmReqParam->buffer) = s_lineCoding;
+                /* The length must be set to the buffer size; it arrives holding the host's
+                   wLength, so leaving it would prime the OUT stage to receive wLength bytes
+                   into this LINE_CODING_SIZE-byte buffer. */
+                *(acmReqParam->length) = sizeof(s_lineCoding);
             }
             else
             {
