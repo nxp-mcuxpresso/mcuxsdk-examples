@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016, 2018, 2020 NXP
+ * Copyright 2016, 2018, 2020, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -14,6 +14,7 @@
 #include "usb.h"
 #include "ieee11073_types.h"
 #include "ieee11073_nomenclature.h"
+#include <stddef.h>
 #include "host_phdc_manager.h"
 #include "app.h"
 
@@ -72,6 +73,10 @@ static uint8_t s_RecvDataBuffer[APDU_MAX_BUFFER_SIZE]; /*!< use to receive appli
 
 /*! @brief the temp buffer used to prepare the manager response data */
 uint8_t s_tempBuffer[50U];
+/*! Bytes available for selectedDataProto.dataProtoInfo.value[] inside the s_tempBuffer staging
+ *  buffer, i.e. what is left after the aare_apdu_t fields that precede it. */
+#define PHDC_MANAGER_MAX_PROTO_INFO_LEN \
+    (sizeof(s_tempBuffer) - offsetof(aare_apdu_t, selectedDataProto.dataProtoInfo.value))
 
 /*! @brief the host PHDC manager instance */
 host_phdc_manager_instance_t g_phdcManagerInstance;
@@ -186,13 +191,24 @@ static void PHDC_ManagerRecvAssociationRequest(void *param, aarq_apdu_t *associa
             phd_association_information_t *assocInfo =
                 (phd_association_information_t *)&dataProto->dataProtoInfo.value[0U];
             uint8_t isSupportedDevice = 1U;
-            /* System ID checking */
-            for (uint8_t i = 0U; i < USB_SHORT_FROM_BIG_ENDIAN(assocInfo->systemId.length); i++)
+            /* System ID checking. systemId.length is a 16-bit field the device sent, and the
+               supported IDs are fixed 8-byte entries, so a device claiming any other length can
+               never match - and comparing against it would read past
+               s_listOfSupportedSystemId[0] (and, with the uint8_t loop counter, spin forever on a
+               claimed length above 255). */
+            if (USB_SHORT_FROM_BIG_ENDIAN(assocInfo->systemId.length) != sizeof(s_listOfSupportedSystemId[0U]))
             {
-                if (s_listOfSupportedSystemId[0U][i] != *((uint8_t *)&assocInfo->systemId.value[0U] + i))
+                isSupportedDevice = 0U;
+            }
+            else
+            {
+                for (uint32_t i = 0U; i < sizeof(s_listOfSupportedSystemId[0U]); i++)
                 {
-                    isSupportedDevice = 0U;
-                    break;
+                    if (s_listOfSupportedSystemId[0U][i] != *((uint8_t *)&assocInfo->systemId.value[0U] + i))
+                    {
+                        isSupportedDevice = 0U;
+                        break;
+                    }
                 }
             }
             if (0U == isSupportedDevice)
@@ -232,7 +248,17 @@ static void PHDC_ManagerRecvAssociationRequest(void *param, aarq_apdu_t *associa
             associationResponse->result = USB_SHORT_FROM_BIG_ENDIAN(phdcManagerInstance->assocResult);
             associationResponse->selectedDataProto.dataProtoId          = dataProto->dataProtoId;
             associationResponse->selectedDataProto.dataProtoInfo.length = dataProto->dataProtoInfo.length;
-            if (USB_SHORT_FROM_BIG_ENDIAN(dataProto->dataProtoInfo.length) > 0U)
+            /* dataProtoInfo.length is a 16-bit field the device sent (up to 65535), and the response
+               is staged in the 50-byte s_tempBuffer, whose value[] starts after result,
+               dataProtoId and length. Refuse to build a response for a length that does not fit
+               instead of overflowing s_tempBuffer with device-supplied bytes. */
+            if (USB_SHORT_FROM_BIG_ENDIAN(dataProto->dataProtoInfo.length) > PHDC_MANAGER_MAX_PROTO_INFO_LEN)
+            {
+                phdcManagerInstance->assocResult                            = ACCEPTED_UNKNOWN_CONFIG;
+                associationResponse->result                                 = USB_SHORT_FROM_BIG_ENDIAN(ACCEPTED_UNKNOWN_CONFIG);
+                associationResponse->selectedDataProto.dataProtoInfo.length = 0U;
+            }
+            else if (USB_SHORT_FROM_BIG_ENDIAN(dataProto->dataProtoInfo.length) > 0U)
             {
                 uint8_t *temp8 = NULL;
                 memcpy(&associationResponse->selectedDataProto.dataProtoInfo.value[0],
@@ -242,12 +268,26 @@ static void PHDC_ManagerRecvAssociationRequest(void *param, aarq_apdu_t *associa
                 offset += sizeof(protocol_version_t) + sizeof(encoding_rules_t) + sizeof(nomenclature_version_t) +
                           sizeof(functional_units_t) + sizeof(system_type_t) + sizeof(uint16_t) +
                           USB_SHORT_FROM_BIG_ENDIAN(assocResponseInfo->systemId.length);
+                /* systemId.length above is still device data, so offset can point past value[].
+                   The writes below touch offset .. offset + 5, so stop if that would leave the
+                   staging buffer. */
+                if (((uint32_t)offset + sizeof(uint16_t) + sizeof(uint32_t)) > PHDC_MANAGER_MAX_PROTO_INFO_LEN)
+                {
+                    associationResponse->selectedDataProto.dataProtoInfo.length = 0U;
+                    usb_echo("\n\r11073Manager: association info too long, rejecting.");
+                    PHDC_ManagerSendAssociationResponse(param, associationResponse);
+                    return;
+                }
                 temp8 = (uint8_t *)&associationResponse->selectedDataProto.dataProtoInfo.value[offset];
                 USB_SHORT_TO_LITTLE_ENDIAN_ADDRESS(0U, temp8);
                 /* Manager's response to data-req-mode-capab is always 0 */
                 offset += sizeof(uint16_t);
                 temp8 = (uint8_t *)&associationResponse->selectedDataProto.dataProtoInfo.value[offset];
                 USB_LONG_TO_LITTLE_ENDIAN_ADDRESS(0U, temp8);
+            }
+            else
+            {
+                /* no proto info to copy */
             }
         }
     }
@@ -286,7 +326,12 @@ static void PHDC_ManagerSendAssociationResponse(void *param, aare_apdu_t *associ
         USB_ASSIGN_VALUE_ADDRESS_SHORT_BY_BYTE(pApdu->u.aare.selectedDataProto.dataProtoInfo.length,
                                                associationResponse->selectedDataProto.dataProtoInfo.length);
 
-        if (USB_SHORT_FROM_BIG_ENDIAN(associationResponse->selectedDataProto.dataProtoInfo.length) > 0U)
+        /* The staged length was bounded against s_tempBuffer when the response was built; confirm it
+           also fits the send buffer before copying into it. */
+        if ((USB_SHORT_FROM_BIG_ENDIAN(associationResponse->selectedDataProto.dataProtoInfo.length) > 0U) &&
+            ((uint32_t)size <= APDU_MAX_BUFFER_SIZE) &&
+            (USB_SHORT_FROM_BIG_ENDIAN(associationResponse->selectedDataProto.dataProtoInfo.length) <=
+             PHDC_MANAGER_MAX_PROTO_INFO_LEN))
         {
             memcpy(&pApdu->u.aare.selectedDataProto.dataProtoInfo.value[0],
                    &associationResponse->selectedDataProto.dataProtoInfo.value[0],
