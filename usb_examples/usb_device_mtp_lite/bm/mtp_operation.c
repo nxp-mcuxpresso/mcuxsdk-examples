@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 NXP
+ * Copyright 2020, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -2430,8 +2430,46 @@ void USB_DeviceCmdSetDevicePropVal(void *param)
         {
             case MTP_DEVICE_PROPERTY_DEVICE_FRIENDLY_NAME:
             {
-                size = USB_DeviceUnicodeStringLength((const uint16_t *)(writeBuf + 1U));
-                size += 2U;
+                uint32_t availableLength;
+                uint32_t scannedLength;
+
+                /* curPos is how many bytes the host actually sent, container header included. The
+                   string starts one byte past that header, so anything beyond this is not data the
+                   host provided and must not be scanned for the UTF-16 terminator. */
+                if (dataInfo->curPos <= ((uint64_t)USB_DEVICE_MTP_MINIMUM_CONTAINER_LENGTH + 1U))
+                {
+                    dataInfo->code = MTP_RESPONSE_INVALID_DEVICE_PROP_VALUE;
+                    return;
+                }
+                availableLength =
+                    (uint32_t)(dataInfo->curPos - (uint64_t)USB_DEVICE_MTP_MINIMUM_CONTAINER_LENGTH - 1U);
+
+                /* Bounded equivalent of USB_DeviceUnicodeStringLength(): that helper walks until it
+                   finds a UTF-16 NUL, which runs off the end of g_mtpTransferBuffer when the host
+                   fills it with unterminated data. */
+                scannedLength = 0U;
+                while ((scannedLength + 1U) < availableLength)
+                {
+                    if (((writeBuf + 1U)[scannedLength] == 0U) && ((writeBuf + 1U)[scannedLength + 1U] == 0U) &&
+                        ((scannedLength % 2U) == 0U))
+                    {
+                        break;
+                    }
+                    scannedLength++;
+                }
+                if ((scannedLength + 1U) >= availableLength)
+                {
+                    /* no terminator inside the received data */
+                    dataInfo->code = MTP_RESPONSE_INVALID_DEVICE_PROP_VALUE;
+                    return;
+                }
+
+                if ((scannedLength + 2U) > 0xFFU)
+                {
+                    dataInfo->code = MTP_RESPONSE_INVALID_DEVICE_PROP_VALUE;
+                    return;
+                }
+                size = (uint8_t)(scannedLength + 2U);
 
                 if ((size >> 1U) != *(uint8_t *)writeBuf)
                 {
@@ -2598,8 +2636,48 @@ void USB_DeviceCmdSetObjPropVal(void *param)
         {
             case MTP_OBJECT_PROPERTY_OBJECT_FILE_NAME:
             {
-                size = USB_DeviceUnicodeStringLength((const uint16_t *)(writeBuf + 1U));
-                size = (size + 2U) >> 1U;
+                uint32_t availableLength;
+                uint32_t nameByteLength;
+
+                /* curPos is how many bytes the host actually sent, container header included. The
+                   name starts one byte past that header; nothing beyond this is host data. */
+                if (dataInfo->curPos <= ((uint64_t)USB_DEVICE_MTP_MINIMUM_CONTAINER_LENGTH + 1U))
+                {
+                    dataInfo->code = MTP_RESPONSE_INVALID_OBJECT_PROP_VALUE;
+                    return;
+                }
+                availableLength =
+                    (uint32_t)(dataInfo->curPos - (uint64_t)USB_DEVICE_MTP_MINIMUM_CONTAINER_LENGTH - 1U);
+
+                /* Bounded equivalent of USB_DeviceUnicodeStringLength(): that helper walks until it
+                   finds a UTF-16 NUL, which runs off the end of g_mtpTransferBuffer when the host
+                   fills it with unterminated data. */
+                nameByteLength = 0U;
+                while ((nameByteLength + 1U) < availableLength)
+                {
+                    if (((writeBuf + 1U)[nameByteLength] == 0U) && ((writeBuf + 1U)[nameByteLength + 1U] == 0U) &&
+                        ((nameByteLength % 2U) == 0U))
+                    {
+                        break;
+                    }
+                    nameByteLength++;
+                }
+                if ((nameByteLength + 1U) >= availableLength)
+                {
+                    /* no terminator inside the received data */
+                    dataInfo->code = MTP_RESPONSE_INVALID_OBJECT_PROP_VALUE;
+                    return;
+                }
+
+                /* USB_DeviceMemCopyUnicodeString() below has no destination bound, so the name must
+                   be known to fit in objHandleStruct.name before it is copied there. */
+                if ((nameByteLength + 2U) > MTP_NAME_MAX_LEN)
+                {
+                    dataInfo->code = MTP_RESPONSE_INVALID_OBJECT_PROP_VALUE;
+                    return;
+                }
+
+                size = (nameByteLength + 2U) >> 1U;
 
                 if (size != *(uint8_t *)writeBuf)
                 {
@@ -2624,13 +2702,30 @@ void USB_DeviceCmdSetObjPropVal(void *param)
 #endif
                 size = USB_DeviceUnicodeStringLength((const uint16_t *)&g_mtp.path[0]);
                 size >>= 1U;
-                while (renameBuffer[size] != '/')
+                if (size >= (MTP_PATH_MAX_LEN >> 1U))
                 {
-                    if (size > 0U)
-                    {
-                        size--;
-                    }
-                };
+                    dataInfo->code = MTP_RESPONSE_INVALID_OBJECT_PROP_VALUE;
+                    return;
+                }
+                /* Walk back to the directory separator. The original loop stopped decrementing at 0
+                   but kept re-testing renameBuffer[0], spinning forever on a path with no '/'. */
+                while ((size > 0U) && (renameBuffer[size] != '/'))
+                {
+                    size--;
+                }
+                if (renameBuffer[size] != '/')
+                {
+                    dataInfo->code = MTP_RESPONSE_INVALID_OBJECT_PROP_VALUE;
+                    return;
+                }
+
+                /* The name is written at &renameBuffer[size + 1] as nameByteLength + 2 bytes, and
+                   USB_DeviceMemCopyUnicodeString() will not stop at the end of the array. */
+                if ((((size + 1U) * 2U) + nameByteLength + 2U) > MTP_PATH_MAX_LEN)
+                {
+                    dataInfo->code = MTP_RESPONSE_INVALID_OBJECT_PROP_VALUE;
+                    return;
+                }
 #if (defined(USB_DEVICE_CONFIG_RETURN_VALUE_CHECK) && (USB_DEVICE_CONFIG_RETURN_VALUE_CHECK > 0U))
                 /* j indicates the offset */
                 j = USB_DeviceMemCopyUnicodeString(&renameBuffer[size + 1U], (const uint16_t *)(writeBuf + 1U), 0);
