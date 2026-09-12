@@ -791,37 +791,72 @@ static void PHDC_ManagerRecvMdcNotiConfig(void *param, event_report_argument_sim
         uint16_t configOffset                       = 0U;
         uint16_t configListSize                     = (uint16_t)(USB_SHORT_FROM_BIG_ENDIAN(configObjectList->length) +
                                              sizeof(configObjectList->count) + sizeof(configObjectList->length));
+        /* configObjectList->length is a 16-bit field the device sent, so configListSize can be far
+           larger than the APDU_MAX_BUFFER_SIZE-byte configObjectList member it is copied into.
+           Reject such a report instead of overflowing it with device-supplied bytes. */
+        if ((uint32_t)configListSize > APDU_MAX_BUFFER_SIZE)
+        {
+            usb_echo("\n\r11073Manager: configuration object list too long, rejecting.");
+            PHDC_ManagerSendAssociationAbortRequest(param, ABORT_REASON_UNDEFINED);
+            return;
+        }
         /* Clear config object list */
         memset((void *)&phdcManagerInstance->configObjectList[0U], 0U, APDU_MAX_BUFFER_SIZE);
         /* Store the configuration object list to the manager instance pointer */
         memcpy((void *)&phdcManagerInstance->configObjectList[0U], (void *)configObjectList, configListSize);
-        /* process configuration object list */
-        for (uint8_t i = 0U; i < USB_SHORT_FROM_BIG_ENDIAN(configObjectList->count); i++)
+        /* Bytes of value[] that configListSize says are present. */
+        uint32_t configValueSize = (uint32_t)configListSize - sizeof(configObjectList->count) -
+                                   sizeof(configObjectList->length);
+        /* process configuration object list. count and every length below come from the device, so
+           the counters are 32-bit (a 16-bit count would wrap a uint8_t and loop forever) and each
+           entry is confirmed to lie inside value[] before it is dereferenced. */
+        for (uint32_t i = 0U; i < USB_SHORT_FROM_BIG_ENDIAN(configObjectList->count); i++)
         {
+            config_object_t *configObject;
+            attribute_list_t *attributeList;
+            uint32_t attributeOffset = 0U;
+            uint32_t attributesLength;
+
+            if (((uint32_t)configOffset + sizeof(config_object_t)) > configValueSize)
+            {
+                break;
+            }
             /* get configuration object entry */
-            config_object_t *configObject =
-                (config_object_t *)(((uint8_t *)&configObjectList->value[0U]) + configOffset);
-            attribute_list_t *attributeList = (attribute_list_t *)&configObject->attributes;
-            uint16_t attributeOffset        = 0U;
+            configObject  = (config_object_t *)(((uint8_t *)&configObjectList->value[0U]) + configOffset);
+            attributeList = (attribute_list_t *)&configObject->attributes;
             usb_echo("\n\r11073Manager:  > Object Handle %d: Class = %d  Num Attributes = %d.",
                      USB_SHORT_FROM_BIG_ENDIAN(configObject->objectHandle),
                      USB_SHORT_FROM_BIG_ENDIAN(configObject->objectClass),
                      USB_SHORT_FROM_BIG_ENDIAN(attributeList->count));
+
+            attributesLength = USB_SHORT_FROM_BIG_ENDIAN(configObject->attributes.length);
+            /* The attribute list must also fit inside value[]. */
+            if (((uint32_t)configOffset + sizeof(config_object_t) + attributesLength) > configValueSize)
+            {
+                break;
+            }
+
             /* process attribute list */
-            for (uint8_t j = 0U; j < USB_SHORT_FROM_BIG_ENDIAN(attributeList->count); j++)
+            for (uint32_t j = 0U; j < USB_SHORT_FROM_BIG_ENDIAN(attributeList->count); j++)
             {
                 /* get attribute entry */
-                ava_type_t *attribute = (ava_type_t *)((uint8_t *)(&attributeList->value[0U]) + attributeOffset);
-                usb_echo("\n\r11073Manager:  > > Attribute%d: Id = ", j);
+                ava_type_t *attribute;
+
+                if ((attributeOffset + sizeof(ava_type_t)) > attributesLength)
+                {
+                    break;
+                }
+                attribute = (ava_type_t *)((uint8_t *)(&attributeList->value[0U]) + attributeOffset);
+                usb_echo("\n\r11073Manager:  > > Attribute%d: Id = ", (int)j);
                 PHDC_ManagerPrintNomenclature(attribute->attributeId);
                 /* Seek to the next attribute entry in the attribute list */
                 attributeOffset += sizeof(attribute->attributeId) + sizeof(attribute->attributeValue.length) +
                                    USB_SHORT_FROM_BIG_ENDIAN(attribute->attributeValue.length);
             }
             /* Seek to the next configuration entry in the configuration object list */
-            configOffset += sizeof(configObject->objectClass) + sizeof(configObject->objectHandle) +
-                            sizeof(configObject->attributes.count) + sizeof(configObject->attributes.length) +
-                            USB_SHORT_FROM_BIG_ENDIAN(configObject->attributes.length);
+            configOffset += (uint16_t)(sizeof(configObject->objectClass) + sizeof(configObject->objectHandle) +
+                                       sizeof(configObject->attributes.count) +
+                                       sizeof(configObject->attributes.length) + attributesLength);
         }
         /* update the result of configuration processing */
         phdcManagerInstance->configResult = ACCEPTED_CONFIG;
