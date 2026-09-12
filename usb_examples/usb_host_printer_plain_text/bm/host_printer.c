@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016, Freescale Semiconductor, Inc.
- * Copyright 2016, 2018 NXP
+ * Copyright 2016, 2018, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -546,12 +546,28 @@ usb_status_t USB_HostPrinterAppEvent(usb_device_handle deviceHandle,
                         interfaceDesc = NULL;
                         while ((uint32_t)unionDes < endPos)
                         {
+                            /* bLength and bDescriptorType come from the device. Confirm both bytes of
+                               the common header are present, that the descriptor claims a usable
+                               length, and that the whole of it fits before endPos - otherwise a
+                               bLength of 0 never advances unionDes (infinite loop) and a truncated
+                               descriptor is read past the extension data. */
+                            if ((((uint32_t)unionDes + 2U) > endPos) || (unionDes->common.bLength < 2U) ||
+                                (((uint32_t)unionDes + unionDes->common.bLength) > endPos))
+                            {
+                                break;
+                            }
                             if (unionDes->common.bDescriptorType != USB_DESCRIPTOR_TYPE_INTERFACE)
                             {
                                 unionDes = (usb_descriptor_union_t *)((uint32_t)unionDes + unionDes->common.bLength);
                             }
                             else
                             {
+                                /* bInterfaceClass/SubClass/Protocol are read below, at offsets 5, 6
+                                   and 7, so the descriptor must be a full interface descriptor. */
+                                if (unionDes->common.bLength < USB_DESCRIPTOR_LENGTH_INTERFACE)
+                                {
+                                    break;
+                                }
                                 interfaceDesc = (usb_descriptor_interface_t *)(&(unionDes->common.bLength));
                                 break;
                             }
