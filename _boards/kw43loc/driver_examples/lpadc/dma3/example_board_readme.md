@@ -6,7 +6,12 @@ Hardware requirements
 
 Board settings
 ==============
-Connect J9-1 (PTA0 ADC0_A0) to a voltage source.
+1. Connect 3.3V to JP4-3 (VDDA_ANA) to provide the ADC reference voltage.
+2. Connect a voltage source to J9-1 (PTA0 ADC0_A0) as the ADC analog input.
+
+Note: JP4-3 is the VDDA_ANA supply pin which serves as the ADC reference voltage.
+The actual VDDA_ANA voltage is slightly lower than 3.3V due to the voltage drop
+across the onboard Schottky diode (RB160M-30).
 
 Prepare the Demo
 ================
@@ -26,8 +31,8 @@ Running the demo
 The following lines are printed to the serial terminal when the demo program is executed.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 LPADC DMA3 Example
-ADC Full Range: XXXX
+ADC Full Range: 4096
 Please press any key to trigger the conversion.
-ADC conversion word: 0xXXXXXXXX
-ADC conversion value: XXXX
+ADC conversion word: 0x81F04068
+ADC conversion value: 2059
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

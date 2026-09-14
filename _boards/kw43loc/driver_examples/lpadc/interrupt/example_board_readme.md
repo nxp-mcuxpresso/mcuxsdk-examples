@@ -6,7 +6,12 @@ Hardware requirements
 
 Board settings
 ==============
-No special settings are required.
+1. Connect 3.3V to JP4-3 (VDDA_ANA) to provide the ADC reference voltage.
+2. Connect a voltage source to J9-1 (PTA0 ADC0_A0) as the ADC analog input.
+
+Note: JP4-3 is the VDDA_ANA supply pin which serves as the ADC reference voltage.
+The actual VDDA_ANA voltage is slightly lower than 3.3V due to the voltage drop
+across the onboard Schottky diode (RB160M-30).
 
 Prepare the Demo
 ================
@@ -20,16 +25,14 @@ Prepare the Demo
 3. Download the program to the target board.
 4. Either press the reset button on your board or launch the debugger in your IDE to begin running
    the demo.
-5. The J9 Pin 1 (ADC0_A0) on LOC board is used to monitor the voltage.
-   The VDD_ANA is used as the ADC reference.
 
 Running the demo
 ================
 The following lines are printed to the serial terminal when the demo program is executed.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 LPADC Interrupt Example
-ADC Full Range: XXXX
-Please press any key to get user channel's ADC value.
-ADC value: 2714
+ADC Full Range: 4096
+Please press any key to get user channel's ADC value
+ADC value: 2057
+ADC interrupt count: 1
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
