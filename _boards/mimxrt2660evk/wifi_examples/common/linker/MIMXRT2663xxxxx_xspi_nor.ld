@@ -249,6 +249,8 @@ SECTIONS
   .app_qacode : ALIGN(4)
   {
     __app_qacode_start__ = .;
+    *fsl_xspi.c.obj(.text .text* .rodata .rodata*)
+    *mflash_drv.c.obj(.text .text* .rodata .rodata*)
     *queue.c.obj(.text*)
     *tcp_out.c.obj(.text*)
     *mlan_sdio.c.obj(.text*)
@@ -295,8 +297,6 @@ SECTIONS
     *(.data)
     *(.data*)
     *(.wlan_data .wlan_data.*)
-    */mflash_drv.c.obj(.text .text* .rodata .rodata*)
-    */fsl_xspi.c.obj(.text .text* .rodata .rodata*)
     KEEP(*(.jcr*))
     . = ALIGN(4);
     __data_end__ = .;

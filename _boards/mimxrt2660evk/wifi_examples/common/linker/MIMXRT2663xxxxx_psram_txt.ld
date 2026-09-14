@@ -243,8 +243,6 @@ SECTIONS
     *(.data*)                /* .data* sections */
     *(DataQuickAccess)       /* quick access data section */
     *(.wlan_data .wlan_data.*)
-    */mflash_drv.c.obj(.text .text* .rodata .rodata*)
-    */fsl_flexspi.c.obj(.text .text* .rodata .rodata*)
     KEEP(*(.jcr*))
     . = ALIGN(4);
     __data_end__ = .;        /* define a global symbol at data end */
@@ -257,6 +255,8 @@ SECTIONS
     . = ALIGN(32);
     __ram_function_start__ = .;
     *(CodeQuickAccess)
+    *fsl_flexspi.c.obj(.text .text* .rodata .rodata*)
+    *mflash_drv.c.obj(.text .text* .rodata .rodata*)
     *queue.c.obj(.text*)
     *tcp_out.c.obj(.text*)
     *mlan_sdio.c.obj(.text*)

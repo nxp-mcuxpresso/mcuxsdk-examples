@@ -147,6 +147,8 @@ if (isdefinedsymbol(__ram_vector_table__)) {
 
 define block APP_QACCESS_CODE {
   /* section ro object hello_world.o */
+  section ro object mflash_drv.o,
+  section ro object fsl_flexspi.o
 };
 
 /* ====================== Initialization directives ======================= */
