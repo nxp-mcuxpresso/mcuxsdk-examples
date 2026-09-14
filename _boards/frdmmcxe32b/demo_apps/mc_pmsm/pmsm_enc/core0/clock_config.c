@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -21,11 +21,11 @@
 /* clang-format off */
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Clocks v16.0
-processor: MCXE31B
-package_id: MCXE31BMPB
+product: Clocks v20.0
+processor: MCXE32B
+package_id: MCXE32BMPB
 mcu_data: ksdk2_0
-processor_version: 0.2506.10
+processor_version: 0.2609.90
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
 
@@ -157,8 +157,7 @@ void BOARD_BootClockRUN_InitClockModule(clock_module_t module)
     switch(module) {
         case kClockModule_FIRC:
             /* Switch the FIRC_DIV_SEL to the desired diveder. */
-            if (((CONFIGURATION->CONFIG_REG_GPR & CONFIGURATION_CONFIG_REG_GPR_APP_CORE_ACC_MASK) >> CONFIGURATION_CONFIG_REG_GPR_APP_CORE_ACC_SHIFT) == 0x5) {
-               CONFIGURATION->CONFIG_REG_GPR = (CONFIGURATION->CONFIG_REG_GPR & ~CONFIGURATION_CONFIG_REG_GPR_FIRC_DIV_SEL_MASK) | CONFIGURATION_CONFIG_REG_GPR_FIRC_DIV_SEL(3);}
+            (void)CLOCK_SetFircDiv(kFIRC_Undivided);
             /* Disable FIRC in standby mode. */
             CLOCK_DisableFircInStandbyMode();
             break;
@@ -186,7 +185,7 @@ void BOARD_BootClockRUN_InitClockModule(clock_module_t module)
             (void)CLOCK_SetClkDiv(kCLOCK_DivLbistClk, 4U);
             (void)CLOCK_SetClkDiv(kCLOCK_DivQspiClk, 1U);
             (void)CLOCK_CommonTriggerClkMux0DivUpdate();
-            (void)CLOCK_ProgressiveClockFrequencySwitch( kPLL_PHI0_CLK_to_MUX0, &g_pcfsConfig_BOARD_BootClockRUN);
+            (void)CLOCK_ProgressiveClockFrequencySwitch(kPLL_PHI0_CLK_to_MUX0, &g_pcfsConfig_BOARD_BootClockRUN);
             break;
         default:
             assert(false);
@@ -202,8 +201,8 @@ void BOARD_BootClockRUN(void)
     BOARD_BootClockRUN_InitClockModule(kClockModule_FXOSC);
     BOARD_BootClockRUN_InitClockModule(kClockModule_PLL);
     BOARD_BootClockRUN_InitClockModule(kClockModule_MUX0_CSC_DC);
-    BOARD_ClockPostConfig();
     /*!< Set SystemCoreClock variable. */
     SystemCoreClockUpdate();
+    BOARD_ClockPostConfig();
 }
 

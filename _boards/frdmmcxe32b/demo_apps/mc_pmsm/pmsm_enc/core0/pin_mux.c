@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -14,10 +14,10 @@
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
 product: Pins v17.0
-processor: MCXE31B
-package_id: MCXE31BMPB
+processor: MCXE32B
+package_id: MCXE32BMPB
 mcu_data: ksdk2_0
-processor_version: 0.2512.60
+processor_version: 0.2609.90
 pin_labels:
 - {pin_num: '27', pin_signal: PTE3, label: pin_pte3_config, identifier: pin_pte3_config}
 - {pin_num: '26', pin_signal: PTE14, label: dsa, identifier: dsa}
@@ -103,7 +103,6 @@ void BOARD_InitDEBUG_UARTPins(void)
     {
         .base                        = SIUL2,
         .pinPortIdx                  = 131u,
-        .mux                         = kPORT_MUX_AS_GPIO,
         .safeMode                    = kPORT_SAFE_MODE_DISABLED,
         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
         .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
@@ -144,7 +143,6 @@ void BOARD_InitDEBUG_UARTPins(void)
     {
         .base                        = SIUL2,
         .pinPortIdx                  = 142u,
-        .mux                         = kPORT_MUX_ALT4,
         .safeMode                    = kPORT_SAFE_MODE_DISABLED,
         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
         .driveStrength               = kPORT_DRIVE_STRENTGTH_NOT_AVAILABLE,
@@ -177,7 +175,6 @@ void BOARD_InitDEBUG_UARTPins_deinit(void)
     {
         .base                        = SIUL2,
         .pinPortIdx                  = 131u,
-        .mux                         = kPORT_MUX_AS_GPIO,
         .safeMode                    = kPORT_SAFE_MODE_DISABLED,
         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
         .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
@@ -223,7 +220,6 @@ void BOARD_InitDEBUG_UARTPins_deinit(void)
     {
         .base                        = SIUL2,
         .pinPortIdx                  = 142u,
-        .mux                         = kPORT_MUX_AS_GPIO,
         .safeMode                    = kPORT_SAFE_MODE_DISABLED,
         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
         .driveStrength               = kPORT_DRIVE_STRENTGTH_NOT_AVAILABLE,
@@ -293,7 +289,6 @@ void BOARD_InitLEDsPins(void)
     {
         .base                        = SIUL2,
         .pinPortIdx                  = 80u,
-        .mux                         = kPORT_MUX_AS_GPIO,
         .safeMode                    = kPORT_SAFE_MODE_DISABLED,
         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
         .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
@@ -313,7 +308,6 @@ void BOARD_InitLEDsPins(void)
     {
         .base                        = SIUL2,
         .pinPortIdx                  = 78u,
-        .mux                         = kPORT_MUX_AS_GPIO,
         .safeMode                    = kPORT_SAFE_MODE_DISABLED,
         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
         .driveStrength               = kPORT_DRIVE_STRENTGTH_NOT_AVAILABLE,
@@ -333,7 +327,6 @@ void BOARD_InitLEDsPins(void)
     {
         .base                        = SIUL2,
         .pinPortIdx                  = 54u,
-        .mux                         = kPORT_MUX_AS_GPIO,
         .safeMode                    = kPORT_SAFE_MODE_DISABLED,
         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
         .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
@@ -375,7 +368,6 @@ void BOARD_InitBUTTONsPins(void)
     {
         .base                        = SIUL2,
         .pinPortIdx                  = 101u,
-        .mux                         = kPORT_MUX_AS_GPIO,
         .safeMode                    = kPORT_SAFE_MODE_DISABLED,
         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
         .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
@@ -443,7 +435,6 @@ void BOARD_MC_LCU_init(void)
     {
         .base                        = SIUL2,
         .pinPortIdx                  = 33u,
-        .mux                         = kPORT_MUX_ALT7,
         .safeMode                    = kPORT_SAFE_MODE_DISABLED,
         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
         .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
@@ -463,7 +454,6 @@ void BOARD_MC_LCU_init(void)
     {
         .base                        = SIUL2,
         .pinPortIdx                  = 32u,
-        .mux                         = kPORT_MUX_ALT5,
         .safeMode                    = kPORT_SAFE_MODE_DISABLED,
         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
         .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
@@ -483,7 +473,6 @@ void BOARD_MC_LCU_init(void)
     {
         .base                        = SIUL2,
         .pinPortIdx                  = 73u,
-        .mux                         = kPORT_MUX_ALT5,
         .safeMode                    = kPORT_SAFE_MODE_DISABLED,
         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
         .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
@@ -503,7 +492,6 @@ void BOARD_MC_LCU_init(void)
     {
         .base                        = SIUL2,
         .pinPortIdx                  = 72u,
-        .mux                         = kPORT_MUX_ALT5,
         .safeMode                    = kPORT_SAFE_MODE_DISABLED,
         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
         .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
@@ -523,7 +511,6 @@ void BOARD_MC_LCU_init(void)
     {
         .base                        = SIUL2,
         .pinPortIdx                  = 75u,
-        .mux                         = kPORT_MUX_ALT7,
         .safeMode                    = kPORT_SAFE_MODE_DISABLED,
         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
         .driveStrength               = kPORT_DRIVE_STRENTGTH_NOT_AVAILABLE,
@@ -543,7 +530,6 @@ void BOARD_MC_LCU_init(void)
     {
         .base                        = SIUL2,
         .pinPortIdx                  = 74u,
-        .mux                         = kPORT_MUX_ALT6,
         .safeMode                    = kPORT_SAFE_MODE_DISABLED,
         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
         .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
@@ -589,7 +575,6 @@ void BOARD_MC_ADC_init(void)
     {
         .base                        = SIUL2,
         .pinPortIdx                  = 100u,
-        .mux                         = kPORT_MUX_AS_GPIO,
         .safeMode                    = kPORT_SAFE_MODE_DISABLED,
         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
         .driveStrength               = kPORT_DRIVE_STRENTGTH_NOT_AVAILABLE,
@@ -627,7 +612,6 @@ void BOARD_MC_ADC_init(void)
     {
         .base                        = SIUL2,
         .pinPortIdx                  = 3u,
-        .mux                         = kPORT_MUX_AS_GPIO,
         .safeMode                    = kPORT_SAFE_MODE_DISABLED,
         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
         .driveStrength               = kPORT_DRIVE_STRENTGTH_NOT_AVAILABLE,
@@ -665,7 +649,6 @@ void BOARD_MC_ADC_init(void)
     {
         .base                        = SIUL2,
         .pinPortIdx                  = 98u,
-        .mux                         = kPORT_MUX_AS_GPIO,
         .safeMode                    = kPORT_SAFE_MODE_DISABLED,
         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
         .driveStrength               = kPORT_DRIVE_STRENTGTH_NOT_AVAILABLE,
@@ -703,7 +686,6 @@ void BOARD_MC_ADC_init(void)
     {
         .base                        = SIUL2,
         .pinPortIdx                  = 43u,
-        .mux                         = kPORT_MUX_AS_GPIO,
         .safeMode                    = kPORT_SAFE_MODE_DISABLED,
         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
         .driveStrength               = kPORT_DRIVE_STRENTGTH_NOT_AVAILABLE,
@@ -741,7 +723,6 @@ void BOARD_MC_ADC_init(void)
     {
         .base                        = SIUL2,
         .pinPortIdx                  = 9u,
-        .mux                         = kPORT_MUX_AS_GPIO,
         .safeMode                    = kPORT_SAFE_MODE_DISABLED,
         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
         .driveStrength               = kPORT_DRIVE_STRENTGTH_NOT_AVAILABLE,
@@ -808,7 +789,6 @@ void BOARD_MC_ENC_Init(void)
     {
         .base                        = SIUL2,
         .pinPortIdx                  = 18u,
-        .mux                         = kPORT_MUX_AS_GPIO,
         .safeMode                    = kPORT_SAFE_MODE_DISABLED,
         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
         .driveStrength               = kPORT_DRIVE_STRENTGTH_NOT_AVAILABLE,
@@ -849,7 +829,6 @@ void BOARD_MC_ENC_Init(void)
     {
         .base                        = SIUL2,
         .pinPortIdx                  = 19u,
-        .mux                         = kPORT_MUX_AS_GPIO,
         .safeMode                    = kPORT_SAFE_MODE_DISABLED,
         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
         .driveStrength               = kPORT_DRIVE_STRENTGTH_NOT_AVAILABLE,
@@ -890,7 +869,6 @@ void BOARD_MC_ENC_Init(void)
     {
         .base                        = SIUL2,
         .pinPortIdx                  = 122u,
-        .mux                         = kPORT_MUX_ALT7,
         .safeMode                    = kPORT_SAFE_MODE_DISABLED,
         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
         .driveStrength               = kPORT_DRIVE_STRENTGTH_NOT_AVAILABLE,
@@ -910,7 +888,6 @@ void BOARD_MC_ENC_Init(void)
     {
         .base                        = SIUL2,
         .pinPortIdx                  = 123u,
-        .mux                         = kPORT_MUX_ALT7,
         .safeMode                    = kPORT_SAFE_MODE_DISABLED,
         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
         .driveStrength               = kPORT_DRIVE_STRENTGTH_NOT_AVAILABLE,
@@ -930,7 +907,6 @@ void BOARD_MC_ENC_Init(void)
     {
         .base                        = SIUL2,
         .pinPortIdx                  = 88u,
-        .mux                         = kPORT_MUX_ALT7,
         .safeMode                    = kPORT_SAFE_MODE_DISABLED,
         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
         .driveStrength               = kPORT_DRIVE_STRENTGTH_NOT_AVAILABLE,
@@ -950,7 +926,6 @@ void BOARD_MC_ENC_Init(void)
     {
         .base                        = SIUL2,
         .pinPortIdx                  = 1u,
-        .mux                         = kPORT_MUX_ALT7,
         .safeMode                    = kPORT_SAFE_MODE_DISABLED,
         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
         .driveStrength               = kPORT_DRIVE_STRENTGTH_NOT_AVAILABLE,

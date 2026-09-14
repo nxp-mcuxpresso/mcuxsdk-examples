@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -18,10 +18,10 @@ product: Pins v17.0
 processor: MCXA346
 package_id: MCXA346VLL
 mcu_data: ksdk2_0
-processor_version: 25.06.0
+processor_version: 0.2609.60
 pin_labels:
-- {pin_num: '57', pin_signal: P3_18/LPUART4_RXD/CT2_MAT0/PWM0_X0/PWM1_X0/SmartDMA_PIO18, label: LED_RED, identifier: LED_RED}
-- {pin_num: '56', pin_signal: P3_19/LPUART4_TXD/CT2_MAT1/PWM0_X1/PWM1_X1/SmartDMA_PIO19, label: LED_GREEN, identifier: LED_GREEN}
+- {pin_num: '57', pin_signal: P3_18/TAMPER5/LPUART4_RXD/CT2_MAT0/PWM0_X0/PWM1_X0/SmartDMA_PIO18, label: LED_RED, identifier: LED_RED}
+- {pin_num: '56', pin_signal: P3_19/TAMPER4/LPUART4_TXD/CT2_MAT1/PWM0_X1/PWM1_X1/SmartDMA_PIO19, label: LED_GREEN, identifier: LED_GREEN}
 - {pin_num: '54', pin_signal: P3_21/TRIG_OUT1/LPI2C3_SCL/LPUART1_TXD/CT2_MAT3/PWM0_X3/PWM1_B3/SmartDMA_PIO21/ADC3_A19, label: LED_BLUE, identifier: LED_BLUE}
 - {pin_num: '100', pin_signal: P1_7/WUU0_IN9/TRIG_OUT2/LPUART2_CTS_B/CT_INP7/CT4_MAT1/SmartDMA_PIO3/ADC0_A23, label: SW2, identifier: SW2}
 - {pin_num: '73', pin_signal: P3_0/WUU0_IN22/TRIG_IN0/LPUART3_RXD/CT_INP16/PWM0_A0/PWM1_X0/SmartDMA_PIO0, label: PWM_AT, identifier: PWM_AT}
@@ -45,7 +45,7 @@ pin_labels:
 - {pin_num: '93', pin_signal: P1_2/TRIG_OUT0/LPSPI0_SDI/LPI2C1_SDAS/CT1_MAT0/CT_INP0/CAN0_TXD/ADC0_A18/CMP2_IN3, label: CUR_DCB, identifier: CUR_DCB_ADC0;CUR_DCB}
 - {pin_num: '99', pin_signal: P1_6/TRIG_IN2/LPSPI0_PCS1/LPUART2_RTS_B/CT_INP6/CT4_MAT0/SmartDMA_PIO2/ADC0_A22, label: BEMF_A, identifier: BEMF_A}
 - {pin_num: '98', pin_signal: P1_5/FREQME_CLK_IN1/LPSPI0_PCS2/LPUART2_TXD/CT1_MAT3/SmartDMA_PIO1/ADC0_A21/CMP1_IN2, label: BEMF_B, identifier: BEMF_B}
-- {pin_num: '48', pin_signal: P3_31/LPTMR0_ALT2/TRIG_IN10/LPI2C3_SDAS/LPUART4_CTS_B/CT0_MAT3/PWM1_B0/SmartDMA_PIO31/ADC1_A20, label: ENC_B, identifier: ENC_B}
+- {pin_num: '48', pin_signal: P3_31/LPTMR0_ALT2/TAMPER0/TRIG_IN10/LPI2C3_SDAS/LPUART4_CTS_B/CT0_MAT3/PWM1_B0/SmartDMA_PIO31/ADC1_A20, label: ENC_B, identifier: ENC_B}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -97,41 +97,20 @@ BOARD_InitPins:
  * END ****************************************************************************************************************/
 void BOARD_InitPins(void)
 {
-    /* GPIO3: Peripheral clock is enabled */
-    CLOCK_EnableClock(kCLOCK_GateGPIO3);
     /* PORT2: Peripheral clock is enabled */
     CLOCK_EnableClock(kCLOCK_GatePORT2);
     /* PORT3: Peripheral clock is enabled */
     CLOCK_EnableClock(kCLOCK_GatePORT3);
-    /* GPIO3 peripheral is released from reset */
-    RESET_ReleasePeripheralReset(kGPIO3_RST_SHIFT_RSTn);
+    /* GPIO3: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GateGPIO3);
     /* LPUART2 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kLPUART2_RST_SHIFT_RSTn);
     /* PORT2 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kPORT2_RST_SHIFT_RSTn);
+    /* GPIO3 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kGPIO3_RST_SHIFT_RSTn);
     /* PORT3 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kPORT3_RST_SHIFT_RSTn);
-
-    gpio_pin_config_t RELAY_config = {
-        .pinDirection = kGPIO_DigitalOutput,
-        .outputLogic = 0U
-    };
-    /* Initialize GPIO functionality on pin PIO3_12 (pin 63)  */
-    GPIO_PinInit(BOARD_INITPINS_RELAY_GPIO, BOARD_INITPINS_RELAY_PIN, &RELAY_config);
-
-    gpio_pin_config_t BRAKE_config = {
-        .pinDirection = kGPIO_DigitalOutput,
-        .outputLogic = 0U
-    };
-    /* Initialize GPIO functionality on pin PIO3_27 (pin 52)  */
-    GPIO_PinInit(BOARD_INITPINS_BRAKE_GPIO, BOARD_INITPINS_BRAKE_PIN, &BRAKE_config);
-
-    gpio_pin_config_t USER_LED_config = {
-        .pinDirection = kGPIO_DigitalOutput,
-        .outputLogic = 0U
-    };
-    /* Initialize GPIO functionality on pin PIO3_30 (pin 49)  */
-    GPIO_PinInit(BOARD_INITPINS_USER_LED_GPIO, BOARD_INITPINS_USER_LED_PIN, &USER_LED_config);
 
     PORT2->PCR[2] = ((PORT2->PCR[2] &
                       /* Mask bits to zero which are setting */
@@ -182,6 +161,27 @@ void BOARD_InitPins(void)
 
                       /* Input Buffer Enable: Enables. */
                       | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    gpio_pin_config_t RELAY_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PIO3_12 (pin 63)  */
+    GPIO_PinInit(BOARD_INITPINS_RELAY_GPIO, BOARD_INITPINS_RELAY_PIN, &RELAY_config);
+
+    gpio_pin_config_t BRAKE_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PIO3_27 (pin 52)  */
+    GPIO_PinInit(BOARD_INITPINS_BRAKE_GPIO, BOARD_INITPINS_BRAKE_PIN, &BRAKE_config);
+
+    gpio_pin_config_t USER_LED_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PIO3_30 (pin 49)  */
+    GPIO_PinInit(BOARD_INITPINS_USER_LED_GPIO, BOARD_INITPINS_USER_LED_PIN, &USER_LED_config);
 }
 
 /* clang-format off */
@@ -190,14 +190,16 @@ void BOARD_InitPins(void)
 BOARD_InitPWM:
 - options: {callFromInitBoot: 'true', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: '73', peripheral: FlexPWM0, signal: 'A, 0', pin_signal: P3_0/WUU0_IN22/TRIG_IN0/LPUART3_RXD/CT_INP16/PWM0_A0/PWM1_X0/SmartDMA_PIO0, direction: OUTPUT}
-  - {pin_num: '72', peripheral: FlexPWM0, signal: 'B, 0', pin_signal: P3_1/TRIG_IN1/LPUART3_TXD/CT_INP17/PWM0_B0/PWM1_X1/SmartDMA_PIO1/FREQME_CLK_OUT0, direction: OUTPUT}
-  - {pin_num: '69', peripheral: FlexPWM0, signal: 'A, 1', pin_signal: P3_8/WUU0_IN23/TRIG_IN3/LPSPI1_SDO/LPUART1_RXD/CT_INP4/PWM0_A1/LPUART5_CTS_B/SmartDMA_PIO8/CLKOUT,
+  - {pin_num: '73', peripheral: FLEXPWM0, signal: 'A, 0', pin_signal: P3_0/WUU0_IN22/TRIG_IN0/LPUART3_RXD/CT_INP16/PWM0_A0/PWM1_X0/SmartDMA_PIO0, direction: OUTPUT}
+  - {pin_num: '72', peripheral: FLEXPWM0, signal: 'B, 0', pin_signal: P3_1/TRIG_IN1/LPUART3_TXD/CT_INP17/PWM0_B0/PWM1_X1/SmartDMA_PIO1/FREQME_CLK_OUT0, direction: OUTPUT}
+  - {pin_num: '69', peripheral: FLEXPWM0, signal: 'A, 1', pin_signal: P3_8/WUU0_IN23/TRIG_IN3/LPSPI1_SDO/LPUART1_RXD/CT_INP4/PWM0_A1/LPUART5_CTS_B/SmartDMA_PIO8/CLKOUT,
     direction: OUTPUT}
-  - {pin_num: '68', peripheral: FlexPWM0, signal: 'B, 1', pin_signal: P3_9/TRIG_IN4/LPSPI1_SDI/LPUART1_TXD/CT_INP5/PWM0_B1/LPUART5_RTS_B/SmartDMA_PIO9, direction: OUTPUT}
-  - {pin_num: '67', peripheral: FlexPWM0, signal: 'A, 2', pin_signal: P3_10/TRIG_IN5/LPSPI1_SCK/LPUART1_RTS_B/CT1_MAT0/PWM0_A2/LPUART5_TXD/SmartDMA_PIO10, direction: OUTPUT}
-  - {pin_num: '66', peripheral: FlexPWM0, signal: 'B, 2', pin_signal: P3_11/WUU0_IN24/TRIG_IN6/LPSPI1_PCS0/LPUART1_CTS_B/CT1_MAT1/PWM0_B2/LPUART5_RXD/SmartDMA_PIO11,
+  - {pin_num: '68', peripheral: FLEXPWM0, signal: 'B, 1', pin_signal: P3_9/TRIG_IN4/LPSPI1_SDI/LPUART1_TXD/CT_INP5/PWM0_B1/LPUART5_RTS_B/SmartDMA_PIO9, direction: OUTPUT}
+  - {pin_num: '67', peripheral: FLEXPWM0, signal: 'A, 2', pin_signal: P3_10/TRIG_IN5/LPSPI1_SCK/LPUART1_RTS_B/CT1_MAT0/PWM0_A2/LPUART5_TXD/SmartDMA_PIO10, direction: OUTPUT}
+  - {pin_num: '66', peripheral: FLEXPWM0, signal: 'B, 2', pin_signal: P3_11/WUU0_IN24/TRIG_IN6/LPSPI1_PCS0/LPUART1_CTS_B/CT1_MAT1/PWM0_B2/LPUART5_RXD/SmartDMA_PIO11,
     direction: OUTPUT}
+  - {pin_num: '91', peripheral: FLEXPWM0, signal: 'PWM_FAULT_TRG_CH, 0', pin_signal: P1_0/WUU0_IN6/LPTMR0_ALT3/TRIG_IN0/LPSPI0_SDO/LPI2C1_SDA/CT_INP4/CT0_MAT2/ADC0_A16/CMP0_IN3}
+  - {pin_num: '91', peripheral: INPUTMUX0, signal: 'TRIG_IN, 0', pin_signal: P1_0/WUU0_IN6/LPTMR0_ALT3/TRIG_IN0/LPSPI0_SDO/LPI2C1_SDA/CT_INP4/CT0_MAT2/ADC0_A16/CMP0_IN3}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -225,7 +227,10 @@ void BOARD_InitPWM(void)
     /* PORT3 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kPORT3_RST_SHIFT_RSTn);
     /*  TrigIn0 connect to FlexPwm0Fault 0 */
-    INPUTMUX_AttachSignal(INPUTMUX0, 0U, kINPUTMUX_Cmp2OutToFlexPwm0Fault);
+    INPUTMUX_AttachSignal(INPUTMUX0, 0U, kINPUTMUX_TrigIn0ToFlexPwm0Fault);
+
+    /* PORT1_0 (pin 91) is configured as TRIG_IN0 */
+    PORT_SetPinMux(PORT1, 0U, kPORT_MuxAlt1);
 
     PORT1->PCR[0] = ((PORT1->PCR[0] &
                       /* Mask bits to zero which are setting */
@@ -384,10 +389,36 @@ void BOARD_InitADC(void)
                      /* Input Buffer Enable: Disables. */
                      | PORT_PCR_IBE(PCR_IBE_ibe0));
 
-    
-    /* PORT2_5 (pin 27) is configured as ADC1_A1 */
-    PORT_SetPinMux(BOARD_INITADC_VOLT_DCB_PORT, BOARD_INITADC_VOLT_DCB_PIN, kPORT_MuxAlt0);
-    
+    /* PORT1_4 (pin 97) is configured as ADC0_A20, CMP0_IN2 */
+    PORT_SetPinMux(BOARD_INITADC_BEMF_C_PORT, BOARD_INITADC_BEMF_C_PIN, kPORT_MuxAlt0);
+
+    PORT1->PCR[4] = ((PORT1->PCR[4] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_IBE_MASK)))
+
+                     /* Input Buffer Enable: Disables. */
+                     | PORT_PCR_IBE(PCR_IBE_ibe0));
+
+    /* PORT1_5 (pin 98) is configured as CMP1_IN2, ADC0_A21 */
+    PORT_SetPinMux(BOARD_INITADC_BEMF_B_PORT, BOARD_INITADC_BEMF_B_PIN, kPORT_MuxAlt0);
+
+    PORT1->PCR[5] = ((PORT1->PCR[5] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_IBE_MASK)))
+
+                     /* Input Buffer Enable: Disables. */
+                     | PORT_PCR_IBE(PCR_IBE_ibe0));
+
+    /* PORT1_6 (pin 99) is configured as ADC0_A22 */
+    PORT_SetPinMux(BOARD_INITADC_BEMF_A_PORT, BOARD_INITADC_BEMF_A_PIN, kPORT_MuxAlt0);
+
+    PORT1->PCR[6] = ((PORT1->PCR[6] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_IBE_MASK)))
+
+                     /* Input Buffer Enable: Disables. */
+                     | PORT_PCR_IBE(PCR_IBE_ibe0));
+
     PORT2->PCR[5] = ((PORT2->PCR[5] &
                       /* Mask bits to zero which are setting */
                       (~(PORT_PCR_MUX_MASK | PORT_PCR_IBE_MASK)))
@@ -398,10 +429,6 @@ void BOARD_InitADC(void)
                      /* Input Buffer Enable: Disables. */
                      | PORT_PCR_IBE(PCR_IBE_ibe0));
 
-    
-    /* PORT4_7 (pin 21) is configured as ADC2_A23 */
-    PORT_SetPinMux(BOARD_INITADC_CUR_C_PORT, BOARD_INITADC_CUR_C_PIN, kPORT_MuxAlt0);
-    
     PORT4->PCR[7] = ((PORT4->PCR[7] &
                       /* Mask bits to zero which are setting */
                       (~(PORT_PCR_MUX_MASK | PORT_PCR_IBE_MASK)))
@@ -419,9 +446,9 @@ void BOARD_InitADC(void)
 BOARD_InitENC:
 - options: {callFromInitBoot: 'true', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: '29', peripheral: eQDC0, signal: PHASEA, pin_signal: P2_7/TRIG_IN5/LPUART4_TXD/CT_INP19/CT1_MAT3/SmartDMA_PIO31/VREFI/ADC1_A7/ADC3_A7/ADC0_A7/ADC2_A7,
+  - {pin_num: '29', peripheral: EQDC0, signal: PHASEA, pin_signal: P2_7/TRIG_IN5/LPUART4_TXD/CT_INP19/CT1_MAT3/SmartDMA_PIO31/VREFI/ADC1_A7/ADC3_A7/ADC0_A7/ADC2_A7,
     identifier: ENC_A}
-  - {pin_num: '48', peripheral: eQDC0, signal: PHASEB, pin_signal: P3_31/LPTMR0_ALT2/TRIG_IN10/LPI2C3_SDAS/LPUART4_CTS_B/CT0_MAT3/PWM1_B0/SmartDMA_PIO31/ADC1_A20}
+  - {pin_num: '48', peripheral: EQDC0, signal: PHASEB, pin_signal: P3_31/LPTMR0_ALT2/TAMPER0/TRIG_IN10/LPI2C3_SDAS/LPUART4_CTS_B/CT0_MAT3/PWM1_B0/SmartDMA_PIO31/ADC1_A20}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -442,6 +469,8 @@ void BOARD_InitENC(void)
     CLOCK_EnableClock(kCLOCK_GatePORT3);
     /* INPUTMUX0 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kINPUTMUX0_RST_SHIFT_RSTn);
+    /* QDC0 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kQDC0_RST_SHIFT_RSTn);
     /* PORT2 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kPORT2_RST_SHIFT_RSTn);
     /* PORT3 peripheral is released from reset */

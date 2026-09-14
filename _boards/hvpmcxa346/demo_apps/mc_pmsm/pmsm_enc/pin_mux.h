@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -188,18 +188,41 @@ void BOARD_InitPWM(void);
 #define BOARD_INITADC_CUR_DCB_PIN_MASK (1U << 2U)      /*!<@brief PORT pin mask */
                                                        /* @} */
 
-/*! @name PORT4_7 (number 21), CUR_C
+/*! @name PORT4_7 (number 21), I_PHC
   @{ */
 
 /* Symbols to be used with PORT driver */
-#define BOARD_INITADC_CUR_C_PORT PORT4               /*!<@brief PORT peripheral base pointer */
-#define BOARD_INITADC_CUR_C_PIN 7U                   /*!<@brief PORT pin number */
-#define BOARD_INITADC_CUR_C_PIN_MASK (1U << 7U)      /*!<@brief PORT pin mask */
+#define BOARD_INITADC_I_PHC_PORT PORT4               /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITADC_I_PHC_PIN 7U                   /*!<@brief PORT pin number */
+#define BOARD_INITADC_I_PHC_PIN_MASK (1U << 7U)      /*!<@brief PORT pin mask */
                                                      /* @} */
 
 /*! @name PORT1_6 (number 99), BEMF_A
   @{ */
 
+/* Symbols to be used with PORT driver */
+#define BOARD_INITADC_BEMF_A_PORT PORT1               /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITADC_BEMF_A_PIN 6U                   /*!<@brief PORT pin number */
+#define BOARD_INITADC_BEMF_A_PIN_MASK (1U << 6U)      /*!<@brief PORT pin mask */
+                                                      /* @} */
+
+/*! @name PORT1_5 (number 98), BEMF_B
+  @{ */
+
+/* Symbols to be used with PORT driver */
+#define BOARD_INITADC_BEMF_B_PORT PORT1               /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITADC_BEMF_B_PIN 5U                   /*!<@brief PORT pin number */
+#define BOARD_INITADC_BEMF_B_PIN_MASK (1U << 5U)      /*!<@brief PORT pin mask */
+                                                      /* @} */
+
+/*! @name PORT1_4 (number 97), BEMF_C
+  @{ */
+
+/* Symbols to be used with PORT driver */
+#define BOARD_INITADC_BEMF_C_PORT PORT1               /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITADC_BEMF_C_PIN 4U                   /*!<@brief PORT pin number */
+#define BOARD_INITADC_BEMF_C_PIN_MASK (1U << 4U)      /*!<@brief PORT pin mask */
+                                                      /* @} */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
@@ -207,22 +230,7 @@ void BOARD_InitPWM(void);
  */
 void BOARD_InitADC(void);
 
-#define PCR_IBE_ibe0 0x00u         /*!<@brief Input Buffer Enable: Disables */
-#define PORT2_PCR4_MUX_mux00 0x00u /*!<@brief Pin Multiplex Control: Alternative 0 (GPIO) */
-
-/*!
- * @brief Configures pin routing and optionally pin electrical features.
- *
- */
-void BOARD_InitCMP(void);
-
 #define PCR_IBE_ibe1 0x01u /*!<@brief Input Buffer Enable: Enables */
-
-/*!
- * @brief Configures pin routing and optionally pin electrical features.
- *
- */
-void BOARD_InitENC(void);
 
 /*! @name PORT2_7 (number 29), ENC_A
   @{ */
@@ -241,6 +249,21 @@ void BOARD_InitENC(void);
 #define BOARD_INITENC_ENC_B_PIN 31U                   /*!<@brief PORT pin number */
 #define BOARD_INITENC_ENC_B_PIN_MASK (1U << 31U)      /*!<@brief PORT pin mask */
                                                       /* @} */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitENC(void);
+
+#define PCR_IBE_ibe0 0x00u         /*!<@brief Input Buffer Enable: Disables */
+#define PORT2_PCR4_MUX_mux00 0x00u /*!<@brief Pin Multiplex Control: Alternative 0 (GPIO) */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitCMP(void);
 
 #if defined(__cplusplus)
 }
