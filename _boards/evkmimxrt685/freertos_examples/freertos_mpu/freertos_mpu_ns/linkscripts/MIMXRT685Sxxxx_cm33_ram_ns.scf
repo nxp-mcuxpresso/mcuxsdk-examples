@@ -50,13 +50,13 @@
 #define  m_interrupts_size             0x00000200
 
 #define  priv_func_start               0x000C0200
-#define  priv_func_size                0x00008000
+#define  priv_func_size                0x00008100
 
-#define  sys_calls_start               0x000C8200
+#define  sys_calls_start               0x000C8300
 #define  sys_calls_size                0x00004000
 
-#define  m_text_start                  0x000CC200
-#define  m_text_size                   0x00033E00
+#define  m_text_start                  0x000CC300
+#define  m_text_size                   0x00033D00
 
 #define  priv_data_start               0x20180000
 #define  priv_data_size                0x0000D000
