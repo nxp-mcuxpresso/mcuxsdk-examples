@@ -17,5 +17,6 @@ an external nor flash device.
 - [EVK-MIMXRT1064](../../../../_boards/evkmimxrt1064/component_examples/flash_component/flexspi_nor/example_board_readme.md)
 - [MIMXRT1180-EVK](../../../../_boards/evkmimxrt1180/component_examples/flash_component/flexspi_nor/example_board_readme.md)
 - [FRDM-RW612](../../../../_boards/frdmrw612/component_examples/flash_component/flexspi_nor/example_board_readme.md)
+- [FRDM-RW610FML](../../../../_boards/frdmrw610fml/component_examples/flash_component/flexspi_nor/example_board_readme.md)
 - [RD-RW612-BGA](../../../../_boards/rdrw612bga/component_examples/flash_component/flexspi_nor/example_board_readme.md)
 - [FRDM-IMXRT1186](../../../../_boards/frdmimxrt1186/component_examples/flash_component/flexspi_nor/example_board_readme.md)

@@ -26,4 +26,5 @@ Following is an example with RD-RW612-BGA board.
 
 ## Supported Boards
 - [FRDM-RW612](../../_boards/frdmrw612/bt_ble_examples/nbu_bb_bm/example_board_readme.md)
+- [FRDM-RW610FML](../../_boards/frdmrw610fml/bt_ble_examples/nbu_bb_bm/example_board_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/bt_ble_examples/nbu_bb_bm/example_board_readme.md)

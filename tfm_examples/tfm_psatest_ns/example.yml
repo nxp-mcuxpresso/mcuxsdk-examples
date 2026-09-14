@@ -18,6 +18,13 @@ tfm_psatest_ns:
     - -iar@flash_release
     - -mdk@flash_debug
     - -mdk@flash_release
+    frdmrw610fml:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -mdk@flash_debug
+    - -mdk@flash_release
     rdrw612bga:
     - -armgcc@flash_debug
     - -armgcc@flash_release

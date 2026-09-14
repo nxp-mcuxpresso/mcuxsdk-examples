@@ -220,6 +220,7 @@ psa_crypto_examples:
     frdmmcxn947@cm33_core0: []
     frdmmcxn947t@cm33_core0: []
     frdmrw612: []
+    frdmrw610fml: []
     rdrw612bga: []
     frdmimxrt700@cm33_core0: []
     mimxrt700evk@cm33_core0: []

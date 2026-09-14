@@ -1,0 +1,60 @@
+# Add additional configuration
+mcux_add_macro(
+    CC "-DENCRYPTED_XIP_IPED"
+)
+mcux_remove_iar_configuration(
+    TARGETS flash_release
+    CC "-Oh"
+)
+mcux_add_iar_configuration(
+    TARGETS flash_release
+    CC "-Om"
+)
+mcux_add_mdk_configuration(
+    LD "--diag_suppress=L6329W"
+)
+mcux_add_armgcc_configuration(
+    TARGETS flash_debug
+    CC "-Og"
+)
+
+# Remove additional configuration
+mcux_remove_armgcc_configuration(
+    TARGETS flash_debug
+    CC "-O0"
+)
+
+# Add or remove Linker File Configurations
+mcux_remove_iar_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS flash_debug flash_release
+    LINKER ${device_root}/Wireless/RW/RW610/iar/RW610_flash.icf
+)
+
+mcux_remove_armgcc_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS flash_debug flash_release
+    LINKER ${device_root}/Wireless/RW/RW610/gcc/RW610_flash.ld
+)
+
+mcux_remove_mdk_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS flash_debug flash_release
+    LINKER ${device_root}/Wireless/RW/RW610/arm/RW610_flash.scf
+)
+
+mcux_add_iar_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS flash_debug flash_release
+    LINKER ${board_root}/${board}/ota_examples/mcuboot_opensource/linker/RW610_flash.icf
+)
+mcux_add_armgcc_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS flash_debug flash_release
+    LINKER ${board_root}/${board}/ota_examples/mcuboot_opensource/linker/RW610_flash.ld
+)
+mcux_add_mdk_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS flash_debug flash_release
+    LINKER ${board_root}/${board}/ota_examples/mcuboot_opensource/linker/RW610_flash.scf
+)

@@ -131,6 +131,7 @@ At this point the bootloader is in place, resident in the FLASH memory. You may 
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/ota_examples/mcuboot_opensource/example_board_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/ota_examples/mcuboot_opensource/example_board_readme.md)
 - [FRDM-RW612](../../_boards/frdmrw612/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [FRDM-RW610FML](../../_boards/frdmrw610fml/ota_examples/mcuboot_opensource/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/ota_examples/mcuboot_opensource/example_board_readme.md)
 - [FRDM-MCXN947T](../../_boards/frdmmcxn947t/ota_examples/mcuboot_opensource/example_board_readme.md)
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/ota_examples/mcuboot_opensource/example_board_readme.md)

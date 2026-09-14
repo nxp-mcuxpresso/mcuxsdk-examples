@@ -151,6 +151,7 @@ The host will wake up the device by delivering the resume signal if it is waked 
 - EVKB-IMXRT1050
 - [RD-RW612-BGA](../../_boards/rdrw612bga/usb_examples/usb_suspend_resume_host_hid_mouse/example_board_readme.md)
 - [FRDM-RW612](../../_boards/frdmrw612/usb_examples/usb_suspend_resume_host_hid_mouse/example_board_readme.md)
+- [FRDM-RW610FML](../../_boards/frdmrw610fml/usb_examples/usb_suspend_resume_host_hid_mouse/example_board_readme.md)
 - EVK-MIMXRT1015
 - FRDM-MCXN236
 - FRDM-MCXA266

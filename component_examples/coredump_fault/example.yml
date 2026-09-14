@@ -21,4 +21,11 @@ coredump_fault:
     - -mdk@release
     - -iar@debug
     - -iar@release
+    frdmrw610fml:
+    - -armgcc@debug
+    - -armgcc@release
+    - -mdk@debug
+    - -mdk@release
+    - -iar@debug
+    - -iar@release
     frdmmcxw71: []

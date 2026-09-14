@@ -94,6 +94,7 @@ For more information about Wi-Fi module connection see:
 - [EVK-MIMXRT595](../../_boards/evkmimxrt595/wifi_examples/common/wifi_examples_readme.md)
 - [EVK-MIMXRT685](../../_boards/evkmimxrt685/wifi_examples/common/wifi_examples_readme.md)
 - [FRDM-RW612](../../_boards/frdmrw612/wifi_examples/common/wifi_examples_readme.md)
+- [FRDM-RW610FML](../../_boards/frdmrw610fml/wifi_examples/common/wifi_examples_readme.md)
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/wifi_examples/common/wifi_examples_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/wifi_examples/common/wifi_examples_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/wifi_examples/common/wifi_examples_readme.md)

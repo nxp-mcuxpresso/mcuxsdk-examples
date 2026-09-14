@@ -13,6 +13,7 @@ so the edge capture timestamp is shown periodically in the terminal.
 - [FRDM-MCXL255](../../../_boards/frdmmcxl255/driver_examples/ctimer/capture/example_board_readme.md)
 - [FRDM-MCXW23](../../../_boards/frdmmcxw23/driver_examples/ctimer/capture/example_board_readme.md)
 - [FRDM-RW612](../../../_boards/frdmrw612/driver_examples/ctimer/capture/example_board_readme.md)
+- [FRDM-RW610FML](../../../_boards/frdmrw610fml/driver_examples/ctimer/capture/example_board_readme.md)
 - [RD-RW612-BGA](../../../_boards/rdrw612bga/driver_examples/ctimer/capture/example_board_readme.md)
 - [MCXW23-EVK](../../../_boards/mcxw23evk/driver_examples/ctimer/capture/example_board_readme.md)
 - [FRDM-MCXA174](../../../_boards/frdmmcxa174/driver_examples/ctimer/capture/example_board_readme.md)

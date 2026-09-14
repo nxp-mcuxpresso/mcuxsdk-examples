@@ -21,6 +21,13 @@ gdma_basic:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    frdmrw610fml:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     rdrw612bga:
     - -armgcc@debug
     - -armgcc@release

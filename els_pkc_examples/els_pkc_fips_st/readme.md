@@ -9,3 +9,4 @@ global variables in the respective files.
 ## Supported Boards
 - [RD-RW612-BGA](../../_boards/rdrw612bga/els_pkc_examples/els_pkc_fips_st/example_board_readme.md)
 - [FRDM-RW612](../../_boards/frdmrw612/els_pkc_examples/els_pkc_fips_st/example_board_readme.md)
+- [FRDM-RW610FML](../../_boards/frdmrw610fml/els_pkc_examples/els_pkc_fips_st/example_board_readme.md)

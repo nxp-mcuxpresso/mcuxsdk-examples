@@ -243,6 +243,7 @@ fmstr_example_uart:
     frdmmcxw72@cm33_core0: []
     mcxw71evk: []
     frdmrw612: []
+    frdmrw610fml: []
     imx943evk@cm7_core1:
     - +iar@debug
     - +armgcc@debug

@@ -39,6 +39,13 @@ usart_interrupt:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    frdmrw610fml:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     lpcxpresso51u68: []
     lpcxpresso54628: []
     lpcxpresso54s018: []

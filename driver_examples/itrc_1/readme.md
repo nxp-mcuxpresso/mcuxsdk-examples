@@ -35,4 +35,5 @@ End of example
 
 ## Supported Boards
 - [FRDM-RW612](../../_boards/frdmrw612/driver_examples/itrc/example_board_readme.md)
+- [FRDM-RW610FML](../../_boards/frdmrw610fml/driver_examples/itrc/example_board_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/driver_examples/itrc/example_board_readme.md)

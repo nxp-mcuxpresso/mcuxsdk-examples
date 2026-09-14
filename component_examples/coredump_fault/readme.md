@@ -102,4 +102,5 @@ by change "Memory dump" option in Kconfig.
 
 ## Supported Boards
 - [FRDM-RW612](../../_boards/frdmrw612/component_examples/coredump_fault/example_board_readme.md)
+- [FRDM-RW610FML](../../_boards/frdmrw610fml/component_examples/coredump_fault/example_board_readme.md)
 - [FRDM-MCXW71](../../_boards/frdmmcxw71/component_examples/coredump_fault/example_board_readme.md)

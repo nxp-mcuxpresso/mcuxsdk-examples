@@ -19,7 +19,7 @@
 #include "fsl_os_abstraction.h"
 #include "fsl_debug_console.h"
 
-#if !defined(RW612_SERIES)
+#if !defined(RW612_SERIES) && !defined(RW610_SERIES)
 #include "wifi.h"
 #include "fsl_sdmmc_host.h"
 #endif /* RW612_SERIES */
@@ -28,7 +28,7 @@
 #include "fsl_device_registers.h"
 
 #include "fsl_gpio.h"
-#if !defined(RW612_SERIES)
+#if !defined(RW612_SERIES) && !defined(RW610_SERIES)
 #include "fsl_iomuxc.h"
 #include "fsl_gpc.h"
 #include "fsl_lpuart_edma.h"
@@ -44,7 +44,7 @@
 //#include "fsl_enet.h"
 #include "app_config.h"
 
-#ifdef RW612_SERIES
+#if defined(RW612_SERIES) || defined(RW610_SERIES)
 #ifndef CONFIG_WPA_SUPP_CRYPTO_MBEDTLS_PSA
 #if defined(MBEDTLS_NXP_SSSAPI)
 #include "sssapi_mbedtls.h"
@@ -108,7 +108,7 @@ extern void APP_InitServices(void);
  * Variables
  ******************************************************************************/
 
-#ifdef RW612_SERIES
+#if defined(RW612_SERIES) || defined(RW610_SERIES)
 #if defined(configUSE_TICKLESS_IDLE) && (configUSE_TICKLESS_IDLE == 1)
 /* Tickless idle is allowed by default but can be disabled runtime with APP_SetTicklessIdle */
 static int ticklessIdleAllowed = 0;
@@ -127,7 +127,7 @@ static void printSeparator(void)
 void task_main(void *param)
 {
     printSeparator();
-#if defined(RW612_SERIES)
+#if defined(RW612_SERIES) || defined(RW610_SERIES)
     PRINTF("     Initialize RW612 Module\r\n");
 #elif defined(WIFI_IW610_BOARD_MURATA_2LL_M2)
     PRINTF("     Initialize Nighthwak-2LL (IW610) M2 Module\r\n");
@@ -201,7 +201,7 @@ int main(void)
     config_mbedtls_threading_alt();
 #endif
 
-#ifdef RW612_SERIES
+#if defined(RW612_SERIES) || defined(RW610_SERIES)
 
 #ifdef OOB_WAKEUP
     Configure_H2C_gpio();

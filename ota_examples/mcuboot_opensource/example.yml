@@ -214,6 +214,15 @@ mcuboot_opensource:
     - -mdk@release
     - -mdk@flash_debug
     - -mdk@flash_release
+    frdmrw610fml:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@flash_debug
+    - -mdk@flash_release
     lpcxpresso55s69@cm33_core0:
     - -mdk@release
     - -mdk@debug
@@ -329,6 +338,15 @@ mcuboot_opensource@rw61x_encrypted_xip:
       - -DCONF_FILE=examples/ota_examples/_custom_cfg/rw61x/mcuboot_opensource.conf
   boards:
     frdmrw612:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@flash_debug
+    - -mdk@flash_release
+    frdmrw610fml:
     - -armgcc@debug
     - -armgcc@release
     - -iar@debug

@@ -15,4 +15,5 @@ psa_crypto_examples_thread:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmrw612: []
+    frdmrw610fml: []
     rdrw612bga: []

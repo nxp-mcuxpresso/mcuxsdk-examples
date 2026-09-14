@@ -44,6 +44,7 @@ host_hid_generic_bm:
     frdmmcxn947@cm33_core0: []
     frdmmcxn947t@cm33_core0: []
     frdmrw612: []
+    frdmrw610fml: []
     lpcxpresso54628: []
     lpcxpresso54s018: []
     lpcxpresso54s018m: []

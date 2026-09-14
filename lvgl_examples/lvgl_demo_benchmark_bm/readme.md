@@ -15,6 +15,7 @@ A demo application runs different functions for benchmark test.
 - [EVK-MIMXRT685](../../_boards/evkmimxrt685/lvgl_examples/lvgl_examples_readme.md)
 - [FRDM-IMXRT700](../../_boards/frdmimxrt700/lvgl_examples/lvgl_examples_readme.md)
 - [FRDM-RW612](../../_boards/frdmrw612/lvgl_examples/lvgl_examples_readme.md)
+- [FRDM-RW610FML](../../_boards/frdmrw610fml/lvgl_examples/lvgl_examples_readme.md)
 - [LPCXpresso54S018](../../_boards/lpcxpresso54s018/lvgl_examples/lvgl_examples_readme.md)
 - [LPCXpresso54S018M](../../_boards/lpcxpresso54s018m/lvgl_examples/lvgl_examples_readme.md)
 - [LPCXpresso55S69](../../_boards/lpcxpresso55s69/lvgl_examples/lvgl_examples_readme.md)

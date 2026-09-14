@@ -78,4 +78,5 @@ Disconnected from MQTT broker.
 ## Supported Boards
 - [EVK-MIMXRT1064](../../_boards/evkmimxrt1064/wifi_examples/common/wifi_examples_readme.md)
 - [FRDM-RW612](../../_boards/frdmrw612/wifi_examples/common/wifi_examples_readme.md)
+- [FRDM-RW610FML](../../_boards/frdmrw610fml/wifi_examples/common/wifi_examples_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/wifi_examples/common/wifi_examples_readme.md)

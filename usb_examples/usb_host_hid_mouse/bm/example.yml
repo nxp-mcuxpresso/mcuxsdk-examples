@@ -48,6 +48,7 @@ host_hid_mouse_bm:
     frdmmcxn947@cm33_core0: []
     frdmmcxn947t@cm33_core0: []
     frdmrw612: []
+    frdmrw610fml: []
     imx95lpd5evk19@cm7:
     - -armgcc@flash_debug
     - -armgcc@flash_release

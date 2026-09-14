@@ -15,3 +15,4 @@ els_pkc_benchmark:
   boards:
     rdrw612bga: []
     frdmrw612: []
+    frdmrw610fml: []

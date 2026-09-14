@@ -143,6 +143,13 @@ wifi_ipv4_ipv6_echo:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    frdmrw610fml:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
     frdmmcxn947@cm33_core0: []

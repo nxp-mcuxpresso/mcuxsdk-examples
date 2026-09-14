@@ -36,6 +36,7 @@ TRNG settings already during TRNG_Init().
 - [FRDM-K32L3A6](../../../_boards/frdmk32l3a6/driver_examples/trng/random/example_board_readme.md)
 - [FRDM-MCXW23](../../../_boards/frdmmcxw23/driver_examples/trng/random/example_board_readme.md)
 - [FRDM-RW612](../../../_boards/frdmrw612/driver_examples/trng/random/example_board_readme.md)
+- [FRDM-RW610FML](../../../_boards/frdmrw610fml/driver_examples/trng/random/example_board_readme.md)
 - [MIMXRT685-AUD-EVK](../../../_boards/mimxrt685audevk/driver_examples/trng/random/example_board_readme.md)
 - [MIMXRT700-EVK](../../../_boards/mimxrt700evk/driver_examples/trng/random/example_board_readme.md)
 - [FRDM-IMXRT700](../../../_boards/frdmimxrt700/driver_examples/trng/random/example_board_readme.md)

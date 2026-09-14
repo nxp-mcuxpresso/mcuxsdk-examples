@@ -54,6 +54,13 @@ powerquad_matrix:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    frdmrw610fml:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     lpcxpresso55s36: []
     lpcxpresso55s69@cm33_core0: []
     mcxn5xxevk@cm33_core0: []

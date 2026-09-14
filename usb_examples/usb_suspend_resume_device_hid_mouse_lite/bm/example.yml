@@ -59,6 +59,7 @@ dev_suspend_resume_hid_mouse_lite_bm:
     mimxrt700evk@cm33_core0: []
     rdrw612bga: []
     frdmrw612: []
+    frdmrw610fml: []
     frdmmcxa266: []
     frdmmcxa366: []
     frdmmcxa577: []

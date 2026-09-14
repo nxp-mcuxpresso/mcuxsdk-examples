@@ -122,6 +122,7 @@ freertos_tickless:
     frdmmcxw23: []
     mcxw23evk: []
     frdmrw612: []
+    frdmrw610fml: []
     lpcxpresso51u68: []
     lpcxpresso54628: []
     lpcxpresso54s018: []

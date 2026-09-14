@@ -12,6 +12,7 @@ The duty cycles of the two PWM signals are 50% and 20%, respectively.
 - [FRDM-MCXN947T](../../../_boards/frdmmcxn947t/driver_examples/sctimer/simple_pwm/example_board_readme.md)
 - [FRDM-MCXW23](../../../_boards/frdmmcxw23/driver_examples/sctimer/simple_pwm/example_board_readme.md)
 - [FRDM-RW612](../../../_boards/frdmrw612/driver_examples/sctimer/simple_pwm/example_board_readme.md)
+- [FRDM-RW610FML](../../../_boards/frdmrw610fml/driver_examples/sctimer/simple_pwm/example_board_readme.md)
 - [LPC845BREAKOUT](../../../_boards/lpc845breakout/driver_examples/sctimer/simple_pwm/example_board_readme.md)
 - [LPCXpresso51U68](../../../_boards/lpcxpresso51u68/driver_examples/sctimer/simple_pwm/example_board_readme.md)
 - [LPCXpresso54628](../../../_boards/lpcxpresso54628/driver_examples/sctimer/simple_pwm/example_board_readme.md)

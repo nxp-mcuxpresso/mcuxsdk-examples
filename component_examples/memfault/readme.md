@@ -70,5 +70,6 @@ Detailed steps can be found here: https://docs.memfault.com/docs/mcu/coredump-el
 
 ## Supported Boards
 - [FRDM-RW612](../../_boards/frdmrw612/component_examples/memfault/example_board_readme.md)
+- [FRDM-RW610FML](../../_boards/frdmrw610fml/component_examples/memfault/example_board_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/component_examples/memfault/example_board_readme.md)
 - [FRDM-MCXW71](../../_boards/frdmmcxw71/component_examples/memfault/example_board_readme.md)

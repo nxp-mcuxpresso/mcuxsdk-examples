@@ -50,6 +50,7 @@ Main routine:
 - [EVK-MIMXRT685](../../../../../_boards/evkmimxrt685/driver_examples/spi/dma_b2b_transfer/master/example_board_readme.md)
 - [FRDM-MCXW23](../../../../../_boards/frdmmcxw23/driver_examples/spi/dma_b2b_transfer/master/example_board_readme.md)
 - [FRDM-RW612](../../../../../_boards/frdmrw612/driver_examples/spi/dma_b2b_transfer/master/example_board_readme.md)
+- [FRDM-RW610FML](../../../../../_boards/frdmrw610fml/driver_examples/spi/dma_b2b_transfer/master/example_board_readme.md)
 - [LPCXpresso54628](../../../../../_boards/lpcxpresso54628/driver_examples/spi/dma_b2b_transfer/master/example_board_readme.md)
 - [LPCXpresso55S06](../../../../../_boards/lpcxpresso55s06/driver_examples/spi/dma_b2b_transfer/master/example_board_readme.md)
 - [LPCXpresso55S16](../../../../../_boards/lpcxpresso55s16/driver_examples/spi/dma_b2b_transfer/master/example_board_readme.md)

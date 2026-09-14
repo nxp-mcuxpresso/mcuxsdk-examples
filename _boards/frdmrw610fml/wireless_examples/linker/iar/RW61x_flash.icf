@@ -1,0 +1,272 @@
+/*
+** ###################################################################
+**     Processors:          RW610EVA0IK
+**                          RW610EVA0IMP
+**                          RW610HNA0IK
+**                          RW610HNA0IMP
+**                          RW610UKA0IZ
+**
+**     Compiler:            IAR ANSI C/C++ Compiler for ARM
+**
+**     Abstract:
+**         Linker file for the IAR ANSI C/C++ Compiler for ARM
+**
+**     Copyright 2016 Freescale Semiconductor, Inc.
+**     Copyright 2016-2024 NXP
+**
+**     SPDX-License-Identifier: BSD-3-Clause
+**
+**     http:                 www.nxp.com
+**     mail:                 support@nxp.com
+**
+** ###################################################################
+*/
+
+/* Stack and Heap Sizes */
+if (isdefinedsymbol(__stack_size__)) {
+  define symbol __size_cstack__                 = __stack_size__;
+} else {
+  define symbol __size_cstack__                 = 0x0800;
+}
+
+if (isdefinedsymbol(__heap_size__)) {
+  define symbol __size_heap__                   = __heap_size__;
+} else {
+  define symbol __size_heap__                   = 0x0a00;
+}
+
+define memory mem with size = 4G;
+initialize by copy {
+readwrite,
+  section .textrw,
+  section CodeQuickAccess,
+  section DataQuickAccess,
+  ro object fsl_flexspi*, // Place in RAM flash and performance dependent functions
+  ro object mflash_drv*,
+  object port*,
+  object portasm*,
+  object queue*,
+  object timers*,
+  object tasks*,
+  object inet_chksum*,
+  object ip4*,
+  object pbuf*,
+  object sys_arch*,
+  object tcp_out*,
+  object tcp_in*,
+  object mlan_11n_rxreorder*,
+  object wifi*,
+  object wifi-imu*,
+  object fsl_adapter_imu*,
+  object fsl_cache*,
+  object fsl_os_abstraction_free_rtos*,
+  object libethermind_ble_lc3_ndsp_common.a,
+  object libethermind_ble_lc3_ndsp_decoder.a,
+  object libethermind_ble_lc3_ndsp_encoder.a
+};
+do not initialize  { section .noinit };
+
+/* -------------------------------------------------------------------------- */
+/*                               FLEX SPI FLASH                               */
+/* -------------------------------------------------------------------------- */
+define symbol m_flash_start                           = 0x08000000;
+define symbol m_flash_size                            = 0x4000000; // 64M flash
+define symbol m_flash_end                             = m_flash_start + m_flash_size - 1;
+define symbol m_flash_sector_size                     = 0x1000;
+
+define symbol m_boot_flash_conf_sector_start                = m_flash_start;
+define symbol m_boot_flash_conf_offset                      = 0x0;
+define symbol m_boot_flash_conf_start                       = m_boot_flash_conf_sector_start + m_boot_flash_conf_offset;
+define symbol m_boot_flash_conf_sector_end                  = m_boot_flash_conf_sector_start + m_flash_sector_size - 1;
+
+define symbol wifi_fw_size                                  = 0xA0000;
+define symbol ble_fw_size                                   = 0x50000;
+define symbol z154_fw_size                                  = 0x50000;
+define symbol fw_storage_start                              = 0x08400000;
+define symbol fw_storage_size                               = (wifi_fw_size + ble_fw_size + z154_fw_size) * 2;
+define symbol fw_storage_end                                = fw_storage_start + fw_storage_size -1;
+
+define symbol fw_wifi_act_start                             = fw_storage_start;
+define symbol fw_wifi_cand_start                            = fw_storage_start + wifi_fw_size;
+define symbol fw_ble_act_start                              = fw_wifi_cand_start + wifi_fw_size;
+define symbol fw_ble_cand_start                             = fw_ble_act_start + ble_fw_size;
+define symbol fw_15d5_act_start                             = fw_ble_cand_start + ble_fw_size;
+define symbol fw_15d4_cand_start                            = fw_15d5_act_start + z154_fw_size;
+
+define symbol m_app_start                                   = m_boot_flash_conf_sector_end + 1;
+define symbol m_app_stated_size                             = (fw_storage_start - m_app_start - m_flash_sector_size);
+define symbol m_app_end                                     = m_app_start + m_app_stated_size - 1;
+
+define symbol m_interrupts_start                            = m_app_start;
+define symbol m_interrupts_size                             = 0x280;
+define symbol m_interrupts_end                              = m_interrupts_start + m_interrupts_size -1;
+
+define symbol m_text_start                                  = m_interrupts_end + 1;
+define symbol m_text_size                                   = m_app_stated_size - m_interrupts_size;
+define symbol m_text_end                                    = m_text_start + m_text_size - 1;
+
+define exported symbol FW_UPDATE_STORAGE_START             = m_app_end + 1;
+define exported symbol FW_UPDATE_STORAGE_SIZE              = m_app_stated_size;
+define exported symbol FW_UPDATE_STORAGE_OFFSET            = FW_UPDATE_STORAGE_START - m_flash_start;
+define exported symbol FW_ACTIVE_APP_START                 = m_app_start;
+define exported symbol FW_ACTIVE_APP_OFFSET                = m_app_start  - m_flash_start;
+define exported symbol FW_ACTIVE_APP_SIZE                  = m_app_stated_size;
+
+
+if (isdefinedsymbol(gUseFactoryData_d)) {
+    define exported symbol __FACTORY_DATA_SIZE              = m_flash_sector_size;
+}
+else
+{
+    define exported symbol __FACTORY_DATA_SIZE              = 0;
+}
+
+define symbol __FACTORY_DATA_START                          = fw_storage_end + 1;
+define exported symbol __FACTORY_DATA_START_OFFSET          = __FACTORY_DATA_START - m_flash_start;
+define symbol __FACTORY_DATA_END                            = __FACTORY_DATA_START + __FACTORY_DATA_SIZE - 1;
+
+define exported symbol PROD_DATA_BASE_ADDR                  = __FACTORY_DATA_END + 1;
+define exported symbol PROD_DATA_SIZE                       = m_flash_sector_size;
+define exported symbol PROD_DATA_END                        = PROD_DATA_BASE_ADDR + m_flash_sector_size - 1;
+
+/* NVM storage */
+if (! isdefinedsymbol(gUseNVMLink_d)) {
+  define symbol gUseNVMLink_d = 0;
+}
+if ( gUseNVMLink_d ) {
+    if (isdefinedsymbol(gNVMSectorCountLink_d)) {
+        define exported symbol NV_STORAGE_MAX_SECTORS   = gNVMSectorCountLink_d;
+    }
+    else {
+        define exported symbol NV_STORAGE_MAX_SECTORS   = 8;
+    }
+}
+else {
+    define exported symbol NV_STORAGE_MAX_SECTORS       = 0;
+}
+define exported symbol NV_STORAGE_START_ADDRESS            = PROD_DATA_END + 1;
+define exported symbol NV_STORAGE_START_ADDRESS_OFFSET     = NV_STORAGE_START_ADDRESS - m_flash_start;
+define exported symbol NV_STORAGE_SECTOR_SIZE              = m_flash_sector_size;
+define exported symbol NV_STORAGE_SIZE                     = NV_STORAGE_MAX_SECTORS * NV_STORAGE_SECTOR_SIZE;
+define exported symbol NV_STORAGE_END_ADDRESS              = NV_STORAGE_START_ADDRESS + NV_STORAGE_SIZE - 1;
+
+define exported symbol LITTLEFS_STORAGE_START_ADDRESS       = PROD_DATA_END + 1;
+define exported symbol LITTLEFS_STORAGE_START_ADDRESS_OFFSET = LITTLEFS_STORAGE_START_ADDRESS - m_flash_start;
+define exported symbol LITTLEFS_STORAGE_END_ADDRESS         = m_flash_end;
+define exported symbol LITTLEFS_STORAGE_SECTOR_SIZE         = m_flash_sector_size;
+define exported symbol LITTLEFS_STORAGE_MAX_SECTORS         = (LITTLEFS_STORAGE_END_ADDRESS - LITTLEFS_STORAGE_START_ADDRESS) / LITTLEFS_STORAGE_SECTOR_SIZE;
+define exported symbol EDGEFAST_BT_LITTLEFS_STORAGE_START_ADDRESS   = LITTLEFS_STORAGE_START_ADDRESS;
+define exported symbol EDGEFAST_BT_LITTLEFS_STORAGE_END_ADDRESS     = LITTLEFS_STORAGE_END_ADDRESS;
+define exported symbol EDGEFAST_BT_LITTLEFS_STORAGE_SECTOR_SIZE     = LITTLEFS_STORAGE_SECTOR_SIZE;
+define exported symbol EDGEFAST_BT_LITTLEFS_STORAGE_MAX_SECTORS     = LITTLEFS_STORAGE_MAX_SECTORS;
+
+
+
+define region TEXT_region                                   = mem:[from m_interrupts_start to m_interrupts_end]
+                                                            | mem:[from m_text_start to m_text_end];
+define region FACTORY_DATA_region                           = mem:[from __FACTORY_DATA_START to __FACTORY_DATA_END];
+define region LITTLEFS_region                               = mem:[from LITTLEFS_STORAGE_START_ADDRESS to LITTLEFS_STORAGE_END_ADDRESS];
+
+define block RO                                             { readonly };
+define block FACTORY_DATA                                   { readonly section .factory_data };
+keep { section .factory_data };
+
+keep { section .flash_conf };
+place at address mem: m_boot_flash_conf_start               { readonly section .flash_conf };
+place at address mem: m_interrupts_start                    { readonly section .intvec };
+place in TEXT_region                                        { block RO, readonly section ._bt* };
+place in FACTORY_DATA_region                                { block FACTORY_DATA};
+
+
+/* -------------------------------------------------------------------------- */
+/*                                    RAM                                     */
+/* -------------------------------------------------------------------------- */
+define symbol __ram_vector_table_size__         =  isdefinedsymbol(__ram_vector_table__) ? 0x00000280 : 0;
+define symbol __ram_vector_table_offset__       =  isdefinedsymbol(__ram_vector_table__) ? 0x0000027F : 0;
+
+define symbol m_interrupts_ram_start            = 0x20000000;
+define symbol m_interrupts_ram_end              = m_interrupts_ram_start + __ram_vector_table_size__ - 1;
+
+/* 0x0000_0000 - 0x0002_FFFF is for LC3 nodsp codec usage */
+define symbol m_ram_text_start                  = __ram_vector_table_size__;
+define symbol m_ram_text_end                    = 0x0002FFFF;
+
+define symbol m_cstack_start                    = m_interrupts_ram_start + m_ram_text_end + 1;
+define symbol m_cstack_end                      = m_cstack_start + __size_cstack__ - 1;
+
+define symbol m_data_start                      = m_cstack_end + 1;
+define symbol m_data_end                        = 0x20122FFF;
+/* 0x2012_3000 - 0x2012_FFFF is reserved for BootROM usage */
+
+define exported symbol __HEAP_end__             = m_data_end;
+define exported symbol __VECTOR_RAM             = isdefinedsymbol(__ram_vector_table__) ? m_interrupts_ram_start : m_interrupts_start;
+define exported symbol __RAM_VECTOR_TABLE_SIZE  = __ram_vector_table_size__;
+
+define region m_interrupts_ram_region           = mem:[from m_interrupts_ram_start to m_interrupts_ram_end];
+define region RAM_TEXT_region                   = mem:[from m_ram_text_start to m_ram_text_end];
+define region DATA_region                       = mem:[from m_data_start to m_data_end - __size_cstack__];
+define region CSTACK_region                     = mem:[from m_cstack_start to m_cstack_end];
+
+define block CSTACK     with alignment = 8, size = __size_cstack__   { };
+define block HEAP       with alignment = 8 { section .heap };
+define block RW         { readwrite };
+define block ZI         { zi };
+
+define block LC3NODSP_TEXT {
+  section .text object libethermind_ble_lc3_ndsp_common.a,
+  section .text object libethermind_ble_lc3_ndsp_decoder.a,
+  section .text object libethermind_ble_lc3_ndsp_encoder.a
+};
+
+place in m_interrupts_ram_region                { section m_interrupts_ram };
+place in RAM_TEXT_region                        { block LC3NODSP_TEXT };
+place in DATA_region                            { section CodeQuickAccess, section DataQuickAccess };
+place in DATA_region                            { block RW, section ._net_buf_pool, section ._k_mem_slab };
+place in DATA_region                            { block ZI };
+place in DATA_region                            { last block HEAP };
+place in CSTACK_region                          { block CSTACK };
+
+keep { section .flash_area_list, section ._net_buf_pool, section ._k_mem_slab, section ._bt*, section ._settings*};
+
+/* -------------------------------------------------------------------------- */
+/*                              SMU1 - CPU3/CPU1                              */
+/* -------------------------------------------------------------------------- */
+define symbol sqram_cpu13_mbox_start            = 0x41380000;
+define symbol sqram_cpu13_mbox_size             = 0x00000488;
+define symbol sqram_cpu13_mbox_end              = sqram_cpu13_mbox_start + sqram_cpu13_mbox_size - 1;
+
+define symbol sqram_cpu31_txq_start             = sqram_cpu13_mbox_end + 1;
+define symbol sqram_cpu31_txq_size              = 0x1000;
+define symbol sqram_cpu31_txq_end               = sqram_cpu31_txq_start + sqram_cpu31_txq_size - 1;
+
+define region SQRAM_CPU13_MBOX_region           = mem:[from sqram_cpu13_mbox_start to sqram_cpu13_mbox_end];
+define region SQRAM_CPU31_TXQ_region            = mem:[from sqram_cpu31_txq_start to sqram_cpu31_txq_end];
+
+do not initialize  { section .smu_cpu31_txq, section .smu_cpu13_mbox };
+
+place in SQRAM_CPU31_TXQ_region                 { section .smu_cpu31_txq };
+place in SQRAM_CPU13_MBOX_region                { section .smu_cpu13_mbox };
+
+/* -------------------------------------------------------------------------- */
+/*                              SMU2 - CPU3/CPU2                              */
+/* -------------------------------------------------------------------------- */
+define symbol sqram_cpu23_mbox_start            = 0x443C0000;
+define symbol sqram_cpu23_mbox_size             = 0x00000488;
+define symbol sqram_cpu23_mbox_end              = sqram_cpu23_mbox_start + sqram_cpu23_mbox_size - 1;
+define exported symbol SQRAM_CPU23_MBOX         = sqram_cpu23_mbox_start;
+
+define symbol sqram_cpu23_txq_start             = sqram_cpu23_mbox_end + 1;
+define symbol sqram_cpu23_txq_size              = 0x1080;
+define symbol sqram_cpu23_txq_end               = sqram_cpu23_txq_start + sqram_cpu23_txq_size - 1;
+
+define symbol sqram_cpu32_txq_start             = sqram_cpu23_txq_end + 1;
+define symbol sqram_cpu32_txq_size              = 0x1080;
+define symbol sqram_cpu32_txq_end               = sqram_cpu32_txq_start + sqram_cpu32_txq_size - 1;
+
+define region SQRAM_CPU23_MBOX_region           = mem:[from sqram_cpu23_mbox_start to sqram_cpu23_mbox_end];
+define region SQRAM_CPU32_TXQ_region            = mem:[from sqram_cpu32_txq_start to sqram_cpu32_txq_end];
+
+do not initialize  { section .smu_cpu32_txq, section .smu_cpu23_mbox };
+
+place in SQRAM_CPU32_TXQ_region                 { section .smu_cpu32_txq };
+place in SQRAM_CPU23_MBOX_region                { section .smu_cpu23_mbox };

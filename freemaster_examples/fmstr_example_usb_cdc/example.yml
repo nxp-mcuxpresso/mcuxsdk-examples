@@ -69,6 +69,7 @@ fmstr_example_usb_cdc:
     frdmmcxn947@cm33_core0: []
     frdmmcxn947t@cm33_core0: []
     frdmrw612: []
+    frdmrw610fml: []
     lpcxpresso51u68: []
     lpcxpresso54628: []
     lpcxpresso54s018: []

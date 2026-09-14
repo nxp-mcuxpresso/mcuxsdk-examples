@@ -42,6 +42,7 @@ Print the content of the file using 'cat mynewdir/foo.txt'. The expected output 
 - [MIMXRT1180-EVK](../../_boards/evkmimxrt1180/littlefs_examples/littlefs_shell/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/littlefs_examples/littlefs_shell/example_board_readme.md)
 - [FRDM-RW612](../../_boards/frdmrw612/littlefs_examples/littlefs_shell/example_board_readme.md)
+- [FRDM-RW610FML](../../_boards/frdmrw610fml/littlefs_examples/littlefs_shell/example_board_readme.md)
 - [LPCXpresso54S018](../../_boards/lpcxpresso54s018/littlefs_examples/littlefs_shell/example_board_readme.md)
 - [LPCXpresso55S36](../../_boards/lpcxpresso55s36/littlefs_examples/littlefs_shell/example_board_readme.md)
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/littlefs_examples/littlefs_shell/example_board_readme.md)

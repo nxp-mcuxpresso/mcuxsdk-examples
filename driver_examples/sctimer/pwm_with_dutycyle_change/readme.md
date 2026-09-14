@@ -11,6 +11,7 @@ and periodically updates the PWM signals dutycycle.
 - [FRDM-MCXN947T](../../../_boards/frdmmcxn947t/driver_examples/sctimer/pwm_with_dutycyle_change/example_board_readme.md)
 - [FRDM-MCXW23](../../../_boards/frdmmcxw23/driver_examples/sctimer/pwm_with_dutycyle_change/example_board_readme.md)
 - [FRDM-RW612](../../../_boards/frdmrw612/driver_examples/sctimer/pwm_with_dutycyle_change/example_board_readme.md)
+- [FRDM-RW610FML](../../../_boards/frdmrw610fml/driver_examples/sctimer/pwm_with_dutycyle_change/example_board_readme.md)
 - [LPC845BREAKOUT](../../../_boards/lpc845breakout/driver_examples/sctimer/pwm_with_dutycyle_change/example_board_readme.md)
 - [LPCXpresso51U68](../../../_boards/lpcxpresso51u68/driver_examples/sctimer/pwm_with_dutycyle_change/example_board_readme.md)
 - [LPCXpresso54628](../../../_boards/lpcxpresso54628/driver_examples/sctimer/pwm_with_dutycyle_change/example_board_readme.md)

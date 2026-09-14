@@ -155,6 +155,15 @@ trng_random:
     - -armgcc@release
     - -iar@debug
     - -iar@release
+    frdmrw610fml:
+    - -mdk@debug
+    - -mdk@flash_debug
+    - -mdk@flash_release
+    - -mdk@release
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
     mimxrt685audevk@cm33:
     - -armgcc@debug
     - -armgcc@release

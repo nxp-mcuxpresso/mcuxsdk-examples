@@ -1,0 +1,13 @@
+<#if memory.name=="SRAM">
+       *mflash_drv.o(.text .text* .rodata .rodata*)
+       *fsl_flexspi.o(.text .text* .rodata .rodata*)
+       *fsl_clock.o(.text .text* .rodata .rodata*)
+       *fsl_cache.o(.text .text* .rodata .rodata*)
+       *fsl_reset.o(.text .text* .rodata .rodata*)
+       *libc_a-memcpy-stub.o(.text .text* .rodata .rodata*)
+       *libc_a-memset.o(.text .text* .rodata .rodata*)
+       *fsl_memcpy.o(.text .text* .rodata .rodata*)
+       *memcpy.o(.text .text* .rodata .rodata*)
+       *memset.o(.text .text* .rodata .rodata*)
+</#if>
+       *(.data*)

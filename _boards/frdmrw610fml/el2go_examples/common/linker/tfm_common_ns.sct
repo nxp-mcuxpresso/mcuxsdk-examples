@@ -1,0 +1,80 @@
+/*
+ * Copyright (c) 2022 Arm Limited. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+// NXP : Based on platform/ext/common/armclang/tfm_common_ns.sct
+
+#include "region_defs.h"
+
+// --------- NXP --------------
+/* This regions map to connectivity peripherals and are required for Wi-Fi to
+ * operate properly in NSPE.
+ */
+#define m_mbox1_start 0x41380000
+#define m_mbox1_size  0x00000488
+#define m_txq1_start  0x41380488
+#define m_txq1_size   0x00001000
+#define m_mbox2_start 0x443C0000
+#define m_mbox2_size  0x00000488
+#define m_txq23_start 0x443C0488
+#define m_txq23_size  0x00001080
+#define m_txq32_start 0x443C1508
+#define m_txq32_size  0x00001080
+// --------- NXP end --------------
+
+LR_CODE NS_CODE_START {
+    ER_CODE NS_CODE_START NS_CODE_SIZE {
+        *.o (RESET +First)
+        * (+RO)
+    }
+
+    ER_DATA NS_DATA_START {
+        * (+ZI +RW)
+    }
+
+    /* STACK */
+    ARM_LIB_STACK +0 ALIGN 32 EMPTY NS_STACK_SIZE {
+    }
+
+    ARM_LIB_HEAP +0 ALIGN 8 EMPTY NS_HEAP_SIZE {
+    }
+
+    /* This empty, zero long execution region is here to mark the limit address
+     * of the last execution region that is allocated in SRAM.
+     */
+    SRAM_WATERMARK +0 EMPTY 0x0 {
+    }
+    /* Make sure that the sections allocated in the SRAM does not exceed the
+     * size of the SRAM available.
+     */
+    ScatterAssert(ImageLimit(SRAM_WATERMARK) <= NS_DATA_START + NS_DATA_SIZE)
+// --------- NXP --------------
+    /* CPU3 <-> CPU1 mailbox */
+    RW_smu_cpu13_mbox m_mbox1_start ALIGN 4 m_mbox1_size {
+        * (.smu_cpu13_mbox)
+    }
+    /* CPU3 -> CPU1 TXQ */
+    RW_smu_cpu31_txq m_txq1_start ALIGN 4 m_txq1_size {
+        * (.smu_cpu31_txq)
+    }
+    /* CPU3 <-> CPU2 mailbox */
+    RW_smu_cpu23_mbox m_mbox2_start ALIGN 4 m_mbox2_size {
+        * (.smu_cpu23_mbox)
+    }
+    /* CPU3 -> CPU2 TXQ */
+    RW_smu_cpu32_txq m_txq32_start ALIGN 4 m_txq32_size {
+        * (.smu_cpu32_txq)
+    }
+// --------- NXP end --------------
+}

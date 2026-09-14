@@ -12,6 +12,7 @@ The powerquad driver API results are compared to the reference result.
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/driver_examples/powerquad/math/example_board_readme.md)
 - [FRDM-MCXN947T](../../../_boards/frdmmcxn947t/driver_examples/powerquad/math/example_board_readme.md)
 - [FRDM-RW612](../../../_boards/frdmrw612/driver_examples/powerquad/math/example_board_readme.md)
+- [FRDM-RW610FML](../../../_boards/frdmrw610fml/driver_examples/powerquad/math/example_board_readme.md)
 - [LPCXpresso55S36](../../../_boards/lpcxpresso55s36/driver_examples/powerquad/math/example_board_readme.md)
 - [LPCXpresso55S69](../../../_boards/lpcxpresso55s69/driver_examples/powerquad/math/example_board_readme.md)
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/driver_examples/powerquad/math/example_board_readme.md)

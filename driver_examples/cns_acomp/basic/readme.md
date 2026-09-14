@@ -8,4 +8,5 @@ as 'kACOMP_PinOutSynInverted', so the output signal from gpio is the inversion o
 
 ## Supported Boards
 - [FRDM-RW612](../../../_boards/frdmrw612/driver_examples/acomp/basic/example_board_readme.md)
+- [FRDM-RW610FML](../../../_boards/frdmrw610fml/driver_examples/acomp/basic/example_board_readme.md)
 - [RD-RW612-BGA](../../../_boards/rdrw612bga/driver_examples/acomp/basic/example_board_readme.md)

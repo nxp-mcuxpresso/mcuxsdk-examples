@@ -1,0 +1,10 @@
+<#if memory.name=="SRAM">
+       *mflash_drv.o(.text .text* .rodata .rodata*)
+       *fsl_flexspi.o(.text .text* .rodata .rodata*)
+	   *fsl_clock.o(.text .text* .rodata .rodata*)
+	   *fsl_cache.o(.text .text* .rodata .rodata*)
+	   *fsl_reset.o(.text .text* .rodata .rodata*)
+</#if>
+	   _image_ram_start = .;
+       *(.data*)
+	   _image_ram_end = .;

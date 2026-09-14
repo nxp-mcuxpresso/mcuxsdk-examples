@@ -34,6 +34,7 @@ refer to MCUXpresso SDK USB RNDIS & LWIP User Guide
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/lwip_examples/lwip_dhcp_usb/freertos/example_board_readme.md)
 - [FRDM-MCXN947T](../../../_boards/frdmmcxn947t/lwip_examples/lwip_dhcp_usb/freertos/example_board_readme.md)
 - [FRDM-RW612](../../../_boards/frdmrw612/lwip_examples/lwip_dhcp_usb/freertos/example_board_readme.md)
+- [FRDM-RW610FML](../../../_boards/frdmrw610fml/lwip_examples/lwip_dhcp_usb/freertos/example_board_readme.md)
 - [LPCXpresso54628](../../../_boards/lpcxpresso54628/lwip_examples/lwip_dhcp_usb/freertos/example_board_readme.md)
 - [LPCXpresso54S018](../../../_boards/lpcxpresso54s018/lwip_examples/lwip_dhcp_usb/freertos/example_board_readme.md)
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/lwip_examples/lwip_dhcp_usb/freertos/example_board_readme.md)

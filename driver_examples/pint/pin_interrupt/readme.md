@@ -11,6 +11,7 @@ This example shows how to use SDK drivers to use the Pin interrupt & pattern mat
 - [FRDM-MCXN947T](../../../_boards/frdmmcxn947t/driver_examples/pint/pin_interrupt/example_board_readme.md)
 - [FRDM-MCXW23](../../../_boards/frdmmcxw23/driver_examples/pint/pin_interrupt/example_board_readme.md)
 - [FRDM-RW612](../../../_boards/frdmrw612/driver_examples/pint/pin_interrupt/example_board_readme.md)
+- [FRDM-RW610FML](../../../_boards/frdmrw610fml/driver_examples/pint/pin_interrupt/example_board_readme.md)
 - [LPC845BREAKOUT](../../../_boards/lpc845breakout/driver_examples/pint/pin_interrupt/example_board_readme.md)
 - [LPCXpresso51U68](../../../_boards/lpcxpresso51u68/driver_examples/pint/pin_interrupt/example_board_readme.md)
 - [LPCXpresso54628](../../../_boards/lpcxpresso54628/driver_examples/pint/pin_interrupt/example_board_readme.md)

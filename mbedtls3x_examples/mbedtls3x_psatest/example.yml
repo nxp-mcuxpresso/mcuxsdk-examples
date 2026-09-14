@@ -115,6 +115,7 @@ mbedtls3x_psatest:
     frdmmcxw72@cm33_core0: []
     mcxw71evk: []
     frdmrw612: []
+    frdmrw610fml: []
     kw47evk@cm33_core0: []
     kw47loc@cm33_core0: []
     mcxw72evk@cm33_core0: []

@@ -9,3 +9,4 @@ the performance is measured in cycles per block and byte and the total computati
 ## Supported Boards
 - [RD-RW612-BGA](../../_boards/rdrw612bga/els_pkc_examples/els_pkc_benchmark/example_board_readme.md)
 - [FRDM-RW612](../../_boards/frdmrw612/els_pkc_examples/els_pkc_benchmark/example_board_readme.md)
+- [FRDM-RW610FML](../../_boards/frdmrw610fml/els_pkc_examples/els_pkc_benchmark/example_board_readme.md)

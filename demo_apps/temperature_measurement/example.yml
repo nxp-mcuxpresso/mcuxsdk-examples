@@ -15,4 +15,5 @@ temperature_measurement:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmrw612: []
+    frdmrw610fml: []
     rdrw612bga: []

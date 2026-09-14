@@ -41,6 +41,13 @@ flexcomm_spi_dma_b2b_transfer_slave:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    frdmrw610fml:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     lpcxpresso54628: []
     lpcxpresso55s06: []
     lpcxpresso55s16: []

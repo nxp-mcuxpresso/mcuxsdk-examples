@@ -63,6 +63,7 @@ Hello world.
 - [FRDM-MCXW71](../../_boards/frdmmcxw71/freertos_examples/freertos_hello/example_board_readme.md)
 - [MCX-W71-EVK](../../_boards/mcxw71evk/freertos_examples/freertos_hello/example_board_readme.md)
 - [FRDM-RW612](../../_boards/frdmrw612/freertos_examples/freertos_hello/example_board_readme.md)
+- [FRDM-RW610FML](../../_boards/frdmrw610fml/freertos_examples/freertos_hello/example_board_readme.md)
 - [IMX943EVK CM33_CORE1](../../_boards/imx943evk/freertos_examples/freertos_hello/cm33_core1/example_board_readme.md)
 - [IMX943EVK CM7_CORE0](../../_boards/imx943evk/freertos_examples/freertos_hello/cm7_core0/example_board_readme.md)
 - [IMX943EVK CM7_CORE1](../../_boards/imx943evk/freertos_examples/freertos_hello/cm7_core1/example_board_readme.md)

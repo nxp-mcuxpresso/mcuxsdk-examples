@@ -45,6 +45,7 @@ power_mode_switch:
     frdmmcxc444: []
     frdmmcxe247: []
     frdmrw612: []
+    frdmrw610fml: []
     rdrw612bga: []
     twrkm34z50mv3: []
     twrkm34z75m: []

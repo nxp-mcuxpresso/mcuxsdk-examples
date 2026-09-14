@@ -1,0 +1,15 @@
+# Copyright 2026 NXP
+# SPDX-License-Identifier: BSD-3-Clause
+
+rsource "Kconfig.defconfig"
+
+config MCUX_HW_BOARD_frdmrw610fml
+    bool
+    default y
+    imply MCUX_HW_DEVICE_RW610
+    imply MCUX_COMPONENT_driver.common
+    imply MCUX_COMPONENT_driver.lpc_gpio
+    imply MCUX_COMPONENT_driver.flexspi
+    imply MCUX_COMPONENT_driver.cache_cache64
+    imply MCUX_COMPONENT_driver.flash_config
+    imply MCUX_COMPONENT_component.els_pkc.platform.rw61x_standalone_clib_gdet_sensor

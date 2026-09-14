@@ -73,6 +73,7 @@ freertos_sem_static:
     frdmmcxw71: []
     mcxw71evk: []
     frdmrw612: []
+    frdmrw610fml: []
     kw45b41zevk:
     - +armgcc@debug
     - +armgcc@release

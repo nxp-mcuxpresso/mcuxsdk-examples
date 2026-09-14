@@ -104,6 +104,7 @@ The period of time delay is not changed after the external interrupt occurs.
 - [EVK-MIMXRT685](../../_boards/evkmimxrt685/freertos_examples/freertos_tickless/example_board_readme.md)
 - [FRDM-MCXW23](../../_boards/frdmmcxw23/freertos_examples/freertos_tickless/example_board_readme.md)
 - [FRDM-RW612](../../_boards/frdmrw612/freertos_examples/freertos_tickless/example_board_readme.md)
+- [FRDM-RW610FML](../../_boards/frdmrw610fml/freertos_examples/freertos_tickless/example_board_readme.md)
 - [LPCXpresso51U68](../../_boards/lpcxpresso51u68/freertos_examples/freertos_tickless/example_board_readme.md)
 - [LPCXpresso54628](../../_boards/lpcxpresso54628/freertos_examples/freertos_tickless/example_board_readme.md)
 - [LPCXpresso54S018](../../_boards/lpcxpresso54s018/freertos_examples/freertos_tickless/example_board_readme.md)

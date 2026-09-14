@@ -11,6 +11,7 @@ if the data master received is correct. This example needs to work with spi_inte
 - [EVK-MIMXRT685](../../../../../_boards/evkmimxrt685/driver_examples/spi/interrupt_b2b/master/example_board_readme.md)
 - [FRDM-MCXW23](../../../../../_boards/frdmmcxw23/driver_examples/spi/interrupt_b2b/master/example_board_readme.md)
 - [FRDM-RW612](../../../../../_boards/frdmrw612/driver_examples/spi/interrupt_b2b/master/example_board_readme.md)
+- [FRDM-RW610FML](../../../../../_boards/frdmrw610fml/driver_examples/spi/interrupt_b2b/master/example_board_readme.md)
 - [LPCXpresso51U68](../../../../../_boards/lpcxpresso51u68/driver_examples/spi/interrupt_b2b/master/example_board_readme.md)
 - [LPCXpresso54628](../../../../../_boards/lpcxpresso54628/driver_examples/spi/interrupt_b2b/master/example_board_readme.md)
 - [LPCXpresso54S018](../../../../../_boards/lpcxpresso54s018/driver_examples/spi/interrupt_b2b/master/example_board_readme.md)

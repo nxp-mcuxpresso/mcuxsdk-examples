@@ -13,4 +13,5 @@ The project checks the data in each buffer and show the result terminal.
 
 ## Supported Boards
 - [FRDM-RW612](../../../_boards/frdmrw612/driver_examples/gdma/lli/example_board_readme.md)
+- [FRDM-RW610FML](../../../_boards/frdmrw610fml/driver_examples/gdma/lli/example_board_readme.md)
 - [RD-RW612-BGA](../../../_boards/rdrw612bga/driver_examples/gdma/lli/example_board_readme.md)

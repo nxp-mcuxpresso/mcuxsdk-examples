@@ -16,6 +16,7 @@ Workspace structure:
 
 ## Supported Boards
 - [FRDM-RW612](../../_boards/frdmrw612/tfm_examples/tfm_secureboot/tfm_secureboot_s/example_board_readme.md)
+- [FRDM-RW610FML](../../_boards/frdmrw610fml/tfm_examples/tfm_secureboot/tfm_secureboot_s/example_board_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/tfm_examples/tfm_secureboot/tfm_secureboot_s/example_board_readme.md)
 - [MCX-W72-EVK](../../_boards/mcxw72evk/tfm_examples/tfm_secureboot/tfm_secureboot_s/example_board_readme.md)
 - [MCX-W71-EVK](../../_boards/mcxw71evk/tfm_examples/tfm_secureboot/tfm_secureboot_s/example_board_readme.md)

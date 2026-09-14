@@ -17,6 +17,7 @@ a message a printed on the UART terminal.
 - [FRDM-MCXN947T](../../_boards/frdmmcxn947t/driver_examples/utick/example_board_readme.md)
 - [FRDM-MCXW23](../../_boards/frdmmcxw23/driver_examples/utick/example_board_readme.md)
 - [FRDM-RW612](../../_boards/frdmrw612/driver_examples/utick/example_board_readme.md)
+- [FRDM-RW610FML](../../_boards/frdmrw610fml/driver_examples/utick/example_board_readme.md)
 - [LPCXpresso55S36](../../_boards/lpcxpresso55s36/driver_examples/utick/example_board_readme.md)
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/driver_examples/utick/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/driver_examples/utick/example_board_readme.md)

@@ -21,6 +21,7 @@ This `ota_mcuboot_basic` example demonstrates a basic application that uses MCUB
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/ota_examples/ota_mcuboot_basic/example_board_readme.md)
 - [FRDM-MCXN947T](../../_boards/frdmmcxn947t/ota_examples/ota_mcuboot_basic/example_board_readme.md)
 - [FRDM-RW612](../../_boards/frdmrw612/ota_examples/ota_mcuboot_basic/example_board_readme.md)
+- [FRDM-RW610FML](../../_boards/frdmrw610fml/ota_examples/ota_mcuboot_basic/example_board_readme.md)
 - [LPCXpresso55S69](../../_boards/lpcxpresso55s69/ota_examples/ota_mcuboot_basic/example_board_readme.md)
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/ota_examples/ota_mcuboot_basic/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/ota_examples/ota_mcuboot_basic/example_board_readme.md)

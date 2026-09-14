@@ -20,4 +20,5 @@ If the project succeed, the panel will show like this
 
 ## Supported Boards
 - [FRDM-RW612](../../../_boards/frdmrw612/driver_examples/lcdic/interrupt/example_board_readme.md)
+- [FRDM-RW610FML](../../../_boards/frdmrw610fml/driver_examples/lcdic/interrupt/example_board_readme.md)
 - [RD-RW612-BGA](../../../_boards/rdrw612bga/driver_examples/lcdic/interrupt/example_board_readme.md)

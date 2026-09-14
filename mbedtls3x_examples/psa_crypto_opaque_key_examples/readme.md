@@ -30,6 +30,7 @@ may be demonstrated if MBEDTLS_PSA_CRYPTO_STORAGE_C is enabled in the config fil
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/mbedtls3x_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
 - [FRDM-MCXN947T](../../_boards/frdmmcxn947t/mbedtls3x_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
 - [FRDM-RW612](../../_boards/frdmrw612/mbedtls3x_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
+- [FRDM-RW610FML](../../_boards/frdmrw610fml/mbedtls3x_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/mbedtls3x_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/mbedtls3x_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/mbedtls3x_examples/psa_crypto_opaque_key_examples/example_board_readme.md)
