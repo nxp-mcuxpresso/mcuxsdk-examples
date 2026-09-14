@@ -18,4 +18,3 @@ semihost:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxw23: []
-    mimxrt700evk@cm33_core0: []
