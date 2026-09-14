@@ -24,6 +24,7 @@
 #define MODEL_SIZE 10 * 1024 * 1024
 #endif
 
+#define MODEL_ALIGNMENT 16U
 static char* model_buf = nullptr;
 
 char cmd[CMD_SIZE + 2];
@@ -240,7 +241,12 @@ static int do_cmd_model_loadb(char* model_buf, NNServer* server){
     
     server->model_size = size;
     if (size <= MODEL_SIZE){
-        model_buf = (char*)malloc(size+8);
+        //model_buf = (char*)malloc(size+8);
+        size_t alloc_size = ((size_t)size + 8u + (MODEL_ALIGNMENT - 1u)) &
+                            ~(size_t)(MODEL_ALIGNMENT - 1u);
+        model_buf = (char*)aligned_alloc(MODEL_ALIGNMENT, alloc_size);
+             PRINTF("model malloc failed\r\n");
+
         if (!model_buf) {
             PRINTF("model malloc failed\r\n");
             return -1;
