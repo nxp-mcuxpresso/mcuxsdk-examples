@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../scripts/data_schema/example_description_schema.json
+serial_mux_console_mux:
+  section-type: application
+  contents:
+    document:
+      name: serial_mux_console_mux${core_id_suffix_name}
+      category: serial_mux_examples
+      brief: >-
+        Single-UART all-virtual console multiplexer reference. Every core's
+        console travels over ONE physical UART (LPUART1 on the cm33_core1 hub)
+        using COBS channel framing: channel 0 = cm33_core1 (hub own console),
+        channel 1 = cm7_core0, channel 2 = cm7_core1. The two cm7 clients route
+        PRINTF through the debug_console_lite virtual backend into shared-memory
+        SPSC rings that the hub polls; the hub emits its own output on channel 0.
+      example_readme:
+        - "readme.md"
+        - "${board_root}/${board}/serial_mux_examples/console_mux/example_board_readme.md"
+        - "${board_root}/${board}/examples_shared_readme.md"
+    boards:
+      - imx943evk@cm33_core1: []
+      - imx943evk@cm7_core0: []
+      - imx943evk@cm7_core1: []
