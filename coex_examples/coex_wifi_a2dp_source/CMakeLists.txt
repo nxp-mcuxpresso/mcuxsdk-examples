@@ -47,7 +47,7 @@ mcux_add_source(
     SOURCES examples/coex_examples/coex_wifi_a2dp_source/mcuxpresso_config/app_mcuxpresso_config.h
 )
 
-include(${SdkRootDirPath}/${board_root}/${board}/coex_examples/coex_wifi_a2dp_source/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/coex_examples/coex_wifi_a2dp_source/${multicore_foldername}/reconfig.cmake OPTIONAL)
 
 include(${SdkRootDirPath}/middleware/wireless/coex/third_party/third_party.cmake OPTIONAL)
 
