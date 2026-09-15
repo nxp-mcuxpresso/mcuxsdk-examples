@@ -249,11 +249,21 @@ SECTIONS
      * globals, deviceConfig/LUT) plus the shared main data buffers that
      * feed IP commands (an AHB fetch from PSRAM would deadlock against an
      * active IP frame). */
-    *fsl_xspi.c.obj(.rodata .rodata* .data .data* .bss .bss* COMMON)
-    *fsl_llc.c.obj(.rodata .rodata* .data .data* .bss .bss* COMMON)
-    *xspi_psram_ops.c.obj(.rodata .rodata* .data .data* .bss .bss* COMMON)
-    *hardware_init.c.obj(.rodata .rodata* .data .data* .bss .bss* COMMON)
-    *xspi_psram_polling_transfer.c.obj(.data .data* .bss .bss* COMMON)
+    /* Initialized (.rodata/.data) sections must be listed before each
+     * file's zero-init (.bss/COMMON) ones: ld infers this output section's
+     * ELF type from the first input section matched, and warns "section
+     * '.qadata' type changed to PROGBITS" if a NOBITS (.bss) section is
+     * matched before any PROGBITS content follows. */
+    *fsl_xspi.c.obj(.rodata .rodata* .data .data*)
+    *fsl_llc.c.obj(.rodata .rodata* .data .data*)
+    *xspi_psram_ops.c.obj(.rodata .rodata* .data .data*)
+    *hardware_init.c.obj(.rodata .rodata* .data .data*)
+    *xspi_psram_polling_transfer.c.obj(.data .data*)
+    *fsl_xspi.c.obj(.bss .bss* COMMON)
+    *fsl_llc.c.obj(.bss .bss* COMMON)
+    *xspi_psram_ops.c.obj(.bss .bss* COMMON)
+    *hardware_init.c.obj(.bss .bss* COMMON)
+    *xspi_psram_polling_transfer.c.obj(.bss .bss* COMMON)
     . = ALIGN(4);
     __qadata_end__ = .;
   } > m_qadata AT > m_text
