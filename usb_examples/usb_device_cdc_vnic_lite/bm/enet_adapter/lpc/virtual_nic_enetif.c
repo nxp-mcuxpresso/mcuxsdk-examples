@@ -22,8 +22,14 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define BOARD_PHY_OPS      BOARD_GetPhyOps()
-#define BOARD_PHY_RESOURCE BOARD_GetPhyResource()
+#define BOARD_PHY_OPS       BOARD_GetPhyOps()
+#define BOARD_PHY_RESOURCE  BOARD_GetPhyResource()
+
+#if defined(EXAMPLE_PHY_INTERFACE_MII)
+#define BOARD_PHY_SYS_CLOCK BOARD_GetPhySysClock()
+#else
+#define BOARD_PHY_SYS_CLOCK 50000000U
+#endif
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -34,6 +40,10 @@ uint8_t *VNIC_EnetRxBufAlloc(void);
 usb_status_t VNIC_EnetTxDone(void);
 extern const phy_operations_t *BOARD_GetPhyOps(void);
 extern void *BOARD_GetPhyResource(void);
+
+#if defined(EXAMPLE_PHY_INTERFACE_MII)
+extern uint32_t BOARD_GetPhySysClock(void);
+#endif
 /*******************************************************************************
  * Variables
  ******************************************************************************/
@@ -54,6 +64,10 @@ __ALIGN_BEGIN enet_tx_bd_struct_t g_txBuffDescrip[ENET_TXBD_NUM] __ALIGN_END;
 #pragma data_alignment = ENET_BUFF_ALIGNMENT
 #endif
 __ALIGN_BEGIN uint8_t RxDataBuff[ENET_RXBD_NUM][ENET_RXBUFF_SIZE] __ALIGN_END;
+
+/* The ENET driver keeps this table in its handle (enet_handle_t::rxBufferStartAddr)
+ * and dereferences it while receiving, so it must outlive ENETIF_Init(). */
+static uint32_t s_rxbuffer[ENET_RXBD_NUM];
 
 /*******************************************************************************
  * Code
@@ -242,9 +256,7 @@ void ENETIF_Input(enet_handle_t *handle, uint8_t channel, void *param)
 enet_err_t ENETIF_Init(void)
 {
     enet_config_t config;
-    uint32_t rxbuffer[ENET_RXBD_NUM];
     uint8_t index;
-    uint32_t refClock = 50000000; /* 50MHZ for rmii reference clock. */
     phy_speed_t speed;
     phy_duplex_t duplex;
     enet_err_t result      = ENET_OK;
@@ -264,7 +276,7 @@ enet_err_t ENETIF_Init(void)
 
     for (index = 0; index < ENET_RXBD_NUM; index++)
     {
-        rxbuffer[index] = (uint32_t)(&RxDataBuff[index][0]);
+        s_rxbuffer[index] = (uint32_t)(&RxDataBuff[index][0]);
     }
 
     /* prepare the buffer configuration. */
@@ -276,7 +288,7 @@ enet_err_t ENETIF_Init(void)
         &g_txDirty[0],
         &g_rxBuffDescrip[0],
         &g_rxBuffDescrip[ENET_RXBD_NUM],
-        &rxbuffer[0],
+        &s_rxbuffer[0],
         ENET_BuffSizeAlign(ENET_RXBUFF_SIZE),
     };
 
@@ -303,6 +315,13 @@ enet_err_t ENETIF_Init(void)
     /* Get default configuration 100M RMII. */
     ENET_GetDefaultConfig(&config);
 
+    /* The miiMode should be set according to the different PHY interfaces. */
+#if defined(EXAMPLE_PHY_INTERFACE_MII)
+    /* ERR053383: some silicon (e.g. FRDM-MCXA577 A0) has an ENET RMII RX issue,
+     * so the external PHY is driven over MII instead of RMII. */
+    config.miiMode = kENET_MiiMode;
+#endif
+
     /* Get the actual PHY link speed and duplex, update for actual link status. */
     PHY_GetLinkSpeedDuplex(&phyHandle, &speed, &duplex);
     config.miiSpeed  = (enet_mii_speed_t)speed;
@@ -311,7 +330,7 @@ enet_err_t ENETIF_Init(void)
     /* Initialize ENET. */
     config.specialControl = kENET_StoreAndForward;
     config.interrupt      = (kENET_DmaTx | kENET_DmaRx);
-    ENET_Init(ENET, &config, &g_hwaddr[0], refClock);
+    ENET_Init(ENET, &config, &g_hwaddr[0], BOARD_PHY_SYS_CLOCK);
     NVIC_SetPriority(ETHERNET_IRQn, 3U);
 
     /* Initialize Descriptor. */

@@ -20,6 +20,7 @@
 #include "usb_phy.h"
 #include "clock_config.h"
 #include "board.h"
+#include "fsl_debug_console.h"
 #include "fsl_phylan8741.h"
 #include "fsl_phy.h"
 /*${header:end}*/
@@ -71,12 +72,22 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
     BOARD_InitENETPins();
     BOARD_InitBootClocks();
-    BOARD_InitDebugConsole();
+    /*
+     * ERR053383 workaround uses MII, which needs P1_8/P1_9 (ENET0_TXD2/TXD3).
+     * Those balls are shared with the MCU-Link VCOM console (LPUART1), so the
+     * debug console is moved to LPUART2 on the Arduino header (D1/TX = P2_10,
+     * D0/RX = P2_11). Connect an external USB-to-UART module to view the log.
+     */
+    BOARD_InitENET_DEBUG_UARTPins();
+    CLOCK_AttachClk(kFRO_LF_DIV_to_LPUART2);
+    CLOCK_SetClockDiv(kCLOCK_DivLPUART2, 1U);
+    RESET_PeripheralReset(kLPUART2_RST_SHIFT_RSTn);
+    DbgConsole_Init(2U, 115200U, kSerialPort_Uart, 12000000U);
 
     RESET_PeripheralReset(kENET0_RST_SHIFT_RSTn);
 
-    /* Use external RMII clock. */
-    CLOCK_AttachClk(kNONE_to_ENETRMII);
+    /* MII mode takes its clocks from the external PHY, so no RMII reference
+     * clock is attached here (ERR053383: A0 RMII RX issue workaround). */
     CLOCK_EnableClock(s_enetClock[ENET_GetInstance(BOARD_GetExampleEnetBase())]);
 
     /* Reset PHY */
@@ -91,8 +102,8 @@ void BOARD_InitHardware(void)
     /* Initialize MDIO */
     MDIO_Init();
 
-    /* Connect ENET to external PHY over RMII */
-    SYSCON->ENET_CTRL = SYSCON_ENET_CTRL_PHY_SEL(0) | SYSCON_ENET_CTRL_PHY_INTF(1);
+    /* Connect ENET to external PHY over MII (ERR053383: A0 RMII RX issue) */
+    SYSCON->ENET_CTRL = SYSCON_ENET_CTRL_PHY_SEL(0) | SYSCON_ENET_CTRL_PHY_INTF(0);
 }
 
 #if (defined(USB_DEVICE_CONFIG_EHCI) && (USB_DEVICE_CONFIG_EHCI > 0U))
