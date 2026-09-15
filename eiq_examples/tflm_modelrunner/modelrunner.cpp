@@ -24,19 +24,6 @@
 #define MODEL_SIZE 10 * 1024 * 1024
 #endif
 
-/*
-+ * The Neutron NPU driver reads the microcode/weights/kernels constant buffers
-+ * directly out of the TFLite flatbuffer. The neutron-converter aligns those
-+ * buffers to 16 bytes relative to the start of the model, so the driver only
-+ * sees valid 16-byte-aligned pointers when the model buffer base is itself
-+ * 16-byte aligned. Plain malloc() on this platform only guarantees 8-byte
-+ * alignment, which triggers:
-+ *   "privateNeutronModelPrepare: Kernels address is not aligned to 16 bytes".
-+ * MODEL_ALIGNMENT is used to force the in-RAM model buffer onto a 16-byte
-+ * boundary.
-+ */
-#define MODEL_ALIGNMENT 16U
-
 static char* model_buf = nullptr;
 
 char cmd[CMD_SIZE + 2];
@@ -253,22 +240,8 @@ static int do_cmd_model_loadb(char* model_buf, NNServer* server){
     
     server->model_size = size;
     if (size <= MODEL_SIZE){
-        //model_buf = (char*)malloc(size+8);
-        /*
-         * Allocate the model buffer on a 16-byte boundary so the Neutron NPU
-         * driver sees correctly aligned microcode/weights/kernels pointers.
-         * aligned_alloc() requires the size to be a multiple of the alignment,
-         * so round (size + 8) up; the extra 8 bytes preserve the original
-         * trailing-terminator headroom used by s_recv(). The heap itself is a
-         * non-cacheable PSRAM window (see linker __NCACHE_REGION_SIZE and the
-         * board.c MPU setup), so the CPU and the Neutron bus master share a
-         * coherent view of this buffer without manual cache maintenance.
-         */
-        size_t alloc_size = ((size_t)size + 8u + (MODEL_ALIGNMENT - 1u)) &
-                            ~(size_t)(MODEL_ALIGNMENT - 1u);
-        model_buf = (char*)aligned_alloc(MODEL_ALIGNMENT, alloc_size);
-
-	if (!model_buf) {
+        model_buf = (char*)malloc(size+8);
+        if (!model_buf) {
             PRINTF("model malloc failed\r\n");
             return -1;
         }
