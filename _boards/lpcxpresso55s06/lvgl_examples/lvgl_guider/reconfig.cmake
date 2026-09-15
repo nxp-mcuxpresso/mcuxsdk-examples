@@ -24,5 +24,5 @@ mcux_remove_armgcc_configuration(
 )
 
 mcux_add_linker_symbol(
-    SYMBOLS "__stack_size__=0x2000"
+    SYMBOLS "__stack_size__=0x1800"
 )

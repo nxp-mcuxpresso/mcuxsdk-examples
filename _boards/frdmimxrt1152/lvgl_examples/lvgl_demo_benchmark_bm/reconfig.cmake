@@ -16,14 +16,8 @@ mcux_add_macro(
         -DSDK_I2C_BASED_COMPONENT_USED=1"
 )
 
-mcux_add_iar_configuration(
-    LD "--config_def=__stack_size__=0x2000"
-)
-mcux_add_mdk_configuration(
-    LD "--predefine=\"-D__stack_size__=0x2000\""
-)
-mcux_add_armgcc_configuration(
-    LD "-Xlinker --defsym=__stack_size__=0x2000"
+mcux_add_linker_symbol(
+    SYMBOLS "__stack_size__=0x2000"
 )
 
 # Add or remove Linker File Configurations
