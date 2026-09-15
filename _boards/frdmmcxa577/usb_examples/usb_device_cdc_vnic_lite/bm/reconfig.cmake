@@ -38,3 +38,9 @@ mcux_add_source(
     "examples/usb_examples/usb_device_cdc_vnic_lite/bm/enet_adapter/lpc/virtual_nic_enetif.c"
     "examples/usb_examples/usb_device_cdc_vnic_lite/bm/enet_adapter/lpc/virtual_nic_enetif.h"
 )
+
+# ERR053383: FRDM-MCXA577 A0 silicon has an ENET RMII RX issue, so the external
+# PHY is driven over MII instead of RMII (see MCUX-88278).
+mcux_add_macro(
+  CC "-DEXAMPLE_PHY_INTERFACE_MII"
+)

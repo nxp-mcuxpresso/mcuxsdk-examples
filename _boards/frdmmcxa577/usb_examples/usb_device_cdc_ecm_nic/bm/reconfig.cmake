@@ -36,3 +36,9 @@ mcux_add_source(
     "middleware/usb/utility/usb_eth_adapter.h"
     "middleware/usb/utility/usb_eth_mcx_enet_adapter.c"
 )
+
+# ERR053383: FRDM-MCXA577 A0 silicon has an ENET RMII RX issue, so the external
+# PHY is driven over MII instead of RMII (see MCUX-88278).
+mcux_add_macro(
+  CC "-DEXAMPLE_PHY_INTERFACE_MII"
+)

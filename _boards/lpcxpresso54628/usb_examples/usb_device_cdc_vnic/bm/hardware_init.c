@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2017, 2021-2022 NXP
+ * Copyright 2016-2017, 2021-2022, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -48,6 +48,11 @@ uint32_t isConnectedToHsHost = 0U;
 /*${variable:end}*/
 
 /*${function:start}*/
+uint32_t BOARD_GetPhySysClock(void)
+{
+    return CLOCK_GetFreq(kCLOCK_CoreSysClk);
+}
+
 const phy_operations_t *BOARD_GetPhyOps(void)
 {
     return &phylan8720a_ops;
