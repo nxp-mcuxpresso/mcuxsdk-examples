@@ -29,3 +29,25 @@ The table below lists example flash memory addresses where the CSR and X.509 cer
 The CSR_SIZE and X509_SIZE values depend on the specific CSR and certificate implementations used in your application. There is no dedicated memory section for the Configuration Block and the APP status code in the linker files. On this platform it has been decided to use the last `4096 bytes` of the internal data flash for this purpose. The CONFIG_BLOCK_SIZE value depends on the specific configuration requirements of your application. However, the maximum allowed CONFIG_BLOCK_SIZE is `124 bytes`. Furthermore, it is important to note that the ITS (Internal Trusted Storage) is managed by littlefs and is located at the same memory address range. This means that the maximum available space for ITS is `8 kB * 8 = 64 kB` including the introduced overhead by the littleFS file system. This leaves `18433 bytes` of data flash available for further application specific usage. This value can be increased/decreased by adjusting the `BLOCK_COUNT` parameter in the prj.conf file located at `examples/_boards/frdmmcxe31b/el2go_examples/el2go_csr/`
 
 The littleFS and HSEB FW memory sections must not be overwritten by the CSR or X.509 certificate storage locations. The littleFS can be changed in the prj.conf. The information about HSEB FW size can be taken from the [Reference Manual](https://www.nxp.com/products/MCX-E31).
+
+Platform-Specific Troubleshooting Notes
+=======================
+
+HSEB NVM Wipe on Initialization
+--------------------------------
+
+By default, the platform initialization performs two wipe operations before the PSA Crypto stack is brought up:
+
+1. **littleFS region erase** - All flash sectors belonging to the littleFS region are erased using `mem_erase_sector()`. This is necessary because the PSA Internal Trusted Storage (ITS) layer stores its key material inside the littleFS filesystem. Erasing the entire region is required because littlefs uses a non-deterministic, wear-leveling block allocator (`lfs_alloc`): each write cycle may place data in a different physical block. There is no reliable way to target only the blocks of a specific ITS file without mounting the filesystem first. Therefore the only safe reset strategy is a full region erase.
+
+2. **HSEB NVM erase** - The `HSE_SRV_ID_ERASE_HSE_NVM_DATA` command is issued to wipe the HSEB NVM key store, ensuring no stale HSE-side key objects remain.
+
+Together these two steps guarantee a clean, consistent key storage state at the start of each run.
+
+This behavior is controlled by the `PLATFORM_SYNC_HSEB_NVM_FLAG` flag defined in `el2go_csr_platform.c`. To disable both wipe operations, change its value to `0`:
+
+```C
+#ifndef PLATFORM_SYNC_HSEB_NVM_FLAG
+  #define PLATFORM_SYNC_HSEB_NVM_FLAG 0 
+#endif
+```

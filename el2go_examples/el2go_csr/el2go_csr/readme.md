@@ -238,3 +238,5 @@ The configuration block integrity is verified using the algorithm specified in t
 8. **"Memory allocation for x.509 certificate verification failed!"**
    - Insufficient heap memory available
    - Increase heap size in the linker configuration or reduce certificate size
+
+For platform-specific troubleshooting, refer to the board-level readme files listed under [Supported Boards](#supported-boards).
