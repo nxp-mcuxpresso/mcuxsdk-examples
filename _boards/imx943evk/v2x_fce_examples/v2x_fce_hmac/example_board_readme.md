@@ -48,14 +48,15 @@ Close V2X/FCE service successfully.
 
 ## System Manager configuration
 
-For the running core (M33 / master) to open the V2X/FCE service and for the
-eDMA engine inside the V2X enclave to reach the DDR data buffers, the System
-Manager (SM) must grant the master access to the V2X message units and expose
-the DDR region used by the demo.
+For the running core (M33 / master) to open the V2X/FCE service, the System
+Manager (SM) must grant the master access to the V2X message units.
+
+The data buffers need no extra permission: they are plain application arrays
+that live in the running core's own TCM, and a master always has access to its
+own TCM.
 
 - If the System Manager image is built from `mx94alt.cfg`, no changes are
-  required: that configuration already assigns the V2X MUs and the DDR region
-  to the AP domain.
+  required: that configuration already assigns the V2X MUs to the AP domain.
 - If the System Manager image is built from any non-`mx94alt.cfg`
   configuration (for example `mx94evkrpmsg.cfg` or `mx94evk.cfg`), the
   configuration must be modified as shown below before rebuilding SM.
@@ -63,24 +64,17 @@ the DDR region used by the demo.
 Using `mx94evkrpmsg.cfg` as an example, apply the following changes
 (`git diff configs/other/mx94evkrpmsg.cfg`):
 
-1. Grant the master (OWNER) access to the V2X message units so it can open the
-   V2X/FCE service. Add these entries to the OWNER block:
+Grant the master (OWNER) access to the V2X message units so it can open the
+V2X/FCE service. Add these entries to the OWNER block:
 
-   ```
-   V2X_APP0            OWNER
-   V2X_DEBUG           OWNER
-   V2X_HSM1            OWNER
-   V2X_HSM2            OWNER
-   V2X_SHE0            OWNER
-   V2X_SHE1            OWNER
-   ```
-
-2. Allow the eDMA inside the V2X enclave to access the 0x86000000 DDR region.
-   In the `AP-NS` section add:
-
-   ```
-   DDR                 EXEC, begin=0x086000000, end=0x089FFFFFF
-   ```
+```
+V2X_APP0            OWNER
+V2X_DEBUG           OWNER
+V2X_HSM1            OWNER
+V2X_HSM2            OWNER
+V2X_SHE0            OWNER
+V2X_SHE1            OWNER
+```
 
 After editing the SM configuration, rebuild the System Manager image and
 reflash it so the changes take effect.
