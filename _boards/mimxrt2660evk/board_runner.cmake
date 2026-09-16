@@ -7,5 +7,5 @@
 # validated. Kconfig MCUX_TOOLCHAIN_JLINK_CPU_IDENTIFIER currently says
 # MIMXRT2663_M85, which J-Link does not know — switch to the Kconfig variable
 # once the device naming is reconciled.
-board_runner_args(jlink "--device=MIMXRT2660_CM85")
+board_runner_args(jlink "--device=MIMXRT2663xxxxx_M85")
 include(${SdkRootDirPath}/cmake/extension/runner/jlink.board.cmake)
