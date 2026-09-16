@@ -7,7 +7,10 @@ Hardware requirements
 
 Board settings
 ============
-Short position 2-3 on J29.
+The Ethernet uses the external PHY over the MII bus. Rework the following solder jumpers so the MII
+signals reach the PHY (this rework is not applicable to 10BASE-T1S mode):
+- Short 2-3 (and disconnect 1-2) of SJ13 (TXD2), SJ14 (TXD3), SJ16 (RXD2), SJ17 (RXD3), SJ18 (COL), SJ19 (CRS).
+- Disconnect 1-2 and 2-3 of SJ15 (RX_CLK) and SJ44 (RXER).
 
 Prepare the Demo
 ===============
