@@ -434,6 +434,7 @@ void BOARD_CommonSetting(void)
     BOARD_ConfigTRDC();
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitDebugConsole();
+    BOARD_CreateGpioHandle();
 }
 
 #if defined(SDK_I2C_BASED_COMPONENT_USED) && SDK_I2C_BASED_COMPONENT_USED
@@ -651,27 +652,6 @@ void BOARD_PCAL6524_I2C_Init(void)
     BOARD_Init6524Pins();
 }
 
-status_t BOARD_PCAL6524_I2C_Send(uint8_t deviceAddress,
-                                 uint32_t subAddress,
-                                 uint8_t subAddressSize,
-                                 const uint8_t *txBuff,
-                                 uint8_t txBuffSize,
-                                 uint32_t flags)
-{
-    return BOARD_LPI2C_Send(BOARD_PCAL6524_I2C, deviceAddress, subAddress, subAddressSize, (uint8_t *)txBuff,
-                            txBuffSize);
-}
-
-status_t BOARD_PCAL6524_I2C_Receive(uint8_t deviceAddress,
-                                    uint32_t subAddress,
-                                    uint8_t subAddressSize,
-                                    uint8_t *rxBuff,
-                                    uint8_t rxBuffSize,
-                                    uint32_t flags)
-{
-    return BOARD_LPI2C_Receive(BOARD_PCAL6524_I2C, deviceAddress, subAddress, subAddressSize, rxBuff, rxBuffSize);
-}
-
 void BOARD_InitPCAL6524(pcal6524_handle_t *handle)
 {
     BOARD_PCAL6524_I2C_Init();
@@ -703,6 +683,15 @@ pcal6524_handle_t *BOARD_GetPCAL6524Handle(void)
     return &s_pcal6524Handle;
 }
 
+static void BOARD_PCAL6524_GpioCallback(GPIO_Type *base, gpio_handle_t *handle, uint32_t pinMask, void *userData)
+{
+    (void)base;
+    (void)handle;
+    (void)pinMask;
+    (void)userData;
+    (void)PCAL6524_InterruptHandler(&s_pcal6524Handle);
+}
+
 void BOARD_EnablePCAL6524Interrupt(void)
 {
     /* PCAL6524 INT is active-LOW open-drain → falling edge on the MCU side.
@@ -716,35 +705,7 @@ void BOARD_EnablePCAL6524Interrupt(void)
     GPIO_SetPinInterruptConfig(BOARD_PCAL6524_INT_GPIO, BOARD_PCAL6524_INT_PIN,
                                kGPIO_InterruptFallingEdge);
     GPIO_GpioClearInterruptFlags(BOARD_PCAL6524_INT_GPIO, 1U << BOARD_PCAL6524_INT_PIN);
-    EnableIRQ(BOARD_PCAL6524_INT_IRQ);
-}
-
-/*
- * MCU GPIO ISR for the PCAL6524 INT line. Open-drain INT asserts low on any
- * input change. Clears the MCU-side pending flag, then drives the PCAL6524
- * software dispatcher synchronously so each registered per-pin callback
- * (installed via PCAL6524_InstallPinCallback on the singleton handle) fires
- * this turn.
- *
- * I2C-in-ISR caveat: BOARD_LPI2C_Send/Receive are blocking-polling, so this
- * is safe correctness-wise (no nested IRQ deadlock), just costs extra cycles
- * in the ISR. BOARD_PCAL6524_Lock masks this same IRQ during task-context
- * I2C access to keep callers from racing the snapshot.
- *
- * Weak so examples that prefer the defer-to-task pattern (e.g. interrupt_demo
- * sets a flag and dispatches from main loop) can override with a strong
- * definition.
- */
-__attribute__((weak)) void BOARD_PCAL6524_INT_IRQ_HANDLER(void)
-{
-    uint32_t flags = GPIO_GpioGetInterruptFlags(BOARD_PCAL6524_INT_GPIO);
-
-    if (0U != (flags & (1U << BOARD_PCAL6524_INT_PIN)))
-    {
-        GPIO_GpioClearInterruptFlags(BOARD_PCAL6524_INT_GPIO, 1U << BOARD_PCAL6524_INT_PIN);
-        (void)PCAL6524_InterruptHandler(&s_pcal6524Handle);
-    }
-    SDK_ISR_EXIT_BARRIER;
+    (void)GPIO_SetPinCallback(&g_gpio0Handle, 1U << BOARD_PCAL6524_INT_PIN, BOARD_PCAL6524_GpioCallback, NULL);
 }
 #endif /* BOARD_USE_PCAL6524 */
 
@@ -798,6 +759,15 @@ pca9555_handle_t *BOARD_GetPCA9555Handle(void)
     return &s_pca9555Handle;
 }
 
+static void BOARD_PCA9555_GpioCallback(GPIO_Type *base, gpio_handle_t *handle, uint32_t pinMask, void *userData)
+{
+    (void)base;
+    (void)handle;
+    (void)pinMask;
+    (void)userData;
+    (void)PCA9555_InterruptHandler(&s_pca9555Handle);
+}
+
 void BOARD_EnablePCA9555Interrupt(void)
 {
     /* PCA9555 EXP_nIRQ2 is active-LOW open-drain → falling edge on the MCU side.
@@ -812,28 +782,7 @@ void BOARD_EnablePCA9555Interrupt(void)
     GPIO_SetPinInterruptConfig(BOARD_PCA9555_INT_GPIO, BOARD_PCA9555_INT_PIN,
                                kGPIO_InterruptFallingEdge);
     GPIO_GpioClearInterruptFlags(BOARD_PCA9555_INT_GPIO, 1U << BOARD_PCA9555_INT_PIN);
-    EnableIRQ(BOARD_PCA9555_INT_IRQ);
-}
-
-/*
- * MCU GPIO ISR for the PCA9555 EXP_nIRQ2 line. See BOARD_PCAL6524_INT_IRQ_HANDLER
- * above for the I2C-in-ISR / lockFunc serialization rationale.
- *
- * BOARD_PCA9555_INT_IRQ shares the HSP_GPIO1_CH0 vector with BOARD_USER_BUTTON_IRQ;
- * only the PCA9555 INT pin (BOARD_PCA9555_INT_PIN) is serviced here. Examples that
- * also need to respond to BOARD_USER_BUTTON_GPIO_PIN must override this handler
- * (the weak attribute lets a strong definition win) and dispatch both pins.
- */
-__attribute__((weak)) void BOARD_PCA9555_INT_IRQ_HANDLER(void)
-{
-    uint32_t flags = GPIO_GpioGetInterruptFlags(BOARD_PCA9555_INT_GPIO);
-
-    if (0U != (flags & (1U << BOARD_PCA9555_INT_PIN)))
-    {
-        GPIO_GpioClearInterruptFlags(BOARD_PCA9555_INT_GPIO, 1U << BOARD_PCA9555_INT_PIN);
-        (void)PCA9555_InterruptHandler(&s_pca9555Handle);
-    }
-    SDK_ISR_EXIT_BARRIER;
+    (void)GPIO_SetPinCallback(&g_gpio1Handle, 1U << BOARD_PCA9555_INT_PIN, BOARD_PCA9555_GpioCallback, NULL);
 }
 #endif /* BOARD_USE_PCA9555 */
 

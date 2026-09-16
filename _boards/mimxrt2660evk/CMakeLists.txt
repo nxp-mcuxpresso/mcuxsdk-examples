@@ -75,11 +75,24 @@ if (CONFIG_MCUX_PRJSEG_module.board.suite)
 
 endif()
 
+if(CONFIG_MCUX_PRJSEG_module.board.boardfile)
+    mcux_add_source(
+        SOURCES
+        gpio_handle.c
+        gpio_handle.h
+    )
+
+    mcux_add_include(
+        INCLUDES
+        .
+    )
+endif()
+
 if (CONFIG_MCUX_COMPONENT_driver.pcal6524)
-    mcux_add_macro(CC "-DBOARD_USE_PCAL6524=1 -DSDK_I2C_BASED_COMPONENT_USED=1")
+    mcux_add_macro(CC "-DBOARD_USE_PCAL6524=1 -DSDK_I2C_BASED_COMPONENT_USED=1 -DBOARD_USE_GPIO0_HANDLE=1")
 endif()
 if (CONFIG_MCUX_COMPONENT_driver.pca9555)
-    mcux_add_macro(CC "-DBOARD_USE_PCA9555=1 -DSDK_I2C_BASED_COMPONENT_USED=1")
+    mcux_add_macro(CC "-DBOARD_USE_PCA9555=1 -DSDK_I2C_BASED_COMPONENT_USED=1 -DBOARD_USE_GPIO1_HANDLE=1")
 endif()
 if (CONFIG_MCUX_BOARD_USE_PF9453)
     mcux_add_macro(CC "-DBOARD_USE_PF9453=1 -DSDK_I2C_BASED_COMPONENT_USED=1")

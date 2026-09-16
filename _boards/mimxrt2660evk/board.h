@@ -13,6 +13,7 @@
 #include "fsl_clock.h"
 #include "fsl_trdc.h"
 #include "fsl_modcon.h"
+#include "gpio_handle.h"
 #if defined(BOARD_USE_PCAL6524) && BOARD_USE_PCAL6524
 #include "fsl_pcal6524.h"
 #endif
@@ -218,7 +219,7 @@
 #define BOARD_PCAL6524_INT_GPIO        HSP__GPIO_0
 #define BOARD_PCAL6524_INT_PIN         27
 #define BOARD_PCAL6524_INT_IRQ         HSP_GPIO0_CH0_IRQn
-#define BOARD_PCAL6524_INT_IRQ_HANDLER HSP_GPIO0_CH0_IRQHandler
+
 /* PCAL6524 (U23) Output func pins */
 #define BOARD_PCAL6524_CSI_RST_B      (8U + 1U)
 #define BOARD_PCAL6524_CSI_PWR_CTL    (8U + 2U)
@@ -256,7 +257,6 @@
 #define BOARD_PCA9555_INT_GPIO        HSP__GPIO_1
 #define BOARD_PCA9555_INT_PIN         29
 #define BOARD_PCA9555_INT_IRQ         HSP_GPIO1_CH0_IRQn
-#define BOARD_PCA9555_INT_IRQ_HANDLER HSP_GPIO1_CH0_IRQHandler
 
 #define BOARD_PCA9555_CSI_PWDN     (8U + 0U) /* Parallel CSI camera (J95) power-down */
 #define BOARD_PCA9555_BL_EN_RGB    (8U + 1U) /* RGB panel backlight enable */
@@ -264,18 +264,6 @@
 
 #if defined(BOARD_USE_PCAL6524) && BOARD_USE_PCAL6524
 void BOARD_PCAL6524_I2C_Init(void);
-status_t BOARD_PCAL6524_I2C_Send(uint8_t deviceAddress,
-                                 uint32_t subAddress,
-                                 uint8_t subAddressSize,
-                                 const uint8_t *txBuff,
-                                 uint8_t txBuffSize,
-                                 uint32_t flags);
-status_t BOARD_PCAL6524_I2C_Receive(uint8_t deviceAddress,
-                                    uint32_t subAddress,
-                                    uint8_t subAddressSize,
-                                    uint8_t *rxBuff,
-                                    uint8_t rxBuffSize,
-                                    uint32_t flags);
 
 /* Initialize a caller-owned PCAL6524 handle. Existing ENET examples keep
  * their own static handle and call this directly. */
@@ -286,15 +274,9 @@ void BOARD_InitPCAL6524(pcal6524_handle_t *handle);
  * (lockFunc = generic IRQ-masking lock). Subsequent calls return the same
  * pointer without re-initializing. Use these when the PCAL6524 INT line and
  * board.c's MCU GPIO ISR are involved.
- *
- * The MCU GPIO ISR for the PCAL6524 INT line is BOARD_PCAL6524_INT_IRQ_HANDLER
- * (HSP_GPIO0_CH0_IRQHandler), defined as a weak symbol in board.c so apps
- * that want a different dispatch pattern can override it. The default fires
- * PCAL6524_InterruptHandler on the singleton handle. */
+ */
 pcal6524_handle_t *BOARD_GetPCAL6524Handle(void);
 void BOARD_EnablePCAL6524Interrupt(void);
-
-extern volatile bool g_pcal6524IntFlag;
 
 #endif /* BOARD_USE_PCAL6524 */
 
@@ -304,10 +286,6 @@ void BOARD_PCA9555_I2C_Init(void);
 /* Initialize a caller-owned PCA9555 handle. */
 void BOARD_InitPCA9555(pca9555_handle_t *handle);
 
-/* Lazy-initialized board-level singleton + ISR-ready helpers. Mirror of the
- * PCAL6524 pattern above. The MCU GPIO ISR is BOARD_PCA9555_INT_IRQ_HANDLER
- * (HSP_GPIO1_CH0_IRQHandler), weak, defaults to
- * PCA9555_InterruptHandler(singleton). */
 pca9555_handle_t *BOARD_GetPCA9555Handle(void);
 void BOARD_EnablePCA9555Interrupt(void);
 
