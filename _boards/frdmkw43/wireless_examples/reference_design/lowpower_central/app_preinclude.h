@@ -191,7 +191,7 @@
 
 /*! Enable/Disable PowerDown functionality in Application - In case of troubles with lowpower,
       turn it off for debug purpose to ensure your application is fine without lowpower  */
-//#define gAppLowpowerEnabled_d           1
+#define gAppLowpowerEnabled_d           1
 
 /*! Lowpower Constraint setting for various BLE states (Advertising, Scanning, connected mode)
     The value shall map with the type defintion PWR_LowpowerMode_t in PWR_Interface.h

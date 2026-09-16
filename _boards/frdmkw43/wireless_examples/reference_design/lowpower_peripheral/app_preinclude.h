@@ -213,7 +213,7 @@
 
 /*! Enable/Disable PowerDown functionality in Application - In case of troubles with lowpower,
       turn it off for debug purpose to ensure your application is fine without lowpower  */
-//#define gAppLowpowerEnabled_d           1
+#define gAppLowpowerEnabled_d           1
 
 /*! Uncomment to enable LPUART0 as wake up source by default
  *  This will prevent WAKE domain to go in retention and keep FRO6M running
