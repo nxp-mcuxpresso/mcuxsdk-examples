@@ -15,15 +15,35 @@ a-format_interrupt_transfer:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1180@cm33:
-    - +iar@debug
-    - +armgcc@debug
-    - +iar@release
-    - +armgcc@release
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@debug
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    - -mdk@release
     evkmimxrt1180@cm7:
-    - +iar@debug
-    - +armgcc@debug
-    - +iar@release
-    - +armgcc@release
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@debug
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    - -mdk@release
     imx943evk@cm7_core1:
     - +iar@debug
     - +armgcc@debug
