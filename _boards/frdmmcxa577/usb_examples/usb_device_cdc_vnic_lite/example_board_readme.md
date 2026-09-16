@@ -11,11 +11,10 @@
 
 ## Hardware Settings
 
-Short position 2-3 on J29.
-
 FRDM-MCXA577 A0 silicon has an ENET RMII receive issue (ERR053383), so this example
 drives the on-board LAN8741 PHY over MII instead of RMII. MII needs more pins than
-RMII, so the board requires an ENET solder-jumper rework before Ethernet works:
+RMII, so an SCH rev B board requires the following ENET solder-jumper rework before
+Ethernet works:
 
 | Solder jumper | Signal       | Setting                      |
 |---------------|--------------|------------------------------|
@@ -27,6 +26,9 @@ RMII, so the board requires an ENET solder-jumper rework before Ethernet works:
 | SJ19          | ENET0_CRS    | disconnect 1-2, short 2-3    |
 | SJ15          | ENET0_RX_CLK | disconnect both 1-2 and 2-3  |
 | SJ44          | ENET0_RXER   | disconnect both 1-2 and 2-3  |
+
+The rework applies to the external 100BASE-TX PHY path only. It is not needed for the
+internal 10BASE-T1S digital PHY.
 
 > Note: In this MII configuration the ENET TX bus uses P1_8/P1_9, which are the same
 pins as the MCU-Link VCOM debug console (LPUART1). This example therefore routes its
