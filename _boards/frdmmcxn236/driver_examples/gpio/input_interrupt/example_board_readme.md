@@ -24,10 +24,10 @@ Prepare the Demo
 Running the demo
 ================
 The following lines are printed to the serial terminal when the demo program is executed.
-If you press the SW2, then 'SW2 is pressed' is shown on the terminal window.
+If you press the SW3, then 'SW3 is pressed' is shown on the terminal window.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Press SW3 to turn on/off a LED
-SW2 is pressed
-SW2 is pressed
+SW3 is pressed
+SW3 is pressed
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
