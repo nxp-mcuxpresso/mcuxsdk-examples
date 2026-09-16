@@ -246,3 +246,4 @@ lwip_https_client_freertos:
     frdmmcxe247: []
     frdmmcxn947@cm33_core0: [-armgcc@debug]
     frdmmcxn947t@cm33_core0: [-armgcc@debug]
+    mimxrt2660evk: []
