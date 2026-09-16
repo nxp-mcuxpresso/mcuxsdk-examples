@@ -40,8 +40,6 @@
 void BOARD_InitHardware(void);
 void APP_InputPinCallback(uint8_t pin, bool pinState, void *userData);
 
-/* Board-layer lock callback the example installs on s_handle.lock after
- * BOARD_InitPCAL6524. See hardware_init.c. */
 status_t APP_PCAL6524_Lock(bool lock);
 /*${prototype:end}*/
 

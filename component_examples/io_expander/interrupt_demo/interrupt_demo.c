@@ -13,8 +13,20 @@
  * Code
  ******************************************************************************/
 
-static pcal6524_handle_t s_handle;
-volatile bool g_pcal6524IntFlag = false;
+pcal6524_handle_t s_ioExpHandle;
+
+status_t APP_PCAL6524_Lock(bool lock)
+{
+    if (lock)
+    {
+        DisableIRQ(BOARD_PCAL6524_INT_IRQ);
+    }
+    else
+    {
+        EnableIRQ(BOARD_PCAL6524_INT_IRQ);
+    }
+    return kStatus_Success;
+}
 
 void APP_InputPinCallback(uint8_t pin, bool pinState, void *userData)
 {
@@ -29,12 +41,12 @@ void APP_InputPinCallback(uint8_t pin, bool pinState, void *userData)
 
     if (active)
     {
-        (void)PCAL6524_SetPins(&s_handle, 1U << APP_OUTPUT_PIN);
+        (void)PCAL6524_SetPins(&s_ioExpHandle, 1U << APP_OUTPUT_PIN);
         USER_LED_ON();
     }
     else
     {
-        (void)PCAL6524_ClearPins(&s_handle, 1U << APP_OUTPUT_PIN);
+        (void)PCAL6524_ClearPins(&s_ioExpHandle, 1U << APP_OUTPUT_PIN);
         USER_LED_OFF();
     }
 
@@ -49,34 +61,34 @@ static status_t APP_ConfigureDemoPins(void)
     uint32_t inMask  = 1U << APP_INPUT_PIN;
     uint32_t outMask = 1U << APP_OUTPUT_PIN;
 
-    status = PCAL6524_SetDirection(&s_handle, inMask, kPCAL6524_Input);
+    status = PCAL6524_SetDirection(&s_ioExpHandle, inMask, kPCAL6524_Input);
     if (kStatus_Success != status) return status;
-    status = PCAL6524_SetPullSelection(&s_handle, inMask, true);
+    status = PCAL6524_SetPullSelection(&s_ioExpHandle, inMask, true);
     if (kStatus_Success != status) return status;
-    status = PCAL6524_SetPullEnable(&s_handle, inMask, true);
+    status = PCAL6524_SetPullEnable(&s_ioExpHandle, inMask, true);
     if (kStatus_Success != status) return status;
-    status = PCAL6524_SetPinInterruptConfig(&s_handle, APP_INPUT_PIN, kPCAL6524_IntEdgeAny);
+    status = PCAL6524_SetPinInterruptConfig(&s_ioExpHandle, APP_INPUT_PIN, kPCAL6524_IntEdgeAny);
     if (kStatus_Success != status) return status;
 
-    status = PCAL6524_SetDirection(&s_handle, outMask, kPCAL6524_Output);
+    status = PCAL6524_SetDirection(&s_ioExpHandle, outMask, kPCAL6524_Output);
     if (kStatus_Success != status) return status;
-    (void)PCAL6524_ClearPins(&s_handle, outMask);
+    (void)PCAL6524_ClearPins(&s_ioExpHandle, outMask);
 
     /* Drop any interrupt latched during pin setup — write-only to the
      * Interrupt Clear register, no input-port read. */
-    return PCAL6524_ClearInterruptPins(&s_handle, inMask);
+    return PCAL6524_ClearInterruptPins(&s_ioExpHandle, inMask);
 }
 
 int main(void)
 {
     BOARD_InitHardware();
-    BOARD_InitPCAL6524(&s_handle);
+    BOARD_InitPCAL6524(&s_ioExpHandle);
 
-    s_handle.lock = APP_PCAL6524_Lock;
-
-    (void)PCAL6524_InstallPinCallback(&s_handle, APP_INPUT_PIN, APP_InputPinCallback, NULL);
+    s_ioExpHandle.lock = APP_PCAL6524_Lock;
 
     PRINTF("\r\n=== I/O Expander Interrupt Demo ===\r\n\r\n");
+
+    (void)PCAL6524_InstallPinCallback(&s_ioExpHandle, APP_INPUT_PIN, APP_InputPinCallback, NULL);
 
     status_t status = APP_ConfigureDemoPins();
     if (kStatus_Success != status)
@@ -85,21 +97,13 @@ int main(void)
         while (1) {}
     }
 
+    EnableIRQ(BOARD_PCAL6524_INT_IRQ);
+
     PRINTF("Input pin %d:  pull-up, any-edge interrupt (active-LOW)\r\n", APP_INPUT_PIN);
     PRINTF("Output pin %d: follows input — HIGH while input is held LOW\r\n", APP_OUTPUT_PIN);
     PRINTF("Waiting for interrupts...\r\n\r\n");
 
     while (1)
     {
-        if (g_pcal6524IntFlag)
-        {
-            g_pcal6524IntFlag = false;
-
-            status = PCAL6524_InterruptHandler(&s_handle);
-            if (kStatus_Success != status)
-            {
-                PRINTF("Error: PCAL6524_InterruptHandler failed (%d)\r\n", (int)status);
-            }
-        }
     }
 }

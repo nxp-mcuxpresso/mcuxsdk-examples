@@ -12,18 +12,7 @@
 /*${header:end}*/
 
 /*${function:start}*/
-status_t APP_PCAL6524_Lock(bool lock)
-{
-    if (lock)
-    {
-        DisableIRQ(BOARD_PCAL6524_INT_IRQ);
-    }
-    else
-    {
-        EnableIRQ(BOARD_PCAL6524_INT_IRQ);
-    }
-    return kStatus_Success;
-}
+extern pcal6524_handle_t s_ioExpHandle;
 
 void BOARD_InitHardware(void)
 {
@@ -43,7 +32,6 @@ void BOARD_InitHardware(void)
     GPIO_PinInit(BOARD_PCAL6524_INT_GPIO, BOARD_PCAL6524_INT_PIN, &intPinConfig);
     GPIO_ClearPinsInterruptFlags(BOARD_PCAL6524_INT_GPIO, 1U << BOARD_PCAL6524_INT_PIN);
     GPIO_EnableInterrupts(BOARD_PCAL6524_INT_GPIO, 1U << BOARD_PCAL6524_INT_PIN);
-    EnableIRQ(BOARD_PCAL6524_INT_IRQ);
 }
 
 /* GPIO3_Combined_16_31_IRQn covers all GPIO3 pins 16..31; if another
@@ -54,9 +42,7 @@ void BOARD_PCAL6524_INT_IRQ_HANDLER(void)
 
     if (0U != (flags & (1U << BOARD_PCAL6524_INT_PIN)))
     {
-        GPIO_ClearPinsInterruptFlags(BOARD_PCAL6524_INT_GPIO,
-                                     1U << BOARD_PCAL6524_INT_PIN);
-        g_pcal6524IntFlag = true;
+        PCAL6524_InterruptHandler(&s_ioExpHandle);
     }
     SDK_ISR_EXIT_BARRIER;
 }
