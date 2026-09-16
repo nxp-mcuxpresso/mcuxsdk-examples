@@ -164,7 +164,7 @@
 /*! \brief Number of half slot before LL interrupt to wakeup the 32MHz of the NBU, depends on the 32Mhz crystal on the
  *  board.
  */
-#define BOARD_LL_32MHz_WAKEUP_ADVANCE_HSLOT 2
+// #define BOARD_LL_32MHz_WAKEUP_ADVANCE_HSLOT 2
 
 /*! \brief Delay from the 32MHz wake up of the LL to wake up the radio domain in number of 30.5us period. Default value
     is set to 0x10 in fwk_plaform.c file. The lower this value is, the safest it is, but it increases power consumption.
