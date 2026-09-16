@@ -6,6 +6,8 @@
 /*${header:start}*/
 #include "fsl_enet.h"
 #include "fsl_clock.h"
+#include "fsl_trdc_soc.h"
+#include "fsl_modcon.h"
 #include "pin_mux.h"
 #include "board.h"
 #include "app.h"
@@ -64,7 +66,17 @@ void BOARD_InitHardware(void)
     BOARD_Init6524Pins();
     BOARD_InitPCAL6524(&s_pcal6524Handle);
 #endif
+    /* The shared clock tree leaves ETH1_TRXCLK at 250MHz; the ENET1G RGMII RX delay-line reference
+     * must be 125MHz (RM), so re-divide it here rather than in the board-wide clock config. */
+    {
+        clock_root_config_t trxCfg = {.mux = kCLOCK_ETH1_TRXCLK_ClockRoot_MAINPLLDIV8, .div = 2U, .sndDiv = 1U};
+        CLOCK_SetRootClock(kCLOCK_Root_COMM_eth1_trxclk, &trxCfg);
+    }
 
+    /* Grant the ENET1 masters TRDC domain 0; without this the ENET DMA bus accesses fault
+     * (the MAC never reclaims TX descriptors and the tx ring stalls once full). */
+    COMM__TRDC->MDA_DFMT1[kTRDC_COMM_MasterENET1_M0R].MDA_W_DFMT1[0] = TRDC_MDA_W_DFMT1_DID(0) | TRDC_MDA_W_DFMT1_VLD_MASK;
+    COMM__TRDC->MDA_DFMT1[kTRDC_COMM_MasterENET1_M0T].MDA_W_DFMT1[0] = TRDC_MDA_W_DFMT1_DID(0) | TRDC_MDA_W_DFMT1_VLD_MASK;
 #if BOARD_NETWORK_USE_TENBASET_PHY
     /* Route ENET_1G MAC to XENOPHY1 internally */
     MODCON_SetCFG((uint32_t)kModCon_COMM_ETH0, 0, MODCON_CFG_ENET1G_2_XENO_PINSEL(1));
@@ -97,6 +109,9 @@ void BOARD_InitHardware(void)
     MDIO_Init();
     g_phy_resource.read  = MDIO_Read;
     g_phy_resource.write = MDIO_Write;
+
+    /* Enable the ENET1G RGMII interface (MODCON ENET1G_CFG RGMII_EN powers up 0 = disabled). */
+    MODCON_SetCFG((uint32_t)kModCon_COMM_ETH1, 0U, MODCON_CFG_ENET1G_RGMII_EN(1U));
 #endif
 }
 

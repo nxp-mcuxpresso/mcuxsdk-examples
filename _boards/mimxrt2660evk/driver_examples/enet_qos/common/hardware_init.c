@@ -7,9 +7,12 @@
 #include "fsl_enet_qos.h"
 #include "fsl_clock.h"
 #include "fsl_phy.h"
+#include "fsl_modcon.h"
+#include "fsl_trdc_soc.h"
 #include "pin_mux.h"
 #include "board.h"
 #include "app.h"
+
 #if !BOARD_NETWORK_USE_TENBASET_PHY
 #include "fsl_pcal6524.h"
 #endif
@@ -37,12 +40,43 @@ static pcal6524_handle_t s_pcal6524Handle;
 /* Board-provided hooks expected by the SDK ENET_QOS driver. */
 void ENET_QOS_EnableClock(bool enable)
 {
-    (void)enable;
+    if (enable)
+    {
+        (void)CLOCK_EnableClock(kCLOCK_COMM_eth0);
+    }
+    else
+    {
+        (void)CLOCK_DisableClock(kCLOCK_COMM_eth0);
+    }
 }
 
+/* Select the ENET_QOS PHY interface in ETH0_ENET_QOS_CFG (RM 27.9.5). INTF_SEL is sampled at the
+ * DMA_MODE.SWR reset that ENET_QOS_Init() asserts right after this hook. */
 void ENET_QOS_SetSYSControl(enet_qos_mii_mode_t miiMode)
 {
-    (void)miiMode;
+    uint32_t primask = DisableGlobalIRQ();
+    uint32_t v       = MODCON_GetCFG((uint32_t)kModCon_COMM_ETH0, 0U);
+
+    v &= ~(MODCON_CFG_ENET_QOS_INTF_SEL_MASK | MODCON_CFG_ENET_QOS_RGMII_EN_MASK |
+           MODCON_CFG_ENET_QOS_REF_CLK_DIR_MASK);
+    v |= MODCON_CFG_ENET_QOS_CLKGEN_EN(1U);
+
+    switch (miiMode)
+    {
+        case kENET_QOS_MiiMode:
+            /* INTF_SEL=0 (MII), RGMII_EN=0 (TX_CLK is input in MII mode) */
+            break;
+        case kENET_QOS_RmiiMode:
+            v |= MODCON_CFG_ENET_QOS_INTF_SEL(4U);
+            break;
+        case kENET_QOS_RgmiiMode:
+            v |= MODCON_CFG_ENET_QOS_INTF_SEL(1U) | MODCON_CFG_ENET_QOS_RGMII_EN(1U);
+            break;
+        default:
+            break;
+    }
+    MODCON_SetCFG((uint32_t)kModCon_COMM_ETH0, 0U, v);
+    EnableGlobalIRQ(primask);
 }
 
 #if !BOARD_NETWORK_USE_TENBASET_PHY
@@ -74,7 +108,18 @@ void BOARD_InitHardware(void)
     BOARD_Init6524Pins();
     BOARD_InitPCAL6524(&s_pcal6524Handle);
 #endif
+    /* The shared clock tree leaves ETH0_TRXCLK at 250MHz; the ENET_QOS RGMII TX clock generator
+     * needs a 125MHz reference, so re-divide it here rather than in the board-wide clock config. */
+    {
+        clock_root_config_t trxCfg = {.mux = kCLOCK_ETH0_TRXCLK_ClockRoot_MAINPLLDIV8, .div = 2U, .sndDiv = 1U};
+        CLOCK_SetRootClock(kCLOCK_Root_COMM_eth0_trxclk, &trxCfg);
+    }
 
+    /* Grant the ENET COMM masters TRDC domain 0; without this the ENET DMA bus accesses fault
+     * (the MAC never reclaims TX descriptors and the tx ring stalls once full). */
+    COMM__TRDC->MDA_DFMT1[kTRDC_COMM_MasterENET0].MDA_W_DFMT1[0]     = TRDC_MDA_W_DFMT1_DID(0) | TRDC_MDA_W_DFMT1_VLD_MASK;
+    COMM__TRDC->MDA_DFMT1[kTRDC_COMM_MasterENET1_M0R].MDA_W_DFMT1[0] = TRDC_MDA_W_DFMT1_DID(0) | TRDC_MDA_W_DFMT1_VLD_MASK;
+    COMM__TRDC->MDA_DFMT1[kTRDC_COMM_MasterENET1_M0T].MDA_W_DFMT1[0] = TRDC_MDA_W_DFMT1_DID(0) | TRDC_MDA_W_DFMT1_VLD_MASK;
 #if BOARD_NETWORK_USE_TENBASET_PHY
     /* Route ENET_QOS MAC to XENOPHY0 internally */
     MODCON_SetCFG((uint32_t)kModCon_COMM_ETH1, 0, MODCON_CFG_ENET_QOS_2_XENO_PINSEL(1));
@@ -105,6 +150,17 @@ void BOARD_InitHardware(void)
     MDIO_Init();
     g_phy_resource.read  = MDIO_Read;
     g_phy_resource.write = MDIO_Write;
+
+    /* ENET_QOS (DWC IP) has no MAC-side RGMII TX delay line like ENET1G's, so set the TX delay on
+     * the YT8531 PHY: ext reg 0xA003, GE_TX_DELAY[3:0], 150ps/step. GE_TX_DELAY=0x9 sits in the
+     * centre of the clean RGMII-TX timing window. Mirrors frdmimxrt1186 (same PHY). */
+    {
+        uint16_t rgmiiCfg1 = 0U;
+        (void)MDIO_Write(EXAMPLE_PHY_ADDR, 0x1EU, 0xA003U);
+        (void)MDIO_Read(EXAMPLE_PHY_ADDR, 0x1FU, &rgmiiCfg1);
+        rgmiiCfg1 = (uint16_t)((rgmiiCfg1 & ~0xFU) | 0x9U);
+        (void)MDIO_Write(EXAMPLE_PHY_ADDR, 0x1FU, rgmiiCfg1);
+    }
 #endif
 }
 
