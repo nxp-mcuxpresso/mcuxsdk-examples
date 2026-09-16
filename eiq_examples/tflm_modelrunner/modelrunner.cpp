@@ -25,6 +25,23 @@
 #endif
 
 #define MODEL_ALIGNMENT 16U
+
+#if defined(__ARMCC_VERSION)
+/* The Arm C library does not provide aligned_alloc; posix_memalign is
+ * available instead and the returned pointer can be released by free(). */
+static char* model_alloc_aligned(size_t alignment, size_t size)
+{
+    void* ptr = nullptr;
+    if (posix_memalign(&ptr, alignment, size) != 0)
+    {
+        return nullptr;
+    }
+    return (char*)ptr;
+}
+#else
+#define model_alloc_aligned(alignment, size) aligned_alloc((alignment), (size))
+#endif
+
 static char* model_buf = nullptr;
 
 char cmd[CMD_SIZE + 2];
@@ -244,8 +261,7 @@ static int do_cmd_model_loadb(char* model_buf, NNServer* server){
         //model_buf = (char*)malloc(size+8);
         size_t alloc_size = ((size_t)size + 8u + (MODEL_ALIGNMENT - 1u)) &
                             ~(size_t)(MODEL_ALIGNMENT - 1u);
-        model_buf = (char*)aligned_alloc(MODEL_ALIGNMENT, alloc_size);
-             PRINTF("model malloc failed\r\n");
+        model_buf = (char*)model_alloc_aligned(MODEL_ALIGNMENT, alloc_size);
 
         if (!model_buf) {
             PRINTF("model malloc failed\r\n");
