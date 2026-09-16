@@ -18,3 +18,5 @@ dsc_dac_waveform_generator:
   boards:
     mc56f81000evk: []
     mc56f83000evk: []
+    mc56f85000evk@dsp56800ef_core0: []
+    mc56f85000evk@dsp56800ef_core1: []

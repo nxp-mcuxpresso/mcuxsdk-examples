@@ -13,3 +13,4 @@ Please also confirm the step size is reasonable based on the settling time of th
 ## Supported Boards
 - [MC56F81000-EVK](../../../_boards/mc56f81000evk/driver_examples/dac/waveform_generator/example_board_readme.md)
 - [MC56F83000-EVK](../../../_boards/mc56f83000evk/driver_examples/dac/waveform_generator/example_board_readme.md)
+- [MC56F85000-EVK](../../../_boards/mc56f85000evk/driver_examples/dac/waveform_generator/example_board_readme.md)

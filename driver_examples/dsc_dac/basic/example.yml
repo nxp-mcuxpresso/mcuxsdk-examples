@@ -18,5 +18,7 @@ dsc_dac_basic:
   boards:
     mc56f81000evk: []
     mc56f83000evk: []
+    mc56f85000evk@dsp56800ef_core0: []
+    mc56f85000evk@dsp56800ef_core1: []
     twrmc56f8200: []
     twrmc56f8400: []
