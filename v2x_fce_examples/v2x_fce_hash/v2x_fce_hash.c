@@ -9,6 +9,7 @@
  ******************************************************************************/
 #include "fsl_device_registers.h"
 #include "fsl_debug_console.h"
+#include <string.h>
 #include "board.h"
 #include "app.h"
 
@@ -91,8 +92,14 @@ static bool V2X_FCE_Compare(const uint8_t *a, const uint8_t *b, uint32_t len)
 int main(void)
 {
     v2x_fce_handle_t handle = {0};
-    v2x_fce_hash_op_t op    = {0};
+    v2x_fce_hash_op_t op;
     status_t status;
+
+    /*
+     * shaAlgo is an enum, so a {0} initializer would mix an integer with an
+     * enumerated type (IAR Pe188). Clear the request with memset instead.
+     */
+    (void)memset(&op, 0, sizeof(op));
 
     /* FCE_GET_INFO response buffer (firmware requires an open FCE session first). */
     SDK_ALIGN(static uint8_t s_info[16], 8u);
