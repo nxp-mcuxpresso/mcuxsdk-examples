@@ -99,6 +99,10 @@ hello_world_s:
     - -mdk@hyperram_release    
     - -mdk@debug
     - -mdk@release
+    - +mcux@flexspi_nor_debug
+    - +mcux@flexspi_nor_release
+    - -mcux@debug
+    - -mcux@release
     frdmimxrt1186@cm33:
     - -armgcc@hyperram_debug
     - -armgcc@hyperram_release
@@ -112,6 +116,8 @@ hello_world_s:
     - -mdk@hyperram_release    
     - -mdk@debug
     - -mdk@release
+    - +mcux@flexspi_nor_debug
+    - +mcux@flexspi_nor_release
     frdmkw43:
     - -mdk@debug
     - -mdk@release

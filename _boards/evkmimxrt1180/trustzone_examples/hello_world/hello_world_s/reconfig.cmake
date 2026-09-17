@@ -7,6 +7,10 @@ mcux_add_source(
             hello_world_debug_ram_release.ini
             hello_world_download_ram_debug.ini
             hello_world_download_ram_release.ini
+            hello_world_flashdebug_debug.ini
+            hello_world_flashdebug_release.ini
+            hello_world_flashdownload_debug.ini
+            hello_world_flashdownload_release.ini
             MIMXRT1180-EVK_TCM.mex
             tzm_config.c
             tzm_config.h
