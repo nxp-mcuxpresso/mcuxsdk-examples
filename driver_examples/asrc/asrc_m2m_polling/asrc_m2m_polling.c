@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 NXP
+ * Copyright 2019, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -106,6 +106,16 @@ int main(void)
     /* set bit clock divider */
     SAI_TxSetBitClockRate(DEMO_SAI, DEMO_AUDIO_MASTER_CLOCK, DEMO_AUDIO_SAMPLE_RATE_IN, DEMO_AUDIO_BIT_WIDTH,
                           DEMO_AUDIO_DATA_CHANNEL);
+
+#ifdef BOARD_SAI_RXCONFIG
+    /* sai rx configurations */
+    BOARD_SAI_RXCONFIG(&config, DEMO_SAI_RX_SYNC_MODE);
+#endif
+#ifdef BOARD_MASTER_CLOCK_CONFIG
+    /* master clock configurations */
+    BOARD_MASTER_CLOCK_CONFIG();
+#endif
+
     /* asrc init */
     ASRC_Init(DEMO_ASRC, DEMO_ASRC_PERIPHERAL_CLOCK);
     ASRC_SetChannelPairConfig(DEMO_ASRC, DEMO_ASRC_CHANNEL_PAIR, &s_asrcChannelPairConfig, DEMO_AUDIO_SAMPLE_RATE_IN,
