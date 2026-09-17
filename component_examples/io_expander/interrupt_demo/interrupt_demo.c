@@ -20,9 +20,11 @@ void APP_InputPinCallback(uint8_t pin, bool pinState, void *userData)
 {
     (void)userData;
 
-    /* Input is pull-up + probe-to-GND, so active-LOW: pinState == false
-     * means the user is currently holding TP12 against ground. Output and
-     * LED track that level — held = HIGH/ON, released = LOW/OFF. */
+    /* Input is pull-up, so active-LOW: pinState == false means the user is
+     * currently driving the input pin LOW (see the board readme for how to
+     * do this on your board). Output and LED track that level —
+     * driven LOW = HIGH/ON, released = LOW/OFF. */
+
     bool active = !pinState;
 
     if (active)
