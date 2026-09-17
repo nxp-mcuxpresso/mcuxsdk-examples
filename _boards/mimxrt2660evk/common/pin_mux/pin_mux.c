@@ -1771,6 +1771,127 @@ void BOARD_InitPDMPins(void) {
       0x80U);                                 /* Input Buffer Enable: Enables */
 }
 
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitM2UARTPins:
+- options: {callFromInitBoot: 'false', coreID: cm85, enableClock: 'true'}
+- pin_list:
+  - {pin_num: L16, peripheral: HSP__LPUART_2, signal: RXD, pin_signal: PIO2_9, ibena: Enables}
+  - {pin_num: L15, peripheral: HSP__LPUART_2, signal: TXD, pin_signal: PIO2_8, ibena: Enables}
+  - {pin_num: K13, peripheral: HSP__LPUART_2, signal: CTS_B, pin_signal: PIO2_10, ibena: Enables}
+  - {pin_num: L17, peripheral: HSP__LPUART_2, signal: RTS_B, pin_signal: PIO2_11, ibena: Enables}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitM2UARTPins, assigned for the Cortex-M85 core.
+Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitM2UARTPins(void) {
+  CLOCK_EnableClock(kCLOCK_MAIN_iomuxc);      /* Enable MAIN IOMUXC clock gate */
+  IOMUXC_SetPin_Mux_Config(
+      IOMUXC_PIO2_10_HSP_LPUART2_CTS_B,       /* PIO2_10 is configured as HSP_LPUART2_CTS_B */
+      0x80U);                                 /* Input Buffer Enable: Enables */
+  IOMUXC_SetPin_Mux_Config(
+      IOMUXC_PIO2_11_HSP_LPUART2_RTS_B,       /* PIO2_11 is configured as HSP_LPUART2_RTS_B */
+      0x80U);                                 /* Input Buffer Enable: Enables */
+  IOMUXC_SetPin_Mux_Config(
+      IOMUXC_PIO2_8_HSP_LPUART2_TXD,          /* PIO2_8 is configured as HSP_LPUART2_TXD */
+      0x80U);                                 /* Input Buffer Enable: Enables */
+  IOMUXC_SetPin_Mux_Config(
+      IOMUXC_PIO2_9_HSP_LPUART2_RXD,          /* PIO2_9 is configured as HSP_LPUART2_RXD */
+      0x80U);                                 /* Input Buffer Enable: Enables */
+}
+
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitM2ScoPins:
+- options: {callFromInitBoot: 'false', coreID: cm85, enableClock: 'true'}
+- pin_list:
+  - {pin_num: H17, peripheral: AUDIO__SAI_1, signal: 'TXD0, 0', pin_signal: PIO2_20, ibena: Enables}
+  - {pin_num: H16, peripheral: AUDIO__SAI_1, signal: 'RXD0, 0', pin_signal: PIO2_21, ibena: Enables}
+  - {pin_num: J15, peripheral: AUDIO__SAI_1, signal: TX_BCLK, pin_signal: PIO2_18, ibena: Enables}
+  - {pin_num: J13, peripheral: AUDIO__SAI_1, signal: TX_SYNC, pin_signal: PIO2_19, ibena: Enables}
+  - {pin_num: H15, peripheral: AUDIO__SAI_1, signal: MCLK, pin_signal: PIO2_22, ibena: Enables}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitM2ScoPins, assigned for the Cortex-M85 core.
+Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitM2ScoPins(void) {
+  CLOCK_EnableClock(kCLOCK_MAIN_iomuxc);      /* Enable MAIN IOMUXC clock gate */
+  IOMUXC_SetPin_Mux_Config(
+      IOMUXC_PIO2_18_AUDIO_SAI1_TX_BCLK,      /* PIO2_18 is configured as AUDIO_SAI1_TX_BCLK */
+      0x80U);                                 /* Input Buffer Enable: Enables */
+  IOMUXC_SetPin_Mux_Config(
+      IOMUXC_PIO2_19_AUDIO_SAI1_TX_SYNC,      /* PIO2_19 is configured as AUDIO_SAI1_TX_SYNC */
+      0x80U);                                 /* Input Buffer Enable: Enables */
+  IOMUXC_SetPin_Mux_Config(
+      IOMUXC_PIO2_20_AUDIO_SAI1_TX_DATA0,     /* PIO2_20 is configured as AUDIO_SAI1_TX_DATA0 */
+      0x80U);                                 /* Input Buffer Enable: Enables */
+  IOMUXC_SetPin_Mux_Config(
+      IOMUXC_PIO2_21_AUDIO_SAI1_RX_DATA0,     /* PIO2_21 is configured as AUDIO_SAI1_RX_DATA0 */
+      0x80U);                                 /* Input Buffer Enable: Enables */
+  IOMUXC_SetPin_Mux_Config(
+      IOMUXC_PIO2_22_AUDIO_SAI1_MCLK,         /* PIO2_22 is configured as AUDIO_SAI1_MCLK */
+      0x80U);                                 /* Input Buffer Enable: Enables */
+}
+
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitUSDHC1Pins:
+- options: {callFromInitBoot: 'false', coreID: cm85, enableClock: 'false'}
+- pin_list:
+  - {pin_num: C10, peripheral: COMM__USDHC_1, signal: CMD, pin_signal: PIO7_4, ibena: Enables, pullena: EnablesPullup}
+  - {pin_num: A10, peripheral: COMM__USDHC_1, signal: CLK, pin_signal: PIO7_5, ibena: Enables}
+  - {pin_num: A9, peripheral: COMM__USDHC_1, signal: 'DATA, 0', pin_signal: PIO7_0, ibena: Enables, pullena: EnablesPullup}
+  - {pin_num: D11, peripheral: COMM__USDHC_1, signal: 'DATA, 1', pin_signal: PIO7_1, ibena: Enables, pullena: EnablesPullup}
+  - {pin_num: B11, peripheral: COMM__USDHC_1, signal: 'DATA, 2', pin_signal: PIO7_2, ibena: Enables, pullena: EnablesPullup}
+  - {pin_num: D10, peripheral: COMM__USDHC_1, signal: 'DATA, 3', pin_signal: PIO7_3, ibena: Enables, pullena: EnablesPullup}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitUSDHC1Pins, assigned for the Cortex-M85 core.
+Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitUSDHC1Pins(void) {
+  IOMUXC_SetPin_Mux_Config(
+      IOMUXC_PIO7_0_COMM_uSDHC1_DAT0,         /* PIO7_0 is configured as COMM_uSDHC1_DAT0 */
+      0xA0U);                                 /* Pullup/Pulldown Enable: Enables pullup
+                                                 Input Buffer Enable: Enables */
+  IOMUXC_SetPin_Mux_Config(
+      IOMUXC_PIO7_1_COMM_uSDHC1_DAT1,         /* PIO7_1 is configured as COMM_uSDHC1_DAT1 */
+      0xA0U);                                 /* Pullup/Pulldown Enable: Enables pullup
+                                                 Input Buffer Enable: Enables */
+  IOMUXC_SetPin_Mux_Config(
+      IOMUXC_PIO7_2_COMM_uSDHC1_DAT2,         /* PIO7_2 is configured as COMM_uSDHC1_DAT2 */
+      0xA0U);                                 /* Pullup/Pulldown Enable: Enables pullup
+                                                 Input Buffer Enable: Enables */
+  IOMUXC_SetPin_Mux_Config(
+      IOMUXC_PIO7_3_COMM_uSDHC1_DAT3,         /* PIO7_3 is configured as COMM_uSDHC1_DAT3 */
+      0xA0U);                                 /* Pullup/Pulldown Enable: Enables pullup
+                                                 Input Buffer Enable: Enables */
+  IOMUXC_SetPin_Mux_Config(
+      IOMUXC_PIO7_4_COMM_uSDHC1_CMD,          /* PIO7_4 is configured as COMM_uSDHC1_CMD */
+      0xA0U);                                 /* Pullup/Pulldown Enable: Enables pullup
+                                                 Input Buffer Enable: Enables */
+  IOMUXC_SetPin_Mux_Config(
+      IOMUXC_PIO7_5_COMM_uSDHC1_CLK,          /* PIO7_5 is configured as COMM_uSDHC1_CLK */
+      0x80U);                                 /* Input Buffer Enable: Enables */
+}
+
 /***********************************************************************************************************************
  * EOF
  **********************************************************************************************************************/

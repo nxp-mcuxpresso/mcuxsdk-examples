@@ -148,11 +148,11 @@
 #define BOARD_TOUCH_I2C_CLOCK kCLOCK_MAIN_hsp_lpi2c1
 #endif
 
-#define BOARD_BT_UART_INSTANCE    3
+#define BOARD_BT_UART_INSTANCE    2
 #define BOARD_BT_UART_BAUDRATE    3000000
-#define BOARD_BT_UART_CLK_FREQ    BOARD_DEBUG_UART_CLK_FREQ
-#define BOARD_BT_UART_IRQ         LPUART3_IRQn
-#define BOARD_BT_UART_IRQ_HANDLER LPUART3_IRQHandler
+#define BOARD_BT_UART_CLK_FREQ    CLOCK_GetRootClockFreq(kCLOCK_Root_MAIN_lpuart2_fclk)
+#define BOARD_BT_UART_IRQ         LPUART2_IRQn
+#define BOARD_BT_UART_IRQ_HANDLER LPUART2_IRQHandler
 
 /*! @brief board has sdcard */
 #define BOARD_HAS_SDCARD (1U)

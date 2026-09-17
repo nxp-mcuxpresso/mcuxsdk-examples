@@ -390,6 +390,100 @@ void BOARD_InitDcifDbiPins(void);            /* Function assigned for the Cortex
  */
 void BOARD_InitPDMPins(void);                 /* Function assigned for the Cortex-M85 */
 
+/* PIO2_9 (coord L16), LPUART2_RXD/J33[2]/J44[3]/U9[20]/U49[5] */
+/* Routed pin properties */
+#define BOARD_INITM2UARTPINS_LPUART2_RXD_PERIPHERAL                HSP__LPUART_2   /*!< Peripheral name */
+#define BOARD_INITM2UARTPINS_LPUART2_RXD_SIGNAL                              RXD   /*!< Signal name */
+
+/* PIO2_10 (coord K13), LPUART2_CTS/U9[19] */
+/* Routed pin properties */
+#define BOARD_INITM2UARTPINS_LPUART2_CTS_PERIPHERAL                HSP__LPUART_2   /*!< Peripheral name */
+#define BOARD_INITM2UARTPINS_LPUART2_CTS_SIGNAL                            CTS_B   /*!< Signal name */
+
+/* PIO2_11 (coord L17), LPUART2_RTS/J44[5]/J34[20]/U69[5] */
+/* Routed pin properties */
+#define BOARD_INITM2UARTPINS_LPUART2_RTS_PERIPHERAL                HSP__LPUART_2   /*!< Peripheral name */
+#define BOARD_INITM2UARTPINS_LPUART2_RTS_SIGNAL                            RTS_B   /*!< Signal name */
+
+/*!
+@brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitM2UARTPins(void);              /* Function assigned for the Cortex-M85 */
+
+/* PIO2_20 (coord H17), SAI1_TXD0/U69[6]/SJ6[1] */
+/* Routed pin properties */
+#define BOARD_INITM2SCOPINS_SAI1_TXD0_PERIPHERAL                    AUDIO__SAI_1   /*!< Peripheral name */
+#define BOARD_INITM2SCOPINS_SAI1_TXD0_SIGNAL                                TXD0   /*!< Signal name */
+#define BOARD_INITM2SCOPINS_SAI1_TXD0_CHANNEL                                 0U   /*!< Signal channel */
+
+/* PIO2_21 (coord H16), SAI1_RXD0/U9[18]/SJ7[1] */
+/* Routed pin properties */
+#define BOARD_INITM2SCOPINS_SAI1_RXD0_PERIPHERAL                    AUDIO__SAI_1   /*!< Peripheral name */
+#define BOARD_INITM2SCOPINS_SAI1_RXD0_SIGNAL                                RXD0   /*!< Signal name */
+#define BOARD_INITM2SCOPINS_SAI1_RXD0_CHANNEL                                 0U   /*!< Signal channel */
+
+/* PIO2_18 (coord J15), SAI1_TX_BCLK/U69[7]/J26[2]/SJ9[1] */
+/* Routed pin properties */
+#define BOARD_INITM2SCOPINS_SAI1_TX_BCLK_PERIPHERAL                 AUDIO__SAI_1   /*!< Peripheral name */
+#define BOARD_INITM2SCOPINS_SAI1_TX_BCLK_SIGNAL                          TX_BCLK   /*!< Signal name */
+
+/* PIO2_19 (coord J13), PIO2_19/R363[1] */
+/* Routed pin properties */
+#define BOARD_INITM2SCOPINS_SAI1_TX_SYNC_PERIPHERAL                 AUDIO__SAI_1   /*!< Peripheral name */
+#define BOARD_INITM2SCOPINS_SAI1_TX_SYNC_SIGNAL                          TX_SYNC   /*!< Signal name */
+
+/* PIO2_22 (coord H15), SAI1_MCLK/SJ10[1] */
+/* Routed pin properties */
+#define BOARD_INITM2SCOPINS_SAI1_MCLK_PERIPHERAL                    AUDIO__SAI_1   /*!< Peripheral name */
+#define BOARD_INITM2SCOPINS_SAI1_MCLK_SIGNAL                                MCLK   /*!< Signal name */
+
+/*!
+@brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitM2ScoPins(void);               /* Function assigned for the Cortex-M85 */
+
+/* PIO7_4 (coord C10), PIO7_4/R257[1] */
+/* Routed pin properties */
+#define BOARD_INITUSDHC1PINS_WIFI_SDIO_CMD_PERIPHERAL              COMM__USDHC_1   /*!< Peripheral name */
+#define BOARD_INITUSDHC1PINS_WIFI_SDIO_CMD_SIGNAL                            CMD   /*!< Signal name */
+
+/* PIO7_5 (coord A10), PIO7_5/R245[1] */
+/* Routed pin properties */
+#define BOARD_INITUSDHC1PINS_WIFI_SDIO_CLK_PERIPHERAL              COMM__USDHC_1   /*!< Peripheral name */
+#define BOARD_INITUSDHC1PINS_WIFI_SDIO_CLK_SIGNAL                            CLK   /*!< Signal name */
+
+/* PIO7_0 (coord A9), PIO7_0/R268[1] */
+/* Routed pin properties */
+#define BOARD_INITUSDHC1PINS_WIFI_SDIO_D0_PERIPHERAL               COMM__USDHC_1   /*!< Peripheral name */
+#define BOARD_INITUSDHC1PINS_WIFI_SDIO_D0_SIGNAL                            DATA   /*!< Signal name */
+#define BOARD_INITUSDHC1PINS_WIFI_SDIO_D0_CHANNEL                             0U   /*!< Signal channel */
+
+/* PIO7_1 (coord D11), PIO7_1/R255[1] */
+/* Routed pin properties */
+#define BOARD_INITUSDHC1PINS_WIFI_SDIO_D1_PERIPHERAL               COMM__USDHC_1   /*!< Peripheral name */
+#define BOARD_INITUSDHC1PINS_WIFI_SDIO_D1_SIGNAL                            DATA   /*!< Signal name */
+#define BOARD_INITUSDHC1PINS_WIFI_SDIO_D1_CHANNEL                             1U   /*!< Signal channel */
+
+/* PIO7_2 (coord B11), PIO7_2/R256[1] */
+/* Routed pin properties */
+#define BOARD_INITUSDHC1PINS_WIFI_SDIO_D2_PERIPHERAL               COMM__USDHC_1   /*!< Peripheral name */
+#define BOARD_INITUSDHC1PINS_WIFI_SDIO_D2_SIGNAL                            DATA   /*!< Signal name */
+#define BOARD_INITUSDHC1PINS_WIFI_SDIO_D2_CHANNEL                             2U   /*!< Signal channel */
+
+/* PIO7_3 (coord D10), PIO7_3/R270[1] */
+/* Routed pin properties */
+#define BOARD_INITUSDHC1PINS_WIFI_SDIO_D3_PERIPHERAL               COMM__USDHC_1   /*!< Peripheral name */
+#define BOARD_INITUSDHC1PINS_WIFI_SDIO_D3_SIGNAL                            DATA   /*!< Signal name */
+#define BOARD_INITUSDHC1PINS_WIFI_SDIO_D3_CHANNEL                             3U   /*!< Signal channel */
+
+/*!
+@brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitUSDHC1Pins(void);              /* Function assigned for the Cortex-M85 */
+
 #if defined(__cplusplus)
 }
 #endif
