@@ -1,5 +1,5 @@
 #
-# Copyright 2024 NXP
+# Copyright 2024, 2026 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -47,7 +47,7 @@ mcux_add_configuration(
 )
 
 mcux_add_linker_symbol(
-    SYMBOLS "__stack_size__=0x400 \
+    SYMBOLS "__stack_size__=0x1000 \
              __heap_size__=0x2000 \
              __use_shmem__=1 \
              __multicore__=1 \

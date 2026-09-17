@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020, 2025 NXP
+ * Copyright 2018-2020, 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -16,7 +16,11 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define PRINTF_NSE DbgConsole_Printf_NSE
+/* The secure DbgConsole_Printf_NSE veneer now takes an explicit length and
+ * validates the full span (including the null terminator) before any access.
+ * The length is computed here in the non-secure world (reading its own
+ * non-secure string is safe); the secure side re-validates it independently. */
+#define PRINTF_NSE(s) DbgConsole_Printf_NSE((s), strlen(s))
 
 #if CONFIG_SECONDARY_CORE_USES_TZM == 1
 #define REMOTE_EPT_ADDR   (31U)
