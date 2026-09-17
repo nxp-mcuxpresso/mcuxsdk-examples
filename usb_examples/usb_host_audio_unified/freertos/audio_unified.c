@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -726,6 +726,7 @@ static uint32_t USB_AudioSpeakerGetBuffer(uint8_t *buffer)
     uint8_t channels;
     uint8_t oneChannelSampleSize;
     uint32_t sampleCount = USB_HostAudioAppGetTransferSampleCount();
+    uint32_t bytesPerSample;
 
     if (AUDIO_DEVICE_VERSION_01 == g_audio.deviceAudioVersion)
     {
@@ -736,6 +737,22 @@ static uint32_t USB_AudioSpeakerGetBuffer(uint8_t *buffer)
     {
         channels             = g_speakerGeneralDesc_20->bNrChannels;
         oneChannelSampleSize = ((g_speakerFormatTypeDescPtr_20->bBitResolution + 7) / 8U);
+    }
+
+    /* channels and oneChannelSampleSize come from the device's audio format descriptors and
+       sampleCount from the negotiated sampling frequency, so the number of bytes written below -
+       sampleCount * channels * oneChannelSampleSize, which is also this function's return value -
+       is entirely device-controlled. buffer only ever points at one MAX_ISO_PACKET_SIZE-byte slot
+       of the send buffer, so clamp the sample count to what that slot can hold rather than writing
+       past it. A device declaring no channels or a zero bit resolution would also divide by zero. */
+    bytesPerSample = (uint32_t)channels * (uint32_t)oneChannelSampleSize;
+    if (0U == bytesPerSample)
+    {
+        return 0U;
+    }
+    if (sampleCount > (MAX_ISO_PACKET_SIZE / bytesPerSample))
+    {
+        sampleCount = MAX_ISO_PACKET_SIZE / bytesPerSample;
     }
 
     for (k = 0U; k < sampleCount; ++k)
