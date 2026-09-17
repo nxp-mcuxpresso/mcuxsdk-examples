@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 - 2017 NXP
+ * Copyright 2016 - 2017, 2026 NXP
  * All rights reserved.
  *
  *
@@ -809,7 +809,12 @@ pd_status_t PD_DpmSVDMResultCallback(void *callbackParam, uint8_t success, pd_sv
                 uint8_t svidIndex = 1U;
                 uint32_t SVID;
                 uint8_t *buffPtr = (uint8_t *)svdmResult->vdoData;
-                for (index = 0; index < (svdmResult->vdoCount); ++index)
+                /* vdoCount is the partner's VDO count from its VDM response, and each iteration
+                   writes two partnerSVIDs entries, so bound the walk by what that array holds. */
+                for (index = 0; (index < (svdmResult->vdoCount)) &&
+                                ((index * 2U + 1U) <
+                                 (sizeof(pdAppInstance->partnerSVIDs) / sizeof(pdAppInstance->partnerSVIDs[0])));
+                     ++index)
                 {
                     SVID = USB_LONG_FROM_LITTLE_ENDIAN_ADDRESS(buffPtr);
                     buffPtr += 4U;
@@ -856,7 +861,12 @@ pd_status_t PD_DpmSVDMResultCallback(void *callbackParam, uint8_t success, pd_sv
                 uint8_t index;
                 uint8_t *buffPtr = (uint8_t *)svdmResult->vdoData;
                 uint8_t dataRole;
-                for (index = 0U; index < (svdmResult->vdoCount); ++index)
+                /* vdoCount is the partner's VDO count from its VDM response, and each iteration
+                   writes two partnerModes entries, so bound the walk by what that array holds. */
+                for (index = 0U; (index < (svdmResult->vdoCount)) &&
+                                 ((index * 2U + 1U) <
+                                  (sizeof(pdAppInstance->partnerModes) / sizeof(pdAppInstance->partnerModes[0])));
+                     ++index)
                 {
                     pdAppInstance->partnerModes[index * 2U] = USB_SHORT_FROM_LITTLE_ENDIAN_ADDRESS(buffPtr);
                     buffPtr += 2U;
