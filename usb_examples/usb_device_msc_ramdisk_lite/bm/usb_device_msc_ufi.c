@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015 - 2016, Freescale Semiconductor, Inc.
- * Copyright 2016 NXP
+ * Copyright 2016, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -391,6 +391,28 @@ usb_status_t USB_DeviceMscUfiReadCommand(usb_device_msc_struct_t *mscHandle)
     {
     }
 
+    /* The starting LBA and transfer length both come from the host's CBW. Reject a range that
+       extends past the end of the medium here, so an out-of-range request never reaches the
+       application's storage read/write callback. */
+    if ((lbaTransferLength != 0U) &&
+        ((logicalBlockAddress >= mscHandle->totalLogicalBlockNumber) ||
+         (lbaTransferLength > (mscHandle->totalLogicalBlockNumber - logicalBlockAddress))))
+    {
+        ufi->thirteenCase.deviceExpectedDirection  = USB_IN;
+        ufi->thirteenCase.deviceExpectedDataLength = 0;
+        ufi->thirteenCase.buffer                   = NULL;
+        ufi->thirteenCase.lbaSendRecvSelect        = 0;
+
+        error = USB_DeviceMscUfiThirteenCasesCheck(mscHandle);
+        if (mscHandle->mscCsw->cswStatus != USB_DEVICE_MSC_PHASE_ERROR)
+        {
+            mscHandle->mscCsw->cswStatus           = USB_DEVICE_MSC_COMMAND_FAILED;
+            ufi->requestSense->senseKey            = USB_DEVICE_MSC_UFI_ILLEGAL_REQUEST;
+            ufi->requestSense->additionalSenseCode = USB_DEVICE_MSC_UFI_LBA_OUT_OF_RANGE;
+        }
+        return error;
+    }
+
     ufi->thirteenCase.deviceExpectedDirection  = USB_IN;
     ufi->thirteenCase.deviceExpectedDataLength = mscHandle->lengthOfEachLba * lbaTransferLength;
     ufi->thirteenCase.buffer                   = NULL;
@@ -441,6 +463,28 @@ usb_status_t USB_DeviceMscUfiWriteCommand(usb_device_msc_struct_t *mscHandle)
     else
     {
     }
+    /* The starting LBA and transfer length both come from the host's CBW. Reject a range that
+       extends past the end of the medium here, so an out-of-range request never reaches the
+       application's storage read/write callback. */
+    if ((lbaTransferLength != 0U) &&
+        ((logicalBlockAddress >= mscHandle->totalLogicalBlockNumber) ||
+         (lbaTransferLength > (mscHandle->totalLogicalBlockNumber - logicalBlockAddress))))
+    {
+        ufi->thirteenCase.deviceExpectedDirection  = USB_OUT;
+        ufi->thirteenCase.deviceExpectedDataLength = 0;
+        ufi->thirteenCase.buffer                   = NULL;
+        ufi->thirteenCase.lbaSendRecvSelect        = 0;
+
+        error = USB_DeviceMscUfiThirteenCasesCheck(mscHandle);
+        if (mscHandle->mscCsw->cswStatus != USB_DEVICE_MSC_PHASE_ERROR)
+        {
+            mscHandle->mscCsw->cswStatus           = USB_DEVICE_MSC_COMMAND_FAILED;
+            ufi->requestSense->senseKey            = USB_DEVICE_MSC_UFI_ILLEGAL_REQUEST;
+            ufi->requestSense->additionalSenseCode = USB_DEVICE_MSC_UFI_LBA_OUT_OF_RANGE;
+        }
+        return error;
+    }
+
     ufi->thirteenCase.deviceExpectedDirection  = USB_OUT;
     ufi->thirteenCase.deviceExpectedDataLength = mscHandle->lengthOfEachLba * lbaTransferLength;
     ufi->thirteenCase.buffer                   = NULL;
