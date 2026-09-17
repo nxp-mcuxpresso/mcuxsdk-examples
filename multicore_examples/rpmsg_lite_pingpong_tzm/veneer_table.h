@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 NXP
+ * Copyright 2018, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -7,6 +7,9 @@
 
 #ifndef _VENEER_TABLE_H_
 #define _VENEER_TABLE_H_
+
+#include <stddef.h>
+#include <stdint.h>
 
 #if defined(__cplusplus)
 extern "C" {
@@ -122,10 +125,12 @@ int32_t rpmsg_lite_send_nse(struct rpmsg_lite_endpoint *ept,
  * This function provides interface between secure and normal worlds
  * This function is called from normal world only
  *
- * @param s     String to be printed
+ * @param s      String to be printed. Must reside in non-secure memory.
+ * @param length Length of the string in bytes, excluding the null terminator.
+ *               Must be greater than 0 and not exceed MAX_STRING_LENGTH.
  *
  */
-void DbgConsole_Printf_NSE(char const *s);
+void DbgConsole_Printf_NSE(char const *s, size_t length);
 
 #if defined(__cplusplus)
 }
