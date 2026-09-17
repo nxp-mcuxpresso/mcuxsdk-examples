@@ -8,5 +8,6 @@ tiger on the screen.
 ## Supported Boards
 - [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/openvg_examples/openvg_tiger/example_board_readme.md)
 - [MIMXRT1160-EVK](../../_boards/evkmimxrt1160/openvg_examples/openvg_tiger/example_board_readme.md)
+- [FRDM-IMXRT1152](../../_boards/frdmimxrt1152/openvg_examples/openvg_tiger/example_board_readme.md)
 - [FRDM-IMXRT700](../../_boards/frdmimxrt700/openvg_examples/openvg_tiger/example_board_readme.md)
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/openvg_examples/openvg_tiger/example_board_readme.md)

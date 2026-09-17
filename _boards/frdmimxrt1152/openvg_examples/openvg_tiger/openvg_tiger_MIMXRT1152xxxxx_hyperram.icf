@@ -1,0 +1,135 @@
+/*
+** ###################################################################
+**     Processors:          MIMXRT1152AHM6B
+**                          MIMXRT1152AVM6B
+**                          MIMXRT1152DHM8B
+**                          MIMXRT1152DVM8B
+**                          MIMXRT1152XHM8B
+**                          MIMXRT1152XVM8B
+**
+**     Compiler:            IAR ANSI C/C++ Compiler for ARM
+**     Reference manual:    IMXRT1150RM, Rev 1, 01/2026
+**
+**     Abstract:
+**         Linker file for the IAR ANSI C/C++ Compiler for ARM,
+**         openvg_tiger_freertos on FRDM-IMXRT1152, hyperram targets.
+**
+**     Copyright 2016 Freescale Semiconductor, Inc.
+**     Copyright 2026 NXP
+**     SPDX-License-Identifier: BSD-3-Clause
+**
+**     http:                 www.nxp.com
+**     mail:                 support@nxp.com
+**
+** ###################################################################
+**
+** Memory layout notes
+** -------------------
+** Derived from the FRDM-IMXRT1152 lvgl_examples hyperram linker script, but
+** re-shaped to resemble the openvg_tiger memory layout used on
+** MIMXRT1176 (openvg_tiger_MIMXRT1176xxxxx_cm7_sdram_only.icf):
+**   - a large dedicated heap placed last in the cached external RAM region,
+**   - a large call stack kept OUT of that region so a heap overflow cannot
+**     clobber it,
+**   - a large non-cacheable region for the VGLite contiguous memory pool and
+**     the frame buffers.
+**
+** The 32 MB HyperRAM mapped by BOARD_MPU_REGION_HYPERRAM at 0x60000000 is
+** split into the conventional FRDM-IMXRT1152 halves, with the cached half
+** carved up to fit the mandatory 9 MB (0x900000) malloc heap:
+**   0x60000000..0x600FFFFF   1 MB cached      vectors + text
+**   0x60100000..0x606FFFFF   6 MB cached      RW / ZI
+**   0x60700000..0x60FFFFFF   9 MB cached      HEAP (0x900000, as on RT1176)
+**   0x61000000..0x61FFFFFF  16 MB non-cached  NonCacheable, frame buffers
+** The cached regions stop at 0x60FFFFFF and therefore never overlap the
+** non-cacheable half. The non-cacheable base/size are left exactly as the
+** board expects (16 MB at 0x61000000) so the power-of-two / natural
+** alignment asserts in BOARD_ConfigMPU() keep holding.
+**
+** As on RT1176 (where openvg_tiger runs entirely out of SDRAM rather than
+** the 256 KB ITCM), the non-XIP hyperram target places vectors and text at
+** the bottom of the cached HyperRAM: the OpenVG + VGLite + FreeRTOS image
+** does not fit in the 256 KB ITCM at -O0.
+*/
+define symbol m_interrupts_start        = 0x60000000;
+define symbol m_interrupts_end          = 0x600003FF;
+
+define symbol m_text_start              = 0x60000400;
+define symbol m_text_end                = 0x600FFFFF;
+
+/* DTCM: quick-access data plus the call stack. */
+define symbol m_data_start              = 0x20000000;
+define symbol m_data_end                = 0x2003FFFF;
+
+/* OCRAM. */
+define symbol m_data2_start             = 0x202C0000;
+define symbol m_data2_end               = 0x2033FFFF;
+
+/* Cached HyperRAM above the text window: RW / ZI and the heap. */
+define symbol m_data3_start             = 0x60100000;
+define symbol m_data3_end               = 0x60FFFFFF;
+
+/* Non-cacheable HyperRAM half. */
+define symbol m_ncache_start            = 0x61000000;
+define symbol m_ncache_end              = 0x61FFFFFF;
+
+/*
+** Sizes, identical to openvg_tiger on MIMXRT1176:
+**   - the OpenVG / VGLite path needs a 9 MB malloc() heap,
+**   - the FreeRTOS start-up stack is large (0xFA00 as on RT1176).
+** The heap takes the top 9 MB of the cached HyperRAM region, leaving 6 MB
+** for RW / ZI. The FreeRTOS kernel heap (CONFIG_configTOTAL_HEAP_SIZE) is a
+** .bss array and is sized in this example's prj.conf to fit that 6 MB.
+*/
+define symbol __size_heap__             = 0x00900000;
+define symbol __size_cstack__           = 0x0000FA00;
+
+define exported symbol __NCACHE_REGION_START   = m_ncache_start;
+define exported symbol __NCACHE_REGION_SIZE    = m_ncache_end - m_ncache_start + 1;
+
+define exported symbol __VECTOR_TABLE          = m_interrupts_start;
+define exported symbol __VECTOR_RAM            = m_interrupts_start;
+define exported symbol __RAM_VECTOR_TABLE_SIZE = 0x0;
+
+define memory mem with size = 4G;
+
+define region TEXT_region   = mem:[from m_interrupts_start to m_interrupts_end]
+                            | mem:[from m_text_start to m_text_end];
+
+/* Call stack lives at the top of DTCM, away from the big heap. */
+define region DATA_region   = mem:[from m_data_start to m_data_end - __size_cstack__];
+define region CSTACK_region = mem:[from m_data_end - __size_cstack__ + 1 to m_data_end];
+
+define region DATA2_region  = mem:[from m_data2_start to m_data2_end];
+
+/* Cached HyperRAM: RW / ZI below, heap above. */
+define region DATA3_region  = mem:[from m_data3_start to m_data3_end - __size_heap__];
+define region HEAP_region   = mem:[from m_data3_end - __size_heap__ + 1 to m_data3_end];
+
+define region NCACHE_region = mem:[from m_ncache_start to m_ncache_end];
+
+define block CSTACK    with alignment = 8, size = __size_cstack__   { };
+define block HEAP      with alignment = 8, size = __size_heap__     { };
+define block RW            { readwrite };
+define block ZI            { zi };
+define block NCACHE_VAR    { section NonCacheable , section NonCacheable.init };
+define block QACCESS_CODE  { section CodeQuickAccess };
+define block QACCESS_DATA  { section DataQuickAccess };
+
+/* cache line size = 32 bytes */
+define block CACHE_LINE_DATA_ZI with alignment = 32, end alignment = 32 { section CacheLineData };
+define block CACHE_LINE_DATA_RW with alignment = 32, end alignment = 32 { section CacheLineData.init };
+
+initialize by copy { readwrite, section .textrw, section CodeQuickAccess, section DataQuickAccess };
+do not initialize  { section .noinit };
+
+place at address mem: m_interrupts_start    { readonly section .intvec };
+
+place in TEXT_region                        { readonly };
+place in DATA3_region                       { block RW, block CACHE_LINE_DATA_RW };
+place in DATA3_region                       { block ZI, block CACHE_LINE_DATA_ZI };
+place in HEAP_region                        { last block HEAP };
+place in NCACHE_region                      { block NCACHE_VAR };
+place in TEXT_region                        { block QACCESS_CODE };
+place in DATA_region                        { block QACCESS_DATA };
+place in CSTACK_region                      { block CSTACK };
