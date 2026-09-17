@@ -139,7 +139,16 @@ static uint8_t USB_HostGetProperEndpointInterfaceInfo(usb_host_class_handle clas
     length          = 0;
     while (length < streamInterface->interfaceExtensionLength)
     {
-        if (descriptor.common->bDescriptorType == USB_DESCRIPTOR_TYPE_INTERFACE)
+        /* Everything walked here is device-supplied. A bLength of 0 would never advance length and
+           spin forever, and a bLength running past interfaceExtensionLength would read outside the
+           buffer, so validate before trusting any field. */
+        if ((descriptor.common->bLength < 2U) ||
+            ((uint32_t)length + descriptor.common->bLength > streamInterface->interfaceExtensionLength))
+        {
+            return kStatus_USB_Error;
+        }
+        if ((descriptor.common->bLength >= USB_DESCRIPTOR_LENGTH_INTERFACE) &&
+            (descriptor.common->bDescriptorType == USB_DESCRIPTOR_TYPE_INTERFACE))
         {
             break;
         }
@@ -149,13 +158,38 @@ static uint8_t USB_HostGetProperEndpointInterfaceInfo(usb_host_class_handle clas
 
     while (length < streamInterface->interfaceExtensionLength)
     {
-        if (descriptor.common->bDescriptorType == USB_DESCRIPTOR_TYPE_INTERFACE)
+        if ((descriptor.common->bLength < 2U) ||
+            ((uint32_t)length + descriptor.common->bLength > streamInterface->interfaceExtensionLength))
+        {
+            return kStatus_USB_Error;
+        }
+        if ((descriptor.common->bLength >= USB_DESCRIPTOR_LENGTH_INTERFACE) &&
+            (descriptor.common->bDescriptorType == USB_DESCRIPTOR_TYPE_INTERFACE))
         {
             alternate = descriptor.interface->bAlternateSetting;
             epCount   = descriptor.interface->bNumEndpoints;
-            while (epCount)
+            /* bNumEndpoints is device-supplied; no alternate setting can expose more endpoints than
+               the host stack tracks, and an unclamped count keeps the walk below running past the
+               end of interfaceExtension looking for endpoints that are not there. */
+            if (epCount > USB_HOST_CONFIG_INTERFACE_MAX_EP)
             {
-                if (descriptor.endpoint->bDescriptorType == USB_DESCRIPTOR_TYPE_ENDPOINT)
+                epCount = USB_HOST_CONFIG_INTERFACE_MAX_EP;
+            }
+            /* Step over the interface descriptor itself before looking for its endpoints. Doing this
+               unconditionally also keeps the outer walk moving when bNumEndpoints is 0, which used
+               to leave length and descriptor unchanged and hang here. */
+            length += descriptor.common->bLength;
+            descriptor.bufr += descriptor.common->bLength;
+
+            while ((epCount != 0U) && (length < streamInterface->interfaceExtensionLength))
+            {
+                if ((descriptor.common->bLength < 2U) ||
+                    ((uint32_t)length + descriptor.common->bLength > streamInterface->interfaceExtensionLength))
+                {
+                    return kStatus_USB_Error;
+                }
+                if ((descriptor.common->bLength >= USB_DESCRIPTOR_LENGTH_ENDPOINT) &&
+                    (descriptor.endpoint->bDescriptorType == USB_DESCRIPTOR_TYPE_ENDPOINT))
                 {
                     epTransactionsPerMicroFrame =
                         (((USB_SHORT_FROM_LITTLE_ENDIAN_DATA(descriptor.endpoint->wMaxPacketSize)) &
