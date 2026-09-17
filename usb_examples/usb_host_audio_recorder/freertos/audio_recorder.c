@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015-2016, Freescale Semiconductor, Inc.
- * Copyright 2016, 2018-2020 NXP
+ * Copyright 2016, 2018-2020, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -960,6 +960,16 @@ void USB_AudioTask(void *arg)
             g_audioRecorder.audioRecorderIsoMaxPacketSize =
                 (uint16_t)((USB_SHORT_FROM_LITTLE_ENDIAN_ADDRESS(g_pIsoEndpDesc->wMaxPacketSize) &
                             USB_DESCRIPTOR_ENDPOINT_MAXPACKETSIZE_SIZE_MASK));
+            /* wMaxPacketSize is declared by the device and its size field allows far more than
+               MAX_ISO_PACKET_SIZE, but it is used directly as the length of every stream-in
+               transfer into a MAX_ISO_PACKET_SIZE-byte buffer slot. Clamp it so an oversized
+               declaration cannot make the controller write past that slot. */
+            if (g_audioRecorder.audioRecorderIsoMaxPacketSize > MAX_ISO_PACKET_SIZE)
+            {
+                usb_echo("Warning: ISO in max packet size %d exceeds the %d-byte buffer, clamping.\r\n",
+                         g_audioRecorder.audioRecorderIsoMaxPacketSize, MAX_ISO_PACKET_SIZE);
+                g_audioRecorder.audioRecorderIsoMaxPacketSize = MAX_ISO_PACKET_SIZE;
+            }
             g_audioRecorder.runState     = kUSB_HostAudioRunIdle;
             g_audioRecorder.runWaitState = kUSB_HostAudioRunWaitAudioSetCurSamplingFreq;
             if ((AUDIO_DEVICE_VERSION_02 == g_audioRecorder.deviceAudioVersion))
