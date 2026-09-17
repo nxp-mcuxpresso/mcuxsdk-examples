@@ -9,3 +9,5 @@ both go active while the input is asserted, inactive when it is released.
 
 ## Supported Boards
 - FRDM-IMXRT1152
+- MIMXRT2660-EVK
+

@@ -12,3 +12,4 @@ io_expander_interrupt_demo:
         - examples/_boards/${board}/component_examples/io_expander/interrupt_demo/example_board_readme.md
   boards:
     frdmimxrt1152: []
+    mimxrt2660evk: []
