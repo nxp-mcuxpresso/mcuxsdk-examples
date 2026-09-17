@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016, Freescale Semiconductor, Inc.
- * Copyright 2016 NXP
+ * Copyright 2016, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -339,6 +339,13 @@
 
 /*! DataLength : Data length of communication feature. */
 #define RNDIS_MAX_EXPECTED_COMMAND_SIZE (76U)
+
+/*! Byte offset of RequestID within a RNDIS SET/QUERY message (MessageType + MessageLength).
+ * informationBufferOffset in RNDIS_SET_MSG is defined relative to RequestID, so any bounds
+ * check of that host-supplied offset against the RNDIS_MAX_EXPECTED_COMMAND_SIZE-byte
+ * s_rndisCommand buffer must account for this fixed header offset.
+ */
+#define RNDIS_SET_MSG_DATA_OFFSET (8U)
 
 /*! This is the maximum observed command size we get on control endpoint --
  * Memory for commands is allocated at initialization, instead of
