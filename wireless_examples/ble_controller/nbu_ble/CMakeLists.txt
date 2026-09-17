@@ -53,10 +53,11 @@ mcux_add_iar_configuration(
     LD "--semihosting"
 )
 
+# Keep release optimization, add debug symbols to the ELF (not loaded into the bin).
 mcux_add_iar_configuration(
     TARGETS  release
-    CC "-Oh"
-    CX "-Oh"
+    CC "-Oh --debug"
+    CX "-Oh --debug"
 )
 
 mcux_add_armgcc_configuration(
@@ -69,8 +70,8 @@ mcux_add_armgcc_configuration(
 
 mcux_add_armgcc_configuration(
     TARGETS release
-    CC "-Os"
-    CX "-Os"
+    CC "-Os -g"
+    CX "-Os -g"
 )
 
 mcux_add_linker_symbol(
