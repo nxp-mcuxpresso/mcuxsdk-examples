@@ -18,7 +18,8 @@ Prepare the Demo
     - No parity
     - One stop bit
     - No flow control
-3.  Build the project, the project uses RaspberryPi by default, to use other panels,
+3.  Build the project, the project uses the RK055MHD091A0-CTG (RK055HDMIPI4MA0)
+MIPI panel by default (DEMO_PANEL 2), to use other panels,
 set the coresponding panel DEMO_PANEL_xxx(without '_SUPPORT') to y in prj.conf under board example folder before project generation.
 The supported panels can be found in examples\_boards\<board>\project_segments\display_support\Kconfig.prjseg.
 Or change the macro DEMO_PANEL in mcux_config.h of the project,
