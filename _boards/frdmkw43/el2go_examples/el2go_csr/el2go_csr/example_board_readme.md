@@ -19,7 +19,7 @@ The table below lists example flash memory addresses where the CSR and X.509 cer
 
 | Module | Start Address | Size |
 |--------------|-------------|-------------|
-| `littleFS` | 0x0013C000 | 8 kB * 32 |
+| `littleFS` | 0x0013C000 | 8 kB * 8 |
 | `X.509 certificate storage` | 0x0017A000 | X509_SIZE |
 | `CSR generation` | 0x0017C000 | CSR_SIZE |
 | `Configuration Block` | 0x0017FF80 | CONFIG_BLOCK_SIZE |
