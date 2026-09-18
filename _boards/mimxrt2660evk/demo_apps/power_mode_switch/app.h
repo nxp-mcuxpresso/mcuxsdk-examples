@@ -76,29 +76,32 @@
 #define APP_RTC_ALARM_OFFSET_S  10U                 /* 10 second alarm offset */
 
 /*
- * WAKE domain eDMA3 channel 0: drives the DMA-request wakeup demo.  Channel 0
- * runs a memory-to-memory copy inside WAKE_SS_SRAM (0x2600_0000..0x2600_1FFF,
- * 8 KB) paced by WAKE_LPTMR_0: each LPTMR compare raises a DMA request (Table 19
- * source index 31, the index encoded in kPOWER_WakeupWakeDma_Lptmr0) that serves
- * one eDMA minor loop, so the transfer advances across the sleep interval and the
- * channel signals completion after APP_DMA_MAJOR_LOOPS ticks.  The channel-mux
- * request source and the LPTMR->eDMA request generation are [hw-defer].
- * WAKE_EDMA3_CH0_IRQn = 208 (channel completion IRQ / "wake on complete" source).
+ * WAKE domain eDMA3 channel 0: drives the DMA-request wakeup demo. Channel 0
+ * runs a single-shot memory-to-memory copy inside WAKE_SS_SRAM
+ * (0x2600_0000..0x2600_1FFF, 8 KB), triggered by one WAKE_LPTMR_0 compare
+ * (Table 19 source index 31, the index encoded in kPOWER_WakeupWakeDma_Lptmr0):
+ * the whole APP_DMA_XFER_BYTES transfer is one eDMA minor loop, so that single
+ * request moves all of it and the channel signals completion right away. The
+ * channel-mux request source and the LPTMR->eDMA request generation are
+ * [hw-defer].
+ *
+ * Two wakeup sources must be armed together: kPOWER_WakeupWakeDma_Lptmr0 wakes
+ * CMC2 so WAKE_LPTMR_0 can run and drive the DMA; kPOWER_WakeupIrq_WakeEdma3Ch0
+ * wakes CMC0 (CPU) via WAKE_EDMA3_CH0_IRQn once the transfer completes. Arming
+ * only one leaves either the DMA never running, or the CPU never woken.
  */
 #define APP_WAKE_EDMA_BASE      WAKE__EDMA3
 #define APP_WAKE_EDMA_CHANNEL   0U
 #define APP_WAKE_EDMA_IRQ       WAKE_EDMA3_CH0_IRQn /* 208 */
 #define APP_WAKE_EDMA_IRQ_HANDLER WAKE_EDMA3_CH0_IRQHandler
-#define APP_WAKE_EDMA_REQ_LPTMR0  31U              /* channel-mux request source [hw-defer] */
+#define APP_WAKE_EDMA_REQ_LPTMR0  7U              /* WAKE_EDMA3 channel-mux slot for WAKE_LPTMR_0 */
 
 /* m2m buffers inside WAKE_SS_SRAM (src in the first 4 KB, dst in the second). */
 #define APP_WAKE_SS_SRAM_BASE   0x26000000U
 #define APP_DMA_SRC_ADDR        (APP_WAKE_SS_SRAM_BASE + 0x0000U)
 #define APP_DMA_DST_ADDR        (APP_WAKE_SS_SRAM_BASE + 0x1000U)
-#define APP_DMA_MINOR_BYTES     32U                /* bytes moved per LPTMR request */
-#define APP_DMA_MAJOR_LOOPS     8U                 /* minor loops (= LPTMR ticks) */
-#define APP_DMA_XFER_BYTES      (APP_DMA_MINOR_BYTES * APP_DMA_MAJOR_LOOPS)
-#define APP_WAKE_LPTMR_DMA_MS   200U               /* WAKE_LPTMR_0 DMA-request period */
+#define APP_DMA_XFER_BYTES      256U               /* moved in one shot by the single LPTMR request */
+#define APP_WAKE_LPTMR_DMA_MS   5000U               /* delay before WAKE_LPTMR_0 fires its one DMA request */
 
 /*
  * AON GPIO wakeup button - SW5 = PIO0_4 (VBAT/AON domain, VDD_CORE_AON/VDD_1V8_AON).
@@ -118,9 +121,119 @@
 #define APP_AON_GPIO_IRQ_HANDLER VBAT_GPIO_CH0_IRQHandler
 #define APP_AON_GPIO_NAME       "SW5"
 
+/*
+ * Bit flags for which low-power modes a wakeup source's hardware domain
+ * supports. Mirrors the bit positions of power_mode_switch.h's APP_LP_* codes
+ * (1=Sleep, 2=DS1, 3=DS2, 4=DS3, 5=PD, 6=DPD1, 7=DPD2), defined independently
+ * here (not via that header's APP_M() macro) because app.h must not depend on
+ * the shared example header - only the reverse direction is allowed.
+ */
+#define APP_WAKEUP_MODE_SLEEP  (1U << 1)
+#define APP_WAKEUP_MODE_DS1    (1U << 2)
+#define APP_WAKEUP_MODE_DS     ((1U << 2) | (1U << 3) | (1U << 4))
+#define APP_WAKEUP_MODE_PD     (1U << 5)
+#define APP_WAKEUP_MODE_DPD    ((1U << 6) | (1U << 7))
 
-#define APP_PRINT_MEASURED_CLOCKS 0
+/*
+ * One code per physical wakeup source.  Sync vs async edge detection is NOT
+ * enumerated here: it is selected internally by the low-power mode (Sleep =
+ * synchronous; Deep Sleep / Power Down = async / clock-less).
+ */
+#define APP_WAKEUP_UART             0U    /*!< HSP LPUART0 RX (Sleep only: RX-full interrupt; the DS
+                                               RX-active-edge wake path produces no wakeup on silicon). */
+#define APP_WAKEUP_WAKE_GPIO        1U    /*!< WAKE GPIO / SW6 (PIO1_0); Sleep, DS 1/2/3, PD.       */
+#define APP_WAKEUP_AON_GPIO         2U    /*!< AON GPIO / SW5 (PIO0_4); Sleep, DS 1/2/3, PD, DPD.   */
+#define APP_WAKEUP_LPTMR            3U    /*!< VBAT LPTMR; Sleep, DS 1/2/3, PD, DPD.                */
+#define APP_WAKEUP_RTC              4U    /*!< VBAT RTC alarm; Sleep, DS 1/2/3, PD, DPD (VBAT domain). */
+#define APP_WAKEUP_DMA_WAKE         5U    /*!< WAKE eDMA3 CH0 m2m; completion wakes. Sleep, DS1 only. */
+#define APP_WAKEUP_NONE             0xFFU /*!< No wakeup source (DPD auto-wake, or back/cancel).    */
 
+/*!
+ * @brief Descriptor for one wakeup source, indexed by APP_WAKEUP_* code.
+ *
+ * Single source of truth for a source's display name plus its board-level
+ * enable/disable functions (defined in hardware_init.c).  Those functions own
+ * the NVIC EnableIRQ/DisableIRQ and POWER_Enable/DisableWakeupSource calls for
+ * every IRQ/POWERCON-mask pair this source needs - not just the peripheral-
+ * specific arm/disarm bits - because some sources (e.g. DMA) need more than
+ * one such pair and a single irq/powerSrc field here could not represent that.
+ * Which demo low-power modes each source supports is @ref modes, a bitmask of
+ * APP_WAKEUP_MODE_*.
+ */
+typedef struct
+{
+    const char *name;      /*!< Display name (log line + Level 2 menu).      */
+    void (*enable)(void);  /*!< Full arm: peripheral bits + EnableIRQ(s) + POWER_EnableWakeupSource(s). */
+    void (*disable)(void); /*!< Full disarm, reverse order of enable().      */
+    uint8_t     modes;     /*!< Supported LP modes: bitmask of APP_WAKEUP_MODE_*. */
+} app_wakeup_source_t;
+
+/*
+ * Per-source enable/disable functions are defined in hardware_init.c; forward-declared
+ * here so the descriptor table below can reference them.  BOARD_EnableDma()/
+ * BOARD_DisableDma() (the shared eDMA transfer setup) are internal to
+ * hardware_init.c - not declared here - since only BOARD_EnableDmaWake() calls them.
+ */
+void BOARD_EnableWakeGpio(void);
+void BOARD_DisableWakeGpio(void);
+void BOARD_EnableAonGpio(void);
+void BOARD_DisableAonGpio(void);
+void BOARD_EnableLptmr(void);
+void BOARD_DisableLptmr(void);
+void BOARD_EnableUart(void);
+void BOARD_DisableUart(void);
+void BOARD_EnableRtc(void);
+void BOARD_DisableRtc(void);
+void BOARD_EnableDmaWake(void);
+void BOARD_DisableDmaWake(void);
+
+/*!
+ * Per-source wakeup descriptor table, indexed by APP_WAKEUP_* code.
+ */
+static const app_wakeup_source_t APP_WAKEUP_SOURCES[] = {
+    [APP_WAKEUP_UART]      = {
+      "UART RX",
+      BOARD_EnableUart,
+      BOARD_DisableUart,
+      APP_WAKEUP_MODE_SLEEP
+    },
+    [APP_WAKEUP_WAKE_GPIO] = {
+      "WAKE GPIO / SW6",
+      BOARD_EnableWakeGpio,
+      BOARD_DisableWakeGpio,
+      APP_WAKEUP_MODE_SLEEP | APP_WAKEUP_MODE_DS | APP_WAKEUP_MODE_PD
+    },
+    [APP_WAKEUP_AON_GPIO]  = {
+      "AON GPIO / SW5",
+      BOARD_EnableAonGpio,
+      BOARD_DisableAonGpio,
+      APP_WAKEUP_MODE_SLEEP | APP_WAKEUP_MODE_DS | APP_WAKEUP_MODE_PD | APP_WAKEUP_MODE_DPD
+    },
+    [APP_WAKEUP_LPTMR]     = {
+      "VBAT LPTMR",
+      BOARD_EnableLptmr,
+      BOARD_DisableLptmr,
+      APP_WAKEUP_MODE_SLEEP | APP_WAKEUP_MODE_DS | APP_WAKEUP_MODE_PD | APP_WAKEUP_MODE_DPD
+    },
+    [APP_WAKEUP_RTC]       = {
+      "RTC alarm",
+      BOARD_EnableRtc,
+      BOARD_DisableRtc,
+      APP_WAKEUP_MODE_SLEEP | APP_WAKEUP_MODE_DS | APP_WAKEUP_MODE_PD | APP_WAKEUP_MODE_DPD
+    },
+    /* DMA (wake on complete): eDMA CH0 completion is the armed wakeup. Sleep and
+     * Deep Sleep 1 only - both keep the WAKE domain (and its eDMA3/LPTMR) alive. */
+    [APP_WAKEUP_DMA_WAKE]  = {
+      "DMA (wake on complete)",
+      BOARD_EnableDmaWake,
+      BOARD_DisableDmaWake,
+      APP_WAKEUP_MODE_SLEEP | APP_WAKEUP_MODE_DS1
+    },
+};
+#define APP_WAKEUP_SOURCE_COUNT \
+    ((uint8_t)(sizeof(APP_WAKEUP_SOURCES) / sizeof(APP_WAKEUP_SOURCES[0])))
+
+#define APP_PRINT_DEBUG_INFO 0
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -131,6 +244,12 @@ void BOARD_InitHardware(void);
  * before arming the retention marker. */
 void BOARD_InitVbatSram(void);
 
+/*! @brief Arm the VBAT_SRAM marker + pattern before a DPD1 entry. */
+void BOARD_EnableVbatSram(void);
+
+/*! @brief On boot after a DPD1 wake, report whether the VBAT_SRAM marker + pattern survived. */
+void BOARD_VbatSramReport(void);
+
 /*
  * Persistent boot-context markers stored in VBATCON GPRs. VBATCON is in the
  * always-on VBAT domain, so its GPRs survive every Power Down / Deep Power Down
@@ -139,7 +258,7 @@ void BOARD_InitVbatSram(void);
  * wakeup source was actually enabled for a given entry; these markers close that
  * gap. Written just before a non-returning POWER_Enter*() call in
  * power_mode_switch.c and consumed (read-and-cleared) on the next boot by
- * APP_HandleWakeupAfterReset() / main(). Defined in hardware_init.c.
+ * BOARD_HandleWakeupAfterReset() / main(). Defined in hardware_init.c.
  */
 #define BOARD_DPD_VARIANT_DPD2 0U
 #define BOARD_DPD_VARIANT_DPD1 1U
@@ -149,9 +268,17 @@ uint32_t BOARD_GetAndClearDpdVariantMarker(void);
 void     BOARD_SetEnabledWakeupMarker(uint8_t wakeupSrc);
 uint8_t  BOARD_GetAndClearEnabledWakeupMarker(void);
 
-/* Handshake routing config defined in the shared example (power_mode_switch.h/.c).
+/*!
+ * @brief Acknowledge a Power Down / Deep Power Down wake at boot.
+ *
+ * @return true if this boot was a Deep Power Down wake (DPD1 or DPD2); false
+ *         otherwise (Power Down wake or a cold / non-low-power reset).
+ */
+bool BOARD_HandleWakeupAfterReset(void);
+
+/* Handshake routing config defined in the shared example (power_mode_switch_tables.c).
  * BOARD_InitHardware() applies this via POWER_SetHandshakeRouting() as the last bring-up step
  * (after BOARD_CommonSetting() already applied POWER_SetPolicy() with POR-default routing). */
-extern power_handshake_routing_config_t s_handshakeRoutingCfg;
+extern power_handshake_routing_config_t g_handshakeRoutingCfg;
 
 #endif /* _APP_H_ */

@@ -421,15 +421,12 @@ void BOARD_ConfigMPU(void)
 void BOARD_CommonSetting(void)
 {
 #if defined(BOARD_USE_PF9453) && BOARD_USE_PF9453
-    /* MUST run before POWER_SetPolicy()/BOARD_InitBootClocks() ramps the core to HP - VDD_CORE
+    /* MUST run before POWER_Init()/BOARD_InitBootClocks() ramps the core to HP - VDD_CORE
      * must already be at its HP set point when that ramp happens. */
     BOARD_InitPmicSupply();
 #endif
     BOARD_ConfigMPU();
-    power_policy_config_t powerPolicyCfg;
-    POWER_GetDefaultPolicyConfig(&powerPolicyCfg);
-    powerPolicyCfg.handshakeRouting = NULL;
-    POWER_SetPolicy(&powerPolicyCfg);
+    POWER_Init();
     BOARD_InitBootClocks();
     BOARD_ConfigTRDC();
     BOARD_InitDEBUG_UARTPins();

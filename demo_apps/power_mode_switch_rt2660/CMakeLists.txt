@@ -14,6 +14,8 @@ mcux_add_configuration(
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}/examples
     SOURCES demo_apps/power_mode_switch_rt2660/power_mode_switch.c
+            demo_apps/power_mode_switch_rt2660/power_mode_switch_tables.c
+            demo_apps/power_mode_switch_rt2660/power_mode_switch_debug.c
             demo_apps/power_mode_switch_rt2660/power_mode_switch.h
 )
 

@@ -6,22 +6,24 @@ This demo exercises all 10 power modes supported by the RT2660:
 
 | # | Mode name | Key | Category | Returns? |
 |---|-----------|-----|----------|----------|
-| 1 | Over Drive Run FBB | A | Run | — |
-| 2 | Normal Drive Run FBB | B | Run | — |
-| 3 | Normal Drive Run ZBB | C | Run | — |
-| 4 | Sleep | S | Standby | Yes |
-| 5 | Deep Sleep 1 | D | Standby | Yes |
-| 6 | Deep Sleep 2 | E | Standby | Yes |
-| 7 | Deep Sleep 3 | F | Standby | Yes |
-| 8 | Power Down | P | Standby | No (PoR) |
-| 9 | Deep Power Down 1 | G | Standby | No (PoR) |
-| 10 | Deep Power Down 2 | H | Standby | No (PoR) |
+| 1 | Normal Run (0.8 V/FBB, 800 MHz) | 1 | Run | — |
+| 2 | HP Run (0.9 V/FBB, 1 GHz) | 2 | Run | — |
+| 3 | Low Performance Run (0.8 V/ZBB, 600 MHz) | 3 | Run | — |
+| 4 | Sleep | 4 | Standby | Yes |
+| 5 | Deep Sleep 1 | 5 | Standby | Yes |
+| 6 | Deep Sleep 2 | 6 | Standby | Yes |
+| 7 | Deep Sleep 3 | 7 | Standby | No (reset) |
+| 8 | Power Down | 8 | Standby | No (PoR) |
+| 9 | Deep Power Down 1 | 9 | Standby | No (PoR) |
+| 10 | Deep Power Down 2 | A | Standby | No (PoR) |
 
 A menu-driven console interface lets the user select the target mode. After
-each Sleep or Deep Sleep entry the example reports the wakeup event and
-returns to the menu. After Power Down or Deep Power Down the system resets;
-the boot reason is detected by reading the CMC reset-status register at
-startup and the appropriate message is printed.
+a Sleep or Deep Sleep 1/2 entry the example reports the wakeup event and
+returns to the menu. Deep Sleep 3 powers off the CPU domain itself (see the
+mode table in power_mode_switch_tables.c), so like Power Down / Deep Power
+Down it cannot resume in place - wakeup triggers a reset instead, and the
+boot reason is detected by reading the RESETCON sticky reset-status register
+at startup and the appropriate message is printed.
 
 ## Driver Stack
 
@@ -44,7 +46,7 @@ fsl_power (coordinator — this example)
 | `POWER_EnterLpRun()` | Switch to Low Power Run (0.8 V, ZBB) |
 | `POWER_EnableWakeupSource()` | Accumulate wakeup source before standby entry |
 | `POWER_EnterSleep()` | Enter Sleep; returns on wakeup |
-| `POWER_EnterDeepSleep()` | Enter Deep Sleep 1/2/3; returns on wakeup |
+| `POWER_EnterDeepSleep()` | Enter Deep Sleep 1/2/3; DS1/DS2 return on wakeup, DS3 resets (CPU domain is off) |
 | `POWER_EnterPowerDown()` | Enter Power Down; does not return |
 | `POWER_EnterDeepPowerDown()` | Enter Deep Power Down 1/2; does not return |
 
