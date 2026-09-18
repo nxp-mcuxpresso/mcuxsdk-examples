@@ -251,8 +251,26 @@ void USB_HostHidGenericTask(void *param)
         case kUSB_HostHidRunSetInterfaceDone: /* 2. hid set idle */
             genericInstance->inMaxPacketSize =
                 USB_HostHidGetPacketsize(genericInstance->classHandle, USB_ENDPOINT_INTERRUPT, USB_IN);
+            /* inMaxPacketSize is the device's own wMaxPacketSize, which the class driver only
+               masks to 11 bits, so it can be as large as 2047 while the buffer it is used with holds
+               HID_GENERIC_IN_BUFFER_SIZE bytes. Clamp it here, where it enters the application, so every
+               transfer length and buffer index derived from it below stays inside that buffer.
+               USB_HostHidGenericProcessBuffer() also writes a terminator at
+               genericInBuffer[inMaxPacketSize], so one byte is reserved for it. */
+            if (genericInstance->inMaxPacketSize > (HID_GENERIC_IN_BUFFER_SIZE - 1U))
+            {
+                genericInstance->inMaxPacketSize = (HID_GENERIC_IN_BUFFER_SIZE - 1U);
+            }
             genericInstance->outMaxPacketSize =
                 USB_HostHidGetPacketsize(genericInstance->classHandle, USB_ENDPOINT_INTERRUPT, USB_OUT);
+            /* outMaxPacketSize is the device's own wMaxPacketSize, which the class driver only
+               masks to 11 bits, so it can be as large as 2047 while the buffer it is used with holds
+               HID_GENERIC_IN_BUFFER_SIZE bytes. Clamp it here, where it enters the application, so every
+               transfer length and buffer index derived from it below stays inside that buffer. */
+            if (genericInstance->outMaxPacketSize > HID_GENERIC_IN_BUFFER_SIZE)
+            {
+                genericInstance->outMaxPacketSize = HID_GENERIC_IN_BUFFER_SIZE;
+            }
 
             /* first: set idle */
             genericInstance->runWaitState = kUSB_HostHidRunWaitSetIdle;

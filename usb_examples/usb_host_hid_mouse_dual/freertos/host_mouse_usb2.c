@@ -258,6 +258,14 @@ void USB_HostHidMouseTask_2(void *param)
         case kUSB_HostHidRunSetInterfaceDone: /* 2. hid set idle */
             mouseInstance->maxPacketSize =
                 USB_HostHidGetPacketsize(mouseInstance->classHandle, USB_ENDPOINT_INTERRUPT, USB_IN);
+            /* maxPacketSize is the device's own wMaxPacketSize, which the class driver only
+               masks to 11 bits, so it can be as large as 2047 while the buffer it is used with holds
+               HID_BUFFER_SIZE_USB2 bytes. Clamp it here, where it enters the application, so every
+               transfer length and buffer index derived from it below stays inside that buffer. */
+            if (mouseInstance->maxPacketSize > HID_BUFFER_SIZE_USB2)
+            {
+                mouseInstance->maxPacketSize = HID_BUFFER_SIZE_USB2;
+            }
 
             /* first: set idle */
             mouseInstance->runWaitState = kUSB_HostHidRunWaitSetIdle;

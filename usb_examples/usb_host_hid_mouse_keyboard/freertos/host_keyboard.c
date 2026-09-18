@@ -336,6 +336,14 @@ void USB_HostHidKeyboardTask(void *param)
         case kUSB_HostHidRunSetInterfaceDone: /* 2. hid set idle */
             keyboardInstance->maxPacketSize =
                 USB_HostHidGetPacketsize(keyboardInstance->classHandle, USB_ENDPOINT_INTERRUPT, USB_IN);
+            /* maxPacketSize is the device's own wMaxPacketSize, which the class driver only
+               masks to 11 bits, so it can be as large as 2047 while the buffer it is used with holds
+               HID_BUFFER_SIZE bytes. Clamp it here, where it enters the application, so every
+               transfer length and buffer index derived from it below stays inside that buffer. */
+            if (keyboardInstance->maxPacketSize > HID_BUFFER_SIZE)
+            {
+                keyboardInstance->maxPacketSize = HID_BUFFER_SIZE;
+            }
 
             /* first: set idle */
             keyboardInstance->runWaitState = kUSB_HostHidRunWaitSetIdle;

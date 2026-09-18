@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016, 2018 NXP
+ * Copyright 2016, 2018, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -168,8 +168,16 @@ void USB_KeypadTask(void *arg)
 
         case kUSB_HostHidRunSetInterfaceDone:
             g_keypad.maxPacketSize = USB_HostHidGetPacketsize(g_keypad.classHandle, USB_ENDPOINT_INTERRUPT, USB_IN);
-            g_keypad.runWaitState  = kUSB_HostHidRunWaitDataReceived;
-            g_keypad.runState      = kUSB_HostHidRunIdle;
+            /* maxPacketSize is the device's own wMaxPacketSize, which the class driver only
+               masks to 11 bits, so it can be as large as 2047 while the buffer it is used with holds
+               HID_BUFFER_SIZE bytes. Clamp it here, where it enters the application, so every
+               transfer length and buffer index derived from it below stays inside that buffer. */
+            if (g_keypad.maxPacketSize > HID_BUFFER_SIZE)
+            {
+                g_keypad.maxPacketSize = HID_BUFFER_SIZE;
+            }
+            g_keypad.runWaitState = kUSB_HostHidRunWaitDataReceived;
+            g_keypad.runState     = kUSB_HostHidRunIdle;
             if (USB_HostHidRecv(g_keypad.classHandle, g_keypad.keypadBuffer, g_keypad.maxPacketSize, Hid_InCallback,
                                 &g_keypad) != kStatus_USB_Success)
             {
