@@ -1602,6 +1602,28 @@ static void PHDC_ManagerRecvComplete(void *param)
     host_phdc_manager_instance_t *phdcManagerInstance = (host_phdc_manager_instance_t *)param;
     /* workaround */
     apdu_t *apdu = (apdu_t *)&phdcManagerInstance->recvDataBuffer[0];
+
+    /* choice and length are the first four bytes, and recvDataBuffer keeps the bytes of the previous
+       APDU (it is only cleared once, before the first receive is primed). A transfer shorter than
+       the header would therefore take choice from that residue and dispatch on an APDU the device
+       never sent. */
+    if (phdcManagerInstance->recvDataLength < APDU_HEADER_SIZE)
+    {
+        usb_echo("\n\r11073Manager: APDU shorter than its header, ignoring.");
+        return;
+    }
+
+    /* apdu->length is the device's own count of the bytes that follow the header, and it is what
+       every parser reached from this switch uses to walk the payload. Confirm it lies inside the
+       bytes this transfer actually delivered, so none of those parsers can walk into the residue
+       behind them. */
+    if ((uint32_t)USB_SHORT_FROM_BIG_ENDIAN(apdu->length) >
+        (phdcManagerInstance->recvDataLength - APDU_HEADER_SIZE))
+    {
+        usb_echo("\n\r11073Manager: APDU length exceeds the received data, ignoring.");
+        return;
+    }
+
     /* APDU processing */
     switch (USB_SHORT_FROM_BIG_ENDIAN(apdu->choice))
     {
@@ -1772,11 +1794,16 @@ static void PHDC_ManagerBulkInCallback(void *param, uint8_t *data, uint32_t data
         {
             if (status == kStatus_USB_Success)
             {
-                phdcManagerInstance->runState = kUSB_HostPhdcRunDataReceived;
+                /* Every length and count the APDU parsers below read comes from the device itself.
+                   Remember how many bytes this transfer actually delivered so they can be checked
+                   against it, instead of against the size of recvDataBuffer. */
+                phdcManagerInstance->recvDataLength = dataLength;
+                phdcManagerInstance->runState       = kUSB_HostPhdcRunDataReceived;
             }
             else
             {
-                phdcManagerInstance->runState = kUSB_HostPhdcRunPrimeDataReceive;
+                phdcManagerInstance->recvDataLength = 0U;
+                phdcManagerInstance->runState       = kUSB_HostPhdcRunPrimeDataReceive;
             }
         }
     }

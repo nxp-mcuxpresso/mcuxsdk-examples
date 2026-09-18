@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016, 2018 NXP
+ * Copyright 2016, 2018, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -68,6 +68,7 @@ typedef struct _host_phdc_manager_instance
     uint8_t configObjectList[APDU_MAX_BUFFER_SIZE]; /*!< configuration object list */
     uint8_t *sendDataBuffer;                        /*!< use to send application protocol data unit */
     uint8_t *recvDataBuffer;                        /*!< use to receive application protocol data unit */
+    uint32_t recvDataLength;                        /*!< number of bytes the device actually sent in recvDataBuffer */
 } host_phdc_manager_instance_t;
 
 /*! @brief host app run status */
