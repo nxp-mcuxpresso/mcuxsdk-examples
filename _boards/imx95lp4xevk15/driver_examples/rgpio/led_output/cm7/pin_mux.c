@@ -40,7 +40,7 @@ BOARD_InitPins:
 - pin_list:
   - {pin_num: P44, peripheral: LPUART3, signal: lpuart_rx, pin_signal: GPIO_IO15, PD: ENABLED, FSEL1: SLIGHTLY_FAST_SLEW_RATE}
   - {pin_num: N51, peripheral: LPUART3, signal: lpuart_tx, pin_signal: GPIO_IO14, PD: ENABLED, FSEL1: SLIGHTLY_FAST_SLEW_RATE}
-  - {pin_num: N49, peripheral: GPIO2, signal: 'gpio_io_bit, 13', pin_signal: GPIO_IO13, PD: ENABLED}
+  - {pin_num: K52, peripheral: GPIO2, signal: 'gpio_io_bit, 3', pin_signal: GPIO_IO03, PD: ENABLED}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -51,8 +51,8 @@ BOARD_InitPins:
  *
  * END ****************************************************************************************************************/
 void BOARD_InitPins(void) {                                /*!< Function assigned for the core: Cortex-M7F[cm7] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO13__GPIO2_IO_BIT13, 0U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO13__GPIO2_IO_BIT13, 
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO03__GPIO2_IO_BIT3, 0U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO03__GPIO2_IO_BIT3, 
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
