@@ -106,7 +106,9 @@ int main(void)
     adcConfig.enableInDozeMode = false;
     adcConfig.enableAnalogPreliminary = true;
     adcConfig.powerUpDelay            = 0x80U;
-    adcConfig.referenceVoltageSource  = DEMO_LPADC_VREF_SOURCE;
+#if !(defined(FSL_FEATURE_LPADC_HAS_CFG_REFSEL) && (FSL_FEATURE_LPADC_HAS_CFG_REFSEL == 0U))
+    adcConfig.referenceVoltageSource = DEMO_LPADC_VREF_SOURCE;
+#endif /* !(defined(FSL_FEATURE_LPADC_HAS_CFG_REFSEL) && (FSL_FEATURE_LPADC_HAS_CFG_REFSEL == 0U)) */
     adcConfig.triggerPriorityPolicy   = kLPADC_ConvPreemptImmediatelyNotAutoResumed;
     adcConfig.enableConvPause         = false;
     adcConfig.convPauseDelay          = 0U;

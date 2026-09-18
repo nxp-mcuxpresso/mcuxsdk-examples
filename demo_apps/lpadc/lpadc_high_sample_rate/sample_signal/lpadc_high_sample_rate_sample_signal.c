@@ -88,7 +88,9 @@ static void DEMO_ADCInit(void)
 #else
     adcConfig.FIFOWatermark = 0x7U;
 #endif /* (defined(FSL_FEATURE_LPADC_FIFO_COUNT) && (FSL_FEATURE_LPADC_FIFO_COUNT == 2)) */
+#if !(defined(FSL_FEATURE_LPADC_HAS_CFG_REFSEL) && (FSL_FEATURE_LPADC_HAS_CFG_REFSEL == 0U))
     adcConfig.referenceVoltageSource = DEMO_LPADC_VREF_SOURCE;
+#endif /* !(defined(FSL_FEATURE_LPADC_HAS_CFG_REFSEL) && (FSL_FEATURE_LPADC_HAS_CFG_REFSEL == 0U)) */
     LPADC_Init(DEMO_LPADC_BASE, &adcConfig);
 
     /* Request LPADC calibration. */

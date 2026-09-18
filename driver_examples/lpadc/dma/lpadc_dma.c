@@ -124,9 +124,11 @@ static void ADC_Configuration(void)
     lpadcConfigStruct.powerLevelMode = kLPADC_PowerLevelAlt4;
 #endif /* FSL_FEATURE_LPADC_HAS_CFG_PWRSEL */
     lpadcConfigStruct.enableAnalogPreliminary = true;
+#if !(defined(FSL_FEATURE_LPADC_HAS_CFG_REFSEL) && (FSL_FEATURE_LPADC_HAS_CFG_REFSEL == 0U))
 #if defined(DEMO_LPADC_VREF_SOURCE)
     lpadcConfigStruct.referenceVoltageSource = DEMO_LPADC_VREF_SOURCE;
 #endif /* DEMO_LPADC_VREF_SOURCE */
+#endif /* !(defined(FSL_FEATURE_LPADC_HAS_CFG_REFSEL) && (FSL_FEATURE_LPADC_HAS_CFG_REFSEL == 0U)) */
 #if (defined(FSL_FEATURE_LPADC_FIFO_COUNT) && (FSL_FEATURE_LPADC_FIFO_COUNT == 2))
     lpadcConfigStruct.FIFO0Watermark = DEMO_CADC_SAMPLE_COUNT - 1U;
     lpadcConfigStruct.FIFO1Watermark = 0U;

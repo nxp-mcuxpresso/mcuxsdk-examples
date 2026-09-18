@@ -178,9 +178,11 @@ static void ADC_Configuration(void)
 #endif /* FSL_FEATURE_LPADC_HAS_CFG_PWRSEL */
     lpadcConfigStruct.enableAnalogPreliminary = true;
     lpadcConfigStruct.powerUpDelay            = 0x10U;
+#if !(defined(FSL_FEATURE_LPADC_HAS_CFG_REFSEL) && (FSL_FEATURE_LPADC_HAS_CFG_REFSEL == 0U))
 #if defined(DEMO_LPADC_VREF_SOURCE)
     lpadcConfigStruct.referenceVoltageSource = DEMO_LPADC_VREF_SOURCE;
 #endif /* DEMO_LPADC_VREF_SOURCE */
+#endif /* !(defined(FSL_FEATURE_LPADC_HAS_CFG_REFSEL) && (FSL_FEATURE_LPADC_HAS_CFG_REFSEL == 0U)) */
     lpadcConfigStruct.enableInDozeMode = true;
     LPADC_Init(DEMO_LPADC_BASE, &lpadcConfigStruct);
 

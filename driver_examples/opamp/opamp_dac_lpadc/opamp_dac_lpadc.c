@@ -144,7 +144,9 @@ void DEMO_DoLpadcConfig(void)
     /* Do LPADC configuration. */
     LPADC_GetDefaultConfig(&mLpadcConfigStruct);
     mLpadcConfigStruct.enableAnalogPreliminary = true;
-    mLpadcConfigStruct.referenceVoltageSource  = DEMO_LPADC_VREF_SOURCE;
+#if !(defined(FSL_FEATURE_LPADC_HAS_CFG_REFSEL) && (FSL_FEATURE_LPADC_HAS_CFG_REFSEL == 0U))
+    mLpadcConfigStruct.referenceVoltageSource = DEMO_LPADC_VREF_SOURCE;
+#endif /* !(defined(FSL_FEATURE_LPADC_HAS_CFG_REFSEL) && (FSL_FEATURE_LPADC_HAS_CFG_REFSEL == 0U)) */
 #if (defined(FSL_FEATURE_LPADC_HAS_CTRL_CAL_AVGS) && FSL_FEATURE_LPADC_HAS_CTRL_CAL_AVGS)
     mLpadcConfigStruct.conversionAverageMode = kLPADC_ConversionAverage128;
 #endif /* (defined(FSL_FEATURE_LPADC_HAS_CTRL_CAL_AVGS) && FSL_FEATURE_LPADC_HAS_CTRL_CAL_AVGS) */

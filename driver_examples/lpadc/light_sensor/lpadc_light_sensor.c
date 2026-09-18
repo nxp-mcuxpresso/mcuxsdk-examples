@@ -72,7 +72,9 @@ static void DEMO_LPADCInit(void)
     mLpadcConfigStruct.powerLevelMode = kLPADC_PowerLevelAlt4;
 #endif /* FSL_FEATURE_LPADC_HAS_CFG_PWRSEL */
     mLpadcConfigStruct.enableAnalogPreliminary = true;
-    mLpadcConfigStruct.referenceVoltageSource  = DEMO_LPADC_VREF_SOURCE;
+#if !(defined(FSL_FEATURE_LPADC_HAS_CFG_REFSEL) && (FSL_FEATURE_LPADC_HAS_CFG_REFSEL == 0U))
+    mLpadcConfigStruct.referenceVoltageSource = DEMO_LPADC_VREF_SOURCE;
+#endif /* !(defined(FSL_FEATURE_LPADC_HAS_CFG_REFSEL) && (FSL_FEATURE_LPADC_HAS_CFG_REFSEL == 0U)) */
     LPADC_Init(DEMO_LPADC_BASE, &mLpadcConfigStruct);
 
     /* Request LPADC calibration. */
