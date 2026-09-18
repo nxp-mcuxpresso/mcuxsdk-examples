@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015 - 2016, Freescale Semiconductor, Inc.
- * Copyright 2016 - 2017 NXP
+ * Copyright 2016 - 2017, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -234,7 +234,12 @@ static usb_status_t USB_DeviceVideoRequest(class_handle_t handle, uint32_t event
     {
         /* probe request */
         case USB_DEVICE_VIDEO_SET_CUR_VS_PROBE_CONTROL:
-            if ((request->buffer == NULL) || (request->length == 0U))
+            /* The host chooses how many bytes to send, and request->buffer points at the static
+               s_ClassRequestBuffer, which still holds the previous class request. Reading the
+               probe fields below out of a shorter transfer would take them from that residue and
+               hand them back on the next GET_CUR. GET_LEN reports probeLength as the payload
+               size for this control, so require the host to have actually sent that much. */
+            if ((request->buffer == NULL) || (request->length < g_UsbDeviceVideoVirtualCamera.probeLength))
             {
                 return kStatus_USB_InvalidRequest;
             }
@@ -267,7 +272,12 @@ static usb_status_t USB_DeviceVideoRequest(class_handle_t handle, uint32_t event
             break;
         /* commit request */
         case USB_DEVICE_VIDEO_SET_CUR_VS_COMMIT_CONTROL:
-            if ((request->buffer == NULL) || (request->length == 0U))
+            /* The host chooses how many bytes to send, and request->buffer points at the static
+               s_ClassRequestBuffer, which still holds the previous class request. Reading the
+               commit fields below out of a shorter transfer would take them from that residue and
+               hand them back on the next GET_CUR. GET_LEN reports commitLength as the payload
+               size for this control, so require the host to have actually sent that much. */
+            if ((request->buffer == NULL) || (request->length < g_UsbDeviceVideoVirtualCamera.commitLength))
             {
                 return kStatus_USB_InvalidRequest;
             }
@@ -301,7 +311,12 @@ static usb_status_t USB_DeviceVideoRequest(class_handle_t handle, uint32_t event
             break;
         /* still probe request */
         case USB_DEVICE_VIDEO_SET_CUR_VS_STILL_PROBE_CONTROL:
-            if ((request->buffer == NULL) || (request->length == 0U))
+            /* The host chooses how many bytes to send, and request->buffer points at the static
+               s_ClassRequestBuffer, which still holds the previous class request. Reading the
+               still probe fields below out of a shorter transfer would take them from that residue and
+               hand them back on the next GET_CUR. GET_LEN reports stillProbeLength as the payload
+               size for this control, so require the host to have actually sent that much. */
+            if ((request->buffer == NULL) || (request->length < g_UsbDeviceVideoVirtualCamera.stillProbeLength))
             {
                 return kStatus_USB_InvalidRequest;
             }
@@ -329,7 +344,12 @@ static usb_status_t USB_DeviceVideoRequest(class_handle_t handle, uint32_t event
             break;
         /* still commit request */
         case USB_DEVICE_VIDEO_SET_CUR_VS_STILL_COMMIT_CONTROL:
-            if ((request->buffer == NULL) || (request->length == 0U))
+            /* The host chooses how many bytes to send, and request->buffer points at the static
+               s_ClassRequestBuffer, which still holds the previous class request. Reading the
+               still commit fields below out of a shorter transfer would take them from that residue and
+               hand them back on the next GET_CUR. GET_LEN reports stillCommitLength as the payload
+               size for this control, so require the host to have actually sent that much. */
+            if ((request->buffer == NULL) || (request->length < g_UsbDeviceVideoVirtualCamera.stillCommitLength))
             {
                 return kStatus_USB_InvalidRequest;
             }
