@@ -299,6 +299,7 @@ void USB_HostPrinterAppTask(void *param)
     usb_status_t status;
     uint8_t *idBuffer;
     uint32_t idLength;
+    uint32_t idCapacity;
     uint8_t interfaceIndex;
     uint8_t support;
 
@@ -367,7 +368,8 @@ void USB_HostPrinterAppTask(void *param)
             printerApp->runState = kUSB_HostPrinterRunIdle;
             if (idLength > USB_HOST_PRINTER_APP_BUFFER_SIZE) /* the device id is longer */
             {
-                printerApp->deviceIdBuffer = malloc(idLength + 1);
+                printerApp->deviceIdBuffer       = malloc(idLength + 1);
+                printerApp->deviceIdBufferLength = idLength + 1U;
                 if (printerApp->deviceIdBuffer == NULL)
                 {
                     usb_echo("malloc error\r\n");
@@ -402,35 +404,58 @@ void USB_HostPrinterAppTask(void *param)
         case kUSB_HostPrinterRunParseDeviceId:
             if (printerApp->deviceIdBuffer != NULL)
             {
-                idBuffer = printerApp->deviceIdBuffer;
+                idBuffer   = printerApp->deviceIdBuffer;
+                idCapacity = printerApp->deviceIdBufferLength;
             }
             else
             {
-                idBuffer = printerApp->printerAppBuffer;
+                idBuffer   = printerApp->printerAppBuffer;
+                idCapacity = USB_HOST_PRINTER_APP_BUFFER_SIZE + 1U;
             }
             idLength = idBuffer[0];
             idLength <<= 8;
             idLength |= idBuffer[1];
 
-            idBuffer[idLength] = 0;
-            usb_echo("%s\r\n", &idBuffer[2]);
+            /* idLength is re-read from the device's reply here, and on the two-transfer path
+               deviceIdBuffer was allocated from the length the FIRST reply declared. Nothing stops
+               the device from declaring a larger length the second time, so the terminator written
+               below would land past the end of that allocation. Bound it by the capacity of
+               whichever buffer is in use. */
+            if (idLength >= idCapacity)
+            {
+                idLength = idCapacity - 1U;
+            }
 
             support = 0;
-            if (strstr((char *)&idBuffer[2], DEVICE_ID_STRING_PJL))
+            /* Bytes 0 and 1 are the length itself, so the ID string starts at byte 2, and the
+               terminator written at idLength is the only thing that bounds the usb_echo() and
+               strstr() scans below. A device declaring fewer than three bytes leaves no terminated
+               string for them to walk, so do not treat the buffer as one. */
+            if (idLength < 3U)
             {
-                if (strstr((char *)&idBuffer[2], DEVICE_ID_STRING_POSTSCRIPT)) /* pjl & postscriptor */
-                {
-                    support                        = 1U;
-                    printerApp->deviceLanguageType = kPrinter_PJLPostscriptor;
-                }
-            }
-            else if (strstr((char *)&idBuffer[2], DEVICE_ID_NXP_STRING)) /* device printer demo */
-            {
-                support                        = 1U;
-                printerApp->deviceLanguageType = kPrinter_NXPVirtual;
+                usb_echo("device id too short\r\n");
             }
             else
             {
+                idBuffer[idLength] = 0;
+                usb_echo("%s\r\n", &idBuffer[2]);
+
+                if (strstr((char *)&idBuffer[2], DEVICE_ID_STRING_PJL))
+                {
+                    if (strstr((char *)&idBuffer[2], DEVICE_ID_STRING_POSTSCRIPT)) /* pjl & postscriptor */
+                    {
+                        support                        = 1U;
+                        printerApp->deviceLanguageType = kPrinter_PJLPostscriptor;
+                    }
+                }
+                else if (strstr((char *)&idBuffer[2], DEVICE_ID_NXP_STRING)) /* device printer demo */
+                {
+                    support                        = 1U;
+                    printerApp->deviceLanguageType = kPrinter_NXPVirtual;
+                }
+                else
+                {
+                }
             }
 
             if (support)

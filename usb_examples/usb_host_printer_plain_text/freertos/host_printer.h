@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016, Freescale Semiconductor, Inc.
- * Copyright 2016 - 2018 NXP
+ * Copyright 2016 - 2018, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -49,6 +49,7 @@ typedef struct _usb_host_printer_app
     SemaphoreHandle_t commandSemaphore;         /*!< semaphore for waiting printer command callback */
     usb_status_t callbackStatus;                /*!< keep the callback status */
     uint8_t *deviceIdBuffer;                    /*!< get device id */
+    uint32_t deviceIdBufferLength;              /*!< allocated size of deviceIdBuffer, including the \0 */
     uint32_t receiveLength;                     /*!< received data length */
     uint32_t receiveDelay;                      /*!< receive periodical delay */
     uint8_t *printerAppBuffer;                  /*!< get device id and receive buffer, increasing 1 for \0 character */
