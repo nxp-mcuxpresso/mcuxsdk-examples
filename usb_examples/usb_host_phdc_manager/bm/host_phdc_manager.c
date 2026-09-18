@@ -789,12 +789,13 @@ static void PHDC_ManagerRecvMdcNotiConfig(void *param, event_report_argument_sim
     {
         event_report_result_simple_t *eventResponse = NULL;
         uint16_t configOffset                       = 0U;
-        uint16_t configListSize                     = (uint16_t)(USB_SHORT_FROM_BIG_ENDIAN(configObjectList->length) +
-                                             sizeof(configObjectList->count) + sizeof(configObjectList->length));
+        uint32_t configListSize                     = (uint32_t)USB_SHORT_FROM_BIG_ENDIAN(configObjectList->length) +
+                                             sizeof(configObjectList->count) + sizeof(configObjectList->length);
         /* configObjectList->length is a 16-bit field the device sent, so configListSize can be far
            larger than the APDU_MAX_BUFFER_SIZE-byte configObjectList member it is copied into.
-           Reject such a report instead of overflowing it with device-supplied bytes. */
-        if ((uint32_t)configListSize > APDU_MAX_BUFFER_SIZE)
+           configListSize is computed in 32-bit so length + header cannot wrap below the limit;
+           reject such a report instead of overflowing it with device-supplied bytes. */
+        if (configListSize > APDU_MAX_BUFFER_SIZE)
         {
             usb_echo("\n\r11073Manager: configuration object list too long, rejecting.");
             PHDC_ManagerSendAssociationAbortRequest(param, ABORT_REASON_UNDEFINED);
