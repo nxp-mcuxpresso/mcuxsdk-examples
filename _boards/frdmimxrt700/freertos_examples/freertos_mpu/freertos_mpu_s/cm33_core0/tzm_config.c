@@ -461,7 +461,7 @@ functional_group:
     - generate_code_for_disabled_regions: 'false'
     - core: 'cm33_core0'
     - regions: [{index: '0', enabled: 'true', security: ns, start: '0x28100000', size: '0x00100000'}, {index: '1', enabled: 'true', security: ns, start: '0x20100000',
-        size: '0x00108000'}, {index: '2', enabled: 'true', security: nsc, start: '0x1000FC00', size: '0x00000400'}, {index: '3', enabled: 'false', security: ns, start: '0x00000000',
+        size: '0x00100000'}, {index: '2', enabled: 'true', security: nsc, start: '0x1000FC00', size: '0x00000400'}, {index: '3', enabled: 'false', security: ns, start: '0x00000000',
         size: '0x00000020'}, {index: '4', enabled: 'false', security: ns, start: '0x00000000', size: '0x00000020'}, {index: '5', enabled: 'false', security: ns, start: '0x00000000',
         size: '0x00000020'}, {index: '6', enabled: 'false', security: ns, start: '0x00000000', size: '0x00000020'}, {index: '7', enabled: 'false', security: ns, start: '0x00000000',
         size: '0x00000020'}]
@@ -784,7 +784,7 @@ void BOARD_InitTrustZone()
     AHBSC0->SRAM_1_RULE[0] = 0;
     AHBSC0->SRAM_1_RULE[1] = 0;
     AHBSC0->SRAM_1_RULE[2] = 0;
-    AHBSC0->SRAM_1_RULE[3] = 0;
+    AHBSC0->SRAM_1_RULE[3] = 0x33330000U;
     AHBSC0->SRAM_2_RULE[0] = 0;
     AHBSC0->SRAM_2_RULE[1] = 0;
     AHBSC0->SRAM_2_RULE[2] = 0;
