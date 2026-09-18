@@ -15,8 +15,8 @@
 #define EXAMPLE_LPSPI_MASTER_IRQN             (LPSPI0_IRQn)
 #define EXAMPLE_LPSPI_DEALY_COUNT             0xFFFFF
 #define LPSPI_MASTER_CLK_FREQ                 (CLOCK_GetLpspiClkFreq(0))
-#define EXAMPLE_LPSPI_MASTER_PCS_FOR_INIT     (kLPSPI_Pcs2)
-#define EXAMPLE_LPSPI_MASTER_PCS_FOR_TRANSFER (kLPSPI_MasterPcs2)
+#define EXAMPLE_LPSPI_MASTER_PCS_FOR_INIT     (kLPSPI_Pcs3)
+#define EXAMPLE_LPSPI_MASTER_PCS_FOR_TRANSFER (kLPSPI_MasterPcs3)
 #define EXAMPLE_LPSPI_MASTER_IRQHandler       (LPSPI0_IRQHandler)
 /*${macro:end}*/
 

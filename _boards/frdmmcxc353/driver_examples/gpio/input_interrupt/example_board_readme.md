@@ -9,7 +9,7 @@ Board settings
 
 Prepare the Demo
 ================
-1. Connect a USB Type-C cable between the host PC and MB board J22.
+1. Connect a USB Type-C cable between the host PC and the MCU-Link USB port on the target board.
 2. Open a serial terminal with these settings:
     - 115200 baud rate
     - 8 data bits
@@ -24,6 +24,6 @@ Running the demo
 These instructions are displayed/shown on the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 GPIO Driver example
-Press SW2 to turn on/off a LED.
+Press SW3 to turn on/off a LED.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 And you will detect voltage toggle on the RED LED.

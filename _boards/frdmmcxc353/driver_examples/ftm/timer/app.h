@@ -20,7 +20,7 @@
 #define BOARD_FTM_HANDLER FTM0_OVERFLOW_IRQHandler
 
 /* Get source clock for FTM driver */
-#define FTM_SOURCE_CLOCK (24 * 1000 * 1000) // (CLOCK_GetFreq(kCLOCK_CoreSysClk))
+#define FTM_SOURCE_CLOCK (CLOCK_GetFreq(kCLOCK_CoreSysClk))
 
 /*${macro:end}*/
 

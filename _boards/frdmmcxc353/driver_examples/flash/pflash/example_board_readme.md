@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Type-C USB cable
-- FRDM-MCXC162 board
+- FRDM-MCXC353 board
 - Personal Computer
 
 Board settings
@@ -12,7 +12,7 @@ and configurations in default state when running this example.
 
 Prepare the Demo
 ================
-1. Connect a USB cable between the host PC and the EVK board J14.
+1. Connect a USB Type-C cable between the host PC and the MCU-Link USB port on the target board.
 2. Open a serial terminal with these settings:
     - 115200 baud rate
     - 8 data bits
@@ -30,16 +30,16 @@ PFlash Example Start
 
  PFlash Information:
  Program Flash block bass address:      0, Hex: (0x0)
- Program Flash block Size:              1024 KB, Hex: (0x100000)
+ Program Flash block Size:              128 KB, Hex: (0x20000)
  Program Flash block Sector Size:       8 KB, Hex: (0x2000)
  Program Flash block count Size:        1
- Total Program Flash Size:              1024 KB, Hex: (0x100000)
+ Total Program Flash Size:              128 KB, Hex: (0x20000)
 
  Erase a sector of flash
- Successfully Erased Sector 0xfe000 -> 0x100000
+ Successfully Erased Sector 0x1e000 -> 0x20000
 
  Program a buffer to a phrase of flash
- Successfully Programmed and Verified Location 0xfe000 -> 0xfe010
+ Successfully Programmed and Verified Location 0x1e000 -> 0x1e010
 
  End of PFlash Example
 ~~~~~~~~~~~~~~~~~~~~~~~

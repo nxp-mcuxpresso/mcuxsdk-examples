@@ -12,8 +12,8 @@
 /*${macro:start}*/
 #define EXAMPLE_LPSPI_SLAVE_BASEADDR         (LPSPI0)
 #define EXAMPLE_LPSPI_SLAVE_IRQN             (LPSPI0_IRQn)
-#define EXAMPLE_LPSPI_SLAVE_PCS_FOR_INIT     (kLPSPI_Pcs2)
-#define EXAMPLE_LPSPI_SLAVE_PCS_FOR_TRANSFER (kLPSPI_SlavePcs2)
+#define EXAMPLE_LPSPI_SLAVE_PCS_FOR_INIT     (kLPSPI_Pcs3)
+#define EXAMPLE_LPSPI_SLAVE_PCS_FOR_TRANSFER (kLPSPI_SlavePcs3)
 #define EXAMPLE_LPSPI_SLAVE_IRQHandler       (LPSPI0_IRQHandler)
 /*${macro:end}*/
 

@@ -50,14 +50,14 @@
 #define APP_WUU                                 WUU0
 #define APP_WUU_IRQN                            WUU0_IRQn
 #define APP_WUU_IRQ_HANDLER                     WUU0_IRQHandler
-#define APP_WUU_WAKEUP_BUTTON_IDX               7U    /* EVB J19 short 2-3, J98 short 5-6*/
-#define APP_WUU_WAKEUP_BUTTON_NAME              "SW3" /* EVB SW3, TODO update to SW2 for FRDM */
+#define APP_WUU_WAKEUP_BUTTON_IDX               7U
+#define APP_WUU_WAKEUP_BUTTON_NAME              "SW2"
 
 /* LPUART RX and TX */
-#define APP_DEBUG_CONSOLE_RX_PORT               PORT2
-#define APP_DEBUG_CONSOLE_RX_PIN                1U
-#define APP_DEBUG_CONSOLE_TX_PORT               PORT2
-#define APP_DEBUG_CONSOLE_TX_PIN                0U
+#define APP_DEBUG_CONSOLE_RX_PORT               PORT0
+#define APP_DEBUG_CONSOLE_RX_PIN                3U
+#define APP_DEBUG_CONSOLE_TX_PORT               PORT0
+#define APP_DEBUG_CONSOLE_TX_PIN                2U
 
 #define APP_ENABLE_NMI_WAKEUP                   0U
 

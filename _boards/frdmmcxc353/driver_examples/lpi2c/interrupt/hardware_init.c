@@ -13,16 +13,16 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
+    BOARD_InitDEBUG_UARTPins();
+    BOARD_InitI2CPins();
+    BOARD_InitBootClocks();
+    BOARD_InitDebugConsole();
+    
     /* Attach peripheral clock for LPI2C0 (master) and LPI2C1 (slave) */
     CLOCK_SetClockDiv(kCLOCK_DivLPI2C0, 1u);
     CLOCK_AttachClk(kFRO_LF_DIV_to_LPI2C0);
 
     CLOCK_SetClockDiv(kCLOCK_DivLPI2C1, 1u);
     CLOCK_AttachClk(kFRO_LF_DIV_to_LPI2C1);
-
-    BOARD_InitDEBUG_UARTPins();
-    BOARD_InitI2CPins();
-    BOARD_InitBootClocks();
-    BOARD_InitDebugConsole();
 }
 /*${function:end}*/

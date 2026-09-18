@@ -10,8 +10,8 @@
  ******************************************************************************/
 /*${macro:start}*/
 #define EXAMPLE_LPSPI_SLAVE_BASEADDR         (LPSPI0)
-#define EXAMPLE_LPSPI_SLAVE_PCS_FOR_INIT     (kLPSPI_Pcs2)
-#define EXAMPLE_LPSPI_SLAVE_PCS_FOR_TRANSFER (kLPSPI_SlavePcs2)
+#define EXAMPLE_LPSPI_SLAVE_PCS_FOR_INIT     (kLPSPI_Pcs3)
+#define EXAMPLE_LPSPI_SLAVE_PCS_FOR_TRANSFER (kLPSPI_SlavePcs3)
 #define EXAMPLE_LPSPI_SLAVE_DMA_BASE         DMA0
 #define EXAMPLE_LPSPI_SLAVE_DMA_RX_CHANNEL   1U
 #define EXAMPLE_LPSPI_SLAVE_DMA_TX_CHANNEL   0U

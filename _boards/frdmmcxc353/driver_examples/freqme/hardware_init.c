@@ -13,16 +13,16 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
+    BOARD_InitDEBUG_UARTPins();
+    BOARD_InitFREQMEPins();
+    BOARD_InitBootClocks();
+    BOARD_InitDebugConsole();
+
     /* Release peripheral reset */
     RESET_ReleasePeripheralReset(kFREQME_RST_SHIFT_RSTn);
 
     /* Attach peripheral clock */
     CLOCK_EnableClock(kCLOCK_GateFREQME);
     CLOCK_SetClockDiv(kCLOCK_DivFRO_HF, 1u);
-
-    BOARD_InitDebugConsole();
-    BOARD_InitFREQMEPins();
-    BOARD_InitBootClocks();
-    BOARD_InitDebugConsole();
 }
 /*${function:end}*/

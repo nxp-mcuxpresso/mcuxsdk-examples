@@ -18,7 +18,7 @@ Board settings
 
 LPSPI:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-       MASTER(SPI1)      connect to        SLAVE(SPI1)
+       MASTER(SPI0)      connect to        SLAVE(SPI0)
 Pin Name   Board Location     Pin Name    Board Location
 SOUT       J2-8               SIN         J2-10
 SIN        J2-10              SOUT        J2-8

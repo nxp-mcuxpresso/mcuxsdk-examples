@@ -16,8 +16,8 @@
 #define LPUART_TX_DMA_CHANNEL          0U
 #define LPUART_RX_DMA_CHANNEL          1U
 #define EXAMPLE_LPUART_DMA_BASEADDR    DMA0
-#define EXAMPLE_LPUART_TX_DMA_REQUEST  kDma0RequestLPUART0Tx
-#define EXAMPLE_LPUART_RX_DMA_REQUEST  kDma0RequestLPUART0Rx
+#define LPUART_TX_DMA_REQUEST          kDma0RequestLPUART0Tx
+#define LPUART_RX_DMA_REQUEST          kDma0RequestLPUART0Rx
 #define EXAMPLE_LPUART_IRQHandler      LPUART0_IRQHandler
 #define EXAMPLE_LPUART_IRQn            LPUART0_IRQn
 /*${macro:end}*/

@@ -43,7 +43,7 @@ void BOARD_InitDEBUG_UARTPins(void);
 
 /* Symbols to be used with GPIO driver */
 #define BOARD_INITLEDSPINS_LED_RED_GPIO GPIO1               /*!<@brief GPIO peripheral base pointer */
-#define BOARD_INITLEDSPINS_LED_RED_INIT_GPIO_VALUE 0U       /*!<@brief GPIO output initial state */
+#define BOARD_INITLEDSPINS_LED_RED_INIT_GPIO_VALUE 1U       /*!<@brief GPIO output initial state */
 #define BOARD_INITLEDSPINS_LED_RED_GPIO_PIN 2U              /*!<@brief GPIO pin number */
 #define BOARD_INITLEDSPINS_LED_RED_GPIO_PIN_MASK (1U << 2U) /*!<@brief GPIO pin mask */
 
@@ -58,7 +58,7 @@ void BOARD_InitDEBUG_UARTPins(void);
 
 /* Symbols to be used with GPIO driver */
 #define BOARD_INITLEDSPINS_LED_GREEN_GPIO GPIO2               /*!<@brief GPIO peripheral base pointer */
-#define BOARD_INITLEDSPINS_LED_GREEN_INIT_GPIO_VALUE 0U       /*!<@brief GPIO output initial state */
+#define BOARD_INITLEDSPINS_LED_GREEN_INIT_GPIO_VALUE 1U       /*!<@brief GPIO output initial state */
 #define BOARD_INITLEDSPINS_LED_GREEN_GPIO_PIN 3U              /*!<@brief GPIO pin number */
 #define BOARD_INITLEDSPINS_LED_GREEN_GPIO_PIN_MASK (1U << 3U) /*!<@brief GPIO pin mask */
 
@@ -73,7 +73,7 @@ void BOARD_InitDEBUG_UARTPins(void);
 
 /* Symbols to be used with GPIO driver */
 #define BOARD_INITLEDSPINS_LED_BLUE_GPIO GPIO2               /*!<@brief GPIO peripheral base pointer */
-#define BOARD_INITLEDSPINS_LED_BLUE_INIT_GPIO_VALUE 0U       /*!<@brief GPIO output initial state */
+#define BOARD_INITLEDSPINS_LED_BLUE_INIT_GPIO_VALUE 1U       /*!<@brief GPIO output initial state */
 #define BOARD_INITLEDSPINS_LED_BLUE_GPIO_PIN 4U              /*!<@brief GPIO pin number */
 #define BOARD_INITLEDSPINS_LED_BLUE_GPIO_PIN_MASK (1U << 4U) /*!<@brief GPIO pin mask */
 
@@ -166,15 +166,6 @@ void BOARD_InitOPAMPPins(void);
  */
 void BOARD_InitCMPPins(void);
 
-/*! @name PORT2_7 (number 28), SW2
-  @{ */
-
-/* Symbols to be used with PORT driver */
-#define BOARD_INITPHDPINS_SW2_PORT PORT2               /*!<@brief PORT peripheral base pointer */
-#define BOARD_INITPHDPINS_SW2_PIN 7U                   /*!<@brief PORT pin number */
-#define BOARD_INITPHDPINS_SW2_PIN_MASK (1U << 7U)      /*!<@brief PORT pin mask */
-                                                       /* @} */
-
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
  *
@@ -222,6 +213,27 @@ void BOARD_InitAOIPins(void);
  *
  */
 void BOARD_InitQTMRPins(void);
+
+/*! @name PORT2_3 (number 24), LED_GREEN
+  @{ */
+
+/* Symbols to be used with PORT driver */
+#define BOARD_INITFTM_OUTPUTPINS_LED_GREEN_PORT PORT2               /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITFTM_OUTPUTPINS_LED_GREEN_PIN 3U                   /*!<@brief PORT pin number */
+#define BOARD_INITFTM_OUTPUTPINS_LED_GREEN_PIN_MASK (1U << 3U)      /*!<@brief PORT pin mask */
+                                                                    /* @} */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitFTM_OUTPUTPins(void);
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitFTM_INPUTPins(void);
 
 #if defined(__cplusplus)
 }

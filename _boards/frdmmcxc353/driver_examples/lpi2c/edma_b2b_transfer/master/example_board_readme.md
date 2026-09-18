@@ -16,7 +16,7 @@ Board settings
 ==============
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-MASTER(LPI2C2)                connect to        SLAVE(LPI2C2)
+MASTER(LPI2C1)                connect to        SLAVE(LPI2C1)
 Pin Name    Board Location                      Pin Name    Board Location
 SCL         J2 pin 20                           SCL         J2 pin 20
 SDA         J2 pin 18                           SDA         J2 pin 18
