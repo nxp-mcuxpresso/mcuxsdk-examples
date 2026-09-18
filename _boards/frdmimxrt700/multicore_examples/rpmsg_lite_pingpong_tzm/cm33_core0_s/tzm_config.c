@@ -72,7 +72,8 @@ functional_group:
             SLEEPCON0_IRQn, TEMPDET0_IRQn, TEMPDET1_IRQn, TRNG_IRQn, USB0_IRQn, USB1_IRQn, USBPHY0_IRQn, USDHC0_IRQn, USDHC1_IRQn, UTICK0_IRQn, VGPU_IRQn, WDT0_IRQn,
             WDT1_IRQn, XSPI0_IRQn, XSPI1_IRQn, XSPI2_IRQn]}}
     - regions: [{memory: BootROM, security: ns_user, start: '0x00000000', size: '0x00040000'}, {memory: SRAM_P0_c, security: ns_user, start: '0x00000000', size: '0x00008000'},
-      {memory: SRAM_P1_c, security: ns_user, start: '0x00000000', size: '0x00008000'}, {memory: SRAM_P2_c, security: ns_user, start: '0x00000000', size: '0x00008000'},
+      {memory: SRAM_P1_c, security: ns_user, start: '0x00000000', size: '0x00007000'}, {memory: SRAM_P1_c, security: s_priv, start: '0x00007000', size: '0x00001000'},
+      {memory: SRAM_P2_c, security: ns_user, start: '0x00000000', size: '0x00008000'},
       {memory: SRAM_P3_c, security: ns_user, start: '0x00000000', size: '0x00008000'}, {memory: SRAM_P4_c, security: ns_user, start: '0x00000000', size: '0x00010000'},
       {memory: SRAM_P5_c, security: ns_user, start: '0x00000000', size: '0x00010000'}, {memory: SRAM_P6_c, security: ns_user, start: '0x00000000', size: '0x00020000'},
       {memory: SRAM_P7_c, security: ns_user, start: '0x00000000', size: '0x00020000'}, {memory: SRAM_P8_c, security: s_priv, start: '0x00000000', size: '0x00040000'},
@@ -783,7 +784,7 @@ void BOARD_INITTEE_BOARD_InitTrustZone()
     AHBSC0->SRAM_1_RULE[0] = 0;
     AHBSC0->SRAM_1_RULE[1] = 0;
     AHBSC0->SRAM_1_RULE[2] = 0;
-    AHBSC0->SRAM_1_RULE[3] = 0;
+    AHBSC0->SRAM_1_RULE[3] = 0x33330000U;
     AHBSC0->SRAM_2_RULE[0] = 0;
     AHBSC0->SRAM_2_RULE[1] = 0;
     AHBSC0->SRAM_2_RULE[2] = 0;
