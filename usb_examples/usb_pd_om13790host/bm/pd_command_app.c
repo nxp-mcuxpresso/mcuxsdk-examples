@@ -1137,7 +1137,20 @@ pd_status_t PD_DpmGetInfoResultCallback(
             {
                 pd_manufac_info_data_block_t *partnerManufacturerInfo =
                     (pd_manufac_info_data_block_t *)(successData->dataBuffer);
-                partnerManufacturerInfo->manufacturerString[successData->dataLength - 4U] = 0U;
+                /* dataLength is supplied by the port partner (up to 260). Anything below the
+                   4-byte vid/pid header underflows the subtraction, and anything above the
+                   struct's own string field indexes past it, so bound the terminator offset
+                   to manufacturerString before writing it. */
+                uint32_t manufacStringLength = 0U;
+                if (successData->dataLength > 4U)
+                {
+                    manufacStringLength = successData->dataLength - 4U;
+                    if (manufacStringLength >= sizeof(partnerManufacturerInfo->manufacturerString))
+                    {
+                        manufacStringLength = sizeof(partnerManufacturerInfo->manufacturerString) - 1U;
+                    }
+                }
+                partnerManufacturerInfo->manufacturerString[manufacStringLength] = 0U;
                 PRINTF("manufacturer string:%s\r\n", partnerManufacturerInfo->manufacturerString);
                 break;
             }
