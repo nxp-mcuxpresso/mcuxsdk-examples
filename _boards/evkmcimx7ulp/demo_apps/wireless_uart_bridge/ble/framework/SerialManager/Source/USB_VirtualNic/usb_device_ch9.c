@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016 - 2017 , NXP
+ * Copyright 2016 - 2017, 2026 NXP
  * All rights reserved.
  *
  *
@@ -773,6 +773,16 @@ usb_status_t USB_DeviceControlCallback(usb_device_handle handle,
                 }
                 if (kStatus_USB_Success == error)
                 {
+                    /* Buffer that is equal to NULL means the class or vendor handler did not prepare
+                       a buffer for the data; stall instead of handing NULL to the controller driver.
+                       wLength is non-zero on this path, and the shared check below the switch is not
+                       reached because of the return. */
+                    if (NULL == buffer)
+                    {
+                        error = USB_DeviceControlCallbackFeedback(handle, deviceSetup, kStatus_USB_InvalidRequest,
+                                                                  kUSB_DeviceControlPipeSetupStage, &buffer, &length);
+                        return error;
+                    }
                     /* Prime an OUT transfer */
                     error = USB_DeviceRecvRequest(handle, USB_CONTROL_ENDPOINT, buffer, deviceSetup->wLength);
                     return error;
