@@ -679,31 +679,27 @@ usb_status_t USB_DeviceMscUfiReadFormatCapacityCommand(usb_device_msc_struct_t *
     {
         responseSize = allocationLength;
     }
-    if (sizeof(ufi->formatCapacityData) < responseSize)
-    {
-    }
 
     ptr = (uint8_t *)&capacityListHead;
-    for (count = 0; count < sizeof(capacityListHead); count++)
+    for (i = 0; i < sizeof(capacityListHead); i++)
     {
-        ufi->formatCapacityData[count] = ptr[i++];
+        ufi->formatCapacityData[count++] = ptr[i];
     }
     ptr = (uint8_t *)&currentMaxHead;
-    i   = 0;
-    for (; i < sizeof(currentMaxHead); count++)
+
+    for (i = 0; i < sizeof(currentMaxHead); i++)
     {
-        ufi->formatCapacityData[count] = ptr[i++];
+        ufi->formatCapacityData[count++] = ptr[i];
     }
 
     if (ufi->formattedDisk)
     {
+        ptr = (uint8_t *)&formattableCapacityHead;
         for (i = 0; i < numFormattableCapDesc; i++)
         {
-            ptr = (uint8_t *)&formattableCapacityHead;
-
-            for (; count < sizeof(formattableCapacityHead); count++)
+            for (j = 0; j < sizeof(formattableCapacityHead); j++)
             {
-                ufi->formatCapacityData[count] = ptr[j++];
+                ufi->formatCapacityData[count++] = ptr[j];
             }
         }
     }
