@@ -8,8 +8,7 @@ mcux_add_configuration(
 mcux_add_linker_symbol(
     SYMBOLS "gUseNVMLink_d=1\
              gEraseNVMLink_d=1\
-             __ram_vector_table__=1\
-             __stack_size__=0xB00"
+             __ram_vector_table__=1"
 )
 
 mcux_add_source(
