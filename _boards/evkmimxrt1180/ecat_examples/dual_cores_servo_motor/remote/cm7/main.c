@@ -119,7 +119,7 @@ int32_t GetPositionActualValue(void);
 acc32_t GetPositionCmdValue(int32_t targetPos);
 void Ecat_AccessLockInit(void);
 void Ecat_AccessLock(void);
-void Ecat_AccessUnock(void);
+void Ecat_AccessUnlock(void);
 /*******************************************************************************
  * Code
  ******************************************************************************/
@@ -266,14 +266,14 @@ void Ecat_AccessLockInit(void)
 
 void Ecat_AccessLock()
 {
-   *g_EcatAccessLock++;
-   __DMB();
+    (*g_EcatAccessLock)++;
+    __DMB();
 }
 
 void Ecat_AccessUnlock()
 {
     __DMB();
-    *g_EcatAccessLock--;
+    (*g_EcatAccessLock)--;
 }
 
 int32_t GetPositionActualValue(void)
