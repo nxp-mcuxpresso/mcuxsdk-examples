@@ -1,8 +1,8 @@
 Hardware requirements
 =====================
 - USB Type-C cable
-- MIMXRT2660-EVK board (on-board APS512XXN-OBx9 16-bit Xccela PSRAM on XSPI1,
-  used as the LLC-cacheable test region)
+- MIMXRT2660-EVK board (on-board 16-bit DDR PSRAM on XSPI1, used as the
+  LLC-cacheable test region)
 - Personal Computer
 
 Board settings
@@ -46,11 +46,20 @@ LLC example PASS.
 
 Note
 ====
-- The LLC test region is the on-board APS512XXN Xccela PSRAM behind XSPI1. The
-  Boot ROM does not bring it up on the default targets, so the board port
-  initialises it in software with xspi_hyper_ram_init() (reused from the
-  xspi/psram polling_transfer driver example): global reset, mode-register
-  setup, X16 entry and read-DLL re-arm at the device maximum of 250 MHz.
+- The LLC test region is the on-board DDR PSRAM behind XSPI1. This example
+  defines USE_PSRAM (see reconfig.cmake) so the boot header carries the board's
+  XMCD and the Boot ROM brings the PSRAM up before the image runs. Which XMCD is
+  linked depends on USE_PSRAM_W958D6 in the board CMakeLists: 1 selects the
+  Winbond W958D6NMYA4I (HyperBus, 250 MHz SCK), 0 selects the AP Memory Xccela
+  part (APS256XXN/APS512XXN depending on board variant, 200 MHz SCK). It must
+  match the part actually populated on your board - the MIMXRT2660-EVK ships
+  either one depending on board variant.
+- If the ROM leaves XSPI1 without a live DDR PSRAM (XSPI_MCR[X16_EN] clear),
+  the LLC test region is not usable and LLC_ExamplePlatformInit() says so,
+  naming USE_PSRAM_W958D6. On a working board that can only mean the linked
+  XMCD does not match the populated part, so the fix is to correct that macro
+  and rebuild; the example carries no software bring-up sequence, and none
+  would work on both variants.
 - The example uses the LLC-cached window at 0x88000000 for all CPU accesses.
   BOARD_InitHardware covers this window with an inner-non-cacheable /
   outer-write-back MPU region so the CM33 L1 D-cache stays out and every CPU

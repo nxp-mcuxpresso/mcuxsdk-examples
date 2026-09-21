@@ -11,6 +11,7 @@
 #include "fsl_xspi.h"
 #include "llc_example_platform.h"
 #include "app.h"
+#include "fsl_debug_console.h"
 /*${header:end}*/
 
 /*${variable:start}*/
@@ -54,7 +55,7 @@ void BOARD_InitHardware(void)
      * init. This also runs BOARD_EarlyConfigLLC() which brings the LLC online. */
     BOARD_CommonSetting();
 
-    /* XSPI1 pin mux for the APS512XXN PSRAM (the LLC test memory). */
+    /* XSPI1 pin mux for the PSRAM (the LLC test memory). */
     BOARD_InitXSPI1PsRamPins();
 
     /* Cover the LLC-cached test window with inner-NC / outer-WB. */
@@ -73,14 +74,27 @@ void LLC_ExamplePlatformInit(void)
         return;
     }
 
-    /* Bring the XSPI1 APS512XXN PSRAM up in software: this example links no
-     * Boot ROM XMCD, so the PSRAM that backs the LLC test region is NOT live
-     * out of reset. This reuses the silicon-validated board bring-up from the
-     * xspi/psram polling_transfer driver example: reprogram XSPI1, run the
-     * APS512XXN mode-register sequence, switch to X16 @ 250 MHz and re-arm the
-     * read DLL. After it returns, the LLC-cached window (0x8800_0000) addresses
-     * valid PSRAM cells. */
-    xspi_hyper_ram_init(EXAMPLE_XSPI);
+    /* The PSRAM that backs the LLC test region must be live before the example
+     * touches the LLC-cached window (0x8800_0000). reconfig.cmake defines
+     * USE_PSRAM, so the boot header carries the board's XMCD and the Boot ROM
+     * has already configured XSPI1 and the device by the time this runs. Every
+     * target of this example is XIP from XSPI0 NOR, so that header is always
+     * present, and the XMCD exists for both board PSRAM variants - so there is
+     * no software bring-up here to fall back on.
+     *
+     * Check the result instead of assuming it: X16_EN reports a live DDR PSRAM
+     * (the same runtime test clock_config.c uses for livePsram, and the reason
+     * it is a runtime test and not a build macro). The only way it can be clear
+     * on a working board is a build whose XMCD does not match the part
+     * populated, so say exactly that rather than letting the example fault on
+     * an absent test region. */
+    if ((EXAMPLE_XSPI->MCR & XSPI_MCR_X16_EN_MASK) == 0U)
+    {
+        PRINTF("Boot ROM left XSPI1 without a live DDR PSRAM (MCR=0x%08x).\r\n", (unsigned int)EXAMPLE_XSPI->MCR);
+        PRINTF("The LLC test region is not usable: set USE_PSRAM_W958D6 to match\r\n");
+        PRINTF("the PSRAM populated on this board (1 = Winbond W958D6NMYA4I,\r\n");
+        PRINTF("0 = AP Memory Xccela) and rebuild.\r\n");
+    }
 
     s_platformInited = true;
 }
