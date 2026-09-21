@@ -215,6 +215,13 @@ void BOARD_SDCardPowerControl(bool enable)
     if (enable)
     {
         (void)PCAL6524_SetPins(pwrHandle, 1UL << BOARD_PCAL6524_SD_PWREN);
+        /* NX3P1108 load switch on VSD_3V3 is turn-on slew-rate limited (typ
+         * tTLH = 80us at CL=0.1uF, per NX3P1108 datasheet Table 10). The
+         * board's actual output cap (C55+C56) is ~4.8uF, ~48x the datasheet
+         * test load, so the rail's rise time to 3.3V scales to roughly 4ms.
+         * Wait for it to settle before the SDMMC stack starts card commands,
+         * otherwise init can run against an unstable/under-voltage rail. */
+        SDK_DelayAtLeastUs(5000U, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
     }
     else
     {
