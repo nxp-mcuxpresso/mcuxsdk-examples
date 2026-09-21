@@ -227,7 +227,7 @@ void USB1_HS_IRQHandler(void)
  */
 void USB_DeviceIsrEnable(void)
 {
-    uint8_t irqNumber;
+    IRQn_Type irqNumber;
 #if (defined(USB_DEVICE_CONFIG_LPCIP3511FS) && (USB_DEVICE_CONFIG_LPCIP3511FS > 0U))
     uint8_t usbDeviceIP3511Irq[] = USB_IRQS;
     irqNumber                    = usbDeviceIP3511Irq[CONTROLLER_ID - kUSB_ControllerLpcIp3511Fs0];
@@ -237,13 +237,14 @@ void USB_DeviceIsrEnable(void)
     irqNumber                    = usbDeviceIP3511Irq[CONTROLLER_ID - kUSB_ControllerLpcIp3511Hs0];
 #endif
 #if (defined(USB_DEVICE_CONFIG_EHCI) && (USB_DEVICE_CONFIG_EHCI > 0U))
-    uint8_t usbDeviceEhciIrq[] = USBHS_IRQS;
-    irqNumber                  = usbDeviceEhciIrq[CONTROLLER_ID - kUSB_ControllerEhci0];
+    /* IRQn_Type (not uint8_t): RT2660 COMM_USB0_IRQn = 304 would truncate. */
+    IRQn_Type usbDeviceEhciIrq[] = USBHS_IRQS;
+    irqNumber                    = usbDeviceEhciIrq[CONTROLLER_ID - kUSB_ControllerEhci0];
 #endif
 
     /* Install isr, set priority, and enable IRQ. */
-    NVIC_SetPriority((IRQn_Type)irqNumber, USB_DEVICE_INTERRUPT_PRIORITY);
-    EnableIRQ((IRQn_Type)irqNumber);
+    NVIC_SetPriority(irqNumber, USB_DEVICE_INTERRUPT_PRIORITY);
+    EnableIRQ(irqNumber);
 }
 #if USB_DEVICE_CONFIG_USE_TASK
 void USB_DeviceTaskFn(void *deviceHandle)

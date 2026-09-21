@@ -111,7 +111,6 @@ USB_DMA_NONINIT_DATA_ALIGN(USB_DATA_ALIGN_SIZE)
 uint8_t audioMicDataBuff[AUDIO_MICROPHONE_DATA_WHOLE_BUFFER_LENGTH * FS_ISO_IN_ENDP_PACKET_SIZE];
 USB_DMA_NONINIT_DATA_ALIGN(USB_DATA_ALIGN_SIZE)
 uint8_t audioMicPacket[(FS_ISO_IN_ENDP_PACKET_SIZE + AUDIO_FORMAT_CHANNELS * AUDIO_FORMAT_SIZE)];
-USB_DMA_NONINIT_DATA_ALIGN(USB_DATA_ALIGN_SIZE)
 
 /* USB device class information */
 static usb_device_class_config_struct_t s_audioConfig[1] = {{
@@ -149,6 +148,7 @@ void USB1_IRQHandler(void)
     USB_DeviceLpcIp3511IsrFunction(s_audioMicrophone.deviceHandle);
 }
 #endif
+
 #if (defined(USB_DEVICE_CONFIG_EHCI) && (USB_DEVICE_CONFIG_EHCI > 0U))
 void USB_OTG_IRQHandler(void)
 {
@@ -172,7 +172,7 @@ void USB1_HS_IRQHandler(void)
 
 void USB_DeviceIsrEnable(void)
 {
-    uint8_t irqNumber;
+    IRQn_Type irqNumber;
 
 #if (defined(USB_DEVICE_CONFIG_LPCIP3511FS) && (USB_DEVICE_CONFIG_LPCIP3511FS > 0U))
     uint8_t usbDeviceIP3511Irq[] = USB_IRQS;
@@ -183,13 +183,14 @@ void USB_DeviceIsrEnable(void)
     irqNumber                    = usbDeviceIP3511Irq[CONTROLLER_ID - kUSB_ControllerLpcIp3511Hs0];
 #endif
 #if (defined(USB_DEVICE_CONFIG_EHCI) && (USB_DEVICE_CONFIG_EHCI > 0U))
-    uint8_t usbDeviceEhciIrq[] = USBHS_IRQS;
-    irqNumber                  = usbDeviceEhciIrq[CONTROLLER_ID - kUSB_ControllerEhci0];
+    /* IRQn_Type (not uint8_t): RT2660 COMM_USB0_IRQn = 304 would truncate. */
+    IRQn_Type usbDeviceEhciIrq[] = USBHS_IRQS;
+    irqNumber                    = usbDeviceEhciIrq[CONTROLLER_ID - kUSB_ControllerEhci0];
 #endif
 
     /* Install isr, set priority, and enable IRQ. */
-    NVIC_SetPriority((IRQn_Type)irqNumber, USB_DEVICE_INTERRUPT_PRIORITY);
-    EnableIRQ((IRQn_Type)irqNumber);
+    NVIC_SetPriority(irqNumber, USB_DEVICE_INTERRUPT_PRIORITY);
+    EnableIRQ(irqNumber);
 }
 
 #if USB_DEVICE_CONFIG_USE_TASK

@@ -1,0 +1,19 @@
+/*
+ * Copyright 2026 NXP
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+#ifndef _APP_H_
+#define _APP_H_
+
+/*${header:start}*/
+#include "fsl_wm8962.h"
+#include "app_definitions.h"
+/*${header:end}*/
+
+/*${prototype:start}*/
+void BOARD_InitHardware(void);
+void BOARD_MasterClockConfig(void);
+/*${prototype:end}*/
+
+#endif /* _APP_H_ */
