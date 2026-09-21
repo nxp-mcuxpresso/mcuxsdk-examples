@@ -50,6 +50,7 @@ pin_detect_hid_msd_bm:
     evkmimxrt1064: []
     evkmimxrt1160@cm7: []
     evkmimxrt1180@cm33: []
+    mimxrt2660evk: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
     frdmmcxn947t@cm33_core0: []

@@ -84,3 +84,4 @@ The following figures show a pin detect HID mouse information for the pin detect
 - [FRDM-MCXA577](../../_boards/frdmmcxa577/usb_examples/usb_pin_detect_hid_mouse/example_board_readme.md)
 - [FRDM-MCXA287](../../_boards/frdmmcxa287/usb_examples/usb_pin_detect_hid_mouse/example_board_readme.md)
 - FRDM-IMXRT1152
+- MIMXRT2660-EVK
