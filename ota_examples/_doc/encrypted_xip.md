@@ -27,11 +27,11 @@
 <!-- TOC --><a name="1-introduction"></a>
 ## 1. Introduction
 
-To provide confidentiality of image data while in transport to the device or while residing on an non-secure storage such as external flash memory, MCUboot has support for encrypting/decrypting images on-the-fly while upgrading. MCUboot architecture expects that XIP is done from a secure memory so encrypted image is decrypted to a secure location such as internal Flash or RAM, however, size of an internal RAM is limited and there are devices with interfaces to only external flash memory.
+To keep image data confidential while it is in transport to the device or while it resides in non-secure storage such as external flash memory, MCUboot supports encrypting and decrypting images on-the-fly during an upgrade. The MCUboot architecture expects XIP to be done from a secure memory, so the encrypted image is decrypted to a secure location such as internal flash or RAM. However, internal RAM is limited in size, and some devices have interfaces to external flash memory only.
 
-Some NXP devices support encrypted XIP on an internal or external Flash device utilizing on-the-fly decryption modules (BEE, OTFAD, IPED, NPX...). It is possible use these decryption engines with a second stage bootloader as the MCUboot.
+Some NXP devices support encrypted XIP on an internal or external flash device using on-the-fly decryption modules (BEE, OTFAD, IPED, NPX, etc.). These decryption engines can be used together with a second-stage bootloader such as MCUboot.
 
-This document describes an extension of MCUboot functionality to support encrypted XIP on NXP devices and its enablement in OTA examples in MCUXpresso SDK.
+This document describes an extension of the MCUboot functionality that supports encrypted XIP on NXP devices, and its enablement in the OTA examples in the MCUXpresso SDK.
 
 <!-- TOC --><a name="2-encrypted-xip-configuration-structures"></a>
 ## 2 Encrypted XIP configuration structures
@@ -52,11 +52,11 @@ The encrypted XIP extension uses a reserved area called encryption metadata, whi
 
 ![Image](encrypted_xip_pics/general_metadata.jpg)
 
-The metadata sector consists of platform-specific configuration block and a magic id. The magic acts as a confirmation of the integrity of the configuration block as it is written as last in a separate flash page.
+The metadata sector consists of a platform-specific configuration block and a magic ID. The magic acts as a confirmation of the configuration block's integrity, as it is written last in a separate flash page.
 
-It's recommended to have the configuration block and the magic id in a common flash sector so they are separated by flash page granularity and deleted simultaneously during sector erase. Typically, in the example code, the configuration block is placed at the beginning of the sector and the magic is placed at the end of the sector.
+It is recommended to keep the configuration block and the magic ID in a common flash sector, so that they are separated by flash-page granularity and erased simultaneously during a sector erase. In the example code, the configuration block is typically placed at the beginning of the sector and the magic at the end.
 
-During an OTA update, the extension generates a new configuration block, holds it as a context in RAM, and reconfigures the encryption unit for the updated area. If the OTA update and verification of the execution area are successful, the configuration block is then persisted in Flash. This approach is necessary for some encryption modules (such as IPED and NPX), as reading invalid cipher causes a device reset leading to a possible endless reset loop.
+During an OTA update, the extension generates a new configuration block, holds it as a context in RAM, and reconfigures the encryption unit for the updated area. If the OTA update and the verification of the execution area are successful, the configuration block is then persisted in flash. This approach is necessary for some encryption modules (such as IPED and NPX), because reading an invalid cipher causes a device reset, which could lead to an endless reset loop.
 
 <!-- TOC --><a name="3-encrypted-xip-upgrade-modes"></a>
 ## 3. Encrypted XIP upgrade modes
@@ -68,9 +68,9 @@ __Note: Encrypted XIP with FLASH_REMAP support is currently in an experimental s
 <!-- TOC --><a name="31-overwrite_only"></a>
 ### 3.1 OVERWRITE_ONLY
 
-This update strategy combines usage of platform specific encrypted XIP feature and funcionality of MCUboot encrypted images created by imgtool. 
+This update strategy combines the platform-specific encrypted XIP feature with the functionality of MCUboot encrypted images created by imgtool.
 
-Following image shows simplified OTA update flow of device fleet using encrypted XIP extension.
+The following image shows a simplified OTA update flow of a device fleet using the encrypted XIP extension.
 
 ![Image](encrypted_xip_pics/device_fleet_graph.jpg)
 
@@ -78,9 +78,9 @@ The device fleet shares a common MCUboot private key used for decryption of encr
 
 For __OVERWRITE_ONLY__ mode an image encrypted by MCUboot is used as a secure capsule for transport and staging in the non-XIP area of a device. This is a feature of MCUboot - for more information please see [MCUboot Encrypted images documentation](https://docs.mcuboot.com/encrypted_images.html).
 
-In summary, an image payload is encrypted using AES-CTR cipher by image tool (see [imgtool](https://docs.mcuboot.com/imgtool.html)). The AES key is randomized per OTA image and padded to image as an encrypted TLV section. The encrypted AES key can be decrypted using private key in selected key encryption scheme (RSA-OAEP, AES-KW, ECIES-P256 or ECIES-X25519).
+In summary, an image payload is encrypted using the AES-CTR cipher by imgtool (see [imgtool](https://docs.mcuboot.com/imgtool.html)). The AES key is randomized per OTA image and appended to the image as an encrypted TLV section. The encrypted AES key can be decrypted using a private key in the selected key encryption scheme (RSA-OAEP, AES-KW, ECIES-P256 or ECIES-X25519).
 
-Following image shows keys management for __OVERWRITE_ONLY__ mode:
+The following image shows key management for __OVERWRITE_ONLY__ mode:
 
 ![Image](encrypted_xip_pics/overwrite_keys_scheme.jpg)
 
@@ -89,35 +89,35 @@ As shown in the image, a user must securely embed the encryption private key int
 <!-- TOC --><a name="311-overwrite_only-partition-layout"></a>
 #### 3.1.1 OVERWRITE_ONLY partition layout
 
-The extension customize OVERWRITE_ONLY upgrade mode and utilizes a partition layout with one execution slot for encrypted XIP, one slot for staging an OTA image and one sector for encryption metadata. The revert funcionality is not possible here.
+The extension customizes the OVERWRITE_ONLY upgrade mode and uses a partition layout with one execution slot for encrypted XIP, one slot for staging an OTA image, and one sector for encryption metadata. The revert functionality is not possible here.
 
-Following image shows flash memory layout:
+The following image shows the flash memory layout:
 
 ![Image](encrypted_xip_pics/overwrite_only_partition.jpg)
 
-Secondary slot act as a staging area for encrypted OTA image by MCUboot. The execution slot is used as an execution area of the encrypted image using platform on-the-fly decryption.
+The secondary slot acts as a staging area for the encrypted OTA image handled by MCUboot. The execution slot is used to execute the encrypted image using the platform's on-the-fly decryption.
 
-Note: the placement of encryption configuration blocks in the flash memory is up to user.
+Note: the placement of the encryption configuration blocks in the flash memory is up to the user.
 
 <!-- TOC --><a name="312-ota-flow-of-modified-overwrite-only-mode"></a>
 #### 3.1.2 OTA flow of modified overwrite only mode
 
-Following image shows simplified flow of MCUboot overwrite-only mode extended with encrypted XIP extension.
+The following image shows a simplified flow of the MCUboot overwrite-only mode extended with the encrypted XIP extension.
 
 ![Image](encrypted_xip_pics/overwrite_only_flow.jpg)
 
-Before jumping to the booting process, the on-the-fly decryption is initialized so MCUboot is able to read and validate content in the primary slot. The re-encryption process is implemented in customized MCUboot code and in MCUboot hooks (see `flash_api.c` and `bootutil_hooks.c`).
+Before jumping to the booting process, the on-the-fly decryption is initialized so that MCUboot is able to read and validate the content in the primary slot. The re-encryption process is implemented in customized MCUboot code and in MCUboot hooks (see `flash_api.c` and `bootutil_hooks.c`).
 
 <!-- TOC --><a name="32-flash_remap"></a>
 ### 3.2 FLASH_REMAP
 
-This update strategy combines usage of platform specific encrypted XIP feature and [flash remapping](flash_remap_readme.md). 
+This update strategy combines the platform-specific encrypted XIP feature with [flash remapping](flash_remap_readme.md).
 
-Following image shows simplified OTA update flow of device fleet using encrypted XIP extension.
+The following image shows a simplified OTA update flow of a device fleet using the encrypted XIP extension.
 
 ![Image](encrypted_xip_pics/device_fleet_remap.jpg)
 
-An OTA image is always downloaded to the inactive slot and marked for testing on the next boot. If the new image doesn't mark itself as OK (confirmed), it will be deleted and the previous version will boot again. This feature is called revert.
+An OTA image is always downloaded to the inactive slot and marked for testing on the next boot. If the new image does not confirm itself as OK, it is deleted and the previous version boots again. This feature is called revert.
 
 The hardware key is provisioned by NXP or a user and is typically unique per device instance to prevent image cloning.
 
@@ -130,20 +130,20 @@ Following image shows keys management for __FLASH_REMAP__ mode:
 <!-- TOC --><a name="321-flash_remap-partition-layout"></a>
 #### 3.2.1 FLASH_REMAP partition layout
 
-The extension customize FLASH_REMAP upgrade mode. Following image shows flash memory layout:
+The extension customizes the FLASH_REMAP upgrade mode. The following image shows the flash memory layout:
 
 ![Image](encrypted_xip_pics/remap_partition.jpg)
 
-Note: the placement of encryption configuration blocks in the flash memory is up to user. 
+Note: the placement of the encryption configuration blocks in the flash memory is up to the user.
 
 <!-- TOC --><a name="322-ota-flow-of-modified-flash_remap-mode"></a>
 #### 3.2.2 OTA flow of modified FLASH_REMAP mode
 
-Following image shows simplified flow of MCUboot flash remap mode extended with encrypted XIP extension.
+The following image shows a simplified flow of the MCUboot flash remap mode extended with the encrypted XIP extension.
 
 ![Image](encrypted_xip_pics/remap_flow.jpg)
 
-Before jumping to the booting process, the on-the-fly decryption is initialized so MCUboot is able to read and validate content in both slots. Compared to OVERWRITE_ONLY, the encryption is processed in the application during OTA - not from the MCUboot context. MCUboot only initializes encrypted XIP after boot (see `flash_api.c` and `bootutil_hooks.c`).
+Before jumping to the booting process, the on-the-fly decryption is initialized so that MCUboot is able to read and validate the content in both slots. Compared to OVERWRITE_ONLY, the encryption is performed by the application during OTA - not from the MCUboot context. MCUboot only initializes encrypted XIP after boot (see `flash_api.c` and `bootutil_hooks.c`).
 
 <!-- TOC --><a name="323-limitations-of-flash_remap-mode"></a>
 #### 3.2.3 Limitations of FLASH_REMAP mode
@@ -208,7 +208,7 @@ Start preferentially with an empty board, erasing original content if needed.
 <!-- TOC --><a name="51-generate-ecies-p256-key-pairs-for-encrypted-image-containers-optional"></a>
 ### 5.1 Generate ECIES-P256 key pairs for encrypted image containers (optional)
 
-Note: For evaluation purpose this part can be skipped as OTA examples in SDK uses pre-generated key pairs.
+Note: For evaluation purposes this part can be skipped, as the OTA examples in the SDK use pre-generated key pairs.
 
 1. Generate private key using imgtool: `imgtool keygen -k enc-ec256-priv.pem -t ecdsa-p256`
     * Adjust the content of the `middleware\mcuboot_opensource\boot\nxp_mcux_sdk\keys\enc-ec256-priv.pem` accordingly.
@@ -216,13 +216,13 @@ Note: For evaluation purpose this part can be skipped as OTA examples in SDK use
 3. Extract private key to a C array: `imgtool getpriv --minimal -k enc-ec256-priv.pem`
     * Adjust the content of the `middleware\mcuboot_opensource\boot\nxp_mcux_sdk\keys\enc-ec256-priv-minimal.c` accordingly.
 
-5. Derive public key key: `imgtool getpub -k enc-ec256-pub.pem -e pem`
-Adjust the content of the `middleware\mcuboot_opensource\boot\nxp_mcux_sdk\keys\enc-ec256-pub.pem` accordingly.
+5. Derive the public key: `imgtool getpub -k enc-ec256-pub.pem -e pem`
+    * Adjust the content of the `middleware\mcuboot_opensource\boot\nxp_mcux_sdk\keys\enc-ec256-pub.pem` accordingly.
 
 <!-- TOC --><a name="52-enable-encrypted-xip-support-and-build-projects"></a>
 ### 5.2 Enable encrypted XIP support and build projects
 
-There are several ways how to enable Encrypted XIP mode.
+There are several ways to enable Encrypted XIP mode.
 
 __OVERWRITE_ONLY:__
 
@@ -248,7 +248,7 @@ To sign and encrypt an application binary, imgtool must be provided with the res
 
 __OVERWRITE_ONLY:__
 
-This mode requires offline encryption by mcuboot for security.
+This mode requires offline encryption for security.
 
 ~~~
  imgtool sign --key sign-ecdsa-p256-priv.pem
@@ -277,12 +277,12 @@ __FLASH_REMAP:__
          signed_ota_app.bin
 ~~~
 
-The values of parameters can be obtained from a readme file of target board. E.g. `boards\BOARD\ota_examples\mcuboot_opensource\example_board_readme.md`
+The parameter values can be obtained from the readme file of the target board, e.g. `boards\BOARD\ota_examples\mcuboot_opensource\example_board_readme.md`.
 
 <!-- TOC --><a name="54-initial-image"></a>
 ### 5.4 Initial image
 
-There are several methods how to run device for first time (initial image) when an application utilizes encrypted XIP.
+There are several methods to run the device for the first time (initial image) when the application uses encrypted XIP.
 
 <!-- TOC --><a name="541-load-an-initial-image-to-flash-memory-production"></a>
 #### 5.4.1 Load an initial image to flash memory (production)
@@ -298,7 +298,7 @@ See `flash_partitioning.h` for your board. For example:
 
 __OVERWRITE_ONLY:__
 
-An encrypted OTA image has to be loaded always to __candidate__ slot address defined as `BOOT_FLASH_CAND_APP`. The MCUboot code recognizes empty primary slot and re-encrypt the encrypted OTA image from the secondary slot to primary slot.
+An encrypted OTA image always has to be loaded to the __candidate__ slot address defined by `BOOT_FLASH_CAND_APP`. The MCUboot code recognizes the empty primary slot and re-encrypts the OTA image from the secondary slot to the primary slot.
 
 __FLASH_REMAP:__
 
@@ -307,7 +307,7 @@ An OTA image can be loaded to slot 0 or slot 1 using an initial SB3. Please see 
 <!-- TOC --><a name="542-run-unsigned-unencrypted-ota-application-development"></a>
 #### 5.4.2 Run unsigned unencrypted OTA application (development)
 
-An unsigned unencrypted application can be loaded and run from execution area using a debug session and then process the OTA update as usual.
+An unsigned, unencrypted application can be loaded and run from the execution area using a debug session, and can then process the OTA update as usual.
 
 <!-- TOC --><a name="55-running-the-example"></a>
 ### 5.5 Running the example

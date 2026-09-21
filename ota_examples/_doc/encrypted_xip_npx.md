@@ -1,8 +1,8 @@
 # Encrypted XIP and NPX (PRINCE encryption/decryption for on-chip flash)
 
-This document extends the documentation of [MCUBoot and encrypted XIP in OTA examples](encrypted_xip.md) and provides a walkthrough to evaluate it on devices with NPX module. 
+This document extends the documentation of [MCUboot and encrypted XIP in OTA examples](encrypted_xip.md) and provides a walkthrough to evaluate it on devices with the NPX module.
 
-__Note: The current state of NPX example implementation for SDK 25.06 is in an experimental state. The IV reconfiguration is not implemented yet and it's planned for future release.__
+__Note: The NPX example implementation in SDK 26.12 is in an experimental state. The IV reconfiguration is not implemented yet and is planned for a future release.__
 
 ## 1. Introduction
 
@@ -10,19 +10,19 @@ The flash memory controller's NPX (NVM PRINCE Encryption/Decryption) submodule p
 
 Additional information can be found in the reference manual and application notes AN14087 and AN14096.
 
-The current example implementation doesn't use customized configuration block as NPX encryption is fully handled by ROM using CMPA and CFPA pages.
+The current example implementation does not use a customized configuration block, as NPX encryption is fully handled by the ROM using the CMPA and CFPA pages.
 
 # 2. Instructions
 
 OTA examples for MCXN9 use the default partition layout with MCUboot placed in the IFR region to utilize the flash remapping feature. In the case of utilizing the NPX module, this configuration is not supported by ROM, and it is required to have the bootloader in the same flash array as the application slots. For this purpose, a customized build with the bootloader placed in the main flash array is provided.
 
-Instructions how to generate project with custom configuration is in `example_board_readme.md` for target board:
+Instructions on how to generate a project with a custom configuration are in the `example_board_readme.md` for the target board:
 
-- FRDM-MCXN947
-- MCX-N5XX-EVK
-- MCX-N9XX-EVK
+- [FRDM-MCXN947](../../_boards/frdmmcxn947/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/ota_examples/mcuboot_opensource/example_board_readme.md)
 
-Note: Following instructions are for FRDM-MCXN947 as a reference. 
+Note: the following instructions use FRDM-MCXN947 as a reference.
 
 ### 2.1 Enable encrypted XIP support and build projects
 
@@ -71,7 +71,7 @@ Build an encrypted MCUboot image for OTA:
 	      app_binary_SIGNED_ENCRYPTED_OTA.bin
 ~~~
 
-The values of parameters can be obtained from a readme file of target board (see `example_board_readme.md`).
+The parameter values can be obtained from the readme file of the target board (see `example_board_readme.md`).
 
 ### 2.3 Configure the device and load bootloader with initial image
 
@@ -80,8 +80,8 @@ The device must be provisioned to support NPX encryption. To simplify the workfl
 Perform the following steps:
 
 1. Erase the device
-2. Get the device into ISP mode - typically on development boards hold the ISP button and press the reset button
-3. Open the SEC tool and create new workspace for MCXN target device, test the ISP connection
+2. Get the device into ISP mode - on development boards this is typically done by holding the ISP button and pressing the reset button
+3. Open the SEC tool, create a new workspace for the MCXN target device, and test the ISP connection
 4. Switch to PKI management tab
     * Click __Generate keys__ (leave default settings)
 
@@ -107,9 +107,9 @@ Note: see define `BOOT_FLASH_ACT_APP` in `flash_partitioning.h` of the project o
 
 ![Image](encrypted_xip_pics/npx_example_3.jpg)
 
-<br>Region 0 is the encrypted MCUboot application to secure the private key embedded in MCUboot code to decrypt the encrypted OTA image by MCUboot.
-<br>Region 1 is the encrypted region of execution slot (slot 0) to utilize encrypted XIP. The last 32kB block (0x118000 - 0x11FFFF) is left unencrypted for slot trailer handling by the MCUboot update process
-<br>The staging area (slot 1) is left unencrypted as an OTA image staged here is encrypted anyway by MCUboot. Usage of region 2 here is optional.
+<br>Region 0 is the encrypted MCUboot application; it secures the private key embedded in the MCUboot code that is used to decrypt the encrypted OTA image.
+<br>Region 1 is the encrypted region of the execution slot (slot 0) that enables encrypted XIP. The last 32kB block (0x118000 - 0x11FFFF) is left unencrypted for slot trailer handling by the MCUboot update process.
+<br>The staging area (slot 1) is left unencrypted, as an OTA image staged here is encrypted by MCUboot anyway. The use of region 2 here is optional.
 
 8. __Build__ and __Write image__
 
@@ -117,9 +117,9 @@ Note: see define `BOOT_FLASH_ACT_APP` in `flash_partitioning.h` of the project o
 
 ### 2.4 Run the application
 
-Perform an OTA update as usual. 
+Perform an OTA update as usual.
 
-Following example log is from `ota_mcuboot_basic`:
+The following example log is from `ota_mcuboot_basic`:
 
 ~~~
 hello sbl.

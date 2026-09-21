@@ -10,7 +10,7 @@
       + [3.2 MCUboot bootloader use case](#32-mcuboot-bootloader-use-case)
    * [Supported Boards](#supported-boards)
 
-In this walkthrough, if possible, the lifecycle of the device is not changed for development purposes, so the device can be restored to its initial state. In real scenarios, transitioning the chips to the corresponding lifecycle is based on specific requirements.
+In this walkthrough, the device lifecycle is not changed where possible (for development purposes), so that the device can be restored to its initial state. In real-world scenarios, transitioning the chip to the appropriate lifecycle depends on the specific requirements.
 
 Common information related to SB3 is available in the documentation ['OTA update by using SB3 file'](sb3_common_readme.md).
 
@@ -21,19 +21,19 @@ The device must be provisioned to support SB3 processing. To simplify the workfl
 To provision the device perform the following steps:
 
 1. Erase the device
-2. Build `mcuboot_opensource`+`ota_mcuboot_basic` or `ota_rom_basic` project depending what you want to evaluate
-3. Get the device into ISP mode 
-    * Typically on development boards hold the ISP button and press the reset button
-4. Open the SEC tool and create new workspace for RW61x target device
-    * Test the ISP connection in SEC tool
+2. Build the `mcuboot_opensource` + `ota_mcuboot_basic` or the `ota_rom_basic` project, depending on what you want to evaluate
+3. Get the device into ISP mode
+    * On development boards this is typically done by holding the ISP button and pressing the reset button
+4. Open the SEC tool and create a new workspace for the RW61x target device
+    * Test the ISP connection in the SEC tool
 5. Switch to PKI management tab
     * Click __Generate keys__ (leave default settings)
 
 ![Image](sb3_pics/1_prov_keys.jpg)
 
-RW61x doesn't properly support shadow registers to process SB3 files for development purposes, so the correct __RKTH__ and __CUST_MK_SK__ have to be provisioned. To provision these keys and keep the device in the __Develop lifecycle__, we will initially use __Encrypted (IPED) Plain__ boot type as a workaround. This initial operation provisions the device with RTKH and CUST_MK_SK permanently, but the board will still be usable for development purposes as OTP BOOT_CFG0 (fuseword 15) remains intact.
+RW61x does not properly support shadow registers to process SB3 files for development purposes, so the correct __RKTH__ and __CUST_MK_SK__ have to be provisioned. To provision these keys while keeping the device in the __Develop lifecycle__, we initially use the __Encrypted (IPED) Plain__ boot type as a workaround. This initial operation provisions the device with RKTH and CUST_MK_SK permanently, but the board remains usable for development purposes, as OTP BOOT_CFG0 (fuseword 15) remains intact.
 
-Note: User is advised to save SEC tool workspace (or atleast the keys somewhere) for future use
+Note: the user is advised to save the SEC tool workspace (or at least the keys) for future use.
 
 6. Build Image
     * Boot: __Encrypted (IPED) Plain__
@@ -49,13 +49,13 @@ Note: User is advised to save SEC tool workspace (or atleast the keys somewhere)
 
 ![Image](sb3_pics/1_prov_write_rw61x.jpg.jpg)
 
-Now the device is provisioned with __RKTH__ and __CUST_MK_SK__ without transition of the lifecycle.
+Now the device is provisioned with __RKTH__ and __CUST_MK_SK__ without transitioning the lifecycle.
 
 8. Enable dual image support
 
 __Note: This is needed only for ROM bootloader use case, otherwise skip this step__
 
-The correct image offset and size has to be programmed to OTP fuseword 17 (BOOT_CFG2). In this example we use these values:
+The correct image offset and size have to be programmed into OTP fuseword 17 (BOOT_CFG2). In this example we use these values:
 
 -  FLEXSPI_IMAGE_SIZE = 0x0 (The size of the boot image is considered to be equal to the offset of the second image)
 -  FLEXSPI_IMAGE_OFFSET = 0x10 
@@ -71,7 +71,7 @@ This will erase encrypted image from the workaround.
 
 10. Load MCUboot (only MCUboot use case)
 
-Load unencrypted and unsigned `mcuboot_opensource` to the device using a programmer as usual
+Load the unencrypted, unsigned `mcuboot_opensource` to the device using a programmer, as usual.
 
 ## 2. Prepare OTA images
 
@@ -89,42 +89,42 @@ Load unencrypted and unsigned `mcuboot_opensource` to the device using a program
     
 ![Image](sb3_pics/2_ota_create_rom_rw61x.jpg)
 
-2. Rename generated SB3 file `bootable_images/ota_rom_basic.sb` to `ota_rom_image0.sb`
+2. Rename the generated SB3 file `bootable_images/ota_rom_basic.sb` to `ota_rom_image0.sb`
 3. Repeat step 1 with these changes:
     * Define Image version 2
     * In __Dual image boot__:
         * Target dual boot image: __Image 1__
     * Click __Build image__
-4. Rename generated SB3 file `bootable_images/ota_rom_basic.sb` to `ota_rom_image1.sb`
+4. Rename the generated SB3 file `bootable_images/ota_rom_basic.sb` to `ota_rom_image1.sb`
 
-Note: __Do not write the image using Write image tab! This will also fuse the BOOT_CFG0 to enable the Secured boot. The initial SB3 file will be written separatetly in next chapter.__
+Note: __Do not write the image using the Write image tab! This would also fuse BOOT_CFG0 to enable secure boot. The initial SB3 file will be written separately in the next chapter.__
 
 ### 2.2 MCUboot bootloader use case
 
-1. Build `ota_mcuboot_basic` and sign image by `imgtool` as usual by following steps in specific `example_board_readme.md` for your board. Copy the signed binary to your $sec_tool_workspace/source_images
-2. Look into `ota_examples/\_common/sb3_templates` directory and copy SB3 configuration templates for your device to your $sec_tool_workspace/configs
-    * `rw612_sb3_cfg_primary_slot.yaml` for primary slot
-    * `rw612_sb3_cfg_secondary_slot.yaml` for secondary slot
-3. In SEC tool open __Tools/SB Editor__ and click __Import__ to import `sb3_config_rw612_secondary_slot.yaml`
-    * Check and eventually fix paths to keys and image binary
-    * click __Generate__
+1. Build `ota_mcuboot_basic` and sign the image with `imgtool` as usual, following the steps in the `example_board_readme.md` for your board. Copy the signed binary to your `$sec_tool_workspace/source_images`.
+2. Look into the `ota_examples/_common/sb3_templates` directory and copy the SB3 configuration templates for your device to your `$sec_tool_workspace/configs`.
+    * `rw612_sb3_cfg_primary_slot.yaml` for the primary slot
+    * `rw612_sb3_cfg_secondary_slot.yaml` for the secondary slot
+3. In the SEC tool, open __Tools/SB Editor__ and click __Import__ to import `sb3_config_rw612_secondary_slot.yaml`.
+    * Check and, if necessary, fix the paths to the keys and the image binary.
+    * Click __Generate__.
 
 ![Image](sb3_pics/2_ota_create_mcuboot_rw61x_1.jpg)
 ![Image](sb3_pics/2_ota_create_mcuboot_rw61x_2.jpg)
 
-4. Repeat 3th step for `sb3_config_rw612_primary_slot.yaml`
+4. Repeat step 3 for `sb3_config_rw612_primary_slot.yaml`.
 
-Note: Optionally, we can also create initial SB3 file containing initial (first) `ota_mcuboot_basic` application for primary or secondary slot to simulate manufacturing process. This image has to be generated with additional __`--pad --confirm`__ imgtool arguments. The initial signed image can be also loaded directly using ISP (via `blhost` and `receive-sb-file` command) or other preferred method as usual.
+Note: Optionally, an initial SB3 file containing the initial (first) `ota_mcuboot_basic` application for the primary or secondary slot can be created to simulate the manufacturing process. This image has to be generated with the additional __`--pad --confirm`__ imgtool arguments. The initial signed image can also be loaded directly using ISP (via `blhost` and the `receive-sb-file` command) or another preferred method, as usual.
 
-Note2: __Do not write the image using Write image tab! This will also fuse the BOOT_CFG0 to enable the Secured boot. The initial SB3 file will be written separatetly in next chapter.__
+Note 2: __Do not write the image using the Write image tab! This would also fuse BOOT_CFG0 to enable secure boot. The initial SB3 file will be written separately in the next chapter.__
     
 ## 3. Firmware update
 
-For demonstration purpose we use [ExtraPutty](https://sourceforge.net/projects/extraputty/) tool as this fork of classic Putty has XMODEM support. Alternatively [TeraTerm](https://teratermproject.github.io/index-en.html) can be used.
+For demonstration purposes we use the [ExtraPutty](https://sourceforge.net/projects/extraputty/) tool, as this fork of the classic PuTTY has XMODEM support. Alternatively, [TeraTerm](https://teratermproject.github.io/index-en.html) can be used.
 
 ### 3.1 ROM bootloader only use case
 
-1. Load and run initial the initial `ota_rom_basic` application with one of these ways:
+1. Load and run the initial `ota_rom_basic` application in one of these ways:
     * load signed image via `blhost` commands: 
         * `blhost -p COM3,115200 -- fill-memory 0x20001000 0x4 0xC0000004`
         * `blhost -p COM3,115200 -- configure-memory 0x9 0x20001000`
@@ -132,14 +132,14 @@ For demonstration purpose we use [ExtraPutty](https://sourceforge.net/projects/e
 
     or
     
-    * load unsigned application via debug session - in this case the `image` command returns invalid information as there is no valid image header to parse
+    * load the unsigned application via a debug session - in this case the `image` command returns invalid information, as there is no valid image header to parse
 
-2. Check image state and active flag location with `image` command
-    * See active flag location to specify inactive image slot
+2. Check the image state and the active flag location with the `image` command
+    * Use the active flag location to determine the inactive image slot
 
 3. Send the OTA image
-    * Run `xmodem_sb3` command
-    * Send `ota_rom_image1.sb` targetting inactive slot via __Files Transfer/Xmodem (1k)__ 
+    * Run the `xmodem_sb3` command
+    * Send `ota_rom_image1.sb`, targeting the inactive slot, via __Files Transfer/Xmodem (1k)__
 
 4. Reboot the device with `reboot` command
 
@@ -185,7 +185,7 @@ $
 
 ### 3.2 MCUboot bootloader use case
 
-1. Load `mcuboot_opensource` and run initial the initial `ota_mcuboot_basic` application with one of these ways:
+1. Load `mcuboot_opensource` and run the initial `ota_mcuboot_basic` application in one of these ways:
     * load signed image via `blhost` commands: 
         * `blhost -p COM3,115200 -- fill-memory 0x20001000 0x4 0xC0000004`
         * `blhost -p COM3,115200 -- configure-memory 0x9 0x20001000`
@@ -193,26 +193,26 @@ $
 
     or
     
-    * load unsigned application via debug session - in this case the `image` command returns invalid information as there is no valid image header to parse
-    
-2. Check image state and active flag location with `image` command
-    * See active flag location to specify inactive image slot
+    * load the unsigned application via a debug session - in this case the `image` command returns invalid information, as there is no valid image header to parse
 
-2. Erase inactive slot with `image erase` command
-    * Note: not needed if the SB file contains the erase command 
+2. Check the image state and the active flag location with the `image` command
+    * Use the active flag location to determine the inactive image slot
+
+3. Erase the inactive slot with the `image erase` command
+    * Note: not needed if the SB file contains the erase command
 
 4. Send the OTA image
-    * Run `xmodem_sb3` command
-    * Send `ota_mcuboot_secondary_slot.sb` targetting inactive slot via __Files Transfer/Xmodem (1k)__ 
+    * Run the `xmodem_sb3` command
+    * Send `ota_mcuboot_secondary_slot.sb`, targeting the inactive slot, via __Files Transfer/Xmodem (1k)__
 
-5. Mark installed image ready for test
-    * Run `image test` command
+5. Mark the installed image ready for test
+    * Run the `image test` command
 
-6. Reboot the device with `reboot` command
+6. Reboot the device with the `reboot` command
 
-7. Check image update with `image` command
+7. Check the image update with the `image` command
 
-8. Mark the updated slot with confirm flag using `image accept` and check the state again with `image` command again
+8. Mark the updated slot with the confirm flag using `image accept`, and check the state again with the `image` command
 
 ~~~
 hello sbl.
@@ -318,5 +318,5 @@ $
 
 ## Supported Boards
 
-- RD-RW612-BGA
-- FRDM-RW612
+- [RD-RW612-BGA](../../_boards/rdrw612bga/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [FRDM-RW612](../../_boards/frdmrw612/ota_examples/mcuboot_opensource/example_board_readme.md)

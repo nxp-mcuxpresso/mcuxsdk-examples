@@ -10,7 +10,7 @@
       + [3.2 MCUboot bootloader use case](#32-mcuboot-bootloader-use-case)
    * [Supported Boards](#supported-boards)
 
-In this walkthrough, if possible, the lifecycle of the device is not changed for development purposes, so the device can be restored to its initial state. In real scenarios, transitioning the chips to the corresponding lifecycle is based on specific requirements.
+In this walkthrough, the device lifecycle is not changed where possible (for development purposes), so that the device can be restored to its initial state. In real-world scenarios, transitioning the chip to the appropriate lifecycle depends on the specific requirements.
 
 Common information related to SB3 is available in the documentation ['OTA update by using SB3 file'](sb3_common_readme.md).
 
@@ -18,15 +18,15 @@ Common information related to SB3 is available in the documentation ['OTA update
 
 The device must be provisioned to support SB3 processing. To simplify the workflow, the MCUXpresso Secure Provisioning Tool (SEC tool) is used. 
 
-RT7xx family supports shadow registers to process SB3 files for development purposes, so there is no need to advance lifecycle.
+The RT7xx family supports shadow registers to process SB3 files for development purposes, so there is no need to advance the lifecycle.
 
 To provision the device perform the following steps:
 
 1. Erase the device
-2. Build `mcuboot_opensource`+`ota_mcuboot_basic` or `ota_rom_basic` project depending what you want to evaluate
-3. Get the device into ISP mode 
-    * Typically on development boards hold the ISP button and press the reset button
-4. Open the SEC tool and create new workspace for RT7xx target device
+2. Build the `mcuboot_opensource` + `ota_mcuboot_basic` or the `ota_rom_basic` project, depending on what you want to evaluate
+3. Get the device into ISP mode
+    * On development boards this is typically done by holding the ISP button and pressing the reset button
+4. Open the SEC tool and create a new workspace for the RT7xx target device
     * Test the ISP connection in SEC tool (__Target__ -> __Connection...__)
     * Setup and test debug probe (__Target__ -> __Debug Probe...__)
 5. Switch to PKI management tab
@@ -41,7 +41,7 @@ To provision the device perform the following steps:
 
 7. Initial setup
     * Boot: __Plain signed__
-        * Note: Uncheck option with replacing FCB, if you proceeded the step 6
+        * Note: uncheck the option to replace the FCB if you performed step 6
     * Lifecycle: __Develop, shadows__
     * Select an __authentication key__ and generate __CUST_MK_SK__ and __OEM SB seed__
     * For MCUboot use case: 
@@ -58,7 +58,7 @@ To provision the device perform the following steps:
         * Set __Image 1 size__ to __Same as offset__
         * Click OK
         * Click __Firmware versions__
-        * Set initial image firmare version __1__ (this number is evaluated by ROM during boot when selecting the image with the highest version)
+        * Set the initial image firmware version to __1__ (this number is evaluated by the ROM during boot when selecting the image with the highest version)
         * Click OK
     * Click __Build image__
 
@@ -69,11 +69,11 @@ To provision the device perform the following steps:
 
 9. Switch boot from ISP to normal boot (XSPI0) and soft reset the board
 
-Now the device is provisioned with __RKTH__ and __CUST_MK_SK__ using shadow registers without transition of the lifecycle. The shadow registers are preserved and re-initiated during soft reset (without power-cycle). 
+Now the device is provisioned with __RKTH__ and __CUST_MK_SK__ using shadow registers, without transitioning the lifecycle. The shadow registers are preserved and re-initialized on a soft reset (without a power cycle).
 
 ## 2. Prepare OTA images
 
-RT7xx uses flash remapping feature using overlay mechanism (see ['MCUboot and flash remapping feature'](flash_remap_readme.md)). For this reason we have to prepare an ota image targeting currently inactive image slot. Following steps assume that primary slot (or image 0) is active and we have to prepare an OTA image targeting second slot (or image 1)
+RT7xx uses the flash remapping feature with the overlay mechanism (see ['MCUboot and flash remapping feature'](flash_remap_readme.md)). For this reason, we have to prepare an OTA image targeting the currently inactive image slot. The following steps assume that the primary slot (or image 0) is active and that we have to prepare an OTA image targeting the second slot (or image 1).
 
 ### 2.1 ROM only use case
 
@@ -88,24 +88,24 @@ Flash memory layout with 4MB image offset looks like this:
 1. Switch to Build Image tab
 2. Increase image version using __Firmware versions__ to number 2 and click __Build image__
 3. Open __Tools__ -> __SB Editor__ (CTRL + E)
-    * Click __Import from workspace__ to initialize an template for adjustment
-    * Rework command sequence into these commands:
+    * Click __Import from workspace__ to initialize a template for adjustment
+    * Rework the command sequence into these commands:
         * __configureMemory__ - configAddress: 0x28000000 memoryId: $memoryId
         * __erase__ - configAddress: 0x28400000 size: $(appEraseSize) memoryId: $memoryId
-        * Note: __erase__ command, depending on erase size, is a blocking process and could leave the device in an unresponsive state for a longer period of time. It's recommended to let the application the erase before processing OTA SB file.
+        * Note: depending on the erase size, the __erase__ command is a blocking operation and could leave the device unresponsive for a longer period of time. It is recommended to let the application perform the erase before processing the OTA SB file.
         * __load__ - configAddress: 0x28400000 memoryId: memoryId data: ${appPath}
-    * Change name of secure binary file to `ota_rom_image1.sb`
+    * Change the name of the secure binary file to `ota_rom_image1.sb`
     * Click __Generate__
 
 ![Image](sb3_pics/2_ota_create_rom_rt7xx.jpg)
 
-* Same steps can be used for an ota image targetting the image 0 slot with these adjustments:
-    * Image version has to be higher than active one in the image 1 slot
+* The same steps can be used for an OTA image targeting the image 0 slot, with these adjustments:
+    * The image version has to be higher than the active one in the image 1 slot
     * configAddress: 0x28004000
 
 ### 2.2 MCUboot bootloader use case
 
-Flash memory layout according settings in `flash_partitioning.h` should look like this:
+The flash memory layout, according to the settings in `flash_partitioning.h`, should look like this:
 
 | **Partition**      | **offset** | **size**   |
 |--------------------|------------|------------|
@@ -114,39 +114,39 @@ Flash memory layout according settings in `flash_partitioning.h` should look lik
 | **Secondary slot** | 0x28240000 | 0x200000   |
 
 1. Switch to Build Image tab
-2. Sign `ota_mcuboot_basic` using `imgtool` with higher image version as usual by following steps in specific `example_board_readme.md` for your board.
+2. Sign `ota_mcuboot_basic` using `imgtool` with a higher image version as usual, following the steps in the `example_board_readme.md` for your board.
 3. Open __Tools__ -> __SB Editor__ (CTRL + E)
-    * Click __Import from workspace__ to initialize an template for adjustment
-    * Rework command sequence into these commands:
+    * Click __Import from workspace__ to initialize a template for adjustment
+    * Rework the command sequence into these commands:
         * __configureMemory__ - configAddress: 0x28000000 memoryId: $memoryId
         * __erase__ - configAddress: 0x28400000 size: 0x200000 memoryId: $memoryId
-        * Note: __erase__ command, depending on erase size, is a blocking process and could leave the device in an unresponsive state for a longer period of time. It's recommended to let the application the erase before processing OTA SB file.
+        * Note: depending on the erase size, the __erase__ command is a blocking operation and could leave the device unresponsive for a longer period of time. It is recommended to let the application perform the erase before processing the OTA SB file.
         * __load__ - configAddress: 0x28240000 memoryId: memoryId data: path to signed `ota_mcuboot_basic`
-    * Change name of secure binary file to `ota_mcuboot_secondary_slot.sb`
+    * Change the name of the secure binary file to `ota_mcuboot_secondary_slot.sb`
     * Click __Generate__
 
 ![Image](sb3_pics/2_ota_create_mcuboot_rt7xx.jpg)
 
-* Same steps can be used for an ota image targetting the primary slot with these adjustments:
-    * Image version has to be higher than active one in the secondary slot
+* The same steps can be used for an OTA image targeting the primary slot, with these adjustments:
+    * The image version has to be higher than the active one in the secondary slot
     * configAddress: 0x28040000
 
 ## 3. Firmware update
 
-For demonstration purpose we use [ExtraPutty](https://sourceforge.net/projects/extraputty/) tool as this fork of classic Putty has XMODEM support. Alternatively [TeraTerm](https://teratermproject.github.io/index-en.html) can be used.
+For demonstration purposes we use the [ExtraPutty](https://sourceforge.net/projects/extraputty/) tool, as this fork of the classic PuTTY has XMODEM support. Alternatively, [TeraTerm](https://teratermproject.github.io/index-en.html) can be used.
 
-Note: Keep in mind that hard reset invalidates shadow registers.
+Note: keep in mind that a hard reset invalidates the shadow registers.
 
 ### 3.1 ROM bootloader only use case
 
 1. Run the initial `ota_rom_basic` application
 
-2. Check image state and active flag location with `image` command
-    * See active flag location to specify inactive image slot
+2. Check the image state and the active flag location with the `image` command
+    * Use the active flag location to determine the inactive image slot
 
 3. Send the OTA image
-    * Run `xmodem_sb3` command
-    * Send `ota_rom_image1.sb` targetting inactive slot via __Files Transfer/Xmodem (1k)__ 
+    * Run the `xmodem_sb3` command
+    * Send `ota_rom_image1.sb`, targeting the inactive slot, via __Files Transfer/Xmodem (1k)__
 
 4. Reboot the device with `reboot` command
 
@@ -193,24 +193,24 @@ $
 
 1. Run the initial `ota_mcuboot_basic` application
 
-2. Check image state and active flag location with `image` command
-    * See active flag location to specify inactive image slot
+2. Check the image state and the active flag location with the `image` command
+    * Use the active flag location to determine the inactive image slot
 
-2. Erase inactive slot with `image erase` command
-    * Note: not needed if the SB file contains the erase command 
+3. Erase the inactive slot with the `image erase` command
+    * Note: not needed if the SB file contains the erase command
 
 4. Send the OTA image
-    * Run `xmodem_sb3` command
-    * Send `ota_mcuboot_secondary_slot.sb` targetting inactive slot via __Files Transfer/Xmodem (1k)__ 
+    * Run the `xmodem_sb3` command
+    * Send `ota_mcuboot_secondary_slot.sb`, targeting the inactive slot, via __Files Transfer/Xmodem (1k)__
 
-5. Mark installed image ready for test
-    * Run `image test` command
+5. Mark the installed image ready for test
+    * Run the `image test` command
 
-6. Reboot the device with `reboot` command
+6. Reboot the device with the `reboot` command
 
-7. Check image update with `image` command
+7. Check the image update with the `image` command
 
-8. Mark the updated slot with confirm flag using `image accept` and check the state again with `image` command again
+8. Mark the updated slot with the confirm flag using `image accept`, and check the state again with the `image` command
 
 ~~~
 hello sbl.

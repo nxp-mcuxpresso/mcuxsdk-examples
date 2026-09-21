@@ -1,6 +1,6 @@
 # Encrypted XIP using OTFAD (On-The-Fly AES Decryption)
 
-This document extends the documentation of [MCUBoot and encrypted XIP in OTA examples](encrypted_xip.md) and provides additional information related to the OTFAD module.
+This document extends the documentation of [MCUboot and encrypted XIP in OTA examples](encrypted_xip.md) and provides additional information related to the OTFAD module.
 
 ## 1. Introduction
 
@@ -132,7 +132,7 @@ Additional information can be found in the Security Reference Manual of the targ
 
 ## 2. Encryption of MCUboot partition (OVERWRITE_ONLY only)
 
-Encrypting the mcuboot partition is required only for case when a private key used for offline encryption is exposed in bootloader code as C array, otherwise, it's optional. It's not necessary during development phase.
+Encrypting the MCUboot partition is required only when a private key used for offline encryption is exposed in the bootloader code as a C array; otherwise it is optional. It is not necessary during the development phase.
 
 To simplify the workflow, the MCUXpresso Secure Provisioning Tool (SEC tool) is used.
 
@@ -142,24 +142,24 @@ Note: This setup applies to region 0 only. Region 1 is reserved for the executio
 
 1. Erase the device
 2. Build `mcuboot_opensource`
-3. Get the device into ISP mode 
-    * Typically on development boards hold the ISP button and press the reset button
-4. Open the SEC tool and create new workspace for RW61x target device
-    * Test the ISP connection in SEC tool
+3. Get the device into ISP mode
+    * On development boards this is typically done by holding the ISP button and pressing the reset button
+4. Open the SEC tool and create a new workspace for the RT11xx target device
+    * Test the ISP connection in the SEC tool
 5. Build Image
     * Boot: __Encrypted (OTFAD) unsigned__
-    * Select or `mcuboot_opensource` output binary or ELF/OUT image as __Source executable image__
+    * Select the `mcuboot_opensource` output binary or ELF/OUT image as __Source executable image__
     * Lifecycle: __Open, HAB disabled__
 7. Configure OTFAD regions
     * Click __OTFAD encryption__
     * Total regions: __1 region - whole image__
     * OTFAD KEK source: __OTP__
     * Generate random KEK, user key and counter for region 0 (see following image)
-    * Configure Region 0 for MCUBoot partition as shown in following image 
+    * Configure Region 0 for the MCUboot partition as shown in the following image
 8. Build image
 9. Write image
     * Click __Write image__
 
-Note: This operation provisions the device with __KEK__ permanently. No other fuses are burned, so the board will still be usable for development purposes. A user still has to enable encrypted XIP boot (by ROM) by switching bit BOOT_CFG[1] on the DIP switch on the board. __Also, it's advised to save the SEC tool workspace (or at least the keys somewhere) for future use.__
+Note: This operation provisions the device with the __KEK__ permanently. No other fuses are burned, so the board remains usable for development purposes. A user still has to enable encrypted XIP boot (by the ROM) by switching bit BOOT_CFG[1] on the board's DIP switch. __It is also advised to save the SEC tool workspace (or at least the keys) for future use.__
 
 ![Image](encrypted_xip_pics/otfad_bootloader_encryption.jpg)

@@ -1,11 +1,11 @@
 # Serial recovery
 
-Serial recovery offers a backup way to restore a corrupted image on a device or an alternative way to update an image for the single application slot upgrade mode.
-The option is enabled with `CONFIG_BOOT_SERIAL_RECOVERY` on some boards by default. 
+Serial recovery offers a backup way to restore a corrupted image on a device, or an alternative way to update an image in the single application slot upgrade mode.
+The option is enabled with `CONFIG_BOOT_SERIAL_RECOVERY`, which is set by default on some boards.
 
-In OTA examples, the bootloader automatically falls into serial recovery if there is no valid image to boot. Alternatively, the mode can be entered with a specific button pressed during reset.
+In the OTA examples, the bootloader automatically falls back to serial recovery if there is no valid image to boot. Alternatively, the mode can be entered by holding a specific button during reset.
 
-For more information see [MCUboot's serial recovery documentation](https://docs.mcuboot.com/serial_recovery.html)
+For more information, see [MCUboot's serial recovery documentation](https://docs.mcuboot.com/serial_recovery.html).
 
 **Encrypted image support**
 

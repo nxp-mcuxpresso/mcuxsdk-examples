@@ -10,7 +10,7 @@
       + [3.2 MCUboot bootloader use case](#32-mcuboot-bootloader-use-case)
    * [Supported Boards](#supported-boards)
 
-In this walkthrough, if possible, the lifecycle of the device is not changed for development purposes, so the device can be restored to its initial state. In real scenarios, transitioning the chips to the corresponding lifecycle is based on specific requirements.
+In this walkthrough, the device lifecycle is not changed where possible (for development purposes), so that the device can be restored to its initial state. In real-world scenarios, transitioning the chip to the appropriate lifecycle depends on the specific requirements.
 
 Common information related to SB3 is available in the documentation ['OTA update by using SB3 file'](sb3_common_readme.md).
 
@@ -21,9 +21,9 @@ The device must be provisioned to support SB3 processing. To simplify the workfl
 To provision the device perform the following steps:
 
 1. Erase the device
-2. Build `mcuboot_opensource`+`ota_mcuboot_basic` or `ota_rom_basic` project depending what you want to evaluate
-3. Get the device into ISP mode - typically on development boards hold the ISP button and press the reset button
-4. Open the SEC tool and create new workspace for MCXN target device, test the ISP connection
+2. Build the `mcuboot_opensource` + `ota_mcuboot_basic` or the `ota_rom_basic` project, depending on what you want to evaluate
+3. Get the device into ISP mode - on development boards this is typically done by holding the ISP button and pressing the reset button
+4. Open the SEC tool, create a new workspace for the MCXN target device, and test the ISP connection
 5. Switch to PKI management tab
     * Click __Generate keys__ (leave default settings)
 
@@ -59,44 +59,44 @@ Following image is for ROM only use case
 
 ### 2.1 ROM bootloader only use case
 
-MCXN uses flash remapping based on swap mechanism so SB3 OTA file always target Image 1 memory region. 
+MCXN uses flash remapping based on the swap mechanism, so the SB3 OTA file always targets the Image 1 memory region.
 
 1. Build Image tab
-    * Increase Image version from 1 to 2
+    * Increase the image version from 1 to 2
     * __Build image__
-2. Rename generated SB3 file `bootable_images/ota_rom_basic.sb` to `ota_rom_basic_image_1_v2.sb`
+2. Rename the generated SB3 file `bootable_images/ota_rom_basic.sb` to `ota_rom_basic_image_1_v2.sb`
 
 ### 2.2 MCUboot bootloader use case
 
-1. Build `ota_mcuboot_basic` and sign image by `imgtool` as usual by following steps in specific `example_board_readme.md` for your board. Copy the signed binary to your $sec_tool_workspace/source_images
-2. Look into `ota_examples/\_common/sb3_templates` directory and copy SB3 configuration templates for your device to your $sec_tool_workspace/configs
+1. Build `ota_mcuboot_basic` and sign the image with `imgtool` as usual, following the steps in the `example_board_readme.md` for your board. Copy the signed binary to your `$sec_tool_workspace/source_images`.
+2. Look into the `ota_examples/_common/sb3_templates` directory and copy the SB3 configuration templates for your device to your `$sec_tool_workspace/configs`.
     * MCXN: `mcxn_sb3_cfg_primary_slot.yaml`
 
-3. In SEC tool open __Tools/SB Editor__ and click __Import__ to `sb3_config_mcxn_secondary_slot.yaml`
-    * Check and eventually fix paths to keys and image binary
-    * click __Generate__
+3. In the SEC tool, open __Tools/SB Editor__ and click __Import__ to import `sb3_config_mcxn_secondary_slot.yaml`.
+    * Check and, if necessary, fix the paths to the keys and the image binary.
+    * Click __Generate__.
 
 ![Image](sb3_pics/2_ota_create_mcuboot_mcxn_1.jpg)
 
 ![Image](sb3_pics/2_ota_create_mcuboot_mcxn_2.jpg)
 
-Note: Optionally, we can also create initial SB3 file containing initial (first) `ota_mcuboot_basic` application for primary/secondary slot (generated with additional __`--pad --confirm`__ imgtool arguments) to simulate manufacturing process, otherwise the initial signed image can be also loaded directly using ISP or other preferred method as usual.
+Note: Optionally, an initial SB3 file containing the initial (first) `ota_mcuboot_basic` application for the primary/secondary slot (generated with the additional __`--pad --confirm`__ imgtool arguments) can be created to simulate the manufacturing process. Otherwise, the initial signed image can also be loaded directly using ISP or another preferred method, as usual.
 
 ## 3. Firmware update
 
-For demonstration purpose we use [ExtraPutty](https://sourceforge.net/projects/extraputty/) tool as this fork of classic Putty has XMODEM support. Alternatively [TeraTerm](https://teratermproject.github.io/index-en.html) can be used.
+For demonstration purposes we use the [ExtraPutty](https://sourceforge.net/projects/extraputty/) tool, as this fork of the classic PuTTY has XMODEM support. Alternatively, [TeraTerm](https://teratermproject.github.io/index-en.html) can be used.
 
 ### 3.1 ROM bootloader only use case
 
-1. Run initial `ota_rom_basic` application loaded in chapter 1.
-    * Note: alternatively unsigned application via debug session using preferred IDE (IAR, MCUX, VSCode) - in this case the `image` command returns invalid information as there is no valid image header to parse
+1. Run the initial `ota_rom_basic` application loaded in chapter 1.
+    * Note: alternatively, run the unsigned application via a debug session using your preferred IDE (IAR, MCUX, VS Code) - in this case the `image` command returns invalid information, as there is no valid image header to parse.
 
-2. Check image state and active flag location with `image` command
-    * See active flag location to specify inactive image slot
+2. Check the image state and the active flag location with the `image` command.
+    * Use the active flag location to determine the inactive image slot.
 
-3. Send the OTA image
-    * Run `xmodem_sb3` command
-    * Send `ota_rom_basic_image_1_v2.sb` targetting inactive slot via __Files Transfer/Xmodem (1k)__ 
+3. Send the OTA image.
+    * Run the `xmodem_sb3` command.
+    * Send `ota_rom_basic_image_1_v2.sb`, targeting the inactive slot, via __Files Transfer/Xmodem (1k)__.
 
 4. Reboot the device with `reboot` command
 
@@ -141,26 +141,26 @@ $
 
 ### 3.2 MCUboot bootloader use case
 
-1. Load and run initial `ota_mcuboot_basic` application as usual - alternatively load initial SB3 via `blhost` and `receive-sb-file` command.
-    
-2. Check image state and active flag location with `image` command
-    * See active flag location to specify inactive image slot
+1. Load and run the initial `ota_mcuboot_basic` application as usual - alternatively, load the initial SB3 via `blhost` and the `receive-sb-file` command.
 
-2. Erase inactive slot with `image erase` command
-    * Note: not needed if the SB file contains the erase command 
+2. Check the image state and the active flag location with the `image` command.
+    * Use the active flag location to determine the inactive image slot.
 
-4. Send the OTA image
-    * Run `xmodem_sb3` command
-    * Send `ota_mcuboot_secondary_slot.sb` targetting inactive slot via __Files Transfer/Xmodem (1k)__ 
+3. Erase the inactive slot with the `image erase` command.
+    * Note: not needed if the SB file contains the erase command.
 
-5. Mark installed image ready for test
-    * Run `image test` command
+4. Send the OTA image.
+    * Run the `xmodem_sb3` command.
+    * Send `ota_mcuboot_secondary_slot.sb`, targeting the inactive slot, via __Files Transfer/Xmodem (1k)__.
 
-6. Reboot the device with `reboot` command
+5. Mark the installed image ready for test.
+    * Run the `image test` command.
 
-7. Check image update with `image` command
+6. Reboot the device with the `reboot` command.
 
-8. Mark the updated slot with confirm flag using `image accept` and check the state again with `image` command again
+7. Check the image update with the `image` command.
+
+8. Mark the updated slot with the confirm flag using `image accept`, and check the state again with the `image` command.
 
 ~~~
 hello sbl.
@@ -260,6 +260,6 @@ $
 
 ## Supported Boards
 
-- FRDM-MCXN236
-- FRDM-MCXN947
-- MCX-N9XX-EVK
+- [FRDM-MCXN236](../../_boards/frdmmcxn236/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [FRDM-MCXN947](../../_boards/frdmmcxn947/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/ota_examples/mcuboot_opensource/example_board_readme.md)
