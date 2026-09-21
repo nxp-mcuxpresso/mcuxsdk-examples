@@ -28,6 +28,7 @@ mcux_add_source(
           middleware/wireless/coex/src/cli/coex_cli.h
           middleware/edgefast_open/examples/central_ht/central_ht.c
           middleware/edgefast_open/examples/central_ht/central_ht.h
+          middleware/wireless/coex/src/common/coex_lfs_defines.h
 )
 
 mcux_add_include(
@@ -35,6 +36,7 @@ mcux_add_include(
   INCLUDES examples/coex_examples/coex_wifi_central_ht
            middleware/wireless/coex/src/cli
            middleware/edgefast_open/examples/central_ht
+           middleware/wireless/coex/src/common
 )
 
 mcux_add_macro(
@@ -43,7 +45,8 @@ mcux_add_macro(
       -DPRINTF_ADVANCED_ENABLE=1\
       -DSDK_DEBUGCONSOLE_UART=1\
       -DSDK_OS_FREE_RTOS\
-      -DUSE_RTOS=1"
+      -DUSE_RTOS=1\
+      -DLFS_DEFINES=coex_lfs_defines.h"
 )
 
 mcux_add_iar_configuration(
