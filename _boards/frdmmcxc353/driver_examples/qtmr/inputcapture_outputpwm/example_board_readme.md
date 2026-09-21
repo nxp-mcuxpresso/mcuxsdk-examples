@@ -7,8 +7,8 @@ Hardware requirements
 
 Board settings
 ============
-- Connect an external signal source to P1_0 (pin 9, QTMR0_CH0) to provide the input capture signal.
-- Use an oscilloscope to measure the PWM output signal on P1_1 (pin 10, QTMR0_CH1).
+- Connect an external signal source to P1_0 (J4-4, QTMR0_CH0) to provide the input capture signal.
+- Use an oscilloscope to measure the PWM output signal on P1_1 (J4-2, QTMR0_CH1).
 
 Prepare the Demo
 ===============

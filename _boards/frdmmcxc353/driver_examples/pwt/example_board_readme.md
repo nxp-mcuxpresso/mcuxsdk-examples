@@ -6,7 +6,7 @@ Hardware requirements
 
 Board settings
 ==============
-Connect input signal to J2-11
+Connect input signal to J2-7
 
 Prepare the Demo
 ================

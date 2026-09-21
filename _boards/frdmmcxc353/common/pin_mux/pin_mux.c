@@ -540,6 +540,8 @@ void BOARD_InitSPIPins(void)
 {
     /* PORT3: Peripheral clock is enabled */
     CLOCK_EnableClock(kCLOCK_GatePORT3);
+    /* FLEXPWM0 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kFLEXPWM0_RST_SHIFT_RSTn);
     /* LPSPI0 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kLPSPI0_RST_SHIFT_RSTn);
     /* PORT3 peripheral is released from reset */
@@ -1263,6 +1265,14 @@ BOARD_InitPWMPins:
     drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
   - {pin_num: '35', peripheral: FLEXPWM0, signal: 'B, 0', pin_signal: P2_22/XBAR_OUT6/LPUART0_CTS_B/LPI2C1_SDAS/PWM0_B0, slew_rate: fast, open_drain: disable, drive_strength: low,
     pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+  - {pin_num: '42', peripheral: FLEXPWM0, signal: 'FAULT, 0', pin_signal: P3_12/XBAR_IN4/LPSPI0_PCS3/QTMR0_CH0/XBAR_OUT6/PWM0_X0/WUU0_IN24, slew_rate: fast, open_drain: disable,
+    drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+  - {pin_num: '41', peripheral: FLEXPWM0, signal: 'FAULT, 1', pin_signal: P3_13/XBAR_IN5/LPSPI0_SDI/QTMR0_CH1/XBAR_OUT7/PWM0_X1, slew_rate: fast, open_drain: disable,
+    drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+  - {pin_num: '40', peripheral: FLEXPWM0, signal: 'FAULT, 2', pin_signal: P3_14/XBAR_IN6/LPSPI0_SCK/QTMR0_CH2/XBAR_OUT8/PWM0_X2, slew_rate: fast, open_drain: disable,
+    drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+  - {pin_num: '39', peripheral: FLEXPWM0, signal: 'FAULT, 3', pin_signal: P3_15/XBAR_IN7/LPSPI0_SDO/QTMR0_CH3/XBAR_OUT9/PWM0_X3, slew_rate: fast, open_drain: disable,
+    drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -1277,10 +1287,20 @@ void BOARD_InitPWMPins(void)
 {
     /* PORT2: Peripheral clock is enabled */
     CLOCK_EnableClock(kCLOCK_GatePORT2);
+    /* PORT3: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GatePORT3);
+    /* XBAR0: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GateXBAR0);
     /* FLEXPWM0 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kFLEXPWM0_RST_SHIFT_RSTn);
     /* PORT2 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kPORT2_RST_SHIFT_RSTn);
+    /* LPSPI0 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kLPSPI0_RST_SHIFT_RSTn);
+    /* PORT3 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kPORT3_RST_SHIFT_RSTn);
+	
+	RESET_ReleasePeripheralReset(kXBAR0_RST_SHIFT_RSTn);
 
     const port_pin_config_t port2_19_pin32_config = {/* Internal pull-up/down resistor is disabled */
                                                      .pullSelect = kPORT_PullDisable,
@@ -1381,6 +1401,118 @@ void BOARD_InitPWMPins(void)
                                                      .lockRegister = kPORT_UnlockRegister};
     /* PORT2_23 (pin 36) is configured as PWM0_A0 */
     PORT_SetPinConfig(PORT2, 23U, &port2_23_pin36_config);
+
+    const port_pin_config_t port3_12_pin42_config = {/* Internal pull-up/down resistor is disabled */
+                                                     .pullSelect = kPORT_PullDisable,
+                                                     /* Low internal pull resistor value is selected. */
+                                                     .pullValueSelect = kPORT_LowPullResistor,
+                                                     /* Fast slew rate is configured */
+                                                     .slewRate = kPORT_FastSlewRate,
+                                                     /* Passive input filter is disabled */
+                                                     .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                     /* Open drain output is disabled */
+                                                     .openDrainEnable = kPORT_OpenDrainDisable,
+                                                     /* Low drive strength is configured */
+                                                     .driveStrength = kPORT_LowDriveStrength,
+                                                     /* Normal drive strength is configured */
+                                                     .driveStrength1 = kPORT_NormalDriveStrength,
+                                                     /* Pin is configured as XBAR_IN4 */
+                                                     .mux = kPORT_MuxAlt1,
+                                                     /* Digital input enabled */
+                                                     .inputBuffer = kPORT_InputBufferEnable,
+                                                     /* Digital input is not inverted */
+                                                     .invertInput = kPORT_InputNormal,
+                                                     /* Pin Control Register fields [15:0] are not locked */
+                                                     .lockRegister = kPORT_UnlockRegister};
+    /* PORT3_12 (pin 42) is configured as XBAR_IN4 */
+    PORT_SetPinConfig(PORT3, 12U, &port3_12_pin42_config);
+
+    const port_pin_config_t port3_13_pin41_config = {/* Internal pull-up/down resistor is disabled */
+                                                     .pullSelect = kPORT_PullDisable,
+                                                     /* Low internal pull resistor value is selected. */
+                                                     .pullValueSelect = kPORT_LowPullResistor,
+                                                     /* Fast slew rate is configured */
+                                                     .slewRate = kPORT_FastSlewRate,
+                                                     /* Passive input filter is disabled */
+                                                     .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                     /* Open drain output is disabled */
+                                                     .openDrainEnable = kPORT_OpenDrainDisable,
+                                                     /* Low drive strength is configured */
+                                                     .driveStrength = kPORT_LowDriveStrength,
+                                                     /* Normal drive strength is configured */
+                                                     .driveStrength1 = kPORT_NormalDriveStrength,
+                                                     /* Pin is configured as XBAR_IN5 */
+                                                     .mux = kPORT_MuxAlt1,
+                                                     /* Digital input enabled */
+                                                     .inputBuffer = kPORT_InputBufferEnable,
+                                                     /* Digital input is not inverted */
+                                                     .invertInput = kPORT_InputNormal,
+                                                     /* Pin Control Register fields [15:0] are not locked */
+                                                     .lockRegister = kPORT_UnlockRegister};
+    /* PORT3_13 (pin 41) is configured as XBAR_IN5 */
+    PORT_SetPinConfig(PORT3, 13U, &port3_13_pin41_config);
+
+    const port_pin_config_t port3_14_pin40_config = {/* Internal pull-up/down resistor is disabled */
+                                                     .pullSelect = kPORT_PullDisable,
+                                                     /* Low internal pull resistor value is selected. */
+                                                     .pullValueSelect = kPORT_LowPullResistor,
+                                                     /* Fast slew rate is configured */
+                                                     .slewRate = kPORT_FastSlewRate,
+                                                     /* Passive input filter is disabled */
+                                                     .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                     /* Open drain output is disabled */
+                                                     .openDrainEnable = kPORT_OpenDrainDisable,
+                                                     /* Low drive strength is configured */
+                                                     .driveStrength = kPORT_LowDriveStrength,
+                                                     /* Normal drive strength is configured */
+                                                     .driveStrength1 = kPORT_NormalDriveStrength,
+                                                     /* Pin is configured as XBAR_IN6 */
+                                                     .mux = kPORT_MuxAlt1,
+                                                     /* Digital input enabled */
+                                                     .inputBuffer = kPORT_InputBufferEnable,
+                                                     /* Digital input is not inverted */
+                                                     .invertInput = kPORT_InputNormal,
+                                                     /* Pin Control Register fields [15:0] are not locked */
+                                                     .lockRegister = kPORT_UnlockRegister};
+    /* PORT3_14 (pin 40) is configured as XBAR_IN6 */
+    PORT_SetPinConfig(PORT3, 14U, &port3_14_pin40_config);
+
+    const port_pin_config_t port3_15_pin39_config = {/* Internal pull-up/down resistor is disabled */
+                                                     .pullSelect = kPORT_PullDisable,
+                                                     /* Low internal pull resistor value is selected. */
+                                                     .pullValueSelect = kPORT_LowPullResistor,
+                                                     /* Fast slew rate is configured */
+                                                     .slewRate = kPORT_FastSlewRate,
+                                                     /* Passive input filter is disabled */
+                                                     .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                     /* Open drain output is disabled */
+                                                     .openDrainEnable = kPORT_OpenDrainDisable,
+                                                     /* Low drive strength is configured */
+                                                     .driveStrength = kPORT_LowDriveStrength,
+                                                     /* Normal drive strength is configured */
+                                                     .driveStrength1 = kPORT_NormalDriveStrength,
+                                                     /* Pin is configured as XBAR_IN7 */
+                                                     .mux = kPORT_MuxAlt1,
+                                                     /* Digital input enabled */
+                                                     .inputBuffer = kPORT_InputBufferEnable,
+                                                     /* Digital input is not inverted */
+                                                     .invertInput = kPORT_InputNormal,
+                                                     /* Pin Control Register fields [15:0] are not locked */
+                                                     .lockRegister = kPORT_UnlockRegister};
+    /* PORT3_15 (pin 39) is configured as XBAR_IN7 */
+    PORT_SetPinConfig(PORT3, 15U, &port3_15_pin39_config);
+    /* IOMUX_XBAR_IN4 output assigned to XBAR0_IN4 input is connected
+     * to XBAR0_OUT22 output assigned to PWM_FAULT0 */
+    XBAR_SetSignalsConnection(kXBAR0_InputIomuxXbarIn4, kXBAR0_OutputPwmFault0);
+    /* IOMUX_XBAR_IN5 output assigned to XBAR0_IN5 input is connected
+     * to XBAR0_OUT23 output assigned to PWM_FAULT1 */
+    XBAR_SetSignalsConnection(kXBAR0_InputIomuxXbarIn5, kXBAR0_OutputPwmFault1);
+    /* IOMUX_XBAR_IN6 output assigned to XBAR0_IN6 input is connected
+     * to XBAR0_OUT24 output assigned to PWM_FAULT2 */
+    XBAR_SetSignalsConnection(kXBAR0_InputIomuxXbarIn6, kXBAR0_OutputPwmFault2);
+    /* IOMUX_XBAR_IN7 output assigned to XBAR0_IN7 input is connected
+     * to XBAR0_OUT25 output assigned to PWM_FAULT3 */
+    XBAR_SetSignalsConnection(kXBAR0_InputIomuxXbarIn7, kXBAR0_OutputPwmFault3);
 }
 
 /* clang-format off */

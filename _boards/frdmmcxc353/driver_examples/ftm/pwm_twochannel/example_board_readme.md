@@ -6,7 +6,7 @@ Hardware requirements
 
 Board settings
 ==============
-No special settings are required.
+FTM output: P2_3(LED_GREEN), P2_2(J2-9)
 
 Prepare the Demo
 ================

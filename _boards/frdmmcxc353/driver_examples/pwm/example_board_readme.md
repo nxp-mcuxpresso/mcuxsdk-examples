@@ -8,15 +8,15 @@ Hardware requirements
 Board settings
 ==============
 * Probe the pwm signal using an oscilloscope
- - PWM0_A0 output signal J3-15(PIO3_0).
- - PWM0_B0 output signal J3-13(PIO3_1).
- - PWM0_A1 output signal J3-11(PIO3_8).
- - PWM0_A2 output signal J3-7(PIO3_10).
+ - PWM0_A0 output signal J3-15(PIO2_23).
+ - PWM0_B0 output signal J3-13(PIO2_22).
+ - PWM0_A1 output signal J3-11(PIO2_21).
+ - PWM0_A2 output signal J3-7(PIO2_19).
 * Connet J3-8(LDO_3V3) to following pins to set PWM output in fault state
- - TRIG_IN2  input signal J4-3(PIO3_7).
- - TRIG_IN3  input signal J3-3(PIO1_13).
- - TRIG_IN4  input signal J4-5(PIO4_6).
- - TRIG_IN10 input signal J3-1(PIO3_31).
+ - TRIG_IN4  input signal J4-1(PIO3_12).
+ - TRIG_IN5  input signal J4-3(PIO3_13).
+ - TRIG_IN6  input signal J4-5(PIO3_14).
+ - TRIG_IN7  input signal J4-7(PIO3_15).
 
 Prepare the Demo
 ================

@@ -6,7 +6,7 @@ Hardware requirements
 
 Board settings
 ==============
-No special settings are required.
+FTM input: P2_2(J2-9), P2_1(J2-3)
 
 Prepare the Demo
 ================
