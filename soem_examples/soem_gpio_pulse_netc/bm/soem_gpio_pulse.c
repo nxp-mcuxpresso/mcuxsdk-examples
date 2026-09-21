@@ -173,9 +173,9 @@ void msgintrCallback(MSGINTR_Type *base, uint8_t channel, uint32_t pendingIntr)
     /* Transmit interrupt */
     if ((pendingIntr & (1U << TX_INTR_MSG_DATA)) != 0U)
     {
-        EP_CleanTxIntrFlags(&if_port.g_ep_handle, 1, 0);
+        EP_CleanTxIntrFlags(if_port.g_ep_handle, 1, 0);
 #if defined(EXAMPLE_EP_NUM) && EXAMPLE_EP_NUM
-        EP_ReclaimTxDescriptor(&if_port.g_ep_handle, 0);
+        EP_ReclaimTxDescriptor(if_port.g_ep_handle, 0);
 #endif
 #if !(defined(EXAMPLE_NETC_HAS_NO_SWITCH) && EXAMPLE_NETC_HAS_NO_SWITCH)    
         if_port.txOver = true;
@@ -184,7 +184,7 @@ void msgintrCallback(MSGINTR_Type *base, uint8_t channel, uint32_t pendingIntr)
     /* Receive interrupt */
     if ((pendingIntr & (1U << RX_INTR_MSG_DATA)) != 0U)
     {
-        EP_CleanRxIntrFlags(&if_port.g_ep_handle, 1);
+        EP_CleanRxIntrFlags(if_port.g_ep_handle, 1);
     }
 }
 
@@ -241,7 +241,7 @@ static status_t APP_SWT_AddTableEntry()
         }
 
         ipfEntryCfg.keye.srcPort = i;
-        result                   = SWT_RxIPFAddTableEntry(&if_port.g_swt_handle, &ipfEntryCfg, &entryID);
+        result                   = SWT_RxIPFAddTableEntry(if_port.g_swt_handle, &ipfEntryCfg, &entryID);
         if ((kStatus_Success != result) && (entryID != 0xFFFFFFFF))
         {
             PRINTF("\r\n%s: %d, Failed to add IPF table!, result = %u\r\n, entryID = %u", __func__, __LINE__, result,
@@ -254,7 +254,7 @@ static status_t APP_SWT_AddTableEntry()
     netc_tb_fdb_config_t fdbEntryCfg = {
         .keye.fid = FRAME_FID, .cfge.portBitmap = (1U << EXAMPLE_SWT_PSEUDO_PORT), .cfge.dynamic = 1};
     memset(&fdbEntryCfg.keye.macAddr[0], 0xFF, 6U);
-    result = SWT_BridgeAddFDBTableEntry(&if_port.g_swt_handle, &fdbEntryCfg, &entryID);
+    result = SWT_BridgeAddFDBTableEntry(if_port.g_swt_handle, &fdbEntryCfg, &entryID);
     if ((kStatus_Success != result) || (0xFFFFFFFFU == entryID))
     {
         PRINTF("\r\n%s: %d, Failed to add FDB table!, result = %d, entryID = %d\r\n", __func__, __LINE__, result,

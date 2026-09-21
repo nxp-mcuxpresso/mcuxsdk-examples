@@ -62,8 +62,19 @@ AT_NONCACHEABLE_SECTION_ALIGN(static netc_tx_bd_t g_txBuffDescrip[EP_RING_NUM][E
 static netc_tx_frame_info_t g_txDirty[EP_RING_NUM][EP_TXBD_NUM];
 #endif
 
+/* Backing storage for the pointer members of if_port. */
+static swt_handle_t s_swt_handle_inst;
+static ep_handle_t s_ep_handle_inst;
+static netc_mdio_handle_t s_emdio_handle_inst;
+static phy_handle_t s_phy_handle_inst;
+
 /* PHY operation. */
-struct netc_swt_if_port if_port;
+struct netc_swt_if_port if_port = {
+    .g_swt_handle   = &s_swt_handle_inst,
+    .g_ep_handle    = &s_ep_handle_inst,
+    .s_emdio_handle = &s_emdio_handle_inst,
+    .phy_handle     = &s_phy_handle_inst,
+};
 static phy_yt8521_resource_t s_phy_resource[5];
 /*${variable:end}*/
 
@@ -78,7 +89,7 @@ status_t NETC_MDIO_Init(void)
     };
 
     mdioConfig.mdio.type = kNETC_EMdio;
-    result               = NETC_MDIOInit(&if_port.s_emdio_handle, &mdioConfig);
+    result               = NETC_MDIOInit(if_port.s_emdio_handle, &mdioConfig);
     if (result != kStatus_Success)
     {
         return result;
@@ -89,12 +100,12 @@ status_t NETC_MDIO_Init(void)
 
 static status_t NETC_EP_EMDIOWrite(uint8_t phyAddr, uint8_t regAddr, uint16_t data)
 {
-    return NETC_MDIOWrite(&if_port.s_emdio_handle, phyAddr, regAddr, data);
+    return NETC_MDIOWrite(if_port.s_emdio_handle, phyAddr, regAddr, data);
 }
 
 static status_t NETC_EP_EMDIORead(uint8_t phyAddr, uint8_t regAddr, uint16_t *pData)
 {
-    return NETC_MDIORead(&if_port.s_emdio_handle, phyAddr, regAddr, pData);
+    return NETC_MDIORead(if_port.s_emdio_handle, phyAddr, regAddr, pData);
 }
 
 uint64_t gettime()
@@ -153,13 +164,13 @@ void msgintrCallback(MSGINTR_Type *base, uint8_t channel, uint32_t pendingIntr)
     /* Transmit interrupt */
     if ((pendingIntr & (1U << TX_INTR_MSG_DATA)) != 0U)
     {
-        EP_CleanTxIntrFlags(&if_port.g_ep_handle, 1, 0);
+        EP_CleanTxIntrFlags(if_port.g_ep_handle, 1, 0);
         if_port.txOver = true;
     }
     /* Receive interrupt */
     if ((pendingIntr & (1U << RX_INTR_MSG_DATA)) != 0U)
     {
-        EP_CleanRxIntrFlags(&if_port.g_ep_handle, 1);
+        EP_CleanRxIntrFlags(if_port.g_ep_handle, 1);
     }
 }
 
@@ -219,7 +230,7 @@ status_t APP_SWT_AddTableEntry()
         }
 
         ipfEntryCfg.keye.srcPort = i;
-        result                   = SWT_RxIPFAddTableEntry(&if_port.g_swt_handle, &ipfEntryCfg, &entryID);
+        result                   = SWT_RxIPFAddTableEntry(if_port.g_swt_handle, &ipfEntryCfg, &entryID);
         if ((kStatus_Success != result) && (entryID != 0xFFFFFFFF))
         {
             PRINTF("\r\n%s: %d, Failed to add IPF table!, result = %u\r\n, entryID = %u", __func__, __LINE__, result,
@@ -232,7 +243,7 @@ status_t APP_SWT_AddTableEntry()
     netc_tb_fdb_config_t fdbEntryCfg = {
         .keye.fid = FRAME_FID, .cfge.portBitmap = (1U << EXAMPLE_SWT_PSEUDO_PORT), .cfge.dynamic = 1};
     memset(&fdbEntryCfg.keye.macAddr[0], 0xFF, 6U);
-    result = SWT_BridgeAddFDBTableEntry(&if_port.g_swt_handle, &fdbEntryCfg, &entryID);
+    result = SWT_BridgeAddFDBTableEntry(if_port.g_swt_handle, &fdbEntryCfg, &entryID);
     if ((kStatus_Success != result) || (0xFFFFFFFFU == entryID))
     {
         PRINTF("\r\n%s: %d, Failed to add FDB table!, result = %d, entryID = %d\r\n", __func__, __LINE__, result,
@@ -359,18 +370,18 @@ static status_t APP_PHY_SetPort(uint32_t port, phy_config_t *phyConfig)
     s_phy_resource[port].write = NETC_EP_EMDIOWrite;
     s_phy_resource[port].read  = NETC_EP_EMDIORead;
 
-    result = PHY_Init(&if_port.phy_handle, phyConfig);
+    result = PHY_Init(if_port.phy_handle, phyConfig);
     if (result != kStatus_Success)
     {
         return result;
     }
 
-    PHY_Write(&if_port.phy_handle, PHY_EXT_ADDR_REG, PHY_RGMII_CONFIG1_REG);
-    PHY_Read(&if_port.phy_handle, PHY_EXT_DATA_REG, &regValue);
+    PHY_Write(if_port.phy_handle, PHY_EXT_ADDR_REG, PHY_RGMII_CONFIG1_REG);
+    PHY_Read(if_port.phy_handle, PHY_EXT_DATA_REG, &regValue);
     regValue &= ~PHY_RGMII_CONFIG1_TXDLY_MASK;
     /* 150ps per step. */
     regValue |= 0x2;
-    PHY_Write(&if_port.phy_handle, PHY_EXT_DATA_REG, regValue);
+    PHY_Write(if_port.phy_handle, PHY_EXT_DATA_REG, regValue);
 
     return result;
 }
@@ -437,7 +448,7 @@ status_t BOARD_InitHardware(void)
 
     do
     {
-		PHY_GetLinkStatus(&if_port.phy_handle, &link);
+		PHY_GetLinkStatus(if_port.phy_handle, &link);
     } while (!link);
 
     return result;

@@ -22,7 +22,16 @@ int32_t  prev_dc_diff_ns = 0;
 int64_t  dc_adjust_ns;
 int64_t  system_time_offset = 0LL;
 
-struct netc_ep_if_port if_port;
+/* Backing storage for the pointer members of if_port. */
+static ep_handle_t s_ep_handle_inst;
+static netc_mdio_handle_t s_emdio_handle_inst;
+static phy_handle_t s_phy_handle_inst;
+
+struct netc_ep_if_port if_port = {
+    .g_ep_handle    = &s_ep_handle_inst,
+    .s_emdio_handle = &s_emdio_handle_inst,
+    .phy_handle     = &s_phy_handle_inst,
+};
 
 volatile uint64_t system_time_ns = 0;
 
@@ -93,13 +102,13 @@ void msgintrCallback(MSGINTR_Type *base, uint8_t channel, uint32_t pendingIntr)
     /* Transmit interrupt */
     if ((pendingIntr & (1U << TX_INTR_MSG_DATA)) != 0U)
     {
-        EP_CleanTxIntrFlags(&if_port.g_ep_handle, 1, 0);
-        EP_ReclaimTxDescriptor(&if_port.g_ep_handle, 0);
+        EP_CleanTxIntrFlags(if_port.g_ep_handle, 1, 0);
+        EP_ReclaimTxDescriptor(if_port.g_ep_handle, 0);
     }
     /* Receive interrupt */
     if ((pendingIntr & (1U << RX_INTR_MSG_DATA)) != 0U)
     {
-        EP_CleanRxIntrFlags(&if_port.g_ep_handle, 1);
+        EP_CleanRxIntrFlags(if_port.g_ep_handle, 1);
     }
 }
 
@@ -284,7 +293,7 @@ status_t NETC_EP_MDIO_Init(void)
     };
 
     mdioConfig.mdio.type = kNETC_EMdio;
-    result               = NETC_MDIOInit(&if_port.s_emdio_handle, &mdioConfig);
+    result               = NETC_MDIOInit(if_port.s_emdio_handle, &mdioConfig);
     if (result != kStatus_Success)
     {
         return result;
@@ -295,12 +304,12 @@ status_t NETC_EP_MDIO_Init(void)
 
 static status_t NETC_EP_EMDIOWrite(uint8_t phyAddr, uint8_t regAddr, uint16_t data)
 {
-    return NETC_MDIOWrite(&if_port.s_emdio_handle, phyAddr, regAddr, data);
+    return NETC_MDIOWrite(if_port.s_emdio_handle, phyAddr, regAddr, data);
 }
 
 static status_t NETC_EP_EMDIORead(uint8_t phyAddr, uint8_t regAddr, uint16_t *pData)
 {
-    return NETC_MDIORead(&if_port.s_emdio_handle, phyAddr, regAddr, pData);
+    return NETC_MDIORead(if_port.s_emdio_handle, phyAddr, regAddr, pData);
 }
 
 static status_t NETC_EP_Phy8201SetUp(phy_handle_t *handle)
@@ -359,13 +368,13 @@ status_t NETC_EP_PHY_Init(void)
     
 	phy8201Config.resource = &s_phy_resource;
     phy8201Config.phyAddr  = EP0_PHY_ADDR;
-    result                 = PHY_Init(&if_port.phy_handle, &phy8201Config);
+    result                 = PHY_Init(if_port.phy_handle, &phy8201Config);
     if (result != kStatus_Success)
     {
         return result;
     }
 
-    result = NETC_EP_Phy8201SetUp(&if_port.phy_handle);
+    result = NETC_EP_Phy8201SetUp(if_port.phy_handle);
     if (result != kStatus_Success)
     {
         return result;
@@ -426,7 +435,7 @@ status_t BOARD_InitHardware(void)
 
     do
     {
-		PHY_GetLinkStatus(&if_port.phy_handle, &link);
+		PHY_GetLinkStatus(if_port.phy_handle, &link);
     } while (!link);
 
     return result;

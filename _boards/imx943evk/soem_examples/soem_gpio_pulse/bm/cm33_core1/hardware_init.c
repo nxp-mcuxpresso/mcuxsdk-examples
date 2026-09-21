@@ -12,7 +12,16 @@
 /*${header:end}*/
 
 /*${variable:start}*/
-struct netc_ep_if_port if_port;
+/* Backing storage for the pointer members of if_port. */
+static ep_handle_t s_ep_handle_inst;
+static netc_mdio_handle_t s_emdio_handle_inst;
+static phy_handle_t s_phy_handle_inst;
+
+struct netc_ep_if_port if_port = {
+    .g_ep_handle    = &s_ep_handle_inst,
+    .s_emdio_handle = &s_emdio_handle_inst,
+    .phy_handle     = &s_phy_handle_inst,
+};
 
 status_t BOARD_InitHardware(void)
 {
@@ -267,7 +276,7 @@ status_t BOARD_InitHardware(void)
 
     do
     {
-		NETC_EP_PHY_GetLinkStatus(&if_port.phy_handle, &link);
+		NETC_EP_PHY_GetLinkStatus(if_port.phy_handle, &link);
     } while (!link);
 
     PRINTF("\r\n PHY get link status success\r\n");
@@ -284,7 +293,7 @@ status_t NETC_EP_MDIO_Init(void)
     };
 
     mdioConfig.mdio.type = kNETC_EMdio;
-    result               = NETC_MDIOInit(&if_port.s_emdio_handle, &mdioConfig);
+    result               = NETC_MDIOInit(if_port.s_emdio_handle, &mdioConfig);
     if (result != kStatus_Success)
     {
         return result;
@@ -295,12 +304,12 @@ status_t NETC_EP_MDIO_Init(void)
 
 static status_t NETC_EP_EMDIOWrite(uint8_t phyAddr, uint8_t regAddr, uint16_t data)
 {
-    return NETC_MDIOWrite(&if_port.s_emdio_handle, phyAddr, regAddr, data);
+    return NETC_MDIOWrite(if_port.s_emdio_handle, phyAddr, regAddr, data);
 }
 
 static status_t NETC_EP_EMDIORead(uint8_t phyAddr, uint8_t regAddr, uint16_t *pData)
 {
-    return NETC_MDIORead(&if_port.s_emdio_handle, phyAddr, regAddr, pData);
+    return NETC_MDIORead(if_port.s_emdio_handle, phyAddr, regAddr, pData);
 }
 
 phy_rtl8211f_resource_t s_phy_resource;
@@ -321,7 +330,7 @@ status_t NETC_EP_PHY_Init(void)
     
 	phy8211Config.resource = &s_phy_resource;
     phy8211Config.phyAddr  = EP0_PHY_ADDR;
-    result = PHY_Init(&if_port.phy_handle, &phy8211Config);
+    result = PHY_Init(if_port.phy_handle, &phy8211Config);
     if (result != kStatus_Success)
     {
         return result;

@@ -135,7 +135,6 @@ static int general_servo_setup(uint16 slave) {
 		return -1;
 }
 
-
 static int nxp_servo_setup(uint16 slave) {
 	int i;
 	int ret = 0;
