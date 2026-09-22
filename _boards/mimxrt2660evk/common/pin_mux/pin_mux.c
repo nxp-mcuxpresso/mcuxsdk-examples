@@ -35,10 +35,10 @@ pin_labels:
 #include "pin_mux.h"
 
 /* FUNCTION ************************************************************************************************************
- *
+ * 
  * Function Name : BOARD_InitBootPins
  * Description   : Calls initialization functions.
- *
+ * 
  * END ****************************************************************************************************************/
 void BOARD_InitBootPins(void) {
     BOARD_InitDEBUG_UARTPins();
@@ -584,96 +584,88 @@ Description   : Configures pin routing and optionally pin electrical features.
 void BOARD_InitDcifDpiPins(void) {
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_0_MEDIA_DCIF_DATA00,        /* PIO3_0 is configured as MEDIA_DCIF_DATA00 */
-      0x00U);
+      0x00U);                                 /* pad configuration */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_1_MEDIA_DCIF_DATA01,        /* PIO3_1 is configured as MEDIA_DCIF_DATA01 */
-      0x00U);
+      0x00U);                                 /* pad configuration */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_10_MEDIA_DCIF_DATA10,       /* PIO3_10 is configured as MEDIA_DCIF_DATA10 */
-      0x00U);
+      0x00U);                                 /* pad configuration */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_11_MEDIA_DCIF_DATA11,       /* PIO3_11 is configured as MEDIA_DCIF_DATA11 */
-      0x00U);
+      0x00U);                                 /* pad configuration */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_12_MEDIA_DCIF_DATA12,       /* PIO3_12 is configured as MEDIA_DCIF_DATA12 */
-      0x00U);
+      0x00U);                                 /* pad configuration */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_13_MEDIA_DCIF_DATA13,       /* PIO3_13 is configured as MEDIA_DCIF_DATA13 */
-      0x00U);
+      0x00U);                                 /* pad configuration */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_14_MEDIA_DCIF_DATA14,       /* PIO3_14 is configured as MEDIA_DCIF_DATA14 */
-      0x00U);
+      0x00U);                                 /* pad configuration */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_15_MEDIA_DCIF_DATA15,       /* PIO3_15 is configured as MEDIA_DCIF_DATA15 */
-      0x00U);
+      0x00U);                                 /* pad configuration */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_16_MEDIA_DCIF_DATA16,       /* PIO3_16 is configured as MEDIA_DCIF_DATA16 */
-      0x00U);
-
+      0x00U);                                 /* pad configuration */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_17_MEDIA_DCIF_DATA17,       /* PIO3_17 is configured as MEDIA_DCIF_DATA17 */
-      0x00U);
-
+      0x00U);                                 /* pad configuration */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_18_MEDIA_DCIF_DATA18,       /* PIO3_18 is configured as MEDIA_DCIF_DATA18 */
-      0x00U);
-
+      0x00U);                                 /* pad configuration */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_19_MEDIA_DCIF_DATA19,       /* PIO3_19 is configured as MEDIA_DCIF_DATA19 */
-      0x00U);
-
+      0x00U);                                 /* pad configuration */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_2_MEDIA_DCIF_DATA02,        /* PIO3_2 is configured as MEDIA_DCIF_DATA02 */
-      0x00U);
+      0x00U);                                 /* pad configuration */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_20_MEDIA_DCIF_DATA20,       /* PIO3_20 is configured as MEDIA_DCIF_DATA20 */
-      0x00U);
-
+      0x00U);                                 /* pad configuration */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_21_MEDIA_DCIF_DATA21,       /* PIO3_21 is configured as MEDIA_DCIF_DATA21 */
-      0x00U);
-
+      0x00U);                                 /* pad configuration */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_22_MEDIA_DCIF_DATA22,       /* PIO3_22 is configured as MEDIA_DCIF_DATA22 */
-      0x00U);
-
+      0x00U);                                 /* pad configuration */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_23_MEDIA_DCIF_DATA23,       /* PIO3_23 is configured as MEDIA_DCIF_DATA23 */
-      0x00U);
-
+      0x00U);                                 /* pad configuration */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_24_MEDIA_DCIF_DE,           /* PIO3_24 is configured as MEDIA_DCIF_DE */
-      0x00U);
+      0x00U);                                 /* pad configuration */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_25_MEDIA_DCIF_PIXEL_CLK,    /* PIO3_25 is configured as MEDIA_DCIF_PIXEL_CLK */
-      0x00U);
+      0x00U);                                 /* pad configuration */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_26_MEDIA_DCIF_HSYNC,        /* PIO3_26 is configured as MEDIA_DCIF_HSYNC */
-      0x00U);
+      0x00U);                                 /* pad configuration */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_27_MEDIA_DCIF_VSYNC,        /* PIO3_27 is configured as MEDIA_DCIF_VSYNC */
-      0x00U);
+      0x00U);                                 /* pad configuration */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_3_MEDIA_DCIF_DATA03,        /* PIO3_3 is configured as MEDIA_DCIF_DATA03 */
-      0x00U);
+      0x00U);                                 /* pad configuration */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_4_MEDIA_DCIF_DATA04,        /* PIO3_4 is configured as MEDIA_DCIF_DATA04 */
-      0x00U);
+      0x00U);                                 /* pad configuration */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_5_MEDIA_DCIF_DATA05,        /* PIO3_5 is configured as MEDIA_DCIF_DATA05 */
-      0x00U);
+      0x00U);                                 /* pad configuration */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_6_MEDIA_DCIF_DATA06,        /* PIO3_6 is configured as MEDIA_DCIF_DATA06 */
-      0x00U);
+      0x00U);                                 /* pad configuration */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_7_MEDIA_DCIF_DATA07,        /* PIO3_7 is configured as MEDIA_DCIF_DATA07 */
-      0x00U);
+      0x00U);                                 /* pad configuration */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_8_MEDIA_DCIF_DATA08,        /* PIO3_8 is configured as MEDIA_DCIF_DATA08 */
-      0x00U);
+      0x00U);                                 /* pad configuration */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_9_MEDIA_DCIF_DATA09,        /* PIO3_9 is configured as MEDIA_DCIF_DATA09 */
-      0x00U);
+      0x00U);                                 /* pad configuration */
 }
 
 
@@ -727,31 +719,31 @@ void BOARD_InitCSIPins(void) {
       IOMUXC_PIO3_19_MEDIA_CSI_PIXCLK,        /* PIO3_19 is configured as MEDIA_CSI_PIXCLK */
       0x80U);                                 /* Input Buffer Enable: Enables */
   IOMUXC_SetPin_Mux_Config(
+      IOMUXC_PIO3_2_MEDIA_CSI_DATA02,         /* PIO3_2 is configured as MEDIA_CSI_DATA02 */
+      0x80U);                                 /* Input Buffer Enable: Enables */
+  IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_20_MEDIA_CSI_FIELD,         /* PIO3_20 is configured as MEDIA_CSI_FIELD */
-      0x80U);                                 /* Input Buffer Enable: Enables */
-  IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO3_9_MEDIA_CSI_DATA09,         /* PIO3_9 is configured as MEDIA_CSI_DATA09 */
-      0x80U);                                 /* Input Buffer Enable: Enables */
-  IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO3_8_MEDIA_CSI_DATA08,         /* PIO3_8 is configured as MEDIA_CSI_DATA08 */
-      0x80U);                                 /* Input Buffer Enable: Enables */
-  IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO3_7_MEDIA_CSI_DATA07,         /* PIO3_7 is configured as MEDIA_CSI_DATA07 */
-      0x80U);                                 /* Input Buffer Enable: Enables */
-  IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO3_6_MEDIA_CSI_DATA06,         /* PIO3_6 is configured as MEDIA_CSI_DATA06 */
-      0x80U);                                 /* Input Buffer Enable: Enables */
-  IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO3_5_MEDIA_CSI_DATA05,         /* PIO3_5 is configured as MEDIA_CSI_DATA05 */
-      0x80U);                                 /* Input Buffer Enable: Enables */
-  IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO3_4_MEDIA_CSI_DATA04,         /* PIO3_4 is configured as MEDIA_CSI_DATA04 */
       0x80U);                                 /* Input Buffer Enable: Enables */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO3_3_MEDIA_CSI_DATA03,         /* PIO3_3 is configured as MEDIA_CSI_DATA03 */
       0x80U);                                 /* Input Buffer Enable: Enables */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO3_2_MEDIA_CSI_DATA02,         /* PIO3_2 is configured as MEDIA_CSI_DATA02 */
+      IOMUXC_PIO3_4_MEDIA_CSI_DATA04,         /* PIO3_4 is configured as MEDIA_CSI_DATA04 */
+      0x80U);                                 /* Input Buffer Enable: Enables */
+  IOMUXC_SetPin_Mux_Config(
+      IOMUXC_PIO3_5_MEDIA_CSI_DATA05,         /* PIO3_5 is configured as MEDIA_CSI_DATA05 */
+      0x80U);                                 /* Input Buffer Enable: Enables */
+  IOMUXC_SetPin_Mux_Config(
+      IOMUXC_PIO3_6_MEDIA_CSI_DATA06,         /* PIO3_6 is configured as MEDIA_CSI_DATA06 */
+      0x80U);                                 /* Input Buffer Enable: Enables */
+  IOMUXC_SetPin_Mux_Config(
+      IOMUXC_PIO3_7_MEDIA_CSI_DATA07,         /* PIO3_7 is configured as MEDIA_CSI_DATA07 */
+      0x80U);                                 /* Input Buffer Enable: Enables */
+  IOMUXC_SetPin_Mux_Config(
+      IOMUXC_PIO3_8_MEDIA_CSI_DATA08,         /* PIO3_8 is configured as MEDIA_CSI_DATA08 */
+      0x80U);                                 /* Input Buffer Enable: Enables */
+  IOMUXC_SetPin_Mux_Config(
+      IOMUXC_PIO3_9_MEDIA_CSI_DATA09,         /* PIO3_9 is configured as MEDIA_CSI_DATA09 */
       0x80U);                                 /* Input Buffer Enable: Enables */
 }
 
@@ -769,19 +761,18 @@ BOARD_InitTouchPins:
 /* FUNCTION ************************************************************************************************************
  *
  * Function Name : BOARD_InitTouchPins, assigned for the Cortex-M85 core.
- * Description   : Routes the HSP_LPI2C1 SDA/SCL pair used by the touch controller on the RGB
- *                 (LCM_RGB_5INCH) and DBI (LCD_PAR_S035) panels. The MIPI panel touch is on
- *                 HSP_LPI2C0 and is muxed by BOARD_InitMIPIPanelPins(). Must agree with
- *                 BOARD_TOUCH_I2C_BASEADDR selected in board.h.
+Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
 void BOARD_InitTouchPins(void) {
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO2_24_HSP_LPI2C1_SDA,          /* PIO2_24 is configured as HSP_LPI2C1_SDA */
-      0x0480U);                               /* Input Buffer + Open-drain Enable */
+      0x0480U);                               /* Input Buffer Enable: Enables
+                                                 Open-drain Enable: Enables */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO2_25_HSP_LPI2C1_SCL,          /* PIO2_25 is configured as HSP_LPI2C1_SCL */
-      0x0480U);                               /* Input Buffer + Open-drain Enable */
+      0x0480U);                               /* Input Buffer Enable: Enables
+                                                 Open-drain Enable: Enables */
 }
 
 
@@ -1063,76 +1054,112 @@ BOARD_InitXSPI1PsRamPins:
 /* FUNCTION ************************************************************************************************************
  *
  * Function Name : BOARD_InitXSPI1PsRamPins, assigned for the Cortex-M85 core.
- * Description   : Configures XSPI1 pins for on-board APS256XXN 16-bit PSRAM.
- *                 Pin mapping matches MCUX-88783 Arduino.xlsx sheet "APS256XXN":
- *                 PIO5_0 /CE, PIO5_5 CLK, PIO5_10/PIO5_16 DQS0/DQS1,
- *                 PIO5_1..4 + PIO5_6..9 ADQ[0:7], PIO5_12..15 + PIO5_17..20 DQ[8:15].
+Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
 void BOARD_InitXSPI1PsRamPins(void) {
   IOMUXC_SetPin_Mux_Config(
-
-      IOMUXC_PIO5_0_MAIN_XSPI1_SS0_N,         /* PIO5_0 is configured as MAIN_XSPI1_SS0_N (/CE) */
-      0x2380U);                               /* Drive Strength: 33 ohm */
+      IOMUXC_PIO5_0_MAIN_XSPI1_SS0_N,         /* PIO5_0 is configured as MAIN_XSPI1_SS0_N */
+      0x2380U);                               /* Input Buffer Enable: Enables
+                                                 Slew Rate Control: High-speed mode
+                                                 Drive Strength: 50 ohm */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO5_5_MAIN_XSPI1_SCLK0,         /* PIO5_5 is configured as MAIN_XSPI1_SCLK0 (CLK) */
-      0x2380U);                               /* Drive Strength: 33 ohm */
+      IOMUXC_PIO5_1_MAIN_XSPI1_DATA0,         /* PIO5_1 is configured as MAIN_XSPI1_DATA0 */
+      0x2380U);                               /* Input Buffer Enable: Enables
+                                                 Slew Rate Control: High-speed mode
+                                                 Drive Strength: 50 ohm */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO5_10_MAIN_XSPI1_DQS0,         /* PIO5_10 is configured as MAIN_XSPI1_DQS0 (DQS/DM0) */
-      0x2390U);                               /* Input Buffer Enable: Enables
-                                                 Drive Strength: 33 ohm */
+      IOMUXC_PIO5_10_MAIN_XSPI1_DQS0,         /* PIO5_10 is configured as MAIN_XSPI1_DQS0 */
+      0x2390U);                               /* Pullup/Pulldown Enable: Enables pulldown
+                                                 Input Buffer Enable: Enables
+                                                 Slew Rate Control: High-speed mode
+                                                 Drive Strength: 50 ohm */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO5_16_MAIN_XSPI1_DQS1,         /* PIO5_16 is configured as MAIN_XSPI1_DQS1 (DQS/DM1) */
-      0x2390U);                               /* Input Buffer Enable: Enables
-                                                 Drive Strength: 33 ohm */
+      IOMUXC_PIO5_12_MAIN_XSPI1_DATA8,        /* PIO5_12 is configured as MAIN_XSPI1_DATA8 */
+      0x2380U);                               /* Input Buffer Enable: Enables
+                                                 Slew Rate Control: High-speed mode
+                                                 Drive Strength: 50 ohm */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO5_1_MAIN_XSPI1_DATA0,         /* PIO5_1 -> XSPI1_DATA0 (ADQ0) */
-      0x2380U);
+      IOMUXC_PIO5_13_MAIN_XSPI1_DATA9,        /* PIO5_13 is configured as MAIN_XSPI1_DATA9 */
+      0x2380U);                               /* Input Buffer Enable: Enables
+                                                 Slew Rate Control: High-speed mode
+                                                 Drive Strength: 50 ohm */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO5_2_MAIN_XSPI1_DATA1,         /* PIO5_2 -> XSPI1_DATA1 (ADQ1) */
-      0x2380U);
+      IOMUXC_PIO5_14_MAIN_XSPI1_DATA10,       /* PIO5_14 is configured as MAIN_XSPI1_DATA10 */
+      0x2380U);                               /* Input Buffer Enable: Enables
+                                                 Slew Rate Control: High-speed mode
+                                                 Drive Strength: 50 ohm */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO5_3_MAIN_XSPI1_DATA2,         /* PIO5_3 -> XSPI1_DATA2 (ADQ2) */
-      0x2380U);
+      IOMUXC_PIO5_15_MAIN_XSPI1_DATA11,       /* PIO5_15 is configured as MAIN_XSPI1_DATA11 */
+      0x2380U);                               /* Input Buffer Enable: Enables
+                                                 Slew Rate Control: High-speed mode
+                                                 Drive Strength: 50 ohm */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO5_4_MAIN_XSPI1_DATA3,         /* PIO5_4 -> XSPI1_DATA3 (ADQ3) */
-      0x2380U);
+      IOMUXC_PIO5_16_MAIN_XSPI1_DQS1,         /* PIO5_16 is configured as MAIN_XSPI1_DQS1 */
+      0x2390U);                               /* Pullup/Pulldown Enable: Enables pulldown
+                                                 Input Buffer Enable: Enables
+                                                 Slew Rate Control: High-speed mode
+                                                 Drive Strength: 50 ohm */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO5_6_MAIN_XSPI1_DATA4,         /* PIO5_6 -> XSPI1_DATA4 (ADQ4) */
-      0x2380U);
+      IOMUXC_PIO5_17_MAIN_XSPI1_DATA12,       /* PIO5_17 is configured as MAIN_XSPI1_DATA12 */
+      0x2380U);                               /* Input Buffer Enable: Enables
+                                                 Slew Rate Control: High-speed mode
+                                                 Drive Strength: 50 ohm */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO5_7_MAIN_XSPI1_DATA5,         /* PIO5_7 -> XSPI1_DATA5 (ADQ5) */
-      0x2380U);
+      IOMUXC_PIO5_18_MAIN_XSPI1_DATA13,       /* PIO5_18 is configured as MAIN_XSPI1_DATA13 */
+      0x2380U);                               /* Input Buffer Enable: Enables
+                                                 Slew Rate Control: High-speed mode
+                                                 Drive Strength: 50 ohm */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO5_8_MAIN_XSPI1_DATA6,         /* PIO5_8 -> XSPI1_DATA6 (ADQ6) */
-      0x2380U);
+      IOMUXC_PIO5_19_MAIN_XSPI1_DATA14,       /* PIO5_19 is configured as MAIN_XSPI1_DATA14 */
+      0x2380U);                               /* Input Buffer Enable: Enables
+                                                 Slew Rate Control: High-speed mode
+                                                 Drive Strength: 50 ohm */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO5_9_MAIN_XSPI1_DATA7,         /* PIO5_9 -> XSPI1_DATA7 (ADQ7) */
-      0x2380U);
+      IOMUXC_PIO5_2_MAIN_XSPI1_DATA1,         /* PIO5_2 is configured as MAIN_XSPI1_DATA1 */
+      0x2380U);                               /* Input Buffer Enable: Enables
+                                                 Slew Rate Control: High-speed mode
+                                                 Drive Strength: 50 ohm */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO5_12_MAIN_XSPI1_DATA8,        /* PIO5_12 -> XSPI1_DATA8 (DQ8) */
-      0x2380U);
+      IOMUXC_PIO5_20_MAIN_XSPI1_DATA15,       /* PIO5_20 is configured as MAIN_XSPI1_DATA15 */
+      0x2380U);                               /* Input Buffer Enable: Enables
+                                                 Slew Rate Control: High-speed mode
+                                                 Drive Strength: 50 ohm */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO5_13_MAIN_XSPI1_DATA9,        /* PIO5_13 -> XSPI1_DATA9 (DQ9) */
-      0x2380U);
+      IOMUXC_PIO5_3_MAIN_XSPI1_DATA2,         /* PIO5_3 is configured as MAIN_XSPI1_DATA2 */
+      0x2380U);                               /* Input Buffer Enable: Enables
+                                                 Slew Rate Control: High-speed mode
+                                                 Drive Strength: 50 ohm */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO5_14_MAIN_XSPI1_DATA10,       /* PIO5_14 -> XSPI1_DATA10 (DQ10) */
-      0x2380U);
+      IOMUXC_PIO5_4_MAIN_XSPI1_DATA3,         /* PIO5_4 is configured as MAIN_XSPI1_DATA3 */
+      0x2380U);                               /* Input Buffer Enable: Enables
+                                                 Slew Rate Control: High-speed mode
+                                                 Drive Strength: 50 ohm */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO5_15_MAIN_XSPI1_DATA11,       /* PIO5_15 -> XSPI1_DATA11 (DQ11) */
-      0x2380U);
+      IOMUXC_PIO5_5_MAIN_XSPI1_SCLK0,         /* PIO5_5 is configured as MAIN_XSPI1_SCLK0 */
+      0x2380U);                               /* Input Buffer Enable: Enables
+                                                 Slew Rate Control: High-speed mode
+                                                 Drive Strength: 50 ohm */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO5_17_MAIN_XSPI1_DATA12,       /* PIO5_17 -> XSPI1_DATA12 (DQ12) */
-      0x2380U);
+      IOMUXC_PIO5_6_MAIN_XSPI1_DATA4,         /* PIO5_6 is configured as MAIN_XSPI1_DATA4 */
+      0x2380U);                               /* Input Buffer Enable: Enables
+                                                 Slew Rate Control: High-speed mode
+                                                 Drive Strength: 50 ohm */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO5_18_MAIN_XSPI1_DATA13,       /* PIO5_18 -> XSPI1_DATA13 (DQ13) */
-      0x2380U);
+      IOMUXC_PIO5_7_MAIN_XSPI1_DATA5,         /* PIO5_7 is configured as MAIN_XSPI1_DATA5 */
+      0x2380U);                               /* Input Buffer Enable: Enables
+                                                 Slew Rate Control: High-speed mode
+                                                 Drive Strength: 50 ohm */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO5_19_MAIN_XSPI1_DATA14,       /* PIO5_19 -> XSPI1_DATA14 (DQ14) */
-      0x2380U);
+      IOMUXC_PIO5_8_MAIN_XSPI1_DATA6,         /* PIO5_8 is configured as MAIN_XSPI1_DATA6 */
+      0x2380U);                               /* Input Buffer Enable: Enables
+                                                 Slew Rate Control: High-speed mode
+                                                 Drive Strength: 50 ohm */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO5_20_MAIN_XSPI1_DATA15,       /* PIO5_20 -> XSPI1_DATA15 (DQ15) */
-      0x2380U);
+      IOMUXC_PIO5_9_MAIN_XSPI1_DATA7,         /* PIO5_9 is configured as MAIN_XSPI1_DATA7 */
+      0x2380U);                               /* Input Buffer Enable: Enables
+                                                 Slew Rate Control: High-speed mode
+                                                 Drive Strength: 50 ohm */
 }
 
 
@@ -1241,6 +1268,7 @@ void BOARD_InitCMPPins(void) {
       IOMUXC_PIO3_4_HSP_GPIO1_GPIO4,          /* PIO3_4 is configured as HSP_GPIO1_GPIO4 */
       0x00U);                                 /* pad configuration */
 }
+
 
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
@@ -1720,6 +1748,7 @@ void BOARD_InitDcifDbiPins(void) {
       IOMUXC_PIO3_9_MEDIA_DCIF_DBI_AB_DATA09,  /* PIO3_9 is configured as MEDIA_DCIF_DBI_AB_DATA09 */
       0x00U);                                 /* pad configuration */
 }
+
 
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
