@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+scmi_bbm:
+  section-type: application
+  contents:
+    meta_path: examples/scmi_examples/scmi_bbm
+    project-root-path: boards/${board}/scmi_examples/scmi_bbm/${multicore_foldername}
+    document:
+      name: scmi_bbm${core_id_suffix_name}
+      category: scmi_examples
+      brief: The SCMI BBM example exercises the BBM protocol of the System
+        Manager. It reads the protocol version and attributes, reads the RTC
+        attributes, time and state, performs a GPR write/read round trip and
+        reads the ON/OFF button state, so that BBNSM features can be verified
+        without booting Linux.
+      example_readme:
+      - examples/scmi_examples/scmi_bbm/readme.md
+      - ${board_root}/${board}/scmi_examples/scmi_bbm/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    imx943evk@cm33_core1: []
