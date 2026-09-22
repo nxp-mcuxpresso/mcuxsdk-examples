@@ -6,7 +6,7 @@ Hardware requirements
 
 Board settings
 ============
-- ADC1 CH8A input signal J2-1(P1_9).
+- ADC0_A0 input signal J2-1(P1_9).
 
 Prepare the Demo
 ===============

@@ -6,7 +6,8 @@ Hardware requirements
 
 Board settings
 ============
-- ADC1 CH8A input signal J2-1(P1_9).
+- OPAMP0_INP input signal J1-13(P1_11).
+- OPAMP0_INN input signal J1-15(P1_12).
 
 Prepare the Demo
 ===============
@@ -24,8 +25,9 @@ Running the demo
 ================
 The log below shows the output of the demo in the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-DualADC Interrupt Example
+OPAMP Interrupt Example
+OPAMP initialized and enabled.
 ADC Full Range: 4096
 Please press any key to get user channel's ADC value.
-ADC value: 2011
+ADC value: 3115
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

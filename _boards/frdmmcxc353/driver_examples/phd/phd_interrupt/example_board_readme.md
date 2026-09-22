@@ -6,11 +6,11 @@ Hardware requirements
 
 Board settings
 ==============
-This example project uses PHD to compare the voltage signal input from channel 3(P1_5)
+This example project uses PHD to compare the voltage signal input from PHD0_CMP0
 with the voltage signal(half of VREF_OUT) output by HSCMP's internal DAC and output different result.
-LED_RED will turn ON/OFF corresponding to different result. So the voltage signal input from P1_28
+LED_RED will turn ON/OFF corresponding to different result. So the voltage signal input from P2_7
 should be changed to observe the dynamical LED state.
-- Input signal to J9-9
+- PHD0_CMP0 input signal J4-8(P2_7).
 
 Prepare the Demo
 ================
