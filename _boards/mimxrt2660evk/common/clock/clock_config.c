@@ -1707,9 +1707,9 @@ static void ConfigCGUDig_AUDIO(void)
  *     6   usb0_fro48m      0  FRO48M           1  48 MHz
  *     7   usb1_fclk        0  USB1             1  48 MHz
  *     8   usb0_wakeclk     0  ULP32K           1  32 kHz
- *     9   eth0_trxclk      3  MAINPLLDIV8      1  250 MHz
+ *     9   eth0_trxclk      3  MAINPLLDIV8      2  125 MHz
  *    10   eth0_timerclk    0  COMMBUS          1  200 MHz
- *    11   eth1_trxclk      3  MAINPLLDIV8      1  250 MHz
+ *    11   eth1_trxclk      3  MAINPLLDIV8      2  125 MHz
  *    12   eth1_timerclk    0  COMMBUS          1  200 MHz
  *    13   eth_refclk       0  COMMBUS          4  50 MHz
  *    14   xeno0_liwclk     0  COMMBUS          2  100 MHz
@@ -1757,8 +1757,13 @@ static void ConfigCGUDig_COMM(void)
     rootCfg.div = 1U;
     CLOCK_SetRootClock(kCLOCK_Root_COMM_usb0_wakeclk, &rootCfg);
 
+    /* ETH0/ETH1_TRXCLK are div=2 (125MHz), not div=1 (250MHz): with MODCON ENET1G_TX_CLK_SEL=0 /
+     * ENET_QOS fed from its TRXCLK root, these roots ARE the RGMII TXC, and gigabit RGMII requires
+     * TXC = 125MHz (RGMII v2.0; the SoC encodes 1000Mbps as "125 MHz" in ENET_QOS LNKSPEED). At
+     * 250MHz the PHY cannot lock onto TXC and the link never comes up (verified on mimxrt2660evk,
+     * MCUX-89911). Do not raise these back to div=1. */
     rootCfg.mux = kCLOCK_ETH0_TRXCLK_ClockRoot_MAINPLLDIV8;
-    rootCfg.div = 1U;
+    rootCfg.div = 2U;
     CLOCK_SetRootClock(kCLOCK_Root_COMM_eth0_trxclk, &rootCfg);
 
     rootCfg.mux = kCLOCK_ETH0_TIMERCLK_ClockRoot_COMMBUS;
@@ -1766,7 +1771,7 @@ static void ConfigCGUDig_COMM(void)
     CLOCK_SetRootClock(kCLOCK_Root_COMM_eth0_timerclk, &rootCfg);
 
     rootCfg.mux = kCLOCK_ETH1_TRXCLK_ClockRoot_MAINPLLDIV8;
-    rootCfg.div = 1U;
+    rootCfg.div = 2U;
     CLOCK_SetRootClock(kCLOCK_Root_COMM_eth1_trxclk, &rootCfg);
 
     rootCfg.mux = kCLOCK_ETH1_TIMERCLK_ClockRoot_COMMBUS;

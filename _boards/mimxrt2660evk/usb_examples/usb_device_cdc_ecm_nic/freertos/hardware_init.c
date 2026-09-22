@@ -10,6 +10,7 @@
 #include "board.h"
 #include "clock_config.h"
 #include "fsl_enet.h"
+#include "fsl_modcon.h"
 #include "fsl_phyyt8521.h"
 #include "fsl_pcal6524.h"
 #include "pin_mux.h"
@@ -91,6 +92,9 @@ void BOARD_InitHardware(void)
     MDIO_Init();
     g_phy_resource.read  = MDIO_Read;
     g_phy_resource.write = MDIO_Write;
+
+    /* Enable the ENET1G RGMII interface (MODCON ENET1G_CFG RGMII_EN powers up 0 = disabled). */
+    MODCON_SetCFG((uint32_t)kModCon_COMM_ETH1, 0U, MODCON_CFG_ENET1G_RGMII_EN(1U));
 }
 
 #if defined(USB_DEVICE_CONFIG_EHCI) && (USB_DEVICE_CONFIG_EHCI > 0U)

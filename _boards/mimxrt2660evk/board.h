@@ -77,22 +77,8 @@
 /*! @brief The board flash size */
 #define BOARD_FLASH_SIZE (0x800000U)
 
-/*! @brief The ENET PHY address. */
-#define BOARD_ENET0_PHY_ADDRESS (0x02U) /* Phy address of enet port 0. */
-
-/*! @brief The ENET PHY used for board. */
-#ifndef BOARD_ENET_PHY_RESET_GPIO
-#define BOARD_ENET_PHY_RESET_GPIO GPIO1
-#endif
-#ifndef BOARD_ENET_PHY_RESET_GPIO_PIN
-#define BOARD_ENET_PHY_RESET_GPIO_PIN (9U)
-#endif
-
-#define BOARD_ENET_PHY_RESET                                                          \
-    GPIO_WritePinOutput(BOARD_ENET_PHY_RESET_GPIO, BOARD_ENET_PHY_RESET_GPIO_PIN, 0); \
-    SDK_DelayAtLeastUs(10000, CLOCK_GetFreq(kCLOCK_CpuClk));                          \
-    GPIO_WritePinOutput(BOARD_ENET_PHY_RESET_GPIO, BOARD_ENET_PHY_RESET_GPIO_PIN, 1); \
-    SDK_DelayAtLeastUs(100, CLOCK_GetFreq(kCLOCK_CpuClk))
+/*! @brief MDIO address of the ETH1 (COMM_ENET, J71) PHY - YT8531 strap pins b'100. */
+#define BOARD_ENET0_PHY_ADDRESS (0x04U)
 
 /* USB PHY condfiguration */
 #define BOARD_USB_PHY_D_CAL     (0x0CU)
