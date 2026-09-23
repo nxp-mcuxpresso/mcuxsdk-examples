@@ -44,10 +44,6 @@ secure_faults_trdc_s:
     - -mdk@hyperram_release    
     - -mdk@debug
     - -mdk@release
-    - -mcux@debug
-    - -mcux@release
-    - +mcux@flexspi_nor_debug
-    - +mcux@flexspi_nor_release
     evkmimxrt1180@cm33:
     - -armgcc@hyperram_debug
     - -armgcc@hyperram_release
@@ -61,5 +57,3 @@ secure_faults_trdc_s:
     - -mdk@hyperram_release
     - -mdk@debug
     - -mdk@release
-    - +mcux@flexspi_nor_debug
-    - +mcux@flexspi_nor_release
