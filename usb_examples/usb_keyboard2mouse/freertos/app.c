@@ -178,19 +178,9 @@ void USB_DeviceTask(void *handle)
 
 static void USB_HostApplicationTask(void *param)
 {
-    while (1)
-    {
-        USB_HostHidKeyboardTask(param);
-    }
-}
-
-int main(void)
-{
-    BOARD_InitHardware();
-
-#if ((defined FSL_FEATURE_SOC_SYSMPU_COUNT) && (FSL_FEATURE_SOC_SYSMPU_COUNT))
-    SYSMPU_Enable(SYSMPU, 0);
-#endif /* FSL_FEATURE_SOC_SYSMPU_COUNT */
+    /* USB initialization and IRQ enablement must occur after the scheduler
+     * starts, because the USB ISRs call xEventGroupSetBitsFromISR(), which
+     * depends on xTimerQueue being created by vTaskStartScheduler(). */
     USB_DeviceApplicationInit();
     USB_HostApplicationInit();
 
@@ -209,6 +199,21 @@ int main(void)
         }
     }
 #endif
+
+    while (1)
+    {
+        USB_HostHidKeyboardTask(param);
+    }
+}
+
+int main(void)
+{
+    BOARD_InitHardware();
+
+#if ((defined FSL_FEATURE_SOC_SYSMPU_COUNT) && (FSL_FEATURE_SOC_SYSMPU_COUNT))
+    SYSMPU_Enable(SYSMPU, 0);
+#endif /* FSL_FEATURE_SOC_SYSMPU_COUNT */
+
     if (xTaskCreate(USB_HostApplicationTask, "app task", 2000L / sizeof(portSTACK_TYPE), &g_HostHidKeyboard, APP_MAIN_TASK_PRIORITY, NULL) !=
         pdPASS)
     {

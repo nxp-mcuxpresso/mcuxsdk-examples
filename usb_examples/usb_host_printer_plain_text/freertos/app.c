@@ -157,6 +157,16 @@ static void USB_HostTask(void *param)
 
 static void USB_HostApplicationTask(void *param)
 {
+    /* USB initialization and IRQ enablement must occur after the scheduler
+     * starts, because the USB ISR calls xEventGroupSetBitsFromISR(), which
+     * depends on xTimerQueue being created by vTaskStartScheduler(). */
+    USB_HostApplicationInit();
+
+    if (xTaskCreate(USB_HostTask, "usb host task", 2000L / sizeof(portSTACK_TYPE), g_HostHandle, APP_USB_TASK_PRIORITY, NULL) != pdPASS)
+    {
+        usb_echo("create host task error\r\n");
+    }
+
     if (xTaskCreate(USB_HostPrinterAppDelayTask, "printer receive delay task", 500L / sizeof(portSTACK_TYPE),
                     &g_HostPrinterApp, APP_DELAY_TASK_PRIORITY, NULL) != pdPASS)
     {
@@ -172,13 +182,6 @@ static void USB_HostApplicationTask(void *param)
 int main(void)
 {
     BOARD_InitHardware();
-
-    USB_HostApplicationInit();
-
-    if (xTaskCreate(USB_HostTask, "usb host task", 2000L / sizeof(portSTACK_TYPE), g_HostHandle, APP_USB_TASK_PRIORITY, NULL) != pdPASS)
-    {
-        usb_echo("create host task error\r\n");
-    }
 
     if (xTaskCreate(USB_HostApplicationTask, "app task", 2000L / sizeof(portSTACK_TYPE), &g_HostPrinterApp, APP_MAIN_TASK_PRIORITY, NULL) !=
         pdPASS)

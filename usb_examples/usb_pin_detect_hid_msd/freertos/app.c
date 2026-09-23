@@ -109,43 +109,6 @@ void USB_Comom_IRQHandler(void)
 }
 
 /*!
- * @brief pin detect  task function.
- */
-void Pin_DetectTaskFunction(void)
-{
-    if (g_idPinStatusChange == 1)
-    {
-        if (g_idPinStatus == 0)
-        {
-            Device_AppDeinit();
-            g_deviceMode = 0;
-            BOARD_UsbVbusOn(1);
-            Host_AppInit();
-        }
-        else
-        {
-            Host_AppDeinit();
-            g_deviceMode = 1;
-            BOARD_UsbVbusOn(0);
-            Device_AppInit();
-        }
-        g_idPinStatusChange = 0;
-    }
-}
-
-void Pin_DetectTask(void *param)
-{
-    while (1)
-    {
-        Pin_DetectTaskFunction();
-        vTaskDelay(100);
-    }
-}
-
-/*!
- * @brief app initialization.
- */
-/*!
  * @brief app initialization.
  */
 void APP_init(void)
@@ -189,6 +152,45 @@ void APP_init(void)
     ehciRegisterBase->OTGSC |= USBHS_OTGSC_IDIE_MASK;
 }
 
+/*!
+ * @brief pin detect  task function.
+ */
+void Pin_DetectTaskFunction(void)
+{
+    if (g_idPinStatusChange == 1)
+    {
+        if (g_idPinStatus == 0)
+        {
+            Device_AppDeinit();
+            g_deviceMode = 0;
+            BOARD_UsbVbusOn(1);
+            Host_AppInit();
+        }
+        else
+        {
+            Host_AppDeinit();
+            g_deviceMode = 1;
+            BOARD_UsbVbusOn(0);
+            Device_AppInit();
+        }
+        g_idPinStatusChange = 0;
+    }
+}
+
+void Pin_DetectTask(void *param)
+{
+    /* USB initialization and IRQ enablement must occur after the scheduler
+     * starts, because the USB ISR calls xEventGroupSetBitsFromISR(), which
+     * depends on xTimerQueue being created by vTaskStartScheduler(). */
+    APP_init();
+
+    while (1)
+    {
+        Pin_DetectTaskFunction();
+        vTaskDelay(100);
+    }
+}
+
 #if defined(__CC_ARM) || (defined(__ARMCC_VERSION)) || defined(__GNUC__)
 int main(void)
 #else
@@ -196,9 +198,6 @@ void main(void)
 #endif
 {
     BOARD_InitHardware();
-
-    APP_init();
-    Pin_DetectTaskFunction();
 
     if (xTaskCreate(Pin_DetectTask, "pin detect task", 2000L / sizeof(portSTACK_TYPE), NULL, APP_PIN_DETECT_TASK_PRIORITY, NULL) != pdPASS)
     {

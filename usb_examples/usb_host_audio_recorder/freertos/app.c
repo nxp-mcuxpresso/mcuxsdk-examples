@@ -133,7 +133,18 @@ void USB_HostTask(void *hostHandle)
  */
 void USB_HostApplicationTask(void *param)
 {
+    /* USB initialization and IRQ enablement must occur after the scheduler
+     * starts, because the USB ISR calls xEventGroupSetBitsFromISR(), which
+     * depends on xTimerQueue being created by vTaskStartScheduler(). */
+    APP_init();
+
+    if (xTaskCreate(USB_HostTask, "usb host task", 2500L / sizeof(portSTACK_TYPE), g_hostHandle, APP_USB_TASK_PRIORITY, NULL) != pdPASS)
+    {
+        usb_echo("create host task error\r\n");
+    }
+
     USB_HostAudioAppSDcardInit();
+
     while (1)
     {
         USB_AudioTask(param);
@@ -147,12 +158,6 @@ int main(void)
 {
     BOARD_InitHardware();
 
-    APP_init();
-
-    if (xTaskCreate(USB_HostTask, "usb host task", 2500L / sizeof(portSTACK_TYPE), g_hostHandle, APP_USB_TASK_PRIORITY, NULL) != pdPASS)
-    {
-        usb_echo("create host task error\r\n");
-    }
     if (xTaskCreate(USB_HostApplicationTask, "app task", 3000L / sizeof(portSTACK_TYPE), NULL, APP_MAIN_TASK_PRIORITY, NULL) != pdPASS)
     {
         usb_echo("create audio task error\r\n");

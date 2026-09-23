@@ -547,6 +547,11 @@ void APP_Task(void *param)
 {
     usb_eth_nic_t *appHandle = (usb_eth_nic_t *)param;
 
+    /* USB initialization and IRQ enablement must occur after the scheduler
+     * starts, because the USB ISR calls xEventGroupSetBitsFromISR(), which
+     * depends on xTimerQueue being created by vTaskStartScheduler(). */
+    APP_Init();
+
 #if USB_DEVICE_CONFIG_USE_TASK
     if (xTaskCreate(USB_DeviceTask, "USB_DeviceTask", 0x400, appHandle->deviceHandle, APP_USB_TASK_PRIORITY, NULL) != pdPASS)
     {
@@ -583,7 +588,6 @@ void main(void)
 #endif
 {
     BOARD_InitHardware();
-    APP_Init();
 
     if (xTaskCreate(APP_Task, "APP_Task", 0x400, &ethNicHandle, APP_MAIN_TASK_PRIORITY, NULL) != pdPASS)
     {

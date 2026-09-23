@@ -106,6 +106,50 @@ void USB_Comom_IRQHandler(void)
 }
 
 /*!
+ * @brief app initialization.
+ */
+void APP_init(void)
+{
+#if defined(USBHS_STACK_BASE_ADDRS)
+    uint32_t usbhsBaseAddrs[] = USBHS_STACK_BASE_ADDRS;
+#else
+    uint32_t usbhsBaseAddrs[] = USBHS_BASE_ADDRS;
+#endif
+
+    if (CONTROLLER_ID - kUSB_ControllerEhci0 >= (sizeof(usbhsBaseAddrs) / sizeof(usbhsBaseAddrs[0])))
+    {
+        usb_echo("Pin detect:controller is not found!\r\n");
+        return;
+    }
+    ehciRegisterBase = (USBHS_Type *)usbhsBaseAddrs[CONTROLLER_ID - kUSB_ControllerEhci0];
+    USB_HostClockInit();
+#if ((defined FSL_FEATURE_SOC_SYSMPU_COUNT) && (FSL_FEATURE_SOC_SYSMPU_COUNT))
+    SYSMPU_Enable(SYSMPU, 0);
+#endif /* FSL_FEATURE_SOC_SYSMPU_COUNT */
+    /* Some time delay waitfor phy ID status stable */
+    for (volatile int i = 0U; i < 1000000U; i++)
+    {
+        __NOP();
+    }
+
+    if (USB_GetIdPinStatus())
+    {
+        g_idPinStatus = 1;
+        g_deviceMode  = 1;
+        BOARD_UsbVbusOn(0);
+        Device_AppInit();
+    }
+    else
+    {
+        g_idPinStatus = 0;
+        g_deviceMode  = 0;
+        BOARD_UsbVbusOn(1);
+        Host_AppInit();
+    }
+    ehciRegisterBase->OTGSC |= USBHS_OTGSC_IDIE_MASK;
+}
+
+/*!
  * @brief host mouse freertos task function.
  *
  * @param param   the host mouse instance pointer.
@@ -165,57 +209,25 @@ void Pin_DetectTaskFunction(void)
 
 void Pin_DetectTask(void *param)
 {
+    /* USB initialization and IRQ enablement must occur after the scheduler
+     * starts, because the USB ISR calls xEventGroupSetBitsFromISR(), which
+     * depends on xTimerQueue being created by vTaskStartScheduler(). */
+    APP_init();
+
+    if (xTaskCreate(Device_AppTask, "usb device task", 2000L / sizeof(portSTACK_TYPE), NULL, APP_DEVICE_APP_TASK_PRIORITY, NULL) != pdPASS)
+    {
+        usb_echo("create usb device task error\r\n");
+    }
+    if (xTaskCreate(Host_AppTask, "usb host task", 2000L / sizeof(portSTACK_TYPE), NULL, APP_HOST_APP_TASK_PRIORITY, NULL) != pdPASS)
+    {
+        usb_echo("create usb host task error\r\n");
+    }
+
     while (1)
     {
         Pin_DetectTaskFunction();
         vTaskDelay(100);
     }
-}
-/*!
- * @brief app initialization.
- */
-/*!
- * @brief app initialization.
- */
-void APP_init(void)
-{
-#if defined(USBHS_STACK_BASE_ADDRS)
-    uint32_t usbhsBaseAddrs[] = USBHS_STACK_BASE_ADDRS;
-#else
-    uint32_t usbhsBaseAddrs[] = USBHS_BASE_ADDRS;
-#endif
-
-    if (CONTROLLER_ID - kUSB_ControllerEhci0 >= (sizeof(usbhsBaseAddrs) / sizeof(usbhsBaseAddrs[0])))
-    {
-        usb_echo("Pin detect:controller is not found!\r\n");
-        return;
-    }
-    ehciRegisterBase = (USBHS_Type *)usbhsBaseAddrs[CONTROLLER_ID - kUSB_ControllerEhci0];
-    USB_HostClockInit();
-#if ((defined FSL_FEATURE_SOC_SYSMPU_COUNT) && (FSL_FEATURE_SOC_SYSMPU_COUNT))
-    SYSMPU_Enable(SYSMPU, 0);
-#endif /* FSL_FEATURE_SOC_SYSMPU_COUNT */
-    /* Some time delay waitfor phy ID status stable */
-    for (volatile int i = 0U; i < 1000000U; i++)
-    {
-        __NOP();
-    }
-
-    if (USB_GetIdPinStatus())
-    {
-        g_idPinStatus = 1;
-        g_deviceMode  = 1;
-        BOARD_UsbVbusOn(0);
-        Device_AppInit();
-    }
-    else
-    {
-        g_idPinStatus = 0;
-        g_deviceMode  = 0;
-        BOARD_UsbVbusOn(1);
-        Host_AppInit();
-    }
-    ehciRegisterBase->OTGSC |= USBHS_OTGSC_IDIE_MASK;
 }
 
 #if defined(__CC_ARM) || (defined(__ARMCC_VERSION)) || defined(__GNUC__)
@@ -226,20 +238,9 @@ void main(void)
 {
     BOARD_InitHardware();
 
-    APP_init();
-    Pin_DetectTaskFunction();
-
     if (xTaskCreate(Pin_DetectTask, "pin detect task", 2000L / sizeof(portSTACK_TYPE), NULL, APP_PIN_DETECT_TASK_PRIORITY, NULL) != pdPASS)
     {
         usb_echo("create pin detect task error\r\n");
-    }
-    if (xTaskCreate(Device_AppTask, "usb device task", 2000L / sizeof(portSTACK_TYPE), NULL, APP_DEVICE_APP_TASK_PRIORITY, NULL) != pdPASS)
-    {
-        usb_echo("create usb device task error\r\n");
-    }
-    if (xTaskCreate(Host_AppTask, "usb host task", 2000L / sizeof(portSTACK_TYPE), NULL, APP_HOST_APP_TASK_PRIORITY, NULL) != pdPASS)
-    {
-        usb_echo("create usb host task error\r\n");
     }
     vTaskStartScheduler();
 

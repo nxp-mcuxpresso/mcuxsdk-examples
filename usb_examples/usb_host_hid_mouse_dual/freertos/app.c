@@ -210,6 +210,31 @@ static void USB_HostTask_2(void *param)
 
 static void USB_HostApplicationTask_1(void *param)
 {
+    /* USB initialization and IRQ enablement must occur after the scheduler
+     * starts, because the USB ISR calls xEventGroupSetBitsFromISR(), which
+     * depends on xTimerQueue being created by vTaskStartScheduler(). */
+    USB_HostApplicationInit();
+
+    if (xTaskCreate(USB_HostTask_1, "usb host 1 task", 2000L / sizeof(portSTACK_TYPE), g_HostHandle_1, APP_USB_TASK1_PRIORITY, NULL) !=
+        pdPASS)
+    {
+        usb_echo("create host 1 task error\r\n");
+    }
+
+    if (xTaskCreate(USB_HostTask_2, "usb host 2 task", 2000L / sizeof(portSTACK_TYPE), g_HostHandle_2, APP_USB_TASK2_PRIORITY, NULL) !=
+        pdPASS)
+    {
+        usb_echo("create host 2 task error\r\n");
+    }
+
+    /* Create the remaining application tasks only now, so that no sibling task
+     * can touch USB resources before the stack above is initialized. */
+    if (xTaskCreate(USB_HostApplicationTask_2, "app task", 2000L / sizeof(portSTACK_TYPE), &g_HostHidMouse_2, APP_MAIN_TASK2_PRIORITY,
+                    NULL) != pdPASS)
+    {
+        usb_echo("create mouse 2 task error\r\n");
+    }
+
     while (1)
     {
         USB_HostHidMouseTask_1(param);
@@ -228,29 +253,10 @@ int main(void)
 {
     BOARD_InitHardware();
 
-    USB_HostApplicationInit();
-
-    if (xTaskCreate(USB_HostTask_1, "usb host 1 task", 2000L / sizeof(portSTACK_TYPE), g_HostHandle_1, APP_USB_TASK1_PRIORITY, NULL) !=
-        pdPASS)
-    {
-        usb_echo("create host 1 task error\r\n");
-    }
-
-    if (xTaskCreate(USB_HostTask_2, "usb host 2 task", 2000L / sizeof(portSTACK_TYPE), g_HostHandle_2, APP_USB_TASK2_PRIORITY, NULL) !=
-        pdPASS)
-    {
-        usb_echo("create host 2 task error\r\n");
-    }
     if (xTaskCreate(USB_HostApplicationTask_1, "app task", 2000L / sizeof(portSTACK_TYPE), &g_HostHidMouse_1, APP_MAIN_TASK1_PRIORITY,
                     NULL) != pdPASS)
     {
         usb_echo("create mouse 1 task error\r\n");
-    }
-
-    if (xTaskCreate(USB_HostApplicationTask_2, "app task", 2000L / sizeof(portSTACK_TYPE), &g_HostHidMouse_2, APP_MAIN_TASK2_PRIORITY,
-                    NULL) != pdPASS)
-    {
-        usb_echo("create mouse 2 task error\r\n");
     }
 
     vTaskStartScheduler();

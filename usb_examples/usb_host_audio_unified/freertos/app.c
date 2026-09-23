@@ -148,6 +148,23 @@ void Keypad_AppTask(void *param)
  */
 void Audio_AppTask(void *param)
 {
+    /* USB initialization and IRQ enablement must occur after the scheduler
+     * starts, because the USB ISR calls xEventGroupSetBitsFromISR(), which
+     * depends on xTimerQueue being created by vTaskStartScheduler(). */
+    APP_init();
+
+    if (xTaskCreate(USB_HostTask, "usb host task", 2000L / sizeof(portSTACK_TYPE), g_hostHandle, APP_USB_TASK_PRIORITY, NULL) != pdPASS)
+    {
+        usb_echo("create host task error\r\n");
+    }
+
+    /* Create the remaining application tasks only now, so that no sibling task
+     * can touch USB resources before the stack above is initialized. */
+    if (xTaskCreate(Keypad_AppTask, "app task", 2000L / sizeof(portSTACK_TYPE), NULL, APP_KEYPAD_TASK_PRIORITY, NULL) != pdPASS)
+    {
+        usb_echo("create keypad task error\r\n");
+    }
+
     while (1)
     {
         USB_AudioTask(param);
@@ -162,20 +179,9 @@ int main(void)
 {
     BOARD_InitHardware();
 
-    APP_init();
-
-    if (xTaskCreate(USB_HostTask, "usb host task", 2000L / sizeof(portSTACK_TYPE), g_hostHandle, APP_USB_TASK_PRIORITY, NULL) != pdPASS)
-    {
-        usb_echo("create host task error\r\n");
-    }
     if (xTaskCreate(Audio_AppTask, "app task", 2000L / sizeof(portSTACK_TYPE), NULL, APP_AUDIO_TASK_PRIORITY, NULL) != pdPASS)
     {
         usb_echo("create audio task error\r\n");
-    }
-
-    if (xTaskCreate(Keypad_AppTask, "app task", 2000L / sizeof(portSTACK_TYPE), NULL, APP_KEYPAD_TASK_PRIORITY, NULL) != pdPASS)
-    {
-        usb_echo("create keypad task error\r\n");
     }
 
     vTaskStartScheduler();
