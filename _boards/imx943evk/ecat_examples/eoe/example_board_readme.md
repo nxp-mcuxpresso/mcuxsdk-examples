@@ -9,6 +9,41 @@ Board settings
 ==============
 No special settings are required.
 
+Optional: I2C EEPROM emulator mode
+==================================
+By default the ESC reads its SII/EEPROM content from the on board EEPROM. The
+example can instead emulate the EEPROM in software: LPI2C4 acts as an I2C target
+at address 0x50 with 16-bit memory addressing, and the EEPROM image is stored in
+the octal NOR flash connected to XSPI1 so that it survives a power cycle.
+
+To enable this mode:
+
+1. Uncomment the EEPROM_I2C_EMULATOR macro block in
+   '.\boards\imx943evk\ecat_examples\eoe\<core>\reconfig.cmake' and rebuild the
+   project. The mode is available on both cm33_core1 and cm7_core1. With the
+   macro defined, ECAT_SDA/ECAT_SCL are muxed on GPIO_IO14/GPIO_IO15 instead of
+   GPIO_IO34/GPIO_IO35.
+
+2. Add the following wires on the board:
+   - J43-8  (GPIO_IO14, ECAT_SDA) to J12-3 (GPIO_IO18, LPI2C4_SDA)
+   - J43-12 (GPIO_IO15, ECAT_SCL) to J12-5 (GPIO_IO19, LPI2C4_SCL)
+   Keep the wires as short as possible. The I2C lines are open drain, so the
+   pull-up resistors present on the LPI2C4 pins are used by both sides.
+
+3. Notes and limitations:
+   - GPIO_IO12..GPIO_IO15 reach the arduino header through the TMUX1574 analog
+     switches (the SPI8 group). The demo drives SPI8_SEL1 and SPI8_SEL3 low on
+     the I2C6 S3 port expander to route the SoC pins to the header, so no manual
+     jumper setting is needed for the mux itself.
+   - LPSPI8 and XBAR1_INOUT8 share GPIO_IO14/GPIO_IO15 and cannot be used while
+     this mode is enabled.
+   - The last part of the XSPI1 flash starting at offset 0x00100000 (4 KB) is
+     erased and reprogrammed by the demo, do not store other data there.
+   - On the first boot the CRC of the stored image is invalid, so a built in
+     default SII image is loaded. Use the TwinCAT 'Update EEPROM' step below to
+     program the real content. The image is written back to flash about 300 ms
+     after the master finished writing and verifying it.
+
 Prepare the Demo
 ================
 1. Generate the SSC source code
