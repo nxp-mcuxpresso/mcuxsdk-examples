@@ -89,7 +89,7 @@ typedef enum
 typedef enum
 {
     kxSpiReadSampleClk_LoopbackInternally      = 0,
-    kxSpiReadSampleClk_LoopbackFromDqsPad      = 1,
+    kxSpiReadSampleClk_LoopbackFromDqsPad      = 2,
     kxSpiReadSampleClk_ExternalInputFromDqsPad = 3,
 } xspi_read_sample_clk_t;
 

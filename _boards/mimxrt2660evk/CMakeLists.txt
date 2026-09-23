@@ -73,6 +73,14 @@ if (CONFIG_MCUX_PRJSEG_module.board.suite)
         CX "-DUSE_PSRAM_W958D6=1"
     )
 
+    mcux_add_configuration(
+        CC "-DUSE_FLASH_W35T51NW=0"
+        CX "-DUSE_FLASH_W35T51NW=0"
+    )
+    mcux_add_configuration(
+        CC "-DUSE_FLASH_W25H512NW=0"
+        CX "-DUSE_FLASH_W25H512NW=0"
+    )
 endif()
 
 if(CONFIG_MCUX_PRJSEG_module.board.boardfile)
