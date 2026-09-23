@@ -32,6 +32,12 @@ void invalidateCacheByRange(uint32_t start_addr, uint32_t size) {
     xthal_dcache_region_invalidate((void *)start_addr, size);
 }
 
+/* Shared modelrunner code (tf_benchmark.cpp) measures inference time through
+ * this abstraction; mirrors the CM33 core implementation. */
+int64_t os_clock_now(void) {
+    return (int64_t)TIMER_GetTimeInUS();
+}
+
 void BOARD_InitHardware(void)
 {
 

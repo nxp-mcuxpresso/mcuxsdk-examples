@@ -7,19 +7,19 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/eiq_examples/tflm_modelrunner_hifi4
+    INCLUDES examples/eiq_examples/tflm_modelrunner
              examples/eiq_examples/common
              ${board_root}/${board}/eiq_examples/tflm_modelrunner_hifi4/
 )
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/eiq_examples/tflm_modelrunner_hifi4/hifi4/main.cpp
-            examples/eiq_examples/tflm_modelrunner_hifi4/hifi4/modelrunner.h
-            examples/eiq_examples/tflm_modelrunner_hifi4/hifi4/modelrunner.cpp
-            examples/eiq_examples/tflm_modelrunner_hifi4/hifi4/tf_benchmark.h
-            examples/eiq_examples/tflm_modelrunner_hifi4/hifi4/tf_benchmark.cpp
-            examples/eiq_examples/tflm_modelrunner_hifi4/hifi4/json_results.cpp
+    SOURCES examples/eiq_examples/tflm_modelrunner/main.cpp
+            examples/eiq_examples/tflm_modelrunner/modelrunner.h
+            examples/eiq_examples/tflm_modelrunner/modelrunner.cpp
+            examples/eiq_examples/tflm_modelrunner/tf_benchmark.h
+            examples/eiq_examples/tflm_modelrunner/tf_benchmark.cpp
+            examples/eiq_examples/tflm_modelrunner/json_results.cpp
             ${board_root}/${board}/eiq_examples/tflm_modelrunner_hifi4/hifi4/flash_opts.h
             ${board_root}/${board}/eiq_examples/tflm_modelrunner_hifi4/hifi4/flash_opts.c
             examples/eiq_examples/common/timer_xtensa.c

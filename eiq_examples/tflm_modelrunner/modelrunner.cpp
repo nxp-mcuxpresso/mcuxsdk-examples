@@ -15,6 +15,15 @@
 #include "http.h"
 #endif
 
+#if defined(__XCC__)
+/* HiFi4 DSP: flush D-cache after bulk data lands in memory so that NPU and
+ * CPU observe coherent data. Implemented in board hardware_init.c. */
+extern "C" void cleanCacheByRange(uint32_t start_addr, uint32_t size);
+/* XCLIB lacks C11 aligned_alloc; memalign (declared in malloc.h) is used
+ * instead for the NPU-facing model buffer. */
+#include <malloc.h>
+#endif
+
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -38,8 +47,19 @@ static char* model_alloc_aligned(size_t alignment, size_t size)
     }
     return (char*)ptr;
 }
+#elif defined(__XCC__)
+/* XCLIB lacks C11 aligned_alloc; memalign (declared in malloc.h, included
+ * above) provides the same alignment guarantee and is free()-compatible. */
+static char* model_alloc_aligned(size_t alignment, size_t size)
+{
+    return (char*)memalign(alignment, size);
+}
 #else
-#define model_alloc_aligned(alignment, size) aligned_alloc((alignment), (size))
+/* Toolchains whose libc provides C11 aligned_alloc */
+static char* model_alloc_aligned(size_t alignment, size_t size)
+{
+    return (char*)aligned_alloc(alignment, size);
+}
 #endif
 
 static char* model_buf = nullptr;
@@ -219,6 +239,9 @@ static int do_cmd_tensor_loadb(NNServer* server){
         PRINTF("\r\n######### Ready for input_idx_%d tensor download ", idx);
         s_recv(server->input.input_data[idx], size, server);
         server->input_tensor_load[idx] = true;
+#if defined(__XCC__)
+        cleanCacheByRange((uint32_t)server->input.input_data[idx], size);
+#endif
         return 0;
     }
 
@@ -236,6 +259,9 @@ static int do_cmd_tensor_loadb(NNServer* server){
             PRINTF("\r\n######### Ready for %s tensor download ", server->input.name[i]);
             s_recv(server->input.input_data[i], size, server);
             server->input_tensor_load[i] = true;
+#if defined(__XCC__)
+            cleanCacheByRange((uint32_t)server->input.input_data[i], size);
+#endif
             return 0;
         }
     }
@@ -278,6 +304,9 @@ static int do_cmd_model_loadb(char* model_buf, NNServer* server){
 #endif
     }
     s_recv(model_buf, size, server);
+#if defined(__XCC__)
+    cleanCacheByRange((uint32_t)model_buf, size);
+#endif
     return Model_Setup(server);
 }
 

@@ -24,6 +24,7 @@ extern "C" {
  ******************************************************************************/
 /*${prototype:start}*/
 void BOARD_InitHardware(void);
+int64_t os_clock_now(void);
 /*${prototype:end}*/
 #if defined(__cplusplus)
 }
