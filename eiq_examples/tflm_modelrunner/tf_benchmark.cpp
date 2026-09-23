@@ -40,6 +40,21 @@ constexpr int kTensorArenaSize_mem = 5*1024 * 1024;
 constexpr int kTensorArenaSize_flash = 5*1024 * 1024;
 #endif
 
+/* A 0-D (scalar) tensor omits the flatbuffer shape field, so shape() is
+ * nullptr; dereferencing it does not fault here, it reads a garbage
+ * dimension count. Report zero dimensions, the shape of a scalar. */
+static const int32_t* tensor_shape_data(const tflite::Tensor* tensor)
+{
+    auto* shape = tensor->shape();
+    return shape ? shape->data() : nullptr;
+}
+
+static int32_t tensor_shape_size(const tflite::Tensor* tensor)
+{
+    auto* shape = tensor->shape();
+    return shape ? (int32_t)shape->size() : 0;
+}
+
 class BProfiler : public tflite::MicroProfilerInterface {
 public:
     explicit BProfiler(NNServer* server): server_(server){}
@@ -90,8 +105,8 @@ int Model_Setup(NNServer* server) {
         if (inputs->size() > 0) {
             int input_idx = (int)(*inputs)[0];  
 	    const tflite::Tensor* input_tensor = (*tensors)[input_idx];
-            server->layers.shape_data[i] = input_tensor->shape()->data();
-            server->layers.shape_size[i] = input_tensor->shape()->size();
+            server->layers.shape_data[i] = tensor_shape_data(input_tensor);
+            server->layers.shape_size[i] = tensor_shape_size(input_tensor);
         } else {
             server->layers.shape_data[i] = nullptr;
             server->layers.shape_size[i] = 0;
@@ -103,8 +118,8 @@ int Model_Setup(NNServer* server) {
             const tflite::Tensor* tensor = (*tensors)[idx];
             char* name = (char*)tensor->name()->c_str();
             server->output.name[server->output.num_outputs] = name;
-            server->output.shape_data[server->output.num_outputs] = tensor->shape()->data();
-            server->output.shape_size[server->output.num_outputs] = tensor->shape()->size();
+            server->output.shape_data[server->output.num_outputs] = tensor_shape_data(tensor);
+            server->output.shape_size[server->output.num_outputs] = tensor_shape_size(tensor);
             server->output.tensor_idx[server->output.num_outputs] = idx;
 	    server->layers.output_idx[i][j] = server->output.num_outputs;
             switch (tensor->type()){
@@ -154,8 +169,8 @@ int Model_Setup(NNServer* server) {
         int idx = (int)(*subgraph->inputs())[i];
         auto tensor = (*tensors)[idx];
         server->input.name[i] = (char*) tensor->name ()->c_str();
-        server->input.shape_data[i] = tensor->shape()->data();
-        server->input.shape_size[i] = tensor->shape()->size();
+        server->input.shape_data[i] = tensor_shape_data(tensor);
+        server->input.shape_size[i] = tensor_shape_size(tensor);
         
         switch (tensor->type()){
         case tflite::TensorType_FLOAT32:
