@@ -86,8 +86,7 @@
 #define gAppLedCnt_c                    0
 
 /*! Enable NVM to be used as non volatile storage management by the host stack
-    This is mandatory if one of these gAppUseBonding_d, gRngSeedHwParamStorage_d
-      or gControllerPreserveXcvrDacTrimValue_d are set */
+    This is mandatory if gAppUseBonding_d is set */
 #define gAppUseNvm_d                    1
 
 /*! Enable Serial Console with external device or host using the LPUART

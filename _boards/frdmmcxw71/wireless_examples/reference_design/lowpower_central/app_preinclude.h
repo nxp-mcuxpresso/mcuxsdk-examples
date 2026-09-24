@@ -62,8 +62,7 @@
 #define gAppLedCnt_c                    0
 
 /*! Enable NVM to be used as non volatile storage management by the host stack
-    This is mandatory if one of these gAppUseBonding_d, gRngSeedHwParamStorage_d
-      or gControllerPreserveXcvrDacTrimValue_d are set */
+    This is mandatory if gAppUseBonding_d is set */
 #define gAppUseNvm_d                    1
 
 /*! Erase NVM pages at download(armgcc only) */
@@ -77,7 +76,7 @@
     Warning   : Memory usage is increased  when set to 1 , roughly :
       1KB of RAM, several KB of Flash (depend of the string size)     */
 #define gAppUseSerialManager_c          1
- 
+
 /**********************************************************************************
  *     BLE Application Configuration
  ***********************************************************************************/
