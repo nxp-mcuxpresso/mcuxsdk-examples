@@ -1,213 +1,241 @@
-Hardware requirements
-=====================
-- FRDM-IMXRT1186 A2
-- RJ45 Network cable
-- Type-C USB cable
-- Personal Computer on which the TwinCat3 has been installed(Windows 10 is recommended)
+# ecat_foe on FRDM-IMXRT1186
 
-Board settings
-==============
-- J12(2-3)/J13(2-3): eCAT0 Function Via J57A(Default).
-- J18(2-3)/J17(2-3): eCAT1 Function Via J57B(Default).
+## 1. Hardware requirements
 
+| Item | Note |
+|------|------|
+| FRDM-IMXRT1186 A2 | Target board |
+| RJ45 network cable | Board EtherCAT Port0 to the host PC |
+| Type-C USB cable | Debug console and flashing |
+| Host PC with TwinCAT 3 | Windows 10 recommended |
+| MCUXpresso Secure Provisioning Tool (SPT) | Image signing and flashing |
 
-MCUBoot layout
-================
+## 2. Board settings
 
-| Region         | From       | To         | Size   |
-|----------------|------------|------------|--------|
-| MCUboot code   | 0x04000000 | 0x0403FFFF | 256kB  |
-| Primary slot   | 0x04040000 | 0x0423FFFF | 2048kB |
-| Secondary slot | 0x04240000 | 0x0443FFFF | 2048kB |
+| Jumpers | Setting | Function |
+|---------|---------|----------|
+| J12, J13 | 2-3 | eCAT0 routed to J57A (default) |
+| J17, J18 | 2-3 | eCAT1 routed to J57B (default) |
 
-- MCUBoot header size is set to 1024 bytes
-- Signing algorithm is ECDSA-P256
-- Write alignment is 4 bytes
-- MCUBoot is configured to use `SWAP_MOVE` image handling strategy
+Boot mode settings used in this document (J60, pins 1-2-3 from left to right):
 
+| J60[1,2,3] | Purpose |
+|------------|---------|
+| 100 | Serial download mode (used to program with SPT) |
+| 001 | Normal boot from flash (used to run the demo) |
 
-EEPROM LPI2C Emulator
-================
-1. FRDM-IMXRT1186 supports EEPROM LPI2C emulator, please skip this chapter if you used EEPROM hardware.
-2. Hardware Setting
+## 3. EtherCAT and console connections
 
-	- Remove Jumper:
+| Connector | Function |
+|-----------|----------|
+| J57A | EtherCAT Port0 - connect this one to the TwinCAT PC |
+| J57B | EtherCAT Port1 |
+| OpenSDA USB | Debug console and flashing |
 
-	  J31: pin1 - pin2
+Serial terminal settings:
 
-	  J35: pin1 - pin2
+| Parameter | Value |
+|-----------|-------|
+| Baud rate | 115200 |
+| Data bits | 8 |
+| Parity | None |
+| Stop bits | 1 |
+| Flow control | None |
 
-	- Remove Resistors:
+## 4. MCUboot memory layout
 
-	  R297: pin1 - pin2
+| Region | From | To | Size |
+|--------|------|----|------|
+| MCUboot code | 0x04000000 | 0x0403FFFF | 256 kB |
+| Primary slot | 0x04040000 | 0x0423FFFF | 2048 kB |
+| Secondary slot | 0x04240000 | 0x0443FFFF | 2048 kB |
 
-	  R299: pin1 - pin2
+| MCUboot parameter | Value |
+|-------------------|-------|
+| Header size | 1024 bytes |
+| Signing algorithm | ECDSA-P256 |
+| Write alignment | 4 bytes |
+| Image handling strategy | `SWAP_MOVE` |
 
-	- Add Resistors:
+## 5. Optional: EEPROM LPI2C emulator
 
-	  R30
+FRDM-IMXRT1186 can emulate the ESC EEPROM in software. **Skip this chapter if you use the
+on board EEPROM hardware.**
 
-	  R31
+1. Rework the board:
 
-	  R297: pin1 - pin3
+   | Action | Components |
+   |--------|-----------|
+   | Remove jumper | J31 pin1-pin2, J35 pin1-pin2 |
+   | Remove resistor | R297 pin1-pin2, R299 pin1-pin2 |
+   | Add resistor | R30, R31, R297 pin1-pin3, R299 pin1-pin3 |
 
-	  R299: pin1 - pin3
+2. Wiring:
 
-	- Connection:
-  
-      J31: pin1  <-->  J2: pin18
+   | From | To |
+   |------|----|
+   | J31 pin 1 | J2 pin 18 |
+   | J35 pin 1 | J2 pin 20 |
 
-      J35: pin1  <-->  J2: pin20  
+3. Define the `EEPROM_I2C_EMULATOR` macro in the project to enable the emulator.
+4. Continue with [6. Prepare the demo](#6-prepare-the-demo).
 
-3. Add EEPROM_I2C_EMULATOR macro 
-	- Add EEPROM_I2C_EMULATOR macro to enable eeprom i2c emulator funtion
-4. Now you can refer "Prepare the Demo" to setup ecat_examples
+## 6. Prepare the demo
 
+### 6.1 Generate the SSC source code
 
-Prepare the Demo
-================
-1. Generate the SSC source code
-	- Download Slave Stack Code Tool(SSC Tool V5.13) from BECKHOFF official website and install it
-	- Open Slave Stack Code Tool
-	- Click 'File' -> 'New' -> 'Import' to import the Congfig file
-		Select foe.xml under path '.\boards\frdmimxrt1186\ecat_examples\foe\<core>\SSC'.
-	- Click 'Custom' -> 'NXP ECAT...' -> 'OK' to select the subdevice description file
-	- Click 'Tool' -> 'Application' -> 'Import' to import Application information
-		Select foe.xlsx under path '.\boards\frdmimxrt1186\ecat_examples\foe\<core>\SSC'.
-	- Click 'Project' -> 'Create new Slave Files'
-		'Source Folder'(default): '.\boards\frdmimxrt1186\ecat_examples\foe\<core>\SSC\Src'.
-		Click 'Start'.
-	- Remove foe.c under Src folder
-	
-2. Connect EtherCAT Port0 with TwinCAT3
-	- RJ45 interface labeled as J57A is the EtherCAT Port0 and RJ45 interface labeled as J57B is the EtherCAT Port1.
+`<SSC_DIR>` = `./boards/frdmimxrt1186/ecat_examples/foe/<core>/SSC`
 
-3. Connect a USB cable between the host PC and the OpenSDA USB port on the target board
+1. Download the Slave Stack Code Tool (SSC Tool V5.13) from the Beckhoff website and install it.
+2. Open the SSC tool.
+3. `File` > `New` > `Import`, then select `<SSC_DIR>/foe.xml`.
+4. `Custom` > `NXP ECAT...` > `OK` to select the SubDevice description file.
+5. `Tool` > `Application` > `Import`, then select `<SSC_DIR>/foe.xlsx`.
+6. `Project` > `Create new Slave Files`, keep the default `Source Folder`
+   (`<SSC_DIR>/Src`), then click `Start`.
+7. Delete `foe.c` from the `Src` folder.
 
-4. Open a serial terminal with the following settings
-	- 115200 baud rate
-	- 8 data bits
- 	- No parity
-	- One stop bit
-	- No flow control
+### 6.2 Connect the hardware
 
-5. Compile mcuboot_opensource and FoE example image
-	- mcuboot_opensource example path: 'boards\frdmimxrt1186\ota_examples\mcuboot_opensource\cm33'
-	- FoE example path: 'boards\frdmimxrt1186\ecat_examples\foe\cm33'
+1. Connect J57A (EtherCAT Port0) to the TwinCAT 3 PC with the RJ45 cable.
+2. Connect the OpenSDA USB port to the host PC and open the serial terminal
+   (see [3. EtherCAT and console connections](#3-ethercat-and-console-connections)).
 
-6. Download mcuboot_opensource and signed FoE image to the target board using 'MCUXpresso Secure Provisioning Tool(SPT)'
-	- Download 'MCUXpresso Secure Provisioning Tool' from NXP official website
-	- Change J60(from left to right)[1,2,3] to '100' to open Serial Download mode, reset board
-	- Open 'SPT' and create a new workspace for the selected processor
-	- Connect the board via UART
-	- Verify the selected boot memory in 'main menu' > 'Target' > 'Boot Memory'
-	- On the Build image view, select the 'mcuboot_opensource_cm33.elf' image as 'Source executable image'
-	- Open 'main menu' > 'Tools' > 'MCUboot' > 'Sign Image' and configure the following
-		- 'ecat_foe.bin' image to be signed
-		- The signing key; it is located in the same folder that the prebuilt application or in MCUXpresso SDK, in folder 'middleware\mcuboot_opensource\boot\nxp_mcux_sdk\keys\sign-ecdsa-p256-priv.pem'
-		- Set 'imgtool arguments'
-			- 'version': '1.0'
-			- 'align': '4'
-			- 'header-size': '0x400'
-			- 'pad-header': ''
-			- 'slot-size': '0x200000'
-			- 'max-sectors': '800'
-			- 'pad': ''
-			- 'confirm': ''
-		- Click the 'Sign' button to sign the application; fix problems, if any
-		- Set target address: '0x04040000'
-		- Close the dialog by clicking the 'Save & Close' button
-	- On the Build tab, double-check that the 'Build script hooks' section contains the pre-build script
-	- Open 'Additional Images' and check that the signed application is properly configured as 'Image 1'
-	- Build and write the bootable image into the processor
-	- Note: You can refer 'MCUboot workflow' chapter of 'MCUXSPTUG.pdf', which is from 'SPT Documentation website page'
+### 6.3 Build the images
 
-7. Run FoE example
-	- Change J60(from left to right)[1,2,3] to '001', reset board 
-	- The serial port will output:
+| Project | Path |
+|---------|------|
+| MCUboot | `boards/frdmimxrt1186/ota_examples/mcuboot_opensource/cm33` |
+| FoE example | `boards/frdmimxrt1186/ecat_examples/foe/cm33` |
 
-		hello sbl.
-		Bootloader Version 1.9.0
-		Primary image: magic=good, swap_type=0x1, copy_done=0x3, image_ok=0x1
-		Secondary image: magic=unset, swap_type=0x1, copy_done=0x3, image_ok=0x3
-		Boot source: primary slot
-		Swap type: none
-		Bootloader chainload address offset: 0x40000
-		Reset_Handler address offset: 0x40400
-		Jumping to the image
+### 6.4 Sign and flash with the SPT
 
-		Start the SSC FoE example...
-	   	Image version: 2.3.0
+1. Download the MCUXpresso Secure Provisioning Tool from the NXP website.
+2. Set J60[1,2,3] to `100` to enter serial download mode, then reset the board.
+3. Open the SPT, create a new workspace for the processor and connect the board over UART.
+4. Check the boot memory in `Target` > `Boot Memory`.
+5. In the Build image view select `mcuboot_opensource_cm33.elf` as `Source executable image`.
+6. Open `Tools` > `MCUboot` > `Sign Image` and configure:
+   - Image to be signed: `ecat_foe.bin`
+   - Signing key: `middleware/mcuboot_opensource/boot/nxp_mcux_sdk/keys/sign-ecdsa-p256-priv.pem`
+     (or the copy next to the prebuilt application)
+   - `imgtool` arguments:
 
-8. Update ESI file to EEPROM
-	- Copy ESI file 'ECAT-FOE.xml' generated by SSC TOOL to <TwinCAT_installation_folder>/<twincat_version>/Config/io/EtherCAT/
-	- Restart TwinCAT3 IDE
-	- Scan device and Update EEPROM
+     | Argument | Value |
+     |----------|-------|
+     | version | 1.0 |
+     | align | 4 |
+     | header-size | 0x400 |
+     | pad-header | (empty) |
+     | slot-size | 0x200000 |
+     | max-sectors | 800 |
+     | pad | (empty) |
+     | confirm | (empty) |
 
-9. Scan and load this device and create a PLC project in TwinCat3
+   - Click `Sign`, then set the target address to `0x04040000`.
+   - Close the dialog with `Save & Close`.
+7. On the Build tab, verify that `Build script hooks` contains the pre-build script.
+8. In `Additional Images`, verify that the signed application is configured as `Image 1`.
+9. Build and write the bootable image into the processor.
 
-	The PLC Main code is as follows:
+> See the "MCUboot workflow" chapter of `MCUXSPTUG.pdf` on the SPT documentation page for
+> more details.
 
-		PROGRAM MAIN
-		VAR 
-			Delay : TON;
-			LedIn AT %I* : BOOL; 
-			LedOut AT %Q* : BOOL;
-		END_VAR
-		
-		Delay(IN := TRUE, PT := T#1S);
-		IF Delay.Q THEN
-			LedOut := NOT LedIn;
-			Delay(IN := FALSE);
-		END_IF;
-		
-10. Activate configuration
-	- Click 'TwinCAT' -> 'Restart TwinCAT(Config Mode)' to activate configuration
+### 6.5 Run the FoE example
 
-11. FoE image upgrade
-	- Compile new FoE image
-	- Open 'MCUXpresso Secure Provisioning Tool' -> 'New Workspace' 
-	- Click 'Tools' -> 'MCUboot' -> 'Sign Image'
-	- Add FoE image into 'Input Image'
-	- The signing key; it is located in the same folder that the prebuilt application or in MCUXpresso SDK, in folder 'middleware\mcuboot_opensource\boot\nxp_mcux_sdk\keys\sign-ecdsa-p256-priv.pem'
-	- Set 'imgtool arguments'
-		- 'version': '1.1'
-		- 'align': '4'
-		- 'header-size': '0x400'
-		- 'pad-header': ''
-		- 'slot-size': '0x200000'
-		- 'max-sectors': '800'
-		- Delete 'pad'
-		- Delete 'confirm'
-	- Click the 'Sign' button to sign the application;
-	- Open Twincat3 project
-	- Click 'Device' -> 'Box1' -> 'Online' -> 'Bootstrap'
-	- Click 'Download' -> 'ecat_foe_cm33_signed.bin' -> 'Password: 12369874' -> 'Ok' to upgrade image
-	- The serial port will output:
+Set J60[1,2,3] to `001` and reset the board. The serial console prints:
 
-			Firmware upgrade in progress...
+```
+hello sbl.
+Bootloader Version 1.9.0
+Primary image: magic=good, swap_type=0x1, copy_done=0x3, image_ok=0x1
+Secondary image: magic=unset, swap_type=0x1, copy_done=0x3, image_ok=0x3
+Boot source: primary slot
+Swap type: none
+Bootloader chainload address offset: 0x40000
+Reset_Handler address offset: 0x40400
+Jumping to the image
 
-			FoE_StoreImage: processed 116 bytes
+Start the SSC FoE example...
+Image version: 2.3.0
+```
 
-			FoE_StoreImage: processed 232 bytes
+### 6.6 Write the ESI file to EEPROM
 
-			...
+1. Copy the ESI file `ECAT-FOE.xml` generated by the SSC tool to
+   `<TwinCAT_installation_folder>/<twincat_version>/Config/io/EtherCAT/`.
+2. Restart the TwinCAT 3 IDE.
+3. Scan the device and perform `Update EEPROM`.
 
-			FoE_StoreImage: upload complete (42028 bytes)
+### 6.7 Create the PLC project
 
-			write magic number offset = 0x43ff00
+Scan and load the device in TwinCAT 3, then create a PLC project with this MAIN program:
 
-			Update image success
+```
+PROGRAM MAIN
+VAR
+    Delay : TON;
+    LedIn AT %I* : BOOL;
+    LedOut AT %Q* : BOOL;
+END_VAR
 
-	- After download, click 'Init' to restart board
+Delay(IN := TRUE, PT := T#1S);
+IF Delay.Q THEN
+    LedOut := NOT LedIn;
+    Delay(IN := FALSE);
+END_IF;
+```
 
-12. FoE image download
-	- Click 'Upload' -> 'ecat_foe_cm33_signed.bin' -> 'Ok' to download upgraded image
+Then click `TwinCAT` > `Restart TwinCAT (Config Mode)` to activate the configuration.
 
-Note: 
+## 7. Upgrade the firmware over FoE
 
-	-	For subsequent upgrades, new version number must be greater than the old version number, perform step 11 to generate the new version signed image
-	-	For more mcuboot information, please refer to mcuboot_opensource example
+### 7.1 Sign the new image
 
+1. Build the new FoE image.
+2. Open the SPT and create a new workspace, then `Tools` > `MCUboot` > `Sign Image`.
+3. Add the FoE image as `Input Image` and select the signing key
+   `middleware/mcuboot_opensource/boot/nxp_mcux_sdk/keys/sign-ecdsa-p256-priv.pem`.
+4. Set the `imgtool` arguments:
 
+   | Argument | Value |
+   |----------|-------|
+   | version | 1.1 (must be higher than the installed version) |
+   | align | 4 |
+   | header-size | 0x400 |
+   | pad-header | (empty) |
+   | slot-size | 0x200000 |
+   | max-sectors | 800 |
+   | pad | remove this argument |
+   | confirm | remove this argument |
 
+5. Click `Sign`.
+
+### 7.2 Download the image over FoE
+
+1. Open the TwinCAT 3 project.
+2. Click `Device` > `Box1` > `Online` > `Bootstrap`.
+3. Click `Download`, select `ecat_foe_cm33_signed.bin`, enter the password `12369874`
+   and confirm with `Ok`. The serial console prints:
+
+```
+Firmware upgrade in progress...
+FoE_StoreImage: processed 116 bytes
+FoE_StoreImage: processed 232 bytes
+...
+FoE_StoreImage: upload complete (42028 bytes)
+write magic number offset = 0x43ff00
+Update image success
+```
+
+4. Click `Init` to restart the board.
+
+### 7.3 Read the image back (optional)
+
+Click `Upload`, select `ecat_foe_cm33_signed.bin` and confirm with `Ok`.
+
+## 8. Notes
+
+* Every subsequent upgrade needs a version number higher than the installed one; repeat
+  [7.1 Sign the new image](#71-sign-the-new-image) to produce it.
+* For more details about the bootloader, refer to the `mcuboot_opensource` example.

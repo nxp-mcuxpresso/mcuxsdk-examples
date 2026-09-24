@@ -1,51 +1,69 @@
-Hardware requirements
-=====================
-- MIMXRT1180-EVK RevC
-- FRDM-MC-LVPMSM
-- Teknic2311P Motor
-- RJ45 Network cable
-- Mini/micro USB cable
-- Personal Computer on which the TwinCat3 has been installed
+# dual_cores_ecat_servo_motor on MIMXRT1180-EVK
 
-Board settings
-==============
-- Jumper setting:
-  | Jumper | Setting | Jumper | Setting | Jumper | Setting |
-	|--------|--------|--------|--------|--------|--------|
-	|   JP1  |   1-2  |   J58  |   2-3  |   J78  |   1-2  |
-	|   J4   |   1-2  |   J59  |   2-3  |   J79  |   1-2  |
-	|   J6   |   1-2  |   J63  |   1-2  |   J90  |   1-2  |
-	|   JP6  |   1-2  |   J65  |   1-2  |   J91  |   1-2  |
-	|   J9   |   1-2  |   J72  |   1-2  |   J93  |   1-2  |
-	|   J11  |   2-3  |   J73  |   1-2  |   J97  |   1-2  |
-	|   J12  |   1-2  |   J75  |   2-3  |   J98  |   1-2  |
-	|   J14  |   1-2  |   J76  |   1-2  |   J99  |   1-2  |
-	|   J57  |   2-3  |   J77  |   1-2  |   J100 |   1-2  |
+## 1. Hardware requirements
 
-- Remove and solder zero resistors:  
-  - Add zero resistors: R747, R749, R760, R763, R767, R1049, R1051.
-  - Remove zero resistors: R104, R105, R107, R126, R142, R146, R148, R1089, R1090.
+| Item | Note |
+|------|------|
+| MIMXRT1180-EVK RevC | Target board |
+| FRDM-MC-LVPMSM | Motor control shield |
+| Teknic2311P motor | Motor |
+| RJ45 network cable | Board EtherCAT Port0 to the host PC |
+| Mini/micro USB cable | Debug console and flashing |
+| Host PC with TwinCAT 3 | EtherCAT MainDevice |
 
+## 2. Board settings
 
-- For detailed motor connection and motor control user guide, please refer:
-  -   http://www.nxp.com/sdkmotorcontrol 
+### 2.1 Jumper settings
 
-Prepare the Demo
-================
+| Jumper | Setting | Jumper | Setting | Jumper | Setting |
+|--------|---------|--------|---------|--------|---------|
+| JP1 | 1-2 | J58 | 2-3 | J78 | 1-2 |
+| J4 | 1-2 | J59 | 2-3 | J79 | 1-2 |
+| J6 | 1-2 | J63 | 1-2 | J90 | 1-2 |
+| JP6 | 1-2 | J65 | 1-2 | J91 | 1-2 |
+| J9 | 1-2 | J72 | 1-2 | J93 | 1-2 |
+| J11 | 2-3 | J73 | 1-2 | J97 | 1-2 |
+| J12 | 1-2 | J75 | 2-3 | J98 | 1-2 |
+| J14 | 1-2 | J76 | 1-2 | J99 | 1-2 |
+| J57 | 2-3 | J77 | 1-2 | J100 | 1-2 |
 
-1. Connect Teknic2311P motor to the FRDM-MC-LVPMSM shield
-2. Connect the FRDM-MC-LVPMSM shield on Motor Control interface of the MIMXRT1180-EVK board.
-3. Connect the EtherCAT Port0 on the MIMXRT1180-EVK board with TwinCAT3
-	- The label of the EtherCAT Port0 is J28.
-4. Connect a USB cable between the host PC and the OpenSDA USB port on the target board
+### 2.2 Zero ohm resistors
 
-5. Open a serial terminal with the following settings
-	- 115200 baud rate
-	- 8 data bits
- 	- No parity
-	- One stop bit
-	- No flow control
+| Action | Resistors |
+|--------|-----------|
+| Add | R747, R749, R760, R763, R767, R1049, R1051 |
+| Remove | R104, R105, R107, R126, R142, R146, R148, R1089, R1090 |
 
-6. Download the program to the target board
+> Detailed motor wiring and the motor control user guide are available at
+> http://www.nxp.com/sdkmotorcontrol
 
-7. Either press the reset button on your board or launch the debugger in your IDE to begin running the demo
+## 3. EtherCAT and console connections
+
+| Connector | Function |
+|-----------|----------|
+| J28 | EtherCAT Port0 - connect this one to the TwinCAT PC |
+| OpenSDA USB | Debug console and flashing |
+
+Serial terminal settings:
+
+| Parameter | Value |
+|-----------|-------|
+| Baud rate | 115200 |
+| Data bits | 8 |
+| Parity | None |
+| Stop bits | 1 |
+| Flow control | None |
+
+## 4. Prepare the demo
+
+1. Connect the Teknic2311P motor to the FRDM-MC-LVPMSM shield.
+2. Plug the FRDM-MC-LVPMSM shield onto the motor control interface of the MIMXRT1180-EVK board.
+3. Connect J28 (EtherCAT Port0) to the TwinCAT 3 PC with the RJ45 cable.
+4. Connect the OpenSDA USB port to the host PC and open the serial terminal
+   (see [3. EtherCAT and console connections](#3-ethercat-and-console-connections)).
+5. Generate the SSC code and apply the patch as described in the
+   [common readme](../../../../ecat_examples/dual_cores_servo_motor/readme.md), then build and
+   download the images for both cores.
+6. Press the reset button or launch the debugger to start the demo.
+7. Continue with the TwinCAT steps in the
+   [common readme](../../../../ecat_examples/dual_cores_servo_motor/readme.md).

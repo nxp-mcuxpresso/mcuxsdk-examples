@@ -1,82 +1,81 @@
-Hardware requirements
-=====================
-- FRDM-IMXRT1186 A2
-- FRDM-MC-LVPMSM
-- Power supply 24V
-- Teknic2311P Motor
-- RJ45 Network cable
-- Type-C USB cable
-- Personal Computer on which the TwinCat3 has been installed
+# ecat_servo_motor on FRDM-IMXRT1186
 
-Board settings
-==============
-- Jumper setting:
-  | Jumper | Setting |
-	|--------|--------|
-	|   J12  |   2-3  |
-	|   J13  |   2-3  |
-	|   J17  |   2-3  |
-	|   J18  |   2-3  |
-  |   J27  |   2-3  |
-  |   J29  |   2-3  |
-  |   J30  |   2-3  |
-  |   J33  |   2-3  |
+## 1. Hardware requirements
 
-- For detailed motor connection and motor control user guide, please refer:
-  -   http://www.nxp.com/sdkmotorcontrol 
+| Item | Note |
+|------|------|
+| FRDM-IMXRT1186 A2 | Target board |
+| FRDM-MC-LVPMSM | Motor control shield |
+| Teknic2311P motor | Motor with quadrature encoder |
+| 24 V power supply | Motor supply |
+| RJ45 network cable | Board EtherCAT Port0 to the host PC |
+| Type-C USB cable | Debug console and flashing |
+| Host PC with TwinCAT 3 | EtherCAT MainDevice |
 
-EEPROM LPI2C Emulator
-================
-1. FRDM-IMXRT1186 supports EEPROM LPI2C emulator, please skip this chapter if you used EEPROM hardware.
-2. Hardware Setting
+## 2. Board settings
 
-	- Remove Jumper:
+Jumper settings (all in position 2-3):
 
-	  J31: pin1 - pin2
+| Jumper | Setting | Jumper | Setting |
+|--------|---------|--------|---------|
+| J12 | 2-3 | J27 | 2-3 |
+| J13 | 2-3 | J29 | 2-3 |
+| J17 | 2-3 | J30 | 2-3 |
+| J18 | 2-3 | J33 | 2-3 |
 
-	  J35: pin1 - pin2
+> Detailed motor wiring and the motor control user guide are available at
+> http://www.nxp.com/sdkmotorcontrol
 
-	- Remove Resistors:
+## 3. EtherCAT and console connections
 
-	  R297: pin1 - pin2
+| Connector | Function |
+|-----------|----------|
+| J57A | EtherCAT Port0 - connect this one to the TwinCAT PC |
+| OpenSDA USB | Debug console and flashing |
 
-	  R299: pin1 - pin2
+Serial terminal settings:
 
-	- Add Resistors:
+| Parameter | Value |
+|-----------|-------|
+| Baud rate | 115200 |
+| Data bits | 8 |
+| Parity | None |
+| Stop bits | 1 |
+| Flow control | None |
 
-	  R30
+## 4. Optional: EEPROM LPI2C emulator
 
-	  R31
+FRDM-IMXRT1186 can emulate the ESC EEPROM in software. **Skip this chapter if you use the
+on board EEPROM hardware.**
 
-	  R297: pin1 - pin3
+1. Rework the board:
 
-	  R299: pin1 - pin3
+   | Action | Components |
+   |--------|-----------|
+   | Remove jumper | J31 pin1-pin2, J35 pin1-pin2 |
+   | Remove resistor | R297 pin1-pin2, R299 pin1-pin2 |
+   | Add resistor | R30, R31, R297 pin1-pin3, R299 pin1-pin3 |
 
-	- Connection:
-  
-      J31: pin1  <-->  J2: pin18
+2. Wiring:
 
-      J35: pin1  <-->  J2: pin20  
+   | From | To |
+   |------|----|
+   | J31 pin 1 | J2 pin 18 |
+   | J35 pin 1 | J2 pin 20 |
 
-3. Add EEPROM_I2C_EMULATOR macro 
-	- Add EEPROM_I2C_EMULATOR macro to enable eeprom i2c emulator funtion
-4. Now you can refer "Prepare the Demo" to setup ecat_examples
+3. Define the `EEPROM_I2C_EMULATOR` macro in the project to enable the emulator.
+4. Continue with [5. Prepare the demo](#5-prepare-the-demo).
 
-Prepare the Demo
-================
-1. Connect Teknic2311P motor to the FRDM-MC-LVPMSM shield
-2. Connect the FRDM-MC-LVPMSM shield on Motor Control interface of the FRDM-IMXRT1186 board.
-3. Connect the EtherCAT Port0 on the FRDM-IMXRT1186 board with TwinCAT3
-	The label of the EtherCAT Port0 is J57A.
-4. Connect a USB cable between the host PC and the OpenSDA USB port on the target board
+## 5. Prepare the demo
 
-5. Open a serial terminal with the following settings
-	- 115200 baud rate
-	- 8 data bits
- 	- No parity
-	- One stop bit
-	- No flow control
-
-6. Download the program to the target board
-
-7. Either press the reset button on your board or launch the debugger in your IDE to begin running the demo
+1. Connect the Teknic2311P motor to the FRDM-MC-LVPMSM shield.
+2. Plug the FRDM-MC-LVPMSM shield onto the motor control interface of the FRDM-IMXRT1186 board.
+3. Connect J57A (EtherCAT Port0) to the TwinCAT 3 PC with the RJ45 cable.
+4. Connect the OpenSDA USB port to the host PC and open the serial terminal
+   (see [3. EtherCAT and console connections](#3-ethercat-and-console-connections)).
+5. Generate the SSC code and apply the patch as described in the
+   [common readme](../../../../ecat_examples/servo_motor/readme.md), then build and download
+   the program.
+6. Press the reset button or launch the debugger to start the demo.
+7. Continue with the TwinCAT steps in the
+   [common readme](../../../../ecat_examples/servo_motor/readme.md).

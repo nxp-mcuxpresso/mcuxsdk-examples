@@ -1,35 +1,60 @@
 # ecat_digital_io
 
-## Overview
-This example demonstrates how to develop a remote IO device based on Slave Stack Code(SSC).
+## 1. Overview
 
-This remote IO device only supports SM-Synchron mode for DC operation, and implements one Input channel and one Output channel:
+This example shows how to build an EtherCAT remote I/O SubDevice on top of the Beckhoff
+Slave Stack Code (SSC).
 
-	Output channel: connected with the LED and used to control this LED.
-	
-	Input channel: used to read the LED current status. 
+| Item | Value |
+|------|-------|
+| EtherCAT profile | Generic digital I/O |
+| Synchronization | SM-Synchron mode only (for DC operation) |
+| Process data | 1 output channel + 1 input channel |
+| MainDevice used for the demo | TwinCAT 3 |
 
-Note that the demo CAN NOT be built directly. Please see the "Prepare the Demo" section for more details.
+Channel mapping:
 
-## Running the demo
-When the example is running, the serial port will output:
+| Channel | Direction | Function |
+|---------|-----------|----------|
+| Output  | MainDevice -> board | Drives the LED |
+| Input   | board -> MainDevice | Reads back the current LED state |
 
-       Start the SSC digital_io example...
+> **Important:** the project cannot be built as shipped. The SSC source code must be
+> generated first - see [2. Build preparation](#2-build-preparation).
 
-After the PLC program started, the LED starts to blink with 0.5Hz frequency.
+## 2. Build preparation
 
-NOTE: refer to the User Guide for the details of how to setup the PLC project on TwinCAT3.
+1. Generate the SSC source code: [Generate SSC Code for digital_io](../topics/generate_ssc_for_digital_io.md)
+2. Follow the board specific steps in the board readme listed in [5. Supported boards](#5-supported-boards).
+3. Build and flash the example.
 
-## TwinCAT Setup
+## 3. Expected output
 
-To demonstrate this IO example, TwinCAT is used as the EtherCAT MainDevice.
-- [Generate SSC Code for digital_io](../topics/generate_ssc_for_digital_io.md)
-- [TwinCAT Installation](../topics/download_and_install_the_twincat_software.md)
-- [TwinCAT EEPROM Update](../topics/twincat_eeprom_update_digital_io.md)
-- [TwinCAT Project Setup](../topics/twincat_project_setup_digital_io.md)
-- [Note](../topics/note_about_the_source_code_in_the_document.md)
+The serial console prints:
 
-## Supported Boards
-- [MIMXRT1180-EVK](../../_boards/evkmimxrt1180/ecat_examples/digital_io/example_board_readme.md)
-- [FRDM-MIMXRT1186](../../_boards/frdmimxrt1186/ecat_examples/digital_io/example_board_readme.md)
-- [iMX943-EVK](../../_boards/imx943evk/ecat_examples/digital_io/example_board_readme.md)
+```
+Start the SSC digital_io example...
+```
+
+Once the TwinCAT PLC program is started, the LED blinks at 0.5 Hz.
+
+## 4. TwinCAT setup
+
+TwinCAT 3 is used as the EtherCAT MainDevice. Perform the steps in this order:
+
+| Step | Document |
+|------|----------|
+| 1. Generate SSC code | [Generate SSC Code for digital_io](../topics/generate_ssc_for_digital_io.md) |
+| 2. Install TwinCAT | [TwinCAT Installation](../topics/download_and_install_the_twincat_software.md) |
+| 3. Write the ESI file to EEPROM | [TwinCAT EEPROM Update](../topics/twincat_eeprom_update_digital_io.md) |
+| 4. Create the PLC project | [TwinCAT Project Setup](../topics/twincat_project_setup_digital_io.md) |
+
+Additional reading: [Note about the source code in the document](../topics/note_about_the_source_code_in_the_document.md)
+
+## 5. Supported boards
+
+| Board | Board specific readme |
+|-------|-----------------------|
+| MIMXRT1180-EVK | [example_board_readme.md](../../_boards/evkmimxrt1180/ecat_examples/digital_io/example_board_readme.md) |
+| FRDM-MIMXRT1186 | [example_board_readme.md](../../_boards/frdmimxrt1186/ecat_examples/digital_io/example_board_readme.md) |
+| i.MX943-EVK | [example_board_readme.md](../../_boards/imx943evk/ecat_examples/digital_io/example_board_readme.md) |

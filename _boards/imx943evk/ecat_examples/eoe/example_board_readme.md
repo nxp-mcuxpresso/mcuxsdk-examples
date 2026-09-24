@@ -1,126 +1,142 @@
-Hardware requirements
-=====================
-- IMX943-EVK board
-- RJ45 Network cable
-- Mini/micro USB cable
-- Personal Computer on which the TwinCat3 has been installed
+# ecat_eoe on i.MX943-EVK
 
-Board settings
-==============
+## 1. Hardware requirements
+
+| Item | Note |
+|------|------|
+| i.MX943-EVK board | Target board |
+| RJ45 network cable | Board EtherCAT Port0 to the host PC |
+| Mini/micro USB cable | Debug console and flashing |
+| Host PC with TwinCAT 3 | EtherCAT MainDevice |
+
+## 2. Board settings
+
 No special settings are required.
 
-Optional: I2C EEPROM emulator mode
-==================================
-By default the ESC reads its SII/EEPROM content from the on board EEPROM. The
-example can instead emulate the EEPROM in software: LPI2C4 acts as an I2C target
-at address 0x50 with 16-bit memory addressing, and the EEPROM image is stored in
-the octal NOR flash connected to XSPI1 so that it survives a power cycle.
+## 3. EtherCAT and console connections
 
-To enable this mode:
+| Connector | Function |
+|-----------|----------|
+| J24B | EtherCAT Port0 - connect this one to the TwinCAT PC |
+| OpenSDA USB | Debug console and flashing |
 
-1. Uncomment the EEPROM_I2C_EMULATOR macro block in
-   '.\boards\imx943evk\ecat_examples\eoe\<core>\reconfig.cmake' and rebuild the
-   project. The mode is available on both cm33_core1 and cm7_core1. With the
-   macro defined, ECAT_SDA/ECAT_SCL are muxed on GPIO_IO14/GPIO_IO15 instead of
-   GPIO_IO34/GPIO_IO35.
+Serial terminal settings:
 
-2. Add the following wires on the board:
-   - J43-8  (GPIO_IO14, ECAT_SDA) to J12-3 (GPIO_IO18, LPI2C4_SDA)
-   - J43-12 (GPIO_IO15, ECAT_SCL) to J12-5 (GPIO_IO19, LPI2C4_SCL)
-   Keep the wires as short as possible. The I2C lines are open drain, so the
-   pull-up resistors present on the LPI2C4 pins are used by both sides.
+| Parameter | Value |
+|-----------|-------|
+| Baud rate | 115200 |
+| Data bits | 8 |
+| Parity | None |
+| Stop bits | 1 |
+| Flow control | None |
 
-3. Notes and limitations:
-   - GPIO_IO12..GPIO_IO15 reach the arduino header through the TMUX1574 analog
-     switches (the SPI8 group). The demo drives SPI8_SEL1 and SPI8_SEL3 low on
-     the I2C6 S3 port expander to route the SoC pins to the header, so no manual
-     jumper setting is needed for the mux itself.
-   - LPSPI8 and XBAR1_INOUT8 share GPIO_IO14/GPIO_IO15 and cannot be used while
-     this mode is enabled.
-   - The last part of the XSPI1 flash starting at offset 0x00100000 (4 KB) is
-     erased and reprogrammed by the demo, do not store other data there.
-   - On the first boot the CRC of the stored image is invalid, so a built in
-     default SII image is loaded. Use the TwinCAT 'Update EEPROM' step below to
-     program the real content. The image is written back to flash about 300 ms
-     after the master finished writing and verifying it.
+## 4. Optional: I2C EEPROM emulator mode
 
-Prepare the Demo
-================
-1. Generate the SSC source code
-	- Download Slave Stack Code Tool(SSC Tool V5.13) from BECKHOFF official website and install it
-	- Open Slave Stack Code Tool
-	- Click 'File' -> 'New' -> 'Import' to import the Congfig file
-		Select eoe.xml under path '.\boards\imx943evk\ecat_examples\eoe\<core>\SSC'.
-	- Click 'Custom' -> 'NXP ECAT...' -> 'OK' to select the subdevice description file
-	- Click 'Tool' -> 'Application' -> 'Import' to import Application information
-		Select eoe_freertos.xlsx under path '.\boards\imx943evk\ecat_examples\eoe\<core>\SSC'.
-	- Click 'Project' -> 'Create new Slave Files'
-		'Source Folder'(default): '.\boards\imx943evk\ecat_examples\eoe\<core>\SSC\Src'.
-		Click 'Start'.
-	- Remove eoe_freertos.c under Src folder
-	
-2. Connect EtherCAT Port0 with TwinCAT3
-	-	Connect EtherCAT0 labeled as J24B with TwinCAT3 using RJ45 Network cable.
+By default the ESC reads its SII/EEPROM content from the on board EEPROM. The example can
+instead emulate the EEPROM in software:
 
-3. Connect a USB cable between the host PC and the OpenSDA USB port on the target board
+| Item | Value |
+|------|-------|
+| I2C target | LPI2C4, address 0x50, 16-bit memory addressing |
+| Image storage | Octal NOR flash on XSPI1 (survives a power cycle) |
+| Flash area used | 4 kB at offset 0x00100000 |
+| Supported cores | cm33_core1 and cm7_core1 |
 
-4. Open a serial terminal with the following settings
-	- 115200 baud rate
-	- 8 data bits
-	- No parity
-	- One stop bit
-	- No flow control
+### 4.1 Enable the mode
 
-5. Download the program to the target board
+Uncomment the `EEPROM_I2C_EMULATOR` macro block in
+`./boards/imx943evk/ecat_examples/eoe/<core>/reconfig.cmake` and rebuild the project.
+With the macro defined, ECAT_SDA/ECAT_SCL are muxed on GPIO_IO14/GPIO_IO15 instead of
+GPIO_IO34/GPIO_IO35.
 
-6. Either press the reset button on your board or launch the debugger in your IDE to begin running the demo
+### 4.2 Add the wires
 
-7. Update ESI file to EEPROM
-	- Copy ESI file 'ECAT-EOE.xml' generated by SSC TOOL to <TwinCAT_installation_folder>/<twincat_version>/Config/io/EtherCAT/
-	- Restart TwinCAT3 IDE
-	- Scan Device and Update EEPROM
+| From | To |
+|------|----|
+| J43-8 (GPIO_IO14, ECAT_SDA) | J12-3 (GPIO_IO18, LPI2C4_SDA) |
+| J43-12 (GPIO_IO15, ECAT_SCL) | J12-5 (GPIO_IO19, LPI2C4_SCL) |
 
-8. Scan and load this device.
+Keep the wires as short as possible. The I2C lines are open drain, so the pull-up resistors
+present on the LPI2C4 pins are used by both sides.
 
-	The PLC Main code is as follows:
+### 4.3 Notes and limitations
 
-		PROGRAM MAIN
-		VAR 
-			Delay : TON;
-			LedIn AT %I* : BOOL; 
-			LedOut AT %Q* : BOOL;
-		END_VAR
-		
-		Delay(IN := TRUE, PT := T#1S);
-		IF Delay.Q THEN
-			LedOut := NOT LedIn;
-			Delay(IN := FALSE);
-		END_IF;
+* GPIO_IO12..GPIO_IO15 reach the Arduino header through the TMUX1574 analog switches (the SPI8
+  group). The demo drives SPI8_SEL1 and SPI8_SEL3 low on the I2C6 S3 port expander to route the
+  SoC pins to the header, so no manual jumper setting is needed for the mux itself.
+* LPSPI8 and XBAR1_INOUT8 share GPIO_IO14/GPIO_IO15 and cannot be used while this mode is
+  enabled.
+* The 4 kB of XSPI1 flash at offset 0x00100000 is erased and reprogrammed by the demo; do not
+  store other data there.
+* On the first boot the CRC of the stored image is invalid, so a built in default SII image is
+  loaded. Use the `Update EEPROM` step below to program the real content. The image is written
+  back to flash about 300 ms after the MainDevice finished writing and verifying it.
 
-9. EoE configuration setting
-	- Set the address of the network card used to connect to the demo board on PC side
+## 5. Prepare the demo
 
-	   ip address:   192.168.1.102
+### 5.1 Generate the SSC source code
 
-	   subnet mask:  255.255.255.0
+`<SSC_DIR>` = `./boards/imx943evk/ecat_examples/eoe/<core>/SSC`
 
-	   gateway:      192.168.1.0
-	   
-	- Set the address of the demo board on TwinCAT EoE configuration page
+1. Download the Slave Stack Code Tool (SSC Tool V5.13) from the Beckhoff website and install it.
+2. Open the SSC tool.
+3. `File` > `New` > `Import`, then select `<SSC_DIR>/eoe.xml`.
+4. `Custom` > `NXP ECAT...` > `OK` to select the SubDevice description file.
+5. `Tool` > `Application` > `Import`, then select `<SSC_DIR>/eoe_freertos.xlsx`.
+6. `Project` > `Create new Slave Files`, keep the default `Source Folder`
+   (`<SSC_DIR>/Src`), then click `Start`.
+7. Delete `eoe_freertos.c` from the `Src` folder.
 
-	   ip address:   192.168.1.66
+### 5.2 Connect the hardware
 
-	   subnet mask:  255.255.255.0
+1. Connect J24B (EtherCAT Port0) to the TwinCAT 3 PC with the RJ45 cable.
+2. Connect the OpenSDA USB port to the host PC and open the serial terminal
+   (see [3. EtherCAT and console connections](#3-ethercat-and-console-connections)).
 
-	   gateway:      192.168.1.102
-		
-10. Activate configuration
-	- Click 'TwinCAT' -> 'Restart TwinCAT(Config Mode)' to activate configuration
+### 5.3 Run the example
 
-11. Test ping and http server
-	- Open cmd.exe and execute "ping 192.168.1.66"
-	- Make sure browser proxy disabled
-	- Open browser and access "http://192.168.1.66"
+1. Build and download the program to the target board.
+2. Press the reset button or launch the debugger to start the demo.
 
+### 5.4 Write the ESI file to EEPROM
 
+1. Copy the ESI file `ECAT-EOE.xml` generated by the SSC tool to
+   `<TwinCAT_installation_folder>/<twincat_version>/Config/io/EtherCAT/`.
+2. Restart the TwinCAT 3 IDE.
+3. Scan the device and perform `Update EEPROM`.
 
+### 5.5 Load the device in TwinCAT
+
+Scan and load the device. The MAIN program used for the I/O part of the demo is:
+
+```
+PROGRAM MAIN
+VAR
+    Delay : TON;
+    LedIn AT %I* : BOOL;
+    LedOut AT %Q* : BOOL;
+END_VAR
+
+Delay(IN := TRUE, PT := T#1S);
+IF Delay.Q THEN
+    LedOut := NOT LedIn;
+    Delay(IN := FALSE);
+END_IF;
+```
+
+### 5.6 Configure the EoE addresses
+
+| Node | Where to set it | IP address | Subnet mask | Gateway |
+|------|-----------------|------------|-------------|---------|
+| Host PC | Windows network adapter used for the board | 192.168.1.102 | 255.255.255.0 | 192.168.1.0 |
+| Board | TwinCAT EoE configuration page | 192.168.1.66 | 255.255.255.0 | 192.168.1.102 |
+
+### 5.7 Activate the configuration
+
+Click `TwinCAT` > `Restart TwinCAT (Config Mode)`.
+
+### 5.8 Test ping and the HTTP server
+
+1. Open `cmd.exe` and run `ping 192.168.1.66`.
+2. Disable the browser proxy.
+3. Open `http://192.168.1.66` in the browser.
