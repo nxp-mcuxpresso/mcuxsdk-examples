@@ -14,7 +14,7 @@
 !!GlobalInfo
 product: Pins v17.0
 processor: MIMXRT1186xxxxx
-package_id: MIMXRT1186XVJ8C
+package_id: MIMXRT1186CVJ8C
 mcu_data: ksdk2_0
 processor_version: 0.0.0
 pin_labels:

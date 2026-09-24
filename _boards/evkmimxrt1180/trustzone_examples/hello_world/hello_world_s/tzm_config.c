@@ -15,7 +15,7 @@
 !!GlobalInfo
 product: TEE v6.0
 processor: MIMXRT1189xxxxx
-package_id: MIMXRT1189XVM8B
+package_id: MIMXRT1189CVM8C
 mcu_data: ksdk2_0
 processor_version: 15.0.0
 toolOptions:
