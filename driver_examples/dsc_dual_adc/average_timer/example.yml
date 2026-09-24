@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+dsc_dual_adc_average_timer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_dual_adc/average_timer
+    project-root-path: boards/${board}/driver_examples/dual_adc/average_timer/${multicore_foldername}
+    document:
+      name: dsc_dual_adc_average_timer${core_id_suffix_name}
+      category: driver_examples/dsc_dual_adc
+      brief: The dsc_dual_adc_average_timer example shows how to use the average-with-timer feature of the DualADC driver.
+      example_readme:
+      - examples/driver_examples/dsc_dual_adc/average_timer/readme.md
+      - ${board_root}/${board}/driver_examples/dual_adc/average_timer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
