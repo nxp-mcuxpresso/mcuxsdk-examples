@@ -1428,7 +1428,7 @@ BOARD_InitSINCPins:
 - options: {callFromInitBoot: 'false', coreID: cm85, enableClock: 'false'}
 - pin_list:
   - {pin_num: E16, peripheral: HSP__SINC_1, signal: 'EMBIT, 0', pin_signal: PIO4_0, ibena: Enables}
-  - {pin_num: G14, peripheral: HSP__SINC_1, signal: 'EMCLK, 0', pin_signal: PIO4_1, ibena: Enables}
+  - {pin_num: G14, peripheral: HSP__SINC_1, signal: 'MOD_CLK, 0', pin_signal: PIO4_1, ibena: Enables}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1443,7 +1443,7 @@ void BOARD_InitSINCPins(void) {
       IOMUXC_PIO4_0_HSP_SINC1_MBIT0,          /* PIO4_0 is configured as HSP_SINC1_MBIT0 */
       0x80U);                                 /* Input Buffer Enable: Enables */
   IOMUXC_SetPin_Mux_Config(
-      IOMUXC_PIO4_1_HSP_SINC1_MCLK0,          /* PIO4_1 is configured as HSP_SINC1_MCLK0 */
+      IOMUXC_PIO4_1_HSP_SINC1_MCLK_OUT0,      /* PIO4_1 is configured as HSP_SINC1_MCLK_OUT0 */
       0x80U);                                 /* Input Buffer Enable: Enables */
 }
 

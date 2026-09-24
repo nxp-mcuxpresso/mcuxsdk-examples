@@ -6,14 +6,13 @@ Hardware requirements
 
 Board settings
 ==============
-connections required:
-- R328 1-3
-- R330 1-3
-
-Connect differential input voltage to J99 (input range: -320mV ~ +320mV).
-note that a differential input of 50 mV will produce a stream of ones and zeros
-that are high 89.06% of the time, not 100%.
-So result can be verified based on equation: SINC result =(ADCin / 64mV) * (128^3 )
+1. Connections required:
+   - R328 1-3
+   - R330 1-3
+2. Connect differential input voltage to J99 (input range: -50mV ~ +50mV).
+3. Note that a differential input of 50 mV will produce a stream of ones and zeros
+   that are high 89.06% of the time, not 100%.
+   So result can be verified based on equation: SINC result =(ADCin / 64mV) * (128^3 )
 
 Prepare the Demo
 ================
