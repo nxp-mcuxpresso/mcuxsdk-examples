@@ -49,5 +49,6 @@ mcux_add_configuration(
         -DARM_MATH_CM3=1\
         -DMCUXPRESSO_SDK\
         -DHWINIT_DEBUG_DTEST=0\
-        -DgAppUseSerialManager_c"
+        -DgAppUseSerialManager_c\
+        -DgPlatformIcsUseWorkqueueRxProcessing_d=0"
 )
