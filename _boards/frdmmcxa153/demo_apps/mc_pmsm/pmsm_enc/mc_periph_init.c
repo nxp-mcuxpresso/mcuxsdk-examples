@@ -396,7 +396,7 @@ static void InitQD(void)
     /* encoder position and speed measurement */
     g_sM1Enc.pui32QdBase   = (EQDC_Type *)QDC0;
     g_sM1Enc.ui16Pp        = M1_MOTOR_PP;
-    g_sM1Enc.bDirection    = M1_POSPE_ENC_DIRECTION;
+    g_sM1Enc.bDirection    = FALSE;
     g_sM1Enc.ui16PulseNumber = M1_POSPE_ENC_PULSES;
 
     /* Enable modulo counting and revolution counter increment on roll-over */
@@ -412,7 +412,7 @@ static void InitQD(void)
 	/* Position gain */
     g_sM1Enc.i32Q10Cnt2PosGain = ((0xffffffffU/(4*g_sM1Enc.ui16PulseNumber))*0x400U);
     /* Speed conversion constant */
-    g_sM1Enc.f32SpeedCalConst = (frac32_t)((60.0F*g_sM1Enc.ui32QDTimerFrequency/(4*g_sM1Enc.ui16PulseNumber*M1_N_MAX)) * 0x8000000U);
+    g_sM1Enc.f32SpeedCalConst = (frac32_t)((2*FLOAT_PI*g_sM1Enc.ui32QDTimerFrequency/(4*g_sM1Enc.ui16PulseNumber*M1_N_MAX)) * 0x8000000U);
     
     g_sM1Enc.f32PosMechInit = FRAC32(0.0);
     g_sM1Enc.f32PosMechOffset = FRAC32(0.0);

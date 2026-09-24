@@ -6,11 +6,20 @@
 
 /*
     * FILE NAME: ../../../examples/_boards/frdmmcxa153/demo_apps/mc_pmsm/pmsm_enc/m2_pmsm_appconfig.h
-    * DATE: Thu May 07 2026, 08:44:35
+    * DATE: Wed Sep 16 2026, 14:49:48
 */
 
 /*
 {
+    "mid": {
+        "midInParamINom": 4,
+        "midInParamNNom": 3000,
+        "midPolePairIAPp": 4,
+        "midElParamMeasRs": 0,
+        "midElParamMeasLd": 0,
+        "midElParamMeasLq": 0,
+        "midElParamMeasUdt": 0
+    },
     "parameters": {
         "parametersNmax": 4400,
         "parametersImax": 8.25,
@@ -19,7 +28,7 @@
         "parametersRs": 0.45,
         "parametersLd": 0.000375,
         "parametersLq": 0.000429,
-        "parametersKe": 0.0138,
+        "parametersKt": 0.01217,
         "parametersJ": 0.0000016,
         "parametersIphNom": 2,
         "parametersUphNom": 15,
@@ -32,7 +41,6 @@
         "parametersNmin": 400,
         "parametersEblock": 1.4,
         "parametersEblockPer": 2000,
-        "parametersKt": 0.01217,
         "parametersUdcbIIRf0": 100,
         "parametersCalibDuration": 0.2,
         "parametersFaultDuration": 6,
@@ -62,7 +70,13 @@
         "speedLoopManualConstantTunning": true
     },
     "positionLoop": {
-        "positionLoopPLKp": 0.05
+        "positionLoopSampleTime": 0.001,
+        "positionLoopF0": 5,
+        "positionLoopKsi": 1,
+        "servo_positionLoopUpperLimit": 3000,
+        "servo_positionLoopLowerLimit": -3000,
+        "servo_speedLoopUpperLimit": 4,
+        "servo_speedLoopLowerLimit": -4
     },
     "sensorless": {
         "sensorlessBemfObsrvF0": 300,
@@ -88,9 +102,11 @@
 #ifndef __M1_PMSM_APPCONFIG_H 
 #define __M1_PMSM_APPCONFIG_H 
 
+/* MID*/
 /* PARAMETERS*/
-#define M1_N_MAX (4400.0F)
+#define M1_N_MAX (921.534F)
 #define M1_FREQ_MAX (146.667F)
+#define M1_N_ANGULAR_MAX (4400.0F)
 #define M1_I_MAX (8.25F)
 #define M1_U_MAX (35.1029F)
 #define M1_E_MAX (15.1F)
@@ -121,22 +137,39 @@
 #define M1_SCALAR_RAMP_DOWN FRAC32(0.000142045)
 /* CURRENTLOOP*/
 #define M1_D_KP_GAIN ACC32(0.213206)
-#define M1_D_KI_GAIN ACC32(0.00901855)
+#define M1_D_KI_GAIN ACC32(0.0180371)
 #define M1_Q_KP_GAIN ACC32(0.259137)
-#define M1_Q_KI_GAIN ACC32(0.0103172)
+#define M1_Q_KI_GAIN ACC32(0.0206344)
+#define M1_Q_IIR_ZC_B0 FRAC32(0.0368774)
+#define M1_Q_IIR_ZC_B1 FRAC32(0.0368774)
+#define M1_Q_IIR_ZC_A1 FRAC32(0.426245)
 #define M1_CLOOP_LIMIT FRAC16(0.9)
 /* SPEEDLOOP*/
 #define M1_SPEED_RAMP_UP FRAC32(0.00227273)
 #define M1_SPEED_RAMP_DOWN FRAC32(0.00227273)
 #define M1_SPEED_LOOP_HIGH_LIMIT FRAC16(0.363636)
 #define M1_SPEED_LOOP_LOW_LIMIT FRAC16(-0.363636)
-#define M1_SPEED_PI_PROP_GAIN ACC32(0.335103)
-#define M1_SPEED_PI_INTEG_GAIN ACC32(0.00100531)
+#define M1_SPEED_PI_PROP_GAIN ACC32(0.003)
+#define M1_SPEED_PI_INTEG_GAIN ACC32(0.00000900000)
 #define M1_SPEED_IIR_B0 FRAC32(0.119529)
 #define M1_SPEED_IIR_B1 FRAC32(0.119529)
 #define M1_SPEED_IIR_A1 FRAC32(0.260943)
+#define M1_SPEED_IIR_ZC_B0 FRAC32(0.00149551)
+#define M1_SPEED_IIR_ZC_B1 FRAC32(0.00149551)
+#define M1_SPEED_IIR_ZC_A1 FRAC32(0.497009)
 /* POSITIONLOOP*/
-#define M1_POS_P_PROP_GAIN FRAC16(0.05)
+#define M1_SERVO_POSITION_P_HIGH_LIMIT FRAC32(0.681818)
+#define M1_SERVO_POSITION_P_LOW_LIMIT FRAC32(-0.681818)
+#define M1_SERVO_SPEED_PI_HIGH_LIMIT FRAC16(0.484848)
+#define M1_SERVO_SPEED_PI_LOW_LIMIT FRAC16(-0.484848)
+#define M1_SERVO_POSITION_P_PROP_GAIN ACC32(9358.52)
+#define M1_SERVO_FEED_FRWD_K1 ACC32(595.782)
+#define M1_SERVO_FEED_FRWD_K2 ACC32(9.48216)
+#define M1_SERVO_IIR_ZC_B0 FRAC32(0.00773252)
+#define M1_SERVO_IIR_ZC_B1 FRAC32(0.00773252)
+#define M1_SERVO_IIR_ZC_A1 FRAC32(0.484535)
+#define M1_SERVO_SPEED_PI_PROP_GAIN ACC32(0.692035)
+#define M1_SERVO_SPEED_PI_INTEG_GAIN ACC32(0.0217409)
 /* SENSORLESS*/
 #define M1_OL_START_RAMP_INC FRAC32(0.0000426136)
 #define M1_OL_START_I FRAC16(0.0727273)
