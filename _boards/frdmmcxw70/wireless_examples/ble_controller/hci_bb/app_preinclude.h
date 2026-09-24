@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 NXP
+ * Copyright 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -18,6 +18,15 @@
 #define gAppLedCnt_c            0
 
 #define gDebugConsoleEnable_d   0
+
+#define gAppHighSystemClockFrequency_d 1
+
+/* To Use 3M baudrate on UART 0 with flow control */
+#define gBoardUse3MbOnUart0_d   0
+
+/* To use 460800 baudrate on UART 1 without flow control, increase SM Ring buffer size */
+// #define BOARD_APP_UART_BAUDRATE 460800
+// #define SERIAL_MANAGER_RING_BUFFER_SIZE (1024U)
 
 /*! *********************************************************************************
  * 	App Configuration
@@ -38,12 +47,16 @@
 /* Defines Size for Timer Task*/
 #define gTmrTaskStackSize_c             384
 
-#define gAppUseSensors_d                0
-
 /*
  * TimerManager Configuration
  */
 #define FSL_OSA_BM_TIMER_CONFIG         FSL_OSA_BM_TIMER_SYSTICK
+
+/* Enable debug signals for the debug target */
+#if !defined(NDEBUG)
+#define FWK_LCL_ENABLE_DTEST
+#define FWK_LCL_ENABLE_GPIO_DEBUG
+#endif /* !defined(NDEBUG) */
 
 /*! *********************************************************************************
  *     RTOS Configuration
@@ -55,12 +68,12 @@
  ***********************************************************************************/
 
 /* Define as 1 in order to configure FEM to use external PA.
-   FEM in NBU is activated by API function Controller_ConfigureFEM.
+   FEM in NBU is activated by API function PLATFORM_InitFEM.
    Remark: FEM may conflict with Localisation feature in term of RF_GPO use. */
 //#define gAppConfigureFEM                       1
 
 /* Define as 1 when use with an external WIFI chip offering Coexistence control to KW4541 BLE.
-   Coexistence in NBU is activated by API function Controller_ConfigureCOEX.
+   Coexistence in NBU is activated by API function PLATFORM_InitCOEX.
    Remark: Coexistence may conflict with Localisation feature in term of RF_GPO use. */
 //#define gAppConfigureCOEX                      1
 

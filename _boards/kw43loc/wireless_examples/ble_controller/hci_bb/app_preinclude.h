@@ -1,6 +1,5 @@
 /*
- * Copyright 2024 - 2026  NXP
- * All rights reserved.
+ * Copyright 2025-2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -50,26 +49,6 @@
 /* Defines Size for Timer Task*/
 #define gTmrTaskStackSize_c             384
 
-/* Enable debug throught SWO trace */
-#define gDbg_SwoEnabled_d       0
-
-#if (defined(gDbg_SwoEnabled_d) && (gDbg_SwoEnabled_d == 1))
- /* Define to 1 if you want to configure the DWT/ITM/TPIU-SWO via SW i.s.o.the probe */
-#define DBG_SWO_INIT_VIA_SW 1
-/* Define to 1 to route SWO signal on GPIO */
-/* Setting shall be done on Main Application Core PPB */
-#define DBG_SWO_PIN_ENABLE 1
-/* CoreSight Funnel SWO route Muxing configuration    */
-/* Setting shall be done on Main Application Core PPB */
-#define DBG_SWO_CORE_MAIN_CORE 1 // Main Core
-#define DBG_SWO_CORE_NBU_CORE  2 // Nbu Core
-#define DBG_SWO_FUNNEL_MUXING DBG_SWO_CORE_NBU_CORE
-#endif /* gDbg_SwoEnabled_d == 1 */
-
-#if !defined(__MCUXPRESSO)
-#define HCIBB_DBG_NBU_ENABLE    1
-#endif
-
 /*
  * TimerManager Configuration
  */
@@ -92,12 +71,12 @@
 
 /* Define as 1 in order to configure FEM to use external PA.
    FEM in NBU is activated by API function PLATFORM_InitFEM.
-   Remark: FEM may conflict with Localisation/Coex features in term of RF_GPO use. */
+   Remark: FEM may conflict with Localisation feature in term of RF_GPO use. */
 //#define gAppConfigureFEM                       1
 
-/* Define as 1 when use with an external WIFI chip offering Coexistence control to BLE.
+/* Define as 1 when use with an external WIFI chip offering Coexistence control to KW4541 BLE.
    Coexistence in NBU is activated by API function PLATFORM_InitCOEX.
-   Remark: Coexistence may conflict with Localisation/FEM feature in term of RF_GPO use. */
+   Remark: Coexistence may conflict with Localisation feature in term of RF_GPO use. */
 //#define gAppConfigureCOEX                      1
 
 /*  ble_ll_config.h file lists the parameters with their default values. User can override
