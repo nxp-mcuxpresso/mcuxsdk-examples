@@ -1,43 +1,56 @@
-# soem_servo_motor_rt1180_bm
+# soem_servo_motor_rt1180_freertos
 
-## Overview
-This example demonstrates how to use the Simple Open EtherCAT Master (SOEM) Library to control motor.
+## 1. Overview
 
-In this example there are 2 NXP EVK board:
+This example shows how to use the Simple Open EtherCAT MainDevice (SOEM) library to control a
+motor over EtherCAT. It runs on FreeRTOS and needs two NXP EVK boards: one running this SOEM
+MainDevice example and one running the NXP EtherCAT servo SubDevice example.
 
-	SOEM as EtherCAT MainDevice running on EVK board(i.MXRT1180/FRDM-1186/i.MX943)
+| Item | Value |
+|------|-------|
+| Role | EtherCAT MainDevice (SOEM) |
+| Environment | FreeRTOS |
+| Ethernet port | NETC (netc0) |
+| SubDevices on the segment | 1 |
 
-	ecat_servo_motor example as EtherCAT SubDevice running on i.MXRT1180 EVK board
+Boards in the setup:
 
-	Note: 
+| Role | Software | Board |
+|------|----------|-------|
+| EtherCAT MainDevice | this SOEM example | i.MXRT1180 EVK / FRDM-1186 / i.MX943 EVK |
+| EtherCAT SubDevice | `ecat_servo_motor` example | i.MXRT1180 EVK |
 
-		ecat_servo_motor path: .../boards/evkmimxrt1180/ecat_examples/servo_motor
+> **Note:** `ecat_servo_motor` path: `.../boards/evkmimxrt1180/ecat_examples/servo_motor`
 
+## 2. Expected result
 
-## Running the demo
-If the test passes, the motor will start to retate.
+If the test passes, the motor starts to rotate.
 
-When the demo is running, the serial port will output:
+## 3. Expected output
 
-	NETC EP frame loopback example start.
-	Starting motion task
-	ec_init on netc0 succeeded.
-	ec_config_init 0
-	...
-	1 slaves found and configured.
-	ec_config_map_group IOmap:20000664 group:0
-	>Slave 1, configadr 1001, state  2
-	...
-	Slaves mapped, state to SAFE_OP.
-	Request operational state for all slaves
-	Calculated workcounter 3
-	Request operational state for all slaves
-	Calculated workcounter 3
-	Operational state reached for all slaves.
+```
+NETC EP frame loopback example start.
+Starting motion task
+ec_init on netc0 succeeded.
+ec_config_init 0
+...
+1 slaves found and configured.
+ec_config_map_group IOmap:20000664 group:0
+>Slave 1, configadr 1001, state  2
+...
+Slaves mapped, state to SAFE_OP.
+Request operational state for all slaves
+Calculated workcounter 3
+Request operational state for all slaves
+Calculated workcounter 3
+Operational state reached for all slaves.
+```
 
+## 4. Notes
 
-Note: Modify GPT timer frequncy >= 200MHz to get more accurate timer.
+* Set the GPT timer frequency to 200 MHz or higher to get a more accurate timer.
+* For detailed SOEM performance data, refer to the EtherCAT benchmark document.
 
-Note: Detailed SOEM performance please refter to EtherCAT Benchamrk. 
+## 5. Supported boards
 
-## Supported Boards
+No board specific readme is linked for this configuration yet.

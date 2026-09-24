@@ -1,27 +1,37 @@
-Hardware requirements
-===================
-- Type-C USB cable
-- Network cable RJ45 standard
-- FRDM-IMXRT1186 board
-- BECKHOFF EK1100 EtherCAT Coupler *1
-- BECKHOFF EL2008 *1
-- BECKHOFF EL1018 *1
-- Personal Computer
+# soem_gpio_pulse_freertos on FRDM-IMXRT1186
 
-Board settings
-============
-- J12(1-2)/J13(2-3): ETH0 Function Via J56A.
-- J18(1-2)/J17(2-3): ETH2 Function Via J56B.
+## 1. Hardware requirements
 
-Prepare the Demo
-================
-1.  Connect a USB cable between the host PC and the OpenSDA USB port on the target board.
-2.  Power up the EtherCAT Coupler and connect it to the target board(J56-A) via an Ethernet Cable.
-3.  Open a serial terminal with the following settings:
-    - 115200 baud rate
-    - 8 data bits
-    - No parity
-    - One stop bit
-    - No flow control
-4.  Write the program to the flash of the target board.
-5.  Press the reset button on your board to start the demo.
+| Item | Note |
+|------|------|
+| FRDM-IMXRT1186 board | Target board |
+| Type-C USB cable | Debug console and flashing |
+| RJ45 network cable (standard) | EtherCAT connection |
+| BECKHOFF EK1100 EtherCAT coupler x1 | EtherCAT SubDevice |
+| BECKHOFF EL2008 digital output terminal x1 | EtherCAT SubDevice |
+| BECKHOFF EL1018 digital input terminal x1 | EtherCAT SubDevice |
+| Personal computer | Host PC |
+
+## 2. Board settings
+
+| Jumper setting | Function |
+|----------------|----------|
+| J12 (1-2), J13 (2-3) | ETH0 routed to J56A |
+| J18 (1-2), J17 (2-3) | ETH2 routed to J56B |
+
+## 3. Prepare the demo
+
+1. Connect a USB cable between the host PC and the OpenSDA USB port on the target board.
+2. Power up the EtherCAT coupler and connect it to the target board (J56-A) with the Ethernet cable.
+3. Open a serial terminal with the following settings:
+
+| Parameter | Value |
+|-----------|-------|
+| Baud rate | 115200 |
+| Data bits | 8 |
+| Parity | None |
+| Stop bits | 1 |
+| Flow control | None |
+
+4. Write the program into the flash of the target board.
+5. Press the reset button on the board to start the demo.

@@ -1,45 +1,56 @@
-# soem_servo_motor_rt1180_bm
+# soem_servo_motor_freertos
 
-## Overview
-This example demonstrates how to use the Simple Open EtherCAT Master (SOEM) Library to control motor.
+## 1. Overview
 
-In this example there are 2 NXP EVK board:
+This example shows how to use the Simple Open EtherCAT MainDevice (SOEM) library to control a
+motor over EtherCAT. It runs on FreeRTOS and needs two NXP EVK boards.
 
-	SOEM as EtherCAT MainDevice running on EVK board(i.MXRT1180/FRDM-1186/i.MX943)
+| Item | Value |
+|------|-------|
+| Role | EtherCAT MainDevice (SOEM) |
+| Environment | FreeRTOS |
+| Ethernet port | NETC (netc0) |
+| SubDevices on the segment | 2 |
 
-	ecat_servo_motor example as EtherCAT SubDevice running on i.MXRT1180 EVK board
+Boards in the setup:
 
-	Note: 
+| Role | Software | Board |
+|------|----------|-------|
+| EtherCAT MainDevice | this SOEM example | i.MXRT1180 EVK / FRDM-1186 / i.MX943 EVK |
+| EtherCAT SubDevice | `ecat_servo_motor` example | i.MXRT1180 EVK |
 
-		ecat_servo_motor path: .../boards/evkmimxrt1180/ecat_examples/servo_motor
+> **Note:** `ecat_servo_motor` path: `.../boards/evkmimxrt1180/ecat_examples/servo_motor`
 
+## 2. Expected result
 
-## Running the demo
-If the test passes, the motor will start to retate.
+If the test passes, the motor starts to rotate.
 
-When the demo is running, the serial port will output:
+## 3. Expected output
 
-	NETC EP frame loopback example start.
-	Starting motion task
-	ec_init on netc0 succeeded.
-	ec_config_init 0
-	...
-	2 slaves found and configured.
-	ec_config_map_group IOmap:20000664 group:0
-	>Slave 1, configadr 1001, state  2
-	...
-	SM programming
-	SM2 Type:3 
-	StartAddr:1200 Flags:   10064
-	...
-	Slaves mapped, state to SAFE_OP.
-	Request operational state for all slaves
-	Calculated workcounter 6
-	Request operational state for all slaves
-	Calculated workcounter 6
-	Operational state reached for all slaves.
+```
+NETC EP frame loopback example start.
+Starting motion task
+ec_init on netc0 succeeded.
+ec_config_init 0
+...
+2 slaves found and configured.
+ec_config_map_group IOmap:20000664 group:0
+>Slave 1, configadr 1001, state  2
+...
+SM programming
+SM2 Type:3
+StartAddr:1200 Flags:   10064
+...
+Slaves mapped, state to SAFE_OP.
+Request operational state for all slaves
+Calculated workcounter 6
+Request operational state for all slaves
+Calculated workcounter 6
+Operational state reached for all slaves.
+```
 
+> **Note:** for detailed SOEM performance data, refer to the EtherCAT benchmark document.
 
-Note: Detailed SOEM performance please refter to EtherCAT Benchamrk. 
+## 4. Supported boards
 
-## Supported Boards
+No board specific readme is linked for this configuration yet.

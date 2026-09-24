@@ -1,29 +1,32 @@
-Hardware requirements
-===================
-- Mini/micro USB cable
-- Network cable RJ45 standard
-- MIMXRT1180-EVK board
-- Personal Computer
-- Servo-Motor
+# soem_servo_motor_bm on MIMXRT1180-EVK
 
-	DELTA_ASDA_B3  * 1
-    
-	INOVANCE_SV680 * 1
+## 1. Hardware requirements
 
-Board settings
-============
+| Item | Note |
+|------|------|
+| MIMXRT1180-EVK board | Target board |
+| Mini/micro USB cable | Debug console and flashing |
+| RJ45 network cable (standard) | EtherCAT connection |
+| Servo drives: DELTA_ASDA_B3 x1, INOVANCE_SV680 x1 | EtherCAT SubDevice |
+| Personal computer | Host PC |
+
+## 2. Board settings
+
 No special settings are required.
 
-Prepare the Demo
-================
-1.  Connect a USB cable between the host PC and the OpenSDA USB port on the target board.
-2.  Power up the servo-motor and connect it to the target board(ENET4) via an Ethernet Cable.
-3.  Open a serial terminal with the following settings:
-    - 115200 baud rate
-    - 8 data bits
-    - No parity
-    - One stop bit
-    - No flow control
-4.  Write the program to the flash of the target board.
-5.  Start the demo and test SOEM performance.
+## 3. Prepare the demo
 
+1. Connect a USB cable between the host PC and the OpenSDA USB port on the target board.
+2. Power up the servo drive(s) and connect them to the target board (ENET4) with the Ethernet cable.
+3. Open a serial terminal with the following settings:
+
+| Parameter | Value |
+|-----------|-------|
+| Baud rate | 115200 |
+| Data bits | 8 |
+| Parity | None |
+| Stop bits | 1 |
+| Flow control | None |
+
+4. Write the program into the flash of the target board.
+5. Start the demo and test the SOEM performance.
