@@ -227,7 +227,7 @@ static const app_wakeup_source_t APP_WAKEUP_SOURCES[] = {
       "DMA (wake on complete)",
       BOARD_EnableDmaWake,
       BOARD_DisableDmaWake,
-      APP_WAKEUP_MODE_SLEEP | APP_WAKEUP_MODE_DS1
+      APP_WAKEUP_MODE_SLEEP
     },
 };
 #define APP_WAKEUP_SOURCE_COUNT \

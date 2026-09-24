@@ -211,23 +211,6 @@ void BOARD_InitHardware(void)
  * limit.
  ******************************************************************************/
 
-/*
- * GPIO wakeup config shared by both buttons.  SW6 = WAKE GPIO (WAKE domain) and
- * SW5 = VBAT/AON GPIO use the same dsc_rgpio channel-routed model: assign the pin
- * to CH0 and arm either edge (robust to the pad's idle level).
- */
-static void BOARD_EnableGpioWakeup(GPIO_Type *base, uint8_t pin)
-{
-    GPIO_PinClearInterruptFlag(base, pin);
-    GPIO_SetPinInterruptChannel(base, pin, kGPIO_InterruptOutput0);
-    GPIO_SetPinInterruptConfig(base, pin, kGPIO_InterruptEitherEdge);
-}
-
-static void BOARD_DisableGpioWakeup(GPIO_Type *base, uint8_t pin)
-{
-    GPIO_SetPinInterruptConfig(base, pin, kGPIO_InterruptStatusFlagDisabled);
-}
-
 void BOARD_EnableWakeGpio(void)
 {
     IOMUXC_SetPin_Mux_Config(IOMUXC_PIO1_0_WAKE_GPIO0_GPIO0, 0xA0U);
@@ -238,9 +221,11 @@ void BOARD_EnableWakeGpio(void)
         .pinDirection = kGPIO_DigitalInput,
         .outputLogic  = 0U,
     };
-    GPIO_PinInit(BOARD_USER_BUTTON_6_GPIO, BOARD_USER_BUTTON_6_GPIO_PIN, &btnConfig);
-
-    BOARD_EnableGpioWakeup(APP_WAKE_GPIO, APP_WAKE_GPIO_PIN);
+    GPIO_PinInit(APP_WAKE_GPIO, APP_WAKE_GPIO_PIN, &btnConfig);    
+    GPIO_PinClearInterruptFlag(APP_WAKE_GPIO, APP_WAKE_GPIO_PIN);
+    GPIO_SetPinInterruptChannel(APP_WAKE_GPIO, APP_WAKE_GPIO_PIN, kGPIO_InterruptOutput0);
+    GPIO_SetPinInterruptConfig(APP_WAKE_GPIO, APP_WAKE_GPIO_PIN, kGPIO_InterruptFallingEdge);
+      
     EnableIRQ(APP_WAKE_GPIO_IRQ);
     POWER_EnableWakeupSource(kPOWER_WakeupIrq_WakeGpioCh0);
 }
@@ -249,9 +234,10 @@ void BOARD_DisableWakeGpio(void)
 {
     DisableIRQ(APP_WAKE_GPIO_IRQ);
     POWER_DisableWakeupSource(kPOWER_WakeupIrq_WakeGpioCh0);
-    BOARD_DisableGpioWakeup(APP_WAKE_GPIO, APP_WAKE_GPIO_PIN);
 
-    GPIO_PortDenit(BOARD_USER_BUTTON_6_GPIO);
+    GPIO_SetPinInterruptConfig(APP_WAKE_GPIO, APP_WAKE_GPIO_PIN, kGPIO_InterruptStatusFlagDisabled);
+    GPIO_PortDenit(APP_WAKE_GPIO);
+
     IOMUXC_SetPin_Mux_Config(IOMUXC_PIO1_0_WAKE_GPIO0_GPIO0, 0x00);
 }
 
@@ -265,9 +251,11 @@ void BOARD_EnableAonGpio(void)
         .pinDirection = kGPIO_DigitalInput,
         .outputLogic  = 0U,
     };
-    GPIO_PinInit(BOARD_USER_BUTTON_GPIO, BOARD_USER_BUTTON_GPIO_PIN, &btnConfig);
+    GPIO_PinInit(APP_AON_GPIO, APP_AON_GPIO_PIN, &btnConfig);    
+    GPIO_PinClearInterruptFlag(APP_AON_GPIO, APP_AON_GPIO_PIN);
+    GPIO_SetPinInterruptChannel(APP_AON_GPIO, APP_AON_GPIO_PIN, kGPIO_InterruptOutput0);
+    GPIO_SetPinInterruptConfig(APP_AON_GPIO, APP_AON_GPIO_PIN, kGPIO_InterruptFallingEdge);
 
-    BOARD_EnableGpioWakeup(APP_AON_GPIO, APP_AON_GPIO_PIN);
     EnableIRQ(APP_AON_GPIO_IRQ);
     POWER_EnableWakeupSource(kPOWER_WakeupIrq_VbatGpioCh0);
 }
@@ -276,9 +264,10 @@ void BOARD_DisableAonGpio(void)
 {
     DisableIRQ(APP_AON_GPIO_IRQ);
     POWER_DisableWakeupSource(kPOWER_WakeupIrq_VbatGpioCh0);
-    BOARD_DisableGpioWakeup(APP_AON_GPIO, APP_AON_GPIO_PIN);
+    
+    GPIO_SetPinInterruptConfig(APP_AON_GPIO, APP_AON_GPIO_PIN, kGPIO_InterruptStatusFlagDisabled);
+    GPIO_PortDenit(APP_AON_GPIO);
 
-    GPIO_PortDenit(BOARD_USER_BUTTON_GPIO);
     IOMUXC_SetPin_Mux_Config(IOMUXC_PIO0_4_VBAT_GPIO0_GPIO4, 0x00);
 }
 
