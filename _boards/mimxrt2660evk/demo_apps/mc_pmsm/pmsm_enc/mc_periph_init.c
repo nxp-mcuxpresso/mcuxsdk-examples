@@ -98,9 +98,9 @@ void InitClock(void)
  */
 void InitADC(void)
 {
-#if FSL_LPADC_DRIVER_VERSION != (MAKE_VERSION(2, 11, 1))
-#warning Used a different fsl_lpadc driver version! An example may not work correctly!
-#endif
+// #if FSL_LPADC_DRIVER_VERSION != (MAKE_VERSION(2, 11, 1))
+// #warning Used a different fsl_lpadc driver version! An example may not work correctly!
+// #endif
 
     lpadc_config_t mLpadcConfigStruct;
     lpadc_conv_trigger_config_t mLpadcTriggerConfigStruct;
