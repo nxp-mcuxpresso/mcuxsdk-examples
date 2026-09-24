@@ -19,6 +19,9 @@
 
 #define HTTP_BUF_SIZE 10670
 
+/* Max multipart name/filename length.*/
+#define HTTP_MIME_NAME_MAX 128
+
 int http_mem_write(NNServer* server, char* buf, int buf_len,
                    char* dst, size_t offset, bool flash_write){
     if(flash_write){
@@ -26,6 +29,10 @@ int http_mem_write(NNServer* server, char* buf, int buf_len,
         FlashErase(server->flash_config, offset, 16384);
         FlashProgram(server->flash_config, offset,(uint32_t*)buf,buf_len);
     }else{
+        /* Name matched no model input, discard instead of writing to null */
+        if (!dst){
+            return -1;
+        }
         memcpy(dst+offset, buf, buf_len);
     }
     return 0;
@@ -48,6 +55,120 @@ url_decode(const char* in)
         return ' ';
     } else {
         return 0;
+    }
+}
+
+/* Copy at most cap-1 bytes and always terminate */
+static void http_copy_bounded(char* dst, size_t cap, const char* src, size_t src_len)
+{
+    if (!dst || cap == 0){
+        return;
+    }
+    if (src_len >= cap){
+        src_len = cap - 1;
+    }
+    memcpy(dst, src, src_len);
+    dst[src_len] = '\0';
+}
+
+/* Percent-decode in place, so a client can escape ';' in a tensor name as %3B */
+static void http_percent_decode_inplace(char* s)
+{
+    size_t r = 0, w = 0;
+
+    while (s[r] != '\0'){
+        char decoded = url_decode(&s[r]);
+        if (decoded != 0){
+            s[w++] = decoded;
+            r += 3;
+        }else{
+            s[w++] = s[r++];
+        }
+    }
+    s[w] = '\0';
+}
+
+/* Legacy debug forms pass the tensor name inside filename as ";name=" or ",name=" */
+static void http_apply_legacy_name(char* name, size_t name_cap, char* filename)
+{
+    const char* seps[2] = {";name=", ",name="};
+
+    /* Only those forms leave the field name as "file" */
+    if (name[0] != '\0' && strcmp(name, "file") != 0){
+        return;
+    }
+
+    for (int i = 0; i < 2; i++){
+        char* hit = strstr(filename, seps[i]);
+        if (hit){
+            const char* v = hit + strlen(seps[i]);
+            http_copy_bounded(name, name_cap, v, strlen(v));
+            *hit = '\0';
+            return;
+        }
+    }
+}
+
+/* Quote aware Content-Disposition parser; a ';' inside quotes belongs to the value */
+static void http_parse_content_disposition(char* line,
+                                           char* name, size_t name_cap,
+                                           char* filename, size_t filename_cap)
+{
+    char* p = strchr(line, ':');
+
+    if (!p){
+        return;
+    }
+
+    for (p++; *p != '\0';){
+        char* key;
+        char* val;
+        size_t key_len;
+        size_t val_len;
+        int quoted = 0;
+
+        while (*p == ' ' || *p == ';'){
+            p++;
+        }
+        if (*p == '\0'){
+            break;
+        }
+
+        key = p;
+        while (*p != '\0' && *p != '=' && *p != ';'){
+            p++;
+        }
+        key_len = (size_t)(p - key);
+        if (*p != '='){
+            continue;
+        }
+
+        p++;
+        if (*p == '"'){
+            quoted = 1;
+            p++;
+        }
+        val = p;
+        while (*p != '\0'){
+            if (quoted){
+                if (*p == '"'){
+                    break;
+                }
+            }else if (*p == ';'){
+                break;
+            }
+            p++;
+        }
+        val_len = (size_t)(p - val);
+        if (quoted && *p == '"'){
+            p++;
+        }
+
+        if (key_len == 4 && strncmp(key, "name", 4) == 0){
+            http_copy_bounded(name, name_cap, val, val_len);
+        }else if (key_len == 8 && strncmp(key, "filename", 8) == 0){
+            http_copy_bounded(filename, filename_cap, val, val_len);
+        }
     }
 }
 
@@ -122,36 +243,23 @@ int http_parse_mime(NNServer* server, int sock, char* boundary,
     }
     memset(buf, 0, 1024);
     memset(tmp_buf, 0, 16384);
+    name[0] = '\0';
+    filename[0] = '\0';
+
     http_readline(sock, buf, &len, content_length);
     if(strncmp(buf, "Conntent-Disposition", 20) > 0){
-        char *val, *key, *query, *rem;
-        strtok_r(buf, ":", &rem);
-        for(query = strtok_r(NULL, "; ", &rem); query != NULL; query = strtok_r(NULL, "; ", &rem)){
-            key = strtok_r(query, "=\"", &val);
-            val = strtok(val,"\"");
-            if (strcmp(key, "name") == 0){
-                strcpy(name, val);
-            }else if(strcmp(key, "filename") == 0){
-                strcpy(filename, val);
-            }
-        }
+        http_parse_content_disposition(buf, name, HTTP_MIME_NAME_MAX,
+                                       filename, HTTP_MIME_NAME_MAX);
     }
     http_readline(sock, buf, &len, content_length);
 
     if(strncmp(buf, "Conntent-Disposition", 20) > 0){
-        char *val, *key, *query, *rem;
-        strtok_r(buf, ":", &rem);
-        for(query = strtok_r(NULL, "; ", &rem); query != NULL; query = strtok_r(NULL, "; ", &rem)){
-            key = strtok_r(query, "=\"", &val);
-            val = strtok(val,"\"");
-            if (strcmp(key, "name") == 0){
-                strcpy(name, val);
-            }else if(strcmp(key, "filename") == 0){
-                strcpy(filename, val);
-            }
-        }
+        http_parse_content_disposition(buf, name, HTTP_MIME_NAME_MAX,
+                                       filename, HTTP_MIME_NAME_MAX);
     }
 
+    http_apply_legacy_name(name, HTTP_MIME_NAME_MAX, filename);
+    http_percent_decode_inplace(name);
 
     if (!data_buf){
         /* Index-based access: field name "input_idx_<N>" selects tensor by index */
@@ -171,6 +279,13 @@ int http_parse_mime(NNServer* server, int sock, char* boundary,
                     data_buf = server->input.input_data [i];
                     server->input_tensor_load[i] = true;
                     break;  /* stop on first match; name should be unique */
+                }
+            }
+            /* Report the mismatch instead of silently leaving the tensor unset */
+            if (!data_buf){
+                PRINTF("TENSOR ERROR: input \"%s\" not found, model expects:\r\n", name);
+                for (int i=0; i<server->input.inputs_size; i++){
+                    PRINTF("  [%d] \"%s\"\r\n", i, server->input.name[i]);
                 }
             }
         }
@@ -346,7 +461,7 @@ int v1_handler_put(int                sock,
         server->model_upload = (char*) malloc(*content_length);
     }
 
-    char name[20], filename[20];
+    char name[HTTP_MIME_NAME_MAX], filename[HTTP_MIME_NAME_MAX];
     http_parse_mime(server, sock, boundary, boundary_len, name,
                     filename, server->model_upload, &data_buf_len,
                     content_length, server->model_flash_load);
@@ -417,8 +532,8 @@ int v1_handler_post(int                sock,
         }
         free(buf);
 
-        char name[50];
-        char filename[50];
+        char name[HTTP_MIME_NAME_MAX];
+        char filename[HTTP_MIME_NAME_MAX];
 	size_t tensor_len = 0;
 
         do{
