@@ -213,7 +213,9 @@ static void APP_GetWakeupConfig(app_power_mode_t targetMode)
                                                kWUU_InternalModuleInterrupt);
             APP_WakeUpTimerConfig(timeOutValue);
 
+#if !(defined(APP_ENABLE_NMI_WAKEUP) && (APP_ENABLE_NMI_WAKEUP==0U))
             SystemNonMaskableInterruptSourceSet(APP_WUU_WAKEUP_TIMER_IRQN);
+#endif
 
             if (targetMode > kAPP_PowerModeSleep)
             {
