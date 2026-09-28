@@ -13,11 +13,14 @@
 #include "image_utils.h"
 #include "model.h"
 #include "output_postproc.h"
+#include "sys_info/sys_info.h"
 #include "timer.h"
 #include "app.h"
 
 void prepare_model()
 {
+    SYS_INFO_PrintAll();
+
     if (MODEL_Init() != kStatus_Success)
     {
         PRINTF("Failed initializing model" EOL);

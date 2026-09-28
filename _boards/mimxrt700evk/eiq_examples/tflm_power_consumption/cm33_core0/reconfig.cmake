@@ -52,6 +52,8 @@ mcux_add_source(
             ${board_root}/${board}/eiq_examples/tflm_power_consumption/tflm_label_image/model/output_postproc.cpp
             ${board_root}/${board}/eiq_examples/tflm_power_consumption/tflm_label_image/model/output_postproc.h
             ${board_root}/${board}/eiq_examples/tflm_power_consumption/tflm_label_image/model/model_mobilenet_ops_npu.cpp
+            examples/eiq_examples/common/sys_info/sys_info.c
+            examples/eiq_examples/common/sys_info/sys_info.h
 )
 
 mcux_add_include(
@@ -61,6 +63,7 @@ mcux_add_include(
              ${board_root}/${board}/eiq_examples/tflm_power_consumption/tflm_label_image/
              ${board_root}/${board}/eiq_examples/tflm_power_consumption/tflm_label_image/image/
              ${board_root}/${board}/eiq_examples/tflm_power_consumption/tflm_label_image/model/
+             examples/eiq_examples/common
 )
 
 mcux_add_iar_configuration(

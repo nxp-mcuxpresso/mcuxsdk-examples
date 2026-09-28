@@ -29,6 +29,7 @@
 #include "image_data.h"
 #include "labels.h"
 #include "model_pte.h"
+#include "sys_info/sys_info.h"
 #include "timer.h"
 
 #define POOL_SIZE (768 * 1024)
@@ -116,6 +117,7 @@ int main(void)
 
     executorch::runtime::runtime_init();
 
+    SYS_INFO_PrintAll();
     PRINTF("%s example using a %s model\r\n", EXAMPLE_NAME, FRAMEWORK_NAME);
     auto loader = BufferDataLoader(model_pte, sizeof(model_pte));
 

@@ -29,6 +29,7 @@
 #include "image_data.h"
 #include "labels.h"
 #include "model_pte.h"
+#include "sys_info/sys_info.h"
 #include "timer.h"
 
 #define POOL_SIZE (64 * 1024)
@@ -122,6 +123,7 @@ int main(void)
       PRINTF("Neutron initialization failed with error code %ld\r\n", neutronRC);
     }
 
+    SYS_INFO_PrintAll();
     PRINTF("%s example using a %s model\r\n", EXAMPLE_NAME, FRAMEWORK_NAME);
     auto loader = BufferDataLoader(model_pte, sizeof(model_pte));
 

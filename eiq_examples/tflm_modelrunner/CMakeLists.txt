@@ -7,6 +7,7 @@ mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES examples/eiq_examples/tflm_modelrunner
              examples/eiq_examples/tflm_modelrunner/picohttpparser
+             examples/eiq_examples/common
              ${board_root}/${board}/eiq_examples/tflm_modelrunner/
 )
 
@@ -17,7 +18,9 @@ mcux_project_remove_include(
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/eiq_examples/tflm_modelrunner/main.cpp
+    SOURCES examples/eiq_examples/common/sys_info/sys_info.c
+            examples/eiq_examples/common/sys_info/sys_info.h
+            examples/eiq_examples/tflm_modelrunner/main.cpp
             examples/eiq_examples/tflm_modelrunner/modelrunner.h
             examples/eiq_examples/tflm_modelrunner/modelrunner.cpp
             examples/eiq_examples/tflm_modelrunner/tf_benchmark.h

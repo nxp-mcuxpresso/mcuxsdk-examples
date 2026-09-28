@@ -11,6 +11,7 @@
 #include "protocol.h"
 #include "fsl_debug_console.h"
 #include "fsl_common.h"
+#include "sys_info/sys_info.h"
 #include "timer.h"
 #include <executorch/backends/nxp/runtime/NeutronDriver.h>
 #include <executorch/runtime/platform/runtime.h>
@@ -40,6 +41,9 @@ int main(void) {
     // recv_frame's SYNC-hunt also discards non-SYNC bytes. After this point we
     // MUST NEVER call PRINTF/GETCHAR — the protocol LPUART0 is shared with the
     // debug console and text bytes would corrupt binary framing.
+    // System info text goes out before any frame traffic, same as the banner
+    // below: the PC side drains these bytes before sending the first frame.
+    SYS_INFO_PrintAll();
     PRINTF("\r\nExecuTorch Modelrunner Ready\r\n");
     executorch::runtime::runtime_init();
     Engine engine;

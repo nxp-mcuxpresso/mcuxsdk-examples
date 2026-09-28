@@ -13,12 +13,16 @@ mcux_add_include(
   INCLUDES .
   ../common
   ../../../middleware/eiq
+  ../../../middleware/eiq/neutron/common/include
+  ../../../middleware/eiq/neutron/driver/include
 )
 
 mcux_add_source(
   BASE_PATH ${SdkRootDirPath}
   SOURCES examples/eiq_examples/common/timer.c
           examples/eiq_examples/common/timer.h
+          examples/eiq_examples/common/sys_info/sys_info.c
+          examples/eiq_examples/common/sys_info/sys_info.h
           examples/eiq_examples/common/board_init.h
           examples/eiq_examples/executorch_modelrunner/main.cpp
           examples/eiq_examples/executorch_modelrunner/NativeFunctions.h

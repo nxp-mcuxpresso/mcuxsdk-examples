@@ -19,6 +19,8 @@ mcux_add_source(
   examples/eiq_examples/common/tflm/model.cpp
   examples/eiq_examples/common/tflm/model/model.h
   examples/eiq_examples/common/tflm/demo_info.cpp
+  examples/eiq_examples/common/sys_info/sys_info.c
+  examples/eiq_examples/common/sys_info/sys_info.h
   examples/eiq_examples/common/demo_info.h
   examples/eiq_examples/common/timer_xtensa.c
   examples/eiq_examples/common/timer_xtensa.h

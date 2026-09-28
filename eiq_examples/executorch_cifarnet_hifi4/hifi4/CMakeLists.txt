@@ -22,6 +22,8 @@ mcux_add_include(
   ../../common
   ../../common/image
   ../../../middleware/eiq
+  ../../../../middleware/eiq/neutron/common/include
+  ../../../../middleware/eiq/neutron/driver/include
 )
 
 mcux_add_source(
@@ -29,6 +31,8 @@ mcux_add_source(
   SOURCES examples/eiq_examples/common/timer_xtensa.c
   examples/eiq_examples/common/timer_xtensa.h
   examples/eiq_examples/common/timer.h
+  examples/eiq_examples/common/sys_info/sys_info.c
+  examples/eiq_examples/common/sys_info/sys_info.h
 
   # miles edit
   examples/eiq_examples/common/board_init.h

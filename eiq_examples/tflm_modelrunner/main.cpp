@@ -13,6 +13,7 @@
 
 #include "modelrunner.h"
 #include "app.h"
+#include "sys_info/sys_info.h"
 
 #ifdef EXTERNAL_MEM
 #include <string.h>
@@ -91,6 +92,8 @@ void wait(uint32_t channel) {
 int main(void)
 {
     BOARD_InitHardware();
+
+    SYS_INFO_PrintAll();
 
     PRINTF("\r\n*************************************************");
     PRINTF("\r\n               TFLite Modelrunner");

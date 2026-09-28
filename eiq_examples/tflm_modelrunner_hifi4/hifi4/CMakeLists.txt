@@ -25,6 +25,8 @@ mcux_add_source(
             examples/eiq_examples/common/timer_xtensa.c
             examples/eiq_examples/common/timer_xtensa.h
             examples/eiq_examples/common/timer.h
+            examples/eiq_examples/common/sys_info/sys_info.c
+            examples/eiq_examples/common/sys_info/sys_info.h
 
 )
 mcux_add_xtensa_configuration(
