@@ -30,6 +30,8 @@ coex_wifi_a2dp_sink:
     - -mdk@sdram_release
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
+    - -mcux@debug
+    - -mcux@release
     evkcmimxrt1060:
     - -armgcc@debug
     - -armgcc@release

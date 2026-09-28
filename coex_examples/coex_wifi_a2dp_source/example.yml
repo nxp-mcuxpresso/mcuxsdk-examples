@@ -47,3 +47,5 @@ coex_wifi_a2dp_source:
     - -mdk@sdram_release
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
+    - -mcux@debug
+    - -mcux@release
