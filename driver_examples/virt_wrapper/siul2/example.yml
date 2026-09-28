@@ -5,7 +5,7 @@ virt_wrapper_siul2:
     meta_path: examples/driver_examples/virt_wrapper/siul2
     project-root-path: boards/${board}/driver_examples/virt_wrapper/siul2/${multicore_foldername}
     document:
-      name: virt_wrapper_siul2_example${core_id_suffix_name}
+      name: virt_wrapper_siul2${core_id_suffix_name}
       category: driver_examples/virt_wrapper
       brief: This exapmle shows how to use VIRT WRAPPER driver to map the SIUL2 peripheral to a
         different virtual address.
