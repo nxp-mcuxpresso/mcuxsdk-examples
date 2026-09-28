@@ -209,11 +209,6 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_coredump)
         INCLUDES
             examples/_common/project_segments/wireless/wireless_mcu/debug
     )
-
-    mcux_add_macro(
-        TOOLCHAINS armgcc iar
-        CC "-DBOARD_DBG_COREDUMP_ENABLE=1"
-    )
 endif()
 
 if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.extflash)

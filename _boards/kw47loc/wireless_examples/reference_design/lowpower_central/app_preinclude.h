@@ -52,6 +52,17 @@
 /*! Enable NXP proprietary debug */
 //#define gDbg_Enabled_d                  1
 
+/*! Enable the host (application core) Zephyr coredump capture on fault.
+    The value is used by the framework host fault handler to gate the coredump
+    path. By default it follows the build type through the standard NDEBUG macro
+    (defined by the toolchain in release builds): enabled in debug, disabled in
+    release. Define it explicitly to override the default for a given build. */
+#if defined(NDEBUG)
+#define BOARD_DBG_COREDUMP_ENABLE       0
+#else
+#define BOARD_DBG_COREDUMP_ENABLE       1
+#endif
+
 /**********************************************************************************
  *     Basic Application Configuration
  ***********************************************************************************/

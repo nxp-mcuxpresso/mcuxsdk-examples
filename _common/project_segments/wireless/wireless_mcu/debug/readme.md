@@ -443,6 +443,45 @@ Notes:
 - `--input` and `--port` are mutually exclusive: choose either live capture or file
   processing.
 
+## App-Core Coredump Enablement (`BOARD_DBG_COREDUMP_ENABLE`)
+
+The app-core (Cortex-M33) Zephyr coredump capture on fault is gated by the
+`BOARD_DBG_COREDUMP_ENABLE` macro. When it is non-zero (and the Zephyr coredump
+API is available, i.e. `CONFIG_DEBUG_COREDUMP` is defined), the host fault
+handler
+(`middleware/wireless/framework/services/DBG/fault_handlers/host/fwk_fault_handlers.c`)
+runs `fault_capture()` after the human-readable register dump, streaming the
+coredump through the selected debug log port. When it is zero, the coredump path
+compiles out and only the register dump is produced.
+
+Unlike the NBU debug options, this macro is **not** set from the project
+segment (`prjseg.cmake`). Define it in the application (typically its
+`app_preinclude.h`) so the application controls whether the coredump capture is
+built in. If left undefined, the capture path is simply not compiled.
+
+The coredump backend sources are added to both debug and release builds by the
+`debug_coredump` project segment
+(`CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_coredump=y`); only the
+fault-handler capture path is gated by `BOARD_DBG_COREDUMP_ENABLE`.
+
+### Example: enable in debug, disable in release
+
+A common policy is to capture coredumps in debug builds only and keep them out
+of release images. The application can derive the value from the build type
+using the standard `NDEBUG` macro (defined by the toolchain in release builds):
+
+```c
+/* In the application configuration, e.g. app_preinclude.h */
+#if defined(NDEBUG)
+#define BOARD_DBG_COREDUMP_ENABLE       0   /* release: coredump disabled */
+#else
+#define BOARD_DBG_COREDUMP_ENABLE       1   /* debug: coredump enabled */
+#endif
+```
+
+To use a fixed policy instead, define `BOARD_DBG_COREDUMP_ENABLE` to `1` (always
+on) or `0` (always off) regardless of the build type.
+
 ## Unified Console Parser (`board_debug_parse.py`)
 
 When everything is routed to the **main application console** (the `serialmgr`
