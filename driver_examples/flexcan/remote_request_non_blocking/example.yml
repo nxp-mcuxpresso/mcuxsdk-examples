@@ -5,7 +5,7 @@ flexcan_remote_request_non_blocking:
     meta_path: examples/driver_examples/flexcan/remote_request_non_blocking
     project-root-path: boards/${board}/driver_examples/flexcan/remote_request_non_blocking/${multicore_foldername}
     document:
-      name: remote_request_non_blocking${core_id_suffix_name}
+      name: flexcan_remote_request_non_blocking${core_id_suffix_name}
       category: driver_examples/flexcan
       brief: The flexcan_remote_request_non_blocking example shows how to use remote request feature in non-blocking
         mode by SDK driver. In this example, 2 boards are connected through CAN bus. Board A send a remote frame to
