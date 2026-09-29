@@ -66,6 +66,15 @@ mcux_add_mdk_configuration(
     "flexspi_nor_release"
 )
 
+mcux_remove_armgcc_configuration(
+    TARGETS flexspi_nor_debug
+    CC "-O0"
+)
+mcux_add_armgcc_configuration(
+    TARGETS flexspi_nor_debug
+    CC "-Og"
+)
+
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
