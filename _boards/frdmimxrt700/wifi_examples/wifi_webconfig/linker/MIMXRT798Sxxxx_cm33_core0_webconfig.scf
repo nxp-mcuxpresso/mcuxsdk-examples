@@ -62,6 +62,7 @@
 #define m_data_start                   (m_interrupts_ram_start + m_interrupts_ram_size)
 #define m_data_size                    (0x00180000 - m_interrupts_ram_size)
 
+
 #define m_boot_flash_conf_start        0x28000000
 
 #if (defined(__use_shmem__))
@@ -111,8 +112,8 @@ LR_m_interrupts m_interrupts_start m_text_start+m_text_size-m_interrupts_start {
     * (.ramfunc)
     * (CodeQuickAccess)
     * (DataQuickAccess)
-    * (mflash_drv.o, +RO +RW +ZI)
-    * (fsl_xspi.o, +RO +RW +ZI)
+    mflash_drv.o (+RO +RW +ZI)
+    fsl_xspi.o (+RO +RW +ZI)
     .ANY (+RW +ZI)
   }
 #if (!defined(__heap_noncacheable__))
