@@ -55,6 +55,48 @@ static int32_t tensor_shape_size(const tflite::Tensor* tensor)
     return shape ? (int32_t)shape->size() : 0;
 }
 
+static const char* tensor_data_type_name(const tflite::Tensor* tensor)
+{
+    switch (tensor->type()){
+    case kTfLiteFloat32:
+        return "FLOAT32";
+    case kTfLiteInt32:
+        return "INT32";
+    case kTfLiteUInt8:
+        return "UINT8";
+    case kTfLiteInt8:
+        return "INT8";
+    case kTfLiteInt16:
+        return "INT16";
+    case kTfLiteInt4:
+        return "INT4";
+    default:
+        return "NoType";
+    }
+}
+
+/* Register one tensor in the output table and return its slot. */
+static int32_t register_output_tensor(NNServer* server,
+                                     const tflite::Tensor* tensor,
+                                     int tensor_index)
+{
+    int32_t slot = server->output.num_outputs;
+    if (slot >= (int32_t)(sizeof(server->output.name) / sizeof(server->output.name[0]))){
+        return -1;
+    }
+
+    server->output.name[slot] = (char*)(tensor->name() ? tensor->name()->c_str() : "");
+    server->output.shape_data[slot] = tensor_shape_data(tensor);
+    server->output.shape_size[slot] = tensor_shape_size(tensor);
+    server->output.tensor_idx[slot] = tensor_index;
+    strncpy(server->output.data_type[slot], tensor_data_type_name(tensor),
+            sizeof(server->output.data_type[slot]) - 1);
+    server->output.data_type[slot][sizeof(server->output.data_type[slot]) - 1] = '\0';
+    server->output.num_outputs++;
+
+    return slot;
+}
+
 class BProfiler : public tflite::MicroProfilerInterface {
 public:
     explicit BProfiler(NNServer* server): server_(server){}
@@ -96,13 +138,16 @@ int Model_Setup(NNServer* server) {
     auto* subgraphs = model->subgraphs();
     const tflite::SubGraph* subgraph = (*subgraphs)[0];
     auto tensors = subgraph->tensors();
+    /* operators() is nullptr if the graph has no operators (an optional flatbuffer field). */
     const flatbuffers::Vector<flatbuffers::Offset<tflite::Operator>>* operators = subgraph->operators();
+    const size_t operators_size = operators ? operators->size() : 0;
     server->output.num_outputs = 0;
-    for (size_t i = 0; i < operators->size(); i++) {
+    for (size_t i = 0; i < operators_size; i++) {
         const tflite::Operator* cur_operator = (*operators)[i];
+        /* inputs()/outputs() are nullptr if the operator has none. */
         auto* outputs = cur_operator->outputs();
 	auto* inputs = cur_operator->inputs();
-        if (inputs->size() > 0) {
+        if (inputs && inputs->size() > 0) {
             int input_idx = (int)(*inputs)[0];  
 	    const tflite::Tensor* input_tensor = (*tensors)[input_idx];
             server->layers.shape_data[i] = tensor_shape_data(input_tensor);
@@ -111,64 +156,56 @@ int Model_Setup(NNServer* server) {
             server->layers.shape_data[i] = nullptr;
             server->layers.shape_size[i] = 0;
         }
-	server->layers.output_size[i] = outputs->size();
-        for (size_t j = 0; j<outputs->size(); j++)
+        const size_t op_outputs_size = outputs ? outputs->size() : 0;
+	server->layers.output_size[i] = op_outputs_size;
+        for (size_t j = 0; j<op_outputs_size; j++)
         {
             int idx = (int)(*outputs)[j];
             const tflite::Tensor* tensor = (*tensors)[idx];
-            char* name = (char*)tensor->name()->c_str();
-            server->output.name[server->output.num_outputs] = name;
-            server->output.shape_data[server->output.num_outputs] = tensor_shape_data(tensor);
-            server->output.shape_size[server->output.num_outputs] = tensor_shape_size(tensor);
-            server->output.tensor_idx[server->output.num_outputs] = idx;
-	    server->layers.output_idx[i][j] = server->output.num_outputs;
-            switch (tensor->type()){
-            case kTfLiteFloat32:
-                strcpy(server->output.data_type [server->output.num_outputs], "FLOAT32");
-                break;
-            case kTfLiteInt32:
-                strcpy(server->output.data_type [server->output.num_outputs], "INT32");
-                break;
-            case kTfLiteUInt8:
-                strcpy(server->output.data_type [server->output.num_outputs], "UINT8");
-                break;
-            case kTfLiteInt8:
-                strcpy(server->output.data_type [server->output.num_outputs], "INT8");
-                break;
-            case kTfLiteInt16:
-                strcpy(server->output.data_type [server->output.num_outputs], "INT16");
-                break;
-            case kTfLiteInt4:
-                strcpy(server->output.data_type [server->output.num_outputs], "INT4");
-                break;
-            default:
-                strcpy(server->output.data_type [server->output.num_outputs], "NoType");
-                break;
+            int32_t slot = register_output_tensor(server, tensor, idx);
+            if (slot < 0){
+                PRINTF("Model has more output tensors than supported.\r\n");
+                return kStatus_Fail;
             }
-	    server->output.num_outputs++;
+	    server->layers.output_idx[i][j] = slot;
         }
     }
 
     server->output.outputs_size = subgraph->outputs()->size();
+    if (server->output.outputs_size >
+        (int32_t)(sizeof(server->output.index) / sizeof(server->output.index[0]))){
+        PRINTF("Model has more graph outputs than supported.\r\n");
+        return kStatus_Fail;
+    }
     for (int i = 0; i < server->output.outputs_size; i++)
     {
         int idx = (int)(*subgraph->outputs())[i];
         /* Match by tensor index (unique integer) instead of name to avoid
          * false matches when multiple tensors share the same name or when
          * an intermediate tensor has the same name as a model output. */
+        int32_t slot = -1;
         for (int j = server->output.num_outputs - 1; j >= 0; j--){
             if (server->output.tensor_idx[j] == idx){
-                server->output.index[i] = j;
+                slot = j;
                 break;
             }
         }
+        if (slot < 0){
+            /* Not found: no operator produces this output, so register it now. */
+            slot = register_output_tensor(server, (*tensors)[idx], idx);
+            if (slot < 0){
+                PRINTF("Model has more output tensors than supported.\r\n");
+                return kStatus_Fail;
+            }
+        }
+        server->output.index[i] = slot;
     }
 
     server->input.inputs_size = subgraph->inputs()->size();
     for (int32_t i = 0; i < server->input.inputs_size; i++){
         int idx = (int)(*subgraph->inputs())[i];
         auto tensor = (*tensors)[idx];
-        server->input.name[i] = (char*) tensor->name ()->c_str();
+        server->input.name[i] = (char*)(tensor->name() ? tensor->name()->c_str() : "");
         server->input.shape_data[i] = tensor_shape_data(tensor);
         server->input.shape_size[i] = tensor_shape_size(tensor);
         

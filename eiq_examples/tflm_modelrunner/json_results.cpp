@@ -292,7 +292,7 @@ int model_info(int sock, NNServer* server){
     if (write_chunk(sock, data, data_len) < 0) return -1;
 
 
-    data_len = snprintf(data, sizeof(data), ",\"layer_count\": %ld", server->output.num_outputs);
+    data_len = snprintf(data, sizeof(data), ",\"layer_count\": %ld", server->layers.num_layers);
     if (data_len < 0 || data_len >= sizeof(data)) return -1;
     if (write_chunk(sock, data, data_len) < 0) return -1;
 
