@@ -35,6 +35,9 @@
 /* hybrid genfsk enablement */
 #define gAppEnableHybridGenfsk_d   1
 
+/* currently low power is not supported in NBU */
+#define gAppDisableControllerLowPower_d 1
+
 /*! *********************************************************************************
  *     Framework Configuration
  ********************************************************************************** */
