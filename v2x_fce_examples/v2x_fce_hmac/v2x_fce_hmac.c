@@ -12,9 +12,9 @@
 #include "board.h"
 #include "app.h"
 
-#include "v2x_fce.h" /* EdgeLock V2X / FCE fast crypto engine service */
+#include "v2x_fce.h"          /* EdgeLock V2X / FCE fast crypto engine service */
 #include "fsl_ele_base_api.h" /* EdgeLock enclave base API: V2X FW bring-up */
-#include "v2x_base.h" /* EdgeLock V2X base (debug) service: FW version query */
+#include "v2x_base.h"         /* EdgeLock V2X base (debug) service: FW version query */
 
 /*******************************************************************************
  * Definitions
@@ -200,11 +200,9 @@ int main(void)
         goto close;
     }
     PRINTF("V2X/FCE info:\r\n");
-    PRINTF("V2X/FCE API version : %u.%u.%u\r\n", (unsigned)s_info[2], (unsigned)s_info[1],
-           (unsigned)s_info[0]);
-    PRINTF("Number of FIFO entries : %u\r\n",
-           (unsigned)((uint32_t)s_info[4] | ((uint32_t)s_info[5] << 8) | ((uint32_t)s_info[6] << 16) |
-                      ((uint32_t)s_info[7] << 24)));
+    PRINTF("V2X/FCE API version : %u.%u.%u\r\n", (unsigned)s_info[2], (unsigned)s_info[1], (unsigned)s_info[0]);
+    PRINTF("Number of FIFO entries : %u\r\n", (unsigned)((uint32_t)s_info[4] | ((uint32_t)s_info[5] << 8) |
+                                                         ((uint32_t)s_info[6] << 16) | ((uint32_t)s_info[7] << 24)));
     PRINTF("\r\n");
 
     /****************** Load the plain HMAC key *********************/
@@ -226,7 +224,7 @@ int main(void)
     op.digest     = s_mac;
     op.digestSize = sizeof(s_mac);
 
-    status = V2X_FCE_HmacGenerate(&handle, &op);
+    status = V2X_FCE_HmacGenerate(&handle, &op, 1u);
     if (status != kStatus_Success)
     {
         PRINTF("HMAC generate failed.\r\n");
@@ -248,7 +246,7 @@ int main(void)
     op.digest     = s_mac;
     op.digestSize = sizeof(s_mac);
 
-    status = V2X_FCE_HmacVerify(&handle, &op);
+    status = V2X_FCE_HmacVerify(&handle, &op, 1u);
     if (status != kStatus_Success)
     {
         PRINTF("HMAC verify failed.\r\n");

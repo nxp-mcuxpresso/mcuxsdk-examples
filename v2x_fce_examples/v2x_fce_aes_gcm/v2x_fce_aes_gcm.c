@@ -12,9 +12,9 @@
 #include "board.h"
 #include "app.h"
 
-#include "v2x_fce.h" /* EdgeLock V2X / FCE fast crypto engine service */
+#include "v2x_fce.h"          /* EdgeLock V2X / FCE fast crypto engine service */
 #include "fsl_ele_base_api.h" /* EdgeLock enclave base API: V2X FW bring-up */
-#include "v2x_base.h" /* EdgeLock V2X base (debug) service: FW version query */
+#include "v2x_base.h"         /* EdgeLock V2X base (debug) service: FW version query */
 
 /*******************************************************************************
  * Definitions
@@ -118,7 +118,7 @@ static bool V2X_FCE_Compare(const uint8_t *a, const uint8_t *b, uint32_t len)
 int main(void)
 {
     v2x_fce_handle_t handle = {0};
-    v2x_fce_gcm_op_t op      = {0};
+    v2x_fce_gcm_op_t op     = {0};
     status_t status;
 
     /* Board and pin/clock initialization. */
@@ -197,8 +197,6 @@ int main(void)
                (unsigned int)version.minor, (unsigned int)version.patch, (unsigned int)version.commitId);
     }
 
-
-
     /****************** Open the V2X/FCE service ********************/
     PRINTF("****************** Ping V2X/FCE service ****************\r\n");
     status = V2X_FCE_Ping(V2X_FCE_MU);
@@ -222,20 +220,17 @@ int main(void)
 
     /****************** Query FCE service info *****************/
     PRINTF("****************** Get V2X/FCE info *******************\r\n");
-    status    = V2X_FCE_GetInfo(&handle, s_info, sizeof(s_info));
+    status = V2X_FCE_GetInfo(&handle, s_info, sizeof(s_info));
     if (status != kStatus_Success)
     {
         PRINTF("Get V2X/FCE info failed.\r\n");
         goto close;
     }
     PRINTF("V2X/FCE info:\r\n");
-    PRINTF("V2X/FCE API version : %u.%u.%u\r\n", (unsigned)s_info[2], (unsigned)s_info[1],
-           (unsigned)s_info[0]);
-    PRINTF("Number of FIFO entries : %u\r\n",
-           (unsigned)((uint32_t)s_info[4] | ((uint32_t)s_info[5] << 8) | ((uint32_t)s_info[6] << 16) |
-                      ((uint32_t)s_info[7] << 24)));
+    PRINTF("V2X/FCE API version : %u.%u.%u\r\n", (unsigned)s_info[2], (unsigned)s_info[1], (unsigned)s_info[0]);
+    PRINTF("Number of FIFO entries : %u\r\n", (unsigned)((uint32_t)s_info[4] | ((uint32_t)s_info[5] << 8) |
+                                                         ((uint32_t)s_info[6] << 16) | ((uint32_t)s_info[7] << 24)));
     PRINTF("\r\n");
-
 
     /****************** Load the plain AES-256 key *******************/
     /* Mirror the reference test_aes_keyslot(): exercise every AES key slot
@@ -266,7 +261,7 @@ int main(void)
     op.tag       = s_tag;
     op.tagSize   = sizeof(s_tag);
 
-    status = V2X_FCE_AesGcmEncrypt(&handle, &op);
+    status = V2X_FCE_AesGcmEncrypt(&handle, &op, 1u);
     if (status != kStatus_Success)
     {
         PRINTF("AES-GCM encrypt failed (status=%d).\r\n", (int)status);
@@ -294,7 +289,7 @@ int main(void)
     op.tag       = s_tag;
     op.tagSize   = sizeof(s_tag);
 
-    status = V2X_FCE_AesGcmDecrypt(&handle, &op);
+    status = V2X_FCE_AesGcmDecrypt(&handle, &op, 1u);
     if (status != kStatus_Success)
     {
         PRINTF("AES-GCM decrypt/authentication failed.\r\n");
