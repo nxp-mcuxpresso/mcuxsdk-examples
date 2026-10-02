@@ -16,7 +16,6 @@ mcux_add_source(
            examples/_boards/${board}/wifi_examples/common/hardware_init.c
            examples/_boards/${board}/wifi_examples/common/pin_mux.c
            examples/_boards/${board}/wifi_examples/common/pin_mux.h
-           examples/_boards/${board}/wifi_examples/common/hardware_poll.c
 	   examples/_boards/${board}/wifi_examples/common/app.h
            examples/_boards/${board}/sdmmc_config.c
            examples/_boards/${board}/sdmmc_config.h
