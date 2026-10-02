@@ -136,6 +136,7 @@ typedef struct _clock_setup
  ******************************************************************************/
 extern mcdrv_pwm3ph_pwma_t g_sM1Pwm3ph;
 extern mcdrv_adc_t g_sM1Curr3phDcBus;
+extern clock_setup_t g_sClockSetup;
 
 /*******************************************************************************
  * API
