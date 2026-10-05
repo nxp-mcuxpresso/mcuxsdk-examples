@@ -61,10 +61,13 @@ mcux_add_iar_configuration(
         --import_cmse_lib_out=${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}/rpmsg_lite_pingpong_tzm_s_CMSE_lib.o"
 )
 
-# Create output directory for armgcc to put library in.
+# Create output directory for armgcc/mdk to put the CMSE import library in.
+# MDK (armlink --import-cmse-lib-out) writes the generated CMSE lib into
+# ${CONFIG_TOOLCHAIN}/ at link time, so the directory must exist for mdk as well,
+# otherwise a clean build fails with "L6449E: ... No such file or directory".
 mcux_add_custom_command(
     BUILD_EVENT PRE_BUILD
-    TOOLCHAINS armgcc
+    TOOLCHAINS armgcc mdk
     BUILD_COMMAND ${CMAKE_COMMAND} -E make_directory ${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}
 )
 
