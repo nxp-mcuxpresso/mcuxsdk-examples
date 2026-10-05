@@ -8,7 +8,7 @@ Hardware requirements
 Board settings
 ============
 Connect the panel to J52.
-Switch the J45 jumper to the 1-2 configuration to enable XSPI1 PSRAM memory access.
+Switch the JP45 jumper to the 1-2 configuration to enable XSPI1 PSRAM memory access.
 Switch the SW10 boot mode switch to the 01 XSPI0 flash configuration.
 
 Prepare the Demo
