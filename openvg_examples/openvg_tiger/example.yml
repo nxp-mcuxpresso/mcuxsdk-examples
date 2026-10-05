@@ -57,8 +57,6 @@ openvg_tiger_freertos:
     - +armgcc@hyperram_release
     - +iar@hyperram_debug
     - +iar@hyperram_release
-    - +mdk@hyperram_debug
-    - +mdk@hyperram_release
     - -armgcc@debug
     - -armgcc@flexspi_nor_debug
     - -armgcc@flexspi_nor_hyperram_debug
