@@ -50,15 +50,25 @@
 /*! Enable NXP proprietary debug */
 //#define gDbg_Enabled_d                  1
 
-/*! Enable the host (application core) Zephyr coredump capture on fault.
-    The value is used by the framework host fault handler to gate the coredump
-    path. By default it follows the build type through the standard NDEBUG macro
+/*! Host (application core) debug features gated by build type.
+
+    - BOARD_DBG_COREDUMP_ENABLE gates the framework host fault handler Zephyr
+      coredump capture on fault.
+    - BOARD_DBG_FAULT_SINK_ENABLE routes the framework fault-handler diagnostic
+      output through the shared debug log engine (the board registers the sink
+      at init via BOARD_DbgFaultSinkInit); when zero the sink is not registered
+      and the fault-handler output path compiles out.
+
+    By default both follow the build type through the standard NDEBUG macro
     (defined by the toolchain in release builds): enabled in debug, disabled in
-    release. Define it explicitly to override the default for a given build. */
+    release. Define either explicitly to override the default for a given
+    build. */
 #if defined(NDEBUG)
 #define BOARD_DBG_COREDUMP_ENABLE       0
+#define BOARD_DBG_FAULT_SINK_ENABLE     0
 #else
 #define BOARD_DBG_COREDUMP_ENABLE       1
+#define BOARD_DBG_FAULT_SINK_ENABLE     1
 #endif
 
 /**********************************************************************************

@@ -482,6 +482,46 @@ using the standard `NDEBUG` macro (defined by the toolchain in release builds):
 To use a fixed policy instead, define `BOARD_DBG_COREDUMP_ENABLE` to `1` (always
 on) or `0` (always off) regardless of the build type.
 
+## Fault-Handler Output Sink (`BOARD_DBG_FAULT_SINK_ENABLE`)
+
+The framework fault handler can route its human-readable diagnostic text (the
+register/fault dump) through the shared debug log engine so it lands on the same
+port used by the coredump backend. This routing is gated by the
+`BOARD_DBG_FAULT_SINK_ENABLE` macro. When it is non-zero, the board registers a
+fault-output sink at init (`BOARD_DbgFaultSinkInit()` in
+`examples/_common/project_segments/wireless/wireless_mcu/debug/board_debug.c`),
+which forwards the fault text to `BOARD_DbgLoggerLogImmediate()` via
+`FWK_FaultHandlerSetOutput()`. When it is zero (or left undefined), the sink is
+not registered and the fault-handler output routing compiles out.
+
+Unlike the NBU debug options, this macro is **not** set from the project
+segment (`prjseg.cmake`). Define it in the application (typically its
+`app_preinclude.h`) so the application controls whether the fault-handler output
+sink is built in, independently of the build configuration. If left undefined,
+the routing is simply not compiled.
+
+The sink is independent of `BOARD_DBG_COREDUMP_ENABLE`: it only routes the
+textual fault dump, and relies on the debug log engine
+(`BOARD_DbgLoggerInit()`) already being initialized.
+
+### Example: enable in debug, disable in release
+
+A common policy is to route the fault output in debug builds only. The
+application can derive the value from the build type using the standard `NDEBUG`
+macro (defined by the toolchain in release builds):
+
+```c
+/* In the application configuration, e.g. app_preinclude.h */
+#if defined(NDEBUG)
+#define BOARD_DBG_FAULT_SINK_ENABLE     0   /* release: sink disabled */
+#else
+#define BOARD_DBG_FAULT_SINK_ENABLE     1   /* debug: sink enabled */
+#endif
+```
+
+To use a fixed policy instead, define `BOARD_DBG_FAULT_SINK_ENABLE` to `1`
+(always on) or `0` (always off) regardless of the build type.
+
 ## Unified Console Parser (`board_debug_parse.py`)
 
 When everything is routed to the **main application console** (the `serialmgr`
