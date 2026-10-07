@@ -75,6 +75,8 @@ openvg_tiger_freertos:
     - -mdk@flexspi_nor_hyperram_release
     - -mdk@flexspi_nor_release
     - -mdk@release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
     frdmimxrt700@cm33_core0:
     - +armgcc@debug
     - +armgcc@release
