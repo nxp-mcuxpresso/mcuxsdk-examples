@@ -13,6 +13,7 @@ project(lp_refdes_ble_peripheral_bm LANGUAGES C CXX ASM
         ${board_root}/${board}/wireless_examples
     CUSTOM_PRJ_CONF_PATH
         ${board_root}/${board}/wireless_examples/reference_design
+        ${board_root}/${board}/wireless_examples/reference_design/lowpower_peripheral
 )
 
 include(${SdkRootDirPath}/CMakeLists.txt)

@@ -14,6 +14,7 @@ project(lp_refdes_ble_central_freertos LANGUAGES C CXX ASM
     CUSTOM_PRJ_CONF_PATH
         ${board_root}/${board}/wireless_examples/freertos
         ${board_root}/${board}/wireless_examples/reference_design
+        ${board_root}/${board}/wireless_examples/reference_design/lowpower_central
 )
 include(${SdkRootDirPath}/CMakeLists.txt)
 include(${SdkRootDirPath}/examples/wireless_examples/reference_design/lowpower_central/lowpower_central.cmake)
