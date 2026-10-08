@@ -14,4 +14,4 @@ flash_component_nand_xspi:
       - ${board_root}/${board}/component_examples/flash_component/xspi_nand/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    frdmimxrt700@cm33_core0: {}
+    frdmimxrt700@cm33_core0: []
