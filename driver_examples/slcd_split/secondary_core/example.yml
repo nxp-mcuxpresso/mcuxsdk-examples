@@ -15,7 +15,4 @@ slcd_split_secondary_core:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxl255@cm0plus:
-    - +armgcc@debug
-    - +armgcc@release
-    - +iar@debug
-    - +iar@release
+    - -armgcc@debug
