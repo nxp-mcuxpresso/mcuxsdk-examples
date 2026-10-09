@@ -37,8 +37,6 @@ mcux_add_source(
             ./custom/lv_conf_ext.h
             ./../lvgl_demo_utils.c
             ./../lvgl_demo_utils.h
-            ./../lvgl_freertos.c
-            ./../lvgl_freertos.h
             ../FreeRTOSConfig_frag.h
 )
 

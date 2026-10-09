@@ -44,7 +44,7 @@ static SemaphoreHandle_t s_transferDone;
 #else
 static volatile bool s_transferDone;
 #endif
-AT_NONCACHEABLE_SECTION_ALIGN(static uint8_t s_frameBuffer[1][LCD_VIRTUAL_BUF_SIZE * LCD_FB_BYTE_PER_PIXEL], 4);
+AT_NONCACHEABLE_SECTION_ALIGN(static uint8_t s_frameBuffer[1][LCD_VIRTUAL_BUF_SIZE], 4);
 /*******************************************************************************
  * Code
  ******************************************************************************/

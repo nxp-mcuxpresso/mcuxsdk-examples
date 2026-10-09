@@ -30,24 +30,19 @@ Prepare the Demo
 
 Select the panel
 ================
-RK055MHD091 MIPI panel is used by default, follow the steps to configure the sw to support different panel.
+RK055MHD091 MIPI panel is used by default, the panel can be switched by using west build option
+or modifying mcux_config.h.
 
-When Kconfig is used
--------------
-Select the panel in Kconfig "Panel Selection".
+When Kconfig is used, use the west build option in this table.
+When Package is used, modify `DEMO_PANEL` in mcux_config.h.
 
-When Package is used
--------------
-Modify `DEMO_PANEL` in mcux_config.h.
-`#define DEMO_PANEL 4` for "MikroE TFT Proto 5" CAPACITIVE FlexIO panel.
-`#define DEMO_PANEL 0` for "RK055HDMIPI4M" MIPI Rectangular panel.
-`#define DEMO_PANEL 3` for "G1120B0MIPI" MIPI Circular panel.
-`#define DEMO_PANEL 2` for "RK055MHD091A0-CTG MIPI Rectangular panel.(default)
+| Panel                                                      | west build option          | mcux_config.h DEMO_PANEL |
+|------------------------------------------------------------|----------------------------|--------------------------|
+| TFT Proto 5" CAPACITIVE (SSD1963)                          | `-DCONFIG_TFT_PROTO_5=y`   | 4                        |
+| RK055HDMIPI4M MIPI Rectangular (RK055AHD091)               | `-DCONFIG_RK055AHD091=y`   | 0                        |
+| G1120B0MIPI MIPI Circular (RM67162)                        | `-DCONFIG_G1120B0MIPI=y`   | 3                        |
+| RK055MHD091A0-CTG MIPI Rectanglular (RK055MHD091, default) | `-DCONFIG_RK055MHD091=y`   | 2                        |
 
-To use DBI panels: SSD1963 and RM67162, below change is needed:
-```
-#define CONFIG_LV_USE_PRIVATE_API 1
-```
 
 Running the demo
 ===============

@@ -19,8 +19,8 @@
 
 /* Virtual buffer height: ~1/10 of screen height. */
 #define LCD_VIRTUAL_BUF_HEIGHT (LCD_HEIGHT / 10U)
-/* Total pixels in one virtual buffer row stripe. */
-#define LCD_VIRTUAL_BUF_SIZE   (LCD_WIDTH * LCD_VIRTUAL_BUF_HEIGHT)
+/* Total bytes in one virtual buffer row stripe. */
+#define LCD_VIRTUAL_BUF_SIZE   (LCD_WIDTH * LCD_VIRTUAL_BUF_HEIGHT * LCD_FB_BYTE_PER_PIXEL)
 
 /*******************************************************************************
  * API

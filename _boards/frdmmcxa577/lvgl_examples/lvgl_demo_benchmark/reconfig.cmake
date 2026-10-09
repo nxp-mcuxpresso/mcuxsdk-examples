@@ -3,8 +3,6 @@ mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES ${board_root}/${board}/lvgl_examples/hardware_init.c
             ${board_root}/${board}/lvgl_examples/app.h
-            examples/lvgl_examples/lvgl_freertos.c
-            examples/lvgl_examples/lvgl_freertos.h
 )
 
 mcux_add_include(

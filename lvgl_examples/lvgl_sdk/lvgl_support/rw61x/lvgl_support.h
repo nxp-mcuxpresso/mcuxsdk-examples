@@ -15,8 +15,8 @@
  * Definitions
  ******************************************************************************/
 
-/* The virtual buffer for DBI panel, it should be ~1/10 screen size. */
-#define LCD_VIRTUAL_BUF_SIZE (DEMO_BUFFER_WIDTH * DEMO_BUFFER_HEIGHT / 4)
+/* The virtual buffer for DBI panel, it should be ~1/10 screen size. Size in bytes. */
+#define LCD_VIRTUAL_BUF_SIZE (DEMO_BUFFER_WIDTH * DEMO_BUFFER_HEIGHT / 4 * DEMO_BUFFER_BYTE_PER_PIXEL)
 
 /*******************************************************************************
  * API

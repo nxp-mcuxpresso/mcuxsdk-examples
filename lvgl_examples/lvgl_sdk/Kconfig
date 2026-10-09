@@ -13,15 +13,11 @@ if MCUX_COMPONENT_middleware.lvgl
     # set as "\"string\"".
     config LV_OS_CUSTOM_INCLUDE
         string
-        default "\"stdint.h\""
+        default "\"\""
 
     config LV_DRAW_SW_ASM_CUSTOM_INCLUDE
         string
         default "\"\""
-
-    config LV_ASSERT_HANDLER_INCLUDE
-        string
-        default "\"assert.h\""
 
     config LV_GLOBAL_CUSTOM_INCLUDE
         string
@@ -33,12 +29,33 @@ if MCUX_COMPONENT_middleware.lvgl
 
     config LV_PROFILER_INCLUDE
         string
-        default "\"lvgl/src/misc/lv_profiler_builtin.h\""
+        default "\"lvgl/debugging/profiler/lv_profiler_builtin.h\""
 
     config LV_TXT_COLOR_CMD
         string
         default "\"#\""
 
+    # Standard library header includes (v9.6 requirement)
+    config LV_STDINT_INCLUDE
+        string
+        default "\"stdint.h\""
+    config LV_STDDEF_INCLUDE
+        string
+        default "\"stddef.h\""
+    config LV_STDBOOL_INCLUDE
+        string
+        default "\"stdbool.h\""
+    config LV_INTTYPES_INCLUDE
+        string
+        default "\"inttypes.h\""
+    config LV_LIMITS_INCLUDE
+        string
+        default "\"limits.h\""
+    config LV_STDARG_INCLUDE
+        string
+        default "\"stdarg.h\""
+
+    # Day-of-week strings
     config LV_MONDAY_STR
         string
         default "\"Mo\""
@@ -61,58 +78,145 @@ if MCUX_COMPONENT_middleware.lvgl
         string
         default "\"Su\""
 
+    # Month strings (v9.6 requirement)
+    config LV_JANUARY_STR
+        string
+        default "\"January\""
+    config LV_FEBRUARY_STR
+        string
+        default "\"February\""
+    config LV_MARCH_STR
+        string
+        default "\"March\""
+    config LV_APRIL_STR
+        string
+        default "\"April\""
+    config LV_MAY_STR
+        string
+        default "\"May\""
+    config LV_JUNE_STR
+        string
+        default "\"June\""
+    config LV_JULY_STR
+        string
+        default "\"July\""
+    config LV_AUGUST_STR
+        string
+        default "\"August\""
+    config LV_SEPTEMBER_STR
+        string
+        default "\"September\""
+    config LV_OCTOBER_STR
+        string
+        default "\"October\""
+    config LV_NOVEMBER_STR
+        string
+        default "\"November\""
+    config LV_DECEMBER_STR
+        string
+        default "\"December\""
+
     # Kconfig default settings
     config LV_USE_DRAW_VG_LITE
         bool
         default y if MCUX_COMPONENT_middleware.vglite
 
-    config LV_USE_PXP
+    # VG-Lite default settings for NXP MCU SDK integration.
+    config LV_VG_LITE_USE_GPU_INIT
         bool
-        default y if MCUX_COMPONENT_driver.pxp
+        depends on LV_USE_DRAW_VG_LITE
+        default y
+
+    config LV_VG_LITE_GRAD_CACHE_CNT
+        int
+        depends on LV_USE_DRAW_VG_LITE
+        default 8
+
+    config LV_VG_LITE_STROKE_CACHE_CNT
+        int
+        depends on LV_USE_DRAW_VG_LITE
+        default 32
+
+    config LV_VG_LITE_DISABLE_VLC_OP_CLOSE
+        bool
+        depends on LV_USE_DRAW_VG_LITE
+        default y
+
+    config LV_VG_LITE_DISABLE_LINEAR_GRADIENT_EXT
+        bool
+        depends on LV_USE_DRAW_VG_LITE
+        default y
 
     config LV_USE_DRAW_PXP
         bool
         default n if LV_USE_DRAW_VG_LITE
+        default y if MCUX_COMPONENT_driver.pxp
 
     config LV_DEMO_BENCHMARK_ALIGNED_FONTS
         bool
-        default y if LV_USE_DRAW_VG_LITE
+        default y if LV_USE_DRAW_VG_LITE && LV_USE_DEMO_BENCHMARK
+
+    config LV_ATTRIBUTE_MEM_ALIGN_SIZE
+        int "Required alignment size for buffers (must be power of 2)"
+        default 64 if LV_USE_DRAW_VG_LITE || LV_USE_DRAW_PXP
+        default 4
 
     config LV_DRAW_BUF_ALIGN
         int
-        default 32 if LV_USE_PXP
+        default 32 if LV_USE_DRAW_PXP
+
+    config LV_USE_VECTOR_GRAPHIC
+        bool
+        default y if LV_USE_DRAW_VG_LITE
+
+    # Section placement for large arrays (board-level override via prj.conf)
+    # Each pair: bool guard (controls whether #define appears in mcux_config.h)
+    #            string section name (the linker section to place data in)
+    config LV_USE_LARGE_RAM_ARRAY_SECTION
+        bool "Place LVGL memory pool in a custom linker section"
+        default n
+
+    config LV_ATTRIBUTE_LARGE_RAM_ARRAY_SECTION
+        string "Linker section name for large RAM arrays"
+        depends on LV_USE_LARGE_RAM_ARRAY_SECTION
+        default "NonCacheable.init"
+
+    config LV_USE_LARGE_CONST_SECTION
+        bool "Place large const data in a custom linker section"
+        default n
+
+    config LV_ATTRIBUTE_LARGE_CONST_SECTION
+        string "Linker section name for large const data"
+        depends on LV_USE_LARGE_CONST_SECTION
+        default "DataQuickAccess"
+
+    # Custom include defaults: lv_conf.h provides LV_ATTRIBUTE_MEM_ALIGN,
+    # LV_SYSMON_GET_IDLE, LV_ASSERT_HANDLER for all SDK projects.
+    config LV_ATTRIBUTE_USE_CUSTOM_INCLUDE
+        bool
+        default y
+
+    config LV_ATTRIBUTE_CUSTOM_INCLUDE
+        string
+        default "\"lv_conf.h\""
+
+    config LV_SYSMON_USE_CUSTOM_INCLUDE
+        bool
+        default y if LV_USE_SYSMON
+
+    config LV_SYSMON_CUSTOM_INCLUDE
+        string
+        default "\"lv_conf.h\"" if LV_USE_SYSMON
+
+    config LV_ASSERT_USE_CUSTOM_INCLUDE
+        bool
+        default y
+
+    config LV_ASSERT_CUSTOM_INCLUDE
+        string
+        default "\"lv_conf.h\""
 
     osource "${SdkRootDirPath}/middleware/lvgl/Kconfig"
-
-    config LV_ATTRIBUTE_MEM_ALIGN
-        string "LV_ATTRIBUTE_MEM_ALIGN"
-        default ""
-        help
-            Will be added where memories needs to be aligned
-            (with -Os data might not be aligned to boundary by default).
-            E.g. __attribute__((aligned(LV_ATTRIBUTE_MEM_ALIGN_SIZE)))
-
-    config LV_ATTRIBUTE_LARGE_CONST
-        string "LV_ATTRIBUTE_LARGE_CONST"
-        default ""
-        help
-            Attribute to mark large constant arrays for example font's bitmaps.
-            E.g. __attribute__((section("DataQuickAccess")))
-
-    config LV_ATTRIBUTE_LARGE_RAM_ARRAY
-        string "LV_ATTRIBUTE_LARGE_RAM_ARRAY"
-        default ""
-        help
-            Attribute to mark large ram arrays for example font's bitmaps.
-            E.g. __attribute__((section(\"NonCacheable.init\")))
-
-    config LV_SYSMON_GET_IDLE
-        string "LV_SYSMON_GET_IDLE"
-        depends on LV_USE_SYSMON
-        default "lv_timer_get_idle"
-        help
-            Get the idle percentage.
-            E.g. uint32_t my_get_idle(void);
 
 endif
 
@@ -125,10 +229,6 @@ menu "LVGL application layers"
 
         config MCUX_COMPONENT_middleware.lvgl.demo.common
             bool "common"
-            imply MCUX_COMPONENT_middleware.lvgl
-
-        config MCUX_COMPONENT_middleware.lvgl.demo.transform
-            bool "transform"
             imply MCUX_COMPONENT_middleware.lvgl
 
         config MCUX_COMPONENT_middleware.lvgl.demo.multilang
@@ -154,7 +254,6 @@ menu "LVGL application layers"
         config MCUX_COMPONENT_middleware.lvgl.demo.benchmark
             bool "benchmark"
             imply MCUX_COMPONENT_middleware.lvgl
-            imply MCUX_COMPONENT_middleware.lvgl.demo.transform
             imply MCUX_COMPONENT_middleware.lvgl.demo.widgets
             imply MCUX_COMPONENT_middleware.lvgl.demo.common
 

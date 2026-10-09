@@ -38,8 +38,8 @@ if MCUX_PRJSEG_module.board.display_support
 
     #     choice DEMO_CO5300_BUFFER_FORMAT_SELECTION
     #         prompt "TFT_PROTO_5 pixel format"
-    #         default DEMO_CO5300_BUFFER_RGB565 if LV_COLOR_DEPTH_16
-    #         default DEMO_CO5300_BUFFER_RGB888 if LV_COLOR_DEPTH_24
+    #         default DEMO_CO5300_BUFFER_RGB565 if LV_COLOR_FORMAT_RGB565
+    #         default DEMO_CO5300_BUFFER_RGB888 if LV_COLOR_FORMAT_RGB888
     #         default DEMO_CO5300_BUFFER_RGB565
 
     #         config DEMO_CO5300_BUFFER_RGB565

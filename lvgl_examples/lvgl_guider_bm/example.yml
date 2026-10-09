@@ -347,7 +347,10 @@ lvgl_guider_bm:
     - -iar@debug
     - -armgcc@debug
     - -mdk@debug
-    lpcxpresso55s28: []
+    lpcxpresso55s28:
+    - -iar@debug
+    - -armgcc@debug
+    - -mdk@debug
     lpcxpresso55s36:
     - -iar@debug
     - -armgcc@debug

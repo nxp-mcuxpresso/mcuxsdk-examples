@@ -105,7 +105,7 @@ FLEXIO_MCULCD_Type flexioLcdDev = {
     .setRDWRPin          = NULL /* Not used in 8080 mode. */
 };
 
-SDK_ALIGN(static uint8_t s_frameBuffer[CONFIG_LVGL_SUPPORT_VDB_COUNT][LCD_VIRTUAL_BUF_SIZE * LCD_FB_BYTE_PER_PIXEL], 4);
+SDK_ALIGN(static uint8_t s_frameBuffer[CONFIG_LVGL_SUPPORT_VDB_COUNT][LCD_VIRTUAL_BUF_SIZE], 4);
 
 /*******************************************************************************
  * Code

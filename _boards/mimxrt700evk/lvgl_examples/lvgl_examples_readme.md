@@ -74,8 +74,8 @@ Please read section [Project Configuration](#project-configuration) to know the 
 #### Pixel format
 
 - By Kconfig
-  - RGB565(default): Use build parameter `-DCONFIG_LV_COLOR_DEPTH_16=y` or omit.
-  - RGB888: Use build parameter `-DCONFIG_LV_COLOR_DEPTH_24=y`
+  - RGB565(default): Use build parameter `-DCONFIG_LV_COLOR_FORMAT_RGB565=y` or omit.
+  - RGB888: Use build parameter `-DCONFIG_LV_COLOR_FORMAT_RGB888=y`
 
 - Or By modifying `mcux_config.h`. If the macros don't exist, add them directly.
   - RGB565(default)
@@ -89,6 +89,8 @@ Please read section [Project Configuration](#project-configuration) to know the 
     #define CONFIG_LV_COLOR_DEPTH 24
     #define CONFIG_LV_DRAW_BUF_ALIGN 192
     #define DEMO_SSD1963_BUFFER_FORMAT 1
+    // #define CONFIG_LV_COLOR_FORMAT_RGB565 0 NOTE: Must remove or comment this line
+    #define CONFIG_LV_COLOR_FORMAT_RGB888 1
     ```
 
 #### Driven Peripheral
@@ -114,8 +116,8 @@ Please read section [Project Configuration](#project-configuration) to know the 
 #### Pixel format
 
 - By Kconfig
-  - RGB565(default): Use build parameter `-DCONFIG_LV_COLOR_DEPTH_16=y` or omit.
-  - XRGB888: Use build parameter `-DCONFIG_LV_COLOR_DEPTH_32=y`
+  - RGB565(default): Use build parameter `-DCONFIG_LV_COLOR_FORMAT_RGB565=y` or omit.
+  - XRGB888: Use build parameter `-DCONFIG_LV_COLOR_FORMAT_XRGB8888=y`
 
 - Or By modifying `mcux_config.h`. If the macros don't exist, add them directly.
   - RGB565(default)
@@ -124,11 +126,13 @@ Please read section [Project Configuration](#project-configuration) to know the 
     #define CONFIG_LV_DRAW_BUF_ALIGN 64
     #define DEMO_RK055AHD091_USE_XRGB8888 0
     ```
-  - XRGB888
+  - XRGB8888
     ```c
     #define CONFIG_LV_COLOR_DEPTH 32
     #define CONFIG_LV_DRAW_BUF_ALIGN 64
     #define DEMO_RK055AHD091_USE_XRGB8888 1
+    // #define CONFIG_LV_COLOR_FORMAT_RGB565 0 NOTE: Must remove or comment this line
+    #define CONFIG_LV_COLOR_FORMAT_XRGB888 1
     ```
 
 ### RK055MHD091A0-CTG MIPI Rectanglular Panel (RK055MHD091)
@@ -136,8 +140,8 @@ Please read section [Project Configuration](#project-configuration) to know the 
 #### Pixel format
 
 - By Kconfig
-  - RGB565(default): Use build parameter `-DCONFIG_LV_COLOR_DEPTH_16=y` or omit.
-  - XRGB888: Use build parameter `-DCONFIG_LV_COLOR_DEPTH_32=y`
+  - RGB565(default): Use build parameter `-DCONFIG_LV_COLOR_FORMAT_RGB565=y` or omit.
+  - XRGB888: Use build parameter `-DCONFIG_LV_COLOR_FORMAT_XRGB8888=y`
 
 - Or By modifying `mcux_config.h`. If the macros don't exist, add them directly.
   - RGB565(default)
@@ -146,11 +150,13 @@ Please read section [Project Configuration](#project-configuration) to know the 
     #define CONFIG_LV_DRAW_BUF_ALIGN 64
     #define DEMO_RK055MHD091_USE_XRGB8888 0
     ```
-  - XRGB888
+  - XRGB8888
     ```c
     #define CONFIG_LV_COLOR_DEPTH 32
     #define CONFIG_LV_DRAW_BUF_ALIGN 64
     #define DEMO_RK055MHD091_USE_XRGB8888 1
+    // #define CONFIG_LV_COLOR_FORMAT_RGB565 0 NOTE: Must remove or comment this line
+    #define CONFIG_LV_COLOR_FORMAT_XRGB888 1
     ```
 
 ### G1120B0MIPI MIPI Circular Panel (RM67162)
@@ -158,8 +164,8 @@ Please read section [Project Configuration](#project-configuration) to know the 
 #### Pixel format
 
 - By Kconfig
-  - RGB565(default): Use build parameter `-DCONFIG_LV_COLOR_DEPTH_16=y` or omit.
-  - RGB888: Use build parameter `-DCONFIG_LV_COLOR_DEPTH_24=y`
+  - RGB565(default): Use build parameter `-DCONFIG_LV_COLOR_FORMAT_RGB565=y` or omit.
+  - RGB888: Use build parameter `-DCONFIG_LV_COLOR_FORMAT_RGB888=y`
 
 - Or By modifying `mcux_config.h`. If the macros don't exist, add them directly.
   - RGB565(default)
@@ -173,6 +179,8 @@ Please read section [Project Configuration](#project-configuration) to know the 
     #define CONFIG_LV_COLOR_DEPTH 24
     #define CONFIG_LV_DRAW_BUF_ALIGN 192
     #define DEMO_RM67162_BUFFER_FORMAT 1
+    // #define CONFIG_LV_COLOR_FORMAT_RGB565 0 NOTE: Must remove or comment this line
+    #define CONFIG_LV_COLOR_FORMAT_RGB888 1
     ```
 
 ### ZC143AC72MIPI MIPI Circular Panel (CO5300)
@@ -180,8 +188,8 @@ Please read section [Project Configuration](#project-configuration) to know the 
 #### Pixel format
 
 - By Kconfig
-  - RGB565(default): Use build parameter `-DCONFIG_LV_COLOR_DEPTH_16=y` or omit.
-  - RGB888: Use build parameter `-DCONFIG_LV_COLOR_DEPTH_24=y`
+  - RGB565(default): Use build parameter `-DCONFIG_LV_COLOR_FORMAT_RGB565=y` or omit.
+  - RGB888: Use build parameter `-DCONFIG_LV_COLOR_FORMAT_RGB888=y`
 
 - Or By modifying `mcux_config.h`. If the macros don't exist, add them directly.
   - RGB565(default)
@@ -195,6 +203,8 @@ Please read section [Project Configuration](#project-configuration) to know the 
     #define CONFIG_LV_COLOR_DEPTH 24
     #define CONFIG_LV_DRAW_BUF_ALIGN 192
     #define DEMO_CO5300_BUFFER_FORMAT 1
+    // #define CONFIG_LV_COLOR_FORMAT_RGB565 0 NOTE: Must remove or comment this line
+    #define CONFIG_LV_COLOR_FORMAT_RGB888 1
     ```
 
 ### MIPI RK055IQH091 Rectangular Panel
@@ -214,8 +224,8 @@ Please read section [Project Configuration](#project-configuration) to know the 
 #### Pixel format
 
 - By Kconfig
-  - RGB565(default): Use build parameter `-DCONFIG_LV_COLOR_DEPTH_16=y` or omit.
-  - RGB888: Use build parameter `-DCONFIG_LV_COLOR_DEPTH_24=y`
+  - RGB565(default): Use build parameter `-DCONFIG_LV_COLOR_FORMAT_RGB565=y` or omit.
+  - RGB888: Use build parameter `-DCONFIG_LV_COLOR_FORMAT_RGB888=y`
 
 - Or By modifying `mcux_config.h`. If the macros don't exist, add them directly.
   - RGB565(default)
@@ -229,6 +239,8 @@ Please read section [Project Configuration](#project-configuration) to know the 
     #define CONFIG_LV_COLOR_DEPTH 24
     #define CONFIG_LV_DRAW_BUF_ALIGN 192
     #define DEMO_LCD_PAR_S035_BUFFER_FORMAT 1
+    // #define CONFIG_LV_COLOR_FORMAT_RGB565 0 NOTE: Must remove or comment this line
+    #define CONFIG_LV_COLOR_FORMAT_RGB888 1
     ```
 
 #### Driven Peripehral

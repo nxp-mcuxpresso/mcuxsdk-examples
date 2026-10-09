@@ -3,6 +3,9 @@
 
 @section LVGL LVGL for KSDK
 
+  - 9.6.0_rev1
+    - Integrate LVGL 9.6.0 to SDK.
+
   - 9.1.0_rev1
     - Integrate LVGL 9.1.0 to SDK.
 

@@ -25,7 +25,7 @@
 #endif
 #include "fsl_debug_console.h"
 
-#if LV_USE_PXP
+#if LV_USE_DRAW_PXP
 #if LV_USE_ROTATE_PXP
 #include "src/draw/nxp/pxp/lv_draw_pxp.h"
 #include "src/display/lv_display_private.h"

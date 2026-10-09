@@ -51,8 +51,7 @@ Please read section [Project Configuration](#project-configuration) to know the 
 
   - Only RGB565 is supported
 
-
 Running the demo
 ===============
-There is tearing effect when using the SSD1963 panel, because the panel video buffer
+There is tearing effect when using the RaspberryPi panel, because the panel video buffer
 could not be fully updated during fresh interval.

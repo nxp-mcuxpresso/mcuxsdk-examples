@@ -34,25 +34,38 @@ If package is used, modify the mcux_config.h, change LVGL_PANEL to 0 use RK043FN
 Steps to configure the pixel format
 ===============
 The project uses RGB565 pixel format by default.
+XRGB8888 (32-bit), RGB565 (16-bit, default), L8 (8-bit) are supported.
 
 When Kconfig is used
 ----------------
-Select color depth in "Middleware->LVGL Configuration -> Color Settings -> Color depth",
-32-bit, 16-bit, 8-bit are supported.
+Add build parameter in `west build` to select different color.
+- `-DCONFIG_LV_COLOR_FORMAT_RGB565=y` for RGB565, this is default used if no parameter set.
+- `-DCONFIG_LV_COLOR_FORMAT_XRGB8888=y` for XRGB8888
+- `-DCONFIG_LV_COLOR_FORMAT_L8=y` for L8
 
 When package is used
 ----------------
-Modify the mcux_config.h change `CONFIG_LV_COLOR_DEPTH` to 32, 16, 8.
+Modify the mcux_config.h.
 
-#define CONFIG_LV_COLOR_DEPTH 8
-#define CONFIG_LV_COLOR_DEPTH_8 1
-
-Note:
-1. PXP doesn't support 8-bit, unselect `LV_USE_PXP`
-in Kconfig, or modify mcux_config.h like:
+To use XRGB8888:
+```c
+// #define CONFIG_LV_COLOR_FORMAT_RGB565 0 NOTE: Must remove or comment this line
+#define CONFIG_LV_COLOR_FORMAT_XRGB8888 1
+#define CONFIG_LV_COLOR_DEPTH 32
 ```
-#define CONFIG_LV_USE_PXP 0
-#define CONFIG_LV_ATTRIBUTE_MEM_ALIGN_SIZE 1
+
+To use L8 (8-bit):
+```
+// #define CONFIG_LV_COLOR_FORMAT_RGB565 0 NOTE: Must remove or comment this line
+#define CONFIG_LV_COLOR_FORMAT_L8 1
+#define CONFIG_LV_COLOR_DEPTH 8
+// #define CONFIG_LV_USE_DRAW_PXP 0
+```
+
+To use RGB565 (16-bit):
+```
+#define CONFIG_LV_COLOR_FORMAT_RGB565 1
+#define CONFIG_LV_COLOR_DEPTH 16
 ```
 
 Running the demo

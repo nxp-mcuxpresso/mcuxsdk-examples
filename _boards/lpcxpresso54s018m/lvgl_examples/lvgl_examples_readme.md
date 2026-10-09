@@ -34,13 +34,35 @@ The project uses RGB565 pixel format by default.
 
 When Kconfig is used
 ----------------
-Select color depth in "Middleware->LVGL Configuration -> Color Settings -> Color depth",
-16-bit, 8-bit, and 1-bit are supported.
+Add build parameter in `west build` to select different color.
+
+- RGB565: `-DCONFIG_LV_COLOR_FORMAT_RGB565=y`, or don't add parameter.
+- LUT8: `-DCONFIG_LV_COLOR_FORMAT_L8=y`
+- LUT8: `-DCONFIG_LV_COLOR_FORMAT_I1=y`
 
 When package is used
 ----------------
-Modify the mcux_config.h change `CONFIG_LV_COLOR_DEPTH` to 16, 8, or 1.
+Modify the mcux_config.h:
 
+To use 8-bit color depth, change like
+```
+#define CONFIG_LV_COLOR_FORMAT_L8 1
+#define CONFIG_LV_COLOR_DEPTH 8
+// #define CONFIG_LV_COLOR_FORMAT_RGB565 0 NOTE: Must remove or comment this line
+```
+
+To use 16-bit color depth, change like
+```
+#define CONFIG_LV_COLOR_FORMAT_RGB565 1
+#define CONFIG_LV_COLOR_DEPTH 16
+```
+
+To use 1-bit color depth, change like
+```
+#define CONFIG_LV_COLOR_FORMAT_I1 1
+#define CONFIG_LV_COLOR_DEPTH 1
+// #define CONFIG_LV_COLOR_FORMAT_RGB565 0 NOTE: Must remove or comment this line
+```
 
 Running the demo
 ================
@@ -63,6 +85,3 @@ Note: Please use above way to program the binary file built by armgcc tool chain
       For IAR, KEIL, MCUXpresso IDE, you can use the IDE tool to program the external flash.
 
 If this example runs correctly, the sample GUI is displayed.
-
-This board also supports LVGL 1-bit, 8-bit color depth, to use this feature, modify
-LV_COLOR_DEPTH as 1 or 8 in lv_conf.h.

@@ -15,8 +15,8 @@
 #define LCD_WIDTH             320
 #define LCD_HEIGHT            240
 #define LCD_FB_BYTE_PER_PIXEL 2
-/* The virtual buffer for DBI panel, it should be ~1/10 screen size. */
-#define LCD_VIRTUAL_BUF_SIZE (LCD_WIDTH * LCD_HEIGHT / 10)
+/* The virtual buffer for DBI panel, it should be ~1/10 screen size. Size in bytes. */
+#define LCD_VIRTUAL_BUF_SIZE (LCD_WIDTH * LCD_HEIGHT / 10 * LCD_FB_BYTE_PER_PIXEL)
 
 /*******************************************************************************
  * API

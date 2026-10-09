@@ -11,21 +11,24 @@ if (CONFIG_MCUX_COMPONENT_middleware.lvgl)
     )
 
     mcux_add_armgcc_configuration(
-        CC  "-fms-extensions            \
-            -Wno-unused-variable        \
-            -Wno-unused-function        \
-            -Wno-unused-parameter       \
-            -Wno-enum-conversion        \
-            -Wno-int-conversion         \
-            -Wno-nonstandard-extension  \
-            -Wno-sign-compare"
+        CC  "-fms-extensions                    \
+            -Wno-unused-variable                \
+            -Wno-unused-but-set-variable        \
+            -Wno-unused-function                \
+            -Wno-unused-parameter               \
+            -Wno-enum-conversion                \
+            -Wno-int-conversion                 \
+            -Wno-nonstandard-extension          \
+            -Wno-sign-compare                   \
+            -Wno-format"
         CX  "-fms-extensions            \
             -Wno-unused-variable        \
             -Wno-unused-function        \
             -Wno-unused-parameter       \
             -Wno-enum-conversion        \
             -Wno-nonstandard-extension  \
-            -Wno-sign-compare"
+            -Wno-sign-compare           \
+            -Wno-format"
     )
 
     mcux_add_mdk_configuration(
@@ -45,6 +48,7 @@ if (CONFIG_MCUX_COMPONENT_middleware.lvgl)
         SOURCES middleware/lvgl/src/**.c
                 middleware/lvgl/src/**.h
                 middleware/lvgl/*.h
+                middleware/lvgl/include/lvgl/**.h
     )
 
 endif()
@@ -126,19 +130,6 @@ if(CONFIG_MCUX_COMPONENT_middleware.lvgl.demo.stress)
         BASE_PATH ${SdkRootDirPath}
             INCLUDES
             middleware/lvgl/demos/stress
-    )
-endif()
-
-if(CONFIG_MCUX_COMPONENT_middleware.lvgl.demo.transform)
-    mcux_add_source(
-        BASE_PATH ${SdkRootDirPath}
-        SOURCES middleware/lvgl/demos/transform/*.c
-                middleware/lvgl/demos/transform/*.h
-    )
-    mcux_add_include(
-        BASE_PATH ${SdkRootDirPath}
-            INCLUDES
-            middleware/lvgl/demos/transform
     )
 endif()
 

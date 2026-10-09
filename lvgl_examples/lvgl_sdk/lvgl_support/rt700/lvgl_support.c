@@ -350,7 +350,7 @@ static void DEMO_WaitBufferSwitchOff(void)
 
 #if DEMO_DISPLAY_USE_PARTIAL_REFRESH
 #if LV_USE_DRAW_VG_LITE
-static void copy_area(const lv_area_t *area, uint8_t *color_p, uint8_t *fb, uint32_t fbStrideBytes, uint8_t align_bytes)
+static void copy_area(const lv_area_t *area, uint8_t *color_p, uint8_t *fb, uint32_t fbStrideBytes, uint32_t srcStride)
 {
     uint32_t y;
     uint32_t areaWidth = lv_area_get_width(area);
@@ -361,8 +361,8 @@ static void copy_area(const lv_area_t *area, uint8_t *color_p, uint8_t *fb, uint
     {
         memcpy(fb, color_p, areaWidth * DEMO_BUFFER_BYTE_PER_PIXEL);
         fb += fbStrideBytes;
-        /* Round up to get correct value to match alignment */
-        color_p += LV_ROUND_UP((areaWidth * DEMO_BUFFER_BYTE_PER_PIXEL), align_bytes);
+        /* Advance by the actual VG-Lite stride (includes 16-pixel width alignment) */
+        color_p += srcStride;
     }
 }
 #else
@@ -394,8 +394,8 @@ static void DEMO_FlushDisplay(lv_display_t *disp_drv, const lv_area_t *area, uin
     uint8_t cf = lv_display_get_color_format(disp_drv);
 
 #if LV_USE_DRAW_VG_LITE
-    uint8_t align_bytes = lv_vg_lite_get_stride_alignment(cf);
-    copy_area(area, color_p, fb, DEMO_BUFFER_STRIDE_BYTE, align_bytes);
+    uint32_t src_stride = lv_draw_buf_width_to_stride(lv_area_get_width(area), cf);
+    copy_area(area, color_p, fb, DEMO_BUFFER_STRIDE_BYTE, src_stride);
 #else
     copy_area(area, color_p, fb, DEMO_BUFFER_STRIDE_BYTE);
 #endif

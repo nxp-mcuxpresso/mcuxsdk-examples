@@ -14,8 +14,6 @@ mcux_add_source(
     SOURCES lvgl_demo_benchmark.c
             ../lvgl_demo_utils.c
             ../lvgl_demo_utils.h
-            ../lvgl_freertos.c
-            ../lvgl_freertos.h
             ../FreeRTOSConfig_frag.h
 )
 
