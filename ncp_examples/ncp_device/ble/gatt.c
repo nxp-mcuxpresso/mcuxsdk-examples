@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 NXP
+ * Copyright 2022-2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -2382,7 +2382,9 @@ static int disable_subscription(struct bt_conn *conn, uint16_t ccc_handle)
         return -EBUSY;
     }
 
-    (void)memset(subscription, 0, sizeof(*subscription));
+    /* Do NOT clear the subscription slot here. bt_gatt_unsubscribe() is
+     * asynchronous; the slot is safely zeroed in notify_func() once the
+     * ATT_WRITE_RSP callback (gatt_write_ccc_rsp) completes. */
 
     return 0;
 }
