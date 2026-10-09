@@ -1,6 +1,6 @@
 # Kconfig and customization of OTA examples
 
-The OTA examples support an alternative way to adjust the default project settings using Kconfig. For more information about Kconfig, please see the [MCUXpresso SDK documentation](https://mcuxpresso.nxp.com/mcuxsdk/latest/html/introduction/README.html).
+The OTA examples support an alternative way to adjust the default project settings using Kconfig. For more information about Kconfig, please see the [MCUXpresso SDK documentation](https://docs.mcuxpresso.nxp.com/mcuxsdk/latest/introduction/README.html).
 
 ## Encrypted XIP mode
 

@@ -21,7 +21,7 @@ A CiA402 compliant EtherCAT servo drive split over two CPU cores:
 
 > **MainDevice options:** this document uses TwinCAT 3 as the EtherCAT MainDevice. An all NXP
 > setup is also possible by using the SOEM based MainDevice example
-> [soem_servo_motor_rt1180 (bm)](https://mcuxpresso.nxp.com/mcuxsdk/latest/html/examples/soem_examples/soem_servo_motor_rt1180/bm/readme.html)
+> [soem_servo_motor_rt1180 (bm)](https://docs.mcuxpresso.nxp.com/mcuxsdk/latest/examples/soem_examples/soem_servo_motor_rt1180/bm/readme.html)
 > on a second board.
 
 > **Important:** the EtherCAT communication project cannot be built as shipped. The SSC source

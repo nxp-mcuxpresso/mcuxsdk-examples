@@ -26,7 +26,7 @@ Prepare the Demo
 4.  Download the demo binaries to the target board.
 
 	Reference "Running an application by U-Boot"
-    https://mcuxpresso.nxp.com/mcuxsdk/latest/html/boards/i.MX/mcimx93evk/gettingStarted/topics/running_an_application_by_u-boot.html#running-an-application-by-u-boot
+    https://docs.mcuxpresso.nxp.com/mcuxsdk/latest/boards/i.MX/mcimx93evk/gettingStarted/topics/running_an_application_by_u-boot.html#running-an-application-by-u-boot
     Reference 'Getting Started with MCUXpresso SDK for MCIMX93-EVK.pdf' to download the demo binaries on board.
 
 	Download the tfm_regression_s_cm33.bin to TCM, tfm_regression_ns_cm33.bin to OCRAM. Then boot the cortex M33 core.

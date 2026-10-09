@@ -27,7 +27,7 @@ Prepare the Demo
 4.  Download the psatest binaries to the target board.
 
 	Reference "Running an application by U-Boot"
-    https://mcuxpresso.nxp.com/mcuxsdk/latest/html/boards/i.MX/mcimx93evk/gettingStarted/topics/running_an_application_by_u-boot.html#running-an-application-by-u-boot
+    https://docs.mcuxpresso.nxp.com/mcuxsdk/latest/boards/i.MX/mcimx93evk/gettingStarted/topics/running_an_application_by_u-boot.html#running-an-application-by-u-boot
     Reference 'Getting Started with MCUXpresso SDK for MCIMX93-EVK.pdf' to download the psatest binaries on board.
 
 	Please do the changes as suggested in Section ""What to do if your non secure binary size excceds 96K?" below before loading binaries.

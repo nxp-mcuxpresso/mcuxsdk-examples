@@ -70,7 +70,7 @@ Image signing example:
 
 Project building example:
 
-The project is built using `west` tool. For more information please see [MCUXpresso SDK documentation](https://mcuxpresso.nxp.com/mcuxsdk/latest/html/introduction/README.html).
+The project is built using `west` tool. For more information please see [MCUXpresso SDK documentation](https://docs.mcuxpresso.nxp.com/mcuxsdk/latest/introduction/README.html).
 
 Bootloader:
 ~~~

@@ -8,11 +8,11 @@ As a vital component of the **MCUXpresso SDK Multi-Repo Delivery**, this reposit
 To experience the complete MCUXpresso SDK delivery, including all sub-repositories and projects, visit the top-level repository [mcuxsdk-manifests](https://github.com/nxp-mcuxpresso/mcuxsdk-manifests).
 
 ## Documentation
-For comprehensive details about the MCUXpresso SDK, please visit the official [MCUXpresso SDK Online Documentation](https://mcuxpresso.nxp.com/mcuxsdk/latest/html/introduction/README.html).
-To explore specific examples and their detailed documentation, head over to the [Examples - Documentation](https://mcuxpresso.nxp.com/mcuxsdk/latest/html/examples/index.html).
+For comprehensive details about the MCUXpresso SDK, please visit the official [MCUXpresso SDK Online Documentation](https://docs.mcuxpresso.nxp.com/mcuxsdk/latest/introduction/README.html).
+To explore specific examples and their detailed documentation, head over to the [Examples - Documentation](https://docs.mcuxpresso.nxp.com/mcuxsdk/latest/examples/index.html).
 
 ## Setup
-To get started with the MCUXpresso SDK provided through GitHub using the west manifest, follow the detailed installation instructions here: [Getting Started with SDK - Detailed Installation Instructions](https://mcuxpresso.nxp.com/mcuxsdk/latest/html/gsd/installation.html#installation)
+To get started with the MCUXpresso SDK provided through GitHub using the west manifest, follow the detailed installation instructions here: [Getting Started with SDK - Detailed Installation Instructions](https://docs.mcuxpresso.nxp.com/mcuxsdk/latest/gsd/installation.html#installation)
 
 ## Contribution
 At present, community contributions are not accepted. Guidelines for contributions will be made available in the future.  

@@ -24,9 +24,9 @@ SubDevice example locations:
 
 | SubDevice board | Location |
 |-----------------|----------|
-| i.MXRT1180 EVK | https://mcuxpresso.nxp.com/mcuxsdk/latest/html/examples/ecat_examples/servo_motor/readme.html |
+| i.MXRT1180 EVK | https://docs.mcuxpresso.nxp.com/mcuxsdk/latest/examples/ecat_examples/servo_motor/readme.html |
 | XSERVO-MTR-DRV RT1180 | https://github.com/nxp-appcodehub/rd-motion-control-slave-servo-mimxrt1180 |
-| i.MX943 EVK | https://mcuxpresso.nxp.com/mcuxsdk/latest/html/examples/ecat_examples/dual_cores_servo_motor/readme.html |
+| i.MX943 EVK | https://docs.mcuxpresso.nxp.com/mcuxsdk/latest/examples/ecat_examples/dual_cores_servo_motor/readme.html |
 
 ## 2. Expected result
 
