@@ -101,9 +101,9 @@ Running the application
 =======================
 Follow the following steps to build the application.
 
-1) This documentation assumes that user have west installed and environment configured. Refer to SDK documentation to install west and setup your environment https://kex-daily.nxp.com/mcuxsdk-internal/latest/html/gsd/installation.html .
+1) This documentation assumes that user have west installed and environment configured. Refer to SDK documentation to install west and setup your environment https://kex-daily.nxp.com/mcuxsdk-internal/latest/gsd/installation.html .
 
-3) Install the MCUXpresso SDK and ensure all dependencies are properly configured in your environment. Follow instructions from the MCUXpresso SDK documentation: https://kex-daily.nxp.com/mcuxsdk-internal/latest/html/gsd/install/github.html
+3) Install the MCUXpresso SDK and ensure all dependencies are properly configured in your environment. Follow instructions from the MCUXpresso SDK documentation: https://kex-daily.nxp.com/mcuxsdk-internal/latest/gsd/install/github.html
 
 4) Under mcuxpresso-sdk/mcuxsdk directory, run the following command to build the camera_usb_final_fr_app_view example:
 * On RT700: west build -b mimxrt700evk ./examples/eiq_examples/mpp/camera_usb_final_fr_app_view -p always --config flash_release --toolchain armgcc -Dcore_id=cm33_core0

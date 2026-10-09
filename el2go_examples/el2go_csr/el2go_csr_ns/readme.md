@@ -16,9 +16,9 @@ Additional information about EdgeLock 2GO X.509 Certificate Service for MCUs can
 ## Definitions
 
 - **[GITHUB]**: refers to the case where the MCU SDK is cloned as GitHub Repository and the EdgeLock 2GO application is built using the meta build system.
-  More details can be found in https://mcuxpresso.nxp.com/mcuxsdk/latest/html/gsd/repo.html.
+  More details can be found in https://docs.mcuxpresso.nxp.com/mcuxsdk/latest/gsd/repo.html.
 - **[ZIP]**: refers to the case where MCU SDK is generated as ZIP package and the EdgeLock 2GO application is imported and built in one of the supported IDEs.
-  More details can be found in https://mcuxpresso.nxp.com/mcuxsdk/latest/html/gsd/package.html.
+  More details can be found in https://docs.mcuxpresso.nxp.com/mcuxsdk/latest/gsd/package.html.
 
 ## Prerequisites
 

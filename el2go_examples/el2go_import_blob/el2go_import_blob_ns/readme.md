@@ -15,9 +15,9 @@ Additional information about EdgeLock 2GO Provisioning for MCUs can be found in 
 ## Definitions
 
 - **[GITHUB]**: refers to the case where the MCU SDK is cloned as GitHub Repository and the EdgeLock 2GO application is build using meta build sytem.
-  More details can be found in https://mcuxpresso.nxp.com/mcuxsdk/latest/html/gsd/repo.html.
+  More details can be found in https://docs.mcuxpresso.nxp.com/mcuxsdk/latest/gsd/repo.html.
 - **[ZIP]**: refers to the case whete MCU SDK is generated as ZIP package and the EdgeLock 2GO application is imported and build in one of supported IDEs.
-  More details can be found in https://mcuxpresso.nxp.com/mcuxsdk/latest/html/gsd/package.html.
+  More details can be found in https://docs.mcuxpresso.nxp.com/mcuxsdk/latest/gsd/package.html.
 
 ## Prerequisites
 
