@@ -209,9 +209,8 @@ typedef enum ct_conf_param_idx_tag
 
 /*network address*/
 #ifdef TEST_DTM_LIKE
+#undef gGenFskDefaultSyncAddress_c
 #define gGenFskDefaultSyncAddress_c  (0x71764129) //DTM sync address
-#else
-#define gGenFskDefaultSyncAddress_c  (0x8E89BED6)
 #endif /* TEST_DTM_LIKE */
 
 #define gGenFskDefaultSyncAddrSize_c (0x03) /*bytes = size + 1*/
