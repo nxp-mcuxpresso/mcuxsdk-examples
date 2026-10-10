@@ -98,7 +98,7 @@ BOARD_InitBUTTONsPins:
 - options: {callFromInitBoot: 'false', coreID: cm85, enableClock: 'false'}
 - pin_list:
   - {pin_num: N9, peripheral: WAKE__GPIO, signal: 'GPIO, 0', pin_signal: PIO1_0, ibena: Enables}
-  - {pin_num: R16, peripheral: VBAT__GPIO, signal: 'GPIO, 4', pin_signal: PIO0_4, ibena: Enables, prval: ohm250k, pullena: EnablesPulldown}
+  - {pin_num: R16, peripheral: VBAT__GPIO, signal: 'GPIO, 4', pin_signal: PIO0_4, ibena: Enables, pullena: EnablesPullup}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -111,8 +111,7 @@ Description   : Configures pin routing and optionally pin electrical features.
 void BOARD_InitBUTTONsPins(void) {
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO0_4_VBAT_GPIO0_GPIO4,         /* PIO0_4 is configured as VBAT_GPIO0_GPIO4 */
-      0xD0U);                                 /* Pullup/Pulldown Enable: Enables pulldown
-                                                 Pull Resister Value: 250 kohm
+      0xA0U);                                 /* Pullup/Pulldown Enable: Enables pullup
                                                  Input Buffer Enable: Enables */
   IOMUXC_SetPin_Mux_Config(
       IOMUXC_PIO1_0_WAKE_GPIO0_GPIO0,         /* PIO1_0 is configured as WAKE_GPIO0_GPIO0 */
