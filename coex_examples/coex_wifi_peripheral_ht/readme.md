@@ -5,3 +5,4 @@
 - [MIMXRT1060-EVKC](../../_boards/evkcmimxrt1060/coex_examples/coex_wifi_peripheral_ht/example_board_readme.md)
 - MIMXRT1170-EVKB
 - [FRDM-RW612](../../_boards/frdmrw612/coex_examples/coex_wifi_peripheral_ht/example_board_readme.md)
+- [FRDM-RW610FML](../../_boards/frdmrw610fml/coex_examples/coex_wifi_peripheral_ht/example_board_readme.md)
