@@ -22,7 +22,7 @@ void BOARD_InitHardware(void)
     BOARD_ConfigMPU();
     BOARD_InitBootClocks();
     BOARD_ConfigTRDC();
-    BOARD_InitDEBUG_UARTPins();
+
     /* Initialize the debug console as CDC virtual com. */
     USB_DeviceClockInit();
 #if defined(USB_DEVICE_CONFIG_EHCI) && (USB_DEVICE_CONFIG_EHCI > 0U)
