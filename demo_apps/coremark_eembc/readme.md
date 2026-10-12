@@ -6,3 +6,4 @@ based on EEMBC Coremark core.
 
 ## Supported Boards
 - [MIMXRT2660-EVK](../../_boards/mimxrt2660evk/demo_apps/coremark_eembc/example_board_readme.md)
+- [IMXRTL345MB](../../_boards/imxrtl345mb/demo_apps/coremark_eembc/example_board_readme.md)

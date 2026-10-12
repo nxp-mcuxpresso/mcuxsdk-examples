@@ -103,3 +103,4 @@ ctimer_pwm_example:
     frdmmcxa577: []
     frdmmcxa287: []
     frdmmcxc162: []
+    imxrtl345mb@cm55_core0: []

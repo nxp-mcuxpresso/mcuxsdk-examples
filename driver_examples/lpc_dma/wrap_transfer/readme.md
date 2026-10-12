@@ -22,3 +22,4 @@ debugging and further development.
 - [LPCXpresso845MAX](../../../_boards/lpcxpresso845max/driver_examples/dma/wrap_transfer/example_board_readme.md)
 - [LPCXpresso860MAX](../../../_boards/lpcxpresso860max/driver_examples/dma/wrap_transfer/example_board_readme.md)
 - [MCXW23-EVK](../../../_boards/mcxw23evk/driver_examples/dma/wrap_transfer/example_board_readme.md)
+- [IMXRTL345MB](../../../_boards/imxrtl345mb/driver_examples/dma/wrap_transfer/example_board_readme.md)

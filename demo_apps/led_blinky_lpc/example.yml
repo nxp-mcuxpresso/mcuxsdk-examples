@@ -32,3 +32,4 @@ led_blinky_lpc:
     lpcxpresso824max: []
     lpcxpresso845max: []
     lpcxpresso860max: []
+    imxrtl345mb@cm55_core0: []

@@ -57,3 +57,4 @@ lpc_gpio_input_interrupt:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    imxrtl345mb@cm55_core0: []

@@ -429,3 +429,4 @@ hello_world:
     - +iar@psram_only_debug
     - +iar@psram_only_release
     frdmmcxc353: []
+    imxrtl345mb@cm55_core0: []

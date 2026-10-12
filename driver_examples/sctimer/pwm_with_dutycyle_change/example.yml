@@ -75,3 +75,4 @@ sctimer_pwm_with_dutycyle_change:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    imxrtl345mb@cm55_core0: []

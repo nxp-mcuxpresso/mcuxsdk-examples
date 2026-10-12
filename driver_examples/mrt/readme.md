@@ -38,3 +38,4 @@ a message a printed on the UART terminal and an LED is toggled on the board.
 - [FRDM-IMXRT700](../../_boards/frdmimxrt700/driver_examples/mrt/example_board_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/driver_examples/mrt/example_board_readme.md)
 - [MCXW23-EVK](../../_boards/mcxw23evk/driver_examples/mrt/example_board_readme.md)
+- [IMXRTL345MB](../../_boards/imxrtl345mb/driver_examples/mrt/example_board_readme.md)

@@ -31,3 +31,4 @@ lpc_dma_wrap_transfer:
     lpcxpresso824max: []
     lpcxpresso845max: []
     lpcxpresso860max: []
+    imxrtl345mb@cm55_core0: []

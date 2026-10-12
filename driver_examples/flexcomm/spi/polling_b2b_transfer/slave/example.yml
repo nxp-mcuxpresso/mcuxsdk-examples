@@ -72,3 +72,4 @@ flexcomm_spi_polling_b2b_transfer_slave:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    imxrtl345mb@cm55_core0: []

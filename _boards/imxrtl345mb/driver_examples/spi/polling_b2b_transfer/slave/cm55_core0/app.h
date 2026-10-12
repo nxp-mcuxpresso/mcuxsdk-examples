@@ -1,0 +1,27 @@
+/*
+ * Copyright 2025-2026 NXP
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+#ifndef _APP_H_
+#define _APP_H_
+
+/*******************************************************************************
+ * Definitions
+ ******************************************************************************/
+/*${macro:start}*/
+#define EXAMPLE_SPI_SLAVE     CTRLSS__SPI_1
+#define EXAMPLE_SPI_SLAVE_IRQ FLEXCOMM1_IRQn
+#define EXAMPLE_SPI_SSEL      1
+#define EXAMPLE_SPI_SPOL      kSPI_SpolActiveAllLow
+/*${macro:end}*/
+
+/*******************************************************************************
+ * Prototypes
+ ******************************************************************************/
+/*${prototype:start}*/
+void BOARD_InitHardware(void);
+/*${prototype:end}*/
+
+#endif /* _APP_H_ */

@@ -28,3 +28,4 @@ dma_m2m_polling:
     lpcxpresso824max: []
     lpcxpresso845max: []
     lpcxpresso860max: []
+    imxrtl345mb@cm55_core0: []

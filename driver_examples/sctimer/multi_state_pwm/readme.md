@@ -43,3 +43,4 @@ In State 0, there is only PWM0 output, in State 1, there are both PWM0 and PWM1 
 - [MIMXRT685-AUD-EVK](../../../_boards/mimxrt685audevk/driver_examples/sctimer/multi_state_pwm/example_board_readme.md)
 - [RD-RW612-BGA](../../../_boards/rdrw612bga/driver_examples/sctimer/multi_state_pwm/example_board_readme.md)
 - [MCXW23-EVK](../../../_boards/mcxw23evk/driver_examples/sctimer/multi_state_pwm/example_board_readme.md)
+- [IMXRTL345MB](../../../_boards/imxrtl345mb/driver_examples/sctimer/multi_state_pwm/example_board_readme.md)

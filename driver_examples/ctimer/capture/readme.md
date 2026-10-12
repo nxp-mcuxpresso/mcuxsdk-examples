@@ -30,3 +30,4 @@ so the edge capture timestamp is shown periodically in the terminal.
 - [FRDM-MCXN947T](../../../_boards/frdmmcxn947t/driver_examples/ctimer/capture/example_board_readme.md)
 - [FRDM-MCXN236](../../../_boards/frdmmcxn236/driver_examples/ctimer/capture/example_board_readme.md)
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/driver_examples/ctimer/capture/example_board_readme.md)
+- [IMXRTL345MB](../../../_boards/imxrtl345mb/driver_examples/ctimer/capture/example_board_readme.md)

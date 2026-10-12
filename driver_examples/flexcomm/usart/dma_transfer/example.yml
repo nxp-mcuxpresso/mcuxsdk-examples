@@ -69,3 +69,4 @@ usart_dma_transfer:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    imxrtl345mb@cm55_core0: []

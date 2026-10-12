@@ -75,3 +75,4 @@ lpc_gpio_led_output:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    imxrtl345mb@cm55_core0: []

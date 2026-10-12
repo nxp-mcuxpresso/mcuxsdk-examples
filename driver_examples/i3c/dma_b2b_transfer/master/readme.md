@@ -12,3 +12,4 @@ receive data from the connected I3C slave and check the data consistency.
 ## Supported Boards
 - [LPCXpresso55S36](../../../../_boards/lpcxpresso55s36/driver_examples/i3c/dma_b2b_transfer/master/example_board_readme.md)
 - [LPCXpresso860MAX](../../../../_boards/lpcxpresso860max/driver_examples/i3c/dma_b2b_transfer/master/example_board_readme.md)
+- [IMXRTL345MB](../../../../_boards/imxrtl345mb/driver_examples/i3c/dma_b2b_transfer/master/example_board_readme.md)

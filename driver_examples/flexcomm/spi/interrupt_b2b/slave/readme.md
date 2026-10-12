@@ -24,3 +24,4 @@ and check if the data slave received is correct. This example needs to work with
 - [MIMXRT685-AUD-EVK](../../../../../_boards/mimxrt685audevk/driver_examples/spi/interrupt_b2b/slave/example_board_readme.md)
 - [RD-RW612-BGA](../../../../../_boards/rdrw612bga/driver_examples/spi/interrupt_b2b/slave/example_board_readme.md)
 - [MCXW23-EVK](../../../../../_boards/mcxw23evk/driver_examples/spi/interrupt_b2b/slave/example_board_readme.md)
+- [IMXRTL345MB](../../../../../_boards/imxrtl345mb/driver_examples/spi/interrupt_b2b/slave/example_board_readme.md)

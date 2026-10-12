@@ -94,3 +94,4 @@ pint_pin_interrupt:
     - -mdk@release
     mimxrt700evk@cm33_core1: []
     frdmimxrt700@cm33_core1: []
+    imxrtl345mb@cm55_core0: []

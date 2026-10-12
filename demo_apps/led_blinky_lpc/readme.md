@@ -27,3 +27,4 @@ see that LED is blinking on the board.
 - [LPCXpresso845MAX](../../_boards/lpcxpresso845max/demo_apps/led_blinky/example_board_readme.md)
 - [LPCXpresso860MAX](../../_boards/lpcxpresso860max/demo_apps/led_blinky/example_board_readme.md)
 - [MCXW23-EVK](../../_boards/mcxw23evk/demo_apps/led_blinky/example_board_readme.md)
+- [IMXRTL345MB](../../_boards/imxrtl345mb/demo_apps/led_blinky/example_board_readme.md)

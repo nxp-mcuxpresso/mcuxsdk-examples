@@ -30,3 +30,4 @@ Destination Buffer:
 - [FRDM-MCXA577](../../../_boards/frdmmcxa577/driver_examples/ctimer/dma_trigger/example_board_readme.md)
 - [FRDM-MCXA287](../../../_boards/frdmmcxa287/driver_examples/ctimer/dma_trigger/example_board_readme.md)
 - [FRDM-MCXL255](../../../_boards/frdmmcxl255/driver_examples/ctimer/dma_trigger/example_board_readme.md)
+- [IMXRTL345MB](../../../_boards/imxrtl345mb/driver_examples/ctimer/dma_trigger/example_board_readme.md)

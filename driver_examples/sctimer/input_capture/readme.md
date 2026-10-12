@@ -23,3 +23,4 @@ This example will print the capture values and pluse width of the input signal o
 - [FRDM-RW612](../../../_boards/frdmrw612/driver_examples/sctimer/input_capture/example_board_readme.md)
 - [FRDM-RW610FML](../../../_boards/frdmrw610fml/driver_examples/sctimer/input_capture/example_board_readme.md)
 - [RD-RW612-BGA](../../../_boards/rdrw612bga/driver_examples/sctimer/input_capture/example_board_readme.md)
+- [IMXRTL345MB](../../../_boards/imxrtl345mb/driver_examples/sctimer/input_capture/example_board_readme.md)

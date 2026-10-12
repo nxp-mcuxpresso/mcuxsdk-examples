@@ -38,3 +38,4 @@ performed.
 - [FRDM-MCXA577](../../../_boards/frdmmcxa577/driver_examples/wwdt/example_board_readme.md)
 - [FRDM-MCXC162](../../../_boards/frdmmcxc162/driver_examples/wwdt/example_board_readme.md)
 - [FRDM-MCXA287](../../../_boards/frdmmcxa287/driver_examples/wwdt/example_board_readme.md)- [FRDM-MCXC353](../../../_boards/frdmmcxc353/driver_examples/wwdt/example_board_readme.md)
+- [IMXRTL345MB](../../../_boards/imxrtl345mb/driver_examples/wwdt/example_board_readme.md)

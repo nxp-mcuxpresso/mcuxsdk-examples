@@ -27,3 +27,4 @@ for an ASCII string. Several CRC protocols are implemented using the CRC driver 
 - [MIMXRT685-AUD-EVK](../../_boards/mimxrt685audevk/driver_examples/crc/example_board_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/driver_examples/crc/example_board_readme.md)
 - [MCXW23-EVK](../../_boards/mcxw23evk/driver_examples/crc/example_board_readme.md)
+- [IMXRTL345MB](../../_boards/imxrtl345mb/driver_examples/crc/example_board_readme.md)

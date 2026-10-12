@@ -1,0 +1,26 @@
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+rsource "Kconfig.defconfig"
+
+config MCUX_HW_BOARD_imxrtl345mb
+    bool
+    default y
+    imply MCUX_HW_DEVICE_IMXRTL3459AAA
+    imply MCUX_COMPONENT_driver.clock if MCUX_HW_DEVICE_IMXRTL3459AAA_CORE_ID_cm55_core0
+    imply MCUX_COMPONENT_driver.common if MCUX_HW_DEVICE_IMXRTL3459AAA_CORE_ID_cm55_core0
+    imply MCUX_COMPONENT_driver.reset if MCUX_HW_DEVICE_IMXRTL3459AAA_CORE_ID_cm55_core0
+    imply MCUX_COMPONENT_driver.lpc_gpio if MCUX_HW_DEVICE_IMXRTL3459AAA_CORE_ID_cm55_core0
+    imply MCUX_COMPONENT_component.serial_manager_uart if MCUX_HW_DEVICE_IMXRTL3459AAA_CORE_ID_cm55_core0
+    imply MCUX_COMPONENT_utility.debug_console_lite if MCUX_HW_DEVICE_IMXRTL3459AAA_CORE_ID_cm55_core0
+    imply MCUX_COMPONENT_driver.flexcomm_usart if MCUX_HW_DEVICE_IMXRTL3459AAA_CORE_ID_cm55_core0
+
+
+
+    ## Board project segment dependency data
+    select MCUX_COMPONENT_driver.clock if MCUX_PRJSEG_module.board.clock_board_core_folder && MCUX_HW_DEVICE_IMXRTL3459AAA_CORE_ID_cm55_core0
+    select MCUX_COMPONENT_driver.reset if MCUX_PRJSEG_module.board.clock_board_core_folder && MCUX_HW_DEVICE_IMXRTL3459AAA_CORE_ID_cm55_core0
+    select MCUX_COMPONENT_component.usart_adapter if MCUX_COMPONENT_component.serial_manager_uart
+    select MCUX_COMPONENT_component.usart_adapter if MCUX_COMPONENT_utility.debug_console_lite
+

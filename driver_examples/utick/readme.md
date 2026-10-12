@@ -32,3 +32,4 @@ a message a printed on the UART terminal.
 - [FRDM-MCXA366](../../_boards/frdmmcxa366/driver_examples/utick/example_board_readme.md)
 - [FRDM-MCXA577](../../_boards/frdmmcxa577/driver_examples/utick/example_board_readme.md)
 - [FRDM-MCXA287](../../_boards/frdmmcxa287/driver_examples/utick/example_board_readme.md)
+- [IMXRTL345MB](../../_boards/imxrtl345mb/driver_examples/utick/example_board_readme.md)

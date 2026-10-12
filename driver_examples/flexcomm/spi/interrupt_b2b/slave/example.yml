@@ -70,3 +70,4 @@ flexcomm_spi_interrupt_b2b_slave:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    imxrtl345mb@cm55_core0: []

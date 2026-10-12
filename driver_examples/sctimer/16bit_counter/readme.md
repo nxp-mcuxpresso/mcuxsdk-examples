@@ -39,3 +39,4 @@ every 0.2 seconds. When a 16-bit counter event occurs, the output is toggled and
 - [FRDM-IMXRT700](../../../_boards/frdmimxrt700/driver_examples/sctimer/16bit_counter/example_board_readme.md)
 - [RD-RW612-BGA](../../../_boards/rdrw612bga/driver_examples/sctimer/16bit_counter/example_board_readme.md)
 - [MCXW23-EVK](../../../_boards/mcxw23evk/driver_examples/sctimer/16bit_counter/example_board_readme.md)
+- [IMXRTL345MB](../../../_boards/imxrtl345mb/driver_examples/sctimer/16bit_counter/example_board_readme.md)

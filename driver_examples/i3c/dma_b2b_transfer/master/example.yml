@@ -20,3 +20,4 @@ i3c_dma_b2b_transfer_master:
   boards:
     lpcxpresso55s36: []
     lpcxpresso860max: []
+    imxrtl345mb@cm55_core0: []

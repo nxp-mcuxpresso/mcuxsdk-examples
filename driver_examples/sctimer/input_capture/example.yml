@@ -35,3 +35,4 @@ sctimer_input_capture:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    imxrtl345mb@cm55_core0: []

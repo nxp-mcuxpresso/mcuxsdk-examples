@@ -143,3 +143,4 @@ freertos_hello:
     mcxw70loc: []
     frdmmcxw70: []
     mimxrt2660evk: []
+    imxrtl345mb@cm55_core0: []

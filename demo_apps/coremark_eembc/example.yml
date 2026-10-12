@@ -34,3 +34,4 @@ coremark_eembc:
     - +iar@psram_txt_release
     - +iar@xspi_nor_psram_debug
     - +iar@xspi_nor_psram_release
+    imxrtl345mb@cm55_core0: []

@@ -12,3 +12,4 @@ The example is supported to set with selection of polarity and edge vs level tri
 - [FRDM-RW610FML](../../../_boards/frdmrw610fml/driver_examples/gpio/input_interrupt/example_board_readme.md)
 - [MIMXRT685-AUD-EVK](../../../_boards/mimxrt685audevk/driver_examples/gpio/input_interrupt/example_board_readme.md)
 - [RD-RW612-BGA](../../../_boards/rdrw612bga/driver_examples/gpio/input_interrupt/example_board_readme.md)
+- [IMXRTL345MB](../../../_boards/imxrtl345mb/driver_examples/gpio/input_interrupt/example_board_readme.md)

@@ -75,3 +75,4 @@ lpc_i2c_interrupt_b2b_transfer_master:
     lpcxpresso824max: []
     lpcxpresso845max: []
     lpcxpresso860max: []
+    imxrtl345mb@cm55_core0: []

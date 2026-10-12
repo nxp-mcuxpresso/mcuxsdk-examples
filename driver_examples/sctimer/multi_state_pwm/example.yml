@@ -78,3 +78,4 @@ sctimer_multi_state_pwm:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    imxrtl345mb@cm55_core0: []

@@ -44,3 +44,4 @@ In this example, the match feature of the CTimer is used to toggle the output le
 - [FRDM-MCXA577](../../../_boards/frdmmcxa577/driver_examples/ctimer/simple_match/example_board_readme.md)
 - [FRDM-MCXC162](../../../_boards/frdmmcxc162/driver_examples/ctimer/simple_match/example_board_readme.md)
 - [FRDM-MCXA287](../../../_boards/frdmmcxa287/driver_examples/ctimer/simple_match/example_board_readme.md)
+- [IMXRTL345MB](../../../_boards/imxrtl345mb/driver_examples/ctimer/simple_match/example_board_readme.md)

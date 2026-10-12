@@ -94,3 +94,4 @@ i3c_polling_b2b_transfer_master:
     frdmmcxa577: []
     frdmmcxa287: []
     mimxrt2660evk: []
+    imxrtl345mb@cm55_core0: []

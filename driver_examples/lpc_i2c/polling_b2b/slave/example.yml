@@ -75,3 +75,4 @@ lpc_i2c_polling_b2b_slave:
     lpcxpresso824max: []
     lpcxpresso845max: []
     lpcxpresso860max: []
+    imxrtl345mb@cm55_core0: []

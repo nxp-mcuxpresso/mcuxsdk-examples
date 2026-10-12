@@ -70,3 +70,4 @@ usart_interrupt_rb_transfer:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    imxrtl345mb@cm55_core0: []

@@ -15,3 +15,4 @@ This example shows how to use SDK drivers to use the Group GPIO input interrupt 
 - [LPCXpresso55S36](../../_boards/lpcxpresso55s36/driver_examples/gint/example_board_readme.md)
 - [LPCXpresso55S69](../../_boards/lpcxpresso55s69/driver_examples/gint/example_board_readme.md)
 - [MCXW23-EVK](../../_boards/mcxw23evk/driver_examples/gint/example_board_readme.md)
+- [IMXRTL345MB](../../_boards/imxrtl345mb/driver_examples/gint/example_board_readme.md)

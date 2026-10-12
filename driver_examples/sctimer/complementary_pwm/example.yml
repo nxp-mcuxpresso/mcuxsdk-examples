@@ -18,3 +18,4 @@ sctimer_complementary_pwm:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso55s36: []
+    imxrtl345mb@cm55_core0: []

@@ -8,3 +8,4 @@ pairs with programmable dead time** on one SCTimer. Both pairs share the same fr
 ## Supported Boards
 
 - [LPCXpresso55S36](../../../_boards/lpcxpresso55s36/driver_examples/sctimer/complementary_pwm/example_board_readme.md)
+- [IMXRTL345MB](../../../_boards/imxrtl345mb/driver_examples/sctimer/complementary_pwm/example_board_readme.md)
