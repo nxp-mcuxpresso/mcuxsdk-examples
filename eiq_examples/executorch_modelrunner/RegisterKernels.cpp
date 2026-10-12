@@ -302,6 +302,65 @@ Kernel(
         internal::event_tracer_log_evalue(context.internal_event_tracer(), *stack[3]);
     }),
 
+// Same schema family as _clone_dim_order (self, non_blocking, dim_order?,
+// out + 1 trailing extra) — needed by FP32 reference exports that reorder
+// activations between NCHW compute and the model's IO layout.
+Kernel(
+    "dim_order_ops::_to_dim_order_copy.out",
+    [](torch::executor::KernelRuntimeContext & context, Span<EValue *> stack) {
+        ET_KERNEL_CHECK_MSG(
+            context, stack.size() == 5, InvalidProgram, /*void*/,
+            "Expected %" ET_PRIsize_t "args received %" ET_PRIsize_t, (size_t)5,
+            stack.size());
+        EValue &self = *stack[0];
+        EValue &non_blocking = *stack[1];
+        EValue &dim_order = *stack[2];
+        EValue &out = *stack[3];
+        const torch::executor::Tensor &self_base = self.to<torch::executor::Tensor>();
+        bool non_blocking_base = non_blocking.to<bool>();
+        auto dim_order_opt =
+            dim_order.toOptional<torch::executor::ArrayRef<int64_t>>();
+        torch::executor::Tensor &out_base = out.to<torch::executor::Tensor>();
+
+        internal::EventTracerProfileOpScope event_tracer_op_scope(
+            context.internal_event_tracer(), "native_call__to_dim_order_copy.out");
+        EXECUTORCH_SCOPE_PROF("native_call__to_dim_order_copy.out");
+        torch::executor::native::_to_dim_order_copy_out(
+            context, self_base, non_blocking_base, dim_order_opt, out_base);
+
+        internal::event_tracer_log_evalue(context.internal_event_tracer(), *stack[3]);
+    }),
+
+// View op used by the FP32 reference IC export: (self, size, stride,
+// storage_offset?, out + 1 trailing extra).
+Kernel(
+    "aten::as_strided_copy.out",
+    [](torch::executor::KernelRuntimeContext & context, Span<EValue *> stack) {
+        ET_KERNEL_CHECK_MSG(
+            context, stack.size() == 6, InvalidProgram, /*void*/,
+            "Expected %" ET_PRIsize_t "args received %" ET_PRIsize_t, (size_t)6,
+            stack.size());
+        EValue &self = *stack[0];
+        EValue &size = *stack[1];
+        EValue &stride = *stack[2];
+        EValue &storage_offset = *stack[3];
+        EValue &out = *stack[4];
+        const torch::executor::Tensor &self_base = self.to<torch::executor::Tensor>();
+        auto size_list_out = size.toIntList();
+        auto stride_list_out = stride.toIntList();
+        auto storage_offset_opt = storage_offset.toOptional<int64_t>();
+        torch::executor::Tensor &out_base = out.to<torch::executor::Tensor>();
+
+        internal::EventTracerProfileOpScope event_tracer_op_scope(
+            context.internal_event_tracer(), "native_call_as_strided_copy.out");
+        EXECUTORCH_SCOPE_PROF("native_call_as_strided_copy.out");
+        torch::executor::native::as_strided_copy_out(
+            context, self_base, size_list_out, stride_list_out,
+            storage_offset_opt, out_base);
+
+        internal::event_tracer_log_evalue(context.internal_event_tracer(), *stack[4]);
+    }),
+
 Kernel(
     "aten::permute_copy.out",
     [](torch::executor::KernelRuntimeContext & context, Span<EValue *> stack) {
@@ -703,6 +762,56 @@ Kernel(
             save_mean_base, save_invstd_base);
 
         internal::event_tracer_log_evalue(context.internal_event_tracer(), *stack[8]);
+    }),
+
+// Inference-only batch norm used by FP32 reference (non_quantized) exports:
+// same as _native_batch_norm_legit minus the training flag; the pte passes
+// 11 stack values (7 inputs + 3 outputs + 1 trailing extra, like the legit
+// variant above which expects 12).
+Kernel(
+    "aten::_native_batch_norm_legit_no_training.out",
+    [](torch::executor::KernelRuntimeContext & context, Span<EValue *> stack) {
+        ET_KERNEL_CHECK_MSG(
+            context, stack.size() == 11, InvalidProgram, /*void*/,
+            "Expected %" ET_PRIsize_t "args received %" ET_PRIsize_t, (size_t)11,
+            stack.size());
+        EValue &input = *stack[0];
+        EValue &weight = *stack[1];
+        EValue &bias = *stack[2];
+        EValue &running_mean = *stack[3];
+        EValue &running_var = *stack[4];
+        EValue &momentum = *stack[5];
+        EValue &eps = *stack[6];
+        EValue &out = *stack[7];
+        EValue &save_mean = *stack[8];
+        EValue &save_invstd = *stack[9];
+        const torch::executor::Tensor &input_base = input.to<torch::executor::Tensor>();
+        const torch::executor::optional<torch::executor::Tensor> &weight_base =
+            weight.toOptional<torch::executor::Tensor>();
+        const torch::executor::optional<torch::executor::Tensor> &bias_base =
+            bias.toOptional<torch::executor::Tensor>();
+        const torch::executor::Tensor &running_mean_base =
+            running_mean.to<torch::executor::Tensor>();
+        const torch::executor::Tensor &running_var_base =
+            running_var.to<torch::executor::Tensor>();
+        double momentum_base = momentum.to<double>();
+        double eps_base = eps.to<double>();
+        torch::executor::Tensor &out_base = out.to<torch::executor::Tensor>();
+        torch::executor::Tensor &save_mean_base =
+            save_mean.to<torch::executor::Tensor>();
+        torch::executor::Tensor &save_invstd_base =
+            save_invstd.to<torch::executor::Tensor>();
+
+        internal::EventTracerProfileOpScope event_tracer_op_scope(
+            context.internal_event_tracer(),
+            "native_call__native_batch_norm_legit_no_training.out");
+        EXECUTORCH_SCOPE_PROF("native_call__native_batch_norm_legit_no_training.out");
+        torch::executor::native::_native_batch_norm_legit_no_training_out(
+            context, input_base, weight_base, bias_base, running_mean_base,
+            running_var_base, momentum_base, eps_base, out_base, save_mean_base,
+            save_invstd_base);
+
+        internal::event_tracer_log_evalue(context.internal_event_tracer(), *stack[7]);
     }),
 
 // ===========================================================================
