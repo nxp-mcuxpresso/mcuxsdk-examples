@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 NXP
+ * Copyright 2024-2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -8,6 +8,7 @@
 #include "pin_mux.h"
 #include "clock_config.h"
 #include "board.h"
+#include "app.h"
 #include "fsl_xbar.h"
 #include "fsl_iomuxc.h"
 #include "fsl_ecat.h"
@@ -545,6 +546,12 @@ UINT16 HW_Init(void)
         .rate = 100000000UL,
     };
 
+    /* Define the init structure for the output LED pin*/
+    rgpio_pin_config_t led_config = {
+        kRGPIO_DigitalOutput,
+        0,
+    };
+
     CLOCK_SetParent(&ecatClk);
     CLOCK_SetRate(&ecatClk);
     CLOCK_EnableClock(ecatClk.clkId);
@@ -569,6 +576,12 @@ UINT16 HW_Init(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
     BOARD_ConfigMPU();
+
+    /* Set PCNS register value to 0x0 to prepare the RGPIO initialization */
+    GPIO_LED->PCNS = 0x0;
+
+    /* Init output LED GPIO. */
+    RGPIO_PinInit(GPIO_LED, GPIO_LED_PIN, &led_config);
 
     PRINTF("Start the SSC digital_io example...\r\n");
 
