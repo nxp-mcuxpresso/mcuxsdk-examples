@@ -1,6 +1,6 @@
 Hardware requirements
 =====================
-- Micro USB cable
+- USB Type-C cable
 - FRDM-RW610FML board
 - Personal Computer
 
@@ -10,8 +10,8 @@ No special settings are required.
 
 Prepare the Demo
 ===============
-1.  Connect a micro USB cable between the PC host and the MCU-Link USB port (J10) on the board.
-    use the USB port (J10) to communicate.
+1.  Connect a USB Type-C cable between the PC host and the MCU-Link USB port (J15) on the board.
+    use the USB port (J15) to communicate.
 2.  The project set the 115200 baud rate as default, set flow as default, need modify the code, diabale the flow.
     The FRDM-RW610FML doesn't suuport the flow transport and 3000000 baud rate.
     open the uart debugging tool, configure

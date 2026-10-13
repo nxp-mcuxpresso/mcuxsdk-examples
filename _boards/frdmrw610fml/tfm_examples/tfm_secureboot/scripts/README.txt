@@ -48,7 +48,7 @@ Please follow the step by step guide how to do an initial provisioning, and foll
     The provisioning should be performed only once.
     - Put the device to the In System Programming (ISP) mode:
         - Configure the U38 pins to boot device into ISP boot mode.
-        - Connect a micro USB cable between the PC host and the USB UART J21 port.
+        - Connect a USB Type-C cable between the PC host and the USB UART J21 port.
     - Execute the "<mcux_workspace>\<project name prefix>_tfm_secureboot_s\<board>\tfm_examples\tfm_secureboot\scripts\1_provision.bat" file.
       It performs a generation and a following loading of a provisioning SB file containing a CUST_MK_SK key, RKTH and Secure_Boot Enable configurations, a MB Signed Image.
         NOTE: This is an irreversible operation as CUST_MK_SK key, RKTH and Secure_Boot Enable configurations are written into the device OTPs. Please make sure you are ready to proceed with it.
@@ -159,7 +159,7 @@ Please follow the step by step guide how to do an initial provisioning, and foll
     The FW update can be performed only on an already provisioned device.
     - Put the device to the In System Programming (ISP) mode:
         - Configure the U38 pins to boot device into ISP boot mode.
-        - Connect a micro USB cable between the PC host and the USB UART J21 port.
+        - Connect a USB Type-C cable between the PC host and the USB UART J21 port.
     - Execute the "<mcux_workspace>\<project name prefix>_tfm_secureboot_s\<board>\tfm_examples\tfm_secureboot\scripts\2_update_fw.bat" file.
     - It performs generation and following loading of the OEM SB file containing the updated FW.
     - The command log:
@@ -203,7 +203,7 @@ Please follow the step by step guide how to do an initial provisioning, and foll
 ################################################################################
     To perform a secure boot of the device:
     - Disable the ISP mode.
-    - Connect a micro USB cable between the PC host and the J-Link/J-Trace USB UART port Link2 J21 connector on the board.
+    - Connect a USB Type-C cable between the PC host and the J-Link/J-Trace USB UART port Link2 J21 connector on the board.
     - Determine serial port number of the connected device:
         - Open the Device Manager. Find the "USB serial Port (COMx)" port number in the "Ports(COM & LPT)" folder. 
         - Use the COM port number for a serial terminal application.
@@ -1190,7 +1190,7 @@ Please follow the step by step guide how to do an initial provisioning, and foll
     To do a mass erase of the whole flash memory:
     - Put the device to the In System Programming (ISP) mode:
         - Configure the U38 pins to boot device into ISP boot mode.
-        - Connect a micro USB cable between the PC host and the USB UART J21 port.
+        - Connect a USB Type-C cable between the PC host and the USB UART J21 port.
     - Execute the "workspace\<project name prefix>_tfm_secureboot_s\<board>\tfm_examples\tfm_secureboot\scripts\4_mass_erase.bat" file.
     - The command log:
 		********************

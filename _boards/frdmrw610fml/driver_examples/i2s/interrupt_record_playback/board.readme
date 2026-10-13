@@ -1,6 +1,6 @@
 Hardware requirements
 =====================
-- Micro USB cable
+- USB Type-C cable
 - FRDM-RW610FML board
 - Personal Computer
 - headphones with 3.5 mm stereo jack
@@ -15,7 +15,7 @@ Prepare the Demo
 ===============
 1.  Connect headphones to Audio HP connector (J4).
 2.  Connect source of sound(from PC or Smart phone) to Audio Line-In connector (J1).
-3.  Connect a micro USB cable between the PC host and the MCU-Link USB port (J10) on the board
+3.  Connect a USB Type-C cable between the PC host and the MCU-Link USB port (J15) on the board
 4.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits

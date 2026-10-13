@@ -1,6 +1,6 @@
 Hardware requirements
 =====================
-- Two micro USB cables
+- Two USB Type-C cables
 - FRDM-RW610FML board
 - Personal Computer
 
@@ -11,7 +11,7 @@ No special settings are required.
 Prepare the Demo
 ===============
 Note: MCUXpresso IDE project default debug console is semihost
-1.  Connect a micro USB cable between the PC host and the MCU-Link USB port (J10) on the board
+1.  Connect a USB Type-C cable between the PC host and the MCU-Link USB port (J15) on the board
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits

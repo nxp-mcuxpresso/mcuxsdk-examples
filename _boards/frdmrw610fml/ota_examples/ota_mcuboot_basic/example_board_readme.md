@@ -1,6 +1,6 @@
 Hardware requirements
 =====================
-- micro USB cable
+- USB Type-C cable
 - FRDM-RW610FML board
 - Personal Computer
 

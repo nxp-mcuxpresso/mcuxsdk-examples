@@ -1,6 +1,6 @@
 Hardware requirements
 =====================
-- Mini/micro USB cable
+- USB Type-C cable
 - FRDM-RW610FML board
 - Personal Computer
 
@@ -9,7 +9,7 @@ Board settings
 
 Prepare the Demo
 ===============
-1.  Connect a micro USB cable between the PC host and the CMSIS DAP USB port (J1) on the board
+1.  Connect a USB Type-C cable between the PC host and the CMSIS DAP USB port (J1) on the board
 2.  Open a serial terminal with the following settings (See Appendix A in Getting started guide for description how to determine serial port number):
     - 115200 baud rate
     - 8 data bits

@@ -1,6 +1,6 @@
 Hardware requirements
 =====================
-- Micro USB cable
+- USB Type-C cable
 - Personal Computer
 
 

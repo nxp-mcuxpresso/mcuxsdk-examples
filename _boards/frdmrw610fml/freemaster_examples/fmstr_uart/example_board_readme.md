@@ -1,6 +1,6 @@
 Hardware requirements
 =====================
-- Mini/micro USB cable
+- USB Type-C cable
 - Target microcontroller board
 - Personal Computer
 - FreeMASTER 2.5 or later installed on PC

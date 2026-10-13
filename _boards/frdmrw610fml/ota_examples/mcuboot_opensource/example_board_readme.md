@@ -1,6 +1,6 @@
 Hardware requirements
 =====================
-- Mini/micro USB cable
+- USB Type-C cable
 - Personal Computer
 
 Board settings

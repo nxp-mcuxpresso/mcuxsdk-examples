@@ -87,7 +87,7 @@ J-Link> loadbin C:\xxx\rw61x_sb_ble_a2.bin,0x08540000
 
 ### Prepare the Demo
 
-1. Connect a micro USB cable between the PC host and the MCU-Link USB port (J7) on the board.
+1. Connect a USB Type-C cable between the PC host and the MCU-Link USB port (J7) on the board.
 2. Open a serial terminal with the following settings:
    - 115200 baud rate
    - 8 data bits

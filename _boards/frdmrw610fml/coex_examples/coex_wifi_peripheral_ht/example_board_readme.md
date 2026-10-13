@@ -14,7 +14,7 @@ and also instructions for running the included sample applications.
 ## 1.2 Hardware requirements
 =============================
 
-- Micro USB cable
+- USB Type-C cable
 - FRDM-RW610FML board
 - Personal Computer
 
@@ -76,7 +76,7 @@ J-Link> loadbin C:\xxx\rw61x_sb_ble_a2.bin,0x08540000
 ## 3.1 Prepare the Demo
 ========================
 
-1. Connect a micro USB cable between the PC host and the MCU-Link USB port (J7) on the board.
+1. Connect a USB Type-C cable between the PC host and the MCU-Link USB port (J7) on the board.
 2. Open a serial terminal with the following settings:
    - 115200 baud rate
    - 8 data bits
