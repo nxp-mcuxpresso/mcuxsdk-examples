@@ -25,8 +25,6 @@ Running the demo
 When running the demo, the debug console shows the menu to command the MCU to the target power mode (PM0 - Active, PM1 - Idle, PM2 - Standby, PM3 - Sleep, PM4 - Deep Sleep).
 NOTE: Only input when the demo asks for input. Input entered at any other time might cause the debug console to overflow and receive the wrong input value.
 
-Note: On FRDM-RW610FML board, the SW2 is connected to GPIO 11, which is not AON pin. So no pin wakeup in sleep modes.
-
 Here's the initial menu when running successfully.
 ~~~~~~~~~~~~~~~~~~~~~
 MCU wakeup source 0x0...

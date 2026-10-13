@@ -14,7 +14,7 @@
 /*${macro:start}*/
 #define APP_WAKEUP_PIN1_NAME "SW2"
 #define APP_GPIO_PIN_NAME    "SW2"
-#define APP_AONPIN_CONNECTED (false)
+#define APP_AONPIN_CONNECTED (true)
 #define APP_GPIO_INTA_IRQHandler GPIO_INTA_DriverIRQHandler
 #define APP_SW_PORT              BOARD_SW2_GPIO_PORT
 #define APP_SW_PIN               BOARD_SW2_GPIO_PIN
