@@ -15,6 +15,7 @@ include(${SdkRootDirPath}/examples/_common/project_segments/display_support/prjs
 include(${SdkRootDirPath}/examples/_common/project_segments/lvgl/prjseg.cmake)
 include(${SdkRootDirPath}/examples/lvgl_examples/lvgl_sdk/lvgl_support/rt2xxx/lvgl_support.cmake)
 include(${SdkRootDirPath}/examples/_common/project_segments/freertos/examples/tickless/prjseg.cmake)
+include(${SdkRootDirPath}/examples/_common/project_segments/vglite_support/prjseg.cmake)
 
 if (CONFIG_MCUX_PRJSEG_module.board.suite)
 
