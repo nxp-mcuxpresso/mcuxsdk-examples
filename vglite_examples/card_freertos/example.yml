@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+card_freertos:
+  section-type: application
+  contents:
+    meta_path: examples/vglite_examples/card_freertos
+    project-root-path: boards/${board}/vglite_examples/card_freertos/${core_id}
+    document:
+      name: card_freertos${core_id_suffix_name}
+      category: vglite_examples
+      brief: This example shows how to use FlexGPU component. It composes a
+        playing-card style graphic into an off-screen buffer, drawing generated
+        ARGB2222 assets onto a card buffer and perspective-blit'ing it onto a
+        larger main buffer.
+      example_readme:
+      - examples/vglite_examples/card_freertos/readme.md
+      - ${board_root}/${board}/vglite_examples/card_freertos/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    mimxrt2660evk:
+    - +armgcc@psram_debug
+    - +armgcc@psram_release
+    - +iar@psram_debug
+    - +iar@psram_release
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release
+    - -armgcc@xspi_nor_debug
+    - -armgcc@xspi_nor_release
+    - -iar@xspi_nor_debug
+    - -iar@xspi_nor_release
