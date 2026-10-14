@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+psa_crypto_mldsa:
+  section-type: application
+  contents:
+    meta_path: examples/mbedtls_examples/psa_crypto_mldsa/
+    project-root-path: boards/${board}/mbedtls_examples/psa_crypto_mldsa/${core_id}
+    document:
+      name: psa_crypto_mldsa${core_id_suffix_name}
+      category: mbedtls_examples
+      brief: MbedTLS Crypto example to demonstrate PSA Crypto API operations.
+      example_readme:
+      - examples/mbedtls_examples/psa_crypto_mldsa/readme.md
+      - ${board_root}/${board}/mbedtls_examples/psa_crypto_mldsa/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxa577: []
