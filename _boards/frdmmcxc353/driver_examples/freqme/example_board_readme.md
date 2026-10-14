@@ -7,8 +7,7 @@ Hardware requirements
 Board settings
 ============
 To measure the frequency or pulse width of external input clock, please connect input clock signal to
-J1_7(P1_4, FREQME_CLK_IN0) or J2_19(P1_5, FREQME_CLK_IN1)
-
+J1_11(P0_7, FREQME_CLK_IN0), J1_9(P1_0, FREQME_CLK_IN1) or J1_7(P0_5, CLK_IN)
 
 Prepare the Demo
 ===============
@@ -32,10 +31,9 @@ Please select operate mode...
         B -- Pulse Width Measurement Mode.
 Frequency Measurement Mode Selected!
 Please select the target clock:
-                A -- XTAL32MHz
-                B -- FRO_OSC_12M
-                C -- FREQME_GPIO_CLK_A
-                D -- FREQME_GPIO_CLK_B
+                A -- CLK_IN
+                B -- FRO_12M
+                C -- FREQME_CLK_IN0
 Please input the scale factor of reference clock(Ranges from 0 to 31).
 20
 Target clock frequency is 11999725 Hz.
