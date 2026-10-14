@@ -9,8 +9,12 @@ Board settings
 1. Connections required:
    - R328 1-3
    - R330 1-3
-2. Connect differential input voltage to J99 (input range: -50mV ~ +50mV).
-3. Note that a differential input of 50 mV will produce a stream of ones and zeros
+2. Set JP4 to position 2-3 to select VDDIO = 3.3V for the SINC clock interface.
+   The AMC1106M05 CLKIN pin requires a high-level input voltage of at least
+   0.7 x DVDD (2.31V when DVDD = 3.3V). The default JP4 position 1-2 selects
+   VDDIO = 1.8V, which is below this threshold and causes unreliable operation.
+3. Connect differential input voltage to J99 (input range: -50mV ~ +50mV).
+4. Note that a differential input of 50 mV will produce a stream of ones and zeros
    that are high 89.06% of the time, not 100%.
    So result can be verified based on equation: SINC result =(ADCin / 64mV) * (128^3 )
 
