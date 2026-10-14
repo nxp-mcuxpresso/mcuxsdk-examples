@@ -13,7 +13,7 @@
 #define EXAMPLE_SPI_SLAVE     SPI1
 #define EXAMPLE_SPI_SLAVE_IRQ FLEXCOMM1_IRQn
 
-#define EXAMPLE_SPI_SSEL 0
+#define EXAMPLE_SPI_SSEL 1
 #define EXAMPLE_SPI_SPOL kSPI_SpolActiveAllLow
 /*${macro:end}*/
 

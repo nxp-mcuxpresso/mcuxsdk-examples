@@ -16,7 +16,7 @@
 #define EXAMPLE_SPI_MASTER_CLK_FREQ CLOCK_GetFlexCommClkFreq(1U)
 #define SPI_MASTER_IRQHandler       FLEXCOMM1_IRQHandler
 
-#define EXAMPLE_SPI_SSEL 0
+#define EXAMPLE_SPI_SSEL 1
 #define EXAMPLE_SPI_SPOL kSPI_SpolActiveAllLow
 /*${macro:end}*/
 

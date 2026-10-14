@@ -13,7 +13,7 @@ Pin Name   Board Location     Pin Name   Board Location
 MISO       J1 pin 4           MISO       J1 pin 4
 MOSI       J1 pin 2           MOSI       J1 pin 2
 SCK        J2 pin 12          SCK        J2 pin 12
-PCS0       J2 pin 6           PCS0       J2 pin 6
+PCS1       J2 pin 6           PCS1       J2 pin 6
 GND        J3 pin 14          GND        J3 pin 14
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

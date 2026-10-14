@@ -15,7 +15,7 @@
 #define EXAMPLE_SPI_MASTER_CLK_SRC  kCLOCK_Flexcomm1
 #define EXAMPLE_SPI_MASTER_CLK_FREQ CLOCK_GetFlexCommClkFreq(1U)
 
-#define EXAMPLE_SPI_SSEL 0
+#define EXAMPLE_SPI_SSEL 1
 #define EXAMPLE_SPI_SPOL kSPI_SpolActiveAllLow
 /*${macro:end}*/
 

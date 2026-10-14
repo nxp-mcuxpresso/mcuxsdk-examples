@@ -67,7 +67,7 @@ void BOARD_InitPins(void)
 SPI1_InitPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: L5, peripheral: FLEXCOMM1, signal: SPI_SSELN0, pin_signal: GPIO_6, pull_up_down: disable}
+  - {pin_num: E12, peripheral: FLEXCOMM1, signal: SPI_SSELN1, pin_signal: GPIO_10, pull_up_down: disable}
   - {pin_num: L9, peripheral: FLEXCOMM1, signal: SPI_SCK, pin_signal: GPIO_7, pull_up_down: disable}
   - {pin_num: M4, peripheral: FLEXCOMM1, signal: SPI_MOSI, pin_signal: GPIO_9, pull_up_down: disable}
   - {pin_num: M6, peripheral: FLEXCOMM1, signal: SPI_MISO, pin_signal: GPIO_8, pull_up_down: disable}
@@ -84,10 +84,10 @@ SPI1_InitPins:
 /* Function assigned for the Cortex-M33 */
 void SPI1_InitPins(void)
 {
-    /* Initialize FC1_SPI_SS0 functionality on pin GPIO_6, GPIO_7, GPIO_9, GPIO_8 (pin L5_L9_M4_M6) */
-    IO_MUX_SetPinMux(IO_MUX_FC1_SPI_SS0);
-    /* Set GPIO_6 (pin L5_L9_M4_M6) configuration - Disable pull-up / pull-down; strongest slew rate */
-    IO_MUX_SetPinConfig(6U, IO_MUX_PinConfigNoPull);
+    /* Initialize FC1_SPI_SS1 functionality on pin GPIO_10, GPIO_7, GPIO_9, GPIO_8 (pin L5_L9_M4_M6) */
+    IO_MUX_SetPinMux(IO_MUX_FC1_SPI_SS1);
+    /* Set GPIO_10 (pin L5_L9_M4_M6) configuration - Disable pull-up / pull-down; strongest slew rate */
+    IO_MUX_SetPinConfig(10U, IO_MUX_PinConfigNoPull);
     /* Set GPIO_7 (pin L5_L9_M4_M6) configuration - Disable pull-up / pull-down; strongest slew rate */
     IO_MUX_SetPinConfig(7U, IO_MUX_PinConfigNoPull);
     /* Set GPIO_8 (pin L5_L9_M4_M6) configuration - Disable pull-up / pull-down; strongest slew rate */

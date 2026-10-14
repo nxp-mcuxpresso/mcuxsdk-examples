@@ -17,7 +17,7 @@
 #define EXAMPLE_SPI_MASTER_RX_CHANNEL 2
 #define EXAMPLE_SPI_MASTER_TX_CHANNEL 3
 
-#define EXAMPLE_SPI_SSEL        0
+#define EXAMPLE_SPI_SSEL        1
 #define EXAMPLE_DMA             DMA0
 #define EXAMPLE_MASTER_SPI_SPOL kSPI_SpolActiveAllLow
 /*${macro:end}*/

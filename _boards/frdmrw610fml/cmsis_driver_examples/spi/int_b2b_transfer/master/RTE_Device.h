@@ -18,7 +18,7 @@ extern void SPI1_DeinitPins();
 
 /* SPI configuration. */
 
-#define RTE_SPI1_SSEL_NUM        kSPI_Ssel0
+#define RTE_SPI1_SSEL_NUM        kSPI_Ssel1
 #define RTE_SPI1_PIN_INIT        SPI1_InitPins
 #define RTE_SPI1_PIN_DEINIT      SPI1_DeinitPins
 #define RTE_SPI1_DMA_TX_CH       3

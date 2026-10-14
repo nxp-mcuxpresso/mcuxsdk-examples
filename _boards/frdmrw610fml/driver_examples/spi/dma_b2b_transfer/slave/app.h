@@ -16,7 +16,7 @@
 #define EXAMPLE_SPI_SLAVE_TX_CHANNEL 3
 
 #define EXAMPLE_DMA            DMA0
-#define EXAMPLE_SPI_SSEL       0
+#define EXAMPLE_SPI_SSEL       1
 #define EXAMPLE_SLAVE_SPI_SPOL kSPI_SpolActiveAllLow
 /*${macro:end}*/
 
