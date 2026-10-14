@@ -1299,8 +1299,8 @@ void BOARD_InitPWMPins(void)
     RESET_ReleasePeripheralReset(kLPSPI0_RST_SHIFT_RSTn);
     /* PORT3 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kPORT3_RST_SHIFT_RSTn);
-	
-	RESET_ReleasePeripheralReset(kXBAR0_RST_SHIFT_RSTn);
+    /* XBAR0 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kXBAR0_RST_SHIFT_RSTn);
 
     const port_pin_config_t port2_19_pin32_config = {/* Internal pull-up/down resistor is disabled */
                                                      .pullSelect = kPORT_PullDisable,
@@ -1606,6 +1606,8 @@ void BOARD_InitAOIPins(void)
     RESET_ReleasePeripheralReset(kPORT2_RST_SHIFT_RSTn);
     /* CMP0 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kCMP0_RST_SHIFT_RSTn);
+    /* XBAR0 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kXBAR0_RST_SHIFT_RSTn);
 
     const port_pin_config_t port1_1_pin10_config = {/* Internal pull-up/down resistor is disabled */
                                                     .pullSelect = kPORT_PullDisable,
@@ -1808,7 +1810,7 @@ void BOARD_InitFTM_OUTPUTPins(void)
     RESET_ReleasePeripheralReset(kAOI0_RST_SHIFT_RSTn);
     /* GPIO2 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kGPIO2_RST_SHIFT_RSTn);
-    
+    /* XBAR0 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kXBAR0_RST_SHIFT_RSTn);
 
     const port_pin_config_t port2_2_pin23_config = {/* Internal pull-up/down resistor is disabled */
@@ -1876,8 +1878,6 @@ BOARD_InitFTM_INPUTPins:
 - pin_list:
   - {pin_num: '23', peripheral: FTM0, signal: 'CH_IN, 0', pin_signal: P2_2/XBAR_IN8/LPI2C1_SDA/LPUART1_TXD/XBAR_OUT10/PWM0_X2, slew_rate: fast, open_drain: disable,
     drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: '22', peripheral: FTM0, signal: 'CH_IN, 1', pin_signal: P2_1/XBAR_IN7/LPUART0_TXD/CLKOUT/XBAR_OUT9/PWM0_X1, slew_rate: fast, open_drain: disable, drive_strength: low,
-    pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -1894,37 +1894,12 @@ void BOARD_InitFTM_INPUTPins(void)
     CLOCK_EnableClock(kCLOCK_GatePORT2);
     /* XBAR0: Peripheral clock is enabled */
     CLOCK_EnableClock(kCLOCK_GateXBAR0);
-    /* PORT2 peripheral is released from reset */
-    RESET_ReleasePeripheralReset(kPORT2_RST_SHIFT_RSTn);
     /* CMP0 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kCMP0_RST_SHIFT_RSTn);
-    
+    /* PORT2 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kPORT2_RST_SHIFT_RSTn);
+    /* XBAR0 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kXBAR0_RST_SHIFT_RSTn);
-
-    const port_pin_config_t port2_1_pin22_config = {/* Internal pull-up/down resistor is disabled */
-                                                    .pullSelect = kPORT_PullDisable,
-                                                    /* Low internal pull resistor value is selected. */
-                                                    .pullValueSelect = kPORT_LowPullResistor,
-                                                    /* Fast slew rate is configured */
-                                                    .slewRate = kPORT_FastSlewRate,
-                                                    /* Passive input filter is disabled */
-                                                    .passiveFilterEnable = kPORT_PassiveFilterDisable,
-                                                    /* Open drain output is disabled */
-                                                    .openDrainEnable = kPORT_OpenDrainDisable,
-                                                    /* Low drive strength is configured */
-                                                    .driveStrength = kPORT_LowDriveStrength,
-                                                    /* Normal drive strength is configured */
-                                                    .driveStrength1 = kPORT_NormalDriveStrength,
-                                                    /* Pin is configured as XBAR_IN7 */
-                                                    .mux = kPORT_MuxAlt1,
-                                                    /* Digital input enabled */
-                                                    .inputBuffer = kPORT_InputBufferEnable,
-                                                    /* Digital input is not inverted */
-                                                    .invertInput = kPORT_InputNormal,
-                                                    /* Pin Control Register fields [15:0] are not locked */
-                                                    .lockRegister = kPORT_UnlockRegister};
-    /* PORT2_1 (pin 22) is configured as XBAR_IN7 */
-    PORT_SetPinConfig(PORT2, 1U, &port2_1_pin22_config);
 
     const port_pin_config_t port2_2_pin23_config = {/* Internal pull-up/down resistor is disabled */
                                                     .pullSelect = kPORT_PullDisable,
@@ -1953,9 +1928,6 @@ void BOARD_InitFTM_INPUTPins(void)
     /* IOMUX_XBAR_IN8 output assigned to XBAR0_IN8 input is connected
      * to XBAR0_OUT30 output assigned to FTM_CH0_IN */
     XBAR_SetSignalsConnection(kXBAR0_InputIomuxXbarIn8, kXBAR0_OutputFtmCh0In);
-    /* IOMUX_XBAR_IN7 output assigned to XBAR0_IN7 input is connected
-     * to XBAR0_OUT31 output assigned to FTM_CH1_IN */
-    XBAR_SetSignalsConnection(kXBAR0_InputIomuxXbarIn7, kXBAR0_OutputFtmCh1In);
 }
 /***********************************************************************************************************************
  * EOF
