@@ -14,6 +14,7 @@ el2go_csr:
       - examples/el2go_examples/el2go_csr/el2go_csr/readme.md
   boards:
     frdmmcxe31b: []
+    frdmmcxe32b@core0: []
     frdmkw43: 
     - -mdk@debug
     - -mdk@release
