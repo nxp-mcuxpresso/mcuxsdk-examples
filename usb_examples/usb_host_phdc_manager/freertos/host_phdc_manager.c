@@ -35,20 +35,25 @@
 
 /*! @brief the local function prototype */
 static void PHDC_ManagerSetState(void *param, uint8_t state);
-static void PHDC_ManagerRecvAssociationRequest(void *param, aarq_apdu_t *associationRequest);
+static void PHDC_ManagerRecvAssociationRequest(void *param, aarq_apdu_t *associationRequest, uint16_t length);
 static void PHDC_ManagerSendAssociationResponse(void *param, aare_apdu_t *associationResponse);
 static void PHDC_ManagerSendAssociationAbortRequest(void *param, abort_reason_t abortReason);
 static void PHDC_ManagerSendAssociationReleaseResponse(void *param, release_response_reason_t releaseReason);
-static void PHDC_ManagerRecvPresentationProtocolDataUnit(void *param, prst_apdu_t *pPrst);
-static void PHDC_ManagerRecvRoivCmipConfirmedEventReport(void *param, event_report_argument_simple_t *eventReport);
-static void PHDC_ManagerRecvMdcNotiConfig(void *param, event_report_argument_simple_t *eventReport);
-static void PHDC_ManagerRecvMdcNotiScanReportFixed(void *param, event_report_argument_simple_t *eventReport);
+static void PHDC_ManagerRecvPresentationProtocolDataUnit(void *param, prst_apdu_t *pPrst, uint16_t length);
+static void PHDC_ManagerRecvRoivCmipConfirmedEventReport(void *param,
+                                                         event_report_argument_simple_t *eventReport,
+                                                         uint16_t length);
+static void PHDC_ManagerRecvMdcNotiConfig(void *param, event_report_argument_simple_t *eventReport, uint16_t length);
+static void PHDC_ManagerRecvMdcNotiScanReportFixed(void *param,
+                                                   event_report_argument_simple_t *eventReport,
+                                                   uint16_t length);
 static void PHDC_ManagerRecvMdcNotiScanReportFixedMetricNU(config_object_t *configObject,
-                                                           observation_scan_fixed_t *obsScanFixed);
+                                                           observation_scan_fixed_t *obsScanFixed,
+                                                           uint32_t obsValDataSize);
 static void PHDC_ManagerSendRorsCmipConfirmedEventReport(void *param, event_report_result_simple_t *eventResponse);
 static void PHDC_ManagerPrintObjectInformation(type_t *objectType);
 static void PHDC_ManagerSendRoivCmipGet(void *param, get_argument_simple_t *getArg, invoke_id_type_t invokeId);
-static void PHDC_ManagerRecvRorsCmipGet(void *param, get_result_simple_t *getResult);
+static void PHDC_ManagerRecvRorsCmipGet(void *param, get_result_simple_t *getResult, uint16_t length);
 static void PHDC_ManagerSendRoer(void *param, error_result_t *errorResult);
 static config_object_t *PHDC_ManagerGetConfigObject(void *param, handle_t objectHandle);
 static ava_type_t *PHDC_ManagerGetAttribute(config_object_t *configObject, oid_type_t attributeId);
@@ -148,10 +153,21 @@ static void PHDC_ManagerSetState(void *param, uint8_t state)
  * @param param               The manager instance pointer.
  * @param associationRequest  Association request data
  */
-static void PHDC_ManagerRecvAssociationRequest(void *param, aarq_apdu_t *associationRequest)
+static void PHDC_ManagerRecvAssociationRequest(void *param, aarq_apdu_t *associationRequest, uint16_t length)
 {
     host_phdc_manager_instance_t *phdcManagerInstance = (host_phdc_manager_instance_t *)param;
     aare_apdu_t *associationResponse                  = NULL;
+    uint16_t aarqFixedPrefixSize = (uint16_t)(sizeof(associationRequest->assocVersion) +
+                                              sizeof(associationRequest->dataProtoList.count) +
+                                              sizeof(associationRequest->dataProtoList.length) +
+                                              sizeof(((data_proto_t *)0)->dataProtoId) +
+                                              sizeof(((data_proto_t *)0)->dataProtoInfo.length));
+    if (length < aarqFixedPrefixSize)
+    {
+        usb_echo("\n\r11073Manager: AARQ shorter than its fixed header, rejecting.");
+        PHDC_ManagerSendAssociationAbortRequest(param, ABORT_REASON_UNDEFINED);
+        return;
+    }
     /* Initialize the association result variable is Reject-unknown */
     phdcManagerInstance->assocResult = REJECTED_UNKNOWN;
     uint32_t tempassocVersion;
@@ -186,6 +202,19 @@ static void PHDC_ManagerRecvAssociationRequest(void *param, aarq_apdu_t *associa
         {
             /* The data-proto-id is set to data-proto-id-20601, the data-proto-info shall be filled with
                PhdAssociationInformation */
+            uint16_t dataProtoInfoBodyLen = USB_SHORT_FROM_BIG_ENDIAN(dataProto->dataProtoInfo.length);
+            uint16_t availableAfterPrefix = (uint16_t)(length - aarqFixedPrefixSize);
+            uint16_t assocInfoFixedPrefixSize =
+                (uint16_t)(sizeof(((phd_association_information_t *)0)->systemId.length) +
+                           sizeof(s_listOfSupportedSystemId[0U]) +
+                           sizeof(((phd_association_information_t *)0)->devConfigId));
+            if ((dataProtoInfoBodyLen < assocInfoFixedPrefixSize) || (availableAfterPrefix < assocInfoFixedPrefixSize))
+            {
+                usb_echo("\n\r11073Manager: AARQ PhdAssociationInformation shorter than its fixed fields, "
+                         "rejecting.");
+                PHDC_ManagerSendAssociationAbortRequest(param, ABORT_REASON_UNDEFINED);
+                return;
+            }
             uint16_t offset                                  = 0;
             phd_association_information_t *assocResponseInfo = NULL;
             phd_association_information_t *assocInfo =
@@ -260,6 +289,13 @@ static void PHDC_ManagerRecvAssociationRequest(void *param, aarq_apdu_t *associa
             }
             else if (USB_SHORT_FROM_BIG_ENDIAN(dataProto->dataProtoInfo.length) > 0U)
             {
+                if (dataProtoInfoBodyLen > availableAfterPrefix)
+                {
+                    associationResponse->selectedDataProto.dataProtoInfo.length = 0U;
+                    usb_echo("\n\r11073Manager: association info exceeds the received data, rejecting.");
+                    PHDC_ManagerSendAssociationResponse(param, associationResponse);
+                    return;
+                }
                 uint8_t *temp8 = NULL;
                 memcpy(&associationResponse->selectedDataProto.dataProtoInfo.value[0],
                        &dataProto->dataProtoInfo.value[0], USB_SHORT_FROM_BIG_ENDIAN(dataProto->dataProtoInfo.length));
@@ -407,11 +443,41 @@ static void PHDC_ManagerSendAssociationReleaseResponse(void *param, release_resp
  *
  * @param param         the phdc manager instance pointer.
  * @param pPrst         the presentation PDU
+ * @param length        real, validated bytes available starting at pPrst (established by the caller
+ *                      against recvDataLength).
  */
-static void PHDC_ManagerRecvPresentationProtocolDataUnit(void *param, prst_apdu_t *pPrst)
+static void PHDC_ManagerRecvPresentationProtocolDataUnit(void *param, prst_apdu_t *pPrst, uint16_t length)
 {
     host_phdc_manager_instance_t *phdcManagerInstance = (host_phdc_manager_instance_t *)param;
-    data_apdu_t *dataApdu                             = (data_apdu_t *)&(pPrst->value[0U]);
+    if (length < sizeof(pPrst->length))
+    {
+        usb_echo("\n\r11073Manager: PRST shorter than its header, ignoring.");
+        PHDC_ManagerSendAssociationAbortRequest(param, ABORT_REASON_UNDEFINED);
+        return;
+    }
+    uint16_t pPrstBodyLen = USB_SHORT_FROM_BIG_ENDIAN(pPrst->length);
+    if (pPrstBodyLen > (length - sizeof(pPrst->length)))
+    {
+        usb_echo("\n\r11073Manager: PRST length exceeds the received data, ignoring.");
+        PHDC_ManagerSendAssociationAbortRequest(param, ABORT_REASON_UNDEFINED);
+        return;
+    }
+    data_apdu_t *dataApdu = (data_apdu_t *)&(pPrst->value[0U]);
+    uint16_t dataApduHeaderSize =
+        (uint16_t)(sizeof(dataApdu->invokeId) + sizeof(dataApdu->choice.choice) + sizeof(dataApdu->choice.length));
+    if (pPrstBodyLen < dataApduHeaderSize)
+    {
+        usb_echo("\n\r11073Manager: PRST data APDU shorter than its header, ignoring.");
+        PHDC_ManagerSendAssociationAbortRequest(param, ABORT_REASON_UNDEFINED);
+        return;
+    }
+    uint16_t dataApduBodyLen = USB_SHORT_FROM_BIG_ENDIAN(dataApdu->choice.length);
+    if (dataApduBodyLen > (pPrstBodyLen - dataApduHeaderSize))
+    {
+        usb_echo("\n\r11073Manager: PRST data APDU length exceeds the received data, ignoring.");
+        PHDC_ManagerSendAssociationAbortRequest(param, ABORT_REASON_UNDEFINED);
+        return;
+    }
     /* Store the invoke ID */
     phdcManagerInstance->invokeId = dataApdu->invokeId;
     /* Get the prst choice */
@@ -458,7 +524,8 @@ static void PHDC_ManagerRecvPresentationProtocolDataUnit(void *param, prst_apdu_
             case ROIV_CMIP_CONFIRMED_EVENT_REPORT_CHOSEN:
                 /* Event report containing configuration from agent */
                 PHDC_ManagerRecvRoivCmipConfirmedEventReport(
-                    param, (event_report_argument_simple_t *)&(dataApdu->choice.u.roivCmipConfirmedEventReport));
+                    param, (event_report_argument_simple_t *)&(dataApdu->choice.u.roivCmipConfirmedEventReport),
+                    dataApduBodyLen);
                 break;
             case ROIV_CMIP_GET_CHOSEN:
                 if (IEEE11073_MANAGER_CONNECTED_ASSOCIATED_CONFIGURING_WAITING == phdcManagerInstance->managerState)
@@ -638,7 +705,8 @@ static void PHDC_ManagerRecvPresentationProtocolDataUnit(void *param, prst_apdu_
                 if (IEEE11073_MANAGER_CONNECTED_ASSOCIATED_OPERATING == phdcManagerInstance->managerState)
                 {
                     /* Normal processing of messages, this is the normal operating state */
-                    PHDC_ManagerRecvRorsCmipGet(param, (get_result_simple_t *)&dataApdu->choice.u.rorsCmipGet);
+                    PHDC_ManagerRecvRorsCmipGet(param, (get_result_simple_t *)&dataApdu->choice.u.rorsCmipGet,
+                                               dataApduBodyLen);
                 }
                 break;
             case RORS_CMIP_CONFIRMED_SET_CHOSEN:
@@ -700,10 +768,28 @@ static void PHDC_ManagerRecvPresentationProtocolDataUnit(void *param, prst_apdu_
  * This function handles the ROIV_CMIP_CONFIRMED_EVENT_REPORT_CHOSEN choice.
  *
  * @param param         the phdc manager instance pointer.
+ * @param length        real, validated bytes available starting at eventReport.
  */
-static void PHDC_ManagerRecvRoivCmipConfirmedEventReport(void *param, event_report_argument_simple_t *eventReport)
+static void PHDC_ManagerRecvRoivCmipConfirmedEventReport(void *param,
+                                                         event_report_argument_simple_t *eventReport,
+                                                         uint16_t length)
 {
     host_phdc_manager_instance_t *phdcManagerInstance = (host_phdc_manager_instance_t *)param;
+    uint16_t eventReportHeaderSize = (uint16_t)(sizeof(eventReport->objectHandle) + sizeof(eventReport->eventTime) +
+                                                sizeof(eventReport->eventType) + sizeof(eventReport->eventInfo.length));
+    if (length < eventReportHeaderSize)
+    {
+        usb_echo("\n\r11073Manager: event report shorter than its header, ignoring.");
+        PHDC_ManagerSendAssociationAbortRequest(param, ABORT_REASON_UNDEFINED);
+        return;
+    }
+    uint16_t eventInfoBodyLen = USB_SHORT_FROM_BIG_ENDIAN(eventReport->eventInfo.length);
+    if (eventInfoBodyLen > (length - eventReportHeaderSize))
+    {
+        usb_echo("\n\r11073Manager: event report length exceeds the received data, ignoring.");
+        PHDC_ManagerSendAssociationAbortRequest(param, ABORT_REASON_UNDEFINED);
+        return;
+    }
     if (IEEE11073_MANAGER_DISASSOCIATING == phdcManagerInstance->managerState)
     {
         /* The manager will not provide any response */
@@ -715,12 +801,12 @@ static void PHDC_ManagerRecvRoivCmipConfirmedEventReport(void *param, event_repo
             /* MDS object event */
             case MDC_NOTI_CONFIGURATION:
                 /* Event report contains device configuration from the Agent */
-                PHDC_ManagerRecvMdcNotiConfig(param, eventReport);
+                PHDC_ManagerRecvMdcNotiConfig(param, eventReport, eventInfoBodyLen);
                 break;
             case MDC_NOTI_SCAN_REPORT_VAR:
                 break;
             case MDC_NOTI_SCAN_REPORT_FIXED:
-                PHDC_ManagerRecvMdcNotiScanReportFixed(param, eventReport);
+                PHDC_ManagerRecvMdcNotiScanReportFixed(param, eventReport, eventInfoBodyLen);
                 break;
             case MDC_NOTI_SCAN_REPORT_MULTI_PERSON_VAR:
                 break;
@@ -768,8 +854,10 @@ static void PHDC_ManagerRecvRoivCmipConfirmedEventReport(void *param, event_repo
  *
  * @param param             the phdc manager instance pointer.
  * @param eventReport       the event report data.
+ * @param length            real, validated bytes available starting at eventReport->eventInfo.value[0]
+ *                          (i.e. at configReport).
  */
-static void PHDC_ManagerRecvMdcNotiConfig(void *param, event_report_argument_simple_t *eventReport)
+static void PHDC_ManagerRecvMdcNotiConfig(void *param, event_report_argument_simple_t *eventReport, uint16_t length)
 {
     /* manager instance pointer */
     host_phdc_manager_instance_t *phdcManagerInstance = (host_phdc_manager_instance_t *)param;
@@ -777,6 +865,14 @@ static void PHDC_ManagerRecvMdcNotiConfig(void *param, event_report_argument_sim
     config_report_t *configReport = (config_report_t *)&eventReport->eventInfo.value[0U];
     /* configuration object list */
     config_object_list_t *configObjectList = &(configReport->configObjList);
+    uint16_t configReportHeaderSize = (uint16_t)(sizeof(configReport->configReportId) +
+                                                 sizeof(configObjectList->count) + sizeof(configObjectList->length));
+    if (length < configReportHeaderSize)
+    {
+        usb_echo("\n\r11073Manager: configuration report shorter than its header, rejecting.");
+        PHDC_ManagerSendAssociationAbortRequest(param, ABORT_REASON_UNDEFINED);
+        return;
+    }
     /* initialize the configuration result */
     phdcManagerInstance->configResult = UNSUPPORTED_CONFIG;
 
@@ -798,6 +894,14 @@ static void PHDC_ManagerRecvMdcNotiConfig(void *param, event_report_argument_sim
         if (configListSize > APDU_MAX_BUFFER_SIZE)
         {
             usb_echo("\n\r11073Manager: configuration object list too long, rejecting.");
+            phdcManagerInstance->configObjectListLength = 0U;
+            PHDC_ManagerSendAssociationAbortRequest(param, ABORT_REASON_UNDEFINED);
+            return;
+        }
+        if (configListSize > ((uint32_t)length - sizeof(configReport->configReportId)))
+        {
+            usb_echo("\n\r11073Manager: configuration object list exceeds the received data, rejecting.");
+            phdcManagerInstance->configObjectListLength = 0U;
             PHDC_ManagerSendAssociationAbortRequest(param, ABORT_REASON_UNDEFINED);
             return;
         }
@@ -808,6 +912,11 @@ static void PHDC_ManagerRecvMdcNotiConfig(void *param, event_report_argument_sim
         /* Bytes of value[] that configListSize says are present. */
         uint32_t configValueSize = (uint32_t)configListSize - sizeof(configObjectList->count) -
                                    sizeof(configObjectList->length);
+        phdcManagerInstance->configObjectListLength = configValueSize;
+        uint32_t configObjectHeaderSize = (uint32_t)(sizeof(((config_object_t *)0)->objectClass) +
+                                                      sizeof(((config_object_t *)0)->objectHandle) +
+                                                      sizeof(((config_object_t *)0)->attributes.count) +
+                                                      sizeof(((config_object_t *)0)->attributes.length));
         /* process configuration object list. count and every length below come from the device, so
            the counters are 32-bit (a 16-bit count would wrap a uint8_t and loop forever) and each
            entry is confirmed to lie inside value[] before it is dereferenced. */
@@ -818,7 +927,7 @@ static void PHDC_ManagerRecvMdcNotiConfig(void *param, event_report_argument_sim
             uint32_t attributeOffset = 0U;
             uint32_t attributesLength;
 
-            if (((uint32_t)configOffset + sizeof(config_object_t)) > configValueSize)
+            if (((uint32_t)configOffset + configObjectHeaderSize) > configValueSize)
             {
                 break;
             }
@@ -832,7 +941,7 @@ static void PHDC_ManagerRecvMdcNotiConfig(void *param, event_report_argument_sim
 
             attributesLength = USB_SHORT_FROM_BIG_ENDIAN(configObject->attributes.length);
             /* The attribute list must also fit inside value[]. */
-            if (((uint32_t)configOffset + sizeof(config_object_t) + attributesLength) > configValueSize)
+            if (((uint32_t)configOffset + configObjectHeaderSize + attributesLength) > configValueSize)
             {
                 break;
             }
@@ -843,7 +952,8 @@ static void PHDC_ManagerRecvMdcNotiConfig(void *param, event_report_argument_sim
                 /* get attribute entry */
                 ava_type_t *attribute;
 
-                if ((attributeOffset + sizeof(ava_type_t)) > attributesLength)
+                if ((attributeOffset + sizeof(((ava_type_t *)0)->attributeId) +
+                     sizeof(((ava_type_t *)0)->attributeValue.length)) > attributesLength)
                 {
                     break;
                 }
@@ -898,10 +1008,12 @@ static void PHDC_ManagerRecvMdcNotiConfig(void *param, event_report_argument_sim
  * This function handles the MDC_NOTI_SCAN_REPORT_FIXED event types.
  *
  * @param param             the phdc manager instance pointer.
- * @param apdu              application protocol data unit.
- * @param dataApdu          data APDU.
+ * @param eventReport       the event report data.
+ * @param length            real, validated bytes available starting at eventReport->eventInfo.value[0]
+ *                          (i.e. at scanReportInfoFixed).
  */
-static void PHDC_ManagerRecvMdcNotiScanReportFixed(void *param, event_report_argument_simple_t *eventReport)
+static void PHDC_ManagerRecvMdcNotiScanReportFixed(void *param, event_report_argument_simple_t *eventReport,
+                                                   uint16_t length)
 {
     uint8_t *addr                                 = (uint8_t *)&eventReport->eventInfo.value[0];
     scan_report_info_fixed_t *scanReportInfoFixed = (scan_report_info_fixed_t *)addr;
@@ -910,16 +1022,43 @@ static void PHDC_ManagerRecvMdcNotiScanReportFixed(void *param, event_report_arg
         (observation_scan_fixed_list_t *)&scanReportInfoFixed->obsScanFixed;
     event_report_result_simple_t *eventResponse = NULL;
     uint16_t obsListOffset                      = 0U;
+    uint16_t obsScanFixedListHeaderSize =
+        (uint16_t)(sizeof(scanReportInfoFixed->dataReqId) + sizeof(scanReportInfoFixed->scanReportNo) +
+                   sizeof(obsScanFixedList->count) + sizeof(obsScanFixedList->length));
+    if (length < obsScanFixedListHeaderSize)
+    {
+        usb_echo("\n\r11073Manager: MDC Noti Scan Report Fixed shorter than its header, ignoring.");
+        PHDC_ManagerSendAssociationAbortRequest(param, ABORT_REASON_UNDEFINED);
+        return;
+    }
+    uint16_t obsListBodyLen = USB_SHORT_FROM_BIG_ENDIAN(obsScanFixedList->length);
+    if (obsListBodyLen > (length - obsScanFixedListHeaderSize))
+    {
+        usb_echo("\n\r11073Manager: MDC Noti Scan Report Fixed list exceeds the received data, ignoring.");
+        PHDC_ManagerSendAssociationAbortRequest(param, ABORT_REASON_UNDEFINED);
+        return;
+    }
     usb_echo("\n\r11073Manager: Received a MDC Noti Scan Report Fixed event.");
     usb_echo("\n\r11073Manager: --------------------------------------------------");
     usb_echo("\n\r11073Manager: Scan Report Number: %d  Number Observations: %d",
              USB_SHORT_FROM_BIG_ENDIAN(scanReportInfoFixed->scanReportNo),
              USB_SHORT_FROM_BIG_ENDIAN(obsScanFixedList->count));
 
-    for (uint8_t i = 0U; i < USB_SHORT_FROM_BIG_ENDIAN(obsScanFixedList->count); i++)
+    uint16_t obsScanFixedEntryHeaderSize = (uint16_t)(sizeof(((observation_scan_fixed_t *)0)->objectHandle) +
+                                                      sizeof(((observation_scan_fixed_t *)0)->obsValData.length));
+    for (uint32_t i = 0U; i < USB_SHORT_FROM_BIG_ENDIAN(obsScanFixedList->count); i++)
     {
+        if ((obsListOffset + obsScanFixedEntryHeaderSize) > obsListBodyLen)
+        {
+            break;
+        }
         observation_scan_fixed_t *obsScanFixed =
             (observation_scan_fixed_t *)((uint8_t *)&(obsScanFixedList->value[0U]) + obsListOffset);
+        uint32_t obsValDataLen = (uint32_t)USB_SHORT_FROM_BIG_ENDIAN(obsScanFixed->obsValData.length);
+        if ((obsListOffset + obsScanFixedEntryHeaderSize + obsValDataLen) > obsListBodyLen)
+        {
+            break;
+        }
         config_object_t *configObject =
             PHDC_ManagerGetConfigObject(param, USB_SHORT_FROM_BIG_ENDIAN(obsScanFixed->objectHandle));
 
@@ -928,7 +1067,7 @@ static void PHDC_ManagerRecvMdcNotiScanReportFixed(void *param, event_report_arg
             switch (USB_SHORT_FROM_BIG_ENDIAN(configObject->objectClass))
             {
                 case MDC_MOC_VMO_METRIC_NUMERIC:
-                    PHDC_ManagerRecvMdcNotiScanReportFixedMetricNU(configObject, obsScanFixed);
+                    PHDC_ManagerRecvMdcNotiScanReportFixedMetricNU(configObject, obsScanFixed, obsValDataLen);
                     break;
                 case MDC_MOC_VMO_METRIC_ENUMERATION:
                     break;
@@ -946,8 +1085,7 @@ static void PHDC_ManagerRecvMdcNotiScanReportFixed(void *param, event_report_arg
             usb_echo("\n\r11073Manager: Cannot find the object for obsScanFixed report : %d",
                      USB_SHORT_FROM_BIG_ENDIAN(obsScanFixed->objectHandle));
         }
-        obsListOffset += sizeof(obsScanFixed->objectHandle) + sizeof(obsScanFixed->obsValData.length) +
-                         USB_SHORT_FROM_BIG_ENDIAN(obsScanFixed->obsValData.length);
+        obsListOffset += (uint16_t)(obsScanFixedEntryHeaderSize + obsValDataLen);
     }
     usb_echo("\n\r11073Manager: --------------------------------------------------");
     usb_echo("\n\r11073Manager: Send back MDC Noti Scan Fixed response.");
@@ -966,9 +1104,12 @@ static void PHDC_ManagerRecvMdcNotiScanReportFixed(void *param, event_report_arg
  *
  * @param configObject         configuration object.
  * @param obsScanFixed         observation scan fixed report.
+ * @param obsValDataSize       real, validated bytes available in obsScanFixed->obsValData.value[]
+ *                             (established by the caller against the current transfer).
  */
 static void PHDC_ManagerRecvMdcNotiScanReportFixedMetricNU(config_object_t *configObject,
-                                                           observation_scan_fixed_t *obsScanFixed)
+                                                           observation_scan_fixed_t *obsScanFixed,
+                                                           uint32_t obsValDataSize)
 {
     ava_type_t *mdcAttributeValMap;
     attr_val_map_t *attributeValMap;
@@ -987,80 +1128,114 @@ static void PHDC_ManagerRecvMdcNotiScanReportFixedMetricNU(config_object_t *conf
         ava_type_t *mdcAttributeIdType = PHDC_ManagerGetAttribute(configObject, MDC_ATTRIBUTE_ID_TYPE);
         if (NULL != mdcAttributeIdType)
         {
-            /* Get object type */
-            type_t *objectType = (type_t *)&(mdcAttributeIdType->attributeValue.value[0U]);
-            PHDC_ManagerPrintObjectInformation(objectType);
+            if (USB_SHORT_FROM_BIG_ENDIAN(mdcAttributeIdType->attributeValue.length) >= sizeof(type_t))
+            {
+                /* Get object type */
+                type_t *objectType = (type_t *)&(mdcAttributeIdType->attributeValue.value[0U]);
+                PHDC_ManagerPrintObjectInformation(objectType);
+            }
         }
         attributeValMap = (attr_val_map_t *)&(mdcAttributeValMap->attributeValue.value[0]);
-        /* Decode the measurement data */
-        for (uint8_t i = 0U; i < USB_SHORT_FROM_BIG_ENDIAN(attributeValMap->count); i++)
+        uint32_t attrValMapSize = (uint32_t)USB_SHORT_FROM_BIG_ENDIAN(mdcAttributeValMap->attributeValue.length);
+        if (attrValMapSize >= (sizeof(attributeValMap->count) + sizeof(attributeValMap->length)))
         {
-            /* Get attribute value map entry */
-            attr_val_map_entry_t *attributeValMapEntry =
-                (attr_val_map_entry_t *)((uint8_t *)(&attributeValMap->value[0U]) + attributeOffset);
-            octet_string_t *observationValData = (octet_string_t *)(&obsScanFixed->obsValData);
-            /* Decode the observation value */
-            switch (USB_SHORT_FROM_BIG_ENDIAN(attributeValMapEntry->attributeId))
+            uint32_t attrValMapValueSize =
+                attrValMapSize - sizeof(attributeValMap->count) - sizeof(attributeValMap->length);
+            /* Decode the measurement data */
+            for (uint32_t i = 0U; i < USB_SHORT_FROM_BIG_ENDIAN(attributeValMap->count); i++)
             {
-                case MDC_ATTRIBUTE_NUMERIC_VALUE_OBSERVATION:
+                if ((attributeOffset + sizeof(((attr_val_map_entry_t *)0)->attributeId) +
+                     sizeof(((attr_val_map_entry_t *)0)->attributeLen)) > attrValMapValueSize)
                 {
-                    /* MDC Attribute Numeric Value Observation */
-                    nu_obs_value_t *observationValue =
-                        (nu_obs_value_t *)&(observationValData->value[observationOffset]);
-                    usb_echo("\n\r11073Manager: Metric Id: ");
-                    PHDC_ManagerPrintNomenclature(observationValue->metricId);
-                    usb_echo(", unit code: ");
-                    PHDC_ManagerPrintNomenclature(observationValue->unitCode);
-                    usb_echo(", Observation Value: ");
-                    PHDC_ManagerPrintFloatValue((uint8_t *)&observationValue->value);
+                    break;
                 }
-                break;
-                case MDC_ATTRIBUTE_NUMERIC_VALUE_OBSERVATION_SIMPLE:
-                    /* MDC Attribute Numeric Value Observation Simple */
-                    usb_echo("\n\r11073Manager: Observation Value = ");
-                    PHDC_ManagerPrintFloatValue(&(observationValData->value[observationOffset]));
-                    /* The Unit code of observation value */
-                    if (NULL != mdcAttributeUnitCode)
-                    {
-                        uint8_t *addr    = (uint8_t *)&mdcAttributeUnitCode->attributeValue.value[0];
-                        oid_type_t *temp = (oid_type_t *)addr;
-                        usb_echo(" ");
-                        PHDC_ManagerPrintNomenclature(*temp);
-                    }
-                    break;
-                case MDC_ATTRIBUTE_NUMERIC_VALUE_OBSERVATION_BASIC:
-                    /* MDC Attribute Numeric Value Observation Basic */
-                    usb_echo("\n\r11073Manager: Observation Value = ");
-                    PHDC_ManagerPrintSfloatValue(&(observationValData->value[observationOffset]));
-                    /* The Unit code of observation value */
-                    if (NULL != mdcAttributeUnitCode)
-                    {
-                        uint8_t *addr    = (uint8_t *)&mdcAttributeUnitCode->attributeValue.value[0];
-                        oid_type_t *temp = (oid_type_t *)addr;
-                        usb_echo(" ");
-                        PHDC_ManagerPrintNomenclature(*temp);
-                    }
-                    break;
-                case MDC_ATTRIBUTE_NUMERIC_COMPOUND_VALUE_OBSERVATION:
-                case MDC_ATTRIBUTE_NUMERIC_COMPOUND_VALUE_OBSERVATION_SIMPLE:
-                case MDC_ATTRIBUTE_NUMERIC_COMPOUND_VALUE_OBSERVATION_BASIC:
-                    /* These numeric compound value object will be enabled as required in future */
-                    break;
-                case MDC_ATTRIBUTE_NUMERIC_ACCURACY:
-                    /* The numeric accuracy object will be enabled as required in future */
-                    break;
-                case MDC_ATTRIBUTE_TIME_STAMP_ABSOLUTE:
-                    /* MDC Attribute Time Stamp Absolute */
-                    usb_echo("\n\r11073Manager: Absolute Time Stamp = ");
-                    PHDC_ManagerPrintAbsoluteTimeStamp(&(observationValData->value[observationOffset]));
-                    break;
-                default:
-                    break;
-            }
-            observationOffset += USB_SHORT_FROM_BIG_ENDIAN(attributeValMapEntry->attributeLen);
+                /* Get attribute value map entry */
+                attr_val_map_entry_t *attributeValMapEntry =
+                    (attr_val_map_entry_t *)((uint8_t *)(&attributeValMap->value[0U]) + attributeOffset);
+                octet_string_t *observationValData = (octet_string_t *)(&obsScanFixed->obsValData);
+                /* Decode the observation value */
+                switch (USB_SHORT_FROM_BIG_ENDIAN(attributeValMapEntry->attributeId))
+                {
+                    case MDC_ATTRIBUTE_NUMERIC_VALUE_OBSERVATION:
+                        if ((observationOffset + sizeof(nu_obs_value_t)) > obsValDataSize)
+                        {
+                            break;
+                        }
+                        {
+                            /* MDC Attribute Numeric Value Observation */
+                            nu_obs_value_t *observationValue =
+                                (nu_obs_value_t *)&(observationValData->value[observationOffset]);
+                            usb_echo("\n\r11073Manager: Metric Id: ");
+                            PHDC_ManagerPrintNomenclature(observationValue->metricId);
+                            usb_echo(", unit code: ");
+                            PHDC_ManagerPrintNomenclature(observationValue->unitCode);
+                            usb_echo(", Observation Value: ");
+                            PHDC_ManagerPrintFloatValue((uint8_t *)&observationValue->value);
+                        }
+                        break;
+                    case MDC_ATTRIBUTE_NUMERIC_VALUE_OBSERVATION_SIMPLE:
+                        if ((observationOffset + sizeof(float_type_t)) > obsValDataSize)
+                        {
+                            break;
+                        }
+                        /* MDC Attribute Numeric Value Observation Simple */
+                        usb_echo("\n\r11073Manager: Observation Value = ");
+                        PHDC_ManagerPrintFloatValue(&(observationValData->value[observationOffset]));
+                        /* The Unit code of observation value */
+                        if ((NULL != mdcAttributeUnitCode) &&
+                            (USB_SHORT_FROM_BIG_ENDIAN(mdcAttributeUnitCode->attributeValue.length) >=
+                             sizeof(oid_type_t)))
+                        {
+                            uint8_t *addr    = (uint8_t *)&mdcAttributeUnitCode->attributeValue.value[0];
+                            oid_type_t *temp = (oid_type_t *)addr;
+                            usb_echo(" ");
+                            PHDC_ManagerPrintNomenclature(*temp);
+                        }
+                        break;
+                    case MDC_ATTRIBUTE_NUMERIC_VALUE_OBSERVATION_BASIC:
+                        if ((observationOffset + sizeof(sfloat_type_t)) > obsValDataSize)
+                        {
+                            break;
+                        }
+                        /* MDC Attribute Numeric Value Observation Basic */
+                        usb_echo("\n\r11073Manager: Observation Value = ");
+                        PHDC_ManagerPrintSfloatValue(&(observationValData->value[observationOffset]));
+                        /* The Unit code of observation value */
+                        if ((NULL != mdcAttributeUnitCode) &&
+                            (USB_SHORT_FROM_BIG_ENDIAN(mdcAttributeUnitCode->attributeValue.length) >=
+                             sizeof(oid_type_t)))
+                        {
+                            uint8_t *addr    = (uint8_t *)&mdcAttributeUnitCode->attributeValue.value[0];
+                            oid_type_t *temp = (oid_type_t *)addr;
+                            usb_echo(" ");
+                            PHDC_ManagerPrintNomenclature(*temp);
+                        }
+                        break;
+                    case MDC_ATTRIBUTE_NUMERIC_COMPOUND_VALUE_OBSERVATION:
+                    case MDC_ATTRIBUTE_NUMERIC_COMPOUND_VALUE_OBSERVATION_SIMPLE:
+                    case MDC_ATTRIBUTE_NUMERIC_COMPOUND_VALUE_OBSERVATION_BASIC:
+                        /* These numeric compound value object will be enabled as required in future */
+                        break;
+                    case MDC_ATTRIBUTE_NUMERIC_ACCURACY:
+                        /* The numeric accuracy object will be enabled as required in future */
+                        break;
+                    case MDC_ATTRIBUTE_TIME_STAMP_ABSOLUTE:
+                        if ((observationOffset + 7U) > obsValDataSize)
+                        {
+                            break;
+                        }
+                        /* MDC Attribute Time Stamp Absolute */
+                        usb_echo("\n\r11073Manager: Absolute Time Stamp = ");
+                        PHDC_ManagerPrintAbsoluteTimeStamp(&(observationValData->value[observationOffset]));
+                        break;
+                    default:
+                        break;
+                }
+                observationOffset += (uint16_t)USB_SHORT_FROM_BIG_ENDIAN(attributeValMapEntry->attributeLen);
 
-            /* Seek to the next attribute value map entry in the MDC Attribute Value Map */
-            attributeOffset += sizeof(attributeValMapEntry->attributeId) + sizeof(attributeValMapEntry->attributeLen);
+                /* Seek to the next attribute value map entry in the MDC Attribute Value Map */
+                attributeOffset += sizeof(attributeValMapEntry->attributeId) + sizeof(attributeValMapEntry->attributeLen);
+            }
         }
     }
     else
@@ -1199,63 +1374,100 @@ static void PHDC_ManagerSendRoivCmipGet(void *param, get_argument_simple_t *getA
  *
  * @param param             the phdc manager instance pointer.
  * @param getResult         get result data.
+ * @param length            real, validated bytes available starting at getResult.
  */
-static void PHDC_ManagerRecvRorsCmipGet(void *param, get_result_simple_t *getResult)
+static void PHDC_ManagerRecvRorsCmipGet(void *param, get_result_simple_t *getResult, uint16_t length)
 {
     attribute_list_t *attributeList = (attribute_list_t *)&getResult->attributeList;
     uint16_t attributeOffset        = 0U;
+    uint16_t attributeListHeaderSize = (uint16_t)(sizeof(getResult->objectHandle) +
+                                                  sizeof(attributeList->count) + sizeof(attributeList->length));
+    if (length < attributeListHeaderSize)
+    {
+        usb_echo("\n\r11073Manager: RORS attribute list shorter than its header, ignoring.");
+        PHDC_ManagerSendAssociationAbortRequest(param, ABORT_REASON_UNDEFINED);
+        return;
+    }
+    uint16_t attrListBodyLen = USB_SHORT_FROM_BIG_ENDIAN(attributeList->length);
+    if (attrListBodyLen > (length - attributeListHeaderSize))
+    {
+        usb_echo("\n\r11073Manager: RORS attribute list exceeds the received data, ignoring.");
+        PHDC_ManagerSendAssociationAbortRequest(param, ABORT_REASON_UNDEFINED);
+        return;
+    }
     usb_echo("\n\r11073Manager: Received a RORS_CMIP_GET_CHOSEN.");
     usb_echo("\n\r11073Manager: --------------------------------------------------");
     usb_echo("\n\r11073Manager: Number of attributes = %d", USB_SHORT_FROM_BIG_ENDIAN(attributeList->count));
 
-    for (uint8_t i = 0U; i < USB_SHORT_FROM_BIG_ENDIAN(attributeList->count); i++)
+    for (uint32_t i = 0U; i < USB_SHORT_FROM_BIG_ENDIAN(attributeList->count); i++)
     {
+        if ((attributeOffset + sizeof(((ava_type_t *)0)->attributeId) +
+             sizeof(((ava_type_t *)0)->attributeValue.length)) > attrListBodyLen)
+        {
+            break;
+        }
         ava_type_t *attribute = (ava_type_t *)((uint8_t *)(&attributeList->value[0U]) + attributeOffset);
+        uint16_t attributeEntryHeaderSize =
+            (uint16_t)(sizeof(attribute->attributeId) + sizeof(attribute->attributeValue.length));
+        uint16_t attributeValueLength = USB_SHORT_FROM_BIG_ENDIAN(attribute->attributeValue.length);
+        if ((attributeOffset + attributeEntryHeaderSize + attributeValueLength) > attrListBodyLen)
+        {
+            break;
+        }
         switch (USB_SHORT_FROM_BIG_ENDIAN(attribute->attributeId))
         {
             case MDC_ATTRIBUTE_SYSTEM_TYPE_SPECIFICATION_LIST:
             {
                 type_ver_list_t *typeVerList = (type_ver_list_t *)&attribute->attributeValue.value[0U];
-                for (uint8_t j = 0U; j < USB_SHORT_FROM_BIG_ENDIAN(typeVerList->count); j++)
+                if (attributeValueLength >= (sizeof(typeVerList->count) + sizeof(typeVerList->length)))
                 {
-                    type_ver_t *typeVer = (type_ver_t *)&typeVerList->value[j];
-                    switch (USB_SHORT_FROM_BIG_ENDIAN(typeVer->type))
+                    uint32_t typeVerListValueSize =
+                        (uint32_t)attributeValueLength - sizeof(typeVerList->count) - sizeof(typeVerList->length);
+                    for (uint32_t j = 0U; j < USB_SHORT_FROM_BIG_ENDIAN(typeVerList->count); j++)
                     {
-                        case MDC_DEV_SPEC_PROFILE_PULSE_OXIMETER:
-                            usb_echo("\n\r11073Manager: Type = Pulse Oximeter, Version = %d",
-                                     USB_SHORT_FROM_BIG_ENDIAN(typeVer->version));
+                        if (((uint32_t)(j + 1U) * sizeof(type_ver_t)) > typeVerListValueSize)
+                        {
                             break;
-                        case MDC_DEV_SPEC_PROFILE_BLOOD_PRESSURE:
-                            usb_echo("\n\r11073Manager: Type = Blood Pressure, Version = %d",
-                                     USB_SHORT_FROM_BIG_ENDIAN(typeVer->version));
-                            break;
-                        case MDC_DEV_SPEC_PROFILE_THERMOMETER:
-                            usb_echo("\n\r11073Manager: Type = Thermometer, Version = %d",
-                                     USB_SHORT_FROM_BIG_ENDIAN(typeVer->version));
-                            break;
-                        case MDC_DEV_SPEC_PROFILE_SCALE:
-                            usb_echo("\n\r11073Manager: Type = Scale, Version = %d",
-                                     USB_SHORT_FROM_BIG_ENDIAN(typeVer->version));
-                            break;
-                        case MDC_DEV_SPEC_PROFILE_GLUCOSE:
-                            usb_echo("\n\r11073Manager: Type = Glucose Meter, Version = %d",
-                                     USB_SHORT_FROM_BIG_ENDIAN(typeVer->version));
-                            break;
-                        case MDC_DEV_SPEC_PROFILE_HF_CARDIO:
-                            usb_echo("\n\r11073Manager: Type = HF Cardio, Version = %d",
-                                     USB_SHORT_FROM_BIG_ENDIAN(typeVer->version));
-                            break;
-                        case MDC_DEV_SPEC_PROFILE_HF_STRENGTH:
-                            usb_echo("\n\r11073Manager: Type = HF Strength, Version = %d",
-                                     USB_SHORT_FROM_BIG_ENDIAN(typeVer->version));
-                            break;
-                        case MDC_DEV_SPEC_PROFILE_AI_ACTIVITY_HUB:
-                        case MDC_DEV_SPEC_PROFILE_AI_MED_MINDER:
-                        default:
-                            usb_echo("\n\r11073Manager: Type = (%s) Version = %d",
-                                     USB_SHORT_FROM_BIG_ENDIAN(typeVer->type),
-                                     USB_SHORT_FROM_BIG_ENDIAN(typeVer->version));
-                            break;
+                        }
+                        type_ver_t *typeVer = (type_ver_t *)&typeVerList->value[j];
+                        switch (USB_SHORT_FROM_BIG_ENDIAN(typeVer->type))
+                        {
+                            case MDC_DEV_SPEC_PROFILE_PULSE_OXIMETER:
+                                usb_echo("\n\r11073Manager: Type = Pulse Oximeter, Version = %d",
+                                         USB_SHORT_FROM_BIG_ENDIAN(typeVer->version));
+                                break;
+                            case MDC_DEV_SPEC_PROFILE_BLOOD_PRESSURE:
+                                usb_echo("\n\r11073Manager: Type = Blood Pressure, Version = %d",
+                                         USB_SHORT_FROM_BIG_ENDIAN(typeVer->version));
+                                break;
+                            case MDC_DEV_SPEC_PROFILE_THERMOMETER:
+                                usb_echo("\n\r11073Manager: Type = Thermometer, Version = %d",
+                                         USB_SHORT_FROM_BIG_ENDIAN(typeVer->version));
+                                break;
+                            case MDC_DEV_SPEC_PROFILE_SCALE:
+                                usb_echo("\n\r11073Manager: Type = Scale, Version = %d",
+                                         USB_SHORT_FROM_BIG_ENDIAN(typeVer->version));
+                                break;
+                            case MDC_DEV_SPEC_PROFILE_GLUCOSE:
+                                usb_echo("\n\r11073Manager: Type = Glucose Meter, Version = %d",
+                                         USB_SHORT_FROM_BIG_ENDIAN(typeVer->version));
+                                break;
+                            case MDC_DEV_SPEC_PROFILE_HF_CARDIO:
+                                usb_echo("\n\r11073Manager: Type = HF Cardio, Version = %d",
+                                         USB_SHORT_FROM_BIG_ENDIAN(typeVer->version));
+                                break;
+                            case MDC_DEV_SPEC_PROFILE_HF_STRENGTH:
+                                usb_echo("\n\r11073Manager: Type = HF Strength, Version = %d",
+                                         USB_SHORT_FROM_BIG_ENDIAN(typeVer->version));
+                                break;
+                            case MDC_DEV_SPEC_PROFILE_AI_ACTIVITY_HUB:
+                            case MDC_DEV_SPEC_PROFILE_AI_MED_MINDER:
+                            default:
+                                usb_echo("\n\r11073Manager: Type = (%s) Version = %d",
+                                         USB_SHORT_FROM_BIG_ENDIAN(typeVer->type),
+                                         USB_SHORT_FROM_BIG_ENDIAN(typeVer->version));
+                                break;
+                        }
                     }
                 }
             }
@@ -1264,12 +1476,20 @@ static void PHDC_ManagerRecvRorsCmipGet(void *param, get_result_simple_t *getRes
             {
                 uint16_t stringOffset = 0U;
                 usb_echo("\n\r11073Manager: Model: ");
-                while (USB_SHORT_FROM_BIG_ENDIAN(attribute->attributeValue.length) > stringOffset)
+                while ((stringOffset + sizeof(((any_t *)0)->length)) <= attributeValueLength)
                 {
                     any_t *modelString = (any_t *)((uint8_t *)&attribute->attributeValue.value[0U] + stringOffset);
-                    usb_echo("%s", modelString->value);
+                    uint16_t modelStringLen = USB_SHORT_FROM_BIG_ENDIAN(modelString->length);
+                    if ((stringOffset + sizeof(modelString->length) + modelStringLen) > attributeValueLength)
+                    {
+                        break;
+                    }
+                    for (uint16_t charIdx = 0U; charIdx < modelStringLen; charIdx++)
+                    {
+                        usb_echo("%c", modelString->value[charIdx]);
+                    }
                     usb_echo(" ");
-                    stringOffset += sizeof(modelString->length) + USB_SHORT_FROM_BIG_ENDIAN(modelString->length);
+                    stringOffset += (uint16_t)(sizeof(modelString->length) + modelStringLen);
                 }
             }
             break;
@@ -1277,8 +1497,7 @@ static void PHDC_ManagerRecvRorsCmipGet(void *param, get_result_simple_t *getRes
                 break;
         }
         /* seek to the next attribute entry in the attribute list */
-        attributeOffset += sizeof(attribute->attributeId) + sizeof(attribute->attributeValue.length) +
-                           USB_SHORT_FROM_BIG_ENDIAN(attribute->attributeValue.length);
+        attributeOffset += (uint16_t)(attributeEntryHeaderSize + attributeValueLength);
     }
 }
 
@@ -1338,22 +1557,37 @@ static config_object_t *PHDC_ManagerGetConfigObject(void *param, handle_t object
     host_phdc_manager_instance_t *phdcManagerInstance = (host_phdc_manager_instance_t *)param;
     config_object_list_t *configObjectList = (config_object_list_t *)&phdcManagerInstance->configObjectList[0U];
     config_object_t *configObjectEntry     = NULL;
-    if (0U != USB_SHORT_FROM_BIG_ENDIAN(configObjectList->count))
+    uint32_t configObjectListValidSize = phdcManagerInstance->configObjectListLength;
+    if ((0U != USB_SHORT_FROM_BIG_ENDIAN(configObjectList->count)) && (configObjectListValidSize > 0U))
     {
         uint16_t configOffset = 0U;
-        for (uint8_t i = 0U; i < USB_SHORT_FROM_BIG_ENDIAN(configObjectList->count); i++)
+        uint32_t configObjectHeaderSize = (uint32_t)(sizeof(((config_object_t *)0)->objectClass) +
+                                                      sizeof(((config_object_t *)0)->objectHandle) +
+                                                      sizeof(((config_object_t *)0)->attributes.count) +
+                                                      sizeof(((config_object_t *)0)->attributes.length));
+        for (uint32_t i = 0U; i < USB_SHORT_FROM_BIG_ENDIAN(configObjectList->count); i++)
         {
+            if (((uint32_t)configOffset + configObjectHeaderSize) > configObjectListValidSize)
+            {
+                break;
+            }
             /* get the configuration object entry */
             configObjectEntry = (config_object_t *)(((uint8_t *)&configObjectList->value[0U]) + configOffset);
+            uint32_t attributesLength = (uint32_t)USB_SHORT_FROM_BIG_ENDIAN(configObjectEntry->attributes.length);
+            if (((uint32_t)configOffset + configObjectHeaderSize + attributesLength) > configObjectListValidSize)
+            {
+                configObjectEntry = NULL;
+                break;
+            }
             if (objectHandle == USB_SHORT_FROM_BIG_ENDIAN(configObjectEntry->objectHandle))
             {
                 /* The configuration object is found, return the configuration object */
                 break;
             }
             /* Seek to the next configuration object entry in the list */
-            configOffset += sizeof(configObjectEntry->objectClass) + sizeof(configObjectEntry->objectHandle) +
+            configOffset += (uint16_t)(sizeof(configObjectEntry->objectClass) + sizeof(configObjectEntry->objectHandle) +
                             sizeof(configObjectEntry->attributes.count) + sizeof(configObjectEntry->attributes.length) +
-                            USB_SHORT_FROM_BIG_ENDIAN(configObjectEntry->attributes.length);
+                            attributesLength);
             configObjectEntry = NULL;
         }
     }
@@ -1380,11 +1614,24 @@ static ava_type_t *PHDC_ManagerGetAttribute(config_object_t *configObject, oid_t
         attribute_list_t *attributeList = (attribute_list_t *)&configObject->attributes;
         /* initialize the attribute offset */
         uint16_t attributeOffset = 0;
+        uint32_t attributesLength = (uint32_t)USB_SHORT_FROM_BIG_ENDIAN(attributeList->length);
         /* process all the attributes */
-        for (uint8_t i = 0U; i < USB_SHORT_FROM_BIG_ENDIAN(attributeList->count); i++)
+        for (uint32_t i = 0U; i < USB_SHORT_FROM_BIG_ENDIAN(attributeList->count); i++)
         {
+            if ((attributeOffset + sizeof(attributeEntry->attributeId) + sizeof(attributeEntry->attributeValue.length)) >
+                attributesLength)
+            {
+                break;
+            }
             /* Get the attribute entry */
             attributeEntry = (ava_type_t *)((uint8_t *)(&attributeList->value[0U]) + attributeOffset);
+            uint32_t attributeValueLength = (uint32_t)USB_SHORT_FROM_BIG_ENDIAN(attributeEntry->attributeValue.length);
+            if ((attributeOffset + sizeof(attributeEntry->attributeId) + sizeof(attributeEntry->attributeValue.length) +
+                 attributeValueLength) > attributesLength)
+            {
+                attributeEntry = NULL;
+                break;
+            }
 
             if (attributeId == USB_SHORT_FROM_BIG_ENDIAN(attributeEntry->attributeId))
             {
@@ -1630,7 +1877,7 @@ static void PHDC_ManagerRecvComplete(void *param)
         case AARQ_CHOSEN:
             if (IEEE11073_MANAGER_CONNECTED_UNASSOCIATED == phdcManagerInstance->managerState)
             {
-                PHDC_ManagerRecvAssociationRequest(param, &apdu->u.aarq);
+                PHDC_ManagerRecvAssociationRequest(param, &apdu->u.aarq, USB_SHORT_FROM_BIG_ENDIAN(apdu->length));
             }
             else if ((IEEE11073_MANAGER_CONNECTED_ASSOCIATED_CONFIGURING_WAITING ==
                       phdcManagerInstance->managerState) ||
@@ -1737,7 +1984,8 @@ static void PHDC_ManagerRecvComplete(void *param)
                      (IEEE11073_MANAGER_CONNECTED_ASSOCIATED_OPERATING == phdcManagerInstance->managerState) ||
                      (IEEE11073_MANAGER_DISASSOCIATING == phdcManagerInstance->managerState))
             {
-                PHDC_ManagerRecvPresentationProtocolDataUnit(param, &apdu->u.prst);
+                PHDC_ManagerRecvPresentationProtocolDataUnit(param, &apdu->u.prst,
+                                                             USB_SHORT_FROM_BIG_ENDIAN(apdu->length));
             }
             else
             {
@@ -1928,6 +2176,7 @@ void HOST_PhdcManagerTask(void *param)
             PHDC_ManagerSetState(param, IEEE11073_MANAGER_CONNECTED_UNASSOCIATED);
             /* Clear received buffer */
             memset((void *)&phdcManagerInstance->recvDataBuffer[0U], 0U, APDU_MAX_BUFFER_SIZE);
+            phdcManagerInstance->configObjectListLength = 0U;
             phdcManagerInstance->runWaitState = kUSB_HostPhdcRunWaitDataReceived;
             phdcManagerInstance->runState     = kUSB_HostPhdcRunIdle;
             status = USB_HostPhdcRecv(phdcManagerInstance->classHandle, 0xFEU, phdcManagerInstance->recvDataBuffer,

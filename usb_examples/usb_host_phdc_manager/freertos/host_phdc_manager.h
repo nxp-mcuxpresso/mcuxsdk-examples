@@ -66,6 +66,7 @@ typedef struct _host_phdc_manager_instance
     config_result_t configResult;                   /*!< configuration response result */
     invoke_id_type_t invokeId;                      /*!< invoke ID number */
     uint8_t configObjectList[APDU_MAX_BUFFER_SIZE]; /*!< configuration object list */
+    uint32_t configObjectListLength;                /*!< bytes of configObjectList[] holding real data */
     uint8_t *sendDataBuffer;                        /*!< use to send application protocol data unit */
     uint8_t *recvDataBuffer;                        /*!< use to receive application protocol data unit */
     uint32_t recvDataLength;                        /*!< number of bytes the device actually sent in recvDataBuffer */
