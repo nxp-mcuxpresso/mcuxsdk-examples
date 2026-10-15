@@ -19,7 +19,8 @@
 #define PWT_EXAMPLE_HANDLER  PWT0_READY_IRQHandler
 
 /* Get source clock for PWT driver */
-#define PWT_SOURCE_CLOCK (24U * 1000U * 1000U) // CLOCK_GetFreq(kCLOCK_BusClk)
+#define PWT_SOURCE_CLOCK CLOCK_GetFreq(kCLOCK_BusClk)
+
 /*${macro:end}*/
 
 /*******************************************************************************
