@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -32,23 +32,17 @@ extern "C" {
  */
 void BOARD_InitBootPins(void);
 
-#define PCR_IBE_ibe1 0x01u /*!<@brief Input Buffer Enable: Enables */
-
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
 void BOARD_InitPins(void);
 
-#define PCR_IBE_ibe1 0x01u /*!<@brief Input Buffer Enable: Enables */
-
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
 void BOARD_InitCameraPins(void);
-
-#define PCR_IBE_ibe1 0x01u /*!<@brief Input Buffer Enable: Enables */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
