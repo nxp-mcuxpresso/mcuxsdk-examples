@@ -21,7 +21,7 @@
 #define PIT_CLOCK_SOURCE         kPIT_CountFroHfDivClk
 #define PIT_CLOCK_SOURCE_DIVIDER kPIT_PrescalerDivBy8
 /* Equation: modulo value = (peripheral clock rate / ((2 ^ prescaler) * interrupt rate)) - 1U */
-#define PIT_PERIOD_COUNT (((48 * 1000 * 1000) >> 3) - 1)
+#define PIT_PERIOD_COUNT (((CLOCK_GetFreq(kCLOCK_FroHfDiv)) >> 3) - 1)
 
 #define PIT_IRQ_PRIO 1
 

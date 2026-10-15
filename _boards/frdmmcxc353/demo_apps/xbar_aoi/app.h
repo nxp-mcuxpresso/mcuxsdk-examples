@@ -13,7 +13,6 @@
 
 /* PIT setting */
 #define DEMO_PIT_BASEADDR PIT0
-#define BUS_CLK_FREQ      (24U * 1000U * 1000U)
 
 /* XBAR setting */
 #define DEMO_XBAR_INPUT_PIT_SIGNAL    kXBAR1_InputPitSyncOut
