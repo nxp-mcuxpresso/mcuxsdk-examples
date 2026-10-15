@@ -2,7 +2,7 @@ Hardware requirements
 ====================
 
 - USB-C cable
-- FRDM-MCXE31B board
+- FRDM-MCXE32B board
 - Personal Computer
 
 Board settings
@@ -28,7 +28,7 @@ The table below lists example flash memory addresses where the CSR and X.509 cer
 
 The CSR_SIZE and X509_SIZE values depend on the specific CSR and certificate implementations used in your application. There is no dedicated memory section for the Configuration Block and the APP status code in the linker files. On this platform it has been decided to use the last `4096 bytes` of the internal data flash for this purpose. The CONFIG_BLOCK_SIZE value depends on the specific configuration requirements of your application. However, the maximum allowed CONFIG_BLOCK_SIZE is `124 bytes`. Furthermore, it is important to note that the ITS (Internal Trusted Storage) is managed by littlefs and is located at the same memory address range. This means that the maximum available space for ITS is `8 kB * 8 = 64 kB` including the introduced overhead by the littleFS file system. This leaves `18433 bytes` of data flash available for further application specific usage. This value can be increased/decreased by adjusting the `BLOCK_COUNT` parameter in the prj.conf file located at `examples/_boards/frdmmcxe31b/el2go_examples/el2go_csr/`
 
-The littleFS and HSEB FW memory sections must not be overwritten by the CSR or X.509 certificate storage locations. The littleFS can be changed in the prj.conf. The information about HSEB FW size can be taken from the [Reference Manual](https://www.nxp.com/products/MCX-E31).
+The littleFS and HSEB FW memory sections must not be overwritten by the CSR or X.509 certificate storage locations. The littleFS can be changed in the prj.conf. The information about HSEB FW size can be taken from Reference manual found at the following link: [MCX-E-Series](https://www.nxp.com/products/processors-and-microcontrollers/arm-microcontrollers/general-purpose-mcus/mcx-arm-cortex-m/mcx-e-series-microcontrollers:MCX-E-SERIES).
 
 Platform-Specific Troubleshooting Notes
 =======================
