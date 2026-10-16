@@ -169,6 +169,11 @@ m_ram_vector_table_size             = m_vector_table_size;
 HEAP_SIZE                           = DEFINED(__heap_size__)  ? __heap_size__  : 0x0800;
 STACK_SIZE                          = DEFINED(__stack_size__) ? __stack_size__ : 0x01000;
 
+m_interrupts_ram_start              = m_core0_ram_start;
+m_interrupts_ram_end                = m_interrupts_ram_start + m_ram_vector_table_size - 1;
+__VECTOR_RAM                        = m_interrupts_ram_start;
+__RAM_VECTOR_TABLE_SIZE_BYTES       = m_ram_vector_table_size;
+
 /* On A0 revisions of this chip, the CPU boot ROM does NOT correctly start the
  * application if the initial Main Stack Pointer (MSP) is located in SRAM1.
  * When the application’s SP is placed in SRAM1, the boot ROM refuses to jump
@@ -176,16 +181,11 @@ STACK_SIZE                          = DEFINED(__stack_size__) ? __stack_size__ :
  *
  * Do NOT relocate the cstack region on A0 silicon.
  */
-m_cstack_start   = m_core0_ram_start;
+m_cstack_start   = m_interrupts_ram_end + 1;
 m_cstack_end     = m_cstack_start + STACK_SIZE - 1;
 
-m_interrupts_ram_start              = m_cstack_end + 1;
-m_interrupts_ram_end                = m_interrupts_ram_start + m_ram_vector_table_size - 1;
-__VECTOR_RAM                        = m_interrupts_ram_start;
-__RAM_VECTOR_TABLE_SIZE_BYTES       = m_ram_vector_table_size;
-
 /* data0 region */
-m_data0_start = m_interrupts_ram_end + 1;
+m_data0_start = m_cstack_end + 1;
 m_data0_end   = m_core0_ram_end;
 m_data0_size  = m_data0_end - m_data0_start + 1;
 
