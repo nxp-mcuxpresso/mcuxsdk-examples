@@ -6,9 +6,9 @@ Hardware requirements
 
 Board settings
 ==============
-IO0     = XBAR_IN5  PORT0_6
-IO1     = XBAR_IN6  PORT0_7
-AOI_OUT = XBAR_OUT8 PORT1_2
+IO0     = XBAR_IN8 (P1_1, J4_2),
+IO1     = XBAR_IN7 (P2_17, J2_2/SW3),
+AOI_OUT = XBAR_OUT11 (P2_3 LED_GREEN).
 
 AOI_OUT = IO0 & IO1
 
