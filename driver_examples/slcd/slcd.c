@@ -204,7 +204,8 @@ int main(void)
     SLCD_GetDefaultConfig(&config);
 
     /* Verify and Complete the configuration structure. */
-#if !(defined(FSL_FEATURE_SLCD_LP_CONTROL) && FSL_FEATURE_SLCD_LP_CONTROL)
+#if !(defined(FSL_FEATURE_SLCD_LP_CONTROL) && FSL_FEATURE_SLCD_LP_CONTROL) && \
+    !(defined(FSL_FEATURE_SLCD_HAS_BUF_POWER_MODE) && FSL_FEATURE_SLCD_HAS_BUF_POWER_MODE)
     /*
      * config.powerSupply = kSLCD_InternalVll3UseChargePump;
      * config.voltageTrim = kSLCD_RegulatedVolatgeTrim08;
@@ -212,6 +213,12 @@ int main(void)
      */
     config.clkConfig          = &slcdClkConfig;
     config.loadAdjust         = kSLCD_HighLoadOrSlowestClkSrc;
+#elif defined(FSL_FEATURE_SLCD_HAS_BUF_POWER_MODE) && FSL_FEATURE_SLCD_HAS_BUF_POWER_MODE
+    /* GCR[LCLK] is not covered by SLCD_GetDefaultConfig() for this branch and defaults to 0,
+     * which (per the reference manual's frame frequency table) is above the 28-58Hz band
+     * recommended for visibility. Select a prescaler that lands in that band. */
+    config.clkPrescaler          = APP_SLCD_CLK_PRESCALER;
+    config.bufSampleHoldHighPerf = true; /* Improve drive for capacitive LCD glass. */
 #endif
     config.dutyCycle          = APP_SLCD_DUTY_CYCLE;
     config.slcdLowPinEnabled  = APP_SLCD_LOW_PIN_ENABLED;
