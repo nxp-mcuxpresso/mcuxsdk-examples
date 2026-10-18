@@ -36,7 +36,7 @@
  * Variables
  ******************************************************************************/
 volatile bool g_DualAdcConversionCompletedFlag = false;
-dadc_conversion_result_t g_DualAdcResult;
+dualadc_conversion_result_t g_DualAdcResult;
 
 /*******************************************************************************
  * Code
@@ -47,10 +47,10 @@ void DEMO_DUALADC_IRQ_HANDLER_FUNC(void)
 
     status = DUALADC_GetScanSequenceStatusFlags(DEMO_DUALADC_BASE);
 
-    if (0U != (status & kDADC_EndofScanAFlag))
+    if (0U != (status & kDUALADC_EndofScanAFlag))
     {
         /* Clear End-of-Scan flag for ADCA. */
-        DUALADC_ClearScanSequenceStatusFlags(DEMO_DUALADC_BASE, kDADC_EndofScanAFlag);
+        DUALADC_ClearScanSequenceStatusFlags(DEMO_DUALADC_BASE, kDUALADC_EndofScanAFlag);
 
         /* Read CMD1 result; reading also clears the result-ready flag. */
         DUALADC_GetConversionResult(DEMO_DUALADC_BASE, DEMO_DUALADC_USER_CMDID, &g_DualAdcResult);
@@ -67,8 +67,8 @@ void DEMO_DUALADC_IRQ_HANDLER_FUNC(void)
 int main(void)
 {
     opamp_config_t opampConfig;
-    dadc_config_t adcConfig;
-    dadc_cmd_config_t cmdConfig;
+    dualadc_config_t adcConfig;
+    dualadc_cmd_config_t cmdConfig;
 
     BOARD_InitHardware();
 
@@ -93,7 +93,7 @@ int main(void)
     /* Initialize ADC with default configuration. */
     DUALADC_GetDefaultConfig(&adcConfig);
 
-    adcConfig.conversionMode = kDADC_CooperationMode;
+    adcConfig.conversionMode = kDUALADC_CooperationMode;
     adcConfig.enableAnalogPreEnable = true; /* Pre-enable analog for minimum trigger latency. */
     DUALADC_Init(DEMO_DUALADC_BASE, &adcConfig);
 
@@ -111,16 +111,16 @@ int main(void)
     DUALADC_GetDefaultConversionCommandConfig(&cmdConfig);
 
     cmdConfig.channelNumber = DEMO_DUALADC_USER_CHANNEL;
-    cmdConfig.resolutionMode = kDADC_ResolutionStandard;
-    cmdConfig.conversionType = kDADC_ConversionDifferential;
-    cmdConfig.sampleTimeMode = kDADC_SampleTime131_5;
+    cmdConfig.resolutionMode = kDUALADC_ResolutionStandard;
+    cmdConfig.conversionType = kDUALADC_ConversionDifferential;
+    cmdConfig.sampleTimeMode = kDUALADC_SampleTime131_5;
     DUALADC_ConfigConversionCommand(DEMO_DUALADC_BASE, DEMO_DUALADC_USER_CMDID, &cmdConfig);
 
     /* Mark CMD2 as sequence terminator so the sequence ends after CMD1. */
     DUALADC_SetConversionSequenceEndCommand(DEMO_DUALADC_BASE, DEMO_DUALADC_USER_CMDID + 1U);
 
     /* Enable End-of-Scan interrupt for ADCA. */
-    DUALADC_EnableInterrupts(DEMO_DUALADC_BASE, kDADC_InterruptEndOfScanA);
+    DUALADC_EnableInterrupts(DEMO_DUALADC_BASE, kDUALADC_InterruptEndOfScanA);
     EnableIRQ(DEMO_DUALADC_IRQn);
 
     PRINTF("ADC Full Range: %d\r\n", DEMO_DUALADC_FULL_RANGE);
@@ -131,7 +131,7 @@ int main(void)
         GETCHAR();
 
         /* Issue a software trigger to start conversion (Trigger0 starts ADCA). */
-        DUALADC_SetSoftwareTrigger(DEMO_DUALADC_BASE, kDADC_SoftwareTrigger0);
+        DUALADC_SetSoftwareTrigger(DEMO_DUALADC_BASE, kDUALADC_SoftwareTrigger0);
 
         /* Wait for End-of-Scan interrupt to signal conversion complete. */
         while (!g_DualAdcConversionCompletedFlag)
