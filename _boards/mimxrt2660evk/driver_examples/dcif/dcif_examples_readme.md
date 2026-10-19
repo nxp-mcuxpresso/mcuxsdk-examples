@@ -9,9 +9,12 @@ Hardware requirements
 
 Board settings
 ==============
-Connect the display panel matching the interface selected in dcif_support.h
+1. Use 5V power supply with J6 1-2 connected instead of usb cable.
+2. Connect the display panel matching the interface selected in dcif_support.h
 (DEMO_INTERFACE_TYPE: DBI = LCD-PAR-S035, DPI = LCM-RGB-5INCH-CT) to the board's
-parallel-LCD connector <TODO: confirm connector, e.g. Jxx>.
+parallel-LCD connector:
+- LCM_RGB_5INCH: connect panel J1 to board J98, pin 1-40 to pin 1-40.
+- LCD_PAR_S035: connect to J94, select panel's 16bit 8080 mode.
 
 Prepare the Demo
 ================

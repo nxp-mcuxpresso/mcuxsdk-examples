@@ -9,7 +9,7 @@ Hardware requirements
 Board settings
 ==============
 1. Connect the OV5640 camera module to J4.
-2. Connect the LCM_RGB_5INCH DPI panel to J98.
+2. Connect the LCM_RGB_5INCH DPI panel to J98, pin 1-40 to pin 1-40.
 3. Use 5V power supply with J6 1-2 connected instead of usb cable.
 
 Prepare the Demo

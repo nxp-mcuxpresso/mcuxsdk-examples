@@ -9,8 +9,12 @@ Hardware requirements
 
 Board settings
 ============
-Connect the appropriate display panel to the EVK display connector for the
-selected panel option.
+1. Use 5V power supply with J6 1-2 connected instead of usb cable.
+2. Connect the appropriate display panel to the EVK display connector for the
+selected panel option:
+- LCM_RGB_5INCH: connect panel J1 to board J98, pin 1-40 to pin 1-40.
+- RK055MHD091A0: connect to J19, panel pin 1-40 to board pin 40-1.
+- LCD_PAR_S035: connect to J94, select panel's 16bit 8080 mode.
 
 Project Configuration
 =====================
