@@ -12,7 +12,7 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define DEMO_CTIMER   CTIMER2
+#define DEMO_CTIMER   CTRLSS__CTIMER_2
 #define DEMO_GPIO     SWM_TO_GPIO_PORT(SWM2_03)
 #define DEMO_GPIO_PIN SWM_TO_GPIO_PIN(SWM2_03)
 /*${macro:end}*/

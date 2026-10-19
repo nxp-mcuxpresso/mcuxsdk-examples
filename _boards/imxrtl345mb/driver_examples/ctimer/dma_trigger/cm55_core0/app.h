@@ -13,8 +13,8 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define CTIMER                  CTIMER0 /* Timer 1 */
-#define CTIMER_MAT_OUT          kCTIMER_Match_0 /* Match output 0 */
+#define CTIMER                  CTRLSS__CTIMER_0    /* Timer 1 */
+#define CTIMER_MAT_OUT          kCTIMER_Match_0     /* Match output 0 */
 #define CTIMER_CLK_FREQ         CLOCK_GetCTimerClkFreq(0U)
 #define EXAMPLE_DMA_BASEADDR    DMA0
 #define DEMO_DMA_CHANNEL        (0U)

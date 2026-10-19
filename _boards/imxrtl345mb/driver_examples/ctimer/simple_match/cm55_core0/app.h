@@ -10,8 +10,8 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define CTIMER          CTIMER2         /* Timer 2 */
-#define CTIMER_MAT_OUT  kCTIMER_Match_0 /* Match output 0 */
+#define CTIMER          CTRLSS__CTIMER_0    /* Timer 2 */
+#define CTIMER_MAT_OUT  kCTIMER_Match_0     /* Match output 0 */
 #define CTIMER_CLK_FREQ (CLOCK_GetCTimerClkFreq(2))
 /*${macro:end}*/
 
