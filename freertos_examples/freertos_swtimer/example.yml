@@ -135,6 +135,7 @@ freertos_swtimer:
     frdmmcxa577: []
     frdmmcxa287: []
     frdmmcxc162: []
+    frdmmcxc353: []
     frdmkw43: []
     kw43loc: []
     mcxw70loc: []
