@@ -765,10 +765,16 @@ void BOARD_InitFREQMEPins(void)
 /* clang-format off */
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOARD_InitADCPins:
-- options: {callFromInitBoot: 'false', coreID: cm23, enableClock: 'true'}
+BOARD_InitPins:
+- options: {callFromInitBoot: 'true', coreID: cm23, enableClock: 'true'}
 - pin_list:
-  - {pin_num: '14', peripheral: ADC0, signal: 'A, 0', pin_signal: P1_9/XBAR_IN5/LPUART0_CTS_B/LPUART1_CTS_B/PWT1_IN0/PWM0_A3, slew_rate: fast, open_drain: disable,
+  - {pin_num: '27', peripheral: ADC0, signal: 'B, 5', pin_signal: P2_6/XBAR_IN4/LPSPI0_SDO/LPUART0_RXD/QTMR0_CH0/PWM0_X0/WUU0_IN19, slew_rate: fast, open_drain: disable,
+    drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: disable, invert_input: normal}
+  - {pin_num: '28', peripheral: ADC0, signal: 'A, 5', pin_signal: P2_7/XBAR_IN3/LPSPI0_SDI/LPUART0_TXD/XBAR_OUT5/PWM0_B3, slew_rate: fast, open_drain: disable, drive_strength: low,
+    pull_select: down, pull_enable: disable, input_buffer: disable, invert_input: normal}
+  - {pin_num: '9', peripheral: ADC0, signal: 'A, 11', pin_signal: P1_0/XBAR_IN7/LPSPI0_SCK/LPI2C0_SCLS/QTMR0_CH0/PWM0_B1/XBAR_OUT9/FREQME_CLK_IN1, slew_rate: fast,
+    open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: disable, invert_input: normal}
+  - {pin_num: '10', peripheral: ADC0, signal: 'B, 11', pin_signal: P1_1/XBAR_IN8/LPSPI0_SDI/LPI2C0_SDAS/QTMR0_CH1/PWM0_A1/XBAR_OUT10/CLKOUT, slew_rate: fast, open_drain: disable,
     drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: disable, invert_input: normal}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -784,12 +790,41 @@ void BOARD_InitADCPins(void)
 {
     /* PORT1: Peripheral clock is enabled */
     CLOCK_EnableClock(kCLOCK_GatePORT1);
+    /* PORT2: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GatePORT2);
     /* ADC0 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kADC0_RST_SHIFT_RSTn);
     /* PORT1 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kPORT1_RST_SHIFT_RSTn);
+    /* PORT2 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kPORT2_RST_SHIFT_RSTn);
 
-    const port_pin_config_t port1_9_pin14_config = {/* Internal pull-up/down resistor is disabled */
+    const port_pin_config_t port1_0_pin9_config = {/* Internal pull-up/down resistor is disabled */
+                                                   .pullSelect = kPORT_PullDisable,
+                                                   /* Low internal pull resistor value is selected. */
+                                                   .pullValueSelect = kPORT_LowPullResistor,
+                                                   /* Fast slew rate is configured */
+                                                   .slewRate = kPORT_FastSlewRate,
+                                                   /* Passive input filter is disabled */
+                                                   .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                   /* Open drain output is disabled */
+                                                   .openDrainEnable = kPORT_OpenDrainDisable,
+                                                   /* Low drive strength is configured */
+                                                   .driveStrength = kPORT_LowDriveStrength,
+                                                   /* Normal drive strength is configured */
+                                                   .driveStrength1 = kPORT_NormalDriveStrength,
+                                                   /* Pin is configured as ADC0_A11 */
+                                                   .mux = kPORT_MuxAlt0,
+                                                   /* Digital input disabled; it is required for analog functions */
+                                                   .inputBuffer = kPORT_InputBufferDisable,
+                                                   /* Digital input is not inverted */
+                                                   .invertInput = kPORT_InputNormal,
+                                                   /* Pin Control Register fields [15:0] are not locked */
+                                                   .lockRegister = kPORT_UnlockRegister};
+    /* PORT1_0 (pin 9) is configured as ADC0_A11 */
+    PORT_SetPinConfig(PORT1, 0U, &port1_0_pin9_config);
+
+    const port_pin_config_t port1_1_pin10_config = {/* Internal pull-up/down resistor is disabled */
                                                     .pullSelect = kPORT_PullDisable,
                                                     /* Low internal pull resistor value is selected. */
                                                     .pullValueSelect = kPORT_LowPullResistor,
@@ -803,7 +838,7 @@ void BOARD_InitADCPins(void)
                                                     .driveStrength = kPORT_LowDriveStrength,
                                                     /* Normal drive strength is configured */
                                                     .driveStrength1 = kPORT_NormalDriveStrength,
-                                                    /* Pin is configured as ADC0_A0 */
+                                                    /* Pin is configured as ADC0_B11 */
                                                     .mux = kPORT_MuxAlt0,
                                                     /* Digital input disabled; it is required for analog functions */
                                                     .inputBuffer = kPORT_InputBufferDisable,
@@ -811,8 +846,58 @@ void BOARD_InitADCPins(void)
                                                     .invertInput = kPORT_InputNormal,
                                                     /* Pin Control Register fields [15:0] are not locked */
                                                     .lockRegister = kPORT_UnlockRegister};
-    /* PORT1_9 (pin 14) is configured as ADC0_A0 */
-    PORT_SetPinConfig(PORT1, 9U, &port1_9_pin14_config);
+    /* PORT1_1 (pin 10) is configured as ADC0_B11 */
+    PORT_SetPinConfig(PORT1, 1U, &port1_1_pin10_config);
+
+    const port_pin_config_t port2_6_pin27_config = {/* Internal pull-up/down resistor is disabled */
+                                                    .pullSelect = kPORT_PullDisable,
+                                                    /* Low internal pull resistor value is selected. */
+                                                    .pullValueSelect = kPORT_LowPullResistor,
+                                                    /* Fast slew rate is configured */
+                                                    .slewRate = kPORT_FastSlewRate,
+                                                    /* Passive input filter is disabled */
+                                                    .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                    /* Open drain output is disabled */
+                                                    .openDrainEnable = kPORT_OpenDrainDisable,
+                                                    /* Low drive strength is configured */
+                                                    .driveStrength = kPORT_LowDriveStrength,
+                                                    /* Normal drive strength is configured */
+                                                    .driveStrength1 = kPORT_NormalDriveStrength,
+                                                    /* Pin is configured as ADC0_B5 */
+                                                    .mux = kPORT_MuxAlt0,
+                                                    /* Digital input disabled; it is required for analog functions */
+                                                    .inputBuffer = kPORT_InputBufferDisable,
+                                                    /* Digital input is not inverted */
+                                                    .invertInput = kPORT_InputNormal,
+                                                    /* Pin Control Register fields [15:0] are not locked */
+                                                    .lockRegister = kPORT_UnlockRegister};
+    /* PORT2_6 (pin 27) is configured as ADC0_B5 */
+    PORT_SetPinConfig(PORT2, 6U, &port2_6_pin27_config);
+
+    const port_pin_config_t port2_7_pin28_config = {/* Internal pull-up/down resistor is disabled */
+                                                    .pullSelect = kPORT_PullDisable,
+                                                    /* Low internal pull resistor value is selected. */
+                                                    .pullValueSelect = kPORT_LowPullResistor,
+                                                    /* Fast slew rate is configured */
+                                                    .slewRate = kPORT_FastSlewRate,
+                                                    /* Passive input filter is disabled */
+                                                    .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                    /* Open drain output is disabled */
+                                                    .openDrainEnable = kPORT_OpenDrainDisable,
+                                                    /* Low drive strength is configured */
+                                                    .driveStrength = kPORT_LowDriveStrength,
+                                                    /* Normal drive strength is configured */
+                                                    .driveStrength1 = kPORT_NormalDriveStrength,
+                                                    /* Pin is configured as ADC0_A5 */
+                                                    .mux = kPORT_MuxAlt0,
+                                                    /* Digital input disabled; it is required for analog functions */
+                                                    .inputBuffer = kPORT_InputBufferDisable,
+                                                    /* Digital input is not inverted */
+                                                    .invertInput = kPORT_InputNormal,
+                                                    /* Pin Control Register fields [15:0] are not locked */
+                                                    .lockRegister = kPORT_UnlockRegister};
+    /* PORT2_7 (pin 28) is configured as ADC0_A5 */
+    PORT_SetPinConfig(PORT2, 7U, &port2_7_pin28_config);
 }
 
 /* clang-format off */

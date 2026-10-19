@@ -14,8 +14,10 @@
 #define DEMO_DUALADC_BASE                  ADC0
 #define DEMO_DUALADC_IRQn                  ADC0_A_IRQn
 #define DEMO_DUALADC_IRQ_HANDLER_FUNC      ADC0_A_IRQHandler
-#define DEMO_DUALADC_USER_CHANNEL          0U
-#define DEMO_DUALADC_USER_CMDID            1U /* CMD1 */
+#define DEMO_DUALADC_USER_CHANNEL_0        5U   /* ADC0_A5 */
+#define DEMO_DUALADC_USER_CHANNEL_1        5U   /* ADC0_B5 */
+#define DEMO_DUALADC_USER_CHANNEL_2        11U  /* ADC0_A11 */
+#define DEMO_DUALADC_USER_CHANNEL_3        11U  /* ADC0_B11 */
 /*${macro:end}*/
 
 /*******************************************************************************

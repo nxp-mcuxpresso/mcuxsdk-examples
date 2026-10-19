@@ -6,7 +6,7 @@ Hardware requirements
 
 Board settings
 ============
-- ADC0_A0 input signal J2-1(P1_9).
+- ADC0_A5(J4-8), ADC0_B5(J4-6), ADC0_A11(J4-4), ADC0_B11(J4-2) input signal.
 
 Prepare the Demo
 ===============
@@ -27,5 +27,8 @@ The log below shows the output of the demo in the terminal window:
 DualADC Interrupt Example
 ADC Full Range: 4096
 Please press any key to get user channel's ADC value.
-ADC value: 2011
+ADC value: 365 2 0 4094
+ADC value: 365 3 0 4095
+ADC value: 367 2 0 4095
+ADC value: 365 2 0 4094
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
