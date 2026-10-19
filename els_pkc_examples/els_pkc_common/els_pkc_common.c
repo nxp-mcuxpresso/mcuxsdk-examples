@@ -50,7 +50,7 @@ int main(void)
     PRINTF("\r\n============================\r\n");
 
     PRINTF("ELS get info:");
-    if (mcuxClEls_Common_Get_Info_example() == true)
+    if (mcuxClEls_Common_Get_Info_example() == ELS_PKC_EXAMPLE_STATUS_OK)
     {
         pass++;
         PRINTF("pass \r\n");
@@ -62,7 +62,7 @@ int main(void)
     }
 
     PRINTF("RNG PRNG random:");
-    if (mcuxClEls_Rng_Prng_Get_Random_example() == true)
+    if (mcuxClEls_Rng_Prng_Get_Random_example() == ELS_PKC_EXAMPLE_STATUS_OK)
     {
         pass++;
         PRINTF("pass \r\n");
@@ -74,7 +74,7 @@ int main(void)
     }
 
     PRINTF("Flow protection:");
-    if (mcuxCsslFlowProtection_example() == true)
+    if (mcuxCsslFlowProtection_example() == ELS_PKC_EXAMPLE_STATUS_OK)
     {
         pass++;
         PRINTF("pass \r\n");
@@ -86,7 +86,7 @@ int main(void)
     }
 
     PRINTF("Memory compare:");
-    if (mcuxCsslMemory_Compare_example() == EXIT_CODE_OK)
+    if (mcuxCsslMemory_Compare_example() == ELS_PKC_EXAMPLE_STATUS_OK)
     {
         pass++;
         PRINTF("pass \r\n");
@@ -98,7 +98,7 @@ int main(void)
     }
 
     PRINTF("Memory copy:");
-    if (mcuxCsslMemory_Copy_example() == EXIT_CODE_OK)
+    if (mcuxCsslMemory_Copy_example() == ELS_PKC_EXAMPLE_STATUS_OK)
     {
         pass++;
         PRINTF("pass \r\n");
@@ -110,7 +110,7 @@ int main(void)
     }
 
     PRINTF("Key component operations:");
-    if (mcuxClKey_example() == true)
+    if (mcuxClKey_example() == ELS_PKC_EXAMPLE_STATUS_OK)
     {
         pass++;
         PRINTF("pass \r\n");

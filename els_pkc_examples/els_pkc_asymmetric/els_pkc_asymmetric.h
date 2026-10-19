@@ -13,15 +13,17 @@
  ******************************************************************************/
 #define EXIT_CODE_ERROR 0x00U
 #define EXIT_CODE_OK    0x01U
+/* ELS_PKC CLib example functions return uint32_t; 0 means success. */
+#define ELS_PKC_EXAMPLE_STATUS_OK 0U
 /*******************************************************************************
  * API
  ******************************************************************************/
-extern bool mcuxClEls_Ecc_Keygen_Sign_Verify_example(void);
-extern bool mcuxClRsa_sign_NoEncode_example(void);
-extern bool mcuxClRsa_sign_pss_sha2_256_example(void);
-extern bool mcuxClRsa_verify_NoVerify_example(void);
-extern bool mcuxClRsa_verify_pssverify_sha2_256_example(void);
-extern bool mcuxClEcc_MontDH_Curve25519_example(void);
-extern bool mcuxClEls_Tls_Master_Key_Session_Keys_example(void);
+extern uint32_t mcuxClEls_Ecc_Keygen_Sign_Verify_example(void);
+extern uint32_t mcuxClRsa_sign_NoEncode_example(void);
+extern uint32_t mcuxClRsa_sign_pss_sha2_256_example(void);
+extern uint32_t mcuxClRsa_verify_NoVerify_example(void);
+extern uint32_t mcuxClRsa_verify_pssverify_sha2_256_example(void);
+extern uint32_t mcuxClEcc_MontDH_Curve25519_example(void);
+extern uint32_t mcuxClEls_Tls_Master_Key_Session_Keys_example(void);
 
 #endif /* _ELS_PKC_ASYMMETRIC_H_ */

@@ -46,7 +46,7 @@ int main(void)
     PRINTF("\r\n============================\r\n");
 
     PRINTF("PKC ECC keygen sign verify:");
-    if (mcuxClEls_Ecc_Keygen_Sign_Verify_example() == true)
+    if (mcuxClEls_Ecc_Keygen_Sign_Verify_example() == ELS_PKC_EXAMPLE_STATUS_OK)
     {
         pass++;
         PRINTF("pass \r\n");
@@ -58,7 +58,7 @@ int main(void)
     }
 
     PRINTF("PKC RSA no-verify:");
-    if (mcuxClRsa_verify_NoVerify_example() == true)
+    if (mcuxClRsa_verify_NoVerify_example() == ELS_PKC_EXAMPLE_STATUS_OK)
     {
         pass++;
         PRINTF("pass \r\n");
@@ -70,7 +70,7 @@ int main(void)
     }
 
     PRINTF("PKC RSA sign no-encode:");
-    if (mcuxClRsa_sign_NoEncode_example() == true)
+    if (mcuxClRsa_sign_NoEncode_example() == ELS_PKC_EXAMPLE_STATUS_OK)
     {
         pass++;
         PRINTF("pass \r\n");
@@ -82,7 +82,7 @@ int main(void)
     }
 
     PRINTF("PKC RSA-PSS sign SHA256:");
-    if (mcuxClRsa_sign_pss_sha2_256_example() == true)
+    if (mcuxClRsa_sign_pss_sha2_256_example() == ELS_PKC_EXAMPLE_STATUS_OK)
     {
         pass++;
         PRINTF("pass \r\n");
@@ -94,7 +94,7 @@ int main(void)
     }
 
     PRINTF("PKC RSA-PSS verify SHA256:");
-    if (mcuxClRsa_verify_pssverify_sha2_256_example() == true)
+    if (mcuxClRsa_verify_pssverify_sha2_256_example() == ELS_PKC_EXAMPLE_STATUS_OK)
     {
         pass++;
         PRINTF("pass \r\n");
@@ -106,7 +106,7 @@ int main(void)
     }
 
     PRINTF("PKC ECC Curve25519:");
-    if (mcuxClEcc_MontDH_Curve25519_example() == true)
+    if (mcuxClEcc_MontDH_Curve25519_example() == ELS_PKC_EXAMPLE_STATUS_OK)
     {
         pass++;
         PRINTF("pass \r\n");
@@ -118,7 +118,7 @@ int main(void)
     }
 
     PRINTF("TLS Master session keys:");
-    if (mcuxClEls_Tls_Master_Key_Session_Keys_example() == true)
+    if (mcuxClEls_Tls_Master_Key_Session_Keys_example() == ELS_PKC_EXAMPLE_STATUS_OK)
     {
         pass++;
         PRINTF("pass \r\n");

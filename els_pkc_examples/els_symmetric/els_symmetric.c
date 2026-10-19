@@ -46,7 +46,7 @@ int main(void)
     PRINTF("\r\n============================\r\n");
 
     PRINTF("AES128-CBC encryption:");
-    if (mcuxClEls_Cipher_Aes128_Cbc_Encrypt_example() == true)
+    if (mcuxClEls_Cipher_Aes128_Cbc_Encrypt_example() == ELS_PKC_EXAMPLE_STATUS_OK)
     {
         pass++;
         PRINTF("pass \r\n");
@@ -58,7 +58,7 @@ int main(void)
     }
 
     PRINTF("AES128-ECB encryption:");
-    if (mcuxClEls_Cipher_Aes128_Ecb_Encrypt_example() == true)
+    if (mcuxClEls_Cipher_Aes128_Ecb_Encrypt_example() == ELS_PKC_EXAMPLE_STATUS_OK)
     {
         pass++;
         PRINTF("pass \r\n");
@@ -70,7 +70,7 @@ int main(void)
     }
 
     PRINTF("CMAC AES128:");
-    if (mcuxClMacModes_Els_Cmac_Aes128_Oneshot_example() == true)
+    if (mcuxClMacModes_Els_Cmac_Aes128_Oneshot_example() == ELS_PKC_EXAMPLE_STATUS_OK)
     {
         pass++;
         PRINTF("pass \r\n");
