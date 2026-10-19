@@ -14,5 +14,4 @@ slcd_split_primary_core:
       - ${board_root}/${board}/driver_examples/slcd_split/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    frdmmcxl255@cm33:
-    - -armgcc@debug
+    frdmmcxl255@cm33: []
