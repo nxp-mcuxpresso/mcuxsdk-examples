@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NXP
+ * Copyright 2021, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -98,11 +98,13 @@ void speculation_buffer_clear(void)
  */
 void lpcac_clear(void)
 {
+#if defined(SYSCON_LPCAC_CTRL_CLR_LPCAC_MASK)
     /* Clear L1 low power cache. */
     if((SYSCON->LPCAC_CTRL & SYSCON_LPCAC_CTRL_DIS_LPCAC_MASK) == 0U)
     {
         SYSCON->LPCAC_CTRL |= SYSCON_LPCAC_CTRL_CLR_LPCAC_MASK;
     }
+#endif
 }
 
 int main()
