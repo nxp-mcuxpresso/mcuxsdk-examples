@@ -49,6 +49,7 @@ if (CONFIG_MCUX_COMPONENT_middleware.lvgl)
                 middleware/lvgl/src/**.h
                 middleware/lvgl/*.h
                 middleware/lvgl/include/lvgl/**.h
+                middleware/lvgl/include/lvgl_private/**.h
     )
 
 endif()
