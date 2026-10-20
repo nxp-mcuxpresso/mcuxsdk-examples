@@ -7,4 +7,5 @@ dual_adc
    :maxdepth: 1
 
    average_timer/readme.md
+   edma/readme.md
    interrupt/readme.md

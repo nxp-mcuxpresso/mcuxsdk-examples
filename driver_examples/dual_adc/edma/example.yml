@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+dual_adc_edma:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dual_adc/edma
+    project-root-path: boards/${board}/driver_examples/dual_adc/edma/${multicore_foldername}
+    document:
+      name: dual_adc_edma${core_id_suffix_name}
+      category: driver_examples/dual_adc
+      brief: The dual_adc_edma example shows how to use eDMA to transfer DualADC conversion results.
+      example_readme:
+      - examples/driver_examples/dual_adc/edma/readme.md
+      - ${board_root}/${board}/driver_examples/dual_adc/edma/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+
+    frdmmcxc353: []
