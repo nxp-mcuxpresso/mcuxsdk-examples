@@ -22,6 +22,8 @@
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
+void SBL_EnableRemap(uint32_t start_addr, uint32_t end_addr, uint32_t off);
+void SBL_DisableRemap(void);
 
 /*******************************************************************************
  * Code
@@ -42,13 +44,14 @@ int main(void)
     CLOCK_EnableClock(kCLOCK_Gpio0);
     CLOCK_EnableClock(kCLOCK_Gpio1);
 
-    /* Disable prefetch buffer and flash cache */    
-    SYSCON->NVM_CTRL |= SYSCON_NVM_CTRL_DIS_MBECC_ERR_INST_MASK | SYSCON_NVM_CTRL_DIS_MBECC_ERR_DATA_MASK;
-    SYSCON->NVM_CTRL |= SYSCON_NVM_CTRL_DIS_FLASH_SPEC_MASK | SYSCON_NVM_CTRL_DIS_DATA_SPEC_MASK;
-    SYSCON->LPCAC_CTRL |= SYSCON_LPCAC_CTRL_DIS_LPCAC_MASK;
-    
-    PRINTF("hello sbl.\n");
-    
+    PRINTF("hello sbl.\n");   
+#if defined(CONFIG_BOOT_MODE_FLASH_REMAP)
+    /* Make sure flash remapping function is disabled before running the
+     * bootloader application .
+     */
+    PRINTF("Disabling flash remapping function\r\n");
+    SBL_DisableRemap();
+#endif
     (void)sbl_boot_main();
 
     return 0;

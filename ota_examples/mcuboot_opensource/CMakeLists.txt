@@ -6,6 +6,19 @@ project(mcuboot_opensource LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_r
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 
+# common
+
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}
+    SOURCES examples/ota_examples/mcuboot_opensource/perf_log.h
+            examples/ota_examples/mcuboot_opensource/perf_log.c
+)
+
+mcux_add_include(
+    BASE_PATH ${SdkRootDirPath}
+    INCLUDES examples/ota_examples/mcuboot_opensource
+)
+
 # Board specific
 
 mcux_add_include(
@@ -29,7 +42,8 @@ mcux_add_source(
 # Add additional configuration
 mcux_add_macro(
     CC "-DPRINTF_ADVANCED_ENABLE=1\
-       -DSHELL_PRINT_COPYRIGHT=0"
+       -DSHELL_PRINT_COPYRIGHT=0\
+       -DPERF_LOG_SILENT"
 )
 mcux_add_iar_configuration(
     CC "--diag_suppress=Pe257,Pa039"

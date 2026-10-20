@@ -44,13 +44,6 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
     CLOCK_EnableClock(kCLOCK_Trng);
 
-    /* Disable prefetch buffer and flash cache 
-     * RM informs this needs to be done to use ROM API that modifies flash
-     */
-    
-    SYSCON->NVM_CTRL |= SYSCON_NVM_CTRL_DIS_MBECC_ERR_INST_MASK | SYSCON_NVM_CTRL_DIS_MBECC_ERR_DATA_MASK;
-    SYSCON->NVM_CTRL |= SYSCON_NVM_CTRL_DIS_FLASH_SPEC_MASK | SYSCON_NVM_CTRL_DIS_DATA_SPEC_MASK;
-    SYSCON->LPCAC_CTRL |= SYSCON_LPCAC_CTRL_DIS_LPCAC_MASK;
 
     /* Select RMII type PHY */
     SYSCON0->ENET_PHY_INTF_SEL = SYSCON_ENET_PHY_INTF_SEL_PHY_SEL(1);

@@ -4,6 +4,10 @@ All notable changes to MCUboot fork in MCUXpresso SDK and related ota examples w
 
 ## [26.12.0] - 12/2026
 
+### Added
+- Added an option allowing hash calculation functions to directly access the storage. This configuration can reduce boot times.
+- Added an option to measure boot time. Remove PERF_LOG_SILENT define from build to enable it.
+
 ### Changed
 - Removed project segments from custom builds to merge MCXN linkers into unified linker and to simplify builds
 
