@@ -4,7 +4,7 @@
 
 The dual_adc_interrupt example shows how to use interrupt with DualADC driver.
 
-This chip integrates one 16-bit Dual ADC (ADC0) with both A-side and B-side conversion channels. The two sides can operate independently or in cooperation mode, and multi-channel conversion is performed through a scan sequence built from command buffers (CMD).
+This chip integrates one 16-bit Dual ADC with both A-side and B-side conversion channels. The two sides can operate independently or in cooperation mode, and multi-channel conversion is performed through a scan sequence built from command buffers (CMD).
 
 This example demonstrates the following features:
 

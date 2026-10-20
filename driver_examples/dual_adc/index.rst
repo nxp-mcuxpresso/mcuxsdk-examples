@@ -6,4 +6,5 @@ dual_adc
 .. toctree::
    :maxdepth: 1
 
+   average_timer/readme.md
    interrupt/readme.md

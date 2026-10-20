@@ -16,7 +16,7 @@
  *   DEMO_DUALADC_BASE               : DADC peripheral base pointer (e.g. DADC0)
  *   DEMO_DUALADC_IRQn               : DADC IRQ number
  *   DEMO_DUALADC_IRQ_HANDLER_FUNC   : DADC IRQ handler function name
- *   DEMO_DUALADC_USER_CHANNEL       : A-side analog channel to convert (0~31)
+ *   DEMO_DUALADC_USER_CHANNEL_0..3  : analog channels to convert (0~31)
  */
 
 /* 12-bit standard resolution, JLEFT=0: result is at bit[14:3]; right-shift by 3. */
