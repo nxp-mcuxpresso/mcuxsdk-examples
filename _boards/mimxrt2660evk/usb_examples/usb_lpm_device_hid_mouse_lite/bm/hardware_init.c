@@ -47,13 +47,16 @@ static const power_deep_sleep_config_t s_usbDeepSleepConfig = {
     .enableCorePllClockSource  = false,
     .enableSysPllClockSource   = false,
     .enableLdoq0V8ClockSource  = false,
-    .enableSxoscClockSource    = false,
+    /* SXOSC feeds usb0_phyclk and usb0_wakeclk, so it has to keep running in standby. */
+    .enableSxoscClockSource    = true,
     .enableFro12MLpClockSource = true,
 
     .enableComputeRootClock = false,
     .enableMainRootClock    = false,
     .enableWakeRootClock    = true,
-    .enableCommRootClock    = false,
+    /* usb0_phyclk and usb0_wakeclk are COMM_CCM slices, so this root clock has to keep running in
+     * standby as well. */
+    .enableCommRootClock    = true,
     .enableMediaRootClock   = false,
     .enableAudioRootClock   = false,
     .enableWake1MRootClock  = true,
@@ -284,6 +287,12 @@ void USB_DeviceClockInit(void)
     };
 
     CLOCK_EnableUsbHsClock();
+    /* usb0_wakeclk clocks the USBNC wake-up detection logic, which has to resolve a USB resume
+     * within the window an LPM L1 exit allows. The board default ULP32K (32 kHz) is too slow for
+     * that; LP1M_CORE (1 MHz) and SXOSC (24 MHz) both satisfy it. SXOSC is selected because it
+     * already feeds usb0_phyclk, so no further clock source has to be kept alive in standby. */
+    CLOCK_SetRootClockMux(kCLOCK_Root_COMM_usb0_wakeclk, kCLOCK_USB0_WAKECLK_ClockRoot_SXOSC);
+
     USB_EhciLowPowerPhyInit(CONTROLLER_ID, CLOCK_GetRootClockFreq(kCLOCK_Root_COMM_usb0_phyclk), &phyConfig);
 
     /* Let the USB PHY PLL power itself down while the bus is suspended and bring itself back up on
