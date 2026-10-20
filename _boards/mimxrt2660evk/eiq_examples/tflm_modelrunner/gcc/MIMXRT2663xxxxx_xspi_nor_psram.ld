@@ -73,7 +73,12 @@ m_qadata_size          = m_dtcm_size - _size_cstack_;
 m_code_start           = m_text_start + m_vector_table_size;
 m_code_size            = m_text_size - m_vector_table_size;
 m_data_start           = m_psram_start;
-m_data_size            = m_psram_size - m_ncache_alloc_size;  /* PSRAM first 16 MB */
+/* Shrink .data/.bss to 1MB; carve the rest into m_model_flash below. */
+m_data_size            = 0x00100000;
+
+m_model_flash_start    = m_data_start + m_data_size;
+m_model_flash_size     = (m_psram_size - m_ncache_alloc_size) - m_data_size;
+
 
 /* ====================== Provided symbol fallbacks ======================= */
 /* ======================================================================== */
@@ -364,9 +369,18 @@ SECTIONS
 __VECTOR_TABLE                = ORIGIN(m_interrupts);
 __VECTOR_RAM                  = DEFINED(__ram_vector_table__) ? ORIGIN(m_rvt) : ORIGIN(m_interrupts);
 __RAM_VECTOR_TABLE_SIZE_BYTES = LENGTH(m_rvt);
-__NCACHE_REGION_START         = ORIGIN(m_ncache);
-__NCACHE_REGION_SIZE          = m_ncache_alloc_size;
+/* Move the MPU non-cacheable boundary earlier so it also covers
+ * m_model_flash; the model region then needs no cache maintenance. */
+__NCACHE_REGION_START         = m_model_flash_start;
+__NCACHE_REGION_SIZE          = m_psram_start + m_psram_size - m_model_flash_start;
 __CONTAINER_IMG_OFFSET        = m_app_image_offset - m_container_offset;
 __CONTAINER_IMG_LOAD_ADDR     = ORIGIN(m_interrupts);
 __CONTAINER_IMG_ENTRY_ADDR    = ORIGIN(m_interrupts);
 __CONTAINER_IMG_SIZE          = text_data_end - __VECTOR_TABLE;
+
+/* PSRAM range for modelrunner's simulated-Flash model storage. */
+__MODEL_FLASH_STORAGE_START   = m_model_flash_start;
+__MODEL_FLASH_STORAGE_SIZE    = m_model_flash_size;
+
+
+

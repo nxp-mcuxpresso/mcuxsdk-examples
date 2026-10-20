@@ -47,21 +47,30 @@ status_t FlashInit(FlashConfig *config)
 status_t FlashErase(FlashConfig *config, uint32_t start, uint32_t length)
 {
     (void)config;
+    /* Reject writes beyond the dedicated model storage range. */
+    if (start + length > FLASH_MODEL_STORAGE_SIZE) {
+        PRINTF("ERROR: model too large for PSRAM storage (%u > %u)\r\n",
+               start + length, FLASH_MODEL_STORAGE_SIZE);
+        return kStatus_Fail;
+    }
     PRINTF("PSRAM erase (no-op) @ 0x%08X len %u\r\n",
-           EXAMPLE_XSPI_AMBA_BASE + start, length);
+           FLASH_BASE_ADDR + start, length);
     return kStatus_Success;
 }
 
 /*
  * FlashProgram -- write 'length' bytes from 'src' to PSRAM offset 'start'.
- * Plain memcpy into the mapped window; the model heap lives in the
- * non-cacheable PSRAM region, so no cache maintenance is needed.
+ * The model storage range is non-cacheable (see __NCACHE_REGION_START in the
+ * linker script), so a plain memcpy is visible to the NPU with no cache
+ * maintenance needed.
  */
 status_t FlashProgram(FlashConfig *config, uint32_t start, uint32_t *src, uint32_t length)
 {
     (void)config;
-    memcpy((void *)(uintptr_t)(EXAMPLE_XSPI_AMBA_BASE + start), src, length);
-    PRINTF("PSRAM program @ 0x%08X: %u bytes\r\n",
-           EXAMPLE_XSPI_AMBA_BASE + start, length);
+    memcpy((void *)(uintptr_t)(FLASH_BASE_ADDR + start), src, length);
+    /* Trailing "==" is the per-chunk ack expected by the host script. */
+    PRINTF("PSRAM program @ 0x%08X: %u bytes  ==\r\n",
+           FLASH_BASE_ADDR + start, length);
     return kStatus_Success;
 }
+

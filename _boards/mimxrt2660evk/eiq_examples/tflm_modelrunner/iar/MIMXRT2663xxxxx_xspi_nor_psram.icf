@@ -85,7 +85,14 @@ define symbol m_cstack_end        = m_dtcm_start + m_dtcm_size - 1;
 define symbol m_code_start        = m_text_start;
 define symbol m_code_end          = m_text_end;
 define symbol m_data_start        = m_psram_start;
-define symbol m_data_end          = m_psram_start + m_psram_size - m_ncache_alloc_size - 1;
+/* Shrink .data/.bss to 1MB; carve the rest into m_model_flash. */
+define symbol m_data_size         = 0x00100000;
+
+
+define symbol m_data_end          = m_data_start + m_data_size - 1;
+define symbol m_model_flash_start = m_data_start + m_data_size;
+define symbol m_model_flash_end   = m_psram_start + m_psram_size - m_ncache_alloc_size - 1;
+
 
 /* ============================ Memory regions ============================ */
 /* ======================================================================== */
@@ -189,8 +196,16 @@ if (isdefinedsymbol(__ram_vector_table__)) {
   define exported symbol __VECTOR_RAM             = m_text_start;
 }
 define exported symbol __RAM_VECTOR_TABLE_SIZE    = m_rvt_offset;
-define exported symbol __NCACHE_REGION_START      = m_ncache_start;
-define exported symbol __NCACHE_REGION_SIZE       = m_ncache_end - m_ncache_start + 1;
+/* Move the MPU non-cacheable boundary earlier so it also covers
+ * m_model_flash; the model region then needs no cache maintenance. */
+define exported symbol __NCACHE_REGION_START      = m_model_flash_start;
+define exported symbol __NCACHE_REGION_SIZE       = m_ncache_end - m_model_flash_start + 1;
 define exported symbol __CONTAINER_IMG_OFFSET     = m_app_image_offset - m_container_offset;
 define exported symbol __CONTAINER_IMG_LOAD_ADDR  = m_text_start;
 define exported symbol __CONTAINER_IMG_ENTRY_ADDR = m_text_start;
+
+/* PSRAM range for modelrunner's simulated-Flash model storage. */
+define exported symbol __MODEL_FLASH_STORAGE_START = m_model_flash_start;
+define exported symbol __MODEL_FLASH_STORAGE_SIZE  = m_model_flash_end - m_model_flash_start + 1;
+
+

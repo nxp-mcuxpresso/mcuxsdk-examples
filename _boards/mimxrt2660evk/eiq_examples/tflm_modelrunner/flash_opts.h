@@ -11,15 +11,13 @@
 #include "app.h"
 #include "board.h"
 
-/*
- * The modelrunner stores the loaded .tflite model in PSRAM.
- * FLASH_MODEL_ADDR is the byte offset from EXAMPLE_XSPI_AMBA_BASE at which
- * the model data begins (0 = start of PSRAM window).
- * FLASH_BASE_ADDR is the AHB alias base used to compute host-visible addresses
- * reported back over the UART/HTTP protocol.
- */
+/* Dedicated PSRAM range for model storage, kept separate from .data/.bss. */
+extern uint32_t __MODEL_FLASH_STORAGE_START;
+extern uint32_t __MODEL_FLASH_STORAGE_SIZE;
 #define FLASH_MODEL_ADDR 0x0U
-#define FLASH_BASE_ADDR  EXAMPLE_XSPI_AMBA_BASE
+#define FLASH_BASE_ADDR  ((uint32_t)&__MODEL_FLASH_STORAGE_START)
+#define FLASH_MODEL_STORAGE_SIZE ((uint32_t)&__MODEL_FLASH_STORAGE_SIZE)
+
 
 /*
  * FlashConfig is an xspi_config_t on RT2660 (kept for interface compatibility).
