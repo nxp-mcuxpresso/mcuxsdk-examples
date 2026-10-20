@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+#
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+#
 """
 test_loopback.py - Self-test the COBS framing without any real hardware.
 

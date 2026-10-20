@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+#
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+#
 """
 serial_mux_hub.py - Multiplex several virtual serial ports over one real UART.
 

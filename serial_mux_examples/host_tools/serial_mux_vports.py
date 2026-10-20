@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+#
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+#
 """
 serial_mux_vports.py - Expose N REAL, OS-level virtual serial ports that any
 third-party software (minicom, PuTTY, TeraTerm, pyserial, LabVIEW, ...) can
