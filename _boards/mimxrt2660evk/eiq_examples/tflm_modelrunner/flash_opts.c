@@ -18,6 +18,7 @@
 
 #include "flash_opts.h"
 #include "fsl_debug_console.h"
+#include "fsl_llc.h"
 #include "timer.h"
 
 #include <string.h>
@@ -60,14 +61,15 @@ status_t FlashErase(FlashConfig *config, uint32_t start, uint32_t length)
 
 /*
  * FlashProgram -- write 'length' bytes from 'src' to PSRAM offset 'start'.
- * The model storage range is non-cacheable (see __NCACHE_REGION_START in the
- * linker script), so a plain memcpy is visible to the NPU with no cache
- * maintenance needed.
+ * The model storage range is cacheable, so the written range is cleaned
+ * from L1 and the LLC before the NPU reads it.
  */
 status_t FlashProgram(FlashConfig *config, uint32_t start, uint32_t *src, uint32_t length)
 {
     (void)config;
     memcpy((void *)(uintptr_t)(FLASH_BASE_ADDR + start), src, length);
+    cleanCache_by_Addr(FLASH_BASE_ADDR + start, length);
+    (void)LLC_CleanInvalidateCache(CMPT__LLC);
     /* Trailing "==" is the per-chunk ack expected by the host script. */
     PRINTF("PSRAM program @ 0x%08X: %u bytes  ==\r\n",
            FLASH_BASE_ADDR + start, length);

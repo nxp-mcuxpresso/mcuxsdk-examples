@@ -369,10 +369,8 @@ SECTIONS
 __VECTOR_TABLE                = ORIGIN(m_interrupts);
 __VECTOR_RAM                  = DEFINED(__ram_vector_table__) ? ORIGIN(m_rvt) : ORIGIN(m_interrupts);
 __RAM_VECTOR_TABLE_SIZE_BYTES = LENGTH(m_rvt);
-/* Move the MPU non-cacheable boundary earlier so it also covers
- * m_model_flash; the model region then needs no cache maintenance. */
-__NCACHE_REGION_START         = m_model_flash_start;
-__NCACHE_REGION_SIZE          = m_psram_start + m_psram_size - m_model_flash_start;
+__NCACHE_REGION_START         = ORIGIN(m_ncache);
+__NCACHE_REGION_SIZE          = m_ncache_alloc_size;
 __CONTAINER_IMG_OFFSET        = m_app_image_offset - m_container_offset;
 __CONTAINER_IMG_LOAD_ADDR     = ORIGIN(m_interrupts);
 __CONTAINER_IMG_ENTRY_ADDR    = ORIGIN(m_interrupts);
