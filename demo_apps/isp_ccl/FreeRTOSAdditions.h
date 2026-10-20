@@ -1,3 +1,8 @@
+/*
+ * Copyright 2026 NXP
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
 
 #if configGENERATE_RUN_TIME_STATS==1
 /**
