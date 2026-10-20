@@ -63,15 +63,25 @@ mcux_add_source(
     "${board_root}/${board}/lwip_examples/lwip_dhcp_usb/freertos/hardware_init.c"
 )
 
+mcux_project_remove_source(
+  BASE_PATH ${SdkRootDirPath}
+  SOURCES examples/lwip_examples/lwip_dhcp_usb/freertos/FreeRTOSConfig.h
+)
+
+mcux_project_remove_include(
+  BASE_PATH ${SdkRootDirPath}
+  INCLUDES examples/lwip_examples/lwip_dhcp_usb/freertos
+)
+
 mcux_add_source(
   BASE_PATH ${SdkRootDirPath}
   SOURCES examples/_boards/${board}/lwip_examples/lwip_dhcp_usb/freertos/freertos_config/FreeRTOSConfig.h
 )
 
-# BEFORE: the app dir (which carries its own FreeRTOSConfig.h) is already on the
-# include path; the kernel must resolve to this board's copy.
-target_include_directories(${MCUX_SDK_PROJECT_NAME} BEFORE PRIVATE
-  ${SdkRootDirPath}/examples/_boards/${board}/lwip_examples/lwip_dhcp_usb/freertos/freertos_config)
+mcux_add_include(
+  BASE_PATH ${SdkRootDirPath}
+  INCLUDES examples/_boards/${board}/lwip_examples/lwip_dhcp_usb/freertos/freertos_config
+)
 
 mcux_add_armgcc_configuration(CC "-fno-branch-count-reg")
 
