@@ -76,20 +76,20 @@
 /*! @brief mmc configuration */
 #define BOARD_SDMMC_MMC_VCC_SUPPLY  kMMC_VoltageWindows270to360
 #define BOARD_SDMMC_MMC_VCCQ_SUPPLY kMMC_VoltageWindows270to360
-/*! @brief align with cache line size */
-#define BOARD_SDMMC_DATA_BUFFER_ALIGN_SIZE       (32U)
+/*! @brief align with cache line size
+ * As DTCM is on AHB bus, there is 1KB boundary access limitation.
+ * To avoid DMA access across 1KB boundary, use 64 bytes alignment
+ * which is same with USDHC DMA burst length used.
+ */
+#define BOARD_SDMMC_DATA_BUFFER_ALIGN_SIZE       (64U)
 #define BOARD_SDMMC_MMC_SUPPORT_8_BIT_DATA_WIDTH 1U
 #define BOARD_SDMMC_MMC_TUNING_TYPE              0
 /*!@ brief host interrupt priority*/
 #define BOARD_SDMMC_SD_HOST_IRQ_PRIORITY   (5U)
 #define BOARD_SDMMC_MMC_HOST_IRQ_PRIORITY  (5U)
 #define BOARD_SDMMC_SDIO_HOST_IRQ_PRIORITY (5U)
-/*!@brief dma descriptor buffer size
- * As DTCM is on AHB bus, there is 1KB boundary access limitation.
- * To avoid DMA access across 1KB boundary, use 64 bytes alignment
- * which is same with USDHC DMA burst length used.
- */
-#define BOARD_SDMMC_HOST_DMA_DESCRIPTOR_BUFFER_SIZE (64U)
+/*!@brief dma descriptor buffer size */
+#define BOARD_SDMMC_HOST_DMA_DESCRIPTOR_BUFFER_SIZE (32U)
 /*! @brief cache maintain function enabled for RW buffer */
 #define BOARD_SDMMC_HOST_CACHE_CONTROL kSDMMCHOST_CacheControlRWBuffer
 

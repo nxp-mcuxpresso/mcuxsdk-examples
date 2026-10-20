@@ -29,9 +29,13 @@ void BOARD_SDCardIoVoltageControl(sdmmc_operation_voltage_t voltage);
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-/*!brief sdmmc dma buffer */
+/*!brief sdmmc dma buffer
+ * As DTCM is on AHB bus, there is 1KB boundary access limitation.
+ * To avoid DMA access across 1KB boundary, use 64 bytes alignment
+ * which is same with USDHC DMA burst length used.
+ */
 AT_NONCACHEABLE_SECTION_ALIGN(static uint32_t s_sdmmcHostDmaBuffer[BOARD_SDMMC_HOST_DMA_DESCRIPTOR_BUFFER_SIZE],
-                              SDMMCHOST_DMA_DESCRIPTOR_BUFFER_ALIGN_SIZE);
+                              64U);
 #if defined SDMMCHOST_ENABLE_CACHE_LINE_ALIGN_TRANSFER && SDMMCHOST_ENABLE_CACHE_LINE_ALIGN_TRANSFER
 /* two cache line length for sdmmc host driver maintain unalign transfer */
 SDK_ALIGN(static uint8_t s_sdmmcCacheLineAlignBuffer[BOARD_SDMMC_DATA_BUFFER_ALIGN_SIZE * 2U],
