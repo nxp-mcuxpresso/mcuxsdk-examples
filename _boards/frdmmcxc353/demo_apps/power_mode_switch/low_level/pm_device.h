@@ -44,8 +44,6 @@ typedef enum _resc_name
     kResc_Io_Vdd_Lvd_Lp,
     kResc_Sys_Vdd_Lvd_Lp,
     kResc_Sys_Vdd_Hvd_Lp,
-    kResc_GlitchDetector_Act,
-    kResc_GlitchDetector_Lp,
 
     /*! Memory modules */
     kResc_RamA,
@@ -66,7 +64,6 @@ typedef struct _app_core_ldo_ctrl
     bool useActiveModeConfig;   /* true: SPC_SetActiveModeRegulatorsConfig, false: SPC_SetLowPowerModeRegulatorsConfig */
     bool lpIREF;                /* Only used for low power modes. */
     spc_bandgap_mode_t bandgapMode;
-    spc_core_ldo_voltage_level_t coreLDOVoltage;
     spc_core_ldo_drive_strength_t coreLDODriveStrength;
 } app_core_ldo_ctrl_t;
 

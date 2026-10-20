@@ -23,8 +23,6 @@ const resc_status_t g_resc_ctrl_table[kResc_Max_Num][APP_LOW_POWER_MODE_COUNT] =
     [kResc_Core_Vdd_Lvd_Lp]     = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_Sys_Vdd_Lvd_Lp]      = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
     [kResc_Sys_Vdd_Hvd_Lp]      = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
-    [kResc_GlitchDetector_Act]  = {kResc_Status_On,     kResc_Status_On,        kResc_Status_On,        kResc_Status_On},
-    [kResc_GlitchDetector_Lp]   = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
 
     /*! SRAM modules */
     [kResc_RamA]                = {kResc_Status_On,     kResc_Status_Lp,        kResc_Status_Lp,        kResc_Status_Lp},
@@ -37,7 +35,7 @@ const resc_status_t g_resc_ctrl_table[kResc_Max_Num][APP_LOW_POWER_MODE_COUNT] =
     [kResc_Cmp1_Dac]            = {kResc_Status_Off,    kResc_Status_Off,       kResc_Status_Off,       kResc_Status_Off},
 };
 
-/* LDO voltage level and drive strength control table for all power modes. */
+/* LDO drive strength control table for all power modes. */
 static const app_core_ldo_ctrl_t g_core_ldo_ctrl_table[APP_LOW_POWER_MODE_COUNT] = {
     /* Sleep */
     {
@@ -45,7 +43,6 @@ static const app_core_ldo_ctrl_t g_core_ldo_ctrl_table[APP_LOW_POWER_MODE_COUNT]
         .useActiveModeConfig   = true,
         .lpIREF                = false,
         .bandgapMode           = kSPC_BandgapEnabledBufferDisabled,
-        .coreLDOVoltage        = kSPC_CoreLDO_NormalVoltage,
         .coreLDODriveStrength  = kSPC_CoreLDO_NormalDriveStrength,
     },
     /* DeepSleep */
@@ -54,7 +51,6 @@ static const app_core_ldo_ctrl_t g_core_ldo_ctrl_table[APP_LOW_POWER_MODE_COUNT]
         .useActiveModeConfig   = false,
         .lpIREF                = false,
         .bandgapMode           = kSPC_BandgapEnabledBufferDisabled,
-        .coreLDOVoltage        = kSPC_CoreLDO_MidDriveVoltage,
         .coreLDODriveStrength  = kSPC_CoreLDO_LowDriveStrength,
     },
     /* PowerDown */
@@ -63,7 +59,6 @@ static const app_core_ldo_ctrl_t g_core_ldo_ctrl_table[APP_LOW_POWER_MODE_COUNT]
         .useActiveModeConfig   = false,
         .lpIREF                = false,
         .bandgapMode           = kSPC_BandgapEnabledBufferDisabled,
-        .coreLDOVoltage        = kSPC_CoreLDO_MidDriveVoltage,
         .coreLDODriveStrength  = kSPC_CoreLDO_LowDriveStrength,
     },
     /* DeepPowerDown */
@@ -72,7 +67,6 @@ static const app_core_ldo_ctrl_t g_core_ldo_ctrl_table[APP_LOW_POWER_MODE_COUNT]
         .useActiveModeConfig   = false,
         .lpIREF                = false,
         .bandgapMode           = kSPC_BandgapEnabledBufferDisabled,
-        .coreLDOVoltage        = kSPC_CoreLDO_MidDriveVoltage,
         .coreLDODriveStrength  = kSPC_CoreLDO_LowDriveStrength,
     },
 };
@@ -268,28 +262,6 @@ static void SetVoltagePeripheralPowerStatus(resc_status_t resc_status, resc_name
             }
             break;
 
-        case kResc_GlitchDetector_Act:
-            if (resc_status == kResc_Status_Off)
-            {
-                SPC_DisableActiveModeVddCoreGlitchDetect(APP_SPC, true);
-            }
-            else
-            {
-                SPC_DisableActiveModeVddCoreGlitchDetect(APP_SPC, false);
-            }
-            break;
-
-        case kResc_GlitchDetector_Lp:
-            if (resc_status == kResc_Status_Off)
-            {
-                SPC_DisableLowPowerModeVddCoreGlitchDetect(APP_SPC, true);
-            }
-            else
-            {
-                SPC_DisableLowPowerModeVddCoreGlitchDetect(APP_SPC, false);
-            }
-            break;
-
         default:
         {
             assert(false);
@@ -394,7 +366,7 @@ static void ApplyRescTableForMode(uint8_t modeIndex)
         {
             SetClockPeripheralPowerStatus(status, resc);
         }
-        else if (resc <= kResc_GlitchDetector_Lp)
+        else if (resc <= kResc_Sys_Vdd_Hvd_Lp)
         {
             SetVoltagePeripheralPowerStatus(status, resc);
         }
@@ -448,7 +420,6 @@ static void SetRegulatorsConfig(app_power_mode_t targetPowerMode)
         spc_active_mode_regulators_config_t activeModeRegulatorOption;
 
         activeModeRegulatorOption.bandgapMode = ctrl->bandgapMode;
-        activeModeRegulatorOption.CoreLDOOption.CoreLDOVoltage = ctrl->coreLDOVoltage;
         activeModeRegulatorOption.CoreLDOOption.CoreLDODriveStrength = ctrl->coreLDODriveStrength;
 
         (void)SPC_SetActiveModeRegulatorsConfig(APP_SPC, &activeModeRegulatorOption);
@@ -459,7 +430,6 @@ static void SetRegulatorsConfig(app_power_mode_t targetPowerMode)
 
         lowPowerRegulatorOption.lpIREF = ctrl->lpIREF;
         lowPowerRegulatorOption.bandgapMode = ctrl->bandgapMode;
-        lowPowerRegulatorOption.CoreLDOOption.CoreLDOVoltage       = ctrl->coreLDOVoltage;
         lowPowerRegulatorOption.CoreLDOOption.CoreLDODriveStrength = ctrl->coreLDODriveStrength;
 
         (void)SPC_SetLowPowerModeRegulatorsConfig(APP_SPC, &lowPowerRegulatorOption);
