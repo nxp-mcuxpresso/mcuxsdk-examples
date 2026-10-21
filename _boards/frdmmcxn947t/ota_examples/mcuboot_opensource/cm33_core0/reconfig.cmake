@@ -50,5 +50,19 @@ mcux_remove_mdk_linker_script(
     LINKER ${device_root}/MCX/MCXN/MCXN947T/arm/MCXN947T_cm33_core0_flash.scf
 )
 
-# Specific linkers are added using project segments
-# see examples/_common/project_segments/ota_examples/mcxn_boards/prjseg.cmake
+# Add the MCUboot linker scripts.
+# A single linker script handles both flash partition layouts. The custom one
+# (bootloader located in the main flash) is selected by the linker symbol
+# __mcuboot_main_flash_only__, which is defined by the mcuboot middleware
+# when MCUX_COMPONENT_middleware.mcuboot.mcxn_custom_cfg.main_flash_only is
+# enabled - see middleware/mcuboot_opensource/CMakeLists.txt
+mcux_add_iar_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER ${board_root}/${board}/ota_examples/mcuboot_opensource/linker/mcxn10_cm33_flash.icf
+)
+mcux_add_armgcc_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER ${board_root}/${board}/ota_examples/mcuboot_opensource/linker/mcxn10_cm33_flash.ld
+)

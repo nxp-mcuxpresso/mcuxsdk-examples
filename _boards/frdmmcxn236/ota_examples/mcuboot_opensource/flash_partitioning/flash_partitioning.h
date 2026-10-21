@@ -20,11 +20,13 @@
 
 #define BOOT_FLASH_ACT_APP              CONFIG_BOOT_FLASH_ACT_APP_ADDRESS
 #define BOOT_FLASH_CAND_APP             CONFIG_BOOT_FLASH_CAND_APP_ADDRESS
+#define BOOT_FLASH_SLOT0_ENC_CFG_ADDRESS  CONFIG_BOOT_FLASH_SLOT0_ENC_CFG_ADDRESS
 
 #else
 /*
  Layout setup
 */
+#ifndef CONFIG_MCXN_CUSTOM_CFG_MAIN_FLASH_ONLY
 /*
   Default configuration
   Bootloader located in Bank 1 IFR 0 Region (0x0100_8000 - 0x0100_FFFF)
@@ -42,6 +44,24 @@
 */
 #define BOOT_FLASH_ACT_APP  0x00000000
 #define BOOT_FLASH_CAND_APP 0x00080000
+#else
+/*
+  Custom configuration - see readme file
+  Bootloader located in main flash
+  This configuration supports mbedTLS by default
+
+  0x0000_0000  +------------------------+ Flash Start
+               | Bootloader             | 256 kB
+  0x0004_0000  +------------------------+
+               | Application_Primary    | 384 kB
+  0x000A_0000  +------------------------+
+               | Application_Secondary  | 384 kB
+  0x0010_0000  +------------------------+
+*/
+#define BOOT_FLASH_ACT_APP  0x00040000
+#define BOOT_FLASH_CAND_APP 0x000A0000
+
+#endif /* !CONFIG_MCXN_CUSTOM_CFG_MAIN_FLASH_ONLY */
 
 #endif /* CONFIG_BOOT_CUSTOM_DEVICE_SETUP */
 

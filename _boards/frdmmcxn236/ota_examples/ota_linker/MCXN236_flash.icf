@@ -39,11 +39,32 @@ if (isdefinedsymbol(__heap_size__)) {
   define symbol __size_heap__          = 0x0400;
 }
 
-define symbol m_interrupts_start               = 0x00000400;
-define symbol m_interrupts_end                 = 0x000007FF;
+/*
+  Flash partition layout selector - this single linker file covers both
+  supported layouts. The custom one is selected by the __mcuboot_main_flash_only__
+  linker symbol, which is defined by the mcuboot middleware when the Kconfig
+  option MCUX_COMPONENT_middleware.mcuboot.mcxn_custom_cfg.main_flash_only
+  is enabled. See flash_partitioning.h of the mcuboot_opensource example.
 
-define symbol m_text_start                     = 0x00000800;
-define symbol m_text_end                       = 0x0007FFFF;
+  This application is linked into the Application_Primary slot. There is
+  0x400 bytes of the MCUboot header at the beginning of the slot, followed
+  by 0x400 bytes of the interrupt vector table and the application itself.
+
+  Default configuration: primary slot 0x0000_0000 (512 kB)
+  Custom configuration:  primary slot 0x0004_0000 (384 kB)
+*/
+
+define symbol mcuboot_header_size      = 0x400;
+define symbol interrupts_size          = 0x400;
+
+define symbol primary_slot_base        = isdefinedsymbol(__mcuboot_main_flash_only__) ? 0x00040000 : 0x00000000;
+define symbol primary_slot_size        = isdefinedsymbol(__mcuboot_main_flash_only__) ? 0x00060000 : 0x00080000;
+
+define symbol m_interrupts_start               = primary_slot_base + mcuboot_header_size;
+define symbol m_interrupts_end                 = m_interrupts_start + interrupts_size - 1;
+
+define symbol m_text_start                     = primary_slot_base + mcuboot_header_size + interrupts_size;
+define symbol m_text_end                       = primary_slot_base + primary_slot_size - 1;
 
 define symbol m_data_start                     = 0x20000000;
 define symbol m_data_end                       = 0x20037FFF;

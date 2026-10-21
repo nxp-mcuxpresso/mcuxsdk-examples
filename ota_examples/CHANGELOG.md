@@ -2,6 +2,14 @@
 
 All notable changes to MCUboot fork in MCUXpresso SDK and related ota examples will be documented in this file.
 
+## [26.12.0] - 12/2026
+
+### Changed
+- Removed project segments from custom builds to merge MCXN linkers into unified linker and to simplify builds
+
+### Fixed
+- (Encrypted XIP)(MCXN236) Fixed missing encrypted XIP configuration for FRDM-MCXN236
+
 ## [26.09.0] - 09/2026 
 
 ### Added

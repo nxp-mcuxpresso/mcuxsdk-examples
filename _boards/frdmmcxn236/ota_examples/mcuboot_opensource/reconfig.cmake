@@ -1,4 +1,7 @@
 # Add additional configuration
+mcux_add_macro(
+    CC "-DENCRYPTED_XIP_NPX"
+)
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}

@@ -40,19 +40,61 @@ if (isdefinedsymbol(__heap_size__)) {
 define symbol __ram_vector_table_size__        =  isdefinedsymbol(__ram_vector_table__) ? 0x00000180 : 0;
 define symbol __ram_vector_table_offset__      =  isdefinedsymbol(__ram_vector_table__) ? 0x0000017F : 0;
 
-/* Flash Bank 1 IFR 0 */
+/*
+  Flash partition layout selector - this single linker file covers both
+  supported layouts. The custom one is selected by the __mcuboot_main_flash_only__
+  linker symbol, which is defined by the mcuboot middleware when the Kconfig
+  option MCUX_COMPONENT_middleware.mcuboot.mcxn_custom_cfg.main_flash_only
+  is enabled. See flash_partitioning.h of the mcuboot_opensource example.
 
-define symbol m_interrupts_start               = 0x01008000;
-define symbol m_interrupts_end                 = 0x010083FF;
+  Default configuration (__mcuboot_main_flash_only__ not defined)
+  Bootloader located in Bank 1 IFR 0 Region (0x0100_8000 - 0x0100_FFFF)
+  This configuration supports flash remap
 
-define symbol m_text_start                     = 0x01008400;
-define symbol m_text_end                       = 0x0100FFFF;
+  0x0000_0000  +------------------------+ Flash Start
+               | Application_Primary    | 1024 kB
+  0x0010_0000  +------------------------+
+               | Application_Secondary  | 1024 kB
+  0x0020_0000  +------------------------+
+                          ...
+  0x0100_8000  +------------------------+
+               | Bootloader             | 32 kB   <- this image
+  0x0100_FFFF  +------------------------+
 
-define symbol m_interrupts_ram_start           = 0x20000000;
-define symbol m_interrupts_ram_end             = 0x20000000 + __ram_vector_table_offset__;
+  RAM: 0x2000_0000 - 0x2004_FFFF (320 kB)
+
+  Custom configuration (__mcuboot_main_flash_only__ defined)
+  Bootloader located in main flash
+  This configuration supports mbedTLS by default and optionally encrypted XIP using NPX
+
+  0x0000_0000  +------------------------+ Flash Start
+               | Bootloader             | 256 kB  <- this image
+  0x0004_0000  +------------------------+
+               | Application_Primary    | 896 kB
+  0x0012_0000  +------------------------+
+               | Application_Secondary  | 896 kB
+  0x0020_0000  +------------------------+
+
+  RAM: 0x3000_0000 - 0x3004_FFFF (320 kB)
+
+  Note: the custom configuration addresses the flash and RAM through their
+  secure aliases (0x1000_0000 / 0x3000_0000), the default one through the
+  non-secure aliases (0x0000_0000 / 0x2000_0000).
+*/
+
+define symbol m_interrupts_start               = isdefinedsymbol(__mcuboot_main_flash_only__) ? 0x10000000 : 0x01008000;
+define symbol m_interrupts_end                 = isdefinedsymbol(__mcuboot_main_flash_only__) ? 0x100003FF : 0x010083FF;
+
+define symbol m_text_start                     = isdefinedsymbol(__mcuboot_main_flash_only__) ? 0x10000400 : 0x01008400;
+define symbol m_text_end                       = isdefinedsymbol(__mcuboot_main_flash_only__) ? 0x1003FFFF : 0x0100FFFF;
+
+define symbol m_interrupts_ram_base            = isdefinedsymbol(__mcuboot_main_flash_only__) ? 0x30000000 : 0x20000000;
+
+define symbol m_interrupts_ram_start           = m_interrupts_ram_base;
+define symbol m_interrupts_ram_end             = m_interrupts_ram_base + __ram_vector_table_offset__;
 
 define symbol m_data_start                     = m_interrupts_ram_start + __ram_vector_table_size__;
-define symbol m_data_end                       = 0x2004FFFF;
+define symbol m_data_end                       = m_interrupts_ram_base + 0x0004FFFF;
 
 /*
 define symbol m_usb_sram_start                 = 0x400BA000;

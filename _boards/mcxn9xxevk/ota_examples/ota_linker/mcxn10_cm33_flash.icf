@@ -22,8 +22,15 @@
 ** ###################################################################
 */
 
-/* Flash range to be used is from 0x0000_0000 to 0x0010_0000
-    - the region after is a storage for Candidate application
+/* Flash partition layout selector.
+    - Default configuration (bootloader in IFR region) uses the primary slot
+      range 0x0000_0000 .. 0x0010_0000.
+    - When __mcuboot_main_flash_only__ is defined (enabled by the Kconfig option
+      MCUX_COMPONENT_middleware.mcuboot.mcxn_custom_cfg.main_flash_only) the
+      bootloader occupies the beginning of the main flash, so the primary slot
+      is moved to 0x0004_0000 .. 0x000E_8000.
+
+    - the region after the primary slot is a storage for Candidate application
     - there is 0x400 bytes of the MCU boot header at the beginning of the 1st slot
     - the *core1_image_size* parameter allocates space for core1 image that will be merged
       with the resulting binary before signing
@@ -35,19 +42,23 @@
 define symbol mcuboot_header_size      = 0x400;
 define symbol mcuboot_trailer_size     = 0x2000;
 define symbol interrupts_size          = 0x400;
-define symbol core1_image_size         = 0x38000;
+define symbol core1_image_size         = isdefinedsymbol(__mcuboot_main_flash_only__) ? 0x18000 : 0x38000;
 
-define symbol primary_slot_base        = 0x00000000;
-define symbol primary_slot_size        = 0x00100000;
+define symbol primary_slot_base        = isdefinedsymbol(__mcuboot_main_flash_only__) ? 0x00040000 : 0x00000000;
+define symbol primary_slot_size        = isdefinedsymbol(__mcuboot_main_flash_only__) ? 0x000E8000 : 0x00100000;
 
 
 define symbol m_interrupts_start       = primary_slot_base + mcuboot_header_size;
 define symbol m_interrupts_end         = m_interrupts_start + interrupts_size - 1;
 
 define symbol m_text_start             = primary_slot_base + mcuboot_header_size + interrupts_size;
-define symbol m_text_end               = 0x000C7FFF;
+/* Note: the custom configuration intentionally leaves a gap between the end of
+   the text region and the core1 image, the default one does not. */
+define symbol m_text_end               = isdefinedsymbol(__mcuboot_main_flash_only__)
+                                       ? (m_text_start + primary_slot_size - core1_image_size - 1)
+                                       : (primary_slot_base + primary_slot_size - core1_image_size - 1);
 
-define exported symbol core1_image_start   = 0x000C8000;
+define exported symbol core1_image_start   = primary_slot_base + primary_slot_size - core1_image_size;
 define exported symbol core1_image_end     = core1_image_start + core1_image_size - mcuboot_trailer_size - 1;
 
 define symbol m_data_start             = 0x20000000;

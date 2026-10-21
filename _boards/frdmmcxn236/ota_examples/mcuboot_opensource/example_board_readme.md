@@ -71,11 +71,48 @@ To flash signed application using blhost you can use the following:
     blhost -u 0x1FC9,0x0158 -- write-memory 0 ota_mcuboot_basic.N236.SIGNED.PADDED.bin
 
 
-### Alternative MCUBoot memory layout - bootloader located in the main memory
+### Custom configuration - Encrypted XIP
 
-It is also possible to have the bootloader occupy the main memory.
-This allows for larger memory footprint compared to IFR region (32kB). However
-the flash remapping (swapping) feature becomes difficult to use in this configuration.
-For more details about this mode see MCUboot example for MCXN947 board where both
-the default IFR scheme and this alternative one are implemented.
+| Region         | From       | To         | Size   |
+|----------------|------------|------------|--------|
+| MCUboot code   | 0x00000000 | 0x0003FFFF |  256kB |
+| Primary slot   | 0x00040000 | 0x0009FFFF |  384kB |
+| Secondary slot | 0x000A0000 | 0x000FFFFF |  384kB |
 
+This custom build generates a project with predefined configuration to utilize Encrypted XIP mode. For more information please see [Encrypted XIP and MCUboot](../../../../ota_examples/_doc/encrypted_xip.md).
+
+Note: Default layout setup using the bootloader in IFR region limits usage of some features such as hardware accelerated mbedTLS (due size of IFR region) or encrypted XIP (due limitation of ROM). This custom configuration moves the bootloader to main flash array.
+
+- MCUBoot header size is set to 1024 bytes
+- Signing algorithm is ECDSA-P256
+- Write alignment is 16 bytes
+- MCUBoot is configured for `Encrypted XIP mode` using modified `MCUBOOT_OVERWRITE_ONLY` image update strategy
+- MCUboot uses ECDH-P256 to secure AES key for image encryption
+- Primary slot is encrypted by NPX module to utilize encrypted XIP
+
+Image signing example:
+
+    imgtool sign --key sign-ecdsa-p256-priv.pem
+                 --align 16
+                 --version 1.1
+                 --slot-size 0x60000
+                 --header-size 0x400
+                 --max-sectors 111
+                 --pad-header
+                 -E enc-ec256-pub.pem
+                 ota_mcuboot_basic.bin
+                 ota_mcuboot_basic.SIGNED.bin
+
+Project building example:
+
+The project is built using `west` tool. For more information please see [MCUXpresso SDK documentation](https://docs.mcuxpresso.nxp.com/mcuxsdk/latest/introduction/README.html).
+
+Bootloader:
+~~~
+west build -p always examples/ota_examples/mcuboot_opensource -b frdmmcxn236 --config debug --toolchain armgcc -DCONF_FILE="examples/ota_examples/_custom_cfg/mcxn236/mcuboot_opensource.conf"
+~~~
+
+OTA application:
+~~~
+west build -p always examples/ota_examples/ota_mcuboot_basic -b frdmmcxn236 --config debug --toolchain armgcc -DCONF_FILE="examples/ota_examples/_custom_cfg/mcxn236/ota_mcuboot_basic.conf"
+~~~

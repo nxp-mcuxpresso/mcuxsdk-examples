@@ -30,12 +30,64 @@ HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x0400;
 STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x1000;
 M_VECTOR_RAM_SIZE = DEFINED(__ram_vector_table__) ? 0x00000180 : 0;
 
+/*
+  Flash partition layout selector - this single linker file covers both
+  supported layouts. The custom one is selected by the __mcuboot_main_flash_only__
+  linker symbol, which is defined by the mcuboot middleware when the Kconfig
+  option MCUX_COMPONENT_middleware.mcuboot.mcxn_custom_cfg.main_flash_only
+  is enabled. See flash_partitioning.h of the mcuboot_opensource example.
+
+  Default configuration (__mcuboot_main_flash_only__ not defined)
+  Bootloader located in Bank 1 IFR 0 Region (0x0100_8000 - 0x0100_FFFF)
+  This configuration supports flash remap
+
+  0x0000_0000  +------------------------+ Flash Start
+               | Application_Primary    | 1024 kB
+  0x0010_0000  +------------------------+
+               | Application_Secondary  | 1024 kB
+  0x0020_0000  +------------------------+
+                          ...
+  0x0100_8000  +------------------------+
+               | Bootloader             | 32 kB   <- this image
+  0x0100_FFFF  +------------------------+
+
+  RAM: 0x2000_0000 - 0x2004_FFFF (320 kB)
+
+  Custom configuration (__mcuboot_main_flash_only__ defined)
+  Bootloader located in main flash
+  This configuration supports mbedTLS by default and optionally encrypted XIP using NPX
+
+  0x0000_0000  +------------------------+ Flash Start
+               | Bootloader             | 256 kB  <- this image
+  0x0004_0000  +------------------------+
+               | Application_Primary    | 896 kB
+  0x0012_0000  +------------------------+
+               | Application_Secondary  | 896 kB
+  0x0020_0000  +------------------------+
+
+  RAM: 0x3000_0000 - 0x3004_FFFF (320 kB)
+
+  Note: the custom configuration addresses the flash and RAM through their
+  secure aliases (0x1000_0000 / 0x3000_0000), the default one through the
+  non-secure aliases (0x0000_0000 / 0x2000_0000).
+*/
+MAIN_FLASH_ONLY = DEFINED(__mcuboot_main_flash_only__) ? 1 : 0;
+
+IVEC_START = MAIN_FLASH_ONLY ? 0x10000000 : 0x01008000;
+IVEC_SIZE  = 0x00000400;
+
+TEXT_START = IVEC_START + IVEC_SIZE;
+TEXT_SIZE  = MAIN_FLASH_ONLY ? 0x0003FC00 : 0x00007C00;
+
+DATA_START = MAIN_FLASH_ONLY ? 0x30000000 : 0x20000000;
+DATA_SIZE  = 0x00050000;
+
 /* Specify the memory areas */
 MEMORY
 {
-  m_interrupts          (RX)  : ORIGIN = 0x01008000, LENGTH = 0x00000400
-  m_text                (RX)  : ORIGIN = 0x01008400, LENGTH = 0x00007C00
-  m_data                (RW)  : ORIGIN = 0x20000000, LENGTH = 0x00050000
+  m_interrupts          (RX)  : ORIGIN = IVEC_START, LENGTH = IVEC_SIZE
+  m_text                (RX)  : ORIGIN = TEXT_START, LENGTH = TEXT_SIZE
+  m_data                (RW)  : ORIGIN = DATA_START, LENGTH = DATA_SIZE
 /*  m_usb_sram            (RW)  : ORIGIN = 0x40140000, LENGTH = 0x00004000 */
 }
 

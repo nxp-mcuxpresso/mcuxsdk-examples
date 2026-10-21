@@ -34,25 +34,32 @@ RPMSG_SHMEM_SIZE = DEFINED(__use_shmem__) ? 0x2000 : 0;
 
 
 /*
- * Flash range to be used is from 0x0000_0000 to 0x0010_0000
+ * Flash partition layout selector.
+ *   - Default configuration (bootloader in IFR region) uses the primary slot
+ *     range 0x0000_0000 .. 0x0010_0000 (1024kB).
+ *   - When __mcuboot_main_flash_only__ is defined (enabled by the Kconfig option
+ *     MCUX_COMPONENT_middleware.mcuboot.mcxn_custom_cfg.main_flash_only) the
+ *     bootloader occupies the beginning of the main flash, so the primary slot
+ *     is moved to 0x0004_0000 .. 0x000E_0000 (896kB).
+ *
+ *   - the region after the primary slot is a storage for Candidate application
+ *   - there is 0x400 bytes of the MCU boot header at the beginning of the 1st slot
+ *   - the *CORE1_SIZE* parameter allocates space for core1 image that will be merged
+ *     with the resulting binary before signing
+ *   - at the end of application image there is a reserved area for image trailer
+ *     of size of one flash sector (8 kB)
+ */
+MAIN_FLASH_ONLY = DEFINED(__mcuboot_main_flash_only__) ? 1 : 0;
 
-    - the region after is a storage for Candidate application
-    - there is 0x400 bytes of the MCU boot header at the beginning of the 1st slot
-    - the *core1_image_size* parameter allocates space for core1 image that will be merged
-      with the resulting binary before signing
-    - at the end of application image there is a reserved area for image trailer
-      of size of one flash sector (8 kB)
-*/
-
-SLOT_START    = 0x00000000;  /* Internal flash */
-SLOT_SIZE     = 0x00100000;    /* 1024kB */
+SLOT_START    = MAIN_FLASH_ONLY ? 0x00040000 : 0x00000000;
+SLOT_SIZE     = MAIN_FLASH_ONLY ? 0x000E0000 : 0x00100000;
 
 MCUBOOT_HEADER_SIZE = 0x400;   /* 1kB */
 IVEC_SIZE = 0x400;             /* 1kB */
 MCUBOOT_TRAILER_SIZE = 0x2000; /* 8kB = sector size */
 
 APP_SIZE      = 0x000CD800;    /* 822kB */
-CORE1_SIZE    = 0x00030000;    /* 192kB */
+CORE1_SIZE    = MAIN_FLASH_ONLY ? 0x00010000 : 0x00030000; /* 64kB / 192kB */
 
 ASSERT(MCUBOOT_HEADER_SIZE+IVEC_SIZE+APP_SIZE+CORE1_SIZE+MCUBOOT_TRAILER_SIZE == SLOT_SIZE, "Flash memory areas doesn't fit slot size")
 

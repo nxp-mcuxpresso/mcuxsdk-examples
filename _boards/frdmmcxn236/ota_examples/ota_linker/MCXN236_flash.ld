@@ -31,12 +31,35 @@ ENTRY(Reset_Handler)
 HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x0400;
 STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x0800;
 
+/*
+  Flash partition layout selector - this single linker file covers both
+  supported layouts. The custom one is selected by the __mcuboot_main_flash_only__
+  linker symbol, which is defined by the mcuboot middleware when the Kconfig
+  option MCUX_COMPONENT_middleware.mcuboot.mcxn_custom_cfg.main_flash_only
+  is enabled. See flash_partitioning.h of the mcuboot_opensource example.
+
+  This application is linked into the Application_Primary slot. There is
+  0x400 bytes of the MCUboot header at the beginning of the slot, followed
+  by 0x400 bytes of the interrupt vector table and the application itself.
+
+  Default configuration: primary slot 0x0000_0000 (512 kB)
+  Custom configuration:  primary slot 0x0004_0000 (384 kB)
+*/
+MAIN_FLASH_ONLY = DEFINED(__mcuboot_main_flash_only__) ? 1 : 0;
+
+MCUBOOT_HEADER_SIZE = 0x400;
+IVEC_SIZE           = 0x400;
+
+SLOT_START = MAIN_FLASH_ONLY ? 0x00040000 : 0x00000000;
+SLOT_SIZE  = MAIN_FLASH_ONLY ? 0x00060000 : 0x00080000;
+
+APP_SIZE   = SLOT_SIZE - MCUBOOT_HEADER_SIZE - IVEC_SIZE;
 
 /* Specify the memory areas */
 MEMORY
 {
-  m_interrupts          (RX)  : ORIGIN = 0x00000400, LENGTH = 0x00000400
-  m_text                (RX)  : ORIGIN = 0x00000800, LENGTH = 0x0007F800
+  m_interrupts          (RX)  : ORIGIN = SLOT_START + MCUBOOT_HEADER_SIZE, LENGTH = IVEC_SIZE
+  m_text                (RX)  : ORIGIN = SLOT_START + MCUBOOT_HEADER_SIZE + IVEC_SIZE, LENGTH = APP_SIZE
   m_data                (RW)  : ORIGIN = 0x20000000, LENGTH = 0x00038000
   m_sramx               (RW)  : ORIGIN = 0x04000000, LENGTH = 0x00018000
 }
