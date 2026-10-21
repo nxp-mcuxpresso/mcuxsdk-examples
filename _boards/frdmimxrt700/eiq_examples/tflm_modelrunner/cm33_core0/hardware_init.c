@@ -12,6 +12,60 @@
 #include "app.h"
 #include "timer.h"
 #include "pmic_support.h"
+#ifdef EXTERNAL_MEM
+#include <stdbool.h>
+#include <stdint.h>
+#include "fsl_edma.h"
+
+
+/* DMA0 = the eDMA4 instance in the COMPUTE domain owned by this CM33 core0. */
+#define NPU_PREFETCH_DMA     DMA0
+#define NPU_PREFETCH_DMA_CH  4
+
+/* Widest eDMA transfer element (SSIZE/DSIZE). */
+#define NPU_PREFETCH_DMA_MAX_WIDTH 64U
+
+/* Shared with copy()/wait() in main.cpp (referenced there via extern "C"). */
+edma_handle_t g_DMA_NPU_Handle;
+volatile bool g_Transfer_Done = false;
+
+/* Reused by every prefetch; only copy() (single producer) programs it. */
+static edma_transfer_config_t s_transferConfig;
+
+
+/* Callback invoked by the EDMA driver ISR. */
+static void EDMA_Callback(edma_handle_t *handle, void *param, bool transferDone, uint32_t tcds)
+{
+    (void)handle;
+    (void)param;
+    (void)tcds;
+    if (transferDone)
+    {
+        g_Transfer_Done = true;
+    }
+}
+
+/* Start one eDMA prefetch; CH4 IRQ sets g_Transfer_Done when it completes. */
+void NPU_PrefetchDmaStart(void *dst, void *src, uint32_t size)
+{
+    uint32_t width = NPU_PREFETCH_DMA_MAX_WIDTH;
+    while (width > sizeof(uint32_t) &&
+           (((uintptr_t)src | (uintptr_t)dst | (uintptr_t)size) & (width - 1U)) != 0U)
+    {
+        width >>= 1;
+    }
+
+    EDMA_PrepareTransfer(&s_transferConfig,
+                         src, width,
+                         dst, width,
+                         size, size,
+                         kEDMA_MemoryToMemory);
+    EDMA_SubmitTransfer(&g_DMA_NPU_Handle, &s_transferConfig);
+    EDMA_StartTransfer(&g_DMA_NPU_Handle);
+}
+#endif
+
+
 /*${function:start}*/
 int64_t os_clock_now(){
     return TIMER_GetTimeInUS();
@@ -47,6 +101,17 @@ void BOARD_InitHardware(void)
     BOARD_InitPsRamPins_Xspi1();
     CLOCK_AttachClk(kAUDIO_PLL_PFD1_to_XSPI1);
     CLOCK_SetClkDiv(kCLOCK_DivXspi1Clk, 1u);     /*400MHz*/
+#endif
+#ifdef EXTERNAL_MEM
+    /* Init the eDMA controller (writes MP_CSR) for the NPU weight prefetch. */
+    {
+        edma_config_t dmaConfig;
+        EDMA_GetDefaultConfig(&dmaConfig);
+        EDMA_Init(NPU_PREFETCH_DMA, &dmaConfig);
+    }
+    EDMA_SetChannelMux(NPU_PREFETCH_DMA, NPU_PREFETCH_DMA_CH, 0U);
+    EDMA_CreateHandle(&g_DMA_NPU_Handle, NPU_PREFETCH_DMA, NPU_PREFETCH_DMA_CH);
+    EDMA_SetCallback(&g_DMA_NPU_Handle, EDMA_Callback, NULL);
 #endif
 }
 /*${function:end}*/
