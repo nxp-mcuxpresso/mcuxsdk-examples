@@ -157,7 +157,7 @@
 */
 
 #if CONFIG_TX_RX_ZERO_COPY
-#define MEM_ALIGNMENT 32
+#define MEM_ALIGNMENT 64
 #else
 #define MEM_ALIGNMENT 4
 #endif
