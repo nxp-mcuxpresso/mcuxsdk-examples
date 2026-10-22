@@ -1,4 +1,4 @@
-# Copyright 2025 NXP
+# Copyright 2025-2026 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -41,10 +41,12 @@ config WAIT_TIME_US
 endmenu
 
 config MCUX_COMPONENT_driver.i3c
+    bool
     default y
     depends on MCUX_HAS_COMPONENT_driver.i3c
 
 config MCUX_COMPONENT_driver.dsc_i3c
+    bool
     default y
     depends on MCUX_HAS_COMPONENT_driver.dsc_i3c
 
