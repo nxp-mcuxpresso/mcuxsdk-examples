@@ -58,7 +58,10 @@ void DEMO_DMA_IRQ_HANDLER(void)
     if (0U != (EDMA_GetChannelStatusFlags(DEMO_DMA_BASEADDR, DEMO_DMA_CHANNEL_0) & (uint32_t)kEDMA_InterruptFlag))
     {
         EDMA_ClearChannelStatusFlags(DEMO_DMA_BASEADDR, DEMO_DMA_CHANNEL_0, (uint32_t)kEDMA_InterruptFlag);
+
+        /* Re-arm the channel for the next software trigger. */
         EDMA_EnableChannelRequest(DEMO_DMA_BASEADDR, DEMO_DMA_CHANNEL_0);
+
         g_DualAdcDmaTransferDoneFlag = true;
     }
 
@@ -109,9 +112,6 @@ int main(void)
             LOG_INFO(" %d", value);
         }
         LOG_INFO("\r\n");
-
-        /* Re-arm the channel for the next software trigger. */
-        EDMA_EnableChannelRequest(DEMO_DMA_BASEADDR, DEMO_DMA_CHANNEL_0);
     }
 }
 
@@ -224,5 +224,10 @@ static void DEMO_ConfigureEDMA(void)
     EDMA_InitChannel(DEMO_DMA_BASEADDR, DEMO_DMA_CHANNEL_0, &channelConfig);
 
     (void)EnableIRQ(DEMO_DMA_IRQ);
+
+    /*
+     * Enable hardware service requests for this channel. Once enabled, the DualADC
+     * end-of-scan peripheral request can initiate an eDMA channel service request.
+     */
     EDMA_EnableChannelRequest(DEMO_DMA_BASEADDR, DEMO_DMA_CHANNEL_0);
 }
