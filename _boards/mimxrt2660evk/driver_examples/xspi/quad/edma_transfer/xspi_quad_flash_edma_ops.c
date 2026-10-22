@@ -143,9 +143,46 @@ void xspi_callback(XSPI_Type *base, xspi_edma_handle_t *handle, status_t status,
  * into flash-resident EDMA_DriverIRQHandler (fsl_edma.c is not RAMFUNC) while
  * the NOR flash array is busy programming -- a flash fetch during that window
  * stalls indefinitely. The handlers clear the channel done flag and call the
- * xspi_callback directly from RAM. */
+ * xspi_callback directly from RAM.
+ *
+ * This replicates the non-scatter-gather path of EDMA_HandleIRQ (drivers/
+ * edma_unified/fsl_edma.c): read CH_CSR.DONE, clear CH_INT, invoke the
+ * registered EDMA callback. dmaTxHandle/dmaRxHandle are plain structs (not
+ * opaque), so reading their callback/userData fields and calling through them
+ * does not need those symbols to be non-static -- XSPI_TransferEDMACallback
+ * (fsl_xspi_edma.c) is itself already ITCM-resident on this target.
+ */
+void MAIN_EDMA3_CH0_IRQHandler(void)
+{
+    EDMA_Type *edmaBase = (EDMA_Type *)(void *)EXAMPLE_XSPI_DMA;
+    bool transferDone   = (EDMA_CHANNEL_BASE(edmaBase, XSPI_TX_DMA_CHANNEL)->CH_CSR & DMA_CH_CSR_DONE_MASK) != 0U;
 
-extern xspi_edma_handle_t xspiHandle;
+    if ((EDMA_CHANNEL_BASE(edmaBase, XSPI_TX_DMA_CHANNEL)->CH_INT & DMA_CH_INT_INT_MASK) != 0U)
+    {
+        EDMA_CHANNEL_BASE(edmaBase, XSPI_TX_DMA_CHANNEL)->CH_INT |= DMA_CH_INT_INT_MASK;
+    }
+
+    if (dmaTxHandle.callback != NULL)
+    {
+        dmaTxHandle.callback(&dmaTxHandle, dmaTxHandle.userData, transferDone, 0U);
+    }
+}
+
+void MAIN_EDMA3_CH1_IRQHandler(void)
+{
+    EDMA_Type *edmaBase = (EDMA_Type *)(void *)EXAMPLE_XSPI_DMA;
+    bool transferDone   = (EDMA_CHANNEL_BASE(edmaBase, XSPI_RX_DMA_CHANNEL)->CH_CSR & DMA_CH_CSR_DONE_MASK) != 0U;
+
+    if ((EDMA_CHANNEL_BASE(edmaBase, XSPI_RX_DMA_CHANNEL)->CH_INT & DMA_CH_INT_INT_MASK) != 0U)
+    {
+        EDMA_CHANNEL_BASE(edmaBase, XSPI_RX_DMA_CHANNEL)->CH_INT |= DMA_CH_INT_INT_MASK;
+    }
+
+    if (dmaRxHandle.callback != NULL)
+    {
+        dmaRxHandle.callback(&dmaRxHandle, dmaRxHandle.userData, transferDone, 0U);
+    }
+}
 
 static void xspi_quad_set_ahb_read_spi(XSPI_Type *base)
 {

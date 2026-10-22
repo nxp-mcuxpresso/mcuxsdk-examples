@@ -10,6 +10,9 @@
 #include "board.h"
 #include "app.h"
 #include "fsl_xspi.h"
+#if !(defined(XIP_BOOT_HEADER_ENABLE) && (XIP_BOOT_HEADER_ENABLE == 1))
+#include "fsl_iomuxc.h"
+#endif
 /*${header:end}*/
 
 /*${variable:start}*/
@@ -25,6 +28,13 @@
  * sampleClkSource is DQS pad loopback -- the part has no DQS pin, so the
  * loopback through the pad ring is the source that tracks the real pad
  * timing (same choice the boot ROM makes for this flash).
+ *
+ * dllConfig uses auto-update mode with the NXP reference values
+ * (useRefValue = true) rather than a hand-picked bypass delay: bypass mode
+ * needs its own FREQEN decision (XSPI_UpdateDllValue derives it from
+ * xspiRootClk only when useRefValue is true), and this example's boot path
+ * (see BOARD_InitHardware) never runs the boot ROM init that would otherwise
+ * leave a known DLLCR state behind.
  */
 xspi_device_config_t deviceconfig = {
     .xspiRootClk     = EXAMPLE_XSPI_ROOT_CLOCK_FREQ,
@@ -38,14 +48,8 @@ xspi_device_config_t deviceconfig = {
             .sampleClkSource = kXSPI_SampleClkFromDqsPadLoopback,
             .dllConfig =
                 {
-                    .dllMode     = kXSPI_BypassMode,
-                    .useRefValue = false,
-                    .enableCdl8  = false,
-                    .dllCustomPara.bypassModePara.delayElementCoarseValue = 0x9U,
-                    .dllCustomPara.bypassModePara.delayElementFineValue = 0x0U,
-                    .dllCustomPara.bypassModePara.offsetDelayElementCount = 0x0U,
-                    .dllCustomPara.bypassModePara.enableHighFreq = true,
-                    .dllCustomDelayTapNum = 3U,
+                    .dllMode     = kXSPI_AutoUpdateMode,
+                    .useRefValue = true,
                 },
         },
     .ptrDeviceDdrConfig    = NULL,
@@ -154,22 +158,46 @@ AT_QUICKACCESS_SECTION_DATA(const uint32_t customLUT[CUSTOM_LUT_LENGTH]) = {
 /*${variable:end}*/
 
 /*${function:start}*/
+#if !(defined(XIP_BOOT_HEADER_ENABLE) && (XIP_BOOT_HEADER_ENABLE == 1))
+/*
+ * Mux the XSPI0 pins, including DQS0 (sampleClkSource is DQS pad loopback, so
+ * DQS0 must be muxed to the XSPI0 function for reads to sample correctly).
+ * On the xspi_nor* (XIP) targets the boot ROM already muxes these pins
+ * before jumping to the image executing from that same flash -- re-muxing
+ * there would disturb the live XIP interface for no benefit, so this runs
+ * only on targets without a boot header (the ROM does not run their init).
+ */
+static void BOARD_InitXspi0QuadPins(void)
+{
+    IOMUXC_SetPin_Mux_Config(IOMUXC_PIO6_0_MAIN_XSPI0_SCLK0, 0x3000U); /* Drive Strength: 33 ohm */
+    IOMUXC_SetPin_Mux_Config(IOMUXC_PIO6_1_MAIN_XSPI0_SS0_N, 0x3000U); /* Drive Strength: 33 ohm */
+    IOMUXC_SetPin_Mux_Config(IOMUXC_PIO6_2_MAIN_XSPI0_DATA0,
+                              0x3080U); /* Input Buffer Enable: Enables, Drive Strength: 33 ohm */
+    IOMUXC_SetPin_Mux_Config(IOMUXC_PIO6_3_MAIN_XSPI0_DATA1,
+                              0x3080U); /* Input Buffer Enable: Enables, Drive Strength: 33 ohm */
+    IOMUXC_SetPin_Mux_Config(IOMUXC_PIO6_4_MAIN_XSPI0_DATA2,
+                              0x3080U); /* Input Buffer Enable: Enables, Drive Strength: 33 ohm */
+    IOMUXC_SetPin_Mux_Config(IOMUXC_PIO6_5_MAIN_XSPI0_DATA3,
+                              0x3080U); /* Input Buffer Enable: Enables, Drive Strength: 33 ohm */
+    IOMUXC_SetPin_Mux_Config(IOMUXC_PIO6_6_MAIN_XSPI0_DQS0,
+                              0x3090U); /* Pulldown Enable, Input Buffer Enable: Enables, Drive Strength: 33 ohm */
+}
+#endif
+
 void BOARD_InitHardware(void)
 {
     /* Board common setting: MPU, Power and Clock Tree, TRDC, and Debug Console init. */
     BOARD_CommonSetting();
-    /* The XSPI0 flash pins are muxed by the boot ROM and (on the xspi_nor*
-     * targets) the code executes XIP from that flash, so the pins must NOT be
-     * re-muxed here: re-applying the mux on the live XIP interface disturbs
-     * the running flash for no benefit. */
-    
-    
+#if !(defined(XIP_BOOT_HEADER_ENABLE) && (XIP_BOOT_HEADER_ENABLE == 1))
+    BOARD_InitXspi0QuadPins();
+#endif
+
     /* In this case, DMA is being used to fill the TBDR buffer, so it should be made sure that the DMA
      * should have same domain ID as the CPU.
      * In default, the CPU is in domain 1, so the DMA3 channel 0,1 should be assigned to domain 1 as well.
      */
     trdc_non_processor_domain_assignment_t eDma3Ch0_1_assignment;
-    
+
     TRDC_GetDefaultNonProcessorDomainAssignment(&eDma3Ch0_1_assignment);
     eDma3Ch0_1_assignment.domainId = 1U;
     TRDC_SetNonProcessorDomainAssignment(MAIN__TRDC, kTRDC_MAIN_MasterMEDMA3Ch0_1, &eDma3Ch0_1_assignment);
