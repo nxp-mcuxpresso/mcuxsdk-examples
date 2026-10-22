@@ -28,3 +28,8 @@ ELS PKC PQC example END
 - [FRDM-MCXN947T](../../_boards/frdmmcxn947t/els_pkc_examples/els_pkc_pqc/example_board_readme.md)
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/els_pkc_examples/els_pkc_pqc/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/els_pkc_examples/els_pkc_pqc/example_board_readme.md)
+- [MIMXRT700-EVK](../../_boards/mimxrt700evk/els_pkc_examples/els_pkc_pqc/example_board_readme.md)
+- [FRDM-IMXRT700](../../_boards/frdmimxrt700/els_pkc_examples/els_pkc_pqc/example_board_readme.md)
+- [FRDM-RW612](../../_boards/frdmrw612/els_pkc_examples/els_pkc_pqc/example_board_readme.md)
+- [FRDM-RW610FML](../../_boards/frdmrw610fml/els_pkc_examples/els_pkc_pqc/example_board_readme.md)
+- [RD-RW612-BGA](../../_boards/rdrw612bga/els_pkc_examples/els_pkc_pqc/example_board_readme.md)

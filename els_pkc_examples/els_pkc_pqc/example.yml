@@ -19,3 +19,8 @@ els_pkc_pqc:
     frdmmcxn947t@cm33_core0: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
+    frdmimxrt700@cm33_core0: []
+    mimxrt700evk@cm33_core0: []
+    frdmrw612: []
+    frdmrw610fml: []
+    rdrw612bga: []
