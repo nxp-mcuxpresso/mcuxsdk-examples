@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+usb_device_cmsis_validation:
+  section-type: application
+  contents:
+    meta_path: examples/cmsis_driver_examples/usb_dev
+    project-root-path: boards/${board}/cmsis_driver_examples/usb_dev
+    document:
+      name: usb_device_cmsis_validation${core_id_suffix_name}
+      category: cmsis_driver_examples/usb_dev
+      brief: CMSIS-Driver Validation for USB Device (EHCI) on NXP MCX A-series.
+        Runs the ARM CMSIS-Driver Validation suite (DV_USBD) over FreeRTOS/CMSIS-RTOS2.
+        Test results are printed to UART at 115200 baud.
+      example_readme:
+      - examples/cmsis_driver_examples/usb_dev/readme.md
+      - ${board_root}/${board}/cmsis_driver_examples/usb_dev/example_board_readme.md
+  boards:
+    frdmmcxa577: []
