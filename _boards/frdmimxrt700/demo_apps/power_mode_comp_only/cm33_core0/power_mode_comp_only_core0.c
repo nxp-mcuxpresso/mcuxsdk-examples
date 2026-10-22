@@ -41,6 +41,7 @@ static app_wakeup_source_t s_wakeupSource; /* Wakeup source. */
  ******************************************************************************/
 static uint32_t APP_GetUserSelection(void);
 static void APP_InitWakeupPin(void);
+static void APP_InitWakeupTimer(void);
 /*******************************************************************************
  * Code
  ******************************************************************************/
@@ -151,6 +152,7 @@ static app_wakeup_source_t APP_GetWakeupSource(uint32_t mode)
 
             if (ch == 'T')
             {
+                APP_InitWakeupTimer();
                 return kAPP_WakeupSourceRtc;
             }
             else if ((ch == 'S') && (mode != kPower_DeepSleepRetention))
@@ -244,7 +246,6 @@ static void APP_SetWakeupConfig(void)
 
     if (s_wakeupSource == kAPP_WakeupSourceRtc)
     {
-        APP_InitWakeupTimer();
         /* Read the RTC seconds register to get current time in seconds */
         IRTC_GetDatetime(APP_RTC, &datetime);
         /* Add alarm seconds to current time */
