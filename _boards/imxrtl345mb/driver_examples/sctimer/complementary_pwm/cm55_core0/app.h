@@ -10,6 +10,7 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
+#define SCT0 CTRLSS__SCT_0
 #define SCTIMER_CLK_FREQ CLOCK_GetFreq(kCLOCK_BusClk)
 /* Two complementary output pairs (high side / low side). */
 #define DEMO_PAIR1_OUT_HIGH kSCTIMER_Out_0

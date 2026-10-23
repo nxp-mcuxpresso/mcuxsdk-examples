@@ -10,6 +10,7 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
+#define SCT0 CTRLSS__SCT_0
 /* TODO: SCTimerClock: 260MHz/(25+1) = 10MHz */
 #define SCTIMER_CLK_PRESCALE    (25U)
 #define SCTIMER_CLK_FREQ        CLOCK_GetCoreSysClkFreq()

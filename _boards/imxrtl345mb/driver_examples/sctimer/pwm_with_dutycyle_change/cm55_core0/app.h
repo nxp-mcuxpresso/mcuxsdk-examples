@@ -10,7 +10,7 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-
+#define SCT0 CTRLSS__SCT_0
 #define SCTIMER_CLK_FREQ CLOCK_GetFreq(kCLOCK_BusClk)
 #define DEMO_SCTIMER_OUT kSCTIMER_Out_3
 /*${macro:end}*/
