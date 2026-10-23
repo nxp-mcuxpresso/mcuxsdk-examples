@@ -64,7 +64,7 @@
 /* TBD (board / HW team): SXOSC analog trim values below are placeholder defaults
  * that need to be confirmed against the mimxrt2660evk crystal and load-cap network:
  *   - gmSel: depends on crystal ESR; RM table 804 lists typical values per XTAL
- *     frequency (24 MHz -> 3 is the RM-recommended value, we currently use 4).
+ *     frequency (24 MHz -> kCLOCK_CguanaSxoscGm24M = 3).
  *   - xtal1CapTrim / xtal2CapTrim: must match the on-board crystal load capacitance
  *     and PCB stray capacitance. Range is [0..63]; both pins should be set to the
  *     same value unless the schematic specifies asymmetric load caps.
@@ -74,11 +74,12 @@
  * the calibrated values should replace the placeholders below. */
 static const clock_cguana_sxosc_config_t s_sxoscConfig = {
     .modeSel      = kCLOCK_CguanaSxoscModeCrystal,
-    .gmSel        = 4U,
+    .gmSel        = kCLOCK_CguanaSxoscGm24M, /* 24 MHz crystal on mimxrt2660evk */
     .xtal1CapTrim = 16U,
     .xtal2CapTrim = 16U,
     .detTrim      = 0U,
     .clkDiv2En    = false, /* 24 MHz output (no divide-by-2). */
+    .freqHz       = 24000000U, /* 24 MHz crystal frequency. */
 };
 
 /* FRO 192 MHz: OTWB=3 targets the 192 MHz band. */
