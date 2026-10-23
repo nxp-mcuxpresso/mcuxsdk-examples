@@ -425,7 +425,7 @@ static status_t BENCH_RunOne(v2x_fce_handle_t *handle, bench_algo_t algo, uint32
         case kBenchAlgoHash:
         default:
         {
-            v2x_fce_hash_op_t op = {0};
+            v2x_fce_hash_op_t op = {(v2x_fce_sha_algo_t)0};
             op.shaAlgo           = s_shaAlgo;
             op.input             = s_in;
             op.inputSize         = payload;
