@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+lpi2c_edma_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpi2c/edma_transfer
+    project-root-path: boards/${board}/driver_examples/lpi2c/edma_transfer/${multicore_foldername}
+    document:
+      name: lpi2c_edma_transfer${core_id_suffix_name}
+      category: driver_examples/lpi2c
+      brief: The LPI2C Example project is a demonstration program that uses the KSDK
+        software to manipulate the Low Power Inter-Integrated Circuit in edma mode.
+        The example uses one lpi2c instance as the master to send data in edma way
+        to another lpi2c instance as the slave. The slave will check the data it
+        receives and shows the log.
+      example_readme:
+      - examples/driver_examples/lpi2c/edma_transfer/readme.md
+      - ${board_root}/${board}/driver_examples/lpi2c/edma_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:

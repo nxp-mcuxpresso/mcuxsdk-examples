@@ -14,7 +14,9 @@
 #include "fsl_lpi2c.h"
 #include "fsl_lpi2c_edma.h"
 #include "fsl_edma.h"
+#if defined(FSL_FEATURE_SOC_DMAMUX_COUNT) && FSL_FEATURE_SOC_DMAMUX_COUNT
 #include "fsl_dmamux.h"
+#endif
 #include "app.h"
 
 /*******************************************************************************
@@ -91,6 +93,7 @@ int main(void)
 
     PRINTF("\r\nLPI2C example -- MasterDMA_SlaveInterrupt.\r\n");
 
+#if defined(FSL_FEATURE_SOC_DMAMUX_COUNT) && FSL_FEATURE_SOC_DMAMUX_COUNT
     /* DMAMUX init */
     DMAMUX_Init(EXAMPLE_LPI2C_MASTER_DMA_MUX);
 
@@ -99,6 +102,7 @@ int main(void)
 
     DMAMUX_SetSource(EXAMPLE_LPI2C_MASTER_DMA_MUX, 1, LPI2CMASTER_RECEIVE_EDMA_REQUEST_SOURCE);
     DMAMUX_EnableChannel(EXAMPLE_LPI2C_MASTER_DMA_MUX, 1);
+#endif
 
     /* EDMA init */
     /*
@@ -186,6 +190,14 @@ int main(void)
     /* Create the EDMA channel handles */
     EDMA_CreateHandle(&g_edmaTxHandle, EXAMPLE_LPI2C_MASTER_DMA, 0);
     EDMA_CreateHandle(&g_edmaRxHandle, EXAMPLE_LPI2C_MASTER_DMA, 1);
+#if defined(FSL_FEATURE_EDMA_HAS_CHANNEL_MUX) && FSL_FEATURE_EDMA_HAS_CHANNEL_MUX
+#if defined(DEMO_LPI2C_TRANSMIT_EDMA_CHANNEL)
+    EDMA_SetChannelMux(EXAMPLE_LPI2C_MASTER_DMA, 0, DEMO_LPI2C_TRANSMIT_EDMA_CHANNEL);
+#endif
+#if defined(DEMO_LPI2C_RECEIVE_EDMA_CHANNEL)
+    EDMA_SetChannelMux(EXAMPLE_LPI2C_MASTER_DMA, 1, DEMO_LPI2C_RECEIVE_EDMA_CHANNEL);
+#endif
+#endif
 
     /* Create the LPI2C master DMA driver handle */
     LPI2C_MasterCreateEDMAHandle(EXAMPLE_I2C_MASTER, &g_m_edma_handle, &g_edmaRxHandle, &g_edmaTxHandle, NULL, NULL);
