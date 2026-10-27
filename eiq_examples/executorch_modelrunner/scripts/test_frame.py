@@ -1,3 +1,7 @@
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 # pytest unit tests for the run.py frame codec and INFO/RESULT parsers.
 #
 # Contract source (board firmware, the ground truth):

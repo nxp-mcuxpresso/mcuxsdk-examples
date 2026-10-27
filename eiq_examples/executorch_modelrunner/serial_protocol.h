@@ -1,3 +1,9 @@
+/*
+ * Copyright 2026 NXP
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
 #ifndef SERIAL_PROTOCOL_H_
 #define SERIAL_PROTOCOL_H_
 
