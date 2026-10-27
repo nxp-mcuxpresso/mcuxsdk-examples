@@ -21,7 +21,6 @@ dev_cdc_ecm_nic_freertos:
     frdmmcxn947@cm33_core0: []
     frdmmcxn947t@cm33_core0: []
     frdmrw612: []
-    frdmrw610fml: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
     rdrw612bga: []
