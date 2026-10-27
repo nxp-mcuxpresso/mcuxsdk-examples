@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# Copyright 2026 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 # Interactive PC-side CLI for executorch_modelrunner.
 #
 # Talks to the board over a binary-transparent serial protocol defined in:

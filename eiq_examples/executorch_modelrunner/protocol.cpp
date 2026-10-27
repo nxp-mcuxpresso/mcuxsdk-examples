@@ -1,3 +1,9 @@
+/*
+ * Copyright 2026 NXP
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
 #include "protocol.h"
 
 // CRC-16/CCITT-FALSE: init=0xFFFF, poly=0x1021, no final xor, MSB-first.
