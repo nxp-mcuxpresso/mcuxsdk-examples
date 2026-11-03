@@ -25,13 +25,6 @@ flexspi_nor_dma_transfer:
     - -iar@release
     - -mdk@debug
     - -mdk@release
-    frdmrw610fml:
-    - -armgcc@debug
-    - -armgcc@release
-    - -iar@debug
-    - -iar@release
-    - -mdk@debug
-    - -mdk@release
     mimxrt685audevk@cm33:
     - -armgcc@debug
     - -armgcc@release

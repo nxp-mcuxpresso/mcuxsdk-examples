@@ -9,6 +9,5 @@ Example will first erase the sector and program a page into the flash, at last c
 
 ## Supported Boards
 - [FRDM-RW612](../../../../_boards/frdmrw612/driver_examples/flexspi/nor/dma_transfer/example_board_readme.md)
-- [FRDM-RW610FML](../../../../_boards/frdmrw610fml/driver_examples/flexspi/nor/dma_transfer/example_board_readme.md)
 - [MIMXRT685-AUD-EVK](../../../../_boards/mimxrt685audevk/driver_examples/flexspi/nor/dma_transfer/example_board_readme.md)
 - [RD-RW612-BGA](../../../../_boards/rdrw612bga/driver_examples/flexspi/nor/dma_transfer/example_board_readme.md)
