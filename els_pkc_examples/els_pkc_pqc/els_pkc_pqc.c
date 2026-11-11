@@ -12,10 +12,17 @@
 #include "els_pkc_pqc.h"
 #include "mcux_els.h"
 #include "mcux_pkc.h"
+#if defined(FSL_FEATURE_SOC_TRNG_COUNT) && (FSL_FEATURE_SOC_TRNG_COUNT > 0)
+#include "fsl_trng.h"
+#endif
 
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+#if (defined(PKC0) && !defined(PKC))
+#define PKC PKC0
+#endif
+
 typedef uint32_t (*els_pkc_pqc_example_t)(void);
 
 typedef struct
@@ -57,6 +64,26 @@ int main(void)
         PRINTF("\r\nELS init failed\r\n");
         return kStatus_Fail;
     }
+
+    /* Enable PKC related clocks and RAM zeroize */
+    if (PKC_PowerDownWakeupInit(PKC) != kStatus_Success)
+    {
+        PRINTF("\r\nPKC init failed\r\n");
+        return kStatus_Fail;
+    }
+
+#if defined(FSL_FEATURE_SOC_TRNG_COUNT) && (FSL_FEATURE_SOC_TRNG_COUNT > 0)
+    /* Initialize the TRNG, it is the entropy source for the DRBG used by ML-DSA */
+    {
+        trng_config_t trngConfig;
+        TRNG_GetDefaultConfig(&trngConfig);
+        if (TRNG_Init(TRNG, &trngConfig) != kStatus_Success)
+        {
+            PRINTF("\r\nTRNG init failed\r\n");
+            return kStatus_Fail;
+        }
+    }
+#endif
 
     PRINTF("\r\nELS PKC PQC example\r\n");
     PRINTF("\r\n============================\r\n");
